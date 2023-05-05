@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-04 13:53+0100\n"
+"POT-Creation-Date: 2023-05-05 13:14+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -161,9 +161,8 @@ msgid "Waiting for response..."
 msgstr "等待回應中…"
 
 #: alias/dlg_query.c:362
-#, fuzzy
 msgid "Query"
-msgstr "查詢："
+msgstr "查詢"
 
 #: alias/dlg_query.c:454 alias/dlg_query.c:531
 msgid "Query command not defined"
@@ -378,7 +377,7 @@ msgstr "儲存中…"
 #, fuzzy, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
-msgstr[0] "附件已被儲存"
+msgstr[0] "附件已被儲存。"
 
 #: attach/recvattach.c:548
 #, c-format
@@ -1538,17 +1537,15 @@ msgid "OAUTH token is too big: %ld"
 msgstr ""
 
 #: conn/dlg_verifycert.c:200
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
-msgstr "(1)不接受，(2)只是這次接受，(3)永遠接受"
+msgstr "(1)不接受，(2)只是這次接受，(3)永遠接受，(4)跳過"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
 #: conn/dlg_verifycert.c:204
-#, fuzzy
 msgid "roas"
-msgstr "123"
+msgstr "1234"
 
 #: conn/dlg_verifycert.c:208
 msgid "(r)eject, accept (o)nce, (a)ccept always"
@@ -1562,9 +1559,8 @@ msgid "roa"
 msgstr "123"
 
 #: conn/dlg_verifycert.c:219
-#, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
-msgstr "(1)不接受，(2)只是這次接受"
+msgstr "(1)不接受，(2)只是這次接受，(4)跳過"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
@@ -2166,14 +2162,12 @@ msgid "Warning: message contains no From: header"
 msgstr ""
 
 #: external.c:116 recvcmd.c:204
-#, fuzzy
 msgid "Bounce message to: "
 msgstr "直接傳送郵件到："
 
 #: external.c:118 recvcmd.c:206
-#, fuzzy
 msgid "Bounce tagged messages to: "
-msgstr "回退信件至："
+msgstr "無法傳送已標記的郵件至："
 
 #: external.c:127 recvcmd.c:217
 msgid "Error parsing address"
@@ -2192,10 +2186,9 @@ msgid_plural "Messages not bounced"
 msgstr[0] "郵件已被傳送"
 
 #: external.c:189 recvcmd.c:286
-#, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
-msgstr[0] "郵件已被傳送"
+msgstr[0] "郵件已被傳送。"
 
 #: external.c:328 external.c:371 external.c:391
 msgid "Can't create filter process"
@@ -2210,23 +2203,19 @@ msgid "No printing command has been defined"
 msgstr "沒有定義列印指令"
 
 #: external.c:472
-#, fuzzy
 msgid "Print message?"
 msgstr "列印信件？"
 
 #: external.c:473
-#, fuzzy
 msgid "Print tagged messages?"
-msgstr "列印信件？"
+msgstr "列印已標記的信件？"
 
 #: external.c:482
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "信件已印出"
 
 #: external.c:486
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "信件未能列印出來"
@@ -2713,9 +2702,8 @@ msgid "%s authentication failed"
 msgstr "SASL 驗證失敗"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:134
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "SASL 驗證失敗"
+msgstr "SASL 驗證失敗。"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -2922,9 +2910,8 @@ msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "無法重開信箱"
 
 #: imap/message.c:1124
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
-msgstr "無法取回使用這個 IMAP 伺服器版本的郵件的標頭"
+msgstr "無法取回使用這個 IMAP 伺服器版本的郵件的標頭。"
 
 #: imap/message.c:1145 index/functions.c:2338 nntp/nntp.c:1251 pop/pop.c:368
 #, fuzzy
@@ -4177,7 +4164,7 @@ msgid_plural "Move %d read messages to %s?"
 msgstr[0] "搬移已讀取的信件到 %s？"
 
 #: mx.c:713 mx.c:960
-#, fuzzy, c-format
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "清除 %d 封已經被刪除的信件？"
@@ -6831,7 +6818,7 @@ msgstr "現正顯示說明文件"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:120 status.c:294
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
 msgstr ""
 
@@ -6877,9 +6864,17 @@ msgstr "PGP 簽名驗證成功"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP 簽名無法驗證"
 
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, fuzzy, c-format
+msgid "%ld%%"
+msgstr "%ld%%"
+
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:122 status.c:292
+#: pager/pbar.c:125 status.c:292
 msgid "end"
 msgstr ""
 
@@ -7532,6 +7527,30 @@ msgstr "無法複制信件"
 msgid "No postponed messages"
 msgstr "沒有被延遲寄出的信件"
 
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, fuzzy, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, fuzzy, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, fuzzy, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d%%)"
+
 #: question/question.c:208
 msgid "yes"
 msgstr ""
@@ -7881,6 +7900,14 @@ msgstr "信箱排序中…"
 msgid "(no mailbox)"
 msgstr "（沒有信箱）"
 
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, fuzzy, c-format
+msgid "%d%%"
+msgstr "%d%%"
+
 #: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -7939,49 +7966,2021 @@ msgstr "編譯選項："
 msgid "Devel options:"
 msgstr "編譯選項："
 
-#. L10N: Pager position percentage.
-#. `%ld` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: pager/message.c:59 pager/pbar.c:123 status.c:294 pager/pbar.c:117
-#, fuzzy, c-format
-msgid "%ld%%"
-msgstr "%ld%%"
+#~ msgid ""
+#~ "\n"
+#~ "Compile options:"
+#~ msgstr ""
+#~ "\n"
+#~ "編譯選項："
 
-#. L10N: Progress bar: `%s` loading text, `%zu` item count,
-#. `%d` percentage, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: pager/pbar.c:125 status.c:292 progress/window.c:168
-#, fuzzy, c-format
-msgid "%s %zu (%d%%)"
-msgstr "%s %zu (%d%%)"
+#~ msgid ""
+#~ "\n"
+#~ "Generic bindings:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "標準功能定義：\n"
+#~ "\n"
 
-#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:178
-#, fuzzy, c-format
-msgid "%s %s/%s (%d%%)"
-msgstr "%s %s/%s (%d%%)"
+#~ msgid ""
+#~ "\n"
+#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft.com>\n"
+#~ "\n"
+#~ "    Redistribution and use in source and binary forms, with or without\n"
+#~ "    modification, are permitted under certain conditions.\n"
+#~ "\n"
+#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
+#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
+#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
+#~ "\n"
+#~ "    You should have received a copy of the full distribution terms\n"
+#~ "    along with this program; if not, write to the program's developers.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "SHA1 implementation 版權所有 (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
+#~ "\n"
+#~ "     重複散布並使用原始程式碼和編譯過的程式碼，不管有否經過修改，\n"
+#~ "     在某些條件下是許可的。\n"
+#~ "\n"
+#~ "     SHA1 程序不附帶任何擔保，不論係明示還是暗示，包括但不限於銷售性\n"
+#~ "     和適於特定目的之暗示擔保。\n"
+#~ "\n"
+#~ "     您應該收到一份此應用程式的完整的散布條文；如果沒有，請寫信給\n"
+#~ "     應用程式的開發人員.\n"
 
-#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:186
-#, fuzzy, c-format
-msgid "%s %zu/%zu (%d%%)"
-msgstr "%s %zu/%zu (%d%%)"
+#~ msgid ""
+#~ "\n"
+#~ "Unbound functions:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "未被定義的功能：\n"
+#~ "\n"
 
-#. L10N: Status bar, percentage of way through index.
-#. `%d` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: status.c:302
+#~ msgid ""
+#~ "\n"
+#~ "[-- End of PGP output --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "[-- PGP 輸出的資料結束 --]\n"
+#~ "\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "  -E\t\tedit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>\tspecify a command to be executed after initialization\n"
+#~ "  -f <file>\tspecify which mailbox to read\n"
+#~ "  -F <file>\tspecify an alternate muttrc file\n"
+#~ "  -H <file>\tspecify a draft file to read header and body from\n"
+#~ "  -i <file>\tspecify a file which Mutt should include in the body\n"
+#~ "  -m <type>\tspecify a default mailbox type\n"
+#~ "  -n\t\tcauses Mutt not to read the system Muttrc\n"
+#~ "  -p\t\trecall a postponed message"
+#~ msgstr ""
+#~ "用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
+#~ "        mutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+#~ "        mutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
+#~ "        mutt -v[v]\n"
+#~ "\n"
+#~ "參數：\n"
+#~ "  -a <檔案>\t\t將檔案附在信件中\n"
+#~ "  -b <地址>\t\t指定一個 秘密複製 (BCC) 的地址\n"
+#~ "  -c <地址>\t\t指定一個 複製 (CC) 的地址\n"
+#~ "  -e <命令>\t\t指定一個初始化後要被執行的命令\n"
+#~ "  -f <檔案>\t\t指定要閱讀那一個郵筒\n"
+#~ "  -F <檔案>\t\t指定另一個 muttrc 檔案\n"
+#~ "  -H <檔案>\t\t指定一個範本檔案以讀取標題來源\n"
+#~ "  -i <檔案>\t\t指定一個包括在回覆中的檔案\n"
+#~ "  -m <類型>\t\t指定一個預設的郵筒類型\n"
+#~ "  -n\t\t使 Mutt 不去讀取系統的 Muttrc 檔\n"
+#~ "  -p\t\t叫回一個延後寄送的信件\n"
+#~ "  -R\t\t以唯讀模式開啟郵筒\n"
+#~ "  -s <主題>\t\t指定一個主題 (如果有空白的話必須被包括在引言中)\n"
+#~ "  -v\t\t顯示版本和編譯時所定義的參數\n"
+#~ "  -x\t\t模擬 mailx 寄送模式\n"
+#~ "  -y\t\t選擇一個被指定在您郵筒清單中的郵筒\n"
+#~ "  -z\t\t如果沒有訊息在郵筒中的話，立即離開\n"
+#~ "  -Z\t\t開啟第一個附有新郵件的資料夾，如果沒有的話立即離開\n"
+#~ "  -h\t\t這個說明訊息"
+
+#, fuzzy
+#~ msgid ""
+#~ "  -Q <variable>\tquery a configuration variable\n"
+#~ "  -R\t\topen mailbox in read-only mode\n"
+#~ "  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v\t\tshow version and compile-time definitions\n"
+#~ "  -x\t\tsimulate the mailx send mode\n"
+#~ "  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+#~ "  -z\t\texit immediately if there are no messages in the mailbox\n"
+#~ "  -Z\t\topen the first folder with new message, exit immediately if none\n"
+#~ "  -h\t\tthis help message"
+#~ msgstr ""
+#~ "用法: mutt [ -nRyzZ ] [ -e <指令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
+#~ "       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -Q <查詢> [ -Q <查詢> ] [...]\n"
+#~ "       mutt [ -nR ] [ -e <指令> ] [ -F <檔案> ] -A <別名> [ -A <別名> ] [...]\n"
+#~ "       mutt [ -nx ] [ -e <指令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+#~ "       mutt [ -n ] [ -e <指令> ] [ -F <檔案> ] -p\n"
+#~ "       mutt -v[v]\n"
+#~ "\n"
+#~ "參數：\n"
+#~ "  -A <alias>\texpand the given alias\n"
+#~ "  -a <檔案>\t\t將檔案附在信件中\n"
+#~ "  -b <地址>\t\t指定一個 秘密複製 (BCC) 的地址\n"
+#~ "  -c <地址>\t\t指定一個 複製 (CC) 的地址\n"
+#~ "  -e <命令>\t\t指定一個初始化後要被執行的命令\n"
+#~ "  -f <檔案>\t\t指定要閱讀那一個郵筒\n"
+#~ "  -F <檔案>\t\t指定另一個 muttrc 檔案\n"
+#~ "  -H <檔案>\t\t指定一個範本檔案以讀取標題來源\n"
+#~ "  -i <檔案>\t\t指定一個包括在回覆中的檔案\n"
+#~ "  -m <類型>\t\t指定一個預設的郵筒類型\n"
+#~ "  -n\t\t使 Mutt 不去讀取系統的 Muttrc 檔\n"
+#~ "  -p\t\t叫回一個延後寄送的信件\n"
+#~ "  -Q <變數>\t查詢一個設定變數\n"
+#~ "  -R\t\t以唯讀模式開啟郵筒\n"
+#~ "  -s <主題>\t\t指定一個主題 (如果有空白的話必須被包括在引言中)\n"
+#~ "  -v\t\t顯示版本和編譯時所定義的參數\n"
+#~ "  -x\t\t模擬 mailx 寄送模式\n"
+#~ "  -y\t\t選擇一個被指定在您郵筒清單中的郵筒\n"
+#~ "  -z\t\t如果沒有訊息在郵筒中的話，立即離開\n"
+#~ "  -Z\t\t開啟第一個附有新郵件的資料夾，如果沒有的話立即離開\n"
+#~ "  -h\t\t這個說明訊息"
+
+#~ msgid " in this limited view"
+#~ msgstr " 在這限定的瀏覽中"
+
+#~ msgid " tagged"
+#~ msgstr " 已標記"
+
+#~ msgid "%d kept"
+#~ msgstr "%d 保留了。"
+
 #, fuzzy, c-format
-msgid "%d%%"
-msgstr "%d%%"
+#~ msgid "%d labels changed"
+#~ msgstr "信箱沒有變動。"
+
+#, fuzzy, c-format
+#~ msgid "%d message(s) have been lost. Try reopening the mailbox"
+#~ msgstr "信件的索引不正確。請再重新開啟信箱。"
+
+#, c-format
+#~ msgid "%d: invalid message number.\n"
+#~ msgstr "%d：無效的信件號碼。\n"
+
+#, c-format
+#~ msgid "%s Do you really want to use the key?"
+#~ msgstr "%s 您真的要使用這個鑰匙？"
+
+#~ msgid "%s [%d message read]"
+#~ msgstr "%s [已閱讀 %d 封信件]"
+
+#, c-format
+#~ msgid "%s [%d of %d messages read]"
+#~ msgstr "%s [已閱讀 %2d 封信件中的 %1d 封]"
+
+#, fuzzy, c-format
+#~ msgid "%s authentication failed, trying next method"
+#~ msgstr "SASL 驗證失敗。"
+
+#, fuzzy, c-format
+#~ msgid "%s connection using %s (%s)"
+#~ msgstr "利用 %s (%s) 來進行 SSL"
+
+#, c-format
+#~ msgid "%s has insecure permissions!"
+#~ msgstr "%s 的權限不安全！"
+
+#, c-format
+#~ msgid "%s is not a mailbox!"
+#~ msgstr "%s 不是信箱！"
+
+#, c-format
+#~ msgid "%s is set"
+#~ msgstr "%s 已被設定"
+
+#, c-format
+#~ msgid "%s no longer exists!"
+#~ msgstr "%s 已經不存在！"
+
+#, fuzzy, c-format
+#~ msgid "%s: Unknown type"
+#~ msgstr "%s：不明的種類"
+
+#, fuzzy, c-format
+#~ msgid "%s: command valid only for index, body, header objects"
+#~ msgstr "%s：命令只提供索引物件"
+
+#, c-format
+#~ msgid "%s: invalid mailbox type"
+#~ msgstr "%s：無效的信箱種類"
+
+#, c-format
+#~ msgid "%s: invalid value"
+#~ msgstr "%s：無效的值"
+
+#, fuzzy, c-format
+#~ msgid "%s: invalid value (%s)"
+#~ msgstr "%s：無效的值"
+
+#~ msgid "%s: no such command"
+#~ msgstr "%s：無此指令"
+
+#, c-format
+#~ msgid "%s: no such function in map"
+#~ msgstr "%s：在對映表中沒有這樣的功能"
+
+#, fuzzy
+#~ msgid "%s: not a regular file"
+#~ msgstr "%s 不是信箱。"
+
+#, fuzzy
+#~ msgid "%s: stat: %s"
+#~ msgstr "無法讀取：%s"
+
+#, c-format
+#~ msgid "%s: unable to attach file.\n"
+#~ msgstr "%s：無法附帶檔案。\n"
+
+#, c-format
+#~ msgid "%s: unknown editor command (~? for help)\n"
+#~ msgstr "%s：不明的編輯器指令（~? 求助）\n"
+
+#, c-format
+#~ msgid "%s: unknown sorting method"
+#~ msgstr "%s：不明的排序方式"
+
+#, c-format
+#~ msgid "%s: unknown type"
+#~ msgstr "%s：不明的種類"
+
+#, fuzzy, c-format
+#~ msgid "%sgroup: warning: bad IDN '%s'.\n"
+#~ msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN。\n"
+
+#~ msgid "(End message with a . on a line by itself)\n"
+#~ msgstr "（在一行裏輸入一個 . 符號來結束信件）\n"
+
+#~ msgid "(continue)\n"
+#~ msgstr "（繼續）\n"
+
+#~ msgid "(need 'view-attachments' bound to key!)"
+#~ msgstr "（需要定義一個鍵給 'view-attachments' 來瀏覽附件！)"
+
+#, c-format
+#~ msgid "(size %s bytes) "
+#~ msgstr "(%s 個位元組) "
+
+#, c-format
+#~ msgid "(use '%s' to view this part)"
+#~ msgstr "（按 '%s' 來顯示這部份）"
+
+#, fuzzy
+#~ msgid "----- End forwarded message -----"
+#~ msgstr "準備轉寄信件…"
+
+#, fuzzy
+#~ msgid "...  Exiting.\n"
+#~ msgstr "%s… 正在離開。\n"
+
+#~ msgid "===== Attachments ====="
+#~ msgstr "===== 附件 ====="
+
+#~ msgid "APOP authentication failed"
+#~ msgstr "APOP 驗證失敗。"
+
+#~ msgid "An unkown PGP version was defined for signing"
+#~ msgstr "定義了一個不明的 PGP 版本來簽名"
+
+#~ msgid "Anonymous authentication failed"
+#~ msgstr "匿名驗證失敗。"
+
+#, fuzzy, c-format
+#~| msgid "Append messages to %s?"
+#~ msgid "Append message(s) to %s?"
+#~ msgstr "附加信件到 %s ?"
+
+#~ msgid "Attaching selected files.."
+#~ msgstr "正在附加選取了的檔案…"
+
+#, fuzzy, c-format
+#~ msgid "Authenticating (%s).."
+#~ msgstr "驗證中 (APOP)…"
+
+#~ msgid "Authenticating (APOP).."
+#~ msgstr "驗證中 (APOP)…"
+
+#~ msgid "Authenticating (CRAM-MD5).."
+#~ msgstr "驗證中 (CRAM-MD5)…"
+
+#~ msgid "Authenticating (GSSAPI).."
+#~ msgstr "驗證中 (GSSAPI)…"
+
+#, fuzzy
+#~ msgid "Authenticating (OAUTHBEARER).."
+#~ msgstr "驗證中 (SASL)…"
+
+#~ msgid "Authenticating (SASL).."
+#~ msgstr "驗證中 (SASL)…"
+
+#~ msgid "Authenticating (anonymous).."
+#~ msgstr "驗證中 (匿名)…"
+
+#~ msgid "Authentication method is unknown"
+#~ msgstr "不明的驗證方法。"
+
+#, fuzzy
+#~| msgid "No mailing lists found!"
+#~ msgid "Available mailing list actions"
+#~ msgstr "沒有找到郵寄論壇！"
+
+#, c-format
+#~ msgid "Bad IDN \"%s\""
+#~ msgstr "無效的 IDN「%s」。"
+
+#, c-format
+#~ msgid "Bad IDN in \"%s\": '%s'"
+#~ msgstr "「%s」中有無效的 IDN：「%s」"
+
+#, c-format
+#~ msgid "Bad IDN in %s: '%s'\n"
+#~ msgstr "%s 中含有無效的 IDN：「%s」\n"
+
+#, fuzzy
+#~ msgid "Bad mailbox name"
+#~ msgstr "製作信箱："
+
+#, c-format
+#~ msgid "Bounce message to %s"
+#~ msgstr "把郵件直接傳送至 %s"
+
+#~ msgid "Bounce message to %s...?"
+#~ msgstr "把郵件直接傳送至 %s…？"
+
+#, c-format
+#~ msgid "Bounce messages to %s"
+#~ msgstr "把郵件直接傳送至 %s"
+
+#~ msgid "Bounce messages to %s...?"
+#~ msgstr "把郵件直接傳送至 %s…？"
+
+#~ msgid "CLOSE failed"
+#~ msgstr "CLOSE 失敗"
+
+#~ msgid "CRAM key for %s@%s: "
+#~ msgstr "%s@%s 的 CRAM 鑰匙"
+
+#~ msgid "CRAM-MD5 authentication failed"
+#~ msgstr "CRAM-MD5 驗證失敗。"
+
+#~ msgid "Can't attach a directory!"
+#~ msgstr "無法附帶目錄！"
+
+#, fuzzy
+#~ msgid "Can't change 'important' flag on POP server"
+#~ msgstr "無法編輯 POP 伺服器上的信件。"
+
+#~ msgid "Can't change character set for non-text attachments!"
+#~ msgstr "非文字的附件是不能改變字符集的！"
+
+#, fuzzy
+#~ msgid "Can't decrypt encrypted message!"
+#~ msgstr "找不到已標記的訊息"
+
+#, c-format
+#~ msgid "Can't dotlock %s.\n"
+#~ msgstr "無法用 dotlock 鎖住 %s。\n"
+
+#~ msgid "Can't edit message on POP server"
+#~ msgstr "無法編輯 POP 伺服器上的信件。"
+
+#~ msgid "Can't get mixmaster's type2.list!"
+#~ msgstr "拿不到 mixmaster 的 type2.list！"
+
+#~ msgid "Can't match nametemplate, continue?"
+#~ msgstr "無法配合二個同樣名稱，繼續？"
+
+#~ msgid "Can't open %s: %s"
+#~ msgstr "無法開啟 %s：%s"
+
+#, fuzzy
+#~ msgid "Can't open OpenSSL subprocess!"
+#~ msgstr "無法開啟 OpenSSL 子程序！"
+
+#~ msgid "Can't open PGP subprocess!"
+#~ msgstr "無法開啟 PGP 子程序！"
+
+#~ msgid "Can't open your secret key ring!"
+#~ msgstr "無法開啟您的祕密鑰匙環！"
+
+#~ msgid "Can't write header to temporary file!"
+#~ msgstr "無法把標頭寫到暫存檔！"
+
+#~ msgid "Can't write message to temporary file!"
+#~ msgstr "無法把信件寫到暫存檔！"
+
+#~ msgid "Cannot create display filter"
+#~ msgstr "無法建立顯示過濾器"
+
+#~ msgid "Cannot create filter"
+#~ msgstr "無法建立過濾器"
+
+#, fuzzy
+#~ msgid "Cannot delete message"
+#~ msgstr "沒有要反刪除的信件。"
+
+#, fuzzy
+#~ msgid "Cannot delete message(s)"
+#~ msgstr "沒有要反刪除的信件。"
+
+#, fuzzy
+#~ msgid "Cannot delete root folder"
+#~ msgstr "無法建立過濾器"
+
+#, fuzzy
+#~ msgid "Cannot edit message"
+#~ msgstr "無法寫信件"
+
+#, fuzzy
+#~ msgid "Cannot flag message"
+#~ msgstr "顯示信件"
+
+#, fuzzy
+#~ msgid "Cannot mark message(s) as read"
+#~ msgstr "跳到這個序列的主信件"
+
+#, fuzzy
+#~| msgid "Cannot create filter"
+#~ msgid "Cannot parse draft file\n"
+#~ msgstr "無法建立過濾器"
+
+#, fuzzy
+#~ msgid "Cannot rename root folder"
+#~ msgstr "無法建立過濾器"
+
+#~ msgid "Cannot toggle write on a readonly mailbox!"
+#~ msgstr "無法寫入到一個唯讀的信箱！"
+
+#, fuzzy
+#~ msgid "Cannot undelete message"
+#~ msgstr "沒有要反刪除的信件。"
+
+#, fuzzy
+#~ msgid "Cannot undelete message(s)"
+#~ msgstr "沒有要反刪除的信件。"
+
+#~ msgid "Caught %s...  Exiting.\n"
+#~ msgstr "捕抓到 %s… 正在離開。\n"
+
+#, fuzzy
+#~ msgid "Caught signal "
+#~ msgstr "捕抓到 signal %d… 正在離開.\n"
+
+#, fuzzy
+#~ msgid "Certificate *NOT* added"
+#~ msgstr "驗証已儲存"
+
+#, fuzzy
+#~ msgid "Certificate is not X.509"
+#~ msgstr "驗証已儲存"
+
+#, c-format
+#~ msgid "Character set changed to %s; %s"
+#~ msgstr "字符集已換為 %s; %s。"
+
+#~ msgid "Check key  "
+#~ msgstr "檢查鑰匙   "
+
+#~ msgid "Checking for new messages.."
+#~ msgstr "看看有沒有新信件…"
+
+#~ msgid "Clear"
+#~ msgstr "清除"
+
+#, c-format
+#~ msgid "Closing connection to %s.."
+#~ msgstr "正在關閉與 %s 的連線…"
+
+#~ msgid "Closing connection to POP server.."
+#~ msgstr "正在關閉與 POP 伺服器的連線…"
+
+#~ msgid "Closing mailbox.."
+#~ msgstr "關閉信箱中…"
+
+#, fuzzy
+#~ msgid "Collecting data.."
+#~ msgstr "正連接到 %s…"
+
+#~ msgid "Comment Packet"
+#~ msgstr "注解封包"
+
+#~ msgid "Committing changes.."
+#~ msgstr "正在寫入更改的資料…"
+
+#~ msgid "Compiling search pattern.."
+#~ msgstr "編譯搜尋樣式中…"
+
+#~ msgid "Compose"
+#~ msgstr "寫信"
+
+#~ msgid "Compressed Data Packet"
+#~ msgstr "壓縮資料封包"
+
+#, fuzzy, c-format
+#~ msgid "Compressed-appending to %s.."
+#~ msgstr "拷貝到 %s…"
+
+#, fuzzy, c-format
+#~ msgid "Compressing %s.."
+#~ msgstr "拷貝到 %s…"
+
+#, c-format
+#~ msgid "Connecting to %s.."
+#~ msgstr "正連接到 %s…"
+
+#, fuzzy, c-format
+#~ msgid "Connecting with \"%s\".."
+#~ msgstr "正連接到 %s…"
+
+#~ msgid "Conventionally Encrypted Session Key Packet"
+#~ msgstr "一般加密鑰匙封包"
+
+#, fuzzy, c-format
+#~| msgid "Can't delete attachment from POP server"
+#~ msgid "Convert attachment from %s to %s?"
+#~ msgstr "無法從 POP 伺服器刪除附件。"
+
+#~ msgid "Copy"
+#~ msgstr "拷貝"
+
+#, fuzzy, c-format
+#~ msgid "Copy%s to mailbox"
+#~ msgstr "%s%s 到信箱"
+
+#, c-format
+#~ msgid "Copying %d messages to %s.."
+#~ msgstr "正在複制 %d 封信件到 %s …"
+
+#, c-format
+#~ msgid "Copying message %d to %s.."
+#~ msgstr "正在複制 信件 %d 到 %s …"
+
+#, fuzzy
+#~ msgid "Copying tagged messages.."
+#~ msgstr "沒有標記了的信件。"
+
+#, c-format
+#~ msgid "Copying to %s.."
+#~ msgstr "拷貝到 %s…"
+
+#, fuzzy
+#~ msgid ""
+#~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+#~ "Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
+#~ "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+#~ "Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
+#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+#~ "\n"
+#~ "Lots of others not mentioned here contributed lots of code,\n"
+#~ "fixes, and suggestions.\n"
+#~ "\n"
+#~ "    This program is free software; you can redistribute it and/or modify\n"
+#~ "    it under the terms of the GNU General Public License as published by\n"
+#~ "    the Free Software Foundation; either version 2 of the License, or\n"
+#~ "    (at your option) any later version.\n"
+#~ "\n"
+#~ "    This program is distributed in the hope that it will be useful,\n"
+#~ "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "    GNU General Public License for more details.\n"
+#~ "\n"
+#~ "    You should have received a copy of the GNU General Public License\n"
+#~ "    along with this program; if not, write to the Free Software\n"
+#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+#~ msgstr ""
+#~ "版權所有 (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>\n"
+#~ "版權所有 (C) 1996-2000 Brandon Long <blong@fiction.net>\n"
+#~ "版權所有 (C) 1997-2000 Thomas Roessler <roessler@does-not-exist.org>\n"
+#~ "版權所有 (C) 1998-2000 Werner Koch <wk@isil.d.shuttle.de>\n"
+#~ "版權所有 (C) 1999-2000 Brendan Cully <brendan@kublai.com>\n"
+#~ "版權所有 (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+#~ "版權所有 (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
+#~ "\n"
+#~ "還有許多在這裡沒有提及到的人仕，他們曾提供程式碼，修正，和意見。\n"
+#~ "\n"
+#~ "    這個應用程式是自由軟體；您可以在自由軟體基金會的 GNU 一般公共\n"
+#~ "    授權書（版本 2，或i隨你喜好使用以後的版本）下重複散布並/或修\n"
+#~ "    正它。\n"
+#~ "\n"
+#~ "    發布這個應用程式的目的是希望它會對你有用，但絕不包括任何保証；\n"
+#~ "    就連銷售性和適於特定目的之暗示擔保亦然。在 GNU 一般公共授權書\n"
+#~ "    中將會獲得更多資料。\n"
+#~ "\n"
+#~ "    您應已連同應用程式收到一份 GNU 一般公共授權書；如果沒有，請寫信\n"
+#~ "    至 Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
+#~ "    Boston, MA  02110-1301, USA.\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "Copyright (C) 1996-2023 Michael R. Elkins and others.\n"
+#~ "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+#~ "Mutt is free software, and you are welcome to redistribute it\n"
+#~ "under certain conditions; type `mutt -vv' for details.\n"
+#~ msgstr ""
+#~ "版權所有 (C) 1996-2023 Michael R. Elkins 及其他人仕。\n"
+#~ "Mutt 不提供任何保證：需要更詳細的資料，請鍵入 `mutt -vv'。\n"
+#~ "Mutt 是一個自由軟體, 歡迎您在某些特定的條件上，重新將它分發。\n"
+#~ "若需要更詳細的資料, 請鍵入 `mutt -vv'\n"
+
+#~ msgid "Could not create temporary file!"
+#~ msgstr "無法建立暫存檔！"
+
+#~ msgid "Could not find sorting function! [report this bug]"
+#~ msgstr "找不到排序的功能！[請回報這個問題]"
+
+#~ msgid "Could not include all requested messages!"
+#~ msgstr "無法包含所有要求的信件！"
+
+#, fuzzy
+#~| msgid "Could not reopen mailbox!"
+#~ msgid "Could not parse mailto: URI"
+#~ msgstr "無法重開信箱！"
+
+#~ msgid "Could not reopen mailbox!"
+#~ msgstr "無法重開信箱！"
+
+#~ msgid "Could not synchronize mailbox %s!"
+#~ msgstr "無法與 %s 信箱同步！"
+
+#, c-format
+#~ msgid "Couldn't lock %s\n"
+#~ msgstr "無法鎖住 %s。\n"
+
+#, fuzzy
+#~ msgid "Create a traditional (inline) PGP message?"
+#~ msgstr "建立一封 application/pgp 的信件？"
+
+#~ msgid "Creating mailboxes is not yet supported"
+#~ msgstr "未支援製造郵箱。"
+
+#~ msgid "DEBUG was not defined during compilation.  Ignored.\n"
+#~ msgstr "在編譯時候沒有定義 DEBUG。放棄執行。\n"
+
+#, c-format
+#~ msgid "Debugging at level %d.\n"
+#~ msgstr "除錯模式在第 %d 層。\n"
+
+#~ msgid "Decode-copy"
+#~ msgstr "解碼並拷貝"
+
+#, fuzzy, c-format
+#~ msgid "Decode-copy%s to mailbox"
+#~ msgstr "%s%s 到信箱"
+
+#~ msgid "Decode-save"
+#~ msgstr "解碼並儲存"
+
+#, fuzzy, c-format
+#~ msgid "Decode-save%s to mailbox"
+#~ msgstr "%s%s 到信箱"
+
+#, fuzzy
+#~| msgid "Print tagged attachment(s)?"
+#~ msgid "Decrypt message attachment?"
+#~ msgstr "是否要列印標記起來的附件?"
+
+#~ msgid "Decrypt-copy"
+#~ msgstr "解密並拷貝"
+
+#, fuzzy, c-format
+#~ msgid "Decrypt-copy%s to mailbox"
+#~ msgstr "%s%s 到信箱"
+
+#~ msgid "Decrypt-save"
+#~ msgstr "解密並儲存"
+
+#, fuzzy, c-format
+#~ msgid "Decrypt-save%s to mailbox"
+#~ msgstr "%s%s 到信箱"
+
+#, fuzzy
+#~ msgid "Decrypting message.."
+#~ msgstr "拿取信件中…"
+
+#, fuzzy
+#~ msgid "Editing backgrounded"
+#~ msgstr "正在背景作業中傳送。"
+
+#, fuzzy
+#~ msgid "Enter keys (^G to abort): "
+#~ msgstr "請輸入 %s 的鑰匙 ID："
+
+#, fuzzy
+#~ msgid "Error History is currently being shown"
+#~ msgstr "現正顯示說明文件。"
+
+#, fuzzy
+#~ msgid "Error bouncing message!"
+#~ msgstr "寄信途中發生錯誤。"
+
+#, fuzzy
+#~ msgid "Error bouncing messages!"
+#~ msgstr "寄信途中發生錯誤。"
+
+#, fuzzy
+#~ msgid "Error checking signature"
+#~ msgstr "寄信途中發生錯誤。"
+
+#, fuzzy, c-format
+#~ msgid "Error creating autocrypt key: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "Error exporting key: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy
+#~ msgid "Error extracting key data!\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, c-format
+#~ msgid "Error in command line: %s\n"
+#~ msgstr "指令行有錯：%s\n"
+
+#~ msgid "Error parsing address!"
+#~ msgstr "無法分析位址！"
+
+#, c-format
+#~ msgid "Error running \"%s\"!"
+#~ msgstr "執行 \"%s\" 時發生錯誤！"
+
+#, fuzzy
+#~ msgid "Error seeking in alias file"
+#~ msgstr "無法試著顯示檔案"
+
+#, c-format
+#~ msgid "Error sending message, child exited %d.\n"
+#~ msgstr "寄送訊息時出現錯誤，子程序結束 %d。\n"
+
+#~ msgid "Error while recoding %s. Leave it unchanged"
+#~ msgstr "當轉換編碼 %s 時發生錯誤，因此不會做任何改變。"
+
+#~ msgid "Error while recoding %s. See %s for recovering your data"
+#~ msgstr "當轉換編碼 %s 發生錯誤。看 %s 來修復你的資料。"
+
+#~ msgid "Error while writing mailbox!"
+#~ msgstr "寫入信箱時發生錯誤！"
+
+#, c-format
+#~ msgid "Error: '%s' is a bad IDN"
+#~ msgstr "錯誤：「%s」是無效的 IDN。"
+
+#~ msgid "Error: multipart/encrypted has no protocol parameter!"
+#~ msgstr "錯誤：multipart/encrypted 沒有任何通訊協定參數！"
+
+#, fuzzy
+#~ msgid "Error: unable to create OpenSSL subprocess!"
+#~ msgstr "[-- 錯誤：無法建立 OpenSSL 子程序！ --]\n"
+
+#, fuzzy, c-format
+#~ msgid "Error: value '%s' is invalid for -d.\n"
+#~ msgstr "錯誤：「%s」是無效的 IDN。"
+
+#, fuzzy
+#~ msgid "Evaluating cache.."
+#~ msgstr "正在取回信件標頭… [%d/%d]"
+
+#~ msgid "Executing command on matching messages.."
+#~ msgstr "正在對符合的郵件執行命令…"
+
+#~ msgid "Exit  "
+#~ msgstr "離開  "
+
+#~ msgid "Exit Mutt without saving?"
+#~ msgstr "不儲存便離開 Mutt 嗎？"
+
+#~ msgid "Exit Mutt?"
+#~ msgstr "離開 Mutt？"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "離開 NeoMutt？"
 
+#~ msgid "Expunging messages from server.."
+#~ msgstr "正在刪除伺服器上的信件…"
+
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "嚴重錯誤。信件數量不協調！"
+
+#~ msgid "Fetching PGP key.."
+#~ msgstr "正在拿取 PGP 鑰匙 …"
+
+#, fuzzy
+#~ msgid "Fetching flag updates.."
+#~ msgstr "正在取回信件標頭… [%d/%d]"
+
+#~ msgid "Fetching list of messages.."
+#~ msgstr "正在拿取信件…"
+
+#, fuzzy
+#~ msgid "Fetching message headers.."
+#~ msgstr "正在取回信件標頭… [%d/%d]"
+
+#~ msgid "Fetching message.."
+#~ msgstr "拿取信件中…"
+
+#, fuzzy
+#~ msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
+#~ msgstr "檔案是一個目錄, 儲存在它下面 ?"
+
+#~ msgid "Fingerprint: %s"
+#~ msgstr "指模：%s"
+
+#~ msgid "First entry is shown"
+#~ msgstr "正在顯示第一項。"
+
+#, fuzzy
+#~ msgid "First, please tag a message to be linked here"
+#~ msgstr "儲存信件以便稍後寄出"
+
+#~ msgid "GSSAPI authentication failed"
+#~ msgstr "GSSAPI 驗證失敗。"
+
+#~ msgid "Getting folder list.."
+#~ msgstr "拿取目錄表中…"
+
+#~ msgid "Getting namespaces.."
+#~ msgstr "拿取 namespace 中…"
+
+#, fuzzy, c-format
+#~ msgid "I don't know how to print %s attachments!"
+#~ msgstr "我不知道要怎麼列印 %s 附件!"
+
+#~ msgid "I don't know how to print that!"
+#~ msgstr "我不知道要如何列印它！"
+
+#, fuzzy
+#~ msgid "ID is expired/disabled/revoked"
+#~ msgstr "這個 ID 已過期/停用/取消。"
+
+#, fuzzy
+#~ msgid "ID is not trusted"
+#~ msgstr "這個 ID 不可接受。"
+
+#, fuzzy
+#~ msgid "ID is not valid"
+#~ msgstr "這個 ID 不可接受。"
+
+#, fuzzy
+#~ msgid "ID is only marginally valid"
+#~ msgstr "此 ID 只是勉強可接受。"
+
+#~ msgid "Including quoted message.."
+#~ msgstr "正引入引言部分…"
+
+#, fuzzy
+#~ msgid "Internal error. Inform <roessler@does-not-exist.org>"
+#~ msgstr "內部錯誤。聯絡 <roessler@does-not-exist.org>。"
+
+#, fuzzy, c-format
+#~ msgid "Invalid POP URL: %s\n"
+#~ msgstr "無效的月份：%s"
+
+#, fuzzy, c-format
+#~ msgid "Invalid value for option %s: \"%s\""
+#~ msgstr "無效的日子：%s"
+
+#, fuzzy
+#~ msgid "Invoking OpenSSL.."
+#~ msgstr "啟動 OpenSSL…"
+
+#~ msgid "Invoking PGP.."
+#~ msgstr "啟動 PGP…"
+
+#, fuzzy
+#~ msgid "Invoking S/MIME.."
+#~ msgstr "啟動 S/MIME…"
+
+#~ msgid "Invoking pgp.."
+#~ msgstr "啟動 pgp…"
+
+#, c-format
+#~ msgid "Key is not bound.  Press '%s' for help"
+#~ msgstr "這個鍵還未被定義功能。 按 '%s' 以取得說明。"
+
+#~ msgid "Last entry is shown"
+#~ msgstr "正在顯示最後一項。"
+
+#~ msgid "Literal Data Packet"
+#~ msgstr "文字資料封包"
+
+#, c-format
+#~ msgid "Lock count exceeded, remove lock for %s?"
+#~ msgstr "鎖進數量超過限額，將 %s 的鎖移除？"
+
+#~ msgid "Logging in.."
+#~ msgstr "登入中…"
+
+#, c-format
+#~ msgid "Looking for keys matching \"%s\".."
+#~ msgstr "正找尋匹配 \"%s\" 的鑰匙…"
+
+#, c-format
+#~ msgid "Looking up %s.."
+#~ msgstr "正在尋找 %s…"
+
+#, fuzzy
+#~ msgid "MD5 Fingerprint: %s"
+#~ msgstr "指模：%s"
+
+#~ msgid "MIC algorithm: "
+#~ msgstr "MIC 演算法："
+
+#~ msgid "MIME type not defined.  Cannot view attachment"
+#~ msgstr "MIME 形式未被定義. 無法顯示附件內容。"
+
+#~ msgid "Mailbox is corrupt!"
+#~ msgstr "信箱已損壞了！"
+
+#~ msgid "Mailbox was corrupted!"
+#~ msgstr "信箱已損壞!"
+
+#~ msgid "Mailbox was externally modified.  Flags may be wrong"
+#~ msgstr "信箱已經由其他途徑改變過。旗標可能有錯誤。"
+
+#~ msgid "Marker Packet"
+#~ msgstr "記號封包"
+
+#, c-format
+#~ msgid "Marking %d messages deleted.."
+#~ msgstr "標簽了的 %d 封信件刪去了…"
+
+#, fuzzy
+#~ msgid "Marking messages deleted.."
+#~ msgstr "標簽了的 %d 封信件刪去了…"
+
+#~ msgid "Message contains:\n"
+#~ msgstr "信件包含：\n"
+
+#~ msgid "Message edited. Really send?"
+#~ msgstr "信件已經編輯過。確定要寄出？"
+
+#~ msgid "Message file is empty!"
+#~ msgstr "信件檔案是空的！"
+
+#~ msgid "Message not modified!"
+#~ msgstr "沒有改動信件！"
+
+#~ msgid "Messages bounced"
+#~ msgstr "郵件已傳送。"
+
+#~ msgid "Messages could not be printed"
+#~ msgstr "信件未能列印出來"
+
+#, fuzzy
+#~ msgid "Messages not bounced"
+#~ msgstr "郵件已傳送。"
+
+#~ msgid "Messages printed"
+#~ msgstr "信件已印出"
+
+#~ msgid "Missing arguments"
+#~ msgstr "缺少參數。"
+
+#, fuzzy, c-format
+#~ msgid "Move %d read messages to %s?"
+#~ msgstr "搬移已讀取的信件到 %s？"
+
+#, c-format
+#~ msgid "Moving read messages to %s.."
+#~ msgstr "正在搬移已經讀取的信件到 %s …"
+
+#, fuzzy, c-format
+#~ msgid "MuttLisp: no such function %s"
+#~ msgstr "%s：沒有這個功能"
+
+#~ msgid "Name Packet"
+#~ msgstr "名稱封包"
+
+#~ msgid "No POP username is defined"
+#~ msgstr "沒有被定義的 POP 使用者名稱。"
+
+#, fuzzy
+#~ msgid "No attachments, abort sending?"
+#~ msgstr "沒有信件標題，要中斷寄信的工作?"
+
+#~ msgid "No boundary parameter found! [report this error]"
+#~ msgstr "沒有發現分界變數！[回報錯誤]"
+
+#~ msgid "No lines in message.\n"
+#~ msgstr "文章中沒有文字。\n"
+
+#~ msgid "No mailbox.\n"
+#~ msgstr "沒有信箱。\n"
+
+#~ msgid "No mailing lists found!"
+#~ msgstr "沒有找到郵寄論壇！"
+
+#~ msgid "No matching mailcap entry found.  Viewing as text"
+#~ msgstr "沒有發現配合 mailcap 的登錄。將以文字檔方式瀏覽。"
+
+#~ msgid "No recipients are specified!"
+#~ msgstr "沒有指定接受者！"
+
+#~ msgid "No recipients specified.\n"
+#~ msgstr "沒有指定收件人。\n"
+
+#~ msgid "No recipients were specified"
+#~ msgstr "沒有指定接受者。"
+
+#~ msgid "No search pattern"
+#~ msgstr "沒有搜尋格式。"
+
+#, fuzzy
+#~ msgid "No such folder"
+#~ msgstr "%s：沒有這種顏色"
+
+#~ msgid "No tagged messages are visible!"
+#~ msgstr "沒有被標記了的信件在顯示！"
+
+#, fuzzy
+#~ msgid "Not supported"
+#~ msgstr "不支援標記功能。"
+
+#, fuzzy
+#~ msgid "OAUTHBEARER authentication failed"
+#~ msgstr "SASL 驗證失敗。"
+
+#~ msgid "One-Pass Signature Packet"
+#~ msgstr "單一通道的簽名封包"
+
+#~ msgid "Out of memory!"
+#~ msgstr "記憶體不足！"
+
+#, fuzzy, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy, c-format
+#~ msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#~ msgid "PGP passphrase forgotten"
+#~ msgstr "已忘記 PGP 通行密碼。"
+
+#~ msgid "POP Password: "
+#~ msgstr "POP 密碼："
+
+#~ msgid "POP Username: "
+#~ msgstr "POP 用戶名稱："
+
+#, fuzzy
+#~ msgid "Passphrase(s) forgotten"
+#~ msgstr "已忘記 PGP 通行密碼。"
+
+#, fuzzy, c-format
+#~| msgid "Password for %s@%s: "
+#~ msgid "Password for %s client cert: "
+#~ msgstr "%s@%s 的密碼："
+
+#~ msgid "Please set the hostname variable to a proper value when using mixmaster!"
+#~ msgstr "使用 mixmaster 時請先設定好 hostname 變數！"
+
+#~ msgid "Postpone this message?"
+#~ msgstr "延遲寄出這封信件？"
+
+#~ msgid "Preparing forwarded message.."
+#~ msgstr "準備轉寄信件…"
+
+#~ msgid "Press any key to continue.."
+#~ msgstr "按下任何鍵繼續…"
+
+#~ msgid "Print tagged attachment(s)?"
+#~ msgstr "是否要列印標記起來的附件?"
+
+#~ msgid "Public Key Packet"
+#~ msgstr "公共鑰匙封包"
+
+#, c-format
+#~ msgid "Purge %d deleted messages?"
+#~ msgstr "清除 %d 封已被刪除的信件？"
+
+#, fuzzy
+#~| msgid "Reopening mailbox.."
+#~ msgid "QRESYNC failed.  Reopening mailbox"
+#~ msgstr "重新開啟信箱中…"
+
+#, c-format
+#~ msgid "Query '%s'"
+#~ msgstr "查詢 '%s'"
+
+#~ msgid "Quit Mutt?"
+#~ msgstr "離開 Mutt？"
+
+#, c-format
+#~ msgid "Reading %s.."
+#~ msgstr "讀取 %s 中…"
+
+#~ msgid "Reading %s... %d"
+#~ msgstr "讀取 %s… %d"
+
+#~ msgid "Reading %s... %d (%d%%)"
+#~ msgstr "讀取 %s 中… %d (%d%%)"
+
+#~ msgid "Reading new message (%d bytes).."
+#~ msgstr "讀取新信件中 (%d 歌位元組)…"
+
+#, c-format
+#~ msgid "Reading new messages (%d bytes).."
+#~ msgstr "讀取新信件中 (%d 個位元組)…"
+
+#, fuzzy
+#~| msgid "Really delete mailbox \"%s\"?"
+#~ msgid "Really delete the main message?"
+#~ msgstr "真的要刪除 \"%s\" 郵箱？"
+
+#, fuzzy
+#~ msgid "Recoding only affetcs text attachments"
+#~ msgstr "只重新編碼受影響的文字附件"
+
+#~ msgid "Recoding successful"
+#~ msgstr "重新編碼成功。"
+
+#, fuzzy
+#~ msgid "Reconnect failed.  Mailbox closed"
+#~ msgstr "預先連接指令失敗。"
+
+#, fuzzy
+#~ msgid "Reconnect succeeded"
+#~ msgstr "預先連接指令失敗。"
+
+#~ msgid "Reopening mailbox.."
+#~ msgstr "重新開啟信箱中…"
+
+#~ msgid "Reopening mailbox... %s"
+#~ msgstr "重新開啟信箱中… %s"
+
+#~ msgid "Reserved"
+#~ msgstr "保留的"
+
+#, fuzzy
+#~ msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "反方向 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排 8)大小 9)分數:"
+
+#~ msgid "Reverse search: "
+#~ msgstr "反向搜尋："
+
+#, fuzzy
+#~ msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "反向排序 (1)日期, (2)字元, (3)大小 或 (4)不排序 ? "
+
+#, fuzzy
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy
+#~ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "(1)加密, (2)簽名, (3)用別的身份簽, (4)兩者皆要, 或 (5)放棄？"
+
+#, fuzzy, c-format
+#~ msgid "SMTP authentication method %s requires SASL"
+#~ msgstr "GSSAPI 驗證失敗。"
+
 #, fuzzy
 #~ msgid "SMTP authentication requires SASL"
 #~ msgstr "GSSAPI 驗證失敗"
+
+#~ msgid "SSL Certificate check"
+#~ msgstr "SSL 驗証測試"
+
+#~ msgid "SSL is unavailable"
+#~ msgstr "沒有 SSL 功能"
+
+#, fuzzy, c-format
+#~ msgid "Save%s to mailbox"
+#~ msgstr "%s%s 到信箱"
+
+#~ msgid "Saved output of child process to %s.\n"
+#~ msgstr "輸出子程序儲存至 %s.\n"
+
+#, fuzzy, c-format
+#~ msgid "Saving changed messages... [%d/%d]"
+#~ msgstr "正在儲存信件狀態旗標… [%d/%d]"
+
+#, fuzzy
+#~ msgid "Saving tagged messages.."
+#~ msgstr "正在儲存信件狀態旗標… [%d/%d]"
+
+#~ msgid "Saving.."
+#~ msgstr "儲存中…"
+
+#, fuzzy, c-format
+#~ msgid "Scanning %s.."
+#~ msgstr "正在選擇 %s …"
+
+#~ msgid "Search: "
+#~ msgstr "搜尋："
+
+#, fuzzy
+#~ msgid "Searching.."
+#~ msgstr "儲存中…"
+
+#~ msgid "Secret Key Packet"
+#~ msgstr "秘密鑰匙封包"
+
+#~ msgid "Secret Subkey Packet"
+#~ msgstr "秘密次鑰匙封包"
+
+#~ msgid "Select  "
+#~ msgstr "選擇    "
+
+#, c-format
+#~ msgid "Selecting %s.."
+#~ msgstr "正在選擇 %s …"
+
+#~ msgid "Sending APPEND command .."
+#~ msgstr "正在送出 APPEND 命令…"
+
+#~ msgid "Sending CREATE command .."
+#~ msgstr "正在送出 CREATE 命令…"
+
+#~ msgid "Sending message.."
+#~ msgstr "正在寄出信件…"
+
+#~ msgid "Server closed connection!"
+#~ msgstr "與伺服器的聯結中斷了!"
+
+#~ msgid "Signature Packet"
+#~ msgstr "簽名封包"
+
+#~ msgid "Skipping CRAM-MD5 authentication"
+#~ msgstr "掠過 CRAM-MD5 驗證"
+
+#, fuzzy
+#~ msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "排序 1)日期 2)發信人 3)收信時間 4)標題 5)收信人 6)序列 7)不排序 8)大小 9)分數:"
+
+#, fuzzy
+#~ msgid "Sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "依照 (1)日期 (2)字元 (3)大小 來排序，或(4)不排序 ? "
+
+#~ msgid "Sorting mailbox.."
+#~ msgstr "信箱排序中…"
+
+#, fuzzy
+#~ msgid "Subkey ....: 0x%s"
+#~ msgstr "鑰匙 ID：0x%s"
+
+#, c-format
+#~ msgid "Subscribing to %s.."
+#~ msgstr "訂閱 %s…"
+
+#~ msgid "Symmetrically Encrypted Data Packet"
+#~ msgstr "對稱加密資料封包"
+
+#, fuzzy
+#~ msgid "TLS/SSL Certificate check"
+#~ msgstr "SSL 驗証測試"
+
+#~ msgid "Tag the messages you want to attach!"
+#~ msgstr "請標記您要附加的信件！"
+
+#~ msgid "The message index is incorrect. Try reopening the mailbox"
+#~ msgstr "信件的索引不正確。請再重新開啟信箱。"
+
+#~ msgid "There are no subparts to show!"
+#~ msgstr "沒有部件！"
+
+#~ msgid "This ID's validity level is undefined"
+#~ msgstr "這個 ID 的可接受程度不明。"
+
+#~ msgid "This IMAP server is ancient. Mutt does not work with it"
+#~ msgstr "這個 IMAP 伺服器已過時，Mutt 無法使用它。"
+
+#~ msgid "This doesn't make sense if you don't want to sign the message"
+#~ msgstr "如果您不想把信件簽名，這樣做就沒有什麼意思啦。"
+
+#, fuzzy
+#~ msgid "This operation is not currently supported for PGP messages"
+#~ msgstr "暫不支援瀏覽 IMAP 目錄"
+
+#~ msgid "Thread contains unread messages"
+#~ msgstr "序列中有尚未讀取的信件。"
+
+#~ msgid "Timeout exceeded while attempting fcntl lock!"
+#~ msgstr "嘗試 fcntl 的鎖定時超過時間!"
+
+#~ msgid "Timeout exceeded while attempting flock lock!"
+#~ msgstr "嘗試 flock 時超過時間！"
+
+#, fuzzy
+#~ msgid ""
+#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#~ "To report a bug, please contact the Mutt maintainers via gitlab:\n"
+#~ "    https://gitlab.com/muttmua/mutt/issues\n"
+#~ msgstr ""
+#~ "要與開發人員連絡，請寄信給 <mutt-dev@mutt.org>。\n"
+#~ "如發現問題，請利用 <https://gitlab.com/muttmua/mutt/issues> 程式告之。\n"
+
+#~ msgid "Toggle display of subparts"
+#~ msgstr "切換部件顯示"
+
+#~ msgid "Trust Packet"
+#~ msgstr "被信托封包"
+
+#, fuzzy
+#~ msgid "Trying to reconnect.."
+#~ msgstr "等待回應中…"
+
+#~ msgid "UTF-8 encoding attachments has not yet been implemented"
+#~ msgstr "還未支援 UTF-8 編碼的附件。"
+
+#~ msgid "Unable to append to IMAP mailboxes at this server"
+#~ msgstr "無法附加在這個伺服器上的 IMAP 信箱"
+
+#, c-format
+#~ msgid "Unable to attach %s!"
+#~ msgstr "無法附加 %s！"
+
+#~ msgid "Unable to attach!"
+#~ msgstr "無法附加！"
+
+#~ msgid "Unable to lock mailbox!"
+#~ msgstr "無法鎖住信箱！"
+
+#~ msgid "Unable to open temporary file!"
+#~ msgstr "無法開啟暫存檔！"
+
+#, fuzzy, c-format
+#~ msgid "Unable to write %s!"
+#~ msgstr "無法附加 %s！"
+
+#~ msgid "Unknown"
+#~ msgstr "不明"
+
+#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
+#~ msgstr "不明的 MIC 演算法。有效的如下: pgp-md5, pgp-sha1, pgp-rmd160"
+
+#~ msgid "Unknown PGP version \"%s\""
+#~ msgstr "不明的 PGP 版本 \"%s\"。"
+
+#, fuzzy, c-format
+#~ msgid "Unsubscribing from %s.."
+#~ msgstr "取消訂閱 %s…"
+
+#, fuzzy
+#~ msgid "Uploading message.."
+#~ msgstr "正在上傳信件…"
+
+#, fuzzy, c-format
+#~| msgid "%s is not a directory"
+#~ msgid "Use '%s' to select a directory"
+#~ msgstr "%s 不是一個目錄。"
+
+#~ msgid "Use 'toggle-write' to re-enable write!"
+#~ msgstr "請使用 'toggle-write' 來重新啟動寫入功能!"
+
+#, fuzzy
+#~ msgid "Use (untrusted!) ID %s for %s ?"
+#~ msgstr "要為 %2$s 使用鑰匙 ID = \"%1$s\"？"
+
+#, fuzzy
+#~ msgid "Use ID %s for %s ?"
+#~ msgstr "要為 %2$s 使用鑰匙 ID = \"%1$s\"？"
+
+#~ msgid "Verifying message indexes.."
+#~ msgstr "正在檢查信件的指引 …"
+
+#~ msgid "View Attachm"
+#~ msgstr "顯示附件。"
+
+#, fuzzy
+#~ msgid "Waiting for editor to exit"
+#~ msgstr "等待回應中…"
+
+#~ msgid "Waiting for response.."
+#~ msgstr "等待回應中…"
+
+#, c-format
+#~ msgid "Warning: '%s' is a bad IDN"
+#~ msgstr "警告：「%s」為無效的 IDN。"
+
+#, c-format
+#~ msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
+#~ msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN。\n"
+
+#, fuzzy
+#~ msgid "Warning: Intermediate certificate not found"
+#~ msgstr "警告：未能儲存驗証"
+
+#, fuzzy
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "跳到這個序列的主信件"
+
+#~ msgid "We can't currently handle utf-8 at this point"
+#~ msgstr "我們還未能處理 utf-8。"
+
+#~ msgid "We currently can't encode to utf-8"
+#~ msgstr "我們現在還未能重新編碼至 utf-8。"
+
+#~ msgid "Write fault!"
+#~ msgstr "寫入失敗！"
+
+#, c-format
+#~ msgid "Writing %s.."
+#~ msgstr "寫入 %s 中…"
+
+#, c-format
+#~ msgid "Writing message to %s .."
+#~ msgstr "寫入信件到 %s …"
+
+#~ msgid "Writing messages... %d (%d%%)"
+#~ msgstr "寫入信件中… %d (%d%%)"
+
+#~ msgid "You already have an alias defined with that name!"
+#~ msgstr "您已經為這個名字定義了別名啦！"
+
+#~ msgid "You are on the first page"
+#~ msgstr "您現在在第一頁。"
+
+#~ msgid "You are on the last page"
+#~ msgstr "您現在在最後一頁。"
+
+#~ msgid "You cannot scroll down farther"
+#~ msgstr "您無法再向下捲動了。"
+
+#~ msgid "You cannot scroll up farther"
+#~ msgstr "您無法再向上捲動了。"
+
+#~ msgid "You have no aliases!"
+#~ msgstr "您沒有別名資料！"
+
+#, c-format
+#~ msgid "[%s = %s] Accept?"
+#~ msgstr "[%s = %s] 接受?"
+
+#, c-format
+#~ msgid "[-- %s/%s is unsupported "
+#~ msgstr "[-- %s/%s 尚未支援 "
+
+#, c-format
+#~ msgid "[-- Attachment #%d"
+#~ msgstr "[-- 附件 #%d"
+
+#~ msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+#~ msgstr "[-- 錯誤： 無法顯示 Multipart/Alternative！ --]\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- 錯誤：不一致的 multipart/signed 結構！ --]\n"
+#~ "\n"
+
+#, c-format
+#~ msgid ""
+#~ "[-- Error: Unknown multipart/signed protocol %s! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- 錯誤：不明的 multipart/signed 協定 %s！ --]\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "[-- Error: could not create a PGP subprocess! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- 錯誤：無法建立 PGP 子程序！ --]\n"
+#~ "\n"
+
+#~ msgid "[-- Error: could not create temporary file! --]\n"
+#~ msgstr "[-- 錯誤：無法建立暫存檔！ --]\n"
+
+#~ msgid ""
+#~ "[-- Error: could not find beginning of PGP message! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- 錯誤：找不到 PGP 信件的開頭！ --]\n"
+#~ "\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "[-- Error: decryption failed --]\n"
+#~ "\n"
+#~ msgstr "[-- 錯誤：突發的檔尾！ --]\n"
+
+#~ msgid ""
+#~ "[-- Error: malformed PGP/MIME message! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- 錯誤：不正確的 PGP/MIME 信件！ --]\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- 錯誤：這封信件不符合 PGP/MIME 的規格！ --]\n"
+#~ "\n"
+
+#, fuzzy
+#~ msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
+#~ msgstr "[-- 錯誤：無法建立 OpenSSL 子程序！ --]\n"
+
+#~ msgid "[-- Error: unable to create PGP subprocess! --]\n"
+#~ msgstr "[-- 錯誤：無法建立 PGP 子程序！ --]\n"
+
+#, c-format
+#~ msgid "[-- This %s/%s attachment "
+#~ msgstr "[-- 這個 %s/%s 附件 "
+
+#, fuzzy, c-format
+#~ msgid "[-- This %s/%s attachment is not included, --]\n"
+#~ msgstr "[-- 這個 %s/%s 附件 "
+
+#, fuzzy
+#~ msgid "[-- This is an attachment "
+#~ msgstr "[-- 這個 %s/%s 附件 "
+
+#, c-format
+#~ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+#~ msgstr "[-- 種類：%s%s，編碼：%s，大小：%s --]\n"
+
+#, fuzzy, c-format
+#~ msgid "[-- and the indicated access-type %s is unsupported --]\n"
+#~ msgstr ""
+#~ "[-- 這個 %s/%s 附件無法被附上, --]\n"
+#~ "[-- 並且被指示的存取類型 (access-type) %s 不被支援 --]\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "[-- and the indicated external source has --]\n"
+#~ "[-- expired. --]\n"
+#~ msgstr ""
+#~ "[-- 這個 %s/%s 附件無法被附上, --]\n"
+#~ "[-- 並且被指示的外部原始檔已 --]\n"
+#~ "[-- 過期。 --]\n"
+
+#, c-format
+#~ msgid "[-- on %s --]\n"
+#~ msgstr "[-- 在 %s --]\n"
+
+#, fuzzy
+#~ msgid "attach file(s) to this message"
+#~ msgstr "在這封信件中夾帶檔案"
+
+#~ msgid "attach message(s) to this message"
+#~ msgstr "在這封信件中夾帶信件"
+
+#~ msgid "bind: too many arguments"
+#~ msgstr "bind：太多引數"
+
+#, fuzzy
+#~ msgid "cannot get certificate common name"
+#~ msgstr "無法從對方拿取驗証"
+
+#, fuzzy
+#~ msgid "cannot get certificate subject"
+#~ msgstr "無法從對方拿取驗証"
+
+#~ msgid "change an attachment's character set"
+#~ msgstr "改變附件的字符集"
+
+#~ msgid "color: too few arguments"
+#~ msgstr "色彩：太少引數"
+
+#~ msgid "converting"
+#~ msgstr "轉換中"
+
+#~ msgid "dazn"
+#~ msgstr "1234"
+
+#, fuzzy
+#~ msgid "delete message(s)"
+#~ msgstr "沒有要反刪除的信件。"
+
+#~ msgid "delete messages matching a pattern"
+#~ msgstr "刪除符合某個格式的信件"
+
+#, fuzzy
+#~ msgid "display message with full headers"
+#~ msgstr "編輯信件的標頭"
+
+#~ msgid "edit the raw message"
+#~ msgstr "編輯信件的真正內容"
+
+#~ msgid "enter a muttrc command"
+#~ msgstr "輸入 muttrc 指令"
+
+#, fuzzy, c-format
+#~ msgid "error adding recipient `%s': %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error allocating data object: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error creating gpgme context: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error creating gpgme data object: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error encrypting data: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error importing key: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#~ msgid "error in expression"
+#~ msgstr "表達式有錯誤"
+
+#, fuzzy, c-format
+#~ msgid "error reading data object: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error rewinding data object: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error setting PKA signature notation: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy, c-format
+#~ msgid "error signing data: %s\n"
+#~ msgstr "在樣式上有錯誤：%s"
+
+#, fuzzy
+#~ msgid "esabfc"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "esabfci"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "esabfco"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "esabfcoi"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "esabifc"
+#~ msgstr "1234i5"
+
+#, fuzzy
+#~ msgid "esabmfc"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "esabmfco"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "esabpfc"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "esabpfco"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "eswabfc"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "eswabfco"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "ewsabf"
+#~ msgstr "12345"
+
+#, fuzzy
+#~ msgid "gpgme_new failed: %s"
+#~ msgstr "登入失敗： %s"
+
+#~ msgid "has been deleted --]\n"
+#~ msgstr "已經被刪除了 --]\n"
+
+#~ msgid "ignoring empty header field: %s"
+#~ msgstr "不理會空的標頭欄位：%s"
+
+#~ msgid "imap_error(): unexpected response in %s: %s\n"
+#~ msgstr "imap_error()：%s 的意外回應：%s\n"
+
+#~ msgid "macro: too many arguments"
+#~ msgstr "macro：引數太多"
+
+#, fuzzy
+#~ msgid "message(s) not deleted"
+#~ msgstr "標簽了的 %d 封信件刪去了…"
+
+#, fuzzy, c-format
+#~ msgid "mismatched brackets: %s"
+#~ msgstr "不對稱的括弧：%s"
+
+#, c-format
+#~ msgid "mismatched parenthesis: %s"
+#~ msgstr "不對稱的括弧：%s"
+
+#~ msgid "missing filename.\n"
+#~ msgstr "沒有檔名。\n"
+
+#~ msgid "mono: too few arguments"
+#~ msgstr "單色：太少引數"
+
+#, fuzzy
+#~ msgid "move attachment up in compose menu list"
+#~ msgstr "使用 mailcap 編輯附件"
+
+#~ msgid "move to the first message"
+#~ msgstr "移動到第一封信件"
+
+#~ msgid "move to the last message"
+#~ msgstr "移動到最後一封信件"
+
+#~ msgid "move to the last undelete message"
+#~ msgstr "移動到最後一封未刪除的信件"
+
+#~ msgid "multipart message has no boundary parameter!"
+#~ msgstr "多部份郵件沒有分隔的參數!"
+
+#, c-format
+#~ msgid "mutt_restore_default(%s): error in regexp: %s\n"
+#~ msgstr "mutt_restore_defualt(%s)：錯誤的正規表示式：%s\n"
+
+#~ msgid "not converting"
+#~ msgstr "沒有轉換"
+
+#, fuzzy
+#~ msgid "not enough arguments"
+#~ msgstr "太少參數"
+
+#~ msgid "null key sequence"
+#~ msgstr "空的鍵值序列"
+
+#, fuzzy
+#~| msgid "No mailing lists found!"
+#~ msgid "perform mailing list action"
+#~ msgstr "沒有找到郵寄論壇！"
+
+#, fuzzy
+#~| msgid "reply to specified mailing list"
+#~ msgid "post to mailing list"
+#~ msgstr "回覆給某一個指定的郵件列表"
+
+#~ msgid "prefix is illegal with reset"
+#~ msgstr "重新設置後字首仍不合規定"
+
+#~ msgid "push: too many arguments"
+#~ msgstr "push：太多引數"
+
+#~ msgid "recode this attachment to/from the local charset"
+#~ msgstr "重新將附件編碼至本地字符集，或由本地字符集重新編碼"
+
+#~ msgid "reserved"
+#~ msgstr "保留的"
+
+#~ msgid "return to the main-menu"
+#~ msgstr "回到主選單"
+
+#, fuzzy
+#~ msgid "run: too many arguments"
+#~ msgstr "push：太多引數"
+
+#~ msgid "score: too few arguments"
+#~ msgstr "分數：太少的引數"
+
+#~ msgid "score: too many arguments"
+#~ msgstr "分數：太多的引數"
+
+#, fuzzy
+#~ msgid "select a new mailbox from the browser"
+#~ msgstr "請選擇本目錄中一個新的檔案"
+
+#, fuzzy
+#~ msgid "select a new mailbox from the browser in read only mode"
+#~ msgstr "用唯讀模式開啟信箱"
+
+#~ msgid "show the Mutt version number and date"
+#~ msgstr "顯示 Mutt 的版本號碼與日期"
+
+#, fuzzy
+#~ msgid "sign as: "
+#~ msgstr " 簽名的身份是： "
+
+#, fuzzy
+#~| msgid "skip beyond quoted text"
+#~ msgid "skip beyond headers"
+#~ msgstr "跳過引言"
+
+#~ msgid "source: too many arguments"
+#~ msgstr "source：太多引數"
+
+#~ msgid "subscribe to current mailbox (IMAP only)"
+#~ msgstr "訂閱現在這個郵箱 (只適用於 IMAP)"
+
+#, fuzzy
+#~| msgid "reply to specified mailing list"
+#~ msgid "subscribe to mailing list"
+#~ msgstr "回覆給某一個指定的郵件列表"
+
+#~ msgid "sync: mbox modified, but no modified messages! (report this bug)"
+#~ msgstr "同步：信箱已被修改，但沒有被修改過的信件！（請回報這個錯誤）"
+
+#~ msgid "tag messages matching a pattern"
+#~ msgstr "標記符合某個格式的信件"
+
+#~ msgid "too few arguments"
+#~ msgstr "太少參數"
+
+#~ msgid "too many arguments"
+#~ msgstr "太多參數"
+
+#~ msgid "undelete messages matching a pattern"
+#~ msgstr "反刪除符合某個格式的信件"
+
+#, fuzzy
+#~ msgid "unsubscribe from current mailbox (IMAP only)"
+#~ msgstr "取消訂閱現在這個郵箱 (只適用於 IMAP)"
+
+#, fuzzy
+#~ msgid "unsubscribe from mailing list"
+#~ msgstr "取消訂閱 %s…"
+
+#~ msgid "untag messages matching a pattern"
+#~ msgstr "反標記符合某個格式的信件"
+
+#, fuzzy
+#~ msgid ""
+#~ "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
+#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+#~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+#~ "       mutt -v[v]\n"
+#~ msgstr ""
+#~ "用法: mutt [ -nRzZ ] [ -e <命令> ] [ -F <檔案> ] [ -m <類型> ] [ -f <檔案> ]\n"
+#~ "        mutt [ -nx ] [ -e <命令> ] [ -a <檔案> ] [ -F <檔案> ] [ -H <檔案> ] [ -i <檔案> ] [ -s <主題> ] [ -b <地址> ] [ -c <地址> ] <地址> [ ... ]\n"
+#~ "        mutt [ -n ] [ -e <命令> ] [ -F <檔案> ] -p\n"
+#~ "        mutt -v[v]\n"
+#~ "\n"
+#~ "參數：\n"
+#~ "  -a <檔案>\t\t將檔案附在信件中\n"
+#~ "  -b <地址>\t\t指定一個 秘密複製 (BCC) 的地址\n"
+#~ "  -c <地址>\t\t指定一個 複製 (CC) 的地址\n"
+#~ "  -e <命令>\t\t指定一個初始化後要被執行的命令\n"
+#~ "  -f <檔案>\t\t指定要閱讀那一個郵筒\n"
+#~ "  -F <檔案>\t\t指定另一個 muttrc 檔案\n"
+#~ "  -H <檔案>\t\t指定一個範本檔案以讀取標題來源\n"
+#~ "  -i <檔案>\t\t指定一個包括在回覆中的檔案\n"
+#~ "  -m <類型>\t\t指定一個預設的郵筒類型\n"
+#~ "  -n\t\t使 Mutt 不去讀取系統的 Muttrc 檔\n"
+#~ "  -p\t\t叫回一個延後寄送的信件\n"
+#~ "  -R\t\t以唯讀模式開啟郵筒\n"
+#~ "  -s <主題>\t\t指定一個主題 (如果有空白的話必須被包括在引言中)\n"
+#~ "  -v\t\t顯示版本和編譯時所定義的參數\n"
+#~ "  -x\t\t模擬 mailx 寄送模式\n"
+#~ "  -y\t\t選擇一個被指定在您郵筒清單中的郵筒\n"
+#~ "  -z\t\t如果沒有訊息在郵筒中的話，立即離開\n"
+#~ "  -Z\t\t開啟第一個附有新郵件的資料夾，如果沒有的話立即離開\n"
+#~ "  -h\t\t這個說明訊息"
+
+#~ msgid "value is illegal with reset"
+#~ msgstr "重新設置後值仍不合規定"
+
+#, fuzzy
+#~| msgid "force viewing of attachment using mailcap"
+#~ msgid "view attachment in pager using copiousoutput mailcap entry"
+#~ msgstr "強迫使用 mailcap 瀏覽附件"
+
+#, fuzzy
+#~ msgid "view multipart/alternative as text"
+#~ msgstr "用文字方式顯示附件內容"
+
+#, fuzzy
+#~ msgid "view multipart/alternative in pager using copiousoutput mailcap entry"
+#~ msgstr "強迫使用 mailcap 瀏覽附件"
+
+#, fuzzy
+#~ msgid "view multipart/alternative using mailcap"
+#~ msgstr "強迫使用 mailcap 瀏覽附件"
+
+#, fuzzy
+#~ msgid "wipe passphrase(s) from memory"
+#~ msgstr "清除記憶體中的 PGP 通行密碼"
+
+#, fuzzy
+#~ msgid ""
+#~ "~q\t\twrite file and quit editor\n"
+#~ "~r file\t\tread a file into the editor\n"
+#~ "~t users\tadd users to the To: field\n"
+#~ "~u\t\trecall the previous line\n"
+#~ "~v\t\tedit message with the $visual editor\n"
+#~ "~w file\t\twrite message to file\n"
+#~ "~x\t\tabort changes and quit editor\n"
+#~ "~?\t\tthis message\n"
+#~ ".\t\ton a line by itself ends input\n"
+#~ msgstr ""
+#~ "~~\t\t插入以 ~ 符號開頭的一行\n"
+#~ "~b 戶口\t新增戶口到 Bcc: 欄位\n"
+#~ "~c 戶口\t新增戶口到 Cc: 欄位\n"
+#~ "~f 信件\t包含信件\n"
+#~ "~F 訊息\t類似 ~f, 不包括信件標頭\n"
+#~ "~h\t\t編輯信件的標頭\n"
+#~ "~m 訊息\t包括引言\n"
+#~ "~M 訊息\t類似 ~m, 不包括信件標頭\n"
+#~ "~p\t\t列印這封信件\n"
+#~ "~q\t\t存檔並且離開編輯器\n"
+#~ "~r 檔案\t\t將檔案讀入編輯器\n"
+#~ "~t 戶口\t新增戶口到 To: 欄位\n"
+#~ "~u\t\t喚回之前那一行\n"
+#~ "~v\t\t使用 $visual 編輯器編輯訊息\n"
+#~ "~w 檔案\t\t將訊息寫入檔案\n"
+#~ "~x\t\t停止修改並離開編輯器\n"
+#~ "~?\t\t這訊息\n"
+#~ ".\t\t如果是一行裏的唯一字符，則代表結束輸入\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "~~\t\tinsert a line beginning with a single ~\n"
+#~ "~b addresses\tadd addresses to the Bcc: field\n"
+#~ "~c addresses\tadd addresses to the Cc: field\n"
+#~ "~f messages\tinclude messages\n"
+#~ "~F messages\tsame as ~f, except also include headers\n"
+#~ "~h\t\tedit the message header\n"
+#~ "~m messages\tinclude and quote messages\n"
+#~ "~M messages\tsame as ~m, except include headers\n"
+#~ "~p\t\tprint the message\n"
+#~ msgstr ""
+#~ "~~\t\t插入以 ~ 符號開頭的一行\n"
+#~ "~b 戶口\t新增戶口到 Bcc: 欄位\n"
+#~ "~c 戶口\t新增戶口到 Cc: 欄位\n"
+#~ "~f 信件\t包含信件\n"
+#~ "~F 訊息\t類似 ~f, 不包括信件標頭\n"
+#~ "~h\t\t編輯信件的標頭\n"
+#~ "~m 訊息\t包括引言\n"
+#~ "~M 訊息\t類似 ~m, 不包括信件標頭\n"
+#~ "~p\t\t列印這封信件\n"
+#~ "~q\t\t存檔並且離開編輯器\n"
+#~ "~r 檔案\t\t將檔案讀入編輯器\n"
+#~ "~t 戶口\t新增戶口到 To: 欄位\n"
+#~ "~u\t\t喚回之前那一行\n"
+#~ "~v\t\t使用 $visual 編輯器編輯訊息\n"
+#~ "~w 檔案\t\t將訊息寫入檔案\n"
+#~ "~x\t\t停止修改並離開編輯器\n"
+#~ "~?\t\t這訊息\n"
+#~ ".\t\t如果是一行裏的唯一字符，則代表結束輸入\n"

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-04 13:53+0100\n"
+"POT-Creation-Date: 2023-05-05 13:16+0100\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -371,12 +371,12 @@ msgstr "Δεν γνωρίζω πώς να το τυπώσω αυτό"
 msgid "Saving..."
 msgstr "Αποθήκευση..."
 
+#
 #: attach/recvattach.c:349 attach/recvattach.c:523
 #, fuzzy, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Η προσάρτηση αποθηκεύθηκε"
-msgstr[1] "Η προσάρτηση αποθηκεύθηκε"
 
 #: attach/recvattach.c:548
 #, c-format
@@ -2081,7 +2081,7 @@ msgstr ""
 
 #: envelope/window.c:435
 msgid " (PGP/MIME)"
-msgstr ""
+msgstr " (PGP/MIME)"
 
 #: envelope/window.c:438
 msgid " (S/MIME)"
@@ -2121,13 +2121,13 @@ msgstr[1] "(+%d παραπάνω)"
 msgid "Warning: message contains no From: header"
 msgstr "Προειδοποίηση: το μήνυμα δεν περίεχει From: κεφαλίδα"
 
+#
 #: external.c:116 recvcmd.c:204
-#, fuzzy
 msgid "Bounce message to: "
 msgstr "Διαβίβαση μηνύματος στον: "
 
+#
 #: external.c:118 recvcmd.c:206
-#, fuzzy
 msgid "Bounce tagged messages to: "
 msgstr "Διαβίβαση σημειωμένων μηνυμάτων στον: "
 
@@ -2142,18 +2142,20 @@ msgid_plural "Bounce messages to %s?"
 msgstr[0] "Διαβίβαση μηνύματος στον %s?"
 msgstr[1] "Διαβίβαση μηνυμάτων στον %s?"
 
+#
 #: external.c:164 recvcmd.c:259
 #, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
-msgstr[0] "Το μήνυμα δεν διαβιβάστηκε"
+msgstr[0] "Τα μηνύματα δεν διαβιβάστηκαν"
 msgstr[1] "Τα μηνύματα δεν διαβιβάστηκαν"
 
+#
 #: external.c:189 recvcmd.c:286
 #, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
-msgstr[0] "Το μήνυμα διαβιβάστηκε"
+msgstr[0] "Τα μηνύματα διαβιβάστηκαν"
 msgstr[1] "Τα μηνύματα διαβιβάστηκαν"
 
 #: external.c:328 external.c:371 external.c:391
@@ -2654,7 +2656,6 @@ msgid "%s authentication failed"
 msgstr "Αυθεντικοποίηση SASL απέτυχε"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:134
-#, fuzzy
 msgid "SASL authentication failed"
 msgstr "Αυθεντικοποίηση SASL απέτυχε"
 
@@ -2859,8 +2860,8 @@ msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου"
 
+#
 #: imap/message.c:1124
-#, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Αδυναμία λήψης επικεφαλίδων από αυτή την έκδοση του εξυπηρετητή IMAP"
 
@@ -4104,11 +4105,12 @@ msgid_plural "Move %d read messages to %s?"
 msgstr[0] "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 msgstr[1] "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 
+#
 #: mx.c:713 mx.c:960
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
-msgstr[0] "Καθαρισμός %d διεγραμμένου μηνύματος;"
+msgstr[0] "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 msgstr[1] "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 
 #: mx.c:737
@@ -5087,14 +5089,12 @@ msgstr "Αδυναμία κλήσης του PGP"
 #. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1916
-#, fuzzy
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1922
-#, fuzzy
 msgid "(i)nline"
 msgstr "(i)εσωτερικό κείμενο"
 
@@ -6718,7 +6718,7 @@ msgstr "Η βοήθεια ήδη εμφανίζεται"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:120 status.c:294
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
 msgstr ""
 
@@ -6762,9 +6762,17 @@ msgstr "Η υπογραφή PGP επαληθεύτηκε επιτυχώς"
 msgid "PGP signature could NOT be verified"
 msgstr "Η υπογραφή PGP ΔΕΝ μπόρεσε να επαληθευτεί"
 
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, fuzzy, c-format
+msgid "%ld%%"
+msgstr "%ld%%"
+
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:122 status.c:292
+#: pager/pbar.c:125 status.c:292
 msgid "end"
 msgstr ""
 
@@ -7418,6 +7426,30 @@ msgstr "Αδυναμία αντιγραφής του μηνύματος."
 msgid "No postponed messages"
 msgstr "Δεν υπάρχουν αναβληθέντα μηνύματα"
 
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, fuzzy, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, fuzzy, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, fuzzy, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d%%)"
+
 #: question/question.c:208
 msgid "yes"
 msgstr "ναι"
@@ -7767,6 +7799,14 @@ msgstr "Τακτοποίηση γραμματοκιβωτίου..."
 msgid "(no mailbox)"
 msgstr "(κανένα γραμματοκιβώτιο)"
 
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, fuzzy, c-format
+msgid "%d%%"
+msgstr "%d%%"
+
 #: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -7845,52 +7885,2220 @@ msgstr "Παράμετροι μεταγλώττισης:"
 msgid "Devel options:"
 msgstr "Προκαθορισμένοι παράμετροι:"
 
-#. L10N: Pager position percentage.
-#. `%ld` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: pager/message.c:59 pager/pbar.c:123 status.c:294 pager/pbar.c:117
-#, fuzzy, c-format
-msgid "%ld%%"
-msgstr "%ld%%"
+#
+#~ msgid ""
+#~ "\n"
+#~ "Compile options:"
+#~ msgstr ""
+#~ "\n"
+#~ "Παράμετροι μεταγλώττισης:"
 
-#. L10N: Progress bar: `%s` loading text, `%zu` item count,
-#. `%d` percentage, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: pager/pbar.c:125 status.c:292 progress/window.c:168
-#, fuzzy, c-format
-msgid "%s %zu (%d%%)"
-msgstr "%s %zu (%d%%)"
+#
+#~ msgid ""
+#~ "\n"
+#~ "Generic bindings:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Γενικές συνδέσεις:\n"
+#~ "\n"
 
-#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:178
-#, fuzzy, c-format
-msgid "%s %s/%s (%d%%)"
-msgstr "%s %s/%s (%d%%)"
+#
+#~ msgid ""
+#~ "\n"
+#~ "Unbound functions:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Μη συνδεδεμένες λειτουργίες:\n"
+#~ "\n"
 
-#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:186
-#, fuzzy, c-format
-msgid "%s %zu/%zu (%d%%)"
-msgstr "%s %zu/%zu (%d%%)"
+#
+#, fuzzy
+#~ msgid ""
+#~ "  -E\t\tedit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>\tspecify a command to be executed after initialization\n"
+#~ "  -f <file>\tspecify which mailbox to read\n"
+#~ "  -F <file>\tspecify an alternate muttrc file\n"
+#~ "  -H <file>\tspecify a draft file to read header and body from\n"
+#~ "  -i <file>\tspecify a file which Mutt should include in the body\n"
+#~ "  -m <type>\tspecify a default mailbox type\n"
+#~ "  -n\t\tcauses Mutt not to read the system Muttrc\n"
+#~ "  -p\t\trecall a postponed message"
+#~ msgstr ""
+#~ "χρήση: mutt [ -nRyzZ ] [ -e <εντολή> ] [ -F <αρχείο> ] [ -m <τύπος> ] [ -f <αρχείο>]\n"
+#~ "       mutt [ -nR ] [ -e <εντολή> ] [ -F <αρχείο> ] -Q <ερώτηση>[ -Q <ερώτηση> ] [...]\n"
+#~ "       mutt [ -nx ] [ -e <εντολή> ] [ -a <αρχείο> ] [ -F <αρχείο> ] [ -H <αρχείο> ] [ -i <αρχείο> ] [ -s <θέμα> ] [ -b <διευθ> ] [ -c <διευθ> ] <διευθ> [ ... ]\n"
+#~ "       mutt [ -n ] [ -e <εντολή> ] [ -F <αρχείο> ] -p\n"
+#~ "       mutt -v[v]\n"
+#~ "\n"
+#~ "επιλογές:\n"
+#~ "  -A <alias>\tαπεικόνιση του συγκεκριμένου ψευδώνυμου\n"
+#~ "  -a <αρχείο>\tπροσαρτήστε ένα αρχείο σε αυτό το μήνυμα\n"
+#~ "  -b <διευθ>\tκαθορίστε μια διεύθυνση τυφλού-πιστού-αντιγράφου (BCC)\n"
+#~ "  -c <διευθ>\tκαθορίστε μια διεύθυνση πιστού-αντιγράφου (CC)\n"
+#~ "  -e <εντολή>\tκαθορίστε μια εντολή για να εκτελεστεί μετά την εκκίνηση\n"
+#~ "  -f <αρχείο>\tκαθορίστε ποιο γραμματοκιβώτιο να αναγνωστεί\n"
+#~ "  -F <αρχείο>\tκαθορίστε ένα εναλλακτικό αρχείο muttrc\n"
+#~ "  -H <αρχείο>\tκαθορίστε ένα προσχέδιο από το οποίο θα διαβαστεί η επικεφαλίδα\n"
+#~ "  -i <αρχείο>\tκαθορίστε ένα αρχείο που το Mutt θα συμπεριλαμβάνει κατά την \n"
+#~ "απάντηση\n"
+#~ "  -m <τύπος>\tκαθορίστε ένα τύπο προκαθορισμένου γραμματοκιβωτίου\n"
+#~ "  -n\t\tκάνετε το Mutt να μην διαβάσει το Muttrc του συστήματος\n"
+#~ "  -p\t\tεπαναφέρετε ένα αναβληθέν μήνυμα\n"
+#~ "  -Q <μεταβλητή>\tερώτηση(εμφάνιση τιμής) μιας μεταβλητής των ρυθμίσεων\n"
+#~ "  -R\t\tανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο-ανάγνωσης\n"
+#~ "  -s <θέμα>\tκαθορίστε ένα θέμα (σε εισαγωγικά εάν έχει κενά)\n"
+#~ "  -v\t\tδείξτε την έκδοση και τους ορισμούς κατά τη μεταγλώττιση\n"
+#~ "  -x\t\tεξομοιώστε την κατάσταση αποστολής mailx\n"
+#~ "  -y\t\tδιαλέξτε ένα γραμματοκιβώτιο από την λίστα `γραμματοκιβωτίων'\n"
+#~ "  -z\t\tεγκατάλειψη αμέσως εάν δεν υπάρχουν μηνύματα στο γραμματοκιβώτιο\n"
+#~ "  -Z\t\tανοίξτε τον πρώτο φάκελο με νέο μήνυμα, βγείτε εάν δεν υπάρχουν\n"
+#~ "  -h\t\tαυτό το μήνυμα βοήθειας"
 
-#. L10N: Status bar, percentage of way through index.
-#. `%d` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: status.c:302
+#
+#, fuzzy
+#~ msgid ""
+#~ "  -Q <variable>\tquery a configuration variable\n"
+#~ "  -R\t\topen mailbox in read-only mode\n"
+#~ "  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v\t\tshow version and compile-time definitions\n"
+#~ "  -x\t\tsimulate the mailx send mode\n"
+#~ "  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+#~ "  -z\t\texit immediately if there are no messages in the mailbox\n"
+#~ "  -Z\t\topen the first folder with new message, exit immediately if none\n"
+#~ "  -h\t\tthis help message"
+#~ msgstr ""
+#~ "χρήση: mutt [ -nRyzZ ] [ -e <εντολή> ] [ -F <αρχείο> ] [ -m <τύπος> ] [ -f <αρχείο>]\n"
+#~ "       mutt [ -nR ] [ -e <εντολή> ] [ -F <αρχείο> ] -Q <ερώτηση>[ -Q <ερώτηση> ] [...]\n"
+#~ "       mutt [ -nx ] [ -e <εντολή> ] [ -a <αρχείο> ] [ -F <αρχείο> ] [ -H <αρχείο> ] [ -i <αρχείο> ] [ -s <θέμα> ] [ -b <διευθ> ] [ -c <διευθ> ] <διευθ> [ ... ]\n"
+#~ "       mutt [ -n ] [ -e <εντολή> ] [ -F <αρχείο> ] -p\n"
+#~ "       mutt -v[v]\n"
+#~ "\n"
+#~ "επιλογές:\n"
+#~ "  -A <alias>\tαπεικόνιση του συγκεκριμένου ψευδώνυμου\n"
+#~ "  -a <αρχείο>\tπροσαρτήστε ένα αρχείο σε αυτό το μήνυμα\n"
+#~ "  -b <διευθ>\tκαθορίστε μια διεύθυνση τυφλού-πιστού-αντιγράφου (BCC)\n"
+#~ "  -c <διευθ>\tκαθορίστε μια διεύθυνση πιστού-αντιγράφου (CC)\n"
+#~ "  -e <εντολή>\tκαθορίστε μια εντολή για να εκτελεστεί μετά την εκκίνηση\n"
+#~ "  -f <αρχείο>\tκαθορίστε ποιο γραμματοκιβώτιο να αναγνωστεί\n"
+#~ "  -F <αρχείο>\tκαθορίστε ένα εναλλακτικό αρχείο muttrc\n"
+#~ "  -H <αρχείο>\tκαθορίστε ένα προσχέδιο από το οποίο θα διαβαστεί η επικεφαλίδα\n"
+#~ "  -i <αρχείο>\tκαθορίστε ένα αρχείο που το Mutt θα συμπεριλαμβάνει κατά την \n"
+#~ "απάντηση\n"
+#~ "  -m <τύπος>\tκαθορίστε ένα τύπο προκαθορισμένου γραμματοκιβωτίου\n"
+#~ "  -n\t\tκάνετε το Mutt να μην διαβάσει το Muttrc του συστήματος\n"
+#~ "  -p\t\tεπαναφέρετε ένα αναβληθέν μήνυμα\n"
+#~ "  -Q <μεταβλητή>\tερώτηση(εμφάνιση τιμής) μιας μεταβλητής των ρυθμίσεων\n"
+#~ "  -R\t\tανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο-ανάγνωσης\n"
+#~ "  -s <θέμα>\tκαθορίστε ένα θέμα (σε εισαγωγικά εάν έχει κενά)\n"
+#~ "  -v\t\tδείξτε την έκδοση και τους ορισμούς κατά τη μεταγλώττιση\n"
+#~ "  -x\t\tεξομοιώστε την κατάσταση αποστολής mailx\n"
+#~ "  -y\t\tδιαλέξτε ένα γραμματοκιβώτιο από την λίστα `γραμματοκιβωτίων'\n"
+#~ "  -z\t\tεγκατάλειψη αμέσως εάν δεν υπάρχουν μηνύματα στο γραμματοκιβώτιο\n"
+#~ "  -Z\t\tανοίξτε τον πρώτο φάκελο με νέο μήνυμα, βγείτε εάν δεν υπάρχουν\n"
+#~ "  -h\t\tαυτό το μήνυμα βοήθειας"
+
+#
+#~ msgid " in this limited view"
+#~ msgstr "σε αυτή την περιορισμένη όψη"
+
+#
+#~ msgid " tagged"
+#~ msgstr " σημειωμένο"
+
+#
 #, fuzzy, c-format
-msgid "%d%%"
-msgstr "%d%%"
+#~ msgid "%d labels changed"
+#~ msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
+
+#, fuzzy, c-format
+#~ msgid "%d message(s) have been lost. Try reopening the mailbox"
+#~ msgstr "Ο δείκτης του μηνύματος είναι άκυρος. Ξανανοίξτε το γραμματοκιβώτιο"
+
+#
+#, c-format
+#~ msgid "%d: invalid message number.\n"
+#~ msgstr "%d: μη έγκυρος αριθμός μηνύματος.\n"
+
+#
+# pgpkey.c:262
+#, c-format
+#~ msgid "%s Do you really want to use the key?"
+#~ msgstr "%s Θέλετε σίγουρα να χρησιμοποιήσετε το κλειδί;"
+
+#
+#, c-format
+#~ msgid "%s [%d of %d messages read]"
+#~ msgstr "%s [%d από %d μηνύματα διαβάστηκαν]"
+
+#, fuzzy, c-format
+#~ msgid "%s authentication failed, trying next method"
+#~ msgstr "Αυθεντικοποίηση SASL απέτυχε"
+
+#
+#, fuzzy, c-format
+#~ msgid "%s connection using %s (%s)"
+#~ msgstr "Σύνδεση SSL χρησιμοποιώντας το %s (%s)"
+
+#, c-format
+#~ msgid "%s has insecure permissions!"
+#~ msgstr "Το %s έχει ανασφαλή δικαιώματα!"
+
+#
+#, c-format
+#~ msgid "%s is not a mailbox!"
+#~ msgstr "Το %s δεν είναι γραμματοκιβώτιο!"
+
+#
+#, c-format
+#~ msgid "%s is set"
+#~ msgstr "Το %s έχει τεθεί"
+
+#
+#, c-format
+#~ msgid "%s no longer exists!"
+#~ msgstr "Το %s δεν υπάρχει πια!"
+
+#
+#, c-format
+#~ msgid "%s: Unknown type"
+#~ msgstr "%s: άγνωστος τύπος"
+
+#
+#, fuzzy, c-format
+#~ msgid "%s: command valid only for index, body, header objects"
+#~ msgstr "%s: η εντολή ισχύει μόνο για το χαρακτηριστικό αντικείμενο"
+
+#
+#, c-format
+#~ msgid "%s: invalid mailbox type"
+#~ msgstr "%s: μη έγκυρος τύπος γραμματοκιβωτίου"
+
+#
+#, c-format
+#~ msgid "%s: invalid value"
+#~ msgstr "%s: μη έγκυρη τιμή"
+
+#
+#, fuzzy, c-format
+#~ msgid "%s: invalid value (%s)"
+#~ msgstr "%s: μη έγκυρη τιμή"
+
+#
+#, c-format
+#~ msgid "%s: no such function in map"
+#~ msgstr "%s: δεν έχει καθοριστεί τέτοια λειτουργία"
+
+#
+#~ msgid "%s: not a regular file"
+#~ msgstr "%s: δεν είναι κανονικό αρχείο"
+
+#
+#~ msgid "%s: stat: %s"
+#~ msgstr "κατάστασης του %s στο δίσκο: %s"
+
+#
+#, c-format
+#~ msgid "%s: unable to attach file.\n"
+#~ msgstr "%s: αδυναμία προσάρτησης του αρχείου.\n"
+
+#
+#, c-format
+#~ msgid "%s: unknown editor command (~? for help)\n"
+#~ msgstr "%s: άγνωστη εντολή κειμενογράφου (~? για βοήθεια)\n"
+
+#
+#, c-format
+#~ msgid "%s: unknown sorting method"
+#~ msgstr "%s: άγνωστη μέθοδος ταξινόμησης"
+
+#
+#, c-format
+#~ msgid "%s: unknown type"
+#~ msgstr "%s: άγνωστος τύπος"
+
+#, fuzzy, c-format
+#~ msgid "%sgroup: warning: bad IDN '%s'.\n"
+#~ msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'.\n"
+
+#
+#~ msgid "(End message with a . on a line by itself)\n"
+#~ msgstr "(Τελειώστε το μήνυμα με . μόνη της σε μια γραμμή)\n"
+
+#
+#~ msgid "(continue)\n"
+#~ msgstr "(συνεχίστε)\n"
+
+#
+#~ msgid "(need 'view-attachments' bound to key!)"
+#~ msgstr "(απαιτείται το 'view-attachments' να είναι συνδεδεμένο με πλήκτρο!"
+
+#
+#, c-format
+#~ msgid "(size %s bytes) "
+#~ msgstr "(μέγεθος %s bytes) "
+
+#
+#, c-format
+#~ msgid "(use '%s' to view this part)"
+#~ msgstr "(χρησιμοποιήστε το '%s' για να δείτε αυτό το μέρος)"
+
+#
+#, fuzzy
+#~ msgid "----- End forwarded message -----"
+#~ msgstr "Επεξεργασία προωθημένου μηνύματος;"
+
+#
+#, fuzzy
+#~ msgid "...  Exiting.\n"
+#~ msgstr "%s...  Εγκατάλειψη.\n"
+
+#~ msgid "12345f"
+#~ msgstr "12345f"
+
+#~ msgid "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
+#~ msgstr "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, ή (f)άκυρο; "
+
+#~ msgid "APOP authentication failed"
+#~ msgstr "Αυθεντικοποίηση APOP απέτυχε"
+
+#~ msgid "Anonymous authentication failed"
+#~ msgstr "Η ανώνυμη αυθεντικοποίηση απέτυχε"
+
+#
+#, fuzzy, c-format
+#~| msgid "Append messages to %s?"
+#~ msgid "Append message(s) to %s?"
+#~ msgstr "Πρόσθεση μηνυμάτων στο %s;"
+
+#~ msgid "Attaching selected files.."
+#~ msgstr "Προσάρτηση επιλεγμένων αρχείων.."
+
+#, c-format
+#~ msgid "Authenticating (%s).."
+#~ msgstr "Αυθεντικοποίηση (%s).."
+
+#~ msgid "Authenticating (APOP).."
+#~ msgstr "Αυθεντικοποίηση (APOP).."
+
+#~ msgid "Authenticating (CRAM-MD5).."
+#~ msgstr "Αυθεντικοποίηση (CRAM-MD5).."
+
+#~ msgid "Authenticating (GSSAPI).."
+#~ msgstr "Αυθεντικοποίηση (GSSAPI).."
+
+#, fuzzy
+#~ msgid "Authenticating (OAUTHBEARER).."
+#~ msgstr "Αυθεντικοποίηση (SASL).."
+
+#~ msgid "Authenticating (SASL).."
+#~ msgstr "Αυθεντικοποίηση (SASL).."
+
+#~ msgid "Authenticating (anonymous).."
+#~ msgstr "Αυθεντικοποίηση (ανώνυμη).."
+
+#
+#, fuzzy
+#~| msgid "No mailing lists found!"
+#~ msgid "Available mailing list actions"
+#~ msgstr "Δεν βρέθηκαν λίστες συζητήσεων!"
+
+#, c-format
+#~ msgid "Bad IDN \"%s\""
+#~ msgstr "Λανθασμένη διεθνής διεύθυνση IDN \"%s\""
+
+#, c-format
+#~ msgid "Bad IDN in \"%s\": '%s'"
+#~ msgstr "Λανθασμένη διεθνής διεύθυνση IDN στο \"%s\": '%s'"
+
+#, c-format
+#~ msgid "Bad IDN in %s: '%s'\n"
+#~ msgstr "Λανθασμένη διεθνής διεύθυνση IDN στο %s: '%s'\n"
+
+#
+#~ msgid "Bad mailbox name"
+#~ msgstr "Κακό όνομα γραμματοκιβωτίου"
+
+#, c-format
+#~ msgid "Bad regexp: %s"
+#~ msgstr "λανθασμένη κανονική έκφραση: %s"
+
+#
+#, c-format
+#~ msgid "Bounce message to %s"
+#~ msgstr "Διαβίβαση μηνύματος στον %s"
+
+#
+#~ msgid "Bounce message to %s...?"
+#~ msgstr "Διαβίβαση μηνύματος στο %s...;"
+
+#
+#, c-format
+#~ msgid "Bounce messages to %s"
+#~ msgstr "Διαβίβαση μηνυμάτων στον %s"
+
+#
+#~ msgid "Bounce messages to %s...?"
+#~ msgstr "Διαβίβαση μηνυμάτων στο %s...;"
+
+#
+#~ msgid "CLOSE failed"
+#~ msgstr "CLOSE απέτυχε"
+
+#~ msgid "CRAM-MD5 authentication failed"
+#~ msgstr "Αυθεντικοποίηση CRAM-MD5 απέτυχε"
+
+#
+#~ msgid "Can't attach a directory!"
+#~ msgstr "Αδυναμία προσάρτησης ενός κατάλογου"
+
+#
+#~ msgid "Can't change 'important' flag on POP server"
+#~ msgstr "Αδυναμία αλλαγής της σημαίας 'important' στο διακομιστή POP"
 
 #, fuzzy
 #~ msgid "Can't decrement a my_ variable"
 #~ msgstr "Δεν μπορεί να γίνει χρήση προθέματος κατά την δημιουργία μίας μεταβλητής"
 
+#
+#~ msgid "Can't decrypt encrypted message!"
+#~ msgstr "Αδυναμία αποκρυπτογράφησης του κρυπτογραφημένου μηνύματος!"
+
+#
+#, c-format
+#~ msgid "Can't dotlock %s.\n"
+#~ msgstr "Αδυναμία dotlock του %s.\n"
+
+#
+#~ msgid "Can't edit message on POP server"
+#~ msgstr "Αδυναμία επεξεργασίας μηνύματος στο διακομιστή POP"
+
+#~ msgid "Can't get mixmaster's type2.list!"
+#~ msgstr "Αδυναμία λήψης της type2.list του mixmaster!"
+
+#
+#~ msgid "Can't match nametemplate, continue?"
+#~ msgstr "Αδυναμία ταιριάσματος του nametemplate, συνέχεια;"
+
+#
+# pgp.c:1070
+#~ msgid "Can't open OpenSSL subprocess!"
+#~ msgstr "Αδυναμία εκκίνησης υποδιεργασίας OpenSSL!"
+
+#
+# pgp.c:1070
+#~ msgid "Can't open PGP subprocess!"
+#~ msgstr "Αδυναμία ανοίγματος υποδιεργασίας PGP!"
+
+#~ msgid "Can't sign: No key specified. Use Sign As"
+#~ msgstr "Αδυναμία υπογραφής. Δεν έχει οριστεί κλειδί. Χρησιμοποιήστε Υπογρ.σαν"
+
+#
+#~ msgid "Can't write header to temporary file!"
+#~ msgstr "Αδυναμία εγγραφής επικεφαλίδας στο προσωρινό αρχείο!"
+
+#
+#~ msgid "Can't write message to temporary file!"
+#~ msgstr "Αδυναμία εγγραφής μηνύματος στο προσωρινό αρχείο!"
+
+#
+#~ msgid "Cannot create display filter"
+#~ msgstr "Αδυναμία δημιουργίας φίλτρου απεικόνισης"
+
+#
+#~ msgid "Cannot create filter"
+#~ msgstr "Αδυναμία δημιουργίας φίλτρου"
+
+#
+#, fuzzy
+#~ msgid "Cannot delete message"
+#~ msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
+
+#
+#, fuzzy
+#~ msgid "Cannot delete message(s)"
+#~ msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
+
+#
+#, fuzzy
+#~ msgid "Cannot delete root folder"
+#~ msgstr "Αδυναμία δημιουργίας φίλτρου"
+
+#
+#, fuzzy
+#~ msgid "Cannot edit message"
+#~ msgstr "Αδυναμία εγγραφής του μηνύματος"
+
+#
+#, fuzzy
+#~ msgid "Cannot flag message"
+#~ msgstr "απεικόνιση του μηνύματος"
+
+#
+#, fuzzy
+#~ msgid "Cannot mark message(s) as read"
+#~ msgstr "μετάβαση στο τρέχον μήνυμα της συζήτησης"
+
+#
+#, fuzzy
+#~| msgid "Cannot create filter"
+#~ msgid "Cannot parse draft file\n"
+#~ msgstr "Αδυναμία δημιουργίας φίλτρου"
+
+#
+#, fuzzy
+#~ msgid "Cannot rename root folder"
+#~ msgstr "Αδυναμία δημιουργίας φίλτρου"
+
+#
+#~ msgid "Cannot toggle write on a readonly mailbox!"
+#~ msgstr "Αδυναμία αλλαγής σε κατάσταση εγγραφής σε γραμματοκιβώτιο μόνο για ανάγνωση!"
+
+#
+#, fuzzy
+#~ msgid "Cannot undelete message"
+#~ msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
+
+#
+#, fuzzy
+#~ msgid "Cannot undelete message(s)"
+#~ msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
+
+#
+#~ msgid "Caught %s...  Exiting.\n"
+#~ msgstr "Εντοπισμός του %s...  Εγκατάλειψη.\n"
+
+#
+#, fuzzy
+#~ msgid "Caught signal "
+#~ msgstr "Εντοπισμός σήματος %d...  Εγκατάλειψη.\n"
+
+#, fuzzy
+#~ msgid "Certificate is not X.509"
+#~ msgstr "Το πιστοποιητικό αποθηκεύτηκε"
+
+#, c-format
+#~ msgid "Character set changed to %s; %s"
+#~ msgstr "Το σετ χαρακτήρων άλλαξε σε %s; %s"
+
+#
+# pgpkey.c:178
+#~ msgid "Check key  "
+#~ msgstr "Ελέγξτε κλειδί "
+
+#
+#~ msgid "Checking for new messages.."
+#~ msgstr "Έλεγχος για νέα μηνύματα.."
+
+#
+#~ msgid "Clear"
+#~ msgstr "Απενεργοποιημένο"
+
+#
+#, c-format
+#~ msgid "Closing connection to %s.."
+#~ msgstr "Κλείσιμο σύνδεσης στο στο %s.."
+
+#
+#~ msgid "Closing connection to POP server.."
+#~ msgstr "Κλείσιμο σύνδεσης στον εξυπηρετητή IMAP.."
+
+#
+#, fuzzy
+#~ msgid "Collecting data.."
+#~ msgstr "Σύνδεση στο %s.."
+
+#
+#~ msgid "Committing changes.."
+#~ msgstr "Εφαρμογή των αλλαγών.."
+
+#
+#~ msgid "Compiling search pattern.."
+#~ msgstr "Σύνταξη μοντέλου αναζήτησης.."
+
+#
+#, fuzzy, c-format
+#~ msgid "Compressed-appending to %s.."
+#~ msgstr "Αντιγραφή στο %s.."
+
+#
+#, fuzzy, c-format
+#~ msgid "Compressing %s.."
+#~ msgstr "Αντιγραφή στο %s.."
+
+#
+#, c-format
+#~ msgid "Connecting to %s.."
+#~ msgstr "Σύνδεση στο %s.."
+
+#
+#, fuzzy, c-format
+#~ msgid "Connecting with \"%s\".."
+#~ msgstr "Σύνδεση στο %s.."
+
+#
+#, fuzzy, c-format
+#~| msgid "Can't delete attachment from POP server"
+#~ msgid "Convert attachment from %s to %s?"
+#~ msgstr "Αδυναμία διαγραφής προσάρτησης από τον εξυπηρετητή POP"
+
+#
+#, c-format
+#~ msgid "Copy%s to mailbox"
+#~ msgstr "Αντιγραφή%s στο γραμματοκιβώτιο"
+
+#
+#, c-format
+#~ msgid "Copying %d messages to %s.."
+#~ msgstr "Αντιγραφή %d μηνυμάτων στο %s.."
+
+#
+#, c-format
+#~ msgid "Copying message %d to %s.."
+#~ msgstr "Αντιγραφή μηνύματος %d στο %s .."
+
+#
+#, fuzzy
+#~ msgid "Copying tagged messages.."
+#~ msgstr "Δεν υπάρχουν σημειωμένα μηνύματα"
+
+#
+#, c-format
+#~ msgid "Copying to %s.."
+#~ msgstr "Αντιγραφή στο %s.."
+
+#
+#, fuzzy
+#~ msgid ""
+#~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+#~ "Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
+#~ "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+#~ "Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
+#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+#~ "\n"
+#~ "Lots of others not mentioned here contributed lots of code,\n"
+#~ "fixes, and suggestions.\n"
+#~ "\n"
+#~ "    This program is free software; you can redistribute it and/or modify\n"
+#~ "    it under the terms of the GNU General Public License as published by\n"
+#~ "    the Free Software Foundation; either version 2 of the License, or\n"
+#~ "    (at your option) any later version.\n"
+#~ "\n"
+#~ "    This program is distributed in the hope that it will be useful,\n"
+#~ "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "    GNU General Public License for more details.\n"
+#~ "\n"
+#~ "    You should have received a copy of the GNU General Public License\n"
+#~ "    along with this program; if not, write to the Free Software\n"
+#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+#~ msgstr ""
+#~ "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
+#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+#~ "Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
+#~ "Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+#~ "Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+#~ "\n"
+#~ "Πολλοί άλλοι που δεν αναφέρονται εδώ έχουν συνεισφέρει κώδικα,\n"
+#~ "διορθώσεις, και προτάσεις.\n"
+#~ "\n"
+#~ "Αυτό το πρόγραμμα είναι ελεύθερο λογισμικό. Μπορείτε να το αναδιανέμετε\n"
+#~ "και/ή να το αλλάξετε σύμφωνα με τους κανόνες της GNU Γενικής Δημόσιας Άδειας\n"
+#~ "όπως δημοσιοποιήθηκε από το Ίδρυμα Ελεύθερου Λογισμικού (Free Software\n"
+#~ "Foundation), είτε την δεύτερη έκδοση της άδειας, είτε (κατ'επιλογή σας)\n"
+#~ "κάθε μετέπειτα έκδοση.\n"
+#~ "\n"
+#~ "Αυτό το πρόγραμμα διανέμεται με την ελπίδα ότι θα είναι χρήσιμο,\n"
+#~ "αλλά ΧΩΡΙΣ ΚΑΜΜΙΑ ΕΓΓΥΗΣΗ. Ούτε ακόμα για την υπονοούμενη εγγύηση της\n"
+#~ "ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑ ΓΙΑ ΣΥΓΚΕΚΡΙΜΕΝΟ ΣΚΟΠΟ. Δείτε την\n"
+#~ "GNU Γενική Δημόσια Άδεια για περισσότερες λεπτομέρειες.\n"
+#~ "\n"
+#~ "Θα έπρεπε να έχετε λάβει ένα αντίγραφο της GNU Γενικής Δημόσιας Άδειας\n"
+#~ "με αυτό το πρόγραμμα. Εάν όχι, γράψτε στο Free Software \n"
+#~ "Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+#~ "\n"
+
+#
+#, fuzzy
+#~ msgid ""
+#~ "Copyright (C) 1996-2023 Michael R. Elkins and others.\n"
+#~ "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+#~ "Mutt is free software, and you are welcome to redistribute it\n"
+#~ "under certain conditions; type `mutt -vv' for details.\n"
+#~ msgstr ""
+#~ "Copyright (C) 1996-2023 Michael R. Elkins και άλλοι.\n"
+#~ "Το Mutt έρχεται ΑΠΟΚΛΕΙΣΤΙΚΑ ΧΩΡΙΣ ΕΓΓΥΗΣΗ; για λεπτομέρειες πατήστε `mutt -vv'.\n"
+#~ "Το Mutt είναι ελεύθερο λογισμικό, και ευχαρίστως μπορείτε να το επαναδιανέμετε\n"
+#~ "υπό ορισμένους όρους; γράψτε `mutt -vv' για λεπτομέρειες.\n"
+
+#
+#~ msgid "Could not create temporary file!"
+#~ msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου!"
+
+#
+#~ msgid "Could not find sorting function! [report this bug]"
+#~ msgstr "Αδυναμία εύρεσης της λειτουργίας ταξινόμησης! [αναφέρατε αυτό το σφάλμα]"
+
+#
+#~ msgid "Could not include all requested messages!"
+#~ msgstr "Αδυναμία συμπερίληψης όλων των μηνυμάτων που ζητήθηκαν!"
+
+#
+#, fuzzy
+#~| msgid "Could not reopen mailbox!"
+#~ msgid "Could not parse mailto: URI"
+#~ msgstr "Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου!"
+
+#
+#~ msgid "Could not reopen mailbox!"
+#~ msgstr "Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου!"
+
+#
+#~ msgid "Could not synchronize mailbox %s!"
+#~ msgstr "Αδυναμία συγχρονισμού του γραμματοκιβωτίου %s!"
+
+#
+#, c-format
+#~ msgid "Couldn't lock %s\n"
+#~ msgstr "Αδυναμία κλειδώματος του %s\n"
+
+#
+#~ msgid "Create a traditional (inline) PGP message?"
+#~ msgstr "Δημιουργία ενός εσωτερικού μηνύματος PGP;"
+
+#
+#~ msgid "DEBUG was not defined during compilation.  Ignored.\n"
+#~ msgstr "Το DEBUG δεν ορίστηκε κατά την διάρκεια του compile. Αγνοήθηκε.\n"
+
+#
+#, c-format
+#~ msgid "Debugging at level %d.\n"
+#~ msgstr "Αποσφαλμάτωση στο επίπεδο %d.\n"
+
+#
+#, c-format
+#~ msgid "Decode-copy%s to mailbox"
+#~ msgstr "Αποκωδικοποίηση-αντιγραφή%s στο γραμματοκιβώτιο"
+
+#
+#, c-format
+#~ msgid "Decode-save%s to mailbox"
+#~ msgstr "Αποκωδικοποίηση-αποθήκευση%s στο γραμματοκιβώτιο"
+
+#
+#, fuzzy
+#~| msgid "Print tagged attachment(s)?"
+#~ msgid "Decrypt message attachment?"
+#~ msgstr "Εκτύπωση σημειωμένου/ων προσάρτησης/σεων;"
+
+#
+#, c-format
+#~ msgid "Decrypt-copy%s to mailbox"
+#~ msgstr "Αποκρυπτογράφηση-αντιγραφή%s στο γραμματοκιβώτιο"
+
+#
+#, c-format
+#~ msgid "Decrypt-save%s to mailbox"
+#~ msgstr "Αποκρυπτογράφηση-αποθήκευση%s στο γραμματοκιβώτιο"
+
+#
+#~ msgid "Decrypting message.."
+#~ msgstr "Αποκρυπτογράφηση μηνύματος.."
+
+#
+#, fuzzy
+#~ msgid "Editing backgrounded"
+#~ msgstr "Αποστολή στο παρασκήνιο"
+
+#
+# pgp.c:1200
+#~ msgid "Enter keys (^G to abort): "
+#~ msgstr "Εισάγετε κλειδιά (^G για απόρριψη): "
+
+#
+#, fuzzy
+#~ msgid "Error History is currently being shown"
+#~ msgstr "Η βοήθεια ήδη εμφανίζεται"
+
+#
+#~ msgid "Error bouncing message!"
+#~ msgstr "Σφάλμα κατά την μεταβίβαση του μηνύματος!"
+
+#
+#~ msgid "Error bouncing messages!"
+#~ msgstr "Σφάλμα κατά την μεταβίβαση των μηνυμάτων!"
+
+#
+#, fuzzy
+#~ msgid "Error checking signature"
+#~ msgstr "Σφάλμα κατά την αποστολή του μηνύματος"
+
+#
+#, fuzzy, c-format
+#~ msgid "Error creating autocrypt key: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "Error exporting key: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy
+#~ msgid "Error extracting key data!\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, c-format
+#~ msgid "Error in command line: %s\n"
+#~ msgstr "Λάθος στη γραμμή εντολών: %s\n"
+
+#
+#~ msgid "Error parsing address!"
+#~ msgstr "Σφάλμα κατά την ανάλυση της διεύθυνσης!"
+
+#
+#, c-format
+#~ msgid "Error running \"%s\"!"
+#~ msgstr "Σφάλμα κατά την εκτέλεση του \"%s\"!"
+
+#
+#, fuzzy
+#~ msgid "Error seeking in alias file"
+#~ msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
+
+#
+#, c-format
+#~ msgid "Error sending message, child exited %d.\n"
+#~ msgstr "Σφάλμα στην αποστολή μηνύματος, τερματισμός θυγατρικής με %d.\n"
+
+#
+#~ msgid "Error while writing mailbox!"
+#~ msgstr "Σφάλμα κατά την εγγραφή στο γραμματοκιβώτιο"
+
+#, c-format
+#~ msgid "Error: '%s' is a bad IDN"
+#~ msgstr "Σφάλμα: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN"
+
+#
+#~ msgid "Error: multipart/encrypted has no protocol parameter!"
+#~ msgstr "Σφάλμα: το πολυμερές/κρυπτογραφημένο δεν έχει παράμετρο πρωτοκόλλου!"
+
+#
+#~ msgid "Error: unable to create OpenSSL subprocess!"
+#~ msgstr "Σφάλμα: αδυναμία δημιουργίας υποδιεργασίας OpenSSL!"
+
+#, fuzzy, c-format
+#~ msgid "Error: value '%s' is invalid for -d.\n"
+#~ msgstr "Σφάλμα: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN"
+
+#
+#, fuzzy
+#~ msgid "Evaluating cache.."
+#~ msgstr "Έλεγχος προσωρινής μνήμης... [%d/%d]"
+
+#
+#~ msgid "Executing command on matching messages.."
+#~ msgstr "Εκτέλεση εντολής στα παρόμοια μηνύματα.."
+
+#
+#~ msgid "Exit  "
+#~ msgstr "Έξοδος "
+
+#
+#~ msgid "Exit Mutt without saving?"
+#~ msgstr "Έξοδος από το Mutt χωρίς αποθήκευση;"
+
+#
+#~ msgid "Exit Mutt?"
+#~ msgstr "Έξοδος από το Mutt;"
+
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Έξοδος από το NeoMutt;"
 
+#
+#~ msgid "Expunging messages from server.."
+#~ msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή.."
+
+#
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "Μοιραίο σφάλμα. Ο αριθμός των μηνυμάτων δεν είναι σε συμφωνία!"
+
+#
+#~ msgid "Fetching PGP key.."
+#~ msgstr "Λήψη κλειδιού PGP.."
+
+#
+#, fuzzy
+#~ msgid "Fetching flag updates.."
+#~ msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
+
+#
+#~ msgid "Fetching list of messages.."
+#~ msgstr "Λήψη λίστας μηνυμάτων.."
+
+#
+#, fuzzy
+#~ msgid "Fetching message headers.."
+#~ msgstr "Λήψη επικεφαλίδων από τα μηνύματα... [%d/%d]"
+
+#
+#~ msgid "Fetching message.."
+#~ msgstr "Λήψη μηνύματος.."
+
+#~ msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
+#~ msgstr "Το αρχείο είναι φάκελος, αποθήκευση υπό αυτού; [(y)ναι, (n)όχι, (a)όλα]"
+
+#, c-format
+#~ msgid "Filling entropy pool: %s...\n"
+#~ msgstr "Αποθήκευση εντροπίας: %s...\n"
+
+#~ msgid "Fingerprint: %s"
+#~ msgstr "Αποτύπωμα: %s"
+
+#
+#~ msgid "First entry is shown"
+#~ msgstr "Η πρώτη καταχώρηση εμφανίζεται"
+
+#
+#, fuzzy
+#~ msgid "First, please tag a message to be linked here"
+#~ msgstr "αποθήκευση αυτού του μηνύματος για μετέπειτα αποστολή"
+
+#~ msgid "GSSAPI authentication failed"
+#~ msgstr "Αυθεντικοποίηση GSSAPI απέτυχε"
+
+#~ msgid "Getting folder list.."
+#~ msgstr "Λήψη λίστας φακέλων.."
+
+#
+#~ msgid "Getting namespaces.."
+#~ msgstr "Λήψη namespaces.."
+
+#
+#, fuzzy, c-format
+#~ msgid "I don't know how to print %s attachments!"
+#~ msgstr "Δεν ξέρω πως να τυπώσω τις %s προσαρτήσεις!"
+
+#
+#~ msgid "I don't know how to print that!"
+#~ msgstr "Δεν γνωρίζω πώς να το τυπώσω αυτό!"
+
+#~ msgid "ID %s is unverified. Do you want to use it for %s ?"
+#~ msgstr "Το ID %s δεν έχει επιβεβαιωθεί. Σίγουρα να γίνει χρήση του για %s ;"
+
+#~ msgid "ID has undefined validity"
+#~ msgstr "Το ID έχει μη ορισμένη εγκυρότητα"
+
+#~ msgid "ID is expired/disabled/revoked"
+#~ msgstr "Το ID είναι ληγμένο/αχρηστευμένο/άκυρο"
+
+#
+#, fuzzy
+#~ msgid "ID is not trusted"
+#~ msgstr "Το ID δεν είναι έγκυρο"
+
+#
+#~ msgid "ID is not valid"
+#~ msgstr "Το ID δεν είναι έγκυρο"
+
+#
+# pgpkey.c:259
+#~ msgid "ID is only marginally valid"
+#~ msgstr "Το ID είναι μόνο μερικώς έγκυρο"
+
+#
+#~ msgid "Including quoted message.."
+#~ msgstr "Συμπερίληψη καθορισμένου μηνύματος.."
+
+#~ msgid "Integer overflow -- can't allocate memory"
+#~ msgstr "Υπερχείλιση ακεραίου -- αδυναμία εκχώρησης μνήμης"
+
+#~ msgid "Integer overflow -- can't allocate memory!"
+#~ msgstr "Υπερχείλιση ακεραίου -- αδυναμία εκχώρησης μνήμης!"
+
+#
+# pgp.c:801
+#~ msgid "Internal error. Inform <roessler@does-not-exist.org>"
+#~ msgstr "Εσωτερικό σφάλμα. Πληροφορήστε <roessler@does-not-exist.org>"
+
+#
+#, fuzzy, c-format
+#~ msgid "Invalid POP URL: %s\n"
+#~ msgstr "Μη έγκυρο   "
+
+#
+#, fuzzy, c-format
+#~ msgid "Invalid value for option %s: \"%s\""
+#~ msgstr "Μη έγκυρη μέρα του μήνα: %s"
+
+#
+# commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
+#~ msgid "Invoking OpenSSL.."
+#~ msgstr "Κλήση του OpenSSL.."
+
+#
+# commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
+#~ msgid "Invoking PGP.."
+#~ msgstr "Κλήση του PGP.."
+
+#
+# commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
+#, fuzzy
+#~ msgid "Invoking S/MIME.."
+#~ msgstr "Κλήση του S/MIME.."
+
+#
+# commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
+#~ msgid "Invoking pgp.."
+#~ msgstr "Κλήση του pgp.."
+
+#
+#, c-format
+#~ msgid "Key is not bound.  Press '%s' for help"
+#~ msgstr "Το πλήκτρο δεν είναι συνδεδεμένο. Πατήστε '%s' για βοήθεια"
+
+#
+#~ msgid "Last entry is shown"
+#~ msgstr "Η τελευταία καταχώρηση εμφανίζεται"
+
+#
+#, c-format
+#~ msgid "Lock count exceeded, remove lock for %s?"
+#~ msgstr "Ο αριθμός κλειδωμάτων ξεπεράστηκε, ξεκλείδωμα του %s;"
+
+#
+#~ msgid "Logging in.."
+#~ msgstr "Είσοδος στο σύστημα.."
+
+#, c-format
+#~ msgid "Looking for keys matching \"%s\".."
+#~ msgstr "Εύρεση όμοιων κλειδιών με \"%s\".."
+
+#
+#, c-format
+#~ msgid "Looking up %s.."
+#~ msgstr "Αναζήτηση του %s.."
+
+#, fuzzy
+#~ msgid "MD5 Fingerprint: %s"
+#~ msgstr "Αποτύπωμα: %s"
+
+#
+#~ msgid "MIME type not defined.  Cannot view attachment"
+#~ msgstr "Ο τύπος MIME δεν έχει οριστεί. Αδυναμία εμφάνισης προσαρτήσεως"
+
+#
+#~ msgid "Mailbox is corrupt!"
+#~ msgstr "Το γραμματοκιβώτιο έχει αλλοιωθεί!"
+
+#
+#~ msgid "Mailbox was corrupted!"
+#~ msgstr "Το γραμματοκιβώτιο είχε αλλοιωθεί!"
+
+#
+#~ msgid "Mailbox was externally modified.  Flags may be wrong"
+#~ msgstr "Το γραμματοκιβώτιο τροποποιήθηκε εξωτερικά. Οι σημαίες μπορεί να είναι λάθος"
+
+#
+#, c-format
+#~ msgid "Marking %d messages deleted.."
+#~ msgstr "Σημείωση %d διαγραφέντων μηνυμάτων.."
+
+#
+#, fuzzy
+#~ msgid "Marking messages deleted.."
+#~ msgstr "Σημείωση %d διαγραφέντων μηνυμάτων.."
+
+#
+#~ msgid "Message contains:\n"
+#~ msgstr "Το μήνυμα περιέχει:\n"
+
+#
+#~ msgid "Message file is empty!"
+#~ msgstr "Το αρχείο μηνυμάτων είναι άδειο!"
+
+#
+#~ msgid "Message not modified!"
+#~ msgstr "Το μήνυμα δεν τροποποιήθηκε!"
+
+#
+#~ msgid "Messages could not be printed"
+#~ msgstr "Αδυναμία εκτύπωσης μηνυμάτων"
+
+#
+#~ msgid "Messages printed"
+#~ msgstr "Τα μηνύματα εκτυπώθηκαν"
+
+#
+#~ msgid "Missing arguments"
+#~ msgstr "Ελλιπή ορίσματα"
+
+#
+#, fuzzy, c-format
+#~ msgid "Move %d read messages to %s?"
+#~ msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
+
+#
+#, c-format
+#~ msgid "Moving read messages to %s.."
+#~ msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s.."
+
+#
+#, fuzzy, c-format
+#~ msgid "MuttLisp: no such function %s"
+#~ msgstr "%s: δεν υπάρχει τέτοια λειτουργία"
+
+#
+#, fuzzy
+#~ msgid "No attachments, abort sending?"
+#~ msgstr "Δεν υπάρχει θέμα, ακύρωση αποστολής;"
+
+#
+#~ msgid "No boundary parameter found! [report this error]"
+#~ msgstr "Δε βρέθηκε παράμετρος οριοθέτησης! [αναφέρατε αυτό το σφάλμα]"
+
+#
+#~ msgid "No lines in message.\n"
+#~ msgstr "Δεν υπάρχουν γραμμές στο μήνυμα.\n"
+
+#
+#~ msgid "No mailbox.\n"
+#~ msgstr "Κανένα γραμματοκιβώτιο.\n"
+
+#
+#~ msgid "No mailing lists found!"
+#~ msgstr "Δεν βρέθηκαν λίστες συζητήσεων!"
+
+#
+#~ msgid "No matching mailcap entry found.  Viewing as text"
+#~ msgstr "Δεν βρέθηκε όμοια καταχώρηση Mailcap. Απεικόνιση ως κείμενο"
+
+#~ msgid "No output from OpenSSL."
+#~ msgstr "Καμμία έξοδος από OpenSSL."
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "Καμμία έξοδος από OpenSSL."
+
+#
+#~ msgid "No recipients are specified!"
+#~ msgstr "Δεν έχουν καθοριστεί παραλήπτες!"
+
+#
+#~ msgid "No recipients specified.\n"
+#~ msgstr "Δεν έχουν οριστεί παραλήπτες.\n"
+
+#
+#~ msgid "No recipients were specified"
+#~ msgstr "Δεν καθορίστηκαν παραλήπτες"
+
+#
+#~ msgid "No search pattern"
+#~ msgstr "Κανένα σχέδιο αναζήτησης"
+
+#
+#~ msgid "No such folder"
+#~ msgstr "Δεν υπάρχει τέτοιος φάκελος"
+
+#
+#~ msgid "No tagged messages are visible!"
+#~ msgstr "Κανένα σημειωμένο μήνυμα δεν είναι ορατό!"
+
+#
+#, fuzzy
+#~ msgid "Not supported"
+#~ msgstr "Σημειώσεις δεν υποστηρίζονται"
+
+#, fuzzy
+#~ msgid "OAUTHBEARER authentication failed"
+#~ msgstr "Αυθεντικοποίηση SASL απέτυχε"
+
+#
+#~ msgid "Out of memory!"
+#~ msgstr "Η μνήμη εξαντλήθηκε!"
+
+#
+# compose.c:132
+#, fuzzy, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy, c-format
+#~ msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#~ msgid "PGP already selected. Clear & continue ? "
+#~ msgstr "Το PGP είχε ήδη επιλεγεί. Καθαρισμός ή συνέχεια ; "
+
+#
+# pgp.c:146
+#~ msgid "PGP passphrase forgotten"
+#~ msgstr "Η φράση-κλειδί PGP έχει ξεχαστεί"
+
+#
+# pgp.c:146
+#~ msgid "Passphrase(s) forgotten"
+#~ msgstr "Η φράση(-εις)-κλειδί έχει ξεχαστεί"
+
+#
+#, fuzzy, c-format
+#~| msgid "Password for %s@%s: "
+#~ msgid "Password for %s client cert: "
+#~ msgstr "Συνθηματικό για το %s@%s: "
+
+#~ msgid "Please set the hostname variable to a proper value when using mixmaster!"
+#~ msgstr "Παρακαλώ ορίστε σωστά την μεταβλητή του ονόματος του συστήματος όταν χρησιμοποιείτε το mixmaster!"
+
+#
+#~ msgid "Postpone this message?"
+#~ msgstr "Να αναβληθεί η ταχυδρόμηση αυτού του μηνύματος;"
+
+#
+#~ msgid "Preparing forwarded message.."
+#~ msgstr "Ετοιμασία προωθημένου μηνύματος .."
+
+#
+#~ msgid "Press any key to continue.."
+#~ msgstr "Πατήστε ένα πλήκτρο για να συνεχίσετε.."
+
+#
+#~ msgid "Print tagged attachment(s)?"
+#~ msgstr "Εκτύπωση σημειωμένου/ων προσάρτησης/σεων;"
+
+#
+#, fuzzy
+#~| msgid "Reopening mailbox.."
+#~ msgid "QRESYNC failed.  Reopening mailbox"
+#~ msgstr "Επαναπρόσβαση στο γραμματοκιβώτιο.."
+
+#
+#, c-format
+#~ msgid "Query '%s'"
+#~ msgstr "Ερώτηση '%s'"
+
+#
+#~ msgid "Quit Mutt?"
+#~ msgstr "Έξοδος από το Mutt;"
+
+#
+#, c-format
+#~ msgid "Reading %s.."
+#~ msgstr "Ανάγνωση %s.."
+
+#
+#~ msgid "Reading %s... %d"
+#~ msgstr "Ανάγνωση %s... %d"
+
+#
+#~ msgid "Reading %s... %d (%d%%)"
+#~ msgstr "Ανάγνωση %s... %d (%d%%)"
+
+#
+#, c-format
+#~ msgid "Reading new messages (%d bytes).."
+#~ msgstr "Ανάγνωση νέων μηνυμάτων (%d bytes).."
+
+#, fuzzy
+#~| msgid "Really delete mailbox \"%s\"?"
+#~ msgid "Really delete the main message?"
+#~ msgstr "Διαγραφή του γραμματοκιβωτίου \"%s\";"
+
+#, fuzzy
+#~ msgid "Reconnect failed.  Mailbox closed"
+#~ msgstr "Αποτυχία εντολής προσύνδεσης"
+
+#, fuzzy
+#~ msgid "Reconnect succeeded"
+#~ msgstr "Αποτυχία εντολής προσύνδεσης"
+
+#
+#~ msgid "Reopening mailbox.."
+#~ msgstr "Επαναπρόσβαση στο γραμματοκιβώτιο.."
+
+#
+#, fuzzy
+#~ msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "Αντ-Ταξ (d)ημν/(f)από/(r)λήψ/(s)θέμ/(o)προς/(t)νήμ/(u)άνευ/(z)μεγ/(c)βαθμ/s(p)am;: "
+
+#
+#~ msgid "Reverse search: "
+#~ msgstr "Ανάστροφη αναζήτηση: "
+
+#
+#, fuzzy
+#~ msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "Ανάστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)άκυρο;"
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "S/MIME (e)κλείδ,(s)υπογρ,(w)υπογρ.με,υπογρ.σ(a)ν,(b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "S/MIME (e)κλείδ,(s)υπογρ,(w)υπογρ.με,υπογρ.σ(a)ν,(b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+#~ msgstr "S/MIME (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+#~ msgstr "S/MIME (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "S/MIME (e)κλείδ,(s)υπογρ,(w)υπογρ.με,υπογρ.σ(a)ν,(b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#
+# compose.c:132
+#, fuzzy
+#~ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "S/MIME (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+
+#~ msgid "S/MIME already selected. Clear & continue ? "
+#~ msgstr "Το S/MIME είχε ήδη επιλεγεί. Καθαρισμός ή συνέχεια ; "
+
+#, fuzzy, c-format
+#~ msgid "SMTP authentication method %s requires SASL"
+#~ msgstr "Αυθεντικοποίηση GSSAPI απέτυχε"
+
 #~ msgid "SMTP authentication requires SASL"
 #~ msgstr "Η αυθεντικοποίηση SMTP απαιτεί SASL"
+
+#~ msgid "SSL Certificate check"
+#~ msgstr "Έλεγχος Πιστοποιητικού SSL"
+
+#~ msgid "SSL is unavailable"
+#~ msgstr "Το SSL δεν είναι διαθέσιμο"
+
+#
+#, c-format
+#~ msgid "Save%s to mailbox"
+#~ msgstr "Αποθήκευση%s στο γραμματοκιβώτιο"
+
+#
+#, fuzzy, c-format
+#~ msgid "Saving changed messages... [%d/%d]"
+#~ msgstr "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
+
+#
+#, fuzzy
+#~ msgid "Saving tagged messages.."
+#~ msgstr "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
+
+#
+#~ msgid "Saving.."
+#~ msgstr "Αποθήκευση.."
+
+#
+#, fuzzy, c-format
+#~ msgid "Scanning %s.."
+#~ msgstr "Επιλογή %s.."
+
+#
+#~ msgid "Search: "
+#~ msgstr "Αναζήτηση:"
+
+#
+#, fuzzy
+#~ msgid "Searching.."
+#~ msgstr "Αποθήκευση.."
+
+#
+#~ msgid "Select  "
+#~ msgstr "Διαλέξτε "
+
+#
+#, c-format
+#~ msgid "Selecting %s.."
+#~ msgstr "Επιλογή %s.."
+
+#
+#~ msgid "Sending message.."
+#~ msgstr "Αποστολή μηνύματος.."
+
+#
+#~ msgid "Server closed connection!"
+#~ msgstr "Η σύνδεση με τον εξυπηρετητή έκλεισε!"
+
+#
+#, fuzzy
+#~ msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "Ταξ (d)ημν/(f)από/(r)λήψ/(s)θέμ/(o)προς/(t)νήμ/(u)άνευ/(z)μεγ/(c)βαθμ/s(p)am;: "
+
+#
+#, fuzzy
+#~ msgid "Sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "Ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)άκυρο;"
+
+#
+#~ msgid "Sorting mailbox.."
+#~ msgstr "Τακτοποίηση γραμματοκιβωτίου.."
+
+#
+#, c-format
+#~ msgid "Subscribing to %s.."
+#~ msgstr "Εγγραφή στο %s.."
+
+#, fuzzy
+#~ msgid "TLS/SSL Certificate check"
+#~ msgstr "Έλεγχος Πιστοποιητικού SSL"
+
+#
+#~ msgid "Tag the messages you want to attach!"
+#~ msgstr "Σημειώστε τα μηνύματα που θέλετε να προσαρτήσετε!"
+
+#~ msgid "The message index is incorrect. Try reopening the mailbox"
+#~ msgstr "Ο δείκτης του μηνύματος είναι άκυρος. Ξανανοίξτε το γραμματοκιβώτιο"
+
+#
+#~ msgid "There are no subparts to show!"
+#~ msgstr "Δεν υπάρχουν επιμέρους τμήματα για να εμφανιστούν"
+
+#
+#~ msgid "This IMAP server is ancient. Mutt does not work with it"
+#~ msgstr "Αυτός ο εξυπηρετητής IMAP είναι αρχαίος. Το Mutt δεν είναι συμβατό με αυτόν"
+
+#
+#~ msgid "Thread contains unread messages"
+#~ msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα"
+
+#
+#~ msgid "Timeout exceeded while attempting fcntl lock!"
+#~ msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος με fcntl!"
+
+#
+#~ msgid "Timeout exceeded while attempting flock lock!"
+#~ msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος flock!"
+
+#
+#, fuzzy
+#~ msgid ""
+#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#~ "To report a bug, please contact the Mutt maintainers via gitlab:\n"
+#~ "    https://gitlab.com/muttmua/mutt/issues\n"
+#~ msgstr ""
+#~ "Για να επικοινωνήσετε με τους developers, στείλτε mail στο <mutt-dev@mutt.org>.\n"
+#~ "Για να αναφέρετε ένα πρόβλημα χρησιμοποιήσετε το εργαλείο <https://gitlab.com/muttmua/mutt/issues>.\n"
+
+#
+#~ msgid "Toggle display of subparts"
+#~ msgstr "Αλλαγή της εμφάνισης των επιμέρους τμημάτων"
+
+#~ msgid "Trying to extract S/MIME certificates...\n"
+#~ msgstr "Προσπάθεια εξαγωγής πιστοποιητικών S/MIME...\n"
+
+#
+#, fuzzy
+#~ msgid "Trying to reconnect.."
+#~ msgstr "Αναμονή απάντησης.."
+
+#
+#~ msgid "Unable to append to IMAP mailboxes at this server"
+#~ msgstr "Αδυναμία στην προσθήκη στα γραμμ/τια IMAP σε αυτόν τον εξυπηρετητή"
+
+#
+#, c-format
+#~ msgid "Unable to attach %s!"
+#~ msgstr "Αδυναμία προσάρτησης του %s!"
+
+#
+#~ msgid "Unable to attach!"
+#~ msgstr "Αδυναμία προσάρτησης!"
+
+#
+#~ msgid "Unable to lock mailbox!"
+#~ msgstr "Αδυναμία κλειδώματος του γραμματοκιβωτίου!"
+
+#
+#~ msgid "Unable to open temporary file!"
+#~ msgstr "Αδυναμία ανοίγματος προσωρινού αρχείου!"
+
+#
+#, fuzzy, c-format
+#~ msgid "Unable to write %s!"
+#~ msgstr "Αδυναμία προσάρτησης του %s!"
+
+#~ msgid "Unexpected response received from server: %s"
+#~ msgstr "Ελήφθη απροσδόκητη απάντηση από το διακομιστή: %s"
+
+#
+#~ msgid "Unknown"
+#~ msgstr "Άγνωστο"
+
+#
+#, fuzzy, c-format
+#~ msgid "Unsubscribing from %s.."
+#~ msgstr "Διαγραφή στο %s.."
+
+#
+#, fuzzy
+#~ msgid "Uploading message.."
+#~ msgstr "Ανέβασμα μηνύματος .."
+
+#
+#, fuzzy, c-format
+#~| msgid "%s is not a directory"
+#~ msgid "Use '%s' to select a directory"
+#~ msgstr "Το %s δεν είναι κατάλογος"
+
+#
+#~ msgid "Use 'toggle-write' to re-enable write!"
+#~ msgstr "Χρησιμοποιήστε το 'toggle-write' για να ενεργοποιήσετε την εγγραφή!"
+
+#
+# pgp.c:1194
+#~ msgid "Use (untrusted!) ID %s for %s ?"
+#~ msgstr "Χρήση του (μη εμπιστευμένου) ID %s για το %s "
+
+#
+# pgp.c:1194
+#~ msgid "Use ID %s for %s ?"
+#~ msgstr "Χρήση του ID = %s για το %s ;"
+
+#
+#~ msgid "Verifying message indexes.."
+#~ msgstr "Επιβεβαίωση των ευρετηρίων μηνυμάτων.."
+
+#
+#~ msgid "View Attachm"
+#~ msgstr "ΌψηΠροσάρτ"
+
+#
+#, fuzzy
+#~ msgid "Waiting for editor to exit"
+#~ msgstr "Αναμονή απάντησης.."
+
+#
+#~ msgid "Waiting for response.."
+#~ msgstr "Αναμονή απάντησης.."
+
+#, c-format
+#~ msgid "Warning: '%s' is a bad IDN"
+#~ msgstr "Προειδοποίηση: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN"
+
+#, c-format
+#~ msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
+#~ msgstr "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'.\n"
+
+#~ msgid "Warning: Intermediate certificate not found"
+#~ msgstr "Προειδοποίηση: Δεν βρέθηκε ενδιάμεσο πιστοποιητικό"
+
+#~ msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
+#~ msgstr "Προειδοποίηση: Δεν έχει οριστεί εμπιστοσύνη στο ID %s. (πλήκτρο. για συνέχεια)"
+
+#, fuzzy
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "Προειδοποίηση: Τμήμα αυτού του μηνύματος δεν είναι υπογεγραμμένο"
+
+#
+#~ msgid "Write fault!"
+#~ msgstr "Σφάλμα εγγραφής!"
+
+#
+#, c-format
+#~ msgid "Writing %s.."
+#~ msgstr "Εγγραφή %s.."
+
+#
+#, c-format
+#~ msgid "Writing message to %s .."
+#~ msgstr "Εγγραφή μηνύματος στο %s .."
+
+#
+#~ msgid "Writing messages... %d (%d%%)"
+#~ msgstr "Εγγραφή μηνυμάτων... %d (%d%%)"
+
+#
+#~ msgid "You already have an alias defined with that name!"
+#~ msgstr "Έχετε ήδη ένα ψευδώνυμο με αυτό το όνομα!"
+
+#
+#~ msgid "You are on the first page"
+#~ msgstr "Είστε στην πρώτη σελίδα"
+
+#
+#~ msgid "You are on the last page"
+#~ msgstr "Είστε στην τελευταία σελίδα"
+
+#
+#~ msgid "You cannot scroll down farther"
+#~ msgstr "Δεν μπορείτε να μετακινηθείτε παρακάτω"
+
+#
+#~ msgid "You cannot scroll up farther"
+#~ msgstr "Δεν μπορείτε να μετακινηθείτε παραπάνω"
+
+#
+#~ msgid "You have no aliases!"
+#~ msgstr "Δεν έχετε κανένα ψευδώνυμο!"
+
+#
+#, c-format
+#~ msgid "[%s = %s] Accept?"
+#~ msgstr "[%s = %s] Δέχεστε;"
+
+#
+#, c-format
+#~ msgid "[-- %s/%s is unsupported "
+#~ msgstr "[-- Το %s/%s δεν υποστηρίζεται "
+
+#
+#, c-format
+#~ msgid "[-- Attachment #%d"
+#~ msgstr "[-- Προσάρτηση #%d"
+
+#
+#~ msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+#~ msgstr "[-- Σφάλμα: Αδυναμία απεικόνισης σε όλα τα μέρη του Multipart/Alternative! --]\n"
+
+#, fuzzy
+#~ msgid ""
+#~ "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Σφάλμα: Ασυνεπής πολυμερής/υπογεγραμμένη δομή! --]\n"
+#~ "\n"
+
+#
+# handler.c:1378
+#, c-format
+#~ msgid ""
+#~ "[-- Error: Unknown multipart/signed protocol %s! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Σφάλμα: Άγνωστο πολυμερές/υπογεγραμμένο πρωτόκολλο %s! --]\n"
+#~ "\n"
+
+#
+# pgp.c:865
+#~ msgid ""
+#~ "[-- Error: could not create a PGP subprocess! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Σφάλμα: αδυναμία στη δημιουργία υποδιεργασίας PGP! --0]\n"
+#~ "\n"
+
+#
+#~ msgid "[-- Error: could not create temporary file! --]\n"
+#~ msgstr "[-- Σφάλμα: αδυναμία δημιουργίας προσωρινού αρχείου! --]\n"
+
+#
+#~ msgid ""
+#~ "[-- Error: could not find beginning of PGP message! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Σφάλμα: δε μπόρεσε να βρεθεί η αρχή του μηνύματος PGP! --]\n"
+#~ "\n"
+
+#
+#, fuzzy
+#~ msgid ""
+#~ "[-- Error: decryption failed --]\n"
+#~ "\n"
+#~ msgstr "[-- Σφάλμα: αδυναμία δημιουργίας προσωρινού αρχείου! --]\n"
+
+#
+# pgp.c:958
+#~ msgid ""
+#~ "[-- Error: malformed PGP/MIME message! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Σφάλμα: κακοφτιαγμένο μήνυμα PGP/MIME! --]\n"
+#~ "\n"
+
+#
+#~ msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
+#~ msgstr "[-- Σφάλμα: αδυναμία δημιουργίας υποδιεργασίας OpenSSL! --]\n"
+
+#
+#~ msgid "[-- Error: unable to create PGP subprocess! --]\n"
+#~ msgstr "[-- Σφάλμα: αδυναμία στη δημιουργία υποδιεργασίας PGP! --]\n"
+
+#
+#, c-format
+#~ msgid "[-- This %s/%s attachment "
+#~ msgstr "[-- Αυτή η %s/%s προσάρτηση "
+
+#
+#, c-format
+#~ msgid "[-- This %s/%s attachment is not included, --]\n"
+#~ msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
+
+#
+#, fuzzy
+#~ msgid "[-- This is an attachment "
+#~ msgstr "[-- Αυτή η %s/%s προσάρτηση "
+
+#
+#, c-format
+#~ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+#~ msgstr "[-- Τύπος: %s/%s, Κωδικοποίηση: %s, Μέγεθος: %s --]\n"
+
+#
+#, c-format
+#~ msgid "[-- and the indicated access-type %s is unsupported --]\n"
+#~ msgstr "[-- και το ενδεδειγμένο access-type %s δεν υποστηρίζεται --]\n"
+
+#
+#~ msgid ""
+#~ "[-- and the indicated external source has --]\n"
+#~ "[-- expired. --]\n"
+#~ msgstr ""
+#~ "[-- και η ενδεδειγμένη εξωτερική πηγή έχει --]\n"
+#~ "[-- λήξει. --]\n"
+
+#
+#, c-format
+#~ msgid "[-- on %s --]\n"
+#~ msgstr "[-- στις %s --]\n"
+
+#, fuzzy
+#~ msgid "_maildir_commit_message(): unable to set time on file"
+#~ msgstr "maildir_commit_message(): αδυναμία ορισμού χρόνου στο αρχείο"
+
+#
+#, fuzzy
+#~ msgid "attach file(s) to this message"
+#~ msgstr "προσάρτηση αρχείου/ων σε αυτό το μήνυμα"
+
+#
+#~ msgid "attach message(s) to this message"
+#~ msgstr "προσάρτηση μηνύματος/των σε αυτό το μήνυμα"
+
+#
+#~ msgid "bind: too many arguments"
+#~ msgstr "bind: πάρα πολλά ορίσματα"
+
+#
+#, fuzzy
+#~ msgid "cannot get certificate common name"
+#~ msgstr "Αδυναμία στη λήψη πιστοποιητικού από το ταίρι"
+
+#
+#, fuzzy
+#~ msgid "cannot get certificate subject"
+#~ msgstr "Αδυναμία στη λήψη πιστοποιητικού από το ταίρι"
+
+#
+#~ msgid "color: too few arguments"
+#~ msgstr "χρώμα: πολύ λίγα ορίσματα"
+
+#~ msgid "converting"
+#~ msgstr "μετατροπή"
+
+#
+#~ msgid "dazn"
+#~ msgstr "dazn"
+
+#
+#, fuzzy
+#~ msgid "delete message(s)"
+#~ msgstr "Δεν υπάρχουν αποκαταστημένα μηνύματα"
+
+#
+#~ msgid "delete messages matching a pattern"
+#~ msgstr "διαγραφή των μηνυμάτων που ταιριάζουν σε ένα μοντέλο/μορφή"
+
+#
+#~ msgid "edit the raw message"
+#~ msgstr "επεξεργασία του <<ωμού>> μηνύματος"
+
+#
+#~ msgid "enter a muttrc command"
+#~ msgstr "καταχώρηση μιας εντολής muttrc"
+
+#
+#, fuzzy, c-format
+#~ msgid "error adding recipient `%s': %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error allocating data object: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error creating gpgme context: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error creating gpgme data object: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error encrypting data: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error importing key: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#~ msgid "error in expression"
+#~ msgstr "σφάλμα στην έκφραση"
+
+#
+#, fuzzy, c-format
+#~ msgid "error reading data object: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error rewinding data object: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error setting PKA signature notation: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+#, fuzzy, c-format
+#~ msgid "error signing data: %s\n"
+#~ msgstr "σφάλμα στο μοντέλο στο: %s"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabfc"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabfci"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabfco"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabfcoi"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#~ msgid "esabifc"
+#~ msgstr "esabifc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabmfc"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabmfco"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabpfc"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "esabpfco"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#~ msgid "eswabfc"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#, fuzzy
+#~ msgid "eswabfco"
+#~ msgstr "eswabfc"
+
+#
+# compose.c:133
+#~ msgid "ewsabf"
+#~ msgstr "ewsabf"
+
+#
+#, fuzzy
+#~ msgid "gpgme_new failed: %s"
+#~ msgstr "SSL απέτυχε: %s"
+
+#
+#~ msgid "has been deleted --]\n"
+#~ msgstr "έχει διαγραφεί --]\n"
+
+#
+#~ msgid "macro: too many arguments"
+#~ msgstr "macro: πάρα πολλές παράμετροι"
+
+#
+#, fuzzy
+#~ msgid "message(s) not deleted"
+#~ msgstr "Σημείωση %d διαγραφέντων μηνυμάτων.."
+
+#
+#, fuzzy, c-format
+#~ msgid "mismatched brackets: %s"
+#~ msgstr "αταίριαστη παρένθεση/εις: %s"
+
+#
+#, c-format
+#~ msgid "mismatched parenthesis: %s"
+#~ msgstr "αταίριαστη παρένθεση/εις: %s"
+
+#
+#~ msgid "missing filename.\n"
+#~ msgstr "λείπει το όνομα του αρχείου.\n"
+
+#
+#~ msgid "mono: too few arguments"
+#~ msgstr "μονόχρωμα: λίγα ορίσματα"
+
+#
+#, fuzzy
+#~ msgid "move attachment up in compose menu list"
+#~ msgstr "επεξεργασία της προσάρτησης χρησιμοποιώντας καταχώρηση mailcap"
+
+#
+#~ msgid "move to the first message"
+#~ msgstr "μετακίνηση στο πρώτο μήνυμα"
+
+#
+#~ msgid "move to the last message"
+#~ msgstr "μετακίνηση στο τελευταίο μήνυμα"
+
+#
+#~ msgid "multipart message has no boundary parameter!"
+#~ msgstr "το πολυμερές μήνυμα δεν έχει οριοθέτουσα παράμετρο!"
+
+#
+#, c-format
+#~ msgid "mutt_restore_default(%s): error in regexp: %s\n"
+#~ msgstr "mutt_restore_default(%s): λάθος στο regexp: %s\n"
+
+#~ msgid "not converting"
+#~ msgstr "όχι μετατροπή"
+
+#
+#, fuzzy
+#~ msgid "not enough arguments"
+#~ msgstr "πολύ λίγα ορίσματα"
+
+#
+#~ msgid "null key sequence"
+#~ msgstr "κενή ακολουθία πλήκτρων"
+
+#
+#, fuzzy
+#~| msgid "No mailing lists found!"
+#~ msgid "perform mailing list action"
+#~ msgstr "Δεν βρέθηκαν λίστες συζητήσεων!"
+
+#
+#, fuzzy
+#~| msgid "reply to specified mailing list"
+#~ msgid "post to mailing list"
+#~ msgstr "απάντηση στην καθορισμένη λίστα αλληλογραφίας"
+
+#
+#~ msgid "prefix is illegal with reset"
+#~ msgstr "το πρόθεμα είναι άκυρο με την επαναφορά"
+
+#
+#~ msgid "push: too many arguments"
+#~ msgstr "push: πάρα πολλά ορίσματα"
+
+#
+#, fuzzy
+#~ msgid "run: too many arguments"
+#~ msgstr "push: πάρα πολλά ορίσματα"
+
+#
+#~ msgid "score: too few arguments"
+#~ msgstr "score: πολύ λίγα ορίσματα"
+
+#
+#~ msgid "score: too many arguments"
+#~ msgstr "score: πάρα πολλά ορίσματα"
+
+#
+#, fuzzy
+#~ msgid "select a new mailbox from the browser"
+#~ msgstr "επιλέξτε ένα νέο αρχείο σε αυτό τον κατάλογο"
+
+#
+#, fuzzy
+#~ msgid "select a new mailbox from the browser in read only mode"
+#~ msgstr "Ανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο για εγγραφή"
+
+#
+#~ msgid "show the Mutt version number and date"
+#~ msgstr "εμφάνιση του αριθμού έκδοσης του Mutt και την ημερομηνία"
+
+#
+#, fuzzy
+#~ msgid "sign as: "
+#~ msgstr " υπογραφή ως: "
+
+#
+#, fuzzy
+#~| msgid "skip beyond quoted text"
+#~ msgid "skip beyond headers"
+#~ msgstr "προσπέραση πέρα από το quoted κείμενο"
+
+#
+#~ msgid "source: too many arguments"
+#~ msgstr "source: πάρα πολλά ορίσματα"
+
+#~ msgid "subscribe to current mailbox (IMAP only)"
+#~ msgstr "εγγραφή στο τρέχον γραμματοκιβώτιο (IMAP μόνο)"
+
+#
+#, fuzzy
+#~| msgid "reply to specified mailing list"
+#~ msgid "subscribe to mailing list"
+#~ msgstr "απάντηση στην καθορισμένη λίστα αλληλογραφίας"
+
+#
+#~ msgid "sync: mbox modified, but no modified messages! (report this bug)"
+#~ msgstr ""
+#~ "sync: το mbox έχει τροποποιηθεί, δεν υπάρχουν τροποποιημένα μηνύματα!\n"
+#~ "(αναφέρατε αυτό το σφάλμα)"
+
+#
+#~ msgid "tag messages matching a pattern"
+#~ msgstr "σημείωση των μηνυμάτων που ταιριάζουν με μια μορφή/μοντέλο"
+
+#
+#~ msgid "too few arguments"
+#~ msgstr "πολύ λίγα ορίσματα"
+
+#
+#~ msgid "too many arguments"
+#~ msgstr "πάρα πολλά ορίσματα"
+
+#
+#~ msgid "undelete messages matching a pattern"
+#~ msgstr "αποκατάσταση (undelete) των μηνυμάτων που ταιριάζουν με μία μορφή/μοντέλο"
+
+#~ msgid "unspecified protocol error"
+#~ msgstr "μη καθορισμένο σφάλμα πρωτοκόλλου"
+
+#, fuzzy
+#~ msgid "unsubscribe from current mailbox (IMAP only)"
+#~ msgstr "διαγραφή από το τρέχον γραμματοκιβώτιο (IMAP μόνο)"
+
+#
+#, fuzzy
+#~ msgid "unsubscribe from mailing list"
+#~ msgstr "Διαγραφή στο %s.."
+
+#
+#~ msgid "untag messages matching a pattern"
+#~ msgstr "αφαίρεση της σημείωσης από τα μηνύματα που ταιριάζουν με μία μορφή/μοντέλο"
+
+#
+#, fuzzy
+#~ msgid ""
+#~ "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
+#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+#~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+#~ "       mutt -v[v]\n"
+#~ msgstr ""
+#~ "χρήση: mutt [ -nRyzZ ] [ -e <εντολή> ] [ -F <αρχείο> ] [ -m <τύπος> ] [ -f <αρχείο>]\n"
+#~ "       mutt [ -nR ] [ -e <εντολή> ] [ -F <αρχείο> ] -Q <ερώτηση>[ -Q <ερώτηση> ] [...]\n"
+#~ "       mutt [ -nx ] [ -e <εντολή> ] [ -a <αρχείο> ] [ -F <αρχείο> ] [ -H <αρχείο> ] [ -i <αρχείο> ] [ -s <θέμα> ] [ -b <διευθ> ] [ -c <διευθ> ] <διευθ> [ ... ]\n"
+#~ "       mutt [ -n ] [ -e <εντολή> ] [ -F <αρχείο> ] -p\n"
+#~ "       mutt -v[v]\n"
+#~ "\n"
+#~ "επιλογές:\n"
+#~ "  -A <alias>\tαπεικόνιση του συγκεκριμένου ψευδώνυμου\n"
+#~ "  -a <αρχείο>\tπροσαρτήστε ένα αρχείο σε αυτό το μήνυμα\n"
+#~ "  -b <διευθ>\tκαθορίστε μια διεύθυνση τυφλού-πιστού-αντιγράφου (BCC)\n"
+#~ "  -c <διευθ>\tκαθορίστε μια διεύθυνση πιστού-αντιγράφου (CC)\n"
+#~ "  -e <εντολή>\tκαθορίστε μια εντολή για να εκτελεστεί μετά την εκκίνηση\n"
+#~ "  -f <αρχείο>\tκαθορίστε ποιο γραμματοκιβώτιο να αναγνωστεί\n"
+#~ "  -F <αρχείο>\tκαθορίστε ένα εναλλακτικό αρχείο muttrc\n"
+#~ "  -H <αρχείο>\tκαθορίστε ένα προσχέδιο από το οποίο θα διαβαστεί η επικεφαλίδα\n"
+#~ "  -i <αρχείο>\tκαθορίστε ένα αρχείο που το Mutt θα συμπεριλαμβάνει κατά την \n"
+#~ "απάντηση\n"
+#~ "  -m <τύπος>\tκαθορίστε ένα τύπο προκαθορισμένου γραμματοκιβωτίου\n"
+#~ "  -n\t\tκάνετε το Mutt να μην διαβάσει το Muttrc του συστήματος\n"
+#~ "  -p\t\tεπαναφέρετε ένα αναβληθέν μήνυμα\n"
+#~ "  -Q <μεταβλητή>\tερώτηση(εμφάνιση τιμής) μιας μεταβλητής των ρυθμίσεων\n"
+#~ "  -R\t\tανοίξτε το γραμματοκιβώτιο σε κατάσταση μόνο-ανάγνωσης\n"
+#~ "  -s <θέμα>\tκαθορίστε ένα θέμα (σε εισαγωγικά εάν έχει κενά)\n"
+#~ "  -v\t\tδείξτε την έκδοση και τους ορισμούς κατά τη μεταγλώττιση\n"
+#~ "  -x\t\tεξομοιώστε την κατάσταση αποστολής mailx\n"
+#~ "  -y\t\tδιαλέξτε ένα γραμματοκιβώτιο από την λίστα `γραμματοκιβωτίων'\n"
+#~ "  -z\t\tεγκατάλειψη αμέσως εάν δεν υπάρχουν μηνύματα στο γραμματοκιβώτιο\n"
+#~ "  -Z\t\tανοίξτε τον πρώτο φάκελο με νέο μήνυμα, βγείτε εάν δεν υπάρχουν\n"
+#~ "  -h\t\tαυτό το μήνυμα βοήθειας"
+
+#
+#~ msgid "value is illegal with reset"
+#~ msgstr "η τιμή είναι άκυρη με την επαναφορά"
+
+#
+#, fuzzy
+#~| msgid "force viewing of attachment using mailcap"
+#~ msgid "view attachment in pager using copiousoutput mailcap entry"
+#~ msgstr "αναγκάζει την εμφάνιση της προσάρτησης χρησιμοποιώντας το mailcap"
+
+#
+#, fuzzy
+#~ msgid "view multipart/alternative as text"
+#~ msgstr "παρουσίαση της προσάρτησης ως κείμενο"
+
+#
+#, fuzzy
+#~ msgid "view multipart/alternative in pager using copiousoutput mailcap entry"
+#~ msgstr "αναγκάζει την εμφάνιση της προσάρτησης χρησιμοποιώντας το mailcap"
+
+#
+#, fuzzy
+#~ msgid "view multipart/alternative using mailcap"
+#~ msgstr "αναγκάζει την εμφάνιση της προσάρτησης χρησιμοποιώντας το mailcap"
+
+#
+# keymap_defs.h:161
+#~ msgid "wipe passphrase(s) from memory"
+#~ msgstr "εξαφάνιση της φράσης(-εων) κλειδί από τη μνήμη"
+
+#
+#, fuzzy
+#~ msgid ""
+#~ "~q\t\twrite file and quit editor\n"
+#~ "~r file\t\tread a file into the editor\n"
+#~ "~t users\tadd users to the To: field\n"
+#~ "~u\t\trecall the previous line\n"
+#~ "~v\t\tedit message with the $visual editor\n"
+#~ "~w file\t\twrite message to file\n"
+#~ "~x\t\tabort changes and quit editor\n"
+#~ "~?\t\tthis message\n"
+#~ ".\t\ton a line by itself ends input\n"
+#~ msgstr ""
+#~ "~~\t\t εισάγετε μια γραμμή ξεκινώντας με ένα ~\n"
+#~ "~b χρήστες\tπροσθέστε χρήστες στο πεδίο Bcc: \n"
+#~ "~c χρήστες\tπροσθέστε χρήστες στο πεδίο Cc: \n"
+#~ "~f μηνύματα\tσυμπεριλάβετε τα μηνύματα\n"
+#~ "~F μηνύματα\tτο ίδιο όπως το ~f, αλλά και με τις επικεφαλίδες\n"
+#~ "~h\t\tεπεξεργαστείτε την επικεφαλίδα\n"
+#~ "~m μηνύματα\tσυμπεριλάβετε και παραθέστε τα μηνύματα\n"
+#~ "~M μηνύματα\tτο ίδιο με το ~m, αλλά και με τις επικεφαλίδες\n"
+#~ "~p\t\tεκτυπώστε το μήνυμα\n"
+#~ "~q\t\tεγγραφή του αρχείο και έξοδος από τον κειμενογράφο\n"
+#~ "~r αρχείο\t\tδιαβάστε ένα αρχείο στον κειμενογράφο\n"
+#~ "~t χρήστες\tπροσθέστε χρήστες στο πεδίο To: \n"
+#~ "~u\t\tανακαλέστε την προηγούμενη γραμμή\n"
+#~ "~v\t\tεπεξεργαστείτε το μήνυμα με το $visual editor\n"
+#~ "~w αρχείο\t\tγράψτε το μήνυμα στο αρχείο\n"
+#~ "~x\t\tακυρώστε τις αλλαγές και βγείτε από τον κειμενογράφο\n"
+#~ "~?\t\tαυτό το μήνυμα\n"
+#~ ".\t\tμόνη της σε μια γραμμή τερματίζει την είσοδο\n"
+
+#
+#, fuzzy
+#~ msgid ""
+#~ "~~\t\tinsert a line beginning with a single ~\n"
+#~ "~b addresses\tadd addresses to the Bcc: field\n"
+#~ "~c addresses\tadd addresses to the Cc: field\n"
+#~ "~f messages\tinclude messages\n"
+#~ "~F messages\tsame as ~f, except also include headers\n"
+#~ "~h\t\tedit the message header\n"
+#~ "~m messages\tinclude and quote messages\n"
+#~ "~M messages\tsame as ~m, except include headers\n"
+#~ "~p\t\tprint the message\n"
+#~ msgstr ""
+#~ "~~\t\t εισάγετε μια γραμμή ξεκινώντας με ένα ~\n"
+#~ "~b χρήστες\tπροσθέστε χρήστες στο πεδίο Bcc: \n"
+#~ "~c χρήστες\tπροσθέστε χρήστες στο πεδίο Cc: \n"
+#~ "~f μηνύματα\tσυμπεριλάβετε τα μηνύματα\n"
+#~ "~F μηνύματα\tτο ίδιο όπως το ~f, αλλά και με τις επικεφαλίδες\n"
+#~ "~h\t\tεπεξεργαστείτε την επικεφαλίδα\n"
+#~ "~m μηνύματα\tσυμπεριλάβετε και παραθέστε τα μηνύματα\n"
+#~ "~M μηνύματα\tτο ίδιο με το ~m, αλλά και με τις επικεφαλίδες\n"
+#~ "~p\t\tεκτυπώστε το μήνυμα\n"
+#~ "~q\t\tεγγραφή του αρχείο και έξοδος από τον κειμενογράφο\n"
+#~ "~r αρχείο\t\tδιαβάστε ένα αρχείο στον κειμενογράφο\n"
+#~ "~t χρήστες\tπροσθέστε χρήστες στο πεδίο To: \n"
+#~ "~u\t\tανακαλέστε την προηγούμενη γραμμή\n"
+#~ "~v\t\tεπεξεργαστείτε το μήνυμα με το $visual editor\n"
+#~ "~w αρχείο\t\tγράψτε το μήνυμα στο αρχείο\n"
+#~ "~x\t\tακυρώστε τις αλλαγές και βγείτε από τον κειμενογράφο\n"
+#~ "~?\t\tαυτό το μήνυμα\n"
+#~ ".\t\tμόνη της σε μια γραμμή τερματίζει την είσοδο\n"

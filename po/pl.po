@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-04 13:53+0100\n"
+"POT-Creation-Date: 2023-05-05 13:14+0100\n"
 "PO-Revision-Date: 2019-11-12 11:18+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
@@ -1988,7 +1988,7 @@ msgstr "Podpisz jako: "
 #. L10N: The compose menu autocrypt line
 #: envelope/window.c:121
 msgid "Autocrypt: "
-msgstr ""
+msgstr "Autocrypt: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:125
@@ -6549,7 +6549,7 @@ msgstr "Pomoc jest właśnie wyświetlana"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:120 status.c:294
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
 msgstr "wszystko"
 
@@ -6593,9 +6593,17 @@ msgstr "Podpis PGP został pomyślnie zweryfikowany"
 msgid "PGP signature could NOT be verified"
 msgstr "Podpis PGP NIE może zostać zweryfikowany"
 
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, fuzzy, c-format
+msgid "%ld%%"
+msgstr "%ld%%"
+
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:122 status.c:292
+#: pager/pbar.c:125 status.c:292
 msgid "end"
 msgstr "koniec"
 
@@ -6972,7 +6980,7 @@ msgstr "wiadomości których nagłówek Temat pasuje do WYRAŻENIA"
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:140
 msgid "superseded messages"
-msgstr ""
+msgstr "zastąpione listy"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:143
@@ -7012,12 +7020,12 @@ msgstr "grupy dyskusyjne pasujące do WYRAŻENIA"
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:166
 msgid "messages whose References header matches EXPR"
-msgstr ""
+msgstr "listy, które odnoszą się (nagłówek References) do WYRAŻENIA"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:169
 msgid "messages with RANGE attachments"
-msgstr ""
+msgstr "listy z LICZBĄ załączników"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:172
@@ -7042,7 +7050,7 @@ msgstr "podwojone wiadomości"
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:184
 msgid "unreferenced messages"
-msgstr ""
+msgstr "listy bez odniesień"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:187
@@ -7215,6 +7223,30 @@ msgstr "Nie udało się odszyfrowanie odłożonego listu"
 #: postpone/postpone.c:681 postpone/postpone.c:692
 msgid "No postponed messages"
 msgstr "Brak odłożonych listów"
+
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, fuzzy, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, fuzzy, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, fuzzy, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d%%)"
 
 #: question/question.c:208
 msgid "yes"
@@ -7553,6 +7585,14 @@ msgstr "Sortowanie poczty w skrzynce..."
 msgid "(no mailbox)"
 msgstr "(brak skrzynki)"
 
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, fuzzy, c-format
+msgid "%d%%"
+msgstr "%d%%"
+
 #: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -7623,51 +7663,1738 @@ msgstr "Parametry kompilacji:"
 msgid "Devel options:"
 msgstr "Opcje debugowania:"
 
-#. L10N: Pager position percentage.
-#. `%ld` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: pager/message.c:59 pager/pbar.c:123 status.c:294 pager/pbar.c:117
-#, fuzzy, c-format
-msgid "%ld%%"
-msgstr "%ld%%"
+#~ msgid ""
+#~ "\n"
+#~ "Compile options:"
+#~ msgstr ""
+#~ "\n"
+#~ "Parametry kompilacji:"
 
-#. L10N: Progress bar: `%s` loading text, `%zu` item count,
-#. `%d` percentage, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: pager/pbar.c:125 status.c:292 progress/window.c:168
-#, fuzzy, c-format
-msgid "%s %zu (%d%%)"
-msgstr "%s %zu (%d%%)"
+#~ msgid ""
+#~ "\n"
+#~ "Generic bindings:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Standardowe przypisania klawiszy:\n"
+#~ "\n"
 
-#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:178
-#, fuzzy, c-format
-msgid "%s %s/%s (%d%%)"
-msgstr "%s %s/%s (%d%%)"
+#~ msgid ""
+#~ "\n"
+#~ "Unbound functions:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Nie przypisane klawiszom funkcje:\n"
+#~ "\n"
 
-#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
-#. `%d` is the number, `%%` is the percent symbol.
-#. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:186
-#, fuzzy, c-format
-msgid "%s %zu/%zu (%d%%)"
-msgstr "%s %zu/%zu (%d%%)"
+#~ msgid ""
+#~ "    This program is free software; you can redistribute it and/or modify\n"
+#~ "    it under the terms of the GNU General Public License as published by\n"
+#~ "    the Free Software Foundation; either version 2 of the License, or\n"
+#~ "    (at your option) any later version.\n"
+#~ "\n"
+#~ "    This program is distributed in the hope that it will be useful,\n"
+#~ "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "    GNU General Public License for more details.\n"
+#~ msgstr ""
+#~ "    Ten program jest wolnym oprogramowaniem; możesz rozprowadzać go i/lub modyfikować\n"
+#~ "    zachowując warunki Powszechnej Licencji Publicznej GNU (General Public\n"
+#~ "    Licence), opublikowanej przez Free Software Foundation, w wersji 2\n"
+#~ "    lub wyższej.\n"
+#~ "\n"
+#~ "    Program ten jest rozprowadzany w nadziei, że będzie przydatny,\n"
+#~ "    ale BEZ ŻADNYCH GWARANCJI, wyrażonych wprost lub domyślnie nawet,\n"
+#~ "    w tym gwarancji możliwości SPRZEDAŻY i PRZYDATNOŚCI DO KONKRETNYCH CELÓW.\n"
+#~ "    Szczegóły znajdziesz w Powszechnej Licencji Publicznej GNU.\n"
 
-#. L10N: Status bar, percentage of way through index.
-#. `%d` is the number, `%%` is the percent symbol.
-#. They may be reordered, or space inserted, if you wish.
-#: status.c:302
-#, fuzzy, c-format
-msgid "%d%%"
-msgstr "%d%%"
+#~ msgid ""
+#~ "    You should have received a copy of the GNU General Public License\n"
+#~ "    along with this program; if not, write to the Free Software\n"
+#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+#~ msgstr ""
+#~ "    W dokumentacji tego programu powinna znajdować się kopia Powszechnej\n"
+#~ "    Licencji Publicznej GNU. Jeśli tak nie jest, napisz do Free Software\n"
+#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+
+#~ msgid ""
+#~ "  -E\t\tedit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>\tspecify a command to be executed after initialization\n"
+#~ "  -f <file>\tspecify which mailbox to read\n"
+#~ "  -F <file>\tspecify an alternate muttrc file\n"
+#~ "  -H <file>\tspecify a draft file to read header and body from\n"
+#~ "  -i <file>\tspecify a file which Mutt should include in the body\n"
+#~ "  -m <type>\tspecify a default mailbox type\n"
+#~ "  -n\t\tcauses Mutt not to read the system Muttrc\n"
+#~ "  -p\t\trecall a postponed message"
+#~ msgstr ""
+#~ "  -E\t\tedytuj szkic (-H) lub dołącz (-i) plik\n"
+#~ "  -e <polec>\tpodaj polecenie do wykonania po inicjalizacji\n"
+#~ "  -f <plik>\totwórz najpierw tą skrzynkę\n"
+#~ "  -F <plik>\tużyj alternatywnego pliku muttrc\n"
+#~ "  -H <plik>\twczytaj szablon nagłówków i treści listu z pliku\n"
+#~ "  -i <plik>\twstaw ten plik w odpowiedzi\n"
+#~ "  -m <typ>\tpodaj typ skrzynki\n"
+#~ "  -n\t\tnie czytaj systemowego Muttrc\n"
+#~ "  -p\t\tponownie edytuj zarzucony list"
+
+#~ msgid ""
+#~ "  -Q <variable>\tquery a configuration variable\n"
+#~ "  -R\t\topen mailbox in read-only mode\n"
+#~ "  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v\t\tshow version and compile-time definitions\n"
+#~ "  -x\t\tsimulate the mailx send mode\n"
+#~ "  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+#~ "  -z\t\texit immediately if there are no messages in the mailbox\n"
+#~ "  -Z\t\topen the first folder with new message, exit immediately if none\n"
+#~ "  -h\t\tthis help message"
+#~ msgstr ""
+#~ "  -Q <zmienna>\tpodaj wartość zmiennej konfiguracyjnej\n"
+#~ "  -R\t\totwórz skrzynkę w trybie tylko do odczytu\n"
+#~ "  -s <tytuł>\tpodaj tytuł (musi być w apostrofach, jeśli zawiera spacje)\n"
+#~ "  -v\t\tpokaż wersję i wkompilowane parametry\n"
+#~ "  -x\t\tsymuluj zachowanie mailx\n"
+#~ "  -y\t\twybierz skrzynkę podaną w twojej liście „mailboxes”\n"
+#~ "  -z\t\twyjdź natychmiast jeśli brak nowych listów w skrzynce\n"
+#~ "  -Z\t\totwórz pierwszą skrzynkę z nowym listem i wyjdź jeśli brak nowych\n"
+#~ "  -h\t\tten tekst"
+
+#~ msgid ""
+#~ "  -d <level>\tlog debugging output to ~/.muttdebug0\n"
+#~ "\t\t0 => no debugging; <0 => do not rotate .muttdebug files"
+#~ msgstr ""
+#~ "  -d <poziom>\tzapisuj komunikaty debugowania do ~/.muttdebug0\n"
+#~ "\t\t0 => brak debugowania; <0 => nie obracaj plików .muttdebug"
+
+#~ msgid " tagged"
+#~ msgstr " zaznaczone"
+
+#~ msgid "\"crypt_use_gpgme\" set but not built with GPGME support"
+#~ msgstr "Ustawiono „crypt_use_gpgme”, ale Mutt został skompilowany bez wsparcia dla GPGME"
+
+#~ msgid "$send_multipart_alternative_filter does not support multipart type generation"
+#~ msgstr "$send_multipart_alternative_filter nie obsługuje generowania typu multipart"
+
+#~ msgid "$send_multipart_alternative_filter is not set"
+#~ msgstr "$send_multipart_alternative_filter nie jest ustawione"
+
+#, c-format
+#~ msgid "%d labels changed"
+#~ msgstr "%d zmienionych etykiet"
+
+#, c-format
+#~ msgid "%d message(s) have been lost. Try reopening the mailbox"
+#~ msgstr "Utracono %d list(ów). Spróbuj ponownie otworzyć skrzynkę"
+
+#, c-format
+#~ msgid "%d: invalid message number.\n"
+#~ msgstr "%d: błędny numer listu.\n"
+
+#, c-format
+#~ msgid "%s Do you really want to use the key?"
+#~ msgstr "%s Czy na pewno chcesz użyć tego klucza?"
+
+#, c-format
+#~ msgid "%s [%d of %d messages read]"
+#~ msgstr "%s [przeczytano %d spośród %d listów]"
+
+#, c-format
+#~ msgid "%s authentication failed, trying next method"
+#~ msgstr "Uwierzytelnianie %s nie powiodło się, próbuję kolejnej metody"
+
+#, c-format
+#~ msgid "%s connection using %s (%s)"
+#~ msgstr "Połączenie %s przy użyciu %s (%s)"
+
+#, c-format
+#~ msgid "%s has insecure permissions!"
+#~ msgstr "Prawa dostępu do %s mogą powodować problemy z bezpieczeństwem!"
+
+#, c-format
+#~ msgid "%s is not a mailbox!"
+#~ msgstr "%s nie jest skrzynką!"
+
+#, c-format
+#~ msgid "%s is set"
+#~ msgstr "%s ustawiony"
+
+#, c-format
+#~ msgid "%s no longer exists!"
+#~ msgstr "%s już nie istnieje!"
+
+#, c-format
+#~ msgid "%s: Unknown type"
+#~ msgstr "%s: nieznany typ"
+
+#, c-format
+#~ msgid "%s: command valid only for index, body, header objects"
+#~ msgstr "%s: polecenie może dotyczyć tylko obiektów indeksu, treści lub nagłówków"
+
+#, c-format
+#~ msgid "%s: invalid mailbox type"
+#~ msgstr "%s: nieprawidłowy typ skrzynki"
+
+#, c-format
+#~ msgid "%s: invalid value"
+#~ msgstr "%s: nieprawidłowa wartość"
+
+#, c-format
+#~ msgid "%s: invalid value (%s)"
+#~ msgstr "%s: nieprawidłowa wartość (%s)"
+
+#, c-format
+#~ msgid "%s: no such function in map"
+#~ msgstr "%s: nie ma takiej funkcji"
+
+#, c-format
+#~ msgid "%s: unable to attach file.\n"
+#~ msgstr "%s: nie można dołączyć pliku.\n"
+
+#, c-format
+#~ msgid "%s: unknown editor command (~? for help)\n"
+#~ msgstr "%s: nieznane polecenie edytora (~? wyświetla pomoc)\n"
+
+#, c-format
+#~ msgid "%s: unknown sorting method"
+#~ msgstr "%s: nieznana metoda sortowania"
+
+#, c-format
+#~ msgid "%s: unknown type"
+#~ msgstr "%s: nieprawidłowy typ"
+
+#, c-format
+#~ msgid "%sgroup: warning: bad IDN '%s'.\n"
+#~ msgstr "%sgroup: Ostrzeżenie: błędny IDN „%s”.\n"
+
+#~ msgid "(End message with a . on a line by itself)\n"
+#~ msgstr "(Zakończ list . (kropką) w osobnej linii)\n"
+
+#~ msgid "(c)reate new, or (s)elect existing GPG key? "
+#~ msgstr "(u)tworzyć nowy czy (w)ybrać istniejący klucz GPG? "
+
+#~ msgid "(continue)\n"
+#~ msgstr "(kontynuuj)\n"
+
+#~ msgid "(need 'view-attachments' bound to key!)"
+#~ msgstr "(przypisz „view-attachments” do klawisza!)"
+
+#, c-format
+#~ msgid "(size %s bytes) "
+#~ msgstr "(o wielkości %s bajtów) "
+
+#, c-format
+#~ msgid "(use '%s' to view this part)"
+#~ msgstr "(użyj „%s” do oglądania tego fragmentu)"
+
+#~ msgid "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?B? Back:%B?%?l? %l?]---(%s/%?T?%T/?%S)-%>-(%P)---"
+#~ msgstr "-%r-Mutt: %f [Listy:%?M?%M/?%m%?n? Nowe:%n?%?o? Stare:%o?%?d? Usun.:%d?%?F? Oflag.:%F?%?t? Zazn.:%t?%?p? Szkice:%p?%?b? Skrz. z now.:%b?%?B? W tle:%B?%?l? %l?]---(%s/%?T?%T/?%S)-%>-(%P)---"
+
+#~ msgid "-- Mutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
+#~ msgstr "-- Mutt: Tworzenie  [Rozm. listu ok.: %l   Zał.: %a]%>-"
+
+#~ msgid "----- End forwarded message -----"
+#~ msgstr "----- Koniec przekierowywanego listu -----"
+
+#, c-format
+#~ msgid "----- Forwarded message from %f -----"
+#~ msgstr "----- Przekierowywany list od %f -----"
+
+#~ msgid "...  Exiting.\n"
+#~ msgstr "… Kończenie.\n"
+
+#~ msgid "1: AES128, 2: AES192, 3: AES256 "
+#~ msgstr "1: AES128, 2: AES192, 3: AES256 "
+
+#~ msgid "1: DES, 2: Triple-DES "
+#~ msgstr "1: DES, 2: Triple‑DES "
+
+#~ msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
+#~ msgstr "1: RC2‑40, 2: RC2‑64, 3: RC2‑128 "
+
+#~ msgid "468"
+#~ msgstr "123"
+
+#~ msgid "895"
+#~ msgstr "123"
+
+#~ msgid "A fatal error occurred.  Will attempt reconnection"
+#~ msgstr "Wystąpił błąd podczas komunikacji z serwerem IMAP. Zostanie podjęta próba ponownego połączenia"
+
+#~ msgid "APOP authentication failed"
+#~ msgstr "Uwierzytelnianie APOP nie powiodło się"
+
+#~ msgid "Already skipped past headers"
+#~ msgstr "Już przeniesiono poza nagłówki"
+
+#~ msgid "Anonymous authentication failed"
+#~ msgstr "Uwierzytelnianie anonymous nie powiodło się"
+
+#, c-format
+#~ msgid "Append message(s) to %s?"
+#~ msgstr "Dopisać list(y) do %s?"
+
+#~ msgid "Archives"
+#~ msgstr "Archiwa"
+
+#~ msgid "Attaching selected files.."
+#~ msgstr "Dołączanie wybranych listów…"
+
+#~ msgid "Attachment referenced in message is missing"
+#~ msgstr "Brakuje załącznika wskazanego w liście"
+
+#, c-format
+#~ msgid "Authenticating (%s).."
+#~ msgstr "Uwierzytelnianie (%s)…"
+
+#~ msgid "Authenticating (APOP).."
+#~ msgstr "Uwierzytelnianie (APOP)…"
+
+#~ msgid "Authenticating (CRAM-MD5).."
+#~ msgstr "Uwierzytelnianie (CRAM‑MD5)…"
+
+#~ msgid "Authenticating (GSSAPI).."
+#~ msgstr "Uwierzytelnianie (GSSAPI)…"
+
+#~ msgid "Authenticating (SASL).."
+#~ msgstr "Uwierzytelnianie (SASL)…"
+
+#~ msgid "Authenticating (anonymous).."
+#~ msgstr "Uwierzytelnianie (anonymous)…"
+
+#~ msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+#~ msgstr "Autocrypt: (s)zyfrowanie, (z)wykły tekst czy (a)utomatycznie? "
+
+#~ msgid "Available mailing list actions"
+#~ msgstr "Dostępne akcje list dyskusyjnych"
+
+#~ msgid "Background Compose Menu"
+#~ msgstr "Menu edytowania w tle"
+
+#, c-format
+#~ msgid "Bad IDN \"%s\""
+#~ msgstr "Błędny IDN „%s”"
+
+#, c-format
+#~ msgid "Bad IDN in \"%s\": '%s'"
+#~ msgstr "Błędny IDN w „%s”: „%s”"
+
+#, c-format
+#~ msgid "Bad IDN in %s: '%s'\n"
+#~ msgstr "Błędny IDN w %s: „%s”\n"
+
+#~ msgid "Bad mailbox name"
+#~ msgstr "Błędna nazwa skrzynki"
+
+#, c-format
+#~ msgid "Bad regexp: %s"
+#~ msgstr "Błąd w wyrażeniu regularnym: %s"
+
+#, c-format
+#~ msgid "Bounce message to %s"
+#~ msgstr "Wyślij kopię listu (odbij) do %s"
+
+#, c-format
+#~ msgid "Bounce messages to %s"
+#~ msgstr "Wyślij kopie listów (odbij) do %s"
+
+#~ msgid "CRAM-MD5 authentication failed"
+#~ msgstr "Uwierzytelnianie CRAM‑MD5 nie powiodło się"
+
+#~ msgid "Can't attach a directory!"
+#~ msgstr "Załącznikiem nie może zostać katalog!"
 
 #~ msgid "Can't decrement a my_ variable"
 #~ msgstr "Nie można zmniejszyć zmiennych 'my_'"
 
+#~ msgid "Can't decrypt encrypted message!"
+#~ msgstr "Nie można odszyfrować zaszyfrowanego listu!"
+
+#, c-format
+#~ msgid "Can't dotlock %s.\n"
+#~ msgstr "Nie można założyć blokady na %s.\n"
+
+#~ msgid "Can't get mixmaster's type2.list!"
+#~ msgstr "Nie można pobrać type2.list mixmastera!"
+
+#~ msgid "Can't match nametemplate, continue?"
+#~ msgstr "Nie pasujący szablon nazwy, kontynuować?"
+
+#~ msgid "Can't open OpenSSL subprocess!"
+#~ msgstr "Błąd: nie można wywołać podprocesu OpenSSL!"
+
+#~ msgid "Can't open PGP subprocess!"
+#~ msgstr "Nie można otworzyć podprocesu PGP!"
+
+#~ msgid "Can't sign: No key specified. Use Sign As"
+#~ msgstr "Nie można podpisać — nie podano klucza. Użyj Podpisz jako"
+
+#~ msgid "Can't write header to temporary file!"
+#~ msgstr "Nie można zapisać nagłówka do pliku tymczasowego!"
+
+#~ msgid "Can't write message to temporary file!"
+#~ msgstr "Nie można zapisać listu do pliku tymczasowego!"
+
+#, c-format
+#~ msgid "Cannot append without an append-hook or close-hook : %s"
+#~ msgstr "Nie można dopisać bez append-hook lub close-hook : %s"
+
+#~ msgid "Cannot create display filter"
+#~ msgstr "Nie można utworzyć filtru wyświetlania"
+
+#~ msgid "Cannot create filter"
+#~ msgstr "Nie można utworzyć filtru"
+
+#~ msgid "Cannot delete message"
+#~ msgstr "Nie można usunąć listu"
+
+#~ msgid "Cannot delete message(s)"
+#~ msgstr "Nie można usunąć listów"
+
+#~ msgid "Cannot delete root folder"
+#~ msgstr "Nie można usunąć głównej skrzynki"
+
+#~ msgid "Cannot edit message"
+#~ msgstr "Nie można edytować listu"
+
+#~ msgid "Cannot flag message"
+#~ msgstr "Nie można zaznaczyć listu"
+
+#~ msgid "Cannot link threads"
+#~ msgstr "Nie można połączyć wątków"
+
+#~ msgid "Cannot mark message(s) as read"
+#~ msgstr "Nie można zaznaczyć listów jako przeczytane"
+
+#~ msgid "Cannot parse draft file\n"
+#~ msgstr "Błąd przetwarzania pliku szkicu\n"
+
+#~ msgid "Cannot postpone.  $postponed is unset"
+#~ msgstr "Nie można odłożyć. $postponed nie jest ustawione"
+
+#~ msgid "Cannot rename root folder"
+#~ msgstr "Nie można usunąć głównej skrzynki"
+
+#~ msgid "Cannot toggle new"
+#~ msgstr "Nie można przełączyć stanu „nowy”"
+
+#~ msgid "Cannot toggle write on a readonly mailbox!"
+#~ msgstr "Nie można zapisać do skrzynki tylko do odczytu!"
+
+#~ msgid "Cannot undelete message"
+#~ msgstr "Nie można przywrócić listu"
+
+#~ msgid "Cannot undelete message(s)"
+#~ msgstr "Nie można odtworzyć listów"
+
+#~ msgid "Cannot use -E flag with stdin\n"
+#~ msgstr "Nie można użyć flagi -E z stdin\n"
+
+#~ msgid "Caught signal "
+#~ msgstr "Otrzymano sygnał "
+
+#, c-format
+#~ msgid "Character set changed to %s; %s"
+#~ msgstr "Zestaw znaków został zmieniony na %s; %s"
+
+#~ msgid "Check key  "
+#~ msgstr "Sprawdź klucz  "
+
+#~ msgid "Checking for new messages.."
+#~ msgstr "Poszukiwanie nowej poczty…"
+
+#~ msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
+#~ msgstr "Wybierz algorytm: 1: DES, 2: RC2, 3: AES, (a)nuluj? "
+
+#, c-format
+#~ msgid "Closing connection to %s.."
+#~ msgstr "Zamykanie połączenia do %s…"
+
+#~ msgid "Closing connection to POP server.."
+#~ msgstr "Zamykanie połączenia z serwerem POP…"
+
+#~ msgid "Collecting data.."
+#~ msgstr "Zbieranie danych…"
+
+#~ msgid "Committing changes.."
+#~ msgstr "Wprowadzanie zmian…"
+
+#~ msgid "Compiling search pattern.."
+#~ msgstr "Kompilacja wzorca poszukiwań…"
+
+#, c-format
+#~ msgid "Compressed-appending to %s.."
+#~ msgstr "Dopisywanie‐skompresowane do %s…"
+
+#, c-format
+#~ msgid "Compressing %s.."
+#~ msgstr "Kompresowanie %s…"
+
+#, c-format
+#~ msgid "Connecting to %s.."
+#~ msgstr "Łączenie z %s…"
+
+#, c-format
+#~ msgid "Connecting with \"%s\".."
+#~ msgstr "Łączenie z „%s”…"
+
+#, c-format
+#~ msgid "Convert attachment from %s to %s?"
+#~ msgstr "Przekonwertować załącznik z %s do %s?"
+
+#, c-format
+#~ msgid "Copy%s to mailbox"
+#~ msgstr "Kopiuj%s do skrzynki"
+
+#, c-format
+#~ msgid "Copying %d messages to %s.."
+#~ msgstr "Kopiowanie %d listów do %s…"
+
+#, c-format
+#~ msgid "Copying message %d to %s.."
+#~ msgstr "Kopiowanie listu %d do %s…"
+
+#~ msgid "Copying tagged messages.."
+#~ msgstr "Brak zaznaczonych listów"
+
+#, c-format
+#~ msgid "Copying to %s.."
+#~ msgstr "Kopiowanie do %s…"
+
+#~ msgid ""
+#~ "Copyright (C) 1996-2023 Michael R. Elkins and others.\n"
+#~ "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+#~ "Mutt is free software, and you are welcome to redistribute it\n"
+#~ "under certain conditions; type `mutt -vv' for details.\n"
+#~ msgstr ""
+#~ "Copyright (C) 1996–2023 Michael R. Elkins i inni.\n"
+#~ "Mutt nie jest objęty ŻADNĄ GWARANCJĄ; szczegóły poznasz pisząc „mutt -vv”.\n"
+#~ "Mutt jest wolnym oprogramowaniem, zapraszamy do jego redystrybucji\n"
+#~ "pod pewnymi warunkami; szczegóły poznasz pisząc „mutt -vv”.\n"
+
+#~ msgid "Could not create temporary file!"
+#~ msgstr "Nie można utworzyć pliku tymczasowego!"
+
+#~ msgid "Could not find sorting function! [report this bug]"
+#~ msgstr "Nie znaleziono funkcji sortowania! (Zgłoś ten błąd.)"
+
+#~ msgid "Could not include all requested messages!"
+#~ msgstr "Nie można dołączyć wszystkich wskazanych listów!"
+
+#~ msgid "Could not parse mailto: URI"
+#~ msgstr "Nie udało się przetworzyć adresu mailto:"
+
+#~ msgid "Could not reopen mailbox!"
+#~ msgstr "Nie można ponownie otworzyć skrzynki pocztowej!"
+
+#, c-format
+#~ msgid "Couldn't lock %s\n"
+#~ msgstr "Nie można zablokować %s\n"
+
+#~ msgid "DEBUG was not defined during compilation.  Ignored.\n"
+#~ msgstr "Diagnostyka błędów nie została wkompilowane. Zignorowano.\n"
+
+#, c-format
+#~ msgid "Debugging at level %d.\n"
+#~ msgstr "Diagnostyka błędów na poziomie %d.\n"
+
+#, c-format
+#~ msgid "Decode-copy%s to mailbox"
+#~ msgstr "Dekoduj i kopiuj%s do skrzynki"
+
+#, c-format
+#~ msgid "Decode-save%s to mailbox"
+#~ msgstr "Dekoduj i zapisz%s do skrzynki"
+
+#~ msgid "Decrypt message attachment?"
+#~ msgstr "Odszyfrować załączony list?"
+
+#, c-format
+#~ msgid "Decrypt-copy%s to mailbox"
+#~ msgstr "Rozszyfruj i kopiuj%s do skrzynki"
+
+#, c-format
+#~ msgid "Decrypt-save%s to mailbox"
+#~ msgstr "Rozszyfruj i zapisz%s do skrzynki"
+
+#~ msgid "Decrypting message.."
+#~ msgstr "Odszyfrowywanie listu…"
+
+#~ msgid "Editing backgrounded"
+#~ msgstr "Edytowanie w tle"
+
+#~ msgid "Enter keys (^G to abort): "
+#~ msgstr "Wprowadź klucze (^G aby przerwać): "
+
+#~ msgid "Error History"
+#~ msgstr "Historia błędów"
+
+#~ msgid "Error History is currently being shown"
+#~ msgstr "Historia błędów jest właśnie wyświetlana"
+
+#~ msgid "Error History is disabled"
+#~ msgstr "Historia błędów jest wyłączona"
+
+#~ msgid "Error bouncing message!"
+#~ msgstr "Błąd wysyłania kopii!"
+
+#~ msgid "Error bouncing messages!"
+#~ msgstr "Błąd wysyłania kopii!"
+
+#, c-format
+#~ msgid "Error creating autocrypt key: %s\n"
+#~ msgstr "Nie udało się utworzyć klucza: %s\n"
+
+#, c-format
+#~ msgid "Error exporting key: %s\n"
+#~ msgstr "Błąd eksportowania klucza: %s\n"
+
+#, c-format
+#~ msgid "Error in command line: %s\n"
+#~ msgstr "Błąd w poleceniu: %s\n"
+
+#~ msgid "Error parsing address!"
+#~ msgstr "Błąd interpretacji adresu!"
+
+#, c-format
+#~ msgid "Error running \"%s\"!"
+#~ msgstr "Błąd uruchomienia „%s”!"
+
+#~ msgid "Error seeking in alias file"
+#~ msgstr "Błąd podczas przeszukiwania pliku aliasów"
+
+#, c-format
+#~ msgid "Error sending message, child exited %d.\n"
+#~ msgstr "Błąd podczas wysyłania listu, proces potomny zwrócił %d.\n"
+
+#~ msgid "Error while writing mailbox!"
+#~ msgstr "Błąd podczas zapisywania skrzynki!"
+
+#, c-format
+#~ msgid "Error: '%s' is a bad IDN"
+#~ msgstr "Błąd: „%s” to błędny IDN"
+
+#~ msgid "Error: unable to create OpenSSL subprocess!"
+#~ msgstr "Błąd: nie można utworzyć podprocesu OpenSSL!"
+
+#~ msgid "Evaluating cache.."
+#~ msgstr "Sprawdzanie pamięci podręcznej…"
+
+#~ msgid "Executing command on matching messages.."
+#~ msgstr "Wykonywanie polecenia na pasujących do wzorca listach…"
+
+#~ msgid "Exit  "
+#~ msgstr "Wyjście  "
+
+#~ msgid "Exit Mutt without saving?"
+#~ msgstr "Wyjść z Mutta bez zapisywania zmian?"
+
+#~ msgid "Exit Mutt?"
+#~ msgstr "Wyjść z Mutta?"
+
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Wyjść z NeoMutta?"
 
+#~ msgid "Expunging messages from server.."
+#~ msgstr "Kasowanie listów na serwerze… "
+
+#~ msgid "Failed to parse mailto: link\n"
+#~ msgstr "Nie udało się się zinterpretować odnośnika mailto:\n"
+
+#~ msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+#~ msgstr "Nie udało się zapisać. (s)próbować ponownie, (z)mienić skrzynkę czy (p)ominąć?"
+
+#~ msgid "Fetching PGP key.."
+#~ msgstr "Sprowadzam klucz PGP…"
+
+#~ msgid "Fetching flag updates.."
+#~ msgstr "Pobieranie aktualizacji flag…"
+
+#~ msgid "Fetching list of messages.."
+#~ msgstr "Pobieranie spisu listów…"
+
+#~ msgid "Fetching message headers.."
+#~ msgstr "Pobieranie nagłówków…"
+
+#~ msgid "Fetching message.."
+#~ msgstr "Pobieranie listu…"
+
+#~ msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
+#~ msgstr "Ten plik jest katalogiem, zapisać w nim? [(t)ak, (n)ie, (w)szystkie]"
+
+#, c-format
+#~ msgid "Filling entropy pool: %s...\n"
+#~ msgstr "Wypełnianie zbiornika entropii: %s…\n"
+
+#~ msgid "First, please tag a message to be linked here"
+#~ msgstr "Najpierw zaznacz list do połączenia tutaj"
+
+#~ msgid "GSSAPI authentication failed"
+#~ msgstr "Uwierzytelnianie GSSAPI nie powiodło się"
+
+#~ msgid "Generate multipart/alternative content?"
+#~ msgstr "Wygenerować treść multipart/alternative?"
+
+#~ msgid "Generating autocrypt key.."
+#~ msgstr "Generowanie klucza Autocrypt…"
+
+#~ msgid "Getting folder list.."
+#~ msgstr "Pobieranie listy skrzynek…"
+
+#, c-format
+#~ msgid "I don't know how to print %s attachments!"
+#~ msgstr "Nie wiem jak wydrukować %s załączników!"
+
+#~ msgid "I don't know how to print that!"
+#~ msgstr "Nie wiem jak to wydrukować!"
+
+#~ msgid "ID has undefined validity"
+#~ msgstr "Poziom ważności tego identyfikatora nie został określony"
+
+#~ msgid "ID is expired/disabled/revoked"
+#~ msgstr "Identyfikator wygasł, został wyłączony lub unieważniony"
+
+#~ msgid "ID is not trusted"
+#~ msgstr "Identyfikator nie jest zaufany"
+
+#~ msgid "ID is not valid"
+#~ msgstr "Nieprawidłowy identyfikator"
+
+#~ msgid "ID is only marginally valid"
+#~ msgstr "Ten identyfikator jest tylko częściowo ważny"
+
+#~ msgid "Including quoted message.."
+#~ msgstr "Wczytywanie cytowanego listu…"
+
+#~ msgid "Integer overflow -- can't allocate memory"
+#~ msgstr "Przepełnienie zmiennej całkowitej — nie można zaalokować pamięci"
+
+#~ msgid "Integer overflow -- can't allocate memory!"
+#~ msgstr "Przepełnienie zmiennej całkowitej — nie można zaalokować pamięci!"
+
+#~ msgid "Internal error.  Please submit a bug report"
+#~ msgstr "Wewnętrzny błąd. Proszę wysłać zgłoszenie błędu"
+
+#, c-format
+#~ msgid "Invalid POP URL: %s\n"
+#~ msgstr "Błędny URL POP: %s\n"
+
+#, c-format
+#~ msgid "Invalid value for option %s: \"%s\""
+#~ msgstr "Niewłaściwa wartość dla opcji %s: „%s”"
+
+#~ msgid "Invoking PGP.."
+#~ msgstr "Wywoływanie PGP…"
+
+#~ msgid "Invoking S/MIME.."
+#~ msgstr "Wywoływanie S/MIME…"
+
+#, c-format
+#~ msgid "Key is not bound.  Press '%s' for help"
+#~ msgstr "Klawisz nie został przypisany. Aby uzyskać pomoc naciśnij „%s”"
+
+#~ msgid "List actions only support mailto: URIs. (Try a browser?)"
+#~ msgstr "Akcje list dyskusyjnych wspierają tylko adresy mailto:. (Spróbuj użyć przeglądarki internetowej.)"
+
+#, c-format
+#~ msgid "Lock count exceeded, remove lock for %s?"
+#~ msgstr "Licznik blokad przekroczony, usunąć blokadę %s?"
+
+#~ msgid "Logging in.."
+#~ msgstr "Logowanie…"
+
+#, c-format
+#~ msgid "Looking for keys matching \"%s\".."
+#~ msgstr "Wyszukiwanie odpowiednich kluczy dla „%s”…"
+
+#, c-format
+#~ msgid "Looking up %s.."
+#~ msgstr "Wyszukiwanie %s…"
+
+#~ msgid "M%?n?AIL&ail?"
+#~ msgstr "P%?n?OCZTA&oczta?"
+
+#~ msgid "MIME type not defined.  Cannot view attachment"
+#~ msgstr "Typ MIME nie został zdefiniowany. Nie można wyświetlić załącznika"
+
+#~ msgid "Mailbox is corrupt!"
+#~ msgstr "Skrzynka jest uszkodzona!"
+
+#~ msgid "Mailbox reconnected.  Some changes may have been lost"
+#~ msgstr "Ponownie podłączono do skrzynki. Zmiany mogły zostać utracone"
+
+#~ msgid "Mailbox was corrupted!"
+#~ msgstr "Skrzynka pocztowa została uszkodzona!"
+
+#~ msgid "Mailbox was externally modified.  Flags may be wrong"
+#~ msgstr "Skrzynka została zmodyfikowana z zewnątrz. Flagi mogą być nieaktualne"
+
+#, c-format
+#~ msgid "Marking %d messages deleted.."
+#~ msgstr "Zaznaczanie %d listów jako skasowanych…"
+
+#~ msgid "Marking messages deleted.."
+#~ msgstr "Zaznaczanie listów jako skasowane…"
+
+#~ msgid "Message contains:\n"
+#~ msgstr "List zawiera:\n"
+
+#~ msgid "Message file is empty!"
+#~ msgstr "Plik listu jest pusty!"
+
+#~ msgid "Message not modified!"
+#~ msgstr "List nie został zmieniony!"
+
+#~ msgid "Messages bounced"
+#~ msgstr "Kopie zostały wysłane"
+
+#~ msgid "Messages could not be printed"
+#~ msgstr "Drukowanie listów nie powiodło się"
+
+#~ msgid "Messages not bounced"
+#~ msgstr "Kopie nie zostały wysłane"
+
+#~ msgid "Messages printed"
+#~ msgstr "Listy zostały wydrukowane"
+
+#~ msgid "Missing arguments"
+#~ msgstr "Brakuje argumentów"
+
+#, c-format
+#~ msgid "Missing blank line separator from output of \"%s\"!"
+#~ msgstr "Brak znaku nowej linii w wyjściu „%s”!"
+
+#, c-format
+#~ msgid "Missing mime type from output of \"%s\"!"
+#~ msgstr "Brak typu MIME w wyjściu „%s”!"
+
+#, c-format
+#~ msgid "Move %d read messages to %s?"
+#~ msgstr "Przenieść %d przeczytanych listów do %s?"
+
+#, c-format
+#~ msgid "Moving read messages to %s.."
+#~ msgstr "Przenoszenie przeczytanych listów do %s…"
+
+#~ msgid "Mutt with %?m?%m messages&no messages?%?n? [%n NEW]?"
+#~ msgstr "Mutt: %?m?%m listów&brak listów?%?n? [%n NOWYCH]?"
+
+#, c-format
+#~ msgid "MuttLisp: missing if condition: %s"
+#~ msgstr "MuttLisp: brakuje warunku funkcji warunkowej (if): %s"
+
+#, c-format
+#~ msgid "MuttLisp: no such function %s"
+#~ msgstr "MuttLisp: brak funkcji %s"
+
+#, c-format
+#~ msgid "MuttLisp: unclosed backticks: %s"
+#~ msgstr "MuttLisp: niezamknięte grawisy: %s"
+
+#, c-format
+#~ msgid "MuttLisp: unclosed list: %s"
+#~ msgstr "MuttLisp: niezamknięta lista: %s"
+
+#~ msgid "No attachments, abort sending?"
+#~ msgstr "Brak załączników, anulować wysyłanie?"
+
+#~ msgid "No backgrounded editing sessions"
+#~ msgstr "Brak sesji edycji w tle"
+
+#~ msgid "No boundary parameter found! [report this error]"
+#~ msgstr "Brak parametru granicznego! (Zgłoś ten błąd.)"
+
+#~ msgid "No crypto backend configured.  Disabling message security setting"
+#~ msgstr "Nie skonfigurowano mechanizmu kryptograficznego. Ustawienia bezpieczeństwa listów są wyłączone"
+
+#~ msgid "No lines in message.\n"
+#~ msgstr "Pusty list.\n"
+
+#, c-format
+#~ msgid "No list action available for %s"
+#~ msgstr "Akcje list dyskusyjnych nie są dostępne dla %s"
+
+#~ msgid "No mailbox.\n"
+#~ msgstr "Brak skrzynki.\n"
+
+#~ msgid "No mailing lists found!"
+#~ msgstr "Nie znaleziono list pocztowych!"
+
+#~ msgid "No matching mailcap entry found.  Viewing as text"
+#~ msgstr "Brak odpowiedniego wpisu w „mailcap”. Wyświetlony jako tekst"
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "Brak wyników działania OpenSSL…"
+
+#~ msgid "No recipients are specified!"
+#~ msgstr "Nie wskazano adresatów!"
+
+#~ msgid "No recipients specified.\n"
+#~ msgstr "Nie wskazano adresatów listu.\n"
+
+#~ msgid "No recipients were specified"
+#~ msgstr "Nie wskazano adresatów!"
+
+#~ msgid "No such folder"
+#~ msgstr "Brak skrzynki"
+
+#~ msgid "No tagged messages are visible!"
+#~ msgstr "Żaden z zaznaczonych listów nie jest widoczny!"
+
+#~ msgid "Not supported"
+#~ msgstr "Nie wspierane"
+
+#, c-format
+#~ msgid "On %d, %n wrote:"
+#~ msgstr "Dnia %d, %n napisał(a):"
+
+#~ msgid "Out of memory!"
+#~ msgstr "Brak pamięci!"
+
+#~ msgid "Owner"
+#~ msgstr "Właściciel"
+
+#, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, %s , wy(c)zysć, b(e)z PGP? "
+
+#, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+#~ msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, %s , b(e)z PGP? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, wy(c)zysć , b(e)z PGP? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, b(e)z PGP? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
+#~ msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime lub (a)nuluj? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj lub (t)ryb oppenc? "
+
+#, c-format
+#~ msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP: podpi(s)z, podpisz j(a)ko, %s (w)yczyść, tryb (o)ppenc wyłączony? "
+
+#~ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP: podpi(s)z, podpisz j(a)ko, wy(c)zyść, b(e)z PGP? "
+
+#~ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP: (p)odpisz, podpisz (j)ako, (s)/mime, (a)nuluj lub wyłącz tryb (o)ppenc? "
+
+#~ msgid "PGP already selected. Clear & continue ? "
+#~ msgstr "Wybrano już PGP. Anulować wybór PGP? "
+
+#~ msgid "PGP passphrase forgotten"
+#~ msgstr "Hasło PGP zostało zapomniane"
+
+#~ msgid "POP timestamp is invalid!"
+#~ msgstr "POP: błedna sygnatura czasu!"
+
+#~ msgid "Passphrase(s) forgotten"
+#~ msgstr "Hasła zostały zapomniane"
+
+#, c-format
+#~ msgid "Password for %s client cert: "
+#~ msgstr "Hasło dla certyfikatu klienta %s: "
+
+#, c-format
+#~ msgid "Pattern modifier '~%c' is disabled"
+#~ msgstr "Modyfikator wzorca „~%c” nie jest obsługiwany"
+
+#~ msgid "Please set the hostname variable to a proper value when using mixmaster!"
+#~ msgstr "Ustaw poprawną wartość hostname jeśli chcesz używać mixmastera!"
+
+#~ msgid "Postpone this message?"
+#~ msgstr "Zachować ten list do późniejszej obróbki i ewentualnej wysyłki?"
+
+#~ msgid "Preparing forwarded message.."
+#~ msgstr "Przygotowywanie listu do przesłania dalej…"
+
+#~ msgid "Press any key to continue.."
+#~ msgstr "Naciśnij dowolny klawisz by kontynuować…"
+
+#~ msgid "Print tagged attachment(s)?"
+#~ msgstr "Wydrukować zaznaczony(e) załącznik(i)?"
+
+#, c-format
+#~ msgid "Process is still running. Really select?"
+#~ msgstr "Proces jest nadal uruchomiony. Czy na pewno wybrać?"
+
+#, c-format
+#~ msgid "Purge %d deleted messages?"
+#~ msgstr "Usunąć NIEODWOŁALNIE %d zaznaczone listy?"
+
+#~ msgid "QRESYNC failed.  Reopening mailbox"
+#~ msgstr "Błąd QRESYNC. Ponowne otwieranie skrzynki"
+
+#, c-format
+#~ msgid "Query '%s'"
+#~ msgstr "Pytanie „%s”"
+
+#~ msgid "Quit Mutt?"
+#~ msgstr "Wyjść z Mutta?"
+
+#, c-format
+#~ msgid "Reading %s.."
+#~ msgstr "Czytanie %s…"
+
+#, c-format
+#~ msgid "Reading new messages (%d bytes).."
+#~ msgstr "Czytanie nowych listów (%d bajtów)…"
+
+#~ msgid "Really delete the main message?"
+#~ msgstr "Czy na pewno usunąć główną wiadomość?"
+
+#~ msgid "Reconnect failed.  Mailbox closed"
+#~ msgstr "Ponowne połączenie nie powiodło się. Skrzynka zamknięta"
+
+#~ msgid "Reconnect succeeded"
+#~ msgstr "Udało się ponownie połączyć"
+
+#~ msgid "Redraw"
+#~ msgstr "Odśwież"
+
+#~ msgid "Reopening mailbox.."
+#~ msgstr "Ponowne otwieranie skrzynki…"
+
+#~ msgid "Resume"
+#~ msgstr "Przywróć"
+
+#~ msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "Sortowanie odwrotne według (d)aty wysłania/(n)adawcy/daty (o)debrania/(t)ematu/od(b)iorcy/(w)ątku/s(k)rzynki/(r)ozmiaru/(p)unktacji/(s)pamu/(e)tykiety?: "
+
+#~ msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "Sortowanie odwrotne według (d)aty, (a)lfabetu, (w)ielkości, (l)iczby, (n)ieprzeczytanych czy żadn(e)? "
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, wy(c)zyść, (b)ez szyfrowaniaj?"
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+#~ msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p lub (a)nuluj? "
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+#~ msgstr "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj lub (t)ryb oppenc? "
+
+#~ msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "S/MIME: (p)odpisz, (m)etoda, podp. (j)ako, wy(c)zyść, (b)ez szyfrowanie?"
+
+#~ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "S/MIME: (p)odpisz, podpisz (j)ako, p(g)p, (a)nuluj lub wyłącz tryb (o)ppenc? "
+
+#~ msgid "S/MIME already selected. Clear & continue ? "
+#~ msgstr "Wybrano już S/MIME. Anulować wybór S/MIME? "
+
+#, c-format
+#~ msgid "SMTP authentication method %s requires SASL"
+#~ msgstr "Metoda uwierzytelniania SMTP %s wymaga SASL"
+
 #~ msgid "SMTP authentication requires SASL"
 #~ msgstr "Uwierzytelnianie SMTP wymaga SASL"
+
+#, c-format
+#~ msgid "SSL Certificate check (certificate %d of %d in chain)"
+#~ msgstr "Weryfikacja certyfikatu SSL (certyfikat %d z %d w łańcuchu)"
+
+#~ msgid "SSL is unavailable"
+#~ msgstr "Protokół SSL nie jest dostępny"
+
+#, c-format
+#~ msgid "Save%s to mailbox"
+#~ msgstr "Zapisz%s do skrzynki"
+
+#, c-format
+#~ msgid "Saving Fcc to %s"
+#~ msgstr "Zapisywanie w %s"
+
+#, c-format
+#~ msgid "Saving changed messages... [%d/%d]"
+#~ msgstr "Zapisywanie zmienionych listów… [%d/%d]"
+
+#~ msgid "Saving tagged messages.."
+#~ msgstr "Zapisywanie zaznaczonych listów…"
+
+#~ msgid "Saving.."
+#~ msgstr "Zapisywanie…"
+
+#, c-format
+#~ msgid "Scanning %s.."
+#~ msgstr "Sprawdzanie %s…"
+
+#~ msgid "Searching.."
+#~ msgstr "Wyszukiwanie…"
+
+#, c-format
+#~ msgid "See $%s for more information"
+#~ msgstr "Zobacz $%s po więcej informacji"
+
+#~ msgid "Select  "
+#~ msgstr "Wybór  "
+
+#, c-format
+#~ msgid "Selecting %s.."
+#~ msgstr "Wybieranie %s…"
+
+#~ msgid "Sending message.."
+#~ msgstr "Wysyłanie listu…"
+
+#~ msgid "Server closed connection!"
+#~ msgstr "Serwer zamknął połączenie!"
+
+#~ msgid "Setting reply flags"
+#~ msgstr "Ustawianie flagi „odpowiedziano”"
+
+#~ msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "Sortowanie według (d)aty wysłania/(n)adawcy/daty (o)debrania/(t)ematu/od(b)iorcy/(w)ątku/s(k)rzynki/(r)ozmiaru/(p)unktacji/(s)pamu/(e)tykiety?: "
+
+#~ msgid "Sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "Sortowanie według (d)aty, (a)lfabetu, (w)ielkości, (l)iczby, (n)ieprzeczytanych czy żadn(e)? "
+
+#~ msgid "Sorting mailbox.."
+#~ msgstr "Sortowanie poczty w skrzynce…"
+
+#, c-format
+#~ msgid "Subscribing to %s.."
+#~ msgstr "Subskrybowanie %s…"
+
+#~ msgid "Tag the messages you want to attach!"
+#~ msgstr "Zaznacz listy do dołączenia!"
+
+#~ msgid "That email address is already assigned to an autocrypt account"
+#~ msgstr "Ten adres e‑mail jest już przypisany do konta Autocrypt"
+
+#~ msgid "The message index is incorrect. Try reopening the mailbox"
+#~ msgstr "Błędny indeks listów. Spróbuj ponownie otworzyć skrzynkę"
+
+#~ msgid "There are $background_edit sessions. Really quit Mutt?"
+#~ msgstr "Nadal są uruchomione sesje $background_edit. Czy na pewno wyjść z Mutta?"
+
+#~ msgid "There are no subparts to show!"
+#~ msgstr "Brak podlistów!"
+
+#~ msgid "There was a problem decoding the message for attachment.  Try again with decoding turned off?"
+#~ msgstr "Wystąpił problem podczas dekodowania listu do załączenia. Czy spróbować ponownie bez dekodowania?"
+
+#~ msgid "There was a problem decrypting the message for attachment.  Try again with decryption turned off?"
+#~ msgstr "Wystąpił problem podczas odszyfrowywania listu do załączenia. Czy spróbować ponownie bez odszyfrowywania?"
+
+#~ msgid "There was an error displaying all or part of the message"
+#~ msgstr "Wystąpił błąd podczas wyświetlania całości lub części listu"
+
+#~ msgid "This IMAP server is ancient. Mutt does not work with it"
+#~ msgstr "Zbyt stara wersja serwera IMAP. Praca z tym serwerem nie jest możliwa"
+
+#~ msgid "Thread cannot be broken, message is not part of a thread"
+#~ msgstr "Nie można przerwać wątku — list nie jest częścią wątku"
+
+#~ msgid "Thread contains unread messages"
+#~ msgstr "Wątek zawiera nieprzeczytane listy"
+
+#~ msgid "Timeout exceeded while attempting fcntl lock!"
+#~ msgstr "Czas oczekiwania na blokadę fcntl został przekroczony!"
+
+#~ msgid "Timeout exceeded while attempting flock lock!"
+#~ msgstr "Czas oczekiwania na blokadę flock został przekroczony!"
+
+#~ msgid ""
+#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#~ "To report a bug, please contact the Mutt maintainers via gitlab:\n"
+#~ "    https://gitlab.com/muttmua/mutt/issues\n"
+#~ msgstr ""
+#~ "Aby skontaktować się z autorami, proszę pisać na <mutt-dev@mutt.org>.\n"
+#~ "Aby zgłosić błąd, proszę skontaktować się z opiekunami Mutta poprzez GitLaba:\n"
+#~ "    https://gitlab.com/muttmua/mutt/issues\n"
+
+#~ msgid "Toggle display of subparts"
+#~ msgstr "przełącza podgląd podlistów listów złożonych"
+
+#~ msgid "Trying to extract S/MIME certificates...\n"
+#~ msgstr "Próba odczytania certyfikatów S/MIME…\n"
+
+#~ msgid "Trying to reconnect.."
+#~ msgstr "Próba ponownego połączenia…"
+
+#, c-format
+#~ msgid "Type '%s' to background compose session"
+#~ msgstr "Naciśnij „%s”, aby ukryć sesję edytowania w tle"
+
+#, c-format
+#~ msgid "Unable to attach %s!"
+#~ msgstr "Nie można dołączyć %s!"
+
+#~ msgid "Unable to attach!"
+#~ msgstr "Nie można dołączyć!"
+
+#~ msgid "Unable to lock mailbox!"
+#~ msgstr "Nie można zablokować skrzynki pocztowej!"
+
+#~ msgid "Unable to open temporary file!"
+#~ msgstr "Nie można otworzyć pliku tymczasowego!"
+
+#, c-format
+#~ msgid "Unable to save attachments to %s.  Using cwd"
+#~ msgstr "Nie można zapisać załączników do %s. Zostanie użyty bieżący katalog roboczy"
+
+#, c-format
+#~ msgid "Unable to write %s!"
+#~ msgstr "Nie można zapisać %s!"
+
+#~ msgid "Unknown"
+#~ msgstr "Nieznany"
+
+#, c-format
+#~ msgid "Unsubscribing from %s.."
+#~ msgstr "Odsubskrybowanie %s…"
+
+#~ msgid "Uploading message.."
+#~ msgstr "Ładowanie listu…"
+
+#~ msgid "Usage: set variable=yes|no"
+#~ msgstr "Użycie: set variable=yes|no"
+
+#, c-format
+#~ msgid "Use '%s' to select a directory"
+#~ msgstr "Użyj „%s” aby wybrać katalog"
+
+#~ msgid "Use 'toggle-write' to re-enable write!"
+#~ msgstr "Użyj „toggle-write”, aby ponownie włączyć zapisanie!"
+
+#~ msgid "Verifying message indexes.."
+#~ msgstr "Sprawdzanie indeksów listów…"
+
+#~ msgid "View Attachm"
+#~ msgstr "Załączniki"
+
+#~ msgid "Waiting for editor to exit"
+#~ msgstr "Oczekiwanie na wyjście z edytora"
+
+#~ msgid "Waiting for response.."
+#~ msgstr "Oczekiwanie na odpowiedź…"
+
+#, c-format
+#~ msgid "Warning: '%s' is a bad IDN"
+#~ msgstr "Ostrzeżenie: „%s” to błędny IDN"
+
+#, c-format
+#~ msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
+#~ msgstr "Ostrzeżenie: błędny IDN „%s” w aliasie „%s”.\n"
+
+#~ msgid "Warning: clearing unexpected server data before TLS negotiation"
+#~ msgstr "Ostrzeżenie: pomijanie nieoczekiwanych danych z serwera (przed negocjacją TLS)"
+
+#~ msgid "Write fault!"
+#~ msgstr "Błąd zapisu!"
+
+#, c-format
+#~ msgid "Writing %s.."
+#~ msgstr "Zapisywanie %s…"
+
+#, c-format
+#~ msgid "Writing message to %s .."
+#~ msgstr "Zapisywanie listu do %s…"
+
+#~ msgid "You already have an alias defined with that name!"
+#~ msgstr "Istnieje już tak nazwany alias!"
+
+#~ msgid "You are on the first page"
+#~ msgstr "To jest pierwsza strona"
+
+#~ msgid "You are on the last page"
+#~ msgstr "To jest ostatnia strona"
+
+#~ msgid "You cannot scroll down farther"
+#~ msgstr "Nie można niżej przewinąć"
+
+#~ msgid "You cannot scroll up farther"
+#~ msgstr "Nie można wyżej przewinąć"
+
+#~ msgid "You have no aliases!"
+#~ msgstr "Brak aliasów!"
+
+#, c-format
+#~ msgid "[%s = %s] Accept?"
+#~ msgstr "[%s = %s] Potwierdzasz?"
+
+#, c-format
+#~ msgid "[-- %s/%s is unsupported "
+#~ msgstr "[-- typ %s/%s nie jest obsługiwany "
+
+#, c-format
+#~ msgid "[-- Attachment #%d"
+#~ msgstr "[-- Załącznik #%d"
+
+#~ msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+#~ msgstr "[--Błąd: Nie można wyświetlić żadnego z fragmentów Multipart/Alternative! --]\n"
+
+#~ msgid ""
+#~ "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Błąd: niespójna struktura multipart/signed ! --]\n"
+#~ "\n"
+
+#, c-format
+#~ msgid ""
+#~ "[-- Error: Unknown multipart/signed protocol %s! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Błąd: nieznany protokół multipart/signed %s! --]\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "[-- Error: could not create a PGP subprocess! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Błąd: nie można utworzyć podprocesu PGP! --]\n"
+#~ "\n"
+
+#~ msgid "[-- Error: could not create temporary file! --]\n"
+#~ msgstr "[-- Błąd: nie można utworzyć pliku tymczasowego! --]\n"
+
+#~ msgid ""
+#~ "[-- Error: could not find beginning of PGP message! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Błąd: nie można odnaleźć początku listu PGP! --]\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "[-- Error: decryption failed --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Błąd: odszyfrowanie nie powiodło się --]\n"
+#~ "\n"
+
+#~ msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
+#~ msgstr "[-- Błąd: nie można utworzyć podprocesu OpenSSL! --]\n"
+
+#~ msgid "[-- Error: unable to create PGP subprocess! --]\n"
+#~ msgstr "[-- Błąd: nie można utworzyć podprocesu PGP! --]\n"
+
+#, c-format
+#~ msgid "[-- This %s/%s attachment "
+#~ msgstr "[-- Ten załącznik typu %s/%s "
+
+#, c-format
+#~ msgid "[-- This %s/%s attachment is not included, --]\n"
+#~ msgstr "[-- Ten załącznik typu %s/%s nie jest dołączony, --]\n"
+
+#~ msgid "[-- This is an attachment "
+#~ msgstr "[-- To jest załącznik "
+
+#, c-format
+#~ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+#~ msgstr "[-- Typ: %s/%s, Kodowanie: %s, Wielkość: %s --]\n"
+
+#, c-format
+#~ msgid "[-- and the indicated access-type %s is unsupported --]\n"
+#~ msgstr "[-- a podany typ dostępu %s nie jest obsługiwany --]\n"
+
+#~ msgid ""
+#~ "[-- and the indicated external source has --]\n"
+#~ "[-- expired. --]\n"
+#~ msgstr "[-- a podane źródło zewnętrzne wygasło. --]\n"
+
+#, c-format
+#~ msgid "[-- on %s --]\n"
+#~ msgstr "[-- na %s --]\n"
+
+#~ msgid "^(re)(\\[[0-9]+\\])*:[ \t]*"
+#~ msgstr "^(re|odp)(\\[[0-9]+\\])*:[ \t]*"
+
+#~ msgid "_maildir_commit_message(): unable to set time on file"
+#~ msgstr "_maildir_commit_message(): nie można nadać plikowi daty"
+
+#, c-format
+#~ msgid "ambiguous specification of secret key `%s'\n"
+#~ msgstr "niejednoznaczne określenie klucza tajnego „%s”\n"
+
+#~ msgid "attach file(s) to this message"
+#~ msgstr "załącz pliki do li(s)tu"
+
+#~ msgid "attach message(s) to this message"
+#~ msgstr "dołącz list(y) do tego listu"
+
+#~ msgid "bind: too many arguments"
+#~ msgstr "bind: zbyt wiele argumentów"
+
+#~ msgid "cannot get certificate common name"
+#~ msgstr "Nie można pobrać nazwy (common name) certyfikatu"
+
+#~ msgid "cannot get certificate subject"
+#~ msgstr "Nie można pobrać nazwy (subject) certyfikatu"
+
+#~ msgid "color: too few arguments"
+#~ msgstr "color: za mało argumentów"
+
+#~ msgid "contact list owner"
+#~ msgstr "skontaktuj się z właścicielem listy dyskusyjnej"
+
+#~ msgid "converting"
+#~ msgstr "konwertowanie"
+
+#~ msgid "dazcun"
+#~ msgstr "dawlne"
+
+#~ msgid "delete messages matching a pattern"
+#~ msgstr "usuń listy pasujące do wzorca"
+
+#~ msgid "display recent history of error messages"
+#~ msgstr "wyświetl historię ostatnich błędów"
+
+#~ msgid "drac"
+#~ msgstr "123a"
+
+#~ msgid "dt"
+#~ msgstr "12"
+
+#~ msgid "edit the raw message"
+#~ msgstr "edytuj list z nagłowkami"
+
+#~ msgid "enter a muttrc command"
+#~ msgstr "wprowadź polecenie pliku startowego (muttrc)"
+
+#, c-format
+#~ msgid "error adding recipient `%s': %s\n"
+#~ msgstr "błąd dodawania odbiorcy „%s”: %s\n"
+
+#, c-format
+#~ msgid "error allocating data object: %s\n"
+#~ msgstr "błąd alokacji obiektu danych: %s\n"
+
+#, c-format
+#~ msgid "error creating gpgme context: %s\n"
+#~ msgstr "błąd tworzenia kontekstu GPGME: %s\n"
+
+#, c-format
+#~ msgid "error creating gpgme data object: %s\n"
+#~ msgstr "błąd tworzenia obiektu danych GPGME: %s\n"
+
+#, c-format
+#~ msgid "error enabling CMS protocol: %s\n"
+#~ msgstr "błąd uruchamiania protokołu CMS: %s\n"
+
+#, c-format
+#~ msgid "error encrypting data: %s\n"
+#~ msgstr "błąd szyfrowania danych: %s\n"
+
+#, c-format
+#~ msgid "error importing key: %s\n"
+#~ msgstr "Błąd importowania klucza: %s\n"
+
+#, c-format
+#~ msgid "error reading data object: %s\n"
+#~ msgstr "błąd czytania obiektu danych: %s\n"
+
+#, c-format
+#~ msgid "error rewinding data object: %s\n"
+#~ msgstr "błąd przeszukania obiektu danych: %s\n"
+
+#, c-format
+#~ msgid "error setting PKA signature notation: %s\n"
+#~ msgstr "błąd konfigurowania notacji podpisu PKA: %s\n"
+
+#, c-format
+#~ msgid "error setting secret key `%s': %s\n"
+#~ msgstr "błąd obsługi klucza tajnego „%s”: %s\n"
+
+#, c-format
+#~ msgid "error signing data: %s\n"
+#~ msgstr "błąd podpisania danych: %s\n"
+
+#~ msgid "esabfc"
+#~ msgstr "zpjoga"
+
+#~ msgid "esabfci"
+#~ msgstr "zpjoga"
+
+#~ msgid "esabfco"
+#~ msgstr "zsabfce"
+
+#~ msgid "esabfcoi"
+#~ msgstr "zsjbfcei"
+
+#~ msgid "esabmfc"
+#~ msgstr "zpjosaa"
+
+#~ msgid "esabmfco"
+#~ msgstr "zpjosaat"
+
+#~ msgid "esabpfc"
+#~ msgstr "zpjogaa"
+
+#~ msgid "esabpfco"
+#~ msgstr "zpjogaat"
+
+#~ msgid "eswabfc"
+#~ msgstr "zpmjoa"
+
+#~ msgid "eswabfco"
+#~ msgstr "zpmjocfb"
+
+#~ msgid "finished"
+#~ msgstr "zakończony"
+
+#~ msgid "format error"
+#~ msgstr "nieprawidłowy format "
+
+#~ msgid "has been deleted --]\n"
+#~ msgstr "został usunięty --]\n"
+
+#~ msgid "list and select backgrounded compose sessions"
+#~ msgstr "wyświetl i wybierz sesje edycji w tle"
+
+#~ msgid "macro: too many arguments"
+#~ msgstr "macro: zbyt wiele argumentów"
+
+#~ msgid "mailbox shortcut expanded to empty regexp"
+#~ msgstr "skrót do skrzynki rozwiniętey do pustego wyrażenia regularnego"
+
+#~ msgid "message(s) not deleted"
+#~ msgstr "List(y) nie zostały skasowane"
+
+#, c-format
+#~ msgid "mismatched brackets: %s"
+#~ msgstr "niesparowane nawiasy: %s"
+
+#, c-format
+#~ msgid "mismatched parenthesis: %s"
+#~ msgstr "niesparowane nawiasy: %s"
+
+#~ msgid "missing filename.\n"
+#~ msgstr "brak nazwy pliku.\n"
+
+#~ msgid "mono: too few arguments"
+#~ msgstr "mono: za mało argumentów"
+
+#~ msgid "move attachment down in compose menu list"
+#~ msgstr "przenieś załącznik w dół na liście menu edycji"
+
+#~ msgid "move attachment up in compose menu list"
+#~ msgstr "przenieś załącznik w górę na liście menu edycji"
+
+#~ msgid "multipart message has no boundary parameter!"
+#~ msgstr "wieloczęściowy list nie posiada wpisu ograniczającego!"
+
+#~ msgid "mutt_account_getoauthbearer: Command returned empty string"
+#~ msgstr "mutt_account_getoauthbearer: Polecenie zwróciło pusty ciąg znaków"
+
+#~ msgid "mutt_account_getoauthbearer: No OAUTH refresh command defined"
+#~ msgstr "mutt_account_getoauthbearer: Nie zdefiniowano polecenia odświeżania OAUTH"
+
+#~ msgid "mutt_account_getoauthbearer: Unable to run refresh command"
+#~ msgstr "mutt_account_getoauthbearer: Nie udało się uruchomić polecenia odświeżania"
+
+#, c-format
+#~ msgid "mutt_restore_default(%s): error in regexp: %s\n"
+#~ msgstr "mutt_restore_default(%s): błąd w wyrażeniu regularnym: %s\n"
+
+#~ msgid "not converting"
+#~ msgstr "bez konwersji"
+
+#~ msgid "not enough arguments"
+#~ msgstr "niewystarczająca liczba argumentów"
+
+#~ msgid "null key sequence"
+#~ msgstr "pusta sekwencja klawiszy"
+
+#~ msgid "number overflow"
+#~ msgstr "przepełnienie liczby"
+
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>\texpand the given alias\n"
+#~ "  -a <file> [...] --\tattach file(s) to the message\n"
+#~ "\t\tthe list of files must be terminated with the \"--\" sequence\n"
+#~ "  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>\tspecify a carbon-copy (CC) address\n"
+#~ "  -D\t\tprint the value of all variables to stdout"
+#~ msgstr ""
+#~ "opcje:\n"
+#~ "  -A <alias>\tużyj aliasu\n"
+#~ "  -a <plik> [...] --\tdołącz plik(i) do listu\n"
+#~ "\t\tlista plików musi zostać zakończona sekwencją „--”\n"
+#~ "  -b <adres>\tpodaj adres ukrytej kopii (UDW)\n"
+#~ "  -c <adres>\tpodaj adres kopii (DW)\n"
+#~ "  -D\t\twydrukuj wartości wszystkich zmiennych"
+
+#~ msgid "perform mailing list action"
+#~ msgstr "uruchom akcję listy dyskusyjnej"
+
+#~ msgid "post to mailing list"
+#~ msgstr "napisz list na listę dyskusyjną"
+
+#~ msgid "prefix is illegal with reset"
+#~ msgstr "reset: nieprawidłowy prefiks"
+
+#~ msgid "push: too many arguments"
+#~ msgstr "push: zbyt wiele argumentów"
+
+#~ msgid "retrieve list archive information"
+#~ msgstr "pobierz informacje o archiwum listy dyskusyjnej"
+
+#~ msgid "retrieve list help"
+#~ msgstr "pobierz pomoc listy dyskusyjnej"
+
+#~ msgid "run: too many arguments"
+#~ msgstr "run: zbyt wiele argumentów"
+
+#~ msgid "running"
+#~ msgstr "uruchomiony"
+
+#~ msgid "safco"
+#~ msgstr "safce"
+
+#~ msgid "safcoi"
+#~ msgstr "safwoi"
+
+#~ msgid "samfco"
+#~ msgstr "pjsaao"
+
+#~ msgid "sapfco"
+#~ msgstr "pjgaao"
+
+#~ msgid "score: too few arguments"
+#~ msgstr "score: za mało argumentów"
+
+#~ msgid "score: too many arguments"
+#~ msgstr "score: zbyt wiele argumentów"
+
+#, c-format
+#~ msgid "secret key `%s' not found: %s\n"
+#~ msgstr "klucz tajny „%s” nie został odnaleziony: %s\n"
+
+#~ msgid "select a new mailbox from the browser"
+#~ msgstr "wybierz nową skrzynkę w przeglądarce"
+
+#~ msgid "select a new mailbox from the browser in read only mode"
+#~ msgstr "wybierz nową skrzynkę w przeglądarce, tylko do odczytu"
+
+#~ msgid "show the Mutt version number and date"
+#~ msgstr "pokaż wersję i datę Mutta"
+
+#~ msgid "skip beyond headers"
+#~ msgstr "przeskocz poza nagłówki"
+
+#~ msgid "source: too many arguments"
+#~ msgstr "source: zbyt wiele argumentów"
+
+#~ msgid "subscribe to current mailbox (IMAP only)"
+#~ msgstr "zasubskrybuj bieżącą skrzynkę (tylko IMAP)"
+
+#~ msgid "subscribe to mailing list"
+#~ msgstr "zasubskrybuj listę dyskusyjną"
+
+#~ msgid "swafco"
+#~ msgstr "pmjcfb"
+
+#~ msgid "sync: mbox modified, but no modified messages! (report this bug)"
+#~ msgstr "sync: skrzynka zmodyfikowana, ale żaden z listów nie został zmieniony! (Zgłoś ten błąd.)"
+
+#~ msgid "tag messages matching a pattern"
+#~ msgstr "zaznacz listy pasujące do wzorca"
+
+#~ msgid "too few arguments"
+#~ msgstr "za mało argumentów"
+
+#~ msgid "too many arguments"
+#~ msgstr "za dużo argumentów"
+
+#~ msgid "undelete messages matching a pattern"
+#~ msgstr "odtwórz listy pasujące do wzorca"
+
+#~ msgid "unsubscribe from current mailbox (IMAP only)"
+#~ msgstr "odsubskrybuj bieżącą skrzynkę (tylko IMAP)"
+
+#~ msgid "unsubscribe from mailing list"
+#~ msgstr "odsubskrybuj listę dyskusyjną"
+
+#~ msgid "untag messages matching a pattern"
+#~ msgstr "odznacz listy pasujące do wzorca"
+
+#~ msgid ""
+#~ "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
+#~ "       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+#~ "       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
+#~ "       mutt [<options>] -p\n"
+#~ "       mutt [<options>] -A <alias> [...]\n"
+#~ "       mutt [<options>] -Q <query> [...]\n"
+#~ "       mutt [<options>] -D\n"
+#~ "       mutt -v[v]\n"
+#~ msgstr ""
+#~ "użycie: mutt [<opcje>] [-z] [-f <plik> | -yZ]\n"
+#~ "        mutt [<opcje>] [-Ex] [-Hi <plik>] [-s <temat>] [-bc <adres>] [-a <plik> [...] --] <adres> [...]\n"
+#~ "        mutt [<opcje>] [-x] [-s <temat>] [-bc <adres>] [-a <plik> [...] --] <adres> [...] < list\n"
+#~ "        mutt [<opcje>] -p\n"
+#~ "        mutt [<opcje>] -A <alias> [...]\n"
+#~ "        mutt [<opcje>] -Q <zmienna> [...]\n"
+#~ "        mutt [<opcje>] -D\n"
+#~ "        mutt -v[v]\n"
+
+#~ msgid "value is illegal with reset"
+#~ msgstr "reset: nieprawidłowa wartość"
+
+#~ msgid "view attachment in pager using copiousoutput mailcap entry"
+#~ msgstr "wyświetl załącznik używając wpisu mailcap z opcją copiousoutput"
+
+#~ msgid "view multipart/alternative"
+#~ msgstr "wyświetl multipart/alternative"
+
+#~ msgid "view multipart/alternative as text"
+#~ msgstr "wyświetl multipart/alternative jako tekst"
+
+#~ msgid "view multipart/alternative in pager using copiousoutput mailcap entry"
+#~ msgstr "wyświetl multipart/alternative używając wpisu mailcap z opcją copiousoutput"
+
+#~ msgid "view multipart/alternative using mailcap"
+#~ msgstr "wyświetl multipart/alternative używając mailcap"
+
+#~ msgid "wipe passphrase(s) from memory"
+#~ msgstr "wymaż hasło (hasła) z pamięci"
+
+#~ msgid ""
+#~ "~q\t\twrite file and quit editor\n"
+#~ "~r file\t\tread a file into the editor\n"
+#~ "~t users\tadd users to the To: field\n"
+#~ "~u\t\trecall the previous line\n"
+#~ "~v\t\tedit message with the $visual editor\n"
+#~ "~w file\t\twrite message to file\n"
+#~ "~x\t\tabort changes and quit editor\n"
+#~ "~?\t\tthis message\n"
+#~ ".\t\ton a line by itself ends input\n"
+#~ msgstr ""
+#~ "~q\t\tzapisz plik i wyjdź z edytora\n"
+#~ "~r plik\t\twczytaj plik do edytora\n"
+#~ "~t użytkownicy\tdodaj użytkowników do pola Do:\n"
+#~ "~u\t\todtwórz poprzednią linię\n"
+#~ "~v\t\tedytuj list edytorem zdefiniowanym w $visual\n"
+#~ "~w plik\t\tzapisz list do pliku\n"
+#~ "~x\t\tporzuć zmiany i wyjdź z edytora\n"
+#~ "~?\t\tten list\n"
+#~ ".\t\tstojąc sama w linii kończy wpisywanie\n"
+
+#~ msgid ""
+#~ "~~\t\tinsert a line beginning with a single ~\n"
+#~ "~b addresses\tadd addresses to the Bcc: field\n"
+#~ "~c addresses\tadd addresses to the Cc: field\n"
+#~ "~f messages\tinclude messages\n"
+#~ "~F messages\tsame as ~f, except also include headers\n"
+#~ "~h\t\tedit the message header\n"
+#~ "~m messages\tinclude and quote messages\n"
+#~ "~M messages\tsame as ~m, except include headers\n"
+#~ "~p\t\tprint the message\n"
+#~ msgstr ""
+#~ "~~\t\twstaw linię zaczynającą się pojedyńczym ~\n"
+#~ "~b adresy\tdodaj adresy do pola Ukryta kopia:\n"
+#~ "~c adresy\tdodaj adresy do pola Kopia:\n"
+#~ "~f listy\tdołącz listy\n"
+#~ "~F listy\tto samo co ~f ale dołącz też nagłówki\n"
+#~ "~h\t\tedytuj nagłówki\n"
+#~ "~m listy\tdodaj i zacytuj listy\n"
+#~ "~M listy\tto samo co ~m ale dołącz też nagłówki\n"
+#~ "~p\t\tdrukuj list\n"
