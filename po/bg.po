@@ -7953,10 +7953,3 @@ msgstr "Опции при компилация:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Опции при компилация:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Желаете ли да напуснете neomutt?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "Неуспешна GSSAPI идентификация"

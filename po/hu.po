@@ -7622,12 +7622,3 @@ msgstr "Fordítási opciók:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Fejlesztői opciók:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Nem lehet csökkenteni a my_ változót"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Kilépsz a NeoMutt-ból?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP azonosítás SASL-t igényel"

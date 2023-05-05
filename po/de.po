@@ -7646,12 +7646,3 @@ msgstr "Einstellungen bei der Kompilierung:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Entwickleroptionen:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Kann eine my_ Variable nicht herunterzählen"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "NeoMutt verlassen?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP-Authentifizierung benötigt SASL"

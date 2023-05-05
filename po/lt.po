@@ -7665,12 +7665,3 @@ msgstr "Kompiliavimo parinktys:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Derinimo parinktys:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Negalima sumažinti my_ kintamojo"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Išeiti iš NeoMutt?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP autentikacijai reikia SASL"

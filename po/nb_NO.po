@@ -7624,12 +7624,3 @@ msgstr "Kompileringstilvalg:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Utviklervalg:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Kan ikke dekrementere en «my_»-variabel"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Avslutt NeoMutt?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI-bekreftelse krever SASL"

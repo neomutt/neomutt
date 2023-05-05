@@ -7820,10 +7820,3 @@ msgstr "Tilvalg ved oversættelsen:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Tilvalg ved oversættelsen:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Afslut NeoMutt øjeblikkeligt?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI-godkendelse slog fejl"

@@ -7872,10 +7872,3 @@ msgstr "Opties tijdens compileren:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opties tijdens compileren:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "NeoMutt afsluiten?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI-authenticatie is mislukt"
