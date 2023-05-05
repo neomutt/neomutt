@@ -7628,29 +7628,18 @@ msgstr "Opciones especificadas al compilar:"
 msgid "Devel options:"
 msgstr "Opciones de Desarrollo:"
 
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "No puedes disminuir un my_v ariable"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "¿Salir de NeoMutt?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "La autenticación SMTP requiere SASL"
-
-#: pager/message.c:59 pager/pbar.c:123 status.c:294
 #. L10N: Pager position percentage.
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: pager/pbar.c:117
+#: pager/message.c:59 pager/pbar.c:123 status.c:294 pager/pbar.c:117
 #, fuzzy, c-format
 msgid "%ld%%"
 msgstr "%ld%%"
 
-#: pager/pbar.c:125 status.c:292
 #. L10N: Progress bar: `%s` loading text, `%zu` item count,
 #. `%d` percentage, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:168
+#: pager/pbar.c:125 status.c:292 progress/window.c:168
 #, fuzzy, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
@@ -7679,3 +7668,11 @@ msgstr "%s %zu/%zu (%d%%)"
 msgid "%d%%"
 msgstr "%d%%"
 
+#~ msgid "Can't decrement a my_ variable"
+#~ msgstr "No puedes disminuir un my_v ariable"
+
+#~ msgid "Exit NeoMutt?"
+#~ msgstr "¿Salir de NeoMutt?"
+
+#~ msgid "SMTP authentication requires SASL"
+#~ msgstr "La autenticación SMTP requiere SASL"
