@@ -7640,7 +7640,7 @@ msgstr "Derinimo parinktys:"
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: pager/pbar.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "%ld%%"
 msgstr "%ld%%"
 
@@ -7649,7 +7649,7 @@ msgstr "%ld%%"
 #. `%d` percentage, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
@@ -7657,7 +7657,7 @@ msgstr "%s %zu (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:178
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
 
@@ -7665,7 +7665,7 @@ msgstr "%s %s/%s (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
@@ -7673,7 +7673,7 @@ msgstr "%s %zu/%zu (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
