@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-04 13:53+0100\n"
-"PO-Revision-Date: 2023-04-25 21:08+0200\n"
+"POT-Creation-Date: 2023-05-05 13:42+0100\n"
+"PO-Revision-Date: 2023-05-04 16:26+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.5.5\n"
+"X-Generator: poe 1.5.5-1-g32ee557\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:398
@@ -833,17 +833,17 @@ msgstr "%s: терминал не подржава ову боју"
 #: color/command.c:305
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "Подршка за директне боје није укомпајлирана: %s"
 
 #: color/command.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "подразумеване боје нису подржане"
+msgstr "Подршка за директне боје је деактивирана: %s"
 
 #: color/command.c:418
 #, c-format
 msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-msgstr ""
+msgstr "„bright“, „alert“, „light“ је дозвољено само за именоване боје: %s"
 
 #: color/command.c:422
 #, c-format
@@ -3851,7 +3851,7 @@ msgstr "<произвољно>"
 #: mixmaster/win_chain.c:65
 #, c-format
 msgid "-- Remailer chain [Length: %d]"
-msgstr ""
+msgstr "-- Ланац прослеђивача [Дужина: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
@@ -6553,7 +6553,7 @@ msgstr "Помоћ је приказана"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:120 status.c:294
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
 msgstr "све"
 
@@ -6597,9 +6597,17 @@ msgstr "PGP потпис успешно верификован"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP потпис није било могуће верификовати"
 
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, fuzzy, c-format
+msgid "%ld%%"
+msgstr "%ld%%"
+
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:122 status.c:292
+#: pager/pbar.c:125 status.c:292
 msgid "end"
 msgstr "крај"
 
@@ -7220,6 +7228,30 @@ msgstr "Не може се дешифровати одложена порука"
 msgid "No postponed messages"
 msgstr "Нема одложених порука"
 
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, fuzzy, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, fuzzy, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, fuzzy, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d%%)"
+
 #: question/question.c:208
 msgid "yes"
 msgstr "да (y)"
@@ -7556,6 +7588,14 @@ msgstr "Сортирање сандучета..."
 #: status.c:172
 msgid "(no mailbox)"
 msgstr "(нема сандучета)"
+
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, fuzzy, c-format
+msgid "%d%%"
+msgstr "%d%%"
 
 #: version.c:85
 msgid ""

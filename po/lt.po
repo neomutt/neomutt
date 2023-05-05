@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-04 13:53+0100\n"
+"POT-Creation-Date: 2023-05-05 13:42+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -741,9 +741,8 @@ msgid "No newsgroups match the mask"
 msgstr "Nė viena naujienų grupė neatitinka kaukės"
 
 #: browser/functions.c:157
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "Ten nėra laiškų"
+msgstr "Nėra pašto dėžučių"
 
 #: browser/functions.c:206 browser/functions.c:547 browser/functions.c:606
 msgid "No files match the file mask"
@@ -835,17 +834,17 @@ msgstr "%s: spalva nepalaikoma terminalo"
 #: color/command.c:305
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "Tiesioginių spalvų palaikymas neįjungtas kompiliavimo metu: %s"
 
 #: color/command.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "įprastos spalvos nepalaikomos"
+msgstr "Tiesioginių spalvų palaikymas išjungtas: %s"
 
 #: color/command.c:418
 #, c-format
 msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-msgstr ""
+msgstr "'bright', 'alert', 'light' yra leidžiami tik vardinėms spalvoms: %s"
 
 #: color/command.c:422
 #, c-format
@@ -3847,7 +3846,7 @@ msgstr "<atsitiktinis>"
 #: mixmaster/win_chain.c:65
 #, c-format
 msgid "-- Remailer chain [Length: %d]"
-msgstr ""
+msgstr "-- Persiuntėjų grandinė [ilgis: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
@@ -6549,7 +6548,7 @@ msgstr "Šiuo metu rodoma pagalba"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:120 status.c:294
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
 msgstr "visi"
 
@@ -6593,9 +6592,17 @@ msgstr "PGP parašas patikrintas sėkmingai"
 msgid "PGP signature could NOT be verified"
 msgstr "PGP parašas NEGALI būti patikrintas"
 
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, c-format
+msgid "%ld%%"
+msgstr "%ld%%"
+
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:122 status.c:292
+#: pager/pbar.c:125 status.c:292
 msgid "end"
 msgstr "pabaiga"
 
@@ -7216,6 +7223,30 @@ msgstr "Negalėjau iššifruoti atidėto laiško"
 msgid "No postponed messages"
 msgstr "Nėra atidėtų laiškų"
 
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d%%)"
+
 #: question/question.c:208
 msgid "yes"
 msgstr "taip"
@@ -7552,6 +7583,14 @@ msgstr "Rikiuoju dėžutę..."
 #: status.c:172
 msgid "(no mailbox)"
 msgstr "(nėra dėžutės)"
+
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, c-format
+msgid "%d%%"
+msgstr "%d%%"
 
 #: version.c:85
 msgid ""

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-04 13:53+0100\n"
+"POT-Creation-Date: 2023-05-05 13:14+0100\n"
 "PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
@@ -2638,9 +2638,8 @@ msgid "%s authentication failed"
 msgstr "Не вдала автентифікація %s"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:134
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Невдала автентифікація"
+msgstr "Помилка аутентифікації SASL"
 
 #: imap/auth_login.c:51
 msgid "LOGIN disabled on this server"
@@ -6551,7 +6550,7 @@ msgstr "Підказку зараз показано"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:59 pager/pbar.c:120 status.c:294
+#: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
 msgstr "усі"
 
@@ -6595,9 +6594,17 @@ msgstr "Підпис PGP вдало перевірено"
 msgid "PGP signature could NOT be verified"
 msgstr "Перевірити підпис PGP неможливо"
 
+#. L10N: Pager position percentage.
+#. `%ld` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: pager/pbar.c:117
+#, fuzzy, c-format
+msgid "%ld%%"
+msgstr "%ld%%"
+
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:122 status.c:292
+#: pager/pbar.c:125 status.c:292
 msgid "end"
 msgstr "кінець"
 
@@ -7219,6 +7226,30 @@ msgstr "Не вийшло розшифрувати повідомлення PGP"
 msgid "No postponed messages"
 msgstr "Жодного листа не залишено"
 
+#. L10N: Progress bar: `%s` loading text, `%zu` item count,
+#. `%d` percentage, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:168
+#, fuzzy, c-format
+msgid "%s %zu (%d%%)"
+msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:178
+#, fuzzy, c-format
+msgid "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:186
+#, fuzzy, c-format
+msgid "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d%%)"
+
 #: question/question.c:208
 msgid "yes"
 msgstr "так"
@@ -7556,6 +7587,14 @@ msgstr "Сортування скриньки..."
 msgid "(no mailbox)"
 msgstr "(нема скриньки)"
 
+#. L10N: Status bar, percentage of way through index.
+#. `%d` is the number, `%%` is the percent symbol.
+#. They may be reordered, or space inserted, if you wish.
+#: status.c:302
+#, fuzzy, c-format
+msgid "%d%%"
+msgstr "%d%%"
+
 #: version.c:85
 msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
@@ -7628,11 +7667,1736 @@ msgstr "Параметри компілювання:"
 msgid "Devel options:"
 msgstr "Параметри розробки:"
 
+#~ msgid ""
+#~ "\n"
+#~ "Compile options:"
+#~ msgstr ""
+#~ "\n"
+#~ "Параметри компіляції:"
+
+#~ msgid ""
+#~ "\n"
+#~ "Generic bindings:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Базові призначення:\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "\n"
+#~ "Unbound functions:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "Не призначені функції:\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "    This program is free software; you can redistribute it and/or modify\n"
+#~ "    it under the terms of the GNU General Public License as published by\n"
+#~ "    the Free Software Foundation; either version 2 of the License, or\n"
+#~ "    (at your option) any later version.\n"
+#~ "\n"
+#~ "    This program is distributed in the hope that it will be useful,\n"
+#~ "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "    GNU General Public License for more details.\n"
+#~ msgstr ""
+#~ "Ця програма -- вільне програмне забезпечення. Ви можете розповсюджувати і/чи\n"
+#~ "змінювати її згідно з умовами GNU General Public License від\n"
+#~ "Free Software Foundation версії 2 чи вище.\n"
+#~ "\n"
+#~ "Ця програма розповсюджується з надуєю, що вона буде корисною, але ми не надаємо\n"
+#~ "ЖОДНИХ ГАРАНТІЙ, включаючи гарантії придатності до будь-яких конкретних\n"
+#~ "завдань. Більш детально дивіться GNU General Public License.\n"
+
+#~ msgid ""
+#~ "    You should have received a copy of the GNU General Public License\n"
+#~ "    along with this program; if not, write to the Free Software\n"
+#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+#~ msgstr ""
+#~ "Ви мали б отримати копію GNU General Public License разом з цією програмою\n"
+#~ "Якщо це не так, звертайтесь до Free Software Foundation, Inc:\n"
+#~ "51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n"
+
+#~ msgid ""
+#~ "  -E\t\tedit the draft (-H) or include (-i) file\n"
+#~ "  -e <command>\tspecify a command to be executed after initialization\n"
+#~ "  -f <file>\tspecify which mailbox to read\n"
+#~ "  -F <file>\tspecify an alternate muttrc file\n"
+#~ "  -H <file>\tspecify a draft file to read header and body from\n"
+#~ "  -i <file>\tspecify a file which Mutt should include in the body\n"
+#~ "  -m <type>\tspecify a default mailbox type\n"
+#~ "  -n\t\tcauses Mutt not to read the system Muttrc\n"
+#~ "  -p\t\trecall a postponed message"
+#~ msgstr ""
+#~ "  -E\t\tредагувари шаблон (-H) або файл включення (-i)\n"
+#~ "  -e <command>\tвказати команду, що її виконати після ініціалізації\n"
+#~ "  -f <file>\tвказати, яку поштову скриньку читати\n"
+#~ "  -F <file>\tвказати альтернативний файл muttrc\n"
+#~ "  -H <file>\tвказати файл, що містить шаблон заголовку та тіла\n"
+#~ "  -i <file>\tвказати файл, що його треба включити у відповідь\n"
+#~ "  -m <type>\tвказати тип поштової скриньки\n"
+#~ "  -n\t\tвказує Mutt не читати системний Muttrc\n"
+#~ "  -p\t\tвикликати залишений лист"
+
+#~ msgid ""
+#~ "  -Q <variable>\tquery a configuration variable\n"
+#~ "  -R\t\topen mailbox in read-only mode\n"
+#~ "  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n"
+#~ "  -v\t\tshow version and compile-time definitions\n"
+#~ "  -x\t\tsimulate the mailx send mode\n"
+#~ "  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+#~ "  -z\t\texit immediately if there are no messages in the mailbox\n"
+#~ "  -Z\t\topen the first folder with new message, exit immediately if none\n"
+#~ "  -h\t\tthis help message"
+#~ msgstr ""
+#~ "  -Q <variable> показати змінну конфігурації\n"
+#~ "  -R\t\tвідкрити поштову скриньку тільки для читання\n"
+#~ "  -s <subj>\tвказати тему (в подвійних лапках, якщо містить пробіли)\n"
+#~ "  -v\t\tпоказати версію та параметри компіляції\n"
+#~ "  -x\t\tсимулювати відправку mailx\n"
+#~ "  -y\t\tвибрати поштову скриньку з-поміж вказаних у mailboxes\n"
+#~ "  -z\t\tодразу вийти, якщо в поштовій скриньці немає жодного листа\n"
+#~ "  -Z\t\tвідкрити першу скриньку з новим листом, якщо немає - одразу вийти\n"
+#~ "  -h\t\tця підказка"
+
+#~ msgid ""
+#~ "  -d <level>\tlog debugging output to ~/.muttdebug0\n"
+#~ "\t\t0 => no debugging; <0 => do not rotate .muttdebug files"
+#~ msgstr ""
+#~ "  -d <level>\tзаписати інформацію для налагодження в ~/.muttdebug0\n"
+#~ "\t\t0 => налагодження вимкнено; <0 => без ротації файлів .muttdebug"
+
+#~ msgid " tagged"
+#~ msgstr " виділені"
+
+#~ msgid "\"crypt_use_gpgme\" set but not built with GPGME support"
+#~ msgstr "\"crypt_use_gpgme\" ввімкнено, але зібрано без підтримки GPGME"
+
+#~ msgid "$send_multipart_alternative_filter does not support multipart type generation"
+#~ msgstr "$send_multipart_alternative_filter не підтримує генерацію типу multipart"
+
+#~ msgid "$send_multipart_alternative_filter is not set"
+#~ msgstr "Значення $send_multipart_alternative_filter не встановлено"
+
+#, c-format
+#~ msgid "%d labels changed"
+#~ msgstr "Позначки було змінено: %d"
+
+#, c-format
+#~ msgid "%d message(s) have been lost. Try reopening the mailbox"
+#~ msgstr "%d повідомлень втрачено. Спробуйте відкрити скриньку знову"
+
+#, c-format
+#~ msgid "%d: invalid message number.\n"
+#~ msgstr "%d: невірний номер листа.\n"
+
+#, c-format
+#~ msgid "%s Do you really want to use the key?"
+#~ msgstr "%s Ви справді бажаєте використовувати ключ?"
+
+#, c-format
+#~ msgid "%s [%d of %d messages read]"
+#~ msgstr "%s [%d з %d листів прочитано]"
+
+#, c-format
+#~ msgid "%s authentication failed, trying next method"
+#~ msgstr "Помилка аутентифікації %s, пробуємо наступний метод"
+
+#, c-format
+#~ msgid "%s connection using %s (%s)"
+#~ msgstr "З’єднання %s з використанням %s (%s)"
+
+#, c-format
+#~ msgid "%s has insecure permissions!"
+#~ msgstr "%s має небезпечні права доступу!"
+
+#, c-format
+#~ msgid "%s is not a mailbox!"
+#~ msgstr "%s не є поштовою скринькою!"
+
+#, c-format
+#~ msgid "%s is set"
+#~ msgstr "%s встановлено"
+
+#, c-format
+#~ msgid "%s no longer exists!"
+#~ msgstr "%s більше не існує!"
+
+#, c-format
+#~ msgid "%s: Unknown type"
+#~ msgstr "%s: Невідомий тип"
+
+#, c-format
+#~ msgid "%s: command valid only for index, body, header objects"
+#~ msgstr "%s: команда можлива тільки для списку, тілі і заголовку листа"
+
+#, c-format
+#~ msgid "%s: invalid mailbox type"
+#~ msgstr "%s: невірний тип скриньки"
+
+#, c-format
+#~ msgid "%s: invalid value"
+#~ msgstr "%s: невірне значення"
+
+#, c-format
+#~ msgid "%s: invalid value (%s)"
+#~ msgstr "%s: невірне значення (%s)"
+
+#, c-format
+#~ msgid "%s: no such function in map"
+#~ msgstr "функція \"%s\" не існує в карті"
+
+#, c-format
+#~ msgid "%s: unable to attach file.\n"
+#~ msgstr "%s: неможливо додати файл.\n"
+
+#, c-format
+#~ msgid "%s: unknown editor command (~? for help)\n"
+#~ msgstr "%s: невідома команда редактора (~? - підказка)\n"
+
+#, c-format
+#~ msgid "%s: unknown sorting method"
+#~ msgstr "%s: невідомий метод сортування"
+
+#, c-format
+#~ msgid "%s: unknown type"
+#~ msgstr "%s: невідомий тип"
+
+#, c-format
+#~ msgid "%sgroup: warning: bad IDN '%s'.\n"
+#~ msgstr "%sgroup: попередження: погане IDN: %s.\n"
+
+#~ msgid "(End message with a . on a line by itself)\n"
+#~ msgstr "(Закінчіть лист рядком, що складається з однієї крапки)\n"
+
+#~ msgid "(c)reate new, or (s)elect existing GPG key? "
+#~ msgstr "(c)створити новий або (s)обрати існуючий ключ GPG?"
+
+#~ msgid "(continue)\n"
+#~ msgstr "(далі)\n"
+
+#~ msgid "(need 'view-attachments' bound to key!)"
+#~ msgstr "(треба призначити клавішу до view-attachments!)"
+
+#, c-format
+#~ msgid "(size %s bytes) "
+#~ msgstr "(розм. %s байт) "
+
+#, c-format
+#~ msgid "(use '%s' to view this part)"
+#~ msgstr "(використовуйте \"%s\" для перегляду цієї частини)"
+
+#~ msgid "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?B? Back:%B?%?l? %l?]---(%s/%?T?%T/?%S)-%>-(%P)---"
+#~ msgstr "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?B? Back:%B?%?l? %l?]---(%s/%?T?%T/?%S)-%>-(%P)---"
+
+#~ msgid "-- Mutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
+#~ msgstr "-- Mutt: Створення повідомлення  [Прибл. розмір: %l   Вкладення: %a]%>-"
+
+#~ msgid "----- End forwarded message -----"
+#~ msgstr "----- End forwarded message -----"
+
+#, c-format
+#~ msgid "----- Forwarded message from %f -----"
+#~ msgstr "----- Forwarded message from %f -----"
+
+#~ msgid "...  Exiting.\n"
+#~ msgstr "...  Завершення.\n"
+
+#~ msgid "1: AES128, 2: AES192, 3: AES256 "
+#~ msgstr "(8)AES128/(9)AES192/(5)AES256"
+
+#~ msgid "1: DES, 2: Triple-DES "
+#~ msgstr "(d)DES/(t)3DES "
+
+#~ msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
+#~ msgstr "(4)RC2-40/(6)RC2-64/(8)RC2-128"
+
+#~ msgid "468"
+#~ msgstr "468"
+
+#~ msgid "895"
+#~ msgstr "895"
+
+#~ msgid "A fatal error occurred.  Will attempt reconnection"
+#~ msgstr "Сталася фатальна помилка. Спроба відновити з’єднання"
+
+#~ msgid "APOP authentication failed"
+#~ msgstr "Помилка аутентифікації APOP"
+
+#~ msgid "Already skipped past headers"
+#~ msgstr "Заголовки вже пропущені"
+
+#~ msgid "Anonymous authentication failed"
+#~ msgstr "Помилка анонімної аутентифікації"
+
+#, c-format
+#~ msgid "Append message(s) to %s?"
+#~ msgstr "Додати листи до %s?"
+
+#~ msgid "Archives"
+#~ msgstr "Архіви"
+
+#~ msgid "Attaching selected files.."
+#~ msgstr "Додавання вибраних файлів.."
+
+#~ msgid "Attachment referenced in message is missing"
+#~ msgstr "Додаток, вказанний у листі, відсутній"
+
+#, c-format
+#~ msgid "Authenticating (%s).."
+#~ msgstr "Аутентифікація (%s).."
+
+#~ msgid "Authenticating (APOP).."
+#~ msgstr "Аутентифікація (APOP).."
+
+#~ msgid "Authenticating (CRAM-MD5).."
+#~ msgstr "Аутентифікація (CRAM-MD5).."
+
+#~ msgid "Authenticating (GSSAPI).."
+#~ msgstr "Аутентифікація (GSSAPI).."
+
+#~ msgid "Authenticating (SASL).."
+#~ msgstr "Аутентифікація (SASL).."
+
+#~ msgid "Authenticating (anonymous).."
+#~ msgstr "Аутентифікація (anonymous).."
+
+#~ msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic? "
+#~ msgstr "Autocrypt: (e)шифрувати, (c)очистити, (a)автоматично? "
+
+#~ msgid "Available mailing list actions"
+#~ msgstr "Доступні дії розсилки"
+
+#~ msgid "Background Compose Menu"
+#~ msgstr "Меню фонового створення повідомлення"
+
+#, c-format
+#~ msgid "Bad IDN \"%s\""
+#~ msgstr "Погане IDN \"%s\""
+
+#, c-format
+#~ msgid "Bad IDN in \"%s\": '%s'"
+#~ msgstr "Некоректне IDN в \"%s\": %s"
+
+#, c-format
+#~ msgid "Bad IDN in %s: '%s'\n"
+#~ msgstr "Поганий IDN в %s: %s\n"
+
+#~ msgid "Bad mailbox name"
+#~ msgstr "Погане ім’я скриньки"
+
+#, c-format
+#~ msgid "Bad regexp: %s"
+#~ msgstr "Поганий регулярний вираз: %s"
+
+#, c-format
+#~ msgid "Bounce message to %s"
+#~ msgstr "Надіслати копію листа %s"
+
+#, c-format
+#~ msgid "Bounce messages to %s"
+#~ msgstr "Надіслати копії листів %s"
+
+#~ msgid "CRAM-MD5 authentication failed"
+#~ msgstr "Помилка аутентифікації CRAM-MD5"
+
+#~ msgid "Can't attach a directory!"
+#~ msgstr "Неможливо додати каталог!"
+
 #~ msgid "Can't decrement a my_ variable"
 #~ msgstr "Не можливо зменшити мою_ змінну"
+
+#~ msgid "Can't decrypt encrypted message!"
+#~ msgstr "Не можу розшифрувати листа!"
+
+#, c-format
+#~ msgid "Can't dotlock %s.\n"
+#~ msgstr "Не вийшло заблокувати %s за допомогою dotlock.\n"
+
+#~ msgid "Can't get mixmaster's type2.list!"
+#~ msgstr "Неможливо отримати type2.list mixmaster’а!"
+
+#~ msgid "Can't match nametemplate, continue?"
+#~ msgstr "Немає відповідного імені, далі?"
+
+#~ msgid "Can't open OpenSSL subprocess!"
+#~ msgstr "Неможливо відкрити підпроцесс OpenSSL!"
+
+#~ msgid "Can't open PGP subprocess!"
+#~ msgstr "Неможливо відкрити підпроцесс PGP!"
+
+#~ msgid "Can't sign: No key specified. Use Sign As"
+#~ msgstr "Неможливо підписати: Ключів не вказано. Використовуйте \"Підписати як\""
+
+#~ msgid "Can't write header to temporary file!"
+#~ msgstr "Неможливо записати заголовок до тимчасового файлу!"
+
+#~ msgid "Can't write message to temporary file!"
+#~ msgstr "Неможливо записати повідомлення до тимчасового файлу!"
+
+#, c-format
+#~ msgid "Cannot append without an append-hook or close-hook : %s"
+#~ msgstr "Неможливо дозаписати без append-hook або close-hook: %s"
+
+#~ msgid "Cannot create display filter"
+#~ msgstr "Неможливо створити фільтр відображення"
+
+#~ msgid "Cannot create filter"
+#~ msgstr "Неможливо створити фільтр"
+
+#~ msgid "Cannot delete message"
+#~ msgstr "Неможливо видалити лист"
+
+#~ msgid "Cannot delete message(s)"
+#~ msgstr "Неможливо видалити повідомлення"
+
+#~ msgid "Cannot delete root folder"
+#~ msgstr "Неможливо видалити кореневу скриньку"
+
+#~ msgid "Cannot edit message"
+#~ msgstr "Неможливо редагувати лист"
+
+#~ msgid "Cannot flag message"
+#~ msgstr "Неможливо змінити атрибут листа"
+
+#~ msgid "Cannot link threads"
+#~ msgstr "Неможливо з’єднати розмови"
+
+#~ msgid "Cannot mark message(s) as read"
+#~ msgstr "Неможливо позначити лист(и) прочитаним(и)"
+
+#~ msgid "Cannot parse draft file\n"
+#~ msgstr "Не вдалось розпізнати файл чернетки\n"
+
+#~ msgid "Cannot postpone.  $postponed is unset"
+#~ msgstr "Неможливо відкласти лист. Значення $postponed не встановлено"
+
+#~ msgid "Cannot rename root folder"
+#~ msgstr "Неможливо перейменувати кореневу скриньку"
+
+#~ msgid "Cannot toggle new"
+#~ msgstr "Неможливо змінити атрибут \"Нове\""
+
+#~ msgid "Cannot toggle write on a readonly mailbox!"
+#~ msgstr "Скринька тільки для читання, ввімкнути запис неможливо!"
+
+#~ msgid "Cannot undelete message"
+#~ msgstr "Неможливо відновити лист"
+
+#~ msgid "Cannot undelete message(s)"
+#~ msgstr "Неможливо відновити повідомлення"
+
+#~ msgid "Cannot use -E flag with stdin\n"
+#~ msgstr "Неможливо використовувати -E з stdin\n"
+
+#~ msgid "Caught signal "
+#~ msgstr "Був отриманий сигнал "
+
+#, c-format
+#~ msgid "Character set changed to %s; %s"
+#~ msgstr "Кодування змінено на %s; %s"
+
+#~ msgid "Check key  "
+#~ msgstr "Перевірка ключа  "
+
+#~ msgid "Checking for new messages.."
+#~ msgstr "Перевірка наявності нових повідомлень.."
+
+#~ msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
+#~ msgstr "Виберіть сімейство алгоритмів: (d)DES/(r)RC2/(a)AES/(c)відмінити?"
+
+#, c-format
+#~ msgid "Closing connection to %s.."
+#~ msgstr "Закриття з’єднання з %s.."
+
+#~ msgid "Closing connection to POP server.."
+#~ msgstr "Закриття з’єднання з сервером POP.."
+
+#~ msgid "Collecting data.."
+#~ msgstr "Збирання даних.."
+
+#~ msgid "Committing changes.."
+#~ msgstr "Внесення змін.."
+
+#~ msgid "Compiling search pattern.."
+#~ msgstr "Компіляція виразу пошуку.."
+
+#, c-format
+#~ msgid "Compressed-appending to %s.."
+#~ msgstr "Стиснення і дозаписування %s.."
+
+#, c-format
+#~ msgid "Compressing %s.."
+#~ msgstr "Стиснення %s.."
+
+#, c-format
+#~ msgid "Connecting to %s.."
+#~ msgstr "З’єднання з %s.."
+
+#, c-format
+#~ msgid "Connecting with \"%s\".."
+#~ msgstr "З’єднання з \"%s\".."
+
+#, c-format
+#~ msgid "Convert attachment from %s to %s?"
+#~ msgstr "Перетворити вкладення з %s на %s?"
+
+#, c-format
+#~ msgid "Copy%s to mailbox"
+#~ msgstr "Копіювати%s до скриньки"
+
+#, c-format
+#~ msgid "Copying %d messages to %s.."
+#~ msgstr "Копіювання %d листів до %s.."
+
+#, c-format
+#~ msgid "Copying message %d to %s.."
+#~ msgstr "Копіювання %d листів до %s.."
+
+#~ msgid "Copying tagged messages.."
+#~ msgstr "Копіювання вибраних повідомлень.."
+
+#, c-format
+#~ msgid "Copying to %s.."
+#~ msgstr "Копіювання до %s.."
+
+#~ msgid ""
+#~ "Copyright (C) 1996-2023 Michael R. Elkins and others.\n"
+#~ "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+#~ "Mutt is free software, and you are welcome to redistribute it\n"
+#~ "under certain conditions; type `mutt -vv' for details.\n"
+#~ msgstr ""
+#~ "Copyright (C) 1996-2023 Michael R. Elkins та інші\n"
+#~ "Mutt поставляється БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ; детальніше: mutt -vv.\n"
+#~ "Mutt -- програмне забезпечення з відкритим кодом, запрошуємо до розповсюдження\n"
+#~ "з деякими умовами. Детальніше: mutt -vv.\n"
+
+#~ msgid "Could not create temporary file!"
+#~ msgstr "Не вийшло створити тимчасовий файл!"
+
+#~ msgid "Could not find sorting function! [report this bug]"
+#~ msgstr "Не знайдено функцію сортування! [сповістіть про це]"
+
+#~ msgid "Could not include all requested messages!"
+#~ msgstr "Не вийшло додати всі бажані листи!"
+
+#~ msgid "Could not parse mailto: URI"
+#~ msgstr "Не вдалося розпізнати mailto: URI"
+
+#~ msgid "Could not reopen mailbox!"
+#~ msgstr "Не вийшло відкрити поштову скриньку знову!"
+
+#, c-format
+#~ msgid "Couldn't lock %s\n"
+#~ msgstr "Не вийшло заблокувати %s\n"
+
+#~ msgid "DEBUG was not defined during compilation.  Ignored.\n"
+#~ msgstr "DEBUG не вказано під час компіляції. Ігнорується.\n"
+
+#, c-format
+#~ msgid "Debugging at level %d.\n"
+#~ msgstr "Відлагодження з рівнем %d.\n"
+
+#, c-format
+#~ msgid "Decode-copy%s to mailbox"
+#~ msgstr "Розкодувати і копіювати%s до скриньки"
+
+#, c-format
+#~ msgid "Decode-save%s to mailbox"
+#~ msgstr "Розкодувати і перенести%s до скриньки"
+
+#~ msgid "Decrypt message attachment?"
+#~ msgstr "Розшифрувати вкладення?"
+
+#, c-format
+#~ msgid "Decrypt-copy%s to mailbox"
+#~ msgstr "Розшифрувати і копіювати%s до скриньки"
+
+#, c-format
+#~ msgid "Decrypt-save%s to mailbox"
+#~ msgstr "Розшифрувати і перенести%s до скриньки"
+
+#~ msgid "Decrypting message.."
+#~ msgstr "Розшифровка листа.."
+
+#~ msgid "Editing backgrounded"
+#~ msgstr "Редагування перенесено в фоновий режим"
+
+#~ msgid "Enter keys (^G to abort): "
+#~ msgstr "Введіть клавіші (^G для відміни): "
+
+#~ msgid "Error History"
+#~ msgstr "Історія помилок"
+
+#~ msgid "Error History is currently being shown"
+#~ msgstr "Історію помилок зараз показано"
+
+#~ msgid "Error History is disabled"
+#~ msgstr "Історію помилок заборонено"
+
+#~ msgid "Error bouncing message!"
+#~ msgstr "Помилка при пересилці листа!"
+
+#~ msgid "Error bouncing messages!"
+#~ msgstr "Помилка при пересилці листів!"
+
+#, c-format
+#~ msgid "Error creating autocrypt key: %s\n"
+#~ msgstr "Помилка створення ключа autocrypt: %s\n"
+
+#, c-format
+#~ msgid "Error exporting key: %s\n"
+#~ msgstr "Помилка експорта ключа: %s\n"
+
+#, c-format
+#~ msgid "Error in command line: %s\n"
+#~ msgstr "Помилка командного рядку: %s\n"
+
+#~ msgid "Error parsing address!"
+#~ msgstr "Помилка розбору адреси!"
+
+#, c-format
+#~ msgid "Error running \"%s\"!"
+#~ msgstr "Помилка виконання \"%s\"!"
+
+#~ msgid "Error seeking in alias file"
+#~ msgstr "Помилка позиціонування в файлі псевдонімів"
+
+#, c-format
+#~ msgid "Error sending message, child exited %d.\n"
+#~ msgstr "Помилка відправки, код повернення %d.\n"
+
+#~ msgid "Error while writing mailbox!"
+#~ msgstr "Помилка під час запису поштової скриньки!"
+
+#, c-format
+#~ msgid "Error: '%s' is a bad IDN"
+#~ msgstr "Помилка: некоректний IDN: %s"
+
+#~ msgid "Error: unable to create OpenSSL subprocess!"
+#~ msgstr "Помилка: неможливо створити підпроцес OpenSSL!"
+
+#~ msgid "Evaluating cache.."
+#~ msgstr "Завантаження кеша.."
+
+#~ msgid "Executing command on matching messages.."
+#~ msgstr "Виконання команди до відповідних листів.."
+
+#~ msgid "Exit  "
+#~ msgstr "Вихід  "
+
+#~ msgid "Exit Mutt without saving?"
+#~ msgstr "Покинути Mutt без збереження змін?"
+
+#~ msgid "Exit Mutt?"
+#~ msgstr "Покинути Mutt?"
 
 #~ msgid "Exit NeoMutt?"
 #~ msgstr "Вийти з NeoMutt?"
 
+#~ msgid "Expunging messages from server.."
+#~ msgstr "Видалення повідомлень з серверу.."
+
+#~ msgid "Failed to parse mailto: link\n"
+#~ msgstr "Неможливо розібрати почилання mailto:\n"
+
+#~ msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip? "
+#~ msgstr "Помилка збереження в Fcc. (r)повторити, (m)інша скринька, (s)пропустити? "
+
+#~ msgid "Fetching PGP key.."
+#~ msgstr "Отримання ключа PGP.."
+
+#~ msgid "Fetching flag updates.."
+#~ msgstr "Отримання оновлень атрибутів.."
+
+#~ msgid "Fetching list of messages.."
+#~ msgstr "Отримання переліку повідомлень.."
+
+#~ msgid "Fetching message headers.."
+#~ msgstr "Отримання заголовків листів.."
+
+#~ msgid "Fetching message.."
+#~ msgstr "Отримання листа.."
+
+#~ msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
+#~ msgstr "Файл є каталогом, зберегти у ньому? [(y)так/(n)ні/(a)все]"
+
+#, c-format
+#~ msgid "Filling entropy pool: %s...\n"
+#~ msgstr "Заповнення пулу ентропії: %s...\n"
+
+#~ msgid "First, please tag a message to be linked here"
+#~ msgstr "Спершу виділіть листи для об’єднання"
+
+#~ msgid "GSSAPI authentication failed"
+#~ msgstr "Помилка аутентифікації GSSAPI"
+
+#~ msgid "Generate multipart/alternative content?"
+#~ msgstr "Створити multipart/alternative контент?"
+
+#~ msgid "Generating autocrypt key.."
+#~ msgstr "Створення ключа autocrypt.."
+
+#~ msgid "Getting folder list.."
+#~ msgstr "Отримання переліку скриньок.."
+
+#, c-format
+#~ msgid "I don't know how to print %s attachments!"
+#~ msgstr "Невідомо, як друкувати додатки типу %s!"
+
+#~ msgid "I don't know how to print that!"
+#~ msgstr "Не знаю, як це друкувати!"
+
+#~ msgid "ID has undefined validity"
+#~ msgstr "Ступінь довіри для ID не визначена"
+
+#~ msgid "ID is expired/disabled/revoked"
+#~ msgstr "ID прострочений, заборонений чи відкликаний"
+
+#~ msgid "ID is not trusted"
+#~ msgstr "ID не є довіреним"
+
+#~ msgid "ID is not valid"
+#~ msgstr "ID недійсний"
+
+#~ msgid "ID is only marginally valid"
+#~ msgstr "ID дійсний лише частково"
+
+#~ msgid "Including quoted message.."
+#~ msgstr "Цитується повідомлення.."
+
+#~ msgid "Integer overflow -- can't allocate memory"
+#~ msgstr "Переповнення цілого значення -- неможливо виділити пам’ять!"
+
+#~ msgid "Integer overflow -- can't allocate memory!"
+#~ msgstr "Переповнення цілого значення -- неможливо виділити пам’ять!"
+
+#~ msgid "Internal error.  Please submit a bug report"
+#~ msgstr "Внутрішня помилка. Будь ласка, повідомте розробників"
+
+#, c-format
+#~ msgid "Invalid POP URL: %s\n"
+#~ msgstr "Неправильний POP URL: %s\n"
+
+#, c-format
+#~ msgid "Invalid value for option %s: \"%s\""
+#~ msgstr "Неправильне значення для параметра %s: \"%s\""
+
+#~ msgid "Invoking PGP.."
+#~ msgstr "Виклик PGP.."
+
+#~ msgid "Invoking S/MIME.."
+#~ msgstr "Виклик S/MIME.."
+
+#, c-format
+#~ msgid "Key is not bound.  Press '%s' for help"
+#~ msgstr "Клавішу не призначено. Натисніть \"%s\" для підказки"
+
+#~ msgid "List actions only support mailto: URIs. (Try a browser?)"
+#~ msgstr "Розсилка підтримує тільки дії mailto: URI. (Спробувати браузер?)"
+
+#, c-format
+#~ msgid "Lock count exceeded, remove lock for %s?"
+#~ msgstr "Всі спроби блокування вичерпано, зняти блокування з %s?"
+
+#~ msgid "Logging in.."
+#~ msgstr "Реєстрація.."
+
+#, c-format
+#~ msgid "Looking for keys matching \"%s\".."
+#~ msgstr "Пошук відповідних ключів \"%s\".."
+
+#, c-format
+#~ msgid "Looking up %s.."
+#~ msgstr "Пошук %s.."
+
+#~ msgid "M%?n?AIL&ail?"
+#~ msgstr "M%?n?AIL&ail?"
+
+#~ msgid "MIME type not defined.  Cannot view attachment"
+#~ msgstr "Тип MIME не визначено. Неможливо показати додаток"
+
+#~ msgid "Mailbox is corrupt!"
+#~ msgstr "Поштову скриньку пошкоджено!"
+
+#~ msgid "Mailbox reconnected.  Some changes may have been lost"
+#~ msgstr "Зв’язок з поштовою скринькою відновлено. Деякі зміни можливо було втрачено"
+
+#~ msgid "Mailbox was corrupted!"
+#~ msgstr "Поштову скриньку було пошкоджено!"
+
+#~ msgid "Mailbox was externally modified.  Flags may be wrong"
+#~ msgstr "Поштову скриньку змінила зовнішня програма. Атрибути можуть бути змінені"
+
+#, c-format
+#~ msgid "Marking %d messages deleted.."
+#~ msgstr "Маркування %d повідомлень видаленими.."
+
+#~ msgid "Marking messages deleted.."
+#~ msgstr "Маркування повідомлень видаленими.."
+
+#~ msgid "Message contains:\n"
+#~ msgstr "Лист містить:\n"
+
+#~ msgid "Message file is empty!"
+#~ msgstr "Файл повідомлення порожній!"
+
+#~ msgid "Message not modified!"
+#~ msgstr "Повідомлення не змінено!"
+
+#~ msgid "Messages bounced"
+#~ msgstr "Копії листів переслано"
+
+#~ msgid "Messages could not be printed"
+#~ msgstr "Повідомлення не можуть бути надруковані"
+
+#~ msgid "Messages not bounced"
+#~ msgstr "Копії листів не переслано"
+
+#~ msgid "Messages printed"
+#~ msgstr "Повідомлення надруковані"
+
+#~ msgid "Missing arguments"
+#~ msgstr "Недостатньо аргументів"
+
+#, c-format
+#~ msgid "Missing blank line separator from output of \"%s\"!"
+#~ msgstr "Відсутній порожній рядок-роздільник у виводі \"%s\"!"
+
+#, c-format
+#~ msgid "Missing mime type from output of \"%s\"!"
+#~ msgstr "Відсутній MIME-тип у виводі \"%s\"!"
+
+#, c-format
+#~ msgid "Move %d read messages to %s?"
+#~ msgstr "Перенести прочитані листи (кількість: %d) до %s?"
+
+#, c-format
+#~ msgid "Moving read messages to %s.."
+#~ msgstr "Перенос прочитаних листів до %s.."
+
+#~ msgid "Mutt with %?m?%m messages&no messages?%?n? [%n NEW]?"
+#~ msgstr "Mutt: %?m?повідомлення: %m&немає повідомлень?%?n? [НОВІ: %n]?"
+
+#, c-format
+#~ msgid "MuttLisp: missing if condition: %s"
+#~ msgstr "MuttLisp: відсутня умова if: %s"
+
+#, c-format
+#~ msgid "MuttLisp: no such function %s"
+#~ msgstr "MuttLisp: функція \"%s\" не існує"
+
+#, c-format
+#~ msgid "MuttLisp: unclosed backticks: %s"
+#~ msgstr "MuttLisp: незакриті зворотні лапки: %s"
+
+#, c-format
+#~ msgid "MuttLisp: unclosed list: %s"
+#~ msgstr "MuttLisp: незакритий список: %s"
+
+#~ msgid "No attachments, abort sending?"
+#~ msgstr "Додатків немає, відмінити відправку?"
+
+#~ msgid "No backgrounded editing sessions"
+#~ msgstr "Немає фонових сеансів редагування"
+
+#~ msgid "No boundary parameter found! [report this error]"
+#~ msgstr "Немає параметру межі! [сповістіть про цю помилку]"
+
+#~ msgid "No crypto backend configured.  Disabling message security setting"
+#~ msgstr "Шифрування не налаштовано. Опції безпеки листів заборонені"
+
+#~ msgid "No lines in message.\n"
+#~ msgstr "Жодного рядку в листі.\n"
+
+#, c-format
+#~ msgid "No list action available for %s"
+#~ msgstr "Немає доступних дій для розсилки %s"
+
+#~ msgid "No mailbox.\n"
+#~ msgstr "Не поштова скринька.\n"
+
+#~ msgid "No mailing lists found!"
+#~ msgstr "Не знайдено списків розсилки!"
+
+#~ msgid "No matching mailcap entry found.  Viewing as text"
+#~ msgstr "Не знайдено відомостей у mailcap. Показано як текст"
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "Немає виводу від OpenSSL.."
+
+#~ msgid "No recipients are specified!"
+#~ msgstr "Не вказано отримувачів!"
+
+#~ msgid "No recipients specified.\n"
+#~ msgstr "Отримувачів не вказано.\n"
+
+#~ msgid "No recipients were specified"
+#~ msgstr "Отримувачів не було вказано"
+
+#~ msgid "No such folder"
+#~ msgstr "Такої скриньки немає"
+
+#~ msgid "No tagged messages are visible!"
+#~ msgstr "Жоден з виділених листів не є видимим!"
+
+#~ msgid "Not supported"
+#~ msgstr "Не підтримується"
+
+#, c-format
+#~ msgid "On %d, %n wrote:"
+#~ msgstr "On %d, %n wrote:"
+
+#~ msgid "Out of memory!"
+#~ msgstr "Не вистачає пам’яті!"
+
+#~ msgid "Owner"
+#~ msgstr "Власник"
+
+#, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, %s, (с)відм, вимк. (o)ppenc? "
+
+#, c-format
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
+#~ msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, %s, (с)відміна? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, (c)відм, вимк. (o)ppenc? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, (c)відміна? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
+#~ msgstr "PGP (e)шифр., (s)підп., (a)підп. як, (b)усе, s/(m)ime, (c)відміна? "
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
+#~ msgstr "PGP (e)шифр, (s)підп, (a)підп. як, (b)усе, s/(m)ime, (c)відм, вимк. (o)ppenc? "
+
+#, c-format
+#~ msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP (s)підп., (a)підп. як, %s, (с)відміна, вимкнути (o)ppenc? "
+
+#~ msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP (s)підп., (a)підп. як, (c)відміна, вимкнути (o)ppenc? "
+
+#~ msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "PGP (s)підп., (a)підп. як, s/(m)ime, (c)відміна, вимкнути (o)ppenc? "
+
+#~ msgid "PGP already selected. Clear & continue ? "
+#~ msgstr "PGP вже вибрано. Очистити і продовжити? "
+
+#~ msgid "PGP passphrase forgotten"
+#~ msgstr "Кодову фразу PGP забуто"
+
+#~ msgid "POP timestamp is invalid!"
+#~ msgstr "Неправильне значення часу POP!"
+
+#~ msgid "Passphrase(s) forgotten"
+#~ msgstr "Паролі видалено з пам’яті"
+
+#, c-format
+#~ msgid "Password for %s client cert: "
+#~ msgstr "Пароль для сертифіката клієнта %s: "
+
+#, c-format
+#~ msgid "Pattern modifier '~%c' is disabled"
+#~ msgstr "Модифікатор шаблону \"~%c\" заборонено"
+
+#~ msgid "Please set the hostname variable to a proper value when using mixmaster!"
+#~ msgstr "Треба встановити відповідне значення hostname для використання mixmaster!"
+
+#~ msgid "Postpone this message?"
+#~ msgstr "Залишити лист до подальшого редагування та відправки?"
+
+#~ msgid "Preparing forwarded message.."
+#~ msgstr "Підготування листа для пересилання.."
+
+#~ msgid "Press any key to continue.."
+#~ msgstr "Натисніть будь-яку клавішу.."
+
+#~ msgid "Print tagged attachment(s)?"
+#~ msgstr "Друкувати виділені додатки?"
+
+#, c-format
+#~ msgid "Process is still running. Really select?"
+#~ msgstr "Процес ще працює. Дійсно вибрати?"
+
+#, c-format
+#~ msgid "Purge %d deleted messages?"
+#~ msgstr "Знищити %d видалених листів?"
+
+#~ msgid "QRESYNC failed.  Reopening mailbox"
+#~ msgstr "Не вдалось виконати QRESYNC. Повторне відкриття поштової скриньки"
+
+#, c-format
+#~ msgid "Query '%s'"
+#~ msgstr "Запит \"%s\""
+
+#~ msgid "Quit Mutt?"
+#~ msgstr "Вийти з Mutt?"
+
+#, c-format
+#~ msgid "Reading %s.."
+#~ msgstr "Читання %s.."
+
+#, c-format
+#~ msgid "Reading new messages (%d bytes).."
+#~ msgstr "Читання нових повідомлень (%d байт).."
+
+#~ msgid "Really delete the main message?"
+#~ msgstr "Дійсно видалити текст повідомлення?"
+
+#~ msgid "Reconnect failed.  Mailbox closed"
+#~ msgstr "Не вдалося відновити з’єднання. Поштову скриньку закрито"
+
+#~ msgid "Reconnect succeeded"
+#~ msgstr "З’єднання відновлено"
+
+#~ msgid "Redraw"
+#~ msgstr "Перемалювати"
+
+#~ msgid "Reopening mailbox.."
+#~ msgstr "Повторне відкриття поштової скриньки.."
+
+#~ msgid "Resume"
+#~ msgstr "Відновити"
+
+#~ msgid "Rev-Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "Звор.Сорт.:(d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/(c)рахунок/(p)спам/(l)позн?"
+
+#~ msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "Зворотньо сортувати: (d)дата/(a)ім’я/(z)розм/(c)кільк/(u)непрочит/(n)не сорт?"
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
+#~ msgstr "S/MIME (e)шифр, (s)підп, (w)шифр.з, (a)підп.як, (b)усе, (c)відм, вимк.(o)ppenc?"
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+#~ msgstr "S/MIME (e)шифр., (s)підп., (w)шифр. з, (a)підп. як, (b)усе, (c)відміна? "
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
+#~ msgstr "S/MIME (e)шифр., (s)підп., (a)підп. як, (b)усе, (p)gp, (c)відміна? "
+
+#~ msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
+#~ msgstr "S/MIME (e)шифр, (s)підп, (a)підп. як, (b)усе, (p)gp, (c)відм, вимк. (o)ppenc? "
+
+#~ msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "S/MIME (s)підп., (w)шифр. з, (a)підп. як, (c)відм., вимкнути (o)ppenc? "
+
+#~ msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
+#~ msgstr "S/MIME (s)підп., (a)підп. як, (p)gp, (c)відміна, вимкнути (o)ppenc? "
+
+#~ msgid "S/MIME already selected. Clear & continue ? "
+#~ msgstr "S/MIME вже вибрано. Очистити і продовжити? "
+
+#, c-format
+#~ msgid "SMTP authentication method %s requires SASL"
+#~ msgstr "SMTP-аутентифікація за допомогою метода %s вимагає SASL"
+
 #~ msgid "SMTP authentication requires SASL"
 #~ msgstr "Автентифікація SMTP вимагає SASL"
+
+#, c-format
+#~ msgid "SSL Certificate check (certificate %d of %d in chain)"
+#~ msgstr "Перевірка сертифікату (сертифікат %d з %d в ланцюжку)"
+
+#~ msgid "SSL is unavailable"
+#~ msgstr "SSL недоступний"
+
+#, c-format
+#~ msgid "Save%s to mailbox"
+#~ msgstr "Перенести%s до скриньки"
+
+#, c-format
+#~ msgid "Saving Fcc to %s"
+#~ msgstr "Збереження Fcc у %s"
+
+#, c-format
+#~ msgid "Saving changed messages... [%d/%d]"
+#~ msgstr "Збереження змінених листів... [%d/%d]"
+
+#~ msgid "Saving tagged messages.."
+#~ msgstr "Збереження вибраних повідомлень.."
+
+#~ msgid "Saving.."
+#~ msgstr "Збереження.."
+
+#, c-format
+#~ msgid "Scanning %s.."
+#~ msgstr "Перегляд %s.."
+
+#~ msgid "Searching.."
+#~ msgstr "Пошук.."
+
+#, c-format
+#~ msgid "See $%s for more information"
+#~ msgstr "Дивіться $%s для отримання додаткової інформації"
+
+#~ msgid "Select  "
+#~ msgstr "Вибір  "
+
+#, c-format
+#~ msgid "Selecting %s.."
+#~ msgstr "Вибір %s.."
+
+#~ msgid "Sending message.."
+#~ msgstr "Лист відправляється.."
+
+#~ msgid "Server closed connection!"
+#~ msgstr "Сервер закрив з’єднання!"
+
+#~ msgid "Setting reply flags"
+#~ msgstr "Встановлення позначок відповіді"
+
+#~ msgid "Sort Date/Frm/Recv/Subj/tO/Thread/Unsort/siZe/sCore/sPam/Label?: "
+#~ msgstr "Сортувати: (d)дата/(f)від/(r)отр/(s)тема/(o)кому/(t)розмова/(u)без/(z)розмір/(c)рахунок/(p)спам/(l)позн?"
+
+#~ msgid "Sort by (d)ate, (a)lpha, si(z)e, (c)ount, (u)nread, or do(n)'t sort? "
+#~ msgstr "Сортувати: (d)дата/(a)ім’я/(z)розм/(c)кільк/(u)непрочит/(n)не сорт?"
+
+#~ msgid "Sorting mailbox.."
+#~ msgstr "Сортування поштової скриньки.."
+
+#, c-format
+#~ msgid "Subscribing to %s.."
+#~ msgstr "Підписування на %s.."
+
+#~ msgid "Tag the messages you want to attach!"
+#~ msgstr "Виділіть повідомлення для додавання!"
+
+#~ msgid "That email address is already assigned to an autocrypt account"
+#~ msgstr "Ця адреса вже призначена для облікового запису autocrypt"
+
+#~ msgid "The message index is incorrect. Try reopening the mailbox"
+#~ msgstr "Некоректний індекс повідомленнь. Спробуйте відкрити скриньку ще раз"
+
+#~ msgid "There are $background_edit sessions. Really quit Mutt?"
+#~ msgstr "Є фонові сеанси редагування. Дійсно вийти?"
+
+#~ msgid "There are no subparts to show!"
+#~ msgstr "Немає підчастин для проглядання!"
+
+#~ msgid "There was a problem decoding the message for attachment.  Try again with decoding turned off?"
+#~ msgstr "Не вдалось декодувати вкладення. Спробувати без декодування?"
+
+#~ msgid "There was a problem decrypting the message for attachment.  Try again with decryption turned off?"
+#~ msgstr "Не вдалось розшифрувати вкладення. Спробувати без розшифровки?"
+
+#~ msgid "There was an error displaying all or part of the message"
+#~ msgstr "Під час відображення всього повідомлення або його частини сталася помилка"
+
+#~ msgid "This IMAP server is ancient. Mutt does not work with it"
+#~ msgstr "Цей сервер IMAP застарілий. Mutt не може працювати з ним"
+
+#~ msgid "Thread cannot be broken, message is not part of a thread"
+#~ msgstr "Розмовву неможливо розірвати: повідомлення не є частиною розмови"
+
+#~ msgid "Thread contains unread messages"
+#~ msgstr "Розмова має нечитані листи"
+
+#~ msgid "Timeout exceeded while attempting fcntl lock!"
+#~ msgstr "Вичерпано час очікування блокування через fctnl!"
+
+#~ msgid "Timeout exceeded while attempting flock lock!"
+#~ msgstr "Вичерпано час очікування блокування через flock!"
+
+#~ msgid ""
+#~ "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
+#~ "To report a bug, please contact the Mutt maintainers via gitlab:\n"
+#~ "    https://gitlab.com/muttmua/mutt/issues\n"
+#~ msgstr ""
+#~ "Для зв’язку з розробниками, шліть лист до <mutt-dev@mutt.org>.\n"
+#~ "Для повідомлення про ваду, будь ласка, зверніться до розробників через gitlab:\n"
+#~ "    https://gitlab.com/muttmua/mutt/issues\n"
+
+#~ msgid "Toggle display of subparts"
+#~ msgstr "вимк./ввімкн. відображення підчастин"
+
+#~ msgid "Trying to extract S/MIME certificates...\n"
+#~ msgstr "Спроба видобування сертифікатів S/MIME...\n"
+
+#~ msgid "Trying to reconnect.."
+#~ msgstr "Спроба відновити з’єднання.."
+
+#, c-format
+#~ msgid "Type '%s' to background compose session"
+#~ msgstr "Натисніть \"%s\" для створення повідомлення в фоновом сеансі"
+
+#, c-format
+#~ msgid "Unable to attach %s!"
+#~ msgstr "Неможливо додати %s!"
+
+#~ msgid "Unable to attach!"
+#~ msgstr "Неможливо додати!"
+
+#~ msgid "Unable to lock mailbox!"
+#~ msgstr "Поштова скринька не може бути блокована!"
+
+#~ msgid "Unable to open temporary file!"
+#~ msgstr "Неможливо відкрити тимчасовий файл!"
+
+#, c-format
+#~ msgid "Unable to save attachments to %s.  Using cwd"
+#~ msgstr "Не вдається зберегти вкладення в %s. Використовується поточний каталог"
+
+#, c-format
+#~ msgid "Unable to write %s!"
+#~ msgstr "Неможливо записати %s!"
+
+#~ msgid "Unknown"
+#~ msgstr "Невідоме"
+
+#, c-format
+#~ msgid "Unsubscribing from %s.."
+#~ msgstr "Відписування від %s.."
+
+#~ msgid "Uploading message.."
+#~ msgstr "Відправка листа.."
+
+#~ msgid "Usage: set variable=yes|no"
+#~ msgstr "Використання: set variable=yes|no"
+
+#, c-format
+#~ msgid "Use '%s' to select a directory"
+#~ msgstr "Використовуйте \"%s\" для вибору каталогу"
+
+#~ msgid "Use 'toggle-write' to re-enable write!"
+#~ msgstr "Використовуйте toggle-write для ввімкнення запису!"
+
+#~ msgid "Verifying message indexes.."
+#~ msgstr "Перевірка індексів повідомлень.."
+
+#~ msgid "View Attachm"
+#~ msgstr "Додатки"
+
+#~ msgid "Waiting for editor to exit"
+#~ msgstr "Очікування виходу з редактора"
+
+#~ msgid "Waiting for response.."
+#~ msgstr "Чекаємо на відповідь.."
+
+#, c-format
+#~ msgid "Warning: '%s' is a bad IDN"
+#~ msgstr "Попередження: некоректне IDN: %s"
+
+#, c-format
+#~ msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
+#~ msgstr "Попередження: Погане IDN \"%s\" в псевдонімі \"%s\".\n"
+
+#~ msgid "Warning: clearing unexpected server data before TLS negotiation"
+#~ msgstr "Попередження: очищення несподіваних даних сервера перед узгодженням TLS"
+
+#~ msgid "Write fault!"
+#~ msgstr "Збій запису!"
+
+#, c-format
+#~ msgid "Writing %s.."
+#~ msgstr "Запис %s.."
+
+#, c-format
+#~ msgid "Writing message to %s .."
+#~ msgstr "Запис листа до %s.."
+
+#~ msgid "You already have an alias defined with that name!"
+#~ msgstr "Ви вже маєте псевдонім на це ім’я!"
+
+#~ msgid "You are on the first page"
+#~ msgstr "Це перша сторінка"
+
+#~ msgid "You are on the last page"
+#~ msgstr "Це остання сторінка"
+
+#~ msgid "You cannot scroll down farther"
+#~ msgstr "Нижче прокручувати неможна"
+
+#~ msgid "You cannot scroll up farther"
+#~ msgstr "Вище прокручувати неможна"
+
+#~ msgid "You have no aliases!"
+#~ msgstr "Ви не маєте жодного псевдоніму!"
+
+#, c-format
+#~ msgid "[%s = %s] Accept?"
+#~ msgstr "[%s = %s] Вірно?"
+
+#, c-format
+#~ msgid "[-- %s/%s is unsupported "
+#~ msgstr "[-- %s/%s не підтримується "
+
+#, c-format
+#~ msgid "[-- Attachment #%d"
+#~ msgstr "[-- Додаток номер %d"
+
+#~ msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
+#~ msgstr "[-- Помилка: жодну частину Multipart/Alternative не вийшло відобразити! --]\n"
+
+#~ msgid ""
+#~ "[-- Error: Missing or bad-format multipart/signed signature! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Помилка: відсутня або несумісна структура multipart/signed! --]\n"
+#~ "\n"
+
+#, c-format
+#~ msgid ""
+#~ "[-- Error: Unknown multipart/signed protocol %s! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Помилка: невідомий протокол multipart/signed %s! --]\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "[-- Error: could not create a PGP subprocess! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Помилка: не вийшло створити підпроцес PGP! --]\n"
+#~ "\n"
+
+#~ msgid "[-- Error: could not create temporary file! --]\n"
+#~ msgstr "[-- Помилка: не вийшло створити тимчасовий файл! --]\n"
+
+#~ msgid ""
+#~ "[-- Error: could not find beginning of PGP message! --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Помилка: не знайдено початок повідомлення PGP! --]\n"
+#~ "\n"
+
+#~ msgid ""
+#~ "[-- Error: decryption failed --]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Помилка: не вдалося розшифрувати --]\n"
+#~ "\n"
+
+#~ msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
+#~ msgstr "[-- Помилка: неможливо створити підпроцес OpenSSL! --]\n"
+
+#~ msgid "[-- Error: unable to create PGP subprocess! --]\n"
+#~ msgstr "[-- Помилка: неможливо створити підпроцес PGP! --]\n"
+
+#, c-format
+#~ msgid "[-- This %s/%s attachment "
+#~ msgstr "[-- Цей %s/%s додаток "
+
+#, c-format
+#~ msgid "[-- This %s/%s attachment is not included, --]\n"
+#~ msgstr "[-- Цей %s/%s додаток не включено, --]\n"
+
+#~ msgid "[-- This is an attachment "
+#~ msgstr "[-- Це додаток "
+
+#, c-format
+#~ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
+#~ msgstr "[-- Тип: %s/%s, кодування: %s, розмір: %s --]\n"
+
+#, c-format
+#~ msgid "[-- and the indicated access-type %s is unsupported --]\n"
+#~ msgstr "[-- відповідний тип доступу %s не підтримується --]\n"
+
+#~ msgid ""
+#~ "[-- and the indicated external source has --]\n"
+#~ "[-- expired. --]\n"
+#~ msgstr "[-- і відповідне зовнішнє джерело видалено за давністю. --]\n"
+
+#, c-format
+#~ msgid "[-- on %s --]\n"
+#~ msgstr "[-- %s --]\n"
+
+#~ msgid "^(re)(\\[[0-9]+\\])*:[ \t]*"
+#~ msgstr "^(re|ha|на)(\\[[0-9]+\\])*:[ \t]*"
+
+#~ msgid "_maildir_commit_message(): unable to set time on file"
+#~ msgstr "_maildir_commit_message(): неможливо встановити час для файлу"
+
+#, c-format
+#~ msgid "ambiguous specification of secret key `%s'\n"
+#~ msgstr "неоднозначне визначення таємного ключа \"%s\"\n"
+
+#~ msgid "attach file(s) to this message"
+#~ msgstr "приєднати файл(и) до цього листа"
+
+#~ msgid "attach message(s) to this message"
+#~ msgstr "приєднати лист(и) до цього листа"
+
+#~ msgid "bind: too many arguments"
+#~ msgstr "bind: забагато аргументів"
+
+#~ msgid "cannot get certificate common name"
+#~ msgstr "Неможливо отримати common name сертифікату"
+
+#~ msgid "cannot get certificate subject"
+#~ msgstr "неможливо отримати subject сертифікату"
+
+#~ msgid "color: too few arguments"
+#~ msgstr "color: замало аргументів"
+
+#~ msgid "contact list owner"
+#~ msgstr "зв’язатися з власником розсилки"
+
+#~ msgid "converting"
+#~ msgstr "перетворюється"
+
+#~ msgid "dazcun"
+#~ msgstr "dazcun"
+
+#~ msgid "delete messages matching a pattern"
+#~ msgstr "видалити листи, що містять вираз"
+
+#~ msgid "display recent history of error messages"
+#~ msgstr "показати останню історію повідомлень про помилки"
+
+#~ msgid "drac"
+#~ msgstr "drac"
+
+#~ msgid "dt"
+#~ msgstr "dt"
+
+#~ msgid "edit the raw message"
+#~ msgstr "редагувати вихідний код листа"
+
+#~ msgid "enter a muttrc command"
+#~ msgstr "ввести команду muttrc"
+
+#, c-format
+#~ msgid "error adding recipient `%s': %s\n"
+#~ msgstr "помилка додавання отримувача \"%s\": %s\n"
+
+#, c-format
+#~ msgid "error allocating data object: %s\n"
+#~ msgstr "помилка розміщення об’єкту даних: %s\n"
+
+#, c-format
+#~ msgid "error creating gpgme context: %s\n"
+#~ msgstr "помилка при створенні контексту gpgme: %s\n"
+
+#, c-format
+#~ msgid "error creating gpgme data object: %s\n"
+#~ msgstr "помилка при створенні об’єкту даних gpgme: %s\n"
+
+#, c-format
+#~ msgid "error enabling CMS protocol: %s\n"
+#~ msgstr "помилка при ввімкненні протоколу CMS: %s\n"
+
+#, c-format
+#~ msgid "error encrypting data: %s\n"
+#~ msgstr "помилка при шифруванні даних: %s\n"
+
+#, c-format
+#~ msgid "error importing key: %s\n"
+#~ msgstr "помилка імпорта ключа: %s\n"
+
+#, c-format
+#~ msgid "error reading data object: %s\n"
+#~ msgstr "помилка читання об’єкту даних: %s\n"
+
+#, c-format
+#~ msgid "error rewinding data object: %s\n"
+#~ msgstr "помилка позиціонування на початок об’єкта даних: %s\n"
+
+#, c-format
+#~ msgid "error setting PKA signature notation: %s\n"
+#~ msgstr "помилка встановлення нотації PKA для підписання: %s\n"
+
+#, c-format
+#~ msgid "error setting secret key `%s': %s\n"
+#~ msgstr "помилка встановлення таємного ключа \"%s\": %s\n"
+
+#, c-format
+#~ msgid "error signing data: %s\n"
+#~ msgstr "помилка при підписуванні даних: %s\n"
+
+#~ msgid "esabfc"
+#~ msgstr "esabfc"
+
+#~ msgid "esabfci"
+#~ msgstr "esabfci"
+
+#~ msgid "esabfco"
+#~ msgstr "esabfco"
+
+#~ msgid "esabfcoi"
+#~ msgstr "esabfcoi"
+
+#~ msgid "esabmfc"
+#~ msgstr "esabmfc"
+
+#~ msgid "esabmfco"
+#~ msgstr "esabmfco"
+
+#~ msgid "esabpfc"
+#~ msgstr "esabpfc"
+
+#~ msgid "esabpfco"
+#~ msgstr "esabpfco"
+
+#~ msgid "eswabfc"
+#~ msgstr "eswabfc"
+
+#~ msgid "eswabfco"
+#~ msgstr "eswabfco"
+
+#~ msgid "finished"
+#~ msgstr "завершено"
+
+#~ msgid "format error"
+#~ msgstr "помилка формату"
+
+#~ msgid "has been deleted --]\n"
+#~ msgstr "було видалено --]\n"
+
+#~ msgid "list and select backgrounded compose sessions"
+#~ msgstr "отримання списку і вибір фонових сеансів редагування"
+
+#~ msgid "macro: too many arguments"
+#~ msgstr "macro: забагато аргументів"
+
+#~ msgid "mailbox shortcut expanded to empty regexp"
+#~ msgstr "скорочення для скриньки перетворене на пустий регулярний вираз"
+
+#~ msgid "message(s) not deleted"
+#~ msgstr "повідомлення не видалені"
+
+#, c-format
+#~ msgid "mismatched brackets: %s"
+#~ msgstr "невідповідна дужка: %s"
+
+#, c-format
+#~ msgid "mismatched parenthesis: %s"
+#~ msgstr "невідповідна дужка: %s"
+
+#~ msgid "missing filename.\n"
+#~ msgstr "не вказано імені файлу.\n"
+
+#~ msgid "mono: too few arguments"
+#~ msgstr "mono: замало аргументів"
+
+#~ msgid "move attachment down in compose menu list"
+#~ msgstr "перемістити вкладення вниз в списку меню редагування"
+
+#~ msgid "move attachment up in compose menu list"
+#~ msgstr "перемістити вкладення вгору в списку меню редагування"
+
+#~ msgid "multipart message has no boundary parameter!"
+#~ msgstr "Багаточастинний лист не має параметру межі!"
+
+#~ msgid "mutt_account_getoauthbearer: Command returned empty string"
+#~ msgstr "mutt_account_getoauthbearer: Команда повернула порожній рядок"
+
+#~ msgid "mutt_account_getoauthbearer: No OAUTH refresh command defined"
+#~ msgstr "mutt_account_getoauthbearer: Команду оновлення OAUTH не визначено"
+
+#~ msgid "mutt_account_getoauthbearer: Unable to run refresh command"
+#~ msgstr "mutt_account_getoauthbearer: Неможливо виконати команду оновлення"
+
+#, c-format
+#~ msgid "mutt_restore_default(%s): error in regexp: %s\n"
+#~ msgstr "mutt_restore_default(%s): помилка регулярного виразу: %s\n"
+
+#~ msgid "not converting"
+#~ msgstr "не перетворюється"
+
+#~ msgid "not enough arguments"
+#~ msgstr "замало аргументів"
+
+#~ msgid "null key sequence"
+#~ msgstr "порожня послідовність клавіш"
+
+#~ msgid "number overflow"
+#~ msgstr "переповнення числового значення"
+
+#~ msgid ""
+#~ "options:\n"
+#~ "  -A <alias>\texpand the given alias\n"
+#~ "  -a <file> [...] --\tattach file(s) to the message\n"
+#~ "\t\tthe list of files must be terminated with the \"--\" sequence\n"
+#~ "  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
+#~ "  -c <address>\tspecify a carbon-copy (CC) address\n"
+#~ "  -D\t\tprint the value of all variables to stdout"
+#~ msgstr ""
+#~ "  -A <alias>\tрозкрити псевдонім\n"
+#~ "  -a <file> [...] --\tдодати файл(и) до листа\n"
+#~ "\t\tсписок файлів має закінчуватись на \"--\"\n"
+#~ "  -b <address>\tвказати BCC, адресу прихованої копії\n"
+#~ "  -c <address>\tвказати адресу копії (CC)\n"
+#~ "  -D\t\tпоказати значення всіх змінних"
+
+#~ msgid "perform mailing list action"
+#~ msgstr "виконати дію розсилки"
+
+#~ msgid "post to mailing list"
+#~ msgstr "відправити в розсилку"
+
+#~ msgid "prefix is illegal with reset"
+#~ msgstr "префікс неприпустимий при скиданні значень"
+
+#~ msgid "push: too many arguments"
+#~ msgstr "push: забагато аргументів"
+
+#~ msgid "retrieve list archive information"
+#~ msgstr "отримати інформацію про архів розсилки"
+
+#~ msgid "retrieve list help"
+#~ msgstr "отримати допомогу розсилки"
+
+#~ msgid "run: too many arguments"
+#~ msgstr "run: забагато аргументів"
+
+#~ msgid "running"
+#~ msgstr "працює"
+
+#~ msgid "safco"
+#~ msgstr "safco"
+
+#~ msgid "safcoi"
+#~ msgstr "safcoi"
+
+#~ msgid "samfco"
+#~ msgstr "samfco"
+
+#~ msgid "sapfco"
+#~ msgstr "sapfco"
+
+#~ msgid "score: too few arguments"
+#~ msgstr "score: замало аргументів"
+
+#~ msgid "score: too many arguments"
+#~ msgstr "score: забагато аргументів"
+
+#, c-format
+#~ msgid "secret key `%s' not found: %s\n"
+#~ msgstr "таємний ключ \"%s\" не знайдено: %s\n"
+
+#~ msgid "select a new mailbox from the browser"
+#~ msgstr "обрати нову поштову скриньку"
+
+#~ msgid "select a new mailbox from the browser in read only mode"
+#~ msgstr "обрати нову поштову скриньку лише для читання"
+
+#~ msgid "show the Mutt version number and date"
+#~ msgstr "показати версію та дату Mutt"
+
+#~ msgid "skip beyond headers"
+#~ msgstr "пропустити заголовки"
+
+#~ msgid "source: too many arguments"
+#~ msgstr "source: забагато аргументів"
+
+#~ msgid "subscribe to current mailbox (IMAP only)"
+#~ msgstr "підписатись на цю скриньку (лише IMAP)"
+
+#~ msgid "subscribe to mailing list"
+#~ msgstr "підписатися на розсилку"
+
+#~ msgid "swafco"
+#~ msgstr "swafco"
+
+#~ msgid "sync: mbox modified, but no modified messages! (report this bug)"
+#~ msgstr "sync: скриньку змінено, але немає змінених листів! (повідомте про це)"
+
+#~ msgid "tag messages matching a pattern"
+#~ msgstr "виділити листи, що відповідають виразу"
+
+#~ msgid "too few arguments"
+#~ msgstr "змало аргументів"
+
+#~ msgid "too many arguments"
+#~ msgstr "забагато аргументів"
+
+#~ msgid "undelete messages matching a pattern"
+#~ msgstr "відновити листи, що відповідають виразу"
+
+#~ msgid "unsubscribe from current mailbox (IMAP only)"
+#~ msgstr "відписатись від цієї скриньки (лише IMAP)"
+
+#~ msgid "unsubscribe from mailing list"
+#~ msgstr "відписатися від розсилки"
+
+#~ msgid "untag messages matching a pattern"
+#~ msgstr "зняти виділення з листів, що відповідають виразу"
+
+#~ msgid ""
+#~ "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
+#~ "       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+#~ "       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
+#~ "       mutt [<options>] -p\n"
+#~ "       mutt [<options>] -A <alias> [...]\n"
+#~ "       mutt [<options>] -Q <query> [...]\n"
+#~ "       mutt [<options>] -D\n"
+#~ "       mutt -v[v]\n"
+#~ msgstr ""
+#~ "Використання:\n"
+#~ "       mutt [<options>] [-z] [-f <file> | -yZ]\n"
+#~ "       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
+#~ "       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
+#~ "       mutt [<options>] -p\n"
+#~ "       mutt [<options>] -A <alias> [...]\n"
+#~ "       mutt [<options>] -Q <query> [...]\n"
+#~ "       mutt [<options>] -D\n"
+#~ "       mutt -v[v]\n"
+
+#~ msgid "value is illegal with reset"
+#~ msgstr "значення неприпустиме при скиданні значень"
+
+#~ msgid "view attachment in pager using copiousoutput mailcap entry"
+#~ msgstr "переглянути вкладення з використанням copiousoutput в mailcap"
+
+#~ msgid "view multipart/alternative"
+#~ msgstr "переглянути multipart/alternative"
+
+#~ msgid "view multipart/alternative as text"
+#~ msgstr "переглянути multipart/alternative як текст"
+
+#~ msgid "view multipart/alternative in pager using copiousoutput mailcap entry"
+#~ msgstr "переглянути multipart/alternative з використанням copiousoutput в mailcap"
+
+#~ msgid "view multipart/alternative using mailcap"
+#~ msgstr "переглянути multipart/alternative з використанням mailcap"
+
+#~ msgid "wipe passphrase(s) from memory"
+#~ msgstr "знищити паролі у пам’яті"
+
+#~ msgid ""
+#~ "~q\t\twrite file and quit editor\n"
+#~ "~r file\t\tread a file into the editor\n"
+#~ "~t users\tadd users to the To: field\n"
+#~ "~u\t\trecall the previous line\n"
+#~ "~v\t\tedit message with the $visual editor\n"
+#~ "~w file\t\twrite message to file\n"
+#~ "~x\t\tabort changes and quit editor\n"
+#~ "~?\t\tthis message\n"
+#~ ".\t\ton a line by itself ends input\n"
+#~ msgstr ""
+#~ "~q\t\tзаписати файл та вийти з редактора\n"
+#~ "~r файл\t\tдодати текст з файлу в лист\n"
+#~ "~t адреси\tдодати адреси до To:\n"
+#~ "~u\t\tповторити попередній рядок\n"
+#~ "~v\t\tредагувати лист редактором $visual\n"
+#~ "~w файл\t\tзаписати лист до файлу\n"
+#~ "~x\t\tвідмінити зміни та вийти з редактора\n"
+#~ "~?\t\tце повідомлення\n"
+#~ ".\t\tрядок з однієї крапки - ознака кінця вводу\n"
+
+#~ msgid ""
+#~ "~~\t\tinsert a line beginning with a single ~\n"
+#~ "~b addresses\tadd addresses to the Bcc: field\n"
+#~ "~c addresses\tadd addresses to the Cc: field\n"
+#~ "~f messages\tinclude messages\n"
+#~ "~F messages\tsame as ~f, except also include headers\n"
+#~ "~h\t\tedit the message header\n"
+#~ "~m messages\tinclude and quote messages\n"
+#~ "~M messages\tsame as ~m, except include headers\n"
+#~ "~p\t\tprint the message\n"
+#~ msgstr ""
+#~ "~~\t\tдодати рядок, що починається з єдиної ~\n"
+#~ "~b адреси\tдодати адреси до Bcc:\n"
+#~ "~c адреси\tдодати адреси до Cc:\n"
+#~ "~f листи\tдодати листи\n"
+#~ "~F листи\tте ж саме, що й ~f, за винятком заголовків\n"
+#~ "~h\t\tредагувати заголовок листа\n"
+#~ "~m листи\tдодати листи як цитування\n"
+#~ "~M листи\tте ж саме, що й ~m, за винятком заголовків\n"
+#~ "~p\t\tдрукувати лист\n"
