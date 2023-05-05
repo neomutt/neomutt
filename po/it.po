@@ -7905,10 +7905,3 @@ msgstr "Opzioni di compilazione:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opzioni di compilazione:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Uscire da neomutt?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "Autenticazione GSSAPI fallita"

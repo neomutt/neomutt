@@ -7938,10 +7938,3 @@ msgstr "Kompileringsval:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Kompileringsval:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Avsluta NeoMutt?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI-verifiering misslyckades"

@@ -7664,12 +7664,3 @@ msgstr "Preložené s voľbami:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Vobľy pre vývoj:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Nie je možné znížiť hodnotu vlastnej premennej my_"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Opustiť NeoMutt?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP overenie vyžaduje SASL"

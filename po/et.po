@@ -7952,10 +7952,3 @@ msgstr "Kompileerimise võtmed:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Kompileerimise võtmed:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Väljuda NeoMuttist?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI autentimine ebaõnnestus"

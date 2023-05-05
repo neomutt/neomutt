@@ -7914,10 +7914,3 @@ msgstr "Konpilazio aukerak:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Konpilazio aukerak:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "NeoMutt utzi?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "GSSAPI autentifikazioak huts egin du"

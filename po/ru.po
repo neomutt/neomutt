@@ -7785,13 +7785,3 @@ msgstr "Параметры компиляции:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Параметры по умолчанию:"
-
-#, fuzzy
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Недопустимо использовать префикс при установке переменной"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Завершить работу с NeoMutt?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "Для SMTP аутентификации необходим SASL"

@@ -8020,10 +8020,3 @@ msgstr "Roghanna tiomsaithe:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Roghanna tiomsaithe:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Scoir NeoMutt?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "Theip ar fhíordheimhniú GSSAPI"

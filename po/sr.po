@@ -7671,12 +7671,3 @@ msgstr "Опције за компајлирање:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Опције при изградњи:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Не може се умањити my_ променљива"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Изаћи из NeoMutt-а?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP аутентификација захтева SASL"

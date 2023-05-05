@@ -8016,10 +8016,3 @@ msgstr "Opcións de compilación:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opcións de compilación:"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "¿Saír de NeoMutt?"
-
-#, fuzzy
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "Autenticación GSSAPI fallida"

@@ -7633,12 +7633,3 @@ msgstr "Compile options:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Devel options:"
-
-#~ msgid "Can't decrement a my_ variable"
-#~ msgstr "Can't decrement a my_ variable"
-
-#~ msgid "Exit NeoMutt?"
-#~ msgstr "Exit NeoMutt?"
-
-#~ msgid "SMTP authentication requires SASL"
-#~ msgstr "SMTP authentication requires SASL"
