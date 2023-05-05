@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-05-04 13:53+0100\n"
-"PO-Revision-Date: 2023-05-05 02:00+0300\n"
+"PO-Revision-Date: 2023-05-05 11:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -7611,40 +7611,40 @@ msgstr "Geliştirici seçenekleri:"
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: pager/pbar.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "%ld%%"
-msgstr "%ld%%"
+msgstr "%%%ld"
 
 #: pager/pbar.c:125 status.c:292
 #. L10N: Progress bar: `%s` loading text, `%zu` item count,
 #. `%d` percentage, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu (%d%%)"
-msgstr "%s %zu (%d%%)"
+msgstr "%s %zu (%%%d)"
 
 #. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:178
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s/%s (%d%%)"
-msgstr "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%%%d)"
 
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu/%zu (%d%%)"
-msgstr "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%%%d)"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
-msgstr "%d%%"
+msgstr "%%%d"
 
