@@ -23,8 +23,13 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
 
 void test_notify_observer_remove(void)
 {
   // bool notify_observer_remove(struct Notify *notify, observer_t callback, void *global_data);
+
+  TEST_CHECK(!notify_observer_remove(NULL, NULL, NULL));
+
+  notify_observer_remove_all(NULL);
 }

@@ -23,8 +23,14 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
 
 void test_slist_empty(void)
 {
   // struct Slist *slist_empty(struct Slist **list);
+
+  struct Slist *slist = NULL;
+
+  TEST_CHECK(slist_empty(NULL) == NULL);
+  TEST_CHECK(slist_empty(&slist) == NULL);
 }

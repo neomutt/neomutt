@@ -40,12 +40,16 @@ void test_config_cache(void)
   struct ConfigSubset *sub = NeoMutt->sub;
 
   {
-    int rc = cs_subset_str_string_set(sub, "charset", "us-ascii", NULL);
+    const struct Slist *c_assumed_charset = cc_assumed_charset();
+    TEST_CHECK(c_assumed_charset == NULL);
+    int rc = cs_subset_str_string_set(sub, "assumed_charset", "us-ascii:utf-8", NULL);
     TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
   }
 
   {
-    int rc = cs_subset_str_string_set(sub, "assumed_charset", "us-ascii:utf-8", NULL);
+    const char *c_charset = cc_charset();
+    TEST_CHECK(c_charset != NULL);
+    int rc = cs_subset_str_string_set(sub, "charset", "us-ascii", NULL);
     TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
   }
 

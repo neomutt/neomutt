@@ -63,7 +63,7 @@ static struct Buffer *pool_new(void)
 static void pool_free(struct Buffer **p)
 {
   if (!p || !*p)
-    return;
+    return; // LCOV_EXCL_LINE
 
   buf_dealloc(*p);
   FREE(p);
@@ -121,9 +121,11 @@ void buf_pool_release(struct Buffer **pbuf)
 
   if (BufferPoolCount >= BufferPoolLen)
   {
+    // LCOV_EXCL_START
     mutt_debug(LL_DEBUG1, "Internal buffer pool error\n");
     pool_free(pbuf);
     return;
+    // LCOV_EXCL_STOP
   }
 
   struct Buffer *buf = *pbuf;

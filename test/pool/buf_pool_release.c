@@ -40,4 +40,17 @@ void test_buf_pool_release(void)
     buf_pool_release(&buf);
     TEST_CHECK_(1, "buf_pool_release(&buf)");
   }
+
+  {
+    static const char *large = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf != NULL);
+
+    // Make the buffer HUGE
+    for (int i = 0; i < 256; i++)
+      buf_addstr(buf, large);
+
+    buf_pool_release(&buf);
+    TEST_CHECK_(1, "buf_pool_release(&buf)");
+  }
 }

@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_b64_buffer_decode(void)
 {
@@ -37,6 +38,18 @@ void test_mutt_b64_buffer_decode(void)
   {
     struct Buffer buf = buf_make(0);
     TEST_CHECK(mutt_b64_buffer_decode(&buf, NULL) != 0);
+    buf_dealloc(&buf);
+  }
+
+  {
+    static const char clear[] = "Hello";
+    static const char encoded[] = "SGVsbG8=";
+
+    struct Buffer buf = buf_make(32);
+
+    int declen = mutt_b64_buffer_decode(&buf, encoded);
+    TEST_CHECK(declen == 5);
+    TEST_CHECK_STR_EQ(clear, buf_string(&buf));
     buf_dealloc(&buf);
   }
 }

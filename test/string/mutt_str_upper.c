@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for notify_set_parent()
+ * Test code for mutt_str_upper()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,11 +23,33 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <string.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
-void test_notify_set_parent(void)
+void test_mutt_str_upper(void)
 {
-  // void notify_set_parent(struct Notify *notify, struct Notify *parent);
+  // char *mutt_str_upper(char *str);
 
-  notify_set_parent(NULL, NULL);
+  {
+    TEST_CHECK(mutt_str_upper(NULL) == NULL);
+  }
+
+  {
+    char buf[64] = "";
+    mutt_str_upper(buf);
+    TEST_CHECK_STR_EQ(buf, "");
+  }
+
+  {
+    char buf[64] = "APPLE";
+    mutt_str_upper(buf);
+    TEST_CHECK_STR_EQ(buf, "APPLE");
+  }
+
+  {
+    char buf[64] = "ApplE";
+    mutt_str_upper(buf);
+    TEST_CHECK_STR_EQ(buf, "APPLE");
+  }
 }

@@ -23,8 +23,11 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
 
 void test_notify_observer_add(void)
 {
   // bool notify_observer_add(struct Notify *notify, NotifyType type, observer_t callback, void *global_data);
+
+  TEST_CHECK(!notify_observer_add(NULL, NT_ALL, NULL, NULL));
 }

@@ -52,7 +52,7 @@ static int cc_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
   if (!ev_c->name || !ev_c->he)
-    return 0;
+    return 0; // LCOV_EXCL_LINE
 
   if (mutt_str_equal(ev_c->name, "assumed_charset"))
   {
@@ -74,7 +74,7 @@ static int cc_config_observer(struct NotifyCallback *nc)
 static void charset_cache_setup(void)
 {
   if (CacheActive)
-    return;
+    return; // LCOV_EXCL_LINE
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, cc_config_observer, NULL);
 

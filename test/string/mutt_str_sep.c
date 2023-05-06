@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for notify_set_parent()
+ * Test code for mutt_str_sep()
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -23,11 +23,29 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
-void test_notify_set_parent(void)
+void test_mutt_str_sep(void)
 {
-  // void notify_set_parent(struct Notify *notify, struct Notify *parent);
+  // char *mutt_str_sep(char **stringp, const char *delim);
 
-  notify_set_parent(NULL, NULL);
+  char *input = "apple,banana:cherry";
+  char *empty = "";
+  const char *delim = ",:";
+
+  {
+    // degenerate tests
+    TEST_CHECK(mutt_str_sep(NULL, delim) == NULL);
+    TEST_CHECK(mutt_str_sep(&empty, NULL) == NULL);
+    TEST_CHECK(mutt_str_sep(&input, NULL) == NULL);
+  }
+
+  {
+    char *copy = strdup(input);
+    char *result = mutt_str_sep(&copy, ",:");
+    TEST_CHECK_STR_EQ("apple", result);
+    FREE(&result);
+  }
 }

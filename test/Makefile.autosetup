@@ -497,6 +497,7 @@ SLIST_OBJS	= test/slist/slist_add_list.o \
 		  test/slist/slist_dup.o \
 		  test/slist/slist_empty.o \
 		  test/slist/slist_free.o \
+		  test/slist/slist_is_empty.o \
 		  test/slist/slist_is_member.o \
 		  test/slist/slist_parse.o \
 		  test/slist/slist_remove_string.o \
@@ -559,10 +560,12 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_next_word.o \
 		  test/string/mutt_str_remove_trailing_ws.o \
 		  test/string/mutt_str_replace.o \
+		  test/string/mutt_str_sep.o \
 		  test/string/mutt_str_skip_email_wsp.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
 		  test/string/mutt_str_sysexit.o \
+		  test/string/mutt_str_upper.o \
 		  test/string/mutt_strn_cat.o \
 		  test/string/mutt_strn_copy.o \
 		  test/string/mutt_strn_dup.o \

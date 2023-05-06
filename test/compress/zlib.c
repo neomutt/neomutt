@@ -76,7 +76,11 @@ void test_compress_zlib(void)
 
     const char zeroes[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-    void *result = cops->decompress(cctx, zeroes, sizeof(zeroes));
+
+    void *result = cops->decompress(cctx, zeroes, 0);
+    TEST_CHECK(result == NULL);
+
+    result = cops->decompress(cctx, zeroes, sizeof(zeroes));
     TEST_CHECK(result == NULL);
 
     const char ones[] = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,

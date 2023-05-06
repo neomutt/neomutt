@@ -55,11 +55,11 @@ void test_mutt_b64_decode(void)
   }
 
   {
-    char out1[32] = { 0 };
-    char out2[32] = { 0 };
+    char in[32] = { 0 };
+    char out[32] = { 0 };
 
     /* Decoding a zero-length string should fail, too */
-    int declen = mutt_b64_decode(out1, out2, sizeof(out2));
+    int declen = mutt_b64_decode(in, out, sizeof(out));
     if (!TEST_CHECK(declen == -1))
     {
       TEST_MSG("Expected: %zu", -1);
@@ -68,16 +68,54 @@ void test_mutt_b64_decode(void)
   }
 
   {
-    char out1[32] = "JQ";
-    char out2[32] = { 0 };
+    char in[32] = "JQ";
+    char out[32] = { 0 };
 
     /* Decoding a non-padded string should be ok */
-    int declen = mutt_b64_decode(out1, out2, sizeof(out2));
+    int declen = mutt_b64_decode(in, out, sizeof(out));
     if (!TEST_CHECK(declen == 1))
     {
       TEST_MSG("Expected: %zu", 1);
       TEST_MSG("Actual  : %zu", declen);
     }
-    TEST_CHECK_STR_EQ("%", out2);
+    TEST_CHECK_STR_EQ("%", out);
+  }
+
+  {
+    char in1[32] = "#A";
+    char in2[32] = "A#";
+    char in3[32] = "AA#A";
+    char in4[32] = "AAA#";
+    char out[32] = { 0 };
+
+    int declen;
+
+    declen = mutt_b64_decode(in1, out, sizeof(out));
+    TEST_CHECK(declen == -1);
+
+    declen = mutt_b64_decode(in2, out, sizeof(out));
+    TEST_CHECK(declen == -1);
+
+    declen = mutt_b64_decode(in3, out, sizeof(out));
+    TEST_CHECK(declen == -1);
+
+    declen = mutt_b64_decode(in4, out, sizeof(out));
+    TEST_CHECK(declen == -1);
+  }
+
+  {
+    char in[32] = "AAAA";
+    char out[32] = { 0 };
+
+    int declen;
+
+    declen = mutt_b64_decode(in, out, 0);
+    TEST_CHECK(declen == 0);
+
+    declen = mutt_b64_decode(in, out, 1);
+    TEST_CHECK(declen == 1);
+
+    declen = mutt_b64_decode(in, out, 2);
+    TEST_CHECK(declen == 2);
   }
 }

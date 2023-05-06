@@ -113,6 +113,18 @@ void test_buf_add_printf(void)
   }
 
   {
+    TEST_CASE("Static very big");
+    const char *str = "apple banana cherry damson elderberry fig guava hawthorn ilama jackfruit kumquat lemon mango nectarine olive papaya quince raspberry strawberry tangerine ugli vanilla wolfberry xigua yew ziziphus";
+    struct Buffer buf = buf_make(0);
+    buf_addstr(&buf, "test");
+
+    for (int i = 0; i < 50; i++)
+      TEST_CHECK(buf_add_printf(&buf, str) != -1);
+
+    buf_dealloc(&buf);
+  }
+
+  {
     TEST_CASE("Varargs");
     const char *str = "apple";
     const char *result = "testapp 1234567 3.1416";

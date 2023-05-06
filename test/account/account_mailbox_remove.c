@@ -51,13 +51,21 @@ void test_account_mailbox_remove(void)
     struct Account *a = account_new("dummy", sub);
     TEST_CHECK(a != NULL);
 
-    struct Mailbox *m = mailbox_new();
+    struct Mailbox *m1 = mailbox_new();
+    struct Mailbox *m2 = mailbox_new();
+    struct Mailbox *m3 = mailbox_new();
 
-    TEST_CHECK(account_mailbox_add(a, m) == true);
+    TEST_CHECK(account_mailbox_add(a, m1) == true);
+    TEST_CHECK(account_mailbox_add(a, m2) == true);
+    TEST_CHECK(account_mailbox_add(a, m3) == true);
 
-    TEST_CHECK(account_mailbox_remove(a, m) == true);
+    TEST_CHECK(account_mailbox_remove(a, m2) == true);
+    TEST_CHECK(account_mailbox_remove(a, m1) == true);
+    TEST_CHECK(account_mailbox_remove(a, m3) == true);
 
-    mailbox_free(&m);
+    mailbox_free(&m1);
+    mailbox_free(&m2);
+    mailbox_free(&m3);
     account_free(&a);
     cs_subset_free(&sub);
   }

@@ -110,8 +110,10 @@ size_t buf_addstr_n(struct Buffer *buf, const char *s, size_t len)
 
   if (len > (SIZE_MAX - BufferStepSize))
   {
+    // LCOV_EXCL_START
     mutt_error(_("Out of memory"));
     mutt_exit(1);
+    // LCOV_EXCL_STOP
   }
 
   if (!buf->data || !buf->dptr || ((buf->dptr + len + 1) > (buf->data + buf->dsize)))
@@ -321,8 +323,10 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
 
   if (new_size > (SIZE_MAX - BufferStepSize))
   {
+    // LCOV_EXCL_START
     mutt_error(_("Out of memory"));
     mutt_exit(1);
+    // LCOV_EXCL_STOP
   }
 
   const bool was_empty = (buf->dptr == NULL);

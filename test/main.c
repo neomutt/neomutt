@@ -540,6 +540,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_slist_dup)                                            \
   NEOMUTT_TEST_ITEM(test_slist_empty)                                          \
   NEOMUTT_TEST_ITEM(test_slist_free)                                           \
+  NEOMUTT_TEST_ITEM(test_slist_is_empty)                                       \
   NEOMUTT_TEST_ITEM(test_slist_is_member)                                      \
   NEOMUTT_TEST_ITEM(test_slist_parse)                                          \
   NEOMUTT_TEST_ITEM(test_slist_remove_string)                                  \
@@ -582,10 +583,12 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_next_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_remove_trailing_ws)                          \
   NEOMUTT_TEST_ITEM(test_mutt_str_replace)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_str_sep)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_email_wsp)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_skip_whitespace)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_str_upper)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_strn_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_strn_copy)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_strn_dup)                                        \

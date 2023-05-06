@@ -81,7 +81,7 @@ static void *compr_lz4_compress(void *cctx, const char *data, size_t dlen, size_
   int datalen = dlen;
   int len = LZ4_compressBound(dlen);
   if (len > (INT_MAX - 4))
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
   mutt_mem_realloc(&ctx->buf, len + 4);
   char *cbuf = ctx->buf;
 
@@ -119,7 +119,7 @@ static void *compr_lz4_decompress(void *cctx, const char *cbuf, size_t clen)
     return NULL;
   size_t ulen = cs[0] + (cs[1] << 8) + (cs[2] << 16) + ((size_t) cs[3] << 24);
   if (ulen > INT_MAX)
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
   if (ulen == 0)
     return (void *) cbuf;
 

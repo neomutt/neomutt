@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for notify_set_parent()
+ * Test code for slist_is_empty()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -25,9 +25,13 @@
 #include "acutest.h"
 #include "mutt/lib.h"
 
-void test_notify_set_parent(void)
+void test_slist_is_empty(void)
 {
-  // void notify_set_parent(struct Notify *notify, struct Notify *parent);
+  // bool slist_is_empty(const struct Slist *list);
 
-  notify_set_parent(NULL, NULL);
+  TEST_CHECK(slist_is_empty(NULL));
+
+  struct Slist *slist = slist_new(SLIST_SEP_COMMA);
+  TEST_CHECK(slist_is_empty(slist));
+  slist_free(&slist);
 }
