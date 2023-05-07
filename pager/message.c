@@ -310,7 +310,7 @@ cleanup:
  */
 int external_pager(struct Mailbox *m, struct Email *e, const char *command)
 {
-  struct Message *msg = mx_msg_open(m, e->msgno);
+  struct Message *msg = mx_msg_open(m, e);
   if (!msg)
     return -1;
 
@@ -459,7 +459,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
   int rc = PAGER_LOOP_QUIT;
   do
   {
-    msg = mx_msg_open(shared->mailbox, shared->email->msgno);
+    msg = mx_msg_open(shared->mailbox, shared->email);
     if (!msg)
       break;
 

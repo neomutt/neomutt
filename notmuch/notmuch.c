@@ -2265,7 +2265,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
     buf_strcpy(&m->pathbuf, edata->folder);
     m->type = edata->type;
 
-    bool ok = maildir_sync_mailbox_message(m, i, h);
+    bool ok = maildir_sync_mailbox_message(m, e, h);
     if (!ok)
     {
       // Syncing file failed, query notmuch for new filepath.
@@ -2279,7 +2279,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 
         buf_strcpy(&m->pathbuf, edata->folder);
         m->type = edata->type;
-        ok = maildir_sync_mailbox_message(m, i, h);
+        ok = maildir_sync_mailbox_message(m, e, h);
         m->type = MUTT_NOTMUCH;
       }
       nm_db_release(m);
@@ -2349,12 +2349,8 @@ static enum MxStatus nm_mbox_close(struct Mailbox *m)
 /**
  * nm_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-static bool nm_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool nm_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  struct Email *e = m->emails[msgno];
-  if (!e)
-    return false;
-
   char path[PATH_MAX] = { 0 };
   char *folder = nm_email_get_folder(e);
 

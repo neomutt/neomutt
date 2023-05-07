@@ -2216,7 +2216,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
     return FR_NO_ACTION;
 
   enum FunctionRetval rc = FR_ERROR;
-  struct Message *msg = mx_msg_open(shared->mailbox, shared->email->msgno);
+  struct Message *msg = mx_msg_open(shared->mailbox, shared->email);
   if (msg)
   {
     dlg_select_attachment(NeoMutt->sub, shared->mailbox, shared->email, msg->fp);

@@ -50,7 +50,7 @@ enum MxStatus   mx_mbox_sync       (struct Mailbox *m);
 int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);
-struct Message *mx_msg_open        (struct Mailbox *m, int msgno);
+struct Message *mx_msg_open        (struct Mailbox *m, struct Email *e);
 int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
 int             mx_path_canon      (char *buf, size_t buflen, const char *folder, enum MailboxType *type);

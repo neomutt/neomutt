@@ -499,7 +499,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   struct Envelope *protected_headers = NULL;
   struct Buffer *file = NULL;
 
-  if (!fp && !(msg = mx_msg_open(m, e->msgno)))
+  if (!fp && !(msg = mx_msg_open(m, e)))
     return -1;
 
   if (!fp)

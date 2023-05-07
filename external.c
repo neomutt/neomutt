@@ -170,7 +170,7 @@ void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
   struct Message *msg = NULL;
   STAILQ_FOREACH(en, el, entries)
   {
-    msg = mx_msg_open(m, en->email->msgno);
+    msg = mx_msg_open(m, en->email);
     if (!msg)
     {
       rc = -1;
@@ -256,7 +256,7 @@ static void pipe_msg(struct Mailbox *m, struct Email *e, struct Message *msg,
   const bool own_msg = !msg;
   if (own_msg)
   {
-    msg = mx_msg_open(m, e->msgno);
+    msg = mx_msg_open(m, e);
     if (!msg)
     {
       return;
@@ -309,7 +309,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     /* handle a single message */
     mutt_message_hook(m, en->email, MUTT_MESSAGE_HOOK);
 
-    struct Message *msg = mx_msg_open(m, en->email->msgno);
+    struct Message *msg = mx_msg_open(m, en->email);
     if (msg && (WithCrypto != 0) && decode)
     {
       mutt_parse_mime_message(en->email, msg->fp);
@@ -344,7 +344,7 @@ static int pipe_message(struct Mailbox *m, struct EmailList *el, const char *cmd
     {
       STAILQ_FOREACH(en, el, entries)
       {
-        struct Message *msg = mx_msg_open(m, en->email->msgno);
+        struct Message *msg = mx_msg_open(m, en->email);
         if (msg)
         {
           mutt_parse_mime_message(en->email, msg->fp);
@@ -763,7 +763,7 @@ int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSa
 
   set_copy_flags(e, transform_opt, &cmflags, &chflags);
 
-  struct Message *msg = mx_msg_open(m_src, e->msgno);
+  struct Message *msg = mx_msg_open(m_src, e);
   if (msg && transform_opt != TRANSFORM_NONE)
   {
     mutt_parse_mime_message(e, msg->fp);
@@ -1205,7 +1205,7 @@ static bool check_traditional_pgp(struct Mailbox *m, struct Email *e)
 
   e->security |= PGP_TRADITIONAL_CHECKED;
 
-  struct Message *msg = mx_msg_open(m, e->msgno);
+  struct Message *msg = mx_msg_open(m, e);
   if (msg)
   {
     mutt_parse_mime_message(e, msg->fp);

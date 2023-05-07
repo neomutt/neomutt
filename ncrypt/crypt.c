@@ -850,7 +850,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
   STAILQ_FOREACH(en, el, entries)
   {
     struct Email *e = en->email;
-    struct Message *msg = mx_msg_open(m, e->msgno);
+    struct Message *msg = mx_msg_open(m, e);
     if (!msg)
     {
       continue;
