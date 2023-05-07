@@ -224,17 +224,17 @@ struct MxOps
    * @ingroup mx_api
    *
    * msg_open - Open an email message in a Mailbox
-   * @param m     Mailbox
-   * @param msg   Message to open
-   * @param msgno Index of message to open
+   * @param m   Mailbox
+   * @param msg Message to open
+   * @param e   Email to open
    * @retval true Success
    * @retval false Error
    *
    * @pre m   is not NULL
    * @pre msg is not NULL
-   * @pre 0 <= msgno < msg->msg_count
+   * @pre e   is not NULL
    */
-  bool (*msg_open)(struct Mailbox *m, struct Message *msg, int msgno);
+  bool (*msg_open)(struct Mailbox *m, struct Message *msg, struct Email *e);
 
   /**
    * @defgroup mx_msg_open_new msg_open_new()

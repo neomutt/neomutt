@@ -501,7 +501,7 @@ static int include_forward(struct Mailbox *m, struct Email *e, FILE *fp_out,
   CopyHeaderFlags chflags = CH_DECODE;
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
 
-  struct Message *msg = mx_msg_open(m, e->msgno);
+  struct Message *msg = mx_msg_open(m, e);
   if (!msg)
   {
     return -1;
@@ -563,7 +563,7 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   struct AttachCtx *actx = NULL;
   int rc = 0, i;
 
-  struct Message *msg = mx_msg_open(m, e->msgno);
+  struct Message *msg = mx_msg_open(m, e);
   if (!msg)
   {
     return -1;
@@ -778,7 +778,7 @@ static int include_reply(struct Mailbox *m, struct Email *e, FILE *fp_out,
       return -1;
   }
 
-  struct Message *msg = mx_msg_open(m, e->msgno);
+  struct Message *msg = mx_msg_open(m, e);
   if (!msg)
   {
     return -1;

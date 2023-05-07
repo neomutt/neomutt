@@ -365,18 +365,14 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
 
 /**
  * mh_rewrite_message - Sync a message in an MH folder
- * @param m     Mailbox
- * @param msgno Index number
+ * @param m Mailbox
+ * @param e Email
  * @retval  0 Success
  * @retval -1 Error
  */
-static int mh_rewrite_message(struct Mailbox *m, int msgno)
+static int mh_rewrite_message(struct Mailbox *m, struct Email *e)
 {
-  if (!m || !m->emails || (msgno >= m->msg_count))
-    return -1;
-
-  struct Email *e = m->emails[msgno];
-  if (!e)
+  if (!m || !e)
     return -1;
 
   bool restore = true;
@@ -385,7 +381,7 @@ static int mh_rewrite_message(struct Mailbox *m, int msgno)
   long old_body_length = e->body->length;
   long old_hdr_lines = e->lines;
 
-  struct Message *src = mx_msg_open(m, msgno);
+  struct Message *src = mx_msg_open(m, e);
   struct Message *dest = mx_msg_open_new(m, e, MUTT_MSG_NO_FLAGS);
   if (!src || !dest)
     return -1;
@@ -443,24 +439,20 @@ static int mh_rewrite_message(struct Mailbox *m, int msgno)
 
 /**
  * mh_sync_message - Sync an email to an MH folder
- * @param m     Mailbox
- * @param msgno Index number
+ * @param m Mailbox
+ * @param e Email
  * @retval  0 Success
  * @retval -1 Error
  */
-static int mh_sync_message(struct Mailbox *m, int msgno)
+static int mh_sync_message(struct Mailbox *m, struct Email *e)
 {
-  if (!m || !m->emails)
-    return -1;
-
-  struct Email *e = m->emails[msgno];
-  if (!e)
+  if (!m || !e)
     return -1;
 
   /* TODO: why the e->env check? */
   if (e->attach_del || (e->env && e->env->changed))
   {
-    if (mh_rewrite_message(m, msgno) != 0)
+    if (mh_rewrite_message(m, e) != 0)
       return -1;
     /* TODO: why the env check? */
     if (e->env)
@@ -750,19 +742,15 @@ static bool mh_read_dir(struct Mailbox *m)
 
 /**
  * mh_sync_mailbox_message - Save changes to the mailbox
- * @param m     Mailbox
- * @param msgno Index number
- * @param hc    Header cache handle
+ * @param m  Mailbox
+ * @param e  Email
+ * @param hc Header cache handle
  * @retval  0 Success
  * @retval -1 Error
  */
-int mh_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCache *hc)
+int mh_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCache *hc)
 {
-  if (!m || !m->emails || (msgno >= m->msg_count))
-    return -1;
-
-  struct Email *e = m->emails[msgno];
-  if (!e)
+  if (!m || !e)
     return -1;
 
   if (e->deleted)
@@ -799,7 +787,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, int msgno, struct HeaderCache *hc
   }
   else if (e->changed || e->attach_del)
   {
-    if (mh_sync_message(m, msgno) == -1)
+    if (mh_sync_message(m, e) == -1)
       return -1;
   }
 
@@ -1063,7 +1051,8 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
     if (m->verbose)
       progress_update(progress, i, -1);
 
-    if (mh_sync_mailbox_message(m, i, hc) == -1)
+    struct Email *e = m->emails[i];
+    if (mh_sync_mailbox_message(m, e, hc) == -1)
     {
       progress_free(&progress);
       goto err;
@@ -1119,15 +1108,8 @@ static enum MxStatus mh_mbox_close(struct Mailbox *m)
 /**
  * mh_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-static bool mh_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool mh_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
-  if (!m || !m->emails || (msgno >= m->msg_count))
-    return false;
-
-  struct Email *e = m->emails[msgno];
-  if (!e)
-    return false;
-
   char path[PATH_MAX] = { 0 };
 
   snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);

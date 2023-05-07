@@ -1133,7 +1133,7 @@ bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                        struct Mailbox *m, struct Email *e, struct PatternCache *cache)
 {
   const bool needs_msg = pattern_needs_msg(m, pat);
-  struct Message *msg = needs_msg ? mx_msg_open(m, e->msgno) : NULL;
+  struct Message *msg = needs_msg ? mx_msg_open(m, e) : NULL;
   if (needs_msg && !msg)
   {
     return false;

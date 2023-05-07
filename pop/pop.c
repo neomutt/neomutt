@@ -972,11 +972,10 @@ static enum MxStatus pop_mbox_close(struct Mailbox *m)
 /**
  * pop_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   char buf[1024] = { 0 };
   struct PopAccountData *adata = pop_adata_get(m);
-  struct Email *e = m->emails[msgno];
   struct PopEmailData *edata = pop_edata_get(e);
   bool bcache = true;
   bool success = false;
@@ -1104,7 +1103,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   e->lines = 0;
   while (fgets(buf, sizeof(buf), msg->fp) && !feof(msg->fp))
   {
-    m->emails[msgno]->lines++;
+    e->lines++;
   }
 
   e->body->length = ftello(msg->fp) - e->body->offset;

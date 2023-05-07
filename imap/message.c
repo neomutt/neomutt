@@ -1938,7 +1938,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
 /**
  * imap_msg_open - Open an email message in a Mailbox - Implements MxOps::msg_open() - @ingroup mx_msg_open
  */
-bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
+bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   struct Envelope *newenv = NULL;
   char buf[1024] = { 0 };
@@ -1956,10 +1956,6 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, int msgno)
   struct ImapAccountData *adata = imap_adata_get(m);
 
   if (!adata || (adata->mailbox != m))
-    return false;
-
-  struct Email *e = m->emails[msgno];
-  if (!e)
     return false;
 
   msg->fp = msg_cache_get(m, e);

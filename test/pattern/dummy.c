@@ -174,7 +174,7 @@ int mx_msg_close(struct Mailbox *m, struct Message **msg)
   return 0;
 }
 
-struct Message *mx_msg_open(struct Mailbox *m, int msgno)
+struct Message *mx_msg_open(struct Mailbox *m, struct Email *e)
 {
   return NULL;
 }

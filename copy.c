@@ -952,8 +952,11 @@ int mutt_append_message(struct Mailbox *m_dst, struct Mailbox *m_src,
                         struct Email *e, struct Message *msg,
                         CopyMessageFlags cmflags, CopyHeaderFlags chflags)
 {
+  if (!e)
+    return -1;
+
   const bool own_msg = !msg;
-  if (own_msg && !(msg = mx_msg_open(m_src, e->msgno)))
+  if (own_msg && !(msg = mx_msg_open(m_src, e)))
   {
     return -1;
   }

@@ -484,7 +484,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
   buf_pool_release(&buf);
 
-  struct Message *msg = mx_msg_open(m, e->msgno);
+  struct Message *msg = mx_msg_open(m, e);
   if (!msg)
   {
     mutt_body_free(&body);
