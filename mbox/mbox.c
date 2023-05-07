@@ -1491,7 +1491,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   progress_free(&progress);
   return 0; /* signal success */
 
-bail:       /* Come here in case of disaster */
+bail: /* Come here in case of disaster */
 
   mutt_file_fclose(&fp);
 

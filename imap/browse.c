@@ -294,7 +294,7 @@ int imap_browse(const char *path, struct BrowserState *state)
      * Further note: UW-IMAP servers return nothing when asked for
      *  NAMESPACES without delimiters at the end. Argh! */
     for (n--; n >= 0 && mbox[n] != list.delim; n--)
-      ;        // do nothing
+      ; // do nothing
 
     if (n > 0) /* "aaaa/bbbb/" -> "aaaa" */
     {

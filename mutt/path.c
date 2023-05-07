@@ -127,7 +127,7 @@ bool mutt_path_tidy_dotdot(char *buf)
     }
     else if (dd[3] == '\0') /* dots at end of string */
     {
-      if (dd == buf)        /* at start of string */
+      if (dd == buf) /* at start of string */
       {
         dd[1] = '\0';
       }
@@ -469,7 +469,7 @@ bool mutt_path_parent(char *buf)
 
   // Find the previous '/'
   for (n--; ((n >= 0) && (buf[n] != '/')); n--)
-    ;         // do nothing
+    ; // do nothing
 
   if (n == 0) // Always keep at least one '/'
     n++;

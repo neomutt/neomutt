@@ -123,7 +123,7 @@ static int menu_drag_view(struct Menu *menu, int top, int index)
   {
     int bottom = top + page;
     // Scroll the view to make the selection visible
-    if (index < top + c_menu_context)            // scroll=YES, moving UP
+    if (index < top + c_menu_context) // scroll=YES, moving UP
       top = index - c_menu_context;
     else if (index >= (bottom - c_menu_context)) // scroll=YES, moving DOWN
       top = index - page + c_menu_context + 1;
@@ -135,7 +135,7 @@ static int menu_drag_view(struct Menu *menu, int top, int index)
     int bottom = top + page;
 
     // Page up/down to make the selection visible
-    if (index < (top + c_menu_context))          // scroll=NO, moving UP
+    if (index < (top + c_menu_context)) // scroll=NO, moving UP
       top = index - page + c_menu_context + 1;
     else if (index >= (bottom - c_menu_context)) // scroll=NO, moving DOWN
       top = index - c_menu_context;

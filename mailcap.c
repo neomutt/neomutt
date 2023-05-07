@@ -425,7 +425,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
       }
     } /* while (!found && (buf = mutt_file_read_line ())) */
     mutt_file_fclose(&fp);
-  }   /* if ((fp = fopen ())) */
+  } /* if ((fp = fopen ())) */
   FREE(&buf);
   return found;
 }

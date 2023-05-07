@@ -104,7 +104,7 @@ bool slist_compare(const struct Slist *a, const struct Slist *b)
 {
   if (!a && !b) /* both empty */
     return true;
-  if (!a ^ !b)  /* one is empty, but not the other */
+  if (!a ^ !b) /* one is empty, but not the other */
     return false;
   if (a->count != b->count)
     return false;

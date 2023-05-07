@@ -28,8 +28,8 @@
 #include "compress/lib.h"
 #include "test/compress/common.h" // IWYU pragma: keep
 
-#define MIN_COMP_LEVEL 1          ///< Minimum compression level for lz4
-#define MAX_COMP_LEVEL 12         ///< Maximum compression level for lz4
+#define MIN_COMP_LEVEL 1  ///< Minimum compression level for lz4
+#define MAX_COMP_LEVEL 12 ///< Maximum compression level for lz4
 
 void test_compress_lz4(void)
 {

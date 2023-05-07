@@ -164,8 +164,7 @@ void index_shared_data_set_mview(struct IndexSharedData *shared, struct MailboxV
   if (shared->mailboxview != mv)
   {
     if (shared->mailboxview)
-      notify_observer_remove(shared->mailboxview->notify,
-                             index_shared_mview_observer, shared);
+      notify_observer_remove(shared->mailboxview->notify, index_shared_mview_observer, shared);
 
     shared->mailboxview = mv;
     subtype |= NT_INDEX_MVIEW;

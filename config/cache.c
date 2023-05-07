@@ -46,7 +46,7 @@ static const char *CachedCharset = NULL;
 static int cc_config_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_CONFIG)
-    return 0;  // LCOV_EXCL_LINE
+    return 0; // LCOV_EXCL_LINE
   if (!nc->event_data)
     return -1; // LCOV_EXCL_LINE
 

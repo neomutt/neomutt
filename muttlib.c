@@ -630,7 +630,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     {
       case -1: /* abort */
         return -1;
-      case 3:  /* cancel */
+      case 3: /* cancel */
         return 1;
 
       case 2: /* append */
@@ -954,7 +954,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         *cp = '\0';
 
         if (*src == '\0')
-          break;     /* bad format */
+          break; /* bad format */
 
         ch = *src++; /* save the character to switch on */
       }
@@ -1045,7 +1045,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         if ((*src == '\0'))
           break; /* bad format */
 
-        src++;   /* move past the trailing '>' (formerly '?') */
+        src++; /* move past the trailing '>' (formerly '?') */
       }
 
       /* handle generic cases first */

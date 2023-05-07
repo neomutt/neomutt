@@ -165,8 +165,8 @@ static int progress_window_repaint(struct MuttWindow *win)
     /* L10N: Progress bar: `%s` loading text, `%zu` item count,
        `%d` percentage, `%%` is the percent symbol.
        `%d` and `%%` may be reordered, or space inserted, if you wish. */
-    message_bar(wdata->win, wdata->display_percent, _("%s %zu (%d%%)"), wdata->msg,
-                wdata->display_pos, wdata->display_percent);
+    message_bar(wdata->win, wdata->display_percent, _("%s %zu (%d%%)"),
+                wdata->msg, wdata->display_pos, wdata->display_percent);
   }
   else
   {
@@ -175,16 +175,16 @@ static int progress_window_repaint(struct MuttWindow *win)
       /* L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
          `%d` is the number, `%%` is the percent symbol.
          `%d` and `%%` may be reordered, or space inserted, if you wish. */
-      message_bar(wdata->win, wdata->display_percent, _("%s %s/%s (%d%%)"), wdata->msg,
-                  wdata->pretty_pos, wdata->pretty_size, wdata->display_percent);
+      message_bar(wdata->win, wdata->display_percent, _("%s %s/%s (%d%%)"),
+                  wdata->msg, wdata->pretty_pos, wdata->pretty_size, wdata->display_percent);
     }
     else
     {
       /* L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
          `%d` is the number, `%%` is the percent symbol.
          `%d` and `%%` may be reordered, or space inserted, if you wish. */
-      message_bar(wdata->win, wdata->display_percent, _("%s %zu/%zu (%d%%)"), wdata->msg,
-                  wdata->display_pos, wdata->size, wdata->display_percent);
+      message_bar(wdata->win, wdata->display_percent, _("%s %zu/%zu (%d%%)"),
+                  wdata->msg, wdata->display_pos, wdata->size, wdata->display_percent);
     }
   }
 

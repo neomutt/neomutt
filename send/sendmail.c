@@ -163,7 +163,7 @@ static int send_msg(const char *path, struct SendmailArgs *args,
       {
         if (open("/dev/null", O_WRONLY | O_APPEND) < 0) /* stdout */
           _exit(S_ERR);
-        if (open("/dev/null", O_RDWR | O_APPEND) < 0)   /* stderr */
+        if (open("/dev/null", O_RDWR | O_APPEND) < 0) /* stderr */
           _exit(S_ERR);
       }
 
@@ -240,7 +240,7 @@ static int send_msg(const char *path, struct SendmailArgs *args,
   if ((pid != -1) && (waitpid(pid, &st, 0) > 0))
     st = WIFEXITED(st) ? WEXITSTATUS(st) : S_ERR; /* return child status */
   else
-    st = S_ERR;                                   /* error */
+    st = S_ERR; /* error */
 
   mutt_sig_unblock_system(true);
 

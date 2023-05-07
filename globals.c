@@ -33,13 +33,13 @@
 #include "mutt/lib.h"
 #include "menu/lib.h"
 
-bool ErrorBufMessage;       ///< true if the last message was an error
-char ErrorBuf[256];         ///< Copy of the last error message
+bool ErrorBufMessage; ///< true if the last message was an error
+char ErrorBuf[256];   ///< Copy of the last error message
 
 char *HomeDir = NULL;       ///< User's home directory
 char *ShortHostname = NULL; ///< Short version of the hostname
 
-char *Username = NULL;      ///< User's login name
+char *Username = NULL; ///< User's login name
 
 char *CurrentFolder = NULL; ///< Currently selected mailbox
 char *LastFolder = NULL;    ///< Previously selected mailbox
@@ -59,7 +59,7 @@ struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);     
 SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
 SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
-enum MenuType CurrentMenu;      ///< Current Menu, e.g. #MENU_PAGER
+enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
 /* pseudo options */
 // clang-format off

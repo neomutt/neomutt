@@ -33,7 +33,7 @@
 #include "mutt/lib.h"
 #include "pgppacket.h"
 
-#define CHUNK_SIZE 1024                 ///< Amount of data to read at once
+#define CHUNK_SIZE 1024 ///< Amount of data to read at once
 
 static unsigned char *PacketBuf = NULL; ///< Cached PGP data packet
 static size_t PacketBufLen = 0;         ///< Length of cached packet

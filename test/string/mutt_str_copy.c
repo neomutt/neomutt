@@ -52,7 +52,7 @@ void test_mutt_str_copy(void)
     }
   }
 
-  {                                         /* normal */
+  { /* normal */
     const char trial[] = "Hello";
     mutt_str_copy(src, trial, sizeof(src)); /* let's eat our own dogfood */
     size_t len = mutt_str_copy(dst, src, sizeof(dst));

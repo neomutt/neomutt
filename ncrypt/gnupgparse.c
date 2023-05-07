@@ -302,11 +302,11 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
         }
         break;
       }
-      case 7:  /* valid for n days */
+      case 7: /* valid for n days */
         break;
-      case 8:  /* Local id         */
+      case 8: /* Local id         */
         break;
-      case 9:  /* ownertrust       */
+      case 9: /* ownertrust       */
         break;
       case 10: /* name             */
       {
