@@ -762,6 +762,18 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
       }
 
       i = imap_copy_messages(m, &el, buf_string(mbox), SAVE_MOVE);
+      if (i == 0)
+      {
+        const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
+        if (c_delete_untag)
+        {
+          struct EmailNode *en = NULL;
+          STAILQ_FOREACH(en, &el, entries)
+          {
+            mutt_set_flag(m, en->email, MUTT_TAG, false, true);
+          }
+        }
+      }
       emaillist_clear(&el);
     }
 

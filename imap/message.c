@@ -1810,13 +1810,10 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
   /* cleanup */
   if (save_opt == SAVE_MOVE)
   {
-    const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
     STAILQ_FOREACH(en, el, entries)
     {
       mutt_set_flag(m, en->email, MUTT_DELETE, true, true);
       mutt_set_flag(m, en->email, MUTT_PURGE, true, true);
-      if (c_delete_untag)
-        mutt_set_flag(m, en->email, MUTT_TAG, false, true);
     }
   }
 
