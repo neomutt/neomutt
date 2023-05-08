@@ -1003,11 +1003,11 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
       ((op == OP_MAIN_LIMIT) && (mutt_pattern_func(shared->mailboxview, MUTT_LIMIT,
                                                    _("Limit to messages matching: ")) == 0)))
   {
+    priv->menu->max = shared->mailbox->vcount;
+    menu_set_index(priv->menu, 0);
     if (old_index >= 0)
     {
-      priv->menu->max = shared->mailbox->vcount;
       /* try to find what used to be the current message */
-      menu_set_index(priv->menu, 0);
       for (size_t i = 0; i < shared->mailbox->vcount; i++)
       {
         struct Email *e = mutt_get_virt_email(shared->mailbox, i);
