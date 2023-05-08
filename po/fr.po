@@ -22,7 +22,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-05-05 13:14+0100\n"
-"PO-Revision-Date: 2017-02-10 12:46+0100\n"
+"PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -30,6 +30,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.4.2\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:398
@@ -38,7 +39,7 @@ msgstr "Créer l'alias : "
 
 #: alias/alias.c:407
 msgid "You already have an alias defined with that name"
-msgstr "Vous avez déjà défini un alias ayant ce nom "
+msgstr "Vous avez déjà défini un alias ayant ce nom"
 
 #: alias/alias.c:413
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -58,10 +59,11 @@ msgstr "Mauvais IDN : '%s'"
 msgid "Personal name: "
 msgstr "Nom de la personne : "
 
+# je ne connais pas le contexte mais cette traduction m'a l'air audacieuse
 #: alias/alias.c:470
 #, fuzzy
 msgid "Comment: "
-msgstr "éditer le champ Reply-To"
+msgstr "éditer le champ Reply-To "
 
 # , c-format
 #: alias/alias.c:481 alias/alias.c:485
@@ -78,9 +80,8 @@ msgid "Error reading alias file"
 msgstr "Erreur en lisant le fichier d'alias"
 
 #: alias/alias.c:552
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "Erreur en lisant le fichier d'alias"
+msgstr "Erreur en ajoutant le fichier d'alias"
 
 #: alias/alias.c:554
 msgid "Alias added"
@@ -91,9 +92,9 @@ msgid "alias: no address"
 msgstr "alias : pas d'adresse"
 
 #: alias/commands.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Attention : mauvais IDN '%s' dans l'alias '%s'"
+msgstr "Attention : mauvaise adresse '%s' dans l'alias '%s'"
 
 #: alias/commands.c:85
 #, c-format
@@ -144,7 +145,7 @@ msgstr "Aide"
 
 #: alias/dlg_alias.c:318
 msgid "You have no aliases"
-msgstr "Vous n'avez pas défini d'alias "
+msgstr "Vous n'avez pas défini d'alias"
 
 #: alias/dlg_alias.c:323
 msgid "Aliases"
@@ -152,7 +153,7 @@ msgstr "Alias"
 
 #: alias/dlg_query.c:101 index/dlg_index.c:109
 msgid "Mail"
-msgstr "Message"
+msgstr "Courriel"
 
 #: alias/dlg_query.c:102
 msgid "New Query"
@@ -171,9 +172,8 @@ msgid "Waiting for response..."
 msgstr "Attente de la réponse..."
 
 #: alias/dlg_query.c:362
-#, fuzzy
 msgid "Query"
-msgstr "Requête : "
+msgstr "Requête"
 
 #: alias/dlg_query.c:454 alias/dlg_query.c:531
 msgid "Query command not defined"
@@ -215,9 +215,8 @@ msgid "attachments: no disposition"
 msgstr "attachments : pas de disposition"
 
 #: attach/attachments.c:488
-#, fuzzy
 msgid "Current attachments settings:"
-msgstr "éditer la description de l'attachement"
+msgstr "Editer la description de l'attachement:"
 
 #: attach/attachments.c:520
 msgid "attachments: invalid disposition"
@@ -263,16 +262,15 @@ msgstr "La boîte aux lettres est en lecture seule"
 
 #: attach/functions.c:185
 msgid "There are no subparts to show"
-msgstr "Il n'y a pas de sous-parties à montrer "
+msgstr "Il n'y a pas de sous-parties à montrer"
 
 #: attach/functions.c:205
 msgid "Can't delete attachment from POP server"
 msgstr "Impossible d'effacer l'attachement depuis le serveur POP"
 
 #: attach/functions.c:214
-#, fuzzy
 msgid "Can't delete attachment from news server"
-msgstr "Impossible d'effacer l'attachement depuis le serveur POP"
+msgstr "Impossible d'effacer l'attachement depuis le serveur usenet"
 
 #: attach/functions.c:221
 msgid "Deletion of attachments from encrypted messages is unsupported"
@@ -305,7 +303,7 @@ msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 #: pager/message.c:336 send/sendlib.c:575
 #, c-format
 msgid "Error running \"%s\""
-msgstr "Erreur en exécutant \"%s\" "
+msgstr "Erreur en exécutant \"%s\""
 
 #: attach/mutt_attach.c:172
 msgid "Failure to open file to parse headers"
@@ -372,21 +370,22 @@ msgstr "---Attachement: %s"
 
 #: attach/mutt_attach.c:1022 attach/mutt_attach.c:1030
 msgid "Write fault"
-msgstr "Erreur d'écriture "
+msgstr "Erreur d'écriture"
 
 #: attach/mutt_attach.c:1293
 msgid "I don't know how to print that"
-msgstr "Je ne sais pas comment imprimer ceci "
+msgstr "Je ne sais pas comment imprimer ceci"
 
 #: attach/recvattach.c:344
 msgid "Saving..."
-msgstr "On sauve..."
+msgstr "Sauvetage en cours..."
 
 #: attach/recvattach.c:349 attach/recvattach.c:523
-#, fuzzy, c-format
+#, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
-msgstr[0] "Attachement sauvé"
+msgstr[0] "Pièce jointe sauvée"
+msgstr[1] "%d pièces jointes sauvées"
 
 # , c-format
 #: attach/recvattach.c:548
@@ -412,7 +411,7 @@ msgstr "Passer à la commande : "
 #: attach/recvattach.c:788
 #, c-format
 msgid "I don't know how to print %s attachments"
-msgstr "Je ne sais pas comment imprimer %s attachements "
+msgstr "Je ne sais pas comment imprimer %s attachements"
 
 #: attach/recvattach.c:892
 #, c-format
@@ -432,7 +431,7 @@ msgstr "Les changements structurels sur attachements déchiffrés ne sont pas su
 
 #: attach/recvattach.c:1151
 msgid "Can't decrypt encrypted message"
-msgstr "Impossible de déchiffrer le message chiffré "
+msgstr "Impossible de déchiffrer le message chiffré"
 
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
@@ -673,7 +672,7 @@ msgstr "cs"
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:299
 msgid "Create a new GPG key for this account, instead?"
-msgstr "Créer une nouvelle clef GPG pour ce compte ?"
+msgstr "Plutôt créer une nouvelle clef GPG pour ce compte ?"
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
 #. This error occurs if the version number is too high.
@@ -733,9 +732,9 @@ msgstr "%s n'est pas un répertoire"
 
 # , c-format
 #: browser/browser.c:962
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed newsgroups"
-msgstr "Abonné à %s"
+msgstr "Abonné aux newsgroups"
 
 #: browser/browser.c:966
 #, c-format
@@ -761,21 +760,19 @@ msgstr "Répertoire [%s], masque de fichier : %s"
 
 #: browser/browser.c:1057
 msgid "Can't attach a directory"
-msgstr "Impossible d'attacher un répertoire "
+msgstr "Impossible d'attacher un répertoire"
 
 #: browser/functions.c:99
 msgid "New file name: "
 msgstr "Nouveau nom de fichier : "
 
 #: browser/functions.c:130
-#, fuzzy
 msgid "No newsgroups match the mask"
-msgstr "Aucun fichier ne correspond au masque"
+msgstr "Aucun groupe de discussion ne correspond au masque"
 
 #: browser/functions.c:157
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "Il n'y a pas de messages"
+msgstr "Il n'y a pas de boite mail"
 
 #: browser/functions.c:206 browser/functions.c:547 browser/functions.c:606
 msgid "No files match the file mask"
@@ -806,9 +803,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "La suppression n'est supportée que pour les boîtes aux lettres IMAP"
 
 #: browser/functions.c:455
-#, fuzzy
 msgid "Can't delete currently selected mailbox"
-msgstr "afficher le nom du fichier sélectionné actuellement"
+msgstr "Afficher le nom du fichier sélectionné actuellement"
 
 #: browser/functions.c:459
 #, c-format
@@ -817,7 +813,7 @@ msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\"?"
 
 #: browser/functions.c:462
 msgid "Mailbox not deleted"
-msgstr "Boîte aux lettres non supprimée"
+msgstr "Boîte mail non supprimée"
 
 #: browser/functions.c:468
 msgid "Mailbox deletion failed"
@@ -825,7 +821,7 @@ msgstr "La suppression de la boîte aux lettres a échoué"
 
 #: browser/functions.c:477
 msgid "Mailbox deleted"
-msgstr "Boîte aux lettres supprimée"
+msgstr "Boîte mail supprimée"
 
 #: browser/functions.c:492
 msgid "File Mask: "
@@ -930,17 +926,17 @@ msgstr "%s: trop d'arguments"
 
 #: color/command.c:998
 msgid "default colors not supported"
-msgstr "La couleur default n'est pas disponible"
+msgstr "la couleur par défaut n'est pas disponible"
 
 #: color/command.c:1029
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid number: %s"
-msgstr "Erreur : score : nombre invalide"
+msgstr "Erreur %s : nombre %s: invalide"
 
 #: color/curses.c:93
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr ""
+msgstr "Trop de couleurs : %d / %d"
 
 #: color/quoted.c:108
 #, c-format
@@ -1062,9 +1058,8 @@ msgid "Could not subscribe to %s"
 msgstr "Abonné à %s"
 
 #: commands.c:1126 commands.c:1462
-#, fuzzy
 msgid "No folder specified"
-msgstr "Pas d'objet (Subject) spécifié."
+msgstr "Pas de répertoire spécifié"
 
 #: commands.c:1161
 #, c-format
@@ -1096,7 +1091,7 @@ msgstr "Impossible d'ajouter sans append-hook ou close-hook : %s"
 #: compmbox/compress.c:463 compmbox/compress.c:527 compmbox/compress.c:603
 #: compmbox/compress.c:641 mbox/mbox.c:1216
 msgid "Unable to lock mailbox"
-msgstr "Impossible de verrouiller la boîte aux lettres "
+msgstr "Impossible de verrouiller la boîte mail"
 
 #: compmbox/compress.c:467 compmbox/compress.c:534 compmbox/compress.c:607
 #, c-format
@@ -1217,7 +1212,7 @@ msgstr "Vous ne pouvez pas supprimer l'unique attachement"
 
 #: compose/functions.c:391 compose/functions.c:405
 msgid "Attachments to be grouped must have the same parent"
-msgstr ""
+msgstr "Pour être regroupées, les pièces jointes doivent avoir le même parent"
 
 #: compose/functions.c:612
 msgid "Attaching selected file..."
@@ -1228,21 +1223,21 @@ msgstr[1] "Joindre les fichiers sélectionnés..."
 #: compose/functions.c:632
 #, c-format
 msgid "Unable to attach %s"
-msgstr "Impossible d'attacher %s "
+msgstr "Impossible d'attacher %s"
 
 #: compose/functions.c:684
 msgid "Open mailbox to attach message from"
-msgstr "Ouvrir une BAL d'où attacher un message"
+msgstr "Ouvrir une boîte mail d'où attacher un message"
 
 #: compose/functions.c:695
 #, fuzzy
 msgid "Open newsgroup to attach message from"
-msgstr "Ouvrir une BAL d'où attacher un message"
+msgstr "Ouvrir une boîte mail d'où attacher un message"
 
 #: compose/functions.c:752 main.c:1342
 #, c-format
 msgid "Unable to open mailbox %s"
-msgstr "Impossible d'ouvrir la BAL %s"
+msgstr "Impossible d'ouvrir la boîte mail %s"
 
 #: compose/functions.c:763
 msgid "No messages in that folder"
@@ -1250,15 +1245,15 @@ msgstr "Aucun message dans ce dossier"
 
 #: compose/functions.c:773
 msgid "Tag the messages you want to attach"
-msgstr "Marquez les messages que vous voulez attacher "
+msgstr "Marquez les messages que vous voulez attacher"
 
 #: compose/functions.c:810
 msgid "Unable to attach"
-msgstr "Impossible d'attacher "
+msgstr "Impossible d'attacher"
 
 #: compose/functions.c:907
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
-msgstr ""
+msgstr "Seules valeurs acceptées pour Content-ID:  -.0-9@A-Z_a-z"
 
 #: compose/functions.c:986
 msgid "Invalid encoding"
@@ -1274,9 +1269,8 @@ msgid "Can't filter multipart attachments"
 msgstr "Seul l'effacement d'attachements multipart est supporté"
 
 #: compose/functions.c:1122
-#, fuzzy
 msgid "Can't get multipart attachments"
-msgstr "Seul l'effacement d'attachements multipart est supporté"
+msgstr "Impossible de recevoir les pièces jointes multipart"
 
 #: compose/functions.c:1144
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1306,7 +1300,7 @@ msgstr "La pièce jointe est déjà au plus bas"
 
 #: compose/functions.c:1232 compose/functions.c:1285
 msgid "Attachment can't be moved out of group"
-msgstr ""
+msgstr "La pièce jointe ne peut pas être déplacée hors du groupe"
 
 #: compose/functions.c:1280
 msgid "Attachment is already at top"
@@ -1363,9 +1357,8 @@ msgid "The current attachment will be converted"
 msgstr "L'attachement courant sera converti"
 
 #: compose/functions.c:1517
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "La pièce jointe est déjà au plus haut"
+msgstr "La pièce jointe n'est pas au format 'multipart'"
 
 #: compose/functions.c:1633 send/send.c:2783
 #, c-format
@@ -1537,7 +1530,7 @@ msgstr "Date relative invalide : %s"
 #: conn/accountcmd.c:79
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
-msgstr ""
+msgstr "Ligne non conforme. Format attendu <key: val> à la place de <%s>"
 
 #: conn/accountcmd.c:119
 #, c-format
@@ -1759,7 +1752,7 @@ msgstr "Remplissage du tas d'entropie : %s..."
 #: conn/openssl.c:216
 #, c-format
 msgid "%s has insecure permissions"
-msgstr "%s a des droits d'accès peu sûrs "
+msgstr "%s a des droits d'accès peu sûrs"
 
 #: conn/openssl.c:353
 msgid "SSL disabled due to the lack of entropy"
@@ -1802,7 +1795,7 @@ msgstr "Échec de vérification de machine : %s"
 
 #: conn/openssl.c:1160
 msgid "I/O error"
-msgstr "erreur d'E/S"
+msgstr "E/S a rencontré une erreur"
 
 #: conn/openssl.c:1166 conn/raw.c:270 gui/curs_lib.c:379 mutt_logging.c:108
 msgid "unknown error"
@@ -1917,8 +1910,8 @@ msgstr "%s n'est pas un fichier ordinaire"
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Le temps de calcul était erroné de %ld octets"
+msgstr[1] "Les temps de calcul étaient erronés de %ld octets."
 
 #: copy.c:810
 msgid "No decryption engine available for message"
@@ -1941,11 +1934,11 @@ msgstr "impossible de tronquer le dossier temporaire : %s"
 
 #: editmsg.c:158
 msgid "Message file is empty"
-msgstr "Le fichier contenant le message est vide "
+msgstr "Le fichier contenant le message est vide"
 
 #: editmsg.c:165
 msgid "Message not modified"
-msgstr "Message non modifié "
+msgstr "Message non modifié"
 
 #: editmsg.c:172
 msgid "Message of read-only mailbox modified! Ignoring changes."
@@ -1966,32 +1959,31 @@ msgstr "Impossible d'ajouter au dossier : %s"
 
 #: email/parse.c:1554
 msgid "multipart message has no boundary parameter"
-msgstr "le message multipart n'a pas de paramètre boundary "
+msgstr "le message multipart n'a pas de paramètre boundary"
 
 #: enter/window.c:54
 msgid "Complete"
-msgstr ""
+msgstr "Complèt"
 
 #: enter/window.c:55
 msgid "Hist Up"
-msgstr ""
+msgstr "Historique vers le haut"
 
 #: enter/window.c:56
 msgid "Hist Down"
-msgstr ""
+msgstr "Historique vers le bas"
 
 #: enter/window.c:57
-#, fuzzy
 msgid "Hist Search"
-msgstr "Rechercher"
+msgstr "Rechercher dans l'historique"
 
 #: enter/window.c:58
 msgid "Begin Line"
-msgstr ""
+msgstr "Début de ligne"
 
 #: enter/window.c:59
 msgid "End Line"
-msgstr ""
+msgstr "Ligne de fin"
 
 #: enter/window.c:60
 msgid "Kill Line"
@@ -2111,7 +2103,7 @@ msgstr "éditer le champ Reply-To"
 
 #: envelope/window.c:131
 msgid "Headers: "
-msgstr "Headers"
+msgstr "Headers: "
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
@@ -2203,12 +2195,12 @@ msgstr "<aucune chaine définie"
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "(+%d plus)"
+msgstr[1] "(+%d more)"
 
 #: external.c:110 recvcmd.c:181 recvcmd.c:193
 msgid "Warning: message contains no From: header"
-msgstr "Attention : le message ne contient pas d'en-tête From:"
+msgstr "Attention : le message ne contient pas d'en-tête From"
 
 #: external.c:116 recvcmd.c:204
 msgid "Bounce message to: "
@@ -2220,29 +2212,27 @@ msgstr "Renvoyer les messages marqués à : "
 
 #: external.c:127 recvcmd.c:217
 msgid "Error parsing address"
-msgstr "Erreur de décodage de l'adresse "
+msgstr "Erreur de décodage de l'adresse"
 
 # , c-format
 #: external.c:145 recvcmd.c:237
-#, fuzzy, c-format
+#, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
-msgstr[0] "Renvoyer le message à %s?"
-msgstr[1] "Renvoyer les messages à %s?"
+msgstr[0] "Retourner  le message à %s?"
+msgstr[1] "Retourner les messages à %s?"
 
 #: external.c:164 recvcmd.c:259
-#, fuzzy
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Message non renvoyé"
-msgstr[1] "Message non renvoyé"
+msgstr[1] "Messages non renvoyés"
 
 #: external.c:189 recvcmd.c:286
-#, fuzzy
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "Message renvoyé"
-msgstr[1] "Message renvoyé"
+msgstr[1] "Messages renvoyés"
 
 #: external.c:328 external.c:371 external.c:391
 msgid "Can't create filter process"
@@ -2265,18 +2255,16 @@ msgid "Print tagged messages?"
 msgstr "Imprimer les messages marqués ?"
 
 #: external.c:482
-#, fuzzy
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Message imprimé"
-msgstr[1] "Message imprimé"
+msgstr[1] "Messages imprimés"
 
 #: external.c:486
-#, fuzzy
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Le message n'a pas pu être imprimé"
-msgstr[1] "Le message n'a pas pu être imprimé"
+msgstr[1] "Les messages n'ont pas pu être imprimé"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: external.c:503
@@ -2307,35 +2295,35 @@ msgstr "Copie de %d messages dans %s..."
 #: external.c:834
 #, fuzzy
 msgid "Copy tagged to mailbox"
-msgstr "Copier les messages marqués vers une BAL"
+msgstr "Copier les messages marqués vers une boîte mail"
 
 # , c-format
 #: external.c:834
 #, fuzzy
 msgid "Copy to mailbox"
-msgstr "Copier vers une BAL"
+msgstr "Copier vers une boîte mail"
 
 #: external.c:837
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
-msgstr "Déchiffrer-copier les messages marqués vers une BAL"
+msgstr "Déchiffrer-copier les messages marqués vers une boîte mail"
 
 # , c-format
 #: external.c:838
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgstr "Déchiffrer-copier vers une BAL"
+msgstr "Déchiffrer-copier vers une boîte mail"
 
 #: external.c:841
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
-msgstr "Décoder-copier les messages marqués vers une BAL"
+msgstr "Décoder-copier les messages marqués vers une boîte mail"
 
 # , c-format
 #: external.c:842
 #, fuzzy
 msgid "Decode-copy to mailbox"
-msgstr "Décoder-copier vers une BAL"
+msgstr "Décoder-copier vers une boîte mail"
 
 #. L10N: Progress meter message when saving tagged messages
 #: external.c:849
@@ -2346,35 +2334,34 @@ msgstr "Imprimer les messages marqués ?"
 #: external.c:853
 #, fuzzy
 msgid "Save tagged to mailbox"
-msgstr "Sauver les messages marqués vers une BAL"
+msgstr "Sauver les messages marqués vers une boîte mail"
 
 # , c-format
 #: external.c:853
 #, fuzzy
 msgid "Save to mailbox"
-msgstr "Sauver vers une BAL"
+msgstr "Sauver vers une boîte mail"
 
 #: external.c:856
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
-msgstr "Déchiffrer-sauver les messages marqués vers une BAL"
+msgstr "Déchiffrer-sauver les messages marqués vers une boîte mail"
 
 # , c-format
 #: external.c:857
 #, fuzzy
 msgid "Decrypt-save to mailbox"
-msgstr "Déchiffrer-sauver vers une BAL"
+msgstr "Déchiffrer-sauver vers une boîte mail"
 
 #: external.c:860
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
-msgstr "Décoder-sauver les messages marqués vers une BAL"
+msgstr "Décoder-sauver les messages marqués vers une boîte mail"
 
 # , c-format
 #: external.c:861
-#, fuzzy
 msgid "Decode-save to mailbox"
-msgstr "Décoder-sauver vers une BAL"
+msgstr "Décoder-sauver vers une boîte mail"
 
 # , c-format
 #: external.c:907
@@ -2626,7 +2613,7 @@ msgstr "Impossible d'ouvrir le fichier temporaire"
 
 #: handler.c:1411
 msgid "failed to re-open 'memory stream'"
-msgstr "Échec de la réouverture de 'memory stream'"
+msgstr "échec de la réouverture de 'memory stream'"
 
 #: handler.c:1698
 msgid "Error: multipart/signed has no protocol"
@@ -2672,7 +2659,7 @@ msgstr "[-- %s/%s n'est pas supporté --]\n"
 #: hcache/config.c:95
 #, c-format
 msgid "Set option %s before setting %s"
-msgstr ""
+msgstr "Déterminer l'option %s avant le paramètre %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
@@ -2680,7 +2667,7 @@ msgstr ""
 #: hcache/config.c:112 send/config.c:54
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr ""
+msgstr "L'option %s doit se situer entre les valeurs de  %d à %d (inclus)"
 
 #: help.c:339
 msgid "ERROR: please report this bug"
@@ -2733,11 +2720,11 @@ msgstr "Impossible de créer le fichier temporaire"
 
 #: hook.c:200
 msgid "current mailbox shortcut '^' is unset"
-msgstr "le raccourci de boîte aux lettres courante '^' n'a pas de valeur"
+msgstr "le raccourci de boîte mail courante '^' n'a pas de valeur"
 
 #: hook.c:212
 msgid "mailbox shortcut expanded to empty regex"
-msgstr "le raccourci de boîte aux lettres a donné une expression rationnelle vide"
+msgstr "le raccourci de boîte mail a donné une expression rationnelle vide"
 
 #: hook.c:232
 msgid "badly formatted command string"
@@ -2814,15 +2801,15 @@ msgstr "Ce dossier n'existe pas: %s"
 
 #: imap/browse.c:404
 msgid "Create mailbox: "
-msgstr "Créer la boîte aux lettres : "
+msgstr "Créer la boîte mail : "
 
 #: imap/browse.c:411 imap/browse.c:470
 msgid "Mailbox must have a name"
-msgstr "La boîte aux lettres doit avoir un nom"
+msgstr "La boîte mail doit avoir un nom"
 
 #: imap/browse.c:419
 msgid "Mailbox created"
-msgstr "Boîte aux lettres créée"
+msgstr "Boîte mail créée"
 
 #: imap/browse.c:453
 msgid "Can't rename root folder"
@@ -2840,12 +2827,12 @@ msgstr "Le renommage a échoué : %s"
 
 #: imap/browse.c:482
 msgid "Mailbox renamed"
-msgstr "Boîte aux lettres renommée"
+msgstr "Boîte mail renommée"
 
 #: imap/command.c:177
 #, c-format
 msgid "Mailbox %s@%s closed"
-msgstr "Boîte aux lettres %s@%s fermée"
+msgstr "Boîte mail %s@%s fermée"
 
 #: imap/command.c:1181
 #, c-format
@@ -2860,7 +2847,7 @@ msgstr "Connexion à %s interrompue"
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
-msgstr ""
+msgstr "L'option %s: %s n'est pas un moyen accepté d'authentification"
 
 #: imap/imap.c:108
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
@@ -3025,7 +3012,7 @@ msgstr "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettr
 #: imap/msn.c:48 mutt/buffer.c:113 mutt/buffer.c:324 mutt/memory.c:58
 #: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006 mx.c:1231
 msgid "Out of memory"
-msgstr "Plus de mémoire "
+msgstr "Plus de mémoire"
 
 #: imap/search.c:158
 #, c-format
@@ -3071,17 +3058,17 @@ msgstr "%s : opération non permise par les ACL"
 
 #: index/dlg_index.c:731
 msgid "Failed to create query, aborting"
-msgstr ""
+msgstr "La création de la requête a échoué, la tâche va quitter"
 
 # , c-format
 #: index/dlg_index.c:777 muttlib.c:1355 mx.c:222 mx.c:362
 #, c-format
 msgid "%s is not a mailbox"
-msgstr "%s n'est pas une boîte aux lettres "
+msgstr "%s n'est pas une boîte mail"
 
 #: index/dlg_index.c:1155
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
+msgstr "Boîte mail modifiée extérieurement. Les indicateurs peuvent être faux."
 
 #: index/dlg_index.c:1164 pager/dlg_pager.c:442
 msgid "New mail in this mailbox"
@@ -3114,9 +3101,8 @@ msgstr "Impossible d'effacer le message"
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
 #: index/functions.c:328 index/functions.c:961
-#, fuzzy
 msgid "Can't delete messages"
-msgstr "Impossible d'effacer le message"
+msgstr "Impossible d'effacer le(s) message(s)"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
@@ -3371,9 +3357,8 @@ msgstr "effacer tous les messages dans la discussion"
 
 # , c-format
 #: index/functions.c:2427
-#, fuzzy
 msgid "Enter Message-Id: "
-msgstr "Entrez keyID : "
+msgstr "Entrez la valeur Message-ID : "
 
 #: index/functions.c:2438
 msgid "Article has no parent reference"
@@ -3461,7 +3446,7 @@ msgstr "impossible de déterminer nodename via uname()"
 #: init.c:628
 #, c-format
 msgid "Config variable '%s' is deprecated"
-msgstr ""
+msgstr "La variable de configuration '%s' est invalide"
 
 #: keymap.c:408
 #, c-format
@@ -3506,7 +3491,7 @@ msgstr "%s : séquence de touches nulle"
 #: keymap.c:1227
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
-msgstr ""
+msgstr "La fonction '%s' n'est pas disponible dans le menu '%s'"
 
 # , c-format
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
@@ -3574,7 +3559,7 @@ msgstr "Pas de mailcap_path ni de MAILCAPS spécifié"
 #: mailcap.c:523
 #, c-format
 msgid "mailcap entry for type %s not found"
-msgstr "Entrée mailcap pour le type %s non trouvée"
+msgstr "entrée mailcap pour le type %s non trouvée"
 
 #: maildir/maildir.c:245 maildir/mh.c:303
 msgid "Could not flush message to disk"
@@ -3609,7 +3594,7 @@ msgstr "Écriture de %s..."
 #. L10N: Try to limit to 80 columns
 #: main.c:261
 msgid "usage:"
-msgstr ""
+msgstr "utilisation:"
 
 #: main.c:262
 msgid ""
@@ -3617,60 +3602,65 @@ msgid ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
+"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
+"          <address> [...]"
 
 #: main.c:265
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
+"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 
 #: main.c:267
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
-msgstr ""
+msgstr "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 
 #: main.c:268
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 
 #: main.c:269
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -B"
 
 #: main.c:270
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 
 #: main.c:271
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 
 #: main.c:272
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -G"
 
 #: main.c:273
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 
 #: main.c:274
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -p"
 
 #: main.c:275
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 
 #: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 
 #: main.c:277
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
-msgstr ""
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 
 #: main.c:278
 msgid "  neomutt -v[v]\n"
-msgstr ""
+msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
 #: main.c:281
@@ -3700,11 +3690,11 @@ msgstr ""
 
 #: main.c:288
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
-msgstr ""
+msgstr "  -b <address>  indique un destinataire en Cci (Blind Carbon Copy - Bcc)"
 
 #: main.c:289
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
-msgstr ""
+msgstr "  -c <address>  Choisir un destinataire en copie (Cc)"
 
 #: main.c:290
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
@@ -3754,7 +3744,7 @@ msgstr ""
 
 #: main.c:302
 msgid "  -h            Print this help message and exit"
-msgstr ""
+msgstr " -h     imprime ce message et quitte"
 
 #: main.c:303
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
@@ -3792,15 +3782,15 @@ msgstr "Ouvrir la boîte aux lettres en lecture seule"
 
 #: main.c:313
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
-msgstr ""
+msgstr "  -s <subject>  Crée le sujet du message  (doit être entre guillemets s'il comporte des espaces)"
 
 #: main.c:314
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr ""
+msgstr "  -v            Affiche la version de NeoMutt version, définit son temps de compilation et sort"
 
 #: main.c:315
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr ""
+msgstr "  -vv          Affiche la licence NeoMutt, les informations relatives à la propriété intellectuelle et sort"
 
 #: main.c:316
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
@@ -3837,7 +3827,7 @@ msgstr "Erreur : la valeur '%s' est invalide pour -d"
 
 #: main.c:960
 msgid "Failed to parse mailto: link"
-msgstr "Impossible d'analyser le lien mailto:"
+msgstr "Le lien mailto: n'a pas pu être analysé"
 
 #: main.c:975 main.c:1232 send/send.c:294 send/send.c:2773 send/send.c:2777
 msgid "No recipients specified"
@@ -3873,7 +3863,7 @@ msgstr "La boîte aux lettres est vide"
 
 #: mbox/mbox.c:254 mbox/mbox.c:320
 msgid "Mailbox is corrupt"
-msgstr "La boîte aux lettres est altérée "
+msgstr "La boîte aux lettres est altérée"
 
 # , c-format
 #: mbox/mbox.c:1012
@@ -3883,7 +3873,7 @@ msgstr "Impossible de verrouiller %s"
 
 #: mbox/mbox.c:1161
 msgid "Mailbox was corrupted"
-msgstr "La boîte aux lettres a été altérée "
+msgstr "La boîte aux lettres a été altérée"
 
 #: mbox/mbox.c:1207 mbox/mbox.c:1460
 msgid "Fatal error!  Could not reopen mailbox!"
@@ -3891,11 +3881,11 @@ msgstr "Erreur fatale ! La boîte aux lettres n'a pas pu être réouverte !"
 
 #: mbox/mbox.c:1244 pager/message.c:232
 msgid "Could not create temporary file"
-msgstr "Impossible de créer le fichier temporaire "
+msgstr "Impossible de créer le fichier temporaire"
 
 #: mbox/mbox.c:1262
 msgid "sync: mbox modified, but no modified messages (report this bug)"
-msgstr "sync : BAL modifiée, mais pas de message modifié  (signalez ce bug)"
+msgstr "sync : boîte mail modifiée, mais pas de message modifié  (signalez ce bug)"
 
 #: mbox/mbox.c:1405
 msgid "Committing changes..."
@@ -3905,11 +3895,11 @@ msgstr "Écriture des changements..."
 #: mbox/mbox.c:1439
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
-msgstr "Erreur d'écriture ! Boîte aux lettres partielle sauvée dans %s"
+msgstr "Erreur d'écriture ! boîte mail partielle sauvée dans %s"
 
 #: mbox/mbox.c:1524
 msgid "Could not reopen mailbox"
-msgstr "La boîte aux lettres n'a pas pu être réouverte "
+msgstr "La boîte aux lettres n'a pas pu être réouverte"
 
 #: mbox/mbox.c:1622 mbox/mbox.c:1774
 msgid "Can't write message"
@@ -3986,7 +3976,7 @@ msgstr "Sélectionner une chaîne de redistributeurs de courrier"
 
 #: mixmaster/dlg_mixmaster.c:193
 msgid "Can't get mixmaster's type2.list"
-msgstr "Impossible d'obtenir le type2.list du mixmaster "
+msgstr "Impossible d'obtenir le type2.list du mixmaster"
 
 #: mixmaster/mixmaster.c:57
 msgid "Mixmaster doesn't accept Cc or Bcc headers"
@@ -3994,7 +3984,7 @@ msgstr "Le mixmaster n'accepte pas les en-têtes Cc et Bcc"
 
 #: mixmaster/mixmaster.c:82
 msgid "Please set the hostname variable to a proper value when using mixmaster"
-msgstr "Donnez une valeur correcte à hostname quand vous utilisez le mixmaster "
+msgstr "Donnez une valeur correcte à hostname quand vous utilisez le mixmaster"
 
 # , c-format
 #: mixmaster/mixmaster.c:125
@@ -4008,7 +3998,7 @@ msgstr "Erreur en envoyant le message"
 
 #: mixmaster/remailer.c:146
 msgid "<random>"
-msgstr ""
+msgstr "<random>"
 
 #: mixmaster/win_chain.c:65
 #, c-format
@@ -4045,7 +4035,7 @@ msgstr "Échec de renommage du fichier"
 
 #: mutt/file.c:1248
 msgid "Timeout exceeded while attempting fcntl lock"
-msgstr "Délai dépassé lors de la tentative de verrouillage fcntl "
+msgstr "Délai dépassé lors de la tentative de verrouillage fcntl"
 
 # , c-format
 #: mutt/file.c:1254
@@ -4055,7 +4045,7 @@ msgstr "Attente du verrouillage fcntl... %d"
 
 #: mutt/file.c:1316
 msgid "Timeout exceeded while attempting flock lock"
-msgstr "Délai dépassé lors de la tentative de verrouillage flock "
+msgstr "Délai dépassé lors de la tentative de verrouillage flock"
 
 # , c-format
 #: mutt/file.c:1323
@@ -4065,9 +4055,9 @@ msgstr "Attente de la tentative de flock... %d"
 
 # , c-format
 #: mutt/logging.c:107
-#, fuzzy, c-format
+#, c-format
 msgid "Closed log file: %s"
-msgstr "Impossible d'ouvrir le fichier : %s"
+msgstr "Impossible d'ouvrir le fichier journal : %s"
 
 # , c-format
 #: mutt/logging.c:138
@@ -4095,12 +4085,12 @@ msgstr ""
 #: mutt/random.c:85
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr ""
+msgstr "ouvrir /dev/urandom: %s"
 
 #: mutt/random.c:92
 #, c-format
 msgid "read /dev/urandom: %s"
-msgstr ""
+msgstr "read /dev/urandom: %s"
 
 #: mutt/regex.c:276
 #, c-format
@@ -4151,9 +4141,9 @@ msgid "New mail in "
 msgstr "Nouveau(x) message(s) dans "
 
 #: mutt_socket.c:71
-#, fuzzy, c-format
+#, c-format
 msgid "SSL is unavailable, can't connect to %s"
-msgstr "SSL n'est pas disponible."
+msgstr "SSL n'est pas disponible, impossible de se connecter à %s"
 
 #: mutt_thread.c:121
 #, c-format
@@ -4177,7 +4167,7 @@ msgstr "Le message père n'est pas visible dans cette vue limitée"
 #. These three letters correspond to the choices in the string.
 #: muttlib.c:589
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
-msgstr "Le fichier est un répertoire, sauver dans celui-ci? (o)ui, (n)on, (t)ous"
+msgstr "Le fichier est un répertoire, sauver dans celui-ci? (o)ui, (n)on, (t)ous ?"
 
 #: muttlib.c:589
 msgid "yna"
@@ -4299,7 +4289,7 @@ msgstr " Appuyez sur '%s' pour inverser l'écriture autorisée"
 
 #: mx.c:937
 msgid "Use 'toggle-write' to re-enable write"
-msgstr "Utilisez 'toggle-write' pour réautoriser l'écriture "
+msgstr "Utilisez 'toggle-write' pour réautoriser l'écriture"
 
 # , c-format
 #: mx.c:939
@@ -4309,7 +4299,7 @@ msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
 
 #: mx.c:1012
 msgid "Mailbox checkpointed"
-msgstr "Boîte aux lettres vérifiée"
+msgstr "Boîte mail vérifiée"
 
 # , c-format
 #: mx.c:1358
@@ -4319,7 +4309,7 @@ msgstr "Impossible d'ouvrir le fichier : %s"
 
 #: mx.c:1860
 msgid "Can't toggle write on a readonly mailbox"
-msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule "
+msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule"
 
 #: mx.c:1867
 msgid "Changes to folder will be written on folder exit"
@@ -4515,7 +4505,7 @@ msgstr "Attention ! Une des clés a été révoquée\n"
 
 #: ncrypt/crypt_gpgme.c:1146
 msgid "Warning: The key used to create the signature expired at: "
-msgstr "Attention ! La clé utilisée pour créer la signature a expiré à :"
+msgstr "Attention ! La clé utilisée pour créer la signature a expiré à : "
 
 #: ncrypt/crypt_gpgme.c:1152
 msgid "Warning: At least one certification key has expired\n"
@@ -4523,7 +4513,7 @@ msgstr "Attention ! Au moins une clé de certification a expiré\n"
 
 #: ncrypt/crypt_gpgme.c:1166
 msgid "Warning: The signature expired at: "
-msgstr "Attention ! La signature a expiré à :"
+msgstr "Attention ! La signature a expiré à : "
 
 #: ncrypt/crypt_gpgme.c:1173
 msgid "Can't verify due to a missing key or certificate\n"
@@ -4582,7 +4572,7 @@ msgstr "ID de la clé "
 #. if the S/MIME key has no ID. This is quite an error.
 #: ncrypt/crypt_gpgme.c:1386
 msgid "no signature fingerprint available"
-msgstr "Aucune empreinte de signature disponible"
+msgstr "aucune empreinte de signature disponible"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:1395 ncrypt/crypt_gpgme.c:1400
@@ -4915,15 +4905,15 @@ msgstr "Toutes les clés correspondantes sont marquées expirées/révoquées"
 
 #: ncrypt/dlg_gpgme.c:757
 msgid "PGP and S/MIME keys matching"
-msgstr "clés PGP et S/MIME correspondant à"
+msgstr "Les clés PGP et S/MIME correspondent"
 
 #: ncrypt/dlg_gpgme.c:759
 msgid "PGP keys matching"
-msgstr "clés PGP correspondant à"
+msgstr "Les clés PGP correspondent"
 
 #: ncrypt/dlg_gpgme.c:761
 msgid "S/MIME keys matching"
-msgstr "clés S/MIME correspondant à"
+msgstr "Les clés S/MIME correspondent"
 
 #: ncrypt/dlg_gpgme.c:763
 msgid "keys matching"
@@ -4992,7 +4982,7 @@ msgstr "Révoquée    "
 #. Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.
 #: ncrypt/dlg_smime.c:148
 msgid "Trusted   "
-msgstr "De confiance"
+msgstr "De confiance "
 
 #. L10N: Describes the trust state of a S/MIME key.
 #. This translation must be padded with spaces to the right such that it
@@ -5219,7 +5209,7 @@ msgstr "Le déchiffrage a échoué"
 
 #: ncrypt/pgp.c:1368
 msgid "Can't open PGP subprocess"
-msgstr "Impossible d'ouvrir le sous-processus PGP "
+msgstr "Impossible d'ouvrir le sous-processus PGP"
 
 #: ncrypt/pgp.c:1807
 msgid "Can't invoke PGP"
@@ -5229,7 +5219,7 @@ msgstr "Impossible d'invoquer PGP"
 #. One of them will appear in each of the three strings marked "(inline"), below.
 #: ncrypt/pgp.c:1916
 msgid "PGP/M(i)ME"
-msgstr "pgp/m(I)me"
+msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
@@ -5334,7 +5324,7 @@ msgstr "Pas de certificat (valide) trouvé pour %s"
 #: ncrypt/smime.c:911 ncrypt/smime.c:940 ncrypt/smime.c:1013
 #: ncrypt/smime.c:1048 ncrypt/smime.c:1125 ncrypt/smime.c:1205
 msgid "Error: unable to create OpenSSL subprocess"
-msgstr "Erreur : impossible de créer le sous-processus OpenSSL "
+msgstr "Erreur : impossible de créer le sous-processus OpenSSL"
 
 #: ncrypt/smime.c:1184
 msgid "Label for certificate: "
@@ -5346,7 +5336,7 @@ msgstr "pas de certfile"
 
 #: ncrypt/smime.c:1293
 msgid "no mbox"
-msgstr "pas de BAL"
+msgstr "pas de boîte mail"
 
 #: ncrypt/smime.c:1454 ncrypt/smime.c:1625
 msgid "No output from OpenSSL..."
@@ -5358,7 +5348,7 @@ msgstr "Impossible de signer : pas de clé spécifiée. Utilisez « Signer avec 
 
 #: ncrypt/smime.c:1592
 msgid "Can't open OpenSSL subprocess"
-msgstr "Impossible d'ouvrir le sous-processus OpenSSL "
+msgstr "Impossible d'ouvrir le sous-processus OpenSSL"
 
 #: ncrypt/smime.c:1823 ncrypt/smime.c:1942
 msgid ""
@@ -5479,7 +5469,7 @@ msgstr "%s est un chemin POP invalide"
 
 #: nntp/nntp.c:131 nntp/nntp.c:681 pop/lib.c:408 pop/pop.c:683
 msgid "Server closed connection"
-msgstr "Le serveur a fermé la connexion "
+msgstr "Le serveur a fermé la connexion"
 
 #: nntp/nntp.c:235
 #, fuzzy
@@ -5518,7 +5508,7 @@ msgstr "Connexion à %s..."
 
 #: nntp/nntp.c:1800
 msgid "Posting is NOT ok"
-msgstr ""
+msgstr "Publier n'est pas ok"
 
 # , c-format
 #: nntp/nntp.c:1800
@@ -5533,14 +5523,13 @@ msgid "Can't post article: %s"
 msgstr "Impossible d'obtenir le statut de %s : %s"
 
 #: nntp/nntp.c:1993
-#, fuzzy, c-format
+#, c-format
 msgid "Loading list of groups from server %s..."
-msgstr "Effacement des messages sur le serveur..."
+msgstr "Téléchargement des messages sur le serveur %s..."
 
 #: nntp/nntp.c:2036 nntp/nntp.c:2128
-#, fuzzy
 msgid "Loading descriptions..."
-msgstr "Connexion..."
+msgstr "Descriptions en cours de chargement..."
 
 #: nntp/nntp.c:2058
 #, fuzzy
@@ -5647,13 +5636,12 @@ msgid "attach messages to this message"
 msgstr "attacher des messages à ce message"
 
 #: opcodes.h:39
-#, fuzzy
 msgid "attach news articles to this message"
-msgstr "attacher des fichiers à ce message"
+msgstr "attacher des fichiers de groupes de discussion à ce message"
 
 #: opcodes.h:40
 msgid "toggle display of subparts"
-msgstr "Inverser l'affichage des sous-parties"
+msgstr "inverser l'affichage des sous-parties"
 
 #: opcodes.h:41 opcodes.h:42 opcodes.h:115
 msgid "delete the current entry"
@@ -5694,11 +5682,11 @@ msgstr "obtenir une copie temporaire d'un attachement"
 
 #: opcodes.h:51
 msgid "group tagged attachments as 'multipart/alternative'"
-msgstr "Regrouper les pièces jointes marquées comme 'multipart/alternative'"
+msgstr "regrouper les pièces jointes marquées comme 'multipart/alternative'"
 
 #: opcodes.h:52
 msgid "group tagged attachments as 'multipart/multilingual'"
-msgstr "Regrouper les pièces jointes marquées comme 'multipart/multilingual'"
+msgstr "regrouper les pièces jointes marquées comme 'multipart/multilingual'"
 
 #: opcodes.h:53
 #, fuzzy
@@ -5794,7 +5782,7 @@ msgstr "inverser l'état du compte courant en actif/inactif"
 
 #: opcodes.h:78
 msgid "toggle the current account prefer-encrypt flag"
-msgstr "Basculer le drapeau prefer-encrypt du compte courant"
+msgstr "basculer le drapeau prefer-encrypt du compte courant"
 
 #: opcodes.h:79
 msgid "show autocrypt compose menu options"
@@ -5815,16 +5803,15 @@ msgstr "renvoyer un message à un autre utilisateur"
 
 #: opcodes.h:88
 msgid "swap the current folder position with $folder if it exists"
-msgstr "Échanger la position du répertoire courant avec $folder s'il existe"
+msgstr "échanger la position du répertoire courant avec $folder s'il existe"
 
 #: opcodes.h:89
 msgid "select a new file in this directory"
 msgstr "sélectionner un nouveau fichier dans ce répertoire"
 
 #: opcodes.h:90
-#, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
-msgstr "s'abonner à la BAL courante (IMAP seulement)"
+msgstr "s'abonner à la boîte mail courante (IMAP/NNTP seulement)"
 
 #: opcodes.h:91
 msgid "display the currently selected file's name"
@@ -5832,12 +5819,12 @@ msgstr "afficher le nom du fichier sélectionné actuellement"
 
 #: opcodes.h:92
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "changer entre voir toutes les BAL/voir les BAL abonnées (IMAP seulement)"
+msgstr "changer entre voir toutes les boîte mail/voir les boîte mail abonnées (IMAP seulement)"
 
 #: opcodes.h:93
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
-msgstr "se désabonner de la BAL courante (IMAP seulement)"
+msgstr "se désabonner de la boîte mail courante (IMAP seulement)"
 
 #: opcodes.h:94
 msgid "view file"
@@ -5853,7 +5840,7 @@ msgstr "changer de répertoires"
 
 #: opcodes.h:97
 msgid "check mailboxes for new mail"
-msgstr "vérifier la présence de nouveaux messages dans les BAL"
+msgstr "vérifier la présence de nouveaux messages dans les boîte mail"
 
 #: opcodes.h:98
 msgid "calculate message statistics for all mailboxes"
@@ -5893,7 +5880,7 @@ msgstr "écrire le message dans un dossier"
 
 #: opcodes.h:107
 msgid "copy a message to a file/mailbox"
-msgstr "copier un message dans un fichier ou une BAL"
+msgstr "copier un message dans un fichier ou une boîte mail"
 
 #: opcodes.h:108
 msgid "create an alias from a message sender"
@@ -5901,7 +5888,7 @@ msgstr "créer un alias à partir de l'expéditeur d'un message"
 
 #: opcodes.h:109
 msgid "create a new mailbox (IMAP only)"
-msgstr "créer une nouvelle BAL (IMAP seulement)"
+msgstr "créer une nouvelle boîte mail (IMAP seulement)"
 
 #: opcodes.h:110
 msgid "move entry to bottom of screen"
@@ -5925,7 +5912,7 @@ msgstr "faire une copie décodée (text/plain) et effacer"
 
 #: opcodes.h:116
 msgid "delete the current mailbox (IMAP only)"
-msgstr "supprimer la BAL courante (IMAP seulement)"
+msgstr "supprimer la boîte mail courante (IMAP seulement)"
 
 #: opcodes.h:117
 msgid "delete all messages in subthread"
@@ -6058,7 +6045,7 @@ msgstr ""
 
 #: opcodes.h:149
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
-msgstr ""
+msgstr "edit modifie le message brut  (les commandes edit et edit-raw-message sont synonymes)"
 
 #: opcodes.h:150
 msgid "end of conditional execution (noop)"
@@ -6119,9 +6106,8 @@ msgstr "créer une macro hotkey (marque-page) pour le message courant"
 
 # , c-format
 #: opcodes.h:163
-#, fuzzy
 msgid "go to parent directory"
-msgstr "%s n'est pas un répertoire."
+msgstr "%s n'est pas un répertoire"
 
 #: opcodes.h:164
 msgid "reply to all recipients preserving To/Cc"
@@ -6168,13 +6154,12 @@ msgstr "répondre à la liste spécifiée"
 
 # , c-format
 #: opcodes.h:183
-#, fuzzy
 msgid "unsubscribe from a mailing list"
-msgstr "Désabonné de %s"
+msgstr "se désabonner de %s"
 
 #: opcodes.h:184
 msgid "load list of all newsgroups from NNTP server"
-msgstr ""
+msgstr "charger la liste de tous les groupes de discussion du serveur NNTP"
 
 #: opcodes.h:185
 msgid "execute a macro"
@@ -6186,7 +6171,7 @@ msgstr "composer un nouveau message"
 
 #: opcodes.h:187
 msgid "list mailboxes with new mail"
-msgstr "lister les BAL ayant de nouveaux messages"
+msgstr "lister les boîte mail ayant de nouveaux messages"
 
 #: opcodes.h:188
 msgid "break the thread in two"
@@ -6453,7 +6438,7 @@ msgstr "{interne}"
 
 #: opcodes.h:253
 msgid "rename the current mailbox (IMAP only)"
-msgstr "renommer la BAL courante (IMAP seulement)"
+msgstr "renommer la boîte mail courante (IMAP seulement)"
 
 #: opcodes.h:254
 msgid "reply to a message"
@@ -6502,7 +6487,7 @@ msgstr "trier les messages dans l'ordre inverse"
 
 #: opcodes.h:266
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "S'abonner aux newsgroups correspondant à un filtre"
+msgstr "s'abonner aux newsgroups correspondant à un filtre"
 
 #: opcodes.h:267
 msgid "tag the current entry"
@@ -6526,7 +6511,7 @@ msgstr "marquer la discussion courante"
 
 #: opcodes.h:272
 msgid "toggle whether to browse mailboxes or all files"
-msgstr "changer entre l'affichage des BAL et celui de tous les fichiers"
+msgstr "changer entre l'affichage des boîte mail et celui de tous les fichiers"
 
 #: opcodes.h:273
 msgid "toggle a message's 'new' flag"
@@ -6619,9 +6604,8 @@ msgid "edit the message with headers"
 msgstr "éditer le message avec ses en-têtes"
 
 #: opcodes.h:300
-#, fuzzy
 msgid "edit the newsgroups list"
-msgstr "éditer la liste CC"
+msgstr "éditer la liste des groupes de discussion"
 
 #: opcodes.h:301
 msgid "edit the Reply-To field"
@@ -6735,7 +6719,7 @@ msgstr "déplacer le focus vers la boîte aux lettres suivante"
 
 #: opcodes.h:344
 msgid "move the highlight to next mailbox with new mail"
-msgstr "déplacer le focus vers la BAL avec de nouveaux messages suivante"
+msgstr "déplacer le focus vers la boîte mail avec de nouveaux messages suivante"
 
 #: opcodes.h:345
 msgid "open highlighted mailbox"
@@ -6755,11 +6739,11 @@ msgstr "déplacer la marque vers la boîte aux lettres précédente"
 
 #: opcodes.h:349
 msgid "move the highlight to previous mailbox with new mail"
-msgstr "déplacer la marque vers la BAL avec de nouveaux messages précédente"
+msgstr "déplacer la marque vers la boîte mail avec de nouveaux messages précédente"
 
 #: opcodes.h:350
 msgid "toggle between mailboxes and virtual mailboxes"
-msgstr "basculer entre l'affichage des BAL et celui de BAL virtuelles"
+msgstr "basculer entre l'affichage des boîte mail et celui de boîte mail virtuelles"
 
 #: opcodes.h:351
 msgid "make the sidebar (in)visible"
@@ -6825,7 +6809,7 @@ msgstr "L'aide est actuellement affichée"
 #. L10N: Status bar message: all the emails are visible in the index
 #: pager/message.c:59 pager/pbar.c:123 status.c:294
 msgid "all"
-msgstr ""
+msgstr "tout"
 
 #: pager/message.c:206
 msgid "Verify signature?"
@@ -6964,13 +6948,12 @@ msgid "Invalid relative date: %s"
 msgstr "Date relative invalide : %s"
 
 #: pattern/compile.c:773 pattern/compile.c:918
-#, fuzzy
 msgid "No current message"
-msgstr "Pas de message courant."
+msgstr "Pas de message courant"
 
 #: pattern/compile.c:954
 msgid "No Context"
-msgstr ""
+msgstr "Pas de contexte"
 
 #: pattern/compile.c:1195 pattern/compile.c:1408
 msgid "empty pattern"
@@ -7043,7 +7026,7 @@ msgstr "MIN-MAX"
 #.
 #: pattern/dlg_pattern.c:227
 msgid "QUERY"
-msgstr ""
+msgstr "REQUÊTE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a nested pattern.
@@ -7383,7 +7366,7 @@ msgstr "Recherche interrompue"
 
 #: pop/auth.c:330
 msgid "POP timestamp is invalid"
-msgstr "L'horodatage POP est invalide "
+msgstr "L'horodatage POP est invalide"
 
 #: pop/auth.c:393
 msgid "Command USER is not supported by server"
@@ -7432,7 +7415,7 @@ msgstr "Connexion perdue. Se reconnecter au serveur POP?"
 
 #: pop/pop.c:184
 msgid "Can't write header to temporary file"
-msgstr "Impossible d'écrire l'en-tête dans le fichier temporaire "
+msgstr "Impossible d'écrire l'en-tête dans le fichier temporaire"
 
 #: pop/pop.c:386
 #, fuzzy, c-format
@@ -7468,7 +7451,7 @@ msgstr[1] "Lecture de nouveaux messages (%d octets)..."
 
 #: pop/pop.c:651
 msgid "Error while writing mailbox"
-msgstr "Erreur à l'écriture de la boîte aux lettres "
+msgstr "Erreur à l'écriture de la boîte aux lettres"
 
 # , c-format
 #. L10N: The plural is picked by the second numerical argument, i.e.
@@ -7491,7 +7474,7 @@ msgstr "Marquage des messages à effacer..."
 
 #: pop/pop.c:1069
 msgid "Can't write message to temporary file"
-msgstr "Impossible d'écrire le message dans le fichier temporaire "
+msgstr "Impossible d'écrire le message dans le fichier temporaire"
 
 #: postpone/dlg_postpone.c:210
 msgid "Postponed Messages"
@@ -7555,11 +7538,10 @@ msgid "You may only bounce message/rfc822 parts"
 msgstr "Vous ne pouvez renvoyer que des parties message/rfc822"
 
 #: recvcmd.c:288
-#, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
-msgstr[0] "Erreur en renvoyant le message "
-msgstr[1] "Erreur en renvoyant les messages "
+msgstr[0] "Erreur en renvoyant le message"
+msgstr[1] "Erreur en renvoyant les messages"
 
 #: recvcmd.c:523
 #, c-format
@@ -7590,7 +7572,7 @@ msgstr "Aucun message marqué n'a pu être trouvé"
 
 #: recvcmd.c:900 send/send.c:1193
 msgid "No mailing lists found"
-msgstr "Pas de liste de diffusion trouvée "
+msgstr "Pas de liste de diffusion trouvée"
 
 #: recvcmd.c:1007
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
@@ -7614,13 +7596,13 @@ msgstr "Pas de paramètre boundary trouvé   [signalez cette erreur]"
 #: send/body.c:361
 #, c-format
 msgid "%s no longer exists"
-msgstr "%s n'existe plus "
+msgstr "%s n'existe plus"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr ""
+msgstr "L'option %s ne doit pas contenir les métacaractères sheel : %c"
 
 #: send/send.c:336
 msgid "No subject, abort?"
@@ -7664,7 +7646,7 @@ msgstr "Inclusion du message cité..."
 
 #: send/send.c:1248
 msgid "Could not include all requested messages"
-msgstr "Tous les messages demandés n'ont pas pu être inclus "
+msgstr "Tous les messages demandés n'ont pas pu être inclus"
 
 #: send/send.c:1261
 msgid "Forward as attachment?"
@@ -7677,7 +7659,7 @@ msgstr "Préparation du message à faire suivre..."
 # , c-format
 #: send/send.c:1778
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "Attention : Fcc vers une BAL IMAP n'est pas supporté en mode batch"
+msgstr "Attention : Fcc vers une boîte mail IMAP n'est pas supporté en mode batch"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
@@ -7712,7 +7694,7 @@ msgstr "rbs"
 #. initial Fcc fails.
 #: send/send.c:1893
 msgid "Fcc mailbox"
-msgstr "Boîte aux lettres Fcc"
+msgstr "Boîte mail Fcc"
 
 #: send/send.c:1962
 msgid "Can't postpone.  $postponed is unset"
@@ -7724,7 +7706,7 @@ msgstr "Erreur de chiffrement du message. Vérifiez vos paramètres de chiffreme
 
 #: send/send.c:2110
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
-msgstr "L'attachement référencé dans le message est manquant"
+msgstr "L'attachement qui correspond à \"$abort_noattach_regex est manquant dans le message"
 
 #: send/send.c:2114
 msgid "No attachments, cancel sending?"
@@ -7740,7 +7722,7 @@ msgstr "Refuser d'envoyer un email vide"
 
 #: send/send.c:2431
 msgid "Try: echo | neomutt -s 'subject' user@example.com"
-msgstr ""
+msgstr "Essayez ceci : echo | neomutt -s 'subject' prenom.nom@example.com"
 
 #: send/send.c:2520
 msgid "Edit forwarded message?"
@@ -7799,7 +7781,6 @@ msgid "Mail sent"
 msgstr "Message envoyé"
 
 #: send/send.c:3008
-#, fuzzy
 msgid "No recipient specified"
 msgstr "Pas de destinataire spécifié"
 
