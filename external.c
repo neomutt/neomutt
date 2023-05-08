@@ -917,6 +917,17 @@ int mutt_save_message(struct Mailbox *m, struct EmailList *el,
       case 0:
         mutt_clear_error();
         rc = 0;
+        if (save_opt == SAVE_MOVE)
+        {
+          const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
+          if (c_delete_untag)
+          {
+            STAILQ_FOREACH(en, el, entries)
+            {
+              mutt_set_flag(m, en->email, MUTT_TAG, false, true);
+            }
+          }
+        }
         goto cleanup;
       /* non-fatal error: continue to fetch/append */
       case 1:
