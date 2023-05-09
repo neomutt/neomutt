@@ -36,7 +36,7 @@ struct MuttWindow;
 struct IndexSharedData
 {
   struct ConfigSubset *sub;         ///< Config set to use
-  struct MailboxView *mailboxview;  ///< Current Mailbox view
+  struct MailboxView *mailbox_view; ///< Current Mailbox view
   struct Account *account;          ///< Current Account
   struct Mailbox *mailbox;          ///< Current Mailbox
   struct Email *email;              ///< Currently selected Email

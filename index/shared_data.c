@@ -49,11 +49,11 @@ static int index_shared_mview_observer(struct NotifyCallback *nc)
 
   struct EventMview *ev_m = nc->event_data;
   struct IndexSharedData *shared = nc->global_data;
-  if (ev_m->mv != shared->mailboxview)
+  if (ev_m->mv != shared->mailbox_view)
     return 0;
 
   if (nc->event_subtype == NT_MVIEW_DELETE)
-    shared->mailboxview = NULL;
+    shared->mailbox_view = NULL;
 
   mutt_debug(LL_NOTIFY, "relay NT_MVIEW to shared data observers\n");
   notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
@@ -161,12 +161,15 @@ void index_shared_data_set_mview(struct IndexSharedData *shared, struct MailboxV
 
   NotifyIndex subtype = NT_INDEX_NO_FLAGS;
 
-  if (shared->mailboxview != mv)
+  if (shared->mailbox_view != mv)
   {
-    if (shared->mailboxview)
-      notify_observer_remove(shared->mailboxview->notify, index_shared_mview_observer, shared);
+    if (shared->mailbox_view)
+    {
+      notify_observer_remove(shared->mailbox_view->notify,
+                             index_shared_mview_observer, shared);
+    }
 
-    shared->mailboxview = mv;
+    shared->mailbox_view = mv;
     subtype |= NT_INDEX_MVIEW;
 
     if (mv)
@@ -282,8 +285,8 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
 
   if (shared->account)
     notify_observer_remove(shared->account->notify, index_shared_account_observer, shared);
-  if (shared->mailboxview)
-    notify_observer_remove(shared->mailboxview->notify, index_shared_mview_observer, shared);
+  if (shared->mailbox_view)
+    notify_observer_remove(shared->mailbox_view->notify, index_shared_mview_observer, shared);
   if (shared->mailbox)
     notify_observer_remove(shared->mailbox->notify, index_shared_mailbox_observer, shared);
   if (shared->email)

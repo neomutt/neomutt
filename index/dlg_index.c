@@ -609,7 +609,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   /* keepalive failure in mutt_enter_fname may kill connection. */
   if (shared->mailbox && (buf_is_empty(&shared->mailbox->pathbuf)))
   {
-    mview_free(&shared->mailboxview);
+    mview_free(&shared->mailbox_view);
     mailbox_free(&shared->mailbox);
   }
 
@@ -630,7 +630,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     const enum MxStatus check = mx_mbox_close(shared->mailbox);
     if (check == MX_STATUS_OK)
     {
-      mview_free(&shared->mailboxview);
+      mview_free(&shared->mailbox_view);
       if (shared->mailbox != m)
       {
         mailbox_free(&shared->mailbox);
@@ -643,7 +643,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
         mutt_monitor_add(NULL);
 #endif
       if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
-        update_index(menu, shared->mailboxview, check, *oldcount, shared);
+        update_index(menu, shared->mailbox_view, check, *oldcount, shared);
 
       FREE(&new_last_folder);
       OptSearchInvalid = true;
@@ -702,7 +702,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
 
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
-    collapse_all(shared->mailboxview, menu, 0);
+    collapse_all(shared->mailbox_view, menu, 0);
 
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
@@ -796,7 +796,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
   struct Mailbox *m = shared->mailbox;
-  if (!shared->mailboxview)
+  if (!shared->mailbox_view)
     menu->current = -1;
 
   if (!m || (line < 0) || (line >= m->email_max))
@@ -871,7 +871,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
   }
 
   const char *const c_index_format = cs_subset_string(shared->sub, "index_format");
-  int msg_in_pager = shared->mailboxview ? shared->mailboxview->msg_in_pager : 0;
+  int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : 0;
   mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
                    m, msg_in_pager, e, flags, NULL);
 }
@@ -1090,7 +1090,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)
   {
-    collapse_all(shared->mailboxview, priv->menu, 0);
+    collapse_all(shared->mailbox_view, priv->menu, 0);
     menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   }
 
@@ -1110,26 +1110,26 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (OptNeedResort && shared->mailbox && (shared->mailbox->msg_count != 0) &&
         (menu_get_index(priv->menu) >= 0))
     {
-      resort_index(shared->mailboxview, priv->menu);
+      resort_index(shared->mailbox_view, priv->menu);
     }
 
     priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
     {
-      if (shared->mailboxview && OptRedrawTree && shared->mailbox &&
+      if (shared->mailbox_view && OptRedrawTree && shared->mailbox &&
           (shared->mailbox->msg_count != 0) && mutt_using_threads())
       {
-        mutt_draw_tree(shared->mailboxview->threads);
+        mutt_draw_tree(shared->mailbox_view->threads);
         OptRedrawTree = false;
       }
     }
 
-    if (shared->mailbox && shared->mailboxview)
+    if (shared->mailbox && shared->mailbox_view)
     {
       mailbox_gc_run();
 
-      shared->mailboxview->menu = priv->menu;
+      shared->mailbox_view->menu = priv->menu;
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
@@ -1140,7 +1140,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
         if (buf_is_empty(&shared->mailbox->pathbuf))
         {
           /* fatal error occurred */
-          mview_free(&shared->mailboxview);
+          mview_free(&shared->mailbox_view);
           menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
 
@@ -1188,7 +1188,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 
         bool verbose = shared->mailbox->verbose;
         shared->mailbox->verbose = false;
-        update_index(priv->menu, shared->mailboxview, check, priv->oldcount, shared);
+        update_index(priv->menu, shared->mailbox_view, check, priv->oldcount, shared);
         shared->mailbox->verbose = verbose;
         priv->menu->max = shared->mailbox->vcount;
         menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -1353,7 +1353,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 #endif
   } while (rc != FR_DONE);
 
-  mview_free(&shared->mailboxview);
+  mview_free(&shared->mailbox_view);
 
   return shared->mailbox;
 }
