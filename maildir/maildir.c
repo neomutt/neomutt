@@ -149,10 +149,14 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
           }
         }
         m->has_new = true;
-        check_new = false;
-        m->msg_new++;
-        if (!check_stats)
+        if (check_stats)
+        {
+          m->msg_new++;
+        }
+        else
+        {
           break;
+        }
       }
     }
   }
@@ -1354,10 +1358,10 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
   bool check_stats = flags & MUTT_MAILBOX_CHECK_FORCE_STATS;
   bool check_new = true;
-  m->msg_new = 0;
 
   if (check_stats)
   {
+    m->msg_new = 0;
     m->msg_count = 0;
     m->msg_unread = 0;
     m->msg_flagged = 0;
