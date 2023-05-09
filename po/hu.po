@@ -5,7 +5,7 @@
 #
 # László Kiss <kissl@eptan.efe.hu>, 2000-2001
 # Szabolcs Horváth <horvaths@fi.inf.elte.hu>, 2001-2003
-# Róbert Horváth <rob@nyar.eu>, 2022
+# Róbert Horváth <rob@nyar.eu>, 2022-2023
 #
 msgid ""
 msgstr ""
@@ -740,9 +740,8 @@ msgid "No newsgroups match the mask"
 msgstr "Nincs a fájlmaszknak megfelelő hírcsoport"
 
 #: browser/functions.c:157
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "Nincs levél"
+msgstr "Nincs egy postafiók sem"
 
 #: browser/functions.c:206 browser/functions.c:547 browser/functions.c:606
 msgid "No files match the file mask"
@@ -834,17 +833,17 @@ msgstr "%s: a terminál által nem támogatott szín"
 #: color/command.c:305
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "Direkt szín támogatás hiányzik a kódból: %s"
 
 #: color/command.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "az alapértelmezett színek nem támogatottak"
+msgstr "Direkt szín támogatás kikapcsolva: %s"
 
 #: color/command.c:418
 #, c-format
 msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-msgstr ""
+msgstr "Csak a 'világos', 'riasztás', 'átlátszó' kifejezések megengedettek a szín neveknek: %s"
 
 #: color/command.c:422
 #, c-format
@@ -3825,7 +3824,7 @@ msgstr "<véletlen>"
 #: mixmaster/win_chain.c:65
 #, c-format
 msgid "-- Remailer chain [Length: %d]"
-msgstr ""
+msgstr "-- Remailer lánc [Hossza: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
@@ -6568,7 +6567,7 @@ msgstr "A PGP aláírást NEM tudtam ellenőrizni"
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: pager/pbar.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "%ld%%"
 msgstr "%ld%%"
 
@@ -7196,7 +7195,7 @@ msgstr "Nincsenek elhalasztott levelek"
 #. `%d` percentage, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
@@ -7204,7 +7203,7 @@ msgstr "%s %zu (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:178
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
 
@@ -7212,7 +7211,7 @@ msgstr "%s %s/%s (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
@@ -7556,7 +7555,7 @@ msgstr "(nincs postafiók)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
