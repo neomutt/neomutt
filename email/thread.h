@@ -24,7 +24,6 @@
 #define MUTT_EMAIL_THREAD_H
 
 #include <stdbool.h>
-#include <stdint.h>
 
 struct Email;
 
@@ -33,19 +32,20 @@ struct Email;
  */
 struct MuttThread
 {
-  bool fake_thread             : 1; ///< Emails grouped by Subject
-  bool duplicate_thread        : 1; ///< Duplicated Email in Thread
-  bool sort_children           : 1; ///< Sort the children
-  bool check_subject           : 1; ///< Should the Subject be checked?
-  bool visible                 : 1; ///< Is this Thread visible?
-  bool deep                    : 1; ///< Is the Thread deeply nested?
-  unsigned int subtree_visible : 2; ///< Is this Thread subtree visible?
-  bool next_subtree_visible    : 1; ///< Is the next Thread subtree visible?
+  bool         check_subject        : 1;  ///< Should the Subject be checked?
+  bool         deep                 : 1;  ///< Is the Thread deeply nested?
+  bool         duplicate_thread     : 1;  ///< Duplicated Email in Thread
+  bool         fake_thread          : 1;  ///< Emails grouped by Subject
+  bool         next_subtree_visible : 1;  ///< Is the next Thread subtree visible?
+  bool         sort_children        : 1;  ///< Sort the children
+  unsigned int subtree_visible      : 2;  ///< Is this Thread subtree visible?
+  bool         visible              : 1;  ///< Is this Thread visible?
 
   struct MuttThread *parent;        ///< Parent of this Thread
   struct MuttThread *child;         ///< Child of this Thread
   struct MuttThread *next;          ///< Next sibling Thread
   struct MuttThread *prev;          ///< Previous sibling Thread
+
   struct Email *message;            ///< Email this Thread refers to
   struct Email *sort_thread_key;    ///< Email that controls how top thread sorts
   struct Email *sort_aux_key;       ///< Email that controls how subthread siblings sort

@@ -69,19 +69,3 @@ struct NntpAccountData *nntp_adata_new(struct Connection *conn)
   adata->groups_list = mutt_mem_malloc(adata->groups_max * sizeof(struct NntpMboxData *));
   return adata;
 }
-
-#if 0
-/**
- * nntp_adata_get - Get the Account data for this mailbox
- * @retval ptr Private Account data
- */
-struct NntpAccountData *nntp_adata_get(struct Mailbox *m)
-{
-  if (!m || (m->type != MUTT_NNTP))
-    return NULL;
-  struct Account *a = m->account;
-  if (!a)
-    return NULL;
-  return a->adata;
-}
-#endif

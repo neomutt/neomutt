@@ -75,12 +75,12 @@ int                 mview_mailbox_observer(struct NotifyCallback *nc);
 struct MailboxView *mview_new             (struct Mailbox *m);
 void                mview_update          (struct MailboxView *mv);
 bool                mview_has_limit       (const struct MailboxView *mv);
-struct Mailbox*     mview_mailbox         (struct MailboxView *mv);
+struct Mailbox *    mview_mailbox         (struct MailboxView *mv);
 
 bool message_is_tagged(struct Email *e);
 struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
 
-int  el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e, bool use_tagged);
+int el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e, bool use_tagged);
 
 bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e);
 

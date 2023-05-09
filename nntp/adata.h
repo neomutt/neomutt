@@ -28,7 +28,6 @@
 #include <sys/types.h>
 
 struct Connection;
-struct Mailbox;
 
 /**
  * struct NntpAccountData - NNTP-specific Account data - @extends Account
@@ -64,7 +63,6 @@ struct NntpAccountData
 };
 
 void                    nntp_adata_free(void **ptr);
-struct NntpAccountData *nntp_adata_get (struct Mailbox *m);
 struct NntpAccountData *nntp_adata_new (struct Connection *conn);
 
 #endif /* MUTT_NNTP_ADATA_H */

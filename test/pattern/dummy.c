@@ -26,6 +26,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
@@ -108,7 +109,7 @@ struct Address *alias_reverse_lookup(const struct Address *addr)
   return NULL;
 }
 
-int crypt_valid_passphrase(int flags)
+bool crypt_valid_passphrase(SecurityFlags flags)
 {
   return 0;
 }

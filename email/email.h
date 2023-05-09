@@ -116,8 +116,8 @@ struct Email
 
   // The following are used to support collapsing threads
   struct MuttThread *thread;   ///< Thread of Emails
-  bool collapsed : 1;          ///< Is this message part of a collapsed thread?
-  bool visible   : 1;          ///< Is this message part of the view?
+  bool collapsed     : 1;      ///< Is this message part of a collapsed thread?
+  bool visible       : 1;      ///< Is this message part of the view?
   bool limit_visited : 1;      ///< Has the limit pattern been applied to this message?
   size_t num_hidden;           ///< Number of hidden messages in this view
                                ///< (only valid when collapsed is set)
