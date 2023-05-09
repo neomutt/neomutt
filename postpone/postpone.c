@@ -721,8 +721,8 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag(m, e, MUTT_DELETE, true);
-  mutt_set_flag(m, e, MUTT_PURGE, true);
+  mutt_set_flag(m, e, MUTT_DELETE, true, true);
+  mutt_set_flag(m, e, MUTT_PURGE, true, true);
 
   /* update the count for the status display */
   PostCount = m->msg_count - m->msg_deleted;

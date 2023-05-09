@@ -51,7 +51,7 @@ static int op_delete(struct PostponeData *pd, int op)
 
   const int index = menu_get_index(menu);
   /* should deleted draft messages be saved in the trash folder? */
-  mutt_set_flag(m, m->emails[index], MUTT_DELETE, (op == OP_DELETE));
+  mutt_set_flag(m, m->emails[index], MUTT_DELETE, (op == OP_DELETE), true);
   PostCount = m->msg_count - m->msg_deleted;
   const bool c_resolve = cs_subset_bool(NeoMutt->sub, "resolve");
   if (c_resolve && (index < (menu->max - 1)))

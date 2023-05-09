@@ -316,7 +316,7 @@ int mutt_pager(struct PagerView *pview)
     const short c_pager_read_delay = cs_subset_number(NeoMutt->sub, "pager_read_delay");
     if (c_pager_read_delay == 0)
     {
-      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
+      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
     }
     else
     {
@@ -528,7 +528,7 @@ int mutt_pager(struct PagerView *pview)
     // marking the wrong message as read.
     if (check_read_delay(&priv->delay_read_timestamp))
     {
-      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true);
+      mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
     }
 
     if (SigWinch)

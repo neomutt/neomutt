@@ -1165,21 +1165,21 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
     {
       tag++;
       if (mutt_str_equal(tag, c_nm_unread_tag))
-        mutt_set_flag(m, e, MUTT_READ, true);
+        mutt_set_flag(m, e, MUTT_READ, true, true);
       else if (mutt_str_equal(tag, c_nm_replied_tag))
-        mutt_set_flag(m, e, MUTT_REPLIED, false);
+        mutt_set_flag(m, e, MUTT_REPLIED, false, true);
       else if (mutt_str_equal(tag, c_nm_flagged_tag))
-        mutt_set_flag(m, e, MUTT_FLAG, false);
+        mutt_set_flag(m, e, MUTT_FLAG, false, true);
     }
     else
     {
       tag = (tag[0] == '+') ? tag + 1 : tag;
       if (mutt_str_equal(tag, c_nm_unread_tag))
-        mutt_set_flag(m, e, MUTT_READ, false);
+        mutt_set_flag(m, e, MUTT_READ, false, true);
       else if (mutt_str_equal(tag, c_nm_replied_tag))
-        mutt_set_flag(m, e, MUTT_REPLIED, true);
+        mutt_set_flag(m, e, MUTT_REPLIED, true, true);
       else if (mutt_str_equal(tag, c_nm_flagged_tag))
-        mutt_set_flag(m, e, MUTT_FLAG, true);
+        mutt_set_flag(m, e, MUTT_FLAG, true, true);
     }
   }
 

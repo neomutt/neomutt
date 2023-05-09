@@ -340,7 +340,7 @@ int external_pager(struct Mailbox *m, struct Email *e, const char *command)
   if (!OptNoCurses)
     keypad(stdscr, true);
   if (r != -1)
-    mutt_set_flag(m, e, MUTT_READ, true);
+    mutt_set_flag(m, e, MUTT_READ, true, true);
   const bool c_prompt_after = cs_subset_bool(NeoMutt->sub, "prompt_after");
   if ((r != -1) && c_prompt_after)
   {

@@ -642,7 +642,7 @@ static void set_changed_flag(struct Mailbox *m, struct Email *e, int local_chang
 
   /* Local changes have priority */
   if (local_changes == 0)
-    mutt_set_flag(m, e, flag_name, new_hd_flag);
+    mutt_set_flag(m, e, flag_name, new_hd_flag, true);
 }
 
 #ifdef USE_HCACHE
@@ -1807,10 +1807,10 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
     const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
     STAILQ_FOREACH(en, el, entries)
     {
-      mutt_set_flag(m, en->email, MUTT_DELETE, true);
-      mutt_set_flag(m, en->email, MUTT_PURGE, true);
+      mutt_set_flag(m, en->email, MUTT_DELETE, true, true);
+      mutt_set_flag(m, en->email, MUTT_PURGE, true, true);
       if (c_delete_untag)
-        mutt_set_flag(m, en->email, MUTT_TAG, false);
+        mutt_set_flag(m, en->email, MUTT_TAG, false, true);
     }
   }
 
@@ -1913,7 +1913,7 @@ char *imap_set_flags(struct Mailbox *m, struct Email *e, char *s, bool *server_c
   m->readonly = false;
 
   /* This is redundant with the following two checks. Removing:
-   * mutt_set_flag (m, e, MUTT_NEW, !(edata->read || edata->old)); */
+   * mutt_set_flag (m, e, MUTT_NEW, !(edata->read || edata->old), true); */
   set_changed_flag(m, e, local_changes, server_changes, MUTT_OLD, old_edata.old,
                    edata->old, e->old);
   set_changed_flag(m, e, local_changes, server_changes, MUTT_READ,
@@ -2093,7 +2093,7 @@ parsemsg:
   if (read != e->read)
   {
     e->read = read;
-    mutt_set_flag(m, e, MUTT_NEW, read);
+    mutt_set_flag(m, e, MUTT_NEW, read, true);
   }
 
   e->lines = 0;

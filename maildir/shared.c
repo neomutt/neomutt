@@ -134,13 +134,13 @@ bool maildir_update_flags(struct Mailbox *m, struct Email *e_old, struct Email *
    * bits are already properly set, but it is still faster not to pass
    * through it */
   if (e_old->flagged != e_new->flagged)
-    mutt_set_flag(m, e_old, MUTT_FLAG, e_new->flagged);
+    mutt_set_flag(m, e_old, MUTT_FLAG, e_new->flagged, true);
   if (e_old->replied != e_new->replied)
-    mutt_set_flag(m, e_old, MUTT_REPLIED, e_new->replied);
+    mutt_set_flag(m, e_old, MUTT_REPLIED, e_new->replied, true);
   if (e_old->read != e_new->read)
-    mutt_set_flag(m, e_old, MUTT_READ, e_new->read);
+    mutt_set_flag(m, e_old, MUTT_READ, e_new->read, true);
   if (e_old->old != e_new->old)
-    mutt_set_flag(m, e_old, MUTT_OLD, e_new->old);
+    mutt_set_flag(m, e_old, MUTT_OLD, e_new->old, true);
 
   /* mutt_set_flag() will set this, but we don't need to
    * sync the changes we made because we just updated the

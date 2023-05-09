@@ -248,13 +248,13 @@ bail:
 
   if (rc == 0)
   {
-    mutt_set_flag(m, e, MUTT_DELETE, true);
-    mutt_set_flag(m, e, MUTT_PURGE, true);
-    mutt_set_flag(m, e, MUTT_READ, true);
+    mutt_set_flag(m, e, MUTT_DELETE, true, true);
+    mutt_set_flag(m, e, MUTT_PURGE, true, true);
+    mutt_set_flag(m, e, MUTT_READ, true, true);
 
     const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
     if (c_delete_untag)
-      mutt_set_flag(m, e, MUTT_TAG, false);
+      mutt_set_flag(m, e, MUTT_TAG, false, true);
   }
   else if (rc == -1)
     mutt_message(_("Error. Preserving temporary file: %s"), buf_string(fname));

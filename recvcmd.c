@@ -1120,7 +1120,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   emaillist_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
   if (mutt_send_message(flags, e_tmp, buf_string(tmpbody), NULL, &el, NeoMutt->sub) == 0)
   {
-    mutt_set_flag(m, e, MUTT_REPLIED, true);
+    mutt_set_flag(m, e, MUTT_REPLIED, true, true);
   }
   e_tmp = NULL; /* mutt_send_message frees this */
 

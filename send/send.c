@@ -2949,7 +2949,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       STAILQ_FOREACH(en, el, entries)
       {
-        mutt_set_flag(m, en->email, MUTT_REPLIED, is_reply(en->email, e_templ));
+        mutt_set_flag(m, en->email, MUTT_REPLIED, is_reply(en->email, e_templ), true);
       }
     }
   }

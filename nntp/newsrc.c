@@ -1342,7 +1342,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
       struct Email *e = m->emails[i];
       if (!e)
         break;
-      mutt_set_flag(m, e, MUTT_READ, true);
+      mutt_set_flag(m, e, MUTT_READ, true, true);
     }
   }
   return mdata;
@@ -1381,7 +1381,7 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
       struct Email *e = m->emails[i];
       if (!e)
         break;
-      mutt_set_flag(m, e, MUTT_READ, false);
+      mutt_set_flag(m, e, MUTT_READ, false, true);
     }
   }
   else

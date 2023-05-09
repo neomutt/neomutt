@@ -165,7 +165,7 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
 {
 }
 
-void mutt_set_flag_update(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)
+void mutt_set_flag(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)
 {
 }
 

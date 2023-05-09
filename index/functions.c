@@ -575,7 +575,7 @@ static int op_flag_message(struct IndexSharedData *shared,
       if (!e)
         break;
       if (message_is_tagged(e))
-        mutt_set_flag(m, e, MUTT_FLAG, !e->flagged);
+        mutt_set_flag(m, e, MUTT_FLAG, !e->flagged, true);
     }
 
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -584,7 +584,7 @@ static int op_flag_message(struct IndexSharedData *shared,
   {
     if (!shared->email)
       return FR_NO_ACTION;
-    mutt_set_flag(m, shared->email, MUTT_FLAG, !shared->email->flagged);
+    mutt_set_flag(m, shared->email, MUTT_FLAG, !shared->email->flagged, true);
 
     resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED);
   }
@@ -2051,7 +2051,7 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
       if (!e)
         break;
       if (e->visible)
-        mutt_set_flag(m, e, MUTT_TAG, false);
+        mutt_set_flag(m, e, MUTT_TAG, false, true);
     }
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
     return FR_SUCCESS;
@@ -2060,7 +2060,7 @@ static int op_tag(struct IndexSharedData *shared, struct IndexPrivateData *priv,
   if (!shared->email)
     return FR_NO_ACTION;
 
-  mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged);
+  mutt_set_flag(shared->mailbox, shared->email, MUTT_TAG, !shared->email->tagged, true);
 
   resolve_email(priv, shared, RESOLVE_NEXT_EMAIL);
   return FR_SUCCESS;
@@ -2112,9 +2112,9 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
         continue;
 
       if (e->read || e->old)
-        mutt_set_flag(m, e, MUTT_NEW, true);
+        mutt_set_flag(m, e, MUTT_NEW, true, true);
       else
-        mutt_set_flag(m, e, MUTT_READ, true);
+        mutt_set_flag(m, e, MUTT_READ, true, true);
     }
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
   }
@@ -2123,9 +2123,9 @@ static int op_toggle_new(struct IndexSharedData *shared, struct IndexPrivateData
     if (!shared->email)
       return FR_NO_ACTION;
     if (shared->email->read || shared->email->old)
-      mutt_set_flag(m, shared->email, MUTT_NEW, true);
+      mutt_set_flag(m, shared->email, MUTT_NEW, true, true);
     else
-      mutt_set_flag(m, shared->email, MUTT_READ, true);
+      mutt_set_flag(m, shared->email, MUTT_READ, true, true);
 
     resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED);
   }
