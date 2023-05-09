@@ -44,18 +44,6 @@
 #include "sort.h"
 
 /**
- * struct ThreadsContext - The "current" threading state
- */
-struct ThreadsContext
-{
-  struct Mailbox *mailbox;  ///< Current mailbox
-  struct MuttThread *tree;  ///< Top of thread tree
-  struct HashTable *hash;   ///< Hash Table: "message-id" -> MuttThread
-  enum SortType c_sort;     ///< Last sort method
-  enum SortType c_sort_aux; ///< Last sort_aux method
-};
-
-/**
  * UseThreadsMethods - Choices for '$use_threads' for the index
  */
 static const struct Mapping UseThreadsMethods[] = {

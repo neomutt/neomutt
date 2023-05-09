@@ -32,7 +32,18 @@ struct Buffer;
 struct Email;
 struct EmailList;
 struct Mailbox;
-struct ThreadsContext;
+
+/**
+ * struct ThreadsContext - The "current" threading state
+ */
+struct ThreadsContext
+{
+  struct Mailbox     *mailbox;      ///< Current mailbox
+  struct MuttThread  *tree;         ///< Top of thread tree
+  struct HashTable   *hash;         ///< Hash Table: "message-id" -> MuttThread
+  enum SortType       c_sort;       ///< Last sort method
+  enum SortType       c_sort_aux;   ///< Last sort_aux method
+};
 
 /**
  * enum TreeChar - Tree characters for menus
