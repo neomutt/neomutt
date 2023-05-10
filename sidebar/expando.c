@@ -135,11 +135,11 @@ static long sidebar_limited_count_num(const struct ExpandoNode *node,
   const struct SbEntry *sbe = sdata->entry;
   const struct IndexSharedData *shared = sdata->shared;
   const struct Mailbox *m = sbe->mailbox;
-  const struct Mailbox *m_cur = shared->mailbox;
+  const struct MailboxView *mv_cur = shared->mailbox_view;
 
-  const bool c = m_cur && mutt_str_equal(m_cur->realpath, m->realpath);
+  const bool c = mv_cur && (mv_cur->mailbox == m);
 
-  return c ? m_cur->vcount : m->msg_count;
+  return c ? mv_cur->vcount : m->msg_count;
 }
 
 /**
