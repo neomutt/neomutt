@@ -258,11 +258,10 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
   }
   else
   {
-    size_t blen = 256;
-    char *buf = mutt_mem_malloc(blen);
+    char buf[1024] = { 0 };
     while (len > 0)
     {
-      if (!fgets(buf, blen - 1, fp))
+      if (!fgets(buf, sizeof(buf), fp))
       {
         break; /* don't loop forever */
       }
@@ -273,7 +272,6 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
         break;
       }
     }
-    FREE(&buf);
   }
 
   if (c_thorough_search)
