@@ -791,25 +791,31 @@ static int op_mail_key(struct IndexSharedData *shared, struct IndexPrivateData *
 static int op_main_break_thread(struct IndexSharedData *shared,
                                 struct IndexPrivateData *priv, int op)
 {
+  struct Mailbox *m = shared->mailbox;
   /* L10N: CHECK_ACL */
-  if (!check_acl(shared->mailbox, MUTT_ACL_WRITE, _("Can't break thread")))
+  if (!check_acl(m, MUTT_ACL_WRITE, _("Can't break thread")))
     return FR_ERROR;
-  if (!shared->email)
+
+  struct Email *e = shared->email;
+  if (!e)
     return FR_NO_ACTION;
 
   if (!mutt_using_threads())
-    mutt_error(_("Threading is not enabled"));
-  else if (!STAILQ_EMPTY(&shared->email->env->in_reply_to) ||
-           !STAILQ_EMPTY(&shared->email->env->references))
+  {
+    mutt_warning(_("Threading is not enabled"));
+    return FR_NO_ACTION;
+  }
+
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!STAILQ_EMPTY(&e->env->in_reply_to) || !STAILQ_EMPTY(&e->env->references))
   {
     {
-      mutt_break_thread(shared->email);
-      mutt_sort_headers(shared->mailbox, shared->mailbox_view->threads, true,
-                        &shared->mailbox_view->vsize);
-      menu_set_index(priv->menu, shared->email->vnum);
+      mutt_break_thread(e);
+      mutt_sort_headers(m, mv->threads, true, &mv->vsize);
+      menu_set_index(priv->menu, e->vnum);
     }
 
-    shared->mailbox->changed = true;
+    m->changed = true;
     mutt_message(_("Thread broken"));
 
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
@@ -1042,30 +1048,37 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
 static int op_main_link_threads(struct IndexSharedData *shared,
                                 struct IndexPrivateData *priv, int op)
 {
+  struct Mailbox *m = shared->mailbox;
   /* L10N: CHECK_ACL */
-  if (!check_acl(shared->mailbox, MUTT_ACL_WRITE, _("Can't link threads")))
+  if (!check_acl(m, MUTT_ACL_WRITE, _("Can't link threads")))
     return FR_ERROR;
-  if (!shared->email)
+
+  struct Email *e = shared->email;
+  if (!e)
     return FR_NO_ACTION;
 
   enum FunctionRetval rc = FR_ERROR;
 
   if (!mutt_using_threads())
+  {
     mutt_error(_("Threading is not enabled"));
-  else if (!shared->email->env->message_id)
+  }
+  else if (!e->env->message_id)
+  {
     mutt_error(_("No Message-ID: header available to link thread"));
+  }
   else
   {
+    struct MailboxView *mv = shared->mailbox_view;
     struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-    el_add_tagged(&el, shared->mailbox_view, NULL, true);
+    el_add_tagged(&el, mv, NULL, true);
 
-    if (mutt_link_threads(shared->email, &el, shared->mailbox))
+    if (mutt_link_threads(e, &el, m))
     {
-      mutt_sort_headers(shared->mailbox, shared->mailbox_view->threads, true,
-                        &shared->mailbox_view->vsize);
-      menu_set_index(priv->menu, shared->email->vnum);
+      mutt_sort_headers(m, mv->threads, true, &mv->vsize);
+      menu_set_index(priv->menu, e->vnum);
 
-      shared->mailbox->changed = true;
+      m->changed = true;
       mutt_message(_("Threads linked"));
       rc = FR_SUCCESS;
     }
@@ -2298,11 +2311,12 @@ static int op_main_imap_logout_all(struct IndexSharedData *shared,
  */
 static int op_catchup(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  if (!shared->mailbox || (shared->mailbox->type != MUTT_NNTP))
+  struct Mailbox *m = shared->mailbox;
+  if (!m || (m->type != MUTT_NNTP))
     return FR_NO_ACTION;
 
-  struct NntpMboxData *mdata = shared->mailbox->mdata;
-  if (mutt_newsgroup_catchup(shared->mailbox, mdata->adata, mdata->group))
+  struct NntpMboxData *mdata = m->mdata;
+  if (mutt_newsgroup_catchup(m, mdata->adata, mdata->group))
     menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return FR_SUCCESS;
@@ -2318,37 +2332,39 @@ static int op_catchup(struct IndexSharedData *shared, struct IndexPrivateData *p
 static int op_get_children(struct IndexSharedData *shared,
                            struct IndexPrivateData *priv, int op)
 {
-  if (shared->mailbox->type != MUTT_NNTP)
+  struct Mailbox *m = shared->mailbox;
+  if (m->type != MUTT_NNTP)
     return FR_ERROR;
 
-  if (!shared->email)
+  struct Email *e = shared->email;
+  if (!e)
     return FR_NO_ACTION;
 
   char buf[PATH_MAX] = { 0 };
-  int oldmsgcount = shared->mailbox->msg_count;
-  int oldindex = shared->email->index;
+  int oldmsgcount = m->msg_count;
+  int oldindex = e->index;
   int rc = 0;
 
-  if (!shared->email->env->message_id)
+  if (!e->env->message_id)
   {
     mutt_error(_("No Message-Id. Unable to perform operation."));
     return FR_ERROR;
   }
 
   mutt_message(_("Fetching message headers..."));
-  if (!shared->mailbox->id_hash)
-    shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
-  mutt_str_copy(buf, shared->email->env->message_id, sizeof(buf));
+  if (!m->id_hash)
+    m->id_hash = mutt_make_id_hash(m);
+  mutt_str_copy(buf, e->env->message_id, sizeof(buf));
 
   /* trying to find msgid of the root message */
   if (op == OP_RECONSTRUCT_THREAD)
   {
     struct ListNode *ref = NULL;
-    STAILQ_FOREACH(ref, &shared->email->env->references, entries)
+    STAILQ_FOREACH(ref, &e->env->references, entries)
     {
-      if (!mutt_hash_find(shared->mailbox->id_hash, ref->data))
+      if (!mutt_hash_find(m->id_hash, ref->data))
       {
-        rc = nntp_check_msgid(shared->mailbox, ref->data);
+        rc = nntp_check_msgid(m, ref->data);
         if (rc < 0)
           return FR_ERROR;
       }
@@ -2360,36 +2376,37 @@ static int op_get_children(struct IndexSharedData *shared,
   }
 
   /* fetching all child messages */
-  rc = nntp_check_children(shared->mailbox, buf);
+  rc = nntp_check_children(m, buf);
 
   /* at least one message has been loaded */
-  if (shared->mailbox->msg_count > oldmsgcount)
+  if (m->msg_count > oldmsgcount)
   {
-    bool verbose = shared->mailbox->verbose;
+    bool verbose = m->verbose;
 
     if (rc < 0)
-      shared->mailbox->verbose = false;
-    mutt_sort_headers(shared->mailbox, shared->mailbox_view->threads,
-                      (op == OP_RECONSTRUCT_THREAD), &shared->mailbox_view->vsize);
-    shared->mailbox->verbose = verbose;
+      m->verbose = false;
+
+    struct MailboxView *mv = shared->mailbox_view;
+    mutt_sort_headers(m, mv->threads, (op == OP_RECONSTRUCT_THREAD), &mv->vsize);
+    m->verbose = verbose;
 
     /* if the root message was retrieved, move to it */
-    struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf);
-    if (e)
+    struct Email *e2 = mutt_hash_find(m->id_hash, buf);
+    if (e2)
     {
-      menu_set_index(priv->menu, e->vnum);
+      menu_set_index(priv->menu, e2->vnum);
     }
     else
     {
       /* try to restore old position */
-      for (int i = 0; i < shared->mailbox->msg_count; i++)
+      for (int i = 0; i < m->msg_count; i++)
       {
-        e = shared->mailbox->emails[i];
-        if (!e)
+        e2 = m->emails[i];
+        if (!e2)
           break;
-        if (e->index == oldindex)
+        if (e2->index == oldindex)
         {
-          menu_set_index(priv->menu, e->vnum);
+          menu_set_index(priv->menu, e2->vnum);
           /* as an added courtesy, recenter the menu
            * with the current entry at the middle of the screen */
           menu_current_middle(priv->menu);
@@ -2416,7 +2433,8 @@ static int op_get_children(struct IndexSharedData *shared,
 static int op_get_message(struct IndexSharedData *shared,
                           struct IndexPrivateData *priv, int op)
 {
-  if (shared->mailbox->type != MUTT_NNTP)
+  struct Mailbox *m = shared->mailbox;
+  if (m->type != MUTT_NNTP)
     return FR_SUCCESS;
 
   int rc = FR_ERROR;
@@ -2433,17 +2451,18 @@ static int op_get_message(struct IndexSharedData *shared,
   }
   else
   {
-    if (!shared->email || STAILQ_EMPTY(&shared->email->env->references))
+    struct Email *e = shared->email;
+    if (!e || STAILQ_EMPTY(&e->env->references))
     {
       mutt_error(_("Article has no parent reference"));
       goto done;
     }
-    buf_strcpy(buf, STAILQ_FIRST(&shared->email->env->references)->data);
+    buf_strcpy(buf, STAILQ_FIRST(&e->env->references)->data);
   }
 
-  if (!shared->mailbox->id_hash)
-    shared->mailbox->id_hash = mutt_make_id_hash(shared->mailbox);
-  struct Email *e = mutt_hash_find(shared->mailbox->id_hash, buf_string(buf));
+  if (!m->id_hash)
+    m->id_hash = mutt_make_id_hash(m);
+  struct Email *e = mutt_hash_find(m->id_hash, buf_string(buf));
   if (e)
   {
     if (e->vnum != -1)
@@ -2453,7 +2472,7 @@ static int op_get_message(struct IndexSharedData *shared,
     else if (e->collapsed)
     {
       mutt_uncollapse_thread(e);
-      mutt_set_vnum(shared->mailbox);
+      mutt_set_vnum(m);
       menu_set_index(priv->menu, e->vnum);
     }
     else
@@ -2464,12 +2483,12 @@ static int op_get_message(struct IndexSharedData *shared,
   else
   {
     mutt_message(_("Fetching %s from server..."), buf_string(buf));
-    int rc2 = nntp_check_msgid(shared->mailbox, buf_string(buf));
+    int rc2 = nntp_check_msgid(m, buf_string(buf));
     if (rc2 == 0)
     {
-      e = shared->mailbox->emails[shared->mailbox->msg_count - 1];
-      mutt_sort_headers(shared->mailbox, shared->mailbox_view->threads, false,
-                        &shared->mailbox_view->vsize);
+      e = m->emails[m->msg_count - 1];
+      struct MailboxView *mv = shared->mailbox_view;
+      mutt_sort_headers(m, mv->threads, false, &mv->vsize);
       menu_set_index(priv->menu, e->vnum);
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
       rc = FR_SUCCESS;
