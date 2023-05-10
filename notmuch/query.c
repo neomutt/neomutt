@@ -250,7 +250,7 @@ nm_windowed_query_from_query(char *buf, size_t buflen, const bool force_enable,
   }
 
   // Add current search to window query.
-  snprintf(buf + length, buflen, " and %s", cur_search);
+  snprintf(buf + length, buflen - length, " and %s", cur_search);
 
   return NM_WINDOW_QUERY_SUCCESS;
 }
