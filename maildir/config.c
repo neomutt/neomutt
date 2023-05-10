@@ -29,7 +29,39 @@
 #include "config.h"
 #include <stddef.h>
 #include <config/lib.h>
+#include <ctype.h>
 #include <stdbool.h>
+#include <stdint.h>
+#include <string.h>
+#include "mutt/lib.h"
+
+/**
+ * maildir_field_delimiter_validator - Validate the "maildir_field_delimiter" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ *
+ * Ensure maildir_field_delimiter is a single non-alphanumeric non-(-.\/) character.
+ */
+static int maildir_field_delimiter_validator(const struct ConfigSet *cs,
+                                             const struct ConfigDef *cdef,
+                                             intptr_t value, struct Buffer *err)
+{
+  const char *delim = (const char *) value;
+
+  if (strlen(delim) != 1)
+  {
+    // L10N: maildir_field_delimiter is a config variable and shouldn't be translated
+    buf_printf(err, _("maildir_field_delimiter must be exactly one character long"));
+    return CSR_ERR_INVALID;
+  }
+
+  if (isalnum(*delim) || strchr("-.\\/", *delim))
+  {
+    // L10N: maildir_field_delimiter is a config variable and shouldn't be translated
+    buf_printf(err, _("maildir_field_delimiter cannot be alphanumeric or '-.\\/'"));
+    return CSR_ERR_INVALID;
+  }
+
+  return CSR_SUCCESS;
+}
 
 /**
  * MaildirVars - Config definitions for the Maildir library
@@ -41,6 +73,9 @@ static struct ConfigDef MaildirVars[] = {
   },
   { "maildir_check_cur", DT_BOOL, false, 0, NULL,
     "Check both 'new' and 'cur' directories for new mail"
+  },
+  { "maildir_field_delimiter", DT_STRING, IP ":", 0, maildir_field_delimiter_validator,
+    "Field delimiter to be used for maildir email files (default is colon, recommended alternative is semi-colon)"
   },
   { "maildir_trash", DT_BOOL, false, 0, NULL,
     "Use the maildir 'trashed' flag, rather than deleting"
