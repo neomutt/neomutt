@@ -175,7 +175,7 @@ long status_M_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
   const struct IndexSharedData *shared = msld->shared;
   const struct Mailbox *m = shared->mailbox;
 
-  return m ? m->vcount : 0;
+  return mv ? mv->vcount : 0;
 }
 
 /**

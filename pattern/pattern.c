@@ -330,12 +330,12 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   if ((m->type == MUTT_IMAP) && (!imap_search(m, pat)))
     goto bail;
 
-  progress = progress_new(MUTT_PROGRESS_READ, (op == MUTT_LIMIT) ? m->msg_count : m->vcount);
+  progress = progress_new(MUTT_PROGRESS_READ, (op == MUTT_LIMIT) ? m->msg_count : mv->vcount);
   progress_set_message(progress, _("Executing command on matching messages..."));
 
   if (op == MUTT_LIMIT)
   {
-    m->vcount = 0;
+    mv->vcount = 0;
     mv->vsize = 0;
     mv->collapsed = false;
     int padding = mx_msg_padding_size(m);
@@ -355,13 +355,13 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
       e->num_hidden = 0;
 
       if (match_all ||
-          mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+          mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, mv, m, e, NULL))
       {
-        e->vnum = m->vcount;
+        e->vnum = mv->vcount;
         e->visible = true;
-        eview_free(&m->v2r[m->vcount]);
-        m->v2r[m->vcount] = eview_new(e);
-        m->vcount++;
+        eview_free(&mv->v2r[mv->vcount]);
+        mv->v2r[mv->vcount] = eview_new(e);
+        mv->vcount++;
         struct Body *b = e->body;
         mv->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
@@ -369,13 +369,13 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   }
   else
   {
-    for (int i = 0; i < m->vcount; i++)
+    for (int i = 0; i < mv->vcount; i++)
     {
-      struct Email *e = mutt_get_virt_email(m, i);
+      struct Email *e = mutt_get_virt_email(mv, i);
       if (!e)
         continue;
       progress_update(progress, i, -1);
-      if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+      if (mutt_pattern_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, mv, m, e, NULL))
       {
         switch (op)
         {
@@ -404,7 +404,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
     FREE(&mv->pattern);
     mutt_pattern_free(&mv->limit_pattern);
 
-    if (m->msg_count && !m->vcount)
+    if (m->msg_count && !mv->vcount)
       mutt_error(_("No messages matched criteria"));
 
     /* record new limit pattern, unless match all */
@@ -503,15 +503,15 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
   if (flags & SEARCH_OPPOSITE)
     incr = -incr;
 
-  progress = progress_new(MUTT_PROGRESS_READ, m->vcount);
+  progress = progress_new(MUTT_PROGRESS_READ, mv->vcount);
   progress_set_message(progress, _("Searching..."));
 
   const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
-  for (int i = cur + incr, j = 0; j != m->vcount; j++)
+  for (int i = cur + incr, j = 0; j != mv->vcount; j++)
   {
     const char *msg = NULL;
     progress_update(progress, j, -1);
-    if (i > m->vcount - 1)
+    if (i > mv->vcount - 1)
     {
       i = 0;
       if (c_wrap_search)
@@ -526,7 +526,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
     }
     else if (i < 0)
     {
-      i = m->vcount - 1;
+      i = mv->vcount - 1;
       if (c_wrap_search)
       {
         msg = _("Search wrapped to bottom");
@@ -538,7 +538,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
       }
     }
 
-    struct Email *e = mutt_get_virt_email(m, i);
+    struct Email *e = mutt_get_virt_email(mv, i);
     if (!e)
       goto done;
 
@@ -559,7 +559,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
       /* remember that we've already searched this message */
       e->searched = true;
       e->matched = mutt_pattern_exec(SLIST_FIRST(state->pattern),
-                                     MUTT_MATCH_FULL_ADDRESS, m, e, NULL);
+                                     MUTT_MATCH_FULL_ADDRESS, mv, m, e, NULL);
       if (e->matched)
       {
         mutt_clear_error();

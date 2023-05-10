@@ -92,7 +92,7 @@ int                     index_make_entry        (struct Menu *menu, int line, in
 struct MuttWindow *     index_pager_init        (void);
 int                     mutt_dlgindex_observer  (struct NotifyCallback *nc);
 void                    mutt_draw_statusline    (struct MuttWindow *win, int max_cols, const char *buf, size_t buflen);
-void                    mutt_set_header_color   (struct Mailbox *m, struct Email *e);
+void                    mutt_set_header_color   (struct MailboxView *mv, struct Email *e);
 void                    resort_index            (struct MailboxView *mv, struct Menu *menu);
 void                    update_index            (struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
 

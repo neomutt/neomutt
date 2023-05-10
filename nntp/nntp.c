@@ -2380,7 +2380,6 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
 
   m->msg_count = 0;
   m->msg_unread = 0;
-  m->vcount = 0;
 
   if (group[0] == '/')
     group++;

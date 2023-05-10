@@ -578,8 +578,8 @@ void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 
   dot_ptr(fp, "emails", m->emails, NULL);
   dot_type_number(fp, "email_max", m->email_max);
-  dot_ptr(fp, "v2r", m->v2r, NULL);
-  dot_type_number(fp, "vcount", m->vcount);
+  // dot_ptr(fp, "v2r", m->v2r, NULL);
+  // dot_type_number(fp, "vcount", m->vcount);
 
   dot_object_footer(fp);
 

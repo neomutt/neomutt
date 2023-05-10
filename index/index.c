@@ -460,8 +460,8 @@ static int index_index_observer(struct NotifyCallback *nc)
 
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
-  if (shared && shared->mailbox)
-    menu->max = shared->mailbox->vcount;
+  if (shared && shared->mailbox_view)
+    menu->max = shared->mailbox_view->vcount;
   else
     menu->max = 0;
 
@@ -484,7 +484,7 @@ static int index_menu_observer(struct NotifyCallback *nc)
   struct Menu *menu = win->wdata;
 
   const int index = menu_get_index(menu);
-  struct Email *e = mutt_get_virt_email(shared->mailbox, index);
+  struct Email *e = mutt_get_virt_email(shared->mailbox_view, index);
   index_shared_data_set_email(shared, e);
 
   return 0;
@@ -620,9 +620,10 @@ static int index_repaint(struct MuttWindow *win)
 
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
+  struct MailboxView *mv = shared->mailbox_view;
   struct Mailbox *m = shared->mailbox;
   const int index = menu_get_index(menu);
-  if (m && m->emails && (index < m->vcount))
+  if (m && m->emails && mv && (index < mv->vcount))
   {
     if (menu->redraw & MENU_REDRAW_INDEX)
     {

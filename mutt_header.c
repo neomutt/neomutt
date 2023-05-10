@@ -162,7 +162,7 @@ int mutt_label_message(struct MailboxView *mv, struct EmailArray *ea)
     if (label_message(m, e, new_label))
     {
       changed++;
-      mutt_set_header_color(m, e);
+      mutt_set_header_color(mv, e);
     }
   }
 

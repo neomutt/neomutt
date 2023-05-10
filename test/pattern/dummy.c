@@ -203,15 +203,15 @@ const char *myvar_get(const char *var)
   return NULL;
 }
 
-struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
+struct Email *mutt_get_virt_email(struct MailboxView *mv, int vnum)
 {
-  if (!m || !m->emails || !m->v2r)
+  if (!mv || !mv->v2r)
     return NULL;
 
-  if ((vnum < 0) || (vnum >= m->vcount))
+  if ((vnum < 0) || (vnum >= mv->vcount))
     return NULL;
 
-  return m->v2r[vnum]->email;
+  return mv->v2r[vnum]->email;
 }
 
 int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach,

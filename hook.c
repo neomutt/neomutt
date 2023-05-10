@@ -704,7 +704,7 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
+      if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, NULL, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
         if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
@@ -748,7 +748,7 @@ static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, str
 
     if (hook->type & type)
     {
-      if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
+      if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, NULL, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
         buf_alloc(path, PATH_MAX);
@@ -1001,7 +1001,7 @@ const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, stru
   TAILQ_FOREACH(hook, hl, entries)
   {
     struct Pattern *pat = SLIST_FIRST(hook->pattern);
-    if ((mutt_pattern_exec(pat, 0, m, e, &cache) > 0) ^ hook->regex.pat_not)
+    if ((mutt_pattern_exec(pat, 0, NULL, m, e, &cache) > 0) ^ hook->regex.pat_not)
     {
       exp = hook->expando;
       break;
