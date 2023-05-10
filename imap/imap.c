@@ -2051,7 +2051,6 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   m->msg_new = 0;
   m->msg_deleted = 0;
   m->size = 0;
-  m->vcount = 0;
 
   if ((count > 0) && (imap_read_headers(m, 1, count, true) < 0))
   {

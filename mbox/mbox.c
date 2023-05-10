@@ -580,7 +580,6 @@ static int reopen_mailbox(struct Mailbox *m)
   mutt_hash_free(&m->id_hash);
   mutt_hash_free(&m->subj_hash);
   mutt_hash_free(&m->label_hash);
-  FREE(&m->v2r);
   if (m->readonly)
   {
     for (int i = 0; i < m->msg_count; i++)
@@ -597,7 +596,6 @@ static int reopen_mailbox(struct Mailbox *m)
 
   m->email_max = 0; /* force allocation of new headers */
   m->msg_count = 0;
-  m->vcount = 0;
   m->msg_tagged = 0;
   m->msg_deleted = 0;
   m->msg_new = 0;

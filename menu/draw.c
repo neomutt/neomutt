@@ -56,8 +56,8 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
 {
   const int type = *s;
   struct RegexColorList *rcl = regex_colors_get_list(type);
-  struct Mailbox *m_cur = get_current_mailbox();
-  struct Email *e = mutt_get_virt_email(m_cur, index);
+  struct MailboxView *mv_cur = get_current_mailbox_view();
+  struct Email *e = mutt_get_virt_email(mv_cur, index);
   if (!rcl || !e)
   {
     return simple_color_get(type);
@@ -87,8 +87,8 @@ static const struct AttrColor *get_color(int index, unsigned char *s)
   const struct AttrColor *ac_merge = NULL;
   STAILQ_FOREACH(np, rcl, entries)
   {
-    if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
-                          MUTT_MATCH_FULL_ADDRESS, m_cur, e, NULL))
+    if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern), MUTT_MATCH_FULL_ADDRESS,
+                          mv_cur, mv_cur->mailbox, e, NULL))
     {
       ac_merge = merged_color_overlay(ac_merge, &np->attr_color);
     }

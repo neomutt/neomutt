@@ -367,7 +367,6 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   m->msg_new = 0;
   m->msg_deleted = 0;
   m->msg_tagged = 0;
-  m->vcount = 0;
 
   enum MxOpenReturns rc = m->mx_ops->mbox_open(m);
   m->opened++;
@@ -1225,18 +1224,15 @@ void mx_alloc_memory(struct Mailbox *m, int req_size)
   if (m->emails)
   {
     mutt_mem_realloc(&m->emails, req_size * sizeof(struct Email *));
-    mutt_mem_realloc(&m->v2r, req_size * sizeof(int));
   }
   else
   {
     m->emails = mutt_mem_calloc(req_size, sizeof(struct Email *));
-    m->v2r = mutt_mem_calloc(req_size, sizeof(int));
   }
 
   for (int i = m->email_max; i < req_size; i++)
   {
     m->emails[i] = NULL;
-    m->v2r[i] = NULL;
   }
 
   m->email_max = req_size;

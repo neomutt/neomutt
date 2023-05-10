@@ -168,7 +168,7 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
   if (!mv || !mv->mailbox || (mv->mailbox->msg_count == 0) || !menu)
     return;
 
-  struct Email *e_cur = mutt_get_virt_email(mv->mailbox, menu_get_index(menu));
+  struct Email *e_cur = mutt_get_virt_email(mv, menu_get_index(menu));
   if (!e_cur)
     return;
 
@@ -186,7 +186,7 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
   if (final == -1)
     return;
 
-  struct Email *base = mutt_get_virt_email(mv->mailbox, final);
+  struct Email *base = mutt_get_virt_email(mv, final);
   if (!base)
     return;
 
@@ -195,11 +195,11 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
   mutt_thread_collapse(mv->threads, mv->collapsed);
 
   /* Restore the cursor */
-  mutt_set_vnum(mv->mailbox);
-  menu->max = mv->mailbox->vcount;
-  for (int i = 0; i < mv->mailbox->vcount; i++)
+  mutt_set_vnum(mv);
+  menu->max = mv->vcount;
+  for (int i = 0; i < mv->vcount; i++)
   {
-    struct Email *e = mutt_get_virt_email(mv->mailbox, i);
+    struct Email *e = mutt_get_virt_email(mv, i);
     if (!e)
       break;
     if (e->index == base->index)
@@ -222,12 +222,11 @@ static void uncollapse_thread(struct MailboxView *mv, int index)
   if (!mv || !mv->mailbox)
     return;
 
-  struct Mailbox *m = mv->mailbox;
-  struct Email *e = mutt_get_virt_email(m, index);
+  struct Email *e = mutt_get_virt_email(mv, index);
   if (e && e->collapsed)
   {
     mutt_uncollapse_thread(e);
-    mutt_set_vnum(m);
+    mutt_set_vnum(mv);
   }
 }
 
@@ -244,12 +243,10 @@ int find_next_undeleted(struct MailboxView *mv, int msgno, bool uncollapse)
   if (!mv || !mv->mailbox)
     return -1;
 
-  struct Mailbox *m = mv->mailbox;
-
   int index = -1;
-  for (int i = msgno + 1; i < m->vcount; i++)
+  for (int i = msgno + 1; i < mv->vcount; i++)
   {
-    struct Email *e = mutt_get_virt_email(m, i);
+    struct Email *e = mutt_get_virt_email(mv, i);
     if (!e)
       continue;
     if (!e->deleted)
@@ -278,12 +275,10 @@ int find_previous_undeleted(struct MailboxView *mv, int msgno, bool uncollapse)
   if (!mv || !mv->mailbox)
     return -1;
 
-  struct Mailbox *m = mv->mailbox;
-
   int index = -1;
   for (int i = msgno - 1; i >= 0; i--)
   {
-    struct Email *e = mutt_get_virt_email(m, i);
+    struct Email *e = mutt_get_virt_email(mv, i);
     if (!e)
       continue;
     if (!e->deleted)
@@ -317,9 +312,9 @@ int find_first_message(struct MailboxView *mv)
     return 0;
 
   int old = -1;
-  for (int i = 0; i < m->vcount; i++)
+  for (int i = 0; i < mv->vcount; i++)
   {
-    struct Email *e = mutt_get_virt_email(m, i);
+    struct Email *e = mutt_get_virt_email(mv, i);
     if (!e)
       continue;
     if (!e->read && !e->deleted)
@@ -356,10 +351,10 @@ int find_first_message(struct MailboxView *mv)
       ASSERT(false);
   }
 
-  if (reverse || (m->vcount == 0))
+  if (reverse || (mv->vcount == 0))
     return 0;
 
-  return m->vcount - 1;
+  return mv->vcount - 1;
 }
 
 /**
@@ -372,17 +367,16 @@ void resort_index(struct MailboxView *mv, struct Menu *menu)
   if (!mv || !mv->mailbox || !menu)
     return;
 
-  struct Mailbox *m = mv->mailbox;
   const int old_index = menu_get_index(menu);
-  struct Email *e_cur = mutt_get_virt_email(m, old_index);
+  struct Email *e_cur = mutt_get_virt_email(mv, old_index);
 
   int new_index = -1;
   mutt_sort_headers(mv, false);
 
   /* Restore the current message */
-  for (int i = 0; i < m->vcount; i++)
+  for (int i = 0; i < mv->vcount; i++)
   {
-    struct Email *e = mutt_get_virt_email(m, i);
+    struct Email *e = mutt_get_virt_email(mv, i);
     if (!e)
       continue;
     if (e == e_cur)
@@ -398,7 +392,7 @@ void resort_index(struct MailboxView *mv, struct Menu *menu)
   if (old_index < 0)
     new_index = find_first_message(mv);
 
-  menu->max = m->vcount;
+  menu->max = mv->vcount;
   menu_set_index(menu, new_index);
   menu_queue_redraw(menu, MENU_REDRAW_INDEX);
 }
@@ -441,7 +435,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
 
       if ((e->limit_visited && e->visible) ||
           mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
-                            MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+                            MUTT_MATCH_FULL_ADDRESS, mv, m, e, NULL))
       {
         /* vnum will get properly set by mutt_set_vnum(), which
          * is called by mutt_sort_headers() just below. */
@@ -468,7 +462,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
     {
       mv->collapsed = false;
       mutt_thread_collapse(mv->threads, mv->collapsed);
-      mutt_set_vnum(m);
+      mutt_set_vnum(mv);
     }
     else if (oldcount > 0)
     {
@@ -479,7 +473,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
           mutt_uncollapse_thread(save_new[j]);
         }
       }
-      mutt_set_vnum(m);
+      mutt_set_vnum(mv);
     }
   }
 
@@ -500,7 +494,7 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
   {
     struct Mailbox *m = mv->mailbox;
     int padding = mx_msg_padding_size(m);
-    m->vcount = mv->vsize = 0;
+    mv->vcount = mv->vsize = 0;
     for (int i = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
@@ -509,14 +503,14 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
 
       if ((e->limit_visited && e->visible) ||
           mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
-                            MUTT_MATCH_FULL_ADDRESS, m, e, NULL))
+                            MUTT_MATCH_FULL_ADDRESS, mv, m, e, NULL))
       {
-        ASSERT(m->vcount < m->msg_count);
-        e->vnum = m->vcount;
-        eview_free(&m->v2r[m->vcount]);
-        m->v2r[m->vcount] = eview_new(e);
+        ASSERT(mv->vcount < m->msg_count);
+        e->vnum = mv->vcount;
+        eview_free(&mv->v2r[mv->vcount]);
+        mv->v2r[mv->vcount] = eview_new(e);
         e->visible = true;
-        m->vcount++;
+        mv->vcount++;
         struct Body *b = e->body;
         mv->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
@@ -548,21 +542,20 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   if (!menu || !mv)
     return;
 
-  struct Mailbox *m = mv->mailbox;
   if (mutt_using_threads())
     update_index_threaded(mv, check, oldcount);
   else
     update_index_unthreaded(mv, check);
 
-  menu->max = m->vcount;
+  menu->max = mv->vcount;
   const int old_index = menu_get_index(menu);
   int index = -1;
   if (oldcount)
   {
     /* restore the current message to the message it was pointing to */
-    for (int i = 0; i < m->vcount; i++)
+    for (int i = 0; i < mv->vcount; i++)
     {
-      struct Email *e = mutt_get_virt_email(m, i);
+      struct Email *e = mutt_get_virt_email(mv, i);
       if (!e)
         continue;
       if (index_shared_data_is_cur_email(shared, e))
@@ -575,7 +568,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
 
   if (index < 0)
   {
-    index = (old_index < m->vcount) ? old_index : find_first_message(mv);
+    index = (old_index < mv->vcount) ? old_index : find_first_message(mv);
   }
   menu_set_index(menu, index);
 }
@@ -803,6 +796,7 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
 
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
+  struct MailboxView *mv = shared->mailbox_view;
   struct Mailbox *m = shared->mailbox;
   if (!shared->mailbox_view)
     menu->current = -1;
@@ -810,7 +804,7 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
   if (!m || (line < 0) || (line >= m->email_max))
     return 0;
 
-  struct Email *e = mutt_get_virt_email(m, line);
+  struct Email *e = mutt_get_virt_email(mv, line);
   if (!e)
     return 0;
 
@@ -832,13 +826,13 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
       if (reverse)
       {
         if (menu->top + menu->page_len > menu->max)
-          edgemsgno = m->v2r[menu->max - 1]->email->msgno;
+          edgemsgno = mv->v2r[menu->max - 1]->email->msgno;
         else
-          edgemsgno = m->v2r[menu->top + menu->page_len - 1]->email->msgno;
+          edgemsgno = mv->v2r[menu->top + menu->page_len - 1]->email->msgno;
       }
       else
       {
-        edgemsgno = m->v2r[menu->top]->email->msgno;
+        edgemsgno = mv->v2r[menu->top]->email->msgno;
       }
 
       for (tmp = e->thread->parent; tmp; tmp = tmp->parent)
@@ -890,7 +884,8 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
     max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
-  return mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
+  return mutt_make_string(buf, max_cols, c_index_format, shared->mailbox,
+                          msg_in_pager, e, flags, NULL);
 }
 
 /**
@@ -900,18 +895,18 @@ const struct AttrColor *index_color(struct Menu *menu, int line)
 {
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
-  struct Mailbox *m = shared->mailbox;
-  if (!m || (line < 0))
+  struct MailboxView *mv = shared->mailbox_view;
+  if (!mv || (line < 0))
     return NULL;
 
-  struct Email *e = mutt_get_virt_email(m, line);
+  struct Email *e = mutt_get_virt_email(mv, line);
   if (!e)
     return NULL;
 
   if (e->attr_color)
     return e->attr_color;
 
-  mutt_set_header_color(m, e);
+  mutt_set_header_color(mv, e);
   return e->attr_color;
 }
 
@@ -1093,7 +1088,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu = priv->win_index->wdata;
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
-  priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
+  priv->menu->max = shared->mailbox_view ? shared->mailbox_view->vcount : 0;
   menu_set_index(priv->menu, find_first_message(shared->mailbox_view));
 
   struct MuttWindow *old_focus = window_set_focus(priv->menu->win);
@@ -1135,7 +1130,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       resort_index(shared->mailbox_view, priv->menu);
     }
 
-    priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
+    priv->menu->max = shared->mailbox ? shared->mailbox_view->vcount : 0;
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
     if (shared->mailbox && shared->mailbox_view)
@@ -1204,12 +1199,12 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
         shared->mailbox->verbose = false;
         update_index(priv->menu, shared->mailbox_view, check, priv->oldcount, shared);
         shared->mailbox->verbose = verbose;
-        priv->menu->max = shared->mailbox->vcount;
+        priv->menu->max = shared->mailbox_view->vcount;
         menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         mutt_pattern_free(&shared->search_state->pattern);
       }
 
-      index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox,
+      index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox_view,
                                                               menu_get_index(priv->menu)));
     }
 
@@ -1369,10 +1364,10 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
 /**
  * mutt_set_header_color - Select a colour for a message
- * @param m Mailbox
- * @param e Current Email
+ * @param mv Mailbox view
+ * @param e  Current Email
  */
-void mutt_set_header_color(struct Mailbox *m, struct Email *e)
+void mutt_set_header_color(struct MailboxView *mv, struct Email *e)
 {
   if (!e)
     return;
@@ -1384,7 +1379,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
   STAILQ_FOREACH(color, regex_colors_get_list(MT_COLOR_INDEX), entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(color->color_pattern),
-                          MUTT_MATCH_FULL_ADDRESS, m, e, &cache))
+                          MUTT_MATCH_FULL_ADDRESS, mv, mv->mailbox, e, &cache))
     {
       ac_merge = merged_color_overlay(ac_merge, &color->attr_color);
     }

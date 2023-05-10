@@ -363,7 +363,7 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
     /* this function gets called by mutt_sync_mailbox(), which may have just
      * deleted all the messages.  the virtual message numbers are not updated
      * in that routine, so we must make sure to zero the vcount member.  */
-    m->vcount = 0;
+    mv->vcount = 0;
     mutt_clear_threads(mv->threads);
     mv->vsize = 0;
     return; /* nothing to do! */
@@ -405,12 +405,12 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
     cmp.type = mx_type(m);
     cmp.sort = cs_subset_sort(NeoMutt->sub, "sort");
     cmp.sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-    mutt_qsort_r((void *) m->emails, m->msg_count, sizeof(struct Email *),
+    mutt_qsort_r((void *) mv->v2r, mv->vcount, sizeof(struct EmailView *),
                  compare_email_shim, &cmp);
   }
 
   /* adjust the virtual message numbers */
-  m->vcount = 0;
+  mv->vcount = 0;
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e_cur = m->emails[i];
@@ -419,10 +419,10 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
 
     if ((e_cur->vnum != -1) || (e_cur->collapsed && e_cur->visible))
     {
-      e_cur->vnum = m->vcount;
-      eview_free(&m->v2r[m->vcount]);
-      m->v2r[m->vcount] = eview_new(e_cur);
-      m->vcount++;
+      e_cur->vnum = mv->vcount;
+      eview_free(&mv->v2r[mv->vcount]);
+      mv->v2r[mv->vcount] = eview_new(e_cur);
+      mv->vcount++;
     }
     e_cur->msgno = i;
   }
@@ -431,7 +431,7 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
   if (threaded)
   {
     mutt_thread_collapse_collapsed(mv->threads);
-    mv->vsize = mutt_set_vnum(m);
+    mv->vsize = mutt_set_vnum(mv);
   }
 
   if (m->verbose)

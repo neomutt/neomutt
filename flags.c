@@ -41,7 +41,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "color/lib.h"
-#include "index/lib.h"
 #include "key/lib.h"
 #include "mutt_thread.h"
 #include "protos.h"
@@ -336,7 +335,7 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
 
   if (update)
   {
-    mutt_set_header_color(m, e);
+    //QWQ mutt_set_header_color(m, e);
     struct EventMailbox ev_m = { m };
     notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   }

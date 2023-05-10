@@ -78,6 +78,10 @@ void mview_free(struct MailboxView **ptr)
   FREE(&mv->pattern);
   mutt_pattern_free(&mv->limit_pattern);
 
+  for (size_t i = 0; i < mv->vcount; i++)
+    eview_free(&mv->v2r[i]);
+
+  FREE(&mv->v2r);
   *ptr = NULL;
   FREE(&mv);
 }
@@ -104,6 +108,7 @@ struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
   notify_observer_add(m->notify, NT_MAILBOX, mview_mailbox_observer, mv);
 
   mv->mailbox = m;
+  mv->v2r = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
   mv->threads = mutt_thread_ctx_init(mv);
   mv->msg_in_pager = -1;
   mv->collapsed = false;
@@ -152,7 +157,7 @@ void mview_update(struct MailboxView *mv)
   m->msg_new = 0;
   m->msg_deleted = 0;
   m->msg_tagged = 0;
-  m->vcount = 0;
+  mv->vcount = 0;
   m->changed = false;
 
   mutt_clear_threads(mv->threads);
@@ -177,9 +182,9 @@ void mview_update(struct MailboxView *mv)
     }
     else
     {
-      eview_free(&m->v2r[m->vcount]);
-      m->v2r[m->vcount] = eview_new(e);
-      e->vnum = m->vcount++;
+      eview_free(&mv->v2r[mv->vcount]);
+      mv->v2r[mv->vcount] = eview_new(e);
+      e->vnum = mv->vcount++;
     }
     e->msgno = msgno;
 
@@ -243,7 +248,7 @@ static void update_tables(struct MailboxView *mv)
   int i, j, padding;
 
   /* update memory to reflect the new state of the mailbox */
-  m->vcount = 0;
+  mv->vcount = 0;
   mv->vsize = 0;
   m->msg_tagged = 0;
   m->msg_deleted = 0;
@@ -268,9 +273,9 @@ static void update_tables(struct MailboxView *mv)
       m->emails[j]->msgno = j;
       if (m->emails[j]->vnum != -1)
       {
-        eview_free(&m->v2r[m->vcount]);
-        m->v2r[m->vcount] = eview_new(m->emails[j]);
-        m->emails[j]->vnum = m->vcount++;
+        eview_free(&mv->v2r[mv->vcount]);
+        mv->v2r[mv->vcount] = eview_new(m->emails[j]);
+        m->emails[j]->vnum = mv->vcount++;
         struct Body *b = m->emails[j]->body;
         mv->vsize += b->length + b->offset - b->hdr_offset + padding;
       }
@@ -409,7 +414,7 @@ int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e
 
 /**
  * mutt_get_virt_email - Get a virtual Email
- * @param m    Mailbox
+ * @param mv   Mailbox view
  * @param vnum Virtual index number
  * @retval ptr  Email
  * @retval NULL No Email selected, or bad index values
@@ -417,15 +422,15 @@ int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e
  * This safely gets the result of the following:
  * - `mailbox->emails[mailbox->v2r[vnum]]`
  */
-struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum)
+struct Email *mutt_get_virt_email(struct MailboxView *mv, int vnum)
 {
-  if (!m || !m->emails || !m->v2r)
+  if (!mv || !mv->v2r)
     return NULL;
 
-  if ((vnum < 0) || (vnum >= m->vcount))
+  if ((vnum < 0) || (vnum >= mv->vcount))
     return NULL;
 
-  return m->v2r[vnum]->email;
+  return mv->v2r[vnum]->email;
 }
 
 /**
@@ -487,7 +492,7 @@ bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e)
   if (!me)
     return false;
 
-  m->vcount = 0;
+  mv->vcount = 0;
   mv->vsize = 0;
   mv->collapsed = false;
 
@@ -506,11 +511,11 @@ bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e)
     {
       struct Body *body = e->body;
 
-      e->vnum = m->vcount;
+      e->vnum = mv->vcount;
       e->visible = true;
-      eview_free(&m->v2r[m->vcount]);
-      m->v2r[m->vcount] = eview_new(e);
-      m->vcount++;
+      eview_free(&mv->v2r[mv->vcount]);
+      mv->v2r[mv->vcount] = eview_new(e);
+      mv->vcount++;
       mv->vsize += (body->length + body->offset - body->hdr_offset);
     }
   }

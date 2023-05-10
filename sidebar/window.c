@@ -79,6 +79,7 @@
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
+#include "mview.h"
 
 const struct ExpandoRenderData SidebarRenderData[];
 
@@ -449,10 +450,11 @@ long sidebar_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
   const struct IndexSharedData *shared = sdata->shared;
   const struct Mailbox *m = sbe->mailbox;
   const struct Mailbox *m_cur = shared->mailbox;
+  const struct MailboxView *mv_cur = shared->mailbox_view;
 
   const bool c = m_cur && mutt_str_equal(m_cur->realpath, m->realpath);
 
-  return c ? m_cur->vcount : m->msg_count;
+  return c ? mv_cur->vcount : m->msg_count;
 }
 
 /**
