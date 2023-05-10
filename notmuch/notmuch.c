@@ -69,7 +69,6 @@
 #include "editor/lib.h"
 #include "hcache/lib.h"
 #include "history/lib.h"
-#include "index/lib.h"
 #include "progress/lib.h"
 #include "adata.h"
 #include "commands.h"
@@ -2458,7 +2457,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   update_tags(msg, buf);
   update_email_flags(m, e, buf);
   update_email_tags(e, msg);
-  email_set_color(m, e);
+  //QWQ email_set_color(m, e);
 
   rc = 0;
   e->changed = true;

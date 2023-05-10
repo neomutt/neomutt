@@ -183,9 +183,9 @@ static long index_limit_count_num(const struct ExpandoNode *node, void *data, Mu
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
+  const struct MailboxView *mv = shared->mailbox_view;
 
-  return m ? m->vcount : 0;
+  return mv ? mv->vcount : 0;
 }
 
 /**

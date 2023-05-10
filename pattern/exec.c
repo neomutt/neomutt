@@ -58,6 +58,8 @@
 #include <sys/stat.h>
 #endif
 
+struct MailboxView;
+
 static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
                          struct Mailbox *m, struct Email *e,
                          struct Message *msg, struct PatternCache *cache);
@@ -565,7 +567,7 @@ static int match_threadcomplete(struct PatternList *pat, PatternExecFlags flags,
   int a;
   struct Email *e = t->message;
   if (e)
-    if (mutt_pattern_exec(SLIST_FIRST(pat), flags, m, e, NULL))
+    if (mutt_pattern_exec(SLIST_FIRST(pat), flags, NULL, m, e, NULL))
       return 1;
 
   if (up && (a = match_threadcomplete(pat, flags, m, t->parent, 1, 1, 1, 0)))
@@ -599,7 +601,7 @@ static int match_threadparent(struct PatternList *pat, PatternExecFlags flags,
   if (!t || !t->parent || !t->parent->message)
     return 0;
 
-  return mutt_pattern_exec(SLIST_FIRST(pat), flags, m, t->parent->message, NULL);
+  return mutt_pattern_exec(SLIST_FIRST(pat), flags, NULL, m, t->parent->message, NULL);
 }
 
 /**
@@ -619,7 +621,7 @@ static int match_threadchildren(struct PatternList *pat, PatternExecFlags flags,
     return 0;
 
   for (t = t->child; t; t = t->next)
-    if (t->message && mutt_pattern_exec(SLIST_FIRST(pat), flags, m, t->message, NULL))
+    if (t->message && mutt_pattern_exec(SLIST_FIRST(pat), flags, NULL, m, t->message, NULL))
       return 1;
 
   return 0;
@@ -1135,6 +1137,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  * mutt_pattern_exec - Match a pattern against an email header
  * @param pat   Pattern to match
  * @param flags Flags, e.g. #MUTT_MATCH_FULL_ADDRESS
+ * @param mv    Mailbox view
  * @param m     Mailbox
  * @param e     Email
  * @param cache Cache for common Patterns
@@ -1146,7 +1149,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
  *        store some of the cacheable pattern matches in this structure.
  */
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
-                       struct Mailbox *m, struct Email *e, struct PatternCache *cache)
+                       struct MailboxView *mv, struct Mailbox *m,
+                       struct Email *e, struct PatternCache *cache)
 {
   const bool needs_msg = pattern_needs_msg(m, pat);
   struct Message *msg = needs_msg ? mx_msg_open(m, e) : NULL;

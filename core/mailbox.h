@@ -95,8 +95,6 @@ struct Mailbox
 
   struct Email **emails;              ///< Array of Emails
   int email_max;                      ///< Size of `emails` array
-  struct EmailView **v2r;             ///< Array of visible Emails
-  int vcount;                         ///< The number of visible Emails
 
   bool notified;                      ///< User has been notified
   enum MailboxType type;              ///< Mailbox type

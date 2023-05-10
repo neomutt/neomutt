@@ -190,7 +190,8 @@ enum PatternAlias
   PAA_VISIBLE,    ///< Set   AliasView.is_visible and hide the rest
 };
 
-bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
+bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags,
+                       struct MailboxView *mv, struct Mailbox *m,
                        struct Email *e, struct PatternCache *cache);
 bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
                              struct AliasView *av, struct PatternCache *cache);

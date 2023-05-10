@@ -126,9 +126,8 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group,
   {
     case RANGE_K_REL:
     {
-      struct Mailbox *m = mv->mailbox;
       struct Menu *menu = mv->menu;
-      struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
+      struct Email *e = mutt_get_virt_email(mv, menu_get_index(menu));
       if (!e)
         return num;
       return num + email_msgno(e);
@@ -176,7 +175,7 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp,
       return m->msg_count;
     case RANGE_DOT:
     {
-      struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
+      struct Email *e = mutt_get_virt_email(mv, menu_get_index(menu));
       if (!e)
         return 1;
       return email_msgno(e);
@@ -252,7 +251,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
       buf_strcpy(err, _("No current message"));
       return RANGE_E_MVIEW;
     }
-    struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
+    struct Email *e = mutt_get_virt_email(mv, menu_get_index(menu));
     if (!e)
       return RANGE_E_MVIEW;
 

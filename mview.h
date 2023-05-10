@@ -44,6 +44,8 @@ struct MailboxView
   struct ThreadsContext *threads;    ///< Threads context
   int msg_in_pager;                  ///< Message currently shown in the pager
 
+  struct EmailView **v2r;            ///< Array of visible Emails
+  int vcount;                        ///< The number of visible Emails
   struct Menu *menu;                 ///< Needed for pattern compilation
 
   bool collapsed : 1;                ///< Are all threads collapsed?
@@ -80,7 +82,7 @@ bool                mview_has_limit       (const struct MailboxView *mv);
 struct Mailbox *    mview_mailbox         (struct MailboxView *mv);
 
 bool message_is_tagged(struct Email *e);
-struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
+struct Email *mutt_get_virt_email(struct MailboxView *mv, int vnum);
 
 int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e, bool use_tagged);
 

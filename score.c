@@ -169,7 +169,8 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   e->score = 0; /* in case of re-scoring */
   for (tmp = ScoreList; tmp; tmp = tmp->next)
   {
-    if (mutt_pattern_exec(SLIST_FIRST(tmp->pat), MUTT_MATCH_FULL_ADDRESS, NULL, e, &cache) > 0)
+    if (mutt_pattern_exec(SLIST_FIRST(tmp->pat), MUTT_MATCH_FULL_ADDRESS, NULL,
+                          NULL, e, &cache) > 0)
     {
       if (tmp->exact || (tmp->val == 9999) || (tmp->val == -9999))
       {
