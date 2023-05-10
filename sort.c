@@ -41,6 +41,7 @@
 #include "globals.h" // IWYU pragma: keep
 #include "mutt_logging.h"
 #include "mutt_thread.h"
+#include "mview.h"
 #include "mx.h"
 #include "score.h"
 #ifdef USE_NNTP
@@ -347,14 +348,15 @@ int mutt_compare_emails(const struct Email *a, const struct Email *b,
 
 /**
  * mutt_sort_headers - Sort emails by their headers
- * @param m       Mailbox
- * @param threads Threads context
- * @param init If true, rebuild the thread
- * @param[out] vsize Size in bytes of the messages in view
+ * @param mv    Mailbox View
+ * @param init  If true, rebuild the thread
  */
-void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
-                       bool init, off_t *vsize)
+void mutt_sort_headers(struct MailboxView *mv, bool init)
 {
+  if (!mv)
+    return;
+
+  struct Mailbox *m = mv->mailbox;
   if (!m || !m->emails[0])
     return;
 
@@ -366,8 +368,8 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
      * deleted all the messages.  the virtual message numbers are not updated
      * in that routine, so we must make sure to zero the vcount member.  */
     m->vcount = 0;
-    mutt_clear_threads(threads);
-    *vsize = 0;
+    mutt_clear_threads(mv->threads);
+    mv->vsize = 0;
     return; /* nothing to do! */
   }
 
@@ -394,12 +396,12 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   }
 
   if (init)
-    mutt_clear_threads(threads);
+    mutt_clear_threads(mv->threads);
 
   const bool threaded = mutt_using_threads();
   if (threaded)
   {
-    mutt_sort_threads(threads, init);
+    mutt_sort_threads(mv->threads, init);
   }
   else
   {
@@ -431,8 +433,8 @@ void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads,
   /* re-collapse threads marked as collapsed */
   if (threaded)
   {
-    mutt_thread_collapse_collapsed(threads);
-    *vsize = mutt_set_vnum(m);
+    mutt_thread_collapse_collapsed(mv->threads);
+    mv->vsize = mutt_set_vnum(m);
   }
 
   if (m->verbose)

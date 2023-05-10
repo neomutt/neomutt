@@ -811,7 +811,7 @@ static int op_main_break_thread(struct IndexSharedData *shared,
   {
     {
       mutt_break_thread(e);
-      mutt_sort_headers(m, mv->threads, true, &mv->vsize);
+      mutt_sort_headers(mv, true);
       menu_set_index(priv->menu, e->vnum);
     }
 
@@ -1075,7 +1075,7 @@ static int op_main_link_threads(struct IndexSharedData *shared,
 
     if (mutt_link_threads(e, &el, m))
     {
-      mutt_sort_headers(m, mv->threads, true, &mv->vsize);
+      mutt_sort_headers(mv, true);
       menu_set_index(priv->menu, e->vnum);
 
       m->changed = true;
@@ -2387,7 +2387,7 @@ static int op_get_children(struct IndexSharedData *shared,
       m->verbose = false;
 
     struct MailboxView *mv = shared->mailbox_view;
-    mutt_sort_headers(m, mv->threads, (op == OP_RECONSTRUCT_THREAD), &mv->vsize);
+    mutt_sort_headers(mv, (op == OP_RECONSTRUCT_THREAD));
     m->verbose = verbose;
 
     /* if the root message was retrieved, move to it */
@@ -2488,7 +2488,7 @@ static int op_get_message(struct IndexSharedData *shared,
     {
       e = m->emails[m->msg_count - 1];
       struct MailboxView *mv = shared->mailbox_view;
-      mutt_sort_headers(m, mv->threads, false, &mv->vsize);
+      mutt_sort_headers(mv, false);
       menu_set_index(priv->menu, e->vnum);
       menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
       rc = FR_SUCCESS;

@@ -369,7 +369,7 @@ void resort_index(struct MailboxView *mv, struct Menu *menu)
   struct Email *e_cur = mutt_get_virt_email(m, old_index);
 
   int new_index = -1;
-  mutt_sort_headers(m, mv->threads, false, &mv->vsize);
+  mutt_sort_headers(mv, false);
 
   /* Restore the current message */
   for (int i = 0; i < m->vcount; i++)
@@ -423,7 +423,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
    * require the threading information.
    *
    * If the mailbox was reopened, need to rethread from scratch. */
-  mutt_sort_headers(m, mv->threads, (check == MX_STATUS_REOPENED), &mv->vsize);
+  mutt_sort_headers(mv, (check == MX_STATUS_REOPENED));
 
   if (lmt)
   {
@@ -450,7 +450,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
       e->limit_visited = true;
     }
     /* Need a second sort to set virtual numbers and redraw the tree */
-    mutt_sort_headers(m, mv->threads, false, &mv->vsize);
+    mutt_sort_headers(mv, false);
   }
 
   /* uncollapse threads with new mail */
@@ -521,7 +521,7 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
   }
 
   /* if the mailbox was reopened, need to rethread from scratch */
-  mutt_sort_headers(mv->mailbox, mv->threads, (check == MX_STATUS_REOPENED), &mv->vsize);
+  mutt_sort_headers(mv, (check == MX_STATUS_REOPENED));
 }
 
 /**

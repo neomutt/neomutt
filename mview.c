@@ -211,7 +211,7 @@ void mview_update(struct MailboxView *mv)
   }
 
   /* rethread from scratch */
-  mutt_sort_headers(mv->mailbox, mv->threads, true, &mv->vsize);
+  mutt_sort_headers(mv, true);
 }
 
 /**
@@ -332,7 +332,7 @@ int mview_mailbox_observer(struct NotifyCallback *nc)
       update_tables(mv);
       break;
     case NT_MAILBOX_RESORT:
-      mutt_sort_headers(mv->mailbox, mv->threads, true, &mv->vsize);
+      mutt_sort_headers(mv, true);
       break;
     default:
       return 0;
