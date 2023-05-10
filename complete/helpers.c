@@ -45,6 +45,7 @@
 #include "menu/lib.h"
 #include "compapi.h"
 #include "data.h"
+#include "gui/mview.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
