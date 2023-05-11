@@ -1658,7 +1658,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   index = menu_get_index(priv->menu);
   if ((index < 0) || (shared->mailbox && (index >= shared->mailbox->vcount)))
   {
-    menu_set_index(priv->menu, ci_first_message(shared->mailbox));
+    menu_set_index(priv->menu, ci_first_message(shared->mailbox_view));
   }
 
   /* check for a fatal error, or all messages deleted */

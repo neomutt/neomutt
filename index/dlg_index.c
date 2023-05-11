@@ -297,14 +297,18 @@ int ci_previous_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
 
 /**
  * ci_first_message - Get index of first new message
- * @param m Mailbox
+ * @param mv Mailbox view
  * @retval num Index of first new message
  *
  * Return the index of the first new message, or failing that, the first
  * unread message.
  */
-int ci_first_message(struct Mailbox *m)
+int ci_first_message(struct MailboxView *mv)
 {
+  if (!mv)
+    return 0;
+
+  struct Mailbox *m = mv->mailbox;
   if (!m || (m->msg_count == 0))
     return 0;
 
@@ -388,7 +392,7 @@ void resort_index(struct MailboxView *mv, struct Menu *menu)
     new_index = mutt_parent_message(e_cur, false);
 
   if (old_index < 0)
-    new_index = ci_first_message(m);
+    new_index = ci_first_message(mv);
 
   menu->max = m->vcount;
   menu_set_index(menu, new_index);
@@ -564,7 +568,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
 
   if (index < 0)
   {
-    index = (old_index < m->vcount) ? old_index : ci_first_message(m);
+    index = (old_index < m->vcount) ? old_index : ci_first_message(mv);
   }
   menu_set_index(menu, index);
 }
@@ -689,7 +693,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     index_shared_data_set_mview(shared, mv);
 
     menu->max = m->msg_count;
-    menu_set_index(menu, ci_first_message(shared->mailbox));
+    menu_set_index(menu, ci_first_message(shared->mailbox_view));
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
 #endif
@@ -1075,7 +1079,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
   priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
-  menu_set_index(priv->menu, ci_first_message(shared->mailbox));
+  menu_set_index(priv->menu, ci_first_message(shared->mailbox_view));
   mutt_window_reflow(NULL);
 
   if (!priv->attach_msg)
