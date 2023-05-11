@@ -1,6 +1,6 @@
 /**
  * @file
- * The "currently-open" mailbox
+ * View of a Mailbox
  *
  * @authors
  * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
@@ -32,7 +32,7 @@ struct Mailbox;
 struct NotifyCallback;
 
 /**
- * struct MailboxView - The "current" mailbox
+ * struct MailboxView - View of a Mailbox
  */
 struct MailboxView
 {

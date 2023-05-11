@@ -434,6 +434,7 @@ void simple_color_dump(enum ColorId cid, const char *prefix)
 
 /**
  * simple_colors_dump - Dump all the Simple colours to the log
+ * @param force If true, list unset colours
  */
 void simple_colors_dump(bool force)
 {

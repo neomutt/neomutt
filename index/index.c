@@ -585,6 +585,7 @@ static int index_repaint(struct MuttWindow *win)
 
 /**
  * index_window_new - Create a new Index Window (list of Emails)
+ * @param priv Private Index data
  * @retval ptr New Window
  */
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv)

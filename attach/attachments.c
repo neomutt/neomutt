@@ -282,6 +282,7 @@ int mutt_count_body_parts(const struct Mailbox *m, struct Email *e, FILE *fp)
 
 /**
  * mutt_attachments_reset - Reset the attachment count for all Emails
+ * @param m Mailbox
  */
 void mutt_attachments_reset(struct Mailbox *m)
 {

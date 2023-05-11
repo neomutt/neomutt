@@ -49,6 +49,7 @@ void cbar_data_free(struct MuttWindow *win, void **ptr)
 
 /**
  * cbar_data_new - Free the private data attached to the MuttWindow
+ * @retval ptr New ComposeBarData
  */
 struct ComposeBarData *cbar_data_new(void)
 {

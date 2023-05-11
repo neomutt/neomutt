@@ -1462,6 +1462,7 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env,
 
 /**
  * mutt_default_from - Get a default 'from' Address
+ * @param sub Config Subset
  * @retval ptr Newly allocated Address
  */
 struct Address *mutt_default_from(struct ConfigSubset *sub)

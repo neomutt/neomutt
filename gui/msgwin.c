@@ -210,6 +210,7 @@ struct MuttWindow *msgwin_new(void)
 
 /**
  * msgwin_get_text - Get the text from the Message Window
+ * @retval ptr Window text
  *
  * @note Do not free the returned string
  */

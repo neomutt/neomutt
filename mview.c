@@ -1,6 +1,6 @@
 /**
  * @file
- * The "currently-open" mailbox
+ * View of a Mailbox
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page neo_mview The "currently-open" mailbox
+ * @page neo_mview View of a Mailbox
  *
- * The "currently-open" mailbox
+ * View of a Mailbox
  */
 
 #include "config.h"

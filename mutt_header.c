@@ -413,7 +413,7 @@ cleanup:
 void mutt_make_label_hash(struct Mailbox *m)
 {
   /* 131 is just a rough prime estimate of how many distinct
-   * labels someone might have in a m.  */
+   * labels someone might have in a mailbox.  */
   m->label_hash = mutt_hash_new(131, MUTT_HASH_STRDUP_KEYS);
 }
 

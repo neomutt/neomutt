@@ -173,6 +173,7 @@ static char *getmailname(void)
 
 /**
  * get_hostname - Find the Fully-Qualified Domain Name
+ * @param cs Config Set
  * @retval true  Success
  * @retval false Error, failed to find any name
  *

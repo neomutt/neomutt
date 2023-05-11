@@ -722,10 +722,9 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 
 /**
  * set_dump - Dump list of config variables into a file/pager.
- *
  * @param flags what configs to dump: see #ConfigDumpFlags
  * @param err buffer for error message
- * @return see #CommandResult
+ * @return num See #CommandResult
  *
  * FIXME: Move me into parse/set.c.  Note: this function currently depends on
  * pager, which is the reason it is not included in the parse library.

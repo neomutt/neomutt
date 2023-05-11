@@ -97,7 +97,6 @@ void mutt_colors_init(void)
 
 /**
  * mutt_color_has_pattern - Check if a color object supports a regex pattern
- *
  * @param cid   Object type, e.g. #MT_COLOR_TILDE
  * @retval true The color object supports patterns
  */
