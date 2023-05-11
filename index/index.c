@@ -256,7 +256,7 @@ static int index_attach_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
-  mutt_attachments_reset(shared->mailbox);
+  mutt_attachments_reset(shared->mailbox_view);
   mutt_debug(LL_DEBUG5, "attachments done\n");
   return 0;
 }
