@@ -231,19 +231,20 @@ static void uncollapse_thread(struct Mailbox *m, int index)
 
 /**
  * ci_next_undeleted - Find the next undeleted email
- * @param m          Mailbox
+ * @param mv         Mailbox view
  * @param msgno      Message number to start at
  * @param uncollapse Open collapsed threads
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-int ci_next_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
+int ci_next_undeleted(struct MailboxView *mv, int msgno, bool uncollapse)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return -1;
 
-  int index = -1;
+  struct Mailbox *m = mv->mailbox;
 
+  int index = -1;
   for (int i = msgno + 1; i < m->vcount; i++)
   {
     struct Email *e = mutt_get_virt_email(m, i);
