@@ -28,6 +28,7 @@
 #include "core/lib.h"
 
 struct Buffer;
+struct MailboxView;
 
 /**
  * enum NotifyAlternates - Alternates command notification types
@@ -50,6 +51,6 @@ enum CommandResult parse_alternates  (struct Buffer *buf, struct Buffer *s, intp
 enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 bool mutt_alternates_match(const char *addr);
-void mutt_alternates_reset(struct Mailbox *m);
+void mutt_alternates_reset(struct MailboxView *mv);
 
 #endif /* MUTT_ALTERNATES_H */

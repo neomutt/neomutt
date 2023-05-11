@@ -237,7 +237,7 @@ static int index_altern_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
-  mutt_alternates_reset(shared->mailbox);
+  mutt_alternates_reset(shared->mailbox_view);
   mutt_debug(LL_DEBUG5, "alternates done\n");
   return 0;
 }

@@ -37,6 +37,7 @@
 #include "alternates.h"
 #include "parse/lib.h"
 #include "commands.h"
+#include "mview.h"
 
 static struct RegexList Alternates = STAILQ_HEAD_INITIALIZER(Alternates); ///< List of regexes to match the user's alternate email addresses
 static struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); ///< List of regexes to exclude false matches in Alternates
@@ -67,12 +68,14 @@ void alternates_init(void)
 
 /**
  * mutt_alternates_reset - Clear the recipient valid flag of all emails
- * @param m Mailbox
+ * @param mv Mailbox view
  */
-void mutt_alternates_reset(struct Mailbox *m)
+void mutt_alternates_reset(struct MailboxView *mv)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return;
+
+  struct Mailbox *m = mv->mailbox;
 
   for (int i = 0; i < m->msg_count; i++)
   {
