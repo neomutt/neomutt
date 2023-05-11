@@ -1455,7 +1455,7 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
 
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
-  index = ci_previous_undeleted(shared->mailbox, index, uncollapse);
+  index = ci_previous_undeleted(shared->mailbox_view, index, uncollapse);
   if (index != -1)
   {
     menu_set_index(priv->menu, index);
@@ -1626,7 +1626,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     if (shared->email->deleted)
       newidx = ci_next_undeleted(shared->mailbox_view, index, false);
     if (newidx < 0)
-      newidx = ci_previous_undeleted(shared->mailbox, index, false);
+      newidx = ci_previous_undeleted(shared->mailbox_view, index, false);
     if (newidx >= 0)
       e = mutt_get_virt_email(shared->mailbox, newidx);
   }
