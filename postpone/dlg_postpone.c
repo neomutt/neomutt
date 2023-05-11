@@ -190,6 +190,8 @@ static struct AttrColor *post_color(struct Menu *menu, int line)
 struct Email *dlg_select_postponed_email(struct Mailbox *m)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
+  // Required to number the emails
+  struct MailboxView *mv = mview_new(m, NeoMutt->notify);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = post_make_entry;
@@ -243,6 +245,7 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   } while (!pd.done);
   // ---------------------------------------------------------------------------
 
+  mview_free(&mv);
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   simple_dialog_free(&dlg);
 
