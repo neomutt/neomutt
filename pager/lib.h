@@ -51,7 +51,7 @@
 struct Email;
 struct IndexSharedData;
 struct ConfigSubset;
-struct Mailbox;
+struct MailboxView;
 struct MuttWindow;
 struct PagerPrivateData;
 
@@ -198,7 +198,7 @@ void buf_strip_formatting(struct Buffer *dest, const char *src, bool strip_marke
 struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared);
 struct MuttWindow *pager_window_new(struct IndexSharedData *shared, struct PagerPrivateData *priv);
 int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *shared);
-int external_pager(struct Mailbox *m, struct Email *e, const char *command);
+int external_pager(struct MailboxView *mv, struct Email *e, const char *command);
 void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw);
 bool mutt_is_quote_line(char *buf, regmatch_t *pmatch);
 const char *pager_get_pager(struct ConfigSubset *sub);

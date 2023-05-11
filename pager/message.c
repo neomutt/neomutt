@@ -49,6 +49,7 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
+#include "mview.h"
 #include "mx.h"
 #include "protos.h"
 #ifdef USE_AUTOCRYPT
@@ -302,14 +303,18 @@ cleanup:
 
 /**
  * external_pager - Display a message in an external program
- * @param m       Mailbox
+ * @param mv      Mailbox view
  * @param e       Email to display
  * @param command External command to run
  * @retval  0 Success
  * @retval -1 Error
  */
-int external_pager(struct Mailbox *m, struct Email *e, const char *command)
+int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
 {
+  if (!mv || !mv->mailbox)
+    return -1;
+
+  struct Mailbox *m = mv->mailbox;
   struct Message *msg = mx_msg_open(m, e);
   if (!msg)
     return -1;

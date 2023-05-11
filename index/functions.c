@@ -411,7 +411,7 @@ static int op_display_message(struct IndexSharedData *shared,
   const char *const c_pager = pager_get_pager(NeoMutt->sub);
   if (c_pager)
   {
-    op = external_pager(shared->mailbox, shared->email, c_pager);
+    op = external_pager(shared->mailbox_view, shared->email, c_pager);
   }
   else
   {
