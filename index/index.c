@@ -481,7 +481,7 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
-  subjrx_clear_mods(shared->mailbox);
+  subjrx_clear_mods(shared->mailbox_view);
   mutt_debug(LL_DEBUG5, "subjectrx done\n");
   return 0;
 }

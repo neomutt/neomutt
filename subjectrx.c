@@ -34,6 +34,7 @@
 #include "core/lib.h"
 #include "subjectrx.h"
 #include "parse/lib.h"
+#include "mview.h"
 
 /// List of subjectrx rules for modifying the Subject:
 static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRegexList);
@@ -142,12 +143,14 @@ bool subjrx_apply_mods(struct Envelope *env)
 
 /**
  * subjrx_clear_mods - Clear out all modified email subjects
- * @param m Mailbox
+ * @param mv Mailbox view
  */
-void subjrx_clear_mods(struct Mailbox *m)
+void subjrx_clear_mods(struct MailboxView *mv)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return;
+
+  struct Mailbox *m = mv->mailbox;
 
   for (int i = 0; i < m->msg_count; i++)
   {
