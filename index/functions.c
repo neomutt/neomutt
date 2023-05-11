@@ -2232,7 +2232,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
   struct Message *msg = mx_msg_open(shared->mailbox, shared->email);
   if (msg)
   {
-    dlg_select_attachment(NeoMutt->sub, shared->mailbox, shared->email, msg->fp);
+    dlg_select_attachment(NeoMutt->sub, shared->mailbox_view, shared->email, msg->fp);
     if (shared->email->attach_del)
     {
       shared->mailbox->changed = true;
