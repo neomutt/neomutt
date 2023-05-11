@@ -441,7 +441,7 @@ static int op_edit_label(struct IndexSharedData *shared, struct IndexPrivateData
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_tagged(&el, shared->mailbox_view, shared->email, priv->tag);
-  int num_changed = mutt_label_message(shared->mailbox, &el);
+  int num_changed = mutt_label_message(shared->mailbox_view, &el);
   emaillist_clear(&el);
 
   if (num_changed > 0)
