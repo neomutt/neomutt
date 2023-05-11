@@ -216,11 +216,15 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
 
 /**
  * uncollapse_thread - Open a collapsed thread
- * @param m     Mailbox
+ * @param mv    Mailbox View
  * @param index Message number
  */
-static void uncollapse_thread(struct Mailbox *m, int index)
+static void uncollapse_thread(struct MailboxView *mv, int index)
 {
+  if (!mv || !mv->mailbox)
+    return;
+
+  struct Mailbox *m = mv->mailbox;
   struct Email *e = mutt_get_virt_email(m, index);
   if (e && e->collapsed)
   {
@@ -258,7 +262,7 @@ int ci_next_undeleted(struct MailboxView *mv, int msgno, bool uncollapse)
   }
 
   if (uncollapse)
-    uncollapse_thread(m, index);
+    uncollapse_thread(mv, index);
 
   return index;
 }
@@ -292,7 +296,7 @@ int ci_previous_undeleted(struct MailboxView *mv, int msgno, bool uncollapse)
   }
 
   if (uncollapse)
-    uncollapse_thread(m, index);
+    uncollapse_thread(mv, index);
 
   return index;
 }
