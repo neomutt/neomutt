@@ -126,7 +126,7 @@ static bool resolve_email(struct IndexPrivateData *priv,
     case RESOLVE_NEXT_UNDELETED:
     {
       const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
-      index = ci_next_undeleted(shared->mailbox, menu_get_index(priv->menu), uncollapse);
+      index = ci_next_undeleted(shared->mailbox_view, menu_get_index(priv->menu), uncollapse);
       break;
     }
 
@@ -169,7 +169,7 @@ bool index_next_undeleted(struct MuttWindow *win_index)
   struct IndexPrivateData *priv = win_index->parent->wdata;
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
-  int index = ci_next_undeleted(shared->mailbox, menu_get_index(menu), uncollapse);
+  int index = ci_next_undeleted(shared->mailbox_view, menu_get_index(menu), uncollapse);
   if ((index < 0) || (index >= shared->mailbox->vcount))
   {
     // Selection failed
@@ -411,7 +411,7 @@ static int op_display_message(struct IndexSharedData *shared,
   const char *const c_pager = pager_get_pager(NeoMutt->sub);
   if (c_pager)
   {
-    op = external_pager(shared->mailbox, shared->email, c_pager);
+    op = external_pager(shared->mailbox_view, shared->email, c_pager);
   }
   else
   {
@@ -441,7 +441,7 @@ static int op_edit_label(struct IndexSharedData *shared, struct IndexPrivateData
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_tagged(&el, shared->mailbox_view, shared->email, priv->tag);
-  int num_changed = mutt_label_message(shared->mailbox, &el);
+  int num_changed = mutt_label_message(shared->mailbox_view, &el);
   emaillist_clear(&el);
 
   if (num_changed > 0)
@@ -1399,7 +1399,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
 
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
-  index = ci_next_undeleted(shared->mailbox, index, uncollapse);
+  index = ci_next_undeleted(shared->mailbox_view, index, uncollapse);
   if (index != -1)
   {
     menu_set_index(priv->menu, index);
@@ -1455,7 +1455,7 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
 
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
-  index = ci_previous_undeleted(shared->mailbox, index, uncollapse);
+  index = ci_previous_undeleted(shared->mailbox_view, index, uncollapse);
   if (index != -1)
   {
     menu_set_index(priv->menu, index);
@@ -1624,9 +1624,9 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     if (!shared->email)
       return FR_NO_ACTION;
     if (shared->email->deleted)
-      newidx = ci_next_undeleted(shared->mailbox, index, false);
+      newidx = ci_next_undeleted(shared->mailbox_view, index, false);
     if (newidx < 0)
-      newidx = ci_previous_undeleted(shared->mailbox, index, false);
+      newidx = ci_previous_undeleted(shared->mailbox_view, index, false);
     if (newidx >= 0)
       e = mutt_get_virt_email(shared->mailbox, newidx);
   }
@@ -1658,7 +1658,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   index = menu_get_index(priv->menu);
   if ((index < 0) || (shared->mailbox && (index >= shared->mailbox->vcount)))
   {
-    menu_set_index(priv->menu, ci_first_message(shared->mailbox));
+    menu_set_index(priv->menu, ci_first_message(shared->mailbox_view));
   }
 
   /* check for a fatal error, or all messages deleted */
@@ -2232,7 +2232,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
   struct Message *msg = mx_msg_open(shared->mailbox, shared->email);
   if (msg)
   {
-    dlg_select_attachment(NeoMutt->sub, shared->mailbox, shared->email, msg->fp);
+    dlg_select_attachment(NeoMutt->sub, shared->mailbox_view, shared->email, msg->fp);
     if (shared->email->attach_del)
     {
       shared->mailbox->changed = true;

@@ -86,6 +86,7 @@
 #include "menu/type.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
+#include "mview.h"
 #include "opcodes.h"
 #include "private_data.h"
 #include "recvattach.h"
@@ -454,15 +455,17 @@ static int attach_window_observer(struct NotifyCallback *nc)
 /**
  * dlg_select_attachment - Show the attachments in a Menu
  * @param sub Config Subset
- * @param m   Mailbox
+ * @param mv  Mailbox view
  * @param e   Email
  * @param fp File with the content of the email, or NULL
  */
-void dlg_select_attachment(struct ConfigSubset *sub, struct Mailbox *m,
+void dlg_select_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
                            struct Email *e, FILE *fp)
 {
-  if (!m || !e || !fp)
+  if (!mv || !mv->mailbox || !e || !fp)
     return;
+
+  struct Mailbox *m = mv->mailbox;
 
   /* make sure we have parsed this message */
   mutt_parse_mime_message(e, fp);

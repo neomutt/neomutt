@@ -216,11 +216,15 @@ void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle)
 
 /**
  * uncollapse_thread - Open a collapsed thread
- * @param m     Mailbox
+ * @param mv    Mailbox View
  * @param index Message number
  */
-static void uncollapse_thread(struct Mailbox *m, int index)
+static void uncollapse_thread(struct MailboxView *mv, int index)
 {
+  if (!mv || !mv->mailbox)
+    return;
+
+  struct Mailbox *m = mv->mailbox;
   struct Email *e = mutt_get_virt_email(m, index);
   if (e && e->collapsed)
   {
@@ -231,19 +235,20 @@ static void uncollapse_thread(struct Mailbox *m, int index)
 
 /**
  * ci_next_undeleted - Find the next undeleted email
- * @param m          Mailbox
+ * @param mv         Mailbox view
  * @param msgno      Message number to start at
  * @param uncollapse Open collapsed threads
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-int ci_next_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
+int ci_next_undeleted(struct MailboxView *mv, int msgno, bool uncollapse)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return -1;
 
-  int index = -1;
+  struct Mailbox *m = mv->mailbox;
 
+  int index = -1;
   for (int i = msgno + 1; i < m->vcount; i++)
   {
     struct Email *e = mutt_get_virt_email(m, i);
@@ -257,26 +262,27 @@ int ci_next_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
   }
 
   if (uncollapse)
-    uncollapse_thread(m, index);
+    uncollapse_thread(mv, index);
 
   return index;
 }
 
 /**
  * ci_previous_undeleted - Find the previous undeleted email
- * @param m          Mailbox
+ * @param mv         Mailbox View
  * @param msgno      Message number to start at
  * @param uncollapse Open collapsed threads
  * @retval >=0 Message number of next undeleted email
  * @retval  -1 No more undeleted messages
  */
-int ci_previous_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
+int ci_previous_undeleted(struct MailboxView *mv, int msgno, bool uncollapse)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return -1;
 
-  int index = -1;
+  struct Mailbox *m = mv->mailbox;
 
+  int index = -1;
   for (int i = msgno - 1; i >= 0; i--)
   {
     struct Email *e = mutt_get_virt_email(m, i);
@@ -290,21 +296,25 @@ int ci_previous_undeleted(struct Mailbox *m, int msgno, bool uncollapse)
   }
 
   if (uncollapse)
-    uncollapse_thread(m, index);
+    uncollapse_thread(mv, index);
 
   return index;
 }
 
 /**
  * ci_first_message - Get index of first new message
- * @param m Mailbox
+ * @param mv Mailbox view
  * @retval num Index of first new message
  *
  * Return the index of the first new message, or failing that, the first
  * unread message.
  */
-int ci_first_message(struct Mailbox *m)
+int ci_first_message(struct MailboxView *mv)
 {
+  if (!mv)
+    return 0;
+
+  struct Mailbox *m = mv->mailbox;
   if (!m || (m->msg_count == 0))
     return 0;
 
@@ -388,7 +398,7 @@ void resort_index(struct MailboxView *mv, struct Menu *menu)
     new_index = mutt_parent_message(e_cur, false);
 
   if (old_index < 0)
-    new_index = ci_first_message(m);
+    new_index = ci_first_message(mv);
 
   menu->max = m->vcount;
   menu_set_index(menu, new_index);
@@ -564,7 +574,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
 
   if (index < 0)
   {
-    index = (old_index < m->vcount) ? old_index : ci_first_message(m);
+    index = (old_index < m->vcount) ? old_index : ci_first_message(mv);
   }
   menu_set_index(menu, index);
 }
@@ -689,7 +699,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     index_shared_data_set_mview(shared, mv);
 
     menu->max = m->msg_count;
-    menu_set_index(menu, ci_first_message(shared->mailbox));
+    menu_set_index(menu, ci_first_message(shared->mailbox_view));
 #ifdef USE_INOTIFY
     mutt_monitor_add(NULL);
 #endif
@@ -1075,7 +1085,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu->make_entry = index_make_entry;
   priv->menu->color = index_color;
   priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
-  menu_set_index(priv->menu, ci_first_message(shared->mailbox));
+  menu_set_index(priv->menu, ci_first_message(shared->mailbox_view));
   mutt_window_reflow(NULL);
 
   if (!priv->attach_msg)

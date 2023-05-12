@@ -39,6 +39,7 @@
 #include "attachments.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
+#include "mview.h"
 
 /**
  * struct AttachMatch - An attachment matching a regex for attachment counter
@@ -282,12 +283,14 @@ int mutt_count_body_parts(const struct Mailbox *m, struct Email *e, FILE *fp)
 
 /**
  * mutt_attachments_reset - Reset the attachment count for all Emails
- * @param m Mailbox
+ * @param mv Mailbox view
  */
-void mutt_attachments_reset(struct Mailbox *m)
+void mutt_attachments_reset(struct MailboxView *mv)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return;
+
+  struct Mailbox *m = mv->mailbox;
 
   for (int i = 0; i < m->msg_count; i++)
   {

@@ -187,14 +187,16 @@ void index_adjust_sort_threads(const struct ConfigSubset *sub)
 
 /**
  * config_reply_regex - React to changes to $reply_regex
- * @param m Mailbox
+ * @param mv Mailbox View
  * @retval  0 Successfully handled
  * @retval -1 Error
  */
-static int config_reply_regex(struct Mailbox *m)
+static int config_reply_regex(struct MailboxView *mv)
 {
-  if (!m)
+  if (!mv || !mv->mailbox)
     return 0;
+
+  struct Mailbox *m = mv->mailbox;
 
   regmatch_t pmatch[1];
 
@@ -237,7 +239,7 @@ static int index_altern_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
-  mutt_alternates_reset(shared->mailbox);
+  mutt_alternates_reset(shared->mailbox_view);
   mutt_debug(LL_DEBUG5, "alternates done\n");
   return 0;
 }
@@ -256,7 +258,7 @@ static int index_attach_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
-  mutt_attachments_reset(shared->mailbox);
+  mutt_attachments_reset(shared->mailbox_view);
   mutt_debug(LL_DEBUG5, "attachments done\n");
   return 0;
 }
@@ -347,7 +349,7 @@ static int index_config_observer(struct NotifyCallback *nc)
   {
     struct MuttWindow *dlg = dialog_find(win);
     struct IndexSharedData *shared = dlg->wdata;
-    config_reply_regex(shared->mailbox);
+    config_reply_regex(shared->mailbox_view);
     mutt_debug(LL_DEBUG5, "config done\n");
   }
   else if (mutt_str_equal(ev_c->name, "sort"))
@@ -481,7 +483,7 @@ static int index_subjrx_observer(struct NotifyCallback *nc)
   struct MuttWindow *dlg = dialog_find(win);
   struct IndexSharedData *shared = dlg->wdata;
 
-  subjrx_clear_mods(shared->mailbox);
+  subjrx_clear_mods(shared->mailbox_view);
   mutt_debug(LL_DEBUG5, "subjectrx done\n");
   return 0;
 }

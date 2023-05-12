@@ -29,6 +29,7 @@
 
 struct Buffer;
 struct Envelope;
+struct MailboxView;
 
 /**
  * enum NotifySubjRx - Subject Regex notification types
@@ -51,6 +52,6 @@ enum CommandResult parse_subjectrx_list  (struct Buffer *buf, struct Buffer *s, 
 enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 bool subjrx_apply_mods(struct Envelope *env);
-void subjrx_clear_mods(struct Mailbox *m);
+void subjrx_clear_mods(struct MailboxView *mv);
 
 #endif /* MUTT_SUBJECTRX_H */
