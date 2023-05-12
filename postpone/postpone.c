@@ -702,7 +702,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
   cs_subset_str_native_set(NeoMutt->sub, "delete", MUTT_YES, NULL);
 
-  struct MailboxView *mv = (m_cur != m) ? mview_new(m) : NULL;
+  struct MailboxView *mv = (m_cur != m) ? mview_new(m, NeoMutt->notify) : NULL;
   if (m->msg_count == 1)
   {
     /* only one message, so just use that one. */
