@@ -348,20 +348,20 @@ struct ThreadsContext *mutt_thread_ctx_init(struct Mailbox *m)
 {
   struct ThreadsContext *tctx = mutt_mem_calloc(1, sizeof(struct ThreadsContext));
   tctx->mailbox = m;
-  tctx->tree = NULL;
-  tctx->hash = NULL;
   return tctx;
 }
 
 /**
  * mutt_thread_ctx_free - Finalize a threading context
- * @param tctx Threading context to finalize
+ * @param ptr Threading context to free
  */
-void mutt_thread_ctx_free(struct ThreadsContext **tctx)
+void mutt_thread_ctx_free(struct ThreadsContext **ptr)
 {
-  (*tctx)->mailbox = NULL;
-  mutt_hash_free(&(*tctx)->hash);
-  FREE(tctx);
+  struct ThreadsContext *tctx = *ptr;
+
+  mutt_hash_free(&tctx->hash);
+
+  FREE(ptr);
 }
 
 /**
@@ -704,12 +704,16 @@ static void pseudo_threads(struct ThreadsContext *tctx)
  */
 void mutt_clear_threads(struct ThreadsContext *tctx)
 {
-  if (!tctx || !tctx->mailbox || !tctx->mailbox->emails || !tctx->tree)
+  if (!tctx || !tctx->tree)
     return;
 
-  for (int i = 0; i < tctx->mailbox->msg_count; i++)
+  struct Mailbox *m = tctx->mailbox;
+  if (!m || !m->emails)
+    return;
+
+  for (int i = 0; i < m->msg_count; i++)
   {
-    struct Email *e = tctx->mailbox->emails[i];
+    struct Email *e = m->emails[i];
     if (!e)
       break;
 
@@ -736,18 +740,20 @@ static int compare_threads(const void *a, const void *b, void *arg)
   const struct MuttThread *tb = *(struct MuttThread const *const *) b;
   const struct ThreadsContext *tctx = arg;
   assert(ta->parent == tb->parent);
+
   /* If c_sort ties, remember we are building the thread array in
    * reverse from the index the mails had in the mailbox.  */
+  struct Mailbox *m = tctx->mailbox;
+  const enum MailboxType mtype = mx_type(m);
   if (ta->parent)
   {
-    return mutt_compare_emails(ta->sort_aux_key, tb->sort_aux_key, mx_type(tctx->mailbox),
+    return mutt_compare_emails(ta->sort_aux_key, tb->sort_aux_key, mtype,
                                tctx->c_sort_aux, SORT_REVERSE | SORT_ORDER);
   }
   else
   {
-    return mutt_compare_emails(ta->sort_thread_key, tb->sort_thread_key,
-                               mx_type(tctx->mailbox), tctx->c_sort,
-                               SORT_REVERSE | SORT_ORDER);
+    return mutt_compare_emails(ta->sort_thread_key, tb->sort_thread_key, mtype,
+                               tctx->c_sort, SORT_REVERSE | SORT_ORDER);
   }
 }
 
@@ -825,6 +831,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
       }
     }
 
+    struct Mailbox *m = tctx->mailbox;
+    const enum MailboxType mtype = mx_type(m);
     while (!thread->next)
     {
       /* if it has siblings and needs to be sorted, sort it... */
@@ -881,7 +889,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
           if (c_sort_aux & SORT_LAST)
           {
             if (!thread->sort_aux_key ||
-                (mutt_compare_emails(thread->sort_aux_key, sort_aux_key, mx_type(tctx->mailbox),
+                (mutt_compare_emails(thread->sort_aux_key, sort_aux_key, mtype,
                                      c_sort_aux | SORT_REVERSE, SORT_ORDER) > 0))
             {
               thread->sort_aux_key = sort_aux_key;
@@ -917,8 +925,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
                 if (tmp->sort_thread_key == thread->sort_thread_key)
                   continue;
                 if ((mutt_compare_emails(thread->sort_thread_key, tmp->sort_thread_key,
-                                         mx_type(tctx->mailbox),
-                                         c_sort | SORT_REVERSE, SORT_ORDER) > 0))
+                                         mtype, c_sort | SORT_REVERSE, SORT_ORDER) > 0))
                 {
                   thread->sort_thread_key = tmp->sort_thread_key;
                 }

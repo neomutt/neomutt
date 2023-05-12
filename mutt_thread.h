@@ -120,7 +120,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
 #define mutt_previous_subthread(e) mutt_aside_thread(e, false, true)
 
 struct ThreadsContext *mutt_thread_ctx_init          (struct Mailbox *m);
-void                   mutt_thread_ctx_free          (struct ThreadsContext **tctx);
+void                   mutt_thread_ctx_free          (struct ThreadsContext **ptr);
 void                   mutt_thread_collapse_collapsed(struct ThreadsContext *tctx);
 void                   mutt_thread_collapse          (struct ThreadsContext *tctx, bool collapse);
 bool                   mutt_thread_can_collapse      (struct Email *e);
