@@ -741,9 +741,8 @@ msgid "No newsgroups match the mask"
 msgstr "Żadna grupa dyskusyjna nie pasuje do wzorca"
 
 #: browser/functions.c:157
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "Brak listów"
+msgstr "Brak skrzynek"
 
 #: browser/functions.c:206 browser/functions.c:547 browser/functions.c:606
 msgid "No files match the file mask"
@@ -835,17 +834,17 @@ msgstr "%s: kolor nie jest obsługiwany przez Twój terminal"
 #: color/command.c:305
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "Niewbudowane wsparcie dla pełnych kolorów: %s"
 
 #: color/command.c:311
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "domyślnie ustalone kolory nie są obsługiwane"
+msgstr "Wyłączono wsparcie dla pełnych kolorów: %s"
 
 #: color/command.c:418
 #, c-format
 msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-msgstr ""
+msgstr "'bright', 'alert', 'light' są dozwolone tylko dla kolorów z nazwami: %s"
 
 #: color/command.c:422
 #, c-format
@@ -6597,7 +6596,7 @@ msgstr "Podpis PGP NIE może zostać zweryfikowany"
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: pager/pbar.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "%ld%%"
 msgstr "%ld%%"
 
@@ -7228,7 +7227,7 @@ msgstr "Brak odłożonych listów"
 #. `%d` percentage, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
@@ -7236,7 +7235,7 @@ msgstr "%s %zu (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:178
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
 
@@ -7244,7 +7243,7 @@ msgstr "%s %s/%s (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
@@ -7589,7 +7588,7 @@ msgstr "(brak skrzynki)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:302
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
