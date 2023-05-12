@@ -500,7 +500,8 @@ static int index_window_observer(struct NotifyCallback *nc)
   struct Menu *menu = win->wdata;
   if (nc->event_subtype != NT_WINDOW_DELETE)
   {
-    menu_queue_redraw(menu, MENU_REDRAW_FULL | MENU_REDRAW_INDEX);
+    if (nc->event_subtype != NT_WINDOW_FOCUS)
+      menu_queue_redraw(menu, MENU_REDRAW_FULL | MENU_REDRAW_INDEX);
     return 0;
   }
 
