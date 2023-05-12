@@ -67,6 +67,7 @@ void alternates_init(void)
 
 /**
  * mutt_alternates_reset - Clear the recipient valid flag of all emails
+ * @param m Mailbox
  */
 void mutt_alternates_reset(struct Mailbox *m)
 {

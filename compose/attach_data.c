@@ -45,6 +45,7 @@ void attach_data_free(struct Menu *menu, void **ptr)
 
 /**
  * attach_data_new - Create new Compose Attach Data
+ * @param e Email
  * @retval ptr New Compose Attach Data
  */
 struct ComposeAttachData *attach_data_new(struct Email *e)

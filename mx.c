@@ -727,7 +727,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
       if (!e)
         break;
       if (!e->deleted && !e->old && !e->read)
-        mutt_set_flag(m, e, MUTT_OLD, true);
+        mutt_set_flag(m, e, MUTT_OLD, true, true);
     }
   }
 
@@ -788,8 +788,8 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
         {
           if (mutt_append_message(m_read, m, e, NULL, MUTT_CM_NO_FLAGS, CH_UPDATE_LEN) == 0)
           {
-            mutt_set_flag(m, e, MUTT_DELETE, true);
-            mutt_set_flag(m, e, MUTT_PURGE, true);
+            mutt_set_flag(m, e, MUTT_DELETE, true, true);
+            mutt_set_flag(m, e, MUTT_PURGE, true, true);
           }
           else
           {

@@ -121,7 +121,6 @@ enum NmQueryType nm_string_to_query_type(const char *str)
 
 /**
  * nm_string_to_query_type_mapper - Lookup a query type
- *
  * @param str String to lookup
  * @retval num Query type
  * @retval #NM_QUERY_TYPE_UNKNOWN on error

@@ -370,14 +370,14 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
         switch (op)
         {
           case MUTT_UNDELETE:
-            mutt_set_flag(m, e, MUTT_PURGE, false);
+            mutt_set_flag(m, e, MUTT_PURGE, false, true);
           /* fallthrough */
           case MUTT_DELETE:
-            mutt_set_flag(m, e, MUTT_DELETE, (op == MUTT_DELETE));
+            mutt_set_flag(m, e, MUTT_DELETE, (op == MUTT_DELETE), true);
             break;
           case MUTT_TAG:
           case MUTT_UNTAG:
-            mutt_set_flag(m, e, MUTT_TAG, (op == MUTT_TAG));
+            mutt_set_flag(m, e, MUTT_TAG, (op == MUTT_TAG), true);
             break;
         }
       }

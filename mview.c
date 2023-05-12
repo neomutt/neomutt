@@ -1,6 +1,6 @@
 /**
  * @file
- * The "currently-open" mailbox
+ * View of a Mailbox
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page neo_mview The "currently-open" mailbox
+ * @page neo_mview View of a Mailbox
  *
- * The "currently-open" mailbox
+ * View of a Mailbox
  */
 
 #include "config.h"
@@ -211,7 +211,7 @@ void mview_update(struct MailboxView *mv)
   }
 
   /* rethread from scratch */
-  mutt_sort_headers(mv->mailbox, mv->threads, true, &mv->vsize);
+  mutt_sort_headers(mv, true);
 }
 
 /**
@@ -332,7 +332,7 @@ int mview_mailbox_observer(struct NotifyCallback *nc)
       update_tables(mv);
       break;
     case NT_MAILBOX_RESORT:
-      mutt_sort_headers(mv->mailbox, mv->threads, true, &mv->vsize);
+      mutt_sort_headers(mv, true);
       break;
     default:
       return 0;

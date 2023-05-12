@@ -38,6 +38,7 @@
 #ifdef USE_NOTMUCH
 /**
  * is_valid_notmuch_url - Checks that a URL is in required form.
+ * @param url URL to test
  * @retval true  url in form notmuch://[absolute path]
  * @retval false url is not in required form
  */
@@ -65,7 +66,9 @@ static int nm_default_url_validator(const struct ConfigSet *cs, const struct Con
 }
 
 /**
- * nm_query_window_timebase_validator - Ensures nm_query_window_timebase matches allowed values - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * nm_query_window_timebase_validator - Validate $nm_query_window_timebase - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ *
+ * Ensure $nm_query_window_timebase matches allowed values.
  *
  * Allowed values:
  * - hour

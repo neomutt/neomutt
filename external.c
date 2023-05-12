@@ -776,11 +776,11 @@ int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSa
 
   if (save_opt == SAVE_MOVE)
   {
-    mutt_set_flag(m_src, e, MUTT_DELETE, true);
-    mutt_set_flag(m_src, e, MUTT_PURGE, true);
+    mutt_set_flag(m_src, e, MUTT_DELETE, true, true);
+    mutt_set_flag(m_src, e, MUTT_PURGE, true, true);
     const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
     if (c_delete_untag)
-      mutt_set_flag(m_src, e, MUTT_TAG, false);
+      mutt_set_flag(m_src, e, MUTT_TAG, false, true);
   }
 
   return 0;

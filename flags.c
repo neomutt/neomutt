@@ -42,15 +42,15 @@
 #include "protos.h"
 
 /**
- * mutt_set_flag_update - Set a flag on an email
+ * mutt_set_flag - Set a flag on an email
  * @param m        Mailbox
  * @param e        Email
  * @param flag     Flag to set, e.g. #MUTT_DELETE
  * @param bf       true: set the flag; false: clear the flag
  * @param upd_mbox true: update the Mailbox
  */
-void mutt_set_flag_update(struct Mailbox *m, struct Email *e,
-                          enum MessageType flag, bool bf, bool upd_mbox)
+void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
+                   bool bf, bool upd_mbox)
 {
   if (!m || !e)
     return;
@@ -361,7 +361,7 @@ void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el,
   struct EmailNode *en = NULL;
   STAILQ_FOREACH(en, el, entries)
   {
-    mutt_set_flag(m, en->email, flag, bf);
+    mutt_set_flag(m, en->email, flag, bf, true);
   }
 }
 
@@ -394,7 +394,7 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
   start = cur;
 
   if (cur->message && (cur != e->thread))
-    mutt_set_flag(m, cur->message, flag, bf);
+    mutt_set_flag(m, cur->message, flag, bf, true);
 
   cur = cur->child;
   if (!cur)
@@ -403,7 +403,7 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
   while (true)
   {
     if (cur->message && (cur != e->thread))
-      mutt_set_flag(m, cur->message, flag, bf);
+      mutt_set_flag(m, cur->message, flag, bf, true);
 
     if (cur->child)
     {
@@ -427,7 +427,7 @@ int mutt_thread_set_flag(struct Mailbox *m, struct Email *e,
 done:
   cur = e->thread;
   if (cur->message)
-    mutt_set_flag(m, cur->message, flag, bf);
+    mutt_set_flag(m, cur->message, flag, bf, true);
   return 0;
 }
 

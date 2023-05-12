@@ -106,7 +106,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct MenuStatusLineData *msld = (struct MenuStatusLineData *) data;
   struct IndexSharedData *shared = msld->shared;
-  struct MailboxView *mv = shared->mailboxview;
+  struct MailboxView *mv = shared->mailbox_view;
   struct Mailbox *m = shared->mailbox;
   struct Menu *menu = msld->menu;
 

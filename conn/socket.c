@@ -312,6 +312,7 @@ struct Connection *mutt_socket_new(enum ConnectionType type)
 
 /**
  * mutt_socket_empty - Clear out any queued data
+ * @param conn Connection to a server
  *
  * The internal buffer is emptied and any data that has already arrived at this
  * machine (in kernel buffers) is read and dropped.

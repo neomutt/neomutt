@@ -25,12 +25,11 @@
 #define MUTT_SORT_H
 
 #include <stdbool.h>
-#include <sys/types.h>
 #include "core/lib.h"
 
 struct Address;
 struct Email;
-struct ThreadsContext;
+struct MailboxView;
 
 #define mutt_numeric_cmp(a,b) ((a) < (b) ? -1 : ((a) > (b) ? 1 : 0))
 
@@ -64,7 +63,7 @@ typedef int (*sort_mail_t)(const struct Email *a, const struct Email *b, bool re
 int mutt_compare_emails(const struct Email *a, const struct Email *b,
                         enum MailboxType type, short sort, short sort_aux);
 
-void mutt_sort_headers(struct Mailbox *m, struct ThreadsContext *threads, bool init, off_t *vsize);
+void mutt_sort_headers(struct MailboxView *mv, bool init);
 
 const char *mutt_get_name(const struct Address *a);
 

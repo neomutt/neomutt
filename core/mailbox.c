@@ -54,6 +54,7 @@ static const struct Mapping MailboxTypes[] = {
 
 /**
  * mailbox_gen - Get the next generation number
+ * @retval num Unique number
  */
 int mailbox_gen(void)
 {

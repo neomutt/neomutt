@@ -554,6 +554,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
 
 /**
  * update_entries_visibility - Should a SbEntry be displayed in the sidebar?
+ * @param wdata Sidebar data
  *
  * For each SbEntry in the entries array, check whether we should display it.
  * This is determined by several criteria.  If the Mailbox:

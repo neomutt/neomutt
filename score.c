@@ -183,11 +183,11 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   const short c_score_threshold_read = cs_subset_number(NeoMutt->sub, "score_threshold_read");
 
   if (e->score <= c_score_threshold_delete)
-    mutt_set_flag_update(m, e, MUTT_DELETE, true, upd_mbox);
+    mutt_set_flag(m, e, MUTT_DELETE, true, upd_mbox);
   if (e->score <= c_score_threshold_read)
-    mutt_set_flag_update(m, e, MUTT_READ, true, upd_mbox);
+    mutt_set_flag(m, e, MUTT_READ, true, upd_mbox);
   if (e->score >= c_score_threshold_flag)
-    mutt_set_flag_update(m, e, MUTT_FLAG, true, upd_mbox);
+    mutt_set_flag(m, e, MUTT_FLAG, true, upd_mbox);
 }
 
 /**

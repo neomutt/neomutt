@@ -142,6 +142,7 @@ bool subjrx_apply_mods(struct Envelope *env)
 
 /**
  * subjrx_clear_mods - Clear out all modified email subjects
+ * @param m Mailbox
  */
 void subjrx_clear_mods(struct Mailbox *m)
 {

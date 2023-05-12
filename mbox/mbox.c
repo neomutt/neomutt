@@ -676,14 +676,14 @@ static int reopen_mailbox(struct Mailbox *m)
           /* Only update the flags if the old header was changed;
            * otherwise, the header may have been modified externally,
            * and we don't want to lose _those_ changes */
-          mutt_set_flag(m, m->emails[i], MUTT_FLAG, e_old[j]->flagged);
-          mutt_set_flag(m, m->emails[i], MUTT_REPLIED, e_old[j]->replied);
-          mutt_set_flag(m, m->emails[i], MUTT_OLD, e_old[j]->old);
-          mutt_set_flag(m, m->emails[i], MUTT_READ, e_old[j]->read);
+          mutt_set_flag(m, m->emails[i], MUTT_FLAG, e_old[j]->flagged, true);
+          mutt_set_flag(m, m->emails[i], MUTT_REPLIED, e_old[j]->replied, true);
+          mutt_set_flag(m, m->emails[i], MUTT_OLD, e_old[j]->old, true);
+          mutt_set_flag(m, m->emails[i], MUTT_READ, e_old[j]->read, true);
         }
-        mutt_set_flag(m, m->emails[i], MUTT_DELETE, e_old[j]->deleted);
-        mutt_set_flag(m, m->emails[i], MUTT_PURGE, e_old[j]->purge);
-        mutt_set_flag(m, m->emails[i], MUTT_TAG, e_old[j]->tagged);
+        mutt_set_flag(m, m->emails[i], MUTT_DELETE, e_old[j]->deleted, true);
+        mutt_set_flag(m, m->emails[i], MUTT_PURGE, e_old[j]->purge, true);
+        mutt_set_flag(m, m->emails[i], MUTT_TAG, e_old[j]->tagged, true);
 
         /* we don't need this header any more */
         email_free(&(e_old[j]));

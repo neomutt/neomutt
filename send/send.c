@@ -1462,6 +1462,7 @@ static void set_reverse_name(struct AddressList *al, struct Envelope *env,
 
 /**
  * mutt_default_from - Get a default 'from' Address
+ * @param sub Config Subset
  * @retval ptr Newly allocated Address
  */
 struct Address *mutt_default_from(struct ConfigSubset *sub)
@@ -2949,7 +2950,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       STAILQ_FOREACH(en, el, entries)
       {
-        mutt_set_flag(m, en->email, MUTT_REPLIED, is_reply(en->email, e_templ));
+        mutt_set_flag(m, en->email, MUTT_REPLIED, is_reply(en->email, e_templ), true);
       }
     }
   }
