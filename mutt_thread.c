@@ -963,14 +963,15 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
 
 /**
  * check_subjects - Find out which emails' subjects differ from their parent's
- * @param m    Mailbox
+ * @param mv   Mailbox View
  * @param init If true, rebuild the thread
  */
-static void check_subjects(struct Mailbox *m, bool init)
+static void check_subjects(struct MailboxView *mv, bool init)
 {
-  if (!m)
+  if (!mv)
     return;
 
+  struct Mailbox *m = mv->mailbox;
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -1244,7 +1245,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   }
   tctx->tree = top.child;
 
-  check_subjects(m, init);
+  check_subjects(mv, init);
 
   const bool c_strict_threads = cs_subset_bool(NeoMutt->sub, "strict_threads");
   if (!c_strict_threads)
