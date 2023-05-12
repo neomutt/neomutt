@@ -101,7 +101,8 @@ static const struct Mapping PostponeHelp[] = {
  */
 static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
-  struct Mailbox *m = menu->mdata;
+  struct MailboxView *mv = menu->mdata;
+  struct Mailbox *m = mv->mailbox;
 
   const char *const c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
   mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format), m, -1,
@@ -167,8 +168,12 @@ static int postponed_window_observer(struct NotifyCallback *nc)
  */
 static struct AttrColor *post_color(struct Menu *menu, int line)
 {
-  struct Mailbox *m = menu->mdata;
-  if (!m || (line < 0))
+  struct MailboxView *mv = menu->mdata;
+  if (!mv || (line < 0))
+    return NULL;
+
+  struct Mailbox *m = mv->mailbox;
+  if (!m)
     return NULL;
 
   struct Email *e = mutt_get_virt_email(m, line);
@@ -197,11 +202,11 @@ struct Email *dlg_select_postponed_email(struct Mailbox *m)
   menu->make_entry = post_make_entry;
   menu->color = post_color;
   menu->max = m->msg_count;
-  menu->mdata = m;
+  menu->mdata = mv;
   menu->mdata_free = NULL; // Menu doesn't own the data
   menu->custom_search = true;
 
-  struct PostponeData pd = { false, m, menu, NULL };
+  struct PostponeData pd = { mv, menu, NULL, false };
   dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
