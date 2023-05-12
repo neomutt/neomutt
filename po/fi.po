@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-05 13:14+0100\n"
+"POT-Creation-Date: 2023-05-12 11:45+0100\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -2310,8 +2310,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Merkistöksi asetettiin %s; konvertoidaan."
 
 #: flags.c:386 index/functions.c:801 index/functions.c:903
-#: index/functions.c:919 index/functions.c:1054 mutt_thread.c:1274
-#: mutt_thread.c:1340 mutt_thread.c:1426
+#: index/functions.c:919 index/functions.c:1054 mutt_thread.c:1282
+#: mutt_thread.c:1348 mutt_thread.c:1434
 msgid "Threading is not enabled"
 msgstr "Ketjutus ei ole päällä"
 
@@ -2871,7 +2871,7 @@ msgstr "Haetaan viestejä..."
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Viesti-indeksi on pielessä, joten kannattaa avata postilaatikko uudelleen"
 
-#: imap/msn.c:48 mutt/buffer.c:113 mutt/buffer.c:324 mutt/memory.c:58
+#: imap/msn.c:48 mutt/buffer.c:114 mutt/buffer.c:327 mutt/memory.c:58
 #: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006 mx.c:1231
 msgid "Out of memory"
 msgstr "muisti loppui"
@@ -3091,12 +3091,12 @@ msgid "No unread messages"
 msgstr "Ei lukemattomia viestejä"
 
 #: index/functions.c:1314 menu/functions.c:107 pager/functions.c:490
-#: pattern/pattern.c:579 pattern/pattern.c:743
+#: pattern/pattern.c:513 pattern/pattern.c:677
 msgid "Search wrapped to top"
 msgstr "Haku jatkoi ylhäältä"
 
-#: index/functions.c:1319 pager/functions.c:516 pattern/pattern.c:592
-#: pattern/pattern.c:756
+#: index/functions.c:1319 pager/functions.c:516 pattern/pattern.c:526
+#: pattern/pattern.c:690
 msgid "Search wrapped to bottom"
 msgstr "Haku jatkoi alhaalta"
 
@@ -3405,27 +3405,27 @@ msgid "mailcap entry for type %s not found"
 msgstr "Mailcap-tietue tyypille %s puuttuu"
 
 # not sure if user needs to know flush v. write? There's no good translation
-#: maildir/maildir.c:245 maildir/mh.c:303
+#: maildir/maildir.c:249 maildir/mh.c:303
 msgid "Could not flush message to disk"
 msgstr "Ei voitu kirjoittaa viestiä levylle"
 
-#: maildir/maildir.c:290
+#: maildir/maildir.c:294
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): tiedoston ajan asetus ei onnistunut"
 
-#: maildir/maildir.c:689 maildir/mh.c:706
+#: maildir/maildir.c:693 maildir/mh.c:706
 #, c-format
 msgid "Scanning %s..."
 msgstr "Skannataan kohdetta %s..."
 
-#: maildir/maildir.c:710 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:714 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:375
 #, c-format
 msgid "Reading %s..."
 msgstr "Luetaan kohdetta %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1399 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:483
+#: maildir/maildir.c:1403 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:483
 #: notmuch/notmuch.c:2232
 #, c-format
 msgid "Writing %s..."
@@ -3754,18 +3754,18 @@ msgstr "Ei voitu uudelleenavata postilaatikkoa"
 msgid "Can't write message"
 msgstr "Ei voitu kirjoittaa viestiä"
 
-#: menu/functions.c:70 pager/functions.c:315 pattern/pattern.c:504
-#: pattern/pattern.c:670
+#: menu/functions.c:70 pager/functions.c:315 pattern/pattern.c:438
+#: pattern/pattern.c:604
 msgid "Reverse search for: "
 msgstr "Hae takaperin: "
 
-#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:504
-#: pattern/pattern.c:670
+#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:438
+#: pattern/pattern.c:604
 msgid "Search for: "
 msgstr "Hae: "
 
 #: menu/functions.c:126 pager/functions.c:423 pager/functions.c:487
-#: pager/functions.c:513 pattern/pattern.c:643 pattern/pattern.c:804
+#: pager/functions.c:513 pattern/pattern.c:577 pattern/pattern.c:738
 msgid "Not found"
 msgstr "Ei löytynyt"
 
@@ -3985,15 +3985,15 @@ msgstr "Ei SSL:ää saavutettavissa, joten yhdistäminen kohteeseen %s ei onnist
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1361
+#: mutt_thread.c:1369
 msgid "Parent message is not available"
 msgstr "Ylempi viesti ei ole saatavilla"
 
-#: mutt_thread.c:1367
+#: mutt_thread.c:1375
 msgid "Root message is not visible in this limited view"
 msgstr "Juuriviesti ei ole näkyvissä tässä rajatussa näkymässä"
 
-#: mutt_thread.c:1369
+#: mutt_thread.c:1377
 msgid "Parent message is not visible in this limited view"
 msgstr "Ylempi viesti ei ole näkyvissä tässä rajatussa näkymässä"
 
@@ -6807,7 +6807,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:99 pattern/exec.c:1116
+#: pattern/exec.c:99 pattern/exec.c:1114
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "virhe: tuntematon operaatio %d (ilmoita viasta)"
@@ -6829,7 +6829,7 @@ msgstr "Ei voitu avata laitetta /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Virhe. Varattaessa väliaikaistiedostoa: %s"
 
-#: pattern/exec.c:899
+#: pattern/exec.c:897
 msgid "error: server custom search only supported with IMAP"
 msgstr "virhe: palvelimen haku toimii vain IMAPilla"
 
@@ -7081,32 +7081,32 @@ msgstr "Ei enää ketjuja"
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
-#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:530
-#: pattern/pattern.c:695
+#: pattern/pattern.c:195 pattern/pattern.c:301 pattern/pattern.c:464
+#: pattern/pattern.c:629
 msgid "Compiling search pattern..."
 msgstr "Käännetään hakuilmausta..."
 
-#: pattern/pattern.c:288 pattern/pattern.c:390
+#: pattern/pattern.c:222 pattern/pattern.c:324
 msgid "Executing command on matching messages..."
 msgstr "Suoritetaan viestintäsmäyskomentoa..."
 
-#: pattern/pattern.c:463
+#: pattern/pattern.c:397
 msgid "No messages matched criteria"
 msgstr "Ei täsmääviä viestejä"
 
-#: pattern/pattern.c:567 pattern/pattern.c:731
+#: pattern/pattern.c:501 pattern/pattern.c:665
 msgid "Searching..."
 msgstr "Haetaan..."
 
-#: pattern/pattern.c:583 pattern/pattern.c:747
+#: pattern/pattern.c:517 pattern/pattern.c:681
 msgid "Search hit bottom without finding match"
 msgstr "Haku eteni loppuun ilman täsmäyksiä"
 
-#: pattern/pattern.c:596 pattern/pattern.c:760
+#: pattern/pattern.c:530 pattern/pattern.c:694
 msgid "Search hit top without finding match"
 msgstr "Haku eteni alkuun ilman täsmäyksiä"
 
-#: pattern/pattern.c:635 pattern/pattern.c:796
+#: pattern/pattern.c:569 pattern/pattern.c:730
 msgid "Search interrupted"
 msgstr "Haku katkaistu"
 

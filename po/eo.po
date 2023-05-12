@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-04-07\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-05-05 13:42+0100\n"
+"POT-Creation-Date: 2023-05-12 11:45+0100\n"
 "PO-Revision-Date: 2021-08-20 16:44+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -2325,8 +2325,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Signaro ŝanĝita al %s; konvertiĝas"
 
 #: flags.c:386 index/functions.c:801 index/functions.c:903
-#: index/functions.c:919 index/functions.c:1054 mutt_thread.c:1274
-#: mutt_thread.c:1340 mutt_thread.c:1426
+#: index/functions.c:919 index/functions.c:1054 mutt_thread.c:1282
+#: mutt_thread.c:1348 mutt_thread.c:1434
 msgid "Threading is not enabled"
 msgstr "Fadenoj ne estas ŝaltitaj"
 
@@ -2895,7 +2895,7 @@ msgstr "Prenas mesaĝon..."
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "La mesaĝindekso estas malĝusta.  Provu remalfermi la poŝtfakon."
 
-#: imap/msn.c:48 mutt/buffer.c:113 mutt/buffer.c:324 mutt/memory.c:58
+#: imap/msn.c:48 mutt/buffer.c:114 mutt/buffer.c:327 mutt/memory.c:58
 #: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006 mx.c:1231
 msgid "Out of memory"
 msgstr "Mankas sufiĉa memoro"
@@ -3121,12 +3121,12 @@ msgid "No unread messages"
 msgstr "Malestas nelegitaj mesaĝoj"
 
 #: index/functions.c:1314 menu/functions.c:107 pager/functions.c:490
-#: pattern/pattern.c:579 pattern/pattern.c:743
+#: pattern/pattern.c:513 pattern/pattern.c:677
 msgid "Search wrapped to top"
 msgstr "Serĉo rekomencis ĉe la komenco"
 
-#: index/functions.c:1319 pager/functions.c:516 pattern/pattern.c:592
-#: pattern/pattern.c:756
+#: index/functions.c:1319 pager/functions.c:516 pattern/pattern.c:526
+#: pattern/pattern.c:690
 msgid "Search wrapped to bottom"
 msgstr "Serĉo rekomencis ĉe la fino"
 
@@ -3441,28 +3441,28 @@ msgstr "Nek mailcap_path nek MAILCAPS estas specifita"
 msgid "mailcap entry for type %s not found"
 msgstr "mailcap-regulo por speco %s ne trovita"
 
-#: maildir/maildir.c:245 maildir/mh.c:303
+#: maildir/maildir.c:249 maildir/mh.c:303
 msgid "Could not flush message to disk"
 msgstr "Ne eblis elbufrigi mesaĝon al disko"
 
-#: maildir/maildir.c:290
+#: maildir/maildir.c:294
 #, fuzzy
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ne eblas ŝanĝi tempon de dosiero"
 
-#: maildir/maildir.c:689 maildir/mh.c:706
+#: maildir/maildir.c:693 maildir/mh.c:706
 #, c-format
 msgid "Scanning %s..."
 msgstr "Traserĉas %s..."
 
-#: maildir/maildir.c:710 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
+#: maildir/maildir.c:714 maildir/mh.c:729 mbox/mbox.c:212 mbox/mbox.c:384
 #: mx.c:375
 #, c-format
 msgid "Reading %s..."
 msgstr "Legiĝas %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1399 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:483
+#: maildir/maildir.c:1403 maildir/mh.c:1057 mbox/mbox.c:1284 mx.c:483
 #: notmuch/notmuch.c:2232
 #, c-format
 msgid "Writing %s..."
@@ -3773,18 +3773,18 @@ msgstr "Ne eblis remalfermi poŝtfakon"
 msgid "Can't write message"
 msgstr "Ne eblas skribi mesaĝon"
 
-#: menu/functions.c:70 pager/functions.c:315 pattern/pattern.c:504
-#: pattern/pattern.c:670
+#: menu/functions.c:70 pager/functions.c:315 pattern/pattern.c:438
+#: pattern/pattern.c:604
 msgid "Reverse search for: "
 msgstr "Inversa serĉo pri: "
 
-#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:504
-#: pattern/pattern.c:670
+#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:438
+#: pattern/pattern.c:604
 msgid "Search for: "
 msgstr "Serĉi pri: "
 
 #: menu/functions.c:126 pager/functions.c:423 pager/functions.c:487
-#: pager/functions.c:513 pattern/pattern.c:643 pattern/pattern.c:804
+#: pager/functions.c:513 pattern/pattern.c:577 pattern/pattern.c:738
 msgid "Not found"
 msgstr "Ne trovita"
 
@@ -4005,15 +4005,15 @@ msgstr "SSL ne disponeblas."
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1361
+#: mutt_thread.c:1369
 msgid "Parent message is not available"
 msgstr "Patra mesaĝo ne estas havebla"
 
-#: mutt_thread.c:1367
+#: mutt_thread.c:1375
 msgid "Root message is not visible in this limited view"
 msgstr "Radika mesaĝo ne estas videbla en ĉi tiu limigita rigardo"
 
-#: mutt_thread.c:1369
+#: mutt_thread.c:1377
 msgid "Parent message is not visible in this limited view"
 msgstr "Patra mesaĝo ne estas videbla en ĉi tiu limigita rigardo"
 
@@ -6880,7 +6880,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:99 pattern/exec.c:1116
+#: pattern/exec.c:99 pattern/exec.c:1114
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "eraro: nekonata funkcio %d (raportu ĉi tiun cimon)"
@@ -6905,7 +6905,7 @@ msgstr "Ne eblas malfermi /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Eraro.  Konservas dumtempan dosieron: %s"
 
-#: pattern/exec.c:899
+#: pattern/exec.c:897
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -7157,32 +7157,32 @@ msgstr "Ne restas fadenoj"
 msgid "IMAP custom server-side search for STRING"
 msgstr ""
 
-#: pattern/pattern.c:261 pattern/pattern.c:367 pattern/pattern.c:530
-#: pattern/pattern.c:695
+#: pattern/pattern.c:195 pattern/pattern.c:301 pattern/pattern.c:464
+#: pattern/pattern.c:629
 msgid "Compiling search pattern..."
 msgstr "Tradukiĝas serĉŝablono..."
 
-#: pattern/pattern.c:288 pattern/pattern.c:390
+#: pattern/pattern.c:222 pattern/pattern.c:324
 msgid "Executing command on matching messages..."
 msgstr "Ruliĝas komando je trafataj mesaĝoj..."
 
-#: pattern/pattern.c:463
+#: pattern/pattern.c:397
 msgid "No messages matched criteria"
 msgstr "Mankas mesaĝoj kiuj plenumas la kondiĉojn"
 
-#: pattern/pattern.c:567 pattern/pattern.c:731
+#: pattern/pattern.c:501 pattern/pattern.c:665
 msgid "Searching..."
 msgstr "Serĉas..."
 
-#: pattern/pattern.c:583 pattern/pattern.c:747
+#: pattern/pattern.c:517 pattern/pattern.c:681
 msgid "Search hit bottom without finding match"
 msgstr "Serĉo atingis la finon sen trovi trafon"
 
-#: pattern/pattern.c:596 pattern/pattern.c:760
+#: pattern/pattern.c:530 pattern/pattern.c:694
 msgid "Search hit top without finding match"
 msgstr "Serĉo atingis la komencon sen trovi trafon"
 
-#: pattern/pattern.c:635 pattern/pattern.c:796
+#: pattern/pattern.c:569 pattern/pattern.c:730
 msgid "Search interrupted"
 msgstr "Serĉo interrompita"
 
