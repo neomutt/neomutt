@@ -91,7 +91,7 @@ struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
   notify_observer_add(m->notify, NT_MAILBOX, mview_mailbox_observer, mv);
 
   mv->mailbox = m;
-  mv->threads = mutt_thread_ctx_init(m);
+  mv->threads = mutt_thread_ctx_init(mv);
   mv->msg_in_pager = -1;
   mv->collapsed = false;
   mview_update(mv);

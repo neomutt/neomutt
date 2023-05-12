@@ -39,6 +39,7 @@
 #include "mutt.h"
 #include "mutt_thread.h"
 #include "globals.h" // IWYU pragma: keep
+#include "mview.h"
 #include "mx.h"
 #include "protos.h"
 #include "sort.h"
@@ -178,10 +179,10 @@ static bool need_display_subject(struct Email *e)
  */
 static void linearize_tree(struct ThreadsContext *tctx)
 {
-  if (!tctx || !tctx->mailbox)
+  if (!tctx || !tctx->mailbox_view)
     return;
 
-  struct Mailbox *m = tctx->mailbox;
+  struct Mailbox *m = tctx->mailbox_view->mailbox;
 
   const bool reverse = (mutt_thread_style() == UT_REVERSE);
   struct MuttThread *tree = tctx->tree;
@@ -341,13 +342,13 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
 
 /**
  * mutt_thread_ctx_init - Initialize a threading context
- * @param m     Current mailbox
+ * @param mv Mailbox view
  * @retval ptr Threading context
  */
-struct ThreadsContext *mutt_thread_ctx_init(struct Mailbox *m)
+struct ThreadsContext *mutt_thread_ctx_init(struct MailboxView *mv)
 {
   struct ThreadsContext *tctx = mutt_mem_calloc(1, sizeof(struct ThreadsContext));
-  tctx->mailbox = m;
+  tctx->mailbox_view = mv;
   return tctx;
 }
 
@@ -633,10 +634,10 @@ static struct HashTable *make_subj_hash(struct Mailbox *m)
  */
 static void pseudo_threads(struct ThreadsContext *tctx)
 {
-  if (!tctx || !tctx->mailbox)
+  if (!tctx || !tctx->mailbox_view)
     return;
 
-  struct Mailbox *m = tctx->mailbox;
+  struct Mailbox *m = tctx->mailbox_view->mailbox;
 
   struct MuttThread *tree = tctx->tree;
   struct MuttThread *top = tree;
@@ -707,7 +708,11 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
   if (!tctx || !tctx->tree)
     return;
 
-  struct Mailbox *m = tctx->mailbox;
+  struct MailboxView *mv = tctx->mailbox_view;
+  if (!mv)
+    return;
+
+  struct Mailbox *m = mv->mailbox;
   if (!m || !m->emails)
     return;
 
@@ -743,7 +748,7 @@ static int compare_threads(const void *a, const void *b, void *arg)
 
   /* If c_sort ties, remember we are building the thread array in
    * reverse from the index the mails had in the mailbox.  */
-  struct Mailbox *m = tctx->mailbox;
+  struct Mailbox *m = tctx->mailbox_view->mailbox;
   const enum MailboxType mtype = mx_type(m);
   if (ta->parent)
   {
@@ -831,7 +836,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
       }
     }
 
-    struct Mailbox *m = tctx->mailbox;
+    struct Mailbox *m = tctx->mailbox_view->mailbox;
     const enum MailboxType mtype = mx_type(m);
     while (!thread->next)
     {
@@ -1014,10 +1019,11 @@ static void thread_hash_destructor(int type, void *obj, intptr_t data)
  */
 void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
 {
-  if (!tctx || !tctx->mailbox)
+  if (!tctx || !tctx->mailbox_view)
     return;
 
-  struct Mailbox *m = tctx->mailbox;
+  struct MailboxView *mv = tctx->mailbox_view;
+  struct Mailbox *m = mv->mailbox;
 
   struct Email *e = NULL;
   int i, using_refs = 0;
@@ -1238,7 +1244,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   }
   tctx->tree = top.child;
 
-  check_subjects(tctx->mailbox, init);
+  check_subjects(m, init);
 
   const bool c_strict_threads = cs_subset_bool(NeoMutt->sub, "strict_threads");
   if (!c_strict_threads)

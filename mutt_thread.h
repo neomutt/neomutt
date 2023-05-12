@@ -32,13 +32,14 @@ struct Buffer;
 struct Email;
 struct EmailList;
 struct Mailbox;
+struct MailboxView;
 
 /**
  * struct ThreadsContext - The "current" threading state
  */
 struct ThreadsContext
 {
-  struct Mailbox     *mailbox;      ///< Current mailbox
+  struct MailboxView *mailbox_view; ///< Current mailbox
   struct MuttThread  *tree;         ///< Top of thread tree
   struct HashTable   *hash;         ///< Hash Table: "message-id" -> MuttThread
   enum SortType       c_sort;       ///< Last sort method
@@ -119,7 +120,7 @@ int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads);
 #define mutt_next_subthread(e)     mutt_aside_thread(e, true,  true)
 #define mutt_previous_subthread(e) mutt_aside_thread(e, false, true)
 
-struct ThreadsContext *mutt_thread_ctx_init          (struct Mailbox *m);
+struct ThreadsContext *mutt_thread_ctx_init          (struct MailboxView *mv);
 void                   mutt_thread_ctx_free          (struct ThreadsContext **ptr);
 void                   mutt_thread_collapse_collapsed(struct ThreadsContext *tctx);
 void                   mutt_thread_collapse          (struct ThreadsContext *tctx, bool collapse);
