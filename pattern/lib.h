@@ -180,7 +180,7 @@ bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailb
 bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
                              struct AliasView *av, struct PatternCache *cache);
 
-struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, const char *s, PatternCompFlags flags, struct Buffer *err);
+struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu, const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
 bool dlg_select_pattern(char *buf, size_t buflen);

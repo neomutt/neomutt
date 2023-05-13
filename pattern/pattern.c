@@ -309,7 +309,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   const bool match_all = mutt_str_equal(pbuf, "~A");
 
   err = buf_pool_get();
-  struct PatternList *pat = mutt_pattern_comp(m, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
+  struct PatternList *pat = mutt_pattern_comp(mv, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
   if (!pat)
   {
     mutt_error("%s", buf_string(err));
@@ -401,7 +401,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
     {
       mv->pattern = simple;
       simple = NULL; /* don't clobber it */
-      mv->limit_pattern = mutt_pattern_comp(m, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
+      mv->limit_pattern = mutt_pattern_comp(mv, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
     }
   }
 
@@ -466,7 +466,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(m, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(mv, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
         buf_pool_release(&buf);
