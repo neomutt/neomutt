@@ -190,7 +190,7 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
-int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op);
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int op);
 int mutt_search_alias_command(struct Menu *menu, int cur, int op);
 
 #endif /* MUTT_PATTERN_LIB_H */
