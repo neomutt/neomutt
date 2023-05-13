@@ -309,7 +309,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   const bool match_all = mutt_str_equal(pbuf, "~A");
 
   err = buf_pool_get();
-  struct PatternList *pat = mutt_pattern_comp(m, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
+  struct PatternList *pat = mutt_pattern_comp(mv, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
   if (!pat)
   {
     mutt_error("%s", buf_string(err));
@@ -401,7 +401,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
     {
       mv->pattern = simple;
       simple = NULL; /* don't clobber it */
-      mv->limit_pattern = mutt_pattern_comp(m, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
+      mv->limit_pattern = mutt_pattern_comp(mv, mv->menu, buf->data, MUTT_PC_FULL_MSG, err);
     }
   }
 
@@ -418,18 +418,19 @@ bail:
 
 /**
  * mutt_search_command - Perform a search
- * @param m    Mailbox to search through
+ * @param mv   Mailbox view to search through
  * @param menu Current Menu
  * @param cur  Index number of current email
  * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
  * @retval >=0 Index of matching email
  * @retval -1  No match, or error
  */
-int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int op)
 {
   struct Progress *progress = NULL;
   struct Buffer *buf = NULL;
   int rc = -1;
+  struct Mailbox *m = mv ? mv->mailbox : NULL;
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {
@@ -465,7 +466,7 @@ int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op)
       mutt_pattern_free(&SearchPattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(m, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
+      SearchPattern = mutt_pattern_comp(mv, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
       if (!SearchPattern)
       {
         buf_pool_release(&buf);

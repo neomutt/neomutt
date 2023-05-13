@@ -112,9 +112,9 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
       break;
   if (!ptr)
   {
-    struct Mailbox *m_cur = get_current_mailbox();
+    struct MailboxView *mv_cur = get_current_mailbox_view();
     struct Menu *menu = get_current_menu();
-    struct PatternList *pat = mutt_pattern_comp(m_cur, menu, pattern, MUTT_PC_NO_FLAGS, err);
+    struct PatternList *pat = mutt_pattern_comp(mv_cur, menu, pattern, MUTT_PC_NO_FLAGS, err);
     if (!pat)
     {
       FREE(&pattern);

@@ -279,9 +279,9 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
       buf_strcpy(buf, s);
       const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
-      struct Mailbox *m_cur = get_current_mailbox();
+      struct MailboxView *mv_cur = get_current_mailbox_view();
       struct Menu *menu = get_current_menu();
-      rcol->color_pattern = mutt_pattern_comp(m_cur, menu, buf->data, MUTT_PC_FULL_MSG, err);
+      rcol->color_pattern = mutt_pattern_comp(mv_cur, menu, buf->data, MUTT_PC_FULL_MSG, err);
       buf_pool_release(&buf);
       if (!rcol->color_pattern)
       {

@@ -180,7 +180,7 @@ bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailb
 bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
                              struct AliasView *av, struct PatternCache *cache);
 
-struct PatternList *mutt_pattern_comp(struct Mailbox *m, struct Menu *menu, const char *s, PatternCompFlags flags, struct Buffer *err);
+struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu, const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
 bool dlg_select_pattern(char *buf, size_t buflen);
@@ -190,7 +190,7 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
-int mutt_search_command(struct Mailbox *m, struct Menu *menu, int cur, int op);
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int op);
 int mutt_search_alias_command(struct Menu *menu, int cur, int op);
 
 #endif /* MUTT_PATTERN_LIB_H */
