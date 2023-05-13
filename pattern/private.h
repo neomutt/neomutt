@@ -27,6 +27,8 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
+struct MailboxView;
+
 /**
  * struct PatternEntry - A line in the Pattern Completion menu
  */
@@ -134,5 +136,6 @@ extern const struct PatternFlags Flags[];
 const struct PatternFlags *lookup_op(int op);
 const struct PatternFlags *lookup_tag(char tag);
 bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err);
+bool eat_message_range(struct Pattern *pat, PatternCompFlags flags, struct Buffer *s, struct Buffer *err, struct MailboxView *mv);
 
 #endif /* MUTT_PATTERN_PRIVATE_H */

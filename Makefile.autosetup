@@ -687,7 +687,7 @@ $(PWD)/parse:
 LIBPATTERN=	libpattern.a
 LIBPATTERNOBJS=	pattern/compile.o pattern/config.o pattern/dlg_pattern.o \
 		pattern/exec.o pattern/flags.o pattern/functions.o \
-		pattern/pattern.o
+		pattern/message.o pattern/pattern.o
 CLEANFILES+=	$(LIBPATTERN) $(LIBPATTERNOBJS)
 ALLOBJS+=	$(LIBPATTERNOBJS)
 
