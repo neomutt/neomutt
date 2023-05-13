@@ -186,6 +186,11 @@ struct Mailbox *get_current_mailbox(void)
   return NULL;
 }
 
+struct MailboxView *get_current_mailbox_view(void)
+{
+  return NULL;
+}
+
 struct Menu *get_current_menu(void)
 {
   return NULL;

@@ -92,6 +92,7 @@ void resort_index(struct MailboxView *mv, struct Menu *menu);
 extern const struct Mapping IndexNewsHelp[];
 struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
 struct Mailbox *get_current_mailbox(void);
+struct MailboxView *get_current_mailbox_view(void);
 struct Menu *get_current_menu(void);
 void dlg_change_folder(struct MuttWindow *dlg, struct Mailbox *m);
 

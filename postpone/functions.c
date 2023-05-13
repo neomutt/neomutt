@@ -163,19 +163,18 @@ int postpone_function_dispatcher(struct MuttWindow *win, int op)
 }
 
 /**
- * postponed_get_mailbox - Extract the Mailbox from the Postponed Dialog
+ * postponed_get_mailbox_view - Extract the Mailbox from the Postponed Dialog
  * @param dlg Postponed Dialog
- * @retval ptr Mailbox
+ * @retval ptr Mailbox view
  */
-struct Mailbox *postponed_get_mailbox(struct MuttWindow *dlg)
+struct MailboxView *postponed_get_mailbox_view(struct MuttWindow *dlg)
 {
   if (!dlg)
     return NULL;
 
   struct PostponeData *pd = dlg->wdata;
-  struct MailboxView *mv = pd->mailbox_view;
-  if (!pd || !mv)
+  if (!pd)
     return NULL;
 
-  return mv->mailbox;
+  return pd->mailbox_view;
 }
