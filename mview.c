@@ -71,10 +71,11 @@ void mview_free(struct MailboxView **ptr)
 
 /**
  * mview_new - Create a new MailboxView
- * @param m Mailbox
+ * @param m      Mailbox
+ * @param parent Notification parent
  * @retval ptr New MailboxView
  */
-struct MailboxView *mview_new(struct Mailbox *m)
+struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
 {
   if (!m)
     return NULL;
@@ -82,7 +83,7 @@ struct MailboxView *mview_new(struct Mailbox *m)
   struct MailboxView *mv = mutt_mem_calloc(1, sizeof(struct MailboxView));
 
   mv->notify = notify_new();
-  notify_set_parent(mv->notify, NeoMutt->notify);
+  notify_set_parent(mv->notify, parent);
   struct EventMview ev_m = { mv };
   mutt_debug(LL_NOTIFY, "NT_MVIEW_ADD: %p\n", mv);
   notify_send(mv->notify, NT_MVIEW, NT_MVIEW_ADD, &ev_m);
@@ -90,7 +91,7 @@ struct MailboxView *mview_new(struct Mailbox *m)
   notify_observer_add(m->notify, NT_MAILBOX, mview_mailbox_observer, mv);
 
   mv->mailbox = m;
-  mv->threads = mutt_thread_ctx_init(m);
+  mv->threads = mutt_thread_ctx_init(mv);
   mv->msg_in_pager = -1;
   mv->collapsed = false;
   mview_update(mv);

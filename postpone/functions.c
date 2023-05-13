@@ -36,6 +36,7 @@
 #include "functions.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
+#include "mview.h"
 #include "opcodes.h"
 #include "protos.h"
 
@@ -47,7 +48,8 @@ struct Email;
 static int op_delete(struct PostponeData *pd, int op)
 {
   struct Menu *menu = pd->menu;
-  struct Mailbox *m = pd->mailbox;
+  struct MailboxView *mv = pd->mailbox_view;
+  struct Mailbox *m = mv->mailbox;
 
   const int index = menu_get_index(menu);
   /* should deleted draft messages be saved in the trash folder? */
@@ -86,7 +88,9 @@ static int op_exit(struct PostponeData *pd, int op)
 static int op_generic_select_entry(struct PostponeData *pd, int op)
 {
   int index = menu_get_index(pd->menu);
-  pd->email = pd->mailbox->emails[index];
+  struct MailboxView *mv = pd->mailbox_view;
+  struct Mailbox *m = mv->mailbox;
+  pd->email = m->emails[index];
   pd->done = true;
   return FR_SUCCESS;
 }
@@ -97,7 +101,8 @@ static int op_generic_select_entry(struct PostponeData *pd, int op)
 static int op_search(struct PostponeData *pd, int op)
 {
   int index = menu_get_index(pd->menu);
-  index = mutt_search_command(pd->mailbox, pd->menu, index, op);
+  struct MailboxView *mv = pd->mailbox_view;
+  index = mutt_search_command(mv->mailbox, pd->menu, index, op);
   if (index != -1)
     menu_set_index(pd->menu, index);
 
@@ -168,8 +173,9 @@ struct Mailbox *postponed_get_mailbox(struct MuttWindow *dlg)
     return NULL;
 
   struct PostponeData *pd = dlg->wdata;
-  if (!pd)
+  struct MailboxView *mv = pd->mailbox_view;
+  if (!pd || !mv)
     return NULL;
 
-  return pd->mailbox;
+  return mv->mailbox;
 }

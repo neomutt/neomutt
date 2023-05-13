@@ -32,10 +32,10 @@ struct MuttWindow;
  */
 struct PostponeData
 {
-  bool done;                ///< Should we close the Dialog?
-  struct Mailbox *mailbox;  ///< Postponed Mailbox
-  struct Menu *menu;        ///< Postponed Menu
-  struct Email *email;      ///< Selected Email
+  struct MailboxView *mailbox_view;  ///< Postponed Mailbox view
+  struct Menu        *menu;          ///< Postponed Menu
+  struct Email       *email;         ///< Selected Email
+  bool                done;          ///< Should we close the Dialog?
 };
 
 /**
