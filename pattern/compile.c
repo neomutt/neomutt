@@ -818,13 +818,15 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group,
  * @param grp    Which regex match to use
  * @param side   Which side of the range is this?  #RANGE_S_LEFT or #RANGE_S_RIGHT
  * @param kind   Range type, e.g. #RANGE_K_REL
- * @param m      Mailbox
- * @param menu   Current Menu
+ * @param mv     Mailbox view
  * @retval num Index number for the message specified
  */
 static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp,
-                           int side, int kind, struct Mailbox *m, struct Menu *menu)
+                           int side, int kind, struct MailboxView *mv)
 {
+  struct Mailbox *m = mv->mailbox;
+  struct Menu *menu = mv->menu;
+
   /* This means the left or right subpattern was empty, e.g. ",." */
   if ((pmatch[grp].rm_so == -1) || (pmatch[grp].rm_so == pmatch[grp].rm_eo))
   {
@@ -907,8 +909,8 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
     return RANGE_E_MVIEW;
 
   /* Snarf the contents of the two sides of the range. */
-  pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind, m, menu);
-  pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind, m, menu);
+  pat->min = scan_range_slot(s, pmatch, pspec->lgrp, RANGE_S_LEFT, kind, mv);
+  pat->max = scan_range_slot(s, pmatch, pspec->rgrp, RANGE_S_RIGHT, kind, mv);
   mutt_debug(LL_DEBUG1, "pat->min=%ld pat->max=%ld\n", pat->min, pat->max);
 
   /* Special case for a bare 0. */
