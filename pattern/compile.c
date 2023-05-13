@@ -780,12 +780,11 @@ static bool is_menu_available(struct Buffer *s, regmatch_t pmatch[], int kind,
  * @param pmatch Array of regex matches
  * @param group  Index of regex match to use
  * @param kind   Range type, e.g. #RANGE_K_REL
- * @param m      Mailbox
- * @param menu   Current Menu
+ * @param mv     Mailbox view
  * @retval num Parse number
  */
 static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group,
-                          int kind, struct Mailbox *m, struct Menu *menu)
+                          int kind, struct MailboxView *mv)
 {
   int num = (int) strtol(&s->dptr[pmatch[group].rm_so], NULL, 0);
   unsigned char c = (unsigned char) (s->dptr[pmatch[group].rm_eo - 1]);
@@ -797,6 +796,8 @@ static int scan_range_num(struct Buffer *s, regmatch_t pmatch[], int group,
   {
     case RANGE_K_REL:
     {
+      struct Mailbox *m = mv->mailbox;
+      struct Menu *menu = mv->menu;
       struct Email *e = mutt_get_virt_email(m, menu_get_index(menu));
       if (!e)
         return num;
@@ -852,10 +853,10 @@ static int scan_range_slot(struct Buffer *s, regmatch_t pmatch[], int grp,
     }
     case RANGE_LT:
     case RANGE_GT:
-      return scan_range_num(s, pmatch, grp + 1, kind, m, menu);
+      return scan_range_num(s, pmatch, grp + 1, kind, mv);
     default:
       /* Only other possibility: a number */
-      return scan_range_num(s, pmatch, grp, kind, m, menu);
+      return scan_range_num(s, pmatch, grp, kind, mv);
   }
 }
 
