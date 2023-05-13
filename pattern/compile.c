@@ -876,12 +876,11 @@ static void order_range(struct Pattern *pat)
  * @param s    String to parse
  * @param kind Range type, e.g. #RANGE_K_REL
  * @param err  Buffer for error messages
- * @param m    Mailbox
- * @param menu Current Menu
+ * @param mv   Mailbox view
  * @retval num EatRangeError code, e.g. #RANGE_E_OK
  */
 static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
-                              struct Buffer *err, struct Mailbox *m, struct Menu *menu)
+                              struct Buffer *err, struct MailboxView *mv)
 {
   int regerr;
   regmatch_t pmatch[RANGE_RX_GROUPS];
@@ -902,6 +901,8 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
   if (regerr != 0)
     return report_regerror(regerr, &pspec->cooked, err);
 
+  struct Mailbox *m = mv->mailbox;
+  struct Menu *menu = mv->menu;
   if (!is_menu_available(s, pmatch, kind, err, menu))
     return RANGE_E_MVIEW;
 
@@ -965,7 +966,7 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
 
   for (int i_kind = 0; i_kind != RANGE_K_INVALID; i_kind++)
   {
-    switch (eat_range_by_regex(pat, s, i_kind, err, mv->mailbox, mv->menu))
+    switch (eat_range_by_regex(pat, s, i_kind, err, mv))
     {
       case RANGE_E_MVIEW:
         /* This means it matched syntactically but lacked context.
