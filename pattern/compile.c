@@ -940,18 +940,16 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
  * @param flags Flags, e.g. #MUTT_PC_PATTERN_DYNAMIC
  * @param s     String to parse
  * @param err   Buffer for error messages
- * @param m     Mailbox
- * @param menu  Current Menu
+ * @param mv    Mailbox view
  * @retval true The pattern was read successfully
  */
 static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
-                              struct Buffer *s, struct Buffer *err,
-                              struct Mailbox *m, struct Menu *menu)
+                              struct Buffer *s, struct Buffer *err, struct MailboxView *mv)
 {
-  if (!m || !menu)
+  if (!mv || !mv->mailbox || !mv->menu)
   {
     // We need these for pretty much anything
-    buf_strcpy(err, _("No Context"));
+    buf_strcpy(err, _("No mailbox is open"));
     return false;
   }
 
@@ -967,7 +965,7 @@ static bool eat_message_range(struct Pattern *pat, PatternCompFlags flags,
 
   for (int i_kind = 0; i_kind != RANGE_K_INVALID; i_kind++)
   {
-    switch (eat_range_by_regex(pat, s, i_kind, err, m, menu))
+    switch (eat_range_by_regex(pat, s, i_kind, err, mv->mailbox, mv->menu))
     {
       case RANGE_E_MVIEW:
         /* This means it matched syntactically but lacked context.
@@ -1349,7 +1347,7 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
                 goto cleanup;
               break;
             case EAT_MESSAGE_RANGE:
-              if (!eat_message_range(leaf, flags, &ps, err, m, menu))
+              if (!eat_message_range(leaf, flags, &ps, err, mv))
                 goto cleanup;
               break;
             case EAT_QUERY:
