@@ -85,7 +85,6 @@ typedef uint8_t SmtpCapFlags;          ///< Flags, e.g. #SMTP_CAP_STARTTLS
 #define SMTP_CAP_DSN          (1 << 2) ///< Server supports Delivery Status Notification
 #define SMTP_CAP_EIGHTBITMIME (1 << 3) ///< Server supports 8-bit MIME content
 #define SMTP_CAP_SMTPUTF8     (1 << 4) ///< Server accepts UTF-8 strings
-
 #define SMTP_CAP_ALL         ((1 << 5) - 1)
 // clang-format on
 
@@ -782,11 +781,11 @@ static int smtp_auth_xoauth2(struct SmtpAccountData *adata, const char *method)
  * @param method     Authentication method (not used)
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
+ *
+ * @note method is "PLAIN"
  */
 static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
 {
-  (void) method; // This is PLAIN
-
   char buf[1024] = { 0 };
 
   /* Get username and password. Bail out of any can't be retrieved. */
@@ -829,11 +828,11 @@ error:
  * @param method Authentication method (not used)
  * @retval  0 Success
  * @retval <0 Error, e.g. #SMTP_AUTH_FAIL
+ *
+ * @note method is "LOGIN"
  */
 static int smtp_auth_login(struct SmtpAccountData *adata, const char *method)
 {
-  (void) method; // This is LOGIN
-
   char b64[1024] = { 0 };
   char buf[1026] = { 0 };
 

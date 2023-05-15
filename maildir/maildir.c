@@ -531,7 +531,6 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
     if (*de->d_name == '.')
       continue;
 
-    /* FOO - really ignore the return value? */
     mutt_debug(LL_DEBUG2, "queueing %s\n", de->d_name);
 
     e = email_new();
@@ -832,19 +831,19 @@ void maildir_parse_flags(struct Email *e, const char *path)
     {
       switch (*p)
       {
-        case 'F':
+        case 'F': // Flagged
           e->flagged = true;
           break;
 
-        case 'R': /* replied */
+        case 'R': // Replied
           e->replied = true;
           break;
 
-        case 'S': /* seen */
+        case 'S': // Seen
           e->read = true;
           break;
 
-        case 'T': /* trashed */
+        case 'T': // Trashed
         {
           const bool c_flag_safe = cs_subset_bool(NeoMutt->sub, "flag_safe");
           if (!e->flagged || !c_flag_safe)
