@@ -52,7 +52,7 @@ void test_mutt_replacelist_match(void)
     mutt_replacelist_add(&replacelist, "foo-([^-]+)-bar", "foo [%0] bar", NULL);
     char buf[32] = { 0 };
     TEST_CHECK(mutt_replacelist_match(&replacelist, buf, sizeof(buf), "foo-1234-bar"));
-    TEST_CHECK_STR_EQ("foo [foo-1234-bar] bar", buf);
+    TEST_CHECK_STR_EQ(buf, "foo [foo-1234-bar] bar");
     mutt_replacelist_free(&replacelist);
   }
 
@@ -61,7 +61,7 @@ void test_mutt_replacelist_match(void)
     mutt_replacelist_add(&replacelist, "foo-([^-]+)-bar", "foo [%1] bar", NULL);
     char buf[32] = { 0 };
     TEST_CHECK(mutt_replacelist_match(&replacelist, buf, sizeof(buf), "foo-1234-bar"));
-    TEST_CHECK_STR_EQ("foo [1234] bar", buf);
+    TEST_CHECK_STR_EQ(buf, "foo [1234] bar");
     mutt_replacelist_free(&replacelist);
   }
 

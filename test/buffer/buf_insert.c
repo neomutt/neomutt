@@ -98,7 +98,7 @@ void test_buf_insert(void)
       struct Buffer *buf = buf_pool_get();
       buf_addstr(buf, tests[i].orig);
       buf_insert(buf, tests[i].position, tests[i].insert);
-      TEST_CHECK_STR_EQ(tests[i].result, buf_string(buf));
+      TEST_CHECK_STR_EQ(buf_string(buf), tests[i].result);
       buf_pool_release(&buf);
     }
   }

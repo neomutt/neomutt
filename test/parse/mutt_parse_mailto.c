@@ -96,7 +96,7 @@ void test_mutt_parse_mailto(void)
     }
     check_addrlist(&env->to, to, mutt_array_size(to));
     check_addrlist(&env->cc, cc, mutt_array_size(cc));
-    TEST_CHECK_STR_EQ(body, parsed_body);
+    TEST_CHECK_STR_EQ(parsed_body, body);
     FREE(&parsed_body);
     mutt_env_free(&env);
   }

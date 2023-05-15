@@ -47,7 +47,7 @@ void test_mutt_md5_init_ctx(void)
       mutt_md5_process(md5_test_data[i].text, &ctx);
       mutt_md5_finish_ctx(&ctx, buf);
       mutt_md5_toascii(buf, digest);
-      TEST_CHECK_STR_EQ(md5_test_data[i].hash, digest);
+      TEST_CHECK_STR_EQ(digest, md5_test_data[i].hash);
     }
   }
 }

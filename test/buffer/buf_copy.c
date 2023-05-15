@@ -60,7 +60,7 @@ void test_buf_copy(void)
     size_t len = buf_copy(&buf2, &buf1);
 
     TEST_CHECK(len == 10);
-    TEST_CHECK_STR_EQ(buf_string(&buf1), buf_string(&buf2));
+    TEST_CHECK_STR_EQ(buf_string(&buf2), buf_string(&buf1));
 
     buf_dealloc(&buf1);
     buf_dealloc(&buf2);

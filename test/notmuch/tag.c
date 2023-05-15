@@ -36,8 +36,8 @@ void test_nm_tag_string_to_tags(void)
     const char *input = "inbox,archive";
     struct TagArray output = nm_tag_str_to_tags(input);
 
-    TEST_CHECK_STR_EQ("inbox", *ARRAY_GET(&output.tags, 0));
-    TEST_CHECK_STR_EQ("archive", *ARRAY_GET(&output.tags, 1));
+    TEST_CHECK_STR_EQ(*ARRAY_GET(&output.tags, 0), "inbox");
+    TEST_CHECK_STR_EQ(*ARRAY_GET(&output.tags, 1), "archive");
 
     nm_tag_array_free(&output);
   }
@@ -46,8 +46,8 @@ void test_nm_tag_string_to_tags(void)
     const char *input = "inbox archive";
     struct TagArray output = nm_tag_str_to_tags(input);
 
-    TEST_CHECK_STR_EQ("inbox", *ARRAY_GET(&output.tags, 0));
-    TEST_CHECK_STR_EQ("archive", *ARRAY_GET(&output.tags, 1));
+    TEST_CHECK_STR_EQ(*ARRAY_GET(&output.tags, 0), "inbox");
+    TEST_CHECK_STR_EQ(*ARRAY_GET(&output.tags, 1), "archive");
 
     nm_tag_array_free(&output);
   }
@@ -56,9 +56,9 @@ void test_nm_tag_string_to_tags(void)
     const char *input = "inbox archive,sent";
     struct TagArray output = nm_tag_str_to_tags(input);
 
-    TEST_CHECK_STR_EQ("inbox", *ARRAY_GET(&output.tags, 0));
-    TEST_CHECK_STR_EQ("archive", *ARRAY_GET(&output.tags, 1));
-    TEST_CHECK_STR_EQ("sent", *ARRAY_GET(&output.tags, 2));
+    TEST_CHECK_STR_EQ(*ARRAY_GET(&output.tags, 0), "inbox");
+    TEST_CHECK_STR_EQ(*ARRAY_GET(&output.tags, 1), "archive");
+    TEST_CHECK_STR_EQ(*ARRAY_GET(&output.tags, 2), "sent");
 
     nm_tag_array_free(&output);
   }

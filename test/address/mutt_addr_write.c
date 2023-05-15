@@ -62,7 +62,7 @@ void test_mutt_addr_write(void)
 
     const char *expected = "bobby bob <bob@bobsdomain>";
 
-    TEST_CHECK_STR_EQ(expected, buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_CHECK(len == strlen(expected));
     buf_pool_release(&buf);
   }

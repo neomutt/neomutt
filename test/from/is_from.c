@@ -130,7 +130,7 @@ void test_is_from(void)
     if (!valid)
       continue;
 
-    TEST_CHECK_STR_EQ(t->path, path);
+    TEST_CHECK_STR_EQ(path, t->path);
 
     if (!TEST_CHECK(t->epoch == epoch))
     {

@@ -55,7 +55,7 @@ void test_mutt_extract_message_id(void)
   {
     size_t len = 0;
     char *out = mutt_extract_message_id(test[i].in, &len);
-    TEST_CHECK_STR_EQ(test[i].out, out);
+    TEST_CHECK_STR_EQ(out, test[i].out);
     if (!TEST_CHECK(test[i].len == len))
     {
       TEST_MSG("Expected: %zu", test[i].len);

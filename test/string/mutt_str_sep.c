@@ -45,7 +45,7 @@ void test_mutt_str_sep(void)
   {
     char *copy = strdup(input);
     char *result = mutt_str_sep(&copy, ",:");
-    TEST_CHECK_STR_EQ("apple", result);
+    TEST_CHECK_STR_EQ(result, "apple");
     FREE(&result);
   }
 }
