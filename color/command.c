@@ -266,6 +266,31 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
 
   mutt_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
 
+  /* A named colour, e.g. 'brightred' */
+  /* prefixes bright, alert, light are only allowed for named colours */
+  bool is_alert = false;
+  bool is_bright = false;
+  bool is_light = false;
+  if ((clen = mutt_istr_startswith(s, "bright")))
+  {
+    color_debug(LL_DEBUG5, "bright\n");
+    is_bright = true;
+    s += clen;
+  }
+  else if ((clen = mutt_istr_startswith(s, "alert")))
+  {
+    color_debug(LL_DEBUG5, "alert\n");
+    is_alert = true;
+    is_bright = true;
+    s += clen;
+  }
+  else if ((clen = mutt_istr_startswith(s, "light")))
+  {
+    color_debug(LL_DEBUG5, "light\n");
+    is_light = true;
+    s += clen;
+  }
+
   /* allow aliases for xterm color resources */
   if ((clen = mutt_istr_startswith(s, "color")))
   {
@@ -301,6 +326,13 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
   /* parse #RRGGBB colours */
   if (s[0] == '#')
   {
+    /* sanity check for the future */
+    if (is_bright || is_alert || is_light)
+    {
+      buf_printf(err, _("'bright', 'alert', 'light' are only allowed for named colors: %s"), s);
+      return MUTT_CMD_ERROR;
+    }
+
 #ifndef NEOMUTT_DIRECT_COLORS
     buf_printf(err, _("Direct colors support not compiled in: %s"), s);
     return MUTT_CMD_ERROR;
@@ -329,30 +361,6 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
     return MUTT_CMD_SUCCESS;
   }
 
-  /* A named colour, e.g. 'brightred' */
-  /* prefixes bright, alert, light are only allowed for named colours */
-  bool is_alert = false;
-  bool is_bright = false;
-  bool is_light = false;
-  if ((clen = mutt_istr_startswith(s, "bright")))
-  {
-    color_debug(LL_DEBUG5, "bright\n");
-    is_bright = true;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "alert")))
-  {
-    color_debug(LL_DEBUG5, "alert\n");
-    is_alert = true;
-    is_bright = true;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "light")))
-  {
-    color_debug(LL_DEBUG5, "light\n");
-    is_light = true;
-    s += clen;
-  }
   if ((*col = mutt_map_get_value(s, ColorNames)) != -1)
   {
     const char *name = mutt_map_get_name(*col, ColorNames);
@@ -410,13 +418,6 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
     }
 #endif
     return MUTT_CMD_SUCCESS;
-  }
-
-  /* sanity check for the future */
-  if (is_bright || is_alert || is_light)
-  {
-    buf_printf(err, _("'bright', 'alert', 'light' are only allowed for named colors: %s"), s);
-    return MUTT_CMD_ERROR;
   }
 
   buf_printf(err, _("%s: no such color"), s);
