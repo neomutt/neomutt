@@ -1088,7 +1088,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
   size_t read = 0;
   char line[1024] = { 0 }; /* RFC2822 specifies a maximum line length of 998 */
 
-  buf_seek(buf, 0);
+  buf_reset(buf);
   while (true)
   {
     if (!fgets(line, sizeof(line), fp))
@@ -1191,7 +1191,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
   {
     LOFF_T line_start_loc = loc;
     size_t len = mutt_rfc822_read_line(fp, line);
-    if (len == 0)
+    if (buf_len(line) == 0)
     {
       break;
     }
