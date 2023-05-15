@@ -34,6 +34,7 @@
  * | pattern/exec.c        | @subpage pattern_exec        |
  * | pattern/flags.c       | @subpage pattern_flags       |
  * | pattern/functions.c   | @subpage pattern_functions   |
+ * | pattern/message.c     | @subpage pattern_message     |
  * | pattern/pattern.c     | @subpage pattern_pattern     |
  */
 
