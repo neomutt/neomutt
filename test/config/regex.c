@@ -314,7 +314,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   const struct Regex *VarIlama = cs_subset_regex(sub, "Ilama");
   regex = VarIlama ? VarIlama->pattern : NULL;
-  if (!TEST_CHECK_STR_EQ(regex, r->pattern))
+  if (!TEST_CHECK_STR_EQ(r->pattern, regex))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tns_out;

@@ -60,18 +60,18 @@ void test_mutt_addr_cat(void)
   {
     char buf[32];
     mutt_addr_cat(buf, sizeof(buf), "apple", MimeSpecials);
-    TEST_CHECK_STR_EQ("apple", buf);
+    TEST_CHECK_STR_EQ(buf, "apple");
   }
 
   {
     char buf[32];
     mutt_addr_cat(buf, sizeof(buf), "a(pp)le", MimeSpecials);
-    TEST_CHECK_STR_EQ("\"a(pp)le\"", buf);
+    TEST_CHECK_STR_EQ(buf, "\"a(pp)le\"");
   }
 
   {
     char buf[32];
     mutt_addr_cat(buf, sizeof(buf), "a(pp)l\"e", MimeSpecials);
-    TEST_CHECK_STR_EQ("\"a(pp)l\\\"e\"", buf);
+    TEST_CHECK_STR_EQ(buf, "\"a(pp)l\\\"e\"");
   }
 }

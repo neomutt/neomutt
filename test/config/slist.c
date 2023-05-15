@@ -682,7 +682,7 @@ static bool test_plus_equals(struct ConfigSubset *sub, struct Buffer *err)
       return false;
     }
 
-    if (!TEST_CHECK_STR_EQ(PlusTests[i][2], buf_string(err)))
+    if (!TEST_CHECK_STR_EQ(buf_string(err), PlusTests[i][2]))
       return false;
   }
 
@@ -757,7 +757,7 @@ static bool test_minus_equals(struct ConfigSubset *sub, struct Buffer *err)
       return false;
     }
 
-    if (!TEST_CHECK_STR_EQ(MinusTests[i][2], buf_string(err)))
+    if (!TEST_CHECK_STR_EQ(buf_string(err), MinusTests[i][2]))
       return false;
   }
 

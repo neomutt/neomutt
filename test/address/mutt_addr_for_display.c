@@ -63,6 +63,6 @@ void test_mutt_addr_for_display(void)
     const char *expected = "bob@bobsdomain";
     const char *actual = mutt_addr_for_display(&addr);
 
-    TEST_CHECK_STR_EQ(expected, actual);
+    TEST_CHECK_STR_EQ(actual, expected);
   }
 }

@@ -49,7 +49,7 @@ void test_mutt_b64_buffer_decode(void)
 
     int declen = mutt_b64_buffer_decode(&buf, encoded);
     TEST_CHECK(declen == 5);
-    TEST_CHECK_STR_EQ(clear, buf_string(&buf));
+    TEST_CHECK_STR_EQ(buf_string(&buf), clear);
     buf_dealloc(&buf);
   }
 }

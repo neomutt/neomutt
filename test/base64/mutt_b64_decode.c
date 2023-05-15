@@ -78,7 +78,7 @@ void test_mutt_b64_decode(void)
       TEST_MSG("Expected: %zu", 1);
       TEST_MSG("Actual  : %zu", declen);
     }
-    TEST_CHECK_STR_EQ("%", out);
+    TEST_CHECK_STR_EQ(out, "%");
   }
 
   {

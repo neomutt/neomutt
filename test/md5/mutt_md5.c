@@ -48,7 +48,7 @@ void test_mutt_md5(void)
       char digest[33];
       mutt_md5(md5_test_data[i].text, buf);
       mutt_md5_toascii(buf, digest);
-      TEST_CHECK_STR_EQ(md5_test_data[i].hash, digest);
+      TEST_CHECK_STR_EQ(digest, md5_test_data[i].hash);
     }
   }
 }

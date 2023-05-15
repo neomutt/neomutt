@@ -377,7 +377,7 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarMango = cs_subset_string(sub, "Mango");
   buf_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
-  if (!TEST_CHECK_STR_EQ(VarMango, (char *) value))
+  if (!TEST_CHECK_STR_EQ((char *) value, VarMango))
   {
     TEST_MSG("Get failed: %s\n", buf_string(err));
     return false;
@@ -434,7 +434,7 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
       return false;
     }
 
-    if (!TEST_CHECK_STR_EQ(PlusTests[i][2], buf_string(err)))
+    if (!TEST_CHECK_STR_EQ(buf_string(err), PlusTests[i][2]))
       return false;
   }
 

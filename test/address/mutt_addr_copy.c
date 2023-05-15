@@ -45,8 +45,8 @@ void test_mutt_addr_copy(void)
                           .intl_checked = false };
     struct Address *a2 = mutt_addr_copy(&a1);
     TEST_CHECK(a2 != NULL);
-    TEST_CHECK_STR_EQ(a1.personal, a2->personal);
-    TEST_CHECK_STR_EQ(a1.mailbox, a2->mailbox);
+    TEST_CHECK_STR_EQ(a2->personal, a1.personal);
+    TEST_CHECK_STR_EQ(a2->mailbox, a1.mailbox);
     TEST_CHECK(a1.group == a2->group);
     TEST_CHECK(a1.is_intl == a2->is_intl);
     TEST_CHECK(a1.intl_checked == a2->intl_checked);
@@ -60,7 +60,7 @@ void test_mutt_addr_copy(void)
     struct Address *a2 = mutt_addr_copy(&a1);
     TEST_CHECK(a2 != NULL);
     TEST_CHECK(a2->personal == NULL);
-    TEST_CHECK_STR_EQ(a1.mailbox, a2->mailbox);
+    TEST_CHECK_STR_EQ(a2->mailbox, a1.mailbox);
     TEST_CHECK(a1.group == a2->group);
     TEST_CHECK(a1.is_intl == a2->is_intl);
     TEST_CHECK(a1.intl_checked == a2->intl_checked);

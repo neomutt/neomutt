@@ -115,7 +115,7 @@ bool test_pretty_var(void)
       return false;
     }
 
-    if (!TEST_CHECK_STR_EQ("\"apple\"", buf_string(&buf)))
+    if (!TEST_CHECK_STR_EQ(buf_string(&buf), "\"apple\""))
     {
       buf_dealloc(&buf);
       return false;

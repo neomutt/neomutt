@@ -65,11 +65,11 @@ void test_mutt_addrlist_copy(void)
     TEST_CHECK(!TAILQ_EMPTY(&src));
     TEST_CHECK(!TAILQ_EMPTY(&dst));
     struct Address *adst = TAILQ_FIRST(&dst);
-    TEST_CHECK_STR_EQ("test@example.com", adst->mailbox);
+    TEST_CHECK_STR_EQ(adst->mailbox, "test@example.com");
     adst = TAILQ_NEXT(adst, entries);
-    TEST_CHECK_STR_EQ("john@doe.org", adst->mailbox);
+    TEST_CHECK_STR_EQ(adst->mailbox, "john@doe.org");
     adst = TAILQ_NEXT(adst, entries);
-    TEST_CHECK_STR_EQ("the-who@stage.co.uk", adst->mailbox);
+    TEST_CHECK_STR_EQ(adst->mailbox, "the-who@stage.co.uk");
     mutt_addrlist_clear(&src);
     mutt_addrlist_clear(&dst);
   }

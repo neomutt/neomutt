@@ -52,7 +52,7 @@ void test_mutt_addrlist_write(void)
 
     struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
-    TEST_CHECK_STR_EQ(in, buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), in);
     buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
   }
@@ -64,7 +64,7 @@ void test_mutt_addrlist_write(void)
     TEST_CHECK(parsed == 4);
     struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
-    TEST_CHECK_STR_EQ(in, buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), in);
     buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
   }
@@ -77,7 +77,7 @@ void test_mutt_addrlist_write(void)
     struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
     // We always add a space after the colon. No big deal
-    TEST_CHECK_STR_EQ("undisclosaed-recipients: ;", buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), "undisclosaed-recipients: ;");
     buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
   }

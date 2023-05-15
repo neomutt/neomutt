@@ -63,8 +63,8 @@ void test_mutt_addrlist_parse2(void)
     TEST_CHECK(parsed == 1);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);
-    TEST_CHECK_STR_EQ("test@example.com John Doe", a->personal);
-    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    TEST_CHECK_STR_EQ(a->personal, "test@example.com John Doe");
+    TEST_CHECK_STR_EQ(a->mailbox, "john@doe.org");
     mutt_addrlist_clear(&alist);
   }
 
@@ -75,13 +75,13 @@ void test_mutt_addrlist_parse2(void)
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK(a->personal == NULL);
-    TEST_CHECK_STR_EQ("test@example.com", a->mailbox);
+    TEST_CHECK_STR_EQ(a->mailbox, "test@example.com");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a->personal == NULL);
-    TEST_CHECK_STR_EQ("john@doe.org", a->mailbox);
+    TEST_CHECK_STR_EQ(a->mailbox, "john@doe.org");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a->personal == NULL);
-    TEST_CHECK_STR_EQ("foo@bar.baz", a->mailbox);
+    TEST_CHECK_STR_EQ(a->mailbox, "foo@bar.baz");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
     mutt_addrlist_clear(&alist);

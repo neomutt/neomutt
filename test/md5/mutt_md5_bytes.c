@@ -54,7 +54,7 @@ void test_mutt_md5_bytes(void)
       mutt_md5_process_bytes(md5_test_data[i].text, strlen(md5_test_data[i].text), &ctx);
       mutt_md5_finish_ctx(&ctx, buf);
       mutt_md5_toascii(buf, digest);
-      TEST_CHECK_STR_EQ(md5_test_data[i].hash, digest);
+      TEST_CHECK_STR_EQ(digest, md5_test_data[i].hash);
     }
   }
 }

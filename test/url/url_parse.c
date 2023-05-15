@@ -261,15 +261,15 @@ void test_url_parse(void)
         TEST_MSG("Expected: %d", test[i].url.scheme);
         TEST_MSG("Actual  : %d", url->scheme);
       }
-      TEST_CHECK_STR_EQ(test[i].url.user, url->user);
-      TEST_CHECK_STR_EQ(test[i].url.pass, url->pass);
-      TEST_CHECK_STR_EQ(test[i].url.host, url->host);
+      TEST_CHECK_STR_EQ(url->user, test[i].url.user);
+      TEST_CHECK_STR_EQ(url->pass, test[i].url.pass);
+      TEST_CHECK_STR_EQ(url->host, test[i].url.host);
       if (!TEST_CHECK(test[i].url.port == url->port))
       {
         TEST_MSG("Expected: %hu", test[i].url.port);
         TEST_MSG("Actual  : %hu", url->port);
       }
-      TEST_CHECK_STR_EQ(test[i].url.path, url->path);
+      TEST_CHECK_STR_EQ(url->path, test[i].url.path);
       check_query_string(test[i].qs_elem, &url->query_strings);
 
       url_free(&url);

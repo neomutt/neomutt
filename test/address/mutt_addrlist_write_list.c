@@ -53,8 +53,7 @@ void test_mutt_addrlist_write_list(void)
     {
       off += snprintf(out + off, sizeof(out) - off, "|%s|", ln->data);
     }
-    TEST_CHECK_STR_EQ("|some-group: ||first@example.com||second@example.com||John Doe <john@doe.org>||\"Foo J. Bar\" <foo-j-bar@baz.com>|",
-                      out);
+    TEST_CHECK_STR_EQ(out, "|some-group: ||first@example.com||second@example.com||John Doe <john@doe.org>||\"Foo J. Bar\" <foo-j-bar@baz.com>|");
     mutt_addrlist_clear(&al);
     mutt_list_free(&l);
   }

@@ -119,15 +119,15 @@ void test_mutt_rfc822_read_line(void)
     struct Buffer *buf = buf_pool_get();
 
     const size_t after1 = mutt_rfc822_read_line(fp, buf);
-    TEST_CHECK_STR_EQ("Head1: val1.1 val1.2", buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), "Head1: val1.1 val1.2");
 
     mutt_rfc822_read_line(fp, buf);
-    TEST_CHECK_STR_EQ("Head2: val2.1 val2.2", buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), "Head2: val2.1 val2.2");
 
     fseek(fp, after1, SEEK_SET);
     buf_reset(buf);
     mutt_rfc822_read_line(fp, buf);
-    TEST_CHECK_STR_EQ("Head2: val2.1 val2.2", buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), "Head2: val2.1 val2.2");
 
     buf_pool_release(&buf);
     fclose(fp);
@@ -151,7 +151,7 @@ void test_mutt_rfc822_read_line(void)
       TEST_MSG("Expected: %ld", off);
       TEST_MSG("Actual  : %zu", read);
     }
-    TEST_CHECK_STR_EQ(test_data[i].output, buf_string(buf));
+    TEST_CHECK_STR_EQ(buf_string(buf), test_data[i].output);
     buf_pool_release(&buf);
     fclose(fp);
   }
