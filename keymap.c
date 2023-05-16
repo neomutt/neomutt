@@ -336,6 +336,8 @@ static size_t parsekeys(const char *str, keycode_t *d, size_t max)
  */
 static struct Keymap *km_compare_keys(struct Keymap *k1, struct Keymap *k2, size_t *pos)
 {
+  *pos = 0;
+
   while (*pos < k1->len && *pos < k2->len)
   {
     if (k1->keys[*pos] < k2->keys[*pos])
