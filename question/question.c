@@ -145,7 +145,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
     ch = mutt_getch_timeout(30 * 1000);
     if (ch.op == OP_TIMEOUT)
       continue;
-    if (ch.op == OP_ABORT || CI_is_return(ch.ch))
+    if (ch.op == OP_ABORT || key_is_return(ch.ch))
     {
       choice = -1;
       break;
@@ -319,7 +319,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
     ch = mutt_getch_timeout(30 * 1000);
     if (ch.op == OP_TIMEOUT)
       continue;
-    if (CI_is_return(ch.ch))
+    if (key_is_return(ch.ch))
       break;
     if (ch.op == OP_ABORT)
     {

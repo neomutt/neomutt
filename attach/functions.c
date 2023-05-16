@@ -409,8 +409,8 @@ static int op_bounce_message(struct AttachPrivateData *priv, int op)
   if (check_attach())
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
-  mutt_attach_bounce(priv->mailbox, cur_att->fp, priv->actx,
-                     priv->menu->tag_prefix ? NULL : cur_att->body);
+  attach_bounce_message(priv->mailbox, cur_att->fp, priv->actx,
+                        priv->menu->tag_prefix ? NULL : cur_att->body);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;
 }

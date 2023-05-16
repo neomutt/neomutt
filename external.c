@@ -83,11 +83,11 @@ void commands_cleanup(void)
 }
 
 /**
- * ci_bounce_message - Bounce an email
+ * index_bounce_message - Bounce an email
  * @param m  Mailbox
  * @param el List of Emails to bounce
  */
-void ci_bounce_message(struct Mailbox *m, struct EmailList *el)
+void index_bounce_message(struct Mailbox *m, struct EmailList *el)
 {
   if (!m || !el || STAILQ_EMPTY(el))
     return;
