@@ -46,7 +46,7 @@ static struct Buffer **BufferPool = NULL;
 
 /**
  * pool_new - Allocate a new Buffer on the heap
- * @retval buf A newly allocated Buffer
+ * @retval obj Newly allocated Buffer
  * @note call pool_free to release the memory
  */
 static struct Buffer *pool_new(void)
@@ -58,15 +58,15 @@ static struct Buffer *pool_new(void)
 
 /**
  * pool_free - Release a Buffer and its contents
- * @param[out] p Buffer pointer to free and NULL
+ * @param[out] ptr Buffer pointer to free and NULL
  */
-static void pool_free(struct Buffer **p)
+static void pool_free(struct Buffer **ptr)
 {
-  if (!p || !*p)
+  if (!ptr || !*ptr)
     return; // LCOV_EXCL_LINE
 
-  buf_dealloc(*p);
-  FREE(p);
+  buf_dealloc(*ptr);
+  FREE(ptr);
 }
 
 /**
@@ -111,24 +111,27 @@ struct Buffer *buf_pool_get(void)
 }
 
 /**
- * buf_pool_release - Free a Buffer from the pool
- * @param[out] pbuf Buffer to free
+ * buf_pool_release - Return a Buffer to the pool
+ * @param[out] ptr Buffer to release
+ *
+ * @note The pointer will be NULL'd
  */
-void buf_pool_release(struct Buffer **pbuf)
+void buf_pool_release(struct Buffer **ptr)
 {
-  if (!pbuf || !*pbuf)
+  if (!ptr || !*ptr)
     return;
 
   if (BufferPoolCount >= BufferPoolLen)
   {
     // LCOV_EXCL_START
     mutt_debug(LL_DEBUG1, "Internal buffer pool error\n");
-    pool_free(pbuf);
+    pool_free(ptr);
     return;
     // LCOV_EXCL_STOP
   }
 
-  struct Buffer *buf = *pbuf;
+  // Reset the size if it's too big or too small
+  struct Buffer *buf = *ptr;
   if ((buf->dsize > (2 * BufferPoolInitialBufferSize)) ||
       (buf->dsize < BufferPoolInitialBufferSize))
   {
@@ -138,5 +141,5 @@ void buf_pool_release(struct Buffer **pbuf)
   buf_reset(buf);
   BufferPool[BufferPoolCount++] = buf;
 
-  *pbuf = NULL;
+  *ptr = NULL;
 }
