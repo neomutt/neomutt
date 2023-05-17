@@ -39,31 +39,13 @@
 /// The focus spans from #RootWindow through MuttWindow.focus
 static struct MuttWindow *WinFocus = NULL;
 
-static const char *win_size(const struct MuttWindow *win)
-{
-  if (!win)
-    return "???";
-
-  switch (win->size)
-  {
-    case MUTT_WIN_SIZE_FIXED:
-      return "FIX";
-    case MUTT_WIN_SIZE_MAXIMISE:
-      return "MAX";
-    case MUTT_WIN_SIZE_MINIMISE:
-      return "MIN";
-  }
-
-  return "???";
-}
-
 static void win_dump(struct MuttWindow *win, int indent)
 {
   bool visible = mutt_window_is_visible(win);
 
   mutt_debug(LL_DEBUG1, "%*s%s[%d,%d] %s-%c \033[1;33m%s\033[0m (%d,%d)%s%s\n",
              indent, "", visible ? "✓" : "✗\033[1;30m", win->state.col_offset,
-             win->state.row_offset, win_size(win),
+             win->state.row_offset, get_window_size(win),
              (win->orient == MUTT_WIN_ORIENT_VERTICAL) ? 'V' : 'H',
              mutt_window_win_name(win), win->state.cols, win->state.rows,
              visible ? "" : "\033[0m",

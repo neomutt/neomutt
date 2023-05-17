@@ -46,9 +46,9 @@
 #define ctrl(ch) ((ch) - '@')
 
 #ifdef KEY_ENTER
-#define CI_is_return(ch) (((ch) == '\r') || ((ch) == '\n') || ((ch) == KEY_ENTER))
+#define key_is_return(ch) (((ch) == '\r') || ((ch) == '\n') || ((ch) == KEY_ENTER))
 #else
-#define CI_is_return(ch) (((ch) == '\r') || ((ch) == '\n'))
+#define key_is_return(ch) (((ch) == '\r') || ((ch) == '\n'))
 #endif
 
 /**

@@ -61,6 +61,7 @@ void imap_adata_free(void **ptr)
 
 /**
  * imap_adata_new - Allocate and initialise a new ImapAccountData structure
+ * @param a Account
  * @retval ptr New ImapAccountData
  */
 struct ImapAccountData *imap_adata_new(struct Account *a)

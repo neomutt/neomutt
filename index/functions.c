@@ -126,7 +126,7 @@ static bool resolve_email(struct IndexPrivateData *priv,
     case RESOLVE_NEXT_UNDELETED:
     {
       const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
-      index = ci_next_undeleted(shared->mailbox_view, menu_get_index(priv->menu), uncollapse);
+      index = find_next_undeleted(shared->mailbox_view, menu_get_index(priv->menu), uncollapse);
       break;
     }
 
@@ -169,7 +169,7 @@ bool index_next_undeleted(struct MuttWindow *win_index)
   struct IndexPrivateData *priv = win_index->parent->wdata;
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
-  int index = ci_next_undeleted(shared->mailbox_view, menu_get_index(menu), uncollapse);
+  int index = find_next_undeleted(shared->mailbox_view, menu_get_index(menu), uncollapse);
   if ((index < 0) || (index >= shared->mailbox->vcount))
   {
     // Selection failed
@@ -215,7 +215,7 @@ static int op_bounce_message(struct IndexSharedData *shared,
 {
   struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
   el_add_tagged(&el, shared->mailbox_view, shared->email, priv->tag);
-  ci_bounce_message(shared->mailbox, &el);
+  index_bounce_message(shared->mailbox, &el);
   emaillist_clear(&el);
 
   return FR_SUCCESS;
@@ -1399,7 +1399,7 @@ static int op_main_next_undeleted(struct IndexSharedData *shared,
 
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
-  index = ci_next_undeleted(shared->mailbox_view, index, uncollapse);
+  index = find_next_undeleted(shared->mailbox_view, index, uncollapse);
   if (index != -1)
   {
     menu_set_index(priv->menu, index);
@@ -1455,7 +1455,7 @@ static int op_main_prev_undeleted(struct IndexSharedData *shared,
 
   const bool uncollapse = mutt_using_threads() && !window_is_focused(priv->win_index);
 
-  index = ci_previous_undeleted(shared->mailbox_view, index, uncollapse);
+  index = find_previous_undeleted(shared->mailbox_view, index, uncollapse);
   if (index != -1)
   {
     menu_set_index(priv->menu, index);
@@ -1624,9 +1624,9 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
     if (!shared->email)
       return FR_NO_ACTION;
     if (shared->email->deleted)
-      newidx = ci_next_undeleted(shared->mailbox_view, index, false);
+      newidx = find_next_undeleted(shared->mailbox_view, index, false);
     if (newidx < 0)
-      newidx = ci_previous_undeleted(shared->mailbox_view, index, false);
+      newidx = find_previous_undeleted(shared->mailbox_view, index, false);
     if (newidx >= 0)
       e = mutt_get_virt_email(shared->mailbox, newidx);
   }
@@ -1658,7 +1658,7 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   index = menu_get_index(priv->menu);
   if ((index < 0) || (shared->mailbox && (index >= shared->mailbox->vcount)))
   {
-    menu_set_index(priv->menu, ci_first_message(shared->mailbox_view));
+    menu_set_index(priv->menu, find_first_message(shared->mailbox_view));
   }
 
   /* check for a fatal error, or all messages deleted */

@@ -555,7 +555,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
       e->searched = true;
       e->matched = mutt_pattern_exec(SLIST_FIRST(SearchPattern),
                                      MUTT_MATCH_FULL_ADDRESS, m, e, NULL);
-      if (e->matched > 0)
+      if (e->matched)
       {
         mutt_clear_error();
         if (msg && *msg)

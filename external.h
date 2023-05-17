@@ -51,7 +51,7 @@ enum MessageSaveOpt
   SAVE_MOVE,       ///< Move message to another mailbox, removing the original
 };
 
-void ci_bounce_message(struct Mailbox *m, struct EmailList *el);
+void index_bounce_message(struct Mailbox *m, struct EmailList *el);
 bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el);
 void commands_cleanup(void);
 void mutt_display_address(struct Envelope *env);
