@@ -1351,7 +1351,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
   ap->body = mutt_make_file_attach(buf_string(fname), shared->sub);
   if (!ap->body)
   {
-    mutt_error(_("What we have here is a failure to make an attachment"));
+    mutt_error(_("Error attaching file"));
     goto done;
   }
   update_idx(shared->adata->menu, shared->adata->actx, ap);

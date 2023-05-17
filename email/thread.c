@@ -40,7 +40,7 @@
  * @param b Child thread
  * @retval true b is a descendent of a (child, grandchild, etc)
  */
-bool is_descendant(struct MuttThread *a, const struct MuttThread *b)
+bool is_descendant(const struct MuttThread *a, const struct MuttThread *b)
 {
   while (a)
   {

@@ -152,7 +152,7 @@ static int pager_repaint(struct MuttWindow *win)
       {
         priv->lines[i].offset = 0;
         priv->lines[i].cid = -1;
-        priv->lines[i].cont_line = 0;
+        priv->lines[i].cont_line = false;
         priv->lines[i].syntax_arr_size = 0;
         priv->lines[i].search_arr_size = -1;
         priv->lines[i].quote = NULL;

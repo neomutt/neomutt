@@ -716,7 +716,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       av->is_searched = true;
       av->is_matched = mutt_pattern_alias_exec(SLIST_FIRST(SearchPattern),
                                                MUTT_MATCH_FULL_ADDRESS, av, NULL);
-      if (av->is_matched > 0)
+      if (av->is_matched)
       {
         mutt_clear_error();
         if (msg && *msg)

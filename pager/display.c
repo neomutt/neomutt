@@ -250,11 +250,11 @@ static void append_line(struct Line *lines, int line_num, int cnt)
 
   lines[line_num + 1].cid = lines[line_num].cid;
   (lines[line_num + 1].syntax)[0].attr_color = (lines[line_num].syntax)[0].attr_color;
-  lines[line_num + 1].cont_line = 1;
+  lines[line_num + 1].cont_line = true;
 
   /* find the real start of the line */
   for (m = line_num; m >= 0; m--)
-    if (lines[m].cont_line == 0)
+    if (!lines[m].cont_line)
       break;
 
   (lines[line_num + 1].syntax)[0].first = m;
@@ -389,7 +389,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
         {
           (lines[line_num].syntax)[0].attr_color =
               (lines[line_num - 1].syntax)[0].attr_color;
-          lines[line_num].cont_header = 1;
+          lines[line_num].cont_header = true;
         }
       }
       else
