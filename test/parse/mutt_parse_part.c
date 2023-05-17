@@ -37,8 +37,9 @@ void test_mutt_parse_part(void)
   }
 
   {
-    FILE fp = { 0 };
-    mutt_parse_part(&fp, NULL);
-    TEST_CHECK_(1, "mutt_parse_part(&fp, NULL)");
+    FILE *fp = fopen("/dev/null", "r");
+    mutt_parse_part(fp, NULL);
+    TEST_CHECK_(1, "mutt_parse_part(fp, NULL)");
+    fclose(fp);
   }
 }

@@ -36,7 +36,8 @@ void test_mutt_rfc822_parse_message(void)
   }
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(!mutt_rfc822_parse_message(&fp, NULL));
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(!mutt_rfc822_parse_message(fp, NULL));
+    fclose(fp);
   }
 }

@@ -31,12 +31,14 @@ void test_mutt_file_copy_stream(void)
   // int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out);
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(mutt_file_copy_stream(NULL, &fp) != 0);
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(mutt_file_copy_stream(NULL, fp) != 0);
+    fclose(fp);
   }
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(mutt_file_copy_stream(&fp, NULL) != 0);
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(mutt_file_copy_stream(fp, NULL) != 0);
+    fclose(fp);
   }
 }

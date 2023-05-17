@@ -109,8 +109,9 @@ void test_mutt_rfc822_read_line(void)
   }
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(mutt_rfc822_read_line(&fp, NULL) == 0);
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(mutt_rfc822_read_line(fp, NULL) == 0);
+    fclose(fp);
   }
 
   {
