@@ -1,4 +1,4 @@
-2023-05-12  Richard Russon  \<rich@flatcap.org\>
+2023-05-17  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #3699 - Support 24bit colors, aka truecolor
   - #3738 - Show complete MIME structure in attachments
@@ -7,15 +7,12 @@
   - #3813 - Fix crash in op_browser_subscribe
   - #3844 - Select the first email when coming from an empty limit
   - #3848 - Fix counting new mails in maildir
+  - #3864 - Fix handling of bright colours
+  - #3759 - bind: fix incorrect conflict report
+  - #3781 - index: only refresh the menu on non-focus window changes
+  - #3856 - tunnel: fix reconnection with `ssl_force=true`
+  - #3860 - maildir: stop parsing headers at the end of the headers section
   - Fix sorting of labels
-* Build
- - #3798 - Build with libidn2 by default, remove support for libidn1
-* Code
-  - config: dynamically create/delete variables
-  - config: unify handling of NeoMutt and user (my_) variables
-  - config: cache config variables used often
-  - speed: various speedups in parsing emails
-  - cleanups: lots of code cleanups
 * Translations
   - 100% :serbia: Serbian
   - 100% :tr: Turkish
@@ -26,7 +23,20 @@
   - 99% :slovakia: Slovak
   - 99% :brazil: Portuguese (Brazil)
   - 99% :czech_republic: Czech
+  - 99% :poland: Polish
   - 95% :fr: French
+* Build
+ - #3798 - Build with libidn2 by default, remove support for libidn1
+* Code
+  - config: dynamically create/delete variables
+  - config: unify handling of NeoMutt and user (my_) variables
+  - config: cache config variables used often
+  - speed: various speedups in parsing emails
+  - cleanups: lots of code cleanups
+  - Huge refactoring towards a separation of Mailbox/MailboxView
+
+2023-05-12  Richard Russon  \<rich@flatcap.org\>
+* BROKEN - Please use 2023-05-17 instead
 
 2023-04-07  Richard Russon  \<rich@flatcap.org\>
 * Features
@@ -60,7 +70,7 @@
   - #3797 - hcache: remove spurious +1 from Buffer serialization.
 * Build
   - #3787 - fix race condition in `make install`
-  - #3780 - fallback to detect SASL manually if pkg-config fails, e.g., homebew
+  - #3780 - fallback to detect SASL manually if pkg-config fails, e.g., homebrew
 
 2023-03-22  Richard Russon  \<rich@flatcap.org\>
 * Features
