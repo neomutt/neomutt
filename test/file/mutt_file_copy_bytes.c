@@ -31,12 +31,14 @@ void test_mutt_file_copy_bytes(void)
   // int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size);
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(mutt_file_copy_bytes(NULL, &fp, 10) != 0);
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(mutt_file_copy_bytes(NULL, fp, 10) != 0);
+    fclose(fp);
   }
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(mutt_file_copy_bytes(&fp, NULL, 10) != 0);
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(mutt_file_copy_bytes(fp, NULL, 10) != 0);
+    fclose(fp);
   }
 }

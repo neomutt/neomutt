@@ -31,9 +31,10 @@ void test_mutt_actx_add_fp(void)
   // void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new);
 
   {
-    FILE fp = { 0 };
-    mutt_actx_add_fp(NULL, &fp);
-    TEST_CHECK_(1, "mutt_actx_add_fp(NULL, &fp)");
+    FILE *fp = fopen("/dev/null", "r");
+    mutt_actx_add_fp(NULL, fp);
+    TEST_CHECK_(1, "mutt_actx_add_fp(NULL, fp)");
+    fclose(fp);
   }
 
   {

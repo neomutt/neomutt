@@ -35,8 +35,9 @@ void test_mutt_file_iter_line(void)
   // bool mutt_file_iter_line(struct MuttFileIter *iter, FILE *fp, ReadLineFlags flags);
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(!mutt_file_iter_line(NULL, &fp, MUTT_RL_NO_FLAGS));
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(!mutt_file_iter_line(NULL, fp, MUTT_RL_NO_FLAGS));
+    fclose(fp);
   }
 
   {

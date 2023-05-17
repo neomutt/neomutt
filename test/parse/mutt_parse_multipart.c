@@ -39,7 +39,8 @@ void test_mutt_parse_multipart(void)
   }
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(!mutt_parse_multipart(&fp, NULL, 0, false));
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(!mutt_parse_multipart(fp, NULL, 0, false));
+    fclose(fp);
   }
 }

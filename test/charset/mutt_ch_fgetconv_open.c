@@ -38,16 +38,18 @@ void test_mutt_ch_fgetconv_open(void)
   }
 
   {
-    FILE fp = { 0 };
+    FILE *fp = fopen("/dev/null", "r");
     struct FgetConv *conv = NULL;
-    TEST_CHECK((conv = mutt_ch_fgetconv_open(&fp, NULL, "banana", MUTT_ICONV_NO_FLAGS)) != NULL);
+    TEST_CHECK((conv = mutt_ch_fgetconv_open(fp, NULL, "banana", MUTT_ICONV_NO_FLAGS)) != NULL);
     mutt_ch_fgetconv_close(&conv);
+    fclose(fp);
   }
 
   {
-    FILE fp = { 0 };
+    FILE *fp = fopen("/dev/null", "r");
     struct FgetConv *conv = NULL;
-    TEST_CHECK((conv = mutt_ch_fgetconv_open(&fp, "apple", NULL, MUTT_ICONV_NO_FLAGS)) != NULL);
+    TEST_CHECK((conv = mutt_ch_fgetconv_open(fp, "apple", NULL, MUTT_ICONV_NO_FLAGS)) != NULL);
     mutt_ch_fgetconv_close(&conv);
+    fclose(fp);
   }
 }

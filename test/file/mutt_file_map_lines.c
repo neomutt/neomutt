@@ -63,8 +63,9 @@ void test_mutt_file_map_lines(void)
   // bool mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp, ReadLineFlags flags);
 
   {
-    FILE fp = { 0 };
-    TEST_CHECK(!mutt_file_map_lines(NULL, "apple", &fp, MUTT_RL_NO_FLAGS));
+    FILE *fp = fopen("/dev/null", "r");
+    TEST_CHECK(!mutt_file_map_lines(NULL, "apple", fp, MUTT_RL_NO_FLAGS));
+    fclose(fp);
   }
 
   {
