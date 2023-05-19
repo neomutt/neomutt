@@ -1109,9 +1109,10 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
   {
     /* Clear the tag prefix unless we just started it.
      * Don't clear the prefix on a timeout, but do clear on an abort */
-    if (priv->tag && (op != OP_TAG_PREFIX) && (op != OP_TAG_PREFIX_COND) && (op != OP_TIMEOUT))
+    if (priv->tag_prefix && (op != OP_TAG_PREFIX) &&
+        (op != OP_TAG_PREFIX_COND) && (op != OP_TIMEOUT))
     {
-      priv->tag = false;
+      priv->tag_prefix = false;
     }
 
     /* check if we need to resort the index because just about
@@ -1241,7 +1242,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     window_redraw(NULL);
 
     /* give visual indication that the next command is a tag- command */
-    if (priv->tag)
+    if (priv->tag_prefix)
       msgwin_set_text(MT_COLOR_NORMAL, "tag-");
 
     const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
@@ -1282,7 +1283,7 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (op < OP_NULL)
     {
       mutt_timeout_hook();
-      if (priv->tag)
+      if (priv->tag_prefix)
         msgwin_clear_text();
       continue;
     }
@@ -1294,9 +1295,9 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
     if ((op == OP_TAG_PREFIX) || (op == OP_TAG_PREFIX_COND))
     {
       /* A second priv->tag-prefix command aborts */
-      if (priv->tag)
+      if (priv->tag_prefix)
       {
-        priv->tag = false;
+        priv->tag_prefix = false;
         msgwin_clear_text();
         continue;
       }
@@ -1322,12 +1323,12 @@ struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
       }
 
       /* get the real command */
-      priv->tag = true;
+      priv->tag_prefix = true;
       continue;
     }
     else if (c_auto_tag && shared->mailbox && (shared->mailbox->msg_tagged != 0))
     {
-      priv->tag = true;
+      priv->tag_prefix = true;
     }
 
     mutt_clear_error();
