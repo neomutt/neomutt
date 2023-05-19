@@ -77,7 +77,6 @@ struct EventMview
 void                mview_free            (struct MailboxView **ptr);
 int                 mview_mailbox_observer(struct NotifyCallback *nc);
 struct MailboxView *mview_new             (struct Mailbox *m, struct Notify *parent);
-void                mview_update          (struct MailboxView *mv);
 bool                mview_has_limit       (const struct MailboxView *mv);
 struct Mailbox *    mview_mailbox         (struct MailboxView *mv);
 
