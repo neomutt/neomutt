@@ -1976,9 +1976,9 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
       choices = "esabcO";
     }
   }
-  /* Opportunistic encryption is unset */
   else
   {
+    /* Opportunistic encryption is unset */
     if (e->security & (SEC_ENCRYPT | SEC_SIGN))
     {
       snprintf(promptbuf, sizeof(promptbuf),

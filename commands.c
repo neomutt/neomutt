@@ -991,17 +991,17 @@ static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
       }
       FREE(&templ.data);
     }
-    /* If not, try to remove from the nospam list. */
     else
     {
+      /* If not, try to remove from the nospam list. */
       mutt_regexlist_remove(&NoSpamList, buf->data);
     }
 
     return MUTT_CMD_SUCCESS;
   }
-  /* MUTT_NOSPAM is for nospam commands. */
   else if (data == MUTT_NOSPAM)
   {
+    /* MUTT_NOSPAM is for nospam commands. */
     /* nospam only ever has one parameter. */
 
     /* "*" is a special case. */

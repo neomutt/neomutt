@@ -3806,9 +3806,9 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
       choices = "SamCo";
     }
   }
-  /* Opportunistic encryption option is set, but is toggled off for this message.  */
   else if (c_crypt_opportunistic_encrypt)
   {
+    /* Opportunistic encryption option is set, but is toggled off for this message.  */
     if (is_smime)
     {
       /* L10N: S/MIME options (opportunistic encryption is off) */
@@ -3826,9 +3826,9 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
       choices = "esabmcO";
     }
   }
-  /* Opportunistic encryption is unset */
   else
   {
+    /* Opportunistic encryption is unset */
     if (is_smime)
     {
       /* L10N: S/MIME options */

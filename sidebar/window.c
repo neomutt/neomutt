@@ -695,9 +695,9 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
       }
     }
   }
-  /* Otherwise we can just calculate the interval */
   else
   {
+    /* Otherwise we can just calculate the interval */
     wdata->top_index = (wdata->hil_index / page_size) * page_size;
     wdata->bot_index = wdata->top_index + page_size - 1;
   }

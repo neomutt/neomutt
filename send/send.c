@@ -1315,7 +1315,6 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       return -1;
     }
   }
-  /* if (WithCrypto && (flags & SEND_KEY)) */
   else if (((WithCrypto & APPLICATION_PGP) != 0) && (flags & SEND_KEY))
   {
     struct Body *b = NULL;

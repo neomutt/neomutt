@@ -821,10 +821,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfi
       mutt_decode_attachment(b, &state);
     }
   }
-
-  /* send case */
   else
   {
+    /* send case */
     const char *infile = NULL;
 
     if (is_flowed)
