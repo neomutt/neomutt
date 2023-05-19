@@ -680,10 +680,6 @@ static enum MxStatus maildir_check(struct Mailbox *m)
   /* destroy the file name hash */
   mutt_hash_free(&hash_names);
 
-  /* If we didn't just get new mail, update the tables. */
-  if (occult)
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-
   /* do any delayed parsing we need to do. */
   maildir_delayed_parsing(m, &mda, NULL);
 
@@ -693,7 +689,6 @@ static enum MxStatus maildir_check(struct Mailbox *m)
 
   if (num_new > 0)
   {
-    mailbox_changed(m, NT_MAILBOX_INVALID);
     m->changed = true;
   }
 

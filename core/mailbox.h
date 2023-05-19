@@ -181,13 +181,6 @@ enum NotifyMailbox
   NT_MAILBOX_DELETE,     ///< Mailbox is about to be deleted
   NT_MAILBOX_DELETE_ALL, ///< All Mailboxes are about to be deleted
   NT_MAILBOX_CHANGE,     ///< Mailbox has been changed
-
-  /* These don't really belong here as they are tied to GUI operations.
-   * Eventually, they'll be eliminated. */
-  NT_MAILBOX_INVALID,    ///< Email list was changed
-  NT_MAILBOX_RESORT,     ///< Email list needs resorting
-  NT_MAILBOX_UPDATE,     ///< Update internal tables
-  NT_MAILBOX_UNTAG,      ///< Clear the 'last-tagged' pointer
 };
 
 /**

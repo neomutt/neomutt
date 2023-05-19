@@ -837,11 +837,8 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
 
   mutt_message(_("Checking for new messages..."));
 
-  int old_msg_count = m->msg_count;
   int rc = pop_fetch_headers(m);
   pop_clear_cache(adata);
-  if (m->msg_count > old_msg_count)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
 
   if (rc < 0)
     return MX_STATUS_ERROR;

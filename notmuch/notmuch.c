@@ -1549,8 +1549,6 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   mdata->mtime.tv_nsec = 0;
   rc = 0;
 
-  if (m->msg_count > mdata->oldmsgcount)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);
@@ -2201,8 +2199,6 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
     }
   }
 
-  if (m->msg_count > mdata->oldmsgcount)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
 done:
   if (q)
     notmuch_query_destroy(q);

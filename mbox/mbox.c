@@ -564,15 +564,6 @@ static int reopen_mailbox(struct Mailbox *m)
   /* silent operations */
   m->verbose = false;
 
-  /* our heuristics require the old mailbox to be unsorted */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
-  {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-  }
-
   e_old = NULL;
   old_msg_count = 0;
 
@@ -596,7 +587,6 @@ static int reopen_mailbox(struct Mailbox *m)
 
   m->email_max = 0; /* force allocation of new headers */
   m->msg_count = 0;
-  m->msg_tagged = 0;
   m->msg_deleted = 0;
   m->msg_new = 0;
   m->msg_unread = 0;
@@ -691,7 +681,6 @@ static int reopen_mailbox(struct Mailbox *m)
         }
         mutt_set_flag(m, m->emails[i], MUTT_DELETE, e_old[j]->deleted, true);
         mutt_set_flag(m, m->emails[i], MUTT_PURGE, e_old[j]->purge, true);
-        mutt_set_flag(m, m->emails[i], MUTT_TAG, e_old[j]->tagged, true);
 
         /* we don't need this header any more */
         email_free(&(e_old[j]));
@@ -710,7 +699,6 @@ static int reopen_mailbox(struct Mailbox *m)
     FREE(&e_old);
   }
 
-  mailbox_changed(m, NT_MAILBOX_UPDATE);
   m->verbose = true;
 
   return (m->changed || msg_mod) ? MX_STATUS_REOPENED : MX_STATUS_NEW_MAIL;
@@ -935,7 +923,6 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
   {
     if (mbox_mbox_open(m) != MX_OPEN_OK)
       return MX_STATUS_ERROR;
-    mailbox_changed(m, NT_MAILBOX_INVALID);
   }
   if (!adata->fp)
     return MX_STATUS_ERROR;
@@ -995,14 +982,10 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
             goto error;
           }
 
-          int old_msg_count = m->msg_count;
           if (m->type == MUTT_MBOX)
             mbox_parse_mailbox(m);
           else
             mmdf_parse_mailbox(m);
-
-          if (m->msg_count > old_msg_count)
-            mailbox_changed(m, NT_MAILBOX_INVALID);
 
           /* Only unlock the folder if it was locked inside of this routine.
            * It may have been locked elsewhere, like in
@@ -1036,7 +1019,6 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
   {
     if (reopen_mailbox(m) != -1)
     {
-      mailbox_changed(m, NT_MAILBOX_INVALID);
       if (unlock)
       {
         mbox_unlock_mailbox(m);
@@ -1069,23 +1051,14 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   char buf[32] = { 0 };
   int j;
   bool unlink_tempfile = false;
-  bool need_sort = false; /* flag to resort mailbox if new mail arrives */
-  int first = -1;         /* first message to be written */
-  LOFF_T offset;          /* location in mailbox to write changed messages */
+  int first = -1; /* first message to be written */
+  LOFF_T offset;  /* location in mailbox to write changed messages */
   struct stat st = { 0 };
   struct MUpdate *new_offset = NULL;
   struct MUpdate *old_offset = NULL;
   FILE *fp = NULL;
   struct Progress *progress = NULL;
   enum MxStatus rc = MX_STATUS_ERROR;
-
-  /* sort message by their position in the mailbox on disk */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
-  {
-    mutt_sort_order(m);
-    need_sort = true;
-  }
 
   /* need to open the file for writing in such a way that it does not truncate
    * the file, so use read-write mode.  */
@@ -1412,14 +1385,6 @@ bail: /* Come here in case of disaster */
     goto fatal;
   }
 
-  mailbox_changed(m, NT_MAILBOX_UPDATE);
-  if (need_sort)
-  {
-    /* if the mailbox was reopened, the thread tree will be invalid so make
-     * sure to start threading from scratch.  */
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-  }
-
 fatal:
   buf_pool_release(&tempfile);
   progress_free(&progress);
@@ -1693,7 +1658,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
                                                  &adata->stats_last_checked) > 0)
     {
       bool old_peek = m->peekonly;
-      mx_mbox_open(m, MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK);
+      mx_mbox_open(m, MUTT_QUIET | MUTT_PEEK);
       mx_mbox_close(m);
       m->peekonly = old_peek;
       mutt_time_now(&adata->stats_last_checked);

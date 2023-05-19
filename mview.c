@@ -34,106 +34,12 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mview.h"
-#include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "pattern/lib.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
-#include "mx.h"
 #include "score.h"
 #include "sort.h"
-
-/**
- * mview_free - Free a MailboxView
- * @param[out] ptr MailboxView to free
- */
-void mview_free(struct MailboxView **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct MailboxView *mv = *ptr;
-
-  struct EventMview ev_m = { mv };
-  mutt_debug(LL_NOTIFY, "NT_MVIEW_DELETE: %p\n", (void *) mv);
-  notify_send(mv->notify, NT_MVIEW, NT_MVIEW_DELETE, &ev_m);
-
-  if (mv->mailbox)
-  {
-    notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
-
-    // Disconnect the Emails before freeing the Threads
-    for (int i = 0; i < mv->mailbox->msg_count; i++)
-    {
-      struct Email *e = mv->mailbox->emails[i];
-      if (!e)
-        continue;
-      e->thread = NULL;
-      e->threaded = false;
-    }
-  }
-
-  mutt_thread_ctx_free(&mv->threads);
-  notify_free(&mv->notify);
-  FREE(&mv->pattern);
-  mutt_pattern_free(&mv->limit_pattern);
-
-  for (size_t i = 0; i < mv->vcount; i++)
-    eview_free(&mv->v2r[i]);
-
-  FREE(&mv->v2r);
-  *ptr = NULL;
-  FREE(&mv);
-}
-
-/**
- * mview_new - Create a new MailboxView
- * @param m      Mailbox
- * @param parent Notification parent
- * @retval ptr New MailboxView
- */
-struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
-{
-  if (!m)
-    return NULL;
-
-  struct MailboxView *mv = mutt_mem_calloc(1, sizeof(struct MailboxView));
-
-  mv->notify = notify_new();
-  notify_set_parent(mv->notify, parent);
-  struct EventMview ev_m = { mv };
-  mutt_debug(LL_NOTIFY, "NT_MVIEW_ADD: %p\n", (void *) mv);
-  notify_send(mv->notify, NT_MVIEW, NT_MVIEW_ADD, &ev_m);
-  // If the Mailbox is closed, mv->mailbox must be set to NULL
-  notify_observer_add(m->notify, NT_MAILBOX, mview_mailbox_observer, mv);
-
-  mv->mailbox = m;
-  mv->v2r = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
-  mv->threads = mutt_thread_ctx_init(mv);
-  mv->msg_in_pager = -1;
-  mv->collapsed = false;
-  mview_update(mv);
-
-  return mv;
-}
-
-/**
- * mview_clean - Release memory and initialize a MailboxView
- * @param mv MailboxView to cleanup
- */
-static void mview_clean(struct MailboxView *mv)
-{
-  FREE(&mv->pattern);
-  mutt_pattern_free(&mv->limit_pattern);
-  if (mv->mailbox)
-    notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
-
-  struct Notify *notify = mv->notify;
-  struct Mailbox *m = mv->mailbox;
-  memset(mv, 0, sizeof(struct MailboxView));
-  mv->notify = notify;
-  mv->mailbox = m;
-}
 
 /**
  * mview_update - Update the MailboxView's message counts
@@ -235,95 +141,95 @@ void mview_update(struct MailboxView *mv)
 }
 
 /**
- * update_tables - Update a MailboxView's internal tables
- * @param mv Mailbox
+ * mview_free - Free a MailboxView
+ * @param[out] ptr MailboxView to free
  */
-static void update_tables(struct MailboxView *mv)
+void mview_free(struct MailboxView **ptr)
 {
-  if (!mv || !mv->mailbox)
+  if (!ptr || !*ptr)
     return;
 
-  struct Mailbox *m = mv->mailbox;
+  struct MailboxView *mv = *ptr;
 
-  int i, j, padding;
+  struct EventMview ev_m = { mv };
+  mutt_debug(LL_NOTIFY, "NT_MVIEW_DELETE: %p\n", (void *) mv);
+  notify_send(mv->notify, NT_MVIEW, NT_MVIEW_DELETE, &ev_m);
 
-  /* update memory to reflect the new state of the mailbox */
-  mv->vcount = 0;
-  mv->vsize = 0;
-  m->msg_tagged = 0;
-  m->msg_deleted = 0;
-  m->msg_new = 0;
-  m->msg_unread = 0;
-  m->changed = false;
-  m->msg_flagged = 0;
-  padding = mx_msg_padding_size(m);
-  const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
-  for (i = 0, j = 0; i < m->msg_count; i++)
+  if (mv->mailbox)
   {
-    if (!m->emails[i])
-      break;
-    if (!m->emails[i]->quasi_deleted &&
-        (!m->emails[i]->deleted || ((m->type == MUTT_MAILDIR) && c_maildir_trash)))
+    notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
+
+    // Disconnect the Emails before freeing the Threads
+    for (int i = 0; i < mv->mailbox->msg_count; i++)
     {
-      if (i != j)
-      {
-        m->emails[j] = m->emails[i];
-        m->emails[i] = NULL;
-      }
-      m->emails[j]->msgno = j;
-      if (m->emails[j]->vnum != -1)
-      {
-        eview_free(&mv->v2r[mv->vcount]);
-        mv->v2r[mv->vcount] = eview_new(m->emails[j]);
-        m->emails[j]->vnum = mv->vcount++;
-        struct Body *b = m->emails[j]->body;
-        mv->vsize += b->length + b->offset - b->hdr_offset + padding;
-      }
-
-      m->emails[j]->changed = false;
-      m->emails[j]->env->changed = false;
-
-      if ((m->type == MUTT_MAILDIR) && c_maildir_trash)
-      {
-        if (m->emails[j]->deleted)
-          m->msg_deleted++;
-      }
-
-      if (m->emails[j]->tagged)
-        m->msg_tagged++;
-      if (m->emails[j]->flagged)
-        m->msg_flagged++;
-      if (!m->emails[j]->read)
-      {
-        m->msg_unread++;
-        if (!m->emails[j]->old)
-          m->msg_new++;
-      }
-
-      j++;
-    }
-    else
-    {
-      if ((m->type == MUTT_NOTMUCH) || (m->type == MUTT_MH) ||
-          (m->type == MUTT_MAILDIR) || (m->type == MUTT_IMAP))
-      {
-        mailbox_size_sub(m, m->emails[i]);
-      }
-      /* remove message from the hash tables */
-      if (m->subj_hash && m->emails[i]->env->real_subj)
-        mutt_hash_delete(m->subj_hash, m->emails[i]->env->real_subj, m->emails[i]);
-      if (m->id_hash && m->emails[i]->env->message_id)
-        mutt_hash_delete(m->id_hash, m->emails[i]->env->message_id, m->emails[i]);
-      mutt_label_hash_remove(m, m->emails[i]);
-
-      if (m->type == MUTT_IMAP)
-        imap_notify_delete_email(m, m->emails[i]);
-
-      mailbox_gc_add(m->emails[i]);
-      m->emails[i] = NULL;
+      struct Email *e = mv->mailbox->emails[i];
+      if (!e)
+        continue;
+      e->thread = NULL;
+      e->threaded = false;
     }
   }
-  m->msg_count = j;
+
+  mutt_thread_ctx_free(&mv->threads);
+  notify_free(&mv->notify);
+  FREE(&mv->pattern);
+  mutt_pattern_free(&mv->limit_pattern);
+
+  for (size_t i = 0; i < mv->vcount; i++)
+    eview_free(&mv->v2r[i]);
+
+  FREE(&mv->v2r);
+  *ptr = NULL;
+  FREE(&mv);
+}
+
+/**
+ * mview_new - Create a new MailboxView
+ * @param m      Mailbox
+ * @param parent Notification parent
+ * @retval ptr New MailboxView
+ */
+struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
+{
+  if (!m)
+    return NULL;
+
+  struct MailboxView *mv = mutt_mem_calloc(1, sizeof(struct MailboxView));
+
+  mv->notify = notify_new();
+  notify_set_parent(mv->notify, parent);
+  struct EventMview ev_m = { mv };
+  mutt_debug(LL_NOTIFY, "NT_MVIEW_ADD: %p\n", (void *) mv);
+  notify_send(mv->notify, NT_MVIEW, NT_MVIEW_ADD, &ev_m);
+  // If the Mailbox is closed, mv->mailbox must be set to NULL
+  notify_observer_add(m->notify, NT_MAILBOX, mview_mailbox_observer, mv);
+
+  mv->mailbox = m;
+  mv->v2r = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
+  mv->threads = mutt_thread_ctx_init(mv);
+  mv->msg_in_pager = -1;
+  mv->collapsed = false;
+  mview_update(mv);
+
+  return mv;
+}
+
+/**
+ * mview_cleanup - Release memory and initialize a MailboxView
+ * @param mv MailboxView to cleanup
+ */
+static void mview_cleanup(struct MailboxView *mv)
+{
+  FREE(&mv->pattern);
+  mutt_pattern_free(&mv->limit_pattern);
+  if (mv->mailbox)
+    notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
+
+  struct Notify *notify = mv->notify;
+  struct Mailbox *m = mv->mailbox;
+  memset(mv, 0, sizeof(struct MailboxView));
+  mv->notify = notify;
+  mv->mailbox = m;
 }
 
 /**
@@ -338,23 +244,10 @@ int mview_mailbox_observer(struct NotifyCallback *nc)
 
   struct MailboxView *mv = nc->global_data;
 
-  switch (nc->event_subtype)
+  if (nc->event_subtype == NT_MAILBOX_DELETE)
   {
-    case NT_MAILBOX_DELETE:
-      mutt_clear_threads(mv->threads);
-      mview_clean(mv);
-      break;
-    case NT_MAILBOX_INVALID:
-      mview_update(mv);
-      break;
-    case NT_MAILBOX_UPDATE:
-      update_tables(mv);
-      break;
-    case NT_MAILBOX_RESORT:
-      mutt_sort_headers(mv, true);
-      break;
-    default:
-      return 0;
+    mutt_clear_threads(mv->threads);
+    mview_cleanup(mv);
   }
 
   mutt_debug(LL_DEBUG5, "mailbox done\n");

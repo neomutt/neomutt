@@ -63,10 +63,13 @@ struct EmailCompare
  */
 static int compare_email_shim(const void *a, const void *b, void *sdata)
 {
-  const struct Email *ea = *(struct Email const *const *) a;
-  const struct Email *eb = *(struct Email const *const *) b;
   const struct EmailCompare *cmp = sdata;
-  return mutt_compare_emails(ea, eb, cmp->type, cmp->sort, cmp->sort_aux);
+  const struct EmailView *ev_a = *(struct EmailView const *const *) a;
+  const struct EmailView *ev_b = *(struct EmailView const *const *) b;
+
+  const struct Email *e_a = ev_a->email;
+  const struct Email *e_b = ev_b->email;
+  return mutt_compare_emails(e_a, e_b, cmp->type, cmp->sort, cmp->sort_aux);
 }
 
 /**
