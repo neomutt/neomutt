@@ -981,15 +981,13 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   if (mdata->reopen & IMAP_EXPUNGE_PENDING)
   {
     imap_hcache_close(mdata);
-    imap_expunge_mailbox(m, false);
+    imap_expunge_mailbox(m);
 
     imap_hcache_open(adata, mdata);
     mdata->reopen &= ~IMAP_EXPUNGE_PENDING;
   }
 
-  /* undo expunge count updates.
-   * mview_update() will do this at the end of the header fetch. */
-  m->msg_tagged = 0;
+  // undo expunge count updates.
   m->msg_deleted = 0;
   m->msg_new = 0;
   m->msg_unread = 0;

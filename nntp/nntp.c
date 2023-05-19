@@ -1491,7 +1491,6 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     for (int i = 0; i < m->msg_count; i++)
       email_free(&m->emails[i]);
     m->msg_count = 0;
-    m->msg_tagged = 0;
 
     mdata->last_loaded = mdata->first_message - 1;
     const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
@@ -1550,7 +1549,6 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
           /* header marked as deleted, removing from context */
           if (deleted)
           {
-            mutt_set_flag(m, m->emails[i], MUTT_TAG, false, true);
             email_free(&m->emails[i]);
             continue;
           }
@@ -1618,10 +1616,6 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     rc = MX_STATUS_REOPENED;
   }
 
-  /* some emails were removed, mailboxview must be updated */
-  if (rc == MX_STATUS_REOPENED)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
-
   /* fetch headers of new articles */
   if (mdata->last_message > mdata->last_loaded)
   {
@@ -1635,13 +1629,10 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
       nntp_hcache_update(mdata, hc);
     }
 #endif
-    int old_msg_count = m->msg_count;
     rc2 = nntp_fetch_headers(m, hc, mdata->last_loaded + 1, mdata->last_message, false);
     m->verbose = verbose;
     if (rc2 == 0)
     {
-      if (m->msg_count > old_msg_count)
-        mailbox_changed(m, NT_MAILBOX_INVALID);
       mdata->last_loaded = mdata->last_message;
     }
     if ((rc == MX_STATUS_OK) && (m->msg_count > oldmsgcount))
@@ -2224,7 +2215,6 @@ int nntp_check_msgid(struct Mailbox *m, const char *msgid)
   e->changed = true;
   e->received = e->date_sent;
   e->index = m->msg_count++;
-  mailbox_changed(m, NT_MAILBOX_INVALID);
   return 0;
 }
 
@@ -2284,15 +2274,12 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
 #ifdef USE_HCACHE
   hc = nntp_hcache_open(mdata);
 #endif
-  int old_msg_count = m->msg_count;
   for (int i = 0; i < cc.num; i++)
   {
     rc = nntp_fetch_headers(m, hc, cc.child[i], cc.child[i], true);
     if (rc < 0)
       break;
   }
-  if (m->msg_count > old_msg_count)
-    mailbox_changed(m, NT_MAILBOX_INVALID);
 
 #ifdef USE_HCACHE
   hcache_close(&hc);
@@ -2710,9 +2697,8 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
   nntp_edata_get(e)->parsed = true;
   mutt_parse_mime_message(e, msg->fp);
 
-  /* these would normally be updated in mview_update(), but the
-   * full headers aren't parsed with overview, so the information wasn't
-   * available then */
+  /* the full headers aren't parsed with overview,
+   * so the information wasn't available then */
   if (WithCrypto)
     e->security = crypt_query(e->body);
 

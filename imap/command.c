@@ -1397,7 +1397,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
     if (mdata->reopen & IMAP_EXPUNGE_PENDING)
     {
       mutt_debug(LL_DEBUG2, "Expunging mailbox\n");
-      imap_expunge_mailbox(adata->mailbox, true);
+      imap_expunge_mailbox(adata->mailbox);
       /* Detect whether we've gotten unexpected EXPUNGE messages */
       if (!(mdata->reopen & IMAP_EXPUNGE_EXPECTED))
         mdata->check_status |= IMAP_EXPUNGE_PENDING;

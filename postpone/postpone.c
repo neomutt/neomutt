@@ -153,7 +153,7 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     if (optnews)
       OptNews = false;
     struct Mailbox *m_post = mx_path_resolve(c_postponed);
-    if (mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET))
+    if (mx_mbox_open(m_post, MUTT_QUIET))
     {
       PostCount = m_post->msg_count;
       mx_fastclose_mailbox(m_post, false);
@@ -668,7 +668,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   struct Mailbox *m = mx_path_resolve(c_postponed);
   if (m_cur != m)
   {
-    if (!mx_mbox_open(m, MUTT_NOSORT))
+    if (!mx_mbox_open(m, MUTT_OPEN_NO_FLAGS))
     {
       PostCount = 0;
       mutt_error(_("No postponed messages"));

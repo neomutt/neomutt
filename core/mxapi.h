@@ -36,17 +36,16 @@ struct Message;
 struct stat;
 
 /* flags for mutt_open_mailbox() */
-typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MUTT_NOSORT
+typedef uint8_t OpenMailboxFlags;   ///< Flags for mutt_open_mailbox(), e.g. #MUTT_READONLY
 #define MUTT_OPEN_NO_FLAGS       0  ///< No flags are set
-#define MUTT_NOSORT        (1 << 0) ///< Do not sort the mailbox after opening it
-#define MUTT_APPEND        (1 << 1) ///< Open mailbox for appending messages
-#define MUTT_READONLY      (1 << 2) ///< Open in read-only mode
-#define MUTT_QUIET         (1 << 3) ///< Do not print any messages
-#define MUTT_NEWFOLDER     (1 << 4) ///< Create a new folder - same as #MUTT_APPEND,
+#define MUTT_APPEND        (1 << 0) ///< Open mailbox for appending messages
+#define MUTT_READONLY      (1 << 1) ///< Open in read-only mode
+#define MUTT_QUIET         (1 << 2) ///< Do not print any messages
+#define MUTT_NEWFOLDER     (1 << 3) ///< Create a new folder - same as #MUTT_APPEND,
                                     ///< but uses mutt_file_fopen() with mode "w" for mbox-style folders.
                                     ///< This will truncate an existing file.
-#define MUTT_PEEK          (1 << 5) ///< Revert atime back after taking a look (if applicable)
-#define MUTT_APPENDNEW     (1 << 6) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
+#define MUTT_PEEK          (1 << 4) ///< Revert atime back after taking a look (if applicable)
+#define MUTT_APPENDNEW     (1 << 5) ///< Set in mx_open_mailbox_append if the mailbox doesn't exist.
                                     ///< Used by maildir/mh to create the mailbox.
 
 typedef uint8_t CheckStatsFlags;                ///< Flags for mutt_mailbox_check

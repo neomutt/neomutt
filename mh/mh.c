@@ -602,8 +602,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
   hcache_close(&hc);
 #endif
 
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (m && mha && (ARRAY_SIZE(mha) > 0) && (c_sort == SORT_ORDER))
+  if (m && mha && (ARRAY_SIZE(mha) > 0))
   {
     mutt_debug(LL_DEBUG3, "mh: sorting %s into natural order\n", mailbox_path(m));
     ARRAY_SORT(mha, mh_sort_path, NULL);
@@ -1019,17 +1018,12 @@ static enum MxStatus mh_check(struct Mailbox *m)
 
   mutt_hash_free(&fnames);
 
-  /* If we didn't just get new mail, update the tables. */
-  if (occult)
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-
   /* Incorporate new messages */
   num_new = mh_move_to_mailbox(m, &mha);
   mharray_clear(&mha);
 
   if (num_new > 0)
   {
-    mailbox_changed(m, NT_MAILBOX_INVALID);
     m->changed = true;
   }
 

@@ -184,7 +184,7 @@ int imap_rename_mailbox(struct ImapAccountData *adata, char *oldname, const char
 int imap_open_connection(struct ImapAccountData *adata);
 void imap_close_connection(struct ImapAccountData *adata);
 int imap_read_literal(FILE *fp, struct ImapAccountData *adata, unsigned long bytes, struct Progress *progress);
-void imap_expunge_mailbox(struct Mailbox *m, bool resort);
+void imap_expunge_mailbox(struct Mailbox *m);
 int imap_login(struct ImapAccountData *adata);
 int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e, struct Buffer *cmd, enum QuadOption *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
