@@ -673,13 +673,12 @@ void imap_notify_delete_email(struct Mailbox *m, struct Email *e)
 /**
  * imap_expunge_mailbox - Purge messages from the server
  * @param m Mailbox
- * @param resort Trigger a resort?
  *
  * Purge IMAP portion of expunged messages from the context. Must not be done
  * while something has a handle on any headers (eg inside pager or editor).
  * That is, check #IMAP_REOPEN_ALLOW.
  */
-void imap_expunge_mailbox(struct Mailbox *m, bool resort)
+void imap_expunge_mailbox(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -737,12 +736,6 @@ void imap_expunge_mailbox(struct Mailbox *m, bool resort)
 #ifdef USE_HCACHE
   imap_hcache_close(mdata);
 #endif
-
-  mailbox_changed(m, NT_MAILBOX_UPDATE);
-  if (resort)
-  {
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-  }
 }
 
 /**
@@ -905,20 +898,6 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
   }
 
   return false;
-}
-
-/**
- * imap_sort_email_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
- */
-static int imap_sort_email_uid(const void *a, const void *b, void *sdata)
-{
-  const struct Email *ea = *(struct Email const *const *) a;
-  const struct Email *eb = *(struct Email const *const *) b;
-
-  const unsigned int ua = imap_edata_get((struct Email *) ea)->uid;
-  const unsigned int ub = imap_edata_get((struct Email *) eb)->uid;
-
-  return mutt_numeric_cmp(ua, ub);
 }
 
 /**
@@ -1491,7 +1470,6 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (!m)
     return -1;
 
-  struct Email **emails = NULL;
   int rc;
 
   struct ImapAccountData *adata = imap_adata_get(m);
@@ -1597,22 +1575,15 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   imap_hcache_close(mdata);
 #endif
 
-  /* presort here to avoid doing 10 resorts in imap_exec_msg_set */
-  emails = MUTT_MEM_MALLOC(m->msg_count, struct Email *);
-  memcpy(emails, m->emails, m->msg_count * sizeof(struct Email *));
-  mutt_qsort_r(emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid, NULL);
-
-  rc = sync_helper(m, emails, m->msg_count, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
+  rc = sync_helper(m, m->emails, m->msg_count, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
   if (rc >= 0)
-    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_FLAG, "\\Flagged");
+    rc |= sync_helper(m, m->emails, m->msg_count, MUTT_ACL_WRITE, MUTT_FLAG, "\\Flagged");
   if (rc >= 0)
-    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_OLD, "Old");
+    rc |= sync_helper(m, m->emails, m->msg_count, MUTT_ACL_WRITE, MUTT_OLD, "Old");
   if (rc >= 0)
-    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_SEEN, MUTT_READ, "\\Seen");
+    rc |= sync_helper(m, m->emails, m->msg_count, MUTT_ACL_SEEN, MUTT_READ, "\\Seen");
   if (rc >= 0)
-    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
-
-  FREE(&emails);
+    rc |= sync_helper(m, m->emails, m->msg_count, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
 
   /* Flush the queued flags if any were changed in sync_helper. */
   if (rc > 0)
