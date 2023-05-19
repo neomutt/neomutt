@@ -308,13 +308,6 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   bool series;
   unsigned int entries;
 
-  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != EMAIL_SORT_UNSORTED)
-  {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", EMAIL_SORT_UNSORTED, NULL);
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-  }
-
   entries = mdata->newsrc_len;
   if (!entries)
   {
@@ -375,12 +368,6 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
     mdata->newsrc_len++;
   }
   MUTT_MEM_REALLOC(&mdata->newsrc_ent, mdata->newsrc_len, struct NewsrcEntry);
-
-  if (c_sort != EMAIL_SORT_UNSORTED)
-  {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-  }
 }
 
 /**
@@ -1149,7 +1136,7 @@ void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t
   {
     if ((anum >= mdata->newsrc_ent[i].first) && (anum <= mdata->newsrc_ent[i].last))
     {
-      /* can't use mutt_set_flag() because mview_update() didn't get called yet */
+      // can't use mutt_set_flag()
       e->read = true;
       return;
     }
