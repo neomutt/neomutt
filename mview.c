@@ -356,53 +356,6 @@ bool message_is_tagged(struct Email *e)
 }
 
 /**
- * el_add_tagged - Get a list of the tagged Emails
- * @param el         Empty EmailList to populate
- * @param mv        Current Mailbox
- * @param e          Current Email
- * @param use_tagged Use tagged Emails
- * @retval num Number of selected emails
- * @retval -1  Error
- */
-int el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e, bool use_tagged)
-{
-  int count = 0;
-
-  if (use_tagged)
-  {
-    if (!mv || !mv->mailbox || !mv->mailbox->emails)
-      return -1;
-
-    struct Mailbox *m = mv->mailbox;
-    for (int i = 0; i < m->msg_count; i++)
-    {
-      e = m->emails[i];
-      if (!e)
-        break;
-      if (!message_is_tagged(e))
-        continue;
-
-      struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-      en->email = e;
-      STAILQ_INSERT_TAIL(el, en, entries);
-      count++;
-    }
-  }
-  else
-  {
-    if (!e)
-      return -1;
-
-    struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-    en->email = e;
-    STAILQ_INSERT_TAIL(el, en, entries);
-    count = 1;
-  }
-
-  return count;
-}
-
-/**
  * ea_add_tagged - Get an array of the tagged Emails
  * @param el         Empty EmailArray to populate
  * @param mv         Current Mailbox

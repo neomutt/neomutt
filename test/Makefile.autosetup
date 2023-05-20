@@ -173,8 +173,6 @@ EMAIL_OBJS	= test/email/common.o \
 		  test/email/email_header_update.o \
 		  test/email/email_new.o \
 		  test/email/email_size.o \
-		  test/email/emaillist_add_email.o \
-		  test/email/emaillist_clear.o \
 		  test/email/mutt_autocrypthdr_free.o \
 		  test/email/mutt_autocrypthdr_new.o
 
