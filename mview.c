@@ -403,6 +403,45 @@ int el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e,
 }
 
 /**
+ * ea_add_tagged - Get an array of the tagged Emails
+ * @param el         Empty EmailArray to populate
+ * @param mv         Current Mailbox
+ * @param e          Current Email
+ * @param use_tagged Use tagged Emails
+ * @retval num Number of selected emails
+ * @retval -1  Error
+ */
+int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e, bool use_tagged)
+{
+  if (use_tagged)
+  {
+    if (!mv || !mv->mailbox || !mv->mailbox->emails)
+      return -1;
+
+    struct Mailbox *m = mv->mailbox;
+    for (int i = 0; i < m->msg_count; i++)
+    {
+      e = m->emails[i];
+      if (!e)
+        break;
+      if (!message_is_tagged(e))
+        continue;
+
+      ARRAY_ADD(ea, e);
+    }
+  }
+  else
+  {
+    if (!e)
+      return -1;
+
+    ARRAY_ADD(ea, e);
+  }
+
+  return ARRAY_SIZE(ea);
+}
+
+/**
  * mutt_get_virt_email - Get a virtual Email
  * @param m    Mailbox
  * @param vnum Virtual index number

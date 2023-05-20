@@ -123,6 +123,7 @@ struct Email
                                ///< (only valid when collapsed is set)
   char *tree;                  ///< Character string to print thread tree
 };
+ARRAY_HEAD(EmailArray, struct Email *);
 
 /**
  * struct EmailNode - List of Emails
