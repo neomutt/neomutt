@@ -299,7 +299,9 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
         tree = tree->next;
     }
     else if (tree->prev)
+    {
       tree = tree->prev;
+    }
     else
     {
       while (tree && !tree->prev)
@@ -325,9 +327,13 @@ static void calculate_visibility(struct MuttThread *tree, int *max_depth)
         tree->deep = false;
       }
       if (!tree->deep && tree->child && tree->subtree_visible)
+      {
         tree = tree->child;
+      }
       else if (tree->next)
+      {
         tree = tree->next;
+      }
       else
       {
         while (tree && !tree->next)
@@ -901,7 +907,9 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
             }
           }
           else if (!thread->sort_aux_key)
+          {
             thread->sort_aux_key = sort_aux_key;
+          }
 
           /* ...but sort_thread_key may require searching the entire
            * list of siblings */
@@ -1556,9 +1564,13 @@ int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
     }
 
     if (thread->child)
+    {
       thread = thread->child;
+    }
     else if (thread->next)
+    {
       thread = thread->next;
+    }
     else
     {
       bool done = false;
@@ -1590,9 +1602,13 @@ int mutt_traverse_thread(struct Email *e_cur, MuttThreadFlags flag)
         e_cur->num_hidden = num_hidden + 1;
 
       if (thread->child)
+      {
         thread = thread->child;
+      }
       else if (thread->next)
+      {
         thread = thread->next;
+      }
       else
       {
         bool done = false;

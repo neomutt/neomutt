@@ -87,9 +87,13 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
     tok->dptr++;
 
     if (ch == qc)
+    {
       qc = 0; /* end of quote */
+    }
     else if (!qc && ((ch == '\'') || (ch == '"')) && !(flags & TOKEN_QUOTE))
+    {
       qc = ch;
+    }
     else if ((ch == '\\') && (qc != '\''))
     {
       if (tok->dptr[0] == '\0')
@@ -137,11 +141,17 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         return -1; /* premature end of token */
       ch = *tok->dptr++;
       if (ch == '^')
+      {
         buf_addch(dest, ch);
+      }
       else if (ch == '[')
+      {
         buf_addch(dest, '\033'); // Escape
+      }
       else if (isalpha((unsigned char) ch))
+      {
         buf_addch(dest, toupper((unsigned char) ch) - '@');
+      }
       else
       {
         buf_addch(dest, '^');

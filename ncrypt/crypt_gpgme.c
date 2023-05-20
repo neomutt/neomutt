@@ -2948,9 +2948,13 @@ static char *list_to_pattern(struct ListHead *list)
           *p++ = 'B';
         }
         else if (*s == ' ')
+        {
           *p++ = '+';
+        }
         else
+        {
           *p++ = *s;
+        }
       }
     }
   }

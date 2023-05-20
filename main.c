@@ -988,9 +988,13 @@ main
       include_file = NULL;
     }
     else if (include_file)
+    {
       infile = include_file;
+    }
     else
+    {
       edit_infile = false;
+    }
 
     if (infile || bodytext)
     {
@@ -1049,7 +1053,9 @@ main
             mutt_file_fclose(&fp_in);
         }
         else if (bodytext)
+        {
           fputs(bodytext, fp_out);
+        }
         mutt_file_fclose(&fp_out);
 
         fp_in = fopen(buf_string(&tempfile), "r");
@@ -1295,7 +1301,9 @@ main
           buf_strcpy(&folder, c_spool_file);
       }
       else if (c_folder)
+      {
         buf_strcpy(&folder, c_folder);
+      }
       /* else no folder */
     }
 

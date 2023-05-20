@@ -189,7 +189,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
                  ((aptr->body->type != TYPE_TEXT) || aptr->body->noconv) ? 'n' : 'c');
       }
       else if ((aptr->body->type != TYPE_TEXT) || aptr->body->noconv)
+      {
         optional = false;
+      }
       break;
     case 'd':
     {
@@ -261,7 +263,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         }
       }
       else if (!aptr->body->filename)
+      {
         optional = false;
+      }
       break;
     case 'D':
       if (!optional)
@@ -339,7 +343,9 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         mutt_format_s(buf, buflen, prec, tmp);
       }
       else if (l == 0)
+      {
         optional = false;
+      }
 
       break;
     }

@@ -134,7 +134,9 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
         snprintf(buf, buflen, fmt, NONULL(remailer->addr));
       }
       else if (!remailer->addr)
+      {
         optional = false;
+      }
       break;
 
     case 'c':
@@ -160,7 +162,9 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
         snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
       }
       else if (!remailer->shortname)
+      {
         optional = false;
+      }
       break;
 
     default:

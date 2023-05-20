@@ -147,8 +147,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
         material = 1 << (b & 0x1f);
         partial = true;
       }
-      else
-      /* b == 255 */
+      else /* b == 255 */
       {
         unsigned char buf[4];
         if (fread(buf, 4, 1, fp) < 1)
@@ -168,8 +167,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
 
     } while (partial);
   }
-  else
-  /* Old-Style PGP */
+  else /* Old-Style PGP */
   {
     int bytes = 0;
     PacketBuf[0] = 0x80 | ((ctb >> 2) & 0x0f);

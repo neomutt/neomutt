@@ -403,7 +403,9 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *cur, s
     }
   }
   else if (nattach)
+  {
     parent = find_common_parent(actx, nattach);
+  }
 
   return parent;
 }
@@ -1012,7 +1014,9 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
       mime_reply_any = true;
   }
   else if (nattach == 1)
+  {
     mime_reply_any = true;
+  }
 
   e_tmp = email_new();
   e_tmp->env = mutt_env_new();

@@ -395,7 +395,9 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
       }
       else if (!(kflags & KEYFLAG_ABILITIES))
+      {
         optional = false;
+      }
       break;
 
     case 'f':
@@ -405,7 +407,9 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, crypt_flags(kflags));
       }
       else if (!(kflags & KEYFLAG_RESTRICTIONS))
+      {
         optional = false;
+      }
       break;
 
     case 'i':

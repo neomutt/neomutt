@@ -482,9 +482,13 @@ static int op_pager_search_next(struct IndexSharedData *shared,
 
       const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
       if (i < priv->lines_used)
+      {
         priv->top_line = i;
+      }
       else if (priv->wrapped || !c_wrap_search)
+      {
         mutt_error(_("Not found"));
+      }
       else
       {
         mutt_message(_("Search wrapped to top"));
@@ -508,9 +512,13 @@ static int op_pager_search_next(struct IndexSharedData *shared,
 
       const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
       if (i >= 0)
+      {
         priv->top_line = i;
+      }
       else if (priv->wrapped || !c_wrap_search)
+      {
         mutt_error(_("Not found"));
+      }
       else
       {
         mutt_message(_("Search wrapped to bottom"));

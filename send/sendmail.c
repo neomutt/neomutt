@@ -197,7 +197,9 @@ static int send_msg(const char *path, struct SendmailArgs *args,
       alarm(wait_time);
     }
     else if (wait_time < 0)
+    {
       _exit(0xff & EX_OK);
+    }
 
     if (waitpid(pid, &st, 0) > 0)
     {
@@ -461,7 +463,9 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     }
   }
   else if (childout)
+  {
     unlink(childout);
+  }
 
   FREE(&childout);
   FREE(&path);

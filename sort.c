@@ -117,9 +117,13 @@ static int compare_subject(const struct Email *a, const struct Email *b, bool re
       rc = -1;
   }
   else if (!b->env->real_subj)
+  {
     rc = 1;
+  }
   else
+  {
     rc = mutt_istr_cmp(a->env->real_subj, b->env->real_subj);
+  }
   return reverse ? -rc : rc;
 }
 

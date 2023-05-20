@@ -374,9 +374,13 @@ static int pgp_check_decryption_okay(FILE *fp_in)
     s = line + plen;
     mutt_debug(LL_DEBUG2, "checking \"%s\"\n", line);
     if (mutt_str_startswith(s, "BEGIN_DECRYPTION"))
+    {
       inside_decrypt = 1;
+    }
     else if (mutt_str_startswith(s, "END_DECRYPTION"))
+    {
       inside_decrypt = 0;
+    }
     else if (mutt_str_startswith(s, "PLAINTEXT"))
     {
       if (!inside_decrypt)
@@ -744,9 +748,13 @@ int pgp_class_application_handler(struct Body *m, struct State *state)
           }
         }
         else if (pgp_keyblock)
+        {
           state_attach_puts(state, _("[-- END PGP PUBLIC KEY BLOCK --]\n"));
+        }
         else
+        {
           state_attach_puts(state, _("[-- END PGP SIGNED MESSAGE --]\n"));
+        }
       }
     }
     else
@@ -1949,10 +1957,10 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
       choices = "SaCo";
     }
   }
-  /* Opportunistic encryption option is set, but is toggled off
-   * for this message.  */
   else if (c_crypt_opportunistic_encrypt)
   {
+    /* Opportunistic encryption option is set, but is toggled off
+     * for this message.  */
     /* When the message is not selected for signing or encryption, the toggle
      * between PGP/MIME and Traditional doesn't make sense.  */
     if (e->security & (SEC_ENCRYPT | SEC_SIGN))

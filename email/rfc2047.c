@@ -124,7 +124,9 @@ static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *t
       *str++ = hex[c & 0x0f];
     }
     else
+    {
       *str++ = c;
+    }
   }
   memcpy(str, "?=", 2);
   str += 2;

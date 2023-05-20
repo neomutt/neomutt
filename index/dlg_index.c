@@ -856,7 +856,9 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
           break;
         }
         else if (tmp->message->vnum >= 0)
+        {
           break;
+        }
       }
       if (flags & MUTT_FORMAT_FORCESUBJ)
       {

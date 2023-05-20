@@ -237,7 +237,9 @@ static int fetch_uidl(const char *line, void *data)
     m->emails[i]->edata_free = pop_edata_free;
   }
   else if (m->emails[i]->index != index - 1)
+  {
     adata->clear_cache = true;
+  }
 
   m->emails[i]->index = index - 1;
 

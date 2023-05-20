@@ -575,7 +575,9 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
       e_new->security |= APPLICATION_PGP;
     }
     else if (WithCrypto & APPLICATION_SMIME)
+    {
       e_new->security |= APPLICATION_SMIME;
+    }
 
     /* destroy the signature */
     mutt_body_free(&e_new->body->parts->next);

@@ -445,19 +445,33 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   if (mutt_istr_equal("bold", buf->data))
+  {
     *attrs |= A_BOLD;
+  }
   else if (mutt_istr_equal("italic", buf->data))
+  {
     *attrs |= A_ITALIC;
+  }
   else if (mutt_istr_equal("none", buf->data))
+  {
     *attrs = A_NORMAL; // Use '=' to clear other bits
+  }
   else if (mutt_istr_equal("normal", buf->data))
+  {
     *attrs = A_NORMAL; // Use '=' to clear other bits
+  }
   else if (mutt_istr_equal("reverse", buf->data))
+  {
     *attrs |= A_REVERSE;
+  }
   else if (mutt_istr_equal("standout", buf->data))
+  {
     *attrs |= A_STANDOUT;
+  }
   else if (mutt_istr_equal("underline", buf->data))
+  {
     *attrs |= A_UNDERLINE;
+  }
   else
   {
     buf_printf(err, _("%s: no such attribute"), buf->data);

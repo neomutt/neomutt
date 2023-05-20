@@ -558,9 +558,13 @@ int text_enriched_handler(struct Body *a, struct State *state)
           text_state = TEXT;
         }
         else if (tag_len < 1024) /* ignore overly long tags */
+        {
           tag[tag_len++] = wc;
+        }
         else
+        {
           text_state = BOGUS_TAG;
+        }
         break;
 
       case BOGUS_TAG:

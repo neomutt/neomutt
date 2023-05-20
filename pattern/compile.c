@@ -786,11 +786,17 @@ void mutt_pattern_free(struct PatternList **pat)
     next = SLIST_NEXT(np, entries);
 
     if (np->is_multi)
+    {
       mutt_list_free(&np->p.multi_cases);
+    }
     else if (np->string_match || np->dynamic)
+    {
       FREE(&np->p.str);
+    }
     else if (np->group_match)
+    {
       np->p.group = NULL;
+    }
     else if (np->p.regex)
     {
       regfree(np->p.regex);

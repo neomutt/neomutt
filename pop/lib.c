@@ -153,13 +153,21 @@ static int fetch_capa(const char *line, void *data)
     buf_strcpy(&adata->auth_list, c);
   }
   else if (mutt_istr_startswith(line, "STLS"))
+  {
     adata->cmd_stls = true;
+  }
   else if (mutt_istr_startswith(line, "USER"))
+  {
     adata->cmd_user = 1;
+  }
   else if (mutt_istr_startswith(line, "UIDL"))
+  {
     adata->cmd_uidl = 1;
+  }
   else if (mutt_istr_startswith(line, "TOP"))
+  {
     adata->cmd_top = 1;
+  }
 
   return 0;
 }

@@ -382,7 +382,9 @@ static int msg_parse_fetch(struct ImapHeader *h, char *s)
       }
     }
     else if (*s == ')')
+    {
       s++; /* end of request */
+    }
     else if (*s)
     {
       /* got something i don't understand */
@@ -865,19 +867,19 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
 
       msn++;
     }
-    /* A non-zero uid missing from the header cache is either the
-     * result of an expunged message (not recorded in the uid seqset)
-     * or a hole in the header cache.
-     *
-     * We have to assume it's an earlier expunge and compact the msn's
-     * in that case, because cmd_parse_vanished() won't find it in the
-     * uid_hash and decrement later msn's there.
-     *
-     * Thus we only increment the uid if the uid was 0: an actual
-     * stored "blank" in the uid seqset.
-     */
     else if (!uid)
     {
+      /* A non-zero uid missing from the header cache is either the
+       * result of an expunged message (not recorded in the uid seqset)
+       * or a hole in the header cache.
+       *
+       * We have to assume it's an earlier expunge and compact the msn's
+       * in that case, because cmd_parse_vanished() won't find it in the
+       * uid_hash and decrement later msn's there.
+       *
+       * Thus we only increment the uid if the uid was 0: an actual
+       * stored "blank" in the uid seqset.
+       */
       msn++;
     }
   }
@@ -2050,12 +2052,12 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 
           fetched = true;
         }
-        /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
-         * change (eg from \Unseen to \Seen).
-         * Uncommitted changes in neomutt take precedence. If we decide to
-         * incrementally update flags later, this won't stop us syncing */
         else if (!e->changed && mutt_istr_startswith(pc, "FLAGS"))
         {
+          /* UW-IMAP will provide a FLAGS update here if the FETCH causes a
+           * change (eg from \Unseen to \Seen).
+           * Uncommitted changes in neomutt take precedence. If we decide to
+           * incrementally update flags later, this won't stop us syncing */
           pc = imap_set_flags(m, e, pc, NULL);
           if (!pc)
             goto bail;

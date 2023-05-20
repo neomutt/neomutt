@@ -371,7 +371,9 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
         snprintf(buf, buflen, fmt, pgp_key_abilities(kflags));
       }
       else if (!(kflags & KEYFLAG_ABILITIES))
+      {
         optional = false;
+      }
       break;
     case 'f':
       if (!optional)
@@ -380,7 +382,9 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
         snprintf(buf, buflen, fmt, pgp_flags(kflags));
       }
       else if (!(kflags & KEYFLAG_RESTRICTIONS))
+      {
         optional = false;
+      }
       break;
     case 'k':
       if (!optional)

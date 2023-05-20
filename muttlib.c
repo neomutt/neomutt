@@ -203,11 +203,17 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
           buf_strcpy(p, NONULL(c_folder));
         }
         else if (mb_type == MUTT_NOTMUCH)
+        {
           buf_strcpy(p, NONULL(c_folder));
+        }
         else if (c_folder && (c_folder[strlen(c_folder) - 1] == '/'))
+        {
           buf_strcpy(p, NONULL(c_folder));
+        }
         else
+        {
           buf_printf(p, "%s/", NONULL(c_folder));
+        }
 
         tail = s + 1;
         break;
@@ -381,9 +387,13 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
                   MIN(pat_match[0].rm_eo - pat_match[0].rm_so + 1, destlen));
   }
   else if ((p = strchr(pw->pw_gecos, ',')))
+  {
     mutt_str_copy(dest, pw->pw_gecos, MIN(destlen, p - pw->pw_gecos + 1));
+  }
   else
+  {
     mutt_str_copy(dest, pw->pw_gecos, destlen);
+  }
 
   pwnl = strlen(pw->pw_name);
 
@@ -519,7 +529,9 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
         p += 3;
       }
       else
+      {
         *q++ = *p++;
+      }
     }
     *q = '\0';
   }

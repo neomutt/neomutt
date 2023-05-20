@@ -230,7 +230,9 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
         }
       }
       else if (*s == '\"')
+      {
         return NULL; /* invalid encoding */
+      }
       else if ((*s == ',') || (*s == '=') || (*s == '+') || (*s == '<') ||
                (*s == '>') || (*s == '#') || (*s == ';'))
       {
@@ -255,10 +257,14 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
           s++;
         }
         else
+        {
           *p++ = *s;
+        }
       }
       else
+      {
         *p++ = *s;
+      }
     }
     *p = '\0';
   }
@@ -346,9 +352,13 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
       print_utf8(fp, userid + 1, s - userid - 1);
   }
   else if (*userid == '(')
+  {
     fputs(_("[Can't display this user ID (unknown encoding)]"), fp);
+  }
   else if (!isalnum(userid[0]))
+  {
     fputs(_("[Can't display this user ID (invalid encoding)]"), fp);
+  }
   else
   {
     struct DnArray *dn = parse_dn(userid);

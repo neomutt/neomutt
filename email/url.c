@@ -209,7 +209,9 @@ int url_pct_decode(char *s)
       }
     }
     else
+    {
       *d++ = *s;
+    }
   }
   *d = '\0';
   return 0;

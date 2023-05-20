@@ -851,11 +851,17 @@ static const char *km_keyname(int c)
     }
   }
   else if ((c >= KEY_F0) && (c < KEY_F(256))) /* this maximum is just a guess */
+  {
     sprintf(buf, "<F%d>", c - KEY_F0);
+  }
   else if (IsPrint(c))
+  {
     snprintf(buf, sizeof(buf), "%c", (unsigned char) c);
+  }
   else
+  {
     snprintf(buf, sizeof(buf), "\\x%hx", (unsigned short) c);
+  }
   return buf;
 }
 
@@ -1194,7 +1200,9 @@ static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus
       buf_printf(err, _("%s: null key sequence"), bind ? "bind" : "macro");
     }
     else if (MoreArgs(s))
+    {
       return buf.data;
+    }
   }
   else
   {

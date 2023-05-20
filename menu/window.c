@@ -105,9 +105,13 @@ static int menu_repaint(struct MuttWindow *win)
 
   /* move the cursor out of the way */
   if (c_arrow_cursor)
+  {
     mutt_window_move(menu->win, 2, menu->current - menu->top);
+  }
   else if (c_braille_friendly)
+  {
     mutt_window_move(menu->win, 0, menu->current - menu->top);
+  }
   else
   {
     mutt_window_move(menu->win, menu->win->state.cols - 1, menu->current - menu->top);

@@ -137,7 +137,9 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
     }
   }
   else if (c_check_mbox_size && m_cur && buf_is_empty(&m_cur->pathbuf))
+  {
     m_check->size = (off_t) st.st_size; /* update the size of current folder */
+  }
 
   if (!m_check->has_new)
     m_check->notified = false;

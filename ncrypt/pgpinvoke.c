@@ -95,7 +95,9 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(buf, buflen, fmt, NONULL(cctx->signas));
       }
       else if (!cctx->signas)
+      {
         optional = false;
+      }
       break;
     }
     case 'f':
@@ -106,7 +108,9 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(buf, buflen, fmt, NONULL(cctx->fname));
       }
       else if (!cctx->fname)
+      {
         optional = false;
+      }
       break;
     }
     case 'p':
@@ -117,7 +121,9 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(buf, buflen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
       }
       else if (!cctx->need_passphrase || pgp_use_gpg_agent())
+      {
         optional = false;
+      }
       break;
     }
     case 'r':
@@ -128,7 +134,9 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(buf, buflen, fmt, NONULL(cctx->ids));
       }
       else if (!cctx->ids)
+      {
         optional = false;
+      }
       break;
     }
     case 's':
@@ -139,7 +147,9 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
         snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
       }
       else if (!cctx->sig_fname)
+      {
         optional = false;
+      }
       break;
     }
     default:

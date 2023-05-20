@@ -347,15 +347,25 @@ static int user_is_recipient(struct Email *e)
         e->recipient = 1; /* unique recipient */
     }
     else if (user_in_addr(&env->cc))
+    {
       e->recipient = 3;
+    }
     else if (check_for_mailing_list(&env->to, NULL, NULL, 0))
+    {
       e->recipient = 5;
+    }
     else if (check_for_mailing_list(&env->cc, NULL, NULL, 0))
+    {
       e->recipient = 5;
+    }
     else if (user_in_addr(&env->reply_to))
+    {
       e->recipient = 6;
+    }
     else
+    {
       e->recipient = 0;
+    }
   }
 
   return e->recipient;
@@ -735,9 +745,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
         struct tm tm;
         if ((op == '[') || (op == 'D'))
+        {
           tm = mutt_date_localtime(e->date_sent);
+        }
         else if (op == '(')
+        {
           tm = mutt_date_localtime(e->received);
+        }
         else if (op == '<')
         {
           tm = mutt_date_localtime(mutt_date_now());
@@ -780,7 +794,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         snprintf(buf, buflen, fmt, mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES));
       }
       else if (mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES) <= 1)
+      {
         optional = false;
+      }
       break;
 
     case 'f':
@@ -821,7 +837,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (!tags)
+      {
         optional = false;
+      }
       FREE(&tags);
       break;
 
@@ -927,7 +945,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
       else if (e->lines <= 0)
+      {
         optional = false;
+      }
       break;
 
     case 'L':
@@ -979,7 +999,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           add_index_color(buf, buflen - colorlen, flags, MT_COLOR_INDEX);
         }
         else
+        {
           *buf = '\0';
+        }
       }
       else
       {
@@ -1175,7 +1197,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf, buflen, prec, e->env->organization ? e->env->organization : "");
       }
       else if (!e->env->organization)
+      {
         optional = false;
+      }
       break;
 
 #ifdef USE_NNTP
@@ -1185,7 +1209,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         mutt_format_s(buf, buflen, prec, e->env->x_comment_to ? e->env->x_comment_to : "");
       }
       else if (!e->env->x_comment_to)
+      {
         optional = false;
+      }
       break;
 #endif
 
@@ -1258,13 +1284,21 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if (e->deleted)
+        {
           ch = get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
+        }
         else if (e->attach_del)
+        {
           ch = get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
+        }
         else if (threads && thread_is_new(e))
+        {
           ch = get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW_THREAD);
+        }
         else if (threads && thread_is_old(e))
+        {
           ch = get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD_THREAD);
+        }
         else if (e->read && (msg_in_pager != e->msgno))
         {
           if (e->replied)
@@ -1287,11 +1321,17 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       {
         const char *ch = NULL;
         if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
+        {
           ch = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN);
+        }
         else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
+        {
           ch = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED);
+        }
         else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
+        {
           ch = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED);
+        }
         else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
         {
           ch = get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
@@ -1318,7 +1358,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         src++;
       }
       else /* fallthrough */
+      {
         break;
+      }
 
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_FLAGS);
       mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
@@ -1330,9 +1372,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       /* New/Old for threads; replied; New/Old for messages */
       const char *first = NULL;
       if (threads && thread_is_new(e))
+      {
         first = get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW_THREAD);
+      }
       else if (threads && thread_is_old(e))
+      {
         first = get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD_THREAD);
+      }
       else if (e->read && (msg_in_pager != e->msgno))
       {
         if (e->replied)

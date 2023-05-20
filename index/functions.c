@@ -486,9 +486,13 @@ static int op_edit_raw_message(struct IndexSharedData *shared,
     edit = true;
   }
   else if (op == OP_EDIT_OR_VIEW_RAW_MESSAGE)
+  {
     edit = !shared->mailbox->readonly && (shared->mailbox->rights & MUTT_ACL_INSERT);
+  }
   else
+  {
     edit = false;
+  }
 
   if (!shared->email)
     return FR_NO_ACTION;

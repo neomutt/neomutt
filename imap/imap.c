@@ -1212,9 +1212,13 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
   }
 
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
+  {
     uidvalidity_flag = "UIDVALIDITY";
+  }
   else if (adata->capabilities & IMAP_CAP_STATUS)
+  {
     uidvalidity_flag = "UID-VALIDITY";
+  }
   else
   {
     mutt_debug(LL_DEBUG2, "Server doesn't support STATUS\n");

@@ -250,7 +250,9 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
 
   int rc = CSR_ERR_CODE;
   if (DTYPE(he->type) == DT_MYVAR)
+  {
     rc = cs_subset_he_delete(NeoMutt->sub, he, err);
+  }
   else if ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD))
   {
     rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
@@ -306,7 +308,9 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
 
   int rc = CSR_ERR_CODE;
   if (DTYPE(he->type) == DT_MYVAR)
+  {
     rc = cs_subset_he_delete(NeoMutt->sub, he, err);
+  }
   else
   {
     rc = cs_subset_he_reset(NeoMutt->sub, he, err);

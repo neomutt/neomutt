@@ -141,21 +141,37 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
       buf_strcpy(buf, "~A");
     }
     else if (mutt_istr_equal("del", buf_string(buf)))
+    {
       buf_strcpy(buf, "~D");
+    }
     else if (mutt_istr_equal("flag", buf_string(buf)))
+    {
       buf_strcpy(buf, "~F");
+    }
     else if (mutt_istr_equal("new", buf_string(buf)))
+    {
       buf_strcpy(buf, "~N");
+    }
     else if (mutt_istr_equal("old", buf_string(buf)))
+    {
       buf_strcpy(buf, "~O");
+    }
     else if (mutt_istr_equal("repl", buf_string(buf)))
+    {
       buf_strcpy(buf, "~Q");
+    }
     else if (mutt_istr_equal("read", buf_string(buf)))
+    {
       buf_strcpy(buf, "~R");
+    }
     else if (mutt_istr_equal("tag", buf_string(buf)))
+    {
       buf_strcpy(buf, "~T");
+    }
     else if (mutt_istr_equal("unread", buf_string(buf)))
+    {
       buf_strcpy(buf, "~U");
+    }
     else
     {
       struct Buffer *tmp = buf_pool_get();

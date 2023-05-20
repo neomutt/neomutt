@@ -484,11 +484,17 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
      * field, so we can attempt to convert the type to Body here.  */
     if (ct->type == TYPE_TEXT)
+    {
       ct->subtype = mutt_str_dup("plain");
+    }
     else if (ct->type == TYPE_AUDIO)
+    {
       ct->subtype = mutt_str_dup("basic");
+    }
     else if (ct->type == TYPE_MESSAGE)
+    {
       ct->subtype = mutt_str_dup("rfc822");
+    }
     else if (ct->type == TYPE_OTHER)
     {
       char buf[128] = { 0 };
@@ -1370,13 +1376,21 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     if (plen != 0)
     {
       if (mutt_istr_equal("type", line + plen))
+      {
         mutt_parse_content_type(c, p);
+      }
       else if (mutt_istr_equal("language", line + plen))
+      {
         parse_content_language(c, p);
+      }
       else if (mutt_istr_equal("transfer-encoding", line + plen))
+      {
         p->encoding = mutt_check_encoding(c);
+      }
       else if (mutt_istr_equal("disposition", line + plen))
+      {
         parse_content_disposition(c, p);
+      }
       else if (mutt_istr_equal("description", line + plen))
       {
         mutt_str_replace(&p->description, c);
@@ -1404,11 +1418,17 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     else if ((plen = mutt_istr_startswith(line, "x-sun-")))
     {
       if (mutt_istr_equal("data-type", line + plen))
+      {
         mutt_parse_content_type(c, p);
+      }
       else if (mutt_istr_equal("encoding-info", line + plen))
+      {
         p->encoding = mutt_check_encoding(c);
+      }
       else if (mutt_istr_equal("content-lines", line + plen))
+      {
         mutt_param_set(&p->parameter, "content-lines", c);
+      }
       else if (mutt_istr_equal("data-description", line + plen))
       {
         mutt_str_replace(&p->description, c);

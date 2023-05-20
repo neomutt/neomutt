@@ -144,7 +144,9 @@ static const char *parse_quote(const char *s, char *token, size_t *tokenlen, siz
         token[*tokenlen] = *s;
     }
     else if (*s == '"')
+    {
       return s + 1;
+    }
     (*tokenlen)++;
     s++;
   }

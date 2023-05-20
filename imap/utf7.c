@@ -215,7 +215,9 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
       goto bail;
     }
     else
+    {
       *p++ = *u7;
+    }
   }
   *p++ = '\0';
   if (u8len)
@@ -266,7 +268,9 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
       n = 0;
     }
     else if (c < 0xc2)
+    {
       goto bail;
+    }
     else if (c < 0xe0)
     {
       ch = c & 0x1f;

@@ -91,7 +91,9 @@ static void fix_uid(char *uid)
       s += 4;
     }
     else
+    {
       *d++ = *s++;
+    }
   }
   *d = '\0';
 
@@ -113,7 +115,9 @@ static void fix_uid(char *uid)
         uid[ob - buf] = '\0';
       }
       else if ((n >= 0) && ((ob - buf) == n) && (buf[n] = 0, (strlen(buf) < (size_t) n)))
+      {
         memcpy(uid, buf, n);
+      }
     }
     FREE(&buf);
   }

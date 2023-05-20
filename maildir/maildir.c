@@ -1498,7 +1498,9 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
     maildir_gen_flags(suffix, sizeof(suffix), &tmp);
   }
   else
+  {
     *suffix = '\0';
+  }
 
   if (e && (e->read || e->old))
     mutt_str_copy(subdir, "cur", sizeof(subdir));

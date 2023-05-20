@@ -79,7 +79,9 @@ void crypt_current_time(struct State *state, const char *app_name)
     mutt_date_localtime_format(p, sizeof(p), _(" (current time: %c)"), mutt_date_now());
   }
   else
+  {
     *p = '\0';
+  }
 
   snprintf(tmp, sizeof(tmp), _("[-- %s output follows%s --]\n"), NONULL(app_name), p);
   state_attach_puts(state, tmp);
@@ -574,9 +576,13 @@ SecurityFlags mutt_is_application_pgp(struct Body *b)
       t |= PGP_SIGN;
     }
     else if (p && mutt_istr_startswith(p, "pgp-encrypt"))
+    {
       t |= PGP_ENCRYPT;
+    }
     else if (p && mutt_istr_startswith(p, "pgp-keys"))
+    {
       t |= PGP_KEY;
+    }
   }
   if (t)
     t |= PGP_INLINE;
@@ -620,7 +626,9 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
     complain = true;
   }
   else if (!mutt_istr_equal(b->subtype, "octet-stream"))
+  {
     return SEC_NO_FLAGS;
+  }
 
   t = mutt_param_get(&b->parameter, "name");
 
@@ -650,7 +658,9 @@ SecurityFlags mutt_is_application_smime(struct Body *b)
       return SMIME_SIGN | SMIME_OPAQUE;
     }
     else if (mutt_istr_equal((t + len), "p7s"))
+    {
       return SMIME_SIGN | SMIME_OPAQUE;
+    }
   }
 
   return SEC_NO_FLAGS;
@@ -802,7 +812,9 @@ void crypt_convert_to_7bit(struct Body *a)
         crypt_convert_to_7bit(a->parts);
       }
       else if (((WithCrypto & APPLICATION_PGP) != 0) && c_pgp_strict_enc)
+      {
         crypt_convert_to_7bit(a->parts);
+      }
     }
     else if ((a->type == TYPE_MESSAGE) && !mutt_istr_equal(a->subtype, "delivery-status"))
     {
@@ -810,9 +822,13 @@ void crypt_convert_to_7bit(struct Body *a)
         mutt_message_to_7bit(a, NULL, NeoMutt->sub);
     }
     else if (a->encoding == ENC_8BIT)
+    {
       a->encoding = ENC_QUOTED_PRINTABLE;
+    }
     else if (a->encoding == ENC_BINARY)
+    {
       a->encoding = ENC_BASE64;
+    }
     else if (a->content && (a->encoding != ENC_BASE64) &&
              (a->content->from || (a->content->space && c_pgp_strict_enc)))
     {

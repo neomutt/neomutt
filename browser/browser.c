@@ -447,7 +447,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
       }
       else if (folder->ff->msg_count == 0)
+      {
         optional = false;
+      }
       break;
 
     case 'N':
@@ -469,7 +471,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
       }
       else if (folder->ff->msg_unread == 0)
+      {
         optional = false;
+      }
       break;
 
     case 's':

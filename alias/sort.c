@@ -82,11 +82,17 @@ static int alias_sort_address(const void *a, const void *b)
 
   int r;
   if (al_a == al_b)
+  {
     r = 0;
+  }
   else if (!al_a)
+  {
     r = -1;
+  }
   else if (!al_b)
+  {
     r = 1;
+  }
   else
   {
     const struct Address *addr_a = TAILQ_FIRST(al_a);
@@ -99,11 +105,17 @@ static int alias_sort_address(const void *a, const void *b)
         r = 1;
     }
     else if (addr_b && addr_b->personal)
+    {
       r = -1;
+    }
     else if (addr_a && addr_b)
+    {
       r = mutt_str_coll(addr_a->mailbox, addr_b->mailbox);
+    }
     else
+    {
       r = 0;
+    }
   }
 
   return RSORT(r);

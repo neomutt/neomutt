@@ -147,9 +147,13 @@ static char *nm_get_default_url(void)
   const char *const c_nm_default_url = cs_subset_string(NeoMutt->sub, "nm_default_url");
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   if (c_nm_default_url)
+  {
     snprintf(url, len, "%s", c_nm_default_url);
+  }
   else if (c_folder)
+  {
     snprintf(url, len, "notmuch://%s", c_folder);
+  }
   else
   {
     FREE(&url);
@@ -360,9 +364,13 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
       }
     }
     else if (mutt_str_equal(item->name, "type"))
+    {
       mdata->query_type = nm_string_to_query_type(item->value);
+    }
     else if (mutt_str_equal(item->name, "query"))
+    {
       mutt_str_replace(&mdata->db_query, item->value);
+    }
   }
 
   if (!mdata->db_query)

@@ -1186,7 +1186,9 @@ static int envelope_defaults(struct Envelope *env, struct EmailList *el,
       }
     }
     else if (mutt_fetch_recips(env, curenv, flags, sub) == -1)
+    {
       return -1;
+    }
 
     if ((flags & SEND_LIST_REPLY) && TAILQ_EMPTY(&env->to))
     {
@@ -1823,7 +1825,9 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
           save_atts = false;
       }
       else if (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) != MUTT_YES)
+      {
         save_atts = false;
+      }
     }
     if (!save_atts)
     {

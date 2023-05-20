@@ -381,9 +381,13 @@ static void notify_crypto(struct Email *e, struct Message *msg, CopyMessageFlags
         mutt_error(_("S/MIME certificate owner does not match sender"));
     }
     else if (e->security & SEC_PARTSIGN)
+    {
       mutt_message(_("Warning: Part of this message has not been signed"));
+    }
     else if (e->security & SEC_SIGN || e->security & SEC_BADSIGN)
+    {
       mutt_error(_("S/MIME signature could NOT be verified"));
+    }
   }
 
   if ((WithCrypto != 0) && (e->security & APPLICATION_PGP) && (cmflags & MUTT_CM_VERIFY))

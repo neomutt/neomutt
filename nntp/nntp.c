@@ -173,9 +173,13 @@ static int nntp_capabilities(struct NntpAccountData *adata)
     if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
       return nntp_connect_error(adata);
     if (mutt_str_equal("STARTTLS", buf))
+    {
       adata->hasSTARTTLS = true;
+    }
     else if (mutt_str_equal("MODE-READER", buf))
+    {
       mode_reader = true;
+    }
     else if (mutt_str_equal("READER", buf))
     {
       adata->hasDATE = true;
@@ -197,7 +201,9 @@ static int nntp_capabilities(struct NntpAccountData *adata)
     }
 #endif
     else if (mutt_str_equal("OVER", buf))
+    {
       adata->hasOVER = true;
+    }
     else if (mutt_str_startswith(buf, "LIST "))
     {
       char *p = strstr(buf, " NEWSGROUPS");
@@ -2088,7 +2094,9 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     }
   }
   else if (adata->newgroups_time)
+  {
     return 0;
+  }
 
   /* get list of new groups */
   mutt_message(msg);

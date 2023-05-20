@@ -424,9 +424,13 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
     }
 
     if (mutt_istr_equal(buf->data, "-rx"))
+    {
       gstate = GS_RX;
+    }
     else if (mutt_istr_equal(buf->data, "-addr"))
+    {
       gstate = GS_ADDR;
+    }
     else
     {
       switch (gstate)

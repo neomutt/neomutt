@@ -122,7 +122,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -135,7 +137,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -184,7 +188,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -203,7 +209,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, tmp);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -215,7 +223,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, tmp);
       }
       else if (!mview_has_limit(mv))
+      {
         optional = false;
+      }
       break;
 
     case 'm':
@@ -227,7 +237,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -238,7 +250,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, m ? m->vcount : 0);
       }
       else if (!mview_has_limit(mv))
+      {
         optional = false;
+      }
       break;
 
     case 'n':
@@ -250,7 +264,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -263,7 +279,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -276,7 +294,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, count);
       }
       else if (count == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -341,7 +361,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, read);
       }
       else if (read == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -370,7 +392,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, num);
       }
       else if (num == 0)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -383,7 +407,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, get_use_threads_str(c_use_threads));
       }
       else if (c_use_threads == UT_FLAT)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -394,7 +420,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, m ? m->msg_unread : 0);
       }
       else if (!m || (m->msg_unread == 0))
+      {
         optional = false;
+      }
       break;
 
     case 'v':
@@ -408,7 +436,9 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, mview_has_limit(mv) ? mv->pattern : "");
       }
       else if (!mview_has_limit(mv))
+      {
         optional = false;
+      }
       break;
 
     case 0:

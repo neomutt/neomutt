@@ -897,7 +897,9 @@ void nntp_clear_cache(struct NntpAccountData *adata)
         mdata->bcache = NULL;
       }
       else if (mdata->newsrc_ent || mdata->subscribed || c_save_unsubscribed)
+      {
         continue;
+      }
 
       nntp_delete_group_cache(mdata);
       if (S_ISDIR(st.st_mode))

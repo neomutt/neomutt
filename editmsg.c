@@ -257,7 +257,9 @@ bail:
       mutt_set_flag(m, e, MUTT_TAG, false, true);
   }
   else if (rc == -1)
+  {
     mutt_message(_("Error. Preserving temporary file: %s"), buf_string(fname));
+  }
 
   m->append = old_append;
 

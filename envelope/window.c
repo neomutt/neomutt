@@ -435,7 +435,9 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
         mutt_window_addstr(win, _(" (PGP/MIME)"));
     }
     else if (((WithCrypto & APPLICATION_SMIME) != 0) && (e->security & APPLICATION_SMIME))
+    {
       mutt_window_addstr(win, _(" (S/MIME)"));
+    }
   }
 
   const bool c_crypt_opportunistic_encrypt = cs_subset_bool(wdata->sub, "crypt_opportunistic_encrypt");

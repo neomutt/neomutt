@@ -435,9 +435,13 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     }
   }
   else if (mutt_str_startswith(raw, "\033[0m")) // Escape: a little hack...
+  {
     lines[line_num].cid = MT_COLOR_NORMAL;
+  }
   else if (check_attachment_marker((char *) raw) == 0)
+  {
     lines[line_num].cid = MT_COLOR_ATTACHMENT;
+  }
   else if (mutt_str_equal("-- \n", buf) || mutt_str_equal("-- \r\n", buf))
   {
     i = line_num + 1;
@@ -457,9 +461,10 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     }
   }
   else if (check_sig(buf, lines, line_num - 1) == 0)
+  {
     lines[line_num].cid = MT_COLOR_SIGNATURE;
+  }
   else if (mutt_is_quote_line(buf, pmatch))
-
   {
     if (q_classify && (lines[line_num].quote == NULL))
     {
@@ -704,7 +709,9 @@ void buf_strip_formatting(struct Buffer *dest, const char *src, bool strip_marke
         s += 2;
       }
       else /* ^H */
+      {
         buf_addch(dest, *s++);
+      }
       continue;
     }
 
@@ -929,7 +936,9 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
         mutt_addwch(win, wc);
     }
     else if (wc == '\n')
+    {
       break;
+    }
     else if (wc == '\t')
     {
       space = ch;

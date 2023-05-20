@@ -191,7 +191,9 @@ static int fold_one_header(FILE *fp, const char *tag, const char *value, size_t 
       col += 8;
     }
     else if (print_val(fp, pfx, buf, chflags, col) < 0)
+    {
       return -1;
+    }
     col += w;
 
     /* if the current word ends in \n, ignore all its trailing spaces
@@ -667,7 +669,9 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
     }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
+  {
     fputs("Subject:\n", fp);
+  }
 
   /* save message id if the user has set it */
   if (env->message_id && !privacy)
@@ -678,7 +682,9 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *attach
     mutt_addrlist_write_file(&env->reply_to, fp, "Reply-To");
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
+  {
     fputs("Reply-To:\n", fp);
+  }
 
   if (!TAILQ_EMPTY(&env->mail_followup_to))
   {

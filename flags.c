@@ -129,7 +129,9 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
           e->purge = true;
       }
       else if (e->purge)
+      {
         e->purge = false;
+      }
       break;
 
     case MUTT_NEW:

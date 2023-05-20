@@ -259,7 +259,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         buf_pool_release(&buf2);
       }
       else if (!c_smime_ca_location)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -271,7 +273,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         snprintf(buf, buflen, fmt, NONULL(cctx->certificates));
       }
       else if (!cctx->certificates)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -283,7 +287,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         snprintf(buf, buflen, fmt, NONULL(cctx->intermediates));
       }
       else if (!cctx->intermediates)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -295,7 +301,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
       }
       else if (!cctx->sig_fname)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -307,7 +315,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         snprintf(buf, buflen, fmt, NONULL(cctx->key));
       }
       else if (!cctx->key)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -319,7 +329,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         snprintf(buf, buflen, fmt, NONULL(cctx->cryptalg));
       }
       else if (!cctx->key)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -331,7 +343,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         snprintf(buf, buflen, fmt, NONULL(cctx->fname));
       }
       else if (!cctx->fname)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -343,7 +357,9 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
         snprintf(buf, buflen, fmt, NONULL(cctx->digestalg));
       }
       else if (!cctx->key)
+      {
         optional = false;
+      }
       break;
     }
 
@@ -941,9 +957,13 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     rc = 1;
   }
   else if (rc == 0)
+  {
     rc = 1;
+  }
   else
+  {
     rc = 0;
+  }
 
   if (copy && buffer && num)
   {
@@ -963,7 +983,9 @@ static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
     }
   }
   else if (copy)
+  {
     rc = 2;
+  }
 
   mutt_file_fclose(&fp_out);
   mutt_file_fclose(&fp_err);
@@ -2190,10 +2212,10 @@ SecurityFlags smime_class_send_menu(struct Email *e)
     letters = _("swaco");
     choices = "SwaCo";
   }
-  /* Opportunistic encryption option is set, but is toggled off
-   * for this message.  */
   else if (c_crypt_opportunistic_encrypt)
   {
+    /* Opportunistic encryption option is set, but is toggled off
+     * for this message.  */
     /* L10N: S/MIME options (opportunistic encryption is off) */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?");
     /* L10N: S/MIME options (opportunistic encryption is off) */

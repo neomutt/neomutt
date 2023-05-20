@@ -508,7 +508,9 @@ static void cmd_parse_fetch(struct ImapAccountData *adata, char *s)
       }
     }
     else if (*s == ')')
+    {
       break; /* end of request */
+    }
     else if (*s)
     {
       mutt_debug(LL_DEBUG2, "Only handle FLAGS updates\n");
@@ -974,10 +976,12 @@ static void cmd_parse_exists(struct ImapAccountData *adata, const char *pn)
      * it should. */
     mutt_debug(LL_DEBUG1, "Message count is out of sync\n");
   }
-  /* at least the InterChange server sends EXISTS messages freely,
-   * even when there is no new mail */
   else if (count == imap_msn_highest(&mdata->msn))
+  {
+    /* at least the InterChange server sends EXISTS messages freely,
+     * even when there is no new mail */
     mutt_debug(LL_DEBUG3, "superfluous EXISTS message\n");
+  }
   else
   {
     mutt_debug(LL_DEBUG2, "New mail in %s - %d messages total\n", mdata->name, count);
@@ -1013,25 +1017,45 @@ static int cmd_handle_untagged(struct ImapAccountData *adata)
       cmd_parse_fetch(adata, pn);
   }
   else if ((adata->state >= IMAP_SELECTED) && mutt_istr_startswith(s, "VANISHED"))
+  {
     cmd_parse_vanished(adata, pn);
+  }
   else if (mutt_istr_startswith(s, "CAPABILITY"))
+  {
     cmd_parse_capability(adata, s);
+  }
   else if (mutt_istr_startswith(s, "OK [CAPABILITY"))
+  {
     cmd_parse_capability(adata, pn);
+  }
   else if (mutt_istr_startswith(pn, "OK [CAPABILITY"))
+  {
     cmd_parse_capability(adata, imap_next_word(pn));
+  }
   else if (mutt_istr_startswith(s, "LIST"))
+  {
     cmd_parse_list(adata, s);
+  }
   else if (mutt_istr_startswith(s, "LSUB"))
+  {
     cmd_parse_lsub(adata, s);
+  }
   else if (mutt_istr_startswith(s, "MYRIGHTS"))
+  {
     cmd_parse_myrights(adata, s);
+  }
   else if (mutt_istr_startswith(s, "SEARCH"))
+  {
     cmd_parse_search(adata, s);
+  }
   else if (mutt_istr_startswith(s, "STATUS"))
+  {
     cmd_parse_status(adata, s);
+  }
   else if (mutt_istr_startswith(s, "ENABLED"))
+  {
     cmd_parse_enabled(adata, s);
+  }
   else if (mutt_istr_startswith(s, "BYE"))
   {
     mutt_debug(LL_DEBUG2, "Handling BYE\n");

@@ -391,7 +391,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, c ? m_cur->msg_deleted : 0);
       }
       else if ((c && (m_cur->msg_deleted == 0)) || !c)
+      {
         optional = false;
+      }
       break;
 
     case 'F':
@@ -401,7 +403,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_flagged);
       }
       else if (m->msg_flagged == 0)
+      {
         optional = false;
+      }
       break;
 
     case 'L':
@@ -411,7 +415,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, c ? m_cur->vcount : m->msg_count);
       }
       else if ((c && (m_cur->vcount == m->msg_count)) || !c)
+      {
         optional = false;
+      }
       break;
 
     case 'N':
@@ -421,7 +427,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_unread);
       }
       else if (m->msg_unread == 0)
+      {
         optional = false;
+      }
       break;
 
     case 'n':
@@ -431,7 +439,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->has_new ? 'N' : ' ');
       }
       else if (m->has_new == false)
+      {
         optional = false;
+      }
       break;
 
     case 'o':
@@ -441,7 +451,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_unread - m->msg_new);
       }
       else if ((c && (m_cur->msg_unread - m_cur->msg_new) == 0) || !c)
+      {
         optional = false;
+      }
       break;
 
     case 'r':
@@ -451,7 +463,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_count - m->msg_unread);
       }
       else if ((c && (m_cur->msg_count - m_cur->msg_unread) == 0) || !c)
+      {
         optional = false;
+      }
       break;
 
     case 'S':
@@ -461,7 +475,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_count);
       }
       else if (m->msg_count == 0)
+      {
         optional = false;
+      }
       break;
 
     case 't':
@@ -471,7 +487,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, c ? m_cur->msg_tagged : 0);
       }
       else if ((c && (m_cur->msg_tagged == 0)) || !c)
+      {
         optional = false;
+      }
       break;
 
     case 'Z':
@@ -481,16 +499,24 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
         snprintf(buf, buflen, fmt, m->msg_new);
       }
       else if ((c && (m_cur->msg_new) == 0) || !c)
+      {
         optional = false;
+      }
       break;
 
     case '!':
       if (m->msg_flagged == 0)
+      {
         mutt_format_s(buf, buflen, prec, "");
+      }
       else if (m->msg_flagged == 1)
+      {
         mutt_format_s(buf, buflen, prec, "!");
+      }
       else if (m->msg_flagged == 2)
+      {
         mutt_format_s(buf, buflen, prec, "!!");
+      }
       else
       {
         snprintf(fmt, sizeof(fmt), "%d!", m->msg_flagged);
@@ -804,7 +830,9 @@ int sb_recalc(struct MuttWindow *win)
         entry->depth -= c_sidebar_component_depth;
     }
     else if (!c_sidebar_folder_indent)
+    {
       entry->depth = 0;
+    }
 
     mutt_str_copy(entry->box, short_path, sizeof(entry->box));
     make_sidebar_entry(entry->display, sizeof(entry->display), width, entry, shared);

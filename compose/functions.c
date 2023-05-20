@@ -1893,7 +1893,9 @@ static int op_exit(struct ComposeSharedData *shared, int op)
     return FR_DONE;
   }
   else if (ans == MUTT_ABORT)
+  {
     return FR_NO_ACTION;
+  }
 
   return op_compose_postpone_message(shared, op);
 }

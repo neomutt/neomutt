@@ -986,7 +986,9 @@ static enum MxStatus mh_mbox_check(struct Mailbox *m)
       email_free(&md->email);
     }
     else /* message has disappeared */
+    {
       occult = true;
+    }
   }
 
   /* destroy the file name hash */

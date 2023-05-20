@@ -324,7 +324,9 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
         continue;
       }
       else if (rc == -1)
+      {
         goto cleanup;
+      }
       buf_copy(tfile, buf);
     }
     else

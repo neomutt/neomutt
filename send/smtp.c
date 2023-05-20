@@ -162,11 +162,17 @@ static int smtp_get_resp(struct SmtpAccountData *adata)
       adata->auth_mechs = mutt_str_dup(s + plen);
     }
     else if (mutt_istr_startswith(s, "DSN"))
+    {
       adata->capabilities |= SMTP_CAP_DSN;
+    }
     else if (mutt_istr_startswith(s, "STARTTLS"))
+    {
       adata->capabilities |= SMTP_CAP_STARTTLS;
+    }
     else if (mutt_istr_startswith(s, "SMTPUTF8"))
+    {
       adata->capabilities |= SMTP_CAP_SMTPUTF8;
+    }
 
     if (!valid_smtp_code(buf, n, &n))
       return SMTP_ERR_CODE;
@@ -1115,9 +1121,13 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
   if (c_envelope_from_address)
+  {
     envfrom = c_envelope_from_address->mailbox;
+  }
   else if (from && !TAILQ_EMPTY(from))
+  {
     envfrom = TAILQ_FIRST(from)->mailbox;
+  }
   else
   {
     mutt_error(_("No from address given"));

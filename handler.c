@@ -1666,9 +1666,13 @@ int mutt_body_handler(struct Body *b, struct State *state)
       }
     }
     else if (mutt_istr_equal("enriched", b->subtype))
+    {
       handler = text_enriched_handler;
+    }
     else /* text body type without a handler */
+    {
       plaintext = false;
+    }
   }
   else if (b->type == TYPE_MESSAGE)
   {
@@ -1739,10 +1743,10 @@ int mutt_body_handler(struct Body *b, struct State *state)
     }
   }
 
-  /* only respect disposition == attachment if we're not
-   * displaying from the attachment menu (i.e. pager) */
   if ((plaintext || handler) && (is_attachment_display || !mutt_prefer_as_attachment(b)))
   {
+    /* only respect disposition == attachment if we're not
+     * displaying from the attachment menu (i.e. pager) */
     /* Prevent encrypted attachments from being included in replies
      * unless $include_encrypted is set. */
     const bool c_include_encrypted = cs_subset_bool(NeoMutt->sub, "include_encrypted");
@@ -1754,10 +1758,10 @@ int mutt_body_handler(struct Body *b, struct State *state)
 
     rc = run_decode_and_handler(b, state, handler, plaintext);
   }
-  /* print hint to use attachment menu for disposition == attachment
-   * if we're not already being called from there */
   else if (state->flags & STATE_DISPLAY)
   {
+    /* print hint to use attachment menu for disposition == attachment
+     * if we're not already being called from there */
     const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
     struct Buffer msg = buf_make(256);
 
