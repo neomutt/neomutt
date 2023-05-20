@@ -262,12 +262,44 @@ static uint32_t color_xterm256_to_24bit(const uint32_t color)
 static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *attrs,
                                            bool is_fg, struct Buffer *err)
 {
-  int clen;
-
   mutt_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
 
+  /* parse #RRGGBB colours */
+  if (s[0] == '#')
+  {
+#ifndef NEOMUTT_DIRECT_COLORS
+    buf_printf(err, _("Direct colors support not compiled in: %s"), s);
+    return MUTT_CMD_ERROR;
+#endif
+    const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+    if (!c_color_directcolor)
+    {
+      buf_printf(err, _("Direct colors support disabled: %s"), s);
+      return MUTT_CMD_ERROR;
+    }
+    s++;
+    char *eptr = NULL;
+    *col = strtoul(s, &eptr, 16);
+    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
+    {
+      buf_printf(err, _("%s: color not supported by term"), s);
+      return MUTT_CMD_ERROR;
+    }
+    /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
+     * the default terminal colours.  As a workaround we round them up to
+     * #000008 which is the blackest black we can produce. */
+    if (*col < 8)
+      *col = 8;
+
+    color_debug(LL_DEBUG5, "#RRGGBB: %d\n", *col);
+    return MUTT_CMD_SUCCESS;
+  }
+
+  int clen = 0;
+
   /* A named colour, e.g. 'brightred' */
-  /* prefixes bright, alert, light are only allowed for named colours */
+  /* prefixes bright, alert, light are only allowed for named colours and
+   * colorNNN for backwards compatibility. */
   bool is_alert = false;
   bool is_bright = false;
   bool is_light = false;
@@ -305,6 +337,40 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
       buf_printf(err, _("%s: color not supported by term"), s);
       return MUTT_CMD_ERROR;
     }
+    if (is_bright || is_light)
+    {
+      if (is_alert)
+      {
+        *attrs |= A_BOLD;
+        *attrs |= A_BLINK;
+      }
+      else if (is_fg)
+      {
+        if ((COLORS >= 16) && is_light)
+        {
+          if (*col <= 7)
+          {
+            /* Advance the color 0-7 by 8 to get the light version */
+            *col += 8;
+          }
+        }
+        else
+        {
+          *attrs |= A_BOLD;
+        }
+      }
+      else
+      {
+        if (COLORS >= 16)
+        {
+          if (*col <= 7)
+          {
+            /* Advance the color 0-7 by 8 to get the light version */
+            *col += 8;
+          }
+        }
+      }
+    }
 #ifdef NEOMUTT_DIRECT_COLORS
     const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
     if (c_color_directcolor)
@@ -320,44 +386,6 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
     }
 #endif
     color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
-    return MUTT_CMD_SUCCESS;
-  }
-
-  /* parse #RRGGBB colours */
-  if (s[0] == '#')
-  {
-    /* sanity check for the future */
-    if (is_bright || is_alert || is_light)
-    {
-      buf_printf(err, _("'bright', 'alert', 'light' are only allowed for named colors: %s"), s);
-      return MUTT_CMD_ERROR;
-    }
-
-#ifndef NEOMUTT_DIRECT_COLORS
-    buf_printf(err, _("Direct colors support not compiled in: %s"), s);
-    return MUTT_CMD_ERROR;
-#endif
-    const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
-    if (!c_color_directcolor)
-    {
-      buf_printf(err, _("Direct colors support disabled: %s"), s);
-      return MUTT_CMD_ERROR;
-    }
-    s++;
-    char *eptr = NULL;
-    *col = strtoul(s, &eptr, 16);
-    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
-    {
-      buf_printf(err, _("%s: color not supported by term"), s);
-      return MUTT_CMD_ERROR;
-    }
-    /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
-     * the default terminal colours.  As a workaround we round them up to
-     * #000008 which is the blackest black we can produce. */
-    if (*col < 8)
-      *col = 8;
-
-    color_debug(LL_DEBUG5, "#RRGGBB: %d\n", *col);
     return MUTT_CMD_SUCCESS;
   }
 
