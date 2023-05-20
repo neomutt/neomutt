@@ -67,7 +67,7 @@ struct Body;
 struct Buffer;
 #endif
 struct Email;
-struct EmailList;
+struct EmailArray;
 struct Envelope;
 struct Mailbox;
 struct Message;
@@ -142,7 +142,7 @@ typedef uint16_t KeyFlags;                  ///< Flags describing PGP/SMIME keys
 #define KEYFLAG_ABILITIES (KEYFLAG_CANSIGN | KEYFLAG_CANENCRYPT | KEYFLAG_PREFER_ENCRYPTION | KEYFLAG_PREFER_SIGNING)
 
 /* crypt.c */
-void          crypt_extract_keys_from_messages         (struct Mailbox *m, struct EmailList *el);
+void          crypt_extract_keys_from_messages         (struct Mailbox *m, struct EmailArray *ea);
 void          crypt_forget_passphrase                  (void);
 int           crypt_get_keys                           (struct Email *e, char **keylist, bool oppenc_mode);
 void          crypt_opportunistic_encrypt              (struct Email *e);

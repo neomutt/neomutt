@@ -1061,22 +1061,22 @@ void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct Con
 /**
  * mutt_make_misc_reply_headers - Set subject for a reply
  * @param env    Envelope for result
- * @param curenv Envelope of source email
+ * @param env_cur Envelope of source email
  * @param sub    Config Subset
  */
-void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv,
+void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *env_cur,
                                   struct ConfigSubset *sub)
 {
-  if (!env || !curenv)
+  if (!env || !env_cur)
     return;
 
   /* This takes precedence over a subject that might have
    * been taken from a List-Post header.  Is that correct?  */
-  if (curenv->real_subj)
+  if (env_cur->real_subj)
   {
     FREE(&env->subject);
-    env->subject = mutt_mem_malloc(mutt_str_len(curenv->real_subj) + 5);
-    sprintf(env->subject, "Re: %s", curenv->real_subj);
+    env->subject = mutt_mem_malloc(mutt_str_len(env_cur->real_subj) + 5);
+    sprintf(env->subject, "Re: %s", env_cur->real_subj);
   }
   else if (!env->subject)
   {
@@ -1087,48 +1087,50 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *curenv,
 
 /**
  * mutt_add_to_reference_headers - Generate references for a reply email
- * @param env    Envelope for result
- * @param curenv Envelope of source email
- * @param sub    Config Subset
+ * @param env     Envelope for result
+ * @param env_cur Envelope of source email
+ * @param sub     Config Subset
  */
-void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *curenv,
+void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *env_cur,
                                    struct ConfigSubset *sub)
 {
-  add_references(&env->references, curenv);
-  add_message_id(&env->references, curenv);
-  add_message_id(&env->in_reply_to, curenv);
+  add_references(&env->references, env_cur);
+  add_message_id(&env->references, env_cur);
+  add_message_id(&env->in_reply_to, env_cur);
 
 #ifdef USE_NNTP
   const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
-  if (OptNewsSend && c_x_comment_to && !TAILQ_EMPTY(&curenv->from))
-    env->x_comment_to = mutt_str_dup(mutt_get_name(TAILQ_FIRST(&curenv->from)));
+  if (OptNewsSend && c_x_comment_to && !TAILQ_EMPTY(&env_cur->from))
+    env->x_comment_to = mutt_str_dup(mutt_get_name(TAILQ_FIRST(&env_cur->from)));
 #endif
 }
 
 /**
  * make_reference_headers - Generate reference headers for an email
- * @param el  List of source Emails
+ * @param ea  Array of source Emails
  * @param env Envelope for result
  * @param sub Config Subset
  */
-static void make_reference_headers(struct EmailList *el, struct Envelope *env,
+static void make_reference_headers(struct EmailArray *ea, struct Envelope *env,
                                    struct ConfigSubset *sub)
 {
-  if (!el || !env || STAILQ_EMPTY(el))
+  if (!ea || !env || ARRAY_EMPTY(ea))
     return;
 
-  struct EmailNode *en = STAILQ_FIRST(el);
-  bool single = !STAILQ_NEXT(en, entries);
+  bool single = (ARRAY_SIZE(ea) == 1);
 
   if (single)
   {
-    mutt_add_to_reference_headers(env, en->email->env, sub);
+    struct Email *e = *ARRAY_GET(ea, 0);
+    mutt_add_to_reference_headers(env, e->env, sub);
   }
   else
   {
-    STAILQ_FOREACH(en, el, entries)
+    struct Email **ep = NULL;
+    ARRAY_FOREACH(ep, ea)
     {
-      mutt_add_to_reference_headers(env, en->email->env, sub);
+      struct Email *e = *ep;
+      mutt_add_to_reference_headers(env, e->env, sub);
     }
   }
 
@@ -1145,23 +1147,23 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env,
 /**
  * envelope_defaults - Fill in some defaults for a new email
  * @param env   Envelope for result
- * @param el    List of Emails to use
+ * @param ea    Array of Emails to use
  * @param flags Flags, see #SendFlags
  * @param sub   Config Subset
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int envelope_defaults(struct Envelope *env, struct EmailList *el,
+static int envelope_defaults(struct Envelope *env, struct EmailArray *ea,
                              SendFlags flags, struct ConfigSubset *sub)
 {
-  if (!el || STAILQ_EMPTY(el))
+  if (!ea || ARRAY_EMPTY(ea))
     return -1;
 
-  struct EmailNode *en = STAILQ_FIRST(el);
-  bool single = !STAILQ_NEXT(en, entries);
+  struct Email *e_cur = *ARRAY_GET(ea, 0);
+  bool single = (ARRAY_SIZE(ea) == 1);
 
-  struct Envelope *curenv = en->email->env;
-  if (!curenv)
+  struct Envelope *env_cur = e_cur->env;
+  if (!env_cur)
     return -1;
 
   if (flags & (SEND_REPLY | SEND_TO_SENDER))
@@ -1170,22 +1172,24 @@ static int envelope_defaults(struct Envelope *env, struct EmailList *el,
     if ((flags & SEND_NEWS))
     {
       /* in case followup set Newsgroups: with Followup-To: if it present */
-      if (!env->newsgroups && !mutt_istr_equal(curenv->followup_to, "poster"))
+      if (!env->newsgroups && !mutt_istr_equal(env_cur->followup_to, "poster"))
       {
-        env->newsgroups = mutt_str_dup(curenv->followup_to);
+        env->newsgroups = mutt_str_dup(env_cur->followup_to);
       }
     }
     else
 #endif
         if (!single)
     {
-      STAILQ_FOREACH(en, el, entries)
+      struct Email **ep = NULL;
+      ARRAY_FOREACH(ep, ea)
       {
-        if (mutt_fetch_recips(env, en->email->env, flags, sub) == -1)
+        struct Email *e = *ep;
+        if (mutt_fetch_recips(env, e->env, flags, sub) == -1)
           return -1;
       }
     }
-    else if (mutt_fetch_recips(env, curenv, flags, sub) == -1)
+    else if (mutt_fetch_recips(env, env_cur, flags, sub) == -1)
     {
       return -1;
     }
@@ -1198,17 +1202,17 @@ static int envelope_defaults(struct Envelope *env, struct EmailList *el,
 
     if (flags & SEND_REPLY)
     {
-      mutt_make_misc_reply_headers(env, curenv, sub);
-      make_reference_headers(el, env, sub);
+      mutt_make_misc_reply_headers(env, env_cur, sub);
+      make_reference_headers(ea, env, sub);
     }
   }
   else if (flags & SEND_FORWARD)
   {
-    mutt_make_forward_subject(env, en->email, sub);
+    mutt_make_forward_subject(env, e_cur, sub);
 
     const bool c_forward_references = cs_subset_bool(sub, "forward_references");
     if (c_forward_references)
-      make_reference_headers(el, env, sub);
+      make_reference_headers(ea, env, sub);
   }
 
   return 0;
@@ -1220,16 +1224,16 @@ static int envelope_defaults(struct Envelope *env, struct EmailList *el,
  * @param e      Email for outgoing message
  * @param flags  Compose mode, see #SendFlags
  * @param m      Mailbox
- * @param el     List of Emails to use
+ * @param ea     Array of Emails to use
  * @param sub    Config Subset
  * @retval  0 Success
  * @retval -1 Error
  */
 static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
-                         struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub)
+                         struct Mailbox *m, struct EmailArray *ea, struct ConfigSubset *sub)
 {
   /* An EmailList is required for replying and forwarding */
-  if (!el && (flags & (SEND_REPLY | SEND_FORWARD)))
+  if (!ea && (flags & (SEND_REPLY | SEND_FORWARD)))
     return -1;
 
   if (flags & SEND_REPLY)
@@ -1242,15 +1246,16 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
     if (ans == MUTT_YES)
     {
       mutt_message(_("Including quoted message..."));
-      struct EmailNode *en = NULL;
-      STAILQ_FOREACH(en, el, entries)
+      struct Email **ep = NULL;
+      size_t count = ARRAY_SIZE(ea) - 1;
+      ARRAY_FOREACH(ep, ea)
       {
-        if (include_reply(m, en->email, fp_tmp, sub) == -1)
+        if (include_reply(m, *ep, fp_tmp, sub) == -1)
         {
           mutt_error(_("Could not include all requested messages"));
           return -1;
         }
-        if (STAILQ_NEXT(en, entries) != NULL)
+        if (ARRAY_FOREACH_IDX < count)
         {
           fputc('\n', fp_tmp);
         }
@@ -1270,10 +1275,10 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
       while (last && last->next)
         last = last->next;
 
-      struct EmailNode *en = NULL;
-      STAILQ_FOREACH(en, el, entries)
+      struct Email **ep = NULL;
+      ARRAY_FOREACH(ep, ea)
       {
-        struct Body *tmp = mutt_make_message_attach(m, en->email, false, sub);
+        struct Body *tmp = mutt_make_message_attach(m, *ep, false, sub);
         if (last)
         {
           last->next = tmp;
@@ -1290,7 +1295,6 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
     {
       enum QuadOption forwardq = MUTT_ABORT;
       struct Body **last = NULL;
-      struct EmailNode *en = NULL;
 
       const bool c_forward_decode = cs_subset_bool(sub, "forward_decode");
       const enum QuadOption c_forward_attachments = cs_subset_quad(sub, "forward_attachments");
@@ -1301,9 +1305,10 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
           last = &((*last)->next);
       }
 
-      STAILQ_FOREACH(en, el, entries)
+      struct Email **ep = NULL;
+      ARRAY_FOREACH(ep, ea)
       {
-        struct Email *e_cur = en->email;
+        struct Email *e_cur = *ep;
         include_forward(m, e_cur, fp_tmp, sub);
         if (c_forward_decode && (c_forward_attachments != MUTT_NO))
         {
@@ -1677,10 +1682,10 @@ int mutt_resend_message(FILE *fp, struct Mailbox *m, struct Email *e_cur,
     }
   }
 
-  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  emaillist_add_email(&el, e_cur);
-  int rc = mutt_send_message(SEND_RESEND, e_new, NULL, m, &el, sub);
-  emaillist_clear(&el);
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ARRAY_ADD(&ea, e_cur);
+  int rc = mutt_send_message(SEND_RESEND, e_new, NULL, m, &ea, sub);
+  ARRAY_FREE(&ea);
 
   return rc;
 }
@@ -2124,14 +2129,14 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
  * @param e_templ  Template to use for new message
  * @param tempfile File specified by -i or -H
  * @param m        Current mailbox
- * @param el       List of Emails to send
+ * @param ea       Array of Emails to send
  * @param sub      Config Subset
  * @retval  0 Message was successfully sent
  * @retval -1 Message was aborted or an error occurred
  * @retval  1 Message was postponed
  */
 int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
-                      struct Mailbox *m, struct EmailList *el, struct ConfigSubset *sub)
+                      struct Mailbox *m, struct EmailArray *ea, struct ConfigSubset *sub)
 {
   struct Buffer fcc = buf_make(0); /* where to copy this message */
   FILE *fp_tmp = NULL;
@@ -2148,13 +2153,10 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   char *err = NULL;
   const char *ctype = NULL;
   char *finalpath = NULL;
-  struct EmailNode *en = NULL;
   struct Email *e_cur = NULL;
 
-  if (el)
-    en = STAILQ_FIRST(el);
-  if (en)
-    e_cur = STAILQ_NEXT(en, entries) ? NULL : en->email;
+  if (ea && (ARRAY_SIZE(ea) == 1))
+    e_cur = *ARRAY_GET(ea, 0);
 
   int rc = -1;
 
@@ -2350,7 +2352,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       !((flags & SEND_DRAFT_FILE) && c_resume_draft_files))
   {
     if ((flags & (SEND_REPLY | SEND_FORWARD | SEND_TO_SENDER)) &&
-        (envelope_defaults(e_templ->env, el, flags, sub) == -1))
+        (envelope_defaults(e_templ->env, ea, flags, sub) == -1))
     {
       goto cleanup;
     }
@@ -2449,7 +2451,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     /* include replies/forwarded messages, unless we are given a template */
     if (!tempfile && (m || !(flags & (SEND_REPLY | SEND_FORWARD))) &&
-        (generate_body(fp_tmp, e_templ, flags, m, el, sub) == -1))
+        (generate_body(fp_tmp, e_templ, flags, m, ea, sub) == -1))
     {
       goto cleanup;
     }
@@ -2951,9 +2953,11 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
     if (!(flags & SEND_POSTPONED) && m)
     {
-      STAILQ_FOREACH(en, el, entries)
+      struct Email **ep = NULL;
+      ARRAY_FOREACH(ep, ea)
       {
-        mutt_set_flag(m, en->email, MUTT_REPLIED, is_reply(en->email, e_templ), true);
+        struct Email *e = *ep;
+        mutt_set_flag(m, e, MUTT_REPLIED, is_reply(e, e_templ), true);
       }
     }
   }
@@ -2987,15 +2991,15 @@ cleanup:
 
 /**
  * send_simple_email - Compose an email given a few basic ingredients
- * @param m Mailbox
- * @param el List of source Emails
+ * @param m      Mailbox
+ * @param ea     Array of source Emails
  * @param mailto mailto address to parse (can include fields such as subject)
- * @param subj Subject, if not overridden by mailto
- * @param body text/plain body
+ * @param subj   Subject, if not overridden by mailto
+ * @param body   text/plain body
  * @retval true Success
  * @retval false Failure
  */
-static bool send_simple_email(struct Mailbox *m, struct EmailList *el,
+static bool send_simple_email(struct Mailbox *m, struct EmailArray *ea,
                               const char *mailto, const char *subj, const char *body)
 {
   struct Email *e = email_new();
@@ -3033,7 +3037,7 @@ static bool send_simple_email(struct Mailbox *m, struct EmailList *el,
   e->body->filename = mutt_str_dup(tempfile);
   e->body->unlink = true;
 
-  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, el, NeoMutt->sub);
+  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, ea, NeoMutt->sub);
   return rc >= 0;
 }
 
@@ -3058,10 +3062,10 @@ bool mutt_send_list_subscribe(struct Mailbox *m, struct Email *e)
     return false;
   }
 
-  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  emaillist_add_email(&el, e);
-  bool rc = send_simple_email(m, &el, mailto, "Subscribe", "subscribe");
-  emaillist_clear(&el);
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ARRAY_ADD(&ea, e);
+  bool rc = send_simple_email(m, &ea, mailto, "Subscribe", "subscribe");
+  ARRAY_FREE(&ea);
 
   return rc;
 }
@@ -3087,10 +3091,10 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
     return false;
   }
 
-  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  emaillist_add_email(&el, e);
-  bool rc = send_simple_email(m, &el, mailto, "Unsubscribe", "unsubscribe");
-  emaillist_clear(&el);
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ARRAY_ADD(&ea, e);
+  bool rc = send_simple_email(m, &ea, mailto, "Unsubscribe", "unsubscribe");
+  ARRAY_FREE(&ea);
 
   return rc;
 }

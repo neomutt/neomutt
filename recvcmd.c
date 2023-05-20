@@ -639,11 +639,11 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   fp_tmp = NULL;
 
   /* now that we have the template, send it. */
-  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  emaillist_add_email(&el, e_parent);
-  mutt_send_message(SEND_NO_FLAGS, e_tmp, buf_string(tmpbody), NULL, &el,
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ARRAY_ADD(&ea, e_parent);
+  mutt_send_message(SEND_NO_FLAGS, e_tmp, buf_string(tmpbody), NULL, &ea,
                     NeoMutt->sub);
-  emaillist_clear(&el);
+  ARRAY_FREE(&ea);
   buf_pool_release(&tmpbody);
   return;
 
@@ -785,11 +785,11 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
     email_free(&e_tmp);
   }
 
-  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
-  emaillist_add_email(&el, e_cur);
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  ARRAY_ADD(&ea, e_cur);
   mutt_send_message(flags, e_tmp, buf_is_empty(tmpbody) ? NULL : buf_string(tmpbody),
-                    NULL, &el, NeoMutt->sub);
-  emaillist_clear(&el);
+                    NULL, &ea, NeoMutt->sub);
+  ARRAY_FREE(&ea);
   e_tmp = NULL; /* mutt_send_message frees this */
 
 cleanup:
@@ -975,7 +975,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   struct Email *e_tmp = NULL;
   FILE *fp_tmp = NULL;
   struct Buffer *tmpbody = NULL;
-  struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
 
   char prefix[128] = { 0 };
 
@@ -1122,8 +1122,8 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
 
   mutt_file_fclose(&fp_tmp);
 
-  emaillist_add_email(&el, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
-  if (mutt_send_message(flags, e_tmp, buf_string(tmpbody), NULL, &el, NeoMutt->sub) == 0)
+  ARRAY_ADD(&ea, e_parent ? e_parent : (e_cur ? e_cur->email : NULL));
+  if (mutt_send_message(flags, e_tmp, buf_string(tmpbody), NULL, &ea, NeoMutt->sub) == 0)
   {
     mutt_set_flag(m, e, MUTT_REPLIED, true, true);
   }
@@ -1137,7 +1137,7 @@ cleanup:
   }
   buf_pool_release(&tmpbody);
   email_free(&e_tmp);
-  emaillist_clear(&el);
+  ARRAY_FREE(&ea);
 }
 
 /**

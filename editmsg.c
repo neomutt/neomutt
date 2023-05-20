@@ -270,18 +270,19 @@ bail:
 /**
  * mutt_ev_message - Edit or view a message
  * @param m      Mailbox
- * @param el     List of Emails
+ * @param ea     Array of Emails
  * @param action Action to perform, e.g. #EVM_EDIT
  * @retval 1  Message not modified
  * @retval 0  Message edited successfully
  * @retval -1 Error
  */
-int mutt_ev_message(struct Mailbox *m, struct EmailList *el, enum EvMessage action)
+int mutt_ev_message(struct Mailbox *m, struct EmailArray *ea, enum EvMessage action)
 {
-  struct EmailNode *en = NULL;
-  STAILQ_FOREACH(en, el, entries)
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
   {
-    if (ev_message(action, m, en->email) == -1)
+    struct Email *e = *ep;
+    if (ev_message(action, m, e) == -1)
       return -1;
   }
 

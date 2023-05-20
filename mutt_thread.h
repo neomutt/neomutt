@@ -30,7 +30,7 @@
 
 struct Buffer;
 struct Email;
-struct EmailList;
+struct EmailArray;
 struct Mailbox;
 struct MailboxView;
 
@@ -128,7 +128,7 @@ bool                   mutt_thread_can_collapse      (struct Email *e);
 
 void                   mutt_clear_threads     (struct ThreadsContext *tctx);
 void                   mutt_draw_tree         (struct ThreadsContext *tctx);
-bool                   mutt_link_threads      (struct Email *parent, struct EmailList *children, struct Mailbox *m);
+bool                   mutt_link_threads      (struct Email *parent, struct EmailArray *children, struct Mailbox *m);
 struct HashTable *     mutt_make_id_hash      (struct Mailbox *m);
 int                    mutt_messages_in_thread(struct Mailbox *m, struct Email *e, enum MessageInThread mit);
 int                    mutt_parent_message    (struct Email *e, bool find_root);

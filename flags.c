@@ -350,20 +350,21 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
 /**
  * mutt_emails_set_flag - Set flag on messages
  * @param m    Mailbox
- * @param el   List of Emails to flag
+ * @param ea   Array of Emails to flag
  * @param flag Flag to set, e.g. #MUTT_DELETE
  * @param bf   true: set the flag; false: clear the flag
  */
-void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el,
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailArray *ea,
                           enum MessageType flag, bool bf)
 {
-  if (!m || !el || STAILQ_EMPTY(el))
+  if (!m || !ea || ARRAY_EMPTY(ea))
     return;
 
-  struct EmailNode *en = NULL;
-  STAILQ_FOREACH(en, el, entries)
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
   {
-    mutt_set_flag(m, en->email, flag, bf, true);
+    struct Email *e = *ep;
+    mutt_set_flag(m, e, flag, bf, true);
   }
 }
 
@@ -436,18 +437,18 @@ done:
 /**
  * mutt_change_flag - Change the flag on a Message
  * @param m  Mailbox
- * @param el List of Emails to change
+ * @param ea Array of Emails to change
  * @param bf true: set the flag; false: clear the flag
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
+int mutt_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
 {
   struct MuttWindow *win = msgwin_get_window();
   if (!win)
     return -1;
 
-  if (!m || !el || STAILQ_EMPTY(el))
+  if (!m || !ea || ARRAY_EMPTY(ea))
     return -1;
 
   enum MessageType flag = MUTT_NONE;
@@ -477,7 +478,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
     case 'd':
     case 'D':
       if (!bf)
-        mutt_emails_set_flag(m, el, MUTT_PURGE, bf);
+        mutt_emails_set_flag(m, ea, MUTT_PURGE, bf);
       flag = MUTT_DELETE;
       break;
 
@@ -488,7 +489,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
 
     case 'o':
     case 'O':
-      mutt_emails_set_flag(m, el, MUTT_READ, !bf);
+      mutt_emails_set_flag(m, ea, MUTT_READ, !bf);
       flag = MUTT_OLD;
       break;
 
@@ -510,6 +511,6 @@ int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf)
       return -1;
   }
 
-  mutt_emails_set_flag(m, el, flag, bf);
+  mutt_emails_set_flag(m, ea, flag, bf);
   return 0;
 }

@@ -28,7 +28,7 @@
 
 struct Body;
 struct Email;
-struct EmailList;
+struct EmailArray;
 struct Envelope;
 struct Mailbox;
 
@@ -51,16 +51,16 @@ enum MessageSaveOpt
   SAVE_MOVE,       ///< Move message to another mailbox, removing the original
 };
 
-void index_bounce_message(struct Mailbox *m, struct EmailList *el);
-bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailList *el);
+void index_bounce_message(struct Mailbox *m, struct EmailArray *ea);
+bool mutt_check_traditional_pgp(struct Mailbox *m, struct EmailArray *ea);
 void commands_cleanup(void);
 void mutt_display_address(struct Envelope *env);
 bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp);
 void mutt_enter_command(void);
-void mutt_pipe_message(struct Mailbox *m, struct EmailList *el);
-void mutt_print_message(struct Mailbox *m, struct EmailList *el);
-int  mutt_save_message(struct Mailbox *m, struct EmailList *el, enum MessageSaveOpt, enum MessageTransformOpt transform_opt);
-int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt, struct Mailbox *m_dst);
+void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea);
+void mutt_print_message(struct Mailbox *m, struct EmailArray *ea);
+int  mutt_save_message(struct Mailbox *m, struct EmailArray *ea, enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt);
+int  mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt, enum MessageTransformOpt transform_opt, struct Mailbox *m_dst);
 bool mutt_select_sort(bool reverse);
 bool mutt_shell_escape(void);
 

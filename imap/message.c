@@ -1655,17 +1655,17 @@ fail:
 /**
  * imap_copy_messages - Server COPY messages to another folder
  * @param m        Mailbox
- * @param el       List of Emails to copy
+ * @param ea       Array of Emails to copy
  * @param dest     Destination folder
  * @param save_opt Copy or move, e.g. #SAVE_MOVE
  * @retval -1 Error
  * @retval  0 Success
  * @retval  1 Non-fatal error - try fetch/append
  */
-int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
+int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
                        const char *dest, enum MessageSaveOpt save_opt)
 {
-  if (!m || !el || !dest)
+  if (!m || !ea || ARRAY_EMPTY(ea) || !dest)
     return -1;
 
   struct Buffer cmd, sync_cmd;
@@ -1677,11 +1677,11 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
   struct ConnAccount cac = { { 0 } };
   enum QuadOption err_continue = MUTT_NO;
   int triedcreate = 0;
-  struct EmailNode *en = STAILQ_FIRST(el);
-  bool single = !STAILQ_NEXT(en, entries);
+  struct Email *e_cur = *ARRAY_GET(ea, 0);
+  bool single = (ARRAY_SIZE(ea) == 1);
   struct ImapAccountData *adata = imap_adata_get(m);
 
-  if (single && en->email->attach_del)
+  if (single && e_cur->attach_del)
   {
     mutt_debug(LL_DEBUG3, "#1 Message contains attachments to be deleted\n");
     return 1;
@@ -1713,12 +1713,12 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
 
     if (single)
     {
-      mutt_message(_("Copying message %d to %s..."), en->email->index + 1, mbox);
-      buf_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(en->email)->uid, mmbox);
+      mutt_message(_("Copying message %d to %s..."), e_cur->index + 1, mbox);
+      buf_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(e_cur)->uid, mmbox);
 
-      if (en->email->active && en->email->changed)
+      if (e_cur->active && e_cur->changed)
       {
-        rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
+        rc = imap_sync_message_for_copy(m, e_cur, &sync_cmd, &err_continue);
         if (rc < 0)
         {
           mutt_debug(LL_DEBUG1, "#2 could not sync\n");
@@ -1737,17 +1737,19 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
        * remainder. */
-      STAILQ_FOREACH(en, el, entries)
+      struct Email **ep = NULL;
+      ARRAY_FOREACH(ep, ea)
       {
-        if (en->email->attach_del)
+        struct Email *e = *ep;
+        if (e->attach_del)
         {
           mutt_debug(LL_DEBUG3, "#2 Message contains attachments to be deleted\n");
           return 1;
         }
 
-        if (en->email->active && en->email->changed)
+        if (e->active && e->changed)
         {
-          rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
+          rc = imap_sync_message_for_copy(m, e, &sync_cmd, &err_continue);
           if (rc < 0)
           {
             mutt_debug(LL_DEBUG1, "#1 could not sync\n");
@@ -1810,10 +1812,12 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
   /* cleanup */
   if (save_opt == SAVE_MOVE)
   {
-    STAILQ_FOREACH(en, el, entries)
+    struct Email **ep = NULL;
+    ARRAY_FOREACH(ep, ea)
     {
-      mutt_set_flag(m, en->email, MUTT_DELETE, true, true);
-      mutt_set_flag(m, en->email, MUTT_PURGE, true, true);
+      struct Email *e = *ep;
+      mutt_set_flag(m, e, MUTT_DELETE, true, true);
+      mutt_set_flag(m, e, MUTT_PURGE, true, true);
     }
   }
 

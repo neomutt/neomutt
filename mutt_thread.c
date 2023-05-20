@@ -1734,21 +1734,22 @@ static bool link_threads(struct Email *parent, struct Email *child, struct Mailb
 /**
  * mutt_link_threads - Forcibly link threads together
  * @param parent   Parent Email
- * @param children List of children Emails
+ * @param children Array of children Emails
  * @param m        Mailbox
  * @retval true On success
  */
-bool mutt_link_threads(struct Email *parent, struct EmailList *children, struct Mailbox *m)
+bool mutt_link_threads(struct Email *parent, struct EmailArray *children, struct Mailbox *m)
 {
   if (!parent || !children || !m)
     return false;
 
   bool changed = false;
 
-  struct EmailNode *en = NULL;
-  STAILQ_FOREACH(en, children, entries)
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, children)
   {
-    changed |= link_threads(parent, en->email, m);
+    struct Email *e = *ep;
+    changed |= link_threads(parent, e, m);
   }
 
   return changed;

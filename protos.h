@@ -31,7 +31,7 @@
 
 struct Buffer;
 struct Email;
-struct EmailList;
+struct EmailArray;
 struct Mailbox;
 struct NotifyCallback;
 
@@ -53,7 +53,7 @@ enum EvMessage
   EVM_EDIT, ///< Edit the message
 };
 
-int mutt_ev_message(struct Mailbox *m, struct EmailList *el, enum EvMessage action);
+int mutt_ev_message(struct Mailbox *m, struct EmailArray *ea, enum EvMessage action);
 
 int mutt_system(const char *cmd);
 
@@ -61,8 +61,8 @@ int mutt_set_xdg_path(enum XdgType type, struct Buffer *buf);
 void mutt_help(enum MenuType menu);
 void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool upd_mbox);
 void mutt_signal_init(void);
-void mutt_emails_set_flag(struct Mailbox *m, struct EmailList *el, enum MessageType flag, bool bf);
-int mutt_change_flag(struct Mailbox *m, struct EmailList *el, bool bf);
+void mutt_emails_set_flag(struct Mailbox *m, struct EmailArray *ea, enum MessageType flag, bool bf);
+int mutt_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf);
 
 int mutt_thread_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool subthread);
 extern short PostCount;

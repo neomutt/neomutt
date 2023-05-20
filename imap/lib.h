@@ -66,7 +66,7 @@ struct BrowserState;
 struct Buffer;
 struct ConnAccount;
 struct Email;
-struct EmailList;
+struct EmailArray;
 struct PatternList;
 struct stat;
 
@@ -93,7 +93,7 @@ int imap_mailbox_create(const char *folder);
 int imap_mailbox_rename(const char *path);
 
 /* message.c */
-int imap_copy_messages(struct Mailbox *m, struct EmailList *el, const char *dest, enum MessageSaveOpt save_opt);
+int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea, const char *dest, enum MessageSaveOpt save_opt);
 
 /* socket.c */
 void imap_logout_all(void);
