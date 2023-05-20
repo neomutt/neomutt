@@ -1245,16 +1245,14 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
             buf_addstr(&env->spam, buf);
           }
         }
-
-        /* spam tag is new, and match expr is non-empty; copy */
         else if (buf_is_empty(&env->spam) && (*buf != '\0'))
         {
+          /* spam tag is new, and match expr is non-empty; copy */
           buf_addstr(&env->spam, buf);
         }
-
-        /* match expr is empty; plug in null string if no existing tag */
         else if (buf_is_empty(&env->spam))
         {
+          /* match expr is empty; plug in null string if no existing tag */
           buf_addstr(&env->spam, "");
         }
 

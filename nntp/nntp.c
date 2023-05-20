@@ -1115,10 +1115,9 @@ static int parse_overview_line(char *line, void *data)
         save = false;
       }
     }
-
-    /* not cached yet, store header */
     else
     {
+      /* not cached yet, store header */
       mutt_debug(LL_DEBUG2, "mutt_hcache_store %s\n", buf);
       mutt_hcache_store(fc->hc, buf, strlen(buf), e, 0);
     }
@@ -1300,19 +1299,17 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
       /* don't try to fetch header from removed newsgroup */
       continue;
     }
-
-    /* fallback to fetch overview */
     else if (mdata->adata->hasOVER || mdata->adata->hasXOVER)
     {
+      /* fallback to fetch overview */
       if (c_nntp_listgroup && mdata->adata->hasLISTGROUP)
         break;
       else
         continue;
     }
-
-    /* fetch header from server */
     else
     {
+      /* fetch header from server */
       FILE *fp = mutt_file_mkstemp();
       if (!fp)
       {
@@ -1437,13 +1434,18 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
   mdata->first_message = first;
   mdata->last_message = last;
   if (!update_stat)
+  {
     return 1;
-
-  /* update counters */
+  }
   else if (!last || (!mdata->newsrc_ent && !mdata->last_cached))
+  {
+    /* update counters */
     mdata->unread = count;
+  }
   else
+  {
     nntp_group_unread_stat(mdata);
+  }
   return 1;
 }
 
@@ -1776,12 +1778,16 @@ int nntp_open_connection(struct NntpAccountData *adata)
     }
 
     if (mutt_str_startswith(buf, "200"))
+    {
       posting = true;
+    }
     else if (mutt_str_startswith(buf, "201"))
+    {
       posting = false;
-    /* error if has capabilities, ignore result if no capabilities */
+    }
     else if (adata->hasCAPABILITIES)
     {
+      /* error if has capabilities, ignore result if no capabilities */
       mutt_socket_close(conn);
       mutt_error(_("Could not switch to reader mode"));
       return -1;
@@ -2420,10 +2426,9 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
       nntp_newsrc_update(adata);
     }
   }
-
-  /* parse newsgroup info */
   else
   {
+    /* parse newsgroup info */
     if (sscanf(buf, "211 " ANUM " " ANUM " " ANUM, &count, &first, &last) != 3)
     {
       nntp_newsrc_close(adata);
@@ -2604,9 +2609,9 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
       if (msg->fp)
         return true;
     }
-    /* clear previous entry */
     else
     {
+      /* clear previous entry */
       unlink(acache->path);
       FREE(&acache->path);
     }

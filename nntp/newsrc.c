@@ -349,10 +349,9 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
         series = false;
       }
     }
-
-    /* search for first read */
     else
     {
+      /* search for first read */
       if (e->deleted || e->read)
       {
         first = last + 1;
@@ -1135,11 +1134,14 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   {
     /* try to load list of newsgroups from cache */
     if (adata->cacheable && (active_get_cache(adata) == 0))
+    {
       rc = nntp_check_new_groups(m, adata);
-
-    /* load list of newsgroups from server */
+    }
     else
+    {
+      /* load list of newsgroups from server */
       rc = nntp_active_fetch(adata, false);
+    }
   }
 
   if (rc >= 0)

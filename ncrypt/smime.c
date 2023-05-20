@@ -2200,9 +2200,9 @@ SecurityFlags smime_class_send_menu(struct Email *e)
     letters = _("eswabco");
     choices = "eswabcO";
   }
-  /* Opportunistic encryption is unset */
   else
   {
+    /* Opportunistic encryption is unset */
     /* L10N: S/MIME options */
     prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?");
     /* L10N: S/MIME options */

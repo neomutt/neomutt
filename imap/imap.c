@@ -272,13 +272,15 @@ static int make_msg_set(struct Mailbox *m, struct Buffer *buf,
           started = true;
         }
       }
-      /* tie up if the last message also matches */
       else if (n == (m->msg_count - 1))
+      {
+        /* tie up if the last message also matches */
         buf_add_printf(buf, ":%u", imap_edata_get(e)->uid);
+      }
     }
-    /* End current set if message doesn't match. */
     else if (setstart)
     {
+      /* End current set if message doesn't match. */
       if (imap_edata_get(m->emails[n - 1])->uid > setstart)
         buf_add_printf(buf, ":%u", imap_edata_get(m->emails[n - 1])->uid);
       setstart = 0;
@@ -1989,9 +1991,9 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     snprintf(buf, sizeof(buf), "MYRIGHTS %s", mdata->munge_name);
     imap_exec(adata, buf, IMAP_CMD_QUEUE);
   }
-  /* assume we have all rights if ACL is unavailable */
   else
   {
+    /* assume we have all rights if ACL is unavailable */
     m->rights |= MUTT_ACL_LOOKUP | MUTT_ACL_READ | MUTT_ACL_SEEN | MUTT_ACL_WRITE |
                  MUTT_ACL_INSERT | MUTT_ACL_POST | MUTT_ACL_CREATE | MUTT_ACL_DELETE;
   }
@@ -2035,9 +2037,9 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
           goto fail;
       }
     }
-    /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
     else if (mutt_istr_startswith(pc, "OK [PERMANENTFLAGS"))
     {
+      /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
       mutt_debug(LL_DEBUG3, "Getting mailbox PERMANENTFLAGS\n");
       /* safe to call on NULL */
       mutt_list_free(&mdata->flags);
@@ -2047,9 +2049,9 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
       if (!pc)
         goto fail;
     }
-    /* save UIDVALIDITY for the header cache */
     else if (mutt_istr_startswith(pc, "OK [UIDVALIDITY"))
     {
+      /* save UIDVALIDITY for the header cache */
       mutt_debug(LL_DEBUG3, "Getting mailbox UIDVALIDITY\n");
       pc += 3;
       pc = imap_next_word(pc);

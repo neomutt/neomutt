@@ -91,10 +91,12 @@ typedef int (*hash_cmp_key_t)(union HashKey a, union HashKey b);
 
 /**
  * struct HashTable - A Hash Table
+ *
+ * @note The number of actual elements in the HashTable isn't recorded.
  */
 struct HashTable
 {
-  size_t num_elems;             ///< Number of elements in the Hash Table
+  size_t num_elems;             ///< Number of buckets in the Hash Table
   bool strdup_keys : 1;         ///< if set, the key->strkey is strdup()'d
   bool allow_dups  : 1;         ///< if set, duplicate keys are allowed
   struct HashElem **table;      ///< Array of Hash keys

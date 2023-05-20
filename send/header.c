@@ -245,9 +245,9 @@ static char *unfold_header(char *s)
       p += 3;
       continue;
     }
-    /* remove LF prior to FWSP, turn \t into ' ' */
     else if ((p[0] == '\n') && ((p[1] == ' ') || (p[1] == '\t')))
     {
+      /* remove LF prior to FWSP, turn \t into ' ' */
       *q++ = ' ';
       p += 2;
       continue;
