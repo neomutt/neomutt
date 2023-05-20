@@ -110,7 +110,15 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   for (ptr = ScoreList, last = NULL; ptr; last = ptr, ptr = ptr->next)
     if (mutt_str_equal(pattern, ptr->str))
       break;
-  if (!ptr)
+
+  if (ptr)
+  {
+    /* 'buf' arg was cleared and 'pattern' holds the only reference;
+     * as here 'ptr' != NULL -> update the value only in which case
+     * ptr->str already has the string, so pattern should be freed.  */
+    FREE(&pattern);
+  }
+  else
   {
     struct MailboxView *mv_cur = get_current_mailbox_view();
     struct Menu *menu = get_current_menu();
@@ -127,13 +135,6 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
       ScoreList = ptr;
     ptr->pat = pat;
     ptr->str = pattern;
-  }
-  else
-  {
-    /* 'buf' arg was cleared and 'pattern' holds the only reference;
-     * as here 'ptr' != NULL -> update the value only in which case
-     * ptr->str already has the string, so pattern should be freed.  */
-    FREE(&pattern);
   }
   pc = buf->data;
   if (*pc == '=')

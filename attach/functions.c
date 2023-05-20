@@ -128,12 +128,7 @@ static bool check_readonly(struct Mailbox *m)
  */
 static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *menu)
 {
-  if (!menu->tag_prefix)
-  {
-    struct AttachPtr *cur_att = current_attachment(actx, menu);
-    crypt_pgp_extract_key_from_attachment(cur_att->fp, cur_att->body);
-  }
-  else
+  if (menu->tag_prefix)
   {
     for (int i = 0; i < actx->idxlen; i++)
     {
@@ -142,6 +137,11 @@ static void recvattach_extract_pgp_keys(struct AttachCtx *actx, struct Menu *men
         crypt_pgp_extract_key_from_attachment(actx->idx[i]->fp, actx->idx[i]->body);
       }
     }
+  }
+  else
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    crypt_pgp_extract_key_from_attachment(cur_att->fp, cur_att->body);
   }
 }
 
@@ -157,16 +157,16 @@ static int recvattach_pgp_check_traditional(struct AttachCtx *actx, struct Menu 
 {
   int rc = 0;
 
-  if (!menu->tag_prefix)
-  {
-    struct AttachPtr *cur_att = current_attachment(actx, menu);
-    rc = crypt_pgp_check_traditional(cur_att->fp, cur_att->body, true);
-  }
-  else
+  if (menu->tag_prefix)
   {
     for (int i = 0; i < actx->idxlen; i++)
       if (actx->idx[i]->body->tagged)
         rc = rc || crypt_pgp_check_traditional(actx->idx[i]->fp, actx->idx[i]->body, true);
+  }
+  else
+  {
+    struct AttachPtr *cur_att = current_attachment(actx, menu);
+    rc = crypt_pgp_check_traditional(cur_att->fp, cur_att->body, true);
   }
 
   return rc;
@@ -225,7 +225,26 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
   {
     mutt_message(_("Deletion of attachments from signed messages may invalidate the signature"));
   }
-  if (!priv->menu->tag_prefix)
+
+  if (priv->menu->tag_prefix)
+  {
+    for (int i = 0; i < priv->menu->max; i++)
+    {
+      if (priv->actx->idx[i]->body->tagged)
+      {
+        if (priv->actx->idx[i]->parent_type == TYPE_MULTIPART)
+        {
+          priv->actx->idx[i]->body->deleted = true;
+          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+        }
+        else
+        {
+          mutt_message(_("Only deletion of multipart attachments is supported"));
+        }
+      }
+    }
+  }
+  else
   {
     struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
     if (cur_att->parent_type == TYPE_MULTIPART)
@@ -245,24 +264,6 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
     else
     {
       mutt_message(_("Only deletion of multipart attachments is supported"));
-    }
-  }
-  else
-  {
-    for (int i = 0; i < priv->menu->max; i++)
-    {
-      if (priv->actx->idx[i]->body->tagged)
-      {
-        if (priv->actx->idx[i]->parent_type == TYPE_MULTIPART)
-        {
-          priv->actx->idx[i]->body->deleted = true;
-          menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-        }
-        else
-        {
-          mutt_message(_("Only deletion of multipart attachments is supported"));
-        }
-      }
     }
   }
 
@@ -324,7 +325,19 @@ static int op_attachment_undelete(struct AttachPrivateData *priv, int op)
 {
   if (check_readonly(priv->mailbox))
     return FR_ERROR;
-  if (!priv->menu->tag_prefix)
+
+  if (priv->menu->tag_prefix)
+  {
+    for (int i = 0; i < priv->menu->max; i++)
+    {
+      if (priv->actx->idx[i]->body->tagged)
+      {
+        priv->actx->idx[i]->body->deleted = false;
+        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
+      }
+    }
+  }
+  else
   {
     struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
     cur_att->body->deleted = false;
@@ -339,17 +352,7 @@ static int op_attachment_undelete(struct AttachPrivateData *priv, int op)
       menu_queue_redraw(priv->menu, MENU_REDRAW_CURRENT);
     }
   }
-  else
-  {
-    for (int i = 0; i < priv->menu->max; i++)
-    {
-      if (priv->actx->idx[i]->body->tagged)
-      {
-        priv->actx->idx[i]->body->deleted = false;
-        menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-      }
-    }
-  }
+
   return FR_SUCCESS;
 }
 

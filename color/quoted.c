@@ -303,7 +303,35 @@ struct QuoteStyle *qstyle_classify(struct QuoteStyle **quote_list, const char *q
           return q_list; /* same prefix: return the current class */
 
         /* found shorter prefix */
-        if (!tmp)
+        if (tmp)
+        {
+          /* found another branch for which tmp is a shorter prefix */
+
+          /* save the next sibling for later */
+          save = q_list->next;
+
+          /* unlink q_list from the top level list */
+          if (q_list->next)
+            q_list->next->prev = q_list->prev;
+          if (q_list->prev)
+            q_list->prev->next = q_list->next;
+
+          /* at this point, we have a tmp->down; link q_list to it */
+          ptr = tmp->down;
+          /* sibling order is important here, q_list should be linked last */
+          while (ptr->next)
+            ptr = ptr->next;
+          ptr->next = q_list;
+          q_list->next = NULL;
+          q_list->prev = ptr;
+          q_list->up = tmp;
+
+          index = q_list->quote_n;
+
+          /* next class to test; as above, we shouldn't go down */
+          q_list = save;
+        }
+        else
         {
           /* add a node above q_list */
           tmp = qstyle_new();
@@ -343,34 +371,6 @@ struct QuoteStyle *qstyle_classify(struct QuoteStyle **quote_list, const char *q
            * node, that node can only be in the top level list, so don't
            * go down after this point */
           q_list = tmp->next;
-        }
-        else
-        {
-          /* found another branch for which tmp is a shorter prefix */
-
-          /* save the next sibling for later */
-          save = q_list->next;
-
-          /* unlink q_list from the top level list */
-          if (q_list->next)
-            q_list->next->prev = q_list->prev;
-          if (q_list->prev)
-            q_list->prev->next = q_list->next;
-
-          /* at this point, we have a tmp->down; link q_list to it */
-          ptr = tmp->down;
-          /* sibling order is important here, q_list should be linked last */
-          while (ptr->next)
-            ptr = ptr->next;
-          ptr->next = q_list;
-          q_list->next = NULL;
-          q_list->prev = ptr;
-          q_list->up = tmp;
-
-          index = q_list->quote_n;
-
-          /* next class to test; as above, we shouldn't go down */
-          q_list = save;
         }
 
         /* we found a shorter prefix, so certain quotes have changed classes */

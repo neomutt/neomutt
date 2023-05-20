@@ -1120,16 +1120,16 @@ static void make_reference_headers(struct EmailList *el, struct Envelope *env,
   struct EmailNode *en = STAILQ_FIRST(el);
   bool single = !STAILQ_NEXT(en, entries);
 
-  if (!single)
+  if (single)
+  {
+    mutt_add_to_reference_headers(env, en->email->env, sub);
+  }
+  else
   {
     STAILQ_FOREACH(en, el, entries)
     {
       mutt_add_to_reference_headers(env, en->email->env, sub);
     }
-  }
-  else
-  {
-    mutt_add_to_reference_headers(env, en->email->env, sub);
   }
 
   /* if there's more than entry in In-Reply-To (i.e. message has multiple

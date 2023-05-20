@@ -1064,7 +1064,24 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
     if (!e)
       continue;
 
-    if (!e->thread)
+    if (e->thread)
+    {
+      /* unlink pseudo-threads because they might be children of newly
+       * arrived messages */
+      thread = e->thread;
+      for (tnew = thread->child; tnew;)
+      {
+        tmp = tnew->next;
+        if (tnew->fake_thread)
+        {
+          unlink_message(&thread->child, tnew);
+          insert_message(&top.child, &top, tnew);
+          tnew->fake_thread = false;
+        }
+        tnew = tmp;
+      }
+    }
+    else
     {
       if ((!init || c_duplicate_threads) && e->env->message_id)
         thread = mutt_hash_find(tctx->hash, e->env->message_id);
@@ -1130,23 +1147,6 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
           thread->duplicate_thread = true;
           thread->message->threaded = true;
         }
-      }
-    }
-    else
-    {
-      /* unlink pseudo-threads because they might be children of newly
-       * arrived messages */
-      thread = e->thread;
-      for (tnew = thread->child; tnew;)
-      {
-        tmp = tnew->next;
-        if (tnew->fake_thread)
-        {
-          unlink_message(&thread->child, tnew);
-          insert_message(&top.child, &top, tnew);
-          tnew->fake_thread = false;
-        }
-        tnew = tmp;
       }
     }
   }

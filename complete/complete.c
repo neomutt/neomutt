@@ -227,7 +227,11 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
   }
   closedir(dir);
 
-  if (!buf_is_empty(dirpart))
+  if (buf_is_empty(dirpart))
+  {
+    mutt_str_copy(buf, buf_string(filepart), buflen);
+  }
+  else
   {
     mutt_str_copy(buf, buf_string(dirpart), buflen);
     if (!mutt_str_equal("/", buf_string(dirpart)) &&
@@ -236,10 +240,6 @@ int mutt_complete(struct CompletionData *cd, char *buf, size_t buflen)
       mutt_str_copy(buf + strlen(buf), "/", buflen - strlen(buf));
     }
     mutt_str_copy(buf + strlen(buf), buf_string(filepart), buflen - strlen(buf));
-  }
-  else
-  {
-    mutt_str_copy(buf, buf_string(filepart), buflen);
   }
 
 cleanup:

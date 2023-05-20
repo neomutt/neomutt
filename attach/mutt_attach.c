@@ -1068,7 +1068,12 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
     return -1;
   }
 
-  if (!fp)
+  if (fp)
+  {
+    state.fp_in = fp;
+    state.flags |= STATE_CHARCONV;
+  }
+  else
   {
     /* When called from the compose menu, the attachment isn't parsed,
      * so we need to do it here. */
@@ -1101,11 +1106,6 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path,
 
     if (m->noconv || is_multipart(m))
       state.flags |= STATE_CHARCONV;
-  }
-  else
-  {
-    state.fp_in = fp;
-    state.flags |= STATE_CHARCONV;
   }
 
   mutt_body_handler(m, &state);

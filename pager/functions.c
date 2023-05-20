@@ -384,23 +384,7 @@ static int op_pager_search(struct IndexSharedData *shared,
       line_num++;
     }
 
-    if (!priv->search_back)
-    {
-      /* searching forward */
-      int i;
-      for (i = priv->top_line; i < priv->lines_used; i++)
-      {
-        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
-            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
-        {
-          break;
-        }
-      }
-
-      if (i < priv->lines_used)
-        priv->top_line = i;
-    }
-    else
+    if (priv->search_back)
     {
       /* searching backward */
       int i;
@@ -414,6 +398,22 @@ static int op_pager_search(struct IndexSharedData *shared,
       }
 
       if (i >= 0)
+        priv->top_line = i;
+    }
+    else
+    {
+      /* searching forward */
+      int i;
+      for (i = priv->top_line; i < priv->lines_used; i++)
+      {
+        if ((!priv->hide_quoted || (priv->lines[i].cid != MT_COLOR_QUOTED)) &&
+            !priv->lines[i].cont_line && (priv->lines[i].search_arr_size > 0))
+        {
+          break;
+        }
+      }
+
+      if (i < priv->lines_used)
         priv->top_line = i;
     }
 

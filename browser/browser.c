@@ -1251,11 +1251,7 @@ void buf_select_file(struct Buffer *file, SelectFileFlags flags,
   }
   else
   {
-    if (!priv->folder)
-    {
-      mutt_path_getcwd(&LastDir);
-    }
-    else
+    if (priv->folder)
     {
       /* Whether we use the tracking feature of the browser depends
        * on which sort method we chose to use. This variable is defined
@@ -1322,6 +1318,10 @@ void buf_select_file(struct Buffer *file, SelectFileFlags flags,
       /* When browser tracking feature is disabled, clear LastDirBackup */
       if (!browser_track)
         buf_reset(&LastDirBackup);
+    }
+    else
+    {
+      mutt_path_getcwd(&LastDir);
     }
 
 #ifdef USE_IMAP

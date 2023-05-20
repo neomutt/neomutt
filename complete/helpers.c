@@ -587,26 +587,22 @@ int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen,
 
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, var);
     if (!he)
-    {
       return 0; /* no such variable. */
-    }
-    else
+
+    struct Buffer value = buf_make(256);
+    struct Buffer pretty = buf_make(256);
+    int rc = cs_subset_he_string_get(NeoMutt->sub, he, &value);
+    if (CSR_RESULT(rc) == CSR_SUCCESS)
     {
-      struct Buffer value = buf_make(256);
-      struct Buffer pretty = buf_make(256);
-      int rc = cs_subset_he_string_get(NeoMutt->sub, he, &value);
-      if (CSR_RESULT(rc) == CSR_SUCCESS)
-      {
-        pretty_var(value.data, &pretty);
-        snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
-        buf_dealloc(&value);
-        buf_dealloc(&pretty);
-        return 0;
-      }
+      pretty_var(value.data, &pretty);
+      snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
       buf_dealloc(&value);
       buf_dealloc(&pretty);
-      return 1;
+      return 0;
     }
+    buf_dealloc(&value);
+    buf_dealloc(&pretty);
+    return 1;
   }
   return 0;
 }

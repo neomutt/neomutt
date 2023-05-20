@@ -696,16 +696,16 @@ void rfc2047_decode(char **pd)
       }
 
       /* Add non-encoded part */
-      if (!slist_is_empty(c_assumed_charset))
+      if (slist_is_empty(c_assumed_charset))
+      {
+        buf_addstr_n(&buf, s, holelen);
+      }
+      else
       {
         char *conv = mutt_strn_dup(s, holelen);
         mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &conv);
         buf_addstr(&buf, conv);
         FREE(&conv);
-      }
-      else
-      {
-        buf_addstr_n(&buf, s, holelen);
       }
       s += holelen;
     }

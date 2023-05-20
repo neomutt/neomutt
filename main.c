@@ -1021,11 +1021,17 @@ main
         }
       }
 
-      /* Copy input to a tempfile, and re-point fp_in to the tempfile.
-       * Note: stdin is always copied to a tempfile, ensuring draft_file
-       * can stat and get the correct st_size below.  */
-      if (!edit_infile)
+      if (edit_infile)
       {
+        /* If editing the infile, keep it around afterwards so
+         * it doesn't get unlinked, and we can rebuild the draft_file */
+        sendflags |= SEND_NO_FREE_HEADER;
+      }
+      else
+      {
+        /* Copy input to a tempfile, and re-point fp_in to the tempfile.
+         * Note: stdin is always copied to a tempfile, ensuring draft_file
+         * can stat and get the correct st_size below.  */
         buf_mktemp(&tempfile);
 
         fp_out = mutt_file_fopen(buf_string(&tempfile), "w");
@@ -1054,10 +1060,6 @@ main
           goto main_curses; // TEST30: can't test
         }
       }
-      /* If editing the infile, keep it around afterwards so
-       * it doesn't get unlinked, and we can rebuild the draft_file */
-      else
-        sendflags |= SEND_NO_FREE_HEADER;
 
       /* Parse the draft_file into the full Email/Body structure.
        * Set SEND_DRAFT_FILE so mutt_send_message doesn't overwrite

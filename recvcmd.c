@@ -842,7 +842,12 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
   struct Envelope *curenv = NULL;
   struct Email *e = NULL;
 
-  if (!parent)
+  if (parent)
+  {
+    curenv = parent->env;
+    e = parent;
+  }
+  else
   {
     for (short i = 0; i < actx->idxlen; i++)
     {
@@ -853,11 +858,6 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
         break;
       }
     }
-  }
-  else
-  {
-    curenv = parent->env;
-    e = parent;
   }
 
   if (!curenv || !e)
@@ -1033,22 +1033,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     goto cleanup;
   }
 
-  if (!e_parent)
-  {
-    if (e_cur)
-    {
-      attach_include_reply(fp, fp_tmp, e_cur->email);
-    }
-    else
-    {
-      for (short i = 0; i < actx->idxlen; i++)
-      {
-        if (actx->idx[i]->body->tagged)
-          attach_include_reply(actx->idx[i]->fp, fp_tmp, actx->idx[i]->body->email);
-      }
-    }
-  }
-  else
+  if (e_parent)
   {
     mutt_make_attribution_intro(e_parent, fp_tmp, NeoMutt->sub);
 
@@ -1113,6 +1098,21 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     if (mime_reply_any && !e_cur && !copy_problematic_attachments(&e_tmp->body, actx, false))
     {
       goto cleanup;
+    }
+  }
+  else
+  {
+    if (e_cur)
+    {
+      attach_include_reply(fp, fp_tmp, e_cur->email);
+    }
+    else
+    {
+      for (short i = 0; i < actx->idxlen; i++)
+      {
+        if (actx->idx[i]->body->tagged)
+          attach_include_reply(actx->idx[i]->fp, fp_tmp, actx->idx[i]->body->email);
+      }
     }
   }
 

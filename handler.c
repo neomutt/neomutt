@@ -1339,7 +1339,11 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
   /* text subtypes may require character set conversion even with 8bit encoding */
   {
     const int orig_type = b->type;
-    if (!plaintext)
+    if (plaintext)
+    {
+      b->type = TYPE_TEXT;
+    }
+    else
     {
       /* decode to a tempfile, saving the original destination */
       fp = state->fp_out;
@@ -1374,10 +1378,6 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
       state->prefix = NULL;
 
       decode = 1;
-    }
-    else
-    {
-      b->type = TYPE_TEXT;
     }
 
     mutt_decode_attachment(b, state);
@@ -1761,7 +1761,19 @@ int mutt_body_handler(struct Body *b, struct State *state)
     const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
     struct Buffer msg = buf_make(256);
 
-    if (!is_attachment_display)
+    if (is_attachment_display)
+    {
+      if (c_honor_disposition && (b->disposition == DISP_ATTACH))
+      {
+        buf_strcpy(&msg, _("[-- This is an attachment --]\n"));
+      }
+      else
+      {
+        /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
+        buf_printf(&msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
+      }
+    }
+    else
     {
       char keystroke[128] = { 0 };
       if (km_expand_key(keystroke, sizeof(keystroke),
@@ -1793,18 +1805,6 @@ int mutt_body_handler(struct Body *b, struct State *state)
           buf_printf(&msg, _("[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"),
                      TYPE(b), b->subtype);
         }
-      }
-    }
-    else
-    {
-      if (c_honor_disposition && (b->disposition == DISP_ATTACH))
-      {
-        buf_strcpy(&msg, _("[-- This is an attachment --]\n"));
-      }
-      else
-      {
-        /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
-        buf_printf(&msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
       }
     }
     state_mark_attach(state);

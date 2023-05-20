@@ -1709,7 +1709,28 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
     buf_init(&sync_cmd);
     buf_init(&cmd);
 
-    if (!single) /* copy tagged messages */
+    if (single)
+    {
+      mutt_message(_("Copying message %d to %s..."), en->email->index + 1, mbox);
+      buf_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(en->email)->uid, mmbox);
+
+      if (en->email->active && en->email->changed)
+      {
+        rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
+        if (rc < 0)
+        {
+          mutt_debug(LL_DEBUG1, "#2 could not sync\n");
+          goto out;
+        }
+      }
+      rc = imap_exec(adata, cmd.data, IMAP_CMD_QUEUE);
+      if (rc != IMAP_EXEC_SUCCESS)
+      {
+        mutt_debug(LL_DEBUG1, "#2 could not queue copy\n");
+        goto out;
+      }
+    }
+    else /* copy tagged messages */
     {
       /* if any messages have attachments to delete, fall through to FETCH
        * and APPEND. TODO: Copy what we can with COPY, fall through for the
@@ -1749,27 +1770,6 @@ int imap_copy_messages(struct Mailbox *m, struct EmailList *el,
       {
         mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
                      rc, mbox);
-      }
-    }
-    else
-    {
-      mutt_message(_("Copying message %d to %s..."), en->email->index + 1, mbox);
-      buf_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(en->email)->uid, mmbox);
-
-      if (en->email->active && en->email->changed)
-      {
-        rc = imap_sync_message_for_copy(m, en->email, &sync_cmd, &err_continue);
-        if (rc < 0)
-        {
-          mutt_debug(LL_DEBUG1, "#2 could not sync\n");
-          goto out;
-        }
-      }
-      rc = imap_exec(adata, cmd.data, IMAP_CMD_QUEUE);
-      if (rc != IMAP_EXEC_SUCCESS)
-      {
-        mutt_debug(LL_DEBUG1, "#2 could not queue copy\n");
-        goto out;
       }
     }
 

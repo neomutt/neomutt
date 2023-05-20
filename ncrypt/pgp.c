@@ -1759,7 +1759,12 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
   else
     from_charset = cc_charset();
 
-  if (!mutt_ch_is_us_ascii(body_charset))
+  if (mutt_ch_is_us_ascii(body_charset))
+  {
+    send_charset = "us-ascii";
+    mutt_file_copy_stream(fp_body, fp_pgp_in);
+  }
+  else
   {
     int c;
     struct FgetConv *fc = NULL;
@@ -1775,11 +1780,6 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
       fputc(c, fp_pgp_in);
 
     mutt_ch_fgetconv_close(&fc);
-  }
-  else
-  {
-    send_charset = "us-ascii";
-    mutt_file_copy_stream(fp_body, fp_pgp_in);
   }
   mutt_file_fclose(&fp_body);
   mutt_file_fclose(&fp_pgp_in);

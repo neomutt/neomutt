@@ -1591,16 +1591,16 @@ static int op_main_set_flag(struct IndexSharedData *shared,
 static int op_main_show_limit(struct IndexSharedData *shared,
                               struct IndexPrivateData *priv, int op)
 {
-  if (!mview_has_limit(shared->mailbox_view))
-  {
-    mutt_message(_("No limit pattern is in effect"));
-  }
-  else
+  if (mview_has_limit(shared->mailbox_view))
   {
     char buf2[256];
     /* L10N: ask for a limit to apply */
     snprintf(buf2, sizeof(buf2), _("Limit: %s"), shared->mailbox_view->pattern);
     mutt_message("%s", buf2);
+  }
+  else
+  {
+    mutt_message(_("No limit pattern is in effect"));
   }
 
   return FR_SUCCESS;

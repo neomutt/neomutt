@@ -352,11 +352,7 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
   else
   {
     struct DnArray *dn = parse_dn(userid);
-    if (!dn)
-    {
-      fputs(_("[Can't display this user ID (invalid DN)]"), fp);
-    }
-    else
+    if (dn)
     {
       print_dn_parts(fp, dn);
       for (int i = 0; dn[i].key; i++)
@@ -365,6 +361,10 @@ static void parse_and_print_user_id(FILE *fp, const char *userid)
         FREE(&dn[i].value);
       }
       FREE(&dn);
+    }
+    else
+    {
+      fputs(_("[Can't display this user ID (invalid DN)]"), fp);
     }
   }
 }

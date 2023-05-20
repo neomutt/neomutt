@@ -222,7 +222,12 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
       goto bail;
     }
 
-    if (!client_start)
+    if (client_start)
+    {
+      olen = client_start;
+      client_start = 0;
+    }
+    else
     {
       while (true)
       {
@@ -231,11 +236,6 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
           break;
         mutt_sasl_interact(interaction);
       }
-    }
-    else
-    {
-      olen = client_start;
-      client_start = 0;
     }
 
     /* Even if sasl_client_step() returns SASL_OK, we should send at
