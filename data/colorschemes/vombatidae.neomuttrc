@@ -63,7 +63,7 @@ color index             color240        color234  ~D         # Deleted
 # ---
 
 #mono body      reverse         '^(subject):.*'
-#color body     brightwhite magenta     '^(subject):.*'
+#color body     bold lightwhite magenta     '^(subject):.*'
 #mono body      reverse         '[[:alpha:]][[:alnum:]-]+:'
 #color body     black cyan      '[[:alpha:]][[:alnum:]-]+:'
 
@@ -79,15 +79,15 @@ color header            color29         color233    '^reply-to:'
 
 #color header   magenta default '^(status|lines|date|received|sender|references):'
 #color header   magenta default '^(pr|mime|x-|user|return|content-)[^:]*:'
-#color header   brightyellow default '^content-type:'
+#color header   bold lightyellow default '^content-type:'
 #color header   magenta default '^content-type: *text/plain'
-# color header  brightgreen default '^list-[^:]*:'
+# color header  bold lightgreen default '^list-[^:]*:'
 #mono  header    bold               '^(subject):.*$'
-#color header   brightcyan default      '^(disposition)'
+#color header   bold lightcyan default      '^(disposition)'
 #color header   green default   '^(mail-)?followup'
 #color header   white default   '^reply'
-#color header   brightwhite default     '^(resent)'
-# color header  brightwhite default     '^from:'
+#color header   bold lightwhite default     '^(resent)'
+# color header  bold lightwhite default     '^from:'
 
 #mono index     bold '~h "^content-type: *(multipart/(mixed|signed|encrypted)|application/)"'
 #color index    green black '~h "^content-type: *multipart/(signed|encrypted)"'
