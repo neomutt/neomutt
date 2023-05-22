@@ -26,6 +26,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "config.h"
 #include "mutt/lib.h"
 
 void test_gen_path(char *buf, size_t buflen, const char *fmt);
@@ -43,6 +44,22 @@ static inline bool test_check_str_eq(const char *actual, const char *expected, c
   }
 
   return rc;
+}
+
+static inline FILE *test_make_file_with_contents(char *contents, size_t len)
+{
+  FILE *fp = NULL;
+#ifdef USE_FMEMOPEN
+  fp = fmemopen(contents, len, "r");
+#else
+  fp = tmpfile();
+  if (fp)
+  {
+    fwrite(contents, len, 1, fp);
+    rewind(fp);
+  }
+#endif
+  return fp;
 }
 
 #define TEST_CHECK_STR_EQ(actual, expected) test_check_str_eq(actual, expected, __FILE__, __LINE__)

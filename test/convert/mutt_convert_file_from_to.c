@@ -37,7 +37,7 @@ void test_mutt_convert_file_from_to(void)
   {
     /* Conversion from us-ascii to UTF-8. */
     char data[] = "us-ascii text\nline 2 \r\nline3";
-    FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
     struct Slist *tocodes = slist_parse("utf-8", SLIST_SEP_COLON);
     struct Slist *fromcodes = slist_parse("us-ascii", SLIST_SEP_COLON);
@@ -63,7 +63,7 @@ void test_mutt_convert_file_from_to(void)
      * For reference, the string below translates to the following bytes
      * in ISO-8859-2: '\xf3\xbf\x77\xb3\x00'*/
     char data[] = "line 2\r\nline3\n\xc5\xbc\xc3\xb3\xc5\x82\x77";
-    FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
     struct Slist *tocodes = slist_parse("iso-8859-2", SLIST_SEP_COLON);
     struct Slist *fromcodes = slist_parse("us-ascii:utf-8", SLIST_SEP_COLON);
