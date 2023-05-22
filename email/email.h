@@ -123,6 +123,7 @@ struct Email
                                ///< (only valid when collapsed is set)
   char *tree;                  ///< Character string to print thread tree
 };
+ARRAY_HEAD(EmailArray, struct Email *);
 
 /**
  * struct EmailNode - List of Emails
@@ -132,7 +133,6 @@ struct EmailNode
   struct Email *email;             ///< Email in the list
   STAILQ_ENTRY(EmailNode) entries; ///< Linked list
 };
-STAILQ_HEAD(EmailList, EmailNode);
 
 /**
  * enum NotifyEmail - Types of Email Event
@@ -186,9 +186,6 @@ bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
 void          email_free      (struct Email **ptr);
 struct Email *email_new       (void);
 size_t        email_size      (const struct Email *e);
-
-int  emaillist_add_email(struct EmailList *el, struct Email *e);
-void emaillist_clear    (struct EmailList *el);
 
 struct ListNode *header_add   (struct ListHead *hdrlist, const char *header);
 struct ListNode *header_find  (const struct ListHead *hdrlist, const char *header);

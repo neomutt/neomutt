@@ -841,11 +841,11 @@ void crypt_convert_to_7bit(struct Body *a)
 /**
  * crypt_extract_keys_from_messages - Extract keys from a message
  * @param m  Mailbox
- * @param el List of Emails to process
+ * @param ea Array of Emails to process
  *
  * The extracted keys will be added to the user's keyring.
  */
-void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
+void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
 {
   if (!WithCrypto)
     return;
@@ -862,10 +862,10 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailList *el)
   if (WithCrypto & APPLICATION_PGP)
     OptDontHandlePgpKeys = true;
 
-  struct EmailNode *en = NULL;
-  STAILQ_FOREACH(en, el, entries)
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
   {
-    struct Email *e = en->email;
+    struct Email *e = *ep;
     struct Message *msg = mx_msg_open(m, e);
     if (!msg)
     {

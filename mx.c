@@ -743,7 +743,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
     if ((m->type == MUTT_IMAP) && (imap_path_probe(buf_string(mbox), NULL) == MUTT_IMAP))
     {
       /* add messages for moving, and clear old tags, if any */
-      struct EmailList el = STAILQ_HEAD_INITIALIZER(el);
+      struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
       for (i = 0; i < m->msg_count; i++)
       {
         struct Email *e = m->emails[i];
@@ -753,7 +753,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
         if (e->read && !e->deleted && !(e->flagged && c_keep_flagged))
         {
           e->tagged = true;
-          emaillist_add_email(&el, e);
+          ARRAY_ADD(&ea, e);
         }
         else
         {
@@ -761,20 +761,20 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
         }
       }
 
-      i = imap_copy_messages(m, &el, buf_string(mbox), SAVE_MOVE);
+      i = imap_copy_messages(m, &ea, buf_string(mbox), SAVE_MOVE);
       if (i == 0)
       {
         const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
         if (c_delete_untag)
         {
-          struct EmailNode *en = NULL;
-          STAILQ_FOREACH(en, &el, entries)
+          struct Email **ep = NULL;
+          ARRAY_FOREACH(ep, &ea)
           {
-            mutt_set_flag(m, en->email, MUTT_TAG, false, true);
+            mutt_set_flag(m, *ep, MUTT_TAG, false, true);
           }
         }
       }
-      emaillist_clear(&el);
+      ARRAY_FREE(&ea);
     }
 
     if (i == 0) /* success */

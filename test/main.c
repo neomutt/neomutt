@@ -197,8 +197,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_email_free)                                           \
   NEOMUTT_TEST_ITEM(test_email_new)                                            \
   NEOMUTT_TEST_ITEM(test_email_size)                                           \
-  NEOMUTT_TEST_ITEM(test_emaillist_add_email)                                  \
-  NEOMUTT_TEST_ITEM(test_emaillist_clear)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_new)                                \
   NEOMUTT_TEST_ITEM(test_email_header_find)                                    \

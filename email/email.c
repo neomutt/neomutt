@@ -130,45 +130,6 @@ size_t email_size(const struct Email *e)
 }
 
 /**
- * emaillist_clear - Drop a private list of Emails
- * @param el EmailList to empty
- *
- * The Emails are not freed.
- */
-void emaillist_clear(struct EmailList *el)
-{
-  if (!el)
-    return;
-
-  struct EmailNode *en = NULL, *tmp = NULL;
-  STAILQ_FOREACH_SAFE(en, el, entries, tmp)
-  {
-    STAILQ_REMOVE(el, en, EmailNode, entries);
-    FREE(&en);
-  }
-  STAILQ_INIT(el);
-}
-
-/**
- * emaillist_add_email - Add an Email to a list
- * @param e  Email to add
- * @param el EmailList to add to
- * @retval  0 Success
- * @retval -1 Error
- */
-int emaillist_add_email(struct EmailList *el, struct Email *e)
-{
-  if (!el || !e)
-    return -1;
-
-  struct EmailNode *en = mutt_mem_calloc(1, sizeof(*en));
-  en->email = e;
-  STAILQ_INSERT_TAIL(el, en, entries);
-
-  return 0;
-}
-
-/**
  * header_find - Find a header, matching on its field, in a list of headers
  * @param hdrlist List of headers to search
  * @param header  The header to search for

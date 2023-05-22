@@ -27,7 +27,7 @@
 #include <sys/types.h>
 
 struct Email;
-struct EmailList;
+struct EmailArray;
 struct Mailbox;
 struct Notify;
 struct NotifyCallback;
@@ -81,7 +81,7 @@ struct Mailbox *    mview_mailbox         (struct MailboxView *mv);
 bool message_is_tagged(struct Email *e);
 struct Email *mutt_get_virt_email(struct Mailbox *m, int vnum);
 
-int el_add_tagged(struct EmailList *el, struct MailboxView *mv, struct Email *e, bool use_tagged);
+int ea_add_tagged(struct EmailArray *ea, struct MailboxView *mv, struct Email *e, bool use_tagged);
 
 bool mutt_limit_current_thread(struct MailboxView *mv, struct Email *e);
 
