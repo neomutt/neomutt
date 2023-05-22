@@ -357,7 +357,7 @@ bool message_is_tagged(struct Email *e)
 
 /**
  * ea_add_tagged - Get an array of the tagged Emails
- * @param el         Empty EmailArray to populate
+ * @param ea         Empty EmailArray to populate
  * @param mv         Current Mailbox
  * @param e          Current Email
  * @param use_tagged Use tagged Emails
