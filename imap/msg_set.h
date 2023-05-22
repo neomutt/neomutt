@@ -22,15 +22,15 @@
 #ifndef MUTT_IMAP_MSG_SET_H
 #define MUTT_IMAP_MSG_SET_H
 
-#include <stdbool.h>
 #include "mutt/lib.h"
-#include "mutt.h"
 
-struct Mailbox;
+struct ImapAccountData;
 
 /// Set of Email UIDs to work on
 ARRAY_HEAD(UidArray, unsigned int);
 
-int imap_exec_msg_set(struct Mailbox *m, const char *pre, const char *post, enum MessageType flag, bool changed, bool invert);
+int imap_sort_uid(const void *a, const void *b);
+int imap_make_msg_set(struct UidArray *uida, struct Buffer *buf, int *pos);
+int imap_exec_msg_set(struct ImapAccountData *adata, const char *pre, const char *post, struct UidArray *uida);
 
 #endif /* MUTT_IMAP_MSG_SET_H */

@@ -220,8 +220,8 @@ static bool compare_flags_for_copy(struct Email *e)
  * @retval num Number of UIDs added
  * @retval  -1 Error
  */
-int select_email_uids(struct Email **emails, int num_emails, enum MessageType flag,
-                      bool changed, bool invert, struct UidArray *uida)
+static int select_email_uids(struct Email **emails, int num_emails, enum MessageType flag,
+                             bool changed, bool invert, struct UidArray *uida)
 {
   if (!emails || !uida)
     return -1;
@@ -291,11 +291,8 @@ int select_email_uids(struct Email **emails, int num_emails, enum MessageType fl
 static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
                        const char *name)
 {
-  int count = 0;
-  int rc;
-  char buf[1024] = { 0 };
-
-  if (!m)
+  struct ImapAccountData *adata = imap_adata_get(m);
+  if (!adata)
     return -1;
 
   if ((m->rights & right) == 0)
@@ -304,17 +301,28 @@ static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
   if ((right == MUTT_ACL_WRITE) && !imap_has_flag(&imap_mdata_get(m)->flags, name))
     return 0;
 
-  snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
-  rc = imap_exec_msg_set(m, "UID STORE", buf, flag, true, false);
-  if (rc < 0)
-    return rc;
-  count += rc;
+  int count = 0;
+  char buf[1024] = { 0 };
 
-  buf[0] = '-';
-  rc = imap_exec_msg_set(m, "UID STORE", buf, flag, true, true);
+  struct UidArray uida = ARRAY_HEAD_INITIALIZER;
+
+  // Set the flag (+FLAGS) on matching emails
+  select_email_uids(m->emails, m->msg_count, flag, true, false, &uida);
+  snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
+  int rc = imap_exec_msg_set(adata, "UID STORE", buf, &uida);
   if (rc < 0)
     return rc;
   count += rc;
+  ARRAY_FREE(&uida);
+
+  // Clear the flag (-FLAGS) on non-matching emails
+  select_email_uids(m->emails, m->msg_count, flag, true, true, &uida);
+  buf[0] = '-';
+  rc = imap_exec_msg_set(adata, "UID STORE", buf, &uida);
+  if (rc < 0)
+    return rc;
+  count += rc;
+  ARRAY_FREE(&uida);
 
   return count;
 }
@@ -878,7 +886,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 /**
  * imap_sort_email_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
  */
-int imap_sort_email_uid(const void *a, const void *b)
+static int imap_sort_email_uid(const void *a, const void *b)
 {
   const struct Email *ea = *(struct Email const *const *) a;
   const struct Email *eb = *(struct Email const *const *) b;
@@ -1368,7 +1376,10 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   /* loop in case of TRYCREATE */
   do
   {
-    rc = imap_exec_msg_set(m, "UID COPY", dest_mdata->munge_name, MUTT_TRASH, false, false);
+    struct UidArray uida = ARRAY_HEAD_INITIALIZER;
+    select_email_uids(m->emails, m->msg_count, MUTT_TRASH, false, false, &uida);
+    ARRAY_SORT(&uida, imap_sort_uid);
+    rc = imap_exec_msg_set(adata, "UID COPY", dest_mdata->munge_name, &uida);
     if (rc == 0)
     {
       mutt_debug(LL_DEBUG1, "No messages to trash\n");
@@ -1385,6 +1396,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
       mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
                    rc, dest_mdata->name);
     }
+    ARRAY_FREE(&uida);
 
     /* let's get it on */
     rc = imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
@@ -1464,8 +1476,11 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && (m->rights & MUTT_ACL_DELETE))
   {
-    rc = imap_exec_msg_set(m, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
-                           MUTT_DELETED, true, false);
+    struct UidArray uida = ARRAY_HEAD_INITIALIZER;
+    select_email_uids(m->emails, m->msg_count, MUTT_DELETED, true, false, &uida);
+    ARRAY_SORT(&uida, imap_sort_uid);
+    rc = imap_exec_msg_set(adata, "UID STORE", "+FLAGS.SILENT (\\Deleted)", &uida);
+    ARRAY_FREE(&uida);
     if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
