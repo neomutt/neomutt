@@ -28,6 +28,7 @@
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"
+#include "test_common.h"
 
 void test_mutt_convert_file_to(void)
 {
@@ -36,7 +37,7 @@ void test_mutt_convert_file_to(void)
   {
     /* Conversion from us-ascii to UTF-8. */
     char data[] = "us-ascii text\nline 2 \r\nline3";
-    FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
     struct Slist *tocodes = slist_parse("utf-8", SLIST_SEP_COLON);
     int tocode = 0;
@@ -79,7 +80,7 @@ void test_mutt_convert_file_to(void)
     /* Conversion from ISO-8859-2 to us-ascii, despite invalid characters,
      * because us-ascii is the only tocode. */
     char data[] = "line 2\r\nline3\n\xf3\xbf\x77\xb3\x00";
-    FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
     struct Slist *tocodes = slist_parse("us-ascii", SLIST_SEP_COLON);
     int tocode = 0;
@@ -97,7 +98,7 @@ void test_mutt_convert_file_to(void)
     /* Conversion from ISO-8859-2 to us-ascii or ISO-8859-1.
      * Neither is a valid conversion, so rc == -1. */
     char data[] = "line 2\r\nline3\n\xf3\xbf\x77\xb3\x00";
-    FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
     struct Slist *tocodes = slist_parse("us-ascii:iso-8859-1", SLIST_SEP_COLON);
     int tocode = 0;
@@ -115,7 +116,7 @@ void test_mutt_convert_file_to(void)
     /* Conversion from ISO-8859-2 to us-ascii or ISO-8859-1,
      * but with all valid characters. */
     char data[] = "line 2\r\nline3\n";
-    FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
     struct Slist *tocodes = slist_parse("us-ascii:iso-8859-1", SLIST_SEP_COLON);
     int tocode = 0;
@@ -137,7 +138,7 @@ void test_mutt_convert_file_to(void)
      * For reference, the string below translates to the following bytes
      * in UTF-8: '\xc5\xbc\xc3\xb3\xc5\x82\x77'*/
     char data[] = "line 2\r\nline3\n\xf3\xbf\x77\xb3\x00";
-    FILE *fp = fmemopen(data, sizeof(data) - 1, "r");
+    FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
     struct Slist *tocodes = slist_parse("us-ascii:utf-8", SLIST_SEP_COLON);
     int tocode = 0;
