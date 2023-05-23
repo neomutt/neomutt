@@ -1023,26 +1023,31 @@ if {[get-define want-debug-backtrace]} {
     user-error "Unable to find libunwind"
   }
   define LIBS "-lunwind-generic [get-define LIBS]"
+  define debug_build 1
 }
 
 # Color dump
 if {[get-define want-debug-color]} {
   define USE_DEBUG_COLOR 1
+  define debug_build 1
 }
 
 # Email dump
 if {[get-define want-debug-email]} {
   define USE_DEBUG_EMAIL 1
+  define debug_build 1
 }
 
 # Graphviz dump
 if {[get-define want-debug-graphviz]} {
   define USE_DEBUG_GRAPHVIZ 1
+  define debug_build 1
 }
 
 # Notifications dump
 if {[get-define want-debug-notify]} {
   define USE_DEBUG_NOTIFY 1
+  define debug_build 1
 }
 
 # TAILQ debugging
@@ -1051,11 +1056,13 @@ if {[get-define want-debug-queue]} {
   define QUEUE_MACRO_DEBUG_TRACE
   # Invalidated pointers will be set to 0xffffffffffffffff
   define QUEUE_MACRO_DEBUG_TRASH
+  define debug_build 1
 }
 
 # Windows dump
 if {[get-define want-debug-window]} {
   define USE_DEBUG_WINDOW 1
+  define debug_build 1
 }
 
 ###############################################################################
@@ -1066,9 +1073,10 @@ if {[get-define want-asan]} {
     user-error "Unable to compile with -fsanitize=address"
   }
   msg-result "yes"
-  define-append CFLAGS -fsanitize=address -O0 -fno-omit-frame-pointer -fno-common
+  define-append CFLAGS -fsanitize=address -fno-omit-frame-pointer -fno-common
   define-append LDFLAGS -fsanitize=address
   define USE_ASAN
+  define debug_build 1
 }
 
 ###############################################################################
@@ -1079,9 +1087,10 @@ if {[get-define want-ubsan]} {
     user-error "Unable to compile with -fsanitize=undefined"
   }
   msg-result "yes"
-  define-append CFLAGS -fsanitize=undefined -O0 -fno-omit-frame-pointer -fno-common
+  define-append CFLAGS -fsanitize=undefined -fno-omit-frame-pointer -fno-common
   define-append LDFLAGS -fsanitize=undefined
   define USE_UBSAN
+  define debug_build 1
 }
 
 ###############################################################################
@@ -1111,6 +1120,14 @@ if {[get-define want-coverage]} {
   define ENABLE_COVERAGE
   define-append CFLAGS -fprofile-arcs -ftest-coverage
   define-append LDFLAGS -fprofile-arcs -ftest-coverage
+}
+
+###############################################################################
+# Debug or Release build?
+if {[get-define debug_build]} {
+  define-append CFLAGS -g -O0
+} else {
+  define-append CFLAGS -O2
 }
 
 ###############################################################################
