@@ -588,7 +588,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
       }
       mutt_file_fclose(&fp);
     }
-    if (!saved)
+    if (saved)
       mutt_message(_("Certificate saved"));
     else
       mutt_error(_("Warning: Couldn't save certificate"));
