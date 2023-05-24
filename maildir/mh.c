@@ -544,9 +544,9 @@ cleanup:
 }
 
 /**
- * mh_cmp_path - Compare two Maildirs by path - Implements ::sort_t - @ingroup sort_api
+ * mh_sort_path - Compare two Maildirs by path - Implements ::sort_t - @ingroup sort_api
  */
-static int mh_cmp_path(const void *a, const void *b)
+static int mh_sort_path(const void *a, const void *b)
 {
   struct MdEmail const *const *pa = (struct MdEmail const *const *) a;
   struct MdEmail const *const *pb = (struct MdEmail const *const *) b;
@@ -673,7 +673,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
   if (m && mda && (ARRAY_SIZE(mda) > 0) && (c_sort == SORT_ORDER))
   {
     mutt_debug(LL_DEBUG3, "maildir: sorting %s into natural order\n", mailbox_path(m));
-    ARRAY_SORT(mda, mh_cmp_path);
+    ARRAY_SORT(mda, mh_sort_path);
   }
 }
 

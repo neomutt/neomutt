@@ -913,9 +913,9 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 }
 
 /**
- * compare_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
+ * imap_sort_email_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
  */
-static int compare_uid(const void *a, const void *b)
+static int imap_sort_email_uid(const void *a, const void *b)
 {
   const struct Email *ea = *(struct Email const *const *) a;
   const struct Email *eb = *(struct Email const *const *) b;
@@ -969,7 +969,7 @@ int imap_exec_msgset(struct Mailbox *m, const char *pre, const char *post,
       memcpy(m->emails, emails, m->email_max * sizeof(struct Email *));
 
       cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-      qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
+      qsort(m->emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
     }
   }
 
@@ -1673,7 +1673,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
 
       cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-      qsort(m->emails, m->msg_count, sizeof(struct Email *), compare_uid);
+      qsort(m->emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
     }
   }
 

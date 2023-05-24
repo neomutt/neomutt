@@ -35,9 +35,9 @@
 #include "muttlib.h"
 
 /**
- * browser_compare_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_compare_subject(const void *a, const void *b)
+static int browser_sort_subject(const void *a, const void *b)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -51,11 +51,11 @@ static int browser_compare_subject(const void *a, const void *b)
 }
 
 /**
- * browser_compare_order - Compare the order of creation of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_order - Compare the order of creation of two browser entries - Implements ::sort_t - @ingroup sort_api
  *
  * @note This only affects browsing mailboxes and is a no-op for folders.
  */
-static int browser_compare_order(const void *a, const void *b)
+static int browser_sort_order(const void *a, const void *b)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -65,9 +65,9 @@ static int browser_compare_order(const void *a, const void *b)
 }
 
 /**
- * browser_compare_desc - Compare the descriptions of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_desc - Compare the descriptions of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_compare_desc(const void *a, const void *b)
+static int browser_sort_desc(const void *a, const void *b)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -79,9 +79,9 @@ static int browser_compare_desc(const void *a, const void *b)
 }
 
 /**
- * browser_compare_date - Compare the date of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_date - Compare the date of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_compare_date(const void *a, const void *b)
+static int browser_sort_date(const void *a, const void *b)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -93,9 +93,9 @@ static int browser_compare_date(const void *a, const void *b)
 }
 
 /**
- * browser_compare_size - Compare the size of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_size - Compare the size of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_compare_size(const void *a, const void *b)
+static int browser_sort_size(const void *a, const void *b)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -107,9 +107,9 @@ static int browser_compare_size(const void *a, const void *b)
 }
 
 /**
- * browser_compare_count - Compare the message count of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_count - Compare the message count of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_compare_count(const void *a, const void *b)
+static int browser_sort_count(const void *a, const void *b)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -127,9 +127,9 @@ static int browser_compare_count(const void *a, const void *b)
 }
 
 /**
- * browser_compare_count_new - Compare the new count of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_count_new - Compare the new count of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_compare_count_new(const void *a, const void *b)
+static int browser_sort_count_new(const void *a, const void *b)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -167,20 +167,20 @@ static int browser_compare(const void *a, const void *b)
   switch (c_sort_browser & SORT_MASK)
   {
     case SORT_COUNT:
-      return browser_compare_count(a, b);
+      return browser_sort_count(a, b);
     case SORT_DATE:
-      return browser_compare_date(a, b);
+      return browser_sort_date(a, b);
     case SORT_DESC:
-      return browser_compare_desc(a, b);
+      return browser_sort_desc(a, b);
     case SORT_SIZE:
-      return browser_compare_size(a, b);
+      return browser_sort_size(a, b);
     case SORT_UNREAD:
-      return browser_compare_count_new(a, b);
+      return browser_sort_count_new(a, b);
     case SORT_SUBJECT:
-      return browser_compare_subject(a, b);
+      return browser_sort_subject(a, b);
     default:
     case SORT_ORDER:
-      return browser_compare_order(a, b);
+      return browser_sort_order(a, b);
   }
 }
 
