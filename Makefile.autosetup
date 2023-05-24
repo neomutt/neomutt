@@ -935,6 +935,7 @@ coverage: all test
 	  --directory core \
 	  --directory email \
 	  --directory enter \
+	  --directory imap \
 	  --directory mutt \
 	  --directory notmuch \
 	  --directory parse \

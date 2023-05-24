@@ -41,12 +41,12 @@
 #include "sort.h"
 
 /**
- * IMAP_MAX_CMDLEN - Maximum length of IMAP commands before they must be split
+ * ImapMaxCmdlen - Maximum length of IMAP commands before they must be split
  *
  * This is suggested in RFC7162 (dated 2014).
  * -	https://datatracker.ietf.org/doc/html/rfc7162#section-4
  */
-#define IMAP_MAX_CMDLEN 8192
+int ImapMaxCmdlen = 8192;
 
 /**
  * imap_sort_uid - Compare two UIDs - Implements ::sort_t - @ingroup sort_api
@@ -83,7 +83,7 @@ int imap_make_msg_set(struct UidArray *uida, struct Buffer *buf, int *pos)
   unsigned int start = *ARRAY_GET(uida, i);
   unsigned int prev = start;
 
-  for (i++; (i < array_size) && (buf_len(buf) < IMAP_MAX_CMDLEN); i++, count++)
+  for (i++; (i < array_size) && (buf_len(buf) < ImapMaxCmdlen); i++, count++)
   {
     unsigned int uid = *ARRAY_GET(uida, i);
 
@@ -132,7 +132,7 @@ int imap_make_msg_set(struct UidArray *uida, struct Buffer *buf, int *pos)
 int imap_exec_msg_set(struct ImapAccountData *adata, const char *pre,
                       const char *post, struct UidArray *uida)
 {
-  struct Buffer cmd = buf_make(IMAP_MAX_CMDLEN);
+  struct Buffer cmd = buf_make(ImapMaxCmdlen);
 
   int count = 0;
   int pos = 0;
