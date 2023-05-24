@@ -475,8 +475,9 @@ $(PWD)/history:
 LIBIMAP=	libimap.a
 LIBIMAPOBJS=	imap/auth.o imap/auth_login.o imap/auth_oauth.o \
 		imap/auth_plain.o imap/browse.o imap/command.o imap/config.o \
-		imap/imap.o imap/message.o imap/msn.o imap/search.o \
-		imap/adata.o imap/edata.o imap/mdata.o imap/utf7.o imap/util.o
+		imap/imap.o imap/message.o imap/msg_set.o imap/msn.o \
+		imap/search.o imap/adata.o imap/edata.o imap/mdata.o \
+		imap/utf7.o imap/util.o
 @if USE_GSS
 LIBIMAPOBJS+=	imap/auth_gss.o
 @endif

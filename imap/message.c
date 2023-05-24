@@ -55,6 +55,7 @@
 #include "external.h"
 #include "globals.h" // IWYU pragma: keep
 #include "mdata.h"
+#include "msg_set.h"
 #include "msn.h"
 #include "mutt_logging.h"
 #include "mx.h"
@@ -1758,7 +1759,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
         }
       }
 
-      rc = imap_exec_msgset(m, "UID COPY", mmbox, MUTT_TAG, false, false);
+      rc = imap_exec_msg_set(m, "UID COPY", mmbox, MUTT_TAG, false, false);
       if (rc == 0)
       {
         mutt_debug(LL_DEBUG1, "No messages tagged\n");
