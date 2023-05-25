@@ -41,8 +41,13 @@
 
 int imap_sort_email_uid(const void *a, const void *b);
 
-/// Maximum length of IMAP commands before they must be split
-#define IMAP_MAX_CMDLEN 1024
+/**
+ * IMAP_MAX_CMDLEN - Maximum length of IMAP commands before they must be split
+ *
+ * This is suggested in RFC7162 (dated 2014).
+ * -	https://datatracker.ietf.org/doc/html/rfc7162#section-4
+ */
+#define IMAP_MAX_CMDLEN 8192
 
 /**
  * imap_make_msg_set - Make a message set
@@ -168,7 +173,7 @@ int imap_make_msg_set(struct Mailbox *m, struct Buffer *buf,
  * (must be flushed with imap_exec)
  */
 int imap_exec_msg_set(struct Mailbox *m, const char *pre, const char *post,
-                     enum MessageType flag, bool changed, bool invert)
+                      enum MessageType flag, bool changed, bool invert)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata || (adata->mailbox != m))

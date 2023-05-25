@@ -30,7 +30,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "config/lib.h"
-#include "mutt.h"
 
 struct Buffer;
 struct ConnAccount;

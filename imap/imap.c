@@ -1395,7 +1395,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   if (expunge && (m->rights & MUTT_ACL_DELETE))
   {
     rc = imap_exec_msg_set(m, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
-                          MUTT_DELETED, true, false);
+                           MUTT_DELETED, true, false);
     if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
