@@ -281,15 +281,17 @@ static int select_email_uids(struct Email **emails, int num_emails, enum Message
 
 /**
  * sync_helper - Sync flag changes to the server
- * @param m     Selected Imap Mailbox
- * @param right ACL, see #AclFlags
- * @param flag  NeoMutt flag, e.g. #MUTT_DELETED
- * @param name  Name of server flag
+ * @param m          Selected Imap Mailbox
+ * @param emails     Array of Emails
+ * @param num_emails Number of Emails in the array
+ * @param right      ACL, see #AclFlags
+ * @param flag       NeoMutt flag, e.g. #MUTT_DELETED
+ * @param name       Name of server flag
  * @retval >=0 Success, number of messages
  * @retval  -1 Failure
  */
-static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
-                       const char *name)
+static int sync_helper(struct Mailbox *m, struct Email **emails, int num_emails,
+                       AclFlags right, enum MessageType flag, const char *name)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   if (!adata)
@@ -307,7 +309,7 @@ static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
   struct UidArray uida = ARRAY_HEAD_INITIALIZER;
 
   // Set the flag (+FLAGS) on matching emails
-  select_email_uids(m->emails, m->msg_count, flag, true, false, &uida);
+  select_email_uids(emails, num_emails, flag, true, false, &uida);
   snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
   int rc = imap_exec_msg_set(adata, "UID STORE", buf, &uida);
   if (rc < 0)
@@ -316,7 +318,7 @@ static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
   ARRAY_FREE(&uida);
 
   // Clear the flag (-FLAGS) on non-matching emails
-  select_email_uids(m->emails, m->msg_count, flag, true, true, &uida);
+  select_email_uids(emails, num_emails, flag, true, true, &uida);
   buf[0] = '-';
   rc = imap_exec_msg_set(adata, "UID STORE", buf, &uida);
   if (rc < 0)
@@ -1561,36 +1563,21 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msg_set */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
-  {
-    emails = m->emails;
-    if (m->msg_count != 0)
-    {
-      m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
-      memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
+  emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
+  memcpy(emails, m->emails, m->msg_count * sizeof(struct Email *));
+  qsort(emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
 
-      cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-      qsort(m->emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
-    }
-  }
+  rc = sync_helper(m, emails, m->msg_count, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_FLAG, "\\Flagged");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_OLD, "Old");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_SEEN, MUTT_READ, "\\Seen");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
 
-  rc = sync_helper(m, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_FLAG, "\\Flagged");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_OLD, "Old");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_SEEN, MUTT_READ, "\\Seen");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
-
-  if (c_sort != SORT_ORDER)
-  {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-    FREE(&m->emails);
-    m->emails = emails;
-  }
+  FREE(&emails);
 
   /* Flush the queued flags if any were changed in sync_helper. */
   if (rc > 0)
