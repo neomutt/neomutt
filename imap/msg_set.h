@@ -23,9 +23,13 @@
 #define MUTT_IMAP_MSG_SET_H
 
 #include <stdbool.h>
+#include "mutt/lib.h"
 #include "mutt.h"
 
 struct Mailbox;
+
+/// Set of Email UIDs to work on
+ARRAY_HEAD(UidArray, unsigned int);
 
 int imap_exec_msg_set(struct Mailbox *m, const char *pre, const char *post, enum MessageType flag, bool changed, bool invert);
 

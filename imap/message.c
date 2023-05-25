@@ -1654,6 +1654,26 @@ fail:
 }
 
 /**
+ * emails_to_uid_array - Extract IMAP UIDs from Emails
+ * @param ea   Array of Emails
+ * @param uida Empty UID array
+ * @retval num Number of UIDs in the array
+ */
+int emails_to_uid_array(struct EmailArray *ea, struct UidArray *uida)
+{
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    struct Email *e = *ep;
+    struct ImapEmailData *edata = imap_edata_get(e);
+
+    ARRAY_ADD(uida, edata->uid);
+  }
+
+  return ARRAY_SIZE(uida);
+}
+
+/**
  * imap_copy_messages - Server COPY messages to another folder
  * @param m        Mailbox
  * @param ea       Array of Emails to copy

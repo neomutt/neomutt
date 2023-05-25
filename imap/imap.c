@@ -210,6 +210,76 @@ static bool compare_flags_for_copy(struct Email *e)
 }
 
 /**
+ * select_email_uids - Create a list of Email UIDs by type
+ * @param emails     Array of Emails
+ * @param num_emails Number of Emails in the array
+ * @param flag       Flag type on which to filter, e.g. #MUTT_REPLIED
+ * @param changed    Include only changed messages in message set
+ * @param invert     Invert sense of flag, eg #MUTT_READ matches unread messages
+ * @param uida       Array to fill with UIDs
+ * @retval num Number of UIDs added
+ * @retval  -1 Error
+ */
+int select_email_uids(struct Email **emails, int num_emails, enum MessageType flag,
+                      bool changed, bool invert, struct UidArray *uida)
+{
+  if (!emails || !uida)
+    return -1;
+
+  for (int i = 0; i < num_emails; i++)
+  {
+    struct Email *e = emails[i];
+    if (changed && !e->changed)
+      continue;
+
+    /* don't include pending expunged messages.
+     *
+     * TODO: can we unset active in cmd_parse_expunge() and
+     * cmd_parse_vanished() instead of checking for index != INT_MAX. */
+    if (!e || !e->active || (e->index == INT_MAX))
+      continue;
+
+    struct ImapEmailData *edata = imap_edata_get(e);
+
+    bool match = false;
+    switch (flag)
+    {
+      case MUTT_DELETED:
+        if (e->deleted != edata->deleted)
+          match = invert ^ e->deleted;
+        break;
+      case MUTT_FLAG:
+        if (e->flagged != edata->flagged)
+          match = invert ^ e->flagged;
+        break;
+      case MUTT_OLD:
+        if (e->old != edata->old)
+          match = invert ^ e->old;
+        break;
+      case MUTT_READ:
+        if (e->read != edata->read)
+          match = invert ^ e->read;
+        break;
+      case MUTT_REPLIED:
+        if (e->replied != edata->replied)
+          match = invert ^ e->replied;
+        break;
+      case MUTT_TRASH:
+        if (e->deleted && !e->purge)
+          match = true;
+        break;
+      default:
+        break;
+    }
+
+    if (match)
+      ARRAY_ADD(uida, edata->uid);
+  }
+
+  return ARRAY_SIZE(uida);
+}
+
+/**
  * sync_helper - Sync flag changes to the server
  * @param m     Selected Imap Mailbox
  * @param right ACL, see #AclFlags
