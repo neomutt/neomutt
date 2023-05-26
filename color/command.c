@@ -306,7 +306,43 @@ static void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg,
 }
 
 /**
- * parse_color_namedcolor - Parse a named colour, e.g. "brightred".
+ * parse_color_prefix - Parse a colour prefix, e.g. "bright"
+ * @param[in]  s      String to parse
+ * @param[out] prefix parsed prefix, see #ColorPrefix
+ * @retval num Length of the matched prefix
+ * @retval   0 No prefix matched
+ *
+ * If prefixes should be parsed, but their value is irrelevant, NULL can be
+ * passed as 'prefix'.
+ */
+static int parse_color_prefix(const char *s, enum ColorPrefix *prefix)
+{
+  int clen = 0;
+
+  if ((clen = mutt_istr_startswith(s, "bright")))
+  {
+    color_debug(LL_DEBUG5, "bright\n");
+    if (prefix)
+      *prefix = COLOR_PREFIX_BRIGHT;
+  }
+  else if ((clen = mutt_istr_startswith(s, "alert")))
+  {
+    color_debug(LL_DEBUG5, "alert\n");
+    if (prefix)
+      *prefix = COLOR_PREFIX_ALERT;
+  }
+  else if ((clen = mutt_istr_startswith(s, "light")))
+  {
+    color_debug(LL_DEBUG5, "light\n");
+    if (prefix)
+      *prefix = COLOR_PREFIX_LIGHT;
+  }
+
+  return clen;
+}
+
+/**
+ * parse_color_namedcolor - Parse a named colour, e.g. "brightred"
  * @param[in]  s     String to parse
  * @param[out] col   Number for 'colorNNN' colours
  * @param[out] attrs Attributes, e.g. A_UNDERLINE
@@ -318,28 +354,8 @@ static void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg,
 static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, int *attrs,
                                                  bool is_fg, struct Buffer *err)
 {
-  int clen = 0;
-
-  /* A named colour, e.g. 'brightred' */
   enum ColorPrefix prefix = COLOR_PREFIX_NONE;
-  if ((clen = mutt_istr_startswith(s, "bright")))
-  {
-    color_debug(LL_DEBUG5, "bright\n");
-    prefix = COLOR_PREFIX_BRIGHT;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "alert")))
-  {
-    color_debug(LL_DEBUG5, "alert\n");
-    prefix = COLOR_PREFIX_ALERT;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "light")))
-  {
-    color_debug(LL_DEBUG5, "light\n");
-    prefix = COLOR_PREFIX_LIGHT;
-    s += clen;
-  }
+  s += parse_color_prefix(s, &prefix);
 
   if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
     return MUTT_CMD_WARNING;
@@ -385,30 +401,12 @@ static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, i
 static enum CommandResult parse_color_colornnn(const char *s, uint32_t *col, int *attrs,
                                                bool is_fg, struct Buffer *err)
 {
-  int clen = 0;
-
   /* prefixes bright, alert, light are only allowed for named colours and
    * colorNNN for backwards compatibility. */
   enum ColorPrefix prefix = COLOR_PREFIX_NONE;
-  if ((clen = mutt_istr_startswith(s, "bright")))
-  {
-    color_debug(LL_DEBUG5, "bright\n");
-    prefix = COLOR_PREFIX_BRIGHT;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "alert")))
-  {
-    color_debug(LL_DEBUG5, "alert\n");
-    prefix = COLOR_PREFIX_ALERT;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "light")))
-  {
-    color_debug(LL_DEBUG5, "light\n");
-    prefix = COLOR_PREFIX_LIGHT;
-    s += clen;
-  }
+  s += parse_color_prefix(s, &prefix);
 
+  int clen = 0;
   /* allow aliases for xterm color resources */
   if ((clen = mutt_istr_startswith(s, "color")) == 0)
     return MUTT_CMD_WARNING;
