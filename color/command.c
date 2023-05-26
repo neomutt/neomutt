@@ -116,6 +116,17 @@ const struct Mapping ComposeColorFields[] = {
   // clang-format on
 };
 
+/**
+ * ColorPrefix - Constants for colour prefixes of named colours
+ */
+enum ColorPrefix
+{
+  COLOR_PREFIX_NONE,   ///< no prefix
+  COLOR_PREFIX_ALERT,  ///< "alert" colour prefix
+  COLOR_PREFIX_BRIGHT, ///< "bright" colour prefix
+  COLOR_PREFIX_LIGHT,  ///< "light" colour prefix
+};
+
 #ifdef NEOMUTT_DIRECT_COLORS
 /**
  * color_xterm256_to_24bit - Convert a xterm color to its RGB value
@@ -249,6 +260,238 @@ static uint32_t color_xterm256_to_24bit(const uint32_t color)
 #endif
 
 /**
+ * modify_color_by_prefix - Modify a colour/attributes based on a prefix, e.g. "bright"
+ * @param[in]     prefix prefix to apply
+ * @param[in]     is_fg  true if a foreground colour should be modified
+ * @param[in,out] col    colour to modify
+ * @param[in,out] attrs  attributes to modify
+ */
+static void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg,
+                                   uint32_t *col, int *attrs)
+{
+  if (prefix == COLOR_PREFIX_NONE)
+    return; // nothing to do here
+
+  if (prefix == COLOR_PREFIX_ALERT)
+  {
+    *attrs |= A_BOLD;
+    *attrs |= A_BLINK;
+  }
+  else if (is_fg)
+  {
+    if ((COLORS >= 16) && (prefix == COLOR_PREFIX_LIGHT))
+    {
+      if (*col <= 7)
+      {
+        /* Advance the color 0-7 by 8 to get the light version */
+        *col += 8;
+      }
+    }
+    else
+    {
+      *attrs |= A_BOLD;
+    }
+  }
+  else
+  {
+    if (COLORS >= 16)
+    {
+      if (*col <= 7)
+      {
+        /* Advance the color 0-7 by 8 to get the light version */
+        *col += 8;
+      }
+    }
+  }
+}
+
+/**
+ * parse_color_prefix - Parse a colour prefix, e.g. "bright"
+ * @param[in]  s      String to parse
+ * @param[out] prefix parsed prefix, see #ColorPrefix
+ * @retval num Length of the matched prefix
+ * @retval   0 No prefix matched
+ *
+ * If prefixes should be parsed, but their value is irrelevant, NULL can be
+ * passed as 'prefix'.
+ */
+static int parse_color_prefix(const char *s, enum ColorPrefix *prefix)
+{
+  int clen = 0;
+
+  if ((clen = mutt_istr_startswith(s, "bright")))
+  {
+    color_debug(LL_DEBUG5, "bright\n");
+    if (prefix)
+      *prefix = COLOR_PREFIX_BRIGHT;
+  }
+  else if ((clen = mutt_istr_startswith(s, "alert")))
+  {
+    color_debug(LL_DEBUG5, "alert\n");
+    if (prefix)
+      *prefix = COLOR_PREFIX_ALERT;
+  }
+  else if ((clen = mutt_istr_startswith(s, "light")))
+  {
+    color_debug(LL_DEBUG5, "light\n");
+    if (prefix)
+      *prefix = COLOR_PREFIX_LIGHT;
+  }
+
+  return clen;
+}
+
+/**
+ * parse_color_namedcolor - Parse a named colour, e.g. "brightred"
+ * @param[in]  s     String to parse
+ * @param[out] col   Number for 'colorNNN' colours
+ * @param[out] attrs Attributes, e.g. A_UNDERLINE
+ * @param[in]  is_fg true if this is a foreground colour
+ * @param[out] err   Buffer for error messages
+ * @retval #MUTT_CMD_SUCCESS Colour parsed successfully
+ * @retval #MUTT_CMD_WARNING Unknown colour, try other parsers
+ */
+static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, int *attrs,
+                                                 bool is_fg, struct Buffer *err)
+{
+  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
+  s += parse_color_prefix(s, &prefix);
+
+  if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
+    return MUTT_CMD_WARNING;
+
+  const char *name = mutt_map_get_name(*col, ColorNames);
+  if (name)
+    color_debug(LL_DEBUG5, "color: %s\n", name);
+
+  modify_color_by_prefix(prefix, is_fg, col, attrs);
+
+#ifdef NEOMUTT_DIRECT_COLORS
+  /* If we are running in direct color mode, we must convert the color
+   * number 0-15 to an RGB value.
+   * The first 16 colours of the xterm palette correspond to the terminal
+   * colours. Note that this replace the colour with a predefined RGB value
+   * and not the RGB value the terminal configured to use.
+   *
+   * Note that some colors are "special" e.g. "default" and do not fall in
+   * the range from 0 to 15.  These must not be converted.
+   */
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  if (c_color_directcolor && (*col < 16))
+  {
+    *col = color_xterm256_to_24bit(*col);
+  }
+#endif
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_color_colornnn - Parse a colorNNN, e.g. "color123".
+ * @param[in]  s     String to parse
+ * @param[out] col   Number for 'colorNNN' colours
+ * @param[out] attrs Attributes, e.g. A_UNDERLINE
+ * @param[in]  is_fg true if this is a foreground colour
+ * @param[out] err   Buffer for error messages
+ * @retval #MUTT_CMD_SUCCESS Colour parsed successfully
+ * @retval #MUTT_CMD_WARNING Unknown colour, try other parsers
+ * @retval #MUTT_CMD_ERROR   Error, colour could not be parsed
+ *
+ * On #MUTT_CMD_ERROR, an error message will be written to err.
+ */
+static enum CommandResult parse_color_colornnn(const char *s, uint32_t *col, int *attrs,
+                                               bool is_fg, struct Buffer *err)
+{
+  /* prefixes bright, alert, light are only allowed for named colours and
+   * colorNNN for backwards compatibility. */
+  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
+  s += parse_color_prefix(s, &prefix);
+
+  int clen = 0;
+  /* allow aliases for xterm color resources */
+  if ((clen = mutt_istr_startswith(s, "color")) == 0)
+    return MUTT_CMD_WARNING;
+
+  s += clen;
+  char *eptr = NULL;
+  *col = strtoul(s, &eptr, 10);
+  /* There are only 256 xterm colors.  Do not confuse with COLORS which is
+   * the number of colours the terminal supports (usually one of 16, 256,
+   * 16777216 (=24bit)). */
+  if ((*s == '\0') || (*eptr != '\0') || (*col >= 256) || ((*col >= COLORS) && !OptNoCurses))
+  {
+    buf_printf(err, _("%s: color not supported by term"), s);
+    return MUTT_CMD_ERROR;
+  }
+
+  modify_color_by_prefix(prefix, is_fg, col, attrs);
+
+#ifdef NEOMUTT_DIRECT_COLORS
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  if (c_color_directcolor)
+  {
+    /* If we are running in direct color mode, we must convert the xterm
+     * color numbers 0-255 to an RGB value. */
+    *col = color_xterm256_to_24bit(*col);
+    /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
+     * the default terminal colours.  As a workaround we round them up to
+     * #000008 which is the blackest black we can produce. */
+    if (*col < 8)
+      *col = 8;
+  }
+#endif
+  color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_color_rrggbb - Parse an RGB colour, e.g. "#12FE45"
+ * @param[in]  s     String to parse
+ * @param[out] col   Number for 'colorNNN' colours
+ * @param[out] attrs Attributes, e.g. A_UNDERLINE
+ * @param[in]  is_fg true if this is a foreground colour
+ * @param[out] err   Buffer for error messages
+ * @retval #MUTT_CMD_SUCCESS Colour parsed successfully
+ * @retval #MUTT_CMD_WARNING Unknown colour, try other parsers
+ * @retval #MUTT_CMD_ERROR   Error, colour could not be parsed
+ *
+ * On #MUTT_CMD_ERROR, an error message will be written to err.
+ */
+static enum CommandResult parse_color_rrggbb(const char *s, uint32_t *col, int *attrs,
+                                             bool is_fg, struct Buffer *err)
+{
+  /* parse #RRGGBB colours */
+  if (s[0] != '#')
+    return MUTT_CMD_WARNING;
+
+#ifndef NEOMUTT_DIRECT_COLORS
+  buf_printf(err, _("Direct colors support not compiled in: %s"), s);
+  return MUTT_CMD_ERROR;
+#endif
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  if (!c_color_directcolor)
+  {
+    buf_printf(err, _("Direct colors support disabled: %s"), s);
+    return MUTT_CMD_ERROR;
+  }
+  s++;
+  char *eptr = NULL;
+  *col = strtoul(s, &eptr, 16);
+  if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
+  {
+    buf_printf(err, _("%s: color not supported by term"), s);
+    return MUTT_CMD_ERROR;
+  }
+  /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
+   * the default terminal colours.  As a workaround we round them up to
+   * #000008 which is the blackest black we can produce. */
+  if (*col < 8)
+    *col = 8;
+
+  color_debug(LL_DEBUG5, "#RRGGBB: %d\n", *col);
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * parse_color_name - Parse a colour name
  * @param[in]  s     String to parse
  * @param[out] col   Number for 'colorNNN' colours
@@ -257,196 +500,29 @@ static uint32_t color_xterm256_to_24bit(const uint32_t color)
  * @param[out] err   Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
- * Parse a colour name, such as "red", "brightgreen", "color123".
+ * Parse a colour name, such as "red", "brightgreen", "color123", "#12FE45"
  */
 static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *attrs,
                                            bool is_fg, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
 
-  /* parse #RRGGBB colours */
-  if (s[0] == '#')
-  {
-#ifndef NEOMUTT_DIRECT_COLORS
-    buf_printf(err, _("Direct colors support not compiled in: %s"), s);
-    return MUTT_CMD_ERROR;
-#endif
-    const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
-    if (!c_color_directcolor)
-    {
-      buf_printf(err, _("Direct colors support disabled: %s"), s);
-      return MUTT_CMD_ERROR;
-    }
-    s++;
-    char *eptr = NULL;
-    *col = strtoul(s, &eptr, 16);
-    if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
-    {
-      buf_printf(err, _("%s: color not supported by term"), s);
-      return MUTT_CMD_ERROR;
-    }
-    /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
-     * the default terminal colours.  As a workaround we round them up to
-     * #000008 which is the blackest black we can produce. */
-    if (*col < 8)
-      *col = 8;
+  /* Try the different colour syntaxes.  A return value of MUTT_CMD_WARNING
+   * means, we should try the next syntax. */
+  enum CommandResult cr;
 
-    color_debug(LL_DEBUG5, "#RRGGBB: %d\n", *col);
-    return MUTT_CMD_SUCCESS;
-  }
-
-  int clen = 0;
-
-  /* A named colour, e.g. 'brightred' */
-  /* prefixes bright, alert, light are only allowed for named colours and
-   * colorNNN for backwards compatibility. */
-  bool is_alert = false;
-  bool is_bright = false;
-  bool is_light = false;
-  if ((clen = mutt_istr_startswith(s, "bright")))
-  {
-    color_debug(LL_DEBUG5, "bright\n");
-    is_bright = true;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "alert")))
-  {
-    color_debug(LL_DEBUG5, "alert\n");
-    is_alert = true;
-    is_bright = true;
-    s += clen;
-  }
-  else if ((clen = mutt_istr_startswith(s, "light")))
-  {
-    color_debug(LL_DEBUG5, "light\n");
-    is_light = true;
-    s += clen;
-  }
-
-  /* allow aliases for xterm color resources */
-  if ((clen = mutt_istr_startswith(s, "color")))
-  {
-    s += clen;
-    char *eptr = NULL;
-    *col = strtoul(s, &eptr, 10);
-    /* There are only 256 xterm colors.  Do not confuse with COLORS which is
-     * the number of colours the terminal supports (usually one of 16, 256,
-     * 16777216 (=24bit)). */
-    if ((*s == '\0') || (*eptr != '\0') || (*col >= 256) || ((*col >= COLORS) && !OptNoCurses))
-    {
-      buf_printf(err, _("%s: color not supported by term"), s);
-      return MUTT_CMD_ERROR;
-    }
-    if (is_bright || is_light)
-    {
-      if (is_alert)
-      {
-        *attrs |= A_BOLD;
-        *attrs |= A_BLINK;
-      }
-      else if (is_fg)
-      {
-        if ((COLORS >= 16) && is_light)
-        {
-          if (*col <= 7)
-          {
-            /* Advance the color 0-7 by 8 to get the light version */
-            *col += 8;
-          }
-        }
-        else
-        {
-          *attrs |= A_BOLD;
-        }
-      }
-      else
-      {
-        if (COLORS >= 16)
-        {
-          if (*col <= 7)
-          {
-            /* Advance the color 0-7 by 8 to get the light version */
-            *col += 8;
-          }
-        }
-      }
-    }
-#ifdef NEOMUTT_DIRECT_COLORS
-    const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
-    if (c_color_directcolor)
-    {
-      /* If we are running in direct color mode, we must convert the xterm
-       * color numbers 0-255 to an RGB value. */
-      *col = color_xterm256_to_24bit(*col);
-      /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
-       * the default terminal colours.  As a workaround we round them up to
-       * #000008 which is the blackest black we can produce. */
-      if (*col < 8)
-        *col = 8;
-    }
-#endif
-    color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
-    return MUTT_CMD_SUCCESS;
-  }
-
-  if ((*col = mutt_map_get_value(s, ColorNames)) != -1)
-  {
-    const char *name = mutt_map_get_name(*col, ColorNames);
-    if (name)
-      color_debug(LL_DEBUG5, "color: %s\n", name);
-
-    if (is_bright || is_light)
-    {
-      if (is_alert)
-      {
-        *attrs |= A_BOLD;
-        *attrs |= A_BLINK;
-      }
-      else if (is_fg)
-      {
-        if ((COLORS >= 16) && is_light)
-        {
-          if (*col <= 7)
-          {
-            /* Advance the color 0-7 by 8 to get the light version */
-            *col += 8;
-          }
-        }
-        else
-        {
-          *attrs |= A_BOLD;
-        }
-      }
-      else
-      {
-        if (COLORS >= 16)
-        {
-          if (*col <= 7)
-          {
-            /* Advance the color 0-7 by 8 to get the light version */
-            *col += 8;
-          }
-        }
-      }
-    }
-#ifdef NEOMUTT_DIRECT_COLORS
-    /* If we are running in direct color mode, we must convert the color
-     * number 0-15 to an RGB value.
-     * The first 16 colours of the xterm palette correspond to the terminal
-     * colours. Note that this replace the colour with a predefined RGB value
-     * and not the RGB value the terminal configured to use.
-     *
-     * Note that some colors are "special" e.g. "default" and do not fall in
-     * the range from 0 to 15.  These must not be converted.
-     */
-    const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
-    if (c_color_directcolor && (*col < 16))
-    {
-      *col = color_xterm256_to_24bit(*col);
-    }
-#endif
-    return MUTT_CMD_SUCCESS;
-  }
+  /* #RRGGBB */
+  cr = parse_color_rrggbb(s, col, attrs, is_fg, err);
+  if (cr != MUTT_CMD_WARNING)
+    return cr;
+  /* color123 */
+  cr = parse_color_colornnn(s, col, attrs, is_fg, err);
+  if (cr != MUTT_CMD_WARNING)
+    return cr;
+  /* named color, e.g. "brightred" */
+  cr = parse_color_namedcolor(s, col, attrs, is_fg, err);
+  if (cr != MUTT_CMD_WARNING)
+    return cr;
 
   buf_printf(err, _("%s: no such color"), s);
   return MUTT_CMD_WARNING;
