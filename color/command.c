@@ -116,6 +116,17 @@ const struct Mapping ComposeColorFields[] = {
   // clang-format on
 };
 
+/**
+ * ColorPrefix - Constants for colour prefixes of named colours
+ */
+enum ColorPrefix
+{
+  COLOR_PREFIX_NONE,   ///< no prefix
+  COLOR_PREFIX_ALERT,  ///< "alert" colour prefix
+  COLOR_PREFIX_BRIGHT, ///< "bright" colour prefix
+  COLOR_PREFIX_LIGHT,  ///< "light" colour prefix
+};
+
 #ifdef NEOMUTT_DIRECT_COLORS
 /**
  * color_xterm256_to_24bit - Convert a xterm color to its RGB value
@@ -249,6 +260,52 @@ static uint32_t color_xterm256_to_24bit(const uint32_t color)
 #endif
 
 /**
+ * modify_color_by_prefix - Modify a colour/attributes based on a prefix, e.g. "bright"
+ * @param[in]     prefix prefix to apply
+ * @param[in]     is_fg  true if a foreground colour should be modified
+ * @param[in,out] col    colour to modify
+ * @param[in,out] attrs  attributes to modify
+ */
+static void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg,
+                                   uint32_t *col, int *attrs)
+{
+  if (prefix == COLOR_PREFIX_NONE)
+    return; // nothing to do here
+
+  if (prefix == COLOR_PREFIX_ALERT)
+  {
+    *attrs |= A_BOLD;
+    *attrs |= A_BLINK;
+  }
+  else if (is_fg)
+  {
+    if ((COLORS >= 16) && (prefix == COLOR_PREFIX_LIGHT))
+    {
+      if (*col <= 7)
+      {
+        /* Advance the color 0-7 by 8 to get the light version */
+        *col += 8;
+      }
+    }
+    else
+    {
+      *attrs |= A_BOLD;
+    }
+  }
+  else
+  {
+    if (COLORS >= 16)
+    {
+      if (*col <= 7)
+      {
+        /* Advance the color 0-7 by 8 to get the light version */
+        *col += 8;
+      }
+    }
+  }
+}
+
+/**
  * parse_color_namedcolor - Parse a named colour, e.g. "brightred".
  * @param[in]  s     String to parse
  * @param[out] col   Number for 'colorNNN' colours
@@ -264,26 +321,23 @@ static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, i
   int clen = 0;
 
   /* A named colour, e.g. 'brightred' */
-  bool is_alert = false;
-  bool is_bright = false;
-  bool is_light = false;
+  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
   if ((clen = mutt_istr_startswith(s, "bright")))
   {
     color_debug(LL_DEBUG5, "bright\n");
-    is_bright = true;
+    prefix = COLOR_PREFIX_BRIGHT;
     s += clen;
   }
   else if ((clen = mutt_istr_startswith(s, "alert")))
   {
     color_debug(LL_DEBUG5, "alert\n");
-    is_alert = true;
-    is_bright = true;
+    prefix = COLOR_PREFIX_ALERT;
     s += clen;
   }
   else if ((clen = mutt_istr_startswith(s, "light")))
   {
     color_debug(LL_DEBUG5, "light\n");
-    is_light = true;
+    prefix = COLOR_PREFIX_LIGHT;
     s += clen;
   }
 
@@ -294,40 +348,8 @@ static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, i
   if (name)
     color_debug(LL_DEBUG5, "color: %s\n", name);
 
-  if (is_bright || is_light)
-  {
-    if (is_alert)
-    {
-      *attrs |= A_BOLD;
-      *attrs |= A_BLINK;
-    }
-    else if (is_fg)
-    {
-      if ((COLORS >= 16) && is_light)
-      {
-        if (*col <= 7)
-        {
-          /* Advance the color 0-7 by 8 to get the light version */
-          *col += 8;
-        }
-      }
-      else
-      {
-        *attrs |= A_BOLD;
-      }
-    }
-    else
-    {
-      if (COLORS >= 16)
-      {
-        if (*col <= 7)
-        {
-          /* Advance the color 0-7 by 8 to get the light version */
-          *col += 8;
-        }
-      }
-    }
-  }
+  modify_color_by_prefix(prefix, is_fg, col, attrs);
+
 #ifdef NEOMUTT_DIRECT_COLORS
   /* If we are running in direct color mode, we must convert the color
    * number 0-15 to an RGB value.
@@ -367,26 +389,23 @@ static enum CommandResult parse_color_colornnn(const char *s, uint32_t *col, int
 
   /* prefixes bright, alert, light are only allowed for named colours and
    * colorNNN for backwards compatibility. */
-  bool is_alert = false;
-  bool is_bright = false;
-  bool is_light = false;
+  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
   if ((clen = mutt_istr_startswith(s, "bright")))
   {
     color_debug(LL_DEBUG5, "bright\n");
-    is_bright = true;
+    prefix = COLOR_PREFIX_BRIGHT;
     s += clen;
   }
   else if ((clen = mutt_istr_startswith(s, "alert")))
   {
     color_debug(LL_DEBUG5, "alert\n");
-    is_alert = true;
-    is_bright = true;
+    prefix = COLOR_PREFIX_ALERT;
     s += clen;
   }
   else if ((clen = mutt_istr_startswith(s, "light")))
   {
     color_debug(LL_DEBUG5, "light\n");
-    is_light = true;
+    prefix = COLOR_PREFIX_LIGHT;
     s += clen;
   }
 
@@ -406,40 +425,8 @@ static enum CommandResult parse_color_colornnn(const char *s, uint32_t *col, int
     return MUTT_CMD_ERROR;
   }
 
-  if (is_bright || is_light)
-  {
-    if (is_alert)
-    {
-      *attrs |= A_BOLD;
-      *attrs |= A_BLINK;
-    }
-    else if (is_fg)
-    {
-      if ((COLORS >= 16) && is_light)
-      {
-        if (*col <= 7)
-        {
-          /* Advance the color 0-7 by 8 to get the light version */
-          *col += 8;
-        }
-      }
-      else
-      {
-        *attrs |= A_BOLD;
-      }
-    }
-    else
-    {
-      if (COLORS >= 16)
-      {
-        if (*col <= 7)
-        {
-          /* Advance the color 0-7 by 8 to get the light version */
-          *col += 8;
-        }
-      }
-    }
-  }
+  modify_color_by_prefix(prefix, is_fg, col, attrs);
+
 #ifdef NEOMUTT_DIRECT_COLORS
   const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
   if (c_color_directcolor)
