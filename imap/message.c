@@ -843,8 +843,7 @@ static int read_headers_qresync_eval_cache(struct ImapAccountData *adata, char *
     {
       imap_msn_set(&mdata->msn, msn - 1, e);
 
-      if (m->msg_count >= m->email_max)
-        mx_alloc_memory(m);
+      mx_alloc_memory(m, m->msg_count);
 
       struct ImapEmailData *edata = imap_edata_new();
       e->edata = edata;
@@ -1237,10 +1236,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
       }
 
       struct Email *e = email_new();
-      if (m->msg_count >= m->email_max)
-      {
-        mx_alloc_memory(m);
-      }
+      mx_alloc_memory(m, m->msg_count);
 
       m->emails[m->msg_count++] = e;
 
@@ -1287,8 +1283,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
     if (mdata->reopen & IMAP_NEWMAIL_PENDING)
     {
       msn_end = mdata->new_mail_count;
-      while (msn_end > m->email_max)
-        mx_alloc_memory(m);
+      mx_alloc_memory(m, msn_end);
       imap_msn_reserve(&mdata->msn, msn_end);
       mdata->reopen &= ~IMAP_NEWMAIL_PENDING;
       mdata->new_mail_count = 0;
@@ -1336,7 +1331,6 @@ bail:
 int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
                       unsigned int msn_end, bool initial_download)
 {
-  int oldmsgcount;
   unsigned int maxuid = 0;
   int retval = -1;
   bool evalhc = false;
@@ -1363,12 +1357,10 @@ retry:
 #endif /* USE_HCACHE */
 
   /* make sure context has room to hold the mailbox */
-  while (msn_end > m->email_max)
-    mx_alloc_memory(m);
+  mx_alloc_memory(m, msn_end);
   imap_msn_reserve(&mdata->msn, msn_end);
   imap_alloc_uid_hash(adata, msn_end);
 
-  oldmsgcount = m->msg_count;
   mdata->reopen &= ~(IMAP_REOPEN_ALLOW | IMAP_NEWMAIL_PENDING);
   mdata->new_mail_count = 0;
 
@@ -1504,12 +1496,8 @@ retry:
   }
 #endif /* USE_HCACHE */
 
-  if (m->msg_count > oldmsgcount)
-  {
-    /* TODO: it's not clear to me why we are calling mx_alloc_memory
-     *       yet again. */
-    mx_alloc_memory(m);
-  }
+  /* TODO: it's not clear to me why we are calling mx_alloc_memory yet again. */
+  mx_alloc_memory(m, m->msg_count);
 
   mdata->reopen |= IMAP_REOPEN_ALLOW;
 

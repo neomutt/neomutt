@@ -231,8 +231,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
       if (m->verbose)
         progress_update(progress, count, (int) (loc / (m->size / 100 + 1)));
 
-      if (m->msg_count == m->email_max)
-        mx_alloc_memory(m);
+      mx_alloc_memory(m, m->msg_count);
       e = email_new();
       m->emails[m->msg_count] = e;
       e->offset = loc;
@@ -411,8 +410,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
         progress_update(progress, count, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
       }
 
-      if (m->msg_count == m->email_max)
-        mx_alloc_memory(m);
+      mx_alloc_memory(m, m->msg_count);
 
       m->emails[m->msg_count] = email_new();
       e_cur = m->emails[m->msg_count];

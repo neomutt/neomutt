@@ -2027,8 +2027,7 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     m->readonly = true;
   }
 
-  while (m->email_max < count)
-    mx_alloc_memory(m);
+  mx_alloc_memory(m, count);
 
   m->msg_count = 0;
   m->msg_unread = 0;

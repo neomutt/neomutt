@@ -770,11 +770,7 @@ static void append_message(struct HeaderCache *h, struct Mailbox *m,
   mutt_debug(LL_DEBUG2, "nm: appending message, i=%d, id=%s, path=%s\n",
              m->msg_count, notmuch_message_get_message_id(msg), path);
 
-  if (m->msg_count >= m->email_max)
-  {
-    mutt_debug(LL_DEBUG2, "nm: allocate mx memory\n");
-    mx_alloc_memory(m);
-  }
+  mx_alloc_memory(m, m->msg_count);
 
 #ifdef USE_HCACHE
   e = mutt_hcache_fetch(h, path, mutt_str_len(path), 0).email;
@@ -1828,8 +1824,7 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   /* all emails */
   m->msg_count = count_query(db, db_query, limit);
-  while (m->email_max < m->msg_count)
-    mx_alloc_memory(m);
+  mx_alloc_memory(m, m->msg_count);
 
   // holder variable for extending query to unread/flagged
   char *qstr = NULL;

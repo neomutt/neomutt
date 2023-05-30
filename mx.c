@@ -1231,38 +1231,42 @@ int mx_msg_close(struct Mailbox *m, struct Message **msg)
 
 /**
  * mx_alloc_memory - Create storage for the emails
- * @param m Mailbox
+ * @param m        Mailbox
+ * @param req_size Space required
  */
-void mx_alloc_memory(struct Mailbox *m)
+void mx_alloc_memory(struct Mailbox *m, int req_size)
 {
   const int grow = 25;
-  size_t s = MAX(sizeof(struct Email *), sizeof(int));
 
-  if (((m->email_max + grow) * s) < (m->email_max * s))
+  // Sanity checks
+  req_size = MAX(req_size, m->email_max);
+  req_size = ROUND_UP(req_size + 1, grow);
+
+  const size_t s = MAX(sizeof(struct Email *), sizeof(int));
+  if ((req_size * s) < (m->email_max * s))
   {
     mutt_error(_("Out of memory"));
     mutt_exit(1);
   }
 
-  m->email_max += grow;
   if (m->emails)
   {
-    mutt_mem_realloc(&m->emails, m->email_max * sizeof(struct Email *));
-    mutt_mem_realloc(&m->v2r, m->email_max * sizeof(int));
+    mutt_mem_realloc(&m->emails, req_size * sizeof(struct Email *));
+    mutt_mem_realloc(&m->v2r, req_size * sizeof(int));
   }
   else
   {
-    m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
-    m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
+    m->emails = mutt_mem_calloc(req_size, sizeof(struct Email *));
+    m->v2r = mutt_mem_calloc(req_size, sizeof(int));
   }
-  for (int i = m->email_max - grow; i < m->email_max; i++)
+
+  for (int i = m->email_max; i < req_size; i++)
   {
-    if (i < m->email_max)
-    {
-      m->emails[i] = NULL;
-      m->v2r[i] = -1;
-    }
+    m->emails[i] = NULL;
+    m->v2r[i] = -1;
   }
+
+  m->email_max = req_size;
 }
 
 /**

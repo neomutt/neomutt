@@ -94,7 +94,7 @@ struct Mailbox
   int msg_tagged;                     ///< How many messages are tagged?
 
   struct Email **emails;              ///< Array of Emails
-  int email_max;                      ///< Number of pointers in emails
+  int email_max;                      ///< Size of `emails` array
   int *v2r;                           ///< Mapping from virtual to real msgno
   int vcount;                         ///< The number of virtual messages
 

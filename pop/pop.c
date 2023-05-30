@@ -227,8 +227,7 @@ static int fetch_uidl(const char *line, void *data)
   {
     mutt_debug(LL_DEBUG1, "new header %d %s\n", index, line);
 
-    if (i >= m->email_max)
-      mx_alloc_memory(m);
+    mx_alloc_memory(m, i);
 
     m->msg_count++;
     m->emails[i] = email_new();
