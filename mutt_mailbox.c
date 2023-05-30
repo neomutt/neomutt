@@ -226,7 +226,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
  */
 bool mutt_mailbox_notify(struct Mailbox *m_cur)
 {
-  if ((mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0) && MailboxNotify)
+  if ((mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_NO_FLAGS) > 0) && (MailboxNotify != 0))
   {
     return mutt_mailbox_list();
   }

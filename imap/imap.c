@@ -783,7 +783,7 @@ int imap_open_connection(struct ImapAccountData *adata)
           else
           {
             /* RFC2595 demands we recheck CAPABILITY after TLS completes. */
-            if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NO_FLAGS))
+            if (imap_exec(adata, "CAPABILITY", IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)
               goto bail;
           }
         }
@@ -1121,8 +1121,8 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
   snprintf(cmd, sizeof(cmd), "STATUS %s (UIDNEXT %s UNSEEN RECENT MESSAGES)",
            mdata->munge_name, uidvalidity_flag);
 
-  int rc = imap_exec(adata, cmd, queue ? IMAP_CMD_QUEUE : IMAP_CMD_NO_FLAGS | IMAP_CMD_POLL);
-  if (rc < 0)
+  int rc = imap_exec(adata, cmd, queue ? IMAP_CMD_QUEUE : IMAP_CMD_POLL);
+  if (rc != IMAP_EXEC_SUCCESS)
   {
     mutt_debug(LL_DEBUG1, "Error queueing command\n");
     return rc;
@@ -2037,7 +2037,7 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
   m->size = 0;
   m->vcount = 0;
 
-  if (count && (imap_read_headers(m, 1, count, true) < 0))
+  if ((count > 0) && (imap_read_headers(m, 1, count, true) < 0))
   {
     mutt_error(_("Error opening mailbox"));
     goto fail;
