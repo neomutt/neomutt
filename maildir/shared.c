@@ -92,8 +92,7 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct MdEmailArray *mda)
                md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
                md->email->replied ? "r" : "", md->email->old ? "O" : "",
                md->email->read ? "R" : "");
-    if (m->msg_count == m->email_max)
-      mx_alloc_memory(m);
+    mx_alloc_memory(m, m->msg_count);
 
     m->emails[m->msg_count] = md->email;
     m->emails[m->msg_count]->index = m->msg_count;
