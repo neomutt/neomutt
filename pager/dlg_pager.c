@@ -295,15 +295,13 @@ int mutt_pager(struct PagerView *pview)
   priv->delay_read_timestamp = 0;
   priv->pager_redraw = false;
 
-  {
-    // Wipe any previous state info
-    struct Notify *notify = priv->notify;
-    int rc = priv->rc;
-    memset(priv, 0, sizeof(*priv));
-    priv->rc = rc;
-    priv->notify = notify;
-    TAILQ_INIT(&priv->ansi_list);
-  }
+  // Wipe any previous state info
+  struct Notify *notify = priv->notify;
+  int prc = priv->rc;
+  memset(priv, 0, sizeof(*priv));
+  priv->rc = prc;
+  priv->notify = notify;
+  TAILQ_INIT(&priv->ansi_list);
 
   //---------- setup flags ----------------------------------------------------
   if (!(pview->flags & MUTT_SHOWCOLOR))
