@@ -1883,7 +1883,7 @@
 ** up periodically, try unsetting this.
 */
 
-{ "imap_keepalive", DT_NUMBER, 300 },
+{ "imap_keep_alive", DT_NUMBER, 300 },
 /*
 ** .pp
 ** This variable specifies the maximum amount of time in seconds that NeoMutt

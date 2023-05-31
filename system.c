@@ -93,7 +93,7 @@ int mutt_system(const char *cmd)
   else if (pid != -1)
   {
 #ifdef USE_IMAP
-    rc = imap_wait_keepalive(pid);
+    rc = imap_wait_keep_alive(pid);
 #endif
   }
 

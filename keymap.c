@@ -651,7 +651,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     return retry_generic(mtype, NULL, 0, 0);
 
 #ifdef USE_IMAP
-  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
+  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
 #endif
 
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
@@ -659,18 +659,18 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
   {
     int i = (c_timeout > 0) ? c_timeout : 60;
 #ifdef USE_IMAP
-    /* keepalive may need to run more frequently than `$timeout` allows */
-    if (c_imap_keepalive != 0)
+    /* keep_alive may need to run more frequently than `$timeout` allows */
+    if (c_imap_keep_alive != 0)
     {
-      if (c_imap_keepalive >= i)
+      if (c_imap_keep_alive >= i)
       {
-        imap_keepalive();
+        imap_keep_alive();
       }
       else
       {
-        while (c_imap_keepalive < i)
+        while (c_imap_keep_alive < i)
         {
-          tmp = mutt_getch_timeout(c_imap_keepalive * 1000);
+          tmp = mutt_getch_timeout(c_imap_keep_alive * 1000);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
@@ -680,8 +680,8 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
           if (MonitorFilesChanged)
             goto gotkey;
 #endif
-          i -= c_imap_keepalive;
-          imap_keepalive();
+          i -= c_imap_keep_alive;
+          imap_keep_alive();
         }
       }
     }

@@ -105,8 +105,8 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
 void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder);
 int imap_mxcmp(const char *mx1, const char *mx2);
 
-int imap_wait_keepalive(pid_t pid);
-void imap_keepalive(void);
+int imap_wait_keep_alive(pid_t pid);
+void imap_keep_alive(void);
 
 void imap_get_parent_path(const char *path, char *buf, size_t buflen);
 void imap_clean_path(char *path, size_t plen);

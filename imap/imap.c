@@ -1029,9 +1029,9 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
 
   /* try IDLE first, unless force is set */
   const bool c_imap_idle = cs_subset_bool(NeoMutt->sub, "imap_idle");
-  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
+  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
   if (!force && c_imap_idle && (adata->capabilities & IMAP_CAP_IDLE) &&
-      ((adata->state != IMAP_IDLE) || (mutt_date_now() >= adata->lastread + c_imap_keepalive)))
+      ((adata->state != IMAP_IDLE) || (mutt_date_now() >= adata->lastread + c_imap_keep_alive)))
   {
     if (imap_cmd_idle(adata) < 0)
       return MX_STATUS_ERROR;

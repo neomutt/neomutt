@@ -935,13 +935,13 @@ void imap_unmunge_mbox_name(bool unicode, char *s)
 }
 
 /**
- * imap_keepalive - Poll the current folder to keep the connection alive
+ * imap_keep_alive - Poll the current folder to keep the connection alive
  */
-void imap_keepalive(void)
+void imap_keep_alive(void)
 {
   time_t now = mutt_date_now();
   struct Account *np = NULL;
-  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
+  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     if (np->type != MUTT_IMAP)
@@ -951,17 +951,17 @@ void imap_keepalive(void)
     if (!adata || !adata->mailbox)
       continue;
 
-    if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + c_imap_keepalive)))
+    if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + c_imap_keep_alive)))
       imap_check_mailbox(adata->mailbox, true);
   }
 }
 
 /**
- * imap_wait_keepalive - Wait for a process to change state
+ * imap_wait_keep_alive - Wait for a process to change state
  * @param pid Process ID to listen to
  * @retval num 'wstatus' from waitpid()
  */
-int imap_wait_keepalive(pid_t pid)
+int imap_wait_keep_alive(pid_t pid)
 {
   struct sigaction oldalrm;
   struct sigaction act;
@@ -984,13 +984,13 @@ int imap_wait_keepalive(pid_t pid)
 
   sigaction(SIGALRM, &act, &oldalrm);
 
-  const short c_imap_keepalive = cs_subset_number(NeoMutt->sub, "imap_keepalive");
-  alarm(c_imap_keepalive);
+  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
+  alarm(c_imap_keep_alive);
   while ((waitpid(pid, &rc, 0) < 0) && (errno == EINTR))
   {
     alarm(0); /* cancel a possibly pending alarm */
-    imap_keepalive();
-    alarm(c_imap_keepalive);
+    imap_keep_alive();
+    alarm(c_imap_keep_alive);
   }
 
   alarm(0); /* cancel a possibly pending alarm */
