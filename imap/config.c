@@ -107,7 +107,7 @@ static struct ConfigDef ImapVars[] = {
   { "imap_server_noise", DT_BOOL, true, 0, NULL,
     "(imap) Display server warnings as error messages"
   },
-  { "imap_keepalive", DT_NUMBER|DT_NOT_NEGATIVE, 300, 0, NULL,
+  { "imap_keep_alive", DT_NUMBER|DT_NOT_NEGATIVE, 300, 0, NULL,
     "(imap) Time to wait before polling an open IMAP connection"
   },
   { "imap_list_subscribed", DT_BOOL, false, 0, NULL,
@@ -132,6 +132,7 @@ static struct ConfigDef ImapVars[] = {
     "(imap) Username for the IMAP server"
   },
 
+  { "imap_keepalive",   DT_SYNONYM, IP "imap_keep_alive",   IP "2023-05-31" },
   { "imap_servernoise", DT_SYNONYM, IP "imap_server_noise", IP "2021-02-11" },
   { NULL },
   // clang-format on

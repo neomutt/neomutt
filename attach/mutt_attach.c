@@ -391,7 +391,7 @@ static int wait_interactive_filter(pid_t pid)
   int rc;
 
 #ifdef USE_IMAP
-  rc = imap_wait_keepalive(pid);
+  rc = imap_wait_keep_alive(pid);
 #else
   waitpid(pid, &rc, 0);
 #endif
