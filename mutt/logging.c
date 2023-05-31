@@ -393,12 +393,12 @@ int log_queue_save(FILE *fp)
  *
  * @sa log_queue_set_max_size(), log_queue_flush(), log_queue_empty()
  *
- * @warning Log lines are limited to 1024 bytes.
+ * @warning Log lines are limited to LOG_LINE_MAX_LEN bytes
  */
 int log_disp_queue(time_t stamp, const char *file, int line,
                    const char *function, enum LogLevel level, ...)
 {
-  char buf[1024] = { 0 };
+  char buf[LOG_LINE_MAX_LEN] = { 0 };
   int err = errno;
 
   va_list ap;
@@ -434,13 +434,15 @@ int log_disp_queue(time_t stamp, const char *file, int line,
  * The format is:
  * * `[TIMESTAMP]<LEVEL> FUNCTION() FORMATTED-MESSAGE`
  *
+ * @warning Log lines are limited to LOG_LINE_MAX_LEN bytes
+ *
  * @note The output will be coloured using ANSI escape sequences,
  *       unless the output is redirected.
  */
 int log_disp_terminal(time_t stamp, const char *file, int line,
                       const char *function, enum LogLevel level, ...)
 {
-  char buf[1024] = { 0 };
+  char buf[LOG_LINE_MAX_LEN] = { 0 };
 
   va_list ap;
   va_start(ap, level);
