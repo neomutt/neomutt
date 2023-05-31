@@ -28,6 +28,9 @@
 #include <time.h>
 #include "queue.h"
 
+/// Log lines longer than this will be truncated
+#define LOG_LINE_MAX_LEN 10240
+
 /**
  * enum LogLevel - Names for the Logging Levels
  */

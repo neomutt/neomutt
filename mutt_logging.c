@@ -91,7 +91,7 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   if (level > c_debug_level)
     return 0;
 
-  char buf[1024] = { 0 };
+  char buf[LOG_LINE_MAX_LEN] = { 0 };
 
   va_list ap;
   va_start(ap, level);
