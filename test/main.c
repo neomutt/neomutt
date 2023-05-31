@@ -346,6 +346,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_idna_print_version)                              \
   NEOMUTT_TEST_ITEM(test_mutt_idna_to_ascii_lz)                                \
                                                                                \
+  /* imap */                                                                   \
+  NEOMUTT_TEST_ITEM(test_imap_msg_set)                                         \
+                                                                               \
   /* list */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_list_clear)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_list_compare)                                    \

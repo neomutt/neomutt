@@ -22,199 +22,131 @@
 /**
  * @page imap_msg_set IMAP Message Sets
  *
- * Manage IMAP message sets, ordered compressed lists of Email UIDs.
+ * Manage IMAP message sets: Lists of Email UIDs, ordered and compressed.
+ *
+ * Every Email on an IMAP server has a unique id (UID).
+ *
+ * When NeoMutt can COPY, FETCH, SEARCH or STORE Emails using these UIDs.
+ * To save bandwidth, lists of UIDs can be abbreviated.  Ranges are shortened
+ * to 'start:end'.
+ *
+ * e.g. `1,2,3,4,6,8,9,10` becomes `1:4,6,8:10`
  */
 
 #include "config.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "email/lib.h"
-#include "core/lib.h"
 #include "msg_set.h"
-#include "adata.h"
-#include "edata.h"
-#include "limits.h"
-
-int imap_sort_email_uid(const void *a, const void *b);
+#include "sort.h"
 
 /**
- * IMAP_MAX_CMDLEN - Maximum length of IMAP commands before they must be split
+ * ImapMaxCmdlen - Maximum length of IMAP commands before they must be split
  *
  * This is suggested in RFC7162 (dated 2014).
  * -	https://datatracker.ietf.org/doc/html/rfc7162#section-4
  */
-#define IMAP_MAX_CMDLEN 8192
+int ImapMaxCmdlen = 8192;
 
 /**
- * imap_make_msg_set - Make a message set
- * @param[in]  m       Selected Imap Mailbox
- * @param[in]  buf     Buffer to store message set
- * @param[in]  flag    Flags to match, e.g. #MUTT_DELETED
- * @param[in]  changed Matched messages that have been altered
- * @param[in]  invert  Flag matches should be inverted
- * @param[out] pos     Cursor used for multiple calls to this function
- * @retval num Messages in the set
- *
- * @note Headers must be in #SORT_ORDER. See imap_exec_msg_set() for args.
- * Pos is an opaque pointer a la strtok(). It should be 0 at first call.
+ * imap_sort_uid - Compare two UIDs - Implements ::sort_t - @ingroup sort_api
  */
-int imap_make_msg_set(struct Mailbox *m, struct Buffer *buf,
-                      enum MessageType flag, bool changed, bool invert, int *pos)
+int imap_sort_uid(const void *a, const void *b)
 {
-  int count = 0;             /* number of messages in message set */
-  unsigned int setstart = 0; /* start of current message range */
-  int n;
-  bool started = false;
+  unsigned int ua = *(unsigned int *) a;
+  unsigned int ub = *(unsigned int *) b;
 
-  struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || (adata->mailbox != m))
-    return -1;
+  return mutt_numeric_cmp(ua, ub);
+}
 
-  for (n = *pos; (n < m->msg_count) && (buf_len(buf) < IMAP_MAX_CMDLEN); n++)
+/**
+ * imap_make_msg_set - Generate a compressed message set of UIDs
+ * @param uida  Array of UIDs
+ * @param buf   Buffer for message set
+ * @param pos   Cursor used for multiple calls to this function
+ * @retval num Number of UIDs processed
+ *
+ * Compress a sorted list of UIDs, e.g.
+ * - `1,2,3,4,6,8,9,10` becomes `1:4,6,8:10`
+ */
+int imap_make_msg_set(struct UidArray *uida, struct Buffer *buf, int *pos)
+{
+  if (!uida || !buf || !pos)
+    return 0;
+
+  const size_t array_size = ARRAY_SIZE(uida);
+  if ((array_size == 0) || (*pos >= array_size))
+    return 0;
+
+  int count = 1; // Number of UIDs added to the set
+  size_t i = *pos;
+  unsigned int start = *ARRAY_GET(uida, i);
+  unsigned int prev = start;
+
+  for (i++; (i < array_size) && (buf_len(buf) < ImapMaxCmdlen); i++, count++)
   {
-    struct Email *e = m->emails[n];
-    if (!e)
-      break;
-    bool match = false; /* whether current message matches flag condition */
-    /* don't include pending expunged messages.
-     *
-     * TODO: can we unset active in cmd_parse_expunge() and
-     * cmd_parse_vanished() instead of checking for index != INT_MAX. */
-    if (e->active && (e->index != INT_MAX))
+    unsigned int uid = *ARRAY_GET(uida, i);
+
+    // Keep adding to current set
+    if (uid == (prev + 1))
     {
-      switch (flag)
-      {
-        case MUTT_DELETED:
-          if (e->deleted != imap_edata_get(e)->deleted)
-            match = invert ^ e->deleted;
-          break;
-        case MUTT_FLAG:
-          if (e->flagged != imap_edata_get(e)->flagged)
-            match = invert ^ e->flagged;
-          break;
-        case MUTT_OLD:
-          if (e->old != imap_edata_get(e)->old)
-            match = invert ^ e->old;
-          break;
-        case MUTT_READ:
-          if (e->read != imap_edata_get(e)->read)
-            match = invert ^ e->read;
-          break;
-        case MUTT_REPLIED:
-          if (e->replied != imap_edata_get(e)->replied)
-            match = invert ^ e->replied;
-          break;
-        case MUTT_TAG:
-          if (e->tagged)
-            match = true;
-          break;
-        case MUTT_TRASH:
-          if (e->deleted && !e->purge)
-            match = true;
-          break;
-        default:
-          break;
-      }
+      prev = uid;
+      continue;
     }
 
-    if (match && (!changed || e->changed))
-    {
-      count++;
-      if (setstart == 0)
-      {
-        setstart = imap_edata_get(e)->uid;
-        if (started)
-        {
-          buf_add_printf(buf, ",%u", imap_edata_get(e)->uid);
-        }
-        else
-        {
-          buf_add_printf(buf, "%u", imap_edata_get(e)->uid);
-          started = true;
-        }
-      }
-      else if (n == (m->msg_count - 1))
-      {
-        /* tie up if the last message also matches */
-        buf_add_printf(buf, ":%u", imap_edata_get(e)->uid);
-      }
-    }
-    else if (setstart)
-    {
-      /* End current set if message doesn't match. */
-      if (imap_edata_get(m->emails[n - 1])->uid > setstart)
-        buf_add_printf(buf, ":%u", imap_edata_get(m->emails[n - 1])->uid);
-      setstart = 0;
-    }
+    // End the current set
+    if (start == prev)
+      buf_add_printf(buf, "%u,", start);
+    else
+      buf_add_printf(buf, "%u:%u,", start, prev);
+
+    // Start a new set
+    start = uid;
+    prev = uid;
   }
 
-  *pos = n;
+  if (start == prev)
+    buf_add_printf(buf, "%u", start);
+  else
+    buf_add_printf(buf, "%u:%u", start, prev);
+
+  *pos = i;
 
   return count;
 }
 
 /**
- * imap_exec_msg_set - Prepare commands for all messages matching conditions
- * @param m       Selected Imap Mailbox
- * @param pre     prefix commands
- * @param post    postfix commands
- * @param flag    flag type on which to filter, e.g. #MUTT_REPLIED
- * @param changed include only changed messages in message set
- * @param invert  invert sense of flag, eg #MUTT_READ matches unread messages
- * @retval num Matched messages
- * @retval -1  Failure
+ * imap_exec_msg_set - Execute a command using a set of UIDs
+ * @param adata Imap Account data
+ * @param pre   Prefix commands
+ * @param post  Postfix commands
+ * @param uida  Sorted array of UIDs
+ * @retval num Number of messages sent
+ * @retval  -1 Error
  *
- * pre/post: commands are of the form "%s %s %s %s", tag, pre, message set, post
- * Prepares commands for all messages matching conditions
- * (must be flushed with imap_exec)
+ * Commands are of the form: TAG PRE MESSAGE-SET POST
+ * e.g. `A01 UID COPY 1:4 MAILBOX`
+ *
+ * @note Must be flushed with imap_exec()
  */
-int imap_exec_msg_set(struct Mailbox *m, const char *pre, const char *post,
-                      enum MessageType flag, bool changed, bool invert)
+int imap_exec_msg_set(struct ImapAccountData *adata, const char *pre,
+                      const char *post, struct UidArray *uida)
 {
-  struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || (adata->mailbox != m))
-    return -1;
+  struct Buffer cmd = buf_make(ImapMaxCmdlen);
 
-  struct Email **emails = NULL;
-  int pos;
-  int rc;
   int count = 0;
-
-  struct Buffer cmd = buf_make(0);
-
-  /* We make a copy of the headers just in case resorting doesn't give
-   exactly the original order (duplicate messages?), because other parts of
-   the mv are tied to the header order. This may be overkill. */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
-  {
-    emails = m->emails;
-    if (m->msg_count != 0)
-    {
-      // We overcommit here, just in case new mail arrives whilst we're sync-ing
-      m->emails = mutt_mem_malloc(m->email_max * sizeof(struct Email *));
-      memcpy(m->emails, emails, m->email_max * sizeof(struct Email *));
-
-      cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-      qsort(m->emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
-    }
-  }
-
-  pos = 0;
+  int pos = 0;
+  int rc = 0;
 
   do
   {
     buf_reset(&cmd);
     buf_add_printf(&cmd, "%s ", pre);
-    rc = imap_make_msg_set(m, &cmd, flag, changed, invert, &pos);
+    rc = imap_make_msg_set(uida, &cmd, &pos);
     if (rc > 0)
     {
       buf_add_printf(&cmd, " %s", post);
-      if (imap_exec(adata, cmd.data, IMAP_CMD_QUEUE) != IMAP_EXEC_SUCCESS)
+      if (imap_exec(adata, buf_string(&cmd), IMAP_CMD_QUEUE) != IMAP_EXEC_SUCCESS)
       {
         rc = -1;
         goto out;
@@ -227,12 +159,5 @@ int imap_exec_msg_set(struct Mailbox *m, const char *pre, const char *post,
 
 out:
   buf_dealloc(&cmd);
-  if (c_sort != SORT_ORDER)
-  {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-    FREE(&m->emails);
-    m->emails = emails;
-  }
-
   return rc;
 }

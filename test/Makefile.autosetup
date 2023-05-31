@@ -306,6 +306,8 @@ IDNA_OBJS	= test/idna/mutt_idna_intl_to_local.o \
 		  test/idna/mutt_idna_print_version.o \
 		  test/idna/mutt_idna_to_ascii_lz.o
 
+IMAP_OBJS	= test/imap/msg_set.o
+
 LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_clear.o \
 		  test/list/mutt_list_compare.o \
@@ -598,19 +600,19 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/compress $(PWD)/test/config $(PWD)/test/convert \
 		  $(PWD)/test/core $(PWD)/test/date $(PWD)/test/email \
 		  $(PWD)/test/enter $(PWD)/test/envelope $(PWD)/test/envlist \
-		  $(PWD)/test/eqi \
-		  $(PWD)/test/file $(PWD)/test/filter $(PWD)/test/from \
-		  $(PWD)/test/group $(PWD)/test/gui $(PWD)/test/hash \
-		  $(PWD)/test/history $(PWD)/test/idna $(PWD)/test/list \
-		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
-		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
-		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
-		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
-		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
-		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
-		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/sort \
-		  $(PWD)/test/store $(PWD)/test/string $(PWD)/test/tags \
-		  $(PWD)/test/thread $(PWD)/test/url
+		  $(PWD)/test/eqi $(PWD)/test/file $(PWD)/test/filter \
+		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
+		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
+		  $(PWD)/test/imap $(PWD)/test/list $(PWD)/test/logging \
+		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
+		  $(PWD)/test/notify $(PWD)/test/notmuch $(PWD)/test/parameter \
+		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
+		  $(PWD)/test/pool $(PWD)/test/prex $(PWD)/test/regex \
+		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/signal \
+		  $(PWD)/test/slist $(PWD)/test/sort $(PWD)/test/store \
+		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
+		  $(PWD)/test/url
 
 TEST_OBJS	= test/main.o test/common.o \
 		  $(ACCOUNT_OBJS) \
@@ -640,6 +642,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(HASH_OBJS) \
 		  $(HISTORY_OBJS) \
 		  $(IDNA_OBJS) \
+		  $(IMAP_OBJS) \
 		  $(LIST_OBJS) \
 		  $(LOGGING_OBJS) \
 		  $(MAILBOX_OBJS) \

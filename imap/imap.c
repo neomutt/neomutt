@@ -210,22 +210,91 @@ static bool compare_flags_for_copy(struct Email *e)
 }
 
 /**
+ * select_email_uids - Create a list of Email UIDs by type
+ * @param emails     Array of Emails
+ * @param num_emails Number of Emails in the array
+ * @param flag       Flag type on which to filter, e.g. #MUTT_REPLIED
+ * @param changed    Include only changed messages in message set
+ * @param invert     Invert sense of flag, eg #MUTT_READ matches unread messages
+ * @param uida       Array to fill with UIDs
+ * @retval num Number of UIDs added
+ * @retval  -1 Error
+ */
+static int select_email_uids(struct Email **emails, int num_emails, enum MessageType flag,
+                             bool changed, bool invert, struct UidArray *uida)
+{
+  if (!emails || !uida)
+    return -1;
+
+  for (int i = 0; i < num_emails; i++)
+  {
+    struct Email *e = emails[i];
+    if (changed && !e->changed)
+      continue;
+
+    /* don't include pending expunged messages.
+     *
+     * TODO: can we unset active in cmd_parse_expunge() and
+     * cmd_parse_vanished() instead of checking for index != INT_MAX. */
+    if (!e || !e->active || (e->index == INT_MAX))
+      continue;
+
+    struct ImapEmailData *edata = imap_edata_get(e);
+
+    bool match = false;
+    switch (flag)
+    {
+      case MUTT_DELETED:
+        if (e->deleted != edata->deleted)
+          match = invert ^ e->deleted;
+        break;
+      case MUTT_FLAG:
+        if (e->flagged != edata->flagged)
+          match = invert ^ e->flagged;
+        break;
+      case MUTT_OLD:
+        if (e->old != edata->old)
+          match = invert ^ e->old;
+        break;
+      case MUTT_READ:
+        if (e->read != edata->read)
+          match = invert ^ e->read;
+        break;
+      case MUTT_REPLIED:
+        if (e->replied != edata->replied)
+          match = invert ^ e->replied;
+        break;
+      case MUTT_TRASH:
+        if (e->deleted && !e->purge)
+          match = true;
+        break;
+      default:
+        break;
+    }
+
+    if (match)
+      ARRAY_ADD(uida, edata->uid);
+  }
+
+  return ARRAY_SIZE(uida);
+}
+
+/**
  * sync_helper - Sync flag changes to the server
- * @param m     Selected Imap Mailbox
- * @param right ACL, see #AclFlags
- * @param flag  NeoMutt flag, e.g. #MUTT_DELETED
- * @param name  Name of server flag
+ * @param m          Selected Imap Mailbox
+ * @param emails     Array of Emails
+ * @param num_emails Number of Emails in the array
+ * @param right      ACL, see #AclFlags
+ * @param flag       NeoMutt flag, e.g. #MUTT_DELETED
+ * @param name       Name of server flag
  * @retval >=0 Success, number of messages
  * @retval  -1 Failure
  */
-static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
-                       const char *name)
+static int sync_helper(struct Mailbox *m, struct Email **emails, int num_emails,
+                       AclFlags right, enum MessageType flag, const char *name)
 {
-  int count = 0;
-  int rc;
-  char buf[1024] = { 0 };
-
-  if (!m)
+  struct ImapAccountData *adata = imap_adata_get(m);
+  if (!adata)
     return -1;
 
   if ((m->rights & right) == 0)
@@ -234,17 +303,28 @@ static int sync_helper(struct Mailbox *m, AclFlags right, enum MessageType flag,
   if ((right == MUTT_ACL_WRITE) && !imap_has_flag(&imap_mdata_get(m)->flags, name))
     return 0;
 
-  snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
-  rc = imap_exec_msg_set(m, "UID STORE", buf, flag, true, false);
-  if (rc < 0)
-    return rc;
-  count += rc;
+  int count = 0;
+  char buf[1024] = { 0 };
 
-  buf[0] = '-';
-  rc = imap_exec_msg_set(m, "UID STORE", buf, flag, true, true);
+  struct UidArray uida = ARRAY_HEAD_INITIALIZER;
+
+  // Set the flag (+FLAGS) on matching emails
+  select_email_uids(emails, num_emails, flag, true, false, &uida);
+  snprintf(buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
+  int rc = imap_exec_msg_set(adata, "UID STORE", buf, &uida);
   if (rc < 0)
     return rc;
   count += rc;
+  ARRAY_FREE(&uida);
+
+  // Clear the flag (-FLAGS) on non-matching emails
+  select_email_uids(emails, num_emails, flag, true, true, &uida);
+  buf[0] = '-';
+  rc = imap_exec_msg_set(adata, "UID STORE", buf, &uida);
+  if (rc < 0)
+    return rc;
+  count += rc;
+  ARRAY_FREE(&uida);
 
   return count;
 }
@@ -808,7 +888,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 /**
  * imap_sort_email_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
  */
-int imap_sort_email_uid(const void *a, const void *b)
+static int imap_sort_email_uid(const void *a, const void *b)
 {
   const struct Email *ea = *(struct Email const *const *) a;
   const struct Email *eb = *(struct Email const *const *) b;
@@ -1298,7 +1378,10 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   /* loop in case of TRYCREATE */
   do
   {
-    rc = imap_exec_msg_set(m, "UID COPY", dest_mdata->munge_name, MUTT_TRASH, false, false);
+    struct UidArray uida = ARRAY_HEAD_INITIALIZER;
+    select_email_uids(m->emails, m->msg_count, MUTT_TRASH, false, false, &uida);
+    ARRAY_SORT(&uida, imap_sort_uid);
+    rc = imap_exec_msg_set(adata, "UID COPY", dest_mdata->munge_name, &uida);
     if (rc == 0)
     {
       mutt_debug(LL_DEBUG1, "No messages to trash\n");
@@ -1315,6 +1398,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
       mutt_message(ngettext("Copying %d message to %s...", "Copying %d messages to %s...", rc),
                    rc, dest_mdata->name);
     }
+    ARRAY_FREE(&uida);
 
     /* let's get it on */
     rc = imap_exec(adata, NULL, IMAP_CMD_NO_FLAGS);
@@ -1394,8 +1478,11 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && (m->rights & MUTT_ACL_DELETE))
   {
-    rc = imap_exec_msg_set(m, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
-                           MUTT_DELETED, true, false);
+    struct UidArray uida = ARRAY_HEAD_INITIALIZER;
+    select_email_uids(m->emails, m->msg_count, MUTT_DELETED, true, false, &uida);
+    ARRAY_SORT(&uida, imap_sort_uid);
+    rc = imap_exec_msg_set(adata, "UID STORE", "+FLAGS.SILENT (\\Deleted)", &uida);
+    ARRAY_FREE(&uida);
     if (rc < 0)
     {
       mutt_error(_("Expunge failed"));
@@ -1476,36 +1563,21 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msg_set */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
-  {
-    emails = m->emails;
-    if (m->msg_count != 0)
-    {
-      m->emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
-      memcpy(m->emails, emails, m->msg_count * sizeof(struct Email *));
+  emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
+  memcpy(emails, m->emails, m->msg_count * sizeof(struct Email *));
+  qsort(emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
 
-      cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-      qsort(m->emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
-    }
-  }
+  rc = sync_helper(m, emails, m->msg_count, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_FLAG, "\\Flagged");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_OLD, "Old");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_SEEN, MUTT_READ, "\\Seen");
+  if (rc >= 0)
+    rc |= sync_helper(m, emails, m->msg_count, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
 
-  rc = sync_helper(m, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_FLAG, "\\Flagged");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_OLD, "Old");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_SEEN, MUTT_READ, "\\Seen");
-  if (rc >= 0)
-    rc |= sync_helper(m, MUTT_ACL_WRITE, MUTT_REPLIED, "\\Answered");
-
-  if (c_sort != SORT_ORDER)
-  {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-    FREE(&m->emails);
-    m->emails = emails;
-  }
+  FREE(&emails);
 
   /* Flush the queued flags if any were changed in sync_helper. */
   if (rc > 0)

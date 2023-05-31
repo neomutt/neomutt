@@ -1654,6 +1654,27 @@ fail:
 }
 
 /**
+ * emails_to_uid_array - Extract IMAP UIDs from Emails
+ * @param ea   Array of Emails
+ * @param uida Empty UID array
+ * @retval num Number of UIDs in the array
+ */
+static int emails_to_uid_array(struct EmailArray *ea, struct UidArray *uida)
+{
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    struct Email *e = *ep;
+    struct ImapEmailData *edata = imap_edata_get(e);
+
+    ARRAY_ADD(uida, edata->uid);
+  }
+  ARRAY_SORT(uida, imap_sort_uid);
+
+  return ARRAY_SIZE(uida);
+}
+
+/**
  * imap_copy_messages - Server COPY messages to another folder
  * @param m        Mailbox
  * @param ea       Array of Emails to copy
@@ -1759,7 +1780,11 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
         }
       }
 
-      rc = imap_exec_msg_set(m, "UID COPY", mmbox, MUTT_TAG, false, false);
+      struct UidArray uida = ARRAY_HEAD_INITIALIZER;
+      emails_to_uid_array(ea, &uida);
+      rc = imap_exec_msg_set(adata, "UID COPY", mmbox, &uida);
+      ARRAY_FREE(&uida);
+
       if (rc == 0)
       {
         mutt_debug(LL_DEBUG1, "No messages tagged\n");
