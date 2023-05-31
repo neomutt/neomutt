@@ -1117,27 +1117,17 @@ static void make_reference_headers(struct EmailArray *ea, struct Envelope *env,
   if (!ea || !env || ARRAY_EMPTY(ea))
     return;
 
-  bool single = (ARRAY_SIZE(ea) == 1);
-
-  if (single)
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
   {
-    struct Email *e = *ARRAY_GET(ea, 0);
+    struct Email *e = *ep;
     mutt_add_to_reference_headers(env, e->env, sub);
-  }
-  else
-  {
-    struct Email **ep = NULL;
-    ARRAY_FOREACH(ep, ea)
-    {
-      struct Email *e = *ep;
-      mutt_add_to_reference_headers(env, e->env, sub);
-    }
   }
 
   /* if there's more than entry in In-Reply-To (i.e. message has multiple
    * parents), don't generate a References: header as it's discouraged by
    * RFC2822, sect. 3.6.4 */
-  if (!single && !STAILQ_EMPTY(&env->in_reply_to) &&
+  if ((ARRAY_SIZE(ea) > 1) && !STAILQ_EMPTY(&env->in_reply_to) &&
       STAILQ_NEXT(STAILQ_FIRST(&env->in_reply_to), entries))
   {
     mutt_list_free(&env->references);
