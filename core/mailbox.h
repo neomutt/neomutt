@@ -109,7 +109,7 @@ struct Mailbox
   bool append                 : 1;    ///< Mailbox is opened in append mode
   bool changed                : 1;    ///< Mailbox has been modified
   bool dontwrite              : 1;    ///< Don't write the mailbox on close
-  bool first_check_stats_done : 1;    ///< True when the check have been done at least on time
+  bool first_check_stats_done : 1;    ///< True when the check have been done at least one time
   bool peekonly               : 1;    ///< Just taking a glance, revert atime
   bool verbose                : 1;    ///< Display status messages?
   bool readonly               : 1;    ///< Don't allow changes to the mailbox

@@ -188,7 +188,7 @@ static void set_timeout(int delay)
 /**
  * mutt_getch_timeout - Get an event with a timeout
  * @param delay Timeout delay in ms
- * @retval Same as mutt_get_ch
+ * @retval obj KeyEvent to process, @sa mutt_getch()
  *
  * delay is just like for timeout() or poll(): the number of milliseconds
  * mutt_getch() should block for input.

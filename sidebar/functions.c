@@ -42,7 +42,7 @@
 /**
  * sb_next - Find the next unhidden Mailbox
  * @param wdata Sidebar data
- * @retval bool true if found
+ * @retval true Mailbox found
  */
 bool sb_next(struct SidebarWindowData *wdata)
 {
@@ -81,7 +81,7 @@ static struct SbEntry **sb_next_new(struct SidebarWindowData *wdata, size_t begi
 /**
  * sb_prev - Find the previous unhidden Mailbox
  * @param wdata Sidebar data
- * @retval bool true if found
+ * @retval true Mailbox found
  */
 bool sb_prev(struct SidebarWindowData *wdata)
 {

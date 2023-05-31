@@ -59,7 +59,7 @@
  * mutt_lookup_mime_type - Find the MIME type for an attachment
  * @param att  Email with attachment
  * @param path Path to attachment
- * @retval num MIME type, e.g. #TYPE_IMAGE
+ * @retval enum #ContentType, e.g. #TYPE_IMAGE
  *
  * Given a file at 'path', see if there is a registered MIME type.
  * Returns the major MIME type, and copies the subtype to "d".  First look

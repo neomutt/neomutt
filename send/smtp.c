@@ -109,7 +109,7 @@ struct SmtpAuth
    * authenticate - Authenticate an SMTP connection
    * @param adata  Smtp Account data
    * @param method Use this named method, or any available method if NULL
-   * @retval int Result, e.g. #SMTP_AUTH_SUCCESS
+   * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
    */
   int (*authenticate)(struct SmtpAccountData *adata, const char *method);
 

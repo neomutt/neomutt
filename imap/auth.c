@@ -102,7 +102,7 @@ bool imap_auth_is_valid(const char *authenticator)
 /**
  * imap_authenticate - Authenticate to an IMAP server
  * @param adata Imap Account data
- * @retval num Result, e.g. #IMAP_AUTH_SUCCESS
+ * @retval enum ImapAuthRes, e.g. #IMAP_AUTH_SUCCESS
  *
  * Attempt to authenticate using either user-specified authentication method if
  * specified, or any.

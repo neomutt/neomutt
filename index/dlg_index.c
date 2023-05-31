@@ -1057,7 +1057,7 @@ dsl_finish:
  * mutt_index_menu - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
- * @retval Mailbox open in the index
+ * @retval ptr Mailbox open in the index
  */
 struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
 {

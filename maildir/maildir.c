@@ -96,7 +96,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
   buf_printf(path, "%s/%s", mailbox_path(m), dir_name);
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
-   * the user last exited the m, then we know there is no recent mail.  */
+   * the user last exited the mailbox, then we know there is no recent mail.  */
   const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
   if (check_new && c_mail_check_recent)
   {
@@ -1447,7 +1447,7 @@ err:
 
 /**
  * maildir_mbox_close - Close a Mailbox - Implements MxOps::mbox_close() - @ingroup mx_mbox_close
- * @retval MX_STATUS_OK Always
+ * @retval #MX_STATUS_OK Always
  */
 static enum MxStatus maildir_mbox_close(struct Mailbox *m)
 {

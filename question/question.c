@@ -189,7 +189,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
  * mutt_yesorno - Ask the user a Yes/No question
  * @param msg Prompt
  * @param def Default answer, #MUTT_YES or #MUTT_NO (see #QuadOption)
- * @retval num Selection made, see #QuadOption
+ * @retval enum #QuadOption, Selection made
  */
 enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 {

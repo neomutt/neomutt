@@ -224,7 +224,7 @@ int mutt_date_local_tz(time_t t)
  * @param t     Time to convert
  * @param local Should the local timezone be considered
  * @retval num        Time in Unix format
- * @retval TIME_T_MIN Error
+ * @retval #TIME_T_MIN Error
  *
  * Convert a struct tm to time_t, but don't take the local timezone into
  * account unless "local" is nonzero
@@ -450,7 +450,7 @@ time_t mutt_date_now(void)
 
 /**
  * mutt_date_now_ms - Return the number of milliseconds since the Unix epoch
- * @retval ms The number of ms since the Unix epoch, or 0 on failure
+ * @retval num The number of ms since the Unix epoch, or 0 on failure
  */
 uint64_t mutt_date_now_ms(void)
 {

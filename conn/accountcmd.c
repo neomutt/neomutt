@@ -67,7 +67,7 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
  * @param cac ConnAccount to write to
  * @param line Line from the response
  * @retval num #MuttAccountFlags that matched
- * @retval MUTT_ACCT_NO_FLAGS Failure
+ * @retval #MUTT_ACCT_NO_FLAGS Failure
  */
 static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
 {
@@ -125,7 +125,7 @@ static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
  * @param cac ConnAccount to write to
  * @param cmd Command line to run
  * @retval num #MuttAccountFlags that matched
- * @retval MUTT_ACCT_NO_FLAGS Failure
+ * @retval #MUTT_ACCT_NO_FLAGS Failure
  */
 static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *cmd)
 {
@@ -158,7 +158,7 @@ static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *c
  * mutt_account_call_external_cmd - Retrieve account credentials via an external command
  * @param cac ConnAccount to fill
  * @retval num A bitmask of MuttAccountFlags that were retrieved on success
- * @retval MUTT_ACCT_NO_FLAGS Failure
+ * @retval #MUTT_ACCT_NO_FLAGS Failure
  */
 MuttAccountFlags mutt_account_call_external_cmd(struct ConnAccount *cac)
 {

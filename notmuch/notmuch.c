@@ -2478,7 +2478,7 @@ static int nm_path_parent(char *buf, size_t buflen)
  */
 const struct MxOps MxNotmuchOps = {
   // clang-format off
-  .type            = MUTT_NOTMUCH,
+  .type             = MUTT_NOTMUCH,
   .name             = "notmuch",
   .is_local         = false,
   .ac_owns_path     = nm_ac_owns_path,

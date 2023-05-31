@@ -45,7 +45,7 @@ struct Progress;
 /**
  * choose_increment - Choose the right increment given a ProgressType
  * @param type ProgressType
- * @retval Increment value
+ * @retval num Increment value
  */
 static size_t choose_increment(enum ProgressType type)
 {

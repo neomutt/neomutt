@@ -1099,7 +1099,7 @@ err:
 
 /**
  * mh_mbox_close - Close a Mailbox - Implements MxOps::mbox_close() - @ingroup mx_mbox_close
- * @retval MX_STATUS_OK Always
+ * @retval #MX_STATUS_OK Always
  */
 static enum MxStatus mh_mbox_close(struct Mailbox *m)
 {

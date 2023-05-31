@@ -80,7 +80,7 @@ struct PopAuth
    * authenticate - Authenticate a POP connection
    * @param adata  POP Account data
    * @param method Name of this authentication method (UNUSED)
-   * @retval num Result, e.g. #POP_A_SUCCESS
+   * @retval enum #PopAuthRes, e.g. #POP_A_SUCCESS
    */
   enum PopAuthRes (*authenticate)(struct PopAccountData *adata, const char *method);
 

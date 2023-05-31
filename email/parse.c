@@ -319,7 +319,7 @@ bool mutt_matches_ignore(const char *s)
 /**
  * mutt_check_mime_type - Check a MIME type string
  * @param s String to check
- * @retval num MIME type, e.g. #TYPE_TEXT
+ * @retval enum ContentType, e.g. #TYPE_TEXT
  */
 enum ContentType mutt_check_mime_type(const char *s)
 {
@@ -392,7 +392,7 @@ char *mutt_extract_message_id(const char *s, size_t *len)
 /**
  * mutt_check_encoding - Check the encoding type
  * @param c String to check
- * @retval num Encoding type, e.g. #ENC_QUOTED_PRINTABLE
+ * @retval enum ContentEncoding, e.g. #ENC_QUOTED_PRINTABLE
  */
 int mutt_check_encoding(const char *c)
 {

@@ -244,7 +244,7 @@ static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
  * @param m         Mailbox
  * @param current   true, if this is the current Mailbox
  * @param highlight true, if this Mailbox has the highlight on it
- * @retval num ColorId, e.g. #MT_COLOR_SIDEBAR_NEW
+ * @retval enum #ColorId, e.g. #MT_COLOR_SIDEBAR_NEW
  */
 static struct AttrColor *calc_color(const struct Mailbox *m, bool current, bool highlight)
 {
