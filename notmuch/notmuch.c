@@ -37,9 +37,6 @@
  * - all functions have to be covered by "mailbox->type == MUTT_NOTMUCH" check
  *   (it's implemented in nm_mdata_get() and init_mailbox() functions).
  *
- * - exception are nm_nonctx_* functions -- these functions use nm_default_url
- *   (or parse URL from another resource)
- *
  * Implementation: #MxNotmuchOps
  */
 

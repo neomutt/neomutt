@@ -742,7 +742,7 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
 }
 
 /**
- * mutt_save_message_ctx - Save a message to a given mailbox
+ * mutt_save_message_mbox - Save a message to a given mailbox
  * @param m_src            Mailbox to copy from
  * @param e                Email
  * @param save_opt         Copy or move, e.g. #SAVE_MOVE
@@ -751,8 +751,8 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_save_message_ctx(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt,
-                          enum MessageTransformOpt transform_opt, struct Mailbox *m_dst)
+int mutt_save_message_mbox(struct Mailbox *m_src, struct Email *e, enum MessageSaveOpt save_opt,
+                           enum MessageTransformOpt transform_opt, struct Mailbox *m_dst)
 {
   CopyMessageFlags cmflags = MUTT_CM_NO_FLAGS;
   CopyHeaderFlags chflags = CH_NO_FLAGS;
@@ -961,7 +961,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
 #endif
   if (msg_count == 1)
   {
-    rc = mutt_save_message_ctx(m, e_cur, save_opt, transform_opt, m_save);
+    rc = mutt_save_message_mbox(m, e_cur, save_opt, transform_opt, m_save);
     if (rc != 0)
     {
       mx_mbox_close(m_save);
@@ -998,7 +998,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
       struct Email *e = *ep;
       progress_update(progress, ++tagged_progress_count, -1);
       mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
-      rc = mutt_save_message_ctx(m, e, save_opt, transform_opt, m_save);
+      rc = mutt_save_message_mbox(m, e, save_opt, transform_opt, m_save);
       if (rc != 0)
         break;
 #ifdef USE_COMP_MBOX
