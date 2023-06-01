@@ -198,7 +198,7 @@
 /**
  * ARRAY_FREE - Release all memory
  * @param head Pointer to a struct defined using ARRAY_HEAD()
- * @retval 0
+ * @retval 0 Always
  */
 #define ARRAY_FREE(head)                                                       \
   (FREE(&(head)->entries), (head)->size = (head)->capacity = 0)

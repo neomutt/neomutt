@@ -562,7 +562,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
 
   if (!evalhc)
   {
-    if (msn_end - msn_begin + 1 <= max_headers_per_fetch)
+    if ((msn_end - msn_begin + 1) <= max_headers_per_fetch)
       *fetch_msn_end = msn_end;
     else
       *fetch_msn_end = msn_begin + max_headers_per_fetch - 1;
@@ -572,7 +572,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
 
   for (msn = msn_begin; msn <= (msn_end + 1); msn++)
   {
-    if (msn_count < max_headers_per_fetch && msn <= msn_end &&
+    if ((msn_count < max_headers_per_fetch) && (msn <= msn_end) &&
         !imap_msn_get(&mdata->msn, msn - 1))
     {
       msn_count++;
@@ -1525,7 +1525,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     return -1;
 
   FILE *fp = NULL;
-  char buf[1024 * 2];
+  char buf[2048];
   char internaldate[IMAP_DATELEN] = { 0 };
   char imap_flags[128] = { 0 };
   size_t len;

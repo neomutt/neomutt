@@ -514,10 +514,10 @@ bool pop_auth_is_valid(const char *authenticator)
  * pop_authenticate - Authenticate with a POP server
  * @param adata POP Account data
  * @retval num Result, e.g. #POP_A_SUCCESS
- * @retval  0 Successful
- * @retval -1 Connection lost
- * @retval -2 Login failed
- * @retval -3 Authentication cancelled
+ * @retval   0 Successful
+ * @retval  -1 Connection lost
+ * @retval  -2 Login failed
+ * @retval  -3 Authentication cancelled
  */
 int pop_authenticate(struct PopAccountData *adata)
 {

@@ -560,7 +560,7 @@ cleanup:
  * mutt_autocrypt_ui_recommendation - Get the recommended action for an Email
  * @param[in]  e       Email
  * @param[out] keylist List of Autocrypt key ids
- * @retval num Recommendation, e.g. #AUTOCRYPT_REC_AVAILABLE
+ * @retval enum #AutocryptRec Recommendation, e.g. #AUTOCRYPT_REC_AVAILABLE
  *
  * If the recommendataion is > NO and keylist is not NULL, keylist will be
  * populated with the autocrypt keyids.

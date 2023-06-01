@@ -164,7 +164,7 @@ int menu_get_index(struct Menu *menu)
  * menu_set_index - Set the current selection in the Menu
  * @param menu  Menu
  * @param index Item to select
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_INDEX
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_INDEX
  */
 MenuRedrawFlags menu_set_index(struct Menu *menu, int index)
 {

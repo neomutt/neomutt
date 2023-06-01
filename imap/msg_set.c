@@ -44,7 +44,7 @@
  * ImapMaxCmdlen - Maximum length of IMAP commands before they must be split
  *
  * This is suggested in RFC7162 (dated 2014).
- * -	https://datatracker.ietf.org/doc/html/rfc7162#section-4
+ * - https://datatracker.ietf.org/doc/html/rfc7162#section-4
  */
 int ImapMaxCmdlen = 8192;
 

@@ -69,9 +69,9 @@ const struct EnumDef UseThreadsTypeDef = {
 
 /**
  * mutt_thread_style - Which threading style is active?
- * @retval UT_FLAT    No threading in use
- * @retval UT_THREADS Normal threads (root above subthread)
- * @retval UT_REVERSE Reverse threads (subthread above root)
+ * @retval #UT_FLAT    No threading in use
+ * @retval #UT_THREADS Normal threads (root above subthread)
+ * @retval #UT_REVERSE Reverse threads (subthread above root)
  *
  * @note UT_UNSET is never returned; rather, this function considers the
  *       interaction between $use_threads and $sort.
@@ -1393,7 +1393,7 @@ int mutt_parent_message(struct Email *e, bool find_root)
 /**
  * mutt_set_vnum - Set the virtual index number of all the messages in a mailbox
  * @param m       Mailbox
- * @retval mum Size in bytes of all messages shown
+ * @retval num Size in bytes of all messages shown
  */
 off_t mutt_set_vnum(struct Mailbox *m)
 {

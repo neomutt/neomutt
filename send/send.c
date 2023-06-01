@@ -2081,7 +2081,7 @@ static bool is_text_plain(const struct Body *b)
  * abort_for_missing_attachments - Should we abort sending because of missing attachments?
  * @param b Body
  * @param sub Config Subset
- * @retval Abort because of missing attachments
+ * @retval true Abort because of missing attachments
  */
 static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSubset *sub)
 {

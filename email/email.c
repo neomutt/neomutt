@@ -133,7 +133,7 @@ size_t email_size(const struct Email *e)
  * header_find - Find a header, matching on its field, in a list of headers
  * @param hdrlist List of headers to search
  * @param header  The header to search for
- * @retval node   The node in the list matching the header
+ * @retval ptr    The node in the list matching the header
  * @retval NULL   No matching header is found
  *
  * The header should either of the form "X-Header:" or "X-Header: value"
@@ -159,7 +159,7 @@ struct ListNode *header_find(const struct ListHead *hdrlist, const char *header)
  * header_add - Add a header to a list
  * @param hdrlist List of headers to search
  * @param header  String to set as the header
- * @retval node   The created header
+ * @retval ptr    The created header
  */
 struct ListNode *header_add(struct ListHead *hdrlist, const char *header)
 {
@@ -173,7 +173,7 @@ struct ListNode *header_add(struct ListHead *hdrlist, const char *header)
  * header_update - Update an existing header
  * @param hdr     The header to update
  * @param header  String to update the header with
- * @retval node   The updated header
+ * @retval ptr    The updated header
  */
 struct ListNode *header_update(struct ListNode *hdr, const char *header)
 {
@@ -187,7 +187,7 @@ struct ListNode *header_update(struct ListNode *hdr, const char *header)
  * header_set - Set a header value in a list
  * @param hdrlist List of headers to search
  * @param header  String to set the value of the header to
- * @retval node   The updated or created header
+ * @retval ptr    The updated or created header
  *
  * If a header exists with the same field, update it, otherwise add a new header.
  */

@@ -688,7 +688,7 @@ static int reopen_mailbox(struct Mailbox *m)
       }
     }
 
-    /* free the remaining old headers */
+    /* free the remaining old emails */
     for (int j = 0; j < old_msg_count; j++)
     {
       if (e_old[j])

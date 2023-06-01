@@ -2544,12 +2544,10 @@ int pgp_gpgme_application_handler(struct Body *m, struct State *state)
           bool sig_stat = false;
           char *tmpfname = NULL;
 
-          {
-            /* Check whether signatures have been verified.  */
-            gpgme_verify_result_t verify_result = gpgme_op_verify_result(ctx);
-            if (verify_result->signatures)
-              sig_stat = true;
-          }
+          /* Check whether signatures have been verified.  */
+          gpgme_verify_result_t verify_result = gpgme_op_verify_result(ctx);
+          if (verify_result->signatures)
+            sig_stat = true;
 
           have_any_sigs = false;
           maybe_goodsig = false;
@@ -2700,12 +2698,10 @@ int pgp_gpgme_encrypted_handler(struct Body *a, struct State *state)
     a->mime_headers = tattach->mime_headers;
     tattach->mime_headers = NULL;
 
-    {
-      FILE *fp_save = state->fp_in;
-      state->fp_in = fp_out;
-      rc = mutt_body_handler(tattach, state);
-      state->fp_in = fp_save;
-    }
+    FILE *fp_save = state->fp_in;
+    state->fp_in = fp_out;
+    rc = mutt_body_handler(tattach, state);
+    state->fp_in = fp_save;
 
     /* Embedded multipart signed protected headers override the
      * encrypted headers.  We need to do this after the handler so
@@ -2796,12 +2792,10 @@ int smime_gpgme_application_handler(struct Body *a, struct State *state)
     a->mime_headers = tattach->mime_headers;
     tattach->mime_headers = NULL;
 
-    {
-      FILE *fp_save = state->fp_in;
-      state->fp_in = fp_out;
-      rc = mutt_body_handler(tattach, state);
-      state->fp_in = fp_save;
-    }
+    FILE *fp_save = state->fp_in;
+    state->fp_in = fp_out;
+    rc = mutt_body_handler(tattach, state);
+    state->fp_in = fp_save;
 
     /* Embedded multipart signed protected headers override the
      * encrypted headers.  We need to do this after the handler so

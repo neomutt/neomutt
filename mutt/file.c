@@ -254,8 +254,8 @@ int mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size)
  * mutt_file_copy_stream - Copy the contents of one file into another
  * @param fp_in  Source file
  * @param fp_out Destination file
- * @retval  n Success, number of bytes copied
- * @retval -1 Error, see errno
+ * @retval num Success, number of bytes copied
+ * @retval  -1 Error, see errno
  */
 int mutt_file_copy_stream(FILE *fp_in, FILE *fp_out)
 {

@@ -554,20 +554,18 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   if (!get_hostname(cs))
     goto done;
 
+  char name[256] = { 0 };
+  const char *c_real_name = cs_subset_string(NeoMutt->sub, "real_name");
+  if (!c_real_name)
   {
-    char name[256] = { 0 };
-    const char *c_real_name = cs_subset_string(NeoMutt->sub, "real_name");
-    if (!c_real_name)
+    struct passwd *pw = getpwuid(getuid());
+    if (pw)
     {
-      struct passwd *pw = getpwuid(getuid());
-      if (pw)
-      {
-        c_real_name = mutt_gecos_name(name, sizeof(name), pw);
-      }
+      c_real_name = mutt_gecos_name(name, sizeof(name), pw);
     }
-    cs_str_initial_set(cs, "real_name", c_real_name, NULL);
-    cs_str_reset(cs, "real_name", NULL);
   }
+  cs_str_initial_set(cs, "real_name", c_real_name, NULL);
+  cs_str_reset(cs, "real_name", NULL);
 
   if (need_pause && !OptNoCurses)
   {

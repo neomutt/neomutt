@@ -38,7 +38,7 @@
  * nm_parse_type_from_query - Parse a query type out of a query
  * @param buf   Buffer for URL
  * @param fallback Fallback query type if buf doesn't contain a type= statement
- * @retval num Notmuch query type, #NmQueryType
+ * @retval enum #NmQueryType, Notmuch query type
  *
  * If a user writes a query for a vfolder and includes a type= statement, that
  * type= will be encoded, which Notmuch will treat as part of the query=
@@ -102,7 +102,7 @@ const char *nm_query_type_to_string(enum NmQueryType query_type)
 /**
  * nm_string_to_query_type - Lookup a query type
  * @param str String to lookup
- * @retval num Query type, e.g. #NM_QUERY_TYPE_MESGS
+ * @retval enum #NmQueryType, e.g. #NM_QUERY_TYPE_MESGS
  *
  * If there's an unknown query type, default to NM_QUERY_TYPE_MESGS.
  */
@@ -167,9 +167,9 @@ bool nm_query_window_check_timebase(const char *timebase)
  * @param[in]  timebase Timebase for `date:` search term. Must be: `hour`,
  *                      `day`, `week`, `month`, or `year`
  * @param[in]  or_terms Additional notmuch search terms
- * @retval NM_WINDOW_QUERY_SUCCESS  Prepended `buf` with `date:` search term
- * @retval NM_WINDOW_QUERY_INVALID_DURATION Duration out-of-range for search term. `buf` *not* prepended with `date:`
- * @retval NM_WINDOW_QUERY_INVALID_TIMEBASE Timebase isn't one of `hour`, `day`, `week`, `month`, or `year`
+ * @retval #NM_WINDOW_QUERY_SUCCESS          Prepended `buf` with `date:` search term
+ * @retval #NM_WINDOW_QUERY_INVALID_DURATION Duration out-of-range for search term. `buf` *not* prepended with `date:`
+ * @retval #NM_WINDOW_QUERY_INVALID_TIMEBASE Timebase isn't one of `hour`, `day`, `week`, `month`, or `year`
  *
  * This is where the magic of windowed queries happens. Taking a vfolder search
  * query string as parameter, it will use the following two user settings:

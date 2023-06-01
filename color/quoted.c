@@ -67,7 +67,7 @@ void quoted_colors_clear(void)
 /**
  * quoted_colors_get - Return the color of a quote, cycling through the used quotes
  * @param q Quote level
- * @retval num Color ID, e.g. #MT_COLOR_QUOTED
+ * @retval enum #ColorId, e.g. #MT_COLOR_QUOTED
  */
 struct AttrColor *quoted_colors_get(int q)
 {
@@ -158,7 +158,7 @@ bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
  * @param cid     Colour Id, should be #MT_COLOR_QUOTED
  * @param q_level Quoting depth level
  * @param err     Buffer for error messages
- * @retval num Result, e.g. #MUTT_CMD_SUCCESS
+ * @retval enum CommandResult, e.g. #MUTT_CMD_SUCCESS
  */
 enum CommandResult quoted_colors_parse_uncolor(enum ColorId cid, int q_level,
                                                struct Buffer *err)

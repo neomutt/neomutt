@@ -1489,7 +1489,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
   if (rc2 != 0)
     nntp_active_save_cache(adata);
 
-  /* articles have been renumbered, remove all headers */
+  /* articles have been renumbered, remove all emails */
   if (mdata->last_message < mdata->last_loaded)
   {
     for (int i = 0; i < m->msg_count; i++)
@@ -1622,7 +1622,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     rc = MX_STATUS_REOPENED;
   }
 
-  /* some headers were removed, context must be updated */
+  /* some emails were removed, mailboxview must be updated */
   if (rc == MX_STATUS_REOPENED)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 

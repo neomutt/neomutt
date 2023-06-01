@@ -1343,7 +1343,7 @@ bool mx_tags_is_supported(struct Mailbox *m)
 /**
  * mx_path_probe - Find a mailbox that understands a path
  * @param path Path to examine
- * @retval num Type, e.g. #MUTT_IMAP
+ * @retval enum MailboxType, e.g. #MUTT_IMAP
  */
 enum MailboxType mx_path_probe(const char *path)
 {

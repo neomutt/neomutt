@@ -350,7 +350,7 @@ struct MxOps
    * path_probe - Does this Mailbox type recognise this path?
    * @param path Path to examine
    * @param st   stat buffer (for local filesystems)
-   * @retval num Type, e.g. #MUTT_IMAP
+   * @retval enum MailboxType, e.g. #MUTT_IMAP
    *
    * @pre path is not NULL
    */

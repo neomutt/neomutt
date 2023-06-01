@@ -61,7 +61,7 @@
  * @param menu  Menu
  * @param top   Index of item at the top of the view
  * @param index Selected item
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_set_and_notify(struct Menu *menu, int top, int index)
 {
@@ -231,7 +231,7 @@ static int calc_move_view(struct Menu *menu, int relative)
  * menu_move_selection - Move the selection, keeping within between [0, menu->max]
  * @param menu  Menu
  * @param index New selection
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
 {
@@ -249,7 +249,7 @@ MenuRedrawFlags menu_move_selection(struct Menu *menu, int index)
  * menu_move_view_relative - Move the view relatively
  * @param menu     Menu
  * @param relative Relative number of lines to move
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_move_view_relative(struct Menu *menu, int relative)
 {
@@ -328,7 +328,7 @@ void menu_adjust(struct Menu *menu)
 /**
  * menu_top_page - Move the focus to the top of the page
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_top_page(struct Menu *menu)
 {
@@ -338,7 +338,7 @@ MenuRedrawFlags menu_top_page(struct Menu *menu)
 /**
  * menu_middle_page - Move the focus to the centre of the page
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_middle_page(struct Menu *menu)
 {
@@ -358,7 +358,7 @@ MenuRedrawFlags menu_middle_page(struct Menu *menu)
 /**
  * menu_bottom_page - Move the focus to the bottom of the page
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_bottom_page(struct Menu *menu)
 {
@@ -377,7 +377,7 @@ MenuRedrawFlags menu_bottom_page(struct Menu *menu)
 /**
  * menu_prev_entry - Move the focus to the previous item in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_prev_entry(struct Menu *menu)
 {
@@ -391,7 +391,7 @@ MenuRedrawFlags menu_prev_entry(struct Menu *menu)
 /**
  * menu_next_entry - Move the focus to the next item in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_next_entry(struct Menu *menu)
 {
@@ -405,7 +405,7 @@ MenuRedrawFlags menu_next_entry(struct Menu *menu)
 /**
  * menu_first_entry - Move the focus to the first entry in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_first_entry(struct Menu *menu)
 {
@@ -421,7 +421,7 @@ MenuRedrawFlags menu_first_entry(struct Menu *menu)
 /**
  * menu_last_entry - Move the focus to the last entry in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_last_entry(struct Menu *menu)
 {
@@ -438,7 +438,7 @@ MenuRedrawFlags menu_last_entry(struct Menu *menu)
 /**
  * menu_current_top - Move the current selection to the top of the window
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_current_top(struct Menu *menu)
 {
@@ -459,7 +459,7 @@ MenuRedrawFlags menu_current_top(struct Menu *menu)
 /**
  * menu_current_middle - Move the current selection to the centre of the window
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_current_middle(struct Menu *menu)
 {
@@ -479,7 +479,7 @@ MenuRedrawFlags menu_current_middle(struct Menu *menu)
 /**
  * menu_current_bottom - Move the current selection to the bottom of the window
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_current_bottom(struct Menu *menu)
 {
@@ -501,7 +501,7 @@ MenuRedrawFlags menu_current_bottom(struct Menu *menu)
 /**
  * menu_half_up - Move the focus up half a page in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_half_up(struct Menu *menu)
 {
@@ -511,7 +511,7 @@ MenuRedrawFlags menu_half_up(struct Menu *menu)
 /**
  * menu_half_down - Move the focus down half a page in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_half_down(struct Menu *menu)
 {
@@ -521,7 +521,7 @@ MenuRedrawFlags menu_half_down(struct Menu *menu)
 /**
  * menu_prev_line - Move the view up one line, keeping the selection the same
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_prev_line(struct Menu *menu)
 {
@@ -534,7 +534,7 @@ MenuRedrawFlags menu_prev_line(struct Menu *menu)
 /**
  * menu_next_line - Move the view down one line, keeping the selection the same
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_next_line(struct Menu *menu)
 {
@@ -547,7 +547,7 @@ MenuRedrawFlags menu_next_line(struct Menu *menu)
 /**
  * menu_prev_page - Move the focus to the previous page in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_prev_page(struct Menu *menu)
 {
@@ -557,7 +557,7 @@ MenuRedrawFlags menu_prev_page(struct Menu *menu)
 /**
  * menu_next_page - Move the focus to the next page in the menu
  * @param menu Current Menu
- * @retval num #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
+ * @retval enum #MenuRedrawFlags, e.g. #MENU_REDRAW_CURRENT
  */
 MenuRedrawFlags menu_next_page(struct Menu *menu)
 {

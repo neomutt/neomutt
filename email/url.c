@@ -220,7 +220,7 @@ int url_pct_decode(char *s)
 /**
  * url_check_scheme - Check the protocol of a URL
  * @param str String to check
- * @retval num Url type, e.g. #U_IMAPS
+ * @retval enum UrlScheme, e.g. #U_IMAPS
  */
 enum UrlScheme url_check_scheme(const char *str)
 {

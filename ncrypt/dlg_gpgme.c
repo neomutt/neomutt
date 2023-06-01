@@ -754,35 +754,33 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   notify_observer_add(NeoMutt->notify, NT_CONFIG, gpgme_key_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, gpgme_key_window_observer, menu->win);
 
+  const char *ts = NULL;
+
+  if ((app & APPLICATION_PGP) && (app & APPLICATION_SMIME))
+    ts = _("PGP and S/MIME keys matching");
+  else if ((app & APPLICATION_PGP))
+    ts = _("PGP keys matching");
+  else if ((app & APPLICATION_SMIME))
+    ts = _("S/MIME keys matching");
+  else
+    ts = _("keys matching");
+
+  char buf[1024] = { 0 };
+  if (p)
   {
-    const char *ts = NULL;
-
-    if ((app & APPLICATION_PGP) && (app & APPLICATION_SMIME))
-      ts = _("PGP and S/MIME keys matching");
-    else if ((app & APPLICATION_PGP))
-      ts = _("PGP keys matching");
-    else if ((app & APPLICATION_SMIME))
-      ts = _("S/MIME keys matching");
-    else
-      ts = _("keys matching");
-
-    char buf[1024] = { 0 };
-    if (p)
-    {
-      /* L10N: 1$s is one of the previous four entries.
-         %2$s is an address.
-         e.g. "S/MIME keys matching <me@mutt.org>" */
-      snprintf(buf, sizeof(buf), _("%s <%s>"), ts, p->mailbox);
-    }
-    else
-    {
-      /* L10N: e.g. 'S/MIME keys matching "Michael Elkins".' */
-      snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
-    }
-
-    struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-    sbar_set_title(sbar, buf);
+    /* L10N: 1$s is one of the previous four entries.
+       %2$s is an address.
+       e.g. "S/MIME keys matching <me@mutt.org>" */
+    snprintf(buf, sizeof(buf), _("%s <%s>"), ts, p->mailbox);
   }
+  else
+  {
+    /* L10N: e.g. 'S/MIME keys matching "Michael Elkins".' */
+    snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
+  }
+
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  sbar_set_title(sbar, buf);
 
   mutt_clear_error();
 

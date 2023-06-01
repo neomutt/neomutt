@@ -73,7 +73,7 @@ static size_t header_size(void)
 }
 
 /**
- * dump - Serialise an Email object
+ * dump_email - Serialise an Email object
  * @param hc          Header cache handle
  * @param e           Email to serialise
  * @param off         Size of the binary blob
@@ -83,7 +83,7 @@ static size_t header_size(void)
  * This function transforms an Email into a binary string so that it can be
  * saved to a database.
  */
-static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint32_t uidvalidity)
+static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off, uint32_t uidvalidity)
 {
   struct Email e_dump;
   bool convert = !CharsetIsUtf8;
@@ -134,14 +134,14 @@ static void *dump(struct HeaderCache *hc, const struct Email *e, int *off, uint3
 }
 
 /**
- * restore - Restore an Email from data retrieved from the cache
+ * restore_email - Restore an Email from data retrieved from the cache
  * @param d Data retrieved using mutt_hcache_dump
  * @retval ptr Success, the restored header (can't be NULL)
  *
  * @note The returned Email must be free'd by caller code with
  *       email_free()
  */
-static struct Email *restore(const unsigned char *d)
+static struct Email *restore_email(const unsigned char *d)
 {
   int off = 0;
   struct Email *e = email_new();
@@ -554,7 +554,7 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
   }
 #endif
 
-  entry.email = restore(data);
+  entry.email = restore_email(data);
 
 end:
   free_raw(hc, &to_free);
@@ -620,7 +620,7 @@ int mutt_hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
     return -1;
 
   int dlen = 0;
-  char *data = dump(hc, e, &dlen, uidvalidity);
+  char *data = dump_email(hc, e, &dlen, uidvalidity);
 
 #ifdef USE_HCACHE_COMPRESSION
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");

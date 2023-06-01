@@ -61,7 +61,7 @@ struct Buffer *buf_init(struct Buffer *buf)
 /**
  * buf_make - Make a new buffer on the stack
  * @param size Initial size
- * @retval buf Initialized buffer
+ * @retval obj Initialized buffer
  *
  * The buffer must be released using buf_dealloc
  */

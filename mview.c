@@ -100,10 +100,10 @@ struct MailboxView *mview_new(struct Mailbox *m, struct Notify *parent)
 }
 
 /**
- * ctx_cleanup - Release memory and initialize a MailboxView
+ * mview_clean - Release memory and initialize a MailboxView
  * @param mv MailboxView to cleanup
  */
-static void ctx_cleanup(struct MailboxView *mv)
+static void mview_clean(struct MailboxView *mv)
 {
   FREE(&mv->pattern);
   mutt_pattern_free(&mv->limit_pattern);
@@ -324,7 +324,7 @@ int mview_mailbox_observer(struct NotifyCallback *nc)
   {
     case NT_MAILBOX_DELETE:
       mutt_clear_threads(mv->threads);
-      ctx_cleanup(mv);
+      mview_clean(mv);
       break;
     case NT_MAILBOX_INVALID:
       mview_update(mv);
