@@ -554,11 +554,11 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
   if (!priv->has_types)
     return FR_NO_ACTION;
 
-  int dretval = 0;
+  int rc = 0;
   int new_topline = 0;
 
   while (((new_topline < priv->lines_used) ||
-          (0 == (dretval = display_line(priv->fp, &priv->bytes_read, &priv->lines,
+          (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
                                         new_topline, &priv->lines_used, &priv->lines_max,
                                         MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                                         &priv->quote_list, &priv->q_level,
@@ -569,7 +569,7 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
     new_topline++;
   }
 
-  if (dretval < 0)
+  if (rc < 0)
   {
     /* L10N: Displayed if <skip-headers> is invoked in the pager, but
        there is no text past the headers.
@@ -595,7 +595,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     return FR_NO_ACTION;
 
   const short c_pager_skip_quoted_context = cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
-  int dretval = 0;
+  int rc = 0;
   int new_topline = priv->top_line;
   int num_quoted = 0;
 
@@ -603,7 +603,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   if (simple_color_is_header(priv->lines[new_topline].cid))
   {
     while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
+            (0 == (rc = display_line(
                        priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
                        &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
@@ -621,7 +621,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   if (c_pager_skip_quoted_context > 0)
   {
     while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
+            (0 == (rc = display_line(
                        priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
                        &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
@@ -632,7 +632,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
       num_quoted++;
     }
 
-    if (dretval < 0)
+    if (rc < 0)
     {
       mutt_error(_("No more unquoted text after quoted text"));
       return FR_NO_ACTION;
@@ -644,7 +644,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     num_quoted = 0;
 
     while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
+            (0 == (rc = display_line(
                        priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
                        &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
@@ -654,14 +654,14 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
       new_topline++;
     }
 
-    if (dretval < 0)
+    if (rc < 0)
     {
       mutt_error(_("No more quoted text"));
       return FR_NO_ACTION;
     }
 
     while (((new_topline < priv->lines_used) ||
-            (0 == (dretval = display_line(
+            (0 == (rc = display_line(
                        priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
                        &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
@@ -672,7 +672,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
       num_quoted++;
     }
 
-    if (dretval < 0)
+    if (rc < 0)
     {
       mutt_error(_("No more unquoted text after quoted text"));
       return FR_NO_ACTION;

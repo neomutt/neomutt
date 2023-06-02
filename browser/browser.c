@@ -173,17 +173,17 @@ void mutt_browser_cleanup(void)
 bool link_is_dir(const char *folder, const char *path)
 {
   struct stat st = { 0 };
-  bool retval = false;
+  bool rc = false;
 
   struct Buffer *fullpath = buf_pool_get();
   buf_concat_path(fullpath, folder, path);
 
   if (stat(buf_string(fullpath), &st) == 0)
-    retval = S_ISDIR(st.st_mode);
+    rc = S_ISDIR(st.st_mode);
 
   buf_pool_release(&fullpath);
 
-  return retval;
+  return rc;
 }
 
 /**

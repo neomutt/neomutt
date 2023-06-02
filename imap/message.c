@@ -1081,7 +1081,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
                                   unsigned int msn_end, bool evalhc,
                                   unsigned int *maxuid, bool initial_download)
 {
-  int retval = -1;
+  int rc = -1;
   unsigned int fetch_msn_end = 0;
   struct Progress *progress = NULL;
   char *hdrreq = NULL;
@@ -1186,10 +1186,10 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         goto bail;
       }
 
-      const int rc = imap_cmd_step(adata);
-      if (rc != IMAP_RES_CONTINUE)
+      const int rc2 = imap_cmd_step(adata);
+      if (rc2 != IMAP_RES_CONTINUE)
       {
-        if (rc != IMAP_RES_OK)
+        if (rc2 != IMAP_RES_OK)
         {
           goto bail;
         }
@@ -1301,7 +1301,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
     msn_begin = fetch_msn_end + 1;
   }
 
-  retval = 0;
+  rc = 0;
 
 bail:
   buf_pool_release(&hdr_list);
@@ -1312,7 +1312,7 @@ bail:
   imap_edata_free((void **) &edata);
   progress_free(&progress);
 
-  return retval;
+  return rc;
 }
 
 /**
@@ -1332,7 +1332,7 @@ int imap_read_headers(struct Mailbox *m, unsigned int msn_begin,
                       unsigned int msn_end, bool initial_download)
 {
   unsigned int maxuid = 0;
-  int retval = -1;
+  int rc = -1;
   bool evalhc = false;
 
 #ifdef USE_HCACHE
@@ -1501,7 +1501,7 @@ retry:
 
   mdata->reopen |= IMAP_REOPEN_ALLOW;
 
-  retval = msn_end;
+  rc = msn_end;
 
 bail:
 #ifdef USE_HCACHE
@@ -1509,7 +1509,7 @@ bail:
   FREE(&uid_seqset);
 #endif /* USE_HCACHE */
 
-  return retval;
+  return rc;
 }
 
 /**

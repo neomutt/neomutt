@@ -333,21 +333,21 @@ int mutt_compare_emails(const struct Email *a, const struct Email *b,
                         enum MailboxType type, short sort, short sort_aux)
 {
   sort_mail_t func = get_sort_func(sort & SORT_MASK, type);
-  int retval = func(a, b, (sort & SORT_REVERSE) != 0);
-  if (retval == 0)
+  int rc = func(a, b, (sort & SORT_REVERSE) != 0);
+  if (rc == 0)
   {
     func = get_sort_func(sort_aux & SORT_MASK, type);
-    retval = func(a, b, (sort_aux & SORT_REVERSE) != 0);
+    rc = func(a, b, (sort_aux & SORT_REVERSE) != 0);
   }
-  if (retval == 0)
+  if (rc == 0)
   {
     /* Fallback of last resort to preserve stable order; will only
      * return 0 if a and b have the same index, which is probably a
      * bug in the code. */
     func = compare_order;
-    retval = func(a, b, false);
+    rc = func(a, b, false);
   }
-  return retval;
+  return rc;
 }
 
 /**
