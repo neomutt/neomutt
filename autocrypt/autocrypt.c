@@ -922,7 +922,7 @@ void mutt_autocrypt_scan_mailboxes(void)
 #ifdef USE_HCACHE
   const char *c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   char *old_hdrcache = mutt_str_dup(c_header_cache);
-  c_header_cache = NULL;
+  cs_subset_str_native_set(NeoMutt->sub, "header_cache", 0, NULL);
 #endif
 
   struct Buffer *folderbuf = buf_pool_get();
