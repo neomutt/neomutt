@@ -4864,13 +4864,13 @@ msgstr "PGP 鑰匙符合 <%s>"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
-#. e.g. "S/MIME keys matching <me@mutt.org>"
+#. e.g. "S/MIME keys matching <john.doe@example.com>"
 #: ncrypt/dlg_gpgme.c:771
 #, fuzzy, c-format
 msgid "%s <%s>"
 msgstr "%s 【%s】\n"
 
-#. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
+#. L10N: e.g. 'S/MIME keys matching "John Doe".'
 #: ncrypt/dlg_gpgme.c:776
 #, fuzzy, c-format
 msgid "%s \"%s\""

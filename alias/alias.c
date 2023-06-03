@@ -63,16 +63,16 @@ struct AliasList Aliases = TAILQ_HEAD_INITIALIZER(Aliases); ///< List of all the
  * @param s  Email address to defang
  *
  * if someone has an address like
- *      From: Michael `/bin/rm -f ~` Elkins <me@mutt.org>
+ *      From: John `/bin/rm -f ~` Doe <john.doe@example.com>
  * and the user creates an alias for this, NeoMutt could wind up executing
  * the backticks because it writes aliases like
- *      alias me Michael `/bin/rm -f ~` Elkins <me@mutt.org>
+ *      alias me John `/bin/rm -f ~` Doe <john.doe@example.com>
  * To avoid this problem, use a backslash (\) to quote any backticks.  We also
  * need to quote backslashes as well, since you could defeat the above by
  * doing
- *      From: Michael \`/bin/rm -f ~\` Elkins <me@mutt.org>
+ *      From: John \`/bin/rm -f ~\` Doe <john.doe@example.com>
  * since that would get aliased as
- *      alias me Michael \\`/bin/rm -f ~\\` Elkins <me@mutt.org>
+ *      alias me John \\`/bin/rm -f ~\\` Doe <john.doe@example.com>
  * which still gets evaluated because the double backslash is not a quote.
  *
  * Additionally, we need to quote ' and " characters, otherwise neomutt will

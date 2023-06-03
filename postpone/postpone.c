@@ -758,8 +758,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
 
       /* note that mutt-fcc was present.  we do this because we want to add a
        * default fcc if the header was missing, but preserve the request of the
-       * user to not make a copy if the header field is present, but empty.
-       * see http://dev.mutt.org/trac/ticket/3653 */
+       * user to not make a copy if the header field is present, but empty. */
       rc |= SEND_POSTPONED_FCC;
     }
     // Check for header names: most specific first

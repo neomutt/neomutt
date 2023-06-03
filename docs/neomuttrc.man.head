@@ -1294,7 +1294,7 @@ Matching any defined alias:
 Logical AND is performed by specifying more than one criterion.
 .IP
 For example:
-.BI ~t\~ work " ~f\~" elkins
+.BI ~t\~ work " ~f\~" smith
 .
 .PP
 would select messages which contain the word \(lqwork\(rq in the list of
@@ -1321,7 +1321,7 @@ select all messages which do \fBnot\fP contain \(lqwork\(rq in the \(lqTo:\(rq
 .
 .IP
 Using boolean operators in patterns:
-.BI !(~t\~ work |~c\~ work ") ~f\~" elkins
+.BI !(~t\~ work |~c\~ work ") ~f\~" smith
 .
 .PP
 Here is an example using white space in the regular expression (note the

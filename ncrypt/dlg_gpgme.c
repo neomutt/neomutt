@@ -770,12 +770,12 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   {
     /* L10N: 1$s is one of the previous four entries.
        %2$s is an address.
-       e.g. "S/MIME keys matching <me@mutt.org>" */
+       e.g. "S/MIME keys matching <john.doe@example.com>" */
     snprintf(buf, sizeof(buf), _("%s <%s>"), ts, buf_string(p->mailbox));
   }
   else
   {
-    /* L10N: e.g. 'S/MIME keys matching "Michael Elkins".' */
+    /* L10N: e.g. 'S/MIME keys matching "John Doe".' */
     snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
   }
 

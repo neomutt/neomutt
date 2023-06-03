@@ -2,7 +2,7 @@
  * @file
  * Zlib compression of network traffic
  *
- * Copyright(C) 2019 Fabian Groffen <grobian@gentoo.org>
+ * Copyright (C) 2019 Fabian Groffen <grobian@gentoo.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

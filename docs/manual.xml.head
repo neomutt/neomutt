@@ -3865,7 +3865,7 @@ my_hdr X-Disclaimer: Why are you listening to me?   <emphasis role="comment"># T
       </para>
       <example id="ex-rc-quote">
         <title>Escaping quotes in configuration files</title>
-        <screen>set real_name="Michael \"MuttDude\" Elkins"</screen>
+        <screen>set real_name="John \"anonymous\" Doe"</screen>
       </example>
       <para>
         <quote>\\</quote> means to insert a literal <quote>\</quote> into the
@@ -9298,11 +9298,11 @@ save-hook ~h"list-id:\\\\s*&lt;only\\\\.dot&gt;"    '=archive'
           Logical AND is performed by specifying more than one criterion. For
           example:
         </para>
-        <screen>~t work ~f elkins</screen>
+        <screen>~t work ~f smith</screen>
         <para>
           would select messages which contain the word <quote>work</quote> in
           the list of recipients <emphasis>and</emphasis> that have the word
-          <quote>elkins</quote> in the <quote>From</quote> header field.
+          <quote>smith</quote> in the <quote>From</quote> header field.
         </para>
         <para>
           NeoMutt also recognizes the following operators to create more
@@ -9329,11 +9329,11 @@ save-hook ~h"list-id:\\\\s*&lt;only\\\\.dot&gt;"    '=archive'
           Here is an example illustrating a complex search pattern. This
           pattern will select all messages which do not contain
           <quote>work</quote> in the <quote>To</quote> or <quote>Cc</quote>
-          field and which are from <quote>elkins</quote>.
+          field and which are from <quote>smith</quote>.
         </para>
         <example id="ex-pattern-bool">
           <title>Using boolean operators in patterns</title>
-          <screen>!(~t work|~c work) ~f elkins</screen>
+          <screen>!(~t work|~c work) ~f smith</screen>
         </example>
         <para>
           Here is an example using white space in the regular expression (note
@@ -9898,10 +9898,12 @@ setenv LESS?
       </para>
 
 <screen>
-Searching database ... 20 entries ... 3 matching:
-me@cs.hmc.edu           Michael Elkins  mutt dude
-blong@fiction.net       Brandon Long    mutt and more
-roessler@does-not-exist.org        Thomas Roessler mutt pgp
+Searching database ... 70 entries ... 5 matching:
+ji@papaya.com   Jeremy Irons    Emmy, Oscar, Tony
+jc@damson.com   James Cagney    Oscar
+mr@ilama.com    Meg Ryan
+mjf@kumquat.com Michael J Fox
+ma@yew.com      Murray Abraham  Oscar
 </screen>
 
       <para>

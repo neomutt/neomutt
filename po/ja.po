@@ -4761,13 +4761,13 @@ msgstr "一致する鍵"
 # "<hoge@example.org> に一致する S/MIME 鍵。"
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
-#. e.g. "S/MIME keys matching <me@mutt.org>"
+#. e.g. "S/MIME keys matching <john.doe@example.com>"
 #: ncrypt/dlg_gpgme.c:771
 #, c-format
 msgid "%s <%s>"
 msgstr "<%2$s> に%1$s。"
 
-#. L10N: e.g. 'S/MIME keys matching "Michael Elkins".'
+#. L10N: e.g. 'S/MIME keys matching "John Doe".'
 #: ncrypt/dlg_gpgme.c:776
 #, c-format
 msgid "%s \"%s\""

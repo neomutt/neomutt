@@ -36,6 +36,7 @@
  * | config/helpers.c    | @subpage config_helpers    |
  * | config/long.c       | @subpage config_long       |
  * | config/mbtable.c    | @subpage config_mbtable    |
+ * | config/myvar.c      | @subpage config_myvar      |
  * | config/number.c     | @subpage config_number     |
  * | config/path.c       | @subpage config_path       |
  * | config/quad.c       | @subpage config_quad       |
