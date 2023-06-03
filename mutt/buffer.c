@@ -315,9 +315,10 @@ bool buf_is_empty(const struct Buffer *buf)
  */
 struct Buffer *buf_new(const char *str)
 {
-  struct Buffer *buf = mutt_mem_malloc(sizeof(struct Buffer));
-  buf_init(buf);
-  buf_addstr(buf, str);
+  struct Buffer *buf = mutt_mem_calloc(1, sizeof(struct Buffer));
+
+  if (str)
+    buf_addstr(buf, str);
   return buf;
 }
 
