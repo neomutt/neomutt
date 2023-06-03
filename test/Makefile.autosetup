@@ -62,22 +62,34 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_addstr.o \
 		  test/buffer/buf_addstr_n.o \
 		  test/buffer/buf_alloc.o \
+		  test/buffer/buf_at.o \
+		  test/buffer/buf_coll.o \
 		  test/buffer/buf_concat_path.o \
 		  test/buffer/buf_concatn_path.o \
 		  test/buffer/buf_copy.o \
 		  test/buffer/buf_dealloc.o \
+		  test/buffer/buf_dequote_comment.o \
+		  test/buffer/buf_dup.o \
+		  test/buffer/buf_find_char.o \
+		  test/buffer/buf_find_string.o \
 		  test/buffer/buf_fix_dptr.o \
+		  test/buffer/buf_free.o \
 		  test/buffer/buf_init.o \
 		  test/buffer/buf_insert.o \
 		  test/buffer/buf_is_empty.o \
+		  test/buffer/buf_istr_equal.o \
 		  test/buffer/buf_len.o \
+		  test/buffer/buf_lower.o \
 		  test/buffer/buf_make.o \
+		  test/buffer/buf_new.o \
 		  test/buffer/buf_printf.o \
 		  test/buffer/buf_reset.o \
+		  test/buffer/buf_str_equal.o \
 		  test/buffer/buf_strcpy.o \
 		  test/buffer/buf_strcpy_n.o \
 		  test/buffer/buf_strdup.o \
-		  test/buffer/buf_substrcpy.o
+		  test/buffer/buf_substrcpy.o \
+		  test/buffer/buf_upper.o \
 
 CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_charset_lookup.o \
