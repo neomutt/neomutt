@@ -4,7 +4,9 @@
  *
  * @authors
  * Copyright (C) 2017 Ian Zimmerman <itz@primate.net>
- * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -307,6 +309,35 @@ bool buf_is_empty(const struct Buffer *buf)
 }
 
 /**
+ * buf_new - Allocate a new Buffer
+ * @param str String to initialise the buffer with, can be NULL
+ * @retval ptr Pointer to new buffer
+ */
+struct Buffer *buf_new(const char *str)
+{
+  struct Buffer *buf = mutt_mem_calloc(1, sizeof(struct Buffer));
+
+  if (str)
+    buf_addstr(buf, str);
+  return buf;
+}
+
+/**
+ * buf_free - Deallocates a buffer
+ * @param ptr Buffer to free
+ */
+void buf_free(struct Buffer **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Buffer *buf = *ptr;
+  buf_dealloc(buf);
+
+  FREE(ptr);
+}
+
+/**
  * buf_alloc - Make sure a buffer can store at least new_size bytes
  * @param buf      Buffer to change
  * @param new_size New size
@@ -386,6 +417,21 @@ size_t buf_strcpy_n(struct Buffer *buf, const char *s, size_t len)
 {
   buf_reset(buf);
   return buf_addstr_n(buf, s, len);
+}
+
+/**
+ * buf_dequote_comment - Un-escape characters in an email address comment
+ * @param buf Buffer to be un-escaped
+ *
+ * @note the buffer is modified
+ */
+void buf_dequote_comment(struct Buffer *buf)
+{
+  if (!buf)
+    return;
+
+  mutt_str_dequote_comment(buf->data);
+  buf_fix_dptr(buf);
 }
 
 /**
@@ -496,6 +542,21 @@ char *buf_strdup(const struct Buffer *buf)
 }
 
 /**
+ * buf_dup - Copy a Buffer into a new allocated buffer
+ * @param buf Buffer to copy
+ * @retval buf New allocated copy of buffer
+ *
+ * @note Caller must free the returned buffer
+ */
+struct Buffer *buf_dup(const struct Buffer *buf)
+{
+  if (!buf)
+    return NULL;
+
+  return buf_new(buf_string(buf));
+}
+
+/**
  * buf_copy - Copy a Buffer's contents to another Buffer
  * @param dst Buffer for result
  * @param src Buffer to copy
@@ -525,8 +586,118 @@ size_t buf_copy(struct Buffer *dst, const struct Buffer *src)
  */
 void buf_seek(struct Buffer *buf, size_t offset)
 {
-  if (buf)
+  if (buf && (offset < buf_len(buf)))
   {
     buf->dptr = buf->data ? buf->data + offset : NULL;
   }
+}
+
+/**
+ * buf_find_string - Return a pointer to a substring found in the buffer
+ * @param buf    Buffer to search
+ * @param s      Substring to find
+ * @retval NULL substring not found
+ * @retval n    Pointer to the beginning of the found substring
+ */
+const char *buf_find_string(struct Buffer *buf, const char *s)
+{
+  if (!buf || !s)
+    return NULL;
+
+  return strstr(buf->data, s);
+}
+
+/**
+ * buf_find_char - Return a pointer to a char found in the buffer
+ * @param buf    Buffer to search
+ * @param c      Char to find
+ * @retval NULL char not found
+ * @retval ptr  Pointer to the found char
+ */
+const char *buf_find_char(struct Buffer *buf, const char c)
+{
+  if (!buf)
+    return NULL;
+
+  return strchr(buf->data, c);
+}
+
+/**
+ * buf_at - Return the character at the given offset
+ * @param buf    Buffer to search
+ * @param offset Offset to get
+ * @retval NUL Offset out of bounds
+ * @return n   The char at the offset
+ */
+char buf_at(struct Buffer *buf, size_t offset)
+{
+  if (!buf || (offset > buf_len(buf)))
+    return '\0';
+
+  return buf->data[offset];
+}
+
+/**
+ * buf_str_equal - Return if two buffers are equal
+ * @param a - Buffer to compare
+ * @param b - Buffer to compare
+ * @retval true  Strings are equal
+ * @retval false String are not equal
+ */
+bool buf_str_equal(struct Buffer *a, struct Buffer *b)
+{
+  return mutt_str_equal(buf_string(a), buf_string(b));
+}
+
+/**
+ * buf_istr_equal - Return if two buffers are equal, case insentive
+ * @param a - First buffer to compare
+ * @param b - Second buffer to compare
+ * @retval true  Strings are equal
+ * @retval false String are not equal
+ */
+bool buf_istr_equal(struct Buffer *a, struct Buffer *b)
+{
+  return mutt_istr_equal(buf_string(a), buf_string(b));
+}
+
+/**
+ * buf_coll - Collate two strings (compare using locale)
+ * @param a First buffer to compare
+ * @param b Second buffer to compare
+ * @retval <0 a precedes b
+ * @retval  0 a and b are identical
+ * @retval >0 b precedes a
+ */
+int buf_coll(struct Buffer *a, struct Buffer *b)
+{
+  return mutt_str_coll(buf_string(a), buf_string(b));
+}
+
+/**
+ * buf_lower - Sets a buffer to lowercase
+ * @param[out] buf Buffer to transform to lowercase
+ *
+ * @note Modifies the buffer
+ */
+void buf_lower(struct Buffer *buf)
+{
+  if (!buf)
+    return;
+
+  mutt_str_lower(buf->data);
+}
+
+/**
+ * buf_upper - Sets a buffer to  uppercase
+ * @param[out] buf Buffer to transform to uppercase
+ *
+ * @note Modifies the buffer
+ */
+void buf_upper(struct Buffer *buf)
+{
+  if (!buf)
+    return;
+
+  mutt_str_upper(buf->data);
 }

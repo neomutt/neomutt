@@ -888,8 +888,8 @@ static int default_to(struct AddressList *to, struct Envelope *env,
        * provides a way to do that.  */
       /* L10N: Asks whether the user respects the reply-to header.
          If she says no, neomutt will reply to the from header's address instead. */
-      snprintf(prompt, sizeof(prompt), _("Reply to %s%s?"), reply_to->mailbox,
-               multiple_reply_to ? ",..." : "");
+      snprintf(prompt, sizeof(prompt), _("Reply to %s%s?"),
+               buf_string(reply_to->mailbox), multiple_reply_to ? ",..." : "");
       switch (query_quadoption(c_reply_to, prompt))
       {
         case MUTT_YES:
@@ -935,7 +935,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in,
   if ((flags & (SEND_LIST_REPLY | SEND_GROUP_REPLY | SEND_GROUP_CHAT_REPLY)) && followup_to)
   {
     char prompt[256] = { 0 };
-    snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"), followup_to->mailbox,
+    snprintf(prompt, sizeof(prompt), _("Follow-up to %s%s?"),
+             buf_string(followup_to->mailbox),
              TAILQ_NEXT(TAILQ_FIRST(&in->mail_followup_to), entries) ? ",..." : "");
 
     const enum QuadOption c_honor_followup_to = cs_subset_quad(sub, "honor_followup_to");
@@ -1476,8 +1477,7 @@ struct Address *mutt_default_from(struct ConfigSubset *sub)
   else if (c_use_domain)
   {
     struct Address *addr = mutt_addr_new();
-    mutt_str_asprintf(&addr->mailbox, "%s@%s", NONULL(Username),
-                      NONULL(mutt_fqdn(true, sub)));
+    buf_printf(addr->mailbox, "%s@%s", NONULL(Username), NONULL(mutt_fqdn(true, sub)));
     return addr;
   }
   else
@@ -2476,7 +2476,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (from && !from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
     {
       const char *const c_real_name = cs_subset_string(sub, "real_name");
-      from->personal = mutt_str_dup(c_real_name);
+      buf_strcpy(from->personal, c_real_name);
     }
   }
 

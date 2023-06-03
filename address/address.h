@@ -34,8 +34,8 @@
  */
 struct Address
 {
-  char *personal;               ///< Real name of address
-  char *mailbox;                ///< Mailbox and host address
+  struct Buffer *personal;      ///< Real name of address
+  struct Buffer *mailbox;       ///< Mailbox and host address
   bool group : 1;               ///< Group mailbox?
   bool is_intl : 1;             ///< International Domain Name
   bool intl_checked : 1;        ///< Checked for IDN?

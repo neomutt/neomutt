@@ -132,7 +132,7 @@ static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, in
   switch (op)
   {
     case 'a':
-      mutt_format_s(buf, buflen, prec, entry->addr->mailbox);
+      mutt_format_s(buf, buflen, prec, buf_string(entry->addr->mailbox));
       break;
     case 'k':
       mutt_format_s(buf, buflen, prec, entry->account->keyid);
@@ -237,7 +237,7 @@ bool populate_menu(struct Menu *menu)
     entries[i].account = accounts[i];
 
     entries[i].addr = mutt_addr_new();
-    entries[i].addr->mailbox = mutt_str_dup(accounts[i]->email_addr);
+    entries[i].addr->mailbox = buf_new(accounts[i]->email_addr);
     mutt_addr_to_local(entries[i].addr);
   }
   FREE(&accounts);

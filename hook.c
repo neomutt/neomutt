@@ -837,7 +837,7 @@ static void list_hook(struct ListHead *matches, const char *match, HookFlags typ
  */
 void mutt_crypt_hook(struct ListHead *list, struct Address *addr)
 {
-  list_hook(list, addr->mailbox, MUTT_CRYPT_HOOK);
+  list_hook(list, buf_string(addr->mailbox), MUTT_CRYPT_HOOK);
 }
 
 /**

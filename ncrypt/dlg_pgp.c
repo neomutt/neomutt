@@ -671,7 +671,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   notify_observer_add(menu->win->notify, NT_WINDOW, pgp_key_window_observer, menu->win);
 
   if (p)
-    snprintf(buf, sizeof(buf), _("PGP keys matching <%s>"), p->mailbox);
+    snprintf(buf, sizeof(buf), _("PGP keys matching <%s>"), buf_string(p->mailbox));
   else
     snprintf(buf, sizeof(buf), _("PGP keys matching \"%s\""), s);
 

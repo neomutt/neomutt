@@ -259,7 +259,7 @@ static void add_args_one(struct SendmailArgs *args, const struct Address *addr)
   /* weed out group mailboxes, since those are for display only */
   if (addr->mailbox && !addr->group)
   {
-    ARRAY_ADD(args, addr->mailbox);
+    ARRAY_ADD(args, buf_string(addr->mailbox));
   }
 }
 

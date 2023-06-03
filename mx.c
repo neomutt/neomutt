@@ -1124,7 +1124,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
 #else  /* !LC_TIME_MASK */
       strftime(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y", &tm);
 #endif /* LC_TIME_MASK */
-      fprintf(msg->fp, "From %s %s\n", p ? p->mailbox : NONULL(Username), buf);
+      fprintf(msg->fp, "From %s %s\n", p ? buf_string(p->mailbox) : NONULL(Username), buf);
     }
   }
   else

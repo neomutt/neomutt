@@ -49,13 +49,13 @@ void test_mutt_addrlist_qualify(void)
     mutt_addrlist_parse(&al, "john@doe.org, user1, user2, test@example.com");
     mutt_addrlist_qualify(&al, "local.domain");
     struct Address *a = TAILQ_FIRST(&al);
-    TEST_CHECK_STR_EQ(a->mailbox, "john@doe.org");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "john@doe.org");
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ(a->mailbox, "user1@local.domain");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "user1@local.domain");
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ(a->mailbox, "user2@local.domain");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "user2@local.domain");
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ(a->mailbox, "test@example.com");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "test@example.com");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
     mutt_addrlist_clear(&al);

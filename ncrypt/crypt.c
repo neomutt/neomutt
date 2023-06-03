@@ -256,10 +256,10 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
       from = mutt_default_from(NeoMutt->sub);
     }
 
-    mailbox = from->mailbox;
+    mailbox = buf_string(from->mailbox);
     const struct Address *c_envelope_from_address = cs_subset_address(NeoMutt->sub, "envelope_from_address");
     if (!mailbox && c_envelope_from_address)
-      mailbox = c_envelope_from_address->mailbox;
+      mailbox = buf_string(c_envelope_from_address->mailbox);
 
     if (((WithCrypto & APPLICATION_SMIME) != 0) && (security & APPLICATION_SMIME))
       crypt_smime_set_sender(mailbox);
@@ -898,16 +898,16 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
                         CH_NO_FLAGS, 0);
       fflush(fp_out);
 
-      char *mbox = NULL;
+      const char *mbox = NULL;
       if (!TAILQ_EMPTY(&e->env->from))
       {
         mutt_expand_aliases(&e->env->from);
-        mbox = TAILQ_FIRST(&e->env->from)->mailbox;
+        mbox = buf_string(TAILQ_FIRST(&e->env->from)->mailbox);
       }
       else if (!TAILQ_EMPTY(&e->env->sender))
       {
         mutt_expand_aliases(&e->env->sender);
-        mbox = TAILQ_FIRST(&e->env->sender)->mailbox;
+        mbox = buf_string(TAILQ_FIRST(&e->env->sender)->mailbox);
       }
       if (mbox)
       {

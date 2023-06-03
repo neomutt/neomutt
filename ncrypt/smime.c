@@ -611,7 +611,7 @@ static struct SmimeKey *smime_get_key_by_hash(const char *hash, bool only_public
  * @param oppenc_mode      If true, use opportunistic encryption
  * @retval ptr Matching key
  */
-static struct SmimeKey *smime_get_key_by_addr(char *mailbox, KeyFlags abilities,
+static struct SmimeKey *smime_get_key_by_addr(const char *mailbox, KeyFlags abilities,
                                               bool only_public_key, bool oppenc_mode)
 {
   if (!mailbox)
@@ -775,7 +775,7 @@ done:
  * This sets the '*ToUse' variables for an upcoming decryption, where the
  * required key is different from `$smime_default_key`.
  */
-static void getkeys(char *mailbox)
+static void getkeys(const char *mailbox)
 {
   const char *k = NULL;
 
@@ -828,7 +828,7 @@ void smime_class_getkeys(struct Envelope *env)
   {
     if (mutt_addr_is_user(a))
     {
-      getkeys(a->mailbox);
+      getkeys(buf_string(a->mailbox));
       return;
     }
   }
@@ -837,13 +837,13 @@ void smime_class_getkeys(struct Envelope *env)
   {
     if (mutt_addr_is_user(a))
     {
-      getkeys(a->mailbox);
+      getkeys(buf_string(a->mailbox));
       return;
     }
   }
 
   struct Address *f = mutt_default_from(NeoMutt->sub);
-  getkeys(f->mailbox);
+  getkeys(buf_string(f->mailbox));
   mutt_addr_free(&f);
 }
 
@@ -860,17 +860,17 @@ char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
-    key = smime_get_key_by_addr(a->mailbox, KEYFLAG_CANENCRYPT, true, oppenc_mode);
+    key = smime_get_key_by_addr(buf_string(a->mailbox), KEYFLAG_CANENCRYPT, true, oppenc_mode);
     if (!key && !oppenc_mode)
     {
       char buf[1024] = { 0 };
-      snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), a->mailbox);
+      snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), buf_string(a->mailbox));
       key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
     }
     if (!key)
     {
       if (!oppenc_mode)
-        mutt_message(_("No (valid) certificate found for %s"), a->mailbox);
+        mutt_message(_("No (valid) certificate found for %s"), buf_string(a->mailbox));
       FREE(&keylist);
       return NULL;
     }
@@ -897,8 +897,8 @@ char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
  * @retval -1 Error
  * @retval -2 Error
  */
-static int smime_handle_cert_email(char *certificate, char *mailbox, bool copy,
-                                   char ***buffer, int *num)
+static int smime_handle_cert_email(const char *certificate, const char *mailbox,
+                                   bool copy, char ***buffer, int *num)
 {
   char email[256] = { 0 };
   int rc = -1, count = 0;
@@ -1256,7 +1256,7 @@ done:
  */
 int smime_class_verify_sender(struct Email *e, struct Message *msg)
 {
-  char *mbox = NULL, *certfile = NULL;
+  const char *mbox = NULL, *certfile = NULL;
   int rc = 1;
 
   struct Buffer *tempfname = buf_pool_get();
@@ -1279,12 +1279,12 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
   if (!TAILQ_EMPTY(&e->env->from))
   {
     mutt_expand_aliases(&e->env->from);
-    mbox = TAILQ_FIRST(&e->env->from)->mailbox;
+    mbox = buf_string(TAILQ_FIRST(&e->env->from)->mailbox);
   }
   else if (!TAILQ_EMPTY(&e->env->sender))
   {
     mutt_expand_aliases(&e->env->sender);
-    mbox = TAILQ_FIRST(&e->env->sender)->mailbox;
+    mbox = buf_string(TAILQ_FIRST(&e->env->sender)->mailbox);
   }
 
   if (mbox)

@@ -290,11 +290,11 @@ static void make_from_addr(struct Envelope *env, char *buf, size_t buflen, bool 
   }
 
   if (me && !TAILQ_EMPTY(&env->to))
-    snprintf(buf, buflen, "%s", TAILQ_FIRST(&env->to)->mailbox);
+    snprintf(buf, buflen, "%s", buf_string(TAILQ_FIRST(&env->to)->mailbox));
   else if (me && !TAILQ_EMPTY(&env->cc))
-    snprintf(buf, buflen, "%s", TAILQ_FIRST(&env->cc)->mailbox);
+    snprintf(buf, buflen, "%s", buf_string(TAILQ_FIRST(&env->cc)->mailbox));
   else if (!TAILQ_EMPTY(&env->from))
-    mutt_str_copy(buf, TAILQ_FIRST(&env->from)->mailbox, buflen);
+    mutt_str_copy(buf, buf_string(TAILQ_FIRST(&env->from)->mailbox), buflen);
   else
     *buf = '\0';
 }

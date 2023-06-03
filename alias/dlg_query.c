@@ -126,7 +126,9 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
     struct Address *first = TAILQ_FIRST(al);
     struct Address *second = TAILQ_NEXT(first, entries);
     if (!second && !first->personal)
-      first->personal = mutt_str_dup(alias->name);
+    {
+      first->personal = buf_new(alias->name);
+    }
 
     mutt_addrlist_to_intl(al, NULL);
   }

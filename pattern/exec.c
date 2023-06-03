@@ -403,9 +403,10 @@ static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
     struct Address *a = NULL;
     TAILQ_FOREACH(a, al, entries)
     {
-      if (pat->all_addr ^ ((!pat->is_alias || alias_reverse_lookup(a)) &&
-                           ((a->mailbox && patmatch(pat, a->mailbox)) ||
-                            (match_personal && a->personal && patmatch(pat, a->personal)))))
+      if (pat->all_addr ^
+          ((!pat->is_alias || alias_reverse_lookup(a)) &&
+           ((a->mailbox && patmatch(pat, buf_string(a->mailbox))) ||
+            (match_personal && a->personal && patmatch(pat, buf_string(a->personal))))))
       {
         va_end(ap);
         return !pat->all_addr; /* Found match, or non-match if all_addr */

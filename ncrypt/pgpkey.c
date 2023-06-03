@@ -154,13 +154,13 @@ static PgpKeyValidFlags pgp_id_matches_addr(struct Address *addr,
   if (pgp_id_is_strong(uid))
     flags |= PGP_KV_STRONGID;
 
-  if (addr->mailbox && u_addr->mailbox && mutt_istr_equal(addr->mailbox, u_addr->mailbox))
+  if (addr->mailbox && u_addr->mailbox && buf_istr_equal(addr->mailbox, u_addr->mailbox))
   {
     flags |= PGP_KV_ADDR;
   }
 
   if (addr->personal && u_addr->personal &&
-      mutt_istr_equal(addr->personal, u_addr->personal))
+      buf_istr_equal(addr->personal, u_addr->personal))
   {
     flags |= PGP_KV_STRING;
   }
@@ -176,8 +176,8 @@ static PgpKeyValidFlags pgp_id_matches_addr(struct Address *addr,
  * @param keyring   PGP keyring to use
  * @retval ptr Selected PGP key
  */
-struct PgpKeyInfo *pgp_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
-                                   enum PgpRing keyring)
+struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
+                                   KeyFlags abilities, enum PgpRing keyring)
 {
   struct PgpKeyInfo *key = NULL;
   struct PgpCache *l = NULL;
@@ -371,9 +371,9 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   struct PgpUid *q = NULL;
 
   if (a->mailbox)
-    mutt_list_insert_tail(&hints, mutt_str_dup(a->mailbox));
+    mutt_list_insert_tail(&hints, buf_strdup(a->mailbox));
   if (a->personal)
-    pgp_add_string_to_hints(a->personal, &hints);
+    pgp_add_string_to_hints(buf_string(a->personal), &hints);
 
   if (!oppenc_mode)
     mutt_message(_("Looking for keys matching \"%s\"..."), a->mailbox);
@@ -384,7 +384,8 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
   if (!keys)
     return NULL;
 
-  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", NONULL(a->personal), NONULL(a->mailbox));
+  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", buf_string(a->personal),
+             buf_string(a->mailbox));
 
   for (k = keys; k; k = kn)
   {

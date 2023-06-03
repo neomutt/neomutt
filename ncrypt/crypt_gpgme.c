@@ -336,14 +336,13 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
 
   if (addr && u_addr)
   {
-    if (addr->mailbox && u_addr->mailbox &&
-        mutt_istr_equal(addr->mailbox, u_addr->mailbox))
+    if (addr->mailbox && u_addr->mailbox && buf_istr_equal(addr->mailbox, u_addr->mailbox))
     {
       rc |= CRYPT_KV_ADDR;
     }
 
     if (addr->personal && u_addr->personal &&
-        mutt_istr_equal(addr->personal, u_addr->personal))
+        buf_istr_equal(addr->personal, u_addr->personal))
     {
       rc |= CRYPT_KV_STRING;
     }
@@ -737,7 +736,7 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
     struct Address *a;
     TAILQ_FOREACH(a, al, entries)
     {
-      if (a->mailbox && set_signer_from_address(ctx, a->mailbox, for_smime))
+      if (a->mailbox && set_signer_from_address(ctx, buf_string(a->mailbox), for_smime))
       {
         return 0;
       }
@@ -3161,12 +3160,12 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   struct CryptKeyInfo **matches_endp = &matches;
 
   if (a && a->mailbox)
-    mutt_list_insert_tail(&hints, mutt_str_dup(a->mailbox));
+    mutt_list_insert_tail(&hints, buf_strdup(a->mailbox));
   if (a && a->personal)
-    crypt_add_string_to_hints(a->personal, &hints);
+    crypt_add_string_to_hints(buf_string(a->personal), &hints);
 
   if (!oppenc_mode)
-    mutt_message(_("Looking for keys matching \"%s\"..."), a ? a->mailbox : "");
+    mutt_message(_("Looking for keys matching \"%s\"..."), a ? buf_string(a->mailbox) : "");
   keys = get_candidates(&hints, app, (abilities & KEYFLAG_CANSIGN));
 
   mutt_list_free(&hints);
@@ -3174,8 +3173,8 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
   if (!keys)
     return NULL;
 
-  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n", a ? NONULL(a->personal) : "",
-             a ? NONULL(a->mailbox) : "");
+  mutt_debug(LL_DEBUG5, "looking for %s <%s>\n",
+             a ? buf_string(a->personal) : "", a ? buf_string(a->mailbox) : "");
 
   for (k = keys; k; k = k->next)
   {
@@ -3348,7 +3347,8 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
  * If whatfor is not null use it as default and store it under that label as
  * the next default.
  */
-static struct CryptKeyInfo *crypt_ask_for_key(char *tag, char *whatfor, KeyFlags abilities,
+static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatfor,
+                                              KeyFlags abilities,
                                               unsigned int app, bool *forced_valid)
 {
   struct CryptKeyInfo *key = NULL;
@@ -3451,7 +3451,8 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
         enum QuadOption ans = MUTT_YES;
         if (!oppenc_mode && c_crypt_confirm_hook)
         {
-          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid, p->mailbox);
+          snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid,
+                   buf_string(p->mailbox));
           ans = mutt_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
@@ -3499,9 +3500,10 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
 
       if (!k_info && !oppenc_mode)
       {
-        snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), p->mailbox);
+        snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), buf_string(p->mailbox));
 
-        k_info = crypt_ask_for_key(buf, p->mailbox, KEYFLAG_CANENCRYPT, app, &forced_valid);
+        k_info = crypt_ask_for_key(buf, buf_string(p->mailbox),
+                                   KEYFLAG_CANENCRYPT, app, &forced_valid);
       }
 
       if (!k_info)
@@ -3968,7 +3970,7 @@ static bool verify_sender(struct Email *e)
     {
       gpgme_key_t key = SignatureKey;
       gpgme_user_id_t uid = NULL;
-      int sender_length = strlen(sender->mailbox);
+      int sender_length = buf_len(sender->mailbox);
       for (uid = key->uids; uid && rc; uid = uid->next)
       {
         int uid_length = strlen(uid->email);
@@ -3982,7 +3984,7 @@ static bool verify_sender(struct Email *e)
              * The mailbox part is case-sensitive,
              * the domainname is not. (RFC2821) */
             const char *tmp_email = uid->email + 1;
-            const char *tmp_sender = sender->mailbox;
+            const char *tmp_sender = buf_string(sender->mailbox);
             /* length of mailbox part including '@' */
             int mailbox_length = at_sign - tmp_email + 1;
             int domainname_length = sender_length - mailbox_length;
@@ -3997,7 +3999,7 @@ static bool verify_sender(struct Email *e)
           }
           else
           {
-            if (mutt_strn_equal(uid->email + 1, sender->mailbox, sender_length))
+            if (mutt_strn_equal(uid->email + 1, buf_string(sender->mailbox), sender_length))
               rc = false;
           }
         }

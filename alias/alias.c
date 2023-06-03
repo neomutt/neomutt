@@ -104,16 +104,16 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
   struct Address *a = TAILQ_FIRST(al);
   while (a)
   {
-    if (!a->group && !a->personal && a->mailbox && !strchr(a->mailbox, '@'))
+    if (!a->group && !a->personal && a->mailbox && !buf_find_char(a->mailbox, '@'))
     {
-      struct AddressList *alias = alias_lookup(a->mailbox);
+      struct AddressList *alias = alias_lookup(buf_string(a->mailbox));
       if (alias)
       {
         bool duplicate = false;
         struct ListNode *np = NULL;
         STAILQ_FOREACH(np, expn, entries)
         {
-          if (mutt_str_equal(a->mailbox, np->data)) /* alias already found */
+          if (mutt_str_equal(buf_string(a->mailbox), np->data)) /* alias already found */
           {
             mutt_debug(LL_DEBUG1, "loop in alias found for '%s'\n", a->mailbox);
             duplicate = true;
@@ -132,7 +132,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
         }
 
         // Keep a list of aliases that we've already seen
-        mutt_list_insert_head(expn, mutt_str_dup(a->mailbox));
+        mutt_list_insert_head(expn, buf_strdup(a->mailbox));
 
         /* The alias may expand to several addresses,
          * some of which may themselves be aliases.
@@ -156,13 +156,13 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
       }
       else
       {
-        struct passwd *pw = getpwnam(a->mailbox);
+        struct passwd *pw = getpwnam(buf_string(a->mailbox));
         if (pw)
         {
           char namebuf[256] = { 0 };
 
           mutt_gecos_name(namebuf, sizeof(namebuf), pw);
-          mutt_str_replace(&a->personal, namebuf);
+          buf_strcpy(a->personal, namebuf);
         }
       }
     }
@@ -383,7 +383,7 @@ void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
     addr = TAILQ_FIRST(al);
     if (addr && addr->mailbox)
     {
-      buf_strcpy(tmp, addr->mailbox);
+      buf_copy(tmp, addr->mailbox);
       pc = strchr(buf_string(tmp), '@');
       if (pc)
         *pc = '\0';
@@ -427,7 +427,7 @@ retry_name:
   mutt_addrlist_to_local(al);
 
   if (addr && addr->mailbox)
-    buf_strcpy(buf, addr->mailbox);
+    buf_copy(buf, addr->mailbox);
   else
     buf_reset(buf);
 
@@ -454,7 +454,7 @@ retry_name:
   } while (TAILQ_EMPTY(&alias->addr));
 
   if (addr && addr->personal && !mutt_is_mail_list(addr))
-    buf_strcpy(buf, addr->personal);
+    buf_copy(buf, addr->personal);
   else
     buf_reset(buf);
 
@@ -464,7 +464,7 @@ retry_name:
     alias_free(&alias);
     goto done;
   }
-  mutt_str_replace(&TAILQ_FIRST(&alias->addr)->personal, buf_string(buf));
+  buf_copy(TAILQ_FIRST(&alias->addr)->personal, buf);
 
   buf_reset(buf);
   if (buf_get_field(_("Comment: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0)
@@ -579,37 +579,40 @@ bool mutt_addr_is_user(const struct Address *addr)
     return false;
   }
 
-  if (mutt_istr_equal(addr->mailbox, Username))
+  if (mutt_istr_equal(buf_string(addr->mailbox), Username))
   {
-    mutt_debug(LL_DEBUG5, "#1 yes, %s = %s\n", addr->mailbox, Username);
+    mutt_debug(LL_DEBUG5, "#1 yes, %s = %s\n", buf_string(addr->mailbox), Username);
     return true;
   }
-  if (string_is_address(addr->mailbox, Username, ShortHostname))
+  if (string_is_address(buf_string(addr->mailbox), Username, ShortHostname))
   {
-    mutt_debug(LL_DEBUG5, "#2 yes, %s = %s @ %s\n", addr->mailbox, Username, ShortHostname);
+    mutt_debug(LL_DEBUG5, "#2 yes, %s = %s @ %s\n", buf_string(addr->mailbox),
+               Username, ShortHostname);
     return true;
   }
   const char *fqdn = mutt_fqdn(false, NeoMutt->sub);
-  if (string_is_address(addr->mailbox, Username, fqdn))
+  if (string_is_address(buf_string(addr->mailbox), Username, fqdn))
   {
-    mutt_debug(LL_DEBUG5, "#3 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
+    mutt_debug(LL_DEBUG5, "#3 yes, %s = %s @ %s\n", buf_string(addr->mailbox),
+               Username, NONULL(fqdn));
     return true;
   }
   fqdn = mutt_fqdn(true, NeoMutt->sub);
-  if (string_is_address(addr->mailbox, Username, fqdn))
+  if (string_is_address(buf_string(addr->mailbox), Username, fqdn))
   {
-    mutt_debug(LL_DEBUG5, "#4 yes, %s = %s @ %s\n", addr->mailbox, Username, NONULL(fqdn));
+    mutt_debug(LL_DEBUG5, "#4 yes, %s = %s @ %s\n", buf_string(addr->mailbox),
+               Username, NONULL(fqdn));
     return true;
   }
 
   const struct Address *c_from = cs_subset_address(NeoMutt->sub, "from");
-  if (c_from && mutt_istr_equal(c_from->mailbox, addr->mailbox))
+  if (c_from && mutt_istr_equal(buf_string(c_from->mailbox), buf_string(addr->mailbox)))
   {
-    mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", addr->mailbox, c_from->mailbox);
+    mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", buf_string(addr->mailbox), c_from->mailbox);
     return true;
   }
 
-  if (mutt_alternates_match(addr->mailbox))
+  if (mutt_alternates_match(buf_string(addr->mailbox)))
     return true;
 
   mutt_debug(LL_DEBUG5, "no, all failed\n");

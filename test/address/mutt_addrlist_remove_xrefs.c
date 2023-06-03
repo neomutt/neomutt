@@ -52,7 +52,7 @@ void test_mutt_addrlist_remove_xrefs(void)
     mutt_addrlist_append(&al2, mutt_addr_create("Name 2", "foo@example.com"));
     mutt_addrlist_remove_xrefs(&al1, &al2);
     struct Address *a = TAILQ_FIRST(&al1);
-    TEST_CHECK_STR_EQ(a->mailbox, "foo@example.com");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "foo@example.com");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
     mutt_addrlist_clear(&al1);
@@ -70,15 +70,15 @@ void test_mutt_addrlist_remove_xrefs(void)
     mutt_addrlist_append(&al2, mutt_addr_create(NULL, "mr.pink@reservoir.movie"));
     mutt_addrlist_remove_xrefs(&al1, &al2);
     struct Address *a = TAILQ_FIRST(&al1);
-    TEST_CHECK_STR_EQ(a->mailbox, "foo@example.com");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "foo@example.com");
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ(a->mailbox, "john@doe.org");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "john@doe.org");
     a = TAILQ_NEXT(a, entries);
-    TEST_CHECK_STR_EQ(a->mailbox, "foo@bar.baz");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "foo@bar.baz");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
     a = TAILQ_FIRST(&al2);
-    TEST_CHECK_STR_EQ(a->mailbox, "mr.pink@reservoir.movie");
+    TEST_CHECK_STR_EQ(buf_string(a->mailbox), "mr.pink@reservoir.movie");
     a = TAILQ_NEXT(a, entries);
     TEST_CHECK(a == NULL);
     mutt_addrlist_clear(&al1);

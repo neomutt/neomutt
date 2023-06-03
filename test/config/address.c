@@ -65,19 +65,19 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   const struct Address *VarApple = cs_subset_address(sub, "Apple");
   const struct Address *VarBanana = cs_subset_address(sub, "Banana");
 
-  TEST_MSG("Apple = '%s'\n", VarApple->mailbox);
-  TEST_MSG("Banana = '%s'\n", VarBanana->mailbox);
+  TEST_MSG("Apple = '%s'\n", buf_string(VarApple->mailbox));
+  TEST_MSG("Banana = '%s'\n", buf_string(VarBanana->mailbox));
 
   const char *apple_orig = "apple@example.com";
   const char *banana_orig = "banana@example.com";
 
-  if (!TEST_CHECK_STR_EQ(VarApple->mailbox, apple_orig))
+  if (!TEST_CHECK_STR_EQ(buf_string(VarApple->mailbox), apple_orig))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
   }
 
-  if (!TEST_CHECK_STR_EQ(VarBanana->mailbox, banana_orig))
+  if (!TEST_CHECK_STR_EQ(buf_string(VarBanana->mailbox), banana_orig))
   {
     TEST_MSG("Error: initial values were wrong\n");
     return false;
@@ -122,7 +122,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("Banana's initial value is wrong: '%s'\n", buf_string(value));
     return false;
   }
-  TEST_MSG("Banana = '%s'\n", VarBanana ? VarBanana->mailbox : "");
+  TEST_MSG("Banana = '%s'\n", VarBanana ? buf_string(VarBanana->mailbox) : "");
   TEST_MSG("Banana's initial value is '%s'\n", NONULL(buf_string(value)));
 
   buf_reset(value);
@@ -150,7 +150,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   const struct Address *VarCherry = cs_subset_address(sub, "Cherry");
-  TEST_MSG("Cherry = '%s'\n", VarCherry ? VarCherry->mailbox : "");
+  TEST_MSG("Cherry = '%s'\n", VarCherry ? buf_string(VarCherry->mailbox) : "");
   TEST_MSG("Cherry's initial value is '%s'\n", NONULL(buf_string(value)));
 
   buf_pool_release(&value);
@@ -165,7 +165,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   const char *valid[] = { "hello@example.com", "world@example.com", NULL };
   const char *name = "Damson";
-  char *addr = NULL;
+  struct Buffer *addr = NULL;
 
   int rc;
   const struct Address *VarDamson = NULL;
@@ -181,12 +181,12 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     VarDamson = cs_subset_address(sub, "Damson");
     addr = VarDamson ? VarDamson->mailbox : NULL;
-    if (!TEST_CHECK_STR_EQ(addr, valid[i]))
+    if (!TEST_CHECK_STR_EQ(buf_string(addr), valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(addr), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'\n", name, buf_string(addr), NONULL(valid[i]));
   }
 
   name = "Elderberry";
@@ -202,12 +202,12 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
     const struct Address *VarElderberry = cs_subset_address(sub, "Elderberry");
     addr = VarElderberry ? VarElderberry->mailbox : NULL;
-    if (!TEST_CHECK_STR_EQ(addr, valid[i]))
+    if (!TEST_CHECK_STR_EQ(buf_string(addr), valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed\n", name);
       return false;
     }
-    TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(addr), NONULL(valid[i]));
+    TEST_MSG("%s = '%s', set by '%s'\n", name, buf_string(addr), NONULL(valid[i]));
   }
 
   log_line(__func__);
@@ -219,7 +219,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   log_line(__func__);
   struct ConfigSet *cs = sub->cs;
   const char *name = "Fig";
-  char *addr = NULL;
+  struct Buffer *addr = NULL;
 
   buf_reset(err);
   int rc = cs_str_string_get(cs, name, err);
@@ -230,7 +230,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   }
   const struct Address *VarFig = cs_subset_address(sub, "Fig");
   addr = VarFig ? VarFig->mailbox : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'\n", name, buf_string(addr), buf_string(err));
 
   name = "Guava";
   buf_reset(err);
@@ -242,7 +242,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   }
   const struct Address *VarGuava = cs_subset_address(sub, "Guava");
   addr = VarGuava ? VarGuava->mailbox : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'\n", name, buf_string(addr), buf_string(err));
 
   name = "Hawthorn";
   rc = cs_str_string_set(cs, name, "hawthorn", err);
@@ -258,7 +258,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   }
   const struct Address *VarHawthorn = cs_subset_address(sub, "Hawthorn");
   addr = VarHawthorn ? VarHawthorn->mailbox : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr), buf_string(err));
+  TEST_MSG("%s = '%s', '%s'\n", name, buf_string(addr), buf_string(err));
 
   log_line(__func__);
   return true;
@@ -271,7 +271,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   struct Address *a = address_new("hello@example.com");
   const char *name = "Ilama";
-  char *addr = NULL;
+  struct Buffer *addr = NULL;
   bool result = false;
 
   buf_reset(err);
@@ -284,12 +284,12 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   const struct Address *VarIlama = cs_subset_address(sub, "Ilama");
   addr = VarIlama ? VarIlama->mailbox : NULL;
-  if (!TEST_CHECK_STR_EQ(addr, a->mailbox))
+  if (!TEST_CHECK_STR_EQ(buf_string(addr), buf_string(a->mailbox)))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     goto tbns_out;
   }
-  TEST_MSG("%s = '%s', set by '%s'\n", name, NONULL(addr), a->mailbox);
+  TEST_MSG("%s = '%s', set by '%s'\n", name, buf_string(addr), buf_string(a->mailbox));
 
   name = "Jackfruit";
   buf_reset(err);
@@ -307,7 +307,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     goto tbns_out;
   }
   addr = VarJackfruit ? VarJackfruit->mailbox : NULL;
-  TEST_MSG("%s = '%s', set by NULL\n", name, NONULL(addr));
+  TEST_MSG("%s = '%s', set by NULL\n", name, buf_string(addr));
 
   log_line(__func__);
   result = true;
@@ -335,9 +335,9 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("Get failed: %s\n", buf_string(err));
     return false;
   }
-  char *addr1 = VarKumquat ? VarKumquat->mailbox : NULL;
-  char *addr2 = a ? a->mailbox : NULL;
-  TEST_MSG("%s = '%s', '%s'\n", name, NONULL(addr1), NONULL(addr2));
+  struct Buffer *addr1 = VarKumquat ? VarKumquat->mailbox : NULL;
+  struct Buffer *addr2 = a ? a->mailbox : NULL;
+  TEST_MSG("%s = '%s', '%s'\n", name, buf_string(addr1), buf_string(addr2));
 
   log_line(__func__);
   return true;
@@ -353,14 +353,14 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   buf_reset(err);
 
   const struct Address *VarLemon = cs_subset_address(sub, "Lemon");
-  char *addr = VarLemon ? VarLemon->mailbox : NULL;
-  TEST_MSG("Initial: %s = '%s'\n", name, NONULL(addr));
+  struct Buffer *addr = VarLemon ? VarLemon->mailbox : NULL;
+  TEST_MSG("Initial: %s = '%s'\n", name, buf_string(addr));
   int rc = cs_str_string_set(cs, name, "hello@example.com", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   VarLemon = cs_subset_address(sub, "Lemon");
   addr = VarLemon ? VarLemon->mailbox : NULL;
-  TEST_MSG("Set: %s = '%s'\n", name, NONULL(addr));
+  TEST_MSG("Set: %s = '%s'\n", name, buf_string(addr));
 
   rc = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
@@ -371,25 +371,25 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   VarLemon = cs_subset_address(sub, "Lemon");
   addr = VarLemon ? VarLemon->mailbox : NULL;
-  if (!TEST_CHECK_STR_EQ(addr, "lemon@example.com"))
+  if (!TEST_CHECK_STR_EQ(buf_string(addr), "lemon@example.com"))
   {
     TEST_MSG("Value of %s wasn't changed\n", name);
     return false;
   }
 
-  TEST_MSG("Reset: %s = '%s'\n", name, NONULL(addr));
+  TEST_MSG("Reset: %s = '%s'\n", name, buf_string(addr));
 
   name = "Mango";
   buf_reset(err);
 
   const struct Address *VarMango = cs_subset_address(sub, "Mango");
-  TEST_MSG("Initial: %s = '%s'\n", name, VarMango->mailbox);
+  TEST_MSG("Initial: %s = '%s'\n", name, buf_string(VarMango->mailbox));
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "john@example.com", err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     return false;
   VarMango = cs_subset_address(sub, "Mango");
-  TEST_MSG("Set: %s = '%s'\n", name, VarMango->mailbox);
+  TEST_MSG("Set: %s = '%s'\n", name, buf_string(VarMango->mailbox));
   dont_fail = false;
 
   rc = cs_str_reset(cs, name, err);
@@ -404,13 +404,13 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarMango = cs_subset_address(sub, "Mango");
-  if (!TEST_CHECK_STR_EQ(VarMango->mailbox, "john@example.com"))
+  if (!TEST_CHECK_STR_EQ(buf_string(VarMango->mailbox), "john@example.com"))
   {
     TEST_MSG("Value of %s changed\n", name);
     return false;
   }
 
-  TEST_MSG("Reset: %s = '%s'\n", name, VarMango->mailbox);
+  TEST_MSG("Reset: %s = '%s'\n", name, buf_string(VarMango->mailbox));
 
   log_line(__func__);
   return true;
@@ -421,7 +421,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   log_line(__func__);
   struct ConfigSet *cs = sub->cs;
 
-  char *addr = NULL;
+  struct Buffer *addr = NULL;
   struct Address *a = address_new("world@example.com");
   bool result = false;
 
@@ -439,7 +439,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   }
   const struct Address *VarNectarine = cs_subset_address(sub, "Nectarine");
   addr = VarNectarine ? VarNectarine->mailbox : NULL;
-  TEST_MSG("Address: %s = %s\n", name, NONULL(addr));
+  TEST_MSG("Address: %s = %s\n", name, buf_string(addr));
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP a, err);
@@ -454,7 +454,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   }
   VarNectarine = cs_subset_address(sub, "Nectarine");
   addr = VarNectarine ? VarNectarine->mailbox : NULL;
-  TEST_MSG("Native: %s = %s\n", name, NONULL(addr));
+  TEST_MSG("Native: %s = %s\n", name, buf_string(addr));
 
   name = "Olive";
   buf_reset(err);
@@ -470,7 +470,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   }
   const struct Address *VarOlive = cs_subset_address(sub, "Olive");
   addr = VarOlive ? VarOlive->mailbox : NULL;
-  TEST_MSG("Address: %s = %s\n", name, NONULL(addr));
+  TEST_MSG("Address: %s = %s\n", name, buf_string(addr));
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP a, err);
@@ -485,7 +485,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   }
   VarOlive = cs_subset_address(sub, "Olive");
   addr = VarOlive ? VarOlive->mailbox : NULL;
-  TEST_MSG("Native: %s = %s\n", name, NONULL(addr));
+  TEST_MSG("Native: %s = %s\n", name, buf_string(addr));
 
   name = "Papaya";
   buf_reset(err);
@@ -501,7 +501,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   }
   const struct Address *VarPapaya = cs_subset_address(sub, "Papaya");
   addr = VarPapaya ? VarPapaya->mailbox : NULL;
-  TEST_MSG("Address: %s = %s\n", name, NONULL(addr));
+  TEST_MSG("Address: %s = %s\n", name, buf_string(addr));
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, IP a, err);
@@ -516,7 +516,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   }
   VarPapaya = cs_subset_address(sub, "Papaya");
   addr = VarPapaya ? VarPapaya->mailbox : NULL;
-  TEST_MSG("Native: %s = %s\n", name, NONULL(addr));
+  TEST_MSG("Native: %s = %s\n", name, buf_string(addr));
 
   result = true;
 tv_out:
@@ -533,11 +533,11 @@ static void dump_native(struct ConfigSet *cs, const char *parent, const char *ch
   struct Address *pa = (struct Address *) pval;
   struct Address *ca = (struct Address *) cval;
 
-  char *pstr = pa ? pa->mailbox : NULL;
-  char *cstr = ca ? ca->mailbox : NULL;
+  struct Buffer *pstr = pa ? pa->mailbox : NULL;
+  struct Buffer *cstr = ca ? ca->mailbox : NULL;
 
-  TEST_MSG("%15s = %s\n", parent, NONULL(pstr));
-  TEST_MSG("%15s = %s\n", child, NONULL(cstr));
+  TEST_MSG("%15s = %s\n", parent, buf_string(pstr));
+  TEST_MSG("%15s = %s\n", child, buf_string(cstr));
 }
 
 static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)

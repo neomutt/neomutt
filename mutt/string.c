@@ -574,9 +574,9 @@ size_t mutt_str_len(const char *a)
  * mutt_str_coll - Collate two strings (compare using locale), safely
  * @param a First string to compare
  * @param b Second string to compare
- * @retval -1 a precedes b
+ * @retval <0 a precedes b
  * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * @retval >0 b precedes a
  */
 int mutt_str_coll(const char *a, const char *b)
 {

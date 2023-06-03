@@ -446,7 +446,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 {
   char cmd[STR_COMMAND] = { 0 };
 
-  char *personal = NULL;
+  struct Buffer *personal = NULL;
 
   struct PgpCommandContext cctx = { 0 };
 
