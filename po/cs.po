@@ -751,9 +751,8 @@ msgid "No newsgroups match the mask"
 msgstr "Masce nevyhovují žádné diskusní skupiny"
 
 #: browser/functions.c:157
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "Nejsou žádné zprávy"
+msgstr "Nejsou žádné schránky"
 
 #: browser/functions.c:206 browser/functions.c:547 browser/functions.c:606
 msgid "No files match the file mask"
@@ -845,12 +844,12 @@ msgstr "Barvu %s terminál nepodporuje."
 #: color/command.c:467
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "Podpora Direct colors nebyla zapnuta při kompilaci: %s"
 
 #: color/command.c:473
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "výchozí barvy nejsou podporovány"
+msgstr "Podpora Direct colors vypnuta: %s"
 
 #: color/command.c:527
 #, c-format
@@ -1135,7 +1134,7 @@ msgid "-- Attachments"
 msgstr "-- Přílohy"
 
 #: compose/functions.c:94
-msgid "There are no attachments"
+msgid "here are no attachments"
 msgstr "Nejsou žádné přílohy"
 
 #. L10N: This message is displayed in the compose menu when an attachment
@@ -1276,9 +1275,8 @@ msgid "Can't create file %s"
 msgstr "Soubor %s nelze vytvořit"
 
 #: compose/functions.c:1354
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Vytvoření přílohy se nezdařilo."
+msgstr "Připojení přílohy se nezdařilo"
 
 #: compose/functions.c:1396
 msgid "Can't print multipart attachments"
@@ -3857,7 +3855,7 @@ msgstr "<náhodný>"
 #: mixmaster/win_chain.c:65
 #, c-format
 msgid "-- Remailer chain [Length: %d]"
-msgstr ""
+msgstr "-- Řeťez remailerů [Délka: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
@@ -6607,9 +6605,9 @@ msgstr "PGP podpis NELZE ověřit"
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: pager/pbar.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "%ld%%"
-msgstr "%ld%%"
+msgstr "%ld %%"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
@@ -7235,25 +7233,25 @@ msgstr "Žádné zprávy nejsou odloženy"
 #. `%d` percentage, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:168
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu (%d%%)"
-msgstr "%s %zu (%d%%)"
+msgstr "%s %zu (%d %%)"
 
 #. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:178
-#, fuzzy, c-format
+#, c-format
 msgid "%s %s/%s (%d%%)"
-msgstr "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%d %%)"
 
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:186
-#, fuzzy, c-format
+#, c-format
 msgid "%s %zu/%zu (%d%%)"
-msgstr "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%d %%)"
 
 #: question/question.c:208
 msgid "yes"
@@ -7596,9 +7594,9 @@ msgstr "(žádná schránka)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:322
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
-msgstr "%d%%"
+msgstr "%d %%"
 
 #: version.c:85
 msgid ""
