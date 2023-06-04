@@ -182,7 +182,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   log_line(__func__);
   struct ConfigSet *cs = sub->cs;
   const char *valid[] = { "Antelope", "ECHIDNA", "herbivore", "BIRD" };
-  int numbers[] = { 1, 41, 1, 3 };
+  const int numbers[] = { 1, 41, 1, 3 };
   const char *invalid[] = { "Frogs", "", NULL };
   const char *name = "Damson";
 

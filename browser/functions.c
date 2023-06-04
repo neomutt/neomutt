@@ -1133,19 +1133,19 @@ static const struct BrowserFunction BrowserFunctions[] = {
 
 /**
  * browser_function_dispatcher - Perform a Browser function
- * @param win_browser Window for the Index
- * @param op          Operation to perform, e.g. OP_GOTO_PARENT
+ * @param win Window for the Browser
+ * @param op  Operation to perform, e.g. OP_GOTO_PARENT
  * @retval num #FunctionRetval, e.g. #FR_SUCCESS
  */
-int browser_function_dispatcher(struct MuttWindow *win_browser, int op)
+int browser_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win_browser)
+  if (!win)
   {
     mutt_error(_(Not_available_in_this_menu));
     return FR_ERROR;
   }
 
-  struct BrowserPrivateData *priv = win_browser->parent->wdata;
+  struct BrowserPrivateData *priv = win->parent->wdata;
   if (!priv)
     return FR_ERROR;
 

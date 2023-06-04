@@ -658,14 +658,14 @@ void rfc2047_decode(char **pd)
   if (!pd || !*pd)
     return;
 
-  struct Buffer buf = buf_make(0); /* Output buffer            */
-  char *s = *pd;                   /* Read pointer                           */
-  char *beg = NULL;                /* Begin of encoded word                  */
-  enum ContentEncoding enc;        /* ENC_BASE64 or ENC_QUOTED_PRINTABLE     */
-  char *charset = NULL;            /* Which charset                          */
-  size_t charsetlen;               /* Length of the charset                  */
-  char *text = NULL;               /* Encoded text                           */
-  size_t textlen;                  /* Length of encoded text                 */
+  struct Buffer buf = buf_make(0);      // Output buffer
+  char *s = *pd;                        // Read pointer
+  char *beg = NULL;                     // Begin of encoded word
+  enum ContentEncoding enc = ENC_OTHER; // ENC_BASE64 or ENC_QUOTED_PRINTABLE
+  char *charset = NULL;                 // Which charset
+  size_t charsetlen;                    // Length of the charset
+  char *text = NULL;                    // Encoded text
+  size_t textlen = 0;                   // Length of encoded text
 
   /* Keep some state in case the next decoded word is using the same charset
    * and it happens to be split in the middle of a multibyte character.
