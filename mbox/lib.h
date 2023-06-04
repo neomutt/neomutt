@@ -63,6 +63,5 @@ extern const struct MxOps MxMmdfOps;
 enum MxStatus    mbox_check(struct Mailbox *m, struct stat *st, bool check_stats);
 enum MailboxType mbox_path_probe(const char *path, const struct stat *st);
 void             mbox_reset_atime(struct Mailbox *m, struct stat *st);
-bool             mbox_test_new_folder(const char *path);
 
 #endif /* MUTT_MBOX_LIB_H */
