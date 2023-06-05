@@ -252,10 +252,20 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
   while (counter)
   {
     struct Address *a = mutt_addr_new();
+
     a->personal = buf_new(NULL);
-    a->mailbox = buf_new(NULL);
     serial_restore_buffer(a->personal, d, off, convert);
+    if (buf_is_empty(a->personal))
+    {
+      buf_free(&a->personal);
+    }
+
+    a->mailbox = buf_new(NULL);
     serial_restore_buffer(a->mailbox, d, off, false);
+    if (buf_is_empty(a->mailbox))
+    {
+      buf_free(&a->mailbox);
+    }
 
     serial_restore_int(&g, d, off);
     a->group = !!g;

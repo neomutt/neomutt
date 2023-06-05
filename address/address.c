@@ -412,8 +412,14 @@ struct Address *mutt_addr_new(void)
 struct Address *mutt_addr_create(const char *personal, const char *mailbox)
 {
   struct Address *a = mutt_addr_new();
-  a->personal = buf_new(personal);
-  a->mailbox = buf_new(mailbox);
+  if (personal)
+  {
+    a->personal = buf_new(personal);
+  }
+  if (mailbox)
+  {
+    a->mailbox = buf_new(mailbox);
+  }
   return a;
 }
 
@@ -542,7 +548,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
       {
         struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        a->mailbox = buf_new(phrase);
+        if (phraselen != 0)
+        {
+          a->mailbox = buf_new(phrase);
+        }
         a->group = true;
         mutt_addrlist_append(al, a);
         phraselen = 0;
@@ -555,7 +564,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
       {
         struct Address *a = mutt_addr_new();
         terminate_buffer(phrase, phraselen);
-        a->personal = buf_new(phrase);
+        if (phraselen != 0)
+        {
+          a->personal = buf_new(phrase);
+        }
         s = parse_route_addr(s + 1, comment, &commentlen, sizeof(comment) - 1, a);
         if (!s)
         {
