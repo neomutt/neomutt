@@ -1263,9 +1263,8 @@ msgid "Can't create file %s"
 msgstr "Negaliu sukurti bylos %s"
 
 #: compose/functions.c:1354
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Čia turėtų būti priedas, tačiau jo nepavyko padaryti"
+msgstr "Klaida bandant prisegti bylą"
 
 #: compose/functions.c:1396
 msgid "Can't print multipart attachments"
