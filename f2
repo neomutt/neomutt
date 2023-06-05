@@ -1,0 +1,57 @@
+C should be clear
+G good
+L list free
+
+autocrypt_menu_free        (struct Menu *menu, void **ptr)
+gpgme_key_table_free       (struct Menu *menu, void **ptr)
+pgp_key_table_free         (struct Menu *menu, void **ptr)
+smime_key_table_free       (struct Menu *menu, void **ptr)
+menu_wdata_free            (struct MuttWindow *win, void **ptr)
+compress_info_free         (struct Mailbox *m)
+cs_hashelem_free           (int type, void *obj, intptr_t data)
+group_hash_free            (int type, void *obj, intptr_t data)
+monitor_info_free          (struct MonitorInfo *info)
+nm_db_free                 (notmuch_database_t *db)
+nntp_hashelem_free         (int type, void *obj, intptr_t data)
+zstrm_free                 (void *opaque, void *address)
+
+G key_free                   (struct PgpKeyInfo **ptr)
+G mbtable_free               (struct MbTable **ptr)
+G mutt_autocrypt_db_peer_free(struct AutocryptPeer **ptr)
+	G struct AutocryptPeer *  mutt_autocrypt_db_peer_new(void)
+G mutt_keymap_free           (struct Keymap **km)
+G mutt_thread_ctx_free       (struct ThreadsContext **ptr)
+G nntp_mdata_free            (void **ptr)
+G progress_free              (struct Progress **ptr)
+	G struct Progress *       progress_new              (const char *msg, enum ProgressType type, size_t size)
+G regex_color_free           (struct RegexColorList *list, struct RegexColor **ptr)
+	G struct RegexColor *     regex_color_new           (void)
+G sbar_wdata_free            (struct MuttWindow *win, void **ptr)
+G mutt_mem_free              (void *ptr)
+C driver_tags_free           (struct TagList *list)
+
+C imap_msn_free              (struct MSN *msn)
+C mh_seq_free                (struct MhSequences *mhs)
+C nm_tag_array_free          (struct TagArray *tags)
+C ARRAY_FREE()?
+
+L crypt_key_free             (struct CryptKeyInfo **keylist)
+L envlist_free               (char ***envp)                          envlist_init
+L mutt_autocrypthdr_free     (struct AutocryptHeader **ptr)
+L mutt_body_free             (struct Body **ptr)
+L mutt_hash_free             (struct HashTable **ptr)
+L mutt_pattern_free          (struct PatternList **pat)
+L pgp_key_free               (struct PgpKeyInfo **kpp)
+L pgp_uid_free               (struct PgpUid **upp)                   progress_new
+L smime_key_free             (struct SmimeKey **keylist)
+L header_free                (struct ListHead *hdrlist, struct ListNode *target)
+L idxfmt_hashelem_free       (int type, void *obj, intptr_t data)
+L mutt_actx_entries_free     (struct AttachCtx *actx)
+L mutt_keymaplist_free       (struct KeymapList *km_list)
+L mutt_list_free             (struct ListHead *h)
+L mutt_param_free            (struct ParameterList *pl)
+L mutt_regexlist_free        (struct RegexList *rl)
+L mutt_replacelist_free      (struct ReplaceList *rl)
+L mutt_winlist_free          (struct MuttWindowList *head)
+L nntp_acache_free           (struct NntpMboxData *mdata)
+

@@ -1,0 +1,224 @@
+object pointers
+	account_new                          account_free
+	address_new                          address_free
+	alias_new                            alias_free
+	attachmatch_new                      attachmatch_free
+	attr_color_new                       attr_color_free
+	bdb_sdata_new                        bdb_sdata_free
+	browser_private_data_new             browser_private_data_free
+	buf_new                              buf_free
+	cid_map_new                          cid_map_free
+	completion_data_new                  completion_data_free
+	cs_new                               cs_free
+	cs_subset_new                        cs_subset_free
+	curses_color_new                     curses_color_free
+	email_new                            email_free
+	enter_state_new                      enter_state_free
+	group_new                            group_free
+	hcache_new                           hcache_free
+	lmdb_sdata_new                       lmdb_sdata_free
+	lookup_new                           lookup_free
+	lz4_cdata_new                        lz4_cdata_free
+	mailbox_new                          mailbox_free
+	mailcap_entry_new                    mailcap_entry_free
+	maildir_entry_new                    maildir_entry_free
+	menu_new                             menu_free
+	mutt_actx_new                        mutt_actx_free
+	mutt_addr_new                        mutt_addr_free
+	mutt_aptr_new                        mutt_aptr_free
+	mutt_autocrypt_db_account_new        mutt_autocrypt_db_account_free
+	mutt_autocrypt_db_gossip_history_new mutt_autocrypt_db_gossip_history_free
+	mutt_autocrypt_db_peer_history_new   mutt_autocrypt_db_peer_history_free
+	mutt_env_new                         mutt_env_free
+	mutt_regex_new                       mutt_regex_free
+	mutt_seqset_iterator_new             mutt_seqset_iterator_free
+	mutt_window_new                      mutt_window_free
+	mview_new                            mview_free
+	neomutt_new                          neomutt_free
+	notify_new                           notify_free
+	parameter_new                        parameter_free
+	qstyle_new                           qstyle_free
+	regex_new                            regex_free
+	remailer_new                         remailer_free
+	rocksdb_sdata_new                    rocksdb_sdata_free
+	simple_dialog_new                    simple_dialog_free
+	slist_new                            slist_free
+	url_new                              url_free
+	zlib_cdata_new                       zlib_cdata_free
+	zstd_cdata_new                       zstd_cdata_free
+
+void pointers
+	attach_data_new         attach_data_free
+	attach_private_data_new attach_private_data_free
+	cbar_data_new           cbar_data_free
+	chain_data_new          chain_data_free
+	compose_shared_data_new compose_shared_data_free
+	env_wdata_new           env_wdata_free
+	helpbar_wdata_new       helpbar_wdata_free
+	ibar_data_new           ibar_data_free
+	imap_adata_new          imap_adata_free
+	imap_edata_new          imap_edata_free
+	imap_mdata_new          imap_mdata_free
+	index_private_data_new  index_private_data_free
+	index_shared_data_new   index_shared_data_free
+	maildir_edata_new       maildir_edata_free
+	maildir_mdata_new       maildir_mdata_free
+	mbox_adata_new          mbox_adata_free
+	message_new             message_free
+	msgwin_wdata_new        msgwin_wdata_free
+	nm_adata_new            nm_adata_free
+	nm_edata_new            nm_edata_free
+	nm_mdata_new            nm_mdata_free
+	nntp_adata_new          nntp_adata_free
+	nntp_edata_new          nntp_edata_free
+	pager_private_data_new  pager_private_data_free
+	pbar_data_new           pbar_data_free
+	pop_adata_new           pop_adata_free
+	pop_edata_new           pop_edata_free
+	progress_wdata_new      progress_wdata_free
+	sb_wdata_new            sb_wdata_free
+
+non-standard: store
+	store_bdb_open          store_bdb_free
+	store_gdbm_open         store_gdbm_free
+	store_kyotocabinet_open store_kyotocabinet_free
+	store_lmdb_open         store_lmdb_free
+	store_qdbm_open         store_qdbm_free
+	store_rocksdb_open      store_rocksdb_free
+	store_tdb_open          store_tdb_free
+	store_tokyocabinet_open store_tokyocabinet_free
+
+cleanup existing
+	crypt_cleanup
+	driver_tags_cleanup
+	menu_cleanup
+	mutt_autocrypt_cleanup
+	mutt_browser_cleanup
+	mutt_ch_cache_cleanup
+	mutt_colors_cleanup
+	smime_class_cleanup
+	smime_cleanup
+
+cleanup renames
+	alias_shutdown               alias_cleanup
+	alternates_free              alternates_cleanup
+	attach_free                  attach_cleanup
+	buf_pool_free                buf_pool_cleanup
+	clear_source_stack           source_stack_cleanup
+	colors_clear                 colors_cleanup
+	color_notify_free            color_notify_cleanup
+	commands_cleanup             external_cleanup
+	commands_free                commands_cleanup
+	config_cache_free            config_cache_cleanup
+	crypto_module_free           crypto_module_cleanup
+	merged_colors_clear          merge_colors_cleanup
+	monitor_check_free           monitor_check_cleanup
+	mutt_grouplist_free          mutt_grouplist_cleanup
+	mutt_gsasl_done              mutt_gsasl_cleanup
+	mutt_hist_free               mutt_hist_cleanup
+	mutt_keys_free               mutt_keys_cleanup
+	mutt_mailbox_cleanup         mailbox_restore_timestamp
+	mutt_opts_free               mutt_opts_cleanup
+	mutt_prex_free               mutt_prex_cleanup
+	mutt_sasl_done               mutt_sasl_cleanup
+	mutt_unlink_temp_attachments mutt_temp_attachments_cleanup
+	quoted_colors_clear          quoted_colors_cleanup
+	regex_colors_clear           regex_colors_cleanup
+	rootwin_free                 rootwin_cleanup
+	sb_shutdown                  sb_cleanup
+	simple_colors_clear          simple_colors_cleanup
+	subjrx_free                  subjrx_cleanup
+
+windows - freed by root window
+	alias_dialog_new
+	alldialogs_new
+	attach_new
+	cbar_new
+	env_window_new
+	helpbar_new
+	ibar_new
+	index_window_new
+	ipanel_new
+	menu_window_new
+	mix_dlg_new
+	msgcont_new
+	msgwin_new
+	pager_window_new
+	pbar_new
+	ppanel_new
+	progress_window_new
+	query_dialog_new
+	sbar_new
+	win_chain_new
+	win_hosts_new
+
+mxapi mbox - no alloc/free
+	comp_mbox_open    comp_mbox_close
+	imap_mbox_open    imap_mbox_close
+	maildir_mbox_open maildir_mbox_close
+	mbox_mbox_open    mbox_mbox_close
+	mh_mbox_open      mh_mbox_close
+	mx_mbox_open      mx_mbox_close
+	nm_mbox_open      nm_mbox_close
+	nntp_mbox_open    nntp_mbox_close
+	pop_mbox_open     pop_mbox_close
+
+mxapi msg
+	comp_msg_open           comp_msg_close
+	imap_msg_open           imap_msg_close
+	maildir_msg_open        maildir_msg_close
+	mbox_msg_open           mbox_msg_close
+	mh_msg_open             mh_msg_close
+	mx_msg_open             mx_msg_close
+	nm_msg_open             nm_msg_close
+	nntp_msg_open           nntp_msg_close
+	pop_msg_open            pop_msg_close
+
+store
+	store_bdb_open          store_bdb_close
+	store_gdbm_open         store_gdbm_close
+	store_kyotocabinet_open store_kyotocabinet_close
+	store_lmdb_open         store_lmdb_close
+	store_qdbm_open         store_qdbm_close
+	store_rocksdb_open      store_rocksdb_close
+	store_tdb_open          store_tdb_close
+	store_tokyocabinet_open store_tokyocabinet_close
+
+compress
+	compr_lz4_open          compr_lz4_close
+	compr_zlib_open         compr_zlib_close
+	compr_zstd_open         compr_zstd_close
+
+connection api - no alloc/free
+	mutt_sasl_conn_open mutt_sasl_conn_close
+	raw_socket_open     raw_socket_close
+	ssl_socket_open     ssl_socket_close
+	tls_socket_open     tls_socket_close
+	tunnel_socket_open  tunnel_socket_close
+	zstrm_open          zstrm_close
+
+irrelevant
+	mutt_ch_iconv_open
+	mutt_file_fsync_close
+	mutt_file_open
+	op_main_next_new
+	op_sidebar_next_new
+	op_sidebar_open
+	op_sidebar_prev_new
+	save_attachment_open
+	sb_next_new
+	sb_prev_new
+	smtp_open
+	tls_starttls_close
+
+generic
+	imap_bcache_open        mutt_bcache_close 
+	nntp_hcache_open        hcache_close
+	pop_hcache_open         hcache_close
+
+misc
+	hcache_open             hcache_close
+	mutt_bcache_open        mutt_bcache_close
+	mutt_ch_fgetconv_open   mutt_ch_fgetconv_close
+	nm_hcache_open          nm_hcache_close
+
