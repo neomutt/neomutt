@@ -199,7 +199,7 @@ static int op_query(struct AliasMenuData *mdata, int op)
   if (op == OP_QUERY)
   {
     ARRAY_FREE(&mdata->ava);
-    aliaslist_free(mdata->al);
+    aliaslist_clear(mdata->al);
   }
 
   struct Menu *menu = mdata->menu;

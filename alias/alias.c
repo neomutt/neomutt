@@ -655,10 +655,12 @@ void alias_free(struct Alias **ptr)
 }
 
 /**
- * aliaslist_free - Free a List of Aliases
- * @param al AliasList to free
+ * aliaslist_clear - Empty a List of Aliases
+ * @param al AliasList to empty
+ *
+ * Each Alias will be freed and the AliasList will be left empty.
  */
-void aliaslist_free(struct AliasList *al)
+void aliaslist_clear(struct AliasList *al)
 {
   if (!al)
     return;
@@ -690,6 +692,6 @@ void alias_cleanup(void)
   {
     alias_reverse_delete(np);
   }
-  aliaslist_free(&Aliases);
+  aliaslist_clear(&Aliases);
   alias_reverse_shutdown();
 }

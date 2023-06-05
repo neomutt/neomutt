@@ -516,7 +516,7 @@ done:
   ARRAY_FREE(&mdata.ava);
   FREE(&mdata.title);
   FREE(&mdata.limit);
-  aliaslist_free(&al);
+  aliaslist_clear(&al);
   return 0;
 }
 
@@ -582,6 +582,6 @@ done:
   ARRAY_FREE(&mdata.ava);
   FREE(&mdata.title);
   FREE(&mdata.limit);
-  aliaslist_free(&al);
+  aliaslist_clear(&al);
   buf_pool_release(&buf);
 }
