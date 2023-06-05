@@ -70,19 +70,19 @@ struct AutocryptHeader *mutt_autocrypthdr_new(void)
 
 /**
  * mutt_autocrypthdr_free - Free an AutocryptHeader
- * @param p AutocryptHeader to free
+ * @param ptr AutocryptHeader to free
  */
-void mutt_autocrypthdr_free(struct AutocryptHeader **p)
+void mutt_autocrypthdr_free(struct AutocryptHeader **ptr)
 {
-  if (!p)
+  if (!ptr || !*ptr)
     return;
 
   struct AutocryptHeader *cur = NULL;
 
-  while (*p)
+  while (*ptr)
   {
-    cur = *p;
-    *p = (*p)->next;
+    cur = *ptr;
+    *ptr = (*ptr)->next;
     FREE(&cur->addr);
     FREE(&cur->keydata);
     FREE(&cur);

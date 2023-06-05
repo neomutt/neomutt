@@ -49,6 +49,7 @@ void imap_mdata_free(void **ptr)
   FREE(&mdata->name);
   FREE(&mdata->real_name);
   FREE(&mdata->munge_name);
+
   FREE(ptr);
 }
 

@@ -65,8 +65,7 @@ void mview_free(struct MailboxView **ptr)
   FREE(&mv->pattern);
   mutt_pattern_free(&mv->limit_pattern);
 
-  FREE(&mv);
-  *ptr = NULL;
+  FREE(ptr);
 }
 
 /**

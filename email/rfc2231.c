@@ -163,16 +163,18 @@ static void list_insert(struct Rfc2231Parameter **list, struct Rfc2231Parameter 
 
 /**
  * parameter_free - Free an Rfc2231Parameter
- * @param[out] p Rfc2231Parameter to free
+ * @param[out] ptr Rfc2231Parameter to free
  */
-static void parameter_free(struct Rfc2231Parameter **p)
+static void parameter_free(struct Rfc2231Parameter **ptr)
 {
-  if (!p || !*p)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(&(*p)->attribute);
-  FREE(&(*p)->value);
-  FREE(p);
+  struct Rfc2231Parameter *p = *ptr;
+  FREE(&p->attribute);
+  FREE(&p->value);
+
+  FREE(ptr);
 }
 
 /**

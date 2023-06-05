@@ -37,6 +37,9 @@
  */
 void nntp_edata_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   FREE(ptr);
 }
 

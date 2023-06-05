@@ -38,6 +38,9 @@
  */
 void nm_adata_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct NmAccountData *adata = *ptr;
   if (adata->db)
   {

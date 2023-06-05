@@ -44,7 +44,7 @@
  */
 void cid_map_free(struct CidMap **ptr)
 {
-  if (!ptr)
+  if (!ptr || !*ptr)
     return;
 
   struct CidMap *cid_map = *ptr;

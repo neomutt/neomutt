@@ -54,6 +54,9 @@ struct SidebarWindowData *sb_wdata_new(struct MuttWindow *win, struct IndexShare
  */
 void sb_wdata_free(struct MuttWindow *win, void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct SidebarWindowData *wdata = *ptr;
 
   struct SbEntry **sbep = NULL;

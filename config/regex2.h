@@ -28,7 +28,7 @@
 struct Buffer;
 struct Regex;
 
-void          regex_free(struct Regex **regex);
+void          regex_free(struct Regex **ptr);
 struct Regex *regex_new (const char *str, uint32_t flags, struct Buffer *err);
 
 #endif /* MUTT_CONFIG_REGEX2_H */

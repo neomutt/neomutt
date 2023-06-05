@@ -297,6 +297,9 @@ static int pbar_window_observer(struct NotifyCallback *nc)
  */
 static void pbar_data_free(struct MuttWindow *win, void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct PBarPrivateData *pbar_data = *ptr;
 
   FREE(&pbar_data->pager_format);

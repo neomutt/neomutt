@@ -45,6 +45,7 @@ void imap_edata_free(void **ptr)
   /* this should be safe even if the list wasn't used */
   FREE(&edata->flags_system);
   FREE(&edata->flags_remote);
+
   FREE(ptr);
 }
 

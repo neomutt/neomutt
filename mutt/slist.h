@@ -55,7 +55,7 @@ struct Slist *slist_add_string(struct Slist *list, const char *str);
 bool          slist_compare(const struct Slist *a, const struct Slist *b);
 struct Slist *slist_dup(const struct Slist *list);
 struct Slist *slist_empty(struct Slist **list);
-void          slist_free(struct Slist **list);
+void          slist_free(struct Slist **ptr);
 bool          slist_is_empty(const struct Slist *list);
 bool          slist_is_member(const struct Slist *list, const char *str);
 struct Slist *slist_new(uint32_t flags);

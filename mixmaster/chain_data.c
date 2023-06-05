@@ -44,5 +44,8 @@ struct ChainData *chain_data_new(void)
  */
 void chain_data_free(struct MuttWindow *win, void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   FREE(ptr);
 }

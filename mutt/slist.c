@@ -157,15 +157,17 @@ struct Slist *slist_empty(struct Slist **list)
 
 /**
  * slist_free - Free an Slist object
- * @param list Slist to free
+ * @param ptr Slist to free
  */
-void slist_free(struct Slist **list)
+void slist_free(struct Slist **ptr)
 {
-  if (!list || !*list)
+  if (!ptr || !*ptr)
     return;
 
-  mutt_list_free(&(*list)->head);
-  FREE(list);
+  struct Slist *slist = *ptr;
+  mutt_list_free(&slist->head);
+
+  FREE(ptr);
 }
 
 /**

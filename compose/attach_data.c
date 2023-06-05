@@ -36,6 +36,9 @@
  */
 void attach_data_free(struct Menu *menu, void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct ComposeAttachData *attach_data = *ptr;
 
   mutt_actx_free(&attach_data->actx);

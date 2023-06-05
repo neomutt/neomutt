@@ -43,18 +43,20 @@
 
 /**
  * regex_free - Free a Regex object
- * @param[out] r Regex to free
+ * @param[out] ptr Regex to free
  */
-void regex_free(struct Regex **r)
+void regex_free(struct Regex **ptr)
 {
-  if (!r || !*r)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(&(*r)->pattern);
-  if ((*r)->regex)
-    regfree((*r)->regex);
-  FREE(&(*r)->regex);
-  FREE(r);
+  struct Regex *rx = *ptr;
+  FREE(&rx->pattern);
+  if (rx->regex)
+    regfree(rx->regex);
+  FREE(&rx->regex);
+
+  FREE(ptr);
 }
 
 /**

@@ -47,10 +47,10 @@ void remailer_free(struct Remailer **ptr)
     return;
 
   struct Remailer *r = *ptr;
-
   FREE(&r->shortname);
   FREE(&r->addr);
   FREE(&r->ver);
+
   FREE(ptr);
 }
 

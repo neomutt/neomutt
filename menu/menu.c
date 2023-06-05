@@ -111,6 +111,9 @@ enum MenuType menu_get_current_type(void)
  */
 void menu_free(struct Menu **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   struct Menu *menu = *ptr;
 
   notify_free(&menu->notify);

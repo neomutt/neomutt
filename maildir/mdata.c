@@ -36,6 +36,9 @@
  */
 void maildir_mdata_free(void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   FREE(ptr);
 }
 

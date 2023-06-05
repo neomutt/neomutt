@@ -38,6 +38,9 @@
  */
 void env_wdata_free(struct MuttWindow *win, void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   FREE(ptr);
 }
 

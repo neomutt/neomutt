@@ -274,17 +274,19 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
 
 /**
  * mbtable_free - Free an MbTable object
- * @param[out] table MbTable to free
+ * @param[out] ptr MbTable to free
  */
-void mbtable_free(struct MbTable **table)
+void mbtable_free(struct MbTable **ptr)
 {
-  if (!table || !*table)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(&(*table)->orig_str);
-  FREE(&(*table)->chars);
-  FREE(&(*table)->segmented_str);
-  FREE(table);
+  struct MbTable *table = *ptr;
+  FREE(&table->orig_str);
+  FREE(&table->chars);
+  FREE(&table->segmented_str);
+
+  FREE(ptr);
 }
 
 /**

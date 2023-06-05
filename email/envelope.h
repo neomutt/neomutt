@@ -125,7 +125,7 @@ void             mutt_env_to_local   (struct Envelope *env);
 
 #ifdef USE_AUTOCRYPT
 struct AutocryptHeader *mutt_autocrypthdr_new(void);
-void                    mutt_autocrypthdr_free(struct AutocryptHeader **p);
+void                    mutt_autocrypthdr_free(struct AutocryptHeader **ptr);
 #endif
 
 #endif /* MUTT_EMAIL_ENVELOPE_H */

@@ -143,19 +143,20 @@ struct PgpUid *pgp_copy_uids(struct PgpUid *up, struct PgpKeyInfo *parent)
 
 /**
  * key_free - Free a PGP Key info
- * @param[out] kpp PGP Key info to free
+ * @param[out] ptr PGP Key info to free
  */
-static void key_free(struct PgpKeyInfo **kpp)
+static void key_free(struct PgpKeyInfo **ptr)
 {
-  if (!kpp || !*kpp)
+  if (!ptr || !*ptr)
     return;
 
-  struct PgpKeyInfo *kp = *kpp;
+  struct PgpKeyInfo *key = *ptr;
 
-  pgp_uid_free(&kp->address);
-  FREE(&kp->keyid);
-  FREE(&kp->fingerprint);
-  FREE(kpp);
+  pgp_uid_free(&key->address);
+  FREE(&key->keyid);
+  FREE(&key->fingerprint);
+
+  FREE(ptr);
 }
 
 /**

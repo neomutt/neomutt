@@ -56,7 +56,7 @@ struct Body *mutt_body_new(void)
  */
 void mutt_body_free(struct Body **ptr)
 {
-  if (!ptr)
+  if (!ptr || !*ptr)
     return;
 
   struct Body *a = *ptr, *b = NULL;

@@ -35,6 +35,9 @@
  */
 void compose_shared_data_free(struct MuttWindow *win, void **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
   FREE(ptr);
 }
 
