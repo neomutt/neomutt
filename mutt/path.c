@@ -566,16 +566,16 @@ const char *mutt_path_getcwd(struct Buffer *cwd)
     return NULL;
 
   buf_alloc(cwd, PATH_MAX);
-  char *retval = getcwd(cwd->data, cwd->dsize);
-  while (!retval && (errno == ERANGE))
+  char *rc = getcwd(cwd->data, cwd->dsize);
+  while (!rc && (errno == ERANGE))
   {
     buf_alloc(cwd, cwd->dsize + 256);
-    retval = getcwd(cwd->data, cwd->dsize);
+    rc = getcwd(cwd->data, cwd->dsize);
   }
-  if (retval)
+  if (rc)
     buf_fix_dptr(cwd);
   else
     buf_reset(cwd);
 
-  return retval;
+  return rc;
 }

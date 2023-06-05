@@ -46,6 +46,6 @@ struct BrowserFunction
   browser_function_t function; ///< Function to call
 };
 
-int browser_function_dispatcher(struct MuttWindow *win_browser, int op);
+int browser_function_dispatcher(struct MuttWindow *win, int op);
 
 #endif //MUTT_BROWSER_FUNCTIONS_H

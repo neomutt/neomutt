@@ -89,11 +89,10 @@ enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buff
   struct Buffer *charset = buf_pool_get();
 
   int rc = MUTT_CMD_ERROR;
-  int retval = 0;
 
-  retval += parse_extract_token(alias, s, TOKEN_NO_FLAGS);
-  retval += parse_extract_token(charset, s, TOKEN_NO_FLAGS);
-  if (retval != 0)
+  if (parse_extract_token(alias, s, TOKEN_NO_FLAGS) < 0)
+    goto done;
+  if (parse_extract_token(charset, s, TOKEN_NO_FLAGS) < 0)
     goto done;
 
   const enum LookupType type = (data & MUTT_ICONV_HOOK) ? MUTT_LOOKUP_ICONV : MUTT_LOOKUP_CHARSET;

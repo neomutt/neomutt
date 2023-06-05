@@ -1003,7 +1003,7 @@ static char *smime_extract_certificate(const char *infile)
   FILE *fp_err = NULL;
   FILE *fp_out = NULL;
   FILE *fp_cert = NULL;
-  char *retval = NULL;
+  char *rc = NULL;
   pid_t pid;
   int empty;
 
@@ -1089,7 +1089,7 @@ static char *smime_extract_certificate(const char *infile)
 
   mutt_file_fclose(&fp_cert);
 
-  retval = buf_strdup(certfile);
+  rc = buf_strdup(certfile);
 
 cleanup:
   mutt_file_fclose(&fp_err);
@@ -1105,7 +1105,7 @@ cleanup:
   }
   buf_pool_release(&pk7out);
   buf_pool_release(&certfile);
-  return retval;
+  return rc;
 }
 
 /**
@@ -1548,7 +1548,7 @@ static char *openssl_md_to_smime_micalg(const char *md)
 struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *from)
 {
   struct Body *t = NULL;
-  struct Body *retval = NULL;
+  struct Body *rc = NULL;
   char buf[1024] = { 0 };
   struct Buffer *filetosign = NULL, *signedfile = NULL;
   FILE *fp_smime_in = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL, *fp_sign = NULL;
@@ -1666,7 +1666,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   mutt_param_set(&t->parameter, "protocol", "application/pkcs7-signature");
 
   t->parts = a;
-  retval = t;
+  rc = t;
 
   t->parts->next = mutt_body_new();
   t = t->parts->next;
@@ -1692,7 +1692,7 @@ cleanup:
   }
   buf_pool_release(&filetosign);
   buf_pool_release(&signedfile);
-  return retval;
+  return rc;
 }
 
 /**

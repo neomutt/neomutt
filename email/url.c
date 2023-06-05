@@ -426,11 +426,11 @@ int url_tostring(struct Url *url, char *dest, size_t len, uint8_t flags)
 
   struct Buffer *dest_buf = buf_pool_get();
 
-  int retval = url_tobuffer(url, dest_buf, flags);
-  if (retval == 0)
+  int rc = url_tobuffer(url, dest_buf, flags);
+  if (rc == 0)
     mutt_str_copy(dest, buf_string(dest_buf), len);
 
   buf_pool_release(&dest_buf);
 
-  return retval;
+  return rc;
 }

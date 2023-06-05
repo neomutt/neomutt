@@ -329,7 +329,6 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     s = mutt_str_dup(c_sendmail);
   }
 
-  /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
   {
     mutt_error(_("$sendmail must be set in order to send mail"));

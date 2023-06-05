@@ -152,7 +152,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   struct ConfigSet *cs = sub->cs;
 
   const char *valid[] = { "-123", "0", "-42", "456" };
-  int longs[] = { -123, 0, -42, 456 };
+  const int longs[] = { -123, 0, -42, 456 };
   const char *invalid[] = { "-9223372036854775809", "9223372036854775808", "junk", "", NULL };
   const char *name = "Damson";
 
@@ -262,7 +262,7 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
   struct ConfigSet *cs = sub->cs;
 
   const char *valid[] = { "-123", "0", "-42", "456" };
-  int numbers[] = { -165, -42, -84, 414 };
+  const int numbers[] = { -165, -42, -84, 414 };
   const char *invalid[] = { "-9223372036854775809", "9223372036854775808", "junk", "", NULL };
   const char *name = "Damson";
 
@@ -343,7 +343,7 @@ static bool test_string_minus_equals(struct ConfigSubset *sub, struct Buffer *er
   struct ConfigSet *cs = sub->cs;
 
   const char *valid[] = { "-123", "0", "-42", "456" };
-  int numbers[] = { 81, -42, 0, -498 };
+  const int numbers[] = { 81, -42, 0, -498 };
   const char *invalid[] = { "-9223372036854775809", "9223372036854775808", "junk", "", NULL };
   const char *name = "Damson";
 
