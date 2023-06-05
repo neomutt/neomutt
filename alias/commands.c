@@ -172,7 +172,7 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
         alias_reverse_delete(np);
       }
 
-      aliaslist_free(&Aliases);
+      aliaslist_clear(&Aliases);
       return MUTT_CMD_SUCCESS;
     }
 

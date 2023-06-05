@@ -526,7 +526,7 @@ done:
   FREE(&mdata.title);
   FREE(&mdata.limit);
   search_state_free(&mdata.search_state);
-  aliaslist_free(&al);
+  aliaslist_clear(&al);
   return 0;
 }
 
@@ -594,6 +594,6 @@ done:
   FREE(&mdata.title);
   FREE(&mdata.limit);
   search_state_free(&mdata.search_state);
-  aliaslist_free(&al);
+  aliaslist_clear(&al);
   buf_pool_release(&buf);
 }
