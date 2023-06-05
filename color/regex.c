@@ -86,9 +86,9 @@ void regex_colors_init(void)
 }
 
 /**
- * regex_colors_clear - Clear the Regex colours
+ * regex_colors_cleanup - Clear the Regex colours
  */
-void regex_colors_clear(void)
+void regex_colors_cleanup(void)
 {
   color_debug(LL_DEBUG5, "clean up regex\n");
   regex_color_list_clear(&AttachList);

@@ -34,6 +34,6 @@ void test_buf_pool_get(void)
     struct Buffer *buf = buf_pool_get();
     TEST_CHECK(buf != NULL);
     buf_pool_release(&buf);
-    buf_pool_free();
+    buf_pool_cleanup();
   }
 }

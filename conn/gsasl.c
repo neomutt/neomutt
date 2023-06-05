@@ -143,9 +143,9 @@ static bool mutt_gsasl_init(void)
 }
 
 /**
- * mutt_gsasl_done - Shutdown GNU SASL library
+ * mutt_gsasl_cleanup - Shutdown GNU SASL library
  */
-void mutt_gsasl_done(void)
+void mutt_gsasl_cleanup(void)
 {
   if (!MuttGsaslCtx)
     return;

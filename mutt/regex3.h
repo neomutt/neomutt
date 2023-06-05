@@ -89,7 +89,7 @@ struct Regex
 {
   char *pattern;  ///< printable version
   regex_t *regex; ///< compiled expression
-  bool pat_not;       ///< do not match
+  bool pat_not;   ///< do not match
 };
 
 /**

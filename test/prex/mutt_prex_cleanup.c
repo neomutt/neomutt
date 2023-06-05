@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for buf_pool_free()
+ * Test code for mutt_prex_cleanup()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,7 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 
-void test_buf_pool_free(void)
+void test_mutt_prex_cleanup(void)
 {
-  // void buf_pool_free(void);
+  // void mutt_prex_cleanup(void);
 }

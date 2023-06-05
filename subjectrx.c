@@ -41,9 +41,9 @@ static struct ReplaceList SubjectRegexList = STAILQ_HEAD_INITIALIZER(SubjectRege
 static struct Notify *SubjRxNotify = NULL; ///< Notifications: #NotifySubjRx
 
 /**
- * subjrx_free - Free the Subject Regex List
+ * subjrx_cleanup - Free the Subject Regex List
  */
-void subjrx_free(void)
+void subjrx_cleanup(void)
 {
   notify_free(&SubjRxNotify);
   mutt_replacelist_free(&SubjectRegexList);

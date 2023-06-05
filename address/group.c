@@ -100,11 +100,11 @@ void mutt_grouplist_init(void)
 }
 
 /**
- * mutt_grouplist_free - Free GroupList singleton resource
+ * mutt_grouplist_cleanup - Free GroupList singleton resource
  *
  * This is called once from init.c when deinitializing the global resources.
  */
-void mutt_grouplist_free(void)
+void mutt_grouplist_cleanup(void)
 {
   mutt_hash_free(&Groups);
 }

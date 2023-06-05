@@ -52,18 +52,18 @@ const struct Mapping ColorNames[] = {
 };
 
 /**
- * colors_clear - Reset all the simple, quoted and regex colours
+ * colors_cleanup - Reset all the simple, quoted and regex colours
  */
-void colors_clear(void)
+void colors_cleanup(void)
 {
   color_debug(LL_DEBUG5, "clean up\n");
   mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
   struct EventColor ev_c = { MT_COLOR_MAX, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 
-  simple_colors_clear();
-  quoted_colors_clear();
-  regex_colors_clear();
+  simple_colors_cleanup();
+  quoted_colors_cleanup();
+  regex_colors_cleanup();
 }
 
 /**
@@ -71,9 +71,9 @@ void colors_clear(void)
  */
 void mutt_colors_cleanup(void)
 {
-  colors_clear();
-  merged_colors_clear();
-  color_notify_free();
+  colors_cleanup();
+  merged_colors_cleanup();
+  color_notify_cleanup();
 }
 
 /**

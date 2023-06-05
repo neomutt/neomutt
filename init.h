@@ -31,7 +31,7 @@ struct ListHead;
 
 void init_config         (struct ConfigSet *cs);
 int  mutt_init           (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
-void mutt_opts_free      (void);
+void mutt_opts_cleanup   (void);
 int  mutt_query_variables(struct ListHead *queries, bool show_docs);
 
 #endif /* MUTT_INIT_H */

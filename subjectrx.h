@@ -46,7 +46,7 @@ enum NotifySubjRx
 };
 
 void subjrx_init(void);
-void subjrx_free(void);
+void subjrx_cleanup(void);
 
 enum CommandResult parse_subjectrx_list  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unsubjectrx_list(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

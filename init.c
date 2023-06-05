@@ -260,15 +260,15 @@ static bool get_hostname(struct ConfigSet *cs)
 }
 
 /**
- * mutt_opts_free - Clean up before quitting
+ * mutt_opts_cleanup - Clean up before quitting
  */
-void mutt_opts_free(void)
+void mutt_opts_cleanup(void)
 {
-  clear_source_stack();
+  source_stack_cleanup();
 
-  alias_shutdown();
+  alias_cleanup();
 #ifdef USE_SIDEBAR
-  sb_shutdown();
+  sb_cleanup();
 #endif
 
   mutt_regexlist_free(&MailLists);
@@ -277,7 +277,7 @@ void mutt_opts_free(void)
   mutt_regexlist_free(&UnMailLists);
   mutt_regexlist_free(&UnSubscribedLists);
 
-  mutt_grouplist_free();
+  mutt_grouplist_cleanup();
   driver_tags_cleanup();
 
   /* Lists of strings */
@@ -303,11 +303,11 @@ void mutt_opts_free(void)
 
   mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
 
-  mutt_hist_free();
-  mutt_keys_free();
+  mutt_hist_cleanup();
+  mutt_keys_cleanup();
 
   mutt_regexlist_free(&NoSpamList);
-  commands_free();
+  commands_cleanup();
 }
 
 /**

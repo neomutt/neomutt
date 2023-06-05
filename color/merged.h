@@ -33,7 +33,7 @@ extern struct AttrColorList MergedColors;
 
 struct AttrColor * merged_color_overlay(struct AttrColor *base, struct AttrColor *over);
 
-void               merged_colors_clear(void);
+void               merged_colors_cleanup(void);
 void               merged_colors_init(void);
 
 #endif /* MUTT_COLOR_MERGED_H */

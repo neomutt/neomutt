@@ -1228,7 +1228,7 @@ main
     if (!buf_is_empty(&tempfile))
       unlink(buf_string(&tempfile));
 
-    rootwin_free();
+    rootwin_cleanup();
 
     if (rv != 0)
       goto main_curses; // TEST36: neomutt -H existing -s test john@example.com -E (cancel sending)
@@ -1371,10 +1371,10 @@ main
     imap_logout_all();
 #endif
 #ifdef USE_SASL_CYRUS
-    mutt_sasl_done();
+    mutt_sasl_cleanup();
 #endif
 #ifdef USE_SASL_GNU
-    mutt_gsasl_done();
+    mutt_gsasl_cleanup();
 #endif
 #ifdef USE_AUTOCRYPT
     mutt_autocrypt_cleanup();
@@ -1387,7 +1387,7 @@ main_ok:
   rc = 0;
 main_curses:
   mutt_endwin();
-  mutt_unlink_temp_attachments();
+  mutt_temp_attachments_cleanup();
   /* Repeat the last message to the user */
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
@@ -1398,22 +1398,22 @@ main_exit:
   buf_dealloc(&expanded_infile);
   buf_dealloc(&tempfile);
   mutt_list_free(&queries);
-  crypto_module_free();
-  rootwin_free();
-  buf_pool_free();
+  crypto_module_cleanup();
+  rootwin_cleanup();
+  buf_pool_cleanup();
   envlist_free(&EnvList);
   mutt_browser_cleanup();
-  commands_cleanup();
+  external_cleanup();
   menu_cleanup();
   crypt_cleanup();
   mutt_ch_cache_cleanup();
-  mutt_opts_free();
-  subjrx_free();
-  attach_free();
-  alternates_free();
-  mutt_keys_free();
-  mutt_prex_free();
-  config_cache_free();
+  mutt_opts_cleanup();
+  subjrx_cleanup();
+  attach_cleanup();
+  alternates_cleanup();
+  mutt_keys_cleanup();
+  mutt_prex_cleanup();
+  config_cache_cleanup();
   neomutt_free(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);

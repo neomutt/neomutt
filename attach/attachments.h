@@ -44,7 +44,7 @@ enum NotifyAttach
 };
 
 void attach_init(void);
-void attach_free(void);
+void attach_cleanup(void);
 
 void mutt_attachments_reset (struct MailboxView *mv);
 int  mutt_count_body_parts  (const struct Mailbox *m, struct Email *e, FILE *fp);

@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_hist_free()
+ * Test code for mutt_hist_cleanup()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -29,9 +29,9 @@ struct ConfigSet;
 
 bool config_init_history(struct ConfigSet *cs);
 
-void test_mutt_hist_free(void)
+void test_mutt_hist_cleanup(void)
 {
-  // void mutt_hist_free(void);
+  // void mutt_hist_cleanup(void);
 
   // config_init_history(NeoMutt->sub->cs);
 }

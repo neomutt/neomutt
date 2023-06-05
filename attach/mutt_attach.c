@@ -1310,9 +1310,9 @@ void mutt_add_temp_attachment(const char *filename)
 }
 
 /**
- * mutt_unlink_temp_attachments - Delete all temporary attachments
+ * mutt_temp_attachments_cleanup - Delete all temporary attachments
  */
-void mutt_unlink_temp_attachments(void)
+void mutt_temp_attachments_cleanup(void)
 {
   struct ListNode *np = NULL;
 

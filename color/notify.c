@@ -44,9 +44,9 @@ void color_notify_init(void)
 }
 
 /**
- * color_notify_free - Free the Colour notification
+ * color_notify_cleanup - Free the Colour notification
  */
-void color_notify_free(void)
+void color_notify_cleanup(void)
 {
   notify_free(&ColorsNotify);
 }

@@ -325,9 +325,9 @@ regmatch_t *mutt_prex_capture(enum Prex which, const char *str)
 }
 
 /**
- * mutt_prex_free - Cleanup heap memory allocated by compiled regexes
+ * mutt_prex_cleanup - Cleanup heap memory allocated by compiled regexes
  */
-void mutt_prex_free(void)
+void mutt_prex_cleanup(void)
 {
   for (enum Prex which = 0; which < PREX_MAX; which++)
   {

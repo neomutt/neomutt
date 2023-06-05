@@ -680,9 +680,9 @@ void alias_init(void)
 }
 
 /**
- * alias_shutdown - Clean up the Alias globals
+ * alias_cleanup - Clean up the Alias globals
  */
-void alias_shutdown(void)
+void alias_cleanup(void)
 {
   struct Alias *np = NULL;
   TAILQ_FOREACH(np, &Aliases, entries)

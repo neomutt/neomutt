@@ -29,7 +29,7 @@ struct Buffer;
 struct stat;
 
 int  mutt_mailbox_check       (struct Mailbox *m_cur, CheckStatsFlags flags);
-void mutt_mailbox_cleanup     (const char *path, struct stat *st);
+void mailbox_restore_timestamp(const char *path, struct stat *st);
 bool mutt_mailbox_list        (void);
 struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s);
 struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s);

@@ -45,7 +45,7 @@ enum NotifyAlternates
 };
 
 void alternates_init(void);
-void alternates_free(void);
+void alternates_cleanup(void);
 
 enum CommandResult parse_alternates  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

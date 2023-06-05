@@ -192,9 +192,9 @@ static int monitor_init(void)
 }
 
 /**
- * monitor_check_free - Close down file monitoring
+ * monitor_check_cleanup - Close down file monitoring
  */
-static void monitor_check_free(void)
+static void monitor_check_cleanup(void)
 {
   if (!Monitor && (INotifyFd != -1))
   {
@@ -316,7 +316,7 @@ static int monitor_handle_ignore(int desc)
     if (new_desc == -1)
     {
       monitor_delete(iter);
-      monitor_check_free();
+      monitor_check_cleanup();
     }
   }
 
@@ -578,7 +578,7 @@ int mutt_monitor_remove(struct Mailbox *m)
              info.monitor->desc);
 
   monitor_delete(info.monitor);
-  monitor_check_free();
+  monitor_check_cleanup();
 
 cleanup:
   monitor_info_free(&info);

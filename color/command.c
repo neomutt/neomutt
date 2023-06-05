@@ -773,7 +773,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_str_equal(buf->data, "*"))
   {
-    colors_clear();
+    colors_cleanup();
     return MUTT_CMD_SUCCESS;
   }
 

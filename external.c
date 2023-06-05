@@ -75,9 +75,9 @@
 static struct Buffer LastSaveFolder = { 0 };
 
 /**
- * commands_cleanup - Clean up commands globals
+ * external_cleanup - Clean up commands globals
  */
-void commands_cleanup(void)
+void external_cleanup(void)
 {
   buf_dealloc(&LastSaveFolder);
 }
@@ -1038,7 +1038,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   m_save->append = old_append;
 
   if (need_mailbox_cleanup)
-    mutt_mailbox_cleanup(buf_string(buf), &st);
+    mailbox_restore_timestamp(buf_string(buf), &st);
 
   mutt_clear_error();
   rc = 0;

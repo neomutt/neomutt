@@ -52,9 +52,9 @@ static int find_highest_used(void)
 }
 
 /**
- * quoted_colors_clear - Reset the quoted-email colours
+ * quoted_colors_cleanup - Reset the quoted-email colours
  */
-void quoted_colors_clear(void)
+void quoted_colors_cleanup(void)
 {
   color_debug(LL_DEBUG5, "QuotedColors: clean up\n");
   for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
@@ -192,8 +192,8 @@ static void qstyle_free(struct QuoteStyle **ptr)
     return;
 
   struct QuoteStyle *qc = *ptr;
-
   FREE(&qc->prefix);
+
   FREE(ptr);
 }
 

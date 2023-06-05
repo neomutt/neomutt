@@ -226,6 +226,6 @@ enum PrexAccountCmd
 };
 
 regmatch_t *mutt_prex_capture(enum Prex which, const char *str);
-void mutt_prex_free(void);
+void mutt_prex_cleanup(void);
 
 #endif /* MUTT_MUTT_PREX_H */

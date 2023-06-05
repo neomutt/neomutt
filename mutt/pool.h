@@ -25,7 +25,7 @@
 
 struct Buffer;
 
-void           buf_pool_free   (void);
+void           buf_pool_cleanup(void);
 struct Buffer *buf_pool_get    (void);
 void           buf_pool_release(struct Buffer **ptr);
 

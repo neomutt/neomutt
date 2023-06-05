@@ -134,7 +134,7 @@ enum NotifyBinding
 const struct MenuFuncOp *km_get_table(enum MenuType mtype);
 const char *mutt_get_func(const struct MenuFuncOp *bindings, int op);
 
-void mutt_keys_free(void);
+void mutt_keys_cleanup(void);
 
 enum CommandResult mutt_parse_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_exec   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

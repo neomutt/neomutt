@@ -116,7 +116,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_lower)                                            \
   NEOMUTT_TEST_ITEM(test_buf_make)                                             \
   NEOMUTT_TEST_ITEM(test_buf_new)                                              \
-  NEOMUTT_TEST_ITEM(test_buf_pool_free)                                        \
+  NEOMUTT_TEST_ITEM(test_buf_pool_cleanup)                                     \
   NEOMUTT_TEST_ITEM(test_buf_pool_get)                                         \
   NEOMUTT_TEST_ITEM(test_buf_pool_release)                                     \
   NEOMUTT_TEST_ITEM(test_buf_printf)                                           \
@@ -311,9 +311,9 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_add)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_add_addrlist)                          \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_add_regex)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_grouplist_cleanup)                               \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_clear)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_destroy)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_grouplist_free)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_init)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_remove_addrlist)                       \
   NEOMUTT_TEST_ITEM(test_mutt_grouplist_remove_regex)                          \
@@ -342,7 +342,7 @@ void test_fini(void);
   /* history */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_hist_add)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_hist_at_scratch)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_hist_free)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_hist_cleanup)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_hist_init)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_hist_next)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_hist_prev)                                       \
@@ -503,7 +503,7 @@ void test_fini(void);
                                                                                \
   /* prex */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_prex_capture)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_prex_free)                                       \
+  NEOMUTT_TEST_ITEM(test_mutt_prex_cleanup)                                    \
                                                                                \
   /* regex */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_regex_capture)                                   \

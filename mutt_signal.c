@@ -97,7 +97,7 @@ static void curses_exit_handler(int sig)
 {
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   endwin(); /* just to be safe */
-  mutt_unlink_temp_attachments();
+  mutt_temp_attachments_cleanup();
   mutt_sig_exit_handler(sig); /* DOES NOT RETURN */
 }
 

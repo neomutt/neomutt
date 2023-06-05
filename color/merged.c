@@ -49,9 +49,9 @@ void merged_colors_init(void)
 }
 
 /**
- * merged_colors_clear - Free the list of Merged colours
+ * merged_colors_cleanup - Free the list of Merged colours
  */
-void merged_colors_clear(void)
+void merged_colors_cleanup(void)
 {
   struct AttrColor *ac = NULL;
   struct AttrColor *tmp = NULL;

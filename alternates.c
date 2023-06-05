@@ -44,9 +44,9 @@ static struct RegexList UnAlternates = STAILQ_HEAD_INITIALIZER(UnAlternates); //
 static struct Notify *AlternatesNotify = NULL; ///< Notifications: #NotifyAlternates
 
 /**
- * alternates_free - Free the alternates lists
+ * alternates_cleanup - Free the alternates lists
  */
-void alternates_free(void)
+void alternates_cleanup(void)
 {
   notify_free(&AlternatesNotify);
 

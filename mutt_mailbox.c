@@ -409,14 +409,14 @@ struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s
 }
 
 /**
- * mutt_mailbox_cleanup - Restore the timestamp of a mailbox
+ * mailbox_restore_timestamp - Restore the timestamp of a mailbox
  * @param path Path to the mailbox
  * @param st   Timestamp info from stat()
  *
  * Fix up the atime and mtime after mbox/mmdf mailbox was modified according to
  * stat() info taken before a modification.
  */
-void mutt_mailbox_cleanup(const char *path, struct stat *st)
+void mailbox_restore_timestamp(const char *path, struct stat *st)
 {
 #ifdef HAVE_UTIMENSAT
   struct timespec ts[2];

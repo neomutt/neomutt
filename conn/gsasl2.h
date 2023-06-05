@@ -29,7 +29,7 @@ struct Connection;
 
 void        mutt_gsasl_client_finish(Gsasl_session **sctx);
 int         mutt_gsasl_client_new   (struct Connection *conn, const char *mech, Gsasl_session **sctx);
-void        mutt_gsasl_done         (void);
+void        mutt_gsasl_cleanup      (void);
 const char *mutt_gsasl_get_mech     (const char *requested_mech, const char *server_mechlist);
 
 #endif /* MUTT_CONN_GSASL2_H */

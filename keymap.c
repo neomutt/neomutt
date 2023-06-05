@@ -1925,9 +1925,9 @@ void mutt_what_key(void)
 }
 
 /**
- * mutt_keys_free - Free the key maps
+ * mutt_keys_cleanup - Free the key maps
  */
-void mutt_keys_free(void)
+void mutt_keys_cleanup(void)
 {
   for (int i = 0; i < MENU_MAX; i++)
   {

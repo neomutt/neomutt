@@ -914,7 +914,7 @@ void mutt_timeout_hook(void)
   }
 
   /* Delete temporary attachment files */
-  mutt_unlink_temp_attachments();
+  mutt_temp_attachments_cleanup();
 }
 
 /**

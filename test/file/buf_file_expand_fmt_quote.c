@@ -48,5 +48,5 @@ void test_buf_file_expand_fmt_quote(void)
     buf_dealloc(&buf);
   }
 
-  buf_pool_free();
+  buf_pool_cleanup();
 }

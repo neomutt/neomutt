@@ -179,7 +179,7 @@ SecurityFlags crypt_smime_send_menu                    (struct Email *e);
 int           crypt_smime_verify_sender                (struct Email *e, struct Message *msg);
 
 /* crypt_mod.c */
-void          crypto_module_free                       (void);
+void          crypto_module_cleanup                    (void);
 
 #ifdef CRYPT_BACKEND_GPGME
 /* crypt_gpgme.c */

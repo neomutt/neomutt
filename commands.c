@@ -1505,9 +1505,9 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * clear_source_stack - Free memory from the stack used for the source command
+ * source_stack_cleanup - Free memory from the stack used for the source command
  */
-void clear_source_stack(void)
+void source_stack_cleanup(void)
 {
   mutt_list_free(&MuttrcStack);
 }

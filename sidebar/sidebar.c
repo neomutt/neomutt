@@ -208,9 +208,9 @@ void sb_init(void)
 }
 
 /**
- * sb_shutdown - Clean up the Sidebar
+ * sb_cleanup - Clean up the Sidebar
  */
-void sb_shutdown(void)
+void sb_cleanup(void)
 {
   if (AllDialogsWindow)
     notify_observer_remove(AllDialogsWindow->notify, sb_insertion_window_observer, NULL);

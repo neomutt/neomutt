@@ -53,9 +53,9 @@ void simple_colors_init(void)
 }
 
 /**
- * simple_colors_clear - Reset the simple colour definitions
+ * simple_colors_cleanup - Reset the simple colour definitions
  */
-void simple_colors_clear(void)
+void simple_colors_cleanup(void)
 {
   color_debug(LL_DEBUG5, "clean up defs\n");
   for (size_t i = 0; i < MT_COLOR_MAX; i++)

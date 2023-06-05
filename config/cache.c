@@ -115,9 +115,9 @@ const char *cc_charset(void)
 }
 
 /**
- * config_cache_free - Cleanup the cache of charset config variables
+ * config_cache_cleanup - Cleanup the cache of charset config variables
  */
-void config_cache_free(void)
+void config_cache_cleanup(void)
 {
   if (NeoMutt)
     notify_observer_remove(NeoMutt->notify, cc_config_observer, NULL);

@@ -435,9 +435,9 @@ int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **ma
 }
 
 /**
- * mutt_hist_free - Free all the history lists
+ * mutt_hist_cleanup - Free all the history lists
  */
-void mutt_hist_free(void)
+void mutt_hist_cleanup(void)
 {
   if (!NeoMutt)
     return;

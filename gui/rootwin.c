@@ -173,9 +173,9 @@ static int rootwin_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * rootwin_free - Free all the default Windows
+ * rootwin_cleanup - Free all the default Windows
  */
-void rootwin_free(void)
+void rootwin_cleanup(void)
 {
   mutt_window_free(&RootWindow);
 }

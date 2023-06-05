@@ -56,7 +56,7 @@ struct EventColor
 };
 
 void color_notify_init(void);
-void color_notify_free(void);
+void color_notify_cleanup(void);
 
 void mutt_color_observer_add   (observer_t callback, void *global_data);
 void mutt_color_observer_remove(observer_t callback, void *global_data);

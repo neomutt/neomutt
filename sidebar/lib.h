@@ -44,8 +44,8 @@
 
 struct MuttWindow;
 
-void sb_init    (void);
-void sb_shutdown(void);
+void sb_init   (void);
+void sb_cleanup(void);
 
 int sb_function_dispatcher(struct MuttWindow *win, int op);
 

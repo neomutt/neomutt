@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_grouplist_free()
+ * Test code for buf_pool_cleanup()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -23,14 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include "address/lib.h"
 
-void test_mutt_grouplist_free(void)
+void test_buf_pool_cleanup(void)
 {
-  // void mutt_grouplist_free(void);
-
-  {
-    mutt_grouplist_free();
-    TEST_CHECK_(1, "mutt_grouplist_free()");
-  }
+  // void buf_pool_cleanup(void);
 }

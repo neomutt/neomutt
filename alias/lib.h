@@ -53,8 +53,8 @@ struct Buffer;
 struct ConfigSubset;
 struct Envelope;
 
-void alias_init    (void);
-void alias_shutdown(void);
+void alias_init   (void);
+void alias_cleanup(void);
 
 void                alias_create           (struct AddressList *al, const struct ConfigSubset *sub);
 struct AddressList *alias_lookup           (const char *name);

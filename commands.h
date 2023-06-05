@@ -52,7 +52,7 @@ enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer 
 char *mutt_get_sourced_cwd(void);
 
 int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
-void clear_source_stack(void);
+void source_stack_cleanup(void);
 int source_rc(const char *rcfile_path, struct Buffer *err);
 
 enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err);

@@ -1258,7 +1258,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   mx_mbox_close(m_fcc);
 
   if (!post && need_mailbox_cleanup)
-    mutt_mailbox_cleanup(path, &st);
+    mailbox_restore_timestamp(path, &st);
 
   if (post)
     set_noconv_flags(e->body, false);

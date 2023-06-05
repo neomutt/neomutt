@@ -62,9 +62,9 @@ static void pool_increase_size(void)
 }
 
 /**
- * buf_pool_free - Release the Buffer pool
+ * buf_pool_cleanup - Release the Buffer pool
  */
-void buf_pool_free(void)
+void buf_pool_cleanup(void)
 {
   mutt_debug(LL_DEBUG1, "%zu of %zu returned to pool\n", BufferPoolCount, BufferPoolLen);
 

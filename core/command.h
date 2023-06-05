@@ -70,7 +70,7 @@ struct Command
 struct Command *command_get       (const char *s);
 
 size_t          commands_array    (struct Command **first);
-void            commands_free     (void);
+void            commands_cleanup  (void);
 void            commands_init     (void);
 void            commands_register (const struct Command *cmds, const size_t num_cmds);
 

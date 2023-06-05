@@ -276,9 +276,9 @@ GROUP_OBJS	= test/group/mutt_group_match.o \
 		  test/group/mutt_grouplist_add.o \
 		  test/group/mutt_grouplist_add_addrlist.o \
 		  test/group/mutt_grouplist_add_regex.o \
+		  test/group/mutt_grouplist_cleanup.o \
 		  test/group/mutt_grouplist_clear.o \
 		  test/group/mutt_grouplist_destroy.o \
-		  test/group/mutt_grouplist_free.o \
 		  test/group/mutt_grouplist_init.o \
 		  test/group/mutt_grouplist_remove_addrlist.o \
 		  test/group/mutt_grouplist_remove_regex.o \
@@ -304,7 +304,7 @@ HASH_OBJS	= test/hash/mutt_hash_delete.o \
 
 HISTORY_OBJS	= test/history/mutt_hist_add.o \
 		  test/history/mutt_hist_at_scratch.o \
-		  test/history/mutt_hist_free.o \
+		  test/history/mutt_hist_cleanup.o \
 		  test/history/mutt_hist_init.o \
 		  test/history/mutt_hist_next.o \
 		  test/history/mutt_hist_prev.o \
@@ -459,12 +459,12 @@ PATTERN_OBJS	= pattern/pattern.o \
 		  test/pattern/dummy.o \
 		  test/pattern/leak.o
 
-POOL_OBJS	= test/pool/buf_pool_free.o \
+POOL_OBJS	= test/pool/buf_pool_cleanup.o \
 		  test/pool/buf_pool_get.o \
 		  test/pool/buf_pool_release.o
 
 PREX_OBJS	= test/prex/mutt_prex_capture.o \
-		  test/prex/mutt_prex_free.o
+		  test/prex/mutt_prex_cleanup.o
 
 REGEX_OBJS	= test/regex/mutt_regex_capture.o \
 		  test/regex/mutt_regex_compile.o \

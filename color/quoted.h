@@ -74,7 +74,7 @@ struct QuoteStyle
   struct QuoteStyle *up, *down;     ///< Parent (less quoted) and child (more quoted) levels
 };
 
-void               quoted_colors_clear(void);
+void               quoted_colors_cleanup(void);
 struct AttrColor * quoted_colors_get(int q);
 int                quoted_colors_num_used(void);
 

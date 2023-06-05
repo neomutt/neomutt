@@ -60,9 +60,9 @@ void commands_register(const struct Command *cmds, const size_t num_cmds)
 }
 
 /**
- * commands_free - Free Commands array
+ * commands_cleanup - Free Commands array
  */
-void commands_free(void)
+void commands_cleanup(void)
 {
   ARRAY_FREE(&Commands);
 }
