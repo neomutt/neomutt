@@ -559,11 +559,10 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
 
   while (((new_topline < priv->lines_used) ||
           (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
-                                        new_topline, &priv->lines_used, &priv->lines_max,
-                                        MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                                        &priv->quote_list, &priv->q_level,
-                                        &priv->force_redraw, &priv->search_re,
-                                        priv->pview->win_pager, &priv->ansi_list)))) &&
+                                   new_topline, &priv->lines_used, &priv->lines_max,
+                                   MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP), &priv->quote_list,
+                                   &priv->q_level, &priv->force_redraw, &priv->search_re,
+                                   priv->pview->win_pager, &priv->ansi_list)))) &&
          simple_color_is_header(priv->lines[new_topline].cid))
   {
     new_topline++;
@@ -603,11 +602,11 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   if (simple_color_is_header(priv->lines[new_topline].cid))
   {
     while (((new_topline < priv->lines_used) ||
-            (0 == (rc = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager, &priv->ansi_list)))) &&
+            (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                                     new_topline, &priv->lines_used, &priv->lines_max,
+                                     MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP), &priv->quote_list,
+                                     &priv->q_level, &priv->force_redraw, &priv->search_re,
+                                     priv->pview->win_pager, &priv->ansi_list)))) &&
            simple_color_is_header(priv->lines[new_topline].cid))
     {
       new_topline++;
@@ -621,11 +620,11 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   if (c_pager_skip_quoted_context > 0)
   {
     while (((new_topline < priv->lines_used) ||
-            (0 == (rc = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager, &priv->ansi_list)))) &&
+            (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                                     new_topline, &priv->lines_used, &priv->lines_max,
+                                     MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP), &priv->quote_list,
+                                     &priv->q_level, &priv->force_redraw, &priv->search_re,
+                                     priv->pview->win_pager, &priv->ansi_list)))) &&
            (priv->lines[new_topline].cid == MT_COLOR_QUOTED))
     {
       new_topline++;
@@ -644,11 +643,11 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     num_quoted = 0;
 
     while (((new_topline < priv->lines_used) ||
-            (0 == (rc = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager, &priv->ansi_list)))) &&
+            (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                                     new_topline, &priv->lines_used, &priv->lines_max,
+                                     MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP), &priv->quote_list,
+                                     &priv->q_level, &priv->force_redraw, &priv->search_re,
+                                     priv->pview->win_pager, &priv->ansi_list)))) &&
            (priv->lines[new_topline].cid != MT_COLOR_QUOTED))
     {
       new_topline++;
@@ -661,11 +660,11 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
     }
 
     while (((new_topline < priv->lines_used) ||
-            (0 == (rc = display_line(
-                       priv->fp, &priv->bytes_read, &priv->lines, new_topline, &priv->lines_used,
-                       &priv->lines_max, MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP),
-                       &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                       &priv->search_re, priv->pview->win_pager, &priv->ansi_list)))) &&
+            (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
+                                     new_topline, &priv->lines_used, &priv->lines_max,
+                                     MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP), &priv->quote_list,
+                                     &priv->q_level, &priv->force_redraw, &priv->search_re,
+                                     priv->pview->win_pager, &priv->ansi_list)))) &&
            (priv->lines[new_topline].cid == MT_COLOR_QUOTED))
     {
       new_topline++;
