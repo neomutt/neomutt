@@ -28,6 +28,7 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <pwd.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -575,7 +576,11 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   }
 
   const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
-  mutt_file_mkdir(c_tmp_dir, S_IRWXU);
+  if (mutt_file_mkdir(c_tmp_dir, S_IRWXU) < 0)
+  {
+    mutt_error(_("Can't create %s: %s"), c_tmp_dir, strerror(errno));
+    goto done;
+  }
 
   mutt_hist_init();
   mutt_hist_read_file();
