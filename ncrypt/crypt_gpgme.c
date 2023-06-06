@@ -1764,7 +1764,6 @@ restart:
         plaintext = NULL;
         /* gpgsm ends the session after an error; restart it */
         gpgme_release(ctx);
-        ctx = NULL;
         goto restart;
       }
     }
