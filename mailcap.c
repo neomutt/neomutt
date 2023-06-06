@@ -361,7 +361,12 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
               buf_sanitize_filename(afilename, NONULL(a->filename), true);
             else
               buf_strcpy(afilename, NONULL(a->filename));
-            mailcap_expand_command(a, buf_string(afilename), type, command);
+            if (mailcap_expand_command(a, buf_string(afilename), type, command) == 1)
+            {
+              mutt_debug(LL_DEBUG1, "mailcap command needs a pipe: %s\n",
+                         buf_string(command));
+            }
+
             if (mutt_system(buf_string(command)))
             {
               /* a non-zero exit code means test failed */
