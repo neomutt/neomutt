@@ -35,6 +35,7 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -713,7 +714,11 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
     }
     else
     {
-      remove(mailbox_path(m));
+      if (remove(mailbox_path(m)) < 0)
+      {
+        mutt_debug(LL_DEBUG1, "remove failed: %s: %s (errno %d)\n",
+                   mailbox_path(m), strerror(errno), errno);
+      }
     }
 
     unlock_realpath(m);
@@ -726,12 +731,20 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
       const bool c_save_empty = cs_subset_bool(NeoMutt->sub, "save_empty");
       if (!c_save_empty)
       {
-        remove(m->realpath);
+        if (remove(m->realpath) < 0)
+        {
+          mutt_debug(LL_DEBUG1, "remove failed: %s: %s (errno %d)\n",
+                     m->realpath, strerror(errno), errno);
+        }
       }
     }
     else
     {
-      remove(mailbox_path(m));
+      if (remove(mailbox_path(m)) < 0)
+      {
+        mutt_debug(LL_DEBUG1, "remove failed: %s: %s (errno %d)\n",
+                   mailbox_path(m), strerror(errno), errno);
+      }
     }
   }
 
