@@ -1127,7 +1127,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       } while (off && isspace(line[--off]));
 
       /* check to see if the next line is a continuation line */
-      char ch = fgetc(fp);
+      int ch = fgetc(fp);
       if ((ch != ' ') && (ch != '\t'))
       {
         /* next line is a separate header field or EOH */
@@ -1135,12 +1135,12 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
         buf_addstr(buf, line);
         break;
       }
-      ++read;
+      read++;
 
       /* eat tabs and spaces from the beginning of the continuation line */
       while (((ch = fgetc(fp)) == ' ') || (ch == '\t'))
       {
-        ++read;
+        read++;
       }
 
       ungetc(ch, fp);
