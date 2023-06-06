@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <errno.h>
 #include <string.h>
 #include <time.h>
 #include "mutt/lib.h"
@@ -1174,6 +1175,12 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
   struct Envelope *env = mutt_env_new();
   char *p = NULL;
   LOFF_T loc = e ? e->offset : ftello(fp);
+  if (loc < 0)
+  {
+    mutt_debug(LL_DEBUG1, "ftello: %s (errno %d)\n", strerror(errno), errno);
+    loc = 0;
+  }
+
   struct Buffer *line = buf_pool_get();
 
   if (e)
