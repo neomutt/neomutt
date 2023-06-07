@@ -975,12 +975,9 @@ static enum MxStatus mh_check(struct Mailbox *m)
     if (!e)
       break;
 
-    e->active = false;
-
     md = mutt_hash_find(fnames, e->path);
     if (md && md->email && email_cmp_strict(e, md->email))
     {
-      e->active = true;
       /* found the right message */
       if (!e->changed)
         if (maildir_update_flags(m, e, md->email))

@@ -1261,13 +1261,11 @@ static enum MxStatus maildir_check(struct Mailbox *m)
     if (!e)
       break;
 
-    e->active = false;
     maildir_canon_filename(buf, e->path);
     md = mutt_hash_find(hash_names, buf_string(buf));
     if (md && md->email)
     {
       /* message already exists, merge flags */
-      e->active = true;
 
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.  */
@@ -1311,7 +1309,6 @@ static enum MxStatus maildir_check(struct Mailbox *m)
       /* This message resides in a subdirectory which was not
        * modified, so we assume that it is still present and
        * unchanged.  */
-      e->active = true;
     }
   }
 
