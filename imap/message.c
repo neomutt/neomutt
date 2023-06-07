@@ -2094,7 +2094,8 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
   if (!fetched || !imap_code(adata->buf))
     goto bail;
 
-  msg_cache_commit(m, e);
+  if (msg_cache_commit(m, e) < 0)
+    mutt_debug(LL_DEBUG1, "failed to add message to cache\n");
 
 parsemsg:
   /* Update the header information.  Previously, we only downloaded a

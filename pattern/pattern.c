@@ -447,6 +447,8 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
   struct Buffer *buf = NULL;
   int rc = -1;
   struct Mailbox *m = mv ? mv->mailbox : NULL;
+  if (!m)
+    return -1;
 
   if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
   {

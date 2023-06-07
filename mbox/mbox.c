@@ -34,6 +34,7 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
 #include <limits.h>
@@ -385,6 +386,12 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   }
 
   loc = ftello(adata->fp);
+  if (loc < 0)
+  {
+    mutt_debug(LL_DEBUG1, "ftello: %s (errno %d)\n", strerror(errno), errno);
+    loc = 0;
+  }
+
   while ((fgets(buf, sizeof(buf), adata->fp)) && !SigInt)
   {
     if (is_from(buf, return_path, sizeof(return_path), &t))
@@ -428,6 +435,11 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
         LOFF_T tmploc;
 
         loc = ftello(adata->fp);
+        if (loc < 0)
+        {
+          mutt_debug(LL_DEBUG1, "ftello: %s (errno %d)\n", strerror(errno), errno);
+          loc = 0;
+        }
 
         /* The test below avoids a potential integer overflow if the
          * content-length is huge (thus necessarily invalid).  */

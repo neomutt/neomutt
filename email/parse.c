@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <errno.h>
 #include <string.h>
 #include <time.h>
 #include "mutt/lib.h"
@@ -1126,7 +1127,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       } while (off && isspace(line[--off]));
 
       /* check to see if the next line is a continuation line */
-      char ch = fgetc(fp);
+      int ch = fgetc(fp);
       if ((ch != ' ') && (ch != '\t'))
       {
         /* next line is a separate header field or EOH */
@@ -1134,12 +1135,12 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
         buf_addstr(buf, line);
         break;
       }
-      ++read;
+      read++;
 
       /* eat tabs and spaces from the beginning of the continuation line */
       while (((ch = fgetc(fp)) == ' ') || (ch == '\t'))
       {
-        ++read;
+        read++;
       }
 
       ungetc(ch, fp);
@@ -1174,6 +1175,12 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
   struct Envelope *env = mutt_env_new();
   char *p = NULL;
   LOFF_T loc = e ? e->offset : ftello(fp);
+  if (loc < 0)
+  {
+    mutt_debug(LL_DEBUG1, "ftello: %s (errno %d)\n", strerror(errno), errno);
+    loc = 0;
+  }
+
   struct Buffer *line = buf_pool_get();
 
   if (e)

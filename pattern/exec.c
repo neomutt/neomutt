@@ -172,6 +172,9 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
 
       if (!mutt_file_seek(msg->fp, e->offset, SEEK_SET))
       {
+#ifdef USE_FMEMOPEN
+        FREE(&temp);
+#endif
         return false;
       }
       mutt_body_handler(e->body, &state);
@@ -197,6 +200,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
       if (!fp)
       {
         mutt_perror(_("Error opening /dev/null"));
+        FREE(&temp);
         return false;
       }
     }

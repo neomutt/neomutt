@@ -861,8 +861,8 @@ static int smtp_auth_login(struct SmtpAccountData *adata, const char *method)
   }
 
   /* Read the 334 VXNlcm5hbWU6 challenge ("Username:" base64-encoded) */
-  mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
-  if (!mutt_str_equal(buf, "334 VXNlcm5hbWU6"))
+  int rc = mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
+  if ((rc < 0) || !mutt_str_equal(buf, "334 VXNlcm5hbWU6"))
   {
     goto error;
   }
@@ -877,8 +877,8 @@ static int smtp_auth_login(struct SmtpAccountData *adata, const char *method)
   }
 
   /* Read the 334 UGFzc3dvcmQ6 challenge ("Password:" base64-encoded) */
-  mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
-  if (!mutt_str_equal(buf, "334 UGFzc3dvcmQ6"))
+  rc = mutt_socket_readln_d(buf, sizeof(buf), adata->conn, MUTT_SOCK_LOG_FULL);
+  if ((rc < 0) || !mutt_str_equal(buf, "334 UGFzc3dvcmQ6"))
   {
     goto error;
   }

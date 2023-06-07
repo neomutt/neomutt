@@ -350,7 +350,12 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
     return;
 
   if (buf->data && (new_size <= buf->dsize))
+  {
+    // Extra sanity-checking
+    if (!buf->dptr || (buf->dptr < buf->data) || (buf->dptr > (buf->data + buf->dsize)))
+      buf->dptr = buf->data;
     return;
+  }
 
   if (new_size > (SIZE_MAX - BufferStepSize))
   {
@@ -366,12 +371,11 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
   buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
 
   mutt_mem_realloc(&buf->data, buf->dsize);
-  buf_seek(buf, offset);
+  buf->dptr = buf->data + offset;
 
   // Ensures that initially NULL buf->data is properly terminated
   if (was_empty)
   {
-    buf->dptr = buf->data;
     *buf->dptr = '\0';
   }
 }
