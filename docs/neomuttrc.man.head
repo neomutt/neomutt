@@ -850,7 +850,7 @@ your spam \fIregex\fPs with the \fBspam\fP and \fBnospam\fP commands, you can
 limit, search, and sort your mail based on its spam attributes, as determined
 by the external filter. You also can display the spam attributes in your index
 display using the %H selector in the $index_format variable. (Tip: try
-\(dq%?H?[%H]\~?\(dq to display spam tags only when they are defined for a given
+\(dq%<H?[%H]\~>\(dq to display spam tags only when they are defined for a given
 message).
 .IP
 For further information on spam-scoring filters, please consult the

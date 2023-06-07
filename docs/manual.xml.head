@@ -376,7 +376,7 @@ vim: ts=2 sw=2 sts=2 expandtab:
 
 <screen>
 set sidebar_visible
-set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set sidebar_format = "%B%&lt;F? [%F]&gt;%* %&lt;N?%N/&gt;%S"
 set mail_check_stats
 </screen>
 
@@ -697,7 +697,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
             </para>
             <para>
               A more detailed value is:
-              <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
+              <literal>%B%&lt;F? [%F]&gt;%* %&lt;N?%N/&gt;%S</literal>
             </para>
             <itemizedlist>
               <title>Which breaks down as:</title>
@@ -708,7 +708,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
               </listitem>
               <listitem>
                 <para>
-                  <literal>%?F? [%F]?</literal> – If flagged emails
+                  <literal>%&lt;F? [%F]&gt;</literal> – If flagged emails
                   <literal>[%F]</literal>, otherwise nothing
                 </para>
               </listitem>
@@ -719,7 +719,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
               </listitem>
               <listitem>
                 <para>
-                  <literal>%?N?%N/?</literal> – If new emails
+                  <literal>%&lt;N?%N/&gt;</literal> – If new emails
                   <literal>%N/</literal>, otherwise nothing
                 </para>
               </listitem>
@@ -886,7 +886,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                 </thead>
                 <tbody>
                   <row>
-                    <entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
+                    <entry><literal>%B%&lt;F? [%F]&gt;%* %&lt;N?%N/&gt;%S</literal></entry>
                     <entry><screen>mailbox [F]            N/S </screen></entry>
                   </row>
                   <row>
@@ -894,11 +894,11 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
                     <entry><screen>mailbox              F:N:S </screen></entry>
                   </row>
                   <row>
-                    <entry><literal>%B %?N?(%N)?%* %S</literal></entry>
+                    <entry><literal>%B %&lt;N?(%N)&gt;%* %S</literal></entry>
                     <entry><screen>mailbox (N)              S </screen></entry>
                   </row>
                   <row>
-                    <entry><literal>%B%* ?F?%F/?%N</literal></entry>
+                    <entry><literal>%B%* %&lt;F?%F/&gt;%N</literal></entry>
                     <entry><screen>mailbox                F/S </screen></entry>
                   </row>
                 </tbody>
@@ -2198,10 +2198,10 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
           hides the others. This is useful when threads contain so many
           messages that you can only see a handful of threads on the screen.
           See %M in <link linkend="index-format">$index_format</link>. For
-          example, you could use <quote>%?M?(#%03M)&amp;(%4l)?</quote> in
+          example, you could use <literal>%&lt;M?(#%03M)&amp;(%4l)&gt;</literal> in
           <link linkend="index-format">$index_format</link> to optionally display
           the number of hidden messages if the thread is collapsed. The
-          <literal>%?&lt;char&gt;?&lt;if-part&gt;&amp;&lt;else-part&gt;?</literal>
+          <literal>%&lt;char?if-part&amp;else-part&gt;</literal>
           syntax is explained in detail in
           <link linkend="formatstrings-conditionals">format string conditionals</link>.
         </para>
@@ -6968,7 +6968,7 @@ folder-hook . 'push "&lt;enter-command&gt;score ~= 10&lt;enter&gt;"'
         also can display the spam attributes in your index display using the
         <literal>%H</literal> selector in the
         <link linkend="index-format">$index_format</link> variable. (Tip: try
-        <literal>%?H?[%H] ?</literal> to display spam tags only when they are
+        <literal>%&lt;H?[%H] &gt;</literal> to display spam tags only when they are
         defined for a given message.)
       </para>
       <para>
@@ -7685,7 +7685,7 @@ mailboxes $my_mx +mailbox3
           optionally print a string based upon one of the above sequences, the
           following construct is used:
         </para>
-        <screen>%?&lt;sequence_char&gt;?&lt;optional_string&gt;?</screen>
+        <screen>%&lt;sequence_char?optional_string&gt;</screen>
         <para>
           where <emphasis>sequence_char</emphasis> is an expando, and
           <emphasis>optional_string</emphasis> is the string you would like
@@ -7695,17 +7695,17 @@ mailboxes $my_mx +mailbox3
         </para>
         <para>
           Here is an example illustrating how to optionally print the number of
-          new messages in a mailbox in
+          new messages (<literal>%n</literal>) in a mailbox in
           <link linkend="status-format">$status_format</link>:
         </para>
-        <screen>%?n?%n new messages.?</screen>
+        <screen>%&lt;n?%n new messages&gt;</screen>
         <para>
           You can also switch between two strings using the following
           construct:
         </para>
 
 <screen>
-%?&lt;sequence_char&gt;?&lt;if_string&gt;&amp;&lt;else_string&gt;?
+%&lt;sequence_char?if_string&amp;else_string&gt;
 </screen>
 
         <para>
@@ -7781,7 +7781,7 @@ mailboxes $my_mx +mailbox3
               </para>
 
 <screen>
-set status_format = "%v on %h: %B: %?n?%n&amp;no? new messages %|-"
+set status_format = "%v on %h: %B: %&lt;n?%n&amp;no&gt; new messages %|-"
 </screen>
 
             </listitem>
@@ -7803,7 +7803,7 @@ set status_format = "%v on %h: %B: %?n?%n&amp;no? new messages %|-"
               </para>
 
 <screen>
-set status_format = "%B: %?n?%n&amp;no? new messages %&gt; (%v on %h)"
+set status_format = "%B: %&lt;n?%n&amp;no&gt; new messages %&gt; (%v on %h)"
 </screen>
 
             </listitem>
@@ -7828,7 +7828,7 @@ set status_format = "%B: %?n?%n&amp;no? new messages %&gt; (%v on %h)"
               </para>
 
 <screen>
-set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"
+set index_format="%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;)%*  %s"
 </screen>
 
             </listitem>
@@ -13853,7 +13853,7 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
           NeoMutt's conditional format strings have the form: (whitespace
           introduced for clarity)
         </para>
-        <screen>%? TEST ? TRUE &amp; FALSE ?</screen>
+        <screen>%&lt; TEST ? TRUE &amp; FALSE &gt;</screen>
         <para>
           The examples below use the test <quote>%[</quote> – the date of the
           message in the local timezone. They will also work with
@@ -13862,7 +13862,7 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
         <para>
           The date tests are of the form:
         </para>
-        <screen>%[nX? TRUE &amp; FALSE ?</screen>
+        <screen>%&lt;[nX? TRUE &amp; FALSE &gt;</screen>
         <itemizedlist>
           <listitem>
             <para>
@@ -13988,14 +13988,14 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
           <para>
             The $index_format string would contain:
           </para>
-          <screen>%?[1m?%[%b %d]&amp;%[%Y-%m-%d]?</screen>
+          <screen>%&lt;[1m?%[%b %d]&amp;%[%Y-%m-%d]&gt;</screen>
           <para>
             Reparsed a little, for clarity, you can see the test condition and
             the two format strings.
           </para>
 
 <screen>
-%?[1m?        &amp;           ?
+%&lt;[1m?        &amp;           &gt;
 
       %[%b %d] %[%Y-%m-%d]
 </screen>
@@ -14076,8 +14076,7 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
 %&lt;[y? %&lt;[m? %&lt;[d? AAA &amp; BBB &gt; &amp; CCC &gt; &amp; DDD &gt;
 </screen>
 
-          <literallayout>AAA = %[%H:%M ] BBB = %[%a %d] CCC = %[%b %d] DDD =
-          %[%m/%y ]</literallayout>
+          <literallayout>AAA = %[%H:%M ] BBB = %[%a %d] CCC = %[%b %d] DDD = %[%m/%y ]</literallayout>
         </sect3>
       </sect2>
 
@@ -14097,10 +14096,10 @@ close-hook  '\.gpg$' "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &
 
 <emphasis role="comment">#</emphasis>
 <emphasis role="comment"># The default index_format is:</emphasis>
-<emphasis role="comment">#       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'</emphasis>
+<emphasis role="comment">#       '%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;) %s'</emphasis>
 <emphasis role="comment">#</emphasis>
 <emphasis role="comment"># We replace the date field '%{%b %d}', giving:</emphasis>
-set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt; %-15.15L (%?l?%4l&amp;%4c?) %s'
+set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt; %-15.15L (%&lt;l?%4l&amp;%4c&gt;) %s'
 <emphasis role="comment"># Test  Date Range  Format String  Example</emphasis>
 <emphasis role="comment"># --------------------------------------------</emphasis>
 <emphasis role="comment"># %[d   Today       %[%H:%M ]      12:34</emphasis>
@@ -15207,7 +15206,7 @@ color index_size cyan default
 <emphasis role="comment"># which can be used in the 'index_format' variable.</emphasis>
 
 <emphasis role="comment"># The default 'index_format' is:</emphasis>
-set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
+set index_format='%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;) %s'
 <emphasis role="comment"># Where %L represents the author/recipient</emphasis>
 <emphasis role="comment"># This might look like:</emphasis>
 <emphasis role="comment">#       1   + Nov 17 David Bowie   Changesbowie    ( 689)</emphasis>
@@ -15215,7 +15214,7 @@ set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
 <emphasis role="comment">#       3   + Nov 16 Jimi Hendrix  Voodoo Child    ( 263)</emphasis>
 <emphasis role="comment">#       4   + Nov 16 Debbie Harry  Parallel Lines  ( 540)</emphasis>
 <emphasis role="comment"># Using the %I expando:</emphasis>
-set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
+set index_format='%4C %Z %{%b %d} %I (%&lt;l?%4l&amp;%4c&gt;) %s'
 <emphasis role="comment"># This might look like:</emphasis>
 <emphasis role="comment">#       1   + Nov 17 DB Changesbowie    ( 689)</emphasis>
 <emphasis role="comment">#       2   ! Nov 17 SN Rumours         ( 555)</emphasis>
@@ -16496,7 +16495,7 @@ macro index,pager tt "&lt;modify-labels&gt;!todo\n" "Toggle the 'todo' tag"
 <emphasis role="comment"># Now instead of using '%g' or '%J' in your $index_format, which lists all tags</emphasis>
 <emphasis role="comment"># in a non-deterministic order, you can something like the following which puts</emphasis>
 <emphasis role="comment"># a transformed tag name in a specific spot on the index line:</emphasis>
-<emphasis role="comment"># set index_format='%4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'</emphasis>
+<emphasis role="comment"># set index_format='%4C %S %[%y.%m.%d] %-18.18n %&lt;GU?%GU&amp; &gt; %&lt;GR?%GR&amp; &gt; %&lt;GI?%GI&amp; &gt; %s'</emphasis>
 
 <emphasis role="comment"># The %G formatting sequence may display all tags including tags hidden by</emphasis>
 <emphasis role="comment"># hidden_tags.</emphasis>
@@ -17994,7 +17993,7 @@ set sidebar_divider_char = '|'
 <emphasis role="comment"># message counts for each mailbox.</emphasis>
 set mail_check_stats
 <emphasis role="comment"># Display the Sidebar mailboxes using this format string.</emphasis>
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
+set sidebar_format = '%B%&lt;F? [%F]&gt;%* %&lt;N?%N/&gt;%S'
 <emphasis role="comment"># Sort the mailboxes in the Sidebar using this method:</emphasis>
 <emphasis role="comment">#       count    – total number of messages</emphasis>
 <emphasis role="comment">#       flagged  – number of flagged messages</emphasis>
@@ -18343,9 +18342,9 @@ set toggle_quoted_show_levels = 1
 <emphasis role="comment"># the status bar (also when it's used by the index).</emphasis>
 
 <emphasis role="comment"># For the examples below, set some defaults</emphasis>
-set status_format='-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? \
-  Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
-set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
+set status_format='-%r-NeoMutt: %f [Msgs:%&lt;M?%M/&gt;%m%&lt;n? New:%n&gt;%&lt;o? Old:%o&gt;%&lt;d? Del:%d&gt;\
+%&lt;F? Flag:%F&gt;%&lt;t? Tag:%t&gt;%&lt;p? Post:%p&gt;%&lt;b? Inc:%b&gt;%&lt;l? %l&gt;]---(%s/%S)-%&gt;-(%P)---'
+set index_format='%4C %Z %{%b %d} %-15.15L (%&lt;l?%4l&amp;%4c&gt;) %s'
 set use_threads=yes
 set sort=last-date-received
 set sort_aux=date

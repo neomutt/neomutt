@@ -146,7 +146,7 @@ static struct ConfigDef MainVars[] = {
   { "assumed_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
-  { "attach_format", DT_STRING|DT_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%?C?, %C?, %s] ", 0, NULL,
+  { "attach_format", DT_STRING|DT_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] ", 0, NULL,
     "printf-like format string for the attachment menu"
   },
   { "attach_save_dir", DT_PATH|DT_PATH_DIR, IP "./", 0, NULL,
@@ -305,7 +305,7 @@ static struct ConfigDef MainVars[] = {
   { "indent_string", DT_STRING, IP "> ", 0, NULL,
     "String used to indent 'reply' text"
   },
-  { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, IP "%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s", 0, NULL,
+  { "index_format", DT_STRING|DT_NOT_EMPTY|R_INDEX, IP "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", 0, NULL,
     "printf-like format string for the index menu (emails)"
   },
   { "keep_flagged", DT_BOOL, false, 0, NULL,
@@ -515,7 +515,7 @@ static struct ConfigDef MainVars[] = {
   { "status_chars", DT_MBTABLE|R_INDEX, IP "-*%A", 0, NULL,
     "Indicator characters for the status bar"
   },
-  { "status_format", DT_STRING|R_INDEX, IP "-%r-NeoMutt: %D [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%?T?%T/?%s/%S)-%>-(%P)---", 0, NULL,
+  { "status_format", DT_STRING|R_INDEX, IP "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---", 0, NULL,
     "printf-like format string for the index's status line"
   },
   { "status_on_top", DT_BOOL, false, 0, NULL,
@@ -551,10 +551,10 @@ static struct ConfigDef MainVars[] = {
   { "ts_enabled", DT_BOOL|R_INDEX, false, 0, NULL,
     "Allow NeoMutt to set the terminal status line and icon"
   },
-  { "ts_icon_format", DT_STRING|R_INDEX, IP "M%?n?AIL&ail?", 0, NULL,
+  { "ts_icon_format", DT_STRING|R_INDEX, IP "M%<n?AIL&ail>", 0, NULL,
     "printf-like format string for the terminal's icon title"
   },
-  { "ts_status_format", DT_STRING|R_INDEX, IP "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?", 0, NULL,
+  { "ts_status_format", DT_STRING|R_INDEX, IP "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>", 0, NULL,
     "printf-like format string for the terminal's status (window title)"
   },
   { "use_domain", DT_BOOL, true, 0, NULL,
