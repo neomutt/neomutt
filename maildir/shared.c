@@ -72,7 +72,7 @@ mode_t mh_umask(struct Mailbox *m)
  * @retval num Number of new emails
  * @retval 0   Error
  */
-int maildir_move_to_mailbox(struct Mailbox *m, struct MdEmailArray *mda)
+int maildir_move_to_mailbox(struct Mailbox *m, const struct MdEmailArray *mda)
 {
   if (!m)
     return 0;
@@ -106,7 +106,6 @@ int maildir_move_to_mailbox(struct Mailbox *m, struct MdEmailArray *mda)
   if (m->msg_count > oldmsgcount)
     num = m->msg_count - oldmsgcount;
 
-  maildirarray_clear(mda);
   return num;
 }
 

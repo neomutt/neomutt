@@ -709,6 +709,7 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
   progress_free(&progress);
 
   maildir_move_to_mailbox(m, &mda);
+  maildirarray_clear(&mda);
 
   if (!mdata->mh_umask)
     mdata->mh_umask = mh_umask(m);
@@ -1327,6 +1328,8 @@ static enum MxStatus maildir_check(struct Mailbox *m)
 
   /* Incorporate new messages */
   num_new = maildir_move_to_mailbox(m, &mda);
+  maildirarray_clear(&mda);
+
   if (num_new > 0)
   {
     mailbox_changed(m, NT_MAILBOX_INVALID);

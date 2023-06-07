@@ -30,7 +30,7 @@
 struct MdEmailArray;
 struct Mailbox;
 
-int    maildir_move_to_mailbox(struct Mailbox *m, struct MdEmailArray *mda);
+int    maildir_move_to_mailbox(struct Mailbox *m, const struct MdEmailArray *mda);
 bool   mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
 mode_t mh_umask               (struct Mailbox *m);
 

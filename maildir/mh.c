@@ -732,6 +732,7 @@ static bool mh_read_dir(struct Mailbox *m)
   mh_seq_free(&mhs);
 
   maildir_move_to_mailbox(m, &mda);
+  maildirarray_clear(&mda);
 
   if (!mdata->mh_umask)
     mdata->mh_umask = mh_umask(m);
@@ -1003,6 +1004,8 @@ static enum MxStatus mh_check(struct Mailbox *m)
 
   /* Incorporate new messages */
   num_new = maildir_move_to_mailbox(m, &mda);
+  maildirarray_clear(&mda);
+
   if (num_new > 0)
   {
     mailbox_changed(m, NT_MAILBOX_INVALID);
