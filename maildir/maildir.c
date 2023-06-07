@@ -69,7 +69,7 @@
 
 struct Progress;
 
-// Flags for maildir_mbox_check()
+// Flags for maildir_check()
 #define MMC_NO_DIRS 0        ///< No directories changed
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
@@ -1158,7 +1158,9 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * maildir_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
+ * maildir_check - Check for new mail
+ * @param m Mailbox
+ * @retval enum #MxStatus
  *
  * This function handles arrival of new mail and reopening of maildir folders.
  * The basic idea here is we check to see if either the new or cur
@@ -1167,7 +1169,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-static enum MxStatus maildir_mbox_check(struct Mailbox *m)
+static enum MxStatus maildir_check(struct Mailbox *m)
 {
   struct stat st_new = { 0 }; /* status of the "new" subdirectory */
   struct stat st_cur = { 0 }; /* status of the "cur" subdirectory */
@@ -1344,6 +1346,14 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
 }
 
 /**
+ * maildir_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
+ */
+static enum MxStatus maildir_mbox_check(struct Mailbox *m)
+{
+  return maildir_check(m);
+}
+
+/**
  * maildir_mbox_check_stats - Check the Mailbox statistics - Implements MxOps::mbox_check_stats() - @ingroup mx_mbox_check_stats
  */
 static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
@@ -1377,7 +1387,7 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
  */
 static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 {
-  enum MxStatus check = maildir_mbox_check(m);
+  enum MxStatus check = maildir_check(m);
   if (check == MX_STATUS_ERROR)
     return check;
 

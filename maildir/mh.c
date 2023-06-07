@@ -870,7 +870,9 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * mh_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
+ * mh_check - Check for new mail
+ * @param m Mailbox
+ * @retval enum #MxStatus
  *
  * This function handles arrival of new mail and reopening of mh/maildir
  * folders. Things are getting rather complex because we don't have a
@@ -879,7 +881,7 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  *
  * Don't change this code unless you _really_ understand what happens.
  */
-static enum MxStatus mh_mbox_check(struct Mailbox *m)
+static enum MxStatus mh_check(struct Mailbox *m)
 {
   char buf[PATH_MAX] = { 0 };
   struct stat st = { 0 };
@@ -1018,6 +1020,14 @@ static enum MxStatus mh_mbox_check(struct Mailbox *m)
 }
 
 /**
+ * mh_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
+ */
+static enum MxStatus mh_mbox_check(struct Mailbox *m)
+{
+  return mh_check(m);
+}
+
+/**
  * mh_mbox_sync - Save changes to the Mailbox - Implements MxOps::mbox_sync() - @ingroup mx_mbox_sync
  * @retval #MX_STATUS_REOPENED  mailbox has been externally modified
  * @retval #MX_STATUS_NEW_MAIL  new mail has arrived
@@ -1028,7 +1038,7 @@ static enum MxStatus mh_mbox_check(struct Mailbox *m)
  */
 static enum MxStatus mh_mbox_sync(struct Mailbox *m)
 {
-  enum MxStatus check = mh_mbox_check(m);
+  enum MxStatus check = mh_check(m);
   if (check == MX_STATUS_ERROR)
     return check;
 
