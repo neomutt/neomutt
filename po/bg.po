@@ -162,10 +162,9 @@ msgstr "Търсене"
 msgid "Waiting for response..."
 msgstr "Чакане на отговор..."
 
-#: alias/dlg_query.c:364
-#, fuzzy
+#: alias/dlg_query.c:362
 msgid "Query"
-msgstr "Запитване: "
+msgstr "Запитване"
 
 #: alias/dlg_query.c:456 alias/dlg_query.c:533
 msgid "Query command not defined"
@@ -2170,13 +2169,11 @@ msgstr[1] ""
 msgid "Warning: message contains no From: header"
 msgstr ""
 
-#: external.c:117 recvcmd.c:205
-#, fuzzy
+#: external.c:116 recvcmd.c:204
 msgid "Bounce message to: "
 msgstr "Препращане на писмото към: "
 
-#: external.c:119 recvcmd.c:207
-#, fuzzy
+#: external.c:118 recvcmd.c:206
 msgid "Bounce tagged messages to: "
 msgstr "Препращане на маркираните писма към: "
 
@@ -2191,19 +2188,17 @@ msgid_plural "Bounce messages to %s?"
 msgstr[0] "Препращане на писмото към %s?"
 msgstr[1] "Препращане на писмото към %s?"
 
-#: external.c:165 recvcmd.c:260
-#, fuzzy
+#: external.c:164 recvcmd.c:259
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Писмото не е препратено"
-msgstr[1] "Писмата не са препратени"
+msgstr[1] "Писмото не е препратено"
 
-#: external.c:191 recvcmd.c:287
-#, fuzzy
+#: external.c:189 recvcmd.c:286
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "Писмото е препратено"
-msgstr[1] "Писмата са препратени"
+msgstr[1] "Писмото е препратено"
 
 #: external.c:326 external.c:372 external.c:392
 msgid "Can't create filter process"
@@ -2217,29 +2212,25 @@ msgstr "Изпращане към команда (pipe): "
 msgid "No printing command has been defined"
 msgstr "Не е дефинирана команда за отпечатване"
 
-#: external.c:469
-#, fuzzy
+#: external.c:472
 msgid "Print message?"
 msgstr "Желаете ли да отпечатате писмото?"
 
-#: external.c:470
-#, fuzzy
+#: external.c:473
 msgid "Print tagged messages?"
 msgstr "Желаете ли да отпечатате маркираните писма?"
 
-#: external.c:479
-#, fuzzy
+#: external.c:482
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "Писмото е отпечатано"
-msgstr[1] "Писмата са отпечатани"
+msgstr[1] "Писмото е отпечатано"
 
-#: external.c:483
-#, fuzzy
+#: external.c:486
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "Писмото не е отпечатано"
-msgstr[1] "Писмата не са отпечатани"
+msgstr[1] "Писмото не е отпечатано"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: external.c:500
@@ -2726,7 +2717,6 @@ msgid "%s authentication failed"
 msgstr "Неуспешна SASL идентификация"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:134
-#, fuzzy
 msgid "SASL authentication failed"
 msgstr "Неуспешна SASL идентификация"
 
@@ -2936,8 +2926,7 @@ msgstr "Изтегляне на заглавните части... [%d/%d]"
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "Грешка при повторното отваряне на пощенската кутия"
 
-#: imap/message.c:1130
-#, fuzzy
+#: imap/message.c:1124
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Грешка при получаване на заглавните части от тази версия на IMAP-сървъра"
 
@@ -4191,12 +4180,12 @@ msgid_plural "Move %d read messages to %s?"
 msgstr[0] "Желаете ли да преместите прочетените писма в %s?"
 msgstr[1] "Желаете ли да преместите прочетените писма в %s?"
 
-#: mx.c:713 mx.c:972
-#, fuzzy, c-format
+#: mx.c:713 mx.c:960
+#, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "Желаете ли да изтриете %d-то отбелязано за изтриване писмо?"
-msgstr[1] "Желаете ли да изтриете  %d отбелязани за изтриване писма?"
+msgstr[1] "Желаете ли да изтриете %d-то отбелязано за изтриване писмо?"
 
 #: mx.c:737
 #, c-format
@@ -7945,6 +7934,15 @@ msgstr "Опции при компилация:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Опции при компилация:"
+
+#: color/command.c:418
+#, c-format
+msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
+msgstr ""
+
+#: pattern/compile.c:954
+msgid "No Context"
+msgstr ""
 
 #~ msgid "What we have here is a failure to make an attachment"
 #~ msgstr "Грешка при създаване на приложението"
