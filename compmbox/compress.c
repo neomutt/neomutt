@@ -318,21 +318,21 @@ static void expand_command_str(const struct Mailbox *m, const char *cmd, char *b
  * @param m        Mailbox to work with
  * @param command  Command string to execute
  * @param progress Message to show the user
- * @retval 1 Success
- * @retval 0 Failure
+ * @retval true  Success
+ * @retval false Failure
  *
  * Run the supplied command, taking care of all the NeoMutt requirements,
  * such as locking files and blocking signals.
  */
-static int execute_command(struct Mailbox *m, const char *command, const char *progress)
+static bool execute_command(struct Mailbox *m, const char *command, const char *progress)
 {
   if (!m || !command || !progress)
-    return 0;
+    return false;
 
   if (m->verbose)
     mutt_message(progress, m->realpath);
 
-  int rc = 1;
+  bool rc = true;
   char sys_cmd[STR_COMMAND] = { 0 };
 
   mutt_sig_block();
@@ -343,7 +343,7 @@ static int execute_command(struct Mailbox *m, const char *command, const char *p
 
   if (mutt_system(sys_cmd) != 0)
   {
-    rc = 0;
+    rc = false;
     mutt_any_key_to_continue(NULL);
     mutt_error(_("Error running \"%s\""), sys_cmd);
   }
@@ -465,8 +465,7 @@ static enum MxOpenReturns comp_mbox_open(struct Mailbox *m)
     goto cmo_fail;
   }
 
-  int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
-  if (rc == 0)
+  if (!execute_command(m, ci->cmd_open, _("Decompressing %s")))
     goto cmo_fail;
 
   unlock_realpath(m);
@@ -532,8 +531,7 @@ static bool comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   /* Open the existing mailbox, unless we are appending */
   if (!ci->cmd_append && (mutt_file_get_size(m->realpath) > 0))
   {
-    int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
-    if (rc == 0)
+    if (!execute_command(m, ci->cmd_open, _("Decompressing %s")))
     {
       mutt_error(_("Compress command failed: %s"), ci->cmd_open);
       goto cmoa_fail2;
@@ -605,10 +603,10 @@ static enum MxStatus comp_mbox_check(struct Mailbox *m)
     return MX_STATUS_ERROR;
   }
 
-  int rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
+  bool rc = execute_command(m, ci->cmd_open, _("Decompressing %s"));
   store_size(m);
   unlock_realpath(m);
-  if (rc == 0)
+  if (!rc)
     return MX_STATUS_ERROR;
 
   return ops->mbox_check(m);
@@ -651,8 +649,7 @@ static enum MxStatus comp_mbox_sync(struct Mailbox *m)
   if (check != MX_STATUS_OK)
     goto sync_cleanup;
 
-  int rc = execute_command(m, ci->cmd_close, _("Compressing %s"));
-  if (rc == 0)
+  if (!execute_command(m, ci->cmd_close, _("Compressing %s")))
   {
     check = MX_STATUS_ERROR;
     goto sync_cleanup;
@@ -706,8 +703,7 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
       msg = _("Compressing %s");
     }
 
-    int rc = execute_command(m, append, msg);
-    if (rc == 0)
+    if (!execute_command(m, append, msg))
     {
       mutt_any_key_to_continue(NULL);
       mutt_error(_("Error. Preserving temporary file: %s"), mailbox_path(m));
