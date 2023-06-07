@@ -483,9 +483,8 @@ msgstr "autocrypt アカウント作成は中止された。"
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:586 autocrypt/autocrypt.c:595
 #: autocrypt/autocrypt.c:602
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "親メッセージが利用できない。"
+msgstr "autocrypt が利用できない。"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -494,7 +493,7 @@ msgstr "親メッセージが利用できない。"
 #: autocrypt/autocrypt.c:614
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "%s には autocrypt が有効でない。"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -688,14 +687,12 @@ msgid "List"
 msgstr "リスト"
 
 #: browser/browser.c:126
-#, fuzzy
 msgid "Subscribe"
-msgstr "%s を購読を開始した"
+msgstr "購読開始"
 
 #: browser/browser.c:127
-#, fuzzy
 msgid "Unsubscribe"
-msgstr "%s の購読を取り消した"
+msgstr "購読取消"
 
 #: browser/browser.c:128 index/dlg_index.c:127
 msgid "Catchup"
@@ -2279,28 +2276,24 @@ msgid "Copying to %s..."
 msgstr "%s にコピー中..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1055
-#, fuzzy
+#: external.c:1050
 msgid "Error saving tagged messages"
-msgstr "タグ付きメッセージを印刷?"
+msgstr "タグ付きメッセージ保存エラー"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1060
-#, fuzzy
+#: external.c:1055
 msgid "Error saving message"
-msgstr "メッセージ送信エラー。"
+msgstr "メッセージ保存エラー"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1067
-#, fuzzy
+#: external.c:1062
 msgid "Error copying tagged messages"
-msgstr "%d メッセージを %s にコピー中..."
+msgstr "タグ付きメッセージコピーエラー"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1072
-#, fuzzy
+#: external.c:1067
 msgid "Error copying message"
-msgstr "メッセージ再送エラー"
+msgstr "メッセージコピーエラー"
 
 #: external.c:1142
 #, c-format
@@ -2657,11 +2650,11 @@ msgstr "認証中 (%s)..."
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
-#: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:676 pop/auth.c:288
-#: pop/auth.c:356 send/smtp.c:832 send/smtp.c:906 send/smtp.c:1010
-#, fuzzy, c-format
+#: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:670 pop/auth.c:288
+#: pop/auth.c:356 send/smtp.c:822 send/smtp.c:896 send/smtp.c:1000
+#, c-format
 msgid "%s authentication failed"
-msgstr "SASL 認証に失敗した。"
+msgstr "%s 認証に失敗した。"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:134
 msgid "SASL authentication failed"
@@ -4088,9 +4081,8 @@ msgstr "ごみ箱をオープンできない"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:590
-#, fuzzy
 msgid "Unable to append to trash folder"
-msgstr "一時ファイルをオープンできない"
+msgstr "ごみ箱に追加できない"
 
 #: mx.c:649
 msgid "Mark all articles read?"
@@ -6617,9 +6609,9 @@ msgstr "メッセージの一番上が表示されている"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:578
+#: pager/functions.c:570
 msgid "No text past headers"
-msgstr ""
+msgstr "ヘッダの後にテキストがない。"
 
 #: pager/functions.c:637 pager/functions.c:677
 msgid "No more unquoted text after quoted text"
@@ -6805,14 +6797,14 @@ msgstr "パラメータがない"
 #. L10N: Pattern completion menu title
 #: pattern/dlg_pattern.c:189
 msgid "Patterns"
-msgstr ""
+msgstr "パターン"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
 #: pattern/dlg_pattern.c:205
 msgid "EXPR"
-msgstr ""
+msgstr "EXPR"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a numeric range.
@@ -6820,7 +6812,7 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:213
 msgid "RANGE"
-msgstr ""
+msgstr "RANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a date range
@@ -6828,7 +6820,7 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:220
 msgid "DATERANGE"
-msgstr ""
+msgstr "DATERANGE"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a query
@@ -6844,22 +6836,22 @@ msgstr ""
 #.
 #: pattern/dlg_pattern.c:245
 msgid "PATTERN"
-msgstr ""
+msgstr "PATTERN"
 
 #. L10N: Pattern Completion Menu description for ~()
 #: pattern/dlg_pattern.c:252
 msgid "messages in threads containing messages matching PATTERN"
-msgstr ""
+msgstr "PATTERN に一致するメッセージを含むスレッド内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~<()
 #: pattern/dlg_pattern.c:260
 msgid "messages whose immediate parent matches PATTERN"
-msgstr ""
+msgstr "直接の親が PATTERN に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~>()
 #: pattern/dlg_pattern.c:268
 msgid "messages having an immediate child matching PATTERN"
-msgstr ""
+msgstr "直接の子が PATTERN に一致するメッセージ"
 
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
@@ -6902,90 +6894,83 @@ msgstr "エラー: サーバカスタム検索はIMAPのみで有効"
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
-#, fuzzy
 msgid "all messages"
-msgstr "メッセージを整列"
+msgstr "すべてのメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~b
 #: pattern/flags.c:47
 msgid "messages whose body matches EXPR"
-msgstr ""
+msgstr "本文が EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~B
 #: pattern/flags.c:50
 msgid "messages whose body or headers match EXPR"
-msgstr ""
+msgstr "本文またはヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~c
 #: pattern/flags.c:53
 msgid "messages whose CC header matches EXPR"
-msgstr ""
+msgstr "CC ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~C
 #: pattern/flags.c:56
 msgid "messages whose recipient matches EXPR"
-msgstr ""
+msgstr "宛先が EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~d
 #: pattern/flags.c:59
 msgid "messages sent in DATERANGE"
-msgstr ""
+msgstr "DATERANGE 内に送信されたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
-#, fuzzy
 msgid "deleted messages"
-msgstr "未削除メッセージがない。"
+msgstr "削除マーク付きメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
 msgid "messages whose Sender header matches EXPR"
-msgstr ""
+msgstr "Sender ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~E
 #: pattern/flags.c:68
-#, fuzzy
 msgid "expired messages"
-msgstr "未読メッセージがない。"
+msgstr "期限切れメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~f
 #: pattern/flags.c:71
 msgid "messages whose From header matches EXPR"
-msgstr ""
+msgstr "From ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
-#, fuzzy
 msgid "flagged messages"
-msgstr "タグ付きメッセージがない。"
+msgstr "フラグ付きメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
-#, fuzzy
 msgid "cryptographically signed messages"
-msgstr "書きかけのメッセージを呼び出す"
+msgstr "暗号で署名されたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~G
 #: pattern/flags.c:80
-#, fuzzy
 msgid "cryptographically encrypted messages"
-msgstr "暗号化メッセージを復号化できない"
+msgstr "暗号で暗号化されたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~h
 #: pattern/flags.c:83
 msgid "messages whose header matches EXPR"
-msgstr ""
+msgstr "ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~H
 #: pattern/flags.c:86
 msgid "messages whose spam tag matches EXPR"
-msgstr ""
+msgstr "スパムタグが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~i
 #: pattern/flags.c:89
-#, fuzzy
 msgid "messages whose Message-ID matches EXPR"
-msgstr "メッセージをヘッダごと編集"
+msgstr "Message-ID が EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
@@ -6994,9 +6979,8 @@ msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
-#, fuzzy
 msgid "messages which contain PGP key"
-msgstr "(mark-message キー)"
+msgstr "PGP 鍵を含むメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
@@ -7007,112 +6991,102 @@ msgstr "メッセージをヘッダごと編集"
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
 msgid "messages addressed to known mailing lists"
-msgstr ""
+msgstr "既知のメーリングリストに宛てたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:104
 msgid "messages whose From/Sender/To/CC matches EXPR"
-msgstr ""
+msgstr "From/Sender/To/CC が EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~m
 #: pattern/flags.c:107
 msgid "messages whose number is in RANGE"
-msgstr ""
+msgstr "番号が RANGE 内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~M
 #: pattern/flags.c:110
 msgid "messages with a Content-Type matching EXPR"
-msgstr ""
+msgstr "Content-Type が EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~n
 #: pattern/flags.c:113
 msgid "messages whose score is in RANGE"
-msgstr ""
+msgstr "score が RANGE 内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~N
 #: pattern/flags.c:116
-#, fuzzy
 msgid "new messages"
-msgstr "新着メッセージがない。"
+msgstr "新着メッセージ"
 
 #. L10N: Pattern Completion Menu description for ~O
 #: pattern/flags.c:119
-#, fuzzy
 msgid "old messages"
-msgstr "メッセージを整列"
+msgstr "古いメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~p
 #: pattern/flags.c:122
 msgid "messages addressed to you"
-msgstr ""
+msgstr "自分宛てのメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~P
 #: pattern/flags.c:125
-#, fuzzy
 msgid "messages from you"
-msgstr "(mark-message キー)"
+msgstr "自分からのメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~Q
 #: pattern/flags.c:128
 msgid "messages which have been replied to"
-msgstr ""
+msgstr "返信のあるメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~r
 #: pattern/flags.c:131
 msgid "messages received in DATERANGE"
-msgstr ""
+msgstr "受取が DATERANGE 内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~R
 #: pattern/flags.c:134
-#, fuzzy
 msgid "already read messages"
-msgstr "未読メッセージがない。"
+msgstr "既読メッセージ"
 
 #. L10N: Pattern Completion Menu description for ~s
 #: pattern/flags.c:137
 msgid "messages whose Subject header matches EXPR"
-msgstr ""
+msgstr "題名ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~S
 #: pattern/flags.c:140
-#, fuzzy
 msgid "superseded messages"
-msgstr "未読メッセージがない。"
+msgstr "上書き済みメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~t
 #: pattern/flags.c:143
 msgid "messages whose To header matches EXPR"
-msgstr ""
+msgstr "To ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:146
-#, fuzzy
 msgid "tagged messages"
-msgstr "タグ付きメッセージがない。"
+msgstr "タグ付きメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:149
-#, fuzzy
 msgid "messages addressed to subscribed mailing lists"
-msgstr "指定済みメーリングリスト宛てに返信"
+msgstr "購読済みメーリングリスト宛てのメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:152
-#, fuzzy
 msgid "unread messages"
-msgstr "未読メッセージがない。"
+msgstr "未読メッセージ"
 
 #. L10N: Pattern Completion Menu description for ~v
 #: pattern/flags.c:155
-#, fuzzy
 msgid "messages in collapsed threads"
-msgstr "この制限された表示範囲には新着メッセージがない。"
+msgstr "非展開スレッド内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~V
 #: pattern/flags.c:158
-#, fuzzy
 msgid "cryptographically verified messages"
-msgstr "前の新着または未読メッセージに移動"
+msgstr "暗号で検証されたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~w
 #: pattern/flags.c:162
@@ -7123,18 +7097,17 @@ msgstr "マスクに一致するニュースグループがない"
 #. L10N: Pattern Completion Menu description for ~x
 #: pattern/flags.c:166
 msgid "messages whose References header matches EXPR"
-msgstr ""
+msgstr "References ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:169
-#, fuzzy
 msgid "messages with RANGE attachments"
-msgstr "MIME 添付ファイルを表示"
+msgstr "RANGE 個ファイルが添付されたメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~y
 #: pattern/flags.c:172
 msgid "messages whose X-Label header matches EXPR"
-msgstr ""
+msgstr "X-Label ヘッダが EXPR に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:175
@@ -7144,19 +7117,17 @@ msgstr ""
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:178
 msgid "messages whose size is in RANGE"
-msgstr ""
+msgstr "サイズが RANGE 内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~=
 #: pattern/flags.c:181
-#, fuzzy
 msgid "duplicated messages"
-msgstr "未削除メッセージがない。"
+msgstr "重複したメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~$
 #: pattern/flags.c:184
-#, fuzzy
 msgid "unreferenced messages"
-msgstr "未読メッセージがない。"
+msgstr "参照されていないメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~#
 #: pattern/flags.c:187
@@ -7483,20 +7454,19 @@ msgstr "添付ファイルとして転送?"
 msgid "Preparing forwarded message..."
 msgstr "転送メッセージを準備中..."
 
-#: send/send.c:1775
-#, fuzzy
+#: send/send.c:1778
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
-msgstr "%c はこのモードではサポートされていない"
+msgstr "警告: バッチモードでは IMAP メールボックスへの Fcc がサポートされていない"
 
 #. L10N: Printed after the "Fcc to an IMAP mailbox is not supported" message.
 #. To make it clearer that the message doesn't mean NeoMutt is aborting
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1781
+#: send/send.c:1784
 #, c-format
 msgid "Skipping Fcc to %s"
-msgstr ""
+msgstr "Fcc は %s をスキップする"
 
 #: send/send.c:1822 send/send.c:1834 send/send.c:1860
 msgid "Save attachments in Fcc?"
@@ -7773,6 +7743,15 @@ msgstr "コンパイル時オプション:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "コンパイル時オプション:"
+
+#: color/command.c:418
+#, c-format
+msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
+msgstr ""
+
+#: pattern/compile.c:954
+msgid "No Context"
+msgstr ""
 
 #~ msgid "What we have here is a failure to make an attachment"
 #~ msgstr "つまり添付ファイルの作成に失敗したということだ"
