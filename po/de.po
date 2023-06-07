@@ -967,14 +967,6 @@ msgstr "source: Fehler bei %s"
 msgid "source: file %s could not be sourced"
 msgstr "source: Datei %s konnte nicht eingelesen werden"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "Spam: kein passendes Muster"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: kein passendes Muster"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

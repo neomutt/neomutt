@@ -957,79 +957,79 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_spam_list - Parse the 'spam' and 'nospam' commands - Implements Command::parse() - @ingroup command_parse
+ * parse_nospam - Parse the 'nospam' command - Implements Command::parse() - @ingroup command_parse
  */
-static enum CommandResult parse_spam_list(struct Buffer *buf, struct Buffer *s,
-                                          intptr_t data, struct Buffer *err)
+static enum CommandResult parse_nospam(struct Buffer *buf, struct Buffer *s,
+                                       intptr_t data, struct Buffer *err)
 {
-  struct Buffer templ;
-
-  buf_init(&templ);
-
-  /* Insist on at least one parameter */
   if (!MoreArgs(s))
   {
-    if (data == MUTT_SPAM)
-      buf_strcpy(err, _("spam: no matching pattern"));
-    else
-      buf_strcpy(err, _("nospam: no matching pattern"));
+    buf_printf(err, _("%s: too few arguments"), "nospam");
     return MUTT_CMD_ERROR;
   }
 
-  /* Extract the first token, a regex */
+  // Extract the first token, a regex or "*"
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-  /* data should be either MUTT_SPAM or MUTT_NOSPAM. MUTT_SPAM is for spam commands. */
-  if (data == MUTT_SPAM)
+  if (MoreArgs(s))
   {
-    /* If there's a second parameter, it's a template for the spam tag. */
-    if (MoreArgs(s))
-    {
-      parse_extract_token(&templ, s, TOKEN_NO_FLAGS);
+    buf_printf(err, _("%s: too many arguments"), "finish");
+    return MUTT_CMD_ERROR;
+  }
 
-      /* Add to the spam list. */
-      if (mutt_replacelist_add(&SpamList, buf->data, templ.data, err) != 0)
-      {
-        FREE(&templ.data);
-        return MUTT_CMD_ERROR;
-      }
-      FREE(&templ.data);
-    }
-    else
-    {
-      /* If not, try to remove from the nospam list. */
-      mutt_regexlist_remove(&NoSpamList, buf->data);
-    }
-
+  // "*" is special - clear both spam and nospam lists
+  if (mutt_str_equal(buf_string(buf), "*"))
+  {
+    mutt_replacelist_free(&SpamList);
+    mutt_regexlist_free(&NoSpamList);
     return MUTT_CMD_SUCCESS;
   }
-  else if (data == MUTT_NOSPAM)
+
+  // If it's on the spam list, just remove it
+  if (mutt_replacelist_remove(&SpamList, buf_string(buf)) != 0)
+    return MUTT_CMD_SUCCESS;
+
+  // Otherwise, add it to the nospam list
+  if (mutt_regexlist_add(&NoSpamList, buf_string(buf), REG_ICASE, err) != 0)
+    return MUTT_CMD_ERROR;
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
+ * parse_spam - Parse the 'spam' command - Implements Command::parse() - @ingroup command_parse
+ */
+static enum CommandResult parse_spam(struct Buffer *buf, struct Buffer *s,
+                                     intptr_t data, struct Buffer *err)
+{
+  if (!MoreArgs(s))
   {
-    /* MUTT_NOSPAM is for nospam commands. */
-    /* nospam only ever has one parameter. */
+    buf_printf(err, _("%s: too few arguments"), "spam");
+    return MUTT_CMD_ERROR;
+  }
 
-    /* "*" is a special case. */
-    if (mutt_str_equal(buf->data, "*"))
-    {
-      mutt_replacelist_free(&SpamList);
-      mutt_regexlist_free(&NoSpamList);
-      return MUTT_CMD_SUCCESS;
-    }
+  // Extract the first token, a regex
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-    /* If it's on the spam list, just remove it. */
-    if (mutt_replacelist_remove(&SpamList, buf->data) != 0)
-      return MUTT_CMD_SUCCESS;
+  // If there's a second parameter, it's a template for the spam tag
+  if (MoreArgs(s))
+  {
+    struct Buffer *templ = buf_pool_get();
+    parse_extract_token(templ, s, TOKEN_NO_FLAGS);
 
-    /* Otherwise, add it to the nospam list. */
-    if (mutt_regexlist_add(&NoSpamList, buf->data, REG_ICASE, err) != 0)
+    // Add to the spam list
+    int rc = mutt_replacelist_add(&SpamList, buf_string(buf), buf_string(templ), err);
+    buf_pool_release(&templ);
+    if (rc != 0)
       return MUTT_CMD_ERROR;
-
-    return MUTT_CMD_SUCCESS;
+  }
+  else
+  {
+    // If not, try to remove from the nospam list
+    mutt_regexlist_remove(&NoSpamList, buf_string(buf));
   }
 
-  /* This should not happen. */
-  buf_strcpy(err, "This is no good at all.");
-  return MUTT_CMD_ERROR;
+  return MUTT_CMD_SUCCESS;
 }
 
 /**
@@ -1541,14 +1541,14 @@ static const struct Command MuttCommands[] = {
   { "mono",                mutt_parse_mono,        0 },
   { "my_hdr",              parse_my_hdr,           0 },
   { "named-mailboxes",     parse_mailboxes,        MUTT_NAMED },
-  { "nospam",              parse_spam_list,        MUTT_NOSPAM },
+  { "nospam",              parse_nospam,           0 },
   { "push",                mutt_parse_push,        0 },
   { "reset",               parse_set,              MUTT_SET_RESET },
   { "score",               mutt_parse_score,       0 },
   { "set",                 parse_set,              MUTT_SET_SET },
   { "setenv",              parse_setenv,           MUTT_SET_SET },
   { "source",              parse_source,           0 },
-  { "spam",                parse_spam_list,        MUTT_SPAM },
+  { "spam",                parse_spam,             0 },
   { "subjectrx",           parse_subjectrx_list,   0 },
   { "subscribe",           parse_subscribe,        0 },
   { "tag-formats",         parse_tag_formats,      0 },

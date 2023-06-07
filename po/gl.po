@@ -1018,16 +1018,6 @@ msgstr "source: erro en %s"
 msgid "source: file %s could not be sourced"
 msgstr "Non foi posible imprimi-las mensaxes"
 
-#: commands.c:973
-#, fuzzy
-msgid "spam: no matching pattern"
-msgstr "marcar mensaxes coincidintes cun patrón"
-
-#: commands.c:975
-#, fuzzy
-msgid "nospam: no matching pattern"
-msgstr "quitar marca a mensaxes coincidintes cun patrón"
-
 #: commands.c:1117 imap/imap.c:1242
 #, fuzzy, c-format
 msgid "Subscribed to %s"

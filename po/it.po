@@ -1006,14 +1006,6 @@ msgstr "source: errore in %s"
 msgid "source: file %s could not be sourced"
 msgstr "Impossibile stampare i messaggi"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: nessun modello corrispondente"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: nessun modello corrispondente"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

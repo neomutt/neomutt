@@ -988,14 +988,6 @@ msgstr "source: klaida %s"
 msgid "source: file %s could not be sourced"
 msgstr "source: byla %s negalėjo būti įtraukta"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: trūksta šablono"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: trūksta šablono"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

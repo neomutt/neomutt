@@ -996,14 +996,6 @@ msgstr "source: σφάλμα στο %s"
 msgid "source: file %s could not be sourced"
 msgstr "source: το αρχείο %s δεν μπόρεσε να συμπεριληθφει"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: κανένα μοτίβο που να ταιριάζει"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: κανένα μοτίβο που να ταιριάζει"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

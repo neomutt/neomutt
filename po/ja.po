@@ -990,14 +990,6 @@ msgstr "source: %s でエラー"
 msgid "source: file %s could not be sourced"
 msgstr "メッセージは印刷できなかった"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: 一致するパターンがない"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: 一致するパターンがない"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

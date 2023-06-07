@@ -987,14 +987,6 @@ msgstr "source: грешка на %s"
 msgid "source: file %s could not be sourced"
 msgstr "source: датотека %s се не може учитати"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: ниједна шема није задовољена"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: ниједна шема није задовољена"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

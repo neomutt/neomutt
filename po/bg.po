@@ -1014,16 +1014,6 @@ msgstr "source: грешка при %s"
 msgid "source: file %s could not be sourced"
 msgstr "Писмата не са отпечатани"
 
-#: commands.c:973
-#, fuzzy
-msgid "spam: no matching pattern"
-msgstr "маркира писма, отговарящи на шаблон"
-
-#: commands.c:975
-#, fuzzy
-msgid "nospam: no matching pattern"
-msgstr "премахва маркировката от писма, отговарящи на шаблон"
-
 #: commands.c:1117 imap/imap.c:1242
 #, fuzzy, c-format
 msgid "Subscribed to %s"
