@@ -57,6 +57,7 @@
 #include "mdata.h"
 #include "mdemail.h"
 #include "mx.h"
+#include "sort.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -169,16 +170,16 @@ cleanup:
 }
 
 /**
- * ch_compare - qsort() callback to sort characters
+ * maildir_sort_flags - Compare two flag characters - Implements ::sort_t - @ingroup sort_api
  * @param a First  character to compare
  * @param b Second character to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int ch_compare(const void *a, const void *b)
+static int maildir_sort_flags(const void *a, const void *b)
 {
-  return (int) (*((const char *) a) - *((const char *) b));
+  return mutt_numeric_cmp(*((const char *) a), *((const char *) b));
 }
 
 /**
@@ -209,7 +210,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
     snprintf(tmp, sizeof(tmp), "%s%s%s%s%s", e->flagged ? "F" : "", e->replied ? "R" : "",
              e->read ? "S" : "", e->deleted ? "T" : "", NONULL(flags));
     if (flags)
-      qsort(tmp, strlen(tmp), 1, ch_compare);
+      qsort(tmp, strlen(tmp), 1, maildir_sort_flags);
     snprintf(dest, destlen, ":2,%s", tmp);
   }
 }
@@ -492,7 +493,7 @@ static int maildir_sort_inode(const void *a, const void *b)
   const struct MdEmail *ma = *(struct MdEmail **) a;
   const struct MdEmail *mb = *(struct MdEmail **) b;
 
-  return ma->inode - mb->inode;
+  return mutt_numeric_cmp(ma->inode, mb->inode);
 }
 
 /**
