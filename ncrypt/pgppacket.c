@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include "mutt/lib.h"
 #include "pgppacket.h"
 
@@ -50,18 +49,11 @@ static size_t PacketBufLen = 0;         ///< Length of cached packet
  */
 static int read_material(size_t material, size_t *used, FILE *fp)
 {
-  if (*used + material >= PacketBufLen)
+  if ((*used + material) >= PacketBufLen)
   {
-    size_t nplen = *used + material + CHUNK_SIZE;
+    PacketBufLen = *used + material + CHUNK_SIZE;
 
-    unsigned char *p = realloc(PacketBuf, nplen);
-    if (!p)
-    {
-      perror("realloc");
-      return -1;
-    }
-    PacketBufLen = nplen;
-    PacketBuf = p;
+    mutt_mem_realloc(&PacketBuf, PacketBufLen);
   }
 
   if (fread(PacketBuf + *used, 1, material, fp) < material)
