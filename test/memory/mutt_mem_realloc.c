@@ -34,4 +34,20 @@ void test_mutt_mem_realloc(void)
     mutt_mem_realloc(NULL, 10);
     TEST_CHECK_(1, "mutt_mem_realloc(NULL, 10)");
   }
+
+  {
+    void *ptr = mutt_mem_malloc(128);
+    mutt_mem_realloc(&ptr, 256);
+    TEST_CHECK_(1, "mutt_mem_realloc(&ptr, 256)");
+    TEST_CHECK(ptr != NULL);
+    FREE(&ptr);
+  }
+
+  {
+    void *ptr = mutt_mem_malloc(128);
+    mutt_mem_realloc(&ptr, 0);
+    TEST_CHECK_(1, "mutt_mem_realloc(&ptr, 0)");
+    TEST_CHECK(ptr == NULL);
+    FREE(&ptr);
+  }
 }
