@@ -182,3 +182,54 @@ void mutt_mem_reallocarray(void *pptr, size_t nmemb, size_t size)
 
   *pp = r;
 }
+
+/**
+ * mutt_mem_recallocarray - resize clear allocation array
+ * @param p Memory block to resize
+ * @param old_n Old number of elements
+ * @param n Requested number of elements
+ * @param size Element size
+ *
+ * @note On error, this function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * If the new size is zero, the block will be freed.
+ *
+ * Caveats:
+ *	Unlike recallocarray(3) from OpenBSD,
+ *	we don't use explicit_bzero(3).
+ *	Sensitive data is not securely erased by this API.
+ */
+void *mutt_mem_recallocarray(void *p, size_t old_n, size_t n, size_t size)
+{
+  mutt_mem_reallocarray(&p, n, size);
+
+  if (n > old_n)
+  {
+    unsigned char *cp = p;
+    memset(cp + old_n, '\0', n - old_n);
+  }
+
+  return p;
+}
+
+/**
+ * mutt_mem_recalloc - resize clear allocation
+ * @param p Memory block to resize
+ * @param old_size Old size
+ * @param size Requested size
+ *
+ * @note On error, this function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * If the new size is zero, the block will be freed.
+ *
+ * Caveats:
+ *	Unlike recallocarray(3) from OpenBSD,
+ *	we don't use explicit_bzero(3).
+ *	Sensitive data is not securely erased by this API.
+ */
+void *mutt_mem_recalloc(void *p, size_t old_size, size_t size)
+{
+  return mutt_mem_recallocarray(p, old_size, size, 1);
+}
