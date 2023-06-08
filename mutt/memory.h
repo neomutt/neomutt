@@ -58,6 +58,7 @@ void *mutt_mem_malloc(size_t size);
 void *mutt_mem_mallocarray(size_t nmemb, size_t size);
 void  mutt_mem_realloc(void *pptr, size_t size);
 void  mutt_mem_reallocarray(void *pptr, size_t nmemb, size_t size);
+void  mutt_mem_recalloc(void *ptr, size_t cur_size, size_t new_size);
 
 #define FREE(x) mutt_mem_free(x)
 
