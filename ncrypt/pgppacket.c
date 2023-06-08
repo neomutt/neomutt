@@ -66,7 +66,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
 
   if (fread(PacketBuf + *used, 1, material, fp) < material)
   {
-    perror("fread");
+    mutt_perror("fread");
     return -1;
   }
 
@@ -103,7 +103,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (fread(&ctb, 1, 1, fp) < 1)
   {
     if (!feof(fp))
-      perror("fread");
+      mutt_perror("fread");
     goto bail;
   }
 
@@ -122,7 +122,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
     {
       if (fread(&b, 1, 1, fp) < 1)
       {
-        perror("fread");
+        mutt_perror("fread");
         goto bail;
       }
 
@@ -136,7 +136,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
         material = (b - 192) * 256;
         if (fread(&b, 1, 1, fp) < 1)
         {
-          perror("fread");
+          mutt_perror("fread");
           goto bail;
         }
         material += b + 192;
@@ -152,7 +152,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
         unsigned char buf[4];
         if (fread(buf, 4, 1, fp) < 1)
         {
-          perror("fread");
+          mutt_perror("fread");
           goto bail;
         }
         material = (size_t) buf[0] << 24;
@@ -179,7 +179,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
       {
         if (fread(&b, 1, 1, fp) < 1)
         {
-          perror("fread");
+          mutt_perror("fread");
           goto bail;
         }
 
@@ -202,7 +202,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
         {
           if (fread(&b, 1, 1, fp) < 1)
           {
-            perror("fread");
+            mutt_perror("fread");
             goto bail;
           }
 
