@@ -497,6 +497,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_mem_free)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_mem_malloc)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mem_realloc)                                     \
+  NEOMUTT_TEST_ITEM(test_mutt_mem_realloc_zero)                                \
                                                                                \
   /* neomutt */                                                                \
   NEOMUTT_TEST_ITEM(test_neomutt_account_add)                                  \

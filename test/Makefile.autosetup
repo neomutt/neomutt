@@ -447,7 +447,8 @@ MD5_OBJS	= test/md5/common.o \
 MEMORY_OBJS	= test/memory/mutt_mem_calloc.o \
 		  test/memory/mutt_mem_free.o \
 		  test/memory/mutt_mem_malloc.o \
-		  test/memory/mutt_mem_realloc.o
+		  test/memory/mutt_mem_realloc.o \
+		  test/memory/mutt_mem_realloc_zero.o
 
 NEOMUTT_OBJS	= test/neo/neomutt_account_add.o \
 		  test/neo/neomutt_account_remove.o \
