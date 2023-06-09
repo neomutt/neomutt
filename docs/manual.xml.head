@@ -16654,84 +16654,6 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
             'messages' or nm_query_type.
           </para>
         </sect3>
-
-        <sect3 id="notmuch-vfolder-format">
-          <title>Format String for the Notmuch Browser</title>
-          <para>
-            Default:
-            <literallayout>
-              <literal>%2C %?n?%4n/&amp; ?%4m %f</literal>
-            </literallayout>
-          </para>
-          <para>
-            This variable allows you to customize the browser display to your
-            personal taste. This string is similar to
-            <link linkend="index-format">$index_format</link>, but has its own
-            set of <literal>printf(3)</literal>-like sequences:
-          </para>
-          <informaltable>
-            <tgroup cols="2">
-              <tbody>
-                <row>
-                  <entry>%C</entry>
-                  <entry>
-                    current file number
-                  </entry>
-                </row>
-                <row>
-                  <entry>%f</entry>
-                  <entry>
-                    folder name (description)
-                  </entry>
-                </row>
-                <row>
-                  <entry>%m</entry>
-                  <entry>
-                    number of messages in the mailbox&#160;*
-                  </entry>
-                </row>
-                <row>
-                  <entry>%n</entry>
-                  <entry>
-                    number of unread messages in the mailbox&#160;*
-                  </entry>
-                </row>
-                <row>
-                  <entry>%N</entry>
-                  <entry>
-                    "N" if mailbox has new mail, " " (space) otherwise
-                  </entry>
-                </row>
-                <row>
-                  <entry>%&gt;X</entry>
-                  <entry>
-                    right justify the rest of the string and pad with character
-                    <quote>X</quote>
-                  </entry>
-                </row>
-                <row>
-                  <entry>%|X</entry>
-                  <entry>
-                    pad to the end of the line with character <quote>X</quote>
-                  </entry>
-                </row>
-                <row>
-                  <entry>%*X</entry>
-                  <entry>
-                    soft-fill with character <quote>X</quote> as pad
-                  </entry>
-                </row>
-              </tbody>
-            </tgroup>
-          </informaltable>
-          <para>
-            For an explanation of <quote>soft-fill</quote>, see the
-            <link linkend="index-format">$index_format</link> documentation.
-          </para>
-          <para>
-            * = can be optionally printed if nonzero
-          </para>
-        </sect3>
       </sect2>
 
       <sect2 id="notmuch-variables">
@@ -16790,6 +16712,12 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry></entry>
               </row>
               <row>
+                <entry><literal>nm_flagged_tag</literal></entry>
+                <entry>string</entry>
+                <entry><literal>flagged</literal></entry>
+                <entry></entry>
+              </row>
+              <row>
                 <entry><literal>nm_open_timeout</literal></entry>
                 <entry>number</entry>
                 <entry><literal>5</literal></entry>
@@ -16800,6 +16728,66 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>string</entry>
                 <entry><literal>messages</literal></entry>
                 <entry></entry>
+              </row>
+              <row>
+                <entry><literal>nm_query_window_current_position</literal></entry>
+                <entry>number</entry>
+                <entry><literal>0</literal></entry>
+                <entry>Position of current search window</entry>
+              </row>
+              <row>
+                <entry><literal>nm_query_window_current_search</literal></entry>
+                <entry>string</entry>
+                <entry>(empty)</entry>
+                <entry>Current search parameters</entry>
+              </row>
+              <row>
+                <entry><literal>nm_query_window_duration</literal></entry>
+                <entry>number</entry>
+                <entry><literal>0</literal></entry>
+                <entry>
+                  Duration between start and end dates for windowed notmuch query.
+                  This corresponds to a bounded notmuch <literal>date:</literal> query.
+                  See <literal>notmuch-search-terms</literal> manual page for more info.
+
+                  Value of <literal>0</literal> disables windowed queries unless
+                  <literal>nm_query_window_enable=yes</literal>
+                </entry>
+              </row>
+              <row>
+                <entry><literal>nm_query_window_enable</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>no</literal></entry>
+                <entry>
+                  Enables windowed notmuch queries for
+                  <literal>nm_query_window_duration = 0</literal>
+                </entry>
+              </row>
+              <row>
+                <entry><literal>nm_query_window_or_terms</literal></entry>
+                <entry>string</entry>
+                <entry>(empty)</entry>
+                <entry>
+                  Additional notmuch search terms to always include in the
+                  window even if they're outside the date range. This turns the
+                  window from <literal>date:...</literal> to
+                  <literal>date:... or (additional search terms.)</literal>
+
+                  For example, to always include flagged, unread emails, set to
+                  <literal>tag:flagged and tag:unread</literal>
+                </entry>
+              </row>
+              <row>
+                <entry><literal>nm_query_window_timebase</literal></entry>
+                <entry>string</entry>
+                <entry><literal>week</literal></entry>
+                <entry>
+                  Time base for windowed notmuch queries.
+
+                  Must be one of: <literal>hour</literal>, <literal>day</literal>,
+                  <literal>week</literal>, <literal>month</literal>, or
+                  <literal>year</literal>
+                </entry>
               </row>
               <row>
                 <entry><literal>nm_record</literal></entry>
@@ -16826,54 +16814,6 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
                 <entry>
                   Unnecessary since <link linkend="spool-file">$spool_file</link>
                   supports mailbox descriptions.
-                </entry>
-              </row>
-              <row>
-                <entry><literal>nm_query_window_enable</literal></entry>
-                <entry>boolean</entry>
-                <entry><literal>no</literal></entry>
-                <entry>
-                  Enables windowed notmuch queries for
-                  <literal>nm_query_window_duration = 0</literal>
-                </entry>
-              </row>
-              <row>
-                <entry><literal>nm_query_window_duration</literal></entry>
-                <entry>number</entry>
-                <entry><literal>0</literal></entry>
-                <entry>
-                  Duration between start and end dates for windowed notmuch query.
-                  This corresponds to a bounded notmuch <literal>date:</literal> query.
-                  See <literal>notmuch-search-terms</literal> manual page for more info.
-
-                  Value of <literal>0</literal> disables windowed queries unless
-                  <literal>nm_query_window_enable=yes</literal>
-                </entry>
-              </row>
-              <row>
-                <entry><literal>nm_query_window_or_terms</literal></entry>
-                <entry>string</entry>
-                <entry><literal>(empty)</literal></entry>
-                <entry>
-                  Additional notmuch search terms to always include in the
-                  window even if they're outside the date range. This turns the
-                  window from <literal>date:...</literal> to
-                  <literal>date:... or (additional search terms.)</literal>
-
-                  For example, to always include flagged, unread emails, set to
-                  <literal>tag:flagged and tag:unread</literal>
-                </entry>
-              </row>
-              <row>
-                <entry><literal>nm_query_window_timebase</literal></entry>
-                <entry>string</entry>
-                <entry><literal>week</literal></entry>
-                <entry>
-                  Time base for windowed notmuch queries.
-
-                  Must be one of: <literal>hour</literal>, <literal>day</literal>,
-                  <literal>week</literal>, <literal>month</literal>, or
-                  <literal>year</literal>
                 </entry>
               </row>
             </tbody>
