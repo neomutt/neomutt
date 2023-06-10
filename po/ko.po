@@ -7910,6 +7910,3 @@ msgstr "컴파일 선택사항:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "컴파일 선택사항:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "여기에 있는 것들은 첨부 과정에서 실패한 것들입니다."

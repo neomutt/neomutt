@@ -7752,6 +7752,3 @@ msgstr ""
 #: pattern/compile.c:954
 msgid "No Context"
 msgstr ""
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "つまり添付ファイルの作成に失敗したということだ"

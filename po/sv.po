@@ -7930,6 +7930,3 @@ msgstr "Kompileringsval:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Kompileringsval:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Vad vi har här är ett misslyckande att skapa en bilaga."

@@ -8008,6 +8008,3 @@ msgstr "Opcións de compilación:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opcións de compilación:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "O que temos aquí é un fallo ó face-lo adxunto"

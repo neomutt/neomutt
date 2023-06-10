@@ -7871,6 +7871,3 @@ msgstr "Opsi2 saat kompilasi:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opsi2 saat kompilasi:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Gagal membuat lampiran, nih..."

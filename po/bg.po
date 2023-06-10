@@ -7943,6 +7943,3 @@ msgstr ""
 #: pattern/compile.c:954
 msgid "No Context"
 msgstr ""
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Грешка при създаване на приложението"

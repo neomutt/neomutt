@@ -7653,13 +7653,3 @@ msgstr "Parametry kompilacji:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Opcje debugowania:"
-
-#, c-format
-#~ msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-#~ msgstr "'bright', 'alert', 'light' są dozwolone tylko dla kolorów z nazwami: %s"
-
-#~ msgid "No Context"
-#~ msgstr "Brak Kontekstu"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Mamy tu błąd tworzenia załącznika"

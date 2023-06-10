@@ -7656,13 +7656,3 @@ msgstr "Kompiliavimo parinktys:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Derinimo parinktys:"
-
-#, c-format
-#~ msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-#~ msgstr "'bright', 'alert', 'light' yra leidžiami tik vardinėms spalvoms: %s"
-
-#~ msgid "No Context"
-#~ msgstr "Nėra konteksto"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Čia turėtų būti priedas, tačiau jo nepavyko padaryti"

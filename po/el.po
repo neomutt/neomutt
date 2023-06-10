@@ -7876,6 +7876,3 @@ msgstr "Παράμετροι μεταγλώττισης:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Προκαθορισμένοι παράμετροι:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Αποτυχία κατά την δημιουργία συννημένου"

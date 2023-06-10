@@ -7906,6 +7906,3 @@ msgstr "Konpilazio aukerak:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Konpilazio aukerak:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Hemen duguna gehigarria sortzerakoan huts bat da"

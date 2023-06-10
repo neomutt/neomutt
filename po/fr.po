@@ -7948,9 +7948,3 @@ msgstr "Options de compilation :"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Options par défaut :"
-
-#~ msgid "No Context"
-#~ msgstr "Pas de contexte"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Nous sommes en présence d'un échec de fabrication d'un attachement"

@@ -7670,9 +7670,3 @@ msgstr "Přeloženo s volbami:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Volby pro vývoj:"
-
-#~ msgid "No Context"
-#~ msgstr "Chybí kontext"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Vytvoření přílohy se nezdařilo."

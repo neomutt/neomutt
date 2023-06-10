@@ -7864,6 +7864,3 @@ msgstr "Opties tijdens compileren:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opties tijdens compileren:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "De bijlage kan niet worden aangemaakt"

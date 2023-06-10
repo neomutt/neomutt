@@ -7565,13 +7565,3 @@ msgstr "Einstellungen bei der Kompilierung:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Entwickleroptionen:"
-
-#, c-format
-#~ msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-#~ msgstr "Nur 'bright', 'alert', 'light' als Farbbezeichnungen erlaubt: %s"
-
-#~ msgid "No Context"
-#~ msgstr "Kein Kontext"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Anhang kann nicht erzeugt werden"

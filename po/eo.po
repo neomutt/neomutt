@@ -7758,6 +7758,3 @@ msgstr "Parametroj de la tradukaĵo:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Parametroj de la tradukaĵo:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Malsukcesis krei kunsendaĵon"

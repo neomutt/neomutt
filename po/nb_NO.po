@@ -7616,9 +7616,3 @@ msgstr "Kompileringstilvalg:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Utviklervalg:"
-
-#~ msgid "No Context"
-#~ msgstr "Ingen kontekst"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Det vi har her er et problem med å legge til et vedlegg"

@@ -7663,13 +7663,3 @@ msgstr "Опције за компајлирање:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Опције при изградњи:"
-
-#, c-format
-#~ msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-#~ msgstr "„bright“, „alert“, „light“ је дозвољено само за именоване боје: %s"
-
-#~ msgid "No Context"
-#~ msgstr "Нема контекста"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "На делу је немогућност креирања прилога"

@@ -7673,9 +7673,3 @@ msgstr "Käännösaikaiset asetukset:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Oletusasetukset:"
-
-#~ msgid "No Context"
-#~ msgstr "Ei kontekstia"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Tässä on epäonnistunut yritys liitteen tuottamisessa"

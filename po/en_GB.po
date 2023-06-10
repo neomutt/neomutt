@@ -7624,13 +7624,3 @@ msgstr "Compile options:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Devel options:"
-
-#, c-format
-#~ msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-#~ msgstr "'bright', 'alert', 'light' are only allowed for named colors: %s"
-
-#~ msgid "No Context"
-#~ msgstr "No Context"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "What we have here is a failure to make an attachment"

@@ -8012,6 +8012,3 @@ msgstr "Roghanna tiomsaithe:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Roghanna tiomsaithe:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Ní féidir iatán a chruthú"

@@ -7659,9 +7659,3 @@ msgstr "Opciones especificadas al compilar:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Opciones de Desarrollo:"
-
-#~ msgid "No Context"
-#~ msgstr "No hay contexto"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Lo que tenemos aquí es un fallo al adjuntar"

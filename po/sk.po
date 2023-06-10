@@ -7654,9 +7654,3 @@ msgstr "Preložené s voľbami:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Vobľy pre vývoj:"
-
-#~ msgid "No Context"
-#~ msgstr "Chýba Kontext"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Vytvorenie prílohy sa nezdarilo"

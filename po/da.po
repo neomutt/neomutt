@@ -7812,6 +7812,3 @@ msgstr "Tilvalg ved oversættelsen:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Tilvalg ved oversættelsen:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Det er ikke muligt at lave et bilag"

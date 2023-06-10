@@ -7613,13 +7613,3 @@ msgstr "Fordítási opciók:"
 #: version.c:515
 msgid "Devel options:"
 msgstr "Fejlesztői opciók:"
-
-#, c-format
-#~ msgid "'bright', 'alert', 'light' are only allowed for named colors: %s"
-#~ msgstr "Csak a 'világos', 'riasztás', 'átlátszó' kifejezések megengedettek a szín neveknek: %s"
-
-#~ msgid "No Context"
-#~ msgstr "Nincs kontextus"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Hiba a melléklet csatolásakor"

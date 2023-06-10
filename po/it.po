@@ -7897,6 +7897,3 @@ msgstr "Opzioni di compilazione:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opzioni di compilazione:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Quel che abbiamo qui è l'impossibilità di fare un allegato"

@@ -7944,6 +7944,3 @@ msgstr "Kompileerimise võtmed:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Kompileerimise võtmed:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "See mis siin nüüd on, on viga lisa loomisel"

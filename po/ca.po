@@ -8081,8 +8081,3 @@ msgstr "Opcions de compilació:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opcions de compilació:"
-
-# ivb (2001/11/20)
-# ivb  Curiosa forma d’emetre un error…
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "El que ocorre aquí és que no s’ha pogut incloure una adjunció."

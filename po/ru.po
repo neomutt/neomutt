@@ -7777,6 +7777,3 @@ msgstr "Параметры компиляции:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Параметры по умолчанию:"
-
-#~ msgid "What we have here is a failure to make an attachment"
-#~ msgstr "Не удалось создать вложение"
