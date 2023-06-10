@@ -57,6 +57,7 @@
 #include "mdata.h"
 #include "mdemail.h"
 #include "mx.h"
+#include "sort.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -69,7 +70,7 @@
 
 struct Progress;
 
-// Flags for maildir_mbox_check()
+// Flags for maildir_check()
 #define MMC_NO_DIRS 0        ///< No directories changed
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
@@ -169,16 +170,16 @@ cleanup:
 }
 
 /**
- * ch_compare - qsort() callback to sort characters
+ * maildir_sort_flags - Compare two flag characters - Implements ::sort_t - @ingroup sort_api
  * @param a First  character to compare
  * @param b Second character to compare
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int ch_compare(const void *a, const void *b)
+static int maildir_sort_flags(const void *a, const void *b)
 {
-  return (int) (*((const char *) a) - *((const char *) b));
+  return mutt_numeric_cmp(*((const char *) a), *((const char *) b));
 }
 
 /**
@@ -209,7 +210,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
     snprintf(tmp, sizeof(tmp), "%s%s%s%s%s", e->flagged ? "F" : "", e->replied ? "R" : "",
              e->read ? "S" : "", e->deleted ? "T" : "", NONULL(flags));
     if (flags)
-      qsort(tmp, strlen(tmp), 1, ch_compare);
+      qsort(tmp, strlen(tmp), 1, maildir_sort_flags);
     snprintf(dest, destlen, ":2,%s", tmp);
   }
 }
@@ -492,7 +493,7 @@ static int maildir_sort_inode(const void *a, const void *b)
   const struct MdEmail *ma = *(struct MdEmail **) a;
   const struct MdEmail *mb = *(struct MdEmail **) b;
 
-  return ma->inode - mb->inode;
+  return mutt_numeric_cmp(ma->inode, mb->inode);
 }
 
 /**
@@ -709,6 +710,7 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
   progress_free(&progress);
 
   maildir_move_to_mailbox(m, &mda);
+  maildirarray_clear(&mda);
 
   if (!mdata->mh_umask)
     mdata->mh_umask = mh_umask(m);
@@ -1158,7 +1160,9 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 }
 
 /**
- * maildir_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
+ * maildir_check - Check for new mail
+ * @param m Mailbox
+ * @retval enum #MxStatus
  *
  * This function handles arrival of new mail and reopening of maildir folders.
  * The basic idea here is we check to see if either the new or cur
@@ -1167,7 +1171,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
  * already knew about.  We don't treat either subdirectory differently, as mail
  * could be copied directly into the cur directory from another agent.
  */
-static enum MxStatus maildir_mbox_check(struct Mailbox *m)
+static enum MxStatus maildir_check(struct Mailbox *m)
 {
   struct stat st_new = { 0 }; /* status of the "new" subdirectory */
   struct stat st_cur = { 0 }; /* status of the "cur" subdirectory */
@@ -1175,8 +1179,7 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
   bool occult = false;        /* messages were removed from the mailbox */
   int num_new = 0;            /* number of new messages added to the mailbox */
   bool flags_changed = false; /* message flags were changed in the mailbox */
-  struct HashTable *fnames = NULL; /* hash table for quickly looking up the base filename
-                                 for a maildir message */
+  struct HashTable *hash_names = NULL; // Hash Table: "base-filename" -> MdEmail
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   /* XXX seems like this check belongs in mx_mbox_check() rather than here.  */
@@ -1240,7 +1243,7 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.  */
-  fnames = mutt_hash_new(ARRAY_SIZE(&mda), MUTT_HASH_NO_FLAGS);
+  hash_names = mutt_hash_new(ARRAY_SIZE(&mda), MUTT_HASH_NO_FLAGS);
 
   struct MdEmail *md = NULL;
   struct MdEmail **mdp = NULL;
@@ -1249,7 +1252,7 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
     md = *mdp;
     maildir_canon_filename(buf, md->email->path);
     md->canon_fname = buf_strdup(buf);
-    mutt_hash_insert(fnames, md->canon_fname, md);
+    mutt_hash_insert(hash_names, md->canon_fname, md);
   }
 
   /* check for modifications and adjust flags */
@@ -1259,13 +1262,11 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
     if (!e)
       break;
 
-    e->active = false;
     maildir_canon_filename(buf, e->path);
-    md = mutt_hash_find(fnames, buf_string(buf));
+    md = mutt_hash_find(hash_names, buf_string(buf));
     if (md && md->email)
     {
       /* message already exists, merge flags */
-      e->active = true;
 
       /* check to see if the message has moved to a different
        * subdirectory.  If so, update the associated filename.  */
@@ -1309,12 +1310,11 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
       /* This message resides in a subdirectory which was not
        * modified, so we assume that it is still present and
        * unchanged.  */
-      e->active = true;
     }
   }
 
   /* destroy the file name hash */
-  mutt_hash_free(&fnames);
+  mutt_hash_free(&hash_names);
 
   /* If we didn't just get new mail, update the tables. */
   if (occult)
@@ -1325,6 +1325,8 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
 
   /* Incorporate new messages */
   num_new = maildir_move_to_mailbox(m, &mda);
+  maildirarray_clear(&mda);
+
   if (num_new > 0)
   {
     mailbox_changed(m, NT_MAILBOX_INVALID);
@@ -1341,6 +1343,14 @@ static enum MxStatus maildir_mbox_check(struct Mailbox *m)
   if (flags_changed)
     return MX_STATUS_FLAGS;
   return MX_STATUS_OK;
+}
+
+/**
+ * maildir_mbox_check - Check for new mail - Implements MxOps::mbox_check() - @ingroup mx_mbox_check
+ */
+static enum MxStatus maildir_mbox_check(struct Mailbox *m)
+{
+  return maildir_check(m);
 }
 
 /**
@@ -1377,7 +1387,7 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
  */
 static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 {
-  enum MxStatus check = maildir_mbox_check(m);
+  enum MxStatus check = maildir_check(m);
   if (check == MX_STATUS_ERROR)
     return check;
 
