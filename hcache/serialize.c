@@ -65,7 +65,7 @@ void lazy_realloc(void *ptr, size_t size)
  * @param[in,out] off Offset into the blob
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_int(unsigned int i, unsigned char *d, int *off)
+unsigned char *serial_dump_int(const unsigned int i, unsigned char *d, int *off)
 {
   lazy_realloc(&d, *off + sizeof(int));
   memcpy(d + *off, &i, sizeof(int));
@@ -81,7 +81,7 @@ unsigned char *serial_dump_int(unsigned int i, unsigned char *d, int *off)
  * @param[in,out] off Offset into the blob
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_uint32_t(uint32_t s, unsigned char *d, int *off)
+unsigned char *serial_dump_uint32_t(const uint32_t s, unsigned char *d, int *off)
 {
   lazy_realloc(&d, *off + sizeof(uint32_t));
   memcpy(d + *off, &s, sizeof(uint32_t));
@@ -212,8 +212,8 @@ void serial_restore_char(char **c, const unsigned char *d, int *off, bool conver
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_address(struct AddressList *al, unsigned char *d,
-                                   int *off, bool convert)
+unsigned char *serial_dump_address(const struct AddressList *al,
+                                   unsigned char *d, int *off, bool convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -282,7 +282,8 @@ void serial_restore_address(struct AddressList *al, const unsigned char *d,
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_stailq(struct ListHead *l, unsigned char *d, int *off, bool convert)
+unsigned char *serial_dump_stailq(const struct ListHead *l, unsigned char *d,
+                                  int *off, bool convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -331,7 +332,8 @@ void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_buffer(struct Buffer *buf, unsigned char *d, int *off, bool convert)
+unsigned char *serial_dump_buffer(const struct Buffer *buf, unsigned char *d,
+                                  int *off, bool convert)
 {
   if (!buf)
   {
@@ -380,8 +382,8 @@ void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off,
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_parameter(struct ParameterList *pl, unsigned char *d,
-                                     int *off, bool convert)
+unsigned char *serial_dump_parameter(const struct ParameterList *pl,
+                                     unsigned char *d, int *off, bool convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -434,7 +436,7 @@ void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_body(struct Body *c, unsigned char *d, int *off, bool convert)
+unsigned char *serial_dump_body(const struct Body *c, unsigned char *d, int *off, bool convert)
 {
   struct Body nb;
 
@@ -500,8 +502,8 @@ void serial_restore_body(struct Body *c, const unsigned char *d, int *off, bool 
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_envelope(struct Envelope *env, unsigned char *d,
-                                    int *off, bool convert)
+unsigned char *serial_dump_envelope(const struct Envelope *env,
+                                    unsigned char *d, int *off, bool convert)
 {
   d = serial_dump_address(&env->return_path, d, off, convert);
   d = serial_dump_address(&env->from, d, off, convert);
