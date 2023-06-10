@@ -23,8 +23,44 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
 
 void test_mutt_mem_calloc(void)
 {
   // void *mutt_mem_calloc(size_t nmemb, size_t size);
+
+  {
+    void *ptr = mutt_mem_calloc(0, 0);
+    TEST_CHECK(ptr == NULL);
+  }
+
+  {
+    void *ptr = mutt_mem_calloc(0, 1024);
+    TEST_CHECK(ptr == NULL);
+  }
+
+  {
+    void *ptr = mutt_mem_calloc(1024, 0);
+    TEST_CHECK(ptr == NULL);
+  }
+
+  {
+    size_t num = 64;
+    size_t size = 128;
+
+    void *ptr = mutt_mem_calloc(num, size);
+    TEST_CHECK(ptr != NULL);
+
+    unsigned char *cp = ptr;
+    for (size_t i = 0; i < (num * size); i++)
+    {
+      if (cp[i] != '\0')
+      {
+        TEST_CHECK_(false, "mem[%zu] = 0x%02x\n", cp[i]);
+        break;
+      }
+    }
+
+    FREE(&ptr);
+  }
 }

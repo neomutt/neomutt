@@ -1002,14 +1002,6 @@ msgstr "source: error pada %s"
 msgid "source: file %s could not be sourced"
 msgstr "Surat-surat tidak dapat dicetak"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: tidak ada pola yg cocok"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: tidak ada pola yg cocok"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

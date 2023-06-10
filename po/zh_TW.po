@@ -1010,16 +1010,6 @@ msgstr "source：錯誤發生在 %s"
 msgid "source: file %s could not be sourced"
 msgstr "信件未能列印出來"
 
-#: commands.c:973
-#, fuzzy
-msgid "spam: no matching pattern"
-msgstr "標記符合某個格式的信件"
-
-#: commands.c:975
-#, fuzzy
-msgid "nospam: no matching pattern"
-msgstr "反標記符合某個格式的信件"
-
 #: commands.c:1117 imap/imap.c:1242
 #, fuzzy, c-format
 msgid "Subscribed to %s"

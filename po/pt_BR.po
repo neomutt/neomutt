@@ -985,14 +985,6 @@ msgstr "fonte: erro em %s"
 msgid "source: file %s could not be sourced"
 msgstr "fonte: arquivo %s não pôde ser importado"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: nenhuma coincidência com o padrão"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: nenhuma coincidência com o padrão"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

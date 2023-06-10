@@ -984,14 +984,6 @@ msgstr "source: Feil ved %s"
 msgid "source: file %s could not be sourced"
 msgstr "source: klarte ikke å inkludere %s"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: ingen mønster stemmer overens"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: ingen mønster stemmer overens"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

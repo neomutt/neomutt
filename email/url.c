@@ -378,7 +378,7 @@ int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
     if (strchr(url->host, ':'))
       buf_add_printf(buf, "[%s]", url->host);
     else
-      buf_add_printf(buf, "%s", url->host);
+      buf_addstr(buf, url->host);
 
     if (url->port)
       buf_add_printf(buf, ":%hu/", url->port);

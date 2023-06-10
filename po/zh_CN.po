@@ -988,14 +988,6 @@ msgstr "source：%s 有错误"
 msgid "source: file %s could not be sourced"
 msgstr "source：文件 %s 无法被加载"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "垃圾邮件：无匹配的模式"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "去掉垃圾邮件：无匹配的模式"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

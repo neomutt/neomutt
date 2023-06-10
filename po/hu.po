@@ -986,14 +986,6 @@ msgstr "feldolgozás: hiba a %s-nál"
 msgid "source: file %s could not be sourced"
 msgstr "feldolgozás: a %s file-t nem sikerült feldolgozni"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "levélszemét: nincs megfelelő minta"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nem-levélszemét: nincs megfelelő minta"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

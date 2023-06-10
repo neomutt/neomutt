@@ -995,14 +995,6 @@ msgstr "source: virhe kohteessa %s"
 msgid "source: file %s could not be sourced"
 msgstr "source: tiedostoa %s ei voi ladata"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: ei täsmää"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: ei täsmää"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

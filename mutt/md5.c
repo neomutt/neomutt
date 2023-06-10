@@ -78,7 +78,7 @@ static void mutt_md5_process_block(const void *buffer, size_t len, struct Md5Ctx
    * double word increment. */
   md5ctx->total[0] += len;
   if (md5ctx->total[0] < len)
-    md5ctx->total[1]++;
+    md5ctx->total[1]++; // LCOV_EXCL_LINE
 
   /* Process all bytes in the buffer with 64 bytes in each round of the loop. */
   while (words < endp)
@@ -294,7 +294,7 @@ void *mutt_md5_finish_ctx(struct Md5Ctx *md5ctx, void *resbuf)
   /* Now count remaining bytes. */
   md5ctx->total[0] += bytes;
   if (md5ctx->total[0] < bytes)
-    md5ctx->total[1]++;
+    md5ctx->total[1]++; // LCOV_EXCL_LINE
 
   /* Put the 64-bit file length in *bits* at the end of the buffer. */
   md5ctx->buffer[size - 2] = SWAP(md5ctx->total[0] << 3);
@@ -437,11 +437,11 @@ void mutt_md5_process_bytes(const void *buf, size_t buflen, struct Md5Ctx *md5ct
     memcpy(&((char *) md5ctx->buffer)[left_over], buf, buflen);
     left_over += buflen;
     if (left_over >= 64)
-    {
+    { // LCOV_EXCL_START
       mutt_md5_process_block(md5ctx->buffer, 64, md5ctx);
       left_over -= 64;
       memmove(md5ctx->buffer, &md5ctx->buffer[16], left_over);
-    }
+    } // LCOV_EXCL_STOP
     md5ctx->buflen = left_over;
   }
 }

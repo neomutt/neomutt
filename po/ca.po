@@ -1064,14 +1064,6 @@ msgstr "source: Error a «%s»."
 msgid "source: file %s could not be sourced"
 msgstr "No s’han pogut imprimir els missatges"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: No s’ha indicat el patró de concordança."
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: No s’ha indicat el patró de concordança."
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

@@ -39,5 +39,13 @@ void test_mutt_mem_free(void)
     void *ptr = NULL;
     mutt_mem_free(&ptr);
     TEST_CHECK_(1, "mutt_mem_free(&ptr)");
+    TEST_CHECK(ptr == NULL);
+  }
+
+  {
+    void *ptr = mutt_mem_malloc(128);
+    mutt_mem_free(&ptr);
+    TEST_CHECK_(1, "mutt_mem_free(&ptr)");
+    TEST_CHECK(ptr == NULL);
   }
 }

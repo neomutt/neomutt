@@ -680,7 +680,7 @@ void get_colorid_name(unsigned int cid, struct Buffer *buf)
 
   name = mutt_map_get_name(cid, ColorFields);
   if (name)
-    buf_printf(buf, "%s", name);
+    buf_addstr(buf, name);
   else
     buf_printf(buf, "UNKNOWN %d", cid);
 }

@@ -1004,14 +1004,6 @@ msgstr "jatorria: %s-n errorea"
 msgid "source: file %s could not be sourced"
 msgstr "Ezin dira mezuak inprimatu"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "zabor-posta: ez da patroia aurkitu"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "ez zabor-posta: ez da patroia aurkitu"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

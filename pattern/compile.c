@@ -75,9 +75,9 @@ static bool eat_regex(struct Pattern *pat, PatternCompFlags flags,
     buf_printf(err, _("Error in expression: %s"), pexpr);
     goto out;
   }
-  if (buf->data[0] == '\0')
+  if (buf_is_empty(buf))
   {
-    buf_printf(err, "%s", _("Empty expression"));
+    buf_addstr(err, _("Empty expression"));
     goto out;
   }
 
@@ -151,7 +151,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   const char *const c_external_search_command = cs_subset_string(NeoMutt->sub, "external_search_command");
   if (!c_external_search_command)
   {
-    buf_printf(err, "%s", _("No search command defined"));
+    buf_addstr(err, _("No search command defined"));
     goto out;
   }
 
@@ -164,7 +164,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   }
   if (*tok_buf->data == '\0')
   {
-    buf_printf(err, "%s", _("Empty expression"));
+    buf_addstr(err, _("Empty expression"));
     goto out;
   }
 
@@ -726,7 +726,7 @@ static bool eat_date(struct Pattern *pat, PatternCompFlags flags,
 
   if (buf_is_empty(tmp))
   {
-    buf_printf(err, "%s", _("Empty expression"));
+    buf_addstr(err, _("Empty expression"));
     goto out;
   }
 
@@ -1059,7 +1059,7 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
         {
           if (ps.dptr[0] == '\0')
           {
-            buf_printf(err, "%s", _("missing parameter"));
+            buf_addstr(err, _("missing parameter"));
             goto cleanup;
           }
           switch (entry->eat_arg)

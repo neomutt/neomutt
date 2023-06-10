@@ -1004,14 +1004,6 @@ msgstr "source: fel vid %s"
 msgid "source: file %s could not be sourced"
 msgstr "Meddelanden kunde inte skrivas ut"
 
-#: commands.c:973
-msgid "spam: no matching pattern"
-msgstr "spam: inget matchande mönster"
-
-#: commands.c:975
-msgid "nospam: no matching pattern"
-msgstr "nospam: inget matchande mönster"
-
 #: commands.c:1117 imap/imap.c:1242
 #, c-format
 msgid "Subscribed to %s"

@@ -1008,16 +1008,6 @@ msgstr "source: %s에 오류"
 msgid "source: file %s could not be sourced"
 msgstr "메일들을 프린트 할 수 없음"
 
-#: commands.c:973
-#, fuzzy
-msgid "spam: no matching pattern"
-msgstr "패턴과 일치하는 메일에 태그 붙임"
-
-#: commands.c:975
-#, fuzzy
-msgid "nospam: no matching pattern"
-msgstr "패턴과 일치하는 메일의 태그 해제"
-
 #: commands.c:1117 imap/imap.c:1242
 #, fuzzy, c-format
 msgid "Subscribed to %s"
