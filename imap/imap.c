@@ -349,7 +349,7 @@ static size_t longest_common_prefix(struct Buffer *buf, const char *src, size_t 
   size_t pos = start;
 
   size_t len = buf_len(buf);
-  while ((pos < len) && buf->data[pos] && (buf->data[pos] == src[pos]))
+  while ((pos < len) && (buf_at(buf, pos) != '\0') && (buf_at(buf, pos) == src[pos]))
     pos++;
   buf->data[pos] = '\0';
 

@@ -293,7 +293,7 @@ bool buf_is_empty(const struct Buffer *buf)
   if (!buf || !buf->data)
     return true;
 
-  return (buf->data[0] == '\0');
+  return (buf_at(buf, 0) == '\0');
 }
 
 /**

@@ -82,7 +82,7 @@ static const char *XdgDefaults[] = {
  */
 void mutt_adv_mktemp(struct Buffer *buf)
 {
-  if (!(buf->data && (buf->data[0] != '\0')))
+  if (buf_is_empty(buf))
   {
     buf_mktemp(buf);
   }
@@ -863,7 +863,7 @@ void mutt_encode_path(struct Buffer *buf, const char *src)
   /* convert the path to POSIX "Portable Filename Character Set" */
   for (size_t i = 0; i < len; i++)
   {
-    if (!mutt_isalnum(buf->data[i]) && !strchr("/.-_", buf->data[i]))
+    if (!mutt_isalnum(buf_at(buf, i)) && !strchr("/.-_", buf_at(buf, i)))
     {
       buf->data[i] = '_';
     }

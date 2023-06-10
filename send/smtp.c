@@ -498,7 +498,7 @@ static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_
       smtp_response++;
       buf_addstr(response_buf, smtp_response);
     }
-  } while (input_buf->data[3] == '-');
+  } while (buf_at(input_buf, 3) == '-');
 
   return 0;
 }

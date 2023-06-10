@@ -39,7 +39,7 @@ void test_mutt_path_getcwd(void)
   {
     struct Buffer *buf = buf_pool_get();
     mutt_path_getcwd(buf);
-    TEST_CHECK(buf->data[0] == '/');
+    TEST_CHECK(buf_at(buf, 0) == '/');
     buf_pool_release(&buf);
   }
 }

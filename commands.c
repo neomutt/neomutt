@@ -1517,7 +1517,7 @@ static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
     }
 
     l = mutt_str_len(buf->data);
-    if (buf->data[l - 1] == ':')
+    if (buf_at(buf, l - 1) == ':')
       l--;
 
     STAILQ_FOREACH_SAFE(np, &UserHeader, entries, tmp)

@@ -232,7 +232,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   {
     /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
      * common mistake */
-    if ((pattern->data[0] == '^') && !CurrentFolder)
+    if ((buf_at(pattern, 0) == '^') && !CurrentFolder)
     {
       buf_strcpy(err, _("current mailbox shortcut '^' is unset"));
       goto cleanup;

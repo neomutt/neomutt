@@ -544,7 +544,7 @@ retry_name:
     {
       goto done;
     }
-    if (buf->data[0] != '\n')
+    if (buf_at(buf, 0) != '\n')
       fputc('\n', fp_alias);
   }
 

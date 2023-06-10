@@ -590,7 +590,7 @@ enum CommandResult parse_macro(struct Buffer *buf, struct Buffer *s,
 
   parse_extract_token(buf, s, TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
-  if (buf->data[0] == '\0')
+  if (buf_at(buf, 0) == '\0')
   {
     buf_strcpy(err, _("macro: empty key sequence"));
   }

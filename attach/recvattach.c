@@ -171,7 +171,7 @@ void mutt_update_tree(struct AttachCtx *actx)
  */
 static void prepend_savedir(struct Buffer *buf)
 {
-  if (!buf || !buf->data || (buf->data[0] == '/'))
+  if (buf_is_empty(buf) || (buf_at(buf, 0) == '/'))
     return;
 
   struct Buffer *tmp = buf_pool_get();

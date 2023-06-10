@@ -232,7 +232,7 @@ bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
         buf_addstr(value, "***");
       }
 
-      if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value->data[0] == '/'))
+      if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (buf_at(value, 0) == '/'))
         mutt_pretty_mailbox(value->data, value->dsize);
 
       // Quote/escape the values of config options NOT of these types
@@ -256,7 +256,7 @@ bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
         break;          /* LCOV_EXCL_LINE */
       }
 
-      if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (initial->data[0] == '/'))
+      if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (buf_at(initial, 0) == '/'))
         mutt_pretty_mailbox(initial->data, initial->dsize);
 
       // Quote/escape the values of config options NOT of these types
