@@ -544,7 +544,7 @@ static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s
     {
       if (CurrentHookType != TOKEN_NO_FLAGS)
       {
-        buf_printf(err, "%s", _("unhook: Can't do unhook * from within a hook"));
+        buf_addstr(err, _("unhook: Can't do unhook * from within a hook"));
         return MUTT_CMD_WARNING;
       }
       mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);

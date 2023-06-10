@@ -267,7 +267,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     line_rc = parse_rc_buffer(linebuf, token, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
-      mutt_error(_("Error in %s, line %d: %s"), rcfile, lineno, err->data);
+      mutt_error(_("Error in %s, line %d: %s"), rcfile, lineno, buf_string(err));
       if (--rc < -MAX_ERRS)
       {
         if (conv)
@@ -278,7 +278,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     else if (line_rc == MUTT_CMD_WARNING)
     {
       /* Warning */
-      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, lineno, err->data);
+      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, lineno, buf_string(err));
       warnings++;
     }
     else if (line_rc == MUTT_CMD_FINISH)
@@ -539,7 +539,7 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
     enum CommandResult rc = parse_rc_line(buf->data, err);
     if (rc == MUTT_CMD_ERROR)
     {
-      mutt_error(_("Error: %s"), err->data);
+      mutt_error(_("Error: %s"), buf_string(err));
       return MUTT_CMD_ERROR;
     }
     return rc;
@@ -1109,7 +1109,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    if (buf->data && (*buf->data != '\0'))
+    if (!buf_is_empty(buf))
     {
       /* Expand and subscribe */
       if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) == 0)

@@ -90,7 +90,7 @@ enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
     }
     if (i == size)
     {
-      buf_printf(err, _("%s: unknown command"), NONULL(token->data));
+      buf_printf(err, _("%s: unknown command"), buf_string(token));
       rc = MUTT_CMD_ERROR;
       break; /* Ignore the rest of the line */
     }
