@@ -60,10 +60,8 @@ void enter_state_resize(struct EnterState *es, size_t num)
     return;
 
   num = ROUND_UP(num + 4, 128);
-  const size_t cur_size = es->wbuflen * sizeof(wchar_t);
-  const size_t new_size = num * sizeof(wchar_t);
-  mutt_mem_recalloc(&es->wbuf, cur_size, new_size);
 
+  mutt_mem_recallocarray(&es->wbuf, es->wbuflen, num, sizeof(wchar_t));
   es->wbuflen = num;
 }
 
