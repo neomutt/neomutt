@@ -137,13 +137,15 @@ void *mutt_mem_mallocarray(size_t nmemb, size_t size)
  * mutt_mem_realloc - Resize a block of memory on the heap
  * @param pptr Address of pointer to memory block to resize
  * @param size New size
+ * @retval ptr  Memory
+ * @retval NULL Size was 0
  *
  * @note On error, this function will never return NULL.
  *       It will print an error and exit the program.
  *
  * If the new size is zero, the block will be freed.
  */
-void mutt_mem_realloc(void *pptr, size_t size)
+void *mutt_mem_realloc(void *pptr, size_t size)
 {
   mutt_mem_reallocarray(pptr, size, 1);
 }

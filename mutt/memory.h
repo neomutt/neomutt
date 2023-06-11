@@ -68,7 +68,7 @@ void *mutt_mem_calloc(size_t nmemb, size_t size);
 void  mutt_mem_free(void *ptr);
 void *mutt_mem_malloc(size_t size);
 void *mutt_mem_mallocarray(size_t nmemb, size_t size);
-void  mutt_mem_realloc(void *pptr, size_t size);
+void *mutt_mem_realloc(void *ptr, size_t size);
 void  mutt_mem_reallocarray(void *pptr, size_t nmemb, size_t size);
 void *mutt_mem_recallocarray(void *p, size_t old_n, size_t n, size_t size);
 void *mutt_mem_recalloc(void *p, size_t old_size, size_t size);
