@@ -72,14 +72,8 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
 
   if (actx->idxlen == actx->idxmax)
   {
-    size_t cur_size = actx->idxmax * sizeof(struct AttachPtr *);
-    size_t new_size = (actx->idxmax + AttachArrayGrow) * sizeof(struct AttachPtr *);
-    mutt_mem_recalloc(&actx->idx, cur_size, new_size);
-
-    cur_size = actx->idxmax * sizeof(short);
-    new_size = (actx->idxmax + AttachArrayGrow) * sizeof(short);
-    mutt_mem_recalloc(&actx->v2r, cur_size, new_size);
-
+    mutt_mem_recallocarray(&actx->idx, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(struct AttachPtr *));
+    mutt_mem_recallocarray(&actx->v2r, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(short));
     actx->idxmax += AttachArrayGrow;
   }
 
@@ -102,14 +96,8 @@ void mutt_actx_ins_attach(struct AttachCtx *actx, struct AttachPtr *attach, int 
 
   if (actx->idxlen == actx->idxmax)
   {
-    size_t cur_size = actx->idxmax * sizeof(struct AttachPtr *);
-    size_t new_size = (actx->idxmax + AttachArrayGrow) * sizeof(struct AttachPtr *);
-    mutt_mem_recalloc(&actx->idx, cur_size, new_size);
-
-    cur_size = actx->idxmax * sizeof(short);
-    new_size = (actx->idxmax + AttachArrayGrow) * sizeof(short);
-    mutt_mem_recalloc(&actx->v2r, cur_size, new_size);
-
+    mutt_mem_recallocarray(&actx->idx, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(struct AttachPtr *));
+    mutt_mem_recallocarray(&actx->v2r, actx->idxmax, actx->idxmax + AttachArrayGrow, sizeof(short));
     actx->idxmax += AttachArrayGrow;
   }
 
@@ -133,10 +121,7 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
 
   if (actx->fp_len == actx->fp_max)
   {
-    const size_t cur_size = actx->fp_max * sizeof(FILE *);
-    const size_t new_size = (actx->fp_max + AttachArrayGrow) * sizeof(FILE *);
-    mutt_mem_recalloc(&actx->fp_idx, cur_size, new_size);
-
+    mutt_mem_recallocarray(&actx->fp_idx, actx->fp_max, actx->fp_max + AttachArrayGrow, sizeof(FILE *));
     actx->fp_max += AttachArrayGrow;
   }
 
@@ -155,10 +140,7 @@ void mutt_actx_add_body(struct AttachCtx *actx, struct Body *b)
 
   if (actx->body_len == actx->body_max)
   {
-    const size_t cur_size = actx->body_max * sizeof(struct Body *);
-    const size_t new_size = (actx->body_max + AttachArrayGrow) * sizeof(struct Body *);
-    mutt_mem_recalloc(&actx->body_idx, cur_size, new_size);
-
+    mutt_mem_recallocarray(&actx->body_idx, actx->body_max, actx->body_max + AttachArrayGrow, sizeof(struct Body *));
     actx->body_max += AttachArrayGrow;
   }
 
