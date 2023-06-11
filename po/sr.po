@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-05-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-06-03 20:23+0100\n"
-"PO-Revision-Date: 2023-05-06 10:21+0200\n"
+"PO-Revision-Date: 2023-06-11 15:10+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -1254,9 +1254,8 @@ msgid "Can't create file %s"
 msgstr "Не може се креирати датотека %s"
 
 #: compose/functions.c:1354
-#, fuzzy
 msgid "Error attaching file"
-msgstr "На делу је немогућност креирања прилога"
+msgstr "Грешка при додавању датотеке"
 
 #: compose/functions.c:1396
 msgid "Can't print multipart attachments"
