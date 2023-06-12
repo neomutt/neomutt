@@ -454,22 +454,21 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
   hc->crc = HcacheVer;
 
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
-  const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
-  if (!store_ops)
+  hc->store_ops = store_get_backend_ops(c_header_cache_backend);
+  if (!hc->store_ops)
   {
     hcache_free(&hc);
     return NULL;
   }
 
-  const struct ComprOps *compr_ops = NULL;
 #ifdef USE_HCACHE_COMPRESSION
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (c_header_cache_compress_method)
   {
-    compr_ops = compress_get_ops(c_header_cache_compress_method);
+    hc->compr_ops = compress_get_ops(c_header_cache_compress_method);
 
     const short c_header_cache_compress_level = cs_subset_number(NeoMutt->sub, "header_cache_compress_level");
-    hc->compr_handle = compr_ops->open(c_header_cache_compress_level);
+    hc->compr_handle = hc->compr_ops->open(c_header_cache_compress_level);
     if (!hc->compr_handle)
     {
       hcache_free(&hc);
@@ -477,25 +476,26 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
     }
 
     /* remember the buffer of database backend */
-    mutt_debug(LL_DEBUG3, "Header cache will use %s compression\n", compr_ops->name);
+    mutt_debug(LL_DEBUG3, "Header cache will use %s compression\n",
+               hc->compr_ops->name);
   }
 #endif
 
   struct Buffer *hcpath = buf_pool_get();
   hcache_per_folder(hcpath, path, hc->folder, namer);
 
-  hc->store_handle = store_ops->open(buf_string(hcpath));
+  hc->store_handle = hc->store_ops->open(buf_string(hcpath));
   if (!hc->store_handle)
   {
     /* remove a possibly incompatible version */
     if (unlink(buf_string(hcpath)) == 0)
     {
-      hc->store_handle = store_ops->open(buf_string(hcpath));
+      hc->store_handle = hc->store_ops->open(buf_string(hcpath));
       if (!hc->store_handle)
       {
-        if (compr_ops)
+        if (hc->compr_ops)
         {
-          compr_ops->close(&hc->compr_handle);
+          hc->compr_ops->close(&hc->compr_handle);
         }
         hcache_free(&hc);
       }
@@ -516,21 +516,12 @@ void hcache_close(struct HeaderCache **ptr)
 
   struct HeaderCache *hc = *ptr;
 
-  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
-  const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
-  if (!hc || !store_ops)
-    return;
-
 #ifdef USE_HCACHE_COMPRESSION
-  const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
-  if (c_header_cache_compress_method)
-  {
-    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
-    compr_ops->close(&hc->compr_handle);
-  }
+  if (hc->compr_ops)
+    hc->compr_ops->close(&hc->compr_handle);
 #endif
 
-  store_ops->close(&hc->store_handle);
+  hc->store_ops->close(&hc->store_handle);
 
   hcache_free(ptr);
 }
@@ -568,12 +559,10 @@ struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key,
   }
 
 #ifdef USE_HCACHE_COMPRESSION
-  const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
-  if (c_header_cache_compress_method)
+  if (hc->compr_ops)
   {
-    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
-
-    void *dblob = compr_ops->decompress(hc->compr_handle, (char *) data + hlen, dlen - hlen);
+    void *dblob = hc->compr_ops->decompress(hc->compr_handle,
+                                            (char *) data + hlen, dlen - hlen);
     if (!dblob)
     {
       goto end;
@@ -651,18 +640,15 @@ int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
   char *data = dump_email(hc, e, &dlen, uidvalidity);
 
 #ifdef USE_HCACHE_COMPRESSION
-  const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
-  if (c_header_cache_compress_method)
+  if (hc->compr_ops)
   {
     /* We don't compress uidvalidity and the crc, so we can check them before
      * decompressing on fetch().  */
     size_t hlen = header_size();
 
-    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
-
     /* data / dlen gets ptr to compressed data here */
     size_t clen = dlen;
-    void *cdata = compr_ops->compress(hc->compr_handle, data + hlen, dlen - hlen, &clen);
+    void *cdata = hc->compr_ops->compress(hc->compr_handle, data + hlen, dlen - hlen, &clen);
     if (!cdata)
     {
       FREE(&data);
@@ -702,16 +688,13 @@ int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
 int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
                      void *data, size_t dlen)
 {
-  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
-  const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
-
-  if (!hc || !store_ops)
+  if (!hc)
     return -1;
 
   struct Buffer path = buf_make(1024);
 
   keylen = buf_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  int rc = store_ops->store(hc->store_handle, buf_string(&path), keylen, data, dlen);
+  int rc = hc->store_ops->store(hc->store_handle, buf_string(&path), keylen, data, dlen);
   buf_dealloc(&path);
 
   return rc;
@@ -725,16 +708,11 @@ int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen)
   if (!hc)
     return -1;
 
-  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
-  const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
-  if (!store_ops)
-    return -1;
-
   struct Buffer path = buf_make(1024);
 
   keylen = buf_printf(&path, "%s%s", hc->folder, key);
 
-  int rc = store_ops->delete_record(hc->store_handle, buf_string(&path), keylen);
+  int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(&path), keylen);
   buf_dealloc(&path);
   return rc;
 }

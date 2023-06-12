@@ -88,7 +88,9 @@ struct HeaderCache
 {
   char *folder;                       ///< Folder name
   unsigned int crc;                   ///< CRC of the cache entry
+  const struct StoreOps *store_ops;   ///< Store backend
   StoreHandle *store_handle;          ///< Store handle
+  const struct ComprOps *compr_ops;   ///< Compression backend
   ComprHandle *compr_handle;          ///< Compression handle
 };
 
