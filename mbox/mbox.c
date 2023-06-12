@@ -205,7 +205,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
     goto fail;
   }
   mutt_file_get_stat_timespec(&adata->atime, &st, MUTT_STAT_ATIME);
-  mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+  mutt_file_get_stat_timespec(&adata->mtime, &st, MUTT_STAT_MTIME);
   m->size = st.st_size;
 
   buf[sizeof(buf) - 1] = '\0';
@@ -375,7 +375,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   }
 
   m->size = st.st_size;
-  mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+  mutt_file_get_stat_timespec(&adata->mtime, &st, MUTT_STAT_MTIME);
   mutt_file_get_stat_timespec(&adata->atime, &st, MUTT_STAT_ATIME);
 
   if (!m->readonly)
@@ -952,7 +952,7 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
 
   if (stat(mailbox_path(m), &st) == 0)
   {
-    if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) == 0) &&
+    if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &adata->mtime) == 0) &&
         (st.st_size == m->size))
     {
       return MX_STATUS_OK;
@@ -961,7 +961,7 @@ static enum MxStatus mbox_mbox_check(struct Mailbox *m)
     if (st.st_size == m->size)
     {
       /* the file was touched, but it is still the same length, so just exit */
-      mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+      mutt_file_get_stat_timespec(&adata->mtime, &st, MUTT_STAT_MTIME);
       return MX_STATUS_OK;
     }
 
@@ -1462,17 +1462,17 @@ static enum MxStatus mbox_mbox_close(struct Mailbox *m)
 
   /* fix up the times so mailbox won't get confused */
   if (m->peekonly && !buf_is_empty(&m->pathbuf) &&
-      (mutt_file_timespec_compare(&m->mtime, &adata->atime) > 0))
+      (mutt_file_timespec_compare(&adata->mtime, &adata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
     struct timespec ts[2];
     ts[0] = adata->atime;
-    ts[1] = m->mtime;
+    ts[1] = adata->mtime;
     utimensat(AT_FDCWD, m->path, ts, 0);
 #else
     struct utimbuf ut;
     ut.actime = adata->atime.tv_sec;
-    ut.modtime = m->mtime.tv_sec;
+    ut.modtime = adata->mtime.tv_sec;
     utime(mailbox_path(m), &ut);
 #endif
   }

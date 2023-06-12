@@ -48,6 +48,7 @@ struct stat;
 struct MboxAccountData
 {
   FILE *fp;                           ///< Mailbox file
+  struct timespec mtime;              ///< Time Mailbox was last changed
   struct timespec atime;              ///< File's last-access time
   struct timespec stats_last_checked; ///< Mtime of mailbox the last time stats where checked
 

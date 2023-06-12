@@ -479,7 +479,7 @@ static void mh_update_mtime(struct Mailbox *m)
   mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
 
   if (stat(buf, &st) == 0)
-    mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&mdata->mtime, &st, MUTT_STAT_MTIME);
 }
 
 /**
@@ -921,7 +921,7 @@ static enum MxStatus mh_check(struct Mailbox *m)
   if ((rc == -1) && (stat(buf, &st_cur) == -1))
     modified = true;
 
-  if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &m->mtime) > 0) ||
+  if ((mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME, &mdata->mtime) > 0) ||
       (mutt_file_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0))
   {
     modified = true;
@@ -943,7 +943,7 @@ static enum MxStatus mh_check(struct Mailbox *m)
 #endif
   {
     mutt_file_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&mdata->mtime, &st, MUTT_STAT_MTIME);
   }
 
   struct MdEmailArray mda = ARRAY_HEAD_INITIALIZER;

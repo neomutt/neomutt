@@ -482,7 +482,7 @@ static void maildir_update_mtime(struct Mailbox *m)
 
   snprintf(buf, sizeof(buf), "%s/%s", mailbox_path(m), "new");
   if (stat(buf, &st) == 0)
-    mutt_file_get_stat_timespec(&m->mtime, &st, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&mdata->mtime, &st, MUTT_STAT_MTIME);
 }
 
 /**
@@ -1203,7 +1203,7 @@ static enum MxStatus maildir_check(struct Mailbox *m)
   }
 
   /* determine which subdirectories need to be scanned */
-  if (mutt_file_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &m->mtime) > 0)
+  if (mutt_file_stat_timespec_compare(&st_new, MUTT_STAT_MTIME, &mdata->mtime) > 0)
     changed = MMC_NEW_DIR;
   if (mutt_file_stat_timespec_compare(&st_cur, MUTT_STAT_MTIME, &mdata->mtime_cur) > 0)
     changed |= MMC_CUR_DIR;
@@ -1229,7 +1229,7 @@ static enum MxStatus maildir_check(struct Mailbox *m)
 #endif
   {
     mutt_file_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_file_get_stat_timespec(&m->mtime, &st_new, MUTT_STAT_MTIME);
+    mutt_file_get_stat_timespec(&mdata->mtime, &st_new, MUTT_STAT_MTIME);
   }
 
   /* do a fast scan of just the filenames in
