@@ -76,6 +76,23 @@ struct Progress;
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
 
 /**
+ * maildir_email_new - Create a Maildir Email
+ * @retval ptr Newly created Email
+ *
+ * Create a new Email and attach MaildirEmailData.
+ *
+ * @note This should be freed using email_free()
+ */
+struct Email *maildir_email_new(void)
+{
+  struct Email *e = email_new();
+  e->edata = maildir_edata_new();
+  e->edata_free = maildir_edata_free;
+
+  return e;
+}
+
+/**
  * maildir_check_dir - Check for new mail / mail counts
  * @param m           Mailbox to check
  * @param dir_name    Path to Mailbox
@@ -534,10 +551,7 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
 
     mutt_debug(LL_DEBUG2, "queueing %s\n", de->d_name);
 
-    e = email_new();
-    e->edata = maildir_edata_new();
-    e->edata_free = maildir_edata_free;
-
+    e = maildir_email_new();
     e->old = is_old;
     maildir_parse_flags(e, de->d_name);
 
@@ -893,11 +907,8 @@ struct Email *maildir_parse_stream(enum MailboxType type, FILE *fp,
   }
 
   if (!e)
-  {
-    e = email_new();
-    e->edata = maildir_edata_new();
-    e->edata_free = maildir_edata_free;
-  }
+    e = maildir_email_new();
+
   e->env = mutt_rfc822_read_header(fp, e, false, false);
 
   if (e->received == 0)

@@ -2158,12 +2158,11 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
     {
       /* if the user hasn't modified the flags on this message, update the
        * flags we just detected.  */
-      struct Email e_tmp = { 0 };
-      e_tmp.edata = maildir_edata_new();
-      maildir_parse_flags(&e_tmp, new_file);
-      e_tmp.old = e->old;
-      maildir_update_flags(m, e, &e_tmp);
-      maildir_edata_free(&e_tmp.edata);
+      struct Email *e_tmp = maildir_email_new();
+      maildir_parse_flags(e_tmp, new_file);
+      e_tmp->old = e->old;
+      maildir_update_flags(m, e, e_tmp);
+      email_free(&e_tmp);
     }
 
     if (update_email_tags(e, msg) == 0)
