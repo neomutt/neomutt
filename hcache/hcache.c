@@ -514,7 +514,7 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
                                      size_t keylen, uint32_t uidvalidity)
 {
   struct RealKey *rk = realkey(key, keylen);
-  struct HCacheEntry entry = { 0 };
+  struct HCacheEntry hce = { 0 };
 
   size_t dlen;
   void *data = fetch_raw(hc, rk->key, rk->len, &dlen);
@@ -531,10 +531,10 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
     goto end;
   }
   int off = 0;
-  serial_restore_uint32_t(&entry.uidvalidity, data, &off);
-  serial_restore_int(&entry.crc, data, &off);
+  serial_restore_uint32_t(&hce.uidvalidity, data, &off);
+  serial_restore_int(&hce.crc, data, &off);
   assert((size_t) off == hlen);
-  if (entry.crc != hc->crc || ((uidvalidity != 0) && uidvalidity != entry.uidvalidity))
+  if (hce.crc != hc->crc || ((uidvalidity != 0) && uidvalidity != hce.uidvalidity))
   {
     goto end;
   }
@@ -554,11 +554,11 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
   }
 #endif
 
-  entry.email = restore_email(data);
+  hce.email = restore_email(data);
 
 end:
   free_raw(hc, &to_free);
-  return entry;
+  return hce;
 }
 
 /**
