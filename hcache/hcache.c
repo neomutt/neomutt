@@ -398,53 +398,62 @@ static void free_raw(struct HeaderCache *hc, void **data)
 }
 
 /**
+ * generate_hcachever - Calculate hcache version from dynamic configuration
+ * @retval num Header cache version
+ */
+static unsigned int generate_hcachever(void)
+{
+  union
+  {
+    unsigned char charval[16]; ///< MD5 digest as a string
+    unsigned int intval;       ///< MD5 digest as an integer
+  } digest;
+  struct Md5Ctx md5ctx;
+
+  mutt_md5_init_ctx(&md5ctx);
+
+  /* Seed with the compiled-in header structure hash */
+  unsigned int ver = HCACHEVER;
+  mutt_md5_process_bytes(&ver, sizeof(ver), &md5ctx);
+
+  /* Mix in user's spam list */
+  struct Replace *sp = NULL;
+  STAILQ_FOREACH(sp, &SpamList, entries)
+  {
+    mutt_md5_process(sp->regex->pattern, &md5ctx);
+    mutt_md5_process(sp->templ, &md5ctx);
+  }
+
+  /* Mix in user's nospam list */
+  struct RegexNode *np = NULL;
+  STAILQ_FOREACH(np, &NoSpamList, entries)
+  {
+    mutt_md5_process(np->regex->pattern, &md5ctx);
+  }
+
+  /* Get a hash and take its bytes as an (unsigned int) hash version */
+  mutt_md5_finish_ctx(&md5ctx, digest.charval);
+
+  return digest.intval;
+}
+
+/**
  * mutt_hcache_open - Multiplexor for StoreOps::open
  */
 struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
+  if (!path || (path[0] == '\0'))
+    return NULL;
+
+  if (HcacheVer == 0x0)
+    HcacheVer = generate_hcachever();
+
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
   if (!ops)
     return NULL;
 
   struct HeaderCache *hc = hcache_new();
-
-  /* Calculate the current hcache version from dynamic configuration */
-  if (HcacheVer == 0x0)
-  {
-    union
-    {
-      unsigned char charval[16]; ///< MD5 digest as a string
-      unsigned int intval;       ///< MD5 digest as an integer
-    } digest;
-    struct Md5Ctx md5ctx;
-
-    HcacheVer = HCACHEVER;
-
-    mutt_md5_init_ctx(&md5ctx);
-
-    /* Seed with the compiled-in header structure hash */
-    mutt_md5_process_bytes(&HcacheVer, sizeof(HcacheVer), &md5ctx);
-
-    /* Mix in user's spam list */
-    struct Replace *sp = NULL;
-    STAILQ_FOREACH(sp, &SpamList, entries)
-    {
-      mutt_md5_process(sp->regex->pattern, &md5ctx);
-      mutt_md5_process(sp->templ, &md5ctx);
-    }
-
-    /* Mix in user's nospam list */
-    struct RegexNode *np = NULL;
-    STAILQ_FOREACH(np, &NoSpamList, entries)
-    {
-      mutt_md5_process(np->regex->pattern, &md5ctx);
-    }
-
-    /* Get a hash and take its bytes as an (unsigned int) hash version */
-    mutt_md5_finish_ctx(&md5ctx, digest.charval);
-    HcacheVer = digest.intval;
-  }
 
   const struct ComprOps *cops = NULL;
 #ifdef USE_HCACHE_COMPRESSION
@@ -468,17 +477,6 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 
   hc->folder = get_foldername(folder);
   hc->crc = HcacheVer;
-
-  if (!path || (path[0] == '\0'))
-  {
-    if (cops)
-    {
-      cops->close(&hc->cctx);
-    }
-
-    hcache_free(&hc);
-    return NULL;
-  }
 
   struct Buffer *hcpath = buf_pool_get();
   hcache_per_folder(hcpath, path, hc->folder, namer);
