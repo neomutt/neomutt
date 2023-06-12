@@ -40,6 +40,7 @@ struct NmMboxData
   struct Progress *progress;   ///< A progress bar
   int oldmsgcount;
   int ignmsgcount;             ///< Ignored messages
+  struct timespec mtime;       ///< Time Mailbox was last changed
 };
 
 void                  nm_mdata_free(void **ptr);

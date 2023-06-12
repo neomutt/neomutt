@@ -47,6 +47,7 @@ struct NntpMboxData
   struct NntpAccountData *adata;
   struct NntpAcache acache[NNTP_ACACHE_LEN];
   struct BodyCache *bcache;
+  struct timespec mtime; ///< Time Mailbox was last changed
 };
 
 void nntp_mdata_free(void **ptr);

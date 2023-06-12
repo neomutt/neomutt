@@ -60,6 +60,7 @@ struct ImapMboxData
   struct BodyCache *bcache;            ///< Email body cache
 
   struct HeaderCache *hcache; ///< Email header cache
+  struct timespec mtime;      ///< Time Mailbox was last changed
 };
 
 void                 imap_mdata_free(void **ptr);

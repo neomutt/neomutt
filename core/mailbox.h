@@ -101,7 +101,6 @@ struct Mailbox
   bool notified;                      ///< User has been notified
   enum MailboxType type;              ///< Mailbox type
   bool newly_created;                 ///< Mbox or mmdf just popped into existence
-  struct timespec mtime;              ///< Time Mailbox was last changed
   struct timespec last_visited;       ///< Time of last exit from this mailbox
 
   const struct MxOps *mx_ops;         ///< MXAPI callback functions
