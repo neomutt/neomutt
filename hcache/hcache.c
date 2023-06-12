@@ -64,6 +64,30 @@
 static unsigned int HcacheVer = 0x0;
 
 /**
+ * hcache_free - Free a header cache
+ * @param ptr header cache to free
+ */
+static void hcache_free(struct HeaderCache **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct HeaderCache *hc = *ptr;
+  FREE(&hc->folder);
+
+  FREE(ptr);
+}
+
+/**
+ * hcache_new - Create a new header cache
+ * @retval ptr Newly created header cache
+ */
+static struct HeaderCache *hcache_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct HeaderCache));
+}
+
+/**
  * header_size - Compute the size of the header with uuid validity and crc
  * @retval num Size of the header
  */
@@ -383,7 +407,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
   if (!ops)
     return NULL;
 
-  struct HeaderCache *hc = mutt_mem_calloc(1, sizeof(struct HeaderCache));
+  struct HeaderCache *hc = hcache_new();
 
   /* Calculate the current hcache version from dynamic configuration */
   if (HcacheVer == 0x0)
@@ -433,7 +457,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
     hc->cctx = cops->open(c_header_cache_compress_level);
     if (!hc->cctx)
     {
-      FREE(&hc);
+      hcache_free(&hc);
       return NULL;
     }
 
@@ -452,8 +476,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
       cops->close(&hc->cctx);
     }
 
-    FREE(&hc->folder);
-    FREE(&hc);
+    hcache_free(&hc);
     return NULL;
   }
 
@@ -473,8 +496,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
         {
           cops->close(&hc->cctx);
         }
-        FREE(&hc->folder);
-        FREE(&hc);
+        hcache_free(&hc);
       }
     }
   }
@@ -503,8 +525,7 @@ void mutt_hcache_close(struct HeaderCache *hc)
 #endif
 
   ops->close(&hc->ctx);
-  FREE(&hc->folder);
-  FREE(&hc);
+  hcache_free(&hc);
 }
 
 /**
