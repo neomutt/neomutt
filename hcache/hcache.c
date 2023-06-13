@@ -506,8 +506,13 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 /**
  * mutt_hcache_close - Multiplexor for StoreOps::close
  */
-void mutt_hcache_close(struct HeaderCache *hc)
+void mutt_hcache_close(struct HeaderCache **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
+  struct HeaderCache *hc = *ptr;
+
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
   if (!hc || !ops)
@@ -523,7 +528,8 @@ void mutt_hcache_close(struct HeaderCache *hc)
 #endif
 
   ops->close(&hc->ctx);
-  hcache_free(&hc);
+
+  hcache_free(ptr);
 }
 
 /**

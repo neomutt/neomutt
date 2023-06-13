@@ -464,7 +464,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   progress_free(&progress);
 
 #ifdef USE_HCACHE
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
 
   if (rc < 0)
@@ -919,7 +919,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
     progress_free(&progress);
 
 #ifdef USE_HCACHE
-    mutt_hcache_close(hc);
+    mutt_hcache_close(&hc);
 #endif
 
     if (rc == 0)
@@ -1144,7 +1144,7 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
   struct PopEmailData *edata = e->edata;
   struct HeaderCache *hc = pop_hcache_open(adata, mailbox_path(m));
   rc = mutt_hcache_store(hc, edata->uid, strlen(edata->uid), e, 0);
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
 
   return rc;

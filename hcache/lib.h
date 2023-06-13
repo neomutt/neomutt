@@ -125,9 +125,11 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 
 /**
  * mutt_hcache_close - Close the connection to the header cache
- * @param hc Pointer to the struct HeaderCache structure got by mutt_hcache_open()
+ * @param ptr Pointer to the struct HeaderCache structure got by mutt_hcache_open()
+ *
+ * @note The pointer will be set to NULL
  */
-void mutt_hcache_close(struct HeaderCache *hc);
+void mutt_hcache_close(struct HeaderCache **ptr);
 
 /**
  * mutt_hcache_store - Store a Header along with a validity datum

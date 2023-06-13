@@ -666,7 +666,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     }
   }
 #ifdef USE_HCACHE
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
 
   const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
@@ -813,7 +813,7 @@ static int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
   rc = mutt_hcache_store(hc, e->path, strlen(e->path), e, 0);
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
   return rc;
 }
@@ -1073,7 +1073,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
 
 #ifdef USE_HCACHE
   if (m->type == MUTT_MH)
-    mutt_hcache_close(hc);
+    mutt_hcache_close(&hc);
 #endif
 
   mh_seq_update(m);
@@ -1102,7 +1102,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
 err:
 #ifdef USE_HCACHE
   if (m->type == MUTT_MH)
-    mutt_hcache_close(hc);
+    mutt_hcache_close(&hc);
 #endif
   return MX_STATUS_ERROR;
 }

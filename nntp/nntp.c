@@ -1469,7 +1469,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
   struct NntpAccountData *adata = mdata->adata;
   time_t now = mutt_date_now();
   enum MxStatus rc = MX_STATUS_OK;
-  void *hc = NULL;
+  struct HeaderCache *hc = NULL;
 
   const short c_nntp_poll = cs_subset_number(NeoMutt->sub, "nntp_poll");
   if (adata->check_time + c_nntp_poll > now)
@@ -1653,7 +1653,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
   }
 
 #ifdef USE_HCACHE
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
   if (rc != MX_STATUS_OK)
     nntp_newsrc_close(adata);
@@ -2249,7 +2249,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
   struct ChildCtx cc;
   char buf[256] = { 0 };
   int rc;
-  void *hc = NULL;
+  struct HeaderCache *hc = NULL;
 
   if (!mdata || !mdata->adata)
     return -1;
@@ -2300,7 +2300,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
 #ifdef USE_HCACHE
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
   m->verbose = verbose;
   FREE(&cc.child);
@@ -2346,7 +2346,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   char server[1024] = { 0 };
   char *group = NULL;
   int rc;
-  void *hc = NULL;
+  struct HeaderCache *hc = NULL;
   anum_t first, last, count = 0;
 
   struct Url *url = url_parse(mailbox_path(m));
@@ -2485,7 +2485,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   nntp_newsrc_close(adata);
   rc = nntp_fetch_headers(m, hc, first, mdata->last_message, false);
 #ifdef USE_HCACHE
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
   if (rc < 0)
     return MX_OPEN_ERROR;
@@ -2560,7 +2560,7 @@ static enum MxStatus nntp_mbox_sync(struct Mailbox *m)
 #ifdef USE_HCACHE
   if (hc)
   {
-    mutt_hcache_close(hc);
+    mutt_hcache_close(&hc);
     mdata->last_cached = mdata->last_loaded;
   }
 #endif

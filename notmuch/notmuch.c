@@ -124,7 +124,7 @@ static struct HeaderCache *nm_hcache_open(struct Mailbox *m)
 static void nm_hcache_close(struct HeaderCache *h)
 {
 #ifdef USE_HCACHE
-  mutt_hcache_close(h);
+  mutt_hcache_close(&h);
 #endif
 }
 

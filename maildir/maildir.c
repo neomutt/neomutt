@@ -661,7 +661,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     }
   }
 #ifdef USE_HCACHE
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
 }
 
@@ -1422,7 +1422,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 
 #ifdef USE_HCACHE
   if (m->type == MUTT_MAILDIR)
-    mutt_hcache_close(hc);
+    mutt_hcache_close(&hc);
 #endif
 
   /* XXX race condition? */
@@ -1450,7 +1450,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 err:
 #ifdef USE_HCACHE
   if (m->type == MUTT_MAILDIR)
-    mutt_hcache_close(hc);
+    mutt_hcache_close(&hc);
 #endif
   return MX_STATUS_ERROR;
 }
@@ -1589,7 +1589,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
   char *key = e->path + 3;
   int keylen = maildir_hcache_keylen(key);
   rc = mutt_hcache_store(hc, key, keylen, e, 0);
-  mutt_hcache_close(hc);
+  mutt_hcache_close(&hc);
 #endif
   return rc;
 }
