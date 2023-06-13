@@ -64,6 +64,30 @@
 static unsigned int HcacheVer = 0x0;
 
 /**
+ * hcache_free - Free a header cache
+ * @param ptr header cache to free
+ */
+static void hcache_free(struct HeaderCache **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct HeaderCache *hc = *ptr;
+  FREE(&hc->folder);
+
+  FREE(ptr);
+}
+
+/**
+ * hcache_new - Create a new header cache
+ * @retval ptr Newly created header cache
+ */
+static struct HeaderCache *hcache_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct HeaderCache));
+}
+
+/**
  * header_size - Compute the size of the header with uuid validity and crc
  * @retval num Size of the header
  */
@@ -374,53 +398,62 @@ static void free_raw(struct HeaderCache *hc, void **data)
 }
 
 /**
+ * generate_hcachever - Calculate hcache version from dynamic configuration
+ * @retval num Header cache version
+ */
+static unsigned int generate_hcachever(void)
+{
+  union
+  {
+    unsigned char charval[16]; ///< MD5 digest as a string
+    unsigned int intval;       ///< MD5 digest as an integer
+  } digest;
+  struct Md5Ctx md5ctx;
+
+  mutt_md5_init_ctx(&md5ctx);
+
+  /* Seed with the compiled-in header structure hash */
+  unsigned int ver = HCACHEVER;
+  mutt_md5_process_bytes(&ver, sizeof(ver), &md5ctx);
+
+  /* Mix in user's spam list */
+  struct Replace *sp = NULL;
+  STAILQ_FOREACH(sp, &SpamList, entries)
+  {
+    mutt_md5_process(sp->regex->pattern, &md5ctx);
+    mutt_md5_process(sp->templ, &md5ctx);
+  }
+
+  /* Mix in user's nospam list */
+  struct RegexNode *np = NULL;
+  STAILQ_FOREACH(np, &NoSpamList, entries)
+  {
+    mutt_md5_process(np->regex->pattern, &md5ctx);
+  }
+
+  /* Get a hash and take its bytes as an (unsigned int) hash version */
+  mutt_md5_finish_ctx(&md5ctx, digest.charval);
+
+  return digest.intval;
+}
+
+/**
  * mutt_hcache_open - Multiplexor for StoreOps::open
  */
 struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
+  if (!path || (path[0] == '\0'))
+    return NULL;
+
+  if (HcacheVer == 0x0)
+    HcacheVer = generate_hcachever();
+
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
   if (!ops)
     return NULL;
 
-  struct HeaderCache *hc = mutt_mem_calloc(1, sizeof(struct HeaderCache));
-
-  /* Calculate the current hcache version from dynamic configuration */
-  if (HcacheVer == 0x0)
-  {
-    union
-    {
-      unsigned char charval[16]; ///< MD5 digest as a string
-      unsigned int intval;       ///< MD5 digest as an integer
-    } digest;
-    struct Md5Ctx md5ctx;
-
-    HcacheVer = HCACHEVER;
-
-    mutt_md5_init_ctx(&md5ctx);
-
-    /* Seed with the compiled-in header structure hash */
-    mutt_md5_process_bytes(&HcacheVer, sizeof(HcacheVer), &md5ctx);
-
-    /* Mix in user's spam list */
-    struct Replace *sp = NULL;
-    STAILQ_FOREACH(sp, &SpamList, entries)
-    {
-      mutt_md5_process(sp->regex->pattern, &md5ctx);
-      mutt_md5_process(sp->templ, &md5ctx);
-    }
-
-    /* Mix in user's nospam list */
-    struct RegexNode *np = NULL;
-    STAILQ_FOREACH(np, &NoSpamList, entries)
-    {
-      mutt_md5_process(np->regex->pattern, &md5ctx);
-    }
-
-    /* Get a hash and take its bytes as an (unsigned int) hash version */
-    mutt_md5_finish_ctx(&md5ctx, digest.charval);
-    HcacheVer = digest.intval;
-  }
+  struct HeaderCache *hc = hcache_new();
 
   const struct ComprOps *cops = NULL;
 #ifdef USE_HCACHE_COMPRESSION
@@ -433,7 +466,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
     hc->cctx = cops->open(c_header_cache_compress_level);
     if (!hc->cctx)
     {
-      FREE(&hc);
+      hcache_free(&hc);
       return NULL;
     }
 
@@ -444,18 +477,6 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 
   hc->folder = get_foldername(folder);
   hc->crc = HcacheVer;
-
-  if (!path || (path[0] == '\0'))
-  {
-    if (cops)
-    {
-      cops->close(&hc->cctx);
-    }
-
-    FREE(&hc->folder);
-    FREE(&hc);
-    return NULL;
-  }
 
   struct Buffer *hcpath = buf_pool_get();
   hcache_per_folder(hcpath, path, hc->folder, namer);
@@ -473,8 +494,7 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
         {
           cops->close(&hc->cctx);
         }
-        FREE(&hc->folder);
-        FREE(&hc);
+        hcache_free(&hc);
       }
     }
   }
@@ -486,8 +506,13 @@ struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcach
 /**
  * mutt_hcache_close - Multiplexor for StoreOps::close
  */
-void mutt_hcache_close(struct HeaderCache *hc)
+void mutt_hcache_close(struct HeaderCache **ptr)
 {
+  if (!ptr || !*ptr)
+    return;
+
+  struct HeaderCache *hc = *ptr;
+
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
   if (!hc || !ops)
@@ -503,8 +528,8 @@ void mutt_hcache_close(struct HeaderCache *hc)
 #endif
 
   ops->close(&hc->ctx);
-  FREE(&hc->folder);
-  FREE(&hc);
+
+  hcache_free(ptr);
 }
 
 /**
@@ -514,7 +539,7 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
                                      size_t keylen, uint32_t uidvalidity)
 {
   struct RealKey *rk = realkey(key, keylen);
-  struct HCacheEntry entry = { 0 };
+  struct HCacheEntry hce = { 0 };
 
   size_t dlen;
   void *data = fetch_raw(hc, rk->key, rk->len, &dlen);
@@ -531,10 +556,10 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
     goto end;
   }
   int off = 0;
-  serial_restore_uint32_t(&entry.uidvalidity, data, &off);
-  serial_restore_int(&entry.crc, data, &off);
+  serial_restore_uint32_t(&hce.uidvalidity, data, &off);
+  serial_restore_int(&hce.crc, data, &off);
   assert((size_t) off == hlen);
-  if (entry.crc != hc->crc || ((uidvalidity != 0) && uidvalidity != entry.uidvalidity))
+  if (hce.crc != hc->crc || ((uidvalidity != 0) && uidvalidity != hce.uidvalidity))
   {
     goto end;
   }
@@ -554,11 +579,11 @@ struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key,
   }
 #endif
 
-  entry.email = restore_email(data);
+  hce.email = restore_email(data);
 
 end:
   free_raw(hc, &to_free);
-  return entry;
+  return hce;
 }
 
 /**

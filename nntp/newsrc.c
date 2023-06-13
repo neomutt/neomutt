@@ -1196,7 +1196,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
           }
           FREE(&hdata);
         }
-        mutt_hcache_close(hc);
+        mutt_hcache_close(&hc);
       }
       closedir(dir);
     }
