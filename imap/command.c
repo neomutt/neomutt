@@ -864,23 +864,40 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 
     errno = 0;
     const unsigned long ulcount = strtoul(value, &value, 10);
-    if (((errno == ERANGE) && (ulcount == ULONG_MAX)) || ((unsigned int) ulcount != ulcount))
-    {
-      mutt_debug(LL_DEBUG1, "Error parsing STATUS number\n");
-      return;
-    }
+    const bool truncated = ((errno == ERANGE) && (ulcount == ULONG_MAX)) || ((unsigned int) ulcount != ulcount);
     const unsigned int count = (unsigned int) ulcount;
 
-    if (mutt_str_startswith(s, "MESSAGES"))
-      mdata->messages = count;
-    else if (mutt_str_startswith(s, "RECENT"))
-      mdata->recent = count;
-    else if (mutt_str_startswith(s, "UIDNEXT"))
-      mdata->uid_next = count;
-    else if (mutt_str_startswith(s, "UIDVALIDITY"))
+    // we accept to truncate a larger value only for UIDVALIDITY, to accommodate
+    // for IMAP servers that use 64-bits for it. This seems to be what also
+    // Thunderbird is doing, see #3830
+    if (mutt_str_startswith(s, "UIDVALIDITY"))
+    {
+      if (truncated)
+      {
+        mutt_debug(LL_DEBUG1, "UIDVALIDITY [%lu] exceeds 32 bits, "
+                              "truncated to [%u]\n", ulcount, count);
+      }
       mdata->uidvalidity = count;
-    else if (mutt_str_startswith(s, "UNSEEN"))
-      mdata->unseen = count;
+    }
+    else
+    {
+      if (truncated)
+      {
+        mutt_debug(LL_DEBUG1, "Number in [%s] exceeds 32 bits\n", s);
+        return;
+      }
+      else
+      {
+        if (mutt_str_startswith(s, "MESSAGES"))
+          mdata->messages = count;
+        else if (mutt_str_startswith(s, "RECENT"))
+          mdata->recent = count;
+        else if (mutt_str_startswith(s, "UIDNEXT"))
+          mdata->uid_next = count;
+        else if (mutt_str_startswith(s, "UNSEEN"))
+          mdata->unseen = count;
+      }
+    }
 
     s = value;
     if ((s[0] != '\0') && (*s != ')'))
