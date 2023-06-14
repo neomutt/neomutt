@@ -864,18 +864,21 @@ static void cmd_parse_status(struct ImapAccountData *adata, char *s)
 
     errno = 0;
     const unsigned long ulcount = strtoul(value, &value, 10);
-    const bool truncated = ((errno == ERANGE) && (ulcount == ULONG_MAX)) || ((unsigned int) ulcount != ulcount);
+    const bool truncated = ((errno == ERANGE) && (ulcount == ULONG_MAX)) ||
+                           ((unsigned int) ulcount != ulcount);
     const unsigned int count = (unsigned int) ulcount;
 
-    // we accept to truncate a larger value only for UIDVALIDITY, to accommodate
-    // for IMAP servers that use 64-bits for it. This seems to be what also
-    // Thunderbird is doing, see #3830
+    // we accept truncating a larger value only for UIDVALIDITY, to accommodate
+    // IMAP servers that use 64-bits for it. This seems to be what Thunderbird
+    // is also doing, see #3830
     if (mutt_str_startswith(s, "UIDVALIDITY"))
     {
       if (truncated)
       {
-        mutt_debug(LL_DEBUG1, "UIDVALIDITY [%lu] exceeds 32 bits, "
-                              "truncated to [%u]\n", ulcount, count);
+        mutt_debug(LL_DEBUG1,
+                   "UIDVALIDITY [%lu] exceeds 32 bits, "
+                   "truncated to [%u]\n",
+                   ulcount, count);
       }
       mdata->uidvalidity = count;
     }
