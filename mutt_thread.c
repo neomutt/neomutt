@@ -364,6 +364,11 @@ struct ThreadsContext *mutt_thread_ctx_init(struct MailboxView *mv)
  */
 void mutt_thread_ctx_free(struct ThreadsContext **ptr)
 {
+  if (!ptr || !*ptr)
+  {
+    return;
+  }
+
   struct ThreadsContext *tctx = *ptr;
 
   mutt_hash_free(&tctx->hash);
