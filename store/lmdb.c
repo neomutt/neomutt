@@ -50,9 +50,9 @@ static const size_t LMDB_DB_SIZE = 107374182400;
 #endif
 
 /**
- * enum MdbTxnMode - LMDB transaction state
+ * enum LmdbTxnMode - LMDB transaction state
  */
-enum MdbTxnMode
+enum LmdbTxnMode
 {
   TXN_UNINITIALIZED, ///< Transaction is uninitialised
   TXN_READ,          ///< Read transaction in progress
@@ -67,15 +67,15 @@ struct StoreLmdbCtx
   MDB_env *env;
   MDB_txn *txn;
   MDB_dbi db;
-  enum MdbTxnMode txn_mode;
+  enum LmdbTxnMode txn_mode;
 };
 
 /**
- * mdb_get_r_txn - Get an LMDB read transaction
+ * lmdb_get_read_txn - Get an LMDB read transaction
  * @param ctx LMDB context
  * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
-static int mdb_get_r_txn(struct StoreLmdbCtx *ctx)
+static int lmdb_get_read_txn(struct StoreLmdbCtx *ctx)
 {
   int rc;
 
@@ -101,11 +101,11 @@ static int mdb_get_r_txn(struct StoreLmdbCtx *ctx)
 }
 
 /**
- * mdb_get_w_txn - Get an LMDB write transaction
+ * lmdb_get_write_txn - Get an LMDB write transaction
  * @param ctx LMDB context
  * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
-static int mdb_get_w_txn(struct StoreLmdbCtx *ctx)
+static int lmdb_get_write_txn(struct StoreLmdbCtx *ctx)
 {
   int rc;
 
@@ -156,7 +156,7 @@ static void *store_lmdb_open(const char *path)
     goto fail_env;
   }
 
-  rc = mdb_get_r_txn(ctx);
+  rc = lmdb_get_read_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_txn_begin: %s\n", mdb_strerror(rc));
@@ -202,7 +202,7 @@ static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t 
   dkey.mv_size = klen;
   data.mv_data = NULL;
   data.mv_size = 0;
-  int rc = mdb_get_r_txn(ctx);
+  int rc = lmdb_get_read_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
     ctx->txn = NULL;
@@ -249,10 +249,10 @@ static int store_lmdb_store(void *store, const char *key, size_t klen, void *val
   dkey.mv_size = klen;
   databuf.mv_data = value;
   databuf.mv_size = vlen;
-  int rc = mdb_get_w_txn(ctx);
+  int rc = lmdb_get_write_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(LL_DEBUG2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));
+    mutt_debug(LL_DEBUG2, "lmdb_get_write_txn: %s\n", mdb_strerror(rc));
     return rc;
   }
   rc = mdb_put(ctx->txn, ctx->db, &dkey, &databuf, 0);
@@ -280,10 +280,10 @@ static int store_lmdb_delete_record(void *store, const char *key, size_t klen)
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = klen;
-  int rc = mdb_get_w_txn(ctx);
+  int rc = lmdb_get_write_txn(ctx);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(LL_DEBUG2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));
+    mutt_debug(LL_DEBUG2, "lmdb_get_write_txn: %s\n", mdb_strerror(rc));
     return rc;
   }
   rc = mdb_del(ctx->txn, ctx->db, &dkey, NULL);
