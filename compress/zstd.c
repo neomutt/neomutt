@@ -50,13 +50,37 @@ struct ComprZstdCtx
 };
 
 /**
+ * zstd_cdata_free - Free Zstandard Compression Data
+ * @param ptr Zstandard Compression Data to free
+ */
+static void zstd_cdata_free(struct ComprZstdCtx **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ComprZstdCtx *cdata = *ptr;
+  FREE(&cdata->buf);
+
+  FREE(ptr);
+}
+
+/**
+ * zstd_cdata_new - Create new Zstandard Compression Data
+ * @retval ptr New Zstandard Compression Data
+ */
+static struct ComprZstdCtx *zstd_cdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct ComprZstdCtx));
+}
+
+/**
  * compr_zstd_open - Implements ComprOps::open() - @ingroup compress_open
  */
 static void *compr_zstd_open(short level)
 {
-  struct ComprZstdCtx *ctx = mutt_mem_malloc(sizeof(struct ComprZstdCtx));
+  struct ComprZstdCtx *ctx = zstd_cdata_new();
 
-  ctx->buf = mutt_mem_malloc(ZSTD_compressBound(1024 * 128));
+  ctx->buf = mutt_mem_calloc(1, ZSTD_compressBound(1024 * 128));
   ctx->cctx = ZSTD_createCCtx();
   ctx->dctx = ZSTD_createDCtx();
 
@@ -65,8 +89,7 @@ static void *compr_zstd_open(short level)
     // LCOV_EXCL_START
     ZSTD_freeCCtx(ctx->cctx);
     ZSTD_freeDCtx(ctx->dctx);
-    FREE(&ctx->buf);
-    FREE(&ctx);
+    zstd_cdata_free(&ctx);
     return NULL;
     // LCOV_EXCL_STOP
   }
@@ -147,8 +170,7 @@ static void compr_zstd_close(void **cctx)
   if (ctx->dctx)
     ZSTD_freeDCtx(ctx->dctx);
 
-  FREE(&ctx->buf);
-  FREE(cctx);
+  zstd_cdata_free((struct ComprZstdCtx **) cctx);
 }
 
 COMPRESS_OPS(zstd, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

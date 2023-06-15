@@ -48,11 +48,35 @@ struct ComprLz4Ctx
 };
 
 /**
+ * lz4_cdata_free - Free Lz4 Compression Data
+ * @param ptr Lz4 Compression Data to free
+ */
+static void lz4_cdata_free(struct ComprLz4Ctx **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ComprLz4Ctx *cdata = *ptr;
+  FREE(&cdata->buf);
+
+  FREE(ptr);
+}
+
+/**
+ * lz4_cdata_new - Create new Lz4 Compression Data
+ * @retval ptr New Lz4 Compression Data
+ */
+static struct ComprLz4Ctx *lz4_cdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct ComprLz4Ctx));
+}
+
+/**
  * compr_lz4_open - Implements ComprOps::open() - @ingroup compress_open
  */
 static void *compr_lz4_open(short level)
 {
-  struct ComprLz4Ctx *ctx = mutt_mem_malloc(sizeof(struct ComprLz4Ctx));
+  struct ComprLz4Ctx *ctx = lz4_cdata_new();
 
   ctx->buf = mutt_mem_malloc(LZ4_compressBound(1024 * 32));
 
@@ -141,10 +165,7 @@ static void compr_lz4_close(void **cctx)
   if (!cctx || !*cctx)
     return;
 
-  struct ComprLz4Ctx *ctx = *cctx;
-
-  FREE(&ctx->buf);
-  FREE(cctx);
+  lz4_cdata_free((struct ComprLz4Ctx **) cctx);
 }
 
 COMPRESS_OPS(lz4, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

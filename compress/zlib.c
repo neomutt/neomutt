@@ -48,13 +48,37 @@ struct ComprZlibCtx
 };
 
 /**
+ * zlib_cdata_free - Free Zlib Compression Data
+ * @param ptr Zlib Compression Data to free
+ */
+static void zlib_cdata_free(struct ComprZlibCtx **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ComprZlibCtx *cdata = *ptr;
+  FREE(&cdata->buf);
+
+  FREE(ptr);
+}
+
+/**
+ * zlib_cdata_new - Create new Zlib Compression Data
+ * @retval ptr New Zlib Compression Data
+ */
+static struct ComprZlibCtx *zlib_cdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct ComprZlibCtx));
+}
+
+/**
  * compr_zlib_open - Implements ComprOps::open() - @ingroup compress_open
  */
 static void *compr_zlib_open(short level)
 {
-  struct ComprZlibCtx *ctx = mutt_mem_malloc(sizeof(struct ComprZlibCtx));
+  struct ComprZlibCtx *ctx = zlib_cdata_new();
 
-  ctx->buf = mutt_mem_malloc(compressBound(1024 * 32));
+  ctx->buf = mutt_mem_calloc(1, compressBound(1024 * 32));
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -136,10 +160,7 @@ static void compr_zlib_close(void **cctx)
   if (!cctx || !*cctx)
     return;
 
-  struct ComprZlibCtx *ctx = *cctx;
-
-  FREE(&ctx->buf);
-  FREE(cctx);
+  zlib_cdata_free((struct ComprZlibCtx **) cctx);
 }
 
 COMPRESS_OPS(zlib, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

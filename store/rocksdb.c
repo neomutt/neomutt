@@ -46,6 +46,30 @@ struct RocksDbCtx
 };
 
 /**
+ * rocksdb_sdata_free - Free RocksDb Store Data
+ * @param ptr RocksDb Store Data to free
+ */
+static void rocksdb_sdata_free(struct RocksDbCtx **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct RocksDbCtx *sdata = *ptr;
+  FREE(&sdata->err);
+
+  FREE(ptr);
+}
+
+/**
+ * rocksdb_sdata_new - Create new RocksDb Store Data
+ * @retval ptr New RocksDb Store Data
+ */
+static struct RocksDbCtx *rocksdb_sdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct RocksDbCtx));
+}
+
+/**
  * store_rocksdb_open - Implements StoreOps::open() - @ingroup store_open
  */
 static void *store_rocksdb_open(const char *path)
@@ -53,7 +77,7 @@ static void *store_rocksdb_open(const char *path)
   if (!path)
     return NULL;
 
-  struct RocksDbCtx *ctx = mutt_mem_malloc(sizeof(struct RocksDbCtx));
+  struct RocksDbCtx *ctx = rocksdb_sdata_new();
 
   /* RocksDB store errors in form of strings */
   ctx->err = NULL;
@@ -174,8 +198,7 @@ static void store_rocksdb_close(void **ptr)
   rocksdb_readoptions_destroy(ctx->read_options);
   rocksdb_writeoptions_destroy(ctx->write_options);
 
-  FREE(ptr);
-  *ptr = NULL;
+  rocksdb_sdata_free((struct RocksDbCtx **) ptr);
 }
 
 /**

@@ -53,6 +53,34 @@ struct StoreDbCtx
 };
 
 /**
+ * bdb_sdata_free - Free Bdb Store Data
+ * @param ptr Bdb Store Data to free
+ */
+static void bdb_sdata_free(struct StoreDbCtx **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct StoreDbCtx *sdata = *ptr;
+  buf_dealloc(&sdata->lockfile);
+
+  FREE(ptr);
+}
+
+/**
+ * bdb_sdata_new - Create new Bdb Store Data
+ * @retval ptr New Bdb Store Data
+ */
+static struct StoreDbCtx *bdb_sdata_new(void)
+{
+  struct StoreDbCtx *sdata = mutt_mem_calloc(1, sizeof(struct StoreDbCtx));
+
+  sdata->lockfile = buf_make(128);
+
+  return sdata;
+}
+
+/**
  * dbt_init - Initialise a BDB context
  * @param dbt  Context to initialise
  * @param data ID string to associate
@@ -94,11 +122,10 @@ static void *store_bdb_open(const char *path)
   int rc;
   uint32_t createflags = DB_CREATE;
 
-  struct StoreDbCtx *ctx = mutt_mem_malloc(sizeof(struct StoreDbCtx));
+  struct StoreDbCtx *ctx = bdb_sdata_new();
 
   const int pagesize = 512;
 
-  ctx->lockfile = buf_make(128);
   buf_printf(&ctx->lockfile, "%s-lock-hack", path);
 
   ctx->fd = open(buf_string(&ctx->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
@@ -145,8 +172,7 @@ fail_unlock:
 fail_close:
   close(ctx->fd);
   unlink(buf_string(&ctx->lockfile));
-  buf_dealloc(&ctx->lockfile);
-  FREE(&ctx);
+  bdb_sdata_free(&ctx);
 
   return NULL;
 }
@@ -236,8 +262,8 @@ static void store_bdb_close(void **ptr)
   mutt_file_unlock(db->fd);
   close(db->fd);
   unlink(buf_string(&db->lockfile));
-  buf_dealloc(&db->lockfile);
-  FREE(ptr);
+
+  bdb_sdata_free((struct StoreDbCtx **) ptr);
 }
 
 /**

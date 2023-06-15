@@ -71,6 +71,24 @@ struct StoreLmdbCtx
 };
 
 /**
+ * lmdb_sdata_free - Free Lmdb Store Data
+ * @param ptr Lmdb Store Data to free
+ */
+static void lmdb_sdata_free(struct StoreLmdbCtx **ptr)
+{
+  FREE(ptr);
+}
+
+/**
+ * lmdb_sdata_new - Create new Lmdb Store Data
+ * @retval ptr New Lmdb Store Data
+ */
+static struct StoreLmdbCtx *lmdb_sdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct StoreLmdbCtx));
+}
+
+/**
  * lmdb_get_read_txn - Get an LMDB read transaction
  * @param ctx LMDB context
  * @retval num LMDB return code, e.g. MDB_SUCCESS
@@ -137,13 +155,13 @@ static void *store_lmdb_open(const char *path)
 
   int rc;
 
-  struct StoreLmdbCtx *ctx = mutt_mem_calloc(1, sizeof(struct StoreLmdbCtx));
+  struct StoreLmdbCtx *ctx = lmdb_sdata_new();
 
   rc = mdb_env_create(&ctx->env);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_env_create: %s\n", mdb_strerror(rc));
-    FREE(&ctx);
+    lmdb_sdata_free(&ctx);
     return NULL;
   }
 
@@ -181,7 +199,7 @@ fail_dbi:
 
 fail_env:
   mdb_env_close(ctx->env);
-  FREE(&ctx);
+  lmdb_sdata_free(&ctx);
   return NULL;
 }
 
@@ -320,7 +338,7 @@ static void store_lmdb_close(void **ptr)
   }
 
   mdb_env_close(db->env);
-  FREE(ptr);
+  lmdb_sdata_free((struct StoreLmdbCtx **) ptr);
 }
 
 /**
