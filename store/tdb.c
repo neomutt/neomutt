@@ -37,7 +37,7 @@
 /**
  * store_tdb_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_tdb_open(const char *path)
+static StoreHandle *store_tdb_open(const char *path)
 {
   if (!path)
     return NULL;
@@ -51,17 +51,20 @@ static void *store_tdb_open(const char *path)
 
   struct tdb_context *db = tdb_open(path, hash_size, flags, O_CREAT | O_RDWR, 00600);
 
-  return db;
+  // Return an opaque pointer
+  return (StoreHandle *) db;
 }
 
 /**
  * store_tdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_tdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_tdb_fetch(StoreHandle *store, const char *key,
+                                    size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
 
+  // Decloak an opaque pointer
   TDB_CONTEXT *db = store;
   TDB_DATA dkey;
   TDB_DATA data;
@@ -77,7 +80,7 @@ static void *store_tdb_fetch(void *store, const char *key, size_t klen, size_t *
 /**
  * store_tdb_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_tdb_free(void *store, void **ptr)
+static void store_tdb_free(StoreHandle *store, void **ptr)
 {
   FREE(ptr);
 }
@@ -85,11 +88,13 @@ static void store_tdb_free(void *store, void **ptr)
 /**
  * store_tdb_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_tdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
+static int store_tdb_store(StoreHandle *store, const char *key, size_t klen,
+                           void *value, size_t vlen)
 {
   if (!store)
     return -1;
 
+  // Decloak an opaque pointer
   TDB_CONTEXT *db = store;
   TDB_DATA dkey;
   TDB_DATA databuf;
@@ -106,11 +111,12 @@ static int store_tdb_store(void *store, const char *key, size_t klen, void *valu
 /**
  * store_tdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_tdb_delete_record(void *store, const char *key, size_t klen)
+static int store_tdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
+  // Decloak an opaque pointer
   TDB_CONTEXT *db = store;
   TDB_DATA dkey;
 
@@ -123,11 +129,12 @@ static int store_tdb_delete_record(void *store, const char *key, size_t klen)
 /**
  * store_tdb_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_tdb_close(void **ptr)
+static void store_tdb_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
+  // Decloak an opaque pointer
   TDB_CONTEXT *db = *ptr;
   tdb_close(db);
   *ptr = NULL;

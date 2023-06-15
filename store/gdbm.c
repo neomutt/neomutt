@@ -40,7 +40,7 @@
 /**
  * store_gdbm_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_gdbm_open(const char *path)
+static StoreHandle *store_gdbm_open(const char *path)
 {
   if (!path)
     return NULL;
@@ -54,13 +54,15 @@ static void *store_gdbm_open(const char *path)
     db = gdbm_open((char *) path, pagesize, GDBM_READER, 00600, NULL);
   }
 
-  return db;
+  // Return an opaque pointer
+  return (StoreHandle *) db;
 }
 
 /**
  * store_gdbm_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_gdbm_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_gdbm_fetch(StoreHandle *store, const char *key,
+                                     size_t klen, size_t *vlen)
 {
   if (!store || (klen > INT_MAX))
     return NULL;
@@ -68,6 +70,7 @@ static void *store_gdbm_fetch(void *store, const char *key, size_t klen, size_t 
   datum dkey = { 0 };
   datum data = { 0 };
 
+  // Decloak an opaque pointer
   GDBM_FILE db = store;
 
   dkey.dptr = (char *) key;
@@ -81,7 +84,7 @@ static void *store_gdbm_fetch(void *store, const char *key, size_t klen, size_t 
 /**
  * store_gdbm_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_gdbm_free(void *store, void **ptr)
+static void store_gdbm_free(StoreHandle *store, void **ptr)
 {
   FREE(ptr);
 }
@@ -89,7 +92,8 @@ static void store_gdbm_free(void *store, void **ptr)
 /**
  * store_gdbm_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_gdbm_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
+static int store_gdbm_store(StoreHandle *store, const char *key, size_t klen,
+                            void *value, size_t vlen)
 {
   if (!store || (klen > INT_MAX) || (vlen > INT_MAX))
     return -1;
@@ -97,6 +101,7 @@ static int store_gdbm_store(void *store, const char *key, size_t klen, void *val
   datum dkey = { 0 };
   datum databuf = { 0 };
 
+  // Decloak an opaque pointer
   GDBM_FILE db = store;
 
   dkey.dptr = (char *) key;
@@ -111,13 +116,14 @@ static int store_gdbm_store(void *store, const char *key, size_t klen, void *val
 /**
  * store_gdbm_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_gdbm_delete_record(void *store, const char *key, size_t klen)
+static int store_gdbm_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store || (klen > INT_MAX))
     return -1;
 
   datum dkey = { 0 };
 
+  // Decloak an opaque pointer
   GDBM_FILE db = store;
 
   dkey.dptr = (char *) key;
@@ -129,11 +135,12 @@ static int store_gdbm_delete_record(void *store, const char *key, size_t klen)
 /**
  * store_gdbm_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_gdbm_close(void **ptr)
+static void store_gdbm_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
+  // Decloak an opaque pointer
   GDBM_FILE db = *ptr;
   gdbm_close(db);
   *ptr = NULL;

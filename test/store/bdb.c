@@ -48,10 +48,10 @@ void test_store_bdb(void)
   mutt_str_cat(path, sizeof(path), "/");
   mutt_str_cat(path, sizeof(path), DB_NAME);
 
-  void *db = store_ops->open(path);
-  TEST_CHECK(db != NULL);
+  StoreHandle *store_handle = store_ops->open(path);
+  TEST_CHECK(store_handle != NULL);
 
-  TEST_CHECK(test_store_db(store_ops, db) == true);
+  TEST_CHECK(test_store_db(store_ops, store_handle) == true);
 
-  store_ops->close(&db);
+  store_ops->close(&store_handle);
 }

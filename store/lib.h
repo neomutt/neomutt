@@ -57,6 +57,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+/// Opaque type for store backend
+typedef void StoreHandle;
+
 /**
  * @defgroup store_api Key Value Store API
  *
@@ -79,7 +82,7 @@ struct StoreOps
    * connection to the database file specified by the path parameter. Backends
    * MUST return non-NULL specific handle information on success.
    */
-  void *(*open)(const char *path);
+  StoreHandle *(*open)(const char *path);
 
   /**
    * @defgroup store_fetch fetch()
@@ -93,7 +96,7 @@ struct StoreOps
    * @retval ptr  Success, Value associated with the Key
    * @retval NULL Error, or Key not found
    */
-  void *(*fetch)(void *store, const char *key, size_t klen, size_t *vlen);
+  void *(*fetch)(StoreHandle *store, const char *key, size_t klen, size_t *vlen);
 
   /**
    * @defgroup store_free free()
@@ -103,7 +106,7 @@ struct StoreOps
    * @param[in]  store Store retrieved via open()
    * @param[out] ptr   Value to be freed
    */
-  void (*free)(void *store, void **ptr);
+  void (*free)(StoreHandle *store, void **ptr);
 
   /**
    * @defgroup store_store store()
@@ -118,7 +121,7 @@ struct StoreOps
    * @retval 0   Success
    * @retval num Error, a backend-specific error code
    */
-  int (*store)(void *store, const char *key, size_t klen, void *value, size_t vlen);
+  int (*store)(StoreHandle *store, const char *key, size_t klen, void *value, size_t vlen);
 
   /**
    * @defgroup store_delete_record delete_record()
@@ -131,7 +134,7 @@ struct StoreOps
    * @retval 0   Success
    * @retval num Error, a backend-specific error code
    */
-  int (*delete_record)(void *store, const char *key, size_t klen);
+  int (*delete_record)(StoreHandle *store, const char *key, size_t klen);
 
   /**
    * @defgroup store_close close()
@@ -140,7 +143,7 @@ struct StoreOps
    * close - Close a Store connection
    * @param[in,out] ptr Store retrieved via open()
    */
-  void (*close)(void **ptr);
+  void (*close)(StoreHandle **ptr);
 
   /**
    * @defgroup store_version version()

@@ -72,6 +72,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "store/lib.h"
 
 struct Buffer;
 struct Email;
@@ -86,7 +87,7 @@ struct HeaderCache
 {
   char *folder;                       ///< Folder name
   unsigned int crc;                   ///< CRC of the cache entry
-  void *ctx;                          ///< Store context (handle)
+  StoreHandle *store_handle;          ///< Store handle
   void *cctx;                         ///< Compression context (handle)
 };
 

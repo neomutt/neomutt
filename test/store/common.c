@@ -81,9 +81,9 @@ bool test_store_degenerate(const struct StoreOps *store_ops, const char *name)
   return true;
 }
 
-bool test_store_db(const struct StoreOps *store_ops, void *db)
+bool test_store_db(const struct StoreOps *store_ops, StoreHandle *store_handle)
 {
-  if (!store_ops || !db)
+  if (!store_ops || !store_handle)
     return false;
 
   const char *key = "one";
@@ -92,20 +92,20 @@ bool test_store_db(const struct StoreOps *store_ops, void *db)
   size_t vlen = strlen(value);
   int rc;
 
-  rc = store_ops->store(db, key, klen, value, vlen);
+  rc = store_ops->store(store_handle, key, klen, value, vlen);
   if (!TEST_CHECK(rc == 0))
     return false;
 
   void *data = NULL;
   vlen = 0;
-  data = store_ops->fetch(db, key, klen, &vlen);
+  data = store_ops->fetch(store_handle, key, klen, &vlen);
   if (!TEST_CHECK(data != NULL))
     return false;
 
-  store_ops->free(db, &data);
-  TEST_CHECK_(1, "store_ops->free(db, &data)");
+  store_ops->free(store_handle, &data);
+  TEST_CHECK_(1, "store_ops->free(store_handle, &data)");
 
-  rc = store_ops->delete_record(db, key, klen);
+  rc = store_ops->delete_record(store_handle, key, klen);
   if (!TEST_CHECK(rc == 0))
     return false;
 

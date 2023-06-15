@@ -72,7 +72,7 @@ static struct RocksDbCtx *rocksdb_sdata_new(void)
 /**
  * store_rocksdb_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_rocksdb_open(const char *path)
+static StoreHandle *store_rocksdb_open(const char *path)
 {
   if (!path)
     return NULL;
@@ -107,17 +107,20 @@ static void *store_rocksdb_open(const char *path)
     return NULL;
   }
 
-  return ctx;
+  // Return an opaque pointer
+  return (StoreHandle *) ctx;
 }
 
 /**
  * store_rocksdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_rocksdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_rocksdb_fetch(StoreHandle *store, const char *key,
+                                        size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
 
+  // Decloak an opaque pointer
   struct RocksDbCtx *ctx = store;
 
   void *rv = rocksdb_get(ctx->db, ctx->read_options, key, klen, vlen, &ctx->err);
@@ -134,7 +137,7 @@ static void *store_rocksdb_fetch(void *store, const char *key, size_t klen, size
 /**
  * store_rocksdb_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_rocksdb_free(void *store, void **ptr)
+static void store_rocksdb_free(StoreHandle *store, void **ptr)
 {
   FREE(ptr);
 }
@@ -142,12 +145,13 @@ static void store_rocksdb_free(void *store, void **ptr)
 /**
  * store_rocksdb_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_rocksdb_store(void *store, const char *key, size_t klen,
+static int store_rocksdb_store(StoreHandle *store, const char *key, size_t klen,
                                void *value, size_t vlen)
 {
   if (!store)
     return -1;
 
+  // Decloak an opaque pointer
   struct RocksDbCtx *ctx = store;
 
   rocksdb_put(ctx->db, ctx->write_options, key, klen, value, vlen, &ctx->err);
@@ -164,11 +168,12 @@ static int store_rocksdb_store(void *store, const char *key, size_t klen,
 /**
  * store_rocksdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_rocksdb_delete_record(void *store, const char *key, size_t klen)
+static int store_rocksdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
+  // Decloak an opaque pointer
   struct RocksDbCtx *ctx = store;
 
   rocksdb_delete(ctx->db, ctx->write_options, key, klen, &ctx->err);
@@ -185,11 +190,12 @@ static int store_rocksdb_delete_record(void *store, const char *key, size_t klen
 /**
  * store_rocksdb_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_rocksdb_close(void **ptr)
+static void store_rocksdb_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
+  // Decloak an opaque pointer
   struct RocksDbCtx *ctx = *ptr;
 
   /* close database and free resources */

@@ -146,7 +146,7 @@ static int lmdb_get_write_txn(struct StoreLmdbCtx *ctx)
 /**
  * store_lmdb_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_lmdb_open(const char *path)
+static StoreHandle *store_lmdb_open(const char *path)
 {
   if (!path)
     return NULL;
@@ -186,7 +186,8 @@ static void *store_lmdb_open(const char *path)
 
   mdb_txn_reset(ctx->txn);
   ctx->txn_mode = TXN_UNINITIALIZED;
-  return ctx;
+  // Return an opaque pointer
+  return (StoreHandle *) ctx;
 
 fail_dbi:
   mdb_txn_abort(ctx->txn);
@@ -202,7 +203,8 @@ fail_env:
 /**
  * store_lmdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_lmdb_fetch(StoreHandle *store, const char *key,
+                                     size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
@@ -210,6 +212,7 @@ static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t 
   MDB_val dkey = { 0 };
   MDB_val data = { 0 };
 
+  // Decloak an opaque pointer
   struct StoreLmdbCtx *ctx = store;
 
   dkey.mv_data = (void *) key;
@@ -241,7 +244,7 @@ static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t 
 /**
  * store_lmdb_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_lmdb_free(void *store, void **ptr)
+static void store_lmdb_free(StoreHandle *store, void **ptr)
 {
   /* LMDB data is owned by the database */
 }
@@ -249,7 +252,8 @@ static void store_lmdb_free(void *store, void **ptr)
 /**
  * store_lmdb_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_lmdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
+static int store_lmdb_store(StoreHandle *store, const char *key, size_t klen,
+                            void *value, size_t vlen)
 {
   if (!store)
     return -1;
@@ -257,6 +261,7 @@ static int store_lmdb_store(void *store, const char *key, size_t klen, void *val
   MDB_val dkey = { 0 };
   MDB_val databuf = { 0 };
 
+  // Decloak an opaque pointer
   struct StoreLmdbCtx *ctx = store;
 
   dkey.mv_data = (void *) key;
@@ -283,13 +288,14 @@ static int store_lmdb_store(void *store, const char *key, size_t klen, void *val
 /**
  * store_lmdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_lmdb_delete_record(void *store, const char *key, size_t klen)
+static int store_lmdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
   MDB_val dkey = { 0 };
 
+  // Decloak an opaque pointer
   struct StoreLmdbCtx *ctx = store;
 
   dkey.mv_data = (void *) key;
@@ -315,11 +321,12 @@ static int store_lmdb_delete_record(void *store, const char *key, size_t klen)
 /**
  * store_lmdb_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_lmdb_close(void **ptr)
+static void store_lmdb_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
+  // Decloak an opaque pointer
   struct StoreLmdbCtx *db = *ptr;
 
   if (db->txn)

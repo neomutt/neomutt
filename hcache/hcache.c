@@ -378,7 +378,7 @@ static void *fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, s
 
   struct Buffer path = buf_make(1024);
   keylen = buf_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  void *blob = store_ops->fetch(hc->ctx, buf_string(&path), keylen, dlen);
+  void *blob = store_ops->fetch(hc->store_handle, buf_string(&path), keylen, dlen);
   buf_dealloc(&path);
   return blob;
 }
@@ -394,7 +394,7 @@ static void free_raw(struct HeaderCache *hc, void **data)
   if (!hc || !store_ops || !data || !*data)
     return;
 
-  store_ops->free(hc->ctx, data);
+  store_ops->free(hc->store_handle, data);
 }
 
 /**
@@ -484,14 +484,14 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
   struct Buffer *hcpath = buf_pool_get();
   hcache_per_folder(hcpath, path, hc->folder, namer);
 
-  hc->ctx = store_ops->open(buf_string(hcpath));
-  if (!hc->ctx)
+  hc->store_handle = store_ops->open(buf_string(hcpath));
+  if (!hc->store_handle)
   {
     /* remove a possibly incompatible version */
     if (unlink(buf_string(hcpath)) == 0)
     {
-      hc->ctx = store_ops->open(buf_string(hcpath));
-      if (!hc->ctx)
+      hc->store_handle = store_ops->open(buf_string(hcpath));
+      if (!hc->store_handle)
       {
         if (compr_ops)
         {
@@ -530,7 +530,7 @@ void hcache_close(struct HeaderCache **ptr)
   }
 #endif
 
-  store_ops->close(&hc->ctx);
+  store_ops->close(&hc->store_handle);
 
   hcache_free(ptr);
 }
@@ -711,7 +711,7 @@ int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
   struct Buffer path = buf_make(1024);
 
   keylen = buf_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  int rc = store_ops->store(hc->ctx, buf_string(&path), keylen, data, dlen);
+  int rc = store_ops->store(hc->store_handle, buf_string(&path), keylen, data, dlen);
   buf_dealloc(&path);
 
   return rc;
@@ -734,7 +734,7 @@ int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen)
 
   keylen = buf_printf(&path, "%s%s", hc->folder, key);
 
-  int rc = store_ops->delete_record(hc->ctx, buf_string(&path), keylen);
+  int rc = store_ops->delete_record(hc->store_handle, buf_string(&path), keylen);
   buf_dealloc(&path);
   return rc;
 }

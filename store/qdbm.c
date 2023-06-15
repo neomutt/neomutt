@@ -41,24 +41,27 @@
 /**
  * store_qdbm_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_qdbm_open(const char *path)
+static StoreHandle *store_qdbm_open(const char *path)
 {
   if (!path)
     return NULL;
 
   VILLA *db = vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
 
-  return db;
+  // Return an opaque pointer
+  return (StoreHandle *) db;
 }
 
 /**
  * store_qdbm_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_qdbm_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_qdbm_fetch(StoreHandle *store, const char *key,
+                                     size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
 
+  // Decloak an opaque pointer
   VILLA *db = store;
   int sp = 0;
   void *rv = vlget(db, key, klen, &sp);
@@ -69,7 +72,7 @@ static void *store_qdbm_fetch(void *store, const char *key, size_t klen, size_t 
 /**
  * store_qdbm_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_qdbm_free(void *store, void **ptr)
+static void store_qdbm_free(StoreHandle *store, void **ptr)
 {
   FREE(ptr);
 }
@@ -77,11 +80,13 @@ static void store_qdbm_free(void *store, void **ptr)
 /**
  * store_qdbm_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_qdbm_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
+static int store_qdbm_store(StoreHandle *store, const char *key, size_t klen,
+                            void *value, size_t vlen)
 {
   if (!store)
     return -1;
 
+  // Decloak an opaque pointer
   VILLA *db = store;
   /* Not sure if dpecode is reset on success, so better to explicitly return 0
    * on success */
@@ -92,11 +97,12 @@ static int store_qdbm_store(void *store, const char *key, size_t klen, void *val
 /**
  * store_qdbm_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_qdbm_delete_record(void *store, const char *key, size_t klen)
+static int store_qdbm_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
+  // Decloak an opaque pointer
   VILLA *db = store;
   /* Not sure if dpecode is reset on success, so better to explicitly return 0
    * on success */
@@ -107,11 +113,12 @@ static int store_qdbm_delete_record(void *store, const char *key, size_t klen)
 /**
  * store_qdbm_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_qdbm_close(void **ptr)
+static void store_qdbm_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
+  // Decloak an opaque pointer
   VILLA *db = *ptr;
   vlclose(db);
   *ptr = NULL;
