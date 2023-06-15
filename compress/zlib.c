@@ -39,9 +39,9 @@
 #define MAX_COMP_LEVEL 9 ///< Maximum compression level for zlib
 
 /**
- * struct ComprZlibCtx - Private Zlib Compression Context
+ * struct ZlibComprData - Private Zlib Compression Data
  */
-struct ComprZlibCtx
+struct ZlibComprData
 {
   void *buf;   ///< Temporary buffer
   short level; ///< Compression Level to be used
@@ -51,12 +51,12 @@ struct ComprZlibCtx
  * zlib_cdata_free - Free Zlib Compression Data
  * @param ptr Zlib Compression Data to free
  */
-static void zlib_cdata_free(struct ComprZlibCtx **ptr)
+static void zlib_cdata_free(struct ZlibComprData **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct ComprZlibCtx *cdata = *ptr;
+  struct ZlibComprData *cdata = *ptr;
   FREE(&cdata->buf);
 
   FREE(ptr);
@@ -66,9 +66,9 @@ static void zlib_cdata_free(struct ComprZlibCtx **ptr)
  * zlib_cdata_new - Create new Zlib Compression Data
  * @retval ptr New Zlib Compression Data
  */
-static struct ComprZlibCtx *zlib_cdata_new(void)
+static struct ZlibComprData *zlib_cdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ComprZlibCtx));
+  return mutt_mem_calloc(1, sizeof(struct ZlibComprData));
 }
 
 /**
@@ -76,9 +76,9 @@ static struct ComprZlibCtx *zlib_cdata_new(void)
  */
 static ComprHandle *compr_zlib_open(short level)
 {
-  struct ComprZlibCtx *ctx = zlib_cdata_new();
+  struct ZlibComprData *cdata = zlib_cdata_new();
 
-  ctx->buf = mutt_mem_calloc(1, compressBound(1024 * 32));
+  cdata->buf = mutt_mem_calloc(1, compressBound(1024 * 32));
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -87,10 +87,10 @@ static ComprHandle *compr_zlib_open(short level)
     level = MIN_COMP_LEVEL;
   }
 
-  ctx->level = level;
+  cdata->level = level;
 
   // Return an opaque pointer
-  return (ComprHandle *) ctx;
+  return (ComprHandle *) cdata;
 }
 
 /**
@@ -103,19 +103,19 @@ static void *compr_zlib_compress(ComprHandle *handle, const char *data,
     return NULL;
 
   // Decloak an opaque pointer
-  struct ComprZlibCtx *ctx = handle;
+  struct ZlibComprData *cdata = handle;
 
   uLong len = compressBound(dlen);
-  mutt_mem_realloc(&ctx->buf, len + 4);
-  Bytef *cbuf = (unsigned char *) ctx->buf + 4;
+  mutt_mem_realloc(&cdata->buf, len + 4);
+  Bytef *cbuf = (unsigned char *) cdata->buf + 4;
   const void *ubuf = data;
-  int rc = compress2(cbuf, &len, ubuf, dlen, ctx->level);
+  int rc = compress2(cbuf, &len, ubuf, dlen, cdata->level);
   if (rc != Z_OK)
     return NULL; // LCOV_EXCL_LINE
   *clen = len + 4;
 
   /* save ulen to first 4 bytes */
-  unsigned char *cs = ctx->buf;
+  unsigned char *cs = cdata->buf;
   cs[0] = dlen & 0xff;
   dlen >>= 8;
   cs[1] = dlen & 0xff;
@@ -124,7 +124,7 @@ static void *compr_zlib_compress(ComprHandle *handle, const char *data,
   dlen >>= 8;
   cs[3] = dlen & 0xff;
 
-  return ctx->buf;
+  return cdata->buf;
 }
 
 /**
@@ -136,7 +136,7 @@ static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t
     return NULL;
 
   // Decloak an opaque pointer
-  struct ComprZlibCtx *ctx = handle;
+  struct ZlibComprData *cdata = handle;
 
   /* first 4 bytes store the size */
   const unsigned char *cs = (const unsigned char *) cbuf;
@@ -146,8 +146,8 @@ static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t
   if (ulen == 0)
     return NULL;
 
-  mutt_mem_realloc(&ctx->buf, ulen);
-  Bytef *ubuf = ctx->buf;
+  mutt_mem_realloc(&cdata->buf, ulen);
+  Bytef *ubuf = cdata->buf;
   cs = (const unsigned char *) cbuf;
   int rc = uncompress(ubuf, &ulen, cs + 4, clen - 4);
   if (rc != Z_OK)
@@ -165,7 +165,7 @@ static void compr_zlib_close(ComprHandle **ptr)
     return;
 
   // Decloak an opaque pointer
-  zlib_cdata_free((struct ComprZlibCtx **) ptr);
+  zlib_cdata_free((struct ZlibComprData **) ptr);
 }
 
 COMPRESS_OPS(zlib, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

@@ -39,9 +39,9 @@
 #define MAX_COMP_LEVEL 12 ///< Maximum compression level for lz4
 
 /**
- * struct ComprLz4Ctx - Private Lz4 Compression Context
+ * struct Lz4ComprData - Private Lz4 Compression Data
  */
-struct ComprLz4Ctx
+struct Lz4ComprData
 {
   void *buf;   ///< Temporary buffer
   short level; ///< Compression Level to be used
@@ -51,12 +51,12 @@ struct ComprLz4Ctx
  * lz4_cdata_free - Free Lz4 Compression Data
  * @param ptr Lz4 Compression Data to free
  */
-static void lz4_cdata_free(struct ComprLz4Ctx **ptr)
+static void lz4_cdata_free(struct Lz4ComprData **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct ComprLz4Ctx *cdata = *ptr;
+  struct Lz4ComprData *cdata = *ptr;
   FREE(&cdata->buf);
 
   FREE(ptr);
@@ -66,9 +66,9 @@ static void lz4_cdata_free(struct ComprLz4Ctx **ptr)
  * lz4_cdata_new - Create new Lz4 Compression Data
  * @retval ptr New Lz4 Compression Data
  */
-static struct ComprLz4Ctx *lz4_cdata_new(void)
+static struct Lz4ComprData *lz4_cdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ComprLz4Ctx));
+  return mutt_mem_calloc(1, sizeof(struct Lz4ComprData));
 }
 
 /**
@@ -76,9 +76,9 @@ static struct ComprLz4Ctx *lz4_cdata_new(void)
  */
 static ComprHandle *compr_lz4_open(short level)
 {
-  struct ComprLz4Ctx *ctx = lz4_cdata_new();
+  struct Lz4ComprData *cdata = lz4_cdata_new();
 
-  ctx->buf = mutt_mem_malloc(LZ4_compressBound(1024 * 32));
+  cdata->buf = mutt_mem_calloc(1, LZ4_compressBound(1024 * 32));
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -87,10 +87,10 @@ static ComprHandle *compr_lz4_open(short level)
     level = MIN_COMP_LEVEL;
   }
 
-  ctx->level = level;
+  cdata->level = level;
 
   // Return an opaque pointer
-  return (ComprHandle *) ctx;
+  return (ComprHandle *) cdata;
 }
 
 /**
@@ -103,22 +103,22 @@ static void *compr_lz4_compress(ComprHandle *handle, const char *data,
     return NULL;
 
   // Decloak an opaque pointer
-  struct ComprLz4Ctx *ctx = handle;
+  struct Lz4ComprData *cdata = handle;
 
   int datalen = dlen;
   int len = LZ4_compressBound(dlen);
   if (len > (INT_MAX - 4))
     return NULL; // LCOV_EXCL_LINE
-  mutt_mem_realloc(&ctx->buf, len + 4);
-  char *cbuf = ctx->buf;
+  mutt_mem_realloc(&cdata->buf, len + 4);
+  char *cbuf = cdata->buf;
 
-  len = LZ4_compress_fast(data, cbuf + 4, datalen, len, ctx->level);
+  len = LZ4_compress_fast(data, cbuf + 4, datalen, len, cdata->level);
   if (len == 0)
     return NULL; // LCOV_EXCL_LINE
   *clen = len + 4;
 
   /* save ulen to first 4 bytes */
-  unsigned char *cs = ctx->buf;
+  unsigned char *cs = cdata->buf;
   cs[0] = dlen & 0xff;
   dlen >>= 8;
   cs[1] = dlen & 0xff;
@@ -127,7 +127,7 @@ static void *compr_lz4_compress(ComprHandle *handle, const char *data,
   dlen >>= 8;
   cs[3] = dlen & 0xff;
 
-  return ctx->buf;
+  return cdata->buf;
 }
 
 /**
@@ -139,7 +139,7 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
     return NULL;
 
   // Decloak an opaque pointer
-  struct ComprLz4Ctx *ctx = handle;
+  struct Lz4ComprData *cdata = handle;
 
   /* first 4 bytes store the size */
   const unsigned char *cs = (const unsigned char *) cbuf;
@@ -151,8 +151,8 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
   if (ulen == 0)
     return (void *) cbuf;
 
-  mutt_mem_realloc(&ctx->buf, ulen);
-  void *ubuf = ctx->buf;
+  mutt_mem_realloc(&cdata->buf, ulen);
+  void *ubuf = cdata->buf;
   const char *data = cbuf;
   int rc = LZ4_decompress_safe(data + 4, ubuf, clen - 4, ulen);
   if (rc < 0)
@@ -170,7 +170,7 @@ static void compr_lz4_close(ComprHandle **ptr)
     return;
 
   // Decloak an opaque pointer
-  lz4_cdata_free((struct ComprLz4Ctx **) ptr);
+  lz4_cdata_free((struct Lz4ComprData **) ptr);
 }
 
 COMPRESS_OPS(lz4, MIN_COMP_LEVEL, MAX_COMP_LEVEL)
