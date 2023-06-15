@@ -72,6 +72,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "compress/lib.h"
 #include "store/lib.h"
 
 struct Buffer;
@@ -88,7 +89,7 @@ struct HeaderCache
   char *folder;                       ///< Folder name
   unsigned int crc;                   ///< CRC of the cache entry
   StoreHandle *store_handle;          ///< Store handle
-  void *cctx;                         ///< Compression context (handle)
+  ComprHandle *compr_handle;          ///< Compression handle
 };
 
 /**

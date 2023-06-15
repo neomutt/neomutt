@@ -74,7 +74,7 @@ static struct ComprZlibCtx *zlib_cdata_new(void)
 /**
  * compr_zlib_open - Implements ComprOps::open() - @ingroup compress_open
  */
-static void *compr_zlib_open(short level)
+static ComprHandle *compr_zlib_open(short level)
 {
   struct ComprZlibCtx *ctx = zlib_cdata_new();
 
@@ -89,18 +89,21 @@ static void *compr_zlib_open(short level)
 
   ctx->level = level;
 
-  return ctx;
+  // Return an opaque pointer
+  return (ComprHandle *) ctx;
 }
 
 /**
  * compr_zlib_compress - Implements ComprOps::compress() - @ingroup compress_compress
  */
-static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
+static void *compr_zlib_compress(ComprHandle *handle, const char *data,
+                                 size_t dlen, size_t *clen)
 {
-  if (!cctx)
+  if (!handle)
     return NULL;
 
-  struct ComprZlibCtx *ctx = cctx;
+  // Decloak an opaque pointer
+  struct ComprZlibCtx *ctx = handle;
 
   uLong len = compressBound(dlen);
   mutt_mem_realloc(&ctx->buf, len + 4);
@@ -127,12 +130,13 @@ static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size
 /**
  * compr_zlib_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
+static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
-  if (!cctx)
+  if (!handle)
     return NULL;
 
-  struct ComprZlibCtx *ctx = cctx;
+  // Decloak an opaque pointer
+  struct ComprZlibCtx *ctx = handle;
 
   /* first 4 bytes store the size */
   const unsigned char *cs = (const unsigned char *) cbuf;
@@ -155,12 +159,13 @@ static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
 /**
  * compr_zlib_close - Implements ComprOps::close() - @ingroup compress_close
  */
-static void compr_zlib_close(void **cctx)
+static void compr_zlib_close(ComprHandle **ptr)
 {
-  if (!cctx || !*cctx)
+  if (!ptr || !*ptr)
     return;
 
-  zlib_cdata_free((struct ComprZlibCtx **) cctx);
+  // Decloak an opaque pointer
+  zlib_cdata_free((struct ComprZlibCtx **) ptr);
 }
 
 COMPRESS_OPS(zlib, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

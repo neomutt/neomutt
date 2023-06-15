@@ -51,6 +51,9 @@
 
 #include <stdlib.h>
 
+/// Opaque type for compression data
+typedef void ComprHandle;
+
 /**
  * @defgroup compress_api Compression API
  *
@@ -68,55 +71,55 @@ struct ComprOps
    *
    * open - Open a compression context
    * @param[in]  level The compression level
-   * @retval ptr  Success, backend-specific context
+   * @retval ptr  Success, Compression private data
    * @retval NULL Otherwise
    */
-  void *(*open)(short level);
+  ComprHandle *(*open)(short level);
 
   /**
    * @defgroup compress_compress compress()
    * @ingroup compress_api
    *
    * compress - Compress header cache data
-   * @param[in]  cctx Compression context
-   * @param[in]  data Data to be compressed
-   * @param[in]  dlen Length of the uncompressed data
-   * @param[out] clen Length of returned compressed data
+   * @param[in]  handle Compression handle
+   * @param[in]  data   Data to be compressed
+   * @param[in]  dlen   Length of the uncompressed data
+   * @param[out] clen   Length of returned compressed data
    * @retval ptr  Success, pointer to compressed data
    * @retval NULL Otherwise
    *
    * @note This function returns a pointer to data, which will be freed by the
    *       close() function.
    */
-  void *(*compress)(void *cctx, const char *data, size_t dlen, size_t *clen);
+  void *(*compress)(ComprHandle *handle, const char *data, size_t dlen, size_t *clen);
 
   /**
    * @defgroup compress_decompress decompress()
    * @ingroup compress_api
    *
    * decompress - Decompress header cache data
-   * @param[in] cctx Compression context
-   * @param[in] cbuf Data to be decompressed
-   * @param[in] clen Length of the compressed input data
+   * @param[in] handle Compression handle
+   * @param[in] cbuf   Data to be decompressed
+   * @param[in] clen   Length of the compressed input data
    * @retval ptr  Success, pointer to decompressed data
    * @retval NULL Otherwise
    *
    * @note This function returns a pointer to data, which will be freed by the
    *       close() function.
    */
-  void *(*decompress)(void *cctx, const char *cbuf, size_t clen);
+  void *(*decompress)(ComprHandle *handle, const char *cbuf, size_t clen);
 
   /**
    * @defgroup compress_close close()
    * @ingroup compress_api
    *
    * close - Close a compression context
-   * @param[out] cctx Backend-specific context retrieved via open()
+   * @param[out] ptr Pointer to Compression handle
    *
    * @note This function will free all allocated resources, which were
    *       allocated by open(), compress() or decompress()
    */
-  void (*close)(void **cctx);
+  void (*close)(ComprHandle **ptr);
 };
 
 extern const struct ComprOps compr_lz4_ops;

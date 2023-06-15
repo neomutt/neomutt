@@ -469,8 +469,8 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
     compr_ops = compress_get_ops(c_header_cache_compress_method);
 
     const short c_header_cache_compress_level = cs_subset_number(NeoMutt->sub, "header_cache_compress_level");
-    hc->cctx = compr_ops->open(c_header_cache_compress_level);
-    if (!hc->cctx)
+    hc->compr_handle = compr_ops->open(c_header_cache_compress_level);
+    if (!hc->compr_handle)
     {
       hcache_free(&hc);
       return NULL;
@@ -495,7 +495,7 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
       {
         if (compr_ops)
         {
-          compr_ops->close(&hc->cctx);
+          compr_ops->close(&hc->compr_handle);
         }
         hcache_free(&hc);
       }
@@ -526,7 +526,7 @@ void hcache_close(struct HeaderCache **ptr)
   if (c_header_cache_compress_method)
   {
     const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
-    compr_ops->close(&hc->cctx);
+    compr_ops->close(&hc->compr_handle);
   }
 #endif
 
@@ -573,7 +573,7 @@ struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key,
   {
     const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
 
-    void *dblob = compr_ops->decompress(hc->cctx, (char *) data + hlen, dlen - hlen);
+    void *dblob = compr_ops->decompress(hc->compr_handle, (char *) data + hlen, dlen - hlen);
     if (!dblob)
     {
       goto end;
@@ -662,7 +662,7 @@ int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
 
     /* data / dlen gets ptr to compressed data here */
     size_t clen = dlen;
-    void *cdata = compr_ops->compress(hc->cctx, data + hlen, dlen - hlen, &clen);
+    void *cdata = compr_ops->compress(hc->compr_handle, data + hlen, dlen - hlen, &clen);
     if (!cdata)
     {
       FREE(&data);

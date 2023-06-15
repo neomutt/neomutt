@@ -76,7 +76,7 @@ static struct ComprZstdCtx *zstd_cdata_new(void)
 /**
  * compr_zstd_open - Implements ComprOps::open() - @ingroup compress_open
  */
-static void *compr_zstd_open(short level)
+static ComprHandle *compr_zstd_open(short level)
 {
   struct ComprZstdCtx *ctx = zstd_cdata_new();
 
@@ -103,18 +103,21 @@ static void *compr_zstd_open(short level)
 
   ctx->level = level;
 
-  return ctx;
+  // Return an opaque pointer
+  return (ComprHandle *) ctx;
 }
 
 /**
  * compr_zstd_compress - Implements ComprOps::compress() - @ingroup compress_compress
  */
-static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
+static void *compr_zstd_compress(ComprHandle *handle, const char *data,
+                                 size_t dlen, size_t *clen)
 {
-  if (!cctx)
+  if (!handle)
     return NULL;
 
-  struct ComprZstdCtx *ctx = cctx;
+  // Decloak an opaque pointer
+  struct ComprZstdCtx *ctx = handle;
 
   size_t len = ZSTD_compressBound(dlen);
   mutt_mem_realloc(&ctx->buf, len);
@@ -131,12 +134,13 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
 /**
  * compr_zstd_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
+static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
-  if (!cctx)
+  if (!handle)
     return NULL;
 
-  struct ComprZstdCtx *ctx = cctx;
+  // Decloak an opaque pointer
+  struct ComprZstdCtx *ctx = handle;
 
   unsigned long long len = ZSTD_getFrameContentSize(cbuf, clen);
   if (len == ZSTD_CONTENTSIZE_UNKNOWN)
@@ -157,12 +161,13 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
 /**
  * compr_zstd_close - Implements ComprOps::close() - @ingroup compress_close
  */
-static void compr_zstd_close(void **cctx)
+static void compr_zstd_close(ComprHandle **ptr)
 {
-  if (!cctx || !*cctx)
+  if (!ptr || !*ptr)
     return;
 
-  struct ComprZstdCtx *ctx = *cctx;
+  // Decloak an opaque pointer
+  struct ComprZstdCtx *ctx = *ptr;
 
   if (ctx->cctx)
     ZSTD_freeCCtx(ctx->cctx);
@@ -170,7 +175,7 @@ static void compr_zstd_close(void **cctx)
   if (ctx->dctx)
     ZSTD_freeDCtx(ctx->dctx);
 
-  zstd_cdata_free((struct ComprZstdCtx **) cctx);
+  zstd_cdata_free((struct ComprZstdCtx **) ptr);
 }
 
 COMPRESS_OPS(zstd, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

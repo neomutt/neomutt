@@ -109,10 +109,10 @@ static void one_test(const struct ComprOps *compr_ops, short level, size_t size)
   if (!TEST_CHECK(size < strlen(compress_test_data)))
     return;
 
-  void *cctx = compr_ops->open(level);
+  ComprHandle *compr_handle = compr_ops->open(level);
 
   size_t clen = 0;
-  void *cdata = compr_ops->compress(cctx, compress_test_data, size, &clen);
+  void *cdata = compr_ops->compress(compr_handle, compress_test_data, size, &clen);
   if (!TEST_CHECK(cdata != NULL))
     return;
   if (!TEST_CHECK(clen != 0))
@@ -121,7 +121,7 @@ static void one_test(const struct ComprOps *compr_ops, short level, size_t size)
   void *copy = mutt_mem_malloc(clen);
   memcpy(copy, cdata, clen);
 
-  void *ddata = compr_ops->decompress(cctx, copy, clen);
+  void *ddata = compr_ops->decompress(compr_handle, copy, clen);
   FREE(&copy);
 
   if (!TEST_CHECK(ddata != NULL))
@@ -130,7 +130,7 @@ static void one_test(const struct ComprOps *compr_ops, short level, size_t size)
   if (!TEST_CHECK(memcmp(compress_test_data, ddata, size) == 0))
     return;
 
-  compr_ops->close(&cctx);
+  compr_ops->close(&compr_handle);
 }
 
 void compress_data_tests(const struct ComprOps *compr_ops, short min_level, short max_level)
