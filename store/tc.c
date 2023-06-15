@@ -48,14 +48,16 @@ static void *store_tokyocabinet_open(const char *path)
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;
-  if (tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
-    return db;
+  if (!tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
+  {
+    int ecode = tcbdbecode(db);
+    mutt_debug(LL_DEBUG2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,
+               tcbdberrmsg(ecode), ecode);
+    tcbdbdel(db);
+    return NULL;
+  }
 
-  int ecode = tcbdbecode(db);
-  mutt_debug(LL_DEBUG2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,
-             tcbdberrmsg(ecode), ecode);
-  tcbdbdel(db);
-  return NULL;
+  return db;
 }
 
 /**
@@ -66,8 +68,8 @@ static void *store_tokyocabinet_fetch(void *store, const char *key, size_t klen,
   if (!store)
     return NULL;
 
-  int sp = 0;
   TCBDB *db = store;
+  int sp = 0;
   void *rv = tcbdbget(db, key, klen, &sp);
   *vlen = sp;
   return rv;

@@ -34,7 +34,7 @@
 
 void test_store_bdb(void)
 {
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
 
   TEST_CASE(DB_NAME);
 

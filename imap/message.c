@@ -769,7 +769,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
           e->replied = h.edata->replied;
         }
 
-        /*  mailbox->emails[msgno]->received is restored from mutt_hcache_restore */
+        /*  mailbox->emails[msgno]->received is restored from hcache_fetch() */
         e->edata = h.edata;
         e->edata_free = imap_edata_free;
 

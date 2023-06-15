@@ -125,8 +125,6 @@ static int lmdb_get_read_txn(struct StoreLmdbCtx *ctx)
  */
 static int lmdb_get_write_txn(struct StoreLmdbCtx *ctx)
 {
-  int rc;
-
   if (ctx->txn)
   {
     if (ctx->txn_mode == TXN_WRITE)
@@ -136,7 +134,7 @@ static int lmdb_get_write_txn(struct StoreLmdbCtx *ctx)
     mdb_txn_abort(ctx->txn);
   }
 
-  rc = mdb_txn_begin(ctx->env, NULL, 0, &ctx->txn);
+  int rc = mdb_txn_begin(ctx->env, NULL, 0, &ctx->txn);
   if (rc == MDB_SUCCESS)
     ctx->txn_mode = TXN_WRITE;
   else
@@ -153,11 +151,9 @@ static void *store_lmdb_open(const char *path)
   if (!path)
     return NULL;
 
-  int rc;
-
   struct StoreLmdbCtx *ctx = lmdb_sdata_new();
 
-  rc = mdb_env_create(&ctx->env);
+  int rc = mdb_env_create(&ctx->env);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_env_create: %s\n", mdb_strerror(rc));
@@ -211,8 +207,8 @@ static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t 
   if (!store)
     return NULL;
 
-  MDB_val dkey;
-  MDB_val data;
+  MDB_val dkey = { 0 };
+  MDB_val data = { 0 };
 
   struct StoreLmdbCtx *ctx = store;
 
@@ -258,8 +254,8 @@ static int store_lmdb_store(void *store, const char *key, size_t klen, void *val
   if (!store)
     return -1;
 
-  MDB_val dkey;
-  MDB_val databuf;
+  MDB_val dkey = { 0 };
+  MDB_val databuf = { 0 };
 
   struct StoreLmdbCtx *ctx = store;
 
@@ -292,7 +288,7 @@ static int store_lmdb_delete_record(void *store, const char *key, size_t klen)
   if (!store)
     return -1;
 
-  MDB_val dkey;
+  MDB_val dkey = { 0 };
 
   struct StoreLmdbCtx *ctx = store;
 

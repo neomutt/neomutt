@@ -79,7 +79,7 @@ static void *store_rocksdb_open(const char *path)
 
   struct RocksDbCtx *ctx = rocksdb_sdata_new();
 
-  /* RocksDB store errors in form of strings */
+  /* RocksDB stores errors in form of strings */
   ctx->err = NULL;
 
   /* setup generic options, create new db and limit log to one file */

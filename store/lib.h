@@ -77,7 +77,7 @@ struct StoreOps
    *
    * The open function has the purpose of opening a backend-specific
    * connection to the database file specified by the path parameter. Backends
-   * MUST return non-NULL specific context information on success.
+   * MUST return non-NULL specific handle information on success.
    */
   void *(*open)(const char *path);
 

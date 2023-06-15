@@ -133,10 +133,10 @@ static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size
  */
 static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
 {
-  struct ComprZstdCtx *ctx = cctx;
-
   if (!cctx)
     return NULL;
+
+  struct ComprZstdCtx *ctx = cctx;
 
   unsigned long long len = ZSTD_getFrameContentSize(cbuf, clen);
   if (len == ZSTD_CONTENTSIZE_UNKNOWN)

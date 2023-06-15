@@ -34,7 +34,7 @@
 
 void test_store_kc(void)
 {
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
 
   const struct StoreOps *sops = store_get_backend_ops(DB_NAME);
   TEST_CHECK(sops != NULL);

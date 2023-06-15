@@ -159,7 +159,7 @@ static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off,
 
 /**
  * restore_email - Restore an Email from data retrieved from the cache
- * @param d Data retrieved using mutt_hcache_dump
+ * @param d Data retrieved using hcache_fetch()
  * @retval ptr Success, the restored header (can't be NULL)
  *
  * @note The returned Email must be free'd by caller code with
@@ -344,8 +344,8 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
  */
 static char *get_foldername(const char *folder)
 {
-  /* if the folder is local, canonify the path to avoid
-   * to ensure equivalent paths share the hcache */
+  /* if the folder is local, canonify the path to ensure equivalent paths share
+   * the hcache */
   char *p = mutt_mem_malloc(PATH_MAX + 1);
   if (!realpath(folder, p))
     mutt_str_replace(&p, folder);
@@ -448,12 +448,18 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
   if (HcacheVer == 0x0)
     HcacheVer = generate_hcachever();
 
+  struct HeaderCache *hc = hcache_new();
+
+  hc->folder = get_foldername(folder);
+  hc->crc = HcacheVer;
+
   const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
   const struct StoreOps *ops = store_get_backend_ops(c_header_cache_backend);
   if (!ops)
+  {
+    hcache_free(&hc);
     return NULL;
-
-  struct HeaderCache *hc = hcache_new();
+  }
 
   const struct ComprOps *cops = NULL;
 #ifdef USE_HCACHE_COMPRESSION
@@ -474,9 +480,6 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
     mutt_debug(LL_DEBUG3, "Header cache will use %s compression\n", cops->name);
   }
 #endif
-
-  hc->folder = get_foldername(folder);
-  hc->crc = HcacheVer;
 
   struct Buffer *hcpath = buf_pool_get();
   hcache_per_folder(hcpath, path, hc->folder, namer);
@@ -559,7 +562,7 @@ struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key,
   serial_restore_uint32_t(&hce.uidvalidity, data, &off);
   serial_restore_int(&hce.crc, data, &off);
   assert((size_t) off == hlen);
-  if (hce.crc != hc->crc || ((uidvalidity != 0) && uidvalidity != hce.uidvalidity))
+  if ((hce.crc != hc->crc) || ((uidvalidity != 0) && (uidvalidity != hce.uidvalidity)))
   {
     goto end;
   }
@@ -602,7 +605,7 @@ bool hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen,
   bool rc = true;
   size_t srclen = 0;
   void *src = fetch_raw(hc, key, keylen, &srclen);
-  if (src && srclen == dstlen)
+  if (src && (srclen == dstlen))
   {
     memcpy(dst, src, dstlen);
   }

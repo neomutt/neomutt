@@ -138,7 +138,7 @@ void compress_data_tests(const struct ComprOps *cops, short min_level, short max
   static const size_t sizes[] = { 63,   64,   65,   127,  128,  129,
                                   255,  256,  257,  511,  512,  513,
                                   1023, 1024, 1024, 2047, 2048, 2049 };
-  char case_name[64];
+  char case_name[64] = { 0 };
   for (short level = min_level; level <= max_level; level++)
   {
     snprintf(case_name, sizeof(case_name), "level %d", level);

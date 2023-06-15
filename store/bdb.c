@@ -81,8 +81,8 @@ static struct StoreDbCtx *bdb_sdata_new(void)
 }
 
 /**
- * dbt_init - Initialise a BDB context
- * @param dbt  Context to initialise
+ * dbt_init - Initialise a BDB thing
+ * @param dbt  Thing to initialise
  * @param data ID string to associate
  * @param len  Length of ID string
  */
@@ -97,8 +97,8 @@ static void dbt_init(DBT *dbt, void *data, size_t len)
 }
 
 /**
- * dbt_empty_init - Initialise an empty BDB context
- * @param dbt  Context to initialise
+ * dbt_empty_init - Initialise an empty BDB thing
+ * @param dbt  Thing to initialise
  */
 static void dbt_empty_init(DBT *dbt)
 {
@@ -118,10 +118,6 @@ static void *store_bdb_open(const char *path)
   if (!path)
     return NULL;
 
-  struct stat st = { 0 };
-  int rc;
-  uint32_t createflags = DB_CREATE;
-
   struct StoreDbCtx *ctx = bdb_sdata_new();
 
   const int pagesize = 512;
@@ -138,7 +134,7 @@ static void *store_bdb_open(const char *path)
   if (mutt_file_lock(ctx->fd, true, true))
     goto fail_close;
 
-  rc = db_env_create(&ctx->env, 0);
+  int rc = db_env_create(&ctx->env, 0);
   if (rc)
     goto fail_unlock;
 
@@ -150,6 +146,9 @@ static void *store_bdb_open(const char *path)
   rc = db_create(&ctx->db, ctx->env, 0);
   if (rc)
     goto fail_env;
+
+  uint32_t createflags = DB_CREATE;
+  struct stat st = { 0 };
 
   if ((stat(path, &st) != 0) && (errno == ENOENT))
   {
@@ -185,10 +184,10 @@ static void *store_bdb_fetch(void *store, const char *key, size_t klen, size_t *
   if (!store)
     return NULL;
 
-  DBT dkey;
-  DBT data;
-
   struct StoreDbCtx *ctx = store;
+
+  DBT dkey = { 0 };
+  DBT data = { 0 };
 
   dbt_init(&dkey, (void *) key, klen);
   dbt_empty_init(&data);
@@ -216,10 +215,10 @@ static int store_bdb_store(void *store, const char *key, size_t klen, void *valu
   if (!store)
     return -1;
 
-  DBT dkey;
-  DBT databuf;
-
   struct StoreDbCtx *ctx = store;
+
+  DBT dkey = { 0 };
+  DBT databuf = { 0 };
 
   dbt_init(&dkey, (void *) key, klen);
   dbt_empty_init(&databuf);
@@ -239,10 +238,9 @@ static int store_bdb_delete_record(void *store, const char *key, size_t klen)
   if (!store)
     return -1;
 
-  DBT dkey;
-
   struct StoreDbCtx *ctx = store;
 
+  DBT dkey = { 0 };
   dbt_init(&dkey, (void *) key, klen);
   return ctx->db->del(ctx->db, NULL, &dkey, 0);
 }

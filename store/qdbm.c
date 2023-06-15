@@ -46,7 +46,9 @@ static void *store_qdbm_open(const char *path)
   if (!path)
     return NULL;
 
-  return vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
+  VILLA *db = vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
+
+  return db;
 }
 
 /**
@@ -81,7 +83,7 @@ static int store_qdbm_store(void *store, const char *key, size_t klen, void *val
     return -1;
 
   VILLA *db = store;
-  /* Not sure if dbecode is reset on success, so better to explicitly return 0
+  /* Not sure if dpecode is reset on success, so better to explicitly return 0
    * on success */
   bool success = vlput(db, key, klen, value, vlen, VL_DOVER);
   return success ? 0 : dpecode ? dpecode : -1;
@@ -96,7 +98,7 @@ static int store_qdbm_delete_record(void *store, const char *key, size_t klen)
     return -1;
 
   VILLA *db = store;
-  /* Not sure if dbecode is reset on success, so better to explicitly return 0
+  /* Not sure if dpecode is reset on success, so better to explicitly return 0
    * on success */
   bool success = vlout(db, key, klen);
   return success ? 0 : dpecode ? dpecode : -1;

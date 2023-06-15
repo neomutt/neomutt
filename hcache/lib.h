@@ -77,19 +77,17 @@ struct Buffer;
 struct Email;
 
 /**
- * struct HeaderCache - Header cache structure
+ * struct HeaderCache - Header Cache
  *
- * This struct holds both the backend-agnostic and the backend-specific parts
- * of the header cache. Backend code MUST initialize the fetch, store,
- * delete and close function pointers in hcache_open, and MAY store
- * backend-specific context in the ctx pointer.
+ * This is the interface to the local cache of Email headers.
+ * The data is kept in a Store (database) which can be optionally Compressed.
  */
 struct HeaderCache
 {
-  char *folder;     ///< Folder name
-  unsigned int crc; ///< CRC of the cache entry
-  void *ctx;        ///< Store context (handle)
-  void *cctx;       ///< Compression context (handle)
+  char *folder;                       ///< Folder name
+  unsigned int crc;                   ///< CRC of the cache entry
+  void *ctx;                          ///< Store context (handle)
+  void *cctx;                         ///< Compression context (handle)
 };
 
 /**

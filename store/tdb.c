@@ -48,7 +48,10 @@ static void *store_tdb_open(const char *path)
    */
   const int flags = TDB_NOLOCK | TDB_INCOMPATIBLE_HASH | TDB_NOSYNC;
   const int hash_size = 33533; // Based on test timings for 100K emails
-  return tdb_open(path, hash_size, flags, O_CREAT | O_RDWR, 00600);
+
+  struct tdb_context *db = tdb_open(path, hash_size, flags, O_CREAT | O_RDWR, 00600);
+
+  return db;
 }
 
 /**
