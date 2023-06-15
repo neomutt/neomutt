@@ -34,9 +34,9 @@
 #include "lib.h"
 
 /**
- * struct RocksDbCtx - Berkeley DB context
+ * struct RocksDbStoreData - RocksDB store
  */
-struct RocksDbCtx
+struct RocksDbStoreData
 {
   rocksdb_t *db;
   rocksdb_options_t *options;
@@ -46,61 +46,88 @@ struct RocksDbCtx
 };
 
 /**
+ * rocksdb_sdata_free - Free RocksDb Store Data
+ * @param ptr RocksDb Store Data to free
+ */
+static void rocksdb_sdata_free(struct RocksDbStoreData **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct RocksDbStoreData *sdata = *ptr;
+  FREE(&sdata->err);
+
+  FREE(ptr);
+}
+
+/**
+ * rocksdb_sdata_new - Create new RocksDb Store Data
+ * @retval ptr New RocksDb Store Data
+ */
+static struct RocksDbStoreData *rocksdb_sdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct RocksDbStoreData));
+}
+
+/**
  * store_rocksdb_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_rocksdb_open(const char *path)
+static StoreHandle *store_rocksdb_open(const char *path)
 {
   if (!path)
     return NULL;
 
-  struct RocksDbCtx *ctx = mutt_mem_malloc(sizeof(struct RocksDbCtx));
+  struct RocksDbStoreData *sdata = rocksdb_sdata_new();
 
-  /* RocksDB store errors in form of strings */
-  ctx->err = NULL;
+  /* RocksDB stores errors in form of strings */
+  sdata->err = NULL;
 
   /* setup generic options, create new db and limit log to one file */
-  ctx->options = rocksdb_options_create();
-  rocksdb_options_set_create_if_missing(ctx->options, 1);
-  rocksdb_options_set_keep_log_file_num(ctx->options, 1);
+  sdata->options = rocksdb_options_create();
+  rocksdb_options_set_create_if_missing(sdata->options, 1);
+  rocksdb_options_set_keep_log_file_num(sdata->options, 1);
 
   /* setup read options, we verify with checksums */
-  ctx->read_options = rocksdb_readoptions_create();
-  rocksdb_readoptions_set_verify_checksums(ctx->read_options, 1);
+  sdata->read_options = rocksdb_readoptions_create();
+  rocksdb_readoptions_set_verify_checksums(sdata->read_options, 1);
 
   /* setup write options, no sync needed, disable WAL */
-  ctx->write_options = rocksdb_writeoptions_create();
-  rocksdb_writeoptions_set_sync(ctx->write_options, 0);
-  rocksdb_writeoptions_disable_WAL(ctx->write_options, 1);
+  sdata->write_options = rocksdb_writeoptions_create();
+  rocksdb_writeoptions_set_sync(sdata->write_options, 0);
+  rocksdb_writeoptions_disable_WAL(sdata->write_options, 1);
 
-  rocksdb_options_set_compression(ctx->options, rocksdb_no_compression);
+  rocksdb_options_set_compression(sdata->options, rocksdb_no_compression);
 
-  /* open database and check for error in ctx->error */
-  ctx->db = rocksdb_open(ctx->options, path, &ctx->err);
-  if (ctx->err)
+  /* open database and check for error in sdata->error */
+  sdata->db = rocksdb_open(sdata->options, path, &sdata->err);
+  if (sdata->err)
   {
-    rocksdb_free(ctx->err);
-    FREE(&ctx);
+    rocksdb_free(sdata->err);
+    FREE(&sdata);
     return NULL;
   }
 
-  return ctx;
+  // Return an opaque pointer
+  return (StoreHandle *) sdata;
 }
 
 /**
  * store_rocksdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_rocksdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_rocksdb_fetch(StoreHandle *store, const char *key,
+                                        size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
 
-  struct RocksDbCtx *ctx = store;
+  // Decloak an opaque pointer
+  struct RocksDbStoreData *sdata = store;
 
-  void *rv = rocksdb_get(ctx->db, ctx->read_options, key, klen, vlen, &ctx->err);
-  if (ctx->err)
+  void *rv = rocksdb_get(sdata->db, sdata->read_options, key, klen, vlen, &sdata->err);
+  if (sdata->err)
   {
-    rocksdb_free(ctx->err);
-    ctx->err = NULL;
+    rocksdb_free(sdata->err);
+    sdata->err = NULL;
     return NULL;
   }
 
@@ -110,7 +137,7 @@ static void *store_rocksdb_fetch(void *store, const char *key, size_t klen, size
 /**
  * store_rocksdb_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_rocksdb_free(void *store, void **ptr)
+static void store_rocksdb_free(StoreHandle *store, void **ptr)
 {
   FREE(ptr);
 }
@@ -118,19 +145,20 @@ static void store_rocksdb_free(void *store, void **ptr)
 /**
  * store_rocksdb_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_rocksdb_store(void *store, const char *key, size_t klen,
+static int store_rocksdb_store(StoreHandle *store, const char *key, size_t klen,
                                void *value, size_t vlen)
 {
   if (!store)
     return -1;
 
-  struct RocksDbCtx *ctx = store;
+  // Decloak an opaque pointer
+  struct RocksDbStoreData *sdata = store;
 
-  rocksdb_put(ctx->db, ctx->write_options, key, klen, value, vlen, &ctx->err);
-  if (ctx->err)
+  rocksdb_put(sdata->db, sdata->write_options, key, klen, value, vlen, &sdata->err);
+  if (sdata->err)
   {
-    rocksdb_free(ctx->err);
-    ctx->err = NULL;
+    rocksdb_free(sdata->err);
+    sdata->err = NULL;
     return -1;
   }
 
@@ -140,18 +168,19 @@ static int store_rocksdb_store(void *store, const char *key, size_t klen,
 /**
  * store_rocksdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_rocksdb_delete_record(void *store, const char *key, size_t klen)
+static int store_rocksdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
-  struct RocksDbCtx *ctx = store;
+  // Decloak an opaque pointer
+  struct RocksDbStoreData *sdata = store;
 
-  rocksdb_delete(ctx->db, ctx->write_options, key, klen, &ctx->err);
-  if (ctx->err)
+  rocksdb_delete(sdata->db, sdata->write_options, key, klen, &sdata->err);
+  if (sdata->err)
   {
-    rocksdb_free(ctx->err);
-    ctx->err = NULL;
+    rocksdb_free(sdata->err);
+    sdata->err = NULL;
     return -1;
   }
 
@@ -161,21 +190,21 @@ static int store_rocksdb_delete_record(void *store, const char *key, size_t klen
 /**
  * store_rocksdb_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_rocksdb_close(void **ptr)
+static void store_rocksdb_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct RocksDbCtx *ctx = *ptr;
+  // Decloak an opaque pointer
+  struct RocksDbStoreData *sdata = *ptr;
 
   /* close database and free resources */
-  rocksdb_close(ctx->db);
-  rocksdb_options_destroy(ctx->options);
-  rocksdb_readoptions_destroy(ctx->read_options);
-  rocksdb_writeoptions_destroy(ctx->write_options);
+  rocksdb_close(sdata->db);
+  rocksdb_options_destroy(sdata->options);
+  rocksdb_readoptions_destroy(sdata->read_options);
+  rocksdb_writeoptions_destroy(sdata->write_options);
 
-  FREE(ptr);
-  *ptr = NULL;
+  rocksdb_sdata_free((struct RocksDbStoreData **) ptr);
 }
 
 /**

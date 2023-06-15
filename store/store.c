@@ -83,16 +83,16 @@ static const struct StoreOps *StoreOps[] = {
 const char *store_backend_list(void)
 {
   char tmp[256] = { 0 };
-  const struct StoreOps **ops = StoreOps;
+  const struct StoreOps **store_ops = StoreOps;
   size_t len = 0;
 
-  for (; *ops; ops++)
+  for (; *store_ops; store_ops++)
   {
     if (len != 0)
     {
       len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
     }
-    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*ops)->name);
+    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*store_ops)->name);
   }
 
   return mutt_str_dup(tmp);
@@ -105,18 +105,18 @@ const char *store_backend_list(void)
  */
 const struct StoreOps *store_get_backend_ops(const char *str)
 {
-  const struct StoreOps **ops = StoreOps;
+  const struct StoreOps **store_ops = StoreOps;
 
   if (!str || (*str == '\0'))
   {
-    return *ops;
+    return *store_ops;
   }
 
-  for (; *ops; ops++)
-    if (mutt_str_equal(str, (*ops)->name))
+  for (; *store_ops; store_ops++)
+    if (mutt_str_equal(str, (*store_ops)->name))
       break;
 
-  return *ops;
+  return *store_ops;
 }
 
 /**

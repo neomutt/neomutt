@@ -38,9 +38,9 @@
 #define MAX_COMP_LEVEL 22 ///< Maximum compression level for zstd
 
 /**
- * struct ComprZstdCtx - Private Zstandard Compression Context
+ * struct ZstdComprData - Private Zstandard Compression Data
  */
-struct ComprZstdCtx
+struct ZstdComprData
 {
   void *buf;   ///< Temporary buffer
   short level; ///< Compression Level to be used
@@ -50,23 +50,46 @@ struct ComprZstdCtx
 };
 
 /**
+ * zstd_cdata_free - Free Zstandard Compression Data
+ * @param ptr Zstandard Compression Data to free
+ */
+static void zstd_cdata_free(struct ZstdComprData **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ZstdComprData *cdata = *ptr;
+  FREE(&cdata->buf);
+
+  FREE(ptr);
+}
+
+/**
+ * zstd_cdata_new - Create new Zstandard Compression Data
+ * @retval ptr New Zstandard Compression Data
+ */
+static struct ZstdComprData *zstd_cdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct ZstdComprData));
+}
+
+/**
  * compr_zstd_open - Implements ComprOps::open() - @ingroup compress_open
  */
-static void *compr_zstd_open(short level)
+static ComprHandle *compr_zstd_open(short level)
 {
-  struct ComprZstdCtx *ctx = mutt_mem_malloc(sizeof(struct ComprZstdCtx));
+  struct ZstdComprData *cdata = zstd_cdata_new();
 
-  ctx->buf = mutt_mem_malloc(ZSTD_compressBound(1024 * 128));
-  ctx->cctx = ZSTD_createCCtx();
-  ctx->dctx = ZSTD_createDCtx();
+  cdata->buf = mutt_mem_calloc(1, ZSTD_compressBound(1024 * 128));
+  cdata->cctx = ZSTD_createCCtx();
+  cdata->dctx = ZSTD_createDCtx();
 
-  if (!ctx->cctx || !ctx->dctx)
+  if (!cdata->cctx || !cdata->dctx)
   {
     // LCOV_EXCL_START
-    ZSTD_freeCCtx(ctx->cctx);
-    ZSTD_freeDCtx(ctx->dctx);
-    FREE(&ctx->buf);
-    FREE(&ctx);
+    ZSTD_freeCCtx(cdata->cctx);
+    ZSTD_freeDCtx(cdata->dctx);
+    zstd_cdata_free(&cdata);
     return NULL;
     // LCOV_EXCL_STOP
   }
@@ -78,42 +101,46 @@ static void *compr_zstd_open(short level)
     level = MIN_COMP_LEVEL;
   }
 
-  ctx->level = level;
+  cdata->level = level;
 
-  return ctx;
+  // Return an opaque pointer
+  return (ComprHandle *) cdata;
 }
 
 /**
  * compr_zstd_compress - Implements ComprOps::compress() - @ingroup compress_compress
  */
-static void *compr_zstd_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
+static void *compr_zstd_compress(ComprHandle *handle, const char *data,
+                                 size_t dlen, size_t *clen)
 {
-  if (!cctx)
+  if (!handle)
     return NULL;
 
-  struct ComprZstdCtx *ctx = cctx;
+  // Decloak an opaque pointer
+  struct ZstdComprData *cdata = handle;
 
   size_t len = ZSTD_compressBound(dlen);
-  mutt_mem_realloc(&ctx->buf, len);
+  mutt_mem_realloc(&cdata->buf, len);
 
-  size_t rc = ZSTD_compressCCtx(ctx->cctx, ctx->buf, len, data, dlen, ctx->level);
+  size_t rc = ZSTD_compressCCtx(cdata->cctx, cdata->buf, len, data, dlen, cdata->level);
   if (ZSTD_isError(rc))
     return NULL; // LCOV_EXCL_LINE
 
   *clen = rc;
 
-  return ctx->buf;
+  return cdata->buf;
 }
 
 /**
  * compr_zstd_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
+static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
-  struct ComprZstdCtx *ctx = cctx;
-
-  if (!cctx)
+  if (!handle)
     return NULL;
+
+  // Decloak an opaque pointer
+  struct ZstdComprData *cdata = handle;
 
   unsigned long long len = ZSTD_getFrameContentSize(cbuf, clen);
   if (len == ZSTD_CONTENTSIZE_UNKNOWN)
@@ -122,33 +149,33 @@ static void *compr_zstd_decompress(void *cctx, const char *cbuf, size_t clen)
     return NULL;
   else if (len == 0)
     return NULL; // LCOV_EXCL_LINE
-  mutt_mem_realloc(&ctx->buf, len);
+  mutt_mem_realloc(&cdata->buf, len);
 
-  size_t rc = ZSTD_decompressDCtx(ctx->dctx, ctx->buf, len, cbuf, clen);
+  size_t rc = ZSTD_decompressDCtx(cdata->dctx, cdata->buf, len, cbuf, clen);
   if (ZSTD_isError(rc))
     return NULL; // LCOV_EXCL_LINE
 
-  return ctx->buf;
+  return cdata->buf;
 }
 
 /**
  * compr_zstd_close - Implements ComprOps::close() - @ingroup compress_close
  */
-static void compr_zstd_close(void **cctx)
+static void compr_zstd_close(ComprHandle **ptr)
 {
-  if (!cctx || !*cctx)
+  if (!ptr || !*ptr)
     return;
 
-  struct ComprZstdCtx *ctx = *cctx;
+  // Decloak an opaque pointer
+  struct ZstdComprData *cdata = *ptr;
 
-  if (ctx->cctx)
-    ZSTD_freeCCtx(ctx->cctx);
+  if (cdata->cctx)
+    ZSTD_freeCCtx(cdata->cctx);
 
-  if (ctx->dctx)
-    ZSTD_freeDCtx(ctx->dctx);
+  if (cdata->dctx)
+    ZSTD_freeDCtx(cdata->dctx);
 
-  FREE(&ctx->buf);
-  FREE(cctx);
+  zstd_cdata_free((struct ZstdComprData **) ptr);
 }
 
 COMPRESS_OPS(zstd, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

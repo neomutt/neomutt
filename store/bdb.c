@@ -42,9 +42,9 @@
 #include "lib.h"
 
 /**
- * struct StoreDbCtx - Berkeley DB context
+ * struct BdbStoreData - Berkeley DB Store
  */
-struct StoreDbCtx
+struct BdbStoreData
 {
   DB_ENV *env;
   DB *db;
@@ -53,8 +53,36 @@ struct StoreDbCtx
 };
 
 /**
- * dbt_init - Initialise a BDB context
- * @param dbt  Context to initialise
+ * bdb_sdata_free - Free Bdb Store Data
+ * @param ptr Bdb Store Data to free
+ */
+static void bdb_sdata_free(struct BdbStoreData **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct BdbStoreData *sdata = *ptr;
+  buf_dealloc(&sdata->lockfile);
+
+  FREE(ptr);
+}
+
+/**
+ * bdb_sdata_new - Create new Bdb Store Data
+ * @retval ptr New Bdb Store Data
+ */
+static struct BdbStoreData *bdb_sdata_new(void)
+{
+  struct BdbStoreData *sdata = mutt_mem_calloc(1, sizeof(struct BdbStoreData));
+
+  sdata->lockfile = buf_make(128);
+
+  return sdata;
+}
+
+/**
+ * dbt_init - Initialise a BDB thing
+ * @param dbt  Thing to initialise
  * @param data ID string to associate
  * @param len  Length of ID string
  */
@@ -69,8 +97,8 @@ static void dbt_init(DBT *dbt, void *data, size_t len)
 }
 
 /**
- * dbt_empty_init - Initialise an empty BDB context
- * @param dbt  Context to initialise
+ * dbt_empty_init - Initialise an empty BDB thing
+ * @param dbt  Thing to initialise
  */
 static void dbt_empty_init(DBT *dbt)
 {
@@ -85,68 +113,66 @@ static void dbt_empty_init(DBT *dbt)
 /**
  * store_bdb_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_bdb_open(const char *path)
+static StoreHandle *store_bdb_open(const char *path)
 {
   if (!path)
     return NULL;
 
-  struct stat st = { 0 };
-  int rc;
-  uint32_t createflags = DB_CREATE;
-
-  struct StoreDbCtx *ctx = mutt_mem_malloc(sizeof(struct StoreDbCtx));
+  struct BdbStoreData *sdata = bdb_sdata_new();
 
   const int pagesize = 512;
 
-  ctx->lockfile = buf_make(128);
-  buf_printf(&ctx->lockfile, "%s-lock-hack", path);
+  buf_printf(&sdata->lockfile, "%s-lock-hack", path);
 
-  ctx->fd = open(buf_string(&ctx->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-  if (ctx->fd < 0)
+  sdata->fd = open(buf_string(&sdata->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+  if (sdata->fd < 0)
   {
-    FREE(&ctx);
+    FREE(&sdata);
     return NULL;
   }
 
-  if (mutt_file_lock(ctx->fd, true, true))
+  if (mutt_file_lock(sdata->fd, true, true))
     goto fail_close;
 
-  rc = db_env_create(&ctx->env, 0);
+  int rc = db_env_create(&sdata->env, 0);
   if (rc)
     goto fail_unlock;
 
-  rc = (*ctx->env->open)(ctx->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, 0600);
+  rc = (*sdata->env->open)(sdata->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE, 0600);
   if (rc)
     goto fail_env;
 
-  ctx->db = NULL;
-  rc = db_create(&ctx->db, ctx->env, 0);
+  sdata->db = NULL;
+  rc = db_create(&sdata->db, sdata->env, 0);
   if (rc)
     goto fail_env;
+
+  uint32_t createflags = DB_CREATE;
+  struct stat st = { 0 };
 
   if ((stat(path, &st) != 0) && (errno == ENOENT))
   {
     createflags |= DB_EXCL;
-    ctx->db->set_pagesize(ctx->db, pagesize);
+    sdata->db->set_pagesize(sdata->db, pagesize);
   }
 
-  rc = (*ctx->db->open)(ctx->db, NULL, path, NULL, DB_BTREE, createflags, 0600);
+  rc = (*sdata->db->open)(sdata->db, NULL, path, NULL, DB_BTREE, createflags, 0600);
   if (rc)
     goto fail_db;
 
-  return ctx;
+  // Return an opaque pointer
+  return (StoreHandle *) sdata;
 
 fail_db:
-  ctx->db->close(ctx->db, 0);
+  sdata->db->close(sdata->db, 0);
 fail_env:
-  ctx->env->close(ctx->env, 0);
+  sdata->env->close(sdata->env, 0);
 fail_unlock:
-  mutt_file_unlock(ctx->fd);
+  mutt_file_unlock(sdata->fd);
 fail_close:
-  close(ctx->fd);
-  unlink(buf_string(&ctx->lockfile));
-  buf_dealloc(&ctx->lockfile);
-  FREE(&ctx);
+  close(sdata->fd);
+  unlink(buf_string(&sdata->lockfile));
+  bdb_sdata_free(&sdata);
 
   return NULL;
 }
@@ -154,21 +180,23 @@ fail_close:
 /**
  * store_bdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_bdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_bdb_fetch(StoreHandle *store, const char *key,
+                                    size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
 
-  DBT dkey;
-  DBT data;
+  // Decloak an opaque pointer
+  struct BdbStoreData *sdata = store;
 
-  struct StoreDbCtx *ctx = store;
+  DBT dkey = { 0 };
+  DBT data = { 0 };
 
   dbt_init(&dkey, (void *) key, klen);
   dbt_empty_init(&data);
   data.flags = DB_DBT_MALLOC;
 
-  ctx->db->get(ctx->db, NULL, &dkey, &data, 0);
+  sdata->db->get(sdata->db, NULL, &dkey, &data, 0);
 
   *vlen = data.size;
   return data.data;
@@ -177,7 +205,7 @@ static void *store_bdb_fetch(void *store, const char *key, size_t klen, size_t *
 /**
  * store_bdb_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_bdb_free(void *store, void **ptr)
+static void store_bdb_free(StoreHandle *store, void **ptr)
 {
   FREE(ptr);
 }
@@ -185,15 +213,17 @@ static void store_bdb_free(void *store, void **ptr)
 /**
  * store_bdb_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_bdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
+static int store_bdb_store(StoreHandle *store, const char *key, size_t klen,
+                           void *value, size_t vlen)
 {
   if (!store)
     return -1;
 
-  DBT dkey;
-  DBT databuf;
+  // Decloak an opaque pointer
+  struct BdbStoreData *sdata = store;
 
-  struct StoreDbCtx *ctx = store;
+  DBT dkey = { 0 };
+  DBT databuf = { 0 };
 
   dbt_init(&dkey, (void *) key, klen);
   dbt_empty_init(&databuf);
@@ -202,42 +232,43 @@ static int store_bdb_store(void *store, const char *key, size_t klen, void *valu
   databuf.size = vlen;
   databuf.ulen = vlen;
 
-  return ctx->db->put(ctx->db, NULL, &dkey, &databuf, 0);
+  return sdata->db->put(sdata->db, NULL, &dkey, &databuf, 0);
 }
 
 /**
  * store_bdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_bdb_delete_record(void *store, const char *key, size_t klen)
+static int store_bdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
-  DBT dkey;
+  // Decloak an opaque pointer
+  struct BdbStoreData *sdata = store;
 
-  struct StoreDbCtx *ctx = store;
-
+  DBT dkey = { 0 };
   dbt_init(&dkey, (void *) key, klen);
-  return ctx->db->del(ctx->db, NULL, &dkey, 0);
+  return sdata->db->del(sdata->db, NULL, &dkey, 0);
 }
 
 /**
  * store_bdb_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_bdb_close(void **ptr)
+static void store_bdb_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct StoreDbCtx *db = *ptr;
+  // Decloak an opaque pointer
+  struct BdbStoreData *sdata = *ptr;
 
-  db->db->close(db->db, 0);
-  db->env->close(db->env, 0);
-  mutt_file_unlock(db->fd);
-  close(db->fd);
-  unlink(buf_string(&db->lockfile));
-  buf_dealloc(&db->lockfile);
-  FREE(ptr);
+  sdata->db->close(sdata->db, 0);
+  sdata->env->close(sdata->env, 0);
+  mutt_file_unlock(sdata->fd);
+  close(sdata->fd);
+  unlink(buf_string(&sdata->lockfile));
+
+  bdb_sdata_free((struct BdbStoreData **) ptr);
 }
 
 /**

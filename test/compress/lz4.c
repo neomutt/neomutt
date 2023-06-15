@@ -33,37 +33,37 @@
 
 void test_compress_lz4(void)
 {
-  // void *open(short level);
-  // void *compress(void *cctx, const char *data, size_t dlen, size_t *clen);
-  // void *decompress(void *cctx, const char *cbuf, size_t clen);
-  // void  close(void **cctx);
+  // ComprHandle *open(short level);
+  // void *compress(ComprHandle *handle, const char *data, size_t dlen, size_t *clen);
+  // void *decompress(ComprHandle *handle, const char *cbuf, size_t clen);
+  // void close(ComprHandle **ptr);
 
-  const struct ComprOps *cops = compress_get_ops("lz4");
-  if (!TEST_CHECK(cops != NULL))
+  const struct ComprOps *compr_ops = compress_get_ops("lz4");
+  if (!TEST_CHECK(compr_ops != NULL))
     return;
 
   {
     // Degenerate tests
-    TEST_CHECK(cops->compress(NULL, NULL, 0, NULL) == NULL);
-    TEST_CHECK(cops->decompress(NULL, NULL, 0) == NULL);
-    void *cctx = NULL;
-    cops->close(NULL);
-    TEST_CHECK_(1, "cops->close(NULL)");
-    cops->close(&cctx);
-    TEST_CHECK_(1, "cops->close(&cctx)");
+    TEST_CHECK(compr_ops->compress(NULL, NULL, 0, NULL) == NULL);
+    TEST_CHECK(compr_ops->decompress(NULL, NULL, 0) == NULL);
+    ComprHandle *compr_handle = NULL;
+    compr_ops->close(NULL);
+    TEST_CHECK_(1, "compr_ops->close(NULL)");
+    compr_ops->close(&compr_handle);
+    TEST_CHECK_(1, "compr_ops->close(&compr_handle)");
   }
 
   {
     // Temporarily disable logging
     MuttLogger = log_disp_null;
 
-    void *cctx = cops->open(MIN_COMP_LEVEL - 1);
-    TEST_CHECK(cctx != NULL);
-    cops->close(&cctx);
+    ComprHandle *compr_handle = compr_ops->open(MIN_COMP_LEVEL - 1);
+    TEST_CHECK(compr_handle != NULL);
+    compr_ops->close(&compr_handle);
 
-    cctx = cops->open(MAX_COMP_LEVEL + 1);
-    TEST_CHECK(cctx != NULL);
-    cops->close(&cctx);
+    compr_handle = compr_ops->open(MAX_COMP_LEVEL + 1);
+    TEST_CHECK(compr_handle != NULL);
+    compr_ops->close(&compr_handle);
 
     // Restore logging
     MuttLogger = log_disp_terminal;
@@ -71,25 +71,25 @@ void test_compress_lz4(void)
 
   {
     // Garbage data
-    void *cctx = cops->open(MIN_COMP_LEVEL);
-    TEST_CHECK(cctx != NULL);
+    ComprHandle *compr_handle = compr_ops->open(MIN_COMP_LEVEL);
+    TEST_CHECK(compr_handle != NULL);
 
     const char zeroes[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 
-    void *result = cops->decompress(cctx, zeroes, 0);
+    void *result = compr_ops->decompress(compr_handle, zeroes, 0);
     TEST_CHECK(result == NULL);
 
-    result = cops->decompress(cctx, zeroes, sizeof(zeroes));
+    result = compr_ops->decompress(compr_handle, zeroes, sizeof(zeroes));
     TEST_CHECK(result == zeroes);
 
     const char ones[] = { 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01,
                           0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01 };
-    result = cops->decompress(cctx, ones, sizeof(ones));
+    result = compr_ops->decompress(compr_handle, ones, sizeof(ones));
     TEST_CHECK(result == NULL);
 
-    cops->close(&cctx);
+    compr_ops->close(&compr_handle);
   }
 
-  compress_data_tests(cops, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
+  compress_data_tests(compr_ops, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
 }

@@ -50,9 +50,9 @@ static const size_t LMDB_DB_SIZE = 107374182400;
 #endif
 
 /**
- * enum MdbTxnMode - LMDB transaction state
+ * enum LmdbTxnMode - LMDB transaction state
  */
-enum MdbTxnMode
+enum LmdbTxnMode
 {
   TXN_UNINITIALIZED, ///< Transaction is uninitialised
   TXN_READ,          ///< Read transaction in progress
@@ -60,67 +60,83 @@ enum MdbTxnMode
 };
 
 /**
- * struct StoreLmdbCtx - LMDB context
+ * struct LmdbStoreData - LMDB store
  */
-struct StoreLmdbCtx
+struct LmdbStoreData
 {
   MDB_env *env;
   MDB_txn *txn;
   MDB_dbi db;
-  enum MdbTxnMode txn_mode;
+  enum LmdbTxnMode txn_mode;
 };
 
 /**
- * mdb_get_r_txn - Get an LMDB read transaction
- * @param ctx LMDB context
+ * lmdb_sdata_free - Free Lmdb Store Data
+ * @param ptr Lmdb Store Data to free
+ */
+static void lmdb_sdata_free(struct LmdbStoreData **ptr)
+{
+  FREE(ptr);
+}
+
+/**
+ * lmdb_sdata_new - Create new Lmdb Store Data
+ * @retval ptr New Lmdb Store Data
+ */
+static struct LmdbStoreData *lmdb_sdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct LmdbStoreData));
+}
+
+/**
+ * lmdb_get_read_txn - Get an LMDB read transaction
+ * @param sdata LMDB store
  * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
-static int mdb_get_r_txn(struct StoreLmdbCtx *ctx)
+static int lmdb_get_read_txn(struct LmdbStoreData *sdata)
 {
   int rc;
 
-  if (ctx->txn && ((ctx->txn_mode == TXN_READ) || (ctx->txn_mode == TXN_WRITE)))
+  if (sdata->txn && ((sdata->txn_mode == TXN_READ) || (sdata->txn_mode == TXN_WRITE)))
     return MDB_SUCCESS;
 
-  if (ctx->txn)
-    rc = mdb_txn_renew(ctx->txn);
+  if (sdata->txn)
+    rc = mdb_txn_renew(sdata->txn);
   else
-    rc = mdb_txn_begin(ctx->env, NULL, MDB_RDONLY, &ctx->txn);
+    rc = mdb_txn_begin(sdata->env, NULL, MDB_RDONLY, &sdata->txn);
 
   if (rc == MDB_SUCCESS)
   {
-    ctx->txn_mode = TXN_READ;
+    sdata->txn_mode = TXN_READ;
   }
   else
   {
     mutt_debug(LL_DEBUG2, "%s: %s\n",
-               ctx->txn ? "mdb_txn_renew" : "mdb_txn_begin", mdb_strerror(rc));
+               sdata->txn ? "mdb_txn_renew" : "mdb_txn_begin", mdb_strerror(rc));
   }
 
   return rc;
 }
 
 /**
- * mdb_get_w_txn - Get an LMDB write transaction
- * @param ctx LMDB context
+ * lmdb_get_write_txn - Get an LMDB write transaction
+ * @param sdata LMDB store
  * @retval num LMDB return code, e.g. MDB_SUCCESS
  */
-static int mdb_get_w_txn(struct StoreLmdbCtx *ctx)
+static int lmdb_get_write_txn(struct LmdbStoreData *sdata)
 {
-  int rc;
-
-  if (ctx->txn)
+  if (sdata->txn)
   {
-    if (ctx->txn_mode == TXN_WRITE)
+    if (sdata->txn_mode == TXN_WRITE)
       return MDB_SUCCESS;
 
     /* Free up the memory for readonly or reset transactions */
-    mdb_txn_abort(ctx->txn);
+    mdb_txn_abort(sdata->txn);
   }
 
-  rc = mdb_txn_begin(ctx->env, NULL, 0, &ctx->txn);
+  int rc = mdb_txn_begin(sdata->env, NULL, 0, &sdata->txn);
   if (rc == MDB_SUCCESS)
-    ctx->txn_mode = TXN_WRITE;
+    sdata->txn_mode = TXN_WRITE;
   else
     mutt_debug(LL_DEBUG2, "mdb_txn_begin: %s\n", mdb_strerror(rc));
 
@@ -130,86 +146,87 @@ static int mdb_get_w_txn(struct StoreLmdbCtx *ctx)
 /**
  * store_lmdb_open - Implements StoreOps::open() - @ingroup store_open
  */
-static void *store_lmdb_open(const char *path)
+static StoreHandle *store_lmdb_open(const char *path)
 {
   if (!path)
     return NULL;
 
-  int rc;
+  struct LmdbStoreData *sdata = lmdb_sdata_new();
 
-  struct StoreLmdbCtx *ctx = mutt_mem_calloc(1, sizeof(struct StoreLmdbCtx));
-
-  rc = mdb_env_create(&ctx->env);
+  int rc = mdb_env_create(&sdata->env);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_env_create: %s\n", mdb_strerror(rc));
-    FREE(&ctx);
+    lmdb_sdata_free(&sdata);
     return NULL;
   }
 
-  mdb_env_set_mapsize(ctx->env, LMDB_DB_SIZE);
+  mdb_env_set_mapsize(sdata->env, LMDB_DB_SIZE);
 
-  rc = mdb_env_open(ctx->env, path, MDB_NOSUBDIR, 0644);
+  rc = mdb_env_open(sdata->env, path, MDB_NOSUBDIR, 0644);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_env_open: %s\n", mdb_strerror(rc));
     goto fail_env;
   }
 
-  rc = mdb_get_r_txn(ctx);
+  rc = lmdb_get_read_txn(sdata);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_txn_begin: %s\n", mdb_strerror(rc));
     goto fail_env;
   }
 
-  rc = mdb_dbi_open(ctx->txn, NULL, MDB_CREATE, &ctx->db);
+  rc = mdb_dbi_open(sdata->txn, NULL, MDB_CREATE, &sdata->db);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_dbi_open: %s\n", mdb_strerror(rc));
     goto fail_dbi;
   }
 
-  mdb_txn_reset(ctx->txn);
-  ctx->txn_mode = TXN_UNINITIALIZED;
-  return ctx;
+  mdb_txn_reset(sdata->txn);
+  sdata->txn_mode = TXN_UNINITIALIZED;
+  // Return an opaque pointer
+  return (StoreHandle *) sdata;
 
 fail_dbi:
-  mdb_txn_abort(ctx->txn);
-  ctx->txn_mode = TXN_UNINITIALIZED;
-  ctx->txn = NULL;
+  mdb_txn_abort(sdata->txn);
+  sdata->txn_mode = TXN_UNINITIALIZED;
+  sdata->txn = NULL;
 
 fail_env:
-  mdb_env_close(ctx->env);
-  FREE(&ctx);
+  mdb_env_close(sdata->env);
+  lmdb_sdata_free(&sdata);
   return NULL;
 }
 
 /**
  * store_lmdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t *vlen)
+static StoreHandle *store_lmdb_fetch(StoreHandle *store, const char *key,
+                                     size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
 
-  MDB_val dkey;
-  MDB_val data;
+  MDB_val dkey = { 0 };
+  MDB_val data = { 0 };
 
-  struct StoreLmdbCtx *ctx = store;
+  // Decloak an opaque pointer
+  struct LmdbStoreData *sdata = store;
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = klen;
   data.mv_data = NULL;
   data.mv_size = 0;
-  int rc = mdb_get_r_txn(ctx);
+  int rc = lmdb_get_read_txn(sdata);
   if (rc != MDB_SUCCESS)
   {
-    ctx->txn = NULL;
+    sdata->txn = NULL;
     mutt_debug(LL_DEBUG2, "txn_renew: %s\n", mdb_strerror(rc));
     return NULL;
   }
-  rc = mdb_get(ctx->txn, ctx->db, &dkey, &data);
+  rc = mdb_get(sdata->txn, sdata->db, &dkey, &data);
   if (rc == MDB_NOTFOUND)
   {
     return NULL;
@@ -227,7 +244,7 @@ static void *store_lmdb_fetch(void *store, const char *key, size_t klen, size_t 
 /**
  * store_lmdb_free - Implements StoreOps::free() - @ingroup store_free
  */
-static void store_lmdb_free(void *store, void **ptr)
+static void store_lmdb_free(StoreHandle *store, void **ptr)
 {
   /* LMDB data is owned by the database */
 }
@@ -235,33 +252,35 @@ static void store_lmdb_free(void *store, void **ptr)
 /**
  * store_lmdb_store - Implements StoreOps::store() - @ingroup store_store
  */
-static int store_lmdb_store(void *store, const char *key, size_t klen, void *value, size_t vlen)
+static int store_lmdb_store(StoreHandle *store, const char *key, size_t klen,
+                            void *value, size_t vlen)
 {
   if (!store)
     return -1;
 
-  MDB_val dkey;
-  MDB_val databuf;
+  MDB_val dkey = { 0 };
+  MDB_val databuf = { 0 };
 
-  struct StoreLmdbCtx *ctx = store;
+  // Decloak an opaque pointer
+  struct LmdbStoreData *sdata = store;
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = klen;
   databuf.mv_data = value;
   databuf.mv_size = vlen;
-  int rc = mdb_get_w_txn(ctx);
+  int rc = lmdb_get_write_txn(sdata);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(LL_DEBUG2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));
+    mutt_debug(LL_DEBUG2, "lmdb_get_write_txn: %s\n", mdb_strerror(rc));
     return rc;
   }
-  rc = mdb_put(ctx->txn, ctx->db, &dkey, &databuf, 0);
+  rc = mdb_put(sdata->txn, sdata->db, &dkey, &databuf, 0);
   if (rc != MDB_SUCCESS)
   {
     mutt_debug(LL_DEBUG2, "mdb_put: %s\n", mdb_strerror(rc));
-    mdb_txn_abort(ctx->txn);
-    ctx->txn_mode = TXN_UNINITIALIZED;
-    ctx->txn = NULL;
+    mdb_txn_abort(sdata->txn);
+    sdata->txn_mode = TXN_UNINITIALIZED;
+    sdata->txn = NULL;
   }
   return rc;
 }
@@ -269,30 +288,31 @@ static int store_lmdb_store(void *store, const char *key, size_t klen, void *val
 /**
  * store_lmdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
-static int store_lmdb_delete_record(void *store, const char *key, size_t klen)
+static int store_lmdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
   if (!store)
     return -1;
 
-  MDB_val dkey;
+  MDB_val dkey = { 0 };
 
-  struct StoreLmdbCtx *ctx = store;
+  // Decloak an opaque pointer
+  struct LmdbStoreData *sdata = store;
 
   dkey.mv_data = (void *) key;
   dkey.mv_size = klen;
-  int rc = mdb_get_w_txn(ctx);
+  int rc = lmdb_get_write_txn(sdata);
   if (rc != MDB_SUCCESS)
   {
-    mutt_debug(LL_DEBUG2, "mdb_get_w_txn: %s\n", mdb_strerror(rc));
+    mutt_debug(LL_DEBUG2, "lmdb_get_write_txn: %s\n", mdb_strerror(rc));
     return rc;
   }
-  rc = mdb_del(ctx->txn, ctx->db, &dkey, NULL);
+  rc = mdb_del(sdata->txn, sdata->db, &dkey, NULL);
   if ((rc != MDB_SUCCESS) && (rc != MDB_NOTFOUND))
   {
     mutt_debug(LL_DEBUG2, "mdb_del: %s\n", mdb_strerror(rc));
-    mdb_txn_abort(ctx->txn);
-    ctx->txn_mode = TXN_UNINITIALIZED;
-    ctx->txn = NULL;
+    mdb_txn_abort(sdata->txn);
+    sdata->txn_mode = TXN_UNINITIALIZED;
+    sdata->txn = NULL;
   }
 
   return rc;
@@ -301,26 +321,27 @@ static int store_lmdb_delete_record(void *store, const char *key, size_t klen)
 /**
  * store_lmdb_close - Implements StoreOps::close() - @ingroup store_close
  */
-static void store_lmdb_close(void **ptr)
+static void store_lmdb_close(StoreHandle **ptr)
 {
   if (!ptr || !*ptr)
     return;
 
-  struct StoreLmdbCtx *db = *ptr;
+  // Decloak an opaque pointer
+  struct LmdbStoreData *sdata = *ptr;
 
-  if (db->txn)
+  if (sdata->txn)
   {
-    if (db->txn_mode == TXN_WRITE)
-      mdb_txn_commit(db->txn);
+    if (sdata->txn_mode == TXN_WRITE)
+      mdb_txn_commit(sdata->txn);
     else
-      mdb_txn_abort(db->txn);
+      mdb_txn_abort(sdata->txn);
 
-    db->txn_mode = TXN_UNINITIALIZED;
-    db->txn = NULL;
+    sdata->txn_mode = TXN_UNINITIALIZED;
+    sdata->txn = NULL;
   }
 
-  mdb_env_close(db->env);
-  FREE(ptr);
+  mdb_env_close(sdata->env);
+  lmdb_sdata_free((struct LmdbStoreData **) ptr);
 }
 
 /**

@@ -56,16 +56,16 @@ static const struct ComprOps *CompressOps[] = {
 const char *compress_list(void)
 {
   char tmp[256] = { 0 };
-  const struct ComprOps **ops = CompressOps;
+  const struct ComprOps **compr_ops = CompressOps;
   size_t len = 0;
 
-  for (; *ops; ops++)
+  for (; *compr_ops; compr_ops++)
   {
     if (len != 0)
     {
       len += snprintf(tmp + len, sizeof(tmp) - len, ", ");
     }
-    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*ops)->name);
+    len += snprintf(tmp + len, sizeof(tmp) - len, "%s", (*compr_ops)->name);
   }
 
   return mutt_str_dup(tmp);
@@ -78,16 +78,16 @@ const char *compress_list(void)
  */
 const struct ComprOps *compress_get_ops(const char *compr)
 {
-  const struct ComprOps **ops = CompressOps;
+  const struct ComprOps **compr_ops = CompressOps;
 
   if (!compr || !*compr)
-    return *ops;
+    return *compr_ops;
 
-  for (; *ops; ops++)
+  for (; *compr_ops; compr_ops++)
   {
-    if (mutt_str_equal(compr, (*ops)->name))
+    if (mutt_str_equal(compr, (*compr_ops)->name))
       break;
   }
 
-  return *ops;
+  return *compr_ops;
 }

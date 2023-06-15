@@ -322,7 +322,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   url_tobuffer(&url, cachepath, U_PATH);
 
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  hc = mutt_hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer);
+  hc = hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer);
 
 cleanup:
   buf_pool_release(&mbox);
@@ -339,7 +339,7 @@ void imap_hcache_close(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return;
 
-  mutt_hcache_close(&mdata->hcache);
+  hcache_close(&mdata->hcache);
 }
 
 /**
@@ -357,8 +357,8 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
   char key[16] = { 0 };
 
   sprintf(key, "/%u", uid);
-  struct HCacheEntry hce = mutt_hcache_fetch(mdata->hcache, key, mutt_str_len(key),
-                                             mdata->uidvalidity);
+  struct HCacheEntry hce = hcache_fetch(mdata->hcache, key, mutt_str_len(key),
+                                        mdata->uidvalidity);
   if (!hce.email && hce.uidvalidity)
   {
     mutt_debug(LL_DEBUG3, "hcache uidvalidity mismatch: %u\n", hce.uidvalidity);
@@ -382,7 +382,7 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
   char key[16] = { 0 };
 
   sprintf(key, "/%u", imap_edata_get(e)->uid);
-  return mutt_hcache_store(mdata->hcache, key, mutt_str_len(key), e, mdata->uidvalidity);
+  return hcache_store(mdata->hcache, key, mutt_str_len(key), e, mdata->uidvalidity);
 }
 
 /**
@@ -400,7 +400,7 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
   char key[16] = { 0 };
 
   sprintf(key, "/%u", uid);
-  return mutt_hcache_delete_record(mdata->hcache, key, mutt_str_len(key));
+  return hcache_delete_record(mdata->hcache, key, mutt_str_len(key));
 }
 
 /**
@@ -418,8 +418,7 @@ int imap_hcache_store_uid_seqset(struct ImapMboxData *mdata)
   struct Buffer buf = buf_make(8192);
   imap_msn_index_to_uid_seqset(&buf, mdata);
 
-  int rc = mutt_hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, buf.data,
-                                 buf_len(&buf) + 1);
+  int rc = hcache_store_raw(mdata->hcache, "/UIDSEQSET", 10, buf.data, buf_len(&buf) + 1);
   mutt_debug(LL_DEBUG3, "Stored /UIDSEQSET %s\n", buf.data);
   buf_dealloc(&buf);
   return rc;
@@ -436,7 +435,7 @@ int imap_hcache_clear_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return -1;
 
-  return mutt_hcache_delete_record(mdata->hcache, "/UIDSEQSET", 10);
+  return hcache_delete_record(mdata->hcache, "/UIDSEQSET", 10);
 }
 
 /**
@@ -450,7 +449,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return NULL;
 
-  char *seqset = mutt_hcache_fetch_str(mdata->hcache, "/UIDSEQSET", 10);
+  char *seqset = hcache_fetch_str(mdata->hcache, "/UIDSEQSET", 10);
   mutt_debug(LL_DEBUG3, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
 
   return seqset;

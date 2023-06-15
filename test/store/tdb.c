@@ -34,22 +34,22 @@
 
 void test_store_tdb(void)
 {
-  char path[PATH_MAX];
+  char path[PATH_MAX] = { 0 };
 
-  const struct StoreOps *sops = store_get_backend_ops(DB_NAME);
-  TEST_CHECK(sops != NULL);
+  const struct StoreOps *store_ops = store_get_backend_ops(DB_NAME);
+  TEST_CHECK(store_ops != NULL);
 
-  TEST_CHECK(test_store_degenerate(sops, DB_NAME) == true);
+  TEST_CHECK(test_store_degenerate(store_ops, DB_NAME) == true);
 
   TEST_CHECK(test_store_setup(path, sizeof(path)) == true);
 
   mutt_str_cat(path, sizeof(path), "/");
   mutt_str_cat(path, sizeof(path), DB_NAME);
 
-  void *db = sops->open(path);
-  TEST_CHECK(db != NULL);
+  StoreHandle *store_handle = store_ops->open(path);
+  TEST_CHECK(store_handle != NULL);
 
-  TEST_CHECK(test_store_db(sops, db) == true);
+  TEST_CHECK(test_store_db(store_ops, store_handle) == true);
 
-  sops->close(&db);
+  store_ops->close(&store_handle);
 }

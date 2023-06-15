@@ -43,47 +43,47 @@ bool test_store_setup(char *buf, size_t buflen)
   return true;
 }
 
-bool test_store_degenerate(const struct StoreOps *sops, const char *name)
+bool test_store_degenerate(const struct StoreOps *store_ops, const char *name)
 {
-  if (!sops)
+  if (!store_ops)
     return false;
 
-  if (!TEST_CHECK_STR_EQ(sops->name, name))
+  if (!TEST_CHECK_STR_EQ(store_ops->name, name))
     return false;
 
-  if (!TEST_CHECK(sops->open(NULL) == NULL))
+  if (!TEST_CHECK(store_ops->open(NULL) == NULL))
     return false;
 
-  if (!TEST_CHECK(sops->fetch(NULL, NULL, 0, NULL) == NULL))
+  if (!TEST_CHECK(store_ops->fetch(NULL, NULL, 0, NULL) == NULL))
     return false;
 
   void *ptr = NULL;
-  sops->free(NULL, NULL);
-  TEST_CHECK_(1, "sops->free(NULL, NULL)");
-  sops->free(NULL, &ptr);
-  TEST_CHECK_(1, "sops->free(NULL, ptr)");
+  store_ops->free(NULL, NULL);
+  TEST_CHECK_(1, "store_ops->free(NULL, NULL)");
+  store_ops->free(NULL, &ptr);
+  TEST_CHECK_(1, "store_ops->free(NULL, ptr)");
 
-  if (!TEST_CHECK(sops->store(NULL, NULL, 0, NULL, 0) != 0))
+  if (!TEST_CHECK(store_ops->store(NULL, NULL, 0, NULL, 0) != 0))
     return false;
 
-  if (!TEST_CHECK(sops->delete_record(NULL, NULL, 0) != 0))
+  if (!TEST_CHECK(store_ops->delete_record(NULL, NULL, 0) != 0))
     return false;
 
-  sops->close(NULL);
-  TEST_CHECK_(1, "sops->close(NULL)");
+  store_ops->close(NULL);
+  TEST_CHECK_(1, "store_ops->close(NULL)");
 
-  sops->close(&ptr);
-  TEST_CHECK_(1, "sops->close(&ptr)");
+  store_ops->close(&ptr);
+  TEST_CHECK_(1, "store_ops->close(&ptr)");
 
-  if (!TEST_CHECK(sops->version() != NULL))
+  if (!TEST_CHECK(store_ops->version() != NULL))
     return false;
 
   return true;
 }
 
-bool test_store_db(const struct StoreOps *sops, void *db)
+bool test_store_db(const struct StoreOps *store_ops, StoreHandle *store_handle)
 {
-  if (!sops || !db)
+  if (!store_ops || !store_handle)
     return false;
 
   const char *key = "one";
@@ -92,20 +92,20 @@ bool test_store_db(const struct StoreOps *sops, void *db)
   size_t vlen = strlen(value);
   int rc;
 
-  rc = sops->store(db, key, klen, value, vlen);
+  rc = store_ops->store(store_handle, key, klen, value, vlen);
   if (!TEST_CHECK(rc == 0))
     return false;
 
   void *data = NULL;
   vlen = 0;
-  data = sops->fetch(db, key, klen, &vlen);
+  data = store_ops->fetch(store_handle, key, klen, &vlen);
   if (!TEST_CHECK(data != NULL))
     return false;
 
-  sops->free(db, &data);
-  TEST_CHECK_(1, "sops->free(db, &data)");
+  store_ops->free(store_handle, &data);
+  TEST_CHECK_(1, "store_ops->free(store_handle, &data)");
 
-  rc = sops->delete_record(db, key, klen);
+  rc = store_ops->delete_record(store_handle, key, klen);
   if (!TEST_CHECK(rc == 0))
     return false;
 

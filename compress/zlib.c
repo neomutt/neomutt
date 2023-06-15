@@ -39,22 +39,46 @@
 #define MAX_COMP_LEVEL 9 ///< Maximum compression level for zlib
 
 /**
- * struct ComprZlibCtx - Private Zlib Compression Context
+ * struct ZlibComprData - Private Zlib Compression Data
  */
-struct ComprZlibCtx
+struct ZlibComprData
 {
   void *buf;   ///< Temporary buffer
   short level; ///< Compression Level to be used
 };
 
 /**
+ * zlib_cdata_free - Free Zlib Compression Data
+ * @param ptr Zlib Compression Data to free
+ */
+static void zlib_cdata_free(struct ZlibComprData **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ZlibComprData *cdata = *ptr;
+  FREE(&cdata->buf);
+
+  FREE(ptr);
+}
+
+/**
+ * zlib_cdata_new - Create new Zlib Compression Data
+ * @retval ptr New Zlib Compression Data
+ */
+static struct ZlibComprData *zlib_cdata_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct ZlibComprData));
+}
+
+/**
  * compr_zlib_open - Implements ComprOps::open() - @ingroup compress_open
  */
-static void *compr_zlib_open(short level)
+static ComprHandle *compr_zlib_open(short level)
 {
-  struct ComprZlibCtx *ctx = mutt_mem_malloc(sizeof(struct ComprZlibCtx));
+  struct ZlibComprData *cdata = zlib_cdata_new();
 
-  ctx->buf = mutt_mem_malloc(compressBound(1024 * 32));
+  cdata->buf = mutt_mem_calloc(1, compressBound(1024 * 32));
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -63,32 +87,35 @@ static void *compr_zlib_open(short level)
     level = MIN_COMP_LEVEL;
   }
 
-  ctx->level = level;
+  cdata->level = level;
 
-  return ctx;
+  // Return an opaque pointer
+  return (ComprHandle *) cdata;
 }
 
 /**
  * compr_zlib_compress - Implements ComprOps::compress() - @ingroup compress_compress
  */
-static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size_t *clen)
+static void *compr_zlib_compress(ComprHandle *handle, const char *data,
+                                 size_t dlen, size_t *clen)
 {
-  if (!cctx)
+  if (!handle)
     return NULL;
 
-  struct ComprZlibCtx *ctx = cctx;
+  // Decloak an opaque pointer
+  struct ZlibComprData *cdata = handle;
 
   uLong len = compressBound(dlen);
-  mutt_mem_realloc(&ctx->buf, len + 4);
-  Bytef *cbuf = (unsigned char *) ctx->buf + 4;
+  mutt_mem_realloc(&cdata->buf, len + 4);
+  Bytef *cbuf = (unsigned char *) cdata->buf + 4;
   const void *ubuf = data;
-  int rc = compress2(cbuf, &len, ubuf, dlen, ctx->level);
+  int rc = compress2(cbuf, &len, ubuf, dlen, cdata->level);
   if (rc != Z_OK)
     return NULL; // LCOV_EXCL_LINE
   *clen = len + 4;
 
   /* save ulen to first 4 bytes */
-  unsigned char *cs = ctx->buf;
+  unsigned char *cs = cdata->buf;
   cs[0] = dlen & 0xff;
   dlen >>= 8;
   cs[1] = dlen & 0xff;
@@ -97,18 +124,19 @@ static void *compr_zlib_compress(void *cctx, const char *data, size_t dlen, size
   dlen >>= 8;
   cs[3] = dlen & 0xff;
 
-  return ctx->buf;
+  return cdata->buf;
 }
 
 /**
  * compr_zlib_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
+static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
-  if (!cctx)
+  if (!handle)
     return NULL;
 
-  struct ComprZlibCtx *ctx = cctx;
+  // Decloak an opaque pointer
+  struct ZlibComprData *cdata = handle;
 
   /* first 4 bytes store the size */
   const unsigned char *cs = (const unsigned char *) cbuf;
@@ -118,8 +146,8 @@ static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
   if (ulen == 0)
     return NULL;
 
-  mutt_mem_realloc(&ctx->buf, ulen);
-  Bytef *ubuf = ctx->buf;
+  mutt_mem_realloc(&cdata->buf, ulen);
+  Bytef *ubuf = cdata->buf;
   cs = (const unsigned char *) cbuf;
   int rc = uncompress(ubuf, &ulen, cs + 4, clen - 4);
   if (rc != Z_OK)
@@ -131,15 +159,13 @@ static void *compr_zlib_decompress(void *cctx, const char *cbuf, size_t clen)
 /**
  * compr_zlib_close - Implements ComprOps::close() - @ingroup compress_close
  */
-static void compr_zlib_close(void **cctx)
+static void compr_zlib_close(ComprHandle **ptr)
 {
-  if (!cctx || !*cctx)
+  if (!ptr || !*ptr)
     return;
 
-  struct ComprZlibCtx *ctx = *cctx;
-
-  FREE(&ctx->buf);
-  FREE(cctx);
+  // Decloak an opaque pointer
+  zlib_cdata_free((struct ZlibComprData **) ptr);
 }
 
 COMPRESS_OPS(zlib, MIN_COMP_LEVEL, MAX_COMP_LEVEL)

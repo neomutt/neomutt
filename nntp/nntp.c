@@ -1098,10 +1098,10 @@ static int parse_overview_line(char *line, void *data)
 
     /* try to replace with header from cache */
     snprintf(buf, sizeof(buf), ANUM, anum);
-    struct HCacheEntry hce = mutt_hcache_fetch(fc->hc, buf, strlen(buf), 0);
+    struct HCacheEntry hce = hcache_fetch(fc->hc, buf, strlen(buf), 0);
     if (hce.email)
     {
-      mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
+      mutt_debug(LL_DEBUG2, "hcache_fetch %s\n", buf);
       email_free(&e);
       e = hce.email;
       m->emails[m->msg_count] = e;
@@ -1123,8 +1123,8 @@ static int parse_overview_line(char *line, void *data)
     else
     {
       /* not cached yet, store header */
-      mutt_debug(LL_DEBUG2, "mutt_hcache_store %s\n", buf);
-      mutt_hcache_store(fc->hc, buf, strlen(buf), e, 0);
+      mutt_debug(LL_DEBUG2, "hcache_store %s\n", buf);
+      hcache_store(fc->hc, buf, strlen(buf), e, 0);
     }
   }
 #endif
@@ -1236,8 +1236,8 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 #ifdef USE_HCACHE
         if (fc.hc)
         {
-          mutt_debug(LL_DEBUG2, "mutt_hcache_delete_record %s\n", buf);
-          mutt_hcache_delete_record(fc.hc, buf, strlen(buf));
+          mutt_debug(LL_DEBUG2, "hcache_delete_record %s\n", buf);
+          hcache_delete_record(fc.hc, buf, strlen(buf));
         }
 #endif
       }
@@ -1273,10 +1273,10 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
-    struct HCacheEntry hce = mutt_hcache_fetch(fc.hc, buf, strlen(buf), 0);
+    struct HCacheEntry hce = hcache_fetch(fc.hc, buf, strlen(buf), 0);
     if (hce.email)
     {
-      mutt_debug(LL_DEBUG2, "mutt_hcache_fetch %s\n", buf);
+      mutt_debug(LL_DEBUG2, "hcache_fetch %s\n", buf);
       e = hce.email;
       m->emails[m->msg_count] = e;
       e->edata = NULL;
@@ -1539,12 +1539,12 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
           messages[anum - first] = 1;
 
         snprintf(buf, sizeof(buf), ANUM, anum);
-        struct HCacheEntry hce = mutt_hcache_fetch(hc, buf, strlen(buf), 0);
+        struct HCacheEntry hce = hcache_fetch(hc, buf, strlen(buf), 0);
         if (hce.email)
         {
           bool deleted;
 
-          mutt_debug(LL_DEBUG2, "#1 mutt_hcache_fetch %s\n", buf);
+          mutt_debug(LL_DEBUG2, "#1 hcache_fetch %s\n", buf);
           e = hce.email;
           e->edata = NULL;
           deleted = e->deleted;
@@ -1584,10 +1584,10 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
         continue;
 
       snprintf(buf, sizeof(buf), ANUM, anum);
-      struct HCacheEntry hce = mutt_hcache_fetch(hc, buf, strlen(buf), 0);
+      struct HCacheEntry hce = hcache_fetch(hc, buf, strlen(buf), 0);
       if (hce.email)
       {
-        mutt_debug(LL_DEBUG2, "#2 mutt_hcache_fetch %s\n", buf);
+        mutt_debug(LL_DEBUG2, "#2 hcache_fetch %s\n", buf);
         mx_alloc_memory(m, m->msg_count);
 
         e = hce.email;
@@ -1653,7 +1653,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
   }
 
 #ifdef USE_HCACHE
-  mutt_hcache_close(&hc);
+  hcache_close(&hc);
 #endif
   if (rc != MX_STATUS_OK)
     nntp_newsrc_close(adata);
@@ -2300,7 +2300,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
     mailbox_changed(m, NT_MAILBOX_INVALID);
 
 #ifdef USE_HCACHE
-  mutt_hcache_close(&hc);
+  hcache_close(&hc);
 #endif
   m->verbose = verbose;
   FREE(&cc.child);
@@ -2485,7 +2485,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   nntp_newsrc_close(adata);
   rc = nntp_fetch_headers(m, hc, first, mdata->last_message, false);
 #ifdef USE_HCACHE
-  mutt_hcache_close(&hc);
+  hcache_close(&hc);
 #endif
   if (rc < 0)
     return MX_OPEN_ERROR;
@@ -2551,8 +2551,8 @@ static enum MxStatus nntp_mbox_sync(struct Mailbox *m)
     {
       if (e->deleted && !e->read)
         mdata->unread--;
-      mutt_debug(LL_DEBUG2, "mutt_hcache_store %s\n", buf);
-      mutt_hcache_store(hc, buf, strlen(buf), e, 0);
+      mutt_debug(LL_DEBUG2, "hcache_store %s\n", buf);
+      hcache_store(hc, buf, strlen(buf), e, 0);
     }
 #endif
   }
@@ -2560,7 +2560,7 @@ static enum MxStatus nntp_mbox_sync(struct Mailbox *m)
 #ifdef USE_HCACHE
   if (hc)
   {
-    mutt_hcache_close(&hc);
+    hcache_close(&hc);
     mdata->last_cached = mdata->last_loaded;
   }
 #endif
