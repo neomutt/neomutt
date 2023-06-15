@@ -36,14 +36,14 @@ void test_store_store(void)
   TEST_CHECK(list != NULL);
   FREE(&list);
 
-  const struct StoreOps *sops = NULL;
+  const struct StoreOps *store_ops = NULL;
 
-  sops = store_get_backend_ops(NULL);
-  TEST_CHECK(sops != NULL);
+  store_ops = store_get_backend_ops(NULL);
+  TEST_CHECK(store_ops != NULL);
 
 #ifdef HAVE_TC
-  sops = store_get_backend_ops("tokyocabinet");
-  TEST_CHECK(sops != NULL);
+  store_ops = store_get_backend_ops("tokyocabinet");
+  TEST_CHECK(store_ops != NULL);
 #endif
 
   TEST_CHECK(store_is_valid_backend(NULL) == true);
