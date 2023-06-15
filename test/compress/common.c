@@ -94,25 +94,25 @@ void test_compress_common(void)
   TEST_CHECK(list != NULL);
   FREE(&list);
 
-  const struct ComprOps *ops = compress_get_ops(NULL);
-  TEST_CHECK(ops != NULL);
+  const struct ComprOps *compr_ops = compress_get_ops(NULL);
+  TEST_CHECK(compr_ops != NULL);
 
-  ops = compress_get_ops("");
-  TEST_CHECK(ops != NULL);
+  compr_ops = compress_get_ops("");
+  TEST_CHECK(compr_ops != NULL);
 
-  ops = compress_get_ops("foobar");
-  TEST_CHECK(ops == NULL);
+  compr_ops = compress_get_ops("foobar");
+  TEST_CHECK(compr_ops == NULL);
 }
 
-static void one_test(const struct ComprOps *cops, short level, size_t size)
+static void one_test(const struct ComprOps *compr_ops, short level, size_t size)
 {
   if (!TEST_CHECK(size < strlen(compress_test_data)))
     return;
 
-  void *cctx = cops->open(level);
+  void *cctx = compr_ops->open(level);
 
   size_t clen = 0;
-  void *cdata = cops->compress(cctx, compress_test_data, size, &clen);
+  void *cdata = compr_ops->compress(cctx, compress_test_data, size, &clen);
   if (!TEST_CHECK(cdata != NULL))
     return;
   if (!TEST_CHECK(clen != 0))
@@ -121,7 +121,7 @@ static void one_test(const struct ComprOps *cops, short level, size_t size)
   void *copy = mutt_mem_malloc(clen);
   memcpy(copy, cdata, clen);
 
-  void *ddata = cops->decompress(cctx, copy, clen);
+  void *ddata = compr_ops->decompress(cctx, copy, clen);
   FREE(&copy);
 
   if (!TEST_CHECK(ddata != NULL))
@@ -130,10 +130,10 @@ static void one_test(const struct ComprOps *cops, short level, size_t size)
   if (!TEST_CHECK(memcmp(compress_test_data, ddata, size) == 0))
     return;
 
-  cops->close(&cctx);
+  compr_ops->close(&cctx);
 }
 
-void compress_data_tests(const struct ComprOps *cops, short min_level, short max_level)
+void compress_data_tests(const struct ComprOps *compr_ops, short min_level, short max_level)
 {
   static const size_t sizes[] = { 63,   64,   65,   127,  128,  129,
                                   255,  256,  257,  511,  512,  513,
@@ -147,14 +147,14 @@ void compress_data_tests(const struct ComprOps *cops, short min_level, short max
     {
       snprintf(case_name, sizeof(case_name), "    size %zu", size);
       TEST_CASE(case_name);
-      one_test(cops, level, size);
+      one_test(compr_ops, level, size);
     }
 
     for (size_t i = 0; i < mutt_array_size(sizes); i++)
     {
       snprintf(case_name, sizeof(case_name), "    size %zu", sizes[i]);
       TEST_CASE(case_name);
-      one_test(cops, level, sizes[i]);
+      one_test(compr_ops, level, sizes[i]);
     }
   }
 }

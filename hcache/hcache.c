@@ -221,9 +221,9 @@ static struct RealKey *realkey(const char *key, size_t keylen)
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (c_header_cache_compress_method)
   {
-    const struct ComprOps *cops = compress_get_ops(c_header_cache_compress_method);
+    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
 
-    rk.len = snprintf(rk.key, sizeof(rk.key), "%s-%s", key, cops->name);
+    rk.len = snprintf(rk.key, sizeof(rk.key), "%s-%s", key, compr_ops->name);
   }
   else
 #endif
@@ -461,15 +461,15 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
     return NULL;
   }
 
-  const struct ComprOps *cops = NULL;
+  const struct ComprOps *compr_ops = NULL;
 #ifdef USE_HCACHE_COMPRESSION
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (c_header_cache_compress_method)
   {
-    cops = compress_get_ops(c_header_cache_compress_method);
+    compr_ops = compress_get_ops(c_header_cache_compress_method);
 
     const short c_header_cache_compress_level = cs_subset_number(NeoMutt->sub, "header_cache_compress_level");
-    hc->cctx = cops->open(c_header_cache_compress_level);
+    hc->cctx = compr_ops->open(c_header_cache_compress_level);
     if (!hc->cctx)
     {
       hcache_free(&hc);
@@ -477,7 +477,7 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
     }
 
     /* remember the buffer of database backend */
-    mutt_debug(LL_DEBUG3, "Header cache will use %s compression\n", cops->name);
+    mutt_debug(LL_DEBUG3, "Header cache will use %s compression\n", compr_ops->name);
   }
 #endif
 
@@ -493,9 +493,9 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
       hc->ctx = store_ops->open(buf_string(hcpath));
       if (!hc->ctx)
       {
-        if (cops)
+        if (compr_ops)
         {
-          cops->close(&hc->cctx);
+          compr_ops->close(&hc->cctx);
         }
         hcache_free(&hc);
       }
@@ -525,8 +525,8 @@ void hcache_close(struct HeaderCache **ptr)
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (c_header_cache_compress_method)
   {
-    const struct ComprOps *cops = compress_get_ops(c_header_cache_compress_method);
-    cops->close(&hc->cctx);
+    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
+    compr_ops->close(&hc->cctx);
   }
 #endif
 
@@ -571,9 +571,9 @@ struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key,
   const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
   if (c_header_cache_compress_method)
   {
-    const struct ComprOps *cops = compress_get_ops(c_header_cache_compress_method);
+    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
 
-    void *dblob = cops->decompress(hc->cctx, (char *) data + hlen, dlen - hlen);
+    void *dblob = compr_ops->decompress(hc->cctx, (char *) data + hlen, dlen - hlen);
     if (!dblob)
     {
       goto end;
@@ -658,11 +658,11 @@ int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
      * decompressing on fetch().  */
     size_t hlen = header_size();
 
-    const struct ComprOps *cops = compress_get_ops(c_header_cache_compress_method);
+    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
 
     /* data / dlen gets ptr to compressed data here */
     size_t clen = dlen;
-    void *cdata = cops->compress(hc->cctx, data + hlen, dlen - hlen, &clen);
+    void *cdata = compr_ops->compress(hc->cctx, data + hlen, dlen - hlen, &clen);
     if (!cdata)
     {
       FREE(&data);
