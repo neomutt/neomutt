@@ -113,7 +113,7 @@ struct HCacheEntry
 typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
 
 /**
- * mutt_hcache_open - Open the connection to the header cache
+ * hcache_open - Open the connection to the header cache
  * @param path   Location of the header cache (often as specified by the user)
  * @param folder Name of the folder containing the messages
  * @param namer  Optional (might be NULL) client-specific function to form the
@@ -121,19 +121,19 @@ typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
  * @retval ptr  Success, struct HeaderCache struct
  * @retval NULL Otherwise
  */
-struct HeaderCache *mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer);
+struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_namer_t namer);
 
 /**
- * mutt_hcache_close - Close the connection to the header cache
- * @param ptr Pointer to the struct HeaderCache structure got by mutt_hcache_open()
+ * hcache_close - Close the connection to the header cache
+ * @param ptr Pointer to the struct HeaderCache structure got by hcache_open()
  *
  * @note The pointer will be set to NULL
  */
-void mutt_hcache_close(struct HeaderCache **ptr);
+void hcache_close(struct HeaderCache **ptr);
 
 /**
- * mutt_hcache_store - Store a Header along with a validity datum
- * @param hc          Pointer to the struct HeaderCache structure got by mutt_hcache_open()
+ * hcache_store - Store a Header along with a validity datum
+ * @param hc          Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key         Message identification string
  * @param keylen      Length of the key string
  * @param e           Email to store
@@ -141,12 +141,12 @@ void mutt_hcache_close(struct HeaderCache **ptr);
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
+int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
                       struct Email *e, uint32_t uidvalidity);
 
 /**
- * mutt_hcache_fetch - Fetch and validate a  message's header from the cache
- * @param hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
+ * hcache_fetch - Fetch and validate a  message's header from the cache
+ * @param hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @param uidvalidity Only restore if it matches the stored uidvalidity
@@ -155,23 +155,23 @@ int mutt_hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
  * @note This function performs a check on the validity of the data found by
  *       comparing it with the crc value of the struct HeaderCache structure.
  */
-struct HCacheEntry mutt_hcache_fetch(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
+struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
 
-char *mutt_hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen);
-bool  mutt_hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
-#define mutt_hcache_fetch_obj(hc, key, keylen, dst) mutt_hcache_fetch_obj_(hc, key, keylen, dst, sizeof(*dst))
+char *hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen);
+bool  hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
+#define hcache_fetch_obj(hc, key, keylen, dst) hcache_fetch_obj_(hc, key, keylen, dst, sizeof(*dst))
 
-int mutt_hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
+int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
 
 /**
- * mutt_hcache_delete_record - Delete a key / data pair
- * @param hc     Pointer to the struct HeaderCache structure got by mutt_hcache_open()
+ * hcache_delete_record - Delete a key / data pair
+ * @param hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int mutt_hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen);
+int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen);
 
 #endif /* MUTT_HCACHE_LIB_H */

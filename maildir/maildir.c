@@ -597,7 +597,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
+  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
   const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
 #endif
 
@@ -624,7 +624,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 
     if (hc)
     {
-      hce = mutt_hcache_fetch(hc, key, keylen, 0);
+      hce = hcache_fetch(hc, key, keylen, 0);
     }
 
     if (hce.email && c_maildir_header_cache_verify)
@@ -651,7 +651,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 #ifdef USE_HCACHE
         key = md->email->path + 3;
         keylen = maildir_hcache_keylen(key);
-        mutt_hcache_store(hc, key, keylen, md->email, 0);
+        hcache_store(hc, key, keylen, md->email, 0);
 #endif
       }
       else
@@ -661,7 +661,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     }
   }
 #ifdef USE_HCACHE
-  mutt_hcache_close(&hc);
+  hcache_close(&hc);
 #endif
 }
 
@@ -965,7 +965,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
     {
       const char *key = e->path + 3;
       size_t keylen = maildir_hcache_keylen(key);
-      mutt_hcache_delete_record(hc, key, keylen);
+      hcache_delete_record(hc, key, keylen);
     }
 #endif
     unlink(path);
@@ -982,7 +982,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
   {
     const char *key = e->path + 3;
     size_t keylen = maildir_hcache_keylen(key);
-    mutt_hcache_store(hc, key, keylen, e, 0);
+    hcache_store(hc, key, keylen, e, 0);
   }
 #endif
 
@@ -1395,7 +1395,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   if (m->type == MUTT_MAILDIR)
-    hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
+    hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
 
   struct Progress *progress = NULL;
@@ -1422,7 +1422,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 
 #ifdef USE_HCACHE
   if (m->type == MUTT_MAILDIR)
-    mutt_hcache_close(&hc);
+    hcache_close(&hc);
 #endif
 
   /* XXX race condition? */
@@ -1450,7 +1450,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 err:
 #ifdef USE_HCACHE
   if (m->type == MUTT_MAILDIR)
-    mutt_hcache_close(&hc);
+    hcache_close(&hc);
 #endif
   return MX_STATUS_ERROR;
 }
@@ -1585,11 +1585,11 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
   int rc = 0;
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  struct HeaderCache *hc = mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
+  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
   char *key = e->path + 3;
   int keylen = maildir_hcache_keylen(key);
-  rc = mutt_hcache_store(hc, key, keylen, e, 0);
-  mutt_hcache_close(&hc);
+  rc = hcache_store(hc, key, keylen, e, 0);
+  hcache_close(&hc);
 #endif
   return rc;
 }

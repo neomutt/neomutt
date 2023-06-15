@@ -111,7 +111,7 @@ static struct HeaderCache *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  return mutt_hcache_open(c_header_cache, mailbox_path(m), NULL);
+  return hcache_open(c_header_cache, mailbox_path(m), NULL);
 #else
   return NULL;
 #endif
@@ -124,7 +124,7 @@ static struct HeaderCache *nm_hcache_open(struct Mailbox *m)
 static void nm_hcache_close(struct HeaderCache **ptr)
 {
 #ifdef USE_HCACHE
-  mutt_hcache_close(ptr);
+  hcache_close(ptr);
 #endif
 }
 
@@ -770,7 +770,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
   mx_alloc_memory(m, m->msg_count);
 
 #ifdef USE_HCACHE
-  e = mutt_hcache_fetch(hc, path, mutt_str_len(path), 0).email;
+  e = hcache_fetch(hc, path, mutt_str_len(path), 0).email;
   if (!e)
 #endif
   {
@@ -806,8 +806,8 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
     }
 
 #ifdef USE_HCACHE
-    mutt_hcache_store(hc, newpath ? newpath : path,
-                      mutt_str_len(newpath ? newpath : path), e, 0);
+    hcache_store(hc, newpath ? newpath : path,
+                 mutt_str_len(newpath ? newpath : path), e, 0);
 #endif
   }
 
@@ -2094,7 +2094,8 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
     return MX_STATUS_OK;
   }
 
-  mutt_debug(LL_DEBUG1, "nm: checking (db=%lu mailbox=%lu)\n", mtime, mdata->mtime.tv_sec);
+  mutt_debug(LL_DEBUG1, "nm: checking (db=%lu mailbox=%lu)\n", mtime,
+             mdata->mtime.tv_sec);
 
   notmuch_query_t *q = get_query(m, false);
   if (!q)

@@ -1050,7 +1050,7 @@ fail:
   }
   m->msg_count = 0;
   m->size = 0;
-  mutt_hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
+  hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
   imap_hcache_clear_uid_seqset(mdata);
   imap_hcache_close(mdata);
 
@@ -1369,8 +1369,8 @@ retry:
 
   if (mdata->hcache && initial_download)
   {
-    mutt_hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
-    mutt_hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
+    hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
+    hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
     if (mdata->modseq)
     {
       const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
@@ -1386,7 +1386,7 @@ retry:
     if (uidvalidity && uid_next && uidvalidity == mdata->uidvalidity)
     {
       evalhc = true;
-      if (mutt_hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
+      if (hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
       {
         if (has_qresync)
         {
@@ -1460,8 +1460,8 @@ retry:
     mdata->uid_next = maxuid + 1;
 
 #ifdef USE_HCACHE
-  mutt_hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uidvalidity,
-                        sizeof(mdata->uidvalidity));
+  hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uidvalidity,
+                   sizeof(mdata->uidvalidity));
   if (maxuid && (mdata->uid_next < maxuid + 1))
   {
     mutt_debug(LL_DEBUG2, "Overriding UIDNEXT: %u -> %u\n", mdata->uid_next, maxuid + 1);
@@ -1469,8 +1469,8 @@ retry:
   }
   if (mdata->uid_next > 1)
   {
-    mutt_hcache_store_raw(mdata->hcache, "/UIDNEXT", 8, &mdata->uid_next,
-                          sizeof(mdata->uid_next));
+    hcache_store_raw(mdata->hcache, "/UIDNEXT", 8, &mdata->uid_next,
+                     sizeof(mdata->uid_next));
   }
 
   /* We currently only sync CONDSTORE and QRESYNC on the initial download.
@@ -1481,12 +1481,11 @@ retry:
   {
     if (has_condstore || has_qresync)
     {
-      mutt_hcache_store_raw(mdata->hcache, "/MODSEQ", 7, &mdata->modseq,
-                            sizeof(mdata->modseq));
+      hcache_store_raw(mdata->hcache, "/MODSEQ", 7, &mdata->modseq, sizeof(mdata->modseq));
     }
     else
     {
-      mutt_hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
+      hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
     }
 
     if (has_qresync)
