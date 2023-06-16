@@ -157,16 +157,19 @@ struct BodyCache *mutt_bcache_open(struct ConnAccount *account, const char *mail
 
 /**
  * mutt_bcache_close - Close an Email-Body Cache
- * @param[out] bcache Body cache
+ * @param[out] ptr Body cache
  *
  * Free all memory of bcache and finally FREE() it, too.
  */
-void mutt_bcache_close(struct BodyCache **bcache)
+void mutt_bcache_close(struct BodyCache **ptr)
 {
-  if (!bcache || !*bcache)
+  if (!ptr || !*ptr)
     return;
-  FREE(&(*bcache)->path);
-  FREE(bcache);
+
+  struct BodyCache *bcache = *ptr;
+  FREE(&bcache->path);
+
+  FREE(ptr);
 }
 
 /**

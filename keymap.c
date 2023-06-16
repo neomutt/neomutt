@@ -176,17 +176,19 @@ static const struct Extkey ExtKeys[] = {
 
 /**
  * mutt_keymap_free - Free a Keymap
- * @param km Keymap to free
+ * @param ptr Keymap to free
  */
-static void mutt_keymap_free(struct Keymap **km)
+static void mutt_keymap_free(struct Keymap **ptr)
 {
-  if (!km || !*km)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(&(*km)->macro);
-  FREE(&(*km)->desc);
-  FREE(&(*km)->keys);
-  FREE(km);
+  struct Keymap *km = *ptr;
+  FREE(&km->macro);
+  FREE(&km->desc);
+  FREE(&km->keys);
+
+  FREE(ptr);
 }
 
 /**

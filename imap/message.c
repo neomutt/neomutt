@@ -70,12 +70,12 @@
 struct BodyCache;
 
 /**
- * msg_cache_open - Open a message cache
+ * imap_bcache_open - Open a message cache
  * @param m     Selected Imap Mailbox
  * @retval ptr  Success, using existing cache (or opened new cache)
  * @retval NULL Failure
  */
-static struct BodyCache *msg_cache_open(struct Mailbox *m)
+static struct BodyCache *imap_bcache_open(struct Mailbox *m)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
@@ -110,7 +110,7 @@ static FILE *msg_cache_get(struct Mailbox *m, struct Email *e)
   if (!e || !adata || (adata->mailbox != m))
     return NULL;
 
-  mdata->bcache = msg_cache_open(m);
+  mdata->bcache = imap_bcache_open(m);
   char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_get(mdata->bcache, id);
@@ -131,7 +131,7 @@ static FILE *msg_cache_put(struct Mailbox *m, struct Email *e)
   if (!e || !adata || (adata->mailbox != m))
     return NULL;
 
-  mdata->bcache = msg_cache_open(m);
+  mdata->bcache = imap_bcache_open(m);
   char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_put(mdata->bcache, id);
@@ -152,7 +152,7 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
   if (!e || !adata || (adata->mailbox != m))
     return -1;
 
-  mdata->bcache = msg_cache_open(m);
+  mdata->bcache = imap_bcache_open(m);
   char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
 
@@ -1858,7 +1858,7 @@ int imap_cache_del(struct Mailbox *m, struct Email *e)
   if (!e || !adata || (adata->mailbox != m))
     return -1;
 
-  mdata->bcache = msg_cache_open(m);
+  mdata->bcache = imap_bcache_open(m);
   char id[64] = { 0 };
   snprintf(id, sizeof(id), "%u-%u", mdata->uidvalidity, imap_edata_get(e)->uid);
   return mutt_bcache_del(mdata->bcache, id);
@@ -1877,7 +1877,7 @@ int imap_cache_clean(struct Mailbox *m)
   if (!adata || (adata->mailbox != m))
     return -1;
 
-  mdata->bcache = msg_cache_open(m);
+  mdata->bcache = imap_bcache_open(m);
   mutt_bcache_list(mdata->bcache, msg_cache_clean_cb, mdata);
 
   return 0;

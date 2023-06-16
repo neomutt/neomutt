@@ -54,7 +54,7 @@ struct BodyCache;
  */
 typedef int (*bcache_list_t)(const char *id, struct BodyCache *bcache, void *data);
 
-void              mutt_bcache_close (struct BodyCache **bcache);
+void              mutt_bcache_close (struct BodyCache **ptr);
 int               mutt_bcache_commit(struct BodyCache *bcache, const char *id);
 int               mutt_bcache_del   (struct BodyCache *bcache, const char *id);
 int               mutt_bcache_exists(struct BodyCache *bcache, const char *id);
