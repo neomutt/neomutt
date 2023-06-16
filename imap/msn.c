@@ -38,7 +38,7 @@
  * @param msn MSN structure
  * @param num Number of MSNs to make room for
  */
-void imap_msn_reserve(struct MSN *msn, size_t num)
+void imap_msn_reserve(struct MSNArray *msn, size_t num)
 {
   /* This is a conservative check to protect against a malicious imap
    * server.  Most likely size_t is bigger than an unsigned int, but
@@ -56,7 +56,7 @@ void imap_msn_reserve(struct MSN *msn, size_t num)
  * imap_msn_free - Free the cache
  * @param msn MSN structure
  */
-void imap_msn_free(struct MSN *msn)
+void imap_msn_free(struct MSNArray *msn)
 {
   ARRAY_FREE(msn);
 }
@@ -66,7 +66,7 @@ void imap_msn_free(struct MSN *msn)
  * @param msn MSN structure
  * @retval num The highest MSN in use
  */
-size_t imap_msn_highest(const struct MSN *msn)
+size_t imap_msn_highest(const struct MSNArray *msn)
 {
   return ARRAY_SIZE(msn);
 }
@@ -77,7 +77,7 @@ size_t imap_msn_highest(const struct MSN *msn)
  * @param idx Index to retrieve
  * @retval ptr Pointer to Email or NULL
  */
-struct Email *imap_msn_get(const struct MSN *msn, size_t idx)
+struct Email *imap_msn_get(const struct MSNArray *msn, size_t idx)
 {
   struct Email **ep = ARRAY_GET(msn, idx);
   return ep ? *ep : NULL;
@@ -89,7 +89,7 @@ struct Email *imap_msn_get(const struct MSN *msn, size_t idx)
  * @param idx Index in the cache
  * @param e   Email to cache
  */
-void imap_msn_set(struct MSN *msn, size_t idx, struct Email *e)
+void imap_msn_set(struct MSNArray *msn, size_t idx, struct Email *e)
 {
   ARRAY_SET(msn, idx, e);
 }
@@ -100,7 +100,7 @@ void imap_msn_set(struct MSN *msn, size_t idx, struct Email *e)
  * @param num Number of entries to remove
  * @retval num Number of entries actually removed
  */
-size_t imap_msn_shrink(struct MSN *msn, size_t num)
+size_t imap_msn_shrink(struct MSNArray *msn, size_t num)
 {
   return ARRAY_SHRINK(msn, num);
 }
@@ -110,7 +110,7 @@ size_t imap_msn_shrink(struct MSN *msn, size_t num)
  * @param msn MSN structure
  * @param idx Index to invalidate
  */
-void imap_msn_remove(struct MSN *msn, size_t idx)
+void imap_msn_remove(struct MSNArray *msn, size_t idx)
 {
   struct Email **ep = ARRAY_GET(msn, idx);
   if (ep)

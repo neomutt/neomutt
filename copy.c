@@ -62,7 +62,7 @@ static int address_header_decode(char **h);
 static int copy_delete_attach(struct Body *b, FILE *fp_in, FILE *fp_out,
                               const char *quoted_date);
 
-ARRAY_HEAD(Headers, char *);
+ARRAY_HEAD(HeaderArray, char *);
 
 /**
  * add_one_header - Add a header to a Headers array
@@ -73,7 +73,7 @@ ARRAY_HEAD(Headers, char *);
  * If a header already exists in that position, the new text will be
  * concatenated on the old.
  */
-static void add_one_header(struct Headers *headers, size_t pos, char *value)
+static void add_one_header(struct HeaderArray *headers, size_t pos, char *value)
 {
   char **old = ARRAY_GET(headers, pos);
   if (old && *old)
@@ -111,7 +111,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
   bool ignore = false;
   char buf[1024] = { 0 }; /* should be long enough to get most fields in one pass */
   char *nl = NULL;
-  struct Headers headers = ARRAY_HEAD_INITIALIZER;
+  struct HeaderArray headers = ARRAY_HEAD_INITIALIZER;
   int hdr_count;
   int x;
   char *this_one = NULL;

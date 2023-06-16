@@ -102,14 +102,14 @@ struct FolderFile
   int gen;                 ///< Unique id, used for (un)sorting
 };
 
-ARRAY_HEAD(BrowserStateEntry, struct FolderFile);
+ARRAY_HEAD(BrowserEntryArray, struct FolderFile);
 
 /**
  * struct BrowserState - State of the file/mailbox browser
  */
 struct BrowserState
 {
-  struct BrowserStateEntry entry; ///< Array of files / dirs / mailboxes
+  struct BrowserEntryArray entry; ///< Array of files / dirs / mailboxes
 #ifdef USE_IMAP
   bool imap_browse; ///< IMAP folder
   char *folder;     ///< Folder name
