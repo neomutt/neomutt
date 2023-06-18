@@ -84,8 +84,8 @@ void mutt_clear_error(void)
 /**
  * log_disp_curses - Display a log line in the message line - Implements ::log_dispatcher_t - @ingroup logging_api
  */
-int log_disp_curses(time_t stamp, const char *file, int line,
-                    const char *function, enum LogLevel level, ...)
+int log_disp_curses(time_t stamp, const char *file, int line, const char *function,
+                    enum LogLevel level, const char *format, ...)
 {
   const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
   if (level > c_debug_level)
@@ -94,9 +94,8 @@ int log_disp_curses(time_t stamp, const char *file, int line,
   char buf[LOG_LINE_MAX_LEN] = { 0 };
 
   va_list ap;
-  va_start(ap, level);
-  const char *fmt = va_arg(ap, const char *);
-  int rc = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_start(ap, format);
+  int rc = vsnprintf(buf, sizeof(buf), format, ap);
   va_end(ap);
 
   if ((level == LL_PERROR) && (rc >= 0) && (rc < sizeof(buf)))

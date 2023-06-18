@@ -242,8 +242,8 @@ bool log_file_running(void)
  *
  * If stamp is 0, then the current time will be used.
  */
-int log_disp_file(time_t stamp, const char *file, int line,
-                  const char *function, enum LogLevel level, ...)
+int log_disp_file(time_t stamp, const char *file, int line, const char *function,
+                  enum LogLevel level, const char *format, ...)
 {
   if (!LogFileFP || (level < LL_PERROR) || (level > LogFileLevel))
     return 0;
@@ -257,9 +257,8 @@ int log_disp_file(time_t stamp, const char *file, int line,
   rc += fprintf(LogFileFP, "[%s]<%c> %s() ", timestamp(stamp), LevelAbbr[level + 3], function);
 
   va_list ap;
-  va_start(ap, level);
-  const char *fmt = va_arg(ap, const char *);
-  rc += vfprintf(LogFileFP, fmt, ap);
+  va_start(ap, format);
+  rc += vfprintf(LogFileFP, format, ap);
   va_end(ap);
 
   if (level == LL_PERROR)
@@ -395,16 +394,15 @@ int log_queue_save(FILE *fp)
  *
  * @warning Log lines are limited to LOG_LINE_MAX_LEN bytes
  */
-int log_disp_queue(time_t stamp, const char *file, int line,
-                   const char *function, enum LogLevel level, ...)
+int log_disp_queue(time_t stamp, const char *file, int line, const char *function,
+                   enum LogLevel level, const char *format, ...)
 {
   char buf[LOG_LINE_MAX_LEN] = { 0 };
   int err = errno;
 
   va_list ap;
-  va_start(ap, level);
-  const char *fmt = va_arg(ap, const char *);
-  int rc = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_start(ap, format);
+  int rc = vsnprintf(buf, sizeof(buf), format, ap);
   va_end(ap);
 
   if (level == LL_PERROR)
@@ -439,15 +437,14 @@ int log_disp_queue(time_t stamp, const char *file, int line,
  * @note The output will be coloured using ANSI escape sequences,
  *       unless the output is redirected.
  */
-int log_disp_terminal(time_t stamp, const char *file, int line,
-                      const char *function, enum LogLevel level, ...)
+int log_disp_terminal(time_t stamp, const char *file, int line, const char *function,
+                      enum LogLevel level, const char *format, ...)
 {
   char buf[LOG_LINE_MAX_LEN] = { 0 };
 
   va_list ap;
-  va_start(ap, level);
-  const char *fmt = va_arg(ap, const char *);
-  int rc = vsnprintf(buf, sizeof(buf), fmt, ap);
+  va_start(ap, format);
+  int rc = vsnprintf(buf, sizeof(buf), format, ap);
   va_end(ap);
 
   log_disp_file(stamp, file, line, function, level, "%s", buf);
@@ -496,8 +493,8 @@ int log_disp_terminal(time_t stamp, const char *file, int line,
 /**
  * log_disp_null - Discard log lines - Implements ::log_dispatcher_t - @ingroup logging_api
  */
-int log_disp_null(time_t stamp, const char *file, int line,
-                  const char *function, enum LogLevel level, ...)
+int log_disp_null(time_t stamp, const char *file, int line, const char *function,
+                  enum LogLevel level, const char *format, ...)
 {
   return 0;
 }
