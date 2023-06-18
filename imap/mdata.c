@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include "private.h"
 #include "core/lib.h"
 #include "mdata.h"

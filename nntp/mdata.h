@@ -24,6 +24,7 @@
 #define MUTT_NNTP_MDATA_H
 
 #include <stdbool.h>
+#include <time.h>
 #include "lib.h"
 
 /**

@@ -24,6 +24,7 @@
 #define MUTT_IMAP_MDATA_H
 
 #include <stdint.h>
+#include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
 
