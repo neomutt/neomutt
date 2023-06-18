@@ -860,7 +860,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
  */
 static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 {
-  struct BrowserStateEntry *entry = menu->mdata;
+  struct BrowserEntryArray *entry = menu->mdata;
 #ifdef USE_NNTP
   if (OptNews)
     return regexec(rx, ARRAY_GET(entry, line)->desc, 0, NULL, 0);
@@ -877,7 +877,7 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct BrowserState *bstate = menu->mdata;
-  struct BrowserStateEntry *entry = &bstate->entry;
+  struct BrowserEntryArray *entry = &bstate->entry;
   struct Folder folder = {
     .ff = ARRAY_GET(entry, line),
     .num = line,
@@ -1053,7 +1053,7 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
  */
 static int file_tag(struct Menu *menu, int sel, int act)
 {
-  struct BrowserStateEntry *entry = menu->mdata;
+  struct BrowserEntryArray *entry = menu->mdata;
   struct FolderFile *ff = ARRAY_GET(entry, sel);
   if (S_ISDIR(ff->mode) ||
       (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)))

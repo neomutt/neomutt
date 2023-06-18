@@ -47,7 +47,7 @@ enum MxStatus   mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
 enum MxStatus   mx_mbox_close      (struct Mailbox *m);
 bool            mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
 enum MxStatus   mx_mbox_sync       (struct Mailbox *m);
-int             mx_msg_close       (struct Mailbox *m, struct Message **msg);
+int             mx_msg_close       (struct Mailbox *m, struct Message **ptr);
 int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
 struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);
 struct Message *mx_msg_open        (struct Mailbox *m, struct Email *e);

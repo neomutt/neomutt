@@ -1203,29 +1203,30 @@ int mx_msg_commit(struct Mailbox *m, struct Message *msg)
 /**
  * mx_msg_close - Close a message
  * @param[in]  m   Mailbox
- * @param[out] msg Message to close
+ * @param[out] ptr Message to close
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mx_msg_close(struct Mailbox *m, struct Message **msg)
+int mx_msg_close(struct Mailbox *m, struct Message **ptr)
 {
-  if (!m || !msg || !*msg)
+  if (!m || !ptr || !*ptr)
     return 0;
 
   int rc = 0;
+  struct Message *msg = *ptr;
 
   if (m->mx_ops && m->mx_ops->msg_close)
-    rc = m->mx_ops->msg_close(m, *msg);
+    rc = m->mx_ops->msg_close(m, msg);
 
-  if ((*msg)->path)
+  if (msg->path)
   {
-    mutt_debug(LL_DEBUG1, "unlinking %s\n", (*msg)->path);
-    unlink((*msg)->path);
-    FREE(&(*msg)->path);
+    mutt_debug(LL_DEBUG1, "unlinking %s\n", msg->path);
+    unlink(msg->path);
+    FREE(&msg->path);
   }
 
-  FREE(&(*msg)->committed_path);
-  FREE(msg);
+  FREE(&msg->committed_path);
+  FREE(ptr);
   return rc;
 }
 

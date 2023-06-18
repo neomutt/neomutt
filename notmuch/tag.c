@@ -33,10 +33,10 @@
 #include "notmuch/tag.h"
 
 /**
- * nm_tag_array_free - Free all memory of a TagArray
- * @param tags  TagArray being cleaned up
+ * nm_tag_array_free - Free all memory of a NmTags
+ * @param tags NmTags being cleaned up
  */
-void nm_tag_array_free(struct TagArray *tags)
+void nm_tag_array_free(struct NmTags *tags)
 {
   ARRAY_FREE(&tags->tags);
   FREE(&tags->tag_str);
@@ -47,11 +47,11 @@ void nm_tag_array_free(struct TagArray *tags)
  * @param tag_str String containing a list of tags, comma- and/or space-delimited
  * @retval obj Array containing tags represented as strings
  */
-struct TagArray nm_tag_str_to_tags(const char *tag_str)
+struct NmTags nm_tag_str_to_tags(const char *tag_str)
 {
   char *buf = mutt_str_dup(tag_str);
 
-  struct TagArray tags = { ARRAY_HEAD_INITIALIZER, buf };
+  struct NmTags tags = { ARRAY_HEAD_INITIALIZER, buf };
 
   char *end = NULL;
   char *tag = NULL;

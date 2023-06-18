@@ -25,21 +25,21 @@
 
 #include "mutt/lib.h"
 
-ARRAY_HEAD(Tags, char *);
+ARRAY_HEAD(TagArray, char *);
 
 /**
- * struct TagArray - Array of Notmuch tags
+ * struct NmTags - Array of Notmuch tags
  *
  * The tag pointers, in the array, point into the source string.
  * They must not be freed.
  */
-struct TagArray
+struct NmTags
 {
-  struct Tags tags;          ///< Tags
+  struct TagArray tags;      ///< Tags
   char *tag_str;             ///< Source string
 };
 
-void nm_tag_array_free(struct TagArray *tags);
-struct TagArray nm_tag_str_to_tags(const char *tag_string);
+void          nm_tag_array_free (struct NmTags *tags);
+struct NmTags nm_tag_str_to_tags(const char *tag_string);
 
 #endif /* MUTT_NOTMUCH_TAG_H */

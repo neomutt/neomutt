@@ -24,6 +24,7 @@
 #define MUTT_IMAP_MDATA_H
 
 #include <stdint.h>
+#include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
 
@@ -55,9 +56,9 @@ struct ImapMboxData
   unsigned int unseen;
 
   // Cached data used only when the mailbox is opened
-  struct HashTable *uid_hash;          ///< Hash Table: "uid" -> Email
-  ARRAY_HEAD(MSN, struct Email *) msn; ///< look up headers by (MSN-1)
-  struct BodyCache *bcache;            ///< Email body cache
+  struct HashTable *uid_hash;               ///< Hash Table: "uid" -> Email
+  ARRAY_HEAD(MSNArray, struct Email *) msn; ///< look up headers by (MSN-1)
+  struct BodyCache *bcache;                 ///< Email body cache
 
   struct HeaderCache *hcache; ///< Email header cache
   struct timespec mtime;      ///< Time Mailbox was last changed

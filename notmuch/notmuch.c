@@ -418,7 +418,7 @@ static void apply_exclude_tags(notmuch_query_t *query)
   if (!c_nm_exclude_tags || !query)
     return;
 
-  struct TagArray tags = nm_tag_str_to_tags(c_nm_exclude_tags);
+  struct NmTags tags = nm_tag_str_to_tags(c_nm_exclude_tags);
 
   char **tag = NULL;
   ARRAY_FOREACH(tag, &tags.tags)
@@ -1100,7 +1100,7 @@ static int update_tags(notmuch_message_t *msg, const char *tag_str)
 
   notmuch_message_freeze(msg);
 
-  struct TagArray tags = nm_tag_str_to_tags(tag_str);
+  struct NmTags tags = nm_tag_str_to_tags(tag_str);
   char **tag_elem = NULL;
   ARRAY_FOREACH(tag_elem, &tags.tags)
   {
@@ -1156,7 +1156,7 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
   const char *const c_nm_replied_tag = cs_subset_string(NeoMutt->sub, "nm_replied_tag");
   const char *const c_nm_flagged_tag = cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
 
-  struct TagArray tags = nm_tag_str_to_tags(tag_str);
+  struct NmTags tags = nm_tag_str_to_tags(tag_str);
   char **tag_elem = NULL;
   ARRAY_FOREACH(tag_elem, &tags.tags)
   {

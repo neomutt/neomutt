@@ -34,9 +34,9 @@ struct Dummy
   double d;
 };
 
-ARRAY_HEAD(Dummies, struct Dummy);
+ARRAY_HEAD(DummyArray, struct Dummy);
 
-static void test_get_one(struct Dummies *d, size_t idx)
+static void test_get_one(struct DummyArray *d, size_t idx)
 {
   struct Dummy *elem = ARRAY_GET(d, idx);
   if (!TEST_CHECK(elem != NULL))
@@ -62,7 +62,7 @@ static void test_get_one(struct Dummies *d, size_t idx)
   }
 }
 
-static void test_get(struct Dummies *d, size_t nof_elem)
+static void test_get(struct DummyArray *d, size_t nof_elem)
 {
   for (size_t i = 0; i < nof_elem; i++)
   {
@@ -88,12 +88,12 @@ static struct Dummy make_elem(size_t idx)
   return elem;
 }
 
-static void test_set_one(struct Dummies *d, size_t idx)
+static void test_set_one(struct DummyArray *d, size_t idx)
 {
   TEST_CHECK(ARRAY_SET(d, idx, make_elem(idx)));
 }
 
-static void test_set(struct Dummies *d, size_t begin, size_t end)
+static void test_set(struct DummyArray *d, size_t begin, size_t end)
 {
   for (size_t i = begin; i < end; i++)
   {
@@ -117,7 +117,7 @@ static int gt(const void *a, const void *b)
 void test_mutt_array_api(void)
 {
   const size_t nof_elem = 12;
-  struct Dummies d = ARRAY_HEAD_INITIALIZER;
+  struct DummyArray d = ARRAY_HEAD_INITIALIZER;
 
   /* Initial state */
   {
@@ -129,7 +129,7 @@ void test_mutt_array_api(void)
 
   /* Initialization */
   {
-    struct Dummies d2;
+    struct DummyArray d2;
     ARRAY_INIT(&d2);
     TEST_CHECK(ARRAY_EMPTY(&d2));
     TEST_CHECK(ARRAY_SIZE(&d2) == 0);
@@ -184,7 +184,7 @@ void test_mutt_array_api(void)
 
   /* First and last on empty arrays */
   {
-    ARRAY_HEAD(, int) a = ARRAY_HEAD_INITIALIZER;
+    ARRAY_HEAD(IntArray, int) a = ARRAY_HEAD_INITIALIZER;
     if (!TEST_CHECK(ARRAY_FIRST(&a) == NULL))
     {
       TEST_MSG("Expected: NULL");
@@ -336,7 +336,7 @@ void test_mutt_array_api(void)
 
   /* Sorting */
   {
-    struct Dummies empty = ARRAY_HEAD_INITIALIZER;
+    struct DummyArray empty = ARRAY_HEAD_INITIALIZER;
     if (!TEST_CHECK(!ARRAY_SORT(&empty, gt)))
     {
       TEST_MSG("Expected: false");
@@ -392,7 +392,7 @@ void test_mutt_array_api(void)
 
   /* Automatic resizing */
   {
-    ARRAY_HEAD(, size_t) head = ARRAY_HEAD_INITIALIZER;
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
     for (size_t i = 0; i < 10; i++)
     {
       ARRAY_ADD(&head, i);
@@ -417,7 +417,7 @@ void test_mutt_array_api(void)
   {
     const size_t to_rem = 5;
 
-    ARRAY_HEAD(, size_t) head = ARRAY_HEAD_INITIALIZER;
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
     for (size_t i = 0; i < 26; i++)
     {
       ARRAY_ADD(&head, i);
@@ -447,7 +447,7 @@ void test_mutt_array_api(void)
   {
     const size_t to_rem = 0;
 
-    ARRAY_HEAD(, size_t) head = ARRAY_HEAD_INITIALIZER;
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
     for (size_t i = 0; i < 26; i++)
     {
       ARRAY_ADD(&head, i);
@@ -477,7 +477,7 @@ void test_mutt_array_api(void)
   {
     const size_t to_rem = 25;
 
-    ARRAY_HEAD(, size_t) head = ARRAY_HEAD_INITIALIZER;
+    ARRAY_HEAD(SizetArray, size_t) head = ARRAY_HEAD_INITIALIZER;
     for (size_t i = 0; i < 26; i++)
     {
       ARRAY_ADD(&head, i);

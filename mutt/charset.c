@@ -951,14 +951,14 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *t
 
 /**
  * mutt_ch_fgetconv_close - Close an fgetconv handle
- * @param[out] fc fgetconv handle
+ * @param[out] ptr fgetconv handle
  */
-void mutt_ch_fgetconv_close(struct FgetConv **fc)
+void mutt_ch_fgetconv_close(struct FgetConv **ptr)
 {
-  if (!fc || !*fc)
+  if (!ptr || !*ptr)
     return;
 
-  FREE(fc);
+  FREE(ptr);
 }
 
 /**

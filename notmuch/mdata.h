@@ -23,6 +23,7 @@
 #ifndef MUTT_NOTMUCH_MDATA_H
 #define MUTT_NOTMUCH_MDATA_H
 
+#include <time.h>
 #include "query.h"
 
 struct Mailbox;

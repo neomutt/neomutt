@@ -80,7 +80,7 @@ bool             mutt_ch_chscmp(const char *cs1, const char *cs2);
 int              mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset, const char *charset, char **ps);
 int              mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t flags);
 int              mutt_ch_fgetconv(struct FgetConv *fc);
-void             mutt_ch_fgetconv_close(struct FgetConv **fc);
+void             mutt_ch_fgetconv_close(struct FgetConv **ptr);
 struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags);
 char *           mutt_ch_fgetconvs(char *buf, size_t buflen, struct FgetConv *fc);
 const char *     mutt_ch_get_default_charset(const struct Slist *const assumed_charset);
