@@ -30,6 +30,7 @@
  * | core/account.c      | @subpage core_account      |
  * | core/dispatcher.c   | @subpage core_dispatcher   |
  * | core/mailbox.c      | @subpage core_mailbox      |
+ * | core/message.c      | @subpage core_message      |
  * | core/neomutt.c      | @subpage core_neomutt      |
  * | core/tmp.c          | @subpage core_tmp          |
  */
@@ -42,6 +43,7 @@
 #include "command.h"
 #include "dispatcher.h"
 #include "mailbox.h"
+#include "message.h"
 #include "mxapi.h"
 #include "neomutt.h"
 #include "tmp.h"

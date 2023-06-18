@@ -51,12 +51,13 @@ extern const struct MxOps MxMaildirOps;
 extern const struct MxOps MxMhOps;
 
 int           maildir_check_empty      (const char *path);
+struct Email *maildir_email_new        (void);
 void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);
 bool          maildir_msg_open_new     (struct Mailbox *m, struct Message *msg, const struct Email *e);
 FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
 void          maildir_parse_flags      (struct Email *e, const char *path);
-struct Email *maildir_parse_message    (enum MailboxType type, const char *fname, bool is_old, struct Email *e);
-struct Email *maildir_parse_stream     (enum MailboxType type, FILE *fp, const char *fname, bool is_old, struct Email *e);
+bool          maildir_parse_message    (enum MailboxType type, const char *fname, bool is_old, struct Email *e);
+bool          maildir_parse_stream     (enum MailboxType type, FILE *fp, const char *fname, bool is_old, struct Email *e);
 bool          maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCache *hc);
 bool          maildir_update_flags     (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
 int           mh_check_empty           (const char *path);

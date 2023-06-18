@@ -1172,9 +1172,9 @@ struct Message *mx_msg_open(struct Mailbox *m, struct Email *e)
     return NULL;
   }
 
-  struct Message *msg = mutt_mem_calloc(1, sizeof(struct Message));
+  struct Message *msg = message_new();
   if (!m->mx_ops->msg_open(m, msg, e))
-    FREE(&msg);
+    message_free(&msg);
 
   return msg;
 }
@@ -1222,11 +1222,9 @@ int mx_msg_close(struct Mailbox *m, struct Message **ptr)
   {
     mutt_debug(LL_DEBUG1, "unlinking %s\n", msg->path);
     unlink(msg->path);
-    FREE(&msg->path);
   }
 
-  FREE(&msg->committed_path);
-  FREE(ptr);
+  message_free(ptr);
   return rc;
 }
 

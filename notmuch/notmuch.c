@@ -778,7 +778,9 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
     {
       /* We pass is_old=false as argument here, but e->old will be updated later
        * by update_message_path() (called by init_email() below).  */
-      e = maildir_parse_message(MUTT_MAILDIR, path, false, NULL);
+      e = maildir_email_new();
+      if (!maildir_parse_message(MUTT_MAILDIR, path, false, e))
+        email_free(&e);
     }
     else
     {
@@ -790,7 +792,9 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
         FILE *fp = maildir_open_find_message(folder, path, &newpath);
         if (fp)
         {
-          e = maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, NULL);
+          e = maildir_email_new();
+          if (!maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, e))
+            email_free(&e);
           mutt_file_fclose(&fp);
 
           mutt_debug(LL_DEBUG1, "nm: not up-to-date: %s -> %s\n", path, newpath);
@@ -2158,12 +2162,11 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
     {
       /* if the user hasn't modified the flags on this message, update the
        * flags we just detected.  */
-      struct Email e_tmp = { 0 };
-      e_tmp.edata = maildir_edata_new();
-      maildir_parse_flags(&e_tmp, new_file);
-      e_tmp.old = e->old;
-      maildir_update_flags(m, e, &e_tmp);
-      maildir_edata_free(&e_tmp.edata);
+      struct Email *e_tmp = maildir_email_new();
+      maildir_parse_flags(e_tmp, new_file);
+      e_tmp->old = e->old;
+      maildir_update_flags(m, e, e_tmp);
+      email_free(&e_tmp);
     }
 
     if (update_email_tags(e, msg) == 0)
