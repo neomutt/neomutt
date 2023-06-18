@@ -424,7 +424,7 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
   FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(buf_string(tempfile));
+    mutt_perror("%s", buf_string(tempfile));
     goto cleanup;
   }
 
@@ -580,7 +580,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
     {
       if (fwrite(buf, nread, 1, fp) != 1)
       {
-        mutt_perror(buf_string(tempf));
+        mutt_perror("%s", buf_string(tempf));
         mutt_file_fclose(&fp);
         unlink(buf_string(tempf));
         goto cleanup;
@@ -2270,7 +2270,7 @@ void pgp_gpgme_invoke_import(const char *fname)
   FILE *fp_in = mutt_file_fopen(fname, "r");
   if (!fp_in)
   {
-    mutt_perror(fname);
+    mutt_perror("%s", fname);
     goto leave;
   }
   /* Note that the stream, "fp_in", needs to be kept open while the keydata

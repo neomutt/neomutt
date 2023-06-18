@@ -1767,7 +1767,7 @@ static int op_mark_msg(struct IndexSharedData *shared, struct IndexPrivateData *
          macro.  %s is the hotkey string ($mark_macro_prefix followed
          by whatever they typed at the prompt.) */
       buf_printf(buf, _("Message bound to %s"), str);
-      mutt_message(buf_string(buf));
+      mutt_message("%s", buf_string(buf));
       mutt_debug(LL_DEBUG1, "Mark: %s => %s\n", str, macro);
       buf_pool_release(&buf);
     }
@@ -3018,7 +3018,7 @@ int index_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win)
   {
-    mutt_error(_(Not_available_in_this_menu));
+    mutt_error("%s", _(Not_available_in_this_menu));
     return FR_ERROR;
   }
 

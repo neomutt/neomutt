@@ -505,7 +505,7 @@ retry_name:
   fp_alias = fopen(buf_string(buf), "a+");
   if (!fp_alias)
   {
-    mutt_perror(buf_string(buf));
+    mutt_perror("%s", buf_string(buf));
     goto done;
   }
 

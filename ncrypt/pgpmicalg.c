@@ -194,7 +194,7 @@ static short pgp_find_hash(const char *fname)
   FILE *fp_in = fopen(fname, "r");
   if (!fp_in)
   {
-    mutt_perror(fname);
+    mutt_perror("%s", fname);
     goto bye;
   }
 

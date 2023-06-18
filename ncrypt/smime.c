@@ -552,7 +552,7 @@ static struct SmimeKey *smime_get_candidates(const char *search, bool only_publi
   FILE *fp = mutt_file_fopen(buf_string(index_file), "r");
   if (!fp)
   {
-    mutt_perror(buf_string(index_file));
+    mutt_perror("%s", buf_string(index_file));
     buf_pool_release(&index_file);
     return NULL;
   }
@@ -1021,7 +1021,7 @@ static char *smime_extract_certificate(const char *infile)
   fp_out = mutt_file_fopen(buf_string(pk7out), "w+");
   if (!fp_out)
   {
-    mutt_perror(buf_string(pk7out));
+    mutt_perror("%s", buf_string(pk7out));
     goto cleanup;
   }
 
@@ -1045,7 +1045,7 @@ static char *smime_extract_certificate(const char *infile)
   empty = (fgetc(fp_out) == EOF);
   if (empty)
   {
-    mutt_perror(buf_string(pk7out));
+    mutt_perror("%s", buf_string(pk7out));
     mutt_file_copy_stream(fp_err, stdout);
     goto cleanup;
   }
@@ -1055,7 +1055,7 @@ static char *smime_extract_certificate(const char *infile)
   fp_cert = mutt_file_fopen(buf_string(certfile), "w+");
   if (!fp_cert)
   {
-    mutt_perror(buf_string(certfile));
+    mutt_perror("%s", buf_string(certfile));
     mutt_file_unlink(buf_string(pk7out));
     goto cleanup;
   }
@@ -1133,7 +1133,7 @@ static char *smime_extract_signer_certificate(const char *infile)
   if (!fp_out)
   {
     mutt_file_fclose(&fp_err);
-    mutt_perror(buf_string(certfile));
+    mutt_perror("%s", buf_string(certfile));
     goto cleanup;
   }
 
@@ -1264,7 +1264,7 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
   FILE *fp_out = mutt_file_fopen(buf_string(tempfname), "w");
   if (!fp_out)
   {
-    mutt_perror(buf_string(tempfname));
+    mutt_perror("%s", buf_string(tempfname));
     goto cleanup;
   }
 
@@ -1396,7 +1396,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp_out)
   {
-    mutt_perror(buf_string(tempfile));
+    mutt_perror("%s", buf_string(tempfile));
     goto cleanup;
   }
 
@@ -1411,7 +1411,7 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   fp_tmp = mutt_file_fopen(buf_string(smime_infile), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(buf_string(smime_infile));
+    mutt_perror("%s", buf_string(smime_infile));
     goto cleanup;
   }
 
@@ -1575,7 +1575,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   fp_sign = mutt_file_fopen(buf_string(filetosign), "w+");
   if (!fp_sign)
   {
-    mutt_perror(buf_string(filetosign));
+    mutt_perror("%s", buf_string(filetosign));
     goto cleanup;
   }
 
@@ -1583,7 +1583,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
   fp_smime_out = mutt_file_fopen(buf_string(signedfile), "w+");
   if (!fp_smime_out)
   {
-    mutt_perror(buf_string(signedfile));
+    mutt_perror("%s", buf_string(signedfile));
     goto cleanup;
   }
 
@@ -1772,7 +1772,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
   state->fp_out = mutt_file_fopen(buf_string(signedfile), "w");
   if (!state->fp_out)
   {
-    mutt_perror(buf_string(signedfile));
+    mutt_perror("%s", buf_string(signedfile));
     goto cleanup;
   }
   /* decoding the attachment changes the size and offset, so save a copy
@@ -1898,7 +1898,7 @@ static struct Body *smime_handle_entity(struct Body *m, struct State *state, FIL
   fp_tmp = mutt_file_fopen(buf_string(&tmpfname), "w+");
   if (!fp_tmp)
   {
-    mutt_perror(buf_string(&tmpfname));
+    mutt_perror("%s", buf_string(&tmpfname));
     goto cleanup;
   }
 

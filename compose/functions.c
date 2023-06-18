@@ -737,7 +737,7 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
           /* check to make sure the file exists and is readable */
           if (access(buf_string(fname), R_OK) == -1)
           {
-            mutt_perror(buf_string(fname));
+            mutt_perror("%s", buf_string(fname));
             buf_pool_release(&fname);
             return FR_ERROR;
           }

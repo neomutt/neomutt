@@ -126,7 +126,7 @@ struct Progress *progress_new(const char *msg, enum ProgressType type, size_t si
   const size_t size_inc = choose_increment(type);
   if (size_inc == 0) // The user has disabled the progress bar
   {
-    mutt_message(msg);
+    mutt_message("%s", msg);
     return NULL;
   }
 

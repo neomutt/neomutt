@@ -97,7 +97,7 @@ int mutt_get_tmp_attachment(struct Body *a)
   }
   else
   {
-    mutt_perror(fp_in ? buf_string(tmpfile) : a->filename);
+    mutt_perror("%s", fp_in ? buf_string(tmpfile) : a->filename);
   }
 
   mutt_file_fclose(&fp_in);
@@ -634,7 +634,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
         {
           mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n",
                      buf_string(pagerfile), errno, strerror(errno));
-          mutt_perror(buf_string(pagerfile));
+          mutt_perror("%s", buf_string(pagerfile));
           goto return_error;
         }
         state.fp_in = fp;

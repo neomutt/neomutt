@@ -110,7 +110,7 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
   if (!fp_tmp)
   {
     if (notify_missing)
-      mutt_perror(c_signature);
+      mutt_perror("%s", c_signature);
     return;
   }
 
@@ -1532,7 +1532,7 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
 
   if (mutt_file_fclose(&fp_tmp) != 0)
   {
-    mutt_perror(buf_string(tempfile));
+    mutt_perror("%s", buf_string(tempfile));
     unlink(buf_string(tempfile));
     goto cleanup;
   }
@@ -2230,7 +2230,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       fp_tmp = mutt_file_fopen(b->filename, "a+");
       if (!fp_tmp)
       {
-        mutt_perror(b->filename);
+        mutt_perror("%s", b->filename);
         goto cleanup;
       }
     }
@@ -2294,7 +2294,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       mutt_debug(LL_DEBUG1, "can't create tempfile %s (errno=%d)\n",
                  e_templ->body->filename, errno);
-      mutt_perror(e_templ->body->filename);
+      mutt_perror("%s", e_templ->body->filename);
       goto cleanup;
     }
   }
@@ -2493,7 +2493,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     mtime = mutt_file_decrease_mtime(b->filename, NULL);
     if (mtime == (time_t) -1)
     {
-      mutt_perror(b->filename);
+      mutt_perror("%s", b->filename);
       goto cleanup;
     }
 
@@ -2541,7 +2541,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         }
         else
         {
-          mutt_perror(b->filename);
+          mutt_perror("%s", b->filename);
         }
       }
 
@@ -2564,7 +2564,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       }
       else
       {
-        mutt_perror(e_templ->body->filename);
+        mutt_perror("%s", e_templ->body->filename);
       }
     }
   }

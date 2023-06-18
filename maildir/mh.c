@@ -90,7 +90,7 @@ bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
     {
       if (errno != EEXIST)
       {
-        mutt_perror(path);
+        mutt_perror("%s", path);
         umask(omask);
         return false;
       }
@@ -307,7 +307,7 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
   DIR *dir = mutt_file_opendir(mailbox_path(m), MUTT_OPENDIR_NONE);
   if (!dir)
   {
-    mutt_perror(mailbox_path(m));
+    mutt_perror("%s", mailbox_path(m));
     return -1;
   }
 
@@ -352,7 +352,7 @@ static int mh_commit_msg(struct Mailbox *m, struct Message *msg, struct Email *e
     }
     else if (errno != EEXIST)
     {
-      mutt_perror(mailbox_path(m));
+      mutt_perror("%s", mailbox_path(m));
       return -1;
     }
   }
@@ -852,7 +852,7 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 
   if (mutt_file_mkdir(mailbox_path(m), S_IRWXU))
   {
-    mutt_perror(mailbox_path(m));
+    mutt_perror("%s", mailbox_path(m));
     return false;
   }
 
@@ -861,7 +861,7 @@ static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   const int i = creat(tmp, S_IRWXU);
   if (i == -1)
   {
-    mutt_perror(tmp);
+    mutt_perror("%s", tmp);
     rmdir(mailbox_path(m));
     return false;
   }
@@ -1128,7 +1128,7 @@ static bool mh_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
   msg->fp = fopen(path, "r");
   if (!msg->fp)
   {
-    mutt_perror(path);
+    mutt_perror("%s", path);
     mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
     return false;
   }

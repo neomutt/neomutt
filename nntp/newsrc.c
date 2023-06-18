@@ -183,7 +183,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
   adata->fp_newsrc = mutt_file_fopen(adata->newsrc_file, "r");
   if (!adata->fp_newsrc)
   {
-    mutt_perror(adata->newsrc_file);
+    mutt_perror("%s", adata->newsrc_file);
     return -1;
   }
 
@@ -197,7 +197,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
 
   if (stat(adata->newsrc_file, &st) != 0)
   {
-    mutt_perror(adata->newsrc_file);
+    mutt_perror("%s", adata->newsrc_file);
     nntp_newsrc_close(adata);
     return -1;
   }
@@ -400,25 +400,25 @@ static int update_file(char *filename, char *buf)
     fp = mutt_file_fopen(tmpfile, "w");
     if (!fp)
     {
-      mutt_perror(tmpfile);
+      mutt_perror("%s", tmpfile);
       *tmpfile = '\0';
       break;
     }
     if (fputs(buf, fp) == EOF)
     {
-      mutt_perror(tmpfile);
+      mutt_perror("%s", tmpfile);
       break;
     }
     if (mutt_file_fclose(&fp) == EOF)
     {
-      mutt_perror(tmpfile);
+      mutt_perror("%s", tmpfile);
       fp = NULL;
       break;
     }
     fp = NULL;
     if (rename(tmpfile, filename) < 0)
     {
-      mutt_perror(filename);
+      mutt_perror("%s", filename);
       break;
     }
     *tmpfile = '\0';
@@ -505,7 +505,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
     }
     else
     {
-      mutt_perror(adata->newsrc_file);
+      mutt_perror("%s", adata->newsrc_file);
     }
   }
   FREE(&buf);

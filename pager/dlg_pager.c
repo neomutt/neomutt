@@ -346,13 +346,13 @@ int mutt_pager(struct PagerView *pview)
   // ---------- try to open the pdata file -------------------------------------
   if (!priv->fp)
   {
-    mutt_perror(pview->pdata->fname);
+    mutt_perror("%s", pview->pdata->fname);
     return -1;
   }
 
   if (stat(pview->pdata->fname, &priv->st) != 0)
   {
-    mutt_perror(pview->pdata->fname);
+    mutt_perror("%s", pview->pdata->fname);
     mutt_file_fclose(&priv->fp);
     return -1;
   }

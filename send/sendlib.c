@@ -877,7 +877,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     mutt_file_copy_bytes(fp, fp_tmp, e->body->length);
     if (mutt_file_fclose(&fp_tmp) != 0)
     {
-      mutt_perror(buf_string(tempfile));
+      mutt_perror("%s", buf_string(tempfile));
       unlink(buf_string(tempfile));
       return -1;
     }
@@ -1081,7 +1081,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+");
     if (!fp_tmp)
     {
-      mutt_perror(buf_string(tempfile));
+      mutt_perror("%s", buf_string(tempfile));
       mx_mbox_close(m_fcc);
       goto done;
     }

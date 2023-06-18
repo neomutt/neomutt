@@ -1000,7 +1000,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
       if (msg->fp)
         return true;
 
-      mutt_perror(cache->path);
+      mutt_perror("%s", cache->path);
       return false;
     }
     else
@@ -1035,7 +1035,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
       msg->fp = mutt_file_fopen(buf_string(path), "w+");
       if (!msg->fp)
       {
-        mutt_perror(buf_string(path));
+        mutt_perror("%s", buf_string(path));
         goto cleanup;
       }
     }

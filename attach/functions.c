@@ -97,7 +97,7 @@ static bool check_attach(void)
   if (OptAttachMsg)
   {
     mutt_flushinp();
-    mutt_error(_(Function_not_permitted_in_attach_message_mode));
+    mutt_error("%s", _(Function_not_permitted_in_attach_message_mode));
     return true;
   }
 
@@ -651,7 +651,7 @@ int attach_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win)
   {
-    mutt_error(_(Not_available_in_this_menu));
+    mutt_error("%s", _(Not_available_in_this_menu));
     return FR_ERROR;
   }
 

@@ -669,7 +669,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
           continue;
         }
       }
-      mutt_perror(dirname);
+      mutt_perror("%s", dirname);
       goto ed_out;
     }
 
@@ -685,7 +685,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
     dir = mutt_file_opendir(dirname, MUTT_OPENDIR_NONE);
     if (!dir)
     {
-      mutt_perror(dirname);
+      mutt_perror("%s", dirname);
       goto ed_out;
     }
 

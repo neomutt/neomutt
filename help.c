@@ -407,7 +407,7 @@ void mutt_help(enum MenuType menu)
     fp = mutt_file_fopen(buf_string(&t), "w");
     if (!fp)
     {
-      mutt_perror(buf_string(&t));
+      mutt_perror("%s", buf_string(&t));
       goto cleanup;
     }
 

@@ -201,7 +201,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
   if (stat(mailbox_path(m), &st) == -1)
   {
-    mutt_perror(mailbox_path(m));
+    mutt_perror("%s", mailbox_path(m));
     goto fail;
   }
   mutt_file_get_stat_timespec(&adata->atime, &st, MUTT_STAT_ATIME);
@@ -370,7 +370,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
   /* Save information about the folder at the time we opened it. */
   if (stat(mailbox_path(m), &st) == -1)
   {
-    mutt_perror(mailbox_path(m));
+    mutt_perror("%s", mailbox_path(m));
     goto fail;
   }
 
@@ -846,7 +846,7 @@ static enum MxOpenReturns mbox_mbox_open(struct Mailbox *m)
   }
   if (!adata->fp)
   {
-    mutt_perror(mailbox_path(m));
+    mutt_perror("%s", mailbox_path(m));
     return MX_OPEN_ERROR;
   }
 
@@ -894,7 +894,7 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     char *tmp_path = mutt_path_dirname(mailbox_path(m));
     if (mutt_file_mkdir(tmp_path, S_IRWXU) == -1)
     {
-      mutt_perror(mailbox_path(m));
+      mutt_perror("%s", mailbox_path(m));
       FREE(&tmp_path);
       return false;
     }
@@ -903,7 +903,7 @@ static bool mbox_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
     adata->fp = mutt_file_fopen(mailbox_path(m), (flags & MUTT_NEWFOLDER) ? "w+" : "a+");
     if (!adata->fp)
     {
-      mutt_perror(mailbox_path(m));
+      mutt_perror("%s", mailbox_path(m));
       return false;
     }
 
@@ -1206,7 +1206,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       {
         if (fputs(MMDF_SEP, fp) == EOF)
         {
-          mutt_perror(buf_string(tempfile));
+          mutt_perror("%s", buf_string(tempfile));
           goto bail;
         }
       }
@@ -1222,7 +1222,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       mx_msg_close(m, &msg);
       if (rc2 != 0)
       {
-        mutt_perror(buf_string(tempfile));
+        mutt_perror("%s", buf_string(tempfile));
         goto bail;
       }
 
@@ -1238,7 +1238,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       {
         if (fputs(MMDF_SEP, fp) == EOF)
         {
-          mutt_perror(buf_string(tempfile));
+          mutt_perror("%s", buf_string(tempfile));
           goto bail;
         }
       }
@@ -1246,7 +1246,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
       {
         if (fputs("\n", fp) == EOF)
         {
-          mutt_perror(buf_string(tempfile));
+          mutt_perror("%s", buf_string(tempfile));
           goto bail;
         }
       }
@@ -1256,14 +1256,14 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   if (mutt_file_fclose(&fp) != 0)
   {
     mutt_debug(LL_DEBUG1, "mutt_file_fclose (&) returned non-zero\n");
-    mutt_perror(buf_string(tempfile));
+    mutt_perror("%s", buf_string(tempfile));
     goto bail;
   }
 
   /* Save the state of this folder. */
   if (stat(mailbox_path(m), &st) == -1)
   {
-    mutt_perror(mailbox_path(m));
+    mutt_perror("%s", mailbox_path(m));
     goto bail;
   }
 
@@ -1275,7 +1275,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
     mutt_sig_unblock();
     mx_fastclose_mailbox(m, false);
     mutt_debug(LL_DEBUG1, "unable to reopen temp copy of mailbox!\n");
-    mutt_perror(buf_string(tempfile));
+    mutt_perror("%s", buf_string(tempfile));
     FREE(&new_offset);
     FREE(&old_offset);
     goto fatal;

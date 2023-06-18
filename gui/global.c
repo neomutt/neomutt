@@ -125,7 +125,7 @@ static int op_show_log_messages(int op)
  */
 static int op_version(int op)
 {
-  mutt_message(mutt_make_version());
+  mutt_message("%s", mutt_make_version());
   return FR_SUCCESS;
 }
 

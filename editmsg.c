@@ -139,7 +139,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   if (mtime == (time_t) -1)
   {
     rc = -1;
-    mutt_perror(buf_string(fname));
+    mutt_perror("%s", buf_string(fname));
     goto bail;
   }
 

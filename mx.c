@@ -240,7 +240,7 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
         }
         else
         {
-          mutt_perror(mailbox_path(m));
+          mutt_perror("%s", mailbox_path(m));
           return false;
         }
       }
@@ -357,7 +357,7 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if ((m->type == MUTT_UNKNOWN) || (m->type == MUTT_MAILBOX_ERROR) || !m->mx_ops)
   {
     if (m->type == MUTT_MAILBOX_ERROR)
-      mutt_perror(mailbox_path(m));
+      mutt_perror("%s", mailbox_path(m));
     else if ((m->type == MUTT_UNKNOWN) || !m->mx_ops)
       mutt_error(_("%s is not a mailbox"), mailbox_path(m));
     goto error;

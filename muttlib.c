@@ -1397,7 +1397,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
         if (mutt_file_mkdir(tmp_path, S_IRWXU) == -1)
         {
           /* report failure & abort */
-          mutt_perror(s);
+          mutt_perror("%s", s);
           FREE(&tmp_path);
           return 1;
         }
@@ -1406,7 +1406,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     }
     else
     {
-      mutt_perror(s);
+      mutt_perror("%s", s);
       return 1;
     }
   }

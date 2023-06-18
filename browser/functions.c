@@ -392,7 +392,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
       }
       else
       {
-        mutt_perror(buf_string(buf));
+        mutt_perror("%s", buf_string(buf));
       }
     }
   }
@@ -1141,7 +1141,7 @@ int browser_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win)
   {
-    mutt_error(_(Not_available_in_this_menu));
+    mutt_error("%s", _(Not_available_in_this_menu));
     return FR_ERROR;
   }
 

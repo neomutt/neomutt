@@ -262,7 +262,7 @@ static int pop_capabilities(struct PopAccountData *adata, int mode)
       msg = _("Command UIDL is not supported by server");
     if (msg && adata->cmd_capa)
     {
-      mutt_error(msg);
+      mutt_error("%s", msg);
       return -2;
     }
     adata->capabilities = true;

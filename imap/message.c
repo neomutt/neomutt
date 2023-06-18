@@ -1539,7 +1539,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   fp = fopen(msg->path, "r");
   if (!fp)
   {
-    mutt_perror(msg->path);
+    mutt_perror("%s", msg->path);
     goto fail;
   }
 

@@ -328,7 +328,7 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
     }
     else if (errno != EEXIST)
     {
-      mutt_perror(mailbox_path(m));
+      mutt_perror("%s", mailbox_path(m));
       rc = -1;
       goto cleanup;
     }
@@ -1129,7 +1129,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   errno = 0;
   if ((mutt_file_mkdir(mailbox_path(m), S_IRWXU) != 0) && (errno != EEXIST))
   {
-    mutt_perror(mailbox_path(m));
+    mutt_perror("%s", mailbox_path(m));
     return false;
   }
 
@@ -1138,7 +1138,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   errno = 0;
   if ((mkdir(tmp, S_IRWXU) != 0) && (errno != EEXIST))
   {
-    mutt_perror(tmp);
+    mutt_perror("%s", tmp);
     rmdir(mailbox_path(m));
     return false;
   }
@@ -1147,7 +1147,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   errno = 0;
   if ((mkdir(tmp, S_IRWXU) != 0) && (errno != EEXIST))
   {
-    mutt_perror(tmp);
+    mutt_perror("%s", tmp);
     snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
     rmdir(tmp);
     rmdir(mailbox_path(m));
@@ -1158,7 +1158,7 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   errno = 0;
   if ((mkdir(tmp, S_IRWXU) != 0) && (errno != EEXIST))
   {
-    mutt_perror(tmp);
+    mutt_perror("%s", tmp);
     snprintf(tmp, sizeof(tmp), "%s/cur", mailbox_path(m));
     rmdir(tmp);
     snprintf(tmp, sizeof(tmp), "%s/new", mailbox_path(m));
@@ -1490,7 +1490,7 @@ static bool maildir_msg_open(struct Mailbox *m, struct Message *msg, struct Emai
 
   if (!msg->fp)
   {
-    mutt_perror(path);
+    mutt_perror("%s", path);
     mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
     return false;
   }
@@ -1545,7 +1545,7 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
       if (errno != EEXIST)
       {
         umask(omask);
-        mutt_perror(path);
+        mutt_perror("%s", path);
         return false;
       }
     }

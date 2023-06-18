@@ -562,7 +562,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
       {
         mutt_clear_error();
         if (msg && *msg)
-          mutt_message(msg);
+          mutt_message("%s", msg);
         rc = i;
         goto done;
       }
@@ -577,7 +577,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
       {
         mutt_clear_error();
         if (msg && *msg)
-          mutt_message(msg);
+          mutt_message("%s", msg);
         rc = i;
         goto done;
       }
@@ -723,7 +723,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       {
         mutt_clear_error();
         if (msg && *msg)
-          mutt_message(msg);
+          mutt_message("%s", msg);
         rc = i;
         goto done;
       }
@@ -738,7 +738,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
       {
         mutt_clear_error();
         if (msg && *msg)
-          mutt_message(msg);
+          mutt_message("%s", msg);
         rc = i;
         goto done;
       }

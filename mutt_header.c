@@ -182,7 +182,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   FILE *fp_out = mutt_file_fopen(buf_string(path), "w");
   if (!fp_out)
   {
-    mutt_perror(buf_string(path));
+    mutt_perror("%s", buf_string(path));
     goto cleanup;
   }
 
@@ -195,7 +195,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   FILE *fp_in = fopen(body, "r");
   if (!fp_in)
   {
-    mutt_perror(body);
+    mutt_perror("%s", body);
     mutt_file_fclose(&fp_out);
     goto cleanup;
   }
@@ -208,14 +208,14 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   struct stat st = { 0 };
   if (stat(buf_string(path), &st) == -1)
   {
-    mutt_perror(buf_string(path));
+    mutt_perror("%s", buf_string(path));
     goto cleanup;
   }
 
   time_t mtime = mutt_file_decrease_mtime(buf_string(path), &st);
   if (mtime == (time_t) -1)
   {
-    mutt_perror(buf_string(path));
+    mutt_perror("%s", buf_string(path));
     goto cleanup;
   }
 
@@ -235,7 +235,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   fp_in = fopen(buf_string(path), "r");
   if (!fp_in)
   {
-    mutt_perror(buf_string(path));
+    mutt_perror("%s", buf_string(path));
     goto cleanup;
   }
 
@@ -244,7 +244,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   {
     /* intentionally leak a possible temporary file here */
     mutt_file_fclose(&fp_in);
-    mutt_perror(body);
+    mutt_perror("%s", body);
     goto cleanup;
   }
 

@@ -490,7 +490,7 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
       np->data = buf_strdup(&buf);
       if (access(np->data, F_OK))
       {
-        mutt_perror(np->data);
+        mutt_perror("%s", np->data);
         goto done; // TEST10: neomutt -F missing
       }
     }

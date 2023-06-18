@@ -1931,7 +1931,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
   FILE *fp = mutt_file_fopen(msg, "r");
   if (!fp)
   {
-    mutt_perror(msg);
+    mutt_perror("%s", msg);
     return -1;
   }
 
@@ -2001,7 +2001,7 @@ int nntp_active_fetch(struct NntpAccountData *adata, bool mark_new)
 
   snprintf(msg, sizeof(msg), _("Loading list of groups from server %s..."),
            adata->conn->account.host);
-  mutt_message(msg);
+  mutt_message("%s", msg);
   if (nntp_date(adata, &adata->newgroups_time) < 0)
     return -1;
 
@@ -2096,7 +2096,7 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
   }
 
   /* get list of new groups */
-  mutt_message(msg);
+  mutt_message("%s", msg);
   if (nntp_date(adata, &now) < 0)
     return -1;
   tmp_mdata.adata = adata;
@@ -2636,7 +2636,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
 
     /* create new cache file */
     const char *fetch_msg = _("Fetching message...");
-    mutt_message(fetch_msg);
+    mutt_message("%s", fetch_msg);
     msg->fp = mutt_bcache_put(mdata->bcache, article);
     if (!msg->fp)
     {
@@ -2646,7 +2646,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
       msg->fp = mutt_file_fopen(acache->path, "w+");
       if (!msg->fp)
       {
-        mutt_perror(acache->path);
+        mutt_perror("%s", acache->path);
         unlink(acache->path);
         FREE(&acache->path);
         return false;

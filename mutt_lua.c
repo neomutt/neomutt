@@ -338,7 +338,7 @@ static int lua_mutt_message(lua_State *l)
   mutt_debug(LL_DEBUG2, " * lua_mutt_message()\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
-    mutt_message(msg);
+    mutt_message("%s", msg);
   return 0;
 }
 
@@ -352,7 +352,7 @@ static int lua_mutt_error(lua_State *l)
   mutt_debug(LL_DEBUG2, " * lua_mutt_error()\n");
   const char *msg = lua_tostring(l, -1);
   if (msg)
-    mutt_error(msg);
+    mutt_error("%s", msg);
   return 0;
 }
 

@@ -714,7 +714,7 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
     fp = mutt_file_fopen(buf_string(tempfile), "w+");
     if (!fp)
     {
-      mutt_perror(buf_string(tempfile));
+      mutt_perror("%s", buf_string(tempfile));
       buf_pool_release(&tempfile);
       return 0;
     }
@@ -748,7 +748,7 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
     fp = mutt_file_fopen(e->body->filename, "r");
     if (!fp)
     {
-      mutt_perror(e->body->filename);
+      mutt_perror("%s", e->body->filename);
       return 0;
     }
 

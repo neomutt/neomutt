@@ -809,7 +809,7 @@ main
     int r = cs_str_initial_set(cs, "mbox_type", new_type, &err);
     if (CSR_RESULT(r) != CSR_SUCCESS)
     {
-      mutt_error(err.data);
+      mutt_error("%s", err.data);
       buf_dealloc(&err);
       goto main_curses;
     }
@@ -1018,7 +1018,7 @@ main
           fp_in = fopen(buf_string(&expanded_infile), "r");
           if (!fp_in)
           {
-            mutt_perror(buf_string(&expanded_infile));
+            mutt_perror("%s", buf_string(&expanded_infile));
             email_free(&e);
             goto main_curses; // TEST28: neomutt -E -H missing
           }
@@ -1042,7 +1042,7 @@ main
         if (!fp_out)
         {
           mutt_file_fclose(&fp_in);
-          mutt_perror(buf_string(&tempfile));
+          mutt_perror("%s", buf_string(&tempfile));
           email_free(&e);
           goto main_curses; // TEST29: neomutt -H existing-file (where tmpdir=/path/to/FILE blocking tmpdir)
         }
@@ -1061,7 +1061,7 @@ main
         fp_in = fopen(buf_string(&tempfile), "r");
         if (!fp_in)
         {
-          mutt_perror(buf_string(&tempfile));
+          mutt_perror("%s", buf_string(&tempfile));
           email_free(&e);
           goto main_curses; // TEST30: can't test
         }
@@ -1084,7 +1084,7 @@ main
         e_tmp->body = mutt_body_new();
         if (fstat(fileno(fp_in), &st) != 0)
         {
-          mutt_perror(draft_file);
+          mutt_perror("%s", draft_file);
           email_free(&e);
           email_free(&e_tmp);
           goto main_curses; // TEST31: can't test
@@ -1180,14 +1180,14 @@ main
       {
         if (truncate(buf_string(&expanded_infile), 0) == -1)
         {
-          mutt_perror(buf_string(&expanded_infile));
+          mutt_perror("%s", buf_string(&expanded_infile));
           email_free(&e);
           goto main_curses; // TEST33: neomutt -H read-only -s test john@example.com -E
         }
         fp_out = mutt_file_fopen(buf_string(&expanded_infile), "a");
         if (!fp_out)
         {
-          mutt_perror(buf_string(&expanded_infile));
+          mutt_perror("%s", buf_string(&expanded_infile));
           email_free(&e);
           goto main_curses; // TEST34: can't test
         }
@@ -1327,7 +1327,7 @@ main
       switch (mx_path_is_empty(buf_string(&folder)))
       {
         case -1:
-          mutt_perror(buf_string(&folder));
+          mutt_perror("%s", buf_string(&folder));
           goto main_curses; // TEST41: neomutt -z -f missing
         case 1:
           mutt_error(_("Mailbox is empty"));

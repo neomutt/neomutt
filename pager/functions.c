@@ -69,7 +69,7 @@ static inline bool assert_pager_mode(bool test)
     return true;
 
   mutt_flushinp();
-  mutt_error(_(Not_available_in_this_menu));
+  mutt_error("%s", _(Not_available_in_this_menu));
   return false;
 }
 
@@ -795,7 +795,7 @@ int pager_function_dispatcher(struct MuttWindow *win, int op)
 {
   if (!win)
   {
-    mutt_error(_(Not_available_in_this_menu));
+    mutt_error("%s", _(Not_available_in_this_menu));
     return FR_ERROR;
   }
 

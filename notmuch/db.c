@@ -172,7 +172,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
     {
       if (msg)
       {
-        mutt_error(msg);
+        mutt_error("%s", msg);
       }
       else
       {

@@ -458,7 +458,7 @@ static void rfc3676_space_stuff(const char *filename, bool unstuff)
 
   if ((truncate(filename, 0) == -1) || ((fp_out = mutt_file_fopen(filename, "a")) == NULL))
   {
-    mutt_perror(filename);
+    mutt_perror("%s", filename);
     goto bail;
   }
 
