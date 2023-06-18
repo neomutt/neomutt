@@ -2312,7 +2312,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (!TAILQ_EMPTY(&e_templ->env->from))
     {
       mutt_debug(LL_DEBUG5, "e_templ->env->from before set_reverse_name: %s\n",
-                 TAILQ_FIRST(&e_templ->env->from)->mailbox);
+                 buf_string(TAILQ_FIRST(&e_templ->env->from)->mailbox));
       mutt_addrlist_clear(&e_templ->env->from);
     }
     set_reverse_name(&e_templ->env->from, e_cur->env, sub);

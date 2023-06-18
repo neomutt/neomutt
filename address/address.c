@@ -1414,7 +1414,7 @@ void mutt_addrlist_dedupe(struct AddressList *al)
         {
           if (a2->mailbox && buf_istr_equal(a->mailbox, a2->mailbox))
           {
-            mutt_debug(LL_DEBUG2, "Removing %s\n", a2->mailbox);
+            mutt_debug(LL_DEBUG2, "Removing %s\n", buf_string(a2->mailbox));
             TAILQ_REMOVE(al, a2, entries);
             mutt_addr_free(&a2);
           }

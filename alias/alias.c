@@ -115,7 +115,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
         {
           if (mutt_str_equal(buf_string(a->mailbox), np->data)) /* alias already found */
           {
-            mutt_debug(LL_DEBUG1, "loop in alias found for '%s'\n", a->mailbox);
+            mutt_debug(LL_DEBUG1, "loop in alias found for '%s'\n", buf_string(a->mailbox));
             duplicate = true;
             break;
           }
@@ -608,7 +608,8 @@ bool mutt_addr_is_user(const struct Address *addr)
   const struct Address *c_from = cs_subset_address(NeoMutt->sub, "from");
   if (c_from && mutt_istr_equal(buf_string(c_from->mailbox), buf_string(addr->mailbox)))
   {
-    mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", buf_string(addr->mailbox), c_from->mailbox);
+    mutt_debug(LL_DEBUG5, "#5 yes, %s = %s\n", buf_string(addr->mailbox),
+               buf_string(c_from->mailbox));
     return true;
   }
 

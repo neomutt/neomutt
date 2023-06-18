@@ -127,9 +127,9 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
         break;
 
       if (a->group)
-        mutt_debug(LL_DEBUG5, "  Group %s\n", a->mailbox);
+        mutt_debug(LL_DEBUG5, "  Group %s\n", buf_string(a->mailbox));
       else
-        mutt_debug(LL_DEBUG5, "  %s\n", a->mailbox);
+        mutt_debug(LL_DEBUG5, "  %s\n", buf_string(a->mailbox));
     }
   }
   mutt_grouplist_destroy(&gl);
