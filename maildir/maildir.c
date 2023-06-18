@@ -465,6 +465,13 @@ static int maildir_sync_message(struct Mailbox *m, struct Email *e)
     /* record that the message is possibly marked as trashed on disk */
     e->trash = e->deleted;
 
+    struct stat st = { 0 };
+    if (stat(buf_string(oldpath), &st) == -1)
+    {
+      mutt_debug(LL_DEBUG1, "File already removed (just continuing)");
+      goto cleanup;
+    }
+
     if (rename(buf_string(oldpath), buf_string(fullpath)) != 0)
     {
       mutt_perror("rename");
