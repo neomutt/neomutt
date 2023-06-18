@@ -636,7 +636,8 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(const struct Email *e, char *
         /* L10N: s is an email address.  Autocrypt is scanning for the keyids
            to use to encrypt, but it can't find a valid keyid for this address.
            The message is printed and they are returned to the compose menu.  */
-        mutt_message(_("No (valid) autocrypt key found for %s"), recip->mailbox);
+        mutt_message(_("No (valid) autocrypt key found for %s"),
+                     buf_string(recip->mailbox));
       }
       goto cleanup;
     }
@@ -665,7 +666,10 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(const struct Email *e, char *
     else
     {
       if (keylist)
-        mutt_message(_("No (valid) autocrypt key found for %s"), recip->mailbox);
+      {
+        mutt_message(_("No (valid) autocrypt key found for %s"),
+                     buf_string(recip->mailbox));
+      }
       goto cleanup;
     }
 

@@ -376,7 +376,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     pgp_add_string_to_hints(buf_string(a->personal), &hints);
 
   if (!oppenc_mode)
-    mutt_message(_("Looking for keys matching \"%s\"..."), a->mailbox);
+    mutt_message(_("Looking for keys matching \"%s\"..."), buf_string(a->mailbox));
   keys = pgp_get_candidates(keyring, &hints);
 
   mutt_list_free(&hints);

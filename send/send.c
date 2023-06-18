@@ -2333,7 +2333,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       mutt_addrlist_copy(&e_templ->env->from, &e_cur->env->x_original_to, false);
       mutt_debug(LL_DEBUG5, "e_templ->env->from extracted from X-Original-To: header: %s\n",
-                 TAILQ_FIRST(&e_templ->env->from)->mailbox);
+                 buf_string(TAILQ_FIRST(&e_templ->env->from)->mailbox));
     }
   }
 

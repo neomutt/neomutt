@@ -601,22 +601,22 @@ static int draw_envelope_addr(int field, struct AddressList *al,
     mutt_debug(LL_DEBUG3, "text: '%s'  len: %d\n", more, more_len);
 
     int reserve = ((count > 0) && (lines_used == max_lines)) ? more_len : 0;
-    mutt_debug(LL_DEBUG3, "processing: %s (al:%d, wl:%d, r:%d, lu:%d)\n", buf,
-               addr_len, width_left, reserve, lines_used);
+    mutt_debug(LL_DEBUG3, "processing: %s (al:%zu, wl:%d, r:%d, lu:%d)\n",
+               buf_string(buf), addr_len, width_left, reserve, lines_used);
     if (addr_len >= (width_left - reserve))
     {
       mutt_debug(LL_DEBUG3, "not enough space\n");
       if (lines_used == max_lines)
       {
         mutt_debug(LL_DEBUG3, "no more lines\n");
-        mutt_debug(LL_DEBUG3, "truncating: %s\n", buf);
+        mutt_debug(LL_DEBUG3, "truncating: %s\n", buf_string(buf));
         mutt_paddstr(win, width_left, buf_string(buf));
         break;
       }
 
       if (width_left == (win->state.cols - MaxHeaderWidth))
       {
-        mutt_debug(LL_DEBUG3, "couldn't print: %s\n", buf);
+        mutt_debug(LL_DEBUG3, "couldn't print: %s\n", buf_string(buf));
         mutt_paddstr(win, width_left, buf_string(buf));
         break;
       }
@@ -632,7 +632,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
     if (addr_len < width_left)
     {
-      mutt_debug(LL_DEBUG3, "space for: %s\n", buf);
+      mutt_debug(LL_DEBUG3, "space for: %s\n", buf_string(buf));
       mutt_window_addstr(win, buf_string(buf));
       mutt_window_addstr(win, sep);
       width_left -= addr_len;
