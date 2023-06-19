@@ -49,7 +49,7 @@ void nm_mdata_free(void **ptr)
 
   struct NmMboxData *mdata = *ptr;
 
-  mutt_debug(LL_DEBUG1, "nm: freeing context data %p\n", mdata);
+  mutt_debug(LL_DEBUG1, "nm: freeing context data %p\n", (void *) mdata);
 
   url_free(&mdata->db_url);
   FREE(&mdata->db_query);

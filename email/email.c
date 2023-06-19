@@ -48,7 +48,7 @@ void email_free(struct Email **ptr)
 
   struct Email *e = *ptr;
 
-  mutt_debug(LL_NOTIFY, "NT_EMAIL_DELETE: %p\n", e);
+  mutt_debug(LL_NOTIFY, "NT_EMAIL_DELETE: %p\n", (void *) e);
   struct EventEmail ev_e = { 1, &e };
   notify_send(e->notify, NT_EMAIL, NT_EMAIL_DELETE, &ev_e);
 

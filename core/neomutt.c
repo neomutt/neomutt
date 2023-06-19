@@ -89,7 +89,8 @@ bool neomutt_account_add(struct NeoMutt *n, struct Account *a)
   TAILQ_INSERT_TAIL(&n->accounts, a, entries);
   notify_set_parent(a->notify, n->notify);
 
-  mutt_debug(LL_NOTIFY, "NT_ACCOUNT_ADD: %s %p\n", mailbox_get_type_name(a->type), a);
+  mutt_debug(LL_NOTIFY, "NT_ACCOUNT_ADD: %s %p\n",
+             mailbox_get_type_name(a->type), (void *) a);
   struct EventAccount ev_a = { a };
   notify_send(n->notify, NT_ACCOUNT, NT_ACCOUNT_ADD, &ev_a);
   return true;

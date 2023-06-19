@@ -78,7 +78,8 @@ bool account_mailbox_add(struct Account *a, struct Mailbox *m)
   mailbox_set_subset(m, a->sub);
   notify_set_parent(m->notify, a->notify);
 
-  mutt_debug(LL_NOTIFY, "NT_MAILBOX_ADD: %s %p\n", mailbox_get_type_name(m->type), m);
+  mutt_debug(LL_NOTIFY, "NT_MAILBOX_ADD: %s %p\n",
+             mailbox_get_type_name(m->type), (void *) m);
   struct EventMailbox ev_m = { m };
   notify_send(a->notify, NT_MAILBOX, NT_MAILBOX_ADD, &ev_m);
   return true;
@@ -145,7 +146,8 @@ void account_free(struct Account **ptr)
 
   struct Account *a = *ptr;
 
-  mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE: %s %p\n", mailbox_get_type_name(a->type), a);
+  mutt_debug(LL_NOTIFY, "NT_ACCOUNT_DELETE: %s %p\n",
+             mailbox_get_type_name(a->type), (void *) a);
   struct EventAccount ev_a = { a };
   notify_send(a->notify, NT_ACCOUNT, NT_ACCOUNT_DELETE, &ev_a);
 

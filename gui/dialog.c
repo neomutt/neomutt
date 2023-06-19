@@ -114,7 +114,7 @@ void dialog_push(struct MuttWindow *dlg)
 
   // Notify the world, allowing plugins to integrate
   mutt_debug(LL_NOTIFY, "NT_WINDOW_DIALOG visible: %s, %p\n",
-             mutt_window_win_name(dlg), dlg);
+             mutt_window_win_name(dlg), (void *) dlg);
   struct EventWindow ev_w = { dlg, WN_VISIBLE };
   notify_send(dlg->notify, NT_WINDOW, NT_WINDOW_DIALOG, &ev_w);
 
@@ -145,7 +145,7 @@ void dialog_pop(void)
 
   // Notify the world, allowing plugins to clean up
   mutt_debug(LL_NOTIFY, "NT_WINDOW_DIALOG hidden: %s, %p\n",
-             mutt_window_win_name(last), last);
+             mutt_window_win_name(last), (void *) last);
   struct EventWindow ev_w = { last, WN_HIDDEN };
   notify_send(last->notify, NT_WINDOW, NT_WINDOW_DIALOG, &ev_w);
 

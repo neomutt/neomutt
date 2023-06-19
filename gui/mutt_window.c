@@ -131,7 +131,8 @@ static void window_notify(struct MuttWindow *win)
   if (flags == WN_NO_FLAGS)
     return;
 
-  mutt_debug(LL_NOTIFY, "NT_WINDOW_STATE: %s, %p\n", mutt_window_win_name(win), win);
+  mutt_debug(LL_NOTIFY, "NT_WINDOW_STATE: %s, %p\n", mutt_window_win_name(win),
+             (void *) win);
   struct EventWindow ev_w = { win, flags };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_STATE, &ev_w);
 }
@@ -207,7 +208,8 @@ void mutt_window_free(struct MuttWindow **ptr)
   if (win->parent && (win->parent->focus == win))
     win->parent->focus = NULL;
 
-  mutt_debug(LL_NOTIFY, "NT_WINDOW_DELETE: %s, %p\n", mutt_window_win_name(win), win);
+  mutt_debug(LL_NOTIFY, "NT_WINDOW_DELETE: %s, %p\n", mutt_window_win_name(win),
+             (void *) win);
   struct EventWindow ev_w = { win, WN_NO_FLAGS };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_DELETE, &ev_w);
 
@@ -447,7 +449,8 @@ void mutt_window_add_child(struct MuttWindow *parent, struct MuttWindow *child)
 
   notify_set_parent(child->notify, parent->notify);
 
-  mutt_debug(LL_NOTIFY, "NT_WINDOW_NEW: %s, %p\n", mutt_window_win_name(child), child);
+  mutt_debug(LL_NOTIFY, "NT_WINDOW_NEW: %s, %p\n", mutt_window_win_name(child),
+             (void *) child);
   struct EventWindow ev_w = { child, WN_NO_FLAGS };
   notify_send(child->notify, NT_WINDOW, NT_WINDOW_ADD, &ev_w);
 }
@@ -678,7 +681,8 @@ struct MuttWindow *window_set_focus(struct MuttWindow *win)
   if (win == old_focus)
     return NULL;
 
-  mutt_debug(LL_NOTIFY, "NT_WINDOW_FOCUS: %s, %p\n", mutt_window_win_name(win), win);
+  mutt_debug(LL_NOTIFY, "NT_WINDOW_FOCUS: %s, %p\n", mutt_window_win_name(win),
+             (void *) win);
   struct EventWindow ev_w = { win, WN_NO_FLAGS };
   notify_send(win->notify, NT_WINDOW, NT_WINDOW_FOCUS, &ev_w);
 #ifdef USE_DEBUG_WINDOW
