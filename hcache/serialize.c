@@ -457,69 +457,127 @@ void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d,
 }
 
 /**
+ * body_pack_flags - Pack the Body flags into a uint32_t
+ * @param b Body to pack
+ * @retval num uint32_t of packed flags
+ *
+ * @note Order of packing must match body_unpack_flags()
+ */
+static inline uint32_t body_pack_flags(const struct Body *b)
+{
+  if (!b)
+    return 0;
+
+  // clang-format off
+  uint32_t packed = b->type +
+                   (b->encoding      <<  4) +
+                   (b->disposition   <<  7) +
+                   (b->badsig        <<  9) +
+                   (b->force_charset << 10) +
+                   (b->goodsig       << 11) +
+                   (b->noconv        << 12) +
+                   (b->use_disp      << 13) +
+                   (b->warnsig       << 14);
+  // clang-format on
+#ifdef USE_AUTOCRYPT
+  packed += (b->is_autocrypt << 15);
+#endif
+
+  return packed;
+}
+
+/**
+ * body_unpack_flags - Unpack the Body flags from a uint32_t
+ * @param b      Body to unpack into
+ * @param packed Packed flags
+ *
+ * @note Order of packing must match body_pack_flags()
+ */
+static inline void body_unpack_flags(struct Body *b, uint32_t packed)
+{
+  if (!b)
+    return;
+
+  // clang-format off
+  b->type         =  (packed       & ((1 << 4) - 1)); // bits 0-3 (4)
+  b->encoding     = ((packed >> 4) & ((1 << 3) - 1)); // bits 4-6 (3)
+  b->disposition  = ((packed >> 7) & ((1 << 2) - 1)); // bits 7-8 (2)
+
+  b->badsig        = (packed & (1 <<  9));
+  b->force_charset = (packed & (1 << 10));
+  b->goodsig       = (packed & (1 << 11));
+  b->noconv        = (packed & (1 << 12));
+  b->use_disp      = (packed & (1 << 13));
+  b->warnsig       = (packed & (1 << 14));
+#ifdef USE_AUTOCRYPT
+  b->is_autocrypt  = (packed & (1 << 15));
+#endif
+  // clang-format on
+}
+
+/**
  * serial_dump_body - Pack an Body into a binary blob
- * @param[in]     c       Body to pack
+ * @param[in]     b       Body to pack
  * @param[in]     d       Binary blob to add to
  * @param[in,out] off     Offset into the blob
  * @param[in]     convert If true, the strings will be converted to utf-8
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_body(const struct Body *c, unsigned char *d, int *off, bool convert)
+unsigned char *serial_dump_body(const struct Body *b, unsigned char *d, int *off, bool convert)
 {
-  struct Body nb;
+  uint32_t packed = body_pack_flags(b);
+  d = serial_dump_uint32_t(packed, d, off);
 
-  memcpy(&nb, c, sizeof(struct Body));
+  uint64_t big = b->offset;
+  d = serial_dump_uint64_t(big, d, off);
 
-  /* some fields are not safe to cache */
-  nb.content = NULL;
-  nb.charset = NULL;
-  nb.next = NULL;
-  nb.parts = NULL;
-  nb.email = NULL;
-  nb.aptr = NULL;
-  nb.mime_headers = NULL;
-  nb.language = NULL;
+  big = b->length;
+  d = serial_dump_uint64_t(big, d, off);
 
-  lazy_realloc(&d, *off + sizeof(struct Body));
-  memcpy(d + *off, &nb, sizeof(struct Body));
-  *off += sizeof(struct Body);
+  d = serial_dump_char(b->xtype, d, off, false);
+  d = serial_dump_char(b->subtype, d, off, false);
 
-  d = serial_dump_char(nb.xtype, d, off, false);
-  d = serial_dump_char(nb.subtype, d, off, false);
+  d = serial_dump_parameter(&b->parameter, d, off, convert);
 
-  d = serial_dump_parameter(&nb.parameter, d, off, convert);
-
-  d = serial_dump_char(nb.description, d, off, convert);
-  d = serial_dump_char(nb.form_name, d, off, convert);
-  d = serial_dump_char(nb.filename, d, off, convert);
-  d = serial_dump_char(nb.d_filename, d, off, convert);
+  d = serial_dump_char(b->description, d, off, convert);
+  d = serial_dump_char(b->form_name, d, off, convert);
+  d = serial_dump_char(b->filename, d, off, convert);
+  d = serial_dump_char(b->d_filename, d, off, convert);
 
   return d;
 }
 
 /**
  * serial_restore_body - Unpack a Body from a binary blob
- * @param[in]     c       Store the unpacked Body here
+ * @param[in]     b       Store the unpacked Body here
  * @param[in]     d       Binary blob to read from
  * @param[in,out] off     Offset into the blob
  * @param[in]     convert If true, the strings will be converted from utf-8
  */
-void serial_restore_body(struct Body *c, const unsigned char *d, int *off, bool convert)
+void serial_restore_body(struct Body *b, const unsigned char *d, int *off, bool convert)
 {
-  memcpy(c, d + *off, sizeof(struct Body));
-  *off += sizeof(struct Body);
-  c->language = NULL;
+  uint32_t packed = 0;
+  serial_restore_uint32_t(&packed, d, off);
+  body_unpack_flags(b, packed);
 
-  serial_restore_char(&c->xtype, d, off, false);
-  serial_restore_char(&c->subtype, d, off, false);
+  uint64_t big = 0;
+  serial_restore_uint64_t(&big, d, off);
+  b->offset = big;
 
-  TAILQ_INIT(&c->parameter);
-  serial_restore_parameter(&c->parameter, d, off, convert);
+  big = 0;
+  serial_restore_uint64_t(&big, d, off);
+  b->length = big;
 
-  serial_restore_char(&c->description, d, off, convert);
-  serial_restore_char(&c->form_name, d, off, convert);
-  serial_restore_char(&c->filename, d, off, convert);
-  serial_restore_char(&c->d_filename, d, off, convert);
+  serial_restore_char(&b->xtype, d, off, false);
+  serial_restore_char(&b->subtype, d, off, false);
+
+  TAILQ_INIT(&b->parameter);
+  serial_restore_parameter(&b->parameter, d, off, convert);
+
+  serial_restore_char(&b->description, d, off, convert);
+  serial_restore_char(&b->form_name, d, off, convert);
+  serial_restore_char(&b->filename, d, off, convert);
+  serial_restore_char(&b->d_filename, d, off, convert);
 }
 
 /**
