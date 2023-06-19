@@ -97,6 +97,90 @@ static size_t header_size(void)
 }
 
 /**
+ * email_pack_flags - Pack the Email flags into a uint32_t
+ * @param e Email to pack
+ * @retval num uint32_t of packed flags
+ *
+ * @note Order of packing must match email_unpack_flags()
+ */
+static inline uint32_t email_pack_flags(const struct Email *e)
+{
+  if (!e)
+    return 0;
+
+  // clang-format off
+  return e->security +
+        (e->expired    << 16) +
+        (e->flagged    << 17) +
+        (e->mime       << 18) +
+        (e->old        << 19) +
+        (e->read       << 20) +
+        (e->replied    << 21) +
+        (e->superseded << 22) +
+        (e->trash      << 23);
+  // clang-format on
+}
+
+/**
+ * email_unpack_flags - Unpack the Email flags from a uint32_t
+ * @param e      Email to unpack into
+ * @param packed Packed flags
+ *
+ * @note Order of packing must match email_pack_flags()
+ */
+static inline void email_unpack_flags(struct Email *e, uint32_t packed)
+{
+  if (!e)
+    return;
+
+  // clang-format off
+  e->security   = (packed & ((1 << 16) - 1)); // bits 0-15
+  e->expired    = (packed & (1 << 16));
+  e->flagged    = (packed & (1 << 17));
+  e->mime       = (packed & (1 << 18));
+  e->old        = (packed & (1 << 19));
+  e->read       = (packed & (1 << 20));
+  e->replied    = (packed & (1 << 21));
+  e->superseded = (packed & (1 << 22));
+  e->trash      = (packed & (1 << 23));
+  // clang-format on
+}
+
+/**
+ * email_pack_timezone - Pack the Email timezone into a uint32_t
+ * @param e Email to pack
+ * @retval num uint32_t of packed timezone
+ *
+ * @note Order of packing must match email_unpack_timezone()
+ */
+static inline uint32_t email_pack_timezone(const struct Email *e)
+{
+  if (!e)
+    return 0;
+
+  return e->zhours + (e->zminutes << 5) + (e->zoccident << 11);
+}
+
+/**
+ * email_unpack_timezone - Unpack the Email timezone from a uint32_t
+ * @param e      Email to unpack into
+ * @param packed Packed timezone
+ *
+ * @note Order of packing must match email_pack_timezone()
+ */
+static inline void email_unpack_timezone(struct Email *e, uint32_t packed)
+{
+  if (!e)
+    return;
+
+  // clang-format off
+  e->zhours    =  (packed       & ((1 << 5) - 1)); // bits 0-4 (5)
+  e->zminutes  = ((packed >> 5) & ((1 << 6) - 1)); // bits 5-10 (6)
+  e->zoccident =  (packed       &  (1 << 11));     // bit  11 (1)
+  // clang-format on
+}
+
+/**
  * dump_email - Serialise an Email object
  * @param hc          Header cache handle
  * @param e           Email to serialise
@@ -109,7 +193,6 @@ static size_t header_size(void)
  */
 static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off, uint32_t uidvalidity)
 {
-  struct Email e_dump;
   bool convert = !CharsetIsUtf8;
 
   *off = 0;
@@ -120,38 +203,21 @@ static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off,
 
   assert((size_t) *off == header_size());
 
-  lazy_realloc(&d, *off + sizeof(struct Email));
-  memcpy(&e_dump, e, sizeof(struct Email));
+  uint32_t packed = email_pack_flags(e);
+  d = serial_dump_uint32_t(packed, d, off);
 
-  /* some fields are not safe to cache */
-  e_dump.tagged = false;
-  e_dump.changed = false;
-  e_dump.threaded = false;
-  e_dump.recip_valid = false;
-  e_dump.searched = false;
-  e_dump.matched = false;
-  e_dump.collapsed = false;
-  e_dump.visible = true;
-  e_dump.num_hidden = 0;
-  e_dump.recipient = 0;
-  e_dump.attr_color = NULL;
-  e_dump.attach_valid = false;
-  e_dump.path = NULL;
-  e_dump.tree = NULL;
-  e_dump.thread = NULL;
-  e_dump.sequence = 0;
-  e_dump.notify = NULL;
-  STAILQ_INIT(&e_dump.tags);
-#ifdef MIXMASTER
-  STAILQ_INIT(&e_dump.chain);
-#endif
-  e_dump.edata = NULL;
+  packed = email_pack_timezone(e);
+  d = serial_dump_uint32_t(packed, d, off);
 
-  memcpy(d + *off, &e_dump, sizeof(struct Email));
-  *off += sizeof(struct Email);
+  uint64_t big = e->date_sent;
+  d = serial_dump_uint64_t(big, d, off);
+  big = e->received;
+  d = serial_dump_uint64_t(big, d, off);
 
-  d = serial_dump_envelope(e_dump.env, d, off, convert);
-  d = serial_dump_body(e_dump.body, d, off, convert);
+  d = serial_dump_int(e->lines, d, off);
+
+  d = serial_dump_envelope(e->env, d, off, convert);
+  d = serial_dump_body(e->body, d, off, convert);
   d = serial_dump_tags(&e->tags, d, off);
 
   return d;
@@ -171,23 +237,28 @@ static struct Email *restore_email(const unsigned char *d)
   struct Email *e = email_new();
   bool convert = !CharsetIsUtf8;
 
-  /* skip validate */
-  off += sizeof(uint32_t);
+  off += sizeof(uint32_t);     // skip validate
+  off += sizeof(unsigned int); // skip crc
 
-  /* skip crc */
-  off += sizeof(unsigned int);
+  uint32_t packed = 0;
+  serial_restore_uint32_t(&packed, d, &off);
+  email_unpack_flags(e, packed);
 
-  size_t sequence = e->sequence;
-  struct Notify *notify = e->notify;
-  memcpy(e, d + off, sizeof(struct Email));
-  off += sizeof(struct Email);
-  e->sequence = sequence;
-  e->notify = notify;
+  packed = 0;
+  serial_restore_uint32_t(&packed, d, &off);
+  email_unpack_timezone(e, packed);
 
-  STAILQ_INIT(&e->tags);
-#ifdef MIXMASTER
-  STAILQ_INIT(&e->chain);
-#endif
+  uint64_t big = 0;
+  serial_restore_uint64_t(&big, d, &off);
+  e->date_sent = big;
+
+  big = 0;
+  serial_restore_uint64_t(&big, d, &off);
+  e->received = big;
+
+  unsigned int num = 0;
+  serial_restore_int(&num, d, &off);
+  e->lines = num;
 
   e->env = mutt_env_new();
   serial_restore_envelope(e->env, d, &off, convert);
