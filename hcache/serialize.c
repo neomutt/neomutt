@@ -91,6 +91,22 @@ unsigned char *serial_dump_uint32_t(const uint32_t s, unsigned char *d, int *off
 }
 
 /**
+ * serial_dump_uint64_t - Pack a uint64_t into a binary blob
+ * @param[in]     s   uint64_t to save
+ * @param[in]     d   Binary blob to add to
+ * @param[in,out] off Offset into the blob
+ * @retval ptr End of the newly packed binary
+ */
+unsigned char *serial_dump_uint64_t(const uint64_t s, unsigned char *d, int *off)
+{
+  lazy_realloc(&d, *off + sizeof(uint64_t));
+  memcpy(d + *off, &s, sizeof(uint64_t));
+  (*off) += sizeof(uint64_t);
+
+  return d;
+}
+
+/**
  * serial_restore_int - Unpack an integer from a binary blob
  * @param[in]     i   Integer to write to
  * @param[in]     d   Binary blob to read from
@@ -112,6 +128,18 @@ void serial_restore_uint32_t(uint32_t *s, const unsigned char *d, int *off)
 {
   memcpy(s, d + *off, sizeof(uint32_t));
   (*off) += sizeof(uint32_t);
+}
+
+/**
+ * serial_restore_uint64_t - Unpack an uint64_t from a binary blob
+ * @param[in]     s   uint64_t to write to
+ * @param[in]     d   Binary blob to read from
+ * @param[in,out] off Offset into the blob
+ */
+void serial_restore_uint64_t(uint64_t *s, const unsigned char *d, int *off)
+{
+  memcpy(s, d + *off, sizeof(uint64_t));
+  (*off) += sizeof(uint64_t);
 }
 
 /**
