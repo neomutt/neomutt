@@ -47,6 +47,7 @@ unsigned char *serial_dump_char_size(const char *c, ssize_t size,    unsigned ch
 unsigned char *serial_dump_envelope (const struct Envelope *env,     unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_int      (const unsigned int i,           unsigned char *d, int *off);
 unsigned char *serial_dump_uint32_t (const uint32_t s,               unsigned char *d, int *off);
+unsigned char *serial_dump_uint64_t (const uint64_t s,               unsigned char *d, int *off);
 unsigned char *serial_dump_parameter(const struct ParameterList *pl, unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_stailq   (const struct ListHead *l,       unsigned char *d, int *off, bool convert);
 
@@ -58,6 +59,7 @@ void serial_restore_char     (char **c,                 const unsigned char *d, 
 void serial_restore_envelope (struct Envelope *env,     const unsigned char *d, int *off, bool convert);
 void serial_restore_int      (unsigned int *i,          const unsigned char *d, int *off);
 void serial_restore_uint32_t (uint32_t *s,              const unsigned char *d, int *off);
+void serial_restore_uint64_t (uint64_t *s,              const unsigned char *d, int *off);
 void serial_restore_parameter(struct ParameterList *pl, const unsigned char *d, int *off, bool convert);
 void serial_restore_stailq   (struct ListHead *l,       const unsigned char *d, int *off, bool convert);
 
