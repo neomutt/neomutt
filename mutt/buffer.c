@@ -319,6 +319,8 @@ struct Buffer *buf_new(const char *str)
 
   if (str)
     buf_addstr(buf, str);
+  else
+    buf_alloc(buf, 1);
   return buf;
 }
 

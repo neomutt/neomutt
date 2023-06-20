@@ -360,7 +360,7 @@ void serial_restore_stailq(struct ListHead *l, const unsigned char *d, int *off,
 unsigned char *serial_dump_buffer(const struct Buffer *buf, unsigned char *d,
                                   int *off, bool convert)
 {
-  if (!buf)
+  if (buf_is_empty(buf))
   {
     d = serial_dump_int(0, d, off);
     return d;
@@ -382,6 +382,8 @@ unsigned char *serial_dump_buffer(const struct Buffer *buf, unsigned char *d,
  */
 void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off, bool convert)
 {
+  buf_alloc(buf, 1);
+
   unsigned int used = 0;
   serial_restore_int(&used, d, off);
   if (used == 0)
@@ -389,9 +391,9 @@ void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off,
 
   char *str = NULL;
   serial_restore_char(&str, d, off, convert);
-  FREE(&str);
 
   buf_addstr(buf, str);
+  FREE(&str);
 }
 
 /**
