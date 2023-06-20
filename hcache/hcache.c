@@ -281,20 +281,18 @@ struct RealKey
 
 /**
  * realkey - Compute the real key used in the backend, taking into account the compression method
+ * @param  hc     Header cache handle
  * @param  key    Original key
  * @param  keylen Length of original key
  * @retval ptr Static location holding data and length of the real key
  */
-static struct RealKey *realkey(const char *key, size_t keylen)
+static struct RealKey *realkey(struct HeaderCache *hc, const char *key, size_t keylen)
 {
   static struct RealKey rk;
 #ifdef USE_HCACHE_COMPRESSION
-  const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
-  if (c_header_cache_compress_method)
+  if (hc->compr_ops)
   {
-    const struct ComprOps *compr_ops = compress_get_ops(c_header_cache_compress_method);
-
-    rk.len = snprintf(rk.key, sizeof(rk.key), "%s-%s", key, compr_ops->name);
+    rk.len = snprintf(rk.key, sizeof(rk.key), "%s-%s", key, hc->compr_ops->name);
   }
   else
 #endif
@@ -336,17 +334,17 @@ static bool create_hcache_dir(const char *path)
 
 /**
  * hcache_per_folder - Generate the hcache pathname
+ * @param hc     Header cache handle
  * @param hcpath Buffer for the result
  * @param path   Base directory, from $header_cache
- * @param folder Mailbox name (including protocol)
  * @param namer  Callback to generate database filename - Implements ::hcache_namer_t
  *
  * Generate the pathname for the hcache database, it will be of the form:
  *     BASE/FOLDER/NAME
  *
  * * BASE:   Base directory (@a path)
- * * FOLDER: Mailbox name (@a folder)
- * * NAME:   Create by @a namer, or md5sum of @a folder
+ * * FOLDER: Mailbox name (hc->folder)
+ * * NAME:   Create by @a namer, or md5sum of hc->folder
  *
  * This function will create any parent directories needed, so the caller just
  * needs to create the database file.
@@ -355,8 +353,8 @@ static bool create_hcache_dir(const char *path)
  * If @a path has a trailing '/' it is assumed to be a directory.
  * Otherwise @a path is assumed to be a file.
  */
-static void hcache_per_folder(struct Buffer *hcpath, const char *path,
-                              const char *folder, hcache_namer_t namer)
+static void hcache_per_folder(struct HeaderCache *hc, struct Buffer *hcpath,
+                              const char *path, hcache_namer_t namer)
 {
   struct stat st = { 0 };
 
@@ -376,7 +374,7 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
   struct Buffer *hcfile = buf_pool_get();
   if (namer)
   {
-    namer(folder, hcfile);
+    namer(hc->folder, hcfile);
     buf_concat_path(hcpath, path, buf_string(hcfile));
   }
   else
@@ -384,17 +382,11 @@ static void hcache_per_folder(struct Buffer *hcpath, const char *path,
     unsigned char m[16]; /* binary md5sum */
     struct Buffer *name = buf_pool_get();
 
-    const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
-    const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
-    if (!store_ops)
-      return;
-
 #ifdef USE_HCACHE_COMPRESSION
-    const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
-    const char *cm = c_header_cache_compress_method;
-    buf_printf(name, "%s|%s%s", store_ops->name, folder, cm ? cm : "");
+    const char *cm = hc->compr_ops ? hc->compr_ops->name : "";
+    buf_printf(name, "%s|%s%s", hc->store_ops->name, hc->folder, cm);
 #else
-    buf_printf(name, "%s|%s", store_ops->name, folder);
+    buf_printf(name, "%s|%s", hc->store_ops->name, hc->folder);
 #endif
     mutt_md5(buf_string(name), m);
     buf_reset(name);
@@ -441,15 +433,9 @@ static void *fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, s
   if (!hc)
     return NULL;
 
-  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
-  const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
-
-  if (!store_ops)
-    return NULL;
-
   struct Buffer path = buf_make(1024);
   keylen = buf_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  void *blob = store_ops->fetch(hc->store_handle, buf_string(&path), keylen, dlen);
+  void *blob = hc->store_ops->fetch(hc->store_handle, buf_string(&path), keylen, dlen);
   buf_dealloc(&path);
   return blob;
 }
@@ -459,13 +445,7 @@ static void *fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, s
  */
 static void free_raw(struct HeaderCache *hc, void **data)
 {
-  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
-  const struct StoreOps *store_ops = store_get_backend_ops(c_header_cache_backend);
-
-  if (!hc || !store_ops || !data || !*data)
-    return;
-
-  store_ops->free(hc->store_handle, data);
+  hc->store_ops->free(hc->store_handle, data);
 }
 
 /**
@@ -553,7 +533,7 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
 #endif
 
   struct Buffer *hcpath = buf_pool_get();
-  hcache_per_folder(hcpath, path, hc->folder, namer);
+  hcache_per_folder(hc, hcpath, path, namer);
 
   hc->store_handle = hc->store_ops->open(buf_string(hcpath));
   if (!hc->store_handle)
@@ -603,10 +583,12 @@ void hcache_close(struct HeaderCache **ptr)
 struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key,
                                 size_t keylen, uint32_t uidvalidity)
 {
-  struct RealKey *rk = realkey(key, keylen);
   struct HCacheEntry hce = { 0 };
+  if (!hc)
+    return hce;
 
-  size_t dlen;
+  size_t dlen = 0;
+  struct RealKey *rk = realkey(hc, key, keylen);
   void *data = fetch_raw(hc, rk->key, rk->len, &dlen);
   void *to_free = data;
   if (!data)
@@ -738,7 +720,7 @@ int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
 #endif
 
   /* store uncompressed data */
-  struct RealKey *rk = realkey(key, keylen);
+  struct RealKey *rk = realkey(hc, key, keylen);
   int rc = hcache_store_raw(hc, rk->key, rk->len, data, dlen);
 
   FREE(&data);
