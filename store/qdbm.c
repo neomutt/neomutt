@@ -55,8 +55,7 @@ static StoreHandle *store_qdbm_open(const char *path)
 /**
  * store_qdbm_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static StoreHandle *store_qdbm_fetch(StoreHandle *store, const char *key,
-                                     size_t klen, size_t *vlen)
+static void *store_qdbm_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;

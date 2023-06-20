@@ -61,8 +61,7 @@ static StoreHandle *store_gdbm_open(const char *path)
 /**
  * store_gdbm_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static StoreHandle *store_gdbm_fetch(StoreHandle *store, const char *key,
-                                     size_t klen, size_t *vlen)
+static void *store_gdbm_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
   if (!store || (klen > INT_MAX))
     return NULL;

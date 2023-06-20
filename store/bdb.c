@@ -180,8 +180,7 @@ fail_close:
 /**
  * store_bdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
  */
-static StoreHandle *store_bdb_fetch(StoreHandle *store, const char *key,
-                                    size_t klen, size_t *vlen)
+static void *store_bdb_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
   if (!store)
     return NULL;
