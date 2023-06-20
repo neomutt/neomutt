@@ -156,11 +156,9 @@ unsigned char *serial_dump_char_size(const char *c, ssize_t size,
 {
   char *p = NULL;
 
-  if (!c)
+  if (!c || (*c == '\0') || (size == 0))
   {
-    size = 0;
-    d = serial_dump_int(size, d, off);
-    return d;
+    return serial_dump_int(0, d, off);
   }
 
   if (convert && !mutt_str_is_ascii(c, size))
@@ -177,8 +175,7 @@ unsigned char *serial_dump_char_size(const char *c, ssize_t size,
   memcpy(d + *off, p ? p : c, size);
   *off += size;
 
-  if (p)
-    FREE(&p);
+  FREE(&p);
 
   return d;
 }
@@ -371,9 +368,7 @@ unsigned char *serial_dump_buffer(const struct Buffer *buf, unsigned char *d,
 
   d = serial_dump_int(1, d, off);
 
-  d = serial_dump_char_size(buf->data, buf->dsize, d, off, convert);
-  d = serial_dump_int(buf->dptr - buf->data, d, off);
-  d = serial_dump_int(buf->dsize, d, off);
+  d = serial_dump_char(buf->data, d, off, convert);
 
   return d;
 }
@@ -388,18 +383,15 @@ unsigned char *serial_dump_buffer(const struct Buffer *buf, unsigned char *d,
 void serial_restore_buffer(struct Buffer *buf, const unsigned char *d, int *off, bool convert)
 {
   unsigned int used = 0;
-  unsigned int offset = 0;
   serial_restore_int(&used, d, off);
   if (used == 0)
-  {
     return;
-  }
 
-  serial_restore_char(&buf->data, d, off, convert);
-  serial_restore_int(&offset, d, off);
-  buf_seek(buf, offset);
-  serial_restore_int(&used, d, off);
-  buf->dsize = used;
+  char *str = NULL;
+  serial_restore_char(&str, d, off, convert);
+  FREE(&str);
+
+  buf_addstr(buf, str);
 }
 
 /**
