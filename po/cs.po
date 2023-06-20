@@ -1126,7 +1126,7 @@ msgid "-- Attachments"
 msgstr "-- Přílohy"
 
 #: compose/functions.c:94
-msgid "here are no attachments"
+msgid "There are no attachments"
 msgstr "Nejsou žádné přílohy"
 
 #. L10N: This message is displayed in the compose menu when an attachment
