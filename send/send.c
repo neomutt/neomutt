@@ -2476,7 +2476,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (from && !from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
     {
       const char *const c_real_name = cs_subset_string(sub, "real_name");
-      buf_strcpy(from->personal, c_real_name);
+      from->personal = buf_new(c_real_name);
     }
   }
 

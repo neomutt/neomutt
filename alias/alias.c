@@ -162,7 +162,7 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
           char namebuf[256] = { 0 };
 
           mutt_gecos_name(namebuf, sizeof(namebuf), pw);
-          buf_strcpy(a->personal, namebuf);
+          a->personal = buf_new(namebuf);
         }
       }
     }
