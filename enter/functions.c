@@ -380,23 +380,30 @@ static int op_editor_complete(struct EnterWindowData *wdata, int op)
   if (wdata->flags & MUTT_COMP_FILE_SIMPLE)
     return complete_file_simple(wdata);
 
-  if ((wdata->flags & MUTT_COMP_ALIAS) && (op == OP_EDITOR_COMPLETE))
-    return complete_alias_complete(wdata);
+  if (wdata->flags & (MUTT_COMP_FILE | MUTT_COMP_FILE_MBOX))
+    return complete_file_mbox(wdata);
 
-  if ((wdata->flags & MUTT_COMP_LABEL) && (op == OP_EDITOR_COMPLETE))
+  if (wdata->flags & MUTT_COMP_ALIAS)
+  {
+    switch (op)
+    {
+      case OP_EDITOR_COMPLETE:
+        return complete_alias_complete(wdata);
+      case OP_EDITOR_COMPLETE_QUERY:
+        return complete_alias_query(wdata);
+      default:
+        return FR_NO_ACTION;
+    }
+  }
+
+  if ((wdata->flags & MUTT_COMP_LABEL))
     return complete_label(wdata);
 
-  if ((wdata->flags & MUTT_COMP_PATTERN) && (op == OP_EDITOR_COMPLETE))
+  if ((wdata->flags & MUTT_COMP_PATTERN))
     return complete_pattern(wdata);
-
-  if ((wdata->flags & MUTT_COMP_ALIAS) && (op == OP_EDITOR_COMPLETE_QUERY))
-    return complete_alias_query(wdata);
 
   if (wdata->flags & MUTT_COMP_COMMAND)
     return complete_command(wdata);
-
-  if (wdata->flags & (MUTT_COMP_FILE | MUTT_COMP_FILE_MBOX))
-    return complete_file_mbox(wdata);
 
 #ifdef USE_NOTMUCH
   if (wdata->flags & MUTT_COMP_NM_QUERY)
