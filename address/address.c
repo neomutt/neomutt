@@ -504,10 +504,10 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
         else if (commentlen != 0)
         {
           struct Address *last = TAILQ_LAST(al, AddressList);
-          if (last && buf_is_empty(last->personal) && !buf_is_empty(last->mailbox))
+          if (last && !last->personal && !buf_is_empty(last->mailbox))
           {
             terminate_buffer(comment, commentlen);
-            buf_strcpy(last->personal, comment);
+            last->personal = buf_new(comment);
           }
         }
 
