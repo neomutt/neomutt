@@ -931,7 +931,7 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
   if (!from->personal)
   {
     const char *const c_real_name = cs_subset_string(sub, "real_name");
-    buf_strcpy(from->personal, c_real_name);
+    from->personal = buf_new(c_real_name);
   }
 
   mutt_addrlist_qualify(&from_list, fqdn);
