@@ -4,7 +4,7 @@
   - #3738 - Show complete MIME structure in attachments
   - #3842 - Allow percentages to be localized
 * Bug Fixes
-  - #3813 - Fix crash in op_browser_subscribe
+  - #3813 - Fix crash in `op_browser_subscribe()`
   - #3844 - Select the first email when coming from an empty limit
   - #3848 - Fix counting new mails in maildir
   - #3864 - Fix handling of bright colours
@@ -47,7 +47,7 @@
   - #3793 - postpone: use colours from the right mailbox
   - #3794 - smtp: ignore oauth if it isn't configured and not requested
 * Config
-  - #3779 - New: `imap_send_id` - Send IMAP ID command when logging in
+  - #3779 - New: `$imap_send_id` - Send IMAP ID command when logging in
 * Translations
   - 100% :czech_republic: Czech
   - 100% :de: German
@@ -62,11 +62,11 @@
 * Code
   - #3767 - libmutt: eliminate use of config variables
   - #3774 - fix ubsan warning
-  - #3802 - mutt: optimize and inline mutt_str_is_email_wsp()
+  - #3802 - mutt: optimize and inline `mutt_str_is_email_wsp()`
   - #3803 - progress: update ncurses only when there is actual progress
-  - #3801 - email: Read assumed_charset outside loops
+  - #3801 - email: Read `$assumed_charset` outside loops
   - #3805 - hcache: do less work when not in use
-  - #3777 - pager: add helper for getting $pager
+  - #3777 - pager: add helper for getting `$pager`
   - #3797 - hcache: remove spurious +1 from Buffer serialization.
 * Build
   - #3787 - fix race condition in `make install`
@@ -77,9 +77,9 @@
   - #3372 - use DT_SLIST for charset variables
   - #3383 - support viewing html with embedded images
   - #3408 - account command, see the [feature page](https://neomutt.org/feature/account-cmd)
-  - #3411 - check that `sendmail` and `inews` don't contain shell meta characters
-  - #3412 - browser: add mailbox_folder_format config variable
-  - #3421 - enter: add function kill-whole-line
+  - #3411 - check that `$sendmail` and `$inews` don't contain shell meta characters
+  - #3412 - browser: add `$mailbox_folder_format` config variable
+  - #3421 - enter: add function `<kill-whole-line>`
   - #3414 - account command: add macOS keychain sample provider
   - #3430 - account command: add GPG+JSON sample provider
   - #3474 - expose italics attribute for colour scheme
@@ -92,33 +92,33 @@
   - #3586 - detect and fixup maildirs with missing "new" and "tmp" directories
   - #3634 - generate standard MIME types as application/pkcs7-* instead of legacy application/x-pkcs7-*
   - #3639 - compose: add Smime: pseudo header
-  - #3641 - handle more X-Mutt pseudo-headers with `edit_headers`
-  - #3702 - use `socket_timeout` to time out read/write operations
+  - #3641 - handle more X-Mutt pseudo-headers with `$edit_headers`
+  - #3702 - use `$socket_timeout` to time out read/write operations
   - #3717 - allow `%[fmt]` in `$folder_format`
-  - #3719 - respect `attribution_locale` in `indent_string` and `post_indent_string`
+  - #3719 - respect `$attribution_locale` in `$indent_string` and `$post_indent_string`
   - #3720 - pattern: add `~K` to search Bcc, include Bcc in `~C`, `%C`, `~L`, and `~p`
   - #3726 - colour postponed emails list
   - #3734 - allow querying user-defined variables (`$my_var`) with `-Q`
   - #3737 - dump user-defined variables (`$my_var`) with `-D`
   - #3655 - generate purely random `Message-ID` headers
-  - #3752 - allow an empty `sidebar_divider_char`
+  - #3752 - allow an empty `$sidebar_divider_char`
   - #3745 - fix handling and display of group addresses
 * Bug Fixes
-  - #3386 - fix `status_on_top` to work on complex windows, e.g., attach
+  - #3386 - fix `$status_on_top` to work on complex windows, e.g., attach
   - #3397 - imap: fix off-by-one error causing bogus "Progress message 10/9" message
   - #3423 - attach: fix segfault when viewing HTML attachment in compose mode
-  - #3434 - allow for longer expansions in e.g., `index_format`
+  - #3434 - allow for longer expansions in e.g., `$index_format`
   - #3450 - accept unpadded base64-encoded data, as some mailers produce
   - #3465 - fix hangup when trying to add email address from help screens
   - #3468 - handle corrupted header caches
   - #3518 - fix slowdown when changing folders
   - #3828 - improve error detection for invalid `color` regexes
-  - #3533 - distinguish between old/new with mark_old unset
+  - #3533 - distinguish between old/new with `$mark_old` unset
   - #3539 - parse mboxes with unconventional `From` lines
   - #3572 - fix hostname detection for hostname ending with a "."
   - #3596 - fix truncated SMTP lines in case of very long lines
-  - #3600 - use `smime_sign_as` instead of `pgp_sign_as` when signing S/MIME messages
-  - #3697 - set `smime_sign_as` instead of `smime_default_key` when signing
+  - #3600 - use `$smime_sign_as` instead of `$pgp_sign_as` when signing S/MIME messages
+  - #3697 - set `$smime_sign_as` instead of `$smime_default_key` when signing
   - #3609 - fix wrong message being marked as read with `$pager_read_delay = 1`
   - #3653 - fix negative new-mail count on maildir
   - #3656 - skip zero width non-joiner character in the pager
@@ -132,17 +132,17 @@
   - avoid unnecessary refreshes
   - fixed a number of memory leaks and crashes
 * Config
-  - #3604 - rename `ask_follow_up` to `ask_followup_to`
+  - #3604 - rename `$ask_follow_up` to `$ask_followup_to`
   - #3659 - rename `sidebar_whitelist`/`unsidebar_whitelist` to `sidebar_pin`/`sidebar_unpin`
   - #3629 - skip line rest of line after a warning
-  - #3670 - `vfolder_format` is now deprecated, use `folder_format`
-  - #3702 - rename `connect_timeout` to `socket_timeout`
+  - #3670 - `$vfolder_format` is now deprecated, use `$folder_format`
+  - #3702 - rename `$connect_timeout` to `$socket_timeout`
   - #3697 - `pgp_entry_format`: add %i expand for the key fingerprint
-  - #3724 - rename `attribution` to `attribution_intro` and
-    `post_indent_string` to `attribution_trailer`
+  - #3724 - rename `$attribution` to `$attribution_intro` and
+    `$post_indent_string` to `$attribution_trailer`
   - config variables are now properly spelled with underscores between names,
-    e.g., `implicit_autoview` -> `implicit_auto_view`, `message_cachedir` ->
-    `message_cache_dir`; the old names were kept as synonyms
+    e.g., `$implicit_autoview` -> `$implicit_auto_view`, `$message_cachedir` ->
+    `$message_cache_dir`; the old names were kept as synonyms
 * Translations
   - 100% Czech
   - 100% German
@@ -179,14 +179,14 @@
 * Bug Fixes
   - Do not crash on an invalid use_threads/sort combination
   - Fix: stuck browser cursor
-  - Resolve (move) the cursor after <edit-label>
+  - Resolve (move) the cursor after `<edit-label>`
   - Index: fix menu size on new mail
   - Don't overlimit LMDB mmap size
   - OpenBSD y/n translation fix
   - Generic: split out OP_EXIT binding
   - Fix parsing of sendmail cmd
-  - Fix: crash with menu_move_off=no
-  - Newsrc: bugfix; nntp_user and nntp_pass ignored
+  - Fix: crash with `$menu_move_off=no`
+  - Newsrc: bugfix; `$nntp_user` and `$nntp_pass` ignored
   - Menu: ensure config changes cause a repaint
   - Mbox: fix sync duplicates
   - Make sure the index redraws all that's needed
@@ -199,7 +199,7 @@
   - 100% Serbian
   - 100% Turkish
 * Docs
-  - add missing pattern modifier ~I for external_search_command
+  - add missing pattern modifier ~I for `$external_search_command`
 * Code
   - menu: eliminate custom_redraw()
   - modernise mixmaster
@@ -211,12 +211,12 @@
 * Features
   - Colours, colours, colours
 * Bug Fixes
-  - Pager: fix pager_stop
+  - Pager: fix `$pager_stop`
   - Merge colours with normal
   - Color: disable mono command
-  - Fix forwarding text attachments when honor_disposition is set
+  - Fix forwarding text attachments when `$honor_disposition` is set
   - Pager: drop the nntp change-group bindings
-  - Use mailbox_check flags coherently, add IMMEDIATE flag
+  - Use `mailbox_check()` flags coherently, add IMMEDIATE flag
   - Fix: tagging in attachment list
   - Fix: misalignment of mini-index
   - Make sure to update the menu size after a resort
@@ -228,10 +228,10 @@
   - Unify pipe functions
   - Index: notify if navigation fails
   - Gui: set colour to be merged with normal
-  - Fix: leak in tls_check_one_certificate()
+  - Fix: leak in `tls_check_one_certificate()`
 * Upstream
-  - Flush iconv() in mutt_convert_string()
-  - Fix integer overflow in mutt_convert_string()
+  - Flush `iconv()` in `mutt_convert_string()`
+  - Fix integer overflow in `mutt_convert_string()`
   - Fix uudecode cleanup on unexpected eof
 
 2022-04-08  Richard Russon  \<rich@flatcap.org\>
@@ -244,7 +244,7 @@
   - Unify Alias/Query workflow
   - Fix colours
   - Say which file exists when saving attachments
-  - Force SMTP authentication if `smtp_user` is set
+  - Force SMTP authentication if `$smtp_user` is set
   - Fix selecting the right email after limiting
   - Make sure we have enough memory for a new email
   - Don't overwrite with zeroes after unlinking the file
@@ -254,7 +254,7 @@
   - regex: range check arrays strictly
   - Fix Coverity defects
   - Fix out of bounds write with long log lines
-  - Apply `fast_reply` to 'to', 'cc', or 'bcc'
+  - Apply `$fast_reply` to 'to', 'cc', or 'bcc'
   - Prevent warning on empty emails
 * Changed Config
   - New default: `set rfc2047_parameters = yes`
@@ -365,18 +365,18 @@
   - imap, smtp: add support for authenticating using XOAUTH2
   - Allow `<sync-mailbox`> to fail quietly
   - imap: speed up server-side searches
-  - pager: improve skip-quoted and skip-headers
+  - pager: improve `<skip-quoted>` and `<skip-headers>`
   - notmuch: open database with user's configuration
   - notmuch: implement `<vfolder-window-reset>`
-  - config: allow += modification of my_ variables
+  - config: allow `+=` modification of my_ variables
   - notmuch: tolerate file renames behind neomutt's back
   - pager: implement `$pager_read_delay`
-  - notmuch: validate `nm_query_window_timebase`
-  - notmuch: make $nm_record work in non-notmuch mailboxes
+  - notmuch: validate `$nm_query_window_timebase`
+  - notmuch: make `$nm_record` work in non-notmuch mailboxes
   - compose: add `$greeting` - a welcome message on top of emails
   - notmuch: show additional mail in query windows
 * Changed Config
-- Renamed lots of config, e.g.  `askbcc` to `ask_bcc`.
+- Renamed lots of config, e.g.  `$askbcc` to `$ask_bcc`.
 * Bug Fixes
   - imap: fix crash on external IMAP events
   - notmuch: handle missing libnotmuch version bumps
@@ -393,7 +393,7 @@
   - hcache: fix caching new labels in the header cache
   - crypto: set invalidity flags for gpgme/smime keys
   - notmuch: fix parsing of multiple `type=`
-  - notmuch: validate $nm_default_url
+  - notmuch: validate `$nm_default_url`
   - messages: avoid unnecessary opening of messages
   - imap: fix seqset iterator when it ends in a comma
   - build: refuse to build without pcre2 when pcre2 is linked in ncurses
@@ -412,25 +412,25 @@
 
 2021-02-05  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - Add <skip-headers> to skip past message headers in pager
-  - Add <view-pager> function to attachment menu
+  - Add `<skip-headers>` to skip past message headers in pager
+  - Add `<view-pager>` function to attachment menu
 * Bug Fixes
   - Fix detection of mbox files with new mail
   - Fix crash on collapsed thread
-  - Fix group-chat-reply
+  - Fix `<group-chat-reply>`
   - Clear the message window on resize
   - Do not crash on return from shell-exec if there's no open mailbox
   - Abort IMAP open if condstore/qresync updates fetch fails
-  - Fix smtp crash on invalid $smtp_authenticators list
+  - Fix smtp crash on invalid `$smtp_authenticators` list
   - Fix pager dropped input on screen resize
   - Fix mime forwarding
   - Check config after hooks
-  - Always recreate a mailbox after folder-hook
+  - Always recreate a mailbox after `folder-hook`
 * Translations
   - 88% Slovakian
 * Docs
-  - Adjust doc to explicitly mention $count_alternative
-  - Restore correct "$sort_re" documentation
+  - Adjust doc to explicitly mention `$count_alternatives`
+  - Restore correct `$sort_re` documentation
   - Clarify pattern completion
   - Man pages: Clear up "-H" and "-O"
 * Build
@@ -450,18 +450,18 @@
 * Security
   - imap: close connection on all failures
 * Features
-  - alias: add <limit> function to Alias/Query dialogs
-  - config: add validators for {imap,smtp,pop}_authenticators
+  - alias: add `<limit>` function to Alias/Query dialogs
+  - config: add validators for `{imap,smtp,pop}_authenticators`
   - config: warn when signature file is missing or not readable
   - smtp: support for native SMTP LOGIN auth mech
   - notmuch: show originating folder in index
 * Bug Fixes
   - sidebar: prevent the divider colour bleeding out
-  - sidebar: fix <sidebar-{next,prev}-new>
-  - notmuch: fix <entire-thread> query for current email
+  - sidebar: fix `<sidebar-{next,prev}-new>`
+  - notmuch: fix `<entire-thread>` query for current email
   - restore shutdown-hook functionality
   - crash in reply-to
-  - user-after-free in folder-hook
+  - user-after-free in `folder-hook`
   - fix some leaks
   - fix application of limits to modified mailboxes
   - write Date header when postponing
@@ -470,27 +470,27 @@
   - 100% Czech
   - 70% Turkish
 * Docs
-  - Document that $sort_alias affects the query menu
+  - Document that `$sort_alias` affects the query menu
 * Build
   - improve ASAN flags
-  - add SASL and S/MIME to --everything
+  - add SASL and S/MIME to `--everything`
   - fix contrib (un)install
 * Code
-  - my_hdr compose screen notifications
+  - `my_hdr` compose screen notifications
   - add contracts to the MXAPI
   - maildir refactoring
   - further reduce the use of global variables
 * Upstream
-  - Add $count_alternatives to count attachments inside alternatives
+  - Add `$count_alternatives` to count attachments inside alternatives
 
 2020-09-25  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Compose: display user-defined headers
   - Address Book / Query: live sorting
   - Address Book / Query: patterns for searching
-  - Config: Add '+=' and '-=' operators for String Lists
-  - Config: Add '+=' operator for Strings
-  - Allow postfix query ':setenv NAME?' for env vars
+  - Config: Add `+=` and `-=` operators for String Lists
+  - Config: Add `+=` operator for Strings
+  - Allow postfix query `:setenv NAME?` for env vars
 * Bug Fixes
   - Fix crash when searching with invalid regexes
   - Compose: Prevent infinite loop of `send2-hook`s
@@ -510,7 +510,7 @@
   - 100% Lithuanian
   - Split up usage strings
 * Build
-  - Run shellcheck on hcachever.sh
+  - Run shellcheck on `hcachever.sh`
   - Add the Address Sanitizer
   - Move compose files to lib under compose/
   - Move address config into libaddress
@@ -521,7 +521,7 @@
   - Refactor the Sidebar to be Event-Driven
   - Refactor the Color Event
   - Refactor the Commands list
-  - Make ctx_update_tables private
+  - Make `ctx_update_tables()` private
   - Reduce the scope/deps of some Validator functions
   - Use the Email's IMAP UID instead of an increasing number as index
   - debug: log window focus
@@ -556,7 +556,7 @@
   - Fix: redrawing of `$pager_index_lines`
   - Fix progress percentage for syncing large mboxes
   - Fix sidebar drawing in presence of indentation + named mailboxes
-  - Fix retrieval of drafts when "postponed" is not in the mailboxes list
+  - Fix retrieval of drafts when `$postponed` is not in the mailboxes list
   - Do not add comments to address group terminators
   - Fix alias sorting for degenerate addresses
   - Fix attaching emails
@@ -572,7 +572,7 @@
   - 100% Spanish
 * Build
   - Allow building against Lua 5.4
-  - Fix when sqlite3.h is missing
+  - Fix when `sqlite3.h` is missing
 * Docs
   - Add a brief section on stty to the manual
   - Update section "Terminal Keybindings" in the manual
@@ -608,14 +608,14 @@
 2020-06-26  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - Avoid opening the same hcache file twice
-  - Re-open Mailbox after folder-hook
-  - Fix the matching of the spool_file Mailbox
+  - Re-open Mailbox after `folder-hook`
+  - Fix the matching of the `$spool_file` Mailbox
   - Fix link-thread to link all tagged emails
 * Changed Config
-  - Add $tunnel_is_secure config, defaulting to true
+  - Add `$tunnel_is_secure` config, defaulting to true
 * Upstream
-  - Don't check IMAP PREAUTH encryption if $tunnel is in use
-  - Add recommendation to use $ssl_force_tls
+  - Don't check IMAP PREAUTH encryption if `$tunnel` is in use
+  - Add recommendation to use `$ssl_force_tls`
 
 2020-06-19  Richard Russon  \<rich@flatcap.org\>
 * Security
@@ -623,7 +623,7 @@
   - TLS: clear data after a starttls acknowledgement
   - Prevent possible IMAP MITM via PREAUTH response
 * Features
-  - add config operations +=/-= for number,long
+  - add config operations `+=`/`-=` for number,long
   - Address book has a comment field
   - Query menu has a comment field
 * Contrib
@@ -637,7 +637,7 @@
   - mmdf: fix creating new mailbox
   - mh: fix creating new mailbox
   - mbox: error out when an mbox/mmdf is a pipe
-  - Fix list-reply by correct parsing of List-Post headers
+  - Fix `<list-reply>` by correct parsing of List-Post headers
   - Decode references according to RFC2047
   - fix tagged message count
   - hcache: fix keylen not being considered when building the full key
@@ -664,7 +664,7 @@
   - Refactor unsafe TAILQ returns
   - add window notifications
   - flip negative ifs
-  - Update to latest acutest.h
+  - Update to latest `acutest.h`
   - test: add store tests
   - test: add compression tests
   - graphviz: email
@@ -688,27 +688,27 @@
 
 2020-04-24  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
-  -Fix history corruption
-  -Handle pretty much anything in a URL query part
-  -Correctly parse escaped characters in header phrases
-  -Fix crash reading received header
-  -Fix sidebar indentation
-  -Avoid crashing on failure to parse an IMAP mailbox
-  -Maildir: handle deleted emails correctly
-  -Ensure OP_NULL is always first
+  - Fix history corruption
+  - Handle pretty much anything in a URL query part
+  - Correctly parse escaped characters in header phrases
+  - Fix crash reading received header
+  - Fix sidebar indentation
+  - Avoid crashing on failure to parse an IMAP mailbox
+  - Maildir: handle deleted emails correctly
+  - Ensure OP_NULL is always first
 * Translations
-  -100% Czech
+  - 100% Czech
 * Build
-  -cirrus: enable pcre2, make pkgconf a special case
-  -Fix finding pcre2 w/o pkgconf
-  -build: tdb.h needs size_t, bring it in with stddef.h
+  - cirrus: enable pcre2, make pkgconf a special case
+  - Fix finding pcre2 w/o pkgconf
+  - build: `tdb.h` needs size_t, bring it in with `stddef.h`
 
 2020-04-17  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Fluid layout for Compose Screen, see: https://vimeo.com/407231157
   - Trivial Database (TDB) header cache backend
   - RocksDB header cache backend
-  - Add \<sidebar-first\> and \<sidebar-last\> functions
+  - Add `<sidebar-first>` and `<sidebar-last>` functions
 * Bug Fixes
   - add error for CLI empty emails
   - Allow spaces and square brackets in paths
@@ -716,13 +716,13 @@
   - fix initial email display
   - notmuch: fix time window search.
   - fix resize bugs
-  - notmuch: fix entire-thread: update current email pointer
+  - notmuch: fix `<entire-thread>`: update current email pointer
   - sidebar: support indenting and shortening of names
-  - Handle variables inside backticks in sidebar_pin
+  - Handle variables inside backticks in `sidebar_pin`
   - browser: fix mask regex error reporting
 * Translations
-  - 100.00% Lithuanian
-  - 98.88% Chinese (simplified)
+  - 100% Lithuanian
+  - 99% Chinese (simplified)
 * Build
   - Use regexes for common parsing tasks: urls, dates
   - Add configure option `--pcre2` -- Enable PCRE2 regular expressions
@@ -730,7 +730,7 @@
   - Add configure option `--rocksdb` -- Use RocksDB for the header cache
   - Create libstore (key/value backends)
   - Update to latest autosetup
-  - Update to latest acutest.h
+  - Update to latest `acutest.h`
   - Rename `doc/` directory to `docs/`
   - make: fix location of .Po dependency files
   - Change libcompress to be more universal
@@ -742,8 +742,8 @@
   - Fix null checks
 * Upstream
   - Buffer refactoring
-  - Fix use-after-free in mutt_str_replace()
-  - Clarify PGP Pseudo-header S\<id\> duration
+  - Fix use-after-free in `mutt_str_replace()`
+  - Clarify PGP Pseudo-header `S<id>` duration
   - Try to respect MUTT_QUIET for IMAP contexts too
   - Limit recurse depth when parsing mime messages
 
@@ -771,23 +771,23 @@
 * Code
   - Add more test coverage
   - Rename magic to type
-  - Use mutt_file_fopen() on config variables
+  - Use `mutt_file_fopen()` on config variables
   - Change commands to use intptr_t for data
 
 2020-03-13  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - UI: add number of old messages to sidebar_format
+  - UI: add number of old messages to `$sidebar_format`
   - UI: support ISO 8601 calendar date
   - UI: fix commands that don’t need to have a non-empty mailbox to be valid
   - PGP: inform about successful decryption of inline PGP messages
   - PGP: try to infer the signing key from the From address
   - PGP: enable GPGME by default
-  - Notmuch: use query as name for vfolder-from-query
+  - Notmuch: use query as name for `<vfolder-from-query>`
   - IMAP: add network traffic compression (COMPRESS=DEFLATE, RFC4978)
   - Header cache: add support for generic header cache compression
 * Bug Fixes
-  - Fix uncollapse_jump
-  - Only try to perform entire-thread on maildir/mh mailboxes
+  - Fix `$uncollapse_jump`
+  - Only try to perform `<entire-thread>` on maildir/mh mailboxes
   - Fix crash in pager
   - Avoid logging single new lines at the end of header fields
   - Fix listing mailboxes
@@ -796,8 +796,8 @@
   - Fix leaks on IMAP error paths
   - Notmuch: compose(attach-message): support notmuch backend
   - Fix IMAP flag comparison code
-  - Fix $move for IMAP mailboxes
-  - Maildir: maildir_mbox_check_stats should only update mailbox stats if requested
+  - Fix `$move` for IMAP mailboxes
+  - Maildir: `maildir_mbox_check_stats()` should only update mailbox stats if requested
   - Fix unmailboxes for virtual mailboxes
   - Maildir: sanitize filename before hashing
   - OAuth: if 'login' name isn't available use 'user'
@@ -809,7 +809,7 @@
   - `$crypt_use_gpgme`                         - Now defaults to 'yes' (enabled)
   - `$abort_backspace`                         - Hitting backspace against an empty prompt aborts the prompt
   - `$abort_key`                               - String representation of key to abort prompts
-  - `$arrow_string`                            - Use an custom string for arrow_cursor
+  - `$arrow_string`                            - Use an custom string for `$arrow_cursor`
   - `$crypt_opportunistic_encrypt_strong_keys` - Enable encryption only when strong a key is available
   - `$header_cache_compress_dictionary`        - Filepath to dictionary for zstd compression
   - `$header_cache_compress_level`             - Level of compression for method
@@ -822,13 +822,13 @@
   - 78% Russian
 * Build
   - Add libdebug
-  - Rename public headers to lib.h
+  - Rename public headers to `lib.h`
   - Create libcompress for compressed folders code
   - Enable Cirrus CI for FreeBSD
 * Code
   - Refactor Windows and Dialogs
   - Lots of code tidying
-  - Refactor: mutt_addrlist\_{search,write}
+  - Refactor: `mutt_addrlist_{search,write}()`
   - Lots of improvements to the Config code
   - Use Buffers more pervasively
   - Unify API function naming
@@ -840,24 +840,24 @@
   - Remove backend deps from the connection code
 * Upstream
   - Allow ~b ~B ~h patterns in send2-hook
-  - Rename smime oppenc mode parameter to get_keys_by_addr()
-  - Add $crypt_opportunistic_encrypt_strong_keys config var
+  - Rename smime oppenc mode parameter to `get_keys_by_addr()`
+  - Add `$crypt_opportunistic_encrypt_strong_keys` config var
   - Fix crash when polling a closed ssl connection
   - Turn off auto-clear outside of autocrypt initialization
   - Add protected-headers="v1" to Content-Type when protecting headers
   - Fix segv in IMAP postponed menu caused by reopen_allow
   - Adding ISO 8601 calendar date
-  - Fix $fcc_attach to not prompt in batch mode
-  - Convert remaining mutt_encode_path() call to use struct Buffer
+  - Fix `$fcc_attach` to not prompt in batch mode
+  - Convert remaining `mutt_encode_path()` call to use struct Buffer
   - Fix rendering of replacement_char when Charset_is_utf8
-  - Update to latest acutest.h
+  - Update to latest `acutest.h`
 
 2019-12-07  Richard Russon  \<rich@flatcap.org\>
 * Features
   - compose: draw status bar with highlights
 * Bug Fixes
   - crash opening notmuch mailbox
-  - crash in mutt_autocrypt_ui_recommendation
+  - crash in `mutt_autocrypt_ui_recommendation()`
   - Avoid negative allocation
   - Mbox new mail
   - Setting of DT_MAILBOX type variables from Lua
@@ -880,30 +880,30 @@
   - Avoid double question marks in bounce confirmation msg
   - Fix bounce confirmation
   - fix new-mail flags and behaviour
-  - fix: browser \<descend-directory\>
+  - fix: browser `<descend-directory>`
   - fix ssl crash
   - fix move to trash
   - fix flickering
   - Do not check hidden mailboxes for new mail
-  - Fix new_mail_command notifications
-  - fix crash in examine_mailboxes()
-  - fix crash in mutt_sort_threads()
+  - Fix `$new_mail_command` notifications
+  - fix crash in `examine_mailboxes()`
+  - fix crash in `mutt_sort_threads()`
   - fix: crash after sending
-  - Fix crash in tunnel's conn_close
+  - Fix crash in tunnel's `conn_close()`
   - fix fcc for deep dirs
   - imap: fix crash when new mail arrives
   - fix colour 'quoted9'
   - quieten messages on exit
-  - fix: crash after failed mbox_check
+  - fix: crash after failed `mbox_check()`
   - browser: default to a file/dir view when attaching a file
 * Changed Config
-  - Change $write_bcc to default off
+  - Change `$write_bcc` to default off
 * Translations
   - 100% Portuguese (Brazil)
   -  92% Polish
 * Docs
   - Add a bit more documentation about sending
-  - Clarify $write_bcc documentation.
+  - Clarify `$write_bcc` documentation.
   - Update documentation for raw size expando
   - docbook: set generate.consistent.ids to make generated html reproducible
 * Build
@@ -914,12 +914,12 @@
 2019-11-11  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - browser: fix directory view
-  - fix crash in parse_extract_token()
+  - fix crash in `parse_extract_token()`
   - force a screen refresh
   - fix crash sending message from command line
-  - notmuch: use nm_default_url if no mailbox data
+  - notmuch: use `$nm_default_url` if no mailbox data
   - fix forward attachments
-  - fix: vfprintf undefined behaviour in body_handler
+  - fix: vfprintf undefined behaviour in `body_handler()`
   - Fix relative symlink resolution
   - fix: trash to non-existent file/dir
   - fix re-opening of mbox Mailboxes
@@ -928,7 +928,7 @@
   - fix crash in command line postpone
   - fix memory leaks
   - fix icommand parsing
-  - fix new mail interaction with mail_check_recent
+  - fix new mail interaction with `$mail_check_recent`
 
 2019-11-02  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
@@ -939,17 +939,17 @@
   - Truncation of "set" command on a path variable
   - Update crash (when changing folder)
   - Resolve symbolic links when saving a message
-  - Folder-hook calling "unmailboxes \*"
+  - Folder-hook calling `unmailboxes *`
   - Failed ssl negotiation
   - Crash when using "alias -group"
-  - LibIDN error when charset wasn't set
-  - Notmuch abort entire-thread if database lacks message
+  - LibIDN error when `$charset` wasn't set
+  - Notmuch abort `<entire-thread>` if database lacks message
 
 2019-10-25  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - Add $fcc_before_send, defaulting unset
+  - Add `$fcc_before_send`, defaulting unset
   - Deprecate TLS 1.0 and 1.1 by default
-  - Turn on $ssl_force_tls by default
+  - Turn on `$ssl_force_tls` by default
   - Command line -z and -Z options to work with IMAP
   - Add size display configuration variables
   - Summary pages: version, set, set all, bind, macro
@@ -957,73 +957,73 @@
   - OAUTHBEARER support
   - inotify support
   - add index-format-hook
-  - Add $auto_subscribe variable
+  - Add `$auto_subscribe` variable
   - Allow relative date hour/min/sec offsets
   - Add attributes support on color declarations
   - Style Menu Options
   - Add new pattern type ~I for external searches
-  - Add \<named-mailboxes\> command
+  - Add `<named-mailboxes>` command
 * Changed Config
-  - folder_format
-  - pgp_use_gpg_agent
-  - shell
-  - ssl_force_tls
-  - ssl_use_tlsv1
-  - ssl_use_tlsv1_1
-  - status_format
-  - to_chars
-  - user_agent
+  - `$folder_format`
+  - `$pgp_use_gpg_agent`
+  - `$shell`
+  - `$ssl_force_tls`
+  - `$ssl_use_tlsv1`
+  - `$ssl_use_tlsv1_1`
+  - `$status_format`
+  - `$to_chars`
+  - `$user_agent`
 * New Config
-  - attach_save_dir
-  - attach_save_without_prompting
-  - autocrypt
-  - autocrypt_acct_format
-  - autocrypt_dir
-  - autocrypt_reply
-  - auto_subscribe
-  - crypt_chars
-  - crypt_protected_headers_read
-  - crypt_protected_headers_save
-  - crypt_protected_headers_subject
-  - crypt_protected_headers_write
-  - external_search_command
-  - fcc_before_send
-  - forward_attachments
-  - imap_condstore
-  - imap_fetch_chunk_size
-  - imap_oauth_refresh_command
-  - imap_qresync
-  - imap_rfc5161
-  - include_encrypted
-  - nm_flagged_tag
-  - nm_replied_tag
-  - pop_oauth_refresh_command
-  - sidebar_non_empty_mailbox_only
-  - size_show_bytes
-  - size_show_fractions
-  - size_show_mb
-  - size_units_on_left
-  - smtp_oauth_refresh_command
-  - ssl_use_tlsv1_3
+  - `$attach_save_dir`
+  - `$attach_save_without_prompting`
+  - `$autocrypt`
+  - `$autocrypt_acct_format`
+  - `$autocrypt_dir`
+  - `$autocrypt_reply`
+  - `$auto_subscribe`
+  - `$crypt_chars`
+  - `$crypt_protected_headers_read`
+  - `$crypt_protected_headers_save`
+  - `$crypt_protected_headers_subject`
+  - `$crypt_protected_headers_write`
+  - `$external_search_command`
+  - `$fcc_before_send`
+  - `$forward_attachments`
+  - `$imap_condstore`
+  - `$imap_fetch_chunk_size`
+  - `$imap_oauth_refresh_command`
+  - `$imap_qresync`
+  - `$imap_rfc5161`
+  - `$include_encrypted`
+  - `$nm_flagged_tag`
+  - `$nm_replied_tag`
+  - `$pop_oauth_refresh_command`
+  - `$sidebar_non_empty_mailbox_only`
+  - `$size_show_bytes`
+  - `$size_show_fractions`
+  - `$size_show_mb`
+  - `$size_units_on_left`
+  - `$smtp_oauth_refresh_command`
+  - `$ssl_use_tlsv1_3`
 * New Commands
-  - index-format-hook
-  - named-mailboxes
-  - unbind
-  - unmacro
+  - `:index-format-hook`
+  - `:named-mailboxes`
+  - `:unbind`
+  - `:unmacro`
 * New Functions
-  - autocrypt-acct-menu
-  - autocrypt-menu
-  - compose-to-sender
-  - create-account
-  - delete-account
-  - descend-directory
-  - group-chat-reply
-  - mailbox-cycle
-  - mailbox-list
-  - toggle-active
-  - toggle-prefer-encrypt
-  - toggle-write
-  - vfolder-from-query-readonly
+  - `<autocrypt-acct-menu>`
+  - `<autocrypt-menu>`
+  - `<compose-to-sender>`
+  - `<create-account>`
+  - `<delete-account>`
+  - `<descend-directory>`
+  - `<group-chat-reply>`
+  - `<mailbox-cycle>`
+  - `<mailbox-list>`
+  - `<toggle-active>`
+  - `<toggle-prefer-encrypt>`
+  - `<toggle-write>`
+  - `<vfolder-from-query-readonly>`
 * Bug Fixes
   - Fix crashes
   - Fix memory leaks
@@ -1051,7 +1051,7 @@
 
 2018-07-16  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - \<check-stats\> function
+  - `<check-stats>` function
 * Bug Fixes
   - Lots
 
@@ -1060,7 +1060,7 @@
   - Expand variables inside backticks
   - Honour SASL-IR IMAP capability in SASL PLAIN
 * Bug Fixes
-  - Fix toggle-read
+  - Fix `<toggle-read>`
   - Do not truncate shell commands on ; or #
   - pager: index must be rebuilt on MUTT_REOPENED
   - Handle a BAD response in AUTH PLAIN w/o initial response
@@ -1085,13 +1085,13 @@
 2018-05-12  Richard Russon  \<rich@flatcap.org\>
 * Features
   - echo command
-  - Add $browser_abbreviate_mailboxes
+  - Add `$browser_abbreviate_mailboxes`
   - Add ~M pattern to match mime Content-Types
   - Add support for multipart/multilingual emails
   - Jump to a collapsed email
   - Add support for idn2 (IDNA2008)
 * Bug Fixes
-  - Let mutt_ch_choose report conversion failure
+  - Let `mutt_ch_choose()` report conversion failure
   - minor IMAP string handling fixes
 * Translations
   - Chinese (Simplified) (100%)
@@ -1114,10 +1114,10 @@
   - split out window functions
   - split out terminal setting
   - convert MyVars to use TAILQ
-  - split mutt_file_{lock,unlock}
-  - Move IDN version string to mutt/idna.c
-  - refactor: init_locale()
-  - Eliminate static variable in mutt_file_dirname
+  - split `mutt_file_{lock,unlock}()`
+  - Move IDN version string to `mutt/idna.c`
+  - refactor: `init_locale()`
+  - Eliminate static variable in `mutt_file_dirname()`
 * Tidy
   - test int functions against 0
   - rename lots of constants
@@ -1126,13 +1126,13 @@
 * Upstream
   - Increase account.user/login size to 128
   - Fix comparison of flags with multiple bits set
-  - Change mutt_error call in mutt_gpgme_set_sender() to dprint
+  - Change `mutt_error()` call in `mutt_gpgme_set_sender()` to dprint
   - Improve the error message when a signature is missing
   - pager specific "show incoming mailboxes list" macro
   - Improve gss debug printing of status_string
   - Remove trailing null count from gss_buffer_desc.length field
   - Add a comment in auth_gss about RFCs and null-termination
-  - Change prompt string for $crypt_verify_sig
+  - Change prompt string for `$crypt_verify_sig`
 
 2018-03-23  Richard Russon  \<rich@flatcap.org\>
 * Features
@@ -1163,7 +1163,7 @@
   - Support —with-sysroot configure arg
   - Expose EXTRA_CFLAGS_FOR_BUILD and EXTRA_LDFLAGS_FOR_BUIlD
   - Update to latest autosetup
-  - Make sure git_ver.h doesn't eat random 'g's out of tag names
+  - Make sure `git_ver.h` doesn't eat random 'g's out of tag names
 * Code
   - Refactor to reduce complexity
   - Refactor to reduce variables' scope
@@ -1171,8 +1171,8 @@
 
 2018-02-23  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - browser: `\<goto-parent\>` function bound to "p"
-  - editor: `\<history-search\>` function bound to "Ctrl-r"
+  - browser: `<goto-parent>` function bound to "p"
+  - editor: `<history-search>` function bound to "Ctrl-r"
   - Cygwin support: https://neomutt.org/distro/cygwin
   - openSUSE support: https://neomutt.org/distro/suse
   - Upstream Homebrew support: Very soon - https://neomutt.org/distro/homebrew
@@ -1182,9 +1182,9 @@
   - display of special chars
   - lua: enable myvars
   - for pgpewrap in default gpg.rc
-  - reply_regexp which wasn't formatted correctly.
+  - `$reply_regexp` which wasn't formatted correctly.
   - parsing of urls containing '?'
-  - out-of-bounds read in mutt_str_lws_len
+  - out-of-bounds read in `mutt_str_lws_len()`
 * Translations
   - Review fuzzy lt translations
   - Updated French translation
@@ -1219,12 +1219,12 @@
   - Fix improper signed int conversion of IMAP uid and msn values
   - Change imap literal counts to parse and store unsigned ints
   - Fix imap status count range check
-  - cmd_handle_fatal: make error message a bit more descriptive
+  - `cmd_handle_fatal()`: make error message a bit more descriptive
   - Create pgp and s/mime default and sign_as key vars
   - Add missing setup calls when resuming encrypted drafts
-  - mutt_pretty_size: show real number for small files
-  - examine_directory: set directory/symlink size to zero
-  - Add history-search function, bound to ctrl-r
+  - `mutt_pretty_size()`: show real number for small files
+  - `examine_directory()`: set directory/symlink size to zero
+  - Add `<history-search>` function, bound to ctrl-r
   - Avoid a potential integer overflow if a Content-Length value is huge
 
 2017-12-15  Richard Russon  \<rich@flatcap.org\>
@@ -1234,33 +1234,33 @@
 2017-12-08  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Enhance ifdef feature to support my_ vars
-  - Add \<edit-or-view-raw-message\>
+  - Add `<edit-or-view-raw-message>`
   - Remove vim syntax file from the main repo
   - Support reading FQDN from mailname files
 * Bug Fixes
   - Do not turn CRLF into LF when dealing with transfer-encoding=base64
   - Cleanup "SSL is unavailable" error in mutt_conn_find
   - Don't clear the macro buffer during startup
-  - Fixup smart modify-labels-then-hide for !tag case
+  - Fixup smart `<modify-labels-then-hide>` for !tag case
   - Add sleep after SMTP error
-  - Restore folder settings after folder-hook
+  - Restore folder settings after `folder-hook`
   - Fix segfault when pipe'ing a deleted message
 * Docs
   - Display_filter escape sequence
   - Correct spelling mistakes
-  - Add a sentence to quasi-delete docs
+  - Add a sentence to `<quasi-delete>` docs
   - Modify gpg.rc to accommodate GPG 2.1 changes
 * Build
   - Fix build for RHEL6
   - Define NCURSES_WIDECHAR to require wide-char support from ncurses
   - Autosetup: fix check for missing sendmail
-  - Respect --with-ssl path
+  - Respect `--with-ssl` path
   - Check that OpenSSL md5 supports -r before using it
-  - Autosetup: expand --everything in `neomutt -v`
-  - Make sure objects are not compiled before git_ver.h is generated
+  - Autosetup: expand `--everything` in `neomutt -v`
+  - Make sure objects are not compiled before `git_ver.h` is generated
   - Build: fix update-po target
   - Fix out-of-tree builds
-  - Fix stdout + stderr redirection in hcachever.sh
+  - Fix stdout + stderr redirection in `hcachever.sh`
   - Build: moved the check for idn before the check for notmuch
   - Define prefix in Makefile.autosetup
   - Install stuff to $(PACKAGE) in $(libexecdir), not $(libdir)
@@ -1287,11 +1287,11 @@
   - Return early where possible
 * Upstream
   - Note which ssl config vars are GnuTLS or OpenSSL only
-  - Add message count to $move quadoption prompt
-  - Add %R (number of read messages) for $status_format
-  - Add $change_folder_next option to control mailbox suggestion order
-  - Fix $smart_wrap to not be disabled by whitespace-prefixed lines
-  - Remove useless else branch in the $smart_wrap code
+  - Add message count to `$move` quadoption prompt
+  - Add %R (number of read messages) for `$status_format`
+  - Add `$change_folder_next` option to control mailbox suggestion order
+  - Fix `$smart_wrap` to not be disabled by whitespace-prefixed lines
+  - Remove useless else branch in the `$smart_wrap` code
   - Fix ansi escape sequences with both reset and color parameters
 
 2017-10-27  Richard Russon  \<rich@flatcap.org\>
@@ -1302,7 +1302,7 @@
   - notmuch: virtual-mailboxes should accept a limit
   - Issue 888: Fix imap mailbox flag logging
   - fix actions on tagged messages
-  - call the folder-hook before saving to $record
+  - call the `folder-hook` before saving to `$record`
   - Fix smart wrap in pager without breaking header
   - Add polling for the IDLE command
 * Docs
@@ -1314,8 +1314,8 @@
 * Build
   - Fix update-po
   - Fix neomutt.pot location, remove from git
-  - Allow to specify --docdir at configure time
-  - Generate neomuttrc even if configured with --disable-doc
+  - Allow to specify `--docdir` at configure time
+  - Generate neomuttrc even if configured with `--disable-doc`
   - Let autosetup define PWD, do not unnecessarily try to create hcache dir
   - Use bundled wcscasecmp if an implementation is not found in libc
   - Use host compiler to build the documentation
@@ -1324,7 +1324,7 @@
   - Fixes for endianness detection
   - Update autosetup to latest master branch
   - Do not use CPPFLAGS / CFLAGS together with CC_FOR_BUILD
-  - --enable-everything includes lua
+  - `--enable-everything` includes lua
   - autosetup: check for sys_siglist[]
 * Code
   - move functions to library
@@ -1335,19 +1335,19 @@
   - merge: minor code cleanups
   - split up 'if' statements that assign and test
   - Refactor: Remove unused return type
-  - Bool: change functions in mx.h
-  - bool: convert function parameters in nntp.h
-  - add extra checks to mutt_pattern_exec()
+  - Bool: change functions in `mx.h`
+  - bool: convert function parameters in `nntp.h`
+  - add extra checks to `mutt_pattern_exec()`
   - Use safe_calloc to initialize memory, simplify size_t overflow check
-  - Move mutt_rename_file to lib/file.[hc]
+  - Move `mutt_rename_file()` to lib/file.[hc]
   - doxygen: fix a few warnings
   - minor code fixes
-  - use mutt_array_size()
+  - use `mutt_array_size()`
   - refactor out O_NOFOLLOW
   - initialise variables
   - lib: move List and Queue into library
   - url: make notmuch query string parser generic
-  - Wrap dirname(3) inside a mutt_dirname() function
+  - Wrap dirname(3) inside a `mutt_dirname()` function
 
 2017-10-13  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
@@ -1365,13 +1365,13 @@
   - set mbox_type
   - %{fmt} date format
   - Fix off-by-one buffer overflow in add_index_color
-  - crash in mbox_to_udomain
-  - crash in mutt_substrdup
+  - crash in `mbox_to_udomain()`
+  - crash in `mutt_substrdup()`
   - crash looking up mime body type
-  - digest_collapse was broken
+  - `$digest_collapse` was broken
   - crash using notmuch expando with imap
-  - imap: Fix mx.mbox leak in imap_get_parent_path
-  - overflow in mutt_mktime()
+  - imap: Fix mx.mbox leak in `imap_get_parent_path()`
+  - overflow in `mutt_mktime()`
   - add more range-checking on dates/times
   - Remove spurious error message
   - Unsubscribe after deleting an imap folder
@@ -1399,14 +1399,14 @@
   - Close the imap socket for the selected mailbox on error
   - Add missing IMAP_CMD_POLL flag in imap mailbox check
   - Change maildir and mh check_mailbox to use dynamic sized hash
-  - Fix uses of context-\>changed as a counter
-  - Make cmd_parse_fetch() more precise about setting reopen/check flags
-  - Enable $reply_self for group-reply, even with $me_too unset
+  - Fix uses of `context->changed` as a counter
+  - Make `cmd_parse_fetch()` more precise about setting reopen/check flags
+  - Enable `$reply_self` for `<group-reply,>` even with $me_too unset
 
 2017-09-12  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - broken check on resend message
-  - crash in vfolder-from-query
+  - crash in `<vfolder-from-query>`
 * Build
   - Be more formal about quoting in m4 macros
   - fix warnings raised by gcc7
@@ -1418,7 +1418,7 @@
 * Bug Fixes
   - Only match real mailboxes when looking for new mail
   - Fix the printing of ncurses version in -v output
-  - Bind editor \<delete\> to delete-char
+  - Bind editor `<delete>` to `<delete-char>`
   - Fix overflowing colours
   - Fix empty In-Reply-To generation
   - Trim trailing slash from completed dirs
@@ -1443,11 +1443,11 @@
   - Use a standard list implementation
   - Coverity fixes
   - Use explicit NUL for string terminators
-  - Drop OPS\* in favour of opcodes.h
+  - Drop OPS\* in favour of `opcodes.h`
 * Upstream
   - Fix menu color calls to occur before positioning the cursor
   - When guessing an attachment type, don't allow text/plain if there is a null character
-  - Add $imap_poll_timeout to allow mailbox polling to time out
+  - Add `$imap_poll_timeout` to allow mailbox polling to time out
   - Handle error if REGCOMP in pager fails when resizing
   - Change recvattach to allow nested encryption
   - Fix attachment check_traditional and extract_keys operations
@@ -1463,9 +1463,9 @@
   - doxygen: add config file
   - doxygen: tidy existing comments
 * Build
-  - fix hcachever.sh script
+  - fix `hcachever.sh` script
 * Upstream
-  - Fix crash when $postponed is on another server.
+  - Fix crash when `$postponed` is on another server.
 
 2017-07-07  Richard Russon  \<rich@flatcap.org\>
 * Features
@@ -1485,8 +1485,8 @@
   - Uses CurrentFolder to populate LastDir with IMAP
   - stabilise sidebar sort order
   - colour emails with a '+' in them
-  - the padding expando '%\>'
-  - Do not set old flag if mark_old is false
+  - the padding expando `%>`
+  - Do not set old flag if `$mark_old` is false
   - maildir creation
   - Decode CRLF line endings to LF when copying headers
   - score address pattern do not match personal name
@@ -1506,7 +1506,7 @@
   - add code of conduct
   - fix ifdef examples
   - update mailmap
-  - Update modify-labels-then-hide
+  - Update `<modify-labels-then-hide>`
   - fix mailmap
   - drop UPDATING files
 * Website
@@ -1527,27 +1527,27 @@
   - don't delete non-existent files
   - remove another reference to devel-notes.txt
   - Handle native Solaris GSSAPI.
-  - drop configure options --enable-exact-address
-  - drop configure option --with-exec-shell
-  - drop configure option --enable-nfs-fix
-  - drop configure option --disable-warnings
+  - drop configure options `--enable-exact-address`
+  - drop configure option `--with-exec-shell`
+  - drop configure option `--enable-nfs-fix`
+  - drop configure option `--disable-warnings`
   - Completely remove dotlock
   - More sophisticated check for BDB version + support for DB6 (non default)
 * Tidy
   - drop VirtIncoming
-  - split parse_mailboxes into parse_unmailboxes
+  - split `parse_mailboxes()` into `parse_unmailboxes()`
   - tidy some mailbox code
   - tidy the version strings
 * Upstream
   - Add ~\<() and ~\>() immediate parent/children patterns
   - Add L10N comments to the GNUTLS certificate prompt
-  - Add more description for the %S and %Z $index_format characters
+  - Add more description for the %S and %Z `$index_format` characters
   - Add config vars for forwarded message attribution intro/trailer
   - Block SIGWINCH during connect()
   - Improve the L10N comment about Sign as
   - Auto-pad translation for the GPGME key selection "verify key" headers
   - Enable all header fields in the compose menu to be translated
-  - Force hard redraw after $sendmail instead of calling mutt_endwin
+  - Force hard redraw after `$sendmail` instead of calling `mutt_endwin()`
   - Make GPGME key selection behavior the same as classic-PGP
   - Rename 'sign as' to 'Sign as'; makes compose menu more consistent
   - Change the compose menu fields to be dynamically padded
@@ -1568,14 +1568,14 @@
   - explain binding warnings
   - don't document unsupported arches
 * Build
-  - fix make git_ver.h
+  - fix make `git_ver.h`
   - allow xsltproc and w3m calls to fail
   - fix make dist
 * Upstream
-  - Add a mutt_endwin() before invoking $sendmail
+  - Add a `mutt_endwin()` before invoking `$sendmail`
   - Restore setenv function
-  - Fix tag-prefix to not abort on $timeout
-  - Change km_dokey() to return -2 on a timeout/sigwinch
+  - Fix `<tag-prefix>` to not abort on `$timeout`
+  - Change `km_dokey()` to return -2 on a timeout/sigwinch
   - Enable TEXTDOMAINDIR override to make translation testing easier
   - Fix "format string is not a string literal" warnings
 
@@ -1583,14 +1583,14 @@
 * Features
   - Warn on bindkey aliasing
   - Drop PATCHES, tidy 'mutt -v' output
-  - Add %z format strings to index_format
-  - Add debug_level/debug_file options
+  - Add %z format strings to `$index_format`
+  - Add `$debug_level`/`$debug_file` options
 * Bug Fixes
   - Fix nntp group selection
   - Fix status color
   - Tidy up S/MIME contrib
   - Do not try to create Maildir if it is an NNTP URL
-  - Fix missing NONULL for mutt.set() in Lua
+  - Fix missing NONULL for `mutt.set()` in Lua
 * Translations
   - Fix German PGP shortkeys
 * Docs
@@ -1628,12 +1628,12 @@
   - Remove typedefs and rename ~130 structs
   - Add separate hcache dir
   - Move crypto files to ncrypt dir
-  - Split up mutt.h, protos.h
+  - Split up `mutt.h`, `protos.h`
   - Always build: sidebar, imap, pop, smtp, compressed, nntp
-  - Remove --enable-mailtool configure option
+  - Remove `--enable-mailtool` configure option
   - Make dotlock optional
   - Change gpgme requirement back to 1.1.0
-  - Remove check_sec.sh
+  - Remove `check_sec.sh`
   - Fix safe_calloc args
   - Remove unused macros
   - Remove unused option: SmimeSignOpaqueCommand
@@ -1642,7 +1642,7 @@
   - Drop obsolete iconv check
   - Unused prototypes - unsupported systems
   - Drop many configure tests for things defined in POSIX:2001
-  - Kill useless crypthash.h file
+  - Kill useless `crypthash.h` file
   - Run clang-format on the code
   - Fail early if ncursesw cannot be found
   - Add names prototype arguments
@@ -1651,26 +1651,26 @@
   - Reduce the scope of for loop variables
   - Coverity: fix defects
 * Upstream
-  - Convert all exec calls to use mutt_envlist(), remove setenv function
-  - Note that mbox-hooks are dependent on $move
+  - Convert all exec calls to use `mutt_envlist()`, remove setenv function
+  - Note that mbox-hooks are dependent on `$move`
   - Refresh header color when updating label
-  - Remove glibc-specific execvpe() call in sendlib.c
+  - Remove glibc-specific `execvpe()` call in `sendlib.c`
   - Add color commands for the compose menu headers and security status
   - Fix sidebar count updates when closing mailbox
   - Don't modify LastFolder/CurrentFolder upon aborting a change folder operation
   - Change message modifying operations to additively set redraw flags
-  - Improve maildir and mh to report flag changes in mx_check_mailbox()
-  - Add $header_color_partial to allow partial coloring of headers
+  - Improve maildir and mh to report flag changes in `mx_check_mailbox()`
+  - Add `$header_color_partial` to allow partial coloring of headers
   - Rename REDRAW_SIGWINCH to REDRAW_FLOW
   - Create R_PAGER_FLOW config variable flag
   - Turn IMAP_EXPUNGE_EXPECTED back off when syncing
-  - Add $history_remove_dups option to remove dups from history ring
+  - Add `$history_remove_dups` option to remove dups from history ring
   - Also remove duplicates from the history file
   - Don't filter new entries when compacting history save file
   - Move the IMAP msn field to IMAP_HEADER_DATA
   - Fix imap expunge to match msn and fix index
-  - Fix cmd_parse_fetch() to match against MSN
-  - Start fixing imap_read_headers() to account for MSN gaps
+  - Fix `cmd_parse_fetch()` to match against MSN
+  - Start fixing `imap_read_headers()` to account for MSN gaps
   - Add msn_index and max_msn to find and check boundaries by MSN
   - Properly adjust fetch ranges when handling new mail
   - Small imap fetch fixes
@@ -1683,7 +1683,7 @@
   - Change imap body cache cleanup to use the uid_hash
   - Convert classic s/mime to space delimit findKeys output
   - Add self-encrypt options for PGP and S/MIME
-  - Change $postpone_encrypt to use self-encrypt variables first
+  - Change `$postpone_encrypt` to use self-encrypt variables first
   - Automatic post-release commit for mutt-1.8.3
   - Add note about message scoring and thread patterns
 
@@ -1693,7 +1693,7 @@
 * Docs
   - Fix typo in README.neomutt (@l2dy)
 * Upstream
-  - Fix km_error_key() infinite loop and unget buffer pollution
+  - Fix `km_error_key()` infinite loop and unget buffer pollution
   - Fix error message when opening a mailbox with no read permission
 
 2017-04-21  Richard Russon  \<rich@flatcap.org\>
@@ -1703,12 +1703,12 @@
   - index_format: add support of %K
 * Bug Fixes
   - attachment/pager: Use mailcap for test/* except plain
-  - Fix uncollapse_new in pager
+  - Fix `$uncollapse_new` in pager
   - fix garbage in chdir prompt due to unescaped string
-  - Fix inbox-first functionality when using mutt_pretty_mailbox
+  - Fix inbox-first functionality when using `mutt_pretty_mailbox()`
   - add full neomutt version to log startup
   - fix bug in uncolor for notmuch tag
-  - fix broken from_chars behaviour
+  - fix broken `$from_chars` behaviour
 * Coverity defects
   - strfcpy
   - add variable - function arg could be NULL/invalid
@@ -1749,11 +1749,11 @@
   - drop obsolete m4 scripts
   - don't look for lua libs unless asked for
   - lower the gettext requirement 0.18 -\> 0.17
-  - add keymap_alldefs.h to BUILT_SOURCES
+  - add `keymap_alldefs.h` to BUILT_SOURCES
   - fix make dist distcheck
-  - Remove -Iimap from CFLAGS and include imap/imap.h explicitly
+  - Remove -Iimap from CFLAGS and include `imap/imap.h` explicitly
   - mx: fix conditional builds
-  - Make iconv mandatory (no more --disable-iconv)
+  - Make iconv mandatory (no more `--disable-iconv`)
   - refactor: Split out BUFFER-handling functions
 * Tidy
   - drop control characters from the source
@@ -1799,7 +1799,7 @@
   - boolify lots of struct members
   - boolify some function parameters
 * Upstream
-  - Add $ssl_verify_partial_chains option for OpenSSL
+  - Add `$ssl_verify_partial_chains` option for OpenSSL
   - Move the OpenSSL partial chain support check inside configure.ac
   - Don't allow storing duplicate certs for OpenSSL interactive prompt
   - Prevent skipped certs from showing a second time
@@ -1810,10 +1810,10 @@
   - Change OpenSSL to use SHA-256 for cert comparison
   - Fix conststrings type mismatches
   - Pass envlist to filter children too
-  - Fix envlist_set() for the case that envlist is null
+  - Fix `envlist_set()` for the case that envlist is null
   - Fix setenv overwriting to not truncate the envlist
-  - Fix (un)sidebar_pin to expand paths
-  - Fix mutt_refresh() pausing during macro events
+  - Fix `(un)sidebar_pin` to expand paths
+  - Fix `mutt_refresh()` pausing during macro events
   - Add a menu stack to track current and past menus
   - Change CurrentMenu to be controlled by the menu stack
   - Set refresh when popping the menu stack
@@ -1822,20 +1822,20 @@
   - Filter other directional markers that corrupt the screen
   - Remove the OPTFORCEREDRAW options
   - Remove SidebarNeedsRedraw
-  - Change reflow_windows() to set full redraw
+  - Change `reflow_windows()` to set full redraw
   - Create R_MENU redraw option
-  - Remove refresh parameter from mutt_enter_fname()
-  - Remove redraw flag setting after mutt_endwin()
-  - Change km_dokey() to pass SigWinch on for the MENU_EDITOR
+  - Remove refresh parameter from `mutt_enter_fname()`
+  - Remove redraw flag setting after `mutt_endwin()`
+  - Change `km_dokey()` to pass SigWinch on for the MENU_EDITOR
   - Separate out the compose menu redrawing
   - Separate out the index menu redrawing
   - Prepare for pager redraw separation
   - Separate out the pager menu redrawing
   - Don't create query menu until after initial prompt
-  - Silence imap progress messages for pipe-message
-  - Ensure mutt stays in endwin during calls to pipe_msg()
+  - Silence imap progress messages for `<pipe-message>`
+  - Ensure mutt stays in endwin during calls to `pipe_msg()`
   - Fix memleak when attaching files
-  - Add $ssl_verify_partial_chains option for OpenSSL
+  - Add `$ssl_verify_partial_chains` option for OpenSSL
   - Move the OpenSSL partial chain support check inside configureac
   - Don't allow storing duplicate certs for OpenSSL interactive prompt
   - Prevent skipped certs from showing a second time
@@ -1847,36 +1847,36 @@
   - Change OpenSSL to use SHA-256 for cert comparison
   - Fix conststrings type mismatches
   - Pass envlist to filter children too
-  - Fix envlist_set() for the case that envlist is null
+  - Fix `envlist_set()` for the case that envlist is null
   - Fix setenv overwriting to not truncate the envlist
-  - Fix mutt_refresh() pausing during macro events
+  - Fix `mutt_refresh()` pausing during macro events
   - Add a menu stack to track current and past menus
   - Change CurrentMenu to be controlled by the menu stack
   - Set refresh when popping the menu stack
   - Remove redraw parameter from crypt send_menus
   - Don't full redraw the index when handling a command from the pager
-  - Fix (un)sidebar_pin to expand paths
+  - Fix `(un)sidebar_pin` to expand paths
   - Filter other directional markers that corrupt the screen
   - Remove the OPTFORCEREDRAW options
   - Remove SidebarNeedsRedraw
-  - Change reflow_windows() to set full redraw
+  - Change `reflow_windows()` to set full redraw
   - Create R_MENU redraw option
-  - Remove refresh parameter from mutt_enter_fname()
-  - Remove redraw flag setting after mutt_endwin()
-  - Change km_dokey() to pass SigWinch on for the MENU_EDITOR
+  - Remove refresh parameter from `mutt_enter_fname()`
+  - Remove redraw flag setting after `mutt_endwin()`
+  - Change `km_dokey()` to pass SigWinch on for the MENU_EDITOR
   - Separate out the compose menu redrawing
   - Separate out the index menu redrawing
   - Prepare for pager redraw separation
   - Separate out the pager menu redrawing
   - Don't create query menu until after initial prompt
-  - Silence imap progress messages for pipe-message
-  - Ensure mutt stays in endwin during calls to pipe_msg()
+  - Silence imap progress messages for `<pipe-message>`
+  - Ensure mutt stays in endwin during calls to `pipe_msg()`
   - Fix memleak when attaching files
   - automatic post-release commit for mutt-181
   - Added tag mutt-1-8-1-rel for changeset f44974c10990
   - mutt-181 signed
   - Add ifdefs around new mutt_resize_screen calls
-  - Add multiline and sigwinch handling to mutt_multi_choice
+  - Add multiline and sigwinch handling to `mutt_multi_choice()`
   - Set pager's REDRAW_SIGWINCH when reflowing windows
   - Add multiline and sigwinch handling to mutt_yesorno
   - Change the sort prompt to use (s)ort style prompts
@@ -1899,21 +1899,21 @@
   - Increase ACCOUNT.pass field size. (closes #3921)
   - SSL: Fix memory leak in subject alternative name code. (closes #3920)
   - Prevent segv if open-appending to an mbox fails. (closes #3918)
-  - Clear out extraneous errors before SSL_connect() (see #3916)
+  - Clear out extraneous errors before `SSL_connect()` (see #3916)
 
 2017-02-25  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - Add option $show_multipart_alternative
+  - Add option `$show_multipart_alternative`
   - notmuch: Allow to use untransformed tag for color
   - Use getaddrinfo_a if possible (#420)
 * Bug Fixes
   - handle sigint within socket operations (#411)
-  - Avoid browsing the remote spool_file by setting MUTT_SELECT_MULTI attach
+  - Avoid browsing the remote `$spool_file` by setting MUTT_SELECT_MULTI attach
   - notmuch: fix crash when completing tags (#395)
   - Fixes missing failure return of notmuch msg open (#401)
   - Fix latest Coverity issues (#387)
   - Advance by the correct number of position even for unknown characters (#368)
-  - Release KyotoCabinet data with kcfree() (#384)
+  - Release KyotoCabinet data with `kcfree()` (#384)
   - 22 resource leaks
 * Translations
   - Update translations
@@ -1927,7 +1927,7 @@
   - link to clang-format config in main repo (#28)
   - updated list of useful programs
   - update/improve list of useful programs
-  - sidebar_format has a single default value
+  - `$sidebar_format` has a single default value
   - fix name of GNU Guix
   - added guix distro
   - added link to new afew maintainers
@@ -1943,82 +1943,82 @@
   - streamline builds
   - fix doc generator
   - add a few includes (prelude to clang-format)
-  - slcurses.h defines its own bool type
+  - `slcurses.h` defines its own bool type
   - travis: use container build
   - add clang-format file
-  - Remove ugly macros and casts from crypt_gpgme.c
+  - Remove ugly macros and casts from `crypt_gpgme.c`
   - fix minor reflow issues in some comments
   - editorconfig: use spaces to indent in *.[ch] files
   - added comment-blocks for clang-format to ignore
   - fix 80 column limit, align statements
-  - Remove snprintf.c from EXTRA_DIST (#406)
+  - Remove `snprintf.c` from EXTRA_DIST (#406)
   - Kill homebrew (v)snprintf implementations, as they are C99 (#402)
   - Display charset + small refactoring
   - Do not cast or check returns from safe_calloc (#396)
   - refactor: create a generic base64 encode/decode
   - debug: remove dprint in favor of mutt_debug (#375)
-  - Fix dubious use macro for _() / gettext() (#376)
+  - Fix dubious use macro for `_()` / `gettext()` (#376)
   - Use buf_init instead of memset
   - Make the heap method and datatype a plain list
   - Reverts making AliasFile into a list_t (#379)
   - Turn mutt_new_* macros into inline functions
   - Do not cast return values from malloc (or similar)
 * Upstream
-  - Simplify mutt_label_complete().
-  - Permit tab completion of pattern expressions with ~y (labels).
-  - Fix the mutt_label_complete() pos parameter.
-  - Fix the x-label update code check location.
-  - Improve the label completion hash table usage.
-  - Adds label completion.
-  - Add hash_find_elem to get the hash element.
-  - Minor fixes to the x-label patch from David.
-  - Adds capability to edit x-labels inside mutt, and to sort by label.
-  - Allow "unsubjectrc *" to remove all patterns.
-  - Add subjectrx command to replace matching subjects with something else.
+  - Simplify `mutt_label_complete()`
+  - Permit tab completion of pattern expressions with ~y (labels)
+  - Fix the `mutt_label_complete()` pos parameter
+  - Fix the x-label update code check location
+  - Improve the label completion hash table usage
+  - Adds label completion
+  - Add `hash_find_elem()` to get the hash element
+  - Minor fixes to the x-label patch from David
+  - Adds capability to edit x-labels inside mutt, and to sort by label
+  - Allow "unsubjectrc *" to remove all patterns
+  - Add subjectrx command to replace matching subjects with something else
   - Abstract the SPAM_LIST as a generic REPLACE_LIST
-  - Improve Reply-to vs From comparison when replying. (closes #3909)
-  - Fix sidebar references to the "new count" to be "unread". (closes #3908)
-  - Fix several alias hashtable issues.
+  - Improve Reply-to vs From comparison when replying
+  - Fix sidebar references to the "new count" to be "unread"
+  - Fix several alias hashtable issues
   - Add casecmp and strdup_key flags to hash_create()
-  - Improve error handling in mbox magic detection.
-  - Allow initial blank lines in local mailboxes.
-  - Fix minor documentation issues.
-  - Convert cmd_parse_search to use the uid hash. (closes #3905)
-  - Create a uid hash for imap. (see #3905)
-  - Convert HASH to be indexable by unsigned int. (see #3905)
-  - Fix imap server-side search to call uid2msgno() only once. (see #3905)
-  - Add a pattern_cache_t to speed up a few repeated matches.
-  - Canonicalize line endings for GPGME S/MIME encryption. (closes #3904)
-  - Fix build for bdb.
-  - Create function to free header cache data.
-  - Add Kyoto Cabinet support to the header cache.
-  - Prevent null pointer exception for h-\>ai_canonname
-  - Show SHA1 fp in interactive cert check menu.
-  - Fix potential cert memory leak in check_certificate_by_digest().
-  - Plug memory leak in weed-expired-certs code.
-  - Filter expired local certs for OpenSSL verification.
-  - Change "allow_dups" into a flag at hash creation.
+  - Improve error handling in mbox magic detection
+  - Allow initial blank lines in local mailboxes
+  - Fix minor documentation issues
+  - Convert cmd_parse_search to use the uid hash
+  - Create a uid hash for imap
+  - Convert HASH to be indexable by unsigned int
+  - Fix imap server-side search to call `uid2msgno()` only once
+  - Add a pattern_cache_t to speed up a few repeated matches
+  - Canonicalize line endings for GPGME S/MIME encryption
+  - Fix build for bdb
+  - Create function to free header cache data
+  - Add Kyoto Cabinet support to the header cache
+  - Prevent null pointer exception for `h->ai_canonname`
+  - Show SHA1 fp in interactive cert check menu
+  - Fix potential cert memory leak in `check_certificate_by_digest()`
+  - Plug memory leak in weed-expired-certs code
+  - Filter expired local certs for OpenSSL verification
+  - Change "allow_dups" into a flag at hash creation
 
 2017-02-06  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
-  - Unicode 0x202F is a non-break space too (#358) (@gahr)
-  - improve readability of find_subject() (@toogley)
-  - Import hcache-lmdb fixes from upstream (#363) (@gahr)
-  - Rework the "inbox-first" implementation to make code self-explanatory (#356) (@gahr)
-  - If possible, only redraw after gpgme has invoked pinentry (#352) (@gahr)
-  - Remove two use-after free in global hooks (#353) (@guiniol)
-  - Handle BAD as IMAP_AUTH_UNAVAIL (#351) (@gahr)
-  - Do not crash when closing a non-opened mailbox (origin/requests/github/343) (@gahr)
-  - Import hcache benchmark (@gahr)
+  - Unicode 0x202F is a non-break space too (#358)
+  - improve readability of `find_subject()`
+  - Import hcache-lmdb fixes from upstream (#363)
+  - Rework the "inbox-first" implementation to make code self-explanatory (#356)
+  - If possible, only redraw after gpgme has invoked pinentry (#352)
+  - Remove two use-after free in global hooks (#353)
+  - Handle BAD as IMAP_AUTH_UNAVAIL (#351)
+  - Do not crash when closing a non-opened mailbox
+  - Import hcache benchmark
   - fix: bug introduced by mkdir changes (#350)
   - change pager to allow timehook-hook to fire
 * Docs
-  - Update documentation about modify-labels-then-hide (@bbenne10)
+  - Update documentation about `<modify-labels-then-hide>`
 
 2017-01-28  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Add option for missing subject replacement
-  - notmuch: Allow \<modify-labels\> to toggle labels
+  - notmuch: Allow `<modify-labels>` to toggle labels
   - Support for aborting mailbox loading
   - Do a mailbox check after shell escape
   - Support of relative paths sourcing and cyclic source detection
@@ -2043,22 +2043,22 @@
   - fix docbook validation
 * Build
   - Start migrating to stdbool logic
-  - add recursive mkdir()
+  - add recursive `mkdir()`
   - reformat the source to mutt standards
-  - appease check_sec.sh
+  - appease `check_sec.sh`
 
 2017-01-13  Richard Russon  \<rich@flatcap.org\>
 * Features
-  - Allow custom status flags in index_format
-  - $from_chars highlights differences in authorship
+  - Allow custom status flags in `$index_format`
+  - `$from_chars` highlights differences in authorship
   - notmuch: make 'Folder' and 'Tags' respect (un)ignore
   - notmuch: add "virtual-unmailboxes" command
 * Bug Fixes
-  - pick smarter default for $sidebar_divider_char
+  - pick smarter default for `$sidebar_divider_char`
   - status color breaks "mutt -D"
-  - Enable reconstruct-thread in the pager
+  - Enable `<reconstruct-thread>` in the pager
   - manually touch 'atime' when reading a mbox file
-  - allow $to_chars to contain Unicode characters
+  - allow `$to_chars` to contain Unicode characters
   - increase the max lmdb database size
   - restore limit current thread
   - don't reset the alarm unless we set it
@@ -2069,13 +2069,13 @@
   - German translation
 * Docs
   - Improve whitespace and grammar on the NNTP feature page
-  - make $to_chars docs more legible
+  - make `$to_chars` docs more legible
   - de-tab the DocBook
   - fix 301 redirects
 * Build
-  - New configure option --enable-everything
+  - New configure option `--enable-everything`
   - add a constant for an aborted question
-  - enhance mutt_to_base64() (and callers)
+  - enhance `mutt_to_base64()` (and callers)
   - Fix configure.ac to require md5 if hcache is enabled
   - Bail if a selected hcache backend cannot be found
   - refactor mutt_matches_ignore
@@ -2083,7 +2083,7 @@
   - add unicode string helper function
   - Re-indent configure.ac
   - generate devel version suffix
-  - fix check_sec.sh warnings
+  - fix `check_sec.sh` warnings
   - remove unnecessary #ifdef's
   - add missing #ifdef for nntp
   - ignore some configure temp files
@@ -2095,7 +2095,7 @@
   - Fix failure with GPGME 1.8: do not steal the gpgme_ prefix.
   - search muttrc file according to XDG Base Specification (closes #3207)
   - Improve openssl interactive_check_cert. (closes #3899)
-  - Add mutt_array_size macro, change interactive_check_cert() to use it. (see #3899)
+  - Add mutt_array_size macro, change `interactive_check_cert()` to use it. (see #3899)
   - Return to pager upon aborting a jump operation. (closes #3901)
   - Change sidebar_spool_file coloring to be lower precedence.
   - Move '@' pattern modifier documentation to the right section.
@@ -2104,15 +2104,15 @@
   - Add option to control whether threads uncollapse when new mail arrives.
   - In the manual, replaced 2 para by example (similar to the first example).
   - Create MbTable type for multibyte character arrays. (see #3024)
-  - Make to_chars and status_chars accept mulitibyte characters. (closes #3024)
+  - Make `$to_chars` and `$status_chars` accept mulitibyte characters. (closes #3024)
 
 2016-11-26  Richard Russon  \<rich@flatcap.org\>
 * Features
   - Upstream adoption of compress
   - Multiple hcache backends and run-time selection
-  - $forward_references includes References: header on forwards
+  - `$forward_references` includes References: header on forwards
   - Hooks: define hooks for startup and shutdown
-  - Add $collapse_all to close threads automatically
+  - Add `$collapse_all` to close threads automatically
 * Bug Fixes
   - Index in pager crash
   - Tag with multiple labels
@@ -2131,11 +2131,11 @@
   - new-mail bug is fixed
   - add since date for features
   - expand example command options for compress
-  - fix entries for beep and new-mail-command
+  - fix entries for `$beep` and `new-mail-command`
   - add a version number to the generated vimrc
   - fix links in README
   - don't use smart quotes in manual examples
-  - \<escape\> and \e means refers to both alt and escape key
+  - `<escape>` and `\e` means refers to both alt and escape key
 * Build
   - Travis: test messages
   - Add option to disable translation messages
@@ -2143,19 +2143,19 @@
   - Doc/Makefile clean neomutt-syntax.vim
   - Improve discovery for the Berkeley Database
   - Fix nntp/notmuch conditionals
-  - Implement mutt_strchrnul()
+  - Implement `mutt_strchrnul()`
   - Rename vim-keybindings to vim-keys
 * Upstream
-  - attach_format: add new %F placeholder
+  - `$attach_format`: add new %F placeholder
   - Compose: add operation to rename an attachment
-  - Chain %d-\>%F-\>%f in the attachment menu
-  - Move mbox close-append logic inside mbox_close_mailbox()
-  - When $flag_safe is set, flagged messages cannot be deleted
+  - Chain `%d->%F->%f` in the attachment menu
+  - Move mbox close-append logic inside `mbox_close_mailbox()`
+  - When `$flag_safe` is set, flagged messages cannot be deleted
   - Adds the '@' pattern modifier to limit matches to known aliases
-  - Adds \<mark-message\> binding to create "hotkeys" for messages
+  - Adds `<mark-message>` binding to create "hotkeys" for messages
   - Updated requirement on the C compiler
-  - Fix mark-message translation and keybind menu
-  - More openssl1.1 fixes: remove uses of X509-\>name in debugging. (closes #3870)
+  - Fix `<mark-message>` translation and keybind menu
+  - More openssl1.1 fixes: remove uses of `X509->name` in debugging. (closes #3870)
   - Don't close stderr when opening a tunnel. (closes #3726)
   - Minor resource and error logic cleanup in tunnel_socket_open()
   - Make sure that the output of X509_NAME_oneline is null-terminated
@@ -2164,12 +2164,12 @@
 * Bug Fixes
   - don't crash when the imap connection dies
 * Upstream
-  - Add root-message function to jump to root message in thread.
+  - Add `<root-message>` function to jump to root message in thread.
   - Updated French translation.
-  - Prevent an integer overflow in mutt_mktime() (closes #3880)
+  - Prevent an integer overflow in `mutt_mktime()` (closes #3880)
   - Fix pager segfault when lineInfo.chunks overflows. (closes #3888)
   - Perform charset conversion on text attachments when piping. (closes #3773) (see #3886)
-  - Add a --disable-doc configuration option.
+  - Add a `--disable-doc` configuration option.
   - Make ncurses and ncursesw header checking the same.
   - Attempt to silence a clang range warning. (closes #3891)
   - Fixed issue from changeset 4da647a80c55. (closes #3892)
@@ -2179,9 +2179,9 @@
 * Features
   - nntp: use safe_{fopen,fclose}
   - nntp: fix resource leak
-  - forgotten-attachment: Ignore lines matching quote_regex.
+  - forgotten-attachment: Ignore lines matching `$quote_regex`
   - forgotten-attachment: Fix checking logic.
-  - forgotten-attachment: Update docs regarding $quote_regex.
+  - forgotten-attachment: Update docs regarding `$quote_regex`
   - notmuch: Add a fake "Folder" header to viewed emails
   - sidebar: consider description when using pinning
   - skip-quoted: skip to body
@@ -2196,21 +2196,21 @@
   - use a more expressive coverity scan badge
   - light tidying
 * Build
-  - replace the ugly strfcpy() macro with a function
+  - replace the ugly `strfcpy()` macro with a function
   - build: Look for tgetent in ncurses, fallback to tinfo only if not found
   - build: fix a couple of build warnings
   - travis: install doc dependencies
   - build: fix install/dist/distcheck targets
 * Upstream
   - Fix POP3 SASL authentication mechanism DIGEST-MD5. (closes #3862)
-  - Add a few explanatory comments to pop_auth_sasl().  (see #3862)
+  - Add a few explanatory comments to `pop_auth_sasl()`  (see #3862)
   - Fix GPGME signature zero timestamp and locale awareness issues. (closes #3882)
-  - Handle presence of '--' delimiter in $sendmail. (closes #3168)
+  - Handle presence of '--' delimiter in `$sendmail` (closes #3168)
   - Allow IPv6 literal addresses in URLs. (closes #3681)
-  - Fix gpgme segfault in create_recipient_set().
-  - Use mutt_strlen and mutt_strncmp in sidebar.c.
-  - Change sidebar to only match $folder prefix on a $sidebar_divider_char. (closes #3887)
-  - Actually fix gpgme segfault in create_recipient_set().
+  - Fix gpgme segfault in `create_recipient_set()`
+  - Use `mutt_strlen()` and `mutt_strncmp()` in `sidebar.c`
+  - Change sidebar to only match `$folder` prefix on a `$sidebar_divider_char.` (closes #3887)
+  - Actually fix gpgme segfault in `create_recipient_set()`
 
 2016-10-14  Richard Russon  \<rich@flatcap.org\>
 * Features
@@ -2218,16 +2218,16 @@
   - notmuch: Synchronise tags to flags
 * Bug Fixes
   - updates when pager is open
-  - crash when neither $spool_file, $folder are set
+  - crash when neither `$spool_file`, `$folder` are set
   - forgotten-attachment: fix empty regex expression
-  - status-color when pager_index_lines \> 0
+  - status-color when `$pager_index_lines > 0`
   - buffer underrun when no menu item is selected
   - crash handling keywords/labels
 * Docs
   - update notmuch references
 * Build
   - update references to 1.7.1
-  - strfcpy() improvement
+  - `strfcpy()` improvement
 * Upstream
   - automatic post-release commit for mutt-1.7.1
   - Mark IMAP fast-trash'ed messages as read before copying. (see #3860)
@@ -2246,7 +2246,7 @@
   - Optimize LMDB's hcache backend
   - Sensible-browser behaviour fixes
 * Bug Fixes
-  - Fixes repaint problem with $pager_index_lines #159
+  - Fixes repaint problem with `$pager_index_lines` #159
   - Quasi-Delete: check there's a selection
   - Bulletproof the pager
   - Typo in the version string
@@ -2266,16 +2266,16 @@
   - Build fix for strndup / malloc
   - Change gcc build options to prevent crashes
 * Upstream
-  - Ensure signatures exist when verifying multipart/signed emails. (closes #3881).
-  - RFC2047-decode mailto url headers after RFC2822 parsing. (closes #3879)
-  - RFC2047-decode mailto header values. (closes #3879)
-  - Reset invalid parsed received dates to 0.  (closes #3878)
-  - Clear pager position when toggling headers.
-  - Don't abort the menu editor on sigwinch. (closes #3875)
-  - Mark some gpgme pgp menu keybinding translations as fuzzy. (closes #3874)
-  - Check for NULL mx_ops in mx.c
-  - Use body color for gpgme output. (closes #3872)
-  - Fix gpgme segfault when querying candidates with a '+' in the address. (closes #3873)
+  - Ensure signatures exist when verifying multipart/signed emails (closes #3881)
+  - RFC2047-decode mailto url headers after RFC2822 parsing (closes #3879)
+  - RFC2047-decode mailto header values (closes #3879)
+  - Reset invalid parsed received dates to 0  (closes #3878)
+  - Clear pager position when toggling headers
+  - Don't abort the menu editor on sigwinch (closes #3875)
+  - Mark some gpgme pgp menu keybinding translations as fuzzy (closes #3874)
+  - Check for NULL mx_ops in mxc
+  - Use body color for gpgme output (closes #3872)
+  - Fix gpgme segfault when querying candidates with a '+' in the address (closes #3873)
 
 2016-09-16  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
@@ -2295,18 +2295,18 @@
 * Docs
   - doc: Removes bug entry in new-mail docs
     Santiago Torres
-  - fix some translations in crypt_gpgme.c
+  - fix some translations in `crypt_gpgme.c`
     Antonio Radici
   - docs: mass tidy up
 * Upstream
   - Fix sidebar documentation a bit
   - Add sidebar_pin command
   - Remove the $locale configuration variable
-  - Add $attribution_locale configuration variable
-  - Add missing include \<locale.h\> to send.c and edit.c
+  - Add `$attribution_locale` configuration variable
+  - Add missing include `<locale.h>` to `send.c` and `edit.c`
   - Filter out zero width no-break space (U+FEFF)
   - Update a confusing and obsolete comment
-  - Moves mutt_copy_list to muttlib.c, where it belongs
+  - Moves `mutt_copy_list()` to `muttlib.c`, where it belongs
   - Redraw screen after an SSL cert prompt
   - Preserve message-id and mft headers for recalled messages
   - Fix openssl 1.1 compilation issues
@@ -2325,7 +2325,7 @@
     Darshit Shah
   - Forgotten attachment
     Darshit Shah
-  - Add sidebar_ordinary color
+  - Add `sidebar_ordinary` color
 * Bug Fixes
   - align the nntp code with mutt
     Fabian Groffen
@@ -2338,19 +2338,19 @@
   - flatten contrib/keybase dir to fix install
   - restore the pager keymapping 'i' to exit
   - proposed fix for clearing labels
-  - notmuch: sync vfolder_format to folder_format
+  - notmuch: sync `$vfolder_format` to `$folder_format`
 * Docs
   - Update List of Features and Authors
 * Build
   - fix configure check for fmemopen
   - use fixed version strings
 * Upstream
-  - Increase date buffer size for $folder_format.
-  - Disable ~X when message scoring.
-  - Fix pgpring reporting of DSA and Elgamal key lengths.
-  - Stub out getdnsdomainname() unless HAVE_GETADDRINFO.
-  - Autoconf: always check for getaddrinfo().
-  - Add missing sidebar contrib sample files to dist tarball.
+  - Increase date buffer size for `$folder_format`
+  - Disable ~X when message scoring
+  - Fix pgpring reporting of DSA and Elgamal key lengths
+  - Stub out `getdnsdomainname()` unless HAVE_GETADDRINFO
+  - Autoconf: always check for `getaddrinfo()`
+  - Add missing sidebar contrib sample files to dist tarball
 
 2016-08-27  Richard Russon  \<rich@flatcap.org\>
 * NeoMutt for Mutt 1.7.0
@@ -2369,7 +2369,7 @@
   - Don't paint invisible progress bars
   - Revert to Mutt keybindings
   - Don't de-tag emails after labelling them
-  - Don't whine if getrandom() fails
+  - Don't whine if `getrandom()` fails
     Adam Borowski (kilobyte)
   - Fix display when 'from' field is invalid
 * Config
@@ -2420,20 +2420,20 @@
   - LMDB: In-memory header caching database
   - SMIME Encrypt to Self - Secure storage of sensitive email
 * Bug Fixes
-  - rework mutt_draw_statusline()
+  - rework `mutt_draw_statusline()`
   - fix cursor position after sidebar redraw
-  - Add sidebar_format flag '%n' to display 'N' on new mail.
-  - fix index_format truncation problem
+  - Add `$sidebar_format` flag '%n' to display 'N' on new mail.
+  - fix `$index_format` truncation problem
   - Fix compiler warnings due to always true condition
-  - Change sidebar next/prev-new to look at mailbox-\>new too.
-  - Change the default for sidebar_format to use %n.
+  - Change sidebar next/prev-new to look at `mailbox->new` too.
+  - Change the default for `$sidebar_format` to use %n.
   - sidebar "unsorted" order to match Mailbox list order.
   - Include ncurses tinfo library if found.
   - Sidebar width problem
   - sidebar crash for non-existent mailbox
   - Temporary compatibility workaround
-  - Reset mailbox-\>new for the current mailbox in IMAP.
-  - version.sh regression
+  - Reset `mailbox->new` for the current mailbox in IMAP.
+  - `version.sh` regression
   - crash when notmuch tries to read a message
   - status line wrapping
 * Docs
@@ -2451,7 +2451,7 @@
 
 2016-06-11  Richard Russon  \<rich@flatcap.org\>
 * Change in behaviour
-  - Temporarily disable $sidebar_refresh_time
+  - Temporarily disable `$sidebar_refresh_time`
     Unfortunately, this was causing too many problems.
     It will be fixed and re-enabled as soon as possible.
 * Bug Fixes
@@ -2461,22 +2461,22 @@
   - Compress config bug prevented it working
   - Some minor bug-fixes from mutt/default
   - Single quote at line beginning misinterpreted by groff
-  - Setting $sidebar_width to more than 128 would cause bad things to happen.
+  - Setting `$sidebar_width` to more than 128 would cause bad things to happen.
   - Fix alignment in the compose menu.
   - Fix sidebar mailbox stats updating on mailbox close.
 * Build Changes
   - Sync whitespace to mutt/default
   - Alter ChangeLog date format to simplify Makefiles
   - Use the new notmuch functions that return a status
-  - Rename sidebar functions sb_* -\> mutt_sb_*
+  - Rename sidebar functions `sb_*` -\> `mutt_sb_*`
 
 2016-05-23  Richard Russon  \<rich@flatcap.org\>
 * New Features:
   - Keywords: Email Label/Keywords/Tagging
   - Compress: Compressed mailboxes support
   - NNTP: Talk to a usenet news server
-  - Separate mappings for \<enter\> and \<return\>
-  - New configure option: --enable-quick-build
+  - Separate mappings for `<enter>` and `<return>`
+  - New configure option: `--enable-quick-build`
   - Various build fixes
 
 2016-05-02  Richard Russon  \<rich@flatcap.org\>
@@ -2484,23 +2484,23 @@
 * Bug Fixes:
   - Build for Notmuch works if Sidebar is disabled
   - Sidebar functions work even if the Sidebar is hidden
-  - sidebar-next-new, etc, only find *new* mail, as documented
+  - `<sidebar-next-new>`, etc, only find *new* mail, as documented
   - Notmuch supports *very* long queries
 
 2016-04-16  Richard Russon  \<rich@flatcap.org\>
 * Big Bugfix Release
 * Bug Fixes:
-  - Fix crash caused by sidebar_folder_indent
+  - Fix crash caused by `$sidebar_folder_indent`
   - Allow the user to change mailboxes again
   - Correct sidebar's messages counts
   - Only sort the sidebar if we're asked to
   - Fix refresh of pager when toggling the sidebar
   - Compose mode: make messages respect the TITLE_FMT
-  - Conditional include if sys/syscall.h
+  - Conditional include if `sys/syscall.h`
   - Build fix for old compilers
   - Try harder to keep track of the open mailbox
 * Changes to Features
-  - Allow sidebar_divider_char to be longer
+  - Allow `$sidebar_divider_char` to be longer
     (it was limited to one character)
   - Ignore case when sorting the sidebar alphabetically
 * Other Changes
@@ -2516,8 +2516,8 @@
 
 2016-03-28  Richard Russon  \<rich@flatcap.org\>
 * New Features
-  - skip-quoted          - skip quoted text
-  - limit-current-thread - limit index view to current thread
+  - `<skip-quoted>`          - skip quoted text
+  - `<limit-current-thread>` - limit index view to current thread
 * Sidebar Intro - A Gentle Introduction to the Sidebar (with pictures).
 
 2016-03-20  Richard Russon  \<rich@flatcap.org\>
