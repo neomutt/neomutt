@@ -742,7 +742,7 @@ return_error:
  * @retval 1 Success
  * @retval 0 Error
  */
-int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile)
+int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char *outfile)
 {
   pid_t pid = 0;
   int out = -1, rc = 0;

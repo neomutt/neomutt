@@ -33,7 +33,6 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -2629,7 +2628,6 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
   }
   else
   {
-    char buf[PATH_MAX] = { 0 };
     /* don't try to fetch article from removed newsgroup */
     if (mdata->deleted)
       return false;
@@ -2640,8 +2638,10 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
     msg->fp = mutt_bcache_put(mdata->bcache, article);
     if (!msg->fp)
     {
-      mutt_mktemp(buf, sizeof(buf));
-      acache->path = mutt_str_dup(buf);
+      struct Buffer *tempfile = buf_pool_get();
+      buf_mktemp(tempfile);
+      acache->path = buf_strdup(tempfile);
+      buf_pool_release(&tempfile);
       acache->index = e->index;
       msg->fp = mutt_file_fopen(acache->path, "w+");
       if (!msg->fp)
@@ -2654,6 +2654,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
     }
 
     /* fetch message to cache file */
+    char buf[2048] = { 0 };
     snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
              nntp_edata_get(e)->article_num ? article : e->env->message_id);
     const int rc = nntp_fetch_lines(mdata, buf, sizeof(buf), fetch_msg,

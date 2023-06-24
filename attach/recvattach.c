@@ -541,7 +541,7 @@ cleanup:
  */
 static void query_pipe_attachment(const char *command, FILE *fp, struct Body *body, bool filter)
 {
-  char tfile[PATH_MAX] = { 0 };
+  struct Buffer *tfile = buf_pool_get();
 
   if (filter)
   {
@@ -551,30 +551,28 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
     if (mutt_yesorno(warning, MUTT_NO) != MUTT_YES)
     {
       msgwin_clear_text();
+      buf_pool_release(&tfile);
       return;
     }
-    mutt_mktemp(tfile, sizeof(tfile));
-  }
-  else
-  {
-    tfile[0] = '\0';
+    buf_mktemp(tfile);
   }
 
-  if (mutt_pipe_attachment(fp, body, command, tfile))
+  if (mutt_pipe_attachment(fp, body, command, buf_string(tfile)))
   {
     if (filter)
     {
       mutt_file_unlink(body->filename);
-      mutt_file_rename(tfile, body->filename);
+      mutt_file_rename(buf_string(tfile), body->filename);
       mutt_update_encoding(body, NeoMutt->sub);
       mutt_message(_("Attachment filtered"));
     }
   }
   else
   {
-    if (filter && tfile[0])
-      mutt_file_unlink(tfile);
+    if (filter && !buf_is_empty(tfile))
+      mutt_file_unlink(buf_string(tfile));
   }
+  buf_pool_release(&tfile);
 }
 
 /**

@@ -77,7 +77,7 @@ int mutt_compose_attachment(struct Body *a);
 int mutt_decode_save_attachment(FILE *fp, struct Body *m, const char *path, StateFlags flags, enum SaveAttach opt);
 bool mutt_edit_attachment(struct Body *a);
 int mutt_get_tmp_attachment(struct Body *a);
-int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, char *outfile);
+int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char *outfile);
 int mutt_print_attachment(FILE *fp, struct Body *a);
 int mutt_save_attachment(FILE *fp, struct Body *m, const char *path, enum SaveAttach opt, struct Email *e);
 

@@ -1430,7 +1430,6 @@ static enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
                                           intptr_t data, struct Buffer *err)
 {
   FILE *fp_out = NULL;
-  char tempfile[PATH_MAX] = { 0 };
   bool dump_all = false, bind = (data == 0);
 
   if (!MoreArgs(s))
@@ -1481,13 +1480,15 @@ static enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  fp_out = mutt_file_fopen(tempfile, "w");
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), tempfile);
+    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
     buf_dealloc(&filebuf);
+    buf_pool_release(&tempfile);
     return MUTT_CMD_ERROR;
   }
   fputs(filebuf.data, fp_out);
@@ -1498,13 +1499,15 @@ static enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = tempfile;
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = (bind) ? "bind" : "macro";
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tempfile);
+
   return MUTT_CMD_SUCCESS;
 }
 

@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <assert.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -863,18 +862,19 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
 
   FILE *fp_out = NULL;
-  char tempfile[PATH_MAX] = { 0 };
+  struct Buffer *tempfile = buf_pool_get();
   struct Buffer filebuf = buf_make(4096);
   char color_fg[32] = { 0 };
   char color_bg[32] = { 0 };
 
-  mutt_mktemp(tempfile, sizeof(tempfile));
-  fp_out = mutt_file_fopen(tempfile, "w");
+  buf_mktemp(tempfile);
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), tempfile);
+    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
     buf_dealloc(&filebuf);
+    buf_pool_release(&tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -1023,13 +1023,15 @@ static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = tempfile;
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = "color";
   pview.flags = MUTT_SHOWCOLOR;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tempfile);
+
   return MUTT_CMD_SUCCESS;
 }
 #endif

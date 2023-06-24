@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -93,13 +92,14 @@ static int op_shell_escape(int op)
  */
 static int op_show_log_messages(int op)
 {
-  char tempfile[PATH_MAX] = { 0 };
-  mutt_mktemp(tempfile, sizeof(tempfile));
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
 
-  FILE *fp = mutt_file_fopen(tempfile, "a+");
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "a+");
   if (!fp)
   {
     mutt_perror("fopen");
+    buf_pool_release(&tempfile);
     return FR_ERROR;
   }
 
@@ -109,13 +109,14 @@ static int op_show_log_messages(int op)
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = tempfile;
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = "messages";
   pview.flags = MUTT_PAGER_LOGS | MUTT_PAGER_BOTTOM;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tempfile);
 
   return FR_SUCCESS;
 }
