@@ -48,15 +48,15 @@ void test_mutt_get_content_info(void)
 
   static const char *text = "file\ncontent";
 
-  char fname[PATH_MAX] = { 0 };
-  mutt_mktemp(fname, sizeof(fname));
+  struct Buffer *fname = buf_pool_get();
+  buf_mktemp(fname);
 
-  FILE *fp = fopen(fname, "w");
+  FILE *fp = fopen(buf_string(fname), "w");
   TEST_CHECK(fp != NULL);
   TEST_MSG("unable to open temp file for writing");
 
   TEST_CHECK(fwrite(text, strlen(text), 1, fp) > 0);
-  TEST_MSG("unable to write to temp file: %s", fname);
+  TEST_MSG("unable to write to temp file: %s", buf_string(fname));
   fclose(fp);
 
   struct ConfigSubset *sub = NeoMutt->sub;
@@ -64,7 +64,7 @@ void test_mutt_get_content_info(void)
   TEST_CHECK(cs_register_variables(cs, CharsetVars, DT_NO_FLAGS));
 
   struct Body *body = mutt_body_new();
-  struct Content *content = mutt_get_content_info(fname, body, sub);
+  struct Content *content = mutt_get_content_info(buf_string(fname), body, sub);
   TEST_CHECK(content != NULL);
 
   TEST_CHECK(content->hibin == 0);
@@ -90,6 +90,7 @@ void test_mutt_get_content_info(void)
   TEST_CHECK(content->cr == 0);
   TEST_MSG("Check failed: %d == 0", content->cr);
 
+  buf_pool_release(&fname);
   mutt_body_free(&body);
   FREE(&content);
 }

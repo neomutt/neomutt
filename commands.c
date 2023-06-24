@@ -735,14 +735,15 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
  */
 enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 {
-  char tempfile[PATH_MAX] = { 0 };
-  mutt_mktemp(tempfile, sizeof(tempfile));
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
 
-  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), tempfile);
+    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
+    buf_pool_release(&tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -753,13 +754,14 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = tempfile;
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = "set";
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tempfile);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -797,14 +799,15 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    char tempfile[PATH_MAX] = { 0 };
-    mutt_mktemp(tempfile, sizeof(tempfile));
+    struct Buffer *tempfile = buf_pool_get();
+    buf_mktemp(tempfile);
 
-    FILE *fp_out = mutt_file_fopen(tempfile, "w");
+    FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
     if (!fp_out)
     {
       // L10N: '%s' is the file name of the temporary file
-      buf_printf(err, _("Could not create temporary file %s"), tempfile);
+      buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
+      buf_pool_release(&tempfile);
       return MUTT_CMD_ERROR;
     }
 
@@ -822,13 +825,15 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     struct PagerData pdata = { 0 };
     struct PagerView pview = { &pdata };
 
-    pdata.fname = tempfile;
+    pdata.fname = buf_string(tempfile);
 
     pview.banner = "setenv";
     pview.flags = MUTT_PAGER_NO_FLAGS;
     pview.mode = PAGER_MODE_OTHER;
 
     mutt_do_pager(&pview, NULL);
+    buf_pool_release(&tempfile);
+
     return MUTT_CMD_SUCCESS;
   }
 
@@ -1477,14 +1482,15 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
   if (!StartupComplete)
     return MUTT_CMD_SUCCESS;
 
-  char tempfile[PATH_MAX] = { 0 };
-  mutt_mktemp(tempfile, sizeof(tempfile));
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
 
-  FILE *fp_out = mutt_file_fopen(tempfile, "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), tempfile);
+    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
+    buf_pool_release(&tempfile);
     return MUTT_CMD_ERROR;
   }
 
@@ -1494,13 +1500,15 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = tempfile;
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = "version";
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tempfile);
+
   return MUTT_CMD_SUCCESS;
 }
 

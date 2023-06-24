@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <errno.h>
-#include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -2276,10 +2275,11 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       }
       else
       {
-        char buf[1024] = { 0 };
-        mutt_mktemp(buf, sizeof(buf));
-        fp_tmp = mutt_file_fopen(buf, "w+");
-        e_templ->body->filename = mutt_str_dup(buf);
+        struct Buffer *buf = buf_pool_get();
+        buf_mktemp(buf);
+        fp_tmp = mutt_file_fopen(buf_string(buf), "w+");
+        e_templ->body->filename = buf_strdup(buf);
+        buf_pool_release(&buf);
       }
     }
     else
@@ -3011,21 +3011,23 @@ static bool send_simple_email(struct Mailbox *m, struct EmailArray *ea,
   char ctype[] = "text/plain";
   mutt_parse_content_type(ctype, e->body);
 
-  char tempfile[PATH_MAX] = { 0 };
-  mutt_mktemp(tempfile, sizeof(tempfile));
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
   if (body)
   {
-    FILE *fp = mutt_file_fopen(tempfile, "w+");
+    FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+");
     if (!fp)
     {
       email_free(&e);
+      buf_pool_release(&tempfile);
       return false;
     }
     fprintf(fp, "%s\n", body);
     mutt_file_fclose(&fp);
   }
-  e->body->filename = mutt_str_dup(tempfile);
+  e->body->filename = buf_strdup(tempfile);
   e->body->unlink = true;
+  buf_pool_release(&tempfile);
 
   const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, ea, NeoMutt->sub);
   return rc >= 0;
