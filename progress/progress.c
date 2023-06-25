@@ -72,6 +72,9 @@ static size_t choose_increment(enum ProgressType type)
  */
 bool progress_update(struct Progress *progress, size_t pos, int percent)
 {
+  if (!progress)
+    return false;
+
   // Decloak an opaque pointer
   struct MuttWindow *win = (struct MuttWindow *) progress;
   const bool updated = progress_window_update(win, pos, percent);

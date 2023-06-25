@@ -519,8 +519,7 @@ static int mh_parse_dir(struct Mailbox *m, struct MdEmailArray *mda, struct Prog
     e->edata = maildir_edata_new();
     e->edata_free = maildir_edata_free;
 
-    if (m->verbose && progress)
-      progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
+    progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
 
     e->path = mutt_str_dup(de->d_name);
 
@@ -620,8 +619,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     if (!md || !md->email || md->header_parsed)
       continue;
 
-    if (m->verbose && progress)
-      progress_update(progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(progress, ARRAY_FOREACH_IDX, -1);
 
     snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
@@ -1059,8 +1057,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (m->verbose)
-      progress_update(progress, i, -1);
+    progress_update(progress, i, -1);
 
     struct Email *e = m->emails[i];
     if (mh_sync_mailbox_message(m, e, hc) == -1)

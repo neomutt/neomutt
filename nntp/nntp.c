@@ -838,8 +838,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
       }
       else
       {
-        if (msg)
-          progress_update(progress, ++lines, -1);
+        progress_update(progress, ++lines, -1);
 
         if ((rc == 0) && (func(line, data) < 0))
           rc = -2;
@@ -1042,9 +1041,7 @@ static int parse_overview_line(char *line, void *data)
   /* not in LISTGROUP */
   if (!fc->messages[anum - fc->first])
   {
-    /* progress */
-    if (m->verbose)
-      progress_update(fc->progress, anum - fc->first + 1, -1);
+    progress_update(fc->progress, anum - fc->first + 1, -1);
     return 0;
   }
 
@@ -1155,9 +1152,7 @@ static int parse_overview_line(char *line, void *data)
     email_free(&e);
   }
 
-  /* progress */
-  if (m->verbose)
-    progress_update(fc->progress, anum - fc->first + 1, -1);
+  progress_update(fc->progress, anum - fc->first + 1, -1);
   return 0;
 }
 
@@ -1256,8 +1251,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   }
   for (current = first; (current <= last) && (rc == 0); current++)
   {
-    if (m->verbose)
-      progress_update(fc.progress, current - first + 1, -1);
+    progress_update(fc.progress, current - first + 1, -1);
 
 #ifdef USE_HCACHE
     snprintf(buf, sizeof(buf), ANUM, current);

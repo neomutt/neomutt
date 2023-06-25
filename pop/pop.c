@@ -392,8 +392,7 @@ static int pop_fetch_headers(struct Mailbox *m)
     bool hcached = false;
     for (i = old_count; i < new_count; i++)
     {
-      if (m->verbose)
-        progress_update(progress, i + 1 - old_count, -1);
+      progress_update(progress, i + 1 - old_count, -1);
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
       struct HCacheEntry hce = hcache_fetch(hc, edata->uid, strlen(edata->uid), 0);
@@ -896,8 +895,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
       if (m->emails[i]->deleted && (edata->refno != -1))
       {
         j++;
-        if (m->verbose)
-          progress_update(progress, j, -1);
+        progress_update(progress, j, -1);
         snprintf(buf, sizeof(buf), "DELE %d\r\n", edata->refno);
         rc = pop_query(adata, buf, sizeof(buf));
         if (rc == 0)

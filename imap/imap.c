@@ -617,7 +617,7 @@ int imap_read_literal(FILE *fp, struct ImapAccountData *adata,
 
     fputc(c, fp);
 
-    if (progress && !(pos % 1024))
+    if ((pos % 1024) == 0)
       progress_update(progress, pos, -1);
     if (c_debug_level >= IMAP_LOG_LTRL)
       buf_addch(&buf, c);

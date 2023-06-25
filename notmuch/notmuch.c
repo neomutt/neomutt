@@ -2249,8 +2249,7 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
 
     struct NmEmailData *edata = nm_edata_get(e);
 
-    if (m->verbose)
-      progress_update(progress, i, -1);
+    progress_update(progress, i, -1);
 
     *old_file = '\0';
     *new_file = '\0';

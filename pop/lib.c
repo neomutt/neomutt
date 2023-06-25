@@ -549,8 +549,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
     }
     else
     {
-      if (progress)
-        progress_update(progress, pos, -1);
+      progress_update(progress, pos, -1);
       if ((rc == 0) && (callback(inbuf, data) < 0))
         rc = -3;
       lenbuf = 0;

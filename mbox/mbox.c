@@ -232,8 +232,7 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
         goto fail;
 
       count++;
-      if (m->verbose)
-        progress_update(progress, count, (int) (loc / (m->size / 100 + 1)));
+      progress_update(progress, count, (int) (loc / (m->size / 100 + 1)));
 
       mx_alloc_memory(m, m->msg_count);
       e = email_new();
@@ -415,10 +414,7 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
       count++;
 
-      if (m->verbose)
-      {
-        progress_update(progress, count, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
-      }
+      progress_update(progress, count, (int) (ftello(adata->fp) / (m->size / 100 + 1)));
 
       mx_alloc_memory(m, m->msg_count);
 
@@ -1187,8 +1183,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   for (i = first, j = 0; i < m->msg_count; i++)
   {
-    if (m->verbose)
-      progress_update(progress, i, i / (m->msg_count / 100 + 1));
+    progress_update(progress, i, i / (m->msg_count / 100 + 1));
     /* back up some information which is needed to restore offsets when
      * something fails.  */
 

@@ -704,8 +704,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
     if (SigInt && query_abort_header_download(adata))
       goto fail;
 
-    if (m->verbose)
-      progress_update(progress, msgno, -1);
+    progress_update(progress, msgno, -1);
 
     memset(&h, 0, sizeof(h));
     h.edata = imap_edata_new();
@@ -929,8 +928,7 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
     if (SigInt && query_abort_header_download(adata))
       goto fail;
 
-    if (m->verbose)
-      progress_update(progress, msgno, -1);
+    progress_update(progress, msgno, -1);
 
     /* cmd_parse_fetch will update the flags */
     rc = imap_cmd_step(adata);
@@ -1230,10 +1228,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
         continue;
       }
 
-      if (m->verbose)
-      {
-        progress_update(progress, msgno++, -1);
-      }
+      progress_update(progress, msgno++, -1);
 
       struct Email *e = email_new();
       mx_alloc_memory(m, m->msg_count);
@@ -1600,8 +1595,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
       sent += len;
       if (flush_buffer(buf, &len, adata->conn) < 0)
         goto fail;
-      if (m->verbose)
-        progress_update(progress, sent, -1);
+      progress_update(progress, sent, -1);
     }
   }
 

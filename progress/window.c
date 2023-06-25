@@ -63,6 +63,8 @@
 #include "muttlib.h"
 #include "wdata.h"
 
+struct Progress;
+
 /**
  * message_bar - Draw a colourful progress bar
  * @param win     Window to draw on

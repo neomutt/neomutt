@@ -562,8 +562,7 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
     e->old = is_old;
     maildir_parse_flags(e, de->d_name);
 
-    if (m->verbose && progress)
-      progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
+    progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
 
     buf_printf(buf, "%s/%s", subdir, de->d_name);
     e->path = buf_strdup(buf);
@@ -630,8 +629,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     if (!md || !md->email || md->header_parsed)
       continue;
 
-    if (m->verbose && progress)
-      progress_update(progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(progress, ARRAY_FOREACH_IDX, -1);
 
     snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
@@ -1426,8 +1424,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 
   for (int i = 0; i < m->msg_count; i++)
   {
-    if (m->verbose)
-      progress_update(progress, i, -1);
+    progress_update(progress, i, -1);
 
     struct Email *e = m->emails[i];
     if (!maildir_sync_mailbox_message(m, e, hc))

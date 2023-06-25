@@ -1168,8 +1168,7 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
       if (!message_is_tagged(e))
         continue;
 
-      if (m->verbose)
-        progress_update(progress, ++px, -1);
+      progress_update(progress, ++px, -1);
       mx_tags_commit(m, e, buf_string(buf));
       e->attr_color = NULL;
       if (op == OP_MAIN_MODIFY_TAGS_THEN_HIDE)
