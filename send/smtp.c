@@ -120,11 +120,10 @@ struct SmtpAuth
 /**
  * valid_smtp_code - Is the is a valid SMTP return code?
  * @param[in]  buf String to check
- * @param[in]  buflen Length of string
  * @param[out] n   Numeric value of code
  * @retval true Valid number
  */
-static bool valid_smtp_code(char *buf, size_t buflen, int *n)
+static bool valid_smtp_code(char *buf, int *n)
 {
   return (mutt_str_atoi(buf, n) - buf) <= 3;
 }
@@ -174,7 +173,7 @@ static int smtp_get_resp(struct SmtpAccountData *adata)
       adata->capabilities |= SMTP_CAP_SMTPUTF8;
     }
 
-    if (!valid_smtp_code(buf, n, &n))
+    if (!valid_smtp_code(buf, &n))
       return SMTP_ERR_CODE;
 
   } while (buf[3] == '-');
@@ -675,7 +674,7 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
     rc = mutt_socket_readln_d(buf, bufsize, adata->conn, MUTT_SOCK_LOG_FULL);
     if (rc < 0)
       goto fail;
-    if (!valid_smtp_code(buf, rc, &rc))
+    if (!valid_smtp_code(buf, &rc))
       goto fail;
 
     if (rc != SMTP_READY)
