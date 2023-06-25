@@ -55,82 +55,82 @@
  *
  * Prototype for an encoding function
  *
- * @param str    String to encode
- * @param buf    Buffer for result
- * @param buflen Length of buffer
+ * @param res    Buffer for the result
+ * @param src    String to encode
+ * @param srclen Length of string to encode
  * @param tocode Character encoding
  * @retval num Bytes written to buffer
  */
-typedef size_t (*encoder_t)(char *str, const char *buf, size_t buflen, const char *tocode);
+typedef size_t (*encoder_t)(char *res, const char *buf, size_t buflen, const char *tocode);
 
 /**
  * b_encoder - Base64 Encode a string - Implements ::encoder_t - @ingroup encoder_api
  */
-static size_t b_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
+static size_t b_encoder(char *res, const char *src, size_t srclen, const char *tocode)
 {
-  char *s0 = str;
+  char *s0 = res;
 
-  memcpy(str, "=?", 2);
-  str += 2;
-  memcpy(str, tocode, strlen(tocode));
-  str += strlen(tocode);
-  memcpy(str, "?B?", 3);
-  str += 3;
+  memcpy(res, "=?", 2);
+  res += 2;
+  memcpy(res, tocode, strlen(tocode));
+  res += strlen(tocode);
+  memcpy(res, "?B?", 3);
+  res += 3;
 
-  while (buflen)
+  while (srclen)
   {
     char encoded[11] = { 0 };
     size_t rc;
-    size_t in_len = MIN(3, buflen);
+    size_t in_len = MIN(3, srclen);
 
-    rc = mutt_b64_encode(buf, in_len, encoded, sizeof(encoded));
+    rc = mutt_b64_encode(src, in_len, encoded, sizeof(encoded));
     for (size_t i = 0; i < rc; i++)
-      *str++ = encoded[i];
+      *res++ = encoded[i];
 
-    buflen -= in_len;
-    buf += in_len;
+    srclen -= in_len;
+    src += in_len;
   }
 
-  memcpy(str, "?=", 2);
-  str += 2;
-  return str - s0;
+  memcpy(res, "?=", 2);
+  res += 2;
+  return res - s0;
 }
 
 /**
  * q_encoder - Quoted-printable Encode a string - Implements ::encoder_t - @ingroup encoder_api
  */
-static size_t q_encoder(char *str, const char *buf, size_t buflen, const char *tocode)
+static size_t q_encoder(char *res, const char *src, size_t srclen, const char *tocode)
 {
   static const char hex[] = "0123456789ABCDEF";
-  char *s0 = str;
+  char *s0 = res;
 
-  memcpy(str, "=?", 2);
-  str += 2;
-  memcpy(str, tocode, strlen(tocode));
-  str += strlen(tocode);
-  memcpy(str, "?Q?", 3);
-  str += 3;
-  while (buflen--)
+  memcpy(res, "=?", 2);
+  res += 2;
+  memcpy(res, tocode, strlen(tocode));
+  res += strlen(tocode);
+  memcpy(res, "?Q?", 3);
+  res += 3;
+  while (srclen--)
   {
-    unsigned char c = *buf++;
+    unsigned char c = *src++;
     if (c == ' ')
     {
-      *str++ = '_';
+      *res++ = '_';
     }
     else if ((c >= 0x7f) || (c < 0x20) || (c == '_') || strchr(MimeSpecials, c))
     {
-      *str++ = '=';
-      *str++ = hex[(c & 0xf0) >> 4];
-      *str++ = hex[c & 0x0f];
+      *res++ = '=';
+      *res++ = hex[(c & 0xf0) >> 4];
+      *res++ = hex[c & 0x0f];
     }
     else
     {
-      *str++ = c;
+      *res++ = c;
     }
   }
-  memcpy(str, "?=", 2);
-  str += 2;
-  return str - s0;
+  memcpy(res, "?=", 2);
+  res += 2;
+  return res - s0;
 }
 
 /**
