@@ -155,8 +155,7 @@ CONVERT_OBJS	= test/convert/mutt_update_content_info.o \
 		  test/convert/mutt_convert_file_from_to.o
 
 CORE_OBJS	= test/core/buf_mktemp_full.o \
-		  test/core/mutt_file_mkstemp_full.o \
-		  test/core/mutt_mktemp_full.o
+		  test/core/mutt_file_mkstemp_full.o
 
 DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \

@@ -183,7 +183,6 @@ void test_fini(void);
   /* core */                                                                   \
   NEOMUTT_TEST_ITEM(test_buf_mktemp_full)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_file_mkstemp_full)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_mktemp_full)                                     \
                                                                                \
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \
