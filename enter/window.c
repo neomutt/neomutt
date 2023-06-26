@@ -232,7 +232,7 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
     mbstate_t mbstate = { 0 };
 
     // clang-format off
-    struct EnterWindowData wdata = { buf->data, buf->dsize, col, complete,
+    struct EnterWindowData wdata = { buf->data, buf->dsize, buf, col, complete,
       multiple, m, files, numfiles, es, ENTER_REDRAW_NONE,
       (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false, NULL };
     // clang-format on
