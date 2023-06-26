@@ -248,6 +248,18 @@ size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1)
 }
 
 /**
+ * buf_mb_wcstombs - Convert a string from wide to multibyte characters
+ * @param dest Buffer for the result
+ * @param wstr Source wide string to convert
+ * @param wlen Length of the wide string
+ */
+void buf_mb_wcstombs(struct Buffer *dest, const wchar_t *wstr, size_t wlen)
+{
+  mutt_mb_wcstombs(dest->data, dest->dsize, wstr, wlen);
+  buf_fix_dptr(dest);
+}
+
+/**
  * mutt_mb_wcstombs - Convert a string from wide to multibyte characters
  * @param dest Buffer for the result
  * @param dlen Length of the result buffer

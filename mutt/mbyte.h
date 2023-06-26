@@ -29,6 +29,8 @@
 #include <wchar.h>  // IWYU pragma: keep
 #include <wctype.h> // IWYU pragma: keep
 
+struct Buffer;
+
 extern bool OptLocales;
 
 #ifdef LOCALES_HACK
@@ -46,6 +48,7 @@ bool   mutt_mb_is_display_corrupting_utf8(wchar_t wc);
 bool   mutt_mb_is_lower(const char *s);
 bool   mutt_mb_is_shell_char(wchar_t ch);
 size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char *buf);
+void   buf_mb_wcstombs(struct Buffer *dest, const wchar_t *wstr, size_t wlen);
 void   mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
 int    mutt_mb_wcswidth(const wchar_t *s, size_t n);
 int    mutt_mb_wcwidth(wchar_t wc);
