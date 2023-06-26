@@ -41,8 +41,10 @@
 #include "data.h"
 // IWYU pragma: end_exports
 
+struct Buffer;
+
 int  mutt_command_complete  (struct CompletionData *cd, char *buf, size_t buflen, int pos, int numtabs);
-int  mutt_complete          (struct CompletionData *cd, char *buf, size_t buflen);
+int  mutt_complete          (struct CompletionData *cd, struct Buffer *buf);
 int  mutt_label_complete    (struct CompletionData *cd, char *buf, size_t buflen, int numtabs);
 bool mutt_nm_query_complete (struct CompletionData *cd, char *buf, size_t buflen, int pos, int numtabs);
 bool mutt_nm_tag_complete   (struct CompletionData *cd, char *buf, size_t buflen, int numtabs);

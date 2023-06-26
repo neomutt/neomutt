@@ -331,21 +331,23 @@ static int sync_helper(struct Mailbox *m, struct Email **emails, int num_emails,
 
 /**
  * longest_common_prefix - Find longest prefix common to two strings
- * @param dest  Destination buffer
+ * @param buf   Destination buffer
  * @param src   Source buffer
  * @param start Starting offset into string
- * @param dlen  Destination buffer length
  * @retval num Length of the common string
  *
  * Trim dest to the length of the longest prefix it shares with src.
  */
-static size_t longest_common_prefix(char *dest, const char *src, size_t start, size_t dlen)
+static size_t longest_common_prefix(struct Buffer *buf, const char *src, size_t start)
 {
   size_t pos = start;
 
-  while ((pos < dlen) && dest[pos] && (dest[pos] == src[pos]))
+  size_t len = buf_len(buf);
+  while ((pos < len) && buf->data[pos] && (buf->data[pos] == src[pos]))
     pos++;
-  dest[pos] = '\0';
+  buf->data[pos] = '\0';
+
+  buf_fix_dptr(buf);
 
   return pos;
 }
@@ -353,35 +355,34 @@ static size_t longest_common_prefix(char *dest, const char *src, size_t start, s
 /**
  * complete_hosts - Look for completion matches for mailboxes
  * @param buf Partial mailbox name to complete
- * @param buflen  Length of buffer
  * @retval  0 Success
  * @retval -1 Failure
  *
  * look for IMAP URLs to complete from defined mailboxes. Could be extended to
  * complete over open connections and account/folder hooks too.
  */
-static int complete_hosts(char *buf, size_t buflen)
+static int complete_hosts(struct Buffer *buf)
 {
   int rc = -1;
   size_t matchlen;
 
-  matchlen = mutt_str_len(buf);
+  matchlen = buf_len(buf);
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
   neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (!mutt_str_startswith(mailbox_path(np->mailbox), buf))
+    if (!mutt_str_startswith(mailbox_path(np->mailbox), buf_string(buf)))
       continue;
 
     if (rc)
     {
-      mutt_str_copy(buf, mailbox_path(np->mailbox), buflen);
+      buf_strcpy(buf, mailbox_path(np->mailbox));
       rc = 0;
     }
     else
     {
-      longest_common_prefix(buf, mailbox_path(np->mailbox), matchlen, buflen);
+      longest_common_prefix(buf, mailbox_path(np->mailbox), matchlen);
     }
   }
   neomutt_mailboxlist_clear(&ml);
@@ -409,7 +410,7 @@ static int complete_hosts(char *buf, size_t buflen)
       }
       else
       {
-        longest_common_prefix(buf, urlstr, matchlen, buflen);
+        longest_common_prefix(buf, urlstr, matchlen);
       }
     }
   }
@@ -1248,8 +1249,7 @@ int imap_subscribe(char *path, bool subscribe)
 
 /**
  * imap_complete - Try to complete an IMAP folder path
- * @param buf Buffer for result
- * @param buflen Length of buffer
+ * @param buf  Buffer for result
  * @param path Partial mailbox name to complete
  * @retval  0 Success
  * @retval -1 Failure
@@ -1257,22 +1257,21 @@ int imap_subscribe(char *path, bool subscribe)
  * Given a partial IMAP folder path, return a string which adds as much to the
  * path as is unique
  */
-int imap_complete(char *buf, size_t buflen, const char *path)
+int imap_complete(struct Buffer *buf, const char *path)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
   char tmp[2048] = { 0 };
   struct ImapList listresp = { 0 };
-  char completion[1024] = { 0 };
+  struct Buffer *completion_buf = NULL;
   size_t clen;
-  size_t matchlen = 0;
   int completions = 0;
   int rc;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
   {
-    mutt_str_copy(buf, path, buflen);
-    return complete_hosts(buf, buflen);
+    buf_strcpy(buf, path);
+    return complete_hosts(buf);
   }
 
   /* fire off command */
@@ -1283,7 +1282,8 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   imap_cmd_start(adata, tmp);
 
   /* and see what the results are */
-  mutt_str_copy(completion, mdata->name, sizeof(completion));
+  completion_buf = buf_pool_get();
+  buf_strcpy(completion_buf, mdata->name);
   imap_mdata_free((void *) &mdata);
 
   adata->cmdresult = &listresp;
@@ -1305,13 +1305,12 @@ int imap_complete(char *buf, size_t buflen, const char *path)
       /* copy in first word */
       if (!completions)
       {
-        mutt_str_copy(completion, listresp.name, sizeof(completion));
-        matchlen = strlen(completion);
+        buf_strcpy(completion_buf, listresp.name);
         completions++;
         continue;
       }
 
-      matchlen = longest_common_prefix(completion, listresp.name, 0, matchlen);
+      longest_common_prefix(completion_buf, listresp.name, 0);
       completions++;
     }
   } while (rc == IMAP_RES_CONTINUE);
@@ -1320,11 +1319,14 @@ int imap_complete(char *buf, size_t buflen, const char *path)
   if (completions)
   {
     /* reformat output */
-    imap_qualify_path(buf, buflen, &adata->conn->account, completion);
-    mutt_pretty_mailbox(buf, buflen);
+    imap_buf_qualify_path(buf, &adata->conn->account, completion_buf->data);
+    buf_pretty_mailbox(buf);
+    buf_fix_dptr(buf);
+    buf_pool_release(&completion_buf);
     return 0;
   }
 
+  buf_pool_release(&completion_buf);
   return -1;
 }
 

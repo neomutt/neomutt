@@ -116,7 +116,7 @@ static int complete_file_simple(struct EnterWindowData *wdata)
     return FR_CONTINUE;
   }
 
-  if (mutt_complete(wdata->cd, wdata->buf, wdata->buflen) == 0)
+  if (mutt_complete(wdata->cd, wdata->buffer) == 0)
   {
     wdata->templen = wdata->state->lastchar - i;
     mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
@@ -311,7 +311,7 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
     return FR_CONTINUE;
   }
 
-  if (mutt_complete(wdata->cd, wdata->buf, wdata->buflen) == 0)
+  if (mutt_complete(wdata->cd, wdata->buffer) == 0)
   {
     wdata->templen = wdata->state->lastchar;
     mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
