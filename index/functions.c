@@ -896,8 +896,7 @@ static int op_main_change_folder(struct IndexSharedData *shared,
   }
   else
   {
-    change_folder_string(priv->menu, folderbuf->data, folderbuf->dsize,
-                         &priv->oldcount, shared, read_only);
+    change_folder_string(priv->menu, folderbuf, &priv->oldcount, shared, read_only);
   }
 
 changefoldercleanup:
@@ -2578,8 +2577,7 @@ static int op_main_change_group(struct IndexSharedData *shared,
   }
   else
   {
-    change_folder_string(priv->menu, folderbuf->data, folderbuf->dsize,
-                         &priv->oldcount, shared, read_only);
+    change_folder_string(priv->menu, folderbuf, &priv->oldcount, shared, read_only);
   }
   struct MuttWindow *dlg = dialog_find(priv->win_index);
   dlg->help_data = IndexNewsHelp;

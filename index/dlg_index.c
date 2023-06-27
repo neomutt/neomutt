@@ -757,27 +757,27 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
  * @param shared       Shared Index data
  * @param read_only    Open Mailbox in read-only mode
  */
-void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldcount,
+void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
                           struct IndexSharedData *shared, bool read_only)
 {
 #ifdef USE_NNTP
   if (OptNews)
   {
     OptNews = false;
-    nntp_expand_path(buf, buflen, &CurrentNewsSrv->conn->account);
+    nntp_expand_path(buf->data, buf->dsize, &CurrentNewsSrv->conn->account);
   }
   else
 #endif
   {
     const char *const c_folder = cs_subset_string(shared->sub, "folder");
-    mx_path_canon(buf, buflen, c_folder, NULL);
+    mx_path_canon(buf, c_folder, NULL);
   }
 
-  enum MailboxType type = mx_path_probe(buf);
+  enum MailboxType type = mx_path_probe(buf_string(buf));
   if ((type == MUTT_MAILBOX_ERROR) || (type == MUTT_UNKNOWN))
   {
     // Look for a Mailbox by its description, before failing
-    struct Mailbox *m = mailbox_find_name(buf);
+    struct Mailbox *m = mailbox_find_name(buf_string(buf));
     if (m)
     {
       change_folder_mailbox(menu, m, oldcount, shared, read_only);
@@ -789,7 +789,7 @@ void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldc
     return;
   }
 
-  struct Mailbox *m = mx_path_resolve(buf);
+  struct Mailbox *m = mx_path_resolve(buf_string(buf));
   change_folder_mailbox(menu, m, oldcount, shared, read_only);
 }
 
