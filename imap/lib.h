@@ -83,7 +83,7 @@ int imap_subscribe(char *path, bool subscribe);
 int imap_complete(char *buf, size_t buflen, const char *path);
 int imap_fast_trash(struct Mailbox *m, const char *dest);
 enum MailboxType imap_path_probe(const char *path, const struct stat *st);
-int imap_path_canon(char *buf, size_t buflen);
+int imap_path_canon(struct Buffer *buf);
 void imap_notify_delete_email(struct Mailbox *m, struct Email *e);
 
 extern const struct MxOps MxImapOps;

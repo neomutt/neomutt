@@ -1392,7 +1392,7 @@ enum MailboxType mx_path_probe(const char *path)
  */
 int mx_path_canon(struct Buffer *buf, const char *folder, enum MailboxType *type)
 {
-  if (!buf)
+  if (buf_is_empty(buf))
     return -1;
 
   for (size_t i = 0; i < 3; i++)
@@ -1479,7 +1479,7 @@ int mx_path_canon(struct Buffer *buf, const char *folder, enum MailboxType *type
   if (!ops || !ops->path_canon)
     return -1;
 
-  if (ops->path_canon(buf->data, buf->dsize) < 0)
+  if (ops->path_canon(buf) < 0)
   {
     mutt_path_canon(buf->data, buf->dsize, HomeDir, true);
   }
@@ -1523,12 +1523,12 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
 /**
  * mx_path_pretty - Abbreviate a mailbox path - Wrapper for MxOps::path_pretty()
  */
-int mx_path_pretty(char *buf, size_t buflen, const char *folder)
+int mx_path_pretty(struct Buffer *buf, const char *folder)
 {
-  if (!buf)
+  if (buf_is_empty(buf))
     return -1;
 
-  enum MailboxType type = mx_path_probe(buf);
+  enum MailboxType type = mx_path_probe(buf_string(buf));
   const struct MxOps *ops = mx_get_ops(type);
   if (!ops)
     return -1;
@@ -1536,13 +1536,13 @@ int mx_path_pretty(char *buf, size_t buflen, const char *folder)
   if (!ops->path_canon)
     return -1;
 
-  if (ops->path_canon(buf, buflen) < 0)
+  if (ops->path_canon(buf) < 0)
     return -1;
 
   if (!ops->path_pretty)
     return -1;
 
-  if (ops->path_pretty(buf, buflen, folder) < 0)
+  if (ops->path_pretty(buf, folder) < 0)
     return -1;
 
   return 0;

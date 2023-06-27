@@ -1612,9 +1612,9 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 /**
  * maildir_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
-static int maildir_path_canon(char *buf, size_t buflen)
+static int maildir_path_canon(struct Buffer *buf)
 {
-  mutt_path_canon(buf, buflen, HomeDir, true);
+  mutt_path_canon(buf->data, buf->dsize, HomeDir, true);
   return 0;
 }
 
@@ -1638,12 +1638,12 @@ static int maildir_path_parent(char *buf, size_t buflen)
 /**
  * maildir_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
-static int maildir_path_pretty(char *buf, size_t buflen, const char *folder)
+static int maildir_path_pretty(struct Buffer *buf, const char *folder)
 {
-  if (mutt_path_abbr_folder(buf, folder))
+  if (mutt_path_abbr_folder(buf->data, folder))
     return 0;
 
-  if (mutt_path_pretty(buf, buflen, HomeDir, false))
+  if (mutt_path_pretty(buf->data, buf->dsize, HomeDir, false))
     return 0;
 
   return -1;
