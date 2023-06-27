@@ -342,13 +342,12 @@ struct MxOps
    *
    * path_canon - Canonicalise a Mailbox path
    * @param buf    Path to modify
-   * @param buflen Length of buffer
    * @retval  0 Success
    * @retval -1 Failure
    *
    * @pre buf is not NULL
    */
-  int (*path_canon)      (char *buf, size_t buflen);
+  int (*path_canon) (struct Buffer *buf);
 
   /**
    * @defgroup mx_path_pretty path_pretty()
@@ -356,14 +355,13 @@ struct MxOps
    *
    * path_pretty - Abbreviate a Mailbox path
    * @param buf    Path to modify
-   * @param buflen Length of buffer
    * @param folder Base path for '=' substitution
    * @retval  0 Success
    * @retval -1 Failure
    *
    * @pre buf is not NULL
    */
-  int (*path_pretty)     (char *buf, size_t buflen, const char *folder);
+  int (*path_pretty) (struct Buffer *buf, const char *folder);
 
   /**
    * @defgroup mx_path_parent path_parent()
