@@ -201,3 +201,11 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
 {
   return 0;
 }
+
+void buf_pretty_mailbox(struct Buffer *buf)
+{
+}
+
+void buf_expand_path_regex(struct Buffer *buf, bool regex)
+{
+}

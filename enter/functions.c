@@ -104,15 +104,14 @@ static int complete_file_simple(struct EnterWindowData *wdata)
        (i > 0) && !mutt_mb_is_shell_char(wdata->state->wbuf[i - 1]); i--)
   {
   }
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
-                   wdata->state->curpos - i);
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
   if (wdata->tempbuf && (wdata->templen == (wdata->state->lastchar - i)) &&
       (memcmp(wdata->tempbuf, wdata->state->wbuf + i,
               (wdata->state->lastchar - i) * sizeof(wchar_t)) == 0))
   {
-    mutt_select_file(wdata->buf, wdata->buflen, MUTT_SEL_NO_FLAGS, wdata->m, NULL, NULL);
-    if (wdata->buf[0] != '\0')
-      replace_part(wdata->state, i, wdata->buf);
+    dlg_select_file(wdata->buffer, MUTT_SEL_NO_FLAGS, wdata->m, NULL, NULL);
+    if (buf_is_empty(wdata->buffer))
+      replace_part(wdata->state, i, buf_string(wdata->buffer));
     return FR_CONTINUE;
   }
 
@@ -127,7 +126,7 @@ static int complete_file_simple(struct EnterWindowData *wdata)
     rc = FR_ERROR;
   }
 
-  replace_part(wdata->state, i, wdata->buf);
+  replace_part(wdata->state, i, buf_string(wdata->buffer));
   return rc;
 }
 
@@ -286,7 +285,7 @@ static int complete_command(struct EnterWindowData *wdata)
 static int complete_file_mbox(struct EnterWindowData *wdata)
 {
   int rc = FR_SUCCESS;
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
 
   /* see if the path has changed from the last time */
   if ((!wdata->tempbuf && !wdata->state->lastchar) ||
@@ -294,15 +293,15 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
        (memcmp(wdata->tempbuf, wdata->state->wbuf,
                wdata->state->lastchar * sizeof(wchar_t)) == 0)))
   {
-    mutt_select_file(wdata->buf, wdata->buflen,
-                     ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
-                         (wdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
-                     wdata->m, wdata->files, wdata->numfiles);
-    if (wdata->buf[0] != '\0')
+    dlg_select_file(wdata->buffer,
+                    ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
+                        (wdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
+                    wdata->m, wdata->files, wdata->numfiles);
+    if (buf_is_empty(wdata->buffer))
     {
-      mutt_pretty_mailbox(wdata->buf, wdata->buflen);
+      buf_pretty_mailbox(wdata->buffer);
       if (!wdata->pass)
-        mutt_hist_add(wdata->hclass, wdata->buf, true);
+        mutt_hist_add(wdata->hclass, buf_string(wdata->buffer), true);
       wdata->done = true;
       return FR_SUCCESS;
     }
@@ -321,7 +320,7 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
   {
     return FR_ERROR; // let the user know that nothing matched
   }
-  replace_part(wdata->state, 0, wdata->buf);
+  replace_part(wdata->state, 0, buf_string(wdata->buffer));
   return rc;
 }
 

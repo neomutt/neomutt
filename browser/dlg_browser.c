@@ -1433,24 +1433,3 @@ bail:
   simple_dialog_free(&dlg);
   browser_private_data_free(&priv);
 }
-
-/**
- * mutt_select_file - Let the user select a file
- * @param[in]  file     Buffer for the result
- * @param[in]  filelen  Length of buffer
- * @param[in]  flags    Flags, see #SelectFileFlags
- * @param[in]  m        Mailbox
- * @param[out] files    Array of selected files
- * @param[out] numfiles Number of selected files
- */
-void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
-                      struct Mailbox *m, char ***files, int *numfiles)
-{
-  struct Buffer *f_buf = buf_pool_get();
-
-  buf_strcpy(f_buf, NONULL(file));
-  dlg_select_file(f_buf, flags, m, files, numfiles);
-  mutt_str_copy(file, buf_string(f_buf), filelen);
-
-  buf_pool_release(&f_buf);
-}
