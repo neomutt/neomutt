@@ -1683,12 +1683,12 @@ struct Mailbox *mx_mbox_find2(const char *path)
   {
     struct Mailbox *m = mx_mbox_find(np, buf_string(buf));
     if (m) {
-      buf_pool_release(&buf);
+      buf_free(&buf);
       return m;
     }
   }
 
-  buf_pool_release(&buf);
+  buf_free(&buf);
   return NULL;
 }
 
