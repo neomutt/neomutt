@@ -752,7 +752,6 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
  * change_folder_string - Change to a different Mailbox by string
  * @param menu         Current Menu
  * @param buf          Folder to change to
- * @param buflen       Length of buffer
  * @param oldcount     How many items are currently in the index
  * @param shared       Shared Index data
  * @param read_only    Open Mailbox in read-only mode
@@ -784,7 +783,7 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
     }
     else
     {
-      mutt_error(_("%s is not a mailbox"), buf);
+      mutt_error(_("%s is not a mailbox"), buf_string(buf));
     }
     return;
   }

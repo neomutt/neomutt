@@ -38,9 +38,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <unistd.h>
-#include "mutt/buffer.h"
 #include "mutt/lib.h"
-#include "mutt/pool.h"
 #include "address/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -1400,9 +1398,9 @@ int mx_path_canon(struct Buffer *buf, const char *folder, enum MailboxType *type
   for (size_t i = 0; i < 3; i++)
   {
     /* Look for !! ! - < > or ^ followed by / or NUL */
-    if ((buf_at(buf,0) == '!') && (buf_at(buf,1) == '!'))
+    if ((buf_at(buf, 0) == '!') && (buf_at(buf, 1) == '!'))
     {
-      if (((buf_at(buf,2) == '/') || (buf_at(buf, 2) == '\0')))
+      if (((buf_at(buf, 2) == '/') || (buf_at(buf, 2) == '\0')))
       {
         mutt_str_inline_replace(buf->data, buf->dsize, 2, LastFolder);
       }
@@ -1422,7 +1420,7 @@ int mx_path_canon(struct Buffer *buf, const char *folder, enum MailboxType *type
     }
     else if ((buf_at(buf, 1) == '/') || (buf_at(buf, 1) == '\0'))
     {
-      if (buf_at(buf,0) == '!')
+      if (buf_at(buf, 0) == '!')
       {
         const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
         mutt_str_inline_replace(buf->data, buf->dsize, 1, c_spool_file);
@@ -1682,7 +1680,8 @@ struct Mailbox *mx_mbox_find2(const char *path)
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
     struct Mailbox *m = mx_mbox_find(np, buf_string(buf));
-    if (m) {
+    if (m)
+    {
       buf_free(&buf);
       return m;
     }
