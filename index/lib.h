@@ -85,7 +85,7 @@ int find_next_undeleted(struct MailboxView *mv, int msgno, bool uncollapse);
 void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
 void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
 void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle);
-void change_folder_string(struct Menu *menu, char *buf, size_t buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
+void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
 int find_previous_undeleted(struct MailboxView *mv, int msgno, bool uncollapse);
 int find_first_message(struct MailboxView *mv);
 void resort_index(struct MailboxView *mv, struct Menu *menu);

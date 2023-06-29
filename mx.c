@@ -1390,7 +1390,7 @@ enum MailboxType mx_path_probe(const char *path)
 /**
  * mx_path_canon - Canonicalise a mailbox path - Wrapper for MxOps::path_canon()
  */
-int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType *type)
+int mx_path_canon(struct Buffer *buf, const char *folder, enum MailboxType *type)
 {
   if (!buf)
     return -1;
@@ -1398,60 +1398,60 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
   for (size_t i = 0; i < 3; i++)
   {
     /* Look for !! ! - < > or ^ followed by / or NUL */
-    if ((buf[0] == '!') && (buf[1] == '!'))
+    if ((buf_at(buf, 0) == '!') && (buf_at(buf, 1) == '!'))
     {
-      if (((buf[2] == '/') || (buf[2] == '\0')))
+      if (((buf_at(buf, 2) == '/') || (buf_at(buf, 2) == '\0')))
       {
-        mutt_str_inline_replace(buf, buflen, 2, LastFolder);
+        mutt_str_inline_replace(buf->data, buf->dsize, 2, LastFolder);
       }
     }
-    else if ((buf[0] == '+') || (buf[0] == '='))
+    else if ((buf_at(buf, 0) == '+') || (buf_at(buf, 0) == '='))
     {
       size_t folder_len = mutt_str_len(folder);
       if ((folder_len > 0) && (folder[folder_len - 1] != '/'))
       {
-        buf[0] = '/';
-        mutt_str_inline_replace(buf, buflen, 0, folder);
+        buf->data[0] = '/';
+        mutt_str_inline_replace(buf->data, buf->dsize, 0, folder);
       }
       else
       {
-        mutt_str_inline_replace(buf, buflen, 1, folder);
+        mutt_str_inline_replace(buf->data, buf->dsize, 1, folder);
       }
     }
-    else if ((buf[1] == '/') || (buf[1] == '\0'))
+    else if ((buf_at(buf, 1) == '/') || (buf_at(buf, 1) == '\0'))
     {
-      if (buf[0] == '!')
+      if (buf_at(buf, 0) == '!')
       {
         const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
-        mutt_str_inline_replace(buf, buflen, 1, c_spool_file);
+        mutt_str_inline_replace(buf->data, buf->dsize, 1, c_spool_file);
       }
-      else if (buf[0] == '-')
+      else if (buf_at(buf, 0) == '-')
       {
-        mutt_str_inline_replace(buf, buflen, 1, LastFolder);
+        mutt_str_inline_replace(buf->data, buf->dsize, 1, LastFolder);
       }
-      else if (buf[0] == '<')
+      else if (buf_at(buf, 0) == '<')
       {
         const char *const c_record = cs_subset_string(NeoMutt->sub, "record");
-        mutt_str_inline_replace(buf, buflen, 1, c_record);
+        mutt_str_inline_replace(buf->data, buf->dsize, 1, c_record);
       }
-      else if (buf[0] == '>')
+      else if (buf_at(buf, 0) == '>')
       {
         const char *const c_mbox = cs_subset_string(NeoMutt->sub, "mbox");
-        mutt_str_inline_replace(buf, buflen, 1, c_mbox);
+        mutt_str_inline_replace(buf->data, buf->dsize, 1, c_mbox);
       }
-      else if (buf[0] == '^')
+      else if (buf_at(buf, 0) == '^')
       {
-        mutt_str_inline_replace(buf, buflen, 1, CurrentFolder);
+        mutt_str_inline_replace(buf->data, buf->dsize, 1, CurrentFolder);
       }
-      else if (buf[0] == '~')
+      else if (buf_at(buf, 0) == '~')
       {
-        mutt_str_inline_replace(buf, buflen, 1, HomeDir);
+        mutt_str_inline_replace(buf->data, buf->dsize, 1, HomeDir);
       }
     }
-    else if (buf[0] == '@')
+    else if (buf_at(buf, 0) == '@')
     {
       /* elm compatibility, @ expands alias to user name */
-      struct AddressList *al = alias_lookup(buf + 1);
+      struct AddressList *al = alias_lookup(buf_string(buf));
       if (!al || TAILQ_EMPTY(al))
         break;
 
@@ -1459,7 +1459,7 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
       e->env = mutt_env_new();
       mutt_addrlist_copy(&e->env->from, al, false);
       mutt_addrlist_copy(&e->env->to, al, false);
-      mutt_default_save(buf, buflen, e);
+      mutt_default_save(buf->data, buf->dsize, e);
       email_free(&e);
       break;
     }
@@ -1472,16 +1472,16 @@ int mx_path_canon(char *buf, size_t buflen, const char *folder, enum MailboxType
   // if (!folder) //XXX - use inherited version, or pass NULL to backend?
   //   return -1;
 
-  enum MailboxType type2 = mx_path_probe(buf);
+  enum MailboxType type2 = mx_path_probe(buf_string(buf));
   if (type)
     *type = type2;
   const struct MxOps *ops = mx_get_ops(type2);
   if (!ops || !ops->path_canon)
     return -1;
 
-  if (ops->path_canon(buf, buflen) < 0)
+  if (ops->path_canon(buf->data, buf->dsize) < 0)
   {
-    mutt_path_canon(buf, buflen, HomeDir, true);
+    mutt_path_canon(buf->data, buf->dsize, HomeDir, true);
   }
 
   return 0;
@@ -1499,16 +1499,17 @@ int mx_path_canon2(struct Mailbox *m, const char *folder)
   if (!m)
     return -1;
 
-  char buf[PATH_MAX] = { 0 };
+  struct Buffer *buf = buf_pool_get();
 
   if (m->realpath)
-    mutt_str_copy(buf, m->realpath, sizeof(buf));
+    buf_strcpy(buf, m->realpath);
   else
-    mutt_str_copy(buf, mailbox_path(m), sizeof(buf));
+    buf_strcpy(buf, mailbox_path(m));
 
-  int rc = mx_path_canon(buf, sizeof(buf), folder, &m->type);
+  int rc = mx_path_canon(buf, folder, &m->type);
 
-  mutt_str_replace(&m->realpath, buf);
+  mutt_str_replace(&m->realpath, buf_string(buf));
+  buf_pool_release(&buf);
 
   if (rc >= 0)
   {
@@ -1671,19 +1672,22 @@ struct Mailbox *mx_mbox_find2(const char *path)
   if (!path)
     return NULL;
 
-  char buf[PATH_MAX] = { 0 };
-  mutt_str_copy(buf, path, sizeof(buf));
+  struct Buffer *buf = buf_new(path);
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-  mx_path_canon(buf, sizeof(buf), c_folder, NULL);
+  mx_path_canon(buf, c_folder, NULL);
 
   struct Account *np = NULL;
   TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
   {
-    struct Mailbox *m = mx_mbox_find(np, buf);
+    struct Mailbox *m = mx_mbox_find(np, buf_string(buf));
     if (m)
+    {
+      buf_free(&buf);
       return m;
+    }
   }
 
+  buf_free(&buf);
   return NULL;
 }
 
