@@ -2383,12 +2383,12 @@ static int imap_path_pretty(struct Buffer *buf, const char *folder)
 /**
  * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
-static int imap_path_parent(char *buf, size_t buflen)
+static int imap_path_parent(struct Buffer *path)
 {
   char tmp[PATH_MAX] = { 0 };
 
-  imap_get_parent_path(buf, tmp, sizeof(tmp));
-  mutt_str_copy(buf, tmp, buflen);
+  imap_get_parent_path(buf_string(path), tmp, sizeof(tmp));
+  buf_strcpy(path, tmp);
   return 0;
 }
 

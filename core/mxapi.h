@@ -27,7 +27,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include "mailbox.h"
 
 struct Account;
@@ -368,14 +367,13 @@ struct MxOps
    * @ingroup mx_api
    *
    * path_parent - Find the parent of a Mailbox path
-   * @param buf    Path to modify
-   * @param buflen Length of buffer
+   * @param path   Path to modify
    * @retval  0 Success
    * @retval -1 Failure
    *
    * @pre buf is not NULL
    */
-  int (*path_parent)     (char *buf, size_t buflen);
+  int (*path_parent)     (struct Buffer *path);
 
   /**
    * @defgroup mx_path_is_empty path_is_empty()

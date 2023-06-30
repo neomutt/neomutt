@@ -1173,16 +1173,22 @@ static int mh_path_canon(struct Buffer *buf)
 /**
  * mh_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
-static int mh_path_parent(char *buf, size_t buflen)
+static int mh_path_parent(struct Buffer *path)
 {
-  if (mutt_path_parent(buf))
+  if (mutt_path_parent(path->data))
+  {
+    buf_fix_dptr(path);
     return 0;
+  }
 
-  if (buf[0] == '~')
-    mutt_path_canon(buf, buflen, HomeDir, true);
+  if (buf_at(path, 0) == '~')
+    mutt_path_canon(path->data, path->dsize, HomeDir, true);
 
-  if (mutt_path_parent(buf))
+  if (mutt_path_parent(path->data))
+  {
+    buf_fix_dptr(path);
     return 0;
+  }
 
   return -1;
 }

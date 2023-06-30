@@ -2763,7 +2763,7 @@ static int nntp_path_pretty(struct Buffer *buf, const char *folder)
 /**
  * nntp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
-static int nntp_path_parent(char *buf, size_t buflen)
+static int nntp_path_parent(struct Buffer *path)
 {
   /* Succeed, but don't do anything, for now */
   return 0;

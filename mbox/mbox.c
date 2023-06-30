@@ -1634,16 +1634,22 @@ static int mbox_path_pretty(struct Buffer *buf, const char *folder)
 /**
  * mbox_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
-static int mbox_path_parent(char *buf, size_t buflen)
+static int mbox_path_parent(struct Buffer *path)
 {
-  if (mutt_path_parent(buf))
+  if (mutt_path_parent(path->data))
+  {
+    buf_fix_dptr(path);
     return 0;
+  }
 
-  if (buf[0] == '~')
-    mutt_path_canon(buf, buflen, HomeDir, false);
+  if (buf_at(path, 0) == '~')
+    mutt_path_canon(path->data, path->dsize, HomeDir, false);
 
-  if (mutt_path_parent(buf))
+  if (mutt_path_parent(path->data))
+  {
+    buf_fix_dptr(path);
     return 0;
+  }
 
   return -1;
 }
