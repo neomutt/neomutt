@@ -33,6 +33,7 @@
 #include <errno.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
@@ -1550,9 +1551,9 @@ int mx_path_pretty(struct Buffer *buf, const char *folder)
 /**
  * mx_path_parent - Find the parent of a mailbox path - Wrapper for MxOps::path_parent()
  */
-int mx_path_parent(const char *buf, size_t buflen)
+int mx_path_parent(struct Buffer *buf)
 {
-  if (!buf)
+  if (buf_is_empty(buf))
     return -1;
 
   return 0;

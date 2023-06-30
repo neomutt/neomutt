@@ -27,7 +27,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <stdio.h>
 #include "config/lib.h"
 #include "core/lib.h"
 
@@ -55,7 +54,7 @@ int             mx_msg_padding_size(struct Mailbox *m);
 int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
 int             mx_path_canon      (struct Buffer *buf, const char *folder, enum MailboxType *type);
 int             mx_path_canon2     (struct Mailbox *m, const char *folder);
-int             mx_path_parent     (const char *buf, size_t buflen);
+int             mx_path_parent     (struct Buffer *buf);
 int             mx_path_pretty     (struct Buffer *buf, const char *folder);
 enum MailboxType mx_path_probe     (const char *path);
 struct Mailbox *mx_path_resolve    (const char *path);
