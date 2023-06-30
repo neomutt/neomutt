@@ -73,7 +73,7 @@ int             mx_ac_remove   (struct Mailbox *m, bool keep_account);
 
 int                 mx_access           (const char *path, int flags);
 void                mx_alloc_memory     (struct Mailbox *m, int req_size);
-int                 mx_path_is_empty    (const char *path);
+int                 mx_path_is_empty    (struct Buffer *path);
 void                mx_fastclose_mailbox(struct Mailbox *m, bool keep_account);
 const struct MxOps *mx_get_ops          (enum MailboxType type);
 bool                mx_tags_is_supported(struct Mailbox *m);

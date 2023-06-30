@@ -163,12 +163,12 @@ static bool mh_valid_message(const char *s)
  * @retval 0 Mailbox contains mail
  * @retval -1 Error
  */
-int mh_check_empty(const char *path)
+int mh_check_empty(struct Buffer *path)
 {
   struct dirent *de = NULL;
   int rc = 1; /* assume empty until we find a message */
 
-  DIR *dir = mutt_file_opendir(path, MUTT_OPENDIR_NONE);
+  DIR *dir = mutt_file_opendir(buf_string(path), MUTT_OPENDIR_NONE);
   if (!dir)
     return -1;
   while ((de = readdir(dir)))

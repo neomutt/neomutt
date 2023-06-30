@@ -1324,7 +1324,7 @@ main
     if (flags & MUTT_CLI_IGNORE)
     {
       /* check to see if there are any messages in the folder */
-      switch (mx_path_is_empty(buf_string(&folder)))
+      switch (mx_path_is_empty(&folder))
       {
         case -1:
           mutt_perror("%s", buf_string(&folder));

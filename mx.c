@@ -1275,12 +1275,12 @@ void mx_alloc_memory(struct Mailbox *m, int req_size)
  * @retval 0 Mailbox contains mail
  * @retval -1 Error
  */
-int mx_path_is_empty(const char *path)
+int mx_path_is_empty(struct Buffer *path)
 {
-  if (!path || (*path == '\0'))
+  if (buf_is_empty(path))
     return -1;
 
-  enum MailboxType type = mx_path_probe(path);
+  enum MailboxType type = mx_path_probe(buf_string(path));
   const struct MxOps *ops = mx_get_ops(type);
   if (!ops || !ops->path_is_empty)
     return -1;
