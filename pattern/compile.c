@@ -849,7 +849,7 @@ static struct Pattern *attach_leaf(struct PatternList *list, struct Pattern *lea
   SLIST_FOREACH(last, list, entries)
   {
     // TODO - or we could use a doubly-linked list
-    if (SLIST_NEXT(last, entries) == NULL)
+    if (!SLIST_NEXT(last, entries))
     {
       SLIST_NEXT(last, entries) = leaf;
       break;

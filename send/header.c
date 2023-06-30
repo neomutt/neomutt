@@ -384,7 +384,7 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
     const char *const *idx = bsearch(tmp->data, UserhdrsOverrideHeaders,
                                      mutt_array_size(UserhdrsOverrideHeaders),
                                      sizeof(char *), userhdrs_override_cmp);
-    if (idx != NULL)
+    if (idx)
     {
       cur_override = idx - UserhdrsOverrideHeaders;
       overrides.is_overridden[cur_override] = true;

@@ -79,7 +79,7 @@ static char *strcasestr(const char *haystack, const char *needle)
  */
 static char *strsep(char **stringp, const char *delim)
 {
-  if (*stringp == NULL)
+  if (!*stringp)
     return NULL;
 
   char *start = *stringp;

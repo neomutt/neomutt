@@ -58,7 +58,7 @@ static struct AttrColor *get_color(int index, unsigned char *s)
   struct RegexColorList *rcl = regex_colors_get_list(type);
   struct Mailbox *m_cur = get_current_mailbox();
   struct Email *e = mutt_get_virt_email(m_cur, index);
-  if ((rcl == NULL) || (e == NULL))
+  if (!rcl || !e)
   {
     return simple_color_get(type);
   }

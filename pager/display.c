@@ -466,7 +466,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   }
   else if (mutt_is_quote_line(buf, pmatch))
   {
-    if (q_classify && (lines[line_num].quote == NULL))
+    if (q_classify && !lines[line_num].quote)
     {
       lines[line_num].quote = qstyle_classify(quote_list, buf + pmatch[0].rm_so,
                                               pmatch[0].rm_eo - pmatch[0].rm_so,
@@ -1092,7 +1092,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     /* this also prevents searching through the hidden lines */
     const short c_toggle_quoted_show_levels = cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
     if ((flags & MUTT_HIDE) && (cur_line->cid == MT_COLOR_QUOTED) &&
-        ((cur_line->quote == NULL) || (cur_line->quote->quote_n >= c_toggle_quoted_show_levels)))
+        (!cur_line->quote || (cur_line->quote->quote_n >= c_toggle_quoted_show_levels)))
     {
       flags = 0; /* MUTT_NOSHOW */
     }

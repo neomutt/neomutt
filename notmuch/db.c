@@ -88,7 +88,7 @@ static const char *get_nm_config_file(void)
   const char *c_nm_config_file = cs_subset_path(NeoMutt->sub, "nm_config_file");
 
   // Workaround the configuration system mapping "" to NULL.
-  if (c_nm_config_file == NULL)
+  if (!c_nm_config_file)
   {
     config_to_use = "";
   }

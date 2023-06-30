@@ -677,9 +677,9 @@ char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
 {
   int i = 0;
   const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
-  for (; mailbox && *mailbox && (i < plen - 1); i++)
+  for (; mailbox && *mailbox && (i < (plen - 1)); i++)
   {
-    if (*mailbox == delim || (!delim && strchr(NONULL(c_imap_delim_chars), *mailbox)))
+    if ((*mailbox == delim) || (!delim && strchr(NONULL(c_imap_delim_chars), *mailbox)))
     {
       delim = *mailbox;
       /* Skip multiple occurrences of delim */
@@ -690,7 +690,7 @@ char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
   }
 
   /* Do not terminate with a delimiter */
-  if (i && path[i - 1] == delim)
+  if ((i != 0) && (path[i - 1] == delim))
     i--;
 
   /* Ensure null termination */

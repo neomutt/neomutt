@@ -83,7 +83,7 @@ void mutt_qsort_r(void *base, size_t nmemb, size_t size, qsort_r_compar_t compar
   qsort_r(base, nmemb, size, compar, arg);
 #else
   /* This fallback is not re-entrant. */
-  assert((GlobalCompar == NULL) && (GlobalData == NULL));
+  assert(!GlobalCompar && !GlobalData);
   GlobalCompar = compar;
   GlobalData = arg;
   qsort(base, nmemb, size, relay_compar);

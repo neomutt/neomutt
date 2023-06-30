@@ -41,9 +41,11 @@
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * This is a strtol() wrapper with range checking.
  * errno may be set on error, e.g. ERANGE
@@ -84,9 +86,11 @@ static const char *str_atol_clamp(const char *str, long *dst, long lmin, long lm
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * This is a strtoull() wrapper with range checking.
  * errno may be set on error, e.g. ERANGE
@@ -126,9 +130,11 @@ static const char *str_atoull_clamp(const char *str, unsigned long long *dst,
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * This is a strtol() wrapper with range checking.
  * errno may be set on error, e.g. ERANGE
@@ -168,9 +174,11 @@ const char *mutt_str_atos(const char *str, short *dst)
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * This is a strtol() wrapper with range checking.
  * If @a dst is NULL, the string will be tested only (without conversion).
@@ -193,9 +201,11 @@ const char *mutt_str_atoi(const char *str, int *dst)
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * @note This function's return value differs from the other functions.
  *       They return -1 if there is input beyond the number.
@@ -217,9 +227,11 @@ const char *mutt_str_atoui(const char *str, unsigned int *dst)
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * @note This function's return value differs from the other functions.
  *       They return -1 if there is input beyond the number.
@@ -241,9 +253,11 @@ const char *mutt_str_atoul(const char *str, unsigned long *dst)
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * @note This function's return value differs from the other functions.
  *       They return -1 if there is input beyond the number.
@@ -265,9 +279,11 @@ const char *mutt_str_atous(const char *str, unsigned short *dst)
  * @param[out] dst Store the result
  * @retval ptr endptr
  *
- * - endptr    == NULL -> no conversion happened, or overflow
- * - endptr[0] == '\0' -> str was fully converted
- * - endptr[0] != '\0' -> endptr points to first non converted char in str
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * @note This function's return value differs from the other functions.
  *       They return -1 if there is input beyond the number.
