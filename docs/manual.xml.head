@@ -3929,8 +3929,12 @@ set imap_pass="`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
       </para>
       <example id="ex-rc-env">
         <title>Using environment variables in configuration files</title>
-        <screen>set record=+sent_on_$HOSTNAME</screen>
+        <screen>set record = "+sent_on_$HOSTNAME"</screen>
       </example>
+      <para>
+        If NeoMutt can't find a matching <emphasis>config</emphasis> variable,
+        it will try to find a matching <emphasis>environment</emphasis> variable.
+      </para>
       <para>
         will cause NeoMutt to save outgoing messages to a folder named
         <quote>sent_on_kremvax</quote> if the environment variable
