@@ -1651,9 +1651,9 @@ static int mbox_path_parent(char *buf, size_t buflen)
 /**
  * mbox_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty() - @ingroup mx_path_is_empty
  */
-static int mbox_path_is_empty(const char *path)
+static int mbox_path_is_empty(struct Buffer *path)
 {
-  return mutt_file_check_empty(path);
+  return mutt_file_check_empty(buf_string(path));
 }
 
 /**

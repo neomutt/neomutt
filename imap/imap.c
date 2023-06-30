@@ -2395,9 +2395,9 @@ static int imap_path_parent(char *buf, size_t buflen)
 /**
  * imap_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty() - @ingroup mx_path_is_empty
  */
-static int imap_path_is_empty(const char *path)
+static int imap_path_is_empty(struct Buffer *path)
 {
-  int rc = imap_path_status(path, false);
+  int rc = imap_path_status(buf_string(path), false);
   if (rc < 0)
     return -1;
   if (rc == 0)

@@ -389,7 +389,7 @@ struct MxOps
    *
    * @pre path is not NULL and not empty
    */
-  int (*path_is_empty)     (const char *path);
+  int (*path_is_empty)     (struct Buffer *path);
 };
 
 #endif /* MUTT_CORE_MXAPI_H */

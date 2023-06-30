@@ -1059,7 +1059,7 @@ cleanup:
  * @retval 0 Mailbox contains mail
  * @retval -1 Error
  */
-int maildir_check_empty(const char *path)
+int maildir_check_empty(struct Buffer *path)
 {
   DIR *dir = NULL;
   struct dirent *de = NULL;
@@ -1073,7 +1073,8 @@ int maildir_check_empty(const char *path)
   {
     /* we do "cur" on the first iteration since it's more likely that we'll
      * find old messages without having to scan both subdirs */
-    snprintf(realpath, sizeof(realpath), "%s/%s", path, (iter == 0) ? "cur" : "new");
+    snprintf(realpath, sizeof(realpath), "%s/%s", buf_string(path),
+             (iter == 0) ? "cur" : "new");
     dir = mutt_file_opendir(realpath, MUTT_OPENDIR_CREATE);
     if (!dir)
       return -1;
