@@ -24,6 +24,7 @@
 #define MUTT_COMPLETE_DATA_H
 
 #include "config.h"
+#include <stdbool.h>
 
 /**
  * struct CompletionData - State data for auto-completion

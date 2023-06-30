@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <string.h>
 #include "mutt/lib.h"
 #include "data.h"
 

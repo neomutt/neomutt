@@ -27,22 +27,23 @@
  */
 
 #include "config.h"
+#include <dirent.h>
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "data.h"
 #include "globals.h"
 #include "muttlib.h"
-#include "protos.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
 #endif
+
+struct CompletionData;
 
 /**
  * mutt_complete - Attempt to complete a partial pathname
