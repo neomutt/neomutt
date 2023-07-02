@@ -353,6 +353,7 @@ const char *opcodes_get_name       (int op);
   _fmt(OP_SIDEBAR_PREV_NEW,                   N_("move the highlight to previous mailbox with new mail")) \
   _fmt(OP_SIDEBAR_TOGGLE_VIRTUAL,             N_("toggle between mailboxes and virtual mailboxes")) \
   _fmt(OP_SIDEBAR_TOGGLE_VISIBLE,             N_("make the sidebar (in)visible")) \
+  _fmt(OP_SIDEBAR_START_SEARCH,               N_("dynamic search")) \
 
 #define OPS_SMIME(_fmt) \
   _fmt(OP_COMPOSE_SMIME_MENU,                 N_("show S/MIME options")) \

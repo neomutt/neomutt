@@ -55,6 +55,7 @@ extern const struct MenuOpSeq PagerDefaultBindings[];
 extern const struct MenuOpSeq PgpDefaultBindings[];
 extern const struct MenuOpSeq PostponedDefaultBindings[];
 extern const struct MenuOpSeq QueryDefaultBindings[];
+extern const struct MenuOpSeq SidebarDefaultBindings[];
 extern const struct MenuOpSeq SmimeDefaultBindings[];
 
 /**
@@ -208,6 +209,8 @@ void km_init(void)
   create_bindings(PgpDefaultBindings, MENU_KEY_SELECT_PGP);
   create_bindings(SmimeDefaultBindings, MENU_KEY_SELECT_SMIME);
 #endif
+
+  create_bindings(SidebarDefaultBindings, MENU_SIDEBAR);
 }
 
 /**
