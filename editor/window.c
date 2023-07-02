@@ -33,6 +33,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
 #include "color/lib.h"
 #include "complete/lib.h"
 #include "history/lib.h"
@@ -247,26 +248,24 @@ static bool enter_recursor(struct MuttWindow *win)
 }
 
 /**
- * mw_get_field - Ask the user for a string - @ingroup gui_mw
+ * mw_get_field_notify - Ask the user for a string and call a notify function on keypress
  * @param[in]  prompt   Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  hclass   History class to use
  * @param[in]  complete Flags, see #CompletionFlags
  * @param[in]  comp_api Auto-completion API
  * @param[in]  cdata    Auto-completion private data
+ * @param[in]  callback Callback function used for notification
+ * @param[in]  cb_data  Data to pass to callback function
+ * @param[in]  md       Menu Definition
+ * @param[in]  fn_disp  Function dispatcher
  * @retval 0  Selection made
  * @retval -1 Aborted
- *
- * This function uses the message window.
- *
- * Ask the user to enter a free-form string.
- * This function supports auto-completion and saves the result to the history.
- *
- * It also supports readline style text editing.
- * See #OpEditor for a list of functions.
  */
-int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complete,
-                 enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata)
+int mw_get_field_notify(const char *prompt, struct Buffer *buf, CompletionFlags complete,
+                        enum HistoryClass hclass, const struct CompleteOps *comp_api,
+                        void *cdata, get_field_callback_t callback, void *cb_data,
+                        const struct MenuDefinition *md, function_dispatcher_t fn_disp)
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
@@ -274,6 +273,13 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
   GetChFlags flags = GETCH_NO_FLAGS;
   if (complete & MUTT_COMP_UNBUFFERED)
     flags = GETCH_IGNORE_MACRO;
+
+  struct Buffer *cbuf = NULL;
+  if (callback)
+    cbuf = buf_pool_get();
+
+  if (!md)
+    md = MdEditor;
 
   int rc = 0;
 
@@ -321,8 +327,10 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
       if (wdata.redraw != ENTER_REDRAW_NONE)
         win->actions |= WA_REPAINT;
 
+      mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
       window_redraw(NULL);
-      struct KeyEvent event = km_dokey(MdEditor, flags);
+      mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+      struct KeyEvent event = km_dokey(md, flags);
       if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
       {
         continue;
@@ -347,7 +355,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
           goto bye;
         }
         win->actions |= WA_REPAINT;
-        continue;
+        goto notify;
       }
       else
       {
@@ -358,8 +366,20 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
       wdata.first = false;
       if ((event.op != OP_EDITOR_COMPLETE) && (event.op != OP_EDITOR_COMPLETE_QUERY))
         wdata.tabs = 0;
+
       wdata.redraw = ENTER_REDRAW_LINE;
-      int rc_disp = enter_function_dispatcher(win, &event);
+
+      int rc_disp = FR_UNKNOWN;
+      if (fn_disp)
+      {
+        rc_disp = fn_disp(cb_data, &event);
+        if (rc_disp == FR_SUCCESS)
+          rc_disp = FR_CONTINUE;
+      }
+
+      if (rc_disp == FR_UNKNOWN)
+        rc_disp = enter_function_dispatcher(win, &event);
+
       switch (rc_disp)
       {
         case FR_NO_ACTION:
@@ -375,6 +395,11 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
           rc = 1;
           goto bye;
 
+        case FR_DONE:
+          wdata.done = true;
+          rc = 0;
+          break;
+
         case FR_SUCCESS:
           rc = 0;
           break;
@@ -384,6 +409,14 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
         default:
           mutt_beep(false);
       }
+
+    notify:
+      if (callback)
+      {
+        buf_mb_wcstombs(cbuf, wdata.state->wbuf, wdata.state->lastchar);
+        callback(buf_string(cbuf), cb_data);
+      }
+
     } while (!wdata.done);
 
   bye:
@@ -401,7 +434,35 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
   else
     buf_reset(buf);
 
+  buf_pool_release(&cbuf);
+
   enter_state_free(&es);
 
   return rc;
+}
+
+/**
+ * mw_get_field - Ask the user for a string - @ingroup gui_mw
+ * @param[in]  prompt   Prompt
+ * @param[in]  buf      Buffer for the result
+ * @param[in]  hclass   History class to use
+ * @param[in]  complete Flags, see #CompletionFlags
+ * @param[in]  comp_api Auto-completion API
+ * @param[in]  cdata    Auto-completion private data
+ * @retval 0  Selection made
+ * @retval -1 Aborted
+ *
+ * This function uses the message window.
+ *
+ * Ask the user to enter a free-form string.
+ * This function supports auto-completion and saves the result to the history.
+ *
+ * It also supports readline style text editing.
+ * See #OpEditor for a list of functions.
+ */
+int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complete,
+                 enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata)
+{
+  return mw_get_field_notify(prompt, buf, complete, hclass, comp_api, cdata,
+                             NULL, NULL, NULL, NULL);
 }

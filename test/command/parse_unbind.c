@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "editor/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "pager/lib.h"
@@ -79,6 +80,7 @@ static void init_menus(void)
 {
   struct SubMenu *sm_generic = generic_init_keys();
 
+  editor_init_keys(sm_generic);
   sidebar_init_keys(sm_generic);
   index_init_keys(sm_generic);
   pager_init_keys(sm_generic);

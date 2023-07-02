@@ -72,7 +72,8 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "key/lib.h"
+
+struct MenuDefinition;
 
 /**
  * menu_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc

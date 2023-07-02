@@ -44,15 +44,30 @@
 #include "state.h"
 #include "wdata.h"
 // IWYU pragma: end_keep
+#include "core/lib.h"
 #include "history/lib.h"
 
 struct Buffer;
 struct CompleteOps;
+struct MenuDefinition;
 struct SubMenu;
 
 void editor_init_keys(struct SubMenu *sm_generic);
 
-int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complete, enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata);
+/**
+ * @defgroup get_field_callback_api Get Field Callback API
+ *
+ * Prototype for a function to react to keys as they are entered
+ *
+ * @param text Text entered so far
+ * @param data Callback private data
+ *
+ * @pre text is not NULL
+ */
+typedef void (*get_field_callback_t)(const char *text, void *data);
+
+int mw_get_field       (const char *prompt, struct Buffer *buf, CompletionFlags complete, enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata);
+int mw_get_field_notify(const char *prompt, struct Buffer *buf, CompletionFlags complete, enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata, get_field_callback_t callback, void *cb_data, const struct MenuDefinition *md, function_dispatcher_t fn_disp);
 void replace_part(struct EnterState *es, size_t from, const char *buf);
 
 #endif /* MUTT_EDITOR_LIB_H */
