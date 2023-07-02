@@ -452,29 +452,30 @@ size_t mutt_path_realpath(char *buf)
 
 /**
  * mutt_path_parent - Find the parent of a path
- * @param buf    Buffer for the result
+ * @param  path  Buffer for the result
  * @retval true  Success
  */
-bool mutt_path_parent(char *buf)
+bool mutt_path_parent(struct Buffer *path)
 {
-  if (!buf)
+  if (buf_is_empty(path))
     return false;
 
-  int n = mutt_str_len(buf);
+  int n = buf_len(path);
   if (n < 2)
     return false;
 
-  if (buf[n - 1] == '/')
+  if (buf_at(path, n - 1) == '/')
     n--;
 
   // Find the previous '/'
-  for (n--; ((n >= 0) && (buf[n] != '/')); n--)
+  for (n--; ((n >= 0) && (buf_at(path, n) != '/')); n--)
     ; // do nothing
 
   if (n == 0) // Always keep at least one '/'
     n++;
 
-  buf[n] = '\0';
+  path->data[n] = '\0';
+  buf_fix_dptr(path);
   return true;
 }
 

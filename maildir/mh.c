@@ -1175,20 +1175,14 @@ static int mh_path_canon(struct Buffer *buf)
  */
 static int mh_path_parent(struct Buffer *path)
 {
-  if (mutt_path_parent(path->data))
-  {
-    buf_fix_dptr(path);
+  if (mutt_path_parent(path))
     return 0;
-  }
 
   if (buf_at(path, 0) == '~')
     mutt_path_canon(path->data, path->dsize, HomeDir, true);
 
-  if (mutt_path_parent(path->data))
-  {
-    buf_fix_dptr(path);
+  if (mutt_path_parent(path))
     return 0;
-  }
 
   return -1;
 }
