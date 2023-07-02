@@ -465,6 +465,8 @@ POOL_OBJS	= test/pool/buf_pool_cleanup.o \
 PREX_OBJS	= test/prex/mutt_prex_capture.o \
 		  test/prex/mutt_prex_cleanup.o
 
+RANDOM_OBJS	= test/random/random.o
+
 REGEX_OBJS	= test/regex/mutt_regex_capture.o \
 		  test/regex/mutt_regex_compile.o \
 		  test/regex/mutt_regex_free.o \
@@ -619,7 +621,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
 		  $(PWD)/test/notify $(PWD)/test/notmuch $(PWD)/test/parameter \
 		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
-		  $(PWD)/test/pool $(PWD)/test/prex $(PWD)/test/regex \
+		  $(PWD)/test/pool $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
 		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/signal \
 		  $(PWD)/test/slist $(PWD)/test/sort $(PWD)/test/store \
 		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
@@ -670,6 +672,7 @@ TEST_OBJS	= test/main.o test/common.o \
 		  $(PATTERN_OBJS) \
 		  $(POOL_OBJS) \
 		  $(PREX_OBJS) \
+		  $(RANDOM_OBJS) \
 		  $(REGEX_OBJS) \
 		  $(RFC2047_OBJS) \
 		  $(RFC2231_OBJS) \

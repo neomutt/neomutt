@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -39,10 +40,9 @@
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "notmuch/lib.h"
-#include "commands.h"
 #include "functions.h"
 #include "keymap.h"
-#include "sort.h"
+#include "menu/type.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion

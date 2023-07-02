@@ -23,6 +23,7 @@
 #ifndef MUTT_PARSE_EXTRACT_H
 #define MUTT_PARSE_EXTRACT_H
 
+#include <ctype.h>
 #include <stdint.h>
 
 struct Buffer;

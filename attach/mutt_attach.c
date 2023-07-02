@@ -791,7 +791,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
     if (is_flowed)
     {
       fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "w");
-      if (fp_unstuff == NULL)
+      if (!fp_unstuff)
       {
         mutt_perror("mutt_file_fopen");
         goto bail;
@@ -806,7 +806,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
       mutt_rfc3676_space_unstuff_attachment(b, buf_string(unstuff_tempfile));
 
       fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "r");
-      if (fp_unstuff == NULL)
+      if (!fp_unstuff)
       {
         mutt_perror("mutt_file_fopen");
         goto bail;

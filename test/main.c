@@ -504,6 +504,11 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_prex_capture)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_prex_cleanup)                                    \
                                                                                \
+  /* random */                                                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_rand32)                                          \
+  NEOMUTT_TEST_ITEM(test_mutt_rand64)                                          \
+  NEOMUTT_TEST_ITEM(test_mutt_rand_base32)                                     \
+                                                                               \
   /* regex */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_regex_capture)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_regex_compile)                                   \

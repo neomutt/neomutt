@@ -605,7 +605,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
     if (is_flowed)
     {
       fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "w");
-      if (fp_unstuff == NULL)
+      if (!fp_unstuff)
       {
         mutt_perror("mutt_file_fopen");
         goto bail;
@@ -619,7 +619,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       state->fp_out = filter_fp;
 
       fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "r");
-      if (fp_unstuff == NULL)
+      if (!fp_unstuff)
       {
         mutt_perror("mutt_file_fopen");
         goto bail;
