@@ -95,6 +95,7 @@ struct SidebarWindowData
   int opn_index;             ///< Current (open) mailbox
   int hil_index;             ///< Highlighted mailbox
   int bot_index;             ///< Last mailbox visible in sidebar
+  bool repage;               ///< Force RECALC to recompute the paging used for the overlays
 
   short previous_sort;       ///< Old `$sidebar_sort`
   enum DivType divider_type; ///< Type of divider to use, e.g. #SB_DIV_ASCII
@@ -128,6 +129,7 @@ struct SidebarWindowData *sb_wdata_get(struct MuttWindow *win);
 struct SidebarWindowData *sb_wdata_new(struct MuttWindow *win, struct IndexSharedData *shared);
 
 // window.c
+void sb_entry_set_display_name(struct SbEntry *entry);
 int sb_recalc(struct MuttWindow *win);
 int sb_repaint(struct MuttWindow *win);
 

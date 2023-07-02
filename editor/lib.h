@@ -52,6 +52,7 @@ struct SubMenu;
 void editor_init_keys(struct SubMenu *sm_generic);
 
 int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complete, enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata);
+int mw_get_field_notify(const char *field, struct Buffer *buf, void (*callback)(void *, const char*), void *data);
 void replace_part(struct EnterState *es, size_t from, const char *buf);
 
 #endif /* MUTT_EDITOR_LIB_H */
