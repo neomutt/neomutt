@@ -29,7 +29,7 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stddef.h>
+#include <string.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -37,6 +37,7 @@
 #include "gui/lib.h"
 #include "functions.h"
 #include "lib.h"
+#include "editor/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -58,9 +59,20 @@ static const struct MenuFuncOp OpSidebar[] = { /* map: sidebar */
   { "sidebar-page-up",        OP_SIDEBAR_PAGE_UP        },
   { "sidebar-prev",           OP_SIDEBAR_PREV           },
   { "sidebar-prev-new",       OP_SIDEBAR_PREV_NEW       },
+  { "sidebar-start-search",   OP_SIDEBAR_START_SEARCH   },
   { "sidebar-toggle-virtual", OP_SIDEBAR_TOGGLE_VIRTUAL },
   { "sidebar-toggle-visible", OP_SIDEBAR_TOGGLE_VISIBLE },
   { NULL, 0 },
+};
+
+/**
+ * SidebarDefaultBindings - Key bindings for the Sidebar Window
+ */
+const struct MenuOpSeq SidebarDefaultBindings[] = {
+  { OP_EDITOR_BACKSPACE, "<backspace>" },
+  { OP_SIDEBAR_NEXT,     "<down>"      },
+  { OP_SIDEBAR_PREV,     "<up>"        },
+  { 0, NULL },
 };
 // clang-format on
 
@@ -75,6 +87,7 @@ void sidebar_init_keys(struct SubMenu *sm_generic)
   sm = km_register_submenu(OpSidebar);
   md = km_register_menu(MENU_SIDEBAR, "sidebar");
   km_menu_add_submenu(md, sm);
+  km_menu_add_bindings(md, SidebarDefaultBindings);
 
   SmSidebar = sm;
 }
@@ -394,6 +407,77 @@ static int op_sidebar_toggle_virtual(struct SidebarWindowData *wdata,
   return FR_SUCCESS;
 }
 
+/**
+ * matcher_cb - XXX
+ * @param data    XXX
+ * @param pattern XXX
+ */
+void matcher_cb(void *data, const char *pattern)
+{
+  struct MuttWindow *win = data;
+  struct SidebarWindowData *wdata = win->wdata;
+  wdata->hil_index = 0;
+  wdata->repage = true;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    struct SbEntry *sbe = *sbep;
+    if (strcasestr(sbe->box, pattern) != NULL)
+    {
+      if (!wdata->hil_index)
+        wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
+
+      sbe->mailbox->visible = true;
+    }
+    else
+    {
+      sbe->mailbox->visible = false;
+    }
+  }
+  wdata->win->actions |= WA_RECALC;
+}
+
+/**
+ * op_sidebar_start_search - Selects the last unhidden mailbox - Implements ::sidebar_function_t - @ingroup sidebar_function_api
+ */
+static int op_sidebar_start_search(struct SidebarWindowData *wdata, const struct KeyEvent *event)
+{
+  struct Buffer *buf = buf_pool_get();
+  buf_alloc(buf, 128);
+  int orghlidx = wdata->hil_index;
+
+  struct SbEntry **sbep = NULL;
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  {
+    struct SbEntry *sbe = *sbep;
+    if (sbe->box[0] == 0)
+    {
+      char *last = strrchr(sbe->mailbox->realpath, '/');
+      if (!last)
+        last = sbe->mailbox->realpath;
+
+      mutt_str_copy(sbe->box, last, sizeof(sbe->box));
+    }
+  }
+
+  if (mw_get_field_notify(_("Sidebar search: "), buf, matcher_cb, wdata->win) != 0)
+    buf_pool_release(&buf);
+
+  /* drop the overlay */
+  ARRAY_FOREACH(sbep, &wdata->entries)
+  (*sbep)->mailbox->visible = true;
+  wdata->win->actions |= WA_RECALC;
+
+  if (!buf || (buf_is_empty(buf) && orghlidx == wdata->hil_index))
+    return FR_NO_ACTION;
+
+  struct MuttWindow *dlg = dialog_find(wdata->win);
+  index_change_folder(dlg, sb_get_highlight(wdata->win));
+
+  return FR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -412,6 +496,7 @@ static const struct SidebarFunction SidebarFunctions[] = {
   { OP_SIDEBAR_PREV_NEW,       op_sidebar_prev_new },
   { OP_SIDEBAR_TOGGLE_VIRTUAL, op_sidebar_toggle_virtual },
   { OP_SIDEBAR_TOGGLE_VISIBLE, op_sidebar_toggle_visible },
+  { OP_SIDEBAR_START_SEARCH,   op_sidebar_start_search },
   { 0, NULL },
   // clang-format on
 };
