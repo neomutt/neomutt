@@ -48,6 +48,7 @@ extern const struct MenuOpSeq PagerDefaultBindings[];
 extern const struct MenuOpSeq PgpDefaultBindings[];
 extern const struct MenuOpSeq PostponedDefaultBindings[];
 extern const struct MenuOpSeq QueryDefaultBindings[];
+extern const struct MenuOpSeq SidebarDefaultBindings[];
 extern const struct MenuOpSeq SmimeDefaultBindings[];
 
 /**
@@ -101,6 +102,7 @@ void km_init(void)
   create_bindings(PgpDefaultBindings, MENU_PGP);
   create_bindings(PostponedDefaultBindings, MENU_POSTPONED);
   create_bindings(QueryDefaultBindings, MENU_QUERY);
+  create_bindings(SidebarDefaultBindings, MENU_SIDEBAR);
   create_bindings(SmimeDefaultBindings, MENU_SMIME);
 
   commands_register(&NeoMutt->commands, KeyCommands);
