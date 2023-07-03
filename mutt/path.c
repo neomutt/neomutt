@@ -274,50 +274,41 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
 
 /**
  * mutt_path_canon - Create the canonical version of a path
- * @param buf     Path to modify
- * @param buflen  Length of the buffer
+ * @param path    Path to modify
  * @param homedir Home directory for '~' substitution
  * @param is_dir  Is the path a directory?
  * @retval true Success
  *
  * Remove unnecessary dots and slashes from a path and expand '~'.
  */
-bool mutt_path_canon(char *buf, size_t buflen, const char *homedir, bool is_dir)
+bool mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir)
 {
-  if (!buf)
+  if (buf_is_empty(path))
     return false;
 
-  char result[PATH_MAX] = { 0 };
-
-  if (buf[0] == '~')
+  if (buf_at(path, 0) == '~')
   {
-    mutt_path_tilde(buf, buflen, homedir);
+    mutt_path_tilde(path->data, path->dsize, homedir);
   }
-  else if (buf[0] != '/')
+  else if (buf_at(path, 0) != '/')
   {
-    if (!getcwd(result, sizeof(result)))
+    char cwd[PATH_MAX] = { 0 };
+    if (!getcwd(cwd, sizeof(cwd)))
     {
       mutt_debug(LL_DEBUG1, "getcwd failed: %s (%d)\n", strerror(errno), errno);
       return false;
     }
 
-    size_t cwdlen = mutt_str_len(result);
-    size_t dirlen = mutt_str_len(buf);
-    if ((cwdlen + dirlen + 1) >= buflen)
-    {
-      mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n",
-                 cwdlen + dirlen + 1, buflen);
-      return false;
-    }
-
-    result[cwdlen] = '/';
-    mutt_str_copy(result + cwdlen + 1, buf, sizeof(result) - cwdlen - 1);
-    mutt_str_copy(buf, result, buflen);
+    size_t cwd_len = mutt_str_len(cwd);
+    cwd[cwd_len] = '/';
+    cwd[cwd_len + 1] = '\0';
+    buf_insert(path, 0, cwd);
   }
 
-  if (!mutt_path_tidy(buf, is_dir))
+  if (!mutt_path_tidy(path->data, is_dir))
     return false;
 
+  buf_fix_dptr(path);
   return true;
 }
 

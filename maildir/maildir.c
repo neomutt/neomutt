@@ -1632,7 +1632,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
  */
 static int maildir_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path->data, path->dsize, HomeDir, true);
+  mutt_path_canon(path, HomeDir, true);
   return 0;
 }
 
@@ -1645,7 +1645,7 @@ static int maildir_path_parent(struct Buffer *path)
     return 0;
 
   if (buf_at(path, 0) == '~')
-    mutt_path_canon(path->data, path->dsize, HomeDir, true);
+    mutt_path_canon(path, HomeDir, true);
 
   if (mutt_path_parent(path))
     return 0;

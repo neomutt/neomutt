@@ -33,6 +33,7 @@ void test_gen_path(char *buf, size_t buflen, const char *fmt);
 
 bool test_neomutt_create (void);
 void test_neomutt_destroy(void);
+const char *get_test_dir(void);
 
 static inline bool test_check_str_eq(const char *actual, const char *expected, const char *file, int lnum)
 {
