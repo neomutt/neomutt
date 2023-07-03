@@ -290,13 +290,16 @@ struct KeyEvent mutt_getch(void)
     return OptNoCurses ? event_err : event_timeout;
   }
 
-  const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
-  if ((ch & 0x80) && c_meta_key)
+  if (ch & 0x80)
   {
-    /* send ALT-x as ESC-x */
-    ch &= ~0x80;
-    mutt_unget_ch(ch);
-    return (struct KeyEvent){ '\033', OP_NULL }; // Escape
+    const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
+    if (c_meta_key)
+    {
+      /* send ALT-x as ESC-x */
+      ch &= ~0x80;
+      mutt_unget_ch(ch);
+      return (struct KeyEvent){ '\033', OP_NULL }; // Escape
+    }
   }
 
   if (ch == AbortKey)

@@ -274,7 +274,7 @@ bool progress_window_update(struct MuttWindow *win, size_t pos, int percent)
  * @param size     Expected number of records or size of traffic
  * @param size_inc Size increment (step size)
  * @param time_inc Time increment
- * @param is_bytes true if measuing bytes
+ * @param is_bytes true if measuring bytes
  * @retval ptr New Progress Window
  */
 struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size_inc,
