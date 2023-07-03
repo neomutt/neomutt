@@ -60,6 +60,19 @@ static int maildir_field_delimiter_validator(const struct ConfigSet *cs,
     return CSR_ERR_INVALID;
   }
 
+  static bool maildir_field_delimiter_changed = false;
+  if (maildir_field_delimiter_changed)
+  {
+    // L10N: maildir_field_delimiter is a config variable and shouldn't be translated
+    buf_printf(err, _("maildir_field_delimiter can only be set once"));
+    return CSR_ERR_INVALID;
+  }
+
+  if (*delim != *(const char *) cdef->initial)
+  {
+    maildir_field_delimiter_changed = true;
+  }
+
   return CSR_SUCCESS;
 }
 
@@ -74,7 +87,7 @@ static struct ConfigDef MaildirVars[] = {
   { "maildir_check_cur", DT_BOOL, false, 0, NULL,
     "Check both 'new' and 'cur' directories for new mail"
   },
-  { "maildir_field_delimiter", DT_STRING, IP ":", 0, maildir_field_delimiter_validator,
+  { "maildir_field_delimiter", DT_STRING|DT_NOT_EMPTY, IP ":", 0, maildir_field_delimiter_validator,
     "Field delimiter to be used for maildir email files (default is colon, recommended alternative is semi-colon)"
   },
   { "maildir_trash", DT_BOOL, false, 0, NULL,

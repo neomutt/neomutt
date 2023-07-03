@@ -128,7 +128,7 @@ void cs_dump_set(const struct ConfigSet *cs)
   struct Buffer *result = buf_pool_get();
 
   char tmp[128];
-  char *list[26] = { 0 };
+  char *list[64] = { 0 };
   size_t index = 0;
   size_t i = 0;
 

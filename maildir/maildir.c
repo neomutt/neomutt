@@ -135,7 +135,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
     goto cleanup;
   }
 
-  const char c_maildir_field_delimiter = *cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
 
   char delimiter_version[8] = { 0 };
   snprintf(delimiter_version, sizeof(delimiter_version), "%c2,", c_maildir_field_delimiter);
@@ -233,7 +233,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
     if (flags)
       qsort(tmp, strlen(tmp), 1, maildir_sort_flags);
 
-    const char c_maildir_field_delimiter = *cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+    const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
     snprintf(dest, destlen, "%c2,%s", c_maildir_field_delimiter, tmp);
   }
 }
@@ -279,7 +279,7 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
   mutt_str_copy(subdir, s, 4);
 
   /* extract the flags */
-  const char c_maildir_field_delimiter = *cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
   s = strchr(s, c_maildir_field_delimiter);
   if (s)
     mutt_str_copy(suffix, s, sizeof(suffix));
@@ -449,7 +449,7 @@ static int maildir_sync_message(struct Mailbox *m, struct Email *e)
     buf_strcpy(newpath, p);
 
     /* kill the previous flags */
-    const char c_maildir_field_delimiter = *cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+    const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
     p = strchr(newpath->data, c_maildir_field_delimiter);
     if (p)
     {
@@ -607,7 +607,7 @@ cleanup:
  */
 static size_t maildir_hcache_keylen(const char *fn)
 {
-  const char c_maildir_field_delimiter = *cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
   const char *p = strrchr(fn, c_maildir_field_delimiter);
   return p ? (size_t) (p - fn) : mutt_str_len(fn);
 }
@@ -767,7 +767,7 @@ static void maildir_canon_filename(struct Buffer *dest, const char *src)
 
   buf_strcpy(dest, src);
 
-  const char c_maildir_field_delimiter = *cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
 
   char searchable_bytes[8] = { 0 };
   snprintf(searchable_bytes, sizeof(searchable_bytes), ",%c", c_maildir_field_delimiter);
@@ -856,7 +856,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
 
   struct MaildirEmailData *edata = maildir_edata_get(e);
 
-  const char c_maildir_field_delimiter = *cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
   char *p = strrchr(path, c_maildir_field_delimiter);
   if (p && mutt_str_startswith(p + 1, "2,"))
   {
