@@ -26,12 +26,36 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_canon(void)
 {
-  // bool mutt_path_canon(char *buf, size_t buflen, const char *homedir);
+  // bool mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir);
 
   {
-    TEST_CHECK(!mutt_path_canon(NULL, 10, "apple", true));
+    TEST_CHECK(!mutt_path_canon(NULL, "apple", true));
+  }
+
+  // test homedir expansion
+
+  {
+    struct Buffer *path = buf_new("~/apple");
+    TEST_CHECK(mutt_path_canon(path, "/orange", true));
+    TEST_CHECK_STR_EQ(path->data, "/orange/apple");
+    buf_free(&path);
+  }
+
+  // test current working directory expansion
+
+  {
+    struct Buffer *path = buf_new("./apple");
+    char expected[PATH_MAX];
+    snprintf(expected, sizeof(expected), "%s/apple", get_test_dir());
+
+    TEST_ASSERT(chdir(get_test_dir()) == 0);
+    TEST_CHECK(mutt_path_canon(path, "", true));
+    TEST_CHECK_STR_EQ(buf_string(path), expected);
+
+    buf_free(&path);
   }
 }

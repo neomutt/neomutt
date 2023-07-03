@@ -908,7 +908,7 @@ static enum MailboxType comp_path_probe(const char *path, const struct stat *st)
  */
 static int comp_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(path->data, path->dsize, HomeDir, false);
+  mutt_path_canon(path, HomeDir, false);
   return 0;
 }
 
@@ -935,7 +935,7 @@ static int comp_path_parent(struct Buffer *path)
     return 0;
 
   if (buf_at(path, 0) == '~')
-    mutt_path_canon(path->data, path->dsize, HomeDir, false);
+    mutt_path_canon(path, HomeDir, false);
 
   if (mutt_path_parent(path))
     return 0;

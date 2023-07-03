@@ -100,7 +100,7 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
   // If the user hasn't set $signature, don't warn them if it doesn't exist
   struct Buffer *def_sig = buf_pool_get();
   cs_str_initial_get(sub->cs, "signature", def_sig);
-  mutt_path_canon(def_sig->data, def_sig->dsize, HomeDir, false);
+  mutt_path_canon(def_sig, HomeDir, false);
   bool notify_missing = !mutt_str_equal(c_signature, buf_string(def_sig));
   buf_pool_release(&def_sig);
 
