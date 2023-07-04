@@ -2320,6 +2320,17 @@
 ** to scan all cur messages.
 */
 
+{ "maildir_field_delimiter", DT_STRING, ":" },
+/*
+** .pp
+** Use the value as maildir field delimiter. This is a single-character used to
+** accommodate maildir mailboxes on platforms where `:` is not allowed
+** in a filename. The recommended alternative on such platforms is `;`.
+** Neomutt supports all non-alphanumeric values except for `-`, `.`, `\`, `/`.
+** \fBNote:\fP this only applies to maildir-style mailboxes. Setting
+** it will have no effect on other mailbox types.
+*/
+
 #ifdef USE_HCACHE
 { "maildir_header_cache_verify", DT_BOOL, true },
 /*

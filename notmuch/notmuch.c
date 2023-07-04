@@ -1228,7 +1228,8 @@ static int rename_maildir_filename(const char *old, char *buf, size_t buflen, st
     *p = '\0';
 
   /* remove old flags from filename */
-  p = strchr(filename, ':');
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
+  p = strchr(filename, c_maildir_field_delimiter);
   if (p)
     *p = '\0';
 
