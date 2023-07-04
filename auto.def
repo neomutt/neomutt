@@ -122,6 +122,7 @@ set valid_options {
   debug-color=0             => "DEBUG: Enable Color dump"
   debug-email=0             => "DEBUG: Enable Email dump"
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
+  debug-names=0             => "DEBUG: Enable Name lookup tables"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
   debug-window=0            => "DEBUG: Enable windows dump"
@@ -168,7 +169,7 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color debug-email
-    debug-graphviz debug-notify debug-queue debug-window doc
+    debug-graphviz debug-names debug-notify debug-queue debug-window doc
     everything fmemopen full-doc fuzzing gdbm gnutls gpgme gsasl gss homespool
     idn2 include-path-in-cflags inotify kyotocabinet lmdb locales-fix lua lz4
     mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl smime sqlite ssl
@@ -1023,6 +1024,7 @@ if {[get-define want-debug-backtrace]} {
     user-error "Unable to find libunwind"
   }
   define LIBS "-lunwind-generic [get-define LIBS]"
+  define USE_DEBUG_BACKTRACE 1
   define debug_build 1
 }
 
@@ -1041,6 +1043,12 @@ if {[get-define want-debug-email]} {
 # Graphviz dump
 if {[get-define want-debug-graphviz]} {
   define USE_DEBUG_GRAPHVIZ 1
+  define debug_build 1
+}
+
+# Name lookup tables
+if {[get-define want-debug-names]} {
+  define USE_DEBUG_NAMES 1
   define debug_build 1
 }
 

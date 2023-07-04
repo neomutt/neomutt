@@ -192,7 +192,7 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-#if defined(USE_DEBUG_NOTIFY) || defined(HAVE_LIBUNWIND)
+#if defined(USE_DEBUG_NOTIFY) || defined(USE_DEBUG_BACKTRACE)
 #include "debug/lib.h"
 #endif
 
@@ -241,7 +241,7 @@ static void reset_tilde(struct ConfigSet *cs)
 void mutt_exit(int code)
 {
   mutt_endwin();
-#ifdef HAVE_LIBUNWIND
+#ifdef USE_DEBUG_BACKTRACE
   if (code != 0)
     show_backtrace();
 #endif
