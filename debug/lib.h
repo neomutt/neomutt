@@ -44,6 +44,7 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "menu/lib.h"
 
 struct AddressList;
 struct AttachCtx;
@@ -81,6 +82,7 @@ const char *name_content_disposition(enum ContentDisposition disp);
 const char *name_content_encoding   (enum ContentEncoding enc);
 const char *name_content_type       (enum ContentType type);
 const char *name_mailbox_type       (enum MailboxType type);
+const char *name_menu_type          (enum MenuType mt);
 const char *name_notify_config      (int id);
 const char *name_notify_global      (int id);
 const char *name_notify_mailbox     (int id);

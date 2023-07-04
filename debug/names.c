@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "menu/lib.h"
 #include "mview.h"
 
 #define DEBUG_NAME(NAME)                                                       \
@@ -235,6 +236,31 @@ const char *name_window_size(const struct MuttWindow *win)
     DEBUG_NAME(MUTT_WIN_SIZE_FIXED);
     DEBUG_NAME(MUTT_WIN_SIZE_MAXIMISE);
     DEBUG_NAME(MUTT_WIN_SIZE_MINIMISE);
+    DEBUG_DEFAULT;
+  }
+}
+
+const char *name_menu_type(enum MenuType mt)
+{
+  switch (mt)
+  {
+    DEBUG_NAME(MENU_ALIAS);
+    DEBUG_NAME(MENU_ATTACH);
+    DEBUG_NAME(MENU_AUTOCRYPT_ACCT);
+    DEBUG_NAME(MENU_COMPOSE);
+    DEBUG_NAME(MENU_EDITOR);
+    DEBUG_NAME(MENU_FOLDER);
+    DEBUG_NAME(MENU_GENERIC);
+    DEBUG_NAME(MENU_KEY_SELECT_PGP);
+    DEBUG_NAME(MENU_KEY_SELECT_SMIME);
+    DEBUG_NAME(MENU_INDEX);
+    DEBUG_NAME(MENU_MIX);
+    DEBUG_NAME(MENU_PAGER);
+    DEBUG_NAME(MENU_PGP);
+    DEBUG_NAME(MENU_POSTPONE);
+    DEBUG_NAME(MENU_QUERY);
+    DEBUG_NAME(MENU_SMIME);
+    DEBUG_NAME(MENU_MAX);
     DEBUG_DEFAULT;
   }
 }
