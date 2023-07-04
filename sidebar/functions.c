@@ -395,6 +395,7 @@ static int op_sidebar_start_search(struct SidebarWindowData *wdata, int op)
   buf_alloc(buf, 128);
   struct SbEntry *sbe = NULL;
   struct SbEntry **sbep = NULL;
+  int orghlidx = wdata->hil_index;
 
   ARRAY_FOREACH(sbep, &wdata->entries)
   {
@@ -416,7 +417,7 @@ static int op_sidebar_start_search(struct SidebarWindowData *wdata, int op)
   (*sbep)->mailbox->visible = true;
   wdata->win->actions |= WA_RECALC;
 
-  if (!buf)
+  if (!buf || (buf_is_empty(buf) && orghlidx == wdata->hil_index))
     return FR_NO_ACTION;
 
   struct MuttWindow *dlg = dialog_find(wdata->win);
