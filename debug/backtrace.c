@@ -54,7 +54,7 @@ void show_backtrace(void)
     unw_get_reg(&cursor, UNW_REG_SP, &sp);
     unw_get_proc_name(&cursor, buf, sizeof(buf), &ip);
     if (buf[0] == '_')
-      break;
+      continue;
     printf("    %s() ip = %lx, sp = %lx\n", buf, (long) ip, (long) sp);
     mutt_debug(LL_DEBUG1, "    %s() ip = %lx, sp = %lx\n", buf, (long) ip, (long) sp);
   }

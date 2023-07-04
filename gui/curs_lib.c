@@ -341,7 +341,7 @@ void mutt_query_exit(void)
   mutt_flushinp();
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
-  if (c_timeout)
+  if (c_timeout != 0)
     set_timeout(-1); /* restore blocking operation */
   if (mw_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {

@@ -63,10 +63,11 @@ struct MuttWindow *msgcont_pop_window(void)
   if (!TAILQ_PREV(win_pop, MuttWindowList, entries))
     return NULL;
 
-  TAILQ_REMOVE(&MessageContainer->children, win_pop, entries);
-
   // Make the top of the stack visible
   struct MuttWindow *win_top = TAILQ_PREV(win_pop, MuttWindowList, entries);
+
+  TAILQ_REMOVE(&MessageContainer->children, win_pop, entries);
+
   if (win_top)
   {
     window_set_visible(win_top, true);

@@ -138,6 +138,37 @@ const char *name_mailbox_type(enum MailboxType type)
   }
 }
 
+const char *name_menu_type(enum MenuType mt)
+{
+  switch (mt)
+  {
+    DEBUG_NAME(MENU_ALIAS);
+    DEBUG_NAME(MENU_ATTACH);
+#ifdef USE_AUTOCRYPT
+    DEBUG_NAME(MENU_AUTOCRYPT_ACCT);
+#endif
+    DEBUG_NAME(MENU_COMPOSE);
+    DEBUG_NAME(MENU_EDITOR);
+    DEBUG_NAME(MENU_FOLDER);
+    DEBUG_NAME(MENU_GENERIC);
+#ifdef CRYPT_BACKEND_GPGME
+    DEBUG_NAME(MENU_KEY_SELECT_PGP);
+    DEBUG_NAME(MENU_KEY_SELECT_SMIME);
+#endif
+    DEBUG_NAME(MENU_INDEX);
+#ifdef MIXMASTER
+    DEBUG_NAME(MENU_MIX);
+#endif
+    DEBUG_NAME(MENU_PAGER);
+    DEBUG_NAME(MENU_PGP);
+    DEBUG_NAME(MENU_POSTPONE);
+    DEBUG_NAME(MENU_QUERY);
+    DEBUG_NAME(MENU_SMIME);
+    DEBUG_NAME(MENU_MAX);
+    DEBUG_DEFAULT;
+  }
+}
+
 const char *name_notify_global(int id)
 {
   switch (id)
@@ -236,37 +267,6 @@ const char *name_window_size(const struct MuttWindow *win)
     DEBUG_NAME(MUTT_WIN_SIZE_FIXED);
     DEBUG_NAME(MUTT_WIN_SIZE_MAXIMISE);
     DEBUG_NAME(MUTT_WIN_SIZE_MINIMISE);
-    DEBUG_DEFAULT;
-  }
-}
-
-const char *name_menu_type(enum MenuType mt)
-{
-  switch (mt)
-  {
-    DEBUG_NAME(MENU_ALIAS);
-    DEBUG_NAME(MENU_ATTACH);
-#ifdef USE_AUTOCRYPT
-    DEBUG_NAME(MENU_AUTOCRYPT_ACCT);
-#endif
-    DEBUG_NAME(MENU_COMPOSE);
-    DEBUG_NAME(MENU_EDITOR);
-    DEBUG_NAME(MENU_FOLDER);
-    DEBUG_NAME(MENU_GENERIC);
-#ifdef CRYPT_BACKEND_GPGME
-    DEBUG_NAME(MENU_KEY_SELECT_PGP);
-    DEBUG_NAME(MENU_KEY_SELECT_SMIME);
-#endif
-    DEBUG_NAME(MENU_INDEX);
-#ifdef MIXMASTER
-    DEBUG_NAME(MENU_MIX);
-#endif
-    DEBUG_NAME(MENU_PAGER);
-    DEBUG_NAME(MENU_PGP);
-    DEBUG_NAME(MENU_POSTPONE);
-    DEBUG_NAME(MENU_QUERY);
-    DEBUG_NAME(MENU_SMIME);
-    DEBUG_NAME(MENU_MAX);
     DEBUG_DEFAULT;
   }
 }

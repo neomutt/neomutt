@@ -312,7 +312,7 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
       mutt_window_move(win, c, r);
 
       struct KeyEvent event = km_dokey_event(MENU_EDITOR);
-      if (event.op < 0)
+      if (event.op < OP_NULL)
       {
         rc = (SigWinch && (event.op == OP_TIMEOUT)) ? 1 : -1;
         goto bye;

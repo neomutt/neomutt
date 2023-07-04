@@ -43,15 +43,17 @@ void init_extended_keys(void);
 /**
  * struct Keymap - A keyboard mapping
  *
- * entry in the keymap tree
+ * Macro: macro, desc, (op == OP_MACRO)
+ * Binding: op
+ * Both use eq, len and keys.
  */
 struct Keymap
 {
-  char *macro;                  ///< macro expansion (op == OP_MACRO)
-  char *desc;                   ///< description of a macro for the help menu
-  short op;                     ///< operation to perform
-  short eq;                     ///< number of leading keys equal to next entry
-  short len;                    ///< length of key sequence (unit: sizeof (keycode_t))
+  char *macro;                  ///< Macro expansion (op == OP_MACRO)
+  char *desc;                   ///< Description of a macro for the help menu
+  short op;                     ///< Operation to perform
+  short eq;                     ///< Number of leading keys equal to next entry
+  short len;                    ///< Length of key sequence (unit: sizeof (keycode_t))
   keycode_t *keys;              ///< key sequence
   STAILQ_ENTRY(Keymap) entries; ///< Linked list
 };

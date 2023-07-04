@@ -152,7 +152,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
     event = mutt_getch_timeout(30 * 1000);
     if (event.op == OP_TIMEOUT)
       continue;
-    if (event.op == OP_ABORT || key_is_return(event.ch))
+    if ((event.op == OP_ABORT) || key_is_return(event.ch))
     {
       choice = -1;
       break;

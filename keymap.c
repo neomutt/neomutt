@@ -821,7 +821,7 @@ static void create_bindings(const struct MenuOpSeq *map, enum MenuType mtype)
 {
   STAILQ_INIT(&Keymaps[mtype]);
 
-  for (int i = 0; map[i].op != 0; i++)
+  for (int i = 0; map[i].op != OP_NULL; i++)
     if (map[i].seq)
       km_bindkey(map[i].seq, mtype, map[i].op);
 }
