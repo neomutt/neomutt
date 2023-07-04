@@ -43,7 +43,7 @@
   default:                                                                     \
     return "UNKNOWN"
 
-const char *get_content_type(enum ContentType type)
+const char *name_content_type(enum ContentType type)
 {
   switch (type)
   {
@@ -61,7 +61,7 @@ const char *get_content_type(enum ContentType type)
   }
 }
 
-const char *get_content_encoding(enum ContentEncoding enc)
+const char *name_content_encoding(enum ContentEncoding enc)
 {
   switch (enc)
   {
@@ -76,7 +76,7 @@ const char *get_content_encoding(enum ContentEncoding enc)
   }
 }
 
-const char *get_content_disposition(enum ContentDisposition disp)
+const char *name_content_disposition(enum ContentDisposition disp)
 {
   switch (disp)
   {
@@ -88,7 +88,7 @@ const char *get_content_disposition(enum ContentDisposition disp)
   }
 }
 
-const char *get_notify_type(enum NotifyType type)
+const char *name_notify_type(enum NotifyType type)
 {
   switch (type)
   {
@@ -117,7 +117,7 @@ const char *get_notify_type(enum NotifyType type)
   }
 }
 
-const char *get_mailbox_type(enum MailboxType type)
+const char *name_mailbox_type(enum MailboxType type)
 {
   switch (type)
   {
@@ -137,7 +137,7 @@ const char *get_mailbox_type(enum MailboxType type)
   }
 }
 
-const char *get_notify_global(int id)
+const char *name_notify_global(int id)
 {
   switch (id)
   {
@@ -149,7 +149,7 @@ const char *get_notify_global(int id)
   }
 }
 
-const char *get_notify_config(int id)
+const char *name_notify_config(int id)
 {
   switch (id)
   {
@@ -160,7 +160,7 @@ const char *get_notify_config(int id)
   }
 }
 
-const char *get_notify_mailbox(int id)
+const char *name_notify_mailbox(int id)
 {
   switch (id)
   {
@@ -176,7 +176,7 @@ const char *get_notify_mailbox(int id)
   }
 }
 
-const char *get_notify_mview(int id)
+const char *name_notify_mview(int id)
 {
   switch (id)
   {
@@ -187,7 +187,7 @@ const char *get_notify_mview(int id)
   }
 }
 
-const char *get_window_type(const struct MuttWindow *win)
+const char *name_window_type(const struct MuttWindow *win)
 {
   if (!win)
     return "NULL";
@@ -225,7 +225,7 @@ const char *get_window_type(const struct MuttWindow *win)
   }
 }
 
-const char *get_window_size(const struct MuttWindow *win)
+const char *name_window_size(const struct MuttWindow *win)
 {
   if (!win)
     return "NULL";

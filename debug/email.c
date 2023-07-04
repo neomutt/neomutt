@@ -311,10 +311,10 @@ void dump_body(const struct Body *body)
   mutt_debug(LL_DEBUG1, "\tlength: %ld\n", body->length);
   mutt_debug(LL_DEBUG1, "\tattach_count: %d\n", body->attach_count);
 
-  mutt_debug(LL_DEBUG1, "\tcontent type: %s\n", get_content_type(body->type));
-  mutt_debug(LL_DEBUG1, "\tcontent encoding: %s\n", get_content_encoding(body->encoding));
+  mutt_debug(LL_DEBUG1, "\tcontent type: %s\n", name_content_type(body->type));
+  mutt_debug(LL_DEBUG1, "\tcontent encoding: %s\n", name_content_encoding(body->encoding));
   mutt_debug(LL_DEBUG1, "\tcontent disposition: %s\n",
-             get_content_disposition(body->disposition));
+             name_content_disposition(body->disposition));
 
   if (body->stamp != 0)
   {

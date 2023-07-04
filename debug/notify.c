@@ -48,7 +48,7 @@ static void notify_dump_account(struct NotifyCallback *nc)
     return;
 
   mutt_debug(LL_DEBUG1, "    Account: %p (%s) %s\n", a,
-             get_mailbox_type(a->type), NONULL(a->name));
+             name_mailbox_type(a->type), NONULL(a->name));
 }
 
 static void notify_dump_color(struct NotifyCallback *nc)
@@ -95,7 +95,7 @@ static void notify_dump_config(struct NotifyCallback *nc)
   struct Buffer value = buf_make(128);
   cs_he_string_get(ev_c->sub->cs, ev_c->he, &value);
   mutt_debug(LL_DEBUG1, "    Config: %s %s = %s\n",
-             get_notify_config(nc->event_subtype), ev_c->name, buf_string(&value));
+             name_notify_config(nc->event_subtype), ev_c->name, buf_string(&value));
   buf_dealloc(&value);
 }
 
@@ -108,7 +108,7 @@ static void notify_dump_mview(struct NotifyCallback *nc)
     path = mailbox_path(ev_m->mv->mailbox);
 
   mutt_debug(LL_DEBUG1, "    MailboxView: %s %s\n",
-             get_notify_mview(nc->event_subtype), path);
+             name_notify_mview(nc->event_subtype), path);
 }
 
 static void notify_dump_email(struct NotifyCallback *nc)
@@ -124,7 +124,7 @@ static void notify_dump_email(struct NotifyCallback *nc)
 
 static void notify_dump_global(struct NotifyCallback *nc)
 {
-  mutt_debug(LL_DEBUG1, "    Global: %s\n", get_notify_global(nc->event_subtype));
+  mutt_debug(LL_DEBUG1, "    Global: %s\n", name_notify_global(nc->event_subtype));
 }
 
 static void notify_dump_mailbox(struct NotifyCallback *nc)
@@ -133,7 +133,8 @@ static void notify_dump_mailbox(struct NotifyCallback *nc)
 
   struct Mailbox *m = ev_m->mailbox;
   const char *path = m ? mailbox_path(m) : "";
-  mutt_debug(LL_DEBUG1, "    Mailbox: %s %s\n", get_notify_mailbox(nc->event_subtype), path);
+  mutt_debug(LL_DEBUG1, "    Mailbox: %s %s\n",
+             name_notify_mailbox(nc->event_subtype), path);
 }
 
 static void notify_dump_window_state(struct NotifyCallback *nc)
@@ -204,7 +205,7 @@ static void notify_dump_window_focus(struct NotifyCallback *nc)
 int debug_all_observer(struct NotifyCallback *nc)
 {
   mutt_debug(LL_DEBUG1, "\033[1;31mNotification:\033[0m %s\n",
-             get_notify_type(nc->event_type));
+             name_notify_type(nc->event_type));
 
   switch (nc->event_type)
   {
