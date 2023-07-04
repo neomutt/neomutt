@@ -404,11 +404,10 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
       if ((np->len != len) && (np->op != OP_NULL))
       {
         /* Overwrite with the different lengths, warn */
-        /* TODO: MAX_SEQ here is wrong */
-        char old_binding[MAX_SEQ] = { 0 };
-        char new_binding[MAX_SEQ] = { 0 };
-        km_expand_key(old_binding, MAX_SEQ, map);
-        km_expand_key(new_binding, MAX_SEQ, np);
+        char old_binding[128] = { 0 };
+        char new_binding[128] = { 0 };
+        km_expand_key(old_binding, sizeof(old_binding), map);
+        km_expand_key(new_binding, sizeof(new_binding), np);
         char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings");
         if (err)
         {
@@ -1309,7 +1308,7 @@ static bool dump_bind(struct Buffer *buf, struct Mapping *menu)
     if (map->op == OP_MACRO)
       continue;
 
-    char key_binding[32] = { 0 };
+    char key_binding[128] = { 0 };
     const char *fn_name = NULL;
 
     km_expand_key(key_binding, sizeof(key_binding), map);
@@ -1381,8 +1380,8 @@ static bool dump_macro(struct Buffer *buf, struct Mapping *menu)
     if (map->op != OP_MACRO)
       continue;
 
-    char key_binding[MAX_SEQ] = { 0 };
-    km_expand_key(key_binding, MAX_SEQ, map);
+    char key_binding[128] = { 0 };
+    km_expand_key(key_binding, sizeof(key_binding), map);
 
     struct Buffer tmp = buf_make(0);
     escape_string(&tmp, map->macro);
