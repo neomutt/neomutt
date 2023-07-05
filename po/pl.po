@@ -3283,8 +3283,8 @@ msgstr "Zmienna konfiguracji '%s' jest przestarzała"
 
 #: keymap.c:410
 #, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "Powiązanie '%s' zastąpi '%s'  Spróbuj użyć 'bind %s %s noop' przed nim  https://neomutt.org/guide/configuration.html#bind-warnings"
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+msgstr "Powiązanie '%s' zastąpi '%s'  Spróbuj użyć 'bind %s %s noop' przed nim"
 
 #: keymap.c:782
 msgid "Macro loop detected"

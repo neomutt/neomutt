@@ -403,22 +403,28 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
       /* Don't warn on overwriting a 'noop' binding */
       if ((np->len != len) && (np->op != OP_NULL))
       {
+        static const char *guide_link = "https://neomutt.org/guide/configuration.html#bind-warnings";
         /* Overwrite with the different lengths, warn */
         char old_binding[128] = { 0 };
         char new_binding[128] = { 0 };
         km_expand_key(old_binding, sizeof(old_binding), map);
         km_expand_key(new_binding, sizeof(new_binding), np);
-        char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings");
+        char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'");
         if (err)
         {
           /* err was passed, put the string there */
           buf_printf(err, err_msg, old_binding, new_binding,
                      mutt_map_get_name(mtype, MenuNames), new_binding);
+          buf_add_printf(err, "  %s", guide_link);
         }
         else
         {
-          mutt_error(err_msg, old_binding, new_binding,
+          struct Buffer *tmp = buf_pool_get();
+          buf_printf(tmp, err_msg, old_binding, new_binding,
                      mutt_map_get_name(mtype, MenuNames), new_binding);
+          buf_add_printf(tmp, "  %s", guide_link);
+          mutt_error("%s", buf_string(tmp));
+          buf_pool_release(&tmp);
         }
         rc = MUTT_CMD_WARNING;
       }

@@ -3424,7 +3424,7 @@ msgstr ""
 
 #: keymap.c:410
 #, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
 msgstr ""
 
 #: keymap.c:782

@@ -3285,8 +3285,8 @@ msgstr "Змінна конфіґурації '%s' застаріла"
 
 #: keymap.c:410
 #, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "Привʼязка '%s' матиме псевдонім '%s' Перш ніж спробувати: 'bind %s %s noop' https://neomutt.org/guide/configuration.html#bind-warnings"
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+msgstr "Привʼязка '%s' матиме псевдонім '%s' Перш ніж спробувати: 'bind %s %s noop'"
 
 #: keymap.c:782
 msgid "Macro loop detected"

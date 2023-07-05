@@ -3299,8 +3299,8 @@ msgstr "Konfigurační proměnná „%s“ je zastaralá"
 
 #: keymap.c:410
 #, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "Zkratka „%s“ překryje „%s“. Nejdříve zkuste: „bind %s %s noop“ https://neomutt.org/guide/configuration.html#bind-warnings"
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+msgstr "Zkratka „%s“ překryje „%s“. Nejdříve zkuste: „bind %s %s noop“"
 
 #: keymap.c:782
 msgid "Macro loop detected"

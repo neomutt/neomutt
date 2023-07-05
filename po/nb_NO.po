@@ -3263,8 +3263,8 @@ msgstr "Oppsettsvariabel «%s» er ikke lenger anbefalt å bruke"
 
 #: keymap.c:410
 #, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "Å tilknytte «%s» vil tilknytte alias «%s». Før dette kan du prøve «bind %s %s noop». Se https://neomutt.org/guide/configuration.html#bind-warnings"
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+msgstr "Å tilknytte «%s» vil tilknytte alias «%s». Før dette kan du prøve «bind %s %s noop». Se"
 
 #: keymap.c:782
 msgid "Macro loop detected"
