@@ -57,7 +57,7 @@ int mutt_multi_choice(const char *prompt, const char *letters)
   if (!win)
     return -1;
 
-  struct KeyEvent ch = { OP_NULL, OP_NULL };
+  struct KeyEvent event = { 0, OP_NULL };
   int choice;
   bool redraw = true;
   int prompt_lines = 1;
@@ -142,25 +142,25 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 
     mutt_refresh();
     /* SigWinch is not processed unless timeout is set */
-    ch = mutt_getch_timeout(30 * 1000);
-    if (ch.op == OP_TIMEOUT)
+    event = mutt_getch_timeout(30 * 1000);
+    if (event.op == OP_TIMEOUT)
       continue;
-    if (ch.op == OP_ABORT || key_is_return(ch.ch))
+    if (event.op == OP_ABORT || key_is_return(event.ch))
     {
       choice = -1;
       break;
     }
     else
     {
-      char *p = strchr(letters, ch.ch);
+      char *p = strchr(letters, event.ch);
       if (p)
       {
         choice = p - letters + 1;
         break;
       }
-      else if ((ch.ch <= '9') && (ch.ch > '0'))
+      else if ((event.ch <= '9') && (event.ch > '0'))
       {
-        choice = ch.ch - '0';
+        choice = event.ch - '0';
         if (choice <= mutt_str_len(letters))
           break;
       }
@@ -197,7 +197,7 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
   if (!win)
     return MUTT_ABORT;
 
-  struct KeyEvent ch = { OP_NULL, OP_NULL };
+  struct KeyEvent event = { 0, OP_NULL };
   char *answer_string = NULL;
   int answer_string_wid, msg_wid;
   size_t trunc_msg_len;
@@ -316,24 +316,24 @@ enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
 
     mutt_refresh();
     /* SigWinch is not processed unless timeout is set */
-    ch = mutt_getch_timeout(30 * 1000);
-    if (ch.op == OP_TIMEOUT)
+    event = mutt_getch_timeout(30 * 1000);
+    if (event.op == OP_TIMEOUT)
       continue;
-    if (key_is_return(ch.ch))
+    if (key_is_return(event.ch))
       break;
-    if (ch.op == OP_ABORT)
+    if (event.op == OP_ABORT)
     {
       def = MUTT_ABORT;
       break;
     }
 
-    answer[0] = ch.ch;
-    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) : (tolower(ch.ch) == 'y'))
+    answer[0] = event.ch;
+    if (reyes_ok ? (regexec(&reyes, answer, 0, 0, 0) == 0) : (tolower(event.ch) == 'y'))
     {
       def = MUTT_YES;
       break;
     }
-    else if (reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) : (tolower(ch.ch) == 'n'))
+    else if (reno_ok ? (regexec(&reno, answer, 0, 0, 0) == 0) : (tolower(event.ch) == 'n'))
     {
       def = MUTT_NO;
       break;
