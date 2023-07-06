@@ -262,7 +262,6 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "delete-char",                   OP_EDITOR_DELETE_CHAR },
   { "downcase-word",                 OP_EDITOR_DOWNCASE_WORD },
   { "eol",                           OP_EDITOR_EOL },
-  { "exit",                          OP_EXIT },
   { "forward-char",                  OP_EDITOR_FORWARD_CHAR },
   { "forward-word",                  OP_EDITOR_FORWARD_WORD },
   { "history-down",                  OP_EDITOR_HISTORY_DOWN },
