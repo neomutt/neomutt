@@ -3253,8 +3253,8 @@ msgstr "配置变量 '%s' 已废弃"
 
 #: keymap.c:410
 #, c-format
-msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
-msgstr "绑定 '%s' 将会为 '%s' 设置别名，在这之前，请尝试：'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings"
+msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
+msgstr "绑定 '%s' 将会为 '%s' 设置别名，在这之前，请尝试：'bind %s %s noop'"
 
 #: keymap.c:782
 msgid "Macro loop detected"

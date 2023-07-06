@@ -403,22 +403,28 @@ static enum CommandResult km_bind_err(const char *s, enum MenuType mtype, int op
       /* Don't warn on overwriting a 'noop' binding */
       if ((np->len != len) && (np->op != OP_NULL))
       {
+        static const char *guide_link = "https://neomutt.org/guide/configuration.html#bind-warnings";
         /* Overwrite with the different lengths, warn */
         char old_binding[128] = { 0 };
         char new_binding[128] = { 0 };
         km_expand_key(old_binding, sizeof(old_binding), map);
         km_expand_key(new_binding, sizeof(new_binding), np);
-        char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'  https://neomutt.org/guide/configuration.html#bind-warnings");
+        char *err_msg = _("Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'");
         if (err)
         {
           /* err was passed, put the string there */
           buf_printf(err, err_msg, old_binding, new_binding,
                      mutt_map_get_name(mtype, MenuNames), new_binding);
+          buf_add_printf(err, "  %s", guide_link);
         }
         else
         {
-          mutt_error(err_msg, old_binding, new_binding,
+          struct Buffer *tmp = buf_pool_get();
+          buf_printf(tmp, err_msg, old_binding, new_binding,
                      mutt_map_get_name(mtype, MenuNames), new_binding);
+          buf_add_printf(tmp, "  %s", guide_link);
+          mutt_error("%s", buf_string(tmp));
+          buf_pool_release(&tmp);
         }
         rc = MUTT_CMD_WARNING;
       }
@@ -633,7 +639,7 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
     mutt_flushinp();
   }
 
-  return (struct KeyEvent){ .ch = mutt_getch().ch, .op = OP_NULL };
+  return (struct KeyEvent){ mutt_getch().ch, OP_NULL };
 }
 
 /**
@@ -643,7 +649,7 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
  */
 struct KeyEvent km_dokey_event(enum MenuType mtype)
 {
-  struct KeyEvent tmp = { OP_NULL, OP_NULL };
+  struct KeyEvent event = { 0, OP_NULL };
   struct Keymap *map = STAILQ_FIRST(&Keymaps[mtype]);
   int pos = 0;
   int n = 0;
@@ -671,11 +677,11 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
       {
         while (c_imap_keep_alive < i)
         {
-          tmp = mutt_getch_timeout(c_imap_keep_alive * 1000);
+          event = mutt_getch_timeout(c_imap_keep_alive * 1000);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
-          if ((tmp.op != OP_TIMEOUT) || SigWinch)
+          if ((event.op != OP_TIMEOUT) || SigWinch)
             goto gotkey;
 #ifdef USE_INOTIFY
           if (MonitorFilesChanged)
@@ -688,37 +694,37 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     }
 #endif
 
-    tmp = mutt_getch_timeout(i * 1000);
+    event = mutt_getch_timeout(i * 1000);
 
 #ifdef USE_IMAP
   gotkey:
 #endif
     /* hide timeouts, but not window resizes, from the line editor. */
-    if ((mtype == MENU_EDITOR) && (tmp.op == OP_TIMEOUT) && !SigWinch)
+    if ((mtype == MENU_EDITOR) && (event.op == OP_TIMEOUT) && !SigWinch)
       continue;
 
-    if ((tmp.op == OP_TIMEOUT) || (tmp.op == OP_ABORT))
+    if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
     {
-      return tmp;
+      return event;
     }
 
     /* do we have an op already? */
-    if (tmp.op != OP_NULL)
+    if (event.op != OP_NULL)
     {
       const char *func = NULL;
       const struct MenuFuncOp *funcs = NULL;
 
       /* is this a valid op for this menu type? */
-      if ((funcs = km_get_table(mtype)) && (func = mutt_get_func(funcs, tmp.op)))
-        return tmp;
+      if ((funcs = km_get_table(mtype)) && (func = mutt_get_func(funcs, event.op)))
+        return event;
 
       if ((mtype != MENU_EDITOR) && (mtype != MENU_PAGER) && (mtype != MENU_GENERIC))
       {
         /* check generic menu type */
         funcs = OpGeneric;
-        func = mutt_get_func(funcs, tmp.op);
+        func = mutt_get_func(funcs, event.op);
         if (func)
-          return tmp;
+          return event;
       }
 
       /* Sigh. Valid function but not in this context.
@@ -728,7 +734,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
         funcs = km_get_table(MenuNames[i].value);
         if (funcs)
         {
-          func = mutt_get_func(funcs, tmp.op);
+          func = mutt_get_func(funcs, event.op);
           if (func)
           {
             mutt_unget_ch('>');
@@ -744,23 +750,23 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     }
 
     if (!map)
-      return tmp;
+      return event;
 
     /* Nope. Business as usual */
-    while (tmp.ch > map->keys[pos])
+    while (event.ch > map->keys[pos])
     {
       if ((pos > map->eq) || !STAILQ_NEXT(map, entries))
-        return retry_generic(mtype, map->keys, pos, tmp.ch);
+        return retry_generic(mtype, map->keys, pos, event.ch);
       map = STAILQ_NEXT(map, entries);
     }
 
-    if (tmp.ch != map->keys[pos])
-      return retry_generic(mtype, map->keys, pos, tmp.ch);
+    if (event.ch != map->keys[pos])
+      return retry_generic(mtype, map->keys, pos, event.ch);
 
     if (++pos == map->len)
     {
       if (map->op != OP_MACRO)
-        return (struct KeyEvent){ .ch = tmp.ch, .op = map->op };
+        return (struct KeyEvent){ event.ch, map->op };
 
       /* OptIgnoreMacroEvents turns off processing the MacroEvents buffer
        * in mutt_getch().  Generating new macro events during that time would
@@ -774,14 +780,14 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
        * but less so than aborting the prompt.  */
       if (OptIgnoreMacroEvents)
       {
-        return (struct KeyEvent){ .ch = tmp.ch, .op = OP_NULL };
+        return (struct KeyEvent){ event.ch, OP_NULL };
       }
 
       if (n++ == 10)
       {
         mutt_flushinp();
         mutt_error(_("Macro loop detected"));
-        return (struct KeyEvent){ .ch = '\0', .op = -1 };
+        return (struct KeyEvent){ '\0', OP_ABORT };
       }
 
       generic_tokenize_push_string(map->macro, mutt_push_macro_event);

@@ -38,7 +38,7 @@
 #include "attach/lib.h"
 #include "globals.h"
 #include "protos.h"
-#if defined(USE_DEBUG_GRAPHVIZ) || defined(HAVE_LIBUNWIND)
+#if defined(USE_DEBUG_GRAPHVIZ) || defined(USE_DEBUG_BACKTRACE)
 #include "debug/lib.h"
 #endif
 
@@ -109,7 +109,7 @@ static void curses_segv_handler(int sig)
 {
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   endwin(); /* just to be safe */
-#ifdef HAVE_LIBUNWIND
+#ifdef USE_DEBUG_BACKTRACE
   show_backtrace();
 #endif
 #ifdef USE_DEBUG_GRAPHVIZ

@@ -356,7 +356,7 @@ static struct AttachPtr *find_common_parent(struct AttachCtx *actx, short nattac
  * is_parent - Check whether one attachment is the parent of another
  * @param i    Index of parent Attachment
  * @param actx Attachment context
- * @param cur  Potential child Attachemnt
+ * @param cur  Potential child Attachment
  * @retval true Attachment
  *
  * check whether attachment i is a parent of the attachment pointed to by cur

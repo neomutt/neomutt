@@ -81,26 +81,26 @@ static const struct Mapping VerifyHelp[] = {
  */
 static int menu_dialog_dokey(struct Menu *menu, int *id)
 {
-  struct KeyEvent ch = mutt_getch_timeout(5000);
+  struct KeyEvent event = mutt_getch_timeout(5000);
 
-  if ((ch.op == OP_TIMEOUT) || (ch.op == OP_ABORT))
+  if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
   {
-    *id = ch.op;
+    *id = event.op;
     return 0;
   }
 
   struct CertMenuData *mdata = menu->mdata;
   char *p = NULL;
-  if ((ch.ch != 0) && (p = strchr(mdata->keys, ch.ch)))
+  if ((event.ch != 0) && (p = strchr(mdata->keys, event.ch)))
   {
     *id = OP_MAX + (p - mdata->keys + 1);
     return 0;
   }
 
-  if (ch.op == OP_NULL)
-    mutt_unget_ch(ch.ch);
+  if (event.op == OP_NULL)
+    mutt_unget_ch(event.ch);
   else
-    mutt_unget_op(ch.op);
+    mutt_unget_op(event.op);
   return -1;
 }
 

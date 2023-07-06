@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "menu/lib.h"
 #include "mview.h"
 
 #define DEBUG_NAME(NAME)                                                       \
@@ -43,7 +44,7 @@
   default:                                                                     \
     return "UNKNOWN"
 
-const char *get_content_type(enum ContentType type)
+const char *name_content_type(enum ContentType type)
 {
   switch (type)
   {
@@ -61,7 +62,7 @@ const char *get_content_type(enum ContentType type)
   }
 }
 
-const char *get_content_encoding(enum ContentEncoding enc)
+const char *name_content_encoding(enum ContentEncoding enc)
 {
   switch (enc)
   {
@@ -76,7 +77,7 @@ const char *get_content_encoding(enum ContentEncoding enc)
   }
 }
 
-const char *get_content_disposition(enum ContentDisposition disp)
+const char *name_content_disposition(enum ContentDisposition disp)
 {
   switch (disp)
   {
@@ -88,7 +89,7 @@ const char *get_content_disposition(enum ContentDisposition disp)
   }
 }
 
-const char *get_notify_type(enum NotifyType type)
+const char *name_notify_type(enum NotifyType type)
 {
   switch (type)
   {
@@ -117,7 +118,7 @@ const char *get_notify_type(enum NotifyType type)
   }
 }
 
-const char *get_mailbox_type(enum MailboxType type)
+const char *name_mailbox_type(enum MailboxType type)
 {
   switch (type)
   {
@@ -137,7 +138,7 @@ const char *get_mailbox_type(enum MailboxType type)
   }
 }
 
-const char *get_notify_global(int id)
+const char *name_notify_global(int id)
 {
   switch (id)
   {
@@ -149,7 +150,7 @@ const char *get_notify_global(int id)
   }
 }
 
-const char *get_notify_config(int id)
+const char *name_notify_config(int id)
 {
   switch (id)
   {
@@ -160,7 +161,7 @@ const char *get_notify_config(int id)
   }
 }
 
-const char *get_notify_mailbox(int id)
+const char *name_notify_mailbox(int id)
 {
   switch (id)
   {
@@ -176,7 +177,7 @@ const char *get_notify_mailbox(int id)
   }
 }
 
-const char *get_notify_mview(int id)
+const char *name_notify_mview(int id)
 {
   switch (id)
   {
@@ -187,7 +188,7 @@ const char *get_notify_mview(int id)
   }
 }
 
-const char *get_window_type(const struct MuttWindow *win)
+const char *name_window_type(const struct MuttWindow *win)
 {
   if (!win)
     return "NULL";
@@ -225,7 +226,7 @@ const char *get_window_type(const struct MuttWindow *win)
   }
 }
 
-const char *get_window_size(const struct MuttWindow *win)
+const char *name_window_size(const struct MuttWindow *win)
 {
   if (!win)
     return "NULL";
@@ -235,6 +236,31 @@ const char *get_window_size(const struct MuttWindow *win)
     DEBUG_NAME(MUTT_WIN_SIZE_FIXED);
     DEBUG_NAME(MUTT_WIN_SIZE_MAXIMISE);
     DEBUG_NAME(MUTT_WIN_SIZE_MINIMISE);
+    DEBUG_DEFAULT;
+  }
+}
+
+const char *name_menu_type(enum MenuType mt)
+{
+  switch (mt)
+  {
+    DEBUG_NAME(MENU_ALIAS);
+    DEBUG_NAME(MENU_ATTACH);
+    DEBUG_NAME(MENU_AUTOCRYPT_ACCT);
+    DEBUG_NAME(MENU_COMPOSE);
+    DEBUG_NAME(MENU_EDITOR);
+    DEBUG_NAME(MENU_FOLDER);
+    DEBUG_NAME(MENU_GENERIC);
+    DEBUG_NAME(MENU_KEY_SELECT_PGP);
+    DEBUG_NAME(MENU_KEY_SELECT_SMIME);
+    DEBUG_NAME(MENU_INDEX);
+    DEBUG_NAME(MENU_MIX);
+    DEBUG_NAME(MENU_PAGER);
+    DEBUG_NAME(MENU_PGP);
+    DEBUG_NAME(MENU_POSTPONE);
+    DEBUG_NAME(MENU_QUERY);
+    DEBUG_NAME(MENU_SMIME);
+    DEBUG_NAME(MENU_MAX);
     DEBUG_DEFAULT;
   }
 }

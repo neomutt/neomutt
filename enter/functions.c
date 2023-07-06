@@ -643,7 +643,7 @@ static int op_editor_kill_word(struct EnterWindowData *wdata, int op)
  */
 static int op_editor_quote_char(struct EnterWindowData *wdata, int op)
 {
-  struct KeyEvent event = { OP_NULL, OP_NULL };
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
     window_redraw(NULL);

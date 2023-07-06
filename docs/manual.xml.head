@@ -5656,7 +5656,7 @@ uncolor compose header
         <para>
           The quoted email colours don't use pattern.
           The first colour, <literal>quoted</literal> provides a default colour
-          for all quoted text.  Also, each diffent level of quoting can be given
+          for all quoted text.  Also, each different level of quoting can be given
           a different colour using, <literal>quoted1</literal>,
           <literal>quoted2</literal>, <literal>quoted3</literal> up to
           <literal>quoted9</literal>.

@@ -656,7 +656,7 @@ bool buf_str_equal(struct Buffer *a, struct Buffer *b)
 }
 
 /**
- * buf_istr_equal - Return if two buffers are equal, case insentive
+ * buf_istr_equal - Return if two buffers are equal, case insensitive
  * @param a - First buffer to compare
  * @param b - Second buffer to compare
  * @retval true  Strings are equal

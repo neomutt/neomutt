@@ -455,7 +455,7 @@ int mutt_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
     return -1;
 
   enum MessageType flag = MUTT_NONE;
-  struct KeyEvent event = { OP_NULL, OP_NULL };
+  struct KeyEvent event = { 0, OP_NULL };
 
   struct MuttWindow *old_focus = window_set_focus(win);
 

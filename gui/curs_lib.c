@@ -101,7 +101,7 @@ static struct KeyEvent *array_pop(struct KeyEventArray *a)
  */
 static void array_add(struct KeyEventArray *a, int ch, int op)
 {
-  struct KeyEvent event = { .ch = ch, .op = op };
+  struct KeyEvent event = { ch, op };
   ARRAY_ADD(a, event);
 }
 
@@ -237,24 +237,24 @@ static int mutt_monitor_getch(void)
  * 3. Keyboard
  *
  * This function can return:
- * - Error   `{ OP_ABORT,   OP_NULL }`
- * - Timeout `{ OP_TIMEOUT, OP_NULL }`
+ * - Error   `{ 0, OP_ABORT   }`
+ * - Timeout `{ 0, OP_TIMEOUT }`
  */
 struct KeyEvent mutt_getch(void)
 {
+  static const struct KeyEvent event_err = { 0, OP_ABORT };
+  static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
   int ch;
-  const struct KeyEvent err = { 0, OP_ABORT };
-  const struct KeyEvent timeout = { 0, OP_TIMEOUT };
 
-  struct KeyEvent *key = array_pop(&UngetKeyEvents);
-  if (key)
+  struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
+  if (event_key)
   {
-    return *key;
+    return *event_key;
   }
 
-  if (!OptIgnoreMacroEvents && (key = array_pop(&MacroEvents)))
+  if (!OptIgnoreMacroEvents && (event_key = array_pop(&MacroEvents)))
   {
-    return *key;
+    return *event_key;
   }
 
   SigInt = false;
@@ -275,7 +275,7 @@ struct KeyEvent mutt_getch(void)
   if (SigInt)
   {
     mutt_query_exit();
-    return err;
+    return event_err;
   }
 
   /* either timeout, a sigwinch (if timeout is set), the terminal
@@ -287,22 +287,25 @@ struct KeyEvent mutt_getch(void)
       mutt_exit(1);
     }
 
-    return OptNoCurses ? err : timeout;
+    return OptNoCurses ? event_err : event_timeout;
   }
 
-  const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
-  if ((ch & 0x80) && c_meta_key)
+  if (ch & 0x80)
   {
-    /* send ALT-x as ESC-x */
-    ch &= ~0x80;
-    mutt_unget_ch(ch);
-    return (struct KeyEvent){ .ch = '\033' /* Escape */, .op = OP_NULL };
+    const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
+    if (c_meta_key)
+    {
+      /* send ALT-x as ESC-x */
+      ch &= ~0x80;
+      mutt_unget_ch(ch);
+      return (struct KeyEvent){ '\033', OP_NULL }; // Escape
+    }
   }
 
   if (ch == AbortKey)
-    return err;
+    return event_err;
 
-  return (struct KeyEvent){ .ch = ch, .op = OP_NULL };
+  return (struct KeyEvent){ ch, OP_NULL };
 }
 
 /**
@@ -451,7 +454,7 @@ int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   if (!win)
     return -1;
 
-  struct KeyEvent ch = { OP_NULL, OP_NULL };
+  struct KeyEvent event = { 0, OP_NULL };
   struct MuttWindow *old_focus = window_set_focus(win);
 
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
@@ -466,8 +469,8 @@ int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
-    ch = mutt_getch();
-  } while (ch.op == OP_TIMEOUT);
+    event = mutt_getch();
+  } while (event.op == OP_TIMEOUT);
   mutt_curses_set_cursor(cursor);
 
   mutt_window_move(win, 0, 0);
@@ -475,11 +478,11 @@ int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   mutt_refresh();
   window_set_focus(old_focus);
 
-  if (ch.ch < 0)
+  if (event.ch < 0)
   {
     return -1;
   }
-  else if (ch.ch == '?')
+  else if (event.ch == '?')
   {
     buf_reset(fname);
 
@@ -496,10 +499,10 @@ int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
     char *pc = mutt_mem_malloc(mutt_str_len(prompt) + 3);
 
     sprintf(pc, "%s: ", prompt);
-    if (ch.op == OP_NULL)
-      mutt_unget_ch(ch.ch);
+    if (event.op == OP_NULL)
+      mutt_unget_ch(event.ch);
     else
-      mutt_unget_op(ch.op);
+      mutt_unget_op(event.op);
 
     buf_alloc(fname, 1024);
     if (buf_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
