@@ -55,7 +55,7 @@ struct MailboxView;
 struct MuttWindow;
 struct PagerPrivateData;
 
-typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUTT_SHOWFLAT
+typedef uint16_t PagerFlags;              ///< Flags for dlg_pager(), e.g. #MUTT_SHOWFLAT
 #define MUTT_PAGER_NO_FLAGS         0     ///< No flags are set
 #define MUTT_SHOWFLAT         (1 << 0)    ///< Show characters (used for displaying help)
 #define MUTT_SHOWCOLOR        (1 << 1)    ///< Show characters in color otherwise don't show characters
@@ -77,16 +77,16 @@ typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUT
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER | MUTT_PAGER_LOGS)
 
 // Pager mode.
-// There are 10 code paths that lead to mutt_pager() invocation:
+// There are 10 code paths that lead to dlg_pager() invocation:
 //
-// 1. mutt_index_menu -> mutt_display_message -> mutt_pager
+// 1. dlg_index -> mutt_display_message -> dlg_pager
 //
 //    This path always results in mailbox and email set,
 //    the rest is unset - Body, fp.
 //    This invocation can be identified by IsEmail macro.
 //    The intent is to display an email message
 //
-// 2. mutt_view_attachment -> mutt_do_pager -> mutt_pager
+// 2. mutt_view_attachment -> mutt_do_pager -> dlg_pager
 //
 //    this path always results in email, body, mailbox_view set
 //    this invocation can be identified by one of the two macros
@@ -109,14 +109,14 @@ typedef uint16_t PagerFlags;              ///< Flags for mutt_pager(), e.g. #MUT
 //
 //    No macro identifies these invocations
 //
-//    mutt_index_menu       -> mutt_do_pager -> mutt_pager
-//    mutt_help             -> mutt_do_pager -> mutt_pager
-//    icmd_bind             -> mutt_do_pager -> mutt_pager
-//    icmd_set              -> mutt_do_pager -> mutt_pager
-//    icmd_version          -> mutt_do_pager -> mutt_pager
-//    dlg_select_pgp_key    -> mutt_do_pager -> mutt_pager
-//    verify_key            -> mutt_do_pager -> mutt_pager
-//    mutt_invoke_sendmail  -> mutt_do_pager -> mutt_pager
+//    dlg_index             -> mutt_do_pager -> dlg_pager
+//    mutt_help             -> mutt_do_pager -> dlg_pager
+//    icmd_bind             -> mutt_do_pager -> dlg_pager
+//    icmd_set              -> mutt_do_pager -> dlg_pager
+//    icmd_version          -> mutt_do_pager -> dlg_pager
+//    dlg_select_pgp_key    -> mutt_do_pager -> dlg_pager
+//    verify_key            -> mutt_do_pager -> dlg_pager
+//    mutt_invoke_sendmail  -> mutt_do_pager -> dlg_pager
 //
 //
 // - IsAttach(pager) (pager && (pager)->body)
@@ -192,7 +192,7 @@ typedef uint8_t PagerRedrawFlags;       ///< Flags, e.g. #PAGER_REDRAW_PAGER
 extern int BrailleRow;
 extern int BrailleCol;
 
-int mutt_pager(struct PagerView *pview);
+int dlg_pager(struct PagerView *pview);
 int mutt_do_pager(struct PagerView *pview, struct Email *e);
 void buf_strip_formatting(struct Buffer *dest, const char *src, bool strip_markers);
 struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared);

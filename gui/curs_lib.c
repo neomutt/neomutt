@@ -492,7 +492,7 @@ int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
       flags |= MUTT_SEL_MULTI;
     if (mailbox)
       flags |= MUTT_SEL_MAILBOX;
-    buf_select_file(fname, flags, m, files, numfiles);
+    dlg_select_file(fname, flags, m, files, numfiles);
   }
   else
   {

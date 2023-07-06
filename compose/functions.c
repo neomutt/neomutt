@@ -764,18 +764,18 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     return FR_NO_ACTION;
   }
 
-  /* `$sort`, `$sort_aux`, `$use_threads` could be changed in mutt_index_menu() */
+  /* `$sort`, `$sort_aux`, `$use_threads` could be changed in dlg_index() */
   const enum SortType old_sort = cs_subset_sort(shared->sub, "sort");
   const enum SortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
   const unsigned char old_use_threads = cs_subset_enum(shared->sub, "use_threads");
 
   OptAttachMsg = true;
   mutt_message(_("Tag the messages you want to attach"));
-  struct MuttWindow *dlg_index = index_pager_init();
-  dialog_push(dlg_index);
-  struct Mailbox *m_attach_new = mutt_index_menu(dlg_index, m_attach);
+  struct MuttWindow *dlg = index_pager_init();
+  dialog_push(dlg);
+  struct Mailbox *m_attach_new = dlg_index(dlg, m_attach);
   dialog_pop();
-  mutt_window_free(&dlg_index);
+  mutt_window_free(&dlg);
   OptAttachMsg = false;
 
   if (!shared->mailbox)

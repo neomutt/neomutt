@@ -29,9 +29,9 @@
  *
  * ## Windows
  *
- * | Name                     | Type             | See Also                       |
- * | :----------------------- | :--------------- | :----------------------------- |
- * | Autocrypt Account Dialog | WT_DLG_AUTOCRYPT | dlg_select_autocrypt_account() |
+ * | Name                     | Type             | See Also               |
+ * | :----------------------- | :--------------- | :--------------------- |
+ * | Autocrypt Account Dialog | WT_DLG_AUTOCRYPT | dlg_select_autocrypt() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -301,9 +301,9 @@ static int autocrypt_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_autocrypt_account - Display the Autocrypt account Menu
+ * dlg_select_autocrypt - Display the Autocrypt account Menu
  */
-void dlg_select_autocrypt_account(void)
+void dlg_select_autocrypt(void)
 {
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (!c_autocrypt)

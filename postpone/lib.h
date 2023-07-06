@@ -43,7 +43,7 @@ struct Email;
 struct Mailbox;
 struct MuttWindow;
 
-struct Email *dlg_select_postponed_email(struct Mailbox *m);
+struct Email *dlg_select_postponed      (struct Mailbox *m);
 int           mutt_get_postponed        (struct Mailbox *m_cur, struct Email *hdr, struct Email **cur, struct Buffer *fcc);
 int           mutt_num_postponed        (struct Mailbox *m, bool force);
 SecurityFlags mutt_parse_crypt_hdr      (const char *p, bool set_empty_signas, SecurityFlags crypt_app);

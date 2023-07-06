@@ -498,7 +498,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
     pview.win_pbar = win_pbar;
     pview.win_pager = win_pager;
 
-    rc = mutt_pager(&pview);
+    rc = dlg_pager(&pview);
     mx_msg_close(shared->mailbox, &msg);
   } while (rc == PAGER_LOOP_RELOAD);
 

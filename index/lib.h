@@ -76,7 +76,7 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
 struct AttrColor *index_color(struct Menu *menu, int line);
 void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
 void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen);
-struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m);
+struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m);
 void mutt_set_header_color(struct Mailbox *m, struct Email *e);
 struct MuttWindow *index_pager_init(void);
 int mutt_dlgindex_observer(struct NotifyCallback *nc);

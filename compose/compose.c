@@ -31,9 +31,9 @@
  *
  * ## Windows
  *
- * | Name                 | Type           | See Also            |
- * | :------------------- | :------------- | :------------------ |
- * | Compose Email Dialog | WT_DLG_COMPOSE | mutt_compose_menu() |
+ * | Name                 | Type           | See Also      |
+ * | :------------------- | :------------- | :------------ |
+ * | Compose Email Dialog | WT_DLG_COMPOSE | dlg_compose() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -297,7 +297,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
 }
 
 /**
- * mutt_compose_menu - Allow the user to edit the message envelope
+ * dlg_compose - Allow the user to edit the message envelope
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
  * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
@@ -306,8 +306,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
  * @retval  0 Normal exit
  * @retval -1 Abort message
  */
-int mutt_compose_menu(struct Email *e, struct Buffer *fcc, uint8_t flags,
-                      struct ConfigSubset *sub)
+int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct ConfigSubset *sub)
 {
   struct MuttWindow *dlg = compose_dlg_init(sub, e, fcc);
   struct ComposeSharedData *shared = dlg->wdata;

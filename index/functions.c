@@ -2261,7 +2261,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 static int op_autocrypt_acct_menu(struct IndexSharedData *shared,
                                   struct IndexPrivateData *priv, int op)
 {
-  dlg_select_autocrypt_account();
+  dlg_select_autocrypt();
   return FR_SUCCESS;
 }
 #endif

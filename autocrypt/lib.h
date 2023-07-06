@@ -165,7 +165,7 @@ enum AutocryptRec
 extern char *AutocryptSignAs;
 extern char *AutocryptDefaultKey;
 
-void              dlg_select_autocrypt_account           (void);
+void              dlg_select_autocrypt                   (void);
 void              mutt_autocrypt_cleanup                 (void);
 int               mutt_autocrypt_generate_gossip_list    (struct Email *e);
 int               mutt_autocrypt_init                    (bool can_create);

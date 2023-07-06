@@ -708,7 +708,7 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
     /* only one message, so just use that one. */
     e = m->emails[0];
   }
-  else if (!(e = dlg_select_postponed_email(m)))
+  else if (!(e = dlg_select_postponed(m)))
   {
     rc = -1;
     goto cleanup;

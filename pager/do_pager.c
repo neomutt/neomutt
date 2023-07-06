@@ -176,7 +176,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
   }
   else
   {
-    rc = mutt_pager(pview);
+    rc = dlg_pager(pview);
   }
 
   dialog_pop();

@@ -1281,7 +1281,7 @@ main
       }
       buf_reset(&folder);
       struct Mailbox *m_cur = get_current_mailbox();
-      buf_select_file(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, m_cur, NULL, NULL);
+      dlg_select_file(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, m_cur, NULL, NULL);
       if (buf_is_empty(&folder))
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)
@@ -1358,7 +1358,7 @@ main
       dialog_push(dlg);
 
       mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
-      m = mutt_index_menu(dlg, m);
+      m = dlg_index(dlg, m);
       mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
       mailbox_free(&m);
 

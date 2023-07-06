@@ -30,9 +30,9 @@
  *
  * ## Windows
  *
- * | Name         | Type         | See Also          |
- * | :----------- | :----------- | :---------------- |
- * | Index Dialog | WT_DLG_INDEX | mutt_index_menu() |
+ * | Name         | Type         | See Also    |
+ * | :----------- | :----------- | :---------- |
+ * | Index Dialog | WT_DLG_INDEX | dlg_index() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -1053,12 +1053,12 @@ dsl_finish:
 }
 
 /**
- * mutt_index_menu - Display a list of emails
+ * dlg_index - Display a list of emails
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
  * @retval ptr Mailbox open in the index
  */
-struct Mailbox *mutt_index_menu(struct MuttWindow *dlg, struct Mailbox *m_init)
+struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
   /* Make sure use_threads/sort/sort_aux are coherent */
   index_adjust_sort_threads(NeoMutt->sub);

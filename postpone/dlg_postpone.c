@@ -31,9 +31,9 @@
  *
  * ## Windows
  *
- * | Name                             | Type            | See Also                     |
- * | :------------------------------- | :-------------- | :--------------------------- |
- * | Postponed Email Selection Dialog | WT_DLG_POSTPONE | dlg_select_postponed_email() |
+ * | Name                             | Type            | See Also               |
+ * | :------------------------------- | :-------------- | :--------------------- |
+ * | Postponed Email Selection Dialog | WT_DLG_POSTPONE | dlg_select_postponed() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -188,11 +188,11 @@ static struct AttrColor *post_color(struct Menu *menu, int line)
 }
 
 /**
- * dlg_select_postponed_email - Create a Menu to select a postponed message
+ * dlg_select_postponed - Create a Menu to select a postponed message
  * @param m Mailbox
  * @retval ptr Email
  */
-struct Email *dlg_select_postponed_email(struct Mailbox *m)
+struct Email *dlg_select_postponed(struct Mailbox *m)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
   // Required to number the emails

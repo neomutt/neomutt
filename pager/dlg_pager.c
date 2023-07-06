@@ -202,7 +202,7 @@ static bool check_read_delay(uint64_t *timestamp)
 }
 
 /**
- * mutt_pager - Display an email, attachment, or help, in a window
+ * dlg_pager - Display an email, attachment, or help, in a window
  * @param pview Pager view settings
  * @retval  0 Success
  * @retval -1 Error
@@ -222,7 +222,7 @@ static bool check_read_delay(uint64_t *timestamp)
  *   it is recognized by presence of data->fp and data->body->email
  * - PAGER_MODE_OTHER does not expect data->email or data->body
  */
-int mutt_pager(struct PagerView *pview)
+int dlg_pager(struct PagerView *pview)
 {
   //===========================================================================
   // ACT 1 - Ensure sanity of the caller and determine the mode
