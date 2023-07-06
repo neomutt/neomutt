@@ -672,6 +672,18 @@ static int op_editor_transpose_chars(struct EnterWindowData *wdata, int op)
   return editor_transpose_chars(wdata->state);
 }
 
+/**
+ * op_redraw - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
+ */
+static int op_redraw(struct EnterWindowData *wdata, int op)
+{
+  clearok(stdscr, true);
+  mutt_resize_screen();
+  window_invalidate_all();
+  window_redraw(NULL);
+  return FR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -703,6 +715,7 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
   { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
   { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },
+  { OP_REDRAW,                    op_redraw },
   { 0, NULL },
   // clang-format on
 };
