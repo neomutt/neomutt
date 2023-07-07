@@ -360,22 +360,19 @@ static int label_sort(const void *a, const void *b)
  * mutt_label_complete - Complete a label name
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int numtabs)
+int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
 {
-  char *pt = buf;
-  int spaces; /* keep track of the number of leading spaces on the line */
+  char *pt = buf->data;
 
   struct Mailbox *m_cur = get_current_mailbox();
   if (!m_cur || !m_cur->label_hash)
     return 0;
 
-  SKIPWS(buf);
-  spaces = buf - pt;
+  SKIPWS(pt);
 
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
@@ -384,7 +381,7 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
     struct HashWalkState hws = { 0 };
 
     cd->num_matched = 0;
-    mutt_str_copy(cd->user_typed, buf, sizeof(cd->user_typed));
+    mutt_str_copy(cd->user_typed, buf_string(buf), sizeof(cd->user_typed));
     memset(cd->match_list, 0, cd->match_list_len);
     memset(cd->completed, 0, sizeof(cd->completed));
     while ((he = mutt_hash_walk(m_cur->label_hash, &hws)))
@@ -416,7 +413,7 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
   }
 
   /* return the completed label */
-  strncpy(buf, cd->completed, buflen - spaces);
+  buf_strcpy(buf, cd->completed);
 
   return 1;
 }

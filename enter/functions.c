@@ -175,10 +175,9 @@ static int complete_label(struct EnterWindowData *wdata)
   for (; (i < wdata->state->lastchar) && (wdata->state->wbuf[i] == ' '); i++)
     ; // do nothing
 
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
-                   wdata->state->curpos - i);
-  int rc = mutt_label_complete(wdata->cd, wdata->buf, wdata->buflen, wdata->tabs);
-  replace_part(wdata->state, i, wdata->buf);
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
+  int rc = mutt_label_complete(wdata->cd, wdata->buffer, wdata->tabs);
+  replace_part(wdata->state, i, buf_string(wdata->buffer));
   if (rc != 1)
     return FR_CONTINUE;
 
@@ -209,7 +208,7 @@ static int complete_pattern(struct EnterWindowData *wdata)
     i++;
     mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
                      wdata->state->curpos - i);
-    int rc = mutt_label_complete(wdata->cd, wdata->buf, wdata->buflen, wdata->tabs);
+    int rc = mutt_label_complete(wdata->cd, wdata->buffer, wdata->tabs);
     replace_part(wdata->state, i, wdata->buf);
     if (rc != 1)
     {
