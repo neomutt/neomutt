@@ -147,10 +147,9 @@ static int complete_alias_complete(struct EnterWindowData *wdata)
   for (; (i < wdata->state->lastchar) && (wdata->state->wbuf[i] == ' '); i++)
     ; // do nothing
 
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
-                   wdata->state->curpos - i);
-  int rc = alias_complete(wdata->buf, wdata->buflen, NeoMutt->sub);
-  replace_part(wdata->state, i, wdata->buf);
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
+  int rc = alias_complete(wdata->buffer, NeoMutt->sub);
+  replace_part(wdata->state, i, buf_string(wdata->buffer));
   if (rc != 1)
   {
     return FR_CONTINUE;

@@ -75,7 +75,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -374,9 +373,8 @@ static bool dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
 
 /**
  * alias_complete - Alias completion routine
- * @param buf    Partial Alias to complete
- * @param buflen Length of buffer
- * @param sub    Config items
+ * @param buf Partial Alias to complete
+ * @param sub Config items
  * @retval 1 Success
  * @retval 0 Error
  *
@@ -384,19 +382,19 @@ static bool dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
  * from the alias list as much as possible. if given empty search string
  * or found nothing, present all aliases
  */
-int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
+int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
   struct Alias *np = NULL;
   char bestname[8192] = { 0 };
 
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
-  mdata.limit = mutt_str_dup(buf);
+  mdata.limit = buf_strdup(buf);
 
-  if (buf[0] != '\0')
+  if (buf_at(buf, 0) != '\0')
   {
     TAILQ_FOREACH(np, &Aliases, entries)
     {
-      if (np->name && mutt_strn_equal(np->name, buf, strlen(buf)))
+      if (np->name && mutt_strn_equal(np->name, buf_string(buf), buf_len(buf)))
       {
         if (bestname[0] == '\0') /* init */
         {
@@ -431,10 +429,10 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
       FREE(&mdata.limit);
       mdata.limit = mtitle;
 
-      if (!mutt_str_equal(bestname, buf))
+      if (!mutt_str_equal(bestname, buf_string(buf)))
       {
         /* we are adding something to the completion */
-        mutt_str_copy(buf, bestname, mutt_str_len(bestname) + 1);
+        buf_strcpy_n(buf, bestname, mutt_str_len(bestname) + 1);
         FREE(&mdata.limit);
         return 1;
       }
@@ -446,7 +444,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 
         struct AliasView *av = ARRAY_GET(&mdata.ava, aasize - 1);
 
-        if (np->name && !mutt_strn_equal(np->name, buf, strlen(buf)))
+        if (np->name && !mutt_strn_equal(np->name, buf_string(buf), buf_len(buf)))
         {
           av->is_visible = false;
         }
@@ -467,7 +465,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
   if (!dlg_select_alias(NULL, &mdata))
     goto done;
 
-  buf[0] = '\0';
+  buf_reset(buf);
 
   // Extract the selected aliases
   struct Buffer *tmpbuf = buf_pool_get();
@@ -479,7 +477,7 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 
     mutt_addrlist_write(&avp->alias->addr, tmpbuf, true);
   }
-  mutt_str_copy(buf, buf_string(tmpbuf), buflen);
+  buf_copy(buf, tmpbuf);
   buf_pool_release(&tmpbuf);
 
 done:
