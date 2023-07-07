@@ -261,19 +261,19 @@ static int complete_alias_query(struct EnterWindowData *wdata)
 static int complete_command(struct EnterWindowData *wdata)
 {
   int rc = FR_SUCCESS;
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-  size_t i = strlen(wdata->buf);
-  if ((i != 0) && (wdata->buf[i - 1] == '=') &&
-      (mutt_var_value_complete(wdata->cd, wdata->buf, wdata->buflen, i) != 0))
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+  size_t i = buf_len(wdata->buffer);
+  if ((i != 0) && (buf_at(wdata->buffer, i - 1) == '=') &&
+      (mutt_var_value_complete(wdata->cd, wdata->buffer->data, wdata->buffer->dsize, i) != 0))
   {
     wdata->tabs = 0;
   }
-  else if (mutt_command_complete(wdata->cd, wdata->buf, wdata->buflen, i, wdata->tabs) == 0)
+  else if (mutt_command_complete(wdata->cd, wdata->buffer, i, wdata->tabs) == 0)
   {
     rc = FR_ERROR;
   }
 
-  replace_part(wdata->state, 0, wdata->buf);
+  replace_part(wdata->state, 0, buf_string(wdata->buffer));
   return rc;
 }
 

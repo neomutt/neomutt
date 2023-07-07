@@ -155,26 +155,24 @@ done:
  * mutt_command_complete - Complete a command name
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param pos     Cursor position in the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
-                          int pos, int numtabs)
+int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
 {
-  char *pt = buf;
+  char *pt = buf->data;
   int spaces; /* keep track of the number of leading spaces on the line */
 
-  SKIPWS(buf);
-  spaces = buf - pt;
+  SKIPWS(pt);
+  spaces = pt - buf->data;
 
-  pt = buf + pos - spaces;
-  while ((pt > buf) && !isspace((unsigned char) *pt))
+  pt = buf->data + pos - spaces;
+  while ((pt > buf->data) && !isspace((unsigned char) *pt))
     pt--;
 
-  if (pt == buf) /* complete cmd */
+  if (pt == buf->data) /* complete cmd */
   {
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
@@ -213,16 +211,16 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
     }
 
     /* return the completed command */
-    strncpy(buf, cd->completed, buflen - spaces);
+    buf_strcpy(buf, cd->completed);
   }
-  else if (mutt_str_startswith(buf, "set") || mutt_str_startswith(buf, "unset") ||
-           mutt_str_startswith(buf, "reset") || mutt_str_startswith(buf, "toggle"))
+  else if (buf_startswith(buf, "set") || buf_startswith(buf, "unset") ||
+           buf_startswith(buf, "reset") || buf_startswith(buf, "toggle"))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_str_startswith(buf, "set"))
+    if (buf_startswith(buf, "set"))
     {
       for (int num = 0; prefixes[num]; num++)
       {
@@ -281,9 +279,10 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    buf_fix_dptr(buf);
   }
-  else if (mutt_str_startswith(buf, "exec"))
+  else if (buf_startswith(buf, "exec"))
   {
     const enum MenuType mtype = menu_get_current_type();
     const struct MenuFuncOp *funcs = km_get_table(mtype);
@@ -333,7 +332,8 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    buf_fix_dptr(buf);
   }
   else
   {
