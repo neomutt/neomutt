@@ -423,7 +423,6 @@ int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numta
  * mutt_nm_query_complete - Complete to the nearest notmuch tag
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param pos     Cursor position in the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval true  Success, a match
@@ -431,14 +430,13 @@ int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numta
  *
  * Complete the nearest "tag:"-prefixed string previous to pos.
  */
-bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
-                            int pos, int numtabs)
+bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
 {
-  char *pt = buf;
+  char *pt = buf->data;
   int spaces;
 
-  SKIPWS(buf);
-  spaces = buf - pt;
+  SKIPWS(pt);
+  spaces = pt - buf->data;
 
   pt = (char *) mutt_strn_rfind((char *) buf, pos, "tag:");
   if (pt)
@@ -472,7 +470,7 @@ bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
     }
 
     /* return the completed query */
-    strncpy(pt, cd->completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
   }
   else
   {
@@ -488,22 +486,21 @@ bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
  * mutt_nm_tag_complete - Complete to the nearest notmuch tag
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval true  Success, a match
  * @retval false Error, no match
  *
  * Complete the nearest "+" or "-" -prefixed string previous to pos.
  */
-bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, int numtabs)
+bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
 {
   if (!buf)
     return false;
 
-  char *pt = buf;
+  char *pt = buf->data;
 
   /* Only examine the last token */
-  char *last_space = strrchr(buf, ' ');
+  char *last_space = strrchr(buf->data, ' ');
   if (last_space)
     pt = (last_space + 1);
 
@@ -539,7 +536,7 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, i
   }
 
   /* return the completed query */
-  strncpy(pt, cd->completed, buf + buflen - pt);
+  strncpy(pt, cd->completed, buf->data + buf->dsize - pt);
 
   return true;
 }

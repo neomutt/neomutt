@@ -326,12 +326,12 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
 static int complete_nm_query(struct EnterWindowData *wdata)
 {
   int rc = FR_SUCCESS;
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-  size_t len = strlen(wdata->buf);
-  if (!mutt_nm_query_complete(wdata->cd, wdata->buf, wdata->buflen, len, wdata->tabs))
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+  size_t len = buf_len(wdata->buffer);
+  if (!mutt_nm_query_complete(wdata->cd, wdata->buffer, len, wdata->tabs))
     rc = FR_ERROR;
 
-  replace_part(wdata->state, 0, wdata->buf);
+  replace_part(wdata->state, 0, buf_string(wdata->buffer));
   return rc;
 }
 
@@ -343,11 +343,11 @@ static int complete_nm_query(struct EnterWindowData *wdata)
 static int complete_nm_tag(struct EnterWindowData *wdata)
 {
   int rc = FR_SUCCESS;
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-  if (!mutt_nm_tag_complete(wdata->cd, wdata->buf, wdata->buflen, wdata->tabs))
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+  if (!mutt_nm_tag_complete(wdata->cd, wdata->buffer, wdata->tabs))
     rc = FR_ERROR;
 
-  replace_part(wdata->state, 0, wdata->buf);
+  replace_part(wdata->state, 0, buf_string(wdata->buffer));
   return rc;
 }
 #endif
