@@ -264,7 +264,7 @@ static int complete_command(struct EnterWindowData *wdata)
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
   size_t i = buf_len(wdata->buffer);
   if ((i != 0) && (buf_at(wdata->buffer, i - 1) == '=') &&
-      (mutt_var_value_complete(wdata->cd, wdata->buffer->data, wdata->buffer->dsize, i) != 0))
+      (mutt_var_value_complete(wdata->cd, wdata->buffer, i) != 0))
   {
     wdata->tabs = 0;
   }

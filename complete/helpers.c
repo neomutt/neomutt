@@ -550,31 +550,30 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, i
 
 /**
  * mutt_var_value_complete - Complete a variable/value
- * @param cd     Completion Data
- * @param buf    Buffer for the result
- * @param buflen Length of the buffer
- * @param pos    Cursor position in the buffer
+ * @param cd  Completion Data
+ * @param buf Buffer for the result
+ * @param pos Cursor position in the buffer
  * @retval 1 Success
  * @retval 0 Failure
  */
-int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen, int pos)
+int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int pos)
 {
-  char *pt = buf;
+  char *pt = buf->data;
 
-  if (buf[0] == '\0')
+  if (pt[0] == '\0')
     return 0;
 
-  SKIPWS(buf);
-  const int spaces = buf - pt;
+  SKIPWS(pt);
+  const int spaces = pt - buf->data;
 
-  pt = buf + pos - spaces;
-  while ((pt > buf) && !isspace((unsigned char) *pt))
+  pt = buf->data + pos - spaces;
+  while ((pt > buf->data) && !isspace((unsigned char) *pt))
     pt--;
   pt++;           /* move past the space */
   if (*pt == '=') /* abort if no var before the '=' */
     return 0;
 
-  if (mutt_str_startswith(buf, "set"))
+  if (buf_startswith(buf, "set"))
   {
     char var[256] = { 0 };
     mutt_str_copy(var, pt, sizeof(var));
@@ -595,7 +594,7 @@ int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen,
     if (CSR_RESULT(rc) == CSR_SUCCESS)
     {
       pretty_var(value.data, &pretty);
-      snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
+      snprintf(pt, buf->dsize - (pt - buf->data), "%s=%s", var, pretty.data);
       buf_dealloc(&value);
       buf_dealloc(&pretty);
       return 0;
