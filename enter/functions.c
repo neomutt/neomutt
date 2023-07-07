@@ -239,14 +239,9 @@ static int complete_alias_query(struct EnterWindowData *wdata)
       ; // do nothing
   }
 
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
-                   wdata->state->curpos - i);
-  struct Buffer *tmp = buf_pool_get();
-  buf_strcpy(tmp, wdata->buf);
-  query_complete(tmp, NeoMutt->sub);
-  mutt_str_copy(wdata->buf, buf_string(tmp), wdata->buflen);
-  buf_pool_release(&tmp);
-  replace_part(wdata->state, i, wdata->buf);
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
+  query_complete(wdata->buffer, NeoMutt->sub);
+  replace_part(wdata->state, i, buf_string(wdata->buffer));
 
   return FR_CONTINUE;
 }
