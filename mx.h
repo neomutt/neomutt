@@ -41,41 +41,41 @@ typedef uint8_t MsgOpenFlags;      ///< Flags for mx_msg_open_new(), e.g. #MUTT_
 #define MUTT_SET_DRAFT    (1 << 1) ///< set the message draft flag
 
 /* Wrappers for the Mailbox API, see MxOps */
-enum MxStatus   mx_mbox_check      (struct Mailbox *m);
-enum MxStatus   mx_mbox_check_stats(struct Mailbox *m, uint8_t flags);
-enum MxStatus   mx_mbox_close      (struct Mailbox *m);
-bool            mx_mbox_open       (struct Mailbox *m, OpenMailboxFlags flags);
-enum MxStatus   mx_mbox_sync       (struct Mailbox *m);
-int             mx_msg_close       (struct Mailbox *m, struct Message **ptr);
-int             mx_msg_commit      (struct Mailbox *m, struct Message *msg);
-struct Message *mx_msg_open_new    (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);
-struct Message *mx_msg_open        (struct Mailbox *m, struct Email *e);
-int             mx_msg_padding_size(struct Mailbox *m);
-int             mx_save_hcache     (struct Mailbox *m, struct Email *e);
-int             mx_path_canon      (struct Buffer *buf, const char *folder, enum MailboxType *type);
-int             mx_path_canon2     (struct Mailbox *m, const char *folder);
-int             mx_path_parent     (struct Buffer *buf);
-int             mx_path_pretty     (struct Buffer *buf, const char *folder);
-enum MailboxType mx_path_probe     (const char *path);
-struct Mailbox *mx_path_resolve    (const char *path);
-struct Mailbox *mx_resolve         (const char *path_or_name);
-int             mx_tags_commit     (struct Mailbox *m, struct Email *e, const char *tags);
-int             mx_tags_edit       (struct Mailbox *m, const char *tags, struct Buffer *buf);
-enum MailboxType mx_type           (struct Mailbox *m);
+enum MxStatus        mx_mbox_check        (struct Mailbox *m);
+enum MxStatus        mx_mbox_check_stats  (struct Mailbox *m, uint8_t flags);
+enum MxStatus        mx_mbox_close        (struct Mailbox *m);
+bool                 mx_mbox_open         (struct Mailbox *m, OpenMailboxFlags flags);
+enum MxStatus        mx_mbox_sync         (struct Mailbox *m);
+int                  mx_msg_close         (struct Mailbox *m, struct Message **ptr);
+int                  mx_msg_commit        (struct Mailbox *m, struct Message *msg);
+struct Message *     mx_msg_open_new      (struct Mailbox *m, const struct Email *e, MsgOpenFlags flags);
+struct Message *     mx_msg_open          (struct Mailbox *m, struct Email *e);
+int                  mx_msg_padding_size  (struct Mailbox *m);
+int                  mx_save_hcache       (struct Mailbox *m, struct Email *e);
+int                  mx_path_canon        (struct Buffer *path, const char *folder, enum MailboxType *type);
+int                  mx_path_canon2       (struct Mailbox *m, const char *folder);
+int                  mx_path_parent       (struct Buffer *path);
+int                  mx_path_pretty       (struct Buffer *path, const char *folder);
+enum MailboxType     mx_path_probe        (const char *path);
+struct Mailbox *     mx_path_resolve      (const char *path);
+struct Mailbox *     mx_resolve           (const char *path_or_name);
+int                  mx_tags_commit       (struct Mailbox *m, struct Email *e, const char *tags);
+int                  mx_tags_edit         (struct Mailbox *m, const char *tags, struct Buffer *buf);
+enum MailboxType     mx_type              (struct Mailbox *m);
 
-struct Account *mx_ac_find     (struct Mailbox *m);
-struct Mailbox *mx_mbox_find   (struct Account *a, const char *path);
-struct Mailbox *mx_mbox_find2  (const char *path);
-bool            mx_mbox_ac_link(struct Mailbox *m);
-bool            mx_ac_add      (struct Account *a, struct Mailbox *m);
-int             mx_ac_remove   (struct Mailbox *m, bool keep_account);
+struct Account *     mx_ac_find           (struct Mailbox *m);
+struct Mailbox *     mx_mbox_find         (struct Account *a, const char *path);
+struct Mailbox *     mx_mbox_find2        (const char *path);
+bool                 mx_mbox_ac_link      (struct Mailbox *m);
+bool                 mx_ac_add            (struct Account *a, struct Mailbox *m);
+int                  mx_ac_remove         (struct Mailbox *m, bool keep_account);
 
-int                 mx_access           (const char *path, int flags);
-void                mx_alloc_memory     (struct Mailbox *m, int req_size);
-int                 mx_path_is_empty    (struct Buffer *path);
-void                mx_fastclose_mailbox(struct Mailbox *m, bool keep_account);
-const struct MxOps *mx_get_ops          (enum MailboxType type);
-bool                mx_tags_is_supported(struct Mailbox *m);
-int                 mx_toggle_write     (struct Mailbox *m);
+int                  mx_access            (const char *path, int flags);
+void                 mx_alloc_memory      (struct Mailbox *m, int req_size);
+int                  mx_path_is_empty     (struct Buffer *path);
+void                 mx_fastclose_mailbox (struct Mailbox *m, bool keep_account);
+const struct MxOps * mx_get_ops           (enum MailboxType type);
+bool                 mx_tags_is_supported (struct Mailbox *m);
+int                  mx_toggle_write      (struct Mailbox *m);
 
 #endif /* MUTT_MX_H */

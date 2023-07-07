@@ -2746,7 +2746,7 @@ enum MailboxType nntp_path_probe(const char *path, const struct stat *st)
 /**
  * nntp_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
-static int nntp_path_canon(struct Buffer *buf)
+static int nntp_path_canon(struct Buffer *path)
 {
   return 0;
 }
@@ -2754,7 +2754,7 @@ static int nntp_path_canon(struct Buffer *buf)
 /**
  * nntp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
-static int nntp_path_pretty(struct Buffer *buf, const char *folder)
+static int nntp_path_pretty(struct Buffer *path, const char *folder)
 {
   /* Succeed, but don't do anything, for now */
   return 0;

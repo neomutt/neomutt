@@ -1164,9 +1164,9 @@ static int mh_msg_close(struct Mailbox *m, struct Message *msg)
 /**
  * mh_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
-static int mh_path_canon(struct Buffer *buf)
+static int mh_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(buf->data, buf->dsize, HomeDir, true);
+  mutt_path_canon(path->data, path->dsize, HomeDir, true);
   return 0;
 }
 
@@ -1190,12 +1190,12 @@ static int mh_path_parent(struct Buffer *path)
 /**
  * mh_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
-static int mh_path_pretty(struct Buffer *buf, const char *folder)
+static int mh_path_pretty(struct Buffer *path, const char *folder)
 {
-  if (mutt_path_abbr_folder(buf->data, folder))
+  if (mutt_path_abbr_folder(path->data, folder))
     return 0;
 
-  if (mutt_path_pretty(buf->data, buf->dsize, HomeDir, false))
+  if (mutt_path_pretty(path->data, path->dsize, HomeDir, false))
     return 0;
 
   return -1;

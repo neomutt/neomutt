@@ -906,21 +906,21 @@ static enum MailboxType comp_path_probe(const char *path, const struct stat *st)
 /**
  * comp_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
-static int comp_path_canon(struct Buffer *buf)
+static int comp_path_canon(struct Buffer *path)
 {
-  mutt_path_canon(buf->data, buf->dsize, HomeDir, false);
+  mutt_path_canon(path->data, path->dsize, HomeDir, false);
   return 0;
 }
 
 /**
  * comp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
-static int comp_path_pretty(struct Buffer *buf, const char *folder)
+static int comp_path_pretty(struct Buffer *path, const char *folder)
 {
-  if (mutt_path_abbr_folder(buf->data, folder))
+  if (mutt_path_abbr_folder(path->data, folder))
     return 0;
 
-  if (mutt_path_pretty(buf->data, buf->dsize, HomeDir, false))
+  if (mutt_path_pretty(path->data, path->dsize, HomeDir, false))
     return 0;
 
   return -1;

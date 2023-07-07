@@ -1165,7 +1165,7 @@ enum MailboxType pop_path_probe(const char *path, const struct stat *st)
 /**
  * pop_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
-static int pop_path_canon(struct Buffer *buf)
+static int pop_path_canon(struct Buffer *path)
 {
   return 0;
 }
@@ -1173,7 +1173,7 @@ static int pop_path_canon(struct Buffer *buf)
 /**
  * pop_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
-static int pop_path_pretty(struct Buffer *buf, const char *folder)
+static int pop_path_pretty(struct Buffer *path, const char *folder)
 {
   /* Succeed, but don't do anything, for now */
   return 0;

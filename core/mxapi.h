@@ -244,7 +244,7 @@ struct MxOps
    * @pre m   is not NULL
    * @pre msg is not NULL
    */
-  int (*msg_commit)      (struct Mailbox *m, struct Message *msg);
+  int (*msg_commit)(struct Mailbox *m, struct Message *msg);
 
   /**
    * @defgroup mx_msg_close msg_close()
@@ -259,7 +259,7 @@ struct MxOps
    * @pre m   is not NULL
    * @pre msg is not NULL
    */
-  int (*msg_close)       (struct Mailbox *m, struct Message *msg);
+  int (*msg_close)(struct Mailbox *m, struct Message *msg);
 
   /**
    * @defgroup mx_msg_padding_size msg_padding_size()
@@ -286,7 +286,7 @@ struct MxOps
    * @pre m is not NULL
    * @pre e is not NULL
    */
-  int (*msg_save_hcache) (struct Mailbox *m, struct Email *e);
+  int (*msg_save_hcache)(struct Mailbox *m, struct Email *e);
 
   /**
    * @defgroup mx_tags_edit tags_edit()
@@ -303,7 +303,7 @@ struct MxOps
    * @pre m   is not NULL
    * @pre buf is not NULL
    */
-  int (*tags_edit)       (struct Mailbox *m, const char *tags, struct Buffer *buf);
+  int (*tags_edit)(struct Mailbox *m, const char *tags, struct Buffer *buf);
 
   /**
    * @defgroup mx_tags_commit tags_commit()
@@ -320,7 +320,7 @@ struct MxOps
    * @pre e   is not NULL
    * @pre buf is not NULL
    */
-  int (*tags_commit)     (struct Mailbox *m, struct Email *e, const char *buf);
+  int (*tags_commit)(struct Mailbox *m, struct Email *e, const char *buf);
 
   /**
    * @defgroup mx_path_probe path_probe()
@@ -340,40 +340,40 @@ struct MxOps
    * @ingroup mx_api
    *
    * path_canon - Canonicalise a Mailbox path
-   * @param buf    Path to modify
+   * @param path Path to modify
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * @pre buf is not NULL
+   * @pre path is not NULL
    */
-  int (*path_canon) (struct Buffer *buf);
+  int (*path_canon)(struct Buffer *path);
 
   /**
    * @defgroup mx_path_pretty path_pretty()
    * @ingroup mx_api
    *
    * path_pretty - Abbreviate a Mailbox path
-   * @param buf    Path to modify
+   * @param path   Path to modify
    * @param folder Base path for '=' substitution
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * @pre buf is not NULL
+   * @pre path is not NULL
    */
-  int (*path_pretty) (struct Buffer *buf, const char *folder);
+  int (*path_pretty)(struct Buffer *path, const char *folder);
 
   /**
    * @defgroup mx_path_parent path_parent()
    * @ingroup mx_api
    *
    * path_parent - Find the parent of a Mailbox path
-   * @param path   Path to modify
+   * @param path Path to modify
    * @retval  0 Success
    * @retval -1 Failure
    *
-   * @pre buf is not NULL
+   * @pre path is not NULL
    */
-  int (*path_parent)     (struct Buffer *path);
+  int (*path_parent)(struct Buffer *path);
 
   /**
    * @defgroup mx_path_is_empty path_is_empty()
@@ -387,7 +387,7 @@ struct MxOps
    *
    * @pre path is not NULL and not empty
    */
-  int (*path_is_empty)     (struct Buffer *path);
+  int (*path_is_empty)(struct Buffer *path);
 };
 
 #endif /* MUTT_CORE_MXAPI_H */

@@ -2336,9 +2336,9 @@ enum MailboxType imap_path_probe(const char *path, const struct stat *st)
 /**
  * imap_path_canon - Canonicalise a Mailbox path - Implements MxOps::path_canon() - @ingroup mx_path_canon
  */
-int imap_path_canon(struct Buffer *buf)
+int imap_path_canon(struct Buffer *path)
 {
-  struct Url *url = url_parse(buf_string(buf));
+  struct Url *url = url_parse(buf_string(path));
   if (!url)
     return 0;
 
@@ -2348,7 +2348,7 @@ int imap_path_canon(struct Buffer *buf)
   imap_fix_path('\0', url->path, tmp, sizeof(tmp));
   url->path = tmp;
   url_tostring(url, tmp2, sizeof(tmp2), U_NO_FLAGS);
-  buf_strcpy(buf, tmp2);
+  buf_strcpy(path, tmp2);
   url_free(&url);
 
   return 0;
@@ -2356,27 +2356,27 @@ int imap_path_canon(struct Buffer *buf)
 
 /**
  * imap_expand_path - Buffer wrapper around imap_path_canon()
- * @param buf Path to expand
+ * @param path Path to expand
  * @retval  0 Success
  * @retval -1 Failure
  *
  * @note The path is expanded in place
  */
-int imap_expand_path(struct Buffer *buf)
+int imap_expand_path(struct Buffer *path)
 {
-  buf_alloc(buf, PATH_MAX);
-  return imap_path_canon(buf);
+  buf_alloc(path, PATH_MAX);
+  return imap_path_canon(path);
 }
 
 /**
  * imap_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
  */
-static int imap_path_pretty(struct Buffer *buf, const char *folder)
+static int imap_path_pretty(struct Buffer *path, const char *folder)
 {
   if (!folder)
     return -1;
 
-  imap_pretty_mailbox(buf->data, buf->dsize, folder);
+  imap_pretty_mailbox(path->data, path->dsize, folder);
   return 0;
 }
 
