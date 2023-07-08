@@ -175,36 +175,38 @@ bool mutt_path_tidy(char *buf, bool is_dir)
 
 /**
  * mutt_path_pretty - Tidy a filesystem path
- * @param buf     Path to modify
- * @param buflen  Length of the buffer
+ * @param path    Path to modify
  * @param homedir Home directory for '~' substitution
  * @param is_dir  Is the path a directory?
  * @retval true Success
  *
  * Tidy a path and replace a home directory with '~'
  */
-bool mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir)
+bool mutt_path_pretty(struct Buffer *path, const char *homedir, bool is_dir)
 {
-  if (!buf)
+  if (buf_is_empty(path))
     return false;
 
-  mutt_path_tidy(buf, is_dir);
+  mutt_path_tidy(path->data, is_dir);
+  buf_fix_dptr(path);
 
-  size_t len = mutt_str_startswith(buf, homedir);
+  size_t len = mutt_str_startswith(path->data, homedir);
   if (len == 0)
     return false;
 
-  if ((buf[len] != '/') && (buf[len] != '\0'))
+  if ((buf_at(path, len) != '/') && (buf_at(path, len) != '\0'))
     return false;
 
-  buf[0] = '~';
-  if (buf[len] == '\0')
+  path->data[0] = '~';
+  if (buf_len(path) == len)
   {
-    buf[1] = '\0';
+    path->data[1] = '\0';
+    buf_fix_dptr(path);
     return true;
   }
 
-  mutt_str_copy(buf + 1, buf + len, buflen - len);
+  mutt_str_copy(path->data + 1, path->data + len, buf_len(path) + 1 - len);
+  buf_fix_dptr(path);
   return true;
 }
 

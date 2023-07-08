@@ -1195,7 +1195,7 @@ static int mh_path_pretty(struct Buffer *path, const char *folder)
   if (mutt_path_abbr_folder(path->data, folder))
     return 0;
 
-  if (mutt_path_pretty(path->data, path->dsize, HomeDir, false))
+  if (mutt_path_pretty(path, HomeDir, false))
     return 0;
 
   return -1;
