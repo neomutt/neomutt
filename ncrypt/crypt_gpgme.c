@@ -3371,7 +3371,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
   while (true)
   {
     buf_reset(resp);
-    if (buf_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -3452,7 +3452,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid,
                    buf_string(p->mailbox));
-          ans = mutt_yesorno(buf, MUTT_YES);
+          ans = mw_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
         {
@@ -3846,7 +3846,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
     }
   }
 
-  choice = mutt_multi_choice(prompt, letters);
+  choice = mw_multi_choice(prompt, letters);
   if (choice > 0)
   {
     switch (choices[choice - 1])

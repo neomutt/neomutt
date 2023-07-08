@@ -738,7 +738,7 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
 
       snprintf(buf, sizeof(buf), _("Connection to %s lost. Reconnect?"),
                adata->conn->account.host);
-      if (mutt_yesorno(buf, MUTT_YES) != MUTT_YES)
+      if (mw_yesorno(buf, MUTT_YES) != MUTT_YES)
       {
         adata->status = NNTP_BYE;
         return -1;

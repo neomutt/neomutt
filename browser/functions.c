@@ -96,8 +96,8 @@ static int op_browser_new_file(struct BrowserPrivateData *priv, int op)
   struct Buffer *buf = buf_pool_get();
   buf_printf(buf, "%s/", buf_string(&LastDir));
 
-  const int rc = buf_get_field(_("New file name: "), buf, MUTT_COMP_FILE, false,
-                               NULL, NULL, NULL);
+  const int rc = mw_get_field(_("New file name: "), buf, MUTT_COMP_FILE, false,
+                              NULL, NULL, NULL);
   if (rc != 0)
   {
     buf_pool_release(&buf);
@@ -310,7 +310,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
 
   if (op == OP_CHANGE_DIRECTORY)
   {
-    int rc = buf_get_field(_("Chdir to: "), buf, MUTT_COMP_FILE, false, NULL, NULL, NULL);
+    int rc = mw_get_field(_("Chdir to: "), buf, MUTT_COMP_FILE, false, NULL, NULL, NULL);
     if ((rc != 0) && buf_is_empty(buf))
     {
       buf_pool_release(&buf);
@@ -457,7 +457,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, int op)
   }
 
   snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), ff->name);
-  if (mutt_yesorno(msg, MUTT_NO) != MUTT_YES)
+  if (mw_yesorno(msg, MUTT_NO) != MUTT_YES)
   {
     mutt_message(_("Mailbox not deleted"));
     return FR_NO_ACTION;
@@ -489,7 +489,7 @@ static int op_enter_mask(struct BrowserPrivateData *priv, int op)
   const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, c_mask ? c_mask->pattern : NULL);
-  if (buf_get_field(_("File Mask: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+  if (mw_get_field(_("File Mask: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
   {
     buf_pool_release(&buf);
     return FR_NO_ACTION;
@@ -860,14 +860,13 @@ static int op_sort(struct BrowserPrivateData *priv, int op)
   int sort = -1;
   int reverse = (op == OP_SORT_REVERSE);
 
-  switch (mutt_multi_choice(
-      (reverse) ?
-          /* L10N: The highlighted letters must match the "Sort" options */
-          _("Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?") :
-          /* L10N: The highlighted letters must match the "Reverse Sort" options */
-          _("Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"),
-      /* L10N: These must match the highlighted letters from "Sort" and "Reverse Sort" */
-      _("dazecwn")))
+  switch (mw_multi_choice((reverse) ?
+                              /* L10N: The highlighted letters must match the "Sort" options */
+                              _("Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?") :
+                              /* L10N: The highlighted letters must match the "Reverse Sort" options */
+                              _("Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"),
+                          /* L10N: These must match the highlighted letters from "Sort" and "Reverse Sort" */
+                          _("dazecwn")))
   {
     case -1: /* abort */
       resort = false;
@@ -938,7 +937,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op)
   else
     snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
   /* buf comes from the buffer pool, so defaults to size 1024 */
-  if ((buf_get_field(tmp2, buf, MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(tmp2, buf, MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     buf_pool_release(&buf);

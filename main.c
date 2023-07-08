@@ -902,7 +902,7 @@ main
     {
       char msg2[256];
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), c_folder);
-      if (mutt_yesorno(msg2, MUTT_YES) == MUTT_YES)
+      if (mw_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {
         if ((mkdir(buf_string(fpath), 0700) == -1) && (errno != EEXIST))
           mutt_error(_("Can't create %s: %s"), c_folder, strerror(errno)); // TEST21: neomutt -n -F /dev/null (and ~/Mail doesn't exist)

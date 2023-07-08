@@ -62,7 +62,7 @@ void mutt_help(enum MenuType menu);
 void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool upd_mbox);
 void mutt_signal_init(void);
 void mutt_emails_set_flag(struct Mailbox *m, struct EmailArray *ea, enum MessageType flag, bool bf);
-int mutt_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf);
+int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf);
 
 int mutt_thread_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag, bool bf, bool subthread);
 extern short PostCount;

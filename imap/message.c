@@ -497,7 +497,7 @@ static bool query_abort_header_download(struct ImapAccountData *adata)
 
   mutt_flushinp();
   /* L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox */
-  if (mutt_yesorno(_("Abort download and close mailbox?"), MUTT_YES) == MUTT_YES)
+  if (mw_yesorno(_("Abort download and close mailbox?"), MUTT_YES) == MUTT_YES)
   {
     abort = true;
     imap_close_connection(adata);
@@ -1799,7 +1799,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
       const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
-      if (c_confirm_create && (mutt_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      if (c_confirm_create && (mw_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;

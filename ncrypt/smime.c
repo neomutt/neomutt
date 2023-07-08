@@ -182,9 +182,9 @@ bool smime_class_valid_passphrase(void)
   smime_class_void_passphrase();
 
   struct Buffer *buf = buf_pool_get();
-  const int rc = buf_get_field(_("Enter S/MIME passphrase:"), buf,
-                               MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, false,
-                               NULL, NULL, NULL);
+  const int rc = mw_get_field(_("Enter S/MIME passphrase:"), buf,
+                              MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, false,
+                              NULL, NULL, NULL);
   mutt_str_copy(SmimePass, buf_string(buf), sizeof(SmimePass));
   buf_pool_release(&buf);
 
@@ -751,7 +751,7 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
   while (true)
   {
     buf_reset(resp);
-    if (buf_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -1203,8 +1203,8 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   const bool c_smime_ask_cert_label = cs_subset_bool(NeoMutt->sub, "smime_ask_cert_label");
   if (c_smime_ask_cert_label)
   {
-    if ((buf_get_field(_("Label for certificate: "), buf, MUTT_COMP_NO_FLAGS,
-                       false, NULL, NULL, NULL) != 0) ||
+    if ((mw_get_field(_("Label for certificate: "), buf, MUTT_COMP_NO_FLAGS,
+                      false, NULL, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       goto done;
@@ -2232,7 +2232,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
     choices = "eswabc";
   }
 
-  choice = mutt_multi_choice(prompt, letters);
+  choice = mw_multi_choice(prompt, letters);
   if (choice > 0)
   {
     switch (choices[choice - 1])
@@ -2294,14 +2294,14 @@ SecurityFlags smime_class_send_menu(struct Email *e)
         {
           struct Buffer errmsg = buf_make(0);
           int rc = CSR_SUCCESS;
-          switch (mutt_multi_choice(_("Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"),
-                                    // L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-                                    _("123c")))
+          switch (mw_multi_choice(_("Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"),
+                                  // L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
+                                  _("123c")))
           {
             case 1:
-              switch (choice = mutt_multi_choice(_("(1) DES, (2) Triple-DES?"),
-                                                 // L10N: Options for: (1) DES, (2) Triple-DES
-                                                 _("12")))
+              switch (choice = mw_multi_choice(_("(1) DES, (2) Triple-DES?"),
+                                               // L10N: Options for: (1) DES, (2) Triple-DES
+                                               _("12")))
               {
                 case 1:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
@@ -2315,9 +2315,9 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               break;
 
             case 2:
-              switch (choice = mutt_multi_choice(_("(1) RC2-40, (2) RC2-64, (3) RC2-128?"),
-                                                 // L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
-                                                 _("123")))
+              switch (choice = mw_multi_choice(_("(1) RC2-40, (2) RC2-64, (3) RC2-128?"),
+                                               // L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
+                                               _("123")))
               {
                 case 1:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
@@ -2335,9 +2335,9 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               break;
 
             case 3:
-              switch (choice = mutt_multi_choice(_("(1) AES128, (2) AES192, (3) AES256?"),
-                                                 // L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-                                                 _("123")))
+              switch (choice = mw_multi_choice(_("(1) AES128, (2) AES192, (3) AES256?"),
+                                               // L10N: Options for: (1) AES128, (2) AES192, (3) AES256
+                                               _("123")))
               {
                 case 1:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",

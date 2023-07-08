@@ -713,7 +713,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
     buf_reset(resp);
 
     if (OptNoCurses ||
-        (buf_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
+        (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
     {
       rc = SASL_FAIL;
       break;

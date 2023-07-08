@@ -286,7 +286,7 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
      "(c)reate new, or (s)elect existing GPG key?" prompt.  */
   const char *letters = _("cs");
 
-  int choice = mutt_multi_choice(prompt, letters);
+  int choice = mw_multi_choice(prompt, letters);
   switch (choice)
   {
     case 2: /* select existing */
@@ -296,7 +296,7 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
 
       /* L10N: During autocrypt account creation, if selecting an existing key fails
          for some reason, we prompt to see if they want to create a key instead.  */
-      if (mutt_yesorno(_("Create a new GPG key for this account, instead?"), MUTT_YES) != MUTT_YES)
+      if (mw_yesorno(_("Create a new GPG key for this account, instead?"), MUTT_YES) != MUTT_YES)
         break;
       /* fallthrough */
 

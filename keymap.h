@@ -71,7 +71,7 @@ int km_expand_key(char *s, size_t len, struct Keymap *map);
 struct Keymap *km_find_func(enum MenuType menu, int func);
 void km_init(void);
 void km_error_key(enum MenuType menu);
-void mutt_what_key(void);
+void mw_what_key(void);
 void mutt_init_abort_key(void);
 int main_config_observer(struct NotifyCallback *nc);
 

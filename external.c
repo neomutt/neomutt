@@ -118,7 +118,7 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   else
     buf_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  rc = buf_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL);
+  rc = mw_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL);
   if ((rc != 0) || buf_is_empty(buf))
     goto done;
 
@@ -428,8 +428,8 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
 
   struct Buffer *buf = buf_pool_get();
 
-  if (buf_get_field(_("Pipe to command: "), buf, MUTT_COMP_FILE_SIMPLE, false,
-                    NULL, NULL, NULL) != 0)
+  if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_FILE_SIMPLE, false,
+                   NULL, NULL, NULL) != 0)
   {
     goto cleanup;
   }
@@ -494,14 +494,13 @@ bool mutt_select_sort(bool reverse)
 {
   enum SortType sort = SORT_DATE;
 
-  switch (mutt_multi_choice(
-      reverse ?
-          /* L10N: The highlighted letters must match the "Sort" options */
-          _("Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?") :
-          /* L10N: The highlighted letters must match the "Rev-Sort" options */
-          _("Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"),
-      /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-      _("dfrsotuzcpl")))
+  switch (mw_multi_choice(reverse ?
+                              /* L10N: The highlighted letters must match the "Sort" options */
+                              _("Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?") :
+                              /* L10N: The highlighted letters must match the "Rev-Sort" options */
+                              _("Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"),
+                          /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
+                          _("dfrsotuzcpl")))
   {
     case -1: /* abort - don't resort */
       return false;
@@ -599,8 +598,8 @@ bool mutt_shell_escape(void)
   bool rc = false;
   struct Buffer *buf = buf_pool_get();
 
-  if (buf_get_field(_("Shell command: "), buf, MUTT_COMP_FILE_SIMPLE, false,
-                    NULL, NULL, NULL) != 0)
+  if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_FILE_SIMPLE, false,
+                   NULL, NULL, NULL) != 0)
   {
     goto done;
   }
@@ -643,7 +642,7 @@ void mutt_enter_command(void)
 
   window_redraw(NULL);
   /* if enter is pressed after : with no command, just return */
-  if ((buf_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;
@@ -860,7 +859,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   buf_fix_dptr(buf);
   buf_pretty_mailbox(buf);
 
-  if (buf_enter_fname(prompt, buf, false, NULL, false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
+  if (mw_enter_fname(prompt, buf, false, NULL, false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
   {
     goto cleanup;
   }
@@ -1118,7 +1117,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     }
   }
 
-  if ((buf_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;
@@ -1141,7 +1140,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   {
     buf_printf(tmp, _("Convert to %s upon sending?"),
                mutt_param_get(&b->parameter, "charset"));
-    enum QuadOption ans = mutt_yesorno(buf_string(tmp), b->noconv ? MUTT_NO : MUTT_YES);
+    enum QuadOption ans = mw_yesorno(buf_string(tmp), b->noconv ? MUTT_NO : MUTT_YES);
     if (ans != MUTT_ABORT)
       b->noconv = (ans == MUTT_NO);
   }

@@ -1903,11 +1903,11 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mutt_what_key - Ask the user to press a key
+ * mw_what_key - Ask the user to press a key
  *
  * Displays the octal value back to the user.
  */
-void mutt_what_key(void)
+void mw_what_key(void)
 {
   int ch;
 

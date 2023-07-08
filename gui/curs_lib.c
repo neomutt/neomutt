@@ -343,7 +343,7 @@ void mutt_query_exit(void)
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   if (c_timeout)
     set_timeout(-1); /* restore blocking operation */
-  if (mutt_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
+  if (mw_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {
     mutt_exit(0); /* This call never returns */
   }
@@ -434,7 +434,7 @@ int mutt_any_key_to_continue(const char *s)
 }
 
 /**
- * buf_enter_fname - Ask the user to select a file
+ * mw_enter_fname - Ask the user to select a file
  * @param[in]  prompt   Prompt
  * @param[in]  fname    Buffer for the result
  * @param[in]  mailbox  If true, select mailboxes
@@ -446,9 +446,9 @@ int mutt_any_key_to_continue(const char *s)
  * @retval  0 Success
  * @retval -1 Error
  */
-int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
-                    struct Mailbox *m, bool multiple, char ***files,
-                    int *numfiles, SelectFileFlags flags)
+int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
+                   struct Mailbox *m, bool multiple, char ***files,
+                   int *numfiles, SelectFileFlags flags)
 {
   struct MuttWindow *win = msgwin_get_window();
   if (!win)
@@ -505,8 +505,8 @@ int buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
       mutt_unget_op(event.op);
 
     buf_alloc(fname, 1024);
-    if (buf_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
-                      multiple, m, files, numfiles) != 0)
+    if (mw_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
+                     multiple, m, files, numfiles) != 0)
     {
       buf_reset(fname);
     }

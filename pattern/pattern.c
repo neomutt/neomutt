@@ -199,8 +199,8 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
   buf_strcpy(buf, mdata->limit);
   if (prompt)
   {
-    if ((buf_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
-                       NULL, NULL, NULL) != 0) ||
+    if ((mw_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
+                      NULL, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       buf_pool_release(&buf);
@@ -305,8 +305,8 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   buf_strcpy(buf, NONULL(mv->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
-    if ((buf_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
-                       NULL, NULL, NULL) != 0) ||
+    if ((mw_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
+                      NULL, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       buf_pool_release(&buf);
@@ -454,8 +454,8 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
   {
     buf = buf_pool_get();
     buf_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((buf_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-                       buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+    if ((mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+                      buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       goto done;
@@ -620,8 +620,8 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   {
     buf = buf_pool_get();
     buf_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((buf_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-                       buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
+    if ((mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+                      buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       goto done;

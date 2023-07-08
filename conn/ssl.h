@@ -41,7 +41,7 @@ void cert_array_clear(struct CertArray *carr);
 struct CertMenuData
 {
   struct CertArray *carr;      ///< Lines of the Certificate
-  char *prompt;                ///< Prompt for user, similar to mutt_multi_choice
+  char *prompt;                ///< Prompt for user, similar to mw_multi_choice
   char *keys;                  ///< Keys used in the prompt
 };
 

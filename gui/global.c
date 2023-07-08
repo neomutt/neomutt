@@ -135,7 +135,7 @@ static int op_version(int op)
  */
 static int op_what_key(int op)
 {
-  mutt_what_key();
+  mw_what_key();
   return FR_SUCCESS;
 }
 
