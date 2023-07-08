@@ -640,6 +640,10 @@ static int op_editor_kill_word(struct EnterWindowData *wdata, int op)
 
 /**
  * op_editor_quote_char - Quote the next typed key - Implements ::enter_function_t - @ingroup enter_function_api
+ *
+ * As part of the line-editor, this function uses the message window.
+ *
+ * @sa #gui_mw
  */
 static int op_editor_quote_char(struct EnterWindowData *wdata, int op)
 {

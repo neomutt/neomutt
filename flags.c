@@ -438,12 +438,17 @@ done:
 }
 
 /**
- * mw_change_flag - Change the flag on a Message
+ * mw_change_flag - Change the flag on a Message - @ingroup gui_mw
  * @param m  Mailbox
  * @param ea Array of Emails to change
  * @param bf true: set the flag; false: clear the flag
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * This function uses the message window.
+ *
+ * Ask the user which flag they'd like to set/clear, e.g.
+ * `Clear flag? (D/N/O/r/!):`
  */
 int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
 {

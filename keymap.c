@@ -1903,9 +1903,14 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * mw_what_key - Ask the user to press a key
+ * mw_what_key - Display the value of a key - @ingroup gui_mw
  *
- * Displays the octal value back to the user.
+ * This function uses the message window.
+ *
+ * Displays the octal value back to the user. e.g.
+ * `Char = h, Octal = 150, Decimal = 104`
+ *
+ * Press the $abort_key (default Ctrl-G) to exit.
  */
 void mw_what_key(void)
 {

@@ -24,6 +24,11 @@
  * @page gui_msgwin Message Window
  *
  * The Message Window is a one-line interactive window at the bottom of the
+ * screen.  See @ref gui_mw
+ *
+ * @defgroup gui_mw GUI: Message Windows
+ *
+ * The Message Window is a one-line interactive window at the bottom of the
  * screen.  It's used for asking the user questions, displaying messages and
  * for a progress bar.
  *

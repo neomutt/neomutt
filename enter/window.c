@@ -166,7 +166,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 }
 
 /**
- * mw_get_field - Ask the user for a string
+ * mw_get_field - Ask the user for a string - @ingroup gui_mw
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  complete Flags, see #CompletionFlags
@@ -176,6 +176,14 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  * @param[out] numfiles Number of files selected
  * @retval 0  Selection made
  * @retval -1 Aborted
+ *
+ * This function uses the message window.
+ *
+ * Ask the user to enter a free-form string.
+ * This function supports auto-completion and saves the result to the history.
+ *
+ * It also supports readline style text editing.
+ * See #OpEditor for a list of functions.
  */
 int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
                  bool multiple, struct Mailbox *m, char ***files, int *numfiles)

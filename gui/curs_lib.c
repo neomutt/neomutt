@@ -434,7 +434,7 @@ int mutt_any_key_to_continue(const char *s)
 }
 
 /**
- * mw_enter_fname - Ask the user to select a file
+ * mw_enter_fname - Ask the user to select a file - @ingroup gui_mw
  * @param[in]  prompt   Prompt
  * @param[in]  fname    Buffer for the result
  * @param[in]  mailbox  If true, select mailboxes
@@ -445,6 +445,11 @@ int mutt_any_key_to_continue(const char *s)
  * @param[in]  flags    Flags, see #SelectFileFlags
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * This function uses the message window.
+ *
+ * Allow the user to enter a filename.
+ * If they hit '?' then the browser will be started.  See: dlg_select_file()
  */
 int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
                    struct Mailbox *m, bool multiple, char ***files,
