@@ -50,7 +50,7 @@ int color_debug(enum LogLevel level, const char *format, ...)
   int len = vsnprintf(buf, sizeof(buf), format, ap);
   va_end(ap);
 
-  mutt_debug(level, buf);
+  mutt_debug(level, "%s", buf);
 
   return len;
 }

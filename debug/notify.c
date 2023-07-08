@@ -47,7 +47,7 @@ static void notify_dump_account(struct NotifyCallback *nc)
   if (!a)
     return;
 
-  mutt_debug(LL_DEBUG1, "    Account: %p (%s) %s\n", a,
+  mutt_debug(LL_DEBUG1, "    Account: %p (%s) %s\n", (void *) a,
              name_mailbox_type(a->type), NONULL(a->name));
 }
 
@@ -118,7 +118,7 @@ static void notify_dump_email(struct NotifyCallback *nc)
   mutt_debug(LL_DEBUG1, "    Email: %d\n", ev_e->num_emails);
   for (size_t i = 0; i < ev_e->num_emails; i++)
   {
-    mutt_debug(LL_DEBUG1, "        : %p\n", ev_e->emails[i]);
+    mutt_debug(LL_DEBUG1, "        : %p\n", (void *) ev_e->emails[i]);
   }
 }
 

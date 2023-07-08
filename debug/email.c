@@ -365,7 +365,7 @@ void dump_attach(const struct AttachPtr *att)
 #undef ADD_FLAG
 
   if (att->fp)
-    mutt_debug(LL_DEBUG1, "\tfp: %p (%d)\n", att->fp, fileno(att->fp));
+    mutt_debug(LL_DEBUG1, "\tfp: %p (%d)\n", (void *) att->fp, fileno(att->fp));
   mutt_debug(LL_DEBUG1, "\tparent_type: %d\n", att->parent_type);
   mutt_debug(LL_DEBUG1, "\tlevel: %d\n", att->level);
   mutt_debug(LL_DEBUG1, "\tnum: %d\n", att->num);
@@ -422,6 +422,6 @@ void dump_body_one_line(const struct Body *b)
   buf_addstr(buf, "Body layout: ");
   dump_body_next(buf, b);
 
-  mutt_message(buf_string(buf));
+  mutt_message("%s", buf_string(buf));
   buf_pool_release(&buf);
 }
