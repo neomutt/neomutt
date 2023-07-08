@@ -370,6 +370,7 @@ void matcher_cb(void *data, const char *pattern)
   struct MuttWindow *win = data;
   struct SidebarWindowData *wdata = win->wdata;
   wdata->hil_index = 0;
+  wdata->repage = 1;
 
   ARRAY_FOREACH(sbep, &wdata->entries)
   {
