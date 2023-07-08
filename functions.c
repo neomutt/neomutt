@@ -262,9 +262,9 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "delete-char",                   OP_EDITOR_DELETE_CHAR },
   { "downcase-word",                 OP_EDITOR_DOWNCASE_WORD },
   { "eol",                           OP_EDITOR_EOL },
-  { "exit",                          OP_EXIT },
   { "forward-char",                  OP_EDITOR_FORWARD_CHAR },
   { "forward-word",                  OP_EDITOR_FORWARD_WORD },
+  { "help",                          OP_HELP },
   { "history-down",                  OP_EDITOR_HISTORY_DOWN },
   { "history-search",                OP_EDITOR_HISTORY_SEARCH },
   { "history-up",                    OP_EDITOR_HISTORY_UP },
@@ -275,6 +275,7 @@ const struct MenuFuncOp OpEditor[] = { /* map: editor */
   { "kill-word",                     OP_EDITOR_KILL_WORD },
   { "mailbox-cycle",                 OP_EDITOR_MAILBOX_CYCLE },
   { "quote-char",                    OP_EDITOR_QUOTE_CHAR },
+  { "redraw-screen",                 OP_REDRAW },
   { "transpose-chars",               OP_EDITOR_TRANSPOSE_CHARS },
   { "upcase-word",                   OP_EDITOR_UPCASE_WORD },
   // Deprecated
@@ -936,6 +937,8 @@ const struct MenuOpSeq EditorDefaultBindings[] = { /* map: editor */
   { OP_EDITOR_MAILBOX_CYCLE,               " " },              // <Space>
   { OP_EDITOR_QUOTE_CHAR,                  "\026" },           // <Ctrl-V>
   { OP_EDITOR_UPCASE_WORD,                 "\033u" },          // <Alt-u>
+  { OP_HELP,                               "\033?" },          // <Alt-?>
+  { OP_REDRAW,                             "\014" },           // <Ctrl-L>
   { 0, NULL },
 };
 

@@ -46,6 +46,7 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
+#include "protos.h"
 #include "state.h" // IWYU pragma: keep
 #include "wdata.h"
 
@@ -672,6 +673,27 @@ static int op_editor_transpose_chars(struct EnterWindowData *wdata, int op)
   return editor_transpose_chars(wdata->state);
 }
 
+/**
+ * op_help - Display Help - Implements ::enter_function_t - @ingroup enter_function_api
+ */
+static int op_help(struct EnterWindowData *wdata, int op)
+{
+  mutt_help(MENU_EDITOR);
+  return FR_SUCCESS;
+}
+
+/**
+ * op_redraw - Redraw the screen - Implements ::enter_function_t - @ingroup enter_function_api
+ */
+static int op_redraw(struct EnterWindowData *wdata, int op)
+{
+  clearok(stdscr, true);
+  mutt_resize_screen();
+  window_invalidate_all();
+  window_redraw(NULL);
+  return FR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -703,6 +725,8 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
   { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
   { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },
+  { OP_HELP,                      op_help },
+  { OP_REDRAW,                    op_redraw },
   { 0, NULL },
   // clang-format on
 };
