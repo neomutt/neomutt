@@ -36,7 +36,7 @@ char *      mutt_path_dirname(const char *path);
 char *      mutt_path_escape(const char *src);
 const char *mutt_path_getcwd(struct Buffer *cwd);
 bool        mutt_path_parent(struct Buffer *path);
-bool        mutt_path_pretty(char *buf, size_t buflen, const char *homedir, bool is_dir);
+bool        mutt_path_pretty(struct Buffer *path, const char *homedir, bool is_dir);
 size_t      mutt_path_realpath(char *buf);
 bool        mutt_path_tidy(char *buf, bool is_dir);
 bool        mutt_path_tidy_dotdot(char *buf);
