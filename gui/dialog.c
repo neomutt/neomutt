@@ -24,7 +24,12 @@
  * @page gui_dialog Dialog Windows
  *
  * A Dialog is an interactive set of windows allowing the user to perform some
- * task, e.g. @ref alias_dlg_alias
+ * task.  See @ref gui_dlg
+ *
+ * @defgroup gui_dlg GUI: Dialog Windows
+ *
+ * A Dialog is an interactive set of windows allowing the user to perform some
+ * task.
  *
  * The All Dialogs window is a container window and not visible.  All active dialogs
  * will be children of this window, though only one will be active at a time.

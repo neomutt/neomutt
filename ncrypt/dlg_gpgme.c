@@ -665,7 +665,7 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_gpgme_key - Get the user to select a key
+ * dlg_select_gpgme_key - Get the user to select a key - @ingroup gui_dlg
  * @param[in]  keys         List of keys to select from
  * @param[in]  p            Address to match
  * @param[in]  s            Real name to display
@@ -673,7 +673,7 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
  * @param[out] forced_valid Set to true if user overrode key's validity
  * @retval ptr Key selected by user
  *
- * Display a menu to select a key from the array of keys.
+ * The Select GPGME Key Dialog lets the user select a PGP Key to use.
  */
 struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
                                           struct Address *p, const char *s,

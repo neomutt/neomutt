@@ -202,10 +202,18 @@ static bool check_read_delay(uint64_t *timestamp)
 }
 
 /**
- * dlg_pager - Display an email, attachment, or help, in a window
+ * dlg_pager - Display an email, attachment, or help, in a window - @ingroup gui_dlg
  * @param pview Pager view settings
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * The Pager Dialog displays an Email to the user.
+ *
+ * They can navigate through the Email, search through it and user `color`
+ * commands to highlight it.
+ *
+ * From the Pager, the user can also use some Index functions, such as
+ * `<next-entry>` or `<delete>`.
  *
  * This pager is actually not so simple as it once was. But it will be again.
  * Currently it operates in 3 modes:

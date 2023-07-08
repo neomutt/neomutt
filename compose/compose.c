@@ -297,7 +297,7 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
 }
 
 /**
- * dlg_compose - Allow the user to edit the message envelope
+ * dlg_compose - Allow the user to edit the message envelope - @ingroup gui_dlg
  * @param e      Email to fill
  * @param fcc    Buffer to save FCC
  * @param flags  Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
@@ -305,6 +305,8 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
  * @retval  1 Message should be postponed
  * @retval  0 Normal exit
  * @retval -1 Abort message
+ *
+ * The Compose Dialog allows the user to edit the email envelope before sending.
  */
 int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct ConfigSubset *sub)
 {

@@ -1150,12 +1150,15 @@ void mutt_browser_select_dir(const char *f)
 }
 
 /**
- * dlg_select_file - Let the user select a file
+ * dlg_select_file - Let the user select a file - @ingroup gui_dlg
  * @param[in]  file     Buffer for the result
  * @param[in]  flags    Flags, see #SelectFileFlags
  * @param[in]  m        Mailbox
  * @param[out] files    Array of selected files
  * @param[out] numfiles Number of selected files
+ *
+ * The Select File Dialog is a file browser.
+ * It allows the user to select a file or directory to use.
  */
 void dlg_select_file(struct Buffer *file, SelectFileFlags flags,
                      struct Mailbox *m, char ***files, int *numfiles)

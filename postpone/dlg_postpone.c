@@ -188,9 +188,14 @@ static struct AttrColor *post_color(struct Menu *menu, int line)
 }
 
 /**
- * dlg_select_postponed - Create a Menu to select a postponed message
+ * dlg_select_postponed - Create a Menu to select a postponed message - @ingroup gui_dlg
  * @param m Mailbox
  * @retval ptr Email
+ *
+ * The Select Postponed Email Dialog shows the user a list of draft emails.
+ * They can select one to use in the Compose Dialog.
+ *
+ * This dialog is only shown if there are two or more postponed emails.
  */
 struct Email *dlg_select_postponed(struct Mailbox *m)
 {

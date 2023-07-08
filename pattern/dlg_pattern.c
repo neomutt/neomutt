@@ -327,10 +327,13 @@ static int pattern_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_pattern - Show menu to select a Pattern
+ * dlg_select_pattern - Show menu to select a Pattern - @ingroup gui_dlg
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
  * @retval true A selection was made
+ *
+ * The Select Pattern Dialog shows the user a help page of Patterns.
+ * They can select one to auto-complete some functions, e.g. `<limit>`
  */
 bool dlg_select_pattern(char *buf, size_t buflen)
 {

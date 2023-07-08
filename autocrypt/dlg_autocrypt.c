@@ -301,7 +301,9 @@ static int autocrypt_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_autocrypt - Display the Autocrypt account Menu
+ * dlg_select_autocrypt - Display the Autocrypt account Menu - @ingroup gui_dlg
+ *
+ * The Autocrypt Dialog lets the user select an Autocrypt Account to use.
  */
 void dlg_select_autocrypt(void)
 {

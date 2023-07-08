@@ -383,10 +383,15 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 }
 
 /**
- * dlg_select_query - Get the user to enter an Address Query
+ * dlg_select_query - Get the user to enter an Address Query - @ingroup gui_dlg
  * @param buf   Buffer for the query
  * @param mdata Menu data holding Aliases
  * @retval true Selection was made
+ *
+ * The Select Query Dialog is an Address Book.
+ * It is dynamically created from an external source using $query_command.
+ *
+ * The user can select addresses to add to an Email.
  */
 static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
 {

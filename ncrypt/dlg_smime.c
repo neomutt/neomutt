@@ -186,10 +186,12 @@ static void smime_key_table_free(struct Menu *menu, void **ptr)
 }
 
 /**
- * dlg_select_smime_key - Get the user to select a key
+ * dlg_select_smime_key - Get the user to select a key - @ingroup gui_dlg
  * @param keys  List of keys to select from
  * @param query String to match
  * @retval ptr Key selected by user
+ *
+ * The Select SMIME Key Dialog lets the user select an SMIME Key to use.
  */
 struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
 {

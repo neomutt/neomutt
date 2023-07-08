@@ -1053,10 +1053,14 @@ dsl_finish:
 }
 
 /**
- * dlg_index - Display a list of emails
+ * dlg_index - Display a list of emails - @ingroup gui_dlg
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
  * @retval ptr Mailbox open in the index
+ *
+ * The Index Dialog is the heart of NeoMutt.
+ * From here, the user can read and reply to emails, organise them into
+ * folders, set labels, etc.
  */
 struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
