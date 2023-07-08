@@ -227,7 +227,7 @@ static int op_sidebar_open(struct SidebarWindowData *wdata, int op)
     return FR_NO_ACTION;
 
   struct MuttWindow *dlg = dialog_find(win_sidebar);
-  dlg_change_folder(dlg, sb_get_highlight(win_sidebar));
+  index_change_folder(dlg, sb_get_highlight(win_sidebar));
   return FR_SUCCESS;
 }
 

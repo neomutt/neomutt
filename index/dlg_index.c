@@ -1430,11 +1430,11 @@ struct MuttWindow *index_pager_init(void)
 }
 
 /**
- * dlg_change_folder - Change the current folder, cautiously
+ * index_change_folder - Change the current folder, cautiously
  * @param dlg Dialog holding the Index
  * @param m   Mailbox to change to
  */
-void dlg_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
+void index_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
 {
   if (!dlg || !m)
     return;
