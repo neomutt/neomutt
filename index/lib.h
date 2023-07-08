@@ -94,6 +94,6 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 struct Mailbox *get_current_mailbox(void);
 struct MailboxView *get_current_mailbox_view(void);
 struct Menu *get_current_menu(void);
-void dlg_change_folder(struct MuttWindow *dlg, struct Mailbox *m);
+void index_change_folder(struct MuttWindow *dlg, struct Mailbox *m);
 
 #endif /* MUTT_INDEX_LIB_H */

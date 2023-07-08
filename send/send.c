@@ -187,7 +187,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
     mutt_addrlist_to_local(al);
     buf_reset(buf);
     mutt_addrlist_write(al, buf, false);
-    if (buf_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0)
     {
       rc = -1;
       goto done;
@@ -231,7 +231,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     else
       buf_reset(buf);
 
-    if (buf_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -243,8 +243,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
       buf_reset(buf);
 
     const bool c_ask_followup_to = cs_subset_bool(sub, "ask_followup_to");
-    if (c_ask_followup_to && (buf_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
-                                            false, NULL, NULL, NULL) != 0))
+    if (c_ask_followup_to && (mw_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
+                                           false, NULL, NULL, NULL) != 0))
     {
       goto done;
     }
@@ -258,7 +258,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
     const bool c_ask_x_comment_to = cs_subset_bool(sub, "ask_x_comment_to");
     if (c_x_comment_to && c_ask_x_comment_to &&
-        (buf_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
+        (mw_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
     {
       goto done;
     }
@@ -330,7 +330,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   }
 
   const enum QuadOption c_abort_nosubject = cs_subset_quad(sub, "abort_nosubject");
-  if ((buf_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
       (buf_is_empty(buf) &&
        (query_quadoption(c_abort_nosubject, _("No subject, abort?")) != MUTT_NO)))
   {
@@ -1873,7 +1873,7 @@ full_fcc:
     while (rc && !(flags & SEND_BATCH))
     {
       mutt_clear_error();
-      int choice = mutt_multi_choice(
+      int choice = mw_multi_choice(
           /* L10N: Called when saving to $record or Fcc failed after sending.
              (r)etry tries the same mailbox again.
              alternate (m)ailbox prompts for a different mailbox to try.
@@ -1888,8 +1888,8 @@ full_fcc:
         case 2: /* alternate (m)ailbox */
           /* L10N: This is the prompt to enter an "alternate (m)ailbox" when the
              initial Fcc fails.  */
-          rc = buf_enter_fname(_("Fcc mailbox"), fcc, true, m, false, NULL,
-                               NULL, MUTT_SEL_NO_FLAGS);
+          rc = mw_enter_fname(_("Fcc mailbox"), fcc, true, m, false, NULL, NULL,
+                              MUTT_SEL_NO_FLAGS);
           if ((rc == -1) || buf_is_empty(fcc))
           {
             rc = 0;

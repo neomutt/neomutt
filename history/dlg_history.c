@@ -118,11 +118,14 @@ static void history_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 }
 
 /**
- * dlg_select_history - Select an item from a history list
+ * dlg_select_history - Select an item from a history list - @ingroup gui_dlg
  * @param[in]  buf         Buffer in which to save string
  * @param[in]  buflen      Buffer length
  * @param[out] matches     Items to choose from
  * @param[in]  match_count Number of items
+ *
+ * The History Dialog lets the user select from the history of commands,
+ * functions or files.
  */
 void dlg_select_history(char *buf, size_t buflen, char **matches, int match_count)
 {

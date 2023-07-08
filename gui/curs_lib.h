@@ -47,7 +47,7 @@ enum FormatJustify
 int          mutt_addwch(struct MuttWindow *win, wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
 void         mutt_beep(bool force);
-int          buf_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox, struct Mailbox *m, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
+int          mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox, struct Mailbox *m, bool multiple, char ***files, int *numfiles, SelectFileFlags flags);
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
 void         mutt_flushinp(void);

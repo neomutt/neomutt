@@ -1053,10 +1053,14 @@ dsl_finish:
 }
 
 /**
- * dlg_index - Display a list of emails
+ * dlg_index - Display a list of emails - @ingroup gui_dlg
  * @param dlg Dialog containing Windows to draw on
  * @param m_init Initial mailbox
  * @retval ptr Mailbox open in the index
+ *
+ * The Index Dialog is the heart of NeoMutt.
+ * From here, the user can read and reply to emails, organise them into
+ * folders, set labels, etc.
  */
 struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
@@ -1430,11 +1434,11 @@ struct MuttWindow *index_pager_init(void)
 }
 
 /**
- * dlg_change_folder - Change the current folder, cautiously
+ * index_change_folder - Change the current folder, cautiously
  * @param dlg Dialog holding the Index
  * @param m   Mailbox to change to
  */
-void dlg_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
+void index_change_folder(struct MuttWindow *dlg, struct Mailbox *m)
 {
   if (!dlg || !m)
     return;

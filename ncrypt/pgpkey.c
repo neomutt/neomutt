@@ -200,7 +200,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
   while (true)
   {
     buf_reset(resp);
-    if (buf_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
     {
       goto done;
     }

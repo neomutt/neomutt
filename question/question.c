@@ -45,13 +45,20 @@
 #endif
 
 /**
- * mutt_multi_choice - Offer the user a multiple choice question
+ * mw_multi_choice - Offer the user a multiple choice question - @ingroup gui_mw
  * @param prompt  Message prompt
  * @param letters Allowable selection keys
  * @retval >=1 1-based user selection
  * @retval  -1 Selection aborted
+ *
+ * This function uses the message window.
+ *
+ * Ask the user a multiple-choice question, using shortcut letters, e.g.
+ * `PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?`
+ *
+ * The shortcuts can be coloured using `color options`.
  */
-int mutt_multi_choice(const char *prompt, const char *letters)
+int mw_multi_choice(const char *prompt, const char *letters)
 {
   struct MuttWindow *win = msgwin_get_window();
   if (!win)
@@ -186,12 +193,21 @@ int mutt_multi_choice(const char *prompt, const char *letters)
 }
 
 /**
- * mutt_yesorno - Ask the user a Yes/No question
+ * mw_yesorno - Ask the user a Yes/No question - @ingroup gui_mw
  * @param msg Prompt
  * @param def Default answer, #MUTT_YES or #MUTT_NO (see #QuadOption)
  * @retval enum #QuadOption, Selection made
+ *
+ * This function uses the message window.
+ *
+ * Ask the user a yes/no question, using shortcut letters, e.g.
+ * `Quit NeoMutt? ([yes]/no):`
+ *
+ * This question can be answered using a locale-dependent letters, e.g.
+ * - English, `[+1yY]` or `[-0nN]`
+ * - Serbian, `[+1yYdDДд]` or `[-0nNНн]`
  */
-enum QuadOption mutt_yesorno(const char *msg, enum QuadOption def)
+enum QuadOption mw_yesorno(const char *msg, enum QuadOption def)
 {
   struct MuttWindow *win = msgwin_get_window();
   if (!win)
@@ -392,7 +408,7 @@ enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
       return opt;
 
     default:
-      opt = mutt_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
+      opt = mw_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
       msgwin_clear_text();
       return opt;
   }

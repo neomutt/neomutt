@@ -163,7 +163,7 @@ void cert_array_clear(struct CertArray *carr)
 }
 
 /**
- * dlg_verify_certificate - Ask the user to validate the certificate
+ * dlg_verify_certificate - Ask the user to validate the certificate - @ingroup gui_dlg
  * @param title        Menu title
  * @param carr         Certificate text to display
  * @param allow_always If true, allow the user to always accept the certificate
@@ -172,6 +172,9 @@ void cert_array_clear(struct CertArray *carr)
  * @retval 2 Accept certificate once
  * @retval 3 Accept certificate always/skip (see notes)
  * @retval 4 Accept certificate skip
+ *
+ * The Verify Certificate Dialog shows a list of signatures for a domain certificate.
+ * They can choose whether to accept or reject it.
  *
  * The possible retvals will depend on the parameters.
  * The options are given in the order: Reject, Once, Always, Skip.

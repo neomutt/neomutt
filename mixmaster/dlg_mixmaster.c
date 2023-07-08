@@ -178,10 +178,11 @@ static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
 }
 
 /**
- * dlg_mixmaster - Create a Mixmaster chain
+ * dlg_mixmaster - Create a Mixmaster chain - @ingroup gui_dlg
  * @param chainhead List of chain links
  *
- * Ask the user to select Mixmaster hosts to create a chain.
+ * The Mixmaster Dialogs allows the user to create a chain of anonymous
+ * remailers.  The user can add/delete/reorder the hostss.
  */
 void dlg_mixmaster(struct ListHead *chainhead)
 {

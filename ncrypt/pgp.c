@@ -99,9 +99,9 @@ bool pgp_class_valid_passphrase(void)
   pgp_class_void_passphrase();
 
   struct Buffer *buf = buf_pool_get();
-  const int rc = buf_get_field(_("Enter PGP passphrase:"), buf,
-                               MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, false,
-                               NULL, NULL, NULL);
+  const int rc = mw_get_field(_("Enter PGP passphrase:"), buf,
+                              MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, false,
+                              NULL, NULL, NULL);
   mutt_str_copy(PgpPass, buf_string(buf), sizeof(PgpPass));
   buf_pool_release(&buf);
 
@@ -1500,7 +1500,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid,
                    buf_string(p->mailbox));
-          ans = mutt_yesorno(buf, MUTT_YES);
+          ans = mw_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
         {
@@ -2010,7 +2010,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
     }
   }
 
-  choice = mutt_multi_choice(prompt, letters);
+  choice = mw_multi_choice(prompt, letters);
   if (choice > 0)
   {
     switch (choices[choice - 1])

@@ -306,10 +306,13 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
 }
 
 /**
- * dlg_select_alias - Display a menu of Aliases
+ * dlg_select_alias - Display a menu of Aliases - @ingroup gui_dlg
  * @param buf   Buffer for expanded aliases
  * @param mdata Menu data holding Aliases
  * @retval true Selection was made
+ *
+ * The Alias Dialog is an Address Book.
+ * The user can select addresses to add to an Email.
  */
 static bool dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
 {

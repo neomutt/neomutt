@@ -583,11 +583,13 @@ static int pgp_key_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_pgp_key - Let the user select a key to use
+ * dlg_select_pgp_key - Let the user select a key to use - @ingroup gui_dlg
  * @param keys List of PGP keys
  * @param p    Address to match
  * @param s    String to match
  * @retval ptr Selected PGP key
+ *
+ * The Select PGP Key Dialog lets the user select an PGP Key to use.
  */
 struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
                                       struct Address *p, const char *s)

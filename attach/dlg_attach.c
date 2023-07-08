@@ -459,11 +459,15 @@ static int attach_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_attachment - Show the attachments in a Menu
+ * dlg_select_attachment - Show the attachments in a Menu - @ingroup gui_dlg
  * @param sub Config Subset
  * @param mv  Mailbox view
  * @param e   Email
  * @param fp File with the content of the email, or NULL
+ *
+ * The Select Attachment dialog shows an Email's attachments.
+ * They can be viewed using the Pager or Mailcap programs.
+ * They can also be saved, printed, deleted, etc.
  */
 void dlg_select_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
                            struct Email *e, FILE *fp)

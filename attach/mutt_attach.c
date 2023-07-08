@@ -139,7 +139,7 @@ int mutt_compose_attachment(struct Body *a)
                  buf_string(newfile));
       if (mutt_file_symlink(a->filename, buf_string(newfile)) == -1)
       {
-        if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
+        if (mw_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
           goto bailout;
         buf_strcpy(newfile, a->filename);
       }
@@ -281,7 +281,7 @@ bool mutt_edit_attachment(struct Body *a)
                  buf_string(newfile));
       if (mutt_file_symlink(a->filename, buf_string(newfile)) == -1)
       {
-        if (mutt_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
+        if (mw_yesorno(_("Can't match 'nametemplate', continue?"), MUTT_YES) != MUTT_YES)
           goto bailout;
         buf_strcpy(newfile, a->filename);
       }

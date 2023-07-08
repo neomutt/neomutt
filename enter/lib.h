@@ -47,6 +47,6 @@
 struct Buffer;
 struct Mailbox;
 
-int buf_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, struct Mailbox *m, char ***files, int *numfiles);
+int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, struct Mailbox *m, char ***files, int *numfiles);
 
 #endif /* MUTT_ENTER_LIB_H */
