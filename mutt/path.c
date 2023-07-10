@@ -212,8 +212,7 @@ bool mutt_path_pretty(struct Buffer *path, const char *homedir, bool is_dir)
 
 /**
  * mutt_path_tilde - Expand '~' in a path
- * @param buf     Path to modify
- * @param buflen  Length of the buffer
+ * @param path    Path to modify
  * @param homedir Home directory for '~' substitution
  * @retval true Success
  *
@@ -222,16 +221,16 @@ bool mutt_path_pretty(struct Buffer *path, const char *homedir, bool is_dir)
  * - `~realuser/dir` (~realuser expanded)
  * - `~nonuser/dir` (~nonuser not changed)
  */
-bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
+bool mutt_path_tilde(struct Buffer *path, const char *homedir)
 {
-  if (!buf || (buf[0] != '~'))
+  if (buf_is_empty(path) || (buf_at(path, 0) != '~'))
     return false;
 
   char result[PATH_MAX] = { 0 };
   char *dir = NULL;
   size_t len = 0;
 
-  if ((buf[1] == '/') || (buf[1] == '\0'))
+  if ((buf_at(path, 1) == '/') || (buf_at(path, 1) == '\0'))
   {
     if (!homedir)
     {
@@ -240,16 +239,16 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
     }
 
     len = mutt_str_copy(result, homedir, sizeof(result));
-    dir = buf + 1;
+    dir = path->data + 1;
   }
   else
   {
     char user[128] = { 0 };
-    dir = strchr(buf + 1, '/');
+    dir = strchr(path->data + 1, '/');
     if (dir)
-      mutt_str_copy(user, buf + 1, MIN(dir - buf, (unsigned) sizeof(user)));
+      mutt_str_copy(user, path->data + 1, MIN(dir - path->data, (unsigned) sizeof(user)));
     else
-      mutt_str_copy(user, buf + 1, sizeof(user));
+      mutt_str_copy(user, path->data + 1, sizeof(user));
 
     struct passwd *pw = getpwnam(user);
     if (!pw || !pw->pw_dir)
@@ -261,15 +260,8 @@ bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir)
     len = mutt_str_copy(result, pw->pw_dir, sizeof(result));
   }
 
-  size_t dirlen = mutt_str_len(dir);
-  if ((len + dirlen) >= buflen)
-  {
-    mutt_debug(LL_DEBUG3, "result too big for the buffer %ld >= %ld\n", len + dirlen, buflen);
-    return false;
-  }
-
   mutt_str_copy(result + len, dir, sizeof(result) - len);
-  mutt_str_copy(buf, result, buflen);
+  buf_strcpy(path, result);
 
   return true;
 }
@@ -290,7 +282,7 @@ bool mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir)
 
   if (buf_at(path, 0) == '~')
   {
-    mutt_path_tilde(path->data, path->dsize, homedir);
+    mutt_path_tilde(path, homedir);
   }
   else if (buf_at(path, 0) != '/')
   {
