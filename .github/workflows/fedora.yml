@@ -43,6 +43,9 @@ jobs:
         cd test-files
         ./setup.sh
 
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
     - name: Configure Neomutt
       run: ./configure ${{ matrix.config.options }}
 
