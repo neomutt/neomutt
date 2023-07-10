@@ -61,7 +61,7 @@ static char *path_tidy(const char *path, bool is_dir)
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, path);
 
-  mutt_path_tilde(buf->data, buf->dsize, HomeDir);
+  mutt_path_tilde(buf, HomeDir);
   mutt_path_tidy(buf->data, is_dir);
 
   char *tidy_path = buf_strdup(buf);

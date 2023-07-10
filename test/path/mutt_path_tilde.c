@@ -23,8 +23,76 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_tilde(void)
 {
-  // bool mutt_path_tilde(char *buf, size_t buflen, const char *homedir);
+  // bool mutt_path_tilde(struct Buffer *path, const char *homedir);
+
+  {
+    TEST_CHECK(!mutt_path_tilde(NULL, "/homedir"));
+  }
+
+  // test no tilde
+
+  {
+    struct Buffer *path = buf_new("/orange");
+    TEST_CHECK(!mutt_path_tilde(path, NULL));
+    TEST_CHECK_STR_EQ(buf_string(path), "/orange");
+    buf_free(&path);
+  }
+
+  // test no homedir
+
+  {
+    struct Buffer *path = buf_new("~/orange");
+    TEST_CHECK(!mutt_path_tilde(path, NULL));
+    buf_free(&path);
+  }
+
+  // test homedir expansion
+
+  {
+    struct Buffer *path = buf_new("~/orange");
+    TEST_CHECK(mutt_path_tilde(path, "/homedir"));
+    TEST_CHECK_STR_EQ(buf_string(path), "/homedir/orange");
+    buf_free(&path);
+  }
+
+  // test homedir expansion without subdirectory
+
+  {
+    struct Buffer *path = buf_new("~");
+    TEST_CHECK(mutt_path_tilde(path, "/homedir"));
+    TEST_CHECK_STR_EQ(buf_string(path), "/homedir");
+    buf_free(&path);
+  }
+
+  // test user expansion
+
+  {
+    struct Buffer *path = buf_new("~root/orange");
+    TEST_CHECK(mutt_path_tilde(path, NULL));
+    TEST_CHECK_STR_EQ(buf_string(path), "/root/orange");
+    buf_free(&path);
+  }
+
+  // test non-user expansion
+
+  {
+    struct Buffer *path = buf_new("~hopefullydoesnotexist/orange");
+    TEST_CHECK(!mutt_path_tilde(path, NULL));
+    TEST_CHECK_STR_EQ(buf_string(path), "~hopefullydoesnotexist/orange");
+    buf_free(&path);
+  }
+
+  // test non-user expansion without subdirectory
+
+  {
+    struct Buffer *path = buf_new("~hopefullydoesnotexist");
+    TEST_CHECK(!mutt_path_tilde(path, NULL));
+    TEST_CHECK_STR_EQ(buf_string(path), "~hopefullydoesnotexist");
+    buf_free(&path);
+  }
 }

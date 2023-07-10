@@ -63,7 +63,7 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
     if (type & (DT_PATH_DIR | DT_PATH_FILE))
       buf_expand_path(value);
     else
-      mutt_path_tilde(value->data, value->dsize, HomeDir);
+      mutt_path_tilde(value, HomeDir);
   }
   else if (IS_MAILBOX(type))
   {
