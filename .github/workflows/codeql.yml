@@ -23,6 +23,10 @@ jobs:
       CONFIGURE_OPTIONS: --bdb --gdbm --gnutls --gpgme --homespool --kyotocabinet --lmdb --lua --mixmaster --notmuch --qdbm --sasl --tokyocabinet --with-domain=example.com --with-lock=flock
 
     steps:
+      - name: Get number of CPU cores
+        uses: SimenB/github-actions-cpu-cores@v1
+        id: cpu-cores
+
       - name: Checkout Code
         uses: actions/checkout@v3
 
@@ -37,7 +41,7 @@ jobs:
           queries: +security-and-quality
 
       - name: Build Neomutt
-        run: make -j 2 -s
+        run: make -j ${{steps.cpu-cores.outputs.count}} -s
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2

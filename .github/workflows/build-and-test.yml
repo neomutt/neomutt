@@ -27,6 +27,10 @@ jobs:
             options: --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
     - name: Checkout Code
       uses: actions/checkout@v3
 
@@ -53,7 +57,7 @@ jobs:
     - name: Build Neomutt
       run: |
         cd build-${{ matrix.cfg.name }}
-        make -j 2 neomutt
+        make -j ${{steps.cpu-cores.outputs.count}} neomutt
 
     - name: Neomutt Version
       run: |
@@ -70,7 +74,7 @@ jobs:
     - name: Build Tests
       run: |
         cd build-${{ matrix.cfg.name }}
-        make -j 2 test/neomutt-test
+        make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test
 
     - name: Run Tests
       run: |

@@ -48,6 +48,10 @@ jobs:
             options: --debug-backtrace --debug-color --debug-email --debug-graphviz --debug-names --debug-notify --debug-queue --debug-window --coverage
 
     steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
     - name: Checkout Code
       uses: actions/checkout@v3
 
@@ -71,7 +75,7 @@ jobs:
     - name: Build Neomutt
       run: |
         export PATH="$PATH:/usr/lib/llvm-10/bin"
-        make -j 2 ${{ matrix.cfg.extras }}
+        make -j ${{steps.cpu-cores.outputs.count}} ${{ matrix.cfg.extras }}
 
     - name: Neomutt Version
       run: |
@@ -79,7 +83,7 @@ jobs:
 
     - name: Build Tests
       run: |
-        test -f neomutt && make -j 2 test/neomutt-test || :
+        test -f neomutt && make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test || :
 
     - name: Run Tests
       run: |
