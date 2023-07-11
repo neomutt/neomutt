@@ -1658,7 +1658,7 @@ static int maildir_path_parent(struct Buffer *path)
  */
 static int maildir_path_pretty(struct Buffer *path, const char *folder)
 {
-  if (mutt_path_abbr_folder(path->data, folder))
+  if (mutt_path_abbr_folder(path, folder))
     return 0;
 
   if (mutt_path_pretty(path, HomeDir, false))

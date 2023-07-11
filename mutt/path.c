@@ -466,16 +466,16 @@ bool mutt_path_parent(struct Buffer *path)
 
 /**
  * mutt_path_abbr_folder - Create a folder abbreviation
- * @param buf    Path to modify
+ * @param path   Path to modify
  * @param folder Base path for '=' substitution
- * @retval true Path was abbreviated
+ * @retval true  Path was abbreviated
  *
  * Abbreviate a path using '=' to represent the 'folder'.
  * If the folder path is passed, it won't be abbreviated to just '='
  */
-bool mutt_path_abbr_folder(char *buf, const char *folder)
+bool mutt_path_abbr_folder(struct Buffer *path, const char *folder)
 {
-  if (!buf || !folder)
+  if (buf_is_empty(path) || !folder)
     return false;
 
   size_t flen = mutt_str_len(folder);
@@ -485,16 +485,18 @@ bool mutt_path_abbr_folder(char *buf, const char *folder)
   if (folder[flen - 1] == '/')
     flen--;
 
-  if (!mutt_strn_equal(buf, folder, flen))
+  if (!mutt_strn_equal(buf_string(path), folder, flen))
     return false;
 
-  if (buf[flen + 1] == '\0') // Don't abbreviate to '=/'
+  if (buf_at(path, flen + 1) == '\0') // Don't abbreviate to '=/'
     return false;
 
-  size_t rlen = mutt_str_len(buf + flen + 1);
+  size_t rlen = mutt_str_len(path->data + flen + 1);
 
-  buf[0] = '=';
-  memmove(buf + 1, buf + flen + 1, rlen + 1);
+  path->data[0] = '=';
+  memmove(path->data + 1, path->data + flen + 1, rlen + 1);
+  buf_fix_dptr(path);
+
   return true;
 }
 
