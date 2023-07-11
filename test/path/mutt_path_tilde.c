@@ -23,6 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <pwd.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "test_common.h"
 
@@ -72,9 +74,18 @@ void test_mutt_path_tilde(void)
   // test user expansion
 
   {
+    struct passwd *pw = getpwnam("root");
+    TEST_CHECK(pw != NULL);
+    TEST_CHECK(pw->pw_dir != NULL);
+
+    struct Buffer *expected = buf_new(NULL);
+    buf_printf(expected, "%s/orange", pw->pw_dir);
+
     struct Buffer *path = buf_new("~root/orange");
     TEST_CHECK(mutt_path_tilde(path, NULL));
-    TEST_CHECK_STR_EQ(buf_string(path), "/root/orange");
+    TEST_CHECK_STR_EQ(buf_string(path), buf_string(expected));
+
+    buf_free(&expected);
     buf_free(&path);
   }
 
