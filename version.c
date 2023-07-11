@@ -127,41 +127,6 @@ struct CompileOptions
 
 /* These are sorted by the display string */
 
-/// Default options strings for `neomutt -v` output
-static const struct CompileOptions CompOptsDefault[] = {
-  { "attach_headers_color", 1 },
-  { "compose_to_sender", 1 },
-  { "compress", 1 },
-  { "cond_date", 1 },
-  { "debug", 1 },
-  { "encrypt_to_self", 1 },
-  { "forgotten_attachments", 1 },
-  { "forwref", 1 },
-  { "ifdef", 1 },
-  { "imap", 1 },
-  { "index_color", 1 },
-  { "initials", 1 },
-  { "limit_current_thread", 1 },
-  { "multiple_fcc", 1 },
-  { "nested_if", 1 },
-  { "new_mail", 1 },
-  { "nntp", 1 },
-  { "pop", 1 },
-  { "progress", 1 },
-  { "quasi_delete", 1 },
-  { "regcomp", 1 },
-  { "reply_with_xorig", 1 },
-  { "sensible_browser", 1 },
-  { "sidebar", 1 },
-  { "skip_quoted", 1 },
-  { "smtp", 1 },
-  { "status_color", 1 },
-  { "timeout", 1 },
-  { "tls_sni", 1 },
-  { "trash", 1 },
-  { NULL, 0 },
-};
-
 /// Compile options strings for `neomutt -v` output
 static const struct CompileOptions CompOpts[] = {
 #ifdef USE_AUTOCRYPT
@@ -518,9 +483,6 @@ bool print_version(FILE *fp)
   rstrip_in_place((char *) cc_cflags);
   fprintf(fp, "\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
 
-  fprintf(fp, "\n%s\n", _("Default options:"));
-  print_compile_options(CompOptsDefault, fp);
-
   fprintf(fp, "\n%s\n", _("Compile options:"));
   print_compile_options(CompOpts, fp);
 
@@ -590,13 +552,6 @@ bool feature_enabled(const char *name)
 {
   if (!name)
     return false;
-  for (int i = 0; CompOptsDefault[i].name; i++)
-  {
-    if (mutt_str_equal(name, CompOptsDefault[i].name))
-    {
-      return true;
-    }
-  }
   for (int i = 0; CompOpts[i].name; i++)
   {
     if (mutt_str_equal(name, CompOpts[i].name))
