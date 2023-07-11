@@ -19,6 +19,10 @@ jobs:
       CONFIGURE_OPTIONS: --asan --autocrypt --bdb --full-doc --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --notmuch --qdbm --sasl --tdb --tokyocabinet --with-lock=fcntl --zlib --zstd
 
     steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
     - name: Checkout Code
       uses: actions/checkout@v3
 
@@ -40,7 +44,7 @@ jobs:
       run: ./configure $CONFIGURE_OPTIONS
 
     - name: Build Tests
-      run: make -j 2 test/neomutt-test
+      run: make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test
 
     - name: Run Tests
       run: |

@@ -19,6 +19,10 @@ jobs:
       COV_RESULTS: cov-int
 
     steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
     - name: Check Secret
       run: |
         [ -n "${{ secrets.COVERITY_SCAN_TOKEN }}" ]
@@ -39,7 +43,7 @@ jobs:
     - name: Build with Coverity
       run: |
         export PATH="$(pwd)/$COV_TOOLS/bin:$PATH"
-        cov-build --dir $COV_RESULTS make -j 2
+        cov-build --dir $COV_RESULTS make -j ${{steps.cpu-cores.outputs.count}}
         # Filter out private info
         sed -i '/TOKEN=/d' cov-int/build-log.txt
 
