@@ -1,0 +1,29 @@
+name: macOS
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+      - 'devel/**'
+
+jobs:
+  build:
+    name: Build on macOS
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
+    - name: Configure Neomutt
+      run: ./configure
+
+    - name: Build Neomutt
+      run: make -j 2 neomutt
+
+    - name: Neomutt Version
+      run: ./neomutt -v
