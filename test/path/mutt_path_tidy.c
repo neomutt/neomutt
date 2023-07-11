@@ -32,9 +32,8 @@ void test_mutt_path_tidy(void)
 {
   // bool mutt_path_tidy(char *buf);
 
-  // clang-format off
-  static const char *tests[][2] =
-  {
+  static const char *tests[][2] = {
+    // clang-format off
     // This struct is VERY wide, keep reading...
     { "/..apple/./../////./banana/banana/./banana/..apple/./banana/..apple/banana///banana/..apple/banana/..apple/banana/banana/..apple",                                     "/banana/banana/banana/..apple/banana/..apple/banana/banana/..apple/banana/..apple/banana/banana/..apple",                                      },
     { "/../../banana///..apple///..apple///banana///banana/banana/banana/..apple/banana/banana/banana/./banana/banana/banana/..apple/banana",                                 "/banana/..apple/..apple/banana/banana/banana/banana/..apple/banana/banana/banana/banana/banana/banana/..apple/banana",                         },
@@ -136,8 +135,8 @@ void test_mutt_path_tidy(void)
     { "/..apple/banana/banana/.././banana/..apple/banana/..apple/..apple/../..///..apple///banana/banana/banana///banana/..apple/banana/banana",                              "/..apple/banana/banana/..apple/banana/..apple/banana/banana/banana/banana/..apple/banana/banana",                                              },
     { "/./banana///../banana/banana/./../..apple/banana/../../banana///banana/..apple/..apple/////..",                                                                        "/banana/banana/banana/..apple",                                                                                                                },
     { "/banana/..apple/banana///banana///./..apple/banana/banana/banana/..apple/banana/banana//",                                                                             "/banana/..apple/banana/banana/..apple/banana/banana/banana/..apple/banana/banana",                                                             },
+    // clang-format on
   };
-  // clang-format on
 
   {
     TEST_CHECK(!mutt_path_tidy(NULL, true));

@@ -168,7 +168,7 @@ bool mutt_path_tidy(char *buf, bool is_dir)
     return false;
 
   if (!mutt_path_tidy_slash(buf, is_dir))
-    return false;
+    return false; // LCOV_EXCL_LINE
 
   return mutt_path_tidy_dotdot(buf);
 }
@@ -289,8 +289,8 @@ bool mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir)
     char cwd[PATH_MAX] = { 0 };
     if (!getcwd(cwd, sizeof(cwd)))
     {
-      mutt_debug(LL_DEBUG1, "getcwd failed: %s (%d)\n", strerror(errno), errno);
-      return false;
+      mutt_debug(LL_DEBUG1, "getcwd failed: %s (%d)\n", strerror(errno), errno); // LCOV_EXCL_LINE
+      return false; // LCOV_EXCL_LINE
     }
 
     size_t cwd_len = mutt_str_len(cwd);
@@ -300,7 +300,7 @@ bool mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir)
   }
 
   if (!mutt_path_tidy(path->data, is_dir))
-    return false;
+    return false; // LCOV_EXCL_LINE
 
   buf_fix_dptr(path);
   return true;
@@ -308,43 +308,63 @@ bool mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir)
 
 /**
  * mutt_path_basename - Find the last component for a pathname
- * @param f String to be examined
+ * @param path String to be examined
  * @retval ptr Part of pathname after last '/' character
+ *
+ * @note Basename of / is /
  */
-const char *mutt_path_basename(const char *f)
+const char *mutt_path_basename(const char *path)
 {
-  if (!f)
+  if (!path)
     return NULL;
 
-  const char *p = strrchr(f, '/');
+  const char *p = strrchr(path, '/');
   if (p)
+  {
+    if (p[1] == '\0')
+      return path;
+
     return p + 1;
-  return f;
+  }
+
+  return path;
 }
 
 /**
  * mutt_path_concat - Join a directory name and a filename
- * @param d     Buffer for the result
- * @param dir   Directory name
- * @param fname File name
- * @param l     Length of buffer
+ * @param dest Buffer for the result
+ * @param dir  Directory name
+ * @param file File name
+ * @param dlen Length of buffer
  * @retval ptr Destination buffer
  *
- * If both dir and fname are supplied, they are separated with '/'.
+ * If both dir and file are supplied, they are separated with '/'.
  * If either is missing, then the other will be copied exactly.
  */
-char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
+char *mutt_path_concat(char *dest, const char *dir, const char *file, size_t dlen)
 {
-  if (!d || !dir || !fname)
+  if (!dest || (!dir && !file))
     return NULL;
+
+  if (dir && (!file || (file[0] == '\0')))
+  {
+    strncpy(dest, dir, dlen);
+    return dest;
+  }
+
+  if (file && (!dir || (dir[0] == '\0')))
+  {
+    strncpy(dest, file, dlen);
+    return dest;
+  }
 
   const char *fmt = "%s/%s";
 
-  if ((fname[0] == '\0') || ((dir[0] != '\0') && (dir[strlen(dir) - 1] == '/')))
+  if (dir[strlen(dir) - 1] == '/')
     fmt = "%s%s";
 
-  snprintf(d, l, fmt, dir, fname);
-  return d;
+  snprintf(dest, dlen, fmt, dir, file);
+  return dest;
 }
 
 /**
@@ -355,6 +375,8 @@ char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l)
  * Unlike the IEEE Std 1003.1-2001 specification of dirname(3), this
  * implementation does not modify its parameter, so callers need not manually
  * copy their paths into a modifiable buffer prior to calling this function.
+ *
+ * @note Dirname of / is /
  *
  * @note The caller must free the returned string
  */
@@ -504,6 +526,8 @@ bool mutt_path_abbr_folder(struct Buffer *path, const char *folder)
  * mutt_path_escape - Escapes single quotes in a path for a command string
  * @param src the path to escape
  * @retval ptr The escaped string
+ *
+ * @note Do not free the returned string
  */
 char *mutt_path_escape(const char *src)
 {
@@ -534,7 +558,7 @@ char *mutt_path_escape(const char *src)
       }
       else
       {
-        break;
+        break; // LCOV_EXCL_LINE
       }
     }
   }
@@ -557,13 +581,13 @@ const char *mutt_path_getcwd(struct Buffer *cwd)
   char *rc = getcwd(cwd->data, cwd->dsize);
   while (!rc && (errno == ERANGE))
   {
-    buf_alloc(cwd, cwd->dsize + 256);
-    rc = getcwd(cwd->data, cwd->dsize);
+    buf_alloc(cwd, cwd->dsize + 256);   // LCOV_EXCL_LINE
+    rc = getcwd(cwd->data, cwd->dsize); // LCOV_EXCL_LINE
   }
   if (rc)
     buf_fix_dptr(cwd);
   else
-    buf_reset(cwd);
+    buf_reset(cwd); // LCOV_EXCL_LINE
 
   return rc;
 }

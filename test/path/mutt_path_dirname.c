@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_dirname(void)
 {
@@ -32,5 +33,29 @@ void test_mutt_path_dirname(void)
 
   {
     TEST_CHECK(mutt_path_dirname(NULL) == NULL);
+  }
+
+  static const char *tests[][2] = {
+    // clang-format off
+    { NULL,                   NULL,            },
+    { "apple",                ".",             },
+    { "/",                    "/",             },
+    { "/apple",               "/",             },
+    { "/apple/banana",        "/apple",        },
+    { "/apple/banana/cherry", "/apple/banana", },
+    // clang-format on
+  };
+
+  {
+    for (int i = 0; i < mutt_array_size(tests); i++)
+    {
+      const char *source = tests[i][0];
+      const char *expected = tests[i][1];
+      TEST_CASE(source);
+
+      const char *result = mutt_path_dirname(source);
+      TEST_CHECK_STR_EQ(result, expected);
+      FREE(&result);
+    }
   }
 }

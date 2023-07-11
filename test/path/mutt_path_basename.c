@@ -25,13 +25,32 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_basename(void)
 {
   // const char *mutt_path_basename(const char *f);
 
+  static const char *tests[][2] = {
+    // clang-format off
+    { NULL,                   NULL,     },
+    { "apple",                "apple",  },
+    { "/",                    "/",      },
+    { "/apple",               "apple",  },
+    { "/apple/banana",        "banana", },
+    { "/apple/banana/cherry", "cherry", },
+    // clang-format on
+  };
+
   {
-    mutt_path_basename(NULL);
-    TEST_CHECK_(1, "mutt_path_basename(NULL)");
+    for (int i = 0; i < mutt_array_size(tests); i++)
+    {
+      const char *source = tests[i][0];
+      const char *expected = tests[i][1];
+      TEST_CASE(source);
+
+      const char *result = mutt_path_basename(source);
+      TEST_CHECK_STR_EQ(result, expected);
+    }
   }
 }

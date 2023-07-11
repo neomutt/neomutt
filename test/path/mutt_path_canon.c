@@ -36,6 +36,15 @@ void test_mutt_path_canon(void)
     TEST_CHECK(!mutt_path_canon(NULL, "apple", true));
   }
 
+  // test already canonical
+
+  {
+    struct Buffer *path = buf_new("/apple");
+    TEST_CHECK(mutt_path_canon(path, "/orange", true));
+    TEST_CHECK_STR_EQ(path->data, "/apple");
+    buf_free(&path);
+  }
+
   // test homedir expansion
 
   {

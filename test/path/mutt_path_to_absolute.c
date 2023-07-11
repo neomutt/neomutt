@@ -25,10 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_to_absolute(void)
 {
   // int mutt_path_to_absolute(char *path, const char *reference);
+
+  MuttLogger = log_disp_null;
 
   {
     TEST_CHECK(!mutt_path_to_absolute(NULL, "apple"));
@@ -36,5 +39,61 @@ void test_mutt_path_to_absolute(void)
 
   {
     TEST_CHECK(!mutt_path_to_absolute("apple", NULL));
+  }
+
+  {
+    TEST_CHECK(mutt_path_to_absolute("/apple", "banana"));
+  }
+
+  {
+    // A real dir
+    char path[PATH_MAX] = { 0 };
+    char reference[PATH_MAX] = { 0 };
+    char expected[PATH_MAX] = { 0 };
+
+    const char *test_dir = get_test_dir();
+    const char *relative = "maildir/empty/child";
+
+    strncpy(path, relative, sizeof(path));
+    snprintf(reference, sizeof(reference), "%s/dummy", test_dir);
+    snprintf(expected, sizeof(expected), "%s/%s", test_dir, relative);
+
+    TEST_CHECK(mutt_path_to_absolute(path, reference));
+    TEST_CHECK_STR_EQ(path, expected);
+  }
+
+  {
+    // A symlink
+    char path[PATH_MAX] = { 0 };
+    char reference[PATH_MAX] = { 0 };
+    char expected[PATH_MAX] = { 0 };
+
+    const char *test_dir = get_test_dir();
+    const char *relative = "notmuch/symlink";
+    const char *dest = "notmuch/apple";
+
+    strncpy(path, relative, sizeof(path));
+    snprintf(reference, sizeof(reference), "%s/dummy", test_dir);
+    snprintf(expected, sizeof(expected), "%s/%s", test_dir, dest);
+
+    TEST_CHECK(mutt_path_to_absolute(path, reference));
+    TEST_CHECK_STR_EQ(path, expected);
+  }
+
+  {
+    // Unreadable dir
+    char path[PATH_MAX] = { 0 };
+    char reference[PATH_MAX] = { 0 };
+    char expected[PATH_MAX] = { 0 };
+
+    const char *test_dir = get_test_dir();
+    const char *relative = "maildir/damson/child";
+
+    strncpy(path, relative, sizeof(path));
+    snprintf(reference, sizeof(reference), "%s/dummy", test_dir);
+    snprintf(expected, sizeof(expected), "%s/%s", test_dir, relative);
+
+    TEST_CHECK(!mutt_path_to_absolute(path, reference));
+    TEST_CHECK_STR_EQ(path, expected);
   }
 }

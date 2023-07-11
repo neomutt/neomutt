@@ -31,9 +31,8 @@ void test_mutt_path_tidy_dotdot(void)
 {
   // bool mutt_path_tidy_dotdot(char *buf);
 
-  // clang-format off
-  static const char *tests[][2] =
-  {
+  static const char *tests[][2] = {
+    // clang-format off
     { NULL,                                   NULL,                          },
     { "/",                                    "/",                           },
     { "/apple",                               "/apple",                      },
@@ -71,8 +70,8 @@ void test_mutt_path_tidy_dotdot(void)
     { "/apple/banana/cherry/../damson/..",    "/apple/banana",               },
     { "/apple/..banana/cherry/../damson",     "/apple/..banana/damson",      },
     { "/..apple/..banana/..cherry/../damson", "/..apple/..banana/damson",    },
+    // clang-format on
   };
-  // clang-format on
 
   {
     TEST_CHECK(!mutt_path_tidy_dotdot(NULL));

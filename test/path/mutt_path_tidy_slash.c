@@ -32,9 +32,8 @@ void test_mutt_path_tidy_slash(void)
 {
   // bool mutt_path_tidy_slash(char *buf);
 
-  // clang-format off
-  static const char *tests[][2] =
-  {
+  static const char *tests[][2] = {
+    // clang-format off
     { NULL,                     NULL,            },
     { "/",                      "/",             },
     { "//",                     "/",             },
@@ -59,8 +58,8 @@ void test_mutt_path_tidy_slash(void)
     { "/apple/banana//./",      "/apple/banana", },
     { "////apple/banana",       "/apple/banana", },
     { "/.//apple/banana",       "/apple/banana", },
+    // clang-format on
   };
-  // clang-format on
 
   {
     TEST_CHECK(!mutt_path_tidy_slash(NULL, true));

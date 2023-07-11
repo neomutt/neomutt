@@ -25,22 +25,50 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_concat(void)
 {
-  // char *mutt_path_concat(char *d, const char *dir, const char *fname, size_t l);
+  // char *mutt_path_concat(char *dest, const char *dir, const char *file, size_t dlen);
+
+  static const char *tests[][3] = {
+    // clang-format off
+    { NULL,     "",       ""             },
+    { NULL,     "banana", "banana"       },
+    { "",       NULL,     ""             },
+    { "",       "",       ""             },
+    { "",       "banana", "banana"       },
+    { "apple",  NULL,     "apple"        },
+    { "apple",  "",       "apple"        },
+    { "apple",  "banana", "apple/banana" },
+    { "apple/", NULL,     "apple/"       },
+    { "apple/", "",       "apple/"       },
+    { "apple/", "banana", "apple/banana" },
+    // clang-format on
+  };
 
   {
-    TEST_CHECK(mutt_path_concat(NULL, "apple", "banana", 5) == NULL);
+    char buf[64] = { 0 };
+    TEST_CHECK(mutt_path_concat(NULL, "apple", "banana", sizeof(buf)) == NULL);
   }
 
   {
-    char buf[32] = { 0 };
-    TEST_CHECK(mutt_path_concat(buf, NULL, "banana", 5) == NULL);
+    char buf[64] = { 0 };
+    TEST_CHECK(mutt_path_concat(buf, NULL, NULL, sizeof(buf)) == NULL);
   }
 
   {
-    char buf[32] = { 0 };
-    TEST_CHECK(mutt_path_concat(buf, "apple", NULL, 5) == NULL);
+    for (int i = 0; i < mutt_array_size(tests); i++)
+    {
+      char buf[64] = { 0 };
+
+      const char *dir = tests[i][0];
+      const char *file = tests[i][1];
+      const char *expected = tests[i][2];
+
+      TEST_CHECK(mutt_path_concat(buf, dir, file, sizeof(buf)) == buf);
+
+      TEST_CHECK_STR_EQ(buf, expected);
+    }
   }
 }

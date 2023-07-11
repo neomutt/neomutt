@@ -25,12 +25,49 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_parent(void)
 {
   // bool mutt_path_parent(char *buf);
 
+  static const char *tests[][2] = {
+    // clang-format off
+    { "/apple",         "/"      },
+    { "/apple/",        "/"      },
+    { "/apple/banana",  "/apple" },
+    { "/apple/banana/", "/apple" },
+    // clang-format on
+  };
+
   {
     TEST_CHECK(!mutt_path_parent(NULL));
+  }
+
+  {
+    struct Buffer *path = buf_new(NULL);
+    TEST_CHECK(!mutt_path_parent(path));
+    buf_free(&path);
+  }
+
+  {
+    struct Buffer *path = buf_new("/");
+    TEST_CHECK(!mutt_path_parent(path));
+    buf_free(&path);
+  }
+
+  {
+    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    {
+      TEST_CASE(tests[i][0]);
+
+      struct Buffer *path = buf_new(tests[i][0]);
+
+      TEST_CHECK(mutt_path_parent(path));
+      const char *expected = tests[i][1];
+      TEST_CHECK_STR_EQ(buf_string(path), expected);
+
+      buf_free(&path);
+    }
   }
 }

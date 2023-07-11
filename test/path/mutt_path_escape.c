@@ -25,12 +25,37 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_escape(void)
 {
   // char *mutt_path_escape(const char *src);
 
+  static const char *tests[][2] = {
+    // clang-format off
+    { "",         ""            },
+    { "apple",    "apple"       },
+    { "/",        "/"           },
+    { "/apple",   "/apple"      },
+    { "/app'le",  "/app'\\''le" },
+    { "/app\"le", "/app\"le"    },
+    // clang-format on
+  };
+
   {
     TEST_CHECK(mutt_path_escape(NULL) == NULL);
+  }
+
+  {
+    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    {
+      TEST_CASE(tests[i][0]);
+
+      const char *source = tests[i][0];
+      const char *expected = tests[i][1];
+
+      const char *result = mutt_path_escape(source);
+      TEST_CHECK_STR_EQ(result, expected);
+    }
   }
 }

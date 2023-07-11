@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_realpath(void)
 {
@@ -32,5 +33,35 @@ void test_mutt_path_realpath(void)
 
   {
     TEST_CHECK(mutt_path_realpath(NULL) == 0);
+  }
+
+  {
+    // Working symlink
+    char path[PATH_MAX] = { 0 };
+    char expected[PATH_MAX] = { 0 };
+
+    const char *test_dir = get_test_dir();
+    TEST_CHECK(test_dir != NULL);
+    snprintf(path, sizeof(path), "%s/file/empty_symlink", test_dir);
+    snprintf(expected, sizeof(expected), "%s/file/empty", test_dir);
+
+    TEST_CHECK(mutt_path_realpath(path) > 0);
+
+    TEST_CHECK_STR_EQ(path, expected);
+  }
+
+  {
+    // Broken symlink
+    char path[PATH_MAX] = { 0 };
+    char expected[PATH_MAX] = { 0 };
+
+    const char *test_dir = get_test_dir();
+    TEST_CHECK(test_dir != NULL);
+    snprintf(path, sizeof(path), "%s/file/missing_symlink", test_dir);
+    snprintf(expected, sizeof(expected), "%s/file/missing_symlink", test_dir);
+
+    TEST_CHECK(mutt_path_realpath(path) == 0);
+
+    TEST_CHECK_STR_EQ(path, expected);
   }
 }
