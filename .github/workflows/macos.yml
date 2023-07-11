@@ -1,0 +1,56 @@
+name: macOS
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+      # Mondays at 04:00
+  workflow_dispatch:
+
+env:
+  EXTRA_LDFLAGS: "-L/usr/local/opt/ncurses/lib"
+  EXTRA_CFLAGS: "-I/usr/local/opt/ncurses/include -pipe"
+
+jobs:
+  build:
+    name: Build on macOS
+    runs-on: macos-latest
+
+    steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Checkout Test Files
+      uses: actions/checkout@v3
+      with:
+        repository: neomutt/neomutt-test-files
+        path: test-files
+
+    - name: Set Up Test Files
+      run: |
+        cd test-files
+        ./setup.sh
+
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
+    - name: Configure Neomutt
+      run: ./configure --disable-doc --disable-nls
+
+    - name: Build Neomutt
+      run: make -j ${{steps.cpu-cores.outputs.count}} neomutt
+
+    - name: Neomutt Version
+      run: ./neomutt -v
+
+    - name: Build Tests
+      run: make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test
+
+    - name: Run Tests
+      continue-on-error: true
+      run: |
+        export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
+        make test
