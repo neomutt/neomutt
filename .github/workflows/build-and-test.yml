@@ -1,0 +1,80 @@
+name: Build and Test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+      - 'devel/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build-${{ matrix.cfg.name }}
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/docker-build
+
+    strategy:
+      # Limit jobs to one at a time so that ccache really helps later builds
+      max-parallel: 1
+      matrix:
+        cfg:
+          - name: default
+            options:
+          - name: disabled
+            options: --disable-nls --disable-pgp --disable-smime --ssl --gsasl
+          - name: everything
+            options: --autocrypt --bdb --fmemopen --gdbm --gnutls --gpgme --gss --kyotocabinet --lmdb --lua --lz4 --mixmaster --notmuch --pcre2 --qdbm --rocksdb --sasl --tdb --testing --tokyocabinet --with-lock=fcntl --zlib --zstd
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Checkout Test Files
+      uses: actions/checkout@v3
+      with:
+        repository: neomutt/neomutt-test-files
+        path: test-files
+
+    - name: Set Up Test Files
+      run: |
+        cd test-files
+        ./setup.sh
+
+    - name: Compilation Cache
+      uses: hendrikmuhs/ccache-action@v1
+
+    - name: Configure Neomutt
+      run: |
+        mkdir build-${{ matrix.cfg.name }}
+        cd build-${{ matrix.cfg.name }}
+        ../configure --full-doc ${{ matrix.cfg.options }}
+
+    - name: Build Neomutt
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        make -j 2 neomutt
+
+    - name: Neomutt Version
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        ./neomutt -v
+
+    - name: Test Docs
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        pwd
+        ls -C
+        make validate-docs
+
+    - name: Build Tests
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        make -j 2 test/neomutt-test
+
+    - name: Run Tests
+      run: |
+        cd build-${{ matrix.cfg.name }}
+        export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
+        make test
+

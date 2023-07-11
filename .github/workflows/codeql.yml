@@ -1,0 +1,45 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: "46 1 * * 1"
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    container: ghcr.io/neomutt/docker-build
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    env:
+      CONFIGURE_OPTIONS: --bdb --gdbm --gnutls --gpgme --homespool --kyotocabinet --lmdb --lua --mixmaster --notmuch --qdbm --sasl --tokyocabinet --with-domain=example.com --with-lock=flock
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Configure Neomutt
+        run: ./configure --disable-doc $CONFIGURE_OPTIONS
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: cpp
+          config-file: ./.github/codeql.yml
+          queries: +security-and-quality
+
+      - name: Build Neomutt
+        run: make -j 2 -s
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:cpp"
