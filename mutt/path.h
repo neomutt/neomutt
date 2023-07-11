@@ -28,7 +28,7 @@
 
 struct Buffer;
 
-bool        mutt_path_abbr_folder(char *buf, const char *folder);
+bool        mutt_path_abbr_folder(struct Buffer *path, const char *folder);
 const char *mutt_path_basename(const char *f);
 bool        mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir);
 char *      mutt_path_concat(char *d, const char *dir, const char *fname, size_t l);

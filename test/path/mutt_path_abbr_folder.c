@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_path_abbr_folder(void)
 {
@@ -35,7 +36,53 @@ void test_mutt_path_abbr_folder(void)
   }
 
   {
-    char buf[32] = { 0 };
-    TEST_CHECK(!mutt_path_abbr_folder(buf, NULL));
+    struct Buffer *path = buf_new("");
+    TEST_CHECK(!mutt_path_abbr_folder(path, NULL));
+    buf_free(&path);
+  }
+
+  // test short folder
+
+  {
+    struct Buffer *path = buf_new("/foo/bar");
+    TEST_CHECK(!mutt_path_abbr_folder(path, "/"));
+    TEST_CHECK_STR_EQ(buf_string(path), "/foo/bar");
+    buf_free(&path);
+  }
+
+  // test abbreviation
+
+  {
+    struct Buffer *path = buf_new("/foo/bar");
+    TEST_CHECK(mutt_path_abbr_folder(path, "/foo"));
+    TEST_CHECK_STR_EQ(buf_string(path), "=bar");
+    buf_free(&path);
+  }
+
+  // test abbreviation folder with trailing slash
+
+  {
+    struct Buffer *path = buf_new("/foo/bar");
+    TEST_CHECK(mutt_path_abbr_folder(path, "/foo/"));
+    TEST_CHECK_STR_EQ(buf_string(path), "=bar");
+    buf_free(&path);
+  }
+
+  // don't abbreviate without subdirectory
+
+  {
+    struct Buffer *path = buf_new("/foo/");
+    TEST_CHECK(!mutt_path_abbr_folder(path, "/foo"));
+    TEST_CHECK_STR_EQ(buf_string(path), "/foo/");
+    buf_free(&path);
+  }
+
+  // don't abbreviate different paths
+
+  {
+    struct Buffer *path = buf_new("/foo/bar");
+    TEST_CHECK(!mutt_path_abbr_folder(path, "/orange"));
+    TEST_CHECK_STR_EQ(buf_string(path), "/foo/bar");
+    buf_free(&path);
   }
 }
