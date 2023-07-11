@@ -7,6 +7,10 @@ on:
       - 'main'
       - 'devel/**'
 
+env:
+  EXTRA_LDFLAGS: "-L/usr/local/opt/ncurses/lib"
+  EXTRA_CFLAGS: "-I/usr/local/opt/ncurses/include"
+
 jobs:
   build:
     name: Build on macOS
@@ -19,8 +23,8 @@ jobs:
     - name: Compilation Cache
       uses: hendrikmuhs/ccache-action@v1
 
-    - name: Install Homebrew dependencies
-      run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ncurses && brew info ncurses
+    # - name: Install Homebrew dependencies
+      # run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ncurses && brew info ncurses
 
     - name: Configure Neomutt
       run: ./configure --disable-doc --disable-nls
