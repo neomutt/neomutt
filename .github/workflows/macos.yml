@@ -9,7 +9,7 @@ on:
 
 env:
   EXTRA_LDFLAGS: "-L/usr/local/opt/ncurses/lib"
-  EXTRA_CFLAGS: "-I/usr/local/opt/ncurses/include"
+  EXTRA_CFLAGS: "-I/usr/local/opt/ncurses/include -pipe"
 
 jobs:
   build:
