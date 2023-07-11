@@ -52,11 +52,11 @@ void test_mutt_path_to_absolute(void)
     char expected[PATH_MAX] = { 0 };
 
     const char *test_dir = get_test_dir();
-    const char *relative = "maildir/empty/child";
+    const char *relative = "banana";
 
     strncpy(path, relative, sizeof(path));
-    snprintf(reference, sizeof(reference), "%s/dummy", test_dir);
-    snprintf(expected, sizeof(expected), "%s/%s", test_dir, relative);
+    snprintf(reference, sizeof(reference), "%s/maildir/apple", test_dir);
+    snprintf(expected, sizeof(expected), "%s/maildir/%s", test_dir, relative);
 
     TEST_CHECK(mutt_path_to_absolute(path, reference));
     TEST_CHECK_STR_EQ(path, expected);
@@ -69,12 +69,11 @@ void test_mutt_path_to_absolute(void)
     char expected[PATH_MAX] = { 0 };
 
     const char *test_dir = get_test_dir();
-    const char *relative = "notmuch/symlink";
-    const char *dest = "notmuch/apple";
+    const char *relative = "banana";
 
     strncpy(path, relative, sizeof(path));
-    snprintf(reference, sizeof(reference), "%s/dummy", test_dir);
-    snprintf(expected, sizeof(expected), "%s/%s", test_dir, dest);
+    snprintf(reference, sizeof(reference), "%s/notmuch/symlink", test_dir);
+    snprintf(expected, sizeof(expected), "%s/notmuch/%s", test_dir, relative);
 
     TEST_CHECK(mutt_path_to_absolute(path, reference));
     TEST_CHECK_STR_EQ(path, expected);
@@ -87,13 +86,16 @@ void test_mutt_path_to_absolute(void)
     char expected[PATH_MAX] = { 0 };
 
     const char *test_dir = get_test_dir();
-    const char *relative = "maildir/damson/child";
+    const char *relative = "tmp";
 
     strncpy(path, relative, sizeof(path));
-    snprintf(reference, sizeof(reference), "%s/dummy", test_dir);
-    snprintf(expected, sizeof(expected), "%s/%s", test_dir, relative);
+    snprintf(reference, sizeof(reference), "%s/maildir/damson/cur", test_dir);
+    snprintf(expected, sizeof(expected), "%s/maildir/damson/%s", test_dir, relative);
 
-    TEST_CHECK(!mutt_path_to_absolute(path, reference));
+    // We don't check the return value here.
+    // If the tests are run as root, like under GitHub Actions, then realpath() will succeed.
+    // If they're run as a non-root user, realpath() will fail.
+    mutt_path_to_absolute(path, reference);
     TEST_CHECK_STR_EQ(path, expected);
   }
 }
