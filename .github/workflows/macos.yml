@@ -17,6 +17,10 @@ jobs:
     runs-on: macos-latest
 
     steps:
+    - name: Get number of CPU cores
+      uses: SimenB/github-actions-cpu-cores@v1
+      id: cpu-cores
+
     - name: Checkout Code
       uses: actions/checkout@v3
 
@@ -38,13 +42,13 @@ jobs:
       run: ./configure --disable-doc --disable-nls
 
     - name: Build Neomutt
-      run: make -j 2 neomutt
+      run: make -j ${{steps.cpu-cores.outputs.count}} neomutt
 
     - name: Neomutt Version
       run: ./neomutt -v
 
     - name: Build Tests
-      run: make -j 2 test/neomutt-test
+      run: make -j {{steps.cpu-cores.outputs.count}} test/neomutt-test
 
     - name: Run Tests
       continue-on-error: true
