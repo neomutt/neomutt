@@ -30,6 +30,38 @@
 struct Email;
 struct Mailbox;
 
+/**
+ * enum FlagChars - Index into the `$flag_chars` variable ($flag_chars)
+ */
+enum FlagChars
+{
+  FLAG_CHAR_TAGGED,         ///< Character denoting a tagged email
+  FLAG_CHAR_IMPORTANT,      ///< Character denoting a important (flagged) email
+  FLAG_CHAR_DELETED,        ///< Character denoting a deleted email
+  FLAG_CHAR_DELETED_ATTACH, ///< Character denoting a deleted attachment
+  FLAG_CHAR_REPLIED, ///< Character denoting an email that has been replied to
+  FLAG_CHAR_OLD,     ///< Character denoting an email that has been read
+  FLAG_CHAR_NEW,     ///< Character denoting an unread email
+  FLAG_CHAR_OLD_THREAD, ///< Character denoting a thread of emails that has been read
+  FLAG_CHAR_NEW_THREAD, ///< Character denoting a thread containing at least one new email
+  FLAG_CHAR_SEMPTY, ///< Character denoting a read email, $index_format %S expando
+  FLAG_CHAR_ZEMPTY, ///< Character denoting a read email, $index_format %Z expando
+};
+
+/**
+ * enum CryptChars - Index into the `$crypt_chars` variable ($crypt_chars)
+ */
+enum CryptChars
+{
+  FLAG_CHAR_CRYPT_GOOD_SIGN, ///< Character denoting a message signed with a verified key
+  FLAG_CHAR_CRYPT_ENCRYPTED, ///< Character denoting a message is PGP-encrypted
+  FLAG_CHAR_CRYPT_SIGNED,    ///< Character denoting a message is signed
+  FLAG_CHAR_CRYPT_CONTAINS_KEY, ///< Character denoting a message contains a PGP key
+  FLAG_CHAR_CRYPT_NO_CRYPTO, ///< Character denoting a message has no cryptography information
+};
+
+const char *get_nth_wchar(const struct MbTable *table, int index);
+
 void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
                       struct Mailbox *m, int inpgr, struct Email *e,
                       MuttFormatFlags flags, const char *progress);

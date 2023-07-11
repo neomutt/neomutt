@@ -40,6 +40,7 @@
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "functions.h"
+#include "hdrline.h"
 #include "keymap.h"
 #include "opcodes.h"
 #include "protos.h"
@@ -379,6 +380,80 @@ static void dump_unbound(FILE *fp, const struct MenuFuncOp *funcs,
 }
 
 /**
+ * show_flag_if_present - Write out a message flag if exists
+ * @param fp              File to write to
+ * @param wraplen         Width to wrap to
+ * @param table           Table containing the flag characters
+ * @param index           Index of flag character int the table
+ * @param description     Description of flag
+ */
+static void show_flag_if_present(FILE *fp, int wraplen, const struct MbTable *table,
+                                 int index, char *description)
+{
+  const char *flag = get_nth_wchar(table, index);
+  if ((strlen(flag) < 1) || (*flag == ' '))
+  {
+    return;
+  }
+
+  format_line(fp, 0, flag, "", description, wraplen);
+}
+
+/**
+ * dump_message_flags - Write out all the message flags
+ * @param fp            File to write to
+ * @param wraplen       Width to wrap to
+ */
+static void dump_message_flags(FILE *fp, int wraplen)
+{
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
+
+  format_line(fp, 0, "$flag_chars:", "", "", wraplen);
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_TAGGED, _("message is tagged"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_IMPORTANT,
+                       _("message is flagged"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_DELETED, _("message is deleted"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_DELETED_ATTACH,
+                       _("attachment is deleted"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_REPLIED,
+                       _("message has been replied to"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_OLD, _("message has been read"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_NEW, _("message is new"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_OLD_THREAD,
+                       _("thread has been read"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_NEW_THREAD,
+                       _("thread has at least one new message"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_SEMPTY,
+                       _("message has been read (%S expando)"));
+  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_ZEMPTY,
+                       _("message has been read (%Z expando)"));
+
+  format_line(fp, 0, "\n$crypt_chars:", "", "", wraplen);
+  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN,
+                       _("message signed with a verified key"));
+  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED,
+                       _("message is PGP-encrypted"));
+  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED,
+                       _("message is signed"));
+  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY,
+                       _("message contains a PGP key"));
+  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO,
+                       _("message has no cryptography information"));
+
+  // from: hdrline.c: user_is_recipient()
+  format_line(fp, 0, "\n$to_chars:", "", "", wraplen);
+  show_flag_if_present(fp, wraplen, c_to_chars, 1, _("message is To: you and only you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, 2, _("message is To: you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, 3, _("message is Cc: to you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, 4, _("message is From: you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, 5,
+                       _("message is sent to a subscribed mailinglist"));
+  show_flag_if_present(fp, wraplen, c_to_chars, 6, _("you are in the Reply-To: list"));
+}
+
+/**
  * mutt_help - Display the help menu
  * @param menu    Current Menu
  */
@@ -424,6 +499,12 @@ void mutt_help(enum MenuType menu)
       dump_unbound(fp, funcs, &Keymaps[menu], NULL, wraplen);
     if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
       dump_unbound(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], wraplen);
+
+    if (menu == MENU_INDEX)
+    {
+      fprintf(fp, "\n%s\n\n", _("Message flags:"));
+      dump_message_flags(fp, wraplen);
+    }
 
     mutt_file_fclose(&fp);
 
