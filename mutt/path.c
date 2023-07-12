@@ -156,21 +156,24 @@ bool mutt_path_tidy_dotdot(char *buf)
 
 /**
  * mutt_path_tidy - Remove unnecessary parts of a path
- * @param[in,out] buf Path to modify
+ * @param[in,out] path Path to modify
  * @param[in]     is_dir Is the path a directory?
  * @retval true Success
  *
  * Remove unnecessary dots and slashes from a path
  */
-bool mutt_path_tidy(char *buf, bool is_dir)
+bool mutt_path_tidy(struct Buffer *path, bool is_dir)
 {
-  if (!buf || (buf[0] != '/'))
+  if (buf_is_empty(path) || (buf_at(path, 0) != '/'))
     return false;
 
-  if (!mutt_path_tidy_slash(buf, is_dir))
+  if (!mutt_path_tidy_slash(path->data, is_dir))
     return false; // LCOV_EXCL_LINE
 
-  return mutt_path_tidy_dotdot(buf);
+  mutt_path_tidy_dotdot(path->data);
+  buf_fix_dptr(path);
+
+  return true;
 }
 
 /**
@@ -187,8 +190,7 @@ bool mutt_path_pretty(struct Buffer *path, const char *homedir, bool is_dir)
   if (buf_is_empty(path))
     return false;
 
-  mutt_path_tidy(path->data, is_dir);
-  buf_fix_dptr(path);
+  mutt_path_tidy(path, is_dir);
 
   size_t len = mutt_str_startswith(path->data, homedir);
   if (len == 0)
@@ -299,11 +301,7 @@ bool mutt_path_canon(struct Buffer *path, const char *homedir, bool is_dir)
     buf_insert(path, 0, cwd);
   }
 
-  if (!mutt_path_tidy(path->data, is_dir))
-    return false; // LCOV_EXCL_LINE
-
-  buf_fix_dptr(path);
-  return true;
+  return mutt_path_tidy(path, is_dir);
 }
 
 /**
