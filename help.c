@@ -442,15 +442,19 @@ static void dump_message_flags(FILE *fp, int wraplen)
   show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO,
                        _("message has no cryptography information"));
 
-  // from: hdrline.c: user_is_recipient()
   format_line(fp, 0, "\n$to_chars:", "", "", wraplen);
-  show_flag_if_present(fp, wraplen, c_to_chars, 1, _("message is To: you and only you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, 2, _("message is To: you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, 3, _("message is Cc: to you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, 4, _("message is From: you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, 5,
+  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_NOT_IN_THE_LIST,
+                       _("message is not To: you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_UNIQUE,
+                       _("message is To: you and only you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_TO, _("message is To: you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_CC, _("message is Cc: to you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_ORIGINATOR,
+                       _("message is From: you"));
+  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_SUBSCRIBED_LIST,
                        _("message is sent to a subscribed mailinglist"));
-  show_flag_if_present(fp, wraplen, c_to_chars, 6, _("you are in the Reply-To: list"));
+  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_REPLY_TO,
+                       _("you are in the Reply-To: list"));
 }
 
 /**
