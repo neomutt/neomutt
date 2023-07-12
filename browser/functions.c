@@ -355,7 +355,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
       /* Resolve path from <chdir>
        * Avoids buildup such as /a/b/../../c
        * Symlinks are always unraveled to keep code simple */
-      if (mutt_path_realpath(buf->data) == 0)
+      if (mutt_path_realpath(buf) == 0)
       {
         buf_pool_release(&buf);
         return FR_ERROR;
@@ -735,7 +735,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
           }
         }
         /* resolve paths navigated from GUI */
-        if (mutt_path_realpath(LastDir.data) == 0)
+        if (mutt_path_realpath(&LastDir) == 0)
           return FR_ERROR;
       }
 
