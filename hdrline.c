@@ -286,18 +286,12 @@ static bool user_in_addr(struct AddressList *al)
 /**
  * user_is_recipient - Is the user a recipient of the message
  * @param e Email to test
- * @retval 0 User is not in list
- * @retval 1 User is unique recipient
- * @retval 2 User is in the TO list
- * @retval 3 User is in the CC list
- * @retval 4 User is originator
- * @retval 5 Sent to a subscribed mailinglist
- * @retval 6 User is in the Reply-To list
+ * @retval enum Character index into the `$to_chars` config variable
  */
-static int user_is_recipient(struct Email *e)
+static enum ToChars user_is_recipient(struct Email *e)
 {
   if (!e || !e->env)
-    return 0;
+    return FLAG_CHAR_TO_NOT_IN_THE_LIST;
 
   struct Envelope *env = e->env;
 
@@ -307,34 +301,34 @@ static int user_is_recipient(struct Email *e)
 
     if (mutt_addr_is_user(TAILQ_FIRST(&env->from)))
     {
-      e->recipient = 4;
+      e->recipient = FLAG_CHAR_TO_ORIGINATOR;
     }
     else if (user_in_addr(&env->to))
     {
       if (TAILQ_NEXT(TAILQ_FIRST(&env->to), entries) || !TAILQ_EMPTY(&env->cc))
-        e->recipient = 2; /* non-unique recipient */
+        e->recipient = FLAG_CHAR_TO_TO; /* non-unique recipient */
       else
-        e->recipient = 1; /* unique recipient */
+        e->recipient = FLAG_CHAR_TO_UNIQUE; /* unique recipient */
     }
     else if (user_in_addr(&env->cc))
     {
-      e->recipient = 3;
+      e->recipient = FLAG_CHAR_TO_CC;
     }
     else if (check_for_mailing_list(&env->to, NULL, NULL, 0))
     {
-      e->recipient = 5;
+      e->recipient = FLAG_CHAR_TO_SUBSCRIBED_LIST;
     }
     else if (check_for_mailing_list(&env->cc, NULL, NULL, 0))
     {
-      e->recipient = 5;
+      e->recipient = FLAG_CHAR_TO_SUBSCRIBED_LIST;
     }
     else if (user_in_addr(&env->reply_to))
     {
-      e->recipient = 6;
+      e->recipient = FLAG_CHAR_TO_REPLY_TO;
     }
     else
     {
-      e->recipient = 0;
+      e->recipient = FLAG_CHAR_TO_NOT_IN_THE_LIST;
     }
   }
 
