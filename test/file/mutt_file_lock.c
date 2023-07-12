@@ -30,7 +30,10 @@ void test_mutt_file_lock(void)
 {
   // int mutt_file_lock(int fd, bool excl, bool timeout);
 
+  MuttLogger = log_disp_null;
+
   {
-    TEST_CHECK(mutt_file_lock(0, false, false) == 0);
+    int rc = mutt_file_lock(-1, false, false);
+    TEST_CHECK(rc == -1);
   }
 }
