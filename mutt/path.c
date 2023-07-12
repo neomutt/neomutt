@@ -436,25 +436,23 @@ bool mutt_path_to_absolute(char *path, const char *reference)
 
 /**
  * mutt_path_realpath - Resolve path, unraveling symlinks
- * @param buf Buffer containing path
+ * @param  path Buffer containing path
  * @retval num String length of resolved path
  * @retval 0   Error, buf is not overwritten
  *
  * Resolve and overwrite the path in buf.
- *
- * @note Size of buf should be at least PATH_MAX bytes.
  */
-size_t mutt_path_realpath(char *buf)
+size_t mutt_path_realpath(struct Buffer *path)
 {
-  if (!buf)
+  if (buf_is_empty(path))
     return 0;
 
   char s[PATH_MAX] = { 0 };
 
-  if (!realpath(buf, s))
+  if (!realpath(buf_string(path), s))
     return 0;
 
-  return mutt_str_copy(buf, s, sizeof(s));
+  return buf_strcpy(path, s);
 }
 
 /**
