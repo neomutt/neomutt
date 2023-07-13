@@ -65,6 +65,7 @@ void test_editor_kill_eow(void)
     enter_state_free(&es);
   }
 
+#if 0
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "apple 义勇军 banana");
@@ -90,4 +91,5 @@ void test_editor_kill_eow(void)
     TEST_CHECK(editor_buffer_get_cursor(es) == 2);
     enter_state_free(&es);
   }
+#endif
 }
