@@ -73,6 +73,8 @@ enum ColorId
 #endif
   MT_COLOR_SIGNATURE,                ///< Pager: signature lines
   MT_COLOR_STATUS,                   ///< Status bar (takes a pattern)
+  MT_COLOR_STRIPE_EVEN,              ///< Stripes: even lines of the Help Page
+  MT_COLOR_STRIPE_ODD,               ///< Stripes: odd lines of the Help Page
   MT_COLOR_TILDE,                    ///< Pager: empty lines after message
   MT_COLOR_TREE,                     ///< Index: tree-drawing characters
   MT_COLOR_UNDERLINE,                ///< Underlined text

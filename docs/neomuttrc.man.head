@@ -295,6 +295,8 @@ currently defined \fIobject\fPs are:
 .BR search ", "
 .BR signature ", "
 .BR status ", "
+.BR stripe_even ", "
+.BR stripe_odd ","
 .BR tilde ", "
 .BR tree ", "
 .BR underline "."
