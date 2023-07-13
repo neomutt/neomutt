@@ -1238,6 +1238,22 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     goto out;
   }
 
+  if (flags & MUTT_PAGER_STRIPES)
+  {
+    const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
+    struct AttrColor *attr_color = mutt_curses_set_color_by_id(cid);
+
+    memset(&ansi, 0, sizeof(struct AnsiColor));
+    ansi.attr_color = attr_color;
+    ansi.attrs = attr_color->attrs;
+
+    if (attr_color->curses_color)
+    {
+      ansi.fg = attr_color->curses_color->fg;
+      ansi.bg = attr_color->curses_color->bg;
+    }
+  }
+
   /* display the line */
   format_line(win_pager, lines, line_num, buf, flags, &ansi, cnt, &ch, &vch,
               &col, &special, win_pager->state.cols, ansi_list);
@@ -1245,7 +1261,16 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   /* avoid a bug in ncurses... */
   if (col == 0)
   {
-    mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+    if (flags & MUTT_PAGER_STRIPES)
+    {
+      const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
+      mutt_curses_set_color_by_id(cid);
+    }
+    else
+    {
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+    }
+
     mutt_window_addch(win_pager, ' ');
   }
 

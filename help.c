@@ -479,7 +479,8 @@ void mutt_help(enum MenuType menu)
   struct PagerView pview = { &pdata };
 
   pview.mode = PAGER_MODE_HELP;
-  pview.flags = MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP;
+  pview.flags = MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP |
+                MUTT_PAGER_NOWRAP | MUTT_PAGER_STRIPES;
 
   do
   {

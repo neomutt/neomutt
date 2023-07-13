@@ -93,6 +93,8 @@ const struct Mapping ColorFields[] = {
 #endif
   { "signature",         MT_COLOR_SIGNATURE },
   { "status",            MT_COLOR_STATUS },
+  { "stripe_even",       MT_COLOR_STRIPE_EVEN},
+  { "stripe_odd",        MT_COLOR_STRIPE_ODD},
   { "tilde",             MT_COLOR_TILDE },
   { "tree",              MT_COLOR_TREE },
   { "underline",         MT_COLOR_UNDERLINE },

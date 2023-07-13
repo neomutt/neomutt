@@ -72,6 +72,7 @@ typedef uint16_t PagerFlags;              ///< Flags for dlg_pager(), e.g. #MUTT
 #define MUTT_PAGER_NOWRAP     (1 << 9)    ///< Format for term width, ignore $wrap
 #define MUTT_PAGER_LOGS       (1 << 10)   ///< Logview mode
 #define MUTT_PAGER_BOTTOM     (1 << 11)   ///< Start at the bottom
+#define MUTT_PAGER_STRIPES    (1 << 12)   ///< Striped highlighting
 #define MUTT_PAGER_MESSAGE    (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
 
 #define MUTT_DISPLAYFLAGS (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER | MUTT_PAGER_LOGS)

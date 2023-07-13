@@ -50,6 +50,7 @@ void simple_colors_init(void)
   SimpleColors[MT_COLOR_SIDEBAR_HIGHLIGHT].attrs = A_UNDERLINE;
 #endif
   SimpleColors[MT_COLOR_STATUS].attrs = A_REVERSE;
+  SimpleColors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
 }
 
 /**

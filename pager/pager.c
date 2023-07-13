@@ -170,11 +170,14 @@ static int pager_repaint(struct MuttWindow *win)
     }
     int i = -1;
     int j = -1;
+    const PagerFlags flags = priv->has_types | priv->search_flag |
+                             (priv->pview->flags & MUTT_PAGER_NOWRAP) |
+                             (priv->pview->flags & MUTT_PAGER_STRIPES);
+
     while (display_line(priv->fp, &priv->bytes_read, &priv->lines, ++i,
-                        &priv->lines_used, &priv->lines_max,
-                        priv->has_types | priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
-                        &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                        &priv->search_re, priv->pview->win_pager, &priv->ansi_list) == 0)
+                        &priv->lines_used, &priv->lines_max, flags, &priv->quote_list,
+                        &priv->q_level, &priv->force_redraw, &priv->search_re,
+                        priv->pview->win_pager, &priv->ansi_list) == 0)
     {
       if (!priv->lines[i].cont_line && (++j == priv->win_height))
       {
@@ -199,12 +202,15 @@ static int pager_repaint(struct MuttWindow *win)
       while ((priv->win_height < priv->pview->win_pager->state.rows) &&
              (priv->lines[priv->cur_line].offset <= priv->st.st_size - 1))
       {
-        if (display_line(priv->fp, &priv->bytes_read, &priv->lines,
-                         priv->cur_line, &priv->lines_used, &priv->lines_max,
-                         (priv->pview->flags & MUTT_DISPLAYFLAGS) | priv->hide_quoted |
-                             priv->search_flag | (priv->pview->flags & MUTT_PAGER_NOWRAP),
-                         &priv->quote_list, &priv->q_level, &priv->force_redraw,
-                         &priv->search_re, priv->pview->win_pager, &priv->ansi_list) > 0)
+        const PagerFlags flags = (priv->pview->flags & MUTT_DISPLAYFLAGS) |
+                                 priv->hide_quoted | priv->search_flag |
+                                 (priv->pview->flags & MUTT_PAGER_NOWRAP) |
+                                 (priv->pview->flags & MUTT_PAGER_STRIPES);
+
+        if (display_line(priv->fp, &priv->bytes_read, &priv->lines, priv->cur_line,
+                         &priv->lines_used, &priv->lines_max, flags, &priv->quote_list,
+                         &priv->q_level, &priv->force_redraw, &priv->search_re,
+                         priv->pview->win_pager, &priv->ansi_list) > 0)
         {
           priv->win_height++;
         }
