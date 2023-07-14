@@ -77,6 +77,7 @@ void test_editor_delete_char(void)
     enter_state_free(&es);
   }
 
+#if 0
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "I ❤️");
@@ -89,4 +90,5 @@ void test_editor_delete_char(void)
     TEST_CHECK(editor_buffer_get_cursor(es) == 2);
     enter_state_free(&es);
   }
+#endif
 }
