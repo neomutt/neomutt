@@ -50,7 +50,6 @@ jobs:
       run: make -j ${{steps.cpu-cores.outputs.count}} test/neomutt-test
 
     - name: Run Tests
-      continue-on-error: true
       run: |
         export NEOMUTT_TEST_DIR=$GITHUB_WORKSPACE/test-files
         make test
