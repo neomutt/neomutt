@@ -1249,10 +1249,6 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     mutt_window_addch(win_pager, ' ');
   }
 
-  /* end the last color pattern (needed by S-Lang) */
-  if (special || ((col != win_pager->state.cols) && (flags & (MUTT_SHOWCOLOR | MUTT_SEARCH))))
-    resolve_color(win_pager, *lines, line_num, vch, flags, 0, &ansi);
-
   /* Fill the blank space at the end of the line with the prevailing color.
    * ncurses does an implicit clrtoeol() when you do mutt_window_addch('\n') so we have
    * to make sure to reset the color *after* that */
