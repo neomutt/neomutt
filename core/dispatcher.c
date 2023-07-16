@@ -46,13 +46,13 @@ static const struct Mapping RetvalNames[] = {
 };
 
 /**
- * dispacher_get_retval_name - Get the name of a return value
+ * dispatcher_get_retval_name - Get the name of a return value
  * @param rv Return value, e.g. #FR_ERROR
  * @retval str Name of the retval
  * @retval ""  Error
  */
-const char *dispacher_get_retval_name(int rv)
+const char *dispatcher_get_retval_name(int rv)
 {
-  const char *result = mutt_map_get_name(rv, RetvalNames);
-  return NONULL(result);
+  const char *name = mutt_map_get_name(rv, RetvalNames);
+  return NONULL(name);
 }
