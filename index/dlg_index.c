@@ -1253,7 +1253,9 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     const int index = menu_get_index(priv->menu);
     if (c_arrow_cursor)
     {
-      mutt_window_move(priv->menu->win, 2, index - priv->menu->top);
+      const char *const c_arrow_string = cs_subset_string(shared->sub, "arrow_string");
+      const int arrow_width = mutt_strwidth(c_arrow_string);
+      mutt_window_move(priv->menu->win, arrow_width, index - priv->menu->top);
     }
     else if (c_braille_friendly)
     {

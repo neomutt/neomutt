@@ -756,12 +756,11 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
   const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
   const char *const c_arrow_string = cs_subset_string(NeoMutt->sub, "arrow_string");
+  const int arrow_width = mutt_strwidth(c_arrow_string);
 
   prefix[0] = '\0';
   buflen--; /* save room for the terminal \0 */
-  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && c_arrow_cursor) ?
-             mutt_strwidth(c_arrow_string) + 1 :
-             0;
+  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && c_arrow_cursor) ? arrow_width + 1 : 0;
   col += wlen;
 
   if ((flags & MUTT_FORMAT_NOFILTER) == 0)
@@ -1115,7 +1114,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
           else if (soft)
           {
             int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && c_arrow_cursor) ?
-                             mutt_strwidth(c_arrow_string) + 1 :
+                             arrow_width + 1 :
                              0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
             /* \0-terminate buf for length computation in mutt_wstr_trunc() */
