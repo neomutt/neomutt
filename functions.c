@@ -333,6 +333,7 @@ const struct MenuFuncOp OpGeneric[] = { /* map: generic */
   { "select-entry",                  OP_GENERIC_SELECT_ENTRY },
   { "shell-escape",                  OP_SHELL_ESCAPE },
   { "show-log-messages",             OP_SHOW_LOG_MESSAGES },
+  { "show-version",                  OP_VERSION },
   { "tag-entry",                     OP_TAG },
   { "tag-prefix",                    OP_TAG_PREFIX },
   { "tag-prefix-cond",               OP_TAG_PREFIX_COND },
@@ -466,7 +467,6 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
   { "save-message",                  OP_SAVE },
   { "set-flag",                      OP_MAIN_SET_FLAG },
   { "show-limit",                    OP_MAIN_SHOW_LIMIT },
-  { "show-version",                  OP_VERSION },
 #ifdef USE_SIDEBAR
   { "sidebar-first",                 OP_SIDEBAR_FIRST },
   { "sidebar-last",                  OP_SIDEBAR_LAST },
@@ -988,6 +988,7 @@ const struct MenuOpSeq GenericDefaultBindings[] = { /* map: generic */
   { OP_TAG,                                "t" },
   { OP_TAG_PREFIX,                         ";" },
   { OP_TOP_PAGE,                           "H" },
+  { OP_VERSION,                            "V" },
   { 0, NULL },
 };
 
@@ -1081,7 +1082,6 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
   { OP_UNDELETE,                           "u" },
   { OP_UNDELETE_SUBTHREAD,                 "\033u" },          // <Alt-u>
   { OP_UNDELETE_THREAD,                    "\025" },           // <Ctrl-U>
-  { OP_VERSION,                            "V" },
   { OP_VIEW_ATTACHMENTS,                   "v" },
   { 0, NULL },
 };
