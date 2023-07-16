@@ -66,23 +66,10 @@
 #include "sidebar/lib.h"
 #endif
 
-/**
- * struct Resize - Keep track of screen resizing
- */
-struct Resize
-{
-  int line;
-  bool search_compiled;
-  bool search_back;
-};
-
 /// Braille display: row to leave the cursor
 int BrailleRow = -1;
 /// Braille display: column to leave the cursor
 int BrailleCol = -1;
-
-/// Data to keep track of screen resizes
-static struct Resize *Resize = NULL;
 
 /// Help Bar for the Pager's Help Page
 static const struct Mapping PagerHelp[] = {
@@ -492,12 +479,6 @@ int dlg_pager(struct PagerView *pview)
         for (size_t i = 0; i <= priv->top_line; i++)
           if (!priv->lines[i].cont_line)
             priv->win_height++;
-
-        Resize = mutt_mem_malloc(sizeof(struct Resize));
-
-        Resize->line = priv->win_height;
-        Resize->search_compiled = priv->search_compiled;
-        Resize->search_back = priv->search_back;
 
         op = OP_ABORT;
         priv->rc = OP_REFORMAT_WINCH;
