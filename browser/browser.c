@@ -22,7 +22,7 @@
  */
 
 /**
- * @page browser_browser File/Mailbox Browser Dialog
+ * @page browser_dlg_browser File/Mailbox Browser Dialog
  *
  * The File/Mailbox Browser Dialog lets the user select from a list of files or
  * mailboxes.

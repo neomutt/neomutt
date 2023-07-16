@@ -32,7 +32,7 @@
  * | Envelope Window | WT_CUSTOM | env_window_new()  |
  *
  * **Parent**
- * - @ref compose_dialog
+ * - @ref compose_dlg_compose
  *
  * **Children**
  *

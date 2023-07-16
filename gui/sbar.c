@@ -36,7 +36,7 @@
  *
  * The Simple Bar has many possible parents, e.g.
  *
- * - @ref compose_dialog
+ * - @ref compose_dlg_compose
  * - @ref gui_simple
  * - ...
  *

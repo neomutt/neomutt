@@ -48,7 +48,7 @@
  * The All Dialogs window has many possible children, e.g.
  *
  * - @ref alias_dlg_alias
- * - @ref compose_dialog
+ * - @ref compose_dlg_compose
  * - @ref crypt_dlg_gpgme
  * - ...
  *
