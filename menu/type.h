@@ -40,6 +40,7 @@ enum MenuType
   MENU_AUTOCRYPT_ACCT,   ///< Autocrypt Account menu
 #endif
   MENU_COMPOSE,          ///< Compose an email
+  MENU_DIALOG,           ///< Simple Dialog
   MENU_EDITOR,           ///< Text entry area
   MENU_FOLDER,           ///< General file/mailbox browser
   MENU_GENERIC,          ///< Generic selection list

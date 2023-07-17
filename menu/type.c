@@ -43,6 +43,7 @@ const struct Mapping MenuNames[] = {
 #endif
   { "browser",          MENU_FOLDER },
   { "compose",          MENU_COMPOSE },
+  { "dialog",           MENU_DIALOG },
   { "editor",           MENU_EDITOR },
   { "index",            MENU_INDEX },
   { "pager",            MENU_PAGER },

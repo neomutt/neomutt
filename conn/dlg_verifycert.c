@@ -251,11 +251,7 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)
     {
-      struct KeyEvent event = km_dokey_event(MENU_GENERIC);
-      if (event.ch == 'q')
-        op = OP_EXIT;
-      else
-        op = event.op;
+      op = km_dokey(MENU_DIALOG);
     }
 
     if (op == OP_TIMEOUT)
@@ -272,7 +268,7 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
     switch (op)
     {
       case -1:         // Abort: Ctrl-G
-      case OP_EXIT:    // Q)uit
+      case OP_QUIT:    // Q)uit
       case OP_MAX + 1: // R)eject
         choice = 1;
         break;

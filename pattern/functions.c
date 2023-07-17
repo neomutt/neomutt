@@ -36,16 +36,6 @@
 #include "opcodes.h"
 
 /**
- * op_exit - Exit this menu - Implements ::pattern_function_t - @ingroup pattern_function_api
- */
-static int op_exit(struct PatternData *pd, int op)
-{
-  pd->done = true;
-  pd->selection = false;
-  return FR_SUCCESS;
-}
-
-/**
  * op_generic_select_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api
  */
 static int op_generic_select_entry(struct PatternData *pd, int op)
@@ -59,6 +49,16 @@ static int op_generic_select_entry(struct PatternData *pd, int op)
   return FR_SUCCESS;
 }
 
+/**
+ * op_quit - Quit this menu - Implements ::pattern_function_t - @ingroup pattern_function_api
+ */
+static int op_quit(struct PatternData *pd, int op)
+{
+  pd->done = true;
+  pd->selection = false;
+  return FR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -66,8 +66,8 @@ static int op_generic_select_entry(struct PatternData *pd, int op)
  */
 static const struct PatternFunction PatternFunctions[] = {
   // clang-format off
-  { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_QUIT,                   op_quit },
   { 0, NULL },
   // clang-format on
 };
