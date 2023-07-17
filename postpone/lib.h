@@ -25,11 +25,11 @@
  *
  * Postponed Emails
  *
- * | File                     | Description                 |
- * | :----------------------- | :-------------------------- |
- * | postpone/dlg_postpone.c  | @subpage postpone_dialog    |
- * | postpone/functions.c     | @subpage postpone_functions |
- * | postpone/postpone.c      | @subpage postpone_postpone  |
+ * | File                     | Description                    |
+ * | :----------------------- | :----------------------------- |
+ * | postpone/dlg_postpone.c  | @subpage postpone_dlg_postpone |
+ * | postpone/functions.c     | @subpage postpone_functions    |
+ * | postpone/postpone.c      | @subpage postpone_postpone     |
  */
 
 #ifndef MUTT_POSTPONE_LIB_H

@@ -390,7 +390,7 @@ static void dump_unbound(FILE *fp, const struct MenuFuncOp *funcs,
 static void show_flag_if_present(FILE *fp, int wraplen, const struct MbTable *table,
                                  int index, char *description)
 {
-  const char *flag = get_nth_wchar(table, index);
+  const char *flag = mbtable_get_nth_wchar(table, index);
   if ((strlen(flag) < 1) || (*flag == ' '))
   {
     return;

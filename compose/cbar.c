@@ -32,7 +32,7 @@
  * | Compose Bar Window | WT_STATUS_BAR | cbar_new() |
  *
  * **Parent**
- * - @ref compose_dialog
+ * - @ref compose_dlg_compose
  *
  * **Children**
  *

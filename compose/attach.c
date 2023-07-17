@@ -32,7 +32,7 @@
  * | Compose Attachments Window | WT_MENU   | attach_new() |
  *
  * **Parent**
- * - @ref compose_dialog
+ * - @ref compose_dlg_compose
  *
  * **Children**
  *

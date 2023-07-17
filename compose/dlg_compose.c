@@ -24,7 +24,7 @@
  */
 
 /**
- * @page compose_dialog Compose Email Dialog
+ * @page compose_dlg_compose Compose Email Dialog
  *
  * The Compose Email Dialog lets the user edit the fields before sending an email.
  * They can also add/remove/reorder attachments.

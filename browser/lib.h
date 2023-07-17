@@ -27,8 +27,8 @@
  *
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
- * | browser/browser.c      | @subpage browser_browser      |
  * | browser/config.c       | @subpage browser_config       |
+ * | browser/dlg_browser.c  | @subpage browser_dlg_browser  |
  * | browser/functions.c    | @subpage browser_functions    |
  * | browser/private_data.c | @subpage browser_private_data |
  * | browser/sort.c         | @subpage browser_sorting      |

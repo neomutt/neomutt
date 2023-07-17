@@ -22,7 +22,7 @@
  */
 
 /**
- * @page postpone_dialog Postponed Email Selection Dialog
+ * @page postpone_dlg_postpone Postponed Email Selection Dialog
  *
  * The Postponed Email Selection Dialog lets the user set a postponed (draft)
  * email.

@@ -290,6 +290,27 @@ void mbtable_free(struct MbTable **ptr)
 }
 
 /**
+ * mbtable_get_nth_wchar - Extract one char from a multi-byte table
+ * @param table  Multi-byte table
+ * @param index  Select this character
+ * @retval ptr String pointer to the character
+ *
+ * Extract one multi-byte character from a string table.
+ * If the index is invalid, then a space character will be returned.
+ * If the character selected is '\n' (Ctrl-M), then "" will be returned.
+ */
+const char *mbtable_get_nth_wchar(const struct MbTable *table, int index)
+{
+  if (!table || !table->chars || (index < 0) || (index >= table->len))
+    return " ";
+
+  if (table->chars[index][0] == '\r')
+    return "";
+
+  return table->chars[index];
+}
+
+/**
  * CstMbtable - Config type representing a multi-byte table
  */
 const struct ConfigSetType CstMbtable = {

@@ -182,6 +182,7 @@ void test_fini(void);
                                                                                \
   /* core */                                                                   \
   NEOMUTT_TEST_ITEM(test_buf_mktemp_full)                                      \
+  NEOMUTT_TEST_ITEM(test_dispatcher_get_retval_name)                           \
   NEOMUTT_TEST_ITEM(test_mutt_file_mkstemp_full)                               \
                                                                                \
   /* date */                                                                   \
