@@ -35,16 +35,6 @@
 #include "opcodes.h"
 
 /**
- * op_exit - Exit this menu - Implements ::history_function_t - @ingroup history_function_api
- */
-static int op_exit(struct HistoryData *hd, int op)
-{
-  hd->done = true;
-  hd->selection = false;
-  return FR_SUCCESS;
-}
-
-/**
  * op_generic_select_entry - Select the current entry - Implements ::history_function_t - @ingroup history_function_api
  */
 static int op_generic_select_entry(struct HistoryData *hd, int op)
@@ -57,6 +47,16 @@ static int op_generic_select_entry(struct HistoryData *hd, int op)
   return FR_SUCCESS;
 }
 
+/**
+ * op_quit - Quit this menu - Implements ::history_function_t - @ingroup history_function_api
+ */
+static int op_quit(struct HistoryData *hd, int op)
+{
+  hd->done = true;
+  hd->selection = false;
+  return FR_SUCCESS;
+}
+
 // -----------------------------------------------------------------------------
 
 /**
@@ -64,8 +64,8 @@ static int op_generic_select_entry(struct HistoryData *hd, int op)
  */
 static const struct HistoryFunction HistoryFunctions[] = {
   // clang-format off
-  { OP_EXIT,                   op_exit },
   { OP_GENERIC_SELECT_ENTRY,   op_generic_select_entry },
+  { OP_QUIT,                   op_quit },
   { 0, NULL },
   // clang-format on
 };

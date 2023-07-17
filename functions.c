@@ -249,6 +249,14 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
 };
 
 /**
+ * OpDialog - Functions for Simple Dialogs
+ */
+const struct MenuFuncOp OpDialog[] = {
+  { "exit",                          OP_EXIT },
+  { NULL, 0 },
+};
+
+/**
  * OpEditor - Functions for the Editor Menu
  */
 const struct MenuFuncOp OpEditor[] = { /* map: editor */
@@ -899,6 +907,14 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ENVELOPE_EDIT_TO,                   "t" },
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_TAG,                                "T" },
+  { 0, NULL },
+};
+
+/**
+ * DialogDefaultBindings - Key bindings for Simple Dialogs
+ */
+const struct MenuOpSeq DialogDefaultBindings[] = {
+  { OP_QUIT,                               "q" },
   { 0, NULL },
 };
 

@@ -154,12 +154,7 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    struct KeyEvent event = km_dokey_event(MENU_GENERIC);
-    if (event.ch == 'q')
-      op = OP_EXIT;
-    else
-      op = event.op;
-
+    op = km_dokey(MENU_DIALOG);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
@@ -171,7 +166,6 @@ void dlg_select_history(char *buf, size_t buflen, char **matches, int match_coun
     mutt_clear_error();
 
     int rc = history_function_dispatcher(dlg, op);
-
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)

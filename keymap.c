@@ -1055,6 +1055,7 @@ void km_init(void)
   create_bindings(AutocryptAcctDefaultBindings, MENU_AUTOCRYPT_ACCT);
 #endif
   create_bindings(BrowserDefaultBindings, MENU_FOLDER);
+  create_bindings(DialogDefaultBindings, MENU_DIALOG);
   create_bindings(ComposeDefaultBindings, MENU_COMPOSE);
   create_bindings(EditorDefaultBindings, MENU_EDITOR);
   create_bindings(GenericDefaultBindings, MENU_GENERIC);
@@ -1266,6 +1267,8 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
 #endif
     case MENU_COMPOSE:
       return OpCompose;
+    case MENU_DIALOG:
+      return OpDialog;
     case MENU_EDITOR:
       return OpEditor;
     case MENU_FOLDER:

@@ -33,6 +33,7 @@ extern struct MenuFuncOp OpAutocrypt[];
 #endif
 extern struct MenuFuncOp OpBrowser[];
 extern struct MenuFuncOp OpCompose[];
+extern struct MenuFuncOp OpDialog[];
 extern struct MenuFuncOp OpEditor[];
 extern struct MenuFuncOp OpGeneric[];
 extern struct MenuFuncOp OpIndex[];
@@ -52,6 +53,7 @@ extern const struct MenuOpSeq AutocryptAcctDefaultBindings[];
 #endif
 extern const struct MenuOpSeq BrowserDefaultBindings[];
 extern const struct MenuOpSeq ComposeDefaultBindings[];
+extern const struct MenuOpSeq DialogDefaultBindings[];
 extern const struct MenuOpSeq EditorDefaultBindings[];
 extern const struct MenuOpSeq GenericDefaultBindings[];
 extern const struct MenuOpSeq IndexDefaultBindings[];

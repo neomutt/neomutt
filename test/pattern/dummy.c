@@ -281,6 +281,11 @@ int global_function_dispatcher(struct MuttWindow *win, int op)
   return 0;
 }
 
+int km_dokey(enum MenuType mtype)
+{
+  return 0;
+}
+
 struct KeyEvent km_dokey_event(enum MenuType mtype)
 {
   struct KeyEvent ke = { 0 };
