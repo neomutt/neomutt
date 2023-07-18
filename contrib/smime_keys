@@ -416,7 +416,7 @@ sub openssl_emails ($) {
 sub openssl_p12_to_pem ($$) {
   my ($p12_file, $pem_file) = @_;
 
-  my @args = ("pkcs12", "-in", $p12_file, "-out", $pem_file);
+  my @args = ("pkcs12", "-in", $p12_file, "-out", $pem_file,"-legacy");
   openssl_exec(@args);
   $? and die "openssl pkcs12 conversion returned $?";
 }
