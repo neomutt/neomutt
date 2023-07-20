@@ -859,7 +859,7 @@ static const char *km_keyname(int c)
   }
   else if ((c >= KEY_F0) && (c < KEY_F(256))) /* this maximum is just a guess */
   {
-    sprintf(buf, "<F%d>", c - KEY_F0);
+    snprintf(buf, sizeof(buf), "<F%d>", c - KEY_F0);
   }
   else if (IsPrint(c))
   {

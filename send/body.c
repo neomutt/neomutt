@@ -285,7 +285,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
         line[linelen] = 0;
         fputs(line, fp_out);
         fputc('\n', fp_out);
-        sprintf(line, "=%2.2X", (unsigned char) savechar);
+        snprintf(line, sizeof(line), "=%2.2X", (unsigned char) savechar);
       }
     }
     else

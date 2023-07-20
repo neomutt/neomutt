@@ -356,7 +356,7 @@ struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid)
 
   char key[16] = { 0 };
 
-  sprintf(key, "/%u", uid);
+  snprintf(key, sizeof(key), "/%u", uid);
   struct HCacheEntry hce = hcache_fetch(mdata->hcache, key, mutt_str_len(key),
                                         mdata->uidvalidity);
   if (!hce.email && hce.uidvalidity)
@@ -381,7 +381,7 @@ int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e)
 
   char key[16] = { 0 };
 
-  sprintf(key, "/%u", imap_edata_get(e)->uid);
+  snprintf(key, sizeof(key), "/%u", imap_edata_get(e)->uid);
   return hcache_store(mdata->hcache, key, mutt_str_len(key), e, mdata->uidvalidity);
 }
 
@@ -399,7 +399,7 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
 
   char key[16] = { 0 };
 
-  sprintf(key, "/%u", uid);
+  snprintf(key, sizeof(key), "/%u", uid);
   return hcache_delete_record(mdata->hcache, key, mutt_str_len(key));
 }
 
