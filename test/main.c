@@ -282,6 +282,46 @@ void test_fini(void);
   /* eqi */                                                                    \
   NEOMUTT_TEST_ITEM(test_eqi)                                                  \
                                                                                \
+  /* expando */                                                                \
+  NEOMUTT_TEST_ITEM(test_expando_colors_render)                                \
+  NEOMUTT_TEST_ITEM(test_expando_complex_if_else)                              \
+  NEOMUTT_TEST_ITEM(test_expando_conditional_date)                             \
+  NEOMUTT_TEST_ITEM(test_expando_conditional_date_render)                      \
+  NEOMUTT_TEST_ITEM(test_expando_conditional_date_render2)                     \
+  NEOMUTT_TEST_ITEM(test_expando_config)                                       \
+  NEOMUTT_TEST_ITEM(test_expando_date_render)                                  \
+  NEOMUTT_TEST_ITEM(test_expando_emoji_text)                                   \
+  NEOMUTT_TEST_ITEM(test_expando_empty)                                        \
+  NEOMUTT_TEST_ITEM(test_expando_empty_if_else)                                \
+  NEOMUTT_TEST_ITEM(test_expando_empty_if_else_render)                         \
+  NEOMUTT_TEST_ITEM(test_expando_expando)                                      \
+  NEOMUTT_TEST_ITEM(test_expando_formatted_expando)                            \
+  NEOMUTT_TEST_ITEM(test_expando_helpers)                                      \
+  NEOMUTT_TEST_ITEM(test_expando_if_else_false_render)                         \
+  NEOMUTT_TEST_ITEM(test_expando_if_else_true_render)                          \
+  NEOMUTT_TEST_ITEM(test_expando_justify)                                      \
+  NEOMUTT_TEST_ITEM(test_expando_nested_if_else)                               \
+  NEOMUTT_TEST_ITEM(test_expando_nested_if_else_render)                        \
+  NEOMUTT_TEST_ITEM(test_expando_new_if_else)                                  \
+  NEOMUTT_TEST_ITEM(test_expando_node)                                         \
+  NEOMUTT_TEST_ITEM(test_expando_node_condbool)                                \
+  NEOMUTT_TEST_ITEM(test_expando_node_conddate)                                \
+  NEOMUTT_TEST_ITEM(test_expando_node_expando)                                 \
+  NEOMUTT_TEST_ITEM(test_expando_node_expando_format)                          \
+  NEOMUTT_TEST_ITEM(test_expando_node_padding)                                 \
+  NEOMUTT_TEST_ITEM(test_expando_old_if_else)                                  \
+  NEOMUTT_TEST_ITEM(test_expando_padding)                                      \
+  NEOMUTT_TEST_ITEM(test_expando_padding_render)                               \
+  NEOMUTT_TEST_ITEM(test_expando_parser)                                       \
+  NEOMUTT_TEST_ITEM(test_expando_percent_sign_text)                            \
+  NEOMUTT_TEST_ITEM(test_expando_simple_expando)                               \
+  NEOMUTT_TEST_ITEM(test_expando_simple_expando_render)                        \
+  NEOMUTT_TEST_ITEM(test_expando_simple_text)                                  \
+  NEOMUTT_TEST_ITEM(test_expando_two_char_expando)                             \
+  NEOMUTT_TEST_ITEM(test_expando_two_char_expando_render)                      \
+  NEOMUTT_TEST_ITEM(test_expando_unicode_padding)                              \
+  NEOMUTT_TEST_ITEM(test_expando_validation)                                   \
+                                                                               \
   /* file */                                                                   \
   NEOMUTT_TEST_ITEM(test_buf_file_expand_fmt_quote)                            \
   NEOMUTT_TEST_ITEM(test_buf_quote_filename)                                   \

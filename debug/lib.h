@@ -3,7 +3,7 @@
  * Convenience wrapper for the debug headers
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,13 +47,14 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
+#include "expando/lib.h"
 #include "menu/lib.h"
 
 struct AddressList;
 struct AttachCtx;
 struct AttachPtr;
 struct MailboxView;
-struct MuttWindow;
 struct PagerPrivateData;
 
 // Common
@@ -74,11 +75,43 @@ void        dump_envelope          (const struct Envelope *env);
 void        dump_list_head         (const struct ListHead *list, const char *name);
 void        dump_param_list        (const struct ParameterList *pl);
 
+// Expando
+const char *name_expando_domain           (enum ExpandoDomain did);
+const char *name_expando_node_type        (enum ExpandoNodeType type);
+const char *name_expando_pad_type         (enum ExpandoPadType type);
+const char *name_expando_uid              (enum ExpandoDomain did, int uid);
+const char *name_expando_uid_alias        (int uid);
+const char *name_expando_uid_all          (int uid);
+const char *name_expando_uid_attach       (int uid);
+const char *name_expando_uid_autocrypt    (int uid);
+const char *name_expando_uid_body         (int uid);
+const char *name_expando_uid_compose      (int uid);
+const char *name_expando_uid_compress     (int uid);
+const char *name_expando_uid_email        (int uid);
+const char *name_expando_uid_envelope     (int uid);
+const char *name_expando_uid_folder       (int uid);
+const char *name_expando_uid_global       (int uid);
+const char *name_expando_uid_history      (int uid);
+const char *name_expando_uid_index        (int uid);
+const char *name_expando_uid_mailbox      (int uid);
+const char *name_expando_uid_menu         (int uid);
+const char *name_expando_uid_mixmaster    (int uid);
+const char *name_expando_uid_nntp         (int uid);
+const char *name_expando_uid_pattern      (int uid);
+const char *name_expando_uid_pgp          (int uid);
+const char *name_expando_uid_pgp_cmd      (int uid);
+const char *name_expando_uid_pgp_key      (int uid);
+const char *name_expando_uid_pgp_key_gpgme(int uid);
+const char *name_expando_uid_sidebar      (int uid);
+const char *name_expando_uid_smime_cmd    (int uid);
+const char *name_format_justify           (enum FormatJustify just);
+
 // Graphviz
-void        dump_graphviz           (const char *title, struct MailboxView *mv);
-void        dump_graphviz_attach_ctx(struct AttachCtx *actx);
-void        dump_graphviz_body      (struct Body *b);
-void        dump_graphviz_email     (struct Email *e, const char *title);
+void        dump_graphviz             (const char *title, struct MailboxView *mv);
+void        dump_graphviz_attach_ctx  (struct AttachCtx *actx);
+void        dump_graphviz_body        (struct Body *b);
+void        dump_graphviz_email       (struct Email *e, const char *title);
+void        dump_graphviz_expando_node(struct ExpandoNode *node);
 
 // Keymap
 void        dump_keybindings        (void);

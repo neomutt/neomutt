@@ -42,7 +42,9 @@
 #include "copy.h"
 #include "mx.h"
 
+struct AddressList;
 struct Email;
+struct Envelope;
 struct MuttWindow;
 struct PagerView;
 
@@ -96,6 +98,7 @@ bool test_neomutt_create(void)
   CONFIG_INIT_TYPE(cs, Address);
   CONFIG_INIT_TYPE(cs, Bool);
   CONFIG_INIT_TYPE(cs, Enum);
+  CONFIG_INIT_TYPE(cs, Expando);
   CONFIG_INIT_TYPE(cs, Long);
   CONFIG_INIT_TYPE(cs, Mbtable);
   CONFIG_INIT_TYPE(cs, MyVar);
@@ -284,4 +287,30 @@ int log_disp_null(time_t stamp, const char *file, int line, const char *function
                   enum LogLevel level, const char *format, ...)
 {
   return 0;
+}
+
+bool check_for_mailing_list(struct AddressList *al, const char *pfx, char *buf, int buflen)
+{
+  return false;
+}
+
+typedef uint8_t MuttThreadFlags;
+int mutt_traverse_thread(struct Email *e, MuttThreadFlags flag)
+{
+  return 0;
+}
+
+int mutt_thread_style(void)
+{
+  return 0;
+}
+
+const char *mutt_get_name(const char *s)
+{
+  return NULL;
+}
+
+bool subjrx_apply_mods(struct Envelope *env)
+{
+  return false;
 }
