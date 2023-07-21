@@ -6,6 +6,7 @@
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -45,9 +46,9 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "sendmail.h"
+#include "expando/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "muttlib.h"
 #ifdef HAVE_SYSEXITS_H

@@ -6,9 +6,10 @@
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -668,6 +669,7 @@ static void init_types(struct ConfigSet *cs)
   CONFIG_INIT_TYPE(cs, Address);
   CONFIG_INIT_TYPE(cs, Bool);
   CONFIG_INIT_TYPE(cs, Enum);
+  CONFIG_INIT_TYPE(cs, Expando);
   CONFIG_INIT_TYPE(cs, Long);
   CONFIG_INIT_TYPE(cs, Mbtable);
   CONFIG_INIT_TYPE(cs, MyVar);

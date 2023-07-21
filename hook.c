@@ -11,6 +11,7 @@
  * Copyright (C) 2019 Naveen Nathan <naveen@lastninja.net>
  * Copyright (C) 2022 Oliver Bandel <oliver@first.in-berlin.de>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,12 +48,12 @@
 #include "hook.h"
 #include "attach/lib.h"
 #include "compmbox/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "muttlib.h"

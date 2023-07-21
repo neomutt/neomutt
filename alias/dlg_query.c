@@ -3,9 +3,10 @@
  * Routines for querying an external address book
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -83,6 +84,7 @@
 #include "mutt.h"
 #include "lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"

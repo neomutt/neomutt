@@ -3,7 +3,7 @@
  * Pager Bar
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -69,9 +69,9 @@
 #include "pbar.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "display.h"
-#include "format_flags.h"
 #include "hdrline.h"
 #include "mview.h"
 #include "private_data.h"

@@ -3,7 +3,8 @@
  * Compose Attachments
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -67,9 +68,9 @@
 #include "gui/lib.h"
 #include "attach/lib.h"
 #include "convert/lib.h"
+#include "expando/lib.h"
 #include "menu/lib.h"
 #include "attach_data.h"
-#include "format_flags.h"
 #include "muttlib.h"
 #include "shared_data.h"
 

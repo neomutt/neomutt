@@ -5,12 +5,12 @@
  * @authors
  * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2016 Ian Zimmerman <itz@primate.net>
- * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017 Stefan Assmann <sassmann@kpanic.de>
  * Copyright (C) 2019 Victor Fernandes <criw@pm.me>
  * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
- * Copyright (C) 2023 Tóth János <gomba007@gmail.com>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
@@ -52,6 +52,7 @@
 #include "hdrline.h"
 #include "attach/lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "ncrypt/lib.h"
 #include "format_flags.h"
 #include "hook.h"

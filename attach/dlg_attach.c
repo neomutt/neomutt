@@ -4,7 +4,8 @@
  *
  * @authors
  * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -75,6 +76,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "attach.h"
