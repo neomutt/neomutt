@@ -59,6 +59,16 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_FULL      (1 << 3) ///< Redraw everything
 
 /**
+ * ExpandoDataMenu - Expando UIDs for Menus
+ *
+ * @sa ED_MENU, ExpandoDomain
+ */
+enum ExpandoDataMenu
+{
+  ED_MEN_PERCENTAGE,           ///< Menu.top, ...
+};
+
+/**
  * @defgroup menu_api Menu API
  *
  * The Menu API

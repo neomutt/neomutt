@@ -367,7 +367,9 @@ LIBDEBUGOBJS+=	debug/notify.o
 LIBDEBUGOBJS+=	debug/window.o
 @endif
 @if USE_DEBUG_BACKTRACE || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_KEYMAP || USE_DEBUG_LOGGING || USE_DEBUG_NAMES || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
-LIBDEBUGOBJS+=	debug/common.o debug/names.o
+LIBDEBUGOBJS+=	debug/names.o
+@endif
+LIBDEBUGOBJS+=	debug/common.o debug/names_expando.o
 LIBDEBUG=	libdebug.a
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 ALLOBJS+=	$(LIBDEBUGOBJS)
@@ -377,7 +379,6 @@ $(LIBDEBUG): $(PWD)/debug $(LIBDEBUGOBJS)
 	$(RANLIB) $@
 $(PWD)/debug:
 	$(MKDIR_P) $(PWD)/debug
-@endif
 
 ###############################################################################
 # libeditor
@@ -991,6 +992,7 @@ coverage: all test
 	  --directory core \
 	  --directory editor \
 	  --directory email \
+	  --directory expando \
 	  --directory imap \
 	  --directory mutt \
 	  --directory notmuch \
