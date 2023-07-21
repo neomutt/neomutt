@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include "attach/lib.h"
 #include "format_flags.h"
+#include "expando/lib.h"
 
 struct Address;
 struct Body;

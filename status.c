@@ -4,11 +4,12 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Austin Ray <austin@austinray.io>
  * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -39,6 +40,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "status.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "postpone/lib.h"

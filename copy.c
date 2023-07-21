@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2014 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
@@ -43,11 +43,11 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "copy.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "send/lib.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"

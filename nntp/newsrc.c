@@ -3,10 +3,11 @@
  * Read/parse/write an NNTP config file of subscribed newsgroups
  *
  * @authors
- * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  * Copyright (C) 2022 Ramkumar Ramachandra <r@artagnon.com>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -48,9 +49,9 @@
 #include "mutt.h"
 #include "lib.h"
 #include "bcache/lib.h"
+#include "expando/lib.h"
 #include "adata.h"
 #include "edata.h"
-#include "format_flags.h"
 #include "mdata.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"

@@ -3,7 +3,8 @@
  * Mixmaster Hosts Window
  *
  * @authors
- * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -52,6 +53,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "expando/lib.h"
 #include "menu/lib.h"
 #include "format_flags.h"
 #include "muttlib.h"
@@ -66,6 +68,7 @@
  */
 static const char *mix_format_caps(struct Remailer *r)
 {
+  // NOTE(g0mb4): use $to_chars?
   static char capbuf[10];
   char *t = capbuf;
 

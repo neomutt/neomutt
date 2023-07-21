@@ -7,6 +7,7 @@
  * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Leon Philman
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -44,11 +45,11 @@
 #include "recvcmd.h"
 #include "attach/lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"

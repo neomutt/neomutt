@@ -16,6 +16,7 @@
  * Copyright (C) 2023 Whitney Cumber
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -59,6 +60,7 @@
 #include "browser/lib.h"
 #include "compose/lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
