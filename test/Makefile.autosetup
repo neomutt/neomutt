@@ -742,9 +742,13 @@ CFLAGS	+= -I$(SRCDIR)/test
 
 TEST_BINARY = test/neomutt-test$(EXEEXT)
 
+ifeq (test, $(firstword $(MAKECMDGOALS)))
+	TEST_RUNARGS := $(wordlist 2, $(words $(MAKECMDGOALS)), $(MAKECMDGOALS))
+endif
+
 .PHONY: test
 test: $(TEST_BINARY)
-	$(TEST_BINARY)
+	$(TEST_BINARY) $(TEST_RUNARGS)
 
 $(BUILD_DIRS):
 	$(MKDIR_P) $@
