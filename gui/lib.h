@@ -35,6 +35,7 @@
  * | gui/mutt_curses.c   | @subpage gui_curses        |
  * | gui/mutt_window.c   | @subpage gui_window        |
  * | gui/reflow.c        | @subpage gui_reflow        |
+ * | gui/resize.c        | @subpage gui_resize        |
  * | gui/rootwin.c       | @subpage gui_rootwin       |
  * | gui/sbar.c          | @subpage gui_sbar          |
  * | gui/simple.c        | @subpage gui_simple        |

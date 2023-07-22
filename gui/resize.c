@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_resize GUI handle the resizing of the screen
+ * @page gui_resize GUI handle the resizing of the screen
  *
  * GUI handle the resizing of the screen
  */
@@ -67,7 +67,7 @@ static struct winsize mutt_get_winsize(void)
 }
 
 /**
- * mutt_resize_screen - Update NeoMutt's opinion about the window size (CURSES)
+ * mutt_resize_screen - Update NeoMutt's opinion about the window size
  */
 void mutt_resize_screen(void)
 {

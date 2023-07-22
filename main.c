@@ -101,7 +101,6 @@
  * | mx.c            | @subpage neo_mx            |
  * | opcodes.c       | @subpage neo_opcode        |
  * | recvcmd.c       | @subpage neo_recvcmd       |
- * | resize.c        | @subpage neo_resize        |
  * | rfc3676.c       | @subpage neo_rfc3676       |
  * | score.c         | @subpage neo_score         |
  * | sort.c          | @subpage neo_sort          |
