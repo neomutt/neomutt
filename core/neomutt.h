@@ -40,6 +40,7 @@ struct ConfigSet;
 struct NeoMutt
 {
   struct Notify *notify;         ///< Notifications handler
+  struct Notify *notify_resize;  ///< Window resize notifications handler
   struct Notify *notify_timeout; ///< Timeout notifications handler
   struct ConfigSubset *sub;      ///< Inherited config items
   struct AccountList accounts;   ///< List of all Accounts

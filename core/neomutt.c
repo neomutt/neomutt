@@ -67,6 +67,9 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   n->notify_timeout = notify_new();
   notify_set_parent(n->notify_timeout, n->notify);
 
+  n->notify_resize = notify_new();
+  notify_set_parent(n->notify_resize, n->notify);
+
   return n;
 }
 
@@ -83,6 +86,7 @@ void neomutt_free(struct NeoMutt **ptr)
 
   neomutt_account_remove(n, NULL);
   cs_subset_free(&n->sub);
+  notify_free(&n->notify_resize);
   notify_free(&n->notify_timeout);
   notify_free(&n->notify);
   if (n->time_c_locale)
