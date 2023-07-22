@@ -35,9 +35,10 @@ struct ConfigSet;
  */
 struct NeoMutt
 {
-  struct Notify *notify;       ///< Notifications handler
-  struct ConfigSubset *sub;    ///< Inherited config items
-  struct AccountList accounts; ///< List of all Accounts
+  struct Notify *notify;         ///< Root notifications handler
+  struct Notify *notify_resize;  ///< Window resize notifications handler
+  struct ConfigSubset *sub;      ///< Inherited config items
+  struct AccountList accounts;   ///< List of all Accounts
 };
 
 extern struct NeoMutt *NeoMutt;

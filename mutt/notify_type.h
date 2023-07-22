@@ -49,6 +49,7 @@ enum NotifyType
   NT_MAILBOX,   ///< Mailbox has changed,           #NotifyMailbox,   #EventMailbox
   NT_MVIEW,     ///< MailboxView has changed,       #NotifyMview,     #EventMview
   NT_MENU,      ///< Menu has changed,              #MenuRedrawFlags
+  NT_RESIZE,    ///< Window has been resized
   NT_PAGER,     ///< Pager data has changed,        #NotifyPager,     #PagerPrivateData
   NT_SCORE,     ///< Email scoring has changed
   NT_SUBJRX,    ///< Subject Regex has changed,     #NotifySubjRx

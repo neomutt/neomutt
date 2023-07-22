@@ -54,6 +54,9 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   n->sub->cs = cs;
   n->sub->scope = SET_SCOPE_NEOMUTT;
 
+  n->notify_resize = notify_new();
+  notify_set_parent(n->notify_resize, n->notify);
+
   return n;
 }
 
@@ -70,6 +73,7 @@ void neomutt_free(struct NeoMutt **ptr)
 
   neomutt_account_remove(n, NULL);
   cs_subset_free(&n->sub);
+  notify_free(&n->notify_resize);
   notify_free(&n->notify);
 
   FREE(ptr);
