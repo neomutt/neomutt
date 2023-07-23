@@ -33,6 +33,32 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "adata.h"
+#include "lib.h"
+
+/**
+ * imap_timeout_observer - Notification that a timeout has occurred - Implements ::observer_t - @ingroup observer_api
+ *
+ * This function is triggered by SIGWINCH.
+ */
+static int imap_timeout_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_TIMEOUT)
+    return 0;
+  if (!nc->global_data)
+    return -1;
+
+  struct ImapAccountData *adata = nc->global_data;
+  mutt_debug(LL_DEBUG5, "imap timeout start\n");
+
+  time_t now = mutt_date_now();
+  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
+
+  if ((adata->state >= IMAP_AUTHENTICATED) && (now >= (adata->lastread + c_imap_keep_alive)))
+    imap_check_mailbox(adata->mailbox, true);
+
+  mutt_debug(LL_DEBUG5, "imap timeout done\n");
+  return 0;
+}
 
 /**
  * imap_adata_free - Free the private Account data - Implements Account::adata_free()
@@ -43,6 +69,8 @@ void imap_adata_free(void **ptr)
     return;
 
   struct ImapAccountData *adata = *ptr;
+
+  notify_observer_remove(NeoMutt->notify_timeout, imap_timeout_observer, adata);
 
   FREE(&adata->capstr);
   buf_dealloc(&adata->cmdbuf);
@@ -78,6 +106,8 @@ struct ImapAccountData *imap_adata_new(struct Account *a)
 
   if (++new_seqid > 'z')
     new_seqid = 'a';
+
+  notify_observer_add(NeoMutt->notify_timeout, NT_TIMEOUT, imap_timeout_observer, adata);
 
   return adata;
 }
