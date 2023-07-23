@@ -54,6 +54,9 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   n->sub->cs = cs;
   n->sub->scope = SET_SCOPE_NEOMUTT;
 
+  n->notify_timeout = notify_new();
+  notify_set_parent(n->notify_timeout, n->notify);
+
   return n;
 }
 
