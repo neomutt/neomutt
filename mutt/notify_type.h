@@ -52,6 +52,7 @@ enum NotifyType
   NT_PAGER,     ///< Pager data has changed,        #NotifyPager,     #PagerPrivateData
   NT_SCORE,     ///< Email scoring has changed
   NT_SUBJRX,    ///< Subject Regex has changed,     #NotifySubjRx
+  NT_TIMEOUT,   ///< Timeout has occurred
   NT_WINDOW,    ///< MuttWindow has changed,        #NotifyWindow,    #EventWindow
 };
 

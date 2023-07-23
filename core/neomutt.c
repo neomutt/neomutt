@@ -64,6 +64,9 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
     mutt_exit(1);                   // LCOV_EXCL_LINE
   }
 
+  n->notify_timeout = notify_new();
+  notify_set_parent(n->notify_timeout, n->notify);
+
   return n;
 }
 
@@ -80,6 +83,7 @@ void neomutt_free(struct NeoMutt **ptr)
 
   neomutt_account_remove(n, NULL);
   cs_subset_free(&n->sub);
+  notify_free(&n->notify_timeout);
   notify_free(&n->notify);
   if (n->time_c_locale)
     freelocale(n->time_c_locale);

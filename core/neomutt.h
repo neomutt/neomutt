@@ -39,10 +39,11 @@ struct ConfigSet;
  */
 struct NeoMutt
 {
-  struct Notify *notify;       ///< Notifications handler
-  struct ConfigSubset *sub;    ///< Inherited config items
-  struct AccountList accounts; ///< List of all Accounts
-  locale_t time_c_locale;      ///< Current locale but LC_TIME=C
+  struct Notify *notify;         ///< Notifications handler
+  struct Notify *notify_timeout; ///< Timeout notifications handler
+  struct ConfigSubset *sub;      ///< Inherited config items
+  struct AccountList accounts;   ///< List of all Accounts
+  locale_t time_c_locale;        ///< Current locale but LC_TIME=C
 };
 
 extern struct NeoMutt *NeoMutt;
