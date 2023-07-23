@@ -1927,15 +1927,22 @@ void mw_what_key(void)
   mutt_window_mvprintw(win, 0, 0, _("Enter keys (%s to abort): "), km_keyname(AbortKey));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  do
+
+  mutt_set_timeout(1000); // 1 second
+  while (true)
   {
     ch = getch();
-    if ((ch != ERR) && (ch != AbortKey))
-    {
-      mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
-      mutt_window_move(win, 0, 0);
-    }
-  } while (ch != ERR && ch != AbortKey);
+    if (ch == AbortKey)
+      break;
+
+    if (ch == ERR) // Timeout
+      continue;
+
+    mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
+    mutt_window_move(win, 0, 0);
+  }
+
+  mutt_set_timeout(-1);
   mutt_curses_set_cursor(cursor);
 
   mutt_flushinp();

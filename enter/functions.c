@@ -653,7 +653,7 @@ static int op_editor_quote_char(struct EnterWindowData *wdata, int op)
   do
   {
     window_redraw(NULL);
-    event = mutt_getch();
+    event = mutt_getch_timeout(1000); // 1 second
   } while (event.op == OP_TIMEOUT);
   if (event.op != OP_ABORT)
   {
