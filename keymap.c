@@ -49,9 +49,6 @@
 #include "globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -657,56 +654,27 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
   if (!map && (mtype != MENU_EDITOR))
     return retry_generic(mtype, NULL, 0, 0);
 
-#ifdef USE_IMAP
-  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
-#endif
+  short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
+  if (c_timeout == 0)
+    c_timeout = 60;
 
-  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
+  int count = 0;
   while (true)
   {
-    int i = (c_timeout > 0) ? c_timeout : 60;
-#ifdef USE_IMAP
-    /* keep_alive may need to run more frequently than `$timeout` allows */
-    if (c_imap_keep_alive != 0)
+    event = mutt_getch_timeout(1000); // 1 second
+    if ((event.op == OP_TIMEOUT) && (++count < c_timeout))
     {
-      if (c_imap_keep_alive >= i)
-      {
-        imap_keep_alive();
-      }
-      else
-      {
-        while (c_imap_keep_alive < i)
-        {
-          event = mutt_getch_timeout(c_imap_keep_alive * 1000);
-          /* If a timeout was not received, or the window was resized, exit the
-           * loop now.  Otherwise, continue to loop until reaching a total of
-           * $timeout seconds.  */
-          if ((event.op != OP_TIMEOUT) || SigWinch)
-            goto gotkey;
-#ifdef USE_INOTIFY
-          if (MonitorFilesChanged)
-            goto gotkey;
-#endif
-          i -= c_imap_keep_alive;
-          imap_keep_alive();
-        }
-      }
+      notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
+      continue;
     }
-#endif
+    count = 0;
 
-    event = mutt_getch_timeout(i * 1000);
-
-#ifdef USE_IMAP
-  gotkey:
-#endif
     /* hide timeouts, but not window resizes, from the line editor. */
     if ((mtype == MENU_EDITOR) && (event.op == OP_TIMEOUT) && !SigWinch)
       continue;
 
     if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
-    {
       return event;
-    }
 
     /* do we have an op already? */
     if (event.op != OP_NULL)
@@ -729,7 +697,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
 
       /* Sigh. Valid function but not in this context.
        * Find the literal string and push it back */
-      for (i = 0; MenuNames[i].name; i++)
+      for (int i = 0; MenuNames[i].name; i++)
       {
         funcs = km_get_table(MenuNames[i].value);
         if (funcs)
