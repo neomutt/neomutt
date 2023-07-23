@@ -64,6 +64,7 @@ void         mutt_perror_debug(const char *s);
 void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);
+void         mutt_set_timeout(int delay);
 void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, enum FormatJustify justify, char pad_char, const char *s, size_t n, bool arboreal);
 size_t       mutt_strwidth(const char *s);
 size_t       mutt_strnwidth(const char *s, size_t len);

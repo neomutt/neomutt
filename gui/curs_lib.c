@@ -121,7 +121,7 @@ static void array_to_endcond(struct KeyEventArray *a)
 }
 
 /// Timeout for getting a character from the user.
-/// @sa set_timeout()
+/// @sa mutt_set_timeout()
 int MuttGetchTimeout = -1;
 
 /**
@@ -172,14 +172,14 @@ void mutt_need_hard_redraw(void)
 }
 
 /**
- * set_timeout - Set the getch() timeout
+ * mutt_set_timeout - Set the getch() timeout
  * @param delay Timeout delay in ms
  * delay is just like for timeout() or poll(): the number of milliseconds
  * mutt_getch() should block for input.
  * * delay == 0 means mutt_getch() is non-blocking.
  * * delay < 0 means mutt_getch is blocking.
  */
-static void set_timeout(int delay)
+void mutt_set_timeout(int delay)
 {
   MuttGetchTimeout = delay;
   timeout(delay);
@@ -197,9 +197,9 @@ static void set_timeout(int delay)
  */
 struct KeyEvent mutt_getch_timeout(int delay)
 {
-  set_timeout(delay);
+  mutt_set_timeout(delay);
   struct KeyEvent event = mutt_getch();
-  set_timeout(-1);
+  mutt_set_timeout(-1);
   return event;
 }
 
@@ -342,7 +342,7 @@ void mutt_query_exit(void)
   enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   if (c_timeout != 0)
-    set_timeout(-1); /* restore blocking operation */
+    mutt_set_timeout(-1); /* restore blocking operation */
   if (mw_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {
     mutt_exit(0); /* This call never returns */
