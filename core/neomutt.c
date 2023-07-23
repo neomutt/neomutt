@@ -73,6 +73,7 @@ void neomutt_free(struct NeoMutt **ptr)
 
   neomutt_account_remove(n, NULL);
   cs_subset_free(&n->sub);
+  notify_free(&n->notify_timeout);
   notify_free(&n->notify);
 
   FREE(ptr);

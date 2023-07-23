@@ -1904,7 +1904,10 @@ void mw_what_key(void)
       break;
 
     if (ch == ERR) // Timeout
+    {
+      notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
       continue;
+    }
 
     mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
     mutt_window_move(win, 0, 0);
