@@ -513,9 +513,9 @@ static int index_window_observer(struct NotifyCallback *nc)
 
   struct IndexPrivateData *priv = menu->mdata;
 
+  mutt_color_observer_remove(index_color_observer, win);
   notify_observer_remove(NeoMutt->notify, index_altern_observer, win);
   notify_observer_remove(NeoMutt->notify, index_attach_observer, win);
-  notify_observer_remove(NeoMutt->notify, index_color_observer, win);
   notify_observer_remove(NeoMutt->sub->notify, index_config_observer, win);
   notify_observer_remove(NeoMutt->notify, index_global_observer, win);
   notify_observer_remove(priv->shared->notify, index_index_observer, win);
@@ -606,9 +606,9 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
   menu->mdata_free = NULL; // Menu doesn't own the data
   priv->menu = menu;
 
+  mutt_color_observer_add(index_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_ALTERN, index_altern_observer, win);
   notify_observer_add(NeoMutt->notify, NT_ATTACH, index_attach_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_COLOR, index_color_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, index_config_observer, win);
   notify_observer_add(NeoMutt->notify, NT_GLOBAL, index_global_observer, win);
   notify_observer_add(priv->shared->notify, NT_ALL, index_index_observer, win);

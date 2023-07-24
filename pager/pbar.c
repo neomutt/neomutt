@@ -280,7 +280,7 @@ static int pbar_window_observer(struct NotifyCallback *nc)
     struct PBarPrivateData *pbar_data = win_pbar->wdata;
     struct IndexSharedData *shared = pbar_data->shared;
 
-    notify_observer_remove(NeoMutt->notify, pbar_color_observer, win_pbar);
+    mutt_color_observer_remove(pbar_color_observer, win_pbar);
     notify_observer_remove(NeoMutt->sub->notify, pbar_config_observer, win_pbar);
     notify_observer_remove(shared->notify, pbar_index_observer, win_pbar);
     notify_observer_remove(pbar_data->priv->notify, pbar_pager_observer, win_pbar);
@@ -341,7 +341,7 @@ struct MuttWindow *pbar_new(struct IndexSharedData *shared, struct PagerPrivateD
   win_pbar->recalc = pbar_recalc;
   win_pbar->repaint = pbar_repaint;
 
-  notify_observer_add(NeoMutt->notify, NT_COLOR, pbar_color_observer, win_pbar);
+  mutt_color_observer_add(pbar_color_observer, win_pbar);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pbar_config_observer, win_pbar);
   notify_observer_add(shared->notify, NT_ALL, pbar_index_observer, win_pbar);
   notify_observer_add(priv->notify, NT_PAGER, pbar_pager_observer, win_pbar);
