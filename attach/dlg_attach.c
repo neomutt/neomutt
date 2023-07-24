@@ -451,7 +451,7 @@ static int attach_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, attach_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, attach_config_observer, menu);
   notify_observer_remove(win_menu->notify, attach_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -500,7 +500,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   menu->mdata_free = attach_private_data_free;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, attach_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, attach_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, attach_window_observer, menu->win);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);

@@ -83,7 +83,7 @@ static void cache_setup(void)
   if (CacheActive)
     return; // LCOV_EXCL_LINE
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, cc_config_observer, NULL);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, cc_config_observer, NULL);
 
   CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
   CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
@@ -143,7 +143,7 @@ const char *cc_maildir_field_delimiter(void)
 void config_cache_cleanup(void)
 {
   if (NeoMutt)
-    notify_observer_remove(NeoMutt->notify, cc_config_observer, NULL);
+    notify_observer_remove(NeoMutt->sub->notify, cc_config_observer, NULL);
 
   // Don't free them, the config system owns the data
   CachedAssumedCharset = NULL;

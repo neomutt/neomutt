@@ -293,7 +293,7 @@ static int autocrypt_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, autocrypt_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, autocrypt_config_observer, menu);
   notify_observer_remove(win_menu->notify, autocrypt_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -330,7 +330,7 @@ void dlg_select_autocrypt(void)
   sbar_set_title(sbar, _("Autocrypt Accounts"));
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, autocrypt_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, autocrypt_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, autocrypt_window_observer, menu->win);
 
   // ---------------------------------------------------------------------------

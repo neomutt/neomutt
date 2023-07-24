@@ -28,9 +28,7 @@
 
 #include "config.h"
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "cbar_data.h"
-#include "cbar.h"
 
 /**
  * cbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
@@ -41,9 +39,6 @@ void cbar_data_free(struct MuttWindow *win, void **ptr)
     return;
 
   struct ComposeBarData *cbar_data = *ptr;
-
-  notify_observer_remove(NeoMutt->notify, cbar_color_observer, win);
-  notify_observer_remove(NeoMutt->notify, cbar_config_observer, win);
 
   FREE(&cbar_data->compose_format);
 

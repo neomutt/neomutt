@@ -338,7 +338,7 @@ static int query_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, alias_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, alias_config_observer, menu);
   notify_observer_remove(win_menu->notify, query_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -376,7 +376,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
   sbar_set_title(sbar, title);
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, alias_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, alias_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, query_window_observer, win_menu);
 
   return dlg;

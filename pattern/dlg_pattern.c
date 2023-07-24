@@ -319,7 +319,7 @@ static int pattern_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, pattern_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, pattern_config_observer, menu);
   notify_observer_remove(win_menu->notify, pattern_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -344,7 +344,7 @@ bool dlg_select_pattern(char *buf, size_t buflen)
   dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, pattern_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pattern_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, pattern_window_observer, menu->win);
 
   // ---------------------------------------------------------------------------
