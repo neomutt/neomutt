@@ -429,8 +429,8 @@ void sb_win_add_observers(struct MuttWindow *win)
 
   struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
 
+  mutt_color_observer_add(sb_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_ACCOUNT, sb_account_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_COLOR, sb_color_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COMMAND, sb_command_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, sb_config_observer, win);
   notify_observer_add(dlg->notify, NT_ALL, sb_index_observer, win);
@@ -449,8 +449,8 @@ void sb_win_remove_observers(struct MuttWindow *win)
 
   struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
 
+  mutt_color_observer_remove(sb_color_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_account_observer, win);
-  notify_observer_remove(NeoMutt->notify, sb_color_observer, win);
   notify_observer_remove(NeoMutt->notify, sb_command_observer, win);
   notify_observer_remove(NeoMutt->sub->notify, sb_config_observer, win);
   notify_observer_remove(dlg->notify, sb_index_observer, win);

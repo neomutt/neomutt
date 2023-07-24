@@ -62,7 +62,6 @@
 
 #include "config.h"
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "lib.h"
 #include "color/lib.h"
 
@@ -162,7 +161,7 @@ static int sbar_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    notify_observer_remove(NeoMutt->notify, sbar_color_observer, win_sbar);
+    mutt_color_observer_remove(sbar_color_observer, win_sbar);
     notify_observer_remove(win_sbar->notify, sbar_window_observer, win_sbar);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
@@ -211,7 +210,7 @@ struct MuttWindow *sbar_new(void)
   win_sbar->recalc = sbar_recalc;
   win_sbar->repaint = sbar_repaint;
 
-  notify_observer_add(NeoMutt->notify, NT_COLOR, sbar_color_observer, win_sbar);
+  mutt_color_observer_add(sbar_color_observer, win_sbar);
   notify_observer_add(win_sbar->notify, NT_WINDOW, sbar_window_observer, win_sbar);
 
   return win_sbar;
