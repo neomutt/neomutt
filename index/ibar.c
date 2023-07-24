@@ -281,7 +281,7 @@ static int ibar_window_observer(struct NotifyCallback *nc)
     struct IndexSharedData *shared = dlg->wdata;
 
     notify_observer_remove(NeoMutt->notify, ibar_color_observer, win_ibar);
-    notify_observer_remove(NeoMutt->notify, ibar_config_observer, win_ibar);
+    notify_observer_remove(NeoMutt->sub->notify, ibar_config_observer, win_ibar);
     notify_observer_remove(shared->notify, ibar_index_observer, win_ibar);
     notify_observer_remove(win_ibar->parent->notify, ibar_menu_observer, win_ibar);
     notify_observer_remove(win_ibar->notify, ibar_window_observer, win_ibar);
@@ -346,7 +346,7 @@ struct MuttWindow *ibar_new(struct MuttWindow *parent, struct IndexSharedData *s
   win_ibar->repaint = ibar_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, ibar_color_observer, win_ibar);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, ibar_config_observer, win_ibar);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, ibar_config_observer, win_ibar);
   notify_observer_add(shared->notify, NT_ALL, ibar_index_observer, win_ibar);
   notify_observer_add(parent->notify, NT_MENU, ibar_menu_observer, win_ibar);
   notify_observer_add(win_ibar->notify, NT_WINDOW, ibar_window_observer, win_ibar);

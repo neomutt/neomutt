@@ -156,7 +156,7 @@ static int postponed_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, postponed_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, postponed_config_observer, menu);
   notify_observer_remove(win_menu->notify, postponed_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -215,7 +215,7 @@ struct Email *dlg_select_postponed(struct Mailbox *m)
   dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, postponed_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, postponed_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, postponed_window_observer, menu->win);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);

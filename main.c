@@ -916,9 +916,9 @@ main
   }
   StartupComplete = true;
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_hist_observer, NULL);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_log_observer, NULL);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, main_config_observer, NULL);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_hist_observer, NULL);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_log_observer, NULL);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_config_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
@@ -1391,6 +1391,12 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
+  if (NeoMutt && NeoMutt->sub)
+  {
+    notify_observer_remove(NeoMutt->sub->notify, main_hist_observer, NULL);
+    notify_observer_remove(NeoMutt->sub->notify, main_log_observer, NULL);
+    notify_observer_remove(NeoMutt->sub->notify, main_config_observer, NULL);
+  }
   mutt_list_free(&commands);
   MuttLogger = log_disp_queue;
   buf_dealloc(&folder);

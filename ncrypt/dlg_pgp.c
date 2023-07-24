@@ -575,7 +575,7 @@ static int pgp_key_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, pgp_key_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, pgp_key_config_observer, menu);
   notify_observer_remove(win_menu->notify, pgp_key_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -669,7 +669,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, pgp_key_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pgp_key_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, pgp_key_window_observer, menu->win);
 
   if (p)

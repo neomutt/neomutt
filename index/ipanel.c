@@ -105,7 +105,7 @@ static int ipanel_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != panel_index)
     return 0;
 
-  notify_observer_remove(NeoMutt->notify, ipanel_config_observer, panel_index);
+  notify_observer_remove(NeoMutt->sub->notify, ipanel_config_observer, panel_index);
   notify_observer_remove(panel_index->notify, ipanel_window_observer, panel_index);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -143,7 +143,7 @@ struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared
     mutt_window_add_child(panel_index, win_ibar);
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, ipanel_config_observer, panel_index);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, ipanel_config_observer, panel_index);
   notify_observer_add(panel_index->notify, NT_WINDOW, ipanel_window_observer, panel_index);
 
   return panel_index;

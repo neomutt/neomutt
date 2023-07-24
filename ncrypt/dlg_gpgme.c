@@ -657,7 +657,7 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, gpgme_key_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, gpgme_key_config_observer, menu);
   notify_observer_remove(win_menu->notify, gpgme_key_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -751,7 +751,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   dlg->wdata = &gd;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, gpgme_key_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, gpgme_key_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, gpgme_key_window_observer, menu->win);
 
   const char *ts = NULL;

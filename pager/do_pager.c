@@ -106,7 +106,7 @@ static int dopager_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != dlg)
     return 0;
 
-  notify_observer_remove(NeoMutt->notify, dopager_config_observer, dlg);
+  notify_observer_remove(NeoMutt->sub->notify, dopager_config_observer, dlg);
   notify_observer_remove(dlg->notify, dopager_window_observer, dlg);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -145,7 +145,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
   dlg->focus = panel_pager;
   mutt_window_add_child(dlg, panel_pager);
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, dopager_config_observer, dlg);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, dopager_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, dopager_window_observer, dlg);
   dialog_push(dlg);
 

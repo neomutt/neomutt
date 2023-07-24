@@ -980,7 +980,7 @@ static int env_window_observer(struct NotifyCallback *nc)
 
     notify_observer_remove(NeoMutt->notify, env_color_observer, win_env);
     notify_observer_remove(wdata->email->notify, env_email_observer, win_env);
-    notify_observer_remove(NeoMutt->notify, env_config_observer, win_env);
+    notify_observer_remove(NeoMutt->sub->notify, env_config_observer, win_env);
     notify_observer_remove(NeoMutt->notify, env_header_observer, win_env);
     notify_observer_remove(win_env->notify, env_window_observer, win_env);
     mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -1006,7 +1006,7 @@ struct MuttWindow *env_window_new(struct Email *e, struct Buffer *fcc, struct Co
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, env_color_observer, win_env);
   notify_observer_add(e->notify, NT_ALL, env_email_observer, win_env);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, env_config_observer, win_env);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, env_config_observer, win_env);
   notify_observer_add(NeoMutt->notify, NT_HEADER, env_header_observer, win_env);
   notify_observer_add(win_env->notify, NT_WINDOW, env_window_observer, win_env);
 

@@ -166,7 +166,7 @@ static int rootwin_window_observer(struct NotifyCallback *nc)
 
   notify_observer_remove(win_root->notify, rootwin_window_observer, win_root);
   if (NeoMutt)
-    notify_observer_remove(NeoMutt->notify, rootwin_config_observer, win_root);
+    notify_observer_remove(NeoMutt->sub->notify, rootwin_config_observer, win_root);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
@@ -212,7 +212,7 @@ void rootwin_new(void)
   mutt_window_add_child(win_cont, win_msg);
   mutt_window_add_child(win_root, win_cont);
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, rootwin_config_observer, win_root);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, rootwin_config_observer, win_root);
   notify_observer_add(win_root->notify, NT_WINDOW, rootwin_window_observer, win_root);
 }
 

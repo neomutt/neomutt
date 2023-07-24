@@ -1120,7 +1120,7 @@ static int browser_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->notify, browser_config_observer, menu);
+  notify_observer_remove(NeoMutt->sub->notify, browser_config_observer, menu);
   notify_observer_remove(win_menu->notify, browser_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -1377,7 +1377,7 @@ void dlg_select_file(struct Buffer *file, SelectFileFlags flags,
   struct MuttWindow *win_menu = priv->menu->win;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, browser_config_observer, priv->menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, browser_config_observer, priv->menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, browser_window_observer, win_menu);
 
   if (priv->state.is_mailbox_list)

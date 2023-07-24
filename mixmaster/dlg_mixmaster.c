@@ -125,7 +125,7 @@ static int remailer_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != dlg)
     return 0;
 
-  notify_observer_remove(NeoMutt->notify, remailer_config_observer, dlg);
+  notify_observer_remove(NeoMutt->sub->notify, remailer_config_observer, dlg);
   notify_observer_remove(dlg->notify, remailer_window_observer, dlg);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -171,7 +171,7 @@ static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
     mutt_window_add_child(dlg, win_rbar);
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, remailer_config_observer, dlg);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, remailer_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
 
   return dlg;

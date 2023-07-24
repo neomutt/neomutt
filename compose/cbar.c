@@ -288,7 +288,7 @@ static int cbar_window_observer(struct NotifyCallback *nc)
     struct ComposeSharedData *shared = dlg->wdata;
 
     notify_observer_remove(NeoMutt->notify, cbar_color_observer, win_cbar);
-    notify_observer_remove(NeoMutt->notify, cbar_config_observer, win_cbar);
+    notify_observer_remove(NeoMutt->sub->notify, cbar_config_observer, win_cbar);
     notify_observer_remove(shared->email->notify, cbar_email_observer, win_cbar);
     notify_observer_remove(win_cbar->notify, cbar_window_observer, win_cbar);
 
@@ -314,7 +314,7 @@ struct MuttWindow *cbar_new(struct ComposeSharedData *shared)
   win_cbar->repaint = cbar_repaint;
 
   notify_observer_add(NeoMutt->notify, NT_COLOR, cbar_color_observer, win_cbar);
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, cbar_config_observer, win_cbar);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, cbar_config_observer, win_cbar);
   notify_observer_add(shared->email->notify, NT_EMAIL, cbar_email_observer, win_cbar);
   notify_observer_add(win_cbar->notify, NT_WINDOW, cbar_window_observer, win_cbar);
 

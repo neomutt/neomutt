@@ -112,7 +112,7 @@ static int simple_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != dlg)
     return 0;
 
-  notify_observer_remove(NeoMutt->notify, simple_config_observer, dlg);
+  notify_observer_remove(NeoMutt->sub->notify, simple_config_observer, dlg);
   notify_observer_remove(dlg->notify, simple_window_observer, dlg);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -152,7 +152,7 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
     mutt_window_add_child(dlg, win_sbar);
   }
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, simple_config_observer, dlg);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, simple_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, simple_window_observer, dlg);
   dialog_push(dlg);
 

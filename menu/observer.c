@@ -116,7 +116,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    notify_observer_remove(NeoMutt->notify, menu_config_observer, menu);
+    notify_observer_remove(NeoMutt->sub->notify, menu_config_observer, menu);
     notify_observer_remove(win->notify, menu_window_observer, menu);
     mutt_color_observer_remove(menu_color_observer, menu);
     msgwin_clear_text();
@@ -134,7 +134,7 @@ void menu_add_observers(struct Menu *menu)
 {
   struct MuttWindow *win = menu->win;
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, menu_config_observer, menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, menu_config_observer, menu);
   notify_observer_add(win->notify, NT_WINDOW, menu_window_observer, menu);
   mutt_color_observer_add(menu_color_observer, menu);
 }
