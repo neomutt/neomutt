@@ -49,7 +49,7 @@ size_t mutt_mb_mbstowcs(wchar_t **pwbuf, size_t *pwbuflen, size_t i, const char 
 void   mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
 int    mutt_mb_wcswidth(const wchar_t *s, size_t n);
 int    mutt_mb_wcwidth(wchar_t wc);
-int    mutt_mb_width(const char *str, int col, bool display);
+int    mutt_mb_width(const char *str, int col, bool indent);
 size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1);
 
 #endif /* MUTT_MUTT_MBYTE_H */
