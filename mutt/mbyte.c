@@ -129,45 +129,65 @@ bool mutt_mb_get_initials(const char *name, char *buf, size_t buflen)
  * mutt_mb_width - Measure a string's display width (in screen columns)
  * @param str     String to measure
  * @param col     Display column (used for expanding tabs)
- * @param display will this be displayed to the user?
- * @retval num Strings width in screen columns
+ * @param indent  If true, newline-space will be indented 8 chars
+ * @retval num String's width in screen columns
  *
  * This is like wcwidth(), but gets const char* not wchar_t*.
  */
-int mutt_mb_width(const char *str, int col, bool display)
+int mutt_mb_width(const char *str, int col, bool indent)
 {
-  wchar_t wc = 0;
-  int l, w = 0, nl = 0;
-  const char *p = str;
+  if (!str || !*str)
+    return 0;
 
-  while (p && *p)
+  bool nl = false;
+  int total_width = 0;
+  mbstate_t mbstate = { 0 };
+
+  size_t str_len = mutt_str_len(str);
+
+  while (*str && (str_len > 0))
   {
-    if (mbtowc(&wc, p, MB_CUR_MAX) >= 0)
+    wchar_t wc = L'\0';
+    size_t consumed = mbrtowc(&wc, str, str_len, &mbstate);
+    if (consumed == 0)
+      break;
+
+    if (consumed == ICONV_ILLEGAL_SEQ)
     {
-      l = wcwidth(wc);
-      if (l < 0)
-        l = 1;
-      /* correctly calc tab stop, even for sending as the
-       * line should look pretty on the receiving end */
-      if ((wc == L'\t') || (nl && (wc == L' ')))
-      {
-        nl = 0;
-        l = 8 - (col % 8);
-      }
-      /* track newlines for display-case: if we have a space
-       * after a newline, assume 8 spaces as for display we
-       * always tab-fold */
-      else if (display && (wc == '\n'))
-        nl = 1;
+      memset(&mbstate, 0, sizeof(mbstate));
+      wc = ReplacementChar;
+      consumed = 1;
     }
-    else
+    else if (consumed == ICONV_BUF_TOO_SMALL)
     {
-      l = 1;
+      wc = ReplacementChar;
+      consumed = str_len;
     }
-    w += l;
-    p++;
+
+    int wchar_width = wcwidth(wc);
+    if (wchar_width < 0)
+      wchar_width = 1;
+
+    if ((wc == L'\t') || (nl && (wc == L' ')))
+    {
+      /* correctly calc tab stop, even for sending as the line should look
+       * pretty on the receiving end */
+      nl = false;
+      wchar_width = 8 - (col % 8);
+    }
+    else if (indent && (wc == '\n'))
+    {
+      /* track newlines for display-case: if we have a space after a newline,
+       * assume 8 spaces as for display we always tab-fold */
+      nl = true;
+    }
+
+    total_width += wchar_width;
+    str += consumed;
+    str_len -= consumed;
   }
-  return w;
+
+  return total_width;
 }
 
 /**

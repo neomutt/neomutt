@@ -3,7 +3,7 @@
  * Test code for mutt_mb_width()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -27,11 +27,102 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 
+struct Test
+{
+  const char *str;
+  int col;
+  int len;
+};
+
+const char *test_name(const char *str)
+{
+  if (!str)
+    return "[NULL]";
+  if (!*str)
+    return "[empty]";
+  return str;
+}
+
 void test_mutt_mb_width(void)
 {
-  // int mutt_mb_width(const char *str, int col, bool display);
+  // int mutt_mb_width(const char *str, int col, bool indent);
 
   {
-    TEST_CHECK(mutt_mb_width(NULL, 0, false) == 0);
+    const char *str = "\377\377\377\377";
+
+    int len = mutt_mb_width(str, 0, false);
+    TEST_CHECK(len == 4);
+    TEST_MSG("Expected: %d\n", 4);
+    TEST_MSG("Actual:   %d\n", len);
+  }
+
+  {
+    static const struct Test tests[] = {
+      // clang-format off
+      { NULL,         0,  0 },
+      { "",           0,  0 },
+      { "apple",      0,  5 },
+      { "Ελληνικά",   0,  8 },
+      { "Українська", 0, 10 },
+      { "한국어",     0,  6 },
+      { "Русский",    0,  7 },
+      { "日本語",     0,  6 },
+      { "中文",       0,  4 },
+      // clang-format on
+    };
+
+    for (int i = 0; i < mutt_array_size(tests); i++)
+    {
+      TEST_CASE(test_name(tests[i].str));
+      int len = mutt_mb_width(tests[i].str, tests[i].col, false);
+      TEST_CHECK(len == tests[i].len);
+      TEST_MSG("Expected: %d\n", tests[i].len);
+      TEST_MSG("Actual:   %d\n", len);
+    }
+  }
+
+  {
+    static const struct Test tests[] = {
+      // clang-format off
+      { "xxx",     0,    3 },
+      { "\txxx",   0,   11 },
+      { "\txxx",   1,   10 },
+      { "\txxx",   2,    9 },
+      { "\txxx",   3,    8 },
+      { "\txxx",   4,    7 },
+      { "\txxx",   5,    6 },
+      { "\txxx",   6,    5 },
+      { "\txxx",   7,    4 },
+      { "\txxx",   8,   11 },
+      // clang-format on
+    };
+
+    for (int i = 0; i < mutt_array_size(tests); i++)
+    {
+      TEST_CASE(test_name(tests[i].str));
+      int len = mutt_mb_width(tests[i].str, tests[i].col, false);
+      TEST_CHECK(len == tests[i].len);
+      TEST_MSG("Expected: %d\n", tests[i].len);
+      TEST_MSG("Actual:   %d\n", len);
+    }
+  }
+
+  {
+    static const struct Test tests[] = {
+      // clang-format off
+      { "xxx",       0,     3 },
+      { "xxx\nyyy",  0,     7 },
+      { "xxx\n yyy", 0,    15 },
+      // clang-format on
+    };
+
+    for (int i = 0; i < mutt_array_size(tests); i++)
+    {
+      TEST_CASE(test_name(tests[i].str));
+      int len = mutt_mb_width(tests[i].str, tests[i].col, true);
+      TEST_CHECK(len == tests[i].len);
+      TEST_MSG("Expected: %d\n", tests[i].len);
+      TEST_MSG("Actual:   %d\n", len);
+    }
   }
 }
