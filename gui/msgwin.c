@@ -61,13 +61,13 @@
  * | Message Window | #WT_MESSAGE | msgwin_new() |
  *
  * **Parent**
- * - @ref gui_rootwin
+ * - @ref gui_msgcont
  *
  * **Children**
  * - None
  *
  * ## Data
- * - #MsgWinPrivateData
+ * - #MsgWinWindowData
  *
  * The Message Window caches the formatted string.
  *
@@ -86,20 +86,12 @@
 #include "mutt/lib.h"
 #include "msgwin.h"
 #include "color/lib.h"
+#include "msgwin_wdata.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
 
 /// Message Window for messages, warnings, errors etc
 static struct MuttWindow *MessageWindow = NULL;
-
-/**
- * struct MsgWinPrivateData - Private data for the Message Window
- */
-struct MsgWinPrivateData
-{
-  enum ColorId cid; ///< Colour for the text, e.g. #MT_COLOR_MESSAGE
-  char *text;       ///< Cached display string
-};
 
 /**
  * msgwin_recalc - Recalculate the display of the Message Window - Implements MuttWindow::recalc() - @ingroup window_recalc
@@ -122,13 +114,13 @@ static int msgwin_repaint(struct MuttWindow *win)
   if (window_is_focused(win)) // someone else is using it
     return 0;
 
-  struct MsgWinPrivateData *priv = win->wdata;
+  struct MsgWinWindowData *wdata = win->wdata;
 
   mutt_window_move(win, 0, 0);
 
-  mutt_curses_set_normal_backed_color_by_id(priv->cid);
+  mutt_curses_set_normal_backed_color_by_id(wdata->cid);
   mutt_window_move(win, 0, 0);
-  mutt_window_addstr(win, priv->text);
+  mutt_window_addstr(win, wdata->text);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   mutt_window_clrtoeol(win);
 
@@ -151,51 +143,23 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
   if (!nc->global_data || !nc->event_data)
     return -1;
 
-  struct MuttWindow *win_msg = nc->global_data;
+  struct MuttWindow *win = nc->global_data;
   struct EventWindow *ev_w = nc->event_data;
-  if (ev_w->win != win_msg)
+  if (ev_w->win != win)
     return 0;
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    win_msg->actions |= WA_RECALC;
+    win->actions |= WA_RECALC;
     mutt_debug(LL_NOTIFY, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
-    notify_observer_remove(win_msg->notify, msgwin_window_observer, win_msg);
+    notify_observer_remove(win->notify, msgwin_window_observer, win);
     MessageWindow = NULL;
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
   return 0;
-}
-
-/**
- * msgwin_wdata_free - Free the private data attached to the Message Window - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
- */
-static void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct MsgWinPrivateData *priv = *ptr;
-
-  FREE(&priv->text);
-
-  FREE(ptr);
-}
-
-/**
- * msgwin_wdata_new - Create new private data for the Message Window
- * @retval ptr New private data
- */
-static struct MsgWinPrivateData *msgwin_wdata_new(void)
-{
-  struct MsgWinPrivateData *msgwin_data = mutt_mem_calloc(1, sizeof(struct MsgWinPrivateData));
-
-  msgwin_data->cid = MT_COLOR_NORMAL;
-
-  return msgwin_data;
 }
 
 /**
@@ -227,9 +191,9 @@ const char *msgwin_get_text(void)
   if (!MessageWindow)
     return NULL;
 
-  struct MsgWinPrivateData *priv = MessageWindow->wdata;
+  struct MsgWinWindowData *wdata = MessageWindow->wdata;
 
-  return priv->text;
+  return wdata->text;
 }
 
 /**
@@ -244,10 +208,10 @@ void msgwin_set_text(enum ColorId cid, const char *text)
   if (!MessageWindow)
     return;
 
-  struct MsgWinPrivateData *priv = MessageWindow->wdata;
+  struct MsgWinWindowData *wdata = MessageWindow->wdata;
 
-  priv->cid = cid;
-  mutt_str_replace(&priv->text, text);
+  wdata->cid = cid;
+  mutt_str_replace(&wdata->text, text);
 
   MessageWindow->actions |= WA_RECALC;
 }

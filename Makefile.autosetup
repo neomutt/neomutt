@@ -415,9 +415,10 @@ $(PWD)/envelope:
 ###############################################################################
 # libgui
 LIBGUI=		libgui.a
-LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/global.o gui/msgcont.o gui/msgwin.o \
-		gui/mutt_curses.o gui/mutt_window.o gui/reflow.o gui/resize.o \
-		gui/rootwin.o gui/sbar.o gui/simple.o gui/terminal.o
+LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/global.o gui/msgcont.o \
+		gui/msgwin.o gui/msgwin_wdata.o gui/mutt_curses.o \
+		gui/mutt_window.o gui/reflow.o gui/resize.o gui/rootwin.o \
+		gui/sbar.o gui/simple.o gui/terminal.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 

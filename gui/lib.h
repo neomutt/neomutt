@@ -32,6 +32,7 @@
  * | gui/global.c        | @subpage gui_global        |
  * | gui/msgcont.c       | @subpage gui_msgcont       |
  * | gui/msgwin.c        | @subpage gui_msgwin        |
+ * | gui/msgwin_wdata.c  | @subpage gui_msgwin_wdata  |
  * | gui/mutt_curses.c   | @subpage gui_curses        |
  * | gui/mutt_window.c   | @subpage gui_window        |
  * | gui/reflow.c        | @subpage gui_reflow        |
