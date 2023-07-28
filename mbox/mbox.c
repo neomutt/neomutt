@@ -746,9 +746,7 @@ static bool mbox_has_new(struct Mailbox *m)
  */
 void mbox_reset_atime(struct Mailbox *m, struct stat *st)
 {
-  struct utimbuf utimebuf;
   struct stat st2 = { 0 };
-
   if (!st)
   {
     if (stat(mailbox_path(m), &st2) < 0)
@@ -756,6 +754,7 @@ void mbox_reset_atime(struct Mailbox *m, struct stat *st)
     st = &st2;
   }
 
+  struct utimbuf utimebuf = { 0 };
   utimebuf.actime = st->st_atime;
   utimebuf.modtime = st->st_mtime;
 
@@ -1460,12 +1459,12 @@ static enum MxStatus mbox_mbox_close(struct Mailbox *m)
       (mutt_file_timespec_compare(&adata->mtime, &adata->atime) > 0))
   {
 #ifdef HAVE_UTIMENSAT
-    struct timespec ts[2];
+    struct timespec ts[2] = { { 0 }, { 0 } };
     ts[0] = adata->atime;
     ts[1] = adata->mtime;
     utimensat(AT_FDCWD, m->path, ts, 0);
 #else
-    struct utimbuf ut;
+    struct utimbuf ut = { 0 };
     ut.actime = adata->atime.tv_sec;
     ut.modtime = adata->mtime.tv_sec;
     utime(mailbox_path(m), &ut);
@@ -1593,12 +1592,12 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
      * only the type was accessed.  This is important, because detection
      * of "new mail" depends on those times set correctly.  */
 #ifdef HAVE_UTIMENSAT
-    struct timespec ts[2];
+    struct timespec ts[2] = { { 0 }, { 0 } };
     mutt_file_get_stat_timespec(&ts[0], &st, MUTT_STAT_ATIME);
     mutt_file_get_stat_timespec(&ts[1], &st, MUTT_STAT_MTIME);
     utimensat(AT_FDCWD, path, ts, 0);
 #else
-    struct utimbuf times;
+    struct utimbuf times = { 0 };
     times.actime = st->st_atime;
     times.modtime = st->st_mtime;
     utime(path, &times);

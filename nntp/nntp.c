@@ -2239,7 +2239,6 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
     return -1;
 
   struct NntpMboxData *mdata = m->mdata;
-  struct ChildCtx cc;
   char buf[256] = { 0 };
   int rc;
   struct HeaderCache *hc = NULL;
@@ -2250,6 +2249,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
     return 0;
 
   /* init context */
+  struct ChildCtx cc = { 0 };
   cc.mailbox = m;
   cc.num = 0;
   cc.max = 10;

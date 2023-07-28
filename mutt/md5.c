@@ -335,7 +335,7 @@ void *mutt_md5(const char *str, void *buf)
  */
 void *mutt_md5_bytes(const void *buffer, size_t len, void *resbuf)
 {
-  struct Md5Ctx md5ctx;
+  struct Md5Ctx md5ctx = { 0 };
 
   /* Initialize the computation context. */
   mutt_md5_init_ctx(&md5ctx);

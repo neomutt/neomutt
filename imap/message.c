@@ -698,7 +698,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
 
   rc = IMAP_RES_CONTINUE;
   int mfhrc = 0;
-  struct ImapHeader h;
+  struct ImapHeader h = { 0 };
   for (int msgno = 1; rc == IMAP_RES_CONTINUE; msgno++)
   {
     if (SigInt && query_abort_header_download(adata))
@@ -1085,7 +1085,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
   char *hdrreq = NULL;
   struct Buffer *tempfile = NULL;
   FILE *fp = NULL;
-  struct ImapHeader h;
+  struct ImapHeader h = { 0 };
   struct Buffer *buf = NULL;
   static const char *const want_headers = "DATE FROM SENDER SUBJECT TO CC MESSAGE-ID REFERENCES "
                                           "CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO "

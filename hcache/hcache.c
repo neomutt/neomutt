@@ -459,7 +459,7 @@ static unsigned int generate_hcachever(void)
     unsigned char charval[16]; ///< MD5 digest as a string
     unsigned int intval;       ///< MD5 digest as an integer
   } digest;
-  struct Md5Ctx md5ctx;
+  struct Md5Ctx md5ctx = { 0 };
 
   mutt_md5_init_ctx(&md5ctx);
 

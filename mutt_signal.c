@@ -116,7 +116,7 @@ static void curses_segv_handler(int sig)
   dump_graphviz("segfault", NULL);
 #endif
 
-  struct sigaction act;
+  struct sigaction act = { 0 };
   sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
   act.sa_handler = SIG_DFL;

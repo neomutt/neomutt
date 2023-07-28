@@ -305,7 +305,7 @@ static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct
        * actually set.  */
       if (msg->received != 0)
       {
-        struct utimbuf ut;
+        struct utimbuf ut = { 0 };
         int rc_utime;
 
         ut.actime = msg->received;

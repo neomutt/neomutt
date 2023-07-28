@@ -1008,7 +1008,7 @@ time_t mutt_file_decrease_mtime(const char *fp, struct stat *st)
   if (!fp)
     return -1;
 
-  struct utimbuf utim;
+  struct utimbuf utim = { 0 };
   struct stat st2 = { 0 };
   time_t mtime;
 
@@ -1048,7 +1048,7 @@ void mutt_file_set_mtime(const char *from, const char *to)
   if (!from || !to)
     return;
 
-  struct utimbuf utim;
+  struct utimbuf utim = { 0 };
   struct stat st = { 0 };
 
   if (stat(from, &st) != -1)
@@ -1221,8 +1221,7 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
   int count = 0;
   int attempt = 0;
 
-  struct flock lck;
-  memset(&lck, 0, sizeof(struct flock));
+  struct flock lck = { 0 };
   lck.l_type = excl ? F_WRLCK : F_RDLCK;
   lck.l_whence = SEEK_SET;
 
@@ -1265,9 +1264,7 @@ int mutt_file_lock(int fd, bool excl, bool timeout)
  */
 int mutt_file_unlock(int fd)
 {
-  struct flock unlockit;
-
-  memset(&unlockit, 0, sizeof(struct flock));
+  struct flock unlockit = { 0 };
   unlockit.l_type = F_UNLCK;
   unlockit.l_whence = SEEK_SET;
   (void) fcntl(fd, F_SETLK, &unlockit);

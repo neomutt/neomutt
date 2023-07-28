@@ -757,7 +757,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       mutt_str_replace(&env->date, body);
       if (e)
       {
-        struct Tz tz;
+        struct Tz tz = { 0 };
         e->date_sent = mutt_date_parse_date(body, &tz);
         if (e->date_sent > 0)
         {

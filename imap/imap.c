@@ -1205,7 +1205,6 @@ int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  char buf[2048] = { 0 };
   struct Buffer err;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
@@ -1216,6 +1215,7 @@ int imap_subscribe(char *path, bool subscribe)
   else
     mutt_message(_("Unsubscribing from %s..."), mdata->name);
 
+  char buf[2048] = { 0 };
   snprintf(buf, sizeof(buf), "%sSUBSCRIBE %s", subscribe ? "" : "UN", mdata->munge_name);
 
   if (imap_exec(adata, buf, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS)

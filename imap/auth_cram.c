@@ -46,13 +46,12 @@
  */
 static void hmac_md5(const char *password, char *challenge, unsigned char *response)
 {
-  struct Md5Ctx md5ctx;
+  struct Md5Ctx md5ctx = { 0 };
   unsigned char ipad[MD5_BLOCK_LEN] = { 0 };
   unsigned char opad[MD5_BLOCK_LEN] = { 0 };
-  unsigned char secret[MD5_BLOCK_LEN + 1];
-  size_t secret_len;
+  unsigned char secret[MD5_BLOCK_LEN + 1] = { 0 };
 
-  secret_len = strlen(password);
+  size_t secret_len = strlen(password);
 
   /* passwords longer than MD5_BLOCK_LEN bytes are substituted with their MD5
    * digests */

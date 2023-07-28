@@ -48,20 +48,6 @@ struct B64Context
 };
 
 /**
- * b64_init - Set up the base64 conversion
- * @param bctx Cursor for the base64 conversion
- * @retval 0 Always
- */
-static int b64_init(struct B64Context *bctx)
-{
-  memset(bctx->buffer, '\0', sizeof(bctx->buffer));
-  bctx->size = 0;
-  bctx->linelen = 0;
-
-  return 0;
-}
-
-/**
  * b64_flush - Save the bytes to the file
  * @param bctx   Cursor for the base64 conversion
  * @param fp_out File to save the output
@@ -117,10 +103,8 @@ static void b64_putc(struct B64Context *bctx, char c, FILE *fp_out)
  */
 static void encode_base64(struct FgetConv *fc, FILE *fp_out, int istext)
 {
-  struct B64Context bctx;
+  struct B64Context bctx = { 0 };
   int ch, ch1 = EOF;
-
-  b64_init(&bctx);
 
   while ((ch = mutt_ch_fgetconv(fc)) != EOF)
   {

@@ -961,9 +961,9 @@ void imap_keep_alive(void)
  */
 int imap_wait_keep_alive(pid_t pid)
 {
-  struct sigaction oldalrm;
-  struct sigaction act;
-  sigset_t oldmask;
+  struct sigaction oldalrm = { 0 };
+  struct sigaction act = { 0 };
+  sigset_t oldmask = { 0 };
   int rc;
 
   const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");

@@ -419,9 +419,9 @@ struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s
 void mailbox_restore_timestamp(const char *path, struct stat *st)
 {
 #ifdef HAVE_UTIMENSAT
-  struct timespec ts[2];
+  struct timespec ts[2] = { { 0 }, { 0 } };
 #else
-  struct utimbuf ut;
+  struct utimbuf ut = { 0 };
 #endif
 
   const bool c_check_mbox_size = cs_subset_bool(NeoMutt->sub, "check_mbox_size");

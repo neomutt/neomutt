@@ -141,7 +141,6 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   char *pend = NULL, *p = NULL;
   int trust = 0;
   KeyFlags flags = KEYFLAG_NO_FLAGS;
-  struct PgpKeyInfo tmp;
   char tstr[11] = { 0 };
 
   *is_subkey = false;
@@ -151,10 +150,9 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
   /* if we're given a key, merge our parsing results, else
    * start with a fresh one to work with so that we don't
    * mess up the real key in case we find parsing errors. */
+  struct PgpKeyInfo tmp = { 0 };
   if (k)
     memcpy(&tmp, k, sizeof(tmp));
-  else
-    memset(&tmp, 0, sizeof(tmp));
 
   mutt_debug(LL_DEBUG2, "buf = '%s'\n", buf);
 
@@ -269,7 +267,7 @@ static struct PgpKeyInfo *parse_pub_line(char *buf, bool *is_subkey, struct PgpK
 
         if (strchr(p, '-')) /* gpg pre-2.0.10 used format (yyyy-mm-dd) */
         {
-          struct tm time;
+          struct tm time = { 0 };
 
           time.tm_sec = 0;
           time.tm_min = 0;

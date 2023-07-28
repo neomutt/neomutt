@@ -390,8 +390,8 @@ void mutt_perror_debug(const char *s)
  */
 int mutt_any_key_to_continue(const char *s)
 {
-  struct termios term;
-  struct termios old;
+  struct termios term = { 0 };
+  struct termios old = { 0 };
 
   int fd = open("/dev/tty", O_RDONLY);
   if (fd < 0)

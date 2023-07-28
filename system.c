@@ -52,9 +52,9 @@
 int mutt_system(const char *cmd)
 {
   int rc = -1;
-  struct sigaction act;
-  struct sigaction oldtstp;
-  struct sigaction oldcont;
+  struct sigaction act = { 0 };
+  struct sigaction oldtstp = { 0 };
+  struct sigaction oldcont = { 0 };
   pid_t pid;
 
   if (!cmd || (*cmd == '\0'))

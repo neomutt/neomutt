@@ -589,7 +589,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct CryptKeyInfo **key_table = menu->mdata;
-  struct CryptEntry entry;
+  struct CryptEntry entry = { 0 };
 
   entry.key = key_table[line];
   entry.num = line + 1;

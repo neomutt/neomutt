@@ -389,7 +389,7 @@ void mutt_date_make_date(struct Buffer *buf, bool local)
   if (!buf)
     return;
 
-  struct tm tm;
+  struct tm tm = { 0 };
   int tz = 0;
 
   time_t t = mutt_date_now();
@@ -836,7 +836,7 @@ time_t mutt_date_parse_imap(const char *s)
   const regmatch_t *mtime = &match[PREX_IMAP_DATE_MATCH_TIME];
   const regmatch_t *mtz = &match[PREX_IMAP_DATE_MATCH_TZ];
 
-  struct tm tm;
+  struct tm tm = { 0 };
 
   sscanf(s + mutt_regmatch_start(mday), " %d", &tm.tm_mday);
   tm.tm_mon = mutt_date_check_month(s + mutt_regmatch_start(mmonth));

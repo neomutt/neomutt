@@ -1041,8 +1041,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   {
     mutt_make_attribution_intro(e_parent, fp_tmp, NeoMutt->sub);
 
-    struct State state;
-    memset(&state, 0, sizeof(struct State));
+    struct State state = { 0 };
     state.fp_out = fp_tmp;
 
     const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");

@@ -865,7 +865,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
       char *group = de->d_name;
       struct stat st = { 0 };
       struct NntpMboxData *mdata = NULL;
-      struct NntpMboxData tmp_mdata;
+      struct NntpMboxData tmp_mdata = { 0 };
 
       if (mutt_str_equal(group, ".") || mutt_str_equal(group, ".."))
         continue;

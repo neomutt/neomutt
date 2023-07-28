@@ -506,8 +506,8 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
 static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {
   struct PgpUid **key_table = menu->mdata;
-  struct PgpEntry entry;
 
+  struct PgpEntry entry = { 0 };
   entry.uid = key_table[line];
   entry.num = line + 1;
 

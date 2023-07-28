@@ -314,7 +314,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
  */
 static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *method)
 {
-  struct Md5Ctx md5ctx;
+  struct Md5Ctx md5ctx = { 0 };
   unsigned char digest[16];
   char hash[33] = { 0 };
   char buf[1024] = { 0 };

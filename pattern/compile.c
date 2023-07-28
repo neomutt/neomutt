@@ -584,7 +584,7 @@ bool eval_date_minmax(struct Pattern *pat, const char *s, struct Buffer *err)
     if (!until_now)
     { /* max date or relative range/window */
 
-      struct tm base_min;
+      struct tm base_min = { 0 };
 
       if (!have_min)
       { /* save base minimum and set current date, e.g. for "-3d+1d" */

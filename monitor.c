@@ -228,15 +228,6 @@ static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
 }
 
 /**
- * monitor_info_init - Set up a file monitor
- * @param info Monitor to initialise
- */
-static void monitor_info_init(struct MonitorInfo *info)
-{
-  memset(info, 0, sizeof(*info));
-}
-
-/**
  * monitor_info_free - Shutdown a file monitor
  * @param info Monitor to shut down
  */
@@ -488,8 +479,7 @@ int mutt_monitor_poll(void)
  */
 int mutt_monitor_add(struct Mailbox *m)
 {
-  struct MonitorInfo info;
-  monitor_info_init(&info);
+  struct MonitorInfo info = { 0 };
 
   int rc = 0;
   enum ResolveResult desc = monitor_resolve(&info, m);
@@ -533,11 +523,9 @@ cleanup:
  */
 int mutt_monitor_remove(struct Mailbox *m)
 {
-  struct MonitorInfo info, info2;
+  struct MonitorInfo info = { 0 };
+  struct MonitorInfo info2 = { 0 };
   int rc = 0;
-
-  monitor_info_init(&info);
-  monitor_info_init(&info2);
 
   if (!m)
   {

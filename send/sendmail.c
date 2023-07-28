@@ -113,7 +113,8 @@ static int send_msg(const char *path, struct SendmailArgArray *args,
   pid_t pid = fork();
   if (pid == 0)
   {
-    struct sigaction act, oldalrm;
+    struct sigaction act = { 0 };
+    struct sigaction oldalrm = { 0 };
 
     /* save parent's ID before setsid() */
     pid_t ppid = getppid();

@@ -409,7 +409,7 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
   }
   else
   {
-    struct EmailCompare cmp;
+    struct EmailCompare cmp = { 0 };
     cmp.type = mx_type(m);
     cmp.sort = cs_subset_sort(NeoMutt->sub, "sort");
     cmp.sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");

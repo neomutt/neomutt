@@ -686,7 +686,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         }
         *p = '\0';
 
-        struct tm tm;
+        struct tm tm = { 0 };
         if ((op == '[') || (op == 'D'))
         {
           tm = mutt_date_localtime(e->date_sent);

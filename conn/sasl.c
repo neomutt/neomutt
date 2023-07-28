@@ -602,14 +602,6 @@ static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
  */
 int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 {
-  sasl_security_properties_t secprops;
-  struct sockaddr_storage local, remote;
-  socklen_t size;
-  char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
-  char *plp = NULL;
-  char *prp = NULL;
-  int rc;
-
   if (mutt_sasl_start() != SASL_OK)
     return -1;
 
@@ -619,6 +611,11 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
     return -1;
   }
 
+  socklen_t size;
+
+  struct sockaddr_storage local = { 0 };
+  char iplocalport[IP_PORT_BUFLEN] = { 0 };
+  char *plp = NULL;
   size = sizeof(local);
   if (getsockname(conn->fd, (struct sockaddr *) &local, &size) == 0)
   {
@@ -632,6 +629,9 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
     mutt_debug(LL_DEBUG2, "SASL failed to get local IP address\n");
   }
 
+  struct sockaddr_storage remote = { 0 };
+  char ipremoteport[IP_PORT_BUFLEN] = { 0 };
+  char *prp = NULL;
   size = sizeof(remote);
   if (getpeername(conn->fd, (struct sockaddr *) &remote, &size) == 0)
   {
@@ -647,17 +647,16 @@ int mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn)
 
   mutt_debug(LL_DEBUG2, "SASL local ip: %s, remote ip:%s\n", NONULL(plp), NONULL(prp));
 
-  rc = sasl_client_new(conn->account.service, conn->account.host, plp, prp,
-                       mutt_sasl_get_callbacks(&conn->account), 0, saslconn);
-
+  int rc = sasl_client_new(conn->account.service, conn->account.host, plp, prp,
+                           mutt_sasl_get_callbacks(&conn->account), 0, saslconn);
   if (rc != SASL_OK)
   {
     mutt_error(_("Error allocating SASL connection"));
     return -1;
   }
 
-  memset(&secprops, 0, sizeof(secprops));
   /* Work around a casting bug in the SASL krb4 module */
+  sasl_security_properties_t secprops = { 0 };
   secprops.max_ssf = 0x7fff;
   secprops.maxbufsize = MUTT_SASL_MAXBUF;
   if (sasl_setprop(*saslconn, SASL_SEC_PROPS, &secprops) != SASL_OK)

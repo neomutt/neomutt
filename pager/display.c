@@ -749,7 +749,7 @@ void buf_strip_formatting(struct Buffer *dest, const char *src, bool strip_marke
 static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned char **buf,
                        unsigned char **fmt, size_t *blen, int *buf_ready)
 {
-  static int b_read;
+  static int b_read = 0;
   struct Buffer stripped;
 
   if (*buf_ready == 0)
