@@ -193,8 +193,9 @@ static int complete_pattern(struct EnterWindowData *wdata)
   size_t i = wdata->state->curpos;
   if (i && (wdata->state->wbuf[i - 1] == '~'))
   {
-    if (dlg_select_pattern(wdata->buf, wdata->buflen))
-      replace_part(wdata->state, i - 1, wdata->buf);
+    if (dlg_select_pattern(wdata->buffer->data, wdata->buffer->dsize))
+      replace_part(wdata->state, i - 1, wdata->buffer->data);
+    buf_fix_dptr(wdata->buffer);
     return FR_CONTINUE;
   }
 
@@ -205,10 +206,10 @@ static int complete_pattern(struct EnterWindowData *wdata)
       (wdata->state->wbuf[i - 1] == '~') && (wdata->state->wbuf[i] == 'y'))
   {
     i++;
-    mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf + i,
-                     wdata->state->curpos - i);
+    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
     int rc = mutt_label_complete(wdata->cd, wdata->buffer, wdata->tabs);
-    replace_part(wdata->state, i, wdata->buf);
+    replace_part(wdata->state, i, wdata->buffer->data);
+    buf_fix_dptr(wdata->buffer);
     if (rc != 1)
     {
       return FR_CONTINUE;
