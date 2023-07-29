@@ -421,8 +421,8 @@ static int op_editor_history_down(struct EnterWindowData *wdata, int op)
   wdata->state->curpos = wdata->state->lastchar;
   if (mutt_hist_at_scratch(wdata->hclass))
   {
-    mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-    mutt_hist_save_scratch(wdata->hclass, wdata->buf);
+    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+    mutt_hist_save_scratch(wdata->hclass, buf_string(wdata->buffer));
   }
   replace_part(wdata->state, 0, mutt_hist_next(wdata->hclass));
   wdata->redraw = ENTER_REDRAW_INIT;
@@ -435,9 +435,9 @@ static int op_editor_history_down(struct EnterWindowData *wdata, int op)
 static int op_editor_history_search(struct EnterWindowData *wdata, int op)
 {
   wdata->state->curpos = wdata->state->lastchar;
-  mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-  mutt_hist_complete(wdata->buf, wdata->buflen, wdata->hclass);
-  replace_part(wdata->state, 0, wdata->buf);
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+  mutt_hist_complete(wdata->buffer->data, wdata->buffer->dsize, wdata->hclass);
+  replace_part(wdata->state, 0, wdata->buffer->data);
   return FR_CONTINUE;
 }
 
@@ -449,8 +449,8 @@ static int op_editor_history_up(struct EnterWindowData *wdata, int op)
   wdata->state->curpos = wdata->state->lastchar;
   if (mutt_hist_at_scratch(wdata->hclass))
   {
-    mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
-    mutt_hist_save_scratch(wdata->hclass, wdata->buf);
+    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+    mutt_hist_save_scratch(wdata->hclass, buf_string(wdata->buffer));
   }
   replace_part(wdata->state, 0, mutt_hist_prev(wdata->hclass));
   wdata->redraw = ENTER_REDRAW_INIT;
@@ -465,16 +465,11 @@ static int op_editor_mailbox_cycle(struct EnterWindowData *wdata, int op)
   if (wdata->flags & MUTT_COMP_FILE_MBOX)
   {
     wdata->first = true; /* clear input if user types a real key later */
-    mutt_mb_wcstombs(wdata->buf, wdata->buflen, wdata->state->wbuf, wdata->state->curpos);
+    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+    mutt_mailbox_next(wdata->m, wdata->buffer);
 
-    struct Buffer *pool = buf_pool_get();
-    buf_addstr(pool, wdata->buf);
-    mutt_mailbox_next(wdata->m, pool);
-    mutt_str_copy(wdata->buf, buf_string(pool), wdata->buflen);
-    buf_pool_release(&pool);
-
-    wdata->state->curpos = wdata->state->lastchar =
-        mutt_mb_mbstowcs(&wdata->state->wbuf, &wdata->state->wbuflen, 0, wdata->buf);
+    wdata->state->curpos = wdata->state->lastchar = mutt_mb_mbstowcs(
+        &wdata->state->wbuf, &wdata->state->wbuflen, 0, buf_string(wdata->buffer));
     return FR_SUCCESS;
   }
   else if (!(wdata->flags & MUTT_COMP_FILE))
@@ -499,7 +494,7 @@ static int op_editor_backspace(struct EnterWindowData *wdata, int op)
     const bool c_abort_backspace = cs_subset_bool(NeoMutt->sub, "abort_backspace");
     if (c_abort_backspace)
     {
-      wdata->buf[0] = '\0';
+      buf_reset(wdata->buffer);
       wdata->done = true;
       rc = FR_SUCCESS;
     }
