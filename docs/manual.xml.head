@@ -15843,7 +15843,7 @@ set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail' \
 <emphasis role="comment"># Set the command you want NeoMutt to execute upon the receipt of a new email</emphasis>
 set new_mail_command = ""
 <emphasis role="comment"># Linux example:</emphasis>
-<emphasis role="comment"># set new_command="notify-send --icon='/home/santiago/Pictures/neomutt.png' \</emphasis>
+<emphasis role="comment"># set new_mail_command="notify-send --icon='/home/santiago/Pictures/neomutt.png' \</emphasis>
 <emphasis role="comment">#   'New Email in %f' '%n new messages, %u unread.' &amp;"</emphasis>
 <emphasis role="comment"># OS X example:</emphasis>
 <emphasis role="comment"># set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' \</emphasis>
