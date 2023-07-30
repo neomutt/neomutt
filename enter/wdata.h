@@ -45,8 +45,7 @@ enum EnterRedrawFlags
 struct EnterWindowData
 {
   // Function parameters
-  char *buf;                      ///< Buffer for the result
-  size_t buflen;                  ///< Length of result buffer
+  struct Buffer *buffer;          ///< struct Buffer for the result
   int col;                        ///< Initial cursor positions
   CompletionFlags flags;          ///< Flags, see #CompletionFlags
   bool multiple;                  ///< Allow multiple matches

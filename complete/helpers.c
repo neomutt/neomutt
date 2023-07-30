@@ -155,26 +155,24 @@ done:
  * mutt_command_complete - Complete a command name
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param pos     Cursor position in the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
-                          int pos, int numtabs)
+int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
 {
-  char *pt = buf;
+  char *pt = buf->data;
   int spaces; /* keep track of the number of leading spaces on the line */
 
-  SKIPWS(buf);
-  spaces = buf - pt;
+  SKIPWS(pt);
+  spaces = pt - buf->data;
 
-  pt = buf + pos - spaces;
-  while ((pt > buf) && !isspace((unsigned char) *pt))
+  pt = buf->data + pos - spaces;
+  while ((pt > buf->data) && !isspace((unsigned char) *pt))
     pt--;
 
-  if (pt == buf) /* complete cmd */
+  if (pt == buf->data) /* complete cmd */
   {
     /* first TAB. Collect all the matches */
     if (numtabs == 1)
@@ -213,16 +211,16 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
     }
 
     /* return the completed command */
-    strncpy(buf, cd->completed, buflen - spaces);
+    buf_strcpy(buf, cd->completed);
   }
-  else if (mutt_str_startswith(buf, "set") || mutt_str_startswith(buf, "unset") ||
-           mutt_str_startswith(buf, "reset") || mutt_str_startswith(buf, "toggle"))
+  else if (buf_startswith(buf, "set") || buf_startswith(buf, "unset") ||
+           buf_startswith(buf, "reset") || buf_startswith(buf, "toggle"))
   { /* complete variables */
     static const char *const prefixes[] = { "no", "inv", "?", "&", 0 };
 
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
-    if (mutt_str_startswith(buf, "set"))
+    if (buf_startswith(buf, "set"))
     {
       for (int num = 0; prefixes[num]; num++)
       {
@@ -281,9 +279,10 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    buf_fix_dptr(buf);
   }
-  else if (mutt_str_startswith(buf, "exec"))
+  else if (buf_startswith(buf, "exec"))
   {
     const enum MenuType mtype = menu_get_current_type();
     const struct MenuFuncOp *funcs = km_get_table(mtype);
@@ -333,7 +332,8 @@ int mutt_command_complete(struct CompletionData *cd, char *buf, size_t buflen,
                cd->match_list[(numtabs - 2) % cd->num_matched]);
     }
 
-    strncpy(pt, cd->completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
+    buf_fix_dptr(buf);
   }
   else
   {
@@ -360,22 +360,19 @@ static int label_sort(const void *a, const void *b)
  * mutt_label_complete - Complete a label name
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval 1 Success, a match
  * @retval 0 Error, no match
  */
-int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int numtabs)
+int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
 {
-  char *pt = buf;
-  int spaces; /* keep track of the number of leading spaces on the line */
+  char *pt = buf->data;
 
   struct Mailbox *m_cur = get_current_mailbox();
   if (!m_cur || !m_cur->label_hash)
     return 0;
 
-  SKIPWS(buf);
-  spaces = buf - pt;
+  SKIPWS(pt);
 
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
@@ -384,7 +381,7 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
     struct HashWalkState hws = { 0 };
 
     cd->num_matched = 0;
-    mutt_str_copy(cd->user_typed, buf, sizeof(cd->user_typed));
+    mutt_str_copy(cd->user_typed, buf_string(buf), sizeof(cd->user_typed));
     memset(cd->match_list, 0, cd->match_list_len);
     memset(cd->completed, 0, sizeof(cd->completed));
     while ((he = mutt_hash_walk(m_cur->label_hash, &hws)))
@@ -416,7 +413,7 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
   }
 
   /* return the completed label */
-  strncpy(buf, cd->completed, buflen - spaces);
+  buf_strcpy(buf, cd->completed);
 
   return 1;
 }
@@ -426,7 +423,6 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
  * mutt_nm_query_complete - Complete to the nearest notmuch tag
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param pos     Cursor position in the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval true  Success, a match
@@ -434,14 +430,13 @@ int mutt_label_complete(struct CompletionData *cd, char *buf, size_t buflen, int
  *
  * Complete the nearest "tag:"-prefixed string previous to pos.
  */
-bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
-                            int pos, int numtabs)
+bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
 {
-  char *pt = buf;
+  char *pt = buf->data;
   int spaces;
 
-  SKIPWS(buf);
-  spaces = buf - pt;
+  SKIPWS(pt);
+  spaces = pt - buf->data;
 
   pt = (char *) mutt_strn_rfind((char *) buf, pos, "tag:");
   if (pt)
@@ -475,7 +470,7 @@ bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
     }
 
     /* return the completed query */
-    strncpy(pt, cd->completed, buf + buflen - pt - spaces);
+    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
   }
   else
   {
@@ -491,22 +486,21 @@ bool mutt_nm_query_complete(struct CompletionData *cd, char *buf, size_t buflen,
  * mutt_nm_tag_complete - Complete to the nearest notmuch tag
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param buflen  Length of the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval true  Success, a match
  * @retval false Error, no match
  *
  * Complete the nearest "+" or "-" -prefixed string previous to pos.
  */
-bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, int numtabs)
+bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
 {
   if (!buf)
     return false;
 
-  char *pt = buf;
+  char *pt = buf->data;
 
   /* Only examine the last token */
-  char *last_space = strrchr(buf, ' ');
+  char *last_space = strrchr(buf->data, ' ');
   if (last_space)
     pt = (last_space + 1);
 
@@ -542,7 +536,7 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, i
   }
 
   /* return the completed query */
-  strncpy(pt, cd->completed, buf + buflen - pt);
+  strncpy(pt, cd->completed, buf->data + buf->dsize - pt);
 
   return true;
 }
@@ -550,31 +544,30 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, char *buf, size_t buflen, i
 
 /**
  * mutt_var_value_complete - Complete a variable/value
- * @param cd     Completion Data
- * @param buf    Buffer for the result
- * @param buflen Length of the buffer
- * @param pos    Cursor position in the buffer
+ * @param cd  Completion Data
+ * @param buf Buffer for the result
+ * @param pos Cursor position in the buffer
  * @retval 1 Success
  * @retval 0 Failure
  */
-int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen, int pos)
+int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int pos)
 {
-  char *pt = buf;
+  char *pt = buf->data;
 
-  if (buf[0] == '\0')
+  if (pt[0] == '\0')
     return 0;
 
-  SKIPWS(buf);
-  const int spaces = buf - pt;
+  SKIPWS(pt);
+  const int spaces = pt - buf->data;
 
-  pt = buf + pos - spaces;
-  while ((pt > buf) && !isspace((unsigned char) *pt))
+  pt = buf->data + pos - spaces;
+  while ((pt > buf->data) && !isspace((unsigned char) *pt))
     pt--;
   pt++;           /* move past the space */
   if (*pt == '=') /* abort if no var before the '=' */
     return 0;
 
-  if (mutt_str_startswith(buf, "set"))
+  if (buf_startswith(buf, "set"))
   {
     char var[256] = { 0 };
     mutt_str_copy(var, pt, sizeof(var));
@@ -595,7 +588,7 @@ int mutt_var_value_complete(struct CompletionData *cd, char *buf, size_t buflen,
     if (CSR_RESULT(rc) == CSR_SUCCESS)
     {
       pretty_var(value.data, &pretty);
-      snprintf(pt, buflen - (pt - buf), "%s=%s", var, pretty.data);
+      snprintf(pt, buf->dsize - (pt - buf->data), "%s=%s", var, pretty.data);
       buf_dealloc(&value);
       buf_dealloc(&pretty);
       return 0;

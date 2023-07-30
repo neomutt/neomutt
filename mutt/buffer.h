@@ -56,6 +56,7 @@ char           buf_at              (struct Buffer *buf, size_t offset);
 bool           buf_str_equal       (struct Buffer *a, struct Buffer *b);
 bool           buf_istr_equal      (struct Buffer *a, struct Buffer *b);
 int            buf_coll            (struct Buffer *a, struct Buffer *b);
+size_t         buf_startswith      (struct Buffer *buf, const char *prefix);
 
 // Functions that APPEND to a Buffer
 size_t         buf_addch           (struct Buffer *buf, char c);

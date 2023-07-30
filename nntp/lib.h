@@ -48,6 +48,7 @@
 #include "core/lib.h"
 #include "format_flags.h"
 
+struct Buffer;
 struct ConnAccount;
 struct Email;
 struct NntpAccountData;
@@ -100,6 +101,6 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 int nntp_compare_order(const struct Email *a, const struct Email *b, bool reverse);
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols, char op, const char *src, const char *prec, const char *if_str, const char *else_str, intptr_t data, MuttFormatFlags flags);
-int nntp_complete(char *buf, size_t buflen);
+int nntp_complete(struct Buffer *buf);
 
 #endif /* MUTT_NNTP_LIB_H */

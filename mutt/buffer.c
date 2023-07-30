@@ -668,6 +668,18 @@ bool buf_istr_equal(struct Buffer *a, struct Buffer *b)
 }
 
 /**
+ * buf_startswith - Check whether a buffer starts with a prefix
+ * @param buf Buffer to check
+ * @param prefix Prefix to match
+ * @retval num Length of prefix if str starts with prefix
+ * @retval 0   str does not start with prefix
+ */
+size_t buf_startswith(struct Buffer *buf, const char *prefix)
+{
+  return mutt_str_startswith(buf_string(buf), prefix);
+}
+
+/**
  * buf_coll - Collate two strings (compare using locale)
  * @param a First buffer to compare
  * @param b Second buffer to compare

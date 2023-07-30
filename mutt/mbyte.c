@@ -248,59 +248,36 @@ size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1)
 }
 
 /**
- * mutt_mb_wcstombs - Convert a string from wide to multibyte characters
+ * buf_mb_wcstombs - Convert a string from wide to multibyte characters
  * @param dest Buffer for the result
- * @param dlen Length of the result buffer
- * @param src Source string to convert
- * @param slen Length of the source string
+ * @param wstr Source wide string to convert
+ * @param wlen Length of the wide string
  */
-void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen)
+void buf_mb_wcstombs(struct Buffer *dest, const wchar_t *wstr, size_t wlen)
 {
-  if (!dest || !src)
+  if (!dest || !wstr)
     return;
 
-  mbstate_t mbstate = { 0 };
-  size_t k;
+  // Give ourselves 4 utf-8 bytes per wide character
+  buf_alloc(dest, 4 * wlen);
 
-  /* First convert directly into the destination buffer */
-  for (; slen && (dlen >= MB_LEN_MAX); dest += k, dlen -= k, src++, slen--)
+  mbstate_t mbstate = { 0 };
+  size_t k = 0;
+
+  char *buf = dest->data;
+  size_t buflen = dest->dsize;
+
+  for (; (wlen > 0) && (buflen >= MB_LEN_MAX); buf += k, buflen -= k, wstr++, wlen--)
   {
-    k = wcrtomb(dest, *src, &mbstate);
+    k = wcrtomb(buf, *wstr, &mbstate);
     if (k == ICONV_ILLEGAL_SEQ)
+      break;
+    if (*wstr == L'\0')
       break;
   }
 
-  /* If this works, we can stop now */
-  if (dlen >= MB_LEN_MAX)
-  {
-    dest += wcrtomb(dest, 0, &mbstate);
-    return;
-  }
-
-  /* Otherwise convert any remaining data into a local buffer */
-  {
-    char buf[3 * MB_LEN_MAX];
-    char *p = buf;
-
-    for (; slen && p - buf < dlen; p += k, src++, slen--)
-    {
-      k = wcrtomb(p, *src, &mbstate);
-      if (k == ICONV_ILLEGAL_SEQ)
-        break;
-    }
-    p += wcrtomb(p, 0, &mbstate);
-
-    /* If it fits into the destination buffer, we can stop now */
-    if (p - buf <= dlen)
-    {
-      memcpy(dest, buf, p - buf);
-      return;
-    }
-
-    /* Otherwise we truncate the string in an ugly fashion */
-    memcpy(dest, buf, dlen);
-    dest[dlen - 1] = '\0'; /* assume original dlen > 0 */
-  }
+  *buf = '\0';
+  buf_fix_dptr(dest);
 }
 
 /**

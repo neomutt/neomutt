@@ -67,7 +67,7 @@ struct AddressList *mutt_get_address       (struct Envelope *env, const char **p
 enum CommandResult parse_alias  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-int  alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub);
+int  alias_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void alias_dialog  (struct Mailbox *m, struct ConfigSubset *sub);
 
 int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);

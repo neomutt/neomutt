@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_mb_wcstombs()
+ * Test code for buf_mb_wcstombs()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -28,20 +28,21 @@
 #include "mutt/lib.h"
 #include "test_common.h"
 
-void test_mutt_mb_wcstombs(void)
+void test_buf_mb_wcstombs(void)
 {
-  // void mutt_mb_wcstombs(char *dest, size_t dlen, const wchar_t *src, size_t slen);
+  // void buf_mb_wcstombs(struct Buffer *dest, const wchar_t *wstr, size_t wlen);
 
   {
     wchar_t src[32] = L"apple";
-    mutt_mb_wcstombs(NULL, 10, src, 5);
-    TEST_CHECK_(1, "mutt_mb_wcstombs(NULL, 10, src, 5)");
+    buf_mb_wcstombs(NULL, src, 5);
+    TEST_CHECK_(1, "buf_mb_wcstombs(NULL, 10, src, 5)");
   }
 
   {
-    char buf[32] = { 0 };
-    mutt_mb_wcstombs(buf, sizeof(buf), NULL, 3);
-    TEST_CHECK_(1, "mutt_mb_wcstombs(buf, sizeof(buf), NULL, 3)");
+    struct Buffer *buf = buf_pool_get();
+    buf_mb_wcstombs(buf, NULL, 3);
+    TEST_CHECK_(1, "buf_mb_wcstombs(buf, sizeof(buf), NULL, 3)");
+    buf_pool_release(&buf);
   }
 
   {
@@ -64,15 +65,16 @@ void test_mutt_mb_wcstombs(void)
       // clang-format on
     };
 
-    char buf[256];
+    struct Buffer *buf = buf_pool_get();
     for (size_t i = 0; test[i].src; i++)
     {
-      memset(buf, 0, sizeof(buf));
+      buf_reset(buf);
       TEST_CASE(test[i].name);
       size_t len = wcslen(test[i].src);
-      mutt_mb_wcstombs(buf, sizeof(buf), test[i].src, len);
+      buf_mb_wcstombs(buf, test[i].src, len);
 
-      TEST_CHECK_STR_EQ(buf, test[i].expected);
+      TEST_CHECK_STR_EQ(buf_string(buf), test[i].expected);
     }
+    buf_pool_release(&buf);
   }
 }

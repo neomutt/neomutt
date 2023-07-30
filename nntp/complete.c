@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -37,25 +36,22 @@
 
 /**
  * nntp_complete - Auto-complete NNTP newsgroups
- * @param buf    Buffer containing pathname
- * @param buflen Length of buffer
+ * @param buf Buffer containing pathname
  * @retval  0 Match found
  * @retval -1 No matches
  *
  * XXX rules
  */
-int nntp_complete(char *buf, size_t buflen)
+int nntp_complete(struct Buffer *buf)
 {
   struct NntpAccountData *adata = CurrentNewsSrv;
   size_t n = 0;
-  char filepart[PATH_MAX] = { 0 };
+  struct Buffer *filepart = buf_new(buf_string(buf));
   bool init = false;
-
-  mutt_str_copy(filepart, buf, sizeof(filepart));
 
   /* special case to handle when there is no filepart yet
    * find the first subscribed newsgroup */
-  int len = mutt_str_len(filepart);
+  int len = buf_len(filepart);
   if (len == 0)
   {
     for (; n < adata->groups_num; n++)
@@ -64,7 +60,7 @@ int nntp_complete(char *buf, size_t buflen)
 
       if (mdata && mdata->subscribed)
       {
-        mutt_str_copy(filepart, mdata->group, sizeof(filepart));
+        buf_strcpy(filepart, mdata->group);
         init = true;
         n++;
         break;
@@ -76,26 +72,30 @@ int nntp_complete(char *buf, size_t buflen)
   {
     struct NntpMboxData *mdata = adata->groups_list[n];
 
-    if (mdata && mdata->subscribed && mutt_strn_equal(mdata->group, filepart, len))
+    if (mdata && mdata->subscribed &&
+        mutt_strn_equal(mdata->group, buf_string(filepart), len))
     {
       if (init)
       {
+        char *str = filepart->data;
         size_t i;
-        for (i = 0; filepart[i] && mdata->group[i]; i++)
+        for (i = 0; (str[i] != '\0') && mdata->group[i]; i++)
         {
-          if (filepart[i] != mdata->group[i])
+          if (str[i] != mdata->group[i])
             break;
         }
-        filepart[i] = '\0';
+        str[i] = '\0';
+        buf_fix_dptr(filepart);
       }
       else
       {
-        mutt_str_copy(filepart, mdata->group, sizeof(filepart));
+        buf_strcpy(filepart, mdata->group);
         init = true;
       }
     }
   }
 
-  mutt_str_copy(buf, filepart, buflen);
+  buf_copy(buf, filepart);
+  buf_free(&filepart);
   return init ? 0 : -1;
 }
