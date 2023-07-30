@@ -362,14 +362,14 @@ MAPPING_OBJS	= test/mapping/mutt_map_get_name.o \
 		  test/mapping/mutt_map_get_value.o \
 		  test/mapping/mutt_map_get_value_n.o
 
-MBYTE_OBJS	= test/mbyte/mutt_mb_charlen.o \
+MBYTE_OBJS	= test/mbyte/buf_mb_wcstombs.o \
+		  test/mbyte/mutt_mb_charlen.o \
 		  test/mbyte/mutt_mb_filter_unprintable.o \
 		  test/mbyte/mutt_mb_get_initials.o \
 		  test/mbyte/mutt_mb_is_display_corrupting_utf8.o \
 		  test/mbyte/mutt_mb_is_lower.o \
 		  test/mbyte/mutt_mb_is_shell_char.o \
 		  test/mbyte/mutt_mb_mbstowcs.o \
-		  test/mbyte/mutt_mb_wcstombs.o \
 		  test/mbyte/mutt_mb_wcswidth.o \
 		  test/mbyte/mutt_mb_wcwidth.o \
 		  test/mbyte/mutt_mb_width.o \

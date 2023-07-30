@@ -406,6 +406,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_map_get_value_n)                                 \
                                                                                \
   /* mbyte */                                                                  \
+  NEOMUTT_TEST_ITEM(test_buf_mb_wcstombs)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mb_charlen)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mb_filter_unprintable)                           \
   NEOMUTT_TEST_ITEM(test_mutt_mb_get_initials)                                 \
@@ -413,7 +414,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_mb_is_lower)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_mb_is_shell_char)                                \
   NEOMUTT_TEST_ITEM(test_mutt_mb_mbstowcs)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_mb_wcstombs)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_mb_wcswidth)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_mb_wcwidth)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_mb_width)                                        \

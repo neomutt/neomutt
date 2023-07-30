@@ -255,6 +255,8 @@ size_t mutt_mb_width_ceiling(const wchar_t *s, size_t n, int w1)
  */
 void buf_mb_wcstombs(struct Buffer *dest, const wchar_t *wstr, size_t wlen)
 {
+  if (!dest)
+    return;
   mutt_mb_wcstombs(dest->data, dest->dsize, wstr, wlen);
   buf_fix_dptr(dest);
 }
