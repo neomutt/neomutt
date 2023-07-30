@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-05-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-06-03 20:23+0100\n"
+"POT-Creation-Date: 2023-07-30 21:01+0100\n"
 "PO-Revision-Date: 2002-12-09 17:19+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@muhv.pri.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -37,7 +37,7 @@ msgid "Address: "
 msgstr "Aadress: "
 
 #: alias/alias.c:450 conn/raw.c:160 conn/raw.c:219 envelope/functions.c:130
-#: external.c:136 recvcmd.c:227 send/send.c:203
+#: external.c:136 recvcmd.c:227 send/send.c:202
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr ""
@@ -46,31 +46,31 @@ msgstr ""
 msgid "Personal name: "
 msgstr "Isiku nimi: "
 
-#: alias/alias.c:470
+#: alias/alias.c:469
 #, fuzzy
 msgid "Comment: "
 msgstr "toimeta Reply-To välja"
 
-#: alias/alias.c:481 alias/alias.c:485
+#: alias/alias.c:480 alias/alias.c:484
 msgid "Accept?"
 msgstr "Nõus?"
 
-#: alias/alias.c:499 attach/recvattach.c:300 attach/recvattach.c:323
-#: attach/recvattach.c:341 attach/recvattach.c:357 attach/recvattach.c:483
+#: alias/alias.c:498 attach/recvattach.c:300 attach/recvattach.c:323
+#: attach/recvattach.c:341 attach/recvattach.c:358 attach/recvattach.c:484
 msgid "Save to file: "
 msgstr "Salvestan faili: "
 
-#: alias/alias.c:525
+#: alias/alias.c:524
 #, fuzzy
 msgid "Error reading alias file"
 msgstr "Viga faili vaatamisel"
 
-#: alias/alias.c:552
+#: alias/alias.c:551
 #, fuzzy
 msgid "Trouble adding alias"
 msgstr "Viga faili vaatamisel"
 
-#: alias/alias.c:554
+#: alias/alias.c:553
 msgid "Alias added"
 msgstr "Hüüdnimi on lisatud"
 
@@ -88,53 +88,54 @@ msgstr ""
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr ""
 
-#: alias/dlg_alias.c:101 alias/dlg_query.c:100 attach/dlg_attach.c:97
-#: autocrypt/dlg_autocrypt.c:89 browser/browser.c:111 browser/browser.c:124
-#: conn/dlg_verifycert.c:69 history/dlg_history.c:77 ncrypt/dlg_gpgme.c:96
-#: ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:75 pager/dlg_pager.c:90
-#: pager/dlg_pager.c:101 pager/dlg_pager.c:111 pager/dlg_pager.c:127
-#: pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:91
+#: alias/dlg_alias.c:100 alias/dlg_query.c:100 attach/dlg_attach.c:97
+#: autocrypt/dlg_autocrypt.c:89 browser/dlg_browser.c:111
+#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:69 history/dlg_history.c:77
+#: ncrypt/dlg_gpgme.c:96 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:75
+#: pager/dlg_pager.c:77 pager/dlg_pager.c:88 pager/dlg_pager.c:98
+#: pager/dlg_pager.c:114 pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:91
 msgid "Exit"
 msgstr "Välju"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:106 index/dlg_index.c:122
-#: pager/dlg_pager.c:115 pager/dlg_pager.c:132 postpone/dlg_postpone.c:92
+#: alias/dlg_alias.c:101 index/dlg_index.c:106 index/dlg_index.c:122
+#: pager/dlg_pager.c:102 pager/dlg_pager.c:119 postpone/dlg_postpone.c:92
 msgid "Del"
 msgstr "Kustuta"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:123
+#: alias/dlg_alias.c:102 index/dlg_index.c:107 index/dlg_index.c:123
 #: postpone/dlg_postpone.c:93
 msgid "Undel"
 msgstr "Taasta"
 
-#: alias/dlg_alias.c:104 alias/dlg_query.c:104
+#: alias/dlg_alias.c:103 alias/dlg_query.c:104
 msgid "Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:105 alias/dlg_query.c:105
+#: alias/dlg_alias.c:104 alias/dlg_query.c:105
 msgid "Rev-Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:97
+#: alias/dlg_alias.c:105 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:97
 #: ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:76 pattern/dlg_pattern.c:92
 msgid "Select"
 msgstr "Vali"
 
-#: alias/dlg_alias.c:107 alias/dlg_query.c:107 attach/dlg_attach.c:101
-#: autocrypt/dlg_autocrypt.c:108 browser/browser.c:115 browser/browser.c:130
-#: compose/compose.c:106 compose/compose.c:121 conn/dlg_verifycert.c:70
-#: history/dlg_history.c:80 index/dlg_index.c:112 index/dlg_index.c:128
-#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:77
-#: pager/dlg_pager.c:93 pager/dlg_pager.c:118 pager/dlg_pager.c:134
-#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:94
+#: alias/dlg_alias.c:106 alias/dlg_query.c:107 attach/dlg_attach.c:101
+#: autocrypt/dlg_autocrypt.c:108 browser/dlg_browser.c:115
+#: browser/dlg_browser.c:130 compose/dlg_compose.c:106
+#: compose/dlg_compose.c:121 conn/dlg_verifycert.c:70 history/dlg_history.c:80
+#: index/dlg_index.c:112 index/dlg_index.c:128 ncrypt/dlg_gpgme.c:99
+#: ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:77 pager/dlg_pager.c:80
+#: pager/dlg_pager.c:105 pager/dlg_pager.c:121 pattern/dlg_pattern.c:93
+#: postpone/dlg_postpone.c:94
 msgid "Help"
 msgstr "Appi"
 
-#: alias/dlg_alias.c:318
+#: alias/dlg_alias.c:320
 msgid "You have no aliases"
 msgstr "Tei pole hüüdnimesid"
 
-#: alias/dlg_alias.c:323
+#: alias/dlg_alias.c:325
 msgid "Aliases"
 msgstr "Hüüdnimed"
 
@@ -163,11 +164,11 @@ msgstr "Ootan vastust..."
 msgid "Query"
 msgstr "Päring: "
 
-#: alias/dlg_query.c:456 alias/dlg_query.c:533
+#: alias/dlg_query.c:461 alias/dlg_query.c:538
 msgid "Query command not defined"
 msgstr "Päringukäsku ei ole defineeritud"
 
-#: alias/dlg_query.c:542 alias/functions.c:193 alias/functions.c:211
+#: alias/dlg_query.c:547 alias/functions.c:193 alias/functions.c:211
 msgid "Query: "
 msgstr "Päring: "
 
@@ -192,7 +193,7 @@ msgid "adu"
 msgstr ""
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:81 index/functions.c:1602
+#: alias/gui.c:81 index/functions.c:1600
 #, c-format
 msgid "Limit: %s"
 msgstr "Piirang: %s"
@@ -233,7 +234,7 @@ msgstr "Toru"
 msgid "Print"
 msgstr "Trüki"
 
-#: attach/dlg_attach.c:503
+#: attach/dlg_attach.c:507
 msgid "Attachments"
 msgstr "Lisad"
 
@@ -242,11 +243,11 @@ msgstr "Lisad"
 msgid "Not available in this menu"
 msgstr "Ei ole selles menüüs kasutatav"
 
-#: attach/functions.c:54 index/functions.c:2854
+#: attach/functions.c:54 index/functions.c:2851
 msgid "Function not permitted in attach-message mode"
 msgstr "Funktsioon ei ole teate lisamise moodis lubatud"
 
-#: attach/functions.c:117 index/functions.c:2848 mx.c:956
+#: attach/functions.c:117 index/functions.c:2845 mx.c:956
 msgid "Mailbox is read-only"
 msgstr "Postkast on ainult lugemiseks"
 
@@ -276,7 +277,7 @@ msgstr "Krüpteeritud teadetest ei saa lisasid eemaldada"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Kustutada saab ainult mitmeosalise teate lisasid"
 
-#: attach/functions.c:578 index/functions.c:2608
+#: attach/functions.c:578 index/functions.c:2605
 msgid "Reply by mail as poster prefers?"
 msgstr ""
 
@@ -289,9 +290,9 @@ msgstr "Nimemuster ei sobi, jätkan?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap koostamise kirje nõuab %%s"
 
-#: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:347
-#: compose/functions.c:1712 gui/curs_lib.c:321 index/dlg_index.c:1186
-#: index/dlg_index.c:1232 pager/dlg_pager.c:466 pager/do_pager.c:167
+#: attach/mutt_attach.c:163 attach/mutt_attach.c:304 compmbox/compress.c:348
+#: compose/functions.c:1711 gui/curs_lib.c:324 index/dlg_index.c:1189
+#: index/dlg_index.c:1235 pager/dlg_pager.c:461 pager/do_pager.c:167
 #: pager/message.c:341 send/sendlib.c:575
 #, c-format
 msgid "Error running \"%s\""
@@ -371,69 +372,69 @@ msgstr "Ma ei tea, kuidas seda trükkida"
 msgid "Saving..."
 msgstr "Salvestan..."
 
-#: attach/recvattach.c:351 attach/recvattach.c:525
+#: attach/recvattach.c:352 attach/recvattach.c:526
 #, fuzzy, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Lisa on salvestatud"
 msgstr[1] "Lisa on salvestatud"
 
-#: attach/recvattach.c:550
+#: attach/recvattach.c:551
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "HOIATUS: Te olete üle kirjutamas faili %s, jätkan?"
 
-#: attach/recvattach.c:570
+#: attach/recvattach.c:568
 msgid "Attachment filtered"
 msgstr "Lisa on filtreeritud"
 
-#: attach/recvattach.c:732
+#: attach/recvattach.c:731
 msgid "Filter through: "
 msgstr "Filtreeri läbi: "
 
-#: attach/recvattach.c:732
+#: attach/recvattach.c:731
 msgid "Pipe to: "
 msgstr "Toru käsule: "
 
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-#: attach/recvattach.c:790
+#: attach/recvattach.c:789
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Ma ei tea, kuidas trükkida %s lisasid"
 
-#: attach/recvattach.c:894
+#: attach/recvattach.c:893
 #, fuzzy, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "Trükin märgitud lisa(d)?"
 msgstr[1] "Trükin märgitud lisa(d)?"
 
-#: attach/recvattach.c:895
+#: attach/recvattach.c:894
 #, c-format
 msgid "Print attachment?"
 msgstr "Trükin lisa?"
 
-#: attach/recvattach.c:937
+#: attach/recvattach.c:936
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr ""
 
-#: attach/recvattach.c:1153
+#: attach/recvattach.c:1152
 msgid "Can't decrypt encrypted message"
 msgstr "Krüpteeritud teadet ei õnnestu lahti krüpteerida"
 
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:904
+#: autocrypt/autocrypt.c:75 main.c:903
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s ei ole. Loon selle?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:227 hcache/hcache.c:236 main.c:908
-#: nntp/newsrc.c:1120
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:230 hcache/hcache.c:329 init.c:581
+#: main.c:907 nntp/newsrc.c:1120
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "%s ei saa luua: %s"
@@ -508,7 +509,7 @@ msgstr ""
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
 #. The message is printed and they are returned to the compose menu.
-#: autocrypt/autocrypt.c:639 autocrypt/autocrypt.c:668
+#: autocrypt/autocrypt.c:639 autocrypt/autocrypt.c:670
 #, fuzzy, c-format
 msgid "No (valid) autocrypt key found for %s"
 msgstr "%s jaoks puudub kehtiv sertifikaat"
@@ -517,12 +518,12 @@ msgstr "%s jaoks puudub kehtiv sertifikaat"
 #. through one or more mailboxes for Autocrypt: headers.  Those headers are
 #. then captured in the database as peer records and used for encryption.
 #. If this is answered yes, they will be prompted for a mailbox.
-#: autocrypt/autocrypt.c:934
+#: autocrypt/autocrypt.c:938
 msgid "Scan a mailbox for autocrypt headers?"
 msgstr ""
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
-#: autocrypt/autocrypt.c:939
+#: autocrypt/autocrypt.c:943
 #, fuzzy
 msgid "Scan mailbox"
 msgstr "Postkasti pole.\n"
@@ -532,7 +533,7 @@ msgstr "Postkasti pole.\n"
 #. I'm purposely being extra verbose; asking first then prompting
 #. for a mailbox.  This is because this is a one-time operation
 #. and I don't want them to accidentally ctrl-g and abort it.
-#: autocrypt/autocrypt.c:960
+#: autocrypt/autocrypt.c:964
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr ""
 
@@ -602,7 +603,7 @@ msgid "inactive"
 msgstr ""
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:328
+#: autocrypt/dlg_autocrypt.c:330
 msgid "Autocrypt Accounts"
 msgstr ""
 
@@ -678,72 +679,72 @@ msgstr ""
 msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
 msgstr "%s ei ole kataloog"
 
-#: bcache/bcache.c:219
+#: bcache/bcache.c:222
 #, fuzzy, c-format
 msgid "Message cache isn't a directory: %s"
 msgstr "%s ei ole kataloog"
 
-#: browser/browser.c:112
+#: browser/dlg_browser.c:112
 msgid "Chdir"
 msgstr "Chdir"
 
-#: browser/browser.c:113
+#: browser/dlg_browser.c:113
 msgid "Goto"
 msgstr ""
 
-#: browser/browser.c:114 browser/browser.c:129
+#: browser/dlg_browser.c:114 browser/dlg_browser.c:129
 msgid "Mask"
 msgstr "Mask"
 
-#: browser/browser.c:125
+#: browser/dlg_browser.c:125
 msgid "List"
 msgstr ""
 
-#: browser/browser.c:126
+#: browser/dlg_browser.c:126
 #, fuzzy
 msgid "Subscribe"
 msgstr "Tellin %s..."
 
-#: browser/browser.c:127
+#: browser/dlg_browser.c:127
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Loobun kaustast %s..."
 
-#: browser/browser.c:128 index/dlg_index.c:127
+#: browser/dlg_browser.c:128 index/dlg_index.c:127
 msgid "Catchup"
 msgstr ""
 
-#: browser/browser.c:678 browser/functions.c:390 browser/functions.c:750
+#: browser/dlg_browser.c:678 browser/functions.c:390 browser/functions.c:750
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s ei ole kataloog"
 
-#: browser/browser.c:966
+#: browser/dlg_browser.c:966
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Tellin %s..."
 
-#: browser/browser.c:970
+#: browser/dlg_browser.c:970
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser/browser.c:979
+#: browser/dlg_browser.c:979
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Postkastid [%d]"
 
-#: browser/browser.c:992
+#: browser/dlg_browser.c:992
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Tellitud [%s], faili mask: %s"
 
-#: browser/browser.c:998
+#: browser/dlg_browser.c:998
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Kataloog [%s], failimask: %s"
 
-#: browser/browser.c:1061
+#: browser/dlg_browser.c:1061
 msgid "Can't attach a directory"
 msgstr "Kataloogi ei saa lisada"
 
@@ -822,91 +823,93 @@ msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Luua saab ainult IMAP postkaste"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/functions.c:866
+#: browser/functions.c:865
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Järjestan tagurpidi (k)uup., (t)ähest., (s)uuruse järgi või (e)i järjesta?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/functions.c:868
+#: browser/functions.c:867
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "Järjestan (k)uup., (t)ähest., (s)uuruse järgi või (e)i järjesta?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/functions.c:870
+#: browser/functions.c:869
 msgid "dazecwn"
 msgstr ""
 
-#: browser/functions.c:937
+#: browser/functions.c:936
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "Tellin %s..."
 
-#: browser/functions.c:939
+#: browser/functions.c:938
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "Loobun kaustast %s..."
 
-#: color/command.c:422 color/command.c:481
+#: color/command.c:423 color/command.c:482
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: terminal ei toeta värve"
 
-#: color/command.c:467
+#: color/command.c:468
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr ""
 
-#: color/command.c:473
+#: color/command.c:474
 #, fuzzy, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "vaikimisi värve ei toetata"
 
-#: color/command.c:527
+#: color/command.c:528
 #, c-format
 msgid "%s: no such color"
 msgstr "%s. sellist värvi ei ole"
 
-#: color/command.c:545 color/command.c:601 color/command.c:653
-#: color/command.c:725 color/command.c:1067 commands.c:352 commands.c:374
-#: commands.c:515 commands.c:531 commands.c:796 commands.c:918 hook.c:103
-#: hook.c:158 hook.c:167 hook.c:181 hook.c:429 hook.c:445 keymap.c:1209
-#: score.c:96 subjectrx.c:73 subjectrx.c:101 subjectrx.c:109
+#: color/command.c:546 color/command.c:602 color/command.c:654
+#: color/command.c:726 color/command.c:1071 commands.c:352 commands.c:374
+#: commands.c:515 commands.c:531 commands.c:798 commands.c:923 commands.c:972
+#: commands.c:1012 hook.c:102 hook.c:157 hook.c:166 hook.c:180 hook.c:428
+#: hook.c:444 keymap.c:1217 score.c:96 subjectrx.c:73 subjectrx.c:101
+#: subjectrx.c:109
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s: liiga vähe argumente"
 
-#: color/command.c:581
+#: color/command.c:582
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s. sellist atribuuti pole"
 
-#: color/command.c:711 color/command.c:734 color/command.c:745
-#: color/command.c:789
+#: color/command.c:712 color/command.c:735 color/command.c:746
+#: color/command.c:790
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: sellist objekti ei ole"
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/command.c:876 commands.c:745 commands.c:807 commands.c:1487
-#: imap/message.c:1143 keymap.c:1487
+#: color/command.c:877 commands.c:745 commands.c:809 commands.c:1492
+#: imap/message.c:1141 keymap.c:1497
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Ajutise faili %s loomine ebaõnnestus"
 
-#: color/command.c:1099 color/command.c:1157 commands.c:398 commands.c:1108
-#: commands.c:1444 hook.c:108 hook.c:188 hook.c:452 keymap.c:1139 keymap.c:1541
-#: keymap.c:1709 keymap.c:1801 mutt_lua.c:511 score.c:104
+#: color/command.c:1103 color/command.c:1161 commands.c:398 commands.c:981
+#: commands.c:1113 commands.c:1449 hook.c:107 hook.c:187 hook.c:451
+#: keymap.c:1147 keymap.c:1554 keymap.c:1722 keymap.c:1814 mutt_lua.c:511
+#: score.c:104
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: liiga palju argumente"
 
-#: color/command.c:1117
+#: color/command.c:1121
 msgid "default colors not supported"
 msgstr "vaikimisi värve ei toetata"
 
-#: color/command.c:1148
+#: color/command.c:1152
 #, fuzzy, c-format
 msgid "%s: invalid number: %s"
 msgstr "%d: vigane teate number.\n"
@@ -986,76 +989,76 @@ msgstr ""
 msgid "invalid header field"
 msgstr "vigane päiseväli"
 
-#: commands.c:842 commands.c:856 parse/set.c:503
+#: commands.c:847 commands.c:861 parse/set.c:501
 #, c-format
 msgid "Can't query a variable with the '%s' command"
 msgstr ""
 
-#: commands.c:862 parse/set.c:497
+#: commands.c:867 parse/set.c:495
 msgid "Can't use a prefix when querying a variable"
 msgstr ""
 
-#: commands.c:894 commands.c:902
+#: commands.c:899 commands.c:907
 #, c-format
 msgid "%s is unset"
 msgstr "%s ei ole seatud"
 
-#: commands.c:942 mutt_lua.c:506
+#: commands.c:947 mutt_lua.c:506
 #, c-format
 msgid "source: error at %s"
 msgstr "source: viga kohal %s"
 
-#: commands.c:950
+#: commands.c:955
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced"
 msgstr "Teateid ei saa trükkida"
 
-#: commands.c:1117 imap/imap.c:1242
+#: commands.c:1122 imap/imap.c:1243
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Tellin %s..."
 
-#: commands.c:1121
+#: commands.c:1126
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "Tellin %s..."
 
-#: commands.c:1129 commands.c:1465
+#: commands.c:1134 commands.c:1470
 #, fuzzy
 msgid "No folder specified"
 msgstr "Teema puudub."
 
-#: commands.c:1164
+#: commands.c:1169
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr ""
 
-#: commands.c:1206
+#: commands.c:1211
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
 
-#: commands.c:1453 imap/imap.c:1244
+#: commands.c:1458 imap/imap.c:1245
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Loobun kaustast %s..."
 
-#: commands.c:1457
+#: commands.c:1462
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "Loobun kaustast %s..."
 
-#: compmbox/compress.c:381 compmbox/compress.c:515
+#: compmbox/compress.c:382 compmbox/compress.c:515
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr ""
 
-#: compmbox/compress.c:463 compmbox/compress.c:527 compmbox/compress.c:603
-#: compmbox/compress.c:641 mbox/mbox.c:1214
+#: compmbox/compress.c:464 compmbox/compress.c:527 compmbox/compress.c:602
+#: compmbox/compress.c:640 mbox/mbox.c:1111
 msgid "Unable to lock mailbox"
 msgstr "Postkasti ei saa lukustada"
 
-#: compmbox/compress.c:467 compmbox/compress.c:534 compmbox/compress.c:607
+#: compmbox/compress.c:468 compmbox/compress.c:534 compmbox/compress.c:606
 #, c-format
 msgid "Decompressing %s"
 msgstr ""
@@ -1064,76 +1067,77 @@ msgstr ""
 msgid "Can't identify the contents of the compressed file"
 msgstr ""
 
-#: compmbox/compress.c:483 compmbox/compress.c:557
+#: compmbox/compress.c:483 compmbox/compress.c:556
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr ""
 
-#: compmbox/compress.c:537
+#: compmbox/compress.c:536
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
 msgstr "Preconnect käsklus ebaõnnestus"
 
-#: compmbox/compress.c:550
+#: compmbox/compress.c:549
 msgid "Unsupported mailbox type for appending"
 msgstr ""
 
-#: compmbox/compress.c:631
+#: compmbox/compress.c:630
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
 
-#: compmbox/compress.c:653 compmbox/compress.c:705
+#: compmbox/compress.c:652 compmbox/compress.c:703
 #, fuzzy, c-format
 msgid "Compressing %s"
 msgstr "Kopeerin kausta %s..."
 
-#: compmbox/compress.c:700
+#: compmbox/compress.c:698
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Kopeerin kausta %s..."
 
-#: compmbox/compress.c:712 editmsg.c:261
+#: compmbox/compress.c:709 editmsg.c:261
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Viga. Säilitan ajutise faili: %s"
 
-#: compose/compose.c:96 compose/compose.c:115
+#: compose/dlg_compose.c:96 compose/dlg_compose.c:115
 msgid "Send"
 msgstr "Saada"
 
-#: compose/compose.c:97 compose/compose.c:116 mixmaster/dlg_mixmaster.c:85
+#: compose/dlg_compose.c:97 compose/dlg_compose.c:116
+#: mixmaster/dlg_mixmaster.c:85
 msgid "Abort"
 msgstr "Katkesta"
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:99
+#: compose/dlg_compose.c:99
 msgid "To"
 msgstr ""
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:101
+#: compose/dlg_compose.c:101
 msgid "CC"
 msgstr ""
 
 #. L10N: compose menu help line entry
-#: compose/compose.c:103 compose/compose.c:118
+#: compose/dlg_compose.c:103 compose/dlg_compose.c:118
 msgid "Subj"
 msgstr ""
 
-#: compose/compose.c:104 compose/compose.c:119 compose/functions.c:591
+#: compose/dlg_compose.c:104 compose/dlg_compose.c:119 compose/functions.c:591
 msgid "Attach file"
 msgstr "Lisa fail"
 
-#: compose/compose.c:105 compose/compose.c:120
+#: compose/dlg_compose.c:105 compose/dlg_compose.c:120
 msgid "Descrip"
 msgstr "Kirjeldus"
 
-#: compose/compose.c:117
+#: compose/dlg_compose.c:117
 #, fuzzy
 msgid "Newsgroups"
 msgstr "Teema puudub."
 
-#: compose/compose.c:274
+#: compose/dlg_compose.c:274
 msgid "-- Attachments"
 msgstr "-- Lisad"
 
@@ -1193,7 +1197,7 @@ msgstr "Avage postkast, millest lisada teade"
 msgid "Open newsgroup to attach message from"
 msgstr "Avage postkast, millest lisada teade"
 
-#: compose/functions.c:752 main.c:1352
+#: compose/functions.c:752 main.c:1351
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Postkasti ei saa lukustada!"
@@ -1218,154 +1222,154 @@ msgstr ""
 msgid "Invalid encoding"
 msgstr "Vigane kodeering"
 
-#: compose/functions.c:1024
+#: compose/functions.c:1023
 msgid "Empty 'Content-Language'"
 msgstr ""
 
-#: compose/functions.c:1087
+#: compose/functions.c:1086
 #, fuzzy
 msgid "Can't filter multipart attachments"
 msgstr "Kustutada saab ainult mitmeosalise teate lisasid"
 
-#: compose/functions.c:1122
+#: compose/functions.c:1121
 #, fuzzy
 msgid "Can't get multipart attachments"
 msgstr "Kustutada saab ainult mitmeosalise teate lisasid"
 
-#: compose/functions.c:1144
+#: compose/functions.c:1143
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1158
+#: compose/functions.c:1157
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1170
+#: compose/functions.c:1169
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr ""
 
-#: compose/functions.c:1172
+#: compose/functions.c:1171
 #, fuzzy
 msgid "Not sending this message"
 msgstr "Viga teate saatmisel"
 
-#: compose/functions.c:1187
+#: compose/functions.c:1186
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1226 compose/functions.c:1245
+#: compose/functions.c:1225 compose/functions.c:1244
 #, fuzzy
 msgid "Attachment is already at bottom"
 msgstr "Lisa on filtreeritud"
 
-#: compose/functions.c:1232 compose/functions.c:1285
+#: compose/functions.c:1231 compose/functions.c:1284
 msgid "Attachment can't be moved out of group"
 msgstr ""
 
-#: compose/functions.c:1280
+#: compose/functions.c:1279
 #, fuzzy
 msgid "Attachment is already at top"
 msgstr "Lisa on salvestatud"
 
-#: compose/functions.c:1311
+#: compose/functions.c:1310
 msgid "New file: "
 msgstr "Uus fail: "
 
-#: compose/functions.c:1330
+#: compose/functions.c:1329
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type on kujul baas/alam"
 
-#: compose/functions.c:1337
+#: compose/functions.c:1336
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Tundmatu Content-Type %s"
 
-#: compose/functions.c:1346
+#: compose/functions.c:1345
 #, c-format
 msgid "Can't create file %s"
 msgstr "Faili %s ei saa luua"
 
-#: compose/functions.c:1354
+#: compose/functions.c:1353
 #, fuzzy
 msgid "Error attaching file"
 msgstr "See mis siin nüüd on, on viga lisa loomisel"
 
-#: compose/functions.c:1396
+#: compose/functions.c:1395
 #, fuzzy
 msgid "Can't print multipart attachments"
 msgstr "Trükin märgitud lisa(d)?"
 
-#: compose/functions.c:1421
+#: compose/functions.c:1420
 #, fuzzy
 msgid "Send attachment with name: "
 msgstr "vaata lisa tekstina"
 
-#: compose/functions.c:1446
+#: compose/functions.c:1445
 #, fuzzy
 msgid "Can't save multipart attachments"
 msgstr "Kustutada saab ainult mitmeosalise teate lisasid"
 
-#: compose/functions.c:1481
+#: compose/functions.c:1480
 msgid "Recoding only affects text attachments"
 msgstr "Ümberkodeerimine puudutab ainult tekstilisasid"
 
-#: compose/functions.c:1486
+#: compose/functions.c:1485
 msgid "The current attachment won't be converted"
 msgstr "Käesolevat lisa ei teisendata"
 
-#: compose/functions.c:1488
+#: compose/functions.c:1487
 msgid "The current attachment will be converted"
 msgstr "Käesolev lisa teisendatakse"
 
-#: compose/functions.c:1517
+#: compose/functions.c:1516
 #, fuzzy
 msgid "Attachment is not 'multipart'"
 msgstr "Lisa on salvestatud"
 
-#: compose/functions.c:1633 send/send.c:2779
+#: compose/functions.c:1632 send/send.c:2778
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr ""
 
-#: compose/functions.c:1666
+#: compose/functions.c:1665
 #, fuzzy
 msgid "Can't edit multipart attachments"
 msgstr "Kustutada saab ainult mitmeosalise teate lisasid"
 
-#: compose/functions.c:1747
+#: compose/functions.c:1746
 #, fuzzy
 msgid "Can't rename multipart attachments"
 msgstr "Kustutada saab ainult mitmeosalise teate lisasid"
 
-#: compose/functions.c:1753
+#: compose/functions.c:1752
 msgid "Rename to: "
 msgstr "Uus nimi: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1760 convert/content_info.c:206 editmsg.c:100
+#: compose/functions.c:1759 convert/content_info.c:206 editmsg.c:100
 #: editmsg.c:133 editmsg.c:152
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Ei saa lugeda %s atribuute: %s"
 
-#: compose/functions.c:1804
+#: compose/functions.c:1803
 msgid "Save a copy of this message?"
 msgstr "Salvestan sellest teatest koopia?"
 
-#: compose/functions.c:1829
+#: compose/functions.c:1828
 msgid "Write message to mailbox"
 msgstr "Kirjuta teade postkasti"
 
-#: compose/functions.c:1833
+#: compose/functions.c:1832
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Kirjutan teate faili %s ..."
 
-#: compose/functions.c:1841
+#: compose/functions.c:1840
 msgid "Message written"
 msgstr "Teade on kirjutatud"
 
-#: compose/functions.c:1874
+#: compose/functions.c:1873
 #, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "Laen postitusootel teate?"
@@ -1400,7 +1404,7 @@ msgstr "%d: vigane teate number.\n"
 msgid "Invalid enum value: %ld"
 msgstr "Vigane kuupäev: %s"
 
-#: config/long.c:48 config/number.c:49 config/path.c:94 config/path.c:167
+#: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:169
 #: config/sort.c:55 config/string.c:66 config/string.c:140
 #, c-format
 msgid "Option %s may not be empty"
@@ -1443,7 +1447,7 @@ msgstr "Vigane suhteline kuupäev: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Vigane kuupäev: %s"
 
-#: config/set.c:106 init.c:655
+#: config/set.c:106 init.c:660
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -1523,7 +1527,7 @@ msgstr ""
 msgid "OAUTH token is too big: %ld"
 msgstr ""
 
-#: conn/dlg_verifycert.c:200
+#: conn/dlg_verifycert.c:203
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(k)eeldu, (n)õustu korra, nõustu (a)alati"
@@ -1531,23 +1535,23 @@ msgstr "(k)eeldu, (n)õustu korra, nõustu (a)alati"
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:204
+#: conn/dlg_verifycert.c:207
 #, fuzzy
 msgid "roas"
 msgstr "kna"
 
-#: conn/dlg_verifycert.c:208
+#: conn/dlg_verifycert.c:211
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(k)eeldu, (n)õustu korra, nõustu (a)alati"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:212
+#: conn/dlg_verifycert.c:215
 msgid "roa"
 msgstr "kna"
 
-#: conn/dlg_verifycert.c:219
+#: conn/dlg_verifycert.c:222
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(k)eeldu, (n)õustu korra"
@@ -1555,27 +1559,27 @@ msgstr "(k)eeldu, (n)õustu korra"
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:223
+#: conn/dlg_verifycert.c:226
 #, fuzzy
 msgid "ros"
 msgstr "kn"
 
-#: conn/dlg_verifycert.c:227
+#: conn/dlg_verifycert.c:230
 msgid "(r)eject, accept (o)nce"
 msgstr "(k)eeldu, (n)õustu korra"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:231
+#: conn/dlg_verifycert.c:234
 msgid "ro"
 msgstr "kn"
 
-#: conn/dlg_verifycert.c:296
+#: conn/dlg_verifycert.c:295
 msgid "Jumping is not implemented for dialogs"
 msgstr "hüppamine ei ole dialoogidele realiseeritud"
 
-#: conn/dlg_verifycert.c:303
+#: conn/dlg_verifycert.c:302
 msgid "Search is not implemented for this menu"
 msgstr "Selles menüüs ei ole otsimist realiseeritud"
 
@@ -1754,7 +1758,7 @@ msgstr "Sertifikaat on salvestatud"
 msgid "I/O error"
 msgstr "S/V viga"
 
-#: conn/openssl.c:1166 conn/raw.c:270 gui/curs_lib.c:379 mutt_logging.c:108
+#: conn/openssl.c:1166 conn/raw.c:270 gui/curs_lib.c:382 mutt_logging.c:107
 msgid "unknown error"
 msgstr "tundmatu viga"
 
@@ -1805,24 +1809,24 @@ msgstr "Viga serveriga %s suhtlemisel (%s)"
 msgid "Connection to %s has been aborted"
 msgstr "Ühendus serveriga %s suleti"
 
-#: conn/sasl.c:618
+#: conn/sasl.c:610
 msgid "Unknown SASL profile"
 msgstr ""
 
-#: conn/sasl.c:655
+#: conn/sasl.c:654
 #, fuzzy
 msgid "Error allocating SASL connection"
 msgstr "viga mustris: %s"
 
-#: conn/sasl.c:665
+#: conn/sasl.c:664
 msgid "Error setting SASL security properties"
 msgstr ""
 
-#: conn/sasl.c:676
+#: conn/sasl.c:675
 msgid "Error setting SASL external security strength"
 msgstr ""
 
-#: conn/sasl.c:686
+#: conn/sasl.c:685
 msgid "Error setting SASL external user name"
 msgstr ""
 
@@ -1904,7 +1908,7 @@ msgstr "Teate faili ei saa avada: %s"
 msgid "Can't append to folder: %s"
 msgstr "Kausta ei saa lisada: %s"
 
-#: email/parse.c:1572
+#: email/parse.c:1579
 msgid "multipart message has no boundary parameter"
 msgstr "mitmeosalisel teatel puudub eraldaja"
 
@@ -1955,19 +1959,19 @@ msgstr ""
 msgid "eca"
 msgstr ""
 
-#: envelope/functions.c:328
+#: envelope/functions.c:327
 msgid "No PGP backend configured"
 msgstr ""
 
-#: envelope/functions.c:335 envelope/functions.c:410
+#: envelope/functions.c:334 envelope/functions.c:409
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "S/MIME on juba valitud. Puhasta ja jätka?"
 
-#: envelope/functions.c:366
+#: envelope/functions.c:365
 msgid "No S/MIME backend configured"
 msgstr ""
 
-#: envelope/functions.c:374
+#: envelope/functions.c:373
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP on juba valitud. Puhasta ja jätka?"
 
@@ -1977,22 +1981,22 @@ msgid "From: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:96 send/send.c:274
+#: envelope/window.c:96 send/send.c:273
 msgid "To: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:98 send/send.c:281
+#: envelope/window.c:98 send/send.c:280
 msgid "Cc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:100 send/send.c:288
+#: envelope/window.c:100 send/send.c:287
 msgid "Bcc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:102 send/send.c:334
+#: envelope/window.c:102 send/send.c:333
 msgid "Subject: "
 msgstr ""
 
@@ -2022,7 +2026,7 @@ msgstr ""
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: envelope/window.c:118 ncrypt/crypt_gpgme.c:3856 ncrypt/pgp.c:2021
+#: envelope/window.c:118 ncrypt/crypt_gpgme.c:3855 ncrypt/pgp.c:2021
 #: ncrypt/smime.c:2241
 msgid "Sign as: "
 msgstr "Allkirjasta kui: "
@@ -2225,172 +2229,172 @@ msgstr[0] "Teadet ei saa trükkida"
 msgstr[1] "Teateid ei saa trükkida"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: external.c:500
+#: external.c:499
 #, fuzzy
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: external.c:502
+#: external.c:501
 #, fuzzy
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: external.c:504
+#: external.c:503
 #, fuzzy
 msgid "dfrsotuzcpl"
 msgstr "dfrsotuzc"
 
-#: external.c:602
+#: external.c:601
 msgid "Shell command: "
 msgstr "Käsurea käsk: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: external.c:821
+#: external.c:820
 #, fuzzy
 msgid "Copying tagged messages..."
 msgstr "Kopeerin %d teadet kausta %s..."
 
-#: external.c:825
+#: external.c:824
 #, fuzzy
 msgid "Copy tagged to mailbox"
 msgstr "Kopeeri märgitud postkasti"
 
-#: external.c:825
+#: external.c:824
 #, fuzzy
 msgid "Copy to mailbox"
 msgstr "Kopeeri postkasti"
 
-#: external.c:828
+#: external.c:827
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Dekrüpti-kopeeri märgitud postkasti"
 
-#: external.c:829
+#: external.c:828
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "Dekrüpti-kopeeri postkasti"
 
-#: external.c:832
+#: external.c:831
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
 msgstr "Dekodeeri-kopeeri märgitud postkasti"
 
-#: external.c:833
+#: external.c:832
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "Dekodeeri-kopeeri postkasti"
 
 #. L10N: Progress meter message when saving tagged messages
-#: external.c:840
+#: external.c:839
 #, fuzzy
 msgid "Saving tagged messages..."
 msgstr "Trükin märgitud teated?"
 
-#: external.c:844
+#: external.c:843
 #, fuzzy
 msgid "Save tagged to mailbox"
 msgstr "Salvesta märgitud postkasti"
 
-#: external.c:844
+#: external.c:843
 #, fuzzy
 msgid "Save to mailbox"
 msgstr "Salvesta postkasti"
 
-#: external.c:847
+#: external.c:846
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Dekrüpti-salvesta märgitud postkasti"
 
-#: external.c:848
+#: external.c:847
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "Dekrüpti-salvesta postkasti"
 
-#: external.c:851
+#: external.c:850
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
 msgstr "Dekodeeri-salvesta märgitud postkasti"
 
-#: external.c:852
+#: external.c:851
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "Dekodeeri-salvesta postkasti"
 
-#: external.c:898
+#: external.c:897
 #, c-format
 msgid "Copying to %s..."
 msgstr "Kopeerin kausta %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1055
+#: external.c:1054
 #, fuzzy
 msgid "Error saving tagged messages"
 msgstr "Trükin märgitud teated?"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1060
+#: external.c:1059
 #, fuzzy
 msgid "Error saving message"
 msgstr "Viga teate saatmisel"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1067
+#: external.c:1066
 #, fuzzy
 msgid "Error copying tagged messages"
 msgstr "Kopeerin %d teadet kausta %s..."
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1072
+#: external.c:1071
 #, fuzzy
 msgid "Error copying message"
 msgstr "Viga teate saatmisel."
 
-#: external.c:1142
+#: external.c:1141
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Teisendan saatmisel kooditabelisse %s?"
 
-#: external.c:1153
+#: external.c:1152
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Sisu tüübiks on nüüd %s"
 
-#: external.c:1158
+#: external.c:1157
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Kooditabeliks on nüüd %s; ei teisenda"
 
-#: external.c:1159
+#: external.c:1158
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Kooditabeliks on nüüd %s; teisendan"
 
-#: flags.c:392 index/functions.c:814 index/functions.c:918
-#: index/functions.c:934 index/functions.c:1073 mutt_thread.c:1292
-#: mutt_thread.c:1358 mutt_thread.c:1444
+#: flags.c:392 index/functions.c:814 index/functions.c:917
+#: index/functions.c:933 index/functions.c:1072 mutt_thread.c:1297
+#: mutt_thread.c:1363 mutt_thread.c:1449
 msgid "Threading is not enabled"
 msgstr "Teemad ei ole lubatud"
 
-#: flags.c:462
+#: flags.c:467
 msgid "Clear flag"
 msgstr "Eemalda lipp"
 
-#: flags.c:462
+#: flags.c:467
 msgid "Set flag"
 msgstr "Sea lipp"
 
-#: gui/curs_lib.c:343 index/functions.c:535
+#: gui/curs_lib.c:346 index/functions.c:535
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Väljun NeoMuttist salvestamata?"
 
-#: gui/curs_lib.c:408
+#: gui/curs_lib.c:411
 msgid "Press any key to continue..."
 msgstr "Jätkamiseks vajutage klahvi..."
 
-#: gui/curs_lib.c:459
+#: gui/curs_lib.c:467
 msgid " ('?' for list): "
 msgstr " ('?' annab loendi): "
 
@@ -2612,28 +2616,125 @@ msgstr ""
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
 
-#: help.c:339
+#: help.c:340
 msgid "ERROR: please report this bug"
 msgstr "VIGA: Palun teatage sellest veast"
 
-#: help.c:397
+#: help.c:414
+msgid "message is tagged"
+msgstr ""
+
+#: help.c:416
+msgid "message is flagged"
+msgstr ""
+
+#: help.c:417
+msgid "message is deleted"
+msgstr ""
+
+#: help.c:419
+msgid "attachment is deleted"
+msgstr ""
+
+#: help.c:421
+msgid "message has been replied to"
+msgstr ""
+
+#: help.c:422
+msgid "message has been read"
+msgstr ""
+
+#: help.c:423
+msgid "message is new"
+msgstr ""
+
+#: help.c:425
+msgid "thread has been read"
+msgstr ""
+
+#: help.c:427
+msgid "thread has at least one new message"
+msgstr ""
+
+#: help.c:429
+#, c-format
+msgid "message has been read (%S expando)"
+msgstr ""
+
+#: help.c:431
+msgid "message has been read (%Z expando)"
+msgstr ""
+
+#: help.c:435
+msgid "message signed with a verified key"
+msgstr ""
+
+#: help.c:437
+msgid "message is PGP-encrypted"
+msgstr ""
+
+#: help.c:439
+msgid "message is signed"
+msgstr ""
+
+#: help.c:441
+msgid "message contains a PGP key"
+msgstr ""
+
+#: help.c:443
+msgid "message has no cryptography information"
+msgstr ""
+
+#: help.c:447
+msgid "message is not To: you"
+msgstr ""
+
+#: help.c:449
+msgid "message is To: you and only you"
+msgstr ""
+
+#: help.c:450
+msgid "message is To: you"
+msgstr ""
+
+#: help.c:451
+msgid "message is Cc: to you"
+msgstr ""
+
+#: help.c:453
+msgid "message is From: you"
+msgstr ""
+
+#: help.c:455
+msgid "message is sent to a subscribed mailinglist"
+msgstr ""
+
+#: help.c:457
+msgid "you are in the Reply-To: list"
+msgstr ""
+
+#: help.c:476
 msgid "<UNKNOWN>"
 msgstr "<TUNDMATU>"
 
-#: help.c:418
+#: help.c:498
 msgid "Generic bindings:"
 msgstr "Üldised seosed:"
 
-#: help.c:422
+#: help.c:502
 msgid "Unbound functions:"
 msgstr "Sidumata funktsioonid:"
 
-#: help.c:430
+#: help.c:510
+msgid "Message flags:"
+msgstr ""
+
+#: help.c:516
 #, c-format
 msgid "Help for %s"
 msgstr "%s abiinfo"
 
-#: history/dlg_history.c:133
+#: history/dlg_history.c:136
 #, fuzzy, c-format
 msgid "History '%s'"
 msgstr "Päring '%s'"
@@ -2643,11 +2744,11 @@ msgstr "Päring '%s'"
 msgid "Bad history file format (line %d)"
 msgstr ""
 
-#: history/history.c:262 ncrypt/crypt_gpgme.c:570 ncrypt/crypt_gpgme.c:1894
-#: ncrypt/crypt_gpgme.c:1918 ncrypt/crypt_gpgme.c:1977
-#: ncrypt/crypt_gpgme.c:1994 ncrypt/crypt_gpgme.c:2027
-#: ncrypt/crypt_gpgme.c:2045 ncrypt/crypt_gpgme.c:2086
-#: ncrypt/crypt_gpgme.c:2671 ncrypt/crypt_gpgme.c:2765
+#: history/history.c:262 ncrypt/crypt_gpgme.c:570 ncrypt/crypt_gpgme.c:1893
+#: ncrypt/crypt_gpgme.c:1917 ncrypt/crypt_gpgme.c:1976
+#: ncrypt/crypt_gpgme.c:1993 ncrypt/crypt_gpgme.c:2026
+#: ncrypt/crypt_gpgme.c:2044 ncrypt/crypt_gpgme.c:2085
+#: ncrypt/crypt_gpgme.c:2670 ncrypt/crypt_gpgme.c:2764
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:592 ncrypt/pgp.c:599
 #: ncrypt/pgp.c:927 ncrypt/pgp.c:1044 ncrypt/pgp.c:1201 ncrypt/pgp.c:1225
 #: ncrypt/pgp.c:1258 ncrypt/pgp.c:1615 ncrypt/pgp_functions.c:132
@@ -2655,33 +2756,33 @@ msgstr ""
 #: ncrypt/smime.c:918 ncrypt/smime.c:1016 ncrypt/smime.c:1126
 #: ncrypt/smime.c:1191 ncrypt/smime.c:1198 ncrypt/smime.c:1406
 #: ncrypt/smime.c:1807 ncrypt/smime.c:1886 ncrypt/smime.c:1893
-#: ncrypt/smime.c:2000 ncrypt/smime.c:2130 ncrypt/smime.c:2146 nntp/nntp.c:1320
-#: nntp/nntp.c:2183 pattern/exec.c:146 pop/pop.c:122
+#: ncrypt/smime.c:2000 ncrypt/smime.c:2130 ncrypt/smime.c:2146 nntp/nntp.c:1313
+#: nntp/nntp.c:2176 pattern/exec.c:146 pop/pop.c:122
 msgid "Can't create temporary file"
 msgstr "Ei õnnestu avada ajutist faili"
 
-#: hook.c:200
+#: hook.c:199
 msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
-#: hook.c:212
+#: hook.c:211
 msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
-#: hook.c:232
+#: hook.c:231
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:548
+#: hook.c:547
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: seose sees ei saa unhook * kasutada"
 
-#: hook.c:561
+#: hook.c:560
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: tundmatu seose tüüp: %s"
 
-#: hook.c:571
+#: hook.c:570
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: %s ei saa %s seest kustutada"
@@ -2692,18 +2793,18 @@ msgid "No authenticators available or wrong credentials"
 msgstr "Autentikaatoreid pole"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:55 imap/auth_cram.c:107 imap/auth_gsasl.c:65
+#: imap/auth_anon.c:55 imap/auth_cram.c:106 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:72 imap/auth_sasl.c:124
-#: nntp/nntp.c:512 nntp/nntp.c:577 pop/auth.c:76 pop/auth.c:190 pop/auth.c:335
-#: pop/auth.c:430 send/smtp.c:536 send/smtp.c:652 send/smtp.c:744
+#: nntp/nntp.c:511 nntp/nntp.c:576 pop/auth.c:76 pop/auth.c:190 pop/auth.c:335
+#: pop/auth.c:430 send/smtp.c:535 send/smtp.c:651 send/smtp.c:743
 #, fuzzy, c-format
 msgid "Authenticating (%s)..."
 msgstr "Autentimine (APOP)..."
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:88 imap/auth_cram.c:181 imap/auth_gss.c:348
-#: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:676 pop/auth.c:288
-#: pop/auth.c:356 send/smtp.c:832 send/smtp.c:906 send/smtp.c:1010
+#: imap/auth_anon.c:88 imap/auth_cram.c:180 imap/auth_gss.c:348
+#: imap/auth_oauth.c:105 imap/auth_sasl.c:258 nntp/nntp.c:675 pop/auth.c:288
+#: pop/auth.c:356 send/smtp.c:831 send/smtp.c:905 send/smtp.c:1009
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "SASL autentimine ebaõnnestus"
@@ -2777,12 +2878,12 @@ msgstr "Postkast on loodud"
 msgid "Mailbox %s@%s closed"
 msgstr "Postkast on suletud"
 
-#: imap/command.c:1205
+#: imap/command.c:1225
 #, fuzzy, c-format
 msgid "IMAP command failed: %s"
 msgstr "Preconnect käsklus ebaõnnestus"
 
-#: imap/command.c:1309 imap/command.c:1430
+#: imap/command.c:1329 imap/command.c:1450
 #, fuzzy, c-format
 msgid "Connection to %s timed out"
 msgstr "Ühendus serveriga %s suleti"
@@ -2797,25 +2898,25 @@ msgstr ""
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "See IMAP server on iganenud. NeoMutt ei tööta sellega."
 
-#: imap/imap.c:437
+#: imap/imap.c:438
 #, fuzzy, c-format
 msgid "CREATE failed: %s"
 msgstr "SSL ebaõnnestus: %s"
 
-#: imap/imap.c:561
+#: imap/imap.c:562
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Sulen ühendust serveriga %s..."
 
-#: imap/imap.c:764 nntp/nntp.c:1822 pop/lib.c:340 send/smtp.c:1055
+#: imap/imap.c:765 nntp/nntp.c:1815 pop/lib.c:340 send/smtp.c:1054
 msgid "Secure connection with TLS?"
 msgstr "Turvan ühenduse TLS protokolliga?"
 
-#: imap/imap.c:780 nntp/nntp.c:1845 pop/lib.c:361 send/smtp.c:1072
+#: imap/imap.c:781 nntp/nntp.c:1838 pop/lib.c:361 send/smtp.c:1071
 msgid "Could not negotiate TLS connection"
 msgstr "TLS ühendust ei õnnestu kokku leppida"
 
-#: imap/imap.c:795 imap/imap.c:812 pop/lib.c:378
+#: imap/imap.c:796 imap/imap.c:813 pop/lib.c:378
 msgid "Encrypted connection unavailable"
 msgstr ""
 
@@ -2829,67 +2930,67 @@ msgstr "Tellin %s..."
 msgid "Unsubscribing from %s..."
 msgstr "Loobun kaustast %s..."
 
-#: imap/imap.c:1398 imap/message.c:1789
+#: imap/imap.c:1400 imap/message.c:1782
 #, fuzzy, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopeerin %d teadet kausta %s..."
 msgstr[1] "Kopeerin %d teadet kausta %s..."
 
-#: imap/imap.c:1416 imap/imap.c:2075 imap/message.c:1807 muttlib.c:1383
+#: imap/imap.c:1418 imap/imap.c:2077 imap/message.c:1800 muttlib.c:1382
 #, c-format
 msgid "Create %s?"
 msgstr "Loon %s?"
 
-#: imap/imap.c:1488
+#: imap/imap.c:1490
 msgid "Expunge failed"
 msgstr "Kustutamine ebaõnnestus."
 
-#: imap/imap.c:1506
+#: imap/imap.c:1508
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "märgin %d teadet kustutatuks..."
 msgstr[1] "märgin %d teadet kustutatuks..."
 
-#: imap/imap.c:1546
+#: imap/imap.c:1548
 #, fuzzy, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "Salvestan teadete olekud... [%d/%d]"
 msgstr[1] "Salvestan teadete olekud... [%d/%d]"
 
-#: imap/imap.c:1591
+#: imap/imap.c:1593
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
-#: imap/imap.c:1599
+#: imap/imap.c:1601
 #, fuzzy
 msgid "Error saving flags"
 msgstr "Viga aadressi analüüsimisel!"
 
-#: imap/imap.c:1626
+#: imap/imap.c:1628
 msgid "Expunging messages from server..."
 msgstr "Kustutan serveril teateid..."
 
-#: imap/imap.c:1632
+#: imap/imap.c:1634
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE ebaõnnestus"
 
-#: imap/imap.c:1875 nntp/nntp.c:2407
+#: imap/imap.c:1877 nntp/nntp.c:2400
 #, c-format
 msgid "Selecting %s..."
 msgstr "Valin %s..."
 
-#: imap/imap.c:2042
+#: imap/imap.c:2044
 msgid "Error opening mailbox"
 msgstr "Viga postkasti avamisel!"
 
-#: imap/imap.c:2185
+#: imap/imap.c:2187
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2229
+#: imap/imap.c:2231
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Vigane    "
@@ -2900,13 +3001,13 @@ msgid "Abort download and close mailbox?"
 msgstr ""
 
 #. L10N: Comparing the cached data with the IMAP server's data
-#: imap/message.c:688 imap/message.c:829
+#: imap/message.c:688 imap/message.c:828
 #, fuzzy
 msgid "Evaluating cache..."
 msgstr "Laen teadete päiseid... [%d/%d]"
 
 #. L10N: Fetching IMAP flag changes, using the CONDSTORE extension
-#: imap/message.c:918
+#: imap/message.c:917
 #, fuzzy
 msgid "Fetching flag updates..."
 msgstr "Laen teadete päiseid... [%d/%d]"
@@ -2914,41 +3015,41 @@ msgstr "Laen teadete päiseid... [%d/%d]"
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
-#: imap/message.c:1062
+#: imap/message.c:1060
 #, fuzzy
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "Postkasti ei õnnestu uuesti avada"
 
-#: imap/message.c:1130
+#: imap/message.c:1128
 #, fuzzy
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Sellest IMAP serverist ei saa päiseid laadida"
 
-#: imap/message.c:1151 index/functions.c:2364 nntp/nntp.c:1255 pop/pop.c:369
+#: imap/message.c:1149 index/functions.c:2362 nntp/nntp.c:1249 pop/pop.c:369
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Laen teadete päiseid... [%d/%d]"
 
-#: imap/message.c:1563
+#: imap/message.c:1557
 #, fuzzy
 msgid "Uploading message..."
 msgstr "Saadan teadet ..."
 
-#: imap/message.c:1726
+#: imap/message.c:1719
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopeerin teadet %d kausta %s..."
 
-#: imap/message.c:1994 nntp/nntp.c:2638 pop/pop.c:1045
+#: imap/message.c:1987 nntp/nntp.c:2630 pop/pop.c:1043
 msgid "Fetching message..."
 msgstr "Laen teadet..."
 
-#: imap/message.c:2045 pop/pop.c:1024
+#: imap/message.c:2038 pop/pop.c:1022
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Teadete indeks on vigane. Proovige postkasti uuesti avada."
 
-#: imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:358 mutt/memory.c:58
-#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006 mx.c:1248
+#: imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365 mutt/memory.c:58
+#: mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006 mx.c:1247
 msgid "Out of memory"
 msgstr "Mälu on otsas"
 
@@ -2962,7 +3063,7 @@ msgstr ""
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/util.c:648
+#: imap/util.c:646
 msgid "Continue?"
 msgstr "Jätkan?"
 
@@ -2970,7 +3071,7 @@ msgstr "Jätkan?"
 msgid "Quit"
 msgstr "Välju"
 
-#: index/dlg_index.c:110 pager/dlg_pager.c:116
+#: index/dlg_index.c:110 pager/dlg_pager.c:103
 msgid "Reply"
 msgstr "Vasta"
 
@@ -2978,11 +3079,11 @@ msgstr "Vasta"
 msgid "Group"
 msgstr "Grupp"
 
-#: index/dlg_index.c:125 pager/dlg_pager.c:130
+#: index/dlg_index.c:125 pager/dlg_pager.c:117
 msgid "Post"
 msgstr ""
 
-#: index/dlg_index.c:126 pager/dlg_pager.c:131
+#: index/dlg_index.c:126 pager/dlg_pager.c:118
 #, fuzzy
 msgid "Followup"
 msgstr "Vastus aadressile %s%s?"
@@ -2997,32 +3098,32 @@ msgstr ""
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:787 muttlib.c:1367 mx.c:222 mx.c:362
+#: index/dlg_index.c:786 muttlib.c:1366 mx.c:222 mx.c:362
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s ei ole postkast"
 
-#: index/dlg_index.c:1166
+#: index/dlg_index.c:1169
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Postkasti on väliselt muudetud. Lipud võivad olla valed."
 
-#: index/dlg_index.c:1175 pager/dlg_pager.c:440
+#: index/dlg_index.c:1178 pager/dlg_pager.c:435
 msgid "New mail in this mailbox"
 msgstr "Selles postkastis on uus kiri"
 
-#: index/dlg_index.c:1194
+#: index/dlg_index.c:1197
 msgid "Mailbox was externally modified"
 msgstr "Postkasti on väliselt muudetud"
 
-#: index/dlg_index.c:1307 index/functions.c:2829 pattern/message.c:289
+#: index/dlg_index.c:1312 index/functions.c:2826 pattern/message.c:289
 msgid "No mailbox is open"
 msgstr "Avatud postkaste pole"
 
-#: index/dlg_index.c:1315
+#: index/dlg_index.c:1320
 msgid "No tagged messages"
 msgstr "Märgitud teateid pole"
 
-#: index/dlg_index.c:1320 index/functions.c:689
+#: index/dlg_index.c:1325 index/functions.c:689
 #, fuzzy
 msgid "Nothing to do"
 msgstr "Ühendus serverisse %s.."
@@ -3037,7 +3138,7 @@ msgstr "Kustutamata teateid pole."
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:328 index/functions.c:976
+#: index/functions.c:328 index/functions.c:975
 #, fuzzy
 msgid "Can't delete messages"
 msgstr "Kustutamata teateid pole."
@@ -3109,109 +3210,109 @@ msgstr "Avan postkasti ainult lugemiseks"
 msgid "Open mailbox"
 msgstr "Avan postkasti"
 
-#: index/functions.c:957
+#: index/functions.c:956
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
 msgstr "Teema sisaldab lugemata teateid"
 
-#: index/functions.c:979
+#: index/functions.c:978
 msgid "Delete messages matching: "
 msgstr "Kustuta teated mustriga: "
 
-#: index/functions.c:1019
+#: index/functions.c:1018
 msgid "Limit to messages matching: "
 msgstr "Piirdu teadetega mustriga: "
 
-#: index/functions.c:1049
+#: index/functions.c:1048
 msgid "To view all messages, limit to \"all\""
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1062
+#: index/functions.c:1061
 msgid "Can't link threads"
 msgstr ""
 
-#: index/functions.c:1077
+#: index/functions.c:1076
 msgid "No Message-ID: header available to link thread"
 msgstr ""
 
-#: index/functions.c:1091
+#: index/functions.c:1090
 msgid "Threads linked"
 msgstr ""
 
-#: index/functions.c:1096
+#: index/functions.c:1095
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1125 mx.c:1309 mx.c:1329
+#: index/functions.c:1124 mx.c:1308 mx.c:1328
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
-#: index/functions.c:1146
+#: index/functions.c:1145
 #, fuzzy
 msgid "No tag specified, aborting"
 msgstr "Teema puudub, katkestan"
 
-#: index/functions.c:1156
+#: index/functions.c:1155
 msgid "Update tags..."
 msgstr ""
 
-#: index/functions.c:1197
+#: index/functions.c:1195
 msgid "Failed to modify tags, aborting"
 msgstr ""
 
-#: index/functions.c:1311
+#: index/functions.c:1309
 #, fuzzy
 msgid "No new messages in this limited view"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
-#: index/functions.c:1313
+#: index/functions.c:1311
 #, fuzzy
 msgid "No new messages"
 msgstr "Uusi teateid pole"
 
-#: index/functions.c:1318
+#: index/functions.c:1316
 #, fuzzy
 msgid "No unread messages in this limited view"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
-#: index/functions.c:1320
+#: index/functions.c:1318
 #, fuzzy
 msgid "No unread messages"
 msgstr "Lugemata teateid pole"
 
-#: index/functions.c:1336 menu/functions.c:107 pager/functions.c:494
-#: pattern/pattern.c:530 pattern/pattern.c:694
+#: index/functions.c:1334 menu/functions.c:107 pager/functions.c:493
+#: pattern/pattern.c:532 pattern/pattern.c:696
 msgid "Search wrapped to top"
 msgstr "Otsing pööras algusest tagasi"
 
-#: index/functions.c:1341 pager/functions.c:524 pattern/pattern.c:543
-#: pattern/pattern.c:707
+#: index/functions.c:1339 pager/functions.c:523 pattern/pattern.c:545
+#: pattern/pattern.c:709
 msgid "Search wrapped to bottom"
 msgstr "Otsing pööras lõpust tagasi"
 
-#: index/functions.c:1385
+#: index/functions.c:1383
 msgid "No more threads"
 msgstr "Rohkem teemasid pole"
 
-#: index/functions.c:1387
+#: index/functions.c:1385
 msgid "You are on the first thread"
 msgstr "Te olete esimesel teemal"
 
-#: index/functions.c:1405 index/functions.c:1794
+#: index/functions.c:1403 index/functions.c:1792
 msgid "You are on the last message"
 msgstr "Te olete viimasel teatel"
 
-#: index/functions.c:1422 index/functions.c:1477
+#: index/functions.c:1420 index/functions.c:1475
 msgid "No undeleted messages"
 msgstr "Kustutamata teateid pole"
 
-#: index/functions.c:1443
+#: index/functions.c:1441
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Uute teadetega postkaste ei ole."
 
-#: index/functions.c:1461 index/functions.c:1834
+#: index/functions.c:1459 index/functions.c:1832
 msgid "You are on the first message"
 msgstr "Te olete esimesel teatel"
 
@@ -3219,16 +3320,16 @@ msgstr "Te olete esimesel teatel"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1530
+#: index/functions.c:1528
 #, fuzzy
 msgid "Can't mark messages as read"
 msgstr "hüppa teema vanemteatele"
 
-#: index/functions.c:1607
+#: index/functions.c:1605
 msgid "No limit pattern is in effect"
 msgstr "Kehtivat piirangumustrit ei ole"
 
-#: index/functions.c:1691
+#: index/functions.c:1689
 msgid "Tag messages matching: "
 msgstr "Märgi teated mustriga: "
 
@@ -3236,30 +3337,30 @@ msgstr "Märgi teated mustriga: "
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1707 index/functions.c:2211
+#: index/functions.c:1705 index/functions.c:2209
 #, fuzzy
 msgid "Can't undelete messages"
 msgstr "Kustutamata teateid pole."
 
-#: index/functions.c:1711
+#: index/functions.c:1709
 msgid "Undelete messages matching: "
 msgstr "Taasta teated mustriga: "
 
-#: index/functions.c:1725
+#: index/functions.c:1723
 msgid "Untag messages matching: "
 msgstr "Võta märk teadetelt mustriga: "
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1748
+#: index/functions.c:1746
 #, fuzzy
 msgid "Enter macro stroke: "
 msgstr "Sisestage võtme ID: "
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:1764
+#: index/functions.c:1762
 #, fuzzy
 msgid "message hotkey"
 msgstr "Teade jäeti postitusootele."
@@ -3267,115 +3368,115 @@ msgstr "Teade jäeti postitusootele."
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:1769
+#: index/functions.c:1767
 #, fuzzy, c-format
 msgid "Message bound to %s"
 msgstr "Teade on peegeldatud"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:1779
+#: index/functions.c:1777
 #, fuzzy
 msgid "No message ID to macro"
 msgstr "Selles kaustas ei ole teateid"
 
-#: index/functions.c:1882
+#: index/functions.c:1880
 msgid "Quit NeoMutt?"
 msgstr "Väljun NeoMuttist?"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2123
+#: index/functions.c:2121
 msgid "Can't toggle new"
 msgstr ""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2175
+#: index/functions.c:2173
 #, fuzzy
 msgid "Can't undelete message"
 msgstr "Kustutamata teateid pole."
 
-#: index/functions.c:2310
+#: index/functions.c:2308
 #, fuzzy
 msgid "Logged out of IMAP servers"
 msgstr "Sulen ühenduse IMAP serveriga.."
 
-#: index/functions.c:2360
+#: index/functions.c:2358
 msgid "No Message-Id. Unable to perform operation."
 msgstr ""
 
-#: index/functions.c:2430
+#: index/functions.c:2428
 #, fuzzy
 msgid "No deleted messages found in the thread"
 msgstr "kustuta kõik teated teemas"
 
-#: index/functions.c:2455
+#: index/functions.c:2453
 #, fuzzy
 msgid "Enter Message-Id: "
 msgstr "Sisestage võtme ID: "
 
-#: index/functions.c:2467
+#: index/functions.c:2465
 msgid "Article has no parent reference"
 msgstr ""
 
-#: index/functions.c:2490
+#: index/functions.c:2488
 #, fuzzy
 msgid "Message is not visible in limited view"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
-#: index/functions.c:2495
+#: index/functions.c:2493
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
 msgstr "Kustutan serveril teateid..."
 
-#: index/functions.c:2508 nntp/nntp.c:2673
+#: index/functions.c:2506 nntp/nntp.c:2668
 #, c-format
 msgid "Article %s not found on the server"
 msgstr ""
 
-#: index/functions.c:2536
+#: index/functions.c:2534
 #, fuzzy
 msgid "Open newsgroup in read-only mode"
 msgstr "Avan postkasti ainult lugemiseks"
 
-#: index/functions.c:2541
+#: index/functions.c:2539
 msgid "Open newsgroup"
 msgstr ""
 
-#: index/functions.c:2613
+#: index/functions.c:2610
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr ""
 
-#: index/functions.c:2650
+#: index/functions.c:2647
 #, fuzzy
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Teema puudub, katkestan"
 
-#: index/functions.c:2671
+#: index/functions.c:2668
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr ""
 
-#: index/functions.c:2683
+#: index/functions.c:2680
 msgid "Failed to read thread, aborting"
 msgstr ""
 
-#: index/functions.c:2722
+#: index/functions.c:2719
 #, fuzzy
 msgid "No query, aborting"
 msgstr "Teema puudub, katkestan"
 
-#: index/functions.c:2765
+#: index/functions.c:2762
 msgid "Windowed queries disabled"
 msgstr ""
 
-#: index/functions.c:2771
+#: index/functions.c:2768
 msgid "No notmuch vfolder currently loaded"
 msgstr ""
 
-#: index/functions.c:2835
+#: index/functions.c:2832
 msgid "There are no messages"
 msgstr "Teateid ei ole"
 
-#: index/functions.c:2842
+#: index/functions.c:2839
 msgid "No visible messages"
 msgstr "Nähtavaid teateid pole"
 
@@ -3383,100 +3484,100 @@ msgstr "Nähtavaid teateid pole"
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
-#: init.c:87
+#: init.c:88
 #, c-format
 msgid "Error in command line: %s"
 msgstr "Viga käsureal: %s"
 
-#: init.c:89
+#: init.c:90
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "Viga käsureal: %s"
 
-#: init.c:200
+#: init.c:201
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "ei suuda tuvastada kasutajanime"
 
-#: init.c:627
+#: init.c:632
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
 
-#: keymap.c:410
+#: keymap.c:412
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
 msgstr ""
 
-#: keymap.c:782
+#: keymap.c:789
 msgid "Macro loop detected"
 msgstr "Tuvastasin makros tsükli"
 
-#: keymap.c:880
+#: keymap.c:887
 msgid "Abort key is not set, defaulting to Ctrl-G"
 msgstr ""
 
-#: keymap.c:886
+#: keymap.c:893
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr ""
 
-#: keymap.c:1087 keymap.c:1122
+#: keymap.c:1095 keymap.c:1130
 msgid "Key is not bound"
 msgstr "Klahv ei ole seotud"
 
-#: keymap.c:1127
+#: keymap.c:1135
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klahv ei ole seotud. Abiinfo saamiseks vajutage '%s'."
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-#: keymap.c:1184 keymap.c:1460 keymap.c:1633
+#: keymap.c:1192 keymap.c:1469 keymap.c:1646
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: sellist menüüd ei ole"
 
-#: keymap.c:1200
+#: keymap.c:1208
 #, c-format
 msgid "%s: null key sequence"
 msgstr "%s: tühi klahvijärjend"
 
-#: keymap.c:1237
+#: keymap.c:1245
 #, c-format
 msgid "Function '%s' not available for menu '%s'"
 msgstr ""
 
 #. L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
 #. it might also be 'all' when all menus are affected.
-#: keymap.c:1476
+#: keymap.c:1485
 #, fuzzy, c-format
 msgid "%s: no binds for this menu"
 msgstr "%s: sellist menüüd ei ole"
 
-#: keymap.c:1476
+#: keymap.c:1485
 #, fuzzy, c-format
 msgid "%s: no macros for this menu"
 msgstr "%s: sellist menüüd ei ole"
 
-#: keymap.c:1790
+#: keymap.c:1803
 msgid "macro: empty key sequence"
 msgstr "makro: tühi klahvijärjend"
 
-#: keymap.c:1860
+#: keymap.c:1873
 msgid "exec: no arguments"
 msgstr "exec: argumente pole"
 
-#: keymap.c:1883
+#: keymap.c:1896
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: sellist funktsiooni pole"
 
-#: keymap.c:1909
+#: keymap.c:1927
 #, fuzzy, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "Sisestage kasutaja teatele %s: "
 
-#: keymap.c:1917
+#: keymap.c:1941
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr ""
@@ -3499,361 +3600,361 @@ msgstr "Vigaselt formaaditud kirje tüübile %s faili \"%s\" real %d"
 #. -or-
 #. unset mailcap_path
 #.
-#: mailcap.c:499
+#: mailcap.c:504
 #, fuzzy
 msgid "Neither mailcap_path nor MAILCAPS specified"
 msgstr "Mailcap tee ei ole määratud"
 
-#: mailcap.c:523
+#: mailcap.c:528
 #, c-format
 msgid "mailcap entry for type %s not found"
 msgstr "Tüübil %s puudub mailcap kirje"
 
-#: maildir/maildir.c:249 maildir/mh.c:303
+#: maildir/maildir.c:273 maildir/mh.c:303
 #, fuzzy
 msgid "Could not flush message to disk"
 msgstr "Teadet ei õnnestu saata."
 
-#: maildir/maildir.c:294
+#: maildir/maildir.c:319
 #, fuzzy
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ei õnnestu seada faili aegu"
 
-#: maildir/maildir.c:684 maildir/mh.c:697
+#: maildir/maildir.c:713 maildir/mh.c:695
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "Valin %s..."
 
-#: maildir/maildir.c:705 maildir/mh.c:720 mbox/mbox.c:212 mbox/mbox.c:383
+#: maildir/maildir.c:734 maildir/mh.c:718 mbox/mbox.c:216 mbox/mbox.c:386
 #: mx.c:375
 #, c-format
 msgid "Reading %s..."
 msgstr "Loen %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/maildir.c:1395 maildir/mh.c:1046 mbox/mbox.c:1282 mx.c:483
-#: notmuch/notmuch.c:2232
+#: maildir/maildir.c:1439 maildir/mh.c:1054 mbox/mbox.c:1179 mx.c:483
+#: notmuch/notmuch.c:2236
 #, c-format
 msgid "Writing %s..."
 msgstr "Kirjutan %s..."
 
 #. L10N: Try to limit to 80 columns
-#: main.c:261
+#: main.c:260
 msgid "usage:"
 msgstr ""
 
-#: main.c:262
+#: main.c:261
 msgid ""
 "  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
 
-#: main.c:265
+#: main.c:264
 msgid ""
 "  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
 
-#: main.c:267
+#: main.c:266
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr ""
 
-#: main.c:268
+#: main.c:267
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr ""
 
-#: main.c:269
+#: main.c:268
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr ""
 
-#: main.c:270
+#: main.c:269
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr ""
 
-#: main.c:271
+#: main.c:270
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr ""
 
-#: main.c:272
+#: main.c:271
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr ""
 
-#: main.c:273
+#: main.c:272
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr ""
 
-#: main.c:274
+#: main.c:273
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr ""
 
-#: main.c:275
+#: main.c:274
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr ""
 
-#: main.c:276
+#: main.c:275
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr ""
 
-#: main.c:277
+#: main.c:276
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr ""
 
-#: main.c:278
+#: main.c:277
 msgid "  neomutt -v[v]\n"
 msgstr ""
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:281
+#: main.c:280
 #, fuzzy
 msgid "options:"
 msgstr "Kompileerimise võtmed:"
 
-#: main.c:282
+#: main.c:281
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
 msgstr ""
 
-#: main.c:284
+#: main.c:283
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr ""
 
-#: main.c:285
+#: main.c:284
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 msgstr ""
 
-#: main.c:287
+#: main.c:286
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 
-#: main.c:288
+#: main.c:287
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr ""
 
-#: main.c:289
+#: main.c:288
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr ""
 
-#: main.c:290
+#: main.c:289
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr ""
 
-#: main.c:291
+#: main.c:290
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr ""
 
-#: main.c:292
+#: main.c:291
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr ""
 
-#: main.c:293
+#: main.c:292
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
 
-#: main.c:295
+#: main.c:294
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 
-#: main.c:296
+#: main.c:295
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr ""
 
-#: main.c:297
+#: main.c:296
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr ""
 
-#: main.c:298
+#: main.c:297
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr ""
 
-#: main.c:299
+#: main.c:298
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr ""
 
-#: main.c:300
+#: main.c:299
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr ""
 
-#: main.c:301
+#: main.c:300
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr ""
 
-#: main.c:302
+#: main.c:301
 msgid "  -h            Print this help message and exit"
 msgstr ""
 
-#: main.c:303
+#: main.c:302
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr ""
 
-#: main.c:304
+#: main.c:303
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 
-#: main.c:305
+#: main.c:304
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
 msgstr ""
 
-#: main.c:307
+#: main.c:306
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr ""
 
-#: main.c:308
+#: main.c:307
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr ""
 
-#: main.c:309
+#: main.c:308
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
 msgstr ""
 
-#: main.c:312
+#: main.c:311
 #, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "Avan postkasti ainult lugemiseks"
 
-#: main.c:313
+#: main.c:312
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr ""
 
-#: main.c:314
+#: main.c:313
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr ""
 
-#: main.c:315
+#: main.c:314
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr ""
 
-#: main.c:316
+#: main.c:315
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr ""
 
-#: main.c:317
+#: main.c:316
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr ""
 
-#: main.c:319
+#: main.c:318
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
 
-#: main.c:342
+#: main.c:341
 msgid "Error initializing terminal"
 msgstr "Viga terminali initsialiseerimisel"
 
-#: main.c:412
+#: main.c:411
 msgid "unable to determine username"
 msgstr "ei suuda tuvastada kasutajanime"
 
-#: main.c:418
+#: main.c:417
 msgid "unable to determine home directory"
 msgstr "ei leia kodukataloogi"
 
-#: main.c:699
+#: main.c:698
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr ""
 
-#: main.c:960
+#: main.c:959
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:975 main.c:1240 send/send.c:294 send/send.c:2769 send/send.c:2773
+#: main.c:974 main.c:1239 send/send.c:293 send/send.c:2768 send/send.c:2772
 msgid "No recipients specified"
 msgstr "Saajaid ei ole määratud"
 
-#: main.c:1008
+#: main.c:1007
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:1096
+#: main.c:1095
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "Teate faili ei saa avada: %s"
 
-#: main.c:1162 mutt_header.c:347
+#: main.c:1161 mutt_header.c:347
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: faili lisamine ebaõnnestus"
 
-#: main.c:1254
+#: main.c:1253
 msgid "No mailbox with new mail"
 msgstr "Uute teadetega postkaste ei ole"
 
-#: main.c:1279
+#: main.c:1278
 msgid "No incoming mailboxes defined"
 msgstr "Sissetulevate kirjade postkaste ei ole määratud"
 
-#: main.c:1333
+#: main.c:1332
 msgid "Mailbox is empty"
 msgstr "Postkast on tühi"
 
-#: mbox/mbox.c:253 mbox/mbox.c:319
+#: mbox/mbox.c:256 mbox/mbox.c:322
 msgid "Mailbox is corrupt"
 msgstr "Postkast on riknenud"
 
-#: mbox/mbox.c:1010
+#: mbox/mbox.c:907
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "%s ei saa lukustada"
 
-#: mbox/mbox.c:1159
+#: mbox/mbox.c:1056
 msgid "Mailbox was corrupted"
 msgstr "Postkast oli riknenud"
 
-#: mbox/mbox.c:1205 mbox/mbox.c:1458
+#: mbox/mbox.c:1102 mbox/mbox.c:1354
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fataalne viga! Postkasti ei õnnestu uuesti avada!"
 
-#: mbox/mbox.c:1242 pager/message.c:233
+#: mbox/mbox.c:1139 pager/message.c:233
 msgid "Could not create temporary file"
 msgstr "Ei õnnestu luua ajutist faili"
 
-#: mbox/mbox.c:1260
+#: mbox/mbox.c:1157
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: mbox on muudetud, aga muudetud teateid ei ole (teatage sellest veast)"
 
-#: mbox/mbox.c:1403
+#: mbox/mbox.c:1299
 msgid "Committing changes..."
 msgstr "Kinnitan muutused..."
 
-#: mbox/mbox.c:1437
+#: mbox/mbox.c:1333
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Kirjutamine ebaõnnestus! Osaline postkast salvestatud faili %s"
 
-#: mbox/mbox.c:1522
+#: mbox/mbox.c:1418
 msgid "Could not reopen mailbox"
 msgstr "Postkasti ei õnnestu uuesti avada"
 
-#: mbox/mbox.c:1620 mbox/mbox.c:1772
+#: mbox/mbox.c:1516 mbox/mbox.c:1668
 msgid "Can't write message"
 msgstr "Teadet ei õnnestu kirjutada"
 
-#: menu/functions.c:70 pager/functions.c:315 pattern/pattern.c:455
-#: pattern/pattern.c:621
+#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:457
+#: pattern/pattern.c:623
 msgid "Reverse search for: "
 msgstr "Otsi tagurpidi: "
 
-#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:455
-#: pattern/pattern.c:621
+#: menu/functions.c:70 pager/functions.c:314 pattern/pattern.c:457
+#: pattern/pattern.c:623
 msgid "Search for: "
 msgstr "Otsi: "
 
-#: menu/functions.c:126 pager/functions.c:423 pager/functions.c:490
-#: pager/functions.c:520 pattern/pattern.c:594 pattern/pattern.c:755
+#: menu/functions.c:126 pager/functions.c:422 pager/functions.c:489
+#: pager/functions.c:519 pattern/pattern.c:596 pattern/pattern.c:757
 msgid "Not found"
 msgstr "Ei leitud"
 
@@ -3911,24 +4012,24 @@ msgstr "OK"
 msgid "Select a remailer chain"
 msgstr "Valige vahendajate ahel"
 
-#: mixmaster/dlg_mixmaster.c:193
+#: mixmaster/dlg_mixmaster.c:194
 msgid "Can't get mixmaster's type2.list"
 msgstr "Mixmaster type2.list laadimine ei õnnestu"
 
-#: mixmaster/mixmaster.c:57
+#: mixmaster/mixmaster.c:56
 msgid "Mixmaster doesn't accept Cc or Bcc headers"
 msgstr "Mixmaster ei toeta Cc või Bcc päiseid"
 
-#: mixmaster/mixmaster.c:82
+#: mixmaster/mixmaster.c:81
 msgid "Please set the hostname variable to a proper value when using mixmaster"
 msgstr "Mixmaster kasutamisel omistage palun hostname muutujale korrektne väärtus"
 
-#: mixmaster/mixmaster.c:125
+#: mixmaster/mixmaster.c:124
 #, c-format
 msgid "Error sending message, child exited %d\n"
 msgstr "Viga teate saatmisel, alamprotsess lõpetas koodiga %d.\n"
 
-#: mixmaster/mixmaster.c:129
+#: mixmaster/mixmaster.c:128
 msgid "Error sending message"
 msgstr "Viga teate saatmisel"
 
@@ -3969,20 +4070,20 @@ msgstr "Viga: %s ei saa ahela viimase vahendajana kasutada"
 msgid "Failed to seek file: %s"
 msgstr "Faili avamine päiste analüüsiks ebaõnnestus"
 
-#: mutt/file.c:1248
+#: mutt/file.c:1247
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "fcntl luku seadmine aegus"
 
-#: mutt/file.c:1254
+#: mutt/file.c:1253
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Ootan fcntl lukku... %d"
 
-#: mutt/file.c:1316
+#: mutt/file.c:1313
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "flock luku seadmine aegus"
 
-#: mutt/file.c:1323
+#: mutt/file.c:1320
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Ootan flock lukku... %d"
@@ -4002,7 +4103,7 @@ msgstr "Silumise tase %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Silumise tase %d.\n"
 
-#: mutt/path.c:423
+#: mutt/path.c:428
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Viga serveriga ühenduse loomisel: %s"
@@ -4022,12 +4123,12 @@ msgstr ""
 msgid "read /dev/urandom: %s"
 msgstr ""
 
-#: mutt/regex.c:276
+#: mutt/regex.c:277
 #, c-format
 msgid "Bad regex: %s"
 msgstr ""
 
-#: mutt/regex.c:348
+#: mutt/regex.c:349
 msgid "Not enough subexpressions for template"
 msgstr ""
 
@@ -4046,7 +4147,7 @@ msgstr "Sain signaali %d ...  Väljun.\n"
 msgid "Option %s may not be set when in attach-message mode"
 msgstr "Funktsioon ei ole teate lisamise moodis lubatud."
 
-#: mutt_logging.c:277
+#: mutt_logging.c:276
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Vigane kuupäev: %s"
@@ -4074,16 +4175,16 @@ msgstr "SSL ei ole kasutatav."
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1379
+#: mutt_thread.c:1384
 msgid "Parent message is not available"
 msgstr "Vanem teade ei ole kättesaadav"
 
-#: mutt_thread.c:1385
+#: mutt_thread.c:1390
 #, fuzzy
 msgid "Root message is not visible in this limited view"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1392
 msgid "Parent message is not visible in this limited view"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
@@ -4118,16 +4219,16 @@ msgstr "Fail on olemas, (k)irjutan üle, (l)isan või ka(t)kestan?"
 msgid "oac"
 msgstr "klt"
 
-#: muttlib.c:1334
+#: muttlib.c:1333
 msgid "Can't save message to POP mailbox"
 msgstr "Teadet ei saa POP postkasti salvestada"
 
-#: muttlib.c:1345
+#: muttlib.c:1344
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Lisan teated kausta %s?"
 
-#: muttlib.c:1358
+#: muttlib.c:1357
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "POP serveril ei saa teadet toimetada"
@@ -4220,20 +4321,20 @@ msgstr "Postkast on märgitud mittekirjutatavaks. %s"
 msgid "Mailbox checkpointed"
 msgstr "Postkast on kontrollitud"
 
-#: mx.c:1374
+#: mx.c:1373
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Teate faili ei saa avada: %s"
 
-#: mx.c:1876
+#: mx.c:1879
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Ainult lugemiseks postkastil ei saa kirjutamist lülitada"
 
-#: mx.c:1883
+#: mx.c:1886
 msgid "Changes to folder will be written on folder exit"
 msgstr "Muudatused kaustas salvestatakse kaustast väljumisel"
 
-#: mx.c:1888
+#: mx.c:1891
 msgid "Changes to folder will not be written"
 msgstr "Muudatusi kaustas ei kirjutata"
 
@@ -4281,7 +4382,7 @@ msgstr "Käivitan PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: ncrypt/crypt.c:225 send/send.c:2747
+#: ncrypt/crypt.c:225 send/send.c:2746
 msgid "Mail not sent"
 msgstr "Kirja ei saadetud"
 
@@ -4359,7 +4460,7 @@ msgid "error creating GPGME data object: %s"
 msgstr "viga mustris: %s"
 
 #: ncrypt/crypt_gpgme.c:471 ncrypt/crypt_gpgme.c:498 ncrypt/crypt_gpgme.c:1562
-#: ncrypt/crypt_gpgme.c:2282
+#: ncrypt/crypt_gpgme.c:2281
 #, fuzzy, c-format
 msgid "error allocating data object: %s"
 msgstr "viga mustris: %s"
@@ -4518,8 +4619,8 @@ msgstr ""
 msgid "               expires: "
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1569 ncrypt/crypt_gpgme.c:1803
-#: ncrypt/crypt_gpgme.c:2558
+#: ncrypt/crypt_gpgme.c:1569 ncrypt/crypt_gpgme.c:1802
+#: ncrypt/crypt_gpgme.c:2557
 msgid "[-- Begin signature information --]\n"
 msgstr ""
 
@@ -4537,8 +4638,8 @@ msgstr ""
 msgid "*** End Notation ***\n"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:1658 ncrypt/crypt_gpgme.c:1817
-#: ncrypt/crypt_gpgme.c:2568
+#: ncrypt/crypt_gpgme.c:1658 ncrypt/crypt_gpgme.c:1816
+#: ncrypt/crypt_gpgme.c:2567
 #, fuzzy
 msgid ""
 "[-- End signature information --]\n"
@@ -4547,34 +4648,34 @@ msgstr ""
 "\n"
 "[-- Allkirjastatud info lõpp --]\n"
 
-#: ncrypt/crypt_gpgme.c:1777
+#: ncrypt/crypt_gpgme.c:1776
 #, fuzzy, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
 msgstr "[-- Viga: ajutise faili loomine ebaõnnestus! --]\n"
 
-#: ncrypt/crypt_gpgme.c:2289
+#: ncrypt/crypt_gpgme.c:2288
 #, fuzzy, c-format
 msgid "Error importing key: %s"
 msgstr "viga mustris: %s"
 
-#: ncrypt/crypt_gpgme.c:2534
+#: ncrypt/crypt_gpgme.c:2533
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:2541 ncrypt/crypt_gpgme.c:2730 ncrypt/pgp.c:747
+#: ncrypt/crypt_gpgme.c:2540 ncrypt/crypt_gpgme.c:2729 ncrypt/pgp.c:747
 #: ncrypt/pgp.c:1315
 #, fuzzy
 msgid "PGP message successfully decrypted"
 msgstr "PGP allkiri on edukalt kontrollitud"
 
-#: ncrypt/crypt_gpgme.c:2580
+#: ncrypt/crypt_gpgme.c:2579
 msgid "Error: copy data failed\n"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:2593 ncrypt/pgp.c:691
+#: ncrypt/crypt_gpgme.c:2592 ncrypt/pgp.c:691
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -4582,11 +4683,11 @@ msgstr ""
 "[-- PGP TEATE ALGUS --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2595 ncrypt/pgp.c:693
+#: ncrypt/crypt_gpgme.c:2594 ncrypt/pgp.c:693
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP AVALIKU VÕTME BLOKI ALGUS --]\n"
 
-#: ncrypt/crypt_gpgme.c:2597 ncrypt/pgp.c:695
+#: ncrypt/crypt_gpgme.c:2596 ncrypt/pgp.c:695
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -4594,19 +4695,19 @@ msgstr ""
 "[-- PGP ALLKIRJASTATUD TEATE ALGUS --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2623 ncrypt/pgp.c:733
+#: ncrypt/crypt_gpgme.c:2622 ncrypt/pgp.c:733
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- PGP TEATE LÕPP --]\n"
 
-#: ncrypt/crypt_gpgme.c:2625 ncrypt/pgp.c:752
+#: ncrypt/crypt_gpgme.c:2624 ncrypt/pgp.c:752
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP AVALIKU VÕTME BLOKI LÕPP --]\n"
 
-#: ncrypt/crypt_gpgme.c:2627 ncrypt/pgp.c:756
+#: ncrypt/crypt_gpgme.c:2626 ncrypt/pgp.c:756
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- PGP ALLKIRJASTATUD TEATE LÕPP --]\n"
 
-#: ncrypt/crypt_gpgme.c:2647 ncrypt/pgp.c:789
+#: ncrypt/crypt_gpgme.c:2646 ncrypt/pgp.c:789
 msgid ""
 "[-- Error: could not find beginning of PGP message --]\n"
 "\n"
@@ -4614,11 +4715,11 @@ msgstr ""
 "[-- Viga: ei suuda leida PGP teate algust --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2674 ncrypt/crypt_gpgme.c:2768 ncrypt/pgp.c:1261
+#: ncrypt/crypt_gpgme.c:2673 ncrypt/crypt_gpgme.c:2767 ncrypt/pgp.c:1261
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- Viga: ajutise faili loomine ebaõnnestus --]\n"
 
-#: ncrypt/crypt_gpgme.c:2687
+#: ncrypt/crypt_gpgme.c:2686
 #, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
@@ -4627,7 +4728,7 @@ msgstr ""
 "[-- Järgneb PGP/MIME krüptitud info --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2688 ncrypt/pgp.c:1274
+#: ncrypt/crypt_gpgme.c:2687 ncrypt/pgp.c:1274
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -4635,77 +4736,77 @@ msgstr ""
 "[-- Järgneb PGP/MIME krüptitud info --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2725
+#: ncrypt/crypt_gpgme.c:2724
 #, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- PGP/MIME krüptitud info lõpp --]\n"
 
-#: ncrypt/crypt_gpgme.c:2726 ncrypt/pgp.c:1310
+#: ncrypt/crypt_gpgme.c:2725 ncrypt/pgp.c:1310
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- PGP/MIME krüptitud info lõpp --]\n"
 
-#: ncrypt/crypt_gpgme.c:2738 ncrypt/pgp.c:682 ncrypt/pgp.c:736
+#: ncrypt/crypt_gpgme.c:2737 ncrypt/pgp.c:682 ncrypt/pgp.c:736
 #: ncrypt/pgp.c:1319
 #, fuzzy
 msgid "Could not decrypt PGP message"
 msgstr "Teadet ei õnnestu kopeerida."
 
-#: ncrypt/crypt_gpgme.c:2781
+#: ncrypt/crypt_gpgme.c:2780
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr "[-- Järgneb S/MIME allkirjastatud info --]\n"
 
-#: ncrypt/crypt_gpgme.c:2782
+#: ncrypt/crypt_gpgme.c:2781
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr "[-- Järgneb S/MIME krüptitud info --]\n"
 
-#: ncrypt/crypt_gpgme.c:2826
+#: ncrypt/crypt_gpgme.c:2825
 #, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME Allkirjastatud info lõpp --]\n"
 
-#: ncrypt/crypt_gpgme.c:2827
+#: ncrypt/crypt_gpgme.c:2826
 #, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME krüptitud info lõpp --]\n"
 
-#: ncrypt/crypt_gpgme.c:3014 ncrypt/crypt_gpgme.c:3065
+#: ncrypt/crypt_gpgme.c:3013 ncrypt/crypt_gpgme.c:3064
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3053 ncrypt/crypt_gpgme.c:3104
-#: ncrypt/crypt_gpgme.c:3622
+#: ncrypt/crypt_gpgme.c:3052 ncrypt/crypt_gpgme.c:3103
+#: ncrypt/crypt_gpgme.c:3621
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3168 ncrypt/crypt_gpgme.c:3288 ncrypt/pgpkey.c:379
+#: ncrypt/crypt_gpgme.c:3167 ncrypt/crypt_gpgme.c:3287 ncrypt/pgpkey.c:379
 #: ncrypt/pgpkey.c:511
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Otsin võtmeid, mis sisaldavad \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:3400 ncrypt/pgpkey.c:228 ncrypt/smime.c:763
+#: ncrypt/crypt_gpgme.c:3399 ncrypt/pgpkey.c:228 ncrypt/smime.c:763
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3454 ncrypt/pgp.c:1501
+#: ncrypt/crypt_gpgme.c:3453 ncrypt/pgp.c:1501
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Kasutan kasutajat = \"%s\" teatel %s?"
 
-#: ncrypt/crypt_gpgme.c:3503 ncrypt/pgp.c:1551 ncrypt/smime.c:787
+#: ncrypt/crypt_gpgme.c:3502 ncrypt/pgp.c:1551 ncrypt/smime.c:787
 #: ncrypt/smime.c:867
 #, c-format
 msgid "Enter keyID for %s: "
@@ -4713,16 +4814,16 @@ msgstr "Sisestage kasutaja teatele %s: "
 
 #. L10N: mutt_gpgme_select_secret_key() tries to list all secret keys to choose
 #. from.  This error is displayed if no results were found.
-#: ncrypt/crypt_gpgme.c:3629
+#: ncrypt/crypt_gpgme.c:3628
 #, fuzzy
 msgid "No secret keys found"
 msgstr "Ei leitud"
 
-#: ncrypt/crypt_gpgme.c:3662 ncrypt/pgpkey.c:249
+#: ncrypt/crypt_gpgme.c:3661 ncrypt/pgpkey.c:249
 msgid "Please enter the key ID: "
 msgstr "Palun sisestage võtme ID: "
 
-#: ncrypt/crypt_gpgme.c:3675
+#: ncrypt/crypt_gpgme.c:3674
 #, fuzzy, c-format
 msgid "Error exporting key: %s"
 msgstr "viga mustris: %s"
@@ -4730,96 +4831,96 @@ msgstr "viga mustris: %s"
 #. L10N: MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:3693
+#: ncrypt/crypt_gpgme.c:3692
 #, fuzzy, c-format
 msgid "PGP Key 0x%s"
 msgstr "PGP Võti %s"
 
-#: ncrypt/crypt_gpgme.c:3733
+#: ncrypt/crypt_gpgme.c:3732
 msgid "GPGME: OpenPGP protocol not available"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:3744
+#: ncrypt/crypt_gpgme.c:3743
 msgid "GPGME: CMS protocol not available"
 msgstr ""
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3795
+#: ncrypt/crypt_gpgme.c:3794
 #, fuzzy
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, k(e)hasse, või (u)nusta?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3797
+#: ncrypt/crypt_gpgme.c:3796
 #, fuzzy
 msgid "sapco"
 msgstr "kaimeu"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3803
+#: ncrypt/crypt_gpgme.c:3802
 #, fuzzy
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, k(e)hasse, või (u)nusta?"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3805
+#: ncrypt/crypt_gpgme.c:3804
 #, fuzzy
 msgid "samco"
 msgstr "kaimeu"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3815
+#: ncrypt/crypt_gpgme.c:3814
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, k(e)hasse, või (u)nusta?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3817
+#: ncrypt/crypt_gpgme.c:3816
 #, fuzzy
 msgid "esabpco"
 msgstr "kaimeu"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3823
+#: ncrypt/crypt_gpgme.c:3822
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, k(e)hasse, või (u)nusta?"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3825
+#: ncrypt/crypt_gpgme.c:3824
 #, fuzzy
 msgid "esabmco"
 msgstr "kaimeu"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:3835
+#: ncrypt/crypt_gpgme.c:3834
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, k(e)hasse, või (u)nusta?"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:3837
+#: ncrypt/crypt_gpgme.c:3836
 #, fuzzy
 msgid "esabpc"
 msgstr "kaimeu"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:3843
+#: ncrypt/crypt_gpgme.c:3842
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP (k)rüpti, (a)llkiri, allk. ku(i), (m)õlemad, k(e)hasse, või (u)nusta?"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:3845
+#: ncrypt/crypt_gpgme.c:3844
 #, fuzzy
 msgid "esabmc"
 msgstr "kaimeu"
 
-#: ncrypt/crypt_gpgme.c:4010
+#: ncrypt/crypt_gpgme.c:4009
 msgid "Failed to verify sender"
 msgstr ""
 
-#: ncrypt/crypt_gpgme.c:4015
+#: ncrypt/crypt_gpgme.c:4014
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "Faili avamine päiste analüüsiks ebaõnnestus."
@@ -4861,28 +4962,28 @@ msgstr "PGP võtmed, mis sisaldavad \"%s\"."
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:771
+#: ncrypt/dlg_gpgme.c:774
 #, c-format
 msgid "%s <%s>"
 msgstr ""
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:776
+#: ncrypt/dlg_gpgme.c:779
 #, c-format
 msgid "%s \"%s\""
 msgstr ""
 
-#: ncrypt/dlg_pgp.c:632
+#: ncrypt/dlg_pgp.c:634
 #, fuzzy
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Kõik sobivad võtmed on märgitud aegunuks/tühistatuks"
 
-#: ncrypt/dlg_pgp.c:674
+#: ncrypt/dlg_pgp.c:676
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP võtmed, mis sisaldavad <%s>"
 
-#: ncrypt/dlg_pgp.c:676
+#: ncrypt/dlg_pgp.c:678
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP võtmed, mis sisaldavad \"%s\""
@@ -4950,7 +5051,7 @@ msgstr "Kontrollitud "
 msgid "Unknown   "
 msgstr "Tundmatu  "
 
-#: ncrypt/dlg_smime.c:226
+#: ncrypt/dlg_smime.c:228
 #, c-format
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME sertifikaadid, mis sisaldavad \"%s\""
@@ -5419,86 +5520,86 @@ msgstr ""
 msgid "%s is an invalid news server specification"
 msgstr "%s on vigane POP tee"
 
-#: nntp/nntp.c:131 nntp/nntp.c:687 pop/lib.c:416 pop/pop.c:684
+#: nntp/nntp.c:130 nntp/nntp.c:686 pop/lib.c:416 pop/pop.c:683
 msgid "Server closed connection"
 msgstr "Server sulges ühenduse"
 
-#: nntp/nntp.c:241
+#: nntp/nntp.c:240
 msgid "Server doesn't support reader mode"
 msgstr ""
 
-#: nntp/nntp.c:483 pop/auth.c:619 send/smtp.c:1014
+#: nntp/nntp.c:482 pop/auth.c:619 send/smtp.c:1013
 msgid "No authenticators available"
 msgstr "Autentikaatoreid pole"
 
-#: nntp/nntp.c:740
+#: nntp/nntp.c:739
 #, fuzzy, c-format
 msgid "Connection to %s lost. Reconnect?"
 msgstr "Ühendus serveriga %s suleti"
 
-#: nntp/nntp.c:1207
+#: nntp/nntp.c:1201
 #, fuzzy
 msgid "Fetching list of articles..."
 msgstr "Laen teadete nimekirja..."
 
-#: nntp/nntp.c:1478 nntp/nntp.c:2078 pop/pop.c:556 pop/pop.c:837
+#: nntp/nntp.c:1471 nntp/nntp.c:2071 pop/pop.c:555 pop/pop.c:836
 msgid "Checking for new messages..."
 msgstr "Kontrollin, kas on uusi teateid..."
 
-#: nntp/nntp.c:1795 nntp/nntp.c:1889
+#: nntp/nntp.c:1788 nntp/nntp.c:1882
 #, fuzzy
 msgid "Could not switch to reader mode"
 msgstr "ei õnnestu kirjutada ajutisse kausta: %s"
 
-#: nntp/nntp.c:1808
+#: nntp/nntp.c:1801
 #, fuzzy, c-format
 msgid "Connected to %s. %s"
 msgstr "Ühendus serverisse %s..."
 
-#: nntp/nntp.c:1809
+#: nntp/nntp.c:1802
 msgid "Posting is NOT ok"
 msgstr ""
 
-#: nntp/nntp.c:1809
+#: nntp/nntp.c:1802
 #, fuzzy
 msgid "Posting is ok"
 msgstr "Ühendus serverisse %s.."
 
-#: nntp/nntp.c:1946 nntp/nntp.c:1981
+#: nntp/nntp.c:1939 nntp/nntp.c:1974
 #, fuzzy, c-format
 msgid "Can't post article: %s"
 msgstr "Ei saa lugeda %s atribuute: %s"
 
-#: nntp/nntp.c:2002
+#: nntp/nntp.c:1995
 #, fuzzy, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "Kustutan serveril teateid..."
 
-#: nntp/nntp.c:2045 nntp/nntp.c:2139
+#: nntp/nntp.c:2038 nntp/nntp.c:2132
 #, fuzzy
 msgid "Loading descriptions..."
 msgstr "Meldin..."
 
-#: nntp/nntp.c:2067
+#: nntp/nntp.c:2060
 #, fuzzy
 msgid "Checking for new newsgroups..."
 msgstr "Kontrollin, kas on uusi teateid..."
 
-#: nntp/nntp.c:2280
+#: nntp/nntp.c:2273
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr ""
 
-#: nntp/nntp.c:2357
+#: nntp/nntp.c:2350
 #, fuzzy, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s on vigane POP tee"
 
-#: nntp/nntp.c:2396
+#: nntp/nntp.c:2389
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr ""
 
-#: nntp/nntp.c:2419
+#: nntp/nntp.c:2412
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr ""
@@ -5510,7 +5611,7 @@ msgstr ""
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
-#: notmuch/config.c:91 notmuch/notmuch.c:313
+#: notmuch/config.c:91 notmuch/notmuch.c:312
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr ""
 
@@ -5529,39 +5630,39 @@ msgstr ""
 msgid "unknown reason"
 msgstr "tundmatu viga"
 
-#: notmuch/mdata.c:84 notmuch/notmuch.c:1788
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1792
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:360
+#: notmuch/notmuch.c:359
 #, c-format
 msgid "failed to parse notmuch limit: %s"
 msgstr ""
 
-#: notmuch/notmuch.c:684
+#: notmuch/notmuch.c:683
 #, fuzzy
 msgid "Reading messages..."
 msgstr "Saadan teadet..."
 
-#: notmuch/notmuch.c:1547
+#: notmuch/notmuch.c:1551
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
-#: notmuch/notmuch.c:1803
+#: notmuch/notmuch.c:1807
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "%s ei õnnestu lisada"
 
-#: notmuch/notmuch.c:2314
+#: notmuch/notmuch.c:2317
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2374
+#: notmuch/notmuch.c:2377
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Kausta ei saa lisada: %s"
@@ -6741,21 +6842,21 @@ msgstr "näita S/MIME võtmeid"
 msgid "null operation"
 msgstr "tühi operatsioon"
 
-#: pager/dlg_pager.c:91 pager/dlg_pager.c:102 pager/dlg_pager.c:112
-#: pager/dlg_pager.c:128
+#: pager/dlg_pager.c:78 pager/dlg_pager.c:89 pager/dlg_pager.c:99
+#: pager/dlg_pager.c:115
 msgid "PrevPg"
 msgstr "EelmLk"
 
-#: pager/dlg_pager.c:92 pager/dlg_pager.c:103 pager/dlg_pager.c:113
-#: pager/dlg_pager.c:129
+#: pager/dlg_pager.c:79 pager/dlg_pager.c:90 pager/dlg_pager.c:100
+#: pager/dlg_pager.c:116
 msgid "NextPg"
 msgstr "JärgmLm"
 
-#: pager/dlg_pager.c:114
+#: pager/dlg_pager.c:101
 msgid "View Attachm."
 msgstr "Vaata lisa"
 
-#: pager/dlg_pager.c:117 pager/dlg_pager.c:133
+#: pager/dlg_pager.c:104 pager/dlg_pager.c:120
 msgid "Next"
 msgstr "Järgm."
 
@@ -6765,7 +6866,7 @@ msgid "Bottom of message is shown"
 msgstr "Teate lõpp on näidatud"
 
 #: pager/functions.c:181 pager/functions.c:273 pager/functions.c:286
-#: pager/functions.c:694
+#: pager/functions.c:692
 msgid "Top of message is shown"
 msgstr "Teate algus on näidatud"
 
@@ -6773,19 +6874,19 @@ msgstr "Teate algus on näidatud"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:578
+#: pager/functions.c:576
 msgid "No text past headers"
 msgstr ""
 
-#: pager/functions.c:637 pager/functions.c:677
+#: pager/functions.c:635 pager/functions.c:675
 msgid "No more unquoted text after quoted text"
 msgstr "Tsiteeritud teksiti järel rohkem teksti ei ole"
 
-#: pager/functions.c:659
+#: pager/functions.c:657
 msgid "No more quoted text"
 msgstr "Rohkem tsiteetitud teksti pole"
 
-#: pager/functions.c:718
+#: pager/functions.c:716
 msgid "Help is currently being shown"
 msgstr "Te loete praegu abiinfot"
 
@@ -6849,45 +6950,45 @@ msgstr "%ld%%"
 msgid "end"
 msgstr ""
 
-#: parse/rc.c:93
+#: parse/rc.c:89
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: tundmatu käsk"
 
-#: parse/set.c:121 parse/set.c:176 parse/set.c:219 parse/set.c:247
-#: parse/set.c:305 parse/set.c:340 parse/set.c:397
+#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
+#: parse/set.c:303 parse/set.c:338 parse/set.c:395
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: tundmatu muutuja"
 
-#: parse/set.c:354 parse/set.c:569
+#: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr ""
 
-#: parse/set.c:469
+#: parse/set.c:467
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr ""
 
-#: parse/set.c:515
+#: parse/set.c:513
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr ""
 
-#: parse/set.c:521 parse/set.c:552
+#: parse/set.c:519 parse/set.c:550
 #, c-format
 msgid "Can't set a variable with the '%s' command"
 msgstr ""
 
-#: parse/set.c:538
+#: parse/set.c:536
 msgid "'+' and '-' must be followed by '='"
 msgstr ""
 
-#: parse/set.c:546
+#: parse/set.c:544
 msgid "Can't use prefix when setting a variable"
 msgstr ""
 
-#: parse/set.c:565
+#: parse/set.c:563
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr ""
 
@@ -7028,7 +7129,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:99 pattern/exec.c:1115
+#: pattern/exec.c:99 pattern/exec.c:1119
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "viga: tundmatu op %d (teatage sellest veast)"
@@ -7038,22 +7139,22 @@ msgstr "viga: tundmatu op %d (teatage sellest veast)"
 msgid "Error opening 'memory stream'"
 msgstr "Viga postkasti avamisel!"
 
-#: pattern/exec.c:189
+#: pattern/exec.c:192
 #, fuzzy
 msgid "Error re-opening 'memory stream'"
 msgstr "Viga postkasti avamisel!"
 
-#: pattern/exec.c:199
+#: pattern/exec.c:202
 #, fuzzy
 msgid "Error opening /dev/null"
 msgstr "/dev/null ei saa avada"
 
-#: pattern/exec.c:208
+#: pattern/exec.c:212
 #, fuzzy
 msgid "Error checking length of temporary file"
 msgstr "Viga. Säilitan ajutise faili: %s"
 
-#: pattern/exec.c:898
+#: pattern/exec.c:902
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -7331,8 +7432,8 @@ msgstr ""
 msgid "No current message"
 msgstr "Lugemata teateid pole"
 
-#: pattern/pattern.c:211 pattern/pattern.c:317 pattern/pattern.c:481
-#: pattern/pattern.c:646
+#: pattern/pattern.c:211 pattern/pattern.c:317 pattern/pattern.c:483
+#: pattern/pattern.c:648
 msgid "Compiling search pattern..."
 msgstr "Kompileerin otsingumustrit..."
 
@@ -7344,20 +7445,20 @@ msgstr "Käivitan leitud teadetel käsu..."
 msgid "No messages matched criteria"
 msgstr "Ühtegi mustrile vastavat teadet ei leitud"
 
-#: pattern/pattern.c:518 pattern/pattern.c:682
+#: pattern/pattern.c:520 pattern/pattern.c:684
 #, fuzzy
 msgid "Searching..."
 msgstr "Salvestan..."
 
-#: pattern/pattern.c:534 pattern/pattern.c:698
+#: pattern/pattern.c:536 pattern/pattern.c:700
 msgid "Search hit bottom without finding match"
 msgstr "Otsing jõudis midagi leidmata lõppu"
 
-#: pattern/pattern.c:547 pattern/pattern.c:711
+#: pattern/pattern.c:549 pattern/pattern.c:713
 msgid "Search hit top without finding match"
 msgstr "Otsing jõudis midagi leidmata algusse"
 
-#: pattern/pattern.c:586 pattern/pattern.c:747
+#: pattern/pattern.c:588 pattern/pattern.c:749
 msgid "Search interrupted"
 msgstr "Otsing katkestati"
 
@@ -7400,11 +7501,11 @@ msgstr "Viga serveriga ühenduse loomisel: %s"
 msgid "Closing connection to POP server..."
 msgstr "Sulen ühenduse POP serveriga..."
 
-#: pop/lib.c:621
+#: pop/lib.c:620
 msgid "Verifying message indexes..."
 msgstr "Kontrollin teadete indekseid ..."
 
-#: pop/lib.c:647
+#: pop/lib.c:646
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Ühendus katkes. Taastan ühenduse POP serveriga?"
 
@@ -7419,57 +7520,57 @@ msgid_plural "%d messages have been lost. Try reopening the mailbox."
 msgstr[0] "Teadete indeks on vigane. Proovige postkasti uuesti avada."
 msgstr[1] "Teadete indeks on vigane. Proovige postkasti uuesti avada."
 
-#: pop/pop.c:517
+#: pop/pop.c:516
 msgid "POP host is not defined"
 msgstr "POP serverit ei ole määratud"
 
-#: pop/pop.c:539 pop/pop.c:718 pop/pop.c:751
+#: pop/pop.c:538 pop/pop.c:717 pop/pop.c:750
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s on vigane POP tee"
 
-#: pop/pop.c:585
+#: pop/pop.c:584
 msgid "No new mail in POP mailbox"
 msgstr "Uusi teateid POP postkastis pole"
 
-#: pop/pop.c:601
+#: pop/pop.c:600
 msgid "Delete messages from server?"
 msgstr "Kustutan teated serverist?"
 
-#: pop/pop.c:604
+#: pop/pop.c:603
 #, fuzzy, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
 msgstr[0] "Loen uusi teateid (%d baiti)..."
 msgstr[1] "Loen uusi teateid (%d baiti)..."
 
-#: pop/pop.c:652
+#: pop/pop.c:651
 msgid "Error while writing mailbox"
 msgstr "Viga postkasti kirjutamisel"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. the %d right before 'messages', i.e. the total number of messages.
-#: pop/pop.c:658
+#: pop/pop.c:657
 #, fuzzy, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
 msgstr[0] "%s [%d/%d teadet loetud]"
 msgstr[1] "%s [%d/%d teadet loetud]"
 
-#: pop/pop.c:802
+#: pop/pop.c:801
 msgid "Fetching list of messages..."
 msgstr "Laen teadete nimekirja..."
 
-#: pop/pop.c:889
+#: pop/pop.c:888
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "märgin %d teadet kustutatuks..."
 
-#: pop/pop.c:1069
+#: pop/pop.c:1067
 msgid "Can't write message to temporary file"
 msgstr "Teadet ei õnnestu ajutisse faili kirjutada"
 
-#: postpone/dlg_postpone.c:217
+#: postpone/dlg_postpone.c:222
 msgid "Postponed Messages"
 msgstr "Postitusootel teated"
 
@@ -7520,11 +7621,11 @@ msgstr "%s %s/%s (%d%%)"
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
-#: question/question.c:208
+#: question/question.c:224
 msgid "yes"
 msgstr "jah"
 
-#: question/question.c:209
+#: question/question.c:225
 msgid "no"
 msgstr "ei"
 
@@ -7565,7 +7666,7 @@ msgstr "%s loomine ebaõnnestus"
 msgid "Can't find any tagged messages"
 msgstr "Ei leia ühtegi märgitud teadet"
 
-#: recvcmd.c:903 send/send.c:1190
+#: recvcmd.c:903 send/send.c:1189
 msgid "No mailing lists found"
 msgstr "Postiloendeid pole"
 
@@ -7575,7 +7676,7 @@ msgstr "Kõiki märgitud lisasid ei saa dekodeerida. Kapseldan ülejäänud MIME
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
-#: recvcmd.c:1154
+#: recvcmd.c:1153
 #, fuzzy
 msgid "You may only compose to sender with message/rfc822 parts"
 msgstr "Peegeldada saab ainult message/rfc822 osi"
@@ -7584,11 +7685,11 @@ msgstr "Peegeldada saab ainult message/rfc822 osi"
 msgid "Error: score: invalid number"
 msgstr ""
 
-#: send/body.c:330
+#: send/body.c:314
 msgid "No boundary parameter found [report this error]"
 msgstr "Eraldaja puudub [teatage sellest veast]"
 
-#: send/body.c:361
+#: send/body.c:345
 #, c-format
 msgid "%s no longer exists"
 msgstr "%s ei ole enam"
@@ -7599,11 +7700,11 @@ msgstr "%s ei ole enam"
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 
-#: send/send.c:336
+#: send/send.c:335
 msgid "No subject, abort?"
 msgstr "Teema puudub, katkestan?"
 
-#: send/send.c:338
+#: send/send.c:337
 msgid "No subject, aborting"
 msgstr "Teema puudub, katkestan"
 
@@ -7613,44 +7714,44 @@ msgstr "Teema puudub, katkestan"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:602
+#: send/send.c:601
 #, fuzzy
 msgid "Forward attachments?"
 msgstr "Edasta lisadena?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:891
+#: send/send.c:890
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Vastan aadressile %s%s?"
 
-#: send/send.c:938
+#: send/send.c:937
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Vastus aadressile %s%s?"
 
-#: send/send.c:1233
+#: send/send.c:1232
 msgid "Include message in reply?"
 msgstr "Kaasan vastuses teate?"
 
-#: send/send.c:1239
+#: send/send.c:1238
 msgid "Including quoted message..."
 msgstr "Tsiteerin teadet..."
 
-#: send/send.c:1246
+#: send/send.c:1245
 msgid "Could not include all requested messages"
 msgstr "Kõiki soovitud teateid ei õnnestu kaasata"
 
-#: send/send.c:1259
+#: send/send.c:1258
 msgid "Forward as attachment?"
 msgstr "Edasta lisadena?"
 
-#: send/send.c:1264
+#: send/send.c:1263
 msgid "Preparing forwarded message..."
 msgstr "Valmistan edastatavat teadet..."
 
-#: send/send.c:1775
+#: send/send.c:1774
 #, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "%c: ei toetata selles moodis"
@@ -7660,12 +7761,12 @@ msgstr "%c: ei toetata selles moodis"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1781
+#: send/send.c:1780
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr ""
 
-#: send/send.c:1822 send/send.c:1834 send/send.c:1860
+#: send/send.c:1821 send/send.c:1833 send/send.c:1859
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "vaata lisa tekstina"
@@ -7674,42 +7775,42 @@ msgstr "vaata lisa tekstina"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1882
+#: send/send.c:1881
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1886
+#: send/send.c:1885
 msgid "rms"
 msgstr ""
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1892
+#: send/send.c:1891
 #, fuzzy
 msgid "Fcc mailbox"
 msgstr "Postkasti pole.\n"
 
-#: send/send.c:1961
+#: send/send.c:1960
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1998 send/send.c:2015
+#: send/send.c:1997 send/send.c:2014
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2109
+#: send/send.c:2108
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send/send.c:2113
+#: send/send.c:2112
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "toimeta lisa kodeeringut"
 
-#: send/send.c:2166
+#: send/send.c:2165
 msgid "Recall postponed message?"
 msgstr "Laen postitusootel teate?"
 
@@ -7737,59 +7838,59 @@ msgstr "Katkestasin muutmata teate saatmise"
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send/send.c:2744
+#: send/send.c:2743
 #, fuzzy
 msgid "Article not posted"
 msgstr "Kirja ei saadetud"
 
-#: send/send.c:2754
+#: send/send.c:2753
 msgid "Message postponed"
 msgstr "Teade jäeti postitusootele"
 
-#: send/send.c:2789
+#: send/send.c:2788
 msgid "No subject, abort sending?"
 msgstr "Teema puudub, katkestan saatmise?"
 
-#: send/send.c:2793 send/send.c:2799
+#: send/send.c:2792 send/send.c:2798
 msgid "No subject specified"
 msgstr "Teema puudub"
 
-#: send/send.c:2805
+#: send/send.c:2804
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "Teema puudub"
 
-#: send/send.c:2867 send/smtp.c:259
+#: send/send.c:2866 send/smtp.c:258
 msgid "Sending message..."
 msgstr "Saadan teadet..."
 
-#: send/send.c:2913
+#: send/send.c:2912
 msgid "Could not send the message"
 msgstr "Teadet ei õnnestu saata"
 
-#: send/send.c:2923
+#: send/send.c:2922
 msgid "Sending in background"
 msgstr "Saadan taustal"
 
-#: send/send.c:2924
+#: send/send.c:2923
 msgid "Article posted"
 msgstr ""
 
-#: send/send.c:2925
+#: send/send.c:2924
 msgid "Mail sent"
 msgstr "Teade on saadetud"
 
-#: send/send.c:3006
+#: send/send.c:3005
 #, fuzzy
 msgid "No recipient specified"
 msgstr "Saajaid ei ole määratud"
 
-#: send/send.c:3051
+#: send/send.c:3052
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Ei leitud"
 
-#: send/send.c:3080
+#: send/send.c:3081
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Loobun kaustast %s..."
@@ -7822,38 +7923,38 @@ msgstr "Viga teate saatmisel, alamprotsess lõpetas %d (%s)"
 msgid "Output of the delivery process"
 msgstr "Väljund saatmise protsessist"
 
-#: send/smtp.c:185
+#: send/smtp.c:184
 #, fuzzy, c-format
 msgid "SMTP session failed: %s"
 msgstr "SSL ebaõnnestus: %s"
 
-#: send/smtp.c:249
+#: send/smtp.c:248
 #, fuzzy, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "SSL ebaõnnestus: %s"
 
-#: send/smtp.c:371
+#: send/smtp.c:370
 #, fuzzy, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "Vigane    "
 
-#: send/smtp.c:1087
+#: send/smtp.c:1086
 msgid "SMTP server does not support authentication"
 msgstr ""
 
-#: send/smtp.c:1138
+#: send/smtp.c:1137
 msgid "No from address given"
 msgstr ""
 
-#: send/smtp.c:1205
+#: send/smtp.c:1204
 msgid "SMTP session failed: read error"
 msgstr ""
 
-#: send/smtp.c:1207
+#: send/smtp.c:1206
 msgid "SMTP session failed: write error"
 msgstr ""
 
-#: send/smtp.c:1209
+#: send/smtp.c:1208
 msgid "Invalid server response"
 msgstr ""
 
