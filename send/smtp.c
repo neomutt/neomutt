@@ -747,9 +747,8 @@ static int smtp_auth_oauth_xoauth2(struct SmtpAccountData *adata, const char *me
   if (!oauthbearer)
     return SMTP_AUTH_FAIL;
 
-  size_t ilen = strlen(oauthbearer) + 30;
-  char *ibuf = mutt_mem_malloc(ilen);
-  snprintf(ibuf, ilen, "AUTH %s %s\r\n", authtype, oauthbearer);
+  char *ibuf = NULL;
+  mutt_str_asprintf(&ibuf, "AUTH %s %s\r\n", authtype, oauthbearer);
 
   int rc = mutt_socket_send(adata->conn, ibuf);
   FREE(&oauthbearer);
