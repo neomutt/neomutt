@@ -1525,14 +1525,12 @@ cleanup:
 static char *openssl_md_to_smime_micalg(const char *md)
 {
   if (!md)
-    return 0;
+    return NULL;
 
   char *micalg = NULL;
   if (mutt_istr_startswith(md, "sha"))
   {
-    const size_t l = strlen(md) + 2;
-    micalg = mutt_mem_malloc(l);
-    snprintf(micalg, l, "sha-%s", md + 3);
+    mutt_str_asprintf(&micalg, "sha-%s", md + 3);
   }
   else
   {

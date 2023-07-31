@@ -433,9 +433,8 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   if (!oauthbearer)
     return POP_A_FAILURE;
 
-  size_t auth_cmd_len = strlen(oauthbearer) + 30;
-  char *auth_cmd = mutt_mem_malloc(auth_cmd_len);
-  snprintf(auth_cmd, auth_cmd_len, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
+  char *auth_cmd = NULL;
+  mutt_str_asprintf(&auth_cmd, "AUTH OAUTHBEARER %s\r\n", oauthbearer);
   FREE(&oauthbearer);
 
   int rc = pop_query_d(adata, auth_cmd, strlen(auth_cmd),

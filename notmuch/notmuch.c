@@ -588,15 +588,11 @@ static char *get_folder_from_path(const char *path)
  */
 static char *nm2mutt_message_id(const char *id)
 {
-  size_t sz;
-  char *mid = NULL;
-
   if (!id)
     return NULL;
-  sz = strlen(id) + 3;
-  mid = mutt_mem_malloc(sz);
 
-  snprintf(mid, sz, "<%s>", id);
+  char *mid = NULL;
+  mutt_str_asprintf(&mid, "<%s>", id);
   return mid;
 }
 
