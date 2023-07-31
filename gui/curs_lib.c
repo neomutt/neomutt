@@ -501,9 +501,8 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   }
   else
   {
-    char *pc = mutt_mem_malloc(mutt_str_len(prompt) + 3);
-
-    sprintf(pc, "%s: ", prompt);
+    char *pc = NULL;
+    mutt_str_asprintf(&pc, "%s: ", prompt);
     if (event.op == OP_NULL)
       mutt_unget_ch(event.ch);
     else
