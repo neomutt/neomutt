@@ -220,8 +220,7 @@ static bool get_hostname(struct ConfigSet *cs)
     /* now get FQDN.  Use configured domain first, DNS next, then uname */
 #ifdef DOMAIN
     /* we have a compile-time domain name, use that for `$hostname` */
-    fqdn = mutt_mem_malloc(mutt_str_len(DOMAIN) + mutt_str_len(ShortHostname) + 2);
-    sprintf((char *) fqdn, "%s.%s", NONULL(ShortHostname), DOMAIN);
+    mutt_str_asprintf(&fqdn, "%s.%s", NONULL(ShortHostname), DOMAIN);
 #else
     fqdn = getmailname();
     if (!fqdn)
@@ -229,8 +228,7 @@ static bool get_hostname(struct ConfigSet *cs)
       struct Buffer *domain = buf_pool_get();
       if (getdnsdomainname(domain) == 0)
       {
-        fqdn = mutt_mem_malloc(buf_len(domain) + mutt_str_len(ShortHostname) + 2);
-        sprintf((char *) fqdn, "%s.%s", NONULL(ShortHostname), buf_string(domain));
+        mutt_str_asprintf(&fqdn, "%s.%s", NONULL(ShortHostname), buf_string(domain));
       }
       else
       {

@@ -1075,8 +1075,7 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *env_cur
   if (env_cur->real_subj)
   {
     FREE(&env->subject);
-    env->subject = mutt_mem_malloc(mutt_str_len(env_cur->real_subj) + 5);
-    sprintf(env->subject, "Re: %s", env_cur->real_subj);
+    mutt_str_asprintf(&(env->subject), "Re: %s", env_cur->real_subj);
   }
   else if (!env->subject)
   {
