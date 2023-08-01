@@ -5,6 +5,7 @@ config.log
 conftest__
 conftest__.c
 Makefile
+jimsh0
 
 # Binaries
 docs/makedoc
