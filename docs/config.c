@@ -4934,6 +4934,12 @@
 ** The "unread" value is a synonym for "new".
 */
 
+{ "browser_sort_dirs_first", DT_BOOL, false },
+/*
+** .pp
+** If this is set, directories will always sort before all non-directories.
+*/
+
 { "sort_re", DT_BOOL, true },
 /*
 ** .pp
