@@ -23,7 +23,6 @@
 #ifndef MUTT_GUI_MSGWIN_WDATA_H
 #define MUTT_GUI_MSGWIN_WDATA_H
 
-#include <stdbool.h>
 #include "color/lib.h"
 
 struct MuttWindow;

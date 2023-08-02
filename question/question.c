@@ -203,7 +203,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * Ask the user a yes/no question, using shortcut letters, e.g.
  * `Quit NeoMutt? ([yes]/no):`
  *
- * This question can be answered using a locale-dependent letters, e.g.
+ * This question can be answered using locale-dependent letters, e.g.
  * - English, `[+1yY]` or `[-0nN]`
  * - Serbian, `[+1yYdDДд]` or `[-0nNНн]`
  */

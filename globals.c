@@ -34,7 +34,7 @@
 #include "menu/lib.h"
 
 bool ErrorBufMessage; ///< true if the last message was an error
-char ErrorBuf[256];   ///< Copy of the last error message
+char ErrorBuf[1024];  ///< Copy of the last error message
 
 char *HomeDir = NULL;       ///< User's home directory
 char *ShortHostname = NULL; ///< Short version of the hostname
