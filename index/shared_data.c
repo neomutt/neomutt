@@ -56,7 +56,7 @@ static int index_shared_mview_observer(struct NotifyCallback *nc)
     shared->mailbox_view = NULL;
 
   mutt_debug(LL_NOTIFY, "relay NT_MVIEW to shared data observers\n");
-  notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, nc->event_data);
   return 0;
 }
 
@@ -81,7 +81,7 @@ static int index_shared_account_observer(struct NotifyCallback *nc)
     shared->account = NULL;
 
   mutt_debug(LL_NOTIFY, "relay NT_ACCOUNT to shared data observers\n");
-  notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, nc->event_data);
   return 0;
 }
 
@@ -106,7 +106,7 @@ static int index_shared_mailbox_observer(struct NotifyCallback *nc)
     shared->mailbox = NULL;
 
   mutt_debug(LL_NOTIFY, "relay NT_MAILBOX to shared data observers\n");
-  notify_send(shared->notify, nc->event_type, nc->event_subtype, ev_m);
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, nc->event_data);
   return 0;
 }
 
@@ -146,7 +146,7 @@ static int index_shared_email_observer(struct NotifyCallback *nc)
 
   mutt_debug(LL_NOTIFY, "relay NT_EMAIL %p to shared data observers\n",
              (void *) shared->email);
-  notify_send(shared->notify, nc->event_type, nc->event_subtype, shared);
+  notify_send(shared->notify, nc->event_type, nc->event_subtype, nc->event_data);
   return 0;
 }
 
