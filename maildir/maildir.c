@@ -191,14 +191,15 @@ cleanup:
 }
 
 /**
- * maildir_sort_flags - Compare two flag characters - Implements ::sort_t - @ingroup sort_api
+ * maildir_sort_flags - Compare two flag characters
  * @param a First  character to compare
  * @param b Second character to compare
+ * @param arg (not used)
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int maildir_sort_flags(const void *a, const void *b)
+static int maildir_sort_flags(const void *a, const void *b, void *arg)
 {
   return mutt_numeric_cmp(*((const char *) a), *((const char *) b));
 }
@@ -231,7 +232,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
     snprintf(tmp, sizeof(tmp), "%s%s%s%s%s", e->flagged ? "F" : "", e->replied ? "R" : "",
              e->read ? "S" : "", e->deleted ? "T" : "", NONULL(flags));
     if (flags)
-      qsort(tmp, strlen(tmp), 1, maildir_sort_flags);
+      mutt_qsort_r(tmp, strlen(tmp), 1, maildir_sort_flags, NULL);
 
     const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
     snprintf(dest, destlen, "%c2,%s", c_maildir_field_delimiter, tmp);
