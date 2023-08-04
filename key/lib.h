@@ -75,6 +75,15 @@ struct Keymap
 STAILQ_HEAD(KeymapList, Keymap);
 
 /**
+ * struct KeymapSeq - Array of KeymapList
+ */
+struct KeymapSeq
+{
+//  struct Keymaps *name;
+  void *name;
+};
+
+/**
  * struct KeyEvent - An event such as a keypress
  */
 struct KeyEvent
@@ -101,6 +110,14 @@ struct MenuFuncOp
 {
   const char *name; ///< Name of the function
   int op;           ///< Operation, e.g. OP_DELETE
+};
+
+/**
+ * struct MenuFuncOps - An array of MenuFuncOp
+ */
+struct MenuFuncOps
+{
+  void *name;
 };
 
 /**
@@ -163,6 +180,9 @@ void                     mutt_flush_macro_to_endcond(void);
 void                     mutt_init_abort_key        (void);
 void                     mutt_keys_cleanup          (void);
 void                     mw_what_key                (void);
+
+struct KeyEvent km_dokey_event2(void *hsmap[], const void *hsfuncs[], GetChFlags flags);
+int km_dokey2(void *hsmap[], const void *hsfuncs[], GetChFlags flags);
 
 // Private to libkey
 struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);
