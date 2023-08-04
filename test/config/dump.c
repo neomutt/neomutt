@@ -166,17 +166,17 @@ bool test_escape_string(void)
 
 bool test_elem_list_sort(void)
 {
-  // int elem_list_sort(const void *a, const void *b);
+  // int elem_list_sort(const void *a, const void *b, void *arg);
 
   {
     struct HashElem he = { 0 };
-    if (!TEST_CHECK(elem_list_sort(NULL, &he) == 0))
+    if (!TEST_CHECK(elem_list_sort(NULL, &he, NULL) == 0))
       return false;
   }
 
   {
     struct HashElem he = { 0 };
-    if (!TEST_CHECK(elem_list_sort(&he, NULL) == 0))
+    if (!TEST_CHECK(elem_list_sort(&he, NULL, NULL) == 0))
       return false;
   }
 

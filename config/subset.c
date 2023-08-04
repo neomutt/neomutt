@@ -53,11 +53,12 @@ static const struct Mapping ConfigEventNames[] = {
  * elem_list_sort - Sort two HashElem pointers to config
  * @param a First HashElem
  * @param b Second HashElem
+ * @param arg (not used)
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-int elem_list_sort(const void *a, const void *b)
+int elem_list_sort(const void *a, const void *b, void *arg)
 {
   if (!a || !b)
     return 0;
@@ -91,7 +92,7 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
       break; /* LCOV_EXCL_LINE */
   }
 
-  qsort(he_list, index, sizeof(struct HashElem *), elem_list_sort);
+  mutt_qsort_r(he_list, index, sizeof(struct HashElem *), elem_list_sort, NULL);
 
   return he_list;
 }
