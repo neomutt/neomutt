@@ -768,13 +768,14 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 
 /**
  * envlist_sort - Sort two environment strings
- * @param a First string
- * @param b Second string
+ * @param a   First string
+ * @param b   Second string
+ * @param arg (not used)
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int envlist_sort(const void *a, const void *b)
+static int envlist_sort(const void *a, const void *b, void *arg)
 {
   return strcmp(*(const char **) a, *(const char **) b);
 }
@@ -815,7 +816,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     for (char **env = EnvList; *env; env++)
       count++;
 
-    qsort(EnvList, count, sizeof(char *), envlist_sort);
+    mutt_qsort_r(EnvList, count, sizeof(char *), envlist_sort, NULL);
 
     for (char **env = EnvList; *env; env++)
       fprintf(fp_out, "%s\n", *env);
