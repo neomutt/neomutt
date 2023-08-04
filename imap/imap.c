@@ -887,9 +887,15 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 }
 
 /**
- * imap_sort_email_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
+ * imap_sort_email_uid - Compare two Emails by UID
+ * @param a First  email to compare
+ * @param b Second email to compare
+ * @param arg (not used)
+ * @retval -1 a precedes b
+ * @retval  0 a and b are identical
+ * @retval  1 b precedes a
  */
-static int imap_sort_email_uid(const void *a, const void *b)
+static int imap_sort_email_uid(const void *a, const void *b, void *arg)
 {
   const struct Email *ea = *(struct Email const *const *) a;
   const struct Email *eb = *(struct Email const *const *) b;
@@ -1567,7 +1573,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   /* presort here to avoid doing 10 resorts in imap_exec_msg_set */
   emails = mutt_mem_malloc(m->msg_count * sizeof(struct Email *));
   memcpy(emails, m->emails, m->msg_count * sizeof(struct Email *));
-  qsort(emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid);
+  mutt_qsort_r(emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid, NULL);
 
   rc = sync_helper(m, emails, m->msg_count, MUTT_ACL_DELETE, MUTT_DELETED, "\\Deleted");
   if (rc >= 0)
