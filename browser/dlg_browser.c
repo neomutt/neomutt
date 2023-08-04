@@ -5,99 +5,8 @@
  * @authors
  * Copyright (C) 2016 Pierre-Elliott Bécue <becue@crans.org>
  * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2018 Austin Ray <austin@austinray.io>
- * Copyright (C) 2019-2022 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020 R Primus <rprimus@gmail.com>
- * Copyright (C) 2022 Carlos Henrique Lima Melara <charlesmelara@outlook.com>
- * Copyright (C) 2023 Leon Philman
- * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
- * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
- *
- * @copyright
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 2 of the License, or (at your option) any later
- * version.
- *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-/**
- * @page browser_dlg_browser File/Mailbox Browser Dialog
- *
- * The File/Mailbox Browser Dialog lets the user select from a list of files or
- * mailboxes.
- *
- * This is a @ref gui_simple
- *
- * ## Windows
- *
- * | Name           | Type           | See Also      |
- * | :------------- | :------------- | :------------ |
- * | Browser Dialog | WT_DLG_BROWSER | dlg_browser() |
- *
- * **Parent**
- * - @ref gui_dialog
- *
- * **Children**
- * - See: @ref gui_simple
- *
- * ## Data
- * - #Menu
- * - #Menu::mdata
- * - #BrowserState
- *
- * The @ref gui_simple holds a Menu.  The Browser Dialog stores its data
- * (#BrowserState) in Menu::mdata.
- *
- * ## Events
- *
- * Once constructed, it is controlled by the following events:
- *
- * | Event Type            | Handler                     |
- * | :-------------------- | :-------------------------- |
- * | #NT_CONFIG            | browser_config_observer() |
- * | #NT_WINDOW            | browser_window_observer() |
- *
- * The Browser Dialog doesn't have any specific colours, so it doesn't need to
- * support #NT_COLOR.
- *
- * The Browser Dialog does not implement MuttWindow::recalc() or MuttWindow::repaint().
- *
- * Some other events are handled by the @ref gui_simple.
- */
-
-#include "config.h"
-#include <assert.h>
-#include <dirent.h>
-#include <errno.h>
-#include <grp.h>
-#include <limits.h>
-#include <locale.h>
-#include <pwd.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <time.h>
-#include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
-#include "conn/lib.h"
-#include "gui/lib.h"
-#include "lib.h"
-#include "expando/lib.h"
-#include "imap/lib.h"
-#include "key/lib.h"
-#include "menu/lib.h"
-#include "nntp/lib.h"
-#include "functions.h"
+ * Copyrigh
+#include "functions.h" // <-- index/functions.h
 #include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -109,6 +18,8 @@
 
 const struct ExpandoRenderData FolderRenderData[];
 const struct ExpandoRenderData GroupIndexRenderData[];
+
+extern const struct MenuFuncOp OpBrowser[];
 
 /// Help Bar for the File/Dir/Mailbox browser dialog
 static const struct Mapping FolderHelp[] = {
@@ -1532,7 +1443,10 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     menu_tagging_dispatcher(priv->menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_FOLDER, GETCH_NO_FLAGS);
+    void *hsmap[] = { &Keymaps[MENU_FOLDER], &Keymaps[MENU_GENERIC], 0 };
+    const void *hsfuncs[] = { OpBrowser, OpGeneric, 0 };
+    op = km_dokey2(hsmap, hsfuncs, GETCH_NO_FLAGS);
+    // op = km_dokey(MENU_FOLDER, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;

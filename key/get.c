@@ -452,6 +452,137 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
 }
 
 /**
+ * km_dokey_event2 - Determine what a keypress should do
+ * @param hsmap haystack KeyMap array
+ * @param hsfuncs haystack MenuFuncOp array
+ * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
+ * @retval ptr Event
+ */
+struct KeyEvent km_dokey_event2(void *hsmap[], const void *hsfuncs[], GetChFlags flags)
+{
+  struct KeyEvent event = { 0, OP_NULL };
+  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
+  int c = 0;
+  int pos = 0;
+  int n = 0;
+
+  while (hsmap[c])
+  {
+    struct Keymap *map = STAILQ_FIRST((struct KeymapList *) hsmap[c++]);
+
+    while (true)
+    {
+      int i = (c_timeout > 0) ? c_timeout : 60;
+
+      event = mutt_getch(GETCH_NO_FLAGS);
+
+      if ((event.op == OP_TIMEOUT) && !SigWinch)
+        continue;
+
+      if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
+        return event;
+
+      if (event.op != OP_NULL)
+      {
+        const char *func = NULL;
+        const struct MenuFuncOp *funcs = NULL;
+
+        for (int d = 0; hsfuncs[d] != 0; d++)
+        {
+          if ((func = mutt_get_func(hsfuncs[d], event.op)))
+            return event;
+        }
+
+        /* Sigh. Valid function but not in this context.
+         * Find the literal string and push it back */
+        for (i = 0; MenuNames[i].name; i++)
+        {
+          funcs = km_get_table(MenuNames[i].value);
+          if (funcs)
+          {
+            func = mutt_get_func(funcs, event.op);
+            if (func)
+            {
+              mutt_unget_ch('>');
+              mutt_unget_string(func);
+              mutt_unget_ch('<');
+              break;
+            }
+          }
+        }
+        /* continue to chew */
+        if (func)
+          continue;
+      }
+
+      /* Nope. Business as usual */
+      while (event.ch > map->keys[pos])
+      {
+        if ((pos > map->eq) || !STAILQ_NEXT(map, entries))
+        {
+          if (event.ch)
+            mutt_unget_ch(event.ch);
+          for (; pos; pos--)
+          {
+            mutt_unget_ch(map->keys[pos - 1]);
+          }
+          goto out;
+        }
+        map = STAILQ_NEXT(map, entries);
+      }
+
+      if (event.ch != map->keys[pos])
+      {
+        if (event.ch)
+          mutt_unget_ch(event.ch);
+        for (; pos; pos--)
+        {
+          mutt_unget_ch(map->keys[pos - 1]);
+        }
+        goto out;
+      }
+
+      if (++pos == map->len)
+      {
+        if (map->op != OP_MACRO)
+        {
+          return (struct KeyEvent){ event.ch, map->op };
+        }
+
+        /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
+         * in mutt_getch().  Generating new macro events during that time would
+         * result in undesired behavior once the option is turned off.
+         *
+         * Originally this returned -1, however that results in an unbuffered
+         * username or password prompt being aborted.  Returning OP_NULL allows
+         * mutt_enter_string_full() to display the keybinding pressed instead.
+         *
+         * It may be unexpected for a macro's keybinding to be returned,
+         * but less so than aborting the prompt.  */
+        if (flags & GETCH_IGNORE_MACRO)
+        {
+          return (struct KeyEvent){ event.ch, OP_NULL };
+        }
+
+        if (n++ == 10)
+        {
+          mutt_flushinp();
+          mutt_error(_("Macro loop detected"));
+          return (struct KeyEvent){ '\0', OP_ABORT };
+        }
+
+        generic_tokenize_push_string(map->macro);
+        map = STAILQ_FIRST((struct KeymapList *) hsmap[c]);
+        pos = 0;
+      }
+    }
+  out:
+    ;
+  }
+  return (struct KeyEvent){ mutt_getch(flags).ch, OP_NULL };
+}
+
+/**
  * km_dokey - Determine what a keypress should do
  * @param mtype Menu type, e.g. #MENU_EDITOR
  * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
@@ -463,4 +594,9 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
 int km_dokey(enum MenuType mtype, GetChFlags flags)
 {
   return km_dokey_event(mtype, flags).op;
+}
+
+int km_dokey2(void *hsmap[], const void *hsfuncs[], GetChFlags flags)
+{
+  return km_dokey_event2(hsmap, hsfuncs, flags).op;
 }

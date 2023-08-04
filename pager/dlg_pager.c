@@ -55,7 +55,7 @@
 #include "pattern/lib.h"
 #include "sidebar/lib.h"
 #include "display.h"
-#include "functions.h"
+#include "functions.h" // <-- index/functions.h
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mview.h"
@@ -63,6 +63,8 @@
 #include "private_data.h"
 #include "protos.h"
 #include "status.h"
+
+extern const struct MenuFuncOp OpPager[];
 
 /// Braille display: row to leave the cursor
 int BrailleRow = -1;
@@ -501,7 +503,10 @@ int dlg_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
-    op = km_dokey(MENU_PAGER, GETCH_NO_FLAGS);
+    void *hsmap[] = { &Keymaps[MENU_PAGER], &Keymaps[MENU_GENERIC], 0 };
+    const void *hsfuncs[] = { OpPager, 0 };
+    op = km_dokey2(hsmap, hsfuncs, GETCH_NO_FLAGS);
+    // op = km_dokey(MENU_PAGER, GETCH_NO_FLAGS);
 
     // km_dokey() can block, so recheck the timer.
     // Note: This check must occur before handling the operations of the index

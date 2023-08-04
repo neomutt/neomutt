@@ -67,7 +67,7 @@
 #include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "functions.h"
+#include "functions.h" // <-- history/functions.h
 #include "mutt_logging.h"
 
 const struct ExpandoRenderData HistoryRenderData[];
@@ -164,7 +164,10 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_DIALOG, GETCH_NO_FLAGS);
+    void *hsmap[] = { &Keymaps[MENU_DIALOG], &Keymaps[MENU_GENERIC], 0 };
+    const void *hsfuncs[] = { OpDialog, OpGeneric, 0 };
+    op = km_dokey2(hsmap, hsfuncs, GETCH_NO_FLAGS);
+    // op = km_dokey(MENU_DIALOG, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
