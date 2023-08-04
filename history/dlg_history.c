@@ -141,7 +141,10 @@ void dlg_history(struct Buffer *buf, struct StringArray *matches)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_DIALOG, GETCH_NO_FLAGS);
+    void *hsmap[] = { &Keymaps[MENU_DIALOG], &Keymaps[MENU_GENERIC], 0 };
+    const void *hsfuncs[] = { OpDialog, OpGeneric, 0 };
+    op = km_dokey2(hsmap, hsfuncs, GETCH_NO_FLAGS);
+    // op = km_dokey(MENU_DIALOG, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;

@@ -97,6 +97,8 @@
 #include "monitor.h"
 #endif
 
+extern const struct MenuFuncOp OpIndex[];
+
 /// Help Bar for the Index dialog
 static const struct Mapping IndexHelp[] = {
   // clang-format off
@@ -1297,7 +1299,10 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     mutt_refresh();
 
     window_redraw(NULL);
-    op = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
+    void *hsmap[] = { &Keymaps[MENU_INDEX], &Keymaps[MENU_GENERIC], 0 };
+    const void *hsfuncs[] = { OpIndex, OpGeneric, 0 };
+    op = km_dokey2(hsmap, hsfuncs, GETCH_NO_FLAGS);
+    // op = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
 
     if (op == OP_REPAINT)
     {
