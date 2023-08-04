@@ -135,17 +135,17 @@ static int pgp_compare_key_address(const void *a, const void *b)
 
 /**
  * pgp_compare_address_qsort - Compare the addresses of two PGP keys
- * @param a First address
- * @param b Second address
+ * @param a   First address
+ * @param b   Second address
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int pgp_compare_address_qsort(const void *a, const void *b)
+static int pgp_compare_address_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_key_address(a, b) :
-                                            pgp_compare_key_address(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !pgp_compare_key_address(a, b) : pgp_compare_key_address(a, b);
 }
 
 /**
@@ -169,17 +169,17 @@ static int pgp_compare_key_date(const void *a, const void *b)
 
 /**
  * pgp_compare_date_qsort - Compare the dates of two PGP keys
- * @param a First key
- * @param b Second key
+ * @param a   First key
+ * @param b   Second key
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int pgp_compare_date_qsort(const void *a, const void *b)
+static int pgp_compare_date_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_key_date(a, b) :
-                                            pgp_compare_key_date(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !pgp_compare_key_date(a, b) : pgp_compare_key_date(a, b);
 }
 
 /**
@@ -203,17 +203,17 @@ static int pgp_compare_keyid(const void *a, const void *b)
 
 /**
  * pgp_compare_keyid_qsort - Compare key IDs
- * @param a First key ID
- * @param b Second key ID
+ * @param a   First key ID
+ * @param b   Second key ID
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int pgp_compare_keyid_qsort(const void *a, const void *b)
+static int pgp_compare_keyid_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_keyid(a, b) :
-                                            pgp_compare_keyid(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !pgp_compare_keyid(a, b) : pgp_compare_keyid(a, b);
 }
 
 /**
@@ -253,17 +253,17 @@ static int pgp_compare_key_trust(const void *a, const void *b)
 
 /**
  * pgp_compare_trust_qsort - Compare the trust levels of two PGP keys
- * @param a First key
- * @param b Second key
+ * @param a   First key
+ * @param b   Second key
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int pgp_compare_trust_qsort(const void *a, const void *b)
+static int pgp_compare_trust_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !pgp_compare_key_trust(a, b) :
-                                            pgp_compare_key_trust(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !pgp_compare_key_trust(a, b) : pgp_compare_key_trust(a, b);
 }
 
 /**
@@ -635,8 +635,8 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
     return NULL;
   }
 
-  int (*f)(const void *, const void *);
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  int (*f)(const void *, const void *, void *); // TODO: use sort_t
+  short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
   switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
@@ -655,7 +655,10 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   }
 
   if (key_table)
-    qsort(key_table, i, sizeof(struct PgpUid *), f);
+  {
+    bool sort_reverse = c_pgp_sort_keys & SORT_REVERSE;
+    mutt_qsort_r(key_table, i, sizeof(struct PgpUid *), f, &sort_reverse);
+  }
 
   struct MuttWindow *dlg = simple_dialog_new(MENU_PGP, WT_DLG_PGP, PgpHelp);
 
