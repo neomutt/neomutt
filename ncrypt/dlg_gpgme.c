@@ -131,17 +131,18 @@ static int crypt_compare_key_address(const void *a, const void *b)
 
 /**
  * crypt_compare_address_qsort - Compare the addresses of two keys
- * @param a First key
- * @param b Second key
+ * @param a   First key
+ * @param b   Second key
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int crypt_compare_address_qsort(const void *a, const void *b)
+static int crypt_compare_address_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_key_address(a, b) :
-                                            crypt_compare_key_address(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !crypt_compare_key_address(a, b) :
+                        crypt_compare_key_address(a, b);
 }
 
 /**
@@ -165,17 +166,17 @@ static int crypt_compare_keyid(const void *a, const void *b)
 
 /**
  * crypt_compare_keyid_qsort - Compare the IDs of two keys
- * @param a First key ID
- * @param b Second key ID
+ * @param a   First key ID
+ * @param b   Second key ID
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int crypt_compare_keyid_qsort(const void *a, const void *b)
+static int crypt_compare_keyid_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_keyid(a, b) :
-                                            crypt_compare_keyid(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !crypt_compare_keyid(a, b) : crypt_compare_keyid(a, b);
 }
 
 /**
@@ -207,17 +208,17 @@ static int crypt_compare_key_date(const void *a, const void *b)
 
 /**
  * crypt_compare_date_qsort - Compare the dates of two keys
- * @param a First key
- * @param b Second key
+ * @param a   First key
+ * @param b   Second key
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int crypt_compare_date_qsort(const void *a, const void *b)
+static int crypt_compare_date_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_key_date(a, b) :
-                                            crypt_compare_key_date(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !crypt_compare_key_date(a, b) : crypt_compare_key_date(a, b);
 }
 
 /**
@@ -271,17 +272,17 @@ static int crypt_compare_key_trust(const void *a, const void *b)
 
 /**
  * crypt_compare_trust_qsort - Compare the trust levels of two keys
- * @param a First key
- * @param b Second key
+ * @param a   First key
+ * @param b   Second key
+ * @param arg Boolean indicating reverse sort order
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int crypt_compare_trust_qsort(const void *a, const void *b)
+static int crypt_compare_trust_qsort(const void *a, const void *b, void *arg)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  return (c_pgp_sort_keys & SORT_REVERSE) ? !crypt_compare_key_trust(a, b) :
-                                            crypt_compare_key_trust(a, b);
+  const bool sort_reverse = *(bool *) arg;
+  return sort_reverse ? !crypt_compare_key_trust(a, b) : crypt_compare_key_trust(a, b);
 }
 
 /**
@@ -681,7 +682,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
 {
   int keymax;
   int i;
-  int (*f)(const void *, const void *);
+  int (*f)(const void *, const void *, void *); // TODO: use sort_t
   enum MenuType menu_to_use = MENU_GENERIC;
   bool unusable = false;
 
@@ -732,7 +733,10 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   }
 
   if (key_table)
-    qsort(key_table, i, sizeof(struct CryptKeyInfo *), f);
+  {
+    bool sort_reverse = c_pgp_sort_keys & SORT_REVERSE;
+    mutt_qsort_r(key_table, i, sizeof(struct CryptKeyInfo *), f, &sort_reverse);
+  }
 
   if (app & APPLICATION_PGP)
     menu_to_use = MENU_KEY_SELECT_PGP;
