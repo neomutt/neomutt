@@ -77,7 +77,7 @@ static struct ConfigDef BrowserVars[] = {
     "Sort method for the browser"
   },
   { "browser_sort_dirs_first", DT_BOOL, false, 0, NULL,
-    "Partition directories to the beginning of the listing"
+    "Group directories before files in the browser"
   },
   { NULL },
   // clang-format on

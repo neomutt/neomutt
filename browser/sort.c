@@ -27,13 +27,13 @@
  */
 
 #include "config.h"
+#include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
 #include "globals.h"
 #include "muttlib.h"
-#include <sys/stat.h>
 
 /**
  * browser_sort_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
@@ -152,7 +152,7 @@ static int browser_sort_count_new(const void *a, const void *b)
  *
  * Wild compare function that calls the others. It's useful because it provides
  * a way to tell "../" is always on the top of the list, independently of the
- * sort method. browser_sort_dirs_first is also handled here.
+ * sort method.  $browser_sort_dirs_first is also handled here.
  */
 static int browser_compare(const void *a, const void *b)
 {

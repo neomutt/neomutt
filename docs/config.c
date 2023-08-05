@@ -4937,7 +4937,8 @@
 { "browser_sort_dirs_first", DT_BOOL, false },
 /*
 ** .pp
-** If this is set, directories will always sort before all non-directories.
+** If this variable is \fIset\fP, the browser will group directories before
+** files.
 */
 
 { "sort_re", DT_BOOL, true },
