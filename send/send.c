@@ -1467,21 +1467,21 @@ struct Address *mutt_default_from(struct ConfigSubset *sub)
    */
 
   const struct Address *c_from = cs_subset_address(sub, "from");
-  const bool c_use_domain = cs_subset_bool(sub, "use_domain");
   if (c_from)
   {
     return mutt_addr_copy(c_from);
   }
-  else if (c_use_domain)
+
+  char domain[1024] = { 0 };
+  const char *mailbox = Username;
+  const bool c_use_domain = cs_subset_bool(sub, "use_domain");
+  if (c_use_domain)
   {
-    struct Address *addr = mutt_addr_new();
-    buf_printf(addr->mailbox, "%s@%s", NONULL(Username), NONULL(mutt_fqdn(true, sub)));
-    return addr;
+    snprintf(domain, sizeof(domain), "%s@%s", NONULL(Username), NONULL(mutt_fqdn(true, sub)));
+    mailbox = domain;
   }
-  else
-  {
-    return mutt_addr_create(NULL, Username);
-  }
+
+  return mutt_addr_create(NULL, mailbox);
 }
 
 /**
@@ -2475,7 +2475,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (from && !from->personal && !(flags & (SEND_RESEND | SEND_POSTPONED)))
     {
       const char *const c_real_name = cs_subset_string(sub, "real_name");
-      from->personal = buf_new(c_real_name);
+      if (c_real_name)
+        from->personal = buf_new(c_real_name);
     }
   }
 
