@@ -51,7 +51,7 @@ int ImapMaxCmdlen = 8192;
 /**
  * imap_sort_uid - Compare two UIDs - Implements ::sort_t - @ingroup sort_api
  */
-int imap_sort_uid(const void *a, const void *b)
+int imap_sort_uid(const void *a, const void *b, void *arg)
 {
   unsigned int ua = *(unsigned int *) a;
   unsigned int ub = *(unsigned int *) b;

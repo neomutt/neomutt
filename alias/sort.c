@@ -45,7 +45,7 @@ static short SortAlias = 0;
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_name(const void *a, const void *b)
+static int alias_sort_name(const void *a, const void *b, void *arg)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
@@ -66,7 +66,7 @@ static int alias_sort_name(const void *a, const void *b)
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_address(const void *a, const void *b)
+static int alias_sort_address(const void *a, const void *b, void *arg)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
@@ -126,7 +126,7 @@ static int alias_sort_address(const void *a, const void *b)
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_unsort(const void *a, const void *b)
+static int alias_sort_unsort(const void *a, const void *b, void *arg)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
@@ -172,7 +172,7 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
     return;
 
   SortAlias = cs_subset_sort(sub, "sort_alias");
-  ARRAY_SORT(ava, alias_get_sort_function(SortAlias));
+  ARRAY_SORT(ava, alias_get_sort_function(SortAlias), NULL);
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, ava)

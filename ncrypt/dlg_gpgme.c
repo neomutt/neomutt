@@ -89,6 +89,7 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"
+#include "sort.h"
 
 /// Help Bar for the GPGME key selection dialog
 static const struct Mapping GpgmeHelp[] = {
@@ -130,7 +131,7 @@ static int crypt_compare_key_address(const void *a, const void *b)
 }
 
 /**
- * crypt_compare_address_qsort - Compare the addresses of two keys
+ * crypt_compare_address_qsort - Compare the addresses of two keys - Implements ::sort_t - @ingroup sort_api
  * @param a   First key
  * @param b   Second key
  * @param arg Boolean indicating reverse sort order
@@ -165,7 +166,7 @@ static int crypt_compare_keyid(const void *a, const void *b)
 }
 
 /**
- * crypt_compare_keyid_qsort - Compare the IDs of two keys
+ * crypt_compare_keyid_qsort - Compare the IDs of two keys - Implements ::sort_t - @ingroup sort_api
  * @param a   First key ID
  * @param b   Second key ID
  * @param arg Boolean indicating reverse sort order
@@ -207,7 +208,7 @@ static int crypt_compare_key_date(const void *a, const void *b)
 }
 
 /**
- * crypt_compare_date_qsort - Compare the dates of two keys
+ * crypt_compare_date_qsort - Compare the dates of two keys - Implements ::sort_t - @ingroup sort_api
  * @param a   First key
  * @param b   Second key
  * @param arg Boolean indicating reverse sort order
@@ -271,7 +272,7 @@ static int crypt_compare_key_trust(const void *a, const void *b)
 }
 
 /**
- * crypt_compare_trust_qsort - Compare the trust levels of two keys
+ * crypt_compare_trust_qsort - Compare the trust levels of two keys - Implements ::sort_t - @ingroup sort_api
  * @param a   First key
  * @param b   Second key
  * @param arg Boolean indicating reverse sort order
@@ -682,7 +683,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
 {
   int keymax;
   int i;
-  int (*f)(const void *, const void *, void *); // TODO: use sort_t
+  sort_t f = NULL;
   enum MenuType menu_to_use = MENU_GENERIC;
   bool unusable = false;
 

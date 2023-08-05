@@ -89,6 +89,7 @@
 #include "pgp_functions.h"
 #include "pgpkey.h"
 #include "pgplib.h"
+#include "sort.h"
 
 /// Help Bar for the PGP key selection dialog
 static const struct Mapping PgpHelp[] = {
@@ -134,7 +135,7 @@ static int pgp_compare_key_address(const void *a, const void *b)
 }
 
 /**
- * pgp_compare_address_qsort - Compare the addresses of two PGP keys
+ * pgp_compare_address_qsort - Compare the addresses of two PGP keys - Implements ::sort_t - @ingroup sort_api
  * @param a   First address
  * @param b   Second address
  * @param arg Boolean indicating reverse sort order
@@ -168,7 +169,7 @@ static int pgp_compare_key_date(const void *a, const void *b)
 }
 
 /**
- * pgp_compare_date_qsort - Compare the dates of two PGP keys
+ * pgp_compare_date_qsort - Compare the dates of two PGP keys - Implements ::sort_t - @ingroup sort_api
  * @param a   First key
  * @param b   Second key
  * @param arg Boolean indicating reverse sort order
@@ -202,7 +203,7 @@ static int pgp_compare_keyid(const void *a, const void *b)
 }
 
 /**
- * pgp_compare_keyid_qsort - Compare key IDs
+ * pgp_compare_keyid_qsort - Compare key IDs - Implements ::sort_t - @ingroup sort_api
  * @param a   First key ID
  * @param b   Second key ID
  * @param arg Boolean indicating reverse sort order
@@ -252,7 +253,7 @@ static int pgp_compare_key_trust(const void *a, const void *b)
 }
 
 /**
- * pgp_compare_trust_qsort - Compare the trust levels of two PGP keys
+ * pgp_compare_trust_qsort - Compare the trust levels of two PGP keys - Implements ::sort_t - @ingroup sort_api
  * @param a   First key
  * @param b   Second key
  * @param arg Boolean indicating reverse sort order
@@ -635,7 +636,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
     return NULL;
   }
 
-  int (*f)(const void *, const void *, void *); // TODO: use sort_t
+  sort_t f = NULL;
   short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
   switch (c_pgp_sort_keys & SORT_MASK)
   {

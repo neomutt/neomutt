@@ -1650,7 +1650,7 @@ static int emails_to_uid_array(struct EmailArray *ea, struct UidArray *uida)
 
     ARRAY_ADD(uida, edata->uid);
   }
-  ARRAY_SORT(uida, imap_sort_uid);
+  ARRAY_SORT(uida, imap_sort_uid, NULL);
 
   return ARRAY_SIZE(uida);
 }

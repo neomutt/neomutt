@@ -273,9 +273,11 @@
  * ARRAY_SORT - Sort an array
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @param fn   Sort function, see ::sort_t
+ * @param arg  Opaque argument to pass to sort function
  */
-#define ARRAY_SORT(head, fn)                                                   \
-  ((head)->entries && (qsort((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), (fn)), true))
+#define ARRAY_SORT(head, fn, arg)                                              \
+  ((head)->entries &&                                                          \
+   (mutt_qsort_r((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), (fn), (arg)), true))
 
 /******************************************************************************
  * Internal APIs

@@ -344,7 +344,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
 }
 
 /**
- * label_sort - Sort two label strings
+ * label_sort - Sort two label strings - Implements ::sort_t - @ingroup sort_api
  * @param a   First string
  * @param b   Second string
  * @param arg (not used)

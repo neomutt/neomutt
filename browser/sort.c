@@ -154,7 +154,7 @@ static int browser_sort_count_new(const void *a, const void *b)
  * a way to tell "../" is always on the top of the list, independently of the
  * sort method.  $browser_sort_dirs_first is also handled here.
  */
-static int browser_compare(const void *a, const void *b)
+static int browser_compare(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -168,7 +168,7 @@ static int browser_compare(const void *a, const void *b)
     if (S_ISDIR(pa->mode) != S_ISDIR(pb->mode))
       return S_ISDIR(pa->mode) ? -1 : 1;
 
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = *(enum SortType *) arg;
   switch (c_sort_browser & SORT_MASK)
   {
     case SORT_COUNT:
@@ -198,7 +198,7 @@ static int browser_compare(const void *a, const void *b)
  */
 void browser_sort(struct BrowserState *state)
 {
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
 #ifdef USE_NNTP
@@ -211,5 +211,5 @@ void browser_sort(struct BrowserState *state)
       break;
   }
 
-  ARRAY_SORT(&state->entry, browser_compare);
+  ARRAY_SORT(&state->entry, browser_compare, &c_sort_browser);
 }

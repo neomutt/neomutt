@@ -50,7 +50,7 @@ static const struct Mapping ConfigEventNames[] = {
 };
 
 /**
- * elem_list_sort - Sort two HashElem pointers to config
+ * elem_list_sort - Sort two HashElem pointers to config - Implements ::sort_t - @ingroup sort_api
  * @param a First HashElem
  * @param b Second HashElem
  * @param arg (not used)

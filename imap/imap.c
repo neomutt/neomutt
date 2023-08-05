@@ -887,7 +887,7 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 }
 
 /**
- * imap_sort_email_uid - Compare two Emails by UID
+ * imap_sort_email_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
  * @param a First  email to compare
  * @param b Second email to compare
  * @param arg (not used)
@@ -1388,7 +1388,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   {
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     select_email_uids(m->emails, m->msg_count, MUTT_TRASH, false, false, &uida);
-    ARRAY_SORT(&uida, imap_sort_uid);
+    ARRAY_SORT(&uida, imap_sort_uid, NULL);
     rc = imap_exec_msg_set(adata, "UID COPY", dest_mdata->munge_name, &uida);
     if (rc == 0)
     {
@@ -1488,7 +1488,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   {
     struct UidArray uida = ARRAY_HEAD_INITIALIZER;
     select_email_uids(m->emails, m->msg_count, MUTT_DELETED, true, false, &uida);
-    ARRAY_SORT(&uida, imap_sort_uid);
+    ARRAY_SORT(&uida, imap_sort_uid, NULL);
     rc = imap_exec_msg_set(adata, "UID STORE", "+FLAGS.SILENT (\\Deleted)", &uida);
     ARRAY_FREE(&uida);
     if (rc < 0)

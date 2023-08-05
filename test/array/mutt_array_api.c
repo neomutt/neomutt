@@ -107,7 +107,7 @@ static void test_set(struct DummyArray *d, size_t begin, size_t end)
   }
 }
 
-static int gt(const void *a, const void *b)
+static int gt(const void *a, const void *b, void *arg)
 {
   const struct Dummy *da = a;
   const struct Dummy *db = b;
@@ -337,13 +337,13 @@ void test_mutt_array_api(void)
   /* Sorting */
   {
     struct DummyArray empty = ARRAY_HEAD_INITIALIZER;
-    if (!TEST_CHECK(!ARRAY_SORT(&empty, gt)))
+    if (!TEST_CHECK(!ARRAY_SORT(&empty, gt, NULL)))
     {
       TEST_MSG("Expected: false");
       TEST_MSG("Actual  : true");
     }
 
-    if (!TEST_CHECK(ARRAY_SORT(&d, gt)))
+    if (!TEST_CHECK(ARRAY_SORT(&d, gt, NULL)))
     {
       TEST_MSG("Expected: true");
       TEST_MSG("Actual  : false");

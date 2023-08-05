@@ -767,7 +767,7 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 }
 
 /**
- * envlist_sort - Sort two environment strings
+ * envlist_sort - Sort two environment strings - Implements ::sort_t - @ingroup sort_api
  * @param a   First string
  * @param b   Second string
  * @param arg (not used)

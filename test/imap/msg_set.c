@@ -64,7 +64,7 @@ void test_sort(void)
       ARRAY_ADD(&uida, data[i]);
     }
 
-    ARRAY_SORT(&uida, imap_sort_uid);
+    ARRAY_SORT(&uida, imap_sort_uid, NULL);
 
     for (int i = 0; i < mutt_array_size(data); i++)
     {
