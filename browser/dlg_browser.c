@@ -1080,17 +1080,25 @@ static int browser_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
 
-  if (!mutt_str_equal(ev_c->name, "browser_abbreviate_mailboxes") &&
-      !mutt_str_equal(ev_c->name, "date_format") && !mutt_str_equal(ev_c->name, "folder") &&
-      !mutt_str_equal(ev_c->name, "folder_format") &&
-      !mutt_str_equal(ev_c->name, "group_index_format") &&
-      !mutt_str_equal(ev_c->name, "mailbox_folder_format") &&
-      !mutt_str_equal(ev_c->name, "sort_browser"))
+  struct Menu *menu = nc->global_data;
+
+  if (mutt_str_equal(ev_c->name, "browser_sort_dirs_first"))
+  {
+    struct BrowserState *state = menu->mdata;
+    browser_sort(state);
+    browser_highlight_default(state, menu);
+  }
+  else if (!mutt_str_equal(ev_c->name, "browser_abbreviate_mailboxes") &&
+           !mutt_str_equal(ev_c->name, "date_format") &&
+           !mutt_str_equal(ev_c->name, "folder") &&
+           !mutt_str_equal(ev_c->name, "folder_format") &&
+           !mutt_str_equal(ev_c->name, "group_index_format") &&
+           !mutt_str_equal(ev_c->name, "mailbox_folder_format") &&
+           !mutt_str_equal(ev_c->name, "sort_browser"))
   {
     return 0;
   }
 
-  struct Menu *menu = nc->global_data;
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   mutt_debug(LL_DEBUG5, "config done, request WA_RECALC, MENU_REDRAW_FULL\n");
 
