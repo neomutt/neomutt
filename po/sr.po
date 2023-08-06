@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-05-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-07-30 21:01+0100\n"
-"PO-Revision-Date: 2023-06-11 15:10+0200\n"
+"PO-Revision-Date: 2023-08-06 14:31+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.5.5-1-g32ee557\n"
+"X-Generator: poe 1.5.7\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:398
@@ -2320,7 +2320,8 @@ msgstr "[-- Врста: %s/%s%s%s, Кодирање: %s, Величина: %s --
 #: handler.c:100
 #, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Алтернативна врста #%d: %s/%s%s%s, Кодирање: %s, Величина: %s --]\n"
+msgstr ""
+"[-- Алтернативна врста #%d: %s/%s%s%s, Кодирање: %s, Величина: %s --]\n"
 
 #: handler.c:556
 #, c-format
@@ -2369,12 +2370,8 @@ msgid ""
 msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
-msgstr[0] ""
-"[-- Овај %s/%s прилог (величине %s бајт) је обрисан --]\n"
-"[-- %s --]\n"
-msgstr[1] ""
-"[-- Овај %s/%s прилог (величине %s бајта) је обрисан --]\n"
-"[-- %s --]\n"
+msgstr[0] "[-- Овај %s/%s прилог (величине %s бајт) је обрисан --]\n[-- %s --]\n"
+msgstr[1] "[-- Овај %s/%s прилог (величине %s бајта) је обрисан --]\n[-- %s --]\n"
 msgstr[2] ""
 "[-- Овај %s/%s прилог (величине %s бајтова) је обрисан --]\n"
 "[-- %s --]\n"
@@ -2409,12 +2406,8 @@ msgstr[2] "[-- Овај %s/%s прилог (величине %s бајтова) 
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
 #: handler.c:857
-msgid ""
-"[-- This %s/%s attachment has been deleted --]\n"
-"[-- on %4$s --]\n"
-msgstr ""
-"[-- Овај %s/%s прилог је обрисан --]\n"
-"[-- %4$s --]\n"
+msgid "[-- This %s/%s attachment has been deleted --]\n[-- on %4$s --]\n"
+msgstr "[-- Овај %s/%s прилог је обрисан --]\n[-- %4$s --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -2451,7 +2444,8 @@ msgstr ""
 
 #: handler.c:1106
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Грешка:  Не може се приказати ниједан од делова Multipart/Alternative --]\n"
+msgstr ""
+"[-- Грешка:  Не може се приказати ниједан од делова Multipart/Alternative --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1256
@@ -2509,13 +2503,15 @@ msgstr "[-- %s/%s није подржан (користите „%s“ да пр
 
 #: handler.c:1804
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
-msgstr "[-- Ово је прилог (потребно је „view-attachments“ доделити тастеру) --]\n"
+msgstr ""
+"[-- Ово је прилог (потребно је „view-attachments“ доделити тастеру) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1809
 #, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
-msgstr "[-- %s/%s није подржан (потребно је „view-attachments“ доделити тастеру) --]\n"
+msgstr ""
+"[-- %s/%s није подржан (потребно је „view-attachments“ доделити тастеру) --]\n"
 
 #: hcache/config.c:95
 #, c-format
@@ -2536,96 +2532,96 @@ msgstr "ГРЕШКА: пријавите ову грешку"
 
 #: help.c:414
 msgid "message is tagged"
-msgstr ""
+msgstr "порука је означена"
 
 #: help.c:416
 msgid "message is flagged"
-msgstr ""
+msgstr "порука је са заставицом"
 
 #: help.c:417
 msgid "message is deleted"
-msgstr ""
+msgstr "порука је обрисана"
 
 #: help.c:419
 msgid "attachment is deleted"
-msgstr ""
+msgstr "прилог је обрисан"
 
 #: help.c:421
 msgid "message has been replied to"
-msgstr ""
+msgstr "на поруку је одговорено"
 
 #: help.c:422
 msgid "message has been read"
-msgstr ""
+msgstr "порука је прочитана"
 
 #: help.c:423
 msgid "message is new"
-msgstr ""
+msgstr "порука је нова"
 
 #: help.c:425
 msgid "thread has been read"
-msgstr ""
+msgstr "нит је прочитана"
 
 #: help.c:427
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "нит има бар једну нову поруку"
 
 #: help.c:429
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "порука је прочитана (%S експандо)"
 
 #: help.c:431
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "порука је прочитана (%Z експандо)"
 
 #: help.c:435
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "порука је потписана верификованим кључем"
 
 #: help.c:437
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "порука је шифрована PGP-ом"
 
 #: help.c:439
 msgid "message is signed"
-msgstr ""
+msgstr "порука је потписана"
 
 #: help.c:441
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "порука садржи PGP кључ"
 
 #: help.c:443
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "порука нема криптографских података"
 
 #: help.c:447
 msgid "message is not To: you"
-msgstr ""
+msgstr "порука није упућена вама (заглавље „To:“)"
 
 #: help.c:449
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "порука је упућена искључиво вама (заглавље „To:“)"
 
 #: help.c:450
 msgid "message is To: you"
-msgstr ""
+msgstr "порука је упућена вама (заглавље „To:“)"
 
 #: help.c:451
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "порука је прослеђена вама (заглавље „Cc:“)"
 
 #: help.c:453
 msgid "message is From: you"
-msgstr ""
+msgstr "поруку сте послали ви (заглавље „From:“)"
 
 #: help.c:455
 msgid "message is sent to a subscribed mailinglist"
-msgstr ""
+msgstr "порука је послата мејлинг листи на коју сте претплаћени"
 
 #: help.c:457
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "ви сте у листи „Reply-To:“"
 
 #: help.c:476
 msgid "<UNKNOWN>"
@@ -2641,7 +2637,7 @@ msgstr "Недодељене функције:"
 
 #: help.c:510
 msgid "Message flags:"
-msgstr ""
+msgstr "Заставице поруке:"
 
 #: help.c:516
 #, c-format
@@ -4294,53 +4290,31 @@ msgstr "Покушај извлачења S/MIME сертификата..."
 
 #: ncrypt/crypt.c:1154
 #, c-format
-msgid ""
-"[-- Error: Unknown multipart/signed protocol %s --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: Непознати multipart/signed протокол %s --]\n"
-"\n"
+msgid "[-- Error: Unknown multipart/signed protocol %s --]\n\n"
+msgstr "[-- Грешка: Непознати multipart/signed протокол %s --]\n\n"
 
 #: ncrypt/crypt.c:1194
-msgid ""
-"[-- Error: Missing or bad-format multipart/signed signature --]\n"
-"\n"
+msgid "[-- Error: Missing or bad-format multipart/signed signature --]\n\n"
 msgstr ""
 "[-- Грешка: multipart/signed потпис је непостојећи или лошег формата --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1232
 #, c-format
-msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n"
-"\n"
+msgid "[-- Warning: We can't verify %s/%s signatures. --]\n\n"
+msgstr "[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n\n"
 
 #: ncrypt/crypt.c:1244
-msgid ""
-"[-- The following data is signed --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су потписани --]\n"
-"\n"
+msgid "[-- The following data is signed --]\n\n"
+msgstr "[-- Следећи подаци су потписани --]\n\n"
 
 #: ncrypt/crypt.c:1252
-msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
-"\n"
-msgstr ""
-"[-- Упозорење: Није пронађен ниједан потпис. --]\n"
-"\n"
+msgid "[-- Warning: Can't find any signatures. --]\n\n"
+msgstr "[-- Упозорење: Није пронађен ниједан потпис. --]\n\n"
 
 #: ncrypt/crypt.c:1259
-msgid ""
-"\n"
-"[-- End of signed data --]\n"
-msgstr ""
-"\n"
-"[-- Крај потписаних података --]\n"
+msgid "\n[-- End of signed data --]\n"
+msgstr "\n[-- Крај потписаних података --]\n"
 
 #: ncrypt/crypt_gpgme.c:382
 #, c-format
@@ -4455,7 +4429,8 @@ msgid "Fingerprint: "
 msgstr "Отисак: "
 
 #: ncrypt/crypt_gpgme.c:1318
-msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
+msgid ""
+"WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "УПОЗОРЕЊЕ: НЕ постоје индиције да кључ припада наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1323
@@ -4463,7 +4438,8 @@ msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "УПОЗОРЕЊЕ: Кључ НЕ ПРИПАДА наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1326
-msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
+msgid ""
+"WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "УПОЗОРЕЊЕ: НИЈЕ извесно да кључ припада наведеној особи\n"
 
 #: ncrypt/crypt_gpgme.c:1361 ncrypt/crypt_gpgme.c:1366
@@ -4529,21 +4505,13 @@ msgstr "*** Крај нотације ***\n"
 
 #: ncrypt/crypt_gpgme.c:1658 ncrypt/crypt_gpgme.c:1816
 #: ncrypt/crypt_gpgme.c:2567
-msgid ""
-"[-- End signature information --]\n"
-"\n"
-msgstr ""
-"[-- Крај информација о потпису --]\n"
-"\n"
+msgid "[-- End signature information --]\n\n"
+msgstr "[-- Крај информација о потпису --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:1776
 #, c-format
-msgid ""
-"[-- Error: decryption failed: %s --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: дешифровање неуспешно: %s --]\n"
-"\n"
+msgid "[-- Error: decryption failed: %s --]\n\n"
+msgstr "[-- Грешка: дешифровање неуспешно: %s --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2288
 #, c-format
@@ -4565,24 +4533,16 @@ msgid "Error: copy data failed\n"
 msgstr "Грешка: неуспешно копирање података\n"
 
 #: ncrypt/crypt_gpgme.c:2592 ncrypt/pgp.c:691
-msgid ""
-"[-- BEGIN PGP MESSAGE --]\n"
-"\n"
-msgstr ""
-"[-- ПОЧЕТАК PGP ПОРУКЕ --]\n"
-"\n"
+msgid "[-- BEGIN PGP MESSAGE --]\n\n"
+msgstr "[-- ПОЧЕТАК PGP ПОРУКЕ --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2594 ncrypt/pgp.c:693
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ПОЧЕТАК PGP БЛОКА ЈАВНОГ КЉУЧА --]\n"
 
 #: ncrypt/crypt_gpgme.c:2596 ncrypt/pgp.c:695
-msgid ""
-"[-- BEGIN PGP SIGNED MESSAGE --]\n"
-"\n"
-msgstr ""
-"[-- ПОЧЕТАК PGP ПОТПИСАНЕ ПОРУКЕ --]\n"
-"\n"
+msgid "[-- BEGIN PGP SIGNED MESSAGE --]\n\n"
+msgstr "[-- ПОЧЕТАК PGP ПОТПИСАНЕ ПОРУКЕ --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2622 ncrypt/pgp.c:733
 msgid "[-- END PGP MESSAGE --]\n"
@@ -4597,32 +4557,20 @@ msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- КРАЈ PGP ПОТПИСАНЕ ПОРУКЕ --]\n"
 
 #: ncrypt/crypt_gpgme.c:2646 ncrypt/pgp.c:789
-msgid ""
-"[-- Error: could not find beginning of PGP message --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: не може се одредити почетак PGP поруке --]\n"
-"\n"
+msgid "[-- Error: could not find beginning of PGP message --]\n\n"
+msgstr "[-- Грешка: не може се одредити почетак PGP поруке --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2673 ncrypt/crypt_gpgme.c:2767 ncrypt/pgp.c:1261
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- Грешка: не може се креирати привремена датотека --]\n"
 
 #: ncrypt/crypt_gpgme.c:2686
-msgid ""
-"[-- The following data is PGP/MIME signed and encrypted --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су потписани и шифровани преко PGP/MIME-а --]\n"
-"\n"
+msgid "[-- The following data is PGP/MIME signed and encrypted --]\n\n"
+msgstr "[-- Следећи подаци су потписани и шифровани преко PGP/MIME-а --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2687 ncrypt/pgp.c:1274
-msgid ""
-"[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су шифровани преко PGP/MIME-а --]\n"
-"\n"
+msgid "[-- The following data is PGP/MIME encrypted --]\n\n"
+msgstr "[-- Следећи подаци су шифровани преко PGP/MIME-а --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2724
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
@@ -4638,20 +4586,12 @@ msgid "Could not decrypt PGP message"
 msgstr "Дешифровање PGP поруке није могуће"
 
 #: ncrypt/crypt_gpgme.c:2780
-msgid ""
-"[-- The following data is S/MIME signed --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су потписани преко S/MIME-а--]\n"
-"\n"
+msgid "[-- The following data is S/MIME signed --]\n\n"
+msgstr "[-- Следећи подаци су потписани преко S/MIME-а--]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2781
-msgid ""
-"[-- The following data is S/MIME encrypted --]\n"
-"\n"
-msgstr ""
-"[-- Следећи подаци су шифровани преко S/MIME-а --]\n"
-"\n"
+msgid "[-- The following data is S/MIME encrypted --]\n\n"
+msgstr "[-- Следећи подаци су шифровани преко S/MIME-а --]\n\n"
 
 #: ncrypt/crypt_gpgme.c:2825
 msgid "[-- End of S/MIME signed data --]\n"
@@ -5063,12 +5003,8 @@ msgid "[-- Error: unable to create PGP subprocess --]\n"
 msgstr "[-- Грешка: не може се креирати PGP потпроцес --]\n"
 
 #: ncrypt/pgp.c:658 ncrypt/pgp.c:957 ncrypt/pgp.c:1125
-msgid ""
-"[-- End of PGP output --]\n"
-"\n"
-msgstr ""
-"[-- Крај PGP излаза --]\n"
-"\n"
+msgid "[-- End of PGP output --]\n\n"
+msgstr "[-- Крај PGP излаза --]\n\n"
 
 #. L10N: You will see this error message if (1) you are decrypting
 #. (not encrypting) something and (2) it is a plaintext. So the
@@ -5082,12 +5018,8 @@ msgid "Internal error.  Please submit a bug report."
 msgstr "Интерна грешка:  Пошаљите пријаву грешке."
 
 #: ncrypt/pgp.c:1077
-msgid ""
-"[-- Error: could not create a PGP subprocess --]\n"
-"\n"
-msgstr ""
-"[-- Грешка: не може се креирати PGP потпроцес --]\n"
-"\n"
+msgid "[-- Error: could not create a PGP subprocess --]\n\n"
+msgstr "[-- Грешка: не може се креирати PGP потпроцес --]\n\n"
 
 #: ncrypt/pgp.c:1112 ncrypt/pgp.c:1134 ncrypt/smime.c:1985
 #: postpone/postpone.c:440
@@ -5236,12 +5168,8 @@ msgid "Can't open OpenSSL subprocess"
 msgstr "Не може се отворити OpenSSL потпроцес"
 
 #: ncrypt/smime.c:1845 ncrypt/smime.c:1964
-msgid ""
-"[-- End of OpenSSL output --]\n"
-"\n"
-msgstr ""
-"[-- Крај OpenSSL излаза --]\n"
-"\n"
+msgid "[-- End of OpenSSL output --]\n\n"
+msgstr "[-- Крај OpenSSL излаза --]\n\n"
 
 #: ncrypt/smime.c:1922 ncrypt/smime.c:1934
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
@@ -5256,20 +5184,12 @@ msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Следећи подаци су потписани преко S/MIME-а --]\n"
 
 #: ncrypt/smime.c:2073
-msgid ""
-"\n"
-"[-- End of S/MIME encrypted data. --]\n"
-msgstr ""
-"\n"
-"[-- Крај података шифрованих преко S/MIME-а. --]\n"
+msgid "\n[-- End of S/MIME encrypted data. --]\n"
+msgstr "\n[-- Крај података шифрованих преко S/MIME-а. --]\n"
 
 #: ncrypt/smime.c:2075
-msgid ""
-"\n"
-"[-- End of S/MIME signed data. --]\n"
-msgstr ""
-"\n"
-"[-- Крај података потписаних преко S/MIME-а. --]\n"
+msgid "\n[-- End of S/MIME signed data. --]\n"
+msgstr "\n[-- Крај података потписаних преко S/MIME-а. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2210
