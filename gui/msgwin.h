@@ -32,6 +32,6 @@ const char *       msgwin_get_text  (void);
 size_t             msgwin_get_width (void);
 struct MuttWindow *msgwin_get_window(void);
 void               msgwin_set_height(short height);
-void               msgwin_set_text  (enum ColorId cid, const char *text);
+void               msgwin_set_text  (const char *text, enum ColorId cid);
 
 #endif /* MUTT_GUI_MSGWIN_H */

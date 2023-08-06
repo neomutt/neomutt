@@ -198,12 +198,12 @@ const char *msgwin_get_text(void)
 
 /**
  * msgwin_set_text - Set the text for the Message Window
- * @param cid  Colour Id, e.g. #MT_COLOR_MESSAGE
  * @param text Text to set
+ * @param cid  Colour Id, e.g. #MT_COLOR_MESSAGE
  *
  * @note The text string will be copied
  */
-void msgwin_set_text(enum ColorId cid, const char *text)
+void msgwin_set_text(const char *text, enum ColorId cid)
 {
   if (!MessageWindow)
     return;
@@ -221,7 +221,7 @@ void msgwin_set_text(enum ColorId cid, const char *text)
  */
 void msgwin_clear_text(void)
 {
-  msgwin_set_text(MT_COLOR_NORMAL, NULL);
+  msgwin_set_text(NULL, MT_COLOR_NORMAL);
 }
 
 /**

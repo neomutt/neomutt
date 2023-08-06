@@ -1247,7 +1247,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     /* give visual indication that the next command is a tag- command */
     if (priv->tag_prefix)
     {
-      msgwin_set_text(MT_COLOR_NORMAL, "tag-");
+      msgwin_set_text("tag-", MT_COLOR_NORMAL);
     }
 
     const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");

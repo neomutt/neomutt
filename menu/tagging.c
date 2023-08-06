@@ -55,7 +55,7 @@ static void menu_set_prefix(struct Menu *menu)
 
   if (menu->tag_prefix)
   {
-    msgwin_set_text(MT_COLOR_NORMAL, "tag-");
+    msgwin_set_text("tag-", MT_COLOR_NORMAL);
   }
   else
   {
@@ -129,7 +129,7 @@ static int op_tag(struct Menu *menu, int op)
   /* give visual indication that the next command is a tag- command */
   if (menu->tag_prefix)
   {
-    msgwin_set_text(MT_COLOR_NORMAL, "tag-");
+    msgwin_set_text("tag-", MT_COLOR_NORMAL);
   }
 
   menu->win->actions |= WA_REPAINT;

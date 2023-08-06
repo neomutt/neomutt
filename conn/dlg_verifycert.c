@@ -234,7 +234,7 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
       mdata.keys = _("ro");
     }
   }
-  msgwin_set_text(MT_COLOR_PROMPT, mdata.prompt);
+  msgwin_set_text(mdata.prompt, MT_COLOR_PROMPT);
 
   bool old_ime = OptIgnoreMacroEvents;
   OptIgnoreMacroEvents = true;
@@ -246,7 +246,7 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
   do
   {
     window_redraw(NULL);
-    msgwin_set_text(MT_COLOR_PROMPT, mdata.prompt);
+    msgwin_set_text(mdata.prompt, MT_COLOR_PROMPT);
 
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)
