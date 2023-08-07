@@ -76,6 +76,9 @@ static struct ConfigDef BrowserVars[] = {
   { "sort_browser", DT_SORT|DT_SORT_REVERSE, SORT_ALPHA, IP SortBrowserMethods, NULL,
     "Sort method for the browser"
   },
+  { "browser_sort_dirs_first", DT_BOOL, false, 0, NULL,
+    "Group directories before files in the browser"
+  },
   { NULL },
   // clang-format on
 };

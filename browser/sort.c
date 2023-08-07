@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -151,7 +152,7 @@ static int browser_sort_count_new(const void *a, const void *b)
  *
  * Wild compare function that calls the others. It's useful because it provides
  * a way to tell "../" is always on the top of the list, independently of the
- * sort method.
+ * sort method.  $browser_sort_dirs_first is also handled here.
  */
 static int browser_compare(const void *a, const void *b)
 {
@@ -162,6 +163,10 @@ static int browser_compare(const void *a, const void *b)
     return -1;
   if ((mutt_str_coll(pb->desc, "../") == 0) || (mutt_str_coll(pb->desc, "..") == 0))
     return 1;
+
+  if (cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"))
+    if (S_ISDIR(pa->mode) != S_ISDIR(pb->mode))
+      return S_ISDIR(pa->mode) ? -1 : 1;
 
   const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
