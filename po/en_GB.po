@@ -2520,96 +2520,96 @@ msgstr "ERROR: please report this bug"
 
 #: help.c:414
 msgid "message is tagged"
-msgstr ""
+msgstr "message is tagged"
 
 #: help.c:416
 msgid "message is flagged"
-msgstr ""
+msgstr "message is flagged"
 
 #: help.c:417
 msgid "message is deleted"
-msgstr ""
+msgstr "message is deleted"
 
 #: help.c:419
 msgid "attachment is deleted"
-msgstr ""
+msgstr "attachment is deleted"
 
 #: help.c:421
 msgid "message has been replied to"
-msgstr ""
+msgstr "message has been replied to"
 
 #: help.c:422
 msgid "message has been read"
-msgstr ""
+msgstr "message has been read"
 
 #: help.c:423
 msgid "message is new"
-msgstr ""
+msgstr "message is new"
 
 #: help.c:425
 msgid "thread has been read"
-msgstr ""
+msgstr "thread has been read"
 
 #: help.c:427
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "thread has at least one new message"
 
 #: help.c:429
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "message has been read (%S expando)"
 
 #: help.c:431
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "message has been read (%Z expando)"
 
 #: help.c:435
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "message signed with a verified key"
 
 #: help.c:437
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "message is PGP-encrypted"
 
 #: help.c:439
 msgid "message is signed"
-msgstr ""
+msgstr "message is signed"
 
 #: help.c:441
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "message contains a PGP key"
 
 #: help.c:443
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "message has no cryptography information"
 
 #: help.c:447
 msgid "message is not To: you"
-msgstr ""
+msgstr "message is not To: you"
 
 #: help.c:449
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "message is To: you and only you"
 
 #: help.c:450
 msgid "message is To: you"
-msgstr ""
+msgstr "message is To: you"
 
 #: help.c:451
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "message is Cc: to you"
 
 #: help.c:453
 msgid "message is From: you"
-msgstr ""
+msgstr "message is From: you"
 
 #: help.c:455
-msgid "message is sent to a subscribed mailinglist"
-msgstr ""
+msgid "message is sent to a subscribed mailing list"
+msgstr "message is sent to a subscribed mailing list"
 
 #: help.c:457
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "you are in the Reply-To: list"
 
 #: help.c:476
 msgid "<UNKNOWN>"
@@ -2625,7 +2625,7 @@ msgstr "Unbound functions:"
 
 #: help.c:510
 msgid "Message flags:"
-msgstr ""
+msgstr "Message flags:"
 
 #: help.c:516
 #, c-format

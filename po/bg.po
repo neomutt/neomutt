@@ -2704,7 +2704,7 @@ msgid "message is From: you"
 msgstr ""
 
 #: help.c:455
-msgid "message is sent to a subscribed mailinglist"
+msgid "message is sent to a subscribed mailing list"
 msgstr ""
 
 #: help.c:457
