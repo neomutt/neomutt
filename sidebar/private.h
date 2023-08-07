@@ -39,12 +39,12 @@ extern struct ListHead SidebarPinned;
  */
 struct SbEntry
 {
-  char box[256];           ///< Mailbox path (possibly abbreviated)
-  char display[256];       ///< Formatted string to display
-  int depth;               ///< Indentation depth
-  struct Mailbox *mailbox; ///< Mailbox this represents
-  bool is_hidden;          ///< Don't show, e.g. $sidebar_new_mail_only
-  struct AttrColor *color; ///< Colour to use
+  char box[256];                  ///< Mailbox path (possibly abbreviated)
+  char display[256];              ///< Formatted string to display
+  int depth;                      ///< Indentation depth
+  struct Mailbox *mailbox;        ///< Mailbox this represents
+  bool is_hidden;                 ///< Don't show, e.g. $sidebar_new_mail_only
+  const struct AttrColor *color;  ///< Colour to use
 };
 ARRAY_HEAD(SbEntryArray, struct SbEntry *);
 

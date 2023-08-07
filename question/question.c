@@ -69,10 +69,10 @@ int mw_multi_choice(const char *prompt, const char *letters)
   bool redraw = true;
   int prompt_lines = 1;
 
-  struct AttrColor *ac_opts = NULL;
+  const struct AttrColor *ac_opts = NULL;
   if (simple_color_is_set(MT_COLOR_OPTIONS))
   {
-    struct AttrColor *ac_base = simple_color_get(MT_COLOR_NORMAL);
+    const struct AttrColor *ac_base = simple_color_get(MT_COLOR_NORMAL);
     ac_base = merged_color_overlay(ac_base, simple_color_get(MT_COLOR_PROMPT));
 
     ac_opts = simple_color_get(MT_COLOR_OPTIONS);
@@ -80,7 +80,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
   }
 
   struct MuttWindow *old_focus = window_set_focus(win);
-  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(NULL);
   while (true)
   {
@@ -187,7 +187,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
 
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   window_set_focus(old_focus);
-  mutt_curses_set_cursor(cursor);
+  mutt_curses_set_cursor(old_cursor);
   mutt_refresh();
   return choice;
 }
@@ -203,7 +203,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * Ask the user a yes/no question, using shortcut letters, e.g.
  * `Quit NeoMutt? ([yes]/no):`
  *
- * This question can be answered using a locale-dependent letters, e.g.
+ * This question can be answered using locale-dependent letters, e.g.
  * - English, `[+1yY]` or `[-0nN]`
  * - Serbian, `[+1yYdDДд]` or `[-0nNНн]`
  */
@@ -290,7 +290,7 @@ enum QuadOption mw_yesorno(const char *msg, enum QuadOption def)
 
   struct MuttWindow *old_focus = window_set_focus(win);
 
-  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(NULL);
   while (true)
   {
@@ -360,7 +360,7 @@ enum QuadOption mw_yesorno(const char *msg, enum QuadOption def)
     }
   }
   window_set_focus(old_focus);
-  mutt_curses_set_cursor(cursor);
+  mutt_curses_set_cursor(old_cursor);
 
   FREE(&answer_string);
 

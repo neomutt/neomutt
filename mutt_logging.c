@@ -148,7 +148,7 @@ int log_disp_curses(time_t stamp, const char *file, int line, const char *functi
         break;
     }
 
-    msgwin_set_text(cid, ErrorBuf);
+    msgwin_set_text(ErrorBuf, cid);
   }
 
   if ((level <= LL_ERROR) && !dupe)

@@ -1477,7 +1477,8 @@ struct Address *mutt_default_from(struct ConfigSubset *sub)
   const bool c_use_domain = cs_subset_bool(sub, "use_domain");
   if (c_use_domain)
   {
-    snprintf(domain, sizeof(domain), "%s@%s", NONULL(Username), NONULL(mutt_fqdn(true, sub)));
+    snprintf(domain, sizeof(domain), "%s@%s", NONULL(Username),
+             NONULL(mutt_fqdn(true, sub)));
     mailbox = domain;
   }
 

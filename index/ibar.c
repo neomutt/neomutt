@@ -310,10 +310,10 @@ static void ibar_data_free(struct MuttWindow *win, void **ptr)
 }
 
 /**
- * ibar_data_new - Free the private data attached to the MuttWindow
+ * ibar_data_new - Create the private data for the Index Bar (status)
  * @param shared Shared Index data
  * @param priv   Private Index data
- * @retval ptr New IBar
+ * @retval ptr New IBarPrivateData
  */
 static struct IBarPrivateData *ibar_data_new(struct IndexSharedData *shared,
                                              struct IndexPrivateData *priv)

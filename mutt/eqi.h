@@ -76,7 +76,7 @@ static inline uint64_t make_lowercase_mask(uint64_t x, int bytenum)
 static inline bool eqi1(const char *a, const char b[1])
 {
   uint8_t b8 = b[0];
-  return (*a | make_lowercase_mask(b8, 0)) == b[0];
+  return (*a | make_lowercase_mask(b8, 0)) == (unsigned char) b[0];
 }
 
 /**

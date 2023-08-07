@@ -131,7 +131,7 @@ struct Menu
    * @retval >0 Colour pair in an integer
    * @retval  0 No colour
    */
-  struct AttrColor *(*color)(struct Menu *menu, int line);
+  const struct AttrColor *(*color)(struct Menu *menu, int line);
 
   struct Notify *notify;  ///< Notifications
 

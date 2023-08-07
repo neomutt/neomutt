@@ -31,7 +31,7 @@ struct AttrColor;
 extern struct AttrColorList MergedColors;
 #endif
 
-struct AttrColor * merged_color_overlay(struct AttrColor *base, struct AttrColor *over);
+const struct AttrColor * merged_color_overlay(const struct AttrColor *base, const struct AttrColor *over);
 
 void               merged_colors_cleanup(void);
 void               merged_colors_init(void);

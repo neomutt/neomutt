@@ -42,7 +42,6 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "conn/lib.h"
 #include "gui/lib.h"
 #include "init.h"
 #include "color/lib.h"

@@ -157,7 +157,7 @@ struct AttrColor attr_color_copy(const struct AttrColor *ac)
  * @param ac Colour to check
  * @retval true Yes, a 'color' command has been used on this object
  */
-bool attr_color_is_set(struct AttrColor *ac)
+bool attr_color_is_set(const struct AttrColor *ac)
 {
   if (!ac)
     return false;

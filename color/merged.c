@@ -106,7 +106,8 @@ static struct AttrColor *merged_colors_find(int fg, int bg, int attrs)
  * base colour will show through.  The attributes of both base and overlay will
  * be OR'd together.
  */
-struct AttrColor *merged_color_overlay(struct AttrColor *base, struct AttrColor *over)
+const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
+                                             const struct AttrColor *over)
 {
   if (!attr_color_is_set(over))
     return base;

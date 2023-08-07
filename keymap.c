@@ -1926,7 +1926,7 @@ void mw_what_key(void)
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
   mutt_window_mvprintw(win, 0, 0, _("Enter keys (%s to abort): "), km_keyname(AbortKey));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
   mutt_set_timeout(1000); // 1 second
   while (true)
@@ -1943,7 +1943,7 @@ void mw_what_key(void)
   }
 
   mutt_set_timeout(-1);
-  mutt_curses_set_cursor(cursor);
+  mutt_curses_set_cursor(old_cursor);
 
   mutt_flushinp();
   mutt_clear_error();

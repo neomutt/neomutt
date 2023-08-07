@@ -52,7 +52,7 @@
  * Text is coloured by inserting special characters into the string, e.g.
  * #MT_COLOR_INDEX_AUTHOR
  */
-static struct AttrColor *get_color(int index, unsigned char *s)
+static const struct AttrColor *get_color(int index, unsigned char *s)
 {
   const int type = *s;
   struct RegexColorList *rcl = regex_colors_get_list(type);
@@ -67,7 +67,7 @@ static struct AttrColor *get_color(int index, unsigned char *s)
 
   if (type == MT_COLOR_INDEX_TAG)
   {
-    struct AttrColor *ac_merge = NULL;
+    const struct AttrColor *ac_merge = NULL;
     STAILQ_FOREACH(np, rcl, entries)
     {
       if (mutt_strn_equal((const char *) (s + 1), np->pattern, strlen(np->pattern)))
@@ -84,7 +84,7 @@ static struct AttrColor *get_color(int index, unsigned char *s)
     return ac_merge;
   }
 
-  struct AttrColor *ac_merge = NULL;
+  const struct AttrColor *ac_merge = NULL;
   STAILQ_FOREACH(np, rcl, entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(np->color_pattern),
@@ -107,7 +107,7 @@ static struct AttrColor *get_color(int index, unsigned char *s)
  * @param sub      Config items
  */
 static void print_enriched_string(struct MuttWindow *win, int index,
-                                  struct AttrColor *ac_def, struct AttrColor *ac_ind,
+                                  const struct AttrColor *ac_def, struct AttrColor *ac_ind,
                                   unsigned char *s, struct ConfigSubset *sub)
 {
   wchar_t wc = 0;
@@ -120,7 +120,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
   {
     if (*s < MUTT_TREE_MAX)
     {
-      struct AttrColor *ac_merge = merged_color_overlay(ac_def, simple_color_get(MT_COLOR_TREE));
+      const struct AttrColor *ac_merge = merged_color_overlay(ac_def, simple_color_get(MT_COLOR_TREE));
       ac_merge = merged_color_overlay(ac_merge, ac_ind);
 
       /* Combining tree fg color and another bg color requires having
@@ -252,13 +252,13 @@ static void print_enriched_string(struct MuttWindow *win, int index,
       s++;
       if (*s == MT_COLOR_INDEX)
       {
-        struct AttrColor *ac_merge = merged_color_overlay(ac_def, ac_ind);
+        const struct AttrColor *ac_merge = merged_color_overlay(ac_def, ac_ind);
         mutt_curses_set_color(ac_merge);
       }
       else
       {
-        struct AttrColor *color = get_color(index, s);
-        struct AttrColor *ac_merge = merged_color_overlay(ac_def, color);
+        const struct AttrColor *color = get_color(index, s);
+        const struct AttrColor *ac_merge = merged_color_overlay(ac_def, color);
         ac_merge = merged_color_overlay(ac_merge, ac_ind);
 
         mutt_curses_set_color(ac_merge);
@@ -322,7 +322,7 @@ void menu_redraw_full(struct Menu *menu)
 void menu_redraw_index(struct Menu *menu)
 {
   char buf[1024] = { 0 };
-  struct AttrColor *ac = NULL;
+  const struct AttrColor *ac = NULL;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
@@ -385,7 +385,7 @@ void menu_redraw_motion(struct Menu *menu)
    * over imap (if matching against ~h for instance).  This can
    * generate status messages.  So we want to call it *before* we
    * position the cursor for drawing. */
-  struct AttrColor *old_color = menu->color(menu, menu->old_current);
+  const struct AttrColor *old_color = menu->color(menu, menu->old_current);
   mutt_window_move(menu->win, 0, menu->old_current - menu->top);
   mutt_curses_set_color(old_color);
 
@@ -420,7 +420,7 @@ void menu_redraw_motion(struct Menu *menu)
                           (unsigned char *) buf, menu->sub);
 
     /* now draw the new one to reflect the change */
-    struct AttrColor *cur_color = menu->color(menu, menu->current);
+    const struct AttrColor *cur_color = menu->color(menu, menu->current);
     cur_color = merged_color_overlay(cur_color, ac_ind);
     menu->make_entry(menu, buf, sizeof(buf), menu->current);
     menu_pad_string(menu, buf, sizeof(buf));
@@ -439,7 +439,7 @@ void menu_redraw_motion(struct Menu *menu)
 void menu_redraw_current(struct Menu *menu)
 {
   char buf[1024] = { 0 };
-  struct AttrColor *ac = menu->color(menu, menu->current);
+  const struct AttrColor *ac = menu->color(menu, menu->current);
 
   mutt_window_move(menu->win, 0, menu->current - menu->top);
   menu->make_entry(menu, buf, sizeof(buf), menu->current);

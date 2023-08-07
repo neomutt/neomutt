@@ -44,7 +44,7 @@ char *SearchBuffers[MENU_MAX];
 /**
  * default_color - Get the default colour for a line of the menu - Implements Menu::color() - @ingroup menu_color
  */
-static struct AttrColor *default_color(struct Menu *menu, int line)
+static const struct AttrColor *default_color(struct Menu *menu, int line)
 {
   return simple_color_get(MT_COLOR_NORMAL);
 }
