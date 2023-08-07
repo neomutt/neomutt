@@ -339,7 +339,7 @@ void mutt_edit_file(const char *editor, const char *file)
 void mutt_query_exit(void)
 {
   mutt_flushinp();
-  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   if (c_timeout != 0)
     mutt_set_timeout(-1); /* restore blocking operation */
@@ -348,7 +348,7 @@ void mutt_query_exit(void)
     mutt_exit(0); /* This call never returns */
   }
   mutt_clear_error();
-  mutt_curses_set_cursor(cursor);
+  mutt_curses_set_cursor(old_cursor);
   SigInt = false;
 }
 
@@ -471,12 +471,12 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   mutt_window_clrtoeol(win);
   mutt_refresh();
 
-  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
     event = mutt_getch_timeout(1000); // 1 second
   } while (event.op == OP_TIMEOUT);
-  mutt_curses_set_cursor(cursor);
+  mutt_curses_set_cursor(old_cursor);
 
   mutt_window_move(win, 0, 0);
   mutt_window_clrtoeol(win);

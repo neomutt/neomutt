@@ -52,7 +52,7 @@ static int IsEndwin = 0;
 static void curses_signal_handler(int sig)
 {
   int save_errno = errno;
-  enum MuttCursorState cursor = MUTT_CURSOR_VISIBLE;
+  enum MuttCursorState old_cursor = MUTT_CURSOR_VISIBLE;
 
   switch (sig)
   {
@@ -62,7 +62,7 @@ static void curses_signal_handler(int sig)
       if (!c_suspend)
         break;
       IsEndwin = isendwin();
-      cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+      old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
       if (!IsEndwin)
         endwin();
       kill(0, SIGSTOP);
@@ -72,7 +72,7 @@ static void curses_signal_handler(int sig)
     case SIGCONT:
       if (!IsEndwin)
         refresh();
-      mutt_curses_set_cursor(cursor);
+      mutt_curses_set_cursor(old_cursor);
       /* We don't receive SIGWINCH when suspended; however, no harm is done by
        * just assuming we received one, and triggering the 'resize' anyway. */
       SigWinch = true;

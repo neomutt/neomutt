@@ -210,7 +210,7 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
   win->help_menu = MENU_EDITOR;
   struct MuttWindow *old_focus = window_set_focus(win);
 
-  enum MuttCursorState cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(win);
   do
   {
@@ -371,7 +371,7 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
     FREE(&wdata.tempbuf);
     completion_data_free(&wdata.cd);
   } while (rc == 1);
-  mutt_curses_set_cursor(cursor);
+  mutt_curses_set_cursor(old_cursor);
 
   msgcont_pop_window();
 
