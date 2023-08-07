@@ -231,8 +231,8 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
 
   if (!attr_color_match(&color, &last_color))
   {
-    struct AttrColor *ac_merge = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
-                                                      &color);
+    const struct AttrColor *ac_merge = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
+                                                            &color);
     mutt_curses_set_color(ac_merge);
     last_color = color;
   }
@@ -1016,7 +1016,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   bool change_last = false;
   int special;
   int offset;
-  struct AttrColor *def_color = NULL;
+  const struct AttrColor *def_color = NULL;
   int m;
   int rc = -1;
   struct AnsiColor ansi = { NULL, 0, COLOR_DEFAULT, COLOR_DEFAULT };
@@ -1241,7 +1241,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   if (flags & MUTT_PAGER_STRIPES)
   {
     const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
-    struct AttrColor *attr_color = mutt_curses_set_color_by_id(cid);
+    const struct AttrColor *attr_color = mutt_curses_set_color_by_id(cid);
 
     memset(&ansi, 0, sizeof(struct AnsiColor));
     ansi.attr_color = attr_color;
@@ -1288,8 +1288,8 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     {
       def_color = simple_color_get((*lines)[m].cid);
     }
-    struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
-    struct AttrColor *ac_eol = NULL;
+    const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+    const struct AttrColor *ac_eol = NULL;
     if (def_color)
       ac_eol = merged_color_overlay(ac_normal, def_color);
     else

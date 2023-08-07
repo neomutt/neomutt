@@ -69,10 +69,10 @@ int mw_multi_choice(const char *prompt, const char *letters)
   bool redraw = true;
   int prompt_lines = 1;
 
-  struct AttrColor *ac_opts = NULL;
+  const struct AttrColor *ac_opts = NULL;
   if (simple_color_is_set(MT_COLOR_OPTIONS))
   {
-    struct AttrColor *ac_base = simple_color_get(MT_COLOR_NORMAL);
+    const struct AttrColor *ac_base = simple_color_get(MT_COLOR_NORMAL);
     ac_base = merged_color_overlay(ac_base, simple_color_get(MT_COLOR_PROMPT));
 
     ac_opts = simple_color_get(MT_COLOR_OPTIONS);

@@ -166,7 +166,7 @@ static int postponed_window_observer(struct NotifyCallback *nc)
 /**
  * post_color - Calculate the colour for a line of the postpone index - Implements Menu::color() - @ingroup menu_color
  */
-static struct AttrColor *post_color(struct Menu *menu, int line)
+static const struct AttrColor *post_color(struct Menu *menu, int line)
 {
   struct MailboxView *mv = menu->mdata;
   if (!mv || (line < 0))

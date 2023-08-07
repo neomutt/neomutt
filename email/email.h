@@ -108,7 +108,7 @@ struct Email
 
   int index;                   ///< The absolute (unsorted) message number
   int msgno;                   ///< Number displayed to the user
-  struct AttrColor *attr_color; ///< Color-pair to use when displaying in the index
+  const struct AttrColor *attr_color; ///< Color-pair to use when displaying in the index
   int score;                   ///< Message score
   int vnum;                    ///< Virtual message number
   short attach_total;          ///< Number of qualifying attachments in message, if attach_valid

@@ -890,7 +890,7 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 /**
  * index_color - Calculate the colour for a line of the index - Implements Menu::color() - @ingroup menu_color
  */
-struct AttrColor *index_color(struct Menu *menu, int line)
+const struct AttrColor *index_color(struct Menu *menu, int line)
 {
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
@@ -938,13 +938,13 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
    */
   struct StatusSyntax
   {
-    struct AttrColor *attr_color;
+    const struct AttrColor *attr_color;
     int first; ///< First character of that colour
     int last;  ///< Last character of that colour
   } *syntax = NULL;
 
-  struct AttrColor *ac_base = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
-                                                   simple_color_get(MT_COLOR_STATUS));
+  const struct AttrColor *ac_base = merged_color_overlay(simple_color_get(MT_COLOR_NORMAL),
+                                                         simple_color_get(MT_COLOR_STATUS));
   do
   {
     struct RegexColor *cl = NULL;
@@ -977,7 +977,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
       if (!found || (first < syntax[i].first) ||
           ((first == syntax[i].first) && (last > syntax[i].last)))
       {
-        struct AttrColor *ac_merge = merged_color_overlay(ac_base, &cl->attr_color);
+        const struct AttrColor *ac_merge = merged_color_overlay(ac_base, &cl->attr_color);
 
         syntax[i].attr_color = ac_merge;
         syntax[i].first = first;
@@ -1246,7 +1246,9 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     /* give visual indication that the next command is a tag- command */
     if (priv->tag_prefix)
+    {
       msgwin_set_text(MT_COLOR_NORMAL, "tag-");
+    }
 
     const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
     const bool c_braille_friendly = cs_subset_bool(shared->sub, "braille_friendly");
@@ -1387,7 +1389,7 @@ void mutt_set_header_color(struct Mailbox *m, struct Email *e)
   struct RegexColor *color = NULL;
   struct PatternCache cache = { 0 };
 
-  struct AttrColor *ac_merge = NULL;
+  const struct AttrColor *ac_merge = NULL;
   STAILQ_FOREACH(color, regex_colors_get_list(MT_COLOR_INDEX), entries)
   {
     if (mutt_pattern_exec(SLIST_FIRST(color->color_pattern),

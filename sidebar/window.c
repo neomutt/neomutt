@@ -246,9 +246,9 @@ static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
  * @param highlight true, if this Mailbox has the highlight on it
  * @retval enum #ColorId, e.g. #MT_COLOR_SIDEBAR_NEW
  */
-static struct AttrColor *calc_color(const struct Mailbox *m, bool current, bool highlight)
+static const struct AttrColor *calc_color(const struct Mailbox *m, bool current, bool highlight)
 {
-  struct AttrColor *ac = NULL;
+  const struct AttrColor *ac = NULL;
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOLFILE) &&
@@ -277,7 +277,7 @@ static struct AttrColor *calc_color(const struct Mailbox *m, bool current, bool 
     ac = simple_color_get(MT_COLOR_SIDEBAR_ORDINARY);
   }
 
-  struct AttrColor *ac_bg = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac_bg = simple_color_get(MT_COLOR_NORMAL);
   ac_bg = merged_color_overlay(ac_bg, simple_color_get(MT_COLOR_SIDEBAR_BACKGROUND));
   ac = merged_color_overlay(ac_bg, ac);
 
@@ -872,7 +872,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   const int width = wdata->divider_width;
   const char *const c_sidebar_divider_char = cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
 
-  struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_BACKGROUND));
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_DIVIDER));
   mutt_curses_set_color(ac);
@@ -908,7 +908,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
                              int num_rows, int div_width, int num_cols)
 {
   /* Fill the remaining rows with blank space */
-  struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_BACKGROUND));
   mutt_curses_set_color(ac);
 

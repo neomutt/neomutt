@@ -37,7 +37,7 @@
  * mutt_curses_set_color - Set the colour and attributes for text
  * @param ac Colour and Attributes to set
  */
-void mutt_curses_set_color(struct AttrColor *ac)
+void mutt_curses_set_color(const struct AttrColor *ac)
 {
   if (!ac)
     return;
@@ -62,12 +62,12 @@ void mutt_curses_set_color(struct AttrColor *ac)
  *
  * @note Colour will be merged over #MT_COLOR_NORMAL
  */
-struct AttrColor *mutt_curses_set_normal_backed_color_by_id(enum ColorId cid)
+const struct AttrColor *mutt_curses_set_normal_backed_color_by_id(enum ColorId cid)
 {
-  struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
-  struct AttrColor *ac_color = simple_color_get(cid);
+  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac_color = simple_color_get(cid);
 
-  struct AttrColor *ac_merge = merged_color_overlay(ac_normal, ac_color);
+  const struct AttrColor *ac_merge = merged_color_overlay(ac_normal, ac_color);
 
   mutt_curses_set_color(ac_merge);
   return ac_merge;
@@ -78,7 +78,7 @@ struct AttrColor *mutt_curses_set_normal_backed_color_by_id(enum ColorId cid)
  * @param cid Colour Id, e.g. #MT_COLOR_TREE
  * @retval ptr Colour set
  */
-struct AttrColor *mutt_curses_set_color_by_id(enum ColorId cid)
+const struct AttrColor *mutt_curses_set_color_by_id(enum ColorId cid)
 {
   struct AttrColor *ac = simple_color_get(cid);
   if (!attr_color_is_set(ac))

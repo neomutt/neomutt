@@ -61,10 +61,10 @@ enum MuttCursorState
   MUTT_CURSOR_VERY_VISIBLE =  2, ///< Display a very visible cursor
 };
 
-void                 mutt_curses_set_color(struct AttrColor *ac);
-struct AttrColor *   mutt_curses_set_color_by_id(enum ColorId cid);
-enum MuttCursorState mutt_curses_set_cursor(enum MuttCursorState state);
-struct AttrColor *   mutt_curses_set_normal_backed_color_by_id(enum ColorId cid);
-void                 mutt_resize_screen(void);
+void                    mutt_curses_set_color(const struct AttrColor *ac);
+const struct AttrColor *mutt_curses_set_color_by_id(enum ColorId cid);
+enum MuttCursorState    mutt_curses_set_cursor(enum MuttCursorState state);
+const struct AttrColor *mutt_curses_set_normal_backed_color_by_id(enum ColorId cid);
+void                    mutt_resize_screen(void);
 
 #endif /* MUTT_GUI_MUTT_CURSES_H */

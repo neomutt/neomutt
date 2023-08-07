@@ -38,9 +38,9 @@ struct QuoteStyle;
  */
 struct TextSyntax
 {
-  struct AttrColor *attr_color; ///< Curses colour of text
-  int first; ///< First character in line to be coloured
-  int last;  ///< Last character in line to be coloured (not included)
+  const struct AttrColor *attr_color;  ///< Curses colour of text
+  int first;                           ///< First character in line to be coloured
+  int last;                            ///< Last character in line to be coloured (not included)
 };
 ARRAY_HEAD(TextSyntaxArray, struct TextSyntax);
 
