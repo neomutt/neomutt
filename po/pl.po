@@ -1259,9 +1259,8 @@ msgid "Can't create file %s"
 msgstr "Nie można utworzyć %s"
 
 #: compose/functions.c:1353
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Mamy tu błąd tworzenia załącznika"
+msgstr "Błąd przy tworzeniu załączników"
 
 #: compose/functions.c:1395
 msgid "Can't print multipart attachments"
@@ -2538,39 +2537,39 @@ msgstr "BŁĄD: zgłoś, proszę, ten błąd"
 
 #: help.c:414
 msgid "message is tagged"
-msgstr ""
+msgstr "wiadomośc jest zaznaczona"
 
 #: help.c:416
 msgid "message is flagged"
-msgstr ""
+msgstr "wiadomość ma flagę"
 
 #: help.c:417
 msgid "message is deleted"
-msgstr ""
+msgstr "wiadomość jest usunięta"
 
 #: help.c:419
 msgid "attachment is deleted"
-msgstr ""
+msgstr "załącznik jest usunięty"
 
 #: help.c:421
 msgid "message has been replied to"
-msgstr ""
+msgstr "odpowiedziano na tę wiadomość"
 
 #: help.c:422
 msgid "message has been read"
-msgstr ""
+msgstr "wiedomość została przeczytana"
 
 #: help.c:423
 msgid "message is new"
-msgstr ""
+msgstr "wiadomość jest nowa"
 
 #: help.c:425
 msgid "thread has been read"
-msgstr ""
+msgstr "wątek został przeczytany"
 
 #: help.c:427
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "wątek ma nową wiadomość"
 
 #: help.c:429
 #, c-format
@@ -2583,51 +2582,51 @@ msgstr ""
 
 #: help.c:435
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "wiadomość podpisana zweryfikowanym kluczem"
 
 #: help.c:437
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "wiadomość zaszyfrowana PGP"
 
 #: help.c:439
 msgid "message is signed"
-msgstr ""
+msgstr "wiadomość podpisana"
 
 #: help.c:441
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "wiadomość zawiera klucz PGP"
 
 #: help.c:443
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "wiadomość nie zawiera informacji kryptograficznych"
 
 #: help.c:447
 msgid "message is not To: you"
-msgstr ""
+msgstr "wiadomość nie jest Do: ciebie"
 
 #: help.c:449
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "wiadomość jest Do: tylko ciebie"
 
 #: help.c:450
 msgid "message is To: you"
-msgstr ""
+msgstr "wiadomość jest Do: ciebie"
 
 #: help.c:451
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "wiadomość jest DW: twojej"
 
 #: help.c:453
 msgid "message is From: you"
-msgstr ""
+msgstr "wiadomość jest Od: ciebie"
 
 #: help.c:455
 msgid "message is sent to a subscribed mailinglist"
-msgstr ""
+msgstr "wiadomość wysłana na zaskubskrybowaną listę pocztową"
 
 #: help.c:457
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "jesteś na liście Odpowiedź do:"
 
 #: help.c:476
 msgid "<UNKNOWN>"
@@ -2643,7 +2642,7 @@ msgstr "Nie przypisane klawiszom funkcje:"
 
 #: help.c:510
 msgid "Message flags:"
-msgstr ""
+msgstr "Flagi wiadomości:"
 
 #: help.c:516
 #, c-format
