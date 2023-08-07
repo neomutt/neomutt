@@ -2616,7 +2616,7 @@ msgid "message is From: you"
 msgstr "поруку сте послали ви (заглавље „From:“)"
 
 #: help.c:455
-msgid "message is sent to a subscribed mailinglist"
+msgid "message is sent to a subscribed mailing list"
 msgstr "порука је послата мејлинг листи на коју сте претплаћени"
 
 #: help.c:457

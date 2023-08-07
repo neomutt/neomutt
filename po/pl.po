@@ -2621,7 +2621,7 @@ msgid "message is From: you"
 msgstr "wiadomość jest Od: ciebie"
 
 #: help.c:455
-msgid "message is sent to a subscribed mailinglist"
+msgid "message is sent to a subscribed mailing list"
 msgstr "wiadomość wysłana na zaskubskrybowaną listę pocztową"
 
 #: help.c:457
