@@ -70,7 +70,7 @@ enum ToChars
   FLAG_CHAR_TO_TO,                ///< Character denoting that the user is in the TO list
   FLAG_CHAR_TO_CC,                ///< Character denoting that the user is in the CC list
   FLAG_CHAR_TO_ORIGINATOR,        ///< Character denoting that the user is originator
-  FLAG_CHAR_TO_SUBSCRIBED_LIST,   ///< Character denoting that the message is sent to a subscribed mailinglist
+  FLAG_CHAR_TO_SUBSCRIBED_LIST,   ///< Character denoting that the message is sent to a subscribed mailing list
   FLAG_CHAR_TO_REPLY_TO,          ///< Character denoting that the user is in the Reply-To list
 };
 

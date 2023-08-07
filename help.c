@@ -452,7 +452,7 @@ static void dump_message_flags(FILE *fp, int wraplen)
   show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_ORIGINATOR,
                        _("message is From: you"));
   show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_SUBSCRIBED_LIST,
-                       _("message is sent to a subscribed mailinglist"));
+                       _("message is sent to a subscribed mailing list"));
   show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_REPLY_TO,
                        _("you are in the Reply-To: list"));
 }
