@@ -47,6 +47,8 @@ hcache/hcversion.h
 *.tmp
 *~
 tags
+asan.*
+.env
 
 # Clangd
 .cache/clangd
