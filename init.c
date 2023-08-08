@@ -52,6 +52,9 @@
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "keymap.h"
+#ifndef DOMAIN
+#include "conn/lib.h"
+#endif
 #ifdef USE_LUA
 #include "mutt_lua.h"
 #endif
