@@ -32,8 +32,8 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "lib.h"
 #include "color/lib.h"
-#include "menu/lib.h"
 #include "type.h"
 
 struct ConfigSubset;

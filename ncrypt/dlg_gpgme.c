@@ -72,7 +72,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 #include "private.h"
 #include "mutt/lib.h"

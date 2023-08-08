@@ -50,7 +50,7 @@
 #include "lib.h"
 #include "compress/lib.h"
 #include "store/lib.h"
-#include "hcache/hcversion.h"
+#include "hcversion.h"
 #include "muttlib.h"
 #include "serialize.h"
 

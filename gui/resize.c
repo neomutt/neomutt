@@ -31,7 +31,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "gui/lib.h"
+#include "lib.h"
 #ifdef HAVE_TERMIOS_H
 #include <termios.h>
 #endif

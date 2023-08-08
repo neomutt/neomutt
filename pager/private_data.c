@@ -29,7 +29,6 @@
 #include "config.h"
 #include "mutt/lib.h"
 #include "private_data.h"
-#include "pager/lib.h"
 
 /**
  * pager_private_data_free - Free Pager Data

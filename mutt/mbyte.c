@@ -58,10 +58,9 @@ int mutt_mb_charlen(const char *s, int *width)
 
   wchar_t wc = 0;
   mbstate_t mbstate = { 0 };
-  size_t k, n;
 
-  n = mutt_str_len(s);
-  k = mbrtowc(&wc, s, n, &mbstate);
+  size_t n = mutt_str_len(s);
+  size_t k = mbrtowc(&wc, s, n, &mbstate);
   if (width)
     *width = wcwidth(wc);
   return ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL)) ? -1 : k;

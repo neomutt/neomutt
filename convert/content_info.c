@@ -35,7 +35,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
-#include "convert/lib.h"
+#include "lib.h"
 
 /**
  * mutt_update_content_info - Cache some info about an email

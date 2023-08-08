@@ -31,9 +31,9 @@
 #include <config/lib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include "private.h"
 #include "mutt/lib.h"
-#include "notmuch/private.h"
-#include "notmuch/query.h"
+#include "query.h"
 
 #ifdef USE_NOTMUCH
 /**

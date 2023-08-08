@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include <ctype.h>
 #include "mutt/lib.h"
-#include "notmuch/tag.h"
+#include "tag.h"
 
 /**
  * nm_tag_array_free - Free all memory of a NmTags

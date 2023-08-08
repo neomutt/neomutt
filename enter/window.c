@@ -37,7 +37,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "complete/lib.h"
-#include "enter/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "color/color.h"
@@ -46,6 +45,7 @@
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
+#include "state.h" // IWYU pragma: keep
 #include "wdata.h"
 
 /// Help Bar for the Command Line Editor

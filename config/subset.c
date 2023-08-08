@@ -30,7 +30,6 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include "mutt/lib.h"
 #include "subset.h"
 #include "set.h"
