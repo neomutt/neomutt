@@ -2834,7 +2834,8 @@ static bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
   }
 
   int index = menu_get_index(menu);
-  if (result && (checks & CHECK_VISIBLE) && (index >= mv->mailbox->vcount))
+  if (result && (checks & CHECK_VISIBLE) &&
+      ((index < 0) || (index >= mv->mailbox->vcount)))
   {
     mutt_error(_("No visible messages"));
     result = false;

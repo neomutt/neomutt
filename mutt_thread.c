@@ -1285,9 +1285,13 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
  * @param forwards   Direction to search: 'true' forwards, 'false' backwards
  * @param subthreads Search subthreads: 'true' subthread, 'false' not
  * @retval num Index into the virtual email table
+ * @retval  -1 Error
  */
 int mutt_aside_thread(struct Email *e, bool forwards, bool subthreads)
 {
+  if (!e)
+    return -1;
+
   struct MuttThread *cur = NULL;
   struct Email *e_tmp = NULL;
 
