@@ -35,11 +35,6 @@
 #include "alias.h"
 #include "gui.h"
 
-#define RSORT(num) ((SortAlias & SORT_REVERSE) ? -num : num)
-
-/// Current value of $sort_alias used by the sorting functions
-static short SortAlias = 0;
-
 /**
  * alias_sort_name - Compare two Aliases by their short names - Implements ::sort_t - @ingroup sort_api
  *
@@ -49,6 +44,7 @@ static int alias_sort_name(const void *a, const void *b, void *arg)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
+  const bool sort_reverse = *(bool *) arg;
 
   if (av_a->is_visible != av_b->is_visible)
     return av_a->is_visible ? -1 : 1;
@@ -57,8 +53,7 @@ static int alias_sort_name(const void *a, const void *b, void *arg)
     return 0;
 
   int r = mutt_str_coll(av_a->alias->name, av_b->alias->name);
-
-  return RSORT(r);
+  return sort_reverse ? -r : r;
 }
 
 /**
@@ -70,6 +65,7 @@ static int alias_sort_address(const void *a, const void *b, void *arg)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
+  const bool sort_reverse = *(bool *) arg;
 
   const struct AddressList *al_a = &av_a->alias->addr;
   const struct AddressList *al_b = &av_b->alias->addr;
@@ -118,7 +114,7 @@ static int alias_sort_address(const void *a, const void *b, void *arg)
     }
   }
 
-  return RSORT(r);
+  return sort_reverse ? -r : r;
 }
 
 /**
@@ -130,6 +126,7 @@ static int alias_sort_unsort(const void *a, const void *b, void *arg)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
+  const bool sort_reverse = *(bool *) arg;
 
   if (av_a->is_visible != av_b->is_visible)
     return av_a->is_visible ? -1 : 1;
@@ -138,8 +135,7 @@ static int alias_sort_unsort(const void *a, const void *b, void *arg)
     return 0;
 
   int r = (av_a->orig_seq - av_b->orig_seq);
-
-  return RSORT(r);
+  return sort_reverse ? -r : r;
 }
 
 /**
@@ -171,8 +167,9 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
   if (!ava || ARRAY_EMPTY(ava))
     return;
 
-  SortAlias = cs_subset_sort(sub, "sort_alias");
-  ARRAY_SORT(ava, alias_get_sort_function(SortAlias), NULL);
+  const short c_sort_alias = cs_subset_sort(sub, "sort_alias");
+  bool sort_reverse = (c_sort_alias & SORT_REVERSE);
+  ARRAY_SORT(ava, alias_get_sort_function(c_sort_alias), &sort_reverse);
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, ava)
