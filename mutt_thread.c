@@ -742,7 +742,7 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
 }
 
 /**
- * compare_threads - qsort_r() function for comparing email threads
+ * compare_threads - qsort_r() function for comparing email threads - Implements ::sort_t - @ingroup sort_api
  * @param a   First thread to compare
  * @param b   Second thread to compare
  * @param arg ThreadsContext for how to compare

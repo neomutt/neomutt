@@ -35,126 +35,119 @@
 #include "sort.h"
 #include "muttlib.h"
 
-/// An extra parameter to control sort order
-static bool SbSortReverse = false;
-
 /**
  * sb_sort_count - Sort Sidebar entries by count - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_count(const void *a, const void *b)
+static int sb_sort_count(const void *a, const void *b, void *arg)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
   const struct Mailbox *m1 = sbe1->mailbox;
   const struct Mailbox *m2 = sbe2->mailbox;
+  const bool sort_reverse = *(bool *) arg;
 
   int rc = 0;
   if (m1->msg_count == m2->msg_count)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
   else
-    rc = (m2->msg_count - m1->msg_count);
+    rc = mutt_numeric_cmp(m2->msg_count, m1->msg_count);
 
-  if (SbSortReverse)
-    rc = -rc;
-  return rc;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
  * sb_sort_desc - Sort Sidebar entries by description - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_desc(const void *a, const void *b)
+static int sb_sort_desc(const void *a, const void *b, void *arg)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
   const struct Mailbox *m1 = sbe1->mailbox;
   const struct Mailbox *m2 = sbe2->mailbox;
+  const bool sort_reverse = *(bool *) arg;
 
   int rc = mutt_str_cmp(m1->name, m2->name);
-
-  if (SbSortReverse)
-    rc = -rc;
-  return rc;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
  * sb_sort_flagged - Sort Sidebar entries by flagged - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_flagged(const void *a, const void *b)
+static int sb_sort_flagged(const void *a, const void *b, void *arg)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
   const struct Mailbox *m1 = sbe1->mailbox;
   const struct Mailbox *m2 = sbe2->mailbox;
+  const bool sort_reverse = *(bool *) arg;
 
   int rc = 0;
   if (m1->msg_flagged == m2->msg_flagged)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
   else
-    rc = (m2->msg_flagged - m1->msg_flagged);
+    rc = mutt_numeric_cmp(m2->msg_flagged, m1->msg_flagged);
 
-  if (SbSortReverse)
-    rc = -rc;
-  return rc;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
  * sb_sort_path - Sort Sidebar entries by path - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_path(const void *a, const void *b)
+static int sb_sort_path(const void *a, const void *b, void *arg)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
   const struct Mailbox *m1 = sbe1->mailbox;
   const struct Mailbox *m2 = sbe2->mailbox;
+  const bool sort_reverse = *(bool *) arg;
 
   int rc = 0;
   rc = mutt_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
   if (rc == 0)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
 
-  if (SbSortReverse)
-    rc = -rc;
-  return rc;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
  * sb_sort_unread - Sort Sidebar entries by unread - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_unread(const void *a, const void *b)
+static int sb_sort_unread(const void *a, const void *b, void *arg)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
   const struct Mailbox *m1 = sbe1->mailbox;
   const struct Mailbox *m2 = sbe2->mailbox;
+  const bool sort_reverse = *(bool *) arg;
 
   int rc = 0;
   if (m1->msg_unread == m2->msg_unread)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
   else
-    rc = (m2->msg_unread - m1->msg_unread);
+    rc = mutt_numeric_cmp(m2->msg_unread, m1->msg_unread);
 
-  if (SbSortReverse)
-    rc = -rc;
-  return rc;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
  * sb_sort_order - Sort Sidebar entries by order of creation - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_order(const void *a, const void *b)
+static int sb_sort_order(const void *a, const void *b, void *arg)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
   const struct Mailbox *m1 = sbe1->mailbox;
   const struct Mailbox *m2 = sbe2->mailbox;
+  const bool sort_reverse = *(bool *) arg;
 
-  return (SbSortReverse ? -1 : 1) * (m1->gen - m2->gen);
+  int rc = mutt_numeric_cmp(m1->gen, m2->gen);
+  return sort_reverse ? -rc : rc;
 }
 
 /**
  * sb_sort_unsorted - Sort Sidebar entries into their original order - Implements ::sort_t - @ingroup sort_api
  */
-static int sb_sort_unsorted(const void *a, const void *b)
+static int sb_sort_unsorted(const void *a, const void *b, void *arg)
 {
   const struct SbEntry *sbe1 = *(struct SbEntry const *const *) a;
   const struct SbEntry *sbe2 = *(struct SbEntry const *const *) b;
@@ -201,6 +194,6 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort)
       break;
   }
 
-  SbSortReverse = (sort & SORT_REVERSE);
-  ARRAY_SORT(&wdata->entries, fn);
+  bool sort_reverse = (sort & SORT_REVERSE);
+  ARRAY_SORT(&wdata->entries, fn, &sort_reverse);
 }

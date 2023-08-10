@@ -1554,7 +1554,7 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
 }
 
 /**
- * mutt_inbox_cmp - Do two folders share the same path and one is an inbox
+ * mutt_inbox_cmp - Do two folders share the same path and one is an inbox - @ingroup sort_api
  * @param a First path
  * @param b Second path
  * @retval -1 a is INBOX of b

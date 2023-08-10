@@ -36,15 +36,16 @@ struct MailboxView;
 /**
  * @defgroup sort_api Sorting API
  *
- * Prototype for generic comparison function, compatible with qsort()
+ * Prototype for generic comparison function, compatible with qsort_r()
  *
- * @param a First item
- * @param b Second item
+ * @param a   First item
+ * @param b   Second item
+ * @param arg Private data
  * @retval <0 a precedes b
  * @retval  0 a and b are identical
  * @retval >0 b precedes a
  */
-typedef int (*sort_t)(const void *a, const void *b);
+typedef int (*sort_t)(const void *a, const void *b, void *arg);
 
 /**
  * @defgroup sort_mail_api Mail Sorting API

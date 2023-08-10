@@ -344,14 +344,15 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
 }
 
 /**
- * label_sort - Sort two label strings
- * @param a First string
- * @param b Second string
+ * label_sort - Sort two label strings - Implements ::sort_t - @ingroup sort_api
+ * @param a   First string
+ * @param b   Second string
+ * @param arg (not used)
  * @retval -1 a precedes b
  * @retval  0 a and b are identical
  * @retval  1 b precedes a
  */
-static int label_sort(const void *a, const void *b)
+static int label_sort(const void *a, const void *b, void *arg)
 {
   return strcasecmp(*(const char **) a, *(const char **) b);
 }
@@ -387,7 +388,7 @@ int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numta
     while ((he = mutt_hash_walk(m_cur->label_hash, &hws)))
       candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
     matches_ensure_morespace(cd, cd->num_matched);
-    qsort(cd->match_list, cd->num_matched, sizeof(char *), label_sort);
+    mutt_qsort_r(cd->match_list, cd->num_matched, sizeof(char *), label_sort, NULL);
     cd->match_list[cd->num_matched++] = cd->user_typed;
 
     /* All matches are stored. Longest non-ambiguous string is ""

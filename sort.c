@@ -59,7 +59,7 @@ struct EmailCompare
 };
 
 /**
- * compare_email_shim - qsort_r() comparator to drive mutt_compare_emails
+ * compare_email_shim - qsort_r() comparator to drive mutt_compare_emails - Implements ::sort_t - @ingroup sort_api
  * @param a   Pointer to first email
  * @param b   Pointer to second email
  * @param arg EmailCompare with needed context
@@ -319,7 +319,7 @@ static sort_mail_t get_sort_func(enum SortType method, enum MailboxType type)
 }
 
 /**
- * mutt_compare_emails - Compare two emails using up to two sort methods
+ * mutt_compare_emails - Compare two emails using up to two sort methods - @ingroup sort_api
  * @param a        First email
  * @param b        Second email
  * @param type     Mailbox type

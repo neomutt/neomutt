@@ -31,24 +31,35 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "sort.h"
 #include "lib.h"
 #include "globals.h"
 #include "muttlib.h"
 
 /**
+ * struct CompareData - Private data for browser_compare()
+ */
+struct CompareData
+{
+  bool sort_dirs_first; ///< $browser_sort_dirs_first = yes
+  bool sort_reverse;    ///< $browser_sort contains 'reverse-'
+  sort_t sort_fn;       ///< Function to perform $browser_sort
+};
+
+/**
  * browser_sort_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_subject(const void *a, const void *b)
+static int browser_sort_subject(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
   /* inbox should be sorted ahead of its siblings */
-  int r = mutt_inbox_cmp(pa->name, pb->name);
-  if (r == 0)
-    r = mutt_str_coll(pa->name, pb->name);
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
+  int rc = mutt_inbox_cmp(pa->name, pb->name);
+  if (rc == 0)
+    rc = mutt_str_coll(pa->name, pb->name);
+
+  return rc;
 }
 
 /**
@@ -56,95 +67,83 @@ static int browser_sort_subject(const void *a, const void *b)
  *
  * @note This only affects browsing mailboxes and is a no-op for folders.
  */
-static int browser_sort_order(const void *a, const void *b)
+static int browser_sort_order(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return ((c_sort_browser & SORT_REVERSE) ? -1 : 1) * (pa->gen - pb->gen);
+  return mutt_numeric_cmp(pa->gen, pb->gen);
 }
 
 /**
  * browser_sort_desc - Compare the descriptions of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_desc(const void *a, const void *b)
+static int browser_sort_desc(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  int r = mutt_str_coll(pa->desc, pb->desc);
-
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
+  return mutt_str_coll(pa->desc, pb->desc);
 }
 
 /**
  * browser_sort_date - Compare the date of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_date(const void *a, const void *b)
+static int browser_sort_date(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  int r = pa->mtime - pb->mtime;
-
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
+  return mutt_numeric_cmp(pa->mtime, pb->mtime);
 }
 
 /**
  * browser_sort_size - Compare the size of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_size(const void *a, const void *b)
+static int browser_sort_size(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  int r = pa->size - pb->size;
-
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
+  return mutt_numeric_cmp(pa->size, pb->size);
 }
 
 /**
  * browser_sort_count - Compare the message count of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_count(const void *a, const void *b)
+static int browser_sort_count(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  int r = 0;
+  int rc = 0;
   if (pa->has_mailbox && pb->has_mailbox)
-    r = pa->msg_count - pb->msg_count;
+    rc = mutt_numeric_cmp(pa->msg_count, pb->msg_count);
   else if (pa->has_mailbox)
-    r = -1;
+    rc = -1;
   else
-    r = 1;
+    rc = 1;
 
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
+  return rc;
 }
 
 /**
  * browser_sort_count_new - Compare the new count of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_count_new(const void *a, const void *b)
+static int browser_sort_count_new(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
-  int r = 0;
+  int rc = 0;
   if (pa->has_mailbox && pb->has_mailbox)
-    r = pa->msg_unread - pb->msg_unread;
+    rc = mutt_numeric_cmp(pa->msg_unread, pb->msg_unread);
   else if (pa->has_mailbox)
-    r = -1;
+    rc = -1;
   else
-    r = 1;
+    rc = 1;
 
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  return (c_sort_browser & SORT_REVERSE) ? -r : r;
+  return rc;
 }
 
 /**
@@ -154,39 +153,24 @@ static int browser_sort_count_new(const void *a, const void *b)
  * a way to tell "../" is always on the top of the list, independently of the
  * sort method.  $browser_sort_dirs_first is also handled here.
  */
-static int browser_compare(const void *a, const void *b)
+static int browser_compare(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
+  const struct CompareData *cd = (struct CompareData *) arg;
 
   if ((mutt_str_coll(pa->desc, "../") == 0) || (mutt_str_coll(pa->desc, "..") == 0))
     return -1;
   if ((mutt_str_coll(pb->desc, "../") == 0) || (mutt_str_coll(pb->desc, "..") == 0))
     return 1;
 
-  if (cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"))
+  if (cd->sort_dirs_first)
     if (S_ISDIR(pa->mode) != S_ISDIR(pb->mode))
       return S_ISDIR(pa->mode) ? -1 : 1;
 
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  switch (c_sort_browser & SORT_MASK)
-  {
-    case SORT_COUNT:
-      return browser_sort_count(a, b);
-    case SORT_DATE:
-      return browser_sort_date(a, b);
-    case SORT_DESC:
-      return browser_sort_desc(a, b);
-    case SORT_SIZE:
-      return browser_sort_size(a, b);
-    case SORT_UNREAD:
-      return browser_sort_count_new(a, b);
-    case SORT_SUBJECT:
-      return browser_sort_subject(a, b);
-    default:
-    case SORT_ORDER:
-      return browser_sort_order(a, b);
-  }
+  int rc = cd->sort_fn(a, b, NULL);
+
+  return cd->sort_reverse ? -rc : rc;
 }
 
 /**
@@ -211,5 +195,38 @@ void browser_sort(struct BrowserState *state)
       break;
   }
 
-  ARRAY_SORT(&state->entry, browser_compare);
+  sort_t f = NULL;
+  switch (c_sort_browser & SORT_MASK)
+  {
+    case SORT_COUNT:
+      f = browser_sort_count;
+      break;
+    case SORT_DATE:
+      f = browser_sort_date;
+      break;
+    case SORT_DESC:
+      f = browser_sort_desc;
+      break;
+    case SORT_SIZE:
+      f = browser_sort_size;
+      break;
+    case SORT_UNREAD:
+      f = browser_sort_count_new;
+      break;
+    case SORT_SUBJECT:
+      f = browser_sort_subject;
+      break;
+    default:
+    case SORT_ORDER:
+      f = browser_sort_order;
+      break;
+  }
+
+  struct CompareData cd = {
+    .sort_fn = f,
+    .sort_reverse = c_sort_browser & SORT_REVERSE,
+    .sort_dirs_first = cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"),
+  };
+
+  ARRAY_SORT(&state->entry, browser_compare, &cd);
 }
