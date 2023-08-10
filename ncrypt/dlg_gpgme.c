@@ -505,10 +505,9 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
         tm = mutt_date_localtime(0); // Default to 1970-01-01
 
       if (use_c_locale)
-        setlocale(LC_TIME, "C");
-      strftime(buf2, sizeof(buf2), buf, &tm);
-      if (use_c_locale)
-        setlocale(LC_TIME, "");
+        strftime_l(buf2, sizeof(buf2), buf, &tm, NeoMutt->time_c_locale);
+      else
+        strftime(buf2, sizeof(buf2), buf, &tm);
 
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, buf2);

@@ -23,6 +23,7 @@
 #ifndef MUTT_MUTT_DATE_H
 #define MUTT_MUTT_DATE_H
 
+#include <locale.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
@@ -53,6 +54,7 @@ time_t    mutt_date_now(void);
 uint64_t  mutt_date_now_ms(void);
 struct tm mutt_date_gmtime(time_t t);
 size_t    mutt_date_localtime_format(char *buf, size_t buflen, const char *format, time_t t);
+size_t    mutt_date_localtime_format_locale(char *buf, size_t buflen, const char *format, time_t t, locale_t loc);
 struct tm mutt_date_localtime(time_t t);
 int       mutt_date_local_tz(time_t t);
 void      mutt_date_make_date(struct Buffer *buf, bool local);

@@ -931,6 +931,25 @@ size_t mutt_date_localtime_format(char *buf, size_t buflen, const char *format, 
 }
 
 /**
+ * mutt_date_localtime_format_locale - Format localtime using a given locale
+ * @param buf    Buffer to store formatted time
+ * @param buflen Buffer size
+ * @param format Format to apply
+ * @param t      Time to format
+ * @param loc    Locale to use
+ * @retval num   Number of Bytes added to buffer, excluding NUL byte
+ */
+size_t mutt_date_localtime_format_locale(char *buf, size_t buflen,
+                                         const char *format, time_t t, locale_t loc)
+{
+  if (!buf || !format)
+    return 0;
+
+  struct tm tm = mutt_date_localtime(t);
+  return strftime_l(buf, buflen, format, &tm, loc);
+}
+
+/**
  * mutt_date_sleep_ms - Sleep for milliseconds
  * @param ms Number of milliseconds to sleep
  */

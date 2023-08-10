@@ -411,10 +411,14 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
       *p = '\0';
 
       if (use_c_locale)
-        setlocale(LC_TIME, "C");
-      mutt_date_localtime_format(buf2, sizeof(buf2), buf, key->gen_time);
-      if (use_c_locale)
-        setlocale(LC_TIME, "");
+      {
+        mutt_date_localtime_format_locale(buf2, sizeof(buf2), buf,
+                                          key->gen_time, NeoMutt->time_c_locale);
+      }
+      else
+      {
+        mutt_date_localtime_format(buf2, sizeof(buf2), buf, key->gen_time);
+      }
 
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
       snprintf(buf, buflen, fmt, buf2);
