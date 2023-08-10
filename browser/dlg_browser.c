@@ -243,7 +243,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
     case 'D':
       if (folder->ff->local)
       {
-        bool do_locales = true;
+        bool use_c_locale = false;
 
         const char *t_fmt = NULL;
         if (op == 'D')
@@ -253,7 +253,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           if (*t_fmt == '!')
           {
             t_fmt++;
-            do_locales = false;
+            use_c_locale = true;
           }
         }
         else
@@ -262,11 +262,11 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           t_fmt = ((mutt_date_now() - folder->ff->mtime) < one_year) ? "%b %d %H:%M" : "%b %d  %Y";
         }
 
-        if (!do_locales)
+        if (use_c_locale)
           setlocale(LC_TIME, "C");
         char date[128] = { 0 };
         mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
-        if (!do_locales)
+        if (use_c_locale)
           setlocale(LC_TIME, "");
 
         mutt_format_s(buf, buflen, prec, date);
@@ -281,7 +281,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       if (folder->ff->local)
       {
         char buf2[128] = { 0 };
-        bool do_locales = true;
+        bool use_c_locale = false;
         struct tm tm = { 0 };
 
         char *p = buf;
@@ -289,7 +289,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         const char *cp = src;
         if (*cp == '!')
         {
-          do_locales = false;
+          use_c_locale = true;
           cp++;
         }
 
@@ -321,10 +321,10 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
         tm = mutt_date_localtime(folder->ff->mtime);
 
-        if (!do_locales)
+        if (use_c_locale)
           setlocale(LC_TIME, "C");
         strftime(buf2, sizeof(buf2), buf, &tm);
-        if (!do_locales)
+        if (use_c_locale)
           setlocale(LC_TIME, "");
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);

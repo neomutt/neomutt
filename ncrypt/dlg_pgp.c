@@ -372,7 +372,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
     case '[':
     {
       char buf2[128];
-      bool do_locales = true;
+      bool use_c_locale = false;
       size_t len;
 
       char *p = buf;
@@ -380,7 +380,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
       const char *cp = src;
       if (*cp == '!')
       {
-        do_locales = false;
+        use_c_locale = true;
         cp++;
       }
 
@@ -410,10 +410,10 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
       }
       *p = '\0';
 
-      if (!do_locales)
+      if (use_c_locale)
         setlocale(LC_TIME, "C");
       mutt_date_localtime_format(buf2, sizeof(buf2), buf, key->gen_time);
-      if (!do_locales)
+      if (use_c_locale)
         setlocale(LC_TIME, "");
 
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);

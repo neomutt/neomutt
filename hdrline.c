@@ -630,15 +630,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         p = buf;
 
         cp = ((op == 'd') || (op == 'D')) ? (NONULL(c_date_format)) : src;
-        bool do_locales;
+        bool use_c_locale = false;
         if (*cp == '!')
         {
-          do_locales = false;
+          use_c_locale = true;
           cp++;
-        }
-        else
-        {
-          do_locales = true;
         }
 
         size_t len = buflen - 1;
@@ -710,10 +706,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           tm = mutt_date_gmtime(now);
         }
 
-        if (!do_locales)
+        if (use_c_locale)
           setlocale(LC_TIME, "C");
         strftime(tmp, sizeof(tmp), buf, &tm);
-        if (!do_locales)
+        if (use_c_locale)
           setlocale(LC_TIME, "");
 
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_DATE);
