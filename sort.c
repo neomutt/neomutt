@@ -319,7 +319,7 @@ static sort_mail_t get_sort_func(enum SortType method, enum MailboxType type)
 }
 
 /**
- * mutt_compare_emails - Compare two emails using up to two sort methods
+ * mutt_compare_emails - Compare two emails using up to two sort methods - @ingroup sort_api
  * @param a        First email
  * @param b        Second email
  * @param type     Mailbox type
