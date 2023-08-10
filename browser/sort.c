@@ -31,6 +31,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "sort.h"
 #include "lib.h"
 #include "globals.h"
 #include "muttlib.h"
@@ -45,11 +46,11 @@ static int browser_sort_subject(const void *a, const void *b, void *arg)
   const bool sort_reverse = *(bool *) arg;
 
   /* inbox should be sorted ahead of its siblings */
-  int r = mutt_inbox_cmp(pa->name, pb->name);
-  if (r == 0)
-    r = mutt_str_coll(pa->name, pb->name);
+  int rc = mutt_inbox_cmp(pa->name, pb->name);
+  if (rc == 0)
+    rc = mutt_str_coll(pa->name, pb->name);
 
-  return sort_reverse ? -r : r;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -63,7 +64,9 @@ static int browser_sort_order(const void *a, const void *b, void *arg)
   const struct FolderFile *pb = (const struct FolderFile *) b;
   const bool sort_reverse = *(bool *) arg;
 
-  return (sort_reverse ? -1 : 1) * (pa->gen - pb->gen);
+  int rc = mutt_numeric_cmp(pa->gen, pb->gen);
+
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -75,9 +78,9 @@ static int browser_sort_desc(const void *a, const void *b, void *arg)
   const struct FolderFile *pb = (const struct FolderFile *) b;
   const bool sort_reverse = *(bool *) arg;
 
-  int r = mutt_str_coll(pa->desc, pb->desc);
+  int rc = mutt_str_coll(pa->desc, pb->desc);
 
-  return sort_reverse ? -r : r;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -89,9 +92,9 @@ static int browser_sort_date(const void *a, const void *b, void *arg)
   const struct FolderFile *pb = (const struct FolderFile *) b;
   const bool sort_reverse = *(bool *) arg;
 
-  int r = pa->mtime - pb->mtime;
+  int rc = mutt_numeric_cmp(pa->mtime, pb->mtime);
 
-  return sort_reverse ? -r : r;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -103,9 +106,9 @@ static int browser_sort_size(const void *a, const void *b, void *arg)
   const struct FolderFile *pb = (const struct FolderFile *) b;
   const bool sort_reverse = *(bool *) arg;
 
-  int r = pa->size - pb->size;
+  int rc = mutt_numeric_cmp(pa->size, pb->size);
 
-  return sort_reverse ? -r : r;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -117,15 +120,15 @@ static int browser_sort_count(const void *a, const void *b, void *arg)
   const struct FolderFile *pb = (const struct FolderFile *) b;
   const bool sort_reverse = *(bool *) arg;
 
-  int r = 0;
+  int rc = 0;
   if (pa->has_mailbox && pb->has_mailbox)
-    r = pa->msg_count - pb->msg_count;
+    rc = mutt_numeric_cmp(pa->msg_count, pb->msg_count);
   else if (pa->has_mailbox)
-    r = -1;
+    rc = -1;
   else
-    r = 1;
+    rc = 1;
 
-  return sort_reverse ? -r : r;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -137,15 +140,15 @@ static int browser_sort_count_new(const void *a, const void *b, void *arg)
   const struct FolderFile *pb = (const struct FolderFile *) b;
   const bool sort_reverse = *(bool *) arg;
 
-  int r = 0;
+  int rc = 0;
   if (pa->has_mailbox && pb->has_mailbox)
-    r = pa->msg_unread - pb->msg_unread;
+    rc = mutt_numeric_cmp(pa->msg_unread, pb->msg_unread);
   else if (pa->has_mailbox)
-    r = -1;
+    rc = -1;
   else
-    r = 1;
+    rc = 1;
 
-  return sort_reverse ? -r : r;
+  return sort_reverse ? -rc : rc;
 }
 
 /**

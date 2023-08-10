@@ -50,7 +50,7 @@ static int sb_sort_count(const void *a, const void *b, void *arg)
   if (m1->msg_count == m2->msg_count)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
   else
-    rc = (m2->msg_count - m1->msg_count);
+    rc = mutt_numeric_cmp(m2->msg_count, m1->msg_count);
 
   return sort_reverse ? -rc : rc;
 }
@@ -85,7 +85,7 @@ static int sb_sort_flagged(const void *a, const void *b, void *arg)
   if (m1->msg_flagged == m2->msg_flagged)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
   else
-    rc = (m2->msg_flagged - m1->msg_flagged);
+    rc = mutt_numeric_cmp(m2->msg_flagged, m1->msg_flagged);
 
   return sort_reverse ? -rc : rc;
 }
@@ -124,7 +124,7 @@ static int sb_sort_unread(const void *a, const void *b, void *arg)
   if (m1->msg_unread == m2->msg_unread)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
   else
-    rc = (m2->msg_unread - m1->msg_unread);
+    rc = mutt_numeric_cmp(m2->msg_unread, m1->msg_unread);
 
   return sort_reverse ? -rc : rc;
 }
@@ -140,7 +140,8 @@ static int sb_sort_order(const void *a, const void *b, void *arg)
   const struct Mailbox *m2 = sbe2->mailbox;
   const bool sort_reverse = *(bool *) arg;
 
-  return (sort_reverse ? -1 : 1) * (m1->gen - m2->gen);
+  int rc = mutt_numeric_cmp(m1->gen, m2->gen);
+  return sort_reverse ? -rc : rc;
 }
 
 /**

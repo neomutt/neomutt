@@ -52,8 +52,8 @@ static int alias_sort_name(const void *a, const void *b, void *arg)
   if (!av_a->is_visible)
     return 0;
 
-  int r = mutt_str_coll(av_a->alias->name, av_b->alias->name);
-  return sort_reverse ? -r : r;
+  int rc = mutt_str_coll(av_a->alias->name, av_b->alias->name);
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -76,18 +76,18 @@ static int alias_sort_address(const void *a, const void *b, void *arg)
   if (!av_a->is_visible)
     return 0;
 
-  int r;
+  int rc;
   if (al_a == al_b)
   {
-    r = 0;
+    rc = 0;
   }
   else if (!al_a)
   {
-    r = -1;
+    rc = -1;
   }
   else if (!al_b)
   {
-    r = 1;
+    rc = 1;
   }
   else
   {
@@ -96,25 +96,25 @@ static int alias_sort_address(const void *a, const void *b, void *arg)
     if (addr_a && addr_a->personal)
     {
       if (addr_b && addr_b->personal)
-        r = buf_coll(addr_a->personal, addr_b->personal);
+        rc = buf_coll(addr_a->personal, addr_b->personal);
       else
-        r = 1;
+        rc = 1;
     }
     else if (addr_b && addr_b->personal)
     {
-      r = -1;
+      rc = -1;
     }
     else if (addr_a && addr_b)
     {
-      r = buf_coll(addr_a->mailbox, addr_b->mailbox);
+      rc = buf_coll(addr_a->mailbox, addr_b->mailbox);
     }
     else
     {
-      r = 0;
+      rc = 0;
     }
   }
 
-  return sort_reverse ? -r : r;
+  return sort_reverse ? -rc : rc;
 }
 
 /**
@@ -134,8 +134,8 @@ static int alias_sort_unsort(const void *a, const void *b, void *arg)
   if (!av_a->is_visible)
     return 0;
 
-  int r = (av_a->orig_seq - av_b->orig_seq);
-  return sort_reverse ? -r : r;
+  int rc = mutt_numeric_cmp(av_a->orig_seq, av_b->orig_seq);
+  return sort_reverse ? -rc : rc;
 }
 
 /**
