@@ -16,6 +16,7 @@
 # option - volba, přepínač (?)
 # enum → výčet (?)
 # quad → přepínač (?)
+# mailing list → poštovní konference
 #
 msgid ""
 msgstr ""
@@ -1960,7 +1961,7 @@ msgstr "Předmět: "
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:104
 msgid "Reply-To: "
-msgstr "Odpověď na: "
+msgstr "Odpověď pro: "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:106
@@ -2552,96 +2553,96 @@ msgstr "CHYBA: ohlaste, prosím, tuto chybu"
 
 #: help.c:414
 msgid "message is tagged"
-msgstr ""
+msgstr "zpráva je označena"
 
 #: help.c:416
 msgid "message is flagged"
-msgstr ""
+msgstr "zpráva s příznakem"
 
 #: help.c:417
 msgid "message is deleted"
-msgstr ""
+msgstr "zpráva je smazána"
 
 #: help.c:419
 msgid "attachment is deleted"
-msgstr ""
+msgstr "příloha je smazána"
 
 #: help.c:421
 msgid "message has been replied to"
-msgstr ""
+msgstr "na zprávu bylo odpovězeno"
 
 #: help.c:422
 msgid "message has been read"
-msgstr ""
+msgstr "zpráva byla přečtena"
 
 #: help.c:423
 msgid "message is new"
-msgstr ""
+msgstr "zpráva je nová"
 
 #: help.c:425
 msgid "thread has been read"
-msgstr ""
+msgstr "vlákno bylo přečteno"
 
 #: help.c:427
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "vlákno má alespoň jednu novou zprávu"
 
 #: help.c:429
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "zpráva byla přečtena (formát %S)"
 
 #: help.c:431
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "zpráva byla přečtena (formát %Z)"
 
 #: help.c:435
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "zpráva podepsána ověřeným klíčem"
 
 #: help.c:437
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "zpárva je zašifrována PGP"
 
 #: help.c:439
 msgid "message is signed"
-msgstr ""
+msgstr "zpráva je podepsána"
 
 #: help.c:441
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "zpráva obsauje PGP klíč"
 
 #: help.c:443
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "zpráva nemá žádné informace o šifrování"
 
 #: help.c:447
 msgid "message is not To: you"
-msgstr ""
+msgstr "zpráva není pro vás (Komu:)"
 
 #: help.c:449
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "zpráva je jen a pouze pro vás (Komu:)"
 
 #: help.c:450
 msgid "message is To: you"
-msgstr ""
+msgstr "zpráva je pro vás (Komu:)"
 
 #: help.c:451
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "zpráva je v kopii pro vás (Cc:)"
 
 #: help.c:453
 msgid "message is From: you"
-msgstr ""
+msgstr "zpráva je od vás (Od:)"
 
 #: help.c:455
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "zpráva je poslána do přihlášené poštovní konference"
 
 #: help.c:457
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "jste v seznamu pro odpověď Reply-To:"
 
 #: help.c:476
 msgid "<UNKNOWN>"
@@ -2657,7 +2658,7 @@ msgstr "Nesvázané funkce:"
 
 #: help.c:510
 msgid "Message flags:"
-msgstr ""
+msgstr "Příznaky zprávy:"
 
 #: help.c:516
 #, c-format
@@ -4935,11 +4936,11 @@ msgstr "Jméno: "
 
 #: ncrypt/gpgme_functions.c:62
 msgid "Valid From: "
-msgstr "Platný od:"
+msgstr "Platný Od:"
 
 #: ncrypt/gpgme_functions.c:62
 msgid "Valid To: "
-msgstr "Platný do:"
+msgstr "Platný Komu:"
 
 #: ncrypt/gpgme_functions.c:63
 msgid "Key Type: "
@@ -6010,11 +6011,11 @@ msgstr "odepsat na specifikovanou poštovní konferenci"
 
 #: opcodes.h:182
 msgid "subscribe to a mailing list"
-msgstr "přihlásit k odběru mailing listu"
+msgstr "přihlásit k odběru poštovní konference"
 
 #: opcodes.h:183
 msgid "unsubscribe from a mailing list"
-msgstr "odhlásit odběr mailing listu"
+msgstr "odhlásit odběr poštovní konference"
 
 #: opcodes.h:184
 msgid "load list of all newsgroups from NNTP server"
@@ -6026,7 +6027,7 @@ msgstr "spustit makro"
 
 #: opcodes.h:186
 msgid "compose a new mail message"
-msgstr "sestavit novou zprávu"
+msgstr "napsat novou zprávu"
 
 #: opcodes.h:187
 msgid "list mailboxes with new mail"
