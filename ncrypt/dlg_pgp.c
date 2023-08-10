@@ -115,7 +115,7 @@ struct PgpEntry
 static const char TrustFlags[] = "?- +";
 
 /**
- * pgp_compare_key_address - Compare Key addresses and IDs for sorting
+ * pgp_compare_key_address - Compare Key addresses and IDs for sorting - @ingroup sort_api
  * @param a First key
  * @param b Second key
  * @retval -1 a precedes b
@@ -124,14 +124,14 @@ static const char TrustFlags[] = "?- +";
  */
 static int pgp_compare_key_address(const void *a, const void *b)
 {
-  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
-  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
+  struct PgpUid const *s = *(struct PgpUid const *const *) a;
+  struct PgpUid const *t = *(struct PgpUid const *const *) b;
 
-  int r = mutt_istr_cmp((*s)->addr, (*t)->addr);
-  if (r != 0)
-    return (r > 0);
+  int rc = mutt_istr_cmp(s->addr, t->addr);
+  if (rc != 0)
+    return rc;
 
-  return mutt_istr_cmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent)) > 0;
+  return mutt_istr_cmp(pgp_fpr_or_lkeyid(s->parent), pgp_fpr_or_lkeyid(t->parent));
 }
 
 /**
@@ -146,11 +146,12 @@ static int pgp_compare_key_address(const void *a, const void *b)
 static int pgp_compare_address_qsort(const void *a, const void *b, void *arg)
 {
   const bool sort_reverse = *(bool *) arg;
-  return sort_reverse ? !pgp_compare_key_address(a, b) : pgp_compare_key_address(a, b);
+  int rc = pgp_compare_key_address(a, b);
+  return sort_reverse ? -rc : rc;
 }
 
 /**
- * pgp_compare_key_date - Compare Key dates for sorting
+ * pgp_compare_key_date - Compare Key dates for sorting - @ingroup sort_api
  * @param a First key ID
  * @param b Second key ID
  * @retval -1 a precedes b
@@ -159,13 +160,14 @@ static int pgp_compare_address_qsort(const void *a, const void *b, void *arg)
  */
 static int pgp_compare_key_date(const void *a, const void *b)
 {
-  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
-  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
+  struct PgpUid const *s = *(struct PgpUid const *const *) a;
+  struct PgpUid const *t = *(struct PgpUid const *const *) b;
 
-  int r = ((*s)->parent->gen_time - (*t)->parent->gen_time);
-  if (r != 0)
-    return r > 0;
-  return mutt_istr_cmp((*s)->addr, (*t)->addr) > 0;
+  int rc = mutt_numeric_cmp(s->parent->gen_time, t->parent->gen_time);
+  if (rc != 0)
+    return rc;
+
+  return mutt_istr_cmp(s->addr, t->addr);
 }
 
 /**
@@ -180,11 +182,12 @@ static int pgp_compare_key_date(const void *a, const void *b)
 static int pgp_compare_date_qsort(const void *a, const void *b, void *arg)
 {
   const bool sort_reverse = *(bool *) arg;
-  return sort_reverse ? !pgp_compare_key_date(a, b) : pgp_compare_key_date(a, b);
+  int rc = pgp_compare_key_date(a, b);
+  return sort_reverse ? -rc : rc;
 }
 
 /**
- * pgp_compare_keyid - Compare Key IDs and addresses for sorting
+ * pgp_compare_keyid - Compare Key IDs and addresses for sorting - @ingroup sort_api
  * @param a First key ID
  * @param b Second key ID
  * @retval -1 a precedes b
@@ -193,13 +196,14 @@ static int pgp_compare_date_qsort(const void *a, const void *b, void *arg)
  */
 static int pgp_compare_keyid(const void *a, const void *b)
 {
-  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
-  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
+  struct PgpUid const *s = *(struct PgpUid const *const *) a;
+  struct PgpUid const *t = *(struct PgpUid const *const *) b;
 
-  int r = mutt_istr_cmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent));
-  if (r != 0)
-    return (r > 0);
-  return mutt_istr_cmp((*s)->addr, (*t)->addr) > 0;
+  int rc = mutt_istr_cmp(pgp_fpr_or_lkeyid(s->parent), pgp_fpr_or_lkeyid(t->parent));
+  if (rc != 0)
+    return rc;
+
+  return mutt_istr_cmp(s->addr, t->addr);
 }
 
 /**
@@ -214,11 +218,12 @@ static int pgp_compare_keyid(const void *a, const void *b)
 static int pgp_compare_keyid_qsort(const void *a, const void *b, void *arg)
 {
   const bool sort_reverse = *(bool *) arg;
-  return sort_reverse ? !pgp_compare_keyid(a, b) : pgp_compare_keyid(a, b);
+  int rc = pgp_compare_keyid(a, b);
+  return sort_reverse ? -rc : rc;
 }
 
 /**
- * pgp_compare_key_trust - Compare the trust of keys for sorting
+ * pgp_compare_key_trust - Compare the trust of keys for sorting - @ingroup sort_api
  * @param a First key
  * @param b Second key
  * @retval -1 a precedes b
@@ -230,26 +235,34 @@ static int pgp_compare_keyid_qsort(const void *a, const void *b, void *arg)
  */
 static int pgp_compare_key_trust(const void *a, const void *b)
 {
-  struct PgpUid const *const *s = (struct PgpUid const *const *) a;
-  struct PgpUid const *const *t = (struct PgpUid const *const *) b;
+  struct PgpUid const *s = *(struct PgpUid const *const *) a;
+  struct PgpUid const *t = *(struct PgpUid const *const *) b;
 
-  int r = (((*s)->parent->flags & KEYFLAG_RESTRICTIONS) -
-           ((*t)->parent->flags & KEYFLAG_RESTRICTIONS));
-  if (r != 0)
-    return r > 0;
-  r = ((*s)->trust - (*t)->trust);
-  if (r != 0)
-    return r < 0;
-  r = ((*s)->parent->keylen - (*t)->parent->keylen);
-  if (r != 0)
-    return r < 0;
-  r = ((*s)->parent->gen_time - (*t)->parent->gen_time);
-  if (r != 0)
-    return r < 0;
-  r = mutt_istr_cmp((*s)->addr, (*t)->addr);
-  if (r != 0)
-    return r > 0;
-  return mutt_istr_cmp(pgp_fpr_or_lkeyid((*s)->parent), pgp_fpr_or_lkeyid((*t)->parent)) > 0;
+  int rc = mutt_numeric_cmp(s->parent->flags & KEYFLAG_RESTRICTIONS,
+                            t->parent->flags & KEYFLAG_RESTRICTIONS);
+  if (rc != 0)
+    return rc;
+
+  // Note: reversed
+  rc = mutt_numeric_cmp(t->trust, s->trust);
+  if (rc != 0)
+    return rc;
+
+  // Note: reversed
+  rc = mutt_numeric_cmp(t->parent->keylen, s->parent->keylen);
+  if (rc != 0)
+    return rc;
+
+  // Note: reversed
+  rc = mutt_numeric_cmp(t->parent->gen_time, s->parent->gen_time);
+  if (rc != 0)
+    return rc;
+
+  rc = mutt_istr_cmp(s->addr, t->addr);
+  if (rc != 0)
+    return rc;
+
+  return mutt_istr_cmp(pgp_fpr_or_lkeyid(s->parent), pgp_fpr_or_lkeyid(t->parent));
 }
 
 /**
@@ -264,7 +277,8 @@ static int pgp_compare_key_trust(const void *a, const void *b)
 static int pgp_compare_trust_qsort(const void *a, const void *b, void *arg)
 {
   const bool sort_reverse = *(bool *) arg;
-  return sort_reverse ? !pgp_compare_key_trust(a, b) : pgp_compare_key_trust(a, b);
+  int rc = pgp_compare_key_trust(a, b);
+  return sort_reverse ? -rc : rc;
 }
 
 /**
