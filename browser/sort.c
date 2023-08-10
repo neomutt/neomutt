@@ -37,6 +37,16 @@
 #include "muttlib.h"
 
 /**
+ * struct CompareData - Private data for browser_compare()
+ */
+struct CompareData
+{
+  bool sort_dirs_first; ///< $browser_sort_dirs_first = yes
+  bool sort_reverse;    ///< $browser_sort contains 'reverse-'
+  sort_t sort_fn;       ///< Function to perform $browser_sort
+};
+
+/**
  * browser_sort_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
  */
 static int browser_sort_subject(const void *a, const void *b, void *arg)
@@ -147,45 +157,20 @@ static int browser_compare(const void *a, const void *b, void *arg)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
-  const enum SortType c_sort_browser = *(enum SortType *) arg;
+  const struct CompareData *cd = (struct CompareData *) arg;
 
   if ((mutt_str_coll(pa->desc, "../") == 0) || (mutt_str_coll(pa->desc, "..") == 0))
     return -1;
   if ((mutt_str_coll(pb->desc, "../") == 0) || (mutt_str_coll(pb->desc, "..") == 0))
     return 1;
 
-  if (cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"))
+  if (cd->sort_dirs_first)
     if (S_ISDIR(pa->mode) != S_ISDIR(pb->mode))
       return S_ISDIR(pa->mode) ? -1 : 1;
 
-  int rc;
-  switch (c_sort_browser & SORT_MASK)
-  {
-    case SORT_COUNT:
-      rc = browser_sort_count(a, b, NULL);
-      break;
-    case SORT_DATE:
-      rc = browser_sort_date(a, b, NULL);
-      break;
-    case SORT_DESC:
-      rc = browser_sort_desc(a, b, NULL);
-      break;
-    case SORT_SIZE:
-      rc = browser_sort_size(a, b, NULL);
-      break;
-    case SORT_UNREAD:
-      rc = browser_sort_count_new(a, b, NULL);
-      break;
-    case SORT_SUBJECT:
-      rc = browser_sort_subject(a, b, NULL);
-      break;
-    default:
-    case SORT_ORDER:
-      rc = browser_sort_order(a, b, NULL);
-      break;
-  }
+  int rc = cd->sort_fn(a, b, NULL);
 
-  return c_sort_browser & SORT_REVERSE ? -rc : rc;
+  return cd->sort_reverse ? -rc : rc;
 }
 
 /**
@@ -197,7 +182,7 @@ static int browser_compare(const void *a, const void *b, void *arg)
  */
 void browser_sort(struct BrowserState *state)
 {
-  enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
 #ifdef USE_NNTP
@@ -210,5 +195,38 @@ void browser_sort(struct BrowserState *state)
       break;
   }
 
-  ARRAY_SORT(&state->entry, browser_compare, &c_sort_browser);
+  sort_t f = NULL;
+  switch (c_sort_browser & SORT_MASK)
+  {
+    case SORT_COUNT:
+      f = browser_sort_count;
+      break;
+    case SORT_DATE:
+      f = browser_sort_date;
+      break;
+    case SORT_DESC:
+      f = browser_sort_desc;
+      break;
+    case SORT_SIZE:
+      f = browser_sort_size;
+      break;
+    case SORT_UNREAD:
+      f = browser_sort_count_new;
+      break;
+    case SORT_SUBJECT:
+      f = browser_sort_subject;
+      break;
+    default:
+    case SORT_ORDER:
+      f = browser_sort_order;
+      break;
+  }
+
+  struct CompareData cd = {
+    .sort_fn = f,
+    .sort_reverse = c_sort_browser & SORT_REVERSE,
+    .sort_dirs_first = cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"),
+  };
+
+  ARRAY_SORT(&state->entry, browser_compare, &cd);
 }
