@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <errno.h>
 #include <inttypes.h> // IWYU pragma: keep
 #include <locale.h>
 #include <stdbool.h>
@@ -636,6 +637,31 @@ static int count_delete_lines(FILE *fp, struct Body *b, LOFF_T *length, size_t d
 }
 
 /**
+ * attribution_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
+ */
+int attribution_config_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->event_data)
+    return -1;
+
+  struct EventConfig *ev_c = nc->event_data;
+
+  if (!mutt_str_equal(ev_c->name, "attribution_locale"))
+    return 0;
+
+  const char *loc = cs_subset_string(NeoMutt->sub, "attribution_locale");
+  locale_t new = NeoMutt->time_attribution_locale;
+  if (!(new = newlocale(LC_TIME_MASK, loc, NeoMutt->time_attribution_locale)))
+    mutt_warning(_("attribution_locale '%s': %s, unchanged"), loc, strerror(errno));
+  if (new)
+    NeoMutt->time_attribution_locale = new;
+
+  return 0;
+}
+
+/**
  * mutt_copy_message_fp - Make a copy of a message from a FILE pointer
  * @param fp_out  Where to write output
  * @param fp_in   Where to get input
@@ -663,13 +689,11 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     }
     else
     {
-      const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
       struct Mailbox *m_cur = get_current_mailbox();
-      setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, sizeof(prefix), wraplen, NONULL(c_indent_string),
-                       m_cur, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
-      setlocale(LC_TIME, "");
+      mutt_make_string_tl(prefix, sizeof(prefix), wraplen, NONULL(c_indent_string),
+                          m_cur, -1, e, MUTT_FORMAT_NO_FLAGS, NULL,
+                          NeoMutt->time_attribution_locale);
     }
   }
 

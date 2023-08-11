@@ -58,7 +58,9 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   if (n->time_c_locale)
     n->time_c_locale = newlocale(LC_TIME_MASK, "C", n->time_c_locale);
 
-  if (!n->time_c_locale)
+  n->time_attribution_locale = duplocale(LC_GLOBAL_LOCALE);
+
+  if (!n->time_c_locale || !n->time_attribution_locale)
   {
     mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
     mutt_exit(1);                   // LCOV_EXCL_LINE
@@ -91,6 +93,8 @@ void neomutt_free(struct NeoMutt **ptr)
   notify_free(&n->notify);
   if (n->time_c_locale)
     freelocale(n->time_c_locale);
+  if (n->time_attribution_locale)
+    freelocale(n->time_attribution_locale);
 
   FREE(ptr);
 }

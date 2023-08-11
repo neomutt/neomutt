@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <errno.h>
-#include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -443,13 +442,9 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
   if (!c_forward_attribution_intro || !fp)
     return;
 
-  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
-
   char buf[1024] = { 0 };
-  setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_intro, NULL, -1,
-                   e, MUTT_FORMAT_NO_FLAGS, NULL);
-  setlocale(LC_TIME, "");
+  mutt_make_string_tl(buf, sizeof(buf), 0, c_forward_attribution_intro, NULL, -1, e,
+                      MUTT_FORMAT_NO_FLAGS, NULL, NeoMutt->time_attribution_locale);
   fputs(buf, fp);
   fputs("\n\n", fp);
 }
@@ -466,13 +461,9 @@ void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
   if (!c_forward_attribution_trailer || !fp)
     return;
 
-  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
-
   char buf[1024] = { 0 };
-  setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_trailer, NULL, -1,
-                   e, MUTT_FORMAT_NO_FLAGS, NULL);
-  setlocale(LC_TIME, "");
+  mutt_make_string_tl(buf, sizeof(buf), 0, c_forward_attribution_trailer, NULL, -1,
+                      e, MUTT_FORMAT_NO_FLAGS, NULL, NeoMutt->time_attribution_locale);
   fputc('\n', fp);
   fputs(buf, fp);
   fputc('\n', fp);
@@ -626,12 +617,9 @@ static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
   if (!s || !fp_out)
     return;
 
-  const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
-
   char buf[1024] = { 0 };
-  setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
-  setlocale(LC_TIME, "");
+  mutt_make_string_tl(buf, sizeof(buf), 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS,
+                      NULL, NeoMutt->time_attribution_locale);
   fputs(buf, fp_out);
   fputc('\n', fp_out);
 }

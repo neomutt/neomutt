@@ -68,6 +68,7 @@ struct HdrFormatInfo
   int msg_in_pager;           ///< Index of Email displayed in the Pager
   struct Email *email;        ///< Current Email
   const char *pager_progress; ///< String representing Pager position through Email
+  locale_t time_locale; ///< Locale to strftime() in, or (locale_t)0 for defautl
 };
 
 /**
@@ -705,8 +706,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           tm = mutt_date_gmtime(now);
         }
 
-        if (use_c_locale)
-          strftime_l(tmp, sizeof(tmp), buf, &tm, NeoMutt->time_c_locale);
+        locale_t loc = use_c_locale ? NeoMutt->time_c_locale : hfi->time_locale;
+        if (loc)
+          strftime_l(tmp, sizeof(tmp), buf, &tm, loc);
         else
           strftime(tmp, sizeof(tmp), buf, &tm);
 
@@ -1406,7 +1408,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * mutt_make_string - Create formatted strings using mailbox expandos
+ * mutt_make_string_tl - Create formatted strings using mailbox expandos
  * @param buf      Buffer for the result
  * @param buflen   Buffer length
  * @param cols     Number of screen columns (OPTIONAL)
@@ -1416,12 +1418,13 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
  * @param e        Email
  * @param flags    Flags, see #MuttFormatFlags
  * @param progress Pager progress string
+ * @param time_loc Locale to format time in, pass (locale_t)0 to use global
  *
  * @sa index_format_str()
  */
-void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
-                      struct Mailbox *m, int inpgr, struct Email *e,
-                      MuttFormatFlags flags, const char *progress)
+void mutt_make_string_tl(char *buf, size_t buflen, int cols, const char *s,
+                         struct Mailbox *m, int inpgr, struct Email *e,
+                         MuttFormatFlags flags, const char *progress, locale_t time_loc)
 {
   struct HdrFormatInfo hfi = { 0 };
 
@@ -1429,6 +1432,7 @@ void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
   hfi.mailbox = m;
   hfi.msg_in_pager = inpgr;
   hfi.pager_progress = progress;
+  hfi.time_locale = time_loc;
 
   mutt_expando_format(buf, buflen, 0, cols, s, index_format_str, (intptr_t) &hfi, flags);
 }

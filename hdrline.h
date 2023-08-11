@@ -25,6 +25,7 @@
 #define MUTT_HDRLINE_H
 
 #include <stdio.h>
+#include <locale.h>
 #include "format_flags.h"
 
 struct Email;
@@ -74,8 +75,19 @@ enum ToChars
   FLAG_CHAR_TO_REPLY_TO,          ///< Character denoting that the user is in the Reply-To list
 };
 
-void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
-                      struct Mailbox *m, int inpgr, struct Email *e,
-                      MuttFormatFlags flags, const char *progress);
+void mutt_make_string_tl(char *buf, size_t buflen, int cols, const char *s,
+                         struct Mailbox *m, int inpgr, struct Email *e,
+                         MuttFormatFlags flags, const char *progress, locale_t time_loc);
+
+
+/**
+ * mutt_make_string - Wrapper to mutt_make_string_tl()
+ */
+static inline void mutt_make_string(char *buf, size_t buflen, int cols, const char *s,
+                                    struct Mailbox *m, int inpgr, struct Email *e,
+                                    MuttFormatFlags flags, const char *progress)
+{
+  mutt_make_string_tl(buf, buflen, cols, s, m, inpgr, e, flags, progress, NULL);
+}
 
 #endif /* MUTT_HDRLINE_H */

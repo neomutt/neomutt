@@ -163,6 +163,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
+#include "copy.h"
 #include "external.h"
 #include "globals.h"
 #include "hook.h"
@@ -938,6 +939,7 @@ main
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_log_observer, NULL);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_config_observer, NULL);
   notify_observer_add(NeoMutt->notify, NT_TIMEOUT, main_timeout_observer, NULL);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, attribution_config_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
