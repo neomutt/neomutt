@@ -50,7 +50,7 @@
 #include "lib.h"
 #include "compress/lib.h"
 #include "store/lib.h"
-#include "hcversion.h"
+#include "hcache/hcversion.h" // path needed by out-of-tree build
 #include "muttlib.h"
 #include "serialize.h"
 
