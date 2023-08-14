@@ -1080,30 +1080,6 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
     conn->account.user[0] = '\0';
   }
 
-  /* news server already exists */
-  if (adata)
-  {
-    if (adata->status == NNTP_BYE)
-      adata->status = NNTP_NONE;
-    if (nntp_open_connection(adata) < 0)
-      return NULL;
-
-    rc = nntp_newsrc_parse(adata);
-    if (rc < 0)
-      return NULL;
-
-    /* check for new newsgroups */
-    if (!leave_lock && (nntp_check_new_groups(m, adata) < 0))
-      rc = -1;
-
-    /* .newsrc has been externally modified */
-    if (rc > 0)
-      nntp_clear_cache(adata);
-    if ((rc < 0) || !leave_lock)
-      nntp_newsrc_close(adata);
-    return (rc < 0) ? NULL : adata;
-  }
-
   /* new news server */
   adata = nntp_adata_new(conn);
 
