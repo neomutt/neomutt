@@ -6340,22 +6340,47 @@ unignore posted-to:
       </para>
       <cmdsynopsis>
         <command>mailboxes</command>
-        <arg choice="plain">
-          <replaceable class="parameter">mailbox</replaceable>
+        <arg choice="opt">
+          <group choice="opt">
+            <arg choice="plain">
+              <option>-label</option>
+              <replaceable>label</replaceable>
+            </arg>
+            <arg choice="plain">
+              <option>-nolabel</option>
+            </arg>
+          </group>
+          <group choice="opt">
+            <arg choice="plain">
+              <option>-notify</option>
+            </arg>
+            <arg choice="plain">
+              <option>-nonotify</option>
+            </arg>
+          </group>
+          <group choice="opt">
+            <arg choice="plain">
+              <option>-poll</option>
+            </arg>
+            <arg choice="plain">
+              <option>-nopoll</option>
+            </arg>
+          </group>
+          <arg choice="plain">
+            <replaceable class="parameter">mailbox</replaceable>
+          </arg>
         </arg>
-        <arg choice="opt" rep="repeat">
-          <replaceable class="parameter">mailbox</replaceable>
-        </arg>
+        <arg choice="opt" rep="repeat"></arg>
         <command>named-mailboxes</command>
         <arg choice="plain">
-          <replaceable class="parameter">description</replaceable>
+          <replaceable class="parameter">label</replaceable>
           <arg choice="plain">
             <replaceable class="parameter">mailbox</replaceable>
           </arg>
         </arg>
         <group choice="req" rep="repeat">
           <arg choice="plain">
-            <replaceable class="parameter">description</replaceable>
+            <replaceable class="parameter">label</replaceable>
             <arg choice="plain">
               <replaceable class="parameter">mailbox</replaceable>
             </arg>
@@ -6374,6 +6399,27 @@ unignore posted-to:
       <para>
         This command specifies folders which can receive mail and which will be
         checked for new messages periodically.
+      </para>
+      <para>
+        The <literal>-label</literal> argument can be used to specify an
+        alternative label to print in the sidebar or mailbox browser instead
+        of the mailbox path.  A label may be removed via the
+        <literal>-nolabel</literal> argument.  If unspecified, an existing
+        mailbox label will be unchanged.
+      </para>
+      <para>
+        Use <literal>-nonotify</literal> to disable notifying when new mail
+        arrives.  The <literal>-notify</literal> argument can be used to reenable
+        notifying for an existing mailbox.  If unspecified: a new
+        mailbox will notify by default, while an existing mailbox will be
+        unchanged.
+      </para>
+      <para>
+        To disable polling, specify <literal>-nopoll</literal> before the
+        mailbox name.  The <literal>-poll</literal> argument can be used to
+        reenable polling for an existing mailbox.  If unspecified: a new
+        mailbox will poll by default, while an existing mailbox will be
+        unchanged.
       </para>
       <para>
         <emphasis>folder</emphasis> can either be a local file or directory

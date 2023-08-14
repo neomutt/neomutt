@@ -142,9 +142,17 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
   }
 
   if (!m_check->has_new)
+  {
     m_check->notified = false;
-  else if (!m_check->notified)
-    MailboxNotify++;
+  }
+  else
+  {
+    // pretend that we've already notified for the mailbox
+    if (!m_check->notify_user)
+      m_check->notified = true;
+    else if (!m_check->notified)
+      MailboxNotify++;
+  }
 }
 
 /**
@@ -203,7 +211,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
   {
     struct Mailbox *m = np->mailbox;
 
-    if (!m->visible)
+    if (!m->visible || !m->poll_new_mail)
       continue;
 
     CheckStatsFlags m_flags = flags;

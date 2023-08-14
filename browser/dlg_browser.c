@@ -726,7 +726,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
           break;
       }
 
-      if (np && m && mutt_str_equal(np->mailbox->realpath, m->realpath))
+      if (np && m && m->poll_new_mail && mutt_str_equal(np->mailbox->realpath, m->realpath))
       {
         np->mailbox->msg_count = m->msg_count;
         np->mailbox->msg_unread = m->msg_unread;
@@ -797,7 +797,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       if (!np->mailbox)
         continue;
 
-      if (m && mutt_str_equal(np->mailbox->realpath, m->realpath))
+      if (m && m->poll_new_mail && mutt_str_equal(np->mailbox->realpath, m->realpath))
       {
         np->mailbox->msg_count = m->msg_count;
         np->mailbox->msg_unread = m->msg_unread;

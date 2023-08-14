@@ -1104,6 +1104,9 @@ static int imap_status(struct ImapAccountData *adata, struct ImapMboxData *mdata
     return mdata->messages;
   }
 
+  if (adata->mailbox && !adata->mailbox->poll_new_mail)
+    return mdata->messages;
+
   if (adata->capabilities & IMAP_CAP_IMAP4REV1)
   {
     uidvalidity_flag = "UIDVALIDITY";

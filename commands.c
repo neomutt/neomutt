@@ -73,6 +73,16 @@ static struct ListHead MuttrcStack = STAILQ_HEAD_INITIALIZER(MuttrcStack);
 #define MAX_ERRS 128
 
 /**
+ * enum TriBool - Tri-state boolean
+ */
+enum TriBool
+{
+  TB_UNSET = -1, ///< Value hasn't been set
+  TB_FALSE,      ///< Value is false
+  TB_TRUE,       ///< Value is true
+};
+
+/**
  * enum GroupState - Type of email address group
  */
 enum GroupState
@@ -595,6 +605,106 @@ bail:
 }
 
 /**
+ * mailbox_add - Add a new Mailbox
+ */
+static enum CommandResult mailbox_add(const char *folder, const char *mailbox, const char *label,
+                        enum TriBool poll, enum TriBool notify, struct Buffer *err)
+{
+  mutt_debug(LL_DEBUG1, "Adding mailbox: '%s' label '%s', poll %s, notify %s\n",
+             mailbox, label ? label : "[NONE]",
+             (poll == TB_UNSET) ? "[UNSPECIFIED]" :
+             (poll == TB_TRUE)  ? "true" :
+                                  "false",
+             (notify == TB_UNSET) ? "[UNSPECIFIED]" :
+             (notify == TB_TRUE)  ? "true" :
+                                    "false");
+  struct Mailbox *m = mailbox_new();
+
+  buf_strcpy(&m->pathbuf, mailbox);
+  /* int rc = */ mx_path_canon2(m, folder);
+
+  if (m->type <= MUTT_UNKNOWN)
+  {
+    buf_printf(err, "Unknown Mailbox: %s", m->realpath);
+    mailbox_free(&m);
+    return MUTT_CMD_ERROR;
+  }
+
+  bool new_account = false;
+  struct Account *a = mx_ac_find(m);
+  if (!a)
+  {
+    a = account_new(NULL, NeoMutt->sub);
+    a->type = m->type;
+    new_account = true;
+  }
+
+  if (!new_account)
+  {
+    struct Mailbox *m_old = mx_mbox_find(a, m->realpath);
+    if (m_old)
+    {
+      if (!m_old->visible)
+      {
+        m_old->visible = true;
+        m_old->gen = mailbox_gen();
+      }
+
+      if (label)
+        mutt_str_replace(&m_old->name, label);
+
+      if (notify != TB_UNSET)
+        m_old->notify_user = notify;
+
+      if (poll != TB_UNSET)
+        m_old->poll_new_mail = poll;
+
+      struct EventMailbox ev_m = { m_old };
+      notify_send(m_old->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+
+      mailbox_free(&m);
+      return MUTT_CMD_SUCCESS;
+    }
+  }
+
+  if (label)
+    m->name = mutt_str_dup(label);
+
+  if (notify != TB_UNSET)
+    m->notify_user = notify;
+
+  if (poll != TB_UNSET)
+    m->poll_new_mail = poll;
+
+  if (!mx_ac_add(a, m))
+  {
+    mailbox_free(&m);
+    if (new_account)
+    {
+      cs_subset_free(&a->sub);
+      FREE(&a->name);
+      notify_free(&a->notify);
+      FREE(&a);
+    }
+    return MUTT_CMD_SUCCESS;
+  }
+
+  if (new_account)
+  {
+    neomutt_account_add(NeoMutt, a);
+  }
+
+  // this is finally a visible mailbox in the sidebar and mailboxes list
+  m->visible = true;
+
+#ifdef USE_INOTIFY
+  mutt_monitor_add(m);
+#endif
+
+  return MUTT_CMD_SUCCESS;
+}
+
+/**
  * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
  * This is also used by 'virtual-mailboxes'.
@@ -602,92 +712,93 @@ bail:
 enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
+  enum CommandResult rc = MUTT_CMD_WARNING;
+
+  struct Buffer *label = buf_pool_get();
+  struct Buffer *mailbox = buf_pool_get();
+
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
   while (MoreArgs(s))
   {
-    struct Mailbox *m = mailbox_new();
+    bool label_set = false;
+    enum TriBool notify = TB_UNSET;
+    enum TriBool poll = TB_UNSET;
 
-    if (data & MUTT_NAMED)
+    do
     {
-      // This may be empty, e.g. `named-mailboxes "" +inbox`
+      // Start by handling the options
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-      m->name = buf_strdup(buf);
-    }
 
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-    if (buf_is_empty(buf))
-    {
-      /* Skip empty tokens. */
-      mailbox_free(&m);
-      continue;
-    }
-
-    buf_strcpy(&m->pathbuf, buf->data);
-    /* int rc = */ mx_path_canon2(m, c_folder);
-
-    if (m->type <= MUTT_UNKNOWN)
-    {
-      mutt_error("Unknown Mailbox: %s", m->realpath);
-      mailbox_free(&m);
-      return MUTT_CMD_ERROR;
-    }
-
-    bool new_account = false;
-    struct Account *a = mx_ac_find(m);
-    if (!a)
-    {
-      a = account_new(NULL, NeoMutt->sub);
-      a->type = m->type;
-      new_account = true;
-    }
-
-    if (!new_account)
-    {
-      struct Mailbox *m_old = mx_mbox_find(a, m->realpath);
-      if (m_old)
+      if (mutt_str_equal(buf_string(buf), "-label"))
       {
-        if (!m_old->visible)
+        if (!MoreArgs(s))
         {
-          m_old->visible = true;
-          m_old->gen = mailbox_gen();
+          buf_printf(err, _("%s: too few arguments"), "mailboxes -label");
+          goto done;
         }
 
-        const bool rename = (data & MUTT_NAMED) && !mutt_str_equal(m_old->name, m->name);
-        if (rename)
+        parse_extract_token(label, s, TOKEN_NO_FLAGS);
+        label_set = true;
+      }
+      else if (mutt_str_equal(buf_string(buf), "-nolabel"))
+      {
+        buf_reset(label);
+        label_set = true;
+      }
+      else if (mutt_str_equal(buf_string(buf), "-notify"))
+      {
+        notify = TB_TRUE;
+      }
+      else if (mutt_str_equal(buf_string(buf), "-nonotify"))
+      {
+        notify = TB_FALSE;
+      }
+      else if (mutt_str_equal(buf_string(buf), "-poll"))
+      {
+        poll = TB_TRUE;
+      }
+      else if (mutt_str_equal(buf_string(buf), "-nopoll"))
+      {
+        poll = TB_FALSE;
+      }
+      else if ((data & MUTT_NAMED) && !label_set)
+      {
+        if (!MoreArgs(s))
         {
-          mutt_str_replace(&m_old->name, m->name);
+          buf_printf(err, _("%s: too few arguments"), "named-mailboxes");
+          goto done;
         }
 
-        mailbox_free(&m);
-        continue;
+        buf_copy(label, buf);
+        label_set = true;
       }
-    }
-
-    if (!mx_ac_add(a, m))
-    {
-      mailbox_free(&m);
-      if (new_account)
+      else
       {
-        cs_subset_free(&a->sub);
-        FREE(&a->name);
-        notify_free(&a->notify);
-        FREE(&a);
+        buf_copy(mailbox, buf);
+        break;
       }
-      continue;
-    }
-    if (new_account)
+    } while (MoreArgs(s));
+
+    if (buf_is_empty(mailbox))
     {
-      neomutt_account_add(NeoMutt, a);
+      buf_printf(err, _("%s: too few arguments"), "mailboxes");
+      goto done;
     }
 
-    // this is finally a visible mailbox in the sidebar and mailboxes list
-    m->visible = true;
+    rc = mailbox_add(c_folder, buf_string(mailbox), label_set ? buf_string(label) : NULL, poll, notify, err);
+    if (rc != MUTT_CMD_SUCCESS)
+      goto done;
 
-#ifdef USE_INOTIFY
-    mutt_monitor_add(m);
-#endif
+    buf_reset(label);
+    buf_reset(mailbox);
   }
-  return MUTT_CMD_SUCCESS;
+
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&label);
+  buf_pool_release(&mailbox);
+  return rc;
 }
 
 /**
@@ -1264,7 +1375,8 @@ static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
 static void do_unmailboxes(struct Mailbox *m)
 {
 #ifdef USE_INOTIFY
-  mutt_monitor_remove(m);
+  if (m->poll_new_mail)
+    mutt_monitor_remove(m);
 #endif
   m->visible = false;
   m->gen = -1;
