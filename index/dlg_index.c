@@ -96,9 +96,6 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 
 /// Help Bar for the Index dialog
 static const struct Mapping IndexHelp[] = {
@@ -626,9 +623,6 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   if (shared->mailbox)
   {
     char *new_last_folder = NULL;
-#ifdef USE_INOTIFY
-    int monitor_remove_rc = mutt_monitor_remove(NULL);
-#endif
     if (shared->mailbox->compress_info && (shared->mailbox->realpath[0] != '\0'))
       new_last_folder = mutt_str_dup(shared->mailbox->realpath);
     else
@@ -646,10 +640,6 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
     }
     else
     {
-#ifdef USE_INOTIFY
-      if (monitor_remove_rc == 0)
-        mutt_monitor_add(NULL);
-#endif
       if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
         update_index(menu, shared->mailbox_view, check, *oldcount, shared);
 
@@ -698,9 +688,6 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
 
     menu->max = m->msg_count;
     menu_set_index(menu, find_first_message(shared->mailbox_view));
-#ifdef USE_INOTIFY
-    mutt_monitor_add(NULL);
-#endif
   }
   else
   {
@@ -1103,9 +1090,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     /* force the mailbox check after we enter the folder */
     mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
   }
-#ifdef USE_INOTIFY
-  mutt_monitor_add(NULL);
-#endif
 
   const bool c_collapse_all = cs_subset_bool(shared->sub, "collapse_all");
   if (mutt_using_threads() && c_collapse_all)

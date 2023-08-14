@@ -36,9 +36,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "globals.h"
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 
 // It's not possible to unget more than one char under some curses libs,
 // so roll our own input buffering routines.
@@ -167,30 +164,6 @@ void mutt_flush_macro_to_endcond(void)
   array_to_endcond(&MacroEvents);
 }
 
-#ifdef USE_INOTIFY
-/**
- * mutt_monitor_getch - Get a character and poll the filesystem monitor
- * @retval num Character pressed
- * @retval ERR Timeout
- */
-static int mutt_monitor_getch(void)
-{
-  /* ncurses has its own internal buffer, so before we perform a poll,
-   * we need to make sure there isn't a character waiting */
-  timeout(0);
-  int ch = getch();
-  timeout(1000); // 1 second
-  if (ch == ERR)
-  {
-    if (mutt_monitor_poll() != 0)
-      ch = ERR;
-    else
-      ch = getch();
-  }
-  return ch;
-}
-#endif /* USE_INOTIFY */
-
 /**
  * mutt_getch - Read a character from the input buffer
  * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
@@ -230,11 +203,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   SigInt = false;
   mutt_sig_allow_interrupt(true);
   timeout(1000); // 1 second
-#ifdef USE_INOTIFY
-  ch = mutt_monitor_getch();
-#else
   ch = getch();
-#endif
   mutt_sig_allow_interrupt(false);
 
   if (SigInt)

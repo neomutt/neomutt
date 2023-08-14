@@ -64,9 +64,6 @@
 #include "mx.h"
 #include "score.h"
 #include "version.h"
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
@@ -703,10 +700,6 @@ static enum CommandResult mailbox_add(const char *folder, const char *mailbox,
   // this is finally a visible mailbox in the sidebar and mailboxes list
   m->visible = true;
 
-#ifdef USE_INOTIFY
-  mutt_monitor_add(m);
-#endif
-
   return MUTT_CMD_SUCCESS;
 }
 
@@ -791,13 +784,8 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       goto done;
     }
 
-    rc = mailbox_add(c_folder, buf_string(mailbox),
-                     label_set ? buf_string(label) : NULL, poll, notify, err);
-    if (rc != MUTT_CMD_SUCCESS)
-      goto done;
-
-    buf_reset(label);
-    buf_reset(mailbox);
+    // this is finally a visible mailbox in the sidebar and mailboxes list
+    m->visible = true;
   }
 
   rc = MUTT_CMD_SUCCESS;
@@ -1379,10 +1367,6 @@ static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
  */
 static void do_unmailboxes(struct Mailbox *m)
 {
-#ifdef USE_INOTIFY
-  if (m->poll_new_mail)
-    mutt_monitor_remove(m);
-#endif
   m->visible = false;
   m->gen = -1;
   if (m->opened)

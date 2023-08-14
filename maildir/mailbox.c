@@ -46,9 +46,6 @@
 #include "mx.h"
 #include "shared.h"
 #include "sort.h"
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 
 struct Progress;
 
@@ -583,17 +580,8 @@ static enum MxStatus maildir_check(struct Mailbox *m)
    * In practice, this sometimes leads to all the new messages not being
    * noticed during the SAME group of mtime stat updates.  To work around
    * the problem, don't update the stat times for a monitor caused check. */
-#ifdef USE_INOTIFY
-  if (MonitorCurMboxChanged)
-  {
-    MonitorCurMboxChanged = false;
-  }
-  else
-#endif
-  {
-    mutt_file_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
-    mutt_file_get_stat_timespec(&mdata->mtime, &st_new, MUTT_STAT_MTIME);
-  }
+  mutt_file_get_stat_timespec(&mdata->mtime_cur, &st_cur, MUTT_STAT_MTIME);
+  mutt_file_get_stat_timespec(&mdata->mtime, &st_new, MUTT_STAT_MTIME);
 
   /* do a fast scan of just the filenames in
    * the subdirectories that have changed.  */
