@@ -425,7 +425,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       /* fake the pattern for menu title */
       char *mtitle = NULL;
-      mutt_str_asprintf(&mtitle, "~f ^%s", buf);
+      mutt_str_asprintf(&mtitle, "~f ^%s", buf_string(buf));
       FREE(&mdata.limit);
       mdata.limit = mtitle;
 
