@@ -235,8 +235,10 @@ void mutt_window_clear    (struct MuttWindow *win);
 void mutt_window_clrtoeol (struct MuttWindow *win);
 int  mutt_window_move     (struct MuttWindow *win, int col, int row);
 int  mutt_window_mvaddstr (struct MuttWindow *win, int col, int row, const char *str);
-int  mutt_window_mvprintw (struct MuttWindow *win, int col, int row, const char *fmt, ...);
-int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...);
+int  mutt_window_mvprintw (struct MuttWindow *win, int col, int row, const char *fmt, ...)
+                            __attribute__((__format__(__printf__, 4, 5)));
+int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...)
+                            __attribute__((__format__(__printf__, 2, 3)));
 bool mutt_window_is_visible(struct MuttWindow *win);
 
 void               mutt_winlist_free (struct MuttWindowList *head);

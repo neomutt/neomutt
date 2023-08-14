@@ -62,7 +62,8 @@ size_t         buf_startswith      (struct Buffer *buf, const char *prefix);
 size_t         buf_addch           (struct Buffer *buf, char c);
 size_t         buf_addstr          (struct Buffer *buf, const char *s);
 size_t         buf_addstr_n        (struct Buffer *buf, const char *s, size_t len);
-int            buf_add_printf      (struct Buffer *buf, const char *fmt, ...);
+int            buf_add_printf      (struct Buffer *buf, const char *fmt, ...)
+                                    __attribute__((__format__(__printf__, 2, 3)));
 
 // Functions that INSERT into a Buffer
 size_t         buf_insert          (struct Buffer *buf, size_t offset, const char *s);
@@ -71,7 +72,8 @@ size_t         buf_insert          (struct Buffer *buf, size_t offset, const cha
 size_t         buf_concat_path     (struct Buffer *buf, const char *dir, const char *fname);
 size_t         buf_concatn_path    (struct Buffer *dst, const char *dir, size_t dirlen, const char *fname, size_t fnamelen);
 size_t         buf_copy            (struct Buffer *dst, const struct Buffer *src);
-int            buf_printf          (struct Buffer *buf, const char *fmt, ...);
+int            buf_printf          (struct Buffer *buf, const char *fmt, ...)
+                                    __attribute__((__format__(__printf__, 2, 3)));
 size_t         buf_strcpy          (struct Buffer *buf, const char *s);
 size_t         buf_strcpy_n        (struct Buffer *buf, const char *s, size_t len);
 size_t         buf_substrcpy       (struct Buffer *buf, const char *beg, const char *end);

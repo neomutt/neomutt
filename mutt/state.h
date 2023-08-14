@@ -62,7 +62,8 @@ void state_mark_attach          (struct State *state);
 void state_mark_protected_header(struct State *state);
 void state_prefix_put           (struct State *state, const char *buf, size_t buflen);
 void state_prefix_putc          (struct State *state, char c);
-int  state_printf               (struct State *state, const char *fmt, ...);
+int  state_printf               (struct State *state, const char *fmt, ...)
+                                  __attribute__((__format__(__printf__, 2, 3)));
 int  state_putws                (struct State *state, const wchar_t *ws);
 
 const char *state_attachment_marker(void);

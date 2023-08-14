@@ -54,7 +54,8 @@
 
 void        mutt_str_adjust(char **ptr);
 void        mutt_str_append_item(char **str, const char *item, char sep);
-int         mutt_str_asprintf(char **strp, const char *fmt, ...);
+int         mutt_str_asprintf(char **strp, const char *fmt, ...)
+                              __attribute__((__format__(__printf__, 2, 3)));
 int         mutt_str_coll(const char *a, const char *b);
 void        mutt_str_dequote_comment(char *str);
 const char *mutt_str_find_word(const char *src);
