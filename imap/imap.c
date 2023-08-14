@@ -1545,8 +1545,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
       /* if the message has been rethreaded or attachments have been deleted
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
-      /* TODO: why the e->env check? */
-      if ((e->env && e->env->changed) || e->attach_del)
+      if (e->env->changed || e->attach_del)
       {
         /* L10N: The plural is chosen by the last %d, i.e. the total number */
         if (m->verbose)
@@ -1559,9 +1558,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
         m->append = true;
         mutt_save_message_mbox(m, e, SAVE_MOVE, TRANSFORM_NONE, m);
         m->append = save_append;
-        /* TODO: why the check for e->env?  Is this possible? */
-        if (e->env)
-          e->env->changed = 0;
+        e->env->changed = false;
       }
     }
   }

@@ -449,14 +449,11 @@ static int mh_sync_message(struct Mailbox *m, struct Email *e)
   if (!m || !e)
     return -1;
 
-  /* TODO: why the e->env check? */
-  if (e->attach_del || (e->env && e->env->changed))
+  if (e->attach_del || e->env->changed)
   {
     if (mh_rewrite_message(m, e) != 0)
       return -1;
-    /* TODO: why the env check? */
-    if (e->env)
-      e->env->changed = 0;
+    e->env->changed = false;
   }
 
   return 0;
