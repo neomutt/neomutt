@@ -56,9 +56,6 @@
 #include "protos.h"
 #include "sequence.h"
 #include "shared.h"
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #else
@@ -958,17 +955,8 @@ static enum MxStatus mh_check(struct Mailbox *m)
    * In practice, this sometimes leads to all the new messages not being
    * noticed during the SAME group of mtime stat updates.  To work around
    * the problem, don't update the stat times for a monitor caused check. */
-#ifdef USE_INOTIFY
-  if (MonitorCurMboxChanged)
-  {
-    MonitorCurMboxChanged = false;
-  }
-  else
-#endif
-  {
-    mutt_file_get_stat_timespec(&mdata->mtime_seq, &st_cur, MUTT_STAT_MTIME);
-    mutt_file_get_stat_timespec(&mdata->mtime, &st, MUTT_STAT_MTIME);
-  }
+  mutt_file_get_stat_timespec(&mdata->mtime_seq, &st_cur, MUTT_STAT_MTIME);
+  mutt_file_get_stat_timespec(&mdata->mtime, &st, MUTT_STAT_MTIME);
 
   struct MhEmailArray mha = ARRAY_HEAD_INITIALIZER;
 

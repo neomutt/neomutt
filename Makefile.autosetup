@@ -72,9 +72,6 @@ NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
 NEOMUTTOBJS+=	main.o
 @endif
 
-@if USE_INOTIFY
-NEOMUTTOBJS+=	monitor.o
-@endif
 @if !HAVE_TIMEGM
 NEOMUTTOBJS+=	timegm.o
 @endif
