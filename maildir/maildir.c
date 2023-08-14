@@ -420,15 +420,12 @@ static int maildir_sync_message(struct Mailbox *m, struct Email *e)
   char suffix[16] = { 0 };
   int rc = 0;
 
-  /* TODO: why the e->env check? */
-  if (e->attach_del || (e->env && e->env->changed))
+  if (e->attach_del || e->env->changed)
   {
     /* when doing attachment deletion/rethreading, fall back to the MH case. */
     if (maildir_rewrite_message(m, e) != 0)
       return -1;
-    /* TODO: why the env check? */
-    if (e->env)
-      e->env->changed = 0;
+    e->env->changed = false;
   }
   else
   {
