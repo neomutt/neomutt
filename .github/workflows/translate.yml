@@ -61,7 +61,7 @@ jobs:
         scripts/commit.sh neomutt website translate.html
 
     - name: Push to Website
-      uses: ad-m/github-push-action@v0.6.0
+      uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.TRANSLATE_DEPLOY_KEY }}
         branch: main
