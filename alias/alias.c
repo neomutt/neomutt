@@ -180,23 +180,22 @@ static void expand_aliases_r(struct AddressList *al, struct ListHead *expn)
 
 /**
  * recode_buf - Convert some text between two character sets
- * @param buf    Buffer to convert
- * @param buflen Length of buffer
+ * @param buf Buffer to convert
  *
  * The 'from' charset is controlled by the 'charset'        config variable.
  * The 'to'   charset is controlled by the 'config_charset' config variable.
  */
-static void recode_buf(char *buf, size_t buflen)
+static void recode_buf(struct Buffer *buf)
 {
   const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
   if (!c_config_charset || !cc_charset())
     return;
 
-  char *s = mutt_str_dup(buf);
+  char *s = buf_strdup(buf);
   if (!s)
     return;
   if (mutt_ch_convert_string(&s, cc_charset(), c_config_charset, MUTT_ICONV_NO_FLAGS) == 0)
-    mutt_str_copy(buf, s, buflen);
+    buf_strcpy(buf, s);
   FREE(&s);
 }
 
@@ -537,12 +536,12 @@ retry_name:
   else
     buf_strcpy(buf, alias->name);
 
-  recode_buf(buf->data, buf->dsize);
+  recode_buf(buf);
   fprintf(fp_alias, "alias %s ", buf_string(buf));
   buf_reset(buf);
 
   mutt_addrlist_write(&alias->addr, buf, false);
-  recode_buf(buf->data, buf->dsize);
+  recode_buf(buf);
   write_safe_address(fp_alias, buf_string(buf));
   if (alias->comment)
     fprintf(fp_alias, " # %s", alias->comment);
