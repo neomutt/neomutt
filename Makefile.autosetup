@@ -73,9 +73,6 @@ NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
 		recvcmd.o rfc3676.o score.o sort.o status.o subjectrx.o \
 		system.o version.o
 
-@if USE_INOTIFY
-NEOMUTTOBJS+=	monitor.o
-@endif
 @if USE_LUA
 NEOMUTTOBJS+=	mutt_lua.o
 @endif
