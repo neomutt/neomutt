@@ -3020,14 +3020,11 @@ int index_function_dispatcher(struct MuttWindow *win, int op)
     return FR_ERROR;
   }
 
-  struct IndexPrivateData *priv = win->parent->wdata;
-  if (!priv)
-    return FR_ERROR;
-
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg || !dlg->wdata)
+  if (!dlg || !dlg->wdata || !win->parent || !win->parent->wdata)
     return FR_ERROR;
 
+  struct IndexPrivateData *priv = win->parent->wdata;
   struct IndexSharedData *shared = dlg->wdata;
 
   int rc = FR_UNKNOWN;
