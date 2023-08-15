@@ -39,8 +39,10 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <utime.h>
+#include <wchar.h>
 #include "file.h"
 #include "buffer.h"
+#include "charset.h"
 #include "date.h"
 #include "logging2.h"
 #include "memory.h"
@@ -55,7 +57,7 @@
 /// These characters must be escaped in regular expressions
 static const char RxSpecialChars[] = "^.[$()|*+?{\\";
 
-/// Set of characters that are safe to use in filenames
+/// Set of characters <=0x7F that are safe to use in filenames
 const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
 #define MAX_LOCK_ATTEMPTS 5
@@ -667,10 +669,33 @@ void mutt_file_sanitize_filename(char *path, bool slash)
   if (!path)
     return;
 
-  for (; *path; path++)
+  size_t size = strlen(path);
+
+  wchar_t c;
+  mbstate_t mbstate = { 0 };
+  for (size_t consumed; size && (consumed = mbrtowc(&c, path, size, &mbstate));
+       size -= consumed, path += consumed)
   {
-    if ((slash && (*path == '/')) || !strchr(FilenameSafeChars, *path))
-      *path = '_';
+    switch (consumed)
+    {
+      case ICONV_ILLEGAL_SEQ:
+        mbstate = (mbstate_t){ 0 };
+        consumed = 1;
+        memset(path, '_', consumed);
+        break;
+
+      case ICONV_BUF_TOO_SMALL:
+        consumed = size;
+        memset(path, '_', consumed);
+        break;
+
+      default:
+        if ((slash && (c == L'/')) || ((c <= 0x7F) && !strchr(FilenameSafeChars, c)))
+        {
+          memset(path, '_', consumed);
+        }
+        break;
+    }
   }
 }
 
