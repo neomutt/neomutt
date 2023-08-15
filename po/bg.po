@@ -2230,13 +2230,13 @@ msgstr[1] "Писмото не е отпечатано"
 #: external.c:499
 #, fuzzy
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Обратно подреждане по: дата на изпращане(d)/от(f)/дата на получаване(r)/тема(s)/получател(o)/нишка(t)/без подреждане(u)/размер(z)/важност(c)?"
+msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 #, fuzzy
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Подреждане по: дата на изпращане(d)/от(f)/дата на получаване(r)/тема(s)/получател(o)/нишка(t)/без подреждане(u)/размер(z)/важност(c)?"
+msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

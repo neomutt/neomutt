@@ -2221,13 +2221,13 @@ msgstr[1] "Meddelanden kunde inte skrivas ut"
 #: external.c:499
 #, fuzzy
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Omvänt (d)atum/(f)rån/(m)ot./är(e)./(t)ill/t(r)åd/(o)sor./(s)tor./(p)oäng/sp(a)m?"
+msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 #, fuzzy
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Sortera (d)atum/(f)rån/(m)ot./är(e)./(t)ill/t(r)åd/(o)sor./(s)tor./(p)oäng/sp(a)m?"
+msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

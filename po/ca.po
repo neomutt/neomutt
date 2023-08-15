@@ -2282,12 +2282,12 @@ msgstr[1] "No s’ha pogut imprimir el missatge"
 #. L10N: The highlighted letters must match the "Sort" options
 #: external.c:499
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Descendent per (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts/sp(a)m/(e)tiqueta?"
+msgstr "Descendent per (d)ata,(o)rig,(r)ebut,(t)ema,de(s)t,(f)il,(c)ap,(m)ida,(p)unts,sp(a)m,(e)tiqueta?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Ascendent per (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts/sp(a)m/(e)tiqueta?"
+msgstr "Ascendent per (d)ata,(o)rig,(r)ebut,(t)ema,de(s)t,(f)il,(c)ap,(m)ida,(p)unts,sp(a)m,(e)tiqueta?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

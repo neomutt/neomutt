@@ -2214,13 +2214,13 @@ msgstr[0] "메일을 프린트 할 수 없음"
 #: external.c:499
 #, fuzzy
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "역순정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?"
+msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 #, fuzzy
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?"
+msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

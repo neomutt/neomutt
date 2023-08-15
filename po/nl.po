@@ -2209,12 +2209,12 @@ msgstr[1] "Berichten konden niet worden afgedrukt"
 #. L10N: The highlighted letters must match the "Sort" options
 #: external.c:499
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Omgekeerd op (d)atum/(v)an/o(n)tv/(o)ndw/(a)an/(t)hread/n(i)et/(g)rt/(s)core/s(p)am/(l)abel?"
+msgstr "Omgekeerd op (d)atum,(v)an,o(n)tv,(o)ndw,(a)an,(t)hread,n(i)et,(g)rt,(s)core,s(p)am,(l)abel?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Sorteren op (d)atum/(v)an/o(n)tv/(o)ndw/(a)an/(t)hread/n(i)et/(g)rt/(s)core/s(p)am/(l)abel?"
+msgstr "Sorteren op (d)atum,(v)an,o(n)tv,(o)ndw,(a)an,(t)hread,n(i)et,(g)rt,(s)core,s(p)am,(l)abel?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

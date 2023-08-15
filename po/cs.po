@@ -2183,12 +2183,12 @@ msgstr[2] "Zprávy nelze vytisknout"
 #. L10N: The highlighted letters must match the "Sort" options
 #: external.c:499
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Řadit opačně (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/sp(a)m/štít(e)k?"
+msgstr "Řadit opačně (d)at,(o)d,pří(j),(v)ěc,(p)ro,v(l)ákno,(n)eseř,veli(k),(s)kóre,sp(a)m,štít(e)k?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Řadit (d)at/(o)d/pří(j)/(v)ěc/(p)ro/v(l)ákno/(n)eseř/veli(k)/(s)kóre/sp(a)m/štít(e)k?"
+msgstr "Řadit (d)at,(o)d,pří(j),(v)ěc,(p)ro,v(l)ákno,(n)eseř,veli(k),(s)kóre,sp(a)m,štít(e)k?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

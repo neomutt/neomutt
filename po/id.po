@@ -2203,13 +2203,13 @@ msgstr[0] "Surat tidak dapat dicetak"
 #: external.c:499
 #, fuzzy
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Urut terbalik tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/n(i)lai/s(p)am?"
+msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 #, fuzzy
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Urut tan(g)gal/d(a)ri/t(e)rima/(s)ubj/(k)e/(t)hread/(n)ggak urut/(u)kuran/n(i)lai/s(p)am?"
+msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

@@ -2222,13 +2222,13 @@ msgstr[1] "Ezin dira mezuak inprimatu"
 #: external.c:499
 #, fuzzy
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Alderantziz-Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/(t)amaina/(p)untuak/(z)abor-posta?"
+msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 #, fuzzy
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Ordenatu (d)ata/(j)at/ja(s)/(g)aia/(n)ori/(h)aria/(e)z-ordenatu/(t)amaina/(p)untuak/(z)abor-posta?  "
+msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503

@@ -2157,12 +2157,12 @@ msgstr[1] "Meldingene kunne ikke skrives ut"
 #. L10N: The highlighted letters must match the "Sort" options
 #: external.c:499
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Omv-sort. (d)ato/(f)ra/(m)odt./(e)mne/ti(l)/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am/(e)tikett?"
+msgstr "Omv-sort. (d)ato,(f)ra,(m)odt.,(e)mne,ti(l),(t)råd,(u)sort,(s)tr.,s(c)ore,s(p)am,(e)tikett?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: external.c:501
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
-msgstr "Sort. (d)ato/(f)ra/(m)odt./(e)mne/ti(l)/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am/(e)tikett?"
+msgstr "Sort. (d)ato,(f)ra,(m)odt.,(e)mne,ti(l),(t)råd,(u)sort,(s)tr.,s(c)ore,s(p)am,(e)tikett?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: external.c:503
