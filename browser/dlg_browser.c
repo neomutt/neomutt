@@ -1080,7 +1080,8 @@ static int browser_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
 
-  struct Menu *menu = nc->global_data;
+  struct BrowserPrivateData *priv = nc->global_data;
+  struct Menu *menu = priv->menu;
 
   if (mutt_str_equal(ev_c->name, "browser_sort_dirs_first"))
   {
@@ -1121,15 +1122,15 @@ static int browser_window_observer(struct NotifyCallback *nc)
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
 
-  struct MuttWindow *win_menu = nc->global_data;
+  struct BrowserPrivateData *priv = nc->global_data;
+  struct MuttWindow *win_menu = priv->menu->win;
+
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != win_menu)
     return 0;
 
-  struct Menu *menu = win_menu->wdata;
-
-  notify_observer_remove(NeoMutt->sub->notify, browser_config_observer, menu);
-  notify_observer_remove(win_menu->notify, browser_window_observer, win_menu);
+  notify_observer_remove(NeoMutt->sub->notify, browser_config_observer, priv);
+  notify_observer_remove(win_menu->notify, browser_window_observer, priv);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
@@ -1385,8 +1386,8 @@ void dlg_select_file(struct Buffer *file, SelectFileFlags flags,
   struct MuttWindow *win_menu = priv->menu->win;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, browser_config_observer, priv->menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, browser_window_observer, win_menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, browser_config_observer, priv);
+  notify_observer_add(win_menu->notify, NT_WINDOW, browser_window_observer, priv);
 
   if (priv->state.is_mailbox_list)
   {
