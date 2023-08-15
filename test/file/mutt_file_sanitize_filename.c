@@ -24,8 +24,10 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
+#include <locale.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_file_sanitize_filename(void)
 {
@@ -34,5 +36,19 @@ void test_mutt_file_sanitize_filename(void)
   {
     mutt_file_sanitize_filename(NULL, false);
     TEST_CHECK_(1, "mutt_file_sanitize_filename(NULL, false)");
+  }
+
+  {
+    setlocale(LC_CTYPE, "C.UTF-8");
+    char buf[] = "żupan/tłusty";
+    mutt_file_sanitize_filename(buf, false);
+    TEST_CHECK_STR_EQ(buf, "żupan/tłusty");
+  }
+
+  {
+    setlocale(LC_CTYPE, "C.UTF-8");
+    char buf[] = "żupan/t\xC5\xC5ust\xC5";
+    mutt_file_sanitize_filename(buf, false);
+    TEST_CHECK_STR_EQ(buf, "żupan/t__ust_");
   }
 }
