@@ -191,6 +191,7 @@ bool link_is_dir(const char *folder, const char *path)
  *
  * | Expando | Description
  * | :------ | :-------------------------------------------------------
+ * | \%a     | Alert: 1 if user is notified of new mail
  * | \%C     | Current file number
  * | \%d     | Date/time folder was last modified
  * | \%D     | Date/time folder was last modified using `$date_format.`
@@ -202,6 +203,7 @@ bool link_is_dir(const char *folder, const char *path)
  * | \%m     | Number of messages in the mailbox
  * | \%N     | "N" if mailbox has new mail, " " (space) otherwise
  * | \%n     | Number of unread messages in the mailbox
+ * | \%p     | Poll: 1 if Mailbox is checked for new mail
  * | \%s     | Size in bytes
  * | \%t     | `*` if the file is tagged, blank otherwise
  * | \%u     | Owner name (or numeric uid, if missing)
@@ -219,6 +221,19 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
   switch (op)
   {
+    case 'a':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->notify_user);
+      }
+      else
+      {
+        if (folder->ff->notify_user == 0)
+          optional = false;
+      }
+      break;
+
     case 'C':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, folder->num + 1);
@@ -476,6 +491,19 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       break;
 
+    case 'p':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->poll_new_mail);
+      }
+      else
+      {
+        if (folder->ff->poll_new_mail == 0)
+          optional = false;
+      }
+      break;
+
     case 's':
       if (folder->ff->local)
       {
@@ -578,6 +606,8 @@ void browser_add_folder(const struct Menu *menu, struct BrowserState *state,
     ff.has_new_mail = m->has_new;
     ff.msg_count = m->msg_count;
     ff.msg_unread = m->msg_unread;
+    ff.notify_user = m->notify_user;
+    ff.poll_new_mail = m->poll_new_mail;
   }
 
   ff.name = mutt_str_dup(name);
@@ -1136,6 +1166,8 @@ static int browser_mailbox_observer(struct NotifyCallback *nc)
       ff->has_new_mail = m->has_new;
       ff->msg_count = m->msg_count;
       ff->msg_unread = m->msg_unread;
+      ff->notify_user = m->notify_user;
+      ff->poll_new_mail = m->poll_new_mail;
       mutt_str_replace(&ff->desc, m->name);
       break;
     }
