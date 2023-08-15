@@ -121,6 +121,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_pool_release)                                     \
   NEOMUTT_TEST_ITEM(test_buf_printf)                                           \
   NEOMUTT_TEST_ITEM(test_buf_reset)                                            \
+  NEOMUTT_TEST_ITEM(test_buf_startswith)                                       \
   NEOMUTT_TEST_ITEM(test_buf_strcpy)                                           \
   NEOMUTT_TEST_ITEM(test_buf_strcpy_n)                                         \
   NEOMUTT_TEST_ITEM(test_buf_strdup)                                           \

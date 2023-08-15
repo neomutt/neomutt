@@ -355,7 +355,7 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
   {
     // Extra sanity-checking
     if (!buf->dptr || (buf->dptr < buf->data) || (buf->dptr > (buf->data + buf->dsize)))
-      buf->dptr = buf->data;
+      buf->dptr = buf->data; // LCOV_EXCL_LINE
     return;
   }
 

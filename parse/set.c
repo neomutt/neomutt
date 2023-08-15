@@ -533,7 +533,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       }
       else
       {
-        buf_printf(err, _("'+' and '-' must be followed by '='"), set_commands[data]);
+        buf_printf(err, _("'+' and '-' must be followed by '='"));
         return MUTT_CMD_WARNING;
       }
     }
