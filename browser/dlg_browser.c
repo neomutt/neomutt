@@ -1107,6 +1107,47 @@ static int browser_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * browser_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * Find the matching Mailbox and update its details.
+ */
+static int browser_mailbox_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+  if (nc->event_subtype == NT_MAILBOX_DELETE)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct BrowserPrivateData *priv = nc->global_data;
+
+  struct BrowserState *state = &priv->state;
+  if (state->is_mailbox_list)
+  {
+    struct EventMailbox *ev_m = nc->event_data;
+    struct Mailbox *m = ev_m->mailbox;
+    struct FolderFile *ff = NULL;
+    ARRAY_FOREACH(ff, &state->entry)
+    {
+      if (ff->gen != m->gen)
+        continue;
+
+      ff->has_new_mail = m->has_new;
+      ff->msg_count = m->msg_count;
+      ff->msg_unread = m->msg_unread;
+      mutt_str_replace(&ff->desc, m->name);
+      break;
+    }
+  }
+
+  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC, MENU_REDRAW_FULL\n");
+
+  return 0;
+}
+
+/**
  * browser_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
@@ -1131,6 +1172,7 @@ static int browser_window_observer(struct NotifyCallback *nc)
 
   notify_observer_remove(NeoMutt->sub->notify, browser_config_observer, priv);
   notify_observer_remove(win_menu->notify, browser_window_observer, priv);
+  notify_observer_remove(NeoMutt->notify, browser_mailbox_observer, priv);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
@@ -1388,6 +1430,7 @@ void dlg_select_file(struct Buffer *file, SelectFileFlags flags,
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, browser_config_observer, priv);
   notify_observer_add(win_menu->notify, NT_WINDOW, browser_window_observer, priv);
+  notify_observer_add(NeoMutt->notify, NT_MAILBOX, browser_mailbox_observer, priv);
 
   if (priv->state.is_mailbox_list)
   {
