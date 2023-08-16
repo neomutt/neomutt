@@ -1293,7 +1293,7 @@ static void do_unmailboxes(struct Mailbox *m)
 static void do_unmailboxes_star(void)
 {
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+  neomutt_mailboxlist_get_all(&ml, &NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   struct MailboxNode *nptmp = NULL;
   STAILQ_FOREACH_SAFE(np, &ml, entries, nptmp)

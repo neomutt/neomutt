@@ -692,7 +692,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
     init_state(state, menu);
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+    neomutt_mailboxlist_get_all(&ml, &NeoMutt, MUTT_MAILBOX_ANY);
 
     const struct Regex *c_mask = cs_subset_regex(NeoMutt.sub, "mask");
     while ((de = readdir(dir)))
@@ -788,7 +788,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
     mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+    neomutt_mailboxlist_get_all(&ml, &NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
     const bool c_browser_abbreviate_mailboxes = cs_subset_bool(NeoMutt.sub, "browser_abbreviate_mailboxes");
 

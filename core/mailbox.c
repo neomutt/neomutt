@@ -150,7 +150,7 @@ struct Mailbox *mailbox_find(const char *path)
     return NULL;
 
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+  neomutt_mailboxlist_get_all(&ml, &NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   struct Mailbox *m = NULL;
   STAILQ_FOREACH(np, &ml, entries)
@@ -181,7 +181,7 @@ struct Mailbox *mailbox_find_name(const char *name)
     return NULL;
 
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+  neomutt_mailboxlist_get_all(&ml, &NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
   struct Mailbox *m = NULL;
   STAILQ_FOREACH(np, &ml, entries)

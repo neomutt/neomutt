@@ -904,12 +904,12 @@ void dump_graphviz(const char *title, struct MailboxView *mv)
   dot_graph_header(fp);
 
 #ifndef GV_HIDE_NEOMUTT
-  dot_node(fp, NeoMutt, "NeoMutt", "#ffa500");
-  dot_add_link(&links, NeoMutt, TAILQ_FIRST(&NeoMutt.accounts),
+  dot_node(fp, &NeoMutt, "NeoMutt", "#ffa500");
+  dot_add_link(&links, &NeoMutt, TAILQ_FIRST(&NeoMutt.accounts),
                "NeoMutt.accounts", false, NULL);
 #ifndef GV_HIDE_CONFIG
   dot_config(fp, (const char *) NeoMutt.sub, 0, NeoMutt.sub, &links);
-  dot_add_link(&links, NeoMutt, NeoMutt.sub, "NeoMutt Config", false, NULL);
+  dot_add_link(&links, &NeoMutt, NeoMutt.sub, "NeoMutt Config", false, NULL);
   struct Buffer buf = buf_make(256);
   char obj1[64] = { 0 };
   char obj2[64] = { 0 };

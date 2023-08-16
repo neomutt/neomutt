@@ -747,7 +747,7 @@ int sb_recalc(struct MuttWindow *win)
   if (ARRAY_EMPTY(&wdata->entries))
   {
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+    neomutt_mailboxlist_get_all(&ml, &NeoMutt, MUTT_MAILBOX_ANY);
     struct MailboxNode *np = NULL;
     STAILQ_FOREACH(np, &ml, entries)
     {
