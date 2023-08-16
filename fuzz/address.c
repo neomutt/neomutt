@@ -13,7 +13,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
   MuttLogger = log_disp_null;
   struct ConfigSet *cs = cs_new(16);
-  NeoMutt = neomutt_new(cs);
+  neomutt_init(&NeoMutt, cs);
   init_config(cs);
   OptNoCurses = true;
   char file[] = "/tmp/mutt-fuzz";

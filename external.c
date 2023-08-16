@@ -659,7 +659,7 @@ void mutt_enter_command(void)
       mutt_warning("%s", buf_string(err));
   }
 
-  if (NeoMutt)
+  if (NeoMutt.initialised)
   {
     // Running commands could cause anything to change, so let others know
     notify_send(NeoMutt.notify, NT_GLOBAL, NT_GLOBAL_COMMAND, NULL);

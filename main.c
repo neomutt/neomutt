@@ -669,7 +669,7 @@ main
   if (!cs)
     goto main_curses;
 
-  NeoMutt = neomutt_new(cs);
+  neomutt_init(&NeoMutt, cs);
   init_config(cs);
   subjrx_init();
   attach_init();
@@ -1391,7 +1391,7 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
-  if (NeoMutt && NeoMutt.sub)
+  if (NeoMutt.sub)
   {
     notify_observer_remove(NeoMutt.sub->notify, main_hist_observer, NULL);
     notify_observer_remove(NeoMutt.sub->notify, main_log_observer, NULL);

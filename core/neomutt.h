@@ -38,9 +38,10 @@ struct NeoMutt
   struct Notify *notify;       ///< Notifications handler
   struct ConfigSubset *sub;    ///< Inherited config items
   struct AccountList accounts; ///< List of all Accounts
+  bool initialised;            ///< Ready to use
 };
 
-extern struct NeoMutt *NeoMutt;
+extern struct NeoMutt NeoMutt;
 
 /**
  * enum NotifyGlobal - Events not associated with an object
@@ -55,10 +56,10 @@ enum NotifyGlobal
   NT_GLOBAL_COMMAND,     ///< A NeoMutt command
 };
 
-bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);
-bool            neomutt_account_remove(struct NeoMutt *n, const struct Account *a);
-void            neomutt_free          (struct NeoMutt **ptr);
-struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
+bool neomutt_account_add   (struct NeoMutt *n, struct Account *a);
+bool neomutt_account_remove(struct NeoMutt *n, const struct Account *a);
+void neomutt_free          (struct NeoMutt *ptr);
+void neomutt_init          (struct NeoMutt *n, struct ConfigSet *cs);
 
 void   neomutt_mailboxlist_clear  (struct MailboxList *ml);
 size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n, enum MailboxType type);

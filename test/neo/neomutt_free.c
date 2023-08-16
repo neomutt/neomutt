@@ -37,13 +37,7 @@ void test_neomutt_free(void)
   }
 
   {
-    struct NeoMutt *n = NULL;
-    neomutt_free(&n);
-    TEST_CHECK_(1, "neomutt_free(&n)");
-  }
-
-  {
-    struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*n));
+    struct NeoMutt n = { 0 };
     neomutt_free(&n);
     TEST_CHECK_(1, "neomutt_free(&n)");
   }

@@ -34,45 +34,41 @@
 #include "account.h"
 #include "mailbox.h"
 
-struct NeoMutt *NeoMutt = NULL; ///< Global NeoMutt object
+struct NeoMutt NeoMutt; ///< Global NeoMutt object
 
 /**
  * neomutt_new - Create the main NeoMutt object
  * @param cs Config Set
  * @retval ptr New NeoMutt
  */
-struct NeoMutt *neomutt_new(struct ConfigSet *cs)
+void neomutt_init(struct NeoMutt *n, struct ConfigSet *cs)
 {
+  memset(n, 0, sizeof(*n));
   if (!cs)
-    return NULL;
-
-  struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
+    return;
 
   TAILQ_INIT(&n->accounts);
   n->notify = notify_new();
   n->sub = cs_subset_new(NULL, NULL, n->notify);
   n->sub->cs = cs;
   n->sub->scope = SET_SCOPE_NEOMUTT;
-
-  return n;
+  n->initialised = true;
 }
 
 /**
  * neomutt_free - Free a NeoMutt
  * @param[out] ptr NeoMutt to free
  */
-void neomutt_free(struct NeoMutt **ptr)
+void neomutt_free(struct NeoMutt *n)
 {
-  if (!ptr || !*ptr)
+  if (!n || !n->initialised)
     return;
-
-  struct NeoMutt *n = *ptr;
 
   neomutt_account_remove(n, NULL);
   cs_subset_free(&n->sub);
   notify_free(&n->notify);
 
-  FREE(ptr);
+  memset(n, 0, sizeof(*n));
 }
 
 /**

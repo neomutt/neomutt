@@ -439,7 +439,7 @@ int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **ma
  */
 void mutt_hist_cleanup(void)
 {
-  if (!NeoMutt)
+  if (!NeoMutt.initialised)
     return;
 
   const short c_history = cs_subset_number(NeoMutt.sub, "history");

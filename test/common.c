@@ -96,14 +96,14 @@ bool test_neomutt_create(void)
   CONFIG_INIT_TYPE(cs, Sort);
   CONFIG_INIT_TYPE(cs, String);
 
-  NeoMutt = neomutt_new(cs);
-  TEST_CHECK(NeoMutt != NULL);
+  neomutt_init(&NeoMutt, cs);
+  TEST_CHECK(NeoMutt.initialised);
 
   TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS));
 
-  init_tmp_dir(NeoMutt);
+  init_tmp_dir(&NeoMutt);
 
-  return NeoMutt;
+  return NeoMutt.notify;
 }
 
 void test_neomutt_destroy(void)

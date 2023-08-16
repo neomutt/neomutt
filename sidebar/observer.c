@@ -424,7 +424,7 @@ static int sb_window_observer(struct NotifyCallback *nc)
  */
 void sb_win_add_observers(struct MuttWindow *win)
 {
-  if (!win || !NeoMutt)
+  if (!win || !NeoMutt.initialised)
     return;
 
   struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
@@ -444,7 +444,7 @@ void sb_win_add_observers(struct MuttWindow *win)
  */
 void sb_win_remove_observers(struct MuttWindow *win)
 {
-  if (!win || !NeoMutt)
+  if (!win || !NeoMutt.initialised)
     return;
 
   struct MuttWindow *dlg = window_find_parent(win, WT_DLG_INDEX);
