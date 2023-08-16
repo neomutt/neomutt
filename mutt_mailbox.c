@@ -201,18 +201,20 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
   struct MailboxNode *np = NULL;
   STAILQ_FOREACH(np, &ml, entries)
   {
-    if (!np->mailbox->visible)
+    struct Mailbox *m = np->mailbox;
+
+    if (!m->visible)
       continue;
 
     CheckStatsFlags m_flags = flags;
-    if (!np->mailbox->first_check_stats_done && c_mail_check_stats)
+    if (!m->first_check_stats_done && c_mail_check_stats)
     {
       m_flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
     }
-    mailbox_check(m_cur, np->mailbox, &st_cur, m_flags);
-    if (np->mailbox->has_new)
+    mailbox_check(m_cur, m, &st_cur, m_flags);
+    if (m->has_new)
       MailboxCount++;
-    np->mailbox->first_check_stats_done = true;
+    m->first_check_stats_done = true;
   }
   neomutt_mailboxlist_clear(&ml);
 
