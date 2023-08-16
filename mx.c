@@ -292,7 +292,7 @@ bool mx_mbox_ac_link(struct Mailbox *m)
   }
   if (new_account)
   {
-    neomutt_account_add(NeoMutt, a);
+    neomutt_account_add(&NeoMutt, a);
   }
   return true;
 }
@@ -1811,7 +1811,7 @@ int mx_ac_remove(struct Mailbox *m, bool keep_account)
   account_mailbox_remove(m->account, m);
   if (!keep_account && STAILQ_EMPTY(&a->mailboxes))
   {
-    neomutt_account_remove(NeoMutt, a);
+    neomutt_account_remove(&NeoMutt, a);
   }
   return 0;
 }

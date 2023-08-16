@@ -677,7 +677,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     }
     if (new_account)
     {
-      neomutt_account_add(NeoMutt, a);
+      neomutt_account_add(&NeoMutt, a);
     }
 
     // this is finally a visible mailbox in the sidebar and mailboxes list
