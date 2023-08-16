@@ -40,7 +40,7 @@ void test_neomutt_new(void)
   // struct NeoMutt *neomutt_new(struct ConfigSet *cs);
 
   {
-    struct NeoMutt n;
+    struct NeoMutt n = { 0 };
     neomutt_init(&n, NULL);
     struct NeoMutt clear = { 0 };
     TEST_CHECK(!memcmp(&n, &clear, sizeof(n)));
@@ -51,12 +51,12 @@ void test_neomutt_new(void)
     cs_register_type(cs, &CstNumber);
     TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS));
 
-    struct NeoMutt n;
+    struct NeoMutt n = { 0 };
     neomutt_init(&n, cs);
     TEST_CHECK(n.initialised);
     TEST_CHECK(n.sub != NULL);
 
-    neomutt_free(&n);
+    neomutt_clear(&n);
     cs_free(&cs);
   }
 }

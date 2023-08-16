@@ -54,7 +54,7 @@ void test_config_subset(void)
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
 
-  struct NeoMutt n;
+  struct NeoMutt n = { 0 };
   neomutt_init(&n, cs);
 
   cs_subset_free(NULL);
@@ -315,7 +315,7 @@ void test_config_subset(void)
   cs_subset_free(&sub_m);
   cs_subset_free(&sub_a);
 
-  neomutt_free(&n);
+  neomutt_clear(&n);
   cs_free(&cs);
   buf_pool_release(&err);
   log_line(__func__);

@@ -1419,7 +1419,7 @@ main_exit:
   mutt_keys_cleanup();
   mutt_prex_cleanup();
   config_cache_cleanup();
-  neomutt_free(&NeoMutt);
+  neomutt_clear(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);
   log_queue_empty();

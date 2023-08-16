@@ -33,7 +33,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
   email_free(&e);
   mutt_env_free(&env);
   fclose(fp);
-  neomutt_free(&NeoMutt);
+  neomutt_clear(&NeoMutt);
   cs_free(&cs);
   return 0;
 }

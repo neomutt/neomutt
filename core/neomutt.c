@@ -56,10 +56,10 @@ void neomutt_init(struct NeoMutt *n, struct ConfigSet *cs)
 }
 
 /**
- * neomutt_free - Free a NeoMutt
- * @param[out] ptr NeoMutt to free
+ * neomutt_clear - Free a NeoMutt's contents
+ * @param[out] ptr NeoMutt to clear
  */
-void neomutt_free(struct NeoMutt *n)
+void neomutt_clear(struct NeoMutt *n)
 {
   if (!n || !n->initialised)
     return;

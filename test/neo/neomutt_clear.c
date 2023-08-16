@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for neomutt_free()
+ * Test code for neomutt_clear()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -27,18 +27,18 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 
-void test_neomutt_free(void)
+void test_neomutt_clear(void)
 {
-  // void neomutt_free(struct NeoMutt **ptr);
+  // void neomutt_clear(struct NeoMutt *n);
 
   {
-    neomutt_free(NULL);
-    TEST_CHECK_(1, "neomutt_free(NULL)");
+    neomutt_clear(NULL);
+    TEST_CHECK_(1, "neomutt_clear(NULL)");
   }
 
   {
     struct NeoMutt n = { 0 };
-    neomutt_free(&n);
-    TEST_CHECK_(1, "neomutt_free(&n)");
+    neomutt_clear(&n);
+    TEST_CHECK_(1, "neomutt_clear(&n)");
   }
 }

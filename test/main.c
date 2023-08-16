@@ -438,7 +438,7 @@ void test_fini(void);
   /* neomutt */                                                                \
   NEOMUTT_TEST_ITEM(test_neomutt_account_add)                                  \
   NEOMUTT_TEST_ITEM(test_neomutt_account_remove)                               \
-  NEOMUTT_TEST_ITEM(test_neomutt_free)                                         \
+  NEOMUTT_TEST_ITEM(test_neomutt_clear)                                        \
   NEOMUTT_TEST_ITEM(test_neomutt_mailboxlist_clear)                            \
   NEOMUTT_TEST_ITEM(test_neomutt_mailboxlist_get_all)                          \
   NEOMUTT_TEST_ITEM(test_neomutt_new)                                          \
