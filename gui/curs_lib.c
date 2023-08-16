@@ -366,6 +366,7 @@ void mutt_endwin(void)
    * doesn't properly flush the screen without an explicit call.  */
   mutt_refresh();
   endwin();
+  SigWinch = true;
 
   errno = e;
 }
