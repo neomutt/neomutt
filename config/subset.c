@@ -49,15 +49,9 @@ static const struct Mapping ConfigEventNames[] = {
 };
 
 /**
- * elem_list_sort - Sort two HashElem pointers to config - Implements ::sort_t - @ingroup sort_api
- * @param a First HashElem
- * @param b Second HashElem
- * @param arg (not used)
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * elem_list_sort - Compare two HashElem pointers to config - Implements ::sort_t - @ingroup sort_api
  */
-int elem_list_sort(const void *a, const void *b, void *arg)
+int elem_list_sort(const void *a, const void *b, void *sdata)
 {
   if (!a || !b)
     return 0;

@@ -41,11 +41,11 @@
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_name(const void *a, const void *b, void *arg)
+static int alias_sort_name(const void *a, const void *b, void *sdata)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
-  const bool sort_reverse = *(bool *) arg;
+  const bool sort_reverse = *(bool *) sdata;
 
   if (av_a->is_visible != av_b->is_visible)
     return av_a->is_visible ? -1 : 1;
@@ -62,11 +62,11 @@ static int alias_sort_name(const void *a, const void *b, void *arg)
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_address(const void *a, const void *b, void *arg)
+static int alias_sort_address(const void *a, const void *b, void *sdata)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
-  const bool sort_reverse = *(bool *) arg;
+  const bool sort_reverse = *(bool *) sdata;
 
   const struct AddressList *al_a = &av_a->alias->addr;
   const struct AddressList *al_b = &av_b->alias->addr;
@@ -123,11 +123,11 @@ static int alias_sort_address(const void *a, const void *b, void *arg)
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_unsort(const void *a, const void *b, void *arg)
+static int alias_sort_unsort(const void *a, const void *b, void *sdata)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
-  const bool sort_reverse = *(bool *) arg;
+  const bool sort_reverse = *(bool *) sdata;
 
   if (av_a->is_visible != av_b->is_visible)
     return av_a->is_visible ? -1 : 1;

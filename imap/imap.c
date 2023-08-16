@@ -887,14 +887,8 @@ bool imap_has_flag(struct ListHead *flag_list, const char *flag)
 
 /**
  * imap_sort_email_uid - Compare two Emails by UID - Implements ::sort_t - @ingroup sort_api
- * @param a First  email to compare
- * @param b Second email to compare
- * @param arg (not used)
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
  */
-static int imap_sort_email_uid(const void *a, const void *b, void *arg)
+static int imap_sort_email_uid(const void *a, const void *b, void *sdata)
 {
   const struct Email *ea = *(struct Email const *const *) a;
   const struct Email *eb = *(struct Email const *const *) b;

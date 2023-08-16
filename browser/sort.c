@@ -39,7 +39,7 @@
 #include "muttlib.h"
 
 /**
- * struct CompareData - Private data for browser_compare()
+ * struct CompareData - Private data for browser_sort_helper()
  */
 struct CompareData
 {
@@ -49,9 +49,9 @@ struct CompareData
 };
 
 /**
- * browser_sort_subject - Compare the subject of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_subject - Compare two browser entries by their subject - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_subject(const void *a, const void *b, void *arg)
+static int browser_sort_subject(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -65,11 +65,11 @@ static int browser_sort_subject(const void *a, const void *b, void *arg)
 }
 
 /**
- * browser_sort_order - Compare the order of creation of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_order - Compare two browser entries by their order - Implements ::sort_t - @ingroup sort_api
  *
  * @note This only affects browsing mailboxes and is a no-op for folders.
  */
-static int browser_sort_order(const void *a, const void *b, void *arg)
+static int browser_sort_order(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -78,9 +78,9 @@ static int browser_sort_order(const void *a, const void *b, void *arg)
 }
 
 /**
- * browser_sort_desc - Compare the descriptions of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_desc - Compare two browser entries by their descriptions - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_desc(const void *a, const void *b, void *arg)
+static int browser_sort_desc(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -89,9 +89,9 @@ static int browser_sort_desc(const void *a, const void *b, void *arg)
 }
 
 /**
- * browser_sort_date - Compare the date of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_date - Compare two browser entries by their date - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_date(const void *a, const void *b, void *arg)
+static int browser_sort_date(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -100,9 +100,9 @@ static int browser_sort_date(const void *a, const void *b, void *arg)
 }
 
 /**
- * browser_sort_size - Compare the size of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_size - Compare two browser entries by their size - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_size(const void *a, const void *b, void *arg)
+static int browser_sort_size(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -111,9 +111,9 @@ static int browser_sort_size(const void *a, const void *b, void *arg)
 }
 
 /**
- * browser_sort_count - Compare the message count of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_count - Compare two browser entries by their message count - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_count(const void *a, const void *b, void *arg)
+static int browser_sort_count(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -130,9 +130,9 @@ static int browser_sort_count(const void *a, const void *b, void *arg)
 }
 
 /**
- * browser_sort_count_new - Compare the new count of two browser entries - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_count_new - Compare two browser entries by their new count - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_count_new(const void *a, const void *b, void *arg)
+static int browser_sort_count_new(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -149,17 +149,17 @@ static int browser_sort_count_new(const void *a, const void *b, void *arg)
 }
 
 /**
- * browser_compare - Sort the items in the browser - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_helper - Helper to sort the items in the browser - Implements ::sort_t - @ingroup sort_api
  *
  * Wild compare function that calls the others. It's useful because it provides
  * a way to tell "../" is always on the top of the list, independently of the
  * sort method.  $browser_sort_dirs_first is also handled here.
  */
-static int browser_compare(const void *a, const void *b, void *arg)
+static int browser_sort_helper(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
-  const struct CompareData *cd = (struct CompareData *) arg;
+  const struct CompareData *cd = (struct CompareData *) sdata;
 
   if ((mutt_str_coll(pa->desc, "../") == 0) || (mutt_str_coll(pa->desc, "..") == 0))
     return -1;
@@ -179,7 +179,7 @@ static int browser_compare(const void *a, const void *b, void *arg)
  * browser_sort - Sort the entries in the browser
  * @param state Browser state
  *
- * Call to qsort using browser_compare function.
+ * Call to qsort using browser_sort_helper function.
  * Some specific sort methods are not used via NNTP.
  */
 void browser_sort(struct BrowserState *state)
@@ -230,5 +230,5 @@ void browser_sort(struct BrowserState *state)
     .sort_dirs_first = cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"),
   };
 
-  ARRAY_SORT(&state->entry, browser_compare, &cd);
+  ARRAY_SORT(&state->entry, browser_sort_helper, &cd);
 }

@@ -111,91 +111,55 @@ struct CryptEntry
 };
 
 /**
- * crypt_compare_key_address - Compare Key addresses and IDs for sorting - @ingroup sort_api
- * @param a First key
- * @param b Second key
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * crypt_sort_address - Compare two keys by their addresses - Implements ::sort_t - @ingroup sort_api
  */
-static int crypt_compare_key_address(const void *a, const void *b)
+static int crypt_sort_address(const void *a, const void *b, void *sdata)
 {
   struct CryptKeyInfo *s = *(struct CryptKeyInfo **) a;
   struct CryptKeyInfo *t = *(struct CryptKeyInfo **) b;
+  const bool sort_reverse = *(bool *) sdata;
 
   int rc = mutt_istr_cmp(s->uid, t->uid);
   if (rc != 0)
-    return rc;
+    goto done;
 
-  return mutt_istr_cmp(crypt_fpr_or_lkeyid(s), crypt_fpr_or_lkeyid(t));
-}
+  rc = mutt_istr_cmp(crypt_fpr_or_lkeyid(s), crypt_fpr_or_lkeyid(t));
 
-/**
- * crypt_compare_address_qsort - Compare the addresses of two keys - Implements ::sort_t - @ingroup sort_api
- * @param a   First key
- * @param b   Second key
- * @param arg Boolean indicating reverse sort order
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-static int crypt_compare_address_qsort(const void *a, const void *b, void *arg)
-{
-  const bool sort_reverse = *(bool *) arg;
-  int rc = crypt_compare_key_address(a, b);
+done:
   return sort_reverse ? -rc : rc;
 }
 
 /**
- * crypt_compare_keyid - Compare Key IDs and addresses for sorting - @ingroup sort_api
- * @param a First key ID
- * @param b Second key ID
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * crypt_sort_keyid - Compare two keys by their IDs - Implements ::sort_t - @ingroup sort_api
  */
-static int crypt_compare_keyid(const void *a, const void *b)
+static int crypt_sort_keyid(const void *a, const void *b, void *sdata)
 {
   struct CryptKeyInfo *s = *(struct CryptKeyInfo **) a;
   struct CryptKeyInfo *t = *(struct CryptKeyInfo **) b;
+  const bool sort_reverse = *(bool *) sdata;
 
   int rc = mutt_istr_cmp(crypt_fpr_or_lkeyid(s), crypt_fpr_or_lkeyid(t));
   if (rc != 0)
-    return rc;
+    goto done;
 
-  return mutt_istr_cmp(s->uid, t->uid);
-}
+  rc = mutt_istr_cmp(s->uid, t->uid);
 
-/**
- * crypt_compare_keyid_qsort - Compare the IDs of two keys - Implements ::sort_t - @ingroup sort_api
- * @param a   First key ID
- * @param b   Second key ID
- * @param arg Boolean indicating reverse sort order
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-static int crypt_compare_keyid_qsort(const void *a, const void *b, void *arg)
-{
-  const bool sort_reverse = *(bool *) arg;
-  int rc = crypt_compare_keyid(a, b);
+done:
   return sort_reverse ? -rc : rc;
 }
 
 /**
- * crypt_compare_key_date - Compare Key creation dates and addresses for sorting - @ingroup sort_api
- * @param a First key
- * @param b Second key
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * crypt_sort_date - Compare two keys by their dates - Implements ::sort_t - @ingroup sort_api
  */
-static int crypt_compare_key_date(const void *a, const void *b)
+static int crypt_sort_date(const void *a, const void *b, void *sdata)
 {
   struct CryptKeyInfo *s = *(struct CryptKeyInfo **) a;
   struct CryptKeyInfo *t = *(struct CryptKeyInfo **) b;
+  const bool sort_reverse = *(bool *) sdata;
+
   unsigned long ts = 0;
   unsigned long tt = 0;
+  int rc = 0;
 
   if (s->kobj->subkeys && (s->kobj->subkeys->timestamp > 0))
     ts = s->kobj->subkeys->timestamp;
@@ -203,50 +167,38 @@ static int crypt_compare_key_date(const void *a, const void *b)
     tt = t->kobj->subkeys->timestamp;
 
   if (ts > tt)
-    return 1;
+  {
+    rc = 1;
+    goto done;
+  }
+
   if (ts < tt)
-    return -1;
+  {
+    rc = -1;
+    goto done;
+  }
 
-  return mutt_istr_cmp(s->uid, t->uid);
-}
+  rc = mutt_istr_cmp(s->uid, t->uid);
 
-/**
- * crypt_compare_date_qsort - Compare the dates of two keys - Implements ::sort_t - @ingroup sort_api
- * @param a   First key
- * @param b   Second key
- * @param arg Boolean indicating reverse sort order
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-static int crypt_compare_date_qsort(const void *a, const void *b, void *arg)
-{
-  const bool sort_reverse = *(bool *) arg;
-  int rc = crypt_compare_key_date(a, b);
+done:
   return sort_reverse ? -rc : rc;
 }
 
 /**
- * crypt_compare_key_trust - Compare the trust of keys for sorting - @ingroup sort_api
- * @param a First key
- * @param b Second key
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- *
- * Compare two trust values, the key length, the creation dates. the addresses
- * and the key IDs.
+ * crypt_sort_trust - Compare two keys by their trust levels - Implements ::sort_t - @ingroup sort_api
  */
-static int crypt_compare_key_trust(const void *a, const void *b)
+static int crypt_sort_trust(const void *a, const void *b, void *sdata)
 {
   struct CryptKeyInfo *s = *(struct CryptKeyInfo **) a;
   struct CryptKeyInfo *t = *(struct CryptKeyInfo **) b;
+  const bool sort_reverse = *(bool *) sdata;
+
   unsigned long ts = 0;
   unsigned long tt = 0;
 
   int rc = mutt_numeric_cmp(s->flags & KEYFLAG_RESTRICTIONS, t->flags & KEYFLAG_RESTRICTIONS);
   if (rc != 0)
-    return rc;
+    goto done;
 
   // Note: reversed
   rc = mutt_numeric_cmp(t->validity, s->validity);
@@ -263,7 +215,7 @@ static int crypt_compare_key_trust(const void *a, const void *b)
   // Note: reversed
   rc = mutt_numeric_cmp(tt, ts);
   if (rc != 0)
-    return rc;
+    goto done;
 
   ts = 0;
   tt = 0;
@@ -275,28 +227,15 @@ static int crypt_compare_key_trust(const void *a, const void *b)
   // Note: reversed
   rc = mutt_numeric_cmp(tt, ts);
   if (rc != 0)
-    return rc;
+    goto done;
 
   rc = mutt_istr_cmp(s->uid, t->uid);
   if (rc != 0)
-    return rc;
+    goto done;
 
-  return mutt_istr_cmp(crypt_fpr_or_lkeyid(s), crypt_fpr_or_lkeyid(t));
-}
+  rc = mutt_istr_cmp(crypt_fpr_or_lkeyid(s), crypt_fpr_or_lkeyid(t));
 
-/**
- * crypt_compare_trust_qsort - Compare the trust levels of two keys - Implements ::sort_t - @ingroup sort_api
- * @param a   First key
- * @param b   Second key
- * @param arg Boolean indicating reverse sort order
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
- */
-static int crypt_compare_trust_qsort(const void *a, const void *b, void *arg)
-{
-  const bool sort_reverse = *(bool *) arg;
-  int rc = crypt_compare_key_trust(a, b);
+done:
   return sort_reverse ? -rc : rc;
 }
 
@@ -733,17 +672,17 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
-      f = crypt_compare_address_qsort;
+      f = crypt_sort_address;
       break;
     case SORT_DATE:
-      f = crypt_compare_date_qsort;
+      f = crypt_sort_date;
       break;
     case SORT_KEYID:
-      f = crypt_compare_keyid_qsort;
+      f = crypt_sort_keyid;
       break;
     case SORT_TRUST:
     default:
-      f = crypt_compare_trust_qsort;
+      f = crypt_sort_trust;
       break;
   }
 

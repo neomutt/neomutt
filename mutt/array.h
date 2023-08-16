@@ -271,13 +271,13 @@
 
 /**
  * ARRAY_SORT - Sort an array
- * @param head Pointer to a struct defined using ARRAY_HEAD()
- * @param fn   Sort function, see ::sort_t
- * @param arg  Opaque argument to pass to sort function
+ * @param head  Pointer to a struct defined using ARRAY_HEAD()
+ * @param fn    Sort function, see ::sort_t
+ * @param sdata Opaque argument to pass to sort function
  */
-#define ARRAY_SORT(head, fn, arg)                                              \
+#define ARRAY_SORT(head, fn, sdata)                                            \
   ((head)->entries &&                                                          \
-   (mutt_qsort_r((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), (fn), (arg)), true))
+   (mutt_qsort_r((head)->entries, ARRAY_SIZE(head), ARRAY_ELEM_SIZE(head), (fn), (sdata)), true))
 
 /******************************************************************************
  * Internal APIs

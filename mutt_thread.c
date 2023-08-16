@@ -742,19 +742,13 @@ void mutt_clear_threads(struct ThreadsContext *tctx)
 }
 
 /**
- * compare_threads - qsort_r() function for comparing email threads - Implements ::sort_t - @ingroup sort_api
- * @param a   First thread to compare
- * @param b   Second thread to compare
- * @param arg ThreadsContext for how to compare
- * @retval <0 a precedes b
- * @retval  0 a and b are identical
- * @retval >0 b precedes a
+ * compare_threads - Helper to sort email threads - Implements ::sort_t - @ingroup sort_api
  */
-static int compare_threads(const void *a, const void *b, void *arg)
+static int compare_threads(const void *a, const void *b, void *sdata)
 {
   const struct MuttThread *ta = *(struct MuttThread const *const *) a;
   const struct MuttThread *tb = *(struct MuttThread const *const *) b;
-  const struct ThreadsContext *tctx = arg;
+  const struct ThreadsContext *tctx = sdata;
   assert(ta->parent == tb->parent);
 
   /* If c_sort ties, remember we are building the thread array in

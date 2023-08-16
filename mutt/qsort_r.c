@@ -31,20 +31,10 @@
 #include <stdlib.h>
 #include "qsort_r.h"
 
-/**
- * typedef qsort_compar_t - Prototype for generic comparison function, compatible with qsort()
- * @param a First item
- * @param b Second item
- * @retval <0 a precedes b
- * @retval  0 a and b are identical
- * @retval >0 b precedes a
- */
-typedef int (*qsort_compar_t)(const void *a, const void *b);
-
 #if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)
 #include <assert.h>
 /// Original comparator in fallback implementation
-static qsort_r_compar_t GlobalCompar = NULL;
+static sort_t GlobalCompar = NULL;
 /// Original opaque data in fallback implementation
 static void *GlobalData = NULL;
 
@@ -68,24 +58,24 @@ static int relay_compar(const void *a, const void *b)
  * @param nmemb  Number of elements in the array
  * @param size   Size of each array element
  * @param compar Comparison function, return <0/0/>0 to compare two elements
- * @param arg    Opaque argument to pass to @a compar
+ * @param sdata  Opaque argument to pass to @a compar
  *
  * @note This implementation might not be re-entrant: signal handlers and
  *       @a compar must not call mutt_qsort_r().
  */
-void mutt_qsort_r(void *base, size_t nmemb, size_t size, qsort_r_compar_t compar, void *arg)
+void mutt_qsort_r(void *base, size_t nmemb, size_t size, sort_t compar, void *sdata)
 {
 #ifdef HAVE_QSORT_S
   /* FreeBSD 13, where qsort_r had incompatible signature but qsort_s works */
-  qsort_s(base, nmemb, size, compar, arg);
+  qsort_s(base, nmemb, size, compar, sdata);
 #elif defined(HAVE_QSORT_R)
   /* glibc, POSIX (https://www.austingroupbugs.net/view.php?id=900) */
-  qsort_r(base, nmemb, size, compar, arg);
+  qsort_r(base, nmemb, size, compar, sdata);
 #else
   /* This fallback is not re-entrant. */
   assert(!GlobalCompar && !GlobalData);
   GlobalCompar = compar;
-  GlobalData = arg;
+  GlobalData = sdata;
   qsort(base, nmemb, size, relay_compar);
   GlobalCompar = NULL;
   GlobalData = NULL;

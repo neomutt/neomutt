@@ -37,7 +37,7 @@ static struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
 /**
  * commands_sort - Compare two commands by name - Implements ::sort_t - @ingroup sort_api
  */
-static int commands_sort(const void *a, const void *b, void *arg)
+static int commands_sort(const void *a, const void *b, void *sdata)
 {
   struct Command x = *(const struct Command *) a;
   struct Command y = *(const struct Command *) b;

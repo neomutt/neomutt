@@ -99,7 +99,7 @@ int      cs_subset_str_string_plus_equals (const struct ConfigSubset *sub, const
 int      cs_subset_str_string_set         (const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
 int      cs_subset_str_delete             (const struct ConfigSubset *sub, const char *name,                       struct Buffer *err);
 
-int               elem_list_sort(const void *a, const void *b, void *arg);
+int               elem_list_sort(const void *a, const void *b, void *sdata);
 struct HashElem **get_elem_list(struct ConfigSet *cs);
 
 #endif /* MUTT_CONFIG_SUBSET_H */

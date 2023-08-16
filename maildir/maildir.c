@@ -191,14 +191,8 @@ cleanup:
 
 /**
  * maildir_sort_flags - Compare two flag characters - Implements ::sort_t - @ingroup sort_api
- * @param a First  character to compare
- * @param b Second character to compare
- * @param arg (not used)
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
  */
-static int maildir_sort_flags(const void *a, const void *b, void *arg)
+static int maildir_sort_flags(const void *a, const void *b, void *sdata)
 {
   return mutt_numeric_cmp(*((const char *) a), *((const char *) b));
 }
@@ -517,7 +511,7 @@ static void maildir_update_mtime(struct Mailbox *m)
 /**
  * maildir_sort_inode - Compare two Maildirs by inode number - Implements ::sort_t - @ingroup sort_api
  */
-static int maildir_sort_inode(const void *a, const void *b, void *arg)
+static int maildir_sort_inode(const void *a, const void *b, void *sdata)
 {
   const struct MdEmail *ma = *(struct MdEmail **) a;
   const struct MdEmail *mb = *(struct MdEmail **) b;

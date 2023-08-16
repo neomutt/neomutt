@@ -59,19 +59,13 @@ struct EmailCompare
 };
 
 /**
- * compare_email_shim - qsort_r() comparator to drive mutt_compare_emails - Implements ::sort_t - @ingroup sort_api
- * @param a   Pointer to first email
- * @param b   Pointer to second email
- * @param arg EmailCompare with needed context
- * @retval <0 a precedes b
- * @retval  0 a identical to b (should not happen in practice)
- * @retval >0 b precedes a
+ * compare_email_shim - Helper to sort emails - Implements ::sort_t - @ingroup sort_api
  */
-static int compare_email_shim(const void *a, const void *b, void *arg)
+static int compare_email_shim(const void *a, const void *b, void *sdata)
 {
   const struct Email *ea = *(struct Email const *const *) a;
   const struct Email *eb = *(struct Email const *const *) b;
-  const struct EmailCompare *cmp = arg;
+  const struct EmailCompare *cmp = sdata;
   return mutt_compare_emails(ea, eb, cmp->type, cmp->sort, cmp->sort_aux);
 }
 

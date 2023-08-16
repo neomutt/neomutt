@@ -343,15 +343,9 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
 }
 
 /**
- * label_sort - Sort two label strings - Implements ::sort_t - @ingroup sort_api
- * @param a   First string
- * @param b   Second string
- * @param arg (not used)
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * label_sort - Compare two label strings - Implements ::sort_t - @ingroup sort_api
  */
-static int label_sort(const void *a, const void *b, void *arg)
+static int label_sort(const void *a, const void *b, void *sdata)
 {
   return strcasecmp(*(const char **) a, *(const char **) b);
 }

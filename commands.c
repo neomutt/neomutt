@@ -766,15 +766,9 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 }
 
 /**
- * envlist_sort - Sort two environment strings - Implements ::sort_t - @ingroup sort_api
- * @param a   First string
- * @param b   Second string
- * @param arg (not used)
- * @retval -1 a precedes b
- * @retval  0 a and b are identical
- * @retval  1 b precedes a
+ * envlist_sort - Compare two environment strings - Implements ::sort_t - @ingroup sort_api
  */
-static int envlist_sort(const void *a, const void *b, void *arg)
+static int envlist_sort(const void *a, const void *b, void *sdata)
 {
   return strcmp(*(const char **) a, *(const char **) b);
 }

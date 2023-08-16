@@ -542,7 +542,7 @@ cleanup:
 /**
  * mh_sort_path - Compare two Maildirs by path - Implements ::sort_t - @ingroup sort_api
  */
-static int mh_sort_path(const void *a, const void *b, void *arg)
+static int mh_sort_path(const void *a, const void *b, void *sdata)
 {
   struct MdEmail const *pa = *(struct MdEmail const *const *) a;
   struct MdEmail const *pb = *(struct MdEmail const *const *) b;
