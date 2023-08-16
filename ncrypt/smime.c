@@ -2353,8 +2353,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               break;
 
             case 4:
-              rc = cs_subset_str_string_set(NeoMutt.sub, "smime_encrypt_with",
-                                            NULL, &errmsg);
+              rc = cs_subset_str_string_set(NeoMutt.sub, "smime_encrypt_with", NULL, &errmsg);
             /* (c)lear */
             /* fallthrough */
             case -1: /* Ctrl-G or Enter */

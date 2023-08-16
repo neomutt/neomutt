@@ -517,9 +517,9 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 
   // is the item defined as:
   bool res = cs_subset_lookup(NeoMutt.sub, buf->data) // a variable?
-             || feature_enabled(buf->data)             // a compiled-in feature?
-             || is_function(buf->data)                 // a function?
-             || command_get(buf->data)                 // a command?
+             || feature_enabled(buf->data)            // a compiled-in feature?
+             || is_function(buf->data)                // a function?
+             || command_get(buf->data)                // a command?
 #ifdef USE_HCACHE
              || store_is_valid_backend(buf->data) // a store? (database)
 #endif
