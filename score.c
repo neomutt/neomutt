@@ -63,11 +63,11 @@ static struct Score *ScoreList = NULL;
  */
 void mutt_check_rescore(struct Mailbox *m)
 {
-  const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
+  const bool c_score = cs_subset_bool(NeoMutt.sub, "score");
   if (OptNeedRescore && c_score)
   {
-    const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-    const enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+    const enum SortType c_sort = cs_subset_sort(NeoMutt.sub, "sort");
+    const enum SortType c_sort_aux = cs_subset_sort(NeoMutt.sub, "sort_aux");
     if (((c_sort & SORT_MASK) == SORT_SCORE) || ((c_sort_aux & SORT_MASK) == SORT_SCORE))
     {
       OptNeedResort = true;
@@ -179,9 +179,9 @@ void mutt_score_message(struct Mailbox *m, struct Email *e, bool upd_mbox)
   if (e->score < 0)
     e->score = 0;
 
-  const short c_score_threshold_delete = cs_subset_number(NeoMutt->sub, "score_threshold_delete");
-  const short c_score_threshold_flag = cs_subset_number(NeoMutt->sub, "score_threshold_flag");
-  const short c_score_threshold_read = cs_subset_number(NeoMutt->sub, "score_threshold_read");
+  const short c_score_threshold_delete = cs_subset_number(NeoMutt.sub, "score_threshold_delete");
+  const short c_score_threshold_flag = cs_subset_number(NeoMutt.sub, "score_threshold_flag");
+  const short c_score_threshold_read = cs_subset_number(NeoMutt.sub, "score_threshold_read");
 
   if (e->score <= c_score_threshold_delete)
     mutt_set_flag(m, e, MUTT_DELETE, true, upd_mbox);

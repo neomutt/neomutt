@@ -73,7 +73,7 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
 
       if (bf)
       {
-        const bool c_flag_safe = cs_subset_bool(NeoMutt->sub, "flag_safe");
+        const bool c_flag_safe = cs_subset_bool(NeoMutt.sub, "flag_safe");
         if (!e->deleted && !m->readonly && (!e->flagged || !c_flag_safe))
         {
           e->deleted = true;

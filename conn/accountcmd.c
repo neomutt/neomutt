@@ -167,7 +167,7 @@ MuttAccountFlags mutt_account_call_external_cmd(struct ConnAccount *cac)
     return MUTT_ACCT_NO_FLAGS;
   }
 
-  const char *c_account_command = cs_subset_string(NeoMutt->sub, "account_command");
+  const char *c_account_command = cs_subset_string(NeoMutt.sub, "account_command");
   if (!c_account_command)
   {
     return MUTT_ACCT_NO_FLAGS;

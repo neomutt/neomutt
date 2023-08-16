@@ -36,7 +36,7 @@ void test_mutt_hist_add(void)
 {
   // void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save);
 
-  config_init_history(NeoMutt->sub->cs);
+  config_init_history(NeoMutt.sub->cs);
 
   {
     mutt_hist_add(0, NULL, false);

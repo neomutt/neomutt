@@ -504,7 +504,7 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
   hc->folder = get_foldername(folder);
   hc->crc = HcacheVer;
 
-  const char *const c_header_cache_backend = cs_subset_string(NeoMutt->sub, "header_cache_backend");
+  const char *const c_header_cache_backend = cs_subset_string(NeoMutt.sub, "header_cache_backend");
   hc->store_ops = store_get_backend_ops(c_header_cache_backend);
   if (!hc->store_ops)
   {
@@ -513,12 +513,12 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
   }
 
 #ifdef USE_HCACHE_COMPRESSION
-  const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt->sub, "header_cache_compress_method");
+  const char *const c_header_cache_compress_method = cs_subset_string(NeoMutt.sub, "header_cache_compress_method");
   if (c_header_cache_compress_method)
   {
     hc->compr_ops = compress_get_ops(c_header_cache_compress_method);
 
-    const short c_header_cache_compress_level = cs_subset_number(NeoMutt->sub, "header_cache_compress_level");
+    const short c_header_cache_compress_level = cs_subset_number(NeoMutt.sub, "header_cache_compress_level");
     hc->compr_handle = hc->compr_ops->open(c_header_cache_compress_level);
     if (!hc->compr_handle)
     {

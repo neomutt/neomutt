@@ -200,7 +200,7 @@ static int config_reply_regex(struct MailboxView *mv)
 
   regmatch_t pmatch[1];
 
-  const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
+  const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt.sub, "reply_regex");
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -514,14 +514,14 @@ static int index_window_observer(struct NotifyCallback *nc)
   struct IndexPrivateData *priv = menu->mdata;
 
   mutt_color_observer_remove(index_color_observer, win);
-  notify_observer_remove(NeoMutt->notify, index_altern_observer, win);
-  notify_observer_remove(NeoMutt->notify, index_attach_observer, win);
-  notify_observer_remove(NeoMutt->sub->notify, index_config_observer, win);
-  notify_observer_remove(NeoMutt->notify, index_global_observer, win);
+  notify_observer_remove(NeoMutt.notify, index_altern_observer, win);
+  notify_observer_remove(NeoMutt.notify, index_attach_observer, win);
+  notify_observer_remove(NeoMutt.sub->notify, index_config_observer, win);
+  notify_observer_remove(NeoMutt.notify, index_global_observer, win);
   notify_observer_remove(priv->shared->notify, index_index_observer, win);
   notify_observer_remove(menu->notify, index_menu_observer, win);
-  notify_observer_remove(NeoMutt->notify, index_score_observer, win);
-  notify_observer_remove(NeoMutt->notify, index_subjrx_observer, win);
+  notify_observer_remove(NeoMutt.notify, index_score_observer, win);
+  notify_observer_remove(NeoMutt.notify, index_subjrx_observer, win);
   notify_observer_remove(win->notify, index_window_observer, win);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -597,7 +597,7 @@ static int index_repaint(struct MuttWindow *win)
  */
 struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
 {
-  struct MuttWindow *win = menu_window_new(MENU_INDEX, NeoMutt->sub);
+  struct MuttWindow *win = menu_window_new(MENU_INDEX, NeoMutt.sub);
   win->recalc = index_recalc;
   win->repaint = index_repaint;
 
@@ -607,14 +607,14 @@ struct MuttWindow *index_window_new(struct IndexPrivateData *priv)
   priv->menu = menu;
 
   mutt_color_observer_add(index_color_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_ALTERN, index_altern_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_ATTACH, index_attach_observer, win);
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, index_config_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_GLOBAL, index_global_observer, win);
+  notify_observer_add(NeoMutt.notify, NT_ALTERN, index_altern_observer, win);
+  notify_observer_add(NeoMutt.notify, NT_ATTACH, index_attach_observer, win);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, index_config_observer, win);
+  notify_observer_add(NeoMutt.notify, NT_GLOBAL, index_global_observer, win);
   notify_observer_add(priv->shared->notify, NT_ALL, index_index_observer, win);
   notify_observer_add(menu->notify, NT_MENU, index_menu_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_SCORE, index_score_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_SUBJRX, index_subjrx_observer, win);
+  notify_observer_add(NeoMutt.notify, NT_SCORE, index_score_observer, win);
+  notify_observer_add(NeoMutt.notify, NT_SUBJRX, index_subjrx_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, index_window_observer, win);
 
   return win;

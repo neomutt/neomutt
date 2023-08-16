@@ -298,7 +298,7 @@ struct Body *pgp_class_make_key_attachment(void)
   att->subtype = mutt_str_dup("pgp-keys");
   snprintf(buf, sizeof(buf), _("PGP Key %s"), tmp);
   att->description = mutt_str_dup(buf);
-  mutt_update_encoding(att, NeoMutt->sub);
+  mutt_update_encoding(att, NeoMutt.sub);
 
   stat(buf_string(tempf), &st);
   att->length = st.st_size;
@@ -446,7 +446,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     if (oppenc_mode)
     {
       const bool c_crypt_opportunistic_encrypt_strong_keys =
-          cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
+          cs_subset_bool(NeoMutt.sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
       {
         pgp_remove_key(&matches, the_strong_valid_key);

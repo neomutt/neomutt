@@ -118,7 +118,7 @@ bool account_mailbox_remove(struct Account *a, struct Mailbox *m)
     if (m)
     {
       m->account = NULL;
-      notify_set_parent(m->notify, NeoMutt->notify);
+      notify_set_parent(m->notify, NeoMutt.notify);
     }
     else
     {

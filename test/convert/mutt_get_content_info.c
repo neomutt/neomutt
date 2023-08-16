@@ -59,7 +59,7 @@ void test_mutt_get_content_info(void)
   TEST_MSG("unable to write to temp file: %s", buf_string(fname));
   fclose(fp);
 
-  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSubset *sub = NeoMutt.sub;
   struct ConfigSet *cs = sub->cs;
   TEST_CHECK(cs_register_variables(cs, CharsetVars, DT_NO_FLAGS));
 

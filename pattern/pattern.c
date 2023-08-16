@@ -317,7 +317,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   mutt_message(_("Compiling search pattern..."));
 
   char *simple = buf_strdup(buf);
-  const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
+  const char *const c_simple_search = cs_subset_string(NeoMutt.sub, "simple_search");
   mutt_check_simple(buf, NONULL(c_simple_search));
   const char *pbuf = buf->data;
   while (*pbuf == ' ')
@@ -470,7 +470,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
      * $simple_search has changed while we were searching */
     struct Buffer *tmp = buf_pool_get();
     buf_copy(tmp, buf);
-    const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
+    const char *const c_simple_search = cs_subset_string(NeoMutt.sub, "simple_search");
     mutt_check_simple(tmp, NONULL(c_simple_search));
 
     if (!SearchPattern || !mutt_str_equal(buf_string(tmp), LastSearchExpn))
@@ -519,7 +519,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
 
   progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, m->vcount);
 
-  const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+  const bool c_wrap_search = cs_subset_bool(NeoMutt.sub, "wrap_search");
   for (int i = cur + incr, j = 0; j != m->vcount; j++)
   {
     const char *msg = NULL;
@@ -683,7 +683,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
 
   progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
 
-  const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+  const bool c_wrap_search = cs_subset_bool(NeoMutt.sub, "wrap_search");
   for (int i = cur + incr, j = 0; j != ARRAY_SIZE(ava); j++)
   {
     const char *msg = NULL;

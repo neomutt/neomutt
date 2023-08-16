@@ -397,7 +397,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
   if (rc == 0)
   {
     snprintf(buf, sizeof(buf), "PASS %s\r\n", adata->conn->account.pass);
-    const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+    const short c_debug_level = cs_subset_number(NeoMutt.sub, "debug_level");
     rc = pop_query_d(adata, buf, sizeof(buf),
                      /* don't print the password unless we're at the ungodly debugging level */
                      (c_debug_level < MUTT_SOCK_LOG_FULL) ? "PASS *\r\n" : NULL);
@@ -422,7 +422,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *method)
 {
   /* If they did not explicitly request or configure oauth then fail quietly */
-  const char *const c_pop_oauth_refresh_command = cs_subset_string(NeoMutt->sub, "pop_oauth_refresh_command");
+  const char *const c_pop_oauth_refresh_command = cs_subset_string(NeoMutt.sub, "pop_oauth_refresh_command");
   if (!method && !c_pop_oauth_refresh_command)
     return POP_A_UNAVAIL;
 
@@ -440,7 +440,7 @@ static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *
   int rc = pop_query_d(adata, auth_cmd, strlen(auth_cmd),
 #ifdef DEBUG
                        /* don't print the bearer token unless we're at the ungodly debugging level */
-                       (cs_subset_number(NeoMutt->sub, "debug_level") < MUTT_SOCK_LOG_FULL) ?
+                       (cs_subset_number(NeoMutt.sub, "debug_level") < MUTT_SOCK_LOG_FULL) ?
                            "AUTH OAUTHBEARER *\r\n" :
 #endif
                            NULL);
@@ -530,8 +530,8 @@ int pop_authenticate(struct PopAccountData *adata)
     return -3;
   }
 
-  const struct Slist *c_pop_authenticators = cs_subset_slist(NeoMutt->sub, "pop_authenticators");
-  const bool c_pop_auth_try_all = cs_subset_bool(NeoMutt->sub, "pop_auth_try_all");
+  const struct Slist *c_pop_authenticators = cs_subset_slist(NeoMutt.sub, "pop_authenticators");
+  const bool c_pop_auth_try_all = cs_subset_bool(NeoMutt.sub, "pop_auth_try_all");
   if (c_pop_authenticators && (c_pop_authenticators->count > 0))
   {
     /* Try user-specified list of authentication methods */

@@ -143,7 +143,7 @@ static int op_pager_bottom(struct IndexSharedData *shared,
 static int op_pager_half_down(struct IndexSharedData *shared,
                               struct PagerPrivateData *priv, int op)
 {
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
+  const bool c_pager_stop = cs_subset_bool(NeoMutt.sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
     priv->top_line = up_n_lines(priv->pview->win_pager->state.rows / 2,
@@ -237,10 +237,10 @@ static int op_pager_next_line(struct IndexSharedData *shared,
 static int op_pager_next_page(struct IndexSharedData *shared,
                               struct PagerPrivateData *priv, int op)
 {
-  const bool c_pager_stop = cs_subset_bool(NeoMutt->sub, "pager_stop");
+  const bool c_pager_stop = cs_subset_bool(NeoMutt.sub, "pager_stop");
   if (priv->lines[priv->cur_line].offset < (priv->st.st_size - 1))
   {
-    const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+    const short c_pager_context = cs_subset_number(NeoMutt.sub, "pager_context");
     priv->top_line = up_n_lines(c_pager_context, priv->lines, priv->cur_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
   }
@@ -287,7 +287,7 @@ static int op_pager_prev_page(struct IndexSharedData *shared,
   }
   else
   {
-    const short c_pager_context = cs_subset_number(NeoMutt->sub, "pager_context");
+    const short c_pager_context = cs_subset_number(NeoMutt.sub, "pager_context");
     priv->top_line = up_n_lines(priv->pview->win_pager->state.rows - c_pager_context,
                                 priv->lines, priv->top_line, priv->hide_quoted);
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
@@ -423,7 +423,7 @@ static int op_pager_search(struct IndexSharedData *shared,
     }
     else
     {
-      const short c_search_context = cs_subset_number(NeoMutt->sub, "search_context");
+      const short c_search_context = cs_subset_number(NeoMutt.sub, "search_context");
       priv->search_flag = MUTT_SEARCH;
       /* give some context for search results */
       if (c_search_context < priv->pview->win_pager->state.rows)
@@ -455,7 +455,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
 {
   if (priv->search_compiled)
   {
-    const short c_search_context = cs_subset_number(NeoMutt->sub, "search_context");
+    const short c_search_context = cs_subset_number(NeoMutt.sub, "search_context");
     priv->wrapped = false;
 
     if (c_search_context < priv->pview->win_pager->state.rows)
@@ -479,7 +479,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
         }
       }
 
-      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+      const bool c_wrap_search = cs_subset_bool(NeoMutt.sub, "wrap_search");
       if (i < priv->lines_used)
       {
         priv->top_line = i;
@@ -509,7 +509,7 @@ static int op_pager_search_next(struct IndexSharedData *shared,
         }
       }
 
-      const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
+      const bool c_wrap_search = cs_subset_bool(NeoMutt.sub, "wrap_search");
       if (i >= 0)
       {
         priv->top_line = i;
@@ -592,7 +592,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   if (!priv->has_types)
     return FR_NO_ACTION;
 
-  const short c_pager_skip_quoted_context = cs_subset_number(NeoMutt->sub, "pager_skip_quoted_context");
+  const short c_pager_skip_quoted_context = cs_subset_number(NeoMutt.sub, "pager_skip_quoted_context");
   int rc = 0;
   int new_topline = priv->top_line;
   int num_quoted = 0;
@@ -749,7 +749,7 @@ static int op_view_attachments(struct IndexSharedData *shared,
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
     return FR_NOT_IMPL;
-  dlg_select_attachment(NeoMutt->sub, shared->mailbox_view, shared->email,
+  dlg_select_attachment(NeoMutt.sub, shared->mailbox_view, shared->email,
                         pview->pdata->fp);
   if (shared->email->attach_del)
     shared->mailbox->changed = true;

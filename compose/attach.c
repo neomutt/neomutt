@@ -188,7 +188,7 @@ static int attach_window_observer(struct NotifyCallback *nc)
     struct ComposeAttachData *adata = menu->mdata;
     struct AttachCtx *actx = adata->actx;
     notify_observer_remove(actx->email->notify, attach_email_observer, win_attach);
-    notify_observer_remove(NeoMutt->sub->notify, attach_config_observer, win_attach);
+    notify_observer_remove(NeoMutt.sub->notify, attach_config_observer, win_attach);
     notify_observer_remove(win_attach->notify, attach_window_observer, win_attach);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
@@ -235,14 +235,14 @@ static void compose_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
  */
 struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
 {
-  struct MuttWindow *win_attach = menu_window_new(MENU_COMPOSE, NeoMutt->sub);
+  struct MuttWindow *win_attach = menu_window_new(MENU_COMPOSE, NeoMutt.sub);
 
   struct ComposeAttachData *adata = attach_data_new(shared->email);
 
   shared->adata = adata;
 
   // NT_COLOR is handled by the Menu Window
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, attach_config_observer, win_attach);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, attach_config_observer, win_attach);
   notify_observer_add(shared->email->notify, NT_EMAIL, attach_email_observer, win_attach);
   notify_observer_add(win_attach->notify, NT_WINDOW, attach_window_observer, win_attach);
 

@@ -109,7 +109,7 @@ void nm_init(void)
 static struct HeaderCache *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   return hcache_open(c_header_cache, mailbox_path(m), NULL);
 #else
   return NULL;
@@ -140,8 +140,8 @@ static char *nm_get_default_url(void)
 
   // Try to use `$nm_default_url` or `$folder`.
   // If neither are set, it is impossible to create a Notmuch URL.
-  const char *const c_nm_default_url = cs_subset_string(NeoMutt->sub, "nm_default_url");
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *const c_nm_default_url = cs_subset_string(NeoMutt.sub, "nm_default_url");
+  const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
   if (c_nm_default_url)
   {
     snprintf(url, len, "%s", c_nm_default_url);
@@ -243,7 +243,7 @@ static char *email_get_fullpath(struct Email *e, char *buf, size_t buflen)
 static void query_window_reset(void)
 {
   mutt_debug(LL_DEBUG2, "entering\n");
-  cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position", 0, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "nm_query_window_current_position", 0, NULL);
 }
 
 /**
@@ -274,12 +274,12 @@ static bool windowed_query_from_query(const char *query, char *buf, size_t bufle
 {
   mutt_debug(LL_DEBUG2, "nm: %s\n", query);
 
-  const bool c_nm_query_window_enable = cs_subset_bool(NeoMutt->sub, "nm_query_window_enable");
-  const short c_nm_query_window_duration = cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
-  const short c_nm_query_window_current_position = cs_subset_number(NeoMutt->sub, "nm_query_window_current_position");
-  const char *const c_nm_query_window_current_search = cs_subset_string(NeoMutt->sub, "nm_query_window_current_search");
-  const char *const c_nm_query_window_timebase = cs_subset_string(NeoMutt->sub, "nm_query_window_timebase");
-  const char *const c_nm_query_window_or_terms = cs_subset_string(NeoMutt->sub, "nm_query_window_or_terms");
+  const bool c_nm_query_window_enable = cs_subset_bool(NeoMutt.sub, "nm_query_window_enable");
+  const short c_nm_query_window_duration = cs_subset_number(NeoMutt.sub, "nm_query_window_duration");
+  const short c_nm_query_window_current_position = cs_subset_number(NeoMutt.sub, "nm_query_window_current_position");
+  const char *const c_nm_query_window_current_search = cs_subset_string(NeoMutt.sub, "nm_query_window_current_search");
+  const char *const c_nm_query_window_timebase = cs_subset_string(NeoMutt.sub, "nm_query_window_timebase");
+  const char *const c_nm_query_window_or_terms = cs_subset_string(NeoMutt.sub, "nm_query_window_or_terms");
 
   /* if the query has changed, reset the window position */
   if (!c_nm_query_window_current_search || !mutt_str_equal(query, c_nm_query_window_current_search))
@@ -343,7 +343,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
   if (mdata->db_query && !window)
     return mdata->db_query;
 
-  const char *const c_nm_query_type = cs_subset_string(NeoMutt->sub, "nm_query_type");
+  const char *const c_nm_query_type = cs_subset_string(NeoMutt.sub, "nm_query_type");
   mdata->query_type = nm_string_to_query_type(c_nm_query_type); /* user's default */
 
   struct UrlQuery *item = NULL;
@@ -375,7 +375,7 @@ static char *get_query_string(struct NmMboxData *mdata, bool window)
   if (window)
   {
     char buf[1024] = { 0 };
-    cs_subset_str_string_set(NeoMutt->sub, "nm_query_window_current_search",
+    cs_subset_str_string_set(NeoMutt.sub, "nm_query_window_current_search",
                              mdata->db_query, NULL);
 
     /* if a date part is defined, do not apply windows (to avoid the risk of
@@ -413,7 +413,7 @@ static int get_limit(struct NmMboxData *mdata)
  */
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-  const char *const c_nm_exclude_tags = cs_subset_string(NeoMutt->sub, "nm_exclude_tags");
+  const char *const c_nm_exclude_tags = cs_subset_string(NeoMutt.sub, "nm_exclude_tags");
   if (!c_nm_exclude_tags || !query)
     return;
 
@@ -537,7 +537,7 @@ static int update_message_path(struct Email *e, const char *path)
     FREE(&edata->folder);
 
     p -= 3; /* skip subfolder (e.g. "new") */
-    if (cs_subset_bool(NeoMutt->sub, "mark_old"))
+    if (cs_subset_bool(NeoMutt.sub, "mark_old"))
     {
       e->old = mutt_str_startswith(p, "cur");
     }
@@ -1151,9 +1151,9 @@ static int update_email_flags(struct Mailbox *m, struct Email *e, const char *ta
   if (!tag_str)
     return -1;
 
-  const char *const c_nm_unread_tag = cs_subset_string(NeoMutt->sub, "nm_unread_tag");
-  const char *const c_nm_replied_tag = cs_subset_string(NeoMutt->sub, "nm_replied_tag");
-  const char *const c_nm_flagged_tag = cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
+  const char *const c_nm_unread_tag = cs_subset_string(NeoMutt.sub, "nm_unread_tag");
+  const char *const c_nm_replied_tag = cs_subset_string(NeoMutt.sub, "nm_replied_tag");
+  const char *const c_nm_flagged_tag = cs_subset_string(NeoMutt.sub, "nm_flagged_tag");
 
   struct NmTags tags = nm_tag_str_to_tags(tag_str);
   char **tag_elem = NULL;
@@ -1582,10 +1582,10 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
   }
 
   enum NmQueryType query_type = nm_string_to_query_type(
-      cs_subset_string(NeoMutt->sub, "nm_query_type"));
+      cs_subset_string(NeoMutt.sub, "nm_query_type"));
   mdata->query_type = nm_parse_type_from_query(buf, query_type);
 
-  const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
+  const short c_nm_db_limit = cs_subset_number(NeoMutt.sub, "nm_db_limit");
   if (get_limit(mdata) == c_nm_db_limit)
   {
     added = snprintf(url, sizeof(url), "%s%s?type=%s&query=", NmUrlProtocol,
@@ -1622,8 +1622,8 @@ char *nm_url_from_query(struct Mailbox *m, char *buf, size_t buflen)
  */
 bool nm_query_window_available(void)
 {
-  const short c_nm_query_window_duration = cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
-  const bool c_nm_query_window_enable = cs_subset_bool(NeoMutt->sub, "nm_query_window_enable");
+  const short c_nm_query_window_duration = cs_subset_number(NeoMutt.sub, "nm_query_window_duration");
+  const bool c_nm_query_window_enable = cs_subset_bool(NeoMutt.sub, "nm_query_window_enable");
 
   return c_nm_query_window_enable || (c_nm_query_window_duration > 0);
 }
@@ -1639,10 +1639,10 @@ bool nm_query_window_available(void)
  */
 void nm_query_window_forward(void)
 {
-  const short c_nm_query_window_current_position = cs_subset_number(NeoMutt->sub, "nm_query_window_current_position");
+  const short c_nm_query_window_current_position = cs_subset_number(NeoMutt.sub, "nm_query_window_current_position");
   if (c_nm_query_window_current_position != 0)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position",
+    cs_subset_str_native_set(NeoMutt.sub, "nm_query_window_current_position",
                              c_nm_query_window_current_position - 1, NULL);
   }
 
@@ -1659,8 +1659,8 @@ void nm_query_window_forward(void)
  */
 void nm_query_window_backward(void)
 {
-  const short c_nm_query_window_current_position = cs_subset_number(NeoMutt->sub, "nm_query_window_current_position");
-  cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position",
+  const short c_nm_query_window_current_position = cs_subset_number(NeoMutt.sub, "nm_query_window_current_position");
+  cs_subset_str_native_set(NeoMutt.sub, "nm_query_window_current_position",
                            c_nm_query_window_current_position + 1, NULL);
   mutt_debug(LL_DEBUG2, "(%d)\n", c_nm_query_window_current_position + 1);
 }
@@ -1670,7 +1670,7 @@ void nm_query_window_backward(void)
  */
 void nm_query_window_reset(void)
 {
-  cs_subset_str_native_set(NeoMutt->sub, "nm_query_window_current_position", 0, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "nm_query_window_current_position", 0, NULL);
   mutt_debug(LL_DEBUG2, "Reset nm_query_window_current_position to 0\n");
 }
 
@@ -1778,7 +1778,7 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   char *db_query = NULL;
   notmuch_database_t *db = NULL;
   enum MxStatus rc = MX_STATUS_ERROR;
-  const short c_nm_db_limit = cs_subset_number(NeoMutt->sub, "nm_db_limit");
+  const short c_nm_db_limit = cs_subset_number(NeoMutt.sub, "nm_db_limit");
   int limit = c_nm_db_limit;
   mutt_debug(LL_DEBUG1, "nm: count\n");
 
@@ -1827,13 +1827,13 @@ static enum MxStatus nm_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   char *qstr = NULL;
 
   // unread messages
-  const char *const c_nm_unread_tag = cs_subset_string(NeoMutt->sub, "nm_unread_tag");
+  const char *const c_nm_unread_tag = cs_subset_string(NeoMutt.sub, "nm_unread_tag");
   mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, c_nm_unread_tag);
   m->msg_unread = count_query(db, qstr, limit);
   FREE(&qstr);
 
   // flagged messages
-  const char *const c_nm_flagged_tag = cs_subset_string(NeoMutt->sub, "nm_flagged_tag");
+  const char *const c_nm_flagged_tag = cs_subset_string(NeoMutt.sub, "nm_flagged_tag");
   mutt_str_asprintf(&qstr, "( %s ) tag:%s", db_query, c_nm_flagged_tag);
   m->msg_flagged = count_query(db, qstr, limit);
   FREE(&qstr);
@@ -1933,7 +1933,7 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
       update_tags(msg, tags);
       FREE(&tags);
     }
-    const char *const c_nm_record_tags = cs_subset_string(NeoMutt->sub, "nm_record_tags");
+    const char *const c_nm_record_tags = cs_subset_string(NeoMutt.sub, "nm_record_tags");
     if (c_nm_record_tags)
       update_tags(msg, c_nm_record_tags);
   }

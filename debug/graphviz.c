@@ -905,23 +905,23 @@ void dump_graphviz(const char *title, struct MailboxView *mv)
 
 #ifndef GV_HIDE_NEOMUTT
   dot_node(fp, NeoMutt, "NeoMutt", "#ffa500");
-  dot_add_link(&links, NeoMutt, TAILQ_FIRST(&NeoMutt->accounts),
-               "NeoMutt->accounts", false, NULL);
+  dot_add_link(&links, NeoMutt, TAILQ_FIRST(&NeoMutt.accounts),
+               "NeoMutt.accounts", false, NULL);
 #ifndef GV_HIDE_CONFIG
-  dot_config(fp, (const char *) NeoMutt->sub, 0, NeoMutt->sub, &links);
-  dot_add_link(&links, NeoMutt, NeoMutt->sub, "NeoMutt Config", false, NULL);
+  dot_config(fp, (const char *) NeoMutt.sub, 0, NeoMutt.sub, &links);
+  dot_add_link(&links, NeoMutt, NeoMutt.sub, "NeoMutt Config", false, NULL);
   struct Buffer buf = buf_make(256);
   char obj1[64] = { 0 };
   char obj2[64] = { 0 };
   dot_ptr_name(obj1, sizeof(obj1), NeoMutt);
-  dot_ptr_name(obj2, sizeof(obj2), NeoMutt->sub);
+  dot_ptr_name(obj2, sizeof(obj2), NeoMutt.sub);
   buf_printf(&buf, "{ rank=same %s %s }", obj1, obj2);
   mutt_list_insert_tail(&links, mutt_str_dup(buf_string(&buf)));
   buf_dealloc(&buf);
 #endif
 #endif
 
-  dot_account_list(fp, &NeoMutt->accounts, &links);
+  dot_account_list(fp, &NeoMutt.accounts, &links);
 
 #ifndef GV_HIDE_MVIEW
   if (mv)
@@ -943,7 +943,7 @@ void dump_graphviz(const char *title, struct MailboxView *mv)
 
   fprintf(fp, "\t{ rank=same ");
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt.accounts, entries)
   {
 #ifdef GV_HIDE_MBOX
     if (np->type == MUTT_MBOX)

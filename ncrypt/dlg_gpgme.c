@@ -610,7 +610,7 @@ static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   entry.key = key_table[line];
   entry.num = line + 1;
 
-  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
+  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt.sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_pgp_entry_format),
                       crypt_format_str, (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
@@ -673,7 +673,7 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->sub->notify, gpgme_key_config_observer, menu);
+  notify_observer_remove(NeoMutt.sub->notify, gpgme_key_config_observer, menu);
   notify_observer_remove(win_menu->notify, gpgme_key_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -705,7 +705,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   keymax = 0;
   i = 0;
   struct CryptKeyInfo **key_table = NULL;
-  const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
+  const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt.sub, "pgp_show_unusable");
   for (struct CryptKeyInfo *k = keys; k; k = k->next)
   {
     if (!c_pgp_show_unusable && (k->flags & KEYFLAG_CANTUSE))
@@ -729,7 +729,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     return NULL;
   }
 
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt.sub, "pgp_sort_keys");
   switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
@@ -770,7 +770,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   dlg->wdata = &gd;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, gpgme_key_config_observer, menu);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, gpgme_key_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, gpgme_key_window_observer, menu->win);
 
   const char *ts = NULL;

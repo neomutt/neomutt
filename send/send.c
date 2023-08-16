@@ -3029,7 +3029,7 @@ static bool send_simple_email(struct Mailbox *m, struct EmailArray *ea,
   e->body->unlink = true;
   buf_pool_release(&tempfile);
 
-  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, ea, NeoMutt->sub);
+  const int rc = mutt_send_message(SEND_DRAFT_FILE, e, NULL, m, ea, NeoMutt.sub);
   return rc >= 0;
 }
 

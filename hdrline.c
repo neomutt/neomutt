@@ -140,7 +140,7 @@ static const char *make_from_prefix(enum FieldType disp)
     [DISP_FROM] = "",  [DISP_PLAIN] = "",
   };
 
-  const struct MbTable *c_from_chars = cs_subset_mbtable(NeoMutt->sub, "from_chars");
+  const struct MbTable *c_from_chars = cs_subset_mbtable(NeoMutt.sub, "from_chars");
 
   if (!c_from_chars || !c_from_chars->chars || (c_from_chars->len == 0))
     return long_prefixes[disp];
@@ -416,10 +416,10 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
   const struct Address *to = TAILQ_FIRST(&e->env->to);
   const struct Address *cc = TAILQ_FIRST(&e->env->cc);
 
-  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
-  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
-  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
-  const char *const c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
+  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt.sub, "crypt_chars");
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt.sub, "flag_chars");
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt.sub, "to_chars");
+  const char *const c_date_format = cs_subset_string(NeoMutt.sub, "date_format");
 
   buf[0] = '\0';
   switch (op)
@@ -970,7 +970,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       if (!optional)
       {
         make_from_addr(e->env, tmp, sizeof(tmp), true);
-        const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
+        const bool c_save_address = cs_subset_bool(NeoMutt.sub, "save_address");
         if (!c_save_address && (p = strpbrk(tmp, "%@")))
           *p = '\0';
         mutt_format_s(buf, buflen, prec, tmp);

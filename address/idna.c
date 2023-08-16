@@ -124,7 +124,7 @@ char *mutt_idna_intl_to_local(const char *user, const char *domain, uint8_t flag
 
 #ifdef HAVE_LIBIDN
   bool is_idn_encoded = check_idn(local_domain);
-  const bool c_idn_decode = cs_subset_bool(NeoMutt->sub, "idn_decode");
+  const bool c_idn_decode = cs_subset_bool(NeoMutt.sub, "idn_decode");
   if (is_idn_encoded && c_idn_decode)
   {
     if (idn2_to_unicode_8z8z(local_domain, &tmp, IDN2_ALLOW_UNASSIGNED) != IDN2_OK)
@@ -239,7 +239,7 @@ char *mutt_idna_local_to_intl(const char *user, const char *domain)
     goto cleanup;
 
 #ifdef HAVE_LIBIDN
-  const bool c_idn_encode = cs_subset_bool(NeoMutt->sub, "idn_encode");
+  const bool c_idn_encode = cs_subset_bool(NeoMutt.sub, "idn_encode");
   if (c_idn_encode)
   {
     if (idn2_to_ascii_8z(intl_domain, &tmp,

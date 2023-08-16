@@ -245,7 +245,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
     col = pad(fp, mutt_strwidth(t1), col_a);
   }
 
-  const char *const c_pager = pager_get_pager(NeoMutt->sub);
+  const char *const c_pager = pager_get_pager(NeoMutt.sub);
   if (ismacro > 0)
   {
     if (!c_pager)
@@ -296,7 +296,7 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
         else
         {
           n += col - wraplen;
-          const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
+          const bool c_markers = cs_subset_bool(NeoMutt.sub, "markers");
           if (c_markers)
             n++;
         }
@@ -406,9 +406,9 @@ static void show_flag_if_present(FILE *fp, int wraplen, const struct MbTable *ta
  */
 static void dump_message_flags(FILE *fp, int wraplen)
 {
-  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
-  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
-  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt.sub, "flag_chars");
+  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt.sub, "crypt_chars");
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt.sub, "to_chars");
 
   format_line(fp, 0, "$flag_chars:", "", "", wraplen);
   show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_TAGGED, _("message is tagged"));

@@ -42,7 +42,7 @@
  */
 void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 {
-  const short c_history = cs_subset_number(NeoMutt->sub, "history");
+  const short c_history = cs_subset_number(NeoMutt.sub, "history");
   char **matches = mutt_mem_calloc(c_history, sizeof(char *));
   int match_count = mutt_hist_search(buf, hclass, matches);
   if (match_count)

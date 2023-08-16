@@ -91,7 +91,7 @@ static int config_pager_index_lines(struct MuttWindow *win)
   if (!win_index)
     return -1;
 
-  const short c_pager_index_lines = cs_subset_number(NeoMutt->sub, "pager_index_lines");
+  const short c_pager_index_lines = cs_subset_number(NeoMutt.sub, "pager_index_lines");
 
   if (c_pager_index_lines > 0)
   {
@@ -219,7 +219,7 @@ static int pager_repaint(struct MuttWindow *win)
       }
     } while (priv->force_redraw);
 
-    const bool c_tilde = cs_subset_bool(NeoMutt->sub, "tilde");
+    const bool c_tilde = cs_subset_bool(NeoMutt.sub, "tilde");
     mutt_curses_set_normal_backed_color_by_id(MT_COLOR_TILDE);
     while (priv->win_height < priv->pview->win_pager->state.rows)
     {
@@ -400,8 +400,8 @@ static int pager_window_observer(struct NotifyCallback *nc)
   struct IndexSharedData *shared = dlg->wdata;
 
   mutt_color_observer_remove(pager_color_observer, win_pager);
-  notify_observer_remove(NeoMutt->sub->notify, pager_config_observer, win_pager);
-  notify_observer_remove(NeoMutt->notify, pager_global_observer, win_pager);
+  notify_observer_remove(NeoMutt.sub->notify, pager_config_observer, win_pager);
+  notify_observer_remove(NeoMutt.notify, pager_global_observer, win_pager);
   notify_observer_remove(shared->notify, pager_index_observer, win_pager);
   notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
   notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
@@ -428,8 +428,8 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
   win->repaint = pager_repaint;
 
   mutt_color_observer_add(pager_color_observer, win);
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pager_config_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_GLOBAL, pager_global_observer, win);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, pager_config_observer, win);
+  notify_observer_add(NeoMutt.notify, NT_GLOBAL, pager_global_observer, win);
   notify_observer_add(shared->notify, NT_ALL, pager_index_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);

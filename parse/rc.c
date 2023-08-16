@@ -80,7 +80,7 @@ enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
         if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
           goto finish; /* Propagate return code */
 
-        notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) cmd);
+        notify_send(NeoMutt.notify, NT_COMMAND, i, (void *) cmd);
         break; /* Continue with next command */
       }
     }

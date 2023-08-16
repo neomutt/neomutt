@@ -188,7 +188,7 @@ void test_config_synonym(void)
 {
   log_line(__func__);
 
-  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSubset *sub = NeoMutt.sub;
   struct ConfigSet *cs = sub->cs;
 
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
@@ -202,7 +202,7 @@ void test_config_synonym(void)
 
   TEST_MSG("Expected error\n");
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
+  notify_observer_add(NeoMutt.notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
 

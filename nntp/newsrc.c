@@ -306,10 +306,10 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   bool series;
   unsigned int entries;
 
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt.sub, "sort");
   if (c_sort != SORT_ORDER)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+    cs_subset_str_native_set(NeoMutt.sub, "sort", SORT_ORDER, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
   }
 
@@ -376,7 +376,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
 
   if (c_sort != SORT_ORDER)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
+    cs_subset_str_native_set(NeoMutt.sub, "sort", c_sort, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
   }
 }
@@ -539,7 +539,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
     mutt_str_copy(file, src ? src : "", sizeof(file));
   }
 
-  const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
+  const char *const c_news_cache_dir = cs_subset_path(NeoMutt.sub, "news_cache_dir");
   snprintf(dst, dstlen, "%s/%s", c_news_cache_dir, file);
 
   /* remove trailing slash */
@@ -716,7 +716,7 @@ struct HeaderCache *nntp_hcache_open(struct NntpMboxData *mdata)
   struct Url url = { 0 };
   char file[PATH_MAX] = { 0 };
 
-  const bool c_save_unsubscribed = cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
+  const bool c_save_unsubscribed = cs_subset_bool(NeoMutt.sub, "save_unsubscribed");
   if (!mdata->adata || !mdata->adata->cacheable || !mdata->adata->conn || !mdata->group ||
       !(mdata->newsrc_ent || mdata->subscribed || c_save_unsubscribed))
   {
@@ -726,7 +726,7 @@ struct HeaderCache *nntp_hcache_open(struct NntpMboxData *mdata)
   mutt_account_tourl(&mdata->adata->conn->account, &url);
   url.path = mdata->group;
   url_tostring(&url, file, sizeof(file), U_PATH);
-  const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
+  const char *const c_news_cache_dir = cs_subset_path(NeoMutt.sub, "news_cache_dir");
   return hcache_open(c_news_cache_dir, file, nntp_hcache_namer);
 }
 
@@ -887,7 +887,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
           if (!S_ISDIR(st.st_mode))
         continue;
 
-      const bool c_save_unsubscribed = cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
+      const bool c_save_unsubscribed = cs_subset_bool(NeoMutt.sub, "save_unsubscribed");
       mdata = mutt_hash_find(adata->groups_hash, group);
       if (!mdata)
       {
@@ -993,9 +993,9 @@ static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
   {
     case MUTT_CA_LOGIN:
     case MUTT_CA_USER:
-      return cs_subset_string(NeoMutt->sub, "nntp_user");
+      return cs_subset_string(NeoMutt.sub, "nntp_user");
     case MUTT_CA_PASS:
-      return cs_subset_string(NeoMutt->sub, "nntp_pass");
+      return cs_subset_string(NeoMutt.sub, "nntp_pass");
     case MUTT_CA_OAUTH_CMD:
     case MUTT_CA_HOST:
     default:
@@ -1111,7 +1111,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
 
   /* try to create cache directory and enable caching */
   adata->cacheable = false;
-  const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
+  const char *const c_news_cache_dir = cs_subset_path(NeoMutt.sub, "news_cache_dir");
   if ((rc >= 0) && c_news_cache_dir)
   {
     cache_expand(file, sizeof(file), &conn->account, NULL);
@@ -1125,7 +1125,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   /* load .newsrc */
   if (rc >= 0)
   {
-    const char *const c_newsrc = cs_subset_path(NeoMutt->sub, "newsrc");
+    const char *const c_newsrc = cs_subset_path(NeoMutt.sub, "newsrc");
     mutt_expando_format(file, sizeof(file), 0, sizeof(file), NONULL(c_newsrc),
                         nntp_format_str, (intptr_t) adata, MUTT_FORMAT_NO_FLAGS);
     mutt_expand_path(file, sizeof(file));
@@ -1258,7 +1258,7 @@ void nntp_article_status(struct Mailbox *m, struct Email *e, char *group, anum_t
     return;
 
   /* article isn't read but cached, it's old */
-  const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
+  const bool c_mark_old = cs_subset_bool(NeoMutt.sub, "mark_old");
   if (c_mark_old)
     e->old = true;
 }
@@ -1304,7 +1304,7 @@ struct NntpMboxData *mutt_newsgroup_unsubscribe(struct NntpAccountData *adata, c
     return NULL;
 
   mdata->subscribed = false;
-  const bool c_save_unsubscribed = cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
+  const bool c_save_unsubscribed = cs_subset_bool(NeoMutt.sub, "save_unsubscribed");
   if (!c_save_unsubscribed)
   {
     mdata->newsrc_len = 0;

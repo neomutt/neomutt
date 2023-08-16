@@ -158,7 +158,7 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
     buf_copy(prompt, scratch);
   }
 
-  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
+  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt.sub, "bounce");
   if (query_quadoption(c_bounce, buf_string(prompt)) != MUTT_YES)
   {
     msgwin_clear_text();
@@ -179,7 +179,7 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
       break;
     }
 
-    rc = mutt_bounce_message(msg->fp, m, e, &al, NeoMutt->sub);
+    rc = mutt_bounce_message(msg->fp, m, e, &al, NeoMutt.sub);
     mx_msg_close(m, &msg);
 
     if (rc < 0)
@@ -212,8 +212,8 @@ static void pipe_set_flags(bool decode, bool print, CopyMessageFlags *cmflags,
     *chflags |= CH_DECODE | CH_REORDER;
     *cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
 
-    const bool c_print_decode_weed = cs_subset_bool(NeoMutt->sub, "print_decode_weed");
-    const bool c_pipe_decode_weed = cs_subset_bool(NeoMutt->sub, "pipe_decode_weed");
+    const bool c_print_decode_weed = cs_subset_bool(NeoMutt.sub, "print_decode_weed");
+    const bool c_pipe_decode_weed = cs_subset_bool(NeoMutt.sub, "pipe_decode_weed");
     if (print ? c_print_decode_weed : c_pipe_decode_weed)
     {
       *chflags |= CH_WEED;
@@ -410,7 +410,7 @@ static int pipe_message(struct Mailbox *m, struct EmailArray *ea, const char *cm
     }
   }
 
-  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+  const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
   if ((rc != 0) || c_wait_key)
     mutt_any_key_to_continue(NULL);
   return rc;
@@ -438,9 +438,9 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
     goto cleanup;
 
   buf_expand_path(buf);
-  const bool c_pipe_decode = cs_subset_bool(NeoMutt->sub, "pipe_decode");
-  const bool c_pipe_split = cs_subset_bool(NeoMutt->sub, "pipe_split");
-  const char *const c_pipe_sep = cs_subset_string(NeoMutt->sub, "pipe_sep");
+  const bool c_pipe_decode = cs_subset_bool(NeoMutt.sub, "pipe_decode");
+  const bool c_pipe_split = cs_subset_bool(NeoMutt.sub, "pipe_split");
+  const char *const c_pipe_sep = cs_subset_string(NeoMutt.sub, "pipe_sep");
   pipe_message(m, ea, buf_string(buf), c_pipe_decode, false, c_pipe_split, c_pipe_sep);
 
 cleanup:
@@ -457,8 +457,8 @@ void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
   if (!m || !ea)
     return;
 
-  const enum QuadOption c_print = cs_subset_quad(NeoMutt->sub, "print");
-  const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
+  const enum QuadOption c_print = cs_subset_quad(NeoMutt.sub, "print");
+  const char *const c_print_command = cs_subset_string(NeoMutt.sub, "print_command");
   if (c_print && !c_print_command)
   {
     mutt_message(_("No printing command has been defined"));
@@ -472,8 +472,8 @@ void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
     return;
   }
 
-  const bool c_print_decode = cs_subset_bool(NeoMutt->sub, "print_decode");
-  const bool c_print_split = cs_subset_bool(NeoMutt->sub, "print_split");
+  const bool c_print_decode = cs_subset_bool(NeoMutt.sub, "print_decode");
+  const bool c_print_split = cs_subset_bool(NeoMutt.sub, "print_split");
   if (pipe_message(m, ea, c_print_command, c_print_decode, true, c_print_split, "\f") == 0)
   {
     mutt_message(ngettext("Message printed", "Messages printed", msg_count));
@@ -550,8 +550,8 @@ bool mutt_select_sort(bool reverse)
       break;
   }
 
-  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const unsigned char c_use_threads = cs_subset_enum(NeoMutt.sub, "use_threads");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt.sub, "sort");
   int rc = CSR_ERR_CODE;
   if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
   {
@@ -560,7 +560,7 @@ bool mutt_select_sort(bool reverse)
     if (reverse)
       sort |= SORT_REVERSE;
 
-    rc = cs_subset_str_native_set(NeoMutt->sub, "sort", sort, NULL);
+    rc = cs_subset_str_native_set(NeoMutt.sub, "sort", sort, NULL);
   }
   else
   {
@@ -569,15 +569,15 @@ bool mutt_select_sort(bool reverse)
     switch (c_use_threads)
     {
       case UT_FLAT:
-        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
+        rc = cs_subset_str_native_set(NeoMutt.sub, "use_threads",
                                       reverse ? UT_REVERSE : UT_THREADS, NULL);
         break;
       case UT_THREADS:
-        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
+        rc = cs_subset_str_native_set(NeoMutt.sub, "use_threads",
                                       reverse ? UT_REVERSE : UT_FLAT, NULL);
         break;
       case UT_REVERSE:
-        rc = cs_subset_str_native_set(NeoMutt->sub, "use_threads",
+        rc = cs_subset_str_native_set(NeoMutt.sub, "use_threads",
                                       reverse ? UT_FLAT : UT_THREADS, NULL);
         break;
       default:
@@ -606,7 +606,7 @@ bool mutt_shell_escape(void)
 
   if (buf_is_empty(buf))
   {
-    const char *const c_shell = cs_subset_string(NeoMutt->sub, "shell");
+    const char *const c_shell = cs_subset_string(NeoMutt.sub, "shell");
     buf_strcpy(buf, c_shell);
   }
 
@@ -622,7 +622,7 @@ bool mutt_shell_escape(void)
   if (rc2 == -1)
     mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf_string(buf));
 
-  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+  const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
   if ((rc2 != 0) || c_wait_key)
     mutt_any_key_to_continue(NULL);
 
@@ -662,7 +662,7 @@ void mutt_enter_command(void)
   if (NeoMutt)
   {
     // Running commands could cause anything to change, so let others know
-    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_COMMAND, NULL);
+    notify_send(NeoMutt.notify, NT_GLOBAL, NT_GLOBAL_COMMAND, NULL);
   }
 
 done:
@@ -731,7 +731,7 @@ static void set_copy_flags(struct Email *e, enum MessageTransformOpt transform_o
   {
     *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN | CH_DECODE; // then decode RFC2047
     *cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
-    const bool c_copy_decode_weed = cs_subset_bool(NeoMutt->sub, "copy_decode_weed");
+    const bool c_copy_decode_weed = cs_subset_bool(NeoMutt.sub, "copy_decode_weed");
     if (c_copy_decode_weed)
     {
       *chflags |= CH_WEED; // and respect $weed
@@ -774,7 +774,7 @@ int mutt_save_message_mbox(struct Mailbox *m_src, struct Email *e, enum MessageS
   {
     mutt_set_flag(m_src, e, MUTT_DELETE, true, true);
     mutt_set_flag(m_src, e, MUTT_PURGE, true, true);
-    const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
+    const bool c_delete_untag = cs_subset_bool(NeoMutt.sub, "delete_untag");
     if (c_delete_untag)
       mutt_set_flag(m_src, e, MUTT_TAG, false, true);
   }
@@ -909,7 +909,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
         rc = 0;
         if (save_opt == SAVE_MOVE)
         {
-          const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
+          const bool c_delete_untag = cs_subset_bool(NeoMutt.sub, "delete_untag");
           if (c_delete_untag)
           {
             struct Email **ep = NULL;

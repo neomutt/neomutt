@@ -525,7 +525,7 @@ static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
   entry.uid = key_table[line];
   entry.num = line + 1;
 
-  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
+  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt.sub, "pgp_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
                       NONULL(c_pgp_entry_format), pgp_entry_format_str,
                       (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
@@ -589,7 +589,7 @@ static int pgp_key_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->sub->notify, pgp_key_config_observer, menu);
+  notify_observer_remove(NeoMutt.sub->notify, pgp_key_config_observer, menu);
   notify_observer_remove(win_menu->notify, pgp_key_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -615,7 +615,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   bool unusable = false;
   int keymax = 0;
 
-  const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
+  const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt.sub, "pgp_show_unusable");
   int i = 0;
   for (struct PgpKeyInfo *kp = keys; kp; kp = kp->next)
   {
@@ -650,7 +650,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   }
 
   sort_t f = NULL;
-  short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  short c_pgp_sort_keys = cs_subset_sort(NeoMutt.sub, "pgp_sort_keys");
   switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
@@ -686,7 +686,7 @@ struct PgpKeyInfo *dlg_select_pgp_key(struct PgpKeyInfo *keys,
   dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pgp_key_config_observer, menu);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, pgp_key_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, pgp_key_window_observer, menu->win);
 
   if (p)

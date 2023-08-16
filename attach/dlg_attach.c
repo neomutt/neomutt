@@ -195,7 +195,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'd':
     {
-      const char *const c_message_format = cs_subset_string(NeoMutt->sub, "message_format");
+      const char *const c_message_format = cs_subset_string(NeoMutt.sub, "message_format");
       if (!optional)
       {
         if (aptr->body->description)
@@ -407,7 +407,7 @@ static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   struct AttachPrivateData *priv = menu->mdata;
   struct AttachCtx *actx = priv->actx;
 
-  const char *const c_attach_format = cs_subset_string(NeoMutt->sub, "attach_format");
+  const char *const c_attach_format = cs_subset_string(NeoMutt.sub, "attach_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_attach_format),
                       attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
                       MUTT_FORMAT_ARROWCURSOR);
@@ -451,7 +451,7 @@ static int attach_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->sub->notify, attach_config_observer, menu);
+  notify_observer_remove(NeoMutt.sub->notify, attach_config_observer, menu);
   notify_observer_remove(win_menu->notify, attach_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -500,7 +500,7 @@ void dlg_select_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   menu->mdata_free = attach_private_data_free;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, attach_config_observer, menu);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, attach_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, attach_window_observer, menu->win);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);

@@ -33,5 +33,5 @@ void test_mutt_hist_read_file(void)
 {
   // void mutt_hist_read_file(void);
 
-  // config_init_history(NeoMutt->sub->cs);
+  // config_init_history(NeoMutt.sub->cs);
 }

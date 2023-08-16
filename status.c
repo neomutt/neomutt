@@ -342,7 +342,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
                                                             0);
       }
 
-      const struct MbTable *c_status_chars = cs_subset_mbtable(NeoMutt->sub, "status_chars");
+      const struct MbTable *c_status_chars = cs_subset_mbtable(NeoMutt.sub, "status_chars");
       if (!c_status_chars || !c_status_chars->len)
         buf[0] = '\0';
       else if (i >= c_status_chars->len)
@@ -370,7 +370,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 's':
     {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+      const enum SortType c_sort = cs_subset_sort(NeoMutt.sub, "sort");
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), c_sort));
       break;
     }
@@ -378,7 +378,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
     case 'S':
     {
       snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      const enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+      const enum SortType c_sort_aux = cs_subset_sort(NeoMutt.sub, "sort_aux");
       snprintf(buf, buflen, fmt, get_sort_str(tmp, sizeof(tmp), c_sort_aux));
       break;
     }

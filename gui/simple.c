@@ -86,7 +86,7 @@ static int simple_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *dlg = nc->global_data;
-  window_status_on_top(dlg, NeoMutt->sub);
+  window_status_on_top(dlg, NeoMutt.sub);
   mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
@@ -112,7 +112,7 @@ static int simple_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != dlg)
     return 0;
 
-  notify_observer_remove(NeoMutt->sub->notify, simple_config_observer, dlg);
+  notify_observer_remove(NeoMutt.sub->notify, simple_config_observer, dlg);
   notify_observer_remove(dlg->notify, simple_window_observer, dlg);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -135,12 +135,12 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
   dlg->help_menu = mtype;
   dlg->help_data = help_data;
 
-  struct MuttWindow *win_menu = menu_window_new(mtype, NeoMutt->sub);
+  struct MuttWindow *win_menu = menu_window_new(mtype, NeoMutt.sub);
   dlg->focus = win_menu;
   dlg->wdata = win_menu->wdata;
 
   struct MuttWindow *win_sbar = sbar_new();
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  const bool c_status_on_top = cs_subset_bool(NeoMutt.sub, "status_on_top");
   if (c_status_on_top)
   {
     mutt_window_add_child(dlg, win_sbar);
@@ -152,7 +152,7 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
     mutt_window_add_child(dlg, win_sbar);
   }
 
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, simple_config_observer, dlg);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, simple_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, simple_window_observer, dlg);
   dialog_push(dlg);
 

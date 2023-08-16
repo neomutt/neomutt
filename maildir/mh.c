@@ -195,7 +195,7 @@ static enum MxStatus mh_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
    * since the last m visit, there is no "new mail" */
-  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt.sub, "mail_check_recent");
   if (c_mail_check_recent && (mh_seq_changed(m) <= 0))
   {
     return MX_STATUS_OK;
@@ -604,7 +604,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
   char fn[PATH_MAX] = { 0 };
 
 #ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
 
@@ -623,7 +623,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 #ifdef USE_HCACHE
     struct stat st_lastchanged = { 0 };
     int rc = 0;
-    const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
+    const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt.sub, "maildir_header_cache_verify");
     if (c_maildir_header_cache_verify)
     {
       rc = stat(fn, &st_lastchanged);
@@ -664,7 +664,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
   hcache_close(&hc);
 #endif
 
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum SortType c_sort = cs_subset_sort(NeoMutt.sub, "sort");
   if (m && mda && (ARRAY_SIZE(mda) > 0) && (c_sort == SORT_ORDER))
   {
     mutt_debug(LL_DEBUG3, "maildir: sorting %s into natural order\n", mailbox_path(m));
@@ -752,7 +752,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCac
   {
     char path[PATH_MAX] = { 0 };
     snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
-    const bool c_mh_purge = cs_subset_bool(NeoMutt->sub, "mh_purge");
+    const bool c_mh_purge = cs_subset_bool(NeoMutt.sub, "mh_purge");
     if (c_mh_purge)
     {
 #ifdef USE_HCACHE
@@ -805,7 +805,7 @@ static int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
   rc = hcache_store(hc, e->path, strlen(e->path), e, 0);
   hcache_close(&hc);
@@ -888,7 +888,7 @@ static enum MxStatus mh_check(struct Mailbox *m)
   struct HashTable *fnames = NULL;
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
-  const bool c_check_new = cs_subset_bool(NeoMutt->sub, "check_new");
+  const bool c_check_new = cs_subset_bool(NeoMutt.sub, "check_new");
   if (!c_check_new)
     return MX_STATUS_OK;
 
@@ -1039,7 +1039,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
 
   struct HeaderCache *hc = NULL;
 #ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   if (m->type == MUTT_MH)
     hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif

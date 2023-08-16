@@ -189,7 +189,7 @@ static int op_browser_tell(struct BrowserPrivateData *priv, int op)
  */
 static int op_browser_toggle_lsub(struct BrowserPrivateData *priv, int op)
 {
-  bool_str_toggle(NeoMutt->sub, "imap_list_subscribed", NULL);
+  bool_str_toggle(NeoMutt.sub, "imap_list_subscribed", NULL);
 
   mutt_unget_op(OP_CHECK_NEW);
   return FR_SUCCESS;
@@ -229,7 +229,7 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, int op)
     char buf2[PATH_MAX];
 
     mutt_path_concat(buf2, buf_string(&LastDir), ff->name, sizeof(buf2));
-    struct Body *b = mutt_make_file_attach(buf2, NeoMutt->sub);
+    struct Body *b = mutt_make_file_attach(buf2, NeoMutt.sub);
     if (b)
     {
       mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, priv->menu->win);
@@ -486,7 +486,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, int op)
  */
 static int op_enter_mask(struct BrowserPrivateData *priv, int op)
 {
-  const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
+  const struct Regex *c_mask = cs_subset_regex(NeoMutt.sub, "mask");
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, c_mask ? c_mask->pattern : NULL);
   if (mw_get_field(_("File Mask: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
@@ -503,7 +503,7 @@ static int op_enter_mask(struct BrowserPrivateData *priv, int op)
     buf_strcpy(buf, ".");
 
   struct Buffer errmsg = buf_make(256);
-  int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", buf_string(buf), &errmsg);
+  int rc = cs_subset_str_string_set(NeoMutt.sub, "mask", buf_string(buf), &errmsg);
   buf_pool_release(&buf);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
@@ -905,7 +905,7 @@ static int op_sort(struct BrowserPrivateData *priv, int op)
     return FR_NO_ACTION;
 
   sort |= reverse ? SORT_REVERSE : 0;
-  cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "sort_browser", sort, NULL);
   browser_sort(&priv->state);
   browser_highlight_default(&priv->state, priv->menu);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
@@ -1021,7 +1021,7 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, int op)
   if (op == OP_BROWSER_GOTO_FOLDER)
   {
     /* When in mailboxes mode, disables this feature */
-    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
     if (c_folder)
     {
       mutt_debug(LL_DEBUG3, "= hit! Folder: %s, LastDir: %s\n", c_folder,

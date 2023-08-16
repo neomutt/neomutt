@@ -144,7 +144,7 @@ void mview_update(struct MailboxView *mv)
 
   mutt_clear_threads(mv->threads);
 
-  const bool c_score = cs_subset_bool(NeoMutt->sub, "score");
+  const bool c_score = cs_subset_bool(NeoMutt.sub, "score");
   struct Email *e = NULL;
   for (int msgno = 0; msgno < m->msg_count; msgno++)
   {
@@ -238,7 +238,7 @@ static void update_tables(struct MailboxView *mv)
   m->changed = false;
   m->msg_flagged = 0;
   padding = mx_msg_padding_size(m);
-  const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
+  const bool c_maildir_trash = cs_subset_bool(NeoMutt.sub, "maildir_trash");
   for (i = 0, j = 0; i < m->msg_count; i++)
   {
     if (!m->emails[i])

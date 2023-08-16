@@ -1061,7 +1061,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   char child[128];
   snprintf(child, sizeof(child), "%s:%s", account, parent);
 
-  struct ConfigSubset *sub = cs_subset_new(NULL, NULL, NeoMutt->notify);
+  struct ConfigSubset *sub = cs_subset_new(NULL, NULL, NeoMutt.notify);
   sub->cs = cs;
   struct Account *a = account_new(account, sub);
 
@@ -1124,7 +1124,7 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
 {
   log_line(__func__);
 
-  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSubset *sub = NeoMutt.sub;
   struct ConfigSet *cs = sub->cs;
 
   buf_reset(err);
@@ -1133,7 +1133,7 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
   if (!TEST_CHECK(cs_register_variables(cs, vars, DT_NO_FLAGS)))
     return false;
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
+  notify_observer_add(NeoMutt.notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
 
@@ -1171,7 +1171,7 @@ void test_config_slist(void)
   TEST_CHECK(slist_test_separator(VarsComma, err));
   TEST_CHECK(slist_test_separator(VarsSpace, err));
 
-  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSubset *sub = NeoMutt.sub;
   struct ConfigSet *cs = sub->cs;
 
   dont_fail = true;
@@ -1179,7 +1179,7 @@ void test_config_slist(void)
     return;
   dont_fail = false;
 
-  notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
+  notify_observer_add(NeoMutt.notify, NT_CONFIG, log_observer, 0);
 
   TEST_CHECK(test_native_set(sub, err));
   TEST_CHECK(test_native_get(sub, err));

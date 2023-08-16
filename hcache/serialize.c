@@ -649,7 +649,7 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   serial_restore_char(&env->list_subscribe, d, off, convert);
   serial_restore_char(&env->list_unsubscribe, d, off, convert);
 
-  const bool c_auto_subscribe = cs_subset_bool(NeoMutt->sub, "auto_subscribe");
+  const bool c_auto_subscribe = cs_subset_bool(NeoMutt.sub, "auto_subscribe");
   if (c_auto_subscribe)
     mutt_auto_subscribe(env->list_post);
 

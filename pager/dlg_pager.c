@@ -306,7 +306,7 @@ int dlg_pager(struct PagerView *pview)
   {
     if (shared->mailbox_view)
       shared->mailbox_view->msg_in_pager = shared->email->msgno;
-    const short c_pager_read_delay = cs_subset_number(NeoMutt->sub, "pager_read_delay");
+    const short c_pager_read_delay = cs_subset_number(NeoMutt.sub, "pager_read_delay");
     if (c_pager_read_delay == 0)
     {
       mutt_set_flag(shared->mailbox, shared->email, MUTT_READ, true, true);
@@ -383,7 +383,7 @@ int dlg_pager(struct PagerView *pview)
     notify_send(priv->notify, NT_PAGER, NT_PAGER_VIEW, priv);
     window_redraw(NULL);
 
-    const bool c_braille_friendly = cs_subset_bool(NeoMutt->sub, "braille_friendly");
+    const bool c_braille_friendly = cs_subset_bool(NeoMutt.sub, "braille_friendly");
     if (c_braille_friendly)
     {
       if (BrailleRow != -1)
@@ -448,10 +448,10 @@ int dlg_pager(struct PagerView *pview)
 
       if (mutt_mailbox_notify(shared->mailbox) || do_new_mail)
       {
-        const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
+        const bool c_beep_new = cs_subset_bool(NeoMutt.sub, "beep_new");
         if (c_beep_new)
           mutt_beep(true);
-        const char *const c_new_mail_command = cs_subset_string(NeoMutt->sub, "new_mail_command");
+        const char *const c_new_mail_command = cs_subset_string(NeoMutt.sub, "new_mail_command");
         if (c_new_mail_command)
         {
           char cmd[1024] = { 0 };

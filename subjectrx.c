@@ -58,7 +58,7 @@ void subjrx_init(void)
     return;
 
   SubjRxNotify = notify_new();
-  notify_set_parent(SubjRxNotify, NeoMutt->notify);
+  notify_set_parent(SubjRxNotify, NeoMutt.notify);
 }
 
 /**

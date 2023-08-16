@@ -75,7 +75,7 @@ int mix_check_message(struct Email *e)
 
   if (need_hostname)
   {
-    const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
+    const char *fqdn = mutt_fqdn(true, NeoMutt.sub);
     if (!fqdn)
     {
       mutt_error(_("Please set the hostname variable to a proper value when using mixmaster"));
@@ -104,7 +104,7 @@ int mix_send_message(struct ListHead *chain, const char *tempfile)
   struct Buffer *cmd = buf_pool_get();
   struct Buffer *cd_quoted = buf_pool_get();
 
-  const char *const c_mixmaster = cs_subset_string(NeoMutt->sub, "mixmaster");
+  const char *const c_mixmaster = cs_subset_string(NeoMutt.sub, "mixmaster");
   buf_printf(cmd, "cat %s | %s -m ", tempfile, c_mixmaster);
 
   struct ListNode *np = NULL;

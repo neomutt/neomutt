@@ -148,7 +148,7 @@ static int complete_alias_complete(struct EnterWindowData *wdata)
     ; // do nothing
 
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
-  int rc = alias_complete(wdata->buffer, NeoMutt->sub);
+  int rc = alias_complete(wdata->buffer, NeoMutt.sub);
   replace_part(wdata->state, i, buf_string(wdata->buffer));
   if (rc != 1)
   {
@@ -241,7 +241,7 @@ static int complete_alias_query(struct EnterWindowData *wdata)
   }
 
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
-  query_complete(wdata->buffer, NeoMutt->sub);
+  query_complete(wdata->buffer, NeoMutt.sub);
   replace_part(wdata->state, i, buf_string(wdata->buffer));
 
   return FR_CONTINUE;
@@ -491,7 +491,7 @@ static int op_editor_backspace(struct EnterWindowData *wdata, int op)
 
   if ((rc == FR_ERROR) && editor_buffer_is_empty(wdata->state))
   {
-    const bool c_abort_backspace = cs_subset_bool(NeoMutt->sub, "abort_backspace");
+    const bool c_abort_backspace = cs_subset_bool(NeoMutt.sub, "abort_backspace");
     if (c_abort_backspace)
     {
       buf_reset(wdata->buffer);

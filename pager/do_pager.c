@@ -84,7 +84,7 @@ static int dopager_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *dlg = nc->global_data;
-  window_status_on_top(dlg, NeoMutt->sub);
+  window_status_on_top(dlg, NeoMutt.sub);
   mutt_debug(LL_DEBUG5, "config done, request WA_REFLOW\n");
   return 0;
 }
@@ -106,7 +106,7 @@ static int dopager_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != dlg)
     return 0;
 
-  notify_observer_remove(NeoMutt->sub->notify, dopager_config_observer, dlg);
+  notify_observer_remove(NeoMutt.sub->notify, dopager_config_observer, dlg);
   notify_observer_remove(dlg->notify, dopager_window_observer, dlg);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -140,12 +140,12 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
   dlg->wdata = shared;
   dlg->wdata_free = index_shared_data_free;
 
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  const bool c_status_on_top = cs_subset_bool(NeoMutt.sub, "status_on_top");
   struct MuttWindow *panel_pager = ppanel_new(c_status_on_top, shared);
   dlg->focus = panel_pager;
   mutt_window_add_child(dlg, panel_pager);
 
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, dopager_config_observer, dlg);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, dopager_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, dopager_window_observer, dlg);
   dialog_push(dlg);
 
@@ -155,7 +155,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
 
   int rc;
 
-  const char *const c_pager = pager_get_pager(NeoMutt->sub);
+  const char *const c_pager = pager_get_pager(NeoMutt.sub);
   if (c_pager)
   {
     struct Buffer *cmd = buf_pool_get();

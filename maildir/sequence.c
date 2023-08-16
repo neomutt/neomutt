@@ -124,9 +124,9 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
   if (!mh_mkstemp(m, &fp_new, &tmpfname))
     return;
 
-  const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt->sub, "mh_seq_unseen");
-  const char *const c_mh_seq_replied = cs_subset_string(NeoMutt->sub, "mh_seq_replied");
-  const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt->sub, "mh_seq_flagged");
+  const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt.sub, "mh_seq_unseen");
+  const char *const c_mh_seq_replied = cs_subset_string(NeoMutt.sub, "mh_seq_replied");
+  const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt.sub, "mh_seq_flagged");
   snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(c_mh_seq_unseen));
   snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(c_mh_seq_replied));
   snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(c_mh_seq_flagged));
@@ -249,9 +249,9 @@ void mh_seq_update(struct Mailbox *m)
 
   struct MhSequences mhs = { 0 };
 
-  const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt->sub, "mh_seq_unseen");
-  const char *const c_mh_seq_replied = cs_subset_string(NeoMutt->sub, "mh_seq_replied");
-  const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt->sub, "mh_seq_flagged");
+  const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt.sub, "mh_seq_unseen");
+  const char *const c_mh_seq_replied = cs_subset_string(NeoMutt.sub, "mh_seq_replied");
+  const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt.sub, "mh_seq_flagged");
   snprintf(seq_unseen, sizeof(seq_unseen), "%s:", NONULL(c_mh_seq_unseen));
   snprintf(seq_replied, sizeof(seq_replied), "%s:", NONULL(c_mh_seq_replied));
   snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(c_mh_seq_flagged));
@@ -389,9 +389,9 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 
-  const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt->sub, "mh_seq_unseen");
-  const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt->sub, "mh_seq_flagged");
-  const char *const c_mh_seq_replied = cs_subset_string(NeoMutt->sub, "mh_seq_replied");
+  const char *const c_mh_seq_unseen = cs_subset_string(NeoMutt.sub, "mh_seq_unseen");
+  const char *const c_mh_seq_flagged = cs_subset_string(NeoMutt.sub, "mh_seq_flagged");
+  const char *const c_mh_seq_replied = cs_subset_string(NeoMutt.sub, "mh_seq_replied");
   while ((buf = mutt_file_read_line(buf, &sz, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
     char *t = strtok(buf, " \t:");

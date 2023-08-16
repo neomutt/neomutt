@@ -43,7 +43,7 @@ void test_config_variable(void)
 {
   log_line(__func__);
 
-  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSubset *sub = NeoMutt.sub;
   struct ConfigSet *cs = sub->cs;
 
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))

@@ -94,7 +94,7 @@ extern const struct CryptModuleSpecs CryptModSmimeGpgme;
 void crypt_init(void)
 {
 #ifdef CRYPT_BACKEND_GPGME
-  const bool c_crypt_use_gpgme = cs_subset_bool(NeoMutt->sub, "crypt_use_gpgme");
+  const bool c_crypt_use_gpgme = cs_subset_bool(NeoMutt.sub, "crypt_use_gpgme");
 #endif
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
   if (
@@ -211,7 +211,7 @@ bool crypt_pgp_valid_passphrase(void)
 int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
 #ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (c_autocrypt)
   {
     OptAutocryptGpgme = true;
@@ -248,7 +248,7 @@ int crypt_pgp_application_handler(struct Body *b, struct State *state)
 int crypt_pgp_encrypted_handler(struct Body *b, struct State *state)
 {
 #ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (c_autocrypt)
   {
     OptAutocryptGpgme = true;

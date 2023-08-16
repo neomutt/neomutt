@@ -273,7 +273,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       {
         struct Buffer result;
         buf_init(&result);
-        int rc = cs_subset_str_string_get(NeoMutt->sub, var, &result);
+        int rc = cs_subset_str_string_get(NeoMutt.sub, var, &result);
 
         if (CSR_RESULT(rc) == CSR_SUCCESS)
         {

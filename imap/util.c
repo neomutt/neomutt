@@ -79,7 +79,7 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
     return -1;
 
   struct Account *np = NULL;
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  TAILQ_FOREACH(np, &NeoMutt.accounts, entries)
   {
     if (np->type != MUTT_IMAP)
       continue;
@@ -205,13 +205,13 @@ static const char *imap_get_field(enum ConnAccountField field, void *gf_data)
   switch (field)
   {
     case MUTT_CA_LOGIN:
-      return cs_subset_string(NeoMutt->sub, "imap_login");
+      return cs_subset_string(NeoMutt.sub, "imap_login");
     case MUTT_CA_USER:
-      return cs_subset_string(NeoMutt->sub, "imap_user");
+      return cs_subset_string(NeoMutt.sub, "imap_user");
     case MUTT_CA_PASS:
-      return cs_subset_string(NeoMutt->sub, "imap_pass");
+      return cs_subset_string(NeoMutt.sub, "imap_pass");
     case MUTT_CA_OAUTH_CMD:
-      return cs_subset_string(NeoMutt->sub, "imap_oauth_refresh_command");
+      return cs_subset_string(NeoMutt.sub, "imap_oauth_refresh_command");
     case MUTT_CA_HOST:
     default:
       return NULL;
@@ -321,7 +321,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   url.path = mbox->data;
   url_tobuffer(&url, cachepath, U_PATH);
 
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   hc = hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer);
 
 cleanup:
@@ -603,7 +603,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   if (tlen && imap_account_match(&cac_home, &cac_target) &&
       mutt_strn_equal(home_mailbox, target_mailbox, hlen))
   {
-    const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
+    const char *const c_imap_delim_chars = cs_subset_string(NeoMutt.sub, "imap_delim_chars");
     if (hlen == 0)
     {
       home_match = true;
@@ -676,7 +676,7 @@ void imap_error(const char *where, const char *msg)
 char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
 {
   int i = 0;
-  const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
+  const char *const c_imap_delim_chars = cs_subset_string(NeoMutt.sub, "imap_delim_chars");
   for (; mailbox && *mailbox && (i < (plen - 1)); i++)
   {
     if ((*mailbox == delim) || (!delim && strchr(NONULL(c_imap_delim_chars), *mailbox)))
@@ -953,8 +953,8 @@ void imap_keep_alive(void)
 {
   time_t now = mutt_date_now();
   struct Account *np = NULL;
-  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
-  TAILQ_FOREACH(np, &NeoMutt->accounts, entries)
+  const short c_imap_keep_alive = cs_subset_number(NeoMutt.sub, "imap_keep_alive");
+  TAILQ_FOREACH(np, &NeoMutt.accounts, entries)
   {
     if (np->type != MUTT_IMAP)
       continue;
@@ -980,8 +980,8 @@ int imap_wait_keep_alive(pid_t pid)
   sigset_t oldmask = { 0 };
   int rc;
 
-  const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");
-  cs_subset_str_native_set(NeoMutt->sub, "imap_passive", true, NULL);
+  const bool c_imap_passive = cs_subset_bool(NeoMutt.sub, "imap_passive");
+  cs_subset_str_native_set(NeoMutt.sub, "imap_passive", true, NULL);
   OptKeepQuiet = true;
 
   sigprocmask(SIG_SETMASK, NULL, &oldmask);
@@ -996,7 +996,7 @@ int imap_wait_keep_alive(pid_t pid)
 
   sigaction(SIGALRM, &act, &oldalrm);
 
-  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
+  const short c_imap_keep_alive = cs_subset_number(NeoMutt.sub, "imap_keep_alive");
   alarm(c_imap_keep_alive);
   while ((waitpid(pid, &rc, 0) < 0) && (errno == EINTR))
   {
@@ -1011,7 +1011,7 @@ int imap_wait_keep_alive(pid_t pid)
   sigprocmask(SIG_SETMASK, &oldmask, NULL);
 
   OptKeepQuiet = false;
-  cs_subset_str_native_set(NeoMutt->sub, "imap_passive", c_imap_passive, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "imap_passive", c_imap_passive, NULL);
 
   return rc;
 }
@@ -1063,7 +1063,7 @@ bool imap_account_match(const struct ConnAccount *a1, const struct ConnAccount *
 
   const char *user = NONULL(Username);
 
-  const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
+  const char *const c_imap_user = cs_subset_string(NeoMutt.sub, "imap_user");
   if ((a1->type == MUTT_ACCT_TYPE_IMAP) && c_imap_user)
     user = c_imap_user;
 

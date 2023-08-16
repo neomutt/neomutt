@@ -33,5 +33,5 @@ void test_mutt_hist_prev(void)
 {
   // char *mutt_hist_prev(enum HistoryClass hclass);
 
-  // config_init_history(NeoMutt->sub->cs);
+  // config_init_history(NeoMutt.sub->cs);
 }

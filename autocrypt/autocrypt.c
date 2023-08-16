@@ -61,7 +61,7 @@ static int autocrypt_dir_init(bool can_create)
   int rc = 0;
   struct stat st = { 0 };
 
-  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt.sub, "autocrypt_dir");
   if (stat(c_autocrypt_dir, &st) == 0)
     return 0;
 
@@ -99,8 +99,8 @@ int mutt_autocrypt_init(bool can_create)
   if (AutocryptDB)
     return 0;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
-  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt.sub, "autocrypt_dir");
   if (!c_autocrypt || !c_autocrypt_dir)
     return -1;
 
@@ -128,7 +128,7 @@ int mutt_autocrypt_init(bool can_create)
 bail:
   OptIgnoreMacroEvents = false;
   OptMenuPopClearScreen = false;
-  cs_subset_str_native_set(NeoMutt->sub, "autocrypt", false, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "autocrypt", false, NULL);
   mutt_autocrypt_db_close();
   return -1;
 }
@@ -170,11 +170,11 @@ int mutt_autocrypt_account_init(bool prompt)
   struct Buffer *keyid = buf_pool_get();
   struct Buffer *keydata = buf_pool_get();
 
-  const struct Address *c_from = cs_subset_address(NeoMutt->sub, "from");
+  const struct Address *c_from = cs_subset_address(NeoMutt.sub, "from");
   if (c_from)
   {
     addr = mutt_addr_copy(c_from);
-    const char *const c_real_name = cs_subset_string(NeoMutt->sub, "real_name");
+    const char *const c_real_name = cs_subset_string(NeoMutt.sub, "real_name");
     if (!addr->personal && c_real_name)
       addr->personal = buf_new(c_real_name);
   }
@@ -272,7 +272,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
   bool update_db = false, insert_db = false, insert_db_history = false, import_gpg = false;
   int rc = -1;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_autocrypt)
     return 0;
 
@@ -420,7 +420,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
   bool update_db = false, insert_db = false, insert_db_history = false, import_gpg = false;
   int rc = -1;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_autocrypt)
     return 0;
 
@@ -576,7 +576,7 @@ enum AutocryptRec mutt_autocrypt_ui_recommendation(const struct Email *e, char *
   struct AddressList recips = TAILQ_HEAD_INITIALIZER(recips);
   struct Buffer *keylist_buf = NULL;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_autocrypt || mutt_autocrypt_init(false) || !e)
   {
     if (keylist)
@@ -709,7 +709,7 @@ int mutt_autocrypt_set_sign_as_default_key(struct Email *e)
   int rc = -1;
   struct AutocryptAccount *account = NULL;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_autocrypt || mutt_autocrypt_init(false) || !e)
     return -1;
 
@@ -775,7 +775,7 @@ int mutt_autocrypt_write_autocrypt_header(struct Envelope *env, FILE *fp)
   int rc = -1;
   struct AutocryptAccount *account = NULL;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_autocrypt || mutt_autocrypt_init(false) || !env)
     return -1;
 
@@ -810,7 +810,7 @@ cleanup:
  */
 int mutt_autocrypt_write_gossip_headers(struct Envelope *env, FILE *fp)
 {
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_autocrypt || mutt_autocrypt_init(false) || !env)
     return -1;
 
@@ -837,7 +837,7 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
   struct AutocryptAccount *account = NULL;
   struct Address *recip = NULL;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_autocrypt || mutt_autocrypt_init(false) || !e)
     return -1;
 
@@ -924,9 +924,9 @@ int mutt_autocrypt_generate_gossip_list(struct Email *e)
 void mutt_autocrypt_scan_mailboxes(void)
 {
 #ifdef USE_HCACHE
-  const char *c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   char *old_hdrcache = mutt_str_dup(c_header_cache);
-  cs_subset_str_native_set(NeoMutt->sub, "header_cache", 0, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "header_cache", 0, NULL);
 #endif
 
   struct Buffer *folderbuf = buf_pool_get();
@@ -965,7 +965,7 @@ void mutt_autocrypt_scan_mailboxes(void)
   }
 
 #ifdef USE_HCACHE
-  cs_subset_str_native_set(NeoMutt->sub, "header_cache", (intptr_t) old_hdrcache, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "header_cache", (intptr_t) old_hdrcache, NULL);
   old_hdrcache = NULL;
 #endif
   buf_pool_release(&folderbuf);

@@ -93,7 +93,7 @@ void mutt_adv_mktemp(struct Buffer *buf)
     struct Buffer *prefix = buf_pool_get();
     buf_strcpy(prefix, buf->data);
     mutt_file_sanitize_filename(prefix->data, true);
-    const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+    const char *const c_tmp_dir = cs_subset_path(NeoMutt.sub, "tmp_dir");
     buf_printf(buf, "%s/%s", NONULL(c_tmp_dir), buf_string(prefix));
 
     struct stat st = { 0 };
@@ -193,7 +193,7 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
       case '=':
       case '+':
       {
-        const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+        const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
         enum MailboxType mb_type = mx_path_probe(c_folder);
 
         /* if folder = {host} or imap[s]://host/: don't append slash */
@@ -248,7 +248,7 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
 
       case '>':
       {
-        const char *const c_mbox = cs_subset_string(NeoMutt->sub, "mbox");
+        const char *const c_mbox = cs_subset_string(NeoMutt.sub, "mbox");
         buf_strcpy(p, c_mbox);
         tail = s + 1;
         break;
@@ -256,7 +256,7 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
 
       case '<':
       {
-        const char *const c_record = cs_subset_string(NeoMutt->sub, "record");
+        const char *const c_record = cs_subset_string(NeoMutt.sub, "record");
         buf_strcpy(p, c_record);
         tail = s + 1;
         break;
@@ -271,7 +271,7 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
         }
         else
         {
-          const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+          const char *const c_spool_file = cs_subset_string(NeoMutt.sub, "spool_file");
           buf_strcpy(p, c_spool_file);
           tail = s + 1;
         }
@@ -380,7 +380,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
   memset(dest, 0, destlen);
 
-  const struct Regex *c_gecos_mask = cs_subset_regex(NeoMutt->sub, "gecos_mask");
+  const struct Regex *c_gecos_mask = cs_subset_regex(NeoMutt.sub, "gecos_mask");
   if (mutt_regex_capture(c_gecos_mask, pw->pw_gecos, 1, pat_match))
   {
     mutt_str_copy(dest, pw->pw_gecos + pat_match[0].rm_so,
@@ -490,7 +490,7 @@ void mutt_pretty_mailbox(char *buf, size_t buflen)
 
   scheme = url_check_scheme(buf);
 
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
   if ((scheme == U_IMAP) || (scheme == U_IMAPS))
   {
     imap_pretty_mailbox(buf, buflen, c_folder);
@@ -670,7 +670,7 @@ void mutt_save_path(char *buf, size_t buflen, const struct Address *addr)
   if (addr && addr->mailbox)
   {
     mutt_str_copy(buf, buf_string(addr->mailbox), buflen);
-    const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
+    const bool c_save_address = cs_subset_bool(NeoMutt.sub, "save_address");
     if (!c_save_address)
     {
       char *p = strpbrk(buf, "%@");
@@ -695,7 +695,7 @@ void buf_save_path(struct Buffer *dest, const struct Address *a)
   if (a && a->mailbox)
   {
     buf_copy(dest, a->mailbox);
-    const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
+    const bool c_save_address = cs_subset_bool(NeoMutt.sub, "save_address");
     if (!c_save_address)
     {
       char *p = strpbrk(dest->data, "%@");
@@ -754,8 +754,8 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
   mutt_str_copy(src2, src, mutt_str_len(src) + 1);
   src = src2;
 
-  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
-  const char *const c_arrow_string = cs_subset_string(NeoMutt->sub, "arrow_string");
+  const bool c_arrow_cursor = cs_subset_bool(NeoMutt.sub, "arrow_cursor");
+  const char *const c_arrow_string = cs_subset_string(NeoMutt.sub, "arrow_string");
   const int arrow_width = mutt_strwidth(c_arrow_string);
 
   prefix[0] = '\0';
@@ -1337,7 +1337,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && (mx_access(s, W_OK) == 0))
   {
-    const bool c_confirm_append = cs_subset_bool(NeoMutt->sub, "confirm_append");
+    const bool c_confirm_append = cs_subset_bool(NeoMutt.sub, "confirm_append");
     if (c_confirm_append)
     {
       struct Buffer *tmp = buf_pool_get();
@@ -1375,7 +1375,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     /* pathname does not exist */
     if (errno == ENOENT)
     {
-      const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
+      const bool c_confirm_create = cs_subset_bool(NeoMutt.sub, "confirm_create");
       if (c_confirm_create)
       {
         struct Buffer *tmp = buf_pool_get();
@@ -1422,7 +1422,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
  */
 void mutt_sleep(short s)
 {
-  const short c_sleep_time = cs_subset_number(NeoMutt->sub, "sleep_time");
+  const short c_sleep_time = cs_subset_number(NeoMutt.sub, "sleep_time");
   if (c_sleep_time > s)
     sleep(c_sleep_time);
   else if (s)
@@ -1517,7 +1517,7 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
 {
   enum MailboxType mb_type = mx_path_probe(path);
 
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
   if (mb_type == MUTT_IMAP)
   {
     imap_get_parent_path(path, buf, buflen);
@@ -1648,10 +1648,10 @@ void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
   if (!buf || (buflen == 0))
     return;
 
-  const bool c_size_show_bytes = cs_subset_bool(NeoMutt->sub, "size_show_bytes");
-  const bool c_size_show_fractions = cs_subset_bool(NeoMutt->sub, "size_show_fractions");
-  const bool c_size_show_mb = cs_subset_bool(NeoMutt->sub, "size_show_mb");
-  const bool c_size_units_on_left = cs_subset_bool(NeoMutt->sub, "size_units_on_left");
+  const bool c_size_show_bytes = cs_subset_bool(NeoMutt.sub, "size_show_bytes");
+  const bool c_size_show_fractions = cs_subset_bool(NeoMutt.sub, "size_show_fractions");
+  const bool c_size_show_mb = cs_subset_bool(NeoMutt.sub, "size_show_mb");
+  const bool c_size_units_on_left = cs_subset_bool(NeoMutt.sub, "size_units_on_left");
 
   if (c_size_show_bytes && (num < 1024))
   {

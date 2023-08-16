@@ -116,7 +116,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
 
   mutt_grouplist_add_addrlist(&gl, &tmp->addr);
 
-  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  const short c_debug_level = cs_subset_number(NeoMutt.sub, "debug_level");
   if (c_debug_level > LL_DEBUG4)
   {
     /* A group is terminated with an empty address, so check a->mailbox */
@@ -145,7 +145,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   mutt_debug(LL_NOTIFY, "%s: %s\n",
              (event == NT_ALIAS_ADD) ? "NT_ALIAS_ADD" : "NT_ALIAS_CHANGE", tmp->name);
   struct EventAlias ev_a = { tmp };
-  notify_send(NeoMutt->notify, NT_ALIAS, event, &ev_a);
+  notify_send(NeoMutt.notify, NT_ALIAS, event, &ev_a);
 
   return MUTT_CMD_SUCCESS;
 

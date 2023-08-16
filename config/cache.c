@@ -83,11 +83,11 @@ static void cache_setup(void)
   if (CacheActive)
     return; // LCOV_EXCL_LINE
 
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, cc_config_observer, NULL);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, cc_config_observer, NULL);
 
-  CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
-  CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
-  CachedMaildirFieldDelimiter = cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+  CachedAssumedCharset = cs_subset_slist(NeoMutt.sub, "assumed_charset");
+  CachedCharset = cs_subset_string(NeoMutt.sub, "charset");
+  CachedMaildirFieldDelimiter = cs_subset_string(NeoMutt.sub, "maildir_field_delimiter");
 
   CacheActive = true;
 }
@@ -101,7 +101,7 @@ const struct Slist *cc_assumed_charset(void)
   if (!CacheActive)
   {
     cache_setup();
-    CachedAssumedCharset = cs_subset_slist(NeoMutt->sub, "assumed_charset");
+    CachedAssumedCharset = cs_subset_slist(NeoMutt.sub, "assumed_charset");
   }
 
   return CachedAssumedCharset;
@@ -116,7 +116,7 @@ const char *cc_charset(void)
   if (!CacheActive)
   {
     cache_setup();
-    CachedCharset = cs_subset_string(NeoMutt->sub, "charset");
+    CachedCharset = cs_subset_string(NeoMutt.sub, "charset");
   }
 
   return CachedCharset;
@@ -131,7 +131,7 @@ const char *cc_maildir_field_delimiter(void)
   if (!CacheActive)
   {
     cache_setup();
-    CachedMaildirFieldDelimiter = cs_subset_string(NeoMutt->sub, "maildir_field_delimiter");
+    CachedMaildirFieldDelimiter = cs_subset_string(NeoMutt.sub, "maildir_field_delimiter");
   }
 
   return CachedMaildirFieldDelimiter;
@@ -143,7 +143,7 @@ const char *cc_maildir_field_delimiter(void)
 void config_cache_cleanup(void)
 {
   if (NeoMutt)
-    notify_observer_remove(NeoMutt->sub->notify, cc_config_observer, NULL);
+    notify_observer_remove(NeoMutt.sub->notify, cc_config_observer, NULL);
 
   // Don't free them, the config system owns the data
   CachedAssumedCharset = NULL;

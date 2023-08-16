@@ -297,7 +297,7 @@ static void pop_hcache_namer(const char *path, struct Buffer *dest)
  */
 static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const char *path)
 {
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   if (!adata || !adata->conn)
     return hcache_open(c_header_cache, path, NULL);
 
@@ -445,7 +445,7 @@ static int pop_fetch_headers(struct Mailbox *m)
       m->emails[i]->read = false;
       if (hcached)
       {
-        const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
+        const bool c_mark_old = cs_subset_bool(NeoMutt.sub, "mark_old");
         if (bcached)
           m->emails[i]->read = true;
         else if (c_mark_old)
@@ -476,7 +476,7 @@ static int pop_fetch_headers(struct Mailbox *m)
   /* after putting the result into our structures,
    * clean up cache, i.e. wipe messages deleted outside
    * the availability of our cache */
-  const bool c_message_cache_clean = cs_subset_bool(NeoMutt->sub, "message_cache_clean");
+  const bool c_message_cache_clean = cs_subset_bool(NeoMutt.sub, "message_cache_clean");
   if (c_message_cache_clean)
     mutt_bcache_list(adata->bcache, msg_cache_check, m);
 
@@ -510,7 +510,7 @@ static void pop_clear_cache(struct PopAccountData *adata)
  */
 void pop_fetch_mail(void)
 {
-  const char *const c_pop_host = cs_subset_string(NeoMutt->sub, "pop_host");
+  const char *const c_pop_host = cs_subset_string(NeoMutt.sub, "pop_host");
   if (!c_pop_host)
   {
     mutt_error(_("POP host is not defined"));
@@ -568,7 +568,7 @@ void pop_fetch_mail(void)
   sscanf(buf, "+OK %d %d", &msgs, &bytes);
 
   /* only get unread messages */
-  const bool c_pop_last = cs_subset_bool(NeoMutt->sub, "pop_last");
+  const bool c_pop_last = cs_subset_bool(NeoMutt.sub, "pop_last");
   if ((msgs > 0) && c_pop_last)
   {
     mutt_str_copy(buf, "LAST\r\n", sizeof(buf));
@@ -585,7 +585,7 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+  const char *const c_spool_file = cs_subset_string(NeoMutt.sub, "spool_file");
   struct Mailbox *m_spool = mx_path_resolve(c_spool_file);
 
   if (!mx_mbox_open(m_spool, MUTT_OPEN_NO_FLAGS))
@@ -596,7 +596,7 @@ void pop_fetch_mail(void)
   bool old_append = m_spool->append;
   m_spool->append = true;
 
-  const enum QuadOption c_pop_delete = cs_subset_quad(NeoMutt->sub, "pop_delete");
+  const enum QuadOption c_pop_delete = cs_subset_quad(NeoMutt.sub, "pop_delete");
   enum QuadOption delanswer = query_quadoption(c_pop_delete, _("Delete messages from server?"));
 
   snprintf(msgbuf, sizeof(msgbuf),
@@ -820,7 +820,7 @@ static enum MxStatus pop_mbox_check(struct Mailbox *m)
 
   struct PopAccountData *adata = pop_adata_get(m);
 
-  const short c_pop_check_interval = cs_subset_number(NeoMutt->sub, "pop_check_interval");
+  const short c_pop_check_interval = cs_subset_number(NeoMutt.sub, "pop_check_interval");
   if ((adata->check_time + c_pop_check_interval) > mutt_date_now())
     return MX_STATUS_OK;
 

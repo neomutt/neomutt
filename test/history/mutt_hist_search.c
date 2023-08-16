@@ -36,7 +36,7 @@ void test_mutt_hist_search(void)
 {
   // int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches);
 
-  config_init_history(NeoMutt->sub->cs);
+  config_init_history(NeoMutt.sub->cs);
 
   {
     char *matches = NULL;

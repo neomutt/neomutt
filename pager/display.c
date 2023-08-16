@@ -131,7 +131,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
 
   if (lines[line_num].cont_line)
   {
-    const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
+    const bool c_markers = cs_subset_bool(NeoMutt.sub, "markers");
     if (!cnt && c_markers)
     {
       last_color = *mutt_curses_set_color_by_id(MT_COLOR_MARKERS);
@@ -312,13 +312,13 @@ static int check_protected_header_marker(const char *p)
 bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
   bool is_quote = false;
-  const struct Regex *c_smileys = cs_subset_regex(NeoMutt->sub, "smileys");
+  const struct Regex *c_smileys = cs_subset_regex(NeoMutt.sub, "smileys");
   regmatch_t pmatch_internal[1];
 
   if (!pmatch)
     pmatch = pmatch_internal;
 
-  const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt->sub, "quote_regex");
+  const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt.sub, "quote_regex");
   if (mutt_regex_capture(c_quote_regex, line, 1, pmatch))
   {
     regmatch_t smatch[1];
@@ -367,7 +367,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   regmatch_t pmatch[1];
   bool found;
   bool null_rx;
-  const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
+  const bool c_header_color_partial = cs_subset_bool(NeoMutt.sub, "header_color_partial");
   int offset, i = 0;
 
   if ((line_num == 0) || simple_color_is_header(lines[line_num - 1].cid) ||
@@ -807,19 +807,19 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
                        int *pspecial, int width, struct AttrColorList *ansi_list)
 {
   int space = -1; /* index of the last space or TAB */
-  const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
+  const bool c_markers = cs_subset_bool(NeoMutt.sub, "markers");
   size_t col = c_markers ? (*lines)[line_num].cont_line : 0;
   size_t k;
   int ch, vch, last_special = -1, special = 0, t;
   wchar_t wc = 0;
   mbstate_t mbstate = { 0 }; // FIXME: this should come from lines
-  const size_t c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+  const size_t c_wrap = cs_subset_number(NeoMutt.sub, "wrap");
   size_t wrap_cols = mutt_window_wrap_cols(width, (flags & MUTT_PAGER_NOWRAP) ? 0 : c_wrap);
 
   if (check_attachment_marker((char *) buf) == 0)
     wrap_cols = width;
 
-  const bool c_allow_ansi = cs_subset_bool(NeoMutt->sub, "allow_ansi");
+  const bool c_allow_ansi = cs_subset_bool(NeoMutt.sub, "allow_ansi");
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {
     /* Handle ANSI sequences */
@@ -1090,7 +1090,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     }
 
     /* this also prevents searching through the hidden lines */
-    const short c_toggle_quoted_show_levels = cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
+    const short c_toggle_quoted_show_levels = cs_subset_number(NeoMutt.sub, "toggle_quoted_show_levels");
     if ((flags & MUTT_HIDE) && (cur_line->cid == MT_COLOR_QUOTED) &&
         (!cur_line->quote || (cur_line->quote->quote_n >= c_toggle_quoted_show_levels)))
     {
@@ -1113,7 +1113,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       goto out;
     }
 
-    const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt->sub, "quote_regex");
+    const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt.sub, "quote_regex");
     if (mutt_regex_capture(c_quote_regex, (char *) fmt, 1, pmatch))
     {
       cur_line->quote = qstyle_classify(quote_list, (char *) fmt + pmatch[0].rm_so,
@@ -1194,7 +1194,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   buf_ptr = buf + cnt;
 
   /* move the break point only if smart_wrap is set */
-  const bool c_smart_wrap = cs_subset_bool(NeoMutt->sub, "smart_wrap");
+  const bool c_smart_wrap = cs_subset_bool(NeoMutt.sub, "smart_wrap");
   if (c_smart_wrap)
   {
     if ((cnt < b_read) && (ch != -1) &&

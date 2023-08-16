@@ -108,7 +108,7 @@ bool test_neomutt_create(void)
 
 void test_neomutt_destroy(void)
 {
-  struct ConfigSet *cs = NeoMutt->sub->cs;
+  struct ConfigSet *cs = NeoMutt.sub->cs;
   neomutt_free(&NeoMutt);
   cs_free(&cs);
 }

@@ -377,7 +377,7 @@ static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, i
    * Note that some colors are "special" e.g. "default" and do not fall in
    * the range from 0 to 15.  These must not be converted.
    */
-  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt.sub, "color_directcolor");
   if (c_color_directcolor && (*col < 16))
   {
     *col = color_xterm256_to_24bit(*col);
@@ -427,7 +427,7 @@ static enum CommandResult parse_color_colornnn(const char *s, uint32_t *col, int
   modify_color_by_prefix(prefix, is_fg, col, attrs);
 
 #ifdef NEOMUTT_DIRECT_COLORS
-  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt.sub, "color_directcolor");
   if (c_color_directcolor)
   {
     /* If we are running in direct color mode, we must convert the xterm
@@ -468,7 +468,7 @@ static enum CommandResult parse_color_rrggbb(const char *s, uint32_t *col, int *
   buf_printf(err, _("Direct colors support not compiled in: %s"), s);
   return MUTT_CMD_ERROR;
 #endif
-  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt.sub, "color_directcolor");
   if (!c_color_directcolor)
   {
     buf_printf(err, _("Direct colors support disabled: %s"), s);

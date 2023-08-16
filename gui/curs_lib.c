@@ -130,7 +130,7 @@ int MuttGetchTimeout = -1;
  */
 void mutt_beep(bool force)
 {
-  const bool c_beep = cs_subset_bool(NeoMutt->sub, "beep");
+  const bool c_beep = cs_subset_bool(NeoMutt.sub, "beep");
   if (force || c_beep)
     beep();
 }
@@ -292,7 +292,7 @@ struct KeyEvent mutt_getch(void)
 
   if (ch & 0x80)
   {
-    const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
+    const bool c_meta_key = cs_subset_bool(NeoMutt.sub, "meta_key");
     if (c_meta_key)
     {
       /* send ALT-x as ESC-x */
@@ -340,7 +340,7 @@ void mutt_query_exit(void)
 {
   mutt_flushinp();
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
+  const short c_timeout = cs_subset_number(NeoMutt.sub, "timeout");
   if (c_timeout != 0)
     mutt_set_timeout(-1); /* restore blocking operation */
   if (mw_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)

@@ -49,9 +49,9 @@ struct Progress;
  */
 static size_t choose_increment(enum ProgressType type)
 {
-  const short c_read_inc = cs_subset_number(NeoMutt->sub, "read_inc");
-  const short c_write_inc = cs_subset_number(NeoMutt->sub, "write_inc");
-  const short c_net_inc = cs_subset_number(NeoMutt->sub, "net_inc");
+  const short c_read_inc = cs_subset_number(NeoMutt.sub, "read_inc");
+  const short c_write_inc = cs_subset_number(NeoMutt.sub, "write_inc");
+  const short c_net_inc = cs_subset_number(NeoMutt.sub, "net_inc");
   const short *incs[] = { &c_read_inc, &c_write_inc, &c_net_inc };
   return (type >= mutt_array_size(incs)) ? 0 : *incs[type];
 }
@@ -133,7 +133,7 @@ struct Progress *progress_new(const char *msg, enum ProgressType type, size_t si
     return NULL;
   }
 
-  const short c_time_inc = cs_subset_number(NeoMutt->sub, "time_inc");
+  const short c_time_inc = cs_subset_number(NeoMutt.sub, "time_inc");
   const bool is_bytes = (type == MUTT_PROGRESS_NET);
 
   struct MuttWindow *win = progress_window_new(msg, size, size_inc, c_time_inc, is_bytes);

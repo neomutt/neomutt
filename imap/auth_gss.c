@@ -129,7 +129,7 @@ enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method
   request_buf.value = buf1->data;
   request_buf.length = buf_len(buf1);
 
-  const short c_debug_level = cs_subset_number(NeoMutt->sub, "debug_level");
+  const short c_debug_level = cs_subset_number(NeoMutt.sub, "debug_level");
   maj_stat = gss_import_name(&min_stat, &request_buf, gss_nt_service_name, &target_name);
   if (maj_stat != GSS_S_COMPLETE)
   {

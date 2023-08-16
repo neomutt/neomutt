@@ -90,9 +90,9 @@ static struct ConfigDef Vars[] = {
 
 void test_config_helpers(void)
 {
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt.sub->cs, Vars, DT_NO_FLAGS));
 
-  struct ConfigSubset *sub = NeoMutt->sub;
+  struct ConfigSubset *sub = NeoMutt.sub;
 
   TEST_CHECK(cs_subset_address(sub, "Elderberry") != NULL);
   TEST_CHECK(cs_subset_bool(sub, "Apple") == false);

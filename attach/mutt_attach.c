@@ -310,7 +310,7 @@ bool mutt_edit_attachment(struct Body *a)
   else if (a->type == TYPE_TEXT)
   {
     /* On text, default to editor */
-    const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
+    const char *const c_editor = cs_subset_string(NeoMutt.sub, "editor");
     mutt_edit_file(NONULL(c_editor), a->filename);
   }
   else
@@ -543,7 +543,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     if (!use_pager)
       mutt_endwin();
 
-    const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+    const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
     if (use_pager || use_pipe)
     {
       if (use_pager && ((fd_pager = mutt_file_open(buf_string(pagerfile),
@@ -660,7 +660,7 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
     else
     {
       StateFlags flags = STATE_DISPLAY | STATE_DISPLAY_ATTACH;
-      const char *const c_pager = pager_get_pager(NeoMutt->sub);
+      const char *const c_pager = pager_get_pager(NeoMutt.sub);
       if (!c_pager)
         flags |= STATE_PAGER;
 
@@ -878,7 +878,7 @@ bail:
   if ((pid > 0) && (filter_wait(pid) != 0))
     rc = 0;
 
-  const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+  const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
   if ((rc == 0) || c_wait_key)
     mutt_any_key_to_continue(NULL);
   return rc;
@@ -1185,7 +1185,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
 
     mutt_endwin();
 
-    const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+    const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
     /* interactive program */
     if (piped)
     {
@@ -1231,7 +1231,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
     goto out;
   }
 
-  const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
+  const char *const c_print_command = cs_subset_string(NeoMutt.sub, "print_command");
   if (mutt_istr_equal("text/plain", type) || mutt_istr_equal("application/postscript", type))
   {
     rc = (mutt_pipe_attachment(fp, a, NONULL(c_print_command), NULL));
@@ -1276,7 +1276,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_file_fclose(&fp_out);
       mutt_file_fclose(&fp_in);
 
-      const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+      const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
       if ((filter_wait(pid) != 0) || c_wait_key)
         mutt_any_key_to_continue(NULL);
       rc = 1;

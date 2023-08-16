@@ -108,7 +108,7 @@ void attach_init(void)
     return;
 
   AttachmentsNotify = notify_new();
-  notify_set_parent(AttachmentsNotify, NeoMutt->notify);
+  notify_set_parent(AttachmentsNotify, NeoMutt.notify);
 }
 
 /**
@@ -187,7 +187,7 @@ static int count_body_parts(struct Body *body)
       shallrecurse = true;
       if (mutt_istr_equal(bp->subtype, "alternative"))
       {
-        const bool c_count_alternatives = cs_subset_bool(NeoMutt->sub, "count_alternatives");
+        const bool c_count_alternatives = cs_subset_bool(NeoMutt.sub, "count_alternatives");
         shallrecurse = c_count_alternatives;
       }
     }

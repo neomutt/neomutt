@@ -50,7 +50,7 @@
 void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix,
                      const char *src, int line)
 {
-  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+  const char *const c_tmp_dir = cs_subset_path(NeoMutt.sub, "tmp_dir");
   buf_printf(buf, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s", NONULL(c_tmp_dir),
              NONULL(prefix), NONULL(ShortHostname), (int) getuid(),
              (int) getpid(), mutt_rand64(), suffix ? "." : "", NONULL(suffix));
@@ -77,7 +77,7 @@ FILE *mutt_file_mkstemp_full(const char *file, int line, const char *func)
 {
   char name[PATH_MAX] = { 0 };
 
-  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+  const char *const c_tmp_dir = cs_subset_path(NeoMutt.sub, "tmp_dir");
   int n = snprintf(name, sizeof(name), "%s/neomutt-XXXXXX", NONULL(c_tmp_dir));
   if (n < 0)
     return NULL;

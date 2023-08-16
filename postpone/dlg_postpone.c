@@ -104,7 +104,7 @@ static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int lin
   struct MailboxView *mv = menu->mdata;
   struct Mailbox *m = mv->mailbox;
 
-  const char *const c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
+  const char *const c_index_format = cs_subset_string(NeoMutt.sub, "index_format");
   mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format), m, -1,
                    m->emails[line], MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
@@ -156,7 +156,7 @@ static int postponed_window_observer(struct NotifyCallback *nc)
 
   struct Menu *menu = win_menu->wdata;
 
-  notify_observer_remove(NeoMutt->sub->notify, postponed_config_observer, menu);
+  notify_observer_remove(NeoMutt.sub->notify, postponed_config_observer, menu);
   notify_observer_remove(win_menu->notify, postponed_window_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
@@ -201,7 +201,7 @@ struct Email *dlg_select_postponed(struct Mailbox *m)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
   // Required to number the emails
-  struct MailboxView *mv = mview_new(m, NeoMutt->notify);
+  struct MailboxView *mv = mview_new(m, NeoMutt.notify);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = post_make_entry;
@@ -215,7 +215,7 @@ struct Email *dlg_select_postponed(struct Mailbox *m)
   dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, postponed_config_observer, menu);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, postponed_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, postponed_window_observer, menu->win);
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
@@ -224,8 +224,8 @@ struct Email *dlg_select_postponed(struct Mailbox *m)
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * `$sort` variable may indicate something different.   Sorting has to be
    * disabled while the postpone menu is being displayed. */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+  const enum SortType c_sort = cs_subset_sort(NeoMutt.sub, "sort");
+  cs_subset_str_native_set(NeoMutt.sub, "sort", SORT_ORDER, NULL);
 
   // ---------------------------------------------------------------------------
   // Event Loop
@@ -256,7 +256,7 @@ struct Email *dlg_select_postponed(struct Mailbox *m)
   // ---------------------------------------------------------------------------
 
   mview_free(&mv);
-  cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "sort", c_sort, NULL);
   simple_dialog_free(&dlg);
 
   return pd.email;

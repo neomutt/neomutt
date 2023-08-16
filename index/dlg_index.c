@@ -695,7 +695,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   const OpenMailboxFlags flags = read_only ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS;
   if (mx_mbox_open(m, flags))
   {
-    struct MailboxView *mv = mview_new(m, NeoMutt->notify);
+    struct MailboxView *mv = mview_new(m, NeoMutt.notify);
     index_shared_data_set_mview(shared, mv);
 
     menu->max = m->msg_count;
@@ -1065,10 +1065,10 @@ dsl_finish:
 struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 {
   /* Make sure use_threads/sort/sort_aux are coherent */
-  index_adjust_sort_threads(NeoMutt->sub);
+  index_adjust_sort_threads(NeoMutt.sub);
 
   struct IndexSharedData *shared = dlg->wdata;
-  index_shared_data_set_mview(shared, mview_new(m_init, NeoMutt->notify));
+  index_shared_data_set_mview(shared, mview_new(m_init, NeoMutt.notify));
 
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
 
@@ -1424,7 +1424,7 @@ struct MuttWindow *index_pager_init(void)
   dlg->wdata = shared;
   dlg->wdata_free = index_shared_data_free;
 
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  const bool c_status_on_top = cs_subset_bool(NeoMutt.sub, "status_on_top");
 
   struct MuttWindow *panel_index = ipanel_new(c_status_on_top, shared);
   struct MuttWindow *panel_pager = ppanel_new(c_status_on_top, shared);

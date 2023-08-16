@@ -62,7 +62,7 @@ static int tunnel_socket_open(struct Connection *conn)
   struct TunnelSockData *tunnel = mutt_mem_malloc(sizeof(struct TunnelSockData));
   conn->sockdata = tunnel;
 
-  const char *const c_tunnel = cs_subset_string(NeoMutt->sub, "tunnel");
+  const char *const c_tunnel = cs_subset_string(NeoMutt.sub, "tunnel");
   mutt_message(_("Connecting with \"%s\"..."), c_tunnel);
 
   int rc = pipe(pin);
@@ -131,7 +131,7 @@ static int tunnel_socket_open(struct Connection *conn)
 
   /* Note we are using ssf as a boolean in this case.  See the notes in
    * conn/connection.h */
-  const bool c_tunnel_is_secure = cs_subset_bool(NeoMutt->sub, "tunnel_is_secure");
+  const bool c_tunnel_is_secure = cs_subset_bool(NeoMutt.sub, "tunnel_is_secure");
   if (c_tunnel_is_secure)
     conn->ssf = 1;
 

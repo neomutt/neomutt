@@ -733,7 +733,7 @@ fail:
 static int smtp_auth_oauth_xoauth2(struct SmtpAccountData *adata, const char *method, bool xoauth2)
 {
   /* If they did not explicitly request or configure oauth then fail quietly */
-  const char *const c_smtp_oauth_refresh_command = cs_subset_string(NeoMutt->sub, "smtp_oauth_refresh_command");
+  const char *const c_smtp_oauth_refresh_command = cs_subset_string(NeoMutt.sub, "smtp_oauth_refresh_command");
   if (!method && !c_smtp_oauth_refresh_command)
     return SMTP_AUTH_UNAVAIL;
 

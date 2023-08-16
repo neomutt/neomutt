@@ -188,7 +188,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
 
   mutt_env_to_local(e->env);
   mutt_rfc822_write_header(fp_out, e->env, NULL, MUTT_WRITE_HEADER_EDITHDRS,
-                           false, false, NeoMutt->sub);
+                           false, false, NeoMutt.sub);
   fputc('\n', fp_out); /* tie off the header. */
 
   /* now copy the body of the message. */
@@ -332,7 +332,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
         p = mutt_str_skip_email_wsp(p);
 
         buf_expand_path(path);
-        body2 = mutt_make_file_attach(buf_string(path), NeoMutt->sub);
+        body2 = mutt_make_file_attach(buf_string(path), NeoMutt.sub);
         if (body2)
         {
           body2->description = mutt_str_dup(p);

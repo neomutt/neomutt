@@ -114,7 +114,7 @@ static void maildir_check_dir(struct Mailbox *m, const char *dir_name,
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the mailbox, then we know there is no recent mail.  */
-  const bool c_mail_check_recent = cs_subset_bool(NeoMutt->sub, "mail_check_recent");
+  const bool c_mail_check_recent = cs_subset_bool(NeoMutt.sub, "mail_check_recent");
   if (check_new && c_mail_check_recent)
   {
     if ((stat(buf_string(path), &st) == 0) &&
@@ -622,9 +622,9 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
   char fn[PATH_MAX] = { 0 };
 
 #ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
-  const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
+  const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt.sub, "maildir_header_cache_verify");
 #endif
 
   struct MdEmail *md = NULL;
@@ -880,7 +880,7 @@ void maildir_parse_flags(struct Email *e, const char *path)
 
         case 'T': // Trashed
         {
-          const bool c_flag_safe = cs_subset_bool(NeoMutt->sub, "flag_safe");
+          const bool c_flag_safe = cs_subset_bool(NeoMutt.sub, "flag_safe");
           if (!e->flagged || !c_flag_safe)
           {
             e->trash = true;
@@ -985,7 +985,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
   if (!e)
     return false;
 
-  const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
+  const bool c_maildir_trash = cs_subset_bool(NeoMutt.sub, "maildir_trash");
   if (e->deleted && !c_maildir_trash)
   {
     char path[PATH_MAX] = { 0 };
@@ -1214,7 +1214,7 @@ static enum MxStatus maildir_check(struct Mailbox *m)
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
   /* XXX seems like this check belongs in mx_mbox_check() rather than here.  */
-  const bool c_check_new = cs_subset_bool(NeoMutt->sub, "check_new");
+  const bool c_check_new = cs_subset_bool(NeoMutt.sub, "check_new");
   if (!c_check_new)
     return MX_STATUS_OK;
 
@@ -1402,7 +1402,7 @@ static enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 
   maildir_check_dir(m, "new", check_new, check_stats);
 
-  const bool c_maildir_check_cur = cs_subset_bool(NeoMutt->sub, "maildir_check_cur");
+  const bool c_maildir_check_cur = cs_subset_bool(NeoMutt.sub, "maildir_check_cur");
   check_new = !m->has_new && c_maildir_check_cur;
   if (check_new || check_stats)
     maildir_check_dir(m, "cur", check_new, check_stats);
@@ -1424,7 +1424,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 
   struct HeaderCache *hc = NULL;
 #ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   if (m->type == MUTT_MAILDIR)
     hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
@@ -1463,7 +1463,7 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 
   if (m->msg_deleted)
   {
-    const bool c_maildir_trash = cs_subset_bool(NeoMutt->sub, "maildir_trash");
+    const bool c_maildir_trash = cs_subset_bool(NeoMutt.sub, "maildir_trash");
     for (int i = 0, j = 0; i < m->msg_count; i++)
     {
       struct Email *e = m->emails[i];
@@ -1614,7 +1614,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
 #ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  const char *const c_header_cache = cs_subset_path(NeoMutt.sub, "header_cache");
   struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
   char *key = e->path + 3;
   int keylen = maildir_hcache_keylen(key);

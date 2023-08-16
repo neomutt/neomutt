@@ -125,7 +125,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
 
   const bool needs_head = (pat->op == MUTT_PAT_HEADER) || (pat->op == MUTT_PAT_WHOLE_MSG);
   const bool needs_body = (pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_WHOLE_MSG);
-  const bool c_thorough_search = cs_subset_bool(NeoMutt->sub, "thorough_search");
+  const bool c_thorough_search = cs_subset_bool(NeoMutt.sub, "thorough_search");
   if (c_thorough_search)
   {
     /* decode the header / body */
@@ -720,7 +720,7 @@ static int msg_search_sendmode(struct Email *e, struct Pattern *pat)
     }
 
     mutt_rfc822_write_header(fp, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE,
-                             false, false, NeoMutt->sub);
+                             false, false, NeoMutt.sub);
     fflush(fp);
     if (mutt_file_seek(fp, 0, SEEK_SET))
     {

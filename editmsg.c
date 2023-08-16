@@ -64,8 +64,8 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   buf_mktemp(fname);
 
   // Temporarily force $mbox_type to be MUTT_MBOX
-  const unsigned char c_mbox_type = cs_subset_enum(NeoMutt->sub, "mbox_type");
-  cs_subset_str_native_set(NeoMutt->sub, "mbox_type", MUTT_MBOX, NULL);
+  const unsigned char c_mbox_type = cs_subset_enum(NeoMutt.sub, "mbox_type");
+  cs_subset_str_native_set(NeoMutt.sub, "mbox_type", MUTT_MBOX, NULL);
 
   struct Mailbox *m_fname = mx_path_resolve(buf_string(fname));
   if (!mx_mbox_open(m_fname, MUTT_NEWFOLDER))
@@ -76,7 +76,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     return -1;
   }
 
-  cs_subset_str_native_set(NeoMutt->sub, "mbox_type", c_mbox_type, NULL);
+  cs_subset_str_native_set(NeoMutt.sub, "mbox_type", c_mbox_type, NULL);
 
   const CopyHeaderFlags chflags = CH_NOLEN |
                                   (((m->type == MUTT_MBOX) || (m->type == MUTT_MMDF)) ?
@@ -143,7 +143,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
+  const char *const c_editor = cs_subset_string(NeoMutt.sub, "editor");
   mutt_edit_file(NONULL(c_editor), buf_string(fname));
 
   rc = stat(buf_string(fname), &st);
@@ -252,7 +252,7 @@ bail:
     mutt_set_flag(m, e, MUTT_PURGE, true, true);
     mutt_set_flag(m, e, MUTT_READ, true, true);
 
-    const bool c_delete_untag = cs_subset_bool(NeoMutt->sub, "delete_untag");
+    const bool c_delete_untag = cs_subset_bool(NeoMutt.sub, "delete_untag");
     if (c_delete_untag)
       mutt_set_flag(m, e, MUTT_TAG, false, true);
   }

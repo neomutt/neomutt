@@ -140,7 +140,7 @@ const char *crypt_keyid(struct CryptKeyInfo *k)
   if (k->kobj && k->kobj->subkeys)
   {
     s = k->kobj->subkeys->keyid;
-    const bool c_pgp_long_ids = cs_subset_bool(NeoMutt->sub, "pgp_long_ids");
+    const bool c_pgp_long_ids = cs_subset_bool(NeoMutt.sub, "pgp_long_ids");
     if ((!c_pgp_long_ids) && (strlen(s) == 16))
     {
       /* Return only the short keyID.  */
@@ -363,7 +363,7 @@ gpgme_ctx_t create_gpgme_context(bool for_smime)
   gpgme_error_t err = gpgme_new(&ctx);
 
 #ifdef USE_AUTOCRYPT
-  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt.sub, "autocrypt_dir");
   if (!err && OptAutocryptGpgme)
     err = gpgme_ctx_set_engine_info(ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);
 #endif
@@ -428,9 +428,9 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
     goto cleanup;
   }
 
-  mutt_write_mime_header(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_header(a, fp_tmp, NeoMutt.sub);
   fputc('\n', fp_tmp);
-  mutt_write_mime_body(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_body(a, fp_tmp, NeoMutt.sub);
 
   if (convert)
   {
@@ -711,10 +711,10 @@ static int set_signer(gpgme_ctx_t ctx, const struct AddressList *al, bool for_sm
 {
   const char *signid = NULL;
 
-  const char *const c_smime_sign_as = cs_subset_string(NeoMutt->sub, "smime_sign_as");
-  const char *const c_pgp_sign_as = cs_subset_string(NeoMutt->sub, "pgp_sign_as");
-  const char *const c_pgp_default_key = cs_subset_string(NeoMutt->sub, "pgp_default_key");
-  const char *const c_smime_default_key = cs_subset_string(NeoMutt->sub, "smime_default_key");
+  const char *const c_smime_sign_as = cs_subset_string(NeoMutt.sub, "smime_sign_as");
+  const char *const c_pgp_sign_as = cs_subset_string(NeoMutt.sub, "pgp_sign_as");
+  const char *const c_pgp_default_key = cs_subset_string(NeoMutt.sub, "pgp_default_key");
+  const char *const c_smime_default_key = cs_subset_string(NeoMutt.sub, "smime_default_key");
   if (for_smime)
     signid = c_smime_sign_as ? c_smime_sign_as : c_smime_default_key;
 #ifdef USE_AUTOCRYPT
@@ -798,7 +798,7 @@ static char *encrypt_gpgme_object(gpgme_data_t plaintext, char *keylist, bool us
     if (set_signer(ctx, from, use_smime))
       goto cleanup;
 
-    const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
+    const bool c_crypt_use_pka = cs_subset_bool(NeoMutt.sub, "crypt_use_pka");
     if (c_crypt_use_pka)
     {
       err = set_pka_sig_notation(ctx);
@@ -925,7 +925,7 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
     return NULL;
   }
 
-  const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
+  const bool c_crypt_use_pka = cs_subset_bool(NeoMutt.sub, "crypt_use_pka");
   if (c_crypt_use_pka)
   {
     err = set_pka_sig_notation(ctx);
@@ -1222,7 +1222,7 @@ static int show_sig_summary(unsigned long sum, gpgme_ctx_t ctx, gpgme_key_t key,
     state_puts(state, "\n");
   }
 
-  const bool c_crypt_use_pka = cs_subset_bool(NeoMutt->sub, "crypt_use_pka");
+  const bool c_crypt_use_pka = cs_subset_bool(NeoMutt.sub, "crypt_use_pka");
   if (c_crypt_use_pka)
   {
     if ((sig->pka_trust == 1) && sig->pka_address)
@@ -3237,7 +3237,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     if (oppenc_mode)
     {
       const bool c_crypt_opportunistic_encrypt_strong_keys =
-          cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
+          cs_subset_bool(NeoMutt.sub, "crypt_opportunistic_encrypt_strong_keys");
       if (the_strong_valid_key)
         k = crypt_copy_key(the_strong_valid_key);
       else if (a_valid_addrmatch_key && !c_crypt_opportunistic_encrypt_strong_keys)
@@ -3425,14 +3425,14 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
   size_t keylist_used = 0;
   struct Address *p = NULL;
   struct CryptKeyInfo *k_info = NULL;
-  const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
+  const char *fqdn = mutt_fqdn(true, NeoMutt.sub);
   char buf[1024] = { 0 };
   bool forced_valid = false;
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
   struct Address *a = NULL;
-  const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
+  const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt.sub, "crypt_confirm_hook");
   TAILQ_FOREACH(a, addrlist, entries)
   {
     key_selected = false;
@@ -3691,7 +3691,7 @@ struct Body *pgp_gpgme_make_key_attachment(void)
      but it may be safer to keep it untranslated. */
   snprintf(buf, sizeof(buf), _("PGP Key 0x%s"), crypt_keyid(key));
   att->description = mutt_str_dup(buf);
-  mutt_update_encoding(att, NeoMutt->sub);
+  mutt_update_encoding(att, NeoMutt.sub);
 
   att->length = mutt_file_get_size(tempf);
 
@@ -3785,7 +3785,7 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.
    */
-  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(NeoMutt.sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
   {
     if (is_smime)
@@ -3860,9 +3860,9 @@ static SecurityFlags gpgme_send_menu(struct Email *e, bool is_smime)
           snprintf(input_signas, sizeof(input_signas), "0x%s", crypt_fpr_or_lkeyid(p));
 
           if (is_smime)
-            cs_subset_str_string_set(NeoMutt->sub, "smime_sign_as", input_signas, NULL);
+            cs_subset_str_string_set(NeoMutt.sub, "smime_sign_as", input_signas, NULL);
           else
-            cs_subset_str_string_set(NeoMutt->sub, "pgp_sign_as", input_signas, NULL);
+            cs_subset_str_string_set(NeoMutt.sub, "pgp_sign_as", input_signas, NULL);
 
           crypt_key_free(&p);
 

@@ -189,7 +189,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     goto cleanup;
   }
 
-  const char *const c_default_hook = cs_subset_string(NeoMutt->sub, "default_hook");
+  const char *const c_default_hook = cs_subset_string(NeoMutt.sub, "default_hook");
   if (folder_or_mbox)
   {
     /* Accidentally using the ^ mailbox shortcut in the .neomuttrc is a
@@ -452,7 +452,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
     goto out;
   }
 
-  const char *const c_default_hook = cs_subset_string(NeoMutt->sub, "default_hook");
+  const char *const c_default_hook = cs_subset_string(NeoMutt.sub, "default_hook");
   if (c_default_hook)
     mutt_check_simple(pattern, c_default_hook);
 
@@ -781,15 +781,15 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
     const struct Address *to = TAILQ_FIRST(&e->env->to);
     const struct Address *cc = TAILQ_FIRST(&e->env->cc);
     const struct Address *bcc = TAILQ_FIRST(&e->env->bcc);
-    const bool c_save_name = cs_subset_bool(NeoMutt->sub, "save_name");
-    const bool c_force_name = cs_subset_bool(NeoMutt->sub, "force_name");
-    const char *const c_record = cs_subset_string(NeoMutt->sub, "record");
+    const bool c_save_name = cs_subset_bool(NeoMutt.sub, "save_name");
+    const bool c_force_name = cs_subset_bool(NeoMutt.sub, "force_name");
+    const char *const c_record = cs_subset_string(NeoMutt.sub, "record");
     if ((c_save_name || c_force_name) && (to || cc || bcc))
     {
       const struct Address *addr = to ? to : (cc ? cc : bcc);
       struct Buffer *buf = buf_pool_get();
       mutt_safe_path(buf, addr);
-      const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+      const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
       buf_concat_path(path, NONULL(c_folder), buf_string(buf));
       buf_pool_release(&buf);
       if (!c_force_name && (mx_access(buf_string(path), W_OK) != 0))

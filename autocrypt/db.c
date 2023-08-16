@@ -84,8 +84,8 @@ int mutt_autocrypt_db_init(bool can_create)
   if (AutocryptDB)
     return 0;
 
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
-  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
+  const char *const c_autocrypt_dir = cs_subset_path(NeoMutt.sub, "autocrypt_dir");
   if (!c_autocrypt || !c_autocrypt_dir)
     return -1;
 

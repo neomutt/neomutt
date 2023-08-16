@@ -69,9 +69,9 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
   struct Envelope *prot_headers = NULL;
   regmatch_t pmatch[1];
 
-  const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
+  const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt.sub, "crypt_protected_headers_read");
 #ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (!c_crypt_protected_headers_read && !c_autocrypt)
     return;
 #else
@@ -123,7 +123,7 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
 
     mutt_str_replace(&e->env->subject, prot_headers->subject);
     FREE(&e->env->disp_subj);
-    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
+    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt.sub, "reply_regex");
     if (mutt_regex_capture(c_reply_regex, e->env->subject, 1, pmatch))
     {
       e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
@@ -141,7 +141,7 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
     mx_save_hcache(m, e);
 
     /* Also persist back to the message headers if this is set */
-    const bool c_crypt_protected_headers_save = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_save");
+    const bool c_crypt_protected_headers_save = cs_subset_bool(NeoMutt.sub, "crypt_protected_headers_save");
     if (c_crypt_protected_headers_save)
     {
       e->env->changed |= MUTT_ENV_CHANGED_SUBJECT;
@@ -203,7 +203,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
     {
       /* find out whether or not the verify signature */
       /* L10N: Used for the $crypt_verify_sig prompt */
-      const enum QuadOption c_crypt_verify_sig = cs_subset_quad(NeoMutt->sub, "crypt_verify_sig");
+      const enum QuadOption c_crypt_verify_sig = cs_subset_quad(NeoMutt.sub, "crypt_verify_sig");
       if (query_quadoption(c_crypt_verify_sig, _("Verify signature?")) == MUTT_YES)
       {
         *cmflags |= MUTT_CM_VERIFY;
@@ -234,7 +234,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
     goto cleanup;
   }
 
-  const char *const c_display_filter = cs_subset_string(NeoMutt->sub, "display_filter");
+  const char *const c_display_filter = cs_subset_string(NeoMutt.sub, "display_filter");
   if (c_display_filter)
   {
     fp_filter_out = fp_out;
@@ -256,7 +256,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
     fputs("\n\n", fp_out);
   }
 
-  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  const bool c_weed = cs_subset_bool(NeoMutt.sub, "weed");
   CopyHeaderFlags chflags = (c_weed ? (CH_WEED | CH_REORDER) : CH_NO_FLAGS) |
                             CH_DECODE | CH_FROM | CH_DISPLAY;
 #ifdef USE_NOTMUCH
@@ -320,7 +320,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
     return -1;
 
   char buf[1024] = { 0 };
-  const char *const c_pager_format = cs_subset_string(NeoMutt->sub, "pager_format");
+  const char *const c_pager_format = cs_subset_string(NeoMutt.sub, "pager_format");
   const int screen_width = RootWindow->state.cols;
   mutt_make_string(buf, sizeof(buf), screen_width, NONULL(c_pager_format), m,
                    -1, e, MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
@@ -346,7 +346,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
     keypad(stdscr, true);
   if (r != -1)
     mutt_set_flag(m, e, MUTT_READ, true, true);
-  const bool c_prompt_after = cs_subset_bool(NeoMutt->sub, "prompt_after");
+  const bool c_prompt_after = cs_subset_bool(NeoMutt.sub, "prompt_after");
   if ((r != -1) && c_prompt_after)
   {
     mutt_unget_ch(mutt_any_key_to_continue(_("Command: ")));
@@ -410,7 +410,7 @@ static void notify_crypto(struct Email *e, struct Message *msg, CopyMessageFlags
 static void squash_index_panel(struct Mailbox *m, struct MuttWindow *win_index,
                                struct MuttWindow *win_pager)
 {
-  const short c_pager_index_lines = cs_subset_number(NeoMutt->sub, "pager_index_lines");
+  const short c_pager_index_lines = cs_subset_number(NeoMutt.sub, "pager_index_lines");
   if (c_pager_index_lines > 0)
   {
     win_index->size = MUTT_WIN_SIZE_FIXED;

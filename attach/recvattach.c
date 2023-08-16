@@ -168,7 +168,7 @@ static void prepend_savedir(struct Buffer *buf)
     return;
 
   struct Buffer *tmp = buf_pool_get();
-  const char *const c_attach_save_dir = cs_subset_path(NeoMutt->sub, "attach_save_dir");
+  const char *const c_attach_save_dir = cs_subset_path(NeoMutt.sub, "attach_save_dir");
   if (c_attach_save_dir)
   {
     buf_addstr(tmp, c_attach_save_dir);
@@ -436,9 +436,9 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   struct Buffer *buf = buf_pool_get();
   struct Buffer *tfile = buf_pool_get();
 
-  const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
-  const char *const c_attach_sep = cs_subset_string(NeoMutt->sub, "attach_sep");
-  const bool c_attach_save_without_prompting = cs_subset_bool(NeoMutt->sub, "attach_save_without_prompting");
+  const bool c_attach_split = cs_subset_bool(NeoMutt.sub, "attach_split");
+  const char *const c_attach_sep = cs_subset_string(NeoMutt.sub, "attach_sep");
+  const bool c_attach_save_without_prompting = cs_subset_bool(NeoMutt.sub, "attach_save_without_prompting");
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -564,7 +564,7 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
     {
       mutt_file_unlink(body->filename);
       mutt_file_rename(buf_string(tfile), body->filename);
-      mutt_update_encoding(body, NeoMutt->sub);
+      mutt_update_encoding(body, NeoMutt.sub);
       mutt_message(_("Attachment filtered"));
     }
   }
@@ -660,7 +660,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
     mutt_file_fclose(&fp_in);
   }
 
-  const char *const c_attach_sep = cs_subset_string(NeoMutt->sub, "attach_sep");
+  const char *const c_attach_sep = cs_subset_string(NeoMutt.sub, "attach_sep");
   if (c_attach_sep)
     state_puts(state, c_attach_sep);
 
@@ -687,7 +687,7 @@ static void pipe_attachment_list(const char *command, struct AttachCtx *actx,
                                  FILE *fp, bool tag, struct Body *top,
                                  bool filter, struct State *state)
 {
-  const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
+  const bool c_attach_split = cs_subset_bool(NeoMutt.sub, "attach_split");
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
@@ -739,14 +739,14 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
   buf_expand_path(buf);
 
-  const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
+  const bool c_attach_split = cs_subset_bool(NeoMutt.sub, "attach_split");
   if (!filter && !c_attach_split)
   {
     mutt_endwin();
     pid_t pid = filter_create(buf_string(buf), &state.fp_out, NULL, NULL);
     pipe_attachment_list(buf_string(buf), actx, fp, tag, top, filter, &state);
     mutt_file_fclose(&state.fp_out);
-    const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+    const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
     if ((filter_wait(pid) != 0) || c_wait_key)
       mutt_any_key_to_continue(NULL);
   }
@@ -811,8 +811,8 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 {
   char type[256] = { 0 };
 
-  const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
-  const char *const c_attach_sep = cs_subset_string(NeoMutt->sub, "attach_sep");
+  const bool c_attach_split = cs_subset_bool(NeoMutt.sub, "attach_split");
+  const char *const c_attach_sep = cs_subset_string(NeoMutt.sub, "attach_sep");
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
@@ -893,11 +893,11 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
            tag ? ngettext("Print tagged attachment?", "Print %d tagged attachments?", tagmsgcount) :
                  _("Print attachment?"),
            tagmsgcount);
-  const enum QuadOption c_print = cs_subset_quad(NeoMutt->sub, "print");
+  const enum QuadOption c_print = cs_subset_quad(NeoMutt.sub, "print");
   if (query_quadoption(c_print, prompt) != MUTT_YES)
     return;
 
-  const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
+  const bool c_attach_split = cs_subset_bool(NeoMutt.sub, "attach_split");
   if (c_attach_split)
   {
     print_attachment_list(actx, fp, tag, top, &state);
@@ -907,11 +907,11 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
     if (!can_print(actx, top, tag))
       return;
     mutt_endwin();
-    const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
+    const char *const c_print_command = cs_subset_string(NeoMutt.sub, "print_command");
     pid_t pid = filter_create(NONULL(c_print_command), &state.fp_out, NULL, NULL);
     print_attachment_list(actx, fp, tag, top, &state);
     mutt_file_fclose(&state.fp_out);
-    const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
+    const bool c_wait_key = cs_subset_bool(NeoMutt.sub, "wait_key");
     if ((filter_wait(pid) != 0) || c_wait_key)
       mutt_any_key_to_continue(NULL);
   }
@@ -961,7 +961,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
     switch (op)
     {
       case OP_DISPLAY_HEADERS:
-        bool_str_toggle(NeoMutt->sub, "weed", NULL);
+        bool_str_toggle(NeoMutt.sub, "weed", NULL);
         /* fallthrough */
 
       case OP_ATTACHMENT_VIEW:
@@ -1184,7 +1184,7 @@ void mutt_attach_init(struct AttachCtx *actx)
    * the outer container is of type 'multipart/digest' */
   bool digest = mutt_istr_equal(actx->email->body->subtype, "digest");
 
-  const bool c_digest_collapse = cs_subset_bool(NeoMutt->sub, "digest_collapse");
+  const bool c_digest_collapse = cs_subset_bool(NeoMutt.sub, "digest_collapse");
   for (int i = 0; i < actx->idxlen; i++)
   {
     actx->idx[i]->body->tagged = false;

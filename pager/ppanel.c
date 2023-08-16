@@ -82,7 +82,7 @@ static int ppanel_config_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ev_c->name, "status_on_top"))
   {
-    window_status_on_top(panel_pager, NeoMutt->sub);
+    window_status_on_top(panel_pager, NeoMutt.sub);
     mutt_debug(LL_DEBUG5, "config done\n");
   }
 
@@ -106,7 +106,7 @@ static int ppanel_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != panel_pager)
     return 0;
 
-  notify_observer_remove(NeoMutt->sub->notify, ppanel_config_observer, panel_pager);
+  notify_observer_remove(NeoMutt.sub->notify, ppanel_config_observer, panel_pager);
   notify_observer_remove(panel_pager->notify, ppanel_window_observer, panel_pager);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -145,7 +145,7 @@ struct MuttWindow *ppanel_new(bool status_on_top, struct IndexSharedData *shared
     mutt_window_add_child(panel_pager, win_pbar);
   }
 
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, ppanel_config_observer, panel_pager);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, ppanel_config_observer, panel_pager);
   notify_observer_add(panel_pager->notify, NT_WINDOW, ppanel_window_observer, panel_pager);
 
   return panel_pager;

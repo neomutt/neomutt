@@ -245,7 +245,7 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
     else if ((plen = mutt_istr_startswith(s, "old")))
     {
       s += plen;
-      edata->old = cs_subset_bool(NeoMutt->sub, "mark_old");
+      edata->old = cs_subset_bool(NeoMutt.sub, "mark_old");
     }
     else
     {
@@ -556,7 +556,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
   if (msn_end < msn_begin)
     return 0;
 
-  const long c_imap_fetch_chunk_size = cs_subset_long(NeoMutt->sub, "imap_fetch_chunk_size");
+  const long c_imap_fetch_chunk_size = cs_subset_long(NeoMutt.sub, "imap_fetch_chunk_size");
   if (c_imap_fetch_chunk_size > 0)
     max_headers_per_fetch = c_imap_fetch_chunk_size;
 
@@ -1100,14 +1100,14 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   struct Buffer *hdr_list = buf_pool_get();
   buf_strcpy(hdr_list, want_headers);
-  const char *const c_imap_headers = cs_subset_string(NeoMutt->sub, "imap_headers");
+  const char *const c_imap_headers = cs_subset_string(NeoMutt.sub, "imap_headers");
   if (c_imap_headers)
   {
     buf_addch(hdr_list, ' ');
     buf_addstr(hdr_list, c_imap_headers);
   }
 #ifdef USE_AUTOCRYPT
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (c_autocrypt)
   {
     buf_addch(hdr_list, ' ');
@@ -1368,7 +1368,7 @@ retry:
     hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
     if (mdata->modseq)
     {
-      const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
+      const bool c_imap_condstore = cs_subset_bool(NeoMutt.sub, "imap_condstore");
       if ((adata->capabilities & IMAP_CAP_CONDSTORE) && c_imap_condstore)
         has_condstore = true;
 
@@ -1798,7 +1798,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
         break;
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
-      const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
+      const bool c_confirm_create = cs_subset_bool(NeoMutt.sub, "confirm_create");
       if (c_confirm_create && (mw_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
@@ -2004,7 +2004,7 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
    * command handler */
   e->active = false;
 
-  const bool c_imap_peek = cs_subset_bool(NeoMutt->sub, "imap_peek");
+  const bool c_imap_peek = cs_subset_bool(NeoMutt.sub, "imap_peek");
   snprintf(buf, sizeof(buf), "UID FETCH %u %s", imap_edata_get(e)->uid,
            ((adata->capabilities & IMAP_CAP_IMAP4REV1) ?
                 (c_imap_peek ? "BODY.PEEK[]" : "BODY[]") :

@@ -58,7 +58,7 @@ static void curses_signal_handler(int sig)
   {
     case SIGTSTP: /* user requested a suspend */
     {
-      const bool c_suspend = cs_subset_bool(NeoMutt->sub, "suspend");
+      const bool c_suspend = cs_subset_bool(NeoMutt.sub, "suspend");
       if (!c_suspend)
         break;
       IsEndwin = isendwin();

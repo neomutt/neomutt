@@ -277,7 +277,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     {
       struct Buffer *buf = buf_pool_get();
       buf_strcpy(buf, s);
-      const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
+      const char *const c_simple_search = cs_subset_string(NeoMutt.sub, "simple_search");
       mutt_check_simple(buf, NONULL(c_simple_search));
       struct MailboxView *mv_cur = get_current_mailbox_view();
       struct Menu *menu = get_current_menu();

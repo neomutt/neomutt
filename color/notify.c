@@ -40,7 +40,7 @@ struct Notify *ColorsNotify = NULL; ///< Notifications: #ColorId, #EventColor
 void color_notify_init(void)
 {
   ColorsNotify = notify_new();
-  notify_set_parent(ColorsNotify, NeoMutt->notify);
+  notify_set_parent(ColorsNotify, NeoMutt.notify);
 }
 
 /**

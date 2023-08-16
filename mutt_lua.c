@@ -158,7 +158,7 @@ static int lua_mutt_set(lua_State *l)
   mutt_debug(LL_DEBUG2, " * lua_mutt_set(%s)\n", param);
 
   struct Buffer err = buf_make(256);
-  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
+  struct HashElem *he = cs_subset_lookup(NeoMutt.sub, param);
   if (!he)
   {
     // In case it is a my_var, we have to create it
@@ -167,7 +167,7 @@ static int lua_mutt_set(lua_State *l)
       struct ConfigDef my_cdef = { 0 };
       my_cdef.name = param;
       my_cdef.type = DT_MYVAR;
-      he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, &err);
+      he = cs_create_variable(NeoMutt.sub->cs, &my_cdef, &err);
       if (!he)
         return -1;
     }
@@ -201,7 +201,7 @@ static int lua_mutt_set(lua_State *l)
       if (DTYPE(he->type) == DT_PATH)
         buf_expand_path(&value_buf);
 
-      int rv = cs_subset_he_string_set(NeoMutt->sub, he, value_buf.data, &err);
+      int rv = cs_subset_he_string_set(NeoMutt.sub, he, value_buf.data, &err);
       buf_dealloc(&value_buf);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
@@ -211,7 +211,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_QUAD:
     {
       const intptr_t value = lua_tointeger(l, -1);
-      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, &err);
+      int rv = cs_subset_he_native_set(NeoMutt.sub, he, value, &err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -219,7 +219,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_BOOL:
     {
       const intptr_t value = lua_toboolean(l, -1);
-      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, &err);
+      int rv = cs_subset_he_native_set(NeoMutt.sub, he, value, &err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -245,7 +245,7 @@ static int lua_mutt_get(lua_State *l)
   const char *param = lua_tostring(l, -1);
   mutt_debug(LL_DEBUG2, " * lua_mutt_get(%s)\n", param);
 
-  struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
+  struct HashElem *he = cs_subset_lookup(NeoMutt.sub, param);
   if (!he)
   {
     mutt_debug(LL_DEBUG2, " * error\n");
@@ -267,7 +267,7 @@ static int lua_mutt_get(lua_State *l)
     case DT_STRING:
     {
       struct Buffer value = buf_make(256);
-      int rc = cs_subset_he_string_get(NeoMutt->sub, he, &value);
+      int rc = cs_subset_he_string_get(NeoMutt.sub, he, &value);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
         buf_dealloc(&value);

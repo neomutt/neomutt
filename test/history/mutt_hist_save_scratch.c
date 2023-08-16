@@ -36,7 +36,7 @@ void test_mutt_hist_save_scratch(void)
 {
   // void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
 
-  config_init_history(NeoMutt->sub->cs);
+  config_init_history(NeoMutt.sub->cs);
 
   {
     mutt_hist_save_scratch(0, NULL);

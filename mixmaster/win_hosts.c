@@ -198,7 +198,7 @@ static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
   if (!r)
     return;
 
-  const char *const c_mix_entry_format = cs_subset_string(NeoMutt->sub, "mix_entry_format");
+  const char *const c_mix_entry_format = cs_subset_string(NeoMutt.sub, "mix_entry_format");
   mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_mix_entry_format),
                       mix_format_str, (intptr_t) *r, MUTT_FORMAT_ARROWCURSOR);
 }
@@ -210,7 +210,7 @@ static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
  */
 struct MuttWindow *win_hosts_new(struct RemailerArray *ra)
 {
-  struct MuttWindow *win_hosts = menu_window_new(MENU_MIX, NeoMutt->sub);
+  struct MuttWindow *win_hosts = menu_window_new(MENU_MIX, NeoMutt.sub);
   win_hosts->focus = win_hosts;
 
   struct Menu *menu = win_hosts->wdata;

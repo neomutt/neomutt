@@ -33,5 +33,5 @@ void test_mutt_hist_reset_state(void)
 {
   // void mutt_hist_reset_state(enum HistoryClass hclass);
 
-  // config_init_history(NeoMutt->sub->cs);
+  // config_init_history(NeoMutt.sub->cs);
 }

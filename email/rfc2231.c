@@ -255,7 +255,7 @@ void rfc2231_decode_parameters(struct ParameterList *pl)
   purge_empty_parameters(pl);
 
   struct Parameter *np = NULL, *tmp = NULL;
-  const bool c_rfc2047_parameters = cs_subset_bool(NeoMutt->sub, "rfc2047_parameters");
+  const bool c_rfc2047_parameters = cs_subset_bool(NeoMutt.sub, "rfc2047_parameters");
   const struct Slist *c_assumed_charset = cc_assumed_charset();
   const char *c_charset = cc_charset();
 
@@ -380,7 +380,7 @@ size_t rfc2231_encode_string(struct ParameterList *head, const char *attribute, 
 
   if (encode)
   {
-    const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
+    const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt.sub, "send_charset");
     const char *c_charset = cc_charset();
     if (c_charset && c_send_charset)
     {

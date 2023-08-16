@@ -81,7 +81,7 @@ static int socket_connect(int fd, struct sockaddr *sa)
     return -1;
   }
 
-  const short c_socket_timeout = cs_subset_number(NeoMutt->sub, "socket_timeout");
+  const short c_socket_timeout = cs_subset_number(NeoMutt.sub, "socket_timeout");
   if (c_socket_timeout > 0)
     alarm(c_socket_timeout);
 
@@ -144,7 +144,7 @@ int raw_socket_open(struct Connection *conn)
   /* we accept v4 or v6 STREAM sockets */
   memset(&hints, 0, sizeof(hints));
 
-  const bool c_use_ipv6 = cs_subset_bool(NeoMutt->sub, "use_ipv6");
+  const bool c_use_ipv6 = cs_subset_bool(NeoMutt.sub, "use_ipv6");
   if (c_use_ipv6)
     hints.ai_family = AF_UNSPEC;
   else

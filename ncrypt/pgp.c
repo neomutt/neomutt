@@ -107,7 +107,7 @@ bool pgp_class_valid_passphrase(void)
 
   if (rc == 0)
   {
-    const long c_pgp_timeout = cs_subset_long(NeoMutt->sub, "pgp_timeout");
+    const long c_pgp_timeout = cs_subset_long(NeoMutt.sub, "pgp_timeout");
     PgpExptime = mutt_date_add_timeout(mutt_date_now(), c_pgp_timeout);
     return true;
   }
@@ -130,7 +130,7 @@ bool pgp_use_gpg_agent(void)
   char *tty = NULL;
 
   /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
-  const bool c_pgp_use_gpg_agent = cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
+  const bool c_pgp_use_gpg_agent = cs_subset_bool(NeoMutt.sub, "pgp_use_gpg_agent");
   if (!c_pgp_use_gpg_agent)
     return false;
 
@@ -151,7 +151,7 @@ bool pgp_use_gpg_agent(void)
  */
 static struct PgpKeyInfo *key_parent(struct PgpKeyInfo *k)
 {
-  const bool c_pgp_ignore_subkeys = cs_subset_bool(NeoMutt->sub, "pgp_ignore_subkeys");
+  const bool c_pgp_ignore_subkeys = cs_subset_bool(NeoMutt.sub, "pgp_ignore_subkeys");
   if ((k->flags & KEYFLAG_SUBKEY) && k->parent && c_pgp_ignore_subkeys)
     k = k->parent;
 
@@ -191,7 +191,7 @@ char *pgp_short_keyid(struct PgpKeyInfo *k)
  */
 char *pgp_this_keyid(struct PgpKeyInfo *k)
 {
-  const bool c_pgp_long_ids = cs_subset_bool(NeoMutt->sub, "pgp_long_ids");
+  const bool c_pgp_long_ids = cs_subset_bool(NeoMutt.sub, "pgp_long_ids");
   if (c_pgp_long_ids)
     return k->keyid;
   return k->keyid + 8;
@@ -256,7 +256,7 @@ static int pgp_copy_checksig(FILE *fp_in, FILE *fp_out)
 
   int rc = -1;
 
-  const struct Regex *c_pgp_good_sign = cs_subset_regex(NeoMutt->sub, "pgp_good_sign");
+  const struct Regex *c_pgp_good_sign = cs_subset_regex(NeoMutt.sub, "pgp_good_sign");
   if (c_pgp_good_sign && c_pgp_good_sign->regex)
   {
     char *line = NULL;
@@ -305,7 +305,7 @@ static int pgp_check_pgp_decryption_okay_regex(FILE *fp_in)
 {
   int rc = -1;
 
-  const struct Regex *c_pgp_decryption_okay = cs_subset_regex(NeoMutt->sub, "pgp_decryption_okay");
+  const struct Regex *c_pgp_decryption_okay = cs_subset_regex(NeoMutt.sub, "pgp_decryption_okay");
   if (c_pgp_decryption_okay && c_pgp_decryption_okay->regex)
   {
     char *line = NULL;
@@ -362,7 +362,7 @@ static int pgp_check_decryption_okay(FILE *fp_in)
   size_t linelen;
   int inside_decrypt = 0;
 
-  const bool c_pgp_check_gpg_decrypt_status_fd = cs_subset_bool(NeoMutt->sub, "pgp_check_gpg_decrypt_status_fd");
+  const bool c_pgp_check_gpg_decrypt_status_fd = cs_subset_bool(NeoMutt.sub, "pgp_check_gpg_decrypt_status_fd");
   if (!c_pgp_check_gpg_decrypt_status_fd)
     return pgp_check_pgp_decryption_okay_regex(fp_in);
 
@@ -1099,7 +1099,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
   mutt_file_fclose(&fp_pgp_out);
 
   rv = filter_wait(pid);
-  const bool c_pgp_use_gpg_agent = cs_subset_bool(NeoMutt->sub, "pgp_use_gpg_agent");
+  const bool c_pgp_use_gpg_agent = cs_subset_bool(NeoMutt.sub, "pgp_use_gpg_agent");
   if (c_pgp_use_gpg_agent)
     mutt_need_hard_redraw();
 
@@ -1364,9 +1364,9 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
     goto cleanup;
   }
 
-  mutt_write_mime_header(a, fp_signed, NeoMutt->sub);
+  mutt_write_mime_header(a, fp_signed, NeoMutt.sub);
   fputc('\n', fp_signed);
-  mutt_write_mime_body(a, fp_signed, NeoMutt->sub);
+  mutt_write_mime_body(a, fp_signed, NeoMutt.sub);
   mutt_file_fclose(&fp_signed);
 
   pid = pgp_invoke_sign(&fp_pgp_in, &fp_pgp_out, &fp_pgp_err, -1, -1, -1,
@@ -1406,7 +1406,7 @@ struct Body *pgp_class_sign_message(struct Body *a, const struct AddressList *fr
     fputs(buf, stdout);
   }
 
-  const bool c_pgp_check_exit = cs_subset_bool(NeoMutt->sub, "pgp_check_exit");
+  const bool c_pgp_check_exit = cs_subset_bool(NeoMutt.sub, "pgp_check_exit");
   if (filter_wait(pid) && c_pgp_check_exit)
     empty = true;
 
@@ -1475,13 +1475,13 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
   size_t keylist_used = 0;
   struct Address *p = NULL;
   struct PgpKeyInfo *k_info = NULL;
-  const char *fqdn = mutt_fqdn(true, NeoMutt->sub);
+  const char *fqdn = mutt_fqdn(true, NeoMutt.sub);
   char buf[1024] = { 0 };
   bool key_selected;
   struct AddressList hookal = TAILQ_HEAD_INITIALIZER(hookal);
 
   struct Address *a = NULL;
-  const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt->sub, "crypt_confirm_hook");
+  const bool c_crypt_confirm_hook = cs_subset_bool(NeoMutt.sub, "crypt_confirm_hook");
   TAILQ_FOREACH(a, addrlist, entries)
   {
     key_selected = false;
@@ -1632,9 +1632,9 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign,
   if (sign)
     crypt_convert_to_7bit(a);
 
-  mutt_write_mime_header(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_header(a, fp_tmp, NeoMutt.sub);
   fputc('\n', fp_tmp);
-  mutt_write_mime_body(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_body(a, fp_tmp, NeoMutt.sub);
   mutt_file_fclose(&fp_tmp);
 
   pid = pgp_invoke_encrypt(&fp_pgp_in, NULL, NULL, -1, fileno(fp_out),
@@ -1655,7 +1655,7 @@ struct Body *pgp_class_encrypt_message(struct Body *a, char *keylist, bool sign,
   }
   mutt_file_fclose(&fp_pgp_in);
 
-  const bool c_pgp_check_exit = cs_subset_bool(NeoMutt->sub, "pgp_check_exit");
+  const bool c_pgp_check_exit = cs_subset_bool(NeoMutt.sub, "pgp_check_exit");
   if (filter_wait(pid) && c_pgp_check_exit)
     empty = true;
 
@@ -1827,7 +1827,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *a, SecurityFlags fla
     fprintf(fp_pgp_in, "%s\n", PgpPass);
   mutt_file_fclose(&fp_pgp_in);
 
-  const bool c_pgp_check_exit = cs_subset_bool(NeoMutt->sub, "pgp_check_exit");
+  const bool c_pgp_check_exit = cs_subset_bool(NeoMutt.sub, "pgp_check_exit");
   if (filter_wait(pid) && c_pgp_check_exit)
     empty = true;
 
@@ -1908,7 +1908,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
     return e->security;
 
   /* If autoinline and no crypto options set, then set inline. */
-  const bool c_pgp_auto_inline = cs_subset_bool(NeoMutt->sub, "pgp_auto_inline");
+  const bool c_pgp_auto_inline = cs_subset_bool(NeoMutt.sub, "pgp_auto_inline");
   if (c_pgp_auto_inline &&
       !((e->security & APPLICATION_PGP) && (e->security & (SEC_SIGN | SEC_ENCRYPT))))
   {
@@ -1934,7 +1934,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
    * between inline and mime, but not turn encryption on or off.
    * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
    *       letter choices for those.  */
-  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt");
+  const bool c_crypt_opportunistic_encrypt = cs_subset_bool(NeoMutt.sub, "crypt_opportunistic_encrypt");
   if (c_crypt_opportunistic_encrypt && (e->security & SEC_OPPENCRYPT))
   {
     if (e->security & (SEC_ENCRYPT | SEC_SIGN))
@@ -2023,7 +2023,7 @@ SecurityFlags pgp_class_send_menu(struct Email *e)
         {
           char input_signas[128] = { 0 };
           snprintf(input_signas, sizeof(input_signas), "0x%s", pgp_fpr_or_lkeyid(p));
-          cs_subset_str_string_set(NeoMutt->sub, "pgp_sign_as", input_signas, NULL);
+          cs_subset_str_string_set(NeoMutt.sub, "pgp_sign_as", input_signas, NULL);
           pgp_key_free(&p);
 
           e->security |= SEC_SIGN;

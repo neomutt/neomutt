@@ -184,7 +184,7 @@ static int browser_compare(const void *a, const void *b, void *arg)
  */
 void browser_sort(struct BrowserState *state)
 {
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
+  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt.sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
 #ifdef USE_NNTP
@@ -227,7 +227,7 @@ void browser_sort(struct BrowserState *state)
   struct CompareData cd = {
     .sort_fn = f,
     .sort_reverse = c_sort_browser & SORT_REVERSE,
-    .sort_dirs_first = cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"),
+    .sort_dirs_first = cs_subset_bool(NeoMutt.sub, "browser_sort_dirs_first"),
   };
 
   ARRAY_SORT(&state->entry, browser_compare, &cd);

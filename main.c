@@ -676,7 +676,7 @@ main
   alternates_init();
 
 #ifdef USE_DEBUG_NOTIFY
-  notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
+  notify_observer_add(NeoMutt.notify, NT_ALL, debug_all_observer, NULL);
 #endif
 
   if (!get_user_info(cs))
@@ -780,7 +780,7 @@ main
   {
     /* "$news_server" precedence: command line, config file, environment, system file */
     if (!cli_nntp)
-      cli_nntp = cs_subset_string(NeoMutt->sub, "news_server");
+      cli_nntp = cs_subset_string(NeoMutt.sub, "news_server");
 
     if (!cli_nntp)
       cli_nntp = mutt_str_getenv("NNTPSERVER");
@@ -872,13 +872,13 @@ main
 #ifdef USE_AUTOCRYPT
   /* Initialize autocrypt after curses messages are working,
    * because of the initial account setup screens. */
-  const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
+  const bool c_autocrypt = cs_subset_bool(NeoMutt.sub, "autocrypt");
   if (c_autocrypt)
     mutt_autocrypt_init(!(sendflags & SEND_BATCH));
 #endif
 
   /* Create the `$folder` directory if it doesn't exist. */
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
   if (!OptNoCurses && c_folder)
   {
     struct stat st = { 0 };
@@ -916,15 +916,15 @@ main
   }
   StartupComplete = true;
 
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_hist_observer, NULL);
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_log_observer, NULL);
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_config_observer, NULL);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, main_hist_observer, NULL);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, main_log_observer, NULL);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, main_config_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
     if (!OptNoCurses)
       mutt_flushinp();
-    if (mutt_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL, NeoMutt->sub) == 0)
+    if (mutt_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL, NeoMutt.sub) == 0)
       rc = 0;
     // TEST23: neomutt -p (postponed message, cancel)
     // TEST24: neomutt -p (no postponed message)
@@ -967,7 +967,7 @@ main
       }
     }
 
-    const bool c_auto_edit = cs_subset_bool(NeoMutt->sub, "auto_edit");
+    const bool c_auto_edit = cs_subset_bool(NeoMutt.sub, "auto_edit");
     if (!draft_file && c_auto_edit && TAILQ_EMPTY(&e->env->to) &&
         TAILQ_EMPTY(&e->env->cc))
     {
@@ -1100,7 +1100,7 @@ main
 
         /* Scan for neomutt header to set `$resume_draft_files` */
         struct ListNode *np = NULL, *tmp = NULL;
-        const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
+        const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt.sub, "resume_edited_draft_files");
         STAILQ_FOREACH_SAFE(np, &e->env->userhdrs, entries, tmp)
         {
           if (mutt_istr_startswith(np->data, "X-Mutt-Resume-Draft:"))
@@ -1148,12 +1148,12 @@ main
       {
         if (b)
         {
-          b->next = mutt_make_file_attach(np->data, NeoMutt->sub);
+          b->next = mutt_make_file_attach(np->data, NeoMutt.sub);
           b = b->next;
         }
         else
         {
-          b = mutt_make_file_attach(np->data, NeoMutt->sub);
+          b = mutt_make_file_attach(np->data, NeoMutt.sub);
           e->body = b;
         }
         if (!b)
@@ -1167,7 +1167,7 @@ main
       mutt_list_free(&attach);
     }
 
-    rv = mutt_send_message(sendflags, e, bodyfile, NULL, NULL, NeoMutt->sub);
+    rv = mutt_send_message(sendflags, e, bodyfile, NULL, NULL, NeoMutt.sub);
     /* We WANT the "Mail sent." and any possible, later error */
     log_queue_empty();
     if (ErrorBufMessage)
@@ -1197,21 +1197,21 @@ main
         {
           if (e->body->next)
             e->body = mutt_make_multipart(e->body);
-          mutt_encode_descriptions(e->body, true, NeoMutt->sub);
-          mutt_prepare_envelope(e->env, false, NeoMutt->sub);
+          mutt_encode_descriptions(e->body, true, NeoMutt.sub);
+          mutt_prepare_envelope(e->env, false, NeoMutt.sub);
           mutt_env_to_intl(e->env, NULL, NULL);
         }
 
-        const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
+        const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt.sub, "crypt_protected_headers_read");
         mutt_rfc822_write_header(fp_out, e->env, e->body, MUTT_WRITE_HEADER_POSTPONE, false,
                                  c_crypt_protected_headers_read &&
                                      mutt_should_hide_protected_subject(e),
-                                 NeoMutt->sub);
-        const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt->sub, "resume_edited_draft_files");
+                                 NeoMutt.sub);
+        const bool c_resume_edited_draft_files = cs_subset_bool(NeoMutt.sub, "resume_edited_draft_files");
         if (c_resume_edited_draft_files)
           fprintf(fp_out, "X-Mutt-Resume-Draft: 1\n");
         fputc('\n', fp_out);
-        if ((mutt_write_mime_body(e->body, fp_out, NeoMutt->sub) == -1))
+        if ((mutt_write_mime_body(e->body, fp_out, NeoMutt.sub) == -1))
         {
           mutt_file_fclose(&fp_out);
           email_free(&e);
@@ -1244,8 +1244,8 @@ main
     if (flags & MUTT_CLI_MAILBOX)
     {
 #ifdef USE_IMAP
-      const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");
-      cs_subset_str_native_set(NeoMutt->sub, "imap_passive", false, NULL);
+      const bool c_imap_passive = cs_subset_bool(NeoMutt.sub, "imap_passive");
+      cs_subset_str_native_set(NeoMutt.sub, "imap_passive", false, NULL);
 #endif
       const CheckStatsFlags csflags = MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_IMMEDIATE;
       if (mutt_mailbox_check(NULL, csflags) == 0)
@@ -1256,7 +1256,7 @@ main
       buf_reset(&folder);
       mutt_mailbox_next(NULL, &folder);
 #ifdef USE_IMAP
-      cs_subset_str_native_set(NeoMutt->sub, "imap_passive", c_imap_passive, NULL);
+      cs_subset_str_native_set(NeoMutt.sub, "imap_passive", c_imap_passive, NULL);
 #endif
     }
     else if (flags & MUTT_CLI_SELECT)
@@ -1264,7 +1264,7 @@ main
 #ifdef USE_NNTP
       if (flags & MUTT_CLI_NEWS)
       {
-        const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
+        const char *const c_news_server = cs_subset_string(NeoMutt.sub, "news_server");
         OptNews = true;
         struct Mailbox *m_cur = get_current_mailbox();
         CurrentNewsSrv = nntp_select_server(m_cur, c_news_server, false);
@@ -1273,7 +1273,7 @@ main
       }
       else
 #endif
-          if (TAILQ_EMPTY(&NeoMutt->accounts))
+          if (TAILQ_EMPTY(&NeoMutt.accounts))
       {
         mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
@@ -1289,7 +1289,7 @@ main
 
     if (buf_is_empty(&folder))
     {
-      const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+      const char *const c_spool_file = cs_subset_string(NeoMutt.sub, "spool_file");
       if (c_spool_file)
       {
         // Check if `$spool_file` corresponds a mailboxes' description.
@@ -1337,11 +1337,11 @@ main
     mutt_folder_hook(buf_string(&folder), NULL);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
     mutt_debug(LL_NOTIFY, "NT_GLOBAL_STARTUP\n");
-    notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
+    notify_send(NeoMutt.notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
     repeat_error = true;
     struct Mailbox *m = mx_resolve(buf_string(&folder));
-    const bool c_read_only = cs_subset_bool(NeoMutt->sub, "read_only");
+    const bool c_read_only = cs_subset_bool(NeoMutt.sub, "read_only");
     if (!mx_mbox_open(m, ((flags & MUTT_CLI_RO) || c_read_only) ? MUTT_READONLY : MUTT_OPEN_NO_FLAGS))
     {
       if (m->account)
@@ -1391,11 +1391,11 @@ main_curses:
   if (repeat_error && ErrorBufMessage)
     puts(ErrorBuf);
 main_exit:
-  if (NeoMutt && NeoMutt->sub)
+  if (NeoMutt && NeoMutt.sub)
   {
-    notify_observer_remove(NeoMutt->sub->notify, main_hist_observer, NULL);
-    notify_observer_remove(NeoMutt->sub->notify, main_log_observer, NULL);
-    notify_observer_remove(NeoMutt->sub->notify, main_config_observer, NULL);
+    notify_observer_remove(NeoMutt.sub->notify, main_hist_observer, NULL);
+    notify_observer_remove(NeoMutt.sub->notify, main_log_observer, NULL);
+    notify_observer_remove(NeoMutt.sub->notify, main_config_observer, NULL);
   }
   mutt_list_free(&commands);
   MuttLogger = log_disp_queue;

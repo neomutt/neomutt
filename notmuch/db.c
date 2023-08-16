@@ -56,13 +56,13 @@ const char *nm_db_get_filename(struct Mailbox *m)
   struct NmMboxData *mdata = nm_mdata_get(m);
   const char *db_filename = NULL;
 
-  const char *const c_nm_default_url = cs_subset_string(NeoMutt->sub, "nm_default_url");
+  const char *const c_nm_default_url = cs_subset_string(NeoMutt.sub, "nm_default_url");
   if (mdata && mdata->db_url && mdata->db_url->path)
     db_filename = mdata->db_url->path;
   else
     db_filename = c_nm_default_url;
 
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
   if (!db_filename && !c_folder)
     return NULL;
 
@@ -85,7 +85,7 @@ const char *nm_db_get_filename(struct Mailbox *m)
 static const char *get_nm_config_file(void)
 {
   const char *config_to_use = NULL;
-  const char *c_nm_config_file = cs_subset_path(NeoMutt->sub, "nm_config_file");
+  const char *c_nm_config_file = cs_subset_path(NeoMutt.sub, "nm_config_file");
 
   // Workaround the configuration system mapping "" to NULL.
   if (!c_nm_config_file)
@@ -115,7 +115,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
   notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
   char *msg = NULL;
 
-  const short c_nm_open_timeout = cs_subset_number(NeoMutt->sub, "nm_open_timeout");
+  const short c_nm_open_timeout = cs_subset_number(NeoMutt.sub, "nm_open_timeout");
   mutt_debug(LL_DEBUG1, "nm: db open '%s' %s (timeout %d)\n", filename,
              writable ? "[WRITE]" : "[READ]", c_nm_open_timeout);
 
@@ -127,7 +127,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
 #if LIBNOTMUCH_CHECK_VERSION(5, 4, 0)
     // notmuch 0.32-0.32.2 didn't bump libnotmuch version to 5.4.
     const char *config_file = get_nm_config_file();
-    const char *const c_nm_config_profile = cs_subset_string(NeoMutt->sub, "nm_config_profile");
+    const char *const c_nm_config_profile = cs_subset_string(NeoMutt.sub, "nm_config_profile");
 
     st = notmuch_database_open_with_config(filename, mode, config_file,
                                            c_nm_config_profile, &db, &msg);

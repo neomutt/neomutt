@@ -92,7 +92,7 @@ void mutt_colors_init(void)
   use_default_colors();
   color_debug(LL_DEBUG5, "COLORS = %d, COLOR_PAIRS = %d\n", COLORS, COLOR_PAIRS);
 
-  notify_set_parent(ColorsNotify, NeoMutt->notify);
+  notify_set_parent(ColorsNotify, NeoMutt.notify);
 }
 
 /**

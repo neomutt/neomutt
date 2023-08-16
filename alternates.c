@@ -63,7 +63,7 @@ void alternates_init(void)
     return;
 
   AlternatesNotify = notify_new();
-  notify_set_parent(AlternatesNotify, NeoMutt->notify);
+  notify_set_parent(AlternatesNotify, NeoMutt.notify);
 }
 
 /**

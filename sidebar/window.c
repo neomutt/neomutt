@@ -148,7 +148,7 @@ static const char *abbrev_folder(const char *mbox, const char *folder, enum Mail
     return mbox + prefix;
   }
 
-  const char *const c_sidebar_delim_chars = cs_subset_string(NeoMutt->sub, "sidebar_delim_chars");
+  const char *const c_sidebar_delim_chars = cs_subset_string(NeoMutt.sub, "sidebar_delim_chars");
   if (!c_sidebar_delim_chars)
     return NULL;
 
@@ -231,7 +231,7 @@ static const char *abbrev_url(const char *mbox, enum MailboxType type)
 static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
 {
   size_t res = 0;
-  const char *const c_sidebar_indent_string = cs_subset_string(NeoMutt->sub, "sidebar_indent_string");
+  const char *const c_sidebar_indent_string = cs_subset_string(NeoMutt.sub, "sidebar_indent_string");
   for (int i = 0; i < sbe->depth; i++)
   {
     res += mutt_str_copy(buf + res, c_sidebar_indent_string, buflen - res);
@@ -250,7 +250,7 @@ static const struct AttrColor *calc_color(const struct Mailbox *m, bool current,
 {
   const struct AttrColor *ac = NULL;
 
-  const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
+  const char *const c_spool_file = cs_subset_string(NeoMutt.sub, "spool_file");
   if (simple_color_is_set(MT_COLOR_SIDEBAR_SPOOLFILE) &&
       mutt_str_equal(mailbox_path(m), c_spool_file))
   {
@@ -556,7 +556,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
 {
   struct SidebarFormatData data = { sbe, shared };
 
-  const char *const c_sidebar_format = cs_subset_string(NeoMutt->sub, "sidebar_format");
+  const char *const c_sidebar_format = cs_subset_string(NeoMutt.sub, "sidebar_format");
   mutt_expando_format(buf, buflen, 0, width, NONULL(c_sidebar_format),
                       sidebar_format_str, (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
 
@@ -593,8 +593,8 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
 static void update_entries_visibility(struct SidebarWindowData *wdata)
 {
   /* Aliases for readability */
-  const bool c_sidebar_new_mail_only = cs_subset_bool(NeoMutt->sub, "sidebar_new_mail_only");
-  const bool c_sidebar_non_empty_mailbox_only = cs_subset_bool(NeoMutt->sub, "sidebar_non_empty_mailbox_only");
+  const bool c_sidebar_new_mail_only = cs_subset_bool(NeoMutt.sub, "sidebar_new_mail_only");
+  const bool c_sidebar_non_empty_mailbox_only = cs_subset_bool(NeoMutt.sub, "sidebar_non_empty_mailbox_only");
   struct SbEntry *sbe = NULL;
 
   struct IndexSharedData *shared = wdata->shared;
@@ -660,8 +660,8 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     return false;
 
   struct SbEntry **sbep = NULL;
-  const bool c_sidebar_new_mail_only = cs_subset_bool(NeoMutt->sub, "sidebar_new_mail_only");
-  const bool c_sidebar_non_empty_mailbox_only = cs_subset_bool(NeoMutt->sub, "sidebar_non_empty_mailbox_only");
+  const bool c_sidebar_new_mail_only = cs_subset_bool(NeoMutt.sub, "sidebar_new_mail_only");
+  const bool c_sidebar_non_empty_mailbox_only = cs_subset_bool(NeoMutt.sub, "sidebar_non_empty_mailbox_only");
 
   sbep = (wdata->opn_index >= 0) ? ARRAY_GET(&wdata->entries, wdata->opn_index) : NULL;
   const struct SbEntry *opn_entry = sbep ? *sbep : NULL;
@@ -669,7 +669,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
   const struct SbEntry *hil_entry = sbep ? *sbep : NULL;
 
   update_entries_visibility(wdata);
-  const short c_sidebar_sort_method = cs_subset_sort(NeoMutt->sub, "sidebar_sort_method");
+  const short c_sidebar_sort_method = cs_subset_sort(NeoMutt.sub, "sidebar_sort_method");
   sb_sort_entries(wdata, c_sidebar_sort_method);
 
   if (opn_entry || hil_entry)
@@ -801,7 +801,7 @@ int sb_recalc(struct MuttWindow *win)
 
     const char *path = mailbox_path(m);
 
-    const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+    const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
     // Try to abbreviate the full path
     const char *abbr = abbrev_folder(path, c_folder, m->type);
     if (!abbr)
@@ -810,11 +810,11 @@ int sb_recalc(struct MuttWindow *win)
 
     /* Compute the depth */
     const char *last_part = abbr;
-    const char *const c_sidebar_delim_chars = cs_subset_string(NeoMutt->sub, "sidebar_delim_chars");
+    const char *const c_sidebar_delim_chars = cs_subset_string(NeoMutt.sub, "sidebar_delim_chars");
     entry->depth = calc_path_depth(abbr, c_sidebar_delim_chars, &last_part);
 
     const bool short_path_is_abbr = (short_path == abbr);
-    const bool c_sidebar_short_path = cs_subset_bool(NeoMutt->sub, "sidebar_short_path");
+    const bool c_sidebar_short_path = cs_subset_bool(NeoMutt.sub, "sidebar_short_path");
     if (c_sidebar_short_path)
     {
       short_path = last_part;
@@ -822,10 +822,10 @@ int sb_recalc(struct MuttWindow *win)
 
     // Don't indent if we were unable to create an abbreviation.
     // Otherwise, the full path will be indent, and it looks unusual.
-    const bool c_sidebar_folder_indent = cs_subset_bool(NeoMutt->sub, "sidebar_folder_indent");
+    const bool c_sidebar_folder_indent = cs_subset_bool(NeoMutt.sub, "sidebar_folder_indent");
     if (c_sidebar_folder_indent && short_path_is_abbr)
     {
-      const short c_sidebar_component_depth = cs_subset_number(NeoMutt->sub, "sidebar_component_depth");
+      const short c_sidebar_component_depth = cs_subset_number(NeoMutt.sub, "sidebar_component_depth");
       if (c_sidebar_component_depth > 0)
         entry->depth -= c_sidebar_component_depth;
     }
@@ -870,14 +870,14 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
   }
 
   const int width = wdata->divider_width;
-  const char *const c_sidebar_divider_char = cs_subset_string(NeoMutt->sub, "sidebar_divider_char");
+  const char *const c_sidebar_divider_char = cs_subset_string(NeoMutt.sub, "sidebar_divider_char");
 
   const struct AttrColor *ac = simple_color_get(MT_COLOR_NORMAL);
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_BACKGROUND));
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_DIVIDER));
   mutt_curses_set_color(ac);
 
-  const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
+  const bool c_sidebar_on_right = cs_subset_bool(NeoMutt.sub, "sidebar_on_right");
   const int col = c_sidebar_on_right ? 0 : (num_cols - width);
 
   for (int i = 0; i < num_rows; i++)
@@ -912,7 +912,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
   ac = merged_color_overlay(ac, simple_color_get(MT_COLOR_SIDEBAR_BACKGROUND));
   mutt_curses_set_color(ac);
 
-  const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
+  const bool c_sidebar_on_right = cs_subset_bool(NeoMutt.sub, "sidebar_on_right");
   if (!c_sidebar_on_right)
     div_width = 0;
   for (int r = 0; r < num_rows; r++)
@@ -931,7 +931,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
 int sb_repaint(struct MuttWindow *win)
 {
   struct SidebarWindowData *wdata = sb_wdata_get(win);
-  const bool c_sidebar_on_right = cs_subset_bool(NeoMutt->sub, "sidebar_on_right");
+  const bool c_sidebar_on_right = cs_subset_bool(NeoMutt.sub, "sidebar_on_right");
 
   int row = 0;
   int num_rows = win->state.rows;

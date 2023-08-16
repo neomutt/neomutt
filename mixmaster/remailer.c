@@ -118,7 +118,7 @@ struct RemailerArray remailer_get_hosts(void)
   char *t = NULL;
   struct Remailer *p = NULL;
 
-  const char *const c_mixmaster = cs_subset_string(NeoMutt->sub, "mixmaster");
+  const char *const c_mixmaster = cs_subset_string(NeoMutt.sub, "mixmaster");
   if (!c_mixmaster)
     return ra;
 

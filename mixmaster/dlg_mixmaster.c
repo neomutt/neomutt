@@ -103,7 +103,7 @@ static int remailer_config_observer(struct NotifyCallback *nc)
     return 0;
 
   struct MuttWindow *dlg = nc->global_data;
-  window_status_on_top(dlg, NeoMutt->sub);
+  window_status_on_top(dlg, NeoMutt.sub);
   mutt_debug(LL_DEBUG5, "config done\n");
   return 0;
 }
@@ -125,7 +125,7 @@ static int remailer_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != dlg)
     return 0;
 
-  notify_observer_remove(NeoMutt->sub->notify, remailer_config_observer, dlg);
+  notify_observer_remove(NeoMutt.sub->notify, remailer_config_observer, dlg);
   notify_observer_remove(dlg->notify, remailer_window_observer, dlg);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
@@ -155,7 +155,7 @@ static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
   struct MuttWindow *win_rbar = sbar_new();
   sbar_set_title(win_rbar, _("Select a remailer chain"));
 
-  const bool c_status_on_top = cs_subset_bool(NeoMutt->sub, "status_on_top");
+  const bool c_status_on_top = cs_subset_bool(NeoMutt.sub, "status_on_top");
   if (c_status_on_top)
   {
     mutt_window_add_child(dlg, win_rbar);
@@ -171,7 +171,7 @@ static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
     mutt_window_add_child(dlg, win_rbar);
   }
 
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, remailer_config_observer, dlg);
+  notify_observer_add(NeoMutt.sub->notify, NT_CONFIG, remailer_config_observer, dlg);
   notify_observer_add(dlg->notify, NT_WINDOW, remailer_window_observer, dlg);
 
   return dlg;

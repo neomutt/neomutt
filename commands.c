@@ -243,7 +243,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   token = buf_pool_get();
   linebuf = buf_pool_get();
 
-  const char *const c_config_charset = cs_subset_string(NeoMutt->sub, "config_charset");
+  const char *const c_config_charset = cs_subset_string(NeoMutt.sub, "config_charset");
   const char *const c_charset = cc_charset();
   while ((line = mutt_file_read_line(line, &linelen, fp, &lineno, MUTT_RL_CONT)) != NULL)
   {
@@ -516,7 +516,7 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
   }
 
   // is the item defined as:
-  bool res = cs_subset_lookup(NeoMutt->sub, buf->data) // a variable?
+  bool res = cs_subset_lookup(NeoMutt.sub, buf->data) // a variable?
              || feature_enabled(buf->data)             // a compiled-in feature?
              || is_function(buf->data)                 // a function?
              || command_get(buf->data)                 // a command?
@@ -602,7 +602,7 @@ bail:
 enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
+  const char *const c_folder = cs_subset_string(NeoMutt.sub, "folder");
   while (MoreArgs(s))
   {
     struct Mailbox *m = mailbox_new();
@@ -636,7 +636,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
     struct Account *a = mx_ac_find(m);
     if (!a)
     {
-      a = account_new(NULL, NeoMutt->sub);
+      a = account_new(NULL, NeoMutt.sub);
       a->type = m->type;
       new_account = true;
     }
@@ -711,13 +711,13 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
   {
     header_update(n, buf->data);
     mutt_debug(LL_NOTIFY, "NT_HEADER_CHANGE: %s\n", buf->data);
-    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_CHANGE, &ev_h);
+    notify_send(NeoMutt.notify, NT_HEADER, NT_HEADER_CHANGE, &ev_h);
   }
   else
   {
     header_add(&UserHeader, buf->data);
     mutt_debug(LL_NOTIFY, "NT_HEADER_ADD: %s\n", buf->data);
-    notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
+    notify_send(NeoMutt.notify, NT_HEADER, NT_HEADER_ADD, &ev_h);
   }
 
   return MUTT_CMD_SUCCESS;
@@ -746,7 +746,7 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
     return MUTT_CMD_ERROR;
   }
 
-  dump_config(NeoMutt->sub->cs, flags, fp_out);
+  dump_config(NeoMutt.sub->cs, flags, fp_out);
 
   mutt_file_fclose(&fp_out);
 
@@ -1278,7 +1278,7 @@ static void do_unmailboxes(struct Mailbox *m)
   {
     struct EventMailbox ev_m = { NULL };
     mutt_debug(LL_NOTIFY, "NT_MAILBOX_CHANGE: NULL\n");
-    notify_send(NeoMutt->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+    notify_send(NeoMutt.notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
   }
   else
   {
@@ -1324,7 +1324,7 @@ enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
     buf_expand_path(buf);
 
     struct Account *a = NULL;
-    TAILQ_FOREACH(a, &NeoMutt->accounts, entries)
+    TAILQ_FOREACH(a, &NeoMutt.accounts, entries)
     {
       struct Mailbox *m = mx_mbox_find(a, buf_string(buf));
       if (m)
@@ -1356,7 +1356,7 @@ static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       {
         mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
         struct EventHeader ev_h = { np->data };
-        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
+        notify_send(NeoMutt.notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
       }
       mutt_list_free(&UserHeader);
       continue;
@@ -1372,7 +1372,7 @@ static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
       {
         mutt_debug(LL_NOTIFY, "NT_HEADER_DELETE: %s\n", np->data);
         struct EventHeader ev_h = { np->data };
-        notify_send(NeoMutt->notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
+        notify_send(NeoMutt.notify, NT_HEADER, NT_HEADER_DELETE, &ev_h);
 
         header_free(&UserHeader, np);
       }
