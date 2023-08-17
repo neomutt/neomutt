@@ -512,10 +512,11 @@ if {[get-define want-gpgme]} {
 }
 
 ###############################################################################
-# INOTIFY
+# Inotify
 if {[get-define want-inotify]} {
   if {[cc-check-functions inotify_add_watch inotify_init inotify_rm_watch]} {
     define USE_INOTIFY
+    define USE_MONITOR
     cc-check-functions inotify_init1
     cc-check-includes sys/inotify.h
   }

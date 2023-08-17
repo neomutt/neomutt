@@ -23,6 +23,7 @@
 #ifndef MUTT_CORE_NEOMUTT_H
 #define MUTT_CORE_NEOMUTT_H
 
+#include "config.h"
 #include <stddef.h>
 #include <locale.h>
 #include <stdbool.h>
@@ -45,6 +46,9 @@ struct NeoMutt
   struct ConfigSubset *sub;      ///< Inherited config items
   struct AccountList accounts;   ///< List of all Accounts
   locale_t time_c_locale;        ///< Current locale but LC_TIME=C
+#ifdef USE_MONITOR
+  struct Monitor *mon;           ///< Filesystem monitor
+#endif
 };
 
 extern struct NeoMutt *NeoMutt;

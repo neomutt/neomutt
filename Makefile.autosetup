@@ -637,6 +637,23 @@ $(PWD)/mixmaster:
 @endif
 
 ###############################################################################
+# libmonitor
+@if USE_MONITOR
+@if USE_INOTIFY
+LIBMONITOROBJS+=monitor/inotify.o
+@endif
+LIBMONITOR=	libmonitor.a
+CLEANFILES+=	$(LIBMONITOR) $(LIBMONITOROBJS)
+ALLOBJS+=	$(LIBMONITOROBJS)
+
+$(LIBMONITOR): $(PWD)/monitor $(LIBMONITOROBJS)
+	$(AR) cr $@ $(LIBMONITOROBJS)
+	$(RANLIB) $@
+$(PWD)/monitor:
+	$(MKDIR_P) $(PWD)/monitor
+@endif
+
+###############################################################################
 # libmutt
 LIBMUTT=	libmutt.a
 LIBMUTTOBJS=	mutt/atoi.o mutt/base64.o mutt/buffer.o mutt/charset.o \
@@ -912,7 +929,7 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIB
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
-		$(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
+		$(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) $(LIBMONITOR) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
 		$(LIBDEBUG) $(LIBMUTT)
 
 # neomutt

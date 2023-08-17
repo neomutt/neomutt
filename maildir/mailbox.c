@@ -46,6 +46,9 @@
 #include "mx.h"
 #include "shared.h"
 #include "sort.h"
+#ifdef USE_MONITOR
+#include "monitor/lib.h"
+#endif
 
 struct Progress;
 
@@ -491,7 +494,7 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
   if (!mdata)
   {
-    mdata = maildir_mdata_new();
+    mdata = maildir_mdata_new(mailbox_path(m));
     m->mdata = mdata;
     m->mdata_free = maildir_mdata_free;
   }
@@ -722,6 +725,10 @@ void maildir_update_mtime(struct Mailbox *m)
  */
 enum MxOpenReturns maildir_mbox_open(struct Mailbox *m)
 {
+#ifdef USE_MONITOR
+  monitor_init();
+#endif
+
   if ((maildir_read_dir(m, "new") == -1) || (maildir_read_dir(m, "cur") == -1))
     return MX_OPEN_ERROR;
 
