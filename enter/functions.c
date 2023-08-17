@@ -291,7 +291,7 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
                     ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
                         (wdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
                     wdata->m, wdata->files, wdata->numfiles);
-    if (buf_is_empty(wdata->buffer))
+    if (!buf_is_empty(wdata->buffer))
     {
       buf_pretty_mailbox(wdata->buffer);
       if (!wdata->pass)
