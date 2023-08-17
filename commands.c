@@ -607,8 +607,9 @@ bail:
 /**
  * mailbox_add - Add a new Mailbox
  */
-static enum CommandResult mailbox_add(const char *folder, const char *mailbox, const char *label,
-                        enum TriBool poll, enum TriBool notify, struct Buffer *err)
+static enum CommandResult mailbox_add(const char *folder, const char *mailbox,
+                                      const char *label, enum TriBool poll,
+                                      enum TriBool notify, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG1, "Adding mailbox: '%s' label '%s', poll %s, notify %s\n",
              mailbox, label ? label : "[NONE]",
@@ -785,7 +786,8 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       goto done;
     }
 
-    rc = mailbox_add(c_folder, buf_string(mailbox), label_set ? buf_string(label) : NULL, poll, notify, err);
+    rc = mailbox_add(c_folder, buf_string(mailbox),
+                     label_set ? buf_string(label) : NULL, poll, notify, err);
     if (rc != MUTT_CMD_SUCCESS)
       goto done;
 

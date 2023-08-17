@@ -1001,7 +1001,7 @@
 /*
 ** .pp
 ** This variable controls how some hooks are interpreted if their pattern is a
-** plain string or a regex. i.e.  They don't contain a pattern, like \fC~f\fP
+** plain string or a regex. i.e.\& they don't contain a pattern, like \fC~f\fP
 ** .pp
 ** The hooks are: $fcc-hook, $fcc-save-hook, $index-format-hook, $message-hook,
 ** $reply-hook, $save-hook, $send-hook and $send2-hook.

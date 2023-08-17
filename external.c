@@ -466,8 +466,8 @@ void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
   }
 
   int msg_count = ARRAY_SIZE(ea);
-  if (query_quadoption(c_print, (msg_count == 1) ? _("Print message?") :
-                                                   _("Print tagged messages?")) != MUTT_YES)
+  const char *msg = ngettext("Print message?", "Print tagged messages?", msg_count);
+  if (query_quadoption(c_print, msg) != MUTT_YES)
   {
     return;
   }
