@@ -617,9 +617,9 @@ bail:
  * @param err     Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-static enum CommandResult mailbox_add(const char *folder, const char *mailbox,
-                                      const char *label, enum TriBool poll,
-                                      enum TriBool notify, struct Buffer *err)
+enum CommandResult mailbox_add(const char *folder, const char *mailbox,
+                               const char *label, enum TriBool poll,
+                               enum TriBool notify, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG1, "Adding mailbox: '%s' label '%s', poll %s, notify %s\n",
              mailbox, label ? label : "[NONE]",
@@ -805,8 +805,13 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       goto done;
     }
 
-    // this is finally a visible mailbox in the sidebar and mailboxes list
-    m->visible = true;
+    rc = mailbox_add(c_folder, buf_string(mailbox),
+                     label_set ? buf_string(label) : NULL, poll, notify, err);
+    if (rc != MUTT_CMD_SUCCESS)
+      goto done;
+
+    buf_reset(label);
+    buf_reset(mailbox);
   }
 
   rc = MUTT_CMD_SUCCESS;

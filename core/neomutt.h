@@ -23,6 +23,7 @@
 #ifndef MUTT_CORE_NEOMUTT_H
 #define MUTT_CORE_NEOMUTT_H
 
+#include "config.h"
 #include <locale.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -47,6 +48,9 @@ struct NeoMutt
   struct AccountList accounts;   ///< List of all Accounts
   locale_t time_c_locale;        ///< Current locale but LC_TIME=C
   mode_t user_default_umask;     ///< User's default file writing permissions (inferred from umask)
+#ifdef USE_MONITOR
+  struct Monitor *mon;           ///< Filesystem monitor
+#endif
 };
 
 extern struct NeoMutt *NeoMutt;

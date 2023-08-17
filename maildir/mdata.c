@@ -30,6 +30,20 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "mdata.h"
+#ifdef USE_MONITOR
+#include "monitor/lib.h"
+#endif
+
+struct Monitor;
+
+/**
+ * maildir_monitor - XXX
+ */
+void maildir_monitor(struct Monitor *mon, int wd, MonitorEvent me, void *wdata)
+{
+  // struct MaildirMboxData *mdata = wdata;
+  mutt_debug(LL_DEBUG1, "QWQ maildir_monitor: wd %d\n", wd);
+}
 
 /**
  * maildir_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
@@ -39,16 +53,29 @@ void maildir_mdata_free(void **ptr)
   if (!ptr || !*ptr)
     return;
 
+  struct MaildirMboxData *mdata = *ptr;
+
+#ifdef USE_MONITOR
+  monitor_remove_watch(NeoMutt->mon, mdata->wd_new);
+#endif
+
   FREE(ptr);
 }
 
 /**
  * maildir_mdata_new - Create a new MaildirMboxData object
+ * @param path Mailbox path
  * @retval ptr New MaildirMboxData struct
  */
-struct MaildirMboxData *maildir_mdata_new(void)
+struct MaildirMboxData *maildir_mdata_new(const char *path)
 {
   struct MaildirMboxData *mdata = mutt_mem_calloc(1, sizeof(struct MaildirMboxData));
+#ifdef USE_MONITOR
+  struct Buffer *dir = buf_pool_get();
+  buf_printf(dir, "%s/new", path);
+  mdata->wd_new = monitor_watch_dir(NeoMutt->mon, buf_string(dir), maildir_monitor, mdata);
+  buf_pool_release(&dir);
+#endif
   return mdata;
 }
 
