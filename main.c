@@ -58,7 +58,7 @@
  * @ref lib_editor, @ref lib_email, @ref lib_envelope, @ref lib_expando,
  * @ref lib_gui, @ref lib_hcache, @ref lib_helpbar, @ref lib_history,
  * @ref lib_imap, @ref lib_index, @ref lib_key, @ref lib_maildir,
- * @ref lib_mh, @ref lib_mbox, @ref lib_menu, @ref lib_mutt, @ref lib_ncrypt,
+ * @ref lib_mh, @ref lib_mbox, @ref lib_menu, @ref lib_monitor, @ref lib_mutt, @ref lib_ncrypt,
  * @ref lib_nntp, @ref lib_notmuch, @ref lib_pager, @ref lib_parse,
  * @ref lib_pattern, @ref lib_pop, @ref lib_postpone, @ref lib_progress,
  * @ref lib_question, @ref lib_send, @ref lib_sidebar, @ref lib_store.
@@ -83,7 +83,6 @@
  * | mailcap.c       | @subpage neo_mailcap       |
  * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
- * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_config.c   | @subpage neo_mutt_config   |
@@ -194,6 +193,9 @@
 #endif
 #ifdef USE_LUA
 #include "mutt_lua.h"
+#endif
+#ifdef USE_MONITOR
+#include "monitor/lib.h"
 #endif
 
 bool StartupComplete = false; ///< When the config has been read
@@ -1794,6 +1796,7 @@ main_exit:
     notify_observer_remove(NeoMutt->sub->notify, main_log_observer, NULL);
     notify_observer_remove(NeoMutt->sub->notify, main_config_observer, NULL);
     notify_observer_remove(NeoMutt->notify, main_timeout_observer, NULL);
+    monitor_free(&NeoMutt->mon);
   }
   MuttLogger = log_disp_queue;
   buf_pool_release(&expanded_infile);
