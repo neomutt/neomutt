@@ -70,7 +70,6 @@
  * | mailcap.c       | @subpage neo_mailcap       |
  * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
- * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_config.c   | @subpage neo_mutt_config   |
@@ -178,6 +177,9 @@
 #endif
 #ifndef DOMAIN
 #include "conn/lib.h"
+#endif
+#ifdef USE_MONITOR
+#include "monitor/lib.h"
 #endif
 
 bool StartupComplete = false; ///< When the config has been read
@@ -1772,6 +1774,7 @@ main_exit:
     notify_observer_remove(NeoMutt->sub->notify, main_hist_observer, NULL);
     notify_observer_remove(NeoMutt->sub->notify, main_log_observer, NULL);
     notify_observer_remove(NeoMutt->notify, main_timeout_observer, NULL);
+    monitor_free(&NeoMutt->mon);
   }
   MuttLogger = log_disp_queue;
   buf_pool_release(&expanded_infile);

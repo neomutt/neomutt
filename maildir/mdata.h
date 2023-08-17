@@ -23,6 +23,7 @@
 #ifndef MUTT_MAILDIR_MDATA_H
 #define MUTT_MAILDIR_MDATA_H
 
+#include "config.h"
 #include <sys/types.h>
 #include <time.h>
 
@@ -36,10 +37,14 @@ struct MaildirMboxData
   struct timespec mtime;     ///< Time Mailbox was last changed
   struct timespec mtime_cur; ///< Timestamp of the 'cur' dir
   mode_t umask;              ///< umask to use when creating files
+#ifdef USE_MONITOR
+  int wd_new;                ///< Watch descriptor for the new/ directory
+  int wd_cur;                ///< Watch descriptor for the cur/ directory
+#endif
 };
 
 void                    maildir_mdata_free(void **ptr);
 struct MaildirMboxData *maildir_mdata_get(struct Mailbox *m);
-struct MaildirMboxData *maildir_mdata_new(void);
+struct MaildirMboxData *maildir_mdata_new(const char *path);
 
 #endif /* MUTT_MAILDIR_MDATA_H */

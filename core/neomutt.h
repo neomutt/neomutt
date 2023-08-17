@@ -23,6 +23,7 @@
 #ifndef MUTT_CORE_NEOMUTT_H
 #define MUTT_CORE_NEOMUTT_H
 
+#include "config.h"
 #include <locale.h>
 #include <stdbool.h>
 #include <sys/types.h>
@@ -52,6 +53,10 @@ struct NeoMutt
   char *home_dir;                ///< User's home directory
   char *username;                ///< User's login name
   char **env;                    ///< Private copy of the environment variables
+
+#ifdef USE_MONITOR
+  struct Monitor *mon;           ///< Filesystem monitor
+#endif
 };
 
 extern struct NeoMutt *NeoMutt;
