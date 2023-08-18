@@ -30,7 +30,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "core/lib.h"
+#include "config/lib.h"
 #include "lib.h"
 
 /// Is the cache enabled?

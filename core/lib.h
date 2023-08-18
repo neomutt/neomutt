@@ -41,6 +41,7 @@
 // IWYU pragma: begin_exports
 #include "account.h"
 #include "command.h"
+#include "config_cache.h"
 #include "dispatcher.h"
 #include "mailbox.h"
 #include "message.h"

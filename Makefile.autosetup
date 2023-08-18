@@ -263,7 +263,7 @@ $(PWD)/compress:
 ###############################################################################
 # libconfig
 LIBCONFIG=	libconfig.a
-LIBCONFIGOBJS=	config/address.o config/bool.o config/cache.o config/charset.o \
+LIBCONFIGOBJS=	config/address.o config/bool.o config/charset.o \
 		config/dump.o config/enum.o config/helpers.o config/long.o \
 		config/mbtable.o config/myvar.o config/number.o config/path.o \
 		config/quad.o config/regex.o config/set.o config/slist.o \
@@ -326,7 +326,7 @@ $(PWD)/convert:
 ###############################################################################
 # libcore
 LIBCORE=	libcore.a
-LIBCOREOBJS=	core/account.o core/command.o core/dispatcher.o core/mailbox.o \
+LIBCOREOBJS=	core/account.o core/config_cache.o core/command.o core/dispatcher.o core/mailbox.o \
 		core/message.o core/neomutt.o core/tmp.o
 CLEANFILES+=	$(LIBCORE) $(LIBCOREOBJS)
 ALLOBJS+=	$(LIBCOREOBJS)

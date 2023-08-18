@@ -28,9 +28,9 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "config/common.h" // IWYU pragma: keep
 #include "config/lib.h"
 #include "core/lib.h"
-#include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
 void test_config_cache(void)
