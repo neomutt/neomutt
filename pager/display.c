@@ -178,7 +178,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   }
 
   color = def_color;
-  if ((flags & MUTT_SHOWCOLOR) && lines[m].syntax_arr_size)
+  if ((flags & MUTT_SHOWCOLOR) && lines[m].syntax)
   {
     matching_chunk = bsearch(&cnt, lines[m].syntax, lines[m].syntax_arr_size,
                              sizeof(struct TextSyntax), comp_syntax_t);
@@ -190,7 +190,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     }
   }
 
-  if ((flags & MUTT_SEARCH) && lines[m].search_arr_size)
+  if ((flags & MUTT_SEARCH) && lines[m].search)
   {
     matching_chunk = bsearch(&cnt, lines[m].search, lines[m].search_arr_size,
                              sizeof(struct TextSyntax), comp_syntax_t);
