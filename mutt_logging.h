@@ -31,7 +31,8 @@
 struct ConfigDef;
 struct ConfigSet;
 
-int log_disp_curses(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...);
+int log_disp_curses(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
+                    __attribute__((__format__(__printf__, 6, 7)));
 
 void mutt_log_prep(void);
 int  mutt_log_start(void);

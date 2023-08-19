@@ -92,10 +92,14 @@ STAILQ_HEAD(LogLineList, LogLine);
 #define mutt_error(...)        MuttLogger(0, __FILE__, __LINE__, __func__, LL_ERROR,   __VA_ARGS__) ///< @ingroup logging_api
 #define mutt_perror(...)       MuttLogger(0, __FILE__, __LINE__, __func__, LL_PERROR,  __VA_ARGS__) ///< @ingroup logging_api
 
-int  log_disp_file    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...);
-int  log_disp_null    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...);
-int  log_disp_queue   (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...);
-int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...);
+int  log_disp_file    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
+                       __attribute__((__format__(__printf__, 6, 7)));
+int  log_disp_null    (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
+                       __attribute__((__format__(__printf__, 6, 7)));
+int  log_disp_queue   (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
+                       __attribute__((__format__(__printf__, 6, 7)));
+int  log_disp_terminal(time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...)
+                       __attribute__((__format__(__printf__, 6, 7)));
 
 int  log_queue_add(struct LogLine *ll);
 void log_queue_empty(void);

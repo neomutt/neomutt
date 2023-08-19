@@ -61,7 +61,8 @@ void regex_colors_dump_all (void);
 void simple_color_dump     (enum ColorId cid, const char *prefix);
 void simple_colors_dump    (bool force);
 
-int color_debug(enum LogLevel level, const char *format, ...);
+int color_debug(enum LogLevel level, const char *format, ...)
+                __attribute__((__format__(__printf__, 2, 3)));
 
 #else
 

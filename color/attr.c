@@ -47,7 +47,7 @@ void attr_color_clear(struct AttrColor *ac)
     return;
 
   if (ac->curses_color)
-    color_debug(LL_DEBUG5, "clear %p\n", ac);
+    color_debug(LL_DEBUG5, "clear %p\n", (void *) ac);
   curses_color_free(&ac->curses_color);
   ac->attrs = 0;
 }

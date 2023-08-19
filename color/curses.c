@@ -171,7 +171,7 @@ struct CursesColor *curses_color_new(int fg, int bg)
 
   struct CursesColor *cc_new = mutt_mem_calloc(1, sizeof(*cc_new));
   NumCursesColors++;
-  color_debug(LL_DEBUG5, "CursesColor %p\n", cc_new);
+  color_debug(LL_DEBUG5, "CursesColor %p\n", (void *) cc_new);
   cc_new->fg = fg;
   cc_new->bg = bg;
   cc_new->ref_count = 1;
