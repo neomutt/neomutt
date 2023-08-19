@@ -191,6 +191,7 @@ bool link_is_dir(const char *folder, const char *path)
  *
  * | Expando | Description
  * | :------ | :-------------------------------------------------------
+ * | \%a     | Alert: 1 if user is notified of new mail
  * | \%C     | Current file number
  * | \%d     | Date/time folder was last modified
  * | \%D     | Date/time folder was last modified using `$date_format.`
@@ -202,6 +203,7 @@ bool link_is_dir(const char *folder, const char *path)
  * | \%m     | Number of messages in the mailbox
  * | \%N     | "N" if mailbox has new mail, " " (space) otherwise
  * | \%n     | Number of unread messages in the mailbox
+ * | \%p     | Poll: 1 if Mailbox is checked for new mail
  * | \%s     | Size in bytes
  * | \%t     | `*` if the file is tagged, blank otherwise
  * | \%u     | Owner name (or numeric uid, if missing)
@@ -219,6 +221,19 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
 
   switch (op)
   {
+    case 'a':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->notify_user);
+      }
+      else
+      {
+        if (folder->ff->notify_user == 0)
+          optional = false;
+      }
+      break;
+
     case 'C':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, folder->num + 1);
@@ -476,6 +491,19 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       break;
 
+    case 'p':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->poll_new_mail);
+      }
+      else
+      {
+        if (folder->ff->poll_new_mail == 0)
+          optional = false;
+      }
+      break;
+
     case 's':
       if (folder->ff->local)
       {
@@ -578,6 +606,8 @@ void browser_add_folder(const struct Menu *menu, struct BrowserState *state,
     ff.has_new_mail = m->has_new;
     ff.msg_count = m->msg_count;
     ff.msg_unread = m->msg_unread;
+    ff.notify_user = m->notify_user;
+    ff.poll_new_mail = m->poll_new_mail;
   }
 
   ff.name = mutt_str_dup(name);
@@ -726,7 +756,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
           break;
       }
 
-      if (np && m && mutt_str_equal(np->mailbox->realpath, m->realpath))
+      if (np && m && m->poll_new_mail && mutt_str_equal(np->mailbox->realpath, m->realpath))
       {
         np->mailbox->msg_count = m->msg_count;
         np->mailbox->msg_unread = m->msg_unread;
@@ -797,7 +827,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       if (!np->mailbox)
         continue;
 
-      if (m && mutt_str_equal(np->mailbox->realpath, m->realpath))
+      if (m && m->poll_new_mail && mutt_str_equal(np->mailbox->realpath, m->realpath))
       {
         np->mailbox->msg_count = m->msg_count;
         np->mailbox->msg_unread = m->msg_unread;
@@ -1080,7 +1110,8 @@ static int browser_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
 
-  struct Menu *menu = nc->global_data;
+  struct BrowserPrivateData *priv = nc->global_data;
+  struct Menu *menu = priv->menu;
 
   if (mutt_str_equal(ev_c->name, "browser_sort_dirs_first"))
   {
@@ -1106,6 +1137,49 @@ static int browser_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * browser_mailbox_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * Find the matching Mailbox and update its details.
+ */
+static int browser_mailbox_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+  if (nc->event_subtype == NT_MAILBOX_DELETE)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct BrowserPrivateData *priv = nc->global_data;
+
+  struct BrowserState *state = &priv->state;
+  if (state->is_mailbox_list)
+  {
+    struct EventMailbox *ev_m = nc->event_data;
+    struct Mailbox *m = ev_m->mailbox;
+    struct FolderFile *ff = NULL;
+    ARRAY_FOREACH(ff, &state->entry)
+    {
+      if (ff->gen != m->gen)
+        continue;
+
+      ff->has_new_mail = m->has_new;
+      ff->msg_count = m->msg_count;
+      ff->msg_unread = m->msg_unread;
+      ff->notify_user = m->notify_user;
+      ff->poll_new_mail = m->poll_new_mail;
+      mutt_str_replace(&ff->desc, m->name);
+      break;
+    }
+  }
+
+  menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "mailbox done, request WA_RECALC, MENU_REDRAW_FULL\n");
+
+  return 0;
+}
+
+/**
  * browser_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
@@ -1121,15 +1195,16 @@ static int browser_window_observer(struct NotifyCallback *nc)
   if (nc->event_subtype != NT_WINDOW_DELETE)
     return 0;
 
-  struct MuttWindow *win_menu = nc->global_data;
+  struct BrowserPrivateData *priv = nc->global_data;
+  struct MuttWindow *win_menu = priv->menu->win;
+
   struct EventWindow *ev_w = nc->event_data;
   if (ev_w->win != win_menu)
     return 0;
 
-  struct Menu *menu = win_menu->wdata;
-
-  notify_observer_remove(NeoMutt->sub->notify, browser_config_observer, menu);
-  notify_observer_remove(win_menu->notify, browser_window_observer, win_menu);
+  notify_observer_remove(NeoMutt->sub->notify, browser_config_observer, priv);
+  notify_observer_remove(win_menu->notify, browser_window_observer, priv);
+  notify_observer_remove(NeoMutt->notify, browser_mailbox_observer, priv);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
@@ -1385,8 +1460,9 @@ void dlg_select_file(struct Buffer *file, SelectFileFlags flags,
   struct MuttWindow *win_menu = priv->menu->win;
 
   // NT_COLOR is handled by the SimpleDialog
-  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, browser_config_observer, priv->menu);
-  notify_observer_add(win_menu->notify, NT_WINDOW, browser_window_observer, win_menu);
+  notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, browser_config_observer, priv);
+  notify_observer_add(win_menu->notify, NT_WINDOW, browser_window_observer, priv);
+  notify_observer_add(NeoMutt->notify, NT_MAILBOX, browser_mailbox_observer, priv);
 
   if (priv->state.is_mailbox_list)
   {

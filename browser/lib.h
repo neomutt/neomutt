@@ -88,13 +88,15 @@ struct FolderFile
 #ifdef USE_IMAP
   char delim;              ///< Path delimiter
 
-  bool imap        : 1;    ///< This is an IMAP folder
-  bool selectable  : 1;    ///< Folder can be selected
-  bool inferiors   : 1;    ///< Folder has children
+  bool imap          : 1;  ///< This is an IMAP folder
+  bool selectable    : 1;  ///< Folder can be selected
+  bool inferiors     : 1;  ///< Folder has children
 #endif
-  bool has_mailbox : 1;    ///< This is a mailbox
-  bool local       : 1;    ///< Folder is on local filesystem
-  bool tagged      : 1;    ///< Folder is tagged
+  bool has_mailbox   : 1;  ///< This is a mailbox
+  bool local         : 1;  ///< Folder is on local filesystem
+  bool notify_user   : 1;  ///< User will be notified of new mail
+  bool poll_new_mail : 1;  ///< Check mailbox for new mail
+  bool tagged        : 1;  ///< Folder is tagged
 #ifdef USE_NNTP
   struct NntpMboxData *nd; ///< Extra NNTP data
 #endif

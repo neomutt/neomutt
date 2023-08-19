@@ -44,12 +44,14 @@
  *
  * | Expando | Description
  * | :------ | :-------------------------------------------------------
+ * | \%a     | Alert: 1 if user is notified of new mail
  * | \%C     | Current newsgroup number
  * | \%d     | Description of newsgroup (becomes from server)
  * | \%f     | Newsgroup name
  * | \%M     | - if newsgroup not allowed for direct post (moderated for example)
  * | \%N     | N if newsgroup is new, u if unsubscribed, blank otherwise
  * | \%n     | Number of new articles in newsgroup
+ * | \%p     | Poll: 1 if Mailbox is checked for new mail
  * | \%s     | Number of unread articles in newsgroup
  */
 const char *group_index_format_str(char *buf, size_t buflen, size_t col, int cols,
@@ -59,9 +61,23 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
 {
   char fn[128], fmt[128];
   struct Folder *folder = (struct Folder *) data;
+  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
+    case 'a':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->notify_user);
+      }
+      else
+      {
+        if (folder->ff->notify_user == 0)
+          optional = false;
+      }
+      break;
+
     case 'C':
       snprintf(fmt, sizeof(fmt), "%%%sd", prec);
       snprintf(buf, buflen, fmt, folder->num + 1);
@@ -126,8 +142,21 @@ const char *group_index_format_str(char *buf, size_t buflen, size_t col, int col
       break;
     }
 
+    case 'p':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, folder->ff->poll_new_mail);
+      }
+      else
+      {
+        if (folder->ff->poll_new_mail == 0)
+          optional = false;
+      }
+      break;
+
     case 's':
-      if (flags & MUTT_FORMAT_OPTIONAL)
+      if (optional)
       {
         if (folder->ff->nd->unread != 0)
         {

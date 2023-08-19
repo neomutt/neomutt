@@ -332,6 +332,7 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
  * | Expando | Description
  * | :------ | :-------------------------------------------------------
  * | \%!     | 'n!' Flagged messages
+ * | \%a     | Alert: 1 if user is notified of new mail
  * | \%B     | Name of the mailbox
  * | \%D     | Description of the mailbox
  * | \%d     | Number of deleted messages
@@ -340,6 +341,7 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
  * | \%n     | "N" if mailbox has new mail, " " (space) otherwise
  * | \%N     | Number of unread messages in the mailbox
  * | \%o     | Number of old unread messages in the mailbox
+ * | \%p     | Poll: 1 if Mailbox is checked for new mail
  * | \%r     | Number of read messages in the mailbox
  * | \%S     | Size of mailbox (total number of messages)
  * | \%t     | Number of tagged messages
@@ -372,6 +374,19 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 
   switch (op)
   {
+    case 'a':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, m->notify_user);
+      }
+      else
+      {
+        if (m->notify_user == 0)
+          optional = false;
+      }
+      break;
+
     case 'B':
     case 'D':
     {
@@ -453,6 +468,19 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       else if ((c && (m_cur->msg_unread - m_cur->msg_new) == 0) || !c)
       {
         optional = false;
+      }
+      break;
+
+    case 'p':
+      if (!optional)
+      {
+        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
+        snprintf(buf, buflen, fmt, m->poll_new_mail);
+      }
+      else
+      {
+        if (m->poll_new_mail == 0)
+          optional = false;
       }
       break;
 
