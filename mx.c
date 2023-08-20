@@ -31,12 +31,10 @@
 
 #include "config.h"
 #include <errno.h>
-#include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -1114,16 +1112,10 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
           p = TAILQ_FIRST(&e->env->from);
       }
 
-      // Force a 'C' locale for the date, so that day/month names are in English
+      // Use C locale for the date, so that day/month names are in English
       char buf[64] = { 0 };
-      struct tm tm = mutt_date_localtime(msg->received);
-#ifdef LC_TIME_MASK
-      locale_t loc = newlocale(LC_TIME_MASK, "C", 0);
-      strftime_l(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y", &tm, loc);
-      freelocale(loc);
-#else  /* !LC_TIME_MASK */
-      strftime(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y", &tm);
-#endif /* LC_TIME_MASK */
+      mutt_date_localtime_format_locale(buf, sizeof(buf), "%a %b %e %H:%M:%S %Y",
+                                        msg->received, NeoMutt->time_c_locale);
       fprintf(msg->fp, "From %s %s\n", p ? buf_string(p->mailbox) : NONULL(Username), buf);
     }
   }

@@ -262,12 +262,16 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           t_fmt = ((mutt_date_now() - folder->ff->mtime) < one_year) ? "%b %d %H:%M" : "%b %d  %Y";
         }
 
-        if (use_c_locale)
-          setlocale(LC_TIME, "C");
         char date[128] = { 0 };
-        mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
         if (use_c_locale)
-          setlocale(LC_TIME, "");
+        {
+          mutt_date_localtime_format_locale(date, sizeof(date), t_fmt,
+                                            folder->ff->mtime, NeoMutt->time_c_locale);
+        }
+        else
+        {
+          mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
+        }
 
         mutt_format_s(buf, buflen, prec, date);
       }
@@ -322,10 +326,9 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         tm = mutt_date_localtime(folder->ff->mtime);
 
         if (use_c_locale)
-          setlocale(LC_TIME, "C");
-        strftime(buf2, sizeof(buf2), buf, &tm);
-        if (use_c_locale)
-          setlocale(LC_TIME, "");
+          strftime_l(buf2, sizeof(buf2), buf, &tm, NeoMutt->time_c_locale);
+        else
+          strftime(buf2, sizeof(buf2), buf, &tm);
 
         snprintf(fmt, sizeof(fmt), "%%%ss", prec);
         snprintf(buf, buflen, fmt, buf2);

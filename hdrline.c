@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <locale.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -707,10 +706,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         }
 
         if (use_c_locale)
-          setlocale(LC_TIME, "C");
-        strftime(tmp, sizeof(tmp), buf, &tm);
-        if (use_c_locale)
-          setlocale(LC_TIME, "");
+          strftime_l(tmp, sizeof(tmp), buf, &tm, NeoMutt->time_c_locale);
+        else
+          strftime(tmp, sizeof(tmp), buf, &tm);
 
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_DATE);
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, tmp);
