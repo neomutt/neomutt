@@ -150,7 +150,15 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   }
   else if (!(flags & MUTT_SHOWCOLOR))
   {
-    def_color = *simple_color_get(MT_COLOR_NORMAL);
+    if (flags & MUTT_PAGER_STRIPES)
+    {
+      def_color = *simple_color_get(((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD :
+                                                            MT_COLOR_STRIPE_EVEN);
+    }
+    else
+    {
+      def_color = *simple_color_get(MT_COLOR_NORMAL);
+    }
   }
   else if ((lines[m].cid == MT_COLOR_HEADER) && lines[m].syntax[0].attr_color)
   {
@@ -1241,17 +1249,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   if (flags & MUTT_PAGER_STRIPES)
   {
     const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
-    const struct AttrColor *attr_color = mutt_curses_set_color_by_id(cid);
-
-    memset(&ansi, 0, sizeof(struct AnsiColor));
-    ansi.attr_color = attr_color;
-    ansi.attrs = attr_color->attrs;
-
-    if (attr_color->curses_color)
-    {
-      ansi.fg = attr_color->curses_color->fg;
-      ansi.bg = attr_color->curses_color->bg;
-    }
+    mutt_curses_set_color_by_id(cid);
   }
 
   /* display the line */
