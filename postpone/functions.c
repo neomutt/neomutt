@@ -40,8 +40,6 @@
 #include "opcodes.h"
 #include "protos.h"
 
-struct Email;
-
 /**
  * op_delete - Delete the current entry - Implements ::postpone_function_t - @ingroup postpone_function_api
  */
