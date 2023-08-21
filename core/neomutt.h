@@ -28,6 +28,9 @@
 #include <locale.h>
 #include "account.h"
 #include "mailbox.h"
+#ifdef __APPLE__
+#include <xlocale.h>
+#endif
 
 struct ConfigSet;
 

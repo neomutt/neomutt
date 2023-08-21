@@ -27,6 +27,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <time.h>
+#ifdef __APPLE__
+#include <xlocale.h>
+#endif
 
 struct Buffer;
 

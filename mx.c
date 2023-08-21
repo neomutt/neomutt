@@ -78,9 +78,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-#ifdef __APPLE__
-#include <xlocale.h>
-#endif
 
 /// Lookup table of mailbox types
 static const struct Mapping MboxTypeMap[] = {
