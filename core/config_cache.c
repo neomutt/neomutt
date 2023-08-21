@@ -21,7 +21,7 @@
  */
 
 /**
- * @page config_cache Cache of config variables
+ * @page core_config_cache Cache of config variables
  *
  * Cache of config variables
  */

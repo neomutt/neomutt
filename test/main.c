@@ -182,9 +182,9 @@ void test_fini(void);
                                                                                \
   /* core */                                                                   \
   NEOMUTT_TEST_ITEM(test_buf_mktemp_full)                                      \
+  NEOMUTT_TEST_ITEM(test_config_cache)                                         \
   NEOMUTT_TEST_ITEM(test_dispatcher_get_retval_name)                           \
   NEOMUTT_TEST_ITEM(test_mutt_file_mkstemp_full)                               \
-  NEOMUTT_TEST_ITEM(test_config_cache)                                         \
                                                                                \
   /* date */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_add_timeout)                                \
