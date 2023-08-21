@@ -32,9 +32,9 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <qdbm/depot.h>
-#include <qdbm/villa.h>
+#include <depot.h>
 #include <stdbool.h>
+#include <villa.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
