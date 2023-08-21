@@ -129,7 +129,6 @@ COMPRESS_OBJS	+= test/compress/zstd.o
 CONFIG_OBJS	= test/config/account.o \
 		  test/config/address.o \
 		  test/config/bool.o \
-		  test/config/cache.o \
 		  test/config/common.o \
 		  test/config/dump.o \
 		  test/config/enum.o \
@@ -156,6 +155,7 @@ CONVERT_OBJS	= test/convert/mutt_update_content_info.o \
 		  test/convert/mutt_convert_file_from_to.o
 
 CORE_OBJS	= test/core/buf_mktemp_full.o \
+		  test/core/config_cache.o \
 		  test/core/dispatcher_get_retval_name.o \
 		  test/core/mutt_file_mkstemp_full.o
 

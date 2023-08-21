@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONFIG_CACHE_H
-#define MUTT_CONFIG_CACHE_H
+#ifndef MUTT_CORE_CONFIG_CACHE_H
+#define MUTT_CORE_CONFIG_CACHE_H
 
 const struct Slist *cc_assumed_charset        (void);
 const char *        cc_charset                (void);
@@ -29,4 +29,4 @@ const char *        cc_maildir_field_delimiter(void);
 
 void config_cache_cleanup(void);
 
-#endif /* MUTT_CONFIG_CACHE_H */
+#endif /* MUTT_CORE_CONFIG_CACHE_H */

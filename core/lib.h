@@ -28,6 +28,8 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | core/account.c      | @subpage core_account      |
+ * | core/command.c      | @subpage core_command      |
+ * | core/config_cache.c | @subpage core_config_cache |
  * | core/dispatcher.c   | @subpage core_dispatcher   |
  * | core/mailbox.c      | @subpage core_mailbox      |
  * | core/message.c      | @subpage core_message      |
@@ -41,6 +43,7 @@
 // IWYU pragma: begin_exports
 #include "account.h"
 #include "command.h"
+#include "config_cache.h"
 #include "dispatcher.h"
 #include "mailbox.h"
 #include "message.h"
