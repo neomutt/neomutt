@@ -28,8 +28,8 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
+#include "config/lib.h"
 
 // clang-format off
 char *AutocryptSignAs = NULL;     ///< Autocrypt Key id to sign as

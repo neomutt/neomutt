@@ -29,6 +29,7 @@
 #include "config.h"
 #include "mutt/lib.h"
 #include "crypt_mod.h"
+#include "lib.h"
 
 /**
  * struct CryptModule - A crypto plugin module

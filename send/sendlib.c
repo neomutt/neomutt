@@ -44,16 +44,20 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "sendlib.h"
-#include "lib.h"
 #include "attach/lib.h"
 #include "convert/lib.h"
 #include "ncrypt/lib.h"
+#include "body.h"
 #include "copy.h"
 #include "globals.h" // IWYU pragma: keep
 #include "handler.h"
+#include "header.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "send.h"
+#include "sendmail.h"
+#include "smtp.h"
 
 /**
  * mutt_lookup_mime_type - Find the MIME type for an attachment

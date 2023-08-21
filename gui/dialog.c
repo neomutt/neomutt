@@ -71,7 +71,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
-#include "lib.h"
+#include "dialog.h"
+#include "mutt_window.h"
 #ifdef USE_DEBUG_WINDOW
 #include "debug/lib.h"
 #endif

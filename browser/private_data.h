@@ -23,8 +23,8 @@
 #ifndef MUTT_BROWSER_PRIVATE_DATA_H
 #define MUTT_BROWSER_PRIVATE_DATA_H
 
-#include <stdbool.h>
 #include <limits.h>
+#include <stdbool.h>
 #include "lib.h"
 
 /**

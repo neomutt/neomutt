@@ -31,9 +31,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "mutt/lib.h"
-#include "lib.h"
+#include "mutt_curses.h"
+#include "mutt_window.h"
+#include "rootwin.h"
 #ifdef HAVE_TERMIOS_H
-#include <termios.h>
+#include <termios.h> // IWYU pragma: keep
 #endif
 #ifndef HAVE_TCGETWINSIZE
 #ifdef HAVE_SYS_IOCTL_H

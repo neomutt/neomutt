@@ -33,7 +33,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
-#include "color/color.h"
+#include "color/lib.h"
 #include "opcodes.h"
 
 /**

@@ -34,7 +34,11 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "ansi.h"
-#include "lib.h"
+#include "attr.h"
+#include "color.h"
+#include "curses2.h"
+#include "debug.h"
+#include "simple2.h"
 
 /**
  * ansi_is_end_char - Is this the end of a sequence?

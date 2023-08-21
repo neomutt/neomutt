@@ -28,8 +28,8 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
+#include "config/lib.h"
 
 /**
  * MboxVars - Config definitions for the Mbox library

@@ -28,8 +28,8 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
+#include "config/lib.h"
 
 /**
  * MenuVars - Config definitions for the Menu library

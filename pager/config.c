@@ -28,9 +28,9 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 
 /**
  * PagerVars - Config definitions for the Pager

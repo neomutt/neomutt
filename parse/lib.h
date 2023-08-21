@@ -33,10 +33,10 @@
 #ifndef MUTT_PARSE_LIB_H
 #define MUTT_PARSE_LIB_H
 
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "extract.h"
 #include "rc.h"
 #include "set.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 #endif /* MUTT_PARSE_LIB_H */

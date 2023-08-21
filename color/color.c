@@ -33,7 +33,14 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
+#include "color.h"
+#include "curses2.h"
+#include "debug.h"
+#include "merged.h"
+#include "notify2.h"
+#include "quoted.h"
+#include "regex4.h"
+#include "simple2.h"
 
 /// Mapping between a colour name and an ncurses colour
 const struct Mapping ColorNames[] = {

@@ -40,7 +40,7 @@
 #ifndef MUTT_CORE_LIB_H
 #define MUTT_CORE_LIB_H
 
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "account.h"
 #include "command.h"
 #include "config_cache.h"
@@ -50,6 +50,6 @@
 #include "mxapi.h"
 #include "neomutt.h"
 #include "tmp.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 #endif /* MUTT_CORE_LIB_H */

@@ -45,12 +45,12 @@
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "smtp.h"
-#include "lib.h"
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "globals.h" // IWYU pragma: keep
 #include "mutt_account.h"
 #include "mutt_socket.h"
+#include "sendlib.h"
 #ifdef USE_SASL_GNU
 #include <gsasl.h>
 #endif

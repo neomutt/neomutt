@@ -46,7 +46,7 @@
 #ifndef MUTT_GUI_LIB_H
 #define MUTT_GUI_LIB_H
 
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "curs_lib.h"
 #include "dialog.h"
 #include "global.h"
@@ -59,6 +59,6 @@
 #include "sbar.h"
 #include "simple.h"
 #include "terminal.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 #endif /* MUTT_GUI_LIB_H */

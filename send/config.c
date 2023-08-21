@@ -28,12 +28,12 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "lib.h"
+#include "config/lib.h"
+#include "smtp.h"
 #ifdef USE_SASL_CYRUS
 #include "conn/lib.h"
 #endif

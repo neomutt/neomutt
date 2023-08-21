@@ -30,7 +30,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "lib.h"
+#include "notify2.h"
 
 struct Notify *ColorsNotify = NULL; ///< Notifications: #ColorId, #EventColor
 

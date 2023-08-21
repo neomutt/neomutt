@@ -31,7 +31,9 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
+#include "color.h"
+#include "curses2.h"
+#include "debug.h"
 
 struct CursesColorList CursesColors; ///< List of all Curses colours
 int NumCursesColors; ///< Number of ncurses colours left to allocate

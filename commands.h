@@ -26,8 +26,8 @@
 
 #include "config.h"
 #include <stdint.h>
-#include "core/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 
 struct Buffer;
 struct GroupList;

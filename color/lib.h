@@ -43,7 +43,7 @@
 #ifndef MUTT_COLOR_LIB_H
 #define MUTT_COLOR_LIB_H
 
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "ansi.h"
 #include "attr.h"
 #include "color.h"
@@ -55,6 +55,6 @@
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 #endif /* MUTT_COLOR_LIB_H */

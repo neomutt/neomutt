@@ -31,7 +31,8 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "lib.h"
+#include "config_cache.h"
+#include "neomutt.h"
 
 /// Is the cache enabled?
 static bool CacheActive = false;

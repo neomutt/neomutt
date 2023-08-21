@@ -66,8 +66,11 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "lib.h"
+#include "simple.h"
 #include "menu/lib.h"
+#include "dialog.h"
+#include "mutt_window.h"
+#include "sbar.h"
 
 /**
  * simple_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api

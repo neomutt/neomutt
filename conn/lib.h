@@ -47,7 +47,7 @@
 #define MUTT_CONN_LIB_H
 
 #include "config.h"
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "connaccount.h"
 #include "connection.h"
 #include "sasl_plain.h"
@@ -61,7 +61,7 @@
 #ifdef USE_ZLIB
 #include "zstrm.h"
 #endif
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 struct Buffer;
 

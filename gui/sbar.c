@@ -62,8 +62,11 @@
 
 #include "config.h"
 #include "mutt/lib.h"
-#include "lib.h"
+#include "sbar.h"
 #include "color/lib.h"
+#include "curs_lib.h"
+#include "mutt_curses.h"
+#include "mutt_window.h"
 
 /**
  * struct SBarPrivateData - Private data for the Simple Bar

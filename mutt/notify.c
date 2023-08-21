@@ -32,6 +32,8 @@
 #include "notify.h"
 #include "logging2.h"
 #include "memory.h"
+#include "notify_type.h"
+#include "observer.h"
 #include "queue.h"
 
 /// Lookup table for NotifyType

@@ -40,7 +40,7 @@
 #ifndef MUTT_SEND_LIB_H
 #define MUTT_SEND_LIB_H
 
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "body.h"
 #include "header.h"
 #include "multipart.h"
@@ -48,6 +48,6 @@
 #include "sendlib.h"
 #include "sendmail.h"
 #include "smtp.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 #endif /* MUTT_SEND_LIB_H */

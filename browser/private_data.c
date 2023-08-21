@@ -29,6 +29,7 @@
 #include "config.h"
 #include "mutt/lib.h"
 #include "private_data.h"
+#include "lib.h"
 
 /**
  * browser_private_data_free - Free Private Browser Data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free

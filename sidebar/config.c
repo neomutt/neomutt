@@ -28,9 +28,9 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
-#include <mutt/lib.h>
 #include <stdbool.h>
+#include "mutt/lib.h"
+#include "config/lib.h"
 
 /**
  * SortSidebarMethods - Sort methods for the sidebar

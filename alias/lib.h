@@ -43,9 +43,9 @@
 #define MUTT_ALIAS_LIB_H
 
 #include <stddef.h>
-#include "core/lib.h"
 #include <stdbool.h>
 #include <stdint.h>
+#include "core/lib.h"
 
 struct Address;
 struct AddressList;

@@ -32,7 +32,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "charset.h"
-#include "lib.h"
+#include "set.h"
 
 /**
  * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator

@@ -39,10 +39,10 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt.h"
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "enter.h"
 #include "state.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 struct Buffer;
 struct Mailbox;

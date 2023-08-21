@@ -36,10 +36,14 @@
 #include <stdio.h>
 #include <string.h>
 #include "charset.h"
-#include "lib.h"
+#include "buffer.h"
+#include "list.h"
+#include "logging2.h"
 #include "memory.h"
 #include "queue.h"
 #include "regex3.h"
+#include "slist.h"
+#include "string2.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif

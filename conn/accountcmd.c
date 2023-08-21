@@ -34,6 +34,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "accountcmd.h"
+#include "connaccount.h"
 #include "mutt_account.h"
 
 /**

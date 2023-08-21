@@ -40,9 +40,9 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
-#include "core/tmp.h"
+#include "core/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
+#include "sendmail.h"
 #include "pager/lib.h"
 #include "format_flags.h"
 #include "globals.h"
@@ -55,8 +55,6 @@
 #else
 #define EX_OK 0
 #endif
-
-struct Mailbox;
 
 /* For execvp environment setting in send_msg() */
 #ifndef __USE_GNU

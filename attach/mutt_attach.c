@@ -47,6 +47,7 @@
 #include "pager/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "attach.h"
 #include "cid.h"
 #include "copy.h"
 #include "globals.h" // IWYU pragma: keep

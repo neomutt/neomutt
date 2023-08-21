@@ -40,6 +40,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "connaccount.h"
+#include "connection.h"
 #include "globals.h"
 #include "muttlib.h"
 #include "ssl.h"

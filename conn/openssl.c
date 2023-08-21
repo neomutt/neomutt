@@ -52,7 +52,8 @@
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "lib.h"
+#include "connaccount.h"
+#include "connection.h"
 #include "mutt_logging.h"
 #include "ssl.h"
 #ifdef HAVE_RAND_EGD

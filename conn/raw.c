@@ -46,7 +46,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
+#include "connaccount.h"
+#include "connection.h"
 #include "globals.h"
 #ifdef HAVE_LIBIDN
 #include "address/lib.h"

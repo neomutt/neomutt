@@ -32,7 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "email/lib.h"
-#include "core/tmp.h"
+#include "core/lib.h"
 #include "cid.h"
 #include "attach.h"
 #include "mailcap.h"

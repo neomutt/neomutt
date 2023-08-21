@@ -36,9 +36,9 @@
 #define MUTT_COMPLETE_LIB_H
 
 #include <stdbool.h>
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "data.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 struct Buffer;
 

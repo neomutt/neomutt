@@ -26,8 +26,8 @@
 
 #include "config.h"
 #include <limits.h>
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 /* On OS X 10.5.x, wide char functions are inlined by default breaking
  * --without-wc-funcs compilation

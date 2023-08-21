@@ -35,9 +35,9 @@
 #define MUTT_CONVERT_LIB_H
 
 #include <wchar.h>
-#include "config/lib.h"
 
 struct Body;
+struct ConfigSubset;
 struct Content;
 struct ContentState;
 struct Slist;

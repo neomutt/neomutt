@@ -24,8 +24,8 @@
 #define MUTT_CORE_NEOMUTT_H
 
 #include <stddef.h>
-#include <stdbool.h>
 #include <locale.h>
+#include <stdbool.h>
 #include "account.h"
 #include "mailbox.h"
 #ifdef __APPLE__

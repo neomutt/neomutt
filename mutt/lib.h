@@ -68,7 +68,7 @@
 #ifndef MUTT_MUTT_LIB_H
 #define MUTT_MUTT_LIB_H
 
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "array.h"
 #include "atoi.h"
 #include "base64.h"
@@ -102,6 +102,6 @@
 #include "slist.h"
 #include "state.h"
 #include "string2.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 #endif /* MUTT_MUTT_LIB_H */

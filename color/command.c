@@ -36,10 +36,15 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
-#include "pager/lib.h"
 #include "parse/lib.h"
+#include "color.h"
+#include "command2.h"
+#include "debug.h"
 #include "globals.h"
+#include "notify2.h"
+#include "quoted.h"
+#include "regex4.h"
+#include "simple2.h"
 #ifdef USE_DEBUG_COLOR
 #include <stdio.h>
 #include "mutt.h"

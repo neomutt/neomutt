@@ -28,8 +28,8 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
+#include "config/lib.h"
 
 /**
  * PatternVars - Config definitions for the pattern library

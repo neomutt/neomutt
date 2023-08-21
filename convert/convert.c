@@ -33,7 +33,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "email/content.h"
+#include "email/lib.h"
 #include "lib.h"
 
 /**

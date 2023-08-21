@@ -50,7 +50,7 @@
 #define MUTT_CONFIG_LIB_H
 
 #include <stdbool.h>
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "bool.h"
 #include "charset.h"
 #include "dump.h"
@@ -64,7 +64,7 @@
 #include "sort2.h"
 #include "subset.h"
 #include "types.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 /**
  * @defgroup cfg_module_api Config Module API

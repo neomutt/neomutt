@@ -28,11 +28,11 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <config/lib.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "conn/lib.h"
 
 /**

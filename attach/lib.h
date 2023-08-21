@@ -44,12 +44,12 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
-// IWYU pragma: begin_exports
+// IWYU pragma: begin_keep
 #include "attach.h"
 #include "attachments.h"
 #include "mutt_attach.h"
 #include "recvattach.h"
-// IWYU pragma: end_exports
+// IWYU pragma: end_keep
 
 struct Body;
 struct Buffer;
