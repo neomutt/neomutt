@@ -28,7 +28,6 @@
 
 struct ConfigSubset;
 
-const struct Address *cs_subset_address(const struct ConfigSubset *sub, const char *name);
 bool                  cs_subset_bool   (const struct ConfigSubset *sub, const char *name);
 unsigned char         cs_subset_enum   (const struct ConfigSubset *sub, const char *name);
 long                  cs_subset_long   (const struct ConfigSubset *sub, const char *name);

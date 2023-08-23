@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for the Address object
+ * Config type representing an email address
  *
  * @authors
  * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
@@ -20,11 +20,12 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TEST_CONFIG_ADDRESS_H
-#define TEST_CONFIG_ADDRESS_H
+#ifndef MUTT_ADDRESS_CONFIG_TYPE_H
+#define MUTT_ADDRESS_CONFIG_TYPE_H
 
-#include <stdbool.h>
+struct ConfigSubset;
 
-void config_address(void);
+struct Address       *address_new(const char *addr);
+const struct Address *cs_subset_address(const struct ConfigSubset *sub, const char *name);
 
-#endif /* TEST_CONFIG_ADDRESS_H */
+#endif /* MUTT_ADDRESS_CONFIG_TYPE_H */

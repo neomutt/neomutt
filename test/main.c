@@ -40,6 +40,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_account_new)                                          \
                                                                                \
   /* address */                                                                \
+  NEOMUTT_TEST_ITEM(test_address_config)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_cmp)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_addr_copy)                                       \
@@ -153,7 +154,6 @@ void test_fini(void);
                                                                                \
   /* config */                                                                 \
   NEOMUTT_TEST_ITEM(test_config_account)                                       \
-  NEOMUTT_TEST_ITEM(test_config_address)                                       \
   NEOMUTT_TEST_ITEM(test_config_bool)                                          \
   NEOMUTT_TEST_ITEM(test_config_dump)                                          \
   NEOMUTT_TEST_ITEM(test_config_enum)                                          \

@@ -27,7 +27,6 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
- * | config/address.c    | @subpage config_address    |
  * | config/bool.c       | @subpage config_bool       |
  * | config/charset.c    | @subpage config_charset    |
  * | config/dump.c       | @subpage config_dump       |
@@ -52,7 +51,6 @@
 
 #include <stdbool.h>
 // IWYU pragma: begin_exports
-#include "address.h"
 #include "bool.h"
 #include "charset.h"
 #include "dump.h"

@@ -73,7 +73,6 @@ static struct ConfigDef Vars[] = {
   { "Banana",     DT_BOOL,                           true,                        0,                   NULL, },
   { "Cherry",     DT_NUMBER,                         0,                           0,                   NULL, },
   { "Damson",     DT_SYNONYM,                        IP "Cherry",                 0,                   NULL, },
-  { "Elderberry", DT_ADDRESS,                        IP "elderberry@example.com", 0,                   NULL, },
   { "Fig",        DT_STRING|DT_COMMAND|DT_NOT_EMPTY, IP "fig",                    0,                   NULL, },
   { "Guava",      DT_LONG,                           0,                           0,                   NULL, },
   { "Hawthorn",   DT_ENUM,                           2,                           IP &MboxTypeDef,     NULL, },
@@ -94,7 +93,6 @@ void test_config_helpers(void)
 
   struct ConfigSubset *sub = NeoMutt->sub;
 
-  TEST_CHECK(cs_subset_address(sub, "Elderberry") != NULL);
   TEST_CHECK(cs_subset_bool(sub, "Apple") == false);
   TEST_CHECK(cs_subset_enum(sub, "Hawthorn") == 2);
   TEST_CHECK(cs_subset_long(sub, "Guava") == 0);

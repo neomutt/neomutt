@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for the Address object
+ * Test code for the Address config object
  *
  * @authors
  * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
@@ -23,15 +23,11 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <limits.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include "mutt/lib.h"
+#include <stddef.h>
 #include "address/lib.h"
+#include "config/common.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
 // clang-format off
@@ -312,7 +308,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   log_line(__func__);
   result = true;
 tbns_out:
-  address_free(&a);
+  mutt_addr_free(&a);
   return result;
 }
 
@@ -520,7 +516,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
 
   result = true;
 tv_out:
-  address_free(&a);
+  mutt_addr_free(&a);
   log_line(__func__);
   return result;
 }
@@ -609,7 +605,7 @@ ti_out:
   return result;
 }
 
-void test_config_address(void)
+void test_address_config(void)
 {
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
