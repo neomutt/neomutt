@@ -626,6 +626,49 @@ ti_out:
   return result;
 }
 
+static bool test_get_nth_wchar(struct ConfigSet *cs, struct Buffer *err)
+{
+  log_line(__func__);
+
+  {
+    struct MbTable *table = NULL;
+    const char *result = mbtable_get_nth_wchar(table, 0);
+    TEST_CHECK_STR_EQ(result, " ");
+    mbtable_free(&table);
+  }
+
+  const char *test_chars = "abc\rdef";
+  {
+    struct MbTable *table = mbtable_parse(test_chars);
+    const char *result = mbtable_get_nth_wchar(table, 0);
+    TEST_CHECK_STR_EQ(result, "a");
+    mbtable_free(&table);
+  }
+
+  {
+    struct MbTable *table = mbtable_parse(test_chars);
+    const char *result = mbtable_get_nth_wchar(table, 3);
+    TEST_CHECK_STR_EQ(result, "");
+    mbtable_free(&table);
+  }
+
+  {
+    struct MbTable *table = mbtable_parse(test_chars);
+    const char *result = mbtable_get_nth_wchar(table, 6);
+    TEST_CHECK_STR_EQ(result, "f");
+    mbtable_free(&table);
+  }
+
+  {
+    struct MbTable *table = mbtable_parse(test_chars);
+    const char *result = mbtable_get_nth_wchar(table, 99);
+    TEST_CHECK_STR_EQ(result, " ");
+    mbtable_free(&table);
+  }
+
+  return true;
+}
+
 void test_config_mbtable(void)
 {
   struct ConfigSubset *sub = NeoMutt->sub;
@@ -649,5 +692,6 @@ void test_config_mbtable(void)
   TEST_CHECK(test_reset(sub, err));
   TEST_CHECK(test_validator(sub, err));
   TEST_CHECK(test_inherit(cs, err));
+  TEST_CHECK(test_get_nth_wchar(cs, err));
   buf_pool_release(&err);
 }

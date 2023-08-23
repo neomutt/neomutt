@@ -40,8 +40,8 @@ static inline bool test_check_str_eq(const char *actual, const char *expected, c
   const bool rc = mutt_str_equal(actual, expected);
   if (!acutest_check_(rc, file, lnum, "test_check_str_eq"))
   {
-    TEST_MSG("Expected : %s", expected);
-    TEST_MSG("Actual   : %s", actual);
+    TEST_MSG("Expected : '%s'", expected);
+    TEST_MSG("Actual   : '%s'", actual);
   }
 
   return rc;
