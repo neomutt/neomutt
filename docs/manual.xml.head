@@ -4176,6 +4176,11 @@ unalias *
 </screen>
 
       <para>
+        Note: The alias <emphasis>key</emphasis> is matched case
+        insensitively when creating (checking for duplicates), removing, or
+        expanding aliases.
+      </para>
+      <para>
         Unlike other mailers, NeoMutt doesn't require aliases to be defined in
         a special file. The <command>alias</command> command can appear
         anywhere in a configuration file, as long as this file is
