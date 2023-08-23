@@ -1,6 +1,6 @@
 /**
  * @file
- * Type representing an email address
+ * Config type representing an email address
  *
  * @authors
  * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
@@ -22,7 +22,7 @@
  */
 
 /**
- * @page config_address Type: Email address
+ * @page addr_config_type Config type: Email address
  *
  * Config type representing an email address.
  *
@@ -33,15 +33,27 @@
  * - Implementation: #CstAddress
  */
 
-#include "config.h"
 #include <stddef.h>
+#include <assert.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
-#include "address/lib.h"
+#include "config/lib.h"
+#include "config_type.h"
 #include "address.h"
-#include "set.h"
-#include "types.h"
+
+/**
+ * address_new - Create an Address from a string
+ * @param addr Email address to parse
+ * @retval ptr New Address object
+ */
+struct Address *address_new(const char *addr)
+{
+  struct Address *a = mutt_mem_calloc(1, sizeof(*a));
+  a->mailbox = buf_new(addr);
+  return a;
+}
 
 /**
  * address_destroy - Destroy an Address object - Implements ConfigSetType::destroy() - @ingroup cfg_type_destroy
@@ -52,7 +64,7 @@ static void address_destroy(const struct ConfigSet *cs, void *var, const struct 
   if (!*a)
     return;
 
-  address_free(a);
+  mutt_addr_free(a);
 }
 
 /**
@@ -167,7 +179,7 @@ static int address_native_set(const struct ConfigSet *cs, void *var,
       return rc | CSR_INV_VALIDATOR;
   }
 
-  address_free(var);
+  mutt_addr_free(var);
 
   struct Address *addr = address_dup((struct Address *) value);
 
@@ -225,30 +237,6 @@ static int address_reset(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * address_new - Create an Address from a string
- * @param addr Email address to parse
- * @retval ptr New Address object
- */
-struct Address *address_new(const char *addr)
-{
-  struct Address *a = mutt_mem_calloc(1, sizeof(*a));
-  a->mailbox = buf_new(addr);
-  return a;
-}
-
-/**
- * address_free - Free an Address object
- * @param[out] ptr Address to free
- */
-void address_free(struct Address **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  mutt_addr_free(ptr);
-}
-
-/**
  * CstAddress - Config type representing an Email Address
  */
 const struct ConfigSetType CstAddress = {
@@ -263,3 +251,28 @@ const struct ConfigSetType CstAddress = {
   address_reset,
   address_destroy,
 };
+
+/**
+ * cs_subset_address - Get an Address config item by name
+ * @param sub   Config Subset
+ * @param name  Name of config item
+ * @retval ptr  Address
+ * @retval NULL Empty address
+ */
+const struct Address *cs_subset_address(const struct ConfigSubset *sub, const char *name)
+{
+  assert(sub && name);
+
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  assert(he);
+
+#ifndef NDEBUG
+  struct HashElem *he_base = cs_get_base(he);
+  assert(DTYPE(he_base->type) == DT_ADDRESS);
+#endif
+
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
+  assert(value != INT_MIN);
+
+  return (const struct Address *) value;
+}

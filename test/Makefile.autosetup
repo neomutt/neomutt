@@ -3,7 +3,8 @@ ACCOUNT_OBJS	= test/account/account_free.o \
 		  test/account/account_mailbox_remove.o \
 		  test/account/account_new.o
 
-ADDRESS_OBJS	= test/address/mutt_addr_cat.o \
+ADDRESS_OBJS	= test/address/config_type.o \
+                  test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_cmp.o \
 		  test/address/mutt_addr_copy.o \
 		  test/address/mutt_addr_create.o \
@@ -127,7 +128,6 @@ COMPRESS_OBJS	+= test/compress/zstd.o
 @endif
 
 CONFIG_OBJS	= test/config/account.o \
-		  test/config/address.o \
 		  test/config/bool.o \
 		  test/config/common.o \
 		  test/config/dump.o \

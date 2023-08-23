@@ -40,31 +40,6 @@
 #include "types.h"
 
 /**
- * cs_subset_address - Get an Address config item by name
- * @param sub   Config Subset
- * @param name  Name of config item
- * @retval ptr  Address
- * @retval NULL Empty address
- */
-const struct Address *cs_subset_address(const struct ConfigSubset *sub, const char *name)
-{
-  assert(sub && name);
-
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-  assert(he);
-
-#ifndef NDEBUG
-  struct HashElem *he_base = cs_get_base(he);
-  assert(DTYPE(he_base->type) == DT_ADDRESS);
-#endif
-
-  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
-
-  return (const struct Address *) value;
-}
-
-/**
  * cs_subset_bool - Get a boolean config item by name
  * @param sub   Config Subset
  * @param name  Name of config item
