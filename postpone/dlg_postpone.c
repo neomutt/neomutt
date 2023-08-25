@@ -235,7 +235,7 @@ struct Email *dlg_select_postponed(struct Mailbox *m)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_POSTPONE);
+    op = km_dokey(MENU_POSTPONE, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;

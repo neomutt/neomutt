@@ -194,9 +194,9 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
 
   msgcont_push_window(win);
 
-  const bool old_oime = OptIgnoreMacroEvents;
+  GetChFlags flags = GETCH_NO_FLAGS;
   if (complete & MUTT_COMP_UNBUFFERED)
-    OptIgnoreMacroEvents = true;
+    flags = GETCH_IGNORE_MACRO;
 
   int rc = 0;
   int col = 0;
@@ -310,7 +310,7 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
       window_redraw(NULL);
       mutt_window_move(win, c, r);
 
-      struct KeyEvent event = km_dokey_event(MENU_EDITOR);
+      struct KeyEvent event = km_dokey_event(MENU_EDITOR, flags);
       if (event.op < OP_NULL)
       {
         rc = (SigWinch && (event.op == OP_TIMEOUT)) ? 1 : -1;
@@ -389,6 +389,5 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
 
   enter_state_free(&es);
 
-  OptIgnoreMacroEvents = old_oime;
   return rc;
 }

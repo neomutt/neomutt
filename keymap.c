@@ -619,10 +619,11 @@ static void generic_tokenize_push_string(char *s, void (*generic_push)(int, int)
  * @param keys    Array of keys to return to the input queue
  * @param keyslen Number of keys in the array
  * @param lastkey Last key pressed (to return to input queue)
+ * @param flags   Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval num Operation, e.g. OP_DELETE
  */
 static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
-                                     int keyslen, int lastkey)
+                                     int keyslen, int lastkey, GetChFlags flags)
 {
   if (lastkey)
     mutt_unget_ch(lastkey);
@@ -631,7 +632,7 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
 
   if ((mtype != MENU_EDITOR) && (mtype != MENU_GENERIC) && (mtype != MENU_PAGER))
   {
-    return km_dokey_event(MENU_GENERIC);
+    return km_dokey_event(MENU_GENERIC, flags);
   }
   if ((mtype != MENU_EDITOR) && (mtype != MENU_GENERIC))
   {
@@ -639,15 +640,16 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
     mutt_flushinp();
   }
 
-  return (struct KeyEvent){ mutt_getch().ch, OP_NULL };
+  return (struct KeyEvent){ mutt_getch(flags).ch, OP_NULL };
 }
 
 /**
  * km_dokey_event - Determine what a keypress should do
  * @param mtype Menu type, e.g. #MENU_EDITOR
+ * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval ptr Event
  */
-struct KeyEvent km_dokey_event(enum MenuType mtype)
+struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
 {
   struct KeyEvent event = { 0, OP_NULL };
   struct Keymap *map = STAILQ_FIRST(&Keymaps[mtype]);
@@ -655,7 +657,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
   int n = 0;
 
   if (!map && (mtype != MENU_EDITOR))
-    return retry_generic(mtype, NULL, 0, 0);
+    return retry_generic(mtype, NULL, 0, 0, flags);
 
 #ifdef USE_IMAP
   const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
@@ -677,7 +679,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
       {
         while (c_imap_keep_alive < i)
         {
-          event = mutt_getch_timeout(c_imap_keep_alive * 1000);
+          event = mutt_getch_timeout(c_imap_keep_alive * 1000, flags);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
@@ -694,7 +696,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     }
 #endif
 
-    event = mutt_getch_timeout(i * 1000);
+    event = mutt_getch_timeout(i * 1000, flags);
 
 #ifdef USE_IMAP
   gotkey:
@@ -756,19 +758,19 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
     while (event.ch > map->keys[pos])
     {
       if ((pos > map->eq) || !STAILQ_NEXT(map, entries))
-        return retry_generic(mtype, map->keys, pos, event.ch);
+        return retry_generic(mtype, map->keys, pos, event.ch, flags);
       map = STAILQ_NEXT(map, entries);
     }
 
     if (event.ch != map->keys[pos])
-      return retry_generic(mtype, map->keys, pos, event.ch);
+      return retry_generic(mtype, map->keys, pos, event.ch, flags);
 
     if (++pos == map->len)
     {
       if (map->op != OP_MACRO)
         return (struct KeyEvent){ event.ch, map->op };
 
-      /* OptIgnoreMacroEvents turns off processing the MacroEvents buffer
+      /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
        * in mutt_getch().  Generating new macro events during that time would
        * result in undesired behavior once the option is turned off.
        *
@@ -778,7 +780,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
        *
        * It may be unexpected for a macro's keybinding to be returned,
        * but less so than aborting the prompt.  */
-      if (OptIgnoreMacroEvents)
+      if (flags & GETCH_IGNORE_MACRO)
       {
         return (struct KeyEvent){ event.ch, OP_NULL };
       }
@@ -802,14 +804,15 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
 /**
  * km_dokey - Determine what a keypress should do
  * @param mtype Menu type, e.g. #MENU_EDITOR
+ * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval >0      Function to execute
  * @retval OP_NULL No function bound to key sequence
  * @retval -1      Error occurred while reading input
  * @retval -2      A timeout or sigwinch occurred
  */
-int km_dokey(enum MenuType mtype)
+int km_dokey(enum MenuType mtype, GetChFlags flags)
 {
-  return km_dokey_event(mtype).op;
+  return km_dokey_event(mtype, flags).op;
 }
 
 /**
@@ -1122,7 +1125,7 @@ void km_error_key(enum MenuType mtype)
    * OP_DELETE will be returned as the op, leaving "q" + OP_END_COND
    * in the unget buffer.
    */
-  op = km_dokey(mtype);
+  op = km_dokey(mtype, GETCH_NO_FLAGS);
   if (op != OP_END_COND)
     mutt_flush_unget_to_endcond();
   if (op != OP_HELP)

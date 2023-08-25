@@ -507,7 +507,7 @@ int dlg_pager(struct PagerView *pview)
     // One of such functions is `mutt_enter_command()`
     // Some OP codes are not handled by pager, they cause pager to quit returning
     // OP code to index. Index handles the operation and then restarts pager
-    op = km_dokey(MENU_PAGER);
+    op = km_dokey(MENU_PAGER, GETCH_NO_FLAGS);
 
     // km_dokey() can block, so recheck the timer.
     // Note: This check must occur before handling the operations of the index

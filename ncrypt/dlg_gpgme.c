@@ -749,7 +749,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(menu_to_use);
+    op = km_dokey(menu_to_use, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;

@@ -238,7 +238,7 @@ struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_SMIME);
+    op = km_dokey(MENU_SMIME, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;

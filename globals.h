@@ -64,7 +64,6 @@ extern bool OptAutocryptGpgme;      ///< (pseudo) use Autocrypt context inside n
 #endif
 extern bool OptDontHandlePgpKeys;   ///< (pseudo) used to extract PGP keys
 extern bool OptForceRefresh;        ///< (pseudo) refresh even during macros
-extern bool OptIgnoreMacroEvents;   ///< (pseudo) don't process macro/push/exec events while set
 extern bool OptKeepQuiet;           ///< (pseudo) shut up the message and refresh functions while we are executing an external program
 extern bool OptMsgErr;              ///< (pseudo) used by mutt_error/mutt_message
 extern bool OptNeedRescore;         ///< (pseudo) set when the 'score' command is used

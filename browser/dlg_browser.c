@@ -1496,7 +1496,7 @@ void dlg_select_file(struct Buffer *file, SelectFileFlags flags,
     menu_tagging_dispatcher(priv->menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_FOLDER);
+    op = km_dokey(MENU_FOLDER, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
