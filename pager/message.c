@@ -350,7 +350,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   if ((r != -1) && c_prompt_after)
   {
     mutt_unget_ch(mutt_any_key_to_continue(_("Command: ")));
-    rc = km_dokey(MENU_PAGER);
+    rc = km_dokey(MENU_PAGER, GETCH_NO_FLAGS);
   }
   else
   {

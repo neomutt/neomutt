@@ -81,7 +81,7 @@ static const struct Mapping VerifyHelp[] = {
  */
 static int menu_dialog_dokey(struct Menu *menu, int *id)
 {
-  struct KeyEvent event = mutt_getch_timeout(5000);
+  struct KeyEvent event = mutt_getch_timeout(5000, GETCH_IGNORE_MACRO);
 
   if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
   {
@@ -236,9 +236,6 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
   }
   msgwin_set_text(mdata.prompt, MT_COLOR_PROMPT);
 
-  bool old_ime = OptIgnoreMacroEvents;
-  OptIgnoreMacroEvents = true;
-
   // ---------------------------------------------------------------------------
   // Event Loop
   int choice = 0;
@@ -251,7 +248,7 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)
     {
-      op = km_dokey(MENU_DIALOG);
+      op = km_dokey(MENU_DIALOG, GETCH_IGNORE_MACRO);
     }
 
     if (op == OP_TIMEOUT)
@@ -306,8 +303,6 @@ int dlg_verify_certificate(const char *title, struct CertArray *carr,
     (void) menu_function_dispatcher(menu->win, op);
   } while (choice == 0);
   // ---------------------------------------------------------------------------
-
-  OptIgnoreMacroEvents = old_ime;
 
   simple_dialog_free(&dlg);
 

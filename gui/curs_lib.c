@@ -69,11 +69,11 @@
 ARRAY_HEAD(KeyEventArray, struct KeyEvent);
 
 /** These are used for macros and exec/push commands.
- * They can be temporarily ignored by setting OptIgnoreMacroEvents */
+ * They can be temporarily ignored by passing #GETCH_IGNORE_MACRO */
 static struct KeyEventArray MacroEvents = ARRAY_HEAD_INITIALIZER;
 
-/** These are used in all other "normal" situations, and are not
- * ignored when setting OptIgnoreMacroEvents */
+/** These are used in all other "normal" situations,
+ * and are not ignored when passing #GETCH_IGNORE_MACRO */
 static struct KeyEventArray UngetKeyEvents = ARRAY_HEAD_INITIALIZER;
 
 /**
@@ -145,7 +145,7 @@ void mutt_refresh(void)
     return;
 
   /* don't refresh in the middle of macros unless necessary */
-  if (!ARRAY_EMPTY(&MacroEvents) && !OptForceRefresh && !OptIgnoreMacroEvents)
+  if (!ARRAY_EMPTY(&MacroEvents) && !OptForceRefresh)
     return;
 
   /* else */
@@ -188,6 +188,7 @@ void mutt_set_timeout(int delay)
 /**
  * mutt_getch_timeout - Get an event with a timeout
  * @param delay Timeout delay in ms
+ * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval obj KeyEvent to process, @sa mutt_getch()
  *
  * delay is just like for timeout() or poll(): the number of milliseconds
@@ -195,10 +196,10 @@ void mutt_set_timeout(int delay)
  * * delay == 0 means mutt_getch() is non-blocking.
  * * delay < 0 means mutt_getch is blocking.
  */
-struct KeyEvent mutt_getch_timeout(int delay)
+struct KeyEvent mutt_getch_timeout(int delay, GetChFlags flags)
 {
   mutt_set_timeout(delay);
-  struct KeyEvent event = mutt_getch();
+  struct KeyEvent event = mutt_getch(flags);
   mutt_set_timeout(-1);
   return event;
 }
@@ -229,6 +230,7 @@ static int mutt_monitor_getch(void)
 
 /**
  * mutt_getch - Read a character from the input buffer
+ * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval obj KeyEvent to process
  *
  * The priority for reading events is:
@@ -240,7 +242,7 @@ static int mutt_monitor_getch(void)
  * - Error   `{ 0, OP_ABORT   }`
  * - Timeout `{ 0, OP_TIMEOUT }`
  */
-struct KeyEvent mutt_getch(void)
+struct KeyEvent mutt_getch(GetChFlags flags)
 {
   static const struct KeyEvent event_err = { 0, OP_ABORT };
   static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
@@ -252,7 +254,7 @@ struct KeyEvent mutt_getch(void)
     return *event_key;
   }
 
-  if (!OptIgnoreMacroEvents && (event_key = array_pop(&MacroEvents)))
+  if (!(flags & GETCH_IGNORE_MACRO) && (event_key = array_pop(&MacroEvents)))
   {
     return *event_key;
   }
@@ -475,7 +477,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
-    event = mutt_getch_timeout(1000); // 1 second
+    event = mutt_getch_timeout(1000, GETCH_NO_FLAGS); // 1 second
   } while (event.op == OP_TIMEOUT);
   mutt_curses_set_cursor(old_cursor);
 

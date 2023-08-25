@@ -35,6 +35,10 @@
 /* maximal length of a key binding sequence used for buffer in km_bindkey */
 #define MAX_SEQ 8
 
+typedef uint8_t GetChFlags;            ///< Flags for mutt_getch(), e.g. #GETCH_NO_FLAGS
+#define GETCH_NO_FLAGS             0   ///< No flags are set
+#define GETCH_IGNORE_MACRO   (1 << 0)  ///< Don't use MacroEvents
+
 /// Type for key storage, the rest of neomutt works fine with int type
 typedef short keycode_t;
 
@@ -78,8 +82,8 @@ void mutt_init_abort_key(void);
 int main_config_observer(struct NotifyCallback *nc);
 
 enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc);
-int km_dokey(enum MenuType menu);
-struct KeyEvent km_dokey_event(enum MenuType menu);
+int km_dokey(enum MenuType menu, GetChFlags flags);
+struct KeyEvent km_dokey_event(enum MenuType menu, GetChFlags flags);
 
 extern struct KeymapList Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
 

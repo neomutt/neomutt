@@ -1277,7 +1277,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     }
 
     window_redraw(NULL);
-    op = km_dokey(MENU_INDEX);
+    op = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
 
     /* either user abort or timeout */
     if (op < OP_NULL)
