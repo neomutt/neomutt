@@ -71,7 +71,6 @@ bool OptDontHandlePgpKeys;  ///< (pseudo) used to extract PGP keys
 bool OptForceRefresh;       ///< (pseudo) refresh even during macros
 bool OptIgnoreMacroEvents;  ///< (pseudo) don't process macro/push/exec events while set
 bool OptKeepQuiet;          ///< (pseudo) shut up the message and refresh functions while we are executing an external program
-bool OptMenuPopClearScreen; ///< (pseudo) clear the screen when popping the last menu
 bool OptMsgErr;             ///< (pseudo) used by mutt_error/mutt_message
 bool OptNeedRescore;        ///< (pseudo) set when the 'score' command is used
 bool OptNeedResort;         ///< (pseudo) used to force a re-sort

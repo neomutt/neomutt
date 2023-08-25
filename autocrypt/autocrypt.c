@@ -105,11 +105,6 @@ int mutt_autocrypt_init(bool can_create)
     return -1;
 
   OptIgnoreMacroEvents = true;
-  /* The init process can display menus at various points
-   *(e.g. browser, pgp key selection).  This allows the screen to be
-   * autocleared after each menu, so the subsequent prompts can be
-   * read. */
-  OptMenuPopClearScreen = true;
 
   if (autocrypt_dir_init(can_create))
     goto bail;
@@ -121,13 +116,11 @@ int mutt_autocrypt_init(bool can_create)
     goto bail;
 
   OptIgnoreMacroEvents = false;
-  OptMenuPopClearScreen = false;
 
   return 0;
 
 bail:
   OptIgnoreMacroEvents = false;
-  OptMenuPopClearScreen = false;
   cs_subset_str_native_set(NeoMutt->sub, "autocrypt", false, NULL);
   mutt_autocrypt_db_close();
   return -1;
