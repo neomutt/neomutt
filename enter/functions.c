@@ -43,7 +43,6 @@
 #include "pattern/lib.h"
 #include "enter.h"
 #include "keymap.h"
-#include "mutt_history.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"

@@ -56,6 +56,8 @@ enum HistoryClass
   HC_MAX,
 };
 
+struct NotifyCallback;
+
 void  mutt_hist_add         (enum HistoryClass hclass, const char *str, bool save);
 bool  mutt_hist_at_scratch  (enum HistoryClass hclass);
 void  mutt_hist_cleanup     (void);
@@ -66,7 +68,9 @@ void  mutt_hist_read_file   (void);
 void  mutt_hist_reset_state (enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
 int   mutt_hist_search      (const char *search_buf, enum HistoryClass hclass, char **matches);
+void  mutt_hist_complete    (char *buf, size_t buflen, enum HistoryClass hclass);
+int   main_hist_observer    (struct NotifyCallback *nc);
 
-void dlg_select_history(char *buf, size_t buflen, char **matches, int match_count);
+void  dlg_select_history(char *buf, size_t buflen, char **matches, int match_count);
 
 #endif /* MUTT_HISTORY_LIB_H */

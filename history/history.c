@@ -671,3 +671,45 @@ void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
    * an old garbage value that should be overwritten */
   mutt_str_replace(&h->hist[h->last], str);
 }
+
+/**
+ * mutt_hist_complete - Complete a string from a history list
+ * @param buf    Buffer in which to save string
+ * @param buflen Buffer length
+ * @param hclass History list to use
+ */
+void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
+{
+  const short c_history = cs_subset_number(NeoMutt->sub, "history");
+  char **matches = mutt_mem_calloc(c_history, sizeof(char *));
+  int match_count = mutt_hist_search(buf, hclass, matches);
+  if (match_count)
+  {
+    if (match_count == 1)
+      mutt_str_copy(buf, matches[0], buflen);
+    else
+      dlg_select_history(buf, buflen, matches, match_count);
+  }
+  FREE(&matches);
+}
+
+/**
+ * main_hist_observer - Notification that a Config Variable has change
+ - Implements ::observer_t - @ingroup observer_api
+ */
+int main_hist_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_CONFIG)
+    return 0;
+  if (!nc->event_data)
+    return -1;
+
+  struct EventConfig *ev_c = nc->event_data;
+
+  if (!mutt_str_equal(ev_c->name, "history"))
+    return 0;
+
+  mutt_hist_init();
+  mutt_debug(LL_DEBUG5, "history done\n");
+  return 0;
+}
