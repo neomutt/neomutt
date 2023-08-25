@@ -90,7 +90,6 @@
  * | mutt_body.c     | @subpage neo_mutt_body     |
  * | mutt_config.c   | @subpage neo_mutt_config   |
  * | mutt_header.c   | @subpage neo_mutt_header   |
- * | mutt_history.c  | @subpage neo_mutt_history  |
  * | mutt_logging.c  | @subpage neo_mutt_logging  |
  * | mutt_lua.c      | @subpage neo_mutt_lua      |
  * | mutt_mailbox.c  | @subpage neo_mutt_mailbox  |
@@ -155,6 +154,7 @@
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "color/lib.h"
+#include "history/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
@@ -167,7 +167,6 @@
 #include "hook.h"
 #include "init.h"
 #include "keymap.h"
-#include "mutt_history.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"

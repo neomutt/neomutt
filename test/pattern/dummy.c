@@ -315,10 +315,6 @@ void mutt_help(enum MenuType menu)
 {
 }
 
-void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
-{
-}
-
 int mutt_label_complete(char *buf, size_t buflen, int numtabs)
 {
   return 0;
