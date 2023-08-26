@@ -80,7 +80,6 @@ bool OptNewsSend;           ///< (pseudo) used to change behavior when posting
 #endif
 bool OptNoCurses;           ///< (pseudo) when sending in batch mode
 bool OptPgpCheckTrust;      ///< (pseudo) used by dlg_select_pgp_key()
-bool OptRedrawTree;         ///< (pseudo) redraw the thread tree
 bool OptResortInit;         ///< (pseudo) used to force the next resort to be from scratch
 bool OptSearchInvalid;      ///< (pseudo) used to invalidate the search pattern
 bool OptSearchReverse;      ///< (pseudo) used by ci_search_command

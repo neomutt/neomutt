@@ -1132,13 +1132,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
-    if (shared->mailbox_view && OptRedrawTree && shared->mailbox &&
-        (shared->mailbox->msg_count != 0) && mutt_using_threads())
-    {
-      mutt_draw_tree(shared->mailbox_view->threads);
-      OptRedrawTree = false;
-    }
-
     if (shared->mailbox && shared->mailbox_view)
     {
       mailbox_gc_run();

@@ -75,7 +75,6 @@ extern bool OptNewsSend;            ///< (pseudo) used to change behavior when p
 #endif
 extern bool OptNoCurses;            ///< (pseudo) when sending in batch mode
 extern bool OptPgpCheckTrust;       ///< (pseudo) used by dlg_select_pgp_key()
-extern bool OptRedrawTree;          ///< (pseudo) redraw the thread tree
 extern bool OptResortInit;          ///< (pseudo) used to force the next resort to be from scratch
 extern bool OptSearchInvalid;       ///< (pseudo) used to invalidate the search pattern
 extern bool OptSearchReverse;       ///< (pseudo) used by ci_search_command
