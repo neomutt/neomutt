@@ -1296,7 +1296,11 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   }
 
   if (col < win_pager->state.cols)
+  {
+    const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
+    mutt_curses_set_color_by_id(cid);
     mutt_window_clrtoeol(win_pager);
+  }
 
   /* reset the color back to normal.  This *must* come after the
    * clrtoeol, otherwise the color for this line will not be
