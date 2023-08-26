@@ -2366,7 +2366,7 @@ msgstr "[-- Błąd: message/external-body nie ma ustawionego rodzaju dostępu --
 #. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
-#. mutt_str_pretty_size() in mutt/string.c.
+#. mutt_str_pretty_size() in muttlib.c
 #: handler.c:818
 #, c-format
 msgid ""
@@ -2398,7 +2398,7 @@ msgstr[2] ""
 #. Sadly, we can't do anything about that at the moment besides
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
-#. mutt_str_pretty_size() in mutt/string.c.
+#. mutt_str_pretty_size() in muttlib.c
 #: handler.c:841
 #, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
