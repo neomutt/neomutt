@@ -454,7 +454,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
         return (struct KeyEvent){ '\0', OP_ABORT };
       }
 
-      generic_tokenize_push_string(map->macro, mutt_push_macro_event);
+      generic_tokenize_push_string(map->macro);
       map = STAILQ_FIRST(&Keymaps[mtype]);
       pos = 0;
     }

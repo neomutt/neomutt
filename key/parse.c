@@ -351,7 +351,7 @@ enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  generic_tokenize_push_string(buf->data, mutt_push_macro_event);
+  generic_tokenize_push_string(buf->data);
   return MUTT_CMD_SUCCESS;
 }
 

@@ -335,14 +335,11 @@ const char *mutt_get_func(const struct MenuFuncOp *funcs, int op)
 
 /**
  * generic_tokenize_push_string - Parse and queue a 'push' command
- * @param s            String to push into the key queue
- * @param generic_push Callback function to add events to macro queue
+ * @param s String to push into the key queue
  *
- * Parses s for `<function>` syntax and adds the whole sequence to either the
- * macro or unget buffer.  This function is invoked by the next two defines
- * below.
+ * Parses s for `<function>` syntax and adds the whole sequence the macro buffer.
  */
-void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
+void generic_tokenize_push_string(char *s)
 {
   char *pp = NULL;
   char *p = s + mutt_str_len(s) - 1;
@@ -363,7 +360,7 @@ void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
         i = parse_fkey(pp);
         if (i > 0)
         {
-          generic_push(KEY_F(i), 0);
+          mutt_push_macro_event(KEY_F(i), 0);
           p = pp - 1;
           continue;
         }
@@ -377,7 +374,7 @@ void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
         if (KeyNames[i].name)
         {
           /* found a match */
-          generic_push(KeyNames[i].value, 0);
+          mutt_push_macro_event(KeyNames[i].value, 0);
           p = pp - 1;
           continue;
         }
@@ -397,13 +394,13 @@ void generic_tokenize_push_string(char *s, void (*generic_push)(int, int))
 
         if (op != OP_NULL)
         {
-          generic_push(0, op);
+          mutt_push_macro_event(0, op);
           p = pp - 1;
           continue;
         }
       }
     }
-    generic_push((unsigned char) *p--, 0); /* independent 8 bits chars */
+    mutt_push_macro_event((unsigned char) *p--, 0); /* independent 8 bits chars */
   }
 }
 

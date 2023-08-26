@@ -169,7 +169,7 @@ void                     mw_what_key                (void);
 // Private to libkey
 struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);
 enum CommandResult dump_bind_macro             (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-void               generic_tokenize_push_string(char *s, void (*generic_push)(int, int));
+void               generic_tokenize_push_string(char *s);
 int                get_op                      (const struct MenuFuncOp *funcs, const char *start, size_t len);
 enum CommandResult km_bindkey                  (const char *s, enum MenuType mtype, int op);
 struct Keymap *    km_compare_keys             (struct Keymap *k1, struct Keymap *k2, size_t *pos);
