@@ -568,7 +568,8 @@ if {[get-define want-sasl]} {
 # Lua
 if {[get-define want-lua]} {
 
-  if {![pkgconf false lua] && ![pkgconf false lua-5.4] && ![pkgconf false lua-5.3] && ![pkgconf false lua-5.2]} {
+  if {![pkgconf false lua] && ![pkgconf false lua-5.4] && ![pkgconf false lua-5.3] && ![pkgconf false lua-5.2] \
+                           && ![pkgconf false lua5.4]  && ![pkgconf false lua5.3]  && ![pkgconf false lua5.2]} {
     user-error "Unable to find LUA"
   }
   define USE_LUA
