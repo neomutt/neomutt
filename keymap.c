@@ -1305,17 +1305,18 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
 
 /**
  * dump_bind - Dumps all the binds maps of a menu into a buffer
- * @param buf   Output buffer
- * @param menu  Menu to dump
+ * @param buf  Output buffer
+ * @param menu Menu to dump
+ * @param name Menu name
  * @retval true  Menu is empty
  * @retval false Menu is not empty
  */
-static bool dump_bind(struct Buffer *buf, struct Mapping *menu)
+static bool dump_bind(struct Buffer *buf, enum MenuType menu, const char *name)
 {
   bool empty = true;
   struct Keymap *map = NULL;
 
-  STAILQ_FOREACH(map, &Keymaps[menu->value], entries)
+  STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
     if (map->op == OP_MACRO)
       continue;
@@ -1326,14 +1327,13 @@ static bool dump_bind(struct Buffer *buf, struct Mapping *menu)
     km_expand_key(key_binding, sizeof(key_binding), map);
     if (map->op == OP_NULL)
     {
-      buf_add_printf(buf, "bind %s %s noop\n", menu->name, key_binding);
+      buf_add_printf(buf, "bind %s %s noop\n", name, key_binding);
       continue;
     }
 
     /* The pager and editor menus don't use the generic map,
      * however for other menus try generic first. */
-    if ((menu->value != MENU_PAGER) && (menu->value != MENU_EDITOR) &&
-        (menu->value != MENU_GENERIC))
+    if ((menu != MENU_PAGER) && (menu != MENU_EDITOR) && (menu != MENU_GENERIC))
     {
       fn_name = mutt_get_func(OpGeneric, map->op);
     }
@@ -1342,14 +1342,14 @@ static bool dump_bind(struct Buffer *buf, struct Mapping *menu)
      * the function, try with its own menu. */
     if (!fn_name)
     {
-      const struct MenuFuncOp *funcs = km_get_table(menu->value);
+      const struct MenuFuncOp *funcs = km_get_table(menu);
       if (!funcs)
         continue;
 
       fn_name = mutt_get_func(funcs, map->op);
     }
 
-    buf_add_printf(buf, "bind %s %s %s\n", menu->name, key_binding, fn_name);
+    buf_add_printf(buf, "bind %s %s %s\n", name, key_binding, fn_name);
     empty = false;
   }
 
@@ -1362,12 +1362,9 @@ static bool dump_bind(struct Buffer *buf, struct Mapping *menu)
  */
 static void dump_all_binds(struct Buffer *buf)
 {
-  for (int i = 0; i < MENU_MAX; i++)
+  for (enum MenuType i = 1; i < MENU_MAX; i++)
   {
-    const char *menu_name = mutt_map_get_name(i, MenuNames);
-    struct Mapping menu = { menu_name, i };
-
-    const bool empty = dump_bind(buf, &menu);
+    const bool empty = dump_bind(buf, i, mutt_map_get_name(i, MenuNames));
 
     /* Add a new line for readability between menus. */
     if (!empty && (i < (MENU_MAX - 1)))
@@ -1377,17 +1374,18 @@ static void dump_all_binds(struct Buffer *buf)
 
 /**
  * dump_macro - Dumps all the macros maps of a menu into a buffer
- * @param buf   Output buffer
- * @param menu  Menu to dump
+ * @param buf  Output buffer
+ * @param menu Menu to dump
+ * @param name Menu name
  * @retval true  Menu is empty
  * @retval false Menu is not empty
  */
-static bool dump_macro(struct Buffer *buf, struct Mapping *menu)
+static bool dump_macro(struct Buffer *buf, enum MenuType menu, const char *name)
 {
   bool empty = true;
   struct Keymap *map = NULL;
 
-  STAILQ_FOREACH(map, &Keymaps[menu->value], entries)
+  STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
     if (map->op != OP_MACRO)
       continue;
@@ -1400,12 +1398,12 @@ static bool dump_macro(struct Buffer *buf, struct Mapping *menu)
 
     if (map->desc)
     {
-      buf_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", menu->name,
-                     key_binding, tmp.data, map->desc);
+      buf_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", name, key_binding,
+                     tmp.data, map->desc);
     }
     else
     {
-      buf_add_printf(buf, "macro %s %s \"%s\"\n", menu->name, key_binding, tmp.data);
+      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, key_binding, tmp.data);
     }
 
     buf_dealloc(&tmp);
@@ -1421,12 +1419,9 @@ static bool dump_macro(struct Buffer *buf, struct Mapping *menu)
  */
 static void dump_all_macros(struct Buffer *buf)
 {
-  for (int i = 0; i < MENU_MAX; i++)
+  for (enum MenuType i = 1; i < MENU_MAX; i++)
   {
-    const char *menu_name = mutt_map_get_name(i, MenuNames);
-    struct Mapping menu = { menu_name, i };
-
-    const bool empty = dump_macro(buf, &menu);
+    const bool empty = dump_macro(buf, i, mutt_map_get_name(i, MenuNames));
 
     /* Add a new line for legibility between menus. */
     if (!empty && (i < (MENU_MAX - 1)))
@@ -1456,7 +1451,7 @@ static enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   }
 
   struct Buffer filebuf = buf_make(4096);
-  if (dump_all || mutt_istr_equal(buf->data, "all"))
+  if (dump_all || mutt_istr_equal(buf_string(buf), "all"))
   {
     if (bind)
       dump_all_binds(&filebuf);
@@ -1465,20 +1460,19 @@ static enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    const int menu_index = mutt_map_get_value(buf->data, MenuNames);
+    const int menu_index = mutt_map_get_value(buf_string(buf), MenuNames);
     if (menu_index == -1)
     {
       // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
-      buf_printf(err, _("%s: no such menu"), buf->data);
+      buf_printf(err, _("%s: no such menu"), buf_string(buf));
       buf_dealloc(&filebuf);
       return MUTT_CMD_ERROR;
     }
 
-    struct Mapping menu = { buf->data, menu_index };
     if (bind)
-      dump_bind(&filebuf, &menu);
+      dump_bind(&filebuf, menu_index, buf_string(buf));
     else
-      dump_macro(&filebuf, &menu);
+      dump_macro(&filebuf, menu_index, buf_string(buf));
   }
 
   if (buf_is_empty(&filebuf))
@@ -1486,7 +1480,7 @@ static enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
     // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
     //       it might also be 'all' when all menus are affected.
     buf_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
-               dump_all ? "all" : buf->data);
+               dump_all ? "all" : buf_string(buf));
     buf_dealloc(&filebuf);
     return MUTT_CMD_ERROR;
   }
@@ -1700,7 +1694,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   if (mutt_str_equal(buf->data, "*"))
   {
-    for (enum MenuType i = 0; i < MENU_MAX; i++)
+    for (enum MenuType i = 1; i < MENU_MAX; i++)
       menu_matches[i] = true;
   }
   else
@@ -1726,7 +1720,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  for (enum MenuType i = 0; i < MENU_MAX; i++)
+  for (enum MenuType i = 1; i < MENU_MAX; i++)
   {
     if (!menu_matches[i])
       continue;
@@ -1957,7 +1951,7 @@ void mw_what_key(void)
  */
 void mutt_keys_cleanup(void)
 {
-  for (int i = 0; i < MENU_MAX; i++)
+  for (enum MenuType i = 1; i < MENU_MAX; i++)
   {
     mutt_keymaplist_free(&Keymaps[i]);
   }
