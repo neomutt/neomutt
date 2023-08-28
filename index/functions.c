@@ -2025,11 +2025,39 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
  */
 static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
+  if (!shared->search)
+  {
+    shared->search = mutt_mem_calloc(1, sizeof(struct Search));
+    shared->search->input = buf_pool_get();
+    shared->search->input_expn = buf_pool_get();
+  }
+
+  shared->search->cur = menu_get_index(priv->menu);
+
+  switch (op)
+  {
+    case OP_SEARCH:
+      shared->search->flags |= SEARCH_PROMPT;
+      shared->search->flags &= ~SEARCH_REVERSE;
+      break;
+    case OP_SEARCH_REVERSE:
+      shared->search->flags |= SEARCH_PROMPT;
+      shared->search->flags |= SEARCH_REVERSE;
+      break;
+    case OP_SEARCH_NEXT:
+      shared->search->flags &= ~SEARCH_PROMPT;
+      shared->search->flags &= ~SEARCH_OPPOSITE;
+      break;
+    case OP_SEARCH_OPPOSITE:
+      shared->search->flags &= ~SEARCH_PROMPT;
+      shared->search->flags |= SEARCH_OPPOSITE;
+      break;
+  }
+
   // Initiating a search can happen on an empty mailbox, but
   // searching for next/previous/... needs to be on a message and
   // thus a non-empty mailbox
-  int index = menu_get_index(priv->menu);
-  index = mutt_search_command(shared->mailbox_view, priv->menu, index, op);
+  int index = mutt_search_command(shared->mailbox_view, priv->menu, shared->search);
   if (index != -1)
     menu_set_index(priv->menu, index);
 

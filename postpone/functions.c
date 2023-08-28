@@ -98,9 +98,9 @@ static int op_generic_select_entry(struct PostponeData *pd, int op)
  */
 static int op_search(struct PostponeData *pd, int op)
 {
-  int index = menu_get_index(pd->menu);
+  struct Search *st = {0};
   struct MailboxView *mv = pd->mailbox_view;
-  index = mutt_search_command(mv, pd->menu, index, op);
+  int index = mutt_search_command(mv, pd->menu, st);
   if (index != -1)
     menu_set_index(pd->menu, index);
 

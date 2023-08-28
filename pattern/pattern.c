@@ -434,14 +434,13 @@ bail:
 
 /**
  * mutt_search_command - Perform a search
- * @param mv   Mailbox view to search through
- * @param menu Current Menu
- * @param cur  Index number of current email
- * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
+ * @param mv     Mailbox view to search through
+ * @param menu   Current Menu
+ * @param search Current search state
  * @retval >=0 Index of matching email
  * @retval -1  No match, or error
  */
-int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int op)
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct Search *search)
 {
   struct Progress *progress = NULL;
   struct Buffer *buf = NULL;
@@ -450,21 +449,16 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
   if (!m)
     return -1;
 
-  if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
+  if (buf_is_empty(search->input) || (search->flags & SEARCH_PROMPT))
   {
     buf = buf_pool_get();
-    buf_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
+    buf_copy(buf, search->input);
+    if ((mw_get_field((search->flags & SEARCH_REVERSE) ? _("Reverse search for: ") : _("Search for: "),
                       buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       goto done;
     }
-
-    if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
-      OptSearchReverse = false;
-    else
-      OptSearchReverse = true;
 
     /* compare the *expanded* version of the search pattern in case
      * $simple_search has changed while we were searching */
@@ -473,26 +467,26 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
     const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
     mutt_check_simple(tmp, NONULL(c_simple_search));
 
-    if (!SearchPattern || !mutt_str_equal(buf_string(tmp), LastSearchExpn))
+    if (!search->pattern || !buf_str_equal(tmp, search->input_expn))
     {
       struct Buffer err;
       buf_init(&err);
       OptSearchInvalid = true;
-      mutt_str_copy(LastSearch, buf_string(buf), sizeof(LastSearch));
-      mutt_str_copy(LastSearchExpn, buf_string(tmp), sizeof(LastSearchExpn));
+      buf_copy(search->input, buf);
+      buf_copy(search->input_expn, tmp);
       mutt_message(_("Compiling search pattern..."));
-      mutt_pattern_free(&SearchPattern);
+      mutt_pattern_free(&search->pattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(mv, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
-      if (!SearchPattern)
+      search->pattern = mutt_pattern_comp(mv, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
+      if (!search->pattern)
       {
         buf_pool_release(&buf);
         buf_pool_release(&tmp);
         mutt_error("%s", err.data);
         FREE(&err.data);
-        LastSearch[0] = '\0';
-        LastSearchExpn[0] = '\0';
+        buf_free(&search->input);
+        buf_free(&search->input_expn);
         return -1;
       }
       FREE(&err.data);
@@ -507,20 +501,20 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
     for (int i = 0; i < m->msg_count; i++)
       m->emails[i]->searched = false;
 #ifdef USE_IMAP
-    if ((m->type == MUTT_IMAP) && (!imap_search(m, SearchPattern)))
+    if ((m->type == MUTT_IMAP) && (!imap_search(m, search->pattern)))
       return -1;
 #endif
     OptSearchInvalid = false;
   }
 
-  int incr = OptSearchReverse ? -1 : 1;
-  if (op == OP_SEARCH_OPPOSITE)
+  int incr = (search->flags & SEARCH_REVERSE) ? -1 : 1;
+  if (search->flags & SEARCH_OPPOSITE)
     incr = -incr;
 
   progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, m->vcount);
 
   const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
-  for (int i = cur + incr, j = 0; j != m->vcount; j++)
+  for (int i = search->cur + incr, j = 0; j != m->vcount; j++)
   {
     const char *msg = NULL;
     progress_update(progress, j, -1);
@@ -571,7 +565,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int 
     {
       /* remember that we've already searched this message */
       e->searched = true;
-      e->matched = mutt_pattern_exec(SLIST_FIRST(SearchPattern),
+      e->matched = mutt_pattern_exec(SLIST_FIRST(search->pattern),
                                      MUTT_MATCH_FULL_ADDRESS, m, e, NULL);
       if (e->matched)
       {
