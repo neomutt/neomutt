@@ -1297,8 +1297,15 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
 
   if (col < win_pager->state.cols)
   {
-    const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
-    mutt_curses_set_color_by_id(cid);
+    if (flags & MUTT_PAGER_STRIPES)
+    {
+      const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
+      mutt_curses_set_color_by_id(cid);
+    }
+    else
+    {
+      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+    }
     mutt_window_clrtoeol(win_pager);
   }
 
