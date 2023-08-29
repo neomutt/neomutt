@@ -2028,8 +2028,8 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
   if (!shared->search)
   {
     shared->search = mutt_mem_calloc(1, sizeof(struct Search));
-    shared->search->input = buf_pool_get();
-    shared->search->input_expn = buf_pool_get();
+    shared->search->string = buf_pool_get();
+    shared->search->string_expn = buf_pool_get();
   }
 
   shared->search->cur = menu_get_index(priv->menu);
@@ -2037,20 +2037,21 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
   switch (op)
   {
     case OP_SEARCH:
-      shared->search->flags |= SEARCH_PROMPT;
-      shared->search->flags &= ~SEARCH_REVERSE;
+      shared->search->prompt = true;
+      shared->search->reverse = false;
       break;
     case OP_SEARCH_REVERSE:
-      shared->search->flags |= SEARCH_PROMPT;
-      shared->search->flags |= SEARCH_REVERSE;
+      shared->search->prompt = true;
+      shared->search->reverse = true;
       break;
     case OP_SEARCH_NEXT:
-      shared->search->flags &= ~SEARCH_PROMPT;
-      shared->search->flags &= ~SEARCH_OPPOSITE;
+      shared->search->prompt = false;
       break;
     case OP_SEARCH_OPPOSITE:
-      shared->search->flags &= ~SEARCH_PROMPT;
-      shared->search->flags |= SEARCH_OPPOSITE;
+      shared->search->prompt = false;
+      // OP_SEARCH_OPPOSITE triggers a one-time search in the opposite direction.
+      // We set it back down below.
+      shared->search->reverse = !shared->search->reverse;
       break;
   }
 
@@ -2060,6 +2061,10 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
   int index = mutt_search_command(shared->mailbox_view, priv->menu, shared->search);
   if (index != -1)
     menu_set_index(priv->menu, index);
+
+  // reset search direction
+  if (op == OP_SEARCH_OPPOSITE)
+      shared->search->reverse = !shared->search->reverse;
 
   return FR_SUCCESS;
 }

@@ -176,18 +176,13 @@ enum PatternType
   MUTT_PAT_MAX,
 };
 
-typedef uint8_t SearchFlags;       ///< Flags for searches; e.g. #SEARCH_REVERSE
-#define SEARCH_NO_FLAGS        0   ///< No flags are set
-#define SEARCH_REVERSE   (1 << 0)  ///< Search backwards
-#define SEARCH_OPPOSITE  (1 << 1)  ///< Search in the opposite direction, yes both can be set (OP_SEARCH_OPPOSITE)
-#define SEARCH_PROMPT    (1 << 2)  ///< Ask for search input
-
 struct Search {
   int                 cur;         ///< index number of current email
-  struct PatternList *pattern;     ///< current search pattern
-  struct Buffer      *input;       ///< last pattern searched for
-  struct Buffer      *input_expn;  ///< expanded version of LastSearch
-  SearchFlags         flags;       ///< flags for search, e.g. #SEARCH_REVERSE
+  struct PatternList *pattern;     ///< compiled search pattern
+  struct Buffer      *string;      ///< search string
+  struct Buffer      *string_expn; ///< expanded search string
+  bool                reverse;     ///< search backwards
+  bool                prompt;      ///< ask for search input
 };
 
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
