@@ -1087,9 +1087,6 @@ void km_init(void)
  */
 void km_error_key(enum MenuType mtype)
 {
-  char buf[128] = { 0 };
-  int p, op;
-
   struct Keymap *key = km_find_func(mtype, OP_HELP);
   if (!key && (mtype != MENU_EDITOR) && (mtype != MENU_PAGER))
     key = km_find_func(MENU_GENERIC, OP_HELP);
@@ -1099,41 +1096,7 @@ void km_error_key(enum MenuType mtype)
     return;
   }
 
-  /* Make sure the key is really the help key in this menu.
-   *
-   * OP_END_COND is used as a barrier to ensure nothing extra
-   * is left in the unget buffer.
-   *
-   * Note that km_expand_key() + tokenize_unget_string() should
-   * not be used here: control sequences are expanded to a form
-   * (e.g. "^H") not recognized by km_dokey(). */
-  mutt_unget_op(OP_END_COND);
-  p = key->len;
-  while (p--)
-    mutt_unget_ch(key->keys[p]);
-
-  /* Note, e.g. for the index menu:
-   *   bind generic ?   noop
-   *   bind generic ,a  help
-   *   bind index   ,ab quit
-   * The index keybinding shadows the generic binding.
-   * OP_END_COND will be read and returned as the op.
-   *
-   *   bind generic ?   noop
-   *   bind generic dq  help
-   *   bind index   d   delete-message
-   * OP_DELETE will be returned as the op, leaving "q" + OP_END_COND
-   * in the unget buffer.
-   */
-  op = km_dokey(mtype, GETCH_NO_FLAGS);
-  if (op != OP_END_COND)
-    mutt_flush_unget_to_endcond();
-  if (op != OP_HELP)
-  {
-    mutt_error(_("Key is not bound"));
-    return;
-  }
-
+  char buf[128] = { 0 };
   km_expand_key(buf, sizeof(buf), key);
   mutt_error(_("Key is not bound.  Press '%s' for help."), buf);
 }
