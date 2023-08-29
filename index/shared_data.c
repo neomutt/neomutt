@@ -31,6 +31,7 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "pattern/lib.h"
 #include "shared_data.h"
 #include "lib.h"
 #include "mview.h"
@@ -292,6 +293,8 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
     notify_observer_remove(shared->mailbox->notify, index_shared_mailbox_observer, shared);
   if (shared->email)
     notify_observer_remove(shared->email->notify, index_shared_email_observer, shared);
+
+  mutt_search_free(&shared->search);
 
   FREE(ptr);
 }

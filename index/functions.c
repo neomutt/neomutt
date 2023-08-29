@@ -2026,45 +2026,33 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
 static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
   if (!shared->search)
-  {
-    shared->search = mutt_mem_calloc(1, sizeof(struct Search));
-    shared->search->string = buf_pool_get();
-    shared->search->string_expn = buf_pool_get();
-  }
+    shared->search = mutt_search_new();
 
-  shared->search->cur = menu_get_index(priv->menu);
-
+  SearchFlags flags = SEARCH_NO_FLAGS;
   switch (op)
   {
     case OP_SEARCH:
-      shared->search->prompt = true;
+      flags |= SEARCH_PROMPT;
       shared->search->reverse = false;
       break;
     case OP_SEARCH_REVERSE:
-      shared->search->prompt = true;
+      flags |= SEARCH_PROMPT;
       shared->search->reverse = true;
       break;
     case OP_SEARCH_NEXT:
-      shared->search->prompt = false;
       break;
     case OP_SEARCH_OPPOSITE:
-      shared->search->prompt = false;
-      // OP_SEARCH_OPPOSITE triggers a one-time search in the opposite direction.
-      // We set it back down below.
-      shared->search->reverse = !shared->search->reverse;
+      flags |= SEARCH_OPPOSITE;
       break;
   }
 
   // Initiating a search can happen on an empty mailbox, but
   // searching for next/previous/... needs to be on a message and
   // thus a non-empty mailbox
-  int index = mutt_search_command(shared->mailbox_view, priv->menu, shared->search);
+  int index = menu_get_index(priv->menu);
+  index = mutt_search_command(shared->mailbox_view, priv->menu, shared->search, index, flags);
   if (index != -1)
     menu_set_index(priv->menu, index);
-
-  // reset search direction
-  if (op == OP_SEARCH_OPPOSITE)
-      shared->search->reverse = !shared->search->reverse;
 
   return FR_SUCCESS;
 }

@@ -176,14 +176,22 @@ enum PatternType
   MUTT_PAT_MAX,
 };
 
+/**
+ * struct Search - State of a search
+ *
+ * This data is kept across operations to allow operations like OP_SEARCH_NEXT.
+ */
 struct Search {
-  int                 cur;         ///< index number of current email
   struct PatternList *pattern;     ///< compiled search pattern
   struct Buffer      *string;      ///< search string
   struct Buffer      *string_expn; ///< expanded search string
   bool                reverse;     ///< search backwards
-  bool                prompt;      ///< ask for search input
 };
+
+typedef uint8_t SearchFlags;       ///< Flags for a specific search, e.g. #SEARCH_PROMPT
+#define SEARCH_NO_FLAGS        0   ///< No flags are set
+#define SEARCH_PROMPT    (1 << 0)  ///< Ask for search input
+#define SEARCH_OPPOSITE  (1 << 1)  ///< Search in the opposite direction
 
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
                        struct Email *e, struct PatternCache *cache);
@@ -200,7 +208,10 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
-int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct Search *state);
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct Search *state, int cur, SearchFlags flags);
 int mutt_search_alias_command(struct Menu *menu, int cur, int op);
+
+struct Search *mutt_search_new();
+void mutt_search_free(struct Search **search);
 
 #endif /* MUTT_PATTERN_LIB_H */

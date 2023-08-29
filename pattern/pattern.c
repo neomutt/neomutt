@@ -33,6 +33,7 @@
 #include <stdbool.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "mutt/pool.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -437,10 +438,13 @@ bail:
  * @param mv     Mailbox view to search through
  * @param menu   Current Menu
  * @param search Current search state
- * @retval >=0 Index of matching email
- * @retval -1  No match, or error
+ * @param cur    Index number of current email
+ * @param flags  Search flags, e.g. SEARCH_PROMPT
+ * @retval >=0   Index of matching email
+ * @retval -1    No match, or error
  */
-int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct Search *search)
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu,
+                        struct Search *search, int cur, SearchFlags flags)
 {
   struct Progress *progress = NULL;
   int rc = -1;
@@ -448,7 +452,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct Search
   if (!m)
     return -1;
 
-  if (buf_is_empty(search->string) || (search->prompt))
+  if (buf_is_empty(search->string) || (flags & SEARCH_PROMPT))
   {
     if ((mw_get_field((search->reverse) ? _("Reverse search for: ") : _("Search for: "),
                       search->string, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN,
@@ -501,11 +505,14 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct Search
     OptSearchInvalid = false;
   }
 
+  int incr = search->reverse ? -1 : 1;
+  if (flags & SEARCH_OPPOSITE)
+    incr = -incr;
+
   progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, m->vcount);
 
   const bool c_wrap_search = cs_subset_bool(NeoMutt->sub, "wrap_search");
-  int incr = search->reverse ? -1 : 1;
-  for (int i = search->cur + incr, j = 0; j != m->vcount; j++)
+  for (int i = cur + incr, j = 0; j != m->vcount; j++)
   {
     const char *msg = NULL;
     progress_update(progress, j, -1);
@@ -743,4 +750,25 @@ done:
   progress_free(&progress);
   buf_pool_release(&buf);
   return rc;
+}
+
+struct Search *mutt_search_new()
+{
+  struct Search *search = mutt_mem_calloc(1, sizeof(struct Search));
+  search->string = buf_pool_get();
+  search->string_expn = buf_pool_get();
+  return search;
+}
+
+void mutt_search_free(struct Search **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Search *search = *ptr;
+  mutt_pattern_free(&search->pattern);
+  buf_pool_release(&search->string);
+  buf_pool_release(&search->string_expn);
+
+  FREE(ptr);
 }
