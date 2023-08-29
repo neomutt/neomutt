@@ -2030,11 +2030,11 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
   {
     case OP_SEARCH:
       flags |= SEARCH_PROMPT;
-      shared->search->reverse = false;
+      shared->search_state->reverse = false;
       break;
     case OP_SEARCH_REVERSE:
       flags |= SEARCH_PROMPT;
-      shared->search->reverse = true;
+      shared->search_state->reverse = true;
       break;
     case OP_SEARCH_NEXT:
       break;
@@ -2047,7 +2047,8 @@ static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *pr
   // searching for next/previous/... needs to be on a message and
   // thus a non-empty mailbox
   int index = menu_get_index(priv->menu);
-  index = mutt_search_command(shared->mailbox_view, priv->menu, shared->search, index, flags);
+  index = mutt_search_command(shared->mailbox_view, priv->menu,
+                              shared->search_state, index, flags);
   if (index != -1)
     menu_set_index(priv->menu, index);
 
