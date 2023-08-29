@@ -26,16 +26,17 @@
  *
  * Match patterns to emails
  *
- * | File                  | Description                  |
- * | :-------------------- | :--------------------------- |
- * | pattern/compile.c     | @subpage pattern_compile     |
- * | pattern/config.c      | @subpage pattern_config      |
- * | pattern/dlg_pattern.c | @subpage pattern_dlg_pattern |
- * | pattern/exec.c        | @subpage pattern_exec        |
- * | pattern/flags.c       | @subpage pattern_flags       |
- * | pattern/functions.c   | @subpage pattern_functions   |
- * | pattern/message.c     | @subpage pattern_message     |
- * | pattern/pattern.c     | @subpage pattern_pattern     |
+ * | File                   | Description                   |
+ * | :--------------------- | :---------------------------- |
+ * | pattern/compile.c      | @subpage pattern_compile      |
+ * | pattern/config.c       | @subpage pattern_config       |
+ * | pattern/dlg_pattern.c  | @subpage pattern_dlg_pattern  |
+ * | pattern/exec.c         | @subpage pattern_exec         |
+ * | pattern/flags.c        | @subpage pattern_flags        |
+ * | pattern/functions.c    | @subpage pattern_functions    |
+ * | pattern/message.c      | @subpage pattern_message      |
+ * | pattern/pattern.c      | @subpage pattern_pattern      |
+ * | pattern/search_state.c | @subpage pattern_search_state |
  */
 
 #ifndef MUTT_PATTERN_LIB_H
@@ -47,6 +48,7 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt.h"
+#include "search_state.h" // IWYU pragma: keep
 
 struct AliasMenuData;
 struct AliasView;
@@ -176,23 +178,6 @@ enum PatternType
   MUTT_PAT_MAX,
 };
 
-/**
- * struct Search - State of a search
- *
- * This data is kept across operations to allow operations like OP_SEARCH_NEXT.
- */
-struct Search {
-  struct PatternList *pattern;     ///< compiled search pattern
-  struct Buffer      *string;      ///< search string
-  struct Buffer      *string_expn; ///< expanded search string
-  bool                reverse;     ///< search backwards
-};
-
-typedef uint8_t SearchFlags;       ///< Flags for a specific search, e.g. #SEARCH_PROMPT
-#define SEARCH_NO_FLAGS        0   ///< No flags are set
-#define SEARCH_PROMPT    (1 << 0)  ///< Ask for search input
-#define SEARCH_OPPOSITE  (1 << 1)  ///< Search in the opposite direction
-
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
                        struct Email *e, struct PatternCache *cache);
 bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
@@ -208,10 +193,7 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
-int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct Search *state, int cur, SearchFlags flags);
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, struct SearchState *state, int cur, SearchFlags flags);
 int mutt_search_alias_command(struct Menu *menu, int cur, int op);
-
-struct Search *mutt_search_new();
-void mutt_search_free(struct Search **search);
 
 #endif /* MUTT_PATTERN_LIB_H */

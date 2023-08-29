@@ -443,7 +443,7 @@ bail:
  * @retval -1    No match, or error
  */
 int mutt_search_command(struct MailboxView *mv, struct Menu *menu,
-                        struct Search *search, int cur, SearchFlags flags)
+                        struct SearchState *search, int cur, SearchFlags flags)
 {
   struct Progress *progress = NULL;
   int rc = -1;
@@ -749,25 +749,4 @@ done:
   progress_free(&progress);
   buf_pool_release(&buf);
   return rc;
-}
-
-struct Search *mutt_search_new()
-{
-  struct Search *search = mutt_mem_calloc(1, sizeof(struct Search));
-  search->string = buf_pool_get();
-  search->string_expn = buf_pool_get();
-  return search;
-}
-
-void mutt_search_free(struct Search **ptr)
-{
-  if (!ptr || !*ptr)
-    return;
-
-  struct Search *search = *ptr;
-  mutt_pattern_free(&search->pattern);
-  buf_pool_release(&search->string);
-  buf_pool_release(&search->string_expn);
-
-  FREE(ptr);
 }
