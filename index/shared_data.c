@@ -309,6 +309,7 @@ struct IndexSharedData *index_shared_data_new(void)
 
   shared->notify = notify_new();
   shared->sub = NeoMutt->sub;
+  shared->search = mutt_search_new();
 
   mutt_debug(LL_NOTIFY, "NT_INDEX_ADD: %p\n", (void *) shared);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_ADD, shared);

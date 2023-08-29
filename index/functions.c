@@ -2025,9 +2025,6 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
  */
 static int op_search(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  if (!shared->search)
-    shared->search = mutt_search_new();
-
   SearchFlags flags = SEARCH_NO_FLAGS;
   switch (op)
   {
