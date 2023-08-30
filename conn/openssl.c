@@ -940,7 +940,7 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   allow_always = allow_always && c_certificate_file &&
                  check_certificate_expiration(cert, true);
 
-  int rc = dlg_verify_certificate(title, &carr, allow_always, allow_skip);
+  int rc = dlg_certificate(title, &carr, allow_always, allow_skip);
   if ((rc == 3) && !allow_always)
     rc = 4;
 

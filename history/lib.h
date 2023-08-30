@@ -71,6 +71,6 @@ int   mutt_hist_search      (const char *search_buf, enum HistoryClass hclass, c
 void  mutt_hist_complete    (char *buf, size_t buflen, enum HistoryClass hclass);
 int   main_hist_observer    (struct NotifyCallback *nc);
 
-void  dlg_select_history(char *buf, size_t buflen, char **matches, int match_count);
+void  dlg_history(char *buf, size_t buflen, char **matches, int match_count);
 
 #endif /* MUTT_HISTORY_LIB_H */

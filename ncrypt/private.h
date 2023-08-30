@@ -31,8 +31,8 @@ struct CryptKeyInfo;
 struct PgpKeyInfo;
 struct SmimeKey;
 
-struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys, struct Address *p, const char *s, unsigned int app, bool *forced_valid);
-struct PgpKeyInfo *  dlg_select_pgp_key  (struct PgpKeyInfo *keys, struct Address *p, const char *s);
-struct SmimeKey *    dlg_select_smime_key(struct SmimeKey *keys, const char *query);
+struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p, const char *s, unsigned int app, bool *forced_valid);
+struct PgpKeyInfo *  dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const char *s);
+struct SmimeKey *    dlg_smime(struct SmimeKey *keys, const char *query);
 
 #endif /* MUTT_NCRYPT_PRIVATE_H */

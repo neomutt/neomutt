@@ -395,7 +395,7 @@ static int pager_window_observer(struct NotifyCallback *nc)
 
   struct MuttWindow *dlg = window_find_parent(win_pager, WT_DLG_INDEX);
   if (!dlg)
-    dlg = window_find_parent(win_pager, WT_DLG_DO_PAGER);
+    dlg = window_find_parent(win_pager, WT_DLG_PAGER);
 
   struct IndexSharedData *shared = dlg->wdata;
 

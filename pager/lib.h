@@ -115,7 +115,7 @@ typedef uint16_t PagerFlags;              ///< Flags for dlg_pager(), e.g. #MUTT
 //    icmd_bind             -> mutt_do_pager -> dlg_pager
 //    icmd_set              -> mutt_do_pager -> dlg_pager
 //    icmd_version          -> mutt_do_pager -> dlg_pager
-//    dlg_select_pgp_key    -> mutt_do_pager -> dlg_pager
+//    dlg_pgp               -> mutt_do_pager -> dlg_pager
 //    verify_key            -> mutt_do_pager -> dlg_pager
 //    mutt_invoke_sendmail  -> mutt_do_pager -> dlg_pager
 //

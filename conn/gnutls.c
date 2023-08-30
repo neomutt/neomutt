@@ -562,7 +562,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
   const bool allow_always = (c_certificate_file && !savedcert &&
                              !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID | CERTERR_REVOKED)));
-  int rc = dlg_verify_certificate(title, &carr, allow_always, false);
+  int rc = dlg_certificate(title, &carr, allow_always, false);
   if (rc == 3) // Accept always
   {
     bool saved = false;

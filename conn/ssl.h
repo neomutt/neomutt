@@ -46,7 +46,7 @@ struct CertMenuData
 };
 
 int mutt_ssl_socket_setup(struct Connection *conn);
-int dlg_verify_certificate(const char *title, struct CertArray *carr, bool allow_always, bool allow_skip);
+int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always, bool allow_skip);
 #else
 /**
  * [Dummy] Set up the socket multiplexor

@@ -49,37 +49,37 @@ struct KeyEvent
 enum WindowType
 {
   // Structural Windows
-  WT_ROOT,        ///< Parent of All Windows
-  WT_CONTAINER,   ///< Invisible shaping container Window
-  WT_ALL_DIALOGS, ///< Container for All Dialogs (nested Windows)
+  WT_ROOT,            ///< Parent of All Windows
+  WT_CONTAINER,       ///< Invisible shaping container Window
+  WT_ALL_DIALOGS,     ///< Container for All Dialogs (nested Windows)
 
   // Dialogs (nested Windows) displayed to the user
-  WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_select_alias()
-  WT_DLG_ATTACH,      ///< Attach Dialog,      dlg_select_attachment()
-  WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   dlg_select_autocrypt()
+  WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_alias()
+  WT_DLG_ATTACH,      ///< Attach Dialog,      dlg_attachment()
+  WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   dlg_autocrypt()
   WT_DLG_BROWSER,     ///< Browser Dialog,     dlg_browser()
-  WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_verify_certificate()
+  WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_certificate()
   WT_DLG_COMPOSE,     ///< Compose Dialog,     dlg_compose()
-  WT_DLG_CRYPT_GPGME, ///< Crypt-GPGME Dialog, dlg_select_gpgme_key()
-  WT_DLG_DO_PAGER,    ///< Pager Dialog,       mutt_do_pager()
-  WT_DLG_HISTORY,     ///< History Dialog,     dlg_select_history()
-  WT_DLG_INDEX,       ///< Index Dialog,       index_pager_init()
-  WT_DLG_PATTERN,     ///< Pattern Dialog,     create_pattern_menu()
-  WT_DLG_PGP,         ///< Pgp Dialog,         dlg_select_pgp_key()
-  WT_DLG_POSTPONE,    ///< Postpone Dialog,    dlg_select_postponed()
-  WT_DLG_QUERY,       ///< Query Dialog,       dlg_select_query()
+  WT_DLG_GPGME,       ///< GPGME Dialog,       dlg_gpgme()
+  WT_DLG_PAGER,       ///< Pager Dialog,       dlg_pager()
+  WT_DLG_HISTORY,     ///< History Dialog,     dlg_history()
+  WT_DLG_INDEX,       ///< Index Dialog,       dlg_index()
+  WT_DLG_PATTERN,     ///< Pattern Dialog,     dlg_pattern()
+  WT_DLG_PGP,         ///< Pgp Dialog,         dlg_pgp()
+  WT_DLG_POSTPONE,    ///< Postpone Dialog,    dlg_postponed()
+  WT_DLG_QUERY,       ///< Query Dialog,       dlg_query()
   WT_DLG_REMAILER,    ///< Remailer Dialog,    dlg_mixmaster()
-  WT_DLG_SMIME,       ///< Smime Dialog,       dlg_select_smime_key()
+  WT_DLG_SMIME,       ///< Smime Dialog,       dlg_smime()
 
   // Common Windows
-  WT_CUSTOM,     ///< Window with a custom drawing function
-  WT_HELP_BAR,   ///< Help Bar containing list of useful key bindings
-  WT_INDEX,      ///< A panel containing the Index Window
-  WT_MENU,       ///< An Window containing a Menu
-  WT_MESSAGE,    ///< Window for messages/errors and command entry
-  WT_PAGER,      ///< A panel containing the Pager Window
-  WT_SIDEBAR,    ///< Side panel containing Accounts or groups of data
-  WT_STATUS_BAR, ///< Status Bar containing extra info about the Index/Pager/etc
+  WT_CUSTOM,          ///< Window with a custom drawing function
+  WT_HELP_BAR,        ///< Help Bar containing list of useful key bindings
+  WT_INDEX,           ///< A panel containing the Index Window
+  WT_MENU,            ///< An Window containing a Menu
+  WT_MESSAGE,         ///< Window for messages/errors and command entry
+  WT_PAGER,           ///< A panel containing the Pager Window
+  WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
+  WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc
 };
 
 bool g_addr_is_user = false;

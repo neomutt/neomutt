@@ -30,9 +30,9 @@
  *
  * ## Windows
  *
- * | Name                        | Type          | See Also                |
- * | :-------------------------- | :------------ | :---------------------- |
- * | Attachment Selection Dialog | WT_DLG_ATTACH | dlg_select_attachment() |
+ * | Name                        | Type          | See Also         |
+ * | :-------------------------- | :------------ | :--------------- |
+ * | Attachment Selection Dialog | WT_DLG_ATTACH | dlg_attachment() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -459,7 +459,7 @@ static int attach_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_attachment - Show the attachments in a Menu - @ingroup gui_dlg
+ * dlg_attachment - Show the attachments in a Menu - @ingroup gui_dlg
  * @param sub Config Subset
  * @param mv  Mailbox view
  * @param e   Email
@@ -469,8 +469,8 @@ static int attach_window_observer(struct NotifyCallback *nc)
  * They can be viewed using the Pager or Mailcap programs.
  * They can also be saved, printed, deleted, etc.
  */
-void dlg_select_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
-                           struct Email *e, FILE *fp)
+void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
+                    struct Email *e, FILE *fp)
 {
   if (!mv || !mv->mailbox || !e || !fp)
     return;

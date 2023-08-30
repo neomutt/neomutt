@@ -32,7 +32,7 @@
  *
  * | Name                            | Type               | See Also                 |
  * | :------------------------------ | :----------------- | :----------------------- |
- * | Certificate Verification Dialog | WT_DLG_CERTIFICATE | dlg_verify_certificate() |
+ * | Certificate Verification Dialog | WT_DLG_CERTIFICATE | dlg_certificate() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -162,7 +162,7 @@ void cert_array_clear(struct CertArray *carr)
 }
 
 /**
- * dlg_verify_certificate - Ask the user to validate the certificate - @ingroup gui_dlg
+ * dlg_certificate - Ask the user to validate the certificate - @ingroup gui_dlg
  * @param title        Menu title
  * @param carr         Certificate text to display
  * @param allow_always If true, allow the user to always accept the certificate
@@ -179,8 +179,7 @@ void cert_array_clear(struct CertArray *carr)
  * The options are given in the order: Reject, Once, Always, Skip.
  * The retval represents the chosen option.
  */
-int dlg_verify_certificate(const char *title, struct CertArray *carr,
-                           bool allow_always, bool allow_skip)
+int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always, bool allow_skip)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_CERTIFICATE, VerifyHelp);
 

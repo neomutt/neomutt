@@ -30,7 +30,7 @@
  *
  * | Name                | Type             | Constructor     |
  * | :------------------ | :--------------- | :-------------- |
- * | Simple Pager Dialog | #WT_DLG_DO_PAGER | mutt_do_pager() |
+ * | Simple Pager Dialog | #WT_DLG_PAGER    | mutt_do_pager() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -128,7 +128,7 @@ int mutt_do_pager(struct PagerView *pview, struct Email *e)
   assert((pview->mode == PAGER_MODE_ATTACH) ||
          (pview->mode == PAGER_MODE_HELP) || (pview->mode == PAGER_MODE_OTHER));
 
-  struct MuttWindow *dlg = mutt_window_new(WT_DLG_DO_PAGER, MUTT_WIN_ORIENT_VERTICAL,
+  struct MuttWindow *dlg = mutt_window_new(WT_DLG_PAGER, MUTT_WIN_ORIENT_VERTICAL,
                                            MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                            MUTT_WIN_SIZE_UNLIMITED);
 

@@ -30,9 +30,9 @@
  *
  * ## Windows
  *
- * | Name                     | Type           | See Also             |
- * | :----------------------- | :------------- | :------------------- |
- * | Pattern Selection Dialog | WT_DLG_PATTERN | dlg_select_pattern() |
+ * | Name                     | Type           | See Also      |
+ * | :----------------------- | :------------- | :------------ |
+ * | Pattern Selection Dialog | WT_DLG_PATTERN | dlg_pattern() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -327,7 +327,7 @@ static int pattern_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_pattern - Show menu to select a Pattern - @ingroup gui_dlg
+ * dlg_pattern - Show menu to select a Pattern - @ingroup gui_dlg
  * @param buf    Buffer for the selected Pattern
  * @param buflen Length of buffer
  * @retval true A selection was made
@@ -335,7 +335,7 @@ static int pattern_window_observer(struct NotifyCallback *nc)
  * The Select Pattern Dialog shows the user a help page of Patterns.
  * They can select one to auto-complete some functions, e.g. `<limit>`
  */
-bool dlg_select_pattern(char *buf, size_t buflen)
+bool dlg_pattern(char *buf, size_t buflen)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
   struct Menu *menu = create_pattern_menu(dlg);

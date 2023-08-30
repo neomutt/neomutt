@@ -3254,7 +3254,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
     else
     {
       /* Else: Ask the user.  */
-      k = dlg_select_gpgme_key(matches, a, NULL, app, forced_valid);
+      k = dlg_gpgme(matches, a, NULL, app, forced_valid);
     }
 
     crypt_key_free(&matches);
@@ -3326,7 +3326,7 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
 
   if (matches)
   {
-    k = dlg_select_gpgme_key(matches, NULL, p, app, forced_valid);
+    k = dlg_gpgme(matches, NULL, p, app, forced_valid);
     crypt_key_free(&matches);
     return k;
   }
@@ -3629,7 +3629,7 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
     goto cleanup;
   }
 
-  choice = dlg_select_gpgme_key(results, NULL, "*", APPLICATION_PGP, NULL);
+  choice = dlg_gpgme(results, NULL, "*", APPLICATION_PGP, NULL);
   if (!(choice && choice->kobj && choice->kobj->subkeys && choice->kobj->subkeys->fpr))
     goto cleanup;
   buf_strcpy(keyid, choice->kobj->subkeys->fpr);

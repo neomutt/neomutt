@@ -29,9 +29,9 @@
  *
  * ## Windows
  *
- * | Name                       | Type               | See Also               |
- * | :------------------------- | :----------------- | :--------------------- |
- * | GPGME Key Selection Dialog | WT_DLG_CRYPT_GPGME | dlg_select_gpgme_key() |
+ * | Name                       | Type         | See Also           |
+ * | :------------------------- | :----------- | :----------------- |
+ * | GPGME Key Selection Dialog | WT_DLG_GPGME | dlg_gpgme()        |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -619,7 +619,7 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_gpgme_key - Get the user to select a key - @ingroup gui_dlg
+ * dlg_gpgme - Get the user to select a key - @ingroup gui_dlg
  * @param[in]  keys         List of keys to select from
  * @param[in]  p            Address to match
  * @param[in]  s            Real name to display
@@ -629,9 +629,8 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
  *
  * The Select GPGME Key Dialog lets the user select a PGP Key to use.
  */
-struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
-                                          struct Address *p, const char *s,
-                                          unsigned int app, bool *forced_valid)
+struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
+                               const char *s, unsigned int app, bool *forced_valid)
 {
   int keymax;
   int i;
@@ -696,7 +695,7 @@ struct CryptKeyInfo *dlg_select_gpgme_key(struct CryptKeyInfo *keys,
   else if (app & APPLICATION_SMIME)
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
-  struct MuttWindow *dlg = simple_dialog_new(menu_to_use, WT_DLG_CRYPT_GPGME, GpgmeHelp);
+  struct MuttWindow *dlg = simple_dialog_new(menu_to_use, WT_DLG_GPGME, GpgmeHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->max = i;

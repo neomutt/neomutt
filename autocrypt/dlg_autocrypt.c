@@ -29,9 +29,9 @@
  *
  * ## Windows
  *
- * | Name                     | Type             | See Also               |
- * | :----------------------- | :--------------- | :--------------------- |
- * | Autocrypt Account Dialog | WT_DLG_AUTOCRYPT | dlg_select_autocrypt() |
+ * | Name                     | Type             | See Also        |
+ * | :----------------------- | :--------------- | :-------------- |
+ * | Autocrypt Account Dialog | WT_DLG_AUTOCRYPT | dlg_autocrypt() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -301,11 +301,11 @@ static int autocrypt_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * dlg_select_autocrypt - Display the Autocrypt account Menu - @ingroup gui_dlg
+ * dlg_autocrypt - Display the Autocrypt account Menu - @ingroup gui_dlg
  *
  * The Autocrypt Dialog lets the user select an Autocrypt Account to use.
  */
-void dlg_select_autocrypt(void)
+void dlg_autocrypt(void)
 {
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (!c_autocrypt)

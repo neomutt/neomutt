@@ -32,9 +32,9 @@
  *
  * ## Windows
  *
- * | Name                 | Type         | See Also           |
- * | :------------------- | :----------- | :----------------- |
- * | Address Query Dialog | WT_DLG_QUERY | dlg_select_query() |
+ * | Name                 | Type         | See Also    |
+ * | :------------------- | :----------- | :---------- |
+ * | Address Query Dialog | WT_DLG_QUERY | dlg_query() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -382,7 +382,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 }
 
 /**
- * dlg_select_query - Get the user to enter an Address Query - @ingroup gui_dlg
+ * dlg_query - Get the user to enter an Address Query - @ingroup gui_dlg
  * @param buf   Buffer for the query
  * @param mdata Menu data holding Aliases
  * @retval true Selection was made
@@ -392,7 +392,7 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
  *
  * The user can select addresses to add to an Email.
  */
-static bool dlg_select_query(struct Buffer *buf, struct AliasMenuData *mdata)
+static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
 {
   struct MuttWindow *dlg = query_dialog_new(mdata, buf_string(buf));
   struct Menu *menu = dlg->wdata;
@@ -489,7 +489,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
   }
 
   /* multiple results, choose from query menu */
-  if (!dlg_select_query(buf, &mdata))
+  if (!dlg_query(buf, &mdata))
     goto done;
 
   buf_reset(buf);
@@ -559,7 +559,7 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
     alias_array_alias_add(&mdata.ava, np);
   }
 
-  if (!dlg_select_query(buf, &mdata))
+  if (!dlg_query(buf, &mdata))
     goto done;
 
   // Prepare the "To:" field of a new email

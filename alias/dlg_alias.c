@@ -34,9 +34,9 @@
  *
  * ## Windows
  *
- * | Name                | Type         | See Also           |
- * | :------------------ | :----------- | :----------------- |
- * | Address Book Dialog | WT_DLG_ALIAS | dlg_select_alias() |
+ * | Name                | Type         | See Also    |
+ * | :------------------ | :----------- | :---------- |
+ * | Address Book Dialog | WT_DLG_ALIAS | dlg_alias() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -304,7 +304,7 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
 }
 
 /**
- * dlg_select_alias - Display a menu of Aliases - @ingroup gui_dlg
+ * dlg_alias - Display a menu of Aliases - @ingroup gui_dlg
  * @param buf   Buffer for expanded aliases
  * @param mdata Menu data holding Aliases
  * @retval true Selection was made
@@ -312,7 +312,7 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
  * The Alias Dialog is an Address Book.
  * The user can select addresses to add to an Email.
  */
-static bool dlg_select_alias(struct Buffer *buf, struct AliasMenuData *mdata)
+static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
 {
   if (ARRAY_EMPTY(&mdata->ava))
   {
@@ -461,7 +461,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     mutt_pattern_alias_func(NULL, &mdata, NULL);
   }
 
-  if (!dlg_select_alias(NULL, &mdata))
+  if (!dlg_alias(NULL, &mdata))
     goto done;
 
   buf_reset(buf);
@@ -514,7 +514,7 @@ void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
     alias_array_alias_add(&mdata.ava, np);
   }
 
-  if (!dlg_select_alias(NULL, &mdata))
+  if (!dlg_alias(NULL, &mdata))
     goto done;
 
   // Prepare the "To:" field of a new email

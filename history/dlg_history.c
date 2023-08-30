@@ -30,9 +30,9 @@
  *
  * ## Windows
  *
- * | Name                     | Type           | See Also             |
- * | :----------------------- | :------------- | :------------------- |
- * | History Selection Dialog | WT_DLG_HISTORY | dlg_select_history() |
+ * | Name                     | Type           | See Also      |
+ * | :----------------------- | :------------- | :------------ |
+ * | History Selection Dialog | WT_DLG_HISTORY | dlg_history() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -118,7 +118,7 @@ static void history_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
 }
 
 /**
- * dlg_select_history - Select an item from a history list - @ingroup gui_dlg
+ * dlg_history - Select an item from a history list - @ingroup gui_dlg
  * @param[in]  buf         Buffer in which to save string
  * @param[in]  buflen      Buffer length
  * @param[out] matches     Items to choose from
@@ -127,7 +127,7 @@ static void history_make_entry(struct Menu *menu, char *buf, size_t buflen, int 
  * The History Dialog lets the user select from the history of commands,
  * functions or files.
  */
-void dlg_select_history(char *buf, size_t buflen, char **matches, int match_count)
+void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
 

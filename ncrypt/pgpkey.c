@@ -472,7 +472,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
     else
     {
       /* Else: Ask the user.  */
-      k = dlg_select_pgp_key(matches, a, NULL);
+      k = dlg_pgp(matches, a, NULL);
       if (k)
         pgp_remove_key(&matches, k);
     }
@@ -522,7 +522,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
       continue;
 
     /* This shouldn't happen, but keys without any addresses aren't selectable
-     * in dlg_select_pgp_key().  */
+     * in dlg_pgp().  */
     if (!k->address)
       continue;
 
@@ -564,7 +564,7 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
   if (matches)
   {
-    k = dlg_select_pgp_key(matches, NULL, p);
+    k = dlg_pgp(matches, NULL, p);
     if (k)
       pgp_remove_key(&matches, k);
     pgp_key_free(&matches);

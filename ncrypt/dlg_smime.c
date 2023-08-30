@@ -29,9 +29,9 @@
  *
  * ## Windows
  *
- * | Name                       | Type         | See Also               |
- * | :------------------------- | :----------- | :--------------------- |
- * | SMIME Key Selection Dialog | WT_DLG_SMIME | dlg_select_smime_key() |
+ * | Name                       | Type         | See Also    |
+ * | :------------------------- | :----------- | :---------- |
+ * | SMIME Key Selection Dialog | WT_DLG_SMIME | dlg_smime() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -186,14 +186,14 @@ static void smime_key_table_free(struct Menu *menu, void **ptr)
 }
 
 /**
- * dlg_select_smime_key - Get the user to select a key - @ingroup gui_dlg
+ * dlg_smime - Get the user to select a key - @ingroup gui_dlg
  * @param keys  List of keys to select from
  * @param query String to match
  * @retval ptr Key selected by user
  *
  * The Select SMIME Key Dialog lets the user select an SMIME Key to use.
  */
-struct SmimeKey *dlg_select_smime_key(struct SmimeKey *keys, const char *query)
+struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
 {
   struct SmimeKey **table = NULL;
   int table_size = 0;
