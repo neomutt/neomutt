@@ -484,6 +484,8 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu,
         buf_pool_release(&tmp);
         mutt_error("%s", err.data);
         FREE(&err.data);
+        buf_reset(state->string);
+        buf_reset(state->string_expn);
         return -1;
       }
       FREE(&err.data);
