@@ -257,6 +257,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
 
   mview_free(&mv);
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
+  search_state_free(&pd.search_state);
   simple_dialog_free(&dlg);
 
   return pd.email;
