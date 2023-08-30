@@ -31,6 +31,7 @@
  * | debug/common.c      | @subpage debug_common      |
  * | debug/email.c       | @subpage debug_email       |
  * | debug/graphviz.c    | @subpage debug_graphviz    |
+ * | debug/keymap.c      | @subpage debug_keymap      |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/pager.c       | @subpage debug_pager       |
  * | debug/window.c      | @subpage debug_window      |
@@ -76,6 +77,9 @@ void        dump_graphviz           (const char *title, struct MailboxView *mv);
 void        dump_graphviz_attach_ctx(struct AttachCtx *actx);
 void        dump_graphviz_body      (struct Body *b);
 void        dump_graphviz_email     (struct Email *e, const char *title);
+
+// Keymap
+void        dump_keybindings        (void);
 
 // Names
 const char *name_content_disposition(enum ContentDisposition disp);
