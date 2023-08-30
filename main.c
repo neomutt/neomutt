@@ -1279,7 +1279,7 @@ main
       }
       buf_reset(&folder);
       struct Mailbox *m_cur = get_current_mailbox();
-      dlg_select_file(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, m_cur, NULL, NULL);
+      dlg_browser(&folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, m_cur, NULL, NULL);
       if (buf_is_empty(&folder))
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)

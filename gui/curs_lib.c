@@ -452,7 +452,7 @@ int mutt_any_key_to_continue(const char *s)
  * This function uses the message window.
  *
  * Allow the user to enter a filename.
- * If they hit '?' then the browser will be started.  See: dlg_select_file()
+ * If they hit '?' then the browser will be started.  See: dlg_browser()
  */
 int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
                    struct Mailbox *m, bool multiple, char ***files,
@@ -500,7 +500,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
       flags |= MUTT_SEL_MULTI;
     if (mailbox)
       flags |= MUTT_SEL_MAILBOX;
-    dlg_select_file(fname, flags, m, files, numfiles);
+    dlg_browser(fname, flags, m, files, numfiles);
   }
   else
   {

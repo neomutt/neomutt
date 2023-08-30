@@ -32,7 +32,7 @@
  */
 struct BrowserPrivateData
 {
-  // Parameters passed to dlg_select_file()
+  // Parameters passed to dlg_browser()
   struct Buffer *file;            ///< Buffer for the result
   struct Mailbox *mailbox;        ///< Mailbox
   char ***files;                  ///< Array of selected files
