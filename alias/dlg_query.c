@@ -358,7 +358,6 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
   struct Menu *menu = dlg->wdata;
 
   menu->make_entry = query_make_entry;
-  menu->custom_search = true;
   menu->tag = query_tag;
   menu->max = ARRAY_SIZE(&mdata->ava);
   mdata->title = mutt_str_dup(_("Query"));

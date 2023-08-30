@@ -282,7 +282,6 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   struct Menu *menu = dlg->wdata;
 
   menu->make_entry = alias_make_entry;
-  menu->custom_search = true;
   menu->tag = alias_tag;
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->mdata = mdata;
