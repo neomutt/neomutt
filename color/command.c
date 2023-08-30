@@ -48,6 +48,10 @@
 #ifdef USE_DEBUG_COLOR
 #include <stdio.h>
 #include "mutt.h"
+#include "pager/lib.h"
+#include "attr.h"
+#include "curses2.h"
+#include "merged.h"
 #include "pager/private_data.h"
 #endif
 

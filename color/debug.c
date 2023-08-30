@@ -32,7 +32,14 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
-#include "lib.h"
+#include "debug.h"
+#include "attr.h"
+#include "color.h"
+#include "curses2.h"
+#include "merged.h"
+#include "quoted.h"
+#include "regex4.h"
+#include "simple2.h"
 
 /**
  * color_debug - Write to the log file
