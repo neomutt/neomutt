@@ -544,7 +544,7 @@ char *mutt_path_escape(const char *src)
     else
     {
       /* convert ' into '\'' */
-      if (destsize + 4 < sizeof(dest))
+      if ((destsize + 4) < sizeof(dest))
       {
         *destp++ = *src++;
         *destp++ = '\\';

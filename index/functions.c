@@ -676,7 +676,7 @@ static int op_jump(struct IndexSharedData *shared, struct IndexPrivateData *priv
   struct Buffer *buf = buf_pool_get();
 
   const int digit = op - OP_JUMP;
-  if (digit > 0 && digit < 10)
+  if ((digit > 0) && (digit < 10))
   {
     mutt_unget_ch('0' + digit);
   }

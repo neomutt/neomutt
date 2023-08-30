@@ -526,7 +526,7 @@ static void draw_mix_line(struct ListHead *chain, struct MuttWindow *win, int ro
     if (t && (t[0] == '0') && (t[1] == '\0'))
       t = "<random>";
 
-    if (c + mutt_str_len(t) + 2 >= win->state.cols)
+    if ((c + mutt_str_len(t) + 2) >= win->state.cols)
       break;
 
     mutt_window_addstr(win, NONULL(t));

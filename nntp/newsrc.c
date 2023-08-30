@@ -458,7 +458,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
       continue;
 
     /* write newsgroup name */
-    if (off + strlen(mdata->group) + 3 > buflen)
+    if ((off + strlen(mdata->group) + 3) > buflen)
     {
       buflen *= 2;
       mutt_mem_realloc(&buf, buflen);
@@ -469,7 +469,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
     /* write entries */
     for (unsigned int j = 0; j < mdata->newsrc_len; j++)
     {
-      if (off + 1024 > buflen)
+      if ((off + 1024) > buflen)
       {
         buflen *= 2;
         mutt_mem_realloc(&buf, buflen);
