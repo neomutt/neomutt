@@ -1508,7 +1508,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     anum_t first = mdata->first_message;
 
     const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
-    if (c_nntp_context && (mdata->last_message - first + 1 > c_nntp_context))
+    if (c_nntp_context && ((mdata->last_message - first + 1) > c_nntp_context))
       first = mdata->last_message - c_nntp_context + 1;
     messages = mutt_mem_calloc(mdata->last_loaded - first + 1, sizeof(unsigned char));
     hc = nntp_hcache_open(mdata);
@@ -2461,7 +2461,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   /* strip off extra articles if adding context is greater than $nntp_context */
   first = mdata->first_message;
   const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
-  if (c_nntp_context && (mdata->last_message - first + 1 > c_nntp_context))
+  if (c_nntp_context && ((mdata->last_message - first + 1) > c_nntp_context))
     first = mdata->last_message - c_nntp_context + 1;
   mdata->last_loaded = first ? first - 1 : 0;
   count = mdata->first_message;

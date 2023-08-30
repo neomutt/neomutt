@@ -108,7 +108,7 @@ static int complete_file_simple(struct EnterWindowData *wdata)
       (memcmp(wdata->tempbuf, wdata->state->wbuf + i,
               (wdata->state->lastchar - i) * sizeof(wchar_t)) == 0))
   {
-    dlg_select_file(wdata->buffer, MUTT_SEL_NO_FLAGS, wdata->m, NULL, NULL);
+    dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, wdata->m, NULL, NULL);
     if (buf_is_empty(wdata->buffer))
       replace_part(wdata->state, i, buf_string(wdata->buffer));
     return FR_CONTINUE;
@@ -286,10 +286,10 @@ static int complete_file_mbox(struct EnterWindowData *wdata)
        (memcmp(wdata->tempbuf, wdata->state->wbuf,
                wdata->state->lastchar * sizeof(wchar_t)) == 0)))
   {
-    dlg_select_file(wdata->buffer,
-                    ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
-                        (wdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
-                    wdata->m, wdata->files, wdata->numfiles);
+    dlg_browser(wdata->buffer,
+                ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
+                    (wdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
+                wdata->m, wdata->files, wdata->numfiles);
     if (!buf_is_empty(wdata->buffer))
     {
       buf_pretty_mailbox(wdata->buffer);

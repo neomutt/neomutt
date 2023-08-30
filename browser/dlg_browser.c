@@ -31,9 +31,9 @@
  *
  * ## Windows
  *
- * | Name           | Type           | See Also                  |
- * | :------------- | :------------- | :------------------------ |
- * | Browser Dialog | WT_DLG_BROWSER | dlg_select_file() |
+ * | Name           | Type           | See Also      |
+ * | :------------- | :------------- | :------------ |
+ * | Browser Dialog | WT_DLG_BROWSER | dlg_browser() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -1236,7 +1236,7 @@ void mutt_browser_select_dir(const char *f)
 }
 
 /**
- * dlg_select_file - Let the user select a file - @ingroup gui_dlg
+ * dlg_browser - Let the user select a file - @ingroup gui_dlg
  * @param[in]  file     Buffer for the result
  * @param[in]  flags    Flags, see #SelectFileFlags
  * @param[in]  m        Mailbox
@@ -1246,8 +1246,8 @@ void mutt_browser_select_dir(const char *f)
  * The Select File Dialog is a file browser.
  * It allows the user to select a file or directory to use.
  */
-void dlg_select_file(struct Buffer *file, SelectFileFlags flags,
-                     struct Mailbox *m, char ***files, int *numfiles)
+void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
+                 char ***files, int *numfiles)
 {
   struct BrowserPrivateData *priv = browser_private_data_new();
   priv->file = file;

@@ -82,7 +82,6 @@ struct Menu
   int old_current;        ///< For driver use only
   int search_dir;         ///< Direction of search
   int num_tagged;         ///< Number of tagged entries
-  bool custom_search : 1; ///< The menu implements its own non-Menu::search()-compatible search, trickle OP_SEARCH*
 
   /**
    * @defgroup menu_make_entry make_entry()

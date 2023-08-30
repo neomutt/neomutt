@@ -59,7 +59,7 @@
 #include <sasl/saslutil.h>
 #endif
 
-#define smtp_success(x) ((x) / 100 == 2)
+#define smtp_success(x) (((x) / 100) == 2)
 #define SMTP_READY 334
 #define SMTP_CONTINUE 354
 

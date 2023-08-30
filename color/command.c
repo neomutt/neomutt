@@ -48,6 +48,10 @@
 #ifdef USE_DEBUG_COLOR
 #include <stdio.h>
 #include "mutt.h"
+#include "pager/lib.h"
+#include "attr.h"
+#include "curses2.h"
+#include "merged.h"
 #include "pager/private_data.h"
 #endif
 
@@ -234,7 +238,7 @@ static uint32_t color_xterm256_to_24bit(const uint32_t color)
      *
      * If we express the xterm color number minus 16 to base 6, i.e.
      *
-     *    color - 16 = vr * 36 + vg * 6 + vb * 1
+     *    color - 16 = (vr * 36) + (vg * 6) + (vb * 1)
      *
      * with vr, vg, vb integers between 0 and 5, then vr, vg, vb is the channel
      * value for red, green, and blue, respectively.

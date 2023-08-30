@@ -209,7 +209,6 @@ struct Email *dlg_select_postponed(struct Mailbox *m)
   menu->max = m->msg_count;
   menu->mdata = mv;
   menu->mdata_free = NULL; // Menu doesn't own the data
-  menu->custom_search = true;
 
   struct PostponeData pd = { mv, menu, NULL, false };
   dlg->wdata = &pd;

@@ -961,7 +961,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     }
     else if ((wc < 0x20) || (wc == 0x7f))
     {
-      if (col + 2 > wrap_cols)
+      if ((col + 2) > wrap_cols)
         break;
       col += 2;
       if (ansi)
@@ -969,7 +969,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     }
     else if (wc < 0x100)
     {
-      if (col + 4 > wrap_cols)
+      if ((col + 4) > wrap_cols)
         break;
       col += 4;
       if (ansi)
@@ -977,7 +977,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     }
     else
     {
-      if (col + 1 > wrap_cols)
+      if ((col + 1) > wrap_cols)
         break;
       col += k;
       if (ansi)

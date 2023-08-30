@@ -58,7 +58,6 @@
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "menu/lib.h"
-#include "globals.h"
 #include "keymap.h"
 #include "opcodes.h"
 #include "ssl.h"

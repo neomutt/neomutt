@@ -802,7 +802,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
           snprintf(buf, sizeof(buf), "\"%s\"", cont->value);
 
         tmplen = mutt_str_len(buf) + mutt_str_len(cont->attribute) + 1;
-        if (len + tmplen + 2 > 76)
+        if ((len + tmplen + 2) > 76)
         {
           fputs("\n\t", fp);
           len = tmplen + 1;
@@ -868,7 +868,7 @@ int mutt_write_mime_header(struct Body *a, FILE *fp, struct ConfigSubset *sub)
             mutt_addr_cat(buf, sizeof(buf), cont->value, MimeSpecials);
 
             tmplen = mutt_str_len(buf) + mutt_str_len(cont->attribute) + 1;
-            if (len + tmplen + 2 > 76)
+            if ((len + tmplen + 2) > 76)
             {
               fputs("\n\t", fp);
               len = tmplen + 1;
