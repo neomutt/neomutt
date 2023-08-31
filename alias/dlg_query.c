@@ -80,6 +80,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "pattern/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "enter/lib.h"
@@ -452,6 +453,7 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
 int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
+  mdata.search_state = search_state_new();
 
   struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
   const char *const c_query_command = cs_subset_string(sub, "query_command");
@@ -520,6 +522,7 @@ done:
   ARRAY_FREE(&mdata.ava);
   FREE(&mdata.title);
   FREE(&mdata.limit);
+  search_state_free(&mdata.search_state);
   aliaslist_free(&al);
   return 0;
 }

@@ -242,8 +242,27 @@ static int op_query(struct AliasMenuData *mdata, int op)
  */
 static int op_search(struct AliasMenuData *mdata, int op)
 {
+  SearchFlags flags = SEARCH_NO_FLAGS;
+  switch (op)
+  {
+    case OP_SEARCH:
+      flags |= SEARCH_PROMPT;
+      mdata->search_state->reverse = false;
+      break;
+    case OP_SEARCH_REVERSE:
+      flags |= SEARCH_PROMPT;
+      mdata->search_state->reverse = true;
+      break;
+    case OP_SEARCH_NEXT:
+      break;
+    case OP_SEARCH_OPPOSITE:
+      flags |= SEARCH_OPPOSITE;
+      break;
+  }
+
   struct Menu *menu = mdata->menu;
-  int index = mutt_search_alias_command(menu, menu_get_index(menu), op);
+  int index = mutt_search_alias_command(menu, mdata->search_state,
+                                        menu_get_index(menu), flags);
   if (index == -1)
     return FR_NO_ACTION;
 

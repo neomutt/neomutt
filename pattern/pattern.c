@@ -85,10 +85,6 @@ struct RangeRegex RangeRegexes[] = {
 typedef bool (*eat_arg_t)(struct Pattern *pat, PatternCompFlags flags,
                           struct Buffer *s, struct Buffer *err);
 
-static struct PatternList *SearchPattern = NULL; ///< current search pattern
-static char LastSearch[256] = { 0 };             ///< last pattern searched for
-static char LastSearchExpn[1024] = { 0 }; ///< expanded version of LastSearch
-
 /**
  * quote_simple - Apply simple quoting to a string
  * @param str    String to quote
@@ -594,61 +590,55 @@ done:
 
 /**
  * mutt_search_alias_command - Perform a search
- * @param menu Menu to search through
- * @param cur  Index number of current alias
- * @param op   Operation to perform, e.g. OP_SEARCH_NEXT
- * @retval >=0 Index of matching alias
- * @retval -1 No match, or error
+ * @param menu  Menu to search through
+ * @param state Current search state
+ * @param cur   Index number of current email
+ * @param flags Search flags, e.g. SEARCH_PROMPT
+ * @retval >=0  Index of matching alias
+ * @retval -1   No match, or error
  */
-int mutt_search_alias_command(struct Menu *menu, int cur, int op)
+int mutt_search_alias_command(struct Menu *menu, struct SearchState *state,
+                              int cur, SearchFlags flags)
 {
   struct Progress *progress = NULL;
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
-  struct Buffer *buf = NULL;
   int rc = -1;
 
-  if ((*LastSearch == '\0') || ((op != OP_SEARCH_NEXT) && (op != OP_SEARCH_OPPOSITE)))
+  if (buf_is_empty(state->string) || flags & SEARCH_PROMPT)
   {
-    buf = buf_pool_get();
-    buf_strcpy(buf, (LastSearch[0] != '\0') ? LastSearch : "");
-    if ((mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-                      buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false, NULL, NULL, NULL) != 0) ||
-        buf_is_empty(buf))
+    if ((mw_get_field((flags & OP_SEARCH_REVERSE) ? _("Reverse search for: ") : _("Search for: "),
+                      state->string, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
+                      NULL, NULL, NULL) != 0) ||
+        buf_is_empty(state->string))
     {
       goto done;
     }
 
-    if ((op == OP_SEARCH) || (op == OP_SEARCH_NEXT))
-      OptSearchReverse = false;
-    else
-      OptSearchReverse = true;
-
     /* compare the *expanded* version of the search pattern in case
      * $simple_search has changed while we were searching */
     struct Buffer *tmp = buf_pool_get();
-    buf_copy(tmp, buf);
+    buf_copy(tmp, state->string);
     mutt_check_simple(tmp, MUTT_ALIAS_SIMPLESEARCH);
 
-    if (!SearchPattern || !mutt_str_equal(buf_string(tmp), LastSearchExpn))
+    if (!state->pattern || !buf_str_equal(tmp, state->string_expn))
     {
       struct Buffer err;
       buf_init(&err);
       OptSearchInvalid = true;
-      mutt_str_copy(LastSearch, buf_string(buf), sizeof(LastSearch));
-      mutt_str_copy(LastSearchExpn, buf_string(tmp), sizeof(LastSearchExpn));
+      buf_copy(state->string_expn, tmp);
       mutt_message(_("Compiling search pattern..."));
-      mutt_pattern_free(&SearchPattern);
+      mutt_pattern_free(&state->pattern);
       err.dsize = 256;
       err.data = mutt_mem_malloc(err.dsize);
-      SearchPattern = mutt_pattern_comp(NULL, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
-      if (!SearchPattern)
+      state->pattern = mutt_pattern_comp(NULL, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
+      if (!state->pattern)
       {
         buf_pool_release(&tmp);
         mutt_error("%s", err.data);
         FREE(&err.data);
-        LastSearch[0] = '\0';
-        LastSearchExpn[0] = '\0';
+        buf_reset(state->string);
+        buf_reset(state->string_expn);
         return -1;
       }
       FREE(&err.data);
@@ -669,8 +659,8 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     OptSearchInvalid = false;
   }
 
-  int incr = OptSearchReverse ? -1 : 1;
-  if (op == OP_SEARCH_OPPOSITE)
+  int incr = state->reverse ? -1 : 1;
+  if (flags & SEARCH_OPPOSITE)
     incr = -incr;
 
   progress = progress_new(_("Searching..."), MUTT_PROGRESS_READ, ARRAY_SIZE(ava));
@@ -724,7 +714,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
     {
       /* remember that we've already searched this message */
       av->is_searched = true;
-      av->is_matched = mutt_pattern_alias_exec(SLIST_FIRST(SearchPattern),
+      av->is_matched = mutt_pattern_alias_exec(SLIST_FIRST(state->pattern),
                                                MUTT_MATCH_FULL_ADDRESS, av, NULL);
       if (av->is_matched)
       {
@@ -749,6 +739,5 @@ int mutt_search_alias_command(struct Menu *menu, int cur, int op)
   mutt_error(_("Not found"));
 done:
   progress_free(&progress);
-  buf_pool_release(&buf);
   return rc;
 }
