@@ -118,7 +118,7 @@ static int op_search(struct PostponeData *pd, int op)
 
   int index = menu_get_index(pd->menu);
   struct MailboxView *mv = pd->mailbox_view;
-  index = mutt_search_command(mv, pd->menu, pd->search_state, index, flags);
+  index = mutt_search_command(mv, pd->menu, index, pd->search_state, flags);
   if (index != -1)
     menu_set_index(pd->menu, index);
 

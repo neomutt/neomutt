@@ -261,8 +261,8 @@ static int op_search(struct AliasMenuData *mdata, int op)
   }
 
   struct Menu *menu = mdata->menu;
-  int index = mutt_search_alias_command(menu, mdata->search_state,
-                                        menu_get_index(menu), flags);
+  int index = menu_get_index(menu);
+  index = mutt_search_alias_command(menu, index, mdata->search_state, flags);
   if (index == -1)
     return FR_NO_ACTION;
 

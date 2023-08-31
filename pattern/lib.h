@@ -193,9 +193,9 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
-int mutt_search_command(struct MailboxView *mv, struct Menu *menu,
-                        struct SearchState *state, int cur, SearchFlags flags);
-int mutt_search_alias_command(struct Menu *menu, struct SearchState *state,
-                              int cur, SearchFlags flags);
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
+                        struct SearchState *state, SearchFlags flags);
+int mutt_search_alias_command(struct Menu *menu, int cur,
+                              struct SearchState *state, SearchFlags flags);
 
 #endif /* MUTT_PATTERN_LIB_H */

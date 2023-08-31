@@ -432,14 +432,14 @@ bail:
  * mutt_search_command - Perform a search
  * @param mv    Mailbox view to search through
  * @param menu  Current Menu
- * @param state Current search state
  * @param cur   Index number of current email
+ * @param state Current search state
  * @param flags Search flags, e.g. SEARCH_PROMPT
  * @retval >=0  Index of matching email
  * @retval -1   No match, or error
  */
-int mutt_search_command(struct MailboxView *mv, struct Menu *menu,
-                        struct SearchState *state, int cur, SearchFlags flags)
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
+                        struct SearchState *state, SearchFlags flags)
 {
   struct Progress *progress = NULL;
   int rc = -1;
@@ -591,14 +591,14 @@ done:
 /**
  * mutt_search_alias_command - Perform a search
  * @param menu  Menu to search through
- * @param state Current search state
  * @param cur   Index number of current email
+ * @param state Current search state
  * @param flags Search flags, e.g. SEARCH_PROMPT
  * @retval >=0  Index of matching alias
  * @retval -1   No match, or error
  */
-int mutt_search_alias_command(struct Menu *menu, struct SearchState *state,
-                              int cur, SearchFlags flags)
+int mutt_search_alias_command(struct Menu *menu, int cur,
+                              struct SearchState *state, SearchFlags flags)
 {
   struct Progress *progress = NULL;
   const struct AliasMenuData *mdata = menu->mdata;
