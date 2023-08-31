@@ -29,6 +29,10 @@
 #include "mutt/lib.h"
 #include "lib.h"
 
+/**
+ * search_state_new - Create a new SearchState
+ * @retval ptr New SearchState
+ */
 struct SearchState *search_state_new()
 {
   struct SearchState *s = mutt_mem_calloc(1, sizeof(struct SearchState));
@@ -37,6 +41,10 @@ struct SearchState *search_state_new()
   return s;
 }
 
+/**
+ * search_state_free - Free a SearchState
+ * @param ptr SearchState to free
+ */
 void search_state_free(struct SearchState **ptr)
 {
   if (!ptr || !*ptr)
