@@ -101,6 +101,8 @@
 #include "msgwin.h"
 #include "mutt_window.h"
 
+void mutt_resize_screen(void);
+
 struct MuttWindow *RootWindow = NULL; ///< Parent of all Windows
 
 /**
@@ -144,6 +146,25 @@ static int rootwin_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * rootwin_resize_observer - Notification that the terminal has been resized - Implements ::observer_t - @ingroup observer_api
+ *
+ * This function is triggered by SIGWINCH.
+ */
+static int rootwin_resize_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_RESIZE)
+    return 0;
+  if (!nc->global_data)
+    return -1;
+
+  window_invalidate_all();
+  mutt_resize_screen();
+
+  mutt_debug(LL_DEBUG5, "window resize done\n");
+  return 0;
+}
+
+/**
  * rootwin_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
@@ -166,7 +187,10 @@ static int rootwin_window_observer(struct NotifyCallback *nc)
 
   notify_observer_remove(win_root->notify, rootwin_window_observer, win_root);
   if (NeoMutt)
+  {
     notify_observer_remove(NeoMutt->sub->notify, rootwin_config_observer, win_root);
+    notify_observer_remove(NeoMutt->notify_resize, rootwin_resize_observer, win_root);
+  }
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
@@ -213,6 +237,7 @@ void rootwin_new(void)
   mutt_window_add_child(win_root, win_cont);
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, rootwin_config_observer, win_root);
+  notify_observer_add(NeoMutt->notify_resize, NT_RESIZE, rootwin_resize_observer, win_root);
   notify_observer_add(win_root->notify, NT_WINDOW, rootwin_window_observer, win_root);
 }
 
