@@ -40,5 +40,5 @@ typedef uint8_t SearchFlags;       ///< Flags for a specific search, e.g. #SEARC
 #define SEARCH_PROMPT    (1 << 0)  ///< Ask for search input
 #define SEARCH_OPPOSITE  (1 << 1)  ///< Search in the opposite direction
 
-struct SearchState *search_state_new();
+struct SearchState *search_state_new(void);
 void search_state_free(struct SearchState **search);

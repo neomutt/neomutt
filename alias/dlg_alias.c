@@ -388,6 +388,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.limit = buf_strdup(buf);
+  mdata.search_state = search_state_new();
 
   if (buf_at(buf, 0) != '\0')
   {
@@ -493,6 +494,7 @@ done:
   ARRAY_FREE(&mdata.ava);
   FREE(&mdata.limit);
   FREE(&mdata.title);
+  search_state_free(&mdata.search_state);
 
   return 0;
 }
@@ -507,6 +509,7 @@ void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
   struct Alias *np = NULL;
 
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
+  mdata.search_state = search_state_new();
 
   // Create a View Array of all the Aliases
   TAILQ_FOREACH(np, &Aliases, entries)
@@ -551,4 +554,5 @@ done:
   ARRAY_FREE(&mdata.ava);
   FREE(&mdata.limit);
   FREE(&mdata.title);
+  search_state_free(&mdata.search_state);
 }
