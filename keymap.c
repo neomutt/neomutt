@@ -46,7 +46,6 @@
 #include "pager/lib.h"
 #include "parse/lib.h"
 #include "functions.h"
-#include "globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
 
@@ -653,15 +652,9 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
   if (!map && (mtype != MENU_EDITOR))
     return retry_generic(mtype, NULL, 0, 0, flags);
 
-  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   while (true)
   {
-    int i = (c_timeout > 0) ? c_timeout : 60;
     event = mutt_getch(flags);
-
-    /* hide timeouts, but not window resizes, from the line editor. */
-    if ((mtype == MENU_EDITOR) && (event.op == OP_TIMEOUT) && !SigWinch)
-      continue;
 
     if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
     {
@@ -689,7 +682,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
 
       /* Sigh. Valid function but not in this context.
        * Find the literal string and push it back */
-      for (i = 0; MenuNames[i].name; i++)
+      for (int i = 0; MenuNames[i].name; i++)
       {
         funcs = km_get_table(MenuNames[i].value);
         if (funcs)
