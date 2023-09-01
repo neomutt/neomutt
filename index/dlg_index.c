@@ -1278,7 +1278,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     /* either user abort or timeout */
     if (op < OP_NULL)
     {
-      mutt_timeout_hook();
       if (priv->tag_prefix)
         msgwin_clear_text();
       continue;

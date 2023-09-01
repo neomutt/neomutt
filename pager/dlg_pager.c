@@ -52,7 +52,6 @@
 #include "display.h"
 #include "functions.h"
 #include "globals.h" // IWYU pragma: keep
-#include "hook.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -529,7 +528,6 @@ int dlg_pager(struct PagerView *pview)
     if (op < OP_NULL)
     {
       op = OP_NULL;
-      mutt_timeout_hook();
       continue;
     }
 
