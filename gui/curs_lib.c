@@ -207,9 +207,8 @@ static int mutt_monitor_getch(void)
  */
 struct KeyEvent mutt_getch(GetChFlags flags)
 {
-  static const struct KeyEvent event_err = { 0, OP_ABORT };
+  static const struct KeyEvent event_abort = { 0, OP_ABORT };
   static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
-  int ch;
 
   struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
   if (event_key)
@@ -220,6 +219,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
     return *event_key;
   }
 
+  int ch;
   SigInt = false;
   mutt_sig_allow_interrupt(true);
 #ifdef USE_INOTIFY
@@ -232,7 +232,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   if (SigInt)
   {
     mutt_query_exit();
-    return event_err;
+    return event_abort;
   }
 
   if (ch == ERR)
@@ -240,7 +240,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
     if (!isatty(0))
       mutt_exit(1);
 
-    return OptNoCurses ? event_err : event_timeout;
+    return OptNoCurses ? event_abort : event_timeout;
   }
 
   if (ch & 0x80)
@@ -256,7 +256,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   }
 
   if (ch == AbortKey)
-    return event_err;
+    return event_abort;
 
   return (struct KeyEvent){ ch, OP_NULL };
 }
@@ -292,13 +292,11 @@ void mutt_edit_file(const char *editor, const char *file)
 void mutt_query_exit(void)
 {
   mutt_flushinp();
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   if (mw_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {
     mutt_exit(0); /* This call never returns */
   }
   mutt_clear_error();
-  mutt_curses_set_cursor(old_cursor);
   SigInt = false;
 }
 

@@ -933,7 +933,9 @@ static enum MxStatus mh_check(struct Mailbox *m)
      * the problem, don't update the stat times for a monitor caused check. */
 #ifdef USE_INOTIFY
   if (MonitorContextChanged)
+  {
     MonitorContextChanged = false;
+  }
   else
 #endif
   {

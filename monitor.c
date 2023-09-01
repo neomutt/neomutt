@@ -397,7 +397,8 @@ static enum ResolveResult monitor_resolve(struct MonitorInfo *info, struct Mailb
 int mutt_monitor_poll(void)
 {
   int rc = 0;
-  char buf[EVENT_BUFLEN] __attribute__((aligned(__alignof__(struct inotify_event))));
+  char buf[EVENT_BUFLEN]
+      __attribute__((aligned(__alignof__(struct inotify_event)))) = { 0 };
 
   MonitorFilesChanged = false;
 
