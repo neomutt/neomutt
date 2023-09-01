@@ -446,6 +446,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
   struct Mailbox *m = mv ? mv->mailbox : NULL;
   if (!m)
     return -1;
+  bool pattern_changed = false;
 
   if (buf_is_empty(state->string) || (flags & SEARCH_PROMPT))
   {
@@ -463,32 +464,35 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
     buf_copy(tmp, state->string);
     const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
     mutt_check_simple(tmp, NONULL(c_simple_search));
-
-    if (!state->pattern || !buf_str_equal(tmp, state->string_expn))
+    if (!buf_str_equal(tmp, state->string_expn))
     {
-      OptSearchInvalid = true;
-      buf_copy(state->string_expn, tmp);
-      mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&state->pattern);
-      struct Buffer *err = buf_pool_get();
-      state->pattern = mutt_pattern_comp(mv, menu, tmp->data, MUTT_PC_FULL_MSG, err);
-      if (!state->pattern)
-      {
-        buf_pool_release(&tmp);
-        mutt_error("%s", buf_string(err));
-        buf_free(&err);
-        buf_reset(state->string);
-        buf_reset(state->string_expn);
-        return -1;
-      }
-      buf_free(&err);
-      mutt_clear_error();
+      buf_copy(state->string_expn, tmp);
+      buf_pool_release(&tmp);
     }
-
-    buf_pool_release(&tmp);
   }
 
-  if (OptSearchInvalid)
+  if (!state->pattern)
+  {
+    mutt_message(_("Compiling search pattern..."));
+    mutt_pattern_free(&state->pattern);
+    struct Buffer *err = buf_pool_get();
+    state->pattern = mutt_pattern_comp(mv, menu, state->string_expn->data,
+                                       MUTT_PC_FULL_MSG, err);
+    pattern_changed = true;
+    if (!state->pattern)
+    {
+      mutt_error("%s", buf_string(err));
+      buf_free(&err);
+      buf_reset(state->string);
+      buf_reset(state->string_expn);
+      return -1;
+    }
+    buf_free(&err);
+    mutt_clear_error();
+  }
+
+  if (pattern_changed)
   {
     for (int i = 0; i < m->msg_count; i++)
       m->emails[i]->searched = false;
@@ -496,7 +500,6 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
     if ((m->type == MUTT_IMAP) && (!imap_search(m, state->pattern)))
       return -1;
 #endif
-    OptSearchInvalid = false;
   }
 
   int incr = state->reverse ? -1 : 1;
@@ -601,6 +604,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
   int rc = -1;
+  bool pattern_changed = false;
 
   if (buf_is_empty(state->string) || flags & SEARCH_PROMPT)
   {
@@ -617,40 +621,40 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
     struct Buffer *tmp = buf_pool_get();
     buf_copy(tmp, state->string);
     mutt_check_simple(tmp, MUTT_ALIAS_SIMPLESEARCH);
-
-    if (!state->pattern || !buf_str_equal(tmp, state->string_expn))
+    if (!buf_str_equal(tmp, state->string_expn))
     {
-      OptSearchInvalid = true;
-      buf_copy(state->string_expn, tmp);
-      mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&state->pattern);
-      struct Buffer *err = buf_pool_get();
-      state->pattern = mutt_pattern_comp(NULL, menu, tmp->data, MUTT_PC_FULL_MSG, err);
-      if (!state->pattern)
-      {
-        buf_pool_release(&tmp);
-        mutt_error("%s", buf_string(err));
-        buf_free(&err);
-        buf_reset(state->string);
-        buf_reset(state->string_expn);
-        return -1;
-      }
-      buf_free(&err);
-      mutt_clear_error();
+      buf_copy(state->string_expn, tmp);
+      buf_pool_release(&tmp);
     }
-
-    buf_pool_release(&tmp);
   }
 
-  if (OptSearchInvalid)
+  if (!state->pattern)
+  {
+    mutt_message(_("Compiling search pattern..."));
+    struct Buffer *err = buf_pool_get();
+    state->pattern = mutt_pattern_comp(NULL, menu, state->string_expn->data,
+                                       MUTT_PC_FULL_MSG, err);
+    pattern_changed = true;
+    if (!state->pattern)
+    {
+      mutt_error("%s", buf_string(err));
+      buf_free(&err);
+      buf_reset(state->string);
+      buf_reset(state->string_expn);
+      return -1;
+    }
+    buf_free(&err);
+    mutt_clear_error();
+  }
+
+  if (pattern_changed)
   {
     struct AliasView *av = NULL;
     ARRAY_FOREACH(av, ava)
     {
       av->is_searched = false;
     }
-
-    OptSearchInvalid = false;
   }
 
   int incr = state->reverse ? -1 : 1;

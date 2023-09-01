@@ -75,7 +75,6 @@ extern bool OptNewsSend;            ///< (pseudo) used to change behavior when p
 extern bool OptNoCurses;            ///< (pseudo) when sending in batch mode
 extern bool OptPgpCheckTrust;       ///< (pseudo) used by dlg_pgp()
 extern bool OptResortInit;          ///< (pseudo) used to force the next resort to be from scratch
-extern bool OptSearchInvalid;       ///< (pseudo) used to invalidate the search pattern
 extern bool OptSortSubthreads;      ///< (pseudo) used when $sort_aux changes
 
 extern char **EnvList;              ///< Private copy of the environment variables

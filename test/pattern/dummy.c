@@ -85,7 +85,6 @@ short AbortKey;
 bool OptForceRefresh;
 bool OptKeepQuiet;
 bool OptNoCurses;
-bool OptSearchInvalid;
 
 const struct MenuFuncOp OpGeneric[] = { 0 };
 

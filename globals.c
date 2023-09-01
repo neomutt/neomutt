@@ -80,7 +80,6 @@ bool OptNewsSend;           ///< (pseudo) used to change behavior when posting
 bool OptNoCurses;           ///< (pseudo) when sending in batch mode
 bool OptPgpCheckTrust;      ///< (pseudo) used by dlg_pgp()
 bool OptResortInit;         ///< (pseudo) used to force the next resort to be from scratch
-bool OptSearchInvalid;      ///< (pseudo) used to invalidate the search pattern
 bool OptSortSubthreads;     ///< (pseudo) used when $sort_aux changes
 // clang-format on
 

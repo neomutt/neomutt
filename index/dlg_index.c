@@ -656,7 +656,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
         update_index(menu, shared->mailbox_view, check, *oldcount, shared);
 
       FREE(&new_last_folder);
-      OptSearchInvalid = true;
+      mutt_pattern_free(&shared->search_state->pattern);
       menu_queue_redraw(menu, MENU_REDRAW_INDEX);
       return;
     }
@@ -719,7 +719,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   struct EventMailbox ev_m = { shared->mailbox };
   mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_FORCE);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
-  OptSearchInvalid = true;
+  mutt_pattern_free(&shared->search_state->pattern);
 }
 
 #ifdef USE_NOTMUCH
@@ -1151,7 +1151,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
           menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
         }
 
-        OptSearchInvalid = true;
+        mutt_pattern_free(&shared->search_state->pattern);
       }
       else if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED) ||
                (check == MX_STATUS_FLAGS))
@@ -1199,7 +1199,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
         shared->mailbox->verbose = verbose;
         priv->menu->max = shared->mailbox->vcount;
         menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
-        OptSearchInvalid = true;
+        mutt_pattern_free(&shared->search_state->pattern);
       }
 
       index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox,
