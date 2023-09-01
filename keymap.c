@@ -49,12 +49,6 @@
 #include "globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 
 /**
  * KeyNames - Key name lookup table
@@ -659,48 +653,12 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
   if (!map && (mtype != MENU_EDITOR))
     return retry_generic(mtype, NULL, 0, 0, flags);
 
-#ifdef USE_IMAP
-  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
-#endif
-
   const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   while (true)
   {
     int i = (c_timeout > 0) ? c_timeout : 60;
-#ifdef USE_IMAP
-    /* keep_alive may need to run more frequently than `$timeout` allows */
-    if (c_imap_keep_alive != 0)
-    {
-      if (c_imap_keep_alive >= i)
-      {
-        imap_keep_alive();
-      }
-      else
-      {
-        while (c_imap_keep_alive < i)
-        {
-          event = mutt_getch(flags);
-          /* If a timeout was not received, or the window was resized, exit the
-           * loop now.  Otherwise, continue to loop until reaching a total of
-           * $timeout seconds.  */
-          if ((event.op != OP_TIMEOUT) || SigWinch)
-            goto gotkey;
-#ifdef USE_INOTIFY
-          if (MonitorFilesChanged)
-            goto gotkey;
-#endif
-          i -= c_imap_keep_alive;
-          imap_keep_alive();
-        }
-      }
-    }
-#endif
-
     event = mutt_getch(flags);
 
-#ifdef USE_IMAP
-  gotkey:
-#endif
     /* hide timeouts, but not window resizes, from the line editor. */
     if ((mtype == MENU_EDITOR) && (event.op == OP_TIMEOUT) && !SigWinch)
       continue;
