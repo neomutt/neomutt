@@ -213,9 +213,7 @@ struct KeyEvent mutt_getch(GetChFlags flags)
 
   struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
   if (event_key)
-  {
     return *event_key;
-  }
 
   if (!(flags & GETCH_IGNORE_MACRO) && (event_key = array_pop(&MacroEvents)))
   {
@@ -223,15 +221,9 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   }
 
   SigInt = false;
-
   mutt_sig_allow_interrupt(true);
-#ifdef KEY_RESIZE
-  /* ncurses 4.2 sends this when the screen is resized */
-  ch = KEY_RESIZE;
-  while (ch == KEY_RESIZE)
-#endif
 #ifdef USE_INOTIFY
-    ch = mutt_monitor_getch();
+  ch = mutt_monitor_getch();
 #else
   ch = getch();
 #endif
@@ -243,14 +235,10 @@ struct KeyEvent mutt_getch(GetChFlags flags)
     return event_err;
   }
 
-  /* either timeout, a sigwinch (if timeout is set), the terminal
-   * has been lost, or curses was never initialized */
   if (ch == ERR)
   {
     if (!isatty(0))
-    {
       mutt_exit(1);
-    }
 
     return OptNoCurses ? event_err : event_timeout;
   }

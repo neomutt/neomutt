@@ -214,13 +214,6 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
   window_redraw(win);
   do
   {
-    if (SigWinch)
-    {
-      SigWinch = false;
-      mutt_resize_screen();
-      clearok(stdscr, true);
-      window_redraw(NULL);
-    }
     mutt_window_clearline(win, 0);
     mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
     mutt_window_addstr(win, field);

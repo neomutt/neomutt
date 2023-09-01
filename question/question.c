@@ -36,7 +36,6 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
-#include "globals.h"
 #include "keymap.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
@@ -84,16 +83,9 @@ int mw_multi_choice(const char *prompt, const char *letters)
   window_redraw(NULL);
   while (true)
   {
-    if (redraw || SigWinch)
+    if (redraw)
     {
       redraw = false;
-      if (SigWinch)
-      {
-        SigWinch = false;
-        mutt_resize_screen();
-        clearok(stdscr, true);
-        window_redraw(NULL);
-      }
       if (win->state.cols)
       {
         int width = mutt_strwidth(prompt) + 2; // + '?' + space
@@ -148,7 +140,6 @@ int mw_multi_choice(const char *prompt, const char *letters)
     }
 
     mutt_refresh();
-    /* SigWinch is not processed unless timeout is set */
     event = mutt_getch(GETCH_NO_FLAGS);
     if (event.op == OP_TIMEOUT)
       continue;
@@ -294,16 +285,9 @@ enum QuadOption mw_yesorno(const char *msg, enum QuadOption def)
   window_redraw(NULL);
   while (true)
   {
-    if (redraw || SigWinch)
+    if (redraw)
     {
       redraw = false;
-      if (SigWinch)
-      {
-        SigWinch = false;
-        mutt_resize_screen();
-        clearok(stdscr, true);
-        window_redraw(NULL);
-      }
       if (win->state.cols)
       {
         prompt_lines = (msg_wid + answer_string_wid + win->state.cols - 1) /
@@ -331,7 +315,6 @@ enum QuadOption mw_yesorno(const char *msg, enum QuadOption def)
     }
 
     mutt_refresh();
-    /* SigWinch is not processed unless timeout is set */
     event = mutt_getch(GETCH_NO_FLAGS);
     if (event.op == OP_TIMEOUT)
       continue;
