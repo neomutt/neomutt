@@ -59,6 +59,7 @@
 #include "mview.h"
 #include "mx.h"
 #include "opcodes.h"
+#include "pattern/lib.h"
 #include "private_data.h"
 #include "protos.h"
 #include "status.h"
@@ -442,7 +443,7 @@ int dlg_pager(struct PagerView *pview)
         if ((check == MX_STATUS_NEW_MAIL) || (check == MX_STATUS_REOPENED))
         {
           pager_queue_redraw(priv, PAGER_REDRAW_PAGER);
-          OptSearchInvalid = true;
+          mutt_pattern_free(&shared->search_state->pattern);
         }
       }
 

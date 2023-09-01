@@ -90,7 +90,6 @@ short AbortKey;
 bool OptForceRefresh;
 bool OptKeepQuiet;
 bool OptNoCurses;
-bool OptSearchInvalid;
 
 typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;
