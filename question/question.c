@@ -141,8 +141,11 @@ int mw_multi_choice(const char *prompt, const char *letters)
 
     mutt_refresh();
     event = mutt_getch(GETCH_NO_FLAGS);
-    if (event.op == OP_TIMEOUT)
+    if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
+    {
+      mutt_refresh();
       continue;
+    }
     if ((event.op == OP_ABORT) || key_is_return(event.ch))
     {
       choice = -1;
@@ -316,8 +319,11 @@ enum QuadOption mw_yesorno(const char *msg, enum QuadOption def)
 
     mutt_refresh();
     event = mutt_getch(GETCH_NO_FLAGS);
-    if (event.op == OP_TIMEOUT)
+    if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
+    {
+      mutt_refresh();
       continue;
+    }
     if (key_is_return(event.ch))
       break;
     if (event.op == OP_ABORT)

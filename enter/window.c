@@ -41,7 +41,6 @@
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "functions.h"
-#include "globals.h"
 #include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
@@ -304,18 +303,23 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
       mutt_window_move(win, c, r);
 
       struct KeyEvent event = km_dokey_event(MENU_EDITOR, flags);
-      if (event.op < OP_NULL)
+      if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
       {
-        rc = (SigWinch && (event.op == OP_TIMEOUT)) ? 1 : -1;
+        continue;
+      }
+
+      if (event.op == OP_ABORT)
+      {
+        rc = -1;
         goto bye;
       }
 
       if (event.op == OP_NULL)
       {
         if (complete & MUTT_COMP_PASS)
-          mutt_debug(LL_DEBUG1, "Got char *\n");
+          mutt_debug(LL_DEBUG5, "Got char *\n");
         else
-          mutt_debug(LL_DEBUG1, "Got char %c (0x%02x)\n", event.ch, event.ch);
+          mutt_debug(LL_DEBUG5, "Got char %c (0x%02x)\n", event.ch, event.ch);
         if (self_insert(&wdata, event.ch))
         {
           rc = 0;

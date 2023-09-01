@@ -1263,17 +1263,18 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     }
     mutt_refresh();
 
-    if (false)
+    window_redraw(NULL);
+    op = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
+
+    if (op == OP_REPAINT)
     {
       priv->menu->top = 0; /* so we scroll the right amount */
       /* force a real complete redraw.  clrtobot() doesn't seem to be able
        * to handle every case without this.  */
       msgwin_clear_text();
+      mutt_refresh();
       continue;
     }
-
-    window_redraw(NULL);
-    op = km_dokey(MENU_INDEX, GETCH_NO_FLAGS);
 
     /* either user abort or timeout */
     if (op < OP_NULL)

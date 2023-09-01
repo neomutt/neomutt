@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -46,6 +47,7 @@
 #include "pager/lib.h"
 #include "parse/lib.h"
 #include "functions.h"
+#include "globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
 
@@ -656,10 +658,9 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
   {
     event = mutt_getch(flags);
 
-    if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
-    {
+    // abort, timeout, repaint
+    if (event.op < OP_NULL)
       return event;
-    }
 
     /* do we have an op already? */
     if (event.op != OP_NULL)
@@ -1846,8 +1847,33 @@ void mw_what_key(void)
     if (ch == AbortKey)
       break;
 
-    if (ch == ERR) // Timeout
+    if (ch == KEY_RESIZE)
+    {
+      timeout(0);
+      while ((ch = getch()) == KEY_RESIZE)
+      {
+        // do nothing
+      }
+    }
+
+    if (ch == ERR)
+    {
+      if (!isatty(0)) // terminal was lost
+        mutt_exit(1);
+
+      if (SigWinch)
+      {
+        SigWinch = false;
+        notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+      }
+      else
+      {
+        notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
+      }
+
+      mutt_refresh();
       continue;
+    }
 
     mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
     mutt_window_move(win, 0, 0);

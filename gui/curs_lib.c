@@ -202,26 +202,34 @@ static int mutt_monitor_getch(void)
  * 3. Keyboard
  *
  * This function can return:
- * - Error   `{ 0, OP_ABORT   }`
+ * - Abort   `{ 0, OP_ABORT   }`
+ * - Repaint `{ 0, OP_REPAINT }`
  * - Timeout `{ 0, OP_TIMEOUT }`
  */
 struct KeyEvent mutt_getch(GetChFlags flags)
 {
   static const struct KeyEvent event_abort = { 0, OP_ABORT };
+  static const struct KeyEvent event_repaint = { 0, OP_REPAINT };
   static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
+
+  if (OptNoCurses)
+    return event_abort;
 
   struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
   if (event_key)
     return *event_key;
 
-  if (!(flags & GETCH_IGNORE_MACRO) && (event_key = array_pop(&MacroEvents)))
+  if (!(flags & GETCH_IGNORE_MACRO))
   {
-    return *event_key;
+    event_key = array_pop(&MacroEvents);
+    if (event_key)
+      return *event_key;
   }
 
   int ch;
   SigInt = false;
   mutt_sig_allow_interrupt(true);
+  timeout(1000); // 1 second
 #ifdef USE_INOTIFY
   ch = mutt_monitor_getch();
 #else
@@ -235,13 +243,33 @@ struct KeyEvent mutt_getch(GetChFlags flags)
     return event_abort;
   }
 
+  if (ch == KEY_RESIZE)
+  {
+    timeout(0);
+    while ((ch = getch()) == KEY_RESIZE)
+    {
+      // do nothing
+    }
+  }
+
   if (ch == ERR)
   {
-    if (!isatty(0))
+    if (!isatty(0)) // terminal was lost
       mutt_exit(1);
 
-    return OptNoCurses ? event_abort : event_timeout;
+    if (SigWinch)
+    {
+      SigWinch = false;
+      notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+      return event_repaint;
+    }
+
+    notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
+    return event_timeout;
   }
+
+  if (ch == AbortKey)
+    return event_abort;
 
   if (ch & 0x80)
   {
@@ -254,9 +282,6 @@ struct KeyEvent mutt_getch(GetChFlags flags)
       return (struct KeyEvent){ '\033', OP_NULL }; // Escape
     }
   }
-
-  if (ch == AbortKey)
-    return event_abort;
 
   return (struct KeyEvent){ ch, OP_NULL };
 }
