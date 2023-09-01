@@ -466,25 +466,22 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
 
     if (!state->pattern || !buf_str_equal(tmp, state->string_expn))
     {
-      struct Buffer err;
-      buf_init(&err);
       OptSearchInvalid = true;
       buf_copy(state->string_expn, tmp);
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&state->pattern);
-      err.dsize = 256;
-      err.data = mutt_mem_malloc(err.dsize);
-      state->pattern = mutt_pattern_comp(mv, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
+      struct Buffer *err = buf_pool_get();
+      state->pattern = mutt_pattern_comp(mv, menu, tmp->data, MUTT_PC_FULL_MSG, err);
       if (!state->pattern)
       {
         buf_pool_release(&tmp);
-        mutt_error("%s", err.data);
-        FREE(&err.data);
+        mutt_error("%s", buf_string(err));
+        buf_free(&err);
         buf_reset(state->string);
         buf_reset(state->string_expn);
         return -1;
       }
-      FREE(&err.data);
+      buf_free(&err);
       mutt_clear_error();
     }
 
@@ -623,25 +620,22 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
 
     if (!state->pattern || !buf_str_equal(tmp, state->string_expn))
     {
-      struct Buffer err;
-      buf_init(&err);
       OptSearchInvalid = true;
       buf_copy(state->string_expn, tmp);
       mutt_message(_("Compiling search pattern..."));
       mutt_pattern_free(&state->pattern);
-      err.dsize = 256;
-      err.data = mutt_mem_malloc(err.dsize);
-      state->pattern = mutt_pattern_comp(NULL, menu, tmp->data, MUTT_PC_FULL_MSG, &err);
+      struct Buffer *err = buf_pool_get();
+      state->pattern = mutt_pattern_comp(NULL, menu, tmp->data, MUTT_PC_FULL_MSG, err);
       if (!state->pattern)
       {
         buf_pool_release(&tmp);
-        mutt_error("%s", err.data);
-        FREE(&err.data);
+        mutt_error("%s", buf_string(err));
+        buf_free(&err);
         buf_reset(state->string);
         buf_reset(state->string_expn);
         return -1;
       }
-      FREE(&err.data);
+      buf_free(&err);
       mutt_clear_error();
     }
 
