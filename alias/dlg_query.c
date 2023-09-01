@@ -544,6 +544,7 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
   struct AliasList al = TAILQ_HEAD_INITIALIZER(al);
   struct AliasMenuData mdata = { ARRAY_HEAD_INITIALIZER, NULL, sub };
   mdata.al = &al;
+  mdata.search_state = search_state_new();
 
   struct Buffer *buf = buf_pool_get();
   if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
@@ -589,6 +590,7 @@ done:
   ARRAY_FREE(&mdata.ava);
   FREE(&mdata.title);
   FREE(&mdata.limit);
+  search_state_free(&mdata.search_state);
   aliaslist_free(&al);
   buf_pool_release(&buf);
 }
