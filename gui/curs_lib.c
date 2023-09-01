@@ -120,10 +120,6 @@ static void array_to_endcond(struct KeyEventArray *a)
   }
 }
 
-/// Timeout for getting a character from the user.
-/// @sa mutt_set_timeout()
-int MuttGetchTimeout = -1;
-
 /**
  * mutt_beep - Irritate the user
  * @param force If true, ignore the "$beep" config variable
@@ -171,39 +167,6 @@ void mutt_need_hard_redraw(void)
   window_redraw(NULL);
 }
 
-/**
- * mutt_set_timeout - Set the getch() timeout
- * @param delay Timeout delay in ms
- * delay is just like for timeout() or poll(): the number of milliseconds
- * mutt_getch() should block for input.
- * * delay == 0 means mutt_getch() is non-blocking.
- * * delay < 0 means mutt_getch is blocking.
- */
-void mutt_set_timeout(int delay)
-{
-  MuttGetchTimeout = delay;
-  timeout(delay);
-}
-
-/**
- * mutt_getch_timeout - Get an event with a timeout
- * @param delay Timeout delay in ms
- * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
- * @retval obj KeyEvent to process, @sa mutt_getch()
- *
- * delay is just like for timeout() or poll(): the number of milliseconds
- * mutt_getch() should block for input.
- * * delay == 0 means mutt_getch() is non-blocking.
- * * delay < 0 means mutt_getch is blocking.
- */
-struct KeyEvent mutt_getch_timeout(int delay, GetChFlags flags)
-{
-  mutt_set_timeout(delay);
-  struct KeyEvent event = mutt_getch(flags);
-  mutt_set_timeout(-1);
-  return event;
-}
-
 #ifdef USE_INOTIFY
 /**
  * mutt_monitor_getch - Get a character and poll the filesystem monitor
@@ -216,7 +179,7 @@ static int mutt_monitor_getch(void)
    * we need to make sure there isn't a character waiting */
   timeout(0);
   int ch = getch();
-  timeout(MuttGetchTimeout);
+  timeout(1000); // 1 second
   if (ch == ERR)
   {
     if (mutt_monitor_poll() != 0)
@@ -342,9 +305,6 @@ void mutt_query_exit(void)
 {
   mutt_flushinp();
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
-  if (c_timeout != 0)
-    mutt_set_timeout(-1); /* restore blocking operation */
   if (mw_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {
     mutt_exit(0); /* This call never returns */
@@ -477,7 +437,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
-    event = mutt_getch_timeout(1000, GETCH_NO_FLAGS); // 1 second
+    event = mutt_getch(GETCH_NO_FLAGS);
   } while (event.op == OP_TIMEOUT);
   mutt_curses_set_cursor(old_cursor);
 

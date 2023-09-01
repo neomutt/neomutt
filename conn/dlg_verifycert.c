@@ -80,7 +80,7 @@ static const struct Mapping VerifyHelp[] = {
  */
 static int menu_dialog_dokey(struct Menu *menu, int *id)
 {
-  struct KeyEvent event = mutt_getch_timeout(5000, GETCH_IGNORE_MACRO);
+  struct KeyEvent event = mutt_getch(GETCH_IGNORE_MACRO);
 
   if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
   {

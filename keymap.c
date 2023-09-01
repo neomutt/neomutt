@@ -679,7 +679,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
       {
         while (c_imap_keep_alive < i)
         {
-          event = mutt_getch_timeout(c_imap_keep_alive * 1000, flags);
+          event = mutt_getch(flags);
           /* If a timeout was not received, or the window was resized, exit the
            * loop now.  Otherwise, continue to loop until reaching a total of
            * $timeout seconds.  */
@@ -696,7 +696,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
     }
 #endif
 
-    event = mutt_getch_timeout(i * 1000, flags);
+    event = mutt_getch(flags);
 
 #ifdef USE_IMAP
   gotkey:
@@ -1888,7 +1888,7 @@ void mw_what_key(void)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
-  mutt_set_timeout(1000); // 1 second
+  timeout(1000); // 1 second
   while (true)
   {
     ch = getch();
@@ -1902,7 +1902,6 @@ void mw_what_key(void)
     mutt_window_move(win, 0, 0);
   }
 
-  mutt_set_timeout(-1);
   mutt_curses_set_cursor(old_cursor);
 
   mutt_flushinp();

@@ -39,7 +39,6 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "monitor.h"
 #include "index/lib.h"
 #ifndef HAVE_INOTIFY_INIT1
@@ -404,7 +403,7 @@ int mutt_monitor_poll(void)
 
   if (INotifyFd != -1)
   {
-    int fds = poll(PollFds, PollFdsCount, MuttGetchTimeout);
+    int fds = poll(PollFds, PollFdsCount, 1000); // 1 Second
 
     if (fds == -1)
     {
