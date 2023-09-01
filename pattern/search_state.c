@@ -26,7 +26,9 @@
  * Holds state of a search
  */
 
+#include "config.h"
 #include "mutt/lib.h"
+#include "search_state.h"
 #include "lib.h"
 
 /**

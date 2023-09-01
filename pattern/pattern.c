@@ -49,6 +49,7 @@
 #include "mx.h"
 #include "opcodes.h"
 #include "protos.h"
+#include "search_state.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
 #endif

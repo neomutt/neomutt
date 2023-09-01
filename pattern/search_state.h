@@ -20,6 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef MUTT_PATTERN_SEARCH_STATE_H
+#define MUTT_PATTERN_SEARCH_STATE_H
+
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -28,7 +31,8 @@
  *
  * This data is kept to allow operations like OP_SEARCH_NEXT.
  */
-struct SearchState {
+struct SearchState
+{
   struct PatternList *pattern;     ///< compiled search pattern
   struct Buffer      *string;      ///< search string
   struct Buffer      *string_expn; ///< expanded search string
@@ -42,3 +46,5 @@ typedef uint8_t SearchFlags;       ///< Flags for a specific search, e.g. #SEARC
 
 struct SearchState *search_state_new(void);
 void search_state_free(struct SearchState **search);
+
+#endif /* MUTT_PATTERN_SEARCH_STATE_H */
