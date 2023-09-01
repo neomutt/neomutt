@@ -77,6 +77,7 @@
 #include "gui/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
+#include "pattern/lib.h"
 #include "format_flags.h"
 #include "functions.h"
 #include "hdrline.h"
@@ -210,7 +211,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
   menu->mdata = mv;
   menu->mdata_free = NULL; // Menu doesn't own the data
 
-  struct PostponeData pd = { mv, menu, NULL, false };
+  struct PostponeData pd = { mv, menu, NULL, false, search_state_new() };
   dlg->wdata = &pd;
 
   // NT_COLOR is handled by the SimpleDialog
@@ -256,6 +257,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
 
   mview_free(&mv);
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
+  search_state_free(&pd.search_state);
   simple_dialog_free(&dlg);
 
   return pd.email;

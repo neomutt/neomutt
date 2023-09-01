@@ -26,16 +26,17 @@
  *
  * Match patterns to emails
  *
- * | File                  | Description                  |
- * | :-------------------- | :--------------------------- |
- * | pattern/compile.c     | @subpage pattern_compile     |
- * | pattern/config.c      | @subpage pattern_config      |
- * | pattern/dlg_pattern.c | @subpage pattern_dlg_pattern |
- * | pattern/exec.c        | @subpage pattern_exec        |
- * | pattern/flags.c       | @subpage pattern_flags       |
- * | pattern/functions.c   | @subpage pattern_functions   |
- * | pattern/message.c     | @subpage pattern_message     |
- * | pattern/pattern.c     | @subpage pattern_pattern     |
+ * | File                   | Description                   |
+ * | :--------------------- | :---------------------------- |
+ * | pattern/compile.c      | @subpage pattern_compile      |
+ * | pattern/config.c       | @subpage pattern_config       |
+ * | pattern/dlg_pattern.c  | @subpage pattern_dlg_pattern  |
+ * | pattern/exec.c         | @subpage pattern_exec         |
+ * | pattern/flags.c        | @subpage pattern_flags        |
+ * | pattern/functions.c    | @subpage pattern_functions    |
+ * | pattern/message.c      | @subpage pattern_message      |
+ * | pattern/pattern.c      | @subpage pattern_pattern      |
+ * | pattern/search_state.c | @subpage pattern_search_state |
  */
 
 #ifndef MUTT_PATTERN_LIB_H
@@ -47,6 +48,7 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt.h"
+#include "search_state.h" // IWYU pragma: keep
 
 struct AliasMenuData;
 struct AliasView;
@@ -191,7 +193,9 @@ bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
 int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
-int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur, int op);
-int mutt_search_alias_command(struct Menu *menu, int cur, int op);
+int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
+                        struct SearchState *state, SearchFlags flags);
+int mutt_search_alias_command(struct Menu *menu, int cur,
+                              struct SearchState *state, SearchFlags flags);
 
 #endif /* MUTT_PATTERN_LIB_H */

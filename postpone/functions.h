@@ -36,6 +36,7 @@ struct PostponeData
   struct Menu        *menu;          ///< Postponed Menu
   struct Email       *email;         ///< Selected Email
   bool                done;          ///< Should we close the Dialog?
+  struct SearchState *search_state;  ///< State of the current search
 };
 
 /**

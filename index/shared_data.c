@@ -33,6 +33,7 @@
 #include "core/lib.h"
 #include "shared_data.h"
 #include "lib.h"
+#include "pattern/lib.h"
 #include "mview.h"
 
 /**
@@ -293,6 +294,8 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
   if (shared->email)
     notify_observer_remove(shared->email->notify, index_shared_email_observer, shared);
 
+  search_state_free(&shared->search_state);
+
   FREE(ptr);
 }
 
@@ -306,6 +309,7 @@ struct IndexSharedData *index_shared_data_new(void)
 
   shared->notify = notify_new();
   shared->sub = NeoMutt->sub;
+  shared->search_state = search_state_new();
 
   mutt_debug(LL_NOTIFY, "NT_INDEX_ADD: %p\n", (void *) shared);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_ADD, shared);

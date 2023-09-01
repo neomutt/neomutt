@@ -98,9 +98,27 @@ static int op_generic_select_entry(struct PostponeData *pd, int op)
  */
 static int op_search(struct PostponeData *pd, int op)
 {
+  SearchFlags flags = SEARCH_NO_FLAGS;
+  switch (op)
+  {
+    case OP_SEARCH:
+      flags |= SEARCH_PROMPT;
+      pd->search_state->reverse = false;
+      break;
+    case OP_SEARCH_REVERSE:
+      flags |= SEARCH_PROMPT;
+      pd->search_state->reverse = true;
+      break;
+    case OP_SEARCH_NEXT:
+      break;
+    case OP_SEARCH_OPPOSITE:
+      flags |= SEARCH_OPPOSITE;
+      break;
+  }
+
   int index = menu_get_index(pd->menu);
   struct MailboxView *mv = pd->mailbox_view;
-  index = mutt_search_command(mv, pd->menu, index, op);
+  index = mutt_search_command(mv, pd->menu, index, pd->search_state, flags);
   if (index != -1)
     menu_set_index(pd->menu, index);
 
