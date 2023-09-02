@@ -79,6 +79,8 @@
 #include <libintl.h>
 #endif
 
+static time_t MailboxTime = 0; ///< last time we started checking for mail
+
 /// Lookup table of mailbox types
 static const struct Mapping MboxTypeMap[] = {
   // clang-format off
@@ -1133,6 +1135,14 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
 {
   if (!m || !m->mx_ops)
     return MX_STATUS_ERROR;
+
+  const short c_mail_check = cs_subset_number(NeoMutt->sub, "mail_check");
+
+  time_t t = mutt_date_now();
+  if ((t - MailboxTime) < c_mail_check)
+    return MX_STATUS_OK;
+
+  MailboxTime = t;
 
   enum MxStatus rc = m->mx_ops->mbox_check(m);
   if ((rc == MX_STATUS_NEW_MAIL) || (rc == MX_STATUS_REOPENED))
