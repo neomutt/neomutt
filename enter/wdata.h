@@ -53,7 +53,7 @@ struct EnterWindowData
   char ***files;                  ///< List of files selected
   int *numfiles;                  ///< Number of files selected
   struct EnterState *state;       ///< Current state of text entry
-  struct CompleteOps *comp_api;   ///< Auto-Completion API
+  const struct CompleteOps *comp_api; ///< Auto-Completion API
   void *cdata;                    ///< Auto-Completion private data
 
   // Local variables

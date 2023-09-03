@@ -47,12 +47,16 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
+#include "complete/lib.h"
 
 struct Address;
 struct AddressList;
 struct Buffer;
 struct ConfigSubset;
+struct EnterWindowData;
 struct Envelope;
+
+extern const struct CompleteOps CompleteAliasOps;
 
 void alias_init   (void);
 void alias_cleanup(void);
@@ -73,6 +77,8 @@ void alias_dialog  (struct Mailbox *m, struct ConfigSubset *sub);
 
 int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void query_index   (struct Mailbox *m, struct ConfigSubset *sub);
+
+int complete_alias(struct EnterWindowData *wdata, int op);
 
 struct Address *alias_reverse_lookup(const struct Address *addr);
 

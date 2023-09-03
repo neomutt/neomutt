@@ -47,8 +47,6 @@
 #include "state.h" // IWYU pragma: keep
 #include "wdata.h"
 
-struct CompleteOps;
-
 /// Help Bar for the Command Line Editor
 static const struct Mapping EditorHelp[] = {
   // clang-format off
@@ -190,7 +188,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  */
 int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
                  bool multiple, struct Mailbox *m, char ***files, int *numfiles,
-                 struct CompleteOps *comp_api, void *cdata)
+                 const struct CompleteOps *comp_api, void *cdata)
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);

@@ -38,10 +38,14 @@
 #include <stddef.h>
 #include <stdbool.h>
 // IWYU pragma: begin_keep
+#include "compapi.h"
 #include "data.h"
 // IWYU pragma: end_keep
 
 struct Buffer;
+
+extern const struct CompleteOps CompleteCommandOps;
+extern const struct CompleteOps CompleteLabelOps;
 
 int  mutt_command_complete  (struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs);
 int  mutt_complete          (struct CompletionData *cd, struct Buffer *buf);

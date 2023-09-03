@@ -44,9 +44,13 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "core/lib.h"
+#include "complete/lib.h"
 
 struct Email;
 struct stat;
+
+extern const struct CompleteOps CompleteNmQueryOps;
+extern const struct CompleteOps CompleteNmTagOps;
 
 extern const struct MxOps MxNotmuchOps;
 

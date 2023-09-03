@@ -49,7 +49,7 @@ struct Buffer;
 struct CompleteOps;
 struct Mailbox;
 
-int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, struct Mailbox *m, char ***files, int *numfiles, struct CompleteOps *comp_api, void *cdata);
+int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, struct Mailbox *m, char ***files, int *numfiles, const struct CompleteOps *comp_api, void *cdata);
 void replace_part(struct EnterState *es, size_t from, const char *buf);
 
 #endif /* MUTT_ENTER_LIB_H */

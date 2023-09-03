@@ -242,3 +242,17 @@ int complete_nm_tag(struct EnterWindowData *wdata, int op)
   replace_part(wdata->state, 0, buf_string(wdata->buffer));
   return rc;
 }
+
+/**
+ * CompleteNmQueryOps - Auto-Completion of NmQuerys
+ */
+const struct CompleteOps CompleteNmQueryOps = {
+  .complete = complete_nm_query,
+};
+
+/**
+ * CompleteNmTagOps - Auto-Completion of NmTags
+ */
+const struct CompleteOps CompleteNmTagOps = {
+  .complete = complete_nm_tag,
+};

@@ -75,3 +75,10 @@ int complete_pattern(struct EnterWindowData *wdata, int op)
 
   return FR_SUCCESS;
 }
+
+/**
+ * CompletePatternOps - Auto-Completion of Patterns
+ */
+const struct CompleteOps CompletePatternOps = {
+  .complete = complete_pattern,
+};

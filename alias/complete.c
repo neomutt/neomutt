@@ -31,6 +31,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "complete/lib.h"
 #include "enter/lib.h"
 #include "opcodes.h"
 
@@ -87,3 +88,23 @@ int complete_alias_query(struct EnterWindowData *wdata, int op)
 
   return FR_CONTINUE;
 }
+
+/**
+ * complete_alias - Alias completion wrapper - Implements ::complete_function_t -- @ingroup complete_api
+ */
+int complete_alias(struct EnterWindowData *wdata, int op)
+{
+  if (op == OP_EDITOR_COMPLETE)
+    return complete_alias_complete(wdata, op);
+  if (op == OP_EDITOR_COMPLETE_QUERY)
+    return complete_alias_query(wdata, op);
+
+  return FR_NO_ACTION;
+}
+
+/**
+ * CompleteAliasOps - Auto-Completion of Aliases
+ */
+const struct CompleteOps CompleteAliasOps = {
+  .complete = complete_alias,
+};

@@ -43,6 +43,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
+#include "complete/lib.h"
 
 struct Mailbox;
 struct Menu;
@@ -57,6 +58,9 @@ typedef uint8_t SelectFileFlags;  ///< Flags for mutt_select_file(), e.g. #MUTT_
 #define MUTT_SEL_MAILBOX (1 << 0) ///< Select a mailbox
 #define MUTT_SEL_MULTI   (1 << 1) ///< Multi-selection is enabled
 #define MUTT_SEL_FOLDER  (1 << 2) ///< Select a local directory
+
+extern const struct CompleteOps CompleteFileOps;
+extern const struct CompleteOps CompleteMailboxOps;
 
 /**
  * struct Folder - A folder/dir in the browser

@@ -2733,7 +2733,7 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
   struct Buffer *buf = buf_pool_get();
 
   if ((mw_get_field("Query: ", buf, MUTT_COMP_NM_QUERY, false, NULL, NULL, NULL,
-                    NULL, NULL) != 0) ||
+                    &CompleteNmQueryOps, NULL) != 0) ||
       buf_is_empty(buf))
   {
     mutt_message(_("No query, aborting"));

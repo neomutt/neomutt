@@ -40,6 +40,7 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "mutt_header.h"
+#include "complete/lib.h"
 #include "enter/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
@@ -142,7 +143,8 @@ int mutt_label_message(struct MailboxView *mv, struct EmailArray *ea)
       buf_strcpy(buf, e->env->x_label);
   }
 
-  if (mw_get_field("Label: ", buf, MUTT_COMP_LABEL, false, NULL, NULL, NULL, NULL, NULL) != 0)
+  if (mw_get_field("Label: ", buf, MUTT_COMP_LABEL, false, NULL, NULL, NULL,
+                   &CompleteLabelOps, NULL) != 0)
   {
     goto done;
   }

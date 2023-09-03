@@ -38,6 +38,7 @@
 #include "enter/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
+#include "compapi.h"
 #include "data.h"
 #include "functions.h"
 #include "keymap.h"
@@ -467,3 +468,17 @@ int complete_label(struct EnterWindowData *wdata, int op)
 
   return FR_SUCCESS;
 }
+
+/**
+ * CompleteCommandOps - Auto-Completion of Commands
+ */
+const struct CompleteOps CompleteCommandOps = {
+  .complete = complete_command,
+};
+
+/**
+ * CompleteLabelOps - Auto-Completion of Labels
+ */
+const struct CompleteOps CompleteLabelOps = {
+  .complete = complete_label,
+};

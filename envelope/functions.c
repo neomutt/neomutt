@@ -40,6 +40,7 @@
 #include "mutt.h"
 #include "functions.h"
 #include "lib.h"
+#include "browser/lib.h"
 #include "enter/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
@@ -118,7 +119,7 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
   buf_fix_dptr(new_list);
   buf_copy(old_list, new_list);
   if (mw_get_field(_(Prompts[field]), new_list, MUTT_COMP_ALIAS, false, NULL,
-                   NULL, NULL, NULL, NULL) == 0)
+                   NULL, NULL, &CompleteAliasOps, NULL) == 0)
   {
     mutt_addrlist_clear(al);
     mutt_addrlist_parse2(al, buf_string(new_list));
@@ -229,7 +230,7 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
   buf_copy(fname, wdata->fcc);
 
   if (mw_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                   false, NULL, NULL, NULL, NULL, NULL) != 0)
+                   false, NULL, NULL, NULL, &CompleteMailboxOps, NULL) != 0)
   {
     goto done; // aborted
   }

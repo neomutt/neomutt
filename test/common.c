@@ -32,6 +32,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "complete/lib.h"
 #include "copy.h"
 #include "mx.h"
 
@@ -47,6 +48,8 @@ char *ShortHostname = "example";
 bool MonitorContextChanged = false;
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
+
+const struct CompleteOps CompleteMailboxOps = { 0 };
 
 static struct ConfigDef Vars[] = {
   // clang-format off

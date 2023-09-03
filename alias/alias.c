@@ -46,6 +46,7 @@
 #include "mutt.h"
 #include "alias.h"
 #include "lib.h"
+#include "browser/lib.h"
 #include "enter/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
@@ -499,7 +500,7 @@ retry_name:
   buf_strcpy(buf, c_alias_file);
 
   if (mw_get_field(_("Save to file: "), buf, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                   false, NULL, NULL, NULL, NULL, NULL) != 0)
+                   false, NULL, NULL, NULL, &CompleteMailboxOps, NULL) != 0)
   {
     goto done;
   }

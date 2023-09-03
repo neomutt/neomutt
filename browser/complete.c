@@ -127,3 +127,17 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
   replace_part(wdata->state, i, buf_string(wdata->buffer));
   return rc;
 }
+
+/**
+ * CompleteFileOps - Auto-Completion of Files
+ */
+const struct CompleteOps CompleteFileOps = {
+  .complete = complete_file_simple,
+};
+
+/**
+ * CompleteMailboxOps - Auto-Completion of Files / Mailboxes
+ */
+const struct CompleteOps CompleteMailboxOps = {
+  .complete = complete_file_mbox,
+};
