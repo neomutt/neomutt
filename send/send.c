@@ -192,7 +192,7 @@ int mutt_edit_address(struct AddressList *al, const char *field, bool expand_ali
     mutt_addrlist_to_local(al);
     buf_reset(buf);
     mutt_addrlist_write(al, buf, false);
-    if (mw_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(field, buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL, NULL, NULL) != 0)
     {
       rc = -1;
       goto done;
@@ -236,7 +236,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     else
       buf_reset(buf);
 
-    if (mw_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field("Newsgroups: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL,
+                     NULL, NULL, NULL) != 0)
     {
       goto done;
     }
@@ -249,7 +250,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
 
     const bool c_ask_followup_to = cs_subset_bool(sub, "ask_followup_to");
     if (c_ask_followup_to && (mw_get_field("Followup-To: ", buf, MUTT_COMP_NO_FLAGS,
-                                           false, NULL, NULL, NULL) != 0))
+                                           false, NULL, NULL, NULL, NULL, NULL) != 0))
     {
       goto done;
     }
@@ -263,7 +264,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
     const bool c_ask_x_comment_to = cs_subset_bool(sub, "ask_x_comment_to");
     if (c_x_comment_to && c_ask_x_comment_to &&
-        (mw_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
+        (mw_get_field("X-Comment-To: ", buf, MUTT_COMP_NO_FLAGS, false, NULL,
+                      NULL, NULL, NULL, NULL) != 0))
     {
       goto done;
     }
@@ -335,7 +337,8 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   }
 
   const enum QuadOption c_abort_nosubject = cs_subset_quad(sub, "abort_nosubject");
-  if ((mw_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL,
+                    NULL, NULL, NULL) != 0) ||
       (buf_is_empty(buf) &&
        (query_quadoption(c_abort_nosubject, _("No subject, abort?")) != MUTT_NO)))
   {

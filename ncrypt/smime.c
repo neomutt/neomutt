@@ -184,7 +184,7 @@ bool smime_class_valid_passphrase(void)
   struct Buffer *buf = buf_pool_get();
   const int rc = mw_get_field(_("Enter S/MIME passphrase:"), buf,
                               MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, false,
-                              NULL, NULL, NULL);
+                              NULL, NULL, NULL, NULL, NULL);
   mutt_str_copy(SmimePass, buf_string(buf), sizeof(SmimePass));
   buf_pool_release(&buf);
 
@@ -751,7 +751,8 @@ static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool
   while (true)
   {
     buf_reset(resp);
-    if (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL,
+                     NULL, NULL) != 0)
     {
       goto done;
     }
@@ -1204,7 +1205,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   if (c_smime_ask_cert_label)
   {
     if ((mw_get_field(_("Label for certificate: "), buf, MUTT_COMP_NO_FLAGS,
-                      false, NULL, NULL, NULL) != 0) ||
+                      false, NULL, NULL, NULL, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       goto done;

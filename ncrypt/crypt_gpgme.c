@@ -3371,7 +3371,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
   while (true)
   {
     buf_reset(resp);
-    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL, NULL, NULL) != 0)
     {
       goto done;
     }

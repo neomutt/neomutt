@@ -101,7 +101,7 @@ bool pgp_class_valid_passphrase(void)
   struct Buffer *buf = buf_pool_get();
   const int rc = mw_get_field(_("Enter PGP passphrase:"), buf,
                               MUTT_COMP_PASS | MUTT_COMP_UNBUFFERED, false,
-                              NULL, NULL, NULL);
+                              NULL, NULL, NULL, NULL, NULL);
   mutt_str_copy(PgpPass, buf_string(buf), sizeof(PgpPass));
   buf_pool_release(&buf);
 

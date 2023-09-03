@@ -205,7 +205,8 @@ void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
   else
     buf_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  if ((mw_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, false, NULL, NULL,
+                    NULL, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;

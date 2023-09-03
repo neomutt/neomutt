@@ -118,7 +118,8 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   else
     buf_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  rc = mw_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, false, NULL, NULL, NULL);
+  rc = mw_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, false, NULL, NULL,
+                    NULL, NULL, NULL);
   if ((rc != 0) || buf_is_empty(buf))
     goto done;
 
@@ -429,7 +430,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
   struct Buffer *buf = buf_pool_get();
 
   if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_FILE_SIMPLE, false,
-                   NULL, NULL, NULL) != 0)
+                   NULL, NULL, NULL, NULL, NULL) != 0)
   {
     goto cleanup;
   }
@@ -599,7 +600,7 @@ bool mutt_shell_escape(void)
   struct Buffer *buf = buf_pool_get();
 
   if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_FILE_SIMPLE, false,
-                   NULL, NULL, NULL) != 0)
+                   NULL, NULL, NULL, NULL, NULL) != 0)
   {
     goto done;
   }
@@ -642,7 +643,7 @@ void mutt_enter_command(void)
 
   window_redraw(NULL);
   /* if enter is pressed after : with no command, just return */
-  if ((mw_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(":", buf, MUTT_COMP_COMMAND, false, NULL, NULL, NULL, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;
@@ -1117,7 +1118,8 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
     }
   }
 
-  if ((mw_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field("Content-Type: ", buf, MUTT_COMP_NO_FLAGS, false, NULL,
+                    NULL, NULL, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;
