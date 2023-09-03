@@ -25,16 +25,17 @@
  *
  * Notmuch virtual mailbox type
  *
- * | File               | Description         |
- * | :----------------- | :------------------ |
- * | notmuch/adata.c    | @subpage nm_adata   |
- * | notmuch/config.c   | @subpage nm_config  |
- * | notmuch/db.c       | @subpage nm_db      |
- * | notmuch/edata.c    | @subpage nm_edata   |
- * | notmuch/mdata.c    | @subpage nm_mdata   |
- * | notmuch/notmuch.c  | @subpage nm_notmuch |
- * | notmuch/query.c    | @subpage nm_query   |
- * | notmuch/tag.c      | @subpage nm_tag     |
+ * | File               | Description          |
+ * | :----------------- | :------------------- |
+ * | notmuch/adata.c    | @subpage nm_adata    |
+ * | notmuch/complete.c | @subpage nm_complete |
+ * | notmuch/config.c   | @subpage nm_config   |
+ * | notmuch/db.c       | @subpage nm_db       |
+ * | notmuch/edata.c    | @subpage nm_edata    |
+ * | notmuch/mdata.c    | @subpage nm_mdata    |
+ * | notmuch/notmuch.c  | @subpage nm_notmuch  |
+ * | notmuch/query.c    | @subpage nm_query    |
+ * | notmuch/tag.c      | @subpage nm_tag      |
  */
 
 #ifndef MUTT_NOTMUCH_LIB_H

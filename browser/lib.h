@@ -27,6 +27,7 @@
  *
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
+ * | browser/complete.c     | @subpage browser_complete     |
  * | browser/config.c       | @subpage browser_config       |
  * | browser/dlg_browser.c  | @subpage browser_dlg_browser  |
  * | browser/functions.c    | @subpage browser_functions    |

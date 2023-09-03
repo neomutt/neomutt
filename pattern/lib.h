@@ -29,6 +29,7 @@
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
  * | pattern/compile.c      | @subpage pattern_compile      |
+ * | pattern/complete.c     | @subpage pattern_complete     |
  * | pattern/config.c       | @subpage pattern_config       |
  * | pattern/dlg_pattern.c  | @subpage pattern_dlg_pattern  |
  * | pattern/exec.c         | @subpage pattern_exec         |

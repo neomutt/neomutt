@@ -30,6 +30,7 @@
 #include "core/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
+#include "keymap.h"
 #include "mview.h"
 
 struct Address;
@@ -39,12 +40,6 @@ struct Envelope;
 struct Keymap;
 struct Pager;
 struct Pattern;
-
-struct KeyEvent
-{
-  int ch; ///< raw key pressed
-  int op; ///< function op
-};
 
 enum WindowType
 {
@@ -91,6 +86,8 @@ bool OptForceRefresh;
 bool OptKeepQuiet;
 bool OptNoCurses;
 bool OptSearchInvalid;
+
+const struct MenuFuncOp OpGeneric[] = { 0 };
 
 typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;
@@ -279,12 +276,17 @@ int global_function_dispatcher(struct MuttWindow *win, int op)
   return 0;
 }
 
-int km_dokey(enum MenuType mtype)
+int km_dokey(enum MenuType mtype, GetChFlags flags)
 {
   return 0;
 }
 
-struct KeyEvent km_dokey_event(enum MenuType mtype)
+const struct MenuFuncOp *km_get_table(enum MenuType mtype)
+{
+  return OpGeneric;
+}
+
+struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
 {
   struct KeyEvent ke = { 0 };
   return ke;
@@ -292,11 +294,6 @@ struct KeyEvent km_dokey_event(enum MenuType mtype)
 
 void km_error_key(enum MenuType mtype)
 {
-}
-
-int mutt_command_complete(char *buf, size_t buflen, int pos, int numtabs)
-{
-  return 0;
 }
 
 int mutt_complete(char *buf, size_t buflen)
@@ -313,34 +310,14 @@ void mutt_help(enum MenuType menu)
 {
 }
 
-int mutt_label_complete(char *buf, size_t buflen, int numtabs)
-{
-  return 0;
-}
-
 struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
 {
   return NULL;
 }
 
-bool mutt_nm_query_complete(char *buf, size_t buflen, int pos, int numtabs)
-{
-  return false;
-}
-
-bool mutt_nm_tag_complete(char *buf, size_t buflen, int numtabs)
-{
-  return false;
-}
-
 void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
                       struct Mailbox *m, char ***files, int *numfiles)
 {
-}
-
-int mutt_var_value_complete(char *buf, size_t buflen, int pos)
-{
-  return 0;
 }
 
 const char *opcodes_get_name(int op)

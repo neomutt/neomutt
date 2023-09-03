@@ -42,11 +42,13 @@
 // IWYU pragma: begin_keep
 #include "enter.h"
 #include "state.h"
+#include "wdata.h"
 // IWYU pragma: end_keep
 
 struct Buffer;
 struct Mailbox;
 
 int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, struct Mailbox *m, char ***files, int *numfiles);
+void replace_part(struct EnterState *es, size_t from, const char *buf);
 
 #endif /* MUTT_ENTER_LIB_H */

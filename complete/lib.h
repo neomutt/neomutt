@@ -35,6 +35,7 @@
 #ifndef MUTT_COMPLETE_LIB_H
 #define MUTT_COMPLETE_LIB_H
 
+#include <stddef.h>
 #include <stdbool.h>
 // IWYU pragma: begin_keep
 #include "data.h"
@@ -48,5 +49,7 @@ int  mutt_label_complete    (struct CompletionData *cd, struct Buffer *buf, int 
 bool mutt_nm_query_complete (struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs);
 bool mutt_nm_tag_complete   (struct CompletionData *cd, struct Buffer *buf, int numtabs);
 int  mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int pos);
+void matches_ensure_morespace(struct CompletionData *cd, int new_size);
+bool candidate               (struct CompletionData *cd, char *user, const char *src, char *dest, size_t dlen);
 
 #endif /* MUTT_COMPLETE_LIB_H */

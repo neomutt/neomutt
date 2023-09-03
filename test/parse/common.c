@@ -33,12 +33,6 @@ struct Command mutt_commands[] = {
   // clang-format on
 };
 
-size_t commands_array(struct Command **first)
-{
-  *first = mutt_commands;
-  return mutt_array_size(mutt_commands);
-}
-
 void buf_expand_path(struct Buffer *buf)
 {
   buf_insert(buf, 0, "expanded");

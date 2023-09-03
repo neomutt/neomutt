@@ -30,6 +30,7 @@
  * | alias/alias.c       | @subpage alias_alias       |
  * | alias/array.c       | @subpage alias_array       |
  * | alias/commands.c    | @subpage alias_commands    |
+ * | alias/complete.c    | @subpage alias_complete    |
  * | alias/config.c      | @subpage alias_config      |
  * | alias/dlg_alias.c   | @subpage alias_dlg_alias   |
  * | alias/dlg_query.c   | @subpage alias_dlg_query   |
