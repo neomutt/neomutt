@@ -38,14 +38,16 @@
 #include "enter/lib.h"
 #include "history/lib.h"
 #include "muttlib.h"
+#include "opcodes.h"
 
 /**
- * complete_file_mbox - Complete a Mailbox
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_file_mbox - Complete a Mailbox - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_file_mbox(struct EnterWindowData *wdata)
+int complete_file_mbox(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   int rc = FR_SUCCESS;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
 
@@ -87,12 +89,13 @@ int complete_file_mbox(struct EnterWindowData *wdata)
 }
 
 /**
- * complete_file_simple - Complete a filename
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_file_simple - Complete a filename - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_file_simple(struct EnterWindowData *wdata)
+int complete_file_simple(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   int rc = FR_SUCCESS;
   size_t i;
   for (i = wdata->state->curpos;

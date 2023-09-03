@@ -41,6 +41,7 @@
 #include "data.h"
 #include "functions.h"
 #include "keymap.h"
+#include "opcodes.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
@@ -417,12 +418,13 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
 }
 
 /**
- * complete_command - Complete a NeoMutt Command
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_command - Complete a NeoMutt Command - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_command(struct EnterWindowData *wdata)
+int complete_command(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   int rc = FR_SUCCESS;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
   size_t i = buf_len(wdata->buffer);
@@ -441,12 +443,13 @@ int complete_command(struct EnterWindowData *wdata)
 }
 
 /**
- * complete_label - Complete a label
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_label - Complete a label - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_label(struct EnterWindowData *wdata)
+int complete_label(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   size_t i;
   for (i = wdata->state->curpos; (i > 0) && (wdata->state->wbuf[i - 1] != ',') &&
                                  (wdata->state->wbuf[i - 1] != ':');

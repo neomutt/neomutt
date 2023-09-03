@@ -32,14 +32,16 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "enter/lib.h"
+#include "opcodes.h"
 
 /**
- * complete_alias_complete - Complete an Alias
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_alias_complete - Complete an Alias - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_alias_complete(struct EnterWindowData *wdata)
+int complete_alias_complete(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   /* invoke the alias-menu to get more addresses */
   size_t i;
   for (i = wdata->state->curpos; (i > 0) && (wdata->state->wbuf[i - 1] != ',') &&
@@ -62,12 +64,13 @@ int complete_alias_complete(struct EnterWindowData *wdata)
 }
 
 /**
- * complete_alias_query - Complete an Alias Query
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_alias_query - Complete an Alias Query - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_alias_query(struct EnterWindowData *wdata)
+int complete_alias_query(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   size_t i = wdata->state->curpos;
   if (i != 0)
   {

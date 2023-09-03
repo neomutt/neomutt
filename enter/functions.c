@@ -45,15 +45,15 @@
 #include "state.h" // IWYU pragma: keep
 #include "wdata.h"
 
-int complete_alias_complete(struct EnterWindowData *wdata);
-int complete_alias_query(struct EnterWindowData *wdata);
-int complete_command(struct EnterWindowData *wdata);
-int complete_file_mbox(struct EnterWindowData *wdata);
-int complete_file_simple(struct EnterWindowData *wdata);
-int complete_label(struct EnterWindowData *wdata);
-int complete_nm_query(struct EnterWindowData *wdata);
-int complete_nm_tag(struct EnterWindowData *wdata);
-int complete_pattern(struct EnterWindowData *wdata);
+int complete_alias_complete(struct EnterWindowData *wdata, int op);
+int complete_alias_query(struct EnterWindowData *wdata, int op);
+int complete_command(struct EnterWindowData *wdata, int op);
+int complete_file_mbox(struct EnterWindowData *wdata, int op);
+int complete_file_simple(struct EnterWindowData *wdata, int op);
+int complete_label(struct EnterWindowData *wdata, int op);
+int complete_nm_query(struct EnterWindowData *wdata, int op);
+int complete_nm_tag(struct EnterWindowData *wdata, int op);
+int complete_pattern(struct EnterWindowData *wdata, int op);
 
 /**
  * replace_part - Search and replace on a buffer
@@ -115,39 +115,39 @@ static int op_editor_complete(struct EnterWindowData *wdata, int op)
   wdata->tabs++;
   wdata->redraw = ENTER_REDRAW_LINE;
   if (wdata->flags & MUTT_COMP_FILE_SIMPLE)
-    return complete_file_simple(wdata);
+    return complete_file_simple(wdata, op);
 
   if (wdata->flags & (MUTT_COMP_FILE | MUTT_COMP_FILE_MBOX))
-    return complete_file_mbox(wdata);
+    return complete_file_mbox(wdata, op);
 
   if (wdata->flags & MUTT_COMP_ALIAS)
   {
     switch (op)
     {
       case OP_EDITOR_COMPLETE:
-        return complete_alias_complete(wdata);
+        return complete_alias_complete(wdata, op);
       case OP_EDITOR_COMPLETE_QUERY:
-        return complete_alias_query(wdata);
+        return complete_alias_query(wdata, op);
       default:
         return FR_NO_ACTION;
     }
   }
 
   if ((wdata->flags & MUTT_COMP_LABEL))
-    return complete_label(wdata);
+    return complete_label(wdata, op);
 
   if ((wdata->flags & MUTT_COMP_PATTERN))
-    return complete_pattern(wdata);
+    return complete_pattern(wdata, op);
 
   if (wdata->flags & MUTT_COMP_COMMAND)
-    return complete_command(wdata);
+    return complete_command(wdata, op);
 
 #ifdef USE_NOTMUCH
   if (wdata->flags & MUTT_COMP_NM_QUERY)
-    return complete_nm_query(wdata);
+    return complete_nm_query(wdata, op);
 
   if (wdata->flags & MUTT_COMP_NM_TAG)
-    return complete_nm_tag(wdata);
+    return complete_nm_tag(wdata, op);
 #endif
 
   return FR_NO_ACTION;

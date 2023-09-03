@@ -33,14 +33,16 @@
 #include "lib.h"
 #include "complete/lib.h"
 #include "enter/lib.h"
+#include "opcodes.h"
 
 /**
- * complete_pattern - Complete a NeoMutt Pattern
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_pattern - Complete a NeoMutt Pattern - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_pattern(struct EnterWindowData *wdata)
+int complete_pattern(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   size_t i = wdata->state->curpos;
   if (i && (wdata->state->wbuf[i - 1] == '~'))
   {

@@ -36,6 +36,7 @@
 #include "enter/lib.h"
 #include "index/lib.h"
 #include "notmuch/lib.h"
+#include "opcodes.h"
 
 /**
  * complete_all_nm_tags - Pass a list of Notmuch tags to the completion code
@@ -208,12 +209,13 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int num
 }
 
 /**
- * complete_nm_query - Complete a Notmuch Query
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_nm_query - Complete a Notmuch Query - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_nm_query(struct EnterWindowData *wdata)
+int complete_nm_query(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   int rc = FR_SUCCESS;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
   size_t len = buf_len(wdata->buffer);
@@ -225,12 +227,13 @@ int complete_nm_query(struct EnterWindowData *wdata)
 }
 
 /**
- * complete_nm_tag - Complete a Notmuch Tag
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ * complete_nm_tag - Complete a Notmuch Tag - Implements ::complete_function_t -- @ingroup complete_api
  */
-int complete_nm_tag(struct EnterWindowData *wdata)
+int complete_nm_tag(struct EnterWindowData *wdata, int op)
 {
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
   int rc = FR_SUCCESS;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
   if (!mutt_nm_tag_complete(wdata->cd, wdata->buffer, wdata->tabs))
