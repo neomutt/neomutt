@@ -32,14 +32,12 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "functions.h"
 #include "complete/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "enter.h"
 #include "keymap.h"
-#include "mutt_mailbox.h"
 #include "opcodes.h"
 #include "protos.h"
 #include "state.h" // IWYU pragma: keep
@@ -155,25 +153,6 @@ static int op_editor_history_up(struct EnterWindowData *wdata, int op)
   replace_part(wdata->state, 0, mutt_hist_prev(wdata->hclass));
   wdata->redraw = ENTER_REDRAW_INIT;
   return FR_SUCCESS;
-}
-
-/**
- * op_editor_mailbox_cycle - Cycle among incoming mailboxes - Implements ::enter_function_t - @ingroup enter_function_api
- */
-static int op_editor_mailbox_cycle(struct EnterWindowData *wdata, int op)
-{
-  if (wdata->flags & MUTT_COMP_FILE_MBOX)
-  {
-    wdata->first = true; /* clear input if user types a real key later */
-    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-    mutt_mailbox_next(wdata->m, wdata->buffer);
-
-    wdata->state->curpos = wdata->state->lastchar = mutt_mb_mbstowcs(
-        &wdata->state->wbuf, &wdata->state->wbuflen, 0, buf_string(wdata->buffer));
-    return FR_SUCCESS;
-  }
-
-  return FR_NO_ACTION;
 }
 
 // -----------------------------------------------------------------------------
@@ -407,7 +386,7 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_KILL_LINE,          op_editor_kill_line },
   { OP_EDITOR_KILL_WHOLE_LINE,    op_editor_kill_whole_line },
   { OP_EDITOR_KILL_WORD,          op_editor_kill_word },
-  { OP_EDITOR_MAILBOX_CYCLE,      op_editor_mailbox_cycle },
+  { OP_EDITOR_MAILBOX_CYCLE,      op_editor_complete },
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
   { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
   { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },

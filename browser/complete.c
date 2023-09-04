@@ -37,6 +37,7 @@
 #include "complete/lib.h"
 #include "enter/lib.h"
 #include "history/lib.h"
+#include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "opcodes.h"
 
@@ -45,7 +46,21 @@
  */
 int complete_file_mbox(struct EnterWindowData *wdata, int op)
 {
-  if (!wdata || (op != OP_EDITOR_COMPLETE))
+  if (!wdata)
+    return FR_NO_ACTION;
+
+  if (op == OP_EDITOR_MAILBOX_CYCLE)
+  {
+    wdata->first = true; /* clear input if user types a real key later */
+    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+    mutt_mailbox_next(wdata->m, wdata->buffer);
+
+    wdata->state->curpos = wdata->state->lastchar = mutt_mb_mbstowcs(
+        &wdata->state->wbuf, &wdata->state->wbuflen, 0, buf_string(wdata->buffer));
+    return FR_SUCCESS;
+  }
+
+  if (op != OP_EDITOR_COMPLETE)
     return FR_NO_ACTION;
 
   int rc = FR_SUCCESS;
