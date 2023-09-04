@@ -315,7 +315,7 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
   shared->rc = -1;
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, compose_config_observer, dlg);
-  notify_observer_add(e->notify, NT_ALL, compose_email_observer, shared);
+  notify_observer_add(e->notify, NT_ENVELOPE, compose_email_observer, shared);
   notify_observer_add(dlg->notify, NT_WINDOW, compose_window_observer, dlg);
 
   if (OptNewsSend)
