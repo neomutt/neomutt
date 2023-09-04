@@ -428,7 +428,7 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
   mutt_color_observer_add(pager_color_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pager_config_observer, win);
   notify_observer_add(NeoMutt->notify, NT_GLOBAL, pager_global_observer, win);
-  notify_observer_add(shared->notify, NT_ALL, pager_index_observer, win);
+  notify_observer_add(shared->notify, NT_INDEX, pager_index_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
 
