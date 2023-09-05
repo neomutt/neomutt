@@ -30,7 +30,7 @@
 #include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
-#include "config/helpers.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "gui/lib.h"

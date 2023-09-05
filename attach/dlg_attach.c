@@ -83,7 +83,6 @@
 #include "hdrline.h"
 #include "hook.h"
 #include "keymap.h"
-#include "menu/type.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "mview.h"

@@ -41,7 +41,6 @@
 #include "data.h"
 #include "functions.h"
 #include "keymap.h"
-#include "menu/type.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
