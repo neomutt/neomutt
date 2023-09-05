@@ -43,6 +43,7 @@
 #include "recvattach.h"
 #include "browser/lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
@@ -302,7 +303,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   while (prompt)
   {
     struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-    if ((mw_get_field(prompt, buf, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
+    if ((mw_get_field(prompt, buf, MUTT_COMP_FILE | MUTT_COMP_CLEAR, HC_FILE,
                       &CompleteMailboxOps, &cdata) != 0) ||
         buf_is_empty(buf))
     {
@@ -485,7 +486,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
           struct FileCompletionData cdata = { false, NULL, NULL, NULL };
           if ((mw_get_field(_("Save to file: "), buf, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                            &CompleteMailboxOps, &cdata) != 0) ||
+                            HC_FILE, &CompleteMailboxOps, &cdata) != 0) ||
               buf_is_empty(buf))
           {
             goto cleanup;
@@ -732,7 +733,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   state.flags = STATE_CHARCONV;
 
   if (mw_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
-                   MUTT_COMP_FILE_SIMPLE, &CompleteFileOps, NULL) != 0)
+                   MUTT_COMP_FILE_SIMPLE, HC_COMMAND, &CompleteFileOps, NULL) != 0)
   {
     goto cleanup;
   }

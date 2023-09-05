@@ -39,6 +39,7 @@
 #include "functions.h"
 #include "lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"
@@ -190,7 +191,7 @@ static int op_main_limit(struct AliasMenuData *mdata, int op)
 static int op_query(struct AliasMenuData *mdata, int op)
 {
   struct Buffer *buf = mdata->query;
-  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     return FR_NO_ACTION;

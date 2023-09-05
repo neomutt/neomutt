@@ -48,6 +48,7 @@
 #include "lib.h"
 #include "browser/lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
@@ -395,7 +396,7 @@ void alias_create(struct AddressList *al, const struct ConfigSubset *sub)
 
 retry_name:
   /* L10N: prompt to add a new alias */
-  if ((mw_get_field(_("Alias as: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Alias as: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;
@@ -435,7 +436,7 @@ retry_name:
 
   do
   {
-    if ((mw_get_field(_("Address: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0) ||
+    if ((mw_get_field(_("Address: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       alias_free(&alias);
@@ -458,7 +459,7 @@ retry_name:
   else
     buf_reset(buf);
 
-  if (mw_get_field(_("Personal name: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0)
+  if (mw_get_field(_("Personal name: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
   {
     alias_free(&alias);
     goto done;
@@ -466,7 +467,7 @@ retry_name:
   buf_copy(TAILQ_FIRST(&alias->addr)->personal, buf);
 
   buf_reset(buf);
-  if (mw_get_field(_("Comment: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) == 0)
+  if (mw_get_field(_("Comment: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
     mutt_str_replace(&alias->comment, buf_string(buf));
   }
@@ -497,7 +498,7 @@ retry_name:
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
   if (mw_get_field(_("Save to file: "), buf, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                   &CompleteMailboxOps, &cdata) != 0)
+                   HC_FILE, &CompleteMailboxOps, &cdata) != 0)
   {
     goto done;
   }

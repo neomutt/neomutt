@@ -49,6 +49,7 @@ struct EnterWindowData
   int col;                        ///< Initial cursor positions
   CompletionFlags flags;          ///< Flags, see #CompletionFlags
   struct EnterState *state;       ///< Current state of text entry
+  enum HistoryClass hclass;       ///< History to use, e.g. #HC_COMMAND
   const struct CompleteOps *comp_api; ///< Auto-Completion API
   void *cdata;                    ///< Auto-Completion private data
 
@@ -56,7 +57,6 @@ struct EnterWindowData
   enum EnterRedrawFlags redraw;   ///< What needs redrawing? See #EnterRedrawFlags
   bool pass;                      ///< Password mode, conceal characters
   bool first;                     ///< First time through, no input yet
-  enum HistoryClass hclass;       ///< History to use, e.g. #HC_COMMAND
   wchar_t *tempbuf;               ///< Buffer used by completion
   size_t templen;                 ///< Length of complete buffer
   mbstate_t *mbstate;             ///< Multi-byte state

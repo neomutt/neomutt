@@ -42,6 +42,7 @@
 #include "recvcmd.h"
 #include "attach/lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"
@@ -205,7 +206,8 @@ void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
   else
     buf_strcpy(prompt, _("Bounce tagged messages to: "));
 
-  if ((mw_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, &CompleteAliasOps, NULL) != 0) ||
+  if ((mw_get_field(buf_string(prompt), buf, MUTT_COMP_ALIAS, HC_ALIAS,
+                    &CompleteAliasOps, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;

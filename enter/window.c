@@ -187,7 +187,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  * See #OpEditor for a list of functions.
  */
 int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
-                 const struct CompleteOps *comp_api, void *cdata)
+                 enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata)
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
@@ -226,8 +226,8 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
     mbstate_t mbstate = { 0 };
 
     // clang-format off
-    struct EnterWindowData wdata = { buf, col, complete, es, comp_api, cdata,
-      ENTER_REDRAW_NONE, (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false, NULL };
+    struct EnterWindowData wdata = { buf, col, complete, es, hclass, comp_api, cdata,
+      ENTER_REDRAW_NONE, (complete & MUTT_COMP_PASS), true, NULL, 0, &mbstate, 0, false, NULL };
     // clang-format on
     win->wdata = &wdata;
 
@@ -244,21 +244,6 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
       wdata.redraw = ENTER_REDRAW_LINE;
       wdata.first = false;
     }
-
-    if (wdata.flags & MUTT_COMP_FILE)
-      wdata.hclass = HC_FILE;
-    else if (wdata.flags & MUTT_COMP_FILE_MBOX)
-      wdata.hclass = HC_MBOX;
-    else if (wdata.flags & MUTT_COMP_FILE_SIMPLE)
-      wdata.hclass = HC_CMD;
-    else if (wdata.flags & MUTT_COMP_ALIAS)
-      wdata.hclass = HC_ALIAS;
-    else if (wdata.flags & MUTT_COMP_COMMAND)
-      wdata.hclass = HC_COMMAND;
-    else if (wdata.flags & MUTT_COMP_PATTERN)
-      wdata.hclass = HC_PATTERN;
-    else
-      wdata.hclass = HC_OTHER;
 
     do
     {
