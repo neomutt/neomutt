@@ -32,6 +32,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "complete/lib.h"
@@ -49,11 +50,13 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
   if (!wdata)
     return FR_NO_ACTION;
 
+  struct FileCompletionData *cdata = wdata->cdata;
+
   if (op == OP_EDITOR_MAILBOX_CYCLE)
   {
     wdata->first = true; /* clear input if user types a real key later */
     buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-    mutt_mailbox_next(wdata->m, wdata->buffer);
+    mutt_mailbox_next(cdata->mailbox, wdata->buffer);
 
     wdata->state->curpos = wdata->state->lastchar = mutt_mb_mbstowcs(
         &wdata->state->wbuf, &wdata->state->wbuflen, 0, buf_string(wdata->buffer));
@@ -74,8 +77,8 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
   {
     dlg_browser(wdata->buffer,
                 ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
-                    (wdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
-                wdata->m, wdata->files, wdata->numfiles);
+                    (cdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
+                cdata->mailbox, cdata->files, cdata->numfiles);
     if (!buf_is_empty(wdata->buffer))
     {
       buf_pretty_mailbox(wdata->buffer);
@@ -122,7 +125,7 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
       (memcmp(wdata->tempbuf, wdata->state->wbuf + i,
               (wdata->state->lastchar - i) * sizeof(wchar_t)) == 0))
   {
-    dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, wdata->m, NULL, NULL);
+    dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, NULL, NULL, NULL);
     if (buf_is_empty(wdata->buffer))
       replace_part(wdata->state, i, buf_string(wdata->buffer));
     return FR_CONTINUE;

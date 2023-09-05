@@ -131,14 +131,18 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
     if (!wdata->pass)
       mutt_hist_add(wdata->hclass, buf_string(wdata->buffer), true);
 
-    if (wdata->multiple)
+    if (wdata->cdata)
     {
-      char **tfiles = NULL;
-      *wdata->numfiles = 1;
-      tfiles = mutt_mem_calloc(*wdata->numfiles, sizeof(char *));
-      buf_expand_path_regex(wdata->buffer, false);
-      tfiles[0] = buf_strdup(wdata->buffer);
-      *wdata->files = tfiles;
+      struct FileCompletionData *cdata = wdata->cdata;
+      if (cdata->multiple)
+      {
+        char **tfiles = NULL;
+        *cdata->numfiles = 1;
+        tfiles = mutt_mem_calloc(*cdata->numfiles, sizeof(char *));
+        buf_expand_path_regex(wdata->buffer, false);
+        tfiles[0] = buf_strdup(wdata->buffer);
+        *cdata->files = tfiles;
+      }
     }
     return true;
   }

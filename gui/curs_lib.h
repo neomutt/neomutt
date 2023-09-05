@@ -42,6 +42,17 @@ enum FormatJustify
   JUSTIFY_RIGHT = 1,  ///< Right justify the text
 };
 
+/**
+ * struct FileCompletionData - Input for the file completion function
+ */
+struct FileCompletionData
+{
+  bool            multiple; ///< Allow multiple selections
+  struct Mailbox *mailbox;  ///< Mailbox
+  char         ***files;    ///< List of files selected
+  int            *numfiles; ///< Number of files selected
+};
+
 int          mutt_addwch(struct MuttWindow *win, wchar_t wc);
 int          mutt_any_key_to_continue(const char *s);
 void         mutt_beep(bool force);

@@ -97,8 +97,9 @@ static int op_browser_new_file(struct BrowserPrivateData *priv, int op)
   struct Buffer *buf = buf_pool_get();
   buf_printf(buf, "%s/", buf_string(&LastDir));
 
+  struct FileCompletionData cdata = { false, priv->mailbox, NULL, NULL };
   const int rc = mw_get_field(_("New file name: "), buf, MUTT_COMP_FILE, false,
-                              NULL, NULL, NULL, &CompleteMailboxOps, NULL);
+                              NULL, NULL, NULL, &CompleteMailboxOps, &cdata);
   if (rc != 0)
   {
     buf_pool_release(&buf);
@@ -311,8 +312,9 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
 
   if (op == OP_CHANGE_DIRECTORY)
   {
+    struct FileCompletionData cdata = { false, priv->mailbox, NULL, NULL };
     int rc = mw_get_field(_("Chdir to: "), buf, MUTT_COMP_FILE, false, NULL,
-                          NULL, NULL, &CompleteMailboxOps, NULL);
+                          NULL, NULL, &CompleteMailboxOps, &cdata);
     if ((rc != 0) && buf_is_empty(buf))
     {
       buf_pool_release(&buf);
