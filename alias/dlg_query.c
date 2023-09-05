@@ -547,8 +547,7 @@ void query_index(struct Mailbox *m, struct ConfigSubset *sub)
   mdata.search_state = search_state_new();
 
   struct Buffer *buf = buf_pool_get();
-  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL,
-                    NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;

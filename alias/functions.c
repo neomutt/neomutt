@@ -190,8 +190,7 @@ static int op_main_limit(struct AliasMenuData *mdata, int op)
 static int op_query(struct AliasMenuData *mdata, int op)
 {
   struct Buffer *buf = mdata->query;
-  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL,
-                    NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field(_("Query: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0) ||
       buf_is_empty(buf))
   {
     return FR_NO_ACTION;

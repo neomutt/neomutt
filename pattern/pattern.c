@@ -196,8 +196,8 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
   buf_strcpy(buf, mdata->limit);
   if (prompt)
   {
-    if ((mw_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
-                      NULL, NULL, NULL, &CompletePatternOps, NULL) != 0) ||
+    if ((mw_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR,
+                      &CompletePatternOps, NULL) != 0) ||
         buf_is_empty(buf))
     {
       buf_pool_release(&buf);
@@ -302,8 +302,8 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   buf_strcpy(buf, NONULL(mv->pattern));
   if (prompt || (op != MUTT_LIMIT))
   {
-    if ((mw_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR, false,
-                      NULL, NULL, NULL, &CompletePatternOps, NULL) != 0) ||
+    if ((mw_get_field(prompt, buf, MUTT_COMP_PATTERN | MUTT_COMP_CLEAR,
+                      &CompletePatternOps, NULL) != 0) ||
         buf_is_empty(buf))
     {
       buf_pool_release(&buf);
@@ -451,8 +451,8 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
   if (buf_is_empty(state->string) || (flags & SEARCH_PROMPT))
   {
     if ((mw_get_field((state->reverse) ? _("Reverse search for: ") : _("Search for: "),
-                      state->string, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
-                      NULL, NULL, NULL, &CompletePatternOps, NULL) != 0) ||
+                      state->string, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN,
+                      &CompletePatternOps, NULL) != 0) ||
         buf_is_empty(state->string))
     {
       goto done;
@@ -606,8 +606,8 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
   if (buf_is_empty(state->string) || flags & SEARCH_PROMPT)
   {
     if ((mw_get_field((flags & OP_SEARCH_REVERSE) ? _("Reverse search for: ") : _("Search for: "),
-                      state->string, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, false,
-                      NULL, NULL, NULL, &CompletePatternOps, NULL) != 0) ||
+                      state->string, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN,
+                      &CompletePatternOps, NULL) != 0) ||
         buf_is_empty(state->string))
     {
       goto done;

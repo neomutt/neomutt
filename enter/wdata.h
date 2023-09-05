@@ -48,10 +48,6 @@ struct EnterWindowData
   struct Buffer *buffer;          ///< struct Buffer for the result
   int col;                        ///< Initial cursor positions
   CompletionFlags flags;          ///< Flags, see #CompletionFlags
-  bool multiple;                  ///< Allow multiple matches
-  struct Mailbox *m;              ///< Mailbox
-  char ***files;                  ///< List of files selected
-  int *numfiles;                  ///< Number of files selected
   struct EnterState *state;       ///< Current state of text entry
   const struct CompleteOps *comp_api; ///< Auto-Completion API
   void *cdata;                    ///< Auto-Completion private data

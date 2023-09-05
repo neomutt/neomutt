@@ -2191,7 +2191,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
   if (tags)
     buf_strcpy(buf, tags);
 
-  if (mw_get_field("Tags: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL, NULL, NULL) != 0)
+  if (mw_get_field("Tags: ", buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0)
     return -1;
 
   /* each keyword must be atom defined by rfc822 as:

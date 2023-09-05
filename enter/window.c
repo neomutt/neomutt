@@ -173,10 +173,6 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  * @param[in]  field    Prompt
  * @param[in]  buf      Buffer for the result
  * @param[in]  complete Flags, see #CompletionFlags
- * @param[in]  multiple Allow multiple selections
- * @param[in]  m        Mailbox
- * @param[out] files    List of files selected
- * @param[out] numfiles Number of files selected
  * @param[in]  comp_api Auto-completion API
  * @param[in]  cdata    Auto-completion private data
  * @retval 0  Selection made
@@ -191,7 +187,6 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  * See #OpEditor for a list of functions.
  */
 int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
-                 bool multiple, struct Mailbox *m, char ***files, int *numfiles,
                  const struct CompleteOps *comp_api, void *cdata)
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
@@ -231,7 +226,7 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
     mbstate_t mbstate = { 0 };
 
     // clang-format off
-    struct EnterWindowData wdata = { buf, col, complete, multiple, m, files, numfiles, es, comp_api, cdata,
+    struct EnterWindowData wdata = { buf, col, complete, es, comp_api, cdata,
       ENTER_REDRAW_NONE, (complete & MUTT_COMP_PASS), true, 0, NULL, 0, &mbstate, 0, false, NULL };
     // clang-format on
     win->wdata = &wdata;

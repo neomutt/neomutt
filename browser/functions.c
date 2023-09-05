@@ -98,8 +98,8 @@ static int op_browser_new_file(struct BrowserPrivateData *priv, int op)
   buf_printf(buf, "%s/", buf_string(&LastDir));
 
   struct FileCompletionData cdata = { false, priv->mailbox, NULL, NULL };
-  const int rc = mw_get_field(_("New file name: "), buf, MUTT_COMP_FILE, false,
-                              NULL, NULL, NULL, &CompleteMailboxOps, &cdata);
+  const int rc = mw_get_field(_("New file name: "), buf, MUTT_COMP_FILE,
+                              &CompleteMailboxOps, &cdata);
   if (rc != 0)
   {
     buf_pool_release(&buf);
@@ -313,8 +313,7 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
   if (op == OP_CHANGE_DIRECTORY)
   {
     struct FileCompletionData cdata = { false, priv->mailbox, NULL, NULL };
-    int rc = mw_get_field(_("Chdir to: "), buf, MUTT_COMP_FILE, false, NULL,
-                          NULL, NULL, &CompleteMailboxOps, &cdata);
+    int rc = mw_get_field(_("Chdir to: "), buf, MUTT_COMP_FILE, &CompleteMailboxOps, &cdata);
     if ((rc != 0) && buf_is_empty(buf))
     {
       buf_pool_release(&buf);
@@ -493,8 +492,7 @@ static int op_enter_mask(struct BrowserPrivateData *priv, int op)
   const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
   struct Buffer *buf = buf_pool_get();
   buf_strcpy(buf, c_mask ? c_mask->pattern : NULL);
-  if (mw_get_field(_("File Mask: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL,
-                   NULL, NULL, NULL) != 0)
+  if (mw_get_field(_("File Mask: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) != 0)
   {
     buf_pool_release(&buf);
     return FR_NO_ACTION;
@@ -942,8 +940,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op)
   else
     snprintf(tmp2, sizeof(tmp2), _("Unsubscribe pattern: "));
   /* buf comes from the buffer pool, so defaults to size 1024 */
-  if ((mw_get_field(tmp2, buf, MUTT_COMP_PATTERN, false, NULL, NULL, NULL,
-                    &CompletePatternOps, NULL) != 0) ||
+  if ((mw_get_field(tmp2, buf, MUTT_COMP_PATTERN, &CompletePatternOps, NULL) != 0) ||
       buf_is_empty(buf))
   {
     buf_pool_release(&buf);

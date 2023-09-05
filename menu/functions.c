@@ -68,7 +68,7 @@ static int search(struct Menu *menu, int op)
   {
     buf_strcpy(buf, search_buf && (search_buf[0] != '\0') ? search_buf : "");
     if ((mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-                      buf, MUTT_COMP_CLEAR, false, NULL, NULL, NULL, NULL, NULL) != 0) ||
+                      buf, MUTT_COMP_CLEAR, NULL, NULL) != 0) ||
         buf_is_empty(buf))
     {
       goto done;
@@ -251,8 +251,7 @@ static int op_jump(struct Menu *menu, int op)
   }
 
   struct Buffer *buf = buf_pool_get();
-  if ((mw_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL,
-                    NULL, NULL, NULL) == 0) &&
+  if ((mw_get_field(_("Jump to: "), buf, MUTT_COMP_NO_FLAGS, NULL, NULL) == 0) &&
       !buf_is_empty(buf))
   {
     int n = 0;
