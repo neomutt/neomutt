@@ -34,10 +34,10 @@ jobs:
       id: cpu-cores
 
     - name: Checkout Code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Checkout Test Files
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: neomutt/neomutt-test-files
         path: test-files
