@@ -53,7 +53,7 @@ void           buf_seek            (struct Buffer *buf, size_t offset);
 const char*    buf_find_string     (struct Buffer *buf, const char *s);
 const char*    buf_find_char       (struct Buffer *buf, const char c);
 char           buf_at              (struct Buffer *buf, size_t offset);
-bool           buf_str_equal       (struct Buffer *a, struct Buffer *b);
+bool           buf_str_equal       (const struct Buffer *a, const struct Buffer *b);
 bool           buf_istr_equal      (struct Buffer *a, struct Buffer *b);
 int            buf_coll            (struct Buffer *a, struct Buffer *b);
 size_t         buf_startswith      (struct Buffer *buf, const char *prefix);

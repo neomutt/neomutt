@@ -650,7 +650,7 @@ char buf_at(struct Buffer *buf, size_t offset)
  * @retval true  Strings are equal
  * @retval false String are not equal
  */
-bool buf_str_equal(struct Buffer *a, struct Buffer *b)
+bool buf_str_equal(const struct Buffer *a, const struct Buffer *b)
 {
   return mutt_str_equal(buf_string(a), buf_string(b));
 }
