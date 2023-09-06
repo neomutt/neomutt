@@ -50,13 +50,13 @@ void           buf_reset           (struct Buffer *buf);
 char *         buf_strdup          (const struct Buffer *buf);
 struct Buffer *buf_dup             (const struct Buffer *buf);
 void           buf_seek            (struct Buffer *buf, size_t offset);
-const char*    buf_find_string     (struct Buffer *buf, const char *s);
-const char*    buf_find_char       (struct Buffer *buf, const char c);
-char           buf_at              (struct Buffer *buf, size_t offset);
+const char*    buf_find_string     (const struct Buffer *buf, const char *s);
+const char*    buf_find_char       (const struct Buffer *buf, const char c);
+char           buf_at              (const struct Buffer *buf, size_t offset);
 bool           buf_str_equal       (const struct Buffer *a, const struct Buffer *b);
-bool           buf_istr_equal      (struct Buffer *a, struct Buffer *b);
-int            buf_coll            (struct Buffer *a, struct Buffer *b);
-size_t         buf_startswith      (struct Buffer *buf, const char *prefix);
+bool           buf_istr_equal      (const struct Buffer *a, const struct Buffer *b);
+int            buf_coll            (const struct Buffer *a, const struct Buffer *b);
+size_t         buf_startswith      (const struct Buffer *buf, const char *prefix);
 
 // Functions that APPEND to a Buffer
 size_t         buf_addch           (struct Buffer *buf, char c);

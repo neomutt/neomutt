@@ -605,7 +605,7 @@ void buf_seek(struct Buffer *buf, size_t offset)
  * @retval NULL substring not found
  * @retval n    Pointer to the beginning of the found substring
  */
-const char *buf_find_string(struct Buffer *buf, const char *s)
+const char *buf_find_string(const struct Buffer *buf, const char *s)
 {
   if (!buf || !s)
     return NULL;
@@ -620,7 +620,7 @@ const char *buf_find_string(struct Buffer *buf, const char *s)
  * @retval NULL char not found
  * @retval ptr  Pointer to the found char
  */
-const char *buf_find_char(struct Buffer *buf, const char c)
+const char *buf_find_char(const struct Buffer *buf, const char c)
 {
   if (!buf)
     return NULL;
@@ -635,7 +635,7 @@ const char *buf_find_char(struct Buffer *buf, const char c)
  * @retval NUL Offset out of bounds
  * @return n   The char at the offset
  */
-char buf_at(struct Buffer *buf, size_t offset)
+char buf_at(const struct Buffer *buf, size_t offset)
 {
   if (!buf || (offset > buf_len(buf)))
     return '\0';
@@ -662,7 +662,7 @@ bool buf_str_equal(const struct Buffer *a, const struct Buffer *b)
  * @retval true  Strings are equal
  * @retval false String are not equal
  */
-bool buf_istr_equal(struct Buffer *a, struct Buffer *b)
+bool buf_istr_equal(const struct Buffer *a, const struct Buffer *b)
 {
   return mutt_istr_equal(buf_string(a), buf_string(b));
 }
@@ -674,7 +674,7 @@ bool buf_istr_equal(struct Buffer *a, struct Buffer *b)
  * @retval num Length of prefix if str starts with prefix
  * @retval 0   str does not start with prefix
  */
-size_t buf_startswith(struct Buffer *buf, const char *prefix)
+size_t buf_startswith(const struct Buffer *buf, const char *prefix)
 {
   return mutt_str_startswith(buf_string(buf), prefix);
 }
@@ -687,7 +687,7 @@ size_t buf_startswith(struct Buffer *buf, const char *prefix)
  * @retval  0 a and b are identical
  * @retval >0 b precedes a
  */
-int buf_coll(struct Buffer *a, struct Buffer *b)
+int buf_coll(const struct Buffer *a, const struct Buffer *b)
 {
   return mutt_str_coll(buf_string(a), buf_string(b));
 }
