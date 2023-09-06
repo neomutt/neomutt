@@ -119,7 +119,7 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
   mutt_addrlist_write(al, new_list, false);
   buf_fix_dptr(new_list);
   buf_copy(old_list, new_list);
-  if (mw_get_field(_(Prompts[field]), new_list, MUTT_COMP_ALIAS, HC_ALIAS,
+  if (mw_get_field(_(Prompts[field]), new_list, MUTT_COMP_NO_FLAGS, HC_ALIAS,
                    &CompleteAliasOps, NULL) == 0)
   {
     mutt_addrlist_clear(al);
@@ -231,8 +231,8 @@ static int op_envelope_edit_fcc(struct EnvelopeWindowData *wdata, int op)
   buf_copy(fname, wdata->fcc);
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-  if (mw_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                   HC_FILE, &CompleteMailboxOps, &cdata) != 0)
+  if (mw_get_field(Prompts[HDR_FCC], fname, MUTT_COMP_CLEAR, HC_FILE,
+                   &CompleteMailboxOps, &cdata) != 0)
   {
     goto done; // aborted
   }

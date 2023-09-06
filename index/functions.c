@@ -2732,7 +2732,7 @@ static int op_main_vfolder_from_query(struct IndexSharedData *shared,
   int rc = FR_SUCCESS;
   struct Buffer *buf = buf_pool_get();
 
-  if ((mw_get_field("Query: ", buf, MUTT_COMP_NM_QUERY, HC_OTHER,
+  if ((mw_get_field("Query: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER,
                     &CompleteNmQueryOps, NULL) != 0) ||
       buf_is_empty(buf))
   {

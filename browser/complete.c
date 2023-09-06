@@ -33,7 +33,6 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "lib.h"
 #include "complete/lib.h"
 #include "enter/lib.h"
@@ -75,10 +74,13 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
        (memcmp(wdata->tempbuf, wdata->state->wbuf,
                wdata->state->lastchar * sizeof(wchar_t)) == 0)))
   {
-    dlg_browser(wdata->buffer,
-                ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
-                    (cdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
-                cdata->mailbox, cdata->files, cdata->numfiles);
+    SelectFileFlags flags = MUTT_SEL_NO_FLAGS;
+    if (wdata->hclass == HC_MBOX)
+      flags |= MUTT_SEL_FOLDER;
+    if (cdata->multiple)
+      flags |= MUTT_SEL_MULTI;
+
+    dlg_browser(wdata->buffer, flags, cdata->mailbox, cdata->files, cdata->numfiles);
     if (!buf_is_empty(wdata->buffer))
     {
       buf_pretty_mailbox(wdata->buffer);

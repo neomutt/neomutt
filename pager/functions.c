@@ -314,8 +314,7 @@ static int op_pager_search(struct IndexSharedData *shared,
 
   buf_strcpy(buf, priv->search_str);
   if (mw_get_field(((op == OP_SEARCH) || (op == OP_SEARCH_NEXT)) ? _("Search for: ") : _("Reverse search for: "),
-                   buf, MUTT_COMP_CLEAR | MUTT_COMP_PATTERN, HC_PATTERN,
-                   &CompletePatternOps, NULL) != 0)
+                   buf, MUTT_COMP_CLEAR, HC_PATTERN, &CompletePatternOps, NULL) != 0)
   {
     goto done;
   }

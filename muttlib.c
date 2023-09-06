@@ -624,7 +624,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     struct Buffer *tmp = buf_pool_get();
     buf_strcpy(tmp, mutt_path_basename(NONULL(attname)));
     struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-    if ((mw_get_field(_("File under directory: "), tmp, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
+    if ((mw_get_field(_("File under directory: "), tmp, MUTT_COMP_CLEAR,
                       HC_FILE, &CompleteMailboxOps, &cdata) != 0) ||
         buf_is_empty(tmp))
     {

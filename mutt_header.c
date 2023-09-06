@@ -144,7 +144,7 @@ int mutt_label_message(struct MailboxView *mv, struct EmailArray *ea)
       buf_strcpy(buf, e->env->x_label);
   }
 
-  if (mw_get_field("Label: ", buf, MUTT_COMP_LABEL, HC_OTHER, &CompleteLabelOps, NULL) != 0)
+  if (mw_get_field("Label: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, &CompleteLabelOps, NULL) != 0)
   {
     goto done;
   }

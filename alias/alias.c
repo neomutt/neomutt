@@ -497,8 +497,8 @@ retry_name:
   buf_strcpy(buf, c_alias_file);
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-  if (mw_get_field(_("Save to file: "), buf, MUTT_COMP_FILE | MUTT_COMP_CLEAR,
-                   HC_FILE, &CompleteMailboxOps, &cdata) != 0)
+  if (mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
+                   &CompleteMailboxOps, &cdata) != 0)
   {
     goto done;
   }

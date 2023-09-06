@@ -51,20 +51,11 @@
 
 extern bool StartupComplete;
 
-typedef uint16_t CompletionFlags;       ///< Flags for mutt_enter_string_full(), e.g. #MUTT_COMP_ALIAS
-#define MUTT_COMP_NO_FLAGS          0   ///< No flags are set
-#define MUTT_COMP_ALIAS       (1 << 0)  ///< Alias completion (in alias dialog)
-#define MUTT_COMP_COMMAND     (1 << 1)  ///< Complete a NeoMutt command
-#define MUTT_COMP_FILE        (1 << 2)  ///< File completion (in browser)
-#define MUTT_COMP_FILE_MBOX   (1 << 3)  ///< File completion, plus incoming folders (in browser)
-#define MUTT_COMP_FILE_SIMPLE (1 << 4)  ///< File completion (no browser)
-#define MUTT_COMP_LABEL       (1 << 5)  ///< Label completion
-#define MUTT_COMP_NM_QUERY    (1 << 6)  ///< Notmuch query mode
-#define MUTT_COMP_NM_TAG      (1 << 7)  ///< Notmuch tag +/- mode
-#define MUTT_COMP_PATTERN     (1 << 8)  ///< Pattern mode (in pattern dialog)
-#define MUTT_COMP_CLEAR       (1 << 9)  ///< Clear input if printable character is pressed
-#define MUTT_COMP_PASS        (1 << 10) ///< Password mode (no echo)
-#define MUTT_COMP_UNBUFFERED  (1 << 11) ///< Ignore macro buffer
+typedef uint8_t CompletionFlags;       ///< Flags for mutt_enter_string_full(), e.g. #MUTT_COMP_NO_FLAGS
+#define MUTT_COMP_NO_FLAGS          0  ///< No flags are set
+#define MUTT_COMP_CLEAR       (1 << 0) ///< Clear input if printable character is pressed
+#define MUTT_COMP_PASS        (1 << 1) ///< Password mode (no echo)
+#define MUTT_COMP_UNBUFFERED  (1 << 2) ///< Ignore macro buffer
 
 /**
  * enum MessageType - To set flags or match patterns

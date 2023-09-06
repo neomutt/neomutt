@@ -1309,7 +1309,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
   struct AttachPtr *ap = NULL;
 
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
-  if ((mw_get_field(_("New file: "), fname, MUTT_COMP_FILE, HC_FILE,
+  if ((mw_get_field(_("New file: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
                     &CompleteMailboxOps, &cdata) != 0) ||
       buf_is_empty(fname))
   {
@@ -1421,8 +1421,8 @@ static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int
   struct Buffer *fname = buf_pool_get();
   buf_strcpy(fname, mutt_path_basename(NONULL(src)));
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
-  int rc = mw_get_field(_("Send attachment with name: "), fname, MUTT_COMP_FILE,
-                        HC_FILE, &CompleteMailboxOps, &cdata);
+  int rc = mw_get_field(_("Send attachment with name: "), fname,
+                        MUTT_COMP_NO_FLAGS, HC_FILE, &CompleteMailboxOps, &cdata);
   if (rc == 0)
   {
     // It's valid to set an empty string here, to erase what was set
@@ -1754,7 +1754,7 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
   buf_strcpy(fname, cur_att->body->filename);
   buf_pretty_mailbox(fname);
   struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
-  if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_FILE, HC_FILE,
+  if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
                     &CompleteMailboxOps, &cdata) == 0) &&
       !buf_is_empty(fname))
   {
