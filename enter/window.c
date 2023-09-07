@@ -170,8 +170,9 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 
 /**
  * mw_get_field - Ask the user for a string - @ingroup gui_mw
- * @param[in]  field    Prompt
+ * @param[in]  prompt   Prompt
  * @param[in]  buf      Buffer for the result
+ * @param[in]  hclass   History class to use
  * @param[in]  complete Flags, see #CompletionFlags
  * @param[in]  comp_api Auto-completion API
  * @param[in]  cdata    Auto-completion private data
@@ -186,7 +187,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
  * It also supports readline style text editing.
  * See #OpEditor for a list of functions.
  */
-int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete,
+int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complete,
                  enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata)
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
@@ -204,9 +205,6 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
 
   struct EnterState *es = enter_state_new();
 
-  const struct Mapping *old_help = win->help_data;
-  int old_menu = win->help_menu;
-
   win->help_data = EditorHelp;
   win->help_menu = MENU_EDITOR;
   struct MuttWindow *old_focus = window_set_focus(win);
@@ -217,7 +215,7 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
   {
     mutt_window_clearline(win, 0);
     mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
-    mutt_window_addstr(win, field);
+    mutt_window_addstr(win, prompt);
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_refresh();
     mutt_window_get_coords(win, &col, NULL);
@@ -359,8 +357,6 @@ int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete
 
   msgcont_pop_window();
 
-  win->help_data = old_help;
-  win->help_menu = old_menu;
   mutt_window_move(win, 0, 0);
   mutt_window_clearline(win, 0);
   window_set_focus(old_focus);

@@ -49,6 +49,7 @@
 #include "color/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
+#include "pattern/lib.h"
 #include "display.h"
 #include "functions.h"
 #include "globals.h" // IWYU pragma: keep
@@ -58,7 +59,6 @@
 #include "mview.h"
 #include "mx.h"
 #include "opcodes.h"
-#include "pattern/lib.h"
 #include "private_data.h"
 #include "protos.h"
 #include "status.h"

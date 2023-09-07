@@ -73,17 +73,17 @@ NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
 		opcodes.o recvcmd.o rfc3676.o score.o sort.o status.o \
 		subjectrx.o system.o version.o
 
+@if USE_INOTIFY
+NEOMUTTOBJS+=	monitor.o
+@endif
+@if USE_LUA
+NEOMUTTOBJS+=	mutt_lua.o
+@endif
 @if !HAVE_TIMEGM
 NEOMUTTOBJS+=	timegm.o
 @endif
 @if !HAVE_WCSCASECMP
 NEOMUTTOBJS+=	wcscasecmp.o
-@endif
-@if USE_LUA
-NEOMUTTOBJS+=	mutt_lua.o
-@endif
-@if USE_INOTIFY
-NEOMUTTOBJS+=	monitor.o
 @endif
 
 CLEANFILES+=	$(NEOMUTT) $(NEOMUTTOBJS)
@@ -137,9 +137,9 @@ $(PWD)/attach:
 # libautocrypt
 @if USE_AUTOCRYPT
 LIBAUTOCRYPT=	libautocrypt.a
-LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/dlg_autocrypt.o \
-		 autocrypt/config.o autocrypt/db.o autocrypt/functions.o \
-		 autocrypt/gpgme.o autocrypt/schema.o
+LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/config.o autocrypt/db.o \
+		autocrypt/dlg_autocrypt.o autocrypt/functions.o \
+		autocrypt/gpgme.o autocrypt/schema.o
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
 ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
 
@@ -265,10 +265,10 @@ $(PWD)/compress:
 # libconfig
 LIBCONFIG=	libconfig.a
 LIBCONFIGOBJS=	config/bool.o config/charset.o config/dump.o config/enum.o \
-		config/helpers.o config/long.o config/mbtable.o \
-		config/myvar.o config/number.o config/path.o \
-		config/quad.o config/regex.o config/set.o config/slist.o \
-		config/sort.o config/string.o config/subset.o
+		config/helpers.o config/long.o config/mbtable.o config/myvar.o \
+		config/number.o config/path.o config/quad.o config/regex.o \
+		config/set.o config/slist.o config/sort.o config/string.o \
+		config/subset.o
 CLEANFILES+=	$(LIBCONFIG) $(LIBCONFIGOBJS)
 ALLOBJS+=	$(LIBCONFIGOBJS)
 
@@ -314,7 +314,7 @@ $(PWD)/conn:
 ###############################################################################
 # libconvert
 LIBCONVERT=	libconvert.a
-LIBCONVERTOBJS=convert/convert.o convert/content_info.o
+LIBCONVERTOBJS=	convert/content_info.o convert/convert.o
 CLEANFILES+=	$(LIBCONVERT) $(LIBCONVERTOBJS)
 ALLOBJS+=	$(LIBCONVERTOBJS)
 
@@ -327,7 +327,7 @@ $(PWD)/convert:
 ###############################################################################
 # libcore
 LIBCORE=	libcore.a
-LIBCOREOBJS=	core/account.o core/config_cache.o core/command.o \
+LIBCOREOBJS=	core/account.o core/command.o core/config_cache.o \
 		core/dispatcher.o core/mailbox.o core/message.o core/neomutt.o \
 		core/tmp.o
 CLEANFILES+=	$(LIBCORE) $(LIBCOREOBJS)
@@ -378,10 +378,10 @@ $(PWD)/debug:
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/body.o email/email.o email/envelope.o \
-		email/from.o email/globals.o email/mime.o email/parameter.o \
-		email/parse.o email/rfc2047.o email/rfc2231.o email/tags.o \
-		email/thread.o email/url.o
+LIBEMAILOBJS=	email/body.o email/email.o email/envelope.o email/from.o \
+		email/globals.o email/mime.o email/parameter.o email/parse.o \
+		email/rfc2047.o email/rfc2231.o email/tags.o email/thread.o \
+		email/url.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 ALLOBJS+=	$(LIBEMAILOBJS)
 
@@ -407,7 +407,7 @@ $(PWD)/enter:
 ###############################################################################
 # libenvelope
 LIBENVELOPE=	libenvelope.a
-LIBENVELOPEOBJS= envelope/functions.o envelope/wdata.o envelope/window.o
+LIBENVELOPEOBJS=envelope/functions.o envelope/wdata.o envelope/window.o
 CLEANFILES+=	$(LIBENVELOPE) $(LIBENVELOPEOBJS)
 ALLOBJS+=	$(LIBENVELOPEOBJS)
 
@@ -479,11 +479,10 @@ $(PWD)/history:
 ###############################################################################
 # libimap
 LIBIMAP=	libimap.a
-LIBIMAPOBJS=	imap/auth.o imap/auth_login.o imap/auth_oauth.o \
+LIBIMAPOBJS=	imap/adata.o imap/auth.o imap/auth_login.o imap/auth_oauth.o \
 		imap/auth_plain.o imap/browse.o imap/command.o imap/config.o \
-		imap/imap.o imap/message.o imap/msg_set.o imap/msn.o \
-		imap/search.o imap/adata.o imap/edata.o imap/mdata.o \
-		imap/utf7.o imap/util.o
+		imap/edata.o imap/imap.o imap/mdata.o imap/message.o \
+		imap/msg_set.o imap/msn.o imap/search.o imap/utf7.o imap/util.o
 @if USE_GSS
 LIBIMAPOBJS+=	imap/auth_gss.o
 @endif
@@ -567,10 +566,9 @@ $(PWD)/menu:
 # libmixmaster
 @if MIXMASTER
 LIBMIXMASTER=	libmixmaster.a
-LIBMIXMASTEROBJS=	mixmaster/chain_data.o mixmaster/dlg_mixmaster.o \
+LIBMIXMASTEROBJS=mixmaster/chain_data.o mixmaster/dlg_mixmaster.o \
 		mixmaster/functions.o mixmaster/mixmaster.o \
-		mixmaster/remailer.o mixmaster/win_chain.o \
-		mixmaster/win_hosts.o
+		mixmaster/remailer.o mixmaster/win_chain.o mixmaster/win_hosts.o
 CLEANFILES+=	$(LIBMIXMASTER) $(LIBMIXMASTEROBJS)
 ALLOBJS+=	$(LIBMIXMASTEROBJS)
 
@@ -604,8 +602,8 @@ $(PWD)/mutt:
 ###############################################################################
 # libncrypt
 LIBNCRYPT=	libncrypt.a
-LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/cryptglue.o \
-		ncrypt/crypt_mod.o
+LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/crypt_mod.o \
+		ncrypt/cryptglue.o
 @if HAVE_PKG_GPGME
 LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o \
 		ncrypt/gpgme_functions.o ncrypt/crypt_mod_pgp_gpgme.o \
@@ -633,8 +631,8 @@ $(PWD)/ncrypt:
 ###############################################################################
 # libnntp
 LIBNNTP=	libnntp.a
-LIBNNTPOBJS=	nntp/browse.o nntp/config.o nntp/complete.o nntp/newsrc.o \
-		nntp/nntp.o nntp/adata.o nntp/edata.o nntp/mdata.o
+LIBNNTPOBJS=	nntp/adata.o nntp/browse.o nntp/complete.o nntp/config.o \
+		nntp/edata.o nntp/mdata.o nntp/newsrc.o nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 ALLOBJS+=	$(LIBNNTPOBJS)
 
@@ -648,9 +646,9 @@ $(PWD)/nntp:
 # libnotmuch
 @if USE_NOTMUCH
 LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/complete.o notmuch/config.o notmuch/db.o \
-		notmuch/notmuch.o notmuch/adata.o notmuch/edata.o \
-		notmuch/mdata.o notmuch/query.o notmuch/tag.o
+LIBNOTMUCHOBJS=	notmuch/adata.o notmuch/complete.o notmuch/config.o \
+		notmuch/db.o notmuch/edata.o notmuch/mdata.o notmuch/notmuch.o \
+		notmuch/query.o notmuch/tag.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)
 
@@ -692,7 +690,7 @@ $(PWD)/parse:
 ###############################################################################
 # libpattern
 LIBPATTERN=	libpattern.a
-LIBPATTERNOBJS=	pattern/complete.o pattern/compile.o pattern/config.o \
+LIBPATTERNOBJS=	pattern/compile.o pattern/complete.o pattern/config.o \
 		pattern/dlg_pattern.o pattern/exec.o pattern/flags.o \
 		pattern/functions.o pattern/message.o pattern/pattern.o \
 		pattern/search_state.o
@@ -708,8 +706,8 @@ $(PWD)/pattern:
 ###############################################################################
 # libpop
 LIBPOP=		libpop.a
-LIBPOPOBJS=	pop/auth.o pop/config.o pop/lib.o pop/pop.o \
-		pop/adata.o pop/edata.o
+LIBPOPOBJS=	pop/adata.o pop/auth.o pop/config.o pop/edata.o pop/lib.o \
+		pop/pop.o
 CLEANFILES+=	$(LIBPOP) $(LIBPOPOBJS)
 ALLOBJS+=	$(LIBPOPOBJS)
 
@@ -722,8 +720,7 @@ $(PWD)/pop:
 ###############################################################################
 # libpostpone
 LIBPOSTPONE=		libpostpone.a
-LIBPOSTPONEOBJS=	postpone/dlg_postpone.o postpone/functions.o \
-			postpone/postpone.o
+LIBPOSTPONEOBJS=postpone/dlg_postpone.o postpone/functions.o postpone/postpone.o
 CLEANFILES+=	$(LIBPOSTPONE) $(LIBPOSTPONEOBJS)
 ALLOBJS+=	$(LIBPOSTPONEOBJS)
 
@@ -736,7 +733,7 @@ $(PWD)/postpone:
 ###############################################################################
 # libprogress
 LIBPROGRESS=	libprogress.a
-LIBPROGRESSOBJS=	progress/progress.o progress/wdata.o progress/window.o
+LIBPROGRESSOBJS=progress/progress.o progress/wdata.o progress/window.o
 CLEANFILES+=	$(LIBPROGRESS) $(LIBPROGRESSOBJS)
 ALLOBJS+=	$(LIBPROGRESSOBJS)
 
@@ -777,8 +774,8 @@ $(PWD)/send:
 # libsidebar
 @if USE_SIDEBAR
 LIBSIDEBAR=	libsidebar.a
-LIBSIDEBAROBJS=	sidebar/config.o sidebar/sidebar.o sidebar/commands.o \
-		sidebar/functions.o sidebar/observer.o sidebar/sort.o \
+LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/functions.o \
+		sidebar/observer.o sidebar/sidebar.o sidebar/sort.o \
 		sidebar/wdata.o sidebar/window.o
 CLEANFILES+=	$(LIBSIDEBAR) $(LIBSIDEBAROBJS)
 ALLOBJS+=	$(LIBSIDEBAROBJS)

@@ -188,8 +188,8 @@ int mw_multi_choice(const char *prompt, const char *letters)
 
 /**
  * query_yesorno - Ask the user a Yes/No question - @ingroup gui_mw
- * @param msg Prompt
- * @param def Default answer, #MUTT_YES or #MUTT_NO (see #QuadOption)
+ * @param prompt Prompt
+ * @param def    Default answer, #MUTT_YES or #MUTT_NO (see #QuadOption)
  * @retval enum #QuadOption, Selection made
  *
  * This function uses the message window.
@@ -201,7 +201,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * - English, `[+1yY]` or `[-0nN]`
  * - Serbian, `[+1yYdDДд]` or `[-0nNНн]`
  */
-enum QuadOption query_yesorno(const char *msg, enum QuadOption def)
+enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
 {
   struct MuttWindow *win = msgwin_get_window();
   if (!win)
@@ -280,7 +280,7 @@ enum QuadOption query_yesorno(const char *msg, enum QuadOption def)
   mutt_str_asprintf(&answer_string, " ([%s]/%s): ", (def == MUTT_YES) ? yes : no,
                     (def == MUTT_YES) ? no : yes);
   answer_string_wid = mutt_strwidth(answer_string);
-  msg_wid = mutt_strwidth(msg);
+  msg_wid = mutt_strwidth(prompt);
 
   struct MuttWindow *old_focus = window_set_focus(win);
 
@@ -304,14 +304,14 @@ enum QuadOption query_yesorno(const char *msg, enum QuadOption def)
       }
 
       /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
-      trunc_msg_len = mutt_wstr_trunc(msg,
+      trunc_msg_len = mutt_wstr_trunc(prompt,
                                       (size_t) 4 * prompt_lines * win->state.cols,
                                       ((size_t) prompt_lines * win->state.cols) - answer_string_wid,
                                       NULL);
 
       mutt_window_move(win, 0, 0);
       mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
-      mutt_window_addnstr(win, msg, trunc_msg_len);
+      mutt_window_addnstr(win, prompt, trunc_msg_len);
       mutt_window_addstr(win, answer_string);
       mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
       mutt_window_clrtoeol(win);

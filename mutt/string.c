@@ -1010,7 +1010,7 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
   if (n == 0)
   {
     /* NeoMutt convention is to use NULL for 0-length strings */
-    FREE(strp);
+    FREE(strp); /* LCOV_EXCL_LINE */
   }
 
   return n;

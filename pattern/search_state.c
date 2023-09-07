@@ -35,7 +35,7 @@
  * search_state_new - Create a new SearchState
  * @retval ptr New SearchState
  */
-struct SearchState *search_state_new()
+struct SearchState *search_state_new(void)
 {
   struct SearchState *s = mutt_mem_calloc(1, sizeof(struct SearchState));
   s->string = buf_pool_get();

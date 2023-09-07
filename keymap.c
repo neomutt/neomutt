@@ -1840,6 +1840,8 @@ void mw_what_key(void)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
+  // ---------------------------------------------------------------------------
+  // Event Loop
   timeout(1000); // 1 second
   while (true)
   {
@@ -1878,6 +1880,7 @@ void mw_what_key(void)
     mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
     mutt_window_move(win, 0, 0);
   }
+  // ---------------------------------------------------------------------------
 
   mutt_curses_set_cursor(old_cursor);
 

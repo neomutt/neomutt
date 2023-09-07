@@ -25,8 +25,8 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
-#include "test_common.h"
 #include "common.h"
+#include "test_common.h"
 
 // clang-format off
 static struct ConfigDef ConfigVars[] = {

@@ -4,17 +4,6 @@ ACCOUNT_OBJS	= test/account/account_free.o \
 		  test/account/account_new.o
 
 ADDRESS_OBJS	= test/address/config_type.o \
-                  test/address/mutt_addr_cat.o \
-		  test/address/mutt_addr_cmp.o \
-		  test/address/mutt_addr_copy.o \
-		  test/address/mutt_addr_create.o \
-		  test/address/mutt_addr_for_display.o \
-		  test/address/mutt_addr_free.o \
-		  test/address/mutt_addr_new.o \
-		  test/address/mutt_addr_to_intl.o \
-		  test/address/mutt_addr_to_local.o \
-		  test/address/mutt_addr_valid_msgid.o \
-		  test/address/mutt_addr_write.o \
 		  test/address/mutt_addrlist_append.o \
 		  test/address/mutt_addrlist_clear.o \
 		  test/address/mutt_addrlist_copy.o \
@@ -31,7 +20,18 @@ ADDRESS_OBJS	= test/address/config_type.o \
 		  test/address/mutt_addrlist_to_intl.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addrlist_write.o \
-		  test/address/mutt_addrlist_write_list.o
+		  test/address/mutt_addrlist_write_list.o \
+		  test/address/mutt_addr_cat.o \
+		  test/address/mutt_addr_cmp.o \
+		  test/address/mutt_addr_copy.o \
+		  test/address/mutt_addr_create.o \
+		  test/address/mutt_addr_for_display.o \
+		  test/address/mutt_addr_free.o \
+		  test/address/mutt_addr_new.o \
+		  test/address/mutt_addr_to_intl.o \
+		  test/address/mutt_addr_to_local.o \
+		  test/address/mutt_addr_valid_msgid.o \
+		  test/address/mutt_addr_write.o
 
 ARRAY_OBJS	= test/array/mutt_array_api.o
 
@@ -65,8 +65,8 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_alloc.o \
 		  test/buffer/buf_at.o \
 		  test/buffer/buf_coll.o \
-		  test/buffer/buf_concat_path.o \
 		  test/buffer/buf_concatn_path.o \
+		  test/buffer/buf_concat_path.o \
 		  test/buffer/buf_copy.o \
 		  test/buffer/buf_dealloc.o \
 		  test/buffer/buf_dequote_comment.o \
@@ -77,8 +77,8 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_free.o \
 		  test/buffer/buf_init.o \
 		  test/buffer/buf_insert.o \
-		  test/buffer/buf_is_empty.o \
 		  test/buffer/buf_istr_equal.o \
+		  test/buffer/buf_is_empty.o \
 		  test/buffer/buf_len.o \
 		  test/buffer/buf_lower.o \
 		  test/buffer/buf_make.o \
@@ -86,10 +86,10 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_printf.o \
 		  test/buffer/buf_reset.o \
 		  test/buffer/buf_startswith.o \
-		  test/buffer/buf_str_equal.o \
 		  test/buffer/buf_strcpy.o \
 		  test/buffer/buf_strcpy_n.o \
 		  test/buffer/buf_strdup.o \
+		  test/buffer/buf_str_equal.o \
 		  test/buffer/buf_substrcpy.o \
 		  test/buffer/buf_upper.o
 
@@ -102,9 +102,9 @@ CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_convert_nonmime_string.o \
 		  test/charset/mutt_ch_convert_string.o \
 		  test/charset/mutt_ch_fgetconv.o \
+		  test/charset/mutt_ch_fgetconvs.o \
 		  test/charset/mutt_ch_fgetconv_close.o \
 		  test/charset/mutt_ch_fgetconv_open.o \
-		  test/charset/mutt_ch_fgetconvs.o \
 		  test/charset/mutt_ch_get_default_charset.o \
 		  test/charset/mutt_ch_get_langinfo_charset.o \
 		  test/charset/mutt_ch_iconv.o \
@@ -150,9 +150,9 @@ CONFIG_OBJS	= test/config/account.o \
 		  test/config/variable.o
 
 CONVERT_OBJS	= test/convert/mutt_update_content_info.o \
-		  test/convert/mutt_get_content_info.o \
+		  test/convert/mutt_convert_file_from_to.o \
 		  test/convert/mutt_convert_file_to.o \
-		  test/convert/mutt_convert_file_from_to.o
+		  test/convert/mutt_get_content_info.o
 
 CORE_OBJS	= test/core/buf_mktemp_full.o \
 		  test/core/config_cache.o \
@@ -161,17 +161,17 @@ CORE_OBJS	= test/core/buf_mktemp_full.o \
 
 DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_check_month.o \
-		  test/date/mutt_date_now.o \
-		  test/date/mutt_date_now_ms.o \
 		  test/date/mutt_date_gmtime.o \
-		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_localtime.o \
 		  test/date/mutt_date_localtime_format.o \
+		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_make_date.o \
 		  test/date/mutt_date_make_imap.o \
 		  test/date/mutt_date_make_time.o \
 		  test/date/mutt_date_make_tls.o \
 		  test/date/mutt_date_normalize_time.o \
+		  test/date/mutt_date_now.o \
+		  test/date/mutt_date_now_ms.o \
 		  test/date/mutt_date_parse_date.o \
 		  test/date/mutt_date_parse_imap.o \
 		  test/date/mutt_date_sleep_ms.o
@@ -469,16 +469,16 @@ PREX_OBJS	= test/prex/mutt_prex_capture.o \
 
 RANDOM_OBJS	= test/random/random.o
 
-REGEX_OBJS	= test/regex/mutt_regex_capture.o \
-		  test/regex/mutt_regex_compile.o \
-		  test/regex/mutt_regex_free.o \
-		  test/regex/mutt_regex_match.o \
-		  test/regex/mutt_regex_new.o \
-		  test/regex/mutt_regexlist_add.o \
+REGEX_OBJS	= test/regex/mutt_regexlist_add.o \
 		  test/regex/mutt_regexlist_free.o \
 		  test/regex/mutt_regexlist_match.o \
 		  test/regex/mutt_regexlist_new.o \
 		  test/regex/mutt_regexlist_remove.o \
+		  test/regex/mutt_regex_capture.o \
+		  test/regex/mutt_regex_compile.o \
+		  test/regex/mutt_regex_free.o \
+		  test/regex/mutt_regex_match.o \
+		  test/regex/mutt_regex_new.o \
 		  test/regex/mutt_replacelist_add.o \
 		  test/regex/mutt_replacelist_apply.o \
 		  test/regex/mutt_replacelist_free.o \
@@ -548,12 +548,17 @@ STORE_OBJS	+= test/store/tdb.o
 STORE_OBJS	+= test/store/tc.o
 @endif
 
-STRING_OBJS	= test/string/mutt_istr_equal.o \
-		  test/string/mutt_istr_find.o \
-		  test/string/mutt_istr_remall.o \
-		  test/string/mutt_istrn_cmp.o \
+STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_istrn_equal.o \
 		  test/string/mutt_istrn_rfind.o \
+		  test/string/mutt_istr_equal.o \
+		  test/string/mutt_istr_find.o \
+		  test/string/mutt_istr_remall.o \
+		  test/string/mutt_strn_cat.o \
+		  test/string/mutt_strn_copy.o \
+		  test/string/mutt_strn_dup.o \
+		  test/string/mutt_strn_equal.o \
+		  test/string/mutt_strn_rfind.o \
 		  test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_append_item.o \
 		  test/string/mutt_str_asprintf.o \
@@ -580,12 +585,7 @@ STRING_OBJS	= test/string/mutt_istr_equal.o \
 		  test/string/mutt_str_skip_whitespace.o \
 		  test/string/mutt_str_startswith.o \
 		  test/string/mutt_str_sysexit.o \
-		  test/string/mutt_str_upper.o \
-		  test/string/mutt_strn_cat.o \
-		  test/string/mutt_strn_copy.o \
-		  test/string/mutt_strn_dup.o \
-		  test/string/mutt_strn_equal.o \
-		  test/string/mutt_strn_rfind.o
+		  test/string/mutt_str_upper.o
 
 TAGS_OBJS	= test/tags/driver_tags_free.o \
 		  test/tags/driver_tags_get.o \
@@ -623,13 +623,13 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
 		  $(PWD)/test/notify $(PWD)/test/notmuch $(PWD)/test/parameter \
 		  $(PWD)/test/parse $(PWD)/test/path $(PWD)/test/pattern \
-		  $(PWD)/test/pool $(PWD)/test/prex $(PWD)/test/random $(PWD)/test/regex \
-		  $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 $(PWD)/test/signal \
-		  $(PWD)/test/slist $(PWD)/test/sort $(PWD)/test/store \
-		  $(PWD)/test/string $(PWD)/test/tags $(PWD)/test/thread \
-		  $(PWD)/test/url
+		  $(PWD)/test/pool $(PWD)/test/prex $(PWD)/test/random \
+		  $(PWD)/test/regex $(PWD)/test/rfc2047 $(PWD)/test/rfc2231 \
+		  $(PWD)/test/signal $(PWD)/test/slist $(PWD)/test/sort \
+		  $(PWD)/test/store $(PWD)/test/string $(PWD)/test/tags \
+		  $(PWD)/test/thread $(PWD)/test/url
 
-TEST_OBJS	= test/main.o test/common.o \
+TEST_OBJS	= test/common.o test/main.o \
 		  $(ACCOUNT_OBJS) \
 		  $(ADDRESS_OBJS) \
 		  $(ARRAY_OBJS) \
