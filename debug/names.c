@@ -111,8 +111,10 @@ const char *name_notify_type(enum NotifyType type)
     DEBUG_NAME(NT_MENU);
     DEBUG_NAME(NT_MVIEW);
     DEBUG_NAME(NT_PAGER);
+    DEBUG_NAME(NT_RESIZE);
     DEBUG_NAME(NT_SCORE);
     DEBUG_NAME(NT_SUBJRX);
+    DEBUG_NAME(NT_TIMEOUT);
     DEBUG_NAME(NT_WINDOW);
     DEBUG_DEFAULT;
   }

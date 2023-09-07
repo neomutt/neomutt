@@ -47,13 +47,17 @@ static const char *OpStrings[][2] = {
  */
 const char *opcodes_get_name(int op)
 {
-  if ((op < OP_TIMEOUT) || (op >= OP_MAX))
+  if ((op < OP_REPAINT) || (op >= OP_MAX))
     return "[UNKNOWN]";
 
   if (op == OP_ABORT)
     return "OP_ABORT";
   if (op == OP_TIMEOUT)
     return "OP_TIMEOUT";
+  if (op == OP_PARTIAL_KEY)
+    return "OP_PARTIAL_KEY";
+  if (op == OP_REPAINT)
+    return "OP_REPAINT";
 
   return OpStrings[op][0];
 }
@@ -65,13 +69,17 @@ const char *opcodes_get_name(int op)
  */
 const char *opcodes_get_description(int op)
 {
-  if ((op < OP_TIMEOUT) || (op >= OP_MAX))
+  if ((op < OP_REPAINT) || (op >= OP_MAX))
     return "[UNKNOWN]";
 
   if (op == OP_ABORT)
     return "abort the current action";
   if (op == OP_TIMEOUT)
     return "timeout occurred";
+  if (op == OP_PARTIAL_KEY)
+    return "partial keybinding";
+  if (op == OP_REPAINT)
+    return "repaint required";
 
   return OpStrings[op][1];
 }

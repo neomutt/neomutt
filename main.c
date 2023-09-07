@@ -452,6 +452,38 @@ static void log_translation(void)
 }
 
 /**
+ * main_timeout_observer - Notification that a timeout has occurred - Implements ::observer_t - @ingroup observer_api
+ */
+int main_timeout_observer(struct NotifyCallback *nc)
+{
+  static time_t last_run = 0;
+
+  if (nc->event_type != NT_TIMEOUT)
+    return 0;
+
+  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
+  if (c_timeout <= 0)
+    goto done;
+
+  time_t now = mutt_date_now();
+  if (now < (last_run + c_timeout))
+    goto done;
+
+  // Limit hook to running under the Index or Pager
+  struct MuttWindow *focus = window_get_focus();
+  struct MuttWindow *dlg = dialog_find(focus);
+  if (!dlg || (dlg->type != WT_DLG_INDEX))
+    goto done;
+
+  last_run = now;
+  mutt_timeout_hook();
+
+done:
+  mutt_debug(LL_DEBUG5, "timeout done\n");
+  return 0;
+}
+
+/**
  * main - Start NeoMutt
  * @param argc Number of command line arguments
  * @param argv List of command line arguments
@@ -918,6 +950,7 @@ main
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_hist_observer, NULL);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_log_observer, NULL);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_config_observer, NULL);
+  notify_observer_add(NeoMutt->notify, NT_TIMEOUT, main_timeout_observer, NULL);
 
   if (sendflags & SEND_POSTPONED)
   {
@@ -1395,6 +1428,7 @@ main_exit:
     notify_observer_remove(NeoMutt->sub->notify, main_hist_observer, NULL);
     notify_observer_remove(NeoMutt->sub->notify, main_log_observer, NULL);
     notify_observer_remove(NeoMutt->sub->notify, main_config_observer, NULL);
+    notify_observer_remove(NeoMutt->notify, main_timeout_observer, NULL);
   }
   mutt_list_free(&commands);
   MuttLogger = log_disp_queue;

@@ -120,10 +120,6 @@ static void array_to_endcond(struct KeyEventArray *a)
   }
 }
 
-/// Timeout for getting a character from the user.
-/// @sa mutt_set_timeout()
-int MuttGetchTimeout = -1;
-
 /**
  * mutt_beep - Irritate the user
  * @param force If true, ignore the "$beep" config variable
@@ -171,39 +167,6 @@ void mutt_need_hard_redraw(void)
   window_redraw(NULL);
 }
 
-/**
- * mutt_set_timeout - Set the getch() timeout
- * @param delay Timeout delay in ms
- * delay is just like for timeout() or poll(): the number of milliseconds
- * mutt_getch() should block for input.
- * * delay == 0 means mutt_getch() is non-blocking.
- * * delay < 0 means mutt_getch is blocking.
- */
-void mutt_set_timeout(int delay)
-{
-  MuttGetchTimeout = delay;
-  timeout(delay);
-}
-
-/**
- * mutt_getch_timeout - Get an event with a timeout
- * @param delay Timeout delay in ms
- * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
- * @retval obj KeyEvent to process, @sa mutt_getch()
- *
- * delay is just like for timeout() or poll(): the number of milliseconds
- * mutt_getch() should block for input.
- * * delay == 0 means mutt_getch() is non-blocking.
- * * delay < 0 means mutt_getch is blocking.
- */
-struct KeyEvent mutt_getch_timeout(int delay, GetChFlags flags)
-{
-  mutt_set_timeout(delay);
-  struct KeyEvent event = mutt_getch(flags);
-  mutt_set_timeout(-1);
-  return event;
-}
-
 #ifdef USE_INOTIFY
 /**
  * mutt_monitor_getch - Get a character and poll the filesystem monitor
@@ -216,7 +179,7 @@ static int mutt_monitor_getch(void)
    * we need to make sure there isn't a character waiting */
   timeout(0);
   int ch = getch();
-  timeout(MuttGetchTimeout);
+  timeout(1000); // 1 second
   if (ch == ERR)
   {
     if (mutt_monitor_poll() != 0)
@@ -239,36 +202,36 @@ static int mutt_monitor_getch(void)
  * 3. Keyboard
  *
  * This function can return:
- * - Error   `{ 0, OP_ABORT   }`
+ * - Abort   `{ 0, OP_ABORT   }`
+ * - Repaint `{ 0, OP_REPAINT }`
  * - Timeout `{ 0, OP_TIMEOUT }`
  */
 struct KeyEvent mutt_getch(GetChFlags flags)
 {
-  static const struct KeyEvent event_err = { 0, OP_ABORT };
+  static const struct KeyEvent event_abort = { 0, OP_ABORT };
+  static const struct KeyEvent event_repaint = { 0, OP_REPAINT };
   static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
-  int ch;
+
+  if (OptNoCurses)
+    return event_abort;
 
   struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
   if (event_key)
-  {
     return *event_key;
+
+  if (!(flags & GETCH_IGNORE_MACRO))
+  {
+    event_key = array_pop(&MacroEvents);
+    if (event_key)
+      return *event_key;
   }
 
-  if (!(flags & GETCH_IGNORE_MACRO) && (event_key = array_pop(&MacroEvents)))
-  {
-    return *event_key;
-  }
-
+  int ch;
   SigInt = false;
-
   mutt_sig_allow_interrupt(true);
-#ifdef KEY_RESIZE
-  /* ncurses 4.2 sends this when the screen is resized */
-  ch = KEY_RESIZE;
-  while (ch == KEY_RESIZE)
-#endif
+  timeout(1000); // 1 second
 #ifdef USE_INOTIFY
-    ch = mutt_monitor_getch();
+  ch = mutt_monitor_getch();
 #else
   ch = getch();
 #endif
@@ -277,20 +240,36 @@ struct KeyEvent mutt_getch(GetChFlags flags)
   if (SigInt)
   {
     mutt_query_exit();
-    return event_err;
+    return event_abort;
   }
 
-  /* either timeout, a sigwinch (if timeout is set), the terminal
-   * has been lost, or curses was never initialized */
+  if (ch == KEY_RESIZE)
+  {
+    timeout(0);
+    while ((ch = getch()) == KEY_RESIZE)
+    {
+      // do nothing
+    }
+  }
+
   if (ch == ERR)
   {
-    if (!isatty(0))
-    {
+    if (!isatty(0)) // terminal was lost
       mutt_exit(1);
+
+    if (SigWinch)
+    {
+      SigWinch = false;
+      notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+      return event_repaint;
     }
 
-    return OptNoCurses ? event_err : event_timeout;
+    notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
+    return event_timeout;
   }
+
+  if (ch == AbortKey)
+    return event_abort;
 
   if (ch & 0x80)
   {
@@ -303,9 +282,6 @@ struct KeyEvent mutt_getch(GetChFlags flags)
       return (struct KeyEvent){ '\033', OP_NULL }; // Escape
     }
   }
-
-  if (ch == AbortKey)
-    return event_err;
 
   return (struct KeyEvent){ ch, OP_NULL };
 }
@@ -341,16 +317,11 @@ void mutt_edit_file(const char *editor, const char *file)
 void mutt_query_exit(void)
 {
   mutt_flushinp();
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
-  if (c_timeout != 0)
-    mutt_set_timeout(-1); /* restore blocking operation */
   if (mw_yesorno(_("Exit NeoMutt without saving?"), MUTT_YES) == MUTT_YES)
   {
     mutt_exit(0); /* This call never returns */
   }
   mutt_clear_error();
-  mutt_curses_set_cursor(old_cursor);
   SigInt = false;
 }
 
@@ -477,7 +448,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
-    event = mutt_getch_timeout(1000, GETCH_NO_FLAGS); // 1 second
+    event = mutt_getch(GETCH_NO_FLAGS);
   } while (event.op == OP_TIMEOUT);
   mutt_curses_set_cursor(old_cursor);
 

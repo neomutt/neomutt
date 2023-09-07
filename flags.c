@@ -471,8 +471,9 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
-    event = mutt_getch_timeout(1000, GETCH_NO_FLAGS); // 1 second
-  } while (event.op == OP_TIMEOUT);
+    mutt_refresh();
+    event = mutt_getch(GETCH_NO_FLAGS);
+  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
   mutt_curses_set_cursor(old_cursor);
 
   window_set_focus(old_focus);

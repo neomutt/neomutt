@@ -39,10 +39,12 @@ struct ConfigSet;
  */
 struct NeoMutt
 {
-  struct Notify *notify;       ///< Notifications handler
-  struct ConfigSubset *sub;    ///< Inherited config items
-  struct AccountList accounts; ///< List of all Accounts
-  locale_t time_c_locale;      ///< Current locale but LC_TIME=C
+  struct Notify *notify;         ///< Notifications handler
+  struct Notify *notify_resize;  ///< Window resize notifications handler
+  struct Notify *notify_timeout; ///< Timeout notifications handler
+  struct ConfigSubset *sub;      ///< Inherited config items
+  struct AccountList accounts;   ///< List of all Accounts
+  locale_t time_c_locale;        ///< Current locale but LC_TIME=C
 };
 
 extern struct NeoMutt *NeoMutt;
@@ -56,7 +58,6 @@ enum NotifyGlobal
 {
   NT_GLOBAL_STARTUP = 1, ///< NeoMutt is initialised
   NT_GLOBAL_SHUTDOWN,    ///< NeoMutt is about to close
-  NT_GLOBAL_TIMEOUT,     ///< A timer has elapsed
   NT_GLOBAL_COMMAND,     ///< A NeoMutt command
 };
 

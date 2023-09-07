@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -49,12 +50,6 @@
 #include "globals.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
 
 /**
  * KeyNames - Key name lookup table
@@ -659,56 +654,13 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
   if (!map && (mtype != MENU_EDITOR))
     return retry_generic(mtype, NULL, 0, 0, flags);
 
-#ifdef USE_IMAP
-  const short c_imap_keep_alive = cs_subset_number(NeoMutt->sub, "imap_keep_alive");
-#endif
-
-  const short c_timeout = cs_subset_number(NeoMutt->sub, "timeout");
   while (true)
   {
-    int i = (c_timeout > 0) ? c_timeout : 60;
-#ifdef USE_IMAP
-    /* keep_alive may need to run more frequently than `$timeout` allows */
-    if (c_imap_keep_alive != 0)
-    {
-      if (c_imap_keep_alive >= i)
-      {
-        imap_keep_alive();
-      }
-      else
-      {
-        while (c_imap_keep_alive < i)
-        {
-          event = mutt_getch_timeout(c_imap_keep_alive * 1000, flags);
-          /* If a timeout was not received, or the window was resized, exit the
-           * loop now.  Otherwise, continue to loop until reaching a total of
-           * $timeout seconds.  */
-          if ((event.op != OP_TIMEOUT) || SigWinch)
-            goto gotkey;
-#ifdef USE_INOTIFY
-          if (MonitorFilesChanged)
-            goto gotkey;
-#endif
-          i -= c_imap_keep_alive;
-          imap_keep_alive();
-        }
-      }
-    }
-#endif
+    event = mutt_getch(flags);
 
-    event = mutt_getch_timeout(i * 1000, flags);
-
-#ifdef USE_IMAP
-  gotkey:
-#endif
-    /* hide timeouts, but not window resizes, from the line editor. */
-    if ((mtype == MENU_EDITOR) && (event.op == OP_TIMEOUT) && !SigWinch)
-      continue;
-
-    if ((event.op == OP_TIMEOUT) || (event.op == OP_ABORT))
-    {
+    // abort, timeout, repaint
+    if (event.op < OP_NULL)
       return event;
-    }
 
     /* do we have an op already? */
     if (event.op != OP_NULL)
@@ -731,7 +683,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
 
       /* Sigh. Valid function but not in this context.
        * Find the literal string and push it back */
-      for (i = 0; MenuNames[i].name; i++)
+      for (int i = 0; MenuNames[i].name; i++)
       {
         funcs = km_get_table(MenuNames[i].value);
         if (funcs)
@@ -1888,21 +1840,45 @@ void mw_what_key(void)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
-  mutt_set_timeout(1000); // 1 second
+  timeout(1000); // 1 second
   while (true)
   {
     ch = getch();
     if (ch == AbortKey)
       break;
 
-    if (ch == ERR) // Timeout
+    if (ch == KEY_RESIZE)
+    {
+      timeout(0);
+      while ((ch = getch()) == KEY_RESIZE)
+      {
+        // do nothing
+      }
+    }
+
+    if (ch == ERR)
+    {
+      if (!isatty(0)) // terminal was lost
+        mutt_exit(1);
+
+      if (SigWinch)
+      {
+        SigWinch = false;
+        notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+      }
+      else
+      {
+        notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
+      }
+
+      mutt_refresh();
       continue;
+    }
 
     mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
     mutt_window_move(win, 0, 0);
   }
 
-  mutt_set_timeout(-1);
   mutt_curses_set_cursor(old_cursor);
 
   mutt_flushinp();

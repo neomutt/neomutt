@@ -233,6 +233,9 @@ int debug_all_observer(struct NotifyCallback *nc)
     case NT_MAILBOX:
       notify_dump_mailbox(nc);
       break;
+    case NT_RESIZE:
+    case NT_TIMEOUT:
+      break; // no other data
     case NT_WINDOW:
       if (nc->event_subtype == NT_WINDOW_STATE)
         notify_dump_window_state(nc);

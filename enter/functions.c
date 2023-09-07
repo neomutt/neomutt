@@ -640,8 +640,9 @@ static int op_editor_quote_char(struct EnterWindowData *wdata, int op)
   do
   {
     window_redraw(NULL);
-    event = mutt_getch_timeout(1000, GETCH_NO_FLAGS); // 1 second
-  } while (event.op == OP_TIMEOUT);
+    event = mutt_getch(GETCH_NO_FLAGS);
+  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
+
   if (event.op != OP_ABORT)
   {
     if (self_insert(wdata, event.ch))
