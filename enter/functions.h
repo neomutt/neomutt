@@ -24,7 +24,9 @@
 #define MUTT_ENTER_FUNCTIONS_H
 
 #include <stdbool.h>
+#include <stddef.h>
 
+struct EnterState;
 struct EnterWindowData;
 struct MuttWindow;
 
@@ -40,6 +42,17 @@ struct MuttWindow;
 typedef int (*enter_function_t)(struct EnterWindowData *wdata, int op);
 
 /**
+ * @defgroup complete_api Auto-Completion API
+ *
+ * Prototype for an Auto-Completion Function
+ *
+ * @param wdata  Enter Window data
+ * @param op     Operation to perform, e.g. OP_EDITOR_COMPLETE
+ * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+ */
+typedef int (*complete_function_t)(struct EnterWindowData *wdata, int op);
+
+/**
  * struct EnterFunction - A NeoMutt function
  */
 struct EnterFunction
@@ -50,5 +63,6 @@ struct EnterFunction
 
 int enter_function_dispatcher(struct MuttWindow *win, int op);
 bool self_insert(struct EnterWindowData *wdata, int ch);
+void replace_part(struct EnterState *es, size_t from, const char *buf);
 
 #endif /* MUTT_ENTER_FUNCTIONS_H */

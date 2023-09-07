@@ -52,6 +52,7 @@
 #include "mutt.h"
 #include "sasl.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "connaccount.h"
 #include "connection.h"
 #include "globals.h"
@@ -713,7 +714,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
     buf_reset(resp);
 
     if (OptNoCurses ||
-        (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0))
+        (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0))
     {
       rc = SASL_FAIL;
       break;

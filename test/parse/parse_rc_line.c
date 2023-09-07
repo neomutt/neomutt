@@ -26,6 +26,7 @@
 #include "core/lib.h"
 #include "parse/lib.h"
 #include "test_common.h"
+#include "common.h"
 
 // clang-format off
 static struct ConfigDef ConfigVars[] = {
@@ -1012,6 +1013,8 @@ void test_command_set(void)
     TEST_MSG("Failed to register config variables\n");
     return;
   }
+
+  commands_register(mutt_commands, 4);
 
   struct Buffer *err = buf_pool_get();
   TEST_CHECK(test_set(err));

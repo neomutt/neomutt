@@ -47,6 +47,7 @@
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
@@ -890,7 +891,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
     FREE(&id);
   }
 
-  if (mw_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0)
+  if (mw_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
     if (!mutt_str_equal(id, buf_string(buf)))
     {
@@ -934,7 +935,7 @@ static int op_attachment_edit_description(struct ComposeSharedData *shared, int 
   buf_strcpy(buf, cur_att->body->description);
 
   /* header names should not be translated */
-  if (mw_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0)
+  if (mw_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
     if (!mutt_str_equal(cur_att->body->description, buf_string(buf)))
     {
@@ -965,7 +966,7 @@ static int op_attachment_edit_encoding(struct ComposeSharedData *shared, int op)
   buf_strcpy(buf, ENCODING(cur_att->body->encoding));
 
   if ((mw_get_field("Content-Transfer-Encoding: ", buf, MUTT_COMP_NO_FLAGS,
-                    false, NULL, NULL, NULL) == 0) &&
+                    HC_OTHER, NULL, NULL) == 0) &&
       !buf_is_empty(buf))
   {
     int enc = mutt_check_encoding(buf_string(buf));
@@ -1006,7 +1007,7 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
                                                  shared->adata->menu);
 
   buf_strcpy(buf, cur_att->body->language);
-  if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) == 0)
+  if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
     if (!mutt_str_equal(cur_att->body->language, buf_string(buf)))
     {
@@ -1307,7 +1308,9 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
   struct Buffer *type = NULL;
   struct AttachPtr *ap = NULL;
 
-  if ((mw_get_field(_("New file: "), fname, MUTT_COMP_FILE, false, NULL, NULL, NULL) != 0) ||
+  struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
+  if ((mw_get_field(_("New file: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
+                    &CompleteMailboxOps, &cdata) != 0) ||
       buf_is_empty(fname))
   {
     goto done;
@@ -1316,7 +1319,7 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 
   /* Call to lookup_mime_type () ?  maybe later */
   type = buf_pool_get();
-  if ((mw_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0) ||
+  if ((mw_get_field("Content-Type: ", type, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
       buf_is_empty(type))
   {
     goto done;
@@ -1417,8 +1420,9 @@ static int op_attachment_rename_attachment(struct ComposeSharedData *shared, int
     src = cur_att->body->filename;
   struct Buffer *fname = buf_pool_get();
   buf_strcpy(fname, mutt_path_basename(NONULL(src)));
-  int rc = mw_get_field(_("Send attachment with name: "), fname, MUTT_COMP_FILE,
-                        false, NULL, NULL, NULL);
+  struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
+  int rc = mw_get_field(_("Send attachment with name: "), fname,
+                        MUTT_COMP_NO_FLAGS, HC_FILE, &CompleteMailboxOps, &cdata);
   if (rc == 0)
   {
     // It's valid to set an empty string here, to erase what was set
@@ -1749,7 +1753,9 @@ static int op_compose_rename_file(struct ComposeSharedData *shared, int op)
   struct Buffer *fname = buf_pool_get();
   buf_strcpy(fname, cur_att->body->filename);
   buf_pretty_mailbox(fname);
-  if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_FILE, false, NULL, NULL, NULL) == 0) &&
+  struct FileCompletionData cdata = { false, shared->mailbox, NULL, NULL };
+  if ((mw_get_field(_("Rename to: "), fname, MUTT_COMP_NO_FLAGS, HC_FILE,
+                    &CompleteMailboxOps, &cdata) == 0) &&
       !buf_is_empty(fname))
   {
     struct stat st = { 0 };

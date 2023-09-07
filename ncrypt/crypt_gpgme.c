@@ -56,6 +56,7 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "crypt.h"
@@ -3371,7 +3372,7 @@ static struct CryptKeyInfo *crypt_ask_for_key(const char *tag, const char *whatf
   while (true)
   {
     buf_reset(resp);
-    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
     {
       goto done;
     }

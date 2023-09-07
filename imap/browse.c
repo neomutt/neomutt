@@ -38,10 +38,12 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "browser/lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "adata.h"
 #include "mdata.h"
 #include "mutt_logging.h"
@@ -407,7 +409,9 @@ int imap_mailbox_create(const char *path)
     buf_addch(name, adata->delim);
   }
 
-  if (mw_get_field(_("Create mailbox: "), name, MUTT_COMP_FILE, false, NULL, NULL, NULL) != 0)
+  struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+  if (mw_get_field(_("Create mailbox: "), name, MUTT_COMP_NO_FLAGS, HC_FILE,
+                   &CompleteMailboxOps, &cdata) != 0)
   {
     goto done;
   }
@@ -466,7 +470,9 @@ int imap_mailbox_rename(const char *path)
   buf_printf(buf, _("Rename mailbox %s to: "), mdata->name);
   buf_strcpy(newname, mdata->name);
 
-  if (mw_get_field(buf_string(buf), newname, MUTT_COMP_FILE, false, NULL, NULL, NULL) != 0)
+  struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+  if (mw_get_field(buf_string(buf), newname, MUTT_COMP_NO_FLAGS, HC_FILE,
+                   &CompleteMailboxOps, &cdata) != 0)
   {
     goto done;
   }

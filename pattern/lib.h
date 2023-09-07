@@ -29,6 +29,7 @@
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
  * | pattern/compile.c      | @subpage pattern_compile      |
+ * | pattern/complete.c     | @subpage pattern_complete     |
  * | pattern/config.c       | @subpage pattern_config       |
  * | pattern/dlg_pattern.c  | @subpage pattern_dlg_pattern  |
  * | pattern/exec.c         | @subpage pattern_exec         |
@@ -48,6 +49,7 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt.h"
+#include "complete/lib.h"
 #include "search_state.h" // IWYU pragma: keep
 
 struct AliasMenuData;
@@ -59,6 +61,8 @@ struct MailboxView;
 struct Menu;
 
 #define MUTT_ALIAS_SIMPLESEARCH "~f %s | ~t %s | ~c %s"
+
+extern const struct CompleteOps CompletePatternOps;
 
 typedef uint8_t PatternCompFlags;           ///< Flags for mutt_pattern_comp(), e.g. #MUTT_PC_FULL_MSG
 #define MUTT_PC_NO_FLAGS                0   ///< No flags are set

@@ -1,6 +1,6 @@
 /**
  * @file
- * Common test code for parsing
+ * API Auto-Completion
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -20,32 +20,30 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-#include "core/lib.h"
-#include "parse/lib.h"
+#ifndef MUTT_COMPLETE_COMPAPI_H
+#define MUTT_COMPLETE_COMPAPI_H
 
-struct Command mutt_commands[] = {
-  // clang-format off
-  { "reset",  parse_set, MUTT_SET_RESET },
-  { "set",    parse_set, MUTT_SET_SET },
-  { "toggle", parse_set, MUTT_SET_INV },
-  { "unset",  parse_set, MUTT_SET_UNSET },
-  // clang-format on
+#include "core/lib.h"
+
+struct EnterWindowData;
+
+/**
+ * @defgroup complete_api Auto-Completion API
+ *
+ * Auto-Completion API
+ */
+struct CompleteOps
+{
+  /**
+   * @defgroup compapi_complete complete()
+   * @ingroup complete_api
+   *
+   * complete - Perform Auto-Completion
+   * @param wdata  Enter Window data
+   * @param op     Operation to perform, e.g. OP_COMPLETE
+   * @retval num #FunctionRetval, e.g. #FR_SUCCESS
+   */
+  enum FunctionRetval (*complete)(struct EnterWindowData *wdata, int op);
 };
 
-void buf_expand_path(struct Buffer *buf)
-{
-  buf_insert(buf, 0, "expanded");
-}
-
-void myvar_append(const char *var, const char *val)
-{
-}
-
-void myvar_del(const char *var)
-{
-}
-
-void myvar_set(const char *var, const char *val)
-{
-}
+#endif /* MUTT_COMPLETE_COMPAPI_H */

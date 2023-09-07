@@ -106,9 +106,9 @@ $(PWD)/address:
 ###############################################################################
 # libalias
 LIBALIAS=	libalias.a
-LIBALIASOBJS=	alias/alias.o alias/array.o alias/commands.o alias/config.o \
-		alias/dlg_alias.o alias/dlg_query.o alias/functions.o \
-		alias/gui.o alias/reverse.o alias/sort.o
+LIBALIASOBJS=	alias/alias.o alias/array.o alias/commands.o alias/complete.o \
+		alias/config.o alias/dlg_alias.o alias/dlg_query.o \
+		alias/functions.o alias/gui.o alias/reverse.o alias/sort.o
 CLEANFILES+=	$(LIBALIAS) $(LIBALIASOBJS)
 ALLOBJS+=	$(LIBALIASOBJS)
 
@@ -166,8 +166,8 @@ $(PWD)/bcache:
 ###############################################################################
 # libbrowser
 LIBBROWSER=	libbrowser.a
-LIBBROWSEROBJS=	browser/config.o browser/dlg_browser.o browser/functions.o \
-		browser/private_data.o browser/sort.o
+LIBBROWSEROBJS=	browser/complete.o browser/config.o browser/dlg_browser.o \
+		browser/functions.o browser/private_data.o browser/sort.o
 CLEANFILES+=	$(LIBBROWSER) $(LIBBROWSEROBJS)
 ALLOBJS+=	$(LIBBROWSEROBJS)
 
@@ -648,9 +648,9 @@ $(PWD)/nntp:
 # libnotmuch
 @if USE_NOTMUCH
 LIBNOTMUCH=	libnotmuch.a
-LIBNOTMUCHOBJS=	notmuch/config.o notmuch/db.o notmuch/notmuch.o \
-		notmuch/adata.o notmuch/edata.o notmuch/mdata.o \
-		notmuch/query.o notmuch/tag.o
+LIBNOTMUCHOBJS=	notmuch/complete.o notmuch/config.o notmuch/db.o \
+		notmuch/notmuch.o notmuch/adata.o notmuch/edata.o \
+		notmuch/mdata.o notmuch/query.o notmuch/tag.o
 CLEANFILES+=	$(LIBNOTMUCH) $(LIBNOTMUCHOBJS)
 ALLOBJS+=	$(LIBNOTMUCHOBJS)
 
@@ -692,9 +692,10 @@ $(PWD)/parse:
 ###############################################################################
 # libpattern
 LIBPATTERN=	libpattern.a
-LIBPATTERNOBJS=	pattern/compile.o pattern/config.o pattern/dlg_pattern.o \
-		pattern/exec.o pattern/flags.o pattern/functions.o \
-		pattern/message.o pattern/pattern.o pattern/search_state.o
+LIBPATTERNOBJS=	pattern/complete.o pattern/compile.o pattern/config.o \
+		pattern/dlg_pattern.o pattern/exec.o pattern/flags.o \
+		pattern/functions.o pattern/message.o pattern/pattern.o \
+		pattern/search_state.o
 CLEANFILES+=	$(LIBPATTERN) $(LIBPATTERNOBJS)
 ALLOBJS+=	$(LIBPATTERNOBJS)
 
@@ -852,11 +853,11 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
-		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
+		$(LIBENTER) $(LIBCOMPLETE) $(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
-		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBENTER) $(LIBCOMPLETE) $(LIBNNTP) \
+		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBNNTP) \
 		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
-		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) \
+		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBENTER) $(LIBCOMPLETE) $(LIBNNTP) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
 		$(LIBCORE) $(LIBPARSE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \

@@ -46,6 +46,7 @@
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "question/lib.h"
 #include "globals.h"
 #include "keymap.h"
@@ -483,8 +484,9 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
       mutt_unget_op(event.op);
 
     buf_alloc(fname, 1024);
-    if (mw_get_field(pc, fname, (mailbox ? MUTT_COMP_FILE_MBOX : MUTT_COMP_FILE) | MUTT_COMP_CLEAR,
-                     multiple, m, files, numfiles) != 0)
+    struct FileCompletionData cdata = { multiple, m, files, numfiles };
+    enum HistoryClass hclass = mailbox ? HC_MBOX : HC_FILE;
+    if (mw_get_field(pc, fname, MUTT_COMP_CLEAR, hclass, &CompleteMailboxOps, &cdata) != 0)
     {
       buf_reset(fname);
     }

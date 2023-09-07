@@ -35,19 +35,21 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "enter/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
-#include "notmuch/lib.h"
+#include "compapi.h"
 #include "data.h"
 #include "functions.h"
 #include "keymap.h"
+#include "opcodes.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion
  * @param cd       Completion Data
  * @param new_size Space required
  */
-static void matches_ensure_morespace(struct CompletionData *cd, int new_size)
+void matches_ensure_morespace(struct CompletionData *cd, int new_size)
 {
   if (new_size <= (cd->match_list_len - 2))
     return;
@@ -71,8 +73,7 @@ static void matches_ensure_morespace(struct CompletionData *cd, int new_size)
  *
  * Changes the dest buffer if necessary/possible to aid completion.
  */
-static bool candidate(struct CompletionData *cd, char *user, const char *src,
-                      char *dest, size_t dlen)
+bool candidate(struct CompletionData *cd, char *user, const char *src, char *dest, size_t dlen)
 {
   if (!dest || !user || !src)
     return false;
@@ -96,58 +97,6 @@ static bool candidate(struct CompletionData *cd, char *user, const char *src,
   }
   return true;
 }
-
-#ifdef USE_NOTMUCH
-/**
- * complete_all_nm_tags - Pass a list of Notmuch tags to the completion code
- * @param cd Completion Data
- * @param pt List of all Notmuch tags
- * @retval  0 Success
- * @retval -1 Error
- */
-static int complete_all_nm_tags(struct CompletionData *cd, const char *pt)
-{
-  struct Mailbox *m_cur = get_current_mailbox();
-  int tag_count_1 = 0;
-  int tag_count_2 = 0;
-  int rc = -1;
-
-  mutt_str_copy(cd->user_typed, pt, sizeof(cd->user_typed));
-  memset(cd->match_list, 0, cd->match_list_len);
-  memset(cd->completed, 0, sizeof(cd->completed));
-  cd->free_match_strings = true;
-
-  nm_db_longrun_init(m_cur, false);
-
-  /* Work out how many tags there are. */
-  if ((nm_get_all_tags(m_cur, NULL, &tag_count_1) != 0) || (tag_count_1 == 0))
-    goto done;
-
-  /* Get all the tags. */
-  const char **nm_tags = mutt_mem_calloc(tag_count_1, sizeof(char *));
-  if ((nm_get_all_tags(m_cur, nm_tags, &tag_count_2) != 0) || (tag_count_1 != tag_count_2))
-  {
-    completion_data_free_match_strings(cd);
-    goto done;
-  }
-
-  /* Put them into the completion machinery. */
-  for (int i = 0; i < tag_count_1; i++)
-  {
-    if (!candidate(cd, cd->user_typed, nm_tags[i], cd->completed, sizeof(cd->completed)))
-      FREE(&nm_tags[i]);
-  }
-
-  matches_ensure_morespace(cd, cd->num_matched);
-  cd->match_list[cd->num_matched++] = mutt_str_dup(cd->user_typed);
-  rc = 0;
-
-done:
-  FREE(&nm_tags);
-  nm_db_longrun_done(m_cur);
-  return rc;
-}
-#endif
 
 /**
  * mutt_command_complete - Complete a command name
@@ -411,130 +360,6 @@ int mutt_label_complete(struct CompletionData *cd, struct Buffer *buf, int numta
   return 1;
 }
 
-#ifdef USE_NOTMUCH
-/**
- * mutt_nm_query_complete - Complete to the nearest notmuch tag
- * @param cd      Completion Data
- * @param buf     Buffer for the result
- * @param pos     Cursor position in the buffer
- * @param numtabs Number of times the user has hit 'tab'
- * @retval true  Success, a match
- * @retval false Error, no match
- *
- * Complete the nearest "tag:"-prefixed string previous to pos.
- */
-bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
-{
-  char *pt = buf->data;
-  int spaces;
-
-  SKIPWS(pt);
-  spaces = pt - buf->data;
-
-  pt = (char *) mutt_strn_rfind((char *) buf, pos, "tag:");
-  if (pt)
-  {
-    pt += 4;
-    if (numtabs == 1)
-    {
-      /* First TAB. Collect all the matches */
-      complete_all_nm_tags(cd, pt);
-
-      /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. don't change 'buf'. Fake successful return this time.  */
-      if (cd->user_typed[0] == '\0')
-        return true;
-    }
-
-    if ((cd->completed[0] == '\0') && (cd->user_typed[0] != '\0'))
-      return false;
-
-    /* cd->num_matched will _always_ be at least 1 since the initial
-     * user-typed string is always stored */
-    if ((numtabs == 1) && (cd->num_matched == 2))
-    {
-      snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
-    }
-    else if ((numtabs > 1) && (cd->num_matched > 2))
-    {
-      /* cycle through all the matches */
-      snprintf(cd->completed, sizeof(cd->completed), "%s",
-               cd->match_list[(numtabs - 2) % cd->num_matched]);
-    }
-
-    /* return the completed query */
-    strncpy(pt, cd->completed, buf->data + buf->dsize - pt - spaces);
-  }
-  else
-  {
-    return false;
-  }
-
-  return true;
-}
-#endif
-
-#ifdef USE_NOTMUCH
-/**
- * mutt_nm_tag_complete - Complete to the nearest notmuch tag
- * @param cd      Completion Data
- * @param buf     Buffer for the result
- * @param numtabs Number of times the user has hit 'tab'
- * @retval true  Success, a match
- * @retval false Error, no match
- *
- * Complete the nearest "+" or "-" -prefixed string previous to pos.
- */
-bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
-{
-  if (!buf)
-    return false;
-
-  char *pt = buf->data;
-
-  /* Only examine the last token */
-  char *last_space = strrchr(buf->data, ' ');
-  if (last_space)
-    pt = (last_space + 1);
-
-  /* Skip the +/- */
-  if ((pt[0] == '+') || (pt[0] == '-'))
-    pt++;
-
-  if (numtabs == 1)
-  {
-    /* First TAB. Collect all the matches */
-    complete_all_nm_tags(cd, pt);
-
-    /* All matches are stored. Longest non-ambiguous string is ""
-     * i.e. don't change 'buf'. Fake successful return this time.  */
-    if (cd->user_typed[0] == '\0')
-      return true;
-  }
-
-  if ((cd->completed[0] == '\0') && (cd->user_typed[0] != '\0'))
-    return false;
-
-  /* cd->num_matched will _always_ be at least 1 since the initial
-   * user-typed string is always stored */
-  if ((numtabs == 1) && (cd->num_matched == 2))
-  {
-    snprintf(cd->completed, sizeof(cd->completed), "%s", cd->match_list[0]);
-  }
-  else if ((numtabs > 1) && (cd->num_matched > 2))
-  {
-    /* cycle through all the matches */
-    snprintf(cd->completed, sizeof(cd->completed), "%s",
-             cd->match_list[(numtabs - 2) % cd->num_matched]);
-  }
-
-  /* return the completed query */
-  strncpy(pt, cd->completed, buf->data + buf->dsize - pt);
-
-  return true;
-}
-#endif
-
 /**
  * mutt_var_value_complete - Complete a variable/value
  * @param cd  Completion Data
@@ -592,3 +417,68 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
   }
   return 0;
 }
+
+/**
+ * complete_command - Complete a NeoMutt Command - Implements ::complete_function_t -- @ingroup complete_api
+ */
+int complete_command(struct EnterWindowData *wdata, int op)
+{
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
+  int rc = FR_SUCCESS;
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
+  size_t i = buf_len(wdata->buffer);
+  if ((i != 0) && (buf_at(wdata->buffer, i - 1) == '=') &&
+      (mutt_var_value_complete(wdata->cd, wdata->buffer, i) != 0))
+  {
+    wdata->tabs = 0;
+  }
+  else if (mutt_command_complete(wdata->cd, wdata->buffer, i, wdata->tabs) == 0)
+  {
+    rc = FR_ERROR;
+  }
+
+  replace_part(wdata->state, 0, buf_string(wdata->buffer));
+  return rc;
+}
+
+/**
+ * complete_label - Complete a label - Implements ::complete_function_t -- @ingroup complete_api
+ */
+int complete_label(struct EnterWindowData *wdata, int op)
+{
+  if (!wdata || (op != OP_EDITOR_COMPLETE))
+    return FR_NO_ACTION;
+
+  size_t i;
+  for (i = wdata->state->curpos; (i > 0) && (wdata->state->wbuf[i - 1] != ',') &&
+                                 (wdata->state->wbuf[i - 1] != ':');
+       i--)
+  {
+  }
+  for (; (i < wdata->state->lastchar) && (wdata->state->wbuf[i] == ' '); i++)
+    ; // do nothing
+
+  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
+  int rc = mutt_label_complete(wdata->cd, wdata->buffer, wdata->tabs);
+  replace_part(wdata->state, i, buf_string(wdata->buffer));
+  if (rc != 1)
+    return FR_CONTINUE;
+
+  return FR_SUCCESS;
+}
+
+/**
+ * CompleteCommandOps - Auto-Completion of Commands
+ */
+const struct CompleteOps CompleteCommandOps = {
+  .complete = complete_command,
+};
+
+/**
+ * CompleteLabelOps - Auto-Completion of Labels
+ */
+const struct CompleteOps CompleteLabelOps = {
+  .complete = complete_label,
+};

@@ -45,6 +45,7 @@
 #include "pgpkey.h"
 #include "lib.h"
 #include "enter/lib.h"
+#include "history/lib.h"
 #include "send/lib.h"
 #include "crypt.h"
 #include "globals.h" // IWYU pragma: keep
@@ -200,7 +201,7 @@ struct PgpKeyInfo *pgp_ask_for_key(char *tag, const char *whatfor,
   while (true)
   {
     buf_reset(resp);
-    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, false, NULL, NULL, NULL) != 0)
+    if (mw_get_field(tag, resp, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0)
     {
       goto done;
     }

@@ -37,16 +37,18 @@
 #define MUTT_ENTER_LIB_H
 
 #include <stddef.h>
-#include <stdbool.h>
 #include "mutt.h"
 // IWYU pragma: begin_keep
 #include "enter.h"
 #include "state.h"
+#include "wdata.h"
 // IWYU pragma: end_keep
+#include "history/lib.h"
 
 struct Buffer;
-struct Mailbox;
+struct CompleteOps;
 
-int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, bool multiple, struct Mailbox *m, char ***files, int *numfiles);
+int mw_get_field(const char *field, struct Buffer *buf, CompletionFlags complete, enum HistoryClass hclass, const struct CompleteOps *comp_api, void *cdata);
+void replace_part(struct EnterState *es, size_t from, const char *buf);
 
 #endif /* MUTT_ENTER_LIB_H */

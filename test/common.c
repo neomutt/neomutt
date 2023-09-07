@@ -32,6 +32,9 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "complete/lib.h"
+#include "copy.h"
+#include "mx.h"
 
 struct MuttWindow;
 struct PagerView;
@@ -42,8 +45,11 @@ char *HomeDir = NULL;
 int SigInt = 0;
 int SigWinch = 0;
 char *ShortHostname = "example";
+bool MonitorContextChanged = false;
 
 #define TEST_DIR "NEOMUTT_TEST_DIR"
+
+const struct CompleteOps CompleteMailboxOps = { 0 };
 
 static struct ConfigDef Vars[] = {
   // clang-format off
@@ -208,4 +214,54 @@ void buf_pretty_mailbox(struct Buffer *buf)
 
 void buf_expand_path_regex(struct Buffer *buf, bool regex)
 {
+}
+
+struct HashTable *mutt_make_id_hash(struct Mailbox *m)
+{
+  return NULL;
+}
+
+void mx_alloc_memory(struct Mailbox *m, int req_size)
+{
+}
+
+struct Mailbox *mx_path_resolve(const char *path)
+{
+  return NULL;
+}
+
+bool mx_mbox_ac_link(struct Mailbox *m)
+{
+  return false;
+}
+
+void mutt_encode_path(struct Buffer *buf, const char *src)
+{
+}
+
+void mutt_set_header_color(struct Mailbox *m, struct Email *e)
+{
+}
+
+enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
+                                     intptr_t data, struct Buffer *err)
+{
+  return MUTT_CMD_SUCCESS;
+}
+
+enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
+                                   intptr_t data, struct Buffer *err)
+{
+  return MUTT_CMD_SUCCESS;
+}
+
+struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpenFlags flags)
+{
+  return NULL;
+}
+
+int mutt_copy_message(FILE *fp_out, struct Email *e, struct Message *msg,
+                      CopyMessageFlags cmflags, CopyHeaderFlags chflags, int wraplen)
+{
+  return 0;
 }

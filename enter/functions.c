@@ -28,23 +28,16 @@
 
 #include "config.h"
 #include <string.h>
-#include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "alias/lib.h"
 #include "gui/lib.h"
-#include "mutt.h"
 #include "functions.h"
-#include "browser/lib.h"
 #include "complete/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
-#include "pattern/lib.h"
 #include "enter.h"
 #include "keymap.h"
-#include "mutt_mailbox.h"
-#include "muttlib.h"
 #include "opcodes.h"
 #include "protos.h"
 #include "state.h" // IWYU pragma: keep
@@ -56,7 +49,7 @@
  * @param from  Starting point for the replacement
  * @param buf   Replacement string
  */
-static void replace_part(struct EnterState *es, size_t from, const char *buf)
+void replace_part(struct EnterState *es, size_t from, const char *buf)
 {
   /* Save the suffix */
   size_t savelen = es->lastchar - es->curpos;
@@ -91,268 +84,6 @@ static void replace_part(struct EnterState *es, size_t from, const char *buf)
 // -----------------------------------------------------------------------------
 
 /**
- * complete_file_simple - Complete a filename
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_file_simple(struct EnterWindowData *wdata)
-{
-  int rc = FR_SUCCESS;
-  size_t i;
-  for (i = wdata->state->curpos;
-       (i > 0) && !mutt_mb_is_shell_char(wdata->state->wbuf[i - 1]); i--)
-  {
-  }
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
-  if (wdata->tempbuf && (wdata->templen == (wdata->state->lastchar - i)) &&
-      (memcmp(wdata->tempbuf, wdata->state->wbuf + i,
-              (wdata->state->lastchar - i) * sizeof(wchar_t)) == 0))
-  {
-    dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, wdata->m, NULL, NULL);
-    if (buf_is_empty(wdata->buffer))
-      replace_part(wdata->state, i, buf_string(wdata->buffer));
-    return FR_CONTINUE;
-  }
-
-  if (mutt_complete(wdata->cd, wdata->buffer) == 0)
-  {
-    wdata->templen = wdata->state->lastchar - i;
-    mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
-    memcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen * sizeof(wchar_t));
-  }
-  else
-  {
-    rc = FR_ERROR;
-  }
-
-  replace_part(wdata->state, i, buf_string(wdata->buffer));
-  return rc;
-}
-
-/**
- * complete_alias_complete - Complete an Alias
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_alias_complete(struct EnterWindowData *wdata)
-{
-  /* invoke the alias-menu to get more addresses */
-  size_t i;
-  for (i = wdata->state->curpos; (i > 0) && (wdata->state->wbuf[i - 1] != ',') &&
-                                 (wdata->state->wbuf[i - 1] != ':');
-       i--)
-  {
-  }
-  for (; (i < wdata->state->lastchar) && (wdata->state->wbuf[i] == ' '); i++)
-    ; // do nothing
-
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
-  int rc = alias_complete(wdata->buffer, NeoMutt->sub);
-  replace_part(wdata->state, i, buf_string(wdata->buffer));
-  if (rc != 1)
-  {
-    return FR_CONTINUE;
-  }
-
-  return FR_SUCCESS;
-}
-
-/**
- * complete_label - Complete a label
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_label(struct EnterWindowData *wdata)
-{
-  size_t i;
-  for (i = wdata->state->curpos; (i > 0) && (wdata->state->wbuf[i - 1] != ',') &&
-                                 (wdata->state->wbuf[i - 1] != ':');
-       i--)
-  {
-  }
-  for (; (i < wdata->state->lastchar) && (wdata->state->wbuf[i] == ' '); i++)
-    ; // do nothing
-
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
-  int rc = mutt_label_complete(wdata->cd, wdata->buffer, wdata->tabs);
-  replace_part(wdata->state, i, buf_string(wdata->buffer));
-  if (rc != 1)
-    return FR_CONTINUE;
-
-  return FR_SUCCESS;
-}
-
-/**
- * complete_pattern - Complete a NeoMutt Pattern
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_pattern(struct EnterWindowData *wdata)
-{
-  size_t i = wdata->state->curpos;
-  if (i && (wdata->state->wbuf[i - 1] == '~'))
-  {
-    if (dlg_pattern(wdata->buffer->data, wdata->buffer->dsize))
-      replace_part(wdata->state, i - 1, wdata->buffer->data);
-    buf_fix_dptr(wdata->buffer);
-    return FR_CONTINUE;
-  }
-
-  for (; (i > 0) && (wdata->state->wbuf[i - 1] != '~'); i--)
-    ; // do nothing
-
-  if ((i > 0) && (i < wdata->state->curpos) &&
-      (wdata->state->wbuf[i - 1] == '~') && (wdata->state->wbuf[i] == 'y'))
-  {
-    i++;
-    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
-    int rc = mutt_label_complete(wdata->cd, wdata->buffer, wdata->tabs);
-    replace_part(wdata->state, i, wdata->buffer->data);
-    buf_fix_dptr(wdata->buffer);
-    if (rc != 1)
-    {
-      return FR_CONTINUE;
-    }
-  }
-  else
-  {
-    return FR_NO_ACTION;
-  }
-
-  return FR_SUCCESS;
-}
-
-/**
- * complete_alias_query - Complete an Alias Query
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_alias_query(struct EnterWindowData *wdata)
-{
-  size_t i = wdata->state->curpos;
-  if (i != 0)
-  {
-    for (; (i > 0) && (wdata->state->wbuf[i - 1] != ','); i--)
-      ; // do nothing
-
-    for (; (i < wdata->state->curpos) && (wdata->state->wbuf[i] == ' '); i++)
-      ; // do nothing
-  }
-
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
-  query_complete(wdata->buffer, NeoMutt->sub);
-  replace_part(wdata->state, i, buf_string(wdata->buffer));
-
-  return FR_CONTINUE;
-}
-
-/**
- * complete_command - Complete a NeoMutt Command
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_command(struct EnterWindowData *wdata)
-{
-  int rc = FR_SUCCESS;
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-  size_t i = buf_len(wdata->buffer);
-  if ((i != 0) && (buf_at(wdata->buffer, i - 1) == '=') &&
-      (mutt_var_value_complete(wdata->cd, wdata->buffer, i) != 0))
-  {
-    wdata->tabs = 0;
-  }
-  else if (mutt_command_complete(wdata->cd, wdata->buffer, i, wdata->tabs) == 0)
-  {
-    rc = FR_ERROR;
-  }
-
-  replace_part(wdata->state, 0, buf_string(wdata->buffer));
-  return rc;
-}
-
-/**
- * complete_file_mbox - Complete a Mailbox
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_file_mbox(struct EnterWindowData *wdata)
-{
-  int rc = FR_SUCCESS;
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-
-  /* see if the path has changed from the last time */
-  if ((!wdata->tempbuf && !wdata->state->lastchar) ||
-      (wdata->tempbuf && (wdata->templen == wdata->state->lastchar) &&
-       (memcmp(wdata->tempbuf, wdata->state->wbuf,
-               wdata->state->lastchar * sizeof(wchar_t)) == 0)))
-  {
-    dlg_browser(wdata->buffer,
-                ((wdata->flags & MUTT_COMP_FILE_MBOX) ? MUTT_SEL_FOLDER : MUTT_SEL_NO_FLAGS) |
-                    (wdata->multiple ? MUTT_SEL_MULTI : MUTT_SEL_NO_FLAGS),
-                wdata->m, wdata->files, wdata->numfiles);
-    if (!buf_is_empty(wdata->buffer))
-    {
-      buf_pretty_mailbox(wdata->buffer);
-      if (!wdata->pass)
-        mutt_hist_add(wdata->hclass, buf_string(wdata->buffer), true);
-      wdata->done = true;
-      return FR_SUCCESS;
-    }
-
-    /* file selection cancelled */
-    return FR_CONTINUE;
-  }
-
-  if (mutt_complete(wdata->cd, wdata->buffer) == 0)
-  {
-    wdata->templen = wdata->state->lastchar;
-    mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
-    memcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen * sizeof(wchar_t));
-  }
-  else
-  {
-    return FR_ERROR; // let the user know that nothing matched
-  }
-  replace_part(wdata->state, 0, buf_string(wdata->buffer));
-  return rc;
-}
-
-#ifdef USE_NOTMUCH
-/**
- * complete_nm_query - Complete a Notmuch Query
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_nm_query(struct EnterWindowData *wdata)
-{
-  int rc = FR_SUCCESS;
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-  size_t len = buf_len(wdata->buffer);
-  if (!mutt_nm_query_complete(wdata->cd, wdata->buffer, len, wdata->tabs))
-    rc = FR_ERROR;
-
-  replace_part(wdata->state, 0, buf_string(wdata->buffer));
-  return rc;
-}
-
-/**
- * complete_nm_tag - Complete a Notmuch Tag
- * @param wdata Enter window data
- * @retval num #FunctionRetval, e.g. #FR_SUCCESS
- */
-static int complete_nm_tag(struct EnterWindowData *wdata)
-{
-  int rc = FR_SUCCESS;
-  buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-  if (!mutt_nm_tag_complete(wdata->cd, wdata->buffer, wdata->tabs))
-    rc = FR_ERROR;
-
-  replace_part(wdata->state, 0, buf_string(wdata->buffer));
-  return rc;
-}
-#endif
-
-/**
  * op_editor_complete - Complete filename or alias - Implements ::enter_function_t - @ingroup enter_function_api
  *
  * This function handles:
@@ -371,41 +102,9 @@ static int op_editor_complete(struct EnterWindowData *wdata, int op)
 
   wdata->tabs++;
   wdata->redraw = ENTER_REDRAW_LINE;
-  if (wdata->flags & MUTT_COMP_FILE_SIMPLE)
-    return complete_file_simple(wdata);
 
-  if (wdata->flags & (MUTT_COMP_FILE | MUTT_COMP_FILE_MBOX))
-    return complete_file_mbox(wdata);
-
-  if (wdata->flags & MUTT_COMP_ALIAS)
-  {
-    switch (op)
-    {
-      case OP_EDITOR_COMPLETE:
-        return complete_alias_complete(wdata);
-      case OP_EDITOR_COMPLETE_QUERY:
-        return complete_alias_query(wdata);
-      default:
-        return FR_NO_ACTION;
-    }
-  }
-
-  if ((wdata->flags & MUTT_COMP_LABEL))
-    return complete_label(wdata);
-
-  if ((wdata->flags & MUTT_COMP_PATTERN))
-    return complete_pattern(wdata);
-
-  if (wdata->flags & MUTT_COMP_COMMAND)
-    return complete_command(wdata);
-
-#ifdef USE_NOTMUCH
-  if (wdata->flags & MUTT_COMP_NM_QUERY)
-    return complete_nm_query(wdata);
-
-  if (wdata->flags & MUTT_COMP_NM_TAG)
-    return complete_nm_tag(wdata);
-#endif
+  if (wdata->comp_api && wdata->comp_api->complete)
+    return wdata->comp_api->complete(wdata, op);
 
   return FR_NO_ACTION;
 }
@@ -454,29 +153,6 @@ static int op_editor_history_up(struct EnterWindowData *wdata, int op)
   replace_part(wdata->state, 0, mutt_hist_prev(wdata->hclass));
   wdata->redraw = ENTER_REDRAW_INIT;
   return FR_SUCCESS;
-}
-
-/**
- * op_editor_mailbox_cycle - Cycle among incoming mailboxes - Implements ::enter_function_t - @ingroup enter_function_api
- */
-static int op_editor_mailbox_cycle(struct EnterWindowData *wdata, int op)
-{
-  if (wdata->flags & MUTT_COMP_FILE_MBOX)
-  {
-    wdata->first = true; /* clear input if user types a real key later */
-    buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-    mutt_mailbox_next(wdata->m, wdata->buffer);
-
-    wdata->state->curpos = wdata->state->lastchar = mutt_mb_mbstowcs(
-        &wdata->state->wbuf, &wdata->state->wbuflen, 0, buf_string(wdata->buffer));
-    return FR_SUCCESS;
-  }
-  else if (!(wdata->flags & MUTT_COMP_FILE))
-  {
-    return FR_NO_ACTION;
-  }
-
-  return op_editor_complete(wdata, op);
 }
 
 // -----------------------------------------------------------------------------
@@ -710,7 +386,7 @@ static const struct EnterFunction EnterFunctions[] = {
   { OP_EDITOR_KILL_LINE,          op_editor_kill_line },
   { OP_EDITOR_KILL_WHOLE_LINE,    op_editor_kill_whole_line },
   { OP_EDITOR_KILL_WORD,          op_editor_kill_word },
-  { OP_EDITOR_MAILBOX_CYCLE,      op_editor_mailbox_cycle },
+  { OP_EDITOR_MAILBOX_CYCLE,      op_editor_complete },
   { OP_EDITOR_QUOTE_CHAR,         op_editor_quote_char },
   { OP_EDITOR_TRANSPOSE_CHARS,    op_editor_transpose_chars },
   { OP_EDITOR_UPCASE_WORD,        op_editor_capitalize_word },
