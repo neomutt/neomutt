@@ -897,8 +897,7 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
            tag ? ngettext("Print tagged attachment?", "Print %d tagged attachments?", tagmsgcount) :
                  _("Print attachment?"),
            tagmsgcount);
-  const enum QuadOption c_print = cs_subset_quad(NeoMutt->sub, "print");
-  if (query_quadoption(c_print, prompt) != MUTT_YES)
+  if (query_quadoption(prompt, NeoMutt->sub, "print") != MUTT_YES)
     return;
 
   const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");

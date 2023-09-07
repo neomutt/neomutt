@@ -1500,7 +1500,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid,
                    buf_string(p->mailbox));
-          ans = query_yesorno(buf, MUTT_YES);
+          ans = query_yesorno_help(buf, MUTT_YES, NeoMutt->sub, "crypt_confirm_hook");
         }
         if (ans == MUTT_YES)
         {

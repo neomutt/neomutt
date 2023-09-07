@@ -38,6 +38,7 @@
 
 int             mw_multi_choice   (const char *prompt, const char *letters);
 enum QuadOption query_yesorno     (const char *prompt, enum QuadOption def);
-enum QuadOption query_quadoption  (enum QuadOption opt, const char *prompt);
+enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def, struct ConfigSubset *sub, const char *name);
+enum QuadOption query_quadoption  (const char *prompt, struct ConfigSubset *sub, const char *name);
 
 #endif /* MUTT_QUESTION_LIB_H */

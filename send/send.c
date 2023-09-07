@@ -335,10 +335,9 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     }
   }
 
-  const enum QuadOption c_abort_nosubject = cs_subset_quad(sub, "abort_nosubject");
   if ((mw_get_field(_("Subject: "), buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0) ||
       (buf_is_empty(buf) &&
-       (query_quadoption(c_abort_nosubject, _("No subject, abort?")) != MUTT_NO)))
+       (query_quadoption(_("No subject, abort?"), sub, "abort_nosubject") != MUTT_NO)))
   {
     mutt_message(_("No subject, aborting"));
     goto done;
@@ -584,7 +583,6 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
   mutt_generate_recvattach_list(actx, actx->email, actx->email->body,
                                 actx->fp_root, -1, 0, 0);
 
-  const enum QuadOption c_forward_attachments = cs_subset_quad(sub, "forward_attachments");
   for (i = 0; i < actx->idxlen; i++)
   {
     body = actx->idx[i]->body;
@@ -597,14 +595,13 @@ static int inline_forward_attachments(struct Mailbox *m, struct Email *e,
       /* Ask the quadoption only once */
       if (*forwardq == MUTT_ABORT)
       {
-        *forwardq = query_quadoption(c_forward_attachments,
-                                     /* L10N: This is the prompt for $forward_attachments.
-                                        When inline forwarding ($mime_forward answered "no"), this prompts
-                                        whether to add non-decodable attachments from the original email.
-                                        Text/plain parts and the like will already be included in the
-                                        message contents, but other attachment, such as PDF files, will also
-                                        be added as attachments to the new mail, if this is answered yes.  */
-                                     _("Forward attachments?"));
+        /* L10N: This is the prompt for $forward_attachments.
+           When inline forwarding ($mime_forward answered "no"), this prompts
+           whether to add non-decodable attachments from the original email.
+           Text/plain parts and the like will already be included in the
+           message contents, but other attachment, such as PDF files, will also
+           be added as attachments to the new mail, if this is answered yes.  */
+        *forwardq = query_quadoption(_("Forward attachments?"), sub, "forward_attachments");
         if (*forwardq != MUTT_YES)
         {
           if (*forwardq == -1)
@@ -895,7 +892,7 @@ static int default_to(struct AddressList *to, struct Envelope *env,
          If she says no, neomutt will reply to the from header's address instead. */
       snprintf(prompt, sizeof(prompt), _("Reply to %s%s?"),
                buf_string(reply_to->mailbox), multiple_reply_to ? ",..." : "");
-      switch (query_quadoption(c_reply_to, prompt))
+      switch (query_quadoption(prompt, sub, "reply_to"))
       {
         case MUTT_YES:
           mutt_addrlist_copy(to, &env->reply_to, false);
@@ -944,8 +941,7 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in,
              buf_string(followup_to->mailbox),
              TAILQ_NEXT(TAILQ_FIRST(&in->mail_followup_to), entries) ? ",..." : "");
 
-    const enum QuadOption c_honor_followup_to = cs_subset_quad(sub, "honor_followup_to");
-    hmfupto = query_quadoption(c_honor_followup_to, prompt);
+    hmfupto = query_quadoption(prompt, sub, "honor_followup_to");
     if (hmfupto == MUTT_ABORT)
       return -1;
   }
@@ -1233,8 +1229,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
 
   if (flags & SEND_REPLY)
   {
-    const enum QuadOption c_include = cs_subset_quad(sub, "include");
-    enum QuadOption ans = query_quadoption(c_include, _("Include message in reply?"));
+    enum QuadOption ans = query_quadoption(_("Include message in reply?"), sub, "include");
     if (ans == MUTT_ABORT)
       return -1;
 
@@ -1259,8 +1254,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
   }
   else if (flags & SEND_FORWARD)
   {
-    const enum QuadOption c_mime_forward = cs_subset_quad(sub, "mime_forward");
-    enum QuadOption ans = query_quadoption(c_mime_forward, _("Forward as attachment?"));
+    enum QuadOption ans = query_quadoption(_("Forward as attachment?"), sub, "mime_forward");
     if (ans == MUTT_YES)
     {
       struct Body *last = e->body;
@@ -1824,7 +1818,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
         if ((c_fcc_attach == MUTT_NO) || (c_fcc_attach == MUTT_ASKNO))
           save_atts = false;
       }
-      else if (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) != MUTT_YES)
+      else if (query_quadoption(_("Save attachments in Fcc?"), sub, "fcc_attach") != MUTT_YES)
       {
         save_atts = false;
       }
@@ -1836,7 +1830,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
            mutt_str_equal(e->body->subtype, "signed")))
       {
         if ((clear_content->type == TYPE_MULTIPART) &&
-            (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) != MUTT_YES))
+            (query_quadoption(_("Save attachments in Fcc?"), sub, "fcc_attach") != MUTT_YES))
         {
           if (!(e->security & SEC_ENCRYPT) && (e->security & SEC_SIGN))
           {
@@ -1862,7 +1856,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
       }
       else
       {
-        if (query_quadoption(c_fcc_attach, _("Save attachments in Fcc?")) != MUTT_YES)
+        if (query_quadoption(_("Save attachments in Fcc?"), sub, "fcc_attach") != MUTT_YES)
           e->body = e->body->parts;
       }
     }
@@ -2115,7 +2109,7 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
     return true;
   }
 
-  return query_quadoption(c_abort_noattach, _("No attachments, cancel sending?")) != MUTT_NO;
+  return query_quadoption(_("No attachments, cancel sending?"), sub, "abort_noattach") != MUTT_NO;
 }
 
 /**
@@ -2168,7 +2162,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
     /* If the user is composing a new message, check to see if there
      * are any postponed messages first.  */
-    enum QuadOption ans = query_quadoption(c_recall, _("Recall postponed message?"));
+    enum QuadOption ans = query_quadoption(_("Recall postponed message?"), sub, "recall");
     if (ans == MUTT_ABORT)
       return rc;
 
@@ -2508,7 +2502,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
     const bool c_auto_edit = cs_subset_bool(sub, "auto_edit");
-    const enum QuadOption c_forward_edit = cs_subset_quad(sub, "forward_edit");
 
     /* Select whether or not the user's editor should be called now.  We
      * don't want to do this when:
@@ -2520,7 +2513,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
      *    recipients.  */
     if (!(flags & SEND_KEY) &&
         (((flags & SEND_FORWARD) == 0) || (c_edit_headers && c_auto_edit) ||
-         (query_quadoption(c_forward_edit, _("Edit forwarded message?")) == MUTT_YES)))
+         (query_quadoption(_("Edit forwarded message?"), sub, "forward_edit") == MUTT_YES)))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       const char *const c_editor = cs_subset_string(sub, "editor");
@@ -2559,11 +2552,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       if (stat(e_templ->body->filename, &st) == 0)
       {
-        const enum QuadOption c_abort_unmodified = cs_subset_quad(sub, "abort_unmodified");
-
         /* if the file was not modified, bail out now */
         if ((mtime == st.st_mtime) && !e_templ->body->next &&
-            (query_quadoption(c_abort_unmodified, _("Abort unmodified message?")) == MUTT_YES))
+            (query_quadoption(_("Abort unmodified message?"), sub, "abort_unmodified") == MUTT_YES))
         {
           mutt_message(_("Aborted unmodified message"));
           goto cleanup;
@@ -2792,7 +2783,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   const enum QuadOption c_abort_nosubject = cs_subset_quad(sub, "abort_nosubject");
 
   if (!e_templ->env->subject && !(flags & SEND_BATCH) &&
-      (query_quadoption(c_abort_nosubject, _("No subject, abort sending?")) != MUTT_NO))
+      (query_quadoption(_("No subject, abort sending?"), sub, "abort_nosubject") != MUTT_NO))
   {
     /* if the abort is automatic, print an error message */
     if (c_abort_nosubject == MUTT_YES)

@@ -145,8 +145,7 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   buf_printf(prompt, ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
              buf_string(buf));
 
-  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
-  if (query_quadoption(c_bounce, buf_string(prompt)) != MUTT_YES)
+  if (query_quadoption(buf_string(prompt), NeoMutt->sub, "bounce") != MUTT_YES)
   {
     msgwin_clear_text(NULL);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
@@ -453,7 +452,7 @@ void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
 
   int msg_count = ARRAY_SIZE(ea);
   const char *msg = ngettext("Print message?", "Print tagged messages?", msg_count);
-  if (query_quadoption(c_print, msg) != MUTT_YES)
+  if (query_quadoption(msg, NeoMutt->sub, "print") != MUTT_YES)
   {
     return;
   }

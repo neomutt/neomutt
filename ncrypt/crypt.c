@@ -184,11 +184,10 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (((WithCrypto & APPLICATION_PGP) != 0) && !(security & SEC_AUTOCRYPT) &&
       ((security & PGP_INLINE) == PGP_INLINE))
   {
-    const enum QuadOption c_pgp_mime_auto = cs_subset_quad(NeoMutt->sub, "pgp_mime_auto");
     if ((e->body->type != TYPE_TEXT) || !mutt_istr_equal(e->body->subtype, "plain"))
     {
-      if (query_quadoption(c_pgp_mime_auto, _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?")) !=
-          MUTT_YES)
+      if (query_quadoption(_("Inline PGP can't be used with attachments.  Revert to PGP/MIME?"),
+                           NeoMutt->sub, "pgp_mime_auto") != MUTT_YES)
       {
         mutt_error(_("Mail not sent: inline PGP can't be used with attachments"));
         return -1;
@@ -196,8 +195,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     }
     else if (mutt_istr_equal("flowed", mutt_param_get(&e->body->parameter, "format")))
     {
-      if ((query_quadoption(c_pgp_mime_auto, _("Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"))) !=
-          MUTT_YES)
+      if ((query_quadoption(_("Inline PGP can't be used with format=flowed.  Revert to PGP/MIME?"),
+                            NeoMutt->sub, "pgp_mime_auto")) != MUTT_YES)
       {
         mutt_error(_("Mail not sent: inline PGP can't be used with format=flowed"));
         return -1;
@@ -219,8 +218,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
       }
 
       /* otherwise inline won't work...ask for revert */
-      if (query_quadoption(c_pgp_mime_auto,
-                           _("Message can't be sent inline.  Revert to using PGP/MIME?")) != MUTT_YES)
+      if (query_quadoption(_("Message can't be sent inline.  Revert to using PGP/MIME?"),
+                           NeoMutt->sub, "pgp_mime_auto") != MUTT_YES)
       {
         mutt_error(_("Mail not sent"));
         return -1;

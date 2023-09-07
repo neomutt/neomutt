@@ -1806,8 +1806,8 @@ static int op_compose_send_message(struct ComposeSharedData *shared, int op)
 
   if (!shared->fcc_set && !buf_is_empty(shared->fcc))
   {
-    const enum QuadOption c_copy = cs_subset_quad(shared->sub, "copy");
-    enum QuadOption ans = query_quadoption(c_copy, _("Save a copy of this message?"));
+    enum QuadOption ans = query_quadoption(_("Save a copy of this message?"),
+                                           shared->sub, "copy");
     if (ans == MUTT_ABORT)
       return FR_NO_ACTION;
     else if (ans == MUTT_NO)
@@ -1876,8 +1876,8 @@ static int op_display_headers(struct ComposeSharedData *shared, int op)
  */
 static int op_exit(struct ComposeSharedData *shared, int op)
 {
-  const enum QuadOption c_postpone = cs_subset_quad(shared->sub, "postpone");
-  enum QuadOption ans = query_quadoption(c_postpone, _("Save (postpone) draft message?"));
+  enum QuadOption ans = query_quadoption(_("Save (postpone) draft message?"),
+                                         shared->sub, "postpone");
   if (ans == MUTT_NO)
   {
     for (int i = 0; i < shared->adata->actx->idxlen; i++)

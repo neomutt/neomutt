@@ -1043,14 +1043,14 @@ static int smtp_open(struct SmtpAccountData *adata, bool esmtp)
 
 #ifdef USE_SSL
   const bool c_ssl_force_tls = cs_subset_bool(adata->sub, "ssl_force_tls");
-  const enum QuadOption c_ssl_starttls = cs_subset_quad(adata->sub, "ssl_starttls");
   enum QuadOption ans = MUTT_NO;
   if (adata->conn->ssf != 0)
     ans = MUTT_NO;
   else if (c_ssl_force_tls)
     ans = MUTT_YES;
   else if ((adata->capabilities & SMTP_CAP_STARTTLS) &&
-           ((ans = query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"))) == MUTT_ABORT))
+           ((ans = query_quadoption(_("Secure connection with TLS?"),
+                                    adata->sub, "ssl_starttls")) == MUTT_ABORT))
   {
     return -1;
   }

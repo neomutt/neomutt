@@ -596,8 +596,8 @@ void pop_fetch_mail(void)
   bool old_append = m_spool->append;
   m_spool->append = true;
 
-  const enum QuadOption c_pop_delete = cs_subset_quad(NeoMutt->sub, "pop_delete");
-  enum QuadOption delanswer = query_quadoption(c_pop_delete, _("Delete messages from server?"));
+  enum QuadOption delanswer = query_quadoption(_("Delete messages from server?"),
+                                               NeoMutt->sub, "pop_delete");
 
   snprintf(msgbuf, sizeof(msgbuf),
            ngettext("Reading new messages (%d byte)...",
