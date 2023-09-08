@@ -187,7 +187,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
 }
 
 /**
- * mw_yesorno - Ask the user a Yes/No question - @ingroup gui_mw
+ * query_yesorno - Ask the user a Yes/No question - @ingroup gui_mw
  * @param msg Prompt
  * @param def Default answer, #MUTT_YES or #MUTT_NO (see #QuadOption)
  * @retval enum #QuadOption, Selection made
@@ -201,7 +201,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * - English, `[+1yY]` or `[-0nN]`
  * - Serbian, `[+1yYdDДд]` or `[-0nNНн]`
  */
-enum QuadOption mw_yesorno(const char *msg, enum QuadOption def)
+enum QuadOption query_yesorno(const char *msg, enum QuadOption def)
 {
   struct MuttWindow *win = msgwin_get_window();
   if (!win)
@@ -397,7 +397,7 @@ enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
       return opt;
 
     default:
-      opt = mw_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
+      opt = query_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
       msgwin_clear_text();
       return opt;
   }

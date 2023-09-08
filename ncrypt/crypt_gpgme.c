@@ -3453,7 +3453,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid,
                    buf_string(p->mailbox));
-          ans = mw_yesorno(buf, MUTT_YES);
+          ans = query_yesorno(buf, MUTT_YES);
         }
         if (ans == MUTT_YES)
         {

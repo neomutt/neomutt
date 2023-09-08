@@ -1420,7 +1420,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
       const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
-      if (c_confirm_create && (mw_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      if (c_confirm_create && (query_yesorno(prompt, MUTT_YES) != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -1590,7 +1590,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
   {
     if (close)
     {
-      if (mw_yesorno(_("Error saving flags. Close anyway?"), MUTT_NO) == MUTT_YES)
+      if (query_yesorno(_("Error saving flags. Close anyway?"), MUTT_NO) == MUTT_YES)
       {
         adata->state = IMAP_AUTHENTICATED;
         return 0;
@@ -2076,7 +2076,7 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
   const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
-  if (c_confirm_create && (mw_yesorno(buf, MUTT_YES) != MUTT_YES))
+  if (c_confirm_create && (query_yesorno(buf, MUTT_YES) != MUTT_YES))
     return false;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)

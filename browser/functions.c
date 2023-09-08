@@ -462,7 +462,7 @@ static int op_delete_mailbox(struct BrowserPrivateData *priv, int op)
   }
 
   snprintf(msg, sizeof(msg), _("Really delete mailbox \"%s\"?"), ff->name);
-  if (mw_yesorno(msg, MUTT_NO) != MUTT_YES)
+  if (query_yesorno(msg, MUTT_NO) != MUTT_YES)
   {
     mutt_message(_("Mailbox not deleted"));
     return FR_NO_ACTION;

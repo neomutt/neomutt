@@ -181,7 +181,7 @@ static int check_attachments(struct AttachCtx *actx, struct ConfigSubset *sub)
       buf_printf(msg, _("Attachment #%d modified. Update encoding for %s?"),
                  i + 1, buf_string(pretty));
 
-      enum QuadOption ans = mw_yesorno(buf_string(msg), MUTT_YES);
+      enum QuadOption ans = query_yesorno(buf_string(msg), MUTT_YES);
       if (ans == MUTT_YES)
         mutt_update_encoding(actx->idx[i]->body, sub);
       else if (ans == MUTT_ABORT)
@@ -1167,7 +1167,8 @@ static int op_attachment_group_lingual(struct ComposeSharedData *shared, int op)
 
   if (shared->adata->menu->num_tagged != tagged_with_lang_num)
   {
-    if (mw_yesorno(_("Not all parts have 'Content-Language' set, continue?"), MUTT_YES) != MUTT_YES)
+    if (query_yesorno(_("Not all parts have 'Content-Language' set, continue?"),
+                      MUTT_YES) != MUTT_YES)
     {
       mutt_message(_("Not sending this message"));
       return FR_ERROR;

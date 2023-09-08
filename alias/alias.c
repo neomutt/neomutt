@@ -411,7 +411,7 @@ retry_name:
 
   if (check_alias_name(buf_string(buf), fixed->data, fixed->dsize))
   {
-    switch (mw_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
+    switch (query_yesorno(_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
       case MUTT_YES:
         buf_copy(buf, fixed);
@@ -484,7 +484,7 @@ retry_name:
   {
     buf_printf(prompt, "[%s = %s] %s", alias->name, buf_string(buf), _("Accept?"));
   }
-  if (mw_yesorno(buf_string(prompt), MUTT_YES) != MUTT_YES)
+  if (query_yesorno(buf_string(prompt), MUTT_YES) != MUTT_YES)
   {
     alias_free(&alias);
     goto done;

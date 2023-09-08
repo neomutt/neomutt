@@ -618,7 +618,7 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
     }
     /* L10N: Means "The path you specified as the destination file is a directory."
        See the msgid "Save to file: " (alias.c, recvattach.c) */
-    else if ((ans = mw_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
+    else if ((ans = query_yesorno(_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
       return (ans == MUTT_NO) ? 1 : -1;
 
     struct Buffer *tmp = buf_pool_get();
@@ -1345,7 +1345,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     {
       struct Buffer *tmp = buf_pool_get();
       buf_printf(tmp, _("Append messages to %s?"), s);
-      enum QuadOption ans = mw_yesorno(buf_string(tmp), MUTT_YES);
+      enum QuadOption ans = query_yesorno(buf_string(tmp), MUTT_YES);
       if (ans == MUTT_NO)
         rc = 1;
       else if (ans == MUTT_ABORT)
@@ -1383,7 +1383,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
       {
         struct Buffer *tmp = buf_pool_get();
         buf_printf(tmp, _("Create %s?"), s);
-        enum QuadOption ans = mw_yesorno(buf_string(tmp), MUTT_YES);
+        enum QuadOption ans = query_yesorno(buf_string(tmp), MUTT_YES);
         if (ans == MUTT_NO)
           rc = 1;
         else if (ans == MUTT_ABORT)

@@ -52,7 +52,7 @@
  * In this active state the Window will have focus and it's the responsibility
  * of the hijacker to perform the drawing.
  *
- * @sa mw_yesorno(), @ref progress_progress
+ * @sa query_yesorno(), @ref progress_progress
  *
  * ## Windows
  *

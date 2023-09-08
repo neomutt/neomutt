@@ -335,7 +335,7 @@ static int op_compose_pgp_menu(struct EnvelopeWindowData *wdata, int op)
   {
     if (wdata->email->security & (SEC_ENCRYPT | SEC_SIGN))
     {
-      if (mw_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
+      if (query_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
       {
         mutt_clear_error();
         return FR_NO_ACTION;
@@ -374,7 +374,7 @@ static int op_compose_smime_menu(struct EnvelopeWindowData *wdata, int op)
   {
     if (wdata->email->security & (SEC_ENCRYPT | SEC_SIGN))
     {
-      if (mw_yesorno(_("PGP already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
+      if (query_yesorno(_("PGP already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
       {
         mutt_clear_error();
         return FR_NO_ACTION;
@@ -410,7 +410,7 @@ static int op_compose_autocrypt_menu(struct EnvelopeWindowData *wdata, int op)
   {
     if (wdata->email->security & (SEC_ENCRYPT | SEC_SIGN))
     {
-      if (mw_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
+      if (query_yesorno(_("S/MIME already selected. Clear and continue?"), MUTT_YES) != MUTT_YES)
       {
         mutt_clear_error();
         return FR_NO_ACTION;

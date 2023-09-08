@@ -643,7 +643,7 @@ fallback:
 enum QuadOption imap_continue(const char *msg, const char *resp)
 {
   imap_error(msg, resp);
-  return mw_yesorno(_("Continue?"), MUTT_NO);
+  return query_yesorno(_("Continue?"), MUTT_NO);
 }
 
 /**
