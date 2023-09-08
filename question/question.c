@@ -37,6 +37,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "keymap.h"
@@ -293,6 +294,11 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
       show_help_prompt = false;
       msgwin_clear_text(win);
       buf_printf(text, "$%s - %s\n", cdef->name, cdef->docs);
+
+      char hyphen[128] = { 0 };
+      mutt_str_hyphenate(hyphen, sizeof(hyphen), cdef->name);
+      buf_add_printf(text, "https://neomutt.org/guide/reference#%s\n", hyphen);
+
       msgwin_add_text(win, buf_string(text), simple_color_get(MT_COLOR_NORMAL));
 
       buf_printf(text, "%s ([%s]/%s): ", prompt, (def == MUTT_YES) ? yes : no,
