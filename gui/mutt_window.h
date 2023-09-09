@@ -96,7 +96,8 @@ enum WindowType
   WT_HELP_BAR,        ///< Help Bar containing list of useful key bindings
   WT_INDEX,           ///< A panel containing the Index Window
   WT_MENU,            ///< An Window containing a Menu
-  WT_MESSAGE,         ///< Window for messages/errors and command entry
+  WT_MESSAGE,         ///< Window for messages/errors
+  WT_MSG_FOCUS,       ///< Message Window that has focus
   WT_PAGER,           ///< A panel containing the Pager Window
   WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
   WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc

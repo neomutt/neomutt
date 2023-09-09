@@ -23,13 +23,16 @@
 #ifndef MUTT_GUI_MSGWIN_H
 #define MUTT_GUI_MSGWIN_H
 
-#include <stdio.h>
+#include <stddef.h>
+#include <stdbool.h>
 #include "color/lib.h"
 
 struct MuttWindow;
 
 void               msgwin_clear_text(struct MuttWindow *win);
-struct MuttWindow *msgwin_new       (void);
+struct MuttWindow *msgwin_new       (bool interactive);
+void               msgwin_add_text  (struct MuttWindow *win, const char *text, const struct AttrColor *ac_color);
+void               msgwin_add_text_n(struct MuttWindow *win, const char *text, int bytes, const struct AttrColor *ac_color);
 const char *       msgwin_get_text  (struct MuttWindow *win);
 size_t             msgwin_get_width (void);
 struct MuttWindow *msgwin_get_window(void);

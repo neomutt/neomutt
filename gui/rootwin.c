@@ -232,7 +232,7 @@ void rootwin_new(void)
   }
 
   struct MuttWindow *win_cont = msgcont_new();
-  struct MuttWindow *win_msg = msgwin_new();
+  struct MuttWindow *win_msg = msgwin_new(false);
   mutt_window_add_child(win_cont, win_msg);
   mutt_window_add_child(win_root, win_cont);
 

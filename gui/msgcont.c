@@ -37,7 +37,7 @@
 #endif
 
 /// Window acting as a stack for the message windows
-static struct MuttWindow *MessageContainer = NULL;
+struct MuttWindow *MessageContainer = NULL;
 
 /**
  * msgcont_new - Create a new Message Container
