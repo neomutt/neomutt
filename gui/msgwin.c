@@ -83,6 +83,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
 #include <wchar.h>
@@ -521,40 +522,4 @@ void msgwin_clear_text(struct MuttWindow *win)
 struct MuttWindow *msgwin_get_window(void)
 {
   return msgcont_get_msgwin();
-}
-
-/**
- * msgwin_get_width - Get the width of the Message Window
- * @retval num Width of Message Window
- */
-size_t msgwin_get_width(void)
-{
-  struct MuttWindow *win = msgcont_get_msgwin();
-  if (!win)
-    return 0;
-
-  return win->state.cols;
-}
-
-/**
- * msgwin_set_height - Resize the Message Window
- * @param height Number of rows required
- *
- * Resize the other Windows to allow a multi-line message to be displayed.
- */
-void msgwin_set_height(short height)
-{
-  struct MuttWindow *win = msgcont_get_msgwin();
-  if (!win)
-    return;
-
-  if (height < 1)
-    height = 1;
-  else if (height > 3)
-    height = 3;
-
-  struct MuttWindow *win_cont = win->parent;
-
-  win_cont->req_rows = height;
-  mutt_window_reflow(win_cont->parent);
 }
