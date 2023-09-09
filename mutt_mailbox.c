@@ -33,7 +33,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "mutt_mailbox.h"
 #include "postpone/lib.h"
 #include "muttlib.h"
@@ -271,16 +270,9 @@ bool mutt_mailbox_list(void)
     buf_strcpy(path, mailbox_path(np->mailbox));
     buf_pretty_mailbox(path);
 
-    const size_t width = msgwin_get_width();
-    if (!first && (width >= 7) && ((pos + buf_len(path)) >= (width - 7)))
-    {
-      break;
-    }
-
     if (!first)
       pos += strlen(strncat(mailboxlist + pos, ", ", sizeof(mailboxlist) - 1 - pos));
 
-    /* Prepend an asterisk to mailboxes not already notified */
     if (!np->mailbox->notified)
     {
       np->mailbox->notified = true;
@@ -290,11 +282,6 @@ bool mutt_mailbox_list(void)
     first = 0;
   }
   neomutt_mailboxlist_clear(&ml);
-
-  if (!first && np)
-  {
-    strncat(mailboxlist + pos, ", ...", sizeof(mailboxlist) - 1 - pos);
-  }
 
   buf_pool_release(&path);
 
