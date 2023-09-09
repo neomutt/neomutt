@@ -477,7 +477,7 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
   mutt_curses_set_cursor(old_cursor);
 
   window_set_focus(old_focus);
-  msgwin_clear_text();
+  msgwin_clear_text(NULL);
 
   if (event.op == OP_ABORT)
     return -1;

@@ -469,7 +469,7 @@ int dlg_pager(struct PagerView *pview)
       priv->pager_redraw = false;
       mutt_resize_screen();
       clearok(stdscr, true); /* force complete redraw */
-      msgwin_clear_text();
+      msgwin_clear_text(NULL);
 
       pager_queue_redraw(priv, PAGER_REDRAW_FLOW);
       if (pview->flags & MUTT_PAGER_RETWINCH)

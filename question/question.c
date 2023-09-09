@@ -398,7 +398,7 @@ enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
 
     default:
       opt = query_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
-      msgwin_clear_text();
+      msgwin_clear_text(NULL);
       return opt;
   }
 

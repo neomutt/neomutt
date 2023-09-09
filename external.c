@@ -164,12 +164,12 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, buf_string(prompt)) != MUTT_YES)
   {
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     goto done;
   }
 
-  msgwin_clear_text();
+  msgwin_clear_text(NULL);
 
   struct Message *msg = NULL;
   ARRAY_FOREACH(ep, ea)
@@ -618,7 +618,7 @@ bool mutt_shell_escape(void)
     goto done;
   }
 
-  msgwin_clear_text();
+  msgwin_clear_text(NULL);
   mutt_endwin();
   fflush(stdout);
   int rc2 = mutt_system(buf_string(buf));

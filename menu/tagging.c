@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -49,17 +50,17 @@ static void menu_set_prefix(struct Menu *menu)
   mutt_debug(LL_DEBUG1, "tag_prefix = %d\n", menu->tag_prefix);
 
   // Don't overwrite error messages
-  const char *msg_text = msgwin_get_text();
+  const char *msg_text = msgwin_get_text(NULL);
   if (msg_text && !mutt_str_equal(msg_text, "tag-"))
     return;
 
   if (menu->tag_prefix)
   {
-    msgwin_set_text("tag-", MT_COLOR_NORMAL);
+    msgwin_set_text(NULL, "tag-", MT_COLOR_NORMAL);
   }
   else
   {
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
   }
 }
 
@@ -129,7 +130,7 @@ static int op_tag(struct Menu *menu, int op)
   /* give visual indication that the next command is a tag- command */
   if (menu->tag_prefix)
   {
-    msgwin_set_text("tag-", MT_COLOR_NORMAL);
+    msgwin_set_text(NULL, "tag-", MT_COLOR_NORMAL);
   }
 
   menu->win->actions |= WA_REPAINT;

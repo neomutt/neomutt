@@ -26,12 +26,14 @@
 #include <stdio.h>
 #include "color/lib.h"
 
-void               msgwin_clear_text(void);
+struct MuttWindow;
+
+void               msgwin_clear_text(struct MuttWindow *win);
 struct MuttWindow *msgwin_new       (void);
-const char *       msgwin_get_text  (void);
+const char *       msgwin_get_text  (struct MuttWindow *win);
 size_t             msgwin_get_width (void);
 struct MuttWindow *msgwin_get_window(void);
 void               msgwin_set_height(short height);
-void               msgwin_set_text  (const char *text, enum ColorId cid);
+void               msgwin_set_text  (struct MuttWindow *win, const char *text, enum ColorId cid);
 
 #endif /* MUTT_GUI_MSGWIN_H */

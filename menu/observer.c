@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -119,7 +120,7 @@ static int menu_window_observer(struct NotifyCallback *nc)
     notify_observer_remove(NeoMutt->sub->notify, menu_config_observer, menu);
     notify_observer_remove(win->notify, menu_window_observer, menu);
     mutt_color_observer_remove(menu_color_observer, menu);
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
 

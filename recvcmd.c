@@ -257,12 +257,12 @@ void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, buf_string(prompt)) != MUTT_YES)
   {
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", num_msg));
     goto done;
   }
 
-  msgwin_clear_text();
+  msgwin_clear_text(NULL);
 
   int rc = 0;
   if (cur)

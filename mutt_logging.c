@@ -78,7 +78,7 @@ void mutt_clear_error(void)
 
   ErrorBufMessage = false;
   if (!OptNoCurses)
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
 }
 
 /**
@@ -148,7 +148,7 @@ int log_disp_curses(time_t stamp, const char *file, int line, const char *functi
         break;
     }
 
-    msgwin_set_text(ErrorBuf, cid);
+    msgwin_set_text(NULL, ErrorBuf, cid);
   }
 
   if ((level <= LL_ERROR) && !dupe)

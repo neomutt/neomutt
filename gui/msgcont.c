@@ -102,3 +102,25 @@ void msgcont_push_window(struct MuttWindow *win)
   debug_win_dump();
 #endif
 }
+
+/**
+ * msgcont_get_msgwin - Get the Message Window
+ * @retval ptr Message Window
+ *
+ * The Message Window is the first child of the MessageContainer and will have
+ * type WT_MESSAGE.
+ */
+struct MuttWindow *msgcont_get_msgwin(void)
+{
+  if (!MessageContainer)
+    return NULL;
+
+  struct MuttWindow *win = TAILQ_FIRST(&MessageContainer->children);
+  if (!win)
+    return NULL;
+
+  if (win->type != WT_MESSAGE)
+    return NULL;
+
+  return win;
+}

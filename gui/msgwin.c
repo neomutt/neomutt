@@ -86,12 +86,10 @@
 #include "mutt/lib.h"
 #include "msgwin.h"
 #include "color/lib.h"
+#include "msgcont.h"
 #include "msgwin_wdata.h"
 #include "mutt_curses.h"
 #include "mutt_window.h"
-
-/// Message Window for messages, warnings, errors etc
-static struct MuttWindow *MessageWindow = NULL;
 
 /**
  * msgwin_recalc - Recalculate the display of the Message Window - Implements MuttWindow::recalc() - @ingroup window_recalc
@@ -156,7 +154,6 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
     notify_observer_remove(win->notify, msgwin_window_observer, win);
-    MessageWindow = NULL;
     mutt_debug(LL_DEBUG5, "window delete done\n");
   }
   return 0;
@@ -168,60 +165,67 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *msgwin_new(void)
 {
-  MessageWindow = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL,
-                                  MUTT_WIN_SIZE_FIXED, MUTT_WIN_SIZE_UNLIMITED, 1);
-  MessageWindow->wdata = msgwin_wdata_new();
-  MessageWindow->wdata_free = msgwin_wdata_free;
-  MessageWindow->recalc = msgwin_recalc;
-  MessageWindow->repaint = msgwin_repaint;
+  struct MuttWindow *win = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+                                           MUTT_WIN_SIZE_UNLIMITED, 1);
+  win->wdata = msgwin_wdata_new();
+  win->wdata_free = msgwin_wdata_free;
+  win->recalc = msgwin_recalc;
+  win->repaint = msgwin_repaint;
 
-  notify_observer_add(MessageWindow->notify, NT_WINDOW, msgwin_window_observer, MessageWindow);
+  notify_observer_add(win->notify, NT_WINDOW, msgwin_window_observer, win);
 
-  return MessageWindow;
+  return win;
 }
 
 /**
  * msgwin_get_text - Get the text from the Message Window
+ * @param win Message Window
  * @retval ptr Window text
  *
  * @note Do not free the returned string
  */
-const char *msgwin_get_text(void)
+const char *msgwin_get_text(struct MuttWindow *win)
 {
-  if (!MessageWindow)
+  if (!win)
+    win = msgcont_get_msgwin();
+  if (!win)
     return NULL;
 
-  struct MsgWinWindowData *wdata = MessageWindow->wdata;
+  struct MsgWinWindowData *wdata = win->wdata;
 
   return wdata->text;
 }
 
 /**
  * msgwin_set_text - Set the text for the Message Window
+ * @param win Message Window
  * @param text Text to set
  * @param cid  Colour Id, e.g. #MT_COLOR_MESSAGE
  *
  * @note The text string will be copied
  */
-void msgwin_set_text(const char *text, enum ColorId cid)
+void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId cid)
 {
-  if (!MessageWindow)
+  if (!win)
+    win = msgcont_get_msgwin();
+  if (!win)
     return;
 
-  struct MsgWinWindowData *wdata = MessageWindow->wdata;
+  struct MsgWinWindowData *wdata = win->wdata;
 
   wdata->cid = cid;
   mutt_str_replace(&wdata->text, text);
 
-  MessageWindow->actions |= WA_RECALC;
+  win->actions |= WA_RECALC;
 }
 
 /**
  * msgwin_clear_text - Clear the text in the Message Window
+ * @param win Message Window
  */
-void msgwin_clear_text(void)
+void msgwin_clear_text(struct MuttWindow *win)
 {
-  msgwin_set_text(NULL, MT_COLOR_NORMAL);
+  msgwin_set_text(win, NULL, MT_COLOR_NORMAL);
 }
 
 /**
@@ -232,7 +236,7 @@ void msgwin_clear_text(void)
  */
 struct MuttWindow *msgwin_get_window(void)
 {
-  return MessageWindow;
+  return msgcont_get_msgwin();
 }
 
 /**
@@ -241,10 +245,11 @@ struct MuttWindow *msgwin_get_window(void)
  */
 size_t msgwin_get_width(void)
 {
-  if (!MessageWindow)
+  struct MuttWindow *win = msgcont_get_msgwin();
+  if (!win)
     return 0;
 
-  return MessageWindow->state.cols;
+  return win->state.cols;
 }
 
 /**
@@ -255,7 +260,8 @@ size_t msgwin_get_width(void)
  */
 void msgwin_set_height(short height)
 {
-  if (!MessageWindow)
+  struct MuttWindow *win = msgcont_get_msgwin();
+  if (!win)
     return;
 
   if (height < 1)
@@ -263,7 +269,7 @@ void msgwin_set_height(short height)
   else if (height > 3)
     height = 3;
 
-  struct MuttWindow *win_cont = MessageWindow->parent;
+  struct MuttWindow *win_cont = win->parent;
 
   win_cont->req_rows = height;
   mutt_window_reflow(win_cont->parent);
