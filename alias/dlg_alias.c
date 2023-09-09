@@ -476,6 +476,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       continue;
 
     mutt_addrlist_write(&avp->alias->addr, tmpbuf, true);
+    buf_addstr(tmpbuf, ", ");
   }
   buf_copy(buf, tmpbuf);
   buf_pool_release(&tmpbuf);
