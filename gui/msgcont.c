@@ -64,6 +64,9 @@ struct MuttWindow *msgcont_pop_window(void)
   if (!TAILQ_PREV(win_pop, MuttWindowList, entries))
     return NULL;
 
+  // Hide the old window
+  window_set_visible(win_pop, false);
+
   // Make the top of the stack visible
   struct MuttWindow *win_top = TAILQ_PREV(win_pop, MuttWindowList, entries);
 
@@ -75,6 +78,7 @@ struct MuttWindow *msgcont_pop_window(void)
     win_top->actions |= WA_RECALC;
   }
 
+  mutt_window_reflow(NULL);
   window_redraw(NULL);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
@@ -96,7 +100,7 @@ void msgcont_push_window(struct MuttWindow *win)
   window_set_visible(win_top, false);
 
   mutt_window_add_child(MessageContainer, win);
-  win->actions |= WA_RECALC;
+  mutt_window_reflow(NULL);
   window_redraw(NULL);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
