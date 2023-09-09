@@ -234,25 +234,8 @@ void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
   buf_alloc(buf, 8192);
   mutt_addrlist_write(&al, buf, true);
 
-#define EXTRA_SPACE (15 + 7 + 2)
-  /* See commands.c.  */
   buf_printf(prompt, ngettext("Bounce message to %s?", "Bounce messages to %s?", num_msg),
              buf_string(buf));
-
-  const size_t width = msgwin_get_width();
-  if (mutt_strwidth(buf_string(prompt)) > (width - EXTRA_SPACE))
-  {
-    struct Buffer *scratch = buf_pool_get();
-    mutt_simple_format(scratch->data, scratch->dsize - 4, 0, width - EXTRA_SPACE,
-                       JUSTIFY_LEFT, 0, prompt->data, prompt->dsize, false);
-    buf_addstr(scratch, "...?");
-    buf_copy(prompt, scratch);
-    buf_pool_release(&scratch);
-  }
-  else
-  {
-    buf_addstr(prompt, "?");
-  }
 
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, buf_string(prompt)) != MUTT_YES)
