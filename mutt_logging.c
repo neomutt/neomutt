@@ -126,9 +126,7 @@ int log_disp_curses(time_t stamp, const char *file, int line, const char *functi
   if ((level > LL_ERROR) && OptMsgErr && !dupe)
     error_pause();
 
-  size_t width = msgwin_get_width();
-  mutt_simple_format(ErrorBuf, sizeof(ErrorBuf), 0, width ? width : sizeof(ErrorBuf),
-                     JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
+  mutt_str_copy(ErrorBuf, buf, sizeof(ErrorBuf));
   ErrorBufMessage = true;
 
   if (!OptKeepQuiet)
