@@ -1842,6 +1842,10 @@ void mw_what_key(void)
 
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
+  char keys[256] = { 0 };
+  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
+
   // ---------------------------------------------------------------------------
   // Event Loop
   timeout(1000); // 1 second
@@ -1879,9 +1883,12 @@ void mw_what_key(void)
       continue;
     }
 
-    snprintf(prompt, sizeof(prompt), _("Char = %s, Octal = %o, Decimal = %d"),
+    msgwin_clear_text(win);
+    snprintf(keys, sizeof(keys), _("Char = %s, Octal = %o, Decimal = %d\n"),
              km_keyname(ch), ch, ch);
-    msgwin_set_text(win, prompt, MT_COLOR_NORMAL);
+    msgwin_add_text(win, keys, ac_normal);
+    msgwin_add_text(win, prompt, ac_prompt);
+    msgwin_add_text(win, NULL, NULL);
     window_redraw(NULL);
   }
   // ---------------------------------------------------------------------------
