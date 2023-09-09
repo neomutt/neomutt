@@ -50,6 +50,7 @@
 #include "question/lib.h"
 #include "globals.h"
 #include "keymap.h"
+#include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_curses.h"
 #include "mutt_logging.h"
@@ -430,33 +431,37 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
                    struct Mailbox *m, bool multiple, char ***files,
                    int *numfiles, SelectFileFlags flags)
 {
-  struct MuttWindow *win = msgwin_get_window();
+  struct MuttWindow *win = msgwin_new(true);
   if (!win)
     return -1;
 
-  struct KeyEvent event = { 0, OP_NULL };
+  char text[PATH_MAX] = { 0 };
+  snprintf(text, sizeof(text), _(" ('?' for list): "));
+  if (!buf_is_empty(fname))
+    mutt_str_cat(text, sizeof(text), buf_string(fname));
+  msgwin_set_text(win, text, MT_COLOR_NORMAL);
+
+  msgcont_push_window(win);
+
   struct MuttWindow *old_focus = window_set_focus(win);
 
-  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
-  mutt_window_mvaddstr(win, 0, 0, prompt);
-  mutt_window_addstr(win, _(" ('?' for list): "));
-  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-  if (!buf_is_empty(fname))
-    mutt_window_addstr(win, buf_string(fname));
-  mutt_window_clrtoeol(win);
-  mutt_refresh();
+  window_redraw(win);
 
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  struct KeyEvent event = { 0, OP_NULL };
   do
   {
     event = mutt_getch(GETCH_NO_FLAGS);
-  } while (event.op == OP_TIMEOUT);
+    if (event.op == OP_REPAINT)
+      window_redraw(win);
+
+  } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
   mutt_curses_set_cursor(old_cursor);
 
-  mutt_window_move(win, 0, 0);
-  mutt_window_clrtoeol(win);
   mutt_refresh();
   window_set_focus(old_focus);
+  win = msgcont_pop_window();
+  mutt_window_free(&win);
 
   if (event.ch < 0)
   {
@@ -855,13 +860,18 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
 
   for (w = 0; n && (cl = mbrtowc(&wc, src, n, &mbstate)); src += cl, n -= cl)
   {
-    if ((cl == ICONV_ILLEGAL_SEQ) || (cl == ICONV_BUF_TOO_SMALL))
+    if (cl == ICONV_ILLEGAL_SEQ)
     {
-      if (cl == ICONV_ILLEGAL_SEQ)
-        memset(&mbstate, 0, sizeof(mbstate));
-      cl = (cl == ICONV_ILLEGAL_SEQ) ? 1 : n;
+      memset(&mbstate, 0, sizeof(mbstate));
+      cl = 1;
       wc = ReplacementChar;
     }
+    else if (cl == ICONV_BUF_TOO_SMALL)
+    {
+      cl = n;
+      wc = ReplacementChar;
+    }
+
     cw = wcwidth(wc);
     /* hack because MUTT_TREE symbols aren't turned into characters
      * until rendered by print_enriched_string() */
@@ -878,7 +888,9 @@ size_t mutt_wstr_trunc(const char *src, size_t maxlen, size_t maxwid, size_t *wi
     {
       cw = 0; /* unprintable wchar */
     }
-    if ((cl + l > maxlen) || (cw + w > maxwid))
+    if (wc == '\n')
+      break;
+    if (((cl + l) > maxlen) || ((cw + w) > maxwid))
       break;
     l += cl;
     w += cw;
