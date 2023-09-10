@@ -673,7 +673,7 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, h, entries)
   {
-    p = strchr(np->data, ':');
+    p = strchr(NONULL(np->data), ':');
     if (!p)
       continue;
 
