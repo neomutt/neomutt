@@ -294,7 +294,7 @@ static int write_one_header(FILE *fp, int pfxw, int max, int wraplen, const char
                             const char *start, const char *end, CopyHeaderFlags chflags)
 {
   const char *t = strchr(start, ':');
-  if (!t || (t > end))
+  if (!t || (t >= end))
   {
     mutt_debug(LL_DEBUG1, "#2 warning: header not in 'key: value' format!\n");
     return 0;
