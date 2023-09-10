@@ -367,7 +367,7 @@ static struct UserHdrsOverride write_userhdrs(FILE *fp, const struct ListHead *u
   struct ListNode *tmp = NULL;
   STAILQ_FOREACH(tmp, userhdrs, entries)
   {
-    char *const colon = strchr(tmp->data, ':');
+    char *const colon = strchr(NONULL(tmp->data), ':');
     if (!colon)
     {
       continue;
