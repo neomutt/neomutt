@@ -42,7 +42,7 @@
 #include "opcodes.h"
 
 /**
- * complete_file_mbox - Complete a Mailbox - Implements ::complete_function_t -- @ingroup complete_api
+ * complete_file_mbox - Complete a Mailbox - Implements ::complete_function_t - @ingroup complete_api
  */
 int complete_file_mbox(struct EnterWindowData *wdata, int op)
 {
@@ -62,7 +62,7 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
     return FR_SUCCESS;
   }
 
-  if (op != OP_EDITOR_COMPLETE)
+  if ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY))
     return FR_NO_ACTION;
 
   int rc = FR_SUCCESS;
@@ -109,11 +109,11 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
 }
 
 /**
- * complete_file_simple - Complete a filename - Implements ::complete_function_t -- @ingroup complete_api
+ * complete_file_simple - Complete a filename - Implements ::complete_function_t - @ingroup complete_api
  */
 int complete_file_simple(struct EnterWindowData *wdata, int op)
 {
-  if (!wdata || (op != OP_EDITOR_COMPLETE))
+  if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
 
   int rc = FR_SUCCESS;
