@@ -36,11 +36,11 @@
 #include "opcodes.h"
 
 /**
- * complete_pattern - Complete a NeoMutt Pattern - Implements ::complete_function_t -- @ingroup complete_api
+ * complete_pattern - Complete a NeoMutt Pattern - Implements ::complete_function_t - @ingroup complete_api
  */
 int complete_pattern(struct EnterWindowData *wdata, int op)
 {
-  if (!wdata || (op != OP_EDITOR_COMPLETE))
+  if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
 
   size_t i = wdata->state->curpos;
