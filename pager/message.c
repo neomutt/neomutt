@@ -240,7 +240,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
     fp_filter_out = fp_out;
     fp_out = NULL;
     filterpid = filter_create_fd(c_display_filter, &fp_out, NULL, NULL, -1,
-                                 fileno(fp_filter_out), -1);
+                                 fileno(fp_filter_out), -1, EnvList);
     if (filterpid < 0)
     {
       mutt_error(_("Can't create display filter"));

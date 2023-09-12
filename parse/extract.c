@@ -35,6 +35,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
+#include "globals.h" // IWYU pragma: keep
 
 /**
  * parse_extract_token - Extract one token from a string
@@ -194,7 +195,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         cmd.data = mutt_str_dup(tok->dptr);
       }
       *pc = '`';
-      pid = filter_create(cmd.data, NULL, &fp, NULL);
+      pid = filter_create(cmd.data, NULL, &fp, NULL, EnvList);
       if (pid < 0)
       {
         mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd.data);

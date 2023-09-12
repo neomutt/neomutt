@@ -43,6 +43,7 @@
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "format_flags.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "pgpkey.h"
@@ -235,7 +236,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   mutt_pgp_command(cmd, sizeof(cmd), &cctx, format);
 
   return filter_create_fd(cmd, fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in,
-                          fd_pgp_out, fd_pgp_err);
+                          fd_pgp_out, fd_pgp_err, EnvList);
 }
 
 /*

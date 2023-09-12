@@ -573,7 +573,7 @@ static void run_mime_type_query(struct Body *att, struct ConfigSubset *sub)
 
   buf_file_expand_fmt_quote(cmd, c_mime_type_query_command, att->filename);
 
-  pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err);
+  pid = filter_create(buf_string(cmd), NULL, &fp, &fp_err, EnvList);
   if (pid < 0)
   {
     mutt_error(_("Error running \"%s\""), buf_string(cmd));

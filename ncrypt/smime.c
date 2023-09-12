@@ -55,6 +55,7 @@
 #include "crypt.h"
 #include "cryptglue.h"
 #include "format_flags.h"
+#include "globals.h" // IWYU pragma: keep
 #include "handler.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
@@ -445,7 +446,7 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
   smime_command(cmd, sizeof(cmd), &cctx, format);
 
   return filter_create_fd(cmd, fp_smime_in, fp_smime_out, fp_smime_err,
-                          fp_smime_infd, fp_smime_outfd, fp_smime_errfd);
+                          fp_smime_infd, fp_smime_outfd, fp_smime_errfd, EnvList);
 }
 
 /**

@@ -26,8 +26,8 @@
 
 #define EXEC_SHELL "/bin/sh"
 
-pid_t filter_create   (const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err);
-pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, int fdin, int fdout, int fderr);
+pid_t filter_create   (const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, char **envlist);
+pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, int fdin, int fdout, int fderr, char **envlist);
 int   filter_wait     (pid_t pid);
 
 #endif /* MUTT_MUTT_FILTER_H */

@@ -212,7 +212,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   }
 
   FILE *fp = NULL;
-  pid_t pid = filter_create(cmd, NULL, &fp, NULL);
+  pid_t pid = filter_create(cmd, NULL, &fp, NULL, EnvList);
   if (pid < 0)
   {
     mutt_perror(_("Unable to run refresh command"));
