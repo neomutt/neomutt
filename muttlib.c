@@ -836,7 +836,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
 
       col -= wlen; /* reset to passed in value */
       wptr = buf;  /* reset write ptr */
-      pid_t pid = filter_create(cmd.data, NULL, &fp_filter, NULL);
+      pid_t pid = filter_create(cmd.data, NULL, &fp_filter, NULL, EnvList);
       if (pid != -1)
       {
         int rc;
@@ -1298,7 +1298,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
 
     p[len - 1] = 0;
     mutt_endwin();
-    *thepid = filter_create(p, NULL, &fp, NULL);
+    *thepid = filter_create(p, NULL, &fp, NULL, EnvList);
     FREE(&p);
   }
   else

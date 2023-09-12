@@ -33,6 +33,6 @@ void test_filter_create_fd(void)
   // pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, int fdin, int fdout, int fderr)
 
   {
-    TEST_CHECK(filter_create_fd("false", NULL, NULL, NULL, -1, -1, -1) > 0);
+    TEST_CHECK(filter_create_fd("false", NULL, NULL, NULL, -1, -1, -1, EnvList) > 0);
   }
 }

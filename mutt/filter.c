@@ -32,18 +32,18 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #include "filter.h"
-#include "globals.h"
 #include "signal2.h"
 
 /**
  * filter_create_fd - Run a command on a pipe (optionally connect stdin/stdout)
- * @param[in]  cmd    Command line to invoke using `sh -c`
- * @param[out] fp_in  File stream pointing to stdin for the command process, can be NULL
- * @param[out] fp_out File stream pointing to stdout for the command process, can be NULL
- * @param[out] fp_err File stream pointing to stderr for the command process, can be NULL
- * @param[in]  fdin   If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
- * @param[in]  fdout  If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
- * @param[in]  fderr  If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
+ * @param[in]  cmd     Command line to invoke using `sh -c`
+ * @param[out] fp_in   File stream pointing to stdin for the command process, can be NULL
+ * @param[out] fp_out  File stream pointing to stdout for the command process, can be NULL
+ * @param[out] fp_err  File stream pointing to stderr for the command process, can be NULL
+ * @param[in]  fdin    If `in` is NULL and fdin is not -1 then fdin will be used as stdin for the command process
+ * @param[in]  fdout   If `out` is NULL and fdout is not -1 then fdout will be used as stdout for the command process
+ * @param[in]  fderr   If `error` is NULL and fderr is not -1 then fderr will be used as stderr for the command process
+ * @param[in]  envlist Environment variables
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -58,8 +58,8 @@
  * Additionally, fp_in, fp_out, and fp_err will point to FILE* streams
  * representing the processes stdin, stdout, and stderr.
  */
-pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
-                       FILE **fp_err, int fdin, int fdout, int fderr)
+pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err,
+                       int fdin, int fdout, int fderr, char **envlist)
 {
   int pin[2], pout[2], perr[2], pid;
 
@@ -146,7 +146,7 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
       close(fderr);
     }
 
-    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, EnvList);
+    execle(EXEC_SHELL, "sh", "-c", cmd, NULL, envlist);
     _exit(127);
   }
   else if (pid == -1)
@@ -197,15 +197,16 @@ pid_t filter_create_fd(const char *cmd, FILE **fp_in, FILE **fp_out,
 
 /**
  * filter_create - Set up filter program
- * @param[in]  cmd    Command string
- * @param[out] fp_in  FILE pointer of stdin
- * @param[out] fp_out FILE pointer of stdout
- * @param[out] fp_err FILE pointer of stderr
+ * @param[in]  cmd     Command string
+ * @param[out] fp_in   FILE pointer of stdin
+ * @param[out] fp_out  FILE pointer of stdout
+ * @param[out] fp_err  FILE pointer of stderr
+ * @param[in]  envlist Environment variables
  * @retval num PID of filter
  */
-pid_t filter_create(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err)
+pid_t filter_create(const char *cmd, FILE **fp_in, FILE **fp_out, FILE **fp_err, char **envlist)
 {
-  return filter_create_fd(cmd, fp_in, fp_out, fp_err, -1, -1, -1);
+  return filter_create_fd(cmd, fp_in, fp_out, fp_err, -1, -1, -1, envlist);
 }
 
 /**

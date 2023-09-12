@@ -574,12 +574,12 @@ static int autoview_handler(struct Body *a, struct State *state)
       fflush(fp_in);
       rewind(fp_in);
       pid = filter_create_fd(buf_string(cmd), NULL, &fp_out, &fp_err,
-                             fileno(fp_in), -1, -1);
+                             fileno(fp_in), -1, -1, EnvList);
     }
     else
     {
       mutt_file_fclose(&fp_in);
-      pid = filter_create(buf_string(cmd), NULL, &fp_out, &fp_err);
+      pid = filter_create(buf_string(cmd), NULL, &fp_out, &fp_err, EnvList);
     }
 
     if (pid < 0)

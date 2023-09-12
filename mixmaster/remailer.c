@@ -36,6 +36,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "remailer.h"
+#include "globals.h" // IWYU pragma: keep
 
 /**
  * remailer_free - Free a Remailer
@@ -129,7 +130,8 @@ struct RemailerArray remailer_get_hosts(void)
   struct Buffer *cmd = buf_pool_get();
   buf_printf(cmd, "%s -T", c_mixmaster);
 
-  pid_t mm_pid = filter_create_fd(buf_string(cmd), NULL, &fp, NULL, fd_null, -1, fd_null);
+  pid_t mm_pid = filter_create_fd(buf_string(cmd), NULL, &fp, NULL, fd_null, -1,
+                                  fd_null, EnvList);
   window_invalidate_all();
   if (mm_pid == -1)
   {

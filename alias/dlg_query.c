@@ -90,6 +90,7 @@
 #include "alias.h"
 #include "format_flags.h"
 #include "functions.h"
+#include "globals.h" // IWYU pragma: keep
 #include "gui.h"
 #include "keymap.h"
 #include "mutt_logging.h"
@@ -270,7 +271,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   const char *const c_query_command = cs_subset_string(sub, "query_command");
   buf_file_expand_fmt_quote(cmd, c_query_command, s);
 
-  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL);
+  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL, EnvList);
   if (pid < 0)
   {
     mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", buf_string(cmd));

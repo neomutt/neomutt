@@ -44,6 +44,7 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "parse/lib.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mview.h"
 
 struct Menu;
@@ -189,7 +190,7 @@ static bool eat_query(struct Pattern *pat, PatternCompFlags flags,
   mutt_message(_("Running search command: %s ..."), cmd_buf->data);
   pat->is_multi = true;
   mutt_list_clear(&pat->p.multi_cases);
-  pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL);
+  pid_t pid = filter_create(cmd_buf->data, NULL, &fp, NULL, EnvList);
   if (pid < 0)
   {
     buf_printf(err, "unable to fork command: %s\n", cmd_buf->data);

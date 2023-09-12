@@ -564,8 +564,8 @@ int mutt_view_attachment(FILE *fp, struct Body *a, enum ViewAttachMode mode,
       }
       unlink_pagerfile = true;
 
-      pid = filter_create_fd(buf_string(cmd), NULL, NULL, NULL,
-                             use_pipe ? fd_temp : -1, use_pager ? fd_pager : -1, -1);
+      pid = filter_create_fd(buf_string(cmd), NULL, NULL, NULL, use_pipe ? fd_temp : -1,
+                             use_pager ? fd_pager : -1, -1, EnvList);
 
       if (pid == -1)
       {
@@ -772,9 +772,9 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
   mutt_endwin();
 
   if (outfile && *outfile)
-    pid = filter_create_fd(path, &fp_filter, NULL, NULL, -1, out, -1);
+    pid = filter_create_fd(path, &fp_filter, NULL, NULL, -1, out, -1, EnvList);
   else
-    pid = filter_create(path, &fp_filter, NULL, NULL);
+    pid = filter_create(path, &fp_filter, NULL, NULL, EnvList);
   if (pid < 0)
   {
     mutt_perror(_("Can't create filter"));
@@ -1198,7 +1198,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
         goto mailcap_cleanup;
       }
 
-      pid = filter_create(buf_string(cmd), &fp_out, NULL, NULL);
+      pid = filter_create(buf_string(cmd), &fp_out, NULL, NULL, EnvList);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));
@@ -1263,7 +1263,7 @@ int mutt_print_attachment(FILE *fp, struct Body *a)
       mutt_debug(LL_DEBUG2, "successfully opened %s read-only\n", buf_string(newfile));
 
       mutt_endwin();
-      pid = filter_create(NONULL(c_print_command), &fp_out, NULL, NULL);
+      pid = filter_create(NONULL(c_print_command), &fp_out, NULL, NULL, EnvList);
       if (pid < 0)
       {
         mutt_perror(_("Can't create filter"));

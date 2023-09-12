@@ -35,6 +35,7 @@
 #include "core/lib.h"
 #include "accountcmd.h"
 #include "connaccount.h"
+#include "globals.h" // IWYU pragma: keep
 #include "mutt_account.h"
 
 /**
@@ -135,7 +136,7 @@ static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *c
   MuttAccountFlags rc = MUTT_ACCT_NO_FLAGS;
 
   FILE *fp = NULL;
-  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL);
+  pid_t pid = filter_create(buf_string(cmd), NULL, &fp, NULL, EnvList);
   if (pid < 0)
   {
     mutt_perror(_("Unable to run account command"));
