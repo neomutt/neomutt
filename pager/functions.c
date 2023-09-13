@@ -751,7 +751,8 @@ static int op_view_attachments(struct IndexSharedData *shared,
 
   if (!assert_pager_mode(pview->mode == PAGER_MODE_EMAIL))
     return FR_NOT_IMPL;
-  dlg_attachment(NeoMutt->sub, shared->mailbox_view, shared->email, pview->pdata->fp);
+  dlg_attachment(NeoMutt->sub, shared->mailbox_view, shared->email,
+                 pview->pdata->fp, shared->attach_msg);
   if (shared->email->attach_del)
     shared->mailbox->changed = true;
   pager_queue_redraw(priv, PAGER_REDRAW_PAGER);

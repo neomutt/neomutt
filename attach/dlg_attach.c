@@ -459,17 +459,18 @@ static int attach_window_observer(struct NotifyCallback *nc)
 
 /**
  * dlg_attachment - Show the attachments in a Menu - @ingroup gui_dlg
- * @param sub Config Subset
- * @param mv  Mailbox view
- * @param e   Email
- * @param fp File with the content of the email, or NULL
+ * @param sub        Config Subset
+ * @param mv         Mailbox view
+ * @param e          Email
+ * @param fp         File with the content of the email, or NULL
+ * @param attach_msg Are we in "attach message" mode?
  *
  * The Select Attachment dialog shows an Email's attachments.
  * They can be viewed using the Pager or Mailcap programs.
  * They can also be saved, printed, deleted, etc.
  */
 void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
-                    struct Email *e, FILE *fp)
+                    struct Email *e, FILE *fp, bool attach_msg)
 {
   if (!mv || !mv->mailbox || !e || !fp)
     return;
@@ -495,6 +496,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   priv->actx = actx;
   priv->sub = sub;
   priv->mailbox = m;
+  priv->attach_msg = attach_msg;
   menu->mdata = priv;
   menu->mdata_free = attach_private_data_free;
 

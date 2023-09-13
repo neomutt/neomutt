@@ -529,7 +529,7 @@ static int op_end_cond(struct IndexSharedData *shared, struct IndexPrivateData *
  */
 static int op_exit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  if (priv->attach_msg)
+  if (shared->attach_msg)
     return FR_DONE;
 
   if (query_quadoption(_("Exit NeoMutt without saving?"), shared->sub, "quit") == MUTT_YES)
@@ -853,7 +853,7 @@ static int op_main_change_folder(struct IndexSharedData *shared,
   char *cp = NULL;
   bool read_only;
   const bool c_read_only = cs_subset_bool(shared->sub, "read_only");
-  if (priv->attach_msg || c_read_only || (op == OP_MAIN_CHANGE_FOLDER_READONLY))
+  if (shared->attach_msg || c_read_only || (op == OP_MAIN_CHANGE_FOLDER_READONLY))
   {
     cp = _("Open mailbox in read-only mode");
     read_only = true;
@@ -1872,7 +1872,7 @@ static int op_query(struct IndexSharedData *shared, struct IndexPrivateData *pri
  */
 static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
-  if (priv->attach_msg)
+  if (shared->attach_msg)
     return FR_DONE;
 
   if (query_quadoption(_("Quit NeoMutt?"), shared->sub, "quit") == MUTT_YES)
@@ -2257,7 +2257,8 @@ static int op_view_attachments(struct IndexSharedData *shared,
   struct Message *msg = mx_msg_open(shared->mailbox, shared->email);
   if (msg)
   {
-    dlg_attachment(NeoMutt->sub, shared->mailbox_view, shared->email, msg->fp);
+    dlg_attachment(NeoMutt->sub, shared->mailbox_view, shared->email, msg->fp,
+                   shared->attach_msg);
     if (shared->email->attach_del)
     {
       shared->mailbox->changed = true;
@@ -2546,7 +2547,7 @@ static int op_main_change_group(struct IndexSharedData *shared,
   bool read_only;
   char *cp = NULL;
   const bool c_read_only = cs_subset_bool(shared->sub, "read_only");
-  if (priv->attach_msg || c_read_only || (op == OP_MAIN_CHANGE_GROUP_READONLY))
+  if (shared->attach_msg || c_read_only || (op == OP_MAIN_CHANGE_GROUP_READONLY))
   {
     cp = _("Open newsgroup in read-only mode");
     read_only = true;
@@ -2826,14 +2827,15 @@ static int op_main_fetch_mail(struct IndexSharedData *shared,
 
 /**
  * prereq - Check the pre-requisites for a function
- * @param mv     Mailbox View
+ * @param shared Index shared data
  * @param menu   Current Menu
  * @param checks Checks to perform, see #CheckFlags
  * @retval true The checks pass successfully
  */
-static bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
+static bool prereq(struct IndexSharedData *shared, struct Menu *menu, CheckFlags checks)
 {
   bool result = true;
+  struct MailboxView *mv = shared->mailbox_view;
 
   if (checks & (CHECK_MSGCOUNT | CHECK_VISIBLE | CHECK_READONLY))
     checks |= CHECK_IN_MAILBOX;
@@ -2864,7 +2866,7 @@ static bool prereq(struct MailboxView *mv, struct Menu *menu, CheckFlags checks)
     result = false;
   }
 
-  if (result && (checks & CHECK_ATTACH) && OptAttachMsg)
+  if (result && (checks & CHECK_ATTACH) && shared->attach_msg)
   {
     mutt_error(_("Function not permitted in attach-message mode"));
     result = false;
@@ -3050,7 +3052,7 @@ int index_function_dispatcher(struct MuttWindow *win, int op)
     const struct IndexFunction *fn = &IndexFunctions[i];
     if (fn->op == op)
     {
-      if (!prereq(shared->mailbox_view, priv->menu, fn->flags))
+      if (!prereq(shared, priv->menu, fn->flags))
       {
         rc = FR_ERROR;
         break;

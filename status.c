@@ -333,13 +333,13 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 
       if (m)
       {
-        i = OptAttachMsg ? 3 :
-                           ((m->readonly || m->dontwrite) ? 2 :
-                            (m->changed ||
-                             /* deleted doesn't necessarily mean changed in IMAP */
-                             (m->type != MUTT_IMAP && m->msg_deleted)) ?
-                                                            1 :
-                                                            0);
+        i = shared->attach_msg ? 3 :
+                                 ((m->readonly || m->dontwrite) ? 2 :
+                                  (m->changed ||
+                                   /* deleted doesn't necessarily mean changed in IMAP */
+                                   (m->type != MUTT_IMAP && m->msg_deleted)) ?
+                                                                  1 :
+                                                                  0);
       }
 
       const struct MbTable *c_status_chars = cs_subset_mbtable(NeoMutt->sub, "status_chars");

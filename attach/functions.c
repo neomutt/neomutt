@@ -90,11 +90,12 @@ static void attach_collapse(struct AttachCtx *actx, struct Menu *menu)
 
 /**
  * check_attach - Check if in attach-message mode
+ * @param priv Private Attach data
  * @retval true Mailbox is readonly
  */
-static bool check_attach(void)
+static bool check_attach(struct AttachPrivateData *priv)
 {
-  if (OptAttachMsg)
+  if (priv->attach_msg)
   {
     mutt_flushinp();
     mutt_error("%s", _(Function_not_permitted_in_attach_message_mode));
@@ -409,7 +410,7 @@ static int op_attachment_view_text(struct AttachPrivateData *priv, int op)
  */
 static int op_bounce_message(struct AttachPrivateData *priv, int op)
 {
-  if (check_attach())
+  if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   attach_bounce_message(priv->mailbox, cur_att->fp, priv->actx,
@@ -437,7 +438,7 @@ static int op_check_traditional(struct AttachPrivateData *priv, int op)
  */
 static int op_compose_to_sender(struct AttachPrivateData *priv, int op)
 {
-  if (check_attach())
+  if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_mail_sender(priv->actx, priv->menu->tag_prefix ? NULL : cur_att->body);
@@ -494,7 +495,7 @@ static int op_forget_passphrase(struct AttachPrivateData *priv, int op)
  */
 static int op_forward_message(struct AttachPrivateData *priv, int op)
 {
-  if (check_attach())
+  if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_forward(cur_att->fp, priv->actx->email, priv->actx,
@@ -508,7 +509,7 @@ static int op_forward_message(struct AttachPrivateData *priv, int op)
  */
 static int op_list_subscribe(struct AttachPrivateData *priv, int op)
 {
-  if (!check_attach())
+  if (!check_attach(priv))
     mutt_send_list_subscribe(priv->mailbox, priv->actx->email);
   return FR_SUCCESS;
 }
@@ -518,7 +519,7 @@ static int op_list_subscribe(struct AttachPrivateData *priv, int op)
  */
 static int op_list_unsubscribe(struct AttachPrivateData *priv, int op)
 {
-  if (!check_attach())
+  if (!check_attach(priv))
     mutt_send_list_unsubscribe(priv->mailbox, priv->actx->email);
   return FR_SUCCESS;
 }
@@ -528,7 +529,7 @@ static int op_list_unsubscribe(struct AttachPrivateData *priv, int op)
  */
 static int op_reply(struct AttachPrivateData *priv, int op)
 {
-  if (check_attach())
+  if (check_attach(priv))
     return FR_ERROR;
 
   SendFlags flags = SEND_REPLY;
@@ -551,7 +552,7 @@ static int op_reply(struct AttachPrivateData *priv, int op)
  */
 static int op_resend(struct AttachPrivateData *priv, int op)
 {
-  if (check_attach())
+  if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_resend(cur_att->fp, priv->mailbox, priv->actx,
@@ -568,7 +569,7 @@ static int op_resend(struct AttachPrivateData *priv, int op)
  */
 static int op_followup(struct AttachPrivateData *priv, int op)
 {
-  if (check_attach())
+  if (check_attach(priv))
     return FR_ERROR;
 
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
@@ -591,7 +592,7 @@ static int op_followup(struct AttachPrivateData *priv, int op)
  */
 static int op_forward_to_group(struct AttachPrivateData *priv, int op)
 {
-  if (check_attach())
+  if (check_attach(priv))
     return FR_ERROR;
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   mutt_attach_forward(cur_att->fp, priv->actx->email, priv->actx,
