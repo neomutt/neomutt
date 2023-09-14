@@ -58,7 +58,6 @@ extern SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 extern enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
 /* pseudo options */
-extern bool OptAttachMsg;           ///< (pseudo) used by attach-message
 #ifdef USE_AUTOCRYPT
 extern bool OptAutocryptGpgme;      ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c
 #endif

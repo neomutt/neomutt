@@ -770,14 +770,14 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   const enum SortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
   const unsigned char old_use_threads = cs_subset_enum(shared->sub, "use_threads");
 
-  OptAttachMsg = true;
   mutt_message(_("Tag the messages you want to attach"));
   struct MuttWindow *dlg = index_pager_init();
+  struct IndexSharedData *index_shared = dlg->wdata;
+  index_shared->attach_msg = true;
   dialog_push(dlg);
   struct Mailbox *m_attach_new = dlg_index(dlg, m_attach);
   dialog_pop();
   mutt_window_free(&dlg);
-  OptAttachMsg = false;
 
   if (!shared->mailbox)
   {

@@ -1068,7 +1068,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   index_adjust_sort_threads(NeoMutt->sub);
 
   struct IndexSharedData *shared = dlg->wdata;
-  shared->attach_msg = OptAttachMsg;
   index_shared_data_set_mview(shared, mview_new(m_init, NeoMutt->notify));
 
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);

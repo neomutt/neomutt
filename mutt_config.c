@@ -34,7 +34,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "globals.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
@@ -107,19 +106,6 @@ static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDe
     return CSR_SUCCESS;
 
   buf_printf(err, _("Invalid value for option %s: %s"), cdef->name, str);
-  return CSR_ERR_INVALID;
-}
-
-/**
- * reply_validator - Validate the "reply_regex" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
- */
-static int reply_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
-                           intptr_t value, struct Buffer *err)
-{
-  if (!OptAttachMsg)
-    return CSR_SUCCESS;
-
-  buf_printf(err, _("Option %s may not be set when in attach-message mode"), cdef->name);
   return CSR_ERR_INVALID;
 }
 
@@ -434,7 +420,7 @@ static struct ConfigDef MainVars[] = {
   { "reflow_wrap", DT_NUMBER, 78, 0, NULL,
     "Maximum paragraph width for reformatting 'format=flowed' text"
   },
-  { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, reply_validator,
+  { "reply_regex", DT_REGEX|R_INDEX|R_RESORT, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, NULL,
     "Regex to match message reply subjects like 're: '"
   },
   { "resolve", DT_BOOL, true, 0, NULL,
