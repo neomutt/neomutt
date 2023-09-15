@@ -40,7 +40,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "core/lib.h"

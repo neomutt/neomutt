@@ -69,7 +69,7 @@ void log_bind(enum MenuType menu, const char *keystr, struct Keymap *map)
   }
 
   mutt_debug(LL_DEBUG1, "    bind %-8s <%s>\n", keystr, fn_name);
-  mutt_debug(LL_DEBUG1, "        op = %d\n", map->op);
+  mutt_debug(LL_DEBUG1, "        op = %d (%s)\n", map->op, opcodes_get_name(map->op));
   mutt_debug(LL_DEBUG1, "        eq = %d\n", map->eq);
 
   struct Buffer *keys = buf_pool_get();

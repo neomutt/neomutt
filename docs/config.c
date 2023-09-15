@@ -4314,7 +4314,7 @@
 { "sidebar_next_new_wrap", DT_BOOL, false },
 /*
 ** .pp
-** When set, the \fC<sidebar-next-new>\fP command will not stop and the end of
+** When set, the \fC<sidebar-next-new>\fP command will not stop at the end of
 ** the list of mailboxes, but wrap around to the beginning. The
 ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
 ** the end of the list.
@@ -4944,14 +4944,14 @@
 { "sort_re", DT_BOOL, true },
 /*
 ** .pp
-** This variable is only useful when sorting by threads with
-** $$strict_threads \fIunset\fP.  In that case, it changes the heuristic
-** mutt uses to thread messages by subject.  With $$sort_re \fIset\fP, mutt will
-** only attach a message as the child of another message by subject if
-** the subject of the child message starts with a substring matching the
-** setting of $$reply_regex.  With $$sort_re \fIunset\fP, mutt will attach
-** the message whether or not this is the case, as long as the
-** non-$$reply_regex parts of both messages are identical.
+** This variable is only useful when sorting by threads with $$strict_threads
+** \fIunset\fP.  In that case, it changes the heuristic neomutt uses to thread
+** messages by subject.  With $$sort_re \fIset\fP, neomutt will only attach a
+** message as the child of another message by subject if the subject of the
+** child message starts with a substring matching the setting of
+** $$reply_regex.  With $$sort_re \fIunset\fP, neomutt will attach the message
+** whether or not this is the case, as long as the non-$$reply_regex parts of
+** both messages are identical.
 */
 
 { "spam_separator", DT_STRING, "," },
