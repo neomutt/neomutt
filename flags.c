@@ -466,27 +466,20 @@ int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
   snprintf(prompt, sizeof(prompt),
            "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
   msgwin_set_text(win, prompt, MT_COLOR_PROMPT);
-  // text, WA_RECALC
 
   msgcont_push_window(win);
-  // resized, text, WA_RECALC
-
   struct MuttWindow *old_focus = window_set_focus(win);
-
   window_redraw(win);
-  // recalc, repaint
 
   struct KeyEvent event = { 0, OP_NULL };
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
     window_redraw(NULL);
     event = mutt_getch(GETCH_NO_FLAGS);
   } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
-  mutt_curses_set_cursor(old_cursor);
 
-  window_set_focus(old_focus);
   win = msgcont_pop_window();
+  window_set_focus(old_focus);
   mutt_window_free(&win);
 
   if (event.op == OP_ABORT)
