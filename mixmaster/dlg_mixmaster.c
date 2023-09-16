@@ -201,6 +201,7 @@ void dlg_mixmaster(struct ListHead *chainhead)
   mutt_list_free(chainhead);
 
   dialog_push(dlg);
+  struct MuttWindow *old_focus = window_set_focus(priv.win_hosts);
 
   // ---------------------------------------------------------------------------
   // Event Loop
@@ -235,6 +236,7 @@ void dlg_mixmaster(struct ListHead *chainhead)
   if (rc == FR_DONE)
     win_chain_extract(priv.win_chain, chainhead);
 
+  window_set_focus(old_focus);
   dialog_pop();
   mutt_window_free(&dlg);
 

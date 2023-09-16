@@ -474,6 +474,9 @@ struct MuttWindow *mutt_window_remove_child(struct MuttWindow *parent, struct Mu
   TAILQ_REMOVE(&parent->children, child, entries);
   child->parent = NULL;
 
+  if (parent->focus == child)
+    parent->focus = NULL;
+
   notify_set_parent(child->notify, NULL);
 
   return child;
@@ -692,9 +695,7 @@ struct MuttWindow *window_set_focus(struct MuttWindow *win)
   for (; parent; child = parent, parent = parent->parent)
     parent->focus = child;
 
-  // Find the most focused Window
-  while (win && win->focus)
-    win = win->focus;
+  win->focus = NULL;
 
   if (win == old_focus)
     return NULL;
@@ -706,6 +707,7 @@ struct MuttWindow *window_set_focus(struct MuttWindow *win)
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
+
   return old_focus;
 }
 

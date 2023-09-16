@@ -146,6 +146,7 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
                             menu,  matches, match_count };
   dlg->wdata = &hd;
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
@@ -173,5 +174,6 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
   } while (!hd.done);
   // ---------------------------------------------------------------------------
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 }

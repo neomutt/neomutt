@@ -127,7 +127,6 @@ void dialog_push(struct MuttWindow *dlg)
   dlg->state.visible = true;
   dlg->parent = AllDialogsWindow;
   mutt_window_reflow(AllDialogsWindow);
-  window_set_focus(dlg);
 
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
@@ -164,7 +163,6 @@ void dialog_pop(void)
   {
     last->state.visible = true;
     mutt_window_reflow(AllDialogsWindow);
-    window_set_focus(last);
   }
   else
   {

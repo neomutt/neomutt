@@ -631,6 +631,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
 
   mutt_clear_error();
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
@@ -659,6 +660,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
   } while (!pd.done);
   // ---------------------------------------------------------------------------
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   return pd.key;
 }

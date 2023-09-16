@@ -234,6 +234,7 @@ int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always
   }
   msgwin_set_text(NULL, mdata.prompt, MT_COLOR_PROMPT);
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int choice = 0;
@@ -302,6 +303,7 @@ int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always
   } while (choice == 0);
   // ---------------------------------------------------------------------------
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 
   return choice;

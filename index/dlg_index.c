@@ -1091,6 +1091,8 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->menu->color = index_color;
   priv->menu->max = shared->mailbox ? shared->mailbox->vcount : 0;
   menu_set_index(priv->menu, find_first_message(shared->mailbox_view));
+
+  struct MuttWindow *old_focus = window_set_focus(priv->menu->win);
   mutt_window_reflow(NULL);
 
   if (!priv->attach_msg)
@@ -1361,6 +1363,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   } while (rc != FR_DONE);
 
   mview_free(&shared->mailbox_view);
+  window_set_focus(old_focus);
 
   return shared->mailbox;
 }
@@ -1420,8 +1423,6 @@ struct MuttWindow *index_pager_init(void)
 
   mutt_window_add_child(dlg, panel_index);
   mutt_window_add_child(dlg, panel_pager);
-
-  dlg->focus = panel_index;
 
   return dlg;
 }

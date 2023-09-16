@@ -230,6 +230,7 @@ struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
 
   mutt_clear_error();
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
@@ -257,6 +258,7 @@ struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
       rc = global_function_dispatcher(NULL, op);
   } while (!sd.done);
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   return sd.key;
 }

@@ -740,6 +740,7 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
 
   mutt_clear_error();
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
@@ -768,6 +769,7 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   } while (!gd.done);
   // ---------------------------------------------------------------------------
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   return gd.key;
 }

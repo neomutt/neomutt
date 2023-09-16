@@ -227,6 +227,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
   const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
@@ -258,6 +259,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
   mview_free(&mv);
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   search_state_free(&pd.search_state);
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 
   return pd.email;

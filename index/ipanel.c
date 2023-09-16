@@ -129,7 +129,6 @@ struct MuttWindow *ipanel_new(bool status_on_top, struct IndexSharedData *shared
   panel_index->wdata_free = index_private_data_free;
 
   struct MuttWindow *win_index = index_window_new(priv);
-  panel_index->focus = win_index;
 
   struct MuttWindow *win_ibar = ibar_new(panel_index, shared, priv);
   if (status_on_top)
