@@ -67,7 +67,6 @@ static const struct Mapping WindowNames[] = {
   { "WT_INDEX",           WT_INDEX },
   { "WT_MENU",            WT_MENU },
   { "WT_MESSAGE",         WT_MESSAGE },
-  { "WT_MSG_FOCUS",       WT_MSG_FOCUS },
   { "WT_PAGER",           WT_PAGER },
   { "WT_ROOT",            WT_ROOT },
   { "WT_SIDEBAR",         WT_SIDEBAR },
