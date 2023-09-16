@@ -191,16 +191,15 @@ static int enter_repaint(struct MuttWindow *win)
 
   struct EnterWindowData *wdata = win->wdata;
 
-  window_set_focus(win);
-
   mutt_window_clearline(win, 0);
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
   mutt_window_addstr(win, wdata->prompt);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-  mutt_refresh();
-  mutt_window_get_coords(win, &wdata->col, NULL);
 
-  int width = win->state.cols - wdata->col - 1;
+  int prompt_length = 0;
+  mutt_window_get_coords(win, &prompt_length, NULL);
+
+  int width = win->state.cols - prompt_length - 1;
 
   if (!wdata->pass)
   {
@@ -220,7 +219,7 @@ static int enter_repaint(struct MuttWindow *win)
           wdata->state->wbuf, wdata->state->lastchar,
           mutt_mb_wcswidth(wdata->state->wbuf, wdata->state->curpos) - (width / 2));
     }
-    mutt_window_move(win, wdata->col, 0);
+    mutt_window_move(win, prompt_length, 0);
     int w = 0;
     for (size_t i = wdata->state->begin; i < wdata->state->lastchar; i++)
     {
@@ -231,15 +230,27 @@ static int enter_repaint(struct MuttWindow *win)
     }
     mutt_window_clrtoeol(win);
     mutt_window_move(win,
-                     wdata->col +
+                     prompt_length +
                          mutt_mb_wcswidth(wdata->state->wbuf + wdata->state->begin,
                                           wdata->state->curpos - wdata->state->begin),
                      0);
   }
 
+  mutt_window_get_coords(win, &wdata->col, &wdata->row);
   mutt_debug(LL_DEBUG1, "repaint done\n");
 
   return 0;
+}
+
+/**
+ * enter_recursor - Recursor the Window - Implements MuttWindow::recursor() - @ingroup window_recursor
+ */
+static bool enter_recursor(struct MuttWindow *win)
+{
+  struct EnterWindowData *wdata = win->wdata;
+  mutt_window_move(win, wdata->col, wdata->row);
+  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+  return true;
 }
 
 /**
@@ -266,7 +277,6 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
 {
   struct MuttWindow *win = mutt_window_new(WT_CUSTOM, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
-  msgcont_push_window(win);
 
   GetChFlags flags = GETCH_NO_FLAGS;
   if (complete & MUTT_COMP_UNBUFFERED)
@@ -278,11 +288,13 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
 
   win->help_data = EditorHelp;
   win->help_menu = MENU_EDITOR;
+
+  msgcont_push_window(win);
   struct MuttWindow *old_focus = window_set_focus(win);
 
   mbstate_t mbstate = { 0 };
   // clang-format off
-  struct EnterWindowData wdata = { buf, 0, complete, es, hclass, comp_api, cdata, prompt, ENTER_REDRAW_NONE, (complete & MUTT_COMP_PASS), true, NULL, 0, &mbstate, 0, false, NULL };
+  struct EnterWindowData wdata = { buf, complete, es, hclass, comp_api, cdata, prompt, ENTER_REDRAW_NONE, (complete & MUTT_COMP_PASS), true, NULL, 0, &mbstate, 0, false, NULL, 0, 0 };
   // clang-format on
 
   win->wdata = &wdata;
@@ -290,8 +302,8 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
   win->actions |= WA_RECALC;
   win->recalc = enter_recalc;
   win->repaint = enter_repaint;
+  win->recursor = enter_recursor;
 
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(win);
 
   if (es->wbuf[0] == L'\0')
@@ -387,10 +399,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
     completion_data_free(&wdata.cd);
   } while (rc == 1);
 
-  mutt_curses_set_cursor(old_cursor);
-
   msgcont_pop_window();
-
   window_set_focus(old_focus);
   mutt_window_free(&win);
 
