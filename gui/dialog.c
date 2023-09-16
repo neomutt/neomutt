@@ -219,22 +219,3 @@ struct MuttWindow *alldialogs_new(void)
 
   return win_alldlgs;
 }
-
-/**
- * alldialogs_get_current - Get the currently active Dialog
- * @retval ptr Active Dialog
- */
-struct MuttWindow *alldialogs_get_current(void)
-{
-  if (!AllDialogsWindow)
-    return NULL;
-
-  struct MuttWindow *np = NULL;
-  TAILQ_FOREACH(np, &AllDialogsWindow->children, entries)
-  {
-    if (mutt_window_is_visible(np))
-      return np;
-  }
-
-  return NULL;
-}
