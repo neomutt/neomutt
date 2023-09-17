@@ -10,17 +10,12 @@ jobs:
   doxygen:
     name: Update Code Docs
     runs-on: ubuntu-latest
-    container: debian:sid
+    container: ghcr.io/neomutt/fedora:38
 
     steps:
     - name: Check Secret
       run: |
         [ -n "${{ secrets.DOXYGEN_DEPLOY_KEY }}" ]
-
-    - name: Install Build Software
-      run: |
-        apt-get update
-        apt install -y doxygen graphviz git rsync
 
     - name: Set Up Git
       run: |
