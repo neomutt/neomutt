@@ -40,7 +40,7 @@
 #include "alias/lib.h"
 #include "mutt.h"
 #include "lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "progress/lib.h"

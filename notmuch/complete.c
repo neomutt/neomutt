@@ -33,7 +33,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "complete/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "index/lib.h"
 #include "notmuch/lib.h"
 #include "opcodes.h"

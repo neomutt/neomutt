@@ -44,7 +44,7 @@
 #include "mutt.h"
 #include "pgpkey.h"
 #include "lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "send/lib.h"
 #include "crypt.h"

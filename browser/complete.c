@@ -35,7 +35,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "complete/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"

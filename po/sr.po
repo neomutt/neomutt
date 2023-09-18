@@ -1863,35 +1863,35 @@ msgstr "Не може се дописати у фолдер: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "порука са више делова нема параметар границе"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr "Допуни"
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr "Ист Нагоре"
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr "Ист Надоле"
 
-#: enter/window.c:57
+#: editor/window.c:57
 msgid "Hist Search"
 msgstr "Претрага Ист"
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr "Поч Реда"
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr "Крај Реда"
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr "Обриши Ред"
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr "Обриши Реч"
 

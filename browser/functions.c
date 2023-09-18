@@ -41,7 +41,7 @@
 #include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"

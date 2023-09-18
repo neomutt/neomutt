@@ -1881,35 +1881,35 @@ msgstr "Αδυναμία προσάρτησης στο φάκελο: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "το πολυμερές μήνυμα δεν έχει παράμετρο ορίων"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr "Έτοιμο"
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr "Ιστ. Πάνω"
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr "Ιστ. Κάτω"
 
-#: enter/window.c:57
+#: editor/window.c:57
 msgid "Hist Search"
 msgstr "Αναζήτηση Ιστ."
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr "Ξεκινήστε γραμμή"
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr "Τελειώστε γραμμή"
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr "Σκοτώστε γραμμή"
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr "Σκοτώστε λέξη"
 

@@ -1861,35 +1861,35 @@ msgstr "Dizine iliştirilemiyor: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "çok parçalı iletinin sınırlama parametresi yok"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr "Tamamla"
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr "Yukarı"
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr "Aşağı"
 
-#: enter/window.c:57
+#: editor/window.c:57
 msgid "Hist Search"
 msgstr "Geçmiş Arama"
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr "Satır Başlangıcı"
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr "Satır Sonu"
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr "Satırı Sonlandır"
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr "Sözcük Sonlandır"
 

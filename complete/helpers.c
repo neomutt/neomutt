@@ -35,7 +35,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
 #include "compapi.h"

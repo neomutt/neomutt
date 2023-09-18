@@ -1857,35 +1857,35 @@ msgstr "Can't append to folder: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "multipart message has no boundary parameter"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr "Complete"
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr "Hist Up"
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr "Hist Down"
 
-#: enter/window.c:57
+#: editor/window.c:57
 msgid "Hist Search"
 msgstr "Hist Search"
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr "Begin Line"
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr "End Line"
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr "Kill Line"
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr "Kill Word"
 

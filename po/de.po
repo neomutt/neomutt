@@ -1863,35 +1863,35 @@ msgstr "Hinzufügen zu Mailbox %s nicht möglich"
 msgid "multipart message has no boundary parameter"
 msgstr "Mehrteilige Nachricht hat keinen \"boundary\"-Parameter"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr "Vollständig"
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr "Verlauf hoch"
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr "Verlauf hinab"
 
-#: enter/window.c:57
+#: editor/window.c:57
 msgid "Hist Search"
 msgstr "Im Verlauf suchen"
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr "Anfangszeile"
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr "Endzeile"
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr "Lösche Zeile"
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr "Lösche Wort"
 

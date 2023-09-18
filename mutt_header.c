@@ -41,7 +41,7 @@
 #include "mutt.h"
 #include "mutt_header.h"
 #include "complete/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"

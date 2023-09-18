@@ -51,7 +51,7 @@
 #include "mutt/lib.h"
 #include "mutt.h"
 #include "sasl.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "connaccount.h"
 #include "connection.h"

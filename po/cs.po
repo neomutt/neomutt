@@ -1877,35 +1877,35 @@ msgstr "Ke složce nelze připojit: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "Zpráva o více částech nemá určeny hranice"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr "Doplnit"
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr "Předchozí položka historie"
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr "Následující položka historie"
 
-#: enter/window.c:57
+#: editor/window.c:57
 msgid "Hist Search"
 msgstr "Hledat v historii příkazů"
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr "Začátek řádky"
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr "Konec řádky"
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr "Odstranit řádku"
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr "Odstranit slovo"
 

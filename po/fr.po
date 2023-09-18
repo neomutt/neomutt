@@ -1959,35 +1959,35 @@ msgstr "Impossible d'ajouter au dossier : %s"
 msgid "multipart message has no boundary parameter"
 msgstr "le message multipart n'a pas de paramètre boundary"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr "Complèt"
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr "Historique vers le haut"
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr "Historique vers le bas"
 
-#: enter/window.c:57
+#: editor/window.c:57
 msgid "Hist Search"
 msgstr "Rechercher dans l'historique"
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr "Début de ligne"
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr "Ligne de fin"
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr ""
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr ""
 

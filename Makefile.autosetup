@@ -376,6 +376,19 @@ $(PWD)/debug:
 @endif
 
 ###############################################################################
+# libeditor
+LIBEDITOR=	libeditor.a
+LIBEDITOROBJS=	editor/enter.o editor/functions.o editor/state.o editor/window.o
+CLEANFILES+=	$(LIBEDITOR) $(LIBEDITOROBJS)
+ALLOBJS+=	$(LIBEDITOROBJS)
+
+$(LIBEDITOR): $(PWD)/editor $(LIBEDITOROBJS)
+	$(AR) cr $@ $(LIBEDITOROBJS)
+	$(RANLIB) $@
+$(PWD)/editor:
+	$(MKDIR_P) $(PWD)/editor
+
+###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
 LIBEMAILOBJS=	email/body.o email/email.o email/envelope.o email/from.o \
@@ -390,19 +403,6 @@ $(LIBEMAIL): $(PWD)/email $(LIBEMAILOBJS)
 	$(RANLIB) $@
 $(PWD)/email:
 	$(MKDIR_P) $(PWD)/email
-
-###############################################################################
-# libenter
-LIBENTER=	libenter.a
-LIBENTEROBJS=	enter/enter.o enter/functions.o enter/state.o enter/window.o
-CLEANFILES+=	$(LIBENTER) $(LIBENTEROBJS)
-ALLOBJS+=	$(LIBENTEROBJS)
-
-$(LIBENTER): $(PWD)/enter $(LIBENTEROBJS)
-	$(AR) cr $@ $(LIBENTEROBJS)
-	$(RANLIB) $@
-$(PWD)/enter:
-	$(MKDIR_P) $(PWD)/enter
 
 ###############################################################################
 # libenvelope
@@ -850,11 +850,11 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
-		$(LIBENTER) $(LIBCOMPLETE) $(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
+		$(LIBEDITOR) $(LIBCOMPLETE) $(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBNNTP) \
 		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
-		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBENTER) $(LIBCOMPLETE) $(LIBNNTP) \
+		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
 		$(LIBCORE) $(LIBPARSE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
@@ -937,8 +937,8 @@ coverage: all test
 	  --directory compress \
 	  --directory config \
 	  --directory core \
+	  --directory editor \
 	  --directory email \
-	  --directory enter \
 	  --directory imap \
 	  --directory mutt \
 	  --directory notmuch \

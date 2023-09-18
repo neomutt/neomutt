@@ -46,7 +46,7 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"

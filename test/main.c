@@ -204,20 +204,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_date_parse_imap)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_date_sleep_ms)                                   \
                                                                                \
-  /* email */                                                                  \
-  NEOMUTT_TEST_ITEM(test_email_cmp_strict)                                     \
-  NEOMUTT_TEST_ITEM(test_email_free)                                           \
-  NEOMUTT_TEST_ITEM(test_email_new)                                            \
-  NEOMUTT_TEST_ITEM(test_email_size)                                           \
-  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_new)                                \
-  NEOMUTT_TEST_ITEM(test_email_header_find)                                    \
-  NEOMUTT_TEST_ITEM(test_email_header_add)                                     \
-  NEOMUTT_TEST_ITEM(test_email_header_update)                                  \
-  NEOMUTT_TEST_ITEM(test_email_header_set)                                     \
-  NEOMUTT_TEST_ITEM(test_email_header_free)                                    \
-                                                                               \
-  /* enter */                                                                  \
+  /* editor */                                                                 \
   NEOMUTT_TEST_ITEM(test_editor_backspace)                                     \
   NEOMUTT_TEST_ITEM(test_editor_backward_char)                                 \
   NEOMUTT_TEST_ITEM(test_editor_backward_word)                                 \
@@ -239,6 +226,19 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_editor_kill_word)                                     \
   NEOMUTT_TEST_ITEM(test_editor_state)                                         \
   NEOMUTT_TEST_ITEM(test_editor_transpose_chars)                               \
+                                                                               \
+  /* email */                                                                  \
+  NEOMUTT_TEST_ITEM(test_email_cmp_strict)                                     \
+  NEOMUTT_TEST_ITEM(test_email_free)                                           \
+  NEOMUTT_TEST_ITEM(test_email_new)                                            \
+  NEOMUTT_TEST_ITEM(test_email_size)                                           \
+  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_new)                                \
+  NEOMUTT_TEST_ITEM(test_email_header_find)                                    \
+  NEOMUTT_TEST_ITEM(test_email_header_add)                                     \
+  NEOMUTT_TEST_ITEM(test_email_header_update)                                  \
+  NEOMUTT_TEST_ITEM(test_email_header_set)                                     \
+  NEOMUTT_TEST_ITEM(test_email_header_free)                                    \
                                                                                \
   /* envelope */                                                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \

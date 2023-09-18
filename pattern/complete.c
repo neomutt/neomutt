@@ -32,7 +32,7 @@
 #include "core/lib.h"
 #include "lib.h"
 #include "complete/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "opcodes.h"
 
 /**

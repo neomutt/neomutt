@@ -42,7 +42,7 @@
 #include "mutt.h"
 #include "recvattach.h"
 #include "browser/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"

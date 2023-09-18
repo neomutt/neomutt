@@ -42,7 +42,7 @@
 #include "mutt.h"
 #include "lib.h"
 #include "browser/lib.h"
-#include "enter/lib.h"
+#include "editor/lib.h"
 #include "history/lib.h"
 #include "adata.h"
 #include "mdata.h"

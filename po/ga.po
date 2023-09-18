@@ -1922,36 +1922,36 @@ msgstr "Ní féidir aon rud a iarcheangal leis an fhillteán: %s"
 msgid "multipart message has no boundary parameter"
 msgstr "teachtaireacht ilchodach gan paraiméadar teoranta"
 
-#: enter/window.c:54
+#: editor/window.c:54
 msgid "Complete"
 msgstr ""
 
-#: enter/window.c:55
+#: editor/window.c:55
 msgid "Hist Up"
 msgstr ""
 
-#: enter/window.c:56
+#: editor/window.c:56
 msgid "Hist Down"
 msgstr ""
 
-#: enter/window.c:57
+#: editor/window.c:57
 #, fuzzy
 msgid "Hist Search"
 msgstr "Cuardaigh"
 
-#: enter/window.c:58
+#: editor/window.c:58
 msgid "Begin Line"
 msgstr ""
 
-#: enter/window.c:59
+#: editor/window.c:59
 msgid "End Line"
 msgstr ""
 
-#: enter/window.c:60
+#: editor/window.c:60
 msgid "Kill Line"
 msgstr ""
 
-#: enter/window.c:61
+#: editor/window.c:61
 msgid "Kill Word"
 msgstr ""
 
