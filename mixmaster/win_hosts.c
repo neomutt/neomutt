@@ -210,7 +210,7 @@ static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
  */
 struct MuttWindow *win_hosts_new(struct RemailerArray *ra)
 {
-  struct MuttWindow *win_hosts = menu_window_new(MENU_MIX, NeoMutt->sub);
+  struct MuttWindow *win_hosts = menu_window_new(MENU_MIXMASTER, NeoMutt->sub);
   win_hosts->focus = win_hosts;
 
   struct Menu *menu = win_hosts->wdata;

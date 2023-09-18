@@ -35,9 +35,9 @@ extern const int MenuNamesLen;
 enum MenuType
 {
   MENU_ALIAS = 1,        ///< Select an email address by its alias
-  MENU_ATTACH,           ///< Select an attachment
+  MENU_ATTACHMENT,       ///< Select an attachment
 #ifdef USE_AUTOCRYPT
-  MENU_AUTOCRYPT_ACCT,   ///< Autocrypt Account menu
+  MENU_AUTOCRYPT,        ///< Autocrypt Account menu
 #endif
   MENU_COMPOSE,          ///< Compose an email
   MENU_DIALOG,           ///< Simple Dialog
@@ -48,13 +48,13 @@ enum MenuType
   MENU_KEY_SELECT_PGP,   ///< Select a PGP key
   MENU_KEY_SELECT_SMIME, ///< Select a SMIME key
 #endif
-  MENU_INDEX,             ///< Index panel (list of emails)
+  MENU_INDEX,            ///< Index panel (list of emails)
 #ifdef MIXMASTER
-  MENU_MIX,              ///< Create/edit a Mixmaster chain
+  MENU_MIXMASTER,        ///< Create/edit a Mixmaster chain
 #endif
   MENU_PAGER,            ///< Pager pager (email viewer)
   MENU_PGP,              ///< PGP encryption menu
-  MENU_POSTPONE,         ///< Select a postponed email
+  MENU_POSTPONED,        ///< Select a postponed email
   MENU_QUERY,            ///< Select from results of external query
   MENU_SMIME,            ///< SMIME encryption menu
   MENU_MAX,

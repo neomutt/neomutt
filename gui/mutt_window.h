@@ -75,7 +75,7 @@ enum WindowType
 
   // Dialogs (nested Windows) displayed to the user
   WT_DLG_ALIAS,       ///< Alias Dialog,       dlg_alias()
-  WT_DLG_ATTACH,      ///< Attach Dialog,      dlg_attachment()
+  WT_DLG_ATTACHMENT,  ///< Attachment Dialog,  dlg_attachment()
   WT_DLG_AUTOCRYPT,   ///< Autocrypt Dialog,   dlg_autocrypt()
   WT_DLG_BROWSER,     ///< Browser Dialog,     dlg_browser()
   WT_DLG_CERTIFICATE, ///< Certificate Dialog, dlg_certificate()
@@ -86,9 +86,9 @@ enum WindowType
   WT_DLG_INDEX,       ///< Index Dialog,       dlg_index()
   WT_DLG_PATTERN,     ///< Pattern Dialog,     dlg_pattern()
   WT_DLG_PGP,         ///< Pgp Dialog,         dlg_pgp()
-  WT_DLG_POSTPONE,    ///< Postpone Dialog,    dlg_postponed()
+  WT_DLG_POSTPONED,   ///< Postponed Dialog,   dlg_postponed()
   WT_DLG_QUERY,       ///< Query Dialog,       dlg_query()
-  WT_DLG_REMAILER,    ///< Remailer Dialog,    dlg_mixmaster()
+  WT_DLG_MIXMASTER,   ///< Mixmaster Dialog,   dlg_mixmaster()
   WT_DLG_SMIME,       ///< Smime Dialog,       dlg_smime()
 
   // Common Windows

@@ -84,7 +84,7 @@
 #include "opcodes.h"
 
 /// Help Bar for the Autocrypt Account selection dialog
-static const struct Mapping AutocryptAcctHelp[] = {
+static const struct Mapping AutocryptHelp[] = {
   // clang-format off
   { N_("Exit"),       OP_EXIT },
   /* L10N: Autocrypt Account Menu Help line:
@@ -314,8 +314,7 @@ void dlg_autocrypt(void)
   if (mutt_autocrypt_init(false))
     return;
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_AUTOCRYPT_ACCT,
-                                             WT_DLG_AUTOCRYPT, AutocryptAcctHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_AUTOCRYPT, WT_DLG_AUTOCRYPT, AutocryptHelp);
 
   struct Menu *menu = dlg->wdata;
   menu->make_entry = autocrypt_make_entry;
@@ -342,13 +341,13 @@ void dlg_autocrypt(void)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_AUTOCRYPT_ACCT, GETCH_NO_FLAGS);
+    op = km_dokey(MENU_AUTOCRYPT, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MENU_AUTOCRYPT_ACCT);
+      km_error_key(MENU_AUTOCRYPT);
       continue;
     }
     mutt_clear_error();

@@ -1004,9 +1004,9 @@ void km_init(void)
   memset(Keymaps, 0, sizeof(struct KeymapList) * MENU_MAX);
 
   create_bindings(AliasDefaultBindings, MENU_ALIAS);
-  create_bindings(AttachDefaultBindings, MENU_ATTACH);
+  create_bindings(AttachmentDefaultBindings, MENU_ATTACHMENT);
 #ifdef USE_AUTOCRYPT
-  create_bindings(AutocryptAcctDefaultBindings, MENU_AUTOCRYPT_ACCT);
+  create_bindings(AutocryptDefaultBindings, MENU_AUTOCRYPT);
 #endif
   create_bindings(BrowserDefaultBindings, MENU_FOLDER);
   create_bindings(DialogDefaultBindings, MENU_DIALOG);
@@ -1015,10 +1015,10 @@ void km_init(void)
   create_bindings(GenericDefaultBindings, MENU_GENERIC);
   create_bindings(IndexDefaultBindings, MENU_INDEX);
 #ifdef MIXMASTER
-  create_bindings(MixDefaultBindings, MENU_MIX);
+  create_bindings(MixmasterDefaultBindings, MENU_MIXMASTER);
 #endif
   create_bindings(PagerDefaultBindings, MENU_PAGER);
-  create_bindings(PostDefaultBindings, MENU_POSTPONE);
+  create_bindings(PostponedDefaultBindings, MENU_POSTPONED);
   create_bindings(QueryDefaultBindings, MENU_QUERY);
 
   if (WithCrypto & APPLICATION_PGP)
@@ -1176,10 +1176,10 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
   {
     case MENU_ALIAS:
       return OpAlias;
-    case MENU_ATTACH:
-      return OpAttach;
+    case MENU_ATTACHMENT:
+      return OpAttachment;
 #ifdef USE_AUTOCRYPT
-    case MENU_AUTOCRYPT_ACCT:
+    case MENU_AUTOCRYPT:
       return OpAutocrypt;
 #endif
     case MENU_COMPOSE:
@@ -1201,15 +1201,15 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
       return OpSmime;
 #endif
 #ifdef MIXMASTER
-    case MENU_MIX:
-      return OpMix;
+    case MENU_MIXMASTER:
+      return OpMixmaster;
 #endif
     case MENU_PAGER:
       return OpPager;
     case MENU_PGP:
       return (WithCrypto & APPLICATION_PGP) ? OpPgp : NULL;
-    case MENU_POSTPONE:
-      return OpPostpone;
+    case MENU_POSTPONED:
+      return OpPostponed;
     case MENU_QUERY:
       return OpQuery;
     default:

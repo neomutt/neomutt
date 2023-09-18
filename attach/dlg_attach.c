@@ -30,9 +30,9 @@
  *
  * ## Windows
  *
- * | Name                        | Type          | See Also         |
- * | :-------------------------- | :------------ | :--------------- |
- * | Attachment Selection Dialog | WT_DLG_ATTACH | dlg_attachment() |
+ * | Name                        | Type              | See Also         |
+ * | :-------------------------- | :---------------- | :--------------- |
+ * | Attachment Selection Dialog | WT_DLG_ATTACHMENT | dlg_attachment() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -91,7 +91,7 @@
 #include "recvattach.h"
 
 /// Help Bar for the Attachment selection dialog
-static const struct Mapping AttachHelp[] = {
+static const struct Mapping AttachmentHelp[] = {
   // clang-format off
   { N_("Exit"),  OP_EXIT },
   { N_("Save"),  OP_ATTACHMENT_SAVE },
@@ -480,7 +480,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   mutt_parse_mime_message(e, fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_ATTACH, WT_DLG_ATTACH, AttachHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_ATTACHMENT, WT_DLG_ATTACHMENT, AttachmentHelp);
   struct Menu *menu = dlg->wdata;
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
@@ -515,13 +515,13 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_ATTACH, GETCH_NO_FLAGS);
+    op = km_dokey(MENU_ATTACHMENT, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MENU_ATTACH);
+      km_error_key(MENU_ATTACHMENT);
       continue;
     }
     mutt_clear_error();

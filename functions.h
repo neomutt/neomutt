@@ -27,7 +27,7 @@
 #include "keymap.h"
 
 extern struct MenuFuncOp OpAlias[];
-extern struct MenuFuncOp OpAttach[];
+extern struct MenuFuncOp OpAttachment[];
 #ifdef USE_AUTOCRYPT
 extern struct MenuFuncOp OpAutocrypt[];
 #endif
@@ -38,18 +38,18 @@ extern struct MenuFuncOp OpEditor[];
 extern struct MenuFuncOp OpGeneric[];
 extern struct MenuFuncOp OpIndex[];
 #ifdef MIXMASTER
-extern struct MenuFuncOp OpMix[];
+extern struct MenuFuncOp OpMixmaster[];
 #endif
 extern struct MenuFuncOp OpPager[];
 extern struct MenuFuncOp OpPgp[];
-extern struct MenuFuncOp OpPostpone[];
+extern struct MenuFuncOp OpPostponed[];
 extern struct MenuFuncOp OpQuery[];
 extern struct MenuFuncOp OpSmime[];
 
 extern const struct MenuOpSeq AliasDefaultBindings[];
-extern const struct MenuOpSeq AttachDefaultBindings[];
+extern const struct MenuOpSeq AttachmentDefaultBindings[];
 #ifdef USE_AUTOCRYPT
-extern const struct MenuOpSeq AutocryptAcctDefaultBindings[];
+extern const struct MenuOpSeq AutocryptDefaultBindings[];
 #endif
 extern const struct MenuOpSeq BrowserDefaultBindings[];
 extern const struct MenuOpSeq ComposeDefaultBindings[];
@@ -58,11 +58,11 @@ extern const struct MenuOpSeq EditorDefaultBindings[];
 extern const struct MenuOpSeq GenericDefaultBindings[];
 extern const struct MenuOpSeq IndexDefaultBindings[];
 #ifdef MIXMASTER
-extern const struct MenuOpSeq MixDefaultBindings[];
+extern const struct MenuOpSeq MixmasterDefaultBindings[];
 #endif
 extern const struct MenuOpSeq PagerDefaultBindings[];
 extern const struct MenuOpSeq PgpDefaultBindings[];
-extern const struct MenuOpSeq PostDefaultBindings[];
+extern const struct MenuOpSeq PostponedDefaultBindings[];
 extern const struct MenuOpSeq QueryDefaultBindings[];
 extern const struct MenuOpSeq SmimeDefaultBindings[];
 

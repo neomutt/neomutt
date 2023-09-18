@@ -31,9 +31,9 @@
  *
  * ## Windows
  *
- * | Name                             | Type            | See Also        |
- * | :------------------------------- | :-------------- | :-------------- |
- * | Postponed Email Selection Dialog | WT_DLG_POSTPONE | dlg_postponed() |
+ * | Name                             | Type             | See Also        |
+ * | :------------------------------- | :--------------- | :-------------- |
+ * | Postponed Email Selection Dialog | WT_DLG_POSTPONED | dlg_postponed() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -87,7 +87,7 @@
 #include "opcodes.h"
 
 /// Help Bar for the Postponed email selection dialog
-static const struct Mapping PostponeHelp[] = {
+static const struct Mapping PostponedHelp[] = {
   // clang-format off
   { N_("Exit"),  OP_EXIT },
   { N_("Del"),   OP_DELETE },
@@ -200,7 +200,7 @@ static const struct AttrColor *post_color(struct Menu *menu, int line)
  */
 struct Email *dlg_postponed(struct Mailbox *m)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONE, WT_DLG_POSTPONE, PostponeHelp);
+  struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONED, WT_DLG_POSTPONED, PostponedHelp);
   // Required to number the emails
   struct MailboxView *mv = mview_new(m, NeoMutt->notify);
 
@@ -236,13 +236,13 @@ struct Email *dlg_postponed(struct Mailbox *m)
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_POSTPONE, GETCH_NO_FLAGS);
+    op = km_dokey(MENU_POSTPONED, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MENU_POSTPONE);
+      km_error_key(MENU_POSTPONED);
       continue;
     }
     mutt_clear_error();

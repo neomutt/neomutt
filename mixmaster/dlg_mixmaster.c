@@ -27,9 +27,9 @@
  *
  * ## Windows
  *
- * | Name                      | Type            | See Also        |
- * | :------------------------ | :-------------- | :-------------- |
- * | Mixmaster Remailer Dialog | WT_DLG_REMAILER | dlg_mixmaster() |
+ * | Name                      | Type             | See Also        |
+ * | :------------------------ | :--------------- | :-------------- |
+ * | Mixmaster Remailer Dialog | WT_DLG_MIXMASTER | dlg_mixmaster() |
  *
  * **Parent**
  * - @ref gui_dialog
@@ -141,10 +141,10 @@ static int remailer_window_observer(struct NotifyCallback *nc)
 static struct MuttWindow *mix_dlg_new(struct MixmasterPrivateData *priv,
                                       struct RemailerArray *ra)
 {
-  struct MuttWindow *dlg = mutt_window_new(WT_DLG_REMAILER, MUTT_WIN_ORIENT_VERTICAL,
+  struct MuttWindow *dlg = mutt_window_new(WT_DLG_MIXMASTER, MUTT_WIN_ORIENT_VERTICAL,
                                            MUTT_WIN_SIZE_MAXIMISE, MUTT_WIN_SIZE_UNLIMITED,
                                            MUTT_WIN_SIZE_UNLIMITED);
-  dlg->help_menu = MENU_MIX;
+  dlg->help_menu = MENU_MIXMASTER;
   dlg->help_data = RemailerHelp;
   dlg->wdata = priv;
 
@@ -212,13 +212,13 @@ void dlg_mixmaster(struct ListHead *chainhead)
     menu_tagging_dispatcher(priv.win_hosts, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_MIX, GETCH_NO_FLAGS);
+    op = km_dokey(MENU_MIXMASTER, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
     if (op == OP_NULL)
     {
-      km_error_key(MENU_MIX);
+      km_error_key(MENU_MIXMASTER);
       continue;
     }
     mutt_clear_error();

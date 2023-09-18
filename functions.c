@@ -64,9 +64,9 @@ const struct MenuFuncOp OpAlias[] = { /* map: alias */
 };
 
 /**
- * OpAttach - Functions for the Attachment Menu
+ * OpAttachment - Functions for the Attachment Menu
  */
-const struct MenuFuncOp OpAttach[] = { /* map: attachment */
+const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
   { "bounce-message",                OP_BOUNCE_MESSAGE },
   { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
   { "collapse-parts",                OP_ATTACHMENT_COLLAPSE },
@@ -518,9 +518,9 @@ const struct MenuFuncOp OpIndex[] = { /* map: index */
 
 #ifdef MIXMASTER
 /**
- * OpMix - Functions for the Mixmaster Menu
+ * OpMixmaster - Functions for the Mixmaster Menu
  */
-const struct MenuFuncOp OpMix[] = { /* map: mixmaster */
+const struct MenuFuncOp OpMixmaster[] = { /* map: mixmaster */
   { "accept",                        OP_MIX_USE },
   { "append",                        OP_MIX_APPEND },
   { "chain-next",                    OP_MIX_CHAIN_NEXT },
@@ -715,9 +715,9 @@ const struct MenuFuncOp OpPgp[] = { /* map: pgp */
 };
 
 /**
- * OpPostpone - Functions for the Postpone Menu
+ * OpPostponed - Functions for the Postpone Menu
  */
-const struct MenuFuncOp OpPostpone[] = { /* map: postpone */
+const struct MenuFuncOp OpPostponed[] = { /* map: postpone */
   { "exit",                          OP_EXIT },
   { "delete-entry",                  OP_DELETE },
   { "undelete-entry",                OP_UNDELETE },
@@ -767,9 +767,9 @@ const struct MenuOpSeq AliasDefaultBindings[] = { /* map: alias */
 };
 
 /**
- * AttachDefaultBindings - Key bindings for the Attachment Menu
+ * AttachmentDefaultBindings - Key bindings for the Attachment Menu
  */
-const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attachment */
+const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
   { OP_ATTACHMENT_COLLAPSE,                "v" },
   { OP_ATTACHMENT_DELETE,                  "d" },
   { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
@@ -798,9 +798,9 @@ const struct MenuOpSeq AttachDefaultBindings[] = { /* map: attachment */
 
 #ifdef USE_AUTOCRYPT
 /**
- * AutocryptAcctDefaultBindings - Key bindings for the Autocrypt Account
+ * AutocryptDefaultBindings - Key bindings for the Autocrypt Account
  */
-const struct MenuOpSeq AutocryptAcctDefaultBindings[] = { /* map: autocrypt account */
+const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account */
   { OP_AUTOCRYPT_CREATE_ACCT,              "c" },
   { OP_AUTOCRYPT_DELETE_ACCT,              "D" },
   { OP_AUTOCRYPT_TOGGLE_ACTIVE,            "a" },
@@ -1104,9 +1104,9 @@ const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
 
 #ifdef MIXMASTER
 /**
- * MixDefaultBindings - Key bindings for the Mixmaster Menu
+ * MixmasterDefaultBindings - Key bindings for the Mixmaster Menu
  */
-const struct MenuOpSeq MixDefaultBindings[] = { /* map: mixmaster */
+const struct MenuOpSeq MixmasterDefaultBindings[] = { /* map: mixmaster */
   { OP_EXIT,                               "q" },
   { OP_GENERIC_SELECT_ENTRY,               "<space>" },
   { OP_MIX_APPEND,                         "a" },
@@ -1238,9 +1238,9 @@ const struct MenuOpSeq PgpDefaultBindings[] = { /* map: pgp */
 };
 
 /**
- * PostDefaultBindings - Key bindings for the Postpone Menu
+ * PostponedDefaultBindings - Key bindings for the Postpone Menu
  */
-const struct MenuOpSeq PostDefaultBindings[] = { /* map: postpone */
+const struct MenuOpSeq PostponedDefaultBindings[] = { /* map: postpone */
   { OP_DELETE,                             "d" },
   { OP_EXIT,                               "q" },
   { OP_UNDELETE,                           "u" },
