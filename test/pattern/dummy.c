@@ -81,12 +81,25 @@ bool g_addr_is_user = false;
 int g_body_parts = 1;
 bool g_is_mail_list = false;
 bool g_is_subscribed_list = false;
-short AbortKey;
 bool OptForceRefresh;
 bool OptKeepQuiet;
 bool OptNoCurses;
 
+const struct MenuFuncOp OpAlias = { 0 };
+const struct MenuFuncOp OpAttachment = { 0 };
+const struct MenuFuncOp OpAutocrypt = { 0 };
+const struct MenuFuncOp OpBrowser = { 0 };
+const struct MenuFuncOp OpCompose = { 0 };
+const struct MenuFuncOp OpDialog = { 0 };
+const struct MenuFuncOp OpEditor = { 0 };
 const struct MenuFuncOp OpGeneric[] = { 0 };
+const struct MenuFuncOp OpIndex = { 0 };
+const struct MenuFuncOp OpMixmaster = { 0 };
+const struct MenuFuncOp OpPager = { 0 };
+const struct MenuFuncOp OpPgp = { 0 };
+const struct MenuFuncOp OpPostponed = { 0 };
+const struct MenuFuncOp OpQuery = { 0 };
+const struct MenuFuncOp OpSmime = { 0 };
 
 typedef uint8_t MuttFormatFlags;
 typedef uint16_t CompletionFlags;
@@ -231,16 +244,6 @@ void menu_push_current(struct Menu *menu)
 {
 }
 
-int km_expand_key(char *s, size_t len, struct Keymap *map)
-{
-  return 0;
-}
-
-struct Keymap *km_find_func(enum MenuType menu, int func)
-{
-  return NULL;
-}
-
 int dlg_pager(const char *banner, const char *fname, PagerFlags flags, struct Pager *extra)
 {
   return 0;
@@ -273,26 +276,6 @@ int alias_complete(char *buf, size_t buflen, struct ConfigSubset *sub)
 int global_function_dispatcher(struct MuttWindow *win, int op)
 {
   return 0;
-}
-
-int km_dokey(enum MenuType mtype, GetChFlags flags)
-{
-  return 0;
-}
-
-const struct MenuFuncOp *km_get_table(enum MenuType mtype)
-{
-  return OpGeneric;
-}
-
-struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
-{
-  struct KeyEvent ke = { 0 };
-  return ke;
-}
-
-void km_error_key(enum MenuType mtype)
-{
 }
 
 int mutt_complete(char *buf, size_t buflen)

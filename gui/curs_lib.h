@@ -60,8 +60,6 @@ int          mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailb
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
 void         mutt_flushinp(void);
-void         mutt_flush_macro_to_endcond(void);
-void         mutt_flush_unget_to_endcond(void);
 void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
 void         mutt_format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal);

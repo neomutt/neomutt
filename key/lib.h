@@ -26,9 +26,13 @@
  *
  * Manage keymappings
  *
- * | File                | Description                |
- * | :------------------ | :------------------------- |
- * | key/keymap.c        | @subpage key_keymap        |
+ * | File                | Description           |
+ * | :------------------ | :-------------------- |
+ * | key/dump.c:         | @subpage key_dump     |
+ * | key/get.c:          | @subpage key_get      |
+ * | key/init.c:         | @subpage key_init     |
+ * | key/lib.c:          | @subpage key_lib      |
+ * | key/parse.c:        | @subpage key_parse    |
  */
 
 #ifndef MUTT_KEY_LIB_H
@@ -36,15 +40,14 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "menu/lib.h"
 
-#define MUTT_UNBIND  1<<0
-#define MUTT_UNMACRO 1<<1
-/* maximal length of a key binding sequence used for buffer in km_bindkey */
-#define MAX_SEQ 8
+#define MUTT_UNBIND   (1 << 0)  ///< Parse 'unbind'  command
+#define MUTT_UNMACRO  (1 << 1)  ///< Parse 'unmacro' command
 
 typedef uint8_t GetChFlags;            ///< Flags for mutt_getch(), e.g. #GETCH_NO_FLAGS
 #define GETCH_NO_FLAGS             0   ///< No flags are set
@@ -52,8 +55,6 @@ typedef uint8_t GetChFlags;            ///< Flags for mutt_getch(), e.g. #GETCH_
 
 /// Type for key storage, the rest of neomutt works fine with int type
 typedef short keycode_t;
-
-void init_extended_keys(void);
 
 /**
  * struct Keymap - A keyboard mapping
@@ -84,19 +85,12 @@ struct KeyEvent
   int op; ///< Function opcode, e.g. OP_HELP
 };
 
-int km_expand_key(char *s, size_t len, struct Keymap *map);
-struct Keymap *km_find_func(enum MenuType menu, int func);
-void km_init(void);
-void km_error_key(enum MenuType menu);
-void mw_what_key(void);
-void mutt_init_abort_key(void);
-int main_config_observer(struct NotifyCallback *nc);
+ARRAY_HEAD(KeyEventArray, struct KeyEvent);
 
-enum CommandResult km_bind(char *s, enum MenuType menu, int op, char *macro, char *desc);
-int km_dokey(enum MenuType menu, GetChFlags flags);
-struct KeyEvent km_dokey_event(enum MenuType menu, GetChFlags flags);
+extern struct KeyEventArray MacroEvents;
 
 extern struct KeymapList Keymaps[]; ///< Array of Keymap keybindings, one for each Menu
+extern struct Mapping KeyNames[];
 
 extern keycode_t AbortKey; ///< key to abort edits etc, normally Ctrl-G
 
@@ -148,16 +142,40 @@ enum NotifyBinding
   NT_MACRO_DELETE_ALL,   ///< All key macros have been deleted
 };
 
-const struct MenuFuncOp *km_get_table(enum MenuType mtype);
-const char *mutt_get_func(const struct MenuFuncOp *bindings, int op);
-
-void mutt_keys_cleanup(void);
-
 enum CommandResult mutt_parse_bind   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_exec   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_macro  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_push   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_unbind (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_unmacro(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+
+enum CommandResult       km_bind                    (char *s, enum MenuType menu, int op, char *macro, char *desc);
+int                      km_dokey                   (enum MenuType menu, GetChFlags flags);
+struct KeyEvent          km_dokey_event             (enum MenuType menu, GetChFlags flags);
+void                     km_error_key               (enum MenuType menu);
+int                      km_expand_key              (char *s, size_t len, struct Keymap *map);
+int                      km_expand_key_string       (char *str, char *buf, size_t buflen);
+struct Keymap *          km_find_func               (enum MenuType menu, int func);
+const struct MenuFuncOp *km_get_table               (enum MenuType mtype);
+void                     km_init                    (void);
+const char *             km_keyname                 (int c);
+void                     init_extended_keys         (void);
+int                      main_config_observer       (struct NotifyCallback *nc);
+void                     mutt_flush_macro_to_endcond(void);
+void                     mutt_flush_unget_to_endcond(void);
+void                     mutt_init_abort_key        (void);
+void                     mutt_keys_cleanup          (void);
+void                     mw_what_key                (void);
+
+// Private to libkey
+struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);
+enum CommandResult dump_bind_macro             (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+void               generic_tokenize_push_string(char *s, void (*generic_push)(int, int));
+int                get_op                      (const struct MenuFuncOp *funcs, const char *start, size_t len);
+enum CommandResult km_bindkey                  (const char *s, enum MenuType mtype, int op);
+struct Keymap *    km_compare_keys             (struct Keymap *k1, struct Keymap *k2, size_t *pos);
+const char *       mutt_get_func               (const struct MenuFuncOp *bindings, int op);
+void               mutt_keymap_free            (struct Keymap **ptr);
+size_t             parsekeys                   (const char *str, keycode_t *d, size_t max);
 
 #endif /* MUTT_KEY_LIB_H */
