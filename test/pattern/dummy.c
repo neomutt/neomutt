@@ -29,8 +29,8 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
-#include "keymap.h"
 #include "mview.h"
 
 struct Address;

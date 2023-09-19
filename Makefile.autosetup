@@ -66,7 +66,7 @@ default:	all
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
 		enriched.o external.o flags.o functions.o git_ver.o globals.o \
-		handler.o hdrline.o help.o hook.o init.o keymap.o mailcap.o \
+		handler.o hdrline.o help.o hook.o init.o mailcap.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_config.o mutt_header.o mutt_logging.o mutt_mailbox.o \
 		mutt_signal.o mutt_socket.o mutt_thread.o mview.o mx.o \
@@ -520,6 +520,19 @@ $(PWD)/index:
 	$(MKDIR_P) $(PWD)/index
 
 ###############################################################################
+# libkey
+LIBKEY=		libkey.a
+LIBKEYOBJS=	key/keymap.o
+CLEANFILES+=	$(LIBKEY) $(LIBKEYOBJS)
+ALLOBJS+=	$(LIBKEYOBJS)
+
+$(LIBKEY): $(PWD)/key $(LIBKEYOBJS)
+	$(AR) cr $@ $(LIBKEYOBJS)
+	$(RANLIB) $@
+$(PWD)/key:
+	$(MKDIR_P) $(PWD)/key
+
+###############################################################################
 # libmaildir
 LIBMAILDIR=	libmaildir.a
 LIBMAILDIROBJS=	maildir/config.o maildir/edata.o maildir/maildir.o \
@@ -852,7 +865,7 @@ $(ALLOBJS):
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIBPOP) \
 		$(LIBEDITOR) $(LIBCOMPLETE) $(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) \
 		$(LIBPROGRESS) $(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
-		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBGUI) $(LIBNNTP) \
+		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) $(LIBNNTP) \
 		$(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) $(LIBENVELOPE) $(LIBMIXMASTER) \
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \

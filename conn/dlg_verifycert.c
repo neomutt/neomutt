@@ -57,8 +57,8 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
-#include "keymap.h"
 #include "opcodes.h"
 #include "ssl.h"
 

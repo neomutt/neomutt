@@ -40,7 +40,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
-#include "keymap.h"
+#include "key/lib.h"
 #include "opcodes.h"
 
 /**

@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <wchar.h>
 #include "browser/lib.h"
-#include "keymap.h"
+#include "key/lib.h"
 
 struct Buffer;
 struct Mailbox;

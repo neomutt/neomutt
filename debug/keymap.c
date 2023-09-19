@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "keymap.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "functions.h"
 #include "opcodes.h"

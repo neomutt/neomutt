@@ -40,6 +40,7 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
@@ -48,7 +49,6 @@
 #include "globals.h" // IWYU pragma: keep
 #include "hdrline.h"
 #include "hook.h"
-#include "keymap.h"
 #include "mview.h"
 #include "mx.h"
 #include "protos.h"

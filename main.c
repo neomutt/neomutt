@@ -54,11 +54,11 @@
  * @ref lib_conn, @ref lib_convert, @ref lib_core, @ref lib_email,
  * @ref lib_enter, @ref lib_envelope, @ref lib_gui, @ref lib_hcache,
  * @ref lib_helpbar, @ref lib_history, @ref lib_imap, @ref lib_index,
- * @ref lib_maildir, @ref lib_mbox, @ref lib_menu, @ref lib_mixmaster,
- * @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp, @ref lib_notmuch,
- * @ref lib_pager, @ref lib_parse, @ref lib_pattern, @ref lib_pop,
- * @ref lib_postpone, @ref lib_progress, @ref lib_question, @ref lib_send,
- * @ref lib_sidebar, @ref lib_store.
+ * @ref lib_key, @ref lib_maildir, @ref lib_mbox, @ref lib_menu,
+ * @ref lib_mixmaster, @ref lib_mutt, @ref lib_ncrypt, @ref lib_nntp,
+ * @ref lib_notmuch, @ref lib_pager, @ref lib_parse, @ref lib_pattern,
+ * @ref lib_pop, @ref lib_postpone, @ref lib_progress, @ref lib_question,
+ * @ref lib_send, @ref lib_sidebar, @ref lib_store.
  *
  * ## Miscellaneous files
  *
@@ -80,7 +80,6 @@
  * | help.c          | @subpage neo_help          |
  * | hook.c          | @subpage neo_hook          |
  * | init.c          | @subpage neo_init          |
- * | keymap.c        | @subpage neo_keymap        |
  * | mailcap.c       | @subpage neo_mailcap       |
  * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
@@ -156,6 +155,7 @@
 #include "color/lib.h"
 #include "history/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "postpone/lib.h"
@@ -166,7 +166,6 @@
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "init.h"
-#include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"

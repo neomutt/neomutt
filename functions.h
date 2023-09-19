@@ -24,7 +24,7 @@
 #define MUTT_FUNCTIONS_H
 
 #include "config.h"
-#include "keymap.h"
+#include "key/lib.h"
 
 extern struct MenuFuncOp OpAlias[];
 extern struct MenuFuncOp OpAttachment[];

@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2010-2011 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -21,7 +22,7 @@
  */
 
 /**
- * @page neo_keymap Manage keymappings
+ * @page key_keymap Manage keymappings
  *
  * Manage keymappings
  */
@@ -40,8 +41,8 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "keymap.h"
 #include "color/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"

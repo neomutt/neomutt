@@ -43,6 +43,7 @@
 #include "alias/lib.h"
 #include "mutt.h"
 #include "mx.h"
+#include "key/lib.h"
 #include "maildir/lib.h"
 #include "mbox/lib.h"
 #include "menu/lib.h"
@@ -51,7 +52,6 @@
 #include "external.h"
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
-#include "keymap.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"

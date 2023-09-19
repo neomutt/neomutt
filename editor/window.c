@@ -39,9 +39,9 @@
 #include "color/lib.h"
 #include "complete/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "functions.h"
-#include "keymap.h"
 #include "muttlib.h"
 #include "opcodes.h"
 #include "state.h" // IWYU pragma: keep

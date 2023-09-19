@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,8 +21,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_KEYMAP_H
-#define MUTT_KEYMAP_H
+/**
+ * @page lib_key Key mappings
+ *
+ * Manage keymappings
+ *
+ * | File                | Description                |
+ * | :------------------ | :------------------------- |
+ * | key/keymap.c        | @subpage key_keymap        |
+ */
+
+#ifndef MUTT_KEY_LIB_H
+#define MUTT_KEY_LIB_H
 
 #include "config.h"
 #include <stddef.h>
@@ -149,4 +160,4 @@ enum CommandResult mutt_parse_push   (struct Buffer *buf, struct Buffer *s, intp
 enum CommandResult mutt_parse_unbind (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_unmacro(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-#endif /* MUTT_KEYMAP_H */
+#endif /* MUTT_KEY_LIB_H */

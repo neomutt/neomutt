@@ -44,6 +44,7 @@
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
@@ -54,7 +55,6 @@
 #include "external.h"
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
-#include "keymap.h"
 #include "mutt_header.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"

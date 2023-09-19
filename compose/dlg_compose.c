@@ -78,6 +78,7 @@
 #include "attach/lib.h"
 #include "envelope/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "attach_data.h"
@@ -85,7 +86,6 @@
 #include "functions.h"
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
-#include "keymap.h"
 #include "mutt_logging.h"
 #include "opcodes.h"
 #include "shared_data.h"

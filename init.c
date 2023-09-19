@@ -46,12 +46,12 @@
 #include "init.h"
 #include "color/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "notmuch/lib.h"
 #include "parse/lib.h"
 #include "commands.h"
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
-#include "keymap.h"
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
