@@ -2365,7 +2365,7 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
                 This command is used to execute any command you would normally
                 put in a configuration file. A common use is to check the
                 settings of variables, or in conjunction with
-                <link linkend="macro">macros</link> to change settings on the
+                <link linkend="macros">macros</link> to change settings on the
                 fly.
               </para>
             </listitem>
@@ -5038,7 +5038,7 @@ folder-hook work "set sort=threads"
       </example>
     </sect1>
 
-    <sect1 id="macro">
+    <sect1 id="macros">
       <title>Keyboard Macros</title>
       <para>
         Usage:
@@ -5077,59 +5077,124 @@ folder-hook work "set sort=threads"
             <replaceable class="parameter">key</replaceable>
           </arg>
         </group>
-
       </cmdsynopsis>
       <para>
-        Macros are useful when you would like a single key to perform a series
-        of actions. When you press <emphasis>key</emphasis> in menu
-        <emphasis>menu</emphasis>, NeoMutt will behave as if you had typed
-        <emphasis>sequence</emphasis>. So if you have a common sequence of
-        commands you type, you can create a macro to execute those commands
-        with a single key or fewer keys.
+        Macros are a convenient way to automate various actions.
       </para>
-      <para>
-        <emphasis>menu</emphasis> is the <link linkend="maps">map</link> which
-        the macro will be bound in. Multiple maps may be specified by
-        separating multiple menu arguments by commas. Whitespace may not be
-        used in between the menu arguments and the commas separating them.
-      </para>
-      <para>
-        <emphasis>key</emphasis> and <emphasis>sequence</emphasis> are expanded
-        by the same rules as the <link linkend="bind">key bindings</link> with
-        some additions. The first is that control characters in
-        <emphasis>sequence</emphasis> can also be specified as
-        <emphasis>^x</emphasis>. In order to get a caret (<quote>^</quote>)
-        you need to use <emphasis>^^</emphasis>. Secondly, to specify a certain
-        key such as <emphasis>up</emphasis> or to invoke a function directly,
-        you can use the format <emphasis>&lt;key name&gt;</emphasis> and
-        <emphasis>&lt;function name&gt;</emphasis>. For a listing of key names
-        see the section on <link linkend="bind">key bindings</link>. Functions
-        are listed in the <link linkend="functions">reference</link>.
-      </para>
-      <para>
-        The advantage with using function names directly is that the macros
-        will work regardless of the current key bindings, so they are not
-        dependent on the user having particular key definitions. This makes
-        them more robust and portable, and also facilitates defining of macros
-        in files used by more than one user (e.g., the system neomuttrc).
-      </para>
-      <para>
-        Optionally you can specify a descriptive text after
-        <emphasis>sequence</emphasis>, which is shown in the help screens if
-        they contain a description.
-      </para>
-      <note>
+
+      <sect2 id="macro">
+        <title>Creating a Key Macro</title>
         <para>
-          Macro definitions (if any) listed in the help screen(s), are silently
-          truncated at the screen width, and are not wrapped.
+          This command allows you to create a macro.
         </para>
-      </note>
-      <note>
+        <cmdsynopsis>
+          <command>macro</command>
+          <arg choice="plain">
+            <replaceable class="parameter">menu</replaceable>
+          </arg>
+          <arg choice="opt" rep="repeat">
+            <replaceable class="parameter">,menu</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">key</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">sequence</replaceable>
+          </arg>
+          <arg choice="opt">
+            <replaceable class="parameter">description</replaceable>
+          </arg>
+        </cmdsynopsis>
         <para>
-          Missing key sequence in unmacro command means unmacro all macros in menus
-          given in <emphasis>menu</emphasis>.
+          Macros are useful when you would like a single key to perform a series
+          of actions. When you press <emphasis>key</emphasis> in menu
+          <emphasis>menu</emphasis>, NeoMutt will behave as if you had typed
+          <emphasis>sequence</emphasis>. So if you have a common sequence of
+          commands you type, you can create a macro to execute those commands
+          with a single key or fewer keys.
         </para>
-      </note>
+        <para>
+          <emphasis>menu</emphasis> is the <link linkend="maps">map</link> which
+          the macro will be bound in. Multiple maps may be specified by
+          separating multiple menu arguments by commas. Whitespace may not be
+          used in between the menu arguments and the commas separating them.
+        </para>
+        <para>
+          <emphasis>key</emphasis> and <emphasis>sequence</emphasis> are expanded
+          by the same rules as the <link linkend="bind">key bindings</link> with
+          some additions. The first is that control characters in
+          <emphasis>sequence</emphasis> can also be specified as
+          <emphasis>^x</emphasis>. In order to get a caret (<quote>^</quote>)
+          you need to use <emphasis>^^</emphasis>. Secondly, to specify a certain
+          key such as <emphasis>up</emphasis> or to invoke a function directly,
+          you can use the format <emphasis>&lt;key name&gt;</emphasis> and
+          <emphasis>&lt;function name&gt;</emphasis>. For a listing of key names
+          see the section on <link linkend="bind">key bindings</link>. Functions
+          are listed in the <link linkend="functions">reference</link>.
+        </para>
+        <para>
+          The advantage with using function names directly is that the macros
+          will work regardless of the current key bindings, so they are not
+          dependent on the user having particular key definitions. This makes
+          them more robust and portable, and also facilitates defining of macros
+          in files used by more than one user (e.g., the system neomuttrc).
+        </para>
+        <para>
+          Optionally you can specify a descriptive text after
+          <emphasis>sequence</emphasis>, which is shown in the help screens if
+          they contain a description.
+        </para>
+        <note>
+          <para>
+            Macro definitions (if any) listed in the help screen(s), are silently
+            truncated at the screen width, and are not wrapped.
+          </para>
+        </note>
+      </sect2>
+
+      <sect2 id="unmacro">
+        <title>Removing a Key Macro</title>
+        <para>
+          This command will remove a macro.
+        </para>
+        <cmdsynopsis>
+          <command>macro</command>
+          <arg choice="plain">
+            <replaceable class="parameter">menu</replaceable>
+          </arg>
+          <arg choice="opt" rep="repeat">
+            <replaceable class="parameter">,menu</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">key</replaceable>
+          </arg>
+          <arg choice="plain">
+            <replaceable class="parameter">sequence</replaceable>
+          </arg>
+          <arg choice="opt">
+            <replaceable class="parameter">description</replaceable>
+          </arg>
+        </cmdsynopsis>
+        <para>
+          <emphasis>map</emphasis> specifies from which menus the macro
+          should be removed.  Multiple maps may be specified by separating them
+          with commas (no additional whitespace is allowed).  If
+          <literal>*</literal> is given, then the macro is removed from
+          all menus.  Valid menu names and their description are listed
+          <link linkend="maps">in the <literal>bind</literal> section</link>.
+        </para>
+        <para>
+          <emphasis>key</emphasis> is the key or key sequence to be unbound.
+          It may be omitted in which case all macros in the given menus
+          are removed.
+        </para>
+        <note>
+          <para>
+            Missing key sequence in unmacro command means unmacro all macros in menus
+            given in <emphasis>menu</emphasis>.
+          </para>
+        </note>
+      </sect2>
     </sect1>
 
     <sect1 id="color">
@@ -20441,6 +20506,27 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <arg choice="opt">
               <replaceable class="parameter">description</replaceable>
             </arg>
+            <command>
+              <link linkend="unmacro">unmacro</link>
+            </command>
+            <group choice="req">
+              <arg choice="plain">
+                <replaceable class="parameter">*</replaceable>
+              </arg>
+              <arg choice="plain">
+                <arg choice="plain">
+                  <replaceable class="parameter">map</replaceable>
+                </arg>
+                <arg choice="opt" rep="repeat">
+                  <replaceable class="parameter">,map</replaceable>
+                </arg>
+              </arg>
+            </group>
+            <group choice="opt">
+              <arg choice="plain">
+                <replaceable class="parameter">key</replaceable>
+              </arg>
+            </group>
           </cmdsynopsis>
         </listitem>
         <listitem>
