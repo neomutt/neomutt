@@ -3499,8 +3499,8 @@ msgstr "Donu ŝlosilojn (^G por nuligi): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Signo = %s, Okume = %o, Dekume = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Signo = %s, Okume = %o, Dekume = %d\n"
 
 #: mailcap.c:216
 #, c-format

@@ -3458,8 +3458,8 @@ msgstr "Zadajte klávesy (alebo stlačte %s pre zrušenie): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Znak = %s, Oktálne = %o, Dekadicky = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Znak = %s, Oktálne = %o, Dekadicky = %d\n"
 
 #: mailcap.c:216
 #, c-format

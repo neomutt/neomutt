@@ -3562,8 +3562,8 @@ msgstr "Ange nycklar (^G för att avbryta): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Tecken = %s, Oktal = %o, Decimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Tecken = %s, Oktal = %o, Decimal = %d\n"
 
 #: mailcap.c:216
 #, c-format

@@ -3403,8 +3403,8 @@ msgstr "Tasten drücken (%s zum Abbrechen): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Zeichen = %s, Oktal = %o, Dezimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Zeichen = %s, Oktal = %o, Dezimal = %d\n"
 
 #: mailcap.c:216
 #, c-format

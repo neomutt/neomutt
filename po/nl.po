@@ -3534,8 +3534,8 @@ msgstr "Geef toetsen in (^G om af te breken): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Teken = %s, Octaal = %o, Decimaal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Teken = %s, Octaal = %o, Decimaal = %d\n"
 
 #: mailcap.c:216
 #, c-format

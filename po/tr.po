@@ -3438,8 +3438,8 @@ msgstr "Düğmeleri girin (iptal için %s): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Karakter = %s, Sekizlik = %o, Onluk = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Karakter = %s, Sekizlik = %o, Onluk = %d\n"
 
 #: mailcap.c:216
 #, c-format

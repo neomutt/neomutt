@@ -3561,8 +3561,8 @@ msgstr "Inserisci i tasti (^G per annullare): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Car = %s, Ottale = %o, Decimale = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Car = %s, Ottale = %o, Decimale = %d\n"
 
 #: mailcap.c:216
 #, c-format

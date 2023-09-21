@@ -3495,8 +3495,8 @@ msgstr "キーを押すと開始 (終了は ^G): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "文字 = %s, 8進 = %o, 10進 = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "文字 = %s, 8進 = %o, 10進 = %d\n"
 
 #: mailcap.c:216
 #, c-format

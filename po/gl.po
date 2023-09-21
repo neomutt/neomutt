@@ -3595,7 +3595,7 @@ msgstr "Introduza keyID para %s: "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr ""
 
 #: mailcap.c:216

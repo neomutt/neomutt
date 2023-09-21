@@ -3647,8 +3647,8 @@ msgstr "Premeu les tecles («^G» avorta): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Caràcter = %s, Octal = %o, Decimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Caràcter = %s, Octal = %o, Decimal = %d\n"
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!

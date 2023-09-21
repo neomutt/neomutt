@@ -3456,8 +3456,8 @@ msgstr "Naciśnij klawisze (%s aby przerwać): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "znak = %s, ósemkowy = %o, dziesiętny = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "znak = %s, ósemkowy = %o, dziesiętny = %d\n"
 
 #: mailcap.c:216
 #, c-format

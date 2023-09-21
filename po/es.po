@@ -3438,8 +3438,8 @@ msgstr "Introducir claves (%s para cancelar): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Char = %s, Octal = %o, Decimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Char = %s, Octal = %o, Decimal = %d\n"
 
 #: mailcap.c:216
 #, c-format

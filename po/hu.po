@@ -3438,8 +3438,8 @@ msgstr "Billentyük beírása (%s - mégse): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Karakter = %s, Oktális = %o, Decimális = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Karakter = %s, Oktális = %o, Decimális = %d\n"
 
 #: mailcap.c:216
 #, c-format

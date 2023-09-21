@@ -3494,8 +3494,8 @@ msgstr "Εισάγετε κλειδιά (^G για απόρριψη): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Χαρακτ = %s, Οκταδικός = %o, Δεκαδικός = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Χαρακτ = %s, Οκταδικός = %o, Δεκαδικός = %d\n"
 
 #: mailcap.c:216
 #, c-format

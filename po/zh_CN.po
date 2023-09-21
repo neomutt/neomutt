@@ -3425,8 +3425,8 @@ msgstr "请按键 (按 %s 中止)："
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "字符 = %s, 八进制 = %o, 十进制 = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "字符 = %s, 八进制 = %o, 十进制 = %d\n"
 
 #: mailcap.c:216
 #, c-format

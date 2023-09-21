@@ -3514,8 +3514,8 @@ msgstr "Введите ключи (%s - прерывание ввода): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Символ = %s, восьмиричный = %o, десятичный = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Символ = %s, восьмиричный = %o, десятичный = %d\n"
 
 #: mailcap.c:216
 #, c-format

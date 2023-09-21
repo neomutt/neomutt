@@ -3534,8 +3534,8 @@ msgstr "Masukkan kunci-kunci (^G utk batal): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Kar = %s, Oktal = %o, Desimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Kar = %s, Oktal = %o, Desimal = %d\n"
 
 #: mailcap.c:216
 #, c-format

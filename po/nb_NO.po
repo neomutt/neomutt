@@ -3436,8 +3436,8 @@ msgstr "Trykk taster (%s for å avbryte): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Tegn = %s, oktalt = %o, desimalt = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Tegn = %s, oktalt = %o, desimalt = %d\n"
 
 #: mailcap.c:216
 #, c-format

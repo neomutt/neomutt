@@ -3549,7 +3549,7 @@ msgstr "請輸入 %s 的鑰匙 ID："
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr ""
 
 #: mailcap.c:216

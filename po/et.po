@@ -3575,7 +3575,7 @@ msgstr "Sisestage kasutaja teatele %s: "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr ""
 
 #: mailcap.c:216

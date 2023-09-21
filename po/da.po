@@ -3524,8 +3524,8 @@ msgstr "Anfør nøgler (^G afbryder): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Tegn = %s, oktalt = %o, decimalt = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Tegn = %s, oktalt = %o, decimalt = %d\n"
 
 #: mailcap.c:216
 #, c-format

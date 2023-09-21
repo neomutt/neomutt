@@ -3619,8 +3619,8 @@ msgstr "Entrez des touches (^G pour abandonner) : "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Caractère = %s, Octal = %o, Décimal = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Caractère = %s, Octal = %o, Décimal = %d\n"
 
 # , c-format
 #: mailcap.c:216

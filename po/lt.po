@@ -3455,8 +3455,8 @@ msgstr "Paspausk klavišus (%s nutraukia): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Simbolis = %s, aštuonetaine sistema = %o, dešimtaine = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Simbolis = %s, aštuonetaine sistema = %o, dešimtaine = %d\n"
 
 #: mailcap.c:216
 #, c-format

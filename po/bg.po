@@ -3571,8 +3571,8 @@ msgstr "Въведете ключове (^G за прекъсване): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Символ = %s, Осмично = %o, Десетично = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Символ = %s, Осмично = %o, Десетично = %d\n"
 
 #: mailcap.c:216
 #, c-format

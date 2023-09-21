@@ -3563,8 +3563,8 @@ msgstr "Sartu gakoak (^G uzteko): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Kar = %s, Zortziko = %o, hamarreko = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Kar = %s, Zortziko = %o, hamarreko = %d\n"
 
 #: mailcap.c:216
 #, c-format

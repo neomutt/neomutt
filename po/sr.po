@@ -3455,8 +3455,8 @@ msgstr "Притисните тастер (%s за прекид): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Знак = %s, октално = %o, децимално = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Знак = %s, октално = %o, децимално = %d\n"
 
 #: mailcap.c:216
 #, c-format

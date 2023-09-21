@@ -3462,8 +3462,8 @@ msgstr "Näppäimet (^G peruu): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Merkki = %s, Oktaali = %o, Desimaali = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Merkki = %s, Oktaali = %o, Desimaali = %d\n"
 
 #: mailcap.c:216
 #, c-format

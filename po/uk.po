@@ -3459,8 +3459,8 @@ msgstr "Уведіть клавіші (%s — перервати): "
 
 #: keymap.c:1941
 #, c-format
-msgid "Char = %s, Octal = %o, Decimal = %d"
-msgstr "Знак = %s, Вісімковий = %o, Десятковий = %d"
+msgid "Char = %s, Octal = %o, Decimal = %d\n"
+msgstr "Знак = %s, Вісімковий = %o, Десятковий = %d\n"
 
 #: mailcap.c:216
 #, c-format
