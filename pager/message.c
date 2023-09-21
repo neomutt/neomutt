@@ -203,8 +203,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
     {
       /* find out whether or not the verify signature */
       /* L10N: Used for the $crypt_verify_sig prompt */
-      const enum QuadOption c_crypt_verify_sig = cs_subset_quad(NeoMutt->sub, "crypt_verify_sig");
-      if (query_quadoption(c_crypt_verify_sig, _("Verify signature?")) == MUTT_YES)
+      if (query_quadoption(_("Verify signature?"), NeoMutt->sub, "crypt_verify_sig") == MUTT_YES)
       {
         *cmflags |= MUTT_CM_VERIFY;
       }

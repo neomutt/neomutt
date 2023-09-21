@@ -641,9 +641,8 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
 
     if (mdata && mdata->adata && mdata->group)
     {
-      const enum QuadOption c_catchup_newsgroup = cs_subset_quad(NeoMutt->sub, "catchup_newsgroup");
-      enum QuadOption ans = query_quadoption(c_catchup_newsgroup,
-                                             _("Mark all articles read?"));
+      enum QuadOption ans = query_quadoption(_("Mark all articles read?"),
+                                             NeoMutt->sub, "catchup_newsgroup");
       if (ans == MUTT_ABORT)
         goto cleanup;
       if (ans == MUTT_YES)
@@ -696,7 +695,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
                             moved, the second argument is the target mailbox. */
                  ngettext("Move %d read message to %s?", "Move %d read messages to %s?", read_msgs),
                  read_msgs, buf_string(mbox));
-      move_messages = query_quadoption(c_move, buf_string(buf));
+      move_messages = query_quadoption(buf_string(buf), NeoMutt->sub, "move");
       if (move_messages == MUTT_ABORT)
         goto cleanup;
     }
@@ -709,8 +708,7 @@ enum MxStatus mx_mbox_close(struct Mailbox *m)
   {
     buf_printf(buf, ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
                m->msg_deleted);
-    const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
-    purge = query_quadoption(c_delete, buf_string(buf));
+    purge = query_quadoption(buf_string(buf), NeoMutt->sub, "delete");
     if (purge == MUTT_ABORT)
       goto cleanup;
   }
@@ -968,8 +966,7 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
     snprintf(buf, sizeof(buf),
              ngettext("Purge %d deleted message?", "Purge %d deleted messages?", m->msg_deleted),
              m->msg_deleted);
-    const enum QuadOption c_delete = cs_subset_quad(NeoMutt->sub, "delete");
-    purge = query_quadoption(c_delete, buf);
+    purge = query_quadoption(buf, NeoMutt->sub, "delete");
     if (purge == MUTT_ABORT)
       return MX_STATUS_ERROR;
     if (purge == MUTT_NO)

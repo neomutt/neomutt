@@ -336,8 +336,8 @@ int pop_open_connection(struct PopAccountData *adata)
       adata->use_stls = 2;
     if (adata->use_stls == 0)
     {
-      const enum QuadOption c_ssl_starttls = cs_subset_quad(NeoMutt->sub, "ssl_starttls");
-      enum QuadOption ans = query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"));
+      enum QuadOption ans = query_quadoption(_("Secure connection with TLS?"),
+                                             NeoMutt->sub, "ssl_starttls");
       if (ans == MUTT_ABORT)
         return -2;
       adata->use_stls = 1;
@@ -642,8 +642,8 @@ int pop_reconnect(struct Mailbox *m)
     if (rc < -1)
       return -1;
 
-    const enum QuadOption c_pop_reconnect = cs_subset_quad(NeoMutt->sub, "pop_reconnect");
-    if (query_quadoption(c_pop_reconnect, _("Connection lost. Reconnect to POP server?")) != MUTT_YES)
+    if (query_quadoption(_("Connection lost. Reconnect to POP server?"),
+                         NeoMutt->sub, "pop_reconnect") != MUTT_YES)
     {
       return -1;
     }

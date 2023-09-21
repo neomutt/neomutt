@@ -237,8 +237,7 @@ void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
   buf_printf(prompt, ngettext("Bounce message to %s?", "Bounce messages to %s?", num_msg),
              buf_string(buf));
 
-  const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
-  if (query_quadoption(c_bounce, buf_string(prompt)) != MUTT_YES)
+  if (query_quadoption(buf_string(prompt), NeoMutt->sub, "bounce") != MUTT_YES)
   {
     msgwin_clear_text(NULL);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", num_msg));
@@ -542,9 +541,8 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    *
    * The next part is more interesting: either include the message bodies,
    * or attach them.  */
-  const enum QuadOption c_mime_forward = cs_subset_quad(NeoMutt->sub, "mime_forward");
   if ((!cur || mutt_can_decode(cur)) &&
-      ((ans = query_quadoption(c_mime_forward, _("Forward as attachments?"))) == MUTT_YES))
+      ((ans = query_quadoption(_("Forward as attachments?"), NeoMutt->sub, "mime_forward")) == MUTT_YES))
   {
     mime_fwd_all = true;
   }
@@ -557,9 +555,8 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
    * Is this intuitive?  */
   if (!mime_fwd_all && !cur && (nattach > 1) && !check_can_decode(actx, cur))
   {
-    const enum QuadOption c_mime_forward_rest = cs_subset_quad(NeoMutt->sub, "mime_forward_rest");
-    ans = query_quadoption(c_mime_forward_rest,
-                           _("Can't decode all tagged attachments.  MIME-forward the others?"));
+    ans = query_quadoption(_("Can't decode all tagged attachments.  MIME-forward the others?"),
+                           NeoMutt->sub, "mime_forward_rest");
     if (ans == MUTT_ABORT)
       goto bail;
     else if (ans == MUTT_NO)
@@ -690,8 +687,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx,
 
   tmpbody = buf_pool_get();
 
-  const enum QuadOption c_mime_forward = cs_subset_quad(NeoMutt->sub, "mime_forward");
-  ans = query_quadoption(c_mime_forward, _("Forward MIME encapsulated?"));
+  ans = query_quadoption(_("Forward MIME encapsulated?"), NeoMutt->sub, "mime_forward");
   if (ans == MUTT_NO)
   {
     /* no MIME encapsulation */
@@ -988,10 +984,8 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
 
   if ((nattach > 1) && !check_can_decode(actx, e_cur))
   {
-    const enum QuadOption c_mime_forward_rest = cs_subset_quad(NeoMutt->sub, "mime_forward_rest");
-    const enum QuadOption ans = query_quadoption(
-        c_mime_forward_rest,
-        _("Can't decode all tagged attachments.  MIME-encapsulate the others?"));
+    const enum QuadOption ans = query_quadoption(_("Can't decode all tagged attachments.  MIME-encapsulate the others?"),
+                                                 NeoMutt->sub, "mime_forward_rest");
     if (ans == MUTT_ABORT)
       return;
     if (ans == MUTT_YES)

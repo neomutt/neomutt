@@ -532,8 +532,7 @@ static int op_exit(struct IndexSharedData *shared, struct IndexPrivateData *priv
   if (priv->attach_msg)
     return FR_DONE;
 
-  const enum QuadOption c_quit = cs_subset_quad(shared->sub, "quit");
-  if (query_quadoption(c_quit, _("Exit NeoMutt without saving?")) == MUTT_YES)
+  if (query_quadoption(_("Exit NeoMutt without saving?"), shared->sub, "quit") == MUTT_YES)
   {
     if (shared->mailbox_view)
     {
@@ -1876,8 +1875,7 @@ static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv
   if (priv->attach_msg)
     return FR_DONE;
 
-  const enum QuadOption c_quit = cs_subset_quad(shared->sub, "quit");
-  if (query_quadoption(c_quit, _("Quit NeoMutt?")) == MUTT_YES)
+  if (query_quadoption(_("Quit NeoMutt?"), shared->sub, "quit") == MUTT_YES)
   {
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
@@ -2618,16 +2616,15 @@ static int op_post(struct IndexSharedData *shared, struct IndexPrivateData *priv
   if (!shared->email)
     return FR_NO_ACTION;
 
-  const enum QuadOption c_followup_to_poster = cs_subset_quad(shared->sub, "followup_to_poster");
   if ((op != OP_FOLLOWUP) || !shared->email->env->followup_to ||
       !mutt_istr_equal(shared->email->env->followup_to, "poster") ||
-      (query_quadoption(c_followup_to_poster, _("Reply by mail as poster prefers?")) != MUTT_YES))
+      (query_quadoption(_("Reply by mail as poster prefers?"), shared->sub,
+                        "followup_to_poster") != MUTT_YES))
   {
-    const enum QuadOption c_post_moderated = cs_subset_quad(shared->sub, "post_moderated");
     if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP) &&
         !((struct NntpMboxData *) shared->mailbox->mdata)->allowed &&
-        (query_quadoption(c_post_moderated, _("Posting to this group not allowed, may be moderated. Continue?")) !=
-         MUTT_YES))
+        (query_quadoption(_("Posting to this group not allowed, may be moderated. Continue?"),
+                          shared->sub, "post_moderated") != MUTT_YES))
     {
       return FR_ERROR;
     }

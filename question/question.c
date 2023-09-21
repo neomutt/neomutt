@@ -27,13 +27,17 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <ctype.h>
 #include <langinfo.h>
+#include <limits.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "keymap.h"
@@ -46,12 +50,14 @@
  * @retval >=1 1-based user selection
  * @retval  -1 Selection aborted
  *
- * This function uses the message window.
+ * This function uses a message window.
  *
  * Ask the user a multiple-choice question, using shortcut letters, e.g.
  * `PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?`
  *
- * The shortcuts can be coloured using `color options`.
+ * Colours:
+ * - Question:  `color prompt`
+ * - Shortcuts: `color options`
  */
 int mw_multi_choice(const char *prompt, const char *letters)
 {
@@ -85,8 +91,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
 
       if (isalnum(cur[1]) && (cur[2] == ')'))
       {
-        // we have a single letter within parentheses
-        // MT_COLOR_OPTIONS
+        // we have a single letter within parentheses - MT_COLOR_OPTIONS
         msgwin_add_text_n(win, cur + 1, 1, ac_opts);
         prompt = cur + 3;
       }
@@ -153,12 +158,13 @@ int mw_multi_choice(const char *prompt, const char *letters)
 }
 
 /**
- * query_yesorno - Ask the user a Yes/No question - @ingroup gui_mw
+ * mw_yesorno - Ask the user a Yes/No question offering help - @ingroup gui_mw
  * @param prompt Prompt
- * @param def    Default answer, #MUTT_YES or #MUTT_NO (see #QuadOption)
+ * @param def    Default answer, e.g. #MUTT_YES
+ * @param cdef   Config definition for help
  * @retval enum #QuadOption, Selection made
  *
- * This function uses the message window.
+ * This function uses a message window.
  *
  * Ask the user a yes/no question, using shortcut letters, e.g.
  * `Quit NeoMutt? ([yes]/no):`
@@ -166,8 +172,15 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * This question can be answered using locale-dependent letters, e.g.
  * - English, `[+1yY]` or `[-0nN]`
  * - Serbian, `[+1yYdDДд]` or `[-0nNНн]`
+ *
+ * If a config variable (cdef) is given, then help is offered.
+ * The options change to: `([yes]/no/?)`
+ *
+ * Pressing '?' will show the name and one-line description of the config variable.
+ * Additionally, if `$help` is set, a link to the config's documentation is shown.
  */
-enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
+static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
+                                  struct ConfigDef *cdef)
 {
   struct MuttWindow *win = msgwin_new(true);
   if (!win)
@@ -231,9 +244,11 @@ enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
     }
   }
 
+  bool show_help_prompt = cdef;
+
   struct Buffer *text = buf_pool_get();
-  buf_printf(text, "%s ([%s]/%s): ", prompt, (def == MUTT_YES) ? yes : no,
-             (def == MUTT_YES) ? no : yes);
+  buf_printf(text, "%s ([%s]/%s%s): ", prompt, (def == MUTT_YES) ? yes : no,
+             (def == MUTT_YES) ? no : yes, show_help_prompt ? "/?" : "");
 
   msgwin_set_text(win, buf_string(text), MT_COLOR_PROMPT);
   msgcont_push_window(win);
@@ -274,6 +289,26 @@ enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
       def = MUTT_NO;
       break;
     }
+    if (show_help_prompt && (event.ch == '?'))
+    {
+      show_help_prompt = false;
+      msgwin_clear_text(win);
+      buf_printf(text, "$%s - %s\n", cdef->name, cdef->docs);
+
+      char hyphen[128] = { 0 };
+      mutt_str_hyphenate(hyphen, sizeof(hyphen), cdef->name);
+      buf_add_printf(text, "https://neomutt.org/guide/reference#%s\n", hyphen);
+
+      msgwin_add_text(win, buf_string(text), simple_color_get(MT_COLOR_NORMAL));
+
+      buf_printf(text, "%s ([%s]/%s): ", prompt, (def == MUTT_YES) ? yes : no,
+                 (def == MUTT_YES) ? no : yes);
+      msgwin_add_text(win, buf_string(text), simple_color_get(MT_COLOR_PROMPT));
+      msgwin_add_text(win, NULL, NULL);
+
+      window_redraw(NULL);
+      mutt_refresh();
+    }
 
     mutt_beep(false);
   }
@@ -293,15 +328,65 @@ enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
 }
 
 /**
- * query_quadoption - Ask the user a quad-question
- * @param opt    Option to use
- * @param prompt Message to show to the user
- * @retval #QuadOption Result, e.g. #MUTT_NO
+ * query_yesorno - Ask the user a Yes/No question
+ * @param prompt Prompt
+ * @param def Default answer, e.g. #MUTT_YES
+ * @retval enum #QuadOption, Selection made
+ *
+ * Wrapper for mw_yesorno().
  */
-enum QuadOption query_quadoption(enum QuadOption opt, const char *prompt)
+enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
 {
-  if ((opt == MUTT_YES) || (opt == MUTT_NO))
-    return opt;
+  return mw_yesorno(prompt, def, NULL);
+}
 
-  return query_yesorno(prompt, (opt == MUTT_ASKYES) ? MUTT_YES : MUTT_NO);
+/**
+ * query_yesorno_help - Ask the user a Yes/No question offering help
+ * @param prompt Prompt
+ * @param def    Default answer, e.g. #MUTT_YES
+ * @param sub    Config Subset
+ * @param name   Name of controlling config variable
+ * @retval enum #QuadOption, Selection made
+ *
+ * Wrapper for mw_yesorno().
+ */
+enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
+                                   struct ConfigSubset *sub, const char *name)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  struct HashElem *he_base = cs_get_base(he);
+  assert(DTYPE(he_base->type) == DT_BOOL);
+
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
+  assert(value != INT_MIN);
+
+  struct ConfigDef *cdef = he_base->data;
+  return mw_yesorno(prompt, def, cdef);
+}
+
+/**
+ * query_quadoption - Ask the user a quad-question
+ * @param prompt Message to show to the user
+ * @param sub    Config Subset
+ * @param name   Name of controlling config variable
+ * @retval #QuadOption Result, e.g. #MUTT_NO
+ *
+ * If the config variable is set to 'yes' or 'no', the function returns immediately.
+ * Otherwise, the job is delegated to mw_yesorno().
+ */
+enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, const char *name)
+{
+  struct HashElem *he = cs_subset_create_inheritance(sub, name);
+  struct HashElem *he_base = cs_get_base(he);
+  assert(DTYPE(he_base->type) == DT_QUAD);
+
+  intptr_t value = cs_subset_he_native_get(sub, he, NULL);
+  assert(value != INT_MIN);
+
+  if ((value == MUTT_YES) || (value == MUTT_NO))
+    return value;
+
+  struct ConfigDef *cdef = he_base->data;
+  enum QuadOption def = (value == MUTT_ASKYES) ? MUTT_YES : MUTT_NO;
+  return mw_yesorno(prompt, def, cdef);
 }

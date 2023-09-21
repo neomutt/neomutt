@@ -1809,10 +1809,9 @@ int nntp_open_connection(struct NntpAccountData *adata)
   {
     if (adata->use_tls == 0)
     {
-      const enum QuadOption c_ssl_starttls = cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       adata->use_tls = c_ssl_force_tls ||
-                               (query_quadoption(c_ssl_starttls,
-                                                 _("Secure connection with TLS?")) == MUTT_YES) ?
+                               (query_quadoption(_("Secure connection with TLS?"),
+                                                 NeoMutt->sub, "ssl_starttls") == MUTT_YES) ?
                            2 :
                            1;
     }

@@ -1345,7 +1345,8 @@ int mutt_save_confirm(const char *s, struct stat *st)
     {
       struct Buffer *tmp = buf_pool_get();
       buf_printf(tmp, _("Append messages to %s?"), s);
-      enum QuadOption ans = query_yesorno(buf_string(tmp), MUTT_YES);
+      enum QuadOption ans = query_yesorno_help(buf_string(tmp), MUTT_YES,
+                                               NeoMutt->sub, "confirm_append");
       if (ans == MUTT_NO)
         rc = 1;
       else if (ans == MUTT_ABORT)
@@ -1383,7 +1384,8 @@ int mutt_save_confirm(const char *s, struct stat *st)
       {
         struct Buffer *tmp = buf_pool_get();
         buf_printf(tmp, _("Create %s?"), s);
-        enum QuadOption ans = query_yesorno(buf_string(tmp), MUTT_YES);
+        enum QuadOption ans = query_yesorno_help(buf_string(tmp), MUTT_YES,
+                                                 NeoMutt->sub, "confirm_create");
         if (ans == MUTT_NO)
           rc = 1;
         else if (ans == MUTT_ABORT)

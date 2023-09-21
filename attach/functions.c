@@ -571,11 +571,11 @@ static int op_followup(struct AttachPrivateData *priv, int op)
   if (check_attach())
     return FR_ERROR;
 
-  const enum QuadOption c_followup_to_poster = cs_subset_quad(NeoMutt->sub, "followup_to_poster");
   struct AttachPtr *cur_att = current_attachment(priv->actx, priv->menu);
   if (!cur_att->body->email->env->followup_to ||
       !mutt_istr_equal(cur_att->body->email->env->followup_to, "poster") ||
-      (query_quadoption(c_followup_to_poster, _("Reply by mail as poster prefers?")) != MUTT_YES))
+      (query_quadoption(_("Reply by mail as poster prefers?"), NeoMutt->sub,
+                        "followup_to_poster") != MUTT_YES))
   {
     mutt_attach_reply(cur_att->fp, priv->mailbox, priv->actx->email, priv->actx,
                       priv->menu->tag_prefix ? NULL : cur_att->body, SEND_NEWS | SEND_REPLY);

@@ -1056,3 +1056,24 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
   /* not reached */
 }
 #endif /* HAVE_ASPRINTF */
+
+/**
+ * mutt_str_hyphenate - Hyphenate a snake-case string
+ * @param buf    Buffer for the result
+ * @param buflen Length of the buffer
+ * @param str    String to convert
+ *
+ * Replace underscores (`_`) with hyphens -`).
+ */
+void mutt_str_hyphenate(char *buf, size_t buflen, const char *str)
+{
+  if (!buf || (buflen == 0) || !str)
+    return;
+
+  mutt_str_copy(buf, str, buflen);
+  for (; *buf != '\0'; buf++)
+  {
+    if (*buf == '_')
+      *buf = '-';
+  }
+}

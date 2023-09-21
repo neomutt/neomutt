@@ -1799,7 +1799,8 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), mbox);
       const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
-      if (c_confirm_create && (query_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      if (c_confirm_create &&
+          (query_yesorno_help(prompt, MUTT_YES, NeoMutt->sub, "confirm_create") != MUTT_YES))
       {
         mutt_clear_error();
         goto out;

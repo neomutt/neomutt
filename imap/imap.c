@@ -757,12 +757,12 @@ int imap_open_connection(struct ImapAccountData *adata)
     {
       enum QuadOption ans;
 
-      const enum QuadOption c_ssl_starttls = cs_subset_quad(NeoMutt->sub, "ssl_starttls");
       if (c_ssl_force_tls)
       {
         ans = MUTT_YES;
       }
-      else if ((ans = query_quadoption(c_ssl_starttls, _("Secure connection with TLS?"))) == MUTT_ABORT)
+      else if ((ans = query_quadoption(_("Secure connection with TLS?"),
+                                       NeoMutt->sub, "ssl_starttls")) == MUTT_ABORT)
       {
         goto bail;
       }
@@ -1420,7 +1420,8 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
       mutt_debug(LL_DEBUG3, "server suggests TRYCREATE\n");
       snprintf(prompt, sizeof(prompt), _("Create %s?"), dest_mdata->name);
       const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
-      if (c_confirm_create && (query_yesorno(prompt, MUTT_YES) != MUTT_YES))
+      if (c_confirm_create &&
+          (query_yesorno_help(prompt, MUTT_YES, NeoMutt->sub, "confirm_create") != MUTT_YES))
       {
         mutt_clear_error();
         goto out;
@@ -2076,7 +2077,8 @@ static bool imap_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   char buf[PATH_MAX + 64];
   snprintf(buf, sizeof(buf), _("Create %s?"), mdata->name);
   const bool c_confirm_create = cs_subset_bool(NeoMutt->sub, "confirm_create");
-  if (c_confirm_create && (query_yesorno(buf, MUTT_YES) != MUTT_YES))
+  if (c_confirm_create &&
+      (query_yesorno_help(buf, MUTT_YES, NeoMutt->sub, "confirm_create") != MUTT_YES))
     return false;
 
   if (imap_create_mailbox(adata, mdata->name) < 0)
