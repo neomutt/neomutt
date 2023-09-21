@@ -1840,8 +1840,6 @@ void mw_what_key(void)
   struct MuttWindow *old_focus = window_set_focus(win);
   window_redraw(win);
 
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
-
   char keys[256] = { 0 };
   const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
   const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
@@ -1893,10 +1891,8 @@ void mw_what_key(void)
   }
   // ---------------------------------------------------------------------------
 
-  mutt_curses_set_cursor(old_cursor);
-
-  window_set_focus(old_focus);
   win = msgcont_pop_window();
+  window_set_focus(old_focus);
   mutt_window_free(&win);
 }
 

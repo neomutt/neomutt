@@ -108,14 +108,12 @@ int mw_multi_choice(const char *prompt, const char *letters)
   msgwin_add_text(win, " ", ac_normal);
 
   msgcont_push_window(win);
-
   struct MuttWindow *old_focus = window_set_focus(win);
   window_redraw(win);
 
   // ---------------------------------------------------------------------------
   // Event Loop
   struct KeyEvent event = { 0, OP_NULL };
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   while (true)
   {
     event = mutt_getch(GETCH_NO_FLAGS);
@@ -149,9 +147,8 @@ int mw_multi_choice(const char *prompt, const char *letters)
   }
   // ---------------------------------------------------------------------------
 
-  mutt_curses_set_cursor(old_cursor);
-  window_set_focus(old_focus);
   win = msgcont_pop_window();
+  window_set_focus(old_focus);
   mutt_window_free(&win);
 
   return choice;
@@ -252,11 +249,9 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
 
   msgwin_set_text(win, buf_string(text), MT_COLOR_PROMPT);
   msgcont_push_window(win);
-
   struct MuttWindow *old_focus = window_set_focus(win);
 
   struct KeyEvent event = { 0, OP_NULL };
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   window_redraw(NULL);
   while (true)
   {
@@ -312,10 +307,9 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
 
     mutt_beep(false);
   }
-  mutt_curses_set_cursor(old_cursor);
 
-  window_set_focus(old_focus);
   win = msgcont_pop_window();
+  window_set_focus(old_focus);
   mutt_window_free(&win);
 
   if (reyes_ok)

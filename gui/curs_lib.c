@@ -442,12 +442,9 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   msgwin_set_text(win, text, MT_COLOR_NORMAL);
 
   msgcont_push_window(win);
-
   struct MuttWindow *old_focus = window_set_focus(win);
-
   window_redraw(win);
 
-  enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   struct KeyEvent event = { 0, OP_NULL };
   do
   {
@@ -456,11 +453,10 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
       window_redraw(win);
 
   } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
-  mutt_curses_set_cursor(old_cursor);
 
   mutt_refresh();
-  window_set_focus(old_focus);
   win = msgcont_pop_window();
+  window_set_focus(old_focus);
   mutt_window_free(&win);
 
   if (event.ch < 0)

@@ -97,7 +97,6 @@ enum WindowType
   WT_INDEX,           ///< A panel containing the Index Window
   WT_MENU,            ///< An Window containing a Menu
   WT_MESSAGE,         ///< Window for messages/errors
-  WT_MSG_FOCUS,       ///< Message Window that has focus
   WT_PAGER,           ///< A panel containing the Pager Window
   WT_SIDEBAR,         ///< Side panel containing Accounts or groups of data
   WT_STATUS_BAR,      ///< Status Bar containing extra info about the Index/Pager/etc
@@ -167,6 +166,9 @@ struct MuttWindow
    * @param win Window
    * @retval  0 Success
    * @retval -1 Error
+   *
+   * @pre win is not NULL
+   * @pre win is visible
    */
   int (*recalc)(struct MuttWindow *win);
 
@@ -178,8 +180,29 @@ struct MuttWindow
    * @param win Window
    * @retval  0 Success
    * @retval -1 Error
+   *
+   * @pre win is not NULL
+   * @pre win is visible
    */
   int (*repaint)(struct MuttWindow *win);
+
+  /**
+   * @defgroup window_recursor recursor()
+   * @ingroup window_api
+   *
+   * recursor - Recursor the Window
+   * @param win Window
+   * @retval true Cursor set
+   *
+   * @pre win is not NULL
+   *
+   * After all the repainting is done, the focussed window will be given an
+   * opportunity to set the position and visibility of the cursor.
+   *
+   * If the focussed window doesn't implement recursor(), then the cursor will
+   * be hidden.
+   */
+  bool (*recursor)(struct MuttWindow *win);
 };
 
 typedef uint8_t WindowNotifyFlags; ///< Flags for Changes to a MuttWindow, e.g. #WN_TALLER

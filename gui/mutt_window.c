@@ -67,7 +67,6 @@ static const struct Mapping WindowNames[] = {
   { "WT_INDEX",           WT_INDEX },
   { "WT_MENU",            WT_MENU },
   { "WT_MESSAGE",         WT_MESSAGE },
-  { "WT_MSG_FOCUS",       WT_MSG_FOCUS },
   { "WT_PAGER",           WT_PAGER },
   { "WT_ROOT",            WT_ROOT },
   { "WT_SIDEBAR",         WT_SIDEBAR },
@@ -605,6 +604,25 @@ static void window_repaint(struct MuttWindow *win)
 }
 
 /**
+ * window_recursor - Recursor the focussed Window
+ *
+ * Give the focussed Window an opportunity to set the position and
+ * visibility of its cursor.
+ */
+static void window_recursor(void)
+{
+  // Give the focussed window an opportunity to set the cursor position
+  struct MuttWindow *win = window_get_focus();
+  if (!win)
+    return;
+
+  if (win->recursor && win->recursor(win))
+    return;
+
+  mutt_curses_set_cursor(MUTT_CURSOR_INVISIBLE);
+}
+
+/**
  * window_redraw - Reflow, recalc and repaint a tree of Windows
  * @param win Window to start at
  *
@@ -620,11 +638,7 @@ void window_redraw(struct MuttWindow *win)
 
   window_recalc(win);
   window_repaint(win);
-
-  // Give the focussed window an opportunity to set the cursor position
-  win = window_get_focus();
-  if (win && win->repaint)
-    win->repaint(win);
+  window_recursor();
 
   mutt_refresh();
 }

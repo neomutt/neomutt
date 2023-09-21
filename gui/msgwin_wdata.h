@@ -23,7 +23,6 @@
 #ifndef MUTT_GUI_MSGWIN_WDATA_H
 #define MUTT_GUI_MSGWIN_WDATA_H
 
-#include <stdbool.h>
 #include "mutt/lib.h"
 
 struct MuttWindow;
@@ -68,7 +67,6 @@ struct MsgWinWindowData
   struct Buffer *text;                       ///< Cached display string
   struct MwCharArray chars;                  ///< Text: Breakdown of bytes and widths
   struct MwChunkArray rows[MSGWIN_MAX_ROWS]; ///< String byte counts for each row
-  bool interactive;                          ///< Is this an interactive window?
   int row;                                   ///< Cursor row
   int col;                                   ///< Cursor column
 };

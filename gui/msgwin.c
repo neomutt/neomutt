@@ -254,39 +254,43 @@ static int msgwin_repaint(struct MuttWindow *win)
 {
   struct MsgWinWindowData *wdata = win->wdata;
 
-  if (win->actions & WA_REPAINT)
+  const char *str = buf_string(wdata->text);
+  for (int i = 0; i < MSGWIN_MAX_ROWS; i++)
   {
-    const char *str = buf_string(wdata->text);
-    for (int i = 0; i < MSGWIN_MAX_ROWS; i++)
-    {
-      mutt_window_move(win, 0, i);
-      if (ARRAY_EMPTY(&wdata->rows[i]))
-        break;
+    mutt_window_move(win, 0, i);
+    if (ARRAY_EMPTY(&wdata->rows[i]))
+      break;
 
-      struct MwChunk *chunk = NULL;
-      ARRAY_FOREACH(chunk, &wdata->rows[i])
-      {
-        mutt_curses_set_color(chunk->ac_color);
-        mutt_window_addnstr(win, str + chunk->offset, chunk->bytes);
-      }
-      mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-      mutt_window_clrtoeol(win);
+    struct MwChunk *chunk = NULL;
+    ARRAY_FOREACH(chunk, &wdata->rows[i])
+    {
+      mutt_curses_set_color(chunk->ac_color);
+      mutt_window_addnstr(win, str + chunk->offset, chunk->bytes);
     }
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     mutt_window_clrtoeol(win);
-
-    if (wdata->interactive)
-    {
-      mutt_window_get_coords(win, &wdata->col, &wdata->row);
-    }
   }
-  else if (wdata->interactive)
-  {
-    mutt_window_move(win, wdata->col, wdata->row);
-  }
+  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  mutt_window_clrtoeol(win);
 
-  mutt_debug(LL_DEBUG1, "MSGWIN repaint done\n");
+  mutt_window_get_coords(win, &wdata->col, &wdata->row);
+
+  mutt_debug(LL_DEBUG1, "msgwin repaint done\n");
   return 0;
+}
+
+/**
+ * msgwin_recursor - Recursor the Message Window - Implements MuttWindow::recursor() - @ingroup window_recursor
+ */
+static bool msgwin_recursor(struct MuttWindow *win)
+{
+  struct MsgWinWindowData *wdata = win->wdata;
+
+  mutt_window_move(win, wdata->col, wdata->row);
+  mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+
+  mutt_debug(LL_DEBUG1, "msgwin recursor done\n");
+  return true;
 }
 
 /**
@@ -368,18 +372,18 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
  */
 struct MuttWindow *msgwin_new(bool interactive)
 {
-  enum WindowType type = interactive ? WT_MSG_FOCUS : WT_MESSAGE;
-
-  struct MuttWindow *win = mutt_window_new(type, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
+  struct MuttWindow *win = mutt_window_new(WT_MESSAGE, MUTT_WIN_ORIENT_VERTICAL, MUTT_WIN_SIZE_FIXED,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
 
   struct MsgWinWindowData *wdata = msgwin_wdata_new();
-  wdata->interactive = interactive;
 
   win->wdata = wdata;
   win->wdata_free = msgwin_wdata_free;
   win->recalc = msgwin_recalc;
   win->repaint = msgwin_repaint;
+
+  if (interactive)
+    win->recursor = msgwin_recursor;
 
   // Copy the container's dimensions
   win->state = MessageContainer->state;

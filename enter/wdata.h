@@ -46,7 +46,6 @@ struct EnterWindowData
 {
   // Function parameters
   struct Buffer *buffer;          ///< struct Buffer for the result
-  int col;                        ///< Initial cursor positions
   CompletionFlags flags;          ///< Flags, see #CompletionFlags
   struct EnterState *state;       ///< Current state of text entry
   enum HistoryClass hclass;       ///< History to use, e.g. #HC_COMMAND
@@ -66,6 +65,9 @@ struct EnterWindowData
   bool done;                      ///< Is text-entry done?
 
   struct CompletionData *cd;      ///< Auto-completion state data
+
+  int row;                        ///< Cursor row
+  int col;                        ///< Cursor column
 };
 
 #endif /* MUTT_ENTER_WDATA_H */
