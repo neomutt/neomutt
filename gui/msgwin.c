@@ -496,7 +496,7 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
   ARRAY_FREE(&wdata->chars);
   if (wdata->text)
   {
-    const struct AttrColor *ac_color = simple_color_get(MT_COLOR_PROMPT);
+    const struct AttrColor *ac_color = simple_color_get(color);
     measure(&wdata->chars, buf_string(wdata->text), ac_color);
   }
 
