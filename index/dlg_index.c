@@ -1240,7 +1240,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     /* give visual indication that the next command is a tag- command */
     if (priv->tag_prefix)
     {
-      msgwin_set_text("tag-", MT_COLOR_NORMAL);
+      msgwin_set_text(NULL, "tag-", MT_COLOR_NORMAL);
     }
 
     const bool c_arrow_cursor = cs_subset_bool(shared->sub, "arrow_cursor");
@@ -1271,7 +1271,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       priv->menu->top = 0; /* so we scroll the right amount */
       /* force a real complete redraw.  clrtobot() doesn't seem to be able
        * to handle every case without this.  */
-      msgwin_clear_text();
+      msgwin_clear_text(NULL);
       mutt_refresh();
       continue;
     }
@@ -1280,7 +1280,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (op < OP_NULL)
     {
       if (priv->tag_prefix)
-        msgwin_clear_text();
+        msgwin_clear_text(NULL);
       continue;
     }
 
@@ -1294,7 +1294,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       if (priv->tag_prefix)
       {
         priv->tag_prefix = false;
-        msgwin_clear_text();
+        msgwin_clear_text(NULL);
         continue;
       }
 

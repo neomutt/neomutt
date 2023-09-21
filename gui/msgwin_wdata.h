@@ -23,17 +23,54 @@
 #ifndef MUTT_GUI_MSGWIN_WDATA_H
 #define MUTT_GUI_MSGWIN_WDATA_H
 
-#include "color/lib.h"
+#include <stdbool.h>
+#include "mutt/lib.h"
 
 struct MuttWindow;
+
+#define MSGWIN_MAX_ROWS 3
+
+/**
+ * struct MwChar - Description of a single character
+ *
+ * Measure the dimensions of each character in MsgWinWindowData.text.
+ * This allows us to wrap the text efficiently.
+ */
+struct MwChar
+{
+  unsigned char width;              ///< Width in screen cells
+  unsigned char bytes;              ///< Number of bytes to represent
+  const struct AttrColor *ac_color; ///< Colour to use
+};
+ARRAY_HEAD(MwCharArray, struct MwChar);
+
+/**
+ * struct MwChunk - A block of characters of one colour
+ *
+ * A chunk represents one colour of consecutive characters in one row.
+ * If the colour changes, chunk is too wide to fit on the screen,
+ * it will be split into multiple chunks.
+ */
+struct MwChunk
+{
+  unsigned short offset;            ///< Offset into MsgWinWindowData.text
+  unsigned short bytes;             ///< Number of bytes in the row
+  unsigned short width;             ///< Width of row in screen cells
+  const struct AttrColor *ac_color; ///< Colour to use
+};
+ARRAY_HEAD(MwChunkArray, struct MwChunk);
 
 /**
  * struct MsgWinWindowData - Message Window private Window data
  */
 struct MsgWinWindowData
 {
-  enum ColorId cid; ///< Colour for the text, e.g. #MT_COLOR_MESSAGE
-  char *text;       ///< Cached display string
+  struct Buffer *text;                       ///< Cached display string
+  struct MwCharArray chars;                  ///< Text: Breakdown of bytes and widths
+  struct MwChunkArray rows[MSGWIN_MAX_ROWS]; ///< String byte counts for each row
+  bool interactive;                          ///< Is this an interactive window?
+  int row;                                   ///< Cursor row
+  int col;                                   ///< Cursor column
 };
 
 void                     msgwin_wdata_free(struct MuttWindow *win, void **ptr);

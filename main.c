@@ -785,7 +785,7 @@ main
 
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
-    rootwin_set_size(COLS, LINES);
+    mutt_resize_screen();
   }
 
   /* set defaults and read init files */
@@ -1370,6 +1370,9 @@ main
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
     mutt_debug(LL_NOTIFY, "NT_GLOBAL_STARTUP\n");
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
+
+    notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+    window_redraw(NULL);
 
     repeat_error = true;
     struct Mailbox *m = mx_resolve(buf_string(&folder));

@@ -555,7 +555,7 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
              _("WARNING!  You are about to overwrite %s, continue?"), body->filename);
     if (query_yesorno(warning, MUTT_NO) != MUTT_YES)
     {
-      msgwin_clear_text();
+      msgwin_clear_text(NULL);
       buf_pool_release(&tfile);
       return;
     }

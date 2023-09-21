@@ -96,8 +96,6 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
 
   struct Buffer *buf = buf_pool_get();
   struct Buffer *prompt = buf_pool_get();
-  struct Buffer *scratch = NULL;
-
   struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
   char *err = NULL;
   int rc;
@@ -144,32 +142,18 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   buf_reset(buf);
   mutt_addrlist_write(&al, buf, true);
 
-#define EXTRA_SPACE (15 + 7 + 2)
-  scratch = buf_pool_get();
-  buf_printf(scratch, ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
+  buf_printf(prompt, ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
              buf_string(buf));
-
-  const size_t width = msgwin_get_width();
-  if (mutt_strwidth(buf_string(scratch)) > (width - EXTRA_SPACE))
-  {
-    mutt_simple_format(prompt->data, prompt->dsize, 0, width - EXTRA_SPACE,
-                       JUSTIFY_LEFT, 0, scratch->data, scratch->dsize, false);
-    buf_addstr(prompt, "...?");
-  }
-  else
-  {
-    buf_copy(prompt, scratch);
-  }
 
   const enum QuadOption c_bounce = cs_subset_quad(NeoMutt->sub, "bounce");
   if (query_quadoption(c_bounce, buf_string(prompt)) != MUTT_YES)
   {
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
     mutt_message(ngettext("Message not bounced", "Messages not bounced", msg_count));
     goto done;
   }
 
-  msgwin_clear_text();
+  msgwin_clear_text(NULL);
 
   struct Message *msg = NULL;
   ARRAY_FOREACH(ep, ea)
@@ -197,7 +181,6 @@ done:
   mutt_addrlist_clear(&al);
   buf_pool_release(&buf);
   buf_pool_release(&prompt);
-  buf_pool_release(&scratch);
 }
 
 /**
@@ -618,7 +601,7 @@ bool mutt_shell_escape(void)
     goto done;
   }
 
-  msgwin_clear_text();
+  msgwin_clear_text(NULL);
   mutt_endwin();
   fflush(stdout);
   int rc2 = mutt_system(buf_string(buf));

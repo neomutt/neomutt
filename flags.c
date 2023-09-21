@@ -29,12 +29,14 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "color/lib.h"
 #include "index/lib.h"
 #include "keymap.h"
 #include "mutt_thread.h"
@@ -452,36 +454,45 @@ done:
  */
 int mw_change_flag(struct Mailbox *m, struct EmailArray *ea, bool bf)
 {
-  struct MuttWindow *win = msgwin_get_window();
-  if (!win)
-    return -1;
-
   if (!m || !ea || ARRAY_EMPTY(ea))
     return -1;
 
-  enum MessageType flag = MUTT_NONE;
-  struct KeyEvent event = { 0, OP_NULL };
+  // blank window (0, 0)
+  struct MuttWindow *win = msgwin_new(true);
+  if (!win)
+    return -1;
+
+  char prompt[256] = { 0 };
+  snprintf(prompt, sizeof(prompt),
+           "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
+  msgwin_set_text(win, prompt, MT_COLOR_PROMPT);
+  // text, WA_RECALC
+
+  msgcont_push_window(win);
+  // resized, text, WA_RECALC
 
   struct MuttWindow *old_focus = window_set_focus(win);
 
-  mutt_window_mvprintw(win, 0, 0, "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
-  mutt_window_clrtoeol(win);
-  window_redraw(NULL);
+  window_redraw(win);
+  // recalc, repaint
 
+  struct KeyEvent event = { 0, OP_NULL };
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   do
   {
-    mutt_refresh();
+    window_redraw(NULL);
     event = mutt_getch(GETCH_NO_FLAGS);
   } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
   mutt_curses_set_cursor(old_cursor);
 
   window_set_focus(old_focus);
-  msgwin_clear_text();
+  win = msgcont_pop_window();
+  mutt_window_free(&win);
 
   if (event.op == OP_ABORT)
     return -1;
 
+  enum MessageType flag = MUTT_NONE;
   switch (event.ch)
   {
     case 'd':

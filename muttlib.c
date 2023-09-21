@@ -1413,7 +1413,7 @@ int mutt_save_confirm(const char *s, struct stat *st)
     }
   }
 
-  msgwin_clear_text();
+  msgwin_clear_text(NULL);
   return rc;
 }
 

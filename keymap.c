@@ -48,7 +48,6 @@
 #include "parse/lib.h"
 #include "functions.h"
 #include "globals.h"
-#include "mutt_logging.h"
 #include "opcodes.h"
 
 /**
@@ -1829,23 +1828,30 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
  */
 void mw_what_key(void)
 {
-  int ch;
-
-  struct MuttWindow *win = msgwin_get_window();
+  struct MuttWindow *win = msgwin_new(true);
   if (!win)
     return;
 
-  mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROMPT);
-  mutt_window_mvprintw(win, 0, 0, _("Enter keys (%s to abort): "), km_keyname(AbortKey));
-  mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  char prompt[256] = { 0 };
+  snprintf(prompt, sizeof(prompt), _("Enter keys (%s to abort): "), km_keyname(AbortKey));
+  msgwin_set_text(win, prompt, MT_COLOR_PROMPT);
+
+  msgcont_push_window(win);
+  struct MuttWindow *old_focus = window_set_focus(win);
+  window_redraw(win);
+
   enum MuttCursorState old_cursor = mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
+
+  char keys[256] = { 0 };
+  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
 
   // ---------------------------------------------------------------------------
   // Event Loop
   timeout(1000); // 1 second
   while (true)
   {
-    ch = getch();
+    int ch = getch();
     if (ch == AbortKey)
       break;
 
@@ -1867,25 +1873,31 @@ void mw_what_key(void)
       {
         SigWinch = false;
         notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+        window_redraw(NULL);
       }
       else
       {
         notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
       }
 
-      mutt_refresh();
       continue;
     }
 
-    mutt_message(_("Char = %s, Octal = %o, Decimal = %d"), km_keyname(ch), ch, ch);
-    mutt_window_move(win, 0, 0);
+    msgwin_clear_text(win);
+    snprintf(keys, sizeof(keys), _("Char = %s, Octal = %o, Decimal = %d\n"),
+             km_keyname(ch), ch, ch);
+    msgwin_add_text(win, keys, ac_normal);
+    msgwin_add_text(win, prompt, ac_prompt);
+    msgwin_add_text(win, NULL, NULL);
+    window_redraw(NULL);
   }
   // ---------------------------------------------------------------------------
 
   mutt_curses_set_cursor(old_cursor);
 
-  mutt_flushinp();
-  mutt_clear_error();
+  window_set_focus(old_focus);
+  win = msgcont_pop_window();
+  mutt_window_free(&win);
 }
 
 /**

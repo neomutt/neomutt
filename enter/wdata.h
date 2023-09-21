@@ -54,6 +54,7 @@ struct EnterWindowData
   void *cdata;                    ///< Auto-Completion private data
 
   // Local variables
+  const char *prompt;             ///< Prompt
   enum EnterRedrawFlags redraw;   ///< What needs redrawing? See #EnterRedrawFlags
   bool pass;                      ///< Password mode, conceal characters
   bool first;                     ///< First time through, no input yet

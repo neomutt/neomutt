@@ -232,7 +232,7 @@ int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always
       mdata.keys = _("ro");
     }
   }
-  msgwin_set_text(mdata.prompt, MT_COLOR_PROMPT);
+  msgwin_set_text(NULL, mdata.prompt, MT_COLOR_PROMPT);
 
   // ---------------------------------------------------------------------------
   // Event Loop
@@ -241,7 +241,7 @@ int dlg_certificate(const char *title, struct CertArray *carr, bool allow_always
   do
   {
     window_redraw(NULL);
-    msgwin_set_text(mdata.prompt, MT_COLOR_PROMPT);
+    msgwin_set_text(NULL, mdata.prompt, MT_COLOR_PROMPT);
 
     // Try to catch dialog keys before ops
     if (menu_dialog_dokey(menu, &op) != 0)

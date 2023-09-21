@@ -57,6 +57,7 @@ static const struct Mapping WindowNames[] = {
   { "WT_DLG_HISTORY",     WT_DLG_HISTORY },
   { "WT_DLG_INDEX",       WT_DLG_INDEX },
   { "WT_DLG_PAGER",       WT_DLG_PAGER },
+  { "WT_DLG_PATTERN",     WT_DLG_PATTERN },
   { "WT_DLG_PGP",         WT_DLG_PGP },
   { "WT_DLG_POSTPONE",    WT_DLG_POSTPONE },
   { "WT_DLG_QUERY",       WT_DLG_QUERY },
@@ -66,6 +67,7 @@ static const struct Mapping WindowNames[] = {
   { "WT_INDEX",           WT_INDEX },
   { "WT_MENU",            WT_MENU },
   { "WT_MESSAGE",         WT_MESSAGE },
+  { "WT_MSG_FOCUS",       WT_MSG_FOCUS },
   { "WT_PAGER",           WT_PAGER },
   { "WT_ROOT",            WT_ROOT },
   { "WT_SIDEBAR",         WT_SIDEBAR },
@@ -348,7 +350,10 @@ void mutt_window_reflow(struct MuttWindow *win)
   if (!win)
     win = RootWindow;
 
-  mutt_debug(LL_DEBUG2, "entering\n");
+  window_reflow(win);
+  window_notify_all(win);
+
+  // Allow Windows to resize themselves based on the first reflow
   window_reflow(win);
   window_notify_all(win);
 
@@ -615,6 +620,12 @@ void window_redraw(struct MuttWindow *win)
 
   window_recalc(win);
   window_repaint(win);
+
+  // Give the focussed window an opportunity to set the cursor position
+  win = window_get_focus();
+  if (win && win->repaint)
+    win->repaint(win);
+
   mutt_refresh();
 }
 

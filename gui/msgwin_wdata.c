@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "msgwin_wdata.h"
 
@@ -40,7 +41,14 @@ void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
 
   struct MsgWinWindowData *wdata = *ptr;
 
-  FREE(&wdata->text);
+  for (int i = 0; i < MSGWIN_MAX_ROWS; i++)
+  {
+    ARRAY_FREE(&wdata->rows[i]);
+  }
+
+  // We don't own MwChar->ac_color, so there's nothing but the ARRAY to free
+  ARRAY_FREE(&wdata->chars);
+  buf_free(&wdata->text);
 
   FREE(ptr);
 }
@@ -51,9 +59,9 @@ void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
  */
 struct MsgWinWindowData *msgwin_wdata_new(void)
 {
-  struct MsgWinWindowData *msgwin_data = mutt_mem_calloc(1, sizeof(struct MsgWinWindowData));
+  struct MsgWinWindowData *wdata = mutt_mem_calloc(1, sizeof(struct MsgWinWindowData));
 
-  msgwin_data->cid = MT_COLOR_NORMAL;
+  wdata->text = buf_new(NULL);
 
-  return msgwin_data;
+  return wdata;
 }

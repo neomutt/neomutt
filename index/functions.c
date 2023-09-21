@@ -885,7 +885,7 @@ static int op_main_change_folder(struct IndexSharedData *shared,
 
   if (buf_is_empty(folderbuf))
   {
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
     goto changefoldercleanup;
   }
 
@@ -2585,7 +2585,7 @@ static int op_main_change_group(struct IndexSharedData *shared,
 
   if (buf_is_empty(folderbuf))
   {
-    msgwin_clear_text();
+    msgwin_clear_text(NULL);
     goto changefoldercleanup2;
   }
 

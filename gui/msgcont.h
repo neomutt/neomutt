@@ -25,6 +25,9 @@
 
 struct MuttWindow;
 
+extern struct MuttWindow *MessageContainer;
+
+struct MuttWindow *msgcont_get_msgwin(void);
 struct MuttWindow *msgcont_new(void);
 struct MuttWindow *msgcont_pop_window(void);
 void               msgcont_push_window(struct MuttWindow *win);

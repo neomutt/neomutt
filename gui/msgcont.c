@@ -37,7 +37,7 @@
 #endif
 
 /// Window acting as a stack for the message windows
-static struct MuttWindow *MessageContainer = NULL;
+struct MuttWindow *MessageContainer = NULL;
 
 /**
  * msgcont_new - Create a new Message Container
@@ -64,6 +64,9 @@ struct MuttWindow *msgcont_pop_window(void)
   if (!TAILQ_PREV(win_pop, MuttWindowList, entries))
     return NULL;
 
+  // Hide the old window
+  window_set_visible(win_pop, false);
+
   // Make the top of the stack visible
   struct MuttWindow *win_top = TAILQ_PREV(win_pop, MuttWindowList, entries);
 
@@ -75,6 +78,7 @@ struct MuttWindow *msgcont_pop_window(void)
     win_top->actions |= WA_RECALC;
   }
 
+  mutt_window_reflow(NULL);
   window_redraw(NULL);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
@@ -96,9 +100,31 @@ void msgcont_push_window(struct MuttWindow *win)
   window_set_visible(win_top, false);
 
   mutt_window_add_child(MessageContainer, win);
-  win->actions |= WA_RECALC;
+  mutt_window_reflow(NULL);
   window_redraw(NULL);
 #ifdef USE_DEBUG_WINDOW
   debug_win_dump();
 #endif
+}
+
+/**
+ * msgcont_get_msgwin - Get the Message Window
+ * @retval ptr Message Window
+ *
+ * The Message Window is the first child of the MessageContainer and will have
+ * type WT_MESSAGE.
+ */
+struct MuttWindow *msgcont_get_msgwin(void)
+{
+  if (!MessageContainer)
+    return NULL;
+
+  struct MuttWindow *win = TAILQ_FIRST(&MessageContainer->children);
+  if (!win)
+    return NULL;
+
+  if (win->type != WT_MESSAGE)
+    return NULL;
+
+  return win;
 }
