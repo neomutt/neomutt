@@ -63,7 +63,6 @@ enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 
 /* pseudo options */
 // clang-format off
-bool OptAttachMsg;          ///< (pseudo) used by attach-message
 #ifdef USE_AUTOCRYPT
 bool OptAutocryptGpgme;     ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c
 #endif

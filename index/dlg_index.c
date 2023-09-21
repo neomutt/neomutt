@@ -1073,7 +1073,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct MuttWindow *panel_index = window_find_child(dlg, WT_INDEX);
 
   struct IndexPrivateData *priv = panel_index->wdata;
-  priv->attach_msg = OptAttachMsg;
   priv->win_index = window_find_child(panel_index, WT_MENU);
 
   int op = OP_NULL;
@@ -1095,7 +1094,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   struct MuttWindow *old_focus = window_set_focus(priv->menu->win);
   mutt_window_reflow(NULL);
 
-  if (!priv->attach_msg)
+  if (!shared->attach_msg)
   {
     /* force the mailbox check after we enter the folder */
     mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
@@ -1208,7 +1207,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
                                                               menu_get_index(priv->menu)));
     }
 
-    if (!priv->attach_msg)
+    if (!shared->attach_msg)
     {
       /* check for new mail in the incoming folders */
       priv->oldcount = priv->newcount;

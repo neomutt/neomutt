@@ -406,7 +406,7 @@ int dlg_pager(struct PagerView *pview)
     // tries to emulate concurrency.
     //-------------------------------------------------------------------------
     bool do_new_mail = false;
-    if (shared->mailbox && !OptAttachMsg)
+    if (shared->mailbox && !shared->attach_msg)
     {
       int oldcount = shared->mailbox->msg_count;
       /* check for new mail */
