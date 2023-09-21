@@ -243,7 +243,7 @@ bool mutt_mailbox_notify(struct Mailbox *m_cur)
 }
 
 /**
- * mutt_mailbox_list - List the mailboxes with new mail
+ * mutt_mailbox_list - Show a message with the list of mailboxes with new mail
  * @retval true There is new mail
  */
 bool mutt_mailbox_list(void)

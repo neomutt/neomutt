@@ -108,7 +108,6 @@ void measure(struct MwCharArray *chars, const char *str, const struct AttrColor 
   if (!str || !*str)
     return;
 
-  int total_width = 0;
   mbstate_t mbstate = { 0 };
   struct MwChar mwc = { 0 };
 
@@ -151,7 +150,6 @@ void measure(struct MwCharArray *chars, const char *str, const struct AttrColor 
     mwc = (struct MwChar){ wchar_width, consumed, ac_color };
     ARRAY_ADD(chars, mwc);
 
-    total_width += wchar_width;
     str += consumed;
     str_len -= consumed;
   }

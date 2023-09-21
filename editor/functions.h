@@ -1,6 +1,6 @@
 /**
  * @file
- * Enter functions
+ * Editor functions
  *
  * @authors
  * Copyright (C) 2022 Richard Russon <rich@flatcap.org>

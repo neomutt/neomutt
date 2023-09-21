@@ -1,6 +1,6 @@
 /**
  * @file
- * Enter functions
+ * Editor functions
  *
  * @authors
  * Copyright (C) 2022 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page editor_functions Enter functions
+ * @page editor_functions Editor functions
  *
- * Enter functions
+ * Editor functions
  */
 
 #include "config.h"

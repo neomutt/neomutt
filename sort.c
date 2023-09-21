@@ -437,6 +437,4 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
 
   if (m->verbose)
     mutt_clear_error();
-
-  return;
 }

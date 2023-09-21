@@ -1,6 +1,6 @@
 /**
  * @file
- * Enter a string
+ * Edit a string
  *
  * @authors
  * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
@@ -21,7 +21,7 @@
  */
 
 /**
- * @page lib_enter Mailbox Enter
+ * @page lib_editor Edit a string
  *
  * Select a Mailbox from a list
  *
