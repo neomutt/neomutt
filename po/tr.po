@@ -6,14 +6,14 @@
 # Fatih Demir <kabalak@gtranslator.org>, 2001
 # Recai Oktaş <roktas@debian.org>, 2006
 # Perry Thompson <contact@ryper.org>, 2018
-# Emir SARI <emir_sari@icloud.com>, 2020-2022
+# Emir SARI <emir_sari@icloud.com>, 2020-2023
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-05-17\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-09-21 13:31+0100\n"
-"PO-Revision-Date: 2023-05-05 11:00+0300\n"
+"PO-Revision-Date: 2023-09-21 16:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -222,7 +222,7 @@ msgstr "Kaydet"
 
 #: attach/dlg_attach.c:98
 msgid "Pipe"
-msgstr "Veri Yolu Yap"
+msgstr "Veriyolu Yap"
 
 #: attach/dlg_attach.c:99
 msgid "Print"
@@ -575,7 +575,7 @@ msgstr "şifreleme yeğle"
 #. thus encryption will need to be manually enabled.
 #: autocrypt/dlg_autocrypt.c:156
 msgid "manual encrypt"
-msgstr "el ile şifreleme"
+msgstr "elle şifreleme"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is enabled/active
@@ -894,7 +894,7 @@ msgstr "%s: Geçersiz numara: %s"
 #: color/curses.c:95
 #, c-format
 msgid "Too many colors: %d / %d"
-msgstr "Pek fazla renk: %d / %d"
+msgstr "Pek çok renk: %d / %d"
 
 #: color/quoted.c:115
 #, c-format
@@ -1256,9 +1256,8 @@ msgid "Can't create file %s"
 msgstr "%s dosyası oluşturulamadı"
 
 #: compose/functions.c:1357
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Durum şu ki, eklemeyi yapamadık"
+msgstr "Dosya eklerken hata"
 
 #: compose/functions.c:1399
 msgid "Can't print multipart attachments"
@@ -2539,96 +2538,96 @@ msgstr "HATA: Bu hatayı lütfen bildirin"
 
 #: help.c:414
 msgid "message is tagged"
-msgstr ""
+msgstr "ileti etiketlendi"
 
 #: help.c:416
 msgid "message is flagged"
-msgstr ""
+msgstr "ileti bayraklandı"
 
 #: help.c:417
 msgid "message is deleted"
-msgstr ""
+msgstr "ileti silindi"
 
 #: help.c:419
 msgid "attachment is deleted"
-msgstr ""
+msgstr "ek silindi"
 
 #: help.c:421
 msgid "message has been replied to"
-msgstr ""
+msgstr "ileti yanıtlandı"
 
 #: help.c:422
 msgid "message has been read"
-msgstr ""
+msgstr "ilete okundu"
 
 #: help.c:423
 msgid "message is new"
-msgstr ""
+msgstr "ileti yeni"
 
 #: help.c:425
 msgid "thread has been read"
-msgstr ""
+msgstr "ilmek okundu"
 
 #: help.c:427
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "ilmekte en az bir yeni ileti var"
 
 #: help.c:429
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "ileti okundu (%S expando)"
 
 #: help.c:431
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "ileti okundu (%Z expando)"
 
 #: help.c:435
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "ileti, doğrulanmış bir anahtarla imzalandı"
 
 #: help.c:437
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "ileti PGP ile şifrelendi"
 
 #: help.c:439
 msgid "message is signed"
-msgstr ""
+msgstr "ileti imzalandı"
 
 #: help.c:441
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "ileti bir PGP anahtarı içeriyor"
 
 #: help.c:443
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "iletide kriptografi bilgisi yok"
 
 #: help.c:447
 msgid "message is not To: you"
-msgstr ""
+msgstr "iletinin To: kısmı size değil"
 
 #: help.c:449
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "iletinin To: kısmı yalnızca size"
 
 #: help.c:450
 msgid "message is To: you"
-msgstr ""
+msgstr "iletinin To: kısmı size"
 
 #: help.c:451
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "ileti size Cc: yapılmış"
 
 #: help.c:453
 msgid "message is From: you"
-msgstr ""
+msgstr "iletinin From: kısmı sizsiniz"
 
 #: help.c:455
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "ileti, abone olunan bir posta listesine gönderildi"
 
 #: help.c:457
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "Reply-To: listesindesiniz"
 
 #: help.c:476
 msgid "<UNKNOWN>"
@@ -2644,7 +2643,7 @@ msgstr "Herhangi bir düğme atanmamış işlevler:"
 
 #: help.c:510
 msgid "Message flags:"
-msgstr ""
+msgstr "İleti bayrakları:"
 
 #: help.c:516
 #, c-format
@@ -3471,19 +3470,18 @@ msgstr "%s için mailcap kaydı bulunamadı"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:52
-#, fuzzy
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter, tam olarak bir karakter uzunluğunda olmalı"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter, abece-sayısal veya '-.\\/' olamaz"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:67
 msgid "maildir_field_delimiter can only be set once"
-msgstr ""
+msgstr "maildir_field_delimiter, yalnızca bir kez ayarlanabilir"
 
 #: maildir/maildir.c:267 maildir/mh.c:303
 msgid "Could not flush message to disk"
@@ -4922,23 +4920,23 @@ msgstr "Ad: "
 
 #: ncrypt/gpgme_functions.c:62
 msgid "Valid From: "
-msgstr "Geçerlilik Başlangıcı: "
+msgstr "Geçerlilik başlangıcı: "
 
 #: ncrypt/gpgme_functions.c:62
 msgid "Valid To: "
-msgstr "Geçerlilik Sonu: "
+msgstr "Geçerlilik sonu: "
 
 #: ncrypt/gpgme_functions.c:63
 msgid "Key Type: "
-msgstr "Anahtar Türü: "
+msgstr "Anahtar türü: "
 
 #: ncrypt/gpgme_functions.c:63
 msgid "Key Usage: "
-msgstr "Anahtar Kullanımı: "
+msgstr "Anahtar kullanımı: "
 
 #: ncrypt/gpgme_functions.c:63
 msgid "Serial-No: "
-msgstr "Seri Numarası: "
+msgstr "Seri numarası: "
 
 #: ncrypt/gpgme_functions.c:64
 msgid "Issued By: "
@@ -7747,6 +7745,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:521
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "İmli iletiler yazdırılsın mı?"
