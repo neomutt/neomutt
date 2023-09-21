@@ -413,6 +413,7 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
     avp->num = ARRAY_FOREACH_IDX;
   }
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int rc = 0;
@@ -441,6 +442,7 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
   } while ((rc != FR_DONE) && (rc != FR_CONTINUE));
   // ---------------------------------------------------------------------------
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   window_redraw(NULL);
   return (rc == FR_CONTINUE); // Was a selection made?

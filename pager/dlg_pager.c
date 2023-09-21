@@ -359,7 +359,7 @@ int dlg_pager(struct PagerView *pview)
   mutt_window_reflow(dlg);
   window_invalidate_all();
 
-  window_set_focus(pview->win_pager);
+  struct MuttWindow *old_focus = window_set_focus(pview->win_pager);
 
   //---------- jump to the bottom if requested ------------------------------
   if (pview->flags & MUTT_PAGER_BOTTOM)
@@ -564,6 +564,7 @@ int dlg_pager(struct PagerView *pview)
       mutt_flushinp();
 
   } while (priv->loop == PAGER_LOOP_CONTINUE);
+  window_set_focus(old_focus);
 
   //-------------------------------------------------------------------------
   // END OF ACT 3: Read user input loop - while (op != OP_ABORT)

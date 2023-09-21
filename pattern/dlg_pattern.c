@@ -347,6 +347,7 @@ bool dlg_pattern(char *buf, size_t buflen)
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pattern_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, pattern_window_observer, menu->win);
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int op = OP_NULL;
@@ -374,6 +375,7 @@ bool dlg_pattern(char *buf, size_t buflen)
   } while (!pd.done);
   // ---------------------------------------------------------------------------
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   return pd.selection;
 }

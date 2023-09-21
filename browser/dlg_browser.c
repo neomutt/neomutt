@@ -1467,6 +1467,8 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   notify_observer_add(win_menu->notify, NT_WINDOW, browser_window_observer, priv);
   notify_observer_add(NeoMutt->notify, NT_MAILBOX, browser_mailbox_observer, priv);
 
+  struct MuttWindow *old_focus = window_set_focus(priv->menu->win);
+
   if (priv->state.is_mailbox_list)
   {
     examine_mailboxes(m, NULL, &priv->state);
@@ -1517,6 +1519,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   // ---------------------------------------------------------------------------
 
 bail:
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   browser_private_data_free(&priv);
 }

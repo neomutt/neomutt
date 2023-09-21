@@ -84,9 +84,7 @@ void menu_init(void)
  */
 enum MenuType menu_get_current_type(void)
 {
-  struct MuttWindow *win = alldialogs_get_current();
-  while (win && win->focus)
-    win = win->focus;
+  struct MuttWindow *win = window_get_focus();
 
   // This should only happen before the first window is created
   if (!win)

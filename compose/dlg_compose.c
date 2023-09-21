@@ -291,7 +291,6 @@ static struct MuttWindow *compose_dlg_init(struct ConfigSubset *sub,
 
   dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
-  dlg->focus = win_attach;
 
   return dlg;
 }
@@ -323,7 +322,6 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, compose_config_observer, dlg);
   notify_observer_add(e->notify, NT_ALL, compose_email_observer, shared);
   notify_observer_add(dlg->notify, NT_WINDOW, compose_window_observer, dlg);
-  dialog_push(dlg);
 
 #ifdef USE_NNTP
   if (OptNewsSend)
@@ -339,6 +337,8 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
 
   struct MuttWindow *win_env = window_find_child(dlg, WT_CUSTOM);
 
+  dialog_push(dlg);
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int rc = 0;
@@ -388,6 +388,7 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
 
   rc = shared->rc;
 
+  window_set_focus(old_focus);
   dialog_pop();
   mutt_window_free(&dlg);
 

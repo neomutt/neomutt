@@ -505,6 +505,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   sbar_set_title(sbar, _("Attachments"));
 
+  struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
   // Event Loop
   int rc = 0;
@@ -539,5 +540,6 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   } while (rc != FR_DONE);
   // ---------------------------------------------------------------------------
 
+  window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 }
