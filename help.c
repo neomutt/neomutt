@@ -37,11 +37,11 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "functions.h"
 #include "hdrline.h"
-#include "keymap.h"
 #include "opcodes.h"
 #include "protos.h"
 

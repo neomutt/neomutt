@@ -47,9 +47,9 @@
 #include "color/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "question/lib.h"
 #include "globals.h"
-#include "keymap.h"
 #include "msgcont.h"
 #include "msgwin.h"
 #include "mutt_curses.h"
@@ -61,66 +61,6 @@
 #ifdef HAVE_ISWBLANK
 #include <wctype.h>
 #endif
-#ifdef USE_INOTIFY
-#include "monitor.h"
-#endif
-
-/* not possible to unget more than one char under some curses libs, so roll our
- * own input buffering routines.  */
-
-ARRAY_HEAD(KeyEventArray, struct KeyEvent);
-
-/** These are used for macros and exec/push commands.
- * They can be temporarily ignored by passing #GETCH_IGNORE_MACRO */
-static struct KeyEventArray MacroEvents = ARRAY_HEAD_INITIALIZER;
-
-/** These are used in all other "normal" situations,
- * and are not ignored when passing #GETCH_IGNORE_MACRO */
-static struct KeyEventArray UngetKeyEvents = ARRAY_HEAD_INITIALIZER;
-
-/**
- * array_pop - Remove an event from the array
- * @param a Array
- * @retval ptr Event
- */
-static struct KeyEvent *array_pop(struct KeyEventArray *a)
-{
-  if (ARRAY_EMPTY(a))
-  {
-    return NULL;
-  }
-
-  struct KeyEvent *event = ARRAY_LAST(a);
-  ARRAY_SHRINK(a, 1);
-  return event;
-}
-
-/**
- * array_add - Add an event to the end of the array
- * @param a  Array
- * @param ch Character
- * @param op Operation, e.g. OP_DELETE
- */
-static void array_add(struct KeyEventArray *a, int ch, int op)
-{
-  struct KeyEvent event = { ch, op };
-  ARRAY_ADD(a, event);
-}
-
-/**
- * array_to_endcond - Clear the array until an OP_END_COND
- * @param a Array
- */
-static void array_to_endcond(struct KeyEventArray *a)
-{
-  while (!ARRAY_EMPTY(a))
-  {
-    if (array_pop(a)->op == OP_END_COND)
-    {
-      return;
-    }
-  }
-}
 
 /**
  * mutt_beep - Irritate the user
@@ -167,125 +107,6 @@ void mutt_need_hard_redraw(void)
   keypad(stdscr, true);
   clearok(stdscr, true);
   window_redraw(NULL);
-}
-
-#ifdef USE_INOTIFY
-/**
- * mutt_monitor_getch - Get a character and poll the filesystem monitor
- * @retval num Character pressed
- * @retval ERR Timeout
- */
-static int mutt_monitor_getch(void)
-{
-  /* ncurses has its own internal buffer, so before we perform a poll,
-   * we need to make sure there isn't a character waiting */
-  timeout(0);
-  int ch = getch();
-  timeout(1000); // 1 second
-  if (ch == ERR)
-  {
-    if (mutt_monitor_poll() != 0)
-      ch = ERR;
-    else
-      ch = getch();
-  }
-  return ch;
-}
-#endif /* USE_INOTIFY */
-
-/**
- * mutt_getch - Read a character from the input buffer
- * @param flags Flags, e.g. #GETCH_IGNORE_MACRO
- * @retval obj KeyEvent to process
- *
- * The priority for reading events is:
- * 1. UngetKeyEvents buffer
- * 2. MacroEvents buffer
- * 3. Keyboard
- *
- * This function can return:
- * - Abort   `{ 0, OP_ABORT   }`
- * - Repaint `{ 0, OP_REPAINT }`
- * - Timeout `{ 0, OP_TIMEOUT }`
- */
-struct KeyEvent mutt_getch(GetChFlags flags)
-{
-  static const struct KeyEvent event_abort = { 0, OP_ABORT };
-  static const struct KeyEvent event_repaint = { 0, OP_REPAINT };
-  static const struct KeyEvent event_timeout = { 0, OP_TIMEOUT };
-
-  if (OptNoCurses)
-    return event_abort;
-
-  struct KeyEvent *event_key = array_pop(&UngetKeyEvents);
-  if (event_key)
-    return *event_key;
-
-  if (!(flags & GETCH_IGNORE_MACRO))
-  {
-    event_key = array_pop(&MacroEvents);
-    if (event_key)
-      return *event_key;
-  }
-
-  int ch;
-  SigInt = false;
-  mutt_sig_allow_interrupt(true);
-  timeout(1000); // 1 second
-#ifdef USE_INOTIFY
-  ch = mutt_monitor_getch();
-#else
-  ch = getch();
-#endif
-  mutt_sig_allow_interrupt(false);
-
-  if (SigInt)
-  {
-    mutt_query_exit();
-    return event_abort;
-  }
-
-  if (ch == KEY_RESIZE)
-  {
-    timeout(0);
-    while ((ch = getch()) == KEY_RESIZE)
-    {
-      // do nothing
-    }
-  }
-
-  if (ch == ERR)
-  {
-    if (!isatty(0)) // terminal was lost
-      mutt_exit(1);
-
-    if (SigWinch)
-    {
-      SigWinch = false;
-      notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
-      return event_repaint;
-    }
-
-    notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
-    return event_timeout;
-  }
-
-  if (ch == AbortKey)
-    return event_abort;
-
-  if (ch & 0x80)
-  {
-    const bool c_meta_key = cs_subset_bool(NeoMutt->sub, "meta_key");
-    if (c_meta_key)
-    {
-      /* send ALT-x as ESC-x */
-      ch &= ~0x80;
-      mutt_unget_ch(ch);
-      return (struct KeyEvent){ '\033', OP_NULL }; // Escape
-    }
-  }
-
-  return (struct KeyEvent){ ch, OP_NULL };
 }
 
 /**
@@ -495,90 +316,6 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   }
 
   return 0;
-}
-
-/**
- * mutt_unget_ch - Return a keystroke to the input buffer
- * @param ch Key press
- *
- * This puts events into the `UngetKeyEvents` buffer
- */
-void mutt_unget_ch(int ch)
-{
-  array_add(&UngetKeyEvents, ch, OP_NULL);
-}
-
-/**
- * mutt_unget_op - Return an operation to the input buffer
- * @param op Operation, e.g. OP_DELETE
- *
- * This puts events into the `UngetKeyEvents` buffer
- */
-void mutt_unget_op(int op)
-{
-  array_add(&UngetKeyEvents, 0, op);
-}
-
-/**
- * mutt_unget_string - Return a string to the input buffer
- * @param s String to return
- *
- * This puts events into the `UngetKeyEvents` buffer
- */
-void mutt_unget_string(const char *s)
-{
-  const char *p = s + mutt_str_len(s) - 1;
-
-  while (p >= s)
-  {
-    mutt_unget_ch((unsigned char) *p--);
-  }
-}
-
-/**
- * mutt_push_macro_event - Add the character/operation to the macro buffer
- * @param ch Character to add
- * @param op Operation to add
- *
- * Adds the ch/op to the macro buffer.
- * This should be used for macros, push, and exec commands only.
- */
-void mutt_push_macro_event(int ch, int op)
-{
-  array_add(&MacroEvents, ch, op);
-}
-
-/**
- * mutt_flush_macro_to_endcond - Drop a macro from the input buffer
- *
- * All the macro text is deleted until an OP_END_COND command,
- * or the buffer is empty.
- */
-void mutt_flush_macro_to_endcond(void)
-{
-  array_to_endcond(&MacroEvents);
-}
-
-/**
- * mutt_flush_unget_to_endcond - Clear entries from UngetKeyEvents
- *
- * Normally, OP_END_COND should only be in the MacroEvent buffer.
- * km_error_key() (ab)uses OP_END_COND as a barrier in the unget buffer, and
- * calls this function to flush.
- */
-void mutt_flush_unget_to_endcond(void)
-{
-  array_to_endcond(&UngetKeyEvents);
-}
-
-/**
- * mutt_flushinp - Empty all the keyboard buffers
- */
-void mutt_flushinp(void)
-{
-  ARRAY_SHRINK(&UngetKeyEvents, ARRAY_SIZE(&UngetKeyEvents));
-  ARRAY_SHRINK(&MacroEvents, ARRAY_SIZE(&MacroEvents));
-  flushinp();
 }
 
 /**
@@ -946,4 +683,84 @@ size_t mutt_strnwidth(const char *s, size_t n)
     w += wcwidth(wc);
   }
   return w;
+}
+
+/**
+ * mw_what_key - Display the value of a key - @ingroup gui_mw
+ *
+ * This function uses the message window.
+ *
+ * Displays the octal value back to the user. e.g.
+ * `Char = h, Octal = 150, Decimal = 104`
+ *
+ * Press the $abort_key (default Ctrl-G) to exit.
+ */
+void mw_what_key(void)
+{
+  struct MuttWindow *win = msgwin_new(true);
+  if (!win)
+    return;
+
+  char prompt[256] = { 0 };
+  snprintf(prompt, sizeof(prompt), _("Enter keys (%s to abort): "), km_keyname(AbortKey));
+  msgwin_set_text(win, prompt, MT_COLOR_PROMPT);
+
+  msgcont_push_window(win);
+  struct MuttWindow *old_focus = window_set_focus(win);
+  window_redraw(win);
+
+  char keys[256] = { 0 };
+  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
+
+  // ---------------------------------------------------------------------------
+  // Event Loop
+  timeout(1000); // 1 second
+  while (true)
+  {
+    int ch = getch();
+    if (ch == AbortKey)
+      break;
+
+    if (ch == KEY_RESIZE)
+    {
+      timeout(0);
+      while ((ch = getch()) == KEY_RESIZE)
+      {
+        // do nothing
+      }
+    }
+
+    if (ch == ERR)
+    {
+      if (!isatty(0)) // terminal was lost
+        mutt_exit(1);
+
+      if (SigWinch)
+      {
+        SigWinch = false;
+        notify_send(NeoMutt->notify_resize, NT_RESIZE, 0, NULL);
+        window_redraw(NULL);
+      }
+      else
+      {
+        notify_send(NeoMutt->notify_timeout, NT_TIMEOUT, 0, NULL);
+      }
+
+      continue;
+    }
+
+    msgwin_clear_text(win);
+    snprintf(keys, sizeof(keys), _("Char = %s, Octal = %o, Decimal = %d\n"),
+             km_keyname(ch), ch, ch);
+    msgwin_add_text(win, keys, ac_normal);
+    msgwin_add_text(win, prompt, ac_prompt);
+    msgwin_add_text(win, NULL, NULL);
+    window_redraw(NULL);
+  }
+  // ---------------------------------------------------------------------------
+
+  win = msgcont_pop_window();
+  window_set_focus(old_focus);
+  mutt_window_free(&win);
 }

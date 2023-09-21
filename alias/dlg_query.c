@@ -84,6 +84,7 @@
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
@@ -92,7 +93,6 @@
 #include "functions.h"
 #include "globals.h" // IWYU pragma: keep
 #include "gui.h"
-#include "keymap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "opcodes.h"

@@ -65,6 +65,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
@@ -73,7 +74,6 @@
 #include "globals.h" // IWYU pragma: keep
 #include "hdrline.h"
 #include "hook.h"
-#include "keymap.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"

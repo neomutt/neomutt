@@ -35,9 +35,9 @@
 #include "functions.h"
 #include "complete/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "enter.h"
-#include "keymap.h"
 #include "opcodes.h"
 #include "protos.h"
 #include "state.h" // IWYU pragma: keep

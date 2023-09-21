@@ -75,8 +75,8 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
-#include "keymap.h"
 
 /**
  * make_help - Create one entry for the Help Bar

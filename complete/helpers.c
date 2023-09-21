@@ -37,11 +37,11 @@
 #include "core/lib.h"
 #include "editor/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "compapi.h"
 #include "data.h"
 #include "functions.h"
-#include "keymap.h"
 #include "opcodes.h"
 
 /**
