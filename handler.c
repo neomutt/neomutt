@@ -814,7 +814,7 @@ static int external_body_handler(struct Body *b, struct State *state)
                  Sadly, we can't do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c. */
+                 mutt_str_pretty_size() in muttlib.c */
               "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
               "[-- on %s --]\n",
               "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -837,7 +837,7 @@ static int external_body_handler(struct Body *b, struct State *state)
                  Sadly, we can't do anything about that at the moment besides
                  passing the precise size in bytes. If you are interested the
                  function responsible for the prettification is
-                 mutt_str_pretty_size() in mutt/string.c.  */
+                 mutt_str_pretty_size() in muttlib.c  */
               "[-- This %s/%s attachment (size %s byte) has been deleted --]\n",
               "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n", size);
         }
