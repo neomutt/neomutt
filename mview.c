@@ -58,7 +58,19 @@ void mview_free(struct MailboxView **ptr)
   notify_send(mv->notify, NT_MVIEW, NT_MVIEW_DELETE, &ev_m);
 
   if (mv->mailbox)
+  {
     notify_observer_remove(mv->mailbox->notify, mview_mailbox_observer, mv);
+
+    // Disconnect the Emails before freeing the Threads
+    for (int i = 0; i < mv->mailbox->msg_count; i++)
+    {
+      struct Email *e = mv->mailbox->emails[i];
+      if (!e)
+        continue;
+      e->thread = NULL;
+      e->threaded = false;
+    }
+  }
 
   mutt_thread_ctx_free(&mv->threads);
   notify_free(&mv->notify);
