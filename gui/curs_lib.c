@@ -256,23 +256,25 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   if (!win)
     return -1;
 
-  char text[PATH_MAX] = { 0 };
-  snprintf(text, sizeof(text), _(" ('?' for list): "));
+  int rc = -1;
+
+  struct Buffer *text = buf_pool_get();
+  const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
+
+  msgwin_add_text(win, prompt, ac_prompt);
+  msgwin_add_text(win, _(" ('?' for list): "), ac_prompt);
   if (!buf_is_empty(fname))
-    mutt_str_cat(text, sizeof(text), buf_string(fname));
-  msgwin_set_text(win, text, MT_COLOR_NORMAL);
+    msgwin_add_text(win, buf_string(fname), ac_normal);
 
   msgcont_push_window(win);
   struct MuttWindow *old_focus = window_set_focus(win);
-  window_redraw(win);
 
   struct KeyEvent event = { 0, OP_NULL };
   do
   {
+    window_redraw(NULL);
     event = mutt_getch(GETCH_NO_FLAGS);
-    if (event.op == OP_REPAINT)
-      window_redraw(win);
-
   } while ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT));
 
   mutt_refresh();
@@ -281,10 +283,9 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
   mutt_window_free(&win);
 
   if (event.ch < 0)
-  {
-    return -1;
-  }
-  else if (event.ch == '?')
+    goto done;
+
+  if (event.ch == '?')
   {
     buf_reset(fname);
 
@@ -315,7 +316,11 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
     FREE(&pc);
   }
 
-  return 0;
+  rc = 0;
+
+done:
+  buf_pool_release(&text);
+  return rc;
 }
 
 /**
