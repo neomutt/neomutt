@@ -2552,96 +2552,96 @@ msgstr "KLAIDA: prašau pranešti šią klaidą"
 
 #: help.c:414
 msgid "message is tagged"
-msgstr ""
+msgstr "laiškas pažymėtas"
 
 #: help.c:416
 msgid "message is flagged"
-msgstr ""
+msgstr "laiškas su vėliavėle"
 
 #: help.c:417
 msgid "message is deleted"
-msgstr ""
+msgstr "laiškas ištrintas"
 
 #: help.c:419
 msgid "attachment is deleted"
-msgstr ""
+msgstr "priedas ištrintas"
 
 #: help.c:421
 msgid "message has been replied to"
-msgstr ""
+msgstr "laiškas atsakytas"
 
 #: help.c:422
 msgid "message has been read"
-msgstr ""
+msgstr "laiškas perskaitytas"
 
 #: help.c:423
 msgid "message is new"
-msgstr ""
+msgstr "laiškas naujas"
 
 #: help.c:425
 msgid "thread has been read"
-msgstr ""
+msgstr "gija perskaityta"
 
 #: help.c:427
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "gija turi bent vieną naują laišką"
 
 #: help.c:429
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "laiškas perskaitytas (%S plėtinys)"
 
 #: help.c:431
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "laiškas perskaitytas (%Z plėtinys)"
 
 #: help.c:435
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "laiškas pasirašytas patikrintu raktu"
 
 #: help.c:437
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "laiškas užšifruotas PGP"
 
 #: help.c:439
 msgid "message is signed"
-msgstr ""
+msgstr "laiškas pasirašytas"
 
 #: help.c:441
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "laiške yra PGP raktas"
 
 #: help.c:443
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "laiškas neturi kriptografinės informacijos"
 
 #: help.c:447
 msgid "message is not To: you"
-msgstr ""
+msgstr "laiškas nėra adresuotas (To:) tau"
 
 #: help.c:449
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "laiškas adresuotas (To:) tau ir tik tau"
 
 #: help.c:450
 msgid "message is To: you"
-msgstr ""
+msgstr "laiškas adresuotas (To:) tau"
 
 #: help.c:451
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "laiško kopija adresuota (Cc:) tau"
 
 #: help.c:453
 msgid "message is From: you"
-msgstr ""
+msgstr "laiškas yra tavo (From:)"
 
 #: help.c:455
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "laiškas išsiųstas į užsiprenumeruotą konferenciją"
 
 #: help.c:457
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "tu esi Reply-To: sąraše"
 
 #: help.c:476
 msgid "<UNKNOWN>"
@@ -2657,7 +2657,7 @@ msgstr "Nesusietos funkcijos:"
 
 #: help.c:510
 msgid "Message flags:"
-msgstr ""
+msgstr "Laiškų ženklinimas:"
 
 #: help.c:516
 #, c-format
@@ -3488,19 +3488,18 @@ msgstr "mailcap įrašas tipui %s nerastas"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:52
-#, fuzzy
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter turi būti lygiai vieno simbolio ilgio"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter negali būti raidė, skaičius, arba '-.\\/'"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:67
 msgid "maildir_field_delimiter can only be set once"
-msgstr ""
+msgstr "maildir_field_delimiter galima nustatyti tik vieną kartą"
 
 #: maildir/maildir.c:267 maildir/mh.c:303
 msgid "Could not flush message to disk"
