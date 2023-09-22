@@ -673,6 +673,10 @@ int mutt_get_postponed(struct Mailbox *m_cur, struct Email *hdr,
   int rc = SEND_POSTPONED;
   const char *p = NULL;
 
+  /* disable threading before loading the postponed mailbox */
+  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
+  cs_subset_str_native_set(NeoMutt->sub, "use_threads", UT_FLAT, NULL);
+
   struct Mailbox *m = mx_path_resolve(c_postponed);
   if (m_cur != m)
   {
@@ -817,5 +821,6 @@ cleanup:
   }
 
   cs_subset_str_native_set(NeoMutt->sub, "delete", c_delete, NULL);
+  cs_subset_str_native_set(NeoMutt->sub, "use_threads", c_use_threads, NULL);
   return rc;
 }
