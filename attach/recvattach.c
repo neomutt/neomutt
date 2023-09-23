@@ -57,7 +57,6 @@
 #include "mutt_attach.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "rfc3676.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

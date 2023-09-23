@@ -33,7 +33,6 @@
 #include "gui/lib.h"
 #include "functions.h"
 #include "menu/lib.h"
-#include "opcodes.h"
 
 /**
  * op_generic_select_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api

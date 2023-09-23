@@ -92,7 +92,6 @@
 #include "gui.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {

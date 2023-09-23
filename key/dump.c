@@ -33,12 +33,11 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
-#include "functions.h"
-#include "opcodes.h"
 
 /**
  * dump_bind - Dumps all the binds maps of a menu into a buffer

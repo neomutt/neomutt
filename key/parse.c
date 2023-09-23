@@ -38,8 +38,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "parse/lib.h"
-#include "functions.h"
-#include "opcodes.h"
 
 /// Maximum length of a key binding sequence used for buffer in km_bindkey
 #define MAX_SEQ 8

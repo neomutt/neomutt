@@ -73,7 +73,6 @@
  * | enriched.c      | @subpage neo_enriched      |
  * | external.c      | @subpage neo_external      |
  * | flags.c         | @subpage neo_flags         |
- * | functions.c     | @subpage neo_functions     |
  * | globals.c       | @subpage neo_globals       |
  * | handler.c       | @subpage neo_handler       |
  * | hdrline.c       | @subpage neo_hdrline       |
@@ -97,7 +96,6 @@
  * | mutt_thread.c   | @subpage neo_mutt_thread   |
  * | mview.c         | @subpage neo_mview         |
  * | mx.c            | @subpage neo_mx            |
- * | opcodes.c       | @subpage neo_opcode        |
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | rfc3676.c       | @subpage neo_rfc3676       |
  * | score.c         | @subpage neo_score         |

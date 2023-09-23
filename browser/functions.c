@@ -27,6 +27,9 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -38,20 +41,20 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "functions.h"
 #include "globals.h" // IWYU pragma: keep
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "opcodes.h"
 #include "private_data.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"
@@ -61,11 +64,105 @@
 #include "nntp/adata.h"
 #include "nntp/mdata.h"
 #endif
+#endif
 
 /// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
 
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
+
+// clang-format off
+/**
+ * OpBrowser - Functions for the file Browser Menu
+ */
+const struct MenuFuncOp OpBrowser[] = { /* map: browser */
+#ifdef USE_NNTP
+  { "catchup",                       OP_CATCHUP },
+#endif
+  { "change-dir",                    OP_CHANGE_DIRECTORY },
+  { "check-new",                     OP_CHECK_NEW },
+#ifdef USE_IMAP
+  { "create-mailbox",                OP_CREATE_MAILBOX },
+  { "delete-mailbox",                OP_DELETE_MAILBOX },
+#endif
+  { "descend-directory",             OP_DESCEND_DIRECTORY },
+  { "display-filename",              OP_BROWSER_TELL },
+  { "enter-mask",                    OP_ENTER_MASK },
+  { "exit",                          OP_EXIT },
+  { "goto-folder",                   OP_BROWSER_GOTO_FOLDER },
+  { "goto-parent",                   OP_GOTO_PARENT },
+  { "mailbox-list",                  OP_MAILBOX_LIST },
+#ifdef USE_NNTP
+  { "reload-active",                 OP_LOAD_ACTIVE },
+#endif
+#ifdef USE_IMAP
+  { "rename-mailbox",                OP_RENAME_MAILBOX },
+#endif
+  { "select-new",                    OP_BROWSER_NEW_FILE },
+  { "sort",                          OP_SORT },
+  { "sort-reverse",                  OP_SORT_REVERSE },
+#if defined(USE_IMAP) || defined(USE_NNTP)
+  { "subscribe",                     OP_BROWSER_SUBSCRIBE },
+#endif
+#ifdef USE_NNTP
+  { "subscribe-pattern",             OP_SUBSCRIBE_PATTERN },
+#endif
+  { "toggle-mailboxes",              OP_TOGGLE_MAILBOXES },
+#ifdef USE_IMAP
+  { "toggle-subscribed",             OP_BROWSER_TOGGLE_LSUB },
+#endif
+#ifdef USE_NNTP
+  { "uncatchup",                     OP_UNCATCHUP },
+#endif
+#if defined(USE_IMAP) || defined(USE_NNTP)
+  { "unsubscribe",                   OP_BROWSER_UNSUBSCRIBE },
+#endif
+#ifdef USE_NNTP
+  { "unsubscribe-pattern",           OP_UNSUBSCRIBE_PATTERN },
+#endif
+  { "view-file",                     OP_BROWSER_VIEW_FILE },
+  // Deprecated
+  { "buffy-list",                    OP_MAILBOX_LIST },
+  { NULL, 0 },
+};
+
+/**
+ * BrowserDefaultBindings - Key bindings for the file Browser Menu
+ */
+const struct MenuOpSeq BrowserDefaultBindings[] = { /* map: browser */
+  { OP_BROWSER_GOTO_FOLDER,                "=" },
+  { OP_BROWSER_NEW_FILE,                   "N" },
+#if defined(USE_IMAP) || defined(USE_NNTP)
+  { OP_BROWSER_SUBSCRIBE,                  "s" },
+#endif
+  { OP_BROWSER_TELL,                       "@" },
+#ifdef USE_IMAP
+  { OP_BROWSER_TOGGLE_LSUB,                "T" },
+#endif
+#if defined(USE_IMAP) || defined(USE_NNTP)
+  { OP_BROWSER_UNSUBSCRIBE,                "u" },
+#endif
+  { OP_BROWSER_VIEW_FILE,                  " " },              // <Space>
+  { OP_CHANGE_DIRECTORY,                   "c" },
+#ifdef USE_IMAP
+  { OP_CREATE_MAILBOX,                     "C" },
+  { OP_DELETE_MAILBOX,                     "d" },
+#endif
+  { OP_ENTER_MASK,                         "m" },
+  { OP_EXIT,                               "q" },
+  { OP_GOTO_PARENT,                        "p" },
+#ifdef USE_NNTP
+#endif
+  { OP_MAILBOX_LIST,                       "." },
+#ifdef USE_IMAP
+  { OP_RENAME_MAILBOX,                     "r" },
+#endif
+  { OP_SORT,                               "o" },
+  { OP_SORT_REVERSE,                       "O" },
+  { OP_TOGGLE_MAILBOXES,                   "\t" },             // <Tab>
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * destroy_state - Free the BrowserState

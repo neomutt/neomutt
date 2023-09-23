@@ -1,4 +1,11 @@
-MAKEDOC_CPP = $(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -D_MAKEDOC -E -C -I.
+MAKEDOC_CPP = $(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -D_MAKEDOC -E -C -I. -I$(SRCDIR)
+
+FUNCTION_SRC = $(SRCDIR)/gui/functions.c $(SRCDIR)/alias/functions.c \
+	       $(SRCDIR)/attach/functions.c $(SRCDIR)/autocrypt/functions.c \
+	       $(SRCDIR)/browser/functions.c $(SRCDIR)/compose/functions.c \
+	       $(SRCDIR)/editor/functions.c $(SRCDIR)/index/functions.c \
+	       $(SRCDIR)/mixmaster/functions.c $(SRCDIR)/ncrypt/functions.c \
+	       $(SRCDIR)/pager/functions.c $(SRCDIR)/postpone/functions.c
 
 docs/makedoc$(EXEEXT): $(SRCDIR)/docs/makedoc.c
 	$(CC_FOR_BUILD) -I. $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) \
@@ -68,14 +75,14 @@ docs/neomutt.1:
 	) > $@
 
 docs/manual.xml:	docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
-		$(SRCDIR)/docs/manual.xml.head $(SRCDIR)/docs/manual.xml.tail\
-		$(SRCDIR)/functions.c $(SRCDIR)/docs/config.c $(SRCDIR)/opcodes.h
+		$(SRCDIR)/docs/manual.xml.head $(SRCDIR)/docs/manual.xml.tail \
+		$(FUNCTION_SRC) $(SRCDIR)/docs/config.c $(SRCDIR)/gui/opcodes.h
 	( sed -e "s/@VERSION@/$(PACKAGE_DATE)/; s!/usr/libexec!$(libexecdir)!g" \
 	    $(SRCDIR)/docs/manual.xml.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -s && \
-	    $(MAKEDOC_CPP) $(SRCDIR)/functions.c | \
+	    $(MAKEDOC_CPP) $(FUNCTION_SRC) | \
 	    perl $(SRCDIR)/docs/gen-map-doc $(SRCDIR)/docs/manual.xml.tail \
-	    $(SRCDIR)/opcodes.h \
+	    $(SRCDIR)/gui/opcodes.h \
 	) > $@
 
 install-docs: all-docs

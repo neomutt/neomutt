@@ -30,10 +30,10 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "lib.h"
 #include "complete/lib.h"
 #include "editor/lib.h"
-#include "opcodes.h"
 
 /**
  * complete_alias_complete - Complete an Alias - Implements ::complete_function_t - @ingroup complete_api

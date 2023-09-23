@@ -91,7 +91,6 @@ const struct MenuFuncOp OpAutocrypt = { 0 };
 const struct MenuFuncOp OpBrowser = { 0 };
 const struct MenuFuncOp OpCompose = { 0 };
 const struct MenuFuncOp OpDialog = { 0 };
-const struct MenuFuncOp OpEditor = { 0 };
 const struct MenuFuncOp OpGeneric[] = { 0 };
 const struct MenuFuncOp OpIndex = { 0 };
 const struct MenuFuncOp OpMixmaster = { 0 };

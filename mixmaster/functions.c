@@ -27,15 +27,58 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "key/lib.h"
 #include "functions.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "win_chain.h"
 #include "win_hosts.h"
+#endif
+
+// clang-format off
+#ifdef MIXMASTER
+/**
+ * OpMixmaster - Functions for the Mixmaster Menu
+ */
+const struct MenuFuncOp OpMixmaster[] = { /* map: mixmaster */
+  { "accept",                        OP_MIX_USE },
+  { "append",                        OP_MIX_APPEND },
+  { "chain-next",                    OP_MIX_CHAIN_NEXT },
+  { "chain-prev",                    OP_MIX_CHAIN_PREV },
+  { "delete",                        OP_MIX_DELETE },
+  { "exit",                          OP_EXIT },
+  { "insert",                        OP_MIX_INSERT },
+  { NULL, 0 },
+};
+#endif /* MIXMASTER */
+
+#ifdef MIXMASTER
+/**
+ * MixmasterDefaultBindings - Key bindings for the Mixmaster Menu
+ */
+const struct MenuOpSeq MixmasterDefaultBindings[] = { /* map: mixmaster */
+  { OP_EXIT,                               "q" },
+  { OP_GENERIC_SELECT_ENTRY,               "<space>" },
+  { OP_MIX_APPEND,                         "a" },
+  { OP_MIX_CHAIN_NEXT,                     "<right>" },
+  { OP_MIX_CHAIN_NEXT,                     "l" },
+  { OP_MIX_CHAIN_PREV,                     "<left>" },
+  { OP_MIX_CHAIN_PREV,                     "h" },
+  { OP_MIX_DELETE,                         "d" },
+  { OP_MIX_INSERT,                         "i" },
+  { OP_MIX_USE,                            "<keypadenter>" },
+  { OP_MIX_USE,                            "\n" },             // <Enter>
+  { OP_MIX_USE,                            "\r" },             // <Return>
+  { 0, NULL },
+};
+#endif /* MIXMASTER */
+// clang-format on
 
 /**
  * op_exit - exit this menu - Implements ::mixmaster_function_t - @ingroup mixmaster_function_api

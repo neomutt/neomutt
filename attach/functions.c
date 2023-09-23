@@ -27,6 +27,9 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -34,24 +37,97 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "functions.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach.h"
+#include "functions.h"
 #include "globals.h" // IWYU pragma: keep
 #include "mutt_attach.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "recvattach.h"
 #include "recvcmd.h"
+#endif
 
 /// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
 /// Error message for unavailable functions in attach mode
 static const char *Function_not_permitted_in_attach_message_mode = N_(
     "Function not permitted in attach-message mode");
+
+// clang-format off
+/**
+ * OpAttachment - Functions for the Attachment Menu
+ */
+const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
+  { "bounce-message",                OP_BOUNCE_MESSAGE },
+  { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
+  { "collapse-parts",                OP_ATTACHMENT_COLLAPSE },
+  { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
+  { "delete-entry",                  OP_ATTACHMENT_DELETE },
+  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
+  { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
+  { "exit",                          OP_EXIT },
+  { "extract-keys",                  OP_EXTRACT_KEYS },
+#ifdef USE_NNTP
+  { "followup-message",              OP_FOLLOWUP },
+#endif
+  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
+  { "forward-message",               OP_FORWARD_MESSAGE },
+#ifdef USE_NNTP
+  { "forward-to-group",              OP_FORWARD_TO_GROUP },
+#endif
+  { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
+  { "group-reply",                   OP_GROUP_REPLY },
+  { "list-reply",                    OP_LIST_REPLY },
+  { "list-subscribe",                OP_LIST_SUBSCRIBE },
+  { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
+  { "pipe-entry",                    OP_PIPE },
+  { "pipe-message",                  OP_PIPE },
+  { "print-entry",                   OP_ATTACHMENT_PRINT },
+  { "reply",                         OP_REPLY },
+  { "resend-message",                OP_RESEND },
+  { "save-entry",                    OP_ATTACHMENT_SAVE },
+  { "undelete-entry",                OP_ATTACHMENT_UNDELETE },
+  { "view-attach",                   OP_ATTACHMENT_VIEW },
+  { "view-mailcap",                  OP_ATTACHMENT_VIEW_MAILCAP },
+  { "view-pager",                    OP_ATTACHMENT_VIEW_PAGER },
+  { "view-text",                     OP_ATTACHMENT_VIEW_TEXT },
+  { NULL, 0 },
+};
+
+/**
+ * AttachmentDefaultBindings - Key bindings for the Attachment Menu
+ */
+const struct MenuOpSeq AttachmentDefaultBindings[] = { /* map: attachment */
+  { OP_ATTACHMENT_COLLAPSE,                "v" },
+  { OP_ATTACHMENT_DELETE,                  "d" },
+  { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+  { OP_EXIT,                               "q" },
+  { OP_PIPE,                               "|" },
+  { OP_ATTACHMENT_PRINT,                   "p" },
+  { OP_ATTACHMENT_SAVE,                    "s" },
+  { OP_ATTACHMENT_UNDELETE,                "u" },
+  { OP_ATTACHMENT_VIEW,                    "<keypadenter>" },
+  { OP_ATTACHMENT_VIEW,                    "\n" },             // <Enter>
+  { OP_ATTACHMENT_VIEW,                    "\r" },             // <Return>
+  { OP_ATTACHMENT_VIEW_MAILCAP,            "m" },
+  { OP_ATTACHMENT_VIEW_TEXT,               "T" },
+  { OP_BOUNCE_MESSAGE,                     "b" },
+  { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
+  { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
+  { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
+  { OP_FORWARD_MESSAGE,                    "f" },
+  { OP_GROUP_REPLY,                        "g" },
+  { OP_LIST_REPLY,                         "L" },
+  { OP_REPLY,                              "r" },
+  { OP_RESEND,                             "\033e" },          // <Alt-e>
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * attach_collapse - Close the tree of the current attachment

@@ -69,7 +69,6 @@
 #include "functions.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {

@@ -38,8 +38,24 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "functions.h"
-#include "opcodes.h"
+
+extern const struct MenuOpSeq AliasDefaultBindings[];
+extern const struct MenuOpSeq AttachmentDefaultBindings[];
+#ifdef USE_AUTOCRYPT
+extern const struct MenuOpSeq AutocryptDefaultBindings[];
+#endif
+extern const struct MenuOpSeq BrowserDefaultBindings[];
+extern const struct MenuOpSeq ComposeDefaultBindings[];
+extern const struct MenuOpSeq EditorDefaultBindings[];
+extern const struct MenuOpSeq IndexDefaultBindings[];
+#ifdef MIXMASTER
+extern const struct MenuOpSeq MixmasterDefaultBindings[];
+#endif
+extern const struct MenuOpSeq PagerDefaultBindings[];
+extern const struct MenuOpSeq PgpDefaultBindings[];
+extern const struct MenuOpSeq PostponedDefaultBindings[];
+extern const struct MenuOpSeq QueryDefaultBindings[];
+extern const struct MenuOpSeq SmimeDefaultBindings[];
 
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style

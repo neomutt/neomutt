@@ -48,7 +48,6 @@
 #include "hook.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "wdata.h"
 #ifdef MIXMASTER
 #include "mixmaster/lib.h"

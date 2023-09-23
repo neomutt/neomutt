@@ -87,7 +87,6 @@
 #include "gpgme_functions.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "sort.h"
 
 /// Help Bar for the GPGME key selection dialog

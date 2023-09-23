@@ -37,7 +37,6 @@
 #include "functions.h"
 #include "lib.h"
 #include "index/lib.h"
-#include "opcodes.h"
 
 /**
  * sb_next - Find the next unhidden Mailbox

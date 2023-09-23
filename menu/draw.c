@@ -41,7 +41,6 @@
 #include "pattern/lib.h"
 #include "mutt_thread.h"
 #include "mview.h"
-#include "opcodes.h"
 
 /**
  * get_color - Choose a colour for a line of the index

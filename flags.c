@@ -40,7 +40,6 @@
 #include "index/lib.h"
 #include "key/lib.h"
 #include "mutt_thread.h"
-#include "opcodes.h"
 #include "protos.h"
 
 /**

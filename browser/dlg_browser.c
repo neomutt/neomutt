@@ -94,7 +94,6 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "opcodes.h"
 #include "private_data.h"
 #ifdef USE_IMAP
 #include "imap/lib.h"

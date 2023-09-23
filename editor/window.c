@@ -43,7 +43,6 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "state.h" // IWYU pragma: keep
 #include "wdata.h"
 

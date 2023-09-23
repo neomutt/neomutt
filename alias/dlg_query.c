@@ -95,7 +95,6 @@
 #include "gui.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {

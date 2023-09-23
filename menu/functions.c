@@ -39,7 +39,6 @@
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
-#include "opcodes.h"
 #include "protos.h"
 #include "type.h"
 

@@ -83,7 +83,6 @@
 #include "format_flags.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "pgp.h"
 #include "pgp_functions.h"
 #include "pgpkey.h"

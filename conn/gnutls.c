@@ -46,6 +46,8 @@
 #include "muttlib.h"
 #include "ssl.h"
 
+int gnutls_protocol_set_priority(gnutls_session_t session, const int *list);
+
 // clang-format off
 /* certificate error bitmap values */
 #define CERTERR_VALID              0
