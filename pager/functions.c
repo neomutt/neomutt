@@ -47,7 +47,6 @@
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "display.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "protos.h"
 

@@ -65,7 +65,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "mutt_logging.h"
-#include "opcodes.h"
 #include "smime.h"
 #include "smime_functions.h"
 

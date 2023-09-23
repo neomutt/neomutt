@@ -61,7 +61,6 @@
 #include "muttlib.h"
 #include "mview.h"
 #include "mx.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"

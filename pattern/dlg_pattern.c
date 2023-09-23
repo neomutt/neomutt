@@ -83,7 +83,6 @@
 #include "functions.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /// Help Bar for the Pattern selection dialog
 static const struct Mapping PatternHelp[] = {

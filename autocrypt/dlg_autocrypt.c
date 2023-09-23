@@ -81,7 +81,6 @@
 #include "functions.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /// Help Bar for the Autocrypt Account selection dialog
 static const struct Mapping AutocryptHelp[] = {

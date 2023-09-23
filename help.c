@@ -42,7 +42,6 @@
 #include "pager/lib.h"
 #include "functions.h"
 #include "hdrline.h"
-#include "opcodes.h"
 #include "protos.h"
 
 /**

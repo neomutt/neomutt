@@ -71,7 +71,6 @@
 #include "color/lib.h"
 #include "index/lib.h"
 #include "display.h"
-#include "opcodes.h"
 #include "private_data.h"
 
 /**

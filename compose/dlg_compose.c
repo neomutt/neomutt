@@ -87,7 +87,6 @@
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "mutt_logging.h"
-#include "opcodes.h"
 #include "shared_data.h"
 
 /// Help Bar for the Compose dialog

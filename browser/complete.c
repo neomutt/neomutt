@@ -39,7 +39,6 @@
 #include "history/lib.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
-#include "opcodes.h"
 
 /**
  * complete_file_mbox - Complete a Mailbox - Implements ::complete_function_t - @ingroup complete_api

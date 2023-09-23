@@ -41,6 +41,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "mx.h"
 #include "key/lib.h"
@@ -56,7 +57,6 @@
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "protos.h"
 #ifdef USE_COMP_MBOX
 #include "compmbox/lib.h"

@@ -37,7 +37,6 @@
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "mview.h"
-#include "opcodes.h"
 #include "protos.h"
 
 /**

@@ -45,7 +45,6 @@
 #include "question/lib.h"
 #include "alias.h"
 #include "gui.h"
-#include "opcodes.h"
 
 /**
  * op_create_alias - create an alias from a message sender - Implements ::alias_function_t - @ingroup alias_function_api

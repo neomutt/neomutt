@@ -32,7 +32,6 @@
 #include "gui/lib.h"
 #include "functions.h"
 #include "menu/lib.h"
-#include "opcodes.h"
 
 /**
  * op_generic_select_entry - Select the current entry - Implements ::history_function_t - @ingroup history_function_api

@@ -40,12 +40,12 @@
  */
 
 #include "config.h"
+#include "gui/lib.h"
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else
 #include <stddef.h>
 #include "key/lib.h"
-#include "opcodes.h"
 #endif
 
 // clang-format off

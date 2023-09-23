@@ -52,7 +52,7 @@
 #include "attr.h"
 #include "curses2.h"
 #include "merged.h"
-#include "pager/private_data.h"
+#include "pager/private_data.h" // IWYU pragma: keep
 #endif
 
 /**

@@ -70,7 +70,6 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "mutt_logging.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "remailer.h"
 #include "win_chain.h"

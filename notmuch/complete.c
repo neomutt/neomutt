@@ -32,11 +32,11 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "complete/lib.h"
 #include "editor/lib.h"
 #include "index/lib.h"
 #include "notmuch/lib.h"
-#include "opcodes.h"
 
 /**
  * complete_all_nm_tags - Pass a list of Notmuch tags to the completion code

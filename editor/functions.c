@@ -38,7 +38,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "enter.h"
-#include "opcodes.h"
 #include "protos.h"
 #include "state.h" // IWYU pragma: keep
 #include "wdata.h"

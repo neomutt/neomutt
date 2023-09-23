@@ -59,7 +59,6 @@
 #include "color/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "opcodes.h"
 #include "ssl.h"
 
 /// Help Bar for the Certificate Verification dialog

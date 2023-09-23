@@ -39,6 +39,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "handler.h"
 #include "attach/lib.h"
@@ -52,7 +53,6 @@
 #include "mailcap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
-#include "opcodes.h"
 #include "rfc3676.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

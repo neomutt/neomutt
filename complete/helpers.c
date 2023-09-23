@@ -35,6 +35,8 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "gui/lib.h"
+#include "lib.h"
 #include "editor/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
@@ -42,7 +44,6 @@
 #include "compapi.h"
 #include "data.h"
 #include "functions.h"
-#include "opcodes.h"
 
 /**
  * matches_ensure_morespace - Allocate more space for auto-completion

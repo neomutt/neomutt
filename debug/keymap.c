@@ -30,10 +30,10 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "functions.h"
-#include "opcodes.h"
 
 /**
  * log_bind - Dumps all the binds maps of a menu into a buffer

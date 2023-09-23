@@ -37,7 +37,6 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "globals.h"
-#include "opcodes.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif

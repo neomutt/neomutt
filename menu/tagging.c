@@ -36,7 +36,6 @@
 #include "lib.h"
 #include "color/lib.h"
 #include "key/lib.h"
-#include "opcodes.h"
 
 /**
  * menu_set_prefix - Set tag_prefix on $auto_tag

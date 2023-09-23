@@ -40,7 +40,6 @@
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "key/lib.h"
-#include "opcodes.h"
 
 /**
  * mw_multi_choice - Offer the user a multiple choice question - @ingroup gui_mw

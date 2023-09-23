@@ -84,7 +84,6 @@
 #include "hdrline.h"
 #include "mutt_logging.h"
 #include "mview.h"
-#include "opcodes.h"
 
 /// Help Bar for the Postponed email selection dialog
 static const struct Mapping PostponedHelp[] = {

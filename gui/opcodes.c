@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_opcode All user-callable functions
+ * @page gui_opcode All user-callable functions
  *
  * All user-callable functions
  */

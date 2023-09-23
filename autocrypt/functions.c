@@ -38,7 +38,6 @@
 #include "lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
-#include "opcodes.h"
 
 /**
  * toggle_active - Toggle whether an Autocrypt account is active

@@ -42,7 +42,6 @@
 #include "attach.h"
 #include "globals.h" // IWYU pragma: keep
 #include "mutt_attach.h"
-#include "opcodes.h"
 #include "private_data.h"
 #include "recvattach.h"
 #include "recvcmd.h"

@@ -38,6 +38,7 @@
 #include "core/lib.h"
 #include "alias/gui.h" // IWYU pragma: keep
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "mutt.h"
 #include "lib.h"
 #include "editor/lib.h"
@@ -48,7 +49,6 @@
 #include "mutt_logging.h"
 #include "mview.h"
 #include "mx.h"
-#include "opcodes.h"
 #include "protos.h"
 #include "search_state.h"
 #ifndef USE_FMEMOPEN
