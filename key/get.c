@@ -35,7 +35,6 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "functions.h"
 #include "globals.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"

@@ -65,7 +65,7 @@ default:	all
 # neomutt
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
-		enriched.o external.o flags.o functions.o git_ver.o globals.o \
+		enriched.o external.o flags.o git_ver.o globals.o \
 		handler.o hdrline.o help.o hook.o init.o mailcap.o \
 		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
 		mutt_config.o mutt_header.o mutt_logging.o mutt_mailbox.o \
@@ -420,10 +420,11 @@ $(PWD)/envelope:
 ###############################################################################
 # libgui
 LIBGUI=		libgui.a
-LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/global.o gui/msgcont.o \
-		gui/msgwin.o gui/msgwin_wdata.o gui/mutt_curses.o \
-		gui/mutt_window.o gui/opcodes.o gui/reflow.o gui/resize.o \
-		gui/rootwin.o gui/sbar.o gui/simple.o gui/terminal.o
+LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/functions.o gui/global.o \
+		gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
+		gui/mutt_curses.o gui/mutt_window.o gui/opcodes.o gui/reflow.o \
+		gui/resize.o gui/rootwin.o gui/sbar.o gui/simple.o \
+		gui/terminal.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 

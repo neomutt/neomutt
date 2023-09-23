@@ -39,7 +39,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "functions.h"
 
 /**
  * KeyNames - Key name lookup table

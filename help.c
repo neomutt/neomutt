@@ -40,7 +40,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
-#include "functions.h"
 #include "hdrline.h"
 #include "protos.h"
 

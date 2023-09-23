@@ -38,7 +38,6 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
-#include "functions.h"
 
 /**
  * struct Extkey - Map key names from NeoMutt's style to Curses style

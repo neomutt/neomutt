@@ -26,25 +26,25 @@
 #include "config.h"
 #include "key/lib.h"
 
-extern struct MenuFuncOp OpAlias[];
-extern struct MenuFuncOp OpAttachment[];
+extern const struct MenuFuncOp OpAlias[];
+extern const struct MenuFuncOp OpAttachment[];
 #ifdef USE_AUTOCRYPT
-extern struct MenuFuncOp OpAutocrypt[];
+extern const struct MenuFuncOp OpAutocrypt[];
 #endif
-extern struct MenuFuncOp OpBrowser[];
-extern struct MenuFuncOp OpCompose[];
-extern struct MenuFuncOp OpDialog[];
-extern struct MenuFuncOp OpEditor[];
-extern struct MenuFuncOp OpGeneric[];
-extern struct MenuFuncOp OpIndex[];
+extern const struct MenuFuncOp OpBrowser[];
+extern const struct MenuFuncOp OpCompose[];
+extern const struct MenuFuncOp OpDialog[];
+extern const struct MenuFuncOp OpEditor[];
+extern const struct MenuFuncOp OpGeneric[];
+extern const struct MenuFuncOp OpIndex[];
 #ifdef MIXMASTER
-extern struct MenuFuncOp OpMixmaster[];
+extern const struct MenuFuncOp OpMixmaster[];
 #endif
-extern struct MenuFuncOp OpPager[];
-extern struct MenuFuncOp OpPgp[];
-extern struct MenuFuncOp OpPostponed[];
-extern struct MenuFuncOp OpQuery[];
-extern struct MenuFuncOp OpSmime[];
+extern const struct MenuFuncOp OpPager[];
+extern const struct MenuFuncOp OpPgp[];
+extern const struct MenuFuncOp OpPostponed[];
+extern const struct MenuFuncOp OpQuery[];
+extern const struct MenuFuncOp OpSmime[];
 
 extern const struct MenuOpSeq AliasDefaultBindings[];
 extern const struct MenuOpSeq AttachmentDefaultBindings[];

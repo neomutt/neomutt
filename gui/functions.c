@@ -21,7 +21,7 @@
  */
 
 /**
- * @page neo_functions Definitions of user functions
+ * @page gui_functions Definitions of user functions
  *
  * Definitions of user functions
  *
@@ -40,7 +40,7 @@
  */
 
 #include "config.h"
-#include "gui/lib.h"
+#include "opcodes.h"
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else

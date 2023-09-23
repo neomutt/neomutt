@@ -38,7 +38,6 @@
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
-#include "functions.h"
 
 /**
  * dump_bind - Dumps all the binds maps of a menu into a buffer

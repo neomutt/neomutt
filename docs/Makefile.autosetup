@@ -69,11 +69,11 @@ docs/neomutt.1:
 
 docs/manual.xml:	docs docs/makedoc$(EXEEXT) $(SRCDIR)/docs/gen-map-doc \
 		$(SRCDIR)/docs/manual.xml.head $(SRCDIR)/docs/manual.xml.tail\
-		$(SRCDIR)/functions.c $(SRCDIR)/docs/config.c $(SRCDIR)/gui/opcodes.h
+		$(SRCDIR)/gui/functions.c $(SRCDIR)/docs/config.c $(SRCDIR)/gui/opcodes.h
 	( sed -e "s/@VERSION@/$(PACKAGE_DATE)/; s!/usr/libexec!$(libexecdir)!g" \
 	    $(SRCDIR)/docs/manual.xml.head && \
 	    $(MAKEDOC_CPP) $(SRCDIR)/docs/config.c | docs/makedoc$(EXEEXT) -s && \
-	    $(MAKEDOC_CPP) $(SRCDIR)/functions.c | \
+	    $(MAKEDOC_CPP) $(SRCDIR)/gui/functions.c | \
 	    perl $(SRCDIR)/docs/gen-map-doc $(SRCDIR)/docs/manual.xml.tail \
 	    $(SRCDIR)/gui/opcodes.h \
 	) > $@

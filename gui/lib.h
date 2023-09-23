@@ -29,6 +29,7 @@
  * | :------------------ | :------------------------- |
  * | gui/curs_lib.c      | @subpage gui_curs_lib      |
  * | gui/dialog.c        | @subpage gui_dialog        |
+ * | gui/functions.c     | @subpage gui_functions     |
  * | gui/global.c        | @subpage gui_global        |
  * | gui/msgcont.c       | @subpage gui_msgcont       |
  * | gui/msgwin.c        | @subpage gui_msgwin        |
@@ -50,6 +51,7 @@
 // IWYU pragma: begin_keep
 #include "curs_lib.h"
 #include "dialog.h"
+#include "functions.h"
 #include "global.h"
 #include "msgcont.h"
 #include "msgwin.h"

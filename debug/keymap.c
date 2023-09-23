@@ -33,7 +33,6 @@
 #include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "functions.h"
 
 /**
  * log_bind - Dumps all the binds maps of a menu into a buffer
