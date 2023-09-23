@@ -27,6 +27,9 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -34,10 +37,42 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "functions.h"
 #include "lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "question/lib.h"
+#include "functions.h"
+#endif
+
+// clang-format off
+#ifdef USE_AUTOCRYPT
+/**
+ * OpAutocrypt - Functions for the Autocrypt Account
+ */
+const struct MenuFuncOp OpAutocrypt[] = { /* map: autocrypt account */
+  { "create-account",                OP_AUTOCRYPT_CREATE_ACCT },
+  { "delete-account",                OP_AUTOCRYPT_DELETE_ACCT },
+  { "exit",                          OP_EXIT },
+  { "toggle-active",                 OP_AUTOCRYPT_TOGGLE_ACTIVE },
+  { "toggle-prefer-encrypt",         OP_AUTOCRYPT_TOGGLE_PREFER },
+  { NULL, 0 }
+};
+#endif
+
+#ifdef USE_AUTOCRYPT
+/**
+ * AutocryptDefaultBindings - Key bindings for the Autocrypt Account
+ */
+const struct MenuOpSeq AutocryptDefaultBindings[] = { /* map: autocrypt account */
+  { OP_AUTOCRYPT_CREATE_ACCT,              "c" },
+  { OP_AUTOCRYPT_DELETE_ACCT,              "D" },
+  { OP_AUTOCRYPT_TOGGLE_ACTIVE,            "a" },
+  { OP_AUTOCRYPT_TOGGLE_PREFER,            "p" },
+  { OP_EXIT,                               "q" },
+  { 0, NULL }
+};
+#endif
+// clang-format on
 
 /**
  * toggle_active - Toggle whether an Autocrypt account is active

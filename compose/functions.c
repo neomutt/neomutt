@@ -27,6 +27,9 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -42,19 +45,20 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach_data.h"
 #include "external.h"
+#include "functions.h"
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "mutt_header.h"
@@ -81,6 +85,149 @@
 #ifdef USE_IMAP
 #include "imap/lib.h"
 #endif
+#endif
+
+// clang-format off
+/**
+ * OpCompose - Functions for the Compose Menu
+ */
+const struct MenuFuncOp OpCompose[] = { /* map: compose */
+  { "attach-file",                   OP_ATTACHMENT_ATTACH_FILE },
+  { "attach-key",                    OP_ATTACHMENT_ATTACH_KEY },
+  { "attach-message",                OP_ATTACHMENT_ATTACH_MESSAGE },
+#ifdef USE_NNTP
+  { "attach-news-message",           OP_ATTACHMENT_ATTACH_NEWS_MESSAGE },
+#endif
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-menu",                OP_COMPOSE_AUTOCRYPT_MENU },
+#endif
+  { "copy-file",                     OP_ATTACHMENT_SAVE },
+  { "detach-file",                   OP_ATTACHMENT_DETACH },
+  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
+  { "edit-bcc",                      OP_ENVELOPE_EDIT_BCC },
+  { "edit-cc",                       OP_ENVELOPE_EDIT_CC },
+  { "edit-content-id",               OP_ATTACHMENT_EDIT_CONTENT_ID },
+  { "edit-description",              OP_ATTACHMENT_EDIT_DESCRIPTION },
+  { "edit-encoding",                 OP_ATTACHMENT_EDIT_ENCODING },
+  { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC },
+  { "edit-file",                     OP_COMPOSE_EDIT_FILE },
+#ifdef USE_NNTP
+  { "edit-followup-to",              OP_ENVELOPE_EDIT_FOLLOWUP_TO },
+#endif
+  { "edit-from",                     OP_ENVELOPE_EDIT_FROM },
+  { "edit-headers",                  OP_ENVELOPE_EDIT_HEADERS },
+  { "edit-language",                 OP_ATTACHMENT_EDIT_LANGUAGE },
+  { "edit-message",                  OP_COMPOSE_EDIT_MESSAGE },
+  { "edit-mime",                     OP_ATTACHMENT_EDIT_MIME },
+#ifdef USE_NNTP
+  { "edit-newsgroups",               OP_ENVELOPE_EDIT_NEWSGROUPS },
+#endif
+  { "edit-reply-to",                 OP_ENVELOPE_EDIT_REPLY_TO },
+  { "edit-subject",                  OP_ENVELOPE_EDIT_SUBJECT },
+  { "edit-to",                       OP_ENVELOPE_EDIT_TO },
+  { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
+#ifdef USE_NNTP
+  { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
+#endif
+  { "exit",                          OP_EXIT },
+  { "filter-entry",                  OP_ATTACHMENT_FILTER },
+  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
+  { "get-attachment",                OP_ATTACHMENT_GET_ATTACHMENT },
+  { "group-alternatives",            OP_ATTACHMENT_GROUP_ALTS },
+  { "group-multilingual",            OP_ATTACHMENT_GROUP_LINGUAL },
+  { "group-related",                 OP_ATTACHMENT_GROUP_RELATED },
+  { "ispell",                        OP_COMPOSE_ISPELL },
+#ifdef MIXMASTER
+  { "mix",                           OP_COMPOSE_MIX },
+#endif
+  { "move-down",                     OP_ATTACHMENT_MOVE_DOWN },
+  { "move-up",                       OP_ATTACHMENT_MOVE_UP },
+  { "new-mime",                      OP_ATTACHMENT_NEW_MIME },
+  { "pgp-menu",                      OP_COMPOSE_PGP_MENU },
+  { "pipe-entry",                    OP_PIPE },
+  { "pipe-message",                  OP_PIPE },
+  { "postpone-message",              OP_COMPOSE_POSTPONE_MESSAGE },
+  { "print-entry",                   OP_ATTACHMENT_PRINT },
+  { "rename-attachment",             OP_ATTACHMENT_RENAME_ATTACHMENT },
+  { "rename-file",                   OP_COMPOSE_RENAME_FILE },
+  { "send-message",                  OP_COMPOSE_SEND_MESSAGE },
+  { "smime-menu",                    OP_COMPOSE_SMIME_MENU },
+  { "toggle-disposition",            OP_ATTACHMENT_TOGGLE_DISPOSITION },
+  { "toggle-recode",                 OP_ATTACHMENT_TOGGLE_RECODE },
+  { "toggle-unlink",                 OP_ATTACHMENT_TOGGLE_UNLINK },
+  { "ungroup-attachment",            OP_ATTACHMENT_UNGROUP },
+  { "update-encoding",               OP_ATTACHMENT_UPDATE_ENCODING },
+  { "view-attach",                   OP_ATTACHMENT_VIEW },
+  { "view-mailcap",                  OP_ATTACHMENT_VIEW_MAILCAP },
+  { "view-pager",                    OP_ATTACHMENT_VIEW_PAGER },
+  { "view-text",                     OP_ATTACHMENT_VIEW_TEXT },
+  { "write-fcc",                     OP_COMPOSE_WRITE_MESSAGE },
+  { NULL, 0 },
+};
+
+/**
+ * ComposeDefaultBindings - Key bindings for the Compose Menu
+ */
+const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
+  { OP_ATTACHMENT_ATTACH_FILE,             "a" },
+  { OP_ATTACHMENT_ATTACH_KEY,              "\033k" },          // <Alt-k>
+  { OP_ATTACHMENT_ATTACH_MESSAGE,          "A" },
+  { OP_ATTACHMENT_DETACH,                  "D" },
+  { OP_ATTACHMENT_EDIT_CONTENT_ID,         "\033i" },          // <Alt-i>
+  { OP_ATTACHMENT_EDIT_DESCRIPTION,        "d" },
+  { OP_ATTACHMENT_EDIT_ENCODING,           "\005" },           // <Ctrl-E>
+  { OP_ATTACHMENT_EDIT_LANGUAGE,           "\014" },           // <Ctrl-L>
+  { OP_ATTACHMENT_EDIT_MIME,               "m" },
+  { OP_ATTACHMENT_EDIT_TYPE,               "\024" },           // <Ctrl-T>
+  { OP_ATTACHMENT_FILTER,                  "F" },
+  { OP_ATTACHMENT_GET_ATTACHMENT,          "G" },
+  { OP_ATTACHMENT_GROUP_ALTS,              "&" },
+  { OP_ATTACHMENT_GROUP_LINGUAL,           "^" },
+  { OP_ATTACHMENT_GROUP_RELATED,           "%" },
+  { OP_ATTACHMENT_MOVE_DOWN,               "+" },
+  { OP_ATTACHMENT_MOVE_UP,                 "-" },
+  { OP_ATTACHMENT_NEW_MIME,                "n" },
+  { OP_EXIT,                               "q" },
+  { OP_PIPE,                               "|" },
+  { OP_ATTACHMENT_PRINT,                   "l" },
+  { OP_ATTACHMENT_RENAME_ATTACHMENT,       "\017" },           // <Ctrl-O>
+  { OP_ATTACHMENT_SAVE,                    "C" },
+  { OP_ATTACHMENT_TOGGLE_DISPOSITION,      "\004" },           // <Ctrl-D>
+  { OP_ATTACHMENT_TOGGLE_UNLINK,           "u" },
+  { OP_ATTACHMENT_UNGROUP,                 "#" },
+  { OP_ATTACHMENT_UPDATE_ENCODING,         "U" },
+  { OP_ATTACHMENT_VIEW,                    "<keypadenter>" },
+  { OP_ATTACHMENT_VIEW,                    "\n" },             // <Enter>
+  { OP_ATTACHMENT_VIEW,                    "\r" },             // <Return>
+#ifdef USE_AUTOCRYPT
+  { OP_COMPOSE_AUTOCRYPT_MENU,             "o" },
+#endif
+  { OP_COMPOSE_EDIT_FILE,                  "\033e" },          // <Alt-e>
+  { OP_COMPOSE_EDIT_MESSAGE,               "e" },
+  { OP_COMPOSE_ISPELL,                     "i" },
+#ifdef MIXMASTER
+  { OP_COMPOSE_MIX,                        "M" },
+#endif
+  { OP_COMPOSE_PGP_MENU,                   "p" },
+  { OP_COMPOSE_POSTPONE_MESSAGE,           "P" },
+  { OP_COMPOSE_RENAME_FILE,                "R" },
+  { OP_COMPOSE_SEND_MESSAGE,               "y" },
+  { OP_COMPOSE_SMIME_MENU,                 "S" },
+  { OP_COMPOSE_WRITE_MESSAGE,              "w" },
+  { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_ENVELOPE_EDIT_BCC,                  "b" },
+  { OP_ENVELOPE_EDIT_CC,                   "c" },
+  { OP_ENVELOPE_EDIT_FCC,                  "f" },
+  { OP_ENVELOPE_EDIT_FROM,                 "\033f" },          // <Alt-f>
+  { OP_ENVELOPE_EDIT_HEADERS,              "E" },
+  { OP_ENVELOPE_EDIT_REPLY_TO,             "r" },
+  { OP_ENVELOPE_EDIT_SUBJECT,              "s" },
+  { OP_ENVELOPE_EDIT_TO,                   "t" },
+  { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
+  { OP_TAG,                                "T" },
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * check_count - Check if there are any attachments

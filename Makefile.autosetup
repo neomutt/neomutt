@@ -617,7 +617,7 @@ $(PWD)/mutt:
 # libncrypt
 LIBNCRYPT=	libncrypt.a
 LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/crypt_mod.o \
-		ncrypt/cryptglue.o
+		ncrypt/cryptglue.o ncrypt/functions.o
 @if HAVE_PKG_GPGME
 LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o \
 		ncrypt/gpgme_functions.o ncrypt/crypt_mod_pgp_gpgme.o \

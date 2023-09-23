@@ -27,6 +27,9 @@
  */
 
 #include "config.h"
+#ifdef _MAKEDOC
+#include "docs/makedoc_defs.h"
+#else
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -38,7 +41,6 @@
 #include "alias/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
-#include "functions.h"
 #include "lib.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
@@ -53,6 +55,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "external.h"
+#include "functions.h"
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
 #include "mutt_header.h"
@@ -84,9 +87,269 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
+#endif
 
 /// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
+
+// clang-format off
+/**
+ * OpIndex - Functions for the Index Menu
+ */
+const struct MenuFuncOp OpIndex[] = { /* map: index */
+  { "alias-dialog",                  OP_ALIAS_DIALOG },
+#ifdef USE_AUTOCRYPT
+  { "autocrypt-acct-menu",           OP_AUTOCRYPT_ACCT_MENU },
+#endif
+  { "bounce-message",                OP_BOUNCE_MESSAGE },
+  { "break-thread",                  OP_MAIN_BREAK_THREAD },
+#ifdef USE_NNTP
+  { "catchup",                       OP_CATCHUP },
+#endif
+  { "change-folder",                 OP_MAIN_CHANGE_FOLDER },
+  { "change-folder-readonly",        OP_MAIN_CHANGE_FOLDER_READONLY },
+#ifdef USE_NNTP
+  { "change-newsgroup",              OP_MAIN_CHANGE_GROUP },
+  { "change-newsgroup-readonly",     OP_MAIN_CHANGE_GROUP_READONLY },
+#endif
+#ifdef USE_NOTMUCH
+  { "change-vfolder",                OP_MAIN_CHANGE_VFOLDER },
+#endif
+  { "check-traditional-pgp",         OP_CHECK_TRADITIONAL },
+  { "clear-flag",                    OP_MAIN_CLEAR_FLAG },
+  { "collapse-all",                  OP_MAIN_COLLAPSE_ALL },
+  { "collapse-thread",               OP_MAIN_COLLAPSE_THREAD },
+  { "compose-to-sender",             OP_COMPOSE_TO_SENDER },
+  { "copy-message",                  OP_COPY_MESSAGE },
+  { "create-alias",                  OP_CREATE_ALIAS },
+  { "decode-copy",                   OP_DECODE_COPY },
+  { "decode-save",                   OP_DECODE_SAVE },
+  { "decrypt-copy",                  OP_DECRYPT_COPY },
+  { "decrypt-save",                  OP_DECRYPT_SAVE },
+  { "delete-message",                OP_DELETE },
+  { "delete-pattern",                OP_MAIN_DELETE_PATTERN },
+  { "delete-subthread",              OP_DELETE_SUBTHREAD },
+  { "delete-thread",                 OP_DELETE_THREAD },
+  { "display-address",               OP_DISPLAY_ADDRESS },
+  { "display-message",               OP_DISPLAY_MESSAGE },
+  { "display-toggle-weed",           OP_DISPLAY_HEADERS },
+  { "edit",                          OP_EDIT_RAW_MESSAGE },
+  { "edit-label",                    OP_EDIT_LABEL },
+  { "edit-or-view-raw-message",      OP_EDIT_OR_VIEW_RAW_MESSAGE },
+  { "edit-raw-message",              OP_EDIT_RAW_MESSAGE },
+  { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
+#ifdef USE_NOTMUCH
+  { "entire-thread",                 OP_MAIN_ENTIRE_THREAD },
+#endif
+  { "exit",                          OP_EXIT },
+  { "extract-keys",                  OP_EXTRACT_KEYS },
+#ifdef USE_POP
+  { "fetch-mail",                    OP_MAIN_FETCH_MAIL },
+#endif
+  { "flag-message",                  OP_FLAG_MESSAGE },
+#ifdef USE_NNTP
+  { "followup-message",              OP_FOLLOWUP },
+#endif
+  { "forget-passphrase",             OP_FORGET_PASSPHRASE },
+  { "forward-message",               OP_FORWARD_MESSAGE },
+#ifdef USE_NNTP
+  { "forward-to-group",              OP_FORWARD_TO_GROUP },
+  { "get-children",                  OP_GET_CHILDREN },
+  { "get-message",                   OP_GET_MESSAGE },
+  { "get-parent",                    OP_GET_PARENT },
+#endif
+  { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
+  { "group-reply",                   OP_GROUP_REPLY },
+#ifdef USE_IMAP
+  { "imap-fetch-mail",               OP_MAIN_IMAP_FETCH },
+  { "imap-logout-all",               OP_MAIN_IMAP_LOGOUT_ALL },
+#endif
+  { "limit",                         OP_MAIN_LIMIT },
+  { "limit-current-thread",          OP_LIMIT_CURRENT_THREAD },
+  { "link-threads",                  OP_MAIN_LINK_THREADS },
+  { "list-reply",                    OP_LIST_REPLY },
+  { "list-subscribe",                OP_LIST_SUBSCRIBE },
+  { "list-unsubscribe",              OP_LIST_UNSUBSCRIBE },
+  { "mail",                          OP_MAIL },
+  { "mail-key",                      OP_MAIL_KEY },
+  { "mailbox-list",                  OP_MAILBOX_LIST },
+  { "mark-message",                  OP_MARK_MSG },
+  { "modify-labels",                 OP_MAIN_MODIFY_TAGS },
+  { "modify-labels-then-hide",       OP_MAIN_MODIFY_TAGS_THEN_HIDE },
+  { "modify-tags",                   OP_MAIN_MODIFY_TAGS },
+  { "modify-tags-then-hide",         OP_MAIN_MODIFY_TAGS_THEN_HIDE },
+  { "next-new",                      OP_MAIN_NEXT_NEW },
+  { "next-new-then-unread",          OP_MAIN_NEXT_NEW_THEN_UNREAD },
+  { "next-subthread",                OP_MAIN_NEXT_SUBTHREAD },
+  { "next-thread",                   OP_MAIN_NEXT_THREAD },
+  { "next-undeleted",                OP_MAIN_NEXT_UNDELETED },
+  { "next-unread",                   OP_MAIN_NEXT_UNREAD },
+  { "next-unread-mailbox",           OP_MAIN_NEXT_UNREAD_MAILBOX },
+  { "parent-message",                OP_MAIN_PARENT_MESSAGE },
+  { "pipe-entry",                    OP_PIPE },
+  { "pipe-message",                  OP_PIPE },
+#ifdef USE_NNTP
+  { "post-message",                  OP_POST },
+#endif
+  { "previous-new",                  OP_MAIN_PREV_NEW },
+  { "previous-new-then-unread",      OP_MAIN_PREV_NEW_THEN_UNREAD },
+  { "previous-subthread",            OP_MAIN_PREV_SUBTHREAD },
+  { "previous-thread",               OP_MAIN_PREV_THREAD },
+  { "previous-undeleted",            OP_MAIN_PREV_UNDELETED },
+  { "previous-unread",               OP_MAIN_PREV_UNREAD },
+  { "print-message",                 OP_PRINT },
+  { "purge-message",                 OP_PURGE_MESSAGE },
+  { "purge-thread",                  OP_PURGE_THREAD },
+  { "quasi-delete",                  OP_MAIN_QUASI_DELETE },
+  { "query",                         OP_QUERY },
+  { "quit",                          OP_QUIT },
+  { "read-subthread",                OP_MAIN_READ_SUBTHREAD },
+  { "read-thread",                   OP_MAIN_READ_THREAD },
+  { "recall-message",                OP_RECALL_MESSAGE },
+#ifdef USE_NNTP
+  { "reconstruct-thread",            OP_RECONSTRUCT_THREAD },
+#endif
+  { "reply",                         OP_REPLY },
+  { "resend-message",                OP_RESEND },
+  { "root-message",                  OP_MAIN_ROOT_MESSAGE },
+  { "save-message",                  OP_SAVE },
+  { "set-flag",                      OP_MAIN_SET_FLAG },
+  { "show-limit",                    OP_MAIN_SHOW_LIMIT },
+#ifdef USE_SIDEBAR
+  { "sidebar-first",                 OP_SIDEBAR_FIRST },
+  { "sidebar-last",                  OP_SIDEBAR_LAST },
+  { "sidebar-next",                  OP_SIDEBAR_NEXT },
+  { "sidebar-next-new",              OP_SIDEBAR_NEXT_NEW },
+  { "sidebar-open",                  OP_SIDEBAR_OPEN },
+  { "sidebar-page-down",             OP_SIDEBAR_PAGE_DOWN },
+  { "sidebar-page-up",               OP_SIDEBAR_PAGE_UP },
+  { "sidebar-prev",                  OP_SIDEBAR_PREV },
+  { "sidebar-prev-new",              OP_SIDEBAR_PREV_NEW },
+  { "sidebar-toggle-virtual",        OP_SIDEBAR_TOGGLE_VIRTUAL },
+  { "sidebar-toggle-visible",        OP_SIDEBAR_TOGGLE_VISIBLE },
+#endif
+  { "sort-mailbox",                  OP_SORT },
+  { "sort-reverse",                  OP_SORT_REVERSE },
+  { "sync-mailbox",                  OP_MAIN_SYNC_FOLDER },
+  { "tag-pattern",                   OP_MAIN_TAG_PATTERN },
+  { "tag-subthread",                 OP_TAG_SUBTHREAD },
+  { "tag-thread",                    OP_TAG_THREAD },
+  { "toggle-new",                    OP_TOGGLE_NEW },
+  { "toggle-read",                   OP_TOGGLE_READ },
+  { "toggle-write",                  OP_TOGGLE_WRITE },
+  { "undelete-message",              OP_UNDELETE },
+  { "undelete-pattern",              OP_MAIN_UNDELETE_PATTERN },
+  { "undelete-subthread",            OP_UNDELETE_SUBTHREAD },
+  { "undelete-thread",               OP_UNDELETE_THREAD },
+  { "untag-pattern",                 OP_MAIN_UNTAG_PATTERN },
+#ifdef USE_NOTMUCH
+  { "vfolder-from-query",            OP_MAIN_VFOLDER_FROM_QUERY },
+  { "vfolder-from-query-readonly",   OP_MAIN_VFOLDER_FROM_QUERY_READONLY },
+  { "vfolder-window-backward",       OP_MAIN_WINDOWED_VFOLDER_BACKWARD },
+  { "vfolder-window-forward",        OP_MAIN_WINDOWED_VFOLDER_FORWARD },
+  { "vfolder-window-reset",          OP_MAIN_WINDOWED_VFOLDER_RESET },
+#endif
+  { "view-attachments",              OP_VIEW_ATTACHMENTS },
+  { "view-raw-message",              OP_VIEW_RAW_MESSAGE },
+  // Deprecated
+  { "buffy-list",                    OP_MAILBOX_LIST },
+  { NULL, 0 },
+};
+
+/**
+ * IndexDefaultBindings - Key bindings for the Index Menu
+ */
+const struct MenuOpSeq IndexDefaultBindings[] = { /* map: index */
+  { OP_ATTACHMENT_EDIT_TYPE,               "\005" },           // <Ctrl-E>
+#ifdef USE_AUTOCRYPT
+  { OP_AUTOCRYPT_ACCT_MENU,                "A" },
+#endif
+  { OP_BOUNCE_MESSAGE,                     "b" },
+  { OP_CHECK_TRADITIONAL,                  "\033P" },          // <Alt-P>
+  { OP_COPY_MESSAGE,                       "C" },
+  { OP_CREATE_ALIAS,                       "a" },
+  { OP_DECODE_COPY,                        "\033C" },          // <Alt-C>
+  { OP_DECODE_SAVE,                        "\033s" },          // <Alt-s>
+  { OP_DELETE,                             "d" },
+  { OP_DELETE_SUBTHREAD,                   "\033d" },          // <Alt-d>
+  { OP_DELETE_THREAD,                      "\004" },           // <Ctrl-D>
+  { OP_DISPLAY_ADDRESS,                    "@" },
+  { OP_DISPLAY_HEADERS,                    "h" },
+  { OP_DISPLAY_MESSAGE,                    " " },              // <Space>
+  { OP_DISPLAY_MESSAGE,                    "<keypadenter>" },
+  { OP_DISPLAY_MESSAGE,                    "\n" },             // <Enter>
+  { OP_DISPLAY_MESSAGE,                    "\r" },             // <Return>
+  { OP_EDIT_LABEL,                         "Y" },
+  { OP_EDIT_OR_VIEW_RAW_MESSAGE,           "e" },
+  { OP_EXIT,                               "x" },
+  { OP_EXTRACT_KEYS,                       "\013" },           // <Ctrl-K>
+  { OP_FLAG_MESSAGE,                       "F" },
+  { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
+  { OP_FORWARD_MESSAGE,                    "f" },
+  { OP_GROUP_REPLY,                        "g" },
+  { OP_LIST_REPLY,                         "L" },
+  { OP_MAIL,                               "m" },
+  { OP_MAILBOX_LIST,                       "." },
+  { OP_MAIL_KEY,                           "\033k" },          // <Alt-k>
+  { OP_MAIN_BREAK_THREAD,                  "#" },
+  { OP_MAIN_CHANGE_FOLDER,                 "c" },
+  { OP_MAIN_CHANGE_FOLDER_READONLY,        "\033c" },          // <Alt-c>
+#ifdef USE_NNTP
+  { OP_MAIN_CHANGE_GROUP,                  "i" },
+  { OP_MAIN_CHANGE_GROUP_READONLY,         "\033i" },          // <Alt-i>
+#endif
+  { OP_MAIN_CLEAR_FLAG,                    "W" },
+  { OP_MAIN_COLLAPSE_ALL,                  "\033V" },          // <Alt-V>
+  { OP_MAIN_COLLAPSE_THREAD,               "\033v" },          // <Alt-v>
+  { OP_MAIN_DELETE_PATTERN,                "D" },
+#ifdef USE_POP
+  { OP_MAIN_FETCH_MAIL,                    "G" },
+#endif
+  { OP_MAIN_LIMIT,                         "l" },
+  { OP_MAIN_LINK_THREADS,                  "&" },
+  { OP_MAIN_NEXT_NEW_THEN_UNREAD,          "\t" },             // <Tab>
+  { OP_MAIN_NEXT_SUBTHREAD,                "\033n" },          // <Alt-n>
+  { OP_MAIN_NEXT_THREAD,                   "\016" },           // <Ctrl-N>
+  { OP_MAIN_NEXT_UNDELETED,                "<down>" },
+  { OP_MAIN_NEXT_UNDELETED,                "j" },
+  { OP_MAIN_PARENT_MESSAGE,                "P" },
+  { OP_MAIN_PREV_NEW_THEN_UNREAD,          "\033\t" },         // <Alt-\>
+  { OP_MAIN_PREV_SUBTHREAD,                "\033p" },          // <Alt-p>
+  { OP_MAIN_PREV_THREAD,                   "\020" },           // <Ctrl-P>
+  { OP_MAIN_PREV_UNDELETED,                "<up>" },
+  { OP_MAIN_PREV_UNDELETED,                "k" },
+  { OP_MAIN_READ_SUBTHREAD,                "\033r" },          // <Alt-r>
+  { OP_MAIN_READ_THREAD,                   "\022" },           // <Ctrl-R>
+  { OP_MAIN_SET_FLAG,                      "w" },
+  { OP_MAIN_SHOW_LIMIT,                    "\033l" },          // <Alt-l>
+  { OP_MAIN_SYNC_FOLDER,                   "$" },
+  { OP_MAIN_TAG_PATTERN,                   "T" },
+  { OP_MAIN_UNDELETE_PATTERN,              "U" },
+  { OP_MAIN_UNTAG_PATTERN,                 "\024" },           // <Ctrl-T>
+  { OP_MARK_MSG,                           "~" },
+  { OP_NEXT_ENTRY,                         "J" },
+  { OP_PIPE,                               "|" },
+  { OP_PREV_ENTRY,                         "K" },
+  { OP_PRINT,                              "p" },
+  { OP_QUERY,                              "Q" },
+  { OP_QUIT,                               "q" },
+  { OP_RECALL_MESSAGE,                     "R" },
+  { OP_REPLY,                              "r" },
+  { OP_RESEND,                             "\033e" },          // <Alt-e>
+  { OP_SAVE,                               "s" },
+  { OP_SHOW_LOG_MESSAGES,                  "M" },
+  { OP_SORT,                               "o" },
+  { OP_SORT_REVERSE,                       "O" },
+  { OP_TAG_THREAD,                         "\033t" },          // <Alt-t>
+  { OP_TOGGLE_NEW,                         "N" },
+  { OP_TOGGLE_WRITE,                       "%" },
+  { OP_UNDELETE,                           "u" },
+  { OP_UNDELETE_SUBTHREAD,                 "\033u" },          // <Alt-u>
+  { OP_UNDELETE_THREAD,                    "\025" },           // <Ctrl-U>
+  { OP_VIEW_ATTACHMENTS,                   "v" },
+  { 0, NULL },
+};
+// clang-format on
 
 /**
  * enum ResolveMethod - How to advance the cursor

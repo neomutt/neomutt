@@ -40,6 +40,24 @@
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 
+extern const struct MenuFuncOp OpAlias[];
+extern const struct MenuFuncOp OpAttachment[];
+#ifdef USE_AUTOCRYPT
+extern const struct MenuFuncOp OpAutocrypt[];
+#endif
+extern const struct MenuFuncOp OpBrowser[];
+extern const struct MenuFuncOp OpCompose[];
+extern const struct MenuFuncOp OpEditor[];
+extern const struct MenuFuncOp OpIndex[];
+#ifdef MIXMASTER
+extern const struct MenuFuncOp OpMixmaster[];
+#endif
+extern const struct MenuFuncOp OpPager[];
+extern const struct MenuFuncOp OpPgp[];
+extern const struct MenuFuncOp OpPostponed[];
+extern const struct MenuFuncOp OpQuery[];
+extern const struct MenuFuncOp OpSmime[];
+
 /**
  * KeyNames - Key name lookup table
  */
