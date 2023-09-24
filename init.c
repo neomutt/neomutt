@@ -367,7 +367,8 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
     if (env_colorterm && (mutt_str_equal(env_colorterm, "truecolor") ||
                           mutt_str_equal(env_colorterm, "24bit")))
     {
-      cs_subset_str_native_set(NeoMutt->sub, "color_directcolor", true, NULL);
+      cs_str_initial_set(cs, "color_directcolor", "yes", NULL);
+      cs_str_reset(cs, "color_directcolor", NULL);
     }
   }
 #endif
