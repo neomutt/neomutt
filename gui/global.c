@@ -84,6 +84,8 @@ static int op_shell_escape(int op)
   {
     struct Mailbox *m_cur = get_current_mailbox();
     mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
+    /* This forces a refresh on the next mx_mbox_check() call. */
+    mx_mbox_reset_check();
   }
   return FR_SUCCESS;
 }

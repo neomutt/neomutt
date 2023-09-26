@@ -1151,6 +1151,17 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
 }
 
 /**
+ * mx_mbox_reset_check - Reset last mail check time.
+ *
+ * @note This effectively forces a check on the next mx_mbox_check() call.
+ */
+void mx_mbox_reset_check(void)
+{
+  const short c_mail_check = cs_subset_number(NeoMutt->sub, "mail_check");
+  MailboxTime = mutt_date_now() - c_mail_check - 1;
+}
+
+/**
  * mx_msg_open - Return a stream pointer for a message
  * @param m Mailbox
  * @param e Email
