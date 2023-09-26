@@ -77,5 +77,6 @@ void                 mx_fastclose_mailbox (struct Mailbox *m, bool keep_account)
 const struct MxOps * mx_get_ops           (enum MailboxType type);
 bool                 mx_tags_is_supported (struct Mailbox *m);
 int                  mx_toggle_write      (struct Mailbox *m);
+void                 mx_mbox_reset_check  (void);
 
 #endif /* MUTT_MX_H */
