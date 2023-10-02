@@ -490,6 +490,9 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
 
   struct MsgWinWindowData *wdata = win->wdata;
 
+  if (mutt_str_equal(buf_string(wdata->text), text))
+    return;
+
   buf_strcpy(wdata->text, text);
   ARRAY_FREE(&wdata->chars);
   if (wdata->text)
