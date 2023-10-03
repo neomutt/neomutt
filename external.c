@@ -413,7 +413,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
 
   struct Buffer *buf = buf_pool_get();
 
-  if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_NO_FLAGS, HC_COMMAND,
+  if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_NO_FLAGS, HC_CMD,
                    &CompleteFileOps, NULL) != 0)
   {
     goto cleanup;
@@ -583,7 +583,7 @@ bool mutt_shell_escape(void)
   bool rc = false;
   struct Buffer *buf = buf_pool_get();
 
-  if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_NO_FLAGS, HC_COMMAND,
+  if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_NO_FLAGS, HC_CMD,
                    &CompleteFileOps, NULL) != 0)
   {
     goto done;
