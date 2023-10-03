@@ -123,10 +123,11 @@ set valid_options {
   debug-email=0             => "DEBUG: Enable Email dump"
   debug-graphviz=0          => "DEBUG: Enable Graphviz dump"
   debug-keymap=0            => "DEBUG: Enable Key mappings dump"
+  debug-logging=0           => "DEBUG: Enable Debug logging"
   debug-names=0             => "DEBUG: Enable Name lookup tables"
   debug-notify=0            => "DEBUG: Enable Notifications dump"
   debug-queue=0             => "DEBUG: Enable TAILQ debugging"
-  debug-window=0            => "DEBUG: Enable windows dump"
+  debug-window=0            => "DEBUG: Enable Windows dump"
 }
 
 set deprecated_options  {
@@ -170,11 +171,11 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
-    debug-email debug-graphviz debug-keymap debug-names debug-notify debug-queue
-    debug-window doc everything fmemopen full-doc fuzzing gdbm gnutls gpgme
-    gsasl gss homespool idn2 include-path-in-cflags inotify kyotocabinet lmdb
-    locales-fix lua lz4 mixmaster nls notmuch pcre2 pgp qdbm rocksdb sasl
-    smime sqlite ssl tdb tokyocabinet ubsan zlib zstd
+    debug-email debug-graphviz debug-keymap debug-logging debug-names 
+    debug-notify debug-queue debug-window doc everything fmemopen full-doc 
+    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 include-path-in-cflags 
+    inotify kyotocabinet lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 
+    pgp qdbm rocksdb sasl smime sqlite ssl tdb tokyocabinet ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -1051,6 +1052,12 @@ if {[get-define want-debug-graphviz]} {
 # Key mappings dump
 if {[get-define want-debug-keymap]} {
   define USE_DEBUG_KEYMAP 1
+  define debug_build 1
+}
+
+# Logging
+if {[get-define want-debug-logging]} {
+  define USE_DEBUG_LOGGING 1
   define debug_build 1
 }
 
