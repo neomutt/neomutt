@@ -46,13 +46,13 @@
  */
 enum HistoryClass
 {
-  HC_CMD,     ///< External commands
-  HC_ALIAS,   ///< Aliases
-  HC_COMMAND, ///< NeoMutt commands
-  HC_FILE,    ///< Files
-  HC_PATTERN, ///< Patterns
-  HC_OTHER,   ///< Miscellaneous strings
-  HC_MBOX,    ///< Mailboxes
+  HC_EXT_COMMAND, ///< External commands
+  HC_ALIAS,       ///< Aliases
+  HC_NEO_COMMAND, ///< NeoMutt commands
+  HC_FILE,        ///< Files
+  HC_PATTERN,     ///< Patterns
+  HC_OTHER,       ///< Miscellaneous strings
+  HC_MAILBOX,     ///< Mailboxes
   HC_MAX,
 };
 

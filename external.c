@@ -413,8 +413,8 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
 
   struct Buffer *buf = buf_pool_get();
 
-  if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_NO_FLAGS, HC_CMD,
-                   &CompleteFileOps, NULL) != 0)
+  if (mw_get_field(_("Pipe to command: "), buf, MUTT_COMP_NO_FLAGS,
+                   HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
   {
     goto cleanup;
   }
@@ -583,8 +583,8 @@ bool mutt_shell_escape(void)
   bool rc = false;
   struct Buffer *buf = buf_pool_get();
 
-  if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_NO_FLAGS, HC_CMD,
-                   &CompleteFileOps, NULL) != 0)
+  if (mw_get_field(_("Shell command: "), buf, MUTT_COMP_NO_FLAGS,
+                   HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
   {
     goto done;
   }
@@ -627,7 +627,8 @@ void mutt_enter_command(void)
 
   window_redraw(NULL);
   /* if enter is pressed after : with no command, just return */
-  if ((mw_get_field(":", buf, MUTT_COMP_NO_FLAGS, HC_COMMAND, &CompleteCommandOps, NULL) != 0) ||
+  if ((mw_get_field(":", buf, MUTT_COMP_NO_FLAGS, HC_NEO_COMMAND,
+                    &CompleteCommandOps, NULL) != 0) ||
       buf_is_empty(buf))
   {
     goto done;

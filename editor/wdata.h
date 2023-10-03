@@ -48,7 +48,7 @@ struct EnterWindowData
   struct Buffer *buffer;          ///< struct Buffer for the result
   CompletionFlags flags;          ///< Flags, see #CompletionFlags
   struct EnterState *state;       ///< Current state of text entry
-  enum HistoryClass hclass;       ///< History to use, e.g. #HC_COMMAND
+  enum HistoryClass hclass;       ///< History to use, e.g. #HC_NEO_COMMAND
   const struct CompleteOps *comp_api; ///< Auto-Completion API
   void *cdata;                    ///< Auto-Completion private data
 

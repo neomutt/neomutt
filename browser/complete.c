@@ -74,7 +74,7 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
                wdata->state->lastchar * sizeof(wchar_t)) == 0)))
   {
     SelectFileFlags flags = MUTT_SEL_NO_FLAGS;
-    if (wdata->hclass == HC_MBOX)
+    if (wdata->hclass == HC_MAILBOX)
       flags |= MUTT_SEL_FOLDER;
     if (cdata->multiple)
       flags |= MUTT_SEL_MULTI;

@@ -732,7 +732,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   state.flags = STATE_CHARCONV;
 
   if (mw_get_field((filter ? _("Filter through: ") : _("Pipe to: ")), buf,
-                   MUTT_COMP_NO_FLAGS, HC_CMD, &CompleteFileOps, NULL) != 0)
+                   MUTT_COMP_NO_FLAGS, HC_EXT_COMMAND, &CompleteFileOps, NULL) != 0)
   {
     goto cleanup;
   }

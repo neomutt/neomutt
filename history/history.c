@@ -78,7 +78,7 @@
 #include "core/lib.h"
 #include "lib.h"
 
-#define HC_FIRST HC_CMD
+#define HC_FIRST HC_EXT_COMMAND
 
 /**
  * struct History - Saved list of user-entered commands/searches

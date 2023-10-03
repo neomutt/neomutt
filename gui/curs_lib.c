@@ -308,7 +308,7 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
 
     buf_alloc(fname, 1024);
     struct FileCompletionData cdata = { multiple, m, files, numfiles };
-    enum HistoryClass hclass = mailbox ? HC_MBOX : HC_FILE;
+    enum HistoryClass hclass = mailbox ? HC_MAILBOX : HC_FILE;
     if (mw_get_field(pc, fname, MUTT_COMP_CLEAR, hclass, &CompleteMailboxOps, &cdata) != 0)
     {
       buf_reset(fname);
