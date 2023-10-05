@@ -41,6 +41,7 @@
 #include "mutt_mailbox.h"
 #include "mutt_window.h"
 #include "muttlib.h"
+#include "mx.h"
 #include "opcodes.h"
 
 /**

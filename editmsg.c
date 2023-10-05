@@ -239,6 +239,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   mx_msg_close(m, &msg);
 
   mx_mbox_close(m);
+  mx_mbox_reset_check();
 
 bail:
   mutt_file_fclose(&fp);
