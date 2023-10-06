@@ -1,3 +1,55 @@
+2023-10-06  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #3870 - color: allow 'alert', 'bright', 'light' prefix for colorNNN
+  - #3871 - color: refactor parsing code
+  - #3895 - imap: truncate large UIDVALIDITYs to support non-conforming IMAP servers
+  - #3898 - hcache: shrink Email and Body caches
+  - #3900 - prompt: treat complete-query as complete where it makes sense
+  - #3925 - help: add message flags to help screen
+  - #3932 - help: add alternating colors
+  - #3982 - mailboxes: add `-label`, `-notify` and `-poll` options
+  - #4046 - color_directcolor: Also set the default/initial value on startup
+* Bug Fixes
+  - #3897 - maildir: fix sync when a deleted file disappears
+  - #3878 - gnutls: fix "certificate saved" message
+  - #3895 - imap: truncate large UIDVALIDITYs to support non-conforming servers
+  - #3897 - maildir: fix fix error with `<sync-mailbox>` on mbsync
+  - #3901 - address: parse comments after address
+  - #3915 - bind: fix truncated binding strings
+  - #3956 - fix 'from' address when real name isn't set
+  - #3962 - Fix crash on `<next-thread>` when the `<limit>`ed view is empty
+  - #3985 - browser: fix autocompletion
+  - #3988 - pager: fix search crash
+  - #3999 - help: fix search highlight
+  - #4049 - force mail check on current mailbox after `<shell-escape>`
+  - #4051 - openssl: continue if a signal interrupts an SSL read/write 
+* Config
+  - #3881 - Rename `$imap_keepalive` to `$imap_keep_alive`
+  - #3889 - Change defaults to use `%<...>` conditional syntax
+    `$attach_format`, `$index_format`, `$mailbox_folder_format`,
+    `$status_format`, `$ts_icon_format`, `$ts_status_format`
+  - #3949 - Add `browser_sort_dirs_first` to always list directories first
+* Code
+  - #3877 - imap: factor out tagged emails
+  - #3799 - address: use struct Buffer instead of plain char pointers
+  - #3868 - drop notifications relay
+  - #3869 - move `$delete_untag` out of the backend
+  - #3873 - respect `--[disable-]fmemopen` in tests
+  - hcache: optimize storage requirements, reduce config
+  - logging: catch format string errors
+  - colour:  refactor colour parsing
+  - refactoring, cleanup
+  - fixed coverity defects
+  - convert many functions to use a `Buffer`
+* Translations
+  - 100% :tr: Turkish
+  - 100% :serbia: Serbian
+  - 100% :lithuania: Lithuanian
+  - 100% :de: German
+  - 99% :czech_republic: Czech
+  - 99% :poland: Polish
+  - 98% :slovakia: Slovak
+
 2023-05-17  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #3699 - Support 24bit colors, aka truecolor
