@@ -217,7 +217,7 @@ int msgwin_calc_rows(struct MsgWinWindowData *wdata, int cols, const char *str)
       // Start a new row
       struct MwChunk tmp = { offset, mwc->bytes, mwc->width, mwc->ac_color };
 
-      mutt_debug(LL_DEBUG1, "row = %d\n", row);
+      mutt_debug(LL_DEBUG5, "row = %d\n", row);
       ARRAY_ADD(&wdata->rows[row], tmp);
       chunk = ARRAY_LAST(&wdata->rows[row]);
 
@@ -241,7 +241,7 @@ int msgwin_calc_rows(struct MsgWinWindowData *wdata, int cols, const char *str)
     width += mwc->width;
   }
 
-  mutt_debug(LL_DEBUG1, "msgwin_calc_rows() => %d\n", row + 1);
+  mutt_debug(LL_DEBUG5, "msgwin_calc_rows() => %d\n", row + 1);
   return row + 1;
 }
 
@@ -273,7 +273,7 @@ static int msgwin_repaint(struct MuttWindow *win)
 
   mutt_window_get_coords(win, &wdata->col, &wdata->row);
 
-  mutt_debug(LL_DEBUG1, "msgwin repaint done\n");
+  mutt_debug(LL_DEBUG5, "msgwin repaint done\n");
   return 0;
 }
 
@@ -287,7 +287,7 @@ static bool msgwin_recursor(struct MuttWindow *win)
   mutt_window_move(win, wdata->col, wdata->row);
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
-  mutt_debug(LL_DEBUG1, "msgwin recursor done\n");
+  mutt_debug(LL_DEBUG5, "msgwin recursor done\n");
   return true;
 }
 
@@ -354,7 +354,7 @@ static int msgwin_window_observer(struct NotifyCallback *nc)
     {
       win->actions |= WA_REPAINT;
     }
-    mutt_debug(LL_DEBUG1, "window state done, request WA_RECALC\n");
+    mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
   {
@@ -429,7 +429,7 @@ void msgwin_add_text(struct MuttWindow *win, const char *text, const struct Attr
   {
     buf_addstr(wdata->text, text);
     measure(&wdata->chars, text, ac_color);
-    mutt_debug(LL_DEBUG1, "MW ADD: %zu, %s\n", buf_len(wdata->text),
+    mutt_debug(LL_DEBUG5, "MW ADD: %zu, %s\n", buf_len(wdata->text),
                buf_string(wdata->text));
   }
   else
@@ -462,7 +462,7 @@ void msgwin_add_text_n(struct MuttWindow *win, const char *text, int bytes,
     const char *dptr = wdata->text->dptr;
     buf_addstr_n(wdata->text, text, bytes);
     measure(&wdata->chars, dptr, ac_color);
-    mutt_debug(LL_DEBUG1, "MW ADD: %zu, %s\n", buf_len(wdata->text),
+    mutt_debug(LL_DEBUG5, "MW ADD: %zu, %s\n", buf_len(wdata->text),
                buf_string(wdata->text));
   }
   else
@@ -501,7 +501,7 @@ void msgwin_set_text(struct MuttWindow *win, const char *text, enum ColorId colo
     measure(&wdata->chars, buf_string(wdata->text), ac_color);
   }
 
-  mutt_debug(LL_DEBUG1, "MW SET: %zu, %s\n", buf_len(wdata->text),
+  mutt_debug(LL_DEBUG5, "MW SET: %zu, %s\n", buf_len(wdata->text),
              buf_string(wdata->text));
 
   int rows = msgwin_calc_rows(wdata, win->state.cols, buf_string(wdata->text));

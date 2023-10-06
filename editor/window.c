@@ -176,7 +176,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 static int enter_recalc(struct MuttWindow *win)
 {
   win->actions |= WA_REPAINT;
-  mutt_debug(LL_DEBUG1, "recalc done, request WA_REPAINT\n");
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
 
   return 0;
 }
@@ -237,7 +237,7 @@ static int enter_repaint(struct MuttWindow *win)
   }
 
   mutt_window_get_coords(win, &wdata->col, &wdata->row);
-  mutt_debug(LL_DEBUG1, "repaint done\n");
+  mutt_debug(LL_DEBUG5, "repaint done\n");
 
   return 0;
 }
