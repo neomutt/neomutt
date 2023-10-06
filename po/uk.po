@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-05-17\n"
+"Project-Id-Version: neomutt-2023-10-06\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-09-23 14:32+0100\n"
+"POT-Creation-Date: 2023-10-06 13:47+0100\n"
 "PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
@@ -426,7 +426,7 @@ msgstr "%s не існує. Створити її?"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:230 hcache/hcache.c:329 init.c:581
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:230 hcache/hcache.c:329 init.c:582
 #: main.c:935 nntp/newsrc.c:1096
 #, c-format
 msgid "Can't create %s: %s"
@@ -1074,7 +1074,7 @@ msgstr "Стиснення %s"
 msgid "Compressed-appending to %s..."
 msgstr "Стиснення і дозаписування %s..."
 
-#: compmbox/compress.c:709 editmsg.c:261
+#: compmbox/compress.c:709 editmsg.c:262
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Помилка. Зберігання тимчасового файлу: %s"
@@ -1411,7 +1411,7 @@ msgstr "Неправильне чотиризначне число: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Неправильне чотиризначне число: %ld"
 
-#: config/set.c:106 init.c:660
+#: config/set.c:106 init.c:661
 #, c-format
 msgid "No such variable: %s"
 msgstr "Нема такої змінної: %s"
@@ -1551,7 +1551,7 @@ msgstr "Неможливо отримати сертифікат"
 msgid "Certificate verification error (%s)"
 msgstr "Помилка перевірки сертифіката (%s)"
 
-#: conn/gnutls.c:170 conn/openssl.c:390
+#: conn/gnutls.c:170 conn/openssl.c:391
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[неможливо обчислити]"
@@ -1564,34 +1564,34 @@ msgstr "Помилка ініціалізації даних сертифіка�
 msgid "Error processing certificate data"
 msgstr "Помилка обробки даних сертифіката"
 
-#: conn/gnutls.c:500 conn/openssl.c:896
+#: conn/gnutls.c:500 conn/openssl.c:897
 msgid "This certificate belongs to:"
 msgstr "Цей сертифікат належить:"
 
-#: conn/gnutls.c:502 conn/openssl.c:898
+#: conn/gnutls.c:502 conn/openssl.c:899
 msgid "This certificate was issued by:"
 msgstr "Цей сертифікат видано:"
 
-#: conn/gnutls.c:505 conn/openssl.c:902
+#: conn/gnutls.c:505 conn/openssl.c:903
 msgid "This certificate is valid"
 msgstr "Цей сертифікат дійсний"
 
-#: conn/gnutls.c:510 conn/openssl.c:903
+#: conn/gnutls.c:510 conn/openssl.c:904
 #, c-format
 msgid "   from %s"
 msgstr "   від %s"
 
-#: conn/gnutls.c:515 conn/openssl.c:905
+#: conn/gnutls.c:515 conn/openssl.c:906
 #, c-format
 msgid "     to %s"
 msgstr "     до %s"
 
-#: conn/gnutls.c:521 conn/openssl.c:911
+#: conn/gnutls.c:521 conn/openssl.c:912
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Відбиток SHA1: %s"
 
-#: conn/gnutls.c:527 conn/gnutls.c:529 conn/openssl.c:917 conn/openssl.c:920
+#: conn/gnutls.c:527 conn/gnutls.c:529 conn/openssl.c:918 conn/openssl.c:921
 msgid "SHA256 Fingerprint: "
 msgstr "Відбиток SHA256: "
 
@@ -1619,16 +1619,16 @@ msgstr "УВАГА: Сертифікат видано неавторизован
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "Увага: Сертифікат сервера підписано ненадійним алгоритмом"
 
-#: conn/gnutls.c:562 conn/openssl.c:933
+#: conn/gnutls.c:562 conn/openssl.c:934
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Перевірка сертифіката SSL (сертифікат %zu з %zu в ланцюжку)"
 
-#: conn/gnutls.c:596 conn/openssl.c:967
+#: conn/gnutls.c:596 conn/openssl.c:968
 msgid "Certificate saved"
 msgstr "Сертифікат збережено"
 
-#: conn/gnutls.c:598 conn/openssl.c:969
+#: conn/gnutls.c:598 conn/openssl.c:970
 msgid "Warning: Couldn't save certificate"
 msgstr "Увага: не можливо зберегти сертифікат"
 
@@ -1643,7 +1643,7 @@ msgstr "Явний вибір набора шифрів через $ssl_ciphers 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:921 conn/openssl.c:1150
+#: conn/gnutls.c:921 conn/openssl.c:1151
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Увага: не можливо вказати назву хоста TLS SNI"
 
@@ -1656,63 +1656,63 @@ msgstr "З’єднання SSL/TLS з використанням %s (%s/%s/%s)"
 msgid "Error: no TLS socket open"
 msgstr "Помилка: не відкрито жодного сокета TLS"
 
-#: conn/openssl.c:211
+#: conn/openssl.c:212
 #, c-format
 msgid "Filling entropy pool: %s..."
 msgstr "Заповнення пулу ентропії: %s..."
 
-#: conn/openssl.c:217
+#: conn/openssl.c:218
 #, c-format
 msgid "%s has insecure permissions"
 msgstr "%s має небезпечні права доступу"
 
-#: conn/openssl.c:354
+#: conn/openssl.c:355
 msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL заборонений через нестачу ентропії"
 
-#: conn/openssl.c:415
+#: conn/openssl.c:416
 msgid "[invalid date]"
 msgstr "[помилкова дата]"
 
-#: conn/openssl.c:478
+#: conn/openssl.c:479
 msgid "Server certificate is not yet valid"
 msgstr "Сертифікат сервера ще не дійсний"
 
-#: conn/openssl.c:488
+#: conn/openssl.c:489
 msgid "Server certificate has expired"
 msgstr "Строк дії сертифіката сервера вичерпано"
 
-#: conn/openssl.c:578
+#: conn/openssl.c:579
 msgid "Failed to find enough entropy on your system"
 msgstr "Не вдалося знайти достятньо ентропії на вашій системі"
 
-#: conn/openssl.c:771
+#: conn/openssl.c:772
 msgid "can't get certificate subject"
 msgstr "не можливо отримати тему сертифіката"
 
-#: conn/openssl.c:780 conn/openssl.c:788
+#: conn/openssl.c:781 conn/openssl.c:789
 msgid "can't get certificate common name"
 msgstr "Неможливо отримати common name сертифікату"
 
-#: conn/openssl.c:802
+#: conn/openssl.c:803
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "власник сертифіката не відповідає назві хоста %s"
 
-#: conn/openssl.c:1070
+#: conn/openssl.c:1071
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Не вдалось перевірити хост сертифіката: %s"
 
-#: conn/openssl.c:1161
+#: conn/openssl.c:1167
 msgid "I/O error"
 msgstr "Помилка вводу/виводу"
 
-#: conn/openssl.c:1167 conn/raw.c:271 gui/curs_lib.c:179 mutt_logging.c:107
+#: conn/openssl.c:1173 conn/raw.c:271 gui/curs_lib.c:179 mutt_logging.c:107
 msgid "unknown error"
 msgstr "невідома помилка"
 
-#: conn/openssl.c:1170
+#: conn/openssl.c:1176
 #, c-format
 msgid "SSL failed: %s"
 msgstr "Помилка SSL: %s"
@@ -1720,11 +1720,11 @@ msgstr "Помилка SSL: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1206
+#: conn/openssl.c:1212
 msgid "Unable to create SSL context"
 msgstr "Неможливо створити SSL контекст"
 
-#: conn/openssl.c:1268
+#: conn/openssl.c:1274
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Увага: помилка ввімкнення ssl_verify_partial_chains"
 
@@ -1821,7 +1821,7 @@ msgstr "Немає механізму розшифрування для лист
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1243
+#: mx.c:1254
 msgid "Out of memory"
 msgstr "Не вистачає пам’яті"
 
@@ -2193,104 +2193,104 @@ msgid "Shell command: "
 msgstr "Команда системи: "
 
 #. L10N: Progress meter message when copying tagged messages
-#: external.c:805
+#: external.c:806
 msgid "Copying tagged messages..."
 msgstr "Копіювання позначених листів..."
 
-#: external.c:809
+#: external.c:810
 msgid "Copy tagged to mailbox"
 msgstr "Копіювати позначені до скриньки"
 
-#: external.c:809
+#: external.c:810
 msgid "Copy to mailbox"
 msgstr "Копіювати до скриньки"
 
-#: external.c:812
+#: external.c:813
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "Розшифрувати-копіювати позначені до скриньки"
 
-#: external.c:813
+#: external.c:814
 msgid "Decrypt-copy to mailbox"
 msgstr "Розшифрувати-копіювати до скриньки"
 
-#: external.c:816
+#: external.c:817
 msgid "Decode-copy tagged to mailbox"
 msgstr "Розкодувати-копіювати позначені до скриньки"
 
-#: external.c:817
+#: external.c:818
 msgid "Decode-copy to mailbox"
 msgstr "Розкодувати-копіювати до скриньки"
 
 #. L10N: Progress meter message when saving tagged messages
-#: external.c:824
+#: external.c:825
 msgid "Saving tagged messages..."
 msgstr "Зберігання позначених листів..."
 
-#: external.c:828
+#: external.c:829
 msgid "Save tagged to mailbox"
 msgstr "Зберегти позначені до скриньки"
 
-#: external.c:828
+#: external.c:829
 msgid "Save to mailbox"
 msgstr "Зберегти до скриньки"
 
-#: external.c:831
+#: external.c:832
 msgid "Decrypt-save tagged to mailbox"
 msgstr "Розшифрувати-зберегти позначені до скриньки"
 
-#: external.c:832
+#: external.c:833
 msgid "Decrypt-save to mailbox"
 msgstr "Розшифрувати-зберегти до скриньки"
 
-#: external.c:835
+#: external.c:836
 msgid "Decode-save tagged to mailbox"
 msgstr "Розкодувати-зберегти позначені до скриньки"
 
-#: external.c:836
+#: external.c:837
 msgid "Decode-save to mailbox"
 msgstr "Розкодувати-зберегти до скриньки"
 
-#: external.c:882
+#: external.c:883
 #, c-format
 msgid "Copying to %s..."
 msgstr "Копіювання до %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1039
+#: external.c:1040
 msgid "Error saving tagged messages"
 msgstr "Помилка зберігання позначених листів"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1044
+#: external.c:1045
 msgid "Error saving message"
 msgstr "Помилка зберігання листа"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1051
+#: external.c:1052
 msgid "Error copying tagged messages"
 msgstr "Помилка копіювання позначених листів"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1056
+#: external.c:1057
 msgid "Error copying message"
 msgstr "Помилка копіювання листа"
 
-#: external.c:1126
+#: external.c:1127
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Перетворити на %s при надсиланні?"
 
-#: external.c:1137
+#: external.c:1138
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Тип даних змінено на %s"
 
-#: external.c:1142
+#: external.c:1143
 #, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "Кодування змінено на %s; не перетворюється"
 
-#: external.c:1143
+#: external.c:1144
 #, c-format
 msgid "Character set changed to %s; converting"
 msgstr "Кодування змінено на %s; перетворюється"
@@ -4256,7 +4256,7 @@ msgstr "Гілки зʼєднано"
 msgid "No thread linked"
 msgstr "Розмови не об’єднано"
 
-#: index/functions.c:1385 mx.c:1304 mx.c:1324
+#: index/functions.c:1385 mx.c:1315 mx.c:1335
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Тека не підтримує позначення, скасування"
 
@@ -4491,7 +4491,7 @@ msgstr "Попередження в командному рядку: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "неможливо визначити ім’я вузла за допомогою uname()"
 
-#: init.c:632
+#: init.c:633
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr "Змінна конфіґурації '%s' застаріла"
@@ -5324,20 +5324,20 @@ msgstr "Скриньку помічено незмінюваною. %s"
 msgid "Mailbox checkpointed"
 msgstr "Скриньку перевірено"
 
-#: mx.c:1369
+#: mx.c:1380
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Не можливо відкрити %s: це труба"
 
-#: mx.c:1875
+#: mx.c:1886
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Скринька тільки для читання, ввімкнути запис неможливо"
 
-#: mx.c:1882
+#: mx.c:1893
 msgid "Changes to folder will be written on folder exit"
 msgstr "Зміни у скриньці буде записано по виходу з неї"
 
-#: mx.c:1887
+#: mx.c:1898
 msgid "Changes to folder will not be written"
 msgstr "Зміни у скриньці не буде записано"
 

@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-05-17\n"
+"Project-Id-Version: neomutt-2023-10-06\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-09-23 14:32+0100\n"
+"POT-Creation-Date: 2023-10-06 13:47+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -434,7 +434,7 @@ msgstr "%s 不存在。建立嗎？"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:230 hcache/hcache.c:329 init.c:581
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:230 hcache/hcache.c:329 init.c:582
 #: main.c:935 nntp/newsrc.c:1096
 #, c-format
 msgid "Can't create %s: %s"
@@ -1095,7 +1095,7 @@ msgstr "拷貝到 %s…"
 msgid "Compressed-appending to %s..."
 msgstr "拷貝到 %s…"
 
-#: compmbox/compress.c:709 editmsg.c:261
+#: compmbox/compress.c:709 editmsg.c:262
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "發生錯誤，保留暫存檔：%s"
@@ -1446,7 +1446,7 @@ msgstr "無效的相對日期：%s"
 msgid "Invalid quad value: %ld"
 msgstr "無效的日子：%s"
 
-#: config/set.c:106 init.c:660
+#: config/set.c:106 init.c:661
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -1588,7 +1588,7 @@ msgstr "無法從對方拿取驗証"
 msgid "Certificate verification error (%s)"
 msgstr ""
 
-#: conn/gnutls.c:170 conn/openssl.c:390
+#: conn/gnutls.c:170 conn/openssl.c:391
 #, c-format
 msgid "[unable to calculate]"
 msgstr "【無法計算】"
@@ -1602,34 +1602,34 @@ msgstr "無法初始化終端機"
 msgid "Error processing certificate data"
 msgstr ""
 
-#: conn/gnutls.c:500 conn/openssl.c:896
+#: conn/gnutls.c:500 conn/openssl.c:897
 msgid "This certificate belongs to:"
 msgstr "這個驗証屬於："
 
-#: conn/gnutls.c:502 conn/openssl.c:898
+#: conn/gnutls.c:502 conn/openssl.c:899
 msgid "This certificate was issued by:"
 msgstr "這個驗証的派發者："
 
-#: conn/gnutls.c:505 conn/openssl.c:902
+#: conn/gnutls.c:505 conn/openssl.c:903
 msgid "This certificate is valid"
 msgstr "這個驗証有效"
 
-#: conn/gnutls.c:510 conn/openssl.c:903
+#: conn/gnutls.c:510 conn/openssl.c:904
 #, c-format
 msgid "   from %s"
 msgstr "   由 %s"
 
-#: conn/gnutls.c:515 conn/openssl.c:905
+#: conn/gnutls.c:515 conn/openssl.c:906
 #, c-format
 msgid "     to %s"
 msgstr "     至 %s"
 
-#: conn/gnutls.c:521 conn/openssl.c:911
+#: conn/gnutls.c:521 conn/openssl.c:912
 #, fuzzy, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "指模：%s"
 
-#: conn/gnutls.c:527 conn/gnutls.c:529 conn/openssl.c:917 conn/openssl.c:920
+#: conn/gnutls.c:527 conn/gnutls.c:529 conn/openssl.c:918 conn/openssl.c:921
 #, fuzzy
 msgid "SHA256 Fingerprint: "
 msgstr "指模：%s"
@@ -1662,16 +1662,16 @@ msgstr "伺服器的驗証還未有效"
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 
-#: conn/gnutls.c:562 conn/openssl.c:933
+#: conn/gnutls.c:562 conn/openssl.c:934
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
 
-#: conn/gnutls.c:596 conn/openssl.c:967
+#: conn/gnutls.c:596 conn/openssl.c:968
 msgid "Certificate saved"
 msgstr "驗証已儲存"
 
-#: conn/gnutls.c:598 conn/openssl.c:969
+#: conn/gnutls.c:598 conn/openssl.c:970
 msgid "Warning: Couldn't save certificate"
 msgstr "警告：未能儲存驗証"
 
@@ -1686,7 +1686,7 @@ msgstr ""
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:921 conn/openssl.c:1150
+#: conn/gnutls.c:921 conn/openssl.c:1151
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
@@ -1699,66 +1699,66 @@ msgstr "利用 %s (%s) 來進行 SSL"
 msgid "Error: no TLS socket open"
 msgstr ""
 
-#: conn/openssl.c:211
+#: conn/openssl.c:212
 #, c-format
 msgid "Filling entropy pool: %s..."
 msgstr ""
 
-#: conn/openssl.c:217
+#: conn/openssl.c:218
 #, c-format
 msgid "%s has insecure permissions"
 msgstr "%s 的權限不安全"
 
-#: conn/openssl.c:354
+#: conn/openssl.c:355
 msgid "SSL disabled due to the lack of entropy"
 msgstr ""
 
-#: conn/openssl.c:415
+#: conn/openssl.c:416
 msgid "[invalid date]"
 msgstr "【無效的日期】"
 
-#: conn/openssl.c:478
+#: conn/openssl.c:479
 msgid "Server certificate is not yet valid"
 msgstr "伺服器的驗証還未有效"
 
-#: conn/openssl.c:488
+#: conn/openssl.c:489
 msgid "Server certificate has expired"
 msgstr "伺服器的驗証已過期"
 
 # Well, I don't know how to translate the word "entropy"
-#: conn/openssl.c:578
+#: conn/openssl.c:579
 msgid "Failed to find enough entropy on your system"
 msgstr ""
 
-#: conn/openssl.c:771
+#: conn/openssl.c:772
 #, fuzzy
 msgid "can't get certificate subject"
 msgstr "無法從對方拿取驗証"
 
-#: conn/openssl.c:780 conn/openssl.c:788
+#: conn/openssl.c:781 conn/openssl.c:789
 #, fuzzy
 msgid "can't get certificate common name"
 msgstr "無法從對方拿取驗証"
 
-#: conn/openssl.c:802
+#: conn/openssl.c:803
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr ""
 
-#: conn/openssl.c:1070
+#: conn/openssl.c:1071
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "驗証已儲存"
 
-#: conn/openssl.c:1161
+#: conn/openssl.c:1167
 msgid "I/O error"
 msgstr ""
 
-#: conn/openssl.c:1167 conn/raw.c:271 gui/curs_lib.c:179 mutt_logging.c:107
+#: conn/openssl.c:1173 conn/raw.c:271 gui/curs_lib.c:179 mutt_logging.c:107
 msgid "unknown error"
 msgstr "不明的錯誤"
 
-#: conn/openssl.c:1170
+#: conn/openssl.c:1176
 #, fuzzy, c-format
 msgid "SSL failed: %s"
 msgstr "登入失敗： %s"
@@ -1766,12 +1766,12 @@ msgstr "登入失敗： %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1206
+#: conn/openssl.c:1212
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "[-- 錯誤：無法建立 OpenSSL 子程序！ --]\n"
 
-#: conn/openssl.c:1268
+#: conn/openssl.c:1274
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -1867,7 +1867,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1243
+#: mx.c:1254
 msgid "Out of memory"
 msgstr "記憶體不足"
 
@@ -2234,122 +2234,122 @@ msgid "Shell command: "
 msgstr "Shell 指令："
 
 #. L10N: Progress meter message when copying tagged messages
-#: external.c:805
+#: external.c:806
 #, fuzzy
 msgid "Copying tagged messages..."
 msgstr "正在複制 %d 封信件到 %s …"
 
-#: external.c:809
+#: external.c:810
 #, fuzzy
 msgid "Copy tagged to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:809
+#: external.c:810
 #, fuzzy
 msgid "Copy to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:812
+#: external.c:813
 #, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:813
+#: external.c:814
 #, fuzzy
 msgid "Decrypt-copy to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:816
+#: external.c:817
 #, fuzzy
 msgid "Decode-copy tagged to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:817
+#: external.c:818
 #, fuzzy
 msgid "Decode-copy to mailbox"
 msgstr "%s 到信箱"
 
 #. L10N: Progress meter message when saving tagged messages
-#: external.c:824
+#: external.c:825
 #, fuzzy
 msgid "Saving tagged messages..."
 msgstr "列印信件？"
 
-#: external.c:828
+#: external.c:829
 #, fuzzy
 msgid "Save tagged to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:828
+#: external.c:829
 #, fuzzy
 msgid "Save to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:831
+#: external.c:832
 #, fuzzy
 msgid "Decrypt-save tagged to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:832
+#: external.c:833
 #, fuzzy
 msgid "Decrypt-save to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:835
+#: external.c:836
 #, fuzzy
 msgid "Decode-save tagged to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:836
+#: external.c:837
 #, fuzzy
 msgid "Decode-save to mailbox"
 msgstr "%s 到信箱"
 
-#: external.c:882
+#: external.c:883
 #, c-format
 msgid "Copying to %s..."
 msgstr "拷貝到 %s…"
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1039
+#: external.c:1040
 #, fuzzy
 msgid "Error saving tagged messages"
 msgstr "列印信件？"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1044
+#: external.c:1045
 #, fuzzy
 msgid "Error saving message"
 msgstr "寄信途中發生錯誤"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1051
+#: external.c:1052
 #, fuzzy
 msgid "Error copying tagged messages"
 msgstr "正在複制 %d 封信件到 %s …"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1056
+#: external.c:1057
 #, fuzzy
 msgid "Error copying message"
 msgstr "寄信途中發生錯誤"
 
-#: external.c:1126
+#: external.c:1127
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "送出的時候轉換字符集為 %s ？"
 
-#: external.c:1137
+#: external.c:1138
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "Content-Type 被改為 %s"
 
-#: external.c:1142
+#: external.c:1143
 #, fuzzy, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "字符集已換為 %s; 沒有轉換"
 
-#: external.c:1143
+#: external.c:1144
 #, fuzzy, c-format
 msgid "Character set changed to %s; converting"
 msgstr "字符集已換為 %s; 轉換中"
@@ -4401,7 +4401,7 @@ msgstr ""
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1385 mx.c:1304 mx.c:1324
+#: index/functions.c:1385 mx.c:1315 mx.c:1335
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
@@ -4656,7 +4656,7 @@ msgstr "指令行有錯：%s"
 msgid "unable to determine nodename via uname()"
 msgstr "無法決定使用者名稱"
 
-#: init.c:632
+#: init.c:633
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -5477,20 +5477,20 @@ msgstr "信箱被標記成為無法寫入的. %s"
 msgid "Mailbox checkpointed"
 msgstr ""
 
-#: mx.c:1369
+#: mx.c:1380
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "無法開啟信件檔案：%s"
 
-#: mx.c:1875
+#: mx.c:1886
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "無法寫入到一個唯讀的信箱"
 
-#: mx.c:1882
+#: mx.c:1893
 msgid "Changes to folder will be written on folder exit"
 msgstr "在離開之後將會把改變寫入資料夾"
 
-#: mx.c:1887
+#: mx.c:1898
 msgid "Changes to folder will not be written"
 msgstr "將不會把改變寫入資料夾"
 
