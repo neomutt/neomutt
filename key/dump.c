@@ -166,7 +166,7 @@ static void dump_all_macros(struct Buffer *buf)
 }
 
 /**
- * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements ICommand::parse()
+ * dump_bind_macro - Parse 'bind' and 'macro' commands - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)

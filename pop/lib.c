@@ -51,7 +51,7 @@
 struct Progress;
 
 /**
- * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field()
+ * pop_get_field - Get connection login credentials - Implements ConnAccount::get_field() - @ingroup conn_account_get_field
  */
 const char *pop_get_field(enum ConnAccountField field, void *gf_data)
 {
@@ -138,7 +138,7 @@ static void pop_error(struct PopAccountData *adata, char *msg)
 }
 
 /**
- * fetch_capa - Parse CAPA output - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_capa - Parse CAPA response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line List of capabilities
  * @param data POP data
  * @retval 0 (always)
@@ -173,7 +173,7 @@ static int fetch_capa(const char *line, void *data)
 }
 
 /**
- * fetch_auth - Fetch list of the authentication mechanisms - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_auth - Parse AUTH response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line List of authentication methods
  * @param data POP data
  * @retval 0 (always)
@@ -563,11 +563,13 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
 }
 
 /**
- * check_uidl - Find message with this UIDL and set refno - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * check_uidl - Parse UIDL response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String containing UIDL
  * @param data POP data
  * @retval  0 Success
  * @retval -1 Error
+ *
+ * Find message with this UIDL and set refno.
  */
 static int check_uidl(const char *line, void *data)
 {

@@ -779,7 +779,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
 #endif
 
 /**
- * nntp_bcache_delete - Remove bcache file - Implements ::bcache_list_t - @ingroup bcache_list_api
+ * nntp_bcache_delete - Delete an entry from the message cache - Implements ::bcache_list_t - @ingroup bcache_list_api
  * @retval 0 Always
  */
 static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
@@ -985,7 +985,7 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 }
 
 /**
- * nntp_get_field - Get connection login credentials - Implements ConnAccount::get_field()
+ * nntp_get_field - Get connection login credentials - Implements ConnAccount::get_field() - @ingroup conn_account_get_field
  */
 static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
 {

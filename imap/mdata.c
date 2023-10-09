@@ -34,7 +34,7 @@
 #include "adata.h"
 
 /**
- * imap_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
+ * imap_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
  */
 void imap_mdata_free(void **ptr)
 {

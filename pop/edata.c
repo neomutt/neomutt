@@ -33,7 +33,7 @@
 #include "edata.h"
 
 /**
- * pop_edata_free - Free the private Email data - Implements Email::edata_free()
+ * pop_edata_free - Free the private Email data - Implements Email::edata_free() - @ingroup email_edata_free
  *
  * Each email has an attached PopEmailData, which contains things like the tags
  * (labels).

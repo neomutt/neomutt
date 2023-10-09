@@ -445,7 +445,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
 }
 
 /**
- * pgp_make_entry - Format a menu item for the pgp key list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * pgp_make_entry - Format a PGP Key for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $pgp_entry_format, pgp_entry_format_str()
  */

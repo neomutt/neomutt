@@ -48,7 +48,7 @@
 
 #ifdef USE_SASL_GNU
 /**
- * pop_auth_gsasl - POP GNU SASL authenticator - Implements PopAuth::authenticate()
+ * pop_auth_gsasl - POP GNU SASL authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *method)
 {
@@ -140,7 +140,7 @@ fail:
 
 #ifdef USE_SASL_CYRUS
 /**
- * pop_auth_sasl - POP SASL authenticator - Implements PopAuth::authenticate()
+ * pop_auth_sasl - POP SASL authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *method)
 {
@@ -310,7 +310,7 @@ void pop_apop_timestamp(struct PopAccountData *adata, char *buf)
 }
 
 /**
- * pop_auth_apop - APOP authenticator - Implements PopAuth::authenticate()
+ * pop_auth_apop - APOP authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *method)
 {
@@ -359,7 +359,7 @@ static enum PopAuthRes pop_auth_apop(struct PopAccountData *adata, const char *m
 }
 
 /**
- * pop_auth_user - USER authenticator - Implements PopAuth::authenticate()
+ * pop_auth_user - USER authenticator - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *method)
 {
@@ -417,7 +417,7 @@ static enum PopAuthRes pop_auth_user(struct PopAccountData *adata, const char *m
 }
 
 /**
- * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER - Implements PopAuth::authenticate()
+ * pop_auth_oauth - Authenticate a POP connection using OAUTHBEARER - Implements PopAuth::authenticate() - @ingroup pop_authenticate
  */
 static enum PopAuthRes pop_auth_oauth(struct PopAccountData *adata, const char *method)
 {

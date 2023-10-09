@@ -160,10 +160,10 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * msg_cache_clean_cb - Delete an entry from the message cache - Implements ::bcache_list_t - @ingroup bcache_list_api
+ * imap_bcache_delete - Delete an entry from the message cache - Implements ::bcache_list_t - @ingroup bcache_list_api
  * @retval 0 Always
  */
-static int msg_cache_clean_cb(const char *id, struct BodyCache *bcache, void *data)
+static int imap_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
   uint32_t uv;
   unsigned int uid;
@@ -1873,7 +1873,7 @@ int imap_cache_clean(struct Mailbox *m)
     return -1;
 
   mdata->bcache = imap_bcache_open(m);
-  mutt_bcache_list(mdata->bcache, msg_cache_clean_cb, mdata);
+  mutt_bcache_list(mdata->bcache, imap_bcache_delete, mdata);
 
   return 0;
 }

@@ -88,11 +88,13 @@ static const char *cache_id(const char *id)
 }
 
 /**
- * fetch_message - Write line to file - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_message - Parse a Message response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String to write
  * @param data FILE pointer to write to
  * @retval  0 Success
  * @retval -1 Failure
+ *
+ * Save a Message to a file.
  */
 static int fetch_message(const char *line, void *data)
 {
@@ -191,7 +193,7 @@ static int pop_read_header(struct PopAccountData *adata, struct Email *e)
 }
 
 /**
- * fetch_uidl - Parse UIDL - Implements ::pop_fetch_t - @ingroup pop_fetch_api
+ * fetch_uidl - Parse UIDL response - Implements ::pop_fetch_t - @ingroup pop_fetch_api
  * @param line String to parse
  * @param data Mailbox
  * @retval  0 Success
@@ -249,9 +251,9 @@ static int fetch_uidl(const char *line, void *data)
 }
 
 /**
- * msg_cache_check - Check the Body Cache for an ID - Implements ::bcache_list_t - @ingroup bcache_list_api
+ * pop_bcache_delete - Delete an entry from the message cache - Implements ::bcache_list_t - @ingroup bcache_list_api
  */
-static int msg_cache_check(const char *id, struct BodyCache *bcache, void *data)
+static int pop_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
   struct Mailbox *m = data;
   if (!m)
@@ -478,7 +480,7 @@ static int pop_fetch_headers(struct Mailbox *m)
    * the availability of our cache */
   const bool c_message_cache_clean = cs_subset_bool(NeoMutt->sub, "message_cache_clean");
   if (c_message_cache_clean)
-    mutt_bcache_list(adata->bcache, msg_cache_check, m);
+    mutt_bcache_list(adata->bcache, pop_bcache_delete, m);
 
   mutt_clear_error();
   return new_count - old_count;

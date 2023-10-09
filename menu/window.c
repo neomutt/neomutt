@@ -124,7 +124,7 @@ static int menu_repaint(struct MuttWindow *win)
 }
 
 /**
- * menu_wdata_free - Destroy a Menu Window - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * menu_wdata_free - Free the Menu - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void menu_wdata_free(struct MuttWindow *win, void **ptr)
 {

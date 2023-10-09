@@ -396,7 +396,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 }
 
 /**
- * attach_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * attach_make_entry - Format an Attachment for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $attach_format, attach_format_str()
  */

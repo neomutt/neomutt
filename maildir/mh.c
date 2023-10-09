@@ -814,7 +814,7 @@ static int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 }
 
 /**
- * mh_ac_owns_path - Check whether an Account own a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
+ * mh_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
  */
 static bool mh_ac_owns_path(struct Account *a, const char *path)
 {

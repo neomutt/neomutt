@@ -535,7 +535,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * crypt_make_entry - Format a menu item for the key selection list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * crypt_make_entry - Format a PGP Key for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $pgp_entry_format, crypt_format_str()
  */

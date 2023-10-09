@@ -100,7 +100,7 @@ const char *get_use_threads_str(enum UseThreads value)
 }
 
 /**
- * sort_validator - Validate values of "sort" - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * sort_validator - Validate the "sort" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                    intptr_t value, struct Buffer *err)
@@ -1013,7 +1013,7 @@ static void check_subjects(struct MailboxView *mv, bool init)
 }
 
 /**
- * thread_hash_destructor - Hash Destructor callback - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ * thread_hash_destructor - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
 static void thread_hash_destructor(int type, void *obj, intptr_t data)
 {

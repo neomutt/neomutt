@@ -187,7 +187,7 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
 }
 
 /**
- * mix_make_entry - Format a menu item for the mixmaster chain list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * mix_make_entry - Format a Remailer for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $mix_entry_format, mix_format_str()
  */

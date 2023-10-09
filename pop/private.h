@@ -77,6 +77,8 @@ struct PopCache
 struct PopAuth
 {
   /**
+   * @defgroup pop_authenticate POP Authenticaion API
+   *
    * authenticate - Authenticate a POP connection
    * @param adata  POP Account data
    * @param method Name of this authentication method (UNUSED)

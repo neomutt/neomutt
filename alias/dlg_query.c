@@ -217,7 +217,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
 }
 
 /**
- * query_make_entry - Format a menu item for the query list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * query_make_entry - Format an Alias for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $query_format, query_format_str()
  */

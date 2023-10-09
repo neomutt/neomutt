@@ -104,7 +104,7 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * history_make_entry - Format a menu item for the history list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa history_format_str()
  */

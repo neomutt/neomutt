@@ -61,6 +61,8 @@ struct ConnAccount
   const char *service;    ///< Name of the service, e.g. "imap"
 
   /**
+   * @defgroup conn_account_get_field Connection Account API
+   *
    * get_field - Function to get some login credentials
    * @param field Field to get, e.g. #MUTT_CA_PASS
    * @retval ptr Requested string

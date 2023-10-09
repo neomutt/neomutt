@@ -31,7 +31,7 @@
 #include "private_data.h"
 
 /**
- * attach_private_data_free - Free Attach Data - Implements Menu::mdata_free() - @ingroup menu_mdata_free
+ * attach_private_data_free - Free the Attach Data - Implements Menu::mdata_free() - @ingroup menu_mdata_free
  * @param menu Menu
  * @param ptr  Attach Data to free
  */

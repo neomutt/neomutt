@@ -904,7 +904,9 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 }
 
 /**
- * folder_make_entry - Format a menu item for the folder browser - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * folder_make_entry - Format a Folder for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ *
+ * @sa $folder_format, $group_index_format, $mailbox_folder_format, folder_format_str()
  */
 static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 {

@@ -99,7 +99,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 }
 
 /**
- * imap_auth_gss - GSS Authentication support - Implements ImapAuth::authenticate()
+ * imap_auth_gss - GSS Authentication support - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_gss(struct ImapAccountData *adata, const char *method)
 {

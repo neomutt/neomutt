@@ -211,7 +211,7 @@ static int compose_attach_tag(struct Menu *menu, int sel, int act)
 }
 
 /**
- * compose_make_entry - Format a menu item for the attachment list - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * compose_make_entry - Format an Attachment for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $attach_format, attach_format_str()
  */

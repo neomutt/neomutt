@@ -33,7 +33,7 @@
 #include "bcache/lib.h"
 
 /**
- * nntp_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
+ * nntp_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
  */
 void nntp_mdata_free(void **ptr)
 {

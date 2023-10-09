@@ -31,7 +31,7 @@
 #include "cbar_data.h"
 
 /**
- * cbar_data_free - Free the private Compose Bar data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * cbar_data_free - Free the private Compose Bar data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void cbar_data_free(struct MuttWindow *win, void **ptr)
 {

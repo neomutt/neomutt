@@ -40,7 +40,7 @@ struct ChainData *chain_data_new(void)
 }
 
 /**
- * chain_data_free - Free the Chain data attached to the Window - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * chain_data_free - Free the Chain data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void chain_data_free(struct MuttWindow *win, void **ptr)
 {

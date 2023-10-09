@@ -414,7 +414,7 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
 }
 
 /**
- * pgp_class_invoke_import - Implements CryptModuleSpecs::pgp_invoke_import() - @ingroup crypto_pgp_invoke_import
+ * pgp_class_invoke_import - Import a key from a message into the user's public key ring - Implements CryptModuleSpecs::pgp_invoke_import() - @ingroup crypto_pgp_invoke_import
  */
 void pgp_class_invoke_import(const char *fname)
 {
@@ -441,7 +441,7 @@ void pgp_class_invoke_import(const char *fname)
 }
 
 /**
- * pgp_class_invoke_getkeys - Implements CryptModuleSpecs::pgp_invoke_getkeys() - @ingroup crypto_pgp_invoke_getkeys
+ * pgp_class_invoke_getkeys - Run a command to download a PGP key - Implements CryptModuleSpecs::pgp_invoke_getkeys() - @ingroup crypto_pgp_invoke_getkeys
  */
 void pgp_class_invoke_getkeys(struct Address *addr)
 {

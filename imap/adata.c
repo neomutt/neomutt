@@ -64,7 +64,7 @@ static int imap_timeout_observer(struct NotifyCallback *nc)
 }
 
 /**
- * imap_adata_free - Free the private Account data - Implements Account::adata_free()
+ * imap_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  */
 void imap_adata_free(void **ptr)
 {

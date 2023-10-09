@@ -35,7 +35,9 @@
 #include "set.h"
 
 /**
- * charset_validator - Validate the "charset" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * charset_validator - Validate the "charset" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ *
+ * Validate the config variables that contain a single charset.
  */
 int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                       intptr_t value, struct Buffer *err)
@@ -73,8 +75,9 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 }
 
 /**
- * charset_slist_validator - Validate the "charset" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
- * This is a version for charset options is Slist.
+ * charset_slist_validator - Validate the multiple "charset" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ *
+ * Validate the config variables that can contain a multiple charsets.
  */
 int charset_slist_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                             intptr_t value, struct Buffer *err)

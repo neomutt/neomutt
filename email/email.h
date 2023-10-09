@@ -77,6 +77,8 @@ struct Email
   bool purge           : 1;    ///< Skip trash folder when deleting
 
   /**
+   * @defgroup email_edata_free Email Private Data API
+   *
    * edata_free - Free the private data attached to the Email
    * @param ptr Private data to be freed
    *

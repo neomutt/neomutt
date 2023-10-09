@@ -206,7 +206,7 @@ retry:
 }
 
 /**
- * zstrm_poll - Checks whether reads would block - Implements Connection::poll() - @ingroup connection_poll
+ * zstrm_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int zstrm_poll(struct Connection *conn, time_t wait_secs)
 {

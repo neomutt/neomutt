@@ -104,7 +104,7 @@ static enum ImapAuthRes imap_auth_oauth_xoauth2(struct ImapAccountData *adata,
 }
 
 /**
- * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER - Implements ImapAuth::authenticate()
+ * imap_auth_oauth - Authenticate an IMAP connection using OAUTHBEARER - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *method)
 {
@@ -112,7 +112,7 @@ enum ImapAuthRes imap_auth_oauth(struct ImapAccountData *adata, const char *meth
 }
 
 /**
- * imap_auth_xoauth2 - Authenticate an IMAP connection using XOAUTH2 - Implements ImapAuth::authenticate()
+ * imap_auth_xoauth2 - Authenticate an IMAP connection using XOAUTH2 - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_xoauth2(struct ImapAccountData *adata, const char *method)
 {

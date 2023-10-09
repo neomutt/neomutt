@@ -131,7 +131,7 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * make_pattern_entry - Create a line for the Pattern Completion menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * make_pattern_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $pattern_format, pattern_format_str()
  */

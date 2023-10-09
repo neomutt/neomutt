@@ -144,7 +144,7 @@ static intptr_t myvar_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * myvar_string_plus_equals - Concat string to a MyVar - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
+ * myvar_string_plus_equals - Add to a MyVar by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
  */
 static int myvar_string_plus_equals(const struct ConfigSet *cs, void *var,
                                     const struct ConfigDef *cdef,

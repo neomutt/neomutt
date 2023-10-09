@@ -37,7 +37,7 @@
 #endif
 
 /**
- * CryptModPgpClassic - CLI PGP - Implements ::CryptModuleSpecs
+ * CryptModPgpClassic - CLI PGP - Implements ::CryptModuleSpecs - @ingroup crypto_api
  */
 const struct CryptModuleSpecs CryptModPgpClassic = {
   // clang-format off

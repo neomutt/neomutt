@@ -864,7 +864,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
 #ifdef USE_DEBUG_COLOR
 /**
- * color_dump - Parse 'color' command to display colours - Implements ICommand::parse()
+ * color_dump - Parse 'color' command to display colours - Implements Command::parse() - @ingroup command_parse
  */
 static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)

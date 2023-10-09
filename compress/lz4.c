@@ -72,7 +72,7 @@ static struct Lz4ComprData *lz4_cdata_new(void)
 }
 
 /**
- * compr_lz4_open - Implements ComprOps::open() - @ingroup compress_open
+ * compr_lz4_open - Open a compression context - Implements ComprOps::open() - @ingroup compress_open
  */
 static ComprHandle *compr_lz4_open(short level)
 {
@@ -94,7 +94,7 @@ static ComprHandle *compr_lz4_open(short level)
 }
 
 /**
- * compr_lz4_compress - Implements ComprOps::compress() - @ingroup compress_compress
+ * compr_lz4_compress - Compress header cache data - Implements ComprOps::compress() - @ingroup compress_compress
  */
 static void *compr_lz4_compress(ComprHandle *handle, const char *data,
                                 size_t dlen, size_t *clen)
@@ -131,7 +131,7 @@ static void *compr_lz4_compress(ComprHandle *handle, const char *data,
 }
 
 /**
- * compr_lz4_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
+ * compr_lz4_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
 static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
@@ -162,7 +162,7 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
 }
 
 /**
- * compr_lz4_close - Implements ComprOps::close() - @ingroup compress_close
+ * compr_lz4_close - Close a compression context - Implements ComprOps::close() - @ingroup compress_close
  */
 static void compr_lz4_close(ComprHandle **ptr)
 {

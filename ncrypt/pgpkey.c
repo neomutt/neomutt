@@ -235,7 +235,7 @@ done:
 }
 
 /**
- * pgp_class_make_key_attachment - Implements CryptModuleSpecs::pgp_make_key_attachment() - @ingroup crypto_pgp_make_key_attachment
+ * pgp_class_make_key_attachment - Generate a public key attachment - Implements CryptModuleSpecs::pgp_make_key_attachment() - @ingroup crypto_pgp_make_key_attachment
  */
 struct Body *pgp_class_make_key_attachment(void)
 {

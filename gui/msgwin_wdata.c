@@ -32,7 +32,7 @@
 #include "msgwin_wdata.h"
 
 /**
- * msgwin_wdata_free - Free the private data attached to the Message Window - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * msgwin_wdata_free - Free the private data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
 {

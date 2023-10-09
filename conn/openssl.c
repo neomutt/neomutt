@@ -1298,7 +1298,7 @@ free_ssldata:
 }
 
 /**
- * ssl_socket_poll - Check whether a socket read would block - Implements Connection::poll() - @ingroup connection_poll
+ * ssl_socket_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int ssl_socket_poll(struct Connection *conn, time_t wait_secs)
 {

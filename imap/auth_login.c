@@ -39,7 +39,7 @@
 #include "mutt_logging.h"
 
 /**
- * imap_auth_login - Plain LOGIN support - Implements ImapAuth::authenticate()
+ * imap_auth_login - Plain LOGIN support - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_login(struct ImapAccountData *adata, const char *method)
 {

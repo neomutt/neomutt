@@ -161,7 +161,7 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
  */
 
 /**
- * smime_class_void_passphrase - Implements CryptModuleSpecs::void_passphrase() - @ingroup crypto_void_passphrase
+ * smime_class_void_passphrase - Forget the cached passphrase - Implements CryptModuleSpecs::void_passphrase() - @ingroup crypto_void_passphrase
  */
 void smime_class_void_passphrase(void)
 {
@@ -170,7 +170,7 @@ void smime_class_void_passphrase(void)
 }
 
 /**
- * smime_class_valid_passphrase - Implements CryptModuleSpecs::valid_passphrase() - @ingroup crypto_valid_passphrase
+ * smime_class_valid_passphrase - Ensure we have a valid passphrase - Implements CryptModuleSpecs::valid_passphrase() - @ingroup crypto_valid_passphrase
  */
 bool smime_class_valid_passphrase(void)
 {
@@ -809,7 +809,7 @@ static void getkeys(const char *mailbox)
 }
 
 /**
- * smime_class_getkeys - Implements CryptModuleSpecs::smime_getkeys() - @ingroup crypto_smime_getkeys
+ * smime_class_getkeys - Get the S/MIME keys required to encrypt this email - Implements CryptModuleSpecs::smime_getkeys() - @ingroup crypto_smime_getkeys
  */
 void smime_class_getkeys(struct Envelope *env)
 {
@@ -849,7 +849,7 @@ void smime_class_getkeys(struct Envelope *env)
 }
 
 /**
- * smime_class_find_keys - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
+ * smime_class_find_keys - Find the keyids of the recipients of a message - Implements CryptModuleSpecs::find_keys() - @ingroup crypto_find_keys
  */
 char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
 {
@@ -1179,7 +1179,7 @@ cleanup:
 }
 
 /**
- * smime_class_invoke_import - Implements CryptModuleSpecs::smime_invoke_import() - @ingroup crypto_smime_invoke_import
+ * smime_class_invoke_import - Add a certificate and update index file (externally) - Implements CryptModuleSpecs::smime_invoke_import() - @ingroup crypto_smime_invoke_import
  */
 void smime_class_invoke_import(const char *infile, const char *mailbox)
 {
@@ -1253,7 +1253,7 @@ done:
 }
 
 /**
- * smime_class_verify_sender - Implements CryptModuleSpecs::smime_verify_sender() - @ingroup crypto_smime_verify_sender
+ * smime_class_verify_sender - Does the sender match the certificate? - Implements CryptModuleSpecs::smime_verify_sender() - @ingroup crypto_smime_verify_sender
  */
 int smime_class_verify_sender(struct Email *e, struct Message *msg)
 {
@@ -1379,7 +1379,7 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
 }
 
 /**
- * smime_class_build_smime_entity - Implements CryptModuleSpecs::smime_build_smime_entity() - @ingroup crypto_smime_build_smime_entity
+ * smime_class_build_smime_entity - Encrypt the email body to all recipients - Implements CryptModuleSpecs::smime_build_smime_entity() - @ingroup crypto_smime_build_smime_entity
  */
 struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
 {
@@ -1542,7 +1542,7 @@ static char *openssl_md_to_smime_micalg(const char *md)
 }
 
 /**
- * smime_class_sign_message - Implements CryptModuleSpecs::sign_message() - @ingroup crypto_sign_message
+ * smime_class_sign_message - Cryptographically sign the Body of a message - Implements CryptModuleSpecs::sign_message() - @ingroup crypto_sign_message
  */
 struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *from)
 {
@@ -1750,7 +1750,7 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
 }
 
 /**
- * smime_class_verify_one - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
+ * smime_class_verify_one - Check a signed MIME part against a signature - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
 int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char *tempfile)
 {
@@ -2102,7 +2102,7 @@ cleanup:
 }
 
 /**
- * smime_class_decrypt_mime - Implements CryptModuleSpecs::decrypt_mime() - @ingroup crypto_decrypt_mime
+ * smime_class_decrypt_mime - Decrypt an encrypted MIME part - Implements CryptModuleSpecs::decrypt_mime() - @ingroup crypto_decrypt_mime
  */
 int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
 {
@@ -2165,7 +2165,7 @@ bail:
 }
 
 /**
- * smime_class_application_handler - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
+ * smime_class_application_handler - Manage the MIME type "application/pgp" or "application/smime" - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
 int smime_class_application_handler(struct Body *m, struct State *state)
 {
@@ -2184,7 +2184,7 @@ int smime_class_application_handler(struct Body *m, struct State *state)
 }
 
 /**
- * smime_class_send_menu - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
+ * smime_class_send_menu - Ask the user whether to sign and/or encrypt the email - Implements CryptModuleSpecs::send_menu() - @ingroup crypto_send_menu
  */
 SecurityFlags smime_class_send_menu(struct Email *e)
 {

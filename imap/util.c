@@ -198,7 +198,7 @@ void imap_clean_path(char *path, size_t plen)
 }
 
 /**
- * imap_get_field - Get connection login credentials - Implements ConnAccount::get_field()
+ * imap_get_field - Get connection login credentials - Implements ConnAccount::get_field() - @ingroup conn_account_get_field
  */
 static const char *imap_get_field(enum ConnAccountField field, void *gf_data)
 {

@@ -73,7 +73,7 @@ struct MUpdate
 };
 
 /**
- * mbox_adata_free - Free the private Account data - Implements Account::adata_free()
+ * mbox_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  */
 static void mbox_adata_free(void **ptr)
 {

@@ -205,7 +205,7 @@ bool driver_tags_replace(struct TagList *head, const char *tags)
 }
 
 /**
- * tags_deleter - Delete a tag - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ * tags_deleter - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
 static void tags_deleter(int type, void *obj, intptr_t data)
 {

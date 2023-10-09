@@ -35,7 +35,7 @@
 #include "types.h"
 
 /**
- * cs_hashelem_free - Callback function for the Hash Table - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ * cs_hashelem_free - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  * @param type Object type, e.g. #DT_STRING
  * @param obj  Object to destroy
  * @param data ConfigSet associated with the object

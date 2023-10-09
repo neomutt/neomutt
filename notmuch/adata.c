@@ -34,7 +34,7 @@
 #include "adata.h"
 
 /**
- * nm_adata_free - Free the private Account data - Implements Account::adata_free()
+ * nm_adata_free - Free the private Account data - Implements Account::adata_free() - @ingroup account_adata_free
  */
 void nm_adata_free(void **ptr)
 {

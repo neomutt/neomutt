@@ -379,7 +379,7 @@ void mutt_delete_hooks(HookFlags type)
 }
 
 /**
- * idxfmt_hashelem_free - Delete an index-format-hook from the Hash Table - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
+ * idxfmt_hashelem_free - Free our hash table data - Implements ::hash_hdata_free_t - @ingroup hash_hdata_free_api
  */
 static void idxfmt_hashelem_free(int type, void *obj, intptr_t data)
 {

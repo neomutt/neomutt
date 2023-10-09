@@ -223,7 +223,7 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
- * slist_string_minus_equals - Remove from a Slist by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
+ * slist_string_minus_equals - Remove from a Slist by string - Implements ConfigSetType::string_minus_equals() - @ingroup cfg_type_string_minus_equals
  */
 static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
                                      const struct ConfigDef *cdef,

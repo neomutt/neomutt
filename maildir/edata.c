@@ -33,7 +33,7 @@
 #include "edata.h"
 
 /**
- * maildir_edata_free - Free the private Email data - Implements Email::edata_free()
+ * maildir_edata_free - Free the private Email data - Implements Email::edata_free() - @ingroup email_edata_free
  */
 void maildir_edata_free(void **ptr)
 {

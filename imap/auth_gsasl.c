@@ -36,7 +36,7 @@
 #include "auth.h"
 
 /**
- * imap_auth_gsasl - GNU SASL authenticator - Implements ImapAuth::authenticate()
+ * imap_auth_gsasl - GNU SASL authenticator - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  */
 enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *method)
 {

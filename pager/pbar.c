@@ -293,7 +293,7 @@ static int pbar_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pbar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * pbar_data_free - Free the private data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void pbar_data_free(struct MuttWindow *win, void **ptr)
 {
@@ -308,7 +308,7 @@ static void pbar_data_free(struct MuttWindow *win, void **ptr)
 }
 
 /**
- * pbar_data_new - Free the private data attached to the MuttWindow
+ * pbar_data_new - Create new private data
  * @param shared Shared Index data
  * @param priv   Private Index data
  * @retval ptr New PBar

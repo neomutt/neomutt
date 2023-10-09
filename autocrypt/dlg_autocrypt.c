@@ -175,7 +175,7 @@ static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, in
 }
 
 /**
- * autocrypt_make_entry - Create a line for the Autocrypt account menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * autocrypt_make_entry - Format an Autocrypt Account for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $autocrypt_acct_format, autocrypt_format_str()
  */

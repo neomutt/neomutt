@@ -34,7 +34,7 @@
 #include "auth.h"
 
 /**
- * imap_auth_anon - Authenticate anonymously - Implements ImapAuth::authenticate()
+ * imap_auth_anon - Authenticate anonymously - Implements ImapAuth::authenticate() - @ingroup imap_authenticate
  *
  * This is basically a stripped-down version of the cram-md5 method.
  */

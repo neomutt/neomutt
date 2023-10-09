@@ -42,6 +42,8 @@
 struct ImapAuth
 {
   /**
+   * @defgroup imap_authenticate IMAP Authenticaion API
+   *
    * authenticate - Authenticate an IMAP connection
    * @param adata Imap Account data
    * @param method Use this named method, or any available method if NULL

@@ -312,7 +312,7 @@ done:
 }
 
 /**
- * smtp_get_field - Get connection login credentials - Implements ConnAccount::get_field()
+ * smtp_get_field - Get connection login credentials - Implements ConnAccount::get_field() - @ingroup conn_account_get_field
  */
 static const char *smtp_get_field(enum ConnAccountField field, void *gf_data)
 {

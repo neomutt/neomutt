@@ -32,7 +32,7 @@
 #include "mdata.h"
 
 /**
- * maildir_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
+ * maildir_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
  */
 void maildir_mdata_free(void **ptr)
 {

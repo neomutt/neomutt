@@ -74,7 +74,7 @@ static struct ZstdComprData *zstd_cdata_new(void)
 }
 
 /**
- * compr_zstd_open - Implements ComprOps::open() - @ingroup compress_open
+ * compr_zstd_open - Open a compression context - Implements ComprOps::open() - @ingroup compress_open
  */
 static ComprHandle *compr_zstd_open(short level)
 {
@@ -108,7 +108,7 @@ static ComprHandle *compr_zstd_open(short level)
 }
 
 /**
- * compr_zstd_compress - Implements ComprOps::compress() - @ingroup compress_compress
+ * compr_zstd_compress - Compress header cache data - Implements ComprOps::compress() - @ingroup compress_compress
  */
 static void *compr_zstd_compress(ComprHandle *handle, const char *data,
                                  size_t dlen, size_t *clen)
@@ -132,7 +132,7 @@ static void *compr_zstd_compress(ComprHandle *handle, const char *data,
 }
 
 /**
- * compr_zstd_decompress - Implements ComprOps::decompress() - @ingroup compress_decompress
+ * compr_zstd_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
 static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
@@ -159,7 +159,7 @@ static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t
 }
 
 /**
- * compr_zstd_close - Implements ComprOps::close() - @ingroup compress_close
+ * compr_zstd_close - Close a compression context - Implements ComprOps::close() - @ingroup compress_close
  */
 static void compr_zstd_close(ComprHandle **ptr)
 {

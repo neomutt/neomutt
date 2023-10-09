@@ -1102,7 +1102,7 @@ int maildir_check_empty(struct Buffer *path)
 }
 
 /**
- * maildir_ac_owns_path - Check whether an Account own a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
+ * maildir_ac_owns_path - Check whether an Account owns a Mailbox path - Implements MxOps::ac_owns_path() - @ingroup mx_ac_owns_path
  */
 static bool maildir_ac_owns_path(struct Account *a, const char *path)
 {

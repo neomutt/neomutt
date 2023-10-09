@@ -336,7 +336,7 @@ int raw_socket_write(struct Connection *conn, const char *buf, size_t count)
 }
 
 /**
- * raw_socket_poll - Checks whether reads would block - Implements Connection::poll() - @ingroup connection_poll
+ * raw_socket_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 int raw_socket_poll(struct Connection *conn, time_t wait_secs)
 {

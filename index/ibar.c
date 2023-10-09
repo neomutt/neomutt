@@ -293,7 +293,7 @@ static int ibar_window_observer(struct NotifyCallback *nc)
 }
 
 /**
- * ibar_data_free - Free the private data attached to the MuttWindow - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
+ * ibar_data_free - Free the private data - Implements MuttWindow::wdata_free() - @ingroup window_wdata_free
  */
 static void ibar_data_free(struct MuttWindow *win, void **ptr)
 {

@@ -36,7 +36,7 @@
 #include "query.h"
 
 /**
- * nm_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free()
+ * nm_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
  *
  * The NmMboxData struct stores global Notmuch data, such as the connection to
  * the database.  This function will close the database, free the resources and

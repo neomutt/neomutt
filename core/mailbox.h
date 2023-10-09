@@ -133,6 +133,8 @@ struct Mailbox
   void *mdata;                        ///< Driver specific data
 
   /**
+   * @defgroup mailbox_mdata_free Mailbox Private Data API
+   *
    * mdata_free - Free the private data attached to the Mailbox
    * @param ptr Private data to be freed
    *

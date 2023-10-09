@@ -38,7 +38,7 @@
 #include "lib.h"
 
 /**
- * store_gdbm_open - Implements StoreOps::open() - @ingroup store_open
+ * store_gdbm_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
 static StoreHandle *store_gdbm_open(const char *path)
 {
@@ -59,7 +59,7 @@ static StoreHandle *store_gdbm_open(const char *path)
 }
 
 /**
- * store_gdbm_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
+ * store_gdbm_fetch - Fetch a Value from the Store - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_gdbm_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -81,7 +81,7 @@ static void *store_gdbm_fetch(StoreHandle *store, const char *key, size_t klen, 
 }
 
 /**
- * store_gdbm_free - Implements StoreOps::free() - @ingroup store_free
+ * store_gdbm_free - Free a Value returned by fetch() - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_gdbm_free(StoreHandle *store, void **ptr)
 {
@@ -89,7 +89,7 @@ static void store_gdbm_free(StoreHandle *store, void **ptr)
 }
 
 /**
- * store_gdbm_store - Implements StoreOps::store() - @ingroup store_store
+ * store_gdbm_store - Write a Value to the Store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_gdbm_store(StoreHandle *store, const char *key, size_t klen,
                             void *value, size_t vlen)
@@ -113,7 +113,7 @@ static int store_gdbm_store(StoreHandle *store, const char *key, size_t klen,
 }
 
 /**
- * store_gdbm_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
+ * store_gdbm_delete_record - Delete a record from the Store - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_gdbm_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
@@ -132,7 +132,7 @@ static int store_gdbm_delete_record(StoreHandle *store, const char *key, size_t 
 }
 
 /**
- * store_gdbm_close - Implements StoreOps::close() - @ingroup store_close
+ * store_gdbm_close - Close a Store connection - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_gdbm_close(StoreHandle **ptr)
 {
@@ -146,7 +146,7 @@ static void store_gdbm_close(StoreHandle **ptr)
 }
 
 /**
- * store_gdbm_version - Implements StoreOps::version() - @ingroup store_version
+ * store_gdbm_version - Get a Store version string - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_gdbm_version(void)
 {

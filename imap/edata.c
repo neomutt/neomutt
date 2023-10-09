@@ -34,7 +34,7 @@
 #include "edata.h"
 
 /**
- * imap_edata_free - Free the private Email data - Implements Email::edata_free()
+ * imap_edata_free - Free the private Email data - Implements Email::edata_free() - @ingroup email_edata_free
  */
 void imap_edata_free(void **ptr)
 {

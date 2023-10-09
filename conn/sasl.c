@@ -89,7 +89,7 @@ struct SaslSockData
   int (*write)(struct Connection *conn, const char *buf, size_t count);
 
   /**
-   * poll - Check whether a socket read would block - Implements Connection::poll() - @ingroup connection_poll
+   * poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
    */
   int (*poll)(struct Connection *conn, time_t wait_secs);
 
@@ -578,7 +578,7 @@ fail:
 }
 
 /**
- * mutt_sasl_conn_poll - Check an SASL connection for data - Implements Connection::poll() - @ingroup connection_poll
+ * mutt_sasl_conn_poll - Check if any data is waiting on a socket - Implements Connection::poll() - @ingroup connection_poll
  */
 static int mutt_sasl_conn_poll(struct Connection *conn, time_t wait_secs)
 {

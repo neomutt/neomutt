@@ -144,7 +144,7 @@ static int lmdb_get_write_txn(struct LmdbStoreData *sdata)
 }
 
 /**
- * store_lmdb_open - Implements StoreOps::open() - @ingroup store_open
+ * store_lmdb_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
 static StoreHandle *store_lmdb_open(const char *path)
 {
@@ -201,7 +201,7 @@ fail_env:
 }
 
 /**
- * store_lmdb_fetch - Implements StoreOps::fetch() - @ingroup store_fetch
+ * store_lmdb_fetch - Fetch a Value from the Store - Implements StoreOps::fetch() - @ingroup store_fetch
  */
 static void *store_lmdb_fetch(StoreHandle *store, const char *key, size_t klen, size_t *vlen)
 {
@@ -241,7 +241,7 @@ static void *store_lmdb_fetch(StoreHandle *store, const char *key, size_t klen, 
 }
 
 /**
- * store_lmdb_free - Implements StoreOps::free() - @ingroup store_free
+ * store_lmdb_free - Free a Value returned by fetch() - Implements StoreOps::free() - @ingroup store_free
  */
 static void store_lmdb_free(StoreHandle *store, void **ptr)
 {
@@ -249,7 +249,7 @@ static void store_lmdb_free(StoreHandle *store, void **ptr)
 }
 
 /**
- * store_lmdb_store - Implements StoreOps::store() - @ingroup store_store
+ * store_lmdb_store - Write a Value to the Store - Implements StoreOps::store() - @ingroup store_store
  */
 static int store_lmdb_store(StoreHandle *store, const char *key, size_t klen,
                             void *value, size_t vlen)
@@ -285,7 +285,7 @@ static int store_lmdb_store(StoreHandle *store, const char *key, size_t klen,
 }
 
 /**
- * store_lmdb_delete_record - Implements StoreOps::delete_record() - @ingroup store_delete_record
+ * store_lmdb_delete_record - Delete a record from the Store - Implements StoreOps::delete_record() - @ingroup store_delete_record
  */
 static int store_lmdb_delete_record(StoreHandle *store, const char *key, size_t klen)
 {
@@ -318,7 +318,7 @@ static int store_lmdb_delete_record(StoreHandle *store, const char *key, size_t 
 }
 
 /**
- * store_lmdb_close - Implements StoreOps::close() - @ingroup store_close
+ * store_lmdb_close - Close a Store connection - Implements StoreOps::close() - @ingroup store_close
  */
 static void store_lmdb_close(StoreHandle **ptr)
 {
@@ -344,7 +344,7 @@ static void store_lmdb_close(StoreHandle **ptr)
 }
 
 /**
- * store_lmdb_version - Implements StoreOps::version() - @ingroup store_version
+ * store_lmdb_version - Get a Store version string - Implements StoreOps::version() - @ingroup store_version
  */
 static const char *store_lmdb_version(void)
 {
