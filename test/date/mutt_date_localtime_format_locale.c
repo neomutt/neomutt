@@ -38,12 +38,15 @@ void test_mutt_date_localtime_format_locale(void)
 
   {
     char buf[64] = { 0 };
-    mutt_date_localtime_format_locale(NULL, sizeof(buf), "%y", 1698521050, NeoMutt->time_c_locale);
-    mutt_date_localtime_format_locale(buf, sizeof(buf), NULL, 1698521050, NeoMutt->time_c_locale);
+    mutt_date_localtime_format_locale(NULL, sizeof(buf), "%y", 1698521050,
+                                      NeoMutt->time_c_locale);
+    mutt_date_localtime_format_locale(buf, sizeof(buf), NULL, 1698521050,
+                                      NeoMutt->time_c_locale);
   }
 
   {
     char buf[64] = { 0 };
-    mutt_date_localtime_format_locale(buf, sizeof(buf), "%y", 1698521050, NeoMutt->time_c_locale);
+    mutt_date_localtime_format_locale(buf, sizeof(buf), "%y", 1698521050,
+                                      NeoMutt->time_c_locale);
   }
 }
