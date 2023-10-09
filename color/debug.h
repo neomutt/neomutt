@@ -34,10 +34,6 @@ struct CursesColor;
 struct RegexColor;
 struct RegexColorList;
 
-const char *color_debug_log_color_attrs(int fg, int bg, int attrs);
-const char *color_debug_log_name(char *buf, int buflen, int color);
-const char *color_debug_log_attrs_list(int attrs);
-
 #ifdef USE_DEBUG_COLOR
 
 void color_dump(void);

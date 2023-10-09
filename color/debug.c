@@ -86,39 +86,36 @@ int color_debug(enum LogLevel level, const char *format, ...)
 
 /**
  * color_debug_log_color_attrs - Get a colourful string to represent a colour in the log
- * @param fg    Foreground colour
- * @param bg    Background colour
- * @param attrs Attributes, e.g. A_UNDERLINE
- * @retval ptr Generated string
+ * @param fg     Foreground colour
+ * @param bg     Background colour
+ * @param attrs  Attributes, e.g. A_UNDERLINE
+ * @param swatch Buffer for swatch
  *
  * @note Do not free the returned string
  */
-const char *color_debug_log_color_attrs(int fg, int bg, int attrs)
+void color_debug_log_color_attrs(int fg, int bg, int attrs, struct Buffer *swatch)
 {
-  static char text[64];
-  int pos = 0;
+  buf_reset(swatch);
 
   if (attrs & A_BLINK)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[5m");
+    buf_add_printf(swatch, "\033[5m");
   if (attrs & A_BOLD)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[1m");
+    buf_add_printf(swatch, "\033[1m");
   if (attrs & A_NORMAL)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[0m");
+    buf_add_printf(swatch, "\033[0m");
   if (attrs & A_REVERSE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[7m");
+    buf_add_printf(swatch, "\033[7m");
   if (attrs & A_STANDOUT)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[1m");
+    buf_add_printf(swatch, "\033[1m");
   if (attrs & A_UNDERLINE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[4m");
+    buf_add_printf(swatch, "\033[4m");
 
   if (fg >= 0)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[38;5;%dm", fg);
+    buf_add_printf(swatch, "\033[38;5;%dm", fg);
   if (bg >= 0)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[48;5;%dm", bg);
+    buf_add_printf(swatch, "\033[48;5;%dm", bg);
 
-  snprintf(text + pos, sizeof(text) - pos, "XXXXXX\033[0m");
-
-  return text;
+  buf_addstr(swatch, "XXXXXX\033[0m");
 }
 
 /**
@@ -493,8 +490,6 @@ void merged_colors_dump(void)
 void color_dump(void)
 {
   struct Buffer *tmp_file = buf_pool_get();
-  char color_fg[32] = { 0 };
-  char color_bg[32] = { 0 };
 
   buf_mktemp(tmp_file);
   FILE *fp = mutt_file_fopen(buf_string(tmp_file), "w");
@@ -505,6 +500,10 @@ void color_dump(void)
     buf_pool_release(&tmp_file);
     return;
   }
+
+  struct Buffer *swatch = buf_pool_get();
+  char color_fg[32] = { 0 };
+  char color_bg[32] = { 0 };
 
   fputs("# All Colours\n\n", fp);
   fputs("# Simple Colours\n", fp);
@@ -522,11 +521,11 @@ void color_dump(void)
     if (!name)
       continue;
 
-    const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
+    color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
     fprintf(fp, "color %-18s %-30s %-8s %-8s # %s\n", name,
             color_debug_log_attrs_list(ac->attrs),
             color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-            color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
+            color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), buf_string(swatch));
   }
 
   if (NumQuotedColors > 0)
@@ -542,11 +541,12 @@ void color_dump(void)
       if (!cc)
         continue;
 
-      const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
+      color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
       fprintf(fp, "color quoted%d %-30s %-8s %-8s # %s\n", i,
               color_debug_log_attrs_list(ac->attrs),
               color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-              color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
+              color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+              buf_string(swatch));
     }
   }
 
@@ -590,12 +590,12 @@ void color_dump(void)
         if (!cc)
           continue;
 
-        const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
+        color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
         fprintf(fp, "color %-14s %-30s %-8s %-8s %-30s # %s\n", name,
                 color_debug_log_attrs_list(ac->attrs),
                 color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
                 color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
-                rc->pattern, swatch);
+                rc->pattern, buf_string(swatch));
       }
     }
   }
@@ -610,10 +610,11 @@ void color_dump(void)
       if (!cc)
         continue;
 
-      const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
+      color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
       fprintf(fp, "# %-30s %-8s %-8s # %s\n", color_debug_log_attrs_list(ac->attrs),
               color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-              color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
+              color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+              buf_string(swatch));
     }
   }
 
@@ -631,10 +632,11 @@ void color_dump(void)
         if (!cc)
           continue;
 
-        const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
+        color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
         fprintf(fp, "# %-30s %-8s %-8s # %s\n", color_debug_log_attrs_list(ac->attrs),
                 color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
+                color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+                buf_string(swatch));
       }
     }
   }
@@ -652,4 +654,5 @@ void color_dump(void)
 
   mutt_do_pager(&pview, NULL);
   buf_pool_release(&tmp_file);
+  buf_pool_release(&swatch);
 }
