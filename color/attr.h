@@ -25,8 +25,8 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include "mutt/lib.h"
+#include "curses2.h"
 
 /**
  * struct AttrColor - A curses colour and its attributes
@@ -48,6 +48,6 @@ bool              attr_color_match (struct AttrColor *ac1, struct AttrColor *ac2
 struct AttrColor *attr_color_new   (void);
 
 void              attr_color_list_clear(struct AttrColorList *acl);
-struct AttrColor *attr_color_list_find (struct AttrColorList *acl, uint32_t fg, uint32_t bg, int attrs);
+struct AttrColor *attr_color_list_find (struct AttrColorList *acl, color_t fg, color_t bg, int attrs);
 
 #endif /* MUTT_COLOR_ATTR_H */

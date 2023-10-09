@@ -31,7 +31,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include "mutt/lib.h"
 #include "attr.h"
 #include "color.h"
@@ -71,7 +70,7 @@ void merged_colors_cleanup(void)
  * @param attrs Attributes, e.g. A_UNDERLINE
  * @retval ptr Matching Merged colour
  */
-static struct AttrColor *merged_colors_find(int fg, int bg, int attrs)
+static struct AttrColor *merged_colors_find(color_t fg, color_t bg, int attrs)
 {
   struct AttrColor *ac = NULL;
   TAILQ_FOREACH(ac, &MergedColors, entries)
@@ -117,8 +116,8 @@ const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
   struct CursesColor *cc_base = base->curses_color;
   struct CursesColor *cc_over = over->curses_color;
 
-  uint32_t fg = COLOR_DEFAULT;
-  uint32_t bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
 
   if (cc_over)
   {

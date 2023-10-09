@@ -25,7 +25,9 @@
 #define MUTT_COLOR_COLOR_H
 
 #include "config.h"
+#include "mutt/lib.h"
 #include <stdbool.h>
+#include <stdint.h>
 
 /**
  * enum ColorId - List of all colored objects
@@ -93,9 +95,6 @@ enum ColorId
   MT_COLOR_INDEX_TAGS,               ///< Index: tags field (%g, %J)
   MT_COLOR_MAX,
 };
-
-#include <stdint.h>
-#include "mutt/lib.h"
 
 extern const struct Mapping ColorNames[];
 extern const struct Mapping ColorFields[];

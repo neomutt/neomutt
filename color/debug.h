@@ -27,10 +27,10 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "color.h"
+#include "curses2.h"
 
 struct AttrColor;
 struct AttrColorList;
-struct CursesColor;
 struct RegexColor;
 struct RegexColorList;
 
@@ -39,7 +39,7 @@ struct RegexColorList;
 void color_dump(void);
 
 const char *color_debug_log_attrs(int attrs);
-const char *color_debug_log_color(int fg, int bg);
+const char *color_debug_log_color(color_t fg, color_t bg);
 
 void attr_color_dump       (struct AttrColor *ac, const char *prefix);
 void attr_color_list_dump  (struct AttrColorList *acl, const char *title);
@@ -67,7 +67,7 @@ int color_debug(enum LogLevel level, const char *format, ...)
 static inline void color_dump(void) {}
 
 static inline const char *color_debug_log_attrs(int attrs) { return ""; }
-static inline const char *color_debug_log_color(int fg, int bg) { return ""; }
+static inline const char *color_debug_log_color(color_t fg, color_t bg) { return ""; }
 
 static inline void attr_color_dump       (struct AttrColor *ac, const char *prefix) {}
 static inline void attr_color_list_dump  (struct AttrColorList *acl, const char *title) {}

@@ -93,7 +93,7 @@ int color_debug(enum LogLevel level, const char *format, ...)
  *
  * @note Do not free the returned string
  */
-void color_debug_log_color_attrs(int fg, int bg, int attrs, struct Buffer *swatch)
+void color_debug_log_color_attrs(color_t fg, color_t bg, int attrs, struct Buffer *swatch)
 {
   buf_reset(swatch);
 
@@ -126,7 +126,7 @@ void color_debug_log_color_attrs(int fg, int bg, int attrs, struct Buffer *swatc
  *
  * @note Do not free the returned string
  */
-const char *color_debug_log_color(int fg, int bg)
+const char *color_debug_log_color(color_t fg, color_t bg)
 {
   static char text[64];
   snprintf(text, sizeof(text), "\033[38;5;%dm\033[48;5;%dmXXXXXX\033[0m", fg, bg);
@@ -229,8 +229,8 @@ void attr_color_dump(struct AttrColor *ac, const char *prefix)
 
   int index = ac->curses_color ? ac->curses_color->index : -1;
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {
@@ -318,8 +318,8 @@ void quoted_color_dump(struct AttrColor *ac, int q_level, const char *prefix)
 
   int index = ac->curses_color ? ac->curses_color->index : -1;
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {
@@ -358,8 +358,8 @@ void regex_color_dump(struct RegexColor *rcol, const char *prefix)
   struct AttrColor *ac = &rcol->attr_color;
   int index = ac->curses_color ? ac->curses_color->index : -1;
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {
@@ -444,8 +444,8 @@ void simple_color_dump(enum ColorId cid, const char *prefix)
     }
   }
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {

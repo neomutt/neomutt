@@ -29,7 +29,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "quoted.h"
@@ -103,7 +102,7 @@ int quoted_colors_num_used(void)
  * @param err     Buffer for error messages
  * @retval true Colour was parsed
  */
-bool quoted_colors_parse_color(enum ColorId cid, uint32_t fg, uint32_t bg,
+bool quoted_colors_parse_color(enum ColorId cid, color_t fg, color_t bg,
                                int attrs, int q_level, int *rc, struct Buffer *err)
 {
   if (cid != MT_COLOR_QUOTED)

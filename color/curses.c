@@ -54,7 +54,7 @@ void curses_colors_init(void)
  * @param bg Background colour
  * @retval ptr Curses colour
  */
-struct CursesColor *curses_colors_find(int fg, int bg)
+struct CursesColor *curses_colors_find(color_t fg, color_t bg)
 {
   struct CursesColor *cc = NULL;
   TAILQ_FOREACH(cc, &CursesColors, entries)
@@ -74,7 +74,7 @@ struct CursesColor *curses_colors_find(int fg, int bg)
  * @param bg Background colour
  * @retval num Index of Curses colour
  */
-static int curses_color_init(int fg, int bg)
+static int curses_color_init(color_t fg, color_t bg)
 {
   color_debug(LL_DEBUG5, "find lowest index\n");
   int index = 16;
@@ -148,7 +148,7 @@ void curses_color_free(struct CursesColor **ptr)
  * If the colour already exists, this function will return a pointer to the
  * object (and increase its ref-count).
  */
-struct CursesColor *curses_color_new(int fg, int bg)
+struct CursesColor *curses_color_new(color_t fg, color_t bg)
 {
   color_debug(LL_DEBUG5, "fg %d, bg %d\n", fg, bg);
   if (((fg == COLOR_UNSET) && (bg == COLOR_UNSET)) ||

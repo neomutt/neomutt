@@ -40,6 +40,7 @@
 #include "parse/lib.h"
 #include "color.h"
 #include "command2.h"
+#include "curses2.h"
 #include "debug.h"
 #include "globals.h"
 #include "notify2.h"
@@ -200,15 +201,18 @@ enum ColorPrefix
  * | 240 | `#585858` | 241 | `#606060` | 242 | `#666666` | 243 | `#767676` | 244 | `#808080` | 245 | `#8a8a8a` | 246 | `#949494` | 247 | `#9e9e9e` |
  * | 248 | `#a8a8a8` | 249 | `#b2b2b2` | 250 | `#bcbcbc` | 251 | `#c6c6c6` | 252 | `#d0d0d0` | 253 | `#dadada` | 254 | `#e4e4e4` | 255 | `#eeeeee` |
  */
-static uint32_t color_xterm256_to_24bit(const uint32_t color)
+static color_t color_xterm256_to_24bit(const color_t color)
 {
-  static const uint32_t basic[] = {
+  static const color_t basic[] = {
     0x000000, 0x800000, 0x008000, 0x808000, 0x000080, 0x800080,
     0x008080, 0xc0c0c0, 0x808080, 0xff0000, 0x00ff00, 0xffff00,
     0x0000ff, 0xff00ff, 0x00ffff, 0xffffff,
   };
 
   assert(color < 256);
+
+  if (color < 0)
+    return color;
 
   if (color < 16)
   {
@@ -236,26 +240,26 @@ static uint32_t color_xterm256_to_24bit(const uint32_t color)
      * value for red, green, and blue, respectively.
      */
 
-    uint32_t normalised_color = color - 16;
-    uint32_t vr = (normalised_color % 216) / 36; /* 216 = 6*6*6 */
-    uint32_t vg = (normalised_color % 36) / 6;
-    uint32_t vb = (normalised_color % 6) / 1;
+    color_t normalised_color = color - 16;
+    color_t vr = (normalised_color % 216) / 36; /* 216 = 6*6*6 */
+    color_t vg = (normalised_color % 36) / 6;
+    color_t vb = (normalised_color % 6) / 1;
 
     /* First step is wider than the other ones, so add the difference if needed */
-    uint32_t r = vr * 0x28 + ((vr > 0) ? (0x5f - 0x40) : 0);
-    uint32_t g = vg * 0x28 + ((vg > 0) ? (0x5f - 0x40) : 0);
-    uint32_t b = vb * 0x28 + ((vb > 0) ? (0x5f - 0x40) : 0);
+    color_t r = vr * 0x28 + ((vr > 0) ? (0x5f - 0x40) : 0);
+    color_t g = vg * 0x28 + ((vg > 0) ? (0x5f - 0x40) : 0);
+    color_t b = vb * 0x28 + ((vb > 0) ? (0x5f - 0x40) : 0);
 
-    uint32_t rgb = (r << 16) + (g << 8) + (b << 0);
+    color_t rgb = (r << 16) + (g << 8) + (b << 0);
     color_debug(LL_DEBUG5, "Converted xterm color %d to RGB #%x:\n", color, rgb);
     return rgb;
   }
 
   /* Grey scale starts at 0x08 and adds 0xa = 10 in very step ending in 0xee.
    * There are a total of 6*4 = 24 grey colors in total. */
-  uint32_t steps = color - 232;
-  uint32_t grey = (steps * 0x0a) + 0x08;
-  uint32_t rgb = (grey << 16) + (grey << 8) + (grey << 0);
+  color_t steps = color - 232;
+  color_t grey = (steps * 0x0a) + 0x08;
+  color_t rgb = (grey << 16) + (grey << 8) + (grey << 0);
   color_debug(LL_DEBUG5, "Converted xterm color %d to RGB #%x:\n", color, rgb);
   return rgb;
 }
@@ -269,7 +273,7 @@ static uint32_t color_xterm256_to_24bit(const uint32_t color)
  * @param[in,out] attrs  attributes to modify
  */
 static void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg,
-                                   uint32_t *col, int *attrs)
+                                   color_t *col, int *attrs)
 {
   if (prefix == COLOR_PREFIX_NONE)
     return; // nothing to do here
@@ -353,7 +357,7 @@ static int parse_color_prefix(const char *s, enum ColorPrefix *prefix)
  * @retval #MUTT_CMD_SUCCESS Colour parsed successfully
  * @retval #MUTT_CMD_WARNING Unknown colour, try other parsers
  */
-static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, int *attrs,
+static enum CommandResult parse_color_namedcolor(const char *s, color_t *col, int *attrs,
                                                  bool is_fg, struct Buffer *err)
 {
   enum ColorPrefix prefix = COLOR_PREFIX_NONE;
@@ -400,7 +404,7 @@ static enum CommandResult parse_color_namedcolor(const char *s, uint32_t *col, i
  *
  * On #MUTT_CMD_ERROR, an error message will be written to err.
  */
-static enum CommandResult parse_color_colornnn(const char *s, uint32_t *col, int *attrs,
+static enum CommandResult parse_color_colornnn(const char *s, color_t *col, int *attrs,
                                                bool is_fg, struct Buffer *err)
 {
   /* prefixes bright, alert, light are only allowed for named colours and
@@ -458,7 +462,7 @@ static enum CommandResult parse_color_colornnn(const char *s, uint32_t *col, int
  *
  * On #MUTT_CMD_ERROR, an error message will be written to err.
  */
-static enum CommandResult parse_color_rrggbb(const char *s, uint32_t *col, int *attrs,
+static enum CommandResult parse_color_rrggbb(const char *s, color_t *col, int *attrs,
                                              bool is_fg, struct Buffer *err)
 {
   /* parse #RRGGBB colours */
@@ -504,7 +508,7 @@ static enum CommandResult parse_color_rrggbb(const char *s, uint32_t *col, int *
  *
  * Parse a colour name, such as "red", "brightgreen", "color123", "#12FE45"
  */
-static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *attrs,
+static enum CommandResult parse_color_name(const char *s, color_t *col, int *attrs,
                                            bool is_fg, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
@@ -534,8 +538,8 @@ static enum CommandResult parse_color_name(const char *s, uint32_t *col, int *at
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
 static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
-                                          uint32_t *fg, uint32_t *bg,
-                                          int *attrs, struct Buffer *err)
+                                          color_t *fg, color_t *bg, int *attrs,
+                                          struct Buffer *err)
 {
   if (fg)
     *fg = COLOR_UNSET;
@@ -593,8 +597,8 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
  * Parse a pair of colours, e.g. "red default"
  */
 static enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
-                                           uint32_t *fg, uint32_t *bg,
-                                           int *attrs, struct Buffer *err)
+                                           color_t *fg, color_t *bg, int *attrs,
+                                           struct Buffer *err)
 {
   while (true)
   {
@@ -873,7 +877,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
                                       bool dry_run, bool color)
 {
   int attrs = 0, q_level = 0;
-  uint32_t fg = 0, bg = 0, match = 0;
+  color_t fg = 0, bg = 0;
+  unsigned int match = 0;
   enum ColorId cid = MT_COLOR_NONE;
   enum CommandResult rc;
 
@@ -902,7 +907,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   /* extract a regular expression if needed */
 
-  if (mutt_color_has_pattern(cid) && cid != MT_COLOR_STATUS)
+  if (mutt_color_has_pattern(cid) && (cid != MT_COLOR_STATUS))
   {
     color_debug(LL_DEBUG5, "regex needed\n");
     if (MoreArgs(s))
@@ -1049,5 +1054,5 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  return parse_color(buf, s, err, parse_attr_spec, true, false);
+  return parse_color(buf, s, err, parse_attr_spec, false, false);
 }

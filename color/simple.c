@@ -122,7 +122,7 @@ bool simple_color_is_header(enum ColorId cid)
  * @param attrs Attributes, e.g. A_UNDERLINE
  * @retval ptr Colour
  */
-struct AttrColor *simple_color_set(enum ColorId cid, int fg, int bg, int attrs)
+struct AttrColor *simple_color_set(enum ColorId cid, color_t fg, color_t bg, int attrs)
 {
   struct AttrColor *ac = simple_color_get(cid);
   if (!ac)

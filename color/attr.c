@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <stdint.h>
 #include "mutt/lib.h"
 #include "attr.h"
 #include "curses2.h"
@@ -116,8 +115,8 @@ void attr_color_list_clear(struct AttrColorList *acl)
  * @param attrs Attributes, e.g. A_UNDERLINE
  * @retval ptr Matching AttrColor
  */
-struct AttrColor *attr_color_list_find(struct AttrColorList *acl, uint32_t fg,
-                                       uint32_t bg, int attrs)
+struct AttrColor *attr_color_list_find(struct AttrColorList *acl, color_t fg,
+                                       color_t bg, int attrs)
 {
   if (!acl)
     return NULL;

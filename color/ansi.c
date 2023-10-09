@@ -146,7 +146,7 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
     }
     else if (buf[pos] == '3')
     {
-      // 30-37 basic fg
+      // 30-37 basic foreground
       if ((buf[pos + 1] >= '0') && (buf[pos + 1] < '8') && ansi_is_end_char(buf[pos + 2]))
       {
         ansi->fg = buf[pos + 1] - '0';
@@ -156,7 +156,7 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
       {
         if (mutt_str_startswith(buf + pos, "38;5;") && isdigit(buf[pos + 5]))
         {
-          // 38;5;n palette fg
+          // 38;5;n palette foreground
           char *end = NULL;
           int value = strtoul(buf + pos + 5, &end, 10);
           if ((value >= 0) && (value < 256) && end && ansi_is_end_char(end[0]))
@@ -171,7 +171,7 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
         }
         else if (mutt_str_startswith(buf + pos, "38;2;") && isdigit(buf[pos + 5]))
         {
-          // 38;2;R;G;B true colour fg
+          // 38;2;R;G;B true colour foreground
           pos += ansi_skip_sequence(buf + pos + 5);
           pos += ansi_skip_sequence(buf + pos);
           pos += ansi_skip_sequence(buf + pos);
@@ -199,7 +199,7 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
     }
     else if (buf[pos] == '4')
     {
-      // 40-47 basic bg
+      // 40-47 basic background
       if ((buf[pos + 1] >= '0') && (buf[pos + 1] < '8'))
       {
         ansi->bg = buf[pos + 1] - '0';
@@ -209,7 +209,7 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
       {
         if (mutt_str_startswith(buf + pos, "48;5;") && isdigit(buf[pos + 5]))
         {
-          // 48;5;n palette bg
+          // 48;5;n palette background
           char *end = NULL;
           int value = strtoul(buf + pos + 5, &end, 10);
           if ((value >= 0) && (value < 256) && end && ansi_is_end_char(end[0]))
@@ -224,7 +224,7 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
         }
         else if (mutt_str_startswith(buf + pos, "48;2;") && isdigit(buf[pos + 5]))
         {
-          // 48;2;R;G;B true colour bg
+          // 48;2;R;G;B true colour background
           pos += ansi_skip_sequence(buf + pos + 5);
           pos += ansi_skip_sequence(buf + pos);
           pos += ansi_skip_sequence(buf + pos);
@@ -236,7 +236,7 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
       }
       else if ((buf[pos + 1] == '9') && ansi_is_end_char(buf[pos + 2]))
       {
-        // default bg
+        // default background
         ansi->bg = COLOR_DEFAULT;
         pos += 2;
       }
