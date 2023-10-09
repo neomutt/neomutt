@@ -24,9 +24,11 @@
 #define MUTT_COLOR_PARSE_COLOR_H
 
 #include "core/lib.h"
+#include "mutt/lib.h"
 
 struct AttrColor;
-struct Buffer;
+
+extern const struct Mapping ColorNames[];
 
 enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
 enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);

@@ -42,6 +42,7 @@
 #include "display.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "private_data.h"
 
 /**
  * check_sig - Check for an email signature
@@ -827,7 +828,11 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
   if (check_attachment_marker((char *) buf) == 0)
     wrap_cols = width;
 
-  const bool c_allow_ansi = cs_subset_bool(NeoMutt->sub, "allow_ansi");
+  struct PagerPrivateData *priv = win->parent->wdata;
+  enum PagerMode mode = priv->pview->mode;
+  const bool c_allow_ansi = (mode == PAGER_MODE_OTHER) ||
+                            cs_subset_bool(NeoMutt->sub, "allow_ansi");
+
   for (ch = 0, vch = 0; ch < cnt; ch += k, vch += k)
   {
     /* Handle ANSI sequences */
@@ -1030,6 +1035,9 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   struct AnsiColor ansi = { { COLOR_DEFAULT, 0, 0 }, { COLOR_DEFAULT, 0, 0 }, 0, NULL };
   regmatch_t pmatch[1];
 
+  struct PagerPrivateData *priv = win_pager->parent->wdata;
+  enum PagerMode mode = priv->pview->mode;
+
   if (line_num == *lines_used)
   {
     (*lines_used)++;
@@ -1086,8 +1094,15 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
         goto out;
       }
 
-      resolve_types(win_pager, (char *) fmt, (char *) buf, *lines, line_num, *lines_used,
-                    quote_list, q_level, force_redraw, flags & MUTT_SHOWCOLOR);
+      if (mode == PAGER_MODE_EMAIL)
+      {
+        resolve_types(win_pager, (char *) fmt, (char *) buf, *lines, line_num, *lines_used,
+                      quote_list, q_level, force_redraw, flags & MUTT_SHOWCOLOR);
+      }
+      else
+      {
+        (*lines)[line_num].cid = MT_COLOR_NORMAL;
+      }
 
       /* avoid race condition for continuation lines when scrolling up */
       for (m = line_num + 1;
