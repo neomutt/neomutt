@@ -201,6 +201,8 @@ static int rootwin_window_observer(struct NotifyCallback *nc)
  */
 void rootwin_cleanup(void)
 {
+  AllDialogsWindow = NULL;
+  MessageContainer = NULL;
   mutt_window_free(&RootWindow);
 }
 
