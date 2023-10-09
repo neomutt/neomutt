@@ -133,9 +133,7 @@ static int pager_repaint(struct MuttWindow *win)
   if (!priv || !priv->pview || !priv->pview->pdata)
     return 0;
 
-#ifdef USE_DEBUG_COLOR
   dump_pager(priv);
-#endif
 
   // We need to populate more lines, but not change position
   const bool repopulate = (priv->cur_line > priv->lines_used);

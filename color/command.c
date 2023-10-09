@@ -36,6 +36,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "parse/lib.h"
 #include "color.h"
 #include "command2.h"
@@ -45,15 +46,6 @@
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
-#ifdef USE_DEBUG_COLOR
-#include <stdio.h>
-#include "mutt.h"
-#include "pager/lib.h"
-#include "attr.h"
-#include "curses2.h"
-#include "merged.h"
-#include "pager/private_data.h" // IWYU pragma: keep
-#endif
 
 /**
  * ColorFields - Mapping of colour names to their IDs
@@ -861,191 +853,6 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   return MUTT_CMD_SUCCESS;
 }
-
-#ifdef USE_DEBUG_COLOR
-/**
- * color_dump - Parse 'color' command to display colours - Implements Command::parse() - @ingroup command_parse
- */
-static enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
-{
-  if (MoreArgs(s))
-    return MUTT_CMD_ERROR;
-
-  FILE *fp_out = NULL;
-  struct Buffer *tempfile = buf_pool_get();
-  struct Buffer filebuf = buf_make(4096);
-  char color_fg[32] = { 0 };
-  char color_bg[32] = { 0 };
-
-  buf_mktemp(tempfile);
-  fp_out = mutt_file_fopen(buf_string(tempfile), "w");
-  if (!fp_out)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
-    buf_dealloc(&filebuf);
-    buf_pool_release(&tempfile);
-    return MUTT_CMD_ERROR;
-  }
-
-  buf_addstr(&filebuf, "# All Colours\n\n");
-  buf_addstr(&filebuf, "# Simple Colours\n");
-  for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
-  {
-    struct AttrColor *ac = simple_color_get(cid);
-    if (!ac)
-      continue;
-
-    struct CursesColor *cc = ac->curses_color;
-    if (!cc)
-      continue;
-
-    const char *name = mutt_map_get_name(cid, ColorFields);
-    if (!name)
-      continue;
-
-    const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-    buf_add_printf(&filebuf, "color %-18s %-30s %-8s %-8s # %s\n", name,
-                   color_debug_log_attrs_list(ac->attrs),
-                   color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                   color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
-  }
-
-  if (NumQuotedColors > 0)
-  {
-    buf_addstr(&filebuf, "\n# Quoted Colours\n");
-    for (int i = 0; i < NumQuotedColors; i++)
-    {
-      struct AttrColor *ac = quoted_colors_get(i);
-      if (!ac)
-        continue;
-
-      struct CursesColor *cc = ac->curses_color;
-      if (!cc)
-        continue;
-
-      const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-      buf_add_printf(&filebuf, "color quoted%d %-30s %-8s %-8s # %s\n", i,
-                     color_debug_log_attrs_list(ac->attrs),
-                     color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                     color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
-    }
-  }
-
-  int rl_count = 0;
-  for (enum ColorId id = MT_COLOR_NONE; id != MT_COLOR_MAX; ++id)
-  {
-    if (!mutt_color_has_pattern(id))
-    {
-      continue;
-    }
-
-    struct RegexColorList *rcl = regex_colors_get_list(id);
-    if (!STAILQ_EMPTY(rcl))
-      rl_count++;
-  }
-
-  if (rl_count > 0)
-  {
-    for (enum ColorId id = MT_COLOR_NONE; id != MT_COLOR_MAX; ++id)
-    {
-      if (!mutt_color_has_pattern(id))
-      {
-        continue;
-      }
-
-      struct RegexColorList *rcl = regex_colors_get_list(id);
-      if (STAILQ_EMPTY(rcl))
-        continue;
-
-      const char *name = mutt_map_get_name(id, ColorFields);
-      if (!name)
-        continue;
-
-      buf_add_printf(&filebuf, "\n# Regex Colour %s\n", name);
-
-      struct RegexColor *rc = NULL;
-      STAILQ_FOREACH(rc, rcl, entries)
-      {
-        struct AttrColor *ac = &rc->attr_color;
-        struct CursesColor *cc = ac->curses_color;
-        if (!cc)
-          continue;
-
-        const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-        buf_add_printf(&filebuf, "color %-14s %-30s %-8s %-8s %-30s # %s\n",
-                       name, color_debug_log_attrs_list(ac->attrs),
-                       color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                       color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
-                       rc->pattern, swatch);
-      }
-    }
-  }
-
-#ifdef USE_DEBUG_COLOR
-  if (!TAILQ_EMPTY(&MergedColors))
-  {
-    buf_addstr(&filebuf, "\n# Merged Colours\n");
-    struct AttrColor *ac = NULL;
-    TAILQ_FOREACH(ac, &MergedColors, entries)
-    {
-      struct CursesColor *cc = ac->curses_color;
-      if (!cc)
-        continue;
-
-      const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-      buf_add_printf(&filebuf, "# %-30s %-8s %-8s # %s\n",
-                     color_debug_log_attrs_list(ac->attrs),
-                     color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                     color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
-    }
-  }
-
-  struct MuttWindow *win = window_get_focus();
-  if (win && (win->type == WT_CUSTOM) && win->parent && (win->parent->type == WT_PAGER))
-  {
-    struct PagerPrivateData *priv = win->parent->wdata;
-    if (priv && !TAILQ_EMPTY(&priv->ansi_list))
-    {
-      buf_addstr(&filebuf, "\n# Ansi Colours\n");
-      struct AttrColor *ac = NULL;
-      TAILQ_FOREACH(ac, &priv->ansi_list, entries)
-      {
-        struct CursesColor *cc = ac->curses_color;
-        if (!cc)
-          continue;
-
-        const char *swatch = color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs);
-        buf_add_printf(&filebuf, "# %-30s %-8s %-8s # %s\n",
-                       color_debug_log_attrs_list(ac->attrs),
-                       color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
-                       color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), swatch);
-      }
-    }
-  }
-#endif
-
-  fputs(filebuf.data, fp_out);
-
-  mutt_file_fclose(&fp_out);
-  buf_dealloc(&filebuf);
-
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
-
-  pdata.fname = buf_string(tempfile);
-
-  pview.banner = "color";
-  pview.flags = MUTT_SHOWCOLOR;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
-  buf_pool_release(&tempfile);
-
-  return MUTT_CMD_SUCCESS;
-}
-#endif
 
 /**
  * parse_color - Parse a 'color' command

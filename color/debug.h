@@ -25,7 +25,9 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdint.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "color.h"
 
 struct AttrColor;
@@ -39,6 +41,8 @@ const char *color_debug_log_name(char *buf, int buflen, int color);
 const char *color_debug_log_attrs_list(int attrs);
 
 #ifdef USE_DEBUG_COLOR
+
+enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
 const char *color_debug_log_attrs(int attrs);
 const char *color_debug_log_color(int fg, int bg);
@@ -65,6 +69,8 @@ int color_debug(enum LogLevel level, const char *format, ...)
                 __attribute__((__format__(__printf__, 2, 3)));
 
 #else
+
+static inline enum CommandResult color_dump(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err) { return MUTT_CMD_SUCCESS; }
 
 static inline const char *color_debug_log_attrs(int attrs) { return ""; }
 static inline const char *color_debug_log_color(int fg, int bg) { return ""; }
