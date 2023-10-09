@@ -879,10 +879,11 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   if (!MoreArgs(s))
   {
-#ifdef USE_DEBUG_COLOR
     if (StartupComplete)
-      return color_dump(buf, s, 0, err);
-#endif
+    {
+      color_dump();
+      return MUTT_CMD_SUCCESS;
+    }
 
     buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;

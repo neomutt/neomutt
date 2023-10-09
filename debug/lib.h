@@ -43,7 +43,6 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include <time.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"

@@ -176,6 +176,10 @@ static int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool
           pos += ansi_skip_sequence(buf + pos);
           pos += ansi_skip_sequence(buf + pos);
         }
+        else
+        {
+          return pos;
+        }
       }
       else if ((buf[pos + 1] == '9') && ansi_is_end_char(buf[pos + 2]))
       {
