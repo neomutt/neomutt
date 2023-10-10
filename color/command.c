@@ -363,8 +363,15 @@ static enum CommandResult parse_color_namedcolor(const char *s, color_t *col, in
   enum ColorPrefix prefix = COLOR_PREFIX_NONE;
   s += parse_color_prefix(s, &prefix);
 
-  if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
+  // COLOR_DEFAULT (-1) interferes with mutt_map_get_value()
+  if (mutt_str_equal(s, "default"))
+  {
+    *col = COLOR_DEFAULT;
+  }
+  else if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
+  {
     return MUTT_CMD_WARNING;
+  }
 
   const char *name = mutt_map_get_name(*col, ColorNames);
   if (name)
@@ -542,9 +549,9 @@ static enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
                                           struct Buffer *err)
 {
   if (fg)
-    *fg = COLOR_UNSET;
+    *fg = COLOR_DEFAULT;
   if (bg)
-    *bg = COLOR_UNSET;
+    *bg = COLOR_DEFAULT;
 
   if (!MoreArgs(s))
   {

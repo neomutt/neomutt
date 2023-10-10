@@ -98,11 +98,6 @@ static int curses_color_init(color_t fg, color_t bg)
     return 0;
   }
 
-  if (fg == COLOR_DEFAULT)
-    fg = COLOR_UNSET;
-  if (bg == COLOR_DEFAULT)
-    bg = COLOR_UNSET;
-
 #ifdef NEOMUTT_DIRECT_COLORS
   int rc = init_extended_pair(index, fg, bg);
   color_debug(LL_DEBUG5, "init_extended_pair(%d,%d,%d) -> %d\n", index, fg, bg, rc);
@@ -151,8 +146,7 @@ void curses_color_free(struct CursesColor **ptr)
 struct CursesColor *curses_color_new(color_t fg, color_t bg)
 {
   color_debug(LL_DEBUG5, "fg %d, bg %d\n", fg, bg);
-  if (((fg == COLOR_UNSET) && (bg == COLOR_UNSET)) ||
-      ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT)))
+  if ((fg == COLOR_DEFAULT) && (bg == COLOR_DEFAULT))
   {
     color_debug(LL_DEBUG5, "both unset\n");
     return NULL;

@@ -100,8 +100,7 @@ extern const struct Mapping ColorNames[];
 extern const struct Mapping ColorFields[];
 extern const struct Mapping ComposeColorFields[];
 
-#define COLOR_DEFAULT (-2)
-#define COLOR_UNSET   UINT32_MAX
+#define COLOR_DEFAULT -1
 
 void mutt_colors_init(void);
 void mutt_colors_cleanup(void);
