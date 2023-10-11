@@ -458,7 +458,7 @@ uint64_t mutt_date_now_ms(void)
   gettimeofday(&tv, NULL);
   /* We assume that gettimeofday doesn't modify its first argument on failure.
    * We also kind of assume that gettimeofday does not fail. */
-  return (uint64_t) (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+  return ((uint64_t) tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }
 
 /**
