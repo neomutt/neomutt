@@ -83,6 +83,6 @@ enum CommandResult quoted_colors_parse_uncolor(enum ColorId cid, int q_level, st
 
 struct QuoteStyle *qstyle_classify (struct QuoteStyle **quote_list, const char *qptr, size_t length, bool *force_redraw, int *q_level);
 void               qstyle_free_tree(struct QuoteStyle **quote_list);
-void               qstyle_recolour (struct QuoteStyle *quote_list);
+void               qstyle_recolor (struct QuoteStyle *quote_list);
 
 #endif /* MUTT_COLOR_QUOTED_H */

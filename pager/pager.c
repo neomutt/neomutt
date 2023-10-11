@@ -254,7 +254,7 @@ static int pager_color_observer(struct NotifyCallback *nc)
   if ((ev_c->cid == MT_COLOR_QUOTED) || (ev_c->cid == MT_COLOR_MAX))
   {
     // rework quoted colours
-    qstyle_recolour(priv->quote_list);
+    qstyle_recolor(priv->quote_list);
   }
 
   if (ev_c->cid == MT_COLOR_MAX)

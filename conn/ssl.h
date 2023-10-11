@@ -36,7 +36,7 @@ ARRAY_HEAD(CertArray, const char *);
 void cert_array_clear(struct CertArray *carr);
 
 /**
- * CertMenuData - Certificate data to use in the Menu
+ * struct CertMenuData - Certificate data to use in the Menu
  */
 struct CertMenuData
 {

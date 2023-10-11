@@ -612,10 +612,10 @@ static void qstyle_recurse(struct QuoteStyle *quote_list, int num_qlevel, int *c
 }
 
 /**
- * qstyle_recolour - Recolour quotes after colour changes
+ * qstyle_recolor - Recolour quotes after colour changes
  * @param quote_list List of quote colours
  */
-void qstyle_recolour(struct QuoteStyle *quote_list)
+void qstyle_recolor(struct QuoteStyle *quote_list)
 {
   if (!quote_list)
     return;
