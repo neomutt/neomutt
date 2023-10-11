@@ -1081,7 +1081,7 @@ enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force)
   mdata->check_status = IMAP_OPEN_NO_FLAGS;
 
   if (force)
-    mx_mbox_reset_check();
+    m->last_checked = 0; // force a check on the next mx_mbox_check() call
   return check;
 }
 

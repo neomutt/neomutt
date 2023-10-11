@@ -239,7 +239,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   mx_msg_close(m, &msg);
 
   mx_mbox_close(m);
-  mx_mbox_reset_check();
+  m->last_checked = 0; // force a check on the next mx_mbox_check() call
 
 bail:
   mutt_file_fclose(&fp);
