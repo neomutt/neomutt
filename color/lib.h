@@ -36,6 +36,7 @@
  * | color/merged.c      | @subpage color_merge       |
  * | color/notify.c      | @subpage color_notify      |
  * | color/parse_ansi.c  | @subpage color_parse_ansi  |
+ * | color/parse_color.c | @subpage color_parse_color |
  * | color/quoted.c      | @subpage color_quote       |
  * | color/regex.c       | @subpage color_regex       |
  * | color/simple.c      | @subpage color_simple      |
@@ -54,6 +55,7 @@
 #include "merged.h"
 #include "notify2.h"
 #include "parse_ansi.h"
+#include "parse_color.h"
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"

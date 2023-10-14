@@ -29,6 +29,17 @@
 #include "curses2.h"
 
 /**
+ * ColorPrefix - Constants for colour prefixes of named colours
+ */
+enum ColorPrefix
+{
+  COLOR_PREFIX_NONE,   ///< no prefix
+  COLOR_PREFIX_ALERT,  ///< "alert"  colour prefix
+  COLOR_PREFIX_BRIGHT, ///< "bright" colour prefix
+  COLOR_PREFIX_LIGHT,  ///< "light"  colour prefix
+};
+
+/**
  * struct AttrColor - A curses colour and its attributes
  */
 struct AttrColor

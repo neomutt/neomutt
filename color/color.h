@@ -95,7 +95,6 @@ enum ColorId
   MT_COLOR_MAX,
 };
 
-extern const struct Mapping ColorNames[];
 extern const struct Mapping ColorFields[];
 extern const struct Mapping ComposeColorFields[];
 
