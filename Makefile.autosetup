@@ -952,6 +952,7 @@ coverage: all test
 	$(RM) mutt/exit.gc??
 	lcov --test-name "test" --output-file coverage.info --capture \
 	  --directory address \
+	  --directory color \
 	  --directory compress \
 	  --directory config \
 	  --directory core \

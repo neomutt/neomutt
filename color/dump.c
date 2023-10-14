@@ -336,10 +336,10 @@ void simple_colors_dump(struct Buffer *buf)
 
       color_log_color_attrs(ac, swatch);
       buf_add_printf(buf, "color %-18s %-20s %-16s %-16s # %s\n", name,
-                    color_log_attrs_list(ac->attrs),
-                    color_log_name(color_fg, sizeof(color_fg), &ac->fg),
-                    color_log_name(color_bg, sizeof(color_bg), &ac->bg),
-                    buf_string(swatch));
+                     color_log_attrs_list(ac->attrs),
+                     color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                     color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                     buf_string(swatch));
     }
     buf_addstr(buf, "\n");
   }
@@ -368,10 +368,10 @@ void simple_colors_dump(struct Buffer *buf)
 
       color_log_color_attrs(ac, swatch);
       buf_add_printf(buf, "color compose %-18s %-20s %-16s %-16s # %s\n", name,
-                    color_log_attrs_list(ac->attrs),
-                    color_log_name(color_fg, sizeof(color_fg), &ac->fg),
-                    color_log_name(color_bg, sizeof(color_bg), &ac->bg),
-                    buf_string(swatch));
+                     color_log_attrs_list(ac->attrs),
+                     color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                     color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                     buf_string(swatch));
     }
     buf_addstr(buf, "\n");
   }
@@ -407,10 +407,10 @@ void status_colors_dump(struct Buffer *buf)
 
     color_log_color_attrs(ac, swatch);
     buf_add_printf(buf, "color status %-20s %-16s %-16s                                # %s\n",
-                  color_log_attrs_list(ac->attrs),
-                  color_log_name(color_fg, sizeof(color_fg), &ac->fg),
-                  color_log_name(color_bg, sizeof(color_bg), &ac->bg),
-                  buf_string(swatch));
+                   color_log_attrs_list(ac->attrs),
+                   color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                   color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                   buf_string(swatch));
 
     struct RegexColor *rc = NULL;
     STAILQ_FOREACH(rc, rcl, entries)
@@ -423,18 +423,18 @@ void status_colors_dump(struct Buffer *buf)
       if (rc->match == 0)
       {
         buf_add_printf(buf, "color status %-20s %-16s %-16s %-30s # %s\n",
-                      color_log_attrs_list(ac->attrs),
-                      color_log_name(color_fg, sizeof(color_fg), &ac->fg),
-                      color_log_name(color_bg, sizeof(color_bg), &ac->bg),
-                      buf_string(pattern), buf_string(swatch));
+                       color_log_attrs_list(ac->attrs),
+                       color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                       color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                       buf_string(pattern), buf_string(swatch));
       }
       else
       {
         buf_add_printf(buf, "color status %-20s %-16s %-16s %-28s %d # %s\n",
-                      color_log_attrs_list(ac->attrs),
-                      color_log_name(color_fg, sizeof(color_fg), &ac->fg),
-                      color_log_name(color_bg, sizeof(color_bg), &ac->bg),
-                      buf_string(pattern), rc->match, buf_string(swatch));
+                       color_log_attrs_list(ac->attrs),
+                       color_log_name(color_fg, sizeof(color_fg), &ac->fg),
+                       color_log_name(color_bg, sizeof(color_bg), &ac->bg),
+                       buf_string(pattern), rc->match, buf_string(swatch));
       }
     }
     buf_addstr(buf, "\n");
