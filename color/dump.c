@@ -58,7 +58,7 @@ void color_log_color_attrs(struct AttrColor *ac, struct Buffer *swatch)
     buf_add_printf(swatch, "\033[1m");
   if (ac->attrs & A_ITALIC)
     buf_add_printf(swatch, "\033[3m");
-  if (ac->attrs & A_NORMAL)
+  if (ac->attrs == A_NORMAL)
     buf_add_printf(swatch, "\033[0m");
   if (ac->attrs & A_REVERSE)
     buf_add_printf(swatch, "\033[7m");
@@ -143,7 +143,7 @@ const char *color_log_attrs_list(int attrs)
     pos += snprintf(text + pos, sizeof(text) - pos, "bold ");
   if (attrs & A_ITALIC)
     pos += snprintf(text + pos, sizeof(text) - pos, "italic ");
-  if (attrs & A_NORMAL)
+  if (attrs == A_NORMAL)
     pos += snprintf(text + pos, sizeof(text) - pos, "normal ");
   if (attrs & A_REVERSE)
     pos += snprintf(text + pos, sizeof(text) - pos, "reverse ");
@@ -198,7 +198,7 @@ const char *color_log_name(char *buf, int buflen, struct ColorElement *elem)
       if (elem->color < 256)
         snprintf(buf, buflen, "color%d", elem->color);
       else
-        snprintf(buf, buflen, "BAD:%d", elem->color);
+        snprintf(buf, buflen, "BAD:%d", elem->color); // LCOV_EXCL_LINE
       break;
     }
 
@@ -233,7 +233,7 @@ void quoted_colors_dump(struct Buffer *buf)
   {
     struct AttrColor *ac = quoted_colors_get(i);
     if (!ac)
-      continue;
+      continue; // LCOV_EXCL_LINE
 
     color_log_color_attrs(ac, swatch);
     buf_add_printf(buf, "color quoted%d %-20s %-16s %-16s # %s\n", i,
@@ -272,7 +272,7 @@ void regex_colors_dump(struct Buffer *buf)
 
     const char *name = mutt_map_get_name(cid, ColorFields);
     if (!name)
-      continue;
+      continue; // LCOV_EXCL_LINE
 
     buf_add_printf(buf, _("# Regex Color %s\n"), name);
 
@@ -455,10 +455,12 @@ void color_dump(void)
   FILE *fp = mutt_file_fopen(buf_string(tmp_file), "w");
   if (!fp)
   {
+    // LCOV_EXCL_START
     // L10N: '%s' is the file name of the temporary file
     mutt_error(_("Could not create temporary file %s"), buf_string(tmp_file));
     buf_pool_release(&tmp_file);
     return;
+    // LCOV_EXCL_STOP
   }
 
   struct Buffer *buf = buf_pool_get();

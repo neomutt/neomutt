@@ -201,7 +201,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           // 38;5;n palette foreground
           char *end = NULL;
           unsigned long value = strtoul(buf + pos + 5, &end, 10);
-          if ((value >= 0) && (value < 256) && end && ansi_is_end_char(end[0]))
+          if ((value < 256) && end && ansi_is_end_char(end[0]))
           {
             elem->color = value;
             elem->type = CT_PALETTE;
@@ -209,7 +209,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           }
           else
           {
-            pos += ansi_skip_sequence(buf + pos);
+            return 0;
           }
         }
         else if (mutt_str_startswith(buf + pos, "38;2;") && isdigit(buf[pos + 5]))
@@ -223,7 +223,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           pos += 5; // Skip 38;2;
 
           value = strtoul(buf + pos, &end, 10);
-          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          if ((value > 255) || !end || (end[0] != ';'))
           {
             return 0;
           }
@@ -231,7 +231,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           pos += end - &buf[pos] + 1;
 
           value = strtoul(buf + pos, &end, 10);
-          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          if ((value > 255) || !end || (end[0] != ';'))
           {
             return 0;
           }
@@ -239,7 +239,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           pos += end - &buf[pos] + 1;
 
           value = strtoul(buf + pos, &end, 10);
-          if ((value < 0) || (value > 255) || !end || (end[0] != 'm'))
+          if ((value > 255) || !end || (end[0] != 'm'))
           {
             return 0;
           }
@@ -251,19 +251,19 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
         }
         else
         {
-          return pos;
+          return pos; // LCOV_EXCL_LINE
         }
       }
       else if ((buf[pos + 1] == '9') && ansi_is_end_char(buf[pos + 2]))
       {
-        // default fg
+        // default foreground
         elem->color = COLOR_DEFAULT;
         elem->type = CT_SIMPLE;
         pos += 2;
       }
       else
       {
-        pos += ansi_skip_sequence(buf + pos);
+        return 0; // LCOV_EXCL_LINE
       }
     }
     else if ((buf[pos] == '4') && ansi_is_end_char(buf[pos + 1]))
@@ -276,7 +276,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       struct ColorElement *elem = &ansi->bg;
 
       // 40-47 basic background
-      if ((buf[pos + 1] >= '0') && (buf[pos + 1] < '8'))
+      if ((buf[pos + 1] >= '0') && (buf[pos + 1] < '8') && ansi_is_end_char(buf[pos + 2]))
       {
         elem->color = buf[pos + 1] - '0';
         elem->type = CT_SIMPLE;
@@ -289,7 +289,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           // 48;5;n palette background
           char *end = NULL;
           unsigned long value = strtoul(buf + pos + 5, &end, 10);
-          if ((value >= 0) && (value < 256) && end && ansi_is_end_char(end[0]))
+          if ((value < 256) && end && ansi_is_end_char(end[0]))
           {
             elem->color = value;
             elem->type = CT_PALETTE;
@@ -297,7 +297,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           }
           else
           {
-            pos += ansi_skip_sequence(buf + pos);
+            return 0;
           }
         }
         else if (mutt_str_startswith(buf + pos, "48;2;") && isdigit(buf[pos + 5]))
@@ -311,7 +311,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           pos += 5; // Skip 48;2;
 
           value = strtoul(buf + pos, &end, 10);
-          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          if ((value > 255) || !end || (end[0] != ';'))
           {
             return 0;
           }
@@ -319,7 +319,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           pos += end - &buf[pos] + 1;
 
           value = strtoul(buf + pos, &end, 10);
-          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          if ((value > 255) || !end || (end[0] != ';'))
           {
             return 0;
           }
@@ -327,7 +327,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
           pos += end - &buf[pos] + 1;
 
           value = strtoul(buf + pos, &end, 10);
-          if ((value < 0) || (value > 255) || !end || (end[0] != 'm'))
+          if ((value > 255) || !end || (end[0] != 'm'))
           {
             return 0;
           }
@@ -339,7 +339,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
         }
         else
         {
-          pos += ansi_skip_sequence(buf + pos);
+          return pos; // LCOV_EXCL_LINE
         }
       }
       else if ((buf[pos + 1] == '9') && ansi_is_end_char(buf[pos + 2]))
@@ -348,6 +348,10 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
         elem->color = COLOR_DEFAULT;
         elem->type = CT_SIMPLE;
         pos += 2;
+      }
+      else
+      {
+        return 0; // LCOV_EXCL_LINE
       }
     }
     else if ((buf[pos] == '5') && ansi_is_end_char(buf[pos + 1]))
@@ -359,6 +363,10 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
     {
       ansi->attrs |= A_REVERSE;
       pos += 2;
+    }
+    else if (buf[pos] == ';')
+    {
+      pos++; // LCOV_EXCL_LINE
     }
     else
     {

@@ -248,7 +248,7 @@ enum CommandResult parse_color_rrggbb(const char *s, struct ColorElement *elem,
 enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
                                     struct Buffer *err)
 {
-  mutt_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
+  color_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
 
   /* Try the different colour syntaxes.  A return value of MUTT_CMD_WARNING
    * means, we should try the next syntax. */

@@ -61,6 +61,7 @@ struct CursesColor *curses_colors_find(color_t fg, color_t bg)
   {
     if ((cc->fg == fg) && (cc->bg == bg))
     {
+      curses_color_dump(cc, "find");
       return cc;
     }
   }

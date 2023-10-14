@@ -442,7 +442,7 @@ bool regex_colors_parse_uncolor(enum ColorId cid, const char *pat, bool uncolor)
     {
       rc = true;
 
-      mutt_debug(LL_DEBUG1, "Freeing pattern \"%s\" from XXX\n", pat);
+      color_debug(LL_DEBUG1, "Freeing pattern \"%s\" from XXX\n", pat);
       if (prev)
         STAILQ_REMOVE_AFTER(cl, prev, entries);
       else

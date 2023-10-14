@@ -152,6 +152,24 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_ch_lookup_remove)                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_set_charset)                                  \
                                                                                \
+  /* color */                                                                  \
+  NEOMUTT_TEST_ITEM(test_ansi_color)                                           \
+  NEOMUTT_TEST_ITEM(test_ansi_color_parse_single)                              \
+  NEOMUTT_TEST_ITEM(test_attr_colors)                                          \
+  NEOMUTT_TEST_ITEM(test_color_dump)                                           \
+  NEOMUTT_TEST_ITEM(test_color_notify)                                         \
+  NEOMUTT_TEST_ITEM(test_curses_colors)                                        \
+  NEOMUTT_TEST_ITEM(test_merged_colors)                                        \
+  NEOMUTT_TEST_ITEM(test_parse_attr_spec)                                      \
+  NEOMUTT_TEST_ITEM(test_parse_color_colornnn)                                 \
+  NEOMUTT_TEST_ITEM(test_parse_color_name)                                     \
+  NEOMUTT_TEST_ITEM(test_parse_color_namedcolor)                               \
+  NEOMUTT_TEST_ITEM(test_parse_color_pair)                                     \
+  NEOMUTT_TEST_ITEM(test_parse_color_prefix)                                   \
+  NEOMUTT_TEST_ITEM(test_parse_color_rrggbb)                                   \
+  NEOMUTT_TEST_ITEM(test_quoted_colors)                                        \
+  NEOMUTT_TEST_ITEM(test_simple_colors)                                        \
+                                                                               \
   /* config */                                                                 \
   NEOMUTT_TEST_ITEM(test_config_account)                                       \
   NEOMUTT_TEST_ITEM(test_config_bool)                                          \
