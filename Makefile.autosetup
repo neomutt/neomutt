@@ -912,7 +912,7 @@ uninstall: $(UNINSTALL_TARGETS)
 distclean: clean
 	$(RM) $(DEPFILES) jimsh0 config.h config.log conststrings.c \
 		contrib/Makefile docs/Makefile docs/neomutt.1 html Makefile po/Makefile \
-		test/Makefile .clang_complete
+		test/Makefile .clang_complete compile_commands.json
 	$(RM) *.gc?? */*.gc?? test/*/*.gc??
 	$(RM) *.expand */*.expand test/*/*.expand
 	$(RM) coverage.info coverage
