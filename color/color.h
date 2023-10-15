@@ -27,7 +27,6 @@
 #include "config.h"
 #include "mutt/lib.h"
 #include <stdbool.h>
-#include <stdint.h>
 
 /**
  * enum ColorId - List of all colored objects
