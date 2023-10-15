@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -36,7 +35,6 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "parse/lib.h"
-#include "attr.h"
 #include "color.h"
 #include "command2.h"
 #include "curses2.h"
@@ -118,62 +116,6 @@ const struct Mapping ComposeColorFields[] = {
   { NULL, 0 }
   // clang-format on
 };
-
-/**
- * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
- */
-enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s, color_t *fg,
-                                   color_t *bg, int *attrs, struct Buffer *err)
-{
-  if (fg)
-    *fg = COLOR_DEFAULT;
-  if (bg)
-    *bg = COLOR_DEFAULT;
-
-  if (!MoreArgs(s))
-  {
-    buf_printf(err, _("%s: too few arguments"), "mono");
-    return MUTT_CMD_WARNING;
-  }
-
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-
-  if (mutt_istr_equal("bold", buf->data))
-  {
-    *attrs |= A_BOLD;
-  }
-  else if (mutt_istr_equal("italic", buf->data))
-  {
-    *attrs |= A_ITALIC;
-  }
-  else if (mutt_istr_equal("none", buf->data))
-  {
-    *attrs = A_NORMAL; // Use '=' to clear other bits
-  }
-  else if (mutt_istr_equal("normal", buf->data))
-  {
-    *attrs = A_NORMAL; // Use '=' to clear other bits
-  }
-  else if (mutt_istr_equal("reverse", buf->data))
-  {
-    *attrs |= A_REVERSE;
-  }
-  else if (mutt_istr_equal("standout", buf->data))
-  {
-    *attrs |= A_STANDOUT;
-  }
-  else if (mutt_istr_equal("underline", buf->data))
-  {
-    *attrs |= A_UNDERLINE;
-  }
-  else
-  {
-    buf_printf(err, _("%s: no such attribute"), buf->data);
-    return MUTT_CMD_WARNING;
-  }
-
-  return MUTT_CMD_SUCCESS;
-}
 
 /**
  * get_colorid_name - Get the name of a color id

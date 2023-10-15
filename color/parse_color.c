@@ -60,6 +60,22 @@ const struct Mapping ColorNames[] = {
 };
 
 /**
+ * AttributeNames - Mapping of attribute names to their IDs
+ */
+static struct Mapping AttributeNames[] = {
+  // clang-format off
+  { "bold",      A_BOLD      },
+  { "italic",    A_ITALIC    },
+  { "none",      A_NORMAL    },
+  { "normal",    A_NORMAL    },
+  { "reverse",   A_REVERSE   },
+  { "standout",  A_STANDOUT  },
+  { "underline", A_UNDERLINE },
+  { NULL, 0 },
+  // clang-format on
+};
+
+/**
  * parse_color_prefix - Parse a colour prefix, e.g. "bright"
  * @param[in]  s      String to parse
  * @param[out] prefix parsed prefix, see #ColorPrefix
@@ -309,48 +325,19 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, color_
 
     parse_extract_token(buf, s, TOKEN_COMMENT);
 
-    if (mutt_istr_equal("bold", buf->data))
-    {
-      *attrs |= A_BOLD;
-      color_debug(LL_DEBUG5, "bold\n");
-    }
-    else if (mutt_istr_equal("italic", buf->data))
-    {
-      *attrs |= A_ITALIC;
-      color_debug(LL_DEBUG5, "italic\n");
-    }
-    else if (mutt_istr_equal("none", buf->data))
-    {
-      *attrs = A_NORMAL; // Use '=' to clear other bits
-      color_debug(LL_DEBUG5, "none\n");
-    }
-    else if (mutt_istr_equal("normal", buf->data))
-    {
-      *attrs = A_NORMAL; // Use '=' to clear other bits
-      color_debug(LL_DEBUG5, "normal\n");
-    }
-    else if (mutt_istr_equal("reverse", buf->data))
-    {
-      *attrs |= A_REVERSE;
-      color_debug(LL_DEBUG5, "reverse\n");
-    }
-    else if (mutt_istr_equal("standout", buf->data))
-    {
-      *attrs |= A_STANDOUT;
-      color_debug(LL_DEBUG5, "standout\n");
-    }
-    else if (mutt_istr_equal("underline", buf->data))
-    {
-      *attrs |= A_UNDERLINE;
-      color_debug(LL_DEBUG5, "underline\n");
-    }
-    else
+    int attr = mutt_map_get_value(buf->data, AttributeNames);
+    if (attr == -1)
     {
       enum CommandResult rc = parse_color_name(buf->data, fg, attrs, true, err);
       if (rc != MUTT_CMD_SUCCESS)
         return rc;
       break;
     }
+
+    if (attr == A_NORMAL)
+      *attrs = attr; // Clear all attributes
+    else
+      *attrs |= attr; // Merge with other attributes
   }
 
   if (!MoreArgsF(s, TOKEN_COMMENT))
@@ -362,4 +349,38 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, color_
   parse_extract_token(buf, s, TOKEN_COMMENT);
 
   return parse_color_name(buf->data, bg, attrs, false, err);
+}
+
+/**
+ * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
+ */
+enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s, color_t *fg,
+                                   color_t *bg, int *attrs, struct Buffer *err)
+{
+  if (fg)
+    *fg = COLOR_DEFAULT;
+  if (bg)
+    *bg = COLOR_DEFAULT;
+
+  if (!MoreArgs(s))
+  {
+    buf_printf(err, _("%s: too few arguments"), "mono");
+    return MUTT_CMD_WARNING;
+  }
+
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+
+  int attr = mutt_map_get_value(buf->data, AttributeNames);
+  if (attr == -1)
+  {
+    buf_printf(err, _("%s: no such attribute"), buf->data);
+    return MUTT_CMD_WARNING;
+  }
+
+  if (attr == A_NORMAL)
+    *attrs = attr; // Clear all attributes
+  else
+    *attrs |= attr; // Merge with other attributes
+
+  return MUTT_CMD_SUCCESS;
 }
