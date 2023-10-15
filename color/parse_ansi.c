@@ -37,7 +37,6 @@
 #include "ansi.h"
 #include "color.h"
 
-
 /**
  * ansi_is_end_char - Is this the end of a sequence?
  * @param c Character to test
