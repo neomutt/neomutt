@@ -754,14 +754,23 @@ static char *gen_msgid(void)
   const int ID_RIGHT_LEN = 12;
   char rnd_id_left[ID_LEFT_LEN + 1];
   char rnd_id_right[ID_RIGHT_LEN + 1];
+  const char *right;
+  const char *const c_message_id_format = cs_subset_string(NeoMutt->sub, "message_id_format");
 
   mutt_rand_base32(rnd_id_left, sizeof(rnd_id_left) - 1);
-  mutt_rand_base32(rnd_id_right, sizeof(rnd_id_right) - 1);
   rnd_id_left[ID_LEFT_LEN] = 0;
-  rnd_id_right[ID_RIGHT_LEN] = 0;
+
+  if (mutt_str_equal(c_message_id_format, "random"))
+  {
+    mutt_rand_base32(rnd_id_right, sizeof(rnd_id_right) - 1);
+    rnd_id_right[ID_RIGHT_LEN] = 0;
+    right = rnd_id_right;
+  }
+  else
+    right = mutt_fqdn(true, NeoMutt->sub);
 
   char *ret;
-  mutt_str_asprintf(&ret, "<%s@%s>", rnd_id_left, rnd_id_right);
+  mutt_str_asprintf(&ret, "<%s@%s>", rnd_id_left, right);
   return ret;
 }
 

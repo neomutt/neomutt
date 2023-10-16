@@ -1640,6 +1640,15 @@
 ** when adding the domain part to addresses.
 */
 
+{ "message_id_format", DT_STRING, "hostname" },
+/*
+** .pp
+** If "hostname", $$hostname, subject to $$hidden_host,
+** is used after the \fB@\fP in generated Message-Ids.
+** .pp
+** If "random", a random 12-byte alphanumeric string is used.
+*/
+
 { "hidden_tags", DT_SLIST, "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
 /*
 ** .pp

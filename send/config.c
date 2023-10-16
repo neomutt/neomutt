@@ -103,6 +103,22 @@ static int simple_command_validator(const struct ConfigSet *cs, const struct Con
 }
 
 /**
+ * message_id_format_validator - validate $message_id_format is in ["hostname", "random"]
+ */
+static int message_id_format_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
+{
+  const char *valstr = (const char *) value;
+  if (!valstr)
+    return CSR_SUCCESS;
+
+  if (mutt_str_equal(valstr, "hostname") || mutt_str_equal(valstr, "random"))
+    return CSR_SUCCESS;
+
+  buf_printf(err, _("Option %s must be one of: hostname, random"), cdef->name);
+  return CSR_ERR_INVALID;
+}
+
+/**
  * SendVars - Config definitions for the send library
  */
 static struct ConfigDef SendVars[] = {
@@ -223,6 +239,9 @@ static struct ConfigDef SendVars[] = {
   },
   { "hidden_host", DT_BOOL, false, 0, NULL,
     "Don't use the hostname, just the domain, when generating the message id"
+  },
+  { "message_id_format", DT_STRING, IP "hostname", 0, message_id_format_validator,
+    "'hostname' to use FQDN (subject to $hidden_host), 'random' to use a random string"
   },
   { "honor_followup_to", DT_QUAD, MUTT_YES, 0, NULL,
     "Honour the 'Mail-Followup-To' header when group replying"
