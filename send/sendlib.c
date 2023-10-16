@@ -754,15 +754,15 @@ static char *gen_msgid(void)
   const int ID_RIGHT_LEN = 12;
   char rnd_id_left[ID_LEFT_LEN + 1];
   char rnd_id_right[ID_RIGHT_LEN + 1];
-  char buf[128] = { 0 };
 
   mutt_rand_base32(rnd_id_left, sizeof(rnd_id_left) - 1);
   mutt_rand_base32(rnd_id_right, sizeof(rnd_id_right) - 1);
   rnd_id_left[ID_LEFT_LEN] = 0;
   rnd_id_right[ID_RIGHT_LEN] = 0;
 
-  snprintf(buf, sizeof(buf), "<%s@%s>", rnd_id_left, rnd_id_right);
-  return mutt_str_dup(buf);
+  char *ret;
+  mutt_str_asprintf(&ret, "<%s@%s>", rnd_id_left, rnd_id_right);
+  return ret;
 }
 
 /**
