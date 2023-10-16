@@ -32,6 +32,8 @@
 #include <assert.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "attr.h"
 #include "color.h"
@@ -330,6 +332,12 @@ color_t color_xterm256_to_24bit(const color_t color)
   if (color < 0)
     return color;
 
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  if (!c_color_directcolor)
+  {
+    return color;
+  }
+
   if (color < 16)
   {
     color_debug(LL_DEBUG5, "Converted color 0-15: %d\n", color);
@@ -394,6 +402,20 @@ void attr_color_overwrite(struct AttrColor *ac_old, struct AttrColor *ac_new)
   color_t fg = ac_new->fg.color;
   color_t bg = ac_new->bg.color;
   int attrs = ac_new->attrs;
+
+  modify_color_by_prefix(ac_new->fg.prefix, true, &fg, &attrs);
+  modify_color_by_prefix(ac_new->bg.prefix, false, &bg, &attrs);
+
+#ifdef NEOMUTT_DIRECT_COLORS
+  if ((ac_new->fg.type == CT_SIMPLE) || (ac_new->fg.type == CT_PALETTE))
+    fg = color_xterm256_to_24bit(fg);
+  else if (fg < 8)
+    fg = 8;
+  if ((ac_new->bg.type == CT_SIMPLE) || (ac_new->bg.type == CT_PALETTE))
+    bg = color_xterm256_to_24bit(bg);
+  else if (bg < 8)
+    bg = 8;
+#endif
 
   struct CursesColor *cc = curses_color_new(fg, bg);
   curses_color_free(&ac_old->curses_color);

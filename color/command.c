@@ -31,6 +31,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
@@ -361,6 +362,39 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   rc = callback(buf, s, ac, err);
   if (rc != MUTT_CMD_SUCCESS)
     goto done;
+
+  //------------------------------------------------------------------
+  // Business Logic
+
+  if ((ac->fg.type == CT_RGB) || (ac->bg.type == CT_RGB))
+  {
+#ifndef NEOMUTT_DIRECT_COLORS
+    buf_printf(err, _("Direct colors support not compiled in: %s"), buf_string(s));
+    return MUTT_CMD_ERROR;
+#endif
+
+    const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+    if (!c_color_directcolor)
+    {
+      buf_printf(err, _("Direct colors support disabled: %s"), buf_string(s));
+      return MUTT_CMD_ERROR;
+    }
+  }
+
+  if ((ac->fg.color >= COLORS) || (ac->bg.color >= COLORS))
+  {
+    buf_printf(err, _("%s: color not supported by term"), buf_string(s));
+    return MUTT_CMD_ERROR;
+  }
+
+  // dry_run?
+  if (OptNoCurses)
+  {
+    buf_printf(err, _("%s: color not supported by term"), buf_string(s));
+    return MUTT_CMD_ERROR;
+  }
+
+  //------------------------------------------------------------------
 
   /* extract a regular expression if needed */
 
