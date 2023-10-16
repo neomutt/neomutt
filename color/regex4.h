@@ -28,7 +28,6 @@
 #include "mutt/lib.h"
 #include "attr.h"
 #include "color.h"
-#include "curses2.h"
 
 /**
  * struct RegexColor - A regular expression and a color to highlight a line
@@ -57,8 +56,8 @@ void                   regex_colors_init(void);
 
 void                   regex_color_list_clear(struct RegexColorList *rcl);
 
-bool regex_colors_parse_color_list (enum ColorId cid, const char *pat, color_t fg, color_t bg, int attrs, int *rc,   struct Buffer *err);
-int  regex_colors_parse_status_list(enum ColorId cid, const char *pat, color_t fg, color_t bg, int attrs, int match, struct Buffer *err);
+bool regex_colors_parse_color_list (enum ColorId cid, const char *pat, struct AttrColor *ac, int *rc, struct Buffer *err);
+int  regex_colors_parse_status_list(enum ColorId cid, const char *pat, struct AttrColor *ac, int match, struct Buffer *err);
 bool regex_colors_parse_uncolor    (enum ColorId cid, const char *pat, bool uncolor);
 
 #endif /* MUTT_COLOR_REGEX4_H */

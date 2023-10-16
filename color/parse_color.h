@@ -24,11 +24,11 @@
 #define MUTT_COLOR_PARSE_COLOR_H
 
 #include "core/lib.h"
-#include "curses2.h"
 
+struct AttrColor;
 struct Buffer;
 
-enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, color_t *fg, color_t *bg, int *attrs, struct Buffer *err);
-enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, color_t *fg, color_t *bg, int *attrs, struct Buffer *err);
+enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
+enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
 
 #endif /* MUTT_COLOR_PARSE_COLOR_H */

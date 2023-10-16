@@ -87,6 +87,9 @@ static struct Mapping AttributeNames[] = {
  */
 int parse_color_prefix(const char *s, enum ColorPrefix *prefix)
 {
+  if (!s || !prefix)
+    return 0;
+
   int clen = 0;
 
   if ((clen = mutt_istr_startswith(s, "bright")))
@@ -114,34 +117,44 @@ int parse_color_prefix(const char *s, enum ColorPrefix *prefix)
 /**
  * parse_color_namedcolor - Parse a named colour, e.g. "brightred"
  * @param[in]  s     String to parse
- * @param[out] col   Number for 'colorNNN' colours
+ * @param[out] elem  Colour element to update
  * @param[out] attrs Attributes, e.g. A_UNDERLINE
  * @param[in]  is_fg true if this is a foreground colour
  * @param[out] err   Buffer for error messages
  * @retval #MUTT_CMD_SUCCESS Colour parsed successfully
  * @retval #MUTT_CMD_WARNING Unknown colour, try other parsers
  */
-enum CommandResult parse_color_namedcolor(const char *s, color_t *col, int *attrs,
+enum CommandResult parse_color_namedcolor(const char *s, struct ColorElement *elem, int *attrs,
                                           bool is_fg, struct Buffer *err)
 {
-  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
-  s += parse_color_prefix(s, &prefix);
+  if (!s || !elem)
+    return MUTT_CMD_ERROR;
 
   // COLOR_DEFAULT (-1) interferes with mutt_map_get_value()
   if (mutt_str_equal(s, "default"))
   {
-    *col = COLOR_DEFAULT;
-  }
-  else if ((*col = mutt_map_get_value(s, ColorNames)) == -1)
-  {
-    return MUTT_CMD_WARNING;
+    elem->color = COLOR_DEFAULT;
+    elem->type = CT_SIMPLE;
+    elem->prefix = COLOR_PREFIX_NONE;
+    return MUTT_CMD_SUCCESS;
   }
 
-  const char *name = mutt_map_get_name(*col, ColorNames);
+  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
+  s += parse_color_prefix(s, &prefix);
+
+  int color = mutt_map_get_value(s, ColorNames);
+  if (color == -1)
+    return MUTT_CMD_WARNING;
+
+  elem->color = color;
+  elem->type = CT_SIMPLE;
+  elem->prefix = prefix;
+
+  const char *name = mutt_map_get_name(elem->color, ColorNames);
   if (name)
     color_debug(LL_DEBUG5, "color: %s\n", name);
 
-  modify_color_by_prefix(prefix, is_fg, col, attrs);
+  modify_color_by_prefix(prefix, is_fg, &elem->color, attrs);
 
 #ifdef NEOMUTT_DIRECT_COLORS
   /* If we are running in direct color mode, we must convert the color
@@ -154,9 +167,9 @@ enum CommandResult parse_color_namedcolor(const char *s, color_t *col, int *attr
    * the range from 0 to 15.  These must not be converted.
    */
   const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
-  if (c_color_directcolor && (*col < 16))
+  if (c_color_directcolor && (elem->color < 16))
   {
-    *col = color_xterm256_to_24bit(*col);
+    elem->color = color_xterm256_to_24bit(elem->color);
   }
 #endif
   return MUTT_CMD_SUCCESS;
@@ -165,7 +178,7 @@ enum CommandResult parse_color_namedcolor(const char *s, color_t *col, int *attr
 /**
  * parse_color_colornnn - Parse a colorNNN, e.g. "color123".
  * @param[in]  s     String to parse
- * @param[out] col   Number for 'colorNNN' colours
+ * @param[out] elem  Colour element to update
  * @param[out] attrs Attributes, e.g. A_UNDERLINE
  * @param[in]  is_fg true if this is a foreground colour
  * @param[out] err   Buffer for error messages
@@ -175,9 +188,12 @@ enum CommandResult parse_color_namedcolor(const char *s, color_t *col, int *attr
  *
  * On #MUTT_CMD_ERROR, an error message will be written to err.
  */
-enum CommandResult parse_color_colornnn(const char *s, color_t *col, int *attrs,
+enum CommandResult parse_color_colornnn(const char *s, struct ColorElement *elem, int *attrs,
                                         bool is_fg, struct Buffer *err)
 {
+  if (!s || !elem)
+    return MUTT_CMD_ERROR;
+
   /* prefixes bright, alert, light are only allowed for named colours and
    * colorNNN for backwards compatibility. */
   enum ColorPrefix prefix = COLOR_PREFIX_NONE;
@@ -190,17 +206,22 @@ enum CommandResult parse_color_colornnn(const char *s, color_t *col, int *attrs,
 
   s += clen;
   char *eptr = NULL;
-  *col = strtoul(s, &eptr, 10);
+
+  unsigned long color = strtoul(s, &eptr, 10);
   /* There are only 256 xterm colors.  Do not confuse with COLORS which is
    * the number of colours the terminal supports (usually one of 16, 256,
    * 16777216 (=24bit)). */
-  if ((*s == '\0') || (*eptr != '\0') || (*col >= 256) || ((*col >= COLORS) && !OptNoCurses))
+  if ((*s == '\0') || (*eptr != '\0') || (color >= 256) || ((color >= COLORS) && !OptNoCurses))
   {
     buf_printf(err, _("%s: color not supported by term"), s);
     return MUTT_CMD_ERROR;
   }
 
-  modify_color_by_prefix(prefix, is_fg, col, attrs);
+  elem->color = color;
+  elem->type = CT_PALETTE;
+  elem->prefix = prefix;
+
+  modify_color_by_prefix(prefix, is_fg, &elem->color, attrs);
 
 #ifdef NEOMUTT_DIRECT_COLORS
   const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
@@ -208,23 +229,23 @@ enum CommandResult parse_color_colornnn(const char *s, color_t *col, int *attrs,
   {
     /* If we are running in direct color mode, we must convert the xterm
      * color numbers 0-255 to an RGB value. */
-    *col = color_xterm256_to_24bit(*col);
+    elem->color = color_xterm256_to_24bit(elem->color);
     /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
      * the default terminal colours.  As a workaround we round them up to
      * #000008 which is the blackest black we can produce. */
-    if (*col < 8)
-      *col = 8;
+    if (elem->color < 8)
+      elem->color = 8;
   }
 #endif
-  color_debug(LL_DEBUG5, "colorNNN %d\n", *col);
+
+  color_debug(LL_DEBUG5, "colorNNN %d\n", elem->color);
   return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_color_rrggbb - Parse an RGB colour, e.g. "#12FE45"
  * @param[in]  s     String to parse
- * @param[out] col   Number for 'colorNNN' colours
- * @param[out] attrs Attributes, e.g. A_UNDERLINE
+ * @param[out] elem  Colour element to update
  * @param[in]  is_fg true if this is a foreground colour
  * @param[out] err   Buffer for error messages
  * @retval #MUTT_CMD_SUCCESS Colour parsed successfully
@@ -233,9 +254,12 @@ enum CommandResult parse_color_colornnn(const char *s, color_t *col, int *attrs,
  *
  * On #MUTT_CMD_ERROR, an error message will be written to err.
  */
-enum CommandResult parse_color_rrggbb(const char *s, color_t *col, int *attrs,
+enum CommandResult parse_color_rrggbb(const char *s, struct ColorElement *elem,
                                       bool is_fg, struct Buffer *err)
 {
+  if (!s || !elem)
+    return MUTT_CMD_ERROR;
+
   /* parse #RRGGBB colours */
   if (s[0] != '#')
     return MUTT_CMD_WARNING;
@@ -252,8 +276,9 @@ enum CommandResult parse_color_rrggbb(const char *s, color_t *col, int *attrs,
   }
   s++;
   char *eptr = NULL;
-  *col = strtoul(s, &eptr, 16);
-  if ((*s == '\0') || (*eptr != '\0') || ((*col >= COLORS) && !OptNoCurses))
+  unsigned long color = strtoul(s, &eptr, 16);
+
+  if ((*s == '\0') || (*eptr != '\0') || ((color >= COLORS) && !OptNoCurses))
   {
     buf_printf(err, _("%s: color not supported by term"), s);
     return MUTT_CMD_ERROR;
@@ -261,25 +286,29 @@ enum CommandResult parse_color_rrggbb(const char *s, color_t *col, int *attrs,
   /* FIXME: The color values 0 to 7 (both inclusive) are still occupied by
    * the default terminal colours.  As a workaround we round them up to
    * #000008 which is the blackest black we can produce. */
-  if (*col < 8)
-    *col = 8;
+  if (color < 8)
+    color = 8;
 
-  color_debug(LL_DEBUG5, "#RRGGBB: %d\n", *col);
+  elem->color = color;
+  elem->type = CT_RGB;
+  elem->prefix = COLOR_PREFIX_NONE;
+
+  color_debug(LL_DEBUG5, "#RRGGBB: %ld\n", color);
   return MUTT_CMD_SUCCESS;
 }
 
 /**
  * parse_color_name - Parse a colour name
  * @param[in]  s     String to parse
- * @param[out] col   Number for 'colorNNN' colours
- * @param[out] attrs Attributes, e.g. A_UNDERLINE
+ * @param[out] elem  Colour element to update
+ * @param[out] attrs Attributes to update
  * @param[in]  is_fg true if this is a foreground colour
  * @param[out] err   Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * Parse a colour name, such as "red", "brightgreen", "color123", "#12FE45"
  */
-enum CommandResult parse_color_name(const char *s, color_t *col, int *attrs,
+enum CommandResult parse_color_name(const char *s, struct ColorElement *elem, int *attrs,
                                     bool is_fg, struct Buffer *err)
 {
   mutt_debug(LL_DEBUG5, "Parsing color name: %s\n", s);
@@ -289,17 +318,17 @@ enum CommandResult parse_color_name(const char *s, color_t *col, int *attrs,
   enum CommandResult cr;
 
   /* #RRGGBB */
-  cr = parse_color_rrggbb(s, col, attrs, is_fg, err);
+  cr = parse_color_rrggbb(s, elem, is_fg, err);
   if (cr != MUTT_CMD_WARNING)
     return cr;
 
   /* color123 */
-  cr = parse_color_colornnn(s, col, attrs, is_fg, err);
+  cr = parse_color_colornnn(s, elem, attrs, is_fg, err);
   if (cr != MUTT_CMD_WARNING)
     return cr;
 
   /* named color, e.g. "brightred" */
-  cr = parse_color_namedcolor(s, col, attrs, is_fg, err);
+  cr = parse_color_namedcolor(s, elem, attrs, is_fg, err);
   if (cr != MUTT_CMD_WARNING)
     return cr;
 
@@ -312,8 +341,8 @@ enum CommandResult parse_color_name(const char *s, color_t *col, int *attrs,
  *
  * Parse a pair of colours, e.g. "red default"
  */
-enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, color_t *fg,
-                                    color_t *bg, int *attrs, struct Buffer *err)
+enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
+                                    struct AttrColor *ac, struct Buffer *err)
 {
   while (true)
   {
@@ -328,16 +357,16 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, color_
     int attr = mutt_map_get_value(buf->data, AttributeNames);
     if (attr == -1)
     {
-      enum CommandResult rc = parse_color_name(buf->data, fg, attrs, true, err);
+      enum CommandResult rc = parse_color_name(buf->data, &ac->fg, &ac->attrs, true, err);
       if (rc != MUTT_CMD_SUCCESS)
         return rc;
       break;
     }
 
     if (attr == A_NORMAL)
-      *attrs = attr; // Clear all attributes
+      ac->attrs = attr; // Clear all attributes
     else
-      *attrs |= attr; // Merge with other attributes
+      ac->attrs |= attr; // Merge with other attributes
   }
 
   if (!MoreArgsF(s, TOKEN_COMMENT))
@@ -348,19 +377,17 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, color_
 
   parse_extract_token(buf, s, TOKEN_COMMENT);
 
-  return parse_color_name(buf->data, bg, attrs, false, err);
+  return parse_color_name(buf->data, &ac->bg, &ac->attrs, false, err);
 }
 
 /**
  * parse_attr_spec - Parse an attribute description - Implements ::parser_callback_t - @ingroup parser_callback_api
  */
-enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s, color_t *fg,
-                                   color_t *bg, int *attrs, struct Buffer *err)
+enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
+                                   struct AttrColor *ac, struct Buffer *err)
 {
-  if (fg)
-    *fg = COLOR_DEFAULT;
-  if (bg)
-    *bg = COLOR_DEFAULT;
+  if (!buf || !s || !ac)
+    return MUTT_CMD_ERROR;
 
   if (!MoreArgs(s))
   {
@@ -378,9 +405,9 @@ enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s, color_t
   }
 
   if (attr == A_NORMAL)
-    *attrs = attr; // Clear all attributes
+    ac->attrs = attr; // Clear all attributes
   else
-    *attrs |= attr; // Merge with other attributes
+    ac->attrs |= attr; // Merge with other attributes
 
   return MUTT_CMD_SUCCESS;
 }

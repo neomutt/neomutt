@@ -35,7 +35,6 @@
 #include "attr.h"
 #include "color.h"
 #include "command2.h"
-#include "curses2.h"
 #include "debug.h"
 #include "notify2.h"
 #include "simple2.h"
@@ -47,6 +46,12 @@ struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
  */
 void simple_colors_init(void)
 {
+  for (int i = 0; i < MT_COLOR_MAX; i++)
+  {
+    SimpleColors[i].fg.color = COLOR_DEFAULT;
+    SimpleColors[i].bg.color = COLOR_DEFAULT;
+  }
+
   // Set some defaults
   color_debug(LL_DEBUG5, "init indicator, markers, etc\n");
   SimpleColors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
@@ -116,22 +121,17 @@ bool simple_color_is_header(enum ColorId cid)
 
 /**
  * simple_color_set - Set the colour of a simple object
- * @param cid   Colour Id, e.g. #MT_COLOR_SEARCH
- * @param fg    Foreground colour
- * @param bg    Background colour
- * @param attrs Attributes, e.g. A_UNDERLINE
+ * @param cid    Colour Id, e.g. #MT_COLOR_SEARCH
+ * @param ac_val Colour value to use
  * @retval ptr Colour
  */
-struct AttrColor *simple_color_set(enum ColorId cid, color_t fg, color_t bg, int attrs)
+struct AttrColor *simple_color_set(enum ColorId cid, struct AttrColor *ac_val)
 {
   struct AttrColor *ac = simple_color_get(cid);
   if (!ac)
     return NULL;
 
-  struct CursesColor *cc = curses_color_new(fg, bg);
-  curses_color_free(&ac->curses_color);
-  ac->curses_color = cc;
-  ac->attrs = attrs;
+  attr_color_overwrite(ac, ac_val);
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);

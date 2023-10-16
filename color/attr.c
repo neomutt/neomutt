@@ -380,3 +380,25 @@ color_t color_xterm256_to_24bit(const color_t color)
   return rgb;
 }
 #endif
+
+/**
+ * attr_color_overwrite - Update an AttrColor in-place
+ * @param ac_old AttrColor to overwrite
+ * @param ac_new AttrColor to copy
+ */
+void attr_color_overwrite(struct AttrColor *ac_old, struct AttrColor *ac_new)
+{
+  if (!ac_old || !ac_new)
+    return;
+
+  color_t fg = ac_new->fg.color;
+  color_t bg = ac_new->bg.color;
+  int attrs = ac_new->attrs;
+
+  struct CursesColor *cc = curses_color_new(fg, bg);
+  curses_color_free(&ac_old->curses_color);
+  ac_old->fg = ac_new->fg;
+  ac_old->bg = ac_new->bg;
+  ac_old->attrs = attrs;
+  ac_old->curses_color = cc;
+}

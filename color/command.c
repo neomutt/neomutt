@@ -35,9 +35,9 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "parse/lib.h"
+#include "attr.h"
 #include "color.h"
 #include "command2.h"
-#include "curses2.h"
 #include "debug.h"
 #include "globals.h"
 #include "notify2.h"
@@ -328,22 +328,26 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
                                       struct Buffer *err, parser_callback_t callback,
                                       bool dry_run, bool color)
 {
-  int attrs = 0, q_level = 0;
-  color_t fg = 0, bg = 0;
+  int q_level = 0;
   unsigned int match = 0;
   enum ColorId cid = MT_COLOR_NONE;
-  enum CommandResult rc;
+  enum CommandResult rc = MUTT_CMD_ERROR;
+  struct AttrColor *ac = NULL;
 
   if (!MoreArgs(s))
   {
     if (StartupComplete)
     {
       color_dump();
-      return MUTT_CMD_SUCCESS;
+      rc = MUTT_CMD_SUCCESS;
+    }
+    else
+    {
+      buf_printf(err, _("%s: too few arguments"), "color");
+      rc = MUTT_CMD_WARNING;
     }
 
-    buf_printf(err, _("%s: too few arguments"), "color");
-    return MUTT_CMD_WARNING;
+    goto done;
   }
 
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
@@ -351,11 +355,12 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   rc = parse_object(buf, s, &cid, &q_level, err);
   if (rc != MUTT_CMD_SUCCESS)
-    return rc;
+    goto done;
 
-  rc = callback(buf, s, &fg, &bg, &attrs, err);
+  ac = attr_color_new();
+  rc = callback(buf, s, ac, err);
   if (rc != MUTT_CMD_SUCCESS)
-    return rc;
+    goto done;
 
   /* extract a regular expression if needed */
 
@@ -375,37 +380,36 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   if (MoreArgs(s) && (cid != MT_COLOR_STATUS))
   {
     buf_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
-    return MUTT_CMD_WARNING;
+    rc = MUTT_CMD_WARNING;
+    goto done;
   }
 
   if (dry_run)
   {
     color_debug(LL_DEBUG5, "dry_run bailout\n");
     *s->dptr = '\0'; /* fake that we're done parsing */
-    return MUTT_CMD_SUCCESS;
+    rc = MUTT_CMD_SUCCESS;
+    goto done;
   }
 
-  /* The case of the tree object is special, because a non-default fg color of
-   * the tree element may be combined dynamically with the default bg color of
-   * an index line, not necessarily defined in a rc file.  */
-  if (!OptNoCurses &&
-      ((fg == COLOR_DEFAULT) || (bg == COLOR_DEFAULT) || (cid == MT_COLOR_TREE)) &&
+  if (!OptNoCurses && ((ac->fg.color == COLOR_DEFAULT) || (ac->bg.color == COLOR_DEFAULT)) &&
       (use_default_colors() != OK))
   {
     buf_strcpy(err, _("default colors not supported"));
-    return MUTT_CMD_ERROR;
+    rc = MUTT_CMD_ERROR;
+    goto done;
   }
 
-  if (regex_colors_parse_color_list(cid, buf->data, fg, bg, attrs, &rc, err))
+  if (regex_colors_parse_color_list(cid, buf->data, ac, &rc, err))
   {
     color_debug(LL_DEBUG5, "regex_colors_parse_color_list done\n");
-    return rc;
+    goto done;
     // do nothing
   }
-  else if (quoted_colors_parse_color(cid, fg, bg, attrs, q_level, &rc, err))
+  else if (quoted_colors_parse_color(cid, ac, q_level, &rc, err))
   {
     color_debug(LL_DEBUG5, "quoted_colors_parse_color done\n");
-    return rc;
+    goto done;
     // do nothing
   }
   else if ((cid == MT_COLOR_STATUS) && MoreArgs(s))
@@ -425,7 +429,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       {
         buf_printf(err, _("%s: invalid number: %s"), color ? "color" : "mono", tmp.data);
         buf_dealloc(&tmp);
-        return MUTT_CMD_WARNING;
+        rc = MUTT_CMD_WARNING;
+        goto done;
       }
       buf_dealloc(&tmp);
     }
@@ -433,16 +438,17 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     if (MoreArgs(s))
     {
       buf_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
-      return MUTT_CMD_WARNING;
+      rc = MUTT_CMD_WARNING;
+      goto done;
     }
 
-    rc = regex_colors_parse_status_list(cid, buf->data, fg, bg, attrs, match, err);
-    return rc;
+    rc = regex_colors_parse_status_list(cid, buf->data, ac, match, err);
+    goto done;
   }
   else // Remaining simple colours
   {
     color_debug(LL_DEBUG5, "simple\n");
-    if (simple_color_set(cid, fg, bg, attrs))
+    if (simple_color_set(cid, ac))
       rc = MUTT_CMD_SUCCESS;
     else
       rc = MUTT_CMD_ERROR;
@@ -456,6 +462,8 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
+done:
+  attr_color_free(&ac);
   return rc;
 }
 

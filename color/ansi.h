@@ -39,7 +39,6 @@ struct AnsiColor
   const struct AttrColor *attr_color;  ///< Curses colour of text
 };
 
-int ansi_color_parse     (const char *str, struct AnsiColor *ansi, struct AttrColorList *acl, bool dry_run);
-int ansi_color_seq_length(const char *str);
+int ansi_color_parse(const char *str, struct AnsiColor *ansi, struct AttrColorList *acl, bool dry_run);
 
 #endif /* MUTT_COLOR_ANSI_H */
