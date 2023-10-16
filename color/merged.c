@@ -142,6 +142,8 @@ const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
   ac = attr_color_new();
   ac->curses_color = curses_color_new(fg, bg);
   ac->attrs = attrs;
+  ac->fg = (base->fg.color == COLOR_DEFAULT) ? over->fg : base->fg;
+  ac->bg = (base->bg.color == COLOR_DEFAULT) ? over->bg : base->bg;
   TAILQ_INSERT_TAIL(&MergedColors, ac, entries);
   merged_colors_dump();
 

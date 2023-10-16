@@ -30,9 +30,11 @@
 #include "config.h"
 #include <stddef.h>
 #include <assert.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "attr.h"
+#include "color.h"
 #include "curses2.h"
 #include "debug.h"
 
@@ -50,7 +52,13 @@ void attr_color_clear(struct AttrColor *ac)
   if (ac->curses_color)
     color_debug(LL_DEBUG5, "clear %p\n", (void *) ac);
   curses_color_free(&ac->curses_color);
-  ac->attrs = 0;
+
+  memset(&ac->fg, 0, sizeof(ac->fg));
+  memset(&ac->bg, 0, sizeof(ac->bg));
+
+  ac->fg.color = COLOR_DEFAULT;
+  ac->bg.color = COLOR_DEFAULT;
+  ac->attrs = A_NORMAL;
 }
 
 /**
@@ -81,6 +89,16 @@ void attr_color_free(struct AttrColor **ptr)
 struct AttrColor *attr_color_new(void)
 {
   struct AttrColor *ac = mutt_mem_calloc(1, sizeof(*ac));
+
+  ac->fg.color = COLOR_DEFAULT;
+  ac->fg.type = CT_SIMPLE;
+  ac->fg.prefix = COLOR_PREFIX_NONE;
+
+  ac->bg.color = COLOR_DEFAULT;
+  ac->bg.type = CT_SIMPLE;
+  ac->bg.prefix = COLOR_PREFIX_NONE;
+
+  ac->attrs = A_NORMAL;
 
   ac->ref_count = 1;
 
@@ -163,7 +181,7 @@ bool attr_color_is_set(const struct AttrColor *ac)
   if (!ac)
     return false;
 
-  return ((ac->attrs != 0) || ac->curses_color);
+  return ((ac->attrs != A_NORMAL) || ac->curses_color);
 }
 
 /**

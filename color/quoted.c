@@ -44,6 +44,20 @@ struct AttrColor QuotedColors[COLOR_QUOTES_MAX]; ///< Array of colours for quote
 int NumQuotedColors; ///< Number of colours for quoted email text
 
 /**
+ * quoted_colors_init - Initialise the Quoted colours
+ */
+void quoted_colors_init(void)
+{
+  for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
+  {
+    struct AttrColor *ac = &QuotedColors[i];
+    ac->fg.color = COLOR_DEFAULT;
+    ac->bg.color = COLOR_DEFAULT;
+  }
+  NumQuotedColors = 0;
+}
+
+/**
  * find_highest_used - Find the highest-numbered quotedN in use
  * @retval num Highest number
  */
