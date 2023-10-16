@@ -267,11 +267,7 @@ long status_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  */
 long status_b_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  struct Mailbox *m = shared->mailbox;
-
-  return mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
+  return mailbox_check_all(MUTT_MAILBOX_CHECK_NO_FLAGS);
 }
 
 /**
