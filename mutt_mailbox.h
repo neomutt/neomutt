@@ -38,4 +38,7 @@ struct Mailbox *mutt_mailbox_next_unread(struct Mailbox *m_cur, struct Buffer *s
 bool mutt_mailbox_notify      (struct Mailbox *m_cur);
 void mutt_mailbox_set_notified(struct Mailbox *m);
 
+bool mailbox_check    (struct Mailbox *m);
+int mailbox_check_all (CheckStatsFlags flags);
+
 #endif /* MUTT_MUTT_MAILBOX_H */

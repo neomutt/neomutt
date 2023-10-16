@@ -73,13 +73,13 @@ static bool is_same_mailbox(struct Mailbox *m1, struct Mailbox *m2,
 }
 
 /**
- * mailbox_check - Check a mailbox for new mail
+ * check_mailbox - Check a mailbox for new mail
  * @param m_cur   Current Mailbox
  * @param m_check Mailbox to check
  * @param st_cur  stat() info for the current Mailbox
  * @param flags   Flags, e.g. #MUTT_MAILBOX_CHECK_FORCE
  */
-static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
+static void check_mailbox(struct Mailbox *m_cur, struct Mailbox *m_check,
                           struct stat *st_cur, CheckStatsFlags flags)
 {
   struct stat st = { 0 };
@@ -216,7 +216,7 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
     {
       m_flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
     }
-    mailbox_check(m_cur, m, &st_cur, m_flags);
+    check_mailbox(m_cur, m, &st_cur, m_flags);
     if (m->has_new)
       MailboxCount++;
     m->first_check_stats_done = true;
@@ -447,4 +447,62 @@ void mailbox_restore_timestamp(const char *path, struct stat *st)
 #endif
     }
   }
+}
+
+bool mailbox_check(struct Mailbox *m)
+{
+  mx_mbox_check_stats(m, MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
+  m->first_check_stats_done = true;
+  return m->has_new;
+}
+
+int mailbox_check_all(CheckStatsFlags flags)
+{
+  if (TAILQ_EMPTY(&NeoMutt->accounts)) // fast return if there are no mailboxes
+    return 0;
+
+#ifdef USE_IMAP
+  if (flags & MUTT_MAILBOX_CHECK_FORCE)
+    mutt_update_num_postponed();
+#endif
+
+  const short c_mail_check = cs_subset_number(NeoMutt->sub, "mail_check");
+  time_t t = mutt_date_now();
+  if ((flags == MUTT_MAILBOX_CHECK_NO_FLAGS) && ((t - MailboxTime) < c_mail_check))
+    return MailboxCount;
+
+  MailboxTime = t;
+  MailboxCount = 0;
+  MailboxNotify = 0;
+
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &ml, entries)
+  {
+    struct Mailbox *m = np->mailbox;
+
+    if (!m->visible || !m->poll_new_mail)
+      continue;
+
+    mailbox_check(m);
+    if (m->has_new)
+    {
+      MailboxCount++;
+
+      // pretend that we've already notified for the mailbox
+      if (!m->notify_user)
+        m->notified = true;
+      else if (!m->notified)
+        MailboxNotify++;
+    }
+    else
+    {
+      m->notified = false;
+    }
+  }
+
+  neomutt_mailboxlist_clear(&ml);
+
+  return MailboxCount;
 }
