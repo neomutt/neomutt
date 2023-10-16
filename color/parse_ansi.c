@@ -190,9 +190,39 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
         else if (mutt_str_startswith(buf + pos, "38;2;") && isdigit(buf[pos + 5]))
         {
           // 38;2;R;G;B true colour foreground
-          pos += ansi_skip_sequence(buf + pos + 5);
-          pos += ansi_skip_sequence(buf + pos);
-          pos += ansi_skip_sequence(buf + pos);
+          long r = -1;
+          long g = -1;
+          long b = -1;
+          char *end = NULL;
+          unsigned long value = 0;
+          pos += 5; // Skip 38;2;
+
+          value = strtoul(buf + pos, &end, 10);
+          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          {
+            return 0;
+          }
+          r = value;
+          pos += end - &buf[pos] + 1;
+
+          value = strtoul(buf + pos, &end, 10);
+          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          {
+            return 0;
+          }
+          g = value;
+          pos += end - &buf[pos] + 1;
+
+          value = strtoul(buf + pos, &end, 10);
+          if ((value < 0) || (value > 255) || !end || (end[0] != 'm'))
+          {
+            return 0;
+          }
+          b = value;
+          pos += end - &buf[pos] + 1;
+
+          elem->color = (r << 16) + (g << 8) + (b << 0);
+          elem->type = CT_RGB;
         }
         else
         {
@@ -248,9 +278,39 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
         else if (mutt_str_startswith(buf + pos, "48;2;") && isdigit(buf[pos + 5]))
         {
           // 48;2;R;G;B true colour background
-          pos += ansi_skip_sequence(buf + pos + 5);
-          pos += ansi_skip_sequence(buf + pos);
-          pos += ansi_skip_sequence(buf + pos);
+          long r = -1;
+          long g = -1;
+          long b = -1;
+          char *end = NULL;
+          unsigned long value = 0;
+          pos += 5; // Skip 48;2;
+
+          value = strtoul(buf + pos, &end, 10);
+          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          {
+            return 0;
+          }
+          r = value;
+          pos += end - &buf[pos] + 1;
+
+          value = strtoul(buf + pos, &end, 10);
+          if ((value < 0) || (value > 255) || !end || (end[0] != ';'))
+          {
+            return 0;
+          }
+          g = value;
+          pos += end - &buf[pos] + 1;
+
+          value = strtoul(buf + pos, &end, 10);
+          if ((value < 0) || (value > 255) || !end || (end[0] != 'm'))
+          {
+            return 0;
+          }
+          b = value;
+          pos += end - &buf[pos] + 1;
+
+          elem->color = (r << 16) + (g << 8) + (b << 0);
+          elem->type = CT_RGB;
         }
         else
         {
