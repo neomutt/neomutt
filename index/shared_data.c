@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "mutt/hash.h"
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
