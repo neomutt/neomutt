@@ -153,6 +153,31 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       ansi->attrs |= A_BOLD;
       pos += 2;
     }
+    else if ((buf[pos] == '2') && isdigit(buf[pos + 1]) && ansi_is_end_char(buf[pos + 2]))
+    {
+      char digit = buf[pos + 1];
+      pos += 3;
+      if (digit == '2')
+      {
+        ansi->attrs &= ~A_BOLD; // Clear the flag
+      }
+      else if (digit == '3')
+      {
+        ansi->attrs &= ~A_ITALIC; // Clear the flag
+      }
+      else if (digit == '4')
+      {
+        ansi->attrs &= ~A_UNDERLINE; // Clear the flag
+      }
+      else if (digit == '5')
+      {
+        ansi->attrs &= ~A_BLINK; // Clear the flag
+      }
+      else if (digit == '7')
+      {
+        ansi->attrs &= ~A_REVERSE; // Clear the flag
+      }
+    }
     else if ((buf[pos] == '3') && ansi_is_end_char(buf[pos + 1]))
     {
       ansi->attrs |= A_ITALIC;
