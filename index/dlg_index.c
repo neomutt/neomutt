@@ -605,29 +605,28 @@ static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_MAILBOX)
     return 0;
-  if (nc->event_subtype != NT_MAILBOX_CHANGE && nc->event_subtype != NT_MAILBOX_INVALID)
+  if (nc->event_subtype != NT_MAILBOX_NEW_MAIL)
     return 0;
 
   struct IndexSharedData *shared = nc->global_data;
   struct EventMailbox *ev_m = nc->event_data;
   struct Mailbox *m = ev_m->mailbox;
+
   const char *path = mailbox_path(m);
 
-  mutt_debug(LL_DEBUG1, "    Mailbox: %s has_new: %d notified: %d\n", path,
-             m->has_new, m->notified);
-
-  if (m->has_new)
+  struct MailboxNotify *mn = mutt_hash_find(shared->mb_notify, path);
+  if (!mn)
   {
-    struct MailboxNotify *mn = mutt_hash_find(shared->mb_notify, path);
-    if (!mn)
-    {
-      mn = mutt_mem_calloc(1, sizeof(struct MailboxNotify));
-      mutt_hash_insert(shared->mb_notify, path, mn);
-    }
-    mn->has_new = m->has_new;
-    mn->wants_notifications = m->notify_user;
-    mn->notify = true;
+    mn = mutt_mem_calloc(1, sizeof(struct MailboxNotify));
+    mutt_hash_insert(shared->mb_notify, path, mn);
   }
+
+  mn->wants_notifications = m->notify_user;
+  mn->has_new_mail = true;
+  mn->needs_notification = true;
+
+  mutt_debug(LL_DEBUG1, "    Mailbox: %s has_new_mail: %d needs_notification: %d\n",
+             path, mn->has_new_mail, mn->needs_notification);
 
   mutt_debug(LL_DEBUG5, "mailbox new-mail done\n");
   return 0;
