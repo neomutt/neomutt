@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include "mutt/hash.h"
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
@@ -296,8 +297,14 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
     notify_observer_remove(shared->email->notify, index_shared_email_observer, shared);
 
   search_state_free(&shared->search_state);
+  mutt_hash_free(&shared->mb_notify);
 
   FREE(ptr);
+}
+
+static void mailbox_notify_free(int type, void *obj, intptr_t data)
+{
+  FREE(&obj);
 }
 
 /**
@@ -311,6 +318,9 @@ struct IndexSharedData *index_shared_data_new(void)
   shared->notify = notify_new();
   shared->sub = NeoMutt->sub;
   shared->search_state = search_state_new();
+
+  shared->mb_notify = mutt_hash_new(200, MUTT_HASH_STRDUP_KEYS);
+  mutt_hash_set_destructor(shared->mb_notify, mailbox_notify_free, 0);
 
   mutt_debug(LL_NOTIFY, "NT_INDEX_ADD: %p\n", (void *) shared);
   notify_send(shared->notify, NT_INDEX, NT_INDEX_ADD, shared);
