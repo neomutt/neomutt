@@ -84,6 +84,7 @@
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
+#include "muttlib.h"
 #include "mview.h"
 #include "mx.h"
 #include "nntp/adata.h"
@@ -621,15 +622,71 @@ static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
     mutt_hash_insert(shared->mb_notify, path, mn);
   }
 
-  mn->wants_notifications = m->notify_user;
-  mn->has_new_mail = true;
-  mn->needs_notification = true;
-
-  mutt_debug(LL_DEBUG1, "    Mailbox: %s has_new_mail: %d needs_notification: %d\n",
-             path, mn->has_new_mail, mn->needs_notification);
+  m->msg_new
+  mn->notify = !m->notified && m->notify_user;
 
   mutt_debug(LL_DEBUG5, "mailbox new-mail done\n");
   return 0;
+}
+
+static void notify_new_mail(struct IndexPrivateData *priv, struct IndexSharedData *shared)
+{
+  bool notify = false;
+  bool first = true;
+  struct Buffer *message = buf_new("New mail in ");
+  struct Buffer *path = buf_pool_get();
+
+  struct HashWalkState walk = { 0 };
+  struct HashElem *he = NULL;
+  while ((he = mutt_hash_walk(shared->mb_notify, &walk)))
+  {
+    struct MailboxNotify *mn = he->data;
+    if (mn->notify)
+    {
+      notify = true;
+
+      // build message
+      buf_strcpy(path, he->key.strkey);
+      buf_pretty_mailbox(path);
+
+      if (!first)
+        buf_addstr(message, ", ");
+
+      buf_addstr(message, buf_string(path));
+      first = false;
+
+      mn->notify = false;
+      
+      // this is the ugly part
+      struct Mailbox *m = mailbox_find(he->key.strkey);
+      if (m)
+        m->notified=true;
+    }
+  }
+
+  if (!notify)
+    return;
+
+  // show "New mail in ..." message
+  mutt_message("%s", buf_string(message));
+
+  // beep
+  const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
+  if (c_beep_new)
+    mutt_beep(true);
+
+  // run new mail command
+  const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
+  if (c_new_mail_command)
+  {
+    char cmd[1024] = { 0 };
+    menu_status_line(cmd, sizeof(cmd), shared, priv->menu, sizeof(cmd),
+                     NONULL(c_new_mail_command));
+    if (mutt_system(cmd) != 0)
+      mutt_error(_("Error running \"%s\""), cmd);
+  }
+
+  buf_free(&message);
 }
 
 /**
@@ -1207,38 +1264,10 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
         {
           mutt_error(_("Mailbox was externally modified.  Flags may be wrong."));
         }
-        else if (check == MX_STATUS_NEW_MAIL)
-        {
-          for (size_t i = 0; i < shared->mailbox->msg_count; i++)
-          {
-            const struct Email *e = shared->mailbox->emails[i];
-            if (e && !e->read && !e->old)
-            {
-              mutt_message(_("New mail in this mailbox"));
-              const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
-              if (c_beep_new)
-                mutt_beep(true);
-              const struct Expando *c_new_mail_command =
-                  cs_subset_expando(shared->sub, "new_mail_command");
-              if (c_new_mail_command)
-              {
-                struct Buffer *cmd = buf_pool_get();
-                menu_status_line(cmd, shared, NULL, -1, c_new_mail_command);
-                if (mutt_system(buf_string(cmd)) != 0)
-                  mutt_error(_("Error running \"%s\""), buf_string(cmd));
-                buf_pool_release(&cmd);
-              }
-              break;
-            }
-          }
-        }
         else if (check == MX_STATUS_FLAGS)
         {
           mutt_message(_("Mailbox was externally modified"));
         }
-
-        /* avoid the message being overwritten by mailbox */
-        priv->do_mailbox_notify = false;
 
         bool verbose = shared->mailbox->verbose;
         shared->mailbox->verbose = false;
@@ -1257,28 +1286,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     {
       /* check for new mail in the incoming folders */
       mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
-      if (priv->do_mailbox_notify)
-      {
-        if (mutt_mailbox_notify(shared->mailbox))
-        {
-          const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
-          if (c_beep_new)
-            mutt_beep(true);
-          const struct Expando *c_new_mail_command = cs_subset_expando(shared->sub, "new_mail_command");
-          if (c_new_mail_command)
-          {
-            struct Buffer *cmd = buf_pool_get();
-            menu_status_line(cmd, shared, priv->menu, -1, c_new_mail_command);
-            if (mutt_system(buf_string(cmd)) != 0)
-              mutt_error(_("Error running \"%s\""), buf_string(cmd));
-            buf_pool_release(&cmd);
-          }
-        }
-      }
-      else
-      {
-        priv->do_mailbox_notify = true;
-      }
+      notify_new_mail(priv, shared);
     }
 
     window_redraw(NULL);
