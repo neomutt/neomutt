@@ -1119,12 +1119,6 @@ enum MxStatus mx_mbox_check(struct Mailbox *m)
     mailbox_changed(m, NT_MAILBOX_INVALID);
   }
 
-  if (rc == MX_STATUS_NEW_MAIL)
-  {
-    struct EventMailbox ev_m = { m };
-    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, &ev_m);
-  }
-
   return rc;
 }
 
@@ -1770,9 +1764,6 @@ enum MxStatus mx_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   {
     struct EventMailbox ev_m = { m };
     notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
-
-    if (rc == MX_STATUS_NEW_MAIL)
-      notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_NEW_MAIL, &ev_m);
   }
 
   return rc;
