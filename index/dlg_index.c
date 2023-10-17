@@ -615,7 +615,6 @@ static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
   struct Mailbox *m = ev_m->mailbox;
 
   const char *path = mailbox_path(m);
-
   struct MailboxNotify *mn = mutt_hash_find(shared->mb_notify, path);
   if (!mn)
   {
@@ -623,8 +622,7 @@ static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
     mutt_hash_insert(shared->mb_notify, path, mn);
   }
 
-  m->msg_new
-  mn->notify = !m->notified && m->notify_user;
+  mn->notify = m->notify_user;
 
   mutt_debug(LL_DEBUG5, "mailbox new-mail done\n");
   return 0;
@@ -657,11 +655,6 @@ static void notify_new_mail(struct IndexPrivateData *priv, struct IndexSharedDat
       first = false;
 
       mn->notify = false;
-      
-      // this is the ugly part
-      struct Mailbox *m = mailbox_find(he->key.strkey);
-      if (m)
-        m->notified=true;
     }
   }
 
@@ -1170,6 +1163,8 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   priv->win_index = window_find_child(panel_index, WT_MENU);
 
   // add new-mail notification listeners to all mailboxes
+  // TODO (ds): needs to happen for newly created mailboxes too
+  // TODO (ds): also need to remove listener when mailbox gets removed
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
   neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
