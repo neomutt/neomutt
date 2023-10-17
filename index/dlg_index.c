@@ -601,6 +601,24 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
   return 0;
 }
 
+static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_MAILBOX)
+    return 0;
+  if (nc->event_subtype != NT_MAILBOX_CHANGE)
+    return 0;
+
+  struct EventMailbox *ev_m = nc->event_data;
+  struct Mailbox *m = ev_m->mailbox;
+
+  const char *path = mailbox_path(m);
+  mutt_debug(LL_DEBUG1, "    Mailbox: %s has_new: %d notified: %d\n", path,
+             m->has_new, m->notified);
+
+  mutt_debug(LL_DEBUG5, "mailbox new-mail done\n");
+  return 0;
+}
+
 /**
  * change_folder_mailbox - Change to a different Mailbox by pointer
  * @param menu      Current Menu
@@ -1079,6 +1097,17 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
   struct IndexPrivateData *priv = panel_index->wdata;
   priv->win_index = window_find_child(panel_index, WT_MENU);
+
+  // add new-mail notification listeners to all mailboxes
+  struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+  neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
+  struct MailboxNode *np = NULL;
+  STAILQ_FOREACH(np, &ml, entries)
+  {
+    struct Mailbox *m = np->mailbox;
+    notify_observer_add(m->notify, NT_MAILBOX, index_mailbox_newmail_observer, shared);
+  }
+  neomutt_mailboxlist_clear(&ml);
 
   int op = OP_NULL;
 
