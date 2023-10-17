@@ -31,8 +31,8 @@ struct Email;
 struct MuttWindow;
 
 struct MailboxNotify {
-  bool has_new;
-  bool notify;
+  bool has_new_mail;
+  bool needs_notification;
   bool wants_notifications;
 };
 
