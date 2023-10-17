@@ -92,15 +92,15 @@ void test_mutt_str_atoull(void)
 
     if ((tests[i].retval == 0) && (!end || *end))
     {
-      TEST_MSG("retval: Expected: \\0, Got: %s\n", end);
+      TEST_MSG("retval: Expected: \\0, Got: %s", end);
     }
     else if ((tests[i].retval == -1) && end)
     {
-      TEST_MSG("retval: Expected: NULL, Got: %s\n", end);
+      TEST_MSG("retval: Expected: NULL, Got: %s", end);
     }
     else if ((tests[i].retval == -2) && end)
     {
-      TEST_MSG("retval: Expected: NULL, Got: %s\n", end);
+      TEST_MSG("retval: Expected: NULL, Got: %s", end);
     }
   }
 }

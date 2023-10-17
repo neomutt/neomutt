@@ -68,12 +68,12 @@ void test_config_account(void)
 
   if (he)
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
   else
   {
-    TEST_MSG("Expected error:\n");
+    TEST_MSG("Expected error:");
   }
   account_free(&a);
 
@@ -84,7 +84,7 @@ void test_config_account(void)
   struct HashElem *he2 = cs_subset_create_inheritance(a->sub, "Apple");
   if (!he1 || !he2 || (he1 != he2))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return;
   }
 
@@ -113,40 +113,40 @@ void test_config_account(void)
   rc = cs_subset_he_native_set(NULL, he, 33, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
   rc = cs_subset_he_native_set(a->sub, NULL, 33, err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
   rc = cs_subset_he_native_set(a->sub, he, 33, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
 
   buf_reset(err);
   rc = cs_subset_he_string_get(a->sub, he, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s = %s\n", he->key.strkey, buf_string(err));
+    TEST_MSG("%s = %s", he->key.strkey, buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
 
   he = cs_subset_lookup(a->sub, "Cherry");
@@ -154,11 +154,11 @@ void test_config_account(void)
   rc = cs_subset_he_string_get(a->sub, he, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s = %s\n", he->key.strkey, buf_string(err));
+    TEST_MSG("%s = %s", he->key.strkey, buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
   }
 
   const char *name = "fruit:Apple";
@@ -166,11 +166,11 @@ void test_config_account(void)
   rc = cs_str_string_get(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("%s = '%s'\n", name, buf_string(err));
+    TEST_MSG("%s = '%s'", name, buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return;
   }
 
@@ -178,11 +178,11 @@ void test_config_account(void)
   rc = cs_str_native_set(cs, name, 42, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Set %s\n", name);
+    TEST_MSG("Set %s", name);
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return;
   }
 
@@ -194,11 +194,11 @@ void test_config_account(void)
   rc = cs_str_initial_set(cs, name, "42", err);
   if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
   {
-    TEST_MSG("Expected error\n");
+    TEST_MSG("Expected error");
   }
   else
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -206,11 +206,11 @@ void test_config_account(void)
   rc = cs_str_initial_get(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Initial %s\n", buf_string(err));
+    TEST_MSG("Initial %s", buf_string(err));
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return;
   }
 
@@ -223,11 +223,11 @@ void test_config_account(void)
   rc = cs_he_native_set(cs, he, 42, err);
   if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-    TEST_MSG("Set %s\n", name);
+    TEST_MSG("Set %s", name);
   }
   else
   {
-    TEST_MSG("%s\n", buf_string(err));
+    TEST_MSG("%s", buf_string(err));
     return;
   }
 

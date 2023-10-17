@@ -127,14 +127,14 @@ void test_init(void)
   TEST_CASE("Common setup");
   if (!TEST_CHECK(path != NULL))
   {
-    TEST_MSG("Environment variable '%s' isn't set\n", TEST_DIR);
+    TEST_MSG("Environment variable '%s' isn't set", TEST_DIR);
     goto done;
   }
 
   size_t len = strlen(path);
   if (!TEST_CHECK(path[len - 1] != '/'))
   {
-    TEST_MSG("Environment variable '%s' mustn't end with a '/'\n", TEST_DIR);
+    TEST_MSG("Environment variable '%s' mustn't end with a '/'", TEST_DIR);
     goto done;
   }
 
@@ -142,13 +142,13 @@ void test_init(void)
 
   if (!TEST_CHECK(stat(path, &st) == 0))
   {
-    TEST_MSG("Test dir '%s' doesn't exist\n", path);
+    TEST_MSG("Test dir '%s' doesn't exist", path);
     goto done;
   }
 
   if (!TEST_CHECK(S_ISDIR(st.st_mode) == true))
   {
-    TEST_MSG("Test dir '%s' isn't a directory\n", path);
+    TEST_MSG("Test dir '%s' isn't a directory", path);
     goto done;
   }
 
@@ -163,7 +163,7 @@ void test_init(void)
   success = true;
 done:
   if (!success)
-    TEST_MSG("See: https://github.com/neomutt/neomutt-test-files#test-files\n");
+    TEST_MSG("See: https://github.com/neomutt/neomutt-test-files#test-files");
 }
 
 void test_fini(void)

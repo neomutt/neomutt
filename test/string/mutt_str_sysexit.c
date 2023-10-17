@@ -66,7 +66,7 @@ void test_mutt_str_sysexit(void)
 
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    TEST_MSG("Testing %d, expecting '%s'\n", tests[i].err_num, NONULL(tests[i].result));
+    TEST_MSG("Testing %d, expecting '%s'", tests[i].err_num, NONULL(tests[i].result));
     result = mutt_str_sysexit(tests[i].err_num);
 
     TEST_CHECK_STR_EQ(result, tests[i].result);

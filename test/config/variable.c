@@ -54,7 +54,7 @@ void test_config_variable(void)
   int result = cs_str_string_set(cs, name, "world", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
@@ -62,7 +62,7 @@ void test_config_variable(void)
   result = cs_str_reset(cs, name, err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
@@ -74,7 +74,7 @@ void test_config_variable(void)
   result = cs_he_string_get(cs, he, err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
@@ -82,7 +82,7 @@ void test_config_variable(void)
   result = cs_he_native_set(cs, he, IP "foo", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
@@ -90,7 +90,7 @@ void test_config_variable(void)
   result = cs_str_native_set(cs, name, IP "bar", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
@@ -98,7 +98,7 @@ void test_config_variable(void)
   intptr_t value = cs_he_native_get(cs, he, err);
   if (!TEST_CHECK_STR_EQ((const char *) value, "bar"))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
@@ -110,14 +110,14 @@ void test_config_variable(void)
   result = cs_he_string_plus_equals(cs, he, "23", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
   result = cs_he_string_minus_equals(cs, he, "56", err);
   if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
   {
-    TEST_MSG("Error: %s\n", buf_string(err));
+    TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 

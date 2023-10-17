@@ -52,8 +52,8 @@ void test_mutt_mb_width(void)
 
     int len = mutt_mb_width(str, 0, false);
     TEST_CHECK(len == 4);
-    TEST_MSG("Expected: %d\n", 4);
-    TEST_MSG("Actual:   %d\n", len);
+    TEST_MSG("Expected: %d", 4);
+    TEST_MSG("Actual:   %d", len);
   }
 
   {
@@ -76,8 +76,8 @@ void test_mutt_mb_width(void)
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, false);
       TEST_CHECK(len == tests[i].len);
-      TEST_MSG("Expected: %d\n", tests[i].len);
-      TEST_MSG("Actual:   %d\n", len);
+      TEST_MSG("Expected: %d", tests[i].len);
+      TEST_MSG("Actual:   %d", len);
     }
   }
 
@@ -102,8 +102,8 @@ void test_mutt_mb_width(void)
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, false);
       TEST_CHECK(len == tests[i].len);
-      TEST_MSG("Expected: %d\n", tests[i].len);
-      TEST_MSG("Actual:   %d\n", len);
+      TEST_MSG("Expected: %d", tests[i].len);
+      TEST_MSG("Actual:   %d", len);
     }
   }
 
@@ -121,8 +121,8 @@ void test_mutt_mb_width(void)
       TEST_CASE(test_name(tests[i].str));
       int len = mutt_mb_width(tests[i].str, tests[i].col, true);
       TEST_CHECK(len == tests[i].len);
-      TEST_MSG("Expected: %d\n", tests[i].len);
-      TEST_MSG("Actual:   %d\n", len);
+      TEST_MSG("Expected: %d", tests[i].len);
+      TEST_MSG("Actual:   %d", len);
     }
   }
 }

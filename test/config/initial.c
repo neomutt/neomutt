@@ -54,7 +54,7 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
   const char *aval = "pie";
   int rc = cs_he_initial_set(cs, he_a, aval, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
-    TEST_MSG("Expected error: %s\n", buf_string(err));
+    TEST_MSG("Expected error: %s", buf_string(err));
 
   name = "Banana";
   struct HashElem *he_b = cs_get_elem(cs, name);
@@ -80,9 +80,9 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarBanana = cs_subset_string(sub, "Banana");
   const char *VarCherry = cs_subset_string(sub, "Cherry");
 
-  TEST_MSG("Apple = %s\n", VarApple);
-  TEST_MSG("Banana = %s\n", VarBanana);
-  TEST_MSG("Cherry = %s\n", VarCherry);
+  TEST_MSG("Apple = %s", VarApple);
+  TEST_MSG("Banana = %s", VarBanana);
+  TEST_MSG("Cherry = %s", VarCherry);
 
   log_line(__func__);
   return (!mutt_str_equal(VarApple, aval) && !mutt_str_equal(VarBanana, bval) &&

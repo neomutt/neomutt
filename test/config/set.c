@@ -258,7 +258,7 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
     struct HashElem *cherry = cs_register_variable(cs, &cherryDef, err);
     if (!TEST_CHECK(cherry != NULL))
     {
-      TEST_MSG("Variable registration failed: %s\n", buf_string(err));
+      TEST_MSG("Variable registration failed: %s", buf_string(err));
       return false;
     }
 
@@ -266,7 +266,7 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
     struct HashElem *damson = cs_register_variable(cs, &damsonDef, err);
     if (!TEST_CHECK(damson != NULL))
     {
-      TEST_MSG("Variable registration failed: %s\n", buf_string(err));
+      TEST_MSG("Variable registration failed: %s", buf_string(err));
       return false;
     }
   }
@@ -289,26 +289,26 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
     buf_reset(err);
     if (!TEST_CHECK(cs_he_delete(cs, cherry, err) == CSR_SUCCESS))
     {
-      TEST_MSG("HashElem deletion failed: %s\n", buf_string(err));
+      TEST_MSG("HashElem deletion failed: %s", buf_string(err));
       return false;
     }
     cherry = cs_get_elem(cs, "Cherry");
     if (!TEST_CHECK(cherry == NULL))
     {
-      TEST_MSG("Cherry not deleted.\n");
+      TEST_MSG("Cherry not deleted.");
       return false;
     }
 
     buf_reset(err);
     if (!TEST_CHECK(cs_str_delete(cs, "Damson", err) == CSR_SUCCESS))
     {
-      TEST_MSG("String deletion failed: %s\n", buf_string(err));
+      TEST_MSG("String deletion failed: %s", buf_string(err));
       return false;
     }
     struct HashElem *damson = cs_get_elem(cs, "Damson");
     if (!TEST_CHECK(damson == NULL))
     {
-      TEST_MSG("Damson not deleted.\n");
+      TEST_MSG("Damson not deleted.");
       return false;
     }
   }
@@ -316,7 +316,7 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
   /* Delete unknown variable must fail */
   if (!TEST_CHECK(cs_str_delete(cs, "does-not-exist", err) == CSR_ERR_UNKNOWN))
   {
-    TEST_MSG("Deletion of non-existent variable succeeded but should have failed: %s\n",
+    TEST_MSG("Deletion of non-existent variable succeeded but should have failed: %s",
              buf_string(err));
     return false;
   }
@@ -327,13 +327,13 @@ bool creation_and_deletion_tests(struct ConfigSet *cs, struct Buffer *err)
     buf_reset(err);
     if (!TEST_CHECK(cs_he_delete(cs, banana, NULL) == CSR_SUCCESS))
     {
-      TEST_MSG("HashElem deletion failed: %s\n", buf_string(err));
+      TEST_MSG("HashElem deletion failed: %s", buf_string(err));
       return false;
     }
     struct HashElem *banana_after = cs_get_elem(cs, "Banana");
     if (!TEST_CHECK(banana_after == NULL))
     {
-      TEST_MSG("Banana not deleted.\n");
+      TEST_MSG("Banana not deleted.");
       return false;
     }
   }
@@ -357,11 +357,11 @@ void test_config_set(void)
 
   if (TEST_CHECK(!cs_register_type(cs, &CstDummy)))
   {
-    TEST_MSG("Expected error\n");
+    TEST_MSG("Expected error");
   }
   else
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -380,11 +380,11 @@ void test_config_set(void)
 
   if (TEST_CHECK(!cs_register_type(cs, &CstDummy2)))
   {
-    TEST_MSG("Expected error\n");
+    TEST_MSG("Expected error");
   }
   else
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -393,11 +393,11 @@ void test_config_set(void)
 
   if (TEST_CHECK(!cs_register_variables(cs, Vars, DT_NO_FLAGS)))
   {
-    TEST_MSG("Expected error\n");
+    TEST_MSG("Expected error");
   }
   else
   {
-    TEST_MSG("This test should have failed\n");
+    TEST_MSG("This test should have failed");
     return;
   }
 
@@ -411,66 +411,66 @@ void test_config_set(void)
   int result = cs_str_string_set(cs, name, "hello", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
-    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'", name);
   }
   else
   {
-    TEST_MSG("This should have failed 1\n");
+    TEST_MSG("This should have failed 1");
     return;
   }
 
   result = cs_str_string_plus_equals(cs, name, "42", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
-    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'", name);
   }
   else
   {
-    TEST_MSG("This should have failed 1\n");
+    TEST_MSG("This should have failed 1");
     return;
   }
 
   result = cs_str_string_minus_equals(cs, name, "42", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
-    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'", name);
   }
   else
   {
-    TEST_MSG("This should have failed 1\n");
+    TEST_MSG("This should have failed 1");
     return;
   }
 
   result = cs_str_string_get(cs, name, err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
-    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'", name);
   }
   else
   {
-    TEST_MSG("This should have failed 2\n");
+    TEST_MSG("This should have failed 2");
     return;
   }
 
   result = cs_str_native_set(cs, name, IP "hello", err);
   if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
   {
-    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'", name);
   }
   else
   {
-    TEST_MSG("This should have failed 3\n");
+    TEST_MSG("This should have failed 3");
     return;
   }
 
   intptr_t native = cs_str_native_get(cs, name, err);
   if (TEST_CHECK(native == INT_MIN))
   {
-    TEST_MSG("Expected error: Unknown var '%s'\n", name);
+    TEST_MSG("Expected error: Unknown var '%s'", name);
   }
   else
   {
-    TEST_MSG("This should have failed 4\n");
+    TEST_MSG("This should have failed 4");
     return;
   }
 

@@ -72,12 +72,12 @@ int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 void log_line(const char *fn)
 {
   int len = 44 - mutt_str_len(fn);
-  TEST_MSG("\033[36m---- %s %.*s\033[m\n", fn, len, line);
+  TEST_MSG("\033[36m---- %s %.*s\033[m", fn, len, line);
 }
 
 void short_line(void)
 {
-  TEST_MSG("%s\n", line + 40);
+  TEST_MSG("%s", line + 40);
 }
 
 int log_observer(struct NotifyCallback *nc)
@@ -95,7 +95,7 @@ int log_observer(struct NotifyCallback *nc)
 
   cs_he_string_get(ec->sub->cs, ec->he, result);
 
-  TEST_MSG("Event: %s has been %s to '%s'\n", ec->name,
+  TEST_MSG("Event: %s has been %s to '%s'", ec->name,
            events[nc->event_subtype - 1], buf_string(result));
 
   buf_pool_release(&result);
@@ -174,7 +174,7 @@ void cs_dump_set(const struct ConfigSet *cs)
   qsort(list, index, sizeof(list[0]), sort_list_cb);
   for (i = 0; list[i]; i++)
   {
-    TEST_MSG("%s\n", list[i]);
+    TEST_MSG("%s", list[i]);
     FREE(&list[i]);
   }
 

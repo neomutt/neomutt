@@ -268,9 +268,9 @@ void test_mutt_pattern_comp(void)
     {
       char s2[1024];
       canonical_pattern(s2, &expected, 0);
-      TEST_MSG("Expected:\n%s", s2);
+      TEST_MSG("Expected:%s", s2);
       canonical_pattern(s2, pat, 0);
-      TEST_MSG("Actual:\n%s", s2);
+      TEST_MSG("Actual:%s", s2);
     }
 
     char *msg = "";
@@ -310,9 +310,9 @@ void test_mutt_pattern_comp(void)
     {
       char s2[1024];
       canonical_pattern(s2, &expected, 0);
-      TEST_MSG("Expected:\n%s", s2);
+      TEST_MSG("Expected:%s", s2);
       canonical_pattern(s2, pat, 0);
-      TEST_MSG("Actual:\n%s", s2);
+      TEST_MSG("Actual:%s", s2);
     }
 
     char *msg = "";
@@ -383,9 +383,9 @@ void test_mutt_pattern_comp(void)
     {
       char s2[1024];
       canonical_pattern(s2, &expected, 0);
-      TEST_MSG("Expected:\n%s", s2);
+      TEST_MSG("Expected:%s", s2);
       canonical_pattern(s2, pat, 0);
-      TEST_MSG("Actual:\n%s", s2);
+      TEST_MSG("Actual:%s", s2);
     }
 
     char *msg = "";
@@ -456,9 +456,9 @@ void test_mutt_pattern_comp(void)
     {
       char s2[1024];
       canonical_pattern(s2, &expected, 0);
-      TEST_MSG("Expected:\n%s", s2);
+      TEST_MSG("Expected:%s", s2);
       canonical_pattern(s2, pat, 0);
-      TEST_MSG("Actual:\n%s", s2);
+      TEST_MSG("Actual:%s", s2);
     }
 
     char *msg = "";
@@ -529,9 +529,9 @@ void test_mutt_pattern_comp(void)
     {
       char s2[1024];
       canonical_pattern(s2, &expected, 0);
-      TEST_MSG("Expected:\n%s", s2);
+      TEST_MSG("Expected:%s", s2);
       canonical_pattern(s2, pat, 0);
-      TEST_MSG("Actual:\n%s", s2);
+      TEST_MSG("Actual:%s", s2);
     }
 
     char *msg = "";
@@ -615,9 +615,9 @@ void test_mutt_pattern_comp(void)
     {
       char s2[1024];
       canonical_pattern(s2, &expected, 0);
-      TEST_MSG("Expected:\n%s", s2);
+      TEST_MSG("Expected:%s", s2);
       canonical_pattern(s2, pat, 0);
-      TEST_MSG("Actual:\n%s", s2);
+      TEST_MSG("Actual:%s", s2);
     }
 
     char *msg = "";
@@ -716,9 +716,9 @@ void test_mutt_pattern_comp(void)
     {
       char s2[1024];
       canonical_pattern(s2, &expected, 0);
-      TEST_MSG("Expected:\n%s", s2);
+      TEST_MSG("Expected:%s", s2);
       canonical_pattern(s2, pat, 0);
-      TEST_MSG("Actual:\n%s", s2);
+      TEST_MSG("Actual:%s", s2);
     }
 
     char *msg = "";
