@@ -606,12 +606,15 @@ static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_MAILBOX)
     return 0;
-  if (nc->event_subtype != NT_MAILBOX_NEW_MAIL)
+  if (nc->event_subtype != NT_MAILBOX_CHANGE && nc->event_subtype != NT_MAILBOX_INVALID)
     return 0;
 
   struct IndexSharedData *shared = nc->global_data;
   struct EventMailbox *ev_m = nc->event_data;
   struct Mailbox *m = ev_m->mailbox;
+
+  if (!m->notify_user)
+    return 0; // the user doesn't want notifications for this mailbox
 
   const char *path = mailbox_path(m);
   struct MailboxNotify *mn = mutt_hash_find(shared->mb_notify, path);
@@ -621,7 +624,14 @@ static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
     mutt_hash_insert(shared->mb_notify, path, mn);
   }
 
-  mn->notify = m->notify_user;
+  mn->has_new_mail = m->has_new;
+
+  /* We only trigger a notification once for each mailbox with new mail.
+   * Even if we receive more new mails. So the logic here is to reset
+   * the 'notified' flag when the mailbox contains no new mail.
+   * Then the next new mail will trigger a notification again. */
+  if (!m->has_new)
+    mn->notified = false;
 
   mutt_debug(LL_DEBUG5, "mailbox new-mail done\n");
   return 0;
@@ -639,7 +649,7 @@ static void notify_new_mail(struct IndexPrivateData *priv, struct IndexSharedDat
   while ((he = mutt_hash_walk(shared->mb_notify, &walk)))
   {
     struct MailboxNotify *mn = he->data;
-    if (mn->notify)
+    if (!mn->notified)
     {
       notify = true;
 
@@ -653,7 +663,7 @@ static void notify_new_mail(struct IndexPrivateData *priv, struct IndexSharedDat
       buf_addstr(message, buf_string(path));
       first = false;
 
-      mn->notify = false;
+      mn->notified = true;
     }
   }
 
