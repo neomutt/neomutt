@@ -25,8 +25,19 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include "mutt/lib.h"
+#include "curses2.h"
+
+/**
+ * ColorPrefix - Constants for colour prefixes of named colours
+ */
+enum ColorPrefix
+{
+  COLOR_PREFIX_NONE,   ///< no prefix
+  COLOR_PREFIX_ALERT,  ///< "alert"  colour prefix
+  COLOR_PREFIX_BRIGHT, ///< "bright" colour prefix
+  COLOR_PREFIX_LIGHT,  ///< "light"  colour prefix
+};
 
 /**
  * struct AttrColor - A curses colour and its attributes
@@ -48,6 +59,6 @@ bool              attr_color_match (struct AttrColor *ac1, struct AttrColor *ac2
 struct AttrColor *attr_color_new   (void);
 
 void              attr_color_list_clear(struct AttrColorList *acl);
-struct AttrColor *attr_color_list_find (struct AttrColorList *acl, uint32_t fg, uint32_t bg, int attrs);
+struct AttrColor *attr_color_list_find (struct AttrColorList *acl, color_t fg, color_t bg, int attrs);
 
 #endif /* MUTT_COLOR_ATTR_H */

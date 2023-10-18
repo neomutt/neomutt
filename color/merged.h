@@ -27,10 +27,6 @@
 
 struct AttrColor;
 
-#ifdef USE_DEBUG_COLOR
-extern struct AttrColorList MergedColors;
-#endif
-
 const struct AttrColor * merged_color_overlay(const struct AttrColor *base, const struct AttrColor *over);
 
 void               merged_colors_cleanup(void);

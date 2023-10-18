@@ -31,15 +31,37 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "debug.h"
+#include "pager/lib.h"
 #include "attr.h"
 #include "color.h"
 #include "curses2.h"
-#include "merged.h"
+#include "pager/private_data.h" // IWYU pragma: keep
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
+
+extern struct AttrColorList MergedColors;
+extern struct CursesColorList CursesColors;
+extern int NumCursesColors;
+
+extern struct RegexColorList AttachList;
+extern struct RegexColorList BodyList;
+extern struct RegexColorList HeaderList;
+extern struct RegexColorList IndexAuthorList;
+extern struct RegexColorList IndexCollapsedList;
+extern struct RegexColorList IndexDateList;
+extern struct RegexColorList IndexFlagsList;
+extern struct RegexColorList IndexLabelList;
+extern struct RegexColorList IndexList;
+extern struct RegexColorList IndexNumberList;
+extern struct RegexColorList IndexSizeList;
+extern struct RegexColorList IndexSubjectList;
+extern struct RegexColorList IndexTagList;
+extern struct RegexColorList IndexTagsList;
+extern struct RegexColorList StatusList;
 
 /**
  * color_debug - Write to the log file
@@ -64,39 +86,36 @@ int color_debug(enum LogLevel level, const char *format, ...)
 
 /**
  * color_debug_log_color_attrs - Get a colourful string to represent a colour in the log
- * @param fg    Foreground colour
- * @param bg    Background colour
- * @param attrs Attributes, e.g. A_UNDERLINE
- * @retval ptr Generated string
+ * @param fg     Foreground colour
+ * @param bg     Background colour
+ * @param attrs  Attributes, e.g. A_UNDERLINE
+ * @param swatch Buffer for swatch
  *
  * @note Do not free the returned string
  */
-const char *color_debug_log_color_attrs(int fg, int bg, int attrs)
+void color_debug_log_color_attrs(color_t fg, color_t bg, int attrs, struct Buffer *swatch)
 {
-  static char text[64];
-  int pos = 0;
+  buf_reset(swatch);
 
   if (attrs & A_BLINK)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[5m");
+    buf_add_printf(swatch, "\033[5m");
   if (attrs & A_BOLD)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[1m");
+    buf_add_printf(swatch, "\033[1m");
   if (attrs & A_NORMAL)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[0m");
+    buf_add_printf(swatch, "\033[0m");
   if (attrs & A_REVERSE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[7m");
+    buf_add_printf(swatch, "\033[7m");
   if (attrs & A_STANDOUT)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[1m");
+    buf_add_printf(swatch, "\033[1m");
   if (attrs & A_UNDERLINE)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[4m");
+    buf_add_printf(swatch, "\033[4m");
 
   if (fg >= 0)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[38;5;%dm", fg);
+    buf_add_printf(swatch, "\033[38;5;%dm", fg);
   if (bg >= 0)
-    pos += snprintf(text + pos, sizeof(text) - pos, "\033[48;5;%dm", bg);
+    buf_add_printf(swatch, "\033[48;5;%dm", bg);
 
-  snprintf(text + pos, sizeof(text) - pos, "XXXXXX\033[0m");
-
-  return text;
+  buf_addstr(swatch, "XXXXXX\033[0m");
 }
 
 /**
@@ -107,7 +126,7 @@ const char *color_debug_log_color_attrs(int fg, int bg, int attrs)
  *
  * @note Do not free the returned string
  */
-const char *color_debug_log_color(int fg, int bg)
+const char *color_debug_log_color(color_t fg, color_t bg)
 {
   static char text[64];
   snprintf(text, sizeof(text), "\033[38;5;%dm\033[48;5;%dmXXXXXX\033[0m", fg, bg);
@@ -210,8 +229,8 @@ void attr_color_dump(struct AttrColor *ac, const char *prefix)
 
   int index = ac->curses_color ? ac->curses_color->index : -1;
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {
@@ -299,8 +318,8 @@ void quoted_color_dump(struct AttrColor *ac, int q_level, const char *prefix)
 
   int index = ac->curses_color ? ac->curses_color->index : -1;
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {
@@ -339,8 +358,8 @@ void regex_color_dump(struct RegexColor *rcol, const char *prefix)
   struct AttrColor *ac = &rcol->attr_color;
   int index = ac->curses_color ? ac->curses_color->index : -1;
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {
@@ -425,8 +444,8 @@ void simple_color_dump(enum ColorId cid, const char *prefix)
     }
   }
 
-  int fg = COLOR_DEFAULT;
-  int bg = COLOR_DEFAULT;
+  color_t fg = COLOR_DEFAULT;
+  color_t bg = COLOR_DEFAULT;
   struct CursesColor *cc = ac->curses_color;
   if (cc)
   {
@@ -463,4 +482,177 @@ void simple_colors_dump(bool force)
 void merged_colors_dump(void)
 {
   attr_color_list_dump(&MergedColors, "MergedColors");
+}
+
+/**
+ * color_dump - Display all the colours in the Pager
+ */
+void color_dump(void)
+{
+  struct Buffer *tmp_file = buf_pool_get();
+
+  buf_mktemp(tmp_file);
+  FILE *fp = mutt_file_fopen(buf_string(tmp_file), "w");
+  if (!fp)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    mutt_error(_("Could not create temporary file %s"), buf_string(tmp_file));
+    buf_pool_release(&tmp_file);
+    return;
+  }
+
+  struct Buffer *swatch = buf_pool_get();
+  char color_fg[32] = { 0 };
+  char color_bg[32] = { 0 };
+
+  fputs("# All Colours\n\n", fp);
+  fputs("# Simple Colours\n", fp);
+  for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
+  {
+    struct AttrColor *ac = simple_color_get(cid);
+    if (!ac)
+      continue;
+
+    struct CursesColor *cc = ac->curses_color;
+    if (!cc)
+      continue;
+
+    const char *name = mutt_map_get_name(cid, ColorFields);
+    if (!name)
+      continue;
+
+    color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
+    fprintf(fp, "color %-18s %-30s %-8s %-8s # %s\n", name,
+            color_debug_log_attrs_list(ac->attrs),
+            color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+            color_debug_log_name(color_bg, sizeof(color_bg), cc->bg), buf_string(swatch));
+  }
+
+  if (NumQuotedColors > 0)
+  {
+    fputs("\n# Quoted Colours\n", fp);
+    for (int i = 0; i < NumQuotedColors; i++)
+    {
+      struct AttrColor *ac = quoted_colors_get(i);
+      if (!ac)
+        continue;
+
+      struct CursesColor *cc = ac->curses_color;
+      if (!cc)
+        continue;
+
+      color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
+      fprintf(fp, "color quoted%d %-30s %-8s %-8s # %s\n", i,
+              color_debug_log_attrs_list(ac->attrs),
+              color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+              color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+              buf_string(swatch));
+    }
+  }
+
+  int rl_count = 0;
+  for (enum ColorId id = MT_COLOR_NONE; id != MT_COLOR_MAX; id++)
+  {
+    if (!mutt_color_has_pattern(id))
+    {
+      continue;
+    }
+
+    struct RegexColorList *rcl = regex_colors_get_list(id);
+    if (!STAILQ_EMPTY(rcl))
+      rl_count++;
+  }
+
+  if (rl_count > 0)
+  {
+    for (enum ColorId id = MT_COLOR_NONE; id != MT_COLOR_MAX; id++)
+    {
+      if (!mutt_color_has_pattern(id))
+      {
+        continue;
+      }
+
+      struct RegexColorList *rcl = regex_colors_get_list(id);
+      if (STAILQ_EMPTY(rcl))
+        continue;
+
+      const char *name = mutt_map_get_name(id, ColorFields);
+      if (!name)
+        continue;
+
+      fprintf(fp, "\n# Regex Colour %s\n", name);
+
+      struct RegexColor *rc = NULL;
+      STAILQ_FOREACH(rc, rcl, entries)
+      {
+        struct AttrColor *ac = &rc->attr_color;
+        struct CursesColor *cc = ac->curses_color;
+        if (!cc)
+          continue;
+
+        color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
+        fprintf(fp, "color %-14s %-30s %-8s %-8s %-30s # %s\n", name,
+                color_debug_log_attrs_list(ac->attrs),
+                color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+                color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+                rc->pattern, buf_string(swatch));
+      }
+    }
+  }
+
+  if (!TAILQ_EMPTY(&MergedColors))
+  {
+    fputs("\n# Merged Colours\n", fp);
+    struct AttrColor *ac = NULL;
+    TAILQ_FOREACH(ac, &MergedColors, entries)
+    {
+      struct CursesColor *cc = ac->curses_color;
+      if (!cc)
+        continue;
+
+      color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
+      fprintf(fp, "# %-30s %-8s %-8s # %s\n", color_debug_log_attrs_list(ac->attrs),
+              color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+              color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+              buf_string(swatch));
+    }
+  }
+
+  struct MuttWindow *win = window_get_focus();
+  if (win && (win->type == WT_CUSTOM) && win->parent && (win->parent->type == WT_PAGER))
+  {
+    struct PagerPrivateData *priv = win->parent->wdata;
+    if (priv && !TAILQ_EMPTY(&priv->ansi_list))
+    {
+      fputs("\n# Ansi Colours\n", fp);
+      struct AttrColor *ac = NULL;
+      TAILQ_FOREACH(ac, &priv->ansi_list, entries)
+      {
+        struct CursesColor *cc = ac->curses_color;
+        if (!cc)
+          continue;
+
+        color_debug_log_color_attrs(cc->fg, cc->bg, ac->attrs, swatch);
+        fprintf(fp, "# %-30s %-8s %-8s # %s\n", color_debug_log_attrs_list(ac->attrs),
+                color_debug_log_name(color_fg, sizeof(color_fg), cc->fg),
+                color_debug_log_name(color_bg, sizeof(color_bg), cc->bg),
+                buf_string(swatch));
+      }
+    }
+  }
+
+  mutt_file_fclose(&fp);
+
+  struct PagerData pdata = { 0 };
+  struct PagerView pview = { &pdata };
+
+  pdata.fname = buf_string(tmp_file);
+
+  pview.banner = "color";
+  pview.flags = MUTT_SHOWCOLOR;
+  pview.mode = PAGER_MODE_OTHER;
+
+  mutt_do_pager(&pview, NULL);
+  buf_pool_release(&tmp_file);
+  buf_pool_release(&swatch);
 }

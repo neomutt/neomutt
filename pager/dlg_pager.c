@@ -492,9 +492,7 @@ int dlg_pager(struct PagerView *pview)
       continue;
     }
 
-#ifdef USE_DEBUG_COLOR
     dump_pager(priv);
-#endif
 
     //-------------------------------------------------------------------------
     // Finally, read user's key press

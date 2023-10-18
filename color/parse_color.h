@@ -1,9 +1,9 @@
 /**
  * @file
- * Simple colour
+ * Parse colour commands
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,24 +20,15 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_SIMPLE2_H
-#define MUTT_COLOR_SIMPLE2_H
+#ifndef MUTT_COLOR_PARSE_COLOR_H
+#define MUTT_COLOR_PARSE_COLOR_H
 
-#include "config.h"
-#include <stdbool.h>
-#include "attr.h"
-#include "color.h"
+#include "core/lib.h"
 #include "curses2.h"
 
-extern struct AttrColor SimpleColors[];
+struct Buffer;
 
-struct AttrColor *simple_color_get      (enum ColorId cid);
-bool              simple_color_is_header(enum ColorId cid);
-bool              simple_color_is_set   (enum ColorId cid);
-void              simple_color_reset    (enum ColorId cid);
-struct AttrColor *simple_color_set      (enum ColorId cid, color_t fg, color_t bg, int attrs);
+enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, color_t *fg, color_t *bg, int *attrs, struct Buffer *err);
+enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, color_t *fg, color_t *bg, int *attrs, struct Buffer *err);
 
-void              simple_colors_cleanup(void);
-void              simple_colors_init(void);
-
-#endif /* MUTT_COLOR_SIMPLE2_H */
+#endif /* MUTT_COLOR_PARSE_COLOR_H */

@@ -27,6 +27,9 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 
+/// Type for 24-bit colour value
+typedef int32_t color_t;
+
 /**
  * struct CursesColor - Colour in the ncurses palette
  *
@@ -36,25 +39,18 @@
  */
 struct CursesColor
 {
-  /* TrueColor uses 24bit. Use fixed-width integer type to make sure it fits.
-   * Use the upper 8 bits to store flags.  */
-  uint32_t fg;                      ///< Foreground colour
-  uint32_t bg;                      ///< Background colour
+  color_t fg;                       ///< Foreground colour
+  color_t bg;                       ///< Background colour
   short index;                      ///< Index number
   short ref_count;                  ///< Number of users
   TAILQ_ENTRY(CursesColor) entries; ///< Linked list
 };
 TAILQ_HEAD(CursesColorList, CursesColor);
 
-#ifdef USE_DEBUG_COLOR
-extern struct CursesColorList CursesColors;
-extern int NumCursesColors;
-#endif
-
 void                curses_color_free(struct CursesColor **ptr);
-struct CursesColor *curses_color_new (int fg, int bg);
+struct CursesColor *curses_color_new (color_t fg, color_t bg);
 
 void                curses_colors_init(void);
-struct CursesColor *curses_colors_find (int fg, int bg);
+struct CursesColor *curses_colors_find(color_t fg, color_t bg);
 
 #endif /* MUTT_COLOR_CURSES2_H */

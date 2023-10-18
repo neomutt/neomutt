@@ -25,6 +25,7 @@
 #define MUTT_COLOR_COLOR_H
 
 #include "config.h"
+#include "mutt/lib.h"
 #include <stdbool.h>
 
 /**
@@ -94,15 +95,10 @@ enum ColorId
   MT_COLOR_MAX,
 };
 
-#include <stdint.h>
-#include "mutt/lib.h"
-
-extern const struct Mapping ColorNames[];
 extern const struct Mapping ColorFields[];
 extern const struct Mapping ComposeColorFields[];
 
-#define COLOR_DEFAULT (-2)
-#define COLOR_UNSET   UINT32_MAX
+#define COLOR_DEFAULT -1
 
 void mutt_colors_init(void);
 void mutt_colors_cleanup(void);

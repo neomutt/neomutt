@@ -237,7 +237,7 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * called from mutt_parse_color()
  */
 static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
-                                      bool sensitive, uint32_t fg, uint32_t bg, int attrs,
+                                      bool sensitive, color_t fg, color_t bg, int attrs,
                                       struct Buffer *err, bool is_index, int match)
 {
   struct RegexColor *rcol = NULL;
@@ -337,8 +337,8 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
  *
  * Parse a Regex 'color' command, e.g. "color index green default pattern"
  */
-bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t fg,
-                                   uint32_t bg, int attrs, int *rc, struct Buffer *err)
+bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, color_t fg,
+                                   color_t bg, int attrs, int *rc, struct Buffer *err)
 
 {
   if (cid == MT_COLOR_STATUS)
@@ -407,8 +407,8 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat, uint32_t f
  * @param err     Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
-int regex_colors_parse_status_list(enum ColorId cid, const char *pat, uint32_t fg,
-                                   uint32_t bg, int attrs, int match, struct Buffer *err)
+int regex_colors_parse_status_list(enum ColorId cid, const char *pat, color_t fg,
+                                   color_t bg, int attrs, int match, struct Buffer *err)
 {
   if (cid != MT_COLOR_STATUS)
     return MUTT_CMD_ERROR;

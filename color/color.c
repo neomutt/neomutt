@@ -42,22 +42,6 @@
 #include "regex4.h"
 #include "simple2.h"
 
-/// Mapping between a colour name and an ncurses colour
-const struct Mapping ColorNames[] = {
-  // clang-format off
-  { "black",   COLOR_BLACK },
-  { "blue",    COLOR_BLUE },
-  { "cyan",    COLOR_CYAN },
-  { "green",   COLOR_GREEN },
-  { "magenta", COLOR_MAGENTA },
-  { "red",     COLOR_RED },
-  { "white",   COLOR_WHITE },
-  { "yellow",  COLOR_YELLOW },
-  { "default", COLOR_DEFAULT },
-  { 0, 0 },
-  // clang-format on
-};
-
 /**
  * colors_cleanup - Reset all the simple, quoted and regex colours
  */

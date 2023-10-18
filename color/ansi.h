@@ -24,6 +24,7 @@
 #define MUTT_COLOR_ANSI_H
 
 #include <stdbool.h>
+#include "curses2.h"
 
 struct AttrColorList;
 
@@ -34,8 +35,8 @@ struct AnsiColor
 {
   const struct AttrColor *attr_color;  ///< Curses colour of text
   int attrs;                           ///< Attributes, e.g. A_BOLD
-  int fg;                              ///< Foreground colour
-  int bg;                              ///< Background colour
+  color_t fg;                          ///< Foreground colour
+  color_t bg;                          ///< Background colour
 };
 
 int ansi_color_parse     (const char *str, struct AnsiColor *ansi, struct AttrColorList *acl, bool dry_run);
