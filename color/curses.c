@@ -89,11 +89,14 @@ static int curses_color_init(color_t fg, color_t bg)
   color_debug(LL_DEBUG5, "lowest index = %d\n", index);
   if (index >= COLOR_PAIRS)
   {
-    static bool warned = false;
-    if (!warned)
+    if (COLOR_PAIRS > 0)
     {
-      mutt_error(_("Too many colors: %d / %d"), index, COLOR_PAIRS);
-      warned = true;
+      static bool warned = false;
+      if (!warned)
+      {
+        mutt_error(_("Too many colors: %d / %d"), index, COLOR_PAIRS);
+        warned = true;
+      }
     }
     return 0;
   }
