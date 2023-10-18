@@ -29,6 +29,8 @@
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "ansi.h"
 #include "attr.h"
@@ -37,6 +39,8 @@
 #include "debug.h"
 #include "parse_ansi.h"
 #include "simple2.h"
+
+color_t color_xterm256_to_24bit(const color_t color);
 
 /**
  * ansi_color_list_add - Add an Ansi colour to the list
@@ -78,7 +82,25 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
   ac = attr_color_new();
   ac->attrs = ansi->attrs;
 
-  struct CursesColor *cc = curses_color_new(ansi->fg, ansi->bg);
+  color_t fg = ansi->fg;
+  color_t bg = ansi->bg;
+
+#ifdef NEOMUTT_DIRECT_COLORS
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  if (c_color_directcolor)
+  {
+    /* If we are running in direct color mode, we must convert the xterm
+     * color numbers 0-255 to an RGB value. */
+    fg = color_xterm256_to_24bit(fg);
+    if (fg < 8)
+      fg = 8;
+    bg = color_xterm256_to_24bit(bg);
+    if (bg < 8)
+      bg = 8;
+  }
+#endif
+
+  struct CursesColor *cc = curses_color_new(fg, bg);
   ac->curses_color = cc;
   ansi->attr_color = ac;
 
