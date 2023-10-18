@@ -650,7 +650,7 @@ static void notify_new_mail(struct IndexPrivateData *priv, struct IndexSharedDat
   while ((he = mutt_hash_walk(shared->mb_notify, &walk)))
   {
     struct MailboxNotify *mn = he->data;
-    if (!mn->notified)
+    if (mn->has_new_mail && !mn->notified)
     {
       notify = true;
 
@@ -1246,10 +1246,15 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       mailbox_gc_run();
 
       shared->mailbox_view->menu = priv->menu;
+
       /* check for new mail in the mailbox.  If nonzero, then something has
        * changed about the file (either we got new mail or the file was
        * modified underneath us.) */
       enum MxStatus check = mx_mbox_check(shared->mailbox);
+
+      if (!shared->attach_msg)
+        mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
+      notify_new_mail(priv, shared);
 
       if (check == MX_STATUS_ERROR)
       {
@@ -1286,13 +1291,6 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
       index_shared_data_set_email(shared, mutt_get_virt_email(shared->mailbox,
                                                               menu_get_index(priv->menu)));
-    }
-
-    if (!shared->attach_msg)
-    {
-      /* check for new mail in the incoming folders */
-      mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
-      notify_new_mail(priv, shared);
     }
 
     window_redraw(NULL);
