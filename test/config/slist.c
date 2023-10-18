@@ -259,8 +259,7 @@ static bool test_slist_is_member(struct Buffer *err)
 
     for (size_t i = 0; i < mutt_array_size(values); i++)
     {
-      TEST_MSG("member '%s' : %s", values[i],
-               slist_is_member(list, values[i]) ? "yes" : "no");
+      TEST_MSG("member '%s' : %s", values[i], slist_is_member(list, values[i]) ? "yes" : "no");
     }
 
     slist_free(&list);

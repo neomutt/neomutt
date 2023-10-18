@@ -58,8 +58,7 @@ static bool set_non_empty_values(void)
     int rc = cs_str_reset(NeoMutt->sub->cs, ConfigVars[v].name, err);
     if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
     {
-      TEST_MSG("Failed to set dummy value for %s: %s", ConfigVars[v].name,
-               buf_string(err));
+      TEST_MSG("Failed to set dummy value for %s: %s", ConfigVars[v].name, buf_string(err));
       ret = false;
     }
   }
@@ -612,8 +611,8 @@ static bool test_toggle(struct Buffer *err)
           enum CommandResult rc = parse_rc_line(line, err);
           if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
           {
-            TEST_MSG("Expected %d, but got %d; err is: '%s'",
-                     MUTT_CMD_SUCCESS, rc, buf_string(err));
+            TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
+                     rc, buf_string(err));
             return false;
           }
 
@@ -641,8 +640,8 @@ static bool test_toggle(struct Buffer *err)
           enum CommandResult rc = parse_rc_line(line, err);
           if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
           {
-            TEST_MSG("Expected %d, but got %d; err is: '%s'",
-                     MUTT_CMD_SUCCESS, rc, buf_string(err));
+            TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
+                     rc, buf_string(err));
             return false;
           }
 
@@ -768,8 +767,8 @@ static bool test_query(struct Buffer *err)
       enum CommandResult rc = parse_rc_line(line, err);
       if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
       {
-        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                 rc, buf_string(err));
+        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
+                 buf_string(err));
         return false;
       }
 
@@ -832,8 +831,8 @@ static bool test_increment(struct Buffer *err)
       enum CommandResult rc = parse_rc_line(line, err);
       if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
       {
-        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                 rc, buf_string(err));
+        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
+                 buf_string(err));
         return false;
       }
 
@@ -889,8 +888,8 @@ static bool test_decrement(struct Buffer *err)
       enum CommandResult rc = parse_rc_line(line, err);
       if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
       {
-        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                 rc, buf_string(err));
+        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
+                 buf_string(err));
         return false;
       }
 
@@ -981,8 +980,8 @@ static bool test_path_expanding(struct Buffer *err)
       enum CommandResult rc = parse_rc_line(line, err);
       if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
       {
-        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS,
-                 rc, buf_string(err));
+        TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
+                 buf_string(err));
         return false;
       }
 
