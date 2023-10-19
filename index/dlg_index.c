@@ -603,12 +603,24 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
   return 0;
 }
 
+/**
+ * index_mailbox_newmail_observer - Notification that a Mailbox has changed - Implements ::observer_t - @ingroup observer_api
+ *
+ * Keeps track of new-mail notifications.
+ */
 static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_MAILBOX)
     return 0;
-  if (nc->event_subtype != NT_MAILBOX_CHANGE && nc->event_subtype != NT_MAILBOX_INVALID)
-    return 0;
+  switch (nc->event_subtype)
+  {
+    case NT_MAILBOX_CHANGE:
+    case NT_MAILBOX_INVALID:
+    case NT_MAILBOX_NEW_MAIL:
+      break; // we're only interested in this 3 cases
+    default:
+      return 0;
+  }
 
   struct IndexSharedData *shared = nc->global_data;
   struct EventMailbox *ev_m = nc->event_data;
@@ -625,20 +637,20 @@ static int index_mailbox_newmail_observer(struct NotifyCallback *nc)
     mutt_hash_insert(shared->mb_notify, path, mn);
   }
 
-  mn->has_new_mail = m->has_new;
+  mn->has_new_mail = nc->event_subtype == NT_MAILBOX_NEW_MAIL;
 
-  /* We only trigger a notification once for each mailbox with new mail.
-   * Even if we receive more new mails. So the logic here is to reset
-   * the 'notified' flag when the mailbox contains no new mail.
-   * Then the next new mail will trigger a notification again. */
-  if (!m->has_new)
+  /* We only trigger one notification for each mailbox with new mail.
+   * Even if we receive more new mails. So we reset the 'notified' flag when
+   * the mailbox contains no new mail. Then the next new mail will trigger
+   * a notification again. */
+  if (!m->has_new && nc->event_subtype != NT_MAILBOX_NEW_MAIL)
     mn->notified = false;
 
   mutt_debug(LL_DEBUG5, "mailbox new-mail done\n");
   return 0;
 }
 
-static void notify_new_mail(struct IndexPrivateData *priv, struct IndexSharedData *shared)
+static void handle_new_mail(struct IndexPrivateData *priv, struct IndexSharedData *shared)
 {
   bool notify = false;
   bool first = true;
@@ -680,14 +692,14 @@ static void notify_new_mail(struct IndexPrivateData *priv, struct IndexSharedDat
     mutt_beep(true);
 
   // run new mail command
-  const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
+  const struct Expando *c_new_mail_command = cs_subset_expando(shared->sub, "new_mail_command");
   if (c_new_mail_command)
   {
-    char cmd[1024] = { 0 };
-    menu_status_line(cmd, sizeof(cmd), shared, priv->menu, sizeof(cmd),
-                     NONULL(c_new_mail_command));
-    if (mutt_system(cmd) != 0)
-      mutt_error(_("Error running \"%s\""), cmd);
+    struct Buffer *cmd = buf_pool_get();
+    menu_status_line(cmd, shared, priv->menu, -1, c_new_mail_command);
+    if (mutt_system(buf_string(cmd)) != 0)
+      mutt_error(_("Error running \"%s\""), buf_string(cmd));
+    buf_pool_release(&cmd);
   }
 
   buf_free(&message);
@@ -1253,8 +1265,10 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
       enum MxStatus check = mx_mbox_check(shared->mailbox);
 
       if (!shared->attach_msg)
+        // check for new mail in other mailboxes
         mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_NO_FLAGS);
-      notify_new_mail(priv, shared);
+
+      handle_new_mail(priv, shared);
 
       if (check == MX_STATUS_ERROR)
       {
