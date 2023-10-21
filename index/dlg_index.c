@@ -553,6 +553,7 @@ void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check
   else
     update_index_unthreaded(mv, check);
 
+  menu->max = m->vcount;
   const int old_index = menu_get_index(menu);
   int index = -1;
   if (oldcount)
