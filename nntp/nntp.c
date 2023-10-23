@@ -2360,6 +2360,8 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   mutt_account_hook(m->realpath);
   struct NntpAccountData *adata = m->account->adata;
   if (!adata)
+    adata = CurrentNewsSrv;
+  if (!adata)
   {
     adata = nntp_select_server(m, server, true);
     m->account->adata = adata;
@@ -2650,8 +2652,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
     char buf[2048] = { 0 };
     snprintf(buf, sizeof(buf), "ARTICLE %s\r\n",
              nntp_edata_get(e)->article_num ? article : e->env->message_id);
-    const int rc = nntp_fetch_lines(mdata, buf, sizeof(buf), fetch_msg,
-                                    fetch_tempfile, msg->fp);
+    const int rc = nntp_fetch_lines(mdata, buf, sizeof(buf), NULL, fetch_tempfile, msg->fp);
     if (rc)
     {
       mutt_file_fclose(&msg->fp);

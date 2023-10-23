@@ -2829,7 +2829,8 @@ static int op_main_change_group(struct IndexSharedData *shared,
 
   OptNews = true;
   const char *const c_news_server = cs_subset_string(shared->sub, "news_server");
-  CurrentNewsSrv = nntp_select_server(shared->mailbox, c_news_server, false);
+  if (!CurrentNewsSrv)
+    CurrentNewsSrv = nntp_select_server(shared->mailbox, c_news_server, false);
   if (!CurrentNewsSrv)
     goto changefoldercleanup2;
 
