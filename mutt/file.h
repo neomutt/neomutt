@@ -129,6 +129,7 @@ const char *mutt_file_rotate(const char *path, int num);
 int         mutt_file_safe_rename(const char *src, const char *target);
 void        mutt_file_sanitize_filename(char *path, bool slash);
 int         mutt_file_sanitize_regex(struct Buffer *dest, const char *src);
+size_t      mutt_file_save_str(FILE *fp, const char *str);
 bool        mutt_file_seek(FILE *fp, LOFF_T offset, int whence);
 void        mutt_file_set_mtime(const char *from, const char *to);
 int         mutt_file_stat_compare(struct stat *st1, enum MuttStatType st1_type, struct stat *st2, enum MuttStatType st2_type);

@@ -1710,3 +1710,21 @@ void mutt_file_resolve_symlink(struct Buffer *buf)
     }
   }
 }
+
+/**
+ * mutt_file_save_str - Save a string to a file
+ * @param fp  Open file to save to
+ * @param str String to save
+ * @retval num Bytes written to file
+ */
+size_t mutt_file_save_str(FILE *fp, const char *str)
+{
+  if (!fp)
+    return 0;
+
+  size_t len = mutt_str_len(str);
+  if (len == 0)
+    return 0;
+
+  return fwrite(str, 1, len, fp);
+}

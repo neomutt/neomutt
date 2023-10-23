@@ -374,7 +374,6 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
     notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
   }
 
-  regex_colors_dump_all();
   return true;
 }
 
@@ -405,7 +404,6 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
   struct EventColor ev_c = { cid, NULL };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
-  regex_colors_dump_all();
   return rc;
 }
 

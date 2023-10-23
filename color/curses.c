@@ -122,15 +122,16 @@ void curses_color_free(struct CursesColor **ptr)
     return;
 
   struct CursesColor *cc = *ptr;
-  if (cc->ref_count > 1)
+
+  cc->ref_count--;
+  if (cc->ref_count > 0)
   {
-    cc->ref_count--;
-    curses_color_dump(cc, "CursesColor rc--: ");
+    curses_color_dump(cc, "curses rc--");
     *ptr = NULL;
     return;
   }
 
-  curses_color_dump(cc, "free: ");
+  curses_color_dump(cc, "curses free");
   TAILQ_REMOVE(&CursesColors, cc, entries);
   NumCursesColors--;
   color_debug(LL_DEBUG5, "CursesColors: %d\n", NumCursesColors);
@@ -159,7 +160,7 @@ struct CursesColor *curses_color_new(color_t fg, color_t bg)
   if (cc)
   {
     cc->ref_count++;
-    curses_color_dump(cc, "rc++: ");
+    curses_color_dump(cc, "curses rc++");
     return cc;
   }
 
@@ -191,7 +192,7 @@ struct CursesColor *curses_color_new(color_t fg, color_t bg)
   color_debug(LL_DEBUG5, "tail\n");
 
 done:
-  curses_color_dump(cc_new, "CursesColor new: ");
+  curses_color_dump(cc_new, "curses new");
   color_debug(LL_DEBUG5, "CursesColors: %d\n", NumCursesColors);
   return cc_new;
 }
