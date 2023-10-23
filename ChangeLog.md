@@ -1,3 +1,13 @@
+2023-10-23  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - #4060 - fix crash on exit
+  - #4061 - fix header colour
+  - #4064 - fix 32-bit date overflow
+  - #4078 - fix new mail in limited view
+  - nntp: fix use-after-free
+  - color: fix ansi colours
+  - color: add +truecolor to version string
+
 2023-10-06  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #3870 - color: allow 'alert', 'bright', 'light' prefix for colorNNN
