@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-06\n"
+"Project-Id-Version: neomutt-2023-10-23\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-06 13:47+0100\n"
+"POT-Creation-Date: 2023-10-23 14:14+0100\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -236,11 +236,11 @@ msgstr "Priedai"
 msgid "Not available in this menu"
 msgstr "Neprieinama šiame meniu"
 
-#: attach/functions.c:58 index/functions.c:3133
+#: attach/functions.c:58 index/functions.c:3134
 msgid "Function not permitted in attach-message mode"
 msgstr "Funkcija neleistina laiško prisegimo režime"
 
-#: attach/functions.c:194 index/functions.c:3127 mx.c:951
+#: attach/functions.c:194 index/functions.c:3128 mx.c:951
 msgid "Mailbox is read-only"
 msgstr "Dėžutė yra tik skaitoma"
 
@@ -268,7 +268,7 @@ msgstr "Pasirašytų laiškų priedų ištrynimas gali sugadinti parašą"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Palaikomas trynimas tik iš keleto dalių priedų"
 
-#: attach/functions.c:654 index/functions.c:2884
+#: attach/functions.c:654 index/functions.c:2885
 msgid "Reply by mail as poster prefers?"
 msgstr "Atsakyti paštu, kaip pageidauja autorius?"
 
@@ -282,8 +282,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap kūrimo įrašui reikia %%s"
 
 #: attach/mutt_attach.c:164 attach/mutt_attach.c:305 compmbox/compress.c:348
-#: compose/functions.c:1862 gui/curs_lib.c:125 index/dlg_index.c:1182
-#: index/dlg_index.c:1228 pager/dlg_pager.c:460 pager/do_pager.c:167
+#: compose/functions.c:1862 gui/curs_lib.c:125 index/dlg_index.c:1185
+#: index/dlg_index.c:1231 pager/dlg_pager.c:460 pager/do_pager.c:167
 #: pager/message.c:340 send/sendlib.c:579
 #, c-format
 msgid "Error running \"%s\""
@@ -704,32 +704,32 @@ msgstr "Pasivyti"
 msgid "%s is not a directory"
 msgstr "%s nėra katalogas"
 
-#: browser/dlg_browser.c:998
+#: browser/dlg_browser.c:1000
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Užsakiau naujienų grupes"
 
-#: browser/dlg_browser.c:1002
+#: browser/dlg_browser.c:1004
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Naujienų grupės serveryje [%s]"
 
-#: browser/dlg_browser.c:1011
+#: browser/dlg_browser.c:1013
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Pašto dėžutės [%d]"
 
-#: browser/dlg_browser.c:1024
+#: browser/dlg_browser.c:1026
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Užsakytos [%s], Bylų kaukė: %s"
 
-#: browser/dlg_browser.c:1030
+#: browser/dlg_browser.c:1032
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Katalogas [%s], Bylų kaukė: %s"
 
-#: browser/dlg_browser.c:1093
+#: browser/dlg_browser.c:1095
 msgid "Can't attach a directory"
 msgstr "Negaliu prisegti katalogo"
 
@@ -827,55 +827,24 @@ msgstr "Užsakymo šablonas: "
 msgid "Unsubscribe pattern: "
 msgstr "Atsisakymo šablonas: "
 
-#: color/command.c:432 color/command.c:491
-#, c-format
-msgid "%s: color not supported by term"
-msgstr "%s: spalva nepalaikoma terminalo"
-
-#: color/command.c:477
-#, c-format
-msgid "Direct colors support not compiled in: %s"
-msgstr "Tiesioginių spalvų palaikymas neįjungtas kompiliavimo metu: %s"
-
-#: color/command.c:483
-#, c-format
-msgid "Direct colors support disabled: %s"
-msgstr "Tiesioginių spalvų palaikymas išjungtas: %s"
-
-#: color/command.c:537
-#, c-format
-msgid "%s: no such color"
-msgstr "%s: nėra tokios spalvos"
-
-#: color/command.c:555 color/command.c:611 color/command.c:663
-#: color/command.c:735 color/command.c:1080 commands.c:361 commands.c:383
-#: commands.c:524 commands.c:540 commands.c:737 commands.c:769 commands.c:785
-#: commands.c:905 commands.c:1030 commands.c:1079 commands.c:1119 hook.c:102
-#: hook.c:157 hook.c:166 hook.c:180 hook.c:428 hook.c:444 key/parse.c:274
-#: score.c:96 subjectrx.c:73 subjectrx.c:101 subjectrx.c:109
-#, c-format
-msgid "%s: too few arguments"
-msgstr "%s: per mažai argumentų"
-
-#: color/command.c:591
-#, c-format
-msgid "%s: no such attribute"
-msgstr "%s: tokio atributo nėra"
-
-#: color/command.c:721 color/command.c:744 color/command.c:755
-#: color/command.c:799
+#: color/command.c:169 color/command.c:192 color/command.c:203
+#: color/command.c:247
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: nėra tokio objekto"
 
-#. L10N: '%s' is the file name of the temporary file
-#: color/command.c:886 commands.c:857 commands.c:916 commands.c:1600
-#: imap/message.c:1141 key/dump.c:230
+#: color/command.c:183 color/command.c:345 color/parse_color.c:322
+#: color/parse_color.c:345 color/parse_color.c:367 commands.c:361
+#: commands.c:383 commands.c:524 commands.c:540 commands.c:737 commands.c:769
+#: commands.c:785 commands.c:905 commands.c:1030 commands.c:1079
+#: commands.c:1119 hook.c:102 hook.c:157 hook.c:166 hook.c:180 hook.c:428
+#: hook.c:444 key/parse.c:274 score.c:96 subjectrx.c:73 subjectrx.c:101
+#: subjectrx.c:109
 #, c-format
-msgid "Could not create temporary file %s"
-msgstr "Negaliu sukurti laikinos bylos %s"
+msgid "%s: too few arguments"
+msgstr "%s: per mažai argumentų"
 
-#: color/command.c:1112 color/command.c:1170 commands.c:407 commands.c:1088
+#: color/command.c:377 color/command.c:435 commands.c:407 commands.c:1088
 #: commands.c:1220 commands.c:1557 hook.c:107 hook.c:187 hook.c:451
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
 #: mutt_lua.c:511 score.c:104
@@ -883,11 +852,11 @@ msgstr "Negaliu sukurti laikinos bylos %s"
 msgid "%s: too many arguments"
 msgstr "%s: per daug argumentų"
 
-#: color/command.c:1130
+#: color/command.c:395
 msgid "default colors not supported"
 msgstr "įprastos spalvos nepalaikomos"
 
-#: color/command.c:1161
+#: color/command.c:426
 #, c-format
 msgid "%s: invalid number: %s"
 msgstr "%s: blogas skaičius: %s"
@@ -897,7 +866,39 @@ msgstr "%s: blogas skaičius: %s"
 msgid "Too many colors: %d / %d"
 msgstr "Per daug spalvų: %d / %d"
 
-#: color/quoted.c:115
+#. L10N: '%s' is the file name of the temporary file
+#: color/debug.c:499 commands.c:857 commands.c:916 commands.c:1600
+#: imap/message.c:1141 key/dump.c:230
+#, c-format
+msgid "Could not create temporary file %s"
+msgstr "Negaliu sukurti laikinos bylos %s"
+
+#: color/parse_color.c:199 color/parse_color.c:258
+#, c-format
+msgid "%s: color not supported by term"
+msgstr "%s: spalva nepalaikoma terminalo"
+
+#: color/parse_color.c:244
+#, c-format
+msgid "Direct colors support not compiled in: %s"
+msgstr "Tiesioginių spalvų palaikymas neįjungtas kompiliavimo metu: %s"
+
+#: color/parse_color.c:250
+#, c-format
+msgid "Direct colors support disabled: %s"
+msgstr "Tiesioginių spalvų palaikymas išjungtas: %s"
+
+#: color/parse_color.c:306
+#, c-format
+msgid "%s: no such color"
+msgstr "%s: nėra tokios spalvos"
+
+#: color/parse_color.c:376
+#, c-format
+msgid "%s: no such attribute"
+msgstr "%s: tokio atributo nėra"
+
+#: color/quoted.c:114
 #, c-format
 msgid "Maximum quoting level is %d"
 msgstr "Giliausias cituojamo teksto lygmuo yra %d"
@@ -1345,11 +1346,11 @@ msgstr "Bloga loginė reikšmė: %s"
 msgid "Invalid boolean value: %ld"
 msgstr "Bloga loginė reikšmė: %ld"
 
-#: config/charset.c:50
+#: config/charset.c:52
 msgid "'charset' must contain exactly one character set name"
 msgstr "'charset' turi nurodyti vieną koduotės pavadinimą"
 
-#: config/charset.c:66 config/charset.c:97 hcache/config.c:54
+#: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
 #, c-format
 msgid "Invalid value for option %s: %s"
@@ -3784,7 +3785,7 @@ msgstr "Blogas istorijos bylos formatas (eilutė %d)"
 #: ncrypt/smime.c:1192 ncrypt/smime.c:1199 ncrypt/smime.c:1407
 #: ncrypt/smime.c:1806 ncrypt/smime.c:1885 ncrypt/smime.c:1892
 #: ncrypt/smime.c:1999 ncrypt/smime.c:2129 ncrypt/smime.c:2145 nntp/nntp.c:1313
-#: nntp/nntp.c:2175 pattern/exec.c:146 pop/pop.c:122
+#: nntp/nntp.c:2175 pattern/exec.c:146 pop/pop.c:124
 msgid "Can't create temporary file"
 msgstr "Negaliu sukurti laikinos bylos"
 
@@ -3814,7 +3815,7 @@ msgstr "unhook: nežinomas hook tipas: %s"
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: negaliu išmesti %s %s viduje"
 
-#: imap/auth.c:152
+#: imap/auth.c:154
 msgid "No authenticators available or wrong credentials"
 msgstr "Nėra autentikatorių arba neteisingas naudotojo vardas/slaptažodis."
 
@@ -4001,7 +4002,7 @@ msgstr "Ištuštinu laiškus iš serverio..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE komanda nepavyko"
 
-#: imap/imap.c:1878 nntp/nntp.c:2399
+#: imap/imap.c:1878 nntp/nntp.c:2401
 #, c-format
 msgid "Selecting %s..."
 msgstr "Parenku %s..."
@@ -4044,7 +4045,7 @@ msgstr "QRESYNC nepavyko.  Atidarau dėžutę iš naujo."
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "Negaliu paimti antraščių iš šios IMAP serverio versijos"
 
-#: imap/message.c:1149 index/functions.c:2642 nntp/nntp.c:1249 pop/pop.c:369
+#: imap/message.c:1149 index/functions.c:2642 nntp/nntp.c:1249 pop/pop.c:371
 msgid "Fetching message headers..."
 msgstr "Paimu laiškų antraštes..."
 
@@ -4057,11 +4058,11 @@ msgstr "Nusiunčiu laišką..."
 msgid "Copying message %d to %s..."
 msgstr "Kopijuoju laišką %d į %s..."
 
-#: imap/message.c:1988 nntp/nntp.c:2629 pop/pop.c:1043
+#: imap/message.c:1988 nntp/nntp.c:2631 pop/pop.c:1045
 msgid "Fetching message..."
 msgstr "Paimu laišką..."
 
-#: imap/message.c:2039 pop/pop.c:1022
+#: imap/message.c:2039 pop/pop.c:1024
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Laiškų indeksas yra neteisingas. Bandyk iš naujo atidaryti dėžutę."
 
@@ -4105,36 +4106,36 @@ msgstr "Pratęsti"
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: veiksmas neleidžiamas pagal ACL"
 
-#: index/dlg_index.c:740
+#: index/dlg_index.c:741
 msgid "Failed to create query, aborting"
 msgstr "Nepavyko sukurti užklausos, atšaukiu"
 
-#: index/dlg_index.c:785 muttlib.c:1370 mx.c:219 mx.c:359
+#: index/dlg_index.c:786 muttlib.c:1370 mx.c:219 mx.c:359
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s nėra pašto dėžutė"
 
-#: index/dlg_index.c:1162
+#: index/dlg_index.c:1165
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Dėžutė buvo išoriškai pakeista.  Flagai gali būti neteisingi."
 
-#: index/dlg_index.c:1171 pager/dlg_pager.c:434
+#: index/dlg_index.c:1174 pager/dlg_pager.c:434
 msgid "New mail in this mailbox"
 msgstr "Naujas paštas šioje dėžutėje"
 
-#: index/dlg_index.c:1190
+#: index/dlg_index.c:1193
 msgid "Mailbox was externally modified"
 msgstr "Pašto dėžutė buvo išoriškai pakeista"
 
-#: index/dlg_index.c:1303 index/functions.c:3107 pattern/message.c:289
+#: index/dlg_index.c:1306 index/functions.c:3108 pattern/message.c:289
 msgid "No mailbox is open"
 msgstr "Jokia dėžutė neatidaryta"
 
-#: index/dlg_index.c:1311
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "Nėra pažymėtų laiškų"
 
-#: index/dlg_index.c:1316 index/functions.c:950
+#: index/dlg_index.c:1319 index/functions.c:950
 msgid "Nothing to do"
 msgstr "Nėra, ką daryti"
 
@@ -4416,7 +4417,7 @@ msgstr "Laiškas nematomas ribotame vaizde"
 msgid "Fetching %s from server..."
 msgstr "Siunčiu %s iš serverio..."
 
-#: index/functions.c:2786 nntp/nntp.c:2667
+#: index/functions.c:2786 nntp/nntp.c:2668
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "Straipsnis %s nerastas serveryje"
@@ -4429,39 +4430,39 @@ msgstr "Atidaryti naujienų grupę tik skaitymo režimu"
 msgid "Open newsgroup"
 msgstr "Atidaryti naujienų grupę"
 
-#: index/functions.c:2889
+#: index/functions.c:2890
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Siuntimas į šią grupę neleidžiamas, gali būti moderuotas. Tęsti?"
 
-#: index/functions.c:2926
+#: index/functions.c:2927
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Nėra virtualaus aplanko nei Message-Id, nutraukiu"
 
-#: index/functions.c:2947
+#: index/functions.c:2948
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "Neradau laiško notmuch duomenų bazėje.  Pabandykite vykdyti 'notmuch new'."
 
-#: index/functions.c:2959
+#: index/functions.c:2960
 msgid "Failed to read thread, aborting"
 msgstr "Nepavyko perskaityti gijos, nutraukiu"
 
-#: index/functions.c:2999
+#: index/functions.c:3000
 msgid "No query, aborting"
 msgstr "Nėra užklausos, nutraukiu"
 
-#: index/functions.c:3042
+#: index/functions.c:3043
 msgid "Windowed queries disabled"
 msgstr "Langų užklausos išjungtos"
 
-#: index/functions.c:3048
+#: index/functions.c:3049
 msgid "No notmuch vfolder currently loaded"
 msgstr "Joks notmuch virtualaus aplanko šiuo metu nėra užkrautas"
 
-#: index/functions.c:3113
+#: index/functions.c:3114
 msgid "There are no messages"
 msgstr "Ten nėra laiškų"
 
-#: index/functions.c:3121
+#: index/functions.c:3122
 msgid "No visible messages"
 msgstr "Nėra matomų laiškų"
 
@@ -6453,7 +6454,7 @@ msgstr "Nenurodytas nė vienas naujienų serveris"
 msgid "%s is an invalid news server specification"
 msgstr "%s yra bloga naujienų serverio specifikacija"
 
-#: nntp/nntp.c:130 nntp/nntp.c:686 pop/lib.c:416 pop/pop.c:683
+#: nntp/nntp.c:130 nntp/nntp.c:686 pop/lib.c:416 pop/pop.c:685
 msgid "Server closed connection"
 msgstr "Serveris uždarė jungtį"
 
@@ -6474,7 +6475,7 @@ msgstr "Prisijungimas prie %s nutrūko. Prisijungti iš naujo?"
 msgid "Fetching list of articles..."
 msgstr "Paimu straipsnių sąrašą..."
 
-#: nntp/nntp.c:1471 nntp/nntp.c:2070 pop/pop.c:555 pop/pop.c:836
+#: nntp/nntp.c:1471 nntp/nntp.c:2070 pop/pop.c:557 pop/pop.c:838
 msgid "Checking for new messages..."
 msgstr "Tikrinu, ar yra naujų laiškų..."
 
@@ -6522,24 +6523,24 @@ msgstr "Negaliu rasti vaikinių straipsnių nes serveris nepalaiko XPAT komandos
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s yra bloga naujienų grupės specifikacija"
 
-#: nntp/nntp.c:2388
+#: nntp/nntp.c:2390
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr "Naujienų grupė %s nerasta serveryje"
 
-#: nntp/nntp.c:2411
+#: nntp/nntp.c:2413
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr "Naujienų grupė %s buvo pašalinta iš serverio"
 
-#: notmuch/config.c:61
+#: notmuch/config.c:63
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
 msgstr "nm_default_url turi būti notmuch://<absoliutus kelias> .  Dabar: %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
-#: notmuch/config.c:91 notmuch/notmuch.c:313
+#: notmuch/config.c:93 notmuch/notmuch.c:313
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "Bloga nm_query_window_timebase reikšmė (geros reikšmės: hour, day, week, month, year)"
 
@@ -7207,11 +7208,11 @@ msgstr "Blogas POP URL: %s"
 msgid "Unable to leave messages on server"
 msgstr "Negaliu palikti laiškų serveryje"
 
-#: pop/lib.c:260 pop/pop.c:156
+#: pop/lib.c:260 pop/pop.c:158
 msgid "Command TOP is not supported by server"
 msgstr "Serveris nepalaiko komandos TOP"
 
-#: pop/lib.c:262 pop/pop.c:363
+#: pop/lib.c:262 pop/pop.c:365
 msgid "Command UIDL is not supported by server"
 msgstr "Serveris nepalaiko komandos UIDL"
 
@@ -7224,19 +7225,19 @@ msgstr "Klaida jungiantis prie IMAP serverio: %s"
 msgid "Closing connection to POP server..."
 msgstr "Uždarau jungtį su POP serveriu..."
 
-#: pop/lib.c:620
+#: pop/lib.c:622
 msgid "Verifying message indexes..."
 msgstr "Tikrinu laiškų indeksus..."
 
-#: pop/lib.c:645
+#: pop/lib.c:647
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Jungtis prarasta. Vėl prisijungti prie POP serverio?"
 
-#: pop/pop.c:184
+#: pop/pop.c:186
 msgid "Can't write header to temporary file"
 msgstr "Negaliu įrašyti antraštės į laikiną bylą"
 
-#: pop/pop.c:387
+#: pop/pop.c:389
 #, c-format
 msgid "%d message has been lost. Try reopening the mailbox."
 msgid_plural "%d messages have been lost. Try reopening the mailbox."
@@ -7244,24 +7245,24 @@ msgstr[0] "%d laiškas pradingo. Bandyk iš naujo atidaryti dėžutę."
 msgstr[1] "%d laiškai pradingo. Bandyk iš naujo atidaryti dėžutę."
 msgstr[2] "%d laiškų pradingo. Bandyk iš naujo atidaryti dėžutę."
 
-#: pop/pop.c:516
+#: pop/pop.c:518
 msgid "POP host is not defined"
 msgstr "POP hostas nenurodytas"
 
-#: pop/pop.c:538 pop/pop.c:717 pop/pop.c:750
+#: pop/pop.c:540 pop/pop.c:719 pop/pop.c:752
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s yra blogas POP kelias"
 
-#: pop/pop.c:584
+#: pop/pop.c:586
 msgid "No new mail in POP mailbox"
 msgstr "Nėra naujų laiškų POP dėžutėje"
 
-#: pop/pop.c:599
+#: pop/pop.c:601
 msgid "Delete messages from server?"
 msgstr "Ištrinti laiškus iš serverio?"
 
-#: pop/pop.c:603
+#: pop/pop.c:605
 #, c-format
 msgid "Reading new messages (%d byte)..."
 msgid_plural "Reading new messages (%d bytes)..."
@@ -7269,13 +7270,13 @@ msgstr[0] "Skaitau naujus laiškus (%d baitas)..."
 msgstr[1] "Skaitau naujus laiškus (%d baitai)..."
 msgstr[2] "Skaitau naujus laiškus (%d baitų)..."
 
-#: pop/pop.c:651
+#: pop/pop.c:653
 msgid "Error while writing mailbox"
 msgstr "Klaida rašant į pašto dėžutę"
 
 #. L10N: The plural is picked by the second numerical argument, i.e.
 #. the %d right before 'messages', i.e. the total number of messages.
-#: pop/pop.c:657
+#: pop/pop.c:659
 #, c-format
 msgid "%s [%d of %d message read]"
 msgid_plural "%s [%d of %d messages read]"
@@ -7283,19 +7284,19 @@ msgstr[0] "%s [%d iš %d laiško perskaityta]"
 msgstr[1] "%s [%d iš %d laiškų perskaityta]"
 msgstr[2] "%s [%d iš %d laiškų perskaityta]"
 
-#: pop/pop.c:801
+#: pop/pop.c:803
 msgid "Fetching list of messages..."
 msgstr "Paimu laiškų sąrašą..."
 
-#: pop/pop.c:888
+#: pop/pop.c:890
 msgid "Marking messages deleted..."
 msgstr "Pažymiu laiškus ištrintais..."
 
-#: pop/pop.c:1067
+#: pop/pop.c:1069
 msgid "Can't write message to temporary file"
 msgstr "Negaliu įrašyti laiško į laikiną bylą"
 
-#: postpone/dlg_postpone.c:221
+#: postpone/dlg_postpone.c:223
 msgid "Postponed Messages"
 msgstr "Atidėti laiškai"
 
@@ -7750,15 +7751,15 @@ msgstr ""
 "NeoMutt yra laisva programinė įranga, ir tu gali laisvai ją platinti su tam\n"
 "tikromis sąlygomis; rašyk 'neomutt -vv' dėl smulkmenų.\n"
 
-#: version.c:513
+#: version.c:521
 msgid "Default options:"
 msgstr "Įprastos parinktys:"
 
-#: version.c:516
+#: version.c:524
 msgid "Compile options:"
 msgstr "Kompiliavimo parinktys:"
 
-#: version.c:521
+#: version.c:529
 msgid "Devel options:"
 msgstr "Derinimo parinktys:"
 
