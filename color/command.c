@@ -40,6 +40,7 @@
 #include "color.h"
 #include "command2.h"
 #include "debug.h"
+#include "dump.h"
 #include "globals.h"
 #include "notify2.h"
 #include "parse_color.h"
@@ -302,8 +303,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   } while (MoreArgs(s));
 
-  if (changes)
-    regex_colors_dump_all();
+  //QWQ if (changes)
+  //QWQ   regex_colors_dump(buf);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -491,7 +492,7 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_uncolor(buf, s, err, true);
-  curses_colors_dump();
+  curses_colors_dump(buf);
   return rc;
 }
 
@@ -523,7 +524,7 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_color(buf, s, err, parse_color_pair, true);
-  curses_colors_dump();
+  curses_colors_dump(buf);
   return rc;
 }
 
@@ -545,6 +546,6 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_color(buf, s, err, parse_attr_spec, false);
-  curses_colors_dump();
+  curses_colors_dump(buf);
   return rc;
 }

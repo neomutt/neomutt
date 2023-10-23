@@ -34,7 +34,6 @@
 #include "attr.h"
 #include "color.h"
 #include "curses2.h"
-#include "debug.h"
 #include "parse_ansi.h"
 #include "simple2.h"
 
@@ -101,7 +100,7 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
   ansi->attr_color = ac;
 
   TAILQ_INSERT_TAIL(acl, ac, entries);
-  attr_color_list_dump(acl, "AnsiColors");
+  //QWQ attr_color_list_dump(acl, "AnsiColors");
 }
 
 /**

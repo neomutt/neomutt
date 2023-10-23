@@ -35,7 +35,6 @@
 #include "attr.h"
 #include "color.h"
 #include "curses2.h"
-#include "debug.h"
 
 struct AttrColorList MergedColors; ///< Array of user colours
 
@@ -145,7 +144,7 @@ const struct AttrColor *merged_color_overlay(const struct AttrColor *base,
   ac->fg = (base->fg.color == COLOR_DEFAULT) ? over->fg : base->fg;
   ac->bg = (base->bg.color == COLOR_DEFAULT) ? over->bg : base->bg;
   TAILQ_INSERT_TAIL(&MergedColors, ac, entries);
-  merged_colors_dump();
+  //QWQ merged_colors_dump(buf);
 
   return ac;
 }
