@@ -324,7 +324,7 @@ void mutt_opts_cleanup(void)
 int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
               bool skip_sys_rc, struct ListHead *commands)
 {
-  int need_pause = 0;
+  bool need_pause = false;
   int rc = 1;
   struct Buffer err = buf_make(256);
   struct Buffer buf = buf_make(256);
@@ -535,7 +535,7 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
       if (source_rc(buf_string(&buf), &err) != 0)
       {
         mutt_error("%s", err.data);
-        need_pause = 1; // TEST11: neomutt (error in /etc/neomuttrc)
+        need_pause = true; // TEST11: neomutt (error in /etc/neomuttrc)
       }
     }
   }
@@ -549,13 +549,13 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
       if (source_rc(np->data, &err) != 0)
       {
         mutt_error("%s", err.data);
-        need_pause = 1; // TEST12: neomutt (error in ~/.neomuttrc)
+        need_pause = true; // TEST12: neomutt (error in ~/.neomuttrc)
       }
     }
   }
 
   if (execute_commands(commands) != 0)
-    need_pause = 1; // TEST13: neomutt -e broken
+    need_pause = true; // TEST13: neomutt -e broken
 
   if (!get_hostname(cs))
     goto done;
