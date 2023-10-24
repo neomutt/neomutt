@@ -33,6 +33,7 @@
 #include <stddef.h>
 #include <inttypes.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -42,6 +43,7 @@
 #include "mutt.h"
 #include "lib.h"
 #include "attach/lib.h"
+#include "browser/lib.h"
 #include "color/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
@@ -51,6 +53,7 @@
 #include "pattern/lib.h"
 #include "display.h"
 #include "functions.h"
+#include "muttlib.h"
 #include "private_data.h"
 #include "protos.h"
 #endif
@@ -1006,6 +1009,64 @@ static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
+ * op_save - Save the Pager text - Implements ::pager_function_t - @ingroup pager_function_api
+ */
+static int op_save(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
+{
+  struct PagerView *pview = priv->pview;
+  if (pview->mode != PAGER_MODE_OTHER)
+    return FR_UNKNOWN;
+
+  if (!priv->fp)
+    return FR_UNKNOWN;
+
+  int rc = FR_ERROR;
+  FILE *fp_save = NULL;
+  struct Buffer *buf = buf_pool_get();
+
+  // Save the current read position
+  long pos = ftell(priv->fp);
+  rewind(priv->fp);
+
+  struct FileCompletionData cdata = { false, NULL, NULL, NULL };
+  if ((mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
+                    &CompleteFileOps, &cdata) != 0) ||
+      buf_is_empty(buf))
+  {
+    rc = FR_SUCCESS;
+    goto done;
+  }
+
+  buf_expand_path(buf);
+  fp_save = mutt_file_fopen(buf_string(buf), "a+");
+  if (!fp_save)
+  {
+    mutt_perror("%s", buf_string(buf));
+    goto done;
+  }
+
+  int bytes = mutt_file_copy_stream(priv->fp, fp_save);
+  if (bytes == -1)
+  {
+    mutt_perror("%s", buf_string(buf));
+    goto done;
+  }
+
+  // Restore the read position
+  if (pos >= 0)
+    mutt_file_seek(priv->fp, pos, SEEK_CUR);
+
+  mutt_message(_("Saved to: %s"), buf_string(buf));
+  rc = FR_SUCCESS;
+
+done:
+  mutt_file_fclose(&fp_save);
+  buf_pool_release(&buf);
+
+  return rc;
+}
+
+/**
  * op_search_toggle - Toggle search pattern coloring - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_search_toggle(struct IndexSharedData *shared,
@@ -1061,6 +1122,7 @@ static const struct PagerFunction PagerFunctions[] = {
   { OP_PAGER_TOP,              op_pager_top },
   { OP_PREV_LINE,              op_pager_prev_line },
   { OP_PREV_PAGE,              op_pager_prev_page },
+  { OP_SAVE,                   op_save },
   { OP_SEARCH,                 op_pager_search },
   { OP_SEARCH_REVERSE,         op_pager_search },
   { OP_SEARCH_NEXT,            op_pager_search_next },
