@@ -498,3 +498,31 @@ int log_disp_null(time_t stamp, const char *file, int line, const char *function
 {
   return 0;
 }
+
+/**
+ * log_multiline_full - Helper to dump multiline text to the log
+ * @param level Logging level, e.g. LL_DEBUG1
+ * @param str   Text to save
+ * @param file  Source file
+ * @param line  Source line number
+ * @param func  Source function
+ */
+void log_multiline_full(enum LogLevel level, const char *str, const char *file,
+                        int line, const char *func)
+{
+  while (str && (str[0] != '\0'))
+  {
+    const char *end = strchr(str, '\n');
+    if (end)
+    {
+      int len = end - str;
+      MuttLogger(0, file, line, func, level, "%.*s\n", len, str);
+      str = end + 1;
+    }
+    else
+    {
+      MuttLogger(0, file, line, func, level, "%s\n", str);
+      break;
+    }
+  }
+}
