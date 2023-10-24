@@ -449,6 +449,29 @@ static void log_translation(void)
 }
 
 /**
+ * log_gui - Log info about the GUI
+ */
+static void log_gui(void)
+{
+  const char *term = mutt_str_getenv("TERM");
+  const char *color_term = mutt_str_getenv("COLORTERM");
+  bool true_color = false;
+#ifdef NEOMUTT_DIRECT_COLORS
+  true_color = true;
+#endif
+
+  mutt_debug(LL_DEBUG1, "GUI:\n");
+  mutt_debug(LL_DEBUG1, "    Curses: %s\n", curses_version());
+  mutt_debug(LL_DEBUG1, "    COLORS=%d\n", COLORS);
+  mutt_debug(LL_DEBUG1, "    COLOR_PAIRS=%d\n", COLOR_PAIRS);
+  mutt_debug(LL_DEBUG1, "    TERM=%s\n", NONULL(term));
+  mutt_debug(LL_DEBUG1, "    COLORTERM=%s\n", NONULL(color_term));
+  mutt_debug(LL_DEBUG1, "    True color support: %s\n", true_color ? "YES" : "NO");
+  mutt_debug(LL_DEBUG1, "    Screen: %dx%d\n", RootWindow->state.cols,
+             RootWindow->state.rows);
+}
+
+/**
  * main_timeout_observer - Notification that a timeout has occurred - Implements ::observer_t - @ingroup observer_api
  */
 int main_timeout_observer(struct NotifyCallback *nc)
@@ -783,6 +806,7 @@ main
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
     mutt_resize_screen();
+    log_gui();
   }
 
   /* set defaults and read init files */
