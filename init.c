@@ -52,6 +52,7 @@
 #include "commands.h"
 #include "globals.h" // IWYU pragma: keep
 #include "hook.h"
+#include "mutt_logging.h"
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
@@ -313,12 +314,15 @@ void mutt_opts_cleanup(void)
 /**
  * mutt_init - Initialise NeoMutt
  * @param cs          Config Set
+ * @param dlevel      Command line debug level
+ * @param dfile       Command line debug file
  * @param skip_sys_rc If true, don't read the system config file
  * @param commands    List of config commands to execute
  * @retval 0 Success
  * @retval 1 Error
  */
-int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
+int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
+              bool skip_sys_rc, struct ListHead *commands)
 {
   int need_pause = 0;
   int rc = 1;
@@ -568,6 +572,18 @@ int mutt_init(struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands)
   }
   cs_str_initial_set(cs, "real_name", c_real_name, NULL);
   cs_str_reset(cs, "real_name", NULL);
+
+  /* The command line overrides the config */
+  if (dlevel)
+    cs_str_reset(cs, "debug_level", NULL);
+  if (dfile)
+    cs_str_reset(cs, "debug_file", NULL);
+
+  if (mutt_log_start() < 0)
+  {
+    mutt_perror("log file");
+    goto done;
+  }
 
   if (need_pause && !OptNoCurses)
   {

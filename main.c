@@ -786,23 +786,11 @@ main
   }
 
   /* set defaults and read init files */
-  int rc2 = mutt_init(cs, flags & MUTT_CLI_NOSYSRC, &commands);
+  int rc2 = mutt_init(cs, dlevel, dfile, flags & MUTT_CLI_NOSYSRC, &commands);
   if (rc2 != 0)
     goto main_curses;
 
   mutt_init_abort_key();
-
-  /* The command line overrides the config */
-  if (dlevel)
-    cs_str_reset(cs, "debug_level", NULL);
-  if (dfile)
-    cs_str_reset(cs, "debug_file", NULL);
-
-  if (mutt_log_start() < 0)
-  {
-    mutt_perror("log file");
-    goto main_exit;
-  }
 
 #ifdef USE_NNTP
   {
@@ -1455,7 +1443,6 @@ main_exit:
   neomutt_free(&NeoMutt);
   cs_free(&cs);
   log_queue_flush(log_disp_terminal);
-  log_queue_empty();
   mutt_log_stop();
   return rc;
 }
