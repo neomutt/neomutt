@@ -30,7 +30,7 @@ struct ConfigSet;
 struct ListHead;
 
 void init_config         (struct ConfigSet *cs);
-int  mutt_init           (struct ConfigSet *cs, bool skip_sys_rc, struct ListHead *commands);
+int  mutt_init           (struct ConfigSet *cs, const char *dlevel, const char *dfile, bool skip_sys_rc, struct ListHead *commands);
 void mutt_opts_cleanup   (void);
 int  mutt_query_variables(struct ListHead *queries, bool show_docs);
 
