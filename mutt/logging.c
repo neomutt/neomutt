@@ -454,7 +454,7 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
 
   FILE *fp = (level < LL_MESSAGE) ? stderr : stdout;
   int err = errno;
-  int colour = 0;
+  int color = 0;
   bool tty = (isatty(fileno(fp)) == 1);
 
   if (tty)
@@ -463,10 +463,10 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
     {
       case LL_PERROR:
       case LL_ERROR:
-        colour = 31;
+        color = 31;
         break;
       case LL_WARNING:
-        colour = 33;
+        color = 33;
         break;
       case LL_MESSAGE:
       default:
@@ -474,15 +474,15 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
     }
   }
 
-  if (colour > 0)
-    rc += fprintf(fp, "\033[1;%dm", colour); // Escape
+  if (color > 0)
+    rc += fprintf(fp, "\033[1;%dm", color); // Escape
 
   fputs(buf, fp);
 
   if (level == LL_PERROR)
     rc += fprintf(fp, ": %s", strerror(err));
 
-  if (colour > 0)
+  if (color > 0)
     rc += fprintf(fp, "\033[0m"); // Escape
 
   rc += fprintf(fp, "\n");
