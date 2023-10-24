@@ -276,7 +276,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     line_rc = parse_rc_buffer(linebuf, token, err);
     if (line_rc == MUTT_CMD_ERROR)
     {
-      mutt_error(_("Error in %s, line %d: %s"), rcfile, lineno, buf_string(err));
+      mutt_error("%s:%d: %s", rcfile, lineno, buf_string(err));
       if (--rc < -MAX_ERRS)
       {
         if (conv)
@@ -287,7 +287,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
     else if (line_rc == MUTT_CMD_WARNING)
     {
       /* Warning */
-      mutt_warning(_("Warning in %s, line %d: %s"), rcfile, lineno, buf_string(err));
+      mutt_warning("%s:%d: %s", rcfile, lineno, buf_string(err));
       warnings++;
     }
     else if (line_rc == MUTT_CMD_FINISH)
