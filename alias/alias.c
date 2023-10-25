@@ -498,7 +498,7 @@ retry_name:
 
   struct FileCompletionData cdata = { false, NULL, NULL, NULL };
   if (mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
-                   &CompleteMailboxOps, &cdata) != 0)
+                   &CompleteFileOps, &cdata) != 0)
   {
     goto done;
   }
