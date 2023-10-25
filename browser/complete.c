@@ -127,7 +127,7 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
               (wdata->state->lastchar - i) * sizeof(wchar_t)) == 0))
   {
     dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, NULL, NULL, NULL);
-    if (buf_is_empty(wdata->buffer))
+    if (!buf_is_empty(wdata->buffer))
       replace_part(wdata->state, i, buf_string(wdata->buffer));
     return FR_CONTINUE;
   }

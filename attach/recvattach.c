@@ -303,7 +303,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   while (prompt)
   {
     struct FileCompletionData cdata = { false, NULL, NULL, NULL };
-    if ((mw_get_field(prompt, buf, MUTT_COMP_CLEAR, HC_FILE, &CompleteMailboxOps, &cdata) != 0) ||
+    if ((mw_get_field(prompt, buf, MUTT_COMP_CLEAR, HC_FILE, &CompleteFileOps, &cdata) != 0) ||
         buf_is_empty(buf))
     {
       goto cleanup;
@@ -485,7 +485,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
           struct FileCompletionData cdata = { false, NULL, NULL, NULL };
           if ((mw_get_field(_("Save to file: "), buf, MUTT_COMP_CLEAR, HC_FILE,
-                            &CompleteMailboxOps, &cdata) != 0) ||
+                            &CompleteFileOps, &cdata) != 0) ||
               buf_is_empty(buf))
           {
             goto cleanup;
