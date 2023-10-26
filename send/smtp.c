@@ -438,22 +438,18 @@ static int smtp_helo(struct SmtpAccountData *adata, bool esmtp)
 #ifdef USE_SASL_GNU
 /**
  * smtp_code - Extract an SMTP return code from a string
- * @param[in]  str String to parse
- * @param[in]  len Length of string
+ * @param[in]  buf Buffer containing the string to parse
  * @param[out] n   SMTP return code result
  * @retval true Success
- *
- * Note: the 'len' parameter is actually the number of bytes, as
- * returned by mutt_socket_readln().  If all callers are converted to
- * mutt_socket_buffer_readln() we can pass in the actual len, or
- * perhaps the buffer itself.
  */
-static int smtp_code(const char *str, size_t len, int *n)
+static int smtp_code(const struct Buffer *buf, int *n)
 {
-  char code[4];
-
-  if (len < 4)
+  if (buf_len(buf) < 3)
     return false;
+
+  char code[4];
+  const char *str = buf_string(buf);
+
   code[0] = str[0];
   code[1] = str[1];
   code[2] = str[2];
@@ -484,7 +480,7 @@ static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_
   {
     if (mutt_socket_buffer_readln(input_buf, conn) < 0)
       return -1;
-    if (!smtp_code(buf_string(input_buf), buf_len(input_buf) + 1 /* number of bytes */, smtp_rc))
+    if (!smtp_code(input_buf, smtp_rc))
     {
       return -1;
     }
