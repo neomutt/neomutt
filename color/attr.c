@@ -296,7 +296,7 @@ void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg, color_t *col, i
  * |     |           |     |           |     |           |     |           |     |           |     |           |     |           |     |           |
  * | :-- | :-------- | :-- | :-------  | :-- | :-------  | :-- | :-------  | :-- | :-------  | :-- | :-------  | :-- | :-------  | :-- | :-------- |
  * | 232 | `#080808` | 233 | `#121212` | 234 | `#1c1c1c` | 235 | `#262626` | 236 | `#303030` | 237 | `#3a3a3a` | 238 | `#444444` | 239 | `#4e4e4e` |
- * | 240 | `#585858` | 241 | `#606060` | 242 | `#666666` | 243 | `#767676` | 244 | `#808080` | 245 | `#8a8a8a` | 246 | `#949494` | 247 | `#9e9e9e` |
+ * | 240 | `#585858` | 241 | `#626262` | 242 | `#6c6c6c` | 243 | `#767676` | 244 | `#808080` | 245 | `#8a8a8a` | 246 | `#949494` | 247 | `#9e9e9e` |
  * | 248 | `#a8a8a8` | 249 | `#b2b2b2` | 250 | `#bcbcbc` | 251 | `#c6c6c6` | 252 | `#d0d0d0` | 253 | `#dadada` | 254 | `#e4e4e4` | 255 | `#eeeeee` |
  */
 color_t color_xterm256_to_24bit(const color_t color)
@@ -344,9 +344,9 @@ color_t color_xterm256_to_24bit(const color_t color)
     color_t vb = (normalised_color % 6) / 1;
 
     /* First step is wider than the other ones, so add the difference if needed */
-    color_t r = vr * 0x28 + ((vr > 0) ? (0x5f - 0x40) : 0);
-    color_t g = vg * 0x28 + ((vg > 0) ? (0x5f - 0x40) : 0);
-    color_t b = vb * 0x28 + ((vb > 0) ? (0x5f - 0x40) : 0);
+    color_t r = (vr * 0x28) + ((vr > 0) ? (0x5f - 0x28) : 0);
+    color_t g = (vg * 0x28) + ((vg > 0) ? (0x5f - 0x28) : 0);
+    color_t b = (vb * 0x28) + ((vb > 0) ? (0x5f - 0x28) : 0);
 
     color_t rgb = (r << 16) + (g << 8) + (b << 0);
     color_debug(LL_DEBUG5, "Converted xterm color %d to RGB #%x:\n", color, rgb);
