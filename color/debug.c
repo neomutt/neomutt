@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -62,27 +61,6 @@ extern struct RegexColorList IndexSubjectList;
 extern struct RegexColorList IndexTagList;
 extern struct RegexColorList IndexTagsList;
 extern struct RegexColorList StatusList;
-
-/**
- * color_debug - Write to the log file
- * @param level  Logging level, e.g. #LL_DEBUG1
- * @param format Printf format string
- * @param ...    Args for printf
- * @retval num Number of characters printed
- */
-int color_debug(enum LogLevel level, const char *format, ...)
-{
-  char buf[1024] = { 0 };
-
-  va_list ap;
-  va_start(ap, format);
-  int len = vsnprintf(buf, sizeof(buf), format, ap);
-  va_end(ap);
-
-  mutt_debug(level, "%s", buf);
-
-  return len;
-}
 
 /**
  * color_debug_log_color_attrs - Get a colourful string to represent a colour in the log
