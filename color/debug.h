@@ -25,7 +25,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "mutt/lib.h"
 #include "color.h"
 #include "curses2.h"
 
@@ -59,8 +58,7 @@ void regex_colors_dump_all (void);
 void simple_color_dump     (enum ColorId cid, const char *prefix);
 void simple_colors_dump    (bool force);
 
-int color_debug(enum LogLevel level, const char *format, ...)
-                __attribute__((__format__(__printf__, 2, 3)));
+#define color_debug(LEVEL, ...) MuttLogger(0, __FILE__, __LINE__, __func__, LEVEL, __VA_ARGS__) ///< @ingroup logging_api
 
 #else
 

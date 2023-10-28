@@ -162,7 +162,7 @@ struct CursesColor *curses_color_new(color_t fg, color_t bg)
 
   color_debug(LL_DEBUG5, "new curses\n");
   int index = curses_color_init(fg, bg);
-  if (index < 0)
+  if (index == 0)
     return NULL;
 
   struct CursesColor *cc_new = mutt_mem_calloc(1, sizeof(*cc_new));
