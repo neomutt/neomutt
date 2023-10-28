@@ -195,6 +195,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_date_local_tz)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_date_localtime)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_date_localtime_format)                           \
+  NEOMUTT_TEST_ITEM(test_mutt_date_localtime_format_locale)                    \
   NEOMUTT_TEST_ITEM(test_mutt_date_make_date)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_date_make_imap)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_date_make_time)                                  \

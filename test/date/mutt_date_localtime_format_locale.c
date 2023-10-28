@@ -1,9 +1,9 @@
 /**
  * @file
- * Test code for mutt_sig_unblock_system()
+ * Test code for mutt_date_localtime_format_locale()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,28 +24,26 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 
-void test_mutt_sig_unblock_system(void)
+void test_mutt_date_localtime_format_locale(void)
 {
-  // void mutt_sig_unblock_system(bool catch);
+  // size_t mutt_date_localtime_format_locale(char *buf, size_t buflen, const char *format, time_t t, locale_t loc);
+
+  putenv("TZ=UTC0");
 
   {
-    mutt_sig_unblock();
-    mutt_sig_unblock_system(false);
-    TEST_CHECK_(1, "mutt_sig_unblock_system(false)");
+    char buf[64] = { 0 };
+    mutt_date_localtime_format_locale(NULL, sizeof(buf), "%y", 1698521050, NeoMutt->time_c_locale);
+    mutt_date_localtime_format_locale(buf, sizeof(buf), NULL, 1698521050, NeoMutt->time_c_locale);
   }
 
   {
-    mutt_sig_unblock();
-    mutt_sig_unblock();
-    mutt_sig_unblock_system(false);
-    TEST_CHECK_(1, "mutt_sig_unblock_system(false)");
-  }
-
-  {
-    mutt_sig_block();
-    mutt_sig_unblock_system(false);
-    TEST_CHECK_(1, "mutt_sig_unblock_system(false)");
+    char buf[64] = { 0 };
+    mutt_date_localtime_format_locale(buf, sizeof(buf), "%y", 1698521050, NeoMutt->time_c_locale);
   }
 }

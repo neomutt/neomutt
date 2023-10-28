@@ -51,7 +51,7 @@ struct ZlibComprData
  * zlib_cdata_free - Free Zlib Compression Data
  * @param ptr Zlib Compression Data to free
  */
-static void zlib_cdata_free(struct ZlibComprData **ptr)
+void zlib_cdata_free(struct ZlibComprData **ptr)
 {
   if (!ptr || !*ptr)
     return;

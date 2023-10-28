@@ -53,7 +53,7 @@ struct ZstdComprData
  * zstd_cdata_free - Free Zstandard Compression Data
  * @param ptr Zstandard Compression Data to free
  */
-static void zstd_cdata_free(struct ZstdComprData **ptr)
+void zstd_cdata_free(struct ZstdComprData **ptr)
 {
   if (!ptr || !*ptr)
     return;

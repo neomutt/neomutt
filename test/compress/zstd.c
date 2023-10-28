@@ -31,6 +31,9 @@
 #define MIN_COMP_LEVEL 1  ///< Minimum compression level for zstd
 #define MAX_COMP_LEVEL 22 ///< Maximum compression level for zstd
 
+struct ZstdComprData;
+void zstd_cdata_free(struct ZstdComprData **ptr);
+
 void test_compress_zstd(void)
 {
   // ComprHandle *open(short level);
@@ -51,6 +54,10 @@ void test_compress_zstd(void)
     TEST_CHECK_(1, "compr_ops->close(NULL)");
     compr_ops->close(&compr_handle);
     TEST_CHECK_(1, "compr_ops->close(&compr_handle)");
+
+    struct ZstdComprData *ptr = NULL;
+    zstd_cdata_free(NULL);
+    zstd_cdata_free(&ptr);
   }
 
   {

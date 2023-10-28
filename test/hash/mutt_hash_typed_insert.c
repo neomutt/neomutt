@@ -44,4 +44,10 @@ void test_mutt_hash_typed_insert(void)
     TEST_CHECK(mutt_hash_typed_insert(table, "apple", 0, NULL) != NULL);
     mutt_hash_free(&table);
   }
+
+  {
+    struct HashTable *table = mutt_hash_new(10, MUTT_HASH_STRCASECMP | MUTT_HASH_STRDUP_KEYS);
+    TEST_CHECK(mutt_hash_typed_insert(table, "", 0, NULL) != NULL);
+    mutt_hash_free(&table);
+  }
 }

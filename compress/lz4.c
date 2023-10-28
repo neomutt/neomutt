@@ -51,7 +51,7 @@ struct Lz4ComprData
  * lz4_cdata_free - Free Lz4 Compression Data
  * @param ptr Lz4 Compression Data to free
  */
-static void lz4_cdata_free(struct Lz4ComprData **ptr)
+void lz4_cdata_free(struct Lz4ComprData **ptr)
 {
   if (!ptr || !*ptr)
     return;

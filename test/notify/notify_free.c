@@ -23,8 +23,18 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
 
 void test_notify_free(void)
 {
   // void notify_free(struct Notify **ptr);
+
+  notify_free(NULL);
+
+  struct Notify *n = NULL;
+  notify_free(&n);
+
+  n = notify_new();
+  TEST_CHECK(n != NULL);
+  notify_free(&n);
 }

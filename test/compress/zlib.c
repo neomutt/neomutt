@@ -31,6 +31,9 @@
 #define MIN_COMP_LEVEL 1 ///< Minimum compression level for zlib
 #define MAX_COMP_LEVEL 9 ///< Maximum compression level for zlib
 
+struct ZlibComprData;
+void zlib_cdata_free(struct ZlibComprData **ptr);
+
 void test_compress_zlib(void)
 {
   // ComprHandle *open(short level);
@@ -51,6 +54,10 @@ void test_compress_zlib(void)
     TEST_CHECK_(1, "compr_ops->close(NULL)");
     compr_ops->close(&compr_handle);
     TEST_CHECK_(1, "compr_ops->close(&compr_handle)");
+
+    struct ZlibComprData *ptr = NULL;
+    zlib_cdata_free(NULL);
+    zlib_cdata_free(&ptr);
   }
 
   {

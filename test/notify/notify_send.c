@@ -23,8 +23,29 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
+#include "email/lib.h"
+#include "core/lib.h"
+
+static int email_observer(struct NotifyCallback *nc)
+{
+  return -1;
+}
 
 void test_notify_send(void)
 {
-  // bool notify_send(struct Notify *notify, enum NotifyType event_type,;
+  // bool notify_send(struct Notify *notify, enum NotifyType event_type, int event_subtype, void *event_data);
+
+  TEST_CHECK(!notify_send(NULL, NT_ACCOUNT, NT_ACCOUNT_DELETE, NULL));
+
+  struct Email *e = email_new();
+
+  notify_observer_add(e->notify, NT_EMAIL, email_observer, NULL);
+
+  struct EventEmail ev_e = { 0, NULL };
+  notify_send(e->notify, NT_EMAIL, NT_EMAIL_CHANGE, &ev_e);
+
+  notify_observer_remove(e->notify, email_observer, NULL);
+
+  email_free(&e);
 }

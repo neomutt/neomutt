@@ -964,6 +964,7 @@ coverage: all test
 	  --directory pattern \
 	  --directory store \
 	  --directory test/eqi \
+	  --exclude '*/atoi.h' \
 	  --exclude '*/include/*'
 	-genhtml --output-directory coverage --frames coverage.info
 	lcov --list coverage.info

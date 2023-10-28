@@ -33,4 +33,10 @@ void test_mutt_sig_block_system(void)
     mutt_sig_block_system();
     TEST_CHECK_(1, "mutt_sig_block_system()");
   }
+
+  {
+    mutt_sig_block_system();
+    mutt_sig_block_system();
+    TEST_CHECK_(1, "mutt_sig_block_system()");
+  }
 }

@@ -198,7 +198,7 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
   STAILQ_FOREACH(np, &notify->observers, entries)
   {
     if (!np->observer)
-      continue;
+      continue; // LCOV_EXCL_LINE
 
     if ((np->observer->callback == callback) && (np->observer->global_data == global_data))
       return true;
@@ -237,7 +237,7 @@ bool notify_observer_remove(struct Notify *notify, const observer_t callback,
   STAILQ_FOREACH(np, &notify->observers, entries)
   {
     if (!np->observer)
-      continue;
+      continue; // LCOV_EXCL_LINE
 
     if ((np->observer->callback == callback) && (np->observer->global_data == global_data))
     {

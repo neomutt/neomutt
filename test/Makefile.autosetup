@@ -40,7 +40,8 @@ ATOI_OBJS	= test/atoi/mutt_str_atoi.o \
 		  test/atoi/mutt_str_atos.o \
 		  test/atoi/mutt_str_atoui.o \
 		  test/atoi/mutt_str_atoul.o \
-		  test/atoi/mutt_str_atoull.o
+		  test/atoi/mutt_str_atoull.o \
+		  test/atoi/mutt_str_atous.o
 
 ATTACH_OBJS	= test/attach/mutt_actx_add_attach.o \
 		  test/attach/mutt_actx_add_body.o \
@@ -164,6 +165,7 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_gmtime.o \
 		  test/date/mutt_date_localtime.o \
 		  test/date/mutt_date_localtime_format.o \
+		  test/date/mutt_date_localtime_format_locale.o \
 		  test/date/mutt_date_local_tz.o \
 		  test/date/mutt_date_make_date.o \
 		  test/date/mutt_date_make_imap.o \

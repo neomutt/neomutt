@@ -23,8 +23,11 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include "mutt/lib.h"
 
 void test_mutt_prex_cleanup(void)
 {
   // void mutt_prex_cleanup(void);
+
+  mutt_prex_cleanup();
 }
