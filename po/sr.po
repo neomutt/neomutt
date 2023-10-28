@@ -7778,27 +7778,27 @@ msgstr "Опције при изградњи:"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Боје цитата\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Боје regex-а %s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Једноставне боје\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Боје писања\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Боје статуса\n"
 
 #: pager/functions.c:1059
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Сачувано у: %s"
 
