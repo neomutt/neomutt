@@ -29,8 +29,6 @@
 #include "config.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
-#include "core/lib.h"
 #include "gui/lib.h"
 #include "ansi.h"
 #include "attr.h"
@@ -54,11 +52,11 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
   if (!acl || !ansi)
     return;
 
-  if ((ansi->fg == COLOR_DEFAULT) && (ansi->bg == COLOR_DEFAULT))
+  if ((ansi->fg.color == COLOR_DEFAULT) && (ansi->bg.color == COLOR_DEFAULT))
   {
     switch (ansi->attrs)
     {
-      case 0:
+      case A_NORMAL:
         return;
       case A_BOLD:
         ansi->attr_color = simple_color_get(MT_COLOR_BOLD);
@@ -72,7 +70,21 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
     }
   }
 
-  struct AttrColor *ac = attr_color_list_find(acl, ansi->fg, ansi->bg, ansi->attrs);
+  color_t fg = ansi->fg.color;
+  color_t bg = ansi->bg.color;
+
+#ifdef NEOMUTT_DIRECT_COLORS
+  if ((ansi->fg.type == CT_SIMPLE) || (ansi->fg.type == CT_PALETTE))
+    fg = color_xterm256_to_24bit(fg);
+  else if (fg < 8)
+    fg = 8;
+  if ((ansi->bg.type == CT_SIMPLE) || (ansi->bg.type == CT_PALETTE))
+    bg = color_xterm256_to_24bit(bg);
+  else if (bg < 8)
+    bg = 8;
+#endif
+
+  struct AttrColor *ac = attr_color_list_find(acl, fg, bg, ansi->attrs);
   if (ac)
   {
     ansi->attr_color = ac;
@@ -81,24 +93,8 @@ static void ansi_color_list_add(struct AttrColorList *acl, struct AnsiColor *ans
 
   ac = attr_color_new();
   ac->attrs = ansi->attrs;
-
-  color_t fg = ansi->fg;
-  color_t bg = ansi->bg;
-
-#ifdef NEOMUTT_DIRECT_COLORS
-  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
-  if (c_color_directcolor)
-  {
-    /* If we are running in direct color mode, we must convert the xterm
-     * color numbers 0-255 to an RGB value. */
-    fg = color_xterm256_to_24bit(fg);
-    if (fg < 8)
-      fg = 8;
-    bg = color_xterm256_to_24bit(bg);
-    if (bg < 8)
-      bg = 8;
-  }
-#endif
+  ac->fg = ansi->fg;
+  ac->bg = ansi->bg;
 
   struct CursesColor *cc = curses_color_new(fg, bg);
   ac->curses_color = cc;

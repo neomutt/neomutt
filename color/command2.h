@@ -26,8 +26,8 @@
 #include "config.h"
 #include <stdint.h>
 #include "core/lib.h"
-#include "curses2.h"
 
+struct AttrColor;
 struct Buffer;
 
 /**
@@ -37,15 +37,12 @@ struct Buffer;
  *
  * @param[in]  buf   Temporary Buffer space
  * @param[in]  s     Buffer containing string to be parsed
- * @param[out] fg    Foreground colour
- * @param[out] bg    Background colour
- * @param[out] attrs Attributes, e.g. A_UNDERLINE
+ * @param[out] ac    Colour
  * @param[out] err   Buffer for error messages
  * @retval  0 Success
  * @retval -1 Error
  */
-typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, color_t *fg,
-                                 color_t *bg, int *attrs, struct Buffer *err);
+typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
 
 enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

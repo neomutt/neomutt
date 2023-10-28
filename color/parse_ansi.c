@@ -35,7 +35,27 @@
 #include "gui/lib.h"
 #include "parse_ansi.h"
 #include "ansi.h"
+#include "attr.h"
 #include "color.h"
+
+/**
+ * ansi_color_reset - Reset an AnsiColor to uncoloured
+ * @param ansi  AnsiColor to reset
+ */
+void ansi_color_reset(struct AnsiColor *ansi)
+{
+  if (!ansi)
+    return;
+
+  ansi->fg.color = COLOR_DEFAULT;
+  ansi->fg.type = CT_SIMPLE;
+
+  ansi->bg.color = COLOR_DEFAULT;
+  ansi->bg.type = CT_SIMPLE;
+
+  ansi->attrs = A_NORMAL;
+  ansi->attr_color = NULL;
+}
 
 /**
  * ansi_is_end_char - Is this the end of a sequence?
@@ -125,10 +145,7 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
     }
     else if ((buf[pos] == '0') && ansi_is_end_char(buf[pos + 1]))
     {
-      ansi->fg = COLOR_DEFAULT;
-      ansi->bg = COLOR_DEFAULT;
-      ansi->attrs = 0;
-      ansi->attr_color = NULL;
+      ansi_color_reset(ansi);
       pos += 2;
     }
     else if ((buf[pos] == '1') && ansi_is_end_char(buf[pos + 1]))
@@ -143,10 +160,13 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
     }
     else if (buf[pos] == '3')
     {
+      struct ColorElement *elem = &ansi->fg;
+
       // 30-37 basic foreground
       if ((buf[pos + 1] >= '0') && (buf[pos + 1] < '8') && ansi_is_end_char(buf[pos + 2]))
       {
-        ansi->fg = buf[pos + 1] - '0';
+        elem->color = buf[pos + 1] - '0';
+        elem->type = CT_SIMPLE;
         pos += 3;
       }
       else if (buf[pos + 1] == '8')
@@ -155,10 +175,11 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
         {
           // 38;5;n palette foreground
           char *end = NULL;
-          int value = strtoul(buf + pos + 5, &end, 10);
+          unsigned long value = strtoul(buf + pos + 5, &end, 10);
           if ((value >= 0) && (value < 256) && end && ansi_is_end_char(end[0]))
           {
-            ansi->fg = value;
+            elem->color = value;
+            elem->type = CT_PALETTE;
             pos += end - &buf[pos];
           }
           else
@@ -181,7 +202,8 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       else if ((buf[pos + 1] == '9') && ansi_is_end_char(buf[pos + 2]))
       {
         // default fg
-        ansi->fg = COLOR_DEFAULT;
+        elem->color = COLOR_DEFAULT;
+        elem->type = CT_SIMPLE;
         pos += 2;
       }
       else
@@ -196,10 +218,13 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
     }
     else if (buf[pos] == '4')
     {
+      struct ColorElement *elem = &ansi->bg;
+
       // 40-47 basic background
       if ((buf[pos + 1] >= '0') && (buf[pos + 1] < '8'))
       {
-        ansi->bg = buf[pos + 1] - '0';
+        elem->color = buf[pos + 1] - '0';
+        elem->type = CT_SIMPLE;
         pos += 3;
       }
       else if (buf[pos + 1] == '8')
@@ -208,10 +233,11 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
         {
           // 48;5;n palette background
           char *end = NULL;
-          int value = strtoul(buf + pos + 5, &end, 10);
+          unsigned long value = strtoul(buf + pos + 5, &end, 10);
           if ((value >= 0) && (value < 256) && end && ansi_is_end_char(end[0]))
           {
-            ansi->bg = value;
+            elem->color = value;
+            elem->type = CT_PALETTE;
             pos += end - &buf[pos];
           }
           else
@@ -234,7 +260,8 @@ int ansi_color_parse_single(const char *buf, struct AnsiColor *ansi, bool dry_ru
       else if ((buf[pos + 1] == '9') && ansi_is_end_char(buf[pos + 2]))
       {
         // default background
-        ansi->bg = COLOR_DEFAULT;
+        elem->color = COLOR_DEFAULT;
+        elem->type = CT_SIMPLE;
         pos += 2;
       }
     }

@@ -74,10 +74,12 @@ void mutt_colors_init(void)
 {
   color_debug(LL_DEBUG5, "init\n");
   color_notify_init();
-  simple_colors_init();
-  regex_colors_init();
+
   curses_colors_init();
   merged_colors_init();
+  quoted_colors_init();
+  regex_colors_init();
+  simple_colors_init();
 
   start_color();
   use_default_colors();

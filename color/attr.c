@@ -30,9 +30,13 @@
 #include "config.h"
 #include <stddef.h>
 #include <assert.h>
+#include <string.h>
 #include "mutt/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "gui/lib.h"
 #include "attr.h"
+#include "color.h"
 #include "curses2.h"
 #include "debug.h"
 
@@ -50,7 +54,13 @@ void attr_color_clear(struct AttrColor *ac)
   if (ac->curses_color)
     color_debug(LL_DEBUG5, "clear %p\n", (void *) ac);
   curses_color_free(&ac->curses_color);
-  ac->attrs = 0;
+
+  memset(&ac->fg, 0, sizeof(ac->fg));
+  memset(&ac->bg, 0, sizeof(ac->bg));
+
+  ac->fg.color = COLOR_DEFAULT;
+  ac->bg.color = COLOR_DEFAULT;
+  ac->attrs = A_NORMAL;
 }
 
 /**
@@ -81,6 +91,16 @@ void attr_color_free(struct AttrColor **ptr)
 struct AttrColor *attr_color_new(void)
 {
   struct AttrColor *ac = mutt_mem_calloc(1, sizeof(*ac));
+
+  ac->fg.color = COLOR_DEFAULT;
+  ac->fg.type = CT_SIMPLE;
+  ac->fg.prefix = COLOR_PREFIX_NONE;
+
+  ac->bg.color = COLOR_DEFAULT;
+  ac->bg.type = CT_SIMPLE;
+  ac->bg.prefix = COLOR_PREFIX_NONE;
+
+  ac->attrs = A_NORMAL;
 
   ac->ref_count = 1;
 
@@ -163,7 +183,7 @@ bool attr_color_is_set(const struct AttrColor *ac)
   if (!ac)
     return false;
 
-  return ((ac->attrs != 0) || ac->curses_color);
+  return ((ac->attrs != A_NORMAL) || ac->curses_color);
 }
 
 /**
@@ -312,6 +332,12 @@ color_t color_xterm256_to_24bit(const color_t color)
   if (color < 0)
     return color;
 
+  const bool c_color_directcolor = cs_subset_bool(NeoMutt->sub, "color_directcolor");
+  if (!c_color_directcolor)
+  {
+    return color;
+  }
+
   if (color < 16)
   {
     color_debug(LL_DEBUG5, "Converted color 0-15: %d\n", color);
@@ -362,3 +388,39 @@ color_t color_xterm256_to_24bit(const color_t color)
   return rgb;
 }
 #endif
+
+/**
+ * attr_color_overwrite - Update an AttrColor in-place
+ * @param ac_old AttrColor to overwrite
+ * @param ac_new AttrColor to copy
+ */
+void attr_color_overwrite(struct AttrColor *ac_old, struct AttrColor *ac_new)
+{
+  if (!ac_old || !ac_new)
+    return;
+
+  color_t fg = ac_new->fg.color;
+  color_t bg = ac_new->bg.color;
+  int attrs = ac_new->attrs;
+
+  modify_color_by_prefix(ac_new->fg.prefix, true, &fg, &attrs);
+  modify_color_by_prefix(ac_new->bg.prefix, false, &bg, &attrs);
+
+#ifdef NEOMUTT_DIRECT_COLORS
+  if ((ac_new->fg.type == CT_SIMPLE) || (ac_new->fg.type == CT_PALETTE))
+    fg = color_xterm256_to_24bit(fg);
+  else if (fg < 8)
+    fg = 8;
+  if ((ac_new->bg.type == CT_SIMPLE) || (ac_new->bg.type == CT_PALETTE))
+    bg = color_xterm256_to_24bit(bg);
+  else if (bg < 8)
+    bg = 8;
+#endif
+
+  struct CursesColor *cc = curses_color_new(fg, bg);
+  curses_color_free(&ac_old->curses_color);
+  ac_old->fg = ac_new->fg;
+  ac_old->bg = ac_new->bg;
+  ac_old->attrs = attrs;
+  ac_old->curses_color = cc;
+}

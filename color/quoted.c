@@ -44,6 +44,20 @@ struct AttrColor QuotedColors[COLOR_QUOTES_MAX]; ///< Array of colours for quote
 int NumQuotedColors; ///< Number of colours for quoted email text
 
 /**
+ * quoted_colors_init - Initialise the Quoted colours
+ */
+void quoted_colors_init(void)
+{
+  for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
+  {
+    struct AttrColor *ac = &QuotedColors[i];
+    ac->fg.color = COLOR_DEFAULT;
+    ac->bg.color = COLOR_DEFAULT;
+  }
+  NumQuotedColors = 0;
+}
+
+/**
  * find_highest_used - Find the highest-numbered quotedN in use
  * @retval num Highest number
  */
@@ -94,16 +108,14 @@ int quoted_colors_num_used(void)
 /**
  * quoted_colors_parse_color - Parse the 'color quoted' command
  * @param cid     Colour Id, should be #MT_COLOR_QUOTED
- * @param fg      Foreground colour
- * @param bg      Background colour
- * @param attrs   Attributes, e.g. A_UNDERLINE
+ * @param ac_val  Colour value to use
  * @param q_level Quoting depth level
  * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
  * @param err     Buffer for error messages
  * @retval true Colour was parsed
  */
-bool quoted_colors_parse_color(enum ColorId cid, color_t fg, color_t bg,
-                               int attrs, int q_level, int *rc, struct Buffer *err)
+bool quoted_colors_parse_color(enum ColorId cid, struct AttrColor *ac_val,
+                               int q_level, int *rc, struct Buffer *err)
 {
   if (cid != MT_COLOR_QUOTED)
     return false;
@@ -120,12 +132,10 @@ bool quoted_colors_parse_color(enum ColorId cid, color_t fg, color_t bg,
 
   struct AttrColor *ac = &QuotedColors[q_level];
   const bool was_set = ((ac->attrs != 0) || ac->curses_color);
-  ac->attrs = attrs;
 
-  struct CursesColor *cc = curses_color_new(fg, bg);
-  curses_color_free(&ac->curses_color);
-  ac->curses_color = cc;
+  attr_color_overwrite(ac, ac_val);
 
+  struct CursesColor *cc = ac->curses_color;
   if (!cc)
     NumQuotedColors = find_highest_used();
 

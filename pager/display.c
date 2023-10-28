@@ -126,7 +126,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
   if (cnt == 0)
   {
     last_color.curses_color = NULL;
-    last_color.attrs = 0;
+    last_color.attrs = A_NORMAL;
   }
 
   if (lines[line_num].cont_line)
@@ -923,7 +923,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     }
 
     if (ansi && ((flags & (MUTT_SHOWCOLOR | MUTT_SEARCH | MUTT_PAGER_MARKER)) ||
-                 special || last_special || ansi->attrs))
+                 special || last_special || (ansi->attrs != A_NORMAL)))
     {
       resolve_color(win, *lines, line_num, vch, flags, special, ansi);
       last_special = special;
@@ -1027,7 +1027,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   const struct AttrColor *def_color = NULL;
   int m;
   int rc = -1;
-  struct AnsiColor ansi = { NULL, 0, COLOR_DEFAULT, COLOR_DEFAULT };
+  struct AnsiColor ansi = { { COLOR_DEFAULT, 0, 0 }, { COLOR_DEFAULT, 0, 0 }, 0, NULL };
   regmatch_t pmatch[1];
 
   if (line_num == *lines_used)
