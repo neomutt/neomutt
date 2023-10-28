@@ -5,6 +5,7 @@
 #
 # Miroslav Vasko <vasko@ies.sk>, 1998
 # František Hájik <ferko.hajik@gmail.com>, 2016.
+# Jakub Jindra <skomonster@gmail.com> , 2020-2023
 #
 # limit - limit vs obmedzenie
 # undeleted - neodstaneny vs obnoveny
@@ -3653,96 +3654,96 @@ msgstr "CHYBA: prosím ohláste túto chybu"
 
 #: help.c:412
 msgid "message is tagged"
-msgstr ""
+msgstr "správa je označená"
 
 #: help.c:414
 msgid "message is flagged"
-msgstr ""
+msgstr "správa s príznakom"
 
 #: help.c:415
 msgid "message is deleted"
-msgstr ""
+msgstr "správa je zmazaná"
 
 #: help.c:417
 msgid "attachment is deleted"
-msgstr ""
+msgstr "príloha je zmazaná"
 
 #: help.c:419
 msgid "message has been replied to"
-msgstr ""
+msgstr "na správu bolo odpovedané"
 
 #: help.c:420
 msgid "message has been read"
-msgstr ""
+msgstr "správa bola prečítaná"
 
 #: help.c:421
 msgid "message is new"
-msgstr ""
+msgstr "správa je nová"
 
 #: help.c:423
 msgid "thread has been read"
-msgstr ""
+msgstr "vlákno bolo prečítané"
 
 #: help.c:425
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "vlákno má alespoň jednu novú správu"
 
 #: help.c:427
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "správa bola prečítaná (formát %S)"
 
 #: help.c:429
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "správa bola prečítaná (formát %Z)"
 
 #: help.c:433
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "správa podpísaná overeným kľúčom"
 
 #: help.c:435
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "správa je zašifrovaná PGP"
 
 #: help.c:437
 msgid "message is signed"
-msgstr ""
+msgstr "správa je podpísaná"
 
 #: help.c:439
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "správa obsahuje PGP kľúč"
 
 #: help.c:441
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "správa nemá žiadné krýptografické informace"
 
 #: help.c:445
 msgid "message is not To: you"
-msgstr ""
+msgstr "správa nie je pre vás (Komu:)"
 
 #: help.c:447
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "správa je adresovaná iba pre vás (Komu:)"
 
 #: help.c:448
 msgid "message is To: you"
-msgstr ""
+msgstr "správa je pre vás (Komu:)"
 
 #: help.c:449
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "správa je v kópii pre vás (Komu:)"
 
 #: help.c:451
 msgid "message is From: you"
-msgstr ""
+msgstr "správa je od vás (Od:)"
 
 #: help.c:453
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "správa je poslaná do prihlásené poštové konferencie"
 
 #: help.c:455
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "ste v zozname pre odpoveď Odpovedz:"
 
 #: help.c:474
 msgid "<UNKNOWN>"
@@ -3758,7 +3759,7 @@ msgstr "Neviazané funkcie:"
 
 #: help.c:508
 msgid "Message flags:"
-msgstr ""
+msgstr "Príznaky správy:"
 
 #: help.c:514
 #, c-format
@@ -4590,17 +4591,17 @@ msgstr "položka mailcap-u pre typ %s nenájdená"
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:52
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter musí mať dĺžku presne jeden znak"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter nemôže byť alphanumerický alebo '-.\\/'"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:67
 msgid "maildir_field_delimiter can only be set once"
-msgstr ""
+msgstr "maildir_field_delimiter smie byť nastevený iba jedenkrát"
 
 #: maildir/maildir.c:267 maildir/mh.c:303
 msgid "Could not flush message to disk"
@@ -7770,27 +7771,27 @@ msgstr "Vobľy pre vývoj:"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Farby citacií\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Farby regulárných výrazov%s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Základné farby\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Farby menu pisanie nových správ\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Farby stavového riadku\n"
 
 #: pager/functions.c:1059
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Uložené do: %s"
 

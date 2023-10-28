@@ -4606,17 +4606,17 @@ msgstr "pro typ %s nebyla nalezena položka v mailcapu"
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:52
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter musí mít délku přesně jeden znak"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter nemůže bťý alphanumerický nebo '-.\\/'"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:67
 msgid "maildir_field_delimiter can only be set once"
-msgstr ""
+msgstr "maildir_field_delimiter smí být nastaven pouze jednou"
 
 #: maildir/maildir.c:267 maildir/mh.c:303
 msgid "Could not flush message to disk"
@@ -7787,27 +7787,27 @@ msgstr "Volby pro vývoj:"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Barvy citací\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Barvy regulárních výrazů%s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Základní barvy\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Barvy menu psaní nových zpráv\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Barvy stavového řádku\n"
 
 #: pager/functions.c:1059
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Uloženo do: %s"
 
