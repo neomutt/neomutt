@@ -54,7 +54,9 @@ void simple_colors_init(void)
 
   // Set some defaults
   color_debug(LL_DEBUG5, "init indicator, markers, etc\n");
+  SimpleColors[MT_COLOR_BOLD].attrs = A_BOLD;
   SimpleColors[MT_COLOR_INDICATOR].attrs = A_REVERSE;
+  SimpleColors[MT_COLOR_ITALIC].attrs = A_ITALIC;
   SimpleColors[MT_COLOR_MARKERS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_SEARCH].attrs = A_REVERSE;
 #ifdef USE_SIDEBAR
@@ -62,6 +64,7 @@ void simple_colors_init(void)
 #endif
   SimpleColors[MT_COLOR_STATUS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
+  SimpleColors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;
 }
 
 /**
@@ -74,6 +77,7 @@ void simple_colors_cleanup(void)
   {
     attr_color_clear(&SimpleColors[i]);
   }
+  simple_colors_init();
 }
 
 /**
