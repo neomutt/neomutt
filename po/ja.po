@@ -7854,3 +7854,30 @@ msgstr "コンパイル時オプション:"
 
 #~ msgid "Print tagged messages?"
 #~ msgstr "タグ付きメッセージを印刷?"
+
+#: color/dump.c:231
+msgid "# Quoted Colors\n"
+msgstr ""
+
+#: color/dump.c:277
+#, c-format
+msgid "# Regex Color %s\n"
+msgstr ""
+
+#: color/dump.c:323
+msgid "# Simple Colors\n"
+msgstr ""
+
+#: color/dump.c:359
+msgid "# Compose Colors\n"
+msgstr ""
+
+#: color/dump.c:406
+msgid "# Status Colors\n"
+msgstr ""
+
+#: pager/functions.c:1059
+#, c-format
+msgid "Saved to: %s"
+msgstr ""
+
