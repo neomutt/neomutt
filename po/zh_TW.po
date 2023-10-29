@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-10-23\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-23 14:14+0100\n"
+"POT-Creation-Date: 2023-10-29 16:08+0000\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -59,6 +59,7 @@ msgstr "接受?"
 
 #: alias/alias.c:500 attach/recvattach.c:302 attach/recvattach.c:325
 #: attach/recvattach.c:343 attach/recvattach.c:360 attach/recvattach.c:487
+#: pager/functions.c:1032
 msgid "Save to file: "
 msgstr "存到檔案："
 
@@ -240,7 +241,7 @@ msgid "Attachments"
 msgstr "附件"
 
 #: attach/functions.c:55 browser/functions.c:70 index/functions.c:93
-#: pager/functions.c:59
+#: pager/functions.c:62
 msgid "Not available in this menu"
 msgstr "在這個菜單中沒有這個功能"
 
@@ -294,7 +295,7 @@ msgstr "Mailcap 編輯項目需要 %%s"
 
 #: attach/mutt_attach.c:164 attach/mutt_attach.c:305 compmbox/compress.c:348
 #: compose/functions.c:1862 gui/curs_lib.c:125 index/dlg_index.c:1185
-#: index/dlg_index.c:1231 pager/dlg_pager.c:460 pager/do_pager.c:167
+#: index/dlg_index.c:1230 pager/dlg_pager.c:460 pager/do_pager.c:167
 #: pager/message.c:340 send/sendlib.c:579
 #, c-format
 msgid "Error running \"%s\""
@@ -427,15 +428,15 @@ msgstr "找不到已標記的訊息"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:75 main.c:931
+#: autocrypt/autocrypt.c:75 main.c:943
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。建立嗎？"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:82 bcache/bcache.c:230 hcache/hcache.c:329 init.c:582
-#: main.c:935 nntp/newsrc.c:1096
+#: autocrypt/autocrypt.c:82 bcache/bcache.c:230 hcache/hcache.c:329 init.c:598
+#: main.c:947 nntp/newsrc.c:1096
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "無法建立 %s: %s"
@@ -850,14 +851,14 @@ msgstr "訂閱 %s…"
 msgid "Unsubscribe pattern: "
 msgstr "取消訂閱 %s…"
 
-#: color/command.c:169 color/command.c:192 color/command.c:203
-#: color/command.c:247
+#: color/command.c:171 color/command.c:194 color/command.c:205
+#: color/command.c:258
 #, c-format
 msgid "%s: no such object"
 msgstr "%s：沒有這個物件"
 
-#: color/command.c:183 color/command.c:345 color/parse_color.c:322
-#: color/parse_color.c:345 color/parse_color.c:367 commands.c:361
+#: color/command.c:185 color/command.c:340 color/parse_color.c:288
+#: color/parse_color.c:313 color/parse_color.c:333 commands.c:361
 #: commands.c:383 commands.c:524 commands.c:540 commands.c:737 commands.c:769
 #: commands.c:785 commands.c:905 commands.c:1030 commands.c:1079
 #: commands.c:1119 hook.c:102 hook.c:157 hook.c:166 hook.c:180 hook.c:428
@@ -867,7 +868,22 @@ msgstr "%s：沒有這個物件"
 msgid "%s: too few arguments"
 msgstr "%s：太少參數"
 
-#: color/command.c:377 color/command.c:435 commands.c:407 commands.c:1088
+#: color/command.c:365
+#, c-format
+msgid "Direct colors support not compiled in: %s"
+msgstr ""
+
+#: color/command.c:372
+#, fuzzy, c-format
+msgid "Direct colors support disabled: %s"
+msgstr "不支援預設的色彩"
+
+#: color/command.c:379 color/parse_color.c:188 color/parse_color.c:227
+#, c-format
+msgid "%s: color not supported by term"
+msgstr "%s：終端機無法顯示色彩"
+
+#: color/command.c:402 color/command.c:444 commands.c:407 commands.c:1088
 #: commands.c:1220 commands.c:1557 hook.c:107 hook.c:187 hook.c:451
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
 #: mutt_lua.c:511 score.c:104
@@ -875,53 +891,55 @@ msgstr "%s：太少參數"
 msgid "%s: too many arguments"
 msgstr "%s: 太多參數"
 
-#: color/command.c:395
-msgid "default colors not supported"
-msgstr "不支援預設的色彩"
-
-#: color/command.c:426
+#: color/command.c:434
 #, fuzzy, c-format
 msgid "%s: invalid number: %s"
 msgstr "%d：無效的信件號碼。\n"
 
-#: color/curses.c:95
+#: color/curses.c:98
 #, c-format
 msgid "Too many colors: %d / %d"
 msgstr ""
 
+#: color/dump.c:231
+msgid "# Quoted Colors\n"
+msgstr ""
+
+#: color/dump.c:277
+#, c-format
+msgid "# Regex Color %s\n"
+msgstr ""
+
+#: color/dump.c:323
+msgid "# Simple Colors\n"
+msgstr ""
+
+#: color/dump.c:359
+msgid "# Compose Colors\n"
+msgstr ""
+
+#: color/dump.c:406
+msgid "# Status Colors\n"
+msgstr ""
+
 #. L10N: '%s' is the file name of the temporary file
-#: color/debug.c:499 commands.c:857 commands.c:916 commands.c:1600
+#: color/dump.c:460 commands.c:857 commands.c:916 commands.c:1600
 #: imap/message.c:1141 key/dump.c:230
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "無法建立暫存檔 %s"
 
-#: color/parse_color.c:199 color/parse_color.c:258
-#, c-format
-msgid "%s: color not supported by term"
-msgstr "%s：終端機無法顯示色彩"
-
-#: color/parse_color.c:244
-#, c-format
-msgid "Direct colors support not compiled in: %s"
-msgstr ""
-
-#: color/parse_color.c:250
-#, fuzzy, c-format
-msgid "Direct colors support disabled: %s"
-msgstr "不支援預設的色彩"
-
-#: color/parse_color.c:306
+#: color/parse_color.c:272
 #, c-format
 msgid "%s: no such color"
 msgstr "%s：沒有這種顏色"
 
-#: color/parse_color.c:376
+#: color/parse_color.c:342
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s：沒有這個屬性"
 
-#: color/quoted.c:114
+#: color/quoted.c:126
 #, c-format
 msgid "Maximum quoting level is %d"
 msgstr ""
@@ -944,16 +962,6 @@ msgstr ""
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr ""
-
-#: commands.c:279
-#, c-format
-msgid "Error in %s, line %d: %s"
-msgstr "%s 發生錯誤，行號 %d：%s"
-
-#: commands.c:290
-#, fuzzy, c-format
-msgid "Warning in %s, line %d: %s"
-msgstr "%s 發生錯誤，行號 %d：%s"
 
 #: commands.c:317
 #, c-format
@@ -1197,7 +1205,7 @@ msgstr "開啟信箱並從它選擇附加的信件"
 msgid "Open newsgroup to attach message from"
 msgstr "開啟信箱並從它選擇附加的信件"
 
-#: compose/functions.c:899 main.c:1383
+#: compose/functions.c:899 main.c:1395
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "無法鎖住信箱"
@@ -1447,7 +1455,7 @@ msgstr "無效的相對日期：%s"
 msgid "Invalid quad value: %ld"
 msgstr "無效的日子：%s"
 
-#: config/set.c:106 init.c:661
+#: config/set.c:106 init.c:677
 #, c-format
 msgid "No such variable: %s"
 msgstr ""
@@ -3964,7 +3972,7 @@ msgstr "沒有認證方式"
 #: imap/auth_anon.c:55 imap/auth_cram.c:106 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:167 imap/auth_oauth.c:71 imap/auth_sasl.c:124
 #: nntp/nntp.c:511 nntp/nntp.c:576 pop/auth.c:76 pop/auth.c:190 pop/auth.c:335
-#: pop/auth.c:430 send/smtp.c:535 send/smtp.c:651 send/smtp.c:743
+#: pop/auth.c:430 send/smtp.c:531 send/smtp.c:647 send/smtp.c:739
 #, fuzzy, c-format
 msgid "Authenticating (%s)..."
 msgstr "驗證中 (APOP)…"
@@ -3972,7 +3980,7 @@ msgstr "驗證中 (APOP)…"
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:88 imap/auth_cram.c:180 imap/auth_gss.c:348
 #: imap/auth_oauth.c:102 imap/auth_sasl.c:258 nntp/nntp.c:675 pop/auth.c:288
-#: pop/auth.c:356 send/smtp.c:830 send/smtp.c:904 send/smtp.c:1008
+#: pop/auth.c:356 send/smtp.c:826 send/smtp.c:900 send/smtp.c:1004
 #, fuzzy, c-format
 msgid "%s authentication failed"
 msgstr "SASL 驗證失敗"
@@ -4075,11 +4083,11 @@ msgstr "登入失敗： %s"
 msgid "Closing connection to %s..."
 msgstr "正在關閉與 %s 的連線…"
 
-#: imap/imap.c:764 nntp/nntp.c:1813 pop/lib.c:339 send/smtp.c:1052
+#: imap/imap.c:764 nntp/nntp.c:1813 pop/lib.c:339 send/smtp.c:1048
 msgid "Secure connection with TLS?"
 msgstr "利用 TLS 來進行安全連接？"
 
-#: imap/imap.c:781 nntp/nntp.c:1837 pop/lib.c:361 send/smtp.c:1070
+#: imap/imap.c:781 nntp/nntp.c:1837 pop/lib.c:361 send/smtp.c:1066
 msgid "Could not negotiate TLS connection"
 msgstr "未能"
 
@@ -4274,15 +4282,15 @@ msgstr "這個信箱中有新信件"
 msgid "Mailbox was externally modified"
 msgstr "信箱已經由其他途徑更改過"
 
-#: index/dlg_index.c:1306 index/functions.c:3108 pattern/message.c:289
+#: index/dlg_index.c:1305 index/functions.c:3108 pattern/message.c:289
 msgid "No mailbox is open"
 msgstr "沒有已開啟的信箱"
 
-#: index/dlg_index.c:1314
+#: index/dlg_index.c:1313
 msgid "No tagged messages"
 msgstr "沒有標記了的信件"
 
-#: index/dlg_index.c:1319 index/functions.c:950
+#: index/dlg_index.c:1318 index/functions.c:950
 #, fuzzy
 msgid "Nothing to do"
 msgstr "正連接到 %s…"
@@ -4439,12 +4447,12 @@ msgstr "在限制閱覽模式下無法顯示主信件"
 msgid "No unread messages"
 msgstr "沒有尚未讀取的信件"
 
-#: index/functions.c:1595 menu/functions.c:107 pager/functions.c:777
+#: index/functions.c:1595 menu/functions.c:107 pager/functions.c:780
 #: pattern/pattern.c:521 pattern/pattern.c:676
 msgid "Search wrapped to top"
 msgstr "搜尋至開頭"
 
-#: index/functions.c:1600 pager/functions.c:807 pattern/pattern.c:534
+#: index/functions.c:1600 pager/functions.c:810 pattern/pattern.c:534
 #: pattern/pattern.c:689
 msgid "Search wrapped to bottom"
 msgstr "搜尋至結尾"
@@ -4642,22 +4650,22 @@ msgstr "沒有要被顯示的信件"
 msgid "Changing threaded display should prefer $use_threads over $sort"
 msgstr ""
 
-#: init.c:90
+#: init.c:91
 #, c-format
 msgid "Error in command line: %s"
 msgstr "指令行有錯：%s"
 
-#: init.c:92
+#: init.c:93
 #, fuzzy, c-format
 msgid "Warning in command line: %s"
 msgstr "指令行有錯：%s"
 
-#: init.c:203
+#: init.c:204
 #, fuzzy
 msgid "unable to determine nodename via uname()"
 msgstr "無法決定使用者名稱"
 
-#: init.c:633
+#: init.c:649
 #, c-format
 msgid "Config variable '%s' is deprecated"
 msgstr ""
@@ -5024,42 +5032,42 @@ msgstr "無法決定使用者名稱"
 msgid "unable to determine home directory"
 msgstr "無法決定 home 目錄"
 
-#: main.c:726
+#: main.c:749
 #, fuzzy, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "錯誤：「%s」是無效的 IDN"
 
-#: main.c:988
+#: main.c:1000
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:1003 main.c:1268 send/send.c:299 send/send.c:2766 send/send.c:2770
+#: main.c:1015 main.c:1280 send/send.c:299 send/send.c:2766 send/send.c:2770
 msgid "No recipients specified"
 msgstr "沒有指定收件人"
 
-#: main.c:1036
+#: main.c:1048
 msgid "Can't use -E flag with stdin"
 msgstr ""
 
-#: main.c:1124
+#: main.c:1136
 #, fuzzy, c-format
 msgid "Can't parse message template: %s"
 msgstr "無法開啟信件檔案：%s"
 
-#: main.c:1190 mutt_header.c:349
+#: main.c:1202 mutt_header.c:349
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：無法附帶檔案"
 
-#: main.c:1282
+#: main.c:1294
 msgid "No mailbox with new mail"
 msgstr "沒有信箱有新信件"
 
-#: main.c:1307
+#: main.c:1319
 msgid "No incoming mailboxes defined"
 msgstr "沒有定義任何的收信郵箱"
 
-#: main.c:1361
+#: main.c:1373
 msgid "Mailbox is empty"
 msgstr "信箱內空無一物"
 
@@ -5105,18 +5113,18 @@ msgstr "無法重開信箱"
 msgid "Can't write message"
 msgstr "無法寫信件"
 
-#: menu/functions.c:70 pager/functions.c:598 pattern/pattern.c:453
+#: menu/functions.c:70 pager/functions.c:601 pattern/pattern.c:453
 #: pattern/pattern.c:611
 msgid "Reverse search for: "
 msgstr "返向搜尋："
 
-#: menu/functions.c:70 pager/functions.c:598 pattern/pattern.c:453
+#: menu/functions.c:70 pager/functions.c:601 pattern/pattern.c:453
 #: pattern/pattern.c:611
 msgid "Search for: "
 msgstr "搜尋："
 
-#: menu/functions.c:126 pager/functions.c:706 pager/functions.c:773
-#: pager/functions.c:803 pattern/pattern.c:585 pattern/pattern.c:737
+#: menu/functions.c:126 pager/functions.c:709 pager/functions.c:776
+#: pager/functions.c:806 pattern/pattern.c:585 pattern/pattern.c:737
 msgid "Not found"
 msgstr "沒有找到"
 
@@ -6720,7 +6728,7 @@ msgstr "與伺服器的聯結中斷了"
 msgid "Server doesn't support reader mode"
 msgstr ""
 
-#: nntp/nntp.c:482 pop/auth.c:618 send/smtp.c:1012
+#: nntp/nntp.c:482 pop/auth.c:618 send/smtp.c:1008
 msgid "No authenticators available"
 msgstr "沒有認證方式"
 
@@ -6881,13 +6889,13 @@ msgstr "顯示附件。"
 msgid "Next"
 msgstr "下一個"
 
-#: pager/functions.c:419 pager/functions.c:440 pager/functions.c:513
-#: pager/functions.c:534
+#: pager/functions.c:422 pager/functions.c:443 pager/functions.c:516
+#: pager/functions.c:537
 msgid "Bottom of message is shown"
 msgstr "現正顯示最下面的信件"
 
-#: pager/functions.c:465 pager/functions.c:557 pager/functions.c:570
-#: pager/functions.c:976
+#: pager/functions.c:468 pager/functions.c:560 pager/functions.c:573
+#: pager/functions.c:979
 msgid "Top of message is shown"
 msgstr "現正顯示最上面的信件"
 
@@ -6895,21 +6903,26 @@ msgstr "現正顯示最上面的信件"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:860
+#: pager/functions.c:863
 msgid "No text past headers"
 msgstr ""
 
-#: pager/functions.c:919 pager/functions.c:959
+#: pager/functions.c:922 pager/functions.c:962
 msgid "No more unquoted text after quoted text"
 msgstr "在引言後有過多的非引言文字"
 
-#: pager/functions.c:941
+#: pager/functions.c:944
 msgid "No more quoted text"
 msgstr "不能有再多的引言"
 
-#: pager/functions.c:1000
+#: pager/functions.c:1003
 msgid "Help is currently being shown"
 msgstr "現正顯示說明文件"
+
+#: pager/functions.c:1059
+#, c-format
+msgid "Saved to: %s"
+msgstr ""
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
@@ -7960,23 +7973,23 @@ msgstr "登入失敗： %s"
 msgid "Invalid SMTP URL: %s"
 msgstr "無效的月份：%s"
 
-#: send/smtp.c:1085
+#: send/smtp.c:1081
 msgid "SMTP server does not support authentication"
 msgstr ""
 
-#: send/smtp.c:1136
+#: send/smtp.c:1132
 msgid "No from address given"
 msgstr ""
 
-#: send/smtp.c:1203
+#: send/smtp.c:1199
 msgid "SMTP session failed: read error"
 msgstr ""
 
-#: send/smtp.c:1205
+#: send/smtp.c:1201
 msgid "SMTP session failed: write error"
 msgstr ""
 
-#: send/smtp.c:1207
+#: send/smtp.c:1203
 msgid "Invalid server response"
 msgstr ""
 
@@ -8058,9 +8071,20 @@ msgstr "編譯選項："
 msgid "Devel options:"
 msgstr "編譯選項："
 
+#, c-format
+#~ msgid "Error in %s, line %d: %s"
+#~ msgstr "%s 發生錯誤，行號 %d：%s"
+
 #, fuzzy, c-format
 #~ msgid "Option %s may not be set when in attach-message mode"
 #~ msgstr "功能在 attach-message 模式下不被支援"
 
 #~ msgid "Print tagged messages?"
 #~ msgstr "列印已標記的信件？"
+
+#, fuzzy, c-format
+#~ msgid "Warning in %s, line %d: %s"
+#~ msgstr "%s 發生錯誤，行號 %d：%s"
+
+#~ msgid "default colors not supported"
+#~ msgstr "不支援預設的色彩"
