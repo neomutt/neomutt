@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse colour commands
+ * Test code for Colour Notifications
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -20,17 +20,37 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_PARSE_COLOR_H
-#define MUTT_COLOR_PARSE_COLOR_H
-
-#include "core/lib.h"
+#define TEST_NO_MAIN
+#include "config.h"
+#include "acutest.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
+#include "gui/lib.h"
+#include "color/lib.h"
 
-struct AttrColor;
+int color_observer(struct NotifyCallback *nc)
+{
+  if (!nc || !nc->event_data)
+    return -1;
 
-extern const struct Mapping ColorNames[];
+  struct EventColor *ev_c = nc->event_data;
+  TEST_CHECK(ev_c->cid == MT_COLOR_INDICATOR);
 
-enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
-enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
+  return 0;
+}
 
-#endif /* MUTT_COLOR_PARSE_COLOR_H */
+void test_color_notify(void)
+{
+  color_notify_init();
+
+  mutt_color_observer_add(color_observer, NULL);
+
+  struct EventColor ev_c = { MT_COLOR_INDICATOR, NULL };
+  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
+
+  mutt_color_observer_remove(color_observer, NULL);
+
+  color_notify_cleanup();
+}

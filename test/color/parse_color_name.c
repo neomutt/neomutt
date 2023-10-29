@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_date_localtime_format_locale()
+ * Test code for Colour Parsing
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -23,30 +23,33 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include <stdbool.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "color/lib.h"
 
-void test_mutt_date_localtime_format_locale(void)
+enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
+                                    struct Buffer *err);
+
+void test_parse_color_name(void)
 {
-  // size_t mutt_date_localtime_format_locale(char *buf, size_t buflen, const char *format, time_t t, locale_t loc);
+  // enum CommandResult parse_color_name(const char *s, struct ColorElement *elem, struct Buffer *err);
 
-  putenv("TZ=UTC0");
+  struct Buffer *err = buf_pool_get();
+  struct ColorElement elem = { 0 };
+  enum CommandResult rc;
 
+  const char *tests[] = { "#11AAFF", "color123", "brightred", NULL };
+
+  for (int i = 0; tests[i]; i++)
   {
-    char buf[64] = { 0 };
-    mutt_date_localtime_format_locale(NULL, sizeof(buf), "%y", 1698521050,
-                                      NeoMutt->time_c_locale);
-    mutt_date_localtime_format_locale(buf, sizeof(buf), NULL, 1698521050,
-                                      NeoMutt->time_c_locale);
+    rc = parse_color_name(tests[i], &elem, err);
+    TEST_CHECK(rc == MUTT_CMD_SUCCESS);
   }
 
-  {
-    char buf[64] = { 0 };
-    mutt_date_localtime_format_locale(buf, sizeof(buf), "%y", 1698521050,
-                                      NeoMutt->time_c_locale);
-  }
+  rc = parse_color_name("junk", &elem, err);
+  TEST_CHECK(rc == MUTT_CMD_WARNING);
+
+  buf_pool_release(&err);
 }

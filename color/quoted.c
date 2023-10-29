@@ -131,18 +131,12 @@ bool quoted_colors_parse_color(enum ColorId cid, struct AttrColor *ac_val,
     NumQuotedColors = q_level + 1;
 
   struct AttrColor *ac = &QuotedColors[q_level];
-  const bool was_set = ((ac->attrs != 0) || ac->curses_color);
 
   attr_color_overwrite(ac, ac_val);
 
   struct CursesColor *cc = ac->curses_color;
   if (!cc)
     NumQuotedColors = find_highest_used();
-
-  if (was_set)
-    quoted_color_dump(ac, q_level, "QuotedColors changed: ");
-  else
-    quoted_color_dump(ac, q_level, "QuotedColors new: ");
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
@@ -153,17 +147,20 @@ bool quoted_colors_parse_color(enum ColorId cid, struct AttrColor *ac_val,
   {
     // Copy the colour into the SimpleColors
     struct AttrColor *ac_quoted = simple_color_get(MT_COLOR_QUOTED);
+    curses_color_free(&ac_quoted->curses_color);
     *ac_quoted = *ac;
     ac_quoted->ref_count = 1;
     if (ac_quoted->curses_color)
+    {
       ac_quoted->curses_color->ref_count++;
+      curses_color_dump(cc, "curses rc++");
+    }
   }
 
   struct EventColor ev_c = { cid, ac };
   notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
 
-  curses_colors_dump();
-  quoted_color_list_dump();
+  curses_colors_dump(buf);
 
   *rc = MUTT_CMD_SUCCESS;
   return true;
@@ -183,10 +180,6 @@ enum CommandResult quoted_colors_parse_uncolor(enum ColorId cid, int q_level,
 
   struct AttrColor *ac = &QuotedColors[q_level];
   attr_color_clear(ac);
-  quoted_color_dump(ac, q_level, "QuotedColors clear: ");
-
-  curses_colors_dump();
-  quoted_color_list_dump();
 
   NumQuotedColors = find_highest_used();
 
@@ -633,7 +626,5 @@ void qstyle_recolor(struct QuoteStyle *quote_list)
   int num = quoted_colors_num_used();
   int cur = 0;
 
-  quoted_color_list_dump();
   qstyle_recurse(quote_list, num, &cur);
-  quoted_color_list_dump();
 }

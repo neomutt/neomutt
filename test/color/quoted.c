@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse colour commands
+ * Test code for Quoted Colours
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -20,17 +20,16 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_PARSE_COLOR_H
-#define MUTT_COLOR_PARSE_COLOR_H
-
-#include "core/lib.h"
+#define TEST_NO_MAIN
+#include "config.h"
+#include "acutest.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
+#include "gui/lib.h"
+#include "color/lib.h"
 
-struct AttrColor;
-
-extern const struct Mapping ColorNames[];
-
-enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
-enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
-
-#endif /* MUTT_COLOR_PARSE_COLOR_H */
+void test_quoted_colors(void)
+{
+}

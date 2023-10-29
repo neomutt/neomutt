@@ -1,6 +1,6 @@
 /**
  * @file
- * Parse colour commands
+ * Colour Dump Command
  *
  * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
@@ -20,17 +20,18 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_COLOR_PARSE_COLOR_H
-#define MUTT_COLOR_PARSE_COLOR_H
-
-#include "core/lib.h"
-#include "mutt/lib.h"
+#ifndef MUTT_COLOR_DUMP_H
+#define MUTT_COLOR_DUMP_H
 
 struct AttrColor;
+struct Buffer;
+struct ColorElement;
 
-extern const struct Mapping ColorNames[];
+void color_dump(void);
 
-enum CommandResult parse_attr_spec (struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
-enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
+const char *color_log_attrs_list (int attrs);
+void        color_log_color_attrs(struct AttrColor *ac, struct Buffer *swatch);
+const char *color_log_name       (char *buf, int buflen, struct ColorElement *elem);
 
-#endif /* MUTT_COLOR_PARSE_COLOR_H */
+#endif /* MUTT_COLOR_DUMP_H */
+
