@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-10-23\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-10-29 16:08+0000\n"
-"PO-Revision-Date: 2023-09-22 17:24+0200\n"
+"PO-Revision-Date: 2023-10-29 18:31+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.2.2\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -882,24 +882,24 @@ msgstr "Zu viele Farben: %d / %d"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Zitierfarben\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Regex Farben %s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Einfache Farben\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Erstellungsfarben\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Statusfarben\n"
 
 #. L10N: '%s' is the file name of the temporary file
 #: color/dump.c:460 commands.c:857 commands.c:916 commands.c:1600
@@ -6638,7 +6638,7 @@ msgstr "Hilfe wird bereits angezeigt"
 #: pager/functions.c:1059
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Gespeichert in: %s"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
