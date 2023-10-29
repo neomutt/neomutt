@@ -1242,10 +1242,14 @@ int mx_msg_close(struct Mailbox *m, struct Message **ptr)
  */
 void mx_alloc_memory(struct Mailbox *m, int req_size)
 {
-  const int grow = 25;
+  if ((req_size + 1) <= m->email_max)
+    return;
+
+  // Step size to increase by
+  // Larger mailboxes get a larger step (limited to 1000)
+  const int grow = CLAMP(m->email_max, 25, 1000);
 
   // Sanity checks
-  req_size = MAX(req_size, m->email_max);
   req_size = ROUND_UP(req_size + 1, grow);
 
   const size_t s = MAX(sizeof(struct Email *), sizeof(int));
