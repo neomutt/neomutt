@@ -7772,27 +7772,27 @@ msgstr "Derinimo parinktys:"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Citatų spalvos\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Šablonų spalvos: %s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Paprastos spalvos\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Kūrimo spalvos\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Būsenos spalvos\n"
 
 #: pager/functions.c:1059
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Išsaugota į %s"
 
