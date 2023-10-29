@@ -7749,15 +7749,15 @@ msgstr "# Alıntı Renkleri\n"
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr "# %s Düzenli İfadesi Rengi"
+msgstr "# %s Düzenli İfadesi Rengi\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr "# Temel Renkler"
+msgstr "# Temel Renkler\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr "# İleti Oluşturma Renkleri"
+msgstr "# İleti Oluşturma Renkleri\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
