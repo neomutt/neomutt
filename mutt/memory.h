@@ -30,7 +30,7 @@
 #undef CLAMP
 #define MAX(a, b) (((a) < (b)) ? (b) : (a))
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
-#define CLAMP(val, lo, hi) ((val) > (hi) ? (hi) : ((val) < (lo) ? (lo) : (val)))
+#define CLAMP(val, lo, hi) MIN(hi, MAX(lo, val))
 
 #undef ROUND_UP
 #define ROUND_UP(NUM, STEP) ((((NUM) + (STEP) -1) / (STEP)) * (STEP))
