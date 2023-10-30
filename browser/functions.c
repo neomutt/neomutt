@@ -326,10 +326,9 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, int op)
   }
   else
   {
-    char buf2[PATH_MAX];
-
-    mutt_path_concat(buf2, buf_string(&LastDir), ff->name, sizeof(buf2));
-    struct Body *b = mutt_make_file_attach(buf2, NeoMutt->sub);
+    struct Buffer *path = buf_pool_get();
+    buf_concat_path(path, buf_string(&LastDir), ff->name);
+    struct Body *b = mutt_make_file_attach(buf_string(path), NeoMutt->sub);
     if (b)
     {
       mutt_view_attachment(NULL, b, MUTT_VA_REGULAR, NULL, NULL, priv->menu->win);
@@ -340,6 +339,7 @@ static int op_browser_view_file(struct BrowserPrivateData *priv, int op)
     {
       mutt_error(_("Error trying to view file"));
     }
+    buf_pool_release(&path);
   }
   return FR_ERROR;
 }

@@ -461,7 +461,6 @@ PARSE_OBJS	= test/parse/common.o \
 PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_basename.o \
 		  test/path/mutt_path_canon.o \
-		  test/path/mutt_path_concat.o \
 		  test/path/mutt_path_dirname.o \
 		  test/path/mutt_path_escape.o \
 		  test/path/mutt_path_getcwd.o \
