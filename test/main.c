@@ -508,7 +508,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_path_escape)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_path_getcwd)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_path_parent)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_path_pretty)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_path_realpath)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_path_tidy_dotdot)                                \

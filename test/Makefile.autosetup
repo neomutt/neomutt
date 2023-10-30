@@ -465,7 +465,6 @@ PATH_OBJS	= test/path/mutt_path_abbr_folder.o \
 		  test/path/mutt_path_escape.o \
 		  test/path/mutt_path_getcwd.o \
 		  test/path/mutt_path_parent.o \
-		  test/path/mutt_path_pretty.o \
 		  test/path/mutt_path_realpath.o \
 		  test/path/mutt_path_tidy.o \
 		  test/path/mutt_path_tidy_dotdot.o \
