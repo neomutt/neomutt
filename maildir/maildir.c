@@ -1645,20 +1645,6 @@ static int maildir_path_parent(struct Buffer *path)
 }
 
 /**
- * maildir_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
- */
-static int maildir_path_pretty(struct Buffer *path, const char *folder)
-{
-  if (mutt_path_abbr_folder(path, folder))
-    return 0;
-
-  if (mutt_path_pretty(path, HomeDir, false))
-    return 0;
-
-  return -1;
-}
-
-/**
  * maildir_path_probe - Is this a Maildir Mailbox? - Implements MxOps::path_probe() - @ingroup mx_path_probe
  */
 static enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
@@ -1705,7 +1691,6 @@ const struct MxOps MxMaildirOps = {
   .tags_commit      = NULL,
   .path_probe       = maildir_path_probe,
   .path_canon       = maildir_path_canon,
-  .path_pretty      = maildir_path_pretty,
   .path_parent      = maildir_path_parent,
   .path_is_empty    = maildir_check_empty,
   // clang-format on
