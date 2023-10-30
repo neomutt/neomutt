@@ -913,20 +913,6 @@ static int comp_path_canon(struct Buffer *path)
 }
 
 /**
- * comp_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
- */
-static int comp_path_pretty(struct Buffer *path, const char *folder)
-{
-  if (mutt_path_abbr_folder(path, folder))
-    return 0;
-
-  if (mutt_path_pretty(path, HomeDir, false))
-    return 0;
-
-  return -1;
-}
-
-/**
  * comp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
 static int comp_path_parent(struct Buffer *path)
@@ -972,7 +958,6 @@ const struct MxOps MxCompOps = {
   .tags_commit      = comp_tags_commit,
   .path_probe       = comp_path_probe,
   .path_canon       = comp_path_canon,
-  .path_pretty      = comp_path_pretty,
   .path_parent      = comp_path_parent,
   .path_is_empty    = NULL,
   // clang-format on

@@ -1617,20 +1617,6 @@ static int mbox_path_canon(struct Buffer *path)
 }
 
 /**
- * mbox_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
- */
-static int mbox_path_pretty(struct Buffer *path, const char *folder)
-{
-  if (mutt_path_abbr_folder(path, folder))
-    return 0;
-
-  if (mutt_path_pretty(path, HomeDir, false))
-    return 0;
-
-  return -1;
-}
-
-/**
  * mbox_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
 static int mbox_path_parent(struct Buffer *path)
@@ -1770,7 +1756,6 @@ const struct MxOps MxMboxOps = {
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
   .path_canon       = mbox_path_canon,
-  .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
   // clang-format on
@@ -1802,7 +1787,6 @@ const struct MxOps MxMmdfOps = {
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
   .path_canon       = mbox_path_canon,
-  .path_pretty      = mbox_path_pretty,
   .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
   // clang-format on

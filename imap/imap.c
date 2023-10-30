@@ -2373,18 +2373,6 @@ int imap_expand_path(struct Buffer *path)
 }
 
 /**
- * imap_path_pretty - Abbreviate a Mailbox path - Implements MxOps::path_pretty() - @ingroup mx_path_pretty
- */
-static int imap_path_pretty(struct Buffer *path, const char *folder)
-{
-  if (!folder)
-    return -1;
-
-  imap_pretty_mailbox(path->data, path->dsize, folder);
-  return 0;
-}
-
-/**
  * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
  */
 static int imap_path_parent(struct Buffer *path)
@@ -2435,7 +2423,6 @@ const struct MxOps MxImapOps = {
   .tags_commit      = imap_tags_commit,
   .path_probe       = imap_path_probe,
   .path_canon       = imap_path_canon,
-  .path_pretty      = imap_path_pretty,
   .path_parent      = imap_path_parent,
   .path_is_empty    = imap_path_is_empty,
   // clang-format on

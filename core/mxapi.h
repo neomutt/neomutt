@@ -349,20 +349,6 @@ struct MxOps
   int (*path_canon)(struct Buffer *path);
 
   /**
-   * @defgroup mx_path_pretty path_pretty()
-   * @ingroup mx_api
-   *
-   * path_pretty - Abbreviate a Mailbox path
-   * @param path   Path to modify
-   * @param folder Base path for '=' substitution
-   * @retval  0 Success
-   * @retval -1 Failure
-   *
-   * @pre path is not NULL
-   */
-  int (*path_pretty)(struct Buffer *path, const char *folder);
-
-  /**
    * @defgroup mx_path_parent path_parent()
    * @ingroup mx_api
    *
