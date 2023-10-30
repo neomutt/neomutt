@@ -504,7 +504,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_path_abbr_folder)                                \
   NEOMUTT_TEST_ITEM(test_mutt_path_basename)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_path_canon)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_path_concat)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_path_dirname)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_path_escape)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_path_getcwd)                                     \

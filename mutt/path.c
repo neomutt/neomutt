@@ -329,43 +329,6 @@ const char *mutt_path_basename(const char *path)
 }
 
 /**
- * mutt_path_concat - Join a directory name and a filename
- * @param dest Buffer for the result
- * @param dir  Directory name
- * @param file File name
- * @param dlen Length of buffer
- * @retval ptr Destination buffer
- *
- * If both dir and file are supplied, they are separated with '/'.
- * If either is missing, then the other will be copied exactly.
- */
-char *mutt_path_concat(char *dest, const char *dir, const char *file, size_t dlen)
-{
-  if (!dest || (!dir && !file))
-    return NULL;
-
-  if (dir && (!file || (file[0] == '\0')))
-  {
-    strncpy(dest, dir, dlen);
-    return dest;
-  }
-
-  if (file && (!dir || (dir[0] == '\0')))
-  {
-    strncpy(dest, file, dlen);
-    return dest;
-  }
-
-  const char *fmt = "%s/%s";
-
-  if (dir[strlen(dir) - 1] == '/')
-    fmt = "%s%s";
-
-  snprintf(dest, dlen, fmt, dir, file);
-  return dest;
-}
-
-/**
  * mutt_path_dirname - Return a path up to, but not including, the final '/'
  * @param  path Path
  * @retval ptr  The directory containing p
