@@ -678,6 +678,9 @@ cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
   foreach f {bkgrndset setcchar use_extended_names} {
     cc-check-function-in-lib $f $ncurses_lib
   }
+
+  define-append CFLAGS -I$ncurses_prefix/include
+  define-append LDFLAGS -L$ncurses_prefix/$::libdir_tail
 }
 
 # Locate the directory containing ncurses.h
