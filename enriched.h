@@ -26,6 +26,6 @@
 struct Body;
 struct State;
 
-int text_enriched_handler(struct Body *a, struct State *state);
+int text_enriched_handler(struct Body *b_email, struct State *state);
 
 #endif /* MUTT_ENRICHED_H */

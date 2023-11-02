@@ -411,11 +411,11 @@ static gpgme_data_t create_gpgme_data(void)
 
 /**
  * body_to_data_object - Create GPGME object from the mail body
- * @param a       Body to use
+ * @param b       Body to use
  * @param convert If true, lines are converted to CR-LF if required
  * @retval ptr Newly created GPGME data object
  */
-static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
+static gpgme_data_t body_to_data_object(struct Body *b, bool convert)
 {
   int err = 0;
   gpgme_data_t data = NULL;
@@ -429,9 +429,9 @@ static gpgme_data_t body_to_data_object(struct Body *a, bool convert)
     goto cleanup;
   }
 
-  mutt_write_mime_header(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_header(b, fp_tmp, NeoMutt->sub);
   fputc('\n', fp_tmp);
-  mutt_write_mime_body(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_body(b, fp_tmp, NeoMutt->sub);
 
   if (convert)
   {
@@ -891,15 +891,15 @@ static void print_time(time_t t, struct State *state)
 
 /**
  * sign_message - Sign a message
- * @param a         Message to sign
+ * @param b         Message to sign
  * @param from      The From header line
  * @param use_smime If set, use SMIME instead of PGP
  * @retval ptr  new Body
  * @retval NULL error
  */
-static struct Body *sign_message(struct Body *a, const struct AddressList *from, bool use_smime)
+static struct Body *sign_message(struct Body *b, const struct AddressList *from, bool use_smime)
 {
-  struct Body *t = NULL;
+  struct Body *b_sign = NULL;
   char *sigfile = NULL;
   int err = 0;
   char buf[100] = { 0 };
@@ -907,9 +907,9 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
   gpgme_data_t message = NULL, signature = NULL;
   gpgme_sign_result_t sigres = NULL;
 
-  crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
+  crypt_convert_to_7bit(b); /* Signed data _must_ be in 7-bit format. */
 
-  message = body_to_data_object(a, true);
+  message = body_to_data_object(b, true);
   if (!message)
     return NULL;
   signature = create_gpgme_data();
@@ -968,51 +968,51 @@ static struct Body *sign_message(struct Body *a, const struct AddressList *from,
     return NULL;
   }
 
-  t = mutt_body_new();
-  t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_dup("signed");
-  t->encoding = ENC_7BIT;
-  t->use_disp = false;
-  t->disposition = DISP_INLINE;
+  b_sign = mutt_body_new();
+  b_sign->type = TYPE_MULTIPART;
+  b_sign->subtype = mutt_str_dup("signed");
+  b_sign->encoding = ENC_7BIT;
+  b_sign->use_disp = false;
+  b_sign->disposition = DISP_INLINE;
 
-  mutt_generate_boundary(&t->parameter);
-  mutt_param_set(&t->parameter, "protocol",
+  mutt_generate_boundary(&b_sign->parameter);
+  mutt_param_set(&b_sign->parameter, "protocol",
                  use_smime ? "application/pkcs7-signature" : "application/pgp-signature");
   /* Get the micalg from GPGME.  Old gpgme versions don't support this
    * for S/MIME so we assume sha-1 in this case. */
   if (get_micalg(ctx, use_smime, buf, sizeof(buf)) == 0)
-    mutt_param_set(&t->parameter, "micalg", buf);
+    mutt_param_set(&b_sign->parameter, "micalg", buf);
   else if (use_smime)
-    mutt_param_set(&t->parameter, "micalg", "sha1");
+    mutt_param_set(&b_sign->parameter, "micalg", "sha1");
   gpgme_release(ctx);
 
-  t->parts = a;
-  a = t;
+  b_sign->parts = b;
+  b = b_sign;
 
-  t->parts->next = mutt_body_new();
-  t = t->parts->next;
-  t->type = TYPE_APPLICATION;
+  b_sign->parts->next = mutt_body_new();
+  b_sign = b_sign->parts->next;
+  b_sign->type = TYPE_APPLICATION;
   if (use_smime)
   {
-    t->subtype = mutt_str_dup("pkcs7-signature");
-    mutt_param_set(&t->parameter, "name", "smime.p7s");
-    t->encoding = ENC_BASE64;
-    t->use_disp = true;
-    t->disposition = DISP_ATTACH;
-    t->d_filename = mutt_str_dup("smime.p7s");
+    b_sign->subtype = mutt_str_dup("pkcs7-signature");
+    mutt_param_set(&b_sign->parameter, "name", "smime.p7s");
+    b_sign->encoding = ENC_BASE64;
+    b_sign->use_disp = true;
+    b_sign->disposition = DISP_ATTACH;
+    b_sign->d_filename = mutt_str_dup("smime.p7s");
   }
   else
   {
-    t->subtype = mutt_str_dup("pgp-signature");
-    mutt_param_set(&t->parameter, "name", "signature.asc");
-    t->use_disp = false;
-    t->disposition = DISP_NONE;
-    t->encoding = ENC_7BIT;
+    b_sign->subtype = mutt_str_dup("pgp-signature");
+    mutt_param_set(&b_sign->parameter, "name", "signature.asc");
+    b_sign->use_disp = false;
+    b_sign->disposition = DISP_NONE;
+    b_sign->encoding = ENC_7BIT;
   }
-  t->filename = sigfile;
-  t->unlink = true; /* ok to remove this file after sending. */
+  b_sign->filename = sigfile;
+  b_sign->unlink = true; /* ok to remove this file after sending. */
 
-  return a;
+  return b;
 }
 
 /**
@@ -1048,33 +1048,33 @@ struct Body *pgp_gpgme_encrypt_message(struct Body *b, char *keylist, bool sign,
   if (!outfile)
     return NULL;
 
-  struct Body *t = mutt_body_new();
-  t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_dup("encrypted");
-  t->encoding = ENC_7BIT;
-  t->use_disp = false;
-  t->disposition = DISP_INLINE;
+  struct Body *b_enc = mutt_body_new();
+  b_enc->type = TYPE_MULTIPART;
+  b_enc->subtype = mutt_str_dup("encrypted");
+  b_enc->encoding = ENC_7BIT;
+  b_enc->use_disp = false;
+  b_enc->disposition = DISP_INLINE;
 
-  mutt_generate_boundary(&t->parameter);
-  mutt_param_set(&t->parameter, "protocol", "application/pgp-encrypted");
+  mutt_generate_boundary(&b_enc->parameter);
+  mutt_param_set(&b_enc->parameter, "protocol", "application/pgp-encrypted");
 
-  t->parts = mutt_body_new();
-  t->parts->type = TYPE_APPLICATION;
-  t->parts->subtype = mutt_str_dup("pgp-encrypted");
-  t->parts->encoding = ENC_7BIT;
+  b_enc->parts = mutt_body_new();
+  b_enc->parts->type = TYPE_APPLICATION;
+  b_enc->parts->subtype = mutt_str_dup("pgp-encrypted");
+  b_enc->parts->encoding = ENC_7BIT;
 
-  t->parts->next = mutt_body_new();
-  t->parts->next->type = TYPE_APPLICATION;
-  t->parts->next->subtype = mutt_str_dup("octet-stream");
-  t->parts->next->encoding = ENC_7BIT;
-  t->parts->next->filename = outfile;
-  t->parts->next->use_disp = true;
-  t->parts->next->disposition = DISP_ATTACH;
-  t->parts->next->unlink = true; /* delete after sending the message */
-  t->parts->next->d_filename = mutt_str_dup("msg.asc"); /* non pgp/mime
+  b_enc->parts->next = mutt_body_new();
+  b_enc->parts->next->type = TYPE_APPLICATION;
+  b_enc->parts->next->subtype = mutt_str_dup("octet-stream");
+  b_enc->parts->next->encoding = ENC_7BIT;
+  b_enc->parts->next->filename = outfile;
+  b_enc->parts->next->use_disp = true;
+  b_enc->parts->next->disposition = DISP_ATTACH;
+  b_enc->parts->next->unlink = true; /* delete after sending the message */
+  b_enc->parts->next->d_filename = mutt_str_dup("msg.asc"); /* non pgp/mime
                                                            can save */
 
-  return t;
+  return b_enc;
 }
 
 /**
@@ -1094,21 +1094,21 @@ struct Body *smime_gpgme_build_smime_entity(struct Body *b, char *keylist)
   if (!outfile)
     return NULL;
 
-  struct Body *t = mutt_body_new();
-  t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_dup("pkcs7-mime");
-  mutt_param_set(&t->parameter, "name", "smime.p7m");
-  mutt_param_set(&t->parameter, "smime-type", "enveloped-data");
-  t->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
-  t->use_disp = true;
-  t->disposition = DISP_ATTACH;
-  t->d_filename = mutt_str_dup("smime.p7m");
-  t->filename = outfile;
-  t->unlink = true; /* delete after sending the message */
-  t->parts = 0;
-  t->next = 0;
+  struct Body *b_enc = mutt_body_new();
+  b_enc->type = TYPE_APPLICATION;
+  b_enc->subtype = mutt_str_dup("pkcs7-mime");
+  mutt_param_set(&b_enc->parameter, "name", "smime.p7m");
+  mutt_param_set(&b_enc->parameter, "smime-type", "enveloped-data");
+  b_enc->encoding = ENC_BASE64; /* The output of OpenSSL SHOULD be binary */
+  b_enc->use_disp = true;
+  b_enc->disposition = DISP_ATTACH;
+  b_enc->d_filename = mutt_str_dup("smime.p7m");
+  b_enc->filename = outfile;
+  b_enc->unlink = true; /* delete after sending the message */
+  b_enc->parts = 0;
+  b_enc->next = 0;
 
-  return t;
+  return b_enc;
 }
 
 /**
@@ -1527,7 +1527,7 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
 
 /**
  * verify_one - Do the actual verification step
- * @param sigbdy   Mime part containing signature
+ * @param b        Body part containing signature
  * @param state    State to read from
  * @param tempfile Temporary file to read
  * @param is_smime Is the key S/MIME?
@@ -1538,16 +1538,14 @@ static int show_one_sig_status(gpgme_ctx_t ctx, int idx, struct State *state)
  *
  * With is_smime set to true we assume S/MIME.
  */
-static int verify_one(struct Body *sigbdy, struct State *state,
-                      const char *tempfile, bool is_smime)
+static int verify_one(struct Body *b, struct State *state, const char *tempfile, bool is_smime)
 {
   int badsig = -1;
   int anywarn = 0;
   gpgme_ctx_t ctx = NULL;
   gpgme_data_t message = NULL;
 
-  gpgme_data_t signature = file_to_data_object(state->fp_in, sigbdy->offset,
-                                               sigbdy->length);
+  gpgme_data_t signature = file_to_data_object(state->fp_in, b->offset, b->length);
   if (!signature)
     return -1;
 
@@ -1680,7 +1678,7 @@ int smime_gpgme_verify_one(struct Body *b, struct State *state, const char *temp
 
 /**
  * decrypt_part - Decrypt a PGP or SMIME message
- * @param[in]  a           Body of message
+ * @param[in]  b           Body of message
  * @param[in]  state       State to use
  * @param[in]  fp_out      File to write to
  * @param[in]  is_smime    True if an SMIME message
@@ -1691,10 +1689,10 @@ int smime_gpgme_verify_one(struct Body *b, struct State *state, const char *temp
  * encrypted and signed message, for S/MIME it returns true when it is not a
  * encrypted but a signed message.
  */
-static struct Body *decrypt_part(struct Body *a, struct State *state,
+static struct Body *decrypt_part(struct Body *b, struct State *state,
                                  FILE *fp_out, bool is_smime, int *r_is_signed)
 {
-  if (!a || !state || !fp_out)
+  if (!b || !state || !fp_out)
     return NULL;
 
   struct Body *tattach = NULL;
@@ -1711,10 +1709,10 @@ static struct Body *decrypt_part(struct Body *a, struct State *state,
 restart:
   ctx = create_gpgme_context(is_smime);
 
-  if (a->length < 0)
+  if (b->length < 0)
     return NULL;
   /* Make a data object from the body, create context etc. */
-  ciphertext = file_to_data_object(state->fp_in, a->offset, a->length);
+  ciphertext = file_to_data_object(state->fp_in, b->offset, b->length);
   if (!ciphertext)
     goto cleanup;
   plaintext = create_gpgme_data();

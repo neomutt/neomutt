@@ -47,7 +47,7 @@
 
 /**
  * mailcap_expand_command - Expand expandos in a command
- * @param a        Email Body
+ * @param b        Email Body
  * @param filename File containing the email text
  * @param type     Type, e.g. "text/plain"
  * @param command  Buffer containing command
@@ -64,7 +64,7 @@
  * %n is the integer number of sub-parts in the multipart
  * %F is "content-type filename" repeated for each sub-part
  */
-int mailcap_expand_command(struct Body *a, const char *filename,
+int mailcap_expand_command(struct Body *b, const char *filename,
                            const char *type, struct Buffer *command)
 {
   int needspipe = true;
@@ -103,10 +103,10 @@ int mailcap_expand_command(struct Body *a, const char *filename,
         /* In send mode, use the current charset, since the message hasn't
          * been converted yet.   If noconv is set, then we assume the
          * charset parameter has the correct value instead. */
-        if (mutt_istr_equal(buf_string(param), "charset") && a->charset && !a->noconv)
-          pvalue2 = a->charset;
+        if (mutt_istr_equal(buf_string(param), "charset") && b->charset && !b->noconv)
+          pvalue2 = b->charset;
         else
-          pvalue2 = mutt_param_get(&a->parameter, buf_string(param));
+          pvalue2 = mutt_param_get(&b->parameter, buf_string(param));
 
         /* Now copy the parameter value into param buffer */
         if (c_mailcap_sanitize)
@@ -221,7 +221,7 @@ static int get_field_text(char *field, char **entry, const char *type,
 
 /**
  * rfc1524_mailcap_parse - Parse a mailcap entry
- * @param a        Email Body
+ * @param b        Email Body
  * @param filename Filename
  * @param type     Type, e.g. "text/plain"
  * @param entry    Entry, e.g. "compose"
@@ -229,7 +229,7 @@ static int get_field_text(char *field, char **entry, const char *type,
  * @retval true  Success
  * @retval false Failure
  */
-static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const char *type,
+static bool rfc1524_mailcap_parse(struct Body *b, const char *filename, const char *type,
                                   struct MailcapEntry *entry, enum MailcapLookup opt)
 {
   char *buf = NULL;
@@ -358,10 +358,10 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
             buf_strcpy(command, test_command);
             const bool c_mailcap_sanitize = cs_subset_bool(NeoMutt->sub, "mailcap_sanitize");
             if (c_mailcap_sanitize)
-              buf_sanitize_filename(afilename, NONULL(a->filename), true);
+              buf_sanitize_filename(afilename, NONULL(b->filename), true);
             else
-              buf_strcpy(afilename, NONULL(a->filename));
-            if (mailcap_expand_command(a, buf_string(afilename), type, command) == 1)
+              buf_strcpy(afilename, NONULL(b->filename));
+            if (mailcap_expand_command(b, buf_string(afilename), type, command) == 1)
             {
               mutt_debug(LL_DEBUG1, "mailcap command needs a pipe: %s\n",
                          buf_string(command));
@@ -386,7 +386,7 @@ static bool rfc1524_mailcap_parse(struct Body *a, const char *filename, const ch
         {
           if (entry)
             entry->xneomuttnowrap = true;
-          a->nowrap = true;
+          b->nowrap = true;
         }
       } /* while (ch) */
 
@@ -467,7 +467,7 @@ void mailcap_entry_free(struct MailcapEntry **ptr)
 
 /**
  * mailcap_lookup - Find given type in the list of mailcap files
- * @param a      Message body
+ * @param b      Message body
  * @param type   Text type in "type/subtype" format
  * @param typelen Length of the type
  * @param entry  struct MailcapEntry to populate with results
@@ -477,7 +477,7 @@ void mailcap_entry_free(struct MailcapEntry **ptr)
  *
  * Find the given type in the list of mailcap files.
  */
-bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
+bool mailcap_lookup(struct Body *b, char *type, size_t typelen,
                     struct MailcapEntry *entry, enum MailcapLookup opt)
 {
   /* rfc1524 specifies that a path of mailcap files should be searched.
@@ -505,7 +505,7 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
     return false;
   }
 
-  mutt_check_lookup_list(a, type, typelen);
+  mutt_check_lookup_list(b, type, typelen);
 
   struct Buffer *path = buf_pool_get();
   bool found = false;
@@ -517,7 +517,7 @@ bool mailcap_lookup(struct Body *a, char *type, size_t typelen,
     buf_expand_path(path);
 
     mutt_debug(LL_DEBUG2, "Checking mailcap file: %s\n", buf_string(path));
-    found = rfc1524_mailcap_parse(a, buf_string(path), type, entry, opt);
+    found = rfc1524_mailcap_parse(b, buf_string(path), type, entry, opt);
     if (found)
       break;
   }

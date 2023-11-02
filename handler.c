@@ -80,26 +80,26 @@ typedef int (*handler_t)(struct Body *b_email, struct State *state);
 /**
  * print_part_line - Print a separator for the Mime part
  * @param state State of text being processed
- * @param b     Body of the email
+ * @param b_email     Body of the email
  * @param n     Part number for multipart emails (0 otherwise)
  */
-static void print_part_line(struct State *state, struct Body *b, int n)
+static void print_part_line(struct State *state, struct Body *b_email, int n)
 {
   char length[5] = { 0 };
-  mutt_str_pretty_size(length, sizeof(length), b->length);
+  mutt_str_pretty_size(length, sizeof(length), b_email->length);
   state_mark_attach(state);
-  char *charset = mutt_param_get(&b->parameter, "charset");
+  char *charset = mutt_param_get(&b_email->parameter, "charset");
   if (n == 0)
   {
     state_printf(state, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
-                 TYPE(b), b->subtype, charset ? "; charset=" : "",
-                 charset ? charset : "", ENCODING(b->encoding), length);
+                 TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
+                 charset ? charset : "", ENCODING(b_email->encoding), length);
   }
   else
   {
     state_printf(state, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
-                 n, TYPE(b), b->subtype, charset ? "; charset=" : "",
-                 charset ? charset : "", ENCODING(b->encoding), length);
+                 n, TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
+                 charset ? charset : "", ENCODING(b_email->encoding), length);
   }
 }
 
@@ -1616,7 +1616,7 @@ void mutt_decode_base64(struct State *state, size_t len, bool istext, iconv_t cd
 
 /**
  * mutt_body_handler - Handler for the Body of an email
- * @param b Body of the email
+ * @param b     Body of the email
  * @param state State to work with
  * @retval 0 Success
  * @retval -1 Error

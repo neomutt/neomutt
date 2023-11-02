@@ -415,22 +415,22 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 
 /**
  * mutt_needs_mailcap - Does this type need a mailcap entry do display
- * @param m Attachment body to be displayed
+ * @param b Attachment body to be displayed
  * @retval true  NeoMutt requires a mailcap entry to display
  * @retval false otherwise
  */
-bool mutt_needs_mailcap(struct Body *m)
+bool mutt_needs_mailcap(struct Body *b)
 {
-  switch (m->type)
+  switch (b->type)
   {
     case TYPE_TEXT:
-      if (mutt_istr_equal("plain", m->subtype))
+      if (mutt_istr_equal("plain", b->subtype))
         return false;
       break;
     case TYPE_APPLICATION:
-      if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(m))
+      if (((WithCrypto & APPLICATION_PGP) != 0) && mutt_is_application_pgp(b))
         return false;
-      if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(m))
+      if (((WithCrypto & APPLICATION_SMIME) != 0) && mutt_is_application_smime(b))
         return false;
       break;
 

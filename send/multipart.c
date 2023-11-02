@@ -37,18 +37,18 @@
 
 /**
  * get_toplevel_encoding - Find the most restrictive encoding type
- * @param a Body to examine
+ * @param b Body to examine
  * @retval num Encoding type, e.g. #ENC_7BIT
  */
-static int get_toplevel_encoding(struct Body *a)
+static int get_toplevel_encoding(struct Body *b)
 {
   int e = ENC_7BIT;
 
-  for (; a; a = a->next)
+  for (; b; b = b->next)
   {
-    if (a->encoding == ENC_BINARY)
+    if (b->encoding == ENC_BINARY)
       return ENC_BINARY;
-    if (a->encoding == ENC_8BIT)
+    if (b->encoding == ENC_8BIT)
       e = ENC_8BIT;
   }
 
@@ -99,21 +99,21 @@ void mutt_generate_boundary(struct ParameterList *pl)
  */
 struct Body *mutt_make_multipart(struct Body *b)
 {
-  struct Body *new_body = mutt_body_new();
-  new_body->type = TYPE_MULTIPART;
-  new_body->subtype = mutt_str_dup("mixed");
-  new_body->encoding = get_toplevel_encoding(b);
+  struct Body *b_new = mutt_body_new();
+  b_new->type = TYPE_MULTIPART;
+  b_new->subtype = mutt_str_dup("mixed");
+  b_new->encoding = get_toplevel_encoding(b);
   do
   {
-    mutt_generate_boundary(&new_body->parameter);
-    if (check_boundary(mutt_param_get(&new_body->parameter, "boundary"), b))
-      mutt_param_delete(&new_body->parameter, "boundary");
-  } while (!mutt_param_get(&new_body->parameter, "boundary"));
-  new_body->use_disp = false;
-  new_body->disposition = DISP_INLINE;
-  new_body->parts = b;
+    mutt_generate_boundary(&b_new->parameter);
+    if (check_boundary(mutt_param_get(&b_new->parameter, "boundary"), b))
+      mutt_param_delete(&b_new->parameter, "boundary");
+  } while (!mutt_param_get(&b_new->parameter, "boundary"));
+  b_new->use_disp = false;
+  b_new->disposition = DISP_INLINE;
+  b_new->parts = b;
 
-  return new_body;
+  return b_new;
 }
 
 /**

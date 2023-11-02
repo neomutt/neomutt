@@ -968,9 +968,9 @@ cleanup:
 /**
  * pgp_extract_keys_from_attachment - Extract pgp keys from messages/attachments
  * @param fp  File to read from
- * @param top Top Attachment
+ * @param b   Top Attachment
  */
-static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
+static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *b)
 {
   struct State state = { 0 };
   struct Buffer *tempfname = buf_pool_get();
@@ -986,7 +986,7 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *top)
   state.fp_in = fp;
   state.fp_out = fp_tmp;
 
-  mutt_body_handler(top, &state);
+  mutt_body_handler(b, &state);
 
   mutt_file_fclose(&fp_tmp);
 
@@ -1336,7 +1336,7 @@ int pgp_class_encrypted_handler(struct Body *b, struct State *state)
  */
 struct Body *pgp_class_sign_message(struct Body *b, const struct AddressList *from)
 {
-  struct Body *t = NULL, *rv = NULL;
+  struct Body *b_enc = NULL, *rv = NULL;
   char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_pgp_out = NULL, *fp_pgp_err = NULL, *fp_signed = NULL;
   bool err = false;
@@ -1431,30 +1431,30 @@ struct Body *pgp_class_sign_message(struct Body *b, const struct AddressList *fr
     goto cleanup; /* fatal error while signing */
   }
 
-  t = mutt_body_new();
-  t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_dup("signed");
-  t->encoding = ENC_7BIT;
-  t->use_disp = false;
-  t->disposition = DISP_INLINE;
-  rv = t;
+  b_enc = mutt_body_new();
+  b_enc->type = TYPE_MULTIPART;
+  b_enc->subtype = mutt_str_dup("signed");
+  b_enc->encoding = ENC_7BIT;
+  b_enc->use_disp = false;
+  b_enc->disposition = DISP_INLINE;
+  rv = b_enc;
 
-  mutt_generate_boundary(&t->parameter);
-  mutt_param_set(&t->parameter, "protocol", "application/pgp-signature");
-  mutt_param_set(&t->parameter, "micalg", pgp_micalg(buf_string(sigfile)));
+  mutt_generate_boundary(&b_enc->parameter);
+  mutt_param_set(&b_enc->parameter, "protocol", "application/pgp-signature");
+  mutt_param_set(&b_enc->parameter, "micalg", pgp_micalg(buf_string(sigfile)));
 
-  t->parts = b;
+  b_enc->parts = b;
 
-  t->parts->next = mutt_body_new();
-  t = t->parts->next;
-  t->type = TYPE_APPLICATION;
-  t->subtype = mutt_str_dup("pgp-signature");
-  t->filename = buf_strdup(sigfile);
-  t->use_disp = false;
-  t->disposition = DISP_NONE;
-  t->encoding = ENC_7BIT;
-  t->unlink = true; /* ok to remove this file after sending. */
-  mutt_param_set(&t->parameter, "name", "signature.asc");
+  b_enc->parts->next = mutt_body_new();
+  b_enc = b_enc->parts->next;
+  b_enc->type = TYPE_APPLICATION;
+  b_enc->subtype = mutt_str_dup("pgp-signature");
+  b_enc->filename = buf_strdup(sigfile);
+  b_enc->use_disp = false;
+  b_enc->disposition = DISP_NONE;
+  b_enc->encoding = ENC_7BIT;
+  b_enc->unlink = true; /* ok to remove this file after sending. */
+  mutt_param_set(&b_enc->parameter, "name", "signature.asc");
 
 cleanup:
   buf_pool_release(&sigfile);
@@ -1594,7 +1594,7 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
 {
   char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_tmp = NULL;
-  struct Body *t = NULL;
+  struct Body *b_enc = NULL;
   int err = 0;
   bool empty = false;
   pid_t pid;
@@ -1689,35 +1689,35 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
     goto cleanup;
   }
 
-  t = mutt_body_new();
-  t->type = TYPE_MULTIPART;
-  t->subtype = mutt_str_dup("encrypted");
-  t->encoding = ENC_7BIT;
-  t->use_disp = false;
-  t->disposition = DISP_INLINE;
+  b_enc = mutt_body_new();
+  b_enc->type = TYPE_MULTIPART;
+  b_enc->subtype = mutt_str_dup("encrypted");
+  b_enc->encoding = ENC_7BIT;
+  b_enc->use_disp = false;
+  b_enc->disposition = DISP_INLINE;
 
-  mutt_generate_boundary(&t->parameter);
-  mutt_param_set(&t->parameter, "protocol", "application/pgp-encrypted");
+  mutt_generate_boundary(&b_enc->parameter);
+  mutt_param_set(&b_enc->parameter, "protocol", "application/pgp-encrypted");
 
-  t->parts = mutt_body_new();
-  t->parts->type = TYPE_APPLICATION;
-  t->parts->subtype = mutt_str_dup("pgp-encrypted");
-  t->parts->encoding = ENC_7BIT;
+  b_enc->parts = mutt_body_new();
+  b_enc->parts->type = TYPE_APPLICATION;
+  b_enc->parts->subtype = mutt_str_dup("pgp-encrypted");
+  b_enc->parts->encoding = ENC_7BIT;
 
-  t->parts->next = mutt_body_new();
-  t->parts->next->type = TYPE_APPLICATION;
-  t->parts->next->subtype = mutt_str_dup("octet-stream");
-  t->parts->next->encoding = ENC_7BIT;
-  t->parts->next->filename = buf_strdup(tempfile);
-  t->parts->next->use_disp = true;
-  t->parts->next->disposition = DISP_ATTACH;
-  t->parts->next->unlink = true; /* delete after sending the message */
-  t->parts->next->d_filename = mutt_str_dup("msg.asc"); /* non pgp/mime can save */
+  b_enc->parts->next = mutt_body_new();
+  b_enc->parts->next->type = TYPE_APPLICATION;
+  b_enc->parts->next->subtype = mutt_str_dup("octet-stream");
+  b_enc->parts->next->encoding = ENC_7BIT;
+  b_enc->parts->next->filename = buf_strdup(tempfile);
+  b_enc->parts->next->use_disp = true;
+  b_enc->parts->next->disposition = DISP_ATTACH;
+  b_enc->parts->next->unlink = true; /* delete after sending the message */
+  b_enc->parts->next->d_filename = mutt_str_dup("msg.asc"); /* non pgp/mime can save */
 
 cleanup:
   buf_pool_release(&tempfile);
   buf_pool_release(&pgpinfile);
-  return t;
+  return b_enc;
 }
 
 /**

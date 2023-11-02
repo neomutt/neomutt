@@ -737,7 +737,7 @@ SecurityFlags crypt_query(struct Body *b)
 
 /**
  * crypt_write_signed - Write the message body/part
- * @param a        Body to write
+ * @param b        Body to write
  * @param state    State to use
  * @param tempfile File to write to
  * @retval  0 Success
@@ -745,7 +745,7 @@ SecurityFlags crypt_query(struct Body *b)
  *
  * Body/part A described by state state to the given TEMPFILE.
  */
-int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile)
+int crypt_write_signed(struct Body *b, struct State *state, const char *tempfile)
 {
   if (!WithCrypto)
     return -1;
@@ -757,12 +757,12 @@ int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile
     return -1;
   }
 
-  if (!mutt_file_seek(state->fp_in, a->hdr_offset, SEEK_SET))
+  if (!mutt_file_seek(state->fp_in, b->hdr_offset, SEEK_SET))
   {
     mutt_file_fclose(&fp);
     return -1;
   }
-  size_t bytes = a->length + a->offset - a->hdr_offset;
+  size_t bytes = b->length + b->offset - b->hdr_offset;
   bool hadcr = false;
   while (bytes > 0)
   {
@@ -793,47 +793,47 @@ int crypt_write_signed(struct Body *a, struct State *state, const char *tempfile
 
 /**
  * crypt_convert_to_7bit - Convert an email to 7bit encoding
- * @param a Body of email to convert
+ * @param b Body of email to convert
  */
-void crypt_convert_to_7bit(struct Body *a)
+void crypt_convert_to_7bit(struct Body *b)
 {
   if (!WithCrypto)
     return;
 
   const bool c_pgp_strict_enc = cs_subset_bool(NeoMutt->sub, "pgp_strict_enc");
-  while (a)
+  while (b)
   {
-    if (a->type == TYPE_MULTIPART)
+    if (b->type == TYPE_MULTIPART)
     {
-      if (a->encoding != ENC_7BIT)
+      if (b->encoding != ENC_7BIT)
       {
-        a->encoding = ENC_7BIT;
-        crypt_convert_to_7bit(a->parts);
+        b->encoding = ENC_7BIT;
+        crypt_convert_to_7bit(b->parts);
       }
       else if (((WithCrypto & APPLICATION_PGP) != 0) && c_pgp_strict_enc)
       {
-        crypt_convert_to_7bit(a->parts);
+        crypt_convert_to_7bit(b->parts);
       }
     }
-    else if ((a->type == TYPE_MESSAGE) && !mutt_istr_equal(a->subtype, "delivery-status"))
+    else if ((b->type == TYPE_MESSAGE) && !mutt_istr_equal(b->subtype, "delivery-status"))
     {
-      if (a->encoding != ENC_7BIT)
-        mutt_message_to_7bit(a, NULL, NeoMutt->sub);
+      if (b->encoding != ENC_7BIT)
+        mutt_message_to_7bit(b, NULL, NeoMutt->sub);
     }
-    else if (a->encoding == ENC_8BIT)
+    else if (b->encoding == ENC_8BIT)
     {
-      a->encoding = ENC_QUOTED_PRINTABLE;
+      b->encoding = ENC_QUOTED_PRINTABLE;
     }
-    else if (a->encoding == ENC_BINARY)
+    else if (b->encoding == ENC_BINARY)
     {
-      a->encoding = ENC_BASE64;
+      b->encoding = ENC_BASE64;
     }
-    else if (a->content && (a->encoding != ENC_BASE64) &&
-             (a->content->from || (a->content->space && c_pgp_strict_enc)))
+    else if (b->content && (b->encoding != ENC_BASE64) &&
+             (b->content->from || (b->content->space && c_pgp_strict_enc)))
     {
-      a->encoding = ENC_QUOTED_PRINTABLE;
+      b->encoding = ENC_QUOTED_PRINTABLE;
     }
-    a = a->next;
+    b = b->next;
   }
 }
 
@@ -1056,27 +1056,27 @@ void crypt_opportunistic_encrypt(struct Email *e)
 
 /**
  * crypt_fetch_signatures - Create an array of an emails parts
- * @param[out] signatures Array of Body parts
- * @param[in]  a          Body part to examine
- * @param[out] n          Cumulative count of parts
+ * @param[out] b_sigs Array of Body parts
+ * @param[in]  b      Body part to examine
+ * @param[out] n      Cumulative count of parts
  */
-static void crypt_fetch_signatures(struct Body ***signatures, struct Body *a, int *n)
+static void crypt_fetch_signatures(struct Body ***b_sigs, struct Body *b, int *n)
 {
   if (!WithCrypto)
     return;
 
-  for (; a; a = a->next)
+  for (; b; b = b->next)
   {
-    if (a->type == TYPE_MULTIPART)
+    if (b->type == TYPE_MULTIPART)
     {
-      crypt_fetch_signatures(signatures, a->parts, n);
+      crypt_fetch_signatures(b_sigs, b->parts, n);
     }
     else
     {
       if ((*n % 5) == 0)
-        mutt_mem_realloc(signatures, (*n + 6) * sizeof(struct Body **));
+        mutt_mem_realloc(b_sigs, (*n + 6) * sizeof(struct Body **));
 
-      (*signatures)[(*n)++] = a;
+      (*b_sigs)[(*n)++] = b;
     }
   }
 }

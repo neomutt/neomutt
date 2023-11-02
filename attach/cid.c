@@ -93,18 +93,18 @@ void cid_map_list_clear(struct CidMapList *cid_map_list)
 
 /**
  * cid_save_attachment - Save attachment if it has a Content-ID
- * @param[in]  body         Body to check and save
+ * @param[in]  b            Body to check and save
  * @param[out] cid_map_list List of Content-ID to filename mappings
  *
  * If body has a Content-ID, it is saved to disk and a new Content-ID to filename
  * mapping is added to cid_map_list.
  */
-static void cid_save_attachment(struct Body *body, struct CidMapList *cid_map_list)
+static void cid_save_attachment(struct Body *b, struct CidMapList *cid_map_list)
 {
-  if (!body || !cid_map_list)
+  if (!b || !cid_map_list)
     return;
 
-  char *id = mutt_param_get(&body->parameter, "content-id");
+  char *id = mutt_param_get(&b->parameter, "content-id");
   if (!id)
     return;
 
@@ -115,15 +115,15 @@ static void cid_save_attachment(struct Body *body, struct CidMapList *cid_map_li
 
   mutt_debug(LL_DEBUG2, "attachment found with \"Content-ID: %s\"\n", id);
   /* get filename */
-  char *fname = mutt_str_dup(body->filename);
-  if (body->aptr)
-    fp = body->aptr->fp;
+  char *fname = mutt_str_dup(b->filename);
+  if (b->aptr)
+    fp = b->aptr->fp;
   mutt_file_sanitize_filename(fname, fp ? true : false);
   mailcap_expand_filename("%s", fname, tmpfile);
   FREE(&fname);
 
   /* save attachment */
-  if (mutt_save_attachment(fp, body, buf_string(tmpfile), 0, NULL) == -1)
+  if (mutt_save_attachment(fp, b, buf_string(tmpfile), 0, NULL) == -1)
     goto bail;
   has_tempfile = true;
   mutt_debug(LL_DEBUG2, "attachment with \"Content-ID: %s\" saved to file \"%s\"\n",

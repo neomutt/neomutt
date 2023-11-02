@@ -31,7 +31,7 @@ struct Body;
 struct Email;
 struct State;
 
-int  rfc3676_handler                      (struct Body *a, struct State *state);
+int  rfc3676_handler                      (struct Body *b_email, struct State *state);
 bool mutt_rfc3676_is_format_flowed        (struct Body *b);
 void mutt_rfc3676_space_stuff             (struct Email *e);
 void mutt_rfc3676_space_unstuff           (struct Email *e);

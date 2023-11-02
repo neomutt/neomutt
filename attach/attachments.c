@@ -150,17 +150,17 @@ static bool count_body_parts_check(struct ListHead *checklist, struct Body *b, b
 
 /**
  * count_body_parts - Count the MIME Body parts
- * @param body  Body of email
+ * @param b Body of email
  * @retval num Number of MIME Body parts
  */
-static int count_body_parts(struct Body *body)
+static int count_body_parts(struct Body *b)
 {
-  if (!body)
+  if (!b)
     return 0;
 
   int count = 0;
 
-  for (struct Body *bp = body; bp; bp = bp->next)
+  for (struct Body *bp = b; bp; bp = bp->next)
   {
     /* Initial disposition is to count and not to recurse this part. */
     bool shallcount = true; /* default */
@@ -193,7 +193,7 @@ static int count_body_parts(struct Body *body)
     }
 
     if ((bp->disposition == DISP_INLINE) && (bp->type != TYPE_MULTIPART) &&
-        (bp->type != TYPE_MESSAGE) && (bp == body))
+        (bp->type != TYPE_MESSAGE) && (bp == b))
     {
       shallcount = false; /* ignore fundamental inlines */
     }

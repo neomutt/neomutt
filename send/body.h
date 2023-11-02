@@ -28,6 +28,6 @@
 struct Body;
 struct ConfigSubset;
 
-int mutt_write_mime_body(struct Body *a, FILE *fp, struct ConfigSubset *sub);
+int mutt_write_mime_body(struct Body *b, FILE *fp, struct ConfigSubset *sub);
 
 #endif /* MUTT_SEND_BODY_H */

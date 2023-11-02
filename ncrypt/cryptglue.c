@@ -291,10 +291,10 @@ bool crypt_pgp_check_traditional(FILE *fp, struct Body *b, bool just_one)
 /**
  * crypt_pgp_traditional_encryptsign - Wrapper for CryptModuleSpecs::pgp_traditional_encryptsign()
  */
-struct Body *crypt_pgp_traditional_encryptsign(struct Body *a, SecurityFlags flags, char *keylist)
+struct Body *crypt_pgp_traditional_encryptsign(struct Body *b, SecurityFlags flags, char *keylist)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_traditional_encryptsign))
-    return CRYPT_MOD_CALL(PGP, pgp_traditional_encryptsign)(a, flags, keylist);
+    return CRYPT_MOD_CALL(PGP, pgp_traditional_encryptsign)(b, flags, keylist);
 
   return NULL;
 }
@@ -324,10 +324,10 @@ char *crypt_pgp_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 /**
  * crypt_pgp_sign_message - Wrapper for CryptModuleSpecs::sign_message()
  */
-struct Body *crypt_pgp_sign_message(struct Body *a, const struct AddressList *from)
+struct Body *crypt_pgp_sign_message(struct Body *b, const struct AddressList *from)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, sign_message))
-    return CRYPT_MOD_CALL(PGP, sign_message)(a, from);
+    return CRYPT_MOD_CALL(PGP, sign_message)(b, from);
 
   return NULL;
 }
@@ -335,7 +335,7 @@ struct Body *crypt_pgp_sign_message(struct Body *a, const struct AddressList *fr
 /**
  * crypt_pgp_encrypt_message - Wrapper for CryptModuleSpecs::pgp_encrypt_message()
  */
-struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *keylist,
+struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *b, char *keylist,
                                        int sign, const struct AddressList *from)
 {
 #ifdef USE_AUTOCRYPT
@@ -345,7 +345,7 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *ke
       return NULL;
 
     OptAutocryptGpgme = true;
-    struct Body *result = pgp_gpgme_encrypt_message(a, keylist, sign, from);
+    struct Body *result = pgp_gpgme_encrypt_message(b, keylist, sign, from);
     OptAutocryptGpgme = false;
 
     return result;
@@ -353,7 +353,7 @@ struct Body *crypt_pgp_encrypt_message(struct Email *e, struct Body *a, char *ke
 #endif
 
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_encrypt_message))
-    return CRYPT_MOD_CALL(PGP, pgp_encrypt_message)(a, keylist, sign, from);
+    return CRYPT_MOD_CALL(PGP, pgp_encrypt_message)(b, keylist, sign, from);
 
   return NULL;
 }
@@ -370,10 +370,10 @@ void crypt_pgp_invoke_import(const char *fname)
 /**
  * crypt_pgp_verify_one - Wrapper for CryptModuleSpecs::verify_one()
  */
-int crypt_pgp_verify_one(struct Body *sigbdy, struct State *state, const char *tempf)
+int crypt_pgp_verify_one(struct Body *b, struct State *state, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, verify_one))
-    return CRYPT_MOD_CALL(PGP, verify_one)(sigbdy, state, tempf);
+    return CRYPT_MOD_CALL(PGP, verify_one)(b, state, tempf);
 
   return -1;
 }
@@ -392,10 +392,10 @@ SecurityFlags crypt_pgp_send_menu(struct Email *e)
 /**
  * crypt_pgp_extract_key_from_attachment - Wrapper for CryptModuleSpecs::pgp_extract_key_from_attachment()
  */
-void crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *top)
+void crypt_pgp_extract_key_from_attachment(FILE *fp, struct Body *b)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, pgp_extract_key_from_attachment))
-    CRYPT_MOD_CALL(PGP, pgp_extract_key_from_attachment)(fp, top);
+    CRYPT_MOD_CALL(PGP, pgp_extract_key_from_attachment)(fp, b);
 }
 
 /**
@@ -483,10 +483,10 @@ char *crypt_smime_find_keys(struct AddressList *addrlist, bool oppenc_mode)
 /**
  * crypt_smime_sign_message - Wrapper for CryptModuleSpecs::sign_message()
  */
-struct Body *crypt_smime_sign_message(struct Body *a, const struct AddressList *from)
+struct Body *crypt_smime_sign_message(struct Body *b, const struct AddressList *from)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, sign_message))
-    return CRYPT_MOD_CALL(SMIME, sign_message)(a, from);
+    return CRYPT_MOD_CALL(SMIME, sign_message)(b, from);
 
   return NULL;
 }
@@ -494,10 +494,10 @@ struct Body *crypt_smime_sign_message(struct Body *a, const struct AddressList *
 /**
  * crypt_smime_build_smime_entity - Wrapper for CryptModuleSpecs::smime_build_smime_entity()
  */
-struct Body *crypt_smime_build_smime_entity(struct Body *a, char *certlist)
+struct Body *crypt_smime_build_smime_entity(struct Body *b, char *certlist)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, smime_build_smime_entity))
-    return CRYPT_MOD_CALL(SMIME, smime_build_smime_entity)(a, certlist);
+    return CRYPT_MOD_CALL(SMIME, smime_build_smime_entity)(b, certlist);
 
   return NULL;
 }
@@ -514,10 +514,10 @@ void crypt_smime_invoke_import(const char *infile, const char *mailbox)
 /**
  * crypt_smime_verify_one - Wrapper for CryptModuleSpecs::verify_one()
  */
-int crypt_smime_verify_one(struct Body *sigbdy, struct State *state, const char *tempf)
+int crypt_smime_verify_one(struct Body *b, struct State *state, const char *tempf)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, verify_one))
-    return CRYPT_MOD_CALL(SMIME, verify_one)(sigbdy, state, tempf);
+    return CRYPT_MOD_CALL(SMIME, verify_one)(b, state, tempf);
 
   return -1;
 }
