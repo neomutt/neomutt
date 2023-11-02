@@ -103,6 +103,8 @@ set valid_options {
   zlib=0                    => "Enable zlib support"
   with-zlib:path            => "Location of zlib"
   zstd=0                    => "Enable Zstandard header cache compression support"
+# iconv
+  with-iconv:path           => "Location of IConv"
 # System
   with-sysroot:path         => "Target system root"
   with-tmpdir:=/tmp         => "location of the tmp directory"
@@ -676,6 +678,9 @@ cc-with [list -libs -L$ncurses_prefix/$::libdir_tail] {
   foreach f {bkgrndset setcchar use_extended_names} {
     cc-check-function-in-lib $f $ncurses_lib
   }
+
+  define-append CFLAGS -I$ncurses_prefix/include
+  define-append LDFLAGS -L$ncurses_prefix/$::libdir_tail
 }
 
 # Locate the directory containing ncurses.h
@@ -694,7 +699,7 @@ apply {{ncurses_prefix} {
 
 ###############################################################################
 # Iconv - try to mimic AM_ICONV by preferring an installed libiconv
-if {![check-iconv $prefix]} {
+if {![check-iconv [opt-val with-iconv $prefix]]} {
   user-error "Unable to find iconv()"
 }
 
