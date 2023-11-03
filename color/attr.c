@@ -166,11 +166,10 @@ struct AttrColor *attr_color_list_find(struct AttrColorList *acl, color_t fg,
  */
 struct AttrColor attr_color_copy(const struct AttrColor *ac)
 {
-  struct AttrColor copy = { 0 };
   if (ac)
-    copy = *ac;
-
-  return copy;
+    return *ac;
+  else
+    return (struct AttrColor){ 0 };
 }
 
 /**
