@@ -137,14 +137,13 @@ const char *color_log_attrs_list(int attrs)
 
   text[0] = '\0';
   int pos = 0;
+  // We can ignore the A_NORMAL case
   if (attrs & A_BLINK)
     pos += snprintf(text + pos, sizeof(text) - pos, "blink ");
   if (attrs & A_BOLD)
     pos += snprintf(text + pos, sizeof(text) - pos, "bold ");
   if (attrs & A_ITALIC)
     pos += snprintf(text + pos, sizeof(text) - pos, "italic ");
-  if (attrs == A_NORMAL)
-    pos += snprintf(text + pos, sizeof(text) - pos, "normal ");
   if (attrs & A_REVERSE)
     pos += snprintf(text + pos, sizeof(text) - pos, "reverse ");
   if (attrs & A_STANDOUT)
