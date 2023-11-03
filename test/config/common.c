@@ -45,7 +45,7 @@ int validator_fail(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %zd", __func__, cdef->name, value);
   return CSR_ERR_INVALID;
 }
 
@@ -55,7 +55,7 @@ int validator_warn(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %zd", __func__, cdef->name, value);
   return CSR_SUCCESS | CSR_SUC_WARNING;
 }
 
@@ -65,7 +65,7 @@ int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
   if (value > 1000000)
     buf_printf(result, "%s: %s, (ptr)", __func__, cdef->name);
   else
-    buf_printf(result, "%s: %s, %ld", __func__, cdef->name, value);
+    buf_printf(result, "%s: %s, %zd", __func__, cdef->name, value);
   return CSR_SUCCESS;
 }
 

@@ -557,7 +557,7 @@ static void cmd_parse_capability(struct ImapAccountData *adata, char *s)
       if (len != 0 && ((s[len] == '\0') || isspace(s[len])))
       {
         adata->capabilities |= (1 << i);
-        mutt_debug(LL_DEBUG3, " Found capability \"%s\": %lu\n", Capabilities[i], i);
+        mutt_debug(LL_DEBUG3, " Found capability \"%s\": %zu\n", Capabilities[i], i);
         break;
       }
     }
@@ -1151,7 +1151,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
     {
       mutt_mem_realloc(&adata->buf, adata->blen + IMAP_CMD_BUFSIZE);
       adata->blen = adata->blen + IMAP_CMD_BUFSIZE;
-      mutt_debug(LL_DEBUG3, "grew buffer to %lu bytes\n", adata->blen);
+      mutt_debug(LL_DEBUG3, "grew buffer to %zu bytes\n", adata->blen);
     }
 
     /* back up over '\0' */
@@ -1177,7 +1177,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
   {
     mutt_mem_realloc(&adata->buf, IMAP_CMD_BUFSIZE);
     adata->blen = IMAP_CMD_BUFSIZE;
-    mutt_debug(LL_DEBUG3, "shrank buffer to %lu bytes\n", adata->blen);
+    mutt_debug(LL_DEBUG3, "shrank buffer to %zu bytes\n", adata->blen);
   }
 
   adata->lastread = mutt_date_now();
@@ -1410,7 +1410,7 @@ void imap_cmd_finish(struct ImapAccountData *adata)
         if (!(mdata->reopen & IMAP_EXPUNGE_PENDING))
           mdata->check_status |= IMAP_NEWMAIL_PENDING;
 
-        mutt_debug(LL_DEBUG2, "Fetching new mails from %ld to %u\n",
+        mutt_debug(LL_DEBUG2, "Fetching new mails from %zd to %u\n",
                    max_msn + 1, mdata->new_mail_count);
         imap_read_headers(adata->mailbox, max_msn + 1, mdata->new_mail_count, false);
       }

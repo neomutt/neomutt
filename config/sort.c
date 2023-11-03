@@ -158,7 +158,7 @@ static int sort_native_set(const struct ConfigSet *cs, void *var,
 
   if (!str)
   {
-    buf_printf(err, _("Invalid sort type: %ld"), value);
+    buf_printf(err, _("Invalid sort type: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

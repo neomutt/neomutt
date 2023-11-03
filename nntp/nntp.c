@@ -1683,7 +1683,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
       *now = timegm(&tm);
       if (*now >= 0)
       {
-        mutt_debug(LL_DEBUG1, "server time is %lu\n", *now);
+        mutt_debug(LL_DEBUG1, "server time is %llu\n", (unsigned long long) *now);
         return 0;
       }
     }

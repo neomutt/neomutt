@@ -488,13 +488,13 @@ static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_
     if (*smtp_rc != SMTP_READY)
       break;
 
-    const char *smtp_response = buf_string(input_buf) + 3;
+    const char *smtp_response = input_buf->data + 3;
     if (*smtp_response)
     {
       smtp_response++;
       buf_addstr(response_buf, smtp_response);
     }
-  } while (buf_string(input_buf)[3] == '-');
+  } while (input_buf->data[3] == '-');
 
   return 0;
 }

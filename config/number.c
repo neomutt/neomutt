@@ -118,7 +118,7 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
 {
   if ((value < SHRT_MIN) || (value > SHRT_MAX))
   {
-    buf_printf(err, _("Invalid number: %ld"), value);
+    buf_printf(err, _("Invalid number: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

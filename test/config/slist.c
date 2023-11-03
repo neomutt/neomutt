@@ -120,7 +120,7 @@ static void slist_dump(const struct Slist *list, struct Buffer *buf)
   if (!list || !buf)
     return;
 
-  buf_printf(buf, "[%ld] ", list->count);
+  buf_printf(buf, "[%zu] ", list->count);
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)

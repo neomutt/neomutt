@@ -127,7 +127,7 @@ static int bool_native_set(const struct ConfigSet *cs, void *var,
 {
   if ((value < 0) || (value > 1))
   {
-    buf_printf(err, _("Invalid boolean value: %ld"), value);
+    buf_printf(err, _("Invalid boolean value: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

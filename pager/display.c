@@ -860,7 +860,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
     {
       if (k == ICONV_ILLEGAL_SEQ)
         memset(&mbstate, 0, sizeof(mbstate));
-      mutt_debug(LL_DEBUG1, "mbrtowc returned %lu; errno = %d\n", k, errno);
+      mutt_debug(LL_DEBUG1, "mbrtowc returned %zu; errno = %d\n", k, errno);
       if ((col + 4) > wrap_cols)
         break;
       col += 4;
@@ -970,7 +970,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
         break;
       col += 2;
       if (ansi)
-        mutt_window_printf(win, "^%c", ('@' + wc) & 0x7f);
+        mutt_window_printf(win, "^%c", (char) (('@' + wc) & 0x7f));
     }
     else if (wc < 0x100)
     {
@@ -978,7 +978,7 @@ static int format_line(struct MuttWindow *win, struct Line **lines, int line_num
         break;
       col += 4;
       if (ansi)
-        mutt_window_printf(win, "\\%03o", wc);
+        mutt_window_printf(win, "\\%03lo", (long) wc);
     }
     else
     {

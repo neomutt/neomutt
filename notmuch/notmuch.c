@@ -2090,13 +2090,13 @@ static enum MxStatus nm_mbox_check(struct Mailbox *m)
 
   if (mdata->mtime.tv_sec >= mtime)
   {
-    mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%lu mailbox=%lu)\n", mtime,
-               mdata->mtime.tv_sec);
+    mutt_debug(LL_DEBUG2, "nm: check unnecessary (db=%llu mailbox=%llu)\n",
+               (unsigned long long) mtime, (unsigned long long) mdata->mtime.tv_sec);
     return MX_STATUS_OK;
   }
 
-  mutt_debug(LL_DEBUG1, "nm: checking (db=%lu mailbox=%lu)\n", mtime,
-             mdata->mtime.tv_sec);
+  mutt_debug(LL_DEBUG1, "nm: checking (db=%llu mailbox=%llu)\n",
+             (unsigned long long) mtime, (unsigned long long) mdata->mtime.tv_sec);
 
   notmuch_query_t *q = get_query(m, false);
   if (!q)

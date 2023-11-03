@@ -638,7 +638,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       width_left -= addr_len;
     }
     mutt_debug(LL_DEBUG3, "%d addresses remaining\n", count);
-    mutt_debug(LL_DEBUG3, "%ld lines remaining\n", max_lines - lines_used);
+    mutt_debug(LL_DEBUG3, "%zd lines remaining\n", max_lines - lines_used);
   }
   mutt_list_free(&list);
   buf_pool_release(&buf);

@@ -129,7 +129,7 @@ static int enum_native_set(const struct ConfigSet *cs, void *var,
   const char *name = mutt_map_get_name(value, ed->lookup);
   if (!name)
   {
-    buf_printf(err, _("Invalid enum value: %ld"), value);
+    buf_printf(err, _("Invalid enum value: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

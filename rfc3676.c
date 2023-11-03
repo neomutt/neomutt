@@ -241,12 +241,12 @@ static void print_flowed_line(char *line, struct State *state, int ql,
   width = quote_width(state, ql);
   last = line[mutt_str_len(line) - 1];
 
-  mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %lu\n", line,
+  mutt_debug(LL_DEBUG5, "f=f: line [%s], width = %ld, spaces = %zu\n", line,
              (long) width, fst->spaces);
 
   for (words = 0; (p = mutt_str_sep(&line, " "));)
   {
-    mutt_debug(LL_DEBUG5, "f=f: word [%s], width: %lu, remaining = [%s]\n", p,
+    mutt_debug(LL_DEBUG5, "f=f: word [%s], width: %zu, remaining = [%s]\n", p,
                fst->width, line);
 
     /* remember number of spaces */
@@ -268,7 +268,7 @@ static void print_flowed_line(char *line, struct State *state, int ql,
     if (!(!fst->spaces && fst->delsp && (last != ' ')) && (w < width) &&
         (w + fst->width + fst->spaces > width))
     {
-      mutt_debug(LL_DEBUG3, "f=f: break line at %lu, %lu spaces left\n",
+      mutt_debug(LL_DEBUG3, "f=f: break line at %zu, %zu spaces left\n",
                  fst->width, fst->spaces);
       /* only honor trailing spaces for format=flowed replies */
       const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");

@@ -129,7 +129,7 @@ static int quad_native_set(const struct ConfigSet *cs, void *var,
 {
   if ((value < 0) || (value >= (mutt_array_size(QuadValues) - 1)))
   {
-    buf_printf(err, _("Invalid quad value: %ld"), value);
+    buf_printf(err, _("Invalid quad value: %ld"), (long) value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
