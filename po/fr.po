@@ -19,9 +19,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -784,7 +784,7 @@ msgstr "Aucun fichier ne correspond au masque"
 msgid "Can't view a directory"
 msgstr "Impossible de visualiser un répertoire"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Erreur en essayant de visualiser le fichier"
 
@@ -1918,7 +1918,7 @@ msgstr "Pas de moteur de déchiffrement disponible pour le message"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Plus de mémoire"
 
@@ -4443,7 +4443,7 @@ msgstr "Discussions liées"
 msgid "No thread linked"
 msgstr "Pas de discussion liée"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Le répertoire ne supporte pas le marquage, abandon"
 
@@ -5146,7 +5146,7 @@ msgstr "Erreur d'écriture ! boîte mail partielle sauvée dans %s"
 msgid "Could not reopen mailbox"
 msgstr "La boîte aux lettres n'a pas pu être réouverte"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Impossible d'écrire le message"
 
@@ -5317,7 +5317,7 @@ msgid "Logging at level %d to file '%s'"
 msgstr "Débuggage au niveau %d.\n"
 
 # , c-format
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Erreur de connexion au serveur : %s"
@@ -5541,20 +5541,20 @@ msgid "Mailbox checkpointed"
 msgstr "Boîte mail vérifiée"
 
 # , c-format
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Impossible d'ouvrir le fichier : %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Les modifications du dossier seront enregistrées à sa sortie"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Les modifications du dossier ne seront pas enregistrées"
 

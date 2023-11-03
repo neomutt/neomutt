@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -755,7 +755,7 @@ msgstr "ファイルマスクに一致するファイルがない"
 msgid "Can't view a directory"
 msgstr "ディレクトリは閲覧できない"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "ファイル閲覧エラー"
 
@@ -1845,7 +1845,7 @@ msgstr "利用できる復号化エンジンがない"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "メモリ不足"
 
@@ -4333,7 +4333,7 @@ msgstr "スレッドがつながった"
 msgid "No thread linked"
 msgstr "スレッドはつながらなかった"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP サーバがユーザ認証をサポートしていない"
@@ -5021,7 +5021,7 @@ msgstr "書き込み失敗! メールボックスの断片を %s に保存した
 msgid "Could not reopen mailbox"
 msgstr "メールボックスを再オープンできなかった"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "メッセージを書き込めない"
 
@@ -5185,7 +5185,7 @@ msgstr "レベル %d でデバッグ中。\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "レベル %d でデバッグ中。\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "サーバ %s への接続エラー。"
@@ -5393,20 +5393,20 @@ msgstr "メールボックスは書き込み不能にマークされた。%s"
 msgid "Mailbox checkpointed"
 msgstr "メールボックスのチェックポイントを採取した。"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "メッセージファイルをオープンできない: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "読み出し専用メールボックスでは変更の書き込みを切替できない"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "フォルダ脱出時にフォルダへの変更が書き込まれる。"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "フォルダへの変更は書き込まれない。"
 

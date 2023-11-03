@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2012-05-25 22:14+0200\n"
 "Last-Translator: Marco Paolone <marcopaolone@gmail.com>\n"
 "Language-Team: none\n"
@@ -769,7 +769,7 @@ msgstr "Non ci sono file corrispondenti alla maschera"
 msgid "Can't view a directory"
 msgstr "Impossibile vedere una directory"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "C'è stato un errore nella visualizzazione del file"
 
@@ -1869,7 +1869,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Memoria esaurita"
 
@@ -4409,7 +4409,7 @@ msgstr "Thread collegati"
 msgid "No thread linked"
 msgstr "Nessun thread collegato"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Il server SMTP non supporta l'autenticazione"
@@ -5108,7 +5108,7 @@ msgstr "Scrittura fallita!  Salvo la mailbox parziale in %s"
 msgid "Could not reopen mailbox"
 msgstr "Impossibile riaprire la mailbox"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Impossibile scrivere il messaggio"
 
@@ -5272,7 +5272,7 @@ msgstr "Debugging al livello %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Debugging al livello %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Errore nella connessione al server: %s"
@@ -5484,20 +5484,20 @@ msgstr "La mailbox è indicata non scrivibile. %s"
 msgid "Mailbox checkpointed"
 msgstr "Effettuato il checkpoint della mailbox"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Impossibile aprire il file del messaggio: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Impossibile (dis)abilitare la scrittura a una mailbox di sola lettura"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "I cambiamenti al folder saranno scritti all'uscita dal folder"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "I cambiamenti al folder non saranno scritti"
 

@@ -12,9 +12,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2023-10-29 18:31+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
@@ -756,7 +756,7 @@ msgstr "Es gibt keine zur Maske passenden Dateien"
 msgid "Can't view a directory"
 msgstr "Verzeichnis kann nicht angezeigt werden"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Fehler bei der Anzeige einer Datei"
 
@@ -1826,7 +1826,7 @@ msgstr "Kein Entschlüsselungsmechanismus für Nachricht vorhanden"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Kein Speicher verfügbar"
 
@@ -4242,7 +4242,7 @@ msgstr "Diskussionsfäden verbunden"
 msgid "No thread linked"
 msgstr "Kein Diskussionsfaden verbunden"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Ordner unterstützt keine Etikettierung, breche ab"
 
@@ -4941,7 +4941,7 @@ msgstr "Konnte nicht schreiben! Speichere Teil-Mailbox in %s"
 msgid "Could not reopen mailbox"
 msgstr "Konnte Mailbox nicht erneut öffnen"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Kann Nachricht nicht schreiben"
 
@@ -5105,7 +5105,7 @@ msgstr "Schreibe Fehlersuche der Stufe %d nach Datei '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Schreibe Protokoll der Stufe %d nach Datei '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Fehler: kann Pfad nicht in absoluten Pfad konvertieren"
 
@@ -5311,20 +5311,20 @@ msgstr "Mailbox ist als schreibgeschützt markiert. %s"
 msgid "Mailbox checkpointed"
 msgstr "Checkpoint in der Mailbox gesetzt"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Kann %s nicht öffnen: Es ist eine Pipe"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Kann Schreibschutz bei Mailbox im Nur-Lese-Modus nicht umschalten"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Änderungen an dieser Mailbox werden beim Verlassen geschrieben"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Änderungen an dieser Mailbox werden nicht geschrieben"
 

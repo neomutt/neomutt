@@ -13,9 +13,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -763,7 +763,7 @@ msgstr "Κανένα αρχείο δεν ταιριάζει με τη μάσκα
 msgid "Can't view a directory"
 msgstr "Αδυναμία ανάγνωσης ενός κατάλογου"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 
@@ -1844,7 +1844,7 @@ msgstr "Δεν υπάρχει διάθεσιμη μηχανή αποκρυπτο
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Η μνήμη εξαντλήθηκε"
 
@@ -4355,7 +4355,7 @@ msgstr "Τα νήματα συνδέθηκαν"
 msgid "No thread linked"
 msgstr "Δεν συνδέδηκε νήμα"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Ο φάκελος δεν υποστηρίζει τις ετικέτες. Ματαίωση"
 
@@ -5048,7 +5048,7 @@ msgstr "Η εγγραφή απέτυχε! Μέρος του γραμματοκι
 msgid "Could not reopen mailbox"
 msgstr "Αδυναμία επαναπρόσβασης του γραμματοκιβωτίου"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Αδυναμία εγγραφής του μηνύματος"
 
@@ -5212,7 +5212,7 @@ msgstr "Αποσφαλμάτωση στο επίπεδο %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Αποσφαλμάτωση στο επίπεδο %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Σφάλμα κατα τη σύνδεση στο διακομιστή: %s"
@@ -5425,20 +5425,20 @@ msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη
 msgid "Mailbox checkpointed"
 msgstr "Το γραμματοκιβώτιο σημειώθηκε"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Αδυναμία αλλαγής σε κατάσταση εγγραφής σε γραμματοκιβώτιο μόνο για ανάγνωση"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Οι αλλαγές στο φάκελο θα γραφούν κατά τη έξοδο από το φάκελο"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Οι αλλαγές στο φάκελο δεν θα γραφούν"
 

@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2017-04-17 17:06+0100\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: none\n"
@@ -750,7 +750,7 @@ msgstr "No files match the file mask"
 msgid "Can't view a directory"
 msgstr "Can't view a directory"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Error trying to view file"
 
@@ -1820,7 +1820,7 @@ msgstr "No decryption engine available for message"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Out of memory"
 
@@ -4236,7 +4236,7 @@ msgstr "Threads linked"
 msgid "No thread linked"
 msgstr "No thread linked"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Folder doesn't support tagging, aborting"
 
@@ -4931,7 +4931,7 @@ msgstr "Write failed!  Saved partial mailbox to %s"
 msgid "Could not reopen mailbox"
 msgstr "Could not reopen mailbox"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Can't write message"
 
@@ -5095,7 +5095,7 @@ msgstr "Debugging at level %d to file '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Logging at level %d to file '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Error: converting path to absolute"
 
@@ -5301,20 +5301,20 @@ msgstr "Mailbox is marked unwritable. %s"
 msgid "Mailbox checkpointed"
 msgstr "Mailbox checkpointed"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Can't open %s: it is a pipe"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Can't toggle write on a readonly mailbox"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Changes to folder will be written on folder exit"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Changes to folder will not be written"
 

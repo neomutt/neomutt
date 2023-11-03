@@ -13,9 +13,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -756,7 +756,7 @@ msgstr "没有文件与文件掩码相符"
 msgid "Can't view a directory"
 msgstr "无法显示目录"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "尝试显示文件出错"
 
@@ -1825,7 +1825,7 @@ msgstr "对于信件没有解密引擎"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "内存不足"
 
@@ -4232,7 +4232,7 @@ msgstr "线索已链接"
 msgid "No thread linked"
 msgstr "无线索来链接"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "文件夹不支持标签，正在终止"
 
@@ -4922,7 +4922,7 @@ msgstr "写入失败！已把部分的信箱保存至 %s"
 msgid "Could not reopen mailbox"
 msgstr "无法重开信箱"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "无法写入信件"
 
@@ -5086,7 +5086,7 @@ msgstr "正在使用级别 %d 进行调试，输出到文件 '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "正在使用级别 %d 记录日志到文件 '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "错误：转化路径到绝对路径"
 
@@ -5289,20 +5289,20 @@ msgstr "信箱已标记为不可写。%s"
 msgid "Mailbox checkpointed"
 msgstr "信箱已检查"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "无法打开 %s：这是管道设备文件"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "无法在只读信箱切换可写"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "在退出文件夹后将会把改变写入文件夹"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "将不会把改变写入文件夹"
 

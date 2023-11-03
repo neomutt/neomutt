@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
@@ -756,7 +756,7 @@ msgstr "Нема файлів, що відповідають масці файл
 msgid "Can't view a directory"
 msgstr "Не можливо переглянути каталог"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Помилка спроби переглянути файл"
 
@@ -1830,7 +1830,7 @@ msgstr "Немає механізму розшифрування для лист
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Не вистачає пам’яті"
 
@@ -4265,7 +4265,7 @@ msgstr "Гілки зʼєднано"
 msgid "No thread linked"
 msgstr "Розмови не об’єднано"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Тека не підтримує позначення, скасування"
 
@@ -4960,7 +4960,7 @@ msgstr "Збій запису! Часткову скриньку збереже�
 msgid "Could not reopen mailbox"
 msgstr "Не вийшло повторно відкрити скриньку"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Неможливо записати лист"
 
@@ -5124,7 +5124,7 @@ msgstr "Налагодження з рівнем %d для файлу '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Запис у журнал з рівнем %d для файлу '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Помилка: перетворення шляху на абсолютний"
 
@@ -5333,20 +5333,20 @@ msgstr "Скриньку помічено незмінюваною. %s"
 msgid "Mailbox checkpointed"
 msgstr "Скриньку перевірено"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Не можливо відкрити %s: це труба"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Скринька тільки для читання, ввімкнути запис неможливо"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Зміни у скриньці буде записано по виходу з неї"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Зміни у скриньці не буде записано"
 

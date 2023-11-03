@@ -11,9 +11,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -775,7 +775,7 @@ msgstr "Няма файлове, отговарящи на маската"
 msgid "Can't view a directory"
 msgstr "Директорията не може да бъде показана"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Грешка при показването на файла"
 
@@ -1885,7 +1885,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Недостатъчно памет"
 
@@ -4425,7 +4425,7 @@ msgstr ""
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
@@ -5125,7 +5125,7 @@ msgstr "Грешка при запис! Пощенската кутия е за�
 msgid "Could not reopen mailbox"
 msgstr "Грешка при повторното отваряне на пощенската кутия"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Невъзможен запис на писмо"
 
@@ -5289,7 +5289,7 @@ msgstr "Debugging на ниво %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Debugging на ниво %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Грешка при свързване със сървъра: %s"
@@ -5501,20 +5501,20 @@ msgstr "Пощенската кутия е само за четене. %s"
 msgid "Mailbox checkpointed"
 msgstr "Пощенската кутия е отбелязана"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Грешка при отваряне на файла: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Режимът на защитената от запис пощенска кутия не може да бъде променен"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Промените в тази пощенска кутия ще бъдат записани при напускането й"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Промените в тази пощенска кутия няма да бъдат записани"
 

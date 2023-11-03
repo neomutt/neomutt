@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2002-12-09 17:19+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@muhv.pri.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -771,7 +771,7 @@ msgstr "Maskile vastavaid faile ei ole"
 msgid "Can't view a directory"
 msgstr "Kataloogi ei saa vaadata"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Viga faili vaatamisel"
 
@@ -1881,7 +1881,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Mälu on otsas"
 
@@ -4430,7 +4430,7 @@ msgstr ""
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
@@ -5130,7 +5130,7 @@ msgstr "Kirjutamine ebaõnnestus! Osaline postkast salvestatud faili %s"
 msgid "Could not reopen mailbox"
 msgstr "Postkasti ei õnnestu uuesti avada"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Teadet ei õnnestu kirjutada"
 
@@ -5294,7 +5294,7 @@ msgstr "Silumise tase %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Silumise tase %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Viga serveriga ühenduse loomisel: %s"
@@ -5507,20 +5507,20 @@ msgstr "Postkast on märgitud mittekirjutatavaks. %s"
 msgid "Mailbox checkpointed"
 msgstr "Postkast on kontrollitud"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Teate faili ei saa avada: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Ainult lugemiseks postkastil ei saa kirjutamist lülitada"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Muudatused kaustas salvestatakse kaustast väljumisel"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Muudatusi kaustas ei kirjutata"
 

@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -770,7 +770,7 @@ msgstr "파일 매스크와 일치하는 파일 없음."
 msgid "Can't view a directory"
 msgstr "디렉토리를 볼 수 없음"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "파일 보기 시도 중 오류"
 
@@ -1877,7 +1877,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "메모리 부족"
 
@@ -4398,7 +4398,7 @@ msgstr ""
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
@@ -5098,7 +5098,7 @@ msgstr "쓰기 실패! 메일함의 일부가 %s에 저장되었음"
 msgid "Could not reopen mailbox"
 msgstr "메일함을 다시 열 수 없음"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "메일을 쓰지 못함"
 
@@ -5262,7 +5262,7 @@ msgstr "디버깅 레벨 %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "디버깅 레벨 %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "%s 서버와의 연결 오류"
@@ -5472,20 +5472,20 @@ msgstr "메일함이 쓰기 불가능으로 표시 되었음. %s"
 msgid "Mailbox checkpointed"
 msgstr "메일함이 표시됨"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "메세지 파일을 열 수 없음: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "읽기 전용 메일함에 쓸수 없음"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "변경 사항은 폴더를 닫을때 기록됨"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "변경 사항을 기록 하지 않음"
 

@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2017-02-22 20:12+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -766,7 +766,7 @@ msgstr "Geen bestanden waarop het masker past gevonden."
 msgid "Can't view a directory"
 msgstr "Map kan niet worden getoond."
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Er is een fout opgetreden tijdens het weergeven van bestand"
 
@@ -1861,7 +1861,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Onvoldoende geheugen"
 
@@ -4379,7 +4379,7 @@ msgstr "Threads gekoppeld"
 msgid "No thread linked"
 msgstr "Geen thread gekoppeld"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Map ondersteunt geen markeringen, stoppen"
@@ -5068,7 +5068,7 @@ msgstr "Opslaan is mislukt!  Deel van postvak is opgeslagen als %s"
 msgid "Could not reopen mailbox"
 msgstr "Kan postvak niet opnieuw openen"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Kan bericht niet wegschrijven"
 
@@ -5232,7 +5232,7 @@ msgstr "Debug-informatie op niveau %d voor bestand '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Logging op niveau %d voor bestand '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Fout: omzetten pad naar aboluut"
@@ -5442,20 +5442,20 @@ msgstr "Postvak is als schrijfbeveiligd gemarkeerd. %s"
 msgid "Mailbox checkpointed"
 msgstr "Postvak is gecontroleerd"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Kan bestand niet openen: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Kan niet schrijven in een schrijfbeveiligd postvak"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Wijzigingen zullen worden weggeschreven bij het verlaten van het postvak"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Wijzigingen worden niet weggeschreven"
 

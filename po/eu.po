@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -767,7 +767,7 @@ msgstr "Ez da fitxategi maskara araberako fitxategirik aurkitu"
 msgid "Can't view a directory"
 msgstr "Ezin da karpeta ikusi"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Errorea fitxategia ikusten saiatzerakoan"
 
@@ -1869,7 +1869,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Memoriaz kanpo"
 
@@ -4411,7 +4411,7 @@ msgstr "Hariak loturik"
 msgid "No thread linked"
 msgstr "Hariak ez dira lotu"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP zerbitzariak ez du autentifikazioa onartzen"
@@ -5111,7 +5111,7 @@ msgstr "Idazteak huts egin du!  postakutxa zatia %s-n gorderik"
 msgid "Could not reopen mailbox"
 msgstr "Ezin da postakutxa berrireki"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Ezin da mezua idatzi"
 
@@ -5275,7 +5275,7 @@ msgstr "%d. mailan arazten.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "%d. mailan arazten.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Errorea zerbitzariarekin konektatzerakoan: %s"
@@ -5488,20 +5488,20 @@ msgstr "Postakutxa idaztezin bezala markatuta. %s"
 msgid "Mailbox checkpointed"
 msgstr "Postakutxa markaturik"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Ezin da mezu fitxategia ireki: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Ezin da idazgarritasuna aldatu idaztezina den postakutxa batetan"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Posta-kutxaren aldaketa bertatik irtetean gordeak izango dira"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Karpetako aldaketak ezin dira gorde"
 

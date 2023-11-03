@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -772,7 +772,7 @@ msgstr "沒有檔案與檔案遮罩相符"
 msgid "Can't view a directory"
 msgstr "無法顯示目錄"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "無法試著顯示檔案"
 
@@ -1876,7 +1876,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "記憶體不足"
 
@@ -4410,7 +4410,7 @@ msgstr ""
 msgid "No thread linked"
 msgstr ""
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
@@ -5109,7 +5109,7 @@ msgstr "寫入失敗！已把部分的信箱儲存至 %s"
 msgid "Could not reopen mailbox"
 msgstr "無法重開信箱"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "無法寫信件"
 
@@ -5273,7 +5273,7 @@ msgstr "除錯模式在第 %d 層。\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "除錯模式在第 %d 層。\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "連線到 %s 時失敗"
@@ -5486,20 +5486,20 @@ msgstr "信箱被標記成為無法寫入的. %s"
 msgid "Mailbox checkpointed"
 msgstr ""
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "無法開啟信件檔案：%s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "無法寫入到一個唯讀的信箱"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "在離開之後將會把改變寫入資料夾"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "將不會把改變寫入資料夾"
 

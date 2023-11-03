@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2018-03-19 01:14-0300\n"
 "Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
 "Language-Team: \n"
@@ -752,7 +752,7 @@ msgstr "Nenhum arquivo casa com a máscara"
 msgid "Can't view a directory"
 msgstr "Não é possível exibir um diretório"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Erro ao tentar exibir arquivo"
 
@@ -1823,7 +1823,7 @@ msgstr "Não há mecanismo disponível para desencriptar a mensagem"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Acabou a memória"
 
@@ -4239,7 +4239,7 @@ msgstr "Threads vinculadas"
 msgid "No thread linked"
 msgstr "Nenhuma thread vinculada"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Pasta não tem suporte a tags, cancelando"
 
@@ -4930,7 +4930,7 @@ msgstr "Erro de gravação! Caixa parcial salva em %s"
 msgid "Could not reopen mailbox"
 msgstr "Não foi possível reabrir a caixa de mensagens"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Não foi possível gravar a mensagem"
 
@@ -5096,7 +5096,7 @@ msgstr "Depurando no nível %d para o arquivo '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Realizando log no nível %d para o arquivo '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Erro: conversão de caminho relativo para completo"
 
@@ -5302,20 +5302,20 @@ msgstr "A caixa está marcada como não gravável. %s"
 msgid "Mailbox checkpointed"
 msgstr "Ponto de controle feito para caixa de mensagens"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Não é possível %s: é um pipe"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Não é possível ativar escrita em uma caixa somente para leitura"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Mudanças na pasta serão gravadas ao sair dela"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Mudanças na pasta não serão gravadas"
 

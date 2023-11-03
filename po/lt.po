@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -754,7 +754,7 @@ msgstr "Nė viena byla netinka bylų kaukei"
 msgid "Can't view a directory"
 msgstr "Negaliu žiūrėti katalogo"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Klaida bandant žiūrėti bylą"
 
@@ -1827,7 +1827,7 @@ msgstr "Nėra iššifravimo mechanizmo laiškui"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Baigėsi atmintis"
 
@@ -4257,7 +4257,7 @@ msgstr "Gijos sujungtos"
 msgid "No thread linked"
 msgstr "Gijos nesujungtos"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Katalogas nepalaiko etikečių, nutraukiu"
 
@@ -4955,7 +4955,7 @@ msgstr "Įrašyti nepavyko!  Dėžutė dalinai išsaugota į %s"
 msgid "Could not reopen mailbox"
 msgstr "Negaliu vėl atidaryti dėžutės"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Negaliu įrašyti laiško"
 
@@ -5119,7 +5119,7 @@ msgstr "Derinimo lygis %d į bylą '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Žurnalo lygis %d į bylą '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Klaida: absoliutinant kelią"
 
@@ -5328,20 +5328,20 @@ msgstr "Dėžutė yra padaryta neįrašoma. %s"
 msgid "Mailbox checkpointed"
 msgstr "Dėžutė sutikrinta"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Negaliu atidaryti %s: tai vamzdis"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Negaliu perjungti tik skaitomos dėžutės rašomumo"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Aplanko pakeitimai bus įrašyti išeinant iš aplanko"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Aplanko pakeitimai nebus įrašyti"
 

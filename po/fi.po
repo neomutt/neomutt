@@ -15,9 +15,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -761,7 +761,7 @@ msgstr "Ei tiedostoja jotka täsmäävät maskiin"
 msgid "Can't view a directory"
 msgstr "Ei voida näyttää tiedostoa"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Virhe tiedostoa näytettäessä"
 
@@ -1844,7 +1844,7 @@ msgstr "Viestille ei ole purkualgoritmia"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "muisti loppui"
 
@@ -4277,7 +4277,7 @@ msgstr "Ketjut linkitetty"
 msgid "No thread linked"
 msgstr "Ei ketjuja linkitetty"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Kansiosta puuttuu merkintätuki, joten peruutetaan"
 
@@ -4974,7 +4974,7 @@ msgstr "Kirjoitus epäonnistui.  Osittainen tallennus postilaatikossa %s"
 msgid "Could not reopen mailbox"
 msgstr "Ei voitu uudelleenavata postilaatikkoa"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Ei voitu kirjoittaa viestiä"
 
@@ -5138,7 +5138,7 @@ msgstr "Virheenjäljitystasolla %d tiedostoon %s"
 msgid "Logging at level %d to file '%s'"
 msgstr "Lokitasolla %d tiedostoon %s"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Virhe: polun konversiossa absoluuttiseksi"
 
@@ -5344,20 +5344,20 @@ msgstr "Postilaatikko on merkitty kirjoitussuojatuksi. %s"
 msgid "Mailbox checkpointed"
 msgstr "Postilaatikon tila on tallennettu"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Ei voitu avata viestitiedostoa: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Ei voida vaihtaa kirjoitustilaan kirjoitussuojatussa postilaatikossa"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Muutokset kansioon tallennetaan poistuttaessa"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Muutoksia kansioon ei tallenneta"
 

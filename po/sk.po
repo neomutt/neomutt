@@ -13,9 +13,9 @@
 # message-id - Message-Id vs ID správy
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -758,7 +758,7 @@ msgstr "Žiadne súbory nezodpovedajú súborovej maske"
 msgid "Can't view a directory"
 msgstr "Nemožno prezerať adresár"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Chyba pri prezeraní súboru"
 
@@ -1831,7 +1831,7 @@ msgstr "Pre správu nebol nájdený dešifrovací program"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Nedostatok pamäte"
 
@@ -4261,7 +4261,7 @@ msgstr "Vlákna prepojené"
 msgid "No thread linked"
 msgstr "Žiadna pripojené vlákno"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Zložka nepodporuje štítkovanie, ukončujem"
 
@@ -4956,7 +4956,7 @@ msgstr "Zápis zlyhal!  Schránka bola čiastočne uložená do %s"
 msgid "Could not reopen mailbox"
 msgstr "Nemožno znovu otvoriť schránku"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Správu nemožno uložiť"
 
@@ -5120,7 +5120,7 @@ msgstr "Ladenie na úrovni %d do súboru „%s“"
 msgid "Logging at level %d to file '%s'"
 msgstr "Zaznamenávání na úrovni %d do súboru „%s“"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Chyba: konverze cesty na absolútnú"
 
@@ -5329,20 +5329,20 @@ msgstr "Schránka je označená len na čítanie. %s"
 msgid "Mailbox checkpointed"
 msgstr "Do schránky bola vložená kontrolná značka"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Nemožno otvoriť %s: súbor je typu pipe"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Nemožno prepnúť zápis na schránke v režime iba na čítanie"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Zmeny v zložke budú zapísané, keď ju opustíte"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Zmeny v zložke nebudú zapísané"
 

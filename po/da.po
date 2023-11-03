@@ -8,9 +8,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2019-05-10 21:15+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -763,7 +763,7 @@ msgstr "Ingen filer passer til filmasken"
 msgid "Can't view a directory"
 msgstr "Filkataloger kan ikke vises"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Fejl ved visning af fil"
 
@@ -1856,7 +1856,7 @@ msgstr "Intet tilgængeligt dekrypteringsprogram til brev"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Ikke mere hukommelse"
 
@@ -4365,7 +4365,7 @@ msgstr "Tråde sammenkædet"
 msgid "No thread linked"
 msgstr "Ingen tråd sammenkædet"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP-server understøtter ikke godkendelse"
@@ -5053,7 +5053,7 @@ msgstr "Kunne ikke skrive! Gemte en del af brevbakken i %s"
 msgid "Could not reopen mailbox"
 msgstr "Kunne ikke genåbne brevbakke"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Kan ikke skrive brev"
 
@@ -5217,7 +5217,7 @@ msgstr "Fejlfinder på niveau %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Fejlfinder på niveau %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Fejl under forbindelse til server: %s"
@@ -5427,20 +5427,20 @@ msgstr "Brevbakken er skrivebeskyttet. %s"
 msgid "Mailbox checkpointed"
 msgstr "Brevbakke opdateret"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Kan ikke åbne brev: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Kan ikke skrive til en skrivebeskyttet brevbakke"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Ændringer i brevbakken vil blive skrevet til disk, når den forlades"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Ændringer i brevbakken vil ikke blive skrevet til disk"
 

@@ -53,9 +53,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -820,7 +820,7 @@ msgstr "No hi ha cap fitxer que concorde amb la màscara de fitxers."
 msgid "Can't view a directory"
 msgstr "No es pot veure un directori."
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Error en intentar veure el fitxer."
 
@@ -1938,7 +1938,7 @@ msgstr "No hi ha cap mecanisme disponible per a desxifrar el missatge"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "No resta memòria."
 
@@ -4496,7 +4496,7 @@ msgstr "S’han enllaçat els fils."
 msgid "No thread linked"
 msgstr "No s’ha enllaçat cap fil."
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "El servidor SMTP no admet autenticació"
@@ -5201,7 +5201,7 @@ msgstr "L’escriptura fallà.  Es desa la bústia parcial a «%s»."
 msgid "Could not reopen mailbox"
 msgstr "No s’ha pogut reobrir la bústia."
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "No s’ha pogut escriure el missatge."
 
@@ -5368,7 +5368,7 @@ msgstr "S’activa la depuració a nivell %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "S’activa la depuració a nivell %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Error en connectar amb el servidor: %s"
@@ -5594,20 +5594,20 @@ msgstr "Bústia en estat de només lectura.  %s"
 msgid "Mailbox checkpointed"
 msgstr "S’ha establert un punt de control a la bústia"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "No s’ha pogut obrir el fitxer missatge: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "No es pot establir si una bústia de només lectura pot ser modificada."
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "S’escriuran els canvis a la carpeta en abandonar-la"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "No s’escriuran els canvis a la carpeta"
 

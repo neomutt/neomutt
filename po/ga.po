@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2006-10-16 14:22-0500\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <ga@li.org>\n"
@@ -773,7 +773,7 @@ msgstr "Níl aon chomhad comhoiriúnach leis an mhasc chomhaid"
 msgid "Can't view a directory"
 msgstr "Ní féidir comhadlann a scrúdú"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Earráid ag iarraidh comhad a scrúdú"
 
@@ -1885,7 +1885,7 @@ msgstr ""
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Cuimhne ídithe"
 
@@ -4474,7 +4474,7 @@ msgstr "Snáitheanna nasctha"
 msgid "No thread linked"
 msgstr "Níor nascadh snáithe"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr ""
 
@@ -5173,7 +5173,7 @@ msgstr "Theip ar scríobh!  Sábháladh bosca poist neamhiomlán i %s"
 msgid "Could not reopen mailbox"
 msgstr "Níorbh fhéidir an bosca poist a athoscailt"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Ní féidir teachtaireacht a scríobh "
 
@@ -5337,7 +5337,7 @@ msgstr "Leibhéal dífhabhtaithe = %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Leibhéal dífhabhtaithe = %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Earráid ag nascadh leis an bhfreastalaí: %s"
@@ -5558,20 +5558,20 @@ msgstr "Tá an bosca poist marcáilte \"neamh-inscríofa\". %s"
 msgid "Mailbox checkpointed"
 msgstr "Seicphointeáladh an bosca poist"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Níorbh fhéidir an comhad teachtaireachta a oscailt: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Ní féidir 'scríobh' a scoránú ar bhosca poist inléite amháin"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Scríobhfar na hathruithe agus an fillteán á dhúnadh"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Ní scríobhfar na hathruithe"
 

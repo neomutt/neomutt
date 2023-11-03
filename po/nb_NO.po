@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2021-05-06 05:30+0100\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Liberium <epost@anotheragency.no>\n"
@@ -751,7 +751,7 @@ msgstr "Ingen filer stemmer overens med filmasken"
 msgid "Can't view a directory"
 msgstr "Kan ikke vise en mappe"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Kunne ikke vise fil"
 
@@ -1822,7 +1822,7 @@ msgstr "Ingen dekrypteringsmotor tilgjengelig for melding"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Gikk tom for minne"
 
@@ -4238,7 +4238,7 @@ msgstr "Trådene ble koblet sammen"
 msgid "No thread linked"
 msgstr "Ingen tråd koblet sammen"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Mappen støtter ikke etikettmerking. Avbryter."
 
@@ -4933,7 +4933,7 @@ msgstr "Kunne ikke skrive! Lagret delvis e-postboks i %s"
 msgid "Could not reopen mailbox"
 msgstr "Kunne ikke åpne e-postboks på nytt"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Kan ikke skrive melding"
 
@@ -5097,7 +5097,7 @@ msgstr "Avlusing på nivå %d til filen «%s»"
 msgid "Logging at level %d to file '%s'"
 msgstr "Logger på nivå %d til filen «%s»"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Feil: kunne ikke konvertere sti til absolutt"
 
@@ -5303,20 +5303,20 @@ msgstr "E-postboksen er markert som skrivebeskyttet. %s"
 msgid "Mailbox checkpointed"
 msgstr "Satte kontrollpunkt i e-postboks"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Kan ikke åpne %s: det er et rør"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Kan ikke veksle skrivetilgang for en skrivebeskyttet e-postboks"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Endringer i mappe vil bli skrevet når du går ut av den"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Endringer til mappe vil ikke bli skrevet"
 

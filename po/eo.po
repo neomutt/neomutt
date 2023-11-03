@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2021-08-20 16:44+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -752,7 +752,7 @@ msgstr "Neniu dosiero kongruas kun la dosieromasko"
 msgid "Can't view a directory"
 msgstr "Ne eblas rigardi dosierujon"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Eraro dum vidigo de dosiero"
 
@@ -1843,7 +1843,7 @@ msgstr "Nenia malĉifroproceduro estas disponata por mesaĝo"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Mankas sufiĉa memoro"
 
@@ -4334,7 +4334,7 @@ msgstr "Fadenoj ligitaj"
 msgid "No thread linked"
 msgstr "Neniu fadeno ligita"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 #, fuzzy
 msgid "Folder doesn't support tagging, aborting"
 msgstr "SMTP-servilo ne akceptas rajtiĝon"
@@ -5022,7 +5022,7 @@ msgstr "Skribo malsukcesis!  Skribis partan poŝtfakon al %s"
 msgid "Could not reopen mailbox"
 msgstr "Ne eblis remalfermi poŝtfakon"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Ne eblas skribi mesaĝon"
 
@@ -5186,7 +5186,7 @@ msgstr "Sencimigo ĉe la nivelo %d.\n"
 msgid "Logging at level %d to file '%s'"
 msgstr "Sencimigo ĉe la nivelo %d.\n"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Eraro dum konektiĝo al servilo: %s"
@@ -5396,20 +5396,20 @@ msgstr "Poŝtfako estas markita kiel neskribebla. %s"
 msgid "Mailbox checkpointed"
 msgstr "Poŝtfako sinkronigita"
 
-#: mx.c:1380
+#: mx.c:1384
 #, fuzzy, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Ne eblas malfermi mesaĝodosieron: %s"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Ne eblas ŝanĝi skribostaton ĉe nurlega poŝtfako"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Ŝanĝoj al poŝtfako estos skribitaj ĉe eliro"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Ŝanĝoj al poŝtfako ne estos skribitaj"
 

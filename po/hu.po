@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2023-03-30 23:38-0300\n"
 "Last-Translator: Robert Horvath <rob@nyar.eu>\n"
 "Language-Team: LME Magyaritasok Lista <magyar@lists.linux.hu>\n"
@@ -753,7 +753,7 @@ msgstr "Nincs a fájlmaszknak megfelelő fájl"
 msgid "Can't view a directory"
 msgstr "A könyvtár nem jeleníthető meg"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Hiba a fájl megjelenítéskor"
 
@@ -1824,7 +1824,7 @@ msgstr "Nem elérhető dekódoló motor az üzenethez"
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Elfogyott a memória"
 
@@ -4240,7 +4240,7 @@ msgstr "Témák (thread-ek) összekötve"
 msgid "No thread linked"
 msgstr "Nincs kapcsolódó téma"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Könyvtár nem támogatja a megjelölést, megszakítom"
 
@@ -4933,7 +4933,7 @@ msgstr "Írás nem sikerült!  Részleges postafiókot elmentettem a(z) %s fájl
 msgid "Could not reopen mailbox"
 msgstr "Nem lehetett újra megnyitni a postafiókot"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Nem lehet írni a levelet"
 
@@ -5097,7 +5097,7 @@ msgstr "Hibakeresési szint %d célfile '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "Loggolási szint %d célfile '%s'"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Hiba: az elérési út teljesre cserélésekor"
 
@@ -5303,20 +5303,20 @@ msgstr "A postafiókot megjelöltem nem írhatónak. %s"
 msgid "Mailbox checkpointed"
 msgstr "A postafiók ellenőrizve"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Nem tudom megnyitni %s-t: ez egy pipe"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "A csak olvasható postafiókba nem lehet írni"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "A postafiók módosításai a postafiókból történő kilépéskor lesznek elmentve"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "A postafiók módosításai nem lesznek elmentve"
 

@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2023-10-23\n"
+"Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-10-29 16:08+0000\n"
+"POT-Creation-Date: 2023-11-03 10:03+0000\n"
 "PO-Revision-Date: 2023-09-22 07:08+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
@@ -753,7 +753,7 @@ msgstr "Ниједна датотека не одговара маски"
 msgid "Can't view a directory"
 msgstr "Не може се прегледати директоријум"
 
-#: browser/functions.c:341
+#: browser/functions.c:340
 msgid "Error trying to view file"
 msgstr "Грешка при покушају да се прегледа датотека"
 
@@ -1826,7 +1826,7 @@ msgstr "Ниједан погон за дешифровање није дост�
 
 #: core/neomutt.c:63 imap/msn.c:48 mutt/buffer.c:116 mutt/buffer.c:365
 #: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:1006
-#: mx.c:1254
+#: mx.c:1258
 msgid "Out of memory"
 msgstr "Нема меморије"
 
@@ -4257,7 +4257,7 @@ msgstr "Нити су повезане"
 msgid "No thread linked"
 msgstr "Ниједна нит није повезана"
 
-#: index/functions.c:1385 mx.c:1315 mx.c:1335
+#: index/functions.c:1385 mx.c:1319 mx.c:1339
 msgid "Folder doesn't support tagging, aborting"
 msgstr "Фасцикла не подржава означавање, прекида се"
 
@@ -4960,7 +4960,7 @@ msgstr "Чување није успело! Делимично сандуче ј
 msgid "Could not reopen mailbox"
 msgstr "Не може се поново отворити сандуче"
 
-#: mbox/mbox.c:1516 mbox/mbox.c:1668
+#: mbox/mbox.c:1516 mbox/mbox.c:1654
 msgid "Can't write message"
 msgstr "Не може се исписати порука"
 
@@ -5124,7 +5124,7 @@ msgstr "Дебаговање на нивоу %d у датотеку „%s“"
 msgid "Logging at level %d to file '%s'"
 msgstr "Записивање у дневник на нивоу %d у датотеку „%s“"
 
-#: mutt/path.c:428
+#: mutt/path.c:355
 msgid "Error: converting path to absolute"
 msgstr "Грешка: конвертовање путање у апсолутну"
 
@@ -5333,20 +5333,20 @@ msgstr "Сандуче је означено као неуписиво. %s"
 msgid "Mailbox checkpointed"
 msgstr "Стање сандучета је забележено"
 
-#: mx.c:1380
+#: mx.c:1384
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "Не може се отворити %s: то је цев"
 
-#: mx.c:1886
+#: mx.c:1862
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Не може се сменити писање у сандучету за читање"
 
-#: mx.c:1893
+#: mx.c:1869
 msgid "Changes to folder will be written on folder exit"
 msgstr "Промене фасцикле ће бити уписане при изласку из ње"
 
-#: mx.c:1898
+#: mx.c:1874
 msgid "Changes to folder will not be written"
 msgstr "Промене фасцикле неће бити уписане"
 
