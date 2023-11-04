@@ -154,6 +154,9 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
     if (curval && mutt_str_equal(value, curval->pattern))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (value)
     {
       r = regex_new(value, cdef->type, err);
@@ -228,6 +231,9 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
   if (regex_compare(*(struct Regex **) var, (struct Regex *) value))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -290,6 +296,9 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
 
   if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (initial)
   {

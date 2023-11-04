@@ -104,6 +104,9 @@ static int path_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     if (mutt_str_equal(value, (*(char **) var)))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (cdef->validator)
     {
       rc = cdef->validator(cs, cdef, (intptr_t) value, err);
@@ -175,6 +178,9 @@ static int path_native_set(const struct ConfigSet *cs, void *var,
 
   int rc;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -221,6 +227,12 @@ static int path_reset(const struct ConfigSet *cs, void *var,
   {
     FREE(&str);
     return rc | CSR_SUC_NO_CHANGE;
+  }
+
+  if (startup_only(cdef, err))
+  {
+    FREE(&str);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   if (cdef->validator)

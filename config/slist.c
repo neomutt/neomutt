@@ -82,6 +82,12 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
     }
 
+    if (startup_only(cdef, err))
+    {
+      slist_free(&list);
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+    }
+
     if (cdef->validator)
     {
       rc = cdef->validator(cs, cdef, (intptr_t) list, err);
@@ -155,6 +161,9 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
   if (slist_compare((struct Slist *) value, *(struct Slist **) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -208,6 +217,9 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
   if (!value)
     return rc | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   struct Slist *orig = *(struct Slist **) var;
   if (slist_is_member(orig, value))
     return rc | CSR_SUC_NO_CHANGE;
@@ -253,6 +265,9 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
   if (!value)
     return rc | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   struct Slist *orig = *(struct Slist **) var;
   if (!slist_is_member(orig, value))
     return rc | CSR_SUC_NO_CHANGE;
@@ -295,6 +310,12 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
   {
     slist_free(&list);
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+  }
+
+  if (startup_only(cdef, err))
+  {
+    slist_free(&list);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   int rc = CSR_SUCCESS;

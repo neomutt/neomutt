@@ -67,6 +67,9 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     if (num == (*(long *) var))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (cdef->validator)
     {
       int rc = cdef->validator(cs, cdef, (intptr_t) num, err);
@@ -117,6 +120,9 @@ static int long_native_set(const struct ConfigSet *cs, void *var,
   if (value == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, value, err);
@@ -162,6 +168,9 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
   if (result == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, (intptr_t) result, err);
@@ -198,6 +207,9 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
   if (result == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, (intptr_t) result, err);
@@ -218,6 +230,9 @@ static int long_reset(const struct ConfigSet *cs, void *var,
 {
   if (cdef->initial == (*(long *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {

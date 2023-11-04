@@ -135,6 +135,9 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
     if (curval && mutt_str_equal(value, curval->orig_str))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     table = mbtable_parse(value);
 
     if (cdef->validator)
@@ -218,6 +221,9 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
   if (mbtable_compare(*(struct MbTable **) var, (struct MbTable *) value))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -267,6 +273,9 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
 
   if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (initial)
     table = mbtable_parse(initial);

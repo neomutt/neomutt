@@ -74,6 +74,9 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
     if (mutt_str_equal(value, (*(char **) var)))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (cdef->validator)
     {
       rc = cdef->validator(cs, cdef, (intptr_t) value, err);
@@ -146,6 +149,9 @@ static int string_native_set(const struct ConfigSet *cs, void *var,
 
   int rc;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -186,6 +192,9 @@ static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
   /* Skip if the value is missing or empty string*/
   if (!value || (value[0] == '\0'))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (value && startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   int rc = CSR_SUCCESS;
 
@@ -230,6 +239,12 @@ static int string_reset(const struct ConfigSet *cs, void *var,
   {
     FREE(&str);
     return rc | CSR_SUC_NO_CHANGE;
+  }
+
+  if (startup_only(cdef, err))
+  {
+    FREE(&str);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
   if (cdef->validator)

@@ -64,6 +64,9 @@ static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     if (num == (*(unsigned char *) var))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (cdef->validator)
     {
       int rc = cdef->validator(cs, cdef, (intptr_t) num, err);
@@ -136,6 +139,9 @@ static int enum_native_set(const struct ConfigSet *cs, void *var,
   if (value == (*(unsigned char *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     int rc = cdef->validator(cs, cdef, value, err);
@@ -171,6 +177,9 @@ static int enum_reset(const struct ConfigSet *cs, void *var,
 
   if (cdef->initial == (*(unsigned char *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (cdef->validator)
   {
