@@ -75,6 +75,16 @@ struct Progress;
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
 
 /**
+ * maildir_hcache_key - Get the header cache key for an Email
+ * @param e Email
+ * @retval str Header cache key string
+ */
+static inline const char *maildir_hcache_key(struct Email *e)
+{
+  return e->path + 4;
+}
+
+/**
  * maildir_email_new - Create a Maildir Email
  * @retval ptr Newly created Email
  *
@@ -637,7 +647,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
     struct stat st_lastchanged = { 0 };
     int rc = 0;
 
-    const char *key = md->email->path + 3;
+    const char *key = maildir_hcache_key(md->email);
     size_t keylen = maildir_hcache_keylen(key);
     struct HCacheEntry hce = { 0 };
 
@@ -668,7 +678,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
       {
         md->header_parsed = true;
 #ifdef USE_HCACHE
-        key = md->email->path + 3;
+        key = maildir_hcache_key(md->email);
         keylen = maildir_hcache_keylen(key);
         hcache_store(hc, key, keylen, md->email, 0);
 #endif
@@ -987,7 +997,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
 #ifdef USE_HCACHE
     if (hc)
     {
-      const char *key = e->path + 3;
+      const char *key = maildir_hcache_key(e);
       size_t keylen = maildir_hcache_keylen(key);
       hcache_delete_record(hc, key, keylen);
     }
@@ -1004,7 +1014,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
 #ifdef USE_HCACHE
   if (hc && e->changed)
   {
-    const char *key = e->path + 3;
+    const char *key = maildir_hcache_key(e);
     size_t keylen = maildir_hcache_keylen(key);
     hcache_store(hc, key, keylen, e, 0);
   }
@@ -1610,7 +1620,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
-  char *key = e->path + 3;
+  const char *key = maildir_hcache_key(e);
   int keylen = maildir_hcache_keylen(key);
   rc = hcache_store(hc, key, keylen, e, 0);
   hcache_close(&hc);

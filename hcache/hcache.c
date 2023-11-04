@@ -292,12 +292,13 @@ static struct RealKey *realkey(struct HeaderCache *hc, const char *key, size_t k
 #ifdef USE_HCACHE_COMPRESSION
   if (hc->compr_ops)
   {
-    rk.len = snprintf(rk.key, sizeof(rk.key), "%s-%s", key, hc->compr_ops->name);
+    rk.len = snprintf(rk.key, sizeof(rk.key), "%.*s-%s", (int) keylen, key,
+                      hc->compr_ops->name);
   }
   else
 #endif
   {
-    memcpy(rk.key, key, keylen + 1); // Including NUL byte
+    mutt_strn_copy(rk.key, key, keylen, sizeof(rk.key));
     rk.len = keylen;
   }
   return &rk;
