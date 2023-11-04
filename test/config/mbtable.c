@@ -34,24 +34,25 @@
 
 // clang-format off
 static struct ConfigDef Vars[] = {
-  { "Apple",      DT_MBTABLE, IP "apple",      0, NULL,              }, /* test_initial_values */
-  { "Banana",     DT_MBTABLE, IP "banana",     0, NULL,              },
-  { "Cherry",     DT_MBTABLE, IP "cherry",     0, NULL,              },
-  { "Damson",     DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_set */
-  { "Elderberry", DT_MBTABLE, IP "elderberry", 0, NULL,              },
-  { "Fig",        DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_get */
-  { "Guava",      DT_MBTABLE, IP "guava",      0, NULL,              },
-  { "Hawthorn",   DT_MBTABLE, 0,               0, NULL,              },
-  { "Ilama",      DT_MBTABLE, 0,               0, NULL,              }, /* test_native_set */
-  { "Jackfruit",  DT_MBTABLE, IP "jackfruit",  0, NULL,              },
-  { "Kumquat",    DT_MBTABLE, 0,               0, NULL,              }, /* test_native_get */
-  { "Lemon",      DT_MBTABLE, IP "lemon",      0, NULL,              }, /* test_reset */
-  { "Mango",      DT_MBTABLE, IP "mango",      0, validator_fail,    },
-  { "Nectarine",  DT_MBTABLE, IP "nectarine",  0, validator_succeed, }, /* test_validator */
-  { "Olive",      DT_MBTABLE, IP "olive",      0, validator_warn,    },
-  { "Papaya",     DT_MBTABLE, IP "papaya",     0, validator_fail,    },
-  { "Quince",     DT_MBTABLE, 0,               0, NULL,              }, /* test_inherit */
-  { NULL },
+{ "Apple",      DT_MBTABLE, IP "apple",      0, NULL,              }, /* test_initial_values */
+{ "Banana",     DT_MBTABLE, IP "banana",     0, NULL,              },
+{ "Cherry",     DT_MBTABLE, IP "cherry",     0, NULL,              },
+{ "Damson",     DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_set */
+{ "Elderberry", DT_MBTABLE, IP "elderberry", 0, NULL,              },
+{ "Fig",        DT_MBTABLE, 0,               0, NULL,              }, /* test_mbtable_get */
+{ "Guava",      DT_MBTABLE, IP "guava",      0, NULL,              },
+{ "Hawthorn",   DT_MBTABLE, 0,               0, NULL,              },
+{ "Ilama",      DT_MBTABLE, 0,               0, NULL,              }, /* test_native_set */
+{ "Jackfruit",  DT_MBTABLE, IP "jackfruit",  0, NULL,              },
+{ "Kumquat",    DT_MBTABLE, 0,               0, NULL,              }, /* test_native_get */
+{ "Lemon",      DT_MBTABLE, IP "lemon",      0, NULL,              }, /* test_reset */
+{ "Mango",      DT_MBTABLE, IP "mango",      0, validator_fail,    },
+{ "Nectarine",  DT_MBTABLE, IP "nectarine",  0, validator_succeed, }, /* test_validator */
+{ "Olive",      DT_MBTABLE, IP "olive",      0, validator_warn,    },
+{ "Papaya",     DT_MBTABLE, IP "papaya",     0, validator_fail,    },
+{ "Quince",     DT_MBTABLE, 0,               0, NULL,              }, /* test_inherit */
+{ "Raspberry",  DT_MBTABLE|DT_ON_STARTUP, IP "raspberry", 0, NULL, }, /* startup */
+{ NULL },
 };
 // clang-format on
 
@@ -226,6 +227,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
+  name = "Raspberry";
+  rc = cs_str_string_set(cs, name, "raspberry", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_string_set(cs, name, "banana", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   return true;
 }
@@ -324,6 +332,19 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
   mb = VarJackfruit ? VarJackfruit->orig_str : NULL;
   TEST_MSG("%s = '%s', set by NULL", name, NONULL(mb));
+
+  mbtable_free(&t);
+  t = mbtable_parse("raspberry");
+
+  name = "Raspberry";
+  rc = cs_str_native_set(cs, name, (intptr_t) t, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  mbtable_free(&t);
+  t = mbtable_parse("apple");
+
+  rc = cs_str_native_set(cs, name, (intptr_t) t, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   result = true;
 tns_out:
@@ -428,6 +449,18 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   TEST_MSG("Reset: %s = '%s'", name, VarMango->orig_str);
+
+  name = "Raspberry";
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  StartupComplete = false;
+  rc = cs_str_string_set(cs, name, "banana", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  StartupComplete = true;
+
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -674,14 +707,18 @@ void test_config_mbtable(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
+  StartupComplete = false;
   dont_fail = true;
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
   dont_fail = false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
+
+  mbtable_compare(NULL, NULL);
 
   struct Buffer *err = buf_pool_get();
   TEST_CHECK(test_initial_values(sub, err));

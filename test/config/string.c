@@ -56,6 +56,7 @@ static struct ConfigDef Vars[] = {
   { "Tangerine",  DT_STRING,              0,               0, NULL,              }, /* test_plus_equals */
   { "Ugli",       DT_STRING|DT_CHARSET_SINGLE, 0,          0, charset_validator, },
   { "Vanilla",    DT_STRING|DT_CHARSET_STRICT, 0,          0, charset_validator, },
+  { "Wolfberry",  DT_STRING|DT_ON_STARTUP, IP "wolfberry", 0, NULL,              }, /* startup */
   { NULL },
 };
 // clang-format on
@@ -235,6 +236,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("%s = '%s', set by '%s'", name, NONULL(VarElderberry), NONULL(valid[i]));
   }
 
+  name = "Wolfberry";
+  rc = cs_str_string_set(cs, name, "wolfberry", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_string_set(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   return true;
 }
@@ -360,6 +368,13 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("%s = '%s', set by '%s'", name, NONULL(VarKumquat), NONULL(valid[i]));
   }
 
+  name = "Wolfberry";
+  rc = cs_str_native_set(cs, name, (intptr_t) "wolfberry", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_native_set(cs, name, (intptr_t) "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   return true;
 }
@@ -438,6 +453,10 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
       return false;
   }
 
+  name = "Wolfberry";
+  rc = cs_str_string_plus_equals(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   return true;
 }
@@ -513,6 +532,18 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   TEST_MSG("Reset: %s = '%s'", name, VarOlive);
+
+  name = "Wolfberry";
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  StartupComplete = false;
+  rc = cs_str_native_set(cs, name, (intptr_t) "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  StartupComplete = true;
+
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -762,10 +793,12 @@ void test_config_string(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
+  StartupComplete = false;
   dont_fail = true;
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
   dont_fail = false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 

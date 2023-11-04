@@ -43,6 +43,7 @@ struct ConfigDef VarsColon[] = {
   { "Fig",        DT_SLIST|SLIST_SEP_COLON, IP ":apple",              0, NULL, }, /* test_string_get */
   { "Guava",      DT_SLIST|SLIST_SEP_COLON, IP "apple::cherry",       0, NULL, },
   { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, IP "apple:",              0, NULL, },
+  { "Ilama",      DT_SLIST|SLIST_SEP_COLON|DT_ON_STARTUP, IP "apple", 0, NULL, }, /* startup */
   { NULL },
 };
 
@@ -55,6 +56,7 @@ struct ConfigDef VarsComma[] = {
   { "Fig",        DT_SLIST|SLIST_SEP_COLON, IP ",apple",              0, NULL, }, /* test_string_get */
   { "Guava",      DT_SLIST|SLIST_SEP_COLON, IP "apple,,cherry",       0, NULL, },
   { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, IP "apple,",              0, NULL, },
+  { "Ilama",      DT_SLIST|SLIST_SEP_COMMA|DT_ON_STARTUP, IP "apple", 0, NULL, }, /* startup */
   { NULL },
 };
 
@@ -67,6 +69,7 @@ struct ConfigDef VarsSpace[] = {
   { "Fig",        DT_SLIST|SLIST_SEP_COLON, IP " apple",              0, NULL, }, /* test_string_get */
   { "Guava",      DT_SLIST|SLIST_SEP_COLON, IP "apple  cherry",       0, NULL, },
   { "Hawthorn",   DT_SLIST|SLIST_SEP_COLON, IP "apple ",              0, NULL, },
+  { "Ilama",      DT_SLIST|SLIST_SEP_SPACE|DT_ON_STARTUP, IP "apple", 0, NULL, }, /* startup */
   { NULL },
 };
 
@@ -82,6 +85,7 @@ struct ConfigDef VarsOther[] = {
   { "Raspberry",  DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,                    }, /* test_plus_equals */
   { "Strawberry", DT_SLIST|SLIST_SEP_COLON, 0,                        0, NULL,                    }, /* test_minus_equals */
   { "Wolfberry",  DT_SLIST|SLIST_SEP_COLON, IP "utf-8",               0, charset_slist_validator, }, /* test_charset_validator */
+  { "Xigua",      DT_SLIST|SLIST_SEP_COLON|DT_ON_STARTUP, IP "apple", 0, NULL,                    }, /* startup */
   { NULL },
 };
 // clang-format on
@@ -481,6 +485,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
+  name = "Ilama";
+  rc = cs_str_string_set(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_string_set(cs, name, "banana", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   return true;
 }
 
@@ -607,6 +618,19 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   slist_free(&list);
+  list = slist_parse("apple", SLIST_SEP_COLON);
+
+  name = "Xigua";
+  rc = cs_str_native_set(cs, name, (intptr_t) list, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  slist_free(&list);
+  list = slist_parse("banana", SLIST_SEP_COLON);
+
+  rc = cs_str_native_set(cs, name, (intptr_t) list, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  slist_free(&list);
   return true;
 }
 
@@ -699,6 +723,10 @@ static bool test_plus_equals(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
+  name = "Xigua";
+  rc = cs_str_string_plus_equals(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   return true;
 }
 
@@ -773,6 +801,10 @@ static bool test_minus_equals(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("%s", buf_string(err));
     return false;
   }
+
+  name = "Xigua";
+  rc = cs_str_string_minus_equals(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   return true;
 }
@@ -849,6 +881,18 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   item = STAILQ_FIRST(&VarMango->head)->data;
   TEST_MSG("Reset: %s = '%s'", name, item);
+
+  name = "Xigua";
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  StartupComplete = false;
+  rc = cs_str_string_set(cs, name, "banana", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  StartupComplete = true;
+
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -1128,9 +1172,11 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
 
   buf_reset(err);
 
+  StartupComplete = false;
   cs_register_type(cs, &CstSlist);
   if (!TEST_CHECK(cs_register_variables(cs, vars, DT_NO_FLAGS)))
     return false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
@@ -1151,6 +1197,7 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
   cs_str_delete(cs, "Fig", NULL);
   cs_str_delete(cs, "Guava", NULL);
   cs_str_delete(cs, "Hawthorn", NULL);
+  cs_str_delete(cs, "Ilama", NULL);
   return true;
 }
 
@@ -1173,10 +1220,12 @@ void test_config_slist(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
+  StartupComplete = false;
   dont_fail = true;
   if (!TEST_CHECK(cs_register_variables(cs, VarsOther, DT_NO_FLAGS)))
     return;
   dont_fail = false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
