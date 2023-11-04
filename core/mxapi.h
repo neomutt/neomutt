@@ -63,6 +63,7 @@ enum MxStatus
 {
   MX_STATUS_ERROR = -1, ///< An error occurred
   MX_STATUS_OK,         ///< No changes
+  MX_STATUS_ABORT,      ///< Operation aborted, e.g. Ctrl-C
   MX_STATUS_NEW_MAIL,   ///< New mail received in Mailbox
   MX_STATUS_LOCKED,     ///< Couldn't lock the Mailbox
   MX_STATUS_REOPENED,   ///< Mailbox was reopened

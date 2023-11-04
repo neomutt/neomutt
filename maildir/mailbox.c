@@ -34,6 +34,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -46,16 +47,33 @@
 #include "mx.h"
 #include "shared.h"
 #include "sort.h"
+#ifdef USE_HCACHE
+#include "hcache/lib.h"
+#else
+struct HeaderCache;
+#endif
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
 
 struct Progress;
+struct timespec;
 
-// Flags for maildir_check()
-#define MMC_NO_DIRS 0        ///< No directories changed
+enum MxStatus maildir_check_slow(struct Mailbox *m, bool force);
+
+typedef uint8_t MaildirCheckFlags; ///< Which directories need checking? e.g. MMC_NEW_DIR
+#define MMC_NO_DIRS 0              ///< No directories changed
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
+
+// clang-format off
+typedef uint8_t EmailCompareFlags;  ///< Has an Email changed? e.g. #MD_EC_FILENAME
+#define MD_EC_NO_FLAGS           0  ///< No flags are set
+#define MD_EC_FILENAME     (1 << 0) ///< Filename changed
+#define MD_EC_DIRECTORY    (1 << 1) ///< Directory changed, e.g. new to cur
+#define MD_EC_FLAGS        (1 << 2) ///< Flags changed
+#define MD_EC_CUSTOM_FLAGS (1 << 3) ///< Custom flags changed
+// clang-format on
 
 /**
  * maildir_email_new - Create a Maildir Email
@@ -168,12 +186,7 @@ bool maildir_parse_stream(FILE *fp, const char *fname, bool is_old, struct Email
   e->body->length = size - e->body->offset;
 
   e->index = -1;
-
-  /* maildir stores its flags in the filename, so ignore the
-   * flags in the header of the message */
   e->old = is_old;
-  maildir_parse_flags(e, fname);
-
   return e;
 }
 
@@ -208,7 +221,7 @@ bool maildir_parse_message(const char *fname, bool is_old, struct Email *e)
  * @retval num Number of new emails
  * @retval 0   Error
  */
-static int maildir_move_to_mailbox(struct Mailbox *m, const struct MdEmailArray *mda)
+int maildir_move_to_mailbox(struct Mailbox *m, const struct MdEmailArray *mda)
 {
   if (!m)
     return 0;
@@ -300,7 +313,7 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
 
     progress_update(progress, ARRAY_SIZE(mda) + 1, -1);
 
-    buf_printf(buf, "%s/%s", subdir, de->d_name);
+    buf_concat_path(buf, subdir, de->d_name);
     e->path = buf_strdup(buf);
 
     entry = maildir_entry_new();
@@ -313,8 +326,8 @@ static int maildir_parse_dir(struct Mailbox *m, struct MdEmailArray *mda,
 
   if (SigInt)
   {
-    SigInt = false;
-    return -2; /* action aborted */
+    SigInt = false; // LCOV_EXCL_LINE
+    return -2;      // LCOV_EXCL_LINE
   }
 
   ARRAY_SORT(mda, maildir_sort_inode, NULL);
@@ -336,7 +349,11 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 {
   char fn[PATH_MAX] = { 0 };
 
-  struct HeaderCache *hc = maildir_hcache_open(m);
+#ifdef USE_HCACHE
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
+  const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
+#endif
 
   struct MdEmail *md = NULL;
   struct MdEmail **mdp = NULL;
@@ -350,18 +367,45 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 
     snprintf(fn, sizeof(fn), "%s/%s", mailbox_path(m), md->email->path);
 
-    struct Email *e = maildir_hcache_read(hc, md->email, fn);
-    if (e)
+#ifdef USE_HCACHE
+    struct stat st_lastchanged = { 0 };
+    int rc = 0;
+
+    const char *key = maildir_hcache_key(md->email);
+    size_t keylen = maildir_hcache_keylen(key);
+    struct HCacheEntry hce = { 0 };
+
+    if (hc)
     {
+      hce = hcache_fetch_email(hc, key, keylen, 0);
+    }
+
+    if (hce.email && c_maildir_header_cache_verify)
+    {
+      rc = stat(fn, &st_lastchanged);
+    }
+
+    if (hce.email && (rc == 0) && (st_lastchanged.st_mtime <= hce.uidvalidity))
+    {
+      hce.email->edata = maildir_edata_new();
+      hce.email->edata_free = maildir_edata_free;
+      hce.email->old = md->email->old;
+      hce.email->path = mutt_str_dup(md->email->path);
       email_free(&md->email);
-      md->email = e;
+      md->email = hce.email;
+      maildir_parse_flags(md->email, fn);
     }
     else
+#endif
     {
       if (maildir_parse_message(fn, md->email->old, md->email))
       {
         md->header_parsed = true;
-        maildir_hcache_store(hc, md->email);
+#ifdef USE_HCACHE
+        key = maildir_hcache_key(md->email);
+        keylen = maildir_hcache_keylen(key);
+        hcache_store_email(hc, key, keylen, md->email, 0);
+#endif
       }
       else
       {
@@ -369,8 +413,9 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
       }
     }
   }
-
-  maildir_hcache_close(&hc);
+#ifdef USE_HCACHE
+  hcache_close(&hc);
+#endif
 }
 
 /**
@@ -472,13 +517,13 @@ cleanup:
 }
 
 /**
- * maildir_read_dir - Read a Maildir style mailbox
+ * maildir_files_read_dir - Read a Maildir style mailbox
  * @param m      Mailbox
  * @param subdir Subdir of the maildir mailbox to read from
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int maildir_read_dir(struct Mailbox *m, const char *subdir)
+int maildir_files_read_dir(struct Mailbox *m, const char *subdir)
 {
   if (!m)
     return -1;
@@ -536,6 +581,9 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
  */
 static enum MxStatus maildir_check(struct Mailbox *m)
 {
+  maildir_check_slow(m, true);
+  return MX_STATUS_OK;
+
   struct stat st_new = { 0 }; /* status of the "new" subdirectory */
   struct stat st_cur = { 0 }; /* status of the "cur" subdirectory */
   int changed = MMC_NO_DIRS;  /* which subdirectories have changed */
@@ -727,6 +775,1057 @@ void maildir_update_mtime(struct Mailbox *m)
     mutt_file_get_stat_timespec(&mdata->mtime, &st, MUTT_STAT_MTIME);
 }
 
+/**
+ * highlight_filename - XXX
+ */
+static const char *highlight_filename(const char *filename, int start, int length)
+{
+  static char name[1024];
+
+  if (!filename)
+    return "";
+
+  size_t nlen = 0;
+
+  if (start > 0)
+    nlen += sprintf(name + nlen, "%.*s", start, filename);
+
+  nlen += sprintf(name + nlen, "\033[1;4;33m%.*s\033[0m", length, filename + start);
+
+  if (filename[start + length] != '\0')
+    nlen += sprintf(name + nlen, "%s", filename + start + length);
+
+  return name;
+}
+
+/**
+ * dump_filenames - XXX
+ */
+static void dump_filenames(const struct FilenameArray *fa, const char *title)
+{
+  mutt_debug(LL_DEBUG1, "------------------------------------------------------------\n");
+  mutt_debug(LL_DEBUG1, "\033[1;32m%s - %zu filenames\033[0m\n", title, ARRAY_SIZE(fa));
+
+  struct Filename *fn = NULL;
+  ARRAY_FOREACH(fn, fa)
+  {
+    mutt_debug(LL_DEBUG1, "%c %s\n", fn->is_cur ? 'C' : 'N',
+               highlight_filename(fn->sub_name, fn->uid_start, fn->uid_length));
+  }
+}
+
+/**
+ * dump_emails - XXX
+ */
+static void dump_emails(const struct EmailArray *ea, const char *title)
+{
+  mutt_debug(LL_DEBUG1, "------------------------------------------------------------\n");
+  mutt_debug(LL_DEBUG1, "\033[1;32m%s - %zu emails\033[0m\n", title, ARRAY_SIZE(ea));
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    struct Email *e = *ep;
+    struct MaildirEmailData *edata = maildir_edata_get(e);
+
+    mutt_debug(LL_DEBUG1, "%c %s\n", e->old ? 'C' : 'N',
+               highlight_filename(e->path, edata->uid_start, edata->uid_length));
+  }
+}
+
+/**
+ * dump_hash - XXX
+ */
+static void dump_hash(struct HashTable *hash)
+{
+  struct HashWalkState walk = { 0 };
+  struct HashElem *he = NULL;
+
+  mutt_debug(LL_DEBUG1, "------------------------------------------------------------\n");
+  mutt_debug(LL_DEBUG1, "Hash Table\n");
+
+  while ((he = mutt_hash_walk(hash, &walk)))
+  {
+    mutt_debug(LL_DEBUG1, "    %2d  %.*s\n", he->type, he->key.intkey, he->key.strkey);
+  }
+}
+
+/**
+ * maildir_find_uid - Find the unique part of the Maildir filename
+ * @param[in]  filename   Filename
+ * @param[out] uid_start  Where in the filename the uid starts
+ * @param[out] uid_length Length of the uid
+ *
+ * @note maildir filename is defined as: \<base filename\>:2,\<flags\>
+ *       but \<base filename\> may contain additional comma separated
+ *       fields. Additionally, `:` may be replaced as the field
+ *       delimiter by a user defined alternative.
+ */
+void maildir_find_uid(const char *filename, short *uid_start, short *uid_length)
+{
+  if (*uid_length > 0) // Already calculated
+    return;
+
+  const char *base = filename;
+  const char *slash = strrchr(filename, '/');
+  if (slash)
+    base = slash + 1;
+
+  *uid_start = (short) (base - filename);
+
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
+
+  char end_chars[8] = { 0 };
+  snprintf(end_chars, sizeof(end_chars), ",%c", c_maildir_field_delimiter);
+  char *end = strpbrk(base, end_chars);
+
+  if (end)
+    *uid_length = (short) (end - base);
+  else
+    *uid_length = (short) mutt_str_len(base);
+}
+
+/**
+ * maildir_parse_flags2 - Parse Maildir file flags
+ * @param[in]  path   Path to email file
+ * @param[out] custom Custom maildir flags
+ */
+MaildirFlags maildir_parse_flags2(const char *path, char **custom)
+{
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
+  char *p = strrchr(path, c_maildir_field_delimiter);
+  if (!p)
+    return MD_MF_NO_FLAGS;
+
+  if (!mutt_str_startswith(p + 1, "2,"))
+    return MD_MF_NO_FLAGS;
+
+  p += 3;
+
+  MaildirFlags flags = MD_MF_NO_FLAGS;
+
+  char leftover[16] = { 0 };
+  int num = 0;
+
+  for (; *p; p++)
+  {
+    switch (*p)
+    {
+      case 'F':
+        flags |= MD_MF_FLAGGED;
+        break;
+
+      case 'R':
+        flags |= MD_MF_REPLIED;
+        break;
+
+      case 'S':
+        flags |= MD_MF_SEEN;
+        break;
+
+      case 'T':
+        flags |= MD_MF_TRASHED;
+        break;
+
+      default:
+        leftover[num++] = *p;
+        break;
+    }
+  }
+
+  if (custom)
+    *custom = mutt_str_dup(leftover);
+
+  return flags;
+}
+
+/**
+ * maildir_parse_flags3 - Parse Maildir file flags
+ * @param[in]  path   Path to email file
+ * @param[out] custom Buffer for custom maildir flags
+ * @param[in]  clen   Length of buffer
+ */
+MaildirFlags maildir_parse_flags3(const char *path, char *custom, size_t clen)
+{
+  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
+  char *p = strrchr(path, c_maildir_field_delimiter);
+  if (!p)
+    return MD_MF_NO_FLAGS;
+
+  if (!mutt_str_startswith(p + 1, "2,"))
+    return MD_MF_NO_FLAGS;
+
+  p += 3;
+
+  MaildirFlags flags = MD_MF_NO_FLAGS;
+
+  size_t num = 0;
+
+  for (; *p && (num < clen); p++)
+  {
+    switch (*p)
+    {
+      case 'F':
+        flags |= MD_MF_FLAGGED;
+        break;
+
+      case 'R':
+        flags |= MD_MF_REPLIED;
+        break;
+
+      case 'S':
+        flags |= MD_MF_SEEN;
+        break;
+
+      case 'T':
+        flags |= MD_MF_TRASHED;
+        break;
+
+      default:
+        custom[num++] = *p;
+        break;
+    }
+  }
+
+  custom[num] = '\0';
+  return flags;
+}
+
+/**
+ * merge_flags - XXX
+ */
+bool merge_flags(struct Email *e, MaildirFlags flags, char **custom)
+{
+  bool changed = false;
+
+  bool flagged = (flags & MD_MF_FLAGGED);
+  if (flagged != e->flagged)
+    changed = true;
+  e->flagged = flagged;
+
+  bool read = (flags & MD_MF_SEEN);
+  if (read != e->read)
+    changed = true;
+  e->read = read;
+
+  bool replied = (flags & MD_MF_REPLIED);
+  if (replied != e->replied)
+    changed = true;
+  e->replied = replied;
+
+  if (flags & MD_MF_TRASHED)
+  {
+    const bool c_flag_safe = cs_subset_bool(NeoMutt->sub, "flag_safe");
+    if (!e->flagged || !c_flag_safe)
+    {
+      e->trash = true;
+      e->deleted = true;
+    }
+  }
+
+  struct MaildirEmailData *edata = maildir_edata_get(e);
+
+  FREE(edata->custom_flags);
+  edata->custom_flags = *custom;
+  *custom = NULL;
+
+  return changed;
+}
+
+/**
+ * merge_flags2 - XXX
+ */
+bool merge_flags2(struct Email *e, MaildirFlags flags, char *custom)
+{
+  bool changed = false;
+
+  bool flagged = (flags & MD_MF_FLAGGED);
+  if (flagged != e->flagged)
+    changed = true;
+  e->flagged = flagged;
+
+  bool read = (flags & MD_MF_SEEN);
+  if (read != e->read)
+    changed = true;
+  e->read = read;
+
+  bool replied = (flags & MD_MF_REPLIED);
+  if (replied != e->replied)
+    changed = true;
+  e->replied = replied;
+
+  if (flags & MD_MF_TRASHED)
+  {
+    const bool c_flag_safe = cs_subset_bool(NeoMutt->sub, "flag_safe");
+    if (!e->flagged || !c_flag_safe)
+    {
+      e->trash = true;
+      e->deleted = true;
+    }
+  }
+
+  struct MaildirEmailData *edata = maildir_edata_get(e);
+
+  if (flags & MD_EC_CUSTOM_FLAGS)
+  {
+    mutt_str_replace(&edata->custom_flags, custom);
+    changed = true;
+  }
+
+  return changed;
+}
+
+/**
+ * maildir_parse_all_flags - XXX
+ */
+static void maildir_parse_all_flags(const struct EmailArray *ea, struct EmailArray *ea_cha)
+{
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    struct Email *e = *ep;
+    struct MaildirEmailData *edata = maildir_edata_get(e);
+
+    char *custom = NULL;
+    edata->disk_flags = maildir_parse_flags2(e->path, &custom);
+    if (merge_flags(e, edata->disk_flags, &custom) && ea_cha)
+    {
+      ARRAY_ADD(ea_cha, e);
+    }
+  }
+}
+
+/**
+ * filename_clear - Clear the contents of a Filename
+ * @param f Filename
+ *
+ * @note The Filename itself isn't freed
+ */
+void filename_clear(struct Filename *f)
+{
+  FREE(&f->sub_name);
+  f->uid_start = 0;
+  f->uid_length = 0;
+  f->is_cur = false;
+}
+
+/**
+ * maildir_files_scan - Scan a Maildir directory for files
+ * @param[in]     path     Path to the Mailbox
+ * @param[in]     subdir   Name of the subdir, "cur" or "new"
+ * @param[in,out] fa       Array for filenames
+ * @param[in]     progress Progress Bar
+ * @retval enum #MxOpenReturns
+ *
+ * @note May be interruped by Ctrl-C (SIGINT)
+ */
+enum MxOpenReturns maildir_files_scan(const char *path, const char *subdir,
+                                      struct FilenameArray *fa, struct Progress *progress)
+{
+  struct Buffer *sub_name = NULL;
+  struct Buffer *path_sub = buf_pool_get();
+  buf_printf(path_sub, "%s/%s", path, subdir);
+  enum MxOpenReturns rc = MX_OPEN_ERROR;
+
+  DIR *dir = mutt_file_opendir(buf_string(path_sub), MUTT_OPENDIR_NONE);
+  if (!dir)
+    goto done;
+
+  progress_set_message(progress, _("Scanning %s..."), path);
+
+  sub_name = buf_pool_get();
+  struct dirent *de = NULL;
+  rc = MX_OPEN_ABORT;
+
+  mutt_sig_allow_interrupt(true);
+  while ((de = readdir(dir)))
+  {
+    if (SigInt)
+    {
+      SigInt = false; // LCOV_EXCL_LINE
+      goto done;      // LCOV_EXCL_LINE
+    }
+
+    if (*de->d_name == '.')
+      continue;
+
+    buf_printf(sub_name, "%s/%s", subdir, de->d_name);
+
+    struct Filename f = { 0 };
+    f.sub_name = buf_strdup(sub_name);
+    maildir_find_uid(f.sub_name, &f.uid_start, &f.uid_length);
+    ARRAY_ADD(fa, f);
+    progress_update(progress, ARRAY_SIZE(fa), -1);
+  }
+  rc = MX_OPEN_OK;
+
+done:
+  mutt_sig_allow_interrupt(false);
+  closedir(dir);
+  buf_pool_release(&sub_name);
+  buf_pool_release(&path_sub);
+  return rc;
+}
+
+/**
+ * maildir_files_read - Read Maildir files from disk
+ * @param[in]     mbox_path Path to Mailbox
+ * @param[in,out] fa        Filenames to look up
+ * @param[in,out] ea        Parsed Emails
+ * @param[in]     progress  Progress Bar
+ * @retval enum #MxOpenReturns
+ *
+ * For each filename in @a fa, read the Email from disk and parse it.
+ * The Emails are stored in @a ea.
+ *
+ * @note May be interruped by Ctrl-C (SIGINT)
+ */
+enum MxOpenReturns maildir_files_read(const char *mbox_path, struct FilenameArray *fa,
+                                      struct EmailArray *ea, struct Progress *progress)
+{
+  if (ARRAY_EMPTY(fa))
+    return MX_OPEN_OK;
+
+  struct Buffer *path_file = buf_pool_get();
+  enum MxOpenReturns rc = MX_OPEN_ABORT;
+
+  progress_set_size(progress, ARRAY_SIZE(fa));
+  progress_set_message(progress, _("Reading files %s..."), mbox_path);
+
+  struct Filename *fn = NULL;
+  mutt_sig_allow_interrupt(true);
+  ARRAY_FOREACH(fn, fa)
+  {
+    if (SigInt)
+    {
+      SigInt = false; // LCOV_EXCL_LINE
+      goto done;      // LCOV_EXCL_LINE
+    }
+
+    if (!fn->sub_name) // Already processed
+      continue;
+
+    buf_concat_path(path_file, mbox_path, fn->sub_name);
+
+    struct Email *e = maildir_email_new();
+    if (maildir_parse_message(buf_string(path_file), fn->is_cur, e))
+    {
+      struct MaildirEmailData *edata = maildir_edata_get(e);
+
+      maildir_find_uid(fn->sub_name, &edata->uid_start, &edata->uid_length);
+      e->path = fn->sub_name; // Transfer string
+      fn->sub_name = NULL;
+      ARRAY_ADD(ea, e);
+    }
+    else
+    {
+      mutt_debug(LL_DEBUG2, "Couldn't parse: %s\n", fn->sub_name);
+      FREE(&fn->sub_name);
+      email_free(&e);
+    }
+
+    progress_update(progress, ARRAY_SIZE(ea), -1);
+  }
+  rc = MX_OPEN_OK;
+
+done:
+  mutt_sig_allow_interrupt(false);
+  buf_pool_release(&path_file);
+  return rc;
+}
+
+/**
+ * maildir_move_to_mailbox2 - Move new Emails into a Mailbox
+ * @param m  Mailbox
+ * @param ea Array of Emails to move
+ */
+void maildir_move_to_mailbox2(struct Mailbox *m, struct EmailArray *ea)
+{
+  if (!m || !ea || ARRAY_EMPTY(ea))
+    return;
+
+  mx_alloc_memory(m, m->msg_count + ARRAY_SIZE(ea));
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, ea)
+  {
+    struct Email *e = *ep;
+
+    mutt_debug(LL_DEBUG2, "Considering %s\n", e->path);
+    mutt_debug(LL_DEBUG2, "Adding Email Flags: %s%s%s%s%s\n",
+               e->flagged ? "f" : "", e->deleted ? "D" : "",
+               e->replied ? "r" : "", e->old ? "O" : "", e->read ? "R" : "");
+
+    m->emails[m->msg_count] = e;
+    m->emails[m->msg_count]->index = m->msg_count;
+    mailbox_size_add(m, e);
+
+    m->msg_count++;
+  }
+
+  // ARRAY_FREE(ea);
+}
+
+/**
+ * check_dir - XXX
+ */
+bool check_dir(const char *mbox_path, const char *subdir, struct timespec *mtime, bool force)
+{
+  bool rc = false;
+  struct Buffer *dir = NULL;
+
+  dir = buf_pool_get();
+  buf_concat_path(dir, mbox_path, subdir);
+
+  struct stat st = { 0 };
+  if (stat(buf_string(dir), &st) == -1)
+    goto done;
+
+  struct timespec a = { 0 };
+
+  mutt_file_get_stat_timespec(&a, &st, MUTT_STAT_MTIME);
+
+  if (!force && (mutt_file_timespec_compare(&a, mtime) < 0))
+    goto done;
+
+  *mtime = a; // Save last check times
+  rc = true;
+
+done:
+  buf_pool_release(&dir);
+  return rc;
+}
+
+/**
+ * hash_emails_by_uid - XXX
+ */
+struct HashTable *hash_emails_by_uid(const struct Mailbox *m)
+{
+  struct HashTable *table = mutt_hash_new(m->msg_count, MUTT_HASH_NO_FLAGS);
+
+  for (size_t i = 0; i < m->msg_count; i++)
+  {
+    struct Email *e = m->emails[i];
+    if (!e)
+      continue;
+
+    const struct MaildirEmailData *edata = maildir_edata_get(e);
+
+    mutt_hash_typed_insert_n(table, e->path + edata->uid_start, edata->uid_length, i, e);
+  }
+
+  return table;
+}
+
+/**
+ * email_compare - XXX
+ */
+EmailCompareFlags email_compare(struct Email *e, const struct Filename *fn)
+{
+  EmailCompareFlags changes = MD_EC_NO_FLAGS;
+
+  struct MaildirEmailData *edata = maildir_edata_get(e);
+
+  // if (edata->uid_length != fn->uid_length)
+  //   changes |= MD_EC_FILENAME;
+
+  // if (!mutt_strn_equal(e->path + uid_start, fn->sub_name + fn->uid_start, fn->uid_length))
+  //   changes |= MD_EC_FILENAME;
+
+  if (!mutt_str_equal(e->path, fn->sub_name))
+    changes |= MD_EC_FILENAME;
+
+  if (e->old != fn->is_cur)
+    changes |= MD_EC_DIRECTORY; // new to cur, or vice versa
+
+  char *custom = NULL;
+  MaildirFlags flags = maildir_parse_flags2(fn->sub_name, &custom);
+  if (flags != edata->disk_flags)
+    changes |= MD_EC_FLAGS;
+
+  if (e->flagged != !!(flags & MD_MF_FLAGGED))
+    changes |= MD_EC_FLAGS;
+
+  if (e->replied != !!(flags & MD_MF_REPLIED))
+    changes |= MD_EC_FLAGS;
+
+  if (e->read != !!(flags & MD_MF_SEEN))
+    changes |= MD_EC_FLAGS;
+
+  if (e->trash != !!(flags & MD_MF_TRASHED))
+    changes |= MD_EC_FLAGS;
+
+  if (!mutt_str_equal(edata->custom_flags, custom))
+    changes |= MD_EC_CUSTOM_FLAGS;
+
+  merge_flags(e, flags, &custom);
+
+  if (changes != MD_EC_NO_FLAGS)
+  {
+    mutt_debug(LL_DEBUG1, "REPLACING %s with %s\n", e->path, fn->sub_name);
+    mutt_str_replace(&e->path, fn->sub_name);
+  }
+
+  FREE(&custom);
+  return changes;
+}
+
+/**
+ * email_compare2 - XXX
+ *
+ * Assumes UID is the same (it's the same file)
+ */
+EmailCompareFlags email_compare2(struct Email *e, const struct Filename *fn,
+                                 MaildirFlags flags, char *custom)
+{
+  EmailCompareFlags changes = MD_EC_NO_FLAGS;
+
+  struct MaildirEmailData *edata = maildir_edata_get(e);
+
+  if (!mutt_str_equal(e->path, fn->sub_name))
+    changes |= MD_EC_FILENAME;
+
+  if (e->old != fn->is_cur)
+    changes |= MD_EC_DIRECTORY; // new to cur, or vice versa
+
+  if (flags != edata->disk_flags)
+    changes |= MD_EC_FLAGS;
+
+  if (e->flagged != !!(flags & MD_MF_FLAGGED))
+    changes |= MD_EC_FLAGS;
+
+  if (e->replied != !!(flags & MD_MF_REPLIED))
+    changes |= MD_EC_FLAGS;
+
+  if (e->read != !!(flags & MD_MF_SEEN))
+    changes |= MD_EC_FLAGS;
+
+  if (e->trash != !!(flags & MD_MF_TRASHED))
+    changes |= MD_EC_FLAGS;
+
+  if (!mutt_str_equal(edata->custom_flags, custom))
+    changes |= MD_EC_CUSTOM_FLAGS;
+
+  return changes;
+}
+
+/**
+ * sync_flagged - XXX
+ */
+bool sync_flagged(struct MaildirEmailData *edata, const struct Filename *fn)
+{
+  MaildirFlags flags = maildir_parse_flags2(fn->sub_name, NULL);
+  const bool disk = (flags & MD_MF_FLAGGED);
+  const bool cached = (edata->disk_flags & MD_MF_FLAGGED);
+
+  if (disk == cached)
+    return false;
+
+  if (disk)
+    edata->disk_flags |= MD_MF_FLAGGED; // Set flag
+  else
+    edata->disk_flags &= MD_MF_FLAGGED; // Clear flag
+
+  return true;
+}
+
+/**
+ * maildir_check_new - XXX
+ */
+enum MxStatus maildir_check_new(struct Mailbox *m, MaildirCheckFlags cflags)
+{
+  if (cflags == MMC_NO_DIRS)
+    return MX_STATUS_OK;
+
+  struct FilenameArray fa_sca = ARRAY_HEAD_INITIALIZER; ///< Files: scanned
+  struct FilenameArray fa_cha = ARRAY_HEAD_INITIALIZER; ///< Files: changed
+  struct FilenameArray fa_new = ARRAY_HEAD_INITIALIZER; ///< Files: new
+  struct EmailArray ea_new = ARRAY_HEAD_INITIALIZER;    ///< Emails: new
+  struct EmailArray ea_cha = ARRAY_HEAD_INITIALIZER;    ///< Emails: changed
+  struct EmailArray ea_del = ARRAY_HEAD_INITIALIZER;    ///< Emails: deleted
+  const char *path = mailbox_path(m);
+  // struct MaildirMboxData *mdata = maildir_mdata_get(m);
+  struct Progress *progress = NULL;
+  struct HeaderCache *hc = NULL;
+  struct HashTable *hash_uids = NULL; // Hash Table: Maildir "uid" -> MdEmail
+
+  enum MxOpenReturns rc = MX_OPEN_ERROR;
+
+  // Maybe?
+  // if (m->verbose)
+  //   progress = progress_new(MUTT_PROGRESS_READ, 0);
+
+  if (cflags & MMC_CUR_DIR)
+  {
+    rc = maildir_files_scan(path, "cur", &fa_sca, progress);
+    if (rc != MX_OPEN_OK)
+      goto done;
+
+    struct Filename *fn = NULL;
+    ARRAY_FOREACH(fn, &fa_sca)
+    {
+      fn->is_cur = true;
+    }
+  }
+
+  if (cflags & MMC_NEW_DIR)
+  {
+    rc = maildir_files_scan(path, "new", &fa_sca, progress);
+    if (rc != MX_OPEN_OK)
+      goto done;
+  }
+
+  dump_filenames(&fa_sca, "Scanned");
+
+  hash_uids = hash_emails_by_uid(m);
+
+  dump_hash(hash_uids);
+  mutt_debug(LL_DEBUG1, "------------------------------------------------------------\n");
+
+  struct Filename *fn = NULL;
+  ARRAY_FOREACH(fn, &fa_sca)
+  {
+    struct HashElem *he = mutt_hash_find_elem_n(hash_uids, fn->sub_name + fn->uid_start,
+                                                fn->uid_length);
+    struct Email *e = he ? he->data : NULL;
+    if (e)
+    {
+      mutt_debug(LL_DEBUG1, "Found: %s\n",
+                 highlight_filename(fn->sub_name, fn->uid_start, fn->uid_length));
+      char custom[32] = { 0 };
+      MaildirFlags flags = maildir_parse_flags3(fn->sub_name, custom, sizeof(custom));
+
+      EmailCompareFlags cmp = email_compare2(e, fn, flags, custom);
+      if (cmp == MD_EC_NO_FLAGS)
+      {
+        mutt_debug(LL_DEBUG1, "\tNO CHANGE\n");
+        he->type = -1;
+        filename_clear(fn); // Done
+      }
+      else
+      {
+        if (merge_flags2(e, flags, custom))
+        {
+          // need to hcache_store()
+        }
+
+        mutt_debug(LL_DEBUG1, "\tCHANGES %d\n", cmp);
+        he->type = -1;
+        ARRAY_ADD(&fa_cha, *fn); // Transfer the filename
+        fn->sub_name = NULL;
+        ARRAY_ADD(&ea_cha, e);
+      }
+    }
+    else
+    {
+      // NEW EMAIL
+      mutt_debug(LL_DEBUG1, "NEW: %s\n",
+                 highlight_filename(fn->sub_name, fn->uid_start, fn->uid_length));
+      ARRAY_ADD(&fa_new, *fn); // Transfer the filename
+      fn->sub_name = NULL;
+    }
+  }
+
+  struct HashWalkState walk = { 0 };
+  struct HashElem *he = NULL;
+  while ((he = mutt_hash_walk(hash_uids, &walk)))
+  {
+    int index = he->type;
+    if (index >= 0)
+    {
+      struct Email *e = he->data;
+      struct MaildirEmailData *edata = maildir_edata_get(e);
+      ARRAY_ADD(&ea_del, e); // Transfer the Email
+      mutt_debug(LL_DEBUG1, "DELETED: %s\n",
+                 highlight_filename(e->path, edata->uid_start, edata->uid_length));
+      m->emails[index] = NULL;
+    }
+  }
+
+  // dump_filenames(&fa_sca, "Scanned");
+  // dump_filenames(&fa_cha, "Changed");
+  dump_filenames(&fa_new, "New");
+
+  dump_emails(&ea_cha, "Changed");
+  dump_emails(&ea_del, "Deleted");
+
+  dump_hash(hash_uids);
+
+  hc = maildir_hcache_open(m);
+
+  rc = maildir_hcache_read(hc, path, &fa_new, &ea_new, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  rc = maildir_files_read(path, &fa_new, &ea_new, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  // maildir_parse_all_flags(&ea, &ea_cha);
+
+  rc = maildir_hcache_delete(hc, &ea_del, path, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  // NEW, CHANGED, UNCHANGED, DELETED
+  //   NEW       -> hcache_store -> ea_new
+  //   CHANGED   -> hcache_store -> ea_cha
+  //   UNCHANGED -> NOP
+  //   DELETED   -> hcache_delete_record (ea_del)
+
+  maildir_move_to_mailbox2(m, &ea_new);
+
+  // move to mailbox
+  // NEW, CHANGED, UNCHANGED, DELETED
+  //   NEW       -> add to end of emails[]
+  //   CHANGED   -> NOP
+  //   UNCHANGED -> NOP
+  //   DELETED   -> NOP
+
+  if ((ARRAY_SIZE(&ea_new) != 0) || (ARRAY_SIZE(&ea_cha) != 0) || (ARRAY_SIZE(&ea_del) != 0))
+  {
+    struct EventMailbox ev_m = { m, &ea_new, &ea_cha, &ea_del };
+    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+  }
+
+  // notify (NEW, CHANGED, DELETED)
+  // expect index to move deleted to the end of emails[]
+
+  // move to mailbox
+  // NEW, CHANGED, UNCHANGED, DELETED
+  //   NEW       -> NOP
+  //   CHANGED   -> NOP
+  //   UNCHANGED -> NOP
+  //   DELETED   -> remove from emails[]
+
+  // hash emails
+  // ∀ fn in hash -> eliminate
+  // hcache lookup ∀ fa_sca -> ea
+  // read files ∀ fa_sca -> ea
+  // hcache store ∀ ea
+  // move to mailbox
+  // notify ∀ ea
+
+  rc = MX_STATUS_OK;
+
+done:
+  maildir_hcache_close(&hc);
+  progress_free(&progress);
+  mutt_hash_free(&hash_uids);
+
+  ARRAY_FOREACH(fn, &fa_sca)
+  {
+    filename_clear(fn);
+  }
+  ARRAY_FREE(&fa_sca);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea_del)
+  {
+    email_free(ep);
+  }
+  ARRAY_FREE(&ea_del);
+
+  return rc;
+}
+
+/**
+ * maildir_check_slow - XXX
+ */
+enum MxStatus maildir_check_slow(struct Mailbox *m, bool force)
+{
+  MaildirCheckFlags changed = MMC_NO_DIRS;
+  const char *path = mailbox_path(m);
+  struct MaildirMboxData *mdata = maildir_mdata_get(m);
+
+  if (check_dir(path, "new", &mdata->mtime, force))
+    changed |= MMC_NEW_DIR;
+
+  if (check_dir(path, "cur", &mdata->mtime_cur, force))
+    changed |= MMC_CUR_DIR;
+
+  return maildir_check_new(m, changed);
+}
+
+/**
+ * maildir_sync2 - XXX
+ */
+enum MxStatus maildir_sync2(struct Mailbox *m)
+{
+  struct FilenameArray fa_sca = ARRAY_HEAD_INITIALIZER; ///< Files: scanned
+  struct FilenameArray fa_cha = ARRAY_HEAD_INITIALIZER; ///< Files: changed
+  struct FilenameArray fa_new = ARRAY_HEAD_INITIALIZER; ///< Files: new
+  struct EmailArray ea_new = ARRAY_HEAD_INITIALIZER;    ///< Emails: new
+  struct EmailArray ea_cha = ARRAY_HEAD_INITIALIZER;    ///< Emails: changed
+  struct EmailArray ea_del = ARRAY_HEAD_INITIALIZER;    ///< Emails: deleted
+  const char *path = mailbox_path(m);
+  // struct MaildirMboxData *mdata = maildir_mdata_get(m);
+  struct Progress *progress = NULL;
+  struct HeaderCache *hc = NULL;
+  struct HashTable *hash_uids = NULL; // Hash Table: Maildir "uid" -> MdEmail
+
+  enum MxOpenReturns rc = MX_OPEN_ERROR;
+
+  // Maybe?
+  // if (m->verbose)
+  //   progress = progress_new(MUTT_PROGRESS_READ, 0);
+
+  rc = maildir_files_scan(path, "cur", &fa_sca, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  struct Filename *fn = NULL;
+  ARRAY_FOREACH(fn, &fa_sca)
+  {
+    fn->is_cur = true;
+  }
+
+  rc = maildir_files_scan(path, "new", &fa_sca, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  dump_filenames(&fa_sca, "Scanned");
+
+  hash_uids = hash_emails_by_uid(m);
+
+  dump_hash(hash_uids);
+  mutt_debug(LL_DEBUG1, "------------------------------------------------------------\n");
+
+  ARRAY_FOREACH(fn, &fa_sca)
+  {
+    struct HashElem *he = mutt_hash_find_elem_n(hash_uids, fn->sub_name + fn->uid_start,
+                                                fn->uid_length);
+    struct Email *e = he ? he->data : NULL;
+    if (e)
+    {
+      mutt_debug(LL_DEBUG1, "Found: %s\n",
+                 highlight_filename(fn->sub_name, fn->uid_start, fn->uid_length));
+      EmailCompareFlags flags = email_compare(e, fn);
+      if (flags == MD_EC_NO_FLAGS)
+      {
+        mutt_debug(LL_DEBUG1, "\tNO CHANGE\n");
+        he->type = -1;
+        filename_clear(fn); // Done
+      }
+      else
+      {
+        mutt_debug(LL_DEBUG1, "\tCHANGES %d\n", flags);
+        he->type = -1;
+        ARRAY_ADD(&fa_cha, *fn); // Transfer the filename
+        fn->sub_name = NULL;
+        ARRAY_ADD(&ea_cha, e);
+      }
+    }
+    else
+    {
+      // NEW EMAIL
+      mutt_debug(LL_DEBUG1, "NEW: %s\n",
+                 highlight_filename(fn->sub_name, fn->uid_start, fn->uid_length));
+      ARRAY_ADD(&fa_new, *fn); // Transfer the filename
+      fn->sub_name = NULL;
+    }
+  }
+
+  struct HashWalkState walk = { 0 };
+  struct HashElem *he = NULL;
+  while ((he = mutt_hash_walk(hash_uids, &walk)))
+  {
+    int index = he->type;
+    if (index >= 0)
+    {
+      struct Email *e = he->data;
+      ARRAY_ADD(&ea_del, e); // Transfer the Email
+      m->emails[index] = NULL;
+    }
+  }
+
+  // dump_filenames(&fa_sca, "Scanned");
+  // dump_filenames(&fa_cha, "Changed");
+  dump_filenames(&fa_new, "New");
+
+  dump_emails(&ea_cha, "Changed");
+  dump_emails(&ea_del, "Deleted");
+
+  dump_hash(hash_uids);
+
+  hc = maildir_hcache_open(m);
+
+  rc = maildir_hcache_read(hc, path, &fa_new, &ea_new, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  rc = maildir_files_read(path, &fa_new, &ea_new, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  // maildir_parse_all_flags(&ea, &ea_cha);
+
+  rc = maildir_hcache_delete(hc, &ea_del, path, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  // NEW, CHANGED, UNCHANGED, DELETED
+  //   NEW       -> hcache_store -> ea_new
+  //   CHANGED   -> hcache_store -> ea_cha
+  //   UNCHANGED -> NOP
+  //   DELETED   -> hcache_delete_record (ea_del)
+
+  maildir_move_to_mailbox2(m, &ea_new);
+
+  // move to mailbox
+  // NEW, CHANGED, UNCHANGED, DELETED
+  //   NEW       -> add to end of emails[]
+  //   CHANGED   -> NOP
+  //   UNCHANGED -> NOP
+  //   DELETED   -> NOP
+
+  if ((ARRAY_SIZE(&ea_new) != 0) || (ARRAY_SIZE(&ea_cha) != 0) || (ARRAY_SIZE(&ea_del) != 0))
+  {
+    struct EventMailbox ev_m = { m, &ea_new, &ea_cha, &ea_del };
+    notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+  }
+
+  // notify (NEW, CHANGED, DELETED)
+  // expect index to move deleted to the end of emails[]
+
+  // move to mailbox
+  // NEW, CHANGED, UNCHANGED, DELETED
+  //   NEW       -> NOP
+  //   CHANGED   -> NOP
+  //   UNCHANGED -> NOP
+  //   DELETED   -> remove from emails[]
+
+  // hash emails
+  // ∀ fn in hash -> eliminate
+  // hcache lookup ∀ fa_sca -> ea
+  // read files ∀ fa_sca -> ea
+  // hcache store ∀ ea
+  // move to mailbox
+  // notify ∀ ea
+
+  rc = MX_STATUS_OK;
+
+done:
+  maildir_hcache_close(&hc);
+  progress_free(&progress);
+  mutt_hash_free(&hash_uids);
+
+  ARRAY_FOREACH(fn, &fa_sca)
+  {
+    filename_clear(fn);
+  }
+  ARRAY_FREE(&fa_sca);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea_del)
+  {
+    email_free(ep);
+  }
+  ARRAY_FREE(&ea_del);
+
+  return rc;
+}
+
 // Mailbox API -----------------------------------------------------------------
 
 /**
@@ -734,10 +1833,109 @@ void maildir_update_mtime(struct Mailbox *m)
  */
 enum MxOpenReturns maildir_mbox_open(struct Mailbox *m)
 {
-  if ((maildir_read_dir(m, "new") == -1) || (maildir_read_dir(m, "cur") == -1))
-    return MX_OPEN_ERROR;
+  struct FilenameArray fa = ARRAY_HEAD_INITIALIZER;
+  struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
+  struct EmailArray ea_cha = ARRAY_HEAD_INITIALIZER;
+  const char *path = mailbox_path(m);
+  struct Progress *progress = NULL;
+  struct Filename *fn = NULL;
+  enum MxOpenReturns rc;
 
-  return MX_OPEN_OK;
+  struct HeaderCache *hc = maildir_hcache_open(m);
+
+  if (m->verbose)
+    progress = progress_new(MUTT_PROGRESS_READ, 0);
+
+  // Scan the cur and new directories, saving the filenames to fa
+  rc = maildir_files_scan(path, "cur", &fa, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  ARRAY_FOREACH(fn, &fa)
+  {
+    fn->is_cur = true;
+  }
+  rc = maildir_files_scan(path, "new", &fa, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  dump_filenames(&fa, "Scanned");
+
+  // Search the Header Cache for each filename in fa, saving the Emails to ea
+  rc = maildir_hcache_read(hc, path, &fa, &ea, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  size_t count_cache = ARRAY_SIZE(&ea);
+
+  // Read and parse any uncached files, saving the Emails to ea
+  rc = maildir_files_read(path, &fa, &ea, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  dump_emails(&ea, "Maildir");
+  mutt_debug(LL_DEBUG1, "------------------------------------------------------------\n");
+
+  maildir_parse_all_flags(&ea, &ea_cha);
+
+  progress_set_size(progress, ARRAY_SIZE(&fa) - count_cache);
+
+  // Save any uncached Emails to the Header Cache
+  rc = maildir_hcache_store(hc, &ea, count_cache, path, progress);
+  if (rc != MX_OPEN_OK)
+    goto done;
+
+  rc = maildir_hcache_store(hc, &ea_cha, 0, path, NULL);
+  if (rc != MX_OPEN_OK)
+    goto done;
+  ARRAY_FREE(&ea_cha);
+
+  struct MaildirMboxData *mdata = maildir_mdata_get(m);
+  if (!mdata)
+  {
+    mdata = maildir_mdata_new();
+    m->mdata = mdata;
+    m->mdata_free = maildir_mdata_free;
+  }
+
+  if (mdata->umask == 0)
+    mdata->umask = maildir_umask(m);
+
+  // Move the Emails into Mailbox.emails[]
+  maildir_move_to_mailbox2(m, &ea);
+  ARRAY_FREE(&ea);
+
+  struct EmailArray ea_new = ARRAY_HEAD_INITIALIZER; ///< Emails: new
+  struct EmailArray ea_del = ARRAY_HEAD_INITIALIZER; ///< Emails: deleted
+  struct EventMailbox ev_m = { m, &ea_new, &ea_cha, &ea_del };
+  ARRAY_RESERVE(ev_m.ea_new, m->msg_count);
+  for (int i = 0; i < m->msg_count; i++)
+  {
+    ARRAY_ADD(ev_m.ea_new, m->emails[i]);
+  }
+  notify_send(m->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+  ARRAY_FREE(&ea_new);
+  rc = MX_OPEN_OK;
+
+done:
+  maildir_hcache_close(&hc);
+  progress_free(&progress);
+
+  ARRAY_FOREACH(fn, &fa)
+  {
+    filename_clear(fn);
+  }
+  ARRAY_FREE(&fa);
+
+  struct Email **ep = NULL;
+  ARRAY_FOREACH(ep, &ea)
+  {
+    email_free(ep);
+  }
+  ARRAY_FREE(&ea);
+  ARRAY_FREE(&ea_cha);
+
+  return rc;
 }
 
 /**
@@ -807,6 +2005,12 @@ enum MxStatus maildir_mbox_check(struct Mailbox *m)
  */
 enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
+  if (!m->mdata)
+    return MX_STATUS_OK;
+
+  maildir_check_slow(m, true);
+  return MX_STATUS_OK;
+
   bool check_stats = flags & MUTT_MAILBOX_CHECK_FORCE_STATS;
   bool check_new = true;
 
@@ -836,11 +2040,17 @@ enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
  */
 enum MxStatus maildir_mbox_sync(struct Mailbox *m)
 {
+  return maildir_sync2(m);
+
   enum MxStatus check = maildir_check(m);
   if (check == MX_STATUS_ERROR)
     return check;
 
-  struct HeaderCache *hc = maildir_hcache_open(m);
+  struct HeaderCache *hc = NULL;
+#ifdef USE_HCACHE
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
+#endif
 
   struct Progress *progress = NULL;
   if (m->verbose)
@@ -861,7 +2071,10 @@ enum MxStatus maildir_mbox_sync(struct Mailbox *m)
     }
   }
   progress_free(&progress);
-  maildir_hcache_close(&hc);
+
+#ifdef USE_HCACHE
+  hcache_close(&hc);
+#endif
 
   /* XXX race condition? */
 
@@ -886,7 +2099,9 @@ enum MxStatus maildir_mbox_sync(struct Mailbox *m)
   return check;
 
 err:
-  maildir_hcache_close(&hc);
+#ifdef USE_HCACHE
+  hcache_close(&hc);
+#endif
   return MX_STATUS_ERROR;
 }
 

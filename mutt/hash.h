@@ -42,7 +42,7 @@ struct HashKey
 struct HashElem
 {
   int type;              ///< Type of data stored in Hash Table, e.g. #DT_STRING
-  struct HashKey key;     ///< Key representing the data
+  struct HashKey key;    ///< Key representing the data
   void *data;            ///< User-supplied data
   struct HashElem *next; ///< Linked List
 };
