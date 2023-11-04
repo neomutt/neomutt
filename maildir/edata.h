@@ -23,13 +23,25 @@
 #ifndef MUTT_MAILDIR_EDATA_H
 #define MUTT_MAILDIR_EDATA_H
 
+#include <stdint.h>
+
 struct Email;
+
+typedef uint8_t MaildirFlags;      ///< Maildir filename flags, e.g. #MD_MF_FLAGGED
+#define MD_MF_NO_FLAGS          0  ///< No flags are set
+#define MD_MF_FLAGGED     (1 << 0) ///< Email is flagged
+#define MD_MF_REPLIED     (1 << 1) ///< Email has been replied to
+#define MD_MF_SEEN        (1 << 2) ///< Email has been seen
+#define MD_MF_TRASHED     (1 << 3) ///< Email is marked as deleted
 
 /**
  * struct MaildirEmailData - Maildir-specific Email data - @extends Email
  */
 struct MaildirEmailData
 {
+  short        uid_start;      ///< Start  of unique part of filename
+  short        uid_length;     ///< Length of unique part of filename
+  MaildirFlags disk_flags;     ///< Cached Maildir filename flags
   char        *custom_flags;   ///< Custom Maildir flags (e.g Dovecot labels)
 };
 

@@ -30,20 +30,24 @@
 #include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
+#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "hcache/lib.h"
+#include "progress/lib.h"
 #include "edata.h"
-#include "mailbox.h"
+#include "globals.h"
+
+struct Progress;
 
 /**
  * maildir_hcache_key - Get the header cache key for an Email
  * @param e Email
  * @retval str Header cache key string
  */
-static const char *maildir_hcache_key(struct Email *e)
+const char *maildir_hcache_key(struct Email *e)
 {
   return e->path + 4;
 }
@@ -55,7 +59,7 @@ static const char *maildir_hcache_key(struct Email *e)
  *
  * @note This length excludes the flags, which will vary
  */
-static size_t maildir_hcache_keylen(const char *fn)
+size_t maildir_hcache_keylen(const char *fn)
 {
   const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
   const char *p = strrchr(fn, c_maildir_field_delimiter);
@@ -72,21 +76,44 @@ void maildir_hcache_close(struct HeaderCache **ptr)
 }
 
 /**
- * maildir_hcache_delete - Delete an Email from the Header Cache
- * @param hc Header Cache
- * @param e  Email to delete
- * @retval  0 Success
- * @retval -1 Error
+ * maildir_hcache_delete - Delete Emails from the Header Cache
+ * @param hc        Header Cache
+ * @param ea        Emails to delete
+ * @param mbox_path Path to Mailbox
+ * @param progress  Progress Bar
+ * @retval enum #MxOpenReturns
+ *
+ * @note May be interruped by Ctrl-C (SIGINT)
  */
-int maildir_hcache_delete(struct HeaderCache *hc, struct Email *e)
+enum MxOpenReturns maildir_hcache_delete(struct HeaderCache *hc, struct EmailArray *ea,
+                                         const char *mbox_path, struct Progress *progress)
 {
-  if (!hc || !e)
-    return 0;
+  progress_set_message(progress, _("Deleting cache %s..."), mbox_path);
 
-  const char *key = maildir_hcache_key(e);
-  size_t keylen = maildir_hcache_keylen(key);
+  int count = 0;
+  struct Email **ep = NULL;
+  enum MxOpenReturns rc = MX_OPEN_ABORT;
 
-  return hcache_delete_email(hc, key, keylen);
+  mutt_sig_allow_interrupt(true);
+  ARRAY_FOREACH(ep, ea)
+  {
+    if (SigInt)
+    {
+      SigInt = false; // LCOV_EXCL_LINE
+      goto done;      // LCOV_EXCL_LINE
+    }
+
+    struct Email *e = *ep;
+    struct MaildirEmailData *edata = maildir_edata_get(e);
+
+    hcache_delete_email(hc, e->path + edata->uid_start, edata->uid_length);
+    progress_update(progress, count++, -1);
+  }
+  rc = MX_OPEN_OK;
+
+done:
+  mutt_sig_allow_interrupt(false);
+  return rc;
 }
 
 /**
@@ -104,61 +131,124 @@ struct HeaderCache *maildir_hcache_open(struct Mailbox *m)
 }
 
 /**
- * maildir_hcache_read - Read an Email from the Header Cache
- * @param[in] hc Header Cache
- * @param[in] e  Email to find
- * @param[in] fn Filename
- * @retval ptr Email from Header Cache
+ * maildir_hcache_read - Read Emails from the Header Cache
+ * @param[in]     hc        Header Cache
+ * @param[in]     mbox_path Path to Mailbox
+ * @param[in,out] fa        Filenames to look up
+ * @param[in,out] ea        Emails found in the Header Cache
+ * @param[in]     progress  Progress Bar
+ * @retval enum #MxOpenReturns
+ *
+ * For each filename in @a fa, try to find a matching Email in the Header Cache.
+ * The Emails are stored in @a ea.
+ *
+ * @note May be interruped by Ctrl-C (SIGINT)
  */
-struct Email *maildir_hcache_read(struct HeaderCache *hc, struct Email *e, const char *fn)
+enum MxOpenReturns maildir_hcache_read(struct HeaderCache *hc, const char *mbox_path,
+                                       struct FilenameArray *fa,
+                                       struct EmailArray *ea, struct Progress *progress)
 {
-  if (!hc || !e)
-    return NULL;
+  if (!hc || ARRAY_EMPTY(fa))
+    return MX_OPEN_OK;
 
-  struct stat st_lastchanged = { 0 };
-  int rc = 0;
+  enum MxOpenReturns rc = MX_OPEN_ABORT;
+  progress_set_size(progress, ARRAY_SIZE(fa));
+  progress_set_message(progress, _("Reading cache %s..."), mbox_path);
 
-  const char *key = maildir_hcache_key(e);
-  size_t keylen = maildir_hcache_keylen(key);
-
-  struct HCacheEntry hce = hcache_fetch_email(hc, key, keylen, 0);
-  if (!hce.email)
-    return NULL;
-
+  struct Buffer *path_file = buf_pool_get();
   const bool c_maildir_header_cache_verify = cs_subset_bool(NeoMutt->sub, "maildir_header_cache_verify");
-  if (c_maildir_header_cache_verify)
-    rc = stat(fn, &st_lastchanged);
+  struct Filename *fnp = NULL;
 
-  if ((rc == 0) && (st_lastchanged.st_mtime <= hce.uidvalidity))
+  mutt_sig_allow_interrupt(true);
+  ARRAY_FOREACH(fnp, fa)
   {
-    hce.email->edata = maildir_edata_new();
+    if (SigInt)
+    {
+      SigInt = false; // LCOV_EXCL_LINE
+      goto done;      // LCOV_EXCL_LINE
+    }
+
+    struct stat st_lastchanged = { 0 };
+
+    struct HCacheEntry hce = hcache_fetch_email(hc, fnp->sub_name + fnp->uid_start,
+                                                fnp->uid_length, 0);
+    if (!hce.email) // not in cache
+      continue;
+
+    if (c_maildir_header_cache_verify)
+    {
+      buf_printf(path_file, "%s/%s", mbox_path, fnp->sub_name);
+      int rc_stat = stat(buf_string(path_file), &st_lastchanged);
+      if ((rc_stat != 0) || (st_lastchanged.st_mtime > hce.uidvalidity))
+      {
+        FREE(&hce.email); // cache out-of-date
+        continue;
+      }
+    }
+
+    struct MaildirEmailData *edata = maildir_edata_new();
+    edata->uid_start = fnp->uid_start;
+    edata->uid_length = fnp->uid_length;
+
+    hce.email->edata = edata;
     hce.email->edata_free = maildir_edata_free;
-    hce.email->old = e->old;
-    hce.email->path = mutt_str_dup(e->path);
-    maildir_parse_flags(hce.email, fn);
+    hce.email->old = fnp->is_cur;
+    hce.email->path = fnp->sub_name; // Transfer string
+    fnp->sub_name = NULL;
+    ARRAY_ADD(ea, hce.email); // Transfer Email
+    hce.email = NULL;
+    progress_update(progress, ARRAY_SIZE(ea), -1);
   }
-  else
-  {
-    email_free(&hce.email);
-  }
+  rc = MX_OPEN_OK;
 
-  return hce.email;
+done:
+  mutt_sig_allow_interrupt(false);
+  buf_pool_release(&path_file);
+  return rc;
 }
 
 /**
- * maildir_hcache_store - Save an Email to the Header Cache
+ * maildir_hcache_store - Save Emails to the Header Cache
  * @param hc        Header Cache
- * @param e         Email to save
- * @retval  0 Success
- * @retval -1 Error
+ * @param ea        Emails to save
+ * @param skip      Number Emails to skip in @a ea
+ * @param mbox_path Path to Mailbox
+ * @param progress  Progress Bar
+ * @retval enum #MxOpenReturns
+ *
+ * @note May be interruped by Ctrl-C (SIGINT)
  */
-int maildir_hcache_store(struct HeaderCache *hc, struct Email *e)
+enum MxOpenReturns maildir_hcache_store(struct HeaderCache *hc, struct EmailArray *ea,
+                                        size_t skip, const char *mbox_path,
+                                        struct Progress *progress)
 {
-  if (!hc || !e)
-    return 0;
+  if (ARRAY_SIZE(ea) == skip)
+    return MX_OPEN_OK;
 
-  const char *key = maildir_hcache_key(e);
-  size_t keylen = maildir_hcache_keylen(key);
+  progress_set_message(progress, _("Saving cache %s..."), mbox_path);
 
-  return hcache_store_email(hc, key, keylen, e, 0);
+  int count = 0;
+  struct Email **ep = NULL;
+  enum MxOpenReturns rc = MX_OPEN_ABORT;
+
+  mutt_sig_allow_interrupt(true);
+  ARRAY_FOREACH_FROM(ep, ea, skip)
+  {
+    if (SigInt)
+    {
+      SigInt = false; // LCOV_EXCL_LINE
+      goto done;      // LCOV_EXCL_LINE
+    }
+
+    struct Email *e = *ep;
+    struct MaildirEmailData *edata = maildir_edata_get(e);
+
+    hcache_store_email(hc, e->path + edata->uid_start, edata->uid_length, e, 0);
+    progress_update(progress, count++, -1);
+  }
+  rc = MX_OPEN_OK;
+
+done:
+  mutt_sig_allow_interrupt(false);
+  return rc;
 }
