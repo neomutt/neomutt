@@ -152,7 +152,8 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, tmp);
         break;
       }
-    /* fallthrough */
+      __attribute__((fallthrough));
+
     case 'f':
 #ifdef USE_COMP_MBOX
       if (m && m->compress_info && (m->realpath[0] != '\0'))

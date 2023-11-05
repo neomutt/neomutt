@@ -227,7 +227,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         break;
       }
     }
-    /* fallthrough */
+      __attribute__((fallthrough));
+
     case 'F':
       if (!optional)
       {
@@ -242,7 +243,8 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         optional = false;
         break;
       }
-    /* fallthrough */
+      __attribute__((fallthrough));
+
     case 'f':
       if (!optional)
       {

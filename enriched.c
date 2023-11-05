@@ -548,8 +548,9 @@ int text_enriched_handler(struct Body *a, struct State *state)
           tag_len = 0;
           text_state = TAG;
         }
-      /* Yes, (it wasn't a <<, so this char is first in TAG) */
-      /* fallthrough */
+        /* Yes, (it wasn't a <<, so this char is first in TAG) */
+        __attribute__((fallthrough));
+
       case TAG:
         if (wc == (wchar_t) '>')
         {
