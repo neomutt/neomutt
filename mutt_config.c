@@ -117,7 +117,7 @@ static struct ConfigDef MainVars[] = {
   { "abort_backspace", DT_BOOL, true, 0, NULL,
     "Hitting backspace against an empty prompt aborts the prompt"
   },
-  { "abort_key", DT_STRING|DT_NOT_EMPTY, IP "\007", 0, NULL,
+  { "abort_key", DT_STRING|DT_NOT_EMPTY|DT_ON_STARTUP, IP "\007", 0, NULL,
     "String representation of key to abort prompts"
   },
   { "arrow_cursor", DT_BOOL, false, 0, NULL,
@@ -177,7 +177,7 @@ static struct ConfigDef MainVars[] = {
   { "collapse_unread", DT_BOOL, true, 0, NULL,
     "Prevent the collapse of threads with unread emails"
   },
-  { "color_directcolor", DT_BOOL, false, 0, NULL,
+  { "color_directcolor", DT_BOOL|DT_ON_STARTUP, false, 0, NULL,
     "Use 24bit colors (aka truecolor aka directcolor)"
   },
   { "config_charset", DT_STRING, 0, 0, charset_validator,
