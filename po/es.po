@@ -742,9 +742,8 @@ msgid "No newsgroups match the mask"
 msgstr "Ningún grupo de noticias coinciden con el patrón"
 
 #: browser/functions.c:257
-#, fuzzy
 msgid "There are no mailboxes"
-msgstr "No hay nuevos mensajes"
+msgstr "No hay buzones"
 
 #: browser/functions.c:306 browser/functions.c:649 browser/functions.c:708
 msgid "No files match the file mask"
@@ -848,12 +847,11 @@ msgstr "%s: parámetros insuficientes"
 #: color/command.c:365
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "El soporte de colores directos no estan compilados en: %s"
 
 #: color/command.c:372
-#, fuzzy, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "No hay soporte para colores estándar"
+msgstr "Desabilitado el soporte para colores estándar: %s"
 
 #: color/command.c:379 color/parse_color.c:188 color/parse_color.c:227
 #, c-format
@@ -880,24 +878,24 @@ msgstr "Muchos colores: %d / %d"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Colores citados\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Color de expresiones regulares %s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Colores Simple\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Colores Simples\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Colores de estatus\n"
 
 #. L10N: '%s' is the file name of the temporary file
 #: color/dump.c:460 commands.c:857 commands.c:916 commands.c:1600
@@ -1266,9 +1264,8 @@ msgid "Can't create file %s"
 msgstr "No se pudo crear el archivo %s"
 
 #: compose/functions.c:1503
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Lo que tenemos aquí es un fallo al adjuntar"
+msgstr "Error adjuntando archivo"
 
 #: compose/functions.c:1545
 msgid "Can't print multipart attachments"
@@ -2891,9 +2888,8 @@ msgid "collapse/uncollapse current thread"
 msgstr "colapsar/expandir hilo actual"
 
 #: gui/opcodes.h:198
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "suprimir mensajes coincidentes"
+msgstr "eliminar mensajes no ocultos que coincidan un patrón"
 
 #: gui/opcodes.h:199
 msgid "retrieve mail from POP server"
@@ -3008,19 +3004,16 @@ msgid "save changes to mailbox"
 msgstr "guardar cabios en el buzón"
 
 #: gui/opcodes.h:227
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "marcar mensajes coincidentes con un patrón"
+msgstr "marcar mensajes no ocultos que coincidan con un patrón"
 
 #: gui/opcodes.h:228
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "restaurar mensajes que coincidan con un patrón"
+msgstr "recuperar mensajes no ocultos que coincidan con un patrón"
 
 #: gui/opcodes.h:229
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "quitar marca de los mensajes que coincidan con un patrón"
+msgstr "desetiquetar mensajes no-oculots que coincidan con un patrón"
 
 #: gui/opcodes.h:230
 msgid "create a hotkey macro for the current message"
@@ -3649,96 +3642,96 @@ msgstr "ERROR: por favor reporte este fallo"
 
 #: help.c:412
 msgid "message is tagged"
-msgstr ""
+msgstr "el mensaje esta etiquetado"
 
 #: help.c:414
 msgid "message is flagged"
-msgstr ""
+msgstr "el mensaje esta marcado"
 
 #: help.c:415
 msgid "message is deleted"
-msgstr ""
+msgstr "el mensaje esta eliminado"
 
 #: help.c:417
 msgid "attachment is deleted"
-msgstr ""
+msgstr "el adjunto esta eliminado"
 
 #: help.c:419
 msgid "message has been replied to"
-msgstr ""
+msgstr "el mensaje ya ha sido respondido"
 
 #: help.c:420
 msgid "message has been read"
-msgstr ""
+msgstr "el mensaje ha sido leído"
 
 #: help.c:421
 msgid "message is new"
-msgstr ""
+msgstr "el mensaje es nuevo"
 
 #: help.c:423
 msgid "thread has been read"
-msgstr ""
+msgstr "el hilo ha sido leído"
 
 #: help.c:425
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "el hilo tiene al menos un nuvo mensaje"
 
 #: help.c:427
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "el mensaje ha sido leido (%S expandido)"
 
 #: help.c:429
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "el mensaje ha sido leido (%Z expando)"
 
 #: help.c:433
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "el mensaje ha sido firmado con una llave verificada"
 
 #: help.c:435
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "el mensaje tiene encriptación PGP"
 
 #: help.c:437
 msgid "message is signed"
-msgstr ""
+msgstr "el mensaje esta firmado"
 
 #: help.c:439
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "el mensaje contiene una llave PGP"
 
 #: help.c:441
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "el mensaje no tiene información criptográfica"
 
 #: help.c:445
 msgid "message is not To: you"
-msgstr ""
+msgstr "el mensaje no es Para: ti"
 
 #: help.c:447
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "el mensaje es Para: tú y solo tú"
 
 #: help.c:448
 msgid "message is To: you"
-msgstr ""
+msgstr "el mensaje es Para: ti"
 
 #: help.c:449
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "el mensaje es Cc: para ti"
 
 #: help.c:451
 msgid "message is From: you"
-msgstr ""
+msgstr "el mensaje es De: Ti"
 
 #: help.c:453
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "el mensaje se ha enviado a una lista de correos suscrita"
 
 #: help.c:455
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "estás en Responder-a: lista"
 
 #: help.c:474
 msgid "<UNKNOWN>"
@@ -3754,7 +3747,7 @@ msgstr "Funciones sin enlazar:"
 
 #: help.c:508
 msgid "Message flags:"
-msgstr ""
+msgstr "Marcas del mensaje:"
 
 #: help.c:514
 #, c-format
@@ -4582,17 +4575,17 @@ msgstr "Entrada mailcap para tipo %s no encontrada"
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:52
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter debe ser exactamnete de un caracter de longitud"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter no puede ser alfanumérico o '-.\\/'"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:67
 msgid "maildir_field_delimiter can only be set once"
-msgstr ""
+msgstr "maildir_field_delimiter puede solamente ser definido una vez"
 
 #: maildir/maildir.c:267 maildir/mh.c:303
 msgid "Could not flush message to disk"
@@ -6662,7 +6655,7 @@ msgstr "Mostrando la ayuda"
 #: pager/functions.c:1059
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Guadado en: %s"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
@@ -6715,7 +6708,6 @@ msgstr "Firma PGP NO pudo ser verificada"
 #. `%ld` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: pager/pbar.c:117
-#, fuzzy, c-format
 msgid "%ld%%"
 msgstr "%ld%%"
 
@@ -6757,7 +6749,7 @@ msgstr "No puedes fijar una variable con el comando '%s'"
 
 #: parse/set.c:536
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "'+' y '-' debe ser seguido por '='"
 
 #: parse/set.c:544
 msgid "Can't use prefix when setting a variable"
@@ -7328,9 +7320,8 @@ msgid "Decrypting message..."
 msgstr "Descifrando mensaje..."
 
 #: postpone/postpone.c:549
-#, fuzzy
 msgid "Could not decrypt postponed message"
-msgstr "No se pudo descifrar el mensaje PGP"
+msgstr "No se pudo descifrar el mensaje pospuesto"
 
 #: postpone/postpone.c:682 postpone/postpone.c:693
 msgid "No postponed messages"
@@ -7340,7 +7331,6 @@ msgstr "No hay mensajes pospuestos"
 #. `%d` percentage, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:169
-#, fuzzy, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
@@ -7348,7 +7338,6 @@ msgstr "%s %zu (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:179
-#, fuzzy, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
 
@@ -7356,7 +7345,6 @@ msgstr "%s %s/%s (%d%%)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
 #: progress/window.c:187
-#, fuzzy, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
@@ -7700,7 +7688,6 @@ msgstr "(ningún buzón)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:322
-#, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"
 
