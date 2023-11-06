@@ -1895,7 +1895,7 @@ full_fcc:
             rc = 0;
             break;
           }
-          __attribute__((fallthrough));
+          FALLTHROUGH;
 
         case 1: /* (r)etry */
           rc = mutt_write_multiple_fcc(buf_string(fcc), e, NULL, false, NULL, finalpath, sub);

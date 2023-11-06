@@ -2357,7 +2357,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
                                             NULL, &errmsg);
               /* (c)lear */
-              __attribute__((fallthrough));
+              FALLTHROUGH;
 
             case -1: /* Ctrl-G or Enter */
               choice = 0;

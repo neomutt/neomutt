@@ -124,7 +124,7 @@ static void mailbox_check(struct Mailbox *m_cur, struct Mailbox *m_check,
         // and total counts per 'mbox_check_stats' docs.
         if ((flags & MUTT_MAILBOX_CHECK_FORCE_STATS) == 0)
           break;
-        __attribute__((fallthrough));
+        FALLTHROUGH;
 
       case MUTT_IMAP:
       case MUTT_MBOX:

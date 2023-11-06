@@ -964,7 +964,7 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
     {
       case OP_DISPLAY_HEADERS:
         bool_str_toggle(NeoMutt->sub, "weed", NULL);
-        __attribute__((fallthrough));
+        FALLTHROUGH;
 
       case OP_ATTACHMENT_VIEW:
       {
@@ -1059,12 +1059,12 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
           op = OP_NULL;
           break;
         }
-        __attribute__((fallthrough));
+        FALLTHROUGH;
 
       case OP_ATTACHMENT_COLLAPSE:
         if (recv)
           return op;
-        __attribute__((fallthrough));
+        FALLTHROUGH;
 
       default:
         op = OP_NULL;

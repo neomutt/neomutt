@@ -298,7 +298,7 @@ int mutt_autocrypt_gpgme_select_or_create_key(struct Address *addr, struct Buffe
          for some reason, we prompt to see if they want to create a key instead.  */
       if (query_yesorno(_("Create a new GPG key for this account, instead?"), MUTT_YES) != MUTT_YES)
         break;
-      __attribute__((fallthrough));
+      FALLTHROUGH;
 
     case 1: /* create new */
       rc = mutt_autocrypt_gpgme_create_key(addr, keyid, keydata);

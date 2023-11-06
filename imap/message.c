@@ -581,7 +581,7 @@ static unsigned int imap_fetch_msn_seqset(struct Buffer *buf, struct ImapAccount
       {
         case 1: /* single: convert to a range */
           state = 2;
-          __attribute__((fallthrough));
+          FALLTHROUGH;
 
         case 2: /* extend range ending */
           range_end = msn;

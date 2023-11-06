@@ -152,7 +152,7 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
         snprintf(buf, buflen, fmt, tmp);
         break;
       }
-      __attribute__((fallthrough));
+      FALLTHROUGH;
 
     case 'f':
 #ifdef USE_COMP_MBOX

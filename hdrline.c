@@ -446,7 +446,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
           break;
         }
       }
-      __attribute__((fallthrough));
+      FALLTHROUGH;
 
     case 'a':
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_AUTHOR);
@@ -1389,7 +1389,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         break;
       }
     }
-      __attribute__((fallthrough));
+      FALLTHROUGH;
 
     default:
       snprintf(buf, buflen, "%%%s%c", prec, op);

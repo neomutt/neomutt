@@ -67,7 +67,7 @@ static void curses_signal_handler(int sig)
         endwin();
       kill(0, SIGSTOP);
     }
-      __attribute__((fallthrough));
+      FALLTHROUGH;
 
     case SIGCONT:
       if (!IsEndwin)

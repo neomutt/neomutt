@@ -104,4 +104,6 @@
 #include "string2.h"
 // IWYU pragma: end_keep
 
+#define FALLTHROUGH __attribute__((fallthrough))
+
 #endif /* MUTT_MUTT_LIB_H */
