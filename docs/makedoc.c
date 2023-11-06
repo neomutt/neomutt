@@ -1082,7 +1082,7 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
       if (strcmp(s, "0") == 0)
         break;
     }
-    /* fallthrough */
+      __attribute__((fallthrough));
     default:
     {
       strncpy(t, s, l);

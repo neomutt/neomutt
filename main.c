@@ -632,7 +632,8 @@ main
 #ifdef USE_NNTP
         case 'g': /* Specify a news server */
           cli_nntp = optarg;
-          /* fallthrough */
+          FALLTHROUGH;
+
         case 'G': /* List of newsgroups */
           flags |= MUTT_CLI_SELECT | MUTT_CLI_NEWS;
           break;

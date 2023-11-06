@@ -190,6 +190,7 @@ void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort)
       break;
     case SORT_ORDER:
       fn = sb_sort_order;
+      FALLTHROUGH;
     default:
       break;
   }

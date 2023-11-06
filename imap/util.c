@@ -252,7 +252,8 @@ static void imap_msn_index_to_uid_seqset(struct Buffer *buf, struct ImapMboxData
       {
         case 1: /* single: convert to a range */
           state = 2;
-          /* fall through */
+          FALLTHROUGH;
+
         case 2: /* extend range ending */
           range_end = cur_uid;
           break;

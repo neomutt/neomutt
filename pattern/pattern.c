@@ -383,7 +383,8 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
         {
           case MUTT_UNDELETE:
             mutt_set_flag(m, e, MUTT_PURGE, false, true);
-          /* fallthrough */
+            FALLTHROUGH;
+
           case MUTT_DELETE:
             mutt_set_flag(m, e, MUTT_DELETE, (op == MUTT_DELETE), true);
             break;

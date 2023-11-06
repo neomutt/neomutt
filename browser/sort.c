@@ -192,6 +192,7 @@ void browser_sort(struct BrowserState *state)
     case SORT_DATE:
       if (OptNews)
         return;
+      FALLTHROUGH;
 #endif
     default:
       break;
