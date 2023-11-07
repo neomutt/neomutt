@@ -80,18 +80,6 @@ static struct ConfigDef MaildirVars[] = {
   { "maildir_trash", DT_BOOL, false, 0, NULL,
     "Use the maildir 'trashed' flag, rather than deleting"
   },
-  { "mh_purge", DT_BOOL, false, 0, NULL,
-    "Really delete files in MH mailboxes"
-  },
-  { "mh_seq_flagged", DT_STRING, IP "flagged", 0, NULL,
-    "MH sequence for flagged message"
-  },
-  { "mh_seq_replied", DT_STRING, IP "replied", 0, NULL,
-    "MH sequence to tag replied messages"
-  },
-  { "mh_seq_unseen", DT_STRING, IP "unseen", 0, NULL,
-    "MH sequence for unseen messages"
-  },
   { NULL },
   // clang-format on
 };

@@ -20,19 +20,19 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILDIR_SEQUENCE_H
-#define MUTT_MAILDIR_SEQUENCE_H
+#ifndef MUTT_MH_SEQUENCE_H
+#define MUTT_MH_SEQUENCE_H
 
 #include <stdbool.h>
 #include <stdint.h>
 
 struct Mailbox;
 
-typedef uint8_t MhSeqFlags;     ///< Flags, e.g. #MH_SEQ_UNSEEN
-#define MH_SEQ_NO_FLAGS      0  ///< No flags are set
-#define MH_SEQ_UNSEEN  (1 << 0) ///< Email hasn't been read
-#define MH_SEQ_REPLIED (1 << 1) ///< Email has been replied to
-#define MH_SEQ_FLAGGED (1 << 2) ///< Email is flagged
+typedef uint8_t MhSeqFlags;         ///< Flags, e.g. #MH_SEQ_UNSEEN
+#define MH_SEQ_NO_FLAGS        0    ///< No flags are set
+#define MH_SEQ_UNSEEN    (1 << 0)   ///< Email hasn't been read
+#define MH_SEQ_REPLIED   (1 << 1)   ///< Email has been replied to
+#define MH_SEQ_FLAGGED   (1 << 2)   ///< Email is flagged
 
 /**
  * struct MhSequences - Set of MH sequence numbers
@@ -43,11 +43,11 @@ struct MhSequences
   MhSeqFlags *flags; ///< Flags for each email
 };
 
-int        mh_seq_read   (struct MhSequences *mhs, const char *path);
 void       mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool replied);
 int        mh_seq_changed(struct Mailbox *m);
-void       mh_seq_update (struct Mailbox *m);
 MhSeqFlags mh_seq_check  (struct MhSequences *mhs, int i);
 void       mh_seq_free   (struct MhSequences *mhs);
+int        mh_seq_read   (struct MhSequences *mhs, const char *path);
+void       mh_seq_update (struct Mailbox *m);
 
-#endif /* MUTT_MAILDIR_SEQUENCE_H */
+#endif /* MUTT_MH_SEQUENCE_H */

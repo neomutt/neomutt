@@ -1,9 +1,9 @@
 /**
  * @file
- * Maildir-specific Email data
+ * Mh local mailbox type
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,21 +20,26 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILDIR_EDATA_H
-#define MUTT_MAILDIR_EDATA_H
-
-struct Email;
-
 /**
- * struct MaildirEmailData - Maildir-specific Email data - @extends Email
+ * @page lib_mh Mh Mailbox
+ *
+ * Mh local mailbox type
+ *
+ * | File               | Description               |
+ * | :----------------- | :------------------------ |
+ * | mh/config.c        | @subpage mh_config        |
+ * | mh/mdata.c         | @subpage mh_mdata         |
+ * | mh/mh.c            | @subpage mh_mh            |
+ * | mh/mhemail.c       | @subpage mh_mdemail       |
+ * | mh/sequence.c      | @subpage mh_sequence      |
+ * | mh/shared.c        | @subpage mh_shared        |
  */
-struct MaildirEmailData
-{
-  char *maildir_flags; ///< Unknown Maildir flags
-};
 
-void                     maildir_edata_free(void **ptr);
-struct MaildirEmailData *maildir_edata_get(struct Email *e);
-struct MaildirEmailData *maildir_edata_new(void);
+#ifndef MUTT_MH_LIB_H
+#define MUTT_MH_LIB_H
 
-#endif /* MUTT_MAILDIR_EDATA_H */
+#include "core/lib.h"
+
+extern const struct MxOps MxMhOps;
+
+#endif /* MUTT_MH_LIB_H */

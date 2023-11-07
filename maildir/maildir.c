@@ -43,11 +43,11 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <utime.h>
-#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
 #include "lib.h"
 #include "progress/lib.h"
 #include "copy.h"
@@ -56,6 +56,7 @@
 #include "mdata.h"
 #include "mdemail.h"
 #include "mx.h"
+#include "protos.h"
 #include "sort.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
@@ -73,6 +74,27 @@ struct Progress;
 #define MMC_NO_DIRS 0        ///< No directories changed
 #define MMC_NEW_DIR (1 << 0) ///< 'new' directory changed
 #define MMC_CUR_DIR (1 << 1) ///< 'cur' directory changed
+
+/**
+ * maildir_umask - Create a umask from the mailbox directory
+ * @param  m   Mailbox
+ * @retval num Umask
+ */
+mode_t maildir_umask(struct Mailbox *m)
+{
+  struct MaildirMboxData *mdata = maildir_mdata_get(m);
+  if (mdata && mdata->umask)
+    return mdata->umask;
+
+  struct stat st = { 0 };
+  if (stat(mailbox_path(m), &st) != 0)
+  {
+    mutt_debug(LL_DEBUG1, "stat failed on %s\n", mailbox_path(m));
+    return 077;
+  }
+
+  return 0777 & ~st.st_mode;
+}
 
 /**
  * maildir_hcache_key - Get the header cache key for an Email
@@ -256,9 +278,8 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
  * m is the mail folder we commit to.
  *
  * e is a header structure to which we write the message's new
- * file name.  This is used in the mh and maildir folder sync
- * routines.  When this routine is invoked from mx_msg_commit(),
- * e is NULL.
+ * file name.  This is used in the maildir folder sync routines.
+ * When this routine is invoked from mx_msg_commit(), e is NULL.
  *
  * msg->path looks like this:
  *
@@ -353,7 +374,7 @@ cleanup:
 }
 
 /**
- * maildir_rewrite_message - Sync a message in an MH folder
+ * maildir_rewrite_message - Sync a message in an Maildir folder
  * @param m Mailbox
  * @param e Email
  * @retval  0 Success
@@ -426,7 +447,7 @@ static int maildir_sync_message(struct Mailbox *m, struct Email *e)
 
   if (e->attach_del || e->env->changed)
   {
-    /* when doing attachment deletion/rethreading, fall back to the MH case. */
+    /* when doing attachment deletion/rethreading, fall back to the maildir case. */
     if (maildir_rewrite_message(m, e) != 0)
       return -1;
     e->env->changed = false;
@@ -695,6 +716,50 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 }
 
 /**
+ * maildir_move_to_mailbox - Copy the Maildir list to the Mailbox
+ * @param[in]  m   Mailbox
+ * @param[out] mda Maildir array to copy, then free
+ * @retval num Number of new emails
+ * @retval 0   Error
+ */
+int maildir_move_to_mailbox(struct Mailbox *m, const struct MdEmailArray *mda)
+{
+  if (!m)
+    return 0;
+
+  int oldmsgcount = m->msg_count;
+
+  struct MdEmail *md = NULL;
+  struct MdEmail **mdp = NULL;
+  ARRAY_FOREACH(mdp, mda)
+  {
+    md = *mdp;
+    mutt_debug(LL_DEBUG2, "Considering %s\n", NONULL(md->canon_fname));
+    if (!md->email)
+      continue;
+
+    mutt_debug(LL_DEBUG2, "Adding header structure. Flags: %s%s%s%s%s\n",
+               md->email->flagged ? "f" : "", md->email->deleted ? "D" : "",
+               md->email->replied ? "r" : "", md->email->old ? "O" : "",
+               md->email->read ? "R" : "");
+    mx_alloc_memory(m, m->msg_count);
+
+    m->emails[m->msg_count] = md->email;
+    m->emails[m->msg_count]->index = m->msg_count;
+    mailbox_size_add(m, md->email);
+
+    md->email = NULL;
+    m->msg_count++;
+  }
+
+  int num = 0;
+  if (m->msg_count > oldmsgcount)
+    num = m->msg_count - oldmsgcount;
+
+  return num;
+}
+
+/**
  * maildir_read_dir - Read a Maildir style mailbox
  * @param m      Mailbox
  * @param subdir Subdir of the maildir mailbox to read from
@@ -741,8 +806,8 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
   maildir_move_to_mailbox(m, &mda);
   maildirarray_clear(&mda);
 
-  if (!mdata->mh_umask)
-    mdata->mh_umask = mh_umask(m);
+  if (!mdata->umask)
+    mdata->umask = maildir_umask(m);
 
   return 0;
 }
@@ -1132,8 +1197,6 @@ static bool maildir_ac_add(struct Account *a, struct Mailbox *m)
  */
 static enum MxOpenReturns maildir_mbox_open(struct Mailbox *m)
 {
-  /* maildir looks sort of like MH, except that there are two subdirectories
-   * of the main folder path from which to read messages */
   if ((maildir_read_dir(m, "new") == -1) || (maildir_read_dir(m, "cur") == -1))
     return MX_OPEN_ERROR;
 
@@ -1192,6 +1255,53 @@ static bool maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   }
 
   return true;
+}
+
+/**
+ * maildir_update_flags - Update the mailbox flags
+ * @param m     Mailbox
+ * @param e_old Old Email
+ * @param e_new New Email
+ * @retval true  The flags changed
+ * @retval false Otherwise
+ */
+bool maildir_update_flags(struct Mailbox *m, struct Email *e_old, struct Email *e_new)
+{
+  if (!m)
+    return false;
+
+  /* save the global state here so we can reset it at the
+   * end of list block if required.  */
+  bool context_changed = m->changed;
+
+  /* user didn't modify this message.  alter the flags to match the
+   * current state on disk.  This may not actually do
+   * anything. mutt_set_flag() will just ignore the call if the status
+   * bits are already properly set, but it is still faster not to pass
+   * through it */
+  if (e_old->flagged != e_new->flagged)
+    mutt_set_flag(m, e_old, MUTT_FLAG, e_new->flagged, true);
+  if (e_old->replied != e_new->replied)
+    mutt_set_flag(m, e_old, MUTT_REPLIED, e_new->replied, true);
+  if (e_old->read != e_new->read)
+    mutt_set_flag(m, e_old, MUTT_READ, e_new->read, true);
+  if (e_old->old != e_new->old)
+    mutt_set_flag(m, e_old, MUTT_OLD, e_new->old, true);
+
+  /* mutt_set_flag() will set this, but we don't need to
+   * sync the changes we made because we just updated the
+   * context to match the current on-disk state of the
+   * message.  */
+  bool header_changed = e_old->changed;
+  e_old->changed = false;
+
+  /* if the mailbox was not modified before we made these
+   * changes, unset the changed flag since nothing needs to
+   * be synchronized.  */
+  if (!context_changed)
+    m->changed = false;
+
+  return header_changed;
 }
 
 /**
@@ -1553,7 +1663,7 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
   else
     mutt_str_copy(subdir, "new", sizeof(subdir));
 
-  mode_t omask = umask(mh_umask(m));
+  mode_t omask = umask(maildir_umask(m));
   while (true)
   {
     snprintf(path, sizeof(path), "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",

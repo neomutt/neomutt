@@ -1,6 +1,6 @@
 /**
  * @file
- * Maildir-specific Email data
+ * Mh Email helper
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -20,21 +20,29 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILDIR_EDATA_H
-#define MUTT_MAILDIR_EDATA_H
+#ifndef MUTT_MH_MDEMAIL_H
+#define MUTT_MH_MDEMAIL_H
 
-struct Email;
+#include <stdbool.h>
+#include <sys/types.h>
+#include "mutt/lib.h"
 
 /**
- * struct MaildirEmailData - Maildir-specific Email data - @extends Email
+ * struct MhEmail - A Mh Email helper
+ *
+ * Used during scanning
  */
-struct MaildirEmailData
+struct MhEmail
 {
-  char *maildir_flags; ///< Unknown Maildir flags
+  struct Email *email;           ///< Temporary Email
+  char *        canon_fname;     ///< Canonical filename for hashing
+  bool          header_parsed;   ///< Has the Email header been parsed?
+  ino_t         inode;           ///< Inode number of the file
 };
+ARRAY_HEAD(MhEmailArray, struct MhEmail *);
 
-void                     maildir_edata_free(void **ptr);
-struct MaildirEmailData *maildir_edata_get(struct Email *e);
-struct MaildirEmailData *maildir_edata_new(void);
+void            mharray_clear(struct MhEmailArray *mha);
+void            mh_entry_free(struct MhEmail **ptr);
+struct MhEmail *mh_entry_new (void);
 
-#endif /* MUTT_MAILDIR_EDATA_H */
+#endif /* MUTT_MH_MDEMAIL_H */

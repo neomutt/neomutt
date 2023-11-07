@@ -21,7 +21,7 @@
  */
 
 /**
- * @page maildir_sequence MH Mailbox Sequences
+ * @page mh_sequence MH Mailbox Sequences
  *
  * MH Mailbox Sequences
  */
@@ -32,12 +32,12 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "sequence.h"
+#include "shared.h"
 
 /**
  * mh_seq_alloc - Allocate more memory for sequences

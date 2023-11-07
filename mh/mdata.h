@@ -1,9 +1,9 @@
 /**
  * @file
- * Maildir/MH private types
+ * Mh-specific Mailbox data
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,18 +20,26 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_MAILDIR_PRIVATE_H
-#define MUTT_MAILDIR_PRIVATE_H
+#ifndef MUTT_MH_MDATA_H
+#define MUTT_MH_MDATA_H
 
-#include <stdbool.h>
-#include <stdio.h>
 #include <sys/types.h>
+#include <time.h>
 
-struct MdEmailArray;
 struct Mailbox;
 
-int    maildir_move_to_mailbox(struct Mailbox *m, const struct MdEmailArray *mda);
-bool   mh_mkstemp             (struct Mailbox *m, FILE **fp, char **tgt);
-mode_t mh_umask               (struct Mailbox *m);
+/**
+ * struct MhMboxData - Mh-specific Mailbox data - @extends Mailbox
+ */
+struct MhMboxData
+{
+  struct timespec mtime;     ///< Time Mailbox was last changed
+  struct timespec mtime_seq; ///< Time '.mh_sequences' was last changed
+  mode_t          umask;     ///< umask to use when creating files
+};
 
-#endif /* MUTT_MAILDIR_PRIVATE_H */
+void               mh_mdata_free(void **ptr);
+struct MhMboxData *mh_mdata_get(struct Mailbox *m);
+struct MhMboxData *mh_mdata_new(void);
+
+#endif /* MUTT_MH_MDATA_H */
