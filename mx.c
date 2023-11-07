@@ -48,6 +48,7 @@
 #include "maildir/lib.h"
 #include "mbox/lib.h"
 #include "menu/lib.h"
+#include "mh/lib.h"
 #include "question/lib.h"
 #include "copy.h"
 #include "external.h"

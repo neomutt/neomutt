@@ -35,7 +35,7 @@ struct MaildirMboxData
 {
   struct timespec mtime;     ///< Time Mailbox was last changed
   struct timespec mtime_cur; ///< Timestamp of the 'cur' dir
-  mode_t mh_umask;           ///< umask to use when creating files
+  mode_t umask;              ///< umask to use when creating files
 };
 
 void                    maildir_mdata_free(void **ptr);

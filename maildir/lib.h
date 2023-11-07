@@ -32,9 +32,6 @@
  * | maildir/maildir.c  | @subpage maildir_maildir  |
  * | maildir/mdata.c    | @subpage maildir_mdata    |
  * | maildir/mdemail.c  | @subpage maildir_mdemail  |
- * | maildir/mh.c       | @subpage maildir_mh       |
- * | maildir/sequence.c | @subpage maildir_sequence |
- * | maildir/shared.c   | @subpage maildir_shared   |
  */
 
 #ifndef MUTT_MAILDIR_LIB_H
@@ -49,7 +46,6 @@ struct Email;
 struct HeaderCache;
 
 extern const struct MxOps MxMaildirOps;
-extern const struct MxOps MxMhOps;
 
 int           maildir_check_empty      (struct Buffer *path);
 struct Email *maildir_email_new        (void);
@@ -61,7 +57,5 @@ bool          maildir_parse_message    (enum MailboxType type, const char *fname
 bool          maildir_parse_stream     (enum MailboxType type, FILE *fp, const char *fname, bool is_old, struct Email *e);
 bool          maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCache *hc);
 bool          maildir_update_flags     (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
-int           mh_check_empty           (struct Buffer *path);
-int           mh_sync_mailbox_message  (struct Mailbox *m, struct Email *e, struct HeaderCache *hc);
 
 #endif /* MUTT_MAILDIR_LIB_H */

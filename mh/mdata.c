@@ -1,6 +1,6 @@
 /**
  * @file
- * Maildir-specific Mailbox data
+ * Mh-specific Mailbox data
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -21,9 +21,9 @@
  */
 
 /**
- * @page maildir_mdata Maildir-specific Mailbox data
+ * @page mh_mdata Mh-specific Mailbox data
  *
- * Maildir-specific Mailbox data
+ * Mh-specific Mailbox data
  */
 
 #include "config.h"
@@ -32,9 +32,9 @@
 #include "mdata.h"
 
 /**
- * maildir_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
+ * mh_mdata_free - Free the private Mailbox data - Implements Mailbox::mdata_free() - @ingroup mailbox_mdata_free
  */
-void maildir_mdata_free(void **ptr)
+void mh_mdata_free(void **ptr)
 {
   if (!ptr || !*ptr)
     return;
@@ -43,23 +43,23 @@ void maildir_mdata_free(void **ptr)
 }
 
 /**
- * maildir_mdata_new - Create a new MaildirMboxData object
- * @retval ptr New MaildirMboxData struct
+ * mh_mdata_new - Create a new MhMboxData object
+ * @retval ptr New MhMboxData struct
  */
-struct MaildirMboxData *maildir_mdata_new(void)
+struct MhMboxData *mh_mdata_new(void)
 {
-  struct MaildirMboxData *mdata = mutt_mem_calloc(1, sizeof(struct MaildirMboxData));
+  struct MhMboxData *mdata = mutt_mem_calloc(1, sizeof(struct MhMboxData));
   return mdata;
 }
 
 /**
- * maildir_mdata_get - Get the private data for this Mailbox
+ * mh_mdata_get - Get the private data for this Mailbox
  * @param m Mailbox
- * @retval ptr MaildirMboxData
+ * @retval ptr MhMboxData
  */
-struct MaildirMboxData *maildir_mdata_get(struct Mailbox *m)
+struct MhMboxData *mh_mdata_get(struct Mailbox *m)
 {
-  if (m && (m->type == MUTT_MAILDIR))
+  if (m || (m->type == MUTT_MH))
     return m->mdata;
 
   return NULL;

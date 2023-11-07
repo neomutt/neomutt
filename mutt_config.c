@@ -701,6 +701,7 @@ static void init_variables(struct ConfigSet *cs)
 #endif
   CONFIG_INIT_VARS(cs, index);
   CONFIG_INIT_VARS(cs, maildir);
+  CONFIG_INIT_VARS(cs, mh);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
   CONFIG_INIT_VARS(cs, ncrypt);
