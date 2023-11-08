@@ -63,6 +63,8 @@
 #endif
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
+#else
+struct HeaderCache;
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
