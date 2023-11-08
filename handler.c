@@ -70,12 +70,12 @@
  *
  * Prototype for a function to handle MIME parts
  *
- * @param b     Body of the email
- * @param state State of text being processed
+ * @param b_email Body of the email
+ * @param state   State of text being processed
  * @retval 0 Success
  * @retval -1 Error
  */
-typedef int (*handler_t)(struct Body *b, struct State *state);
+typedef int (*handler_t)(struct Body *b_email, struct State *state);
 
 /**
  * print_part_line - Print a separator for the Mime part
@@ -521,7 +521,7 @@ static bool is_autoview(struct Body *b)
 /**
  * autoview_handler - Handler for autoviewable attachments - Implements ::handler_t - @ingroup handler_api
  */
-static int autoview_handler(struct Body *a, struct State *state)
+static int autoview_handler(struct Body *b_email, struct State *state)
 {
   struct MailcapEntry *entry = mailcap_entry_new();
   char buf[1024] = { 0 };
@@ -535,10 +535,10 @@ static int autoview_handler(struct Body *a, struct State *state)
   pid_t pid;
   int rc = 0;
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  mailcap_lookup(a, type, sizeof(type), entry, MUTT_MC_AUTOVIEW);
+  snprintf(type, sizeof(type), "%s/%s", TYPE(b_email), b_email->subtype);
+  mailcap_lookup(b_email, type, sizeof(type), entry, MUTT_MC_AUTOVIEW);
 
-  fname = mutt_str_dup(a->filename);
+  fname = mutt_str_dup(b_email->filename);
   mutt_file_sanitize_filename(fname, true);
   mailcap_expand_filename(entry->nametemplate, fname, tempfile);
   FREE(&fname);
@@ -548,7 +548,7 @@ static int autoview_handler(struct Body *a, struct State *state)
     buf_strcpy(cmd, entry->command);
 
     /* mailcap_expand_command returns 0 if the file is required */
-    bool piped = mailcap_expand_command(a, buf_string(tempfile), type, cmd);
+    bool piped = mailcap_expand_command(b_email, buf_string(tempfile), type, cmd);
 
     if (state->flags & STATE_DISPLAY)
     {
@@ -566,7 +566,7 @@ static int autoview_handler(struct Body *a, struct State *state)
       goto cleanup;
     }
 
-    mutt_file_copy_bytes(state->fp_in, fp_in, a->length);
+    mutt_file_copy_bytes(state->fp_in, fp_in, b_email->length);
 
     if (piped)
     {
@@ -674,7 +674,7 @@ cleanup:
  * all trailing spaces to improve interoperability; if $text_flowed is unset,
  * simply verbatim copy input.
  */
-static int text_plain_handler(struct Body *b, struct State *state)
+static int text_plain_handler(struct Body *b_email, struct State *state)
 {
   char *buf = NULL;
   size_t sz = 0;
@@ -701,7 +701,7 @@ static int text_plain_handler(struct Body *b, struct State *state)
 /**
  * message_handler - Handler for message/rfc822 body parts - Implements ::handler_t - @ingroup handler_api
  */
-static int message_handler(struct Body *a, struct State *state)
+static int message_handler(struct Body *b_email, struct State *state)
 {
   struct Body *b = NULL;
   LOFF_T off_start;
@@ -711,8 +711,8 @@ static int message_handler(struct Body *a, struct State *state)
   if (off_start < 0)
     return -1;
 
-  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
-      (a->encoding == ENC_UUENCODED))
+  if ((b_email->encoding == ENC_BASE64) || (b_email->encoding == ENC_QUOTED_PRINTABLE) ||
+      (b_email->encoding == ENC_UUENCODED))
   {
     b = mutt_body_new();
     b->length = mutt_file_get_size_fp(state->fp_in);
@@ -720,7 +720,7 @@ static int message_handler(struct Body *a, struct State *state)
   }
   else
   {
-    b = a;
+    b = b_email;
   }
 
   if (b->parts)
@@ -747,8 +747,8 @@ static int message_handler(struct Body *a, struct State *state)
     rc = mutt_body_handler(b->parts, state);
   }
 
-  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
-      (a->encoding == ENC_UUENCODED))
+  if ((b_email->encoding == ENC_BASE64) || (b_email->encoding == ENC_QUOTED_PRINTABLE) ||
+      (b_email->encoding == ENC_UUENCODED))
   {
     mutt_body_free(&b);
   }
@@ -759,12 +759,12 @@ static int message_handler(struct Body *a, struct State *state)
 /**
  * external_body_handler - Handler for external-body emails - Implements ::handler_t - @ingroup handler_api
  */
-static int external_body_handler(struct Body *b, struct State *state)
+static int external_body_handler(struct Body *b_email, struct State *state)
 {
   const char *str = NULL;
   char strbuf[1024] = { 0 };
 
-  const char *access_type = mutt_param_get(&b->parameter, "access-type");
+  const char *access_type = mutt_param_get(&b_email->parameter, "access-type");
   if (!access_type)
   {
     if (state->flags & STATE_DISPLAY)
@@ -779,7 +779,7 @@ static int external_body_handler(struct Body *b, struct State *state)
     }
   }
 
-  const char *expiration = mutt_param_get(&b->parameter, "expiration");
+  const char *expiration = mutt_param_get(&b_email->parameter, "expiration");
   time_t expire;
   if (expiration)
     expire = mutt_date_parse_date(expiration, NULL);
@@ -792,7 +792,7 @@ static int external_body_handler(struct Body *b, struct State *state)
     if (state->flags & (STATE_DISPLAY | STATE_PRINTING))
     {
       char pretty_size[10] = { 0 };
-      char *length = mutt_param_get(&b->parameter, "length");
+      char *length = mutt_param_get(&b_email->parameter, "length");
       if (length)
       {
         long size = strtol(length, NULL, 10);
@@ -865,13 +865,13 @@ static int external_body_handler(struct Body *b, struct State *state)
         }
       }
 
-      snprintf(strbuf, sizeof(strbuf), str, TYPE(b->parts), b->parts->subtype,
-               pretty_size, expiration);
+      snprintf(strbuf, sizeof(strbuf), str, TYPE(b_email->parts),
+               b_email->parts->subtype, pretty_size, expiration);
       state_attach_puts(state, strbuf);
-      if (b->parts->filename)
+      if (b_email->parts->filename)
       {
         state_mark_attach(state);
-        state_printf(state, _("[-- name: %s --]\n"), b->parts->filename);
+        state_printf(state, _("[-- name: %s --]\n"), b_email->parts->filename);
       }
 
       CopyHeaderFlags chflags = CH_DECODE;
@@ -879,7 +879,7 @@ static int external_body_handler(struct Body *b, struct State *state)
         chflags |= CH_WEED | CH_REORDER;
 
       mutt_copy_hdr(state->fp_in, state->fp_out, ftello(state->fp_in),
-                    b->parts->offset, chflags, NULL, 0);
+                    b_email->parts->offset, chflags, NULL, 0);
     }
   }
   else if (expiration && (expire < mutt_date_now()))
@@ -891,7 +891,7 @@ static int external_body_handler(struct Body *b, struct State *state)
          The "%s/%s" is a MIME type, e.g. "text/plain". */
       snprintf(strbuf, sizeof(strbuf),
                _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
-               TYPE(b->parts), b->parts->subtype);
+               TYPE(b_email->parts), b_email->parts->subtype);
       state_attach_puts(state, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
@@ -899,7 +899,7 @@ static int external_body_handler(struct Body *b, struct State *state)
         chflags |= CH_WEED | CH_REORDER;
 
       mutt_copy_hdr(state->fp_in, state->fp_out, ftello(state->fp_in),
-                    b->parts->offset, chflags, NULL, 0);
+                    b_email->parts->offset, chflags, NULL, 0);
     }
   }
   else
@@ -913,7 +913,7 @@ static int external_body_handler(struct Body *b, struct State *state)
          "LOCAL-FILE", "MAIL-SERVER". */
       snprintf(strbuf, sizeof(strbuf),
                _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
-               TYPE(b->parts), b->parts->subtype, access_type);
+               TYPE(b_email->parts), b_email->parts->subtype, access_type);
       state_attach_puts(state, strbuf);
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
@@ -921,7 +921,7 @@ static int external_body_handler(struct Body *b, struct State *state)
         chflags |= CH_WEED | CH_REORDER;
 
       mutt_copy_hdr(state->fp_in, state->fp_out, ftello(state->fp_in),
-                    b->parts->offset, chflags, NULL, 0);
+                    b_email->parts->offset, chflags, NULL, 0);
     }
   }
 
@@ -931,29 +931,31 @@ static int external_body_handler(struct Body *b, struct State *state)
 /**
  * alternative_handler - Handler for multipart alternative emails - Implements ::handler_t - @ingroup handler_api
  */
-static int alternative_handler(struct Body *a, struct State *state)
+static int alternative_handler(struct Body *b_email, struct State *state)
 {
-  struct Body *const head = a;
+  struct Body *const head = b_email;
   struct Body *choice = NULL;
   struct Body *b = NULL;
   bool mustfree = false;
   int rc = 0;
 
-  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
-      (a->encoding == ENC_UUENCODED))
+  if ((b_email->encoding == ENC_BASE64) || (b_email->encoding == ENC_QUOTED_PRINTABLE) ||
+      (b_email->encoding == ENC_UUENCODED))
   {
     mustfree = true;
     b = mutt_body_new();
     b->length = mutt_file_get_size_fp(state->fp_in);
-    b->parts = mutt_parse_multipart(state->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                                    b->length, mutt_istr_equal("digest", a->subtype));
+    b->parts = mutt_parse_multipart(state->fp_in,
+                                    mutt_param_get(&b_email->parameter, "boundary"),
+                                    b->length,
+                                    mutt_istr_equal("digest", b_email->subtype));
   }
   else
   {
-    b = a;
+    b = b_email;
   }
 
-  a = b;
+  b_email = b;
 
   /* First, search list of preferred types */
   struct ListNode *np = NULL;
@@ -974,10 +976,10 @@ static int alternative_handler(struct Body *a, struct State *state)
       btlen = mutt_str_len(np->data);
     }
 
-    if (a->parts)
-      b = a->parts;
+    if (b_email->parts)
+      b = b_email->parts;
     else
-      b = a;
+      b = b_email;
     while (b)
     {
       const char *bt = TYPE(b);
@@ -999,10 +1001,10 @@ static int alternative_handler(struct Body *a, struct State *state)
   /* Next, look for an autoviewable type */
   if (!choice)
   {
-    if (a->parts)
-      b = a->parts;
+    if (b_email->parts)
+      b = b_email->parts;
     else
-      b = a;
+      b = b_email;
     while (b)
     {
       if (is_autoview(b))
@@ -1014,10 +1016,10 @@ static int alternative_handler(struct Body *a, struct State *state)
   /* Then, look for a text entry */
   if (!choice)
   {
-    if (a->parts)
-      b = a->parts;
+    if (b_email->parts)
+      b = b_email->parts;
     else
-      b = a;
+      b = b_email;
     int type = 0;
     while (b)
     {
@@ -1046,10 +1048,10 @@ static int alternative_handler(struct Body *a, struct State *state)
   /* Finally, look for other possibilities */
   if (!choice)
   {
-    if (a->parts)
-      b = a->parts;
+    if (b_email->parts)
+      b = b_email->parts;
     else
-      b = a;
+      b = b_email;
     while (b)
     {
       if (mutt_can_decode(b))
@@ -1080,10 +1082,10 @@ static int alternative_handler(struct Body *a, struct State *state)
 
     if (mutt_str_equal("info", c_show_multipart_alternative))
     {
-      if (a->parts)
-        b = a->parts;
+      if (b_email->parts)
+        b = b_email->parts;
       else
-        b = a;
+        b = b_email;
       int count = 0;
       while (b)
       {
@@ -1108,7 +1110,7 @@ static int alternative_handler(struct Body *a, struct State *state)
   }
 
   if (mustfree)
-    mutt_body_free(&a);
+    mutt_body_free(&b_email);
 
   return rc;
 }
@@ -1117,33 +1119,35 @@ static int alternative_handler(struct Body *a, struct State *state)
  * multilingual_handler - Handler for multi-lingual emails - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
-static int multilingual_handler(struct Body *a, struct State *state)
+static int multilingual_handler(struct Body *b_email, struct State *state)
 {
   struct Body *b = NULL;
   bool mustfree = false;
   int rc = 0;
 
   mutt_debug(LL_DEBUG2, "RFC8255 >> entering in handler multilingual handler\n");
-  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
-      (a->encoding == ENC_UUENCODED))
+  if ((b_email->encoding == ENC_BASE64) || (b_email->encoding == ENC_QUOTED_PRINTABLE) ||
+      (b_email->encoding == ENC_UUENCODED))
   {
     mustfree = true;
     b = mutt_body_new();
     b->length = mutt_file_get_size_fp(state->fp_in);
-    b->parts = mutt_parse_multipart(state->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                                    b->length, mutt_istr_equal("digest", a->subtype));
+    b->parts = mutt_parse_multipart(state->fp_in,
+                                    mutt_param_get(&b_email->parameter, "boundary"),
+                                    b->length,
+                                    mutt_istr_equal("digest", b_email->subtype));
   }
   else
   {
-    b = a;
+    b = b_email;
   }
 
-  a = b;
+  b_email = b;
 
-  if (a->parts)
-    b = a->parts;
+  if (b_email->parts)
+    b = b_email->parts;
   else
-    b = a;
+    b = b_email;
 
   struct Body *choice = NULL;
   struct Body *first_part = NULL;
@@ -1195,10 +1199,10 @@ static int multilingual_handler(struct Body *a, struct State *state)
       if (choice)
         break;
 
-      if (a->parts)
-        b = a->parts;
+      if (b_email->parts)
+        b = b_email->parts;
       else
-        b = a;
+        b = b_email;
     }
   }
 
@@ -1215,7 +1219,7 @@ static int multilingual_handler(struct Body *a, struct State *state)
   }
 
   if (mustfree)
-    mutt_body_free(&a);
+    mutt_body_free(&b_email);
 
   return rc;
 }
@@ -1223,23 +1227,25 @@ static int multilingual_handler(struct Body *a, struct State *state)
 /**
  * multipart_handler - Handler for multipart emails - Implements ::handler_t - @ingroup handler_api
  */
-static int multipart_handler(struct Body *a, struct State *state)
+static int multipart_handler(struct Body *b_email, struct State *state)
 {
   struct Body *b = NULL, *p = NULL;
   int count;
   int rc = 0;
 
-  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
-      (a->encoding == ENC_UUENCODED))
+  if ((b_email->encoding == ENC_BASE64) || (b_email->encoding == ENC_QUOTED_PRINTABLE) ||
+      (b_email->encoding == ENC_UUENCODED))
   {
     b = mutt_body_new();
     b->length = mutt_file_get_size_fp(state->fp_in);
-    b->parts = mutt_parse_multipart(state->fp_in, mutt_param_get(&a->parameter, "boundary"),
-                                    b->length, mutt_istr_equal("digest", a->subtype));
+    b->parts = mutt_parse_multipart(state->fp_in,
+                                    mutt_param_get(&b_email->parameter, "boundary"),
+                                    b->length,
+                                    mutt_istr_equal("digest", b_email->subtype));
   }
   else
   {
-    b = a;
+    b = b_email;
   }
 
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
@@ -1289,8 +1295,8 @@ static int multipart_handler(struct Body *a, struct State *state)
     }
   }
 
-  if ((a->encoding == ENC_BASE64) || (a->encoding == ENC_QUOTED_PRINTABLE) ||
-      (a->encoding == ENC_UUENCODED))
+  if ((b_email->encoding == ENC_BASE64) || (b_email->encoding == ENC_QUOTED_PRINTABLE) ||
+      (b_email->encoding == ENC_UUENCODED))
   {
     mutt_body_free(&b);
   }
@@ -1455,12 +1461,12 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
 /**
  * valid_pgp_encrypted_handler - Handler for valid pgp-encrypted emails - Implements ::handler_t - @ingroup handler_api
  */
-static int valid_pgp_encrypted_handler(struct Body *b, struct State *state)
+static int valid_pgp_encrypted_handler(struct Body *b_email, struct State *state)
 {
-  struct Body *octetstream = b->parts->next;
+  struct Body *octetstream = b_email->parts->next;
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
-  mutt_env_free(&b->mime_headers);
+  mutt_env_free(&b_email->mime_headers);
   mutt_env_free(&octetstream->mime_headers);
 
   int rc;
@@ -1469,12 +1475,12 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *state)
     rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, 0);
   else
     rc = crypt_pgp_encrypted_handler(octetstream, state);
-  b->goodsig |= octetstream->goodsig;
+  b_email->goodsig |= octetstream->goodsig;
 
   /* Relocate protected headers onto the multipart/encrypted part */
   if (!rc && octetstream->mime_headers)
   {
-    b->mime_headers = octetstream->mime_headers;
+    b_email->mime_headers = octetstream->mime_headers;
     octetstream->mime_headers = NULL;
   }
 
@@ -1484,25 +1490,25 @@ static int valid_pgp_encrypted_handler(struct Body *b, struct State *state)
 /**
  * malformed_pgp_encrypted_handler - Handler for invalid pgp-encrypted emails - Implements ::handler_t - @ingroup handler_api
  */
-static int malformed_pgp_encrypted_handler(struct Body *b, struct State *state)
+static int malformed_pgp_encrypted_handler(struct Body *b_email, struct State *state)
 {
-  struct Body *octetstream = b->parts->next->next;
+  struct Body *octetstream = b_email->parts->next->next;
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
-  mutt_env_free(&b->mime_headers);
+  mutt_env_free(&b_email->mime_headers);
   mutt_env_free(&octetstream->mime_headers);
 
   /* exchange encodes the octet-stream, so re-run it through the decoder */
   int rc = run_decode_and_handler(octetstream, state, crypt_pgp_encrypted_handler, false);
-  b->goodsig |= octetstream->goodsig;
+  b_email->goodsig |= octetstream->goodsig;
 #ifdef USE_AUTOCRYPT
-  b->is_autocrypt |= octetstream->is_autocrypt;
+  b_email->is_autocrypt |= octetstream->is_autocrypt;
 #endif
 
   /* Relocate protected headers onto the multipart/encrypted part */
   if (!rc && octetstream->mime_headers)
   {
-    b->mime_headers = octetstream->mime_headers;
+    b_email->mime_headers = octetstream->mime_headers;
     octetstream->mime_headers = NULL;
   }
 

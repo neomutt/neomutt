@@ -1103,12 +1103,12 @@ bool mutt_should_hide_protected_subject(struct Email *e)
 /**
  * mutt_protected_headers_handler - Handler for protected headers - Implements ::handler_t - @ingroup handler_api
  */
-int mutt_protected_headers_handler(struct Body *b, struct State *state)
+int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
 {
   const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
-  if (c_crypt_protected_headers_read && b->mime_headers)
+  if (c_crypt_protected_headers_read && b_email->mime_headers)
   {
-    if (b->mime_headers->subject)
+    if (b_email->mime_headers->subject)
     {
       const bool display = (state->flags & STATE_DISPLAY);
 
@@ -1120,8 +1120,8 @@ int mutt_protected_headers_handler(struct Body *b, struct State *state)
       const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
       int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
 
-      mutt_write_one_header(state->fp_out, "Subject", b->mime_headers->subject,
-                            state->prefix, wraplen,
+      mutt_write_one_header(state->fp_out, "Subject",
+                            b_email->mime_headers->subject, state->prefix, wraplen,
                             display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
       state_puts(state, "\n");
     }
@@ -1133,29 +1133,29 @@ int mutt_protected_headers_handler(struct Body *b, struct State *state)
 /**
  * mutt_signed_handler - Handler for "multipart/signed" - Implements ::handler_t - @ingroup handler_api
  */
-int mutt_signed_handler(struct Body *b, struct State *state)
+int mutt_signed_handler(struct Body *b_email, struct State *state)
 {
   if (!WithCrypto)
     return -1;
 
   bool inconsistent = false;
-  struct Body *top = b;
+  struct Body *top = b_email;
   struct Body **signatures = NULL;
   int sigcnt = 0;
   int rc = 0;
   struct Buffer *tempfile = NULL;
 
-  b = b->parts;
+  b_email = b_email->parts;
   SecurityFlags signed_type = mutt_is_multipart_signed(top);
   if (signed_type == SEC_NO_FLAGS)
   {
     /* A null protocol value is already checked for in mutt_body_handler() */
     state_printf(state, _("[-- Error: Unknown multipart/signed protocol %s --]\n\n"),
                  mutt_param_get(&top->parameter, "protocol"));
-    return mutt_body_handler(b, state);
+    return mutt_body_handler(b_email, state);
   }
 
-  if (!(b && b->next))
+  if (!(b_email && b_email->next))
   {
     inconsistent = true;
   }
@@ -1164,22 +1164,23 @@ int mutt_signed_handler(struct Body *b, struct State *state)
     switch (signed_type)
     {
       case SEC_SIGN:
-        if ((b->next->type != TYPE_MULTIPART) || !mutt_istr_equal(b->next->subtype, "mixed"))
+        if ((b_email->next->type != TYPE_MULTIPART) ||
+            !mutt_istr_equal(b_email->next->subtype, "mixed"))
         {
           inconsistent = true;
         }
         break;
       case PGP_SIGN:
-        if ((b->next->type != TYPE_APPLICATION) ||
-            !mutt_istr_equal(b->next->subtype, "pgp-signature"))
+        if ((b_email->next->type != TYPE_APPLICATION) ||
+            !mutt_istr_equal(b_email->next->subtype, "pgp-signature"))
         {
           inconsistent = true;
         }
         break;
       case SMIME_SIGN:
-        if ((b->next->type != TYPE_APPLICATION) ||
-            (!mutt_istr_equal(b->next->subtype, "x-pkcs7-signature") &&
-             !mutt_istr_equal(b->next->subtype, "pkcs7-signature")))
+        if ((b_email->next->type != TYPE_APPLICATION) ||
+            (!mutt_istr_equal(b_email->next->subtype, "x-pkcs7-signature") &&
+             !mutt_istr_equal(b_email->next->subtype, "pkcs7-signature")))
         {
           inconsistent = true;
         }
@@ -1191,19 +1192,19 @@ int mutt_signed_handler(struct Body *b, struct State *state)
   if (inconsistent)
   {
     state_attach_puts(state, _("[-- Error: Missing or bad-format multipart/signed signature --]\n\n"));
-    return mutt_body_handler(b, state);
+    return mutt_body_handler(b_email, state);
   }
 
   if (state->flags & STATE_DISPLAY)
   {
-    crypt_fetch_signatures(&signatures, b->next, &sigcnt);
+    crypt_fetch_signatures(&signatures, b_email->next, &sigcnt);
 
     if (sigcnt != 0)
     {
       tempfile = buf_pool_get();
       buf_mktemp(tempfile);
       bool goodsig = true;
-      if (crypt_write_signed(b, state, buf_string(tempfile)) == 0)
+      if (crypt_write_signed(b_email, state, buf_string(tempfile)) == 0)
       {
         for (int i = 0; i < sigcnt; i++)
         {
@@ -1242,7 +1243,7 @@ int mutt_signed_handler(struct Body *b, struct State *state)
       /* Now display the signed body */
       state_attach_puts(state, _("[-- The following data is signed --]\n\n"));
 
-      mutt_protected_headers_handler(b, state);
+      mutt_protected_headers_handler(b_email, state);
 
       FREE(&signatures);
     }
@@ -1252,7 +1253,7 @@ int mutt_signed_handler(struct Body *b, struct State *state)
     }
   }
 
-  rc = mutt_body_handler(b, state);
+  rc = mutt_body_handler(b_email, state);
 
   if ((state->flags & STATE_DISPLAY) && (sigcnt != 0))
     state_attach_puts(state, _("\n[-- End of signed data --]\n"));

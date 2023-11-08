@@ -317,7 +317,7 @@ static void print_fixed_line(const char *line, struct State *state, int ql,
  * rfc3676_handler - Handler for format=flowed - Implements ::handler_t - @ingroup handler_api
  * @retval 0 Always
  */
-int rfc3676_handler(struct Body *a, struct State *state)
+int rfc3676_handler(struct Body *b_email, struct State *state)
 {
   char *buf = NULL;
   unsigned int quotelevel = 0;
@@ -326,7 +326,7 @@ int rfc3676_handler(struct Body *a, struct State *state)
   struct FlowedState fst = { 0 };
 
   /* respect DelSp of RFC3676 only with f=f parts */
-  char *t = mutt_param_get(&a->parameter, "delsp");
+  char *t = mutt_param_get(&b_email->parameter, "delsp");
   if (t)
   {
     delsp = mutt_istr_equal(t, "yes");

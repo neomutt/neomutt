@@ -234,10 +234,10 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 /**
  * crypt_pgp_application_handler - Wrapper for CryptModuleSpecs::application_handler() - Implements ::handler_t - @ingroup handler_api
  */
-int crypt_pgp_application_handler(struct Body *b, struct State *state)
+int crypt_pgp_application_handler(struct Body *b_email, struct State *state)
 {
   if (CRYPT_MOD_CALL_CHECK(PGP, application_handler))
-    return CRYPT_MOD_CALL(PGP, application_handler)(b, state);
+    return CRYPT_MOD_CALL(PGP, application_handler)(b_email, state);
 
   return -1;
 }
@@ -245,25 +245,25 @@ int crypt_pgp_application_handler(struct Body *b, struct State *state)
 /**
  * crypt_pgp_encrypted_handler - Wrapper for CryptModuleSpecs::encrypted_handler() - Implements ::handler_t - @ingroup handler_api
  */
-int crypt_pgp_encrypted_handler(struct Body *b, struct State *state)
+int crypt_pgp_encrypted_handler(struct Body *b_email, struct State *state)
 {
 #ifdef USE_AUTOCRYPT
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt)
   {
     OptAutocryptGpgme = true;
-    int result = pgp_gpgme_encrypted_handler(b, state);
+    int result = pgp_gpgme_encrypted_handler(b_email, state);
     OptAutocryptGpgme = false;
     if (result == 0)
     {
-      b->is_autocrypt = true;
+      b_email->is_autocrypt = true;
       return result;
     }
   }
 #endif
 
   if (CRYPT_MOD_CALL_CHECK(PGP, encrypted_handler))
-    return CRYPT_MOD_CALL(PGP, encrypted_handler)(b, state);
+    return CRYPT_MOD_CALL(PGP, encrypted_handler)(b_email, state);
 
   return -1;
 }
@@ -441,10 +441,10 @@ int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
 /**
  * crypt_smime_application_handler - Wrapper for CryptModuleSpecs::application_handler() - Implements ::handler_t - @ingroup handler_api
  */
-int crypt_smime_application_handler(struct Body *b, struct State *state)
+int crypt_smime_application_handler(struct Body *b_email, struct State *state)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, application_handler))
-    return CRYPT_MOD_CALL(SMIME, application_handler)(b, state);
+    return CRYPT_MOD_CALL(SMIME, application_handler)(b_email, state);
 
   return -1;
 }
