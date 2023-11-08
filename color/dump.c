@@ -27,15 +27,16 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "dump.h"
 #include "pager/lib.h"
 #include "attr.h"
 #include "color.h"
-#include "debug.h"
 #include "parse_color.h"
 #include "quoted.h"
 #include "regex4.h"

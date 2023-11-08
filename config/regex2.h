@@ -23,6 +23,7 @@
 #ifndef MUTT_CONFIG_REGEX2_H
 #define MUTT_CONFIG_REGEX2_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 struct Buffer;

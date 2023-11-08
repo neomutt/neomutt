@@ -30,7 +30,6 @@
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
