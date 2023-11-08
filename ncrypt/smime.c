@@ -1381,7 +1381,7 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
 /**
  * smime_class_build_smime_entity - Encrypt the email body to all recipients - Implements CryptModuleSpecs::smime_build_smime_entity() - @ingroup crypto_smime_build_smime_entity
  */
-struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
+struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
 {
   char buf[1024], certfile[PATH_MAX];
   char *cert_end = NULL;
@@ -1434,9 +1434,9 @@ struct Body *smime_class_build_smime_entity(struct Body *a, char *certlist)
   }
 
   /* write a MIME entity */
-  mutt_write_mime_header(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_header(b, fp_tmp, NeoMutt->sub);
   fputc('\n', fp_tmp);
-  mutt_write_mime_body(a, fp_tmp, NeoMutt->sub);
+  mutt_write_mime_body(b, fp_tmp, NeoMutt->sub);
   mutt_file_fclose(&fp_tmp);
 
   pid = smime_invoke_encrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
@@ -1544,7 +1544,7 @@ static char *openssl_md_to_smime_micalg(const char *md)
 /**
  * smime_class_sign_message - Cryptographically sign the Body of a message - Implements CryptModuleSpecs::sign_message() - @ingroup crypto_sign_message
  */
-struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *from)
+struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *from)
 {
   struct Body *t = NULL;
   struct Body *rc = NULL;
@@ -1565,7 +1565,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
     return NULL;
   }
 
-  crypt_convert_to_7bit(a); /* Signed data _must_ be in 7-bit format. */
+  crypt_convert_to_7bit(b); /* Signed data _must_ be in 7-bit format. */
 
   filetosign = buf_pool_get();
   signedfile = buf_pool_get();
@@ -1586,9 +1586,9 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
     goto cleanup;
   }
 
-  mutt_write_mime_header(a, fp_sign, NeoMutt->sub);
+  mutt_write_mime_header(b, fp_sign, NeoMutt->sub);
   fputc('\n', fp_sign);
-  mutt_write_mime_body(a, fp_sign, NeoMutt->sub);
+  mutt_write_mime_body(b, fp_sign, NeoMutt->sub);
   mutt_file_fclose(&fp_sign);
 
   const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
@@ -1664,7 +1664,7 @@ struct Body *smime_class_sign_message(struct Body *a, const struct AddressList *
 
   mutt_param_set(&t->parameter, "protocol", "application/pkcs7-signature");
 
-  t->parts = a;
+  t->parts = b;
   rc = t;
 
   t->parts->next = mutt_body_new();
@@ -1752,7 +1752,7 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
 /**
  * smime_class_verify_one - Check a signed MIME part against a signature - Implements CryptModuleSpecs::verify_one() - @ingroup crypto_verify_one
  */
-int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char *tempfile)
+int smime_class_verify_one(struct Body *b, struct State *state, const char *tempfile)
 {
   FILE *fp = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL;
   pid_t pid;
@@ -1760,7 +1760,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
 
   LOFF_T tmpoffset = 0;
   size_t tmplength = 0;
-  int orig_type = sigbdy->type;
+  int orig_type = b->type;
 
   struct Buffer *signedfile = buf_pool_get();
 
@@ -1776,18 +1776,18 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
   }
   /* decoding the attachment changes the size and offset, so save a copy
    * of the "real" values now, and restore them after processing */
-  tmplength = sigbdy->length;
-  tmpoffset = sigbdy->offset;
+  tmplength = b->length;
+  tmpoffset = b->offset;
 
   /* if we are decoding binary bodies, we don't want to prefix each
    * line with the prefix or else the data will get corrupted.  */
   char *save_prefix = state->prefix;
   state->prefix = NULL;
 
-  mutt_decode_attachment(sigbdy, state);
+  mutt_decode_attachment(b, state);
 
-  sigbdy->length = ftello(state->fp_out);
-  sigbdy->offset = 0;
+  b->length = ftello(state->fp_out);
+  b->offset = 0;
   mutt_file_fclose(&state->fp_out);
 
   /* restore final destination and substitute the tempfile for input */
@@ -1798,7 +1798,7 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
   /* restore the prefix */
   state->prefix = save_prefix;
 
-  sigbdy->type = orig_type;
+  b->type = orig_type;
 
   fp_smime_err = mutt_file_mkstemp();
   if (!fp_smime_err)
@@ -1845,8 +1845,8 @@ int smime_class_verify_one(struct Body *sigbdy, struct State *state, const char 
 
   mutt_file_unlink(buf_string(signedfile));
 
-  sigbdy->length = tmplength;
-  sigbdy->offset = tmpoffset;
+  b->length = tmplength;
+  b->offset = tmpoffset;
 
   /* restore the original source stream */
   mutt_file_fclose(&state->fp_in);
@@ -2104,7 +2104,7 @@ cleanup:
 /**
  * smime_class_decrypt_mime - Decrypt an encrypted MIME part - Implements CryptModuleSpecs::decrypt_mime() - @ingroup crypto_decrypt_mime
  */
-int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
+int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec)
 {
   struct State state = { 0 };
   LOFF_T tmpoffset = b->offset;
@@ -2146,12 +2146,12 @@ int smime_class_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
     goto bail;
   }
 
-  *cur = smime_handle_entity(b, &state, *fp_out);
-  if (!*cur)
+  *b_dec = smime_handle_entity(b, &state, *fp_out);
+  if (!*b_dec)
     goto bail;
 
-  (*cur)->goodsig = b->goodsig;
-  (*cur)->badsig = b->badsig;
+  (*b_dec)->goodsig = b->goodsig;
+  (*b_dec)->badsig = b->badsig;
   rc = 0;
 
 bail:
@@ -2167,14 +2167,14 @@ bail:
 /**
  * smime_class_application_handler - Manage the MIME type "application/pgp" or "application/smime" - Implements CryptModuleSpecs::application_handler() - @ingroup crypto_application_handler
  */
-int smime_class_application_handler(struct Body *m, struct State *state)
+int smime_class_application_handler(struct Body *b, struct State *state)
 {
   int rc = -1;
 
   /* clear out any mime headers before the handler, so they can't be spoofed. */
-  mutt_env_free(&m->mime_headers);
+  mutt_env_free(&b->mime_headers);
 
-  struct Body *tattach = smime_handle_entity(m, state, NULL);
+  struct Body *tattach = smime_handle_entity(b, state, NULL);
   if (tattach)
   {
     rc = 0;

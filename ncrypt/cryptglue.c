@@ -208,14 +208,14 @@ bool crypt_pgp_valid_passphrase(void)
 /**
  * crypt_pgp_decrypt_mime - Wrapper for CryptModuleSpecs::decrypt_mime()
  */
-int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
+int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec)
 {
 #ifdef USE_AUTOCRYPT
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt)
   {
     OptAutocryptGpgme = true;
-    int result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, cur);
+    int result = pgp_gpgme_decrypt_mime(fp_in, fp_out, b, b_dec);
     OptAutocryptGpgme = false;
     if (result == 0)
     {
@@ -226,7 +226,7 @@ int crypt_pgp_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Bo
 #endif
 
   if (CRYPT_MOD_CALL_CHECK(PGP, decrypt_mime))
-    return CRYPT_MOD_CALL(PGP, decrypt_mime)(fp_in, fp_out, b, cur);
+    return CRYPT_MOD_CALL(PGP, decrypt_mime)(fp_in, fp_out, b, b_dec);
 
   return -1;
 }
@@ -430,10 +430,10 @@ bool crypt_smime_valid_passphrase(void)
 /**
  * crypt_smime_decrypt_mime - Wrapper for CryptModuleSpecs::decrypt_mime()
  */
-int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **cur)
+int crypt_smime_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct Body **b_dec)
 {
   if (CRYPT_MOD_CALL_CHECK(SMIME, decrypt_mime))
-    return CRYPT_MOD_CALL(SMIME, decrypt_mime)(fp_in, fp_out, b, cur);
+    return CRYPT_MOD_CALL(SMIME, decrypt_mime)(fp_in, fp_out, b, b_dec);
 
   return -1;
 }
