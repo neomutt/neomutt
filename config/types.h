@@ -46,22 +46,23 @@
 
 #define DT_NO_FLAGS            0   ///< No flags are set
 
-#define DT_NOT_EMPTY     (1 << 6)  ///< Empty strings are not allowed
-#define DT_NOT_NEGATIVE  (1 << 7)  ///< Negative numbers are not allowed
-#define DT_MAILBOX       (1 << 8)  ///< Don't perform path expansions
-#define DT_SENSITIVE     (1 << 9)  ///< Contains sensitive value, e.g. password
-#define DT_COMMAND       (1 << 10) ///< A command
-#define DT_INHERIT_ACC   (1 << 11) ///< Config item can be Account-specific
-#define DT_INHERIT_MBOX  (1 << 12) ///< Config item can be Mailbox-specific
-#define DT_PATH_DIR      (1 << 13) ///< Path is a directory
-#define DT_PATH_FILE     (1 << 14) ///< Path is a file
+#define DT_ON_STARTUP    (1 << 6)  ///< May only be set at startup
+#define DT_NOT_EMPTY     (1 << 7)  ///< Empty strings are not allowed
+#define DT_NOT_NEGATIVE  (1 << 8)  ///< Negative numbers are not allowed
+#define DT_MAILBOX       (1 << 9)  ///< Don't perform path expansions
+#define DT_SENSITIVE     (1 << 10) ///< Contains sensitive value, e.g. password
+#define DT_COMMAND       (1 << 11) ///< A command
+#define DT_INHERIT_ACC   (1 << 12) ///< Config item can be Account-specific
+#define DT_INHERIT_MBOX  (1 << 13) ///< Config item can be Mailbox-specific
+#define DT_PATH_DIR      (1 << 14) ///< Path is a directory
+#define DT_PATH_FILE     (1 << 15) ///< Path is a file
 
 #define IS_SENSITIVE(type) (((type) & DT_SENSITIVE) == DT_SENSITIVE)
 #define IS_MAILBOX(type)   (((type) & (DT_STRING | DT_MAILBOX)) == (DT_STRING | DT_MAILBOX))
 #define IS_COMMAND(type)   (((type) & (DT_STRING | DT_COMMAND)) == (DT_STRING | DT_COMMAND))
 
 /* subtypes for... */
-#define DT_SUBTYPE_MASK  0x7FC0  ///< Mask for the Data Subtype
+#define DT_SUBTYPE_MASK  0xFFC0  ///< Mask for the Data Subtype
 
 typedef uint32_t ConfigRedrawFlags; ///< Flags for redraw/resort, e.g. #R_INDEX
 #define R_REDRAW_NO_FLAGS        0  ///< No refresh/resort flags

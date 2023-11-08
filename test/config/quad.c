@@ -50,6 +50,7 @@ static struct ConfigDef Vars[] = {
   { "Mango",      DT_QUAD, 0, 0, NULL,              }, /* test_inherit */
   { "Nectarine",  DT_QUAD, 0, 0, NULL,              }, /* test_toggle */
   { "Olive",      DT_BOOL, 0, 0, NULL,              },
+  { "Papaya",     DT_QUAD | DT_ON_STARTUP, 3, 0, NULL, }, /* startup */
   { NULL },
 };
 // clang-format on
@@ -221,6 +222,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     short_line();
   }
 
+  name = "Papaya";
+  rc = cs_str_string_set(cs, name, "ask-yes", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_string_set(cs, name, "ask-no", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   return true;
 }
@@ -326,6 +334,13 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     }
   }
 
+  name = "Papaya";
+  rc = cs_str_native_set(cs, name, MUTT_ASKYES, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_native_set(cs, name, MUTT_ASKNO, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   return true;
 }
@@ -411,6 +426,18 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   TEST_MSG("Reset: %s = %d", name, VarIlama);
+
+  name = "Papaya";
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  StartupComplete = false;
+  rc = cs_str_native_set(cs, name, MUTT_NO, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  StartupComplete = true;
+
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -727,10 +754,12 @@ void test_config_quad(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
+  StartupComplete = false;
   dont_fail = true;
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
   dont_fail = false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 

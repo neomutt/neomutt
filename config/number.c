@@ -82,6 +82,9 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
         return rc | CSR_INV_VALIDATOR;
     }
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     *(short *) var = num;
   }
   else
@@ -139,6 +142,9 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
       return rc | CSR_INV_VALIDATOR;
   }
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   *(short *) var = value;
   return CSR_SUCCESS;
 }
@@ -187,6 +193,9 @@ static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
       return rc | CSR_INV_VALIDATOR;
   }
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   *(short *) var = result;
   return CSR_SUCCESS;
 }
@@ -226,6 +235,9 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
       return rc | CSR_INV_VALIDATOR;
   }
 
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   *(short *) var = result;
   return CSR_SUCCESS;
 }
@@ -246,6 +258,9 @@ static int number_reset(const struct ConfigSet *cs, void *var,
     if (CSR_RESULT(rc) != CSR_SUCCESS)
       return rc | CSR_INV_VALIDATOR;
   }
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   *(short *) var = cdef->initial;
   return CSR_SUCCESS;

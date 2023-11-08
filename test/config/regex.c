@@ -53,6 +53,7 @@ static struct ConfigDef Vars[] = {
   { "Quince",     DT_REGEX,                    IP "quince.*",     0, validator_warn,    },
   { "Raspberry",  DT_REGEX,                    IP "raspberry.*",  0, validator_fail,    },
   { "Strawberry", DT_REGEX,                    0,                 0, NULL,              }, /* test_inherit */
+  { "Tangerine",  DT_REGEX|DT_ON_STARTUP,      IP "tangerine.*",  0, NULL,              }, /* startup */
   { NULL },
 };
 // clang-format on
@@ -233,6 +234,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
+  name = "Tangerine";
+  rc = cs_str_string_set(cs, name, "tangerine.*", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  rc = cs_str_string_set(cs, name, "apple.*", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   return true;
 }
@@ -373,6 +381,19 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     goto tns_out;
   }
 
+  regex_free(&r);
+  r = regex_new("tangerine.*", DT_REGEX_NOSUB, err);
+
+  name = "Tangerine";
+  rc = cs_str_native_set(cs, name, (intptr_t) r, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  regex_free(&r);
+  r = regex_new("apple.*", DT_REGEX_NOSUB, err);
+
+  rc = cs_str_native_set(cs, name, (intptr_t) r, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
   log_line(__func__);
   result = true;
 tns_out:
@@ -487,6 +508,18 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   TEST_MSG("Reset: %s = '%s'", name, VarOlive->pattern);
+
+  name = "Tangerine";
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+
+  StartupComplete = false;
+  rc = cs_str_string_set(cs, name, "banana", err);
+  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  StartupComplete = true;
+
+  rc = cs_str_reset(cs, name, err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
 
   log_line(__func__);
   return true;
@@ -690,14 +723,18 @@ void test_config_regex(void)
   struct ConfigSubset *sub = NeoMutt->sub;
   struct ConfigSet *cs = sub->cs;
 
+  StartupComplete = false;
   dont_fail = true;
   if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
     return;
   dont_fail = false;
+  StartupComplete = true;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);
 
   set_list(cs);
+
+  regex_compare(NULL, NULL);
 
   struct Buffer *err = buf_pool_get();
   TEST_CHECK(test_initial_values(sub, err));

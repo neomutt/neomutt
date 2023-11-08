@@ -155,7 +155,7 @@ static struct ConfigDef NcryptVars[] = {
  */
 static struct ConfigDef NcryptVarsGpgme[] = {
   // clang-format off
-  { "crypt_use_gpgme", DT_BOOL, true, 0, NULL,
+  { "crypt_use_gpgme", DT_BOOL|DT_ON_STARTUP, true, 0, NULL,
     "Use GPGME crypto backend"
   },
   { "crypt_use_pka", DT_BOOL, false, 0, NULL,

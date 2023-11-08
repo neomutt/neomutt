@@ -42,6 +42,22 @@
 #include "types.h"
 
 /**
+ * mbtable_compare - Compare two MbTables
+ * @param a First MbTable
+ * @param b Second MbTable
+ * @retval true They are identical
+ */
+bool mbtable_compare(const struct MbTable *a, const struct MbTable *b)
+{
+  if (!a && !b) /* both empty */
+    return true;
+  if (!a ^ !b) /* one is empty, but not the other */
+    return false;
+
+  return mutt_str_equal(a->orig_str, b->orig_str);
+}
+
+/**
  * mbtable_parse - Parse a multibyte string into a table
  * @param s String of multibyte characters
  * @retval ptr New MbTable object
@@ -118,6 +134,9 @@ static int mbtable_string_set(const struct ConfigSet *cs, void *var, struct Conf
     struct MbTable *curval = *(struct MbTable **) var;
     if (curval && mutt_str_equal(value, curval->orig_str))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
     table = mbtable_parse(value);
 
@@ -199,6 +218,12 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
 {
   int rc;
 
+  if (mbtable_compare(*(struct MbTable **) var, (struct MbTable *) value))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -248,6 +273,9 @@ static int mbtable_reset(const struct ConfigSet *cs, void *var,
 
   if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (initial)
     table = mbtable_parse(initial);

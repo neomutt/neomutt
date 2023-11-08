@@ -42,6 +42,24 @@
 #include "types.h"
 
 /**
+ * regex_compare - Compare two regexes
+ * @param a First regex
+ * @param b Second regex
+ * @retval true They are identical
+ */
+bool regex_compare(const struct Regex *a, const struct Regex *b)
+{
+  if (!a && !b) /* both empty */
+    return true;
+  if (!a ^ !b) /* one is empty, but not the other */
+    return false;
+  if (a->pat_not != b->pat_not)
+    return false;
+
+  return mutt_str_equal(a->pattern, b->pattern);
+}
+
+/**
  * regex_free - Free a Regex object
  * @param[out] ptr Regex to free
  */
@@ -136,6 +154,9 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
     if (curval && mutt_str_equal(value, curval->pattern))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
+    if (startup_only(cdef, err))
+      return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
     if (value)
     {
       r = regex_new(value, cdef->type, err);
@@ -207,6 +228,12 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 {
   int rc;
 
+  if (regex_compare(*(struct Regex **) var, (struct Regex *) value))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
   if (cdef->validator)
   {
     rc = cdef->validator(cs, cdef, value, err);
@@ -269,6 +296,9 @@ static int regex_reset(const struct ConfigSet *cs, void *var,
 
   if (mutt_str_equal(initial, curval))
     return rc | CSR_SUC_NO_CHANGE;
+
+  if (startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
   if (initial)
   {

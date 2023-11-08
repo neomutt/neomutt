@@ -26,10 +26,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "mutt/lib.h"
+#include "types.h"
 
-struct Buffer;
 struct ConfigSet;
-struct HashElem;
 
 /* Config Set Results */
 #define CSR_SUCCESS       0 ///< Action completed successfully
@@ -289,5 +289,24 @@ int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name
 int      cs_str_string_plus_equals (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_string_set         (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_delete             (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
+
+extern bool StartupComplete;
+
+/**
+ * startup_only - Validator function for DT_ON_STARTUP
+ * @param cdef Variable definition
+ * @param err  Buffer for error messages
+ * @retval true Variable may only be set at startup
+ */
+static inline bool startup_only(const struct ConfigDef *cdef, struct Buffer *err)
+{
+  if ((cdef->type & DT_ON_STARTUP) && StartupComplete)
+  {
+    buf_printf(err, _("Option %s may only be set at startup"), cdef->name);
+    return true;
+  }
+
+  return false;
+}
 
 #endif /* MUTT_CONFIG_SET_H */
