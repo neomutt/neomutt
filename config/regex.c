@@ -42,6 +42,24 @@
 #include "types.h"
 
 /**
+ * regex_compare - Compare two regexes
+ * @param a First regex
+ * @param b Second regex
+ * @retval true They are identical
+ */
+bool regex_compare(const struct Regex *a, const struct Regex *b)
+{
+  if (!a && !b) /* both empty */
+    return true;
+  if (!a ^ !b) /* one is empty, but not the other */
+    return false;
+  if (a->pat_not != b->pat_not)
+    return false;
+
+  return mutt_str_equal(a->pattern, b->pattern);
+}
+
+/**
  * regex_free - Free a Regex object
  * @param[out] ptr Regex to free
  */
@@ -206,6 +224,9 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
                             const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
   int rc;
+
+  if (regex_compare(*(struct Regex **) var, (struct Regex *) value))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
   {
