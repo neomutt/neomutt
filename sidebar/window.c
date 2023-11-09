@@ -82,9 +82,9 @@
 #include "muttlib.h"
 
 /**
- * struct SidebarFormatData - Data passed to sidebar_format_str()
+ * struct SidebarData - Data passed to sidebar_format_str()
  */
-struct SidebarFormatData
+struct SidebarData
 {
   struct SbEntry *entry;          ///< Info about a folder
   struct IndexSharedData *shared; ///< Shared Index Data
@@ -352,9 +352,9 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
                                       const char *if_str, const char *else_str,
                                       intptr_t data, MuttFormatFlags flags)
 {
-  struct SidebarFormatData *sfdata = (struct SidebarFormatData *) data;
-  struct SbEntry *sbe = sfdata->entry;
-  struct IndexSharedData *shared = sfdata->shared;
+  struct SidebarData *sdata = (struct SidebarData *) data;
+  struct SbEntry *sbe = sdata->entry;
+  struct IndexSharedData *shared = sdata->shared;
   char fmt[256] = { 0 };
 
   if (!sbe || !shared || !buf)
@@ -582,11 +582,11 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
 static void make_sidebar_entry(char *buf, size_t buflen, int width,
                                struct SbEntry *sbe, struct IndexSharedData *shared)
 {
-  struct SidebarFormatData data = { sbe, shared };
+  struct SidebarData sdata = { sbe, shared };
 
   const char *const c_sidebar_format = cs_subset_string(NeoMutt->sub, "sidebar_format");
   mutt_expando_format(buf, buflen, 0, width, NONULL(c_sidebar_format),
-                      sidebar_format_str, (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
+                      sidebar_format_str, (intptr_t) &sdata, MUTT_FORMAT_NO_FLAGS);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);
