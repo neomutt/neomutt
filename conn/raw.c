@@ -138,13 +138,11 @@ int raw_socket_open(struct Connection *conn)
 
   /* "65536\0" */
   char port[6] = { 0 };
-  struct addrinfo hints;
+  struct addrinfo hints = { 0 };
   struct addrinfo *res = NULL;
   struct addrinfo *cur = NULL;
 
   /* we accept v4 or v6 STREAM sockets */
-  memset(&hints, 0, sizeof(hints));
-
   const bool c_use_ipv6 = cs_subset_bool(NeoMutt->sub, "use_ipv6");
   if (c_use_ipv6)
     hints.ai_family = AF_UNSPEC;
@@ -207,10 +205,8 @@ int raw_socket_open(struct Connection *conn)
 #else
   /* --- IPv4 only --- */
 
-  struct sockaddr_in sin;
   struct hostent *he = NULL;
-
-  memset(&sin, 0, sizeof(sin));
+  struct sockaddr_in sin = { 0 };
   sin.sin_port = htons(conn->account.port);
   sin.sin_family = AF_INET;
 
@@ -343,8 +339,8 @@ int raw_socket_poll(struct Connection *conn, time_t wait_secs)
   if (conn->fd < 0)
     return -1;
 
-  fd_set rfds;
-  struct timeval tv;
+  fd_set rfds = { 0 };
+  struct timeval tv = { 0 };
 
   uint64_t wait_millis = wait_secs * 1000UL;
 

@@ -297,9 +297,9 @@ struct AddressList *alias_lookup(const char *name)
  */
 void mutt_expand_aliases(struct AddressList *al)
 {
-  struct ListHead expn; /* previously expanded aliases to avoid loops */
+  // previously expanded aliases to avoid loops
+  struct ListHead expn = STAILQ_HEAD_INITIALIZER(expn);
 
-  STAILQ_INIT(&expn);
   expand_aliases_r(al, &expn);
   mutt_list_free(&expn);
   mutt_addrlist_dedupe(al);

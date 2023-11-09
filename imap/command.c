@@ -667,11 +667,7 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
  */
 static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
 {
-  char buf[256] = { 0 };
-  char quoted_name[256] = { 0 };
   struct Buffer err;
-  struct Url url = { 0 };
-  struct ImapList list = { 0 };
 
   if (adata->cmdresult)
   {
@@ -684,6 +680,8 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   if (!c_imap_check_subscribed)
     return;
 
+  struct ImapList list = { 0 };
+
   adata->cmdresult = &list;
   cmd_parse_list(adata, s);
   adata->cmdresult = NULL;
@@ -692,6 +690,10 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
     return;
 
   mutt_debug(LL_DEBUG3, "Subscribing to %s\n", list.name);
+
+  char buf[256] = { 0 };
+  char quoted_name[256] = { 0 };
+  struct Url url = { 0 };
 
   mutt_str_copy(buf, "mailboxes \"", sizeof(buf));
   mutt_account_tourl(&adata->conn->account, &url);

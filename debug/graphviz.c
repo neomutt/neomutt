@@ -54,7 +54,6 @@
 #include "imap/private.h"    // IWYU pragma: keep
 #include "maildir/edata.h"   // IWYU pragma: keep
 #include "maildir/mdata.h"   // IWYU pragma: keep
-#include "maildir/private.h" // IWYU pragma: keep
 #include "mview.h"
 #include "nntp/adata.h"      // IWYU pragma: keep
 #include "nntp/mdata.h"      // IWYU pragma: keep
@@ -477,8 +476,8 @@ void dot_mailbox_maildir(FILE *fp, struct MaildirMboxData *mdata, struct ListHea
   dot_type_date(buf, sizeof(buf), mdata->mtime_cur.tv_sec);
   dot_type_string(fp, "mtime_cur", buf, true);
 
-  dot_type_umask(buf, sizeof(buf), mdata->mh_umask);
-  dot_type_string(fp, "mh_umask", buf, true);
+  dot_type_umask(buf, sizeof(buf), mdata->umask);
+  dot_type_string(fp, "umask", buf, true);
   dot_object_footer(fp);
 }
 

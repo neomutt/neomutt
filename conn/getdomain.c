@@ -130,10 +130,9 @@ int getdnsdomainname(struct Buffer *result)
     return rc;
 
   struct addrinfo *lookup_result = NULL;
-  struct addrinfo hints;
+  struct addrinfo hints = { 0 };
 
   buf_reset(result);
-  memset(&hints, 0, sizeof(struct addrinfo));
   hints.ai_flags = AI_CANONNAME;
   hints.ai_family = AF_UNSPEC;
 

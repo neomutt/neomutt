@@ -436,7 +436,7 @@ bool print_version(FILE *fp)
   if (!fp)
     return false;
 
-  struct utsname uts;
+  struct utsname uts = { 0 };
   bool tty = isatty(fileno(fp));
   const char *fmt = "%s\n";
 
