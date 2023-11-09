@@ -189,14 +189,13 @@ static void prepend_savedir(struct Buffer *buf)
 
 /**
  * has_a_message - Determine if the Body has a message (to save)
- * @param[in]  body Body of the message
+ * @param[in] b Body of the message
  * @retval true Suitable for saving
  */
-static bool has_a_message(struct Body *body)
+static bool has_a_message(struct Body *b)
 {
-  return (body->email && (body->encoding != ENC_BASE64) &&
-          (body->encoding != ENC_QUOTED_PRINTABLE) &&
-          mutt_is_message_type(body->type, body->subtype));
+  return (b->email && (b->encoding != ENC_BASE64) && (b->encoding != ENC_QUOTED_PRINTABLE) &&
+          mutt_is_message_type(b->type, b->subtype));
 }
 
 /**
@@ -265,13 +264,13 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
 /**
  * query_save_attachment - Ask the user if we should save the attachment
  * @param[in]  fp        File handle to the attachment (OPTIONAL)
- * @param[in]  body      Attachment
- * @param[in]  e       Email
+ * @param[in]  b         Attachment
+ * @param[in]  e         Email
  * @param[out] directory Where the attachment was saved
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, char **directory)
+static int query_save_attachment(FILE *fp, struct Body *b, struct Email *e, char **directory)
 {
   char *prompt = NULL;
   enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
@@ -280,20 +279,20 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
   struct Buffer *buf = buf_pool_get();
   struct Buffer *tfile = buf_pool_get();
 
-  if (body->filename)
+  if (b->filename)
   {
     if (directory && *directory)
     {
-      buf_concat_path(buf, *directory, mutt_path_basename(body->filename));
+      buf_concat_path(buf, *directory, mutt_path_basename(b->filename));
     }
     else
     {
-      buf_strcpy(buf, body->filename);
+      buf_strcpy(buf, b->filename);
     }
   }
-  else if (has_a_message(body))
+  else if (has_a_message(b))
   {
-    mutt_default_save(buf->data, buf->dsize, body->email);
+    mutt_default_save(buf->data, buf->dsize, b->email);
     buf_fix_dptr(buf);
   }
 
@@ -312,7 +311,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     prompt = NULL;
     buf_expand_path(buf);
 
-    bool is_message = (fp && has_a_message(body));
+    bool is_message = (fp && has_a_message(b));
 
     if (is_message)
     {
@@ -333,7 +332,7 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     }
     else
     {
-      rc = mutt_check_overwrite(body->filename, buf_string(buf), tfile, &opt, directory);
+      rc = mutt_check_overwrite(b->filename, buf_string(buf), tfile, &opt, directory);
       if (rc == -1)
       {
         goto cleanup;
@@ -346,8 +345,8 @@ static int query_save_attachment(FILE *fp, struct Body *body, struct Email *e, c
     }
 
     mutt_message(_("Saving..."));
-    if (save_attachment_flowed_helper(fp, body, buf_string(tfile), opt,
-                                      (e || !is_message) ? e : body->email) == 0)
+    if (save_attachment_flowed_helper(fp, b, buf_string(tfile), opt,
+                                      (e || !is_message) ? e : b->email) == 0)
     {
       // This uses ngettext to avoid duplication of messages
       const int num = 1;
@@ -370,32 +369,32 @@ cleanup:
 
 /**
  * save_without_prompting - Save the attachment, without prompting each time.
- * @param[in]  fp   File handle to the attachment (OPTIONAL)
- * @param[in]  body Attachment
- * @param[in]  e    Email
+ * @param[in]  fp File handle to the attachment (OPTIONAL)
+ * @param[in]  b  Attachment
+ * @param[in]  e  Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int save_without_prompting(FILE *fp, struct Body *body, struct Email *e)
+static int save_without_prompting(FILE *fp, struct Body *b, struct Email *e)
 {
   enum SaveAttach opt = MUTT_SAVE_NO_FLAGS;
   int rc = -1;
   struct Buffer *buf = buf_pool_get();
   struct Buffer *tfile = buf_pool_get();
 
-  if (body->filename)
+  if (b->filename)
   {
-    buf_strcpy(buf, body->filename);
+    buf_strcpy(buf, b->filename);
   }
-  else if (has_a_message(body))
+  else if (has_a_message(b))
   {
-    mutt_default_save(buf->data, buf->dsize, body->email);
+    mutt_default_save(buf->data, buf->dsize, b->email);
   }
 
   prepend_savedir(buf);
   buf_expand_path(buf);
 
-  bool is_message = (fp && has_a_message(body));
+  bool is_message = (fp && has_a_message(b));
 
   if (is_message)
   {
@@ -403,13 +402,13 @@ static int save_without_prompting(FILE *fp, struct Body *body, struct Email *e)
   }
   else
   {
-    rc = mutt_check_overwrite(body->filename, buf_string(buf), tfile, &opt, NULL);
+    rc = mutt_check_overwrite(b->filename, buf_string(buf), tfile, &opt, NULL);
     if (rc == -1) // abort or cancel
       goto cleanup;
   }
 
-  rc = save_attachment_flowed_helper(fp, body, buf_string(tfile), opt,
-                                     (e || !is_message) ? e : body->email);
+  rc = save_attachment_flowed_helper(fp, b, buf_string(tfile), opt,
+                                     (e || !is_message) ? e : b->email);
 
 cleanup:
   buf_pool_release(&buf);
@@ -422,12 +421,12 @@ cleanup:
  * @param actx Attachment context
  * @param fp   File handle for the attachment (OPTIONAL)
  * @param tag  If true, only save the tagged attachments
- * @param top  First Attachment
+ * @param b    First Attachment
  * @param e  Email
  * @param menu Menu listing attachments
  */
 void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                               struct Body *top, struct Email *e, struct Menu *menu)
+                               struct Body *b, struct Email *e, struct Menu *menu)
 {
   char *directory = NULL;
   int rc = 1;
@@ -447,15 +446,15 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     if (tag)
     {
       fp = actx->idx[i]->fp;
-      top = actx->idx[i]->body;
+      b = actx->idx[i]->body;
     }
-    if (!tag || top->tagged)
+    if (!tag || b->tagged)
     {
       if (c_attach_split)
       {
-        if (tag && menu && top->aptr)
+        if (tag && menu && b->aptr)
         {
-          menu_set_index(menu, top->aptr->num);
+          menu_set_index(menu, b->aptr->num);
           menu_queue_redraw(menu, MENU_REDRAW_MOTION);
 
           menu_redraw(menu);
@@ -463,14 +462,14 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         if (c_attach_save_without_prompting)
         {
           // Save each file, with no prompting, using the configured 'AttachSaveDir'
-          rc = save_without_prompting(fp, top, e);
+          rc = save_without_prompting(fp, b, e);
           if (rc == 0)
             saved_attachments++;
         }
         else
         {
           // Save each file, prompting the user for the location each time.
-          if (query_save_attachment(fp, top, e, &directory) == -1)
+          if (query_save_attachment(fp, b, e, &directory) == -1)
             break;
         }
       }
@@ -480,7 +479,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
 
         if (buf_is_empty(buf))
         {
-          buf_strcpy(buf, mutt_path_basename(NONULL(top->filename)));
+          buf_strcpy(buf, mutt_path_basename(NONULL(b->filename)));
           prepend_savedir(buf);
 
           struct FileCompletionData cdata = { false, NULL, NULL, NULL };
@@ -491,7 +490,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
             goto cleanup;
           }
           buf_expand_path(buf);
-          if (mutt_check_overwrite(top->filename, buf_string(buf), tfile, &opt, NULL))
+          if (mutt_check_overwrite(b->filename, buf_string(buf), tfile, &opt, NULL))
             goto cleanup;
         }
         else
@@ -499,7 +498,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           opt = MUTT_SAVE_APPEND;
         }
 
-        rc = save_attachment_flowed_helper(fp, top, buf_string(tfile), opt, e);
+        rc = save_attachment_flowed_helper(fp, b, buf_string(tfile), opt, e);
         if ((rc == 0) && c_attach_sep && (fp_out = fopen(buf_string(tfile), "a")))
         {
           fprintf(fp_out, "%s", c_attach_sep);
@@ -540,10 +539,10 @@ cleanup:
  * query_pipe_attachment - Ask the user if we should pipe the attachment
  * @param command Command to pipe the attachment to
  * @param fp      File handle to the attachment (OPTIONAL)
- * @param body    Attachment
+ * @param b       Attachment
  * @param filter  Is this command a filter?
  */
-static void query_pipe_attachment(const char *command, FILE *fp, struct Body *body, bool filter)
+static void query_pipe_attachment(const char *command, FILE *fp, struct Body *b, bool filter)
 {
   struct Buffer *tfile = buf_pool_get();
 
@@ -551,7 +550,7 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
   {
     char warning[PATH_MAX + 256];
     snprintf(warning, sizeof(warning),
-             _("WARNING!  You are about to overwrite %s, continue?"), body->filename);
+             _("WARNING!  You are about to overwrite %s, continue?"), b->filename);
     if (query_yesorno(warning, MUTT_NO) != MUTT_YES)
     {
       msgwin_clear_text(NULL);
@@ -561,13 +560,13 @@ static void query_pipe_attachment(const char *command, FILE *fp, struct Body *bo
     buf_mktemp(tfile);
   }
 
-  if (mutt_pipe_attachment(fp, body, command, buf_string(tfile)))
+  if (mutt_pipe_attachment(fp, b, command, buf_string(tfile)))
   {
     if (filter)
     {
-      mutt_file_unlink(body->filename);
-      mutt_file_rename(buf_string(tfile), body->filename);
-      mutt_update_encoding(body, NeoMutt->sub);
+      mutt_file_unlink(b->filename);
+      mutt_file_rename(buf_string(tfile), b->filename);
+      mutt_update_encoding(b, NeoMutt->sub);
       mutt_message(_("Attachment filtered"));
     }
   }
@@ -715,11 +714,11 @@ static void pipe_attachment_list(const char *command, struct AttachCtx *actx,
  * @param actx   Attachment context
  * @param fp     File handle to the attachment (OPTIONAL)
  * @param tag    If true, only save the tagged attachments
- * @param top    First Attachment
+ * @param b      First Attachment
  * @param filter Is this command a filter?
  */
 void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                               struct Body *top, bool filter)
+                               struct Body *b, bool filter)
 {
   struct State state = { 0 };
   struct Buffer *buf = NULL;
@@ -747,7 +746,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   {
     mutt_endwin();
     pid_t pid = filter_create(buf_string(buf), &state.fp_out, NULL, NULL, EnvList);
-    pipe_attachment_list(buf_string(buf), actx, fp, tag, top, filter, &state);
+    pipe_attachment_list(buf_string(buf), actx, fp, tag, b, filter, &state);
     mutt_file_fclose(&state.fp_out);
     const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
     if ((filter_wait(pid) != 0) || c_wait_key)
@@ -755,7 +754,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
   }
   else
   {
-    pipe_attachment_list(buf_string(buf), actx, fp, tag, top, filter, &state);
+    pipe_attachment_list(buf_string(buf), actx, fp, tag, b, filter, &state);
   }
 
 cleanup:
@@ -765,27 +764,27 @@ cleanup:
 /**
  * can_print - Do we know how to print this attachment type?
  * @param actx Attachment
- * @param top  Body of email
+ * @param b    Body of email
  * @param tag  Apply to all tagged Attachments
  * @retval true (all) the Attachment(s) are printable
  */
-static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
+static bool can_print(struct AttachCtx *actx, struct Body *b, bool tag)
 {
   char type[256] = { 0 };
 
   for (int i = 0; !tag || (i < actx->idxlen); i++)
   {
     if (tag)
-      top = actx->idx[i]->body;
-    snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
-    if (!tag || top->tagged)
+      b = actx->idx[i]->body;
+    snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+    if (!tag || b->tagged)
     {
-      if (!mailcap_lookup(top, type, sizeof(type), NULL, MUTT_MC_PRINT))
+      if (!mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
       {
-        if (!mutt_istr_equal("text/plain", top->subtype) &&
-            !mutt_istr_equal("application/postscript", top->subtype))
+        if (!mutt_istr_equal("text/plain", b->subtype) &&
+            !mutt_istr_equal("application/postscript", b->subtype))
         {
-          if (!mutt_can_decode(top))
+          if (!mutt_can_decode(b))
           {
             /* L10N: s gets replaced by a MIME type, e.g. "text/plain" or
                application/octet-stream.  */
@@ -806,11 +805,11 @@ static bool can_print(struct AttachCtx *actx, struct Body *top, bool tag)
  * @param actx  Attachment context
  * @param fp    File handle to the attachment (OPTIONAL)
  * @param tag   Apply to all tagged Attachments
- * @param top   First Attachment
+ * @param b     First Attachment
  * @param state File state for decoding the attachments
  */
 static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
-                                  struct Body *top, struct State *state)
+                                  struct Body *b, struct State *state)
 {
   char type[256] = { 0 };
 
@@ -822,19 +821,19 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     if (tag)
     {
       fp = actx->idx[i]->fp;
-      top = actx->idx[i]->body;
+      b = actx->idx[i]->body;
     }
-    if (!tag || top->tagged)
+    if (!tag || b->tagged)
     {
-      snprintf(type, sizeof(type), "%s/%s", TYPE(top), top->subtype);
-      if (!c_attach_split && !mailcap_lookup(top, type, sizeof(type), NULL, MUTT_MC_PRINT))
+      snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+      if (!c_attach_split && !mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
       {
-        if (mutt_istr_equal("text/plain", top->subtype) ||
-            mutt_istr_equal("application/postscript", top->subtype))
+        if (mutt_istr_equal("text/plain", b->subtype) ||
+            mutt_istr_equal("application/postscript", b->subtype))
         {
-          pipe_attachment(fp, top, state);
+          pipe_attachment(fp, b, state);
         }
-        else if (mutt_can_decode(top))
+        else if (mutt_can_decode(b))
         {
           /* decode and print */
 
@@ -842,7 +841,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
           struct Buffer *newfile = buf_pool_get();
 
           buf_mktemp(newfile);
-          if (mutt_decode_save_attachment(fp, top, buf_string(newfile),
+          if (mutt_decode_save_attachment(fp, b, buf_string(newfile),
                                           STATE_PRINTING, MUTT_SAVE_NO_FLAGS) == 0)
           {
             if (!state->fp_out)
@@ -866,7 +865,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
       }
       else
       {
-        mutt_print_attachment(fp, top);
+        mutt_print_attachment(fp, b);
       }
     }
     if (!tag)
@@ -879,9 +878,9 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
  * @param actx Attachment context
  * @param fp   File handle to the attachment (OPTIONAL)
  * @param tag  Apply to all tagged Attachments
- * @param top  First Attachment
+ * @param b    First Attachment
  */
-void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *top)
+void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, struct Body *b)
 {
   char prompt[128] = { 0 };
   struct State state = { 0 };
@@ -902,16 +901,16 @@ void mutt_print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag, stru
   const bool c_attach_split = cs_subset_bool(NeoMutt->sub, "attach_split");
   if (c_attach_split)
   {
-    print_attachment_list(actx, fp, tag, top, &state);
+    print_attachment_list(actx, fp, tag, b, &state);
   }
   else
   {
-    if (!can_print(actx, top, tag))
+    if (!can_print(actx, b, tag))
       return;
     mutt_endwin();
     const char *const c_print_command = cs_subset_string(NeoMutt->sub, "print_command");
     pid_t pid = filter_create(NONULL(c_print_command), &state.fp_out, NULL, NULL, EnvList);
-    print_attachment_list(actx, fp, tag, top, &state);
+    print_attachment_list(actx, fp, tag, b, &state);
     mutt_file_fclose(&state.fp_out);
     const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
     if ((filter_wait(pid) != 0) || c_wait_key)
@@ -1078,27 +1077,27 @@ int mutt_attach_display_loop(struct ConfigSubset *sub, struct Menu *menu, int op
  * mutt_generate_recvattach_list - Create a list of attachments
  * @param actx        Attachment context
  * @param e           Email
- * @param parts       Body of email
+ * @param b           Body of email
  * @param fp          File to read from
  * @param parent_type Type, e.g. #TYPE_MULTIPART
  * @param level       Attachment depth
  * @param decrypted   True if attachment has been decrypted
  */
 void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
-                                   struct Body *parts, FILE *fp,
-                                   int parent_type, int level, bool decrypted)
+                                   struct Body *b, FILE *fp, int parent_type,
+                                   int level, bool decrypted)
 {
-  struct Body *m = NULL;
+  struct Body *bp = NULL;
   struct Body *new_body = NULL;
   FILE *fp_new = NULL;
   SecurityFlags type;
 
-  for (m = parts; m; m = m->next)
+  for (bp = b; bp; bp = bp->next)
   {
     bool need_secured = false;
     bool secured = false;
 
-    if (((WithCrypto & APPLICATION_SMIME) != 0) && (type = mutt_is_application_smime(m)))
+    if (((WithCrypto & APPLICATION_SMIME) != 0) && (type = mutt_is_application_smime(bp)))
     {
       need_secured = true;
 
@@ -1111,13 +1110,13 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
           crypt_smime_getkeys(e->env);
       }
 
-      secured = (crypt_smime_decrypt_mime(fp, &fp_new, m, &new_body) == 0);
+      secured = (crypt_smime_decrypt_mime(fp, &fp_new, bp, &new_body) == 0);
       /* If the decrypt/verify-opaque doesn't generate mime output, an empty
        * text/plain type will still be returned by mutt_read_mime_header().
        * We can't distinguish an actual part from a failure, so only use a
        * text/plain that results from a single top-level part. */
       if (secured && (new_body->type == TYPE_TEXT) &&
-          mutt_istr_equal("plain", new_body->subtype) && ((parts != m) || m->next))
+          mutt_istr_equal("plain", new_body->subtype) && ((b != bp) || bp->next))
       {
         mutt_body_free(&new_body);
         mutt_file_fclose(&fp_new);
@@ -1129,14 +1128,14 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
     }
 
     if (((WithCrypto & APPLICATION_PGP) != 0) &&
-        (mutt_is_multipart_encrypted(m) || mutt_is_malformed_multipart_pgp_encrypted(m)))
+        (mutt_is_multipart_encrypted(bp) || mutt_is_malformed_multipart_pgp_encrypted(bp)))
     {
       need_secured = true;
 
       if (!crypt_valid_passphrase(APPLICATION_PGP))
         goto decrypt_failed;
 
-      secured = (crypt_pgp_decrypt_mime(fp, &fp_new, m, &new_body) == 0);
+      secured = (crypt_pgp_decrypt_mime(fp, &fp_new, bp, &new_body) == 0);
 
       if (secured)
         e->security |= PGP_ENCRYPT;
@@ -1158,22 +1157,22 @@ void mutt_generate_recvattach_list(struct AttachCtx *actx, struct Email *e,
     struct AttachPtr *ap = mutt_aptr_new();
     mutt_actx_add_attach(actx, ap);
 
-    ap->body = m;
+    ap->body = bp;
     ap->fp = fp;
-    m->aptr = ap;
+    bp->aptr = ap;
     ap->parent_type = parent_type;
     ap->level = level;
     ap->decrypted = decrypted;
 
-    if (mutt_is_message_type(m->type, m->subtype))
+    if (mutt_is_message_type(bp->type, bp->subtype))
     {
-      mutt_generate_recvattach_list(actx, m->email, m->parts, fp, m->type,
+      mutt_generate_recvattach_list(actx, bp->email, bp->parts, fp, bp->type,
                                     level + 1, decrypted);
-      e->security |= m->email->security;
+      e->security |= bp->email->security;
     }
     else
     {
-      mutt_generate_recvattach_list(actx, e, m->parts, fp, m->type, level + 1, decrypted);
+      mutt_generate_recvattach_list(actx, e, bp->parts, fp, bp->type, level + 1, decrypted);
     }
   }
 }

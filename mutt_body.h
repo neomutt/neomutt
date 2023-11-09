@@ -27,6 +27,6 @@
 
 struct Body;
 
-int mutt_body_copy(FILE *fp, struct Body **tgt, struct Body *src);
+int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src);
 
 #endif /* MUTT_MUTT_BODY_H */

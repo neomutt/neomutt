@@ -243,20 +243,20 @@ bail:
 /**
  * parse_content_disposition - Parse a content disposition
  * @param s String to parse
- * @param ct Body to save the result
+ * @param b Body to save the result
  *
  * e.g. parse a string "inline" and set #DISP_INLINE.
  */
-static void parse_content_disposition(const char *s, struct Body *ct)
+static void parse_content_disposition(const char *s, struct Body *b)
 {
   struct ParameterList pl = TAILQ_HEAD_INITIALIZER(pl);
 
   if (mutt_istr_startswith(s, "inline"))
-    ct->disposition = DISP_INLINE;
+    b->disposition = DISP_INLINE;
   else if (mutt_istr_startswith(s, "form-data"))
-    ct->disposition = DISP_FORM_DATA;
+    b->disposition = DISP_FORM_DATA;
   else
-    ct->disposition = DISP_ATTACH;
+    b->disposition = DISP_ATTACH;
 
   /* Check to see if a default filename was given */
   s = strchr(s, ';');
@@ -266,10 +266,10 @@ static void parse_content_disposition(const char *s, struct Body *ct)
     parse_parameters(&pl, s, false);
     s = mutt_param_get(&pl, "filename");
     if (s)
-      mutt_str_replace(&ct->filename, s);
+      mutt_str_replace(&b->filename, s);
     s = mutt_param_get(&pl, "name");
     if (s)
-      mutt_str_replace(&ct->form_name, s);
+      mutt_str_replace(&b->form_name, s);
     mutt_param_free(&pl);
   }
 }
@@ -293,16 +293,16 @@ static void parse_references(struct ListHead *head, const char *s)
 
 /**
  * parse_content_language - Read the content's language
- * @param s  Language string
- * @param ct Body of the email
+ * @param s Language string
+ * @param b Body of the email
  */
-static void parse_content_language(const char *s, struct Body *ct)
+static void parse_content_language(const char *s, struct Body *b)
 {
-  if (!s || !ct)
+  if (!s || !b)
     return;
 
   mutt_debug(LL_DEBUG2, "RFC8255 >> Content-Language set to %s\n", s);
-  mutt_str_replace(&ct->language, s);
+  mutt_str_replace(&b->language, s);
 }
 
 /**
@@ -419,17 +419,17 @@ int mutt_check_encoding(const char *c)
 /**
  * mutt_parse_content_type - Parse a content type
  * @param s String to parse
- * @param ct Body to save the result
+ * @param b Body to save the result
  *
  * e.g. parse a string "inline" and set #DISP_INLINE.
  */
-void mutt_parse_content_type(const char *s, struct Body *ct)
+void mutt_parse_content_type(const char *s, struct Body *b)
 {
-  if (!s || !ct)
+  if (!s || !b)
     return;
 
-  FREE(&ct->subtype);
-  mutt_param_free(&ct->parameter);
+  FREE(&b->subtype);
+  mutt_param_free(&b->parameter);
 
   /* First extract any existing parameters */
   char *pc = strchr(s, ';');
@@ -438,20 +438,20 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
     *pc++ = 0;
     while (*pc && isspace(*pc))
       pc++;
-    parse_parameters(&ct->parameter, pc, false);
+    parse_parameters(&b->parameter, pc, false);
 
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
      * let that take precedence, and don't set it here */
-    pc = mutt_param_get(&ct->parameter, "name");
-    if (pc && !ct->filename)
-      ct->filename = mutt_str_dup(pc);
+    pc = mutt_param_get(&b->parameter, "name");
+    if (pc && !b->filename)
+      b->filename = mutt_str_dup(pc);
 
 #ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
-    pc = mutt_param_get(&ct->parameter, "conversions");
+    pc = mutt_param_get(&b->parameter, "conversions");
     if (pc)
-      ct->encoding = mutt_check_encoding(pc);
+      b->encoding = mutt_check_encoding(pc);
 #endif
   }
 
@@ -464,66 +464,66 @@ void mutt_parse_content_type(const char *s, struct Body *ct)
       ; // do nothing
 
     *pc = '\0';
-    mutt_str_replace(&ct->subtype, subtype);
+    mutt_str_replace(&b->subtype, subtype);
   }
 
   /* Finally, get the major type */
-  ct->type = mutt_check_mime_type(s);
+  b->type = mutt_check_mime_type(s);
 
 #ifdef SUN_ATTACHMENT
   if (mutt_istr_equal("x-sun-attachment", s))
-    mutt_str_replace(&ct->subtype, "x-sun-attachment");
+    mutt_str_replace(&b->subtype, "x-sun-attachment");
 #endif
 
-  if (ct->type == TYPE_OTHER)
+  if (b->type == TYPE_OTHER)
   {
-    mutt_str_replace(&ct->xtype, s);
+    mutt_str_replace(&b->xtype, s);
   }
 
-  if (!ct->subtype)
+  if (!b->subtype)
   {
     /* Some older non-MIME mailers (i.e., mailtool, elm) have a content-type
      * field, so we can attempt to convert the type to Body here.  */
-    if (ct->type == TYPE_TEXT)
+    if (b->type == TYPE_TEXT)
     {
-      ct->subtype = mutt_str_dup("plain");
+      b->subtype = mutt_str_dup("plain");
     }
-    else if (ct->type == TYPE_AUDIO)
+    else if (b->type == TYPE_AUDIO)
     {
-      ct->subtype = mutt_str_dup("basic");
+      b->subtype = mutt_str_dup("basic");
     }
-    else if (ct->type == TYPE_MESSAGE)
+    else if (b->type == TYPE_MESSAGE)
     {
-      ct->subtype = mutt_str_dup("rfc822");
+      b->subtype = mutt_str_dup("rfc822");
     }
-    else if (ct->type == TYPE_OTHER)
+    else if (b->type == TYPE_OTHER)
     {
       char buf[128] = { 0 };
 
-      ct->type = TYPE_APPLICATION;
+      b->type = TYPE_APPLICATION;
       snprintf(buf, sizeof(buf), "x-%s", s);
-      ct->subtype = mutt_str_dup(buf);
+      b->subtype = mutt_str_dup(buf);
     }
     else
     {
-      ct->subtype = mutt_str_dup("x-unknown");
+      b->subtype = mutt_str_dup("x-unknown");
     }
   }
 
   /* Default character set for text types. */
-  if (ct->type == TYPE_TEXT)
+  if (b->type == TYPE_TEXT)
   {
-    pc = mutt_param_get(&ct->parameter, "charset");
+    pc = mutt_param_get(&b->parameter, "charset");
     if (pc)
     {
       /* Microsoft Outlook seems to think it is necessary to repeat
        * charset=, strip it off not to confuse ourselves */
       if (mutt_istrn_equal(pc, "charset=", sizeof("charset=") - 1))
-        mutt_param_set(&ct->parameter, "charset", pc + (sizeof("charset=") - 1));
+        mutt_param_set(&b->parameter, "charset", pc + (sizeof("charset=") - 1));
     }
     else
     {
-      mutt_param_set(&ct->parameter, "charset",
+      mutt_param_set(&b->parameter, "charset",
                      mutt_ch_get_default_charset(cc_assumed_charset()));
     }
   }
@@ -1346,17 +1346,17 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
   if (!fp)
     return NULL;
 
-  struct Body *p = mutt_body_new();
+  struct Body *b = mutt_body_new();
   struct Envelope *env = mutt_env_new();
   char *c = NULL;
   struct Buffer *buf = buf_pool_get();
   bool matched = false;
 
-  p->hdr_offset = ftello(fp);
+  b->hdr_offset = ftello(fp);
 
-  p->encoding = ENC_7BIT; /* default from RFC1521 */
-  p->type = digest ? TYPE_MESSAGE : TYPE_TEXT;
-  p->disposition = DISP_INLINE;
+  b->encoding = ENC_7BIT; /* default from RFC1521 */
+  b->type = digest ? TYPE_MESSAGE : TYPE_TEXT;
+  b->disposition = DISP_INLINE;
 
   while (mutt_rfc822_read_line(fp, buf) != 0)
   {
@@ -1384,24 +1384,24 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     {
       if (mutt_istr_equal("type", line + plen))
       {
-        mutt_parse_content_type(c, p);
+        mutt_parse_content_type(c, b);
       }
       else if (mutt_istr_equal("language", line + plen))
       {
-        parse_content_language(c, p);
+        parse_content_language(c, b);
       }
       else if (mutt_istr_equal("transfer-encoding", line + plen))
       {
-        p->encoding = mutt_check_encoding(c);
+        b->encoding = mutt_check_encoding(c);
       }
       else if (mutt_istr_equal("disposition", line + plen))
       {
-        parse_content_disposition(c, p);
+        parse_content_disposition(c, b);
       }
       else if (mutt_istr_equal("description", line + plen))
       {
-        mutt_str_replace(&p->description, c);
-        rfc2047_decode(&p->description);
+        mutt_str_replace(&b->description, c);
+        rfc2047_decode(&b->description);
       }
       else if (mutt_istr_equal("id", line + plen))
       {
@@ -1418,7 +1418,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
           if (id[cid_len - 1] == '>')
             id[cid_len - 1] = '\0';
         }
-        mutt_param_set(&p->parameter, "content-id", id);
+        mutt_param_set(&b->parameter, "content-id", id);
       }
     }
 #ifdef SUN_ATTACHMENT
@@ -1426,20 +1426,20 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
     {
       if (mutt_istr_equal("data-type", line + plen))
       {
-        mutt_parse_content_type(c, p);
+        mutt_parse_content_type(c, b);
       }
       else if (mutt_istr_equal("encoding-info", line + plen))
       {
-        p->encoding = mutt_check_encoding(c);
+        b->encoding = mutt_check_encoding(c);
       }
       else if (mutt_istr_equal("content-lines", line + plen))
       {
-        mutt_param_set(&p->parameter, "content-lines", c);
+        mutt_param_set(&b->parameter, "content-lines", c);
       }
       else if (mutt_istr_equal("data-description", line + plen))
       {
-        mutt_str_replace(&p->description, c);
-        rfc2047_decode(&p->description);
+        mutt_str_replace(&b->description, c);
+        rfc2047_decode(&b->description);
       }
     }
 #endif
@@ -1451,25 +1451,25 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
       }
     }
   }
-  p->offset = ftello(fp); /* Mark the start of the real data */
-  if ((p->type == TYPE_TEXT) && !p->subtype)
-    p->subtype = mutt_str_dup("plain");
-  else if ((p->type == TYPE_MESSAGE) && !p->subtype)
-    p->subtype = mutt_str_dup("rfc822");
+  b->offset = ftello(fp); /* Mark the start of the real data */
+  if ((b->type == TYPE_TEXT) && !b->subtype)
+    b->subtype = mutt_str_dup("plain");
+  else if ((b->type == TYPE_MESSAGE) && !b->subtype)
+    b->subtype = mutt_str_dup("rfc822");
 
   buf_pool_release(&buf);
 
   if (matched)
   {
-    p->mime_headers = env;
-    rfc2047_decode_envelope(p->mime_headers);
+    b->mime_headers = env;
+    rfc2047_decode_envelope(b->mime_headers);
   }
   else
   {
     mutt_env_free(&env);
   }
 
-  return p;
+  return b;
 }
 
 /**
@@ -1785,17 +1785,17 @@ void mutt_parse_part(FILE *fp, struct Body *b)
 
 /**
  * mutt_rfc822_parse_message - Parse a Message/RFC822 body
- * @param fp      Stream to read from
- * @param parent  Info about the message/rfc822 body part
+ * @param fp Stream to read from
+ * @param b  Info about the message/rfc822 body part
  * @retval ptr New Body containing parsed message
  *
- * @note This assumes that 'parent->length' has been set!
+ * @note This assumes that 'b->length' has been set!
  */
-struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *parent)
+struct Body *mutt_rfc822_parse_message(FILE *fp, struct Body *b)
 {
   int counter = 0;
 
-  return rfc822_parse_message(fp, parent, &counter);
+  return rfc822_parse_message(fp, b, &counter);
 }
 
 /**

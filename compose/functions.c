@@ -356,8 +356,8 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
     return -1;
 
   struct AttachPtr **idx = actx->idx;
-  struct Body *bptr_previous = NULL;
-  struct Body *bptr_parent = NULL;
+  struct Body *b_previous = NULL;
+  struct Body *b_parent = NULL;
 
   if (aidx == 0)
   {
@@ -371,9 +371,9 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
 
   if (idx[aidx]->level > 0)
   {
-    if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
+    if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &b_parent))
     {
-      if (attach_body_count(bptr_parent->parts, false) < 3)
+      if (attach_body_count(b_parent->parts, false) < 3)
       {
         mutt_error(_("Can't leave group with only one attachment"));
         return -1;
@@ -384,10 +384,10 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
   // reorder body pointers
   if (aidx > 0)
   {
-    if (attach_body_previous(idx[0]->body, idx[aidx]->body, &bptr_previous))
-      bptr_previous->next = idx[aidx]->body->next;
-    else if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &bptr_parent))
-      bptr_parent->parts = idx[aidx]->body->next;
+    if (attach_body_previous(idx[0]->body, idx[aidx]->body, &b_previous))
+      b_previous->next = idx[aidx]->body->next;
+    else if (attach_body_parent(idx[0]->body, NULL, idx[aidx]->body, &b_parent))
+      b_parent->parts = idx[aidx]->body->next;
   }
 
   // free memory
@@ -468,19 +468,19 @@ static void compose_attach_swap(struct Email *e, struct AttachCtx *actx, int fir
   else
   {
     // find previous attachment
-    struct Body *bptr_previous = NULL;
-    struct Body *bptr_parent = NULL;
-    if (attach_body_previous(e->body, idx[first]->body, &bptr_previous))
+    struct Body *b_previous = NULL;
+    struct Body *b_parent = NULL;
+    if (attach_body_previous(e->body, idx[first]->body, &b_previous))
     {
       idx[first]->body->next = idx[second]->body->next;
       idx[second]->body->next = idx[first]->body;
-      bptr_previous->next = idx[second]->body;
+      b_previous->next = idx[second]->body;
     }
-    else if (attach_body_parent(e->body, NULL, idx[first]->body, &bptr_parent))
+    else if (attach_body_parent(e->body, NULL, idx[first]->body, &b_parent))
     {
       idx[first]->body->next = idx[second]->body->next;
       idx[second]->body->next = idx[first]->body;
-      bptr_parent->parts = idx[second]->body;
+      b_parent->parts = idx[second]->body;
     }
   }
 
@@ -1670,20 +1670,20 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
 
   int aidx = shared->adata->menu->current;
   struct AttachCtx *actx = shared->adata->actx;
-  struct Body *bptr = actx->idx[aidx]->body;
-  struct Body *bptr_next = bptr->next;
-  struct Body *bptr_previous = NULL;
-  struct Body *bptr_parent = NULL;
+  struct Body *b = actx->idx[aidx]->body;
+  struct Body *b_next = b->next;
+  struct Body *b_previous = NULL;
+  struct Body *b_parent = NULL;
   int parent_type = actx->idx[aidx]->parent_type;
   int level = actx->idx[aidx]->level;
 
   // reorder body pointers
-  if (attach_body_previous(shared->email->body, bptr, &bptr_previous))
-    bptr_previous->next = bptr->parts;
-  else if (attach_body_parent(shared->email->body, NULL, bptr, &bptr_parent))
-    bptr_parent->parts = bptr->parts;
+  if (attach_body_previous(shared->email->body, b, &b_previous))
+    b_previous->next = b->parts;
+  else if (attach_body_parent(shared->email->body, NULL, b, &b_parent))
+    b_parent->parts = b->parts;
   else
-    shared->email->body = bptr->parts;
+    shared->email->body = b->parts;
 
   // update attachment list
   int i = aidx + 1;
@@ -1695,7 +1695,7 @@ static int op_attachment_ungroup(struct ComposeSharedData *shared, int op)
       actx->idx[i]->parent_type = parent_type;
       // set body->next for final attachment in group
       if (!actx->idx[i]->body->next)
-        actx->idx[i]->body->next = bptr_next;
+        actx->idx[i]->body->next = b_next;
     }
     i++;
     if (i == actx->idxlen)

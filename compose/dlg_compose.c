@@ -190,24 +190,24 @@ static int compose_window_observer(struct NotifyCallback *nc)
 /**
  * gen_attach_list - Generate the attachment list for the compose screen
  * @param actx        Attachment context
- * @param m           Attachment
+ * @param b           Attachment
  * @param parent_type Attachment type, e.g #TYPE_MULTIPART
  * @param level       Nesting depth of attachment
  */
-static void gen_attach_list(struct AttachCtx *actx, struct Body *m, int parent_type, int level)
+static void gen_attach_list(struct AttachCtx *actx, struct Body *b, int parent_type, int level)
 {
-  for (; m; m = m->next)
+  for (; b; b = b->next)
   {
     struct AttachPtr *ap = mutt_aptr_new();
     mutt_actx_add_attach(actx, ap);
-    ap->body = m;
-    m->aptr = ap;
+    ap->body = b;
+    b->aptr = ap;
     ap->parent_type = parent_type;
     ap->level = level;
-    if ((m->type == TYPE_MULTIPART) && m->parts &&
-        (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(m)))
+    if ((b->type == TYPE_MULTIPART) && b->parts &&
+        (!(WithCrypto & APPLICATION_PGP) || !mutt_is_multipart_encrypted(b)))
     {
-      gen_attach_list(actx, m->parts, m->type, level + 1);
+      gen_attach_list(actx, b->parts, b->type, level + 1);
     }
   }
 }

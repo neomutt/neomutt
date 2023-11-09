@@ -31,10 +31,10 @@ struct Body;
 struct Email;
 struct Mailbox;
 
-void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx, struct Body *cur);
-void mutt_attach_resend(FILE *fp, struct Mailbox *m, struct AttachCtx *actx, struct Body *cur);
-void mutt_attach_forward(FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *cur, SendFlags flags);
-void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *e_cur, SendFlags flags);
-void mutt_attach_mail_sender(struct AttachCtx *actx, struct Body *cur);
+void attach_bounce_message  (struct Mailbox *m, FILE *fp, struct AttachCtx *actx, struct Body *b);
+void mutt_attach_resend     (FILE *fp, struct Mailbox *m, struct AttachCtx *actx, struct Body *b);
+void mutt_attach_forward    (FILE *fp, struct Email *e, struct AttachCtx *actx, struct Body *b, SendFlags flags);
+void mutt_attach_reply      (FILE *fp, struct Mailbox *m, struct Email *e, struct AttachCtx *actx, struct Body *b, SendFlags flags);
+void mutt_attach_mail_sender(struct AttachCtx *actx, struct Body *b);
 
 #endif /* MUTT_RECVCMD_H */
