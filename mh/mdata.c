@@ -59,7 +59,7 @@ struct MhMboxData *mh_mdata_new(void)
  */
 struct MhMboxData *mh_mdata_get(struct Mailbox *m)
 {
-  if (m || (m->type == MUTT_MH))
+  if (m && (m->type == MUTT_MH))
     return m->mdata;
 
   return NULL;
