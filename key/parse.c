@@ -226,15 +226,14 @@ static void km_unbind_all(struct KeymapList *km_list, unsigned long mode)
 static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus,
                           int *num_menus, struct Buffer *err, bool bind)
 {
-  struct Buffer buf;
+  struct Buffer *buf = buf_pool_get();
   int i = 0;
   char *q = NULL;
-
-  buf_init(&buf);
+  char *result = NULL;
 
   /* menu name */
-  parse_extract_token(&buf, s, TOKEN_NO_FLAGS);
-  char *p = buf.data;
+  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+  char *p = buf->data;
   if (MoreArgs(s))
   {
     while (i < max_menus)
@@ -247,7 +246,7 @@ static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus
       if (val == -1)
       {
         buf_printf(err, _("%s: no such menu"), p);
-        goto error;
+        goto done;
       }
       mtypes[i] = val;
       i++;
@@ -258,24 +257,25 @@ static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus
     }
     *num_menus = i;
     /* key sequence */
-    parse_extract_token(&buf, s, TOKEN_NO_FLAGS);
+    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-    if (buf.data[0] == '\0')
+    if (buf_at(buf, 0) == '\0')
     {
       buf_printf(err, _("%s: null key sequence"), bind ? "bind" : "macro");
     }
     else if (MoreArgs(s))
     {
-      return buf.data;
+      result = buf_strdup(buf);
+      goto done;
     }
   }
   else
   {
     buf_printf(err, _("%s: too few arguments"), bind ? "bind" : "macro");
   }
-error:
-  FREE(&buf.data);
-  return NULL;
+done:
+  buf_pool_release(&buf);
+  return result;
 }
 
 /**

@@ -918,7 +918,6 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
   const struct PatternFlags *entry = NULL;
   char *p = NULL;
   char *buf = NULL;
-  struct Buffer ps;
   struct Mailbox *m = mv ? mv->mailbox : NULL;
 
   if (!s || (s[0] == '\0'))
@@ -927,25 +926,25 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
     return NULL;
   }
 
-  buf_init(&ps);
-  ps.dptr = (char *) s;
-  ps.dsize = mutt_str_len(s);
+  struct Buffer *ps = buf_pool_get();
+  buf_strcpy(ps, s);
+  buf_seek(ps, 0);
 
-  while (*ps.dptr)
+  while (*ps->dptr)
   {
-    SKIPWS(ps.dptr);
-    switch (*ps.dptr)
+    SKIPWS(ps->dptr);
+    switch (*ps->dptr)
     {
       case '^':
-        ps.dptr++;
+        ps->dptr++;
         all_addr = !all_addr;
         break;
       case '!':
-        ps.dptr++;
+        ps->dptr++;
         pat_not = !pat_not;
         break;
       case '@':
-        ps.dptr++;
+        ps->dptr++;
         is_alias = !is_alias;
         break;
       case '|':
@@ -953,7 +952,8 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
         {
           if (!curlist)
           {
-            buf_printf(err, _("error in pattern at: %s"), ps.dptr);
+            buf_printf(err, _("error in pattern at: %s"), ps->dptr);
+            buf_pool_release(&ps);
             return NULL;
           }
 
@@ -967,7 +967,7 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
 
           pat_or = true;
         }
-        ps.dptr++;
+        ps->dptr++;
         implicit = false;
         pat_not = false;
         all_addr = false;
@@ -977,27 +977,27 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
       case '=':
       case '~':
       {
-        if (ps.dptr[1] == '\0')
+        if (ps->dptr[1] == '\0')
         {
-          buf_printf(err, _("missing pattern: %s"), ps.dptr);
+          buf_printf(err, _("missing pattern: %s"), ps->dptr);
           goto cleanup;
         }
         short thread_op = 0;
-        if (ps.dptr[1] == '(')
+        if (ps->dptr[1] == '(')
           thread_op = MUTT_PAT_THREAD;
-        else if ((ps.dptr[1] == '<') && (ps.dptr[2] == '('))
+        else if ((ps->dptr[1] == '<') && (ps->dptr[2] == '('))
           thread_op = MUTT_PAT_PARENT;
-        else if ((ps.dptr[1] == '>') && (ps.dptr[2] == '('))
+        else if ((ps->dptr[1] == '>') && (ps->dptr[2] == '('))
           thread_op = MUTT_PAT_CHILDREN;
         if (thread_op != 0)
         {
-          ps.dptr++; /* skip ~ */
+          ps->dptr++; /* skip ~ */
           if ((thread_op == MUTT_PAT_PARENT) || (thread_op == MUTT_PAT_CHILDREN))
-            ps.dptr++;
-          p = find_matching_paren(ps.dptr + 1);
+            ps->dptr++;
+          p = find_matching_paren(ps->dptr + 1);
           if (p[0] != ')')
           {
-            buf_printf(err, _("mismatched parentheses: %s"), ps.dptr);
+            buf_printf(err, _("mismatched parentheses: %s"), ps->dptr);
             goto cleanup;
           }
           struct Pattern *leaf = attach_new_leaf(&curlist);
@@ -1009,7 +1009,7 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
           all_addr = false;
           is_alias = false;
           /* compile the sub-expression */
-          buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
+          buf = mutt_strn_dup(ps->dptr + 1, p - (ps->dptr + 1));
           leaf->child = mutt_pattern_comp(mv, menu, buf, flags, err);
           if (!leaf->child)
           {
@@ -1017,8 +1017,8 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
             goto cleanup;
           }
           FREE(&buf);
-          ps.dptr = p + 1; /* restore location */
-          SKIPWS(ps.dptr);
+          ps->dptr = p + 1; /* restore location */
+          SKIPWS(ps->dptr);
           break;
         }
         if (implicit && pat_or)
@@ -1029,15 +1029,15 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
           pat_or = false;
         }
 
-        entry = lookup_tag(ps.dptr[1]);
+        entry = lookup_tag(ps->dptr[1]);
         if (!entry)
         {
-          buf_printf(err, _("%c: invalid pattern modifier"), *ps.dptr);
+          buf_printf(err, _("%c: invalid pattern modifier"), *ps->dptr);
           goto cleanup;
         }
         if (entry->flags && ((flags & entry->flags) == 0))
         {
-          buf_printf(err, _("%c: not supported in this mode"), *ps.dptr);
+          buf_printf(err, _("%c: not supported in this mode"), *ps->dptr);
           goto cleanup;
         }
 
@@ -1045,20 +1045,20 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
         leaf->pat_not = pat_not;
         leaf->all_addr = all_addr;
         leaf->is_alias = is_alias;
-        leaf->string_match = (ps.dptr[0] == '=');
-        leaf->group_match = (ps.dptr[0] == '%');
+        leaf->string_match = (ps->dptr[0] == '=');
+        leaf->group_match = (ps->dptr[0] == '%');
         leaf->sendmode = (flags & MUTT_PC_SEND_MODE_SEARCH);
         leaf->op = entry->op;
         pat_not = false;
         all_addr = false;
         is_alias = false;
 
-        ps.dptr++; /* move past the ~ */
-        ps.dptr++; /* eat the operator and any optional whitespace */
-        SKIPWS(ps.dptr);
+        ps->dptr++; /* move past the ~ */
+        ps->dptr++; /* eat the operator and any optional whitespace */
+        SKIPWS(ps->dptr);
         if (entry->eat_arg)
         {
-          if (ps.dptr[0] == '\0')
+          if (ps->dptr[0] == '\0')
           {
             buf_addstr(err, _("missing parameter"));
             goto cleanup;
@@ -1066,23 +1066,23 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
           switch (entry->eat_arg)
           {
             case EAT_REGEX:
-              if (!eat_regex(leaf, flags, &ps, err))
+              if (!eat_regex(leaf, flags, ps, err))
                 goto cleanup;
               break;
             case EAT_DATE:
-              if (!eat_date(leaf, flags, &ps, err))
+              if (!eat_date(leaf, flags, ps, err))
                 goto cleanup;
               break;
             case EAT_RANGE:
-              if (!eat_range(leaf, flags, &ps, err))
+              if (!eat_range(leaf, flags, ps, err))
                 goto cleanup;
               break;
             case EAT_MESSAGE_RANGE:
-              if (!eat_message_range(leaf, flags, &ps, err, mv))
+              if (!eat_message_range(leaf, flags, ps, err, mv))
                 goto cleanup;
               break;
             case EAT_QUERY:
-              if (!eat_query(leaf, flags, &ps, err, m))
+              if (!eat_query(leaf, flags, ps, err, m))
                 goto cleanup;
               break;
             default:
@@ -1095,14 +1095,14 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
 
       case '(':
       {
-        p = find_matching_paren(ps.dptr + 1);
+        p = find_matching_paren(ps->dptr + 1);
         if (p[0] != ')')
         {
-          buf_printf(err, _("mismatched parentheses: %s"), ps.dptr);
+          buf_printf(err, _("mismatched parentheses: %s"), ps->dptr);
           goto cleanup;
         }
         /* compile the sub-expression */
-        buf = mutt_strn_dup(ps.dptr + 1, p - (ps.dptr + 1));
+        buf = mutt_strn_dup(ps->dptr + 1, p - (ps->dptr + 1));
         struct PatternList *sub = mutt_pattern_comp(mv, menu, buf, flags, err);
         FREE(&buf);
         if (!sub)
@@ -1123,16 +1123,17 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
         pat_not = false;
         all_addr = false;
         is_alias = false;
-        ps.dptr = p + 1; /* restore location */
-        SKIPWS(ps.dptr);
+        ps->dptr = p + 1; /* restore location */
+        SKIPWS(ps->dptr);
         break;
       }
 
       default:
-        buf_printf(err, _("error in pattern at: %s"), ps.dptr);
+        buf_printf(err, _("error in pattern at: %s"), ps->dptr);
         goto cleanup;
     }
   }
+  buf_pool_release(&ps);
 
   if (!curlist)
   {
@@ -1150,5 +1151,6 @@ struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu,
 
 cleanup:
   mutt_pattern_free(&curlist);
+  buf_pool_release(&ps);
   return NULL;
 }

@@ -1211,7 +1211,6 @@ int imap_subscribe(char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
-  struct Buffer err;
 
   if (imap_adata_find(path, &adata, &mdata) < 0)
     return -1;
@@ -1234,14 +1233,12 @@ int imap_subscribe(char *path, bool subscribe)
   if (c_imap_check_subscribed)
   {
     char mbox[1024] = { 0 };
-    buf_init(&err);
-    err.dsize = 256;
-    err.data = mutt_mem_malloc(err.dsize);
     size_t len = snprintf(mbox, sizeof(mbox), "%smailboxes ", subscribe ? "" : "un");
     imap_quote_string(mbox + len, sizeof(mbox) - len, path, true);
-    if (parse_rc_line(mbox, &err))
-      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", err.data);
-    FREE(&err.data);
+    struct Buffer *err = buf_pool_get();
+    if (parse_rc_line(mbox, err))
+      mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
+    buf_pool_release(&err);
   }
 
   if (subscribe)
@@ -2014,15 +2011,14 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     else
     {
       struct ListNode *np = NULL;
-      struct Buffer flag_buffer;
-      buf_init(&flag_buffer);
-      buf_printf(&flag_buffer, "Mailbox flags: ");
+      struct Buffer *flag_buffer = buf_pool_get();
+      buf_printf(flag_buffer, "Mailbox flags: ");
       STAILQ_FOREACH(np, &mdata->flags, entries)
       {
-        buf_add_printf(&flag_buffer, "[%s] ", np->data);
+        buf_add_printf(flag_buffer, "[%s] ", np->data);
       }
-      mutt_debug(LL_DEBUG3, "%s\n", flag_buffer.data);
-      FREE(&flag_buffer.data);
+      mutt_debug(LL_DEBUG3, "%s\n", buf_string(flag_buffer));
+      buf_pool_release(&flag_buffer);
     }
   }
 

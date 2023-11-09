@@ -1672,7 +1672,6 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
   if (!m || !ea || ARRAY_EMPTY(ea) || !dest)
     return -1;
 
-  struct Buffer cmd, sync_cmd;
   char buf[PATH_MAX] = { 0 };
   char mbox[PATH_MAX] = { 0 };
   char mmbox[PATH_MAX] = { 0 };
@@ -1710,26 +1709,28 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
   imap_munge_mbox_name(adata->unicode, mmbox, sizeof(mmbox), mbox);
 
   /* loop in case of TRYCREATE */
+  struct Buffer *cmd = buf_pool_get();
+  struct Buffer *sync_cmd = buf_pool_get();
   do
   {
-    buf_init(&sync_cmd);
-    buf_init(&cmd);
+    buf_reset(sync_cmd);
+    buf_reset(cmd);
 
     if (single)
     {
       mutt_message(_("Copying message %d to %s..."), e_cur->index + 1, mbox);
-      buf_add_printf(&cmd, "UID COPY %u %s", imap_edata_get(e_cur)->uid, mmbox);
+      buf_add_printf(cmd, "UID COPY %u %s", imap_edata_get(e_cur)->uid, mmbox);
 
       if (e_cur->active && e_cur->changed)
       {
-        rc = imap_sync_message_for_copy(m, e_cur, &sync_cmd, &err_continue);
+        rc = imap_sync_message_for_copy(m, e_cur, sync_cmd, &err_continue);
         if (rc < 0)
         {
           mutt_debug(LL_DEBUG1, "#2 could not sync\n");
           goto out;
         }
       }
-      rc = imap_exec(adata, cmd.data, IMAP_CMD_QUEUE);
+      rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_QUEUE);
       if (rc != IMAP_EXEC_SUCCESS)
       {
         mutt_debug(LL_DEBUG1, "#2 could not queue copy\n");
@@ -1748,12 +1749,13 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
         if (e->attach_del)
         {
           mutt_debug(LL_DEBUG3, "#2 Message contains attachments to be deleted\n");
-          return 1;
+          rc = 1;
+          goto out;
         }
 
         if (e->active && e->changed)
         {
-          rc = imap_sync_message_for_copy(m, e, &sync_cmd, &err_continue);
+          rc = imap_sync_message_for_copy(m, e, sync_cmd, &err_continue);
           if (rc < 0)
           {
             mutt_debug(LL_DEBUG1, "#1 could not sync\n");
@@ -1833,8 +1835,8 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
   rc = 0;
 
 out:
-  FREE(&cmd.data);
-  FREE(&sync_cmd.data);
+  buf_pool_release(&cmd);
+  buf_pool_release(&sync_cmd);
 
   return (rc < 0) ? -1 : rc;
 }

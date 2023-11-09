@@ -180,26 +180,25 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         mutt_debug(LL_DEBUG1, "mismatched backticks\n");
         return -1;
       }
-      struct Buffer cmd;
-      buf_init(&cmd);
+      struct Buffer *cmd = buf_pool_get();
       *pc = '\0';
       if (flags & TOKEN_BACKTICK_VARS)
       {
         /* recursively extract tokens to interpolate variables */
-        parse_extract_token(&cmd, tok,
+        parse_extract_token(cmd, tok,
                             TOKEN_QUOTE | TOKEN_SPACE | TOKEN_COMMENT |
                                 TOKEN_SEMICOLON | TOKEN_NOSHELL);
       }
       else
       {
-        cmd.data = mutt_str_dup(tok->dptr);
+        buf_strcpy(cmd, tok->dptr);
       }
       *pc = '`';
-      pid = filter_create(cmd.data, NULL, &fp, NULL, EnvList);
+      pid = filter_create(buf_string(cmd), NULL, &fp, NULL, EnvList);
       if (pid < 0)
       {
-        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", cmd.data);
-        FREE(&cmd.data);
+        mutt_debug(LL_DEBUG1, "unable to fork command: %s\n", buf_string(cmd));
+        buf_pool_release(&cmd);
         return -1;
       }
 
@@ -211,9 +210,11 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       mutt_file_fclose(&fp);
       int rc = filter_wait(pid);
       if (rc != 0)
+      {
         mutt_debug(LL_DEBUG1, "backticks exited code %d for command: %s\n", rc,
-                   buf_string(&cmd));
-      FREE(&cmd.data);
+                   buf_string(cmd));
+      }
+      buf_pool_release(&cmd);
 
       /* if we got output, make a new string consisting of the shell output
        * plus whatever else was left on the original line */
@@ -272,14 +273,12 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       }
       if (var)
       {
-        struct Buffer result;
-        buf_init(&result);
-        int rc = cs_subset_str_string_get(NeoMutt->sub, var, &result);
+        struct Buffer *result = buf_pool_get();
+        int rc = cs_subset_str_string_get(NeoMutt->sub, var, result);
 
         if (CSR_RESULT(rc) == CSR_SUCCESS)
         {
-          buf_addstr(dest, result.data);
-          FREE(&result.data);
+          buf_addstr(dest, buf_string(result));
         }
         else if (!(flags & TOKEN_NOSHELL) && (env = mutt_str_getenv(var)))
         {
@@ -291,6 +290,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
           buf_addstr(dest, var);
         }
         FREE(&var);
+        buf_pool_release(&result);
       }
     }
     else

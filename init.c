@@ -396,12 +396,11 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
   p = mutt_str_getenv("REPLYTO");
   if (p)
   {
-    struct Buffer token;
+    struct Buffer *token = buf_pool_get();
 
     buf_printf(&buf, "Reply-To: %s", p);
-    buf_init(&token);
-    parse_my_hdr(&token, &buf, 0, &err); /* adds to UserHeader */
-    FREE(&token.data);
+    parse_my_hdr(token, &buf, 0, &err); /* adds to UserHeader */
+    buf_pool_release(&token);
   }
 
   p = mutt_str_getenv("EMAIL");

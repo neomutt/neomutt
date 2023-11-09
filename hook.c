@@ -891,27 +891,23 @@ done:
 void mutt_timeout_hook(void)
 {
   struct Hook *hook = NULL;
-  struct Buffer err;
-  char buf[256] = { 0 };
-
-  buf_init(&err);
-  err.data = buf;
-  err.dsize = sizeof(buf);
+  struct Buffer *err = buf_pool_get();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & MUTT_TIMEOUT_HOOK)))
       continue;
 
-    if (parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
     {
-      mutt_error("%s", err.data);
-      buf_reset(&err);
+      mutt_error("%s", buf_string(err));
+      buf_reset(err);
 
       /* The hooks should be independent of each other, so even though this on
        * failed, we'll carry on with the others. */
     }
   }
+  buf_pool_release(&err);
 
   /* Delete temporary attachment files */
   mutt_temp_attachments_cleanup();

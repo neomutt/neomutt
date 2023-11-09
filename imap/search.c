@@ -239,15 +239,14 @@ bool imap_search(struct Mailbox *m, const struct PatternList *pat)
   if (check_pattern_list(pat) == 0)
     return true;
 
-  struct Buffer buf;
-  buf_init(&buf);
-  buf_addstr(&buf, "UID SEARCH ");
+  struct Buffer *buf = buf_pool_get();
+  buf_addstr(buf, "UID SEARCH ");
 
   struct ImapAccountData *adata = imap_adata_get(m);
-  const bool ok = compile_search(adata, SLIST_FIRST(pat), &buf) &&
-                  (imap_exec(adata, buf.data, IMAP_CMD_NO_FLAGS) == IMAP_EXEC_SUCCESS);
+  const bool ok = compile_search(adata, SLIST_FIRST(pat), buf) &&
+                  (imap_exec(adata, buf_string(buf), IMAP_CMD_NO_FLAGS) == IMAP_EXEC_SUCCESS);
 
-  FREE(&buf.data);
+  buf_pool_release(&buf);
   return ok;
 }
 

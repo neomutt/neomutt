@@ -759,7 +759,6 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
                        unsigned char **fmt, size_t *blen, int *buf_ready)
 {
   static int b_read = 0;
-  struct Buffer stripped;
 
   if (*buf_ready == 0)
   {
@@ -782,12 +781,13 @@ static int fill_buffer(FILE *fp, LOFF_T *bytes_read, LOFF_T offset, unsigned cha
     b_read = (int) (*bytes_read - offset);
     *buf_ready = 1;
 
-    buf_init(&stripped);
-    buf_alloc(&stripped, *blen);
-    buf_strip_formatting(&stripped, (const char *) *buf, 1);
+    struct Buffer *stripped = buf_pool_get();
+    buf_alloc(stripped, *blen);
+    buf_strip_formatting(stripped, (const char *) *buf, 1);
     /* This should be a noop, because *fmt should be NULL */
     FREE(fmt);
-    *fmt = (unsigned char *) stripped.data;
+    *fmt = (unsigned char *) buf_strdup(stripped);
+    buf_pool_release(&stripped);
   }
 
   return b_read;
