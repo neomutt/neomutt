@@ -47,15 +47,15 @@ STAILQ_HEAD(ListHead, ListNode);
  */
 typedef void (*list_free_t)(void **ptr);
 
-void             mutt_list_clear(struct ListHead *h);
-bool             mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh);
-struct ListNode *mutt_list_find(const struct ListHead *h, const char *data);
-void             mutt_list_free(struct ListHead *h);
-void             mutt_list_free_type(struct ListHead *h, list_free_t fn);
+void             mutt_list_clear       (struct ListHead *h);
+bool             mutt_list_equal       (const struct ListHead *ah, const struct ListHead *bh);
+struct ListNode *mutt_list_find        (const struct ListHead *h, const char *data);
+void             mutt_list_free        (struct ListHead *h);
+void             mutt_list_free_type   (struct ListHead *h, list_free_t fn);
 struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, char *s);
-struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s);
-struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s);
-bool             mutt_list_match(const char *s, struct ListHead *h);
-size_t           mutt_list_str_split(struct ListHead *head, const char *src, char sep);
+struct ListNode *mutt_list_insert_head (struct ListHead *h, char *s);
+struct ListNode *mutt_list_insert_tail (struct ListHead *h, char *s);
+bool             mutt_list_match       (const char *s, struct ListHead *h);
+size_t           mutt_list_str_split   (struct ListHead *head, const char *src, char sep);
 
 #endif /* MUTT_MUTT_LIST_H */

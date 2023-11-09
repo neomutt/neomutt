@@ -76,7 +76,7 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
   {
     list = slist_parse(value, cdef->type);
 
-    if (slist_compare(list, *(struct Slist **) var))
+    if (slist_equal(list, *(struct Slist **) var))
     {
       slist_free(&list);
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
@@ -158,7 +158,7 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
 
   int rc;
 
-  if (slist_compare((struct Slist *) value, *(struct Slist **) var))
+  if (slist_equal((struct Slist *) value, *(struct Slist **) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (startup_only(cdef, err))
@@ -306,7 +306,7 @@ static int slist_reset(const struct ConfigSet *cs, void *var,
   if (initial)
     list = slist_parse(initial, cdef->type);
 
-  if (slist_compare(list, *(struct Slist **) var))
+  if (slist_equal(list, *(struct Slist **) var))
   {
     slist_free(&list);
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;

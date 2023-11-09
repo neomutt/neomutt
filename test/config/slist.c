@@ -313,7 +313,7 @@ static bool test_slist_add_list(struct Buffer *err)
   return true;
 }
 
-static bool test_slist_compare(struct Buffer *err)
+static bool test_slist_equal(struct Buffer *err)
 {
   struct Slist *list1 = slist_parse("apple:banana::cherry", SLIST_SEP_COLON | SLIST_ALLOW_EMPTY);
   slist_dump(list1, err);
@@ -327,19 +327,19 @@ static bool test_slist_compare(struct Buffer *err)
 
   bool result = true;
 
-  if (!TEST_CHECK(slist_compare(NULL, NULL) == true))
+  if (!TEST_CHECK(slist_equal(NULL, NULL) == true))
     result = false;
 
-  if (!TEST_CHECK(slist_compare(list1, NULL) == false))
+  if (!TEST_CHECK(slist_equal(list1, NULL) == false))
     result = false;
 
-  if (!TEST_CHECK(slist_compare(NULL, list2) == false))
+  if (!TEST_CHECK(slist_equal(NULL, list2) == false))
     result = false;
 
-  if (!TEST_CHECK(slist_compare(list1, list2) == true))
+  if (!TEST_CHECK(slist_equal(list1, list2) == true))
     result = false;
 
-  if (!TEST_CHECK(slist_compare(list1, list3) == false))
+  if (!TEST_CHECK(slist_equal(list1, list3) == false))
     result = false;
 
   slist_free(&list1);
@@ -1211,7 +1211,7 @@ void test_config_slist(void)
   TEST_CHECK(test_slist_remove_string(err));
   TEST_CHECK(test_slist_is_member(err));
   TEST_CHECK(test_slist_add_list(err));
-  TEST_CHECK(test_slist_compare(err));
+  TEST_CHECK(test_slist_equal(err));
 
   TEST_CHECK(slist_test_separator(VarsColon, err));
   TEST_CHECK(slist_test_separator(VarsComma, err));

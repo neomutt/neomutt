@@ -382,7 +382,7 @@ void test_fini(void);
                                                                                \
   /* list */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_list_clear)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_list_compare)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_list_equal)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_list_find)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_list_free)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_list_free_type)                                  \
@@ -571,9 +571,9 @@ void test_fini(void);
   /* slist */                                                                  \
   NEOMUTT_TEST_ITEM(test_slist_add_list)                                       \
   NEOMUTT_TEST_ITEM(test_slist_add_string)                                     \
-  NEOMUTT_TEST_ITEM(test_slist_compare)                                        \
   NEOMUTT_TEST_ITEM(test_slist_dup)                                            \
   NEOMUTT_TEST_ITEM(test_slist_empty)                                          \
+  NEOMUTT_TEST_ITEM(test_slist_equal)                                          \
   NEOMUTT_TEST_ITEM(test_slist_free)                                           \
   NEOMUTT_TEST_ITEM(test_slist_is_empty)                                       \
   NEOMUTT_TEST_ITEM(test_slist_is_member)                                      \

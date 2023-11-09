@@ -207,7 +207,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
 }
 
 /**
- * mutt_list_compare - Compare two string lists
+ * mutt_list_equal - Compare two string lists
  * @param ah First string list
  * @param bh Second string list
  * @retval true Lists are identical
@@ -215,7 +215,7 @@ bool mutt_list_match(const char *s, struct ListHead *h)
  * To be identical, the lists must both be the same length and contain the same
  * strings.  Two empty lists are identical.
  */
-bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh)
+bool mutt_list_equal(const struct ListHead *ah, const struct ListHead *bh)
 {
   if (!ah || !bh)
     return false;

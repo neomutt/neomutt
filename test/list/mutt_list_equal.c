@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_list_compare()
+ * Test code for mutt_list_equal()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -28,31 +28,31 @@
 #include "mutt/lib.h"
 #include "common.h"
 
-void test_mutt_list_compare(void)
+void test_mutt_list_equal(void)
 {
-  // bool mutt_list_compare(const struct ListHead *ah, const struct ListHead *bh);
+  // bool mutt_list_equal(const struct ListHead *ah, const struct ListHead *bh);
 
   {
     struct ListHead listhead = { 0 };
-    TEST_CHECK(!mutt_list_compare(NULL, &listhead));
+    TEST_CHECK(!mutt_list_equal(NULL, &listhead));
   }
 
   {
     struct ListHead listhead = { 0 };
-    TEST_CHECK(!mutt_list_compare(&listhead, NULL));
+    TEST_CHECK(!mutt_list_equal(&listhead, NULL));
   }
 
   {
     struct ListHead first = STAILQ_HEAD_INITIALIZER(first);
     struct ListHead second = STAILQ_HEAD_INITIALIZER(second);
-    TEST_CHECK(mutt_list_compare(&first, &second) == true);
+    TEST_CHECK(mutt_list_equal(&first, &second) == true);
   }
 
   {
     static const char *names[] = { "Amy", "Beth", "Cathy", NULL };
     struct ListHead first = test_list_create(names, false);
     struct ListHead second = STAILQ_HEAD_INITIALIZER(second);
-    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    TEST_CHECK(mutt_list_equal(&first, &second) == false);
     mutt_list_clear(&first);
   }
 
@@ -61,7 +61,7 @@ void test_mutt_list_compare(void)
     static const char *second_names[] = { "Amy", "Beth", NULL };
     struct ListHead first = test_list_create(first_names, false);
     struct ListHead second = test_list_create(second_names, false);
-    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    TEST_CHECK(mutt_list_equal(&first, &second) == false);
     mutt_list_clear(&first);
     mutt_list_clear(&second);
   }
@@ -71,7 +71,7 @@ void test_mutt_list_compare(void)
     static const char *second_names[] = { "Amy", "Beth", "Cathy", NULL };
     struct ListHead first = test_list_create(first_names, false);
     struct ListHead second = test_list_create(second_names, false);
-    TEST_CHECK(mutt_list_compare(&first, &second) == true);
+    TEST_CHECK(mutt_list_equal(&first, &second) == true);
     mutt_list_clear(&first);
     mutt_list_clear(&second);
   }
@@ -81,7 +81,7 @@ void test_mutt_list_compare(void)
     static const char *second_names[] = { "Amy", "Beth", "Cathy", "Denise", NULL };
     struct ListHead first = test_list_create(first_names, false);
     struct ListHead second = test_list_create(second_names, false);
-    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    TEST_CHECK(mutt_list_equal(&first, &second) == false);
     mutt_list_clear(&first);
     mutt_list_clear(&second);
   }
@@ -91,7 +91,7 @@ void test_mutt_list_compare(void)
     static const char *second_names[] = { "Anna", "Beth", "Cathy", NULL };
     struct ListHead first = test_list_create(first_names, false);
     struct ListHead second = test_list_create(second_names, false);
-    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    TEST_CHECK(mutt_list_equal(&first, &second) == false);
     mutt_list_clear(&first);
     mutt_list_clear(&second);
   }
@@ -101,7 +101,7 @@ void test_mutt_list_compare(void)
     static const char *second_names[] = { "Amy", "Bella", "Cathy", NULL };
     struct ListHead first = test_list_create(first_names, false);
     struct ListHead second = test_list_create(second_names, false);
-    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    TEST_CHECK(mutt_list_equal(&first, &second) == false);
     mutt_list_clear(&first);
     mutt_list_clear(&second);
   }
@@ -111,7 +111,7 @@ void test_mutt_list_compare(void)
     static const char *second_names[] = { "Anna", "Beth", "Carol", NULL };
     struct ListHead first = test_list_create(first_names, false);
     struct ListHead second = test_list_create(second_names, false);
-    TEST_CHECK(mutt_list_compare(&first, &second) == false);
+    TEST_CHECK(mutt_list_equal(&first, &second) == false);
     mutt_list_clear(&first);
     mutt_list_clear(&second);
   }

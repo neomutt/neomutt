@@ -261,7 +261,7 @@ bool mutt_env_cmp_strict(const struct Envelope *e1, const struct Envelope *e2)
   {
     if (!mutt_str_equal(e1->message_id, e2->message_id) ||
         !mutt_str_equal(e1->subject, e2->subject) ||
-        !mutt_list_compare(&e1->references, &e2->references) ||
+        !mutt_list_equal(&e1->references, &e2->references) ||
         !mutt_addrlist_equal(&e1->from, &e2->from) ||
         !mutt_addrlist_equal(&e1->sender, &e2->sender) ||
         !mutt_addrlist_equal(&e1->reply_to, &e2->reply_to) ||

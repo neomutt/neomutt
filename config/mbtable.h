@@ -40,7 +40,7 @@ struct MbTable
   char *segmented_str; ///< Each chars entry points inside this string
 };
 
-bool            mbtable_compare      (const struct MbTable *a, const struct MbTable *b);
+bool            mbtable_equal        (const struct MbTable *a, const struct MbTable *b);
 void            mbtable_free         (struct MbTable **ptr);
 const char *    mbtable_get_nth_wchar(const struct MbTable *table, int index);
 struct MbTable *mbtable_parse        (const char *str);

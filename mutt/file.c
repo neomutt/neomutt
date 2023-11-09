@@ -68,7 +68,7 @@ const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
 #endif
 
 /**
- * compare_stat - Compare the struct stat's of two files/dirs
+ * stat_equal - Compare the struct stat's of two files/dirs
  * @param st_old struct stat of the first file/dir
  * @param st_new struct stat of the second file/dir
  * @retval true They match
@@ -76,7 +76,7 @@ const char FilenameSafeChars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrst
  * This compares the device id (st_dev), inode number (st_ino) and special id
  * (st_rdev) of the files/dirs.
  */
-static bool compare_stat(struct stat *st_old, struct stat *st_new)
+static bool stat_equal(struct stat *st_old, struct stat *st_new)
 {
   return (st_old->st_dev == st_new->st_dev) && (st_old->st_ino == st_new->st_ino) &&
          (st_old->st_rdev == st_new->st_rdev);
@@ -325,7 +325,7 @@ int mutt_file_symlink(const char *oldpath, const char *newpath)
   }
 
   if ((stat(oldpath, &st_old) == -1) || (stat(newpath, &st_new) == -1) ||
-      !compare_stat(&st_old, &st_new))
+      !stat_equal(&st_old, &st_new))
   {
     unlink(newpath);
     return -1;
@@ -366,7 +366,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
      * used lstat() further below for 20 years without issue, and I
      * believe was never intended to be used on a src symlink.  */
     if ((lstat(src, &st_src) == 0) && (lstat(target, &st_target) == 0) &&
-        (compare_stat(&st_src, &st_target) == 0))
+        (stat_equal(&st_src, &st_target) == 0))
     {
       mutt_debug(LL_DEBUG1, "link (%s, %s) reported failure: %s (%d) but actually succeeded\n",
                  src, target, strerror(errno), errno);
@@ -412,7 +412,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
     return -1;
   }
 
-  /* Remove the compare_stat() check, because it causes problems with maildir
+  /* Remove the stat_equal() check, because it causes problems with maildir
    * on filesystems that don't properly support hard links, such as sshfs.  The
    * filesystem creates the link, but the resulting file is given a different
    * inode number by the sshfs layer.  This results in an infinite loop
@@ -433,7 +433,7 @@ int mutt_file_safe_rename(const char *src, const char *target)
 
   /* pretend that the link failed because the target file did already exist. */
 
-  if (!compare_stat(&st_src, &st_target))
+  if (!stat_equal(&st_src, &st_target))
   {
     mutt_debug(LL_DEBUG1, "stat blocks for %s and %s diverge; pretending EEXIST\n", src, target);
     errno = EEXIST;
@@ -592,7 +592,7 @@ int mutt_file_open(const char *path, uint32_t flags)
   struct stat st_old = { 0 };
   struct stat st_new = { 0 };
   if (((lstat(path, &st_old) < 0) || (fstat(fd, &st_new) < 0)) ||
-      !compare_stat(&st_old, &st_new))
+      !stat_equal(&st_old, &st_new))
   {
     close(fd);
     fd = -1;

@@ -718,7 +718,7 @@ void test_config_mbtable(void)
 
   set_list(cs);
 
-  mbtable_compare(NULL, NULL);
+  mbtable_equal(NULL, NULL);
 
   struct Buffer *err = buf_pool_get();
   TEST_CHECK(test_initial_values(sub, err));

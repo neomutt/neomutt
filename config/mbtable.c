@@ -42,12 +42,12 @@
 #include "types.h"
 
 /**
- * mbtable_compare - Compare two MbTables
+ * mbtable_equal - Compare two MbTables
  * @param a First MbTable
  * @param b Second MbTable
  * @retval true They are identical
  */
-bool mbtable_compare(const struct MbTable *a, const struct MbTable *b)
+bool mbtable_equal(const struct MbTable *a, const struct MbTable *b)
 {
   if (!a && !b) /* both empty */
     return true;
@@ -218,7 +218,7 @@ static int mbtable_native_set(const struct ConfigSet *cs, void *var,
 {
   int rc;
 
-  if (mbtable_compare(*(struct MbTable **) var, (struct MbTable *) value))
+  if (mbtable_equal(*(struct MbTable **) var, (struct MbTable *) value))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (startup_only(cdef, err))

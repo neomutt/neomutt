@@ -427,7 +427,7 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
 }
 
 /**
- * compare_certificates - Compare two X509 certificated
+ * certificates_equal - Compare two X509 certificated
  * @param cert      Certificate
  * @param peercert  Peer certificate
  * @param peermd    Peer certificate message digest
@@ -435,8 +435,8 @@ static char *asn1time_to_string(ASN1_UTCTIME *tm)
  * @retval true  Certificates match
  * @retval false Certificates differ
  */
-static bool compare_certificates(X509 *cert, X509 *peercert,
-                                 unsigned char *peermd, unsigned int peermdlen)
+static bool certificates_equal(X509 *cert, X509 *peercert,
+                               unsigned char *peermd, unsigned int peermdlen)
 {
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int mdlen;
@@ -649,7 +649,7 @@ static bool check_certificate_cache(X509 *peercert)
   for (int i = sk_X509_num(SslSessionCerts); i-- > 0;)
   {
     cert = sk_X509_value(SslSessionCerts, i);
-    if (compare_certificates(cert, peercert, peermd, peermdlen))
+    if (certificates_equal(cert, peercert, peermd, peermdlen))
     {
       return true;
     }
@@ -685,7 +685,7 @@ static bool check_certificate_file(X509 *peercert)
 
   while (PEM_read_X509(fp, &cert, NULL, NULL))
   {
-    if (compare_certificates(cert, peercert, peermd, peermdlen) &&
+    if (certificates_equal(cert, peercert, peermd, peermdlen) &&
         check_certificate_expiration(cert, true))
     {
       pass = true;
@@ -1039,7 +1039,7 @@ static int ssl_verify_callback(int preverify_ok, X509_STORE_CTX *ctx)
       unsigned char last_cert_md[EVP_MAX_MD_SIZE];
       unsigned int last_cert_mdlen;
       if (X509_digest(last_cert, EVP_sha256(), last_cert_md, &last_cert_mdlen) &&
-          compare_certificates(cert, last_cert, last_cert_md, last_cert_mdlen))
+          certificates_equal(cert, last_cert, last_cert_md, last_cert_mdlen))
       {
         mutt_debug(LL_DEBUG2, "ignoring duplicate skipped certificate\n");
         return true;

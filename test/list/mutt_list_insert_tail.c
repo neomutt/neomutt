@@ -49,7 +49,7 @@ void test_mutt_list_insert_tail(void)
     struct ListHead start = STAILQ_HEAD_INITIALIZER(start);
     struct ListHead expected = test_list_create(expected_names, false);
     TEST_CHECK(mutt_list_insert_tail(&start, insert) != NULL);
-    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    TEST_CHECK(mutt_list_equal(&start, &expected) == true);
     mutt_list_clear(&start);
     mutt_list_clear(&expected);
   }
@@ -61,7 +61,7 @@ void test_mutt_list_insert_tail(void)
     struct ListHead start = test_list_create(start_names, false);
     struct ListHead expected = test_list_create(expected_names, false);
     TEST_CHECK(mutt_list_insert_tail(&start, insert) != NULL);
-    TEST_CHECK(mutt_list_compare(&start, &expected) == true);
+    TEST_CHECK(mutt_list_equal(&start, &expected) == true);
     mutt_list_clear(&start);
     mutt_list_clear(&expected);
   }

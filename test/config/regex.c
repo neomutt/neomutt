@@ -734,7 +734,7 @@ void test_config_regex(void)
 
   set_list(cs);
 
-  regex_compare(NULL, NULL);
+  regex_equal(NULL, NULL);
 
   struct Buffer *err = buf_pool_get();
   TEST_CHECK(test_initial_values(sub, err));

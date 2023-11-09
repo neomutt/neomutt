@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for slist_compare()
+ * Test code for slist_equal()
  *
  * @authors
  * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
@@ -24,7 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 
-void test_slist_compare(void)
+void test_slist_equal(void)
 {
-  // bool slist_compare(const struct Slist *a, const struct Slist *b);
+  // bool slist_equal(const struct Slist *a, const struct Slist *b);
 }

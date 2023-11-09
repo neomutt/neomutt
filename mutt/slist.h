@@ -50,17 +50,17 @@ struct Slist
   uint32_t flags;       ///< Flags controlling list, e.g. #SLIST_SEP_SPACE
 };
 
-struct Slist *slist_add_list(struct Slist *list, const struct Slist *add);
-struct Slist *slist_add_string(struct Slist *list, const char *str);
-bool          slist_compare(const struct Slist *a, const struct Slist *b);
-struct Slist *slist_dup(const struct Slist *list);
-struct Slist *slist_empty(struct Slist **list);
-void          slist_free(struct Slist **ptr);
-bool          slist_is_empty(const struct Slist *list);
-bool          slist_is_member(const struct Slist *list, const char *str);
-struct Slist *slist_new(uint32_t flags);
-struct Slist *slist_parse(const char *str, uint32_t flags);
+struct Slist *slist_add_list     (struct Slist *list, const struct Slist *add);
+struct Slist *slist_add_string   (struct Slist *list, const char *str);
+struct Slist *slist_dup          (const struct Slist *list);
+struct Slist *slist_empty        (struct Slist **list);
+bool          slist_equal        (const struct Slist *a, const struct Slist *b);
+void          slist_free         (struct Slist **ptr);
+bool          slist_is_empty     (const struct Slist *list);
+bool          slist_is_member    (const struct Slist *list, const char *str);
+struct Slist *slist_new          (uint32_t flags);
+struct Slist *slist_parse        (const char *str, uint32_t flags);
 struct Slist *slist_remove_string(struct Slist *list, const char *str);
-int           slist_to_buffer(const struct Slist *list, struct Buffer *buf);
+int           slist_to_buffer    (const struct Slist *list, struct Buffer *buf);
 
 #endif /* MUTT_MUTT_SLIST_H */

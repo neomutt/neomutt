@@ -42,12 +42,12 @@
 #include "types.h"
 
 /**
- * regex_compare - Compare two regexes
+ * regex_equal - Compare two regexes
  * @param a First regex
  * @param b Second regex
  * @retval true They are identical
  */
-bool regex_compare(const struct Regex *a, const struct Regex *b)
+bool regex_equal(const struct Regex *a, const struct Regex *b)
 {
   if (!a && !b) /* both empty */
     return true;
@@ -228,7 +228,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 {
   int rc;
 
-  if (regex_compare(*(struct Regex **) var, (struct Regex *) value))
+  if (regex_equal(*(struct Regex **) var, (struct Regex *) value))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (startup_only(cdef, err))
