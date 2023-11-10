@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-11-03 10:03+0000\n"
-"PO-Revision-Date: 2023-03-30 23:38-0300\n"
+"PO-Revision-Date: 2023-11-10 21:54+0100\n"
 "Last-Translator: Robert Horvath <rob@nyar.eu>\n"
 "Language-Team: LME Magyaritasok Lista <magyar@lists.linux.hu>\n"
 "Language: hu\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -879,24 +879,24 @@ msgstr "Túl sok szín: %d / %d"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Idézett Színek\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Regex Szín %s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Egyszerű Színek\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Írás Színek\n"
 
 #: color/dump.c:406
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Státusz Színek\n"
 
 #. L10N: '%s' is the file name of the temporary file
 #: color/dump.c:460 commands.c:857 commands.c:916 commands.c:1600
@@ -1265,9 +1265,8 @@ msgid "Can't create file %s"
 msgstr "Nem lehet a(z) %s fájlt létrehozni"
 
 #: compose/functions.c:1503
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Hiba a melléklet csatolásakor"
+msgstr "Hiba a file csatolásakor"
 
 #: compose/functions.c:1545
 msgid "Can't print multipart attachments"
@@ -3107,7 +3106,7 @@ msgstr "képernyő törlése és újrarajzolása"
 
 #: gui/opcodes.h:254
 msgid "{internal}"
-msgstr "(belső)"
+msgstr "{belső}"
 
 #: gui/opcodes.h:255
 msgid "rename the current mailbox (IMAP only)"
@@ -3645,96 +3644,96 @@ msgstr "HIBA: kérlek jelezd ezt a hibát a fejlesztőknek"
 
 #: help.c:412
 msgid "message is tagged"
-msgstr ""
+msgstr "üzenet megcímkézve"
 
 #: help.c:414
 msgid "message is flagged"
-msgstr ""
+msgstr "üzenet megjelölve"
 
 #: help.c:415
 msgid "message is deleted"
-msgstr ""
+msgstr "üzenet törölve"
 
 #: help.c:417
 msgid "attachment is deleted"
-msgstr ""
+msgstr "csatolmány törölve"
 
 #: help.c:419
 msgid "message has been replied to"
-msgstr ""
+msgstr "az üzenetre válaszoltak"
 
 #: help.c:420
 msgid "message has been read"
-msgstr ""
+msgstr "üzenetet elolvasták"
 
 #: help.c:421
 msgid "message is new"
-msgstr ""
+msgstr "az üzenet új"
 
 #: help.c:423
 msgid "thread has been read"
-msgstr ""
+msgstr "a témát elolvasták"
 
 #: help.c:425
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "a téma legalább egy új üzenetet tartalmaz"
 
 #: help.c:427
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "az üzenetet elolvasták (%S expando)"
 
 #: help.c:429
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "az üzenetet elolvasták (%Z expando)"
 
 #: help.c:433
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "az üzenetet ellenőrzött kulccsal írták alá"
 
 #: help.c:435
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "az üzenet PGP-vel titkosítva"
 
 #: help.c:437
 msgid "message is signed"
-msgstr ""
+msgstr "az üzenet aláírták"
 
 #: help.c:439
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "az üzenetben PGP kulcs található"
 
 #: help.c:441
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "az üzenet nem tartalmaz kriptográfiai információt"
 
 #: help.c:445
 msgid "message is not To: you"
-msgstr ""
+msgstr "az üzenet nem Önnek szól"
 
 #: help.c:447
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "az üzenet Önnek és csak Önnek szól"
 
 #: help.c:448
 msgid "message is To: you"
-msgstr ""
+msgstr "az üzenet Önnek szól"
 
 #: help.c:449
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "az üzenet másolata Önnek szól"
 
 #: help.c:451
 msgid "message is From: you"
-msgstr ""
+msgstr "az üzenet Öntől származik"
 
 #: help.c:453
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "az üzenetet egy feliratkozott levelezőlistára küldték"
 
 #: help.c:455
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "Ön a Válaszcím (Reply-To:) listában van"
 
 #: help.c:474
 msgid "<UNKNOWN>"
@@ -3750,7 +3749,7 @@ msgstr "Billentyűkombináció nélküli parancsok:"
 
 #: help.c:508
 msgid "Message flags:"
-msgstr ""
+msgstr "Üzeet flag-ek:"
 
 #: help.c:514
 #, c-format
@@ -4578,17 +4577,17 @@ msgstr "mailcap bejegyzés a(z) %s típushoz nem található"
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:52
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter pontosan egy karakter hosszú kell legyen"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter nem lehet alfanumerikus vagy '-.\\/'"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:67
 msgid "maildir_field_delimiter can only be set once"
-msgstr ""
+msgstr "maildir_field_delimiter -t csak egyszer lehet beállítani"
 
 #: maildir/maildir.c:267 maildir/mh.c:303
 msgid "Could not flush message to disk"
@@ -6628,7 +6627,7 @@ msgstr "A súgó már meg van jelenítve"
 #: pager/functions.c:1059
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Mentve ide: %s"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
