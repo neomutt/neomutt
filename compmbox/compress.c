@@ -247,47 +247,6 @@ static void compress_info_free(struct Mailbox *m)
 }
 
 /**
- * compress_format_str - Expand the filenames in a command string - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%f     | Compressed file
- * | \%t     | Plaintext, temporary file
- */
-static const char *compress_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                       char op, const char *src, const char *prec,
-                                       const char *if_str, const char *else_str,
-                                       intptr_t data, MuttFormatFlags flags)
-{
-  if (!buf || (data == 0))
-    return src;
-
-  struct Mailbox *m = (struct Mailbox *) data;
-
-  /* NOTE the compressed file config vars expect %f and %t to be
-   * surrounded by '' (unlike other NeoMutt config vars, which add the
-   * outer quotes for the user).  This is why we use the
-   * buf_quote_filename() form with add_outer of false. */
-  struct Buffer *quoted = buf_pool_get();
-  switch (op)
-  {
-    case 'f':
-      /* Compressed file */
-      buf_quote_filename(quoted, m->realpath, false);
-      snprintf(buf, buflen, "%s", buf_string(quoted));
-      break;
-    case 't':
-      /* Plaintext, temporary file */
-      buf_quote_filename(quoted, mailbox_path(m), false);
-      snprintf(buf, buflen, "%s", buf_string(quoted));
-      break;
-  }
-
-  buf_pool_release(&quoted);
-  return src;
-}
-
-/**
  * execute_command - Run a system command
  * @param m        Mailbox to work with
  * @param command  Command string to execute
@@ -314,8 +273,8 @@ static bool execute_command(struct Mailbox *m, const char *command, const char *
   endwin();
   fflush(stdout);
 
-  mutt_expando_format(sys_cmd->data, sys_cmd->dsize, 0, sys_cmd->dsize, command,
-                      compress_format_str, (intptr_t) m, MUTT_FORMAT_NO_FLAGS);
+  // mutt_expando_format(sys_cmd->data, sys_cmd->dsize, 0, sys_cmd->dsize, command,
+  //                     compress_format_str, (intptr_t) m, MUTT_FORMAT_NO_FLAGS);
 
   if (mutt_system(buf_string(sys_cmd)) != 0)
   {

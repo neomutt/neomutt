@@ -55,127 +55,16 @@
 #endif
 
 /**
- * pgp_command_format_str - Format a PGP command string - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :----------------------------------------------------------------
- * | \%a     | Value of `$pgp_sign_as` if set, otherwise `$pgp_default_key`
- * | \%f     | File containing a message
- * | \%p     | Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty string otherwise
- * | \%r     | One or more key IDs (or fingerprints if available)
- * | \%s     | File containing the signature part of a multipart/signed attachment when verifying it
- */
-static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                          char op, const char *src, const char *prec,
-                                          const char *if_str, const char *else_str,
-                                          intptr_t data, MuttFormatFlags flags)
-{
-  char fmt[128] = { 0 };
-  struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-
-  switch (op)
-  {
-    case 'a':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->signas));
-      }
-      else if (!cctx->signas)
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 'f':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->fname));
-      }
-      else if (!cctx->fname)
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 'p':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
-      }
-      else if (!cctx->need_passphrase || pgp_use_gpg_agent())
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 'r':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->ids));
-      }
-      else if (!cctx->ids)
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 's':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
-      }
-      else if (!cctx->sig_fname)
-      {
-        optional = false;
-      }
-      break;
-    }
-    default:
-    {
-      *buf = '\0';
-      break;
-    }
-  }
-
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, pgp_command_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str,
-                        pgp_command_format_str, data, MUTT_FORMAT_NO_FLAGS);
-  }
-
-  /* We return the format string, unchanged */
-  return src;
-}
-
-/**
  * mutt_pgp_command - Prepare a PGP Command
  * @param buf    Buffer for the result
  * @param cctx   Data to pass to the formatter
  * @param fmt    printf-like formatting string
- *
- * @sa pgp_command_format_str()
  */
 static void mutt_pgp_command(struct Buffer *buf, struct PgpCommandContext *cctx,
                              const char *fmt)
 {
-  mutt_expando_format(buf->data, buf->dsize, 0, buf->dsize, NONULL(fmt),
-                      pgp_command_format_str, (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
+  // mutt_expando_format(buf->data, buf->dsize, 0, buf->dsize, NONULL(fmt),
+  //                     pgp_command_format_str, (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(buf));
 }
 

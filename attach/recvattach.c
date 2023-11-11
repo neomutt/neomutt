@@ -34,6 +34,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>

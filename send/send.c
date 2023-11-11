@@ -675,77 +675,12 @@ void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigS
 }
 
 /**
- * greeting_format_str - Format a greetings string - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :----------------------------------------------------------------
- * | \%n     | Recipient's real name (or address if missing)
- * | \%u     | User (login) name of the recipient
- * | \%v     | First name of the recipient
- */
-static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                       char op, const char *src, const char *prec,
-                                       const char *if_str, const char *else_str,
-                                       intptr_t data, MuttFormatFlags flags)
-{
-  struct Email *e = (struct Email *) data;
-  char *p = NULL;
-  char buf2[256] = { 0 };
-
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
-
-  buf[0] = '\0';
-  switch (op)
-  {
-    case 'n':
-      mutt_format(buf, buflen, prec, mutt_get_name(to), false);
-      break;
-
-    case 'u':
-      if (to)
-      {
-        mutt_str_copy(buf2, mutt_addr_for_display(to), sizeof(buf2));
-        if ((p = strpbrk(buf2, "%@")))
-          *p = '\0';
-      }
-      else
-      {
-        buf2[0] = '\0';
-      }
-      mutt_format(buf, buflen, prec, buf2, false);
-      break;
-
-    case 'v':
-      if (to)
-        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(to), false);
-      else if (cc)
-        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(cc), false);
-      else
-        *buf2 = '\0';
-      if ((p = strpbrk(buf2, " %@")))
-        *p = '\0';
-      mutt_format(buf, buflen, prec, buf2, false);
-      break;
-
-    default:
-      snprintf(buf, buflen, "%%%s%c", prec, op);
-      break;
-  }
-
-  if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, greeting_format_str, data, flags);
-
-  return src;
-}
-
-/**
  * mutt_make_greeting - Add greetings string
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  *
- * @sa $greeting, greeting_format_str()
+ * @sa $greeting
  */
 static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
@@ -755,8 +690,8 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 
   char buf[1024] = { 0 };
 
-  mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_format_str,
-                      (intptr_t) e, TOKEN_NO_FLAGS);
+  // mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_format_str,
+  //                     (intptr_t) e, TOKEN_NO_FLAGS);
 
   fputs(buf, fp_out);
   fputc('\n', fp_out);

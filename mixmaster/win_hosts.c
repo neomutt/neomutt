@@ -110,89 +110,9 @@ static const char *mix_format_caps(struct Remailer *r)
 }
 
 /**
- * mix_format_str - Format a string for the remailer menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | The remailer's e-mail address
- * | \%c     | Remailer capabilities
- * | \%n     | The running number on the menu
- * | \%s     | The remailer's short name
- */
-static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                  char op, const char *src, const char *prec,
-                                  const char *if_str, const char *else_str,
-                                  intptr_t data, MuttFormatFlags flags)
-{
-  char fmt[128] = { 0 };
-  struct Remailer *remailer = (struct Remailer *) data;
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-
-  switch (op)
-  {
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(remailer->addr));
-      }
-      else if (!remailer->addr)
-      {
-        optional = false;
-      }
-      break;
-
-    case 'c':
-      if (optional)
-        break;
-
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, mix_format_caps(remailer));
-      break;
-
-    case 'n':
-      if (optional)
-        break;
-
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, remailer->num);
-      break;
-
-    case 's':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(remailer->shortname));
-      }
-      else if (!remailer->shortname)
-      {
-        optional = false;
-      }
-      break;
-
-    default:
-      *buf = '\0';
-  }
-
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, mix_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, mix_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-
-  /* We return the format string, unchanged */
-  return src;
-}
-
-/**
  * mix_make_entry - Format a Remailer for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $mix_entry_format, mix_format_str()
+ * @sa $mix_entry_format
  */
 static void mix_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
@@ -202,9 +122,9 @@ static void mix_make_entry(struct Menu *menu, int line, struct Buffer *buf)
     return;
 
   const char *const c_mix_entry_format = cs_subset_string(NeoMutt->sub, "mix_entry_format");
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                      NONULL(c_mix_entry_format), mix_format_str, (intptr_t) *r,
-                      MUTT_FORMAT_ARROWCURSOR);
+  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+  //                     NONULL(c_mix_entry_format), mix_format_str, (intptr_t) *r,
+  //                     MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

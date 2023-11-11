@@ -917,79 +917,6 @@ void nntp_clear_cache(struct NntpAccountData *adata)
 }
 
 /**
- * nntp_format_str - Expand the newsrc filename - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Account url
- * | \%p     | Port
- * | \%P     | Port if specified
- * | \%s     | News server name
- * | \%S     | Url schema
- * | \%u     | Username
- */
-const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
-                            const char *src, const char *prec, const char *if_str,
-                            const char *else_str, intptr_t data, MuttFormatFlags flags)
-{
-  struct NntpAccountData *adata = (struct NntpAccountData *) data;
-  struct ConnAccount *cac = &adata->conn->account;
-  char fn[128] = { 0 };
-  char fmt[128] = { 0 };
-
-  switch (op)
-  {
-    case 'a':
-    {
-      struct Url url = { 0 };
-      mutt_account_tourl(cac, &url);
-      url_tostring(&url, fn, sizeof(fn), U_PATH);
-      char *p = strchr(fn, '/');
-      if (p)
-        *p = '\0';
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, fn);
-      break;
-    }
-    case 'p':
-      snprintf(fmt, sizeof(fmt), "%%%su", prec);
-      snprintf(buf, buflen, fmt, cac->port);
-      break;
-    case 'P':
-      *buf = '\0';
-      if (cac->flags & MUTT_ACCT_PORT)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%su", prec);
-        snprintf(buf, buflen, fmt, cac->port);
-      }
-      break;
-    case 's':
-      mutt_str_copy(fn, cac->host, sizeof(fn));
-      mutt_str_lower(fn);
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, fn);
-      break;
-    case 'S':
-    {
-      struct Url url = { 0 };
-      mutt_account_tourl(cac, &url);
-      url_tostring(&url, fn, sizeof(fn), U_PATH);
-      char *p = strchr(fn, ':');
-      if (p)
-        *p = '\0';
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, fn);
-      break;
-    }
-    case 'u':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, cac->user);
-      break;
-  }
-  return src;
-}
-
-/**
  * nntp_get_field - Get connection login credentials - Implements ConnAccount::get_field() - @ingroup conn_account_get_field
  */
 static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
@@ -1021,7 +948,7 @@ static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  *
- * @sa $newsrc, nntp_format_str()
+ * @sa $newsrc
  */
 struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server, bool leave_lock)
 {
@@ -1107,8 +1034,8 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   if (rc >= 0)
   {
     const char *const c_newsrc = cs_subset_path(NeoMutt->sub, "newsrc");
-    mutt_expando_format(file, sizeof(file), 0, sizeof(file), NONULL(c_newsrc),
-                        nntp_format_str, (intptr_t) adata, MUTT_FORMAT_NO_FLAGS);
+    // mutt_expando_format(file, sizeof(file), 0, sizeof(file), NONULL(c_newsrc),
+    //                     nntp_format_str, (intptr_t) adata, MUTT_FORMAT_NO_FLAGS);
     mutt_expand_path(file, sizeof(file));
     adata->newsrc_file = mutt_str_dup(file);
     rc = nntp_newsrc_parse(adata);
