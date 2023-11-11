@@ -30,7 +30,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -38,6 +37,146 @@
 #include "lib.h"
 #include "browser/lib.h"
 #include "expando/lib.h"
-#include "format_flags.h"
 #include "mdata.h"
-#include "muttlib.h"
+
+/**
+ * group_index_a_num - NNTP: Alert for new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->ff->notify_user;
+}
+
+/**
+ * group_index_C_num - NNTP: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->num + 1;
+}
+
+/**
+ * group_index_d - NNTP: Description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void group_index_d(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  char tmp[128] = { 0 };
+
+  if (!folder->ff->nd->desc)
+    return;
+
+  char *desc = mutt_str_dup(folder->ff->nd->desc);
+  const char *const c_newsgroups_charset = cs_subset_string(NeoMutt->sub, "newsgroups_charset");
+  if (c_newsgroups_charset)
+  {
+    mutt_ch_convert_string(&desc, c_newsgroups_charset, cc_charset(), MUTT_ICONV_HOOK_FROM);
+  }
+  mutt_mb_filter_unprintable(&desc);
+  mutt_str_copy(tmp, desc, sizeof(tmp));
+  FREE(&desc);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * group_index_f - NNTP: Newsgroup name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void group_index_f(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = folder->ff->name;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * group_index_M - NNTP: Moderated flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void group_index_M(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = NULL;
+  // NOTE(g0mb4): use $flag_chars?
+  if (folder->ff->nd->deleted)
+  {
+    s = "D";
+  }
+  else
+  {
+    s = folder->ff->nd->allowed ? " " : "-";
+  }
+
+  buf_strcpy(buf, s);
+}
+
+/**
+ * group_index_n_num - NNTP: Number of new articles - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+  const struct NntpMboxData *nd = folder->ff->nd;
+
+  const bool c_mark_old = cs_subset_bool(NeoMutt->sub, "mark_old");
+
+  if (c_mark_old && (nd->last_cached >= nd->first_message) &&
+      (nd->last_cached <= nd->last_message))
+  {
+    return nd->last_message - nd->last_cached;
+  }
+
+  return nd->unread;
+}
+
+/**
+ * group_index_N - NNTP: New flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void group_index_N(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = NULL;
+  // NOTE(g0mb4): use $flag_chars?
+  if (folder->ff->nd->subscribed)
+  {
+    s = " ";
+  }
+  else
+  {
+    s = folder->ff->has_new_mail ? "N" : "u";
+  }
+
+  buf_strcpy(buf, s);
+}
+
+/**
+ * group_index_p_num - NNTP: Poll for new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->ff->poll_new_mail;
+}
+
+/**
+ * group_index_s_num - NNTP: Number of unread articles - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  // NOTE(g0mb4): is long required for unread?
+  return folder->ff->nd->unread;
+}

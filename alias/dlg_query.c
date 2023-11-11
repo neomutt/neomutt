@@ -71,7 +71,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -91,12 +90,10 @@
 #include "pattern/lib.h"
 #include "send/lib.h"
 #include "alias.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "globals.h"
 #include "gui.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
@@ -138,6 +135,90 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
   }
 
   return true;
+}
+
+/**
+ * query_a - Query: Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  struct Buffer *addrs = buf_pool_get();
+  mutt_addrlist_write(&alias->addr, addrs, true);
+
+  buf_printf(buf, "<%s>", buf_string(addrs));
+}
+
+/**
+ * query_c_num - Query: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long query_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AliasView *av = data;
+
+  return av->num + 1;
+}
+
+/**
+ * query_e - Query: Extra information - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  const char *s = alias->comment;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * query_n - Query: Name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  const char *s = alias->name;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * query_t_num - Query: Tagged char - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long query_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AliasView *av = data;
+  return av->is_tagged;
+}
+
+/**
+ * query_t - Query: Tagged char - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+
+  // NOTE(g0mb4): use $flag_chars?
+  const char *s = av->is_tagged ? "*" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * query_Y - Query: Tags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+
+  alias_tags_to_buffer(&av->alias->tags, buf);
 }
 
 /**

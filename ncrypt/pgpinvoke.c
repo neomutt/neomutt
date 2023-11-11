@@ -33,7 +33,6 @@
 #include "config.h"
 #include <fcntl.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -44,15 +43,73 @@
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "expando/lib.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "pgpkey.h"
 #include "protos.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #endif
+
+/**
+ * pgp_command_a - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_a(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->signas;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_f - PGP Command: Filename of message - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_f(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->fname;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_p - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_p(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->need_passphrase ? "PGPPASSFD=0" : "";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_r - PGP Command: key IDs - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_r(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->ids;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_s - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_s(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->sig_fname;
+  buf_strcpy(buf, s);
+}
 
 /**
  * mutt_pgp_command - Prepare a PGP Command

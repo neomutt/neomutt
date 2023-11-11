@@ -68,10 +68,9 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <assert.h>
 #include <locale.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -83,9 +82,7 @@
 #include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "format_flags.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "pgp.h"
 #include "pgp_functions.h"
 #include "pgpkey.h"
@@ -249,6 +246,260 @@ static char pgp_flags(KeyFlags flags)
     return 'c';
 
   return ' ';
+}
+
+/**
+ * pgp_entry_pgp_date - PGP: Date of the key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_date(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  char tmp[128] = { 0 };
+  char datestr[128] = { 0 };
+
+  int len = node->end - node->start;
+  const char *start = node->start;
+  bool use_c_locale = false;
+  if (*start == '!')
+  {
+    use_c_locale = true;
+    start++;
+    len--;
+  }
+
+  assert(len < sizeof(datestr));
+  mutt_strn_copy(datestr, start, len, sizeof(datestr));
+
+  if (use_c_locale)
+  {
+    mutt_date_localtime_format_locale(tmp, sizeof(tmp), datestr, key->gen_time,
+                                      NeoMutt->time_c_locale);
+  }
+  else
+  {
+    mutt_date_localtime_format(tmp, sizeof(tmp), datestr, key->gen_time);
+  }
+
+  buf_strcpy(buf, tmp);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_n_num - PGP: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  return entry->num;
+#else
+  return 0;
+#endif
+}
+
+/**
+ * pgp_entry_pgp_t - PGP: Trust/validity - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_t(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+
+  buf_printf(buf, "%c", TrustFlags[uid->trust & 0x03]);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_u - PGP: User id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_u(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+
+  const char *s = uid->addr;
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_a - PGP: Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_a(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  const char *s = key->algorithm;
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_A - PGP: Principal Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_A(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  const char *s = pkey->algorithm;
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_c - PGP: Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_c(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  const KeyFlags kflags = key->flags | uid->flags;
+
+  const char *s = pgp_key_abilities(kflags);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_C - PGP: Principal Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_C(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  const KeyFlags kflags = (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
+
+  const char *s = pgp_key_abilities(kflags);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_f - PGP: Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_f(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  const KeyFlags kflags = key->flags | uid->flags;
+
+  buf_printf(buf, "%c", pgp_flags(kflags));
+#endif
+}
+
+/**
+ * pgp_entry_pgp_F - PGP: Principal Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_F(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  const KeyFlags kflags = (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
+
+  buf_printf(buf, "%c", pgp_flags(kflags));
+#endif
+}
+
+/**
+ * pgp_entry_pgp_k - PGP: Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_k(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+
+  const char *s = pgp_this_keyid(key);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_K - PGP: Principal Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_K(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  const char *s = pgp_this_keyid(pkey);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_l_num - PGP: Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  return key->keylen;
+#else
+  return 0;
+#endif
+}
+
+/**
+ * pgp_entry_pgp_L_num - PGP: Principal Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  return pkey->keylen;
+#else
+  return 0;
+#endif
 }
 
 /**

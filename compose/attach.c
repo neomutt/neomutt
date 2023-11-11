@@ -59,7 +59,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -68,10 +67,8 @@
 #include "gui/lib.h"
 #include "attach/lib.h"
 #include "convert/lib.h"
-#include "expando/lib.h"
 #include "menu/lib.h"
 #include "attach_data.h"
-#include "muttlib.h"
 #include "shared_data.h"
 
 /**

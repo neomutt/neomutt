@@ -70,8 +70,6 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -83,7 +81,6 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 
 /// Help Bar for the Pattern selection dialog
 static const struct Mapping PatternHelp[] = {
@@ -94,6 +91,40 @@ static const struct Mapping PatternHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
+
+/**
+ * pattern_d - Pattern: pattern description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pattern_d(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PatternEntry *entry = data;
+
+  const char *s = entry->desc;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pattern_e - Pattern: pattern expression - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pattern_e(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PatternEntry *entry = data;
+
+  const char *s = entry->expr;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pattern_n_num - Pattern: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct PatternEntry *entry = data;
+
+  return entry->num;
+}
 
 /**
  * make_pattern_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
