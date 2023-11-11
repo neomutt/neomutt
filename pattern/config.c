@@ -3,7 +3,7 @@
  * Config used by libpattern
  *
  * @authors
- * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -29,7 +29,27 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include "private.h"
 #include "config/lib.h"
+#include "expando/lib.h"
+
+/**
+ * PatternFormatDef - Expando definitions
+ *
+ * Config:
+ * - $pattern_format
+ */
+static const struct ExpandoDefinition PatternFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
+  { "d", "description",  ED_PATTERN, ED_PAT_DESCRIPTION,  E_TYPE_STRING, NULL },
+  { "e", "expresion",    ED_PATTERN, ED_PAT_EXPRESION,    E_TYPE_STRING, NULL },
+  { "n", "number",       ED_PATTERN, ED_PAT_NUMBER,       E_TYPE_NUMBER, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
 
 /**
  * PatternVars - Config definitions for the pattern library
@@ -39,7 +59,7 @@ static struct ConfigDef PatternVars[] = {
   { "external_search_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External search command"
   },
-  { "pattern_format", DT_STRING, IP "%2n %-15e  %d", 0, NULL,
+  { "pattern_format", DT_EXPANDO, IP "%2n %-15e  %d", IP &PatternFormatDef, NULL,
     "printf-like format string for the pattern completion menu"
   },
   { "thorough_search", DT_BOOL, true, 0, NULL,
