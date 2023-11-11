@@ -33,6 +33,9 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "expando/lib.h"
+
+extern const struct ExpandoDefinition IndexFormatDef[];
 
 /**
  * PagerVars - Config definitions for the Pager
@@ -54,7 +57,7 @@ static struct ConfigDef PagerVars[] = {
   { "pager_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the pager"
   },
-  { "pager_format", DT_STRING, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", 0, NULL,
+  { "pager_format", DT_EXPANDO, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", IP IndexFormatDef, NULL,
     "printf-like format string for the pager's status bar"
   },
   { "pager_index_lines", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,

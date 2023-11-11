@@ -68,6 +68,22 @@ static const struct Command CompCommands[] = {
 };
 
 /**
+ * CompressFormatDef - Expando definitions
+ *
+ * Config:
+ * - append-hook
+ * - close-hook
+ * - open-hook
+ */
+const struct ExpandoDefinition CompressFormatDef[] = {
+  // clang-format off
+  { "f", "from", ED_COMPRESS, ED_CMP_FROM, E_TYPE_STRING, NULL },
+  { "t", "to",   ED_COMPRESS, ED_CMP_TO,   E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
+/**
  * mutt_comp_init - Setup feature commands
  */
 void mutt_comp_init(void)

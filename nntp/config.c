@@ -3,7 +3,7 @@
  * Config used by libnntp
  *
  * @authors
- * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
@@ -31,6 +31,27 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "config/lib.h"
+#include "conn/lib.h"
+#include "expando/lib.h"
+
+/**
+ * NntpFormatDef - Expando definitions
+ *
+ * Config:
+ * - $inews
+ * - $newsrc
+ */
+const struct ExpandoDefinition NntpFormatDef[] = {
+  // clang-format off
+  { "a", "account",  ED_NNTP, ED_NTP_ACCOUNT,  E_TYPE_STRING, NULL },
+  { "p", "port",     ED_NNTP, ED_NTP_PORT,     E_TYPE_NUMBER, NULL },
+  { "P", "port-if",  ED_NNTP, ED_NTP_PORT_IF,  E_TYPE_NUMBER, NULL },
+  { "s", "server",   ED_NNTP, ED_NTP_SERVER,   E_TYPE_STRING, NULL },
+  { "S", "schema",   ED_NNTP, ED_NTP_SCHEMA,   E_TYPE_STRING, NULL },
+  { "u", "username", ED_NNTP, ED_NTP_USERNAME, E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
 
 /**
  * NntpVars - Config definitions for the NNTP library
@@ -46,7 +67,7 @@ static struct ConfigDef NntpVars[] = {
   { "newsgroups_charset", DT_STRING, IP "utf-8", 0, charset_validator,
     "(nntp) Character set of newsgroups' descriptions"
   },
-  { "newsrc", DT_PATH|D_PATH_FILE, IP "~/.newsrc", 0, NULL,
+  { "newsrc", DT_EXPANDO|D_PATH_FILE, IP "~/.newsrc", IP &NntpFormatDef, NULL,
     "(nntp) File containing list of subscribed newsgroups"
   },
   { "news_cache_dir", DT_PATH|D_PATH_DIR, IP "~/.neomutt", 0, NULL,
