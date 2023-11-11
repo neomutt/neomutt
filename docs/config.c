@@ -1710,6 +1710,18 @@
 ** Also see $$save_history.
 */
 
+{ "history_format", DT_STRING, "%s" },
+/*
+** .pp
+** Controls the format of the entries of the history list.
+** This string is similar to $$index_format, but has its own
+** set of \fCprintf(3)\fP-like sequences:
+** .dl
+** .dt %C .dd Line number
+** .dt %s .dd History match
+** .de
+*/
+
 { "history_remove_dups", DT_BOOL, false },
 /*
 ** .pp
