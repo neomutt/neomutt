@@ -111,73 +111,9 @@ static const struct Mapping AliasHelp[] = {
 };
 
 /**
- * alias_format_str - Format a string for the alias list - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Alias name
- * | \%c     | Comments
- * | \%f     | Flags - currently, a 'd' for an alias marked for deletion
- * | \%n     | Index number
- * | \%r     | Address which alias expands to
- * | \%t     | Character which indicates if the alias is tagged for inclusion
- * | \%Y     | Comma-separated tags
- */
-static const char *alias_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                    char op, const char *src, const char *prec,
-                                    const char *if_str, const char *else_str,
-                                    intptr_t data, MuttFormatFlags flags)
-{
-  char tmp[1024] = { 0 };
-  struct AliasView *av = (struct AliasView *) data;
-  struct Alias *alias = av->alias;
-
-  switch (op)
-  {
-    case 'a':
-      mutt_format(buf, buflen, prec, alias->name, false);
-      break;
-    case 'c':
-      mutt_format(buf, buflen, prec, alias->comment, false);
-      break;
-    case 'f':
-      snprintf(tmp, sizeof(tmp), "%%%ss", prec);
-      snprintf(buf, buflen, tmp, av->is_deleted ? "D" : " ");
-      break;
-    case 'n':
-      snprintf(tmp, sizeof(tmp), "%%%sd", prec);
-      snprintf(buf, buflen, tmp, av->num + 1);
-      break;
-    case 'r':
-    {
-      struct Buffer *tmpbuf = buf_pool_get();
-      mutt_addrlist_write(&alias->addr, tmpbuf, true);
-      mutt_str_copy(tmp, buf_string(tmpbuf), sizeof(tmp));
-      buf_pool_release(&tmpbuf);
-      mutt_format(buf, buflen, prec, tmp, false);
-      break;
-    }
-    case 't':
-      buf[0] = av->is_tagged ? '*' : ' ';
-      buf[1] = '\0';
-      break;
-    case 'Y':
-    {
-      struct Buffer *tags = buf_pool_get();
-      alias_tags_to_buffer(&av->alias->tags, tags);
-      mutt_format(buf, buflen, prec, buf_string(tags), false);
-      buf_pool_release(&tags);
-      break;
-    }
-  }
-
-  return src;
-}
-
-/**
  * alias_make_entry - Format an Alias for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $alias_format, alias_format_str()
+ * @sa $alias_format
  */
 static void alias_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
@@ -187,8 +123,8 @@ static void alias_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 
   const char *const c_alias_format = cs_subset_string(mdata->sub, "alias_format");
 
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols, NONULL(c_alias_format),
-                      alias_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
+  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols, NONULL(c_alias_format),
+  //                     alias_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

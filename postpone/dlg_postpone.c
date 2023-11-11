@@ -98,7 +98,7 @@ static const struct Mapping PostponedHelp[] = {
 /**
  * post_make_entry - Format an Email for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $index_format, index_format_str()
+ * @sa $index_format
  */
 static void post_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {

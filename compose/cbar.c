@@ -94,72 +94,9 @@ static int num_attachments(const struct ComposeAttachData *adata)
 }
 
 /**
- * compose_format_str - Create the status bar string for compose mode - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Total number of attachments
- * | \%h     | Local hostname
- * | \%l     | Approximate size (in bytes) of the current message
- * | \%v     | NeoMutt version string
- */
-static const char *compose_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
-{
-  char fmt[128] = { 0 };
-  char tmp[128] = { 0 };
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
-  struct ComposeSharedData *shared = (struct ComposeSharedData *) data;
-
-  *buf = '\0';
-  switch (op)
-  {
-    case 'a': /* total number of attachments */
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, num_attachments(shared->adata));
-      break;
-
-    case 'h': /* hostname */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, NONULL(ShortHostname));
-      break;
-
-    case 'l': /* approx length of current message in bytes */
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      mutt_str_pretty_size(tmp, sizeof(tmp),
-                           cum_attachs_size(shared->sub, shared->adata));
-      snprintf(buf, buflen, fmt, tmp);
-      break;
-
-    case 'v':
-      snprintf(buf, buflen, "%s", mutt_make_version());
-      break;
-
-    case 0:
-      *buf = '\0';
-      return src;
-
-    default:
-      snprintf(buf, buflen, "%%%s%c", prec, op);
-      break;
-  }
-
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, compose_format_str, data, flags);
-  }
-  // This format function doesn't have any optional expandos,
-  // so there's no `else if (flags & MUTT_FORMAT_OPTIONAL)` clause
-
-  return src;
-}
-
-/**
  * cbar_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  *
- * @sa $compose_format, compose_format_str()
+ * @sa $compose_format
  */
 static int cbar_recalc(struct MuttWindow *win)
 {
@@ -167,8 +104,8 @@ static int cbar_recalc(struct MuttWindow *win)
   struct ComposeSharedData *shared = win->parent->wdata;
 
   const char *const c_compose_format = cs_subset_string(shared->sub, "compose_format");
-  mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
-                      compose_format_str, (intptr_t) shared, MUTT_FORMAT_NO_FLAGS);
+  // mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
+  //                     compose_format_str, (intptr_t) shared, MUTT_FORMAT_NO_FLAGS);
 
   struct ComposeBarData *cbar_data = win->wdata;
   if (!mutt_str_equal(buf, cbar_data->compose_format))

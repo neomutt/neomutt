@@ -96,54 +96,18 @@ static const struct Mapping PatternHelp[] = {
 };
 
 /**
- * pattern_format_str - Format a string for the pattern completion menu - Implements ::format_t - @ingroup expando_api
+ * make_pattern_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * | Expando | Description
- * | :------ | :---------------------
- * | \%d     | Pattern description
- * | \%e     | Pattern expression
- * | \%n     | Index number
- */
-static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
-{
-  struct PatternEntry *entry = (struct PatternEntry *) data;
-
-  switch (op)
-  {
-    case 'd':
-      mutt_format(buf, buflen, prec, NONULL(entry->desc), false);
-      break;
-    case 'e':
-      mutt_format(buf, buflen, prec, NONULL(entry->expr), false);
-      break;
-    case 'n':
-    {
-      char tmp[32] = { 0 };
-      snprintf(tmp, sizeof(tmp), "%%%sd", prec);
-      snprintf(buf, buflen, tmp, entry->num);
-      break;
-    }
-  }
-
-  return src;
-}
-
-/**
- * pattern_make_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
- *
- * @sa $pattern_format, pattern_format_str()
+ * @sa $pattern_format
  */
 static void pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
 
   const char *const c_pattern_format = cs_subset_string(NeoMutt->sub, "pattern_format");
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                      NONULL(c_pattern_format), pattern_format_str,
-                      (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
+  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+  //                     NONULL(c_pattern_format), pattern_format_str,
+  //                     (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

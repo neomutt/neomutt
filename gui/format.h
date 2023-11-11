@@ -36,7 +36,6 @@ enum FormatJustify
   JUSTIFY_RIGHT = 1,  ///< Right justify the text
 };
 
-void mutt_format       (char *buf, size_t buflen, const char *prec, const char *s, bool arboreal);
 void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, enum FormatJustify justify, char pad_char, const char *s, size_t n, bool arboreal);
 
 #endif /* MUTT_GUI_FORMAT_H */

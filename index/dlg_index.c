@@ -793,7 +793,7 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
 /**
  * index_make_entry - Format an Email for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $index_format, index_format_str()
+ * @sa $index_format
  */
 void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {

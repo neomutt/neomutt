@@ -170,7 +170,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
 /**
  * enter_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
  *
- * @sa $compose_format, compose_format_str()
+ * @sa $compose_format
  */
 static int enter_recalc(struct MuttWindow *win)
 {

@@ -84,43 +84,7 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
- * history_format_str - Format a string for the history list - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------
- * | \%C     | Line number
- * | \%s     | History match
- */
-static const char *history_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
-{
-  struct HistoryEntry *h = (struct HistoryEntry *) data;
-
-  switch (op)
-  {
-    case 'C':
-    {
-      char tmp[32] = { 0 };
-      snprintf(tmp, sizeof(tmp), "%%%sd", prec);
-      snprintf(buf, buflen, tmp, h->num);
-      break;
-    }
-    case 's':
-    {
-      mutt_format(buf, buflen, prec, NONULL(h->history), false);
-      break;
-    }
-  }
-
-  return src;
-}
-
-/**
  * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
- *
- * @sa history_format_str()
  */
 static void history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
@@ -129,9 +93,9 @@ static void history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   struct HistoryEntry h = { line, entry };
 
   const char *const c_history_format = cs_subset_string(NeoMutt->sub, "history_format");
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                      NONULL(c_history_format), history_format_str,
-                      (intptr_t) &h, MUTT_FORMAT_ARROWCURSOR);
+  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+  //                     NONULL(c_history_format), history_format_str,
+  //                     (intptr_t) &h, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
