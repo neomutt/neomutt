@@ -60,9 +60,6 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -76,7 +73,6 @@
 #include "menu/lib.h"
 #include "attach_data.h"
 #include "cbar_data.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "muttlib.h"
 #include "shared_data.h"
@@ -91,6 +87,59 @@ static int num_attachments(const struct ComposeAttachData *adata)
   if (!adata || !adata->menu)
     return 0;
   return adata->menu->max;
+}
+
+/**
+ * compose_a_num - Compose: Number of attachments - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long compose_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct ComposeSharedData *shared = data;
+
+  return num_attachments(shared->adata);
+}
+
+/**
+ * compose_h - Compose: Hostname - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void compose_h(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const char *s = ShortHostname;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * compose_l_num - Compose: Size in bytes - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long compose_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct ComposeSharedData *shared = data;
+  return cum_attachs_size(shared->sub, shared->adata);
+}
+
+/**
+ * compose_l - Compose: Size in bytes - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void compose_l(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct ComposeSharedData *shared = data;
+
+  char tmp[128] = { 0 };
+
+  mutt_str_pretty_size(tmp, sizeof(tmp), cum_attachs_size(shared->sub, shared->adata));
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * compose_v - Compose: Version - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void compose_v(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const char *s = mutt_make_version();
+  buf_strcpy(buf, s);
 }
 
 /**

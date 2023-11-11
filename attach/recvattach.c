@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -374,7 +373,7 @@ cleanup:
 }
 
 /**
- * save_without_prompting - Save the attachment, without prompting each time.
+ * save_without_prompting - Save the attachment, without prompting each time
  * @param[in]  fp File handle to the attachment (OPTIONAL)
  * @param[in]  b  Attachment
  * @param[in]  e  Email

@@ -58,7 +58,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -70,7 +69,6 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {
@@ -82,6 +80,28 @@ static const struct Mapping HistoryHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
+
+/**
+ * history_C_num - History: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HistoryEntry *entry = data;
+
+  return entry->num + 1;
+}
+
+/**
+ * history_s - History: History match - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void history_s(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct HistoryEntry *entry = data;
+
+  const char *s = entry->history;
+  buf_strcpy(buf, s);
+}
 
 /**
  * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry

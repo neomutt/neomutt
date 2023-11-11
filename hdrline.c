@@ -36,10 +36,9 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include "mutt/lib.h"
@@ -48,14 +47,11 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "gui/lib.h"
 #include "hdrline.h"
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "ncrypt/lib.h"
-#include "format_flags.h"
-#include "hook.h"
 #include "maillist.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
@@ -301,6 +297,1489 @@ static bool thread_is_new(struct Email *e)
 static bool thread_is_old(struct Email *e)
 {
   return e->collapsed && (e->num_hidden > 1) && (mutt_thread_contains_unread(e) == 2);
+}
+
+/**
+ * index_date_recv_local_num - Index: Local received date and time - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_date_recv_local_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->received;
+}
+
+/**
+ * index_date_recv_local - Index: Local received date and time - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_date_recv_local(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  struct tm tm = mutt_date_localtime(e->received);
+
+  char tmp[128] = { 0 };
+  char tmp2[128] = { 0 };
+
+  int len = node->end - node->start;
+  const char *start = node->start;
+
+  bool use_c_locale = false;
+  if (*start == '!')
+  {
+    use_c_locale = true;
+    start++;
+    len--;
+  }
+  assert(len < sizeof(tmp2));
+  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
+
+  if (use_c_locale)
+  {
+    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    strftime(tmp, sizeof(tmp), tmp2, &tm);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_date_local_num - Index: Local date and time - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_date_local_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * index_date_local - Index: Local date and time - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_date_local(const struct ExpandoNode *node, void *data,
+                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  struct tm tm = mutt_date_localtime(e->date_sent);
+
+  char tmp[128] = { 0 };
+  char tmp2[128] = { 0 };
+
+  int len = node->end - node->start;
+  const char *start = node->start;
+
+  bool use_c_locale = false;
+  if (*start == '!')
+  {
+    use_c_locale = true;
+    start++;
+    len--;
+  }
+  assert(len < sizeof(tmp2));
+  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
+
+  if (use_c_locale)
+  {
+    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    strftime(tmp, sizeof(tmp), tmp2, &tm);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_date_num - Index: Sender's date and time - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * index_date - Index: Sender's date and time - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_date(const struct ExpandoNode *node, void *data,
+                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  time_t now = e->date_sent;
+  if (e->zoccident)
+    now -= (e->zhours * 3600 + e->zminutes * 60);
+  else
+    now += (e->zhours * 3600 + e->zminutes * 60);
+
+  struct tm tm = mutt_date_gmtime(now);
+
+  char tmp[128] = { 0 };
+  char tmp2[128] = { 0 };
+
+  int len = node->end - node->start;
+  const char *start = node->start;
+
+  bool use_c_locale = false;
+  if (*start == '!')
+  {
+    use_c_locale = true;
+    start++;
+    len--;
+  }
+  assert(len < sizeof(tmp2));
+  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
+
+  if (use_c_locale)
+  {
+    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    strftime(tmp, sizeof(tmp), tmp2, &tm);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_format_hook - Index: index-format-hook - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_format_hook(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  struct Mailbox *m = hfi->mailbox;
+
+  char tmp[128] = { 0 };
+  const int len = node->end - node->start;
+
+  mutt_strn_copy(tmp, node->start, len, sizeof(tmp));
+
+  // mutt_expando_format(tmp, sizeof(tmp), col, cols,
+  //                     NONULL(mutt_idxfmt_hook(tmp, m, email)),
+  //                     index_format_str, data, flags);
+  // format_string_simple(fmt, sizeof(fmt), tmp, MUTT_FORMAT_NO_FLAGS);
+}
+
+/**
+ * index_a - Index: Author Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+
+  const char *s = NULL;
+  if (from && from->mailbox)
+  {
+    s = mutt_addr_for_display(from);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_A - Index: Reply-to address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_A(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *reply_to = TAILQ_FIRST(&e->env->reply_to);
+
+  if (reply_to && reply_to->mailbox)
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+    const char *s = mutt_addr_for_display(reply_to);
+    buf_strcpy(buf, s);
+    return;
+  }
+
+  index_a(node, data, flags, max_cols, buf);
+}
+
+/**
+ * index_b - Index: Filename - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_b(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Mailbox *m = hfi->mailbox;
+  if (!m)
+  {
+    buf_addstr(buf, "(null)");
+    return;
+  }
+
+  char *p = NULL;
+
+#ifdef USE_NOTMUCH
+  struct Email *e = hfi->email;
+  if (m->type == MUTT_NOTMUCH)
+  {
+    p = nm_email_get_folder_rel_db(m, e);
+  }
+#endif
+  if (!p)
+  {
+    p = strrchr(mailbox_path(m), '/');
+    if (p)
+    {
+      p++;
+    }
+  }
+  buf_addstr(buf, p ? p : mailbox_path(m));
+}
+
+/**
+ * index_B - Index: Email list - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_B(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
+      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
+  {
+    buf_strcpy(buf, tmp);
+    return;
+  }
+
+  index_b(node, data, flags, max_cols, buf);
+}
+
+/**
+ * index_c_num - Index: Number of bytes - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->body)
+    return 0;
+
+  return e->body->length;
+}
+
+/**
+ * index_c - Index: Number of bytes - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
+
+  mutt_str_pretty_size(tmp, sizeof(tmp), e->body->length);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_cr - Index: Number of raw bytes - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_cr(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
+
+  mutt_str_pretty_size(tmp, sizeof(tmp), email_size(e));
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_C_num - Index: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_NUMBER);
+
+  return e->msgno + 1;
+}
+
+/**
+ * index_d_num - Index: Senders Date and time - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * index_d - Index: Senders Date and time - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
+  const char *cp = NONULL(c_date_format);
+  bool use_c_locale = false;
+  if (*cp == '!')
+  {
+    use_c_locale = true;
+    cp++;
+  }
+
+  /* restore sender's time zone */
+  time_t now = e->date_sent;
+  if (e->zoccident)
+    now -= (e->zhours * 3600 + e->zminutes * 60);
+  else
+    now += (e->zhours * 3600 + e->zminutes * 60);
+
+  struct tm tm = mutt_date_gmtime(now);
+  char tmp[128] = { 0 };
+
+  if (use_c_locale)
+  {
+    strftime_l(tmp, sizeof(tmp), cp, &tm, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    strftime(tmp, sizeof(tmp), cp, &tm);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_D_num - Index: Local Date and time - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * index_D - Index: Local Date and time - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
+  const char *cp = NONULL(c_date_format);
+  bool use_c_locale = false;
+  if (*cp == '!')
+  {
+    use_c_locale = true;
+    cp++;
+  }
+
+  struct tm tm = mutt_date_localtime(e->date_sent);
+  char tmp[128] = { 0 };
+
+  if (use_c_locale)
+  {
+    strftime_l(tmp, sizeof(tmp), cp, &tm, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    strftime(tmp, sizeof(tmp), cp, &tm);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_e_num - Index: Thread index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_e_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  struct Mailbox *m = hfi->mailbox;
+
+  return mutt_messages_in_thread(m, e, MIT_POSITION);
+}
+
+/**
+ * index_E_num - Index: Number of messages thread - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_E_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  struct Mailbox *m = hfi->mailbox;
+
+  return mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES);
+}
+
+/**
+ * index_f - Index: Sender - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  mutt_addrlist_write(&e->env->from, buf, true);
+}
+
+/**
+ * index_F - Index: Author name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_NO_FLAGS);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_Fp - Index: Plain author name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_Fp(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_PLAIN);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_g - Index: Message tags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_g(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_TAGS);
+  driver_tags_get_transformed(&e->tags, buf);
+}
+
+/**
+ * index_G - Index: Individual tag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_G(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  char tag_format[3] = { 0 };
+
+  tag_format[0] = 'G';
+  tag_format[1] = node->start[1];
+  tag_format[2] = '\0';
+
+  char *tag = mutt_hash_find(TagFormats, tag_format);
+  if (!tag)
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_TAG);
+  driver_tags_get_transformed_for(&e->tags, tag, buf);
+}
+
+/**
+ * index_H - Index: Spam attributes - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_H(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  buf_copy(buf, &e->env->spam);
+}
+
+/**
+ * index_i - Index: Message-id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_i(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->message_id ? e->env->message_id : "<no.id>";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_I - Index: Initials of author - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_I(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+
+  char tmp[128] = { 0 };
+
+  if (mutt_mb_get_initials(mutt_get_name(from), tmp, sizeof(tmp)))
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+    buf_strcpy(buf, tmp);
+    return;
+  }
+
+  index_a(node, data, flags, max_cols, buf);
+}
+
+/**
+ * index_J - Index: Tags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_J(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  bool have_tags = true;
+  struct Buffer *tags = buf_pool_get();
+  driver_tags_get_transformed(&e->tags, tags);
+  if (!buf_is_empty(tags))
+  {
+    if (flags & MUTT_FORMAT_TREE)
+    {
+      struct Buffer *parent_tags = buf_pool_get();
+      if (e->thread->prev && e->thread->prev->message)
+      {
+        driver_tags_get_transformed(&e->thread->prev->message->tags, parent_tags);
+      }
+      if (!parent_tags && e->thread->parent && e->thread->parent->message)
+      {
+        driver_tags_get_transformed(&e->thread->parent->message->tags, parent_tags);
+      }
+      if (parent_tags && buf_istr_equal(tags, parent_tags))
+        have_tags = false;
+      buf_pool_release(&parent_tags);
+    }
+  }
+  else
+  {
+    have_tags = false;
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_TAGS);
+
+  const char *s = have_tags ? buf_string(tags) : "";
+  buf_strcpy(buf, s);
+
+  buf_pool_release(&tags);
+}
+
+/**
+ * index_K - Index: Mailing list - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_K(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
+      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
+  {
+    buf_strcpy(buf, tmp);
+  }
+}
+
+/**
+ * index_l_num - Index: Number of lines - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
+
+  return e->lines;
+}
+
+/**
+ * index_L - Index: List address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_L(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  char tmp[128] = { 0 };
+
+  make_from(e->env, tmp, sizeof(tmp), true, flags);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_m_num - Index: Total number of message - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Mailbox *m = hfi->mailbox;
+
+  if (m)
+    return m->msg_count;
+
+  return 0;
+}
+
+/**
+ * index_M - Index: Number of hidden messages - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_M(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const bool threads = mutt_using_threads();
+  const bool is_index = (flags & MUTT_FORMAT_INDEX) != 0;
+
+  if (threads && is_index && e->collapsed && (e->num_hidden > 1))
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    const int num = e->num_hidden;
+    buf_printf(buf, "%d", num);
+  }
+  else if (is_index && threads)
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    const char *s = " ";
+    buf_strcpy(buf, s);
+  }
+}
+
+/**
+ * index_M_num - Index: Number of hidden messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_M_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  const bool threads = mutt_using_threads();
+  const bool is_index = (flags & MUTT_FORMAT_INDEX) != 0;
+
+  if (threads && is_index && e->collapsed && (e->num_hidden > 1))
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    return e->num_hidden;
+  }
+
+  return 0;
+}
+
+/**
+ * index_n - Index: Author's real name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+  const char *s = mutt_get_name(from);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_N_num - Index: Message score - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_N_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->score;
+}
+
+/**
+ * index_O - Index: List Name or Save folder - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_O(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  make_from_addr(e->env, tmp, sizeof(tmp), true);
+  const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
+  if (!c_save_address && (p = strpbrk(tmp, "%@")))
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_P - Index: Progress indicator - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+
+  const char *s = hfi->pager_progress;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_q - Index: Newsgroup name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_q(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->newsgroups;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_r - Index: To recipients - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  mutt_addrlist_write(&e->env->to, buf, true);
+}
+
+/**
+ * index_R - Index: Cc recipients - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_R(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  mutt_addrlist_write(&e->env->cc, buf, true);
+}
+
+/**
+ * index_s - Index: Subject - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  subjrx_apply_mods(e->env);
+  char *subj = NULL;
+
+  if (e->env->disp_subj)
+    subj = e->env->disp_subj;
+  else
+    subj = e->env->subject;
+
+  if (flags & MUTT_FORMAT_TREE && !e->collapsed)
+  {
+    if (flags & MUTT_FORMAT_FORCESUBJ)
+    {
+      if (flags & MUTT_FORMAT_INDEX)
+        node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
+      node_expando_set_has_tree(node, true);
+
+      buf_printf(buf, "%s%s", e->tree, NONULL(subj));
+    }
+    else
+    {
+      if (flags & MUTT_FORMAT_INDEX)
+        node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
+      node_expando_set_has_tree(node, true);
+
+      const char *s = e->tree;
+      buf_strcpy(buf, s);
+    }
+  }
+  else
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
+    const char *s = subj;
+    buf_strcpy(buf, s);
+  }
+}
+
+/**
+ * index_S - Index: Status flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const int msg_in_pager = hfi->msg_in_pager;
+
+  const char *wch = NULL;
+  if (e->deleted)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
+  else if (e->attach_del)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
+  else if (e->tagged)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
+  else if (e->flagged)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_IMPORTANT);
+  else if (e->replied)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_REPLIED);
+  else if (e->read && (msg_in_pager != e->msgno))
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_SEMPTY);
+  else if (e->old)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD);
+  else
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+
+  buf_strcpy(buf, wch);
+}
+
+/**
+ * index_t - Index: To field - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
+  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
+
+  char tmp[128] = { 0 };
+
+  if (!check_for_mailing_list(&e->env->to, "To ", tmp, sizeof(tmp)) &&
+      !check_for_mailing_list(&e->env->cc, "Cc ", tmp, sizeof(tmp)))
+  {
+    if (to)
+      snprintf(tmp, sizeof(tmp), "To %s", mutt_get_name(to));
+    else if (cc)
+      snprintf(tmp, sizeof(tmp), "Cc %s", mutt_get_name(cc));
+    else
+    {
+      tmp[0] = '\0';
+    }
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_T - Index: $to_chars flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
+
+  int i;
+  const char *s = (c_to_chars && ((i = user_is_recipient(e))) < c_to_chars->len) ?
+                      c_to_chars->chars[i] :
+                      " ";
+
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_u - Index: User name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+  if (!from || !from->mailbox)
+    return;
+
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  mutt_str_copy(tmp, mutt_addr_for_display(from), sizeof(tmp));
+  p = strpbrk(tmp, "%@");
+  if (p)
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_v - Index: First name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_v(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
+  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
+
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  if (mutt_addr_is_user(from))
+  {
+    if (to)
+    {
+      const char *s = mutt_get_name(to);
+      mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
+    }
+    else if (cc)
+    {
+      const char *s = mutt_get_name(cc);
+      mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
+    }
+  }
+  else
+  {
+    const char *s = mutt_get_name(from);
+    mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
+  }
+  p = strpbrk(tmp, " %@");
+  if (p)
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_W - Index: Organization - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_W(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->organization;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_x - Index: X-Comment-To - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_x(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->x_comment_to;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_X_num - Index: Number of MIME attachments - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  struct Mailbox *m = hfi->mailbox;
+
+  struct Message *msg = mx_msg_open(m, e);
+  if (!msg)
+    return 0;
+
+  const int num = mutt_count_body_parts(m, e, msg->fp);
+  mx_msg_close(m, &msg);
+  return num;
+}
+
+/**
+ * index_y - Index: X-Label - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_LABEL);
+
+  const char *s = e->env->x_label;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_Y - Index: X-Label (if different) - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  bool label = true;
+  if (e->env->x_label)
+  {
+    struct Email *e_tmp = NULL;
+    if (flags & MUTT_FORMAT_TREE && (e->thread->prev && e->thread->prev->message &&
+                                     e->thread->prev->message->env->x_label))
+    {
+      e_tmp = e->thread->prev->message;
+    }
+    else if (flags & MUTT_FORMAT_TREE && (e->thread->parent && e->thread->parent->message &&
+                                          e->thread->parent->message->env->x_label))
+    {
+      e_tmp = e->thread->parent->message;
+    }
+
+    if (e_tmp && mutt_istr_equal(e->env->x_label, e_tmp->env->x_label))
+    {
+      label = false;
+    }
+  }
+  else
+  {
+    label = false;
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_LABEL);
+
+  if (label)
+  {
+    const char *s = e->env->x_label;
+    buf_strcpy(buf, s);
+  }
+}
+
+/**
+ * index_zc - Index: Message crypto flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_zc(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
+
+  const char *ch = NULL;
+  if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN);
+  }
+  else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED);
+  }
+  else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED);
+  }
+  else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
+  }
+  else
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+  buf_strcpy(buf, ch);
+}
+
+/**
+ * index_zs - Index: Message status flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_zs(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const bool threads = mutt_using_threads();
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const int msg_in_pager = hfi->msg_in_pager;
+
+  const char *ch = NULL;
+  if (e->deleted)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
+  }
+  else if (e->attach_del)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
+  }
+  else if (threads && thread_is_new(e))
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW_THREAD);
+  }
+  else if (threads && thread_is_old(e))
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD_THREAD);
+  }
+  else if (e->read && (msg_in_pager != e->msgno))
+  {
+    if (e->replied)
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_REPLIED);
+    }
+    else
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_ZEMPTY);
+    }
+  }
+  else
+  {
+    if (e->old)
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD);
+    }
+    else
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW);
+    }
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+  buf_strcpy(buf, ch);
+}
+
+/**
+ * index_zt - Index: Message tag flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_zt(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
+
+  const char *ch = NULL;
+  if (e->tagged)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
+  }
+  else if (e->flagged)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_IMPORTANT);
+  }
+  else
+  {
+    ch = mbtable_get_nth_wchar(c_to_chars, user_is_recipient(e));
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+  buf_strcpy(buf, ch);
+}
+
+/**
+ * index_Z - Index: Status flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_Z(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const int msg_in_pager = hfi->msg_in_pager;
+
+  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
+  const bool threads = mutt_using_threads();
+
+  const char *first = NULL;
+  if (threads && thread_is_new(e))
+  {
+    first = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW_THREAD);
+  }
+  else if (threads && thread_is_old(e))
+  {
+    first = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD_THREAD);
+  }
+  else if (e->read && (msg_in_pager != e->msgno))
+  {
+    if (e->replied)
+    {
+      first = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_REPLIED);
+    }
+    else
+    {
+      first = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_ZEMPTY);
+    }
+  }
+  else
+  {
+    if (e->old)
+    {
+      first = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD);
+    }
+    else
+    {
+      first = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW);
+    }
+  }
+
+  /* Marked for deletion; deleted attachments; crypto */
+  const char *second = NULL;
+  if (e->deleted)
+    second = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
+  else if (e->attach_del)
+    second = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
+  else if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
+    second = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN);
+  else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
+    second = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED);
+  else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
+    second = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED);
+  else if (((WithCrypto & APPLICATION_PGP) != 0) && (e->security & PGP_KEY))
+    second = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
+  else
+    second = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO);
+
+  /* Tagged, flagged and recipient flag */
+  const char *third = NULL;
+  if (e->tagged)
+    third = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
+  else if (e->flagged)
+    third = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_IMPORTANT);
+  else
+    third = mbtable_get_nth_wchar(c_to_chars, user_is_recipient(e));
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+
+  buf_printf(buf, "%s%s%s", first, second, third);
 }
 
 /**

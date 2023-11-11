@@ -46,17 +46,12 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "expando/lib.h"
 #include "menu/lib.h"
-#include "format_flags.h"
-#include "muttlib.h"
 #include "remailer.h"
 
 /**
@@ -66,7 +61,7 @@
  *
  * @note The string is a static buffer
  */
-static const char *mix_format_caps(struct Remailer *r)
+static const char *mix_format_caps(const struct Remailer *r)
 {
   // NOTE(g0mb4): use $to_chars?
   static char capbuf[10];
@@ -107,6 +102,52 @@ static const char *mix_format_caps(struct Remailer *r)
   *t = '\0';
 
   return capbuf;
+}
+
+/**
+ * mix_a - Mixmaster: Email address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void mix_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+           int max_cols, struct Buffer *buf)
+{
+  const struct Remailer *remailer = data;
+
+  const char *s = remailer->addr;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * mix_c - Mixmaster: Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void mix_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+           int max_cols, struct Buffer *buf)
+{
+  const struct Remailer *remailer = data;
+
+  const char *s = mix_format_caps(remailer);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * mix_n_num - Mixmaster: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long mix_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Remailer *remailer = data;
+
+  return remailer->num;
+}
+
+/**
+ * mix_s - Mixmaster: Short name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void mix_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+           int max_cols, struct Buffer *buf)
+{
+  const struct Remailer *remailer = data;
+
+  const char *s = remailer->shortname;
+  buf_strcpy(buf, s);
 }
 
 /**

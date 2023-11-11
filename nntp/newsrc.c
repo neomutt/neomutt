@@ -33,7 +33,6 @@
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
-#include <inttypes.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -914,6 +913,122 @@ void nntp_clear_cache(struct NntpAccountData *adata)
     }
     closedir(dir);
   }
+}
+
+/**
+ * nntp_a - Newsrc: Account url - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  struct NntpAccountData *adata = data;
+  struct ConnAccount *cac = &adata->conn->account;
+
+  char tmp[128] = { 0 };
+
+  struct Url url = { 0 };
+  mutt_account_tourl(cac, &url);
+  url_tostring(&url, tmp, sizeof(tmp), U_PATH);
+  char *p = strchr(tmp, '/');
+  if (p)
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * nntp_p_num - Newsrc: Port - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  return cac->port;
+}
+
+/**
+ * nntp_P_num - Newsrc: Port if specified - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  if (cac->flags & MUTT_ACCT_PORT)
+    return cac->port;
+
+  return 0;
+}
+
+/**
+ * nntp_P - Newsrc: Port if specified - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  if (cac->flags & MUTT_ACCT_PORT)
+  {
+    buf_add_printf(buf, "%hd", cac->port);
+  }
+}
+
+/**
+ * nntp_s - Newsrc: News server name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  char tmp[128] = { 0 };
+
+  mutt_str_copy(tmp, cac->host, sizeof(tmp));
+  mutt_str_lower(tmp);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * nntp_S - Newsrc: Url schema - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  struct NntpAccountData *adata = data;
+  struct ConnAccount *cac = &adata->conn->account;
+
+  char tmp[128] = { 0 };
+
+  struct Url url = { 0 };
+  mutt_account_tourl(cac, &url);
+  url_tostring(&url, tmp, sizeof(tmp), U_PATH);
+  char *p = strchr(tmp, ':');
+  if (p)
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * nntp_u - Newsrc: Username - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  const char *s = cac->user;
+  buf_strcpy(buf, s);
 }
 
 /**

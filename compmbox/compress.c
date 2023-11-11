@@ -39,7 +39,6 @@
 #include "config.h"
 #include <errno.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -52,7 +51,6 @@
 #include "expando/lib.h"
 #include "globals.h"
 #include "hook.h"
-#include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
 
@@ -244,6 +242,34 @@ static void compress_info_free(struct Mailbox *m)
   unlock_realpath(m);
 
   FREE(&m->compress_info);
+}
+
+/**
+ * compress_f - Compress: From filename - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void compress_f(const struct ExpandoNode *node, void *data,
+                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Mailbox *m = data;
+
+  struct Buffer *quoted = buf_pool_get();
+  buf_quote_filename(quoted, m->realpath, false);
+  buf_copy(buf, quoted);
+  buf_pool_release(&quoted);
+}
+
+/**
+ * compress_t - Compress: To filename - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void compress_t(const struct ExpandoNode *node, void *data,
+                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Mailbox *m = data;
+
+  struct Buffer *quoted = buf_pool_get();
+  buf_quote_filename(quoted, mailbox_path(m), false);
+  buf_copy(buf, quoted);
+  buf_pool_release(&quoted);
 }
 
 /**

@@ -46,11 +46,9 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "sendmail.h"
-#include "expando/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"
 #include "globals.h"
-#include "muttlib.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #else

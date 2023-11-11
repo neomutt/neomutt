@@ -23,11 +23,8 @@
 #ifndef MUTT_ATTACH_RECVATTACH_H
 #define MUTT_ATTACH_RECVATTACH_H
 
-#include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
-#include "expando/lib.h"
 
 struct AttachCtx;
 struct Body;
