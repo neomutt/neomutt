@@ -36,17 +36,16 @@ void test_buf_file_expand_fmt_quote(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_file_expand_fmt_quote(&buf, NULL, "banana");
+    struct Buffer *buf = buf_pool_get();
+    buf_file_expand_fmt_quote(buf, NULL, "banana");
     TEST_CHECK_(1, "buf_file_expand_fmt_quote(&buf, NULL, \"banana\")");
+    buf_pool_release(&buf);
   }
 
   {
-    struct Buffer buf = buf_make(32);
-    buf_file_expand_fmt_quote(&buf, "apple", NULL);
+    struct Buffer *buf = buf_pool_get();
+    buf_file_expand_fmt_quote(buf, "apple", NULL);
     TEST_CHECK_(1, "buf_file_expand_fmt_quote(&buf, \"apple\", NULL)");
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
-
-  buf_pool_cleanup();
 }
