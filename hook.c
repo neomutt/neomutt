@@ -694,15 +694,13 @@ void mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type)
 /**
  * addr_hook - Perform an address hook (get a path)
  * @param path    Buffer for path
- * @param pathlen Length of buffer
  * @param type    Hook type, see #HookFlags
  * @param m       Mailbox
  * @param e       Email
  * @retval  0 Success
  * @retval -1 Failure
  */
-static int addr_hook(char *path, size_t pathlen, HookFlags type,
-                     struct Mailbox *m, struct Email *e)
+static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, struct Email *e)
 {
   struct Hook *hook = NULL;
   struct PatternCache cache = { 0 };
@@ -718,7 +716,9 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        mutt_make_string(path, pathlen, 0, hook->command, m, -1, e, MUTT_FORMAT_PLAIN, NULL);
+        mutt_make_string(path->data, path->dsize, 0, hook->command, m, -1, e,
+                         MUTT_FORMAT_PLAIN, NULL);
+        buf_fix_dptr(path);
         return 0;
       }
     }
@@ -729,15 +729,13 @@ static int addr_hook(char *path, size_t pathlen, HookFlags type,
 
 /**
  * mutt_default_save - Find the default save path for an email
- * @param path    Buffer for the path
- * @param pathlen Length of buffer
- * @param e       Email
+ * @param path  Buffer for the path
+ * @param e     Email
  */
-void mutt_default_save(char *path, size_t pathlen, struct Email *e)
+void mutt_default_save(struct Buffer *path, struct Email *e)
 {
-  *path = '\0';
   struct Mailbox *m_cur = get_current_mailbox();
-  if (addr_hook(path, pathlen, MUTT_SAVE_HOOK, m_cur, e) == 0)
+  if (addr_hook(path, MUTT_SAVE_HOOK, m_cur, e) == 0)
     return;
 
   struct Envelope *env = e->env;
@@ -762,7 +760,7 @@ void mutt_default_save(char *path, size_t pathlen, struct Email *e)
   {
     struct Buffer *tmp = buf_pool_get();
     mutt_safe_path(tmp, addr);
-    snprintf(path, pathlen, "=%s", buf_string(tmp));
+    buf_add_printf(path, "=%s", buf_string(tmp));
     buf_pool_release(&tmp);
   }
 }
@@ -776,7 +774,7 @@ void mutt_select_fcc(struct Buffer *path, struct Email *e)
 {
   buf_alloc(path, PATH_MAX);
 
-  if (addr_hook(path->data, path->dsize, MUTT_FCC_HOOK, NULL, e) != 0)
+  if (addr_hook(path, MUTT_FCC_HOOK, NULL, e) != 0)
   {
     const struct Address *to = TAILQ_FIRST(&e->env->to);
     const struct Address *cc = TAILQ_FIRST(&e->env->cc);

@@ -292,8 +292,7 @@ static int query_save_attachment(FILE *fp, struct Body *b, struct Email *e, char
   }
   else if (has_a_message(b))
   {
-    mutt_default_save(buf->data, buf->dsize, b->email);
-    buf_fix_dptr(buf);
+    mutt_default_save(buf, b->email);
   }
 
   prepend_savedir(buf);
@@ -388,7 +387,7 @@ static int save_without_prompting(FILE *fp, struct Body *b, struct Email *e)
   }
   else if (has_a_message(b))
   {
-    mutt_default_save(buf->data, buf->dsize, b->email);
+    mutt_default_save(buf, b->email);
   }
 
   prepend_savedir(buf);

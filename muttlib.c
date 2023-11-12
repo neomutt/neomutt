@@ -233,10 +233,8 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
           mutt_addrlist_copy(&e->env->from, al, false);
           mutt_addrlist_copy(&e->env->to, al, false);
 
-          /* TODO: fix mutt_default_save() to use Buffer */
           buf_alloc(p, PATH_MAX);
-          mutt_default_save(p->data, p->dsize, e);
-          buf_fix_dptr(p);
+          mutt_default_save(p, e);
 
           email_free(&e);
           /* Avoid infinite recursion if the resulting folder starts with '@' */
