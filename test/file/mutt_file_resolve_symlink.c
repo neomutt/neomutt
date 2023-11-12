@@ -46,17 +46,17 @@ void test_mutt_file_resolve_symlink(void)
   char first[256] = { 0 };
   char second[256] = { 0 };
 
-  struct Buffer result = buf_make(256);
+  struct Buffer *result = buf_pool_get();
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
     test_gen_path(first, sizeof(first), tests[i].first);
     test_gen_path(second, sizeof(second), tests[i].second);
-    buf_strcpy(&result, first);
+    buf_strcpy(result, first);
 
     TEST_CASE(first);
-    mutt_file_resolve_symlink(&result);
-    TEST_CHECK_STR_EQ(buf_string(&result), second);
+    mutt_file_resolve_symlink(result);
+    TEST_CHECK_STR_EQ(buf_string(result), second);
   }
 
-  buf_dealloc(&result);
+  buf_pool_release(&result);
 }
