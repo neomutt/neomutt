@@ -36,16 +36,17 @@ void test_buf_reset(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_reset(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_reset(buf);
     TEST_CHECK_(1, "buf_reset(buf)");
+    buf_pool_release(&buf);
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    buf_reset(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    buf_reset(buf);
     TEST_CHECK_(1, "buf_reset(buf)");
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 }

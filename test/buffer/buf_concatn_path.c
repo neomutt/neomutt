@@ -36,17 +36,17 @@ void test_buf_concatn_path(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
+    struct Buffer *buf = buf_pool_get();
 
     const char *dir = "/home/jim/work";
     const char *file = "file.txt";
     const char *result = "/home/jim/file";
 
-    size_t len = buf_concatn_path(&buf, dir, 9, file, 4);
+    size_t len = buf_concatn_path(buf, dir, 9, file, 4);
 
     TEST_CHECK(len == 14);
-    TEST_CHECK_STR_EQ(buf_string(&buf), result);
+    TEST_CHECK_STR_EQ(buf_string(buf), result);
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 }

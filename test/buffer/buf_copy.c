@@ -37,32 +37,32 @@ void test_buf_copy(void)
   }
 
   {
-    struct Buffer buf1 = buf_make(0);
-    struct Buffer buf2 = buf_make(0);
+    struct Buffer *buf1 = buf_pool_get();
+    struct Buffer *buf2 = buf_pool_get();
 
-    size_t len = buf_copy(&buf2, &buf1);
+    size_t len = buf_copy(buf2, buf1);
 
     TEST_CHECK(len == 0);
-    TEST_CHECK(buf_is_empty(&buf2) == true);
+    TEST_CHECK(buf_is_empty(buf2) == true);
 
-    buf_dealloc(&buf1);
-    buf_dealloc(&buf2);
+    buf_pool_release(&buf1);
+    buf_pool_release(&buf2);
   }
 
   {
     char *src = "abcdefghij";
 
-    struct Buffer buf1 = buf_make(32);
-    struct Buffer buf2 = buf_make(0);
+    struct Buffer *buf1 = buf_pool_get();
+    struct Buffer *buf2 = buf_pool_get();
 
-    buf_strcpy(&buf1, src);
+    buf_strcpy(buf1, src);
 
-    size_t len = buf_copy(&buf2, &buf1);
+    size_t len = buf_copy(buf2, buf1);
 
     TEST_CHECK(len == 10);
-    TEST_CHECK_STR_EQ(buf_string(&buf2), buf_string(&buf1));
+    TEST_CHECK_STR_EQ(buf_string(buf2), buf_string(buf1));
 
-    buf_dealloc(&buf1);
-    buf_dealloc(&buf2);
+    buf_pool_release(&buf1);
+    buf_pool_release(&buf2);
   }
 }

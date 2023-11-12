@@ -36,17 +36,18 @@ void test_buf_fix_dptr(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_fix_dptr(&buf);
-    TEST_CHECK(buf_is_empty(&buf));
+    struct Buffer *buf = buf_pool_get();
+    buf_fix_dptr(buf);
+    TEST_CHECK(buf_is_empty(buf));
+    buf_pool_release(&buf);
   }
 
   {
     const char *str = "a quick brown fox";
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, str);
-    buf_fix_dptr(&buf);
-    TEST_CHECK(buf_len(&buf) == (strlen(str)));
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, str);
+    buf_fix_dptr(buf);
+    TEST_CHECK(buf_len(buf) == (strlen(str)));
+    buf_pool_release(&buf);
   }
 }

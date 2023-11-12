@@ -36,17 +36,17 @@ void test_buf_addch(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(buf_addch(&buf, 'a') == 1);
-    TEST_CHECK_STR_EQ(buf_string(&buf), "a");
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(buf_addch(buf, 'a') == 1);
+    TEST_CHECK_STR_EQ(buf_string(buf), "a");
+    buf_pool_release(&buf);
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    buf_addstr(&buf, "test");
-    TEST_CHECK(buf_addch(&buf, 'a') == 1);
-    TEST_CHECK_STR_EQ(buf_string(&buf), "testa");
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_addstr(buf, "test");
+    TEST_CHECK(buf_addch(buf, 'a') == 1);
+    TEST_CHECK_STR_EQ(buf_string(buf), "testa");
+    buf_pool_release(&buf);
   }
 }
