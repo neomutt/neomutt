@@ -36,14 +36,16 @@ void test_mutt_file_expand_fmt(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    mutt_file_expand_fmt(&buf, NULL, "banana");
+    struct Buffer *buf = buf_pool_get();
+    mutt_file_expand_fmt(buf, NULL, "banana");
     TEST_CHECK_(1, "mutt_file_expand_fmt(&buf, NULL, \"banana\")");
+    buf_pool_release(&buf);
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    mutt_file_expand_fmt(&buf, "apple", NULL);
+    struct Buffer *buf = buf_pool_get();
+    mutt_file_expand_fmt(buf, "apple", NULL);
     TEST_CHECK_(1, "mutt_file_expand_fmt(&buf, \"apple\", NULL)");
+    buf_pool_release(&buf);
   }
 }
