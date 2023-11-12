@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-11-03 10:03+0000\n"
-"PO-Revision-Date: 2023-09-22 07:08+0200\n"
+"PO-Revision-Date: 2023-11-12 10:08+0100\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.5.8\n"
+"X-Generator: poe 1.7.2\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -722,12 +722,12 @@ msgstr "Сандучићи [%d]"
 #: browser/dlg_browser.c:1026
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
-msgstr "Претплаћено [%s], Маска фајлова: %s"
+msgstr "Претплаћено [%s], Маска датотека: %s"
 
 #: browser/dlg_browser.c:1032
 #, c-format
 msgid "Directory [%s], File mask: %s"
-msgstr "Директоријум [%s], Маска фајлова: %s"
+msgstr "Директоријум [%s], Маска датотека: %s"
 
 #: browser/dlg_browser.c:1095
 msgid "Can't attach a directory"
@@ -735,7 +735,7 @@ msgstr "Не може се додати директоријум"
 
 #: browser/functions.c:199
 msgid "New file name: "
-msgstr "Назив новог фајла: "
+msgstr "Назив нове датотеке: "
 
 #: browser/functions.c:230
 msgid "No newsgroups match the mask"
@@ -5482,7 +5482,7 @@ msgstr "грешка приликом премотавања објекта са
 
 #: ncrypt/crypt_gpgme.c:537
 msgid "[tempfile]"
-msgstr "[привфајл]"
+msgstr "[привремдато]"
 
 #: ncrypt/crypt_gpgme.c:543 ncrypt/crypt_gpgme.c:597
 #, c-format
