@@ -1471,7 +1471,7 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
       e->env = mutt_env_new();
       mutt_addrlist_copy(&e->env->from, al, false);
       mutt_addrlist_copy(&e->env->to, al, false);
-      mutt_default_save(path->data, path->dsize, e);
+      mutt_default_save(path, e);
       email_free(&e);
       break;
     }

@@ -841,8 +841,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   }
 
   mutt_message_hook(m, e_cur, MUTT_MESSAGE_HOOK);
-  mutt_default_save(buf->data, buf->dsize, e_cur);
-  buf_fix_dptr(buf);
+  mutt_default_save(buf, e_cur);
   buf_pretty_mailbox(buf);
 
   if (mw_enter_fname(prompt, buf, false, NULL, false, NULL, NULL, MUTT_SEL_NO_FLAGS) == -1)
