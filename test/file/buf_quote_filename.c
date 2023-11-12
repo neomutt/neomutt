@@ -49,13 +49,13 @@ void test_buf_quote_filename(void)
     TEST_CHECK_(1, "buf_quote_filename(NULL, NULL, false)");
   }
 
-  struct Buffer result = buf_make(256);
+  struct Buffer *result = buf_pool_get();
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
     TEST_CASE(tests[i].first);
-    buf_quote_filename(&result, tests[i].first, (i % 2));
-    TEST_CHECK_STR_EQ(buf_string(&result), tests[i].second);
+    buf_quote_filename(result, tests[i].first, (i % 2));
+    TEST_CHECK_STR_EQ(buf_string(result), tests[i].second);
   }
 
-  buf_dealloc(&result);
+  buf_pool_release(&result);
 }
