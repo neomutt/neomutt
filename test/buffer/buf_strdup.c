@@ -40,17 +40,17 @@ void test_buf_strdup(void)
     char *src = "abcdefghij";
     char *result = NULL;
 
-    struct Buffer buf = buf_make(32);
+    struct Buffer *buf = buf_pool_get();
 
-    buf_strcpy(&buf, src);
+    buf_strcpy(buf, src);
 
-    result = buf_strdup(&buf);
+    result = buf_strdup(buf);
 
     TEST_CHECK(result != NULL);
     TEST_CHECK_STR_EQ(result, src);
 
     FREE(&result);
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 }

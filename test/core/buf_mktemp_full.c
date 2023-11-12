@@ -34,8 +34,8 @@ void test_buf_mktemp_full(void)
   // void buf_mktemp_full(struct Buffer *buf, const char *prefix, const char *suffix, const char *src, int line);
 
   {
-    struct Buffer buf = buf_make(1024);
-    buf_mktemp_full(&buf, NULL, NULL, __FILE__, __LINE__);
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    buf_mktemp_full(buf, NULL, NULL, __FILE__, __LINE__);
+    buf_pool_release(&buf);
   }
 }

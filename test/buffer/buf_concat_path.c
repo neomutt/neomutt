@@ -61,36 +61,36 @@ void test_buf_concat_path(void)
       TEST_CASE_("DIR: '%s'  FILE: '%s'", NONULL(concat_test[i][0]),
                  NONULL(concat_test[i][1]));
       {
-        struct Buffer buf = buf_make(0);
-        buf_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
+        struct Buffer *buf = buf_pool_get();
+        buf_concat_path(buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK_STR_EQ(buf_string(&buf), concat_test[i][2]);
+          TEST_CHECK_STR_EQ(buf_string(buf), concat_test[i][2]);
         }
         else
         {
-          if (!TEST_CHECK(strlen(buf_string(&buf)) == 0))
+          if (!TEST_CHECK(strlen(buf_string(buf)) == 0))
           {
-            TEST_MSG("len = %ld", strlen(buf_string(&buf)));
+            TEST_MSG("len = %ld", strlen(buf_string(buf)));
           }
         }
-        buf_dealloc(&buf);
+        buf_pool_release(&buf);
       }
 
       {
         const char *str = "test";
-        struct Buffer buf = buf_make(0);
-        buf_addstr(&buf, str);
-        buf_concat_path(&buf, concat_test[i][0], concat_test[i][1]);
+        struct Buffer *buf = buf_pool_get();
+        buf_addstr(buf, str);
+        buf_concat_path(buf, concat_test[i][0], concat_test[i][1]);
         if (concat_test[i][2])
         {
-          TEST_CHECK_STR_EQ(buf_string(&buf), concat_test[i][2]);
+          TEST_CHECK_STR_EQ(buf_string(buf), concat_test[i][2]);
         }
         else
         {
-          TEST_CHECK_STR_EQ(buf_string(&buf), str);
+          TEST_CHECK_STR_EQ(buf_string(buf), str);
         }
-        buf_dealloc(&buf);
+        buf_pool_release(&buf);
       }
     }
   }

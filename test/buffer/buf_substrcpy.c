@@ -39,13 +39,13 @@ void test_buf_substrcpy(void)
     char *src = "abcdefghijklmnopqrstuvwxyz";
     char *result = "jklmnopqr";
 
-    struct Buffer buf = buf_make(32);
+    struct Buffer *buf = buf_pool_get();
 
-    size_t len = buf_substrcpy(&buf, src + 9, src + 18);
+    size_t len = buf_substrcpy(buf, src + 9, src + 18);
 
     TEST_CHECK(len == 9);
-    TEST_CHECK_STR_EQ(buf_string(&buf), result);
+    TEST_CHECK_STR_EQ(buf_string(buf), result);
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 }

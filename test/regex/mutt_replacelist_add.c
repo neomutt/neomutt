@@ -31,20 +31,23 @@ void test_mutt_replacelist_add(void)
   // int mutt_replacelist_add(struct ReplaceList *rl, const char *pat, const char *templ, struct Buffer *err);
 
   {
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(mutt_replacelist_add(NULL, "apple", "banana", &buf) == 0);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(mutt_replacelist_add(NULL, "apple", "banana", buf) == 0);
+    buf_pool_release(&buf);
   }
 
   {
     struct ReplaceList replacelist = { 0 };
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(mutt_replacelist_add(&replacelist, NULL, "banana", &buf) == 0);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(mutt_replacelist_add(&replacelist, NULL, "banana", buf) == 0);
+    buf_pool_release(&buf);
   }
 
   {
     struct ReplaceList replacelist = { 0 };
-    struct Buffer buf = buf_make(0);
-    TEST_CHECK(mutt_replacelist_add(&replacelist, "apple", NULL, &buf) == 0);
+    struct Buffer *buf = buf_pool_get();
+    TEST_CHECK(mutt_replacelist_add(&replacelist, "apple", NULL, buf) == 0);
+    buf_pool_release(&buf);
   }
 
   {

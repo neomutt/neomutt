@@ -97,9 +97,13 @@ bool test_pretty_var(void)
   // size_t pretty_var(const char *str, struct Buffer *buf);
 
   {
-    struct Buffer buf = buf_make(0);
-    if (!TEST_CHECK(pretty_var(NULL, &buf) == 0))
+    struct Buffer *buf = buf_pool_get();
+    if (!TEST_CHECK(pretty_var(NULL, buf) == 0))
+    {
+      buf_pool_release(&buf);
       return false;
+    }
+    buf_pool_release(&buf);
   }
 
   {
@@ -108,20 +112,20 @@ bool test_pretty_var(void)
   }
 
   {
-    struct Buffer buf = buf_make(64);
-    if (!TEST_CHECK(pretty_var("apple", &buf) > 0))
+    struct Buffer *buf = buf_pool_get();
+    if (!TEST_CHECK(pretty_var("apple", buf) > 0))
     {
-      buf_dealloc(&buf);
+      buf_pool_release(&buf);
       return false;
     }
 
-    if (!TEST_CHECK_STR_EQ(buf_string(&buf), "\"apple\""))
+    if (!TEST_CHECK_STR_EQ(buf_string(buf), "\"apple\""))
     {
-      buf_dealloc(&buf);
+      buf_pool_release(&buf);
       return false;
     }
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 
   return true;
@@ -137,28 +141,32 @@ bool test_escape_string(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    if (!TEST_CHECK(escape_string(&buf, NULL) == 0))
+    struct Buffer *buf = buf_pool_get();
+    if (!TEST_CHECK(escape_string(buf, NULL) == 0))
+    {
+      buf_pool_release(&buf);
       return false;
+    }
+    buf_pool_release(&buf);
   }
 
   {
     const char *before = "apple\nbanana\rcherry\tdam\007son\\endive\"fig'grape";
     const char *after = "apple\\nbanana\\rcherry\\tdam\\gson\\\\endive\\\"fig'grape";
-    struct Buffer buf = buf_make(256);
-    if (!TEST_CHECK(escape_string(&buf, before) > 0))
+    struct Buffer *buf = buf_pool_get();
+    if (!TEST_CHECK(escape_string(buf, before) > 0))
     {
-      buf_dealloc(&buf);
+      buf_pool_release(&buf);
       return false;
     }
 
-    if (!TEST_CHECK_STR_EQ(buf_string(&buf), after))
+    if (!TEST_CHECK_STR_EQ(buf_string(buf), after))
     {
-      buf_dealloc(&buf);
+      buf_pool_release(&buf);
       return false;
     }
 
-    buf_dealloc(&buf);
+    buf_pool_release(&buf);
   }
 
   return true;
@@ -247,10 +255,10 @@ bool test_dump_config_neo(void)
 
     struct HashElem *he = cs_get_elem(cs, "Banana");
 
-    struct Buffer buf_val = buf_make(0);
-    buf_addstr(&buf_val, "yes");
-    struct Buffer buf_init = buf_make(0);
-    buf_addstr(&buf_init, "yes");
+    struct Buffer *buf_val = buf_pool_get();
+    buf_addstr(buf_val, "yes");
+    struct Buffer *buf_init = buf_pool_get();
+    buf_addstr(buf_init, "yes");
 
     FILE *fp = fopen("/dev/null", "w");
     if (!fp)
@@ -258,35 +266,35 @@ bool test_dump_config_neo(void)
 
     // Degenerate tests
 
-    dump_config_neo(NULL, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(NULL, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1, "dump_config_neo(NULL, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, NULL, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(cs, NULL, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, NULL, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, NULL, &buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(cs, he, NULL, buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, NULL, &buf_init, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(cs, he, buf_val, NULL, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, NULL, CS_DUMP_NO_FLAGS, fp)");
-    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, NULL);
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, NULL);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, NULL)");
 
     // Normal tests
 
-    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
 
-    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_ONLY_CHANGED, fp);
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_ONLY_CHANGED, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_ONLY_CHANGED, fp)");
 
-    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_SHOW_DEFAULTS, fp);
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_SHOW_DEFAULTS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_SHOW_DEFAULTS, fp)");
 
     he = mutt_hash_find_elem(cs->hash, "Damson");
-    dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp);
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
 
     fclose(fp);
-    buf_dealloc(&buf_val);
-    buf_dealloc(&buf_init);
+    buf_pool_release(&buf_val);
+    buf_pool_release(&buf_init);
     cs_free(&cs);
   }
 
