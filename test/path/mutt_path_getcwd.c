@@ -36,9 +36,9 @@ void test_mutt_path_getcwd(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
-    mutt_path_getcwd(&buf);
-    TEST_CHECK(buf.data[0] == '/');
-    buf_dealloc(&buf);
+    struct Buffer *buf = buf_pool_get();
+    mutt_path_getcwd(buf);
+    TEST_CHECK(buf->data[0] == '/');
+    buf_pool_release(&buf);
   }
 }
