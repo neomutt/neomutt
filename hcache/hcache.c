@@ -434,10 +434,10 @@ static void *fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, s
   if (!hc)
     return NULL;
 
-  struct Buffer path = buf_make(1024);
-  keylen = buf_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  void *blob = hc->store_ops->fetch(hc->store_handle, buf_string(&path), keylen, dlen);
-  buf_dealloc(&path);
+  struct Buffer *path = buf_pool_get();
+  keylen = buf_printf(path, "%s%.*s", hc->folder, (int) keylen, key);
+  void *blob = hc->store_ops->fetch(hc->store_handle, buf_string(path), keylen, dlen);
+  buf_pool_release(&path);
   return blob;
 }
 
@@ -745,11 +745,11 @@ int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
   if (!hc)
     return -1;
 
-  struct Buffer path = buf_make(1024);
+  struct Buffer *path = buf_pool_get();
 
-  keylen = buf_printf(&path, "%s%.*s", hc->folder, (int) keylen, key);
-  int rc = hc->store_ops->store(hc->store_handle, buf_string(&path), keylen, data, dlen);
-  buf_dealloc(&path);
+  keylen = buf_printf(path, "%s%.*s", hc->folder, (int) keylen, key);
+  int rc = hc->store_ops->store(hc->store_handle, buf_string(path), keylen, data, dlen);
+  buf_pool_release(&path);
 
   return rc;
 }
@@ -762,11 +762,10 @@ int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen)
   if (!hc)
     return -1;
 
-  struct Buffer path = buf_make(1024);
+  struct Buffer *path = buf_pool_get();
 
-  keylen = buf_printf(&path, "%s%s", hc->folder, key);
-
-  int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(&path), keylen);
-  buf_dealloc(&path);
+  keylen = buf_printf(path, "%s%s", hc->folder, key);
+  int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(path), keylen);
+  buf_pool_release(&path);
   return rc;
 }
