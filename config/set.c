@@ -281,21 +281,21 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
   if (!cs || !vars)
     return false;
 
-  struct Buffer err = buf_make(0);
+  struct Buffer *err = buf_pool_get();
 
   bool rc = true;
 
   for (size_t i = 0; vars[i].name; i++)
   {
     vars[i].type |= flags;
-    if (!cs_register_variable(cs, &vars[i], &err))
+    if (!cs_register_variable(cs, &vars[i], err))
     {
-      mutt_debug(LL_DEBUG1, "%s\n", buf_string(&err));
+      mutt_debug(LL_DEBUG1, "%s\n", buf_string(err));
       rc = false;
     }
   }
 
-  buf_dealloc(&err);
+  buf_pool_release(&err);
   return rc;
 }
 
