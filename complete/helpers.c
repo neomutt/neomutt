@@ -400,19 +400,19 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
     if (!he)
       return 0; /* no such variable. */
 
-    struct Buffer value = buf_make(256);
-    struct Buffer pretty = buf_make(256);
-    int rc = cs_subset_he_string_get(NeoMutt->sub, he, &value);
+    struct Buffer *value = buf_pool_get();
+    struct Buffer *pretty = buf_pool_get();
+    int rc = cs_subset_he_string_get(NeoMutt->sub, he, value);
     if (CSR_RESULT(rc) == CSR_SUCCESS)
     {
-      pretty_var(value.data, &pretty);
-      snprintf(pt, buf->dsize - (pt - buf->data), "%s=%s", var, pretty.data);
-      buf_dealloc(&value);
-      buf_dealloc(&pretty);
+      pretty_var(value->data, pretty);
+      snprintf(pt, buf->dsize - (pt - buf->data), "%s=%s", var, pretty->data);
+      buf_pool_release(&value);
+      buf_pool_release(&pretty);
       return 0;
     }
-    buf_dealloc(&value);
-    buf_dealloc(&pretty);
+    buf_pool_release(&value);
+    buf_pool_release(&pretty);
     return 1;
   }
   return 0;
