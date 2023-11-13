@@ -427,16 +427,16 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
     if (MoreArgs(s))
     {
-      struct Buffer tmp = buf_make(0);
-      parse_extract_token(&tmp, s, TOKEN_NO_FLAGS);
-      if (!mutt_str_atoui_full(tmp.data, &match))
+      struct Buffer *tmp = buf_pool_get();
+      parse_extract_token(tmp, s, TOKEN_NO_FLAGS);
+      if (!mutt_str_atoui_full(tmp->data, &match))
       {
-        buf_printf(err, _("%s: invalid number: %s"), color ? "color" : "mono", tmp.data);
-        buf_dealloc(&tmp);
+        buf_printf(err, _("%s: invalid number: %s"), color ? "color" : "mono", tmp->data);
+        buf_pool_release(&tmp);
         rc = MUTT_CMD_WARNING;
         goto done;
       }
-      buf_dealloc(&tmp);
+      buf_pool_release(&tmp);
     }
 
     if (MoreArgs(s))
