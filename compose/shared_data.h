@@ -26,6 +26,8 @@
 #include "config.h"
 #include <stdbool.h>
 
+struct MuttWindow;
+
 /**
  * struct ComposeSharedData - Shared Compose Data
  */
@@ -45,8 +47,6 @@ struct ComposeSharedData
   bool news;                         ///< Email is a news article
 #endif
 };
-
-struct MuttWindow;
 
 void compose_shared_data_free(struct MuttWindow *win, void **ptr);
 struct ComposeSharedData *compose_shared_data_new(void);

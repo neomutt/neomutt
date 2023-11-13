@@ -100,15 +100,6 @@ static const struct Mapping PgpHelp[] = {
   // clang-format on
 };
 
-/**
- * struct PgpEntry - An entry in a PGP key menu
- */
-struct PgpEntry
-{
-  size_t num; ///< Index number
-  struct PgpUid *uid;
-};
-
 /// Characters used to show the trust level for PGP keys
 static const char TrustFlags[] = "?- +";
 

@@ -63,20 +63,6 @@
 #include "smime.h"
 #endif
 
-/**
- * struct SmimeCommandContext - Data for a SIME command
- */
-struct SmimeCommandContext
-{
-  const char *key;           ///< %k
-  const char *cryptalg;      ///< %a
-  const char *digestalg;     ///< %d
-  const char *fname;         ///< %f
-  const char *sig_fname;     ///< %s
-  const char *certificates;  ///< %c
-  const char *intermediates; ///< %i
-};
-
 /// Cached Smime Passphrase
 static char SmimePass[256];
 /// Unix time when #SmimePass expires

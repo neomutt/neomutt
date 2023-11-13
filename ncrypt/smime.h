@@ -51,6 +51,20 @@ struct SmimeKey
   struct SmimeKey *next;
 };
 
+/**
+ * struct SmimeCommandContext - Data for a SIME command
+ */
+struct SmimeCommandContext
+{
+  const char *key;           ///< %k
+  const char *cryptalg;      ///< %a
+  const char *digestalg;     ///< %d
+  const char *fname;         ///< %f
+  const char *sig_fname;     ///< %s
+  const char *certificates;  ///< %c
+  const char *intermediates; ///< %i
+};
+
 void smime_init(void);
 void smime_cleanup(void);
 

@@ -83,15 +83,6 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
- * struct HistoryEntry - A line in the History menu
- */
-struct HistoryEntry
-{
-  int num;             ///< Index number
-  const char *history; ///< Description of history
-};
-
-/**
  * history_format_str - Format a string for the history list - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description

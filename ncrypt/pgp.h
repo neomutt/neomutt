@@ -36,6 +36,20 @@ struct Email;
 struct PgpKeyInfo;
 struct State;
 
+/**
+ * struct PgpCommandContext - Data for a PGP command
+ *
+ * The actual command line formatter.
+ */
+struct PgpCommandContext
+{
+  bool need_passphrase;  ///< %p
+  const char *fname;     ///< %f
+  const char *sig_fname; ///< %s
+  const char *signas;    ///< %a
+  const char *ids;       ///< %r
+};
+
 char *        pgp_fpr_or_lkeyid                    (struct PgpKeyInfo *k);
 char *        pgp_keyid                            (struct PgpKeyInfo *k);
 char *        pgp_long_keyid                       (struct PgpKeyInfo *k);

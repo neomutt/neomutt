@@ -53,20 +53,6 @@
 #endif
 
 /**
- * struct PgpCommandContext - Data for a PGP command
- *
- * The actual command line formatter.
- */
-struct PgpCommandContext
-{
-  bool need_passphrase;  ///< %p
-  const char *fname;     ///< %f
-  const char *sig_fname; ///< %s
-  const char *signas;    ///< %a
-  const char *ids;       ///< %r
-};
-
-/**
  * pgp_command_format_str - Format a PGP command string - Implements ::format_t - @ingroup expando_api
  *
  * | Expando | Description

@@ -25,11 +25,21 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 struct Address;
 struct CryptKeyInfo;
 struct PgpKeyInfo;
 struct SmimeKey;
+
+/**
+ * struct PgpEntry - An entry in a PGP key menu
+ */
+struct PgpEntry
+{
+  size_t num; ///< Index number
+  struct PgpUid *uid;
+};
 
 struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p, const char *s, unsigned int app, bool *forced_valid);
 struct PgpKeyInfo *  dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const char *s);

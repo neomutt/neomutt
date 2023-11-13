@@ -84,7 +84,7 @@
  * @param adata Attachment data
  * @retval num Number of attachments
  */
-int num_attachments(struct ComposeAttachData *adata)
+static int num_attachments(const struct ComposeAttachData *adata)
 {
   if (!adata || !adata->menu)
     return 0;
