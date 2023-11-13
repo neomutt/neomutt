@@ -3,7 +3,8 @@
  * Compressed mbox local mailbox type
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -36,6 +37,17 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include "core/lib.h"
+
+/**
+ * ExpandoDataCompress - Expando UIDs for Compression
+ *
+ * @sa ED_COMPRESS, ExpandoDomain
+ */
+enum ExpandoDataCompress
+{
+  ED_CMP_FROM = 1,  ///< 'from' path
+  ED_CMP_TO,        ///< 'to'   path
+};
 
 /**
  * struct CompressInfo - Private data for compress

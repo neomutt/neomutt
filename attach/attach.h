@@ -3,7 +3,7 @@
  * Handling of email attachments
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -42,6 +42,18 @@ struct AttachPtr
   bool unowned : 1;     ///< Don't unlink on detach
   bool decrypted : 1;   ///< Not part of message as stored in the email->body
   bool collapsed : 1;   ///< Group is collapsed
+};
+
+/**
+ * ExpandoDataAttach - Expando UIDs for Attachments
+ *
+ * @sa ED_ATTACH, ExpandoDomain
+ */
+enum ExpandoDataAttach
+{
+  ED_ATT_CHARSET = 1,          ///< AttachPtr.body
+  ED_ATT_NUMBER,               ///< AttachPtr.num
+  ED_ATT_TREE,                 ///< AttachPtr.tree
 };
 
 /**

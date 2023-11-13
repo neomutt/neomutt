@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
- * Copyright (C) 2019-2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -46,6 +46,20 @@ struct AccountEntry
   int num;                          ///< Number in the index
   struct AutocryptAccount *account; ///< Account details
   struct Address *addr;             ///< Email address associated with the account
+};
+
+/**
+ * ExpandoDataAutocrypt - Expando UIDs for Autocrypt
+ *
+ * @sa ED_AUTOCRYPT, ExpandoDomain
+ */
+enum ExpandoDataAutocrypt
+{
+  ED_AUT_ENABLED = 1,          ///< AutocryptAccount.enabled
+  ED_AUT_KEYID,                ///< AutocryptAccount.keyid
+  ED_AUT_ADDRESS,              ///< AccountEntry.addr
+  ED_AUT_NUMBER,               ///< AccountEntry.num
+  ED_AUT_PREFER_ENCRYPT,       ///< AutocryptAccount.prefer_encrypt
 };
 
 int                            mutt_autocrypt_account_init(bool prompt);

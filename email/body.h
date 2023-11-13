@@ -3,7 +3,7 @@
  * Representation of the body of an email
  *
  * @authors
- * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -90,6 +90,29 @@ struct Body
   signed short attach_count;      ///< Number of attachments
 };
 ARRAY_HEAD(BodyArray, struct Body *);
+
+/**
+ * ExpandoDataBody - Expando UIDs for Bodies
+ *
+ * @sa ED_BODY, ExpandoDomain
+ */
+enum ExpandoDataBody
+{
+  ED_BOD_ATTACH_COUNT = 1,     ///< Body.attach_count
+  ED_BOD_ATTACH_QUALIFIES,     ///< Body.attach_qualifies
+  ED_BOD_CHARSET_CONVERT,      ///< Body.type
+  ED_BOD_DELETED,              ///< Body.deleted
+  ED_BOD_DESCRIPTION,          ///< Body.description
+  ED_BOD_DISPOSITION,          ///< Body.disposition
+  ED_BOD_FILE,                 ///< Body.filename
+  ED_BOD_FILE_DISPOSITION,     ///< Body.d_filename
+  ED_BOD_FILE_SIZE,            ///< Body.filename
+  ED_BOD_MIME_ENCODING,        ///< Body.encoding
+  ED_BOD_MIME_MAJOR,           ///< Body.type, Body.xtype
+  ED_BOD_MIME_MINOR,           ///< Body.subtype
+  ED_BOD_TAGGED,               ///< Body.tagged
+  ED_BOD_UNLINK,               ///< Body.unlink
+};
 
 bool         mutt_body_cmp_strict(const struct Body *b1, const struct Body *b2);
 void         mutt_body_free      (struct Body **ptr);
