@@ -63,6 +63,8 @@
 
 struct BodyCache;
 
+const struct ExpandoRenderData NntpRenderData[];
+
 /**
  * mdata_find - Find NntpMboxData for given newsgroup or add it
  * @param adata NNTP server
@@ -1458,3 +1460,20 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
     break;
   }
 }
+
+/**
+ * NntpRenderData - Callbacks for Newsrc Expandos
+ *
+ * @sa NntpFormatDef, ExpandoDataNntp
+ */
+const struct ExpandoRenderData NntpRenderData[] = {
+  // clang-format off
+  { ED_NNTP, ED_NTP_ACCOUNT,  nntp_a, NULL },
+  { ED_NNTP, ED_NTP_PORT,     NULL,   nntp_p_num },
+  { ED_NNTP, ED_NTP_PORT_IF,  nntp_P, nntp_P_num },
+  { ED_NNTP, ED_NTP_SCHEMA,   nntp_S, NULL },
+  { ED_NNTP, ED_NTP_SERVER,   nntp_s, NULL },
+  { ED_NNTP, ED_NTP_USERNAME, nntp_u, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

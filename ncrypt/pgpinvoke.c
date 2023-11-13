@@ -51,6 +51,8 @@
 #include "pgp.h"
 #endif
 
+const struct ExpandoRenderData PgpCommandRenderData[];
+
 /**
  * pgp_command_a - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
@@ -512,3 +514,19 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
   buf_pool_release(&quoted);
   return rc;
 }
+
+/**
+ * PgpCommandRenderData - Callbacks for PGP Command Expandos
+ *
+ * @sa PgpCommandFormatDef, ExpandoDataPgpCmd
+ */
+const struct ExpandoRenderData PgpCommandRenderData[] = {
+  // clang-format off
+  { ED_PGP_CMD, ED_PGC_SIGN_AS,        pgp_command_a, NULL },
+  { ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   pgp_command_f, NULL },
+  { ED_PGP_CMD, ED_PGC_NEED_PASS,      pgp_command_p, NULL },
+  { ED_PGP_CMD, ED_PGC_KEY_IDS,        pgp_command_r, NULL },
+  { ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, pgp_command_s, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

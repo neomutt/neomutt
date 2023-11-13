@@ -498,3 +498,37 @@ void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared,
   // mutt_expando_format(buf->data, buf->dsize, 0, cols, fmt, status_format_str,
   //                     (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
 }
+
+/**
+ * StatusRenderData - Callbacks for Status Expandos
+ *
+ * @sa StatusFormatDef, ExpandoDataGlobal, ExpandoDataIndex, ExpandoDataMenu
+ */
+const struct ExpandoRenderData StatusRenderData[] = {
+  // clang-format off
+  { ED_INDEX,  ED_IND_UNREAD_MAILBOXES,NULL,     status_b_num },
+  { ED_INDEX,  ED_IND_DELETED_COUNT,   NULL,     status_d_num },
+  { ED_INDEX,  ED_IND_DESCRIPTION,     status_D, NULL },
+  { ED_INDEX,  ED_IND_FLAGGED_COUNT,   NULL,     status_F_num },
+  { ED_INDEX,  ED_IND_MAILBOX_PATH,    status_f, NULL },
+  { ED_GLOBAL, ED_GLO_HOSTNAME,        status_h, NULL },
+  { ED_INDEX,  ED_IND_LIMIT_SIZE,      status_L, status_L_num },
+  { ED_INDEX,  ED_IND_MAILBOX_SIZE,    status_l, status_l_num },
+  { ED_INDEX,  ED_IND_LIMIT_COUNT,     NULL,     status_M_num },
+  { ED_INDEX,  ED_IND_MESSAGE_COUNT,   NULL,     status_m_num },
+  { ED_INDEX,  ED_IND_NEW_COUNT,       NULL,     status_n_num },
+  { ED_INDEX,  ED_IND_OLD_COUNT,       NULL,     status_o_num },
+  { ED_MENU,   ED_MEN_PERCENTAGE,      status_P, status_P_num },
+  { ED_INDEX,  ED_IND_POSTPONED_COUNT, NULL,     status_p_num },
+  { ED_INDEX,  ED_IND_READ_COUNT,      NULL,     status_R_num },
+  { ED_INDEX,  ED_IND_READONLY,        status_r, NULL },
+  { ED_GLOBAL, ED_GLO_SORT,            status_s, NULL },
+  { ED_GLOBAL, ED_GLO_SORT_AUX,        status_S, NULL },
+  { ED_INDEX,  ED_IND_TAGGED_COUNT,    NULL,     status_t_num },
+  { ED_GLOBAL, ED_GLO_USE_THREADS,     status_T, NULL },
+  { ED_INDEX,  ED_IND_UNREAD_COUNT,    NULL,     status_u_num },
+  { ED_INDEX,  ED_IND_LIMIT_PATTERN,   status_V, NULL },
+  { ED_GLOBAL, ED_GLO_VERSION,         status_v, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

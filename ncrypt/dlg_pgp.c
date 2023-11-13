@@ -89,6 +89,8 @@
 #include "pgplib.h"
 #include "sort.h"
 
+const struct ExpandoRenderData PgpEntryRenderData[];
+
 /// Help Bar for the PGP key selection dialog
 static const struct Mapping PgpHelp[] = {
   // clang-format off
@@ -246,6 +248,21 @@ static char pgp_flags(KeyFlags flags)
     return 'c';
 
   return ' ';
+}
+
+/**
+ * pgp_entry_pgp_date_num - PGP: Date of the key - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  return key->gen_time;
+#endif
+  return 0;
 }
 
 /**
@@ -721,3 +738,28 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
   simple_dialog_free(&dlg);
   return pd.key;
 }
+
+/**
+ * PgpEntryRenderData- Callbacks for PGP Key Expandos
+ *
+ * @sa PgpEntryFormatDef, ExpandoDataGlobal, ExpandoDataPgp, ExpandoDataPgpKey
+ */
+const struct ExpandoRenderData PgpEntryRenderData[] = {
+  // clang-format off
+  { ED_PGP,     ED_PGP_NUMBER,            NULL,                pgp_entry_pgp_n_num },
+  { ED_PGP,     ED_PGP_TRUST,             pgp_entry_pgp_t,     NULL },
+  { ED_PGP,     ED_PGP_USER_ID,           pgp_entry_pgp_u,     NULL },
+  { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_pgp_date,  pgp_entry_pgp_date_num },
+  { ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     pgp_entry_pgp_a,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  pgp_entry_pgp_c,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_FLAGS,         pgp_entry_pgp_f,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_ID,            pgp_entry_pgp_k,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_LENGTH,        NULL,                pgp_entry_pgp_l_num },
+  { ED_PGP_KEY, ED_PGK_PKEY_ALGORITHM,    pgp_entry_pgp_A,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_CAPABILITIES, pgp_entry_pgp_C,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        pgp_entry_pgp_F,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_ID,           pgp_entry_pgp_K,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL,                pgp_entry_pgp_L_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

@@ -56,6 +56,8 @@
 
 struct Email;
 
+const struct ExpandoRenderData CompressRenderData[];
+
 /**
  * CompCommands - Compression Commands
  */
@@ -889,6 +891,19 @@ static int comp_path_canon(struct Buffer *path)
   mutt_path_canon(path, HomeDir, false);
   return 0;
 }
+
+/**
+ * CompressRenderData - Callbacks for Compression Hook Expandos
+ *
+ * @sa CompressFormatDef, ExpandoDataCompress
+ */
+const struct ExpandoRenderData CompressRenderData[] = {
+  // clang-format off
+  { ED_COMPRESS, ED_CMP_FROM, compress_f, NULL },
+  { ED_COMPRESS, ED_CMP_TO,   compress_t, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};
 
 /**
  * MxCompOps - Compressed Mailbox - Implements ::MxOps - @ingroup mx_api

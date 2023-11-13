@@ -107,6 +107,9 @@
 #include "nntp/mdata.h"
 #include "private_data.h"
 
+const struct ExpandoRenderData FolderRenderData[];
+const struct ExpandoRenderData GroupIndexRenderData[];
+
 /// Help Bar for the File/Dir/Mailbox browser dialog
 static const struct Mapping FolderHelp[] = {
   // clang-format off
@@ -1551,3 +1554,52 @@ bail:
   simple_dialog_free(&dlg);
   browser_private_data_free(&priv);
 }
+
+/**
+ * FolderRenderData - Callbacks for Browser Expandos
+ *
+ * @sa FolderFormatDef, ExpandoDataFolder, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData FolderRenderData[] = {
+  // clang-format off
+  { ED_FOLDER, ED_FOL_NOTIFY,        NULL,         folder_a_num },
+  { ED_FOLDER, ED_FOL_NUMBER,        NULL,         folder_C_num },
+  { ED_FOLDER, ED_FOL_DATE,          folder_d,     folder_d_num },
+  { ED_FOLDER, ED_FOL_DATE_FORMAT,   folder_D,     folder_D_num },
+  { ED_FOLDER, ED_FOL_FILE_MODE,     folder_F,     NULL },
+  { ED_FOLDER, ED_FOL_FILENAME,      folder_f,     NULL },
+  { ED_FOLDER, ED_FOL_FILE_GROUP,    folder_g,     NULL },
+  { ED_FOLDER, ED_FOL_DESCRIPTION,   folder_i,     NULL },
+  { ED_FOLDER, ED_FOL_HARD_LINKS,    folder_l,     folder_l_num },
+  { ED_FOLDER, ED_FOL_MESSAGE_COUNT, folder_m,     folder_m_num },
+  { ED_FOLDER, ED_FOL_NEW_MAIL,      folder_N,     folder_N_num },
+  { ED_FOLDER, ED_FOL_UNREAD_COUNT,  folder_n,     folder_n_num },
+  { ED_FOLDER, ED_FOL_POLL,          NULL,         folder_p_num },
+  { ED_FOLDER, ED_FOL_FILE_SIZE,     folder_s,     folder_s_num },
+  { ED_FOLDER, ED_FOL_TAGGED,        folder_t,     folder_t_num },
+  { ED_FOLDER, ED_FOL_FILE_OWNER,    folder_u,     NULL },
+  { ED_FOLDER, ED_FOL_STRF,          folder_date,  folder_date_num },
+  { ED_GLOBAL, ED_GLO_PADDING_SPACE, folder_space, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};
+
+/**
+ * GroupIndexRenderData - Callbacks for Nntp Browser Expandos
+ *
+ * @sa GroupIndexFormatDef, ExpandoDataFolder
+ */
+const struct ExpandoRenderData GroupIndexRenderData[] = {
+  // clang-format off
+  { ED_FOLDER, ED_FOL_NOTIFY,       NULL,          group_index_a_num },
+  { ED_FOLDER, ED_FOL_NUMBER,       NULL,          group_index_C_num },
+  { ED_FOLDER, ED_FOL_DESCRIPTION,  group_index_d, NULL },
+  { ED_FOLDER, ED_FOL_NEWSGROUP,    group_index_f, NULL },
+  { ED_FOLDER, ED_FOL_FLAGS,        group_index_M, NULL },
+  { ED_FOLDER, ED_FOL_FLAGS2,       group_index_N, NULL },
+  { ED_FOLDER, ED_FOL_NEW_COUNT,    NULL,          group_index_n_num },
+  { ED_FOLDER, ED_FOL_POLL,         NULL,          group_index_p_num },
+  { ED_FOLDER, ED_FOL_UNREAD_COUNT, NULL,          group_index_s_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

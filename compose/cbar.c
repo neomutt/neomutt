@@ -60,6 +60,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -76,6 +77,8 @@
 #include "globals.h"
 #include "muttlib.h"
 #include "shared_data.h"
+
+const struct ExpandoRenderData ComposeRenderData[];
 
 /**
  * num_attachments - Count the number of attachments
@@ -309,3 +312,18 @@ struct MuttWindow *cbar_new(struct ComposeSharedData *shared)
 
   return win_cbar;
 }
+
+/**
+ * ComposeRenderData - Callbacks for Compose Expandos
+ *
+ * @sa ComposeFormatDef, ExpandoDataCompose, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData ComposeRenderData[] = {
+  // clang-format off
+  { ED_COMPOSE, ED_COM_ATTACH_COUNT, NULL,      compose_a_num },
+  { ED_GLOBAL,  ED_GLO_HOSTNAME,     compose_h, NULL },
+  { ED_COMPOSE, ED_COM_ATTACH_SIZE,  compose_l, compose_l_num },
+  { ED_GLOBAL,  ED_GLO_VERSION,      compose_v, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

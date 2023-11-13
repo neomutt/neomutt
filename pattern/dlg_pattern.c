@@ -375,3 +375,17 @@ bool dlg_pattern(char *buf, size_t buflen)
   simple_dialog_free(&dlg);
   return pd.selection;
 }
+
+/**
+ * PatternRenderData - Callbacks for Pattern Expandos
+ *
+ * @sa PatternFormatDef, ExpandoDataGlobal, ExpandoDataPattern
+ */
+const struct ExpandoRenderData PatternRenderData[] = {
+  // clang-format off
+  { ED_PATTERN, ED_PAT_DESCRIPTION, pattern_d,     NULL },
+  { ED_PATTERN, ED_PAT_EXPRESION,   pattern_e,     NULL },
+  { ED_PATTERN, ED_PAT_NUMBER,      NULL,          pattern_n_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

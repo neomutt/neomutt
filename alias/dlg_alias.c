@@ -94,6 +94,8 @@
 #include "gui.h"
 #include "mutt_logging.h"
 
+const struct ExpandoRenderData AliasRenderData[];
+
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
   // clang-format off
@@ -608,3 +610,21 @@ done:
   FREE(&mdata.title);
   search_state_free(&mdata.search_state);
 }
+
+/**
+ * AliasRenderData - Callbacks for Alias Expandos
+ *
+ * @sa AliasFormatDef, ExpandoDataAlias, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData AliasRenderData[] = {
+  // clang-format off
+  { ED_ALIAS,  ED_ALI_NAME,    alias_a,     NULL },
+  { ED_ALIAS,  ED_ALI_COMMENT, alias_c,     NULL },
+  { ED_ALIAS,  ED_ALI_FLAGS,   alias_f,     alias_f_num },
+  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        alias_n_num },
+  { ED_ALIAS,  ED_ALI_ADDRESS, alias_r,     NULL },
+  { ED_ALIAS,  ED_ALI_TAGGED,  alias_t,     alias_t_num },
+  { ED_ALIAS,  ED_ALI_TAGS,    alias_Y,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};
