@@ -3,7 +3,7 @@
  * Read/write command history from/to a file
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -65,6 +65,17 @@ struct HistoryEntry
 {
   int num;             ///< Index number
   const char *history; ///< Description of history
+};
+
+/**
+ * ExpandoDataHistory - Expando UIDs for History
+ *
+ * @sa ED_HISTORY, ExpandoDomain
+ */
+enum ExpandoDataHistory
+{
+  ED_HIS_MATCH = 1,            ///< HistoryEntry.history
+  ED_HIS_NUMBER,               ///< HistoryEntry.num
 };
 
 void  mutt_hist_add         (enum HistoryClass hclass, const char *str, bool save);

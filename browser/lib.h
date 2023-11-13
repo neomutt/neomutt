@@ -3,7 +3,7 @@
  * Select a Mailbox from a list
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -106,6 +106,36 @@ struct FolderFile
 };
 
 ARRAY_HEAD(BrowserEntryArray, struct FolderFile);
+
+/**
+ * ExpandoDataFolder - Expando UIDs for the File Browser
+ *
+ * @sa ED_FOLDER, ExpandoDomain
+ */
+enum ExpandoDataFolder
+{
+  ED_FOL_DATE = 1,             ///< FolderFile.mtime
+  ED_FOL_DATE_FORMAT,          ///< FolderFile.mtime
+  ED_FOL_DESCRIPTION,          ///< FolderFile.desc, FolderFile.name
+  ED_FOL_FILENAME,             ///< FolderFile.name
+  ED_FOL_FILE_GROUP,           ///< FolderFile.gid
+  ED_FOL_FILE_MODE,            ///< FolderFile.move
+  ED_FOL_FILE_OWNER,           ///< FolderFile.uid
+  ED_FOL_FILE_SIZE,            ///< FolderFile.size
+  ED_FOL_FLAGS,                ///< FolderFile.nd (NntpMboxData)
+  ED_FOL_FLAGS2,               ///< FolderFile.nd (NntpMboxData)
+  ED_FOL_HARD_LINKS,           ///< FolderFile.nlink
+  ED_FOL_MESSAGE_COUNT,        ///< FolderFile.msg_count
+  ED_FOL_NEWSGROUP,            ///< FolderFile.name
+  ED_FOL_NEW_COUNT,            ///< FolderFile.nd (NntpMboxData)
+  ED_FOL_NEW_MAIL,             ///< FolderFile.has_new_mail
+  ED_FOL_NOTIFY,               ///< FolderFile.notify_user
+  ED_FOL_NUMBER,               ///< Folder.num
+  ED_FOL_POLL,                 ///< FolderFile.poll_new_mail
+  ED_FOL_STRF,                 ///< FolderFile.mtime
+  ED_FOL_TAGGED,               ///< FolderFile.tagged
+  ED_FOL_UNREAD_COUNT,         ///< FolderFile.msg_unread
+};
 
 /**
  * struct BrowserState - State of the file/mailbox browser

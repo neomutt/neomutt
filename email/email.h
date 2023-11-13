@@ -3,7 +3,7 @@
  * Representation of an email
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
@@ -128,6 +128,41 @@ struct Email
   char *tree;                  ///< Character string to print thread tree
 };
 ARRAY_HEAD(EmailArray, struct Email *);
+
+/**
+ * ExpandoDataEmail - Expando UIDs for Emails
+ *
+ * @sa ED_EMAIL, ExpandoDomain
+ */
+enum ExpandoDataEmail
+{
+  ED_EMA_ATTACHMENT_COUNT = 1, ///< Email, mutt_count_body_parts()
+  ED_EMA_BODY_CHARACTERS,      ///< Body.length
+  ED_EMA_COMBINED_FLAGS,       ///< Email.read, Email.old, thread_is_new(), ...
+  ED_EMA_CRYPTO_FLAGS,         ///< Email.security, #SecurityFlags
+  ED_EMA_DATE_FORMAT,          ///< Email.date_sent
+  ED_EMA_DATE_FORMAT_LOCAL,    ///< Email.date_sent
+  ED_EMA_FLAG_CHARS,           ///< Email.deleted, Email.attach_del, ...
+  ED_EMA_FROM_LIST,            ///< Envelope.to, Envelope.cc
+  ED_EMA_INDEX_HOOK,           ///< Mailbox, Email, mutt_idxfmt_hook()
+  ED_EMA_LINES,                ///< Email.lines
+  ED_EMA_LIST_OR_SAVE_FOLDER,  ///< Envelope.to, Envelope.cc, check_for_mailing_list()
+  ED_EMA_MESSAGE_FLAGS,        ///< Email.tagged, Email.flagged
+  ED_EMA_NUMBER,               ///< Email.msgno
+  ED_EMA_SCORE,                ///< Email.score
+  ED_EMA_SIZE,                 ///< Body.length
+  ED_EMA_STATUS_FLAGS,         ///< Email.deleted, Email.attach_del, ...
+  ED_EMA_STRF,                 ///< Email.date_sent, Email.zhours, Email.zminutes, Email.zoccident
+  ED_EMA_STRF_LOCAL,           ///< Email.date_sent
+  ED_EMA_STRF_RECV_LOCAL,      ///< Email.received
+  ED_EMA_TAGS,                 ///< Email.tags
+  ED_EMA_TAGS_TRANSFORMED,     ///< Email.tags, driver_tags_get_transformed()
+  ED_EMA_THREAD_COUNT,         ///< Email, mutt_messages_in_thread()
+  ED_EMA_THREAD_HIDDEN_COUNT,  ///< Email.collapsed, Email.num_hidden, ...
+  ED_EMA_THREAD_NUMBER,        ///< Email, mutt_messages_in_thread()
+  ED_EMA_THREAD_TAGS,          ///< Email.tags
+  ED_EMA_TO_CHARS,             ///< Email, User_is_recipient()
+};
 
 /**
  * struct EmailNode - List of Emails
