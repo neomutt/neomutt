@@ -70,6 +70,8 @@
 #include "functions.h"
 #include "mutt_logging.h"
 
+const struct ExpandoRenderData HistoryRenderData[];
+
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {
   // clang-format off
@@ -178,3 +180,16 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 }
+
+/**
+ * HistoryRenderData - Callbacks for History Expandos
+ *
+ * @sa HistoryFormatDef, ExpandoDataGlobal, ExpandoDataHistory
+ */
+const struct ExpandoRenderData HistoryRenderData[] = {
+  // clang-format off
+  { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_C_num },
+  { ED_HISTORY, ED_HIS_MATCH,  history_s,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

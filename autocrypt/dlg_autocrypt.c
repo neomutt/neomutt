@@ -82,6 +82,8 @@
 #include "functions.h"
 #include "mutt_logging.h"
 
+const struct ExpandoRenderData AutocryptRenderData[];
+
 /// Help Bar for the Autocrypt Account selection dialog
 static const struct Mapping AutocryptHelp[] = {
   // clang-format off
@@ -376,3 +378,19 @@ void dlg_autocrypt(void)
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 }
+
+/**
+ * AutocryptRenderData - Callbacks for Autocrypt Expandos
+ *
+ * @sa AutocryptFormatDef, ExpandoDataAutocrypt, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData AutocryptRenderData[] = {
+  // clang-format off
+  { ED_AUTOCRYPT, ED_AUT_ADDRESS,        autocrypt_a,     NULL },
+  { ED_AUTOCRYPT, ED_AUT_KEYID,          autocrypt_k,     NULL },
+  { ED_AUTOCRYPT, ED_AUT_NUMBER,         NULL,            autocrypt_n_num },
+  { ED_AUTOCRYPT, ED_AUT_PREFER_ENCRYPT, autocrypt_p,     NULL },
+  { ED_AUTOCRYPT, ED_AUT_ENABLED,        autocrypt_s,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

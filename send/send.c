@@ -99,6 +99,8 @@
 #include "autocrypt/lib.h"
 #endif
 
+const struct ExpandoRenderData GreetingRenderData[];
+
 /**
  * append_signature - Append a signature to an email
  * @param fp  File to write to
@@ -3076,3 +3078,17 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
 
   return rc;
 }
+
+/**
+ * GreetingRenderData - Callbacks for Greeting Expandos
+ *
+ * @sa GreetingFormatDef, ExpandoDataEnvelope
+ */
+const struct ExpandoRenderData GreetingRenderData[] = {
+  // clang-format off
+  { ED_ENVELOPE, ED_ENV_REAL_NAME,  greeting_n, NULL },
+  { ED_ENVELOPE, ED_ENV_USER_NAME,  greeting_u, NULL },
+  { ED_ENVELOPE, ED_ENV_FIRST_NAME, greeting_v, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

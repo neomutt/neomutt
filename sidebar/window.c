@@ -80,6 +80,8 @@
 #include "expando/lib.h"
 #include "index/lib.h"
 
+const struct ExpandoRenderData SidebarRenderData[];
+
 /**
  * struct SidebarData - Data passed to sidebar_format_str()
  */
@@ -998,3 +1000,29 @@ int sb_repaint(struct MuttWindow *win)
   mutt_debug(LL_DEBUG5, "repaint done\n");
   return 0;
 }
+
+/**
+ * SidebarRenderData - Callbacks for Sidebar Expandos
+ *
+ * @sa SidebarFormatDef, ExpandoDataSidebar
+ */
+const struct ExpandoRenderData SidebarRenderData[] = {
+  // clang-format off
+  { ED_SIDEBAR, ED_SID_FLAGGED,       sidebar_bang, NULL },
+  { ED_SIDEBAR, ED_SID_NOTIFY,        NULL,         sidebar_a_num },
+  { ED_SIDEBAR, ED_SID_NAME,          sidebar_B,    NULL },
+  { ED_SIDEBAR, ED_SID_DELETED_COUNT, NULL,         sidebar_d_num },
+  { ED_SIDEBAR, ED_SID_DESCRIPTION,   sidebar_D,    NULL },
+  { ED_SIDEBAR, ED_SID_FLAGGED_COUNT, NULL,         sidebar_F_num },
+  { ED_SIDEBAR, ED_SID_LIMITED_COUNT, NULL,         sidebar_L_num },
+  { ED_SIDEBAR, ED_SID_NEW_MAIL,      sidebar_n,    sidebar_n_num },
+  { ED_SIDEBAR, ED_SID_UNREAD_COUNT,  NULL,         sidebar_N_num },
+  { ED_SIDEBAR, ED_SID_OLD_COUNT,     NULL,         sidebar_o_num },
+  { ED_SIDEBAR, ED_SID_POLL,          NULL,         sidebar_p_num },
+  { ED_SIDEBAR, ED_SID_READ_COUNT,    NULL,         sidebar_r_num },
+  { ED_SIDEBAR, ED_SID_MESSAGE_COUNT, NULL,         sidebar_S_num },
+  { ED_SIDEBAR, ED_SID_TAGGED_COUNT,  NULL,         sidebar_t_num },
+  { ED_SIDEBAR, ED_SID_UNSEEN_COUNT,  NULL,         sidebar_Z_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

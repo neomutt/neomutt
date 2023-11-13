@@ -602,3 +602,31 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
 }
+
+/**
+ * AttachRenderData - Callbacks for Attachment Expandos
+ *
+ * @sa AttachFormatDef, ExpandoDataAttach, ExpandoDataBody, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData AttachRenderData[] = {
+  // clang-format off
+  { ED_ATTACH, ED_ATT_CHARSET,          attach_C,     NULL },
+  { ED_BODY,   ED_BOD_CHARSET_CONVERT,  attach_c,     NULL },
+  { ED_BODY,   ED_BOD_DELETED,          attach_D,     attach_D_num },
+  { ED_BODY,   ED_BOD_DESCRIPTION,      attach_d,     NULL },
+  { ED_BODY,   ED_BOD_MIME_ENCODING,    attach_e,     NULL },
+  { ED_BODY,   ED_BOD_FILE,             attach_f,     NULL },
+  { ED_BODY,   ED_BOD_FILE_DISPOSITION, attach_F,     NULL },
+  { ED_BODY,   ED_BOD_DISPOSITION,      attach_I,     NULL },
+  { ED_BODY,   ED_BOD_MIME_MAJOR,       attach_m,     NULL },
+  { ED_BODY,   ED_BOD_MIME_MINOR,       attach_M,     NULL },
+  { ED_ATTACH, ED_ATT_NUMBER,           NULL,         attach_n_num },
+  { ED_BODY,   ED_BOD_ATTACH_QUALIFIES, attach_Q,     attach_Q_num },
+  { ED_BODY,   ED_BOD_FILE_SIZE,        attach_s,     attach_s_num },
+  { ED_BODY,   ED_BOD_TAGGED,           attach_t,     attach_t_num },
+  { ED_ATTACH, ED_ATT_TREE,             attach_T,     NULL },
+  { ED_BODY,   ED_BOD_UNLINK,           attach_u,     attach_u_num },
+  { ED_BODY,   ED_BOD_ATTACH_COUNT,     NULL,         attach_X_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

@@ -602,3 +602,20 @@ done:
   aliaslist_clear(&al);
   buf_pool_release(&buf);
 }
+
+/**
+ * QueryRenderData - Callbacks for Query Expandos
+ *
+ * @sa QueryFormatDef, ExpandoDataAlias, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData QueryRenderData[] = {
+  // clang-format off
+  { ED_ALIAS,  ED_ALI_ADDRESS, query_a,     NULL },
+  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
+  { ED_ALIAS,  ED_ALI_COMMENT, query_e,     NULL },
+  { ED_ALIAS,  ED_ALI_NAME,    query_n,     NULL },
+  { ED_ALIAS,  ED_ALI_TAGGED,  query_t,     query_t_num },
+  { ED_ALIAS,  ED_ALI_TAGS,    query_Y,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

@@ -62,6 +62,8 @@
 #include "notmuch/lib.h"
 #endif
 
+const struct ExpandoRenderData IndexRenderData[];
+
 /**
  * struct HdrFormatInfo - Data passed to index_format_str()
  */
@@ -1811,3 +1813,65 @@ void mutt_make_string(struct Buffer *buf, int cols, const char *s,
   // mutt_expando_format(buf->data, buf->dsize, 0, cols, s, index_format_str,
   //                     (intptr_t) &hfi, flags);
 }
+
+/**
+ * IndexRenderData - Callbacks for Index Expandos
+ *
+ * @sa IndexFormatDef, ExpandoDataEmail, ExpandoDataEnvelope, ExpandoDataGlobal, ExpandoDataMailbox
+ */
+const struct ExpandoRenderData IndexRenderData[] = {
+  // clang-format off
+  { ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL,     index_date_recv_local, NULL },
+  { ED_EMAIL,    ED_EMA_INDEX_HOOK,          index_format_hook,     NULL },
+  { ED_ENVELOPE, ED_ENV_FROM,                index_a,               NULL },
+  { ED_ENVELOPE, ED_ENV_REPLY_TO,            index_A,               NULL },
+  { ED_ENVELOPE, ED_ENV_LIST_ADDRESS,        index_B,               NULL },
+  { ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        index_b,               NULL },
+  { ED_EMAIL,    ED_EMA_NUMBER,              NULL,                  index_C_num },
+  { ED_EMAIL,    ED_EMA_SIZE,                index_c,               index_c_num },
+  { ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     index_cr,              NULL },
+  { ED_EMAIL,    ED_EMA_DATE_FORMAT,         index_d,               index_d_num },
+  { ED_EMAIL,    ED_EMA_DATE_FORMAT_LOCAL,   index_D,               index_D_num },
+  { ED_EMAIL,    ED_EMA_THREAD_COUNT,        NULL,                  index_E_num },
+  { ED_EMAIL,    ED_EMA_THREAD_NUMBER,       NULL,                  index_e_num },
+  { ED_ENVELOPE, ED_ENV_FROM_FULL,           index_f,               NULL },
+  { ED_ENVELOPE, ED_ENV_SENDER,              index_F,               NULL },
+  { ED_ENVELOPE, ED_ENV_SENDER_PLAIN,        index_Fp,              NULL },
+  { ED_EMAIL,    ED_EMA_TAGS,                index_g,               NULL },
+  { ED_EMAIL,    ED_EMA_TAGS_TRANSFORMED,    index_G,               NULL },
+  { ED_ENVELOPE, ED_ENV_SPAM,                index_H,               NULL },
+  { ED_ENVELOPE, ED_ENV_INITIALS,            index_I,               NULL },
+  { ED_ENVELOPE, ED_ENV_MESSAGE_ID,          index_i,               NULL },
+  { ED_EMAIL,    ED_EMA_THREAD_TAGS,         index_J,               NULL },
+  { ED_ENVELOPE, ED_ENV_LIST_EMPTY,          index_K,               NULL },
+  { ED_EMAIL,    ED_EMA_FROM_LIST,           index_L,               NULL },
+  { ED_EMAIL,    ED_EMA_LINES,               NULL,                  index_l_num },
+  { ED_MAILBOX,  ED_MBX_MESSAGE_COUNT,       NULL,                  index_m_num },
+  { ED_EMAIL,    ED_EMA_THREAD_HIDDEN_COUNT, index_M,               index_M_num },
+  { ED_ENVELOPE, ED_ENV_NAME,                index_n,               NULL },
+  { ED_EMAIL,    ED_EMA_SCORE,               NULL,                  index_N_num },
+  { ED_EMAIL,    ED_EMA_LIST_OR_SAVE_FOLDER, index_O,               NULL },
+  { ED_MAILBOX,  ED_MBX_PERCENTAGE,          index_P,               NULL },
+  { ED_ENVELOPE, ED_ENV_NEWSGROUP,           index_q,               NULL },
+  { ED_ENVELOPE, ED_ENV_CC_ALL,              index_R,               NULL },
+  { ED_ENVELOPE, ED_ENV_TO_ALL,              index_r,               NULL },
+  { ED_EMAIL,    ED_EMA_FLAG_CHARS,          index_S,               NULL },
+  { ED_ENVELOPE, ED_ENV_SUBJECT,             index_s,               NULL },
+  { ED_ENVELOPE, ED_ENV_TO,                  index_t,               NULL },
+  { ED_EMAIL,    ED_EMA_TO_CHARS,            index_T,               NULL },
+  { ED_ENVELOPE, ED_ENV_USERNAME,            index_u,               NULL },
+  { ED_ENVELOPE, ED_ENV_FIRST_NAME,          index_v,               NULL },
+  { ED_ENVELOPE, ED_ENV_ORGANIZATION,        index_W,               NULL },
+  { ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    NULL,                  index_X_num },
+  { ED_ENVELOPE, ED_ENV_X_COMMENT_TO,        index_x,               NULL },
+  { ED_ENVELOPE, ED_ENV_THREAD_X_LABEL,      index_Y,               NULL },
+  { ED_ENVELOPE, ED_ENV_X_LABEL,             index_y,               NULL },
+  { ED_EMAIL,    ED_EMA_COMBINED_FLAGS,      index_Z,               NULL },
+  { ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        index_zc,              NULL },
+  { ED_EMAIL,    ED_EMA_STATUS_FLAGS,        index_zs,              NULL },
+  { ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       index_zt,              NULL },
+  { ED_EMAIL,    ED_EMA_STRF_LOCAL,          index_date_local,      NULL },
+  { ED_EMAIL,    ED_EMA_STRF,                index_date,            NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

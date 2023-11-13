@@ -88,6 +88,7 @@
 #include "crypt_gpgme.h"
 #include "gpgme_functions.h"
 #include "mutt_logging.h"
+#include "pgplib.h"
 #include "sort.h"
 
 /// Help Bar for the GPGME key selection dialog
@@ -279,6 +280,19 @@ static char *crypt_flags(KeyFlags flags)
     return "c";
 
   return " ";
+}
+
+/**
+ * pgp_entry_gpgme_date_num - GPGME: Date of the key - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_gpgme_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+  return key->kobj->subkeys->timestamp;
+#endif
+  return 0;
 }
 
 /**
@@ -756,3 +770,32 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   simple_dialog_free(&dlg);
   return gd.key;
 }
+
+/**
+ * PgpEntryGpgmeRenderData - Callbacks for GPGME Key Expandos
+ *
+ * @sa PgpEntryFormatDef, ExpandoDataGlobal, ExpandoDataPgpKeyGpgme
+ */
+const struct ExpandoRenderData PgpEntryGpgmeRenderData[] = {
+  // clang-format off
+  { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_gpgme_date,  pgp_entry_gpgme_date_num },
+  { ED_PGP,     ED_PGP_NUMBER,            NULL,                  pgp_entry_gpgme_n_num },
+  { ED_PGP,     ED_PGP_TRUST,             pgp_entry_gpgme_t,     NULL },
+  { ED_PGP,     ED_PGP_USER_ID,           pgp_entry_gpgme_u,     NULL },
+  { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_gpgme_date,  pgp_entry_gpgme_date_num },
+  { ED_PGP_KEY, ED_PGK_PROTOCOL,          pgp_entry_gpgme_p,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     pgp_entry_gpgme_a,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  pgp_entry_gpgme_c,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_FINGERPRINT,   pgp_entry_gpgme_i,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_FLAGS,         pgp_entry_gpgme_f,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_ID,            pgp_entry_gpgme_k,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_LENGTH,        NULL,                  pgp_entry_gpgme_l_num },
+  { ED_PGP_KEY, ED_PGK_PKEY_ALGORITHM,    pgp_entry_gpgme_a,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_CAPABILITIES, pgp_entry_gpgme_c,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_FINGERPRINT,  pgp_entry_gpgme_i,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        pgp_entry_gpgme_f,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_ID,           pgp_entry_gpgme_k,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL,                  pgp_entry_gpgme_l_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

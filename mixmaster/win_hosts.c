@@ -215,3 +215,18 @@ struct Remailer *win_hosts_get_selection(struct MuttWindow *win)
 
   return *r;
 }
+
+/**
+ * MixRenderData - Callbacks for Mixmaster Expandos
+ *
+ * @sa MixFormatDef, ExpandoDataGlobal, ExpandoDataMixmaster
+ */
+const struct ExpandoRenderData MixRenderData[] = {
+  // clang-format off
+  { ED_MIXMASTER, ED_MIX_ADDRESS,      mix_a,     NULL },
+  { ED_MIXMASTER, ED_MIX_CAPABILITIES, mix_c,     NULL },
+  { ED_MIXMASTER, ED_MIX_NUMBER,       NULL,      mix_n_num },
+  { ED_MIXMASTER, ED_MIX_SHORT_NAME,   mix_s,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};
