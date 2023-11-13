@@ -603,19 +603,19 @@ static int op_enter_mask(struct BrowserPrivateData *priv, int op)
   if (buf_is_empty(buf))
     buf_strcpy(buf, ".");
 
-  struct Buffer errmsg = buf_make(256);
-  int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", buf_string(buf), &errmsg);
+  struct Buffer *errmsg = buf_pool_get();
+  int rc = cs_subset_str_string_set(NeoMutt->sub, "mask", buf_string(buf), errmsg);
   buf_pool_release(&buf);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
-    if (!buf_is_empty(&errmsg))
+    if (!buf_is_empty(errmsg))
     {
-      mutt_error("%s", buf_string(&errmsg));
-      buf_dealloc(&errmsg);
+      mutt_error("%s", buf_string(errmsg));
+      buf_pool_release(&errmsg);
     }
     return FR_ERROR;
   }
-  buf_dealloc(&errmsg);
+  buf_pool_release(&errmsg);
 
   destroy_state(&priv->state);
 #ifdef USE_IMAP
