@@ -26,7 +26,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <stdbool.h>
-#include <wchar.h>  // IWYU pragma: keep
+#include <wchar.h>
 #include <wctype.h> // IWYU pragma: keep
 
 struct Buffer;

@@ -35,7 +35,7 @@
 #include "core/lib.h"
 #include "accountcmd.h"
 #include "connaccount.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_account.h"
 
 /**

@@ -66,7 +66,7 @@
 #include "adata.h"
 #include "commands.h"
 #include "edata.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mdata.h"
 #include "mutt_thread.h"
 #include "mx.h"

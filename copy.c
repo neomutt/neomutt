@@ -46,7 +46,7 @@
 #include "pager/lib.h"
 #include "send/lib.h"
 #include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "mx.h"

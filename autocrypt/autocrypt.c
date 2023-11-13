@@ -46,7 +46,6 @@
 #include "ncrypt/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
-#include "globals.h" // IWYU pragma: keep
 #include "muttlib.h"
 #include "mx.h"
 

@@ -52,7 +52,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "alternates.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "maillist.h"
 #include "muttlib.h"
 #include "reverse.h"

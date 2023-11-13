@@ -35,7 +35,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "extract.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 
 /**
  * parse_extract_token - Extract one token from a string

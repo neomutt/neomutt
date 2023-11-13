@@ -30,7 +30,6 @@
 
 #include "config.h"
 #include <errno.h>
-#include <inttypes.h> // IWYU pragma: keep
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -54,7 +53,7 @@
 #include "parse/lib.h"
 #include "store/lib.h"
 #include "alternates.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "score.h"

@@ -55,7 +55,7 @@
 #include "crypt.h"
 #include "cryptglue.h"
 #include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

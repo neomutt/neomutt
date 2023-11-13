@@ -55,7 +55,7 @@
 #include "send/lib.h"
 #include "crypt.h"
 #include "cryptglue.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "hook.h"
 #include "pgpinvoke.h"

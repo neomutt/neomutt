@@ -50,7 +50,7 @@
 #include "question/lib.h"
 #include "send/lib.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"

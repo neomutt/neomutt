@@ -75,7 +75,7 @@
 #include "attach_data.h"
 #include "cbar_data.h"
 #include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "muttlib.h"
 #include "shared_data.h"
 

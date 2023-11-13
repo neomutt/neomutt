@@ -38,7 +38,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "mutt_thread.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mview.h"
 #include "mx.h"
 #include "protos.h"

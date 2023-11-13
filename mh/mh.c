@@ -51,7 +51,7 @@
 #include "progress/lib.h"
 #include "copy.h"
 #include "errno.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mdata.h"
 #include "mhemail.h"
 #include "mx.h"

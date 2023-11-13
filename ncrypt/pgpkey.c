@@ -48,7 +48,7 @@
 #include "history/lib.h"
 #include "send/lib.h"
 #include "crypt.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "gnupgparse.h"
 #include "mutt_logging.h"
 #include "pgpinvoke.h"

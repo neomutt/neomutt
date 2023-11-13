@@ -71,7 +71,7 @@
 #include "color/lib.h"
 #include "ncrypt/lib.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "wdata.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>

@@ -36,7 +36,7 @@
 #include "email/lib.h"
 #include "gui/lib.h"
 #include "header.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

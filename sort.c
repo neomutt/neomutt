@@ -38,7 +38,7 @@
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "sort.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mview.h"

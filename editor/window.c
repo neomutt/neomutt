@@ -43,7 +43,7 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "muttlib.h"
-#include "state.h" // IWYU pragma: keep
+#include "state.h"
 #include "wdata.h"
 
 /// Help Bar for the Command Line Editor

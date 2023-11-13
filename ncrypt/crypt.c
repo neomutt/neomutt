@@ -52,7 +52,7 @@
 #include "send/lib.h"
 #include "copy.h"
 #include "cryptglue.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "mx.h"
 #ifdef USE_AUTOCRYPT

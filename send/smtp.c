@@ -47,7 +47,7 @@
 #include "smtp.h"
 #include "progress/lib.h"
 #include "question/lib.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_account.h"
 #include "mutt_socket.h"
 #include "sendlib.h"

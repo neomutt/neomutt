@@ -52,7 +52,7 @@
 #include "question/lib.h"
 #include "copy.h"
 #include "external.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hook.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
@@ -70,7 +70,6 @@
 #endif
 #ifdef USE_NNTP
 #include "nntp/lib.h"
-#include "nntp/adata.h" // IWYU pragma: keep
 #include "nntp/mdata.h" // IWYU pragma: keep
 #endif
 #ifdef USE_NOTMUCH

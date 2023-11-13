@@ -78,7 +78,7 @@
 #include "menu/lib.h"
 #include "postpone/lib.h"
 #include "alternates.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mview.h"

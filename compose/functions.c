@@ -59,7 +59,7 @@
 #include "attach_data.h"
 #include "external.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hook.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"

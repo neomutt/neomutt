@@ -31,7 +31,6 @@
 #include "config.h"
 #include <limits.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -48,7 +47,7 @@
 #include "pattern/lib.h"
 #include "commands.h"
 #include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hdrline.h"
 #include "muttlib.h"
 #include "mx.h"

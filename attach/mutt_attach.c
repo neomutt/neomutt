@@ -50,7 +50,7 @@
 #include "attach.h"
 #include "cid.h"
 #include "copy.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "mailcap.h"
 #include "muttlib.h"

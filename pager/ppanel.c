@@ -55,7 +55,6 @@
  */
 
 #include "config.h"
-#include <inttypes.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"

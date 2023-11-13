@@ -35,7 +35,7 @@
 #include "mutt_window.h"
 #include "rootwin.h"
 #ifdef HAVE_TERMIOS_H
-#include <termios.h> // IWYU pragma: keep
+#include <termios.h>
 #endif
 #ifndef HAVE_TCGETWINSIZE
 #ifdef HAVE_SYS_IOCTL_H

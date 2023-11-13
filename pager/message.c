@@ -46,7 +46,7 @@
 #include "question/lib.h"
 #include "copy.h"
 #include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "mview.h"

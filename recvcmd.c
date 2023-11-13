@@ -47,7 +47,7 @@
 #include "send/lib.h"
 #include "copy.h"
 #include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
 #include "mutt_body.h"

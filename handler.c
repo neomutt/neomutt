@@ -49,7 +49,7 @@
 #include "pager/lib.h"
 #include "copy.h"
 #include "enriched.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mailcap.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

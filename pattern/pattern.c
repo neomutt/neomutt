@@ -45,7 +45,7 @@
 #include "history/lib.h"
 #include "menu/lib.h"
 #include "progress/lib.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_logging.h"
 #include "mview.h"
 #include "mx.h"

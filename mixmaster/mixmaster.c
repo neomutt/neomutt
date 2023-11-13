@@ -38,7 +38,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "send/lib.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "protos.h"
 
 /**

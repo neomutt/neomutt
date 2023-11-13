@@ -44,7 +44,6 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
 #include "mutt_attach.h"
 #include "private_data.h"
 #include "recvattach.h"

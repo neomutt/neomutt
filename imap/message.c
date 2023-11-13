@@ -53,7 +53,7 @@
 #include "adata.h"
 #include "edata.h"
 #include "external.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mdata.h"
 #include "msg_set.h"
 #include "msn.h"

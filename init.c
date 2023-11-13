@@ -50,7 +50,7 @@
 #include "notmuch/lib.h"
 #include "parse/lib.h"
 #include "commands.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hook.h"
 #include "mutt_logging.h"
 #ifndef DOMAIN

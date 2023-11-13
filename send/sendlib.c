@@ -49,7 +49,7 @@
 #include "ncrypt/lib.h"
 #include "body.h"
 #include "copy.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "header.h"
 #include "mutt_mailbox.h"

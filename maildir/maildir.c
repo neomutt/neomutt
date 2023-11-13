@@ -52,7 +52,7 @@
 #include "progress/lib.h"
 #include "copy.h"
 #include "edata.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mdata.h"
 #include "mdemail.h"
 #include "mx.h"

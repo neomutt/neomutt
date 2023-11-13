@@ -42,7 +42,7 @@
 #include "enter.h"
 #include "functions.h"
 #include "protos.h"
-#include "state.h" // IWYU pragma: keep
+#include "state.h"
 #include "wdata.h"
 #endif
 

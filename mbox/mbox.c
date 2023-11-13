@@ -53,7 +53,7 @@
 #include "lib.h"
 #include "progress/lib.h"
 #include "copy.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_header.h"
 #include "mutt_thread.h"
 #include "muttlib.h"

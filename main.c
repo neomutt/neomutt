@@ -161,7 +161,7 @@
 #include "send/lib.h"
 #include "alternates.h"
 #include "external.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hook.h"
 #include "init.h"
 #include "mutt_logging.h"

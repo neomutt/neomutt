@@ -71,7 +71,7 @@
 #include "pattern/lib.h"
 #include "format_flags.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hdrline.h"
 #include "hook.h"
 #include "mutt_logging.h"

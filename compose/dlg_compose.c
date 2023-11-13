@@ -84,7 +84,7 @@
 #include "attach_data.h"
 #include "cbar.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "hook.h"
 #include "mutt_logging.h"
 #include "shared_data.h"

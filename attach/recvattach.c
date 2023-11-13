@@ -50,7 +50,7 @@
 #include "send/lib.h"
 #include "attach.h"
 #include "external.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "handler.h"
 #include "hook.h"
 #include "mailcap.h"

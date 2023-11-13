@@ -35,7 +35,7 @@
 #include "attr.h"
 #include "curses2.h"
 #include "dump.h"
-#include "pager/private_data.h" // IWYU pragma: keep
+#include "pager/private_data.h"
 
 extern struct AttrColorList MergedColors;
 extern struct CursesColorList CursesColors;

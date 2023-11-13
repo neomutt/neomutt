@@ -91,7 +91,7 @@
 #include "alias.h"
 #include "format_flags.h"
 #include "functions.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "gui.h"
 #include "mutt_logging.h"
 #include "muttlib.h"

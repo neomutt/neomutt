@@ -60,7 +60,6 @@
  */
 
 #include "config.h"
-#include <inttypes.h> // IWYU pragma: keep
 #include <stdio.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"

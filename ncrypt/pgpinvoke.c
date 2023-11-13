@@ -43,7 +43,7 @@
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "format_flags.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "pgpkey.h"

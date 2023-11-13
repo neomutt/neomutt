@@ -36,7 +36,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "remailer.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 
 /**
  * remailer_free - Free a Remailer

@@ -6,7 +6,7 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "globals.h" // IWYU pragma: keep
+#include "globals.h"
 #include "init.h"
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)

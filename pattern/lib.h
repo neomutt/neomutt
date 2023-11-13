@@ -50,7 +50,7 @@
 #include "mutt/lib.h"
 #include "mutt.h"
 #include "complete/lib.h"
-#include "search_state.h" // IWYU pragma: keep
+#include "search_state.h"
 
 struct AliasMenuData;
 struct AliasView;
