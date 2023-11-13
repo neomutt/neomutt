@@ -214,19 +214,19 @@ static void reset_tilde(struct ConfigSet *cs)
 {
   static const char *names[] = { "folder", "mbox", "postponed", "record" };
 
-  struct Buffer value = buf_make(256);
+  struct Buffer *value = buf_pool_get();
   for (size_t i = 0; i < mutt_array_size(names); i++)
   {
     struct HashElem *he = cs_get_elem(cs, names[i]);
     if (!he)
       continue;
-    buf_reset(&value);
-    cs_he_initial_get(cs, he, &value);
-    buf_expand_path_regex(&value, false);
-    cs_he_initial_set(cs, he, value.data, NULL);
+    buf_reset(value);
+    cs_he_initial_get(cs, he, value);
+    buf_expand_path_regex(value, false);
+    cs_he_initial_set(cs, he, value->data, NULL);
     cs_he_reset(cs, he, NULL);
   }
-  buf_dealloc(&value);
+  buf_pool_release(&value);
 }
 
 /**
