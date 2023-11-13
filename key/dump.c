@@ -129,20 +129,20 @@ static bool dump_macro(struct Buffer *buf, enum MenuType menu, const char *name)
     char key_binding[128] = { 0 };
     km_expand_key(key_binding, sizeof(key_binding), map);
 
-    struct Buffer tmp = buf_make(0);
-    escape_string(&tmp, map->macro);
+    struct Buffer *tmp = buf_pool_get();
+    escape_string(tmp, map->macro);
 
     if (map->desc)
     {
       buf_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", name, key_binding,
-                     tmp.data, map->desc);
+                     tmp->data, map->desc);
     }
     else
     {
-      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, key_binding, tmp.data);
+      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, key_binding, tmp->data);
     }
 
-    buf_dealloc(&tmp);
+    buf_pool_release(&tmp);
     empty = false;
   }
 

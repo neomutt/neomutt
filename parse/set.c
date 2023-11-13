@@ -71,16 +71,16 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
   }
   else if (IS_COMMAND(type))
   {
-    struct Buffer scratch = buf_make(1024);
-    buf_copy(&scratch, value);
+    struct Buffer *scratch = buf_pool_get();
+    buf_copy(scratch, value);
 
     if (!mutt_str_equal(value->data, "builtin"))
     {
-      buf_expand_path(&scratch);
+      buf_expand_path(scratch);
     }
     buf_reset(value);
-    buf_addstr(value, buf_string(&scratch));
-    buf_dealloc(&scratch);
+    buf_addstr(value, buf_string(scratch));
+    buf_pool_release(&scratch);
   }
 }
 

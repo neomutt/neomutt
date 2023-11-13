@@ -1769,18 +1769,18 @@ int mutt_body_handler(struct Body *b, struct State *state)
     /* print hint to use attachment menu for disposition == attachment
      * if we're not already being called from there */
     const bool c_honor_disposition = cs_subset_bool(NeoMutt->sub, "honor_disposition");
-    struct Buffer msg = buf_make(256);
+    struct Buffer *msg = buf_pool_get();
 
     if (is_attachment_display)
     {
       if (c_honor_disposition && (b->disposition == DISP_ATTACH))
       {
-        buf_strcpy(&msg, _("[-- This is an attachment --]\n"));
+        buf_strcpy(msg, _("[-- This is an attachment --]\n"));
       }
       else
       {
         /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
-        buf_printf(&msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
+        buf_printf(msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
       }
     }
     else
@@ -1792,14 +1792,14 @@ int mutt_body_handler(struct Body *b, struct State *state)
         if (c_honor_disposition && (b->disposition == DISP_ATTACH))
         {
           /* L10N: %s expands to a keystroke/key binding, e.g. 'v'.  */
-          buf_printf(&msg, _("[-- This is an attachment (use '%s' to view this part) --]\n"),
+          buf_printf(msg, _("[-- This is an attachment (use '%s' to view this part) --]\n"),
                      keystroke);
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain".
              The last %s expands to a keystroke/key binding, e.g. 'v'. */
-          buf_printf(&msg, _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n"),
+          buf_printf(msg, _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n"),
                      TYPE(b), b->subtype, keystroke);
         }
       }
@@ -1807,19 +1807,19 @@ int mutt_body_handler(struct Body *b, struct State *state)
       {
         if (c_honor_disposition && (b->disposition == DISP_ATTACH))
         {
-          buf_strcpy(&msg, _("[-- This is an attachment (need 'view-attachments' bound to key) --]\n"));
+          buf_strcpy(msg, _("[-- This is an attachment (need 'view-attachments' bound to key) --]\n"));
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
-          buf_printf(&msg, _("[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"),
+          buf_printf(msg, _("[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"),
                      TYPE(b), b->subtype);
         }
       }
     }
     state_mark_attach(state);
-    state_printf(state, "%s", buf_string(&msg));
-    buf_dealloc(&msg);
+    state_printf(state, "%s", buf_string(msg));
+    buf_pool_release(&msg);
   }
 
 cleanup:
