@@ -72,27 +72,28 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
 #define CHECK_READONLY   (1 << 3) ///< Is the mailbox readonly?
 #define CHECK_ATTACH     (1 << 4) ///< Is the user in message-attach mode?
 
-const struct AttrColor *index_color(struct Menu *menu, int line);
-void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line);
-void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen);
-struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m);
-void mutt_set_header_color(struct Mailbox *m, struct Email *e);
-struct MuttWindow *index_pager_init(void);
-int mutt_dlgindex_observer(struct NotifyCallback *nc);
-bool check_acl(struct Mailbox *m, AclFlags acl, const char *msg);
-int find_next_undeleted(struct MailboxView *mv, int msgno, bool uncollapse);
-void update_index(struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
-void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
-void collapse_all(struct MailboxView *mv, struct Menu *menu, int toggle);
-void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
-int find_previous_undeleted(struct MailboxView *mv, int msgno, bool uncollapse);
-int find_first_message(struct MailboxView *mv);
-void resort_index(struct MailboxView *mv, struct Menu *menu);
 extern const struct Mapping IndexNewsHelp[];
-struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
-struct Mailbox *get_current_mailbox(void);
-struct MailboxView *get_current_mailbox_view(void);
-struct Menu *get_current_menu(void);
-void index_change_folder(struct MuttWindow *dlg, struct Mailbox *m);
+
+void                    change_folder_mailbox   (struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
+struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);
+void                    change_folder_string    (struct Menu *menu, struct Buffer *buf, int *oldcount, struct IndexSharedData *shared, bool read_only);
+bool                    check_acl               (struct Mailbox *m, AclFlags acl, const char *msg);
+void                    collapse_all            (struct MailboxView *mv, struct Menu *menu, int toggle);
+struct Mailbox *        dlg_index               (struct MuttWindow *dlg, struct Mailbox *m);
+int                     find_first_message      (struct MailboxView *mv);
+int                     find_next_undeleted     (struct MailboxView *mv, int msgno, bool uncollapse);
+int                     find_previous_undeleted (struct MailboxView *mv, int msgno, bool uncollapse);
+struct Mailbox *        get_current_mailbox     (void);
+struct MailboxView *    get_current_mailbox_view(void);
+struct Menu *           get_current_menu        (void);
+void                    index_change_folder     (struct MuttWindow *dlg, struct Mailbox *m);
+const struct AttrColor *index_color             (struct Menu *menu, int line);
+void                    index_make_entry        (struct Menu *menu, char *buf, size_t buflen, int line);
+struct MuttWindow *     index_pager_init        (void);
+int                     mutt_dlgindex_observer  (struct NotifyCallback *nc);
+void                    mutt_draw_statusline    (struct MuttWindow *win, int cols, const char *buf, size_t buflen);
+void                    mutt_set_header_color   (struct Mailbox *m, struct Email *e);
+void                    resort_index            (struct MailboxView *mv, struct Menu *menu);
+void                    update_index            (struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
 
 #endif /* MUTT_INDEX_LIB_H */

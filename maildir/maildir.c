@@ -821,7 +821,7 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
  *
  * @note         maildir filename is defined as: \<base filename\>:2,\<flags\>
  *               but \<base filename\> may contain additional comma separated
- *               fields. Additionally, `:` may be replaced as the field 
+ *               fields. Additionally, `:` may be replaced as the field
  *               delimiter by a user defined alternative.
  */
 static void maildir_canon_filename(struct Buffer *dest, const char *src)

@@ -173,10 +173,10 @@ if {1} {
   # Keep sorted, please.
   foreach opt {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
-    debug-email debug-graphviz debug-keymap debug-logging debug-names 
-    debug-notify debug-queue debug-window doc everything fmemopen full-doc 
-    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 include-path-in-cflags 
-    inotify kyotocabinet lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2 
+    debug-email debug-graphviz debug-keymap debug-logging debug-names
+    debug-notify debug-queue debug-window doc everything fmemopen full-doc
+    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 include-path-in-cflags
+    inotify kyotocabinet lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2
     pgp qdbm rocksdb sasl smime sqlite ssl tdb tokyocabinet ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]

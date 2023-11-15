@@ -28,7 +28,7 @@
 
 /**
  * struct AnsiColor - An ANSI escape sequence
- * 
+ *
  * @note AnsiColor doesn't own the AttrColor
  */
 struct AnsiColor

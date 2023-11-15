@@ -65,7 +65,7 @@
   - #3988 - pager: fix search crash
   - #3999 - help: fix search highlight
   - #4049 - force mail check on current mailbox after `<shell-escape>`
-  - #4051 - openssl: continue if a signal interrupts an SSL read/write 
+  - #4051 - openssl: continue if a signal interrupts an SSL read/write
 * Config
   - #3881 - Rename `$imap_keepalive` to `$imap_keep_alive`
   - #3889 - Change defaults to use `%<...>` conditional syntax
