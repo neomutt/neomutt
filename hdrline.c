@@ -52,6 +52,7 @@
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "ncrypt/lib.h"
+#include "hook.h"
 #include "maillist.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
@@ -493,10 +494,11 @@ void index_format_hook(const struct ExpandoNode *node, void *data,
 
   mutt_strn_copy(tmp, node->start, len, sizeof(tmp));
 
-  // mutt_expando_format(tmp, sizeof(tmp), col, cols,
-  //                     NONULL(mutt_idxfmt_hook(tmp, m, email)),
-  //                     index_format_str, data, flags);
-  // format_string_simple(fmt, sizeof(fmt), tmp, MUTT_FORMAT_NO_FLAGS);
+  const struct Expando *exp = mutt_idxfmt_hook(tmp, m, e);
+  if (!exp)
+    return;
+
+  expando_render(exp, IndexRenderData, data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 }
 
 /**
