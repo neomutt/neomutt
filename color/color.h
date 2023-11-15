@@ -61,7 +61,6 @@ enum ColorId
   MT_COLOR_PROMPT,                   ///< Question/user input
   MT_COLOR_QUOTED,                   ///< Pager: quoted text
   MT_COLOR_SEARCH,                   ///< Pager: search matches
-#ifdef USE_SIDEBAR
   MT_COLOR_SIDEBAR_BACKGROUND,       ///< Background colour for the Sidebar
   MT_COLOR_SIDEBAR_DIVIDER,          ///< Line dividing sidebar from the index/pager
   MT_COLOR_SIDEBAR_FLAGGED,          ///< Mailbox with flagged messages
@@ -71,7 +70,6 @@ enum ColorId
   MT_COLOR_SIDEBAR_ORDINARY,         ///< Mailbox with no new or flagged messages
   MT_COLOR_SIDEBAR_SPOOLFILE,        ///< $spool_file (Spool mailbox)
   MT_COLOR_SIDEBAR_UNREAD,           ///< Mailbox with unread mail
-#endif
   MT_COLOR_SIGNATURE,                ///< Pager: signature lines
   MT_COLOR_STATUS,                   ///< Status bar (takes a pattern)
   MT_COLOR_STRIPE_EVEN,              ///< Stripes: even lines of the Help Page

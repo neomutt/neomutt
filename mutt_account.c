@@ -84,7 +84,6 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
   url->port = 0;
   url->path = NULL;
 
-#ifdef USE_IMAP
   if (cac->type == MUTT_ACCT_TYPE_IMAP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -92,9 +91,7 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_IMAP;
   }
-#endif
 
-#ifdef USE_POP
   if (cac->type == MUTT_ACCT_TYPE_POP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -102,9 +99,7 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_POP;
   }
-#endif
 
-#ifdef USE_SMTP
   if (cac->type == MUTT_ACCT_TYPE_SMTP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -112,9 +107,7 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_SMTP;
   }
-#endif
 
-#ifdef USE_NNTP
   if (cac->type == MUTT_ACCT_TYPE_NNTP)
   {
     if (cac->flags & MUTT_ACCT_SSL)
@@ -122,7 +115,6 @@ void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
     else
       url->scheme = U_NNTP;
   }
-#endif
 
   url->host = cac->host;
   if (cac->flags & MUTT_ACCT_PORT)

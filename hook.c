@@ -41,6 +41,7 @@
 #include "alias/lib.h"
 #include "hook.h"
 #include "attach/lib.h"
+#include "compmbox/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
@@ -51,9 +52,6 @@
 #include "hdrline.h"
 #include "muttlib.h"
 #include "mx.h"
-#ifdef USE_COMP_MBOX
-#include "compmbox/lib.h"
-#endif
 
 /**
  * struct Hook - A list of user hooks
@@ -254,7 +252,6 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
     buf_pool_release(&tmp);
   }
-#ifdef USE_COMP_MBOX
   else if (data & (MUTT_APPEND_HOOK | MUTT_OPEN_HOOK | MUTT_CLOSE_HOOK))
   {
     if (mutt_comp_valid_command(buf_string(cmd)) == 0)
@@ -263,7 +260,6 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       goto cleanup;
     }
   }
-#endif
   else if (c_default_hook && (~data & MUTT_GLOBAL_HOOK) &&
            !(data & (MUTT_ACCOUNT_HOOK)) && (!WithCrypto || !(data & MUTT_CRYPT_HOOK)))
   {

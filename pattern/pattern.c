@@ -43,6 +43,7 @@
 #include "lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "menu/lib.h"
 #include "progress/lib.h"
 #include "globals.h"
@@ -53,9 +54,6 @@
 #include "search_state.h"
 #ifndef USE_FMEMOPEN
 #include <sys/stat.h>
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
 #endif
 
 /**
@@ -328,10 +326,8 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
     goto bail;
   }
 
-#ifdef USE_IMAP
   if ((m->type == MUTT_IMAP) && (!imap_search(m, pat)))
     goto bail;
-#endif
 
   progress = progress_new(_("Executing command on matching messages..."), MUTT_PROGRESS_READ,
                           (op == MUTT_LIMIT) ? m->msg_count : m->vcount);
@@ -497,10 +493,8 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
   {
     for (int i = 0; i < m->msg_count; i++)
       m->emails[i]->searched = false;
-#ifdef USE_IMAP
     if ((m->type == MUTT_IMAP) && (!imap_search(m, state->pattern)))
       return -1;
-#endif
   }
 
   int incr = state->reverse ? -1 : 1;

@@ -81,7 +81,6 @@ const struct Mapping ColorFields[] = {
   { "prompt",            MT_COLOR_PROMPT },
   { "quoted",            MT_COLOR_QUOTED },
   { "search",            MT_COLOR_SEARCH },
-#ifdef USE_SIDEBAR
   { "sidebar_background", MT_COLOR_SIDEBAR_BACKGROUND },
   { "sidebar_divider",   MT_COLOR_SIDEBAR_DIVIDER },
   { "sidebar_flagged",   MT_COLOR_SIDEBAR_FLAGGED },
@@ -92,7 +91,6 @@ const struct Mapping ColorFields[] = {
   { "sidebar_spool_file", MT_COLOR_SIDEBAR_SPOOLFILE },
   { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE }, // This will be deprecated
   { "sidebar_unread",    MT_COLOR_SIDEBAR_UNREAD },
-#endif
   { "signature",         MT_COLOR_SIGNATURE },
   { "status",            MT_COLOR_STATUS },
   { "stripe_even",       MT_COLOR_STRIPE_EVEN},

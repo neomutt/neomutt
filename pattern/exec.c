@@ -784,11 +784,7 @@ static bool pattern_needs_msg(const struct Mailbox *m, const struct Pattern *pat
 
   if ((pat->op == MUTT_PAT_WHOLE_MSG) || (pat->op == MUTT_PAT_BODY) || (pat->op == MUTT_PAT_HEADER))
   {
-#ifdef USE_IMAP
     return !((m->type == MUTT_IMAP) && pat->string_match);
-#else
-    return true;
-#endif
   }
 
   if ((pat->op == MUTT_PAT_AND) || (pat->op == MUTT_PAT_OR))
@@ -884,21 +880,17 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
        * This is also the case when message scoring.  */
       if (!m)
         return false;
-#ifdef USE_IMAP
       /* IMAP search sets e->matched at search compile time */
       if ((m->type == MUTT_IMAP) && pat->string_match)
         return e->matched;
-#endif
       return pat->pat_not ^ msg_search(pat, e, msg);
     case MUTT_PAT_SERVERSEARCH:
-#ifdef USE_IMAP
       if (!m)
         return false;
       if (m->type == MUTT_IMAP)
       {
         return (pat->string_match) ? e->matched : false;
       }
-#endif
       mutt_error(_("error: server custom search only supported with IMAP"));
       return false;
     case MUTT_PAT_SENDER:
@@ -1109,12 +1101,10 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->thread && !e->thread->child);
     case MUTT_PAT_BROKEN:
       return pat->pat_not ^ (e->thread && e->thread->fake_thread);
-#ifdef USE_NNTP
     case MUTT_PAT_NEWSGROUPS:
       if (!e->env)
         return false;
       return pat->pat_not ^ (e->env->newsgroups && patmatch(pat, e->env->newsgroups));
-#endif
   }
   mutt_error(_("error: unknown op %d (report this error)"), pat->op);
   return false;

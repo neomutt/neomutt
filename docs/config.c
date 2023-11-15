@@ -188,7 +188,6 @@
 ** editing the body of an outgoing message.
 */
 
-#ifdef USE_NNTP
 { "ask_followup_to", DT_BOOL, false },
 /*
 ** .pp
@@ -202,7 +201,6 @@
 ** If set, NeoMutt will prompt you for x-comment-to field before editing
 ** the body of an outgoing message.
 */
-#endif
 
 { "assumed_charset", DT_SLIST, 0 },
 /*
@@ -476,14 +474,19 @@
 ** desirable to \fIunset\fP this variable.
 */
 
-#ifdef USE_NNTP
+{ "browser_sort_dirs_first", DT_BOOL, false },
+/*
+** .pp
+** If this variable is \fIset\fP, the browser will group directories before
+** files.
+*/
+
 { "catchup_newsgroup", DT_QUAD, MUTT_ASKYES },
 /*
 ** .pp
 ** If this variable is \fIset\fP, NeoMutt will mark all articles in newsgroup
 ** as read when you quit the newsgroup (catchup newsgroup).
 */
-#endif
 
 #ifdef USE_SSL
 { "certificate_file", DT_PATH, "~/.mutt_certificates" },
@@ -1362,7 +1365,6 @@
 ** of the same email for you.
 */
 
-#ifdef USE_NNTP
 { "followup_to_poster", DT_QUAD, MUTT_ASKYES },
 /*
 ** .pp
@@ -1371,7 +1373,6 @@
 ** permitted.  The message will be mailed to the submitter of the
 ** message via mail.
 */
-#endif
 
 { "force_name", DT_BOOL, false },
 /*
@@ -1529,7 +1530,6 @@
 ** .de
 */
 
-#ifdef USE_NNTP
 { "group_index_format", DT_STRING, "%4C %M%N %5s  %-45.45f %d" },
 /*
 ** .pp
@@ -1548,7 +1548,6 @@
 ** .dt %|X .dd Pad to the end of the line with character "X"
 ** .de
 */
-#endif
 
 { "hdrs", DT_BOOL, true },
 /*
@@ -1795,7 +1794,6 @@
 ** list.
 */
 
-#ifdef USE_IMAP
 { "imap_authenticators", DT_SLIST, 0 },
 /*
 ** .pp
@@ -2006,6 +2004,14 @@
 ** https://github.com/neomutt/neomutt/issues/1689
 */
 
+{ "imap_send_id", DT_BOOL, false },
+/*
+** .pp
+** When \fIset\fP, NeoMutt will send an IMAP ID command (RFC2971) to the
+** server when logging in if advertised by the server. This command provides
+** information about the IMAP client, such as "NeoMutt" and the current version.
+*/
+
 { "imap_server_noise", DT_BOOL, true },
 /*
 ** .pp
@@ -2024,15 +2030,6 @@
 ** .pp
 ** This variable defaults to your user name on the local machine.
 */
-
-{ "imap_send_id", DT_BOOL, false },
-/*
-** .pp
-** When \fIset\fP, NeoMutt will send an IMAP ID command (RFC2971) to the
-** server when logging in if advertised by the server. This command provides
-** information about the IMAP client, such as "NeoMutt" and the current version.
-*/
-#endif
 
 { "implicit_auto_view", DT_BOOL, false },
 /*
@@ -2201,7 +2198,6 @@
 ** "$save-hook", "$fcc-hook" and "$fcc-save-hook", too.
 */
 
-#ifdef USE_NNTP
 { "inews", DT_COMMAND, 0 },
 /*
 ** .pp
@@ -2222,7 +2218,6 @@
 ** set inews="/usr/local/bin/inews -hS"
 ** .te
 */
-#endif
 
 { "ispell", DT_COMMAND, ISPELL },
 /*
@@ -2447,7 +2442,6 @@
 ** (useful for slow links to avoid many redraws).
 */
 
-#if defined(USE_IMAP) || defined(USE_POP)
 { "message_cache_clean", DT_BOOL, false },
 /*
 ** .pp
@@ -2470,7 +2464,6 @@
 ** .pp
 ** Also see the $$message_cache_clean variable.
 */
-#endif
 
 { "message_format", DT_STRING, "%s" },
 /*
@@ -2624,7 +2617,6 @@
 ** deeper threads to fit on the screen.
 */
 
-#ifdef USE_SOCKET
 { "net_inc", DT_NUMBER, 10 },
 /*
 ** .pp
@@ -2634,7 +2626,6 @@
 ** .pp
 ** See also $$read_inc, $$write_inc and $$net_inc.
 */
-#endif
 
 { "new_mail_command", DT_COMMAND, 0 },
 /*
@@ -2644,7 +2635,6 @@
 ** into this command.
 */
 
-#ifdef USE_NNTP
 { "news_cache_dir", DT_PATH, "~/.neomutt" },
 /*
 ** .pp
@@ -2688,7 +2678,6 @@
 ** .dt %u .dd Username          .dd \fCusername\fP
 ** .de
 */
-#endif
 
 #ifdef USE_NOTMUCH
 { "nm_config_file", DT_PATH, "auto" },
@@ -2825,7 +2814,6 @@
 */
 #endif
 
-#ifdef USE_NNTP
 { "nntp_authenticators", DT_STRING, 0 },
 /*
 ** .pp
@@ -2893,7 +2881,6 @@
 ** authentication, NeoMutt will prompt you for your account name when you
 ** connect to news server.
 */
-#endif
 
 { "pager", DT_COMMAND, "builtin" },
 /*
@@ -3485,7 +3472,6 @@
 ** and the $$pipe_sep separator is added after each message.
 */
 
-#ifdef USE_POP
 { "pop_auth_try_all", DT_BOOL, true },
 /*
 ** .pp
@@ -3581,9 +3567,7 @@
 ** .pp
 ** This variable defaults to your user name on the local machine.
 */
-#endif
 
-#ifdef USE_NNTP
 { "post_moderated", DT_QUAD, MUTT_ASKYES },
 /*
 ** .pp
@@ -3592,7 +3576,6 @@
 ** does not support posting to that newsgroup or totally read-only, that
 ** posting will not have an effect.
 */
-#endif
 
 { "postpone", DT_QUAD, MUTT_ASKYES },
 /*
@@ -3634,7 +3617,6 @@
 ** Also see the $$postpone variable.
 */
 
-#ifdef USE_SOCKET
 { "preconnect", DT_STRING, 0 },
 /*
 ** .pp
@@ -3653,7 +3635,6 @@
 ** Note: For this example to work, you must be able to log in to the
 ** remote machine without having to enter a password.
 */
-#endif
 
 { "preferred_languages", DT_SLIST, 0 },
 /*
@@ -4085,14 +4066,12 @@
 ** Also see the $$force_name variable.
 */
 
-#ifdef USE_NNTP
 { "save_unsubscribed", DT_BOOL, false },
 /*
 ** .pp
 ** When \fIset\fP, info about unsubscribed newsgroups will be saved into
 ** "newsrc" file and into cache.
 */
-#endif
 
 { "score", DT_BOOL, true },
 /*
@@ -4195,7 +4174,6 @@
 ** When not set, the default behavior is to show only the chosen alternative.
 */
 
-#ifdef USE_NNTP
 { "show_new_news", DT_BOOL, true },
 /*
 ** .pp
@@ -4211,9 +4189,7 @@
 ** If \fIset\fP, only subscribed newsgroups that contain unread articles
 ** will be displayed in browser.
 */
-#endif
 
-#ifdef USE_SIDEBAR
 { "sidebar_component_depth", DT_NUMBER, 0 },
 /*
 ** .pp
@@ -4400,7 +4376,6 @@
 ** For example: sidebar_width=20 could display 20 ASCII characters, or 10
 ** Chinese characters.
 */
-#endif
 
 { "sig_dashes", DT_BOOL, true },
 /*
@@ -4763,7 +4738,6 @@
 */
 #endif
 
-#ifdef USE_SMTP
 { "smtp_authenticators", DT_SLIST, 0 },
 /*
 ** .pp
@@ -4827,7 +4801,6 @@
 ** .pp
 ** This variable defaults to your user name on the local machine.
 */
-#endif
 
 { "socket_timeout", DT_NUMBER, 30 },
 /*
@@ -4944,13 +4917,6 @@
 ** order (example: "\fCset sort_browser=reverse-date\fP").
 ** .pp
 ** The "unread" value is a synonym for "new".
-*/
-
-{ "browser_sort_dirs_first", DT_BOOL, false },
-/*
-** .pp
-** If this variable is \fIset\fP, the browser will group directories before
-** files.
 */
 
 { "sort_re", DT_BOOL, true },
@@ -5440,7 +5406,6 @@
 ** formatting to the one used by "$$status_format".
 */
 
-#ifdef USE_SOCKET
 { "tunnel", DT_COMMAND, 0 },
 /*
 ** .pp
@@ -5473,7 +5438,6 @@
 ** This setting is appropriate if $$tunnel does not provide security and
 ** could be tampered with by attackers.
 */
-#endif
 
 { "uncollapse_jump", DT_BOOL, false },
 /*
@@ -5676,13 +5640,11 @@
 ** "$tuning" section of the manual for performance considerations.
 */
 
-#ifdef USE_NNTP
 { "x_comment_to", DT_BOOL, false },
 /*
 ** .pp
 ** If \fIset\fP, NeoMutt will add "X-Comment-To:" field (that contains full
 ** name of original article author) to article that followuped to newsgroup.
 */
-#endif
 // clang-format on
 /*--*/

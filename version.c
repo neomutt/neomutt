@@ -255,11 +255,6 @@ static const struct CompileOptions CompOpts[] = {
 #else
   { "sqlite", 0 },
 #endif
-#ifdef SUN_ATTACHMENT
-  { "sun_attachment", 1 },
-#else
-  { "sun_attachment", 0 },
-#endif
 #ifdef NEOMUTT_DIRECT_COLORS
   { "truecolor", 1 },
 #else

@@ -66,17 +66,11 @@
 #ifndef USE_AUTOCRYPT
 #define USE_AUTOCRYPT
 #endif
-#ifndef USE_COMP_MBOX
-#define USE_COMP_MBOX
-#endif
 #ifndef USE_HCACHE
 #define USE_HCACHE
 #endif
 #ifndef USE_HCACHE_COMPRESSION
 #define USE_HCACHE_COMPRESSION
-#endif
-#ifndef USE_IMAP
-#define USE_IMAP
 #endif
 #ifndef USE_LUA
 #define USE_LUA
@@ -84,20 +78,8 @@
 #ifndef USE_NOTMUCH
 #define USE_NOTMUCH
 #endif
-#ifndef USE_POP
-#define USE_POP
-#endif
 #ifndef USE_SASL
 #define USE_SASL
-#endif
-#ifndef USE_SIDEBAR
-#define USE_SIDEBAR
-#endif
-#ifndef USE_SMTP
-#define USE_SMTP
-#endif
-#ifndef USE_SOCKET
-#define USE_SOCKET
 #endif
 #ifndef USE_SSL
 #define USE_SSL

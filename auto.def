@@ -437,14 +437,6 @@ if {1} {
 
 ###############################################################################
 # Various unconditional defines
-define USE_COMP_MBOX
-define USE_IMAP
-define USE_NNTP
-define USE_POP
-define USE_SIDEBAR
-define USE_SOCKET
-define USE_SMTP
-define SUN_ATTACHMENT
 define TEST_CASE_MAXSIZE 1024
 ###############################################################################
 
@@ -1197,7 +1189,6 @@ set auto_rep {
   PKGDOCDIR
   QUEUE_*
   SENDMAIL
-  SUN_ATTACHMENT
   SYSCONFDIR
   TEST_CASE_MAXSIZE
   TMPDIR

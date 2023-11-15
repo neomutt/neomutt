@@ -128,6 +128,12 @@ static struct ConfigDef SendVars[] = {
   { "ask_cc", DT_BOOL, false, 0, NULL,
     "Ask the user for the carbon-copy recipients"
   },
+  { "ask_followup_to", DT_BOOL, false, 0, NULL,
+    "(nntp) Ask the user for follow-up groups before editing"
+  },
+  { "ask_x_comment_to", DT_BOOL, false, 0, NULL,
+    "(nntp) Ask the user for the 'X-Comment-To' field before editing"
+  },
   { "attach_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
   },
@@ -233,6 +239,9 @@ static struct ConfigDef SendVars[] = {
   { "include", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Include a copy of the email that's being replied to"
   },
+  { "inews", DT_STRING|DT_COMMAND, 0, 0, simple_command_validator,
+    "(nntp) External command to post news articles"
+  },
   { "me_too", DT_BOOL, false, 0, NULL,
     "Remove the user's address from the list of recipients"
   },
@@ -293,6 +302,21 @@ static struct ConfigDef SendVars[] = {
   { "signature", DT_PATH|DT_PATH_FILE, IP "~/.signature", 0, NULL,
     "File containing a signature to append to all mail"
   },
+  { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, smtp_auth_validator,
+    "(smtp) List of allowed authentication methods (colon-separated)"
+  },
+  { "smtp_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
+    "(smtp) External command to generate OAUTH refresh token"
+  },
+  { "smtp_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+    "(smtp) Password for the SMTP server"
+  },
+  { "smtp_url", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+    "(smtp) Url of the SMTP server"
+  },
+  { "smtp_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+    "(smtp) Username for the SMTP server"
+  },
   { "use_8bit_mime", DT_BOOL, false, 0, NULL,
     "Use 8-bit messages and ESMTP to send messages"
   },
@@ -315,6 +339,7 @@ static struct ConfigDef SendVars[] = {
   { "abort_noattach_regexp",    DT_SYNONYM, IP "abort_noattach_regex",       IP "2021-03-21" },
   { "askbcc",                   DT_SYNONYM, IP "ask_bcc",                    IP "2021-03-21" },
   { "askcc",                    DT_SYNONYM, IP "ask_cc",                     IP "2021-03-21" },
+  { "ask_follow_up",            DT_SYNONYM, IP "ask_followup_to",            IP "2023-01-20" },
   { "attach_keyword",           DT_SYNONYM, IP "abort_noattach_regex",       IP "2021-03-21" },
   { "attribution",              DT_SYNONYM, IP "attribution_intro",          IP "2023-02-20" },
   { "crypt_autoencrypt",        DT_SYNONYM, IP "crypt_auto_encrypt",         IP "2021-03-21" },
@@ -328,9 +353,9 @@ static struct ConfigDef SendVars[] = {
   { "forw_decrypt",             DT_SYNONYM, IP "forward_decrypt",            IP "2021-03-21" },
   { "forw_format",              DT_SYNONYM, IP "forward_format",             IP "2021-03-21" },
   { "metoo",                    DT_SYNONYM, IP "me_too",                     IP "2021-03-21" },
-  { "pgp_auto_traditional",     DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_autoencrypt",          DT_SYNONYM, IP "crypt_auto_encrypt",         IP "2021-03-21" },
   { "pgp_autosign",             DT_SYNONYM, IP "crypt_auto_sign",            IP "2021-03-21" },
+  { "pgp_auto_traditional",     DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_replyencrypt",         DT_SYNONYM, IP "crypt_reply_encrypt",        IP "2021-03-21" },
   { "pgp_replyinline",          DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_replysign",            DT_SYNONYM, IP "crypt_reply_sign",           IP "2021-03-21" },
@@ -340,73 +365,15 @@ static struct ConfigDef SendVars[] = {
   { "reverse_realname",         DT_SYNONYM, IP "reverse_real_name",          IP "2021-03-21" },
   { "use_8bitmime",             DT_SYNONYM, IP "use_8bit_mime",              IP "2021-03-21" },
 
-  { NULL },
-  // clang-format on
-};
-
-#if defined(USE_NNTP)
-/**
- * SendVarsNntp - NNTP Config definitions for the send library
- */
-static struct ConfigDef SendVarsNntp[] = {
-  // clang-format off
-  { "ask_followup_to", DT_BOOL, false, 0, NULL,
-    "(nntp) Ask the user for follow-up groups before editing"
-  },
-  { "ask_x_comment_to", DT_BOOL, false, 0, NULL,
-    "(nntp) Ask the user for the 'X-Comment-To' field before editing"
-  },
-  { "inews", DT_STRING|DT_COMMAND, 0, 0, simple_command_validator,
-    "(nntp) External command to post news articles"
-  },
   { "mime_subject", DT_DEPRECATED|DT_BOOL, 0, IP "2021-03-24" },
-
-  { "ask_follow_up", DT_SYNONYM, IP "ask_followup_to", IP "2023-01-20" },
   { NULL },
   // clang-format on
 };
-#endif
-
-#if defined(USE_SMTP)
-/**
- * SendVarsSmtp - SMTP Config definitions for the send library
- */
-static struct ConfigDef SendVarsSmtp[] = {
-  // clang-format off
-  { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, smtp_auth_validator,
-    "(smtp) List of allowed authentication methods (colon-separated)"
-  },
-  { "smtp_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) External command to generate OAUTH refresh token"
-  },
-  { "smtp_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) Password for the SMTP server"
-  },
-  { "smtp_url", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) Url of the SMTP server"
-  },
-  { "smtp_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
-    "(smtp) Username for the SMTP server"
-  },
-  { NULL },
-  // clang-format on
-};
-#endif
 
 /**
  * config_init_send - Register send config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
  */
 bool config_init_send(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, SendVars, DT_NO_FLAGS);
-
-#if defined(USE_NNTP)
-  rc |= cs_register_variables(cs, SendVarsNntp, DT_NO_FLAGS);
-#endif
-
-#if defined(USE_SMTP)
-  rc |= cs_register_variables(cs, SendVarsSmtp, DT_NO_FLAGS);
-#endif
-
-  return rc;
+  return cs_register_variables(cs, SendVars, DT_NO_FLAGS);
 }

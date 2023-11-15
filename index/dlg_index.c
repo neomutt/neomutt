@@ -67,8 +67,10 @@
 #include "color/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "nntp/lib.h"
 #include "pager/lib.h"
 #include "pattern/lib.h"
+#include "sidebar/lib.h"
 #include "format_flags.h"
 #include "functions.h"
 #include "globals.h"
@@ -79,6 +81,7 @@
 #include "mutt_thread.h"
 #include "mview.h"
 #include "mx.h"
+#include "nntp/adata.h"
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"
@@ -87,15 +90,8 @@
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#include "nntp/adata.h"
-#endif
 #ifdef USE_INOTIFY
 #include "monitor.h"
-#endif
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
 #endif
 
 /// Help Bar for the Index dialog
@@ -113,7 +109,6 @@ static const struct Mapping IndexHelp[] = {
   // clang-format on
 };
 
-#ifdef USE_NNTP
 /// Help Bar for the News Index dialog
 const struct Mapping IndexNewsHelp[] = {
   // clang-format off
@@ -128,7 +123,6 @@ const struct Mapping IndexNewsHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
-#endif
 
 /**
  * check_acl - Check the ACLs for a function
@@ -629,11 +623,9 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
 #ifdef USE_INOTIFY
     int monitor_remove_rc = mutt_monitor_remove(NULL);
 #endif
-#ifdef USE_COMP_MBOX
     if (shared->mailbox->compress_info && (shared->mailbox->realpath[0] != '\0'))
       new_last_folder = mutt_str_dup(shared->mailbox->realpath);
     else
-#endif
       new_last_folder = mutt_str_dup(mailbox_path(shared->mailbox));
     *oldcount = shared->mailbox->msg_count;
 
@@ -759,14 +751,12 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
                           struct IndexSharedData *shared, bool read_only)
 {
-#ifdef USE_NNTP
   if (OptNews)
   {
     OptNews = false;
     nntp_expand_path(buf->data, buf->dsize, &CurrentNewsSrv->conn->account);
   }
   else
-#endif
   {
     const char *const c_folder = cs_subset_string(shared->sub, "folder");
     mx_path_canon(buf, c_folder, NULL);
@@ -1079,11 +1069,9 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
   int op = OP_NULL;
 
-#ifdef USE_NNTP
   if (shared->mailbox && (shared->mailbox->type == MUTT_NNTP))
     dlg->help_data = IndexNewsHelp;
   else
-#endif
     dlg->help_data = IndexHelp;
   dlg->help_menu = MENU_INDEX;
 
@@ -1331,9 +1319,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 
     mutt_clear_error();
 
-#ifdef USE_NNTP
     OptNews = false; /* for any case */
-#endif
 
 #ifdef USE_NOTMUCH
     nm_db_debug_check(shared->mailbox);
@@ -1344,13 +1330,11 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(priv->win_index, op);
 
-#ifdef USE_SIDEBAR
     if (rc == FR_UNKNOWN)
     {
       struct MuttWindow *win_sidebar = window_find_child(dlg, WT_SIDEBAR);
       rc = sb_function_dispatcher(win_sidebar, op);
     }
-#endif
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
 

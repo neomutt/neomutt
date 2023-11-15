@@ -40,6 +40,7 @@
 #include "core/lib.h"
 #include "mutt.h"
 #include "lib.h"
+#include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "send/lib.h"
 #include "globals.h"
@@ -50,9 +51,6 @@
 #include "mx.h"
 #include "protos.h"
 #include "rfc3676.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 
 /// Number of postponed (draft) emails
 short PostCount = 0;
@@ -99,7 +97,6 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     return PostCount;
   }
 
-#ifdef USE_IMAP
   /* LastModify is useless for IMAP */
   if (imap_path_probe(c_postponed, NULL) == MUTT_IMAP)
   {
@@ -120,7 +117,6 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     }
     return PostCount;
   }
-#endif
 
   if (stat(c_postponed, &st) == -1)
   {
@@ -147,17 +143,13 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
 
   if (LastModify < st.st_mtime)
   {
-#ifdef USE_NNTP
     int optnews = OptNews;
-#endif
     LastModify = st.st_mtime;
 
     if (access(c_postponed, R_OK | F_OK) != 0)
       return PostCount = 0;
-#ifdef USE_NNTP
     if (optnews)
       OptNews = false;
-#endif
     struct Mailbox *m_post = mx_path_resolve(c_postponed);
     if (mx_mbox_open(m_post, MUTT_NOSORT | MUTT_QUIET))
     {
@@ -170,10 +162,8 @@ int mutt_num_postponed(struct Mailbox *m, bool force)
     }
     mailbox_free(&m_post);
 
-#ifdef USE_NNTP
     if (optnews)
       OptNews = true;
-#endif
   }
 
   return PostCount;

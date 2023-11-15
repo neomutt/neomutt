@@ -107,7 +107,6 @@ static const struct Mapping ComposeHelp[] = {
   // clang-format on
 };
 
-#ifdef USE_NNTP
 /// Help Bar for the News Compose dialog
 static const struct Mapping ComposeNewsHelp[] = {
   // clang-format off
@@ -121,7 +120,6 @@ static const struct Mapping ComposeNewsHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
-#endif
 
 /**
  * compose_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
@@ -322,11 +320,9 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
   notify_observer_add(e->notify, NT_ALL, compose_email_observer, shared);
   notify_observer_add(dlg->notify, NT_WINDOW, compose_window_observer, dlg);
 
-#ifdef USE_NNTP
   if (OptNewsSend)
     dlg->help_data = ComposeNewsHelp;
   else
-#endif
     dlg->help_data = ComposeHelp;
   dlg->help_menu = MENU_COMPOSE;
 
@@ -344,9 +340,7 @@ int dlg_compose(struct Email *e, struct Buffer *fcc, uint8_t flags, struct Confi
   int op = OP_NULL;
   do
   {
-#ifdef USE_NNTP
     OptNews = false; /* for any case */
-#endif
     menu_tagging_dispatcher(menu->win, op);
     window_redraw(NULL);
 

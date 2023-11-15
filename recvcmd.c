@@ -847,7 +847,6 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     return -1;
   }
 
-#ifdef USE_NNTP
   if ((flags & SEND_NEWS))
   {
     /* in case followup set Newsgroups: with Followup-To: if it present */
@@ -857,7 +856,6 @@ static int attach_reply_envelope_defaults(struct Envelope *env, struct AttachCtx
     }
   }
   else
-#endif
   {
     if (parent)
     {
@@ -958,12 +956,10 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
 
   char prefix[128] = { 0 };
 
-#ifdef USE_NNTP
   if (flags & SEND_NEWS)
     OptNewsSend = true;
   else
     OptNewsSend = false;
-#endif
 
   if (!check_all_msg(actx, b, false))
   {

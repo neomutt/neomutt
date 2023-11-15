@@ -168,10 +168,8 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
   if (TAILQ_EMPTY(&NeoMutt->accounts)) // fast return if there are no mailboxes
     return 0;
 
-#ifdef USE_IMAP
   if (flags & MUTT_MAILBOX_CHECK_FORCE)
     mutt_update_num_postponed();
-#endif
 
   const short c_mail_check = cs_subset_number(NeoMutt->sub, "mail_check");
   const bool c_mail_check_stats = cs_subset_bool(NeoMutt->sub, "mail_check_stats");
@@ -194,11 +192,8 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
 
   /* check device ID and serial number instead of comparing paths */
   struct stat st_cur = { 0 };
-  if (!m_cur || (m_cur->type == MUTT_IMAP) || (m_cur->type == MUTT_POP)
-#ifdef USE_NNTP
-      || (m_cur->type == MUTT_NNTP)
-#endif
-      || stat(mailbox_path(m_cur), &st_cur) != 0)
+  if (!m_cur || (m_cur->type == MUTT_IMAP) || (m_cur->type == MUTT_POP) ||
+      (m_cur->type == MUTT_NNTP) || stat(mailbox_path(m_cur), &st_cur) != 0)
   {
     st_cur.st_dev = 0;
     st_cur.st_ino = 0;

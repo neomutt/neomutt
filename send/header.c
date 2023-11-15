@@ -603,20 +603,20 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
     mutt_addrlist_write_file(&env->to, fp, "To");
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
-#ifdef USE_NNTP
+  {
     if (!OptNewsSend)
-#endif
       fputs("To:\n", fp);
+  }
 
   if (!TAILQ_EMPTY(&env->cc))
   {
     mutt_addrlist_write_file(&env->cc, fp, "Cc");
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
-#ifdef USE_NNTP
+  {
     if (!OptNewsSend)
-#endif
       fputs("Cc:\n", fp);
+  }
 
   if (!TAILQ_EMPTY(&env->bcc))
   {
@@ -630,12 +630,11 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
     }
   }
   else if (mode == MUTT_WRITE_HEADER_EDITHDRS)
-#ifdef USE_NNTP
+  {
     if (!OptNewsSend)
-#endif
       fputs("Bcc:\n", fp);
+  }
 
-#ifdef USE_NNTP
   if (env->newsgroups)
     fprintf(fp, "Newsgroups: %s\n", env->newsgroups);
   else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend)
@@ -651,7 +650,6 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
     fprintf(fp, "X-Comment-To: %s\n", env->x_comment_to);
   else if ((mode == MUTT_WRITE_HEADER_EDITHDRS) && OptNewsSend && c_x_comment_to)
     fputs("X-Comment-To:\n", fp);
-#endif
 
   if (env->subject)
   {
@@ -688,9 +686,7 @@ int mutt_rfc822_write_header(FILE *fp, struct Envelope *env, struct Body *b,
 
   if (!TAILQ_EMPTY(&env->mail_followup_to))
   {
-#ifdef USE_NNTP
     if (!OptNewsSend)
-#endif
     {
       mutt_addrlist_write_file(&env->mail_followup_to, fp, "Mail-Followup-To");
     }

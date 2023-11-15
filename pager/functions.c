@@ -74,10 +74,8 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "break-thread",                  OP_MAIN_BREAK_THREAD },
   { "change-folder",                 OP_MAIN_CHANGE_FOLDER },
   { "change-folder-readonly",        OP_MAIN_CHANGE_FOLDER_READONLY },
-#ifdef USE_NNTP
   { "change-newsgroup",              OP_MAIN_CHANGE_GROUP },
   { "change-newsgroup-readonly",     OP_MAIN_CHANGE_GROUP_READONLY },
-#endif
 #ifdef USE_NOTMUCH
   { "change-vfolder",                OP_MAIN_CHANGE_VFOLDER },
 #endif
@@ -108,23 +106,17 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "exit",                          OP_EXIT },
   { "extract-keys",                  OP_EXTRACT_KEYS },
   { "flag-message",                  OP_FLAG_MESSAGE },
-#ifdef USE_NNTP
   { "followup-message",              OP_FOLLOWUP },
-#endif
   { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "forward-message",               OP_FORWARD_MESSAGE },
-#ifdef USE_NNTP
   { "forward-to-group",              OP_FORWARD_TO_GROUP },
-#endif
   { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
   { "group-reply",                   OP_GROUP_REPLY },
   { "half-down",                     OP_HALF_DOWN },
   { "half-up",                       OP_HALF_UP },
   { "help",                          OP_HELP },
-#ifdef USE_IMAP
   { "imap-fetch-mail",               OP_MAIN_IMAP_FETCH },
   { "imap-logout-all",               OP_MAIN_IMAP_LOGOUT_ALL },
-#endif
   { "jump",                          OP_JUMP },
   { "jump",                          OP_JUMP_1 },
   { "jump",                          OP_JUMP_2 },
@@ -160,9 +152,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "parent-message",                OP_MAIN_PARENT_MESSAGE },
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
-#ifdef USE_NNTP
   { "post-message",                  OP_POST },
-#endif
   { "previous-entry",                OP_PREV_ENTRY },
   { "previous-line",                 OP_PREV_LINE },
   { "previous-new",                  OP_MAIN_PREV_NEW },
@@ -181,9 +171,7 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "read-subthread",                OP_MAIN_READ_SUBTHREAD },
   { "read-thread",                   OP_MAIN_READ_THREAD },
   { "recall-message",                OP_RECALL_MESSAGE },
-#ifdef USE_NNTP
   { "reconstruct-thread",            OP_RECONSTRUCT_THREAD },
-#endif
   { "redraw-screen",                 OP_REDRAW },
   { "reply",                         OP_REPLY },
   { "resend-message",                OP_RESEND },
@@ -199,7 +187,6 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "shell-escape",                  OP_SHELL_ESCAPE },
   { "show-log-messages",             OP_SHOW_LOG_MESSAGES },
   { "show-version",                  OP_VERSION },
-#ifdef USE_SIDEBAR
   { "sidebar-first",                 OP_SIDEBAR_FIRST },
   { "sidebar-last",                  OP_SIDEBAR_LAST },
   { "sidebar-next",                  OP_SIDEBAR_NEXT },
@@ -211,7 +198,6 @@ const struct MenuFuncOp OpPager[] = { /* map: pager */
   { "sidebar-prev-new",              OP_SIDEBAR_PREV_NEW },
   { "sidebar-toggle-virtual",        OP_SIDEBAR_TOGGLE_VIRTUAL },
   { "sidebar-toggle-visible",        OP_SIDEBAR_TOGGLE_VISIBLE },
-#endif
   { "skip-headers",                  OP_PAGER_SKIP_HEADERS },
   { "skip-quoted",                   OP_PAGER_SKIP_QUOTED },
   { "sort-mailbox",                  OP_SORT },

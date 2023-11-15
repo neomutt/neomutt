@@ -49,6 +49,7 @@
 #include "compose/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
@@ -69,24 +70,19 @@
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "muttlib.h"
+#include "mx.h"
+#include "nntp/mdata.h"
 #include "protos.h"
 #include "rfc3676.h"
 #include "sendlib.h"
 #include "sendmail.h"
 #include "smtp.h"
 #include "sort.h"
-#ifdef USE_NNTP
-#include "mx.h"
-#include "nntp/mdata.h"
-#endif
 #ifdef MIXMASTER
 #include "mixmaster/lib.h"
 #endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
@@ -229,7 +225,6 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
   struct Buffer *buf = buf_pool_get();
   buf_alloc(buf, 8192);
 
-#ifdef USE_NNTP
   if (OptNewsSend)
   {
     if (en->newsgroups)
@@ -271,7 +266,6 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     mutt_str_replace(&en->x_comment_to, buf_string(buf));
   }
   else
-#endif
   {
     const bool c_fast_reply = cs_subset_bool(sub, "fast_reply");
     if (TAILQ_EMPTY(&en->to) || !c_fast_reply || (flags & SEND_REVIEW_TO))
@@ -350,7 +344,6 @@ done:
   return rc;
 }
 
-#ifdef USE_NNTP
 /**
  * nntp_get_header - Get the trimmed header
  * @param s Header line with leading whitespace
@@ -363,7 +356,6 @@ static char *nntp_get_header(const char *s)
   SKIPWS(s);
   return mutt_str_dup(s);
 }
-#endif
 
 /**
  * process_user_recips - Process the user headers
@@ -381,14 +373,12 @@ static void process_user_recips(struct Envelope *env)
       mutt_addrlist_parse(&env->cc, uh->data + plen);
     else if ((plen = mutt_istr_startswith(uh->data, "bcc:")))
       mutt_addrlist_parse(&env->bcc, uh->data + plen);
-#ifdef USE_NNTP
     else if ((plen = mutt_istr_startswith(uh->data, "newsgroups:")))
       env->newsgroups = nntp_get_header(uh->data + plen);
     else if ((plen = mutt_istr_startswith(uh->data, "followup-to:")))
       env->followup_to = nntp_get_header(uh->data + plen);
     else if ((plen = mutt_istr_startswith(uh->data, "x-comment-to:")))
       env->x_comment_to = nntp_get_header(uh->data + plen);
-#endif
   }
 }
 
@@ -429,11 +419,9 @@ static void process_user_header(struct Envelope *env)
     else if (!mutt_istr_startswith(uh->data, "to:") &&
              !mutt_istr_startswith(uh->data, "cc:") &&
              !mutt_istr_startswith(uh->data, "bcc:") &&
-#ifdef USE_NNTP
              !mutt_istr_startswith(uh->data, "newsgroups:") &&
              !mutt_istr_startswith(uh->data, "followup-to:") &&
              !mutt_istr_startswith(uh->data, "x-comment-to:") &&
-#endif
              !mutt_istr_startswith(uh->data, "supersedes:") &&
              !mutt_istr_startswith(uh->data, "subject:") &&
              !mutt_istr_startswith(uh->data, "return-path:"))
@@ -1099,11 +1087,9 @@ void mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *env_cu
   add_message_id(&env->references, env_cur);
   add_message_id(&env->in_reply_to, env_cur);
 
-#ifdef USE_NNTP
   const bool c_x_comment_to = cs_subset_bool(sub, "x_comment_to");
   if (OptNewsSend && c_x_comment_to && !TAILQ_EMPTY(&env_cur->from))
     env->x_comment_to = mutt_str_dup(mutt_get_name(TAILQ_FIRST(&env_cur->from)));
-#endif
 }
 
 /**
@@ -1159,7 +1145,6 @@ static int envelope_defaults(struct Envelope *env, struct EmailArray *ea,
 
   if (flags & (SEND_REPLY | SEND_TO_SENDER))
   {
-#ifdef USE_NNTP
     if ((flags & SEND_NEWS))
     {
       /* in case followup set Newsgroups: with Followup-To: if it present */
@@ -1168,9 +1153,7 @@ static int envelope_defaults(struct Envelope *env, struct EmailArray *ea,
         env->newsgroups = mutt_str_dup(env_cur->followup_to);
       }
     }
-    else
-#endif
-        if (!single)
+    else if (!single)
     {
       struct Email **ep = NULL;
       ARRAY_FOREACH(ep, ea)
@@ -1342,14 +1325,12 @@ void mutt_set_followup_to(struct Envelope *env, struct ConfigSubset *sub)
   const bool c_followup_to = cs_subset_bool(sub, "followup_to");
   if (!c_followup_to)
     return;
-#ifdef USE_NNTP
   if (OptNewsSend)
   {
     if (!env->followup_to && env->newsgroups && (strrchr(env->newsgroups, ',')))
       env->followup_to = mutt_str_dup(env->newsgroups);
     return;
   }
-#endif
 
   if (TAILQ_EMPTY(&env->mail_followup_to))
   {
@@ -1505,24 +1486,21 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
   if (!fp_tmp)
     goto cleanup;
 
-#ifdef USE_SMTP
   const bool c_write_bcc = cs_subset_bool(sub, "write_bcc");
   const char *const c_smtp_url = cs_subset_string(sub, "smtp_url");
   if (c_smtp_url)
     cs_subset_str_native_set(sub, "write_bcc", false, NULL);
-#endif
+
 #ifdef MIXMASTER
   mutt_rfc822_write_header(fp_tmp, e->env, e->body, MUTT_WRITE_HEADER_NORMAL,
                            !STAILQ_EMPTY(&e->chain),
                            mutt_should_hide_protected_subject(e), sub);
-#endif
-#ifndef MIXMASTER
+#else
   mutt_rfc822_write_header(fp_tmp, e->env, e->body, MUTT_WRITE_HEADER_NORMAL,
                            false, mutt_should_hide_protected_subject(e), sub);
 #endif
-#ifdef USE_SMTP
+
   cs_subset_str_native_set(sub, "write_bcc", c_write_bcc, NULL);
-#endif
 
   fputc('\n', fp_tmp); /* tie off the header. */
 
@@ -1544,19 +1522,15 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
   }
 #endif
 
-#ifdef USE_NNTP
   if (OptNewsSend)
     goto sendmail;
-#endif
 
-#ifdef USE_SMTP
   if (c_smtp_url)
   {
     rc = mutt_smtp_send(&e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
                         buf_string(tempfile), (e->body->encoding == ENC_8BIT), sub);
     goto cleanup;
   }
-#endif
 
 sendmail:
   rc = mutt_invoke_sendmail(m, &e->env->from, &e->env->to, &e->env->cc, &e->env->bcc,
@@ -1767,7 +1741,6 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
    * from non-curses mode is available from Brendan Cully.  However,
    * I'd like to think a bit more about this before including it.  */
 
-#ifdef USE_IMAP
   if ((flags & SEND_BATCH) && !buf_is_empty(fcc) &&
       (imap_path_probe(buf_string(fcc), NULL) == MUTT_IMAP))
   {
@@ -1781,7 +1754,6 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
     buf_reset(fcc);
     return rc;
   }
-#endif
 
   if (buf_is_empty(fcc) || mutt_str_equal("/dev/null", buf_string(fcc)))
     return rc;
@@ -2149,12 +2121,10 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   int rc = -1;
 
-#ifdef USE_NNTP
   if (flags & SEND_NEWS)
     OptNewsSend = true;
   else
     OptNewsSend = false;
-#endif
 
   const enum QuadOption c_recall = cs_subset_quad(sub, "recall");
 
@@ -2205,7 +2175,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         goto cleanup;
       }
       flags = rc;
-#ifdef USE_NNTP
       /* If postponed message is a news article, it have
        * a "Newsgroups:" header line, then set appropriate flag.  */
       if (e_templ->env->newsgroups)
@@ -2218,7 +2187,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         flags &= ~SEND_NEWS;
         OptNewsSend = false;
       }
-#endif
     }
 
     if (flags & (SEND_POSTPONED | SEND_RESEND))
@@ -2357,12 +2325,10 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (flags & SEND_REPLY)
       mutt_fix_reply_recipients(e_templ->env, sub);
 
-#ifdef USE_NNTP
     if ((flags & SEND_NEWS) && (m && m->type == MUTT_NNTP) && !e_templ->env->newsgroups)
     {
       e_templ->env->newsgroups = mutt_str_dup(((struct NntpMboxData *) m->mdata)->group);
     }
-#endif
 
     const bool c_auto_edit = cs_subset_bool(sub, "auto_edit");
     const bool c_edit_headers = cs_subset_bool(sub, "edit_headers");
@@ -2735,12 +2701,10 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
                     ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0), sub);
     if (i == -1)
     {
-/* abort */
-#ifdef USE_NNTP
+      /* abort */
       if (flags & SEND_NEWS)
         mutt_message(_("Article not posted"));
       else
-#endif
         mutt_message(_("Mail not sent"));
       goto cleanup;
     }
@@ -2754,9 +2718,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
   }
 
-#ifdef USE_NNTP
   if (!(flags & SEND_NEWS))
-#endif
+  {
     if ((mutt_addrlist_count_recips(&e_templ->env->to) == 0) &&
         (mutt_addrlist_count_recips(&e_templ->env->cc) == 0) &&
         (mutt_addrlist_count_recips(&e_templ->env->bcc) == 0))
@@ -2770,6 +2733,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       mutt_warning(_("No recipients specified"));
       goto main_loop;
     }
+  }
 
   if (mutt_env_to_intl(e_templ->env, &tag, &err))
   {
@@ -2790,7 +2754,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       mutt_error(_("No subject specified"));
     goto main_loop;
   }
-#ifdef USE_NNTP
+
   if ((flags & SEND_NEWS) && !e_templ->env->subject)
   {
     mutt_error(_("No subject specified"));
@@ -2802,7 +2766,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     mutt_error(_("No newsgroup specified"));
     goto main_loop;
   }
-#endif
 
   if (!(flags & SEND_BATCH) && abort_for_missing_attachments(e_templ->body, sub))
   {
@@ -2917,9 +2880,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   if (!OptNoCurses)
   {
-    mutt_message((i != 0) ? _("Sending in background") :
-                            (flags & SEND_NEWS) ? _("Article posted") : /* USE_NNTP */
-                                _("Mail sent"));
+    mutt_message((i != 0)            ? _("Sending in background") :
+                 (flags & SEND_NEWS) ? _("Article posted") :
+                                       _("Mail sent"));
 #ifdef USE_NOTMUCH
     const bool c_nm_record = cs_subset_bool(sub, "nm_record");
     if (c_nm_record)

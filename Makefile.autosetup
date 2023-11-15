@@ -803,7 +803,6 @@ $(PWD)/send:
 
 ###############################################################################
 # libsidebar
-@if USE_SIDEBAR
 LIBSIDEBAR=	libsidebar.a
 LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/functions.o \
 		sidebar/observer.o sidebar/sidebar.o sidebar/sort.o \
@@ -816,7 +815,6 @@ $(LIBSIDEBAR): $(PWD)/sidebar $(LIBSIDEBAROBJS)
 	$(RANLIB) $@
 $(PWD)/sidebar:
 	$(MKDIR_P) $(PWD)/sidebar
-@endif
 
 ###############################################################################
 # libstore

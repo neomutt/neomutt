@@ -120,14 +120,12 @@ const char *const Prompts[] = {
   // L10N: The compose menu autocrypt line
   N_("Autocrypt: "),
 #endif
-#ifdef USE_NNTP
   /* L10N: Compose menu field.  May not want to translate. */
   N_("Newsgroups: "),
   /* L10N: Compose menu field.  May not want to translate. */
   N_("Followup-To: "),
   /* L10N: Compose menu field.  May not want to translate. */
   N_("X-Comment-To: "),
-#endif
   N_("Headers: "),
 };
 
@@ -317,7 +315,6 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
   struct Envelope *env = e->env;
   const int cols = win->state.cols - MaxHeaderWidth;
 
-#ifdef USE_NNTP
   if (wdata->is_news)
   {
     rows += 2; // 'Newsgroups:' and 'Followup-To:'
@@ -326,7 +323,6 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
       rows++;
   }
   else
-#endif
   {
     rows += calc_address(&env->to, cols, &wdata->to_rows);
     rows += calc_address(&env->cc, cols, &wdata->cc_rows);
@@ -724,7 +720,6 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
   mutt_window_clear(win);
   int row = draw_envelope_addr(HDR_FROM, &e->env->from, win, 0, 1);
 
-#ifdef USE_NNTP
   if (wdata->is_news)
   {
     draw_header(win, row++, HDR_NEWSGROUPS);
@@ -741,7 +736,6 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
     }
   }
   else
-#endif
   {
     row += draw_envelope_addr(HDR_TO, &e->env->to, win, row, wdata->to_rows);
     row += draw_envelope_addr(HDR_CC, &e->env->cc, win, row, wdata->cc_rows);

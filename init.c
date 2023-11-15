@@ -45,31 +45,25 @@
 #include "gui/lib.h"
 #include "init.h"
 #include "color/lib.h"
+#include "compmbox/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "key/lib.h"
+#include "menu/lib.h"
 #include "notmuch/lib.h"
 #include "parse/lib.h"
+#include "sidebar/lib.h"
 #include "commands.h"
 #include "globals.h"
 #include "hook.h"
 #include "mutt_logging.h"
+#include "muttlib.h"
+#include "protos.h"
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
 #ifdef USE_LUA
 #include "mutt_lua.h"
-#endif
-#include "menu/lib.h"
-#include "muttlib.h"
-#include "protos.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
-#ifdef USE_COMP_MBOX
-#include "compmbox/lib.h"
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
 #endif
 
 /**
@@ -268,9 +262,7 @@ void mutt_opts_cleanup(void)
   source_stack_cleanup();
 
   alias_cleanup();
-#ifdef USE_SIDEBAR
   sb_cleanup();
-#endif
 
   mutt_regexlist_free(&MailLists);
   mutt_regexlist_free(&NoSpamList);
@@ -333,21 +325,15 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
   alias_init();
   commands_init();
   hooks_init();
-#ifdef USE_COMP_MBOX
   mutt_comp_init();
-#endif
-#ifdef USE_IMAP
   imap_init();
-#endif
 #ifdef USE_LUA
   mutt_lua_init();
 #endif
   driver_tags_init();
 
   menu_init();
-#ifdef USE_SIDEBAR
   sb_init();
-#endif
 #ifdef USE_NOTMUCH
   nm_init();
 #endif

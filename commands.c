@@ -1194,7 +1194,6 @@ bail:
   return MUTT_CMD_ERROR;
 }
 
-#ifdef USE_IMAP
 /**
  * parse_subscribe_to - Parse the 'subscribe-to' command - Implements Command::parse() - @ingroup command_parse
  *
@@ -1240,7 +1239,6 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
   buf_addstr(err, _("No folder specified"));
   return MUTT_CMD_WARNING;
 }
-#endif
 
 /**
  * parse_tag_formats - Parse the 'tag-formats' command - Implements Command::parse() - @ingroup command_parse
@@ -1533,7 +1531,6 @@ static enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s
   return MUTT_CMD_SUCCESS;
 }
 
-#ifdef USE_IMAP
 /**
  * parse_unsubscribe_from - Parse the 'unsubscribe-from' command - Implements Command::parse() - @ingroup command_parse
  *
@@ -1577,7 +1574,6 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
   buf_addstr(err, _("No folder specified"));
   return MUTT_CMD_WARNING;
 }
-#endif
 
 /**
  * parse_version - Parse the 'version' command - Implements Command::parse() - @ingroup command_parse

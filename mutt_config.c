@@ -696,30 +696,22 @@ static void init_variables(struct ConfigSet *cs)
 #endif
   CONFIG_INIT_VARS(cs, helpbar);
   CONFIG_INIT_VARS(cs, history);
-#if defined(USE_IMAP)
   CONFIG_INIT_VARS(cs, imap);
-#endif
   CONFIG_INIT_VARS(cs, index);
   CONFIG_INIT_VARS(cs, maildir);
   CONFIG_INIT_VARS(cs, mh);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
   CONFIG_INIT_VARS(cs, ncrypt);
-#if defined(USE_NNTP)
   CONFIG_INIT_VARS(cs, nntp);
-#endif
 #if defined(USE_NOTMUCH)
   CONFIG_INIT_VARS(cs, notmuch);
 #endif
   CONFIG_INIT_VARS(cs, pager);
   CONFIG_INIT_VARS(cs, pattern);
-#if defined(USE_POP)
   CONFIG_INIT_VARS(cs, pop);
-#endif
   CONFIG_INIT_VARS(cs, send);
-#if defined(USE_SIDEBAR)
   CONFIG_INIT_VARS(cs, sidebar);
-#endif
 }
 
 /**

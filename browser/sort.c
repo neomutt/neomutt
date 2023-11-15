@@ -187,13 +187,11 @@ void browser_sort(struct BrowserState *state)
   const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
-#ifdef USE_NNTP
     case SORT_SIZE:
     case SORT_DATE:
       if (OptNews)
         return;
       FALLTHROUGH;
-#endif
     default:
       break;
   }

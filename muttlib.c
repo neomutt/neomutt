@@ -52,6 +52,7 @@
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
 #include "question/lib.h"
@@ -60,9 +61,6 @@
 #include "hook.h"
 #include "mx.h"
 #include "protos.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 
 /// Accepted XDG environment variables
 static const char *XdgEnvVars[] = {
@@ -316,12 +314,10 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
   buf_pool_release(&q);
   buf_pool_release(&tmp);
 
-#ifdef USE_IMAP
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
     imap_expand_path(buf);
-#endif
 }
 
 /**
@@ -1328,13 +1324,11 @@ int mutt_save_confirm(const char *s, struct stat *st)
 
   enum MailboxType type = mx_path_probe(s);
 
-#ifdef USE_POP
   if (type == MUTT_POP)
   {
     mutt_error(_("Can't save message to POP mailbox"));
     return 1;
   }
-#endif
 
   if ((type != MUTT_MAILBOX_ERROR) && (type != MUTT_UNKNOWN) && (mx_access(s, W_OK) == 0))
   {
@@ -1353,13 +1347,11 @@ int mutt_save_confirm(const char *s, struct stat *st)
     }
   }
 
-#ifdef USE_NNTP
   if (type == MUTT_NNTP)
   {
     mutt_error(_("Can't save message to news server"));
     return 0;
   }
-#endif
 
   if (stat(s, st) != -1)
   {

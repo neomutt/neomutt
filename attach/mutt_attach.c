@@ -43,6 +43,7 @@
 #include "gui/lib.h"
 #include "mutt_attach.h"
 #include "lib.h"
+#include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "question/lib.h"
@@ -57,9 +58,6 @@
 #include "mx.h"
 #include "protos.h"
 #include "rfc3676.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 
 /**
  * mutt_get_tmp_attachment - Get a temporary copy of an attachment
@@ -389,11 +387,7 @@ static int wait_interactive_filter(pid_t pid)
 {
   int rc;
 
-#ifdef USE_IMAP
   rc = imap_wait_keep_alive(pid);
-#else
-  waitpid(pid, &rc, 0);
-#endif
   mutt_sig_unblock_system(true);
   rc = WIFEXITED(rc) ? WEXITSTATUS(rc) : -1;
 

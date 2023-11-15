@@ -885,7 +885,6 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
       unlink(buf_string(tempfile));
       return -1;
     }
-#ifdef USE_SMTP
     const char *const c_smtp_url = cs_subset_string(sub, "smtp_url");
     if (c_smtp_url)
     {
@@ -893,7 +892,6 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
                           (e->body->encoding == ENC_8BIT), sub);
     }
     else
-#endif
     {
       rc = mutt_invoke_sendmail(m, env_from, to, NULL, NULL, buf_string(tempfile),
                                 (e->body->encoding == ENC_8BIT), sub);
@@ -952,9 +950,7 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
   struct Buffer *resent_from = buf_pool_get();
   mutt_addrlist_write(&from_list, resent_from, false);
 
-#ifdef USE_NNTP
   OptNewsSend = false;
-#endif
 
   /* prepare recipient list. idna conversion appears to happen before this
    * function is called, since the user receives confirmation of the address
