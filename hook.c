@@ -360,7 +360,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   }
 
   struct Expando *exp = NULL;
-  if (data & MUTT_IDXFMTHOOK)
+  if (data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
     exp = expando_parse(buf_string(cmd), IndexFormatDef, err);
 
   hook = hook_new();
@@ -751,6 +751,7 @@ static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, str
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
+        buf_alloc(path, PATH_MAX);
         mutt_make_string(path, -1, hook->expando, m, -1, e, MUTT_FORMAT_PLAIN, NULL);
         buf_fix_dptr(path);
         return 0;
