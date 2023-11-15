@@ -751,7 +751,7 @@ static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, str
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        mutt_make_string(path, 0, hook->command, m, -1, e, MUTT_FORMAT_PLAIN, NULL);
+        mutt_make_string(path, -1, hook->expando, m, -1, e, MUTT_FORMAT_PLAIN, NULL);
         buf_fix_dptr(path);
         return 0;
       }

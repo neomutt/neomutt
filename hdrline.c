@@ -1789,18 +1789,21 @@ void index_Z(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 /**
  * mutt_make_string - Create formatted strings using mailbox expandos
  * @param buf      Buffer for the result
- * @param cols     Number of screen columns (OPTIONAL)
- * @param s        printf-line format string
+ * @param max_cols Number of screen columns (-1 means unlimited)
+ * @param exp      Expando containing expando tree
  * @param m        Mailbox
  * @param inpgr    Message shown in the pager
  * @param e        Email
  * @param flags    Flags, see #MuttFormatFlags
  * @param progress Pager progress string
  */
-void mutt_make_string(struct Buffer *buf, int cols, const char *s,
-                      struct Mailbox *m, int inpgr, struct Email *e,
-                      MuttFormatFlags flags, const char *progress)
+void mutt_make_string(struct Buffer *buf, size_t max_cols,
+                      const struct Expando *exp, struct Mailbox *m, int inpgr,
+                      struct Email *e, MuttFormatFlags flags, const char *progress)
 {
+  if (!exp)
+    return;
+
   struct HdrFormatInfo hfi = { 0 };
 
   hfi.email = e;
@@ -1808,8 +1811,7 @@ void mutt_make_string(struct Buffer *buf, int cols, const char *s,
   hfi.msg_in_pager = inpgr;
   hfi.pager_progress = progress;
 
-  // mutt_expando_format(buf->data, buf->dsize, 0, cols, s, index_format_str,
-  //                     (intptr_t) &hfi, flags);
+  expando_render(exp, IndexRenderData, &hfi, flags, max_cols, buf);
 }
 
 /**

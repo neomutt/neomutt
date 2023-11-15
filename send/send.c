@@ -453,7 +453,7 @@ static void process_user_header(struct Envelope *env)
  */
 void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
-  const char *const c_forward_attribution_intro = cs_subset_string(sub, "forward_attribution_intro");
+  const struct Expando *c_forward_attribution_intro = cs_subset_expando(sub, "forward_attribution_intro");
   if (!c_forward_attribution_intro || !fp)
     return;
 
@@ -461,7 +461,7 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, 0, c_forward_attribution_intro, NULL, -1, e,
+  mutt_make_string(buf, -1, c_forward_attribution_intro, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf_string(buf), fp);
@@ -477,7 +477,7 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
  */
 void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
-  const char *const c_forward_attribution_trailer = cs_subset_string(sub, "forward_attribution_trailer");
+  const struct Expando *c_forward_attribution_trailer = cs_subset_expando(sub, "forward_attribution_trailer");
   if (!c_forward_attribution_trailer || !fp)
     return;
 
@@ -485,7 +485,7 @@ void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, 0, c_forward_attribution_trailer, NULL, -1, e,
+  mutt_make_string(buf, -1, c_forward_attribution_trailer, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
@@ -631,22 +631,22 @@ cleanup:
 
 /**
  * format_attribution - Format an attribution prefix/suffix
- * @param s      String to format
+ * @param exp    Expando to format
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  */
-static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
-                               struct ConfigSubset *sub)
+static void format_attribution(const struct Expando *exp, struct Email *e,
+                               FILE *fp_out, struct ConfigSubset *sub)
 {
-  if (!s || !fp_out)
+  if (!exp || !fp_out)
     return;
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, -1, exp, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
@@ -661,7 +661,7 @@ static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
  */
 void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  format_attribution(cs_subset_string(sub, "attribution_intro"), e, fp_out, sub);
+  format_attribution(cs_subset_expando(sub, "attribution_intro"), e, fp_out, sub);
 }
 
 /**
@@ -672,7 +672,7 @@ void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSub
  */
 void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  format_attribution(cs_subset_string(sub, "attribution_trailer"), e, fp_out, sub);
+  format_attribution(cs_subset_expando(sub, "attribution_trailer"), e, fp_out, sub);
 }
 
 /**
@@ -1058,11 +1058,11 @@ void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct Con
   if (!env)
     return;
 
-  const char *const c_forward_format = cs_subset_string(sub, "forward_format");
+  const struct Expando *c_forward_format = cs_subset_expando(sub, "forward_format");
 
   struct Buffer *buf = buf_pool_get();
   /* set the default subject for the message. */
-  mutt_make_string(buf, 0, NONULL(c_forward_format), NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, -1, c_forward_format, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   mutt_env_set_subject(env, buf_string(buf));
   buf_pool_release(&buf);
 }
