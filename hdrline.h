@@ -25,6 +25,7 @@
 #ifndef MUTT_HDRLINE_H
 #define MUTT_HDRLINE_H
 
+#include <stddef.h>
 #include "expando/lib.h"
 
 struct Buffer;
@@ -75,7 +76,7 @@ enum ToChars
   FLAG_CHAR_TO_REPLY_TO,          ///< Character denoting that the user is in the Reply-To list
 };
 
-void mutt_make_string(struct Buffer *buf, int cols, const char *s,
+void mutt_make_string(struct Buffer *buf, size_t cols, const struct Expando *exp,
                       struct Mailbox *m, int inpgr, struct Email *e,
                       MuttFormatFlags flags, const char *progress);
 

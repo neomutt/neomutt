@@ -166,7 +166,7 @@ void attach_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 {
   const struct AttachPtr *aptr = data;
 
-  const char *const c_message_format = cs_subset_string(NeoMutt->sub, "message_format");
+  const struct Expando *c_message_format = cs_subset_expando(NeoMutt->sub, "message_format");
   if (aptr->body->description)
   {
     const char *s = aptr->body->description;

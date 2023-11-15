@@ -879,7 +879,7 @@ void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
     }
   }
 
-  const char *const c_index_format = cs_subset_string(shared->sub, "index_format");
+  const struct Expando *c_index_format = cs_subset_expando(shared->sub, "index_format");
   int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : 0;
 
   int max_cols = menu->win->state.cols;
@@ -890,7 +890,7 @@ void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
     max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
-  mutt_make_string(buf, max_cols, NONULL(c_index_format), m, msg_in_pager, e, flags, NULL);
+  mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
 }
 
 /**
