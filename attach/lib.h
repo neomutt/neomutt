@@ -44,6 +44,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
+#include "expando/lib.h"
 // IWYU pragma: begin_keep
 #include "attach.h"
 #include "attachments.h"
@@ -53,6 +54,8 @@
 
 struct Body;
 struct Buffer;
+
+extern const struct ExpandoRenderData AttachRenderData[];
 
 int          attach_body_count   (struct Body *b, bool recurse);
 bool         attach_body_parent  (struct Body *start, struct Body *start_parent, struct Body *body, struct Body **body_parent);

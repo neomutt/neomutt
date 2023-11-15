@@ -881,8 +881,16 @@ void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 
   const char *const c_index_format = cs_subset_string(shared->sub, "index_format");
   int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : 0;
-  mutt_make_string(buf, menu->win->state.cols, NONULL(c_index_format), m,
-                   msg_in_pager, e, flags, NULL);
+
+  int max_cols = menu->win->state.cols;
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  mutt_make_string(buf, max_cols, NONULL(c_index_format), m, msg_in_pager, e, flags, NULL);
 }
 
 /**

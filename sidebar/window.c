@@ -579,7 +579,7 @@ long sidebar_Z_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  * @param[in]  shared  Shared Index Data
  *
  * Take all the relevant mailbox data and the desired screen width and then get
- * mutt_expando_format to do the actual work.
+ * expando_render() to do the actual work.
  *
  * @sa $sidebar_format
  */
@@ -588,9 +588,12 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
 {
   struct SidebarData sdata = { sbe, shared };
 
-  const char *const c_sidebar_format = cs_subset_string(NeoMutt->sub, "sidebar_format");
-  // mutt_expando_format(buf, buflen, 0, width, NONULL(c_sidebar_format),
-  //                     sidebar_format_str, (intptr_t) &sdata, MUTT_FORMAT_NO_FLAGS);
+  struct Buffer *tmp = buf_pool_get();
+  const struct Expando *c_sidebar_format = cs_subset_expando(NeoMutt->sub, "sidebar_format");
+  expando_render(c_sidebar_format, SidebarRenderData, &sdata,
+                 MUTT_FORMAT_NO_FLAGS, width, tmp);
+  mutt_str_copy(buf, buf_string(tmp), buflen);
+  buf_pool_release(&tmp);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth(buf);

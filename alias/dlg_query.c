@@ -95,6 +95,8 @@
 #include "gui.h"
 #include "mutt_logging.h"
 
+const struct ExpandoRenderData QueryRenderData[];
+
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
   // clang-format off
@@ -232,10 +234,16 @@ static void query_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   const struct AliasViewArray *ava = &mdata->ava;
   struct AliasView *av = ARRAY_GET(ava, line);
 
-  const char *const c_query_format = cs_subset_string(mdata->sub, "query_format");
+  int max_cols = menu->win->state.cols;
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
 
-  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols, NONULL(c_query_format),
-  //                     query_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
+  const struct Expando *c_query_format = cs_subset_expando(mdata->sub, "query_format");
+  expando_render(c_query_format, QueryRenderData, av, MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

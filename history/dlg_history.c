@@ -114,10 +114,17 @@ static void history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 
   struct HistoryEntry h = { line, entry };
 
-  const char *const c_history_format = cs_subset_string(NeoMutt->sub, "history_format");
-  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-  //                     NONULL(c_history_format), history_format_str,
-  //                     (intptr_t) &h, MUTT_FORMAT_ARROWCURSOR);
+  int max_cols = menu->win->state.cols;
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_history_format = cs_subset_expando(NeoMutt->sub, "history_format");
+  expando_render(c_history_format, HistoryRenderData, &h,
+                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

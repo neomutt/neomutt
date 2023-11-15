@@ -46,6 +46,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "sendmail.h"
+#include "expando/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"
 #include "globals.h"
@@ -305,19 +306,20 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
 
   if (OptNewsSend)
   {
-    char cmd[1024] = { 0 };
+    struct Buffer *cmd = buf_pool_get();
 
-    const char *const c_inews = cs_subset_string(sub, "inews");
-    // mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(c_inews),
-    //                     nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
-    if (*cmd == '\0')
+    const struct Expando *c_inews = cs_subset_expando(sub, "inews");
+    expando_render(c_inews, NntpRenderData, 0, MUTT_FORMAT_NO_FLAGS, cmd->dsize, cmd);
+    if (buf_is_empty(cmd))
     {
       i = nntp_post(m, msg);
       unlink(msg);
+      buf_pool_release(&cmd);
       return i;
     }
 
-    s = mutt_str_dup(cmd);
+    s = buf_strdup(cmd);
+    buf_pool_release(&cmd);
   }
   else
   {
