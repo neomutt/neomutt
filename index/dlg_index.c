@@ -917,10 +917,10 @@ const struct AttrColor *index_color(struct Menu *menu, int line)
 
 /**
  * mutt_draw_statusline - Draw a highlighted status bar
- * @param win    Window
- * @param cols   Maximum number of screen columns
- * @param buf    Message to be displayed
- * @param buflen Length of the buffer
+ * @param win      Window
+ * @param max_cols Maximum number of screen columns
+ * @param buf      Message to be displayed
+ * @param buflen   Length of the buffer
  *
  * Users configure the highlighting of the status bar, e.g.
  *     color status red default "[0-9][0-9]:[0-9][0-9]"
@@ -928,7 +928,7 @@ const struct AttrColor *index_color(struct Menu *menu, int line)
  * Where regexes overlap, the one nearest the start will be used.
  * If two regexes start at the same place, the longer match will be used.
  */
-void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, size_t buflen)
+void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf, size_t buflen)
 {
   if (!buf || !stdscr)
     return;
@@ -999,8 +999,8 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
     }
   } while (found);
 
-  /* Only 'len' bytes will fit into 'cols' screen columns */
-  len = mutt_wstr_trunc(buf, buflen, cols, NULL);
+  /* Only 'len' bytes will fit into 'max_cols' screen columns */
+  len = mutt_wstr_trunc(buf, buflen, max_cols, NULL);
 
   offset = 0;
 
@@ -1050,10 +1050,10 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
   }
 
   int width = mutt_strwidth(buf);
-  if (width < cols)
+  if (width < max_cols)
   {
     /* Pad the rest of the line with whitespace */
-    mutt_paddstr(win, cols - width, "");
+    mutt_paddstr(win, max_cols - width, "");
   }
 dsl_finish:
   FREE(&syntax);
@@ -1178,11 +1178,12 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
               const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
               if (c_beep_new)
                 mutt_beep(true);
-              const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
+              const struct Expando *c_new_mail_command =
+                  cs_subset_expando(shared->sub, "new_mail_command");
               if (c_new_mail_command)
               {
                 struct Buffer *cmd = buf_pool_get();
-                menu_status_line(cmd, shared, NULL, cmd->dsize, NONULL(c_new_mail_command));
+                menu_status_line(cmd, shared, NULL, -1, c_new_mail_command);
                 if (mutt_system(buf_string(cmd)) != 0)
                   mutt_error(_("Error running \"%s\""), buf_string(cmd));
                 buf_pool_release(&cmd);
@@ -1223,11 +1224,11 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
           const bool c_beep_new = cs_subset_bool(shared->sub, "beep_new");
           if (c_beep_new)
             mutt_beep(true);
-          const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
+          const struct Expando *c_new_mail_command = cs_subset_expando(shared->sub, "new_mail_command");
           if (c_new_mail_command)
           {
             struct Buffer *cmd = buf_pool_get();
-            menu_status_line(cmd, shared, priv->menu, cmd->dsize, NONULL(c_new_mail_command));
+            menu_status_line(cmd, shared, priv->menu, -1, c_new_mail_command);
             if (mutt_system(buf_string(cmd)) != 0)
               mutt_error(_("Error running \"%s\""), buf_string(cmd));
             buf_pool_release(&cmd);
