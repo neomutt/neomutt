@@ -447,11 +447,11 @@ int dlg_pager(struct PagerView *pview)
         const bool c_beep_new = cs_subset_bool(NeoMutt->sub, "beep_new");
         if (c_beep_new)
           mutt_beep(true);
-        const char *const c_new_mail_command = cs_subset_string(NeoMutt->sub, "new_mail_command");
+        const struct Expando *c_new_mail_command = cs_subset_expando(NeoMutt->sub, "new_mail_command");
         if (c_new_mail_command)
         {
           struct Buffer *cmd = buf_pool_get();
-          menu_status_line(cmd, shared, NULL, cmd->dsize, NONULL(c_new_mail_command));
+          menu_status_line(cmd, shared, NULL, cmd->dsize, c_new_mail_command);
           if (mutt_system(buf_string(cmd)) != 0)
             mutt_error(_("Error running \"%s\""), buf_string(cmd));
           buf_pool_release(&cmd);

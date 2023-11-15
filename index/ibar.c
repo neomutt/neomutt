@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -94,8 +95,8 @@ static int ibar_recalc(struct MuttWindow *win)
   struct IndexSharedData *shared = ibar_data->shared;
   struct IndexPrivateData *priv = ibar_data->priv;
 
-  const char *c_status_format = cs_subset_string(shared->sub, "status_format");
-  menu_status_line(buf, shared, priv->menu, win->state.cols, NONULL(c_status_format));
+  const struct Expando *c_status_format = cs_subset_expando(shared->sub, "status_format");
+  menu_status_line(buf, shared, priv->menu, win->state.cols, c_status_format);
 
   if (!mutt_str_equal(buf_string(buf), ibar_data->status_format))
   {
@@ -107,8 +108,8 @@ static int ibar_recalc(struct MuttWindow *win)
   const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
   if (c_ts_enabled && TsSupported)
   {
-    const char *c_ts_status_format = cs_subset_string(shared->sub, "ts_status_format");
-    menu_status_line(buf, shared, priv->menu, buf->dsize, NONULL(c_ts_status_format));
+    const struct Expando *c_ts_status_format = cs_subset_expando(shared->sub, "ts_status_format");
+    menu_status_line(buf, shared, priv->menu, buf->dsize, c_ts_status_format);
     if (!mutt_str_equal(buf_string(buf), ibar_data->ts_status_format))
     {
       mutt_str_replace(&ibar_data->ts_status_format, buf_string(buf));
@@ -116,8 +117,8 @@ static int ibar_recalc(struct MuttWindow *win)
       mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
     }
 
-    const char *c_ts_icon_format = cs_subset_string(shared->sub, "ts_icon_format");
-    menu_status_line(buf, shared, priv->menu, buf->dsize, NONULL(c_ts_icon_format));
+    const struct Expando *c_ts_icon_format = cs_subset_expando(shared->sub, "ts_icon_format");
+    menu_status_line(buf, shared, priv->menu, buf->dsize, c_ts_icon_format);
     if (!mutt_str_equal(buf_string(buf), ibar_data->ts_icon_format))
     {
       mutt_str_replace(&ibar_data->ts_icon_format, buf_string(buf));

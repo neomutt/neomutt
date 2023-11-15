@@ -52,6 +52,8 @@
 void status_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf);
 
+const struct ExpandoRenderData StatusRenderData[];
+
 /**
  * get_sort_str - Get the sort method as a string
  * @param buf    Buffer for the sort string
@@ -486,17 +488,16 @@ void status_V(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * @param[in]  shared   Shared Index data
  * @param[in]  menu     Current menu
  * @param[in]  cols     Maximum number of columns to use
- * @param[in]  fmt      Format string
+ * @param[in]  exp      Expando
  *
  * @sa status_format_str()
  */
 void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared,
-                      struct Menu *menu, int cols, const char *fmt)
+                      struct Menu *menu, int cols, const struct Expando *exp)
 {
   struct MenuStatusLineData data = { shared, menu };
 
-  // mutt_expando_format(buf->data, buf->dsize, 0, cols, fmt, status_format_str,
-  //                     (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
+  expando_render(exp, StatusRenderData, &data, MUTT_FORMAT_NO_FLAGS, cols, buf);
 }
 
 /**
