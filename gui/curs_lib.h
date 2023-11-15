@@ -33,16 +33,6 @@ struct Mailbox;
 struct MuttWindow;
 
 /**
- * enum FormatJustify - Alignment for mutt_simple_format()
- */
-enum FormatJustify
-{
-  JUSTIFY_LEFT = -1,  ///< Left justify the text
-  JUSTIFY_CENTER = 0, ///< Centre the text
-  JUSTIFY_RIGHT = 1,  ///< Right justify the text
-};
-
-/**
  * struct FileCompletionData - Input for the file completion function
  */
 struct FileCompletionData
@@ -60,9 +50,6 @@ int          mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailb
 void         mutt_edit_file(const char *editor, const char *file);
 void         mutt_endwin(void);
 void         mutt_flushinp(void);
-void         mutt_format_s(char *buf, size_t buflen, const char *prec, const char *s);
-void         mutt_format_s_tree(char *buf, size_t buflen, const char *prec, const char *s);
-void         mutt_format_s_x(char *buf, size_t buflen, const char *prec, const char *s, bool arboreal);
 struct KeyEvent mutt_getch(GetChFlags flags);
 void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(struct MuttWindow *win, int n, const char *s);
@@ -70,7 +57,6 @@ void         mutt_perror_debug(const char *s);
 void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);
-void         mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, enum FormatJustify justify, char pad_char, const char *s, size_t n, bool arboreal);
 size_t       mutt_strwidth(const char *s);
 size_t       mutt_strnwidth(const char *s, size_t len);
 void         mutt_unget_ch(int ch);
