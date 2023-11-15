@@ -58,17 +58,17 @@ typedef uint32_t HookFlags;          ///< Flags for mutt_parse_hook(), e.g. #MUT
 void hooks_init(void);
 enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 
-void  mutt_account_hook(const char *url);
-void  mutt_crypt_hook(struct ListHead *list, struct Address *addr);
-void  mutt_default_save(struct Buffer *path, struct Email *e);
-void  mutt_delete_hooks(HookFlags type);
-char *mutt_find_hook(HookFlags type, const char *pat);
-void  mutt_folder_hook(const char *path, const char *desc);
-const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *e);
-void  mutt_message_hook(struct Mailbox *m, struct Email *e, HookFlags type);
-enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
-void  mutt_select_fcc(struct Buffer *path, struct Email *e);
-void  mutt_startup_shutdown_hook(HookFlags type);
-void  mutt_timeout_hook(void);
+void                  mutt_account_hook            (const char *url);
+void                  mutt_crypt_hook              (struct ListHead *list, struct Address *addr);
+void                  mutt_default_save            (struct Buffer *path, struct Email *e);
+void                  mutt_delete_hooks            (HookFlags type);
+char *                mutt_find_hook               (HookFlags type, const char *pat);
+void                  mutt_folder_hook             (const char *path, const char *desc);
+const struct Expando *mutt_idxfmt_hook             (const char *name, struct Mailbox *m, struct Email *e);
+void                  mutt_message_hook            (struct Mailbox *m, struct Email *e, HookFlags type);
+enum CommandResult    mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+void                  mutt_select_fcc              (struct Buffer *path, struct Email *e);
+void                  mutt_startup_shutdown_hook   (HookFlags type);
+void                  mutt_timeout_hook            (void);
 
 #endif /* MUTT_HOOK_H */
