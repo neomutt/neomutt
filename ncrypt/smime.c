@@ -333,13 +333,12 @@ void smime_command_s(const struct ExpandoNode *node, void *data,
  * smime_command - Format an SMIME command string
  * @param buf    Buffer for the result
  * @param cctx   Data to pass to the formatter
- * @param fmt    printf-like formatting string
+ * @param exp    Expando to use
  */
 static void smime_command(struct Buffer *buf, struct SmimeCommandContext *cctx,
-                          const char *fmt)
+                          const struct Expando *exp)
 {
-  // mutt_expando_format(buf->data, buf->dsize, 0, buf->dsize, NONULL(fmt),
-  //                     smime_command_format_str, (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
+  expando_render(exp, SmimeCommandRenderData, cctx, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(buf));
 }
 
@@ -358,7 +357,7 @@ static void smime_command(struct Buffer *buf, struct SmimeCommandContext *cctx,
  * @param[in]  key           SMIME key
  * @param[in]  certificates  Public certificates
  * @param[in]  intermediates Intermediate certificates
- * @param[in]  format        printf-like format string
+ * @param[in]  exp           Expando format string
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -369,11 +368,11 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
                           int fp_smime_infd, int fp_smime_outfd, int fp_smime_errfd,
                           const char *fname, const char *sig_fname, const char *cryptalg,
                           const char *digestalg, const char *key, const char *certificates,
-                          const char *intermediates, const char *format)
+                          const char *intermediates, const struct Expando *exp)
 {
   struct SmimeCommandContext cctx = { 0 };
 
-  if (!format || (*format == '\0'))
+  if (!exp)
     return (pid_t) -1;
 
   cctx.fname = fname;
@@ -385,7 +384,7 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
   cctx.intermediates = intermediates;
 
   struct Buffer *cmd = buf_pool_get();
-  smime_command(cmd, &cctx, format);
+  smime_command(cmd, &cctx, exp);
 
   pid_t pid = filter_create_fd(buf_string(cmd), fp_smime_in, fp_smime_out, fp_smime_err,
                                fp_smime_infd, fp_smime_outfd, fp_smime_errfd, EnvList);
@@ -864,7 +863,8 @@ static int smime_handle_cert_email(const char *certificate, const char *mailbox,
     return 1;
   }
 
-  const char *const c_smime_get_cert_email_command = cs_subset_string(NeoMutt->sub, "smime_get_cert_email_command");
+  const struct Expando *c_smime_get_cert_email_command =
+      cs_subset_expando(NeoMutt->sub, "smime_get_cert_email_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), certificate,
                      NULL, NULL, NULL, NULL, NULL, NULL, c_smime_get_cert_email_command);
   if (pid == -1)
@@ -972,7 +972,7 @@ static char *smime_extract_certificate(const char *infile)
 
   /* Step 1: Convert the signature to a PKCS#7 structure, as we can't
    * extract the full set of certificates directly. */
-  const char *const c_smime_pk7out_command = cs_subset_string(NeoMutt->sub, "smime_pk7out_command");
+  const struct Expando *c_smime_pk7out_command = cs_subset_expando(NeoMutt->sub, "smime_pk7out_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_out), fileno(fp_err), infile,
                      NULL, NULL, NULL, NULL, NULL, NULL, c_smime_pk7out_command);
   if (pid == -1)
@@ -1006,7 +1006,7 @@ static char *smime_extract_certificate(const char *infile)
   }
 
   // Step 2: Extract the certificates from a PKCS#7 structure.
-  const char *const c_smime_get_cert_command = cs_subset_string(NeoMutt->sub, "smime_get_cert_command");
+  const struct Expando *c_smime_get_cert_command = cs_subset_expando(NeoMutt->sub, "smime_get_cert_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, fileno(fp_cert), fileno(fp_err),
                      buf_string(pk7out), NULL, NULL, NULL, NULL, NULL, NULL,
                      c_smime_get_cert_command);
@@ -1084,7 +1084,8 @@ static char *smime_extract_signer_certificate(const char *infile)
 
   /* Extract signer's certificate
    */
-  const char *const c_smime_get_signer_cert_command = cs_subset_string(NeoMutt->sub, "smime_get_signer_cert_command");
+  const struct Expando *c_smime_get_signer_cert_command =
+      cs_subset_expando(NeoMutt->sub, "smime_get_signer_cert_command");
   pid = smime_invoke(NULL, NULL, NULL, -1, -1, fileno(fp_err), infile, NULL, NULL, NULL,
                      NULL, buf_string(certfile), NULL, c_smime_get_signer_cert_command);
   if (pid == -1)
@@ -1163,7 +1164,8 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   {
     mutt_endwin();
 
-    const char *const c_smime_import_cert_command = cs_subset_string(NeoMutt->sub, "smime_import_cert_command");
+    const struct Expando *c_smime_import_cert_command =
+        cs_subset_expando(NeoMutt->sub, "smime_import_cert_command");
     FILE *fp_smime_in = NULL;
     pid_t pid = smime_invoke(&fp_smime_in, NULL, NULL, -1, fileno(fp_out),
                              fileno(fp_err), certfile, NULL, NULL, NULL, NULL,
@@ -1290,7 +1292,7 @@ static pid_t smime_invoke_encrypt(FILE **fp_smime_in, FILE **fp_smime_out,
                                   const char *fname, const char *uids)
 {
   const char *const c_smime_encrypt_with = cs_subset_string(NeoMutt->sub, "smime_encrypt_with");
-  const char *const c_smime_encrypt_command = cs_subset_string(NeoMutt->sub, "smime_encrypt_command");
+  const struct Expando *c_smime_encrypt_command = cs_subset_expando(NeoMutt->sub, "smime_encrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, c_smime_encrypt_with,
                       NULL, NULL, uids, NULL, c_smime_encrypt_command);
@@ -1316,7 +1318,7 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
                                int fp_smime_errfd, const char *fname)
 {
   const char *const c_smime_sign_digest_alg = cs_subset_string(NeoMutt->sub, "smime_sign_digest_alg");
-  const char *const c_smime_sign_command = cs_subset_string(NeoMutt->sub, "smime_sign_command");
+  const struct Expando *c_smime_sign_command = cs_subset_expando(NeoMutt->sub, "smime_sign_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd, fp_smime_outfd,
                       fp_smime_errfd, fname, NULL, NULL, c_smime_sign_digest_alg,
                       buf_string(&SmimeKeyToUse), buf_string(&SmimeCertToUse),
@@ -1662,8 +1664,9 @@ static pid_t smime_invoke_verify(FILE **fp_smime_in, FILE **fp_smime_out,
                                  int fp_smime_outfd, int fp_smime_errfd,
                                  const char *fname, const char *sig_fname, int opaque)
 {
-  const char *const c_smime_verify_opaque_command = cs_subset_string(NeoMutt->sub, "smime_verify_opaque_command");
-  const char *const c_smime_verify_command = cs_subset_string(NeoMutt->sub, "smime_verify_command");
+  const struct Expando *c_smime_verify_opaque_command =
+      cs_subset_expando(NeoMutt->sub, "smime_verify_opaque_command");
+  const struct Expando *c_smime_verify_command = cs_subset_expando(NeoMutt->sub, "smime_verify_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd, fp_smime_outfd,
                       fp_smime_errfd, fname, sig_fname, NULL, NULL, NULL, NULL, NULL,
                       (opaque ? c_smime_verify_opaque_command : c_smime_verify_command));
@@ -1688,7 +1691,7 @@ static pid_t smime_invoke_decrypt(FILE **fp_smime_in, FILE **fp_smime_out,
                                   FILE **fp_smime_err, int fp_smime_infd, int fp_smime_outfd,
                                   int fp_smime_errfd, const char *fname)
 {
-  const char *const c_smime_decrypt_command = cs_subset_string(NeoMutt->sub, "smime_decrypt_command");
+  const struct Expando *c_smime_decrypt_command = cs_subset_expando(NeoMutt->sub, "smime_decrypt_command");
   return smime_invoke(fp_smime_in, fp_smime_out, fp_smime_err, fp_smime_infd,
                       fp_smime_outfd, fp_smime_errfd, fname, NULL, NULL, NULL,
                       buf_string(&SmimeKeyToUse), buf_string(&SmimeCertToUse),
