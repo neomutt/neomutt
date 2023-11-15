@@ -82,6 +82,8 @@
 #include "functions.h"
 #include "mutt_logging.h"
 
+const struct ExpandoRenderData PatternRenderData[];
+
 /// Help Bar for the Pattern selection dialog
 static const struct Mapping PatternHelp[] = {
   // clang-format off
@@ -135,10 +137,17 @@ static void pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
 
-  const char *const c_pattern_format = cs_subset_string(NeoMutt->sub, "pattern_format");
-  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-  //                     NONULL(c_pattern_format), pattern_format_str,
-  //                     (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
+  int max_cols = menu->win->state.cols;
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_pattern_format = cs_subset_expando(NeoMutt->sub, "pattern_format");
+  expando_render(c_pattern_format, PatternRenderData, entry,
+                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

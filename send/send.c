@@ -65,6 +65,7 @@
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
+#include "parse/lib.h"
 #include "pattern/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
@@ -751,17 +752,17 @@ void greeting_v(const struct ExpandoNode *node, void *data,
  */
 static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  const char *const c_greeting = cs_subset_string(sub, "greeting");
+  const struct Expando *c_greeting = cs_subset_expando(sub, "greeting");
   if (!c_greeting || !fp_out)
     return;
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
 
-  // mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_format_str,
-  //                     (intptr_t) e, TOKEN_NO_FLAGS);
+  expando_render(c_greeting, GreetingRenderData, e, TOKEN_NO_FLAGS, buf->dsize, buf);
 
-  fputs(buf, fp_out);
+  fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
+  buf_pool_release(&buf);
 }
 
 /**

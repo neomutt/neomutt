@@ -152,20 +152,21 @@ void compose_v(const struct ExpandoNode *node, void *data,
  */
 static int cbar_recalc(struct MuttWindow *win)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   struct ComposeSharedData *shared = win->parent->wdata;
 
-  const char *const c_compose_format = cs_subset_string(shared->sub, "compose_format");
-  // mutt_expando_format(buf, sizeof(buf), 0, win->state.cols, NONULL(c_compose_format),
-  //                     compose_format_str, (intptr_t) shared, MUTT_FORMAT_NO_FLAGS);
+  const struct Expando *c_compose_format = cs_subset_expando(shared->sub, "compose_format");
+  expando_render(c_compose_format, ComposeRenderData, shared,
+                 MUTT_FORMAT_NO_FLAGS, win->state.cols, buf);
 
   struct ComposeBarData *cbar_data = win->wdata;
-  if (!mutt_str_equal(buf, cbar_data->compose_format))
+  if (!mutt_str_equal(buf_string(buf), cbar_data->compose_format))
   {
-    mutt_str_replace(&cbar_data->compose_format, buf);
+    mutt_str_replace(&cbar_data->compose_format, buf_string(buf));
     win->actions |= WA_REPAINT;
     mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   }
+  buf_pool_release(&buf);
 
   return 0;
 }

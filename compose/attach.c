@@ -67,6 +67,7 @@
 #include "gui/lib.h"
 #include "attach/lib.h"
 #include "convert/lib.h"
+#include "expando/lib.h"
 #include "menu/lib.h"
 #include "attach_data.h"
 #include "shared_data.h"
@@ -220,11 +221,17 @@ static void compose_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   struct ComposeSharedData *shared = menu->win->parent->wdata;
   struct ConfigSubset *sub = shared->sub;
 
-  const char *const c_attach_format = cs_subset_string(sub, "attach_format");
-  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-  //                     NONULL(c_attach_format), attach_format_str,
-  //                     (intptr_t) (actx->idx[actx->v2r[line]]),
-  //                     MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR);
+  int max_cols = menu->win->state.cols;
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_attach_format = cs_subset_expando(sub, "attach_format");
+  expando_render(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
+                 MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

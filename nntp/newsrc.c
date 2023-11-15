@@ -1150,11 +1150,12 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   /* load .newsrc */
   if (rc >= 0)
   {
-    const char *const c_newsrc = cs_subset_path(NeoMutt->sub, "newsrc");
-    // mutt_expando_format(file, sizeof(file), 0, sizeof(file), NONULL(c_newsrc),
-    //                     nntp_format_str, (intptr_t) adata, MUTT_FORMAT_NO_FLAGS);
-    mutt_expand_path(file, sizeof(file));
-    adata->newsrc_file = mutt_str_dup(file);
+    const struct Expando *c_newsrc = cs_subset_expando(NeoMutt->sub, "newsrc");
+    struct Buffer *buf = buf_pool_get();
+    expando_render(c_newsrc, NntpRenderData, adata, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    mutt_expand_path(buf->data, buf->dsize);
+    adata->newsrc_file = buf_strdup(buf);
+    buf_pool_release(&buf);
     rc = nntp_newsrc_parse(adata);
   }
   if (rc >= 0)

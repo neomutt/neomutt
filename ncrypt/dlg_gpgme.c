@@ -91,6 +91,8 @@
 #include "pgplib.h"
 #include "sort.h"
 
+const struct ExpandoRenderData PgpEntryGpgmeRenderData[];
+
 /// Help Bar for the GPGME key selection dialog
 static const struct Mapping GpgmeHelp[] = {
   // clang-format off
@@ -544,10 +546,17 @@ static void crypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   entry.key = key_table[line];
   entry.num = line + 1;
 
-  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
-  // mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-  //                     NONULL(c_pgp_entry_format), crypt_format_str,
-  //                     (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
+  int max_cols = menu->win->state.cols;
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
+  expando_render(c_pgp_entry_format, PgpEntryGpgmeRenderData, &entry,
+                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

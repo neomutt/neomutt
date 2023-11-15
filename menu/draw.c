@@ -289,15 +289,19 @@ static void print_enriched_string(struct MuttWindow *win, int index,
  */
 static void menu_pad_string(struct Menu *menu, struct Buffer *buf)
 {
-  char *scratch = buf_strdup(buf);
+  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
-  const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-  const int shift = c_arrow_cursor ? mutt_strwidth(c_arrow_string) + 1 : 0;
-  const int cols = menu->win->state.cols - shift;
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
 
-  mutt_simple_format(buf->data, buf->dsize, cols, cols, JUSTIFY_LEFT, ' ',
-                     scratch, mutt_str_len(scratch), true);
-  FREE(&scratch);
+  int buf_cols = mutt_strwidth(buf_string(buf));
+  for (; buf_cols < max_cols; buf_cols++)
+  {
+    buf_addch(buf, ' ');
+  }
 }
 
 /**
