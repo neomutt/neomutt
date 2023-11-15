@@ -79,6 +79,38 @@ static struct HashTable *IdxFmtHooks = NULL;
 static HookFlags CurrentHookType = MUTT_HOOK_NO_FLAGS;
 
 /**
+ * hook_free - Free a Hook
+ * @param ptr Hook to free
+ */
+static void hook_free(struct Hook **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct Hook *h = *ptr;
+
+  FREE(&h->command);
+  FREE(&h->source_file);
+  FREE(&h->regex.pattern);
+  if (h->regex.regex)
+  {
+    regfree(h->regex.regex);
+    FREE(&h->regex.regex);
+  }
+  mutt_pattern_free(&h->pattern);
+  FREE(ptr);
+}
+
+/**
+ * hook_new - Create a Hook
+ * @retval ptr New Hook
+ */
+static struct Hook *hook_new(void)
+{
+  return mutt_mem_calloc(1, sizeof(struct Hook));
+}
+
+/**
  * mutt_parse_charset_iconv_hook - Parse 'charset-hook' and 'iconv-hook' commands - Implements Command::parse() - @ingroup command_parse
  */
 enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buffer *s,
@@ -321,7 +353,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook = hook_new();
   hook->type = data;
   hook->command = buf_strdup(cmd);
   hook->source_file = mutt_get_sourced_cwd();
@@ -336,24 +368,6 @@ cleanup:
   buf_pool_release(&cmd);
   buf_pool_release(&pattern);
   return rc;
-}
-
-/**
- * delete_hook - Delete a Hook
- * @param h Hook to delete
- */
-static void delete_hook(struct Hook *h)
-{
-  FREE(&h->command);
-  FREE(&h->source_file);
-  FREE(&h->regex.pattern);
-  if (h->regex.regex)
-  {
-    regfree(h->regex.regex);
-    FREE(&h->regex.regex);
-  }
-  mutt_pattern_free(&h->pattern);
-  FREE(&h);
 }
 
 /**
@@ -372,7 +386,7 @@ void mutt_delete_hooks(HookFlags type)
     if ((type == MUTT_HOOK_NO_FLAGS) || (type == h->type))
     {
       TAILQ_REMOVE(&Hooks, h, entries);
-      delete_hook(h);
+      hook_free(&h);
     }
   }
 }
@@ -389,7 +403,7 @@ static void idxfmt_hashelem_free(int type, void *obj, intptr_t data)
   TAILQ_FOREACH_SAFE(h, hl, entries, tmp)
   {
     TAILQ_REMOVE(hl, h, entries);
-    delete_hook(h);
+    hook_free(&h);
   }
 
   FREE(&hl);
@@ -483,7 +497,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
   if (!pat)
     goto out;
 
-  hook = mutt_mem_calloc(1, sizeof(struct Hook));
+  hook = hook_new();
   hook->type = MUTT_IDXFMTHOOK;
   hook->command = buf_strdup(fmtstring);
   hook->source_file = mutt_get_sourced_cwd();
