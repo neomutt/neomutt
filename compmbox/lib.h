@@ -56,9 +56,9 @@ enum ExpandoDataCompress
  */
 struct CompressInfo
 {
-  const char *cmd_append;        ///< append-hook command
-  const char *cmd_close;         ///< close-hook  command
-  const char *cmd_open;          ///< open-hook   command
+  struct Expando *cmd_append;    ///< append-hook command
+  struct Expando *cmd_close;     ///< close-hook  command
+  struct Expando *cmd_open;      ///< open-hook   command
   long size;                     ///< size of the compressed file
   const struct MxOps *child_ops; ///< callbacks of de-compressed file
   bool locked;                   ///< if realpath is locked

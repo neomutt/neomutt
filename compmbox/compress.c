@@ -210,6 +210,25 @@ static void store_size(const struct Mailbox *m)
 }
 
 /**
+ * validate_compress_expando - Validate the Compress hooks
+ * @param s Command string
+ * @retval ptr Expando
+ */
+static struct Expando *validate_compress_expando(const char *s)
+{
+  struct Buffer *err = buf_pool_get();
+
+  struct Expando *exp = expando_parse(s, CompressFormatDef, err);
+  if (!exp)
+  {
+    mutt_error(_("Expando parse error: %s"), buf_string(err));
+  }
+
+  buf_pool_release(&err);
+  return exp;
+}
+
+/**
  * set_compress_info - Find the compress hooks for a mailbox
  * @param m Mailbox to examine
  * @retval ptr  CompressInfo Hook info for the mailbox's path
@@ -236,9 +255,9 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
   struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
   m->compress_info = ci;
 
-  ci->cmd_open = mutt_str_dup(o);
-  ci->cmd_close = mutt_str_dup(c);
-  ci->cmd_append = mutt_str_dup(a);
+  ci->cmd_open = validate_compress_expando(o);
+  ci->cmd_close = validate_compress_expando(c);
+  ci->cmd_append = validate_compress_expando(a);
 
   return ci;
 }
@@ -253,9 +272,9 @@ static void compress_info_free(struct Mailbox *m)
     return;
 
   struct CompressInfo *ci = m->compress_info;
-  FREE(&ci->cmd_open);
-  FREE(&ci->cmd_close);
-  FREE(&ci->cmd_append);
+  expando_free(&ci->cmd_open);
+  expando_free(&ci->cmd_close);
+  expando_free(&ci->cmd_append);
 
   unlock_realpath(m);
 
@@ -293,7 +312,7 @@ void compress_t(const struct ExpandoNode *node, void *data,
 /**
  * execute_command - Run a system command
  * @param m        Mailbox to work with
- * @param command  Command string to execute
+ * @param exp      Command expando to execute
  * @param progress Message to show the user
  * @retval true  Success
  * @retval false Failure
@@ -301,9 +320,9 @@ void compress_t(const struct ExpandoNode *node, void *data,
  * Run the supplied command, taking care of all the NeoMutt requirements,
  * such as locking files and blocking signals.
  */
-static bool execute_command(struct Mailbox *m, const char *command, const char *progress)
+static bool execute_command(struct Mailbox *m, const struct Expando *exp, const char *progress)
 {
-  if (!m || !command || !progress)
+  if (!m || !exp || !progress)
     return false;
 
   if (m->verbose)
@@ -317,8 +336,7 @@ static bool execute_command(struct Mailbox *m, const char *command, const char *
   endwin();
   fflush(stdout);
 
-  // mutt_expando_format(sys_cmd->data, sys_cmd->dsize, 0, sys_cmd->dsize, command,
-  //                     compress_format_str, (intptr_t) m, MUTT_FORMAT_NO_FLAGS);
+  expando_render(exp, CompressRenderData, m, MUTT_FORMAT_NO_FLAGS, sys_cmd->dsize, sys_cmd);
 
   if (mutt_system(buf_string(sys_cmd)) != 0)
   {
@@ -513,7 +531,7 @@ static bool comp_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
   {
     if (!execute_command(m, ci->cmd_open, _("Decompressing %s")))
     {
-      mutt_error(_("Compress command failed: %s"), ci->cmd_open);
+      mutt_error(_("Compress command failed: %s"), ci->cmd_open->string);
       goto cmoa_fail2;
     }
     m->type = mx_path_probe(mailbox_path(m));
@@ -668,7 +686,7 @@ static enum MxStatus comp_mbox_close(struct Mailbox *m)
   /* sync has already been called, so we only need to delete some files */
   if (m->append)
   {
-    const char *append = NULL;
+    const struct Expando *append = NULL;
     const char *msg = NULL;
 
     /* The file exists and we can append */

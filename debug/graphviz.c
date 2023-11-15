@@ -416,9 +416,9 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
 void dot_comp(FILE *fp, struct CompressInfo *ci, struct ListHead *links)
 {
   dot_object_header(fp, ci, "CompressInfo", "#c0c060");
-  dot_type_string(fp, "append", ci->cmd_append, true);
-  dot_type_string(fp, "close", ci->cmd_close, true);
-  dot_type_string(fp, "open", ci->cmd_open, true);
+  dot_type_string(fp, "append", ci->cmd_append->string, true);
+  dot_type_string(fp, "close", ci->cmd_close->string, true);
+  dot_type_string(fp, "open", ci->cmd_open->string, true);
   dot_object_footer(fp);
 }
 
