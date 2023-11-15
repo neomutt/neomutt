@@ -45,9 +45,7 @@ struct EnvelopeWindowData
   short bcc_rows;                  ///< Number of rows used by the 'Bcc:' field
   short sec_rows;                  ///< Number of rows used by the security fields
 
-#ifdef USE_NNTP
   bool is_news;                    ///< Email is a news article
-#endif
 #ifdef USE_AUTOCRYPT
   enum AutocryptRec autocrypt_rec; ///< Autocrypt recommendation
 #endif

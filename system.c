@@ -33,11 +33,9 @@
 #include <sys/wait.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
+#include "imap/lib.h"
 #include "globals.h"
 #include "protos.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
 
 /**
  * mutt_system - Run an external command
@@ -92,9 +90,7 @@ int mutt_system(const char *cmd)
   }
   else if (pid != -1)
   {
-#ifdef USE_IMAP
     rc = imap_wait_keep_alive(pid);
-#endif
   }
 
   sigaction(SIGCONT, &oldcont, NULL);

@@ -50,10 +50,13 @@
 #include "browser/lib.h"
 #include "editor/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "nntp/lib.h"
+#include "pop/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "attach_data.h"
@@ -66,6 +69,7 @@
 #include "muttlib.h"
 #include "mview.h"
 #include "mx.h"
+#include "nntp/adata.h" // IWYU pragma: keep
 #include "protos.h"
 #include "rfc3676.h"
 #include "shared_data.h"
@@ -74,16 +78,6 @@
 #endif
 #ifdef MIXMASTER
 #include "mixmaster/lib.h"
-#endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#include "nntp/adata.h" // IWYU pragma: keep
-#endif
-#ifdef USE_POP
-#include "pop/lib.h"
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
 #endif
 #endif
 
@@ -95,9 +89,7 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "attach-file",                   OP_ATTACHMENT_ATTACH_FILE },
   { "attach-key",                    OP_ATTACHMENT_ATTACH_KEY },
   { "attach-message",                OP_ATTACHMENT_ATTACH_MESSAGE },
-#ifdef USE_NNTP
   { "attach-news-message",           OP_ATTACHMENT_ATTACH_NEWS_MESSAGE },
-#endif
 #ifdef USE_AUTOCRYPT
   { "autocrypt-menu",                OP_COMPOSE_AUTOCRYPT_MENU },
 #endif
@@ -111,24 +103,18 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "edit-encoding",                 OP_ATTACHMENT_EDIT_ENCODING },
   { "edit-fcc",                      OP_ENVELOPE_EDIT_FCC },
   { "edit-file",                     OP_COMPOSE_EDIT_FILE },
-#ifdef USE_NNTP
   { "edit-followup-to",              OP_ENVELOPE_EDIT_FOLLOWUP_TO },
-#endif
   { "edit-from",                     OP_ENVELOPE_EDIT_FROM },
   { "edit-headers",                  OP_ENVELOPE_EDIT_HEADERS },
   { "edit-language",                 OP_ATTACHMENT_EDIT_LANGUAGE },
   { "edit-message",                  OP_COMPOSE_EDIT_MESSAGE },
   { "edit-mime",                     OP_ATTACHMENT_EDIT_MIME },
-#ifdef USE_NNTP
   { "edit-newsgroups",               OP_ENVELOPE_EDIT_NEWSGROUPS },
-#endif
   { "edit-reply-to",                 OP_ENVELOPE_EDIT_REPLY_TO },
   { "edit-subject",                  OP_ENVELOPE_EDIT_SUBJECT },
   { "edit-to",                       OP_ENVELOPE_EDIT_TO },
   { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
-#ifdef USE_NNTP
   { "edit-x-comment-to",             OP_ENVELOPE_EDIT_X_COMMENT_TO },
-#endif
   { "exit",                          OP_EXIT },
   { "filter-entry",                  OP_ATTACHMENT_FILTER },
   { "forget-passphrase",             OP_FORGET_PASSPHRASE },
@@ -830,7 +816,6 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
 {
   char *prompt = _("Open mailbox to attach message from");
 
-#ifdef USE_NNTP
   OptNews = false;
   if (shared->mailbox && (op == OP_ATTACHMENT_ATTACH_NEWS_MESSAGE))
   {
@@ -842,14 +827,11 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     prompt = _("Open newsgroup to attach message from");
     OptNews = true;
   }
-#endif
 
   struct Buffer *fname = buf_pool_get();
   if (shared->mailbox)
   {
-#ifdef USE_NNTP
     if ((op == OP_ATTACHMENT_ATTACH_MESSAGE) ^ (shared->mailbox->type == MUTT_NNTP))
-#endif
     {
       buf_strcpy(fname, mailbox_path(shared->mailbox));
       buf_pretty_mailbox(fname);
@@ -864,21 +846,17 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
     return FR_NO_ACTION;
   }
 
-#ifdef USE_NNTP
   if (OptNews)
     nntp_expand_path(fname->data, fname->dsize, &CurrentNewsSrv->conn->account);
   else
-#endif
     buf_expand_path(fname);
-#ifdef USE_IMAP
+
   if (imap_path_probe(buf_string(fname), NULL) != MUTT_IMAP)
-#endif
-#ifdef USE_POP
+  {
     if (pop_path_probe(buf_string(fname), NULL) != MUTT_POP)
-#endif
-#ifdef USE_NNTP
+    {
       if (!OptNews && (nntp_path_probe(buf_string(fname), NULL) != MUTT_NNTP))
-#endif
+      {
         if (mx_path_probe(buf_string(fname)) != MUTT_NOTMUCH)
         {
           /* check to make sure the file exists and is readable */
@@ -889,6 +867,9 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
             return FR_ERROR;
           }
         }
+      }
+    }
+  }
 
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
 

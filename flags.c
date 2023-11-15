@@ -81,7 +81,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
           update = true;
           if (upd_mbox)
             m->msg_deleted++;
-#ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
           if (m->type == MUTT_IMAP)
@@ -90,7 +89,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
             if (upd_mbox)
               m->changed = true;
           }
-#endif
         }
       }
       else if (e->deleted)
@@ -99,7 +97,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
         update = true;
         if (upd_mbox)
           m->msg_deleted--;
-#ifdef USE_IMAP
         /* see my comment above */
         if (m->type == MUTT_IMAP)
         {
@@ -107,7 +104,6 @@ void mutt_set_flag(struct Mailbox *m, struct Email *e, enum MessageType flag,
           if (upd_mbox)
             m->changed = true;
         }
-#endif
         /* If the user undeletes a message which is marked as
          * "trash" in the maildir folder on disk, the folder has
          * been changed, and is marked accordingly.  However, we do

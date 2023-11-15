@@ -70,14 +70,10 @@ const struct MenuFuncOp OpAttachment[] = { /* map: attachment */
   { "edit-type",                     OP_ATTACHMENT_EDIT_TYPE },
   { "exit",                          OP_EXIT },
   { "extract-keys",                  OP_EXTRACT_KEYS },
-#ifdef USE_NNTP
   { "followup-message",              OP_FOLLOWUP },
-#endif
   { "forget-passphrase",             OP_FORGET_PASSPHRASE },
   { "forward-message",               OP_FORWARD_MESSAGE },
-#ifdef USE_NNTP
   { "forward-to-group",              OP_FORWARD_TO_GROUP },
-#endif
   { "group-chat-reply",              OP_GROUP_CHAT_REPLY },
   { "group-reply",                   OP_GROUP_REPLY },
   { "list-reply",                    OP_LIST_REPLY },
@@ -274,23 +270,19 @@ static int op_attachment_delete(struct AttachPrivateData *priv, int op)
   if (check_readonly(priv->mailbox))
     return FR_ERROR;
 
-#ifdef USE_POP
   if (priv->mailbox->type == MUTT_POP)
   {
     mutt_flushinp();
     mutt_error(_("Can't delete attachment from POP server"));
     return FR_ERROR;
   }
-#endif
 
-#ifdef USE_NNTP
   if (priv->mailbox->type == MUTT_NNTP)
   {
     mutt_flushinp();
     mutt_error(_("Can't delete attachment from news server"));
     return FR_ERROR;
   }
-#endif
 
   if ((WithCrypto != 0) && (priv->actx->email->security & SEC_ENCRYPT))
   {
@@ -638,7 +630,6 @@ static int op_resend(struct AttachPrivateData *priv, int op)
 
 // -----------------------------------------------------------------------------
 
-#ifdef USE_NNTP
 /**
  * op_followup - followup to newsgroup - Implements ::attach_function_t - @ingroup attach_function_api
  */
@@ -675,7 +666,6 @@ static int op_forward_to_group(struct AttachPrivateData *priv, int op)
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;
 }
-#endif
 
 // -----------------------------------------------------------------------------
 
@@ -701,14 +691,10 @@ static const struct AttachFunction AttachFunctions[] = {
   { OP_DISPLAY_HEADERS,             op_attachment_view },
   { OP_EXIT,                        op_exit },
   { OP_EXTRACT_KEYS,                op_extract_keys },
-#ifdef USE_NNTP
   { OP_FOLLOWUP,                    op_followup },
-#endif
   { OP_FORGET_PASSPHRASE,           op_forget_passphrase },
   { OP_FORWARD_MESSAGE,             op_forward_message },
-#ifdef USE_NNTP
   { OP_FORWARD_TO_GROUP,            op_forward_to_group },
-#endif
   { OP_GROUP_CHAT_REPLY,            op_reply },
   { OP_GROUP_REPLY,                 op_reply },
   { OP_LIST_REPLY,                  op_reply },

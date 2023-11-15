@@ -328,10 +328,8 @@ enum ContentType mutt_check_mime_type(const char *s)
     return TYPE_TEXT;
   if (mutt_istr_equal("multipart", s))
     return TYPE_MULTIPART;
-#ifdef SUN_ATTACHMENT
   if (mutt_istr_equal("x-sun-attachment", s))
     return TYPE_MULTIPART;
-#endif
   if (mutt_istr_equal("application", s))
     return TYPE_APPLICATION;
   if (mutt_istr_equal("message", s))
@@ -409,10 +407,8 @@ int mutt_check_encoding(const char *c)
     return ENC_BASE64;
   if (mutt_istr_startswith(c, "x-uuencode"))
     return ENC_UUENCODED;
-#ifdef SUN_ATTACHMENT
   if (mutt_istr_startswith(c, "uuencode"))
     return ENC_UUENCODED;
-#endif
   return ENC_OTHER;
 }
 
@@ -447,12 +443,10 @@ void mutt_parse_content_type(const char *s, struct Body *b)
     if (pc && !b->filename)
       b->filename = mutt_str_dup(pc);
 
-#ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
     pc = mutt_param_get(&b->parameter, "conversions");
     if (pc)
       b->encoding = mutt_check_encoding(pc);
-#endif
   }
 
   /* Now get the subtype */
@@ -470,10 +464,8 @@ void mutt_parse_content_type(const char *s, struct Body *b)
   /* Finally, get the major type */
   b->type = mutt_check_mime_type(s);
 
-#ifdef SUN_ATTACHMENT
   if (mutt_istr_equal("x-sun-attachment", s))
     mutt_str_replace(&b->subtype, "x-sun-attachment");
-#endif
 
   if (b->type == TYPE_OTHER)
   {
@@ -783,7 +775,6 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
         mutt_addrlist_parse(&env->from, body);
         matched = true;
       }
-#ifdef USE_NNTP
       else if ((name_len == 11) && eqi10(name + 1, "ollowup-to"))
       {
         if (!env->followup_to)
@@ -793,7 +784,6 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
         }
         matched = true;
       }
-#endif
       break;
 
     case 'i':
@@ -892,7 +882,6 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       }
       break;
 
-#ifdef USE_NNTP
     case 'n':
       if ((name_len == 10) && eqi9(name + 1, "ewsgroups"))
       {
@@ -902,7 +891,6 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
         matched = true;
       }
       break;
-#endif
 
     case 'o':
       /* field 'Organization:' saves only for pager! */
@@ -1029,7 +1017,6 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
         env->x_label = mutt_str_dup(body);
         matched = true;
       }
-#ifdef USE_NNTP
       else if ((name_len == 12) && eqi11(name + 1, "-comment-to"))
       {
         if (!env->x_comment_to)
@@ -1042,7 +1029,6 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
           env->xref = mutt_str_dup(body);
         matched = true;
       }
-#endif
       else if ((name_len == 13) && eqi12(name + 1, "-original-to"))
       {
         mutt_addrlist_parse(&env->x_original_to, body);
@@ -1421,7 +1407,6 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
         mutt_param_set(&b->parameter, "content-id", id);
       }
     }
-#ifdef SUN_ATTACHMENT
     else if ((plen = mutt_istr_startswith(line, "x-sun-")))
     {
       if (mutt_istr_equal("data-type", line + plen))
@@ -1442,7 +1427,6 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
         rfc2047_decode(&b->description);
       }
     }
-#endif
     else
     {
       if (mutt_rfc822_parse_line(env, NULL, line, strlen(line), c, false, false, false))
@@ -1513,11 +1497,9 @@ static void parse_part(FILE *fp, struct Body *b, int *counter)
   switch (b->type)
   {
     case TYPE_MULTIPART:
-#ifdef SUN_ATTACHMENT
       if (mutt_istr_equal(b->subtype, "x-sun-attachment"))
         bound = "--------";
       else
-#endif
         bound = mutt_param_get(&b->parameter, "boundary");
 
       if (!mutt_file_seek(fp, b->offset, SEEK_SET))
@@ -1622,7 +1604,6 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
         if (!new_body)
           break;
 
-#ifdef SUN_ATTACHMENT
         if (mutt_param_get(&new_body->parameter, "content-lines"))
         {
           int lines = 0;
@@ -1631,7 +1612,7 @@ static struct Body *parse_multipart(FILE *fp, const char *boundary,
             if ((ftello(fp) >= end_off) || !fgets(buf, sizeof(buf), fp))
               break;
         }
-#endif
+
         /* Consistency checking - catch bad attachment end boundaries */
         if (new_body->offset > end_off)
         {

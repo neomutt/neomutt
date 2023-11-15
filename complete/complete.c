@@ -35,14 +35,10 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "imap/lib.h"
+#include "nntp/lib.h"
 #include "globals.h"
 #include "muttlib.h"
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#endif
 
 struct CompletionData;
 
@@ -67,21 +63,17 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   struct Buffer *exp_dirpart = NULL;
   struct Buffer *filepart = NULL;
   struct Buffer *tmp = NULL;
-#ifdef USE_IMAP
   struct Buffer *imap_path = NULL;
   int rc;
-#endif
 
   mutt_debug(LL_DEBUG2, "completing %s\n", buf_string(buf));
 
-#ifdef USE_NNTP
   if (OptNews)
     return nntp_complete(buf);
-#endif
 
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-#ifdef USE_IMAP
+
   imap_path = buf_pool_get();
   /* we can use '/' as a delimiter, imap_complete rewrites it */
   char ch = buf_at(buf, 0);
@@ -107,7 +99,6 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   }
 
   buf_pool_release(&imap_path);
-#endif
 
   dirpart = buf_pool_get();
   exp_dirpart = buf_pool_get();

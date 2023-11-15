@@ -980,11 +980,9 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_str_copy(buf, hfi->pager_progress, buflen);
       break;
 
-#ifdef USE_NNTP
     case 'q':
       mutt_format_s(buf, buflen, prec, e->env->newsgroups ? e->env->newsgroups : "");
       break;
-#endif
 
     case 'r':
     {
@@ -1139,7 +1137,6 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       }
       break;
 
-#ifdef USE_NNTP
     case 'x':
       if (!optional)
       {
@@ -1150,7 +1147,6 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         optional = false;
       }
       break;
-#endif
 
     case 'X':
     {

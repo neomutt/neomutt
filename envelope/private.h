@@ -47,11 +47,9 @@ enum HeaderField
 #ifdef USE_AUTOCRYPT
   HDR_AUTOCRYPT, ///< "Autocrypt:" and "Recommendation:" fields
 #endif
-#ifdef USE_NNTP
   HDR_NEWSGROUPS, ///< "Newsgroups:" field
   HDR_FOLLOWUPTO, ///< "Followup-To:" field
   HDR_XCOMMENTTO, ///< "X-Comment-To:" field
-#endif
   HDR_CUSTOM_HEADERS, ///< "Headers:" field
   HDR_ATTACH_TITLE,   ///< The "-- Attachments" line
 };

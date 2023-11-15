@@ -51,6 +51,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
+#include "sidebar/lib.h"
 #include "display.h"
 #include "functions.h"
 #include "globals.h"
@@ -61,9 +62,6 @@
 #include "private_data.h"
 #include "protos.h"
 #include "status.h"
-#ifdef USE_SIDEBAR
-#include "sidebar/lib.h"
-#endif
 
 /// Braille display: row to leave the cursor
 int BrailleRow = -1;
@@ -106,7 +104,6 @@ static const struct Mapping PagerNormalHelp[] = {
   // clang-format on
 };
 
-#ifdef USE_NNTP
 /// Help Bar for the Pager of an NNTP Mailbox
 static const struct Mapping PagerNewsHelp[] = {
   // clang-format off
@@ -121,7 +118,6 @@ static const struct Mapping PagerNewsHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
-#endif
 
 /**
  * pager_queue_redraw - Queue a request for a redraw
@@ -541,10 +537,8 @@ int dlg_pager(struct PagerView *pview)
     {
       if ((rc == FR_UNKNOWN) && priv->pview->win_index)
         rc = index_function_dispatcher(priv->pview->win_index, op);
-#ifdef USE_SIDEBAR
       if (rc == FR_UNKNOWN)
         rc = sb_function_dispatcher(win_sidebar, op);
-#endif
     }
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);

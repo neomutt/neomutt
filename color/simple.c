@@ -59,9 +59,7 @@ void simple_colors_init(void)
   SimpleColors[MT_COLOR_ITALIC].attrs = A_ITALIC;
   SimpleColors[MT_COLOR_MARKERS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_SEARCH].attrs = A_REVERSE;
-#ifdef USE_SIDEBAR
   SimpleColors[MT_COLOR_SIDEBAR_HIGHLIGHT].attrs = A_UNDERLINE;
-#endif
   SimpleColors[MT_COLOR_STATUS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
   SimpleColors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;

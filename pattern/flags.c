@@ -156,11 +156,9 @@ const struct PatternFlags Flags[] = {
   { 'V', MUTT_PAT_CRYPT_VERIFIED, 0, EAT_NONE,
     // L10N: Pattern Completion Menu description for ~V
     N_("cryptographically verified messages") },
-#ifdef USE_NNTP
   { 'w', MUTT_PAT_NEWSGROUPS, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~w
     N_("newsgroups matching EXPR") },
-#endif
   { 'x', MUTT_PAT_REFERENCE, 0, EAT_REGEX,
     // L10N: Pattern Completion Menu description for ~x
     N_("messages whose References header matches EXPR") },

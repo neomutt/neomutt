@@ -264,9 +264,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
    * $edit_headers set, we remove References: as they're likely invalid;
    * we can simply compare strings as we don't generate References for
    * multiple Message-Ids in IRT anyways */
-#ifdef USE_NNTP
   if (!OptNewsSend)
-#endif
   {
     if (!STAILQ_EMPTY(&e->env->in_reply_to) &&
         (STAILQ_EMPTY(&env_new->in_reply_to) ||

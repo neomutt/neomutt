@@ -75,12 +75,10 @@ struct Envelope
   char *date;                          ///< Sent date
   char *x_label;                       ///< X-Label
   char *organization;                  ///< Organisation header
-#ifdef USE_NNTP
   char *newsgroups;                    ///< List of newsgroups
   char *xref;                          ///< List of cross-references
   char *followup_to;                   ///< List of 'followup-to' fields
   char *x_comment_to;                  ///< List of 'X-comment-to' fields
-#endif
   struct Buffer spam;                  ///< Spam header
   struct ListHead references;          ///< message references (in reverse order)
   struct ListHead in_reply_to;         ///< in-reply-to header content

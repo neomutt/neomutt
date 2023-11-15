@@ -90,21 +90,17 @@ struct FolderFile
   int msg_count;           ///< total number of messages
   int msg_unread;          ///< number of unread messages
 
-#ifdef USE_IMAP
   char delim;              ///< Path delimiter
 
   bool imap          : 1;  ///< This is an IMAP folder
   bool selectable    : 1;  ///< Folder can be selected
   bool inferiors     : 1;  ///< Folder has children
-#endif
   bool has_mailbox   : 1;  ///< This is a mailbox
   bool local         : 1;  ///< Folder is on local filesystem
   bool notify_user   : 1;  ///< User will be notified of new mail
   bool poll_new_mail : 1;  ///< Check mailbox for new mail
   bool tagged        : 1;  ///< Folder is tagged
-#ifdef USE_NNTP
   struct NntpMboxData *nd; ///< Extra NNTP data
-#endif
 
   int gen;                 ///< Unique id, used for (un)sorting
 };
@@ -117,10 +113,8 @@ ARRAY_HEAD(BrowserEntryArray, struct FolderFile);
 struct BrowserState
 {
   struct BrowserEntryArray entry; ///< Array of files / dirs / mailboxes
-#ifdef USE_IMAP
   bool imap_browse; ///< IMAP folder
   char *folder;     ///< Folder name
-#endif
   bool is_mailbox_list; ///< Viewing mailboxes
 };
 

@@ -176,9 +176,7 @@ enum PatternType
   MUTT_PAT_DRIVER_TAGS,       ///< Pattern matches message tags
   MUTT_PAT_MIMEATTACH,        ///< Pattern matches number of attachments
   MUTT_PAT_MIMETYPE,          ///< Pattern matches MIME type
-#ifdef USE_NNTP
   MUTT_PAT_NEWSGROUPS,        ///< Pattern matches newsgroup
-#endif
   MUTT_PAT_MAX,
 };
 

@@ -122,12 +122,10 @@ void mutt_env_free(struct Envelope **ptr)
   FREE(&env->date);
   FREE(&env->x_label);
   FREE(&env->organization);
-#ifdef USE_NNTP
   FREE(&env->newsgroups);
   FREE(&env->xref);
   FREE(&env->followup_to);
   FREE(&env->x_comment_to);
-#endif
 
   buf_dealloc(&env->spam);
 

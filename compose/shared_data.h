@@ -43,9 +43,7 @@ struct ComposeSharedData
   int flags;                         ///< Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
   bool fcc_set;                      ///< User has edited the Fcc: field
   int rc;                            ///< Return code to leave compose
-#ifdef USE_NNTP
   bool news;                         ///< Email is a news article
-#endif
 };
 
 void compose_shared_data_free(struct MuttWindow *win, void **ptr);

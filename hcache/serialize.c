@@ -616,11 +616,9 @@ unsigned char *serial_dump_envelope(const struct Envelope *env,
   d = serial_dump_stailq(&env->in_reply_to, d, off, false);
   d = serial_dump_stailq(&env->userhdrs, d, off, convert);
 
-#ifdef USE_NNTP
   d = serial_dump_char(env->xref, d, off, false);
   d = serial_dump_char(env->followup_to, d, off, false);
   d = serial_dump_char(env->x_comment_to, d, off, convert);
-#endif
 
   return d;
 }
@@ -674,11 +672,9 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   serial_restore_stailq(&env->in_reply_to, d, off, false);
   serial_restore_stailq(&env->userhdrs, d, off, convert);
 
-#ifdef USE_NNTP
   serial_restore_char(&env->xref, d, off, false);
   serial_restore_char(&env->followup_to, d, off, false);
   serial_restore_char(&env->x_comment_to, d, off, convert);
-#endif
 }
 
 /**

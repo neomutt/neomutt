@@ -155,15 +155,12 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
       FALLTHROUGH;
 
     case 'f':
-#ifdef USE_COMP_MBOX
       if (m && m->compress_info && (m->realpath[0] != '\0'))
       {
         mutt_str_copy(tmp, m->realpath, sizeof(tmp));
         mutt_pretty_mailbox(tmp, sizeof(tmp));
       }
-      else
-#endif
-          if (m && (m->type == MUTT_NOTMUCH) && m->name)
+      else if (m && (m->type == MUTT_NOTMUCH) && m->name)
       {
         mutt_str_copy(tmp, m->name, sizeof(tmp));
       }

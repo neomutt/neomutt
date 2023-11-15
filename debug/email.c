@@ -122,12 +122,10 @@ void dump_envelope(const struct Envelope *env)
   OPT_STRING(date);
   OPT_STRING(x_label);
   OPT_STRING(organization);
-#ifdef USE_NNTP
   OPT_STRING(newsgroups);
   OPT_STRING(xref);
   OPT_STRING(followup_to);
   OPT_STRING(x_comment_to);
-#endif
 #undef OPT_STRING
 
   dump_list_head(&env->references, "references");

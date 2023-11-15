@@ -67,10 +67,8 @@ extern bool OptKeepQuiet;           ///< (pseudo) shut up the message and refres
 extern bool OptMsgErr;              ///< (pseudo) used by mutt_error/mutt_message
 extern bool OptNeedRescore;         ///< (pseudo) set when the 'score' command is used
 extern bool OptNeedResort;          ///< (pseudo) used to force a re-sort
-#ifdef USE_NNTP
 extern bool OptNews;                ///< (pseudo) used to change reader mode
 extern bool OptNewsSend;            ///< (pseudo) used to change behavior when posting
-#endif
 extern bool OptNoCurses;            ///< (pseudo) when sending in batch mode
 extern bool OptPgpCheckTrust;       ///< (pseudo) used by dlg_pgp()
 extern bool OptResortInit;          ///< (pseudo) used to force the next resort to be from scratch

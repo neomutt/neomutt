@@ -152,10 +152,13 @@
 #include "browser/lib.h"
 #include "color/lib.h"
 #include "history/lib.h"
+#include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
+#include "nntp/lib.h"
+#include "pop/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
@@ -168,21 +171,12 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
+#include "nntp/adata.h" // IWYU pragma: keep
 #include "protos.h"
 #include "subjectrx.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
-#endif
-#ifdef USE_IMAP
-#include "imap/lib.h"
-#endif
-#ifdef USE_POP
-#include "pop/lib.h"
-#endif
-#ifdef USE_NNTP
-#include "nntp/lib.h"
-#include "nntp/adata.h" // IWYU pragma: keep
 #endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
@@ -201,9 +195,7 @@ typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUT
 #define MUTT_CLI_NOSYSRC (1 << 2) ///< -n Do not read the system-wide config file
 #define MUTT_CLI_RO      (1 << 3) ///< -R Open mailbox in read-only mode
 #define MUTT_CLI_SELECT  (1 << 4) ///< -y Start with a list of all mailboxes
-#ifdef USE_NNTP
 #define MUTT_CLI_NEWS    (1 << 5) ///< -g/-G Start with a list of all newsgroups
-#endif
 // clang-format on
 
 /**
@@ -525,9 +517,7 @@ main
   char *new_type = NULL;
   char *dlevel = NULL;
   char *dfile = NULL;
-#ifdef USE_NNTP
   const char *cli_nntp = NULL;
-#endif
   struct Email *e = NULL;
   struct ListHead attach = STAILQ_HEAD_INITIALIZER(attach);
   struct ListHead commands = STAILQ_HEAD_INITIALIZER(commands);
@@ -589,7 +579,6 @@ main
         argv[nargc++] = argv[optind];
     }
 
-    /* USE_NNTP 'g:G' */
     i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvxyzZ");
     if (i != EOF)
     {
@@ -629,7 +618,6 @@ main
           buf_strcpy(&folder, optarg);
           explicit_folder = true;
           break;
-#ifdef USE_NNTP
         case 'g': /* Specify a news server */
           cli_nntp = optarg;
           FALLTHROUGH;
@@ -637,7 +625,6 @@ main
         case 'G': /* List of newsgroups */
           flags |= MUTT_CLI_SELECT | MUTT_CLI_NEWS;
           break;
-#endif
         case 'H':
           draft_file = optarg;
           break;
@@ -817,28 +804,24 @@ main
 
   mutt_init_abort_key();
 
-#ifdef USE_NNTP
+  /* "$news_server" precedence: command line, config file, environment, system file */
+  if (!cli_nntp)
+    cli_nntp = cs_subset_string(NeoMutt->sub, "news_server");
+
+  if (!cli_nntp)
+    cli_nntp = mutt_str_getenv("NNTPSERVER");
+
+  if (!cli_nntp)
   {
-    /* "$news_server" precedence: command line, config file, environment, system file */
-    if (!cli_nntp)
-      cli_nntp = cs_subset_string(NeoMutt->sub, "news_server");
-
-    if (!cli_nntp)
-      cli_nntp = mutt_str_getenv("NNTPSERVER");
-
-    if (!cli_nntp)
-    {
-      char buf[1024] = { 0 };
-      cli_nntp = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buf, sizeof(buf));
-    }
-
-    if (cli_nntp)
-    {
-      cs_str_initial_set(cs, "news_server", cli_nntp, NULL);
-      cs_str_reset(cs, "news_server", NULL);
-    }
+    char buf[1024] = { 0 };
+    cli_nntp = mutt_file_read_keyword(SYSCONFDIR "/nntpserver", buf, sizeof(buf));
   }
-#endif
+
+  if (cli_nntp)
+  {
+    cs_str_initial_set(cs, "news_server", cli_nntp, NULL);
+    cs_str_reset(cs, "news_server", NULL);
+  }
 
   /* Initialize crypto backends.  */
   crypt_init();
@@ -928,16 +911,10 @@ main
     buf_strcpy(fpath, c_folder);
     buf_expand_path(fpath);
     bool skip = false;
-#ifdef USE_IMAP
     /* we're not connected yet - skip mail folder creation */
     skip |= (imap_path_probe(buf_string(fpath), NULL) == MUTT_IMAP);
-#endif
-#ifdef USE_POP
     skip |= (pop_path_probe(buf_string(fpath), NULL) == MUTT_POP);
-#endif
-#ifdef USE_NNTP
     skip |= (nntp_path_probe(buf_string(fpath), NULL) == MUTT_NNTP);
-#endif
     if (!skip && (stat(buf_string(fpath), &st) == -1) && (errno == ENOENT))
     {
       char msg2[256];
@@ -1285,10 +1262,8 @@ main
   {
     if (flags & MUTT_CLI_MAILBOX)
     {
-#ifdef USE_IMAP
       const bool c_imap_passive = cs_subset_bool(NeoMutt->sub, "imap_passive");
       cs_subset_str_native_set(NeoMutt->sub, "imap_passive", false, NULL);
-#endif
       const CheckStatsFlags csflags = MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_IMMEDIATE;
       if (mutt_mailbox_check(NULL, csflags) == 0)
       {
@@ -1297,13 +1272,10 @@ main
       }
       buf_reset(&folder);
       mutt_mailbox_next(NULL, &folder);
-#ifdef USE_IMAP
       cs_subset_str_native_set(NeoMutt->sub, "imap_passive", c_imap_passive, NULL);
-#endif
     }
     else if (flags & MUTT_CLI_SELECT)
     {
-#ifdef USE_NNTP
       if (flags & MUTT_CLI_NEWS)
       {
         const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
@@ -1313,9 +1285,7 @@ main
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
-      else
-#endif
-          if (TAILQ_EMPTY(&NeoMutt->accounts))
+      else if (TAILQ_EMPTY(&NeoMutt->accounts))
       {
         mutt_error(_("No incoming mailboxes defined"));
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
@@ -1348,7 +1318,6 @@ main
       /* else no folder */
     }
 
-#ifdef USE_NNTP
     if (OptNews)
     {
       OptNews = false;
@@ -1356,8 +1325,9 @@ main
       nntp_expand_path(folder.data, folder.dsize, &CurrentNewsSrv->conn->account);
     }
     else
-#endif
+    {
       buf_expand_path(&folder);
+    }
 
     mutt_str_replace(&CurrentFolder, buf_string(&folder));
     mutt_str_replace(&LastFolder, buf_string(&folder));
@@ -1411,9 +1381,7 @@ main
       log_queue_empty();
       repeat_error = false;
     }
-#ifdef USE_IMAP
     imap_logout_all();
-#endif
 #ifdef USE_SASL_CYRUS
     mutt_sasl_cleanup();
 #endif
