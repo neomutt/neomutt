@@ -7632,27 +7632,47 @@ msgstr "無法複制信件"
 msgid "No postponed messages"
 msgstr "沒有被延遲寄出的信件"
 
-#. L10N: Progress bar: `%s` loading text, `%zu` item count,
-#. `%d` percentage, `%%` is the percent symbol.
+#. L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
+#. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:169
-#, fuzzy, c-format
+#: progress/window.c:175
+#, c-format
+msgid "%s %s (%d%%)"
+msgstr "%s %s (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%zu` position,
+#. `%d` is the number, `%%` is the percent symbol.
+#. `%d` and `%%` may be reordered, or space inserted, if you wish.
+#: progress/window.c:183
+#, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
+
+#. L10N: Progress bar: `%s` loading text, `%s` position/size
+#: progress/window.c:192
+#, c-format
+msgid "%s %s"
+msgstr "%s %s"
+
+#. L10N: Progress bar: `%s` loading text, `%zu` position
+#: progress/window.c:197
+#, c-format
+msgid "%s %zu"
+msgstr "%s %zu"
 
 #. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:179
-#, fuzzy, c-format
+#: progress/window.c:208
+#, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
 
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:187
-#, fuzzy, c-format
+#: progress/window.c:216
+#, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 

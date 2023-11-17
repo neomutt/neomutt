@@ -73,7 +73,7 @@
  */
 static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ...)
 {
-  if (!fmt || !win)
+  if (!fmt || !win || !win->wdata)
     return;
 
   va_list ap;
@@ -91,7 +91,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
 
   mutt_window_move(win, 0, 0);
 
-  if (simple_color_is_set(MT_COLOR_PROGRESS))
+  if ((percent != -1) && simple_color_is_set(MT_COLOR_PROGRESS))
   {
     if (l < w)
     {
@@ -160,14 +160,43 @@ static int progress_window_repaint(struct MuttWindow *win)
     return -1;
 
   struct ProgressWindowData *wdata = win->wdata;
+  if (wdata->msg[0] == '\0')
+    return 0;
 
   if (wdata->size == 0)
   {
-    /* L10N: Progress bar: `%s` loading text, `%zu` item count,
-       `%d` percentage, `%%` is the percent symbol.
-       `%d` and `%%` may be reordered, or space inserted, if you wish. */
-    message_bar(wdata->win, wdata->display_percent, _("%s %zu (%d%%)"),
-                wdata->msg, wdata->display_pos, wdata->display_percent);
+    if (wdata->display_percent >= 0)
+    {
+      if (wdata->is_bytes)
+      {
+        /* L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
+           `%d` is the number, `%%` is the percent symbol.
+           `%d` and `%%` may be reordered, or space inserted, if you wish. */
+        message_bar(wdata->win, wdata->display_percent, _("%s %s (%d%%)"),
+                    wdata->msg, wdata->pretty_pos, wdata->display_percent);
+      }
+      else
+      {
+        /* L10N: Progress bar: `%s` loading text, `%zu` position,
+           `%d` is the number, `%%` is the percent symbol.
+           `%d` and `%%` may be reordered, or space inserted, if you wish. */
+        message_bar(wdata->win, wdata->display_percent, _("%s %zu (%d%%)"),
+                    wdata->msg, wdata->display_pos, wdata->display_percent);
+      }
+    }
+    else
+    {
+      if (wdata->is_bytes)
+      {
+        /* L10N: Progress bar: `%s` loading text, `%s` position/size */
+        message_bar(wdata->win, -1, _("%s %s"), wdata->msg, wdata->pretty_pos);
+      }
+      else
+      {
+        /* L10N: Progress bar: `%s` loading text, `%zu` position */
+        message_bar(wdata->win, -1, _("%s %zu"), wdata->msg, wdata->display_pos);
+      }
+    }
   }
   else
   {
@@ -247,7 +276,7 @@ bool progress_window_update(struct MuttWindow *win, size_t pos, int percent)
 
   struct ProgressWindowData *wdata = win->wdata;
 
-  if (wdata->size == 0)
+  if (percent >= 0)
   {
     if (!percent_needs_update(wdata, percent))
       return false;
