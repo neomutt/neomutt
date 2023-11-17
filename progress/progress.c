@@ -172,3 +172,14 @@ void progress_set_message(struct Progress *progress, const char *fmt, ...)
 
   va_end(ap);
 }
+
+/**
+ * progress_set_size - Set the progress size
+ */
+void progress_set_size(struct Progress *progress, size_t size)
+{
+  // Decloak an opaque pointer
+  struct MuttWindow *win = (struct MuttWindow *) progress;
+
+  progress_window_set_size(win, size);
+}

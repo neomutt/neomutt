@@ -323,3 +323,22 @@ void progress_window_set_message(struct MuttWindow *win, const char *fmt, va_lis
 
   win->actions |= WA_RECALC;
 }
+
+/**
+ * progress_window_set_size - Set the progress size
+ * @param win  Window to draw on
+ * @param size New size
+ */
+void progress_window_set_size(struct MuttWindow *win, size_t size)
+{
+  if (!win || !win->wdata)
+    return;
+
+  struct ProgressWindowData *wdata = win->wdata;
+
+  wdata->size = size;
+  wdata->display_pos = 0;
+  wdata->display_percent = 0;
+  wdata->display_time = 0;
+  win->actions |= WA_RECALC;
+}
