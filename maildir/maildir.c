@@ -777,9 +777,8 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Scanning %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(MUTT_PROGRESS_READ, 0);
+    progress_set_message(progress, _("Scanning %s..."), mailbox_path(m));
   }
 
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
@@ -798,9 +797,8 @@ static int maildir_read_dir(struct Mailbox *m, const char *subdir)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_READ, ARRAY_SIZE(&mda));
+    progress = progress_new(MUTT_PROGRESS_READ, ARRAY_SIZE(&mda));
+    progress_set_message(progress, _("Reading %s..."), mailbox_path(m));
   }
   maildir_delayed_parsing(m, &mda, progress);
   progress_free(&progress);
@@ -1548,9 +1546,8 @@ static enum MxStatus maildir_mbox_sync(struct Mailbox *m)
   struct Progress *progress = NULL;
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress = progress_new(MUTT_PROGRESS_WRITE, m->msg_count);
+    progress_set_message(progress, _("Writing %s..."), mailbox_path(m));
   }
 
   for (int i = 0; i < m->msg_count; i++)

@@ -1385,7 +1385,8 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
 
     if (m->verbose)
     {
-      progress = progress_new(_("Update tags..."), MUTT_PROGRESS_WRITE, m->msg_tagged);
+      progress = progress_new(MUTT_PROGRESS_WRITE, m->msg_tagged);
+      progress_set_message(progress, _("Update tags..."));
     }
 
 #ifdef USE_NOTMUCH

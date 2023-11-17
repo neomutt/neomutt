@@ -969,7 +969,8 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
     if (m->type == MUTT_NOTMUCH)
       nm_db_longrun_init(m, true);
 #endif
-    struct Progress *progress = progress_new(progress_msg, MUTT_PROGRESS_WRITE, msg_count);
+    struct Progress *progress = progress_new(MUTT_PROGRESS_WRITE, msg_count);
+    progress_set_message(progress, "%s", progress_msg);
     struct Email **ep = NULL;
     ARRAY_FOREACH(ep, ea)
     {

@@ -24,11 +24,13 @@
 #define MUTT_PROGRESS_WINDOW_H
 
 #include <stddef.h>
+#include <stdarg.h>
 #include <stdbool.h>
 
 struct MuttWindow;
 
-struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size_inc, size_t time_inc, bool is_bytes);
-bool               progress_window_update(struct MuttWindow *win, size_t pos, int percent);
+struct MuttWindow *progress_window_new        (size_t size, size_t size_inc, size_t time_inc, bool is_bytes);
+void               progress_window_set_message(struct MuttWindow *win, const char *fmt, va_list ap);
+bool               progress_window_update     (struct MuttWindow *win, size_t pos, int percent);
 
 #endif /* MUTT_PROGRESS_WINDOW_H */

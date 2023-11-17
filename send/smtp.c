@@ -255,7 +255,8 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
     return -1;
   }
   unlink(msgfile);
-  progress = progress_new(_("Sending message..."), MUTT_PROGRESS_NET, size);
+  progress = progress_new(MUTT_PROGRESS_NET, size);
+  progress_set_message(progress, _("Sending message..."));
 
   snprintf(buf, sizeof(buf), "DATA\r\n");
   if (mutt_socket_send(adata->conn, buf) == -1)

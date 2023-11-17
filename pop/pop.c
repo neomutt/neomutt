@@ -368,8 +368,8 @@ static int pop_fetch_headers(struct Mailbox *m)
 
   if (m->verbose)
   {
-    progress = progress_new(_("Fetching message headers..."),
-                            MUTT_PROGRESS_READ, new_count - old_count);
+    progress = progress_new(MUTT_PROGRESS_READ, new_count - old_count);
+    progress_set_message(progress, _("Fetching message headers..."));
   }
 
   if (rc == 0)
@@ -887,8 +887,8 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
     struct Progress *progress = NULL;
     if (m->verbose)
     {
-      progress = progress_new(_("Marking messages deleted..."),
-                              MUTT_PROGRESS_WRITE, num_deleted);
+      progress = progress_new(MUTT_PROGRESS_WRITE, num_deleted);
+      progress_set_message(progress, _("Marking messages deleted..."));
     }
 
     for (i = 0, j = 0, rc = 0; (rc == 0) && (i < m->msg_count); i++)
@@ -1042,8 +1042,9 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
 
     snprintf(buf, sizeof(buf), "RETR %d\r\n", edata->refno);
 
-    struct Progress *progress = progress_new(_("Fetching message..."), MUTT_PROGRESS_NET,
+    struct Progress *progress = progress_new(MUTT_PROGRESS_NET,
                                              e->body->length + e->body->offset - 1);
+    progress_set_message(progress, _("Fetching message..."));
     const int rc = pop_fetch_data(adata, buf, progress, fetch_message, msg->fp);
     progress_free(&progress);
 

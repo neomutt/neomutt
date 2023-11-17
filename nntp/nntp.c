@@ -806,7 +806,10 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
     rc = 0;
 
     if (msg)
-      progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
+    {
+      progress = progress_new(MUTT_PROGRESS_READ, 0);
+      progress_set_message(progress, "%s", msg);
+    }
 
     while (true)
     {
@@ -1246,8 +1249,8 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   /* fetching header from cache or server, or fallback to fetch overview */
   if (m->verbose)
   {
-    fc.progress = progress_new(_("Fetching message headers..."),
-                               MUTT_PROGRESS_READ, last - first + 1);
+    fc.progress = progress_new(MUTT_PROGRESS_READ, last - first + 1);
+    progress_set_message(fc.progress, _("Fetching message headers..."));
   }
   for (current = first; (current <= last) && (rc == 0); current++)
   {
@@ -2128,8 +2131,8 @@ int nntp_check_new_groups(struct Mailbox *m, struct NntpAccountData *adata)
     if (c_nntp_load_description)
     {
       unsigned int count = 0;
-      struct Progress *progress = progress_new(_("Loading descriptions..."), MUTT_PROGRESS_READ,
-                                               adata->groups_num - i);
+      struct Progress *progress = progress_new(MUTT_PROGRESS_READ, adata->groups_num - i);
+      progress_set_message(progress, _("Loading descriptions..."));
 
       for (i = groups_num; i < adata->groups_num; i++)
       {

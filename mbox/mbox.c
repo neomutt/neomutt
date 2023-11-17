@@ -37,7 +37,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
-#include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -212,9 +211,8 @@ static enum MxOpenReturns mmdf_parse_mailbox(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(MUTT_PROGRESS_READ, 0);
+    progress_set_message(progress, _("Reading %s..."), mailbox_path(m));
   }
 
   while (true)
@@ -382,9 +380,8 @@ static enum MxOpenReturns mbox_parse_mailbox(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Reading %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_READ, 0);
+    progress = progress_new(MUTT_PROGRESS_READ, 0);
+    progress_set_message(progress, _("Reading %s..."), mailbox_path(m));
   }
 
   loc = ftello(adata->fp);
@@ -1175,9 +1172,8 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   if (m->verbose)
   {
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress = progress_new(MUTT_PROGRESS_WRITE, m->msg_count);
+    progress_set_message(progress, _("Writing %s..."), mailbox_path(m));
   }
 
   for (i = first, j = 0; i < m->msg_count; i++)

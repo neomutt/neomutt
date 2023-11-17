@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -117,35 +118,57 @@ void progress_free(struct Progress **ptr)
 
 /**
  * progress_new - Create a new Progress Bar
- * @param msg  Message to display
  * @param type Type, e.g. #MUTT_PROGRESS_READ
  * @param size Total size of expected file / traffic
  * @retval ptr New Progress Bar
  *
  * If the user has disabled the progress bar, e.g. `set read_inc = 0` then a
  * simple message will be displayed instead.
- *
- * @note msg will be copied
  */
-struct Progress *progress_new(const char *msg, enum ProgressType type, size_t size)
+struct Progress *progress_new(enum ProgressType type, size_t size)
 {
   if (OptNoCurses)
     return NULL;
 
   const size_t size_inc = choose_increment(type);
   if (size_inc == 0) // The user has disabled the progress bar
-  {
-    mutt_message("%s", msg);
     return NULL;
-  }
 
   const short c_time_inc = cs_subset_number(NeoMutt->sub, "time_inc");
   const bool is_bytes = (type == MUTT_PROGRESS_NET);
 
-  struct MuttWindow *win = progress_window_new(msg, size, size_inc, c_time_inc, is_bytes);
+  struct MuttWindow *win = progress_window_new(size, size_inc, c_time_inc, is_bytes);
 
   msgcont_push_window(win);
 
   // Return an opaque pointer
   return (struct Progress *) win;
+}
+
+/**
+ * progress_set_message - Set the progress message
+ * @param progress Progress bar
+ * @param fmt      Format string
+ * @param ...      Format parameters
+ */
+void progress_set_message(struct Progress *progress, const char *fmt, ...)
+{
+  // Decloak an opaque pointer
+  struct MuttWindow *win = (struct MuttWindow *) progress;
+
+  va_list ap;
+  va_start(ap, fmt);
+
+  if (win)
+  {
+    progress_window_set_message(win, fmt, ap);
+  }
+  else
+  {
+    char msg[1024] = { 0 };
+    vsnprintf(msg, sizeof(msg), fmt, ap);
+    mutt_message("%s", msg);
+  }
+
+  va_end(ap);
 }

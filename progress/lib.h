@@ -83,8 +83,10 @@ enum ProgressType
   MUTT_PROGRESS_WRITE, ///< Progress tracks elements, according to `$write_inc`
 };
 
-void             progress_free  (struct Progress **ptr);
-struct Progress *progress_new   (const char *msg, enum ProgressType type, size_t size);
-bool             progress_update(struct Progress *progress, size_t pos, int percent);
+void             progress_free       (struct Progress **ptr);
+struct Progress *progress_new        (enum ProgressType type, size_t size);
+bool             progress_update     (struct Progress *progress, size_t pos, int percent);
+void             progress_set_message(struct Progress *progress, const char *fmt, ...)
+                                      __attribute__((__format__(__printf__, 2, 3)));
 
 #endif /* MUTT_PROGRESS_LIB_H */
