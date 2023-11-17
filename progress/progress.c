@@ -49,11 +49,17 @@ struct Progress;
  */
 static size_t choose_increment(enum ProgressType type)
 {
-  const short c_read_inc = cs_subset_number(NeoMutt->sub, "read_inc");
-  const short c_write_inc = cs_subset_number(NeoMutt->sub, "write_inc");
-  const short c_net_inc = cs_subset_number(NeoMutt->sub, "net_inc");
-  const short *incs[] = { &c_read_inc, &c_write_inc, &c_net_inc };
-  return (type >= mutt_array_size(incs)) ? 0 : *incs[type];
+  switch (type)
+  {
+    case MUTT_PROGRESS_NET:
+      return cs_subset_number(NeoMutt->sub, "net_inc");
+    case MUTT_PROGRESS_READ:
+      return cs_subset_number(NeoMutt->sub, "read_inc");
+    case MUTT_PROGRESS_WRITE:
+      return cs_subset_number(NeoMutt->sub, "write_inc");
+    default:
+      return 0;
+  }
 }
 
 /**
