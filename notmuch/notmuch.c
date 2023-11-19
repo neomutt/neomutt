@@ -775,7 +775,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
       /* We pass is_old=false as argument here, but e->old will be updated later
        * by update_message_path() (called by init_email() below).  */
       e = maildir_email_new();
-      if (!maildir_parse_message(MUTT_MAILDIR, path, false, e))
+      if (!maildir_parse_message(path, false, e))
         email_free(&e);
     }
     else
@@ -789,7 +789,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
         if (fp)
         {
           e = maildir_email_new();
-          if (!maildir_parse_stream(MUTT_MAILDIR, fp, newpath, false, e))
+          if (!maildir_parse_stream(fp, newpath, false, e))
             email_free(&e);
           mutt_file_fclose(&fp);
 

@@ -1069,8 +1069,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
   struct HeaderCache *hc = NULL;
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  if (m->type == MUTT_MH)
-    hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
+  hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
 #endif
 
   struct Progress *progress = NULL;
@@ -1094,8 +1093,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
   progress_free(&progress);
 
 #ifdef USE_HCACHE
-  if (m->type == MUTT_MH)
-    hcache_close(&hc);
+  hcache_close(&hc);
 #endif
 
   mh_seq_update(m);
@@ -1123,8 +1121,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
 
 err:
 #ifdef USE_HCACHE
-  if (m->type == MUTT_MH)
-    hcache_close(&hc);
+  hcache_close(&hc);
 #endif
   return MX_STATUS_ERROR;
 }
