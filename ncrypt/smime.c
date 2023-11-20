@@ -1172,6 +1172,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
   char *certfile = NULL;
   struct Buffer *buf = NULL;
 
+  FILE *fp_out = NULL;
   FILE *fp_err = mutt_file_mkstemp();
   if (!fp_err)
   {
@@ -1179,7 +1180,7 @@ void smime_class_invoke_import(const char *infile, const char *mailbox)
     goto done;
   }
 
-  FILE *fp_out = mutt_file_mkstemp();
+  fp_out = mutt_file_mkstemp();
   if (!fp_out)
   {
     mutt_perror(_("Can't create temporary file"));

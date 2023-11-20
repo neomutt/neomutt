@@ -319,11 +319,12 @@ int mutt_autocrypt_gpgme_import_key(const char *keydata, struct Buffer *keyid)
   int rc = -1;
   gpgme_ctx_t ctx = NULL;
   gpgme_data_t dh = NULL;
+  struct Buffer *raw_keydata = NULL;
 
   if (create_gpgme_context(&ctx))
     goto cleanup;
 
-  struct Buffer *raw_keydata = buf_pool_get();
+  raw_keydata = buf_pool_get();
   if (!mutt_b64_buffer_decode(raw_keydata, keydata))
     goto cleanup;
 

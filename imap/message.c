@@ -1095,6 +1095,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
+  struct ImapEmailData *edata = NULL;
 
   if (!adata || (adata->mailbox != m))
     return -1;
@@ -1162,7 +1163,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
    *   at the end of the loop makes the comparison unneeded, but to be
    *   cautious I'm keeping it.
    */
-  struct ImapEmailData *edata = imap_edata_new();
+  edata = imap_edata_new();
   while ((fetch_msn_end < msn_end) &&
          imap_fetch_msn_seqset(buf, adata, evalhc, msn_begin, msn_end, &fetch_msn_end))
   {
