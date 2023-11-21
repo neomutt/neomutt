@@ -289,15 +289,13 @@
       true)                                                                    \
    : false)
 
+#ifndef __COVERITY__
+#define __coverity_escape__(x) 0
+#endif
 #define ARRAY_ADD_NORESERVE(head, elem)                                        \
   ((head)->capacity > (head)->size                                             \
    ? (((head)->entries[(head)->size++] = (elem)),                              \
-      true)                                                                    \
-   : false)
-
-#ifdef __COVERITY__
-#undef ARRAY_ADD_NORESERVE
-#define ARRAY_ADD_NORESERVE(head,elem) __coverity_escape__(elem);
-#endif
+      __coverity_escape__(elem), true)                                         \
+   : __coverity_escape__(elem), false)
 
 #endif /* MUTT_MUTT_ARRAY_H */
