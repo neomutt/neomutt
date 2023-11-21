@@ -677,8 +677,8 @@ static void progress_setup(struct Mailbox *m)
 
   mdata->oldmsgcount = m->msg_count;
   mdata->ignmsgcount = 0;
-  mdata->progress = progress_new(_("Reading messages..."), MUTT_PROGRESS_READ,
-                                 mdata->oldmsgcount);
+  mdata->progress = progress_new(MUTT_PROGRESS_READ, mdata->oldmsgcount);
+  progress_set_message(mdata->progress, _("Reading messages..."));
 }
 
 /**
@@ -2229,9 +2229,8 @@ static enum MxStatus nm_mbox_sync(struct Mailbox *m)
   if (m->verbose)
   {
     /* all is in this function so we don't use data->progress here */
-    char msg[PATH_MAX] = { 0 };
-    snprintf(msg, sizeof(msg), _("Writing %s..."), mailbox_path(m));
-    progress = progress_new(msg, MUTT_PROGRESS_WRITE, m->msg_count);
+    progress = progress_new(MUTT_PROGRESS_WRITE, m->msg_count);
+    progress_set_message(progress, _("Writing %s..."), mailbox_path(m));
   }
 
   struct HeaderCache *hc = nm_hcache_open(m);

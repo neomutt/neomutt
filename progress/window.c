@@ -73,7 +73,7 @@
  */
 static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ...)
 {
-  if (!fmt || !win)
+  if (!fmt || !win || !win->wdata)
     return;
 
   va_list ap;
@@ -91,7 +91,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
 
   mutt_window_move(win, 0, 0);
 
-  if (simple_color_is_set(MT_COLOR_PROGRESS))
+  if ((percent != -1) && simple_color_is_set(MT_COLOR_PROGRESS))
   {
     if (l < w)
     {
@@ -160,14 +160,43 @@ static int progress_window_repaint(struct MuttWindow *win)
     return -1;
 
   struct ProgressWindowData *wdata = win->wdata;
+  if (wdata->msg[0] == '\0')
+    return 0;
 
   if (wdata->size == 0)
   {
-    /* L10N: Progress bar: `%s` loading text, `%zu` item count,
-       `%d` percentage, `%%` is the percent symbol.
-       `%d` and `%%` may be reordered, or space inserted, if you wish. */
-    message_bar(wdata->win, wdata->display_percent, _("%s %zu (%d%%)"),
-                wdata->msg, wdata->display_pos, wdata->display_percent);
+    if (wdata->display_percent >= 0)
+    {
+      if (wdata->is_bytes)
+      {
+        /* L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
+           `%d` is the number, `%%` is the percent symbol.
+           `%d` and `%%` may be reordered, or space inserted, if you wish. */
+        message_bar(wdata->win, wdata->display_percent, _("%s %s (%d%%)"),
+                    wdata->msg, wdata->pretty_pos, wdata->display_percent);
+      }
+      else
+      {
+        /* L10N: Progress bar: `%s` loading text, `%zu` position,
+           `%d` is the number, `%%` is the percent symbol.
+           `%d` and `%%` may be reordered, or space inserted, if you wish. */
+        message_bar(wdata->win, wdata->display_percent, _("%s %zu (%d%%)"),
+                    wdata->msg, wdata->display_pos, wdata->display_percent);
+      }
+    }
+    else
+    {
+      if (wdata->is_bytes)
+      {
+        /* L10N: Progress bar: `%s` loading text, `%s` position/size */
+        message_bar(wdata->win, -1, _("%s %s"), wdata->msg, wdata->pretty_pos);
+      }
+      else
+      {
+        /* L10N: Progress bar: `%s` loading text, `%zu` position */
+        message_bar(wdata->win, -1, _("%s %zu"), wdata->msg, wdata->display_pos);
+      }
+    }
   }
   else
   {
@@ -247,7 +276,7 @@ bool progress_window_update(struct MuttWindow *win, size_t pos, int percent)
 
   struct ProgressWindowData *wdata = win->wdata;
 
-  if (wdata->size == 0)
+  if (percent >= 0)
   {
     if (!percent_needs_update(wdata, percent))
       return false;
@@ -271,14 +300,13 @@ bool progress_window_update(struct MuttWindow *win, size_t pos, int percent)
 
 /**
  * progress_window_new - Create a new Progress Bar Window
- * @param msg      Progress message to display
  * @param size     Expected number of records or size of traffic
  * @param size_inc Size increment (step size)
  * @param time_inc Time increment
  * @param is_bytes true if measuring bytes
  * @retval ptr New Progress Window
  */
-struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size_inc,
+struct MuttWindow *progress_window_new(size_t size, size_t size_inc,
                                        size_t time_inc, bool is_bytes)
 {
   if (size_inc == 0) // The user has disabled the progress bar
@@ -297,7 +325,6 @@ struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size
   wdata->size_inc = size_inc;
   wdata->time_inc = time_inc;
   wdata->is_bytes = is_bytes;
-  mutt_str_copy(wdata->msg, msg, sizeof(wdata->msg));
 
   if (is_bytes)
     mutt_str_pretty_size(wdata->pretty_size, sizeof(wdata->pretty_size), size);
@@ -306,4 +333,41 @@ struct MuttWindow *progress_window_new(const char *msg, size_t size, size_t size
   win->wdata_free = progress_wdata_free;
 
   return win;
+}
+
+/**
+ * progress_window_set_message - Set the progress message
+ * @param win Window to draw on
+ * @param fmt printf format string
+ * @param ap  printf arguments
+ */
+void progress_window_set_message(struct MuttWindow *win, const char *fmt, va_list ap)
+{
+  if (!win || !win->wdata || !fmt)
+    return;
+
+  struct ProgressWindowData *wdata = win->wdata;
+
+  vsnprintf(wdata->msg, sizeof(wdata->msg), fmt, ap);
+
+  win->actions |= WA_RECALC;
+}
+
+/**
+ * progress_window_set_size - Set the progress size
+ * @param win  Window to draw on
+ * @param size New size
+ */
+void progress_window_set_size(struct MuttWindow *win, size_t size)
+{
+  if (!win || !win->wdata)
+    return;
+
+  struct ProgressWindowData *wdata = win->wdata;
+
+  wdata->size = size;
+  wdata->display_pos = 0;
+  wdata->display_percent = 0;
+  wdata->display_time = 0;
+  win->actions |= WA_RECALC;
 }

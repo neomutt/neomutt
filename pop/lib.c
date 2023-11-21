@@ -619,8 +619,8 @@ int pop_reconnect(struct Mailbox *m)
     int rc = pop_open_connection(adata);
     if (rc == 0)
     {
-      struct Progress *progress = progress_new(_("Verifying message indexes..."),
-                                               MUTT_PROGRESS_NET, 0);
+      struct Progress *progress = progress_new(MUTT_PROGRESS_NET, 0);
+      progress_set_message(progress, _("Verifying message indexes..."));
 
       for (int i = 0; i < m->msg_count; i++)
       {

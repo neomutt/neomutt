@@ -686,7 +686,8 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
   if (m->verbose)
   {
     /* L10N: Comparing the cached data with the IMAP server's data */
-    progress = progress_new(_("Evaluating cache..."), MUTT_PROGRESS_READ, msn_end);
+    progress = progress_new(MUTT_PROGRESS_READ, msn_end);
+    progress_set_message(progress, _("Evaluating cache..."));
   }
 
   /* If we are using CONDSTORE's "FETCH CHANGEDSINCE", then we keep
@@ -915,7 +916,8 @@ static int read_headers_condstore_qresync_updates(struct ImapAccountData *adata,
   if (m->verbose)
   {
     /* L10N: Fetching IMAP flag changes, using the CONDSTORE extension */
-    progress = progress_new(_("Fetching flag updates..."), MUTT_PROGRESS_READ, msn_end);
+    progress = progress_new(MUTT_PROGRESS_READ, msn_end);
+    progress_set_message(progress, _("Fetching flag updates..."));
   }
 
   snprintf(buf, sizeof(buf), "UID FETCH 1:%u (FLAGS) (CHANGEDSINCE %llu%s)",
@@ -1148,7 +1150,8 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
 
   if (m->verbose)
   {
-    progress = progress_new(_("Fetching message headers..."), MUTT_PROGRESS_READ, msn_end);
+    progress = progress_new(MUTT_PROGRESS_READ, msn_end);
+    progress_set_message(progress, _("Fetching message headers..."));
   }
 
   buf = buf_pool_get();
@@ -1556,7 +1559,10 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   rewind(fp);
 
   if (m->verbose)
-    progress = progress_new(_("Uploading message..."), MUTT_PROGRESS_NET, len);
+  {
+    progress = progress_new(MUTT_PROGRESS_NET, len);
+    progress_set_message(progress, _("Uploading message..."));
+  }
 
   mutt_date_make_imap(internaldate, sizeof(internaldate), msg->received);
 
