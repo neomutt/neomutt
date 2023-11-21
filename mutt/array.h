@@ -295,4 +295,9 @@
       true)                                                                    \
    : false)
 
+#ifdef __COVERITY__
+#undef ARRAY_ADD_NORESERVE
+#define ARRAY_ADD_NORESERVE(head,elem) __coverity_escape__(elem);
+#endif
+
 #endif /* MUTT_MUTT_ARRAY_H */
