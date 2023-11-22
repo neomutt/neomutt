@@ -295,7 +295,7 @@
 #define ARRAY_ADD_NORESERVE(head, elem)                                        \
   ((head)->capacity > (head)->size                                             \
    ? (((head)->entries[(head)->size++] = (elem)),                              \
-      __coverity_escape__(elem), true)                                         \
-   : __coverity_escape__(elem), false)
+     ((void)__coverity_escape__(elem), true))                                  \
+   : ((void)__coverity_escape__(elem), false))
 
 #endif /* MUTT_MUTT_ARRAY_H */
