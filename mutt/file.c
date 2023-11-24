@@ -148,17 +148,28 @@ static int put_file_in_place(const char *path, const char *safe_file, const char
 }
 
 /**
- * mutt_file_fclose - Close a FILE handle (and NULL the pointer)
- * @param[out] fp FILE handle to close
+ * mutt_file_fclose_full - Close a FILE handle (and NULL the pointer)
+ * @param[out] fp    FILE handle to close
+ * @param[in]  file  Source file
+ * @param[in]  line  Source line number
+ * @param[in]  func  Source function
  * @retval 0   Success
  * @retval EOF Error, see errno
  */
-int mutt_file_fclose(FILE **fp)
+int mutt_file_fclose_full(FILE **fp, const char *file, int line, const char *func)
 {
   if (!fp || !*fp)
     return 0;
 
+  int fd = fileno(*fp);
   int rc = fclose(*fp);
+
+  if (rc == 0)
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File closed (fd=%d)\n", fd);
+  else
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File close failed (fd=%d), errno=%d, %s\n",
+               fd, errno, strerror(errno));
+
   *fp = NULL;
   return rc;
 }
@@ -628,20 +639,25 @@ DIR *mutt_file_opendir(const char *path, enum MuttOpenDirMode mode)
 }
 
 /**
- * mutt_file_fopen - Call fopen() safely
- * @param path Filename
- * @param mode Mode e.g. "r" readonly; "w" read-write
+ * mutt_file_fopen_full - Call fopen() safely
+ * @param path  Filename
+ * @param mode  Mode e.g. "r" readonly; "w" read-write
+ * @param file  Source file
+ * @param line  Source line number
+ * @param func  Source function
  * @retval ptr  FILE handle
  * @retval NULL Error, see errno
  *
  * When opening files for writing, make sure the file doesn't already exist to
  * avoid race conditions.
  */
-FILE *mutt_file_fopen(const char *path, const char *mode)
+FILE *mutt_file_fopen_full(const char *path, const char *mode, const char *file,
+                           int line, const char *func)
 {
   if (!path || !mode)
     return NULL;
 
+  FILE *fp = NULL;
   if (mode[0] == 'w')
   {
     uint32_t flags = O_CREAT | O_EXCL | O_NOFOLLOW;
@@ -652,15 +668,28 @@ FILE *mutt_file_fopen(const char *path, const char *mode)
       flags |= O_WRONLY;
 
     int fd = mutt_file_open(path, flags);
-    if (fd < 0)
-      return NULL;
-
-    return fdopen(fd, mode);
+    if (fd >= 0)
+    {
+      fp = fdopen(fd, mode);
+    }
   }
   else
   {
-    return fopen(path, mode);
+    fp = fopen(path, mode);
   }
+
+  if (fp)
+  {
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File opened (fd=%d): %s\n",
+               fileno(fp), path);
+  }
+  else
+  {
+    MuttLogger(0, file, line, func, LL_DEBUG2, "File open failed (errno=%d, %s): %s\n",
+               errno, strerror(errno), path);
+  }
+
+  return fp;
 }
 
 /**
@@ -1384,7 +1413,7 @@ int mutt_file_rename(const char *oldfile, const char *newfile)
   if (access(newfile, F_OK) == 0)
     return 2;
 
-  FILE *fp_old = fopen(oldfile, "r");
+  FILE *fp_old = mutt_file_fopen(oldfile, "r");
   if (!fp_old)
     return 3;
   FILE *fp_new = mutt_file_fopen(newfile, "w");

@@ -106,8 +106,8 @@ int         mutt_file_copy_stream(FILE *fp_in, FILE *fp_out);
 time_t      mutt_file_decrease_mtime(const char *fp, struct stat *st);
 void        mutt_file_expand_fmt(struct Buffer *dest, const char *fmt, const char *src);
 void        mutt_file_expand_fmt_quote(char *dest, size_t destlen, const char *fmt, const char *src);
-int         mutt_file_fclose(FILE **fp);
-FILE *      mutt_file_fopen(const char *path, const char *mode);
+int         mutt_file_fclose_full(FILE **fp, const char *file, int line, const char *func);
+FILE *      mutt_file_fopen_full(const char *path, const char *mode, const char *file, int line, const char *func);
 int         mutt_file_fsync_close(FILE **fp);
 long        mutt_file_get_size(const char *path);
 long        mutt_file_get_size_fp(FILE* fp);
@@ -142,5 +142,8 @@ void        mutt_file_resolve_symlink(struct Buffer *buf);
 
 void        buf_quote_filename(struct Buffer *buf, const char *filename, bool add_outer);
 void        buf_file_expand_fmt_quote(struct Buffer *dest, const char *fmt, const char *src);
+
+#define mutt_file_fopen(PATH, MODE) mutt_file_fopen_full(PATH, MODE, __FILE__, __LINE__, __func__)
+#define mutt_file_fclose(FP)        mutt_file_fclose_full(FP, __FILE__, __LINE__, __func__)
 
 #endif /* MUTT_MUTT_FILE_H */
