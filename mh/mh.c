@@ -511,7 +511,7 @@ static int mh_sort_path(const void *a, const void *b, void *sdata)
  */
 static struct Email *mh_parse_message(const char *fname, struct Email *e)
 {
-  FILE *fp = fopen(fname, "r");
+  FILE *fp = mutt_file_fopen(fname, "r");
   if (!fp)
   {
     return NULL;
@@ -1144,11 +1144,10 @@ static bool mh_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 
   snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
 
-  msg->fp = fopen(path, "r");
+  msg->fp = mutt_file_fopen(path, "r");
   if (!msg->fp)
   {
     mutt_perror("%s", path);
-    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
     return false;
   }
 

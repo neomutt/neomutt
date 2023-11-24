@@ -132,7 +132,7 @@ void mh_seq_add_one(struct Mailbox *m, int n, bool unseen, bool flagged, bool re
   snprintf(seq_flagged, sizeof(seq_flagged), "%s:", NONULL(c_mh_seq_flagged));
 
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", mailbox_path(m));
-  FILE *fp_old = fopen(sequences, "r");
+  FILE *fp_old = mutt_file_fopen(sequences, "r");
   if (fp_old)
   {
     while ((buf = mutt_file_read_line(buf, &sz, fp_old, NULL, MUTT_RL_NO_FLAGS)))
@@ -266,7 +266,7 @@ void mh_seq_update(struct Mailbox *m)
   snprintf(sequences, sizeof(sequences), "%s/.mh_sequences", mailbox_path(m));
 
   /* first, copy unknown sequences */
-  FILE *fp_old = fopen(sequences, "r");
+  FILE *fp_old = mutt_file_fopen(sequences, "r");
   if (fp_old)
   {
     while ((buf = mutt_file_read_line(buf, &s, fp_old, NULL, MUTT_RL_NO_FLAGS)))
@@ -385,7 +385,7 @@ int mh_seq_read(struct MhSequences *mhs, const char *path)
   char pathname[PATH_MAX] = { 0 };
   snprintf(pathname, sizeof(pathname), "%s/.mh_sequences", path);
 
-  FILE *fp = fopen(pathname, "r");
+  FILE *fp = mutt_file_fopen(pathname, "r");
   if (!fp)
     return 0; /* yes, ask callers to silently ignore the error */
 

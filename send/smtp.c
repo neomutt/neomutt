@@ -242,7 +242,7 @@ static int smtp_data(struct SmtpAccountData *adata, const char *msgfile)
   int term = 0;
   size_t buflen = 0;
 
-  FILE *fp = fopen(msgfile, "r");
+  FILE *fp = mutt_file_fopen(msgfile, "r");
   if (!fp)
   {
     mutt_error(_("SMTP session failed: unable to open %s"), msgfile);

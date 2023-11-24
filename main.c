@@ -1036,7 +1036,7 @@ main
         {
           buf_strcpy(&expanded_infile, infile);
           buf_expand_path(&expanded_infile);
-          fp_in = fopen(buf_string(&expanded_infile), "r");
+          fp_in = mutt_file_fopen(buf_string(&expanded_infile), "r");
           if (!fp_in)
           {
             mutt_perror("%s", buf_string(&expanded_infile));
@@ -1081,7 +1081,7 @@ main
         }
         mutt_file_fclose(&fp_out);
 
-        fp_in = fopen(buf_string(&tempfile), "r");
+        fp_in = mutt_file_fopen(buf_string(&tempfile), "r");
         if (!fp_in)
         {
           mutt_perror("%s", buf_string(&tempfile));

@@ -996,7 +996,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
     if (cache->index == e->index)
     {
       /* yes, so just return a pointer to the message */
-      msg->fp = fopen(cache->path, "r");
+      msg->fp = mutt_file_fopen(cache->path, "r");
       if (msg->fp)
         return true;
 

@@ -125,7 +125,8 @@ int log_disp_debug(time_t stamp, const char *file, int line, const char *functio
     bytes += snprintf(buf + bytes, buflen - bytes, "\033[0m"); // Escape
   }
 
-  bytes += snprintf(buf + bytes, buflen - bytes, "\n");
+  if (level < LL_DEBUG1)
+    bytes += snprintf(buf + bytes, buflen - bytes, "\n");
 
   fputs(buf, stdout);
   return bytes;

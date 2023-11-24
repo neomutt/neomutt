@@ -1304,7 +1304,7 @@ FILE *mutt_open_read(const char *path, pid_t *thepid)
       errno = EINVAL;
       return NULL;
     }
-    fp = fopen(path, "r");
+    fp = mutt_file_fopen(path, "r");
     *thepid = -1;
   }
   return fp;

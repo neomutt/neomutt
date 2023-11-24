@@ -1535,7 +1535,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
 
-  fp = fopen(msg->path, "r");
+  fp = mutt_file_fopen(msg->path, "r");
   if (!fp)
   {
     mutt_perror("%s", msg->path);

@@ -319,7 +319,7 @@ int dlg_pager(struct PagerView *pview)
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
   priv->lines_max = LINES; // number of lines on screen, from curses
   priv->lines = mutt_mem_calloc(priv->lines_max, sizeof(struct Line));
-  priv->fp = fopen(pview->pdata->fname, "r");
+  priv->fp = mutt_file_fopen(pview->pdata->fname, "r");
   priv->has_types = ((pview->mode == PAGER_MODE_EMAIL) || (pview->flags & MUTT_SHOWCOLOR)) ?
                         MUTT_TYPES :
                         0; // main message or rfc822 attachment

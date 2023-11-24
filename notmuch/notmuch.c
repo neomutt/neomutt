@@ -2355,7 +2355,7 @@ static bool nm_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
 
   snprintf(path, sizeof(path), "%s/%s", folder, e->path);
 
-  msg->fp = fopen(path, "r");
+  msg->fp = mutt_file_fopen(path, "r");
   if (!msg->fp && (errno == ENOENT) && ((m->type == MUTT_MAILDIR) || (m->type == MUTT_NOTMUCH)))
   {
     msg->fp = maildir_open_find_message(folder, e->path, NULL);

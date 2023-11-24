@@ -498,7 +498,7 @@ void mutt_save_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
         }
 
         rc = save_attachment_flowed_helper(fp, b, buf_string(tfile), opt, e);
-        if ((rc == 0) && c_attach_sep && (fp_out = fopen(buf_string(tfile), "a")))
+        if ((rc == 0) && c_attach_sep && (fp_out = mutt_file_fopen(buf_string(tfile), "a")))
         {
           fprintf(fp_out, "%s", c_attach_sep);
           mutt_file_fclose(&fp_out);
@@ -651,7 +651,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
       infile = b->filename;
     }
 
-    fp_in = fopen(infile, "r");
+    fp_in = mutt_file_fopen(infile, "r");
     if (!fp_in)
     {
       mutt_perror("fopen");
@@ -849,7 +849,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
               return;
             }
 
-            fp_in = fopen(buf_string(newfile), "r");
+            fp_in = mutt_file_fopen(buf_string(newfile), "r");
             if (fp_in)
             {
               mutt_file_copy_stream(fp_in, state->fp_out);

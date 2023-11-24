@@ -1419,7 +1419,7 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
         return -1;
       }
 #else
-      state->fp_in = fopen(buf_string(tempfile), "r");
+      state->fp_in = mutt_file_fopen(buf_string(tempfile), "r");
       unlink(buf_string(tempfile));
       buf_pool_release(&tempfile);
 #endif

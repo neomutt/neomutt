@@ -265,7 +265,7 @@ struct Body *pgp_class_make_key_attachment(void)
     goto cleanup;
   }
 
-  FILE *fp_null = fopen("/dev/null", "w");
+  FILE *fp_null = mutt_file_fopen("/dev/null", "w");
   if (!fp_null)
   {
     mutt_perror(_("Can't open /dev/null"));

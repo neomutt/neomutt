@@ -798,7 +798,7 @@ static bool mbox_ac_add(struct Account *a, struct Mailbox *m)
  */
 static FILE *mbox_open_readwrite(struct Mailbox *m)
 {
-  FILE *fp = fopen(mailbox_path(m), "r+");
+  FILE *fp = mutt_file_fopen(mailbox_path(m), "r+");
   if (fp)
     m->readonly = false;
   return fp;
@@ -813,7 +813,7 @@ static FILE *mbox_open_readwrite(struct Mailbox *m)
  */
 static FILE *mbox_open_readonly(struct Mailbox *m)
 {
-  FILE *fp = fopen(mailbox_path(m), "r");
+  FILE *fp = mutt_file_fopen(mailbox_path(m), "r");
   if (fp)
     m->readonly = true;
   return fp;
@@ -1259,7 +1259,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   unlink_tempfile = false;
 
-  fp = fopen(buf_string(tempfile), "r");
+  fp = mutt_file_fopen(buf_string(tempfile), "r");
   if (!fp)
   {
     mutt_sig_unblock();
@@ -1553,7 +1553,7 @@ enum MailboxType mbox_path_probe(const char *path, const struct stat *st)
   if (st->st_size == 0)
     return MUTT_MBOX;
 
-  FILE *fp = fopen(path, "r");
+  FILE *fp = mutt_file_fopen(path, "r");
   if (!fp)
     return MUTT_UNKNOWN;
 

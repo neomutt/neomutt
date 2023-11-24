@@ -2186,7 +2186,7 @@ static int pgp_check_traditional_one_body(FILE *fp, struct Body *b)
     goto cleanup;
   }
 
-  FILE *fp_tmp = fopen(buf_string(tempfile), "r");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "r");
   if (!fp_tmp)
   {
     unlink(buf_string(tempfile));

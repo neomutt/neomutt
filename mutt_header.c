@@ -194,7 +194,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   fputc('\n', fp_out); /* tie off the header. */
 
   /* now copy the body of the message. */
-  FILE *fp_in = fopen(body, "r");
+  FILE *fp_in = mutt_file_fopen(body, "r");
   if (!fp_in)
   {
     mutt_perror("%s", body);
@@ -234,7 +234,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   mutt_list_free(&e->env->userhdrs);
 
   /* Read the temp file back in */
-  fp_in = fopen(buf_string(path), "r");
+  fp_in = mutt_file_fopen(buf_string(path), "r");
   if (!fp_in)
   {
     mutt_perror("%s", buf_string(path));

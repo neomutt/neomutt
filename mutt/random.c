@@ -34,6 +34,7 @@
 #include <string.h>
 #include "random.h"
 #include "exit.h"
+#include "file.h"
 #include "logging2.h"
 #include "message.h"
 #ifdef HAVE_SYS_RANDOM_H
@@ -79,7 +80,7 @@ static int mutt_randbuf(void *buf, size_t buflen)
    * configured selinux, seccomp or something to not allow getrandom */
   if (!FpRandom)
   {
-    FpRandom = fopen("/dev/urandom", "rb");
+    FpRandom = mutt_file_fopen("/dev/urandom", "rb");
     if (!FpRandom)
     {
       mutt_error(_("open /dev/urandom: %s"), strerror(errno));
