@@ -121,9 +121,6 @@ void progress_free(struct Progress **ptr)
 
   // Decloak an opaque pointer
   struct MuttWindow **wptr = (struct MuttWindow **) ptr;
-  window_redraw(*wptr);
-  usleep(100000); // 0.1s to ensure 100% is seen
-
   struct MuttWindow *win_pop = msgcont_pop_window();
   if (win_pop != *wptr)
     return;
