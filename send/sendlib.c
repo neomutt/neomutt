@@ -109,7 +109,7 @@ enum ContentType mutt_lookup_mime_type(struct Body *b, const char *path)
         goto bye; /* shouldn't happen */
     }
 
-    fp = fopen(buf, "r");
+    fp = mutt_file_fopen(buf, "r");
     if (fp)
     {
       found_mimetypes = true;
@@ -265,7 +265,7 @@ void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   {
     fp_in = fp;
   }
-  else if (!b->filename || !(fp_in = fopen(b->filename, "r")))
+  else if (!b->filename || !(fp_in = mutt_file_fopen(b->filename, "r")))
   {
     mutt_error(_("Could not open %s"), b->filename ? b->filename : "(null)");
     return;

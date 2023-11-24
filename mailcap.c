@@ -252,7 +252,7 @@ static bool rfc1524_mailcap_parse(struct Body *b, const char *filename, const ch
     return false;
   const int btlen = ch - type;
 
-  FILE *fp = fopen(filename, "r");
+  FILE *fp = mutt_file_fopen(filename, "r");
   if (fp)
   {
     size_t buflen;
@@ -428,9 +428,10 @@ static bool rfc1524_mailcap_parse(struct Body *b, const char *filename, const ch
           entry->xneomuttkeep = false;
         }
       }
-    } /* while (!found && (buf = mutt_file_read_line ())) */
+    }
     mutt_file_fclose(&fp);
-  } /* if ((fp = fopen ())) */
+  }
+
   FREE(&buf);
   return found;
 }

@@ -181,7 +181,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
     goto bail;
   }
 
-  fp = fopen(buf_string(fname), "r");
+  fp = mutt_file_fopen(buf_string(fname), "r");
   if (!fp)
   {
     rc = -1;

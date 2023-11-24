@@ -97,9 +97,9 @@ static bool lock_realpath(struct Mailbox *m, bool excl)
     return true;
 
   if (excl)
-    ci->fp_lock = fopen(m->realpath, "a");
+    ci->fp_lock = mutt_file_fopen(m->realpath, "a");
   else
-    ci->fp_lock = fopen(m->realpath, "r");
+    ci->fp_lock = mutt_file_fopen(m->realpath, "r");
   if (!ci->fp_lock)
   {
     mutt_perror("%s", m->realpath);

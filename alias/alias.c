@@ -524,7 +524,7 @@ retry_name:
     goto done;
   }
   mutt_expand_path(buf->data, buf->dsize);
-  fp_alias = fopen(buf_string(buf), "a+");
+  fp_alias = mutt_file_fopen(buf_string(buf), "a+");
   if (!fp_alias)
   {
     mutt_perror("%s", buf_string(buf));

@@ -81,7 +81,7 @@ int mutt_get_tmp_attachment(struct Body *b)
   mailcap_entry_free(&entry);
 
   FILE *fp_in = NULL, *fp_out = NULL;
-  if ((fp_in = fopen(b->filename, "r")) &&
+  if ((fp_in = mutt_file_fopen(b->filename, "r")) &&
       (fp_out = mutt_file_fopen(buf_string(tmpfile), "w")))
   {
     mutt_file_copy_stream(fp_in, fp_out);
@@ -633,11 +633,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
         state.fp_in = fp;
         state.flags = STATE_CHARCONV;
         mutt_decode_attachment(b, &state);
-        if (mutt_file_fclose(&state.fp_out) == EOF)
-        {
-          mutt_debug(LL_DEBUG1, "fclose(%s) errno=%d %s\n",
-                     buf_string(pagerfile), errno, strerror(errno));
-        }
+        mutt_file_fclose(&state.fp_out);
       }
       else
       {
@@ -835,7 +831,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
       infile = b->filename;
     }
 
-    fp_in = fopen(infile, "r");
+    fp_in = mutt_file_fopen(infile, "r");
     if (!fp_in)
     {
       mutt_perror("fopen");
@@ -886,9 +882,9 @@ bail:
 static FILE *save_attachment_open(const char *path, enum SaveAttach opt)
 {
   if (opt == MUTT_SAVE_APPEND)
-    return fopen(path, "a");
+    return mutt_file_fopen(path, "a");
   if (opt == MUTT_SAVE_OVERWRITE)
-    return fopen(path, "w");
+    return mutt_file_fopen(path, "w");
 
   return mutt_file_fopen(path, "w");
 }
@@ -994,7 +990,7 @@ int mutt_save_attachment(FILE *fp, struct Body *b, const char *path,
 
     /* In send mode, just copy file */
 
-    FILE *fp_old = fopen(b->filename, "r");
+    FILE *fp_old = mutt_file_fopen(b->filename, "r");
     if (!fp_old)
     {
       mutt_perror("fopen");
@@ -1049,9 +1045,9 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
   state.flags = flags;
 
   if (opt == MUTT_SAVE_APPEND)
-    state.fp_out = fopen(path, "a");
+    state.fp_out = mutt_file_fopen(path, "a");
   else if (opt == MUTT_SAVE_OVERWRITE)
-    state.fp_out = fopen(path, "w");
+    state.fp_out = mutt_file_fopen(path, "w");
   else
     state.fp_out = mutt_file_fopen(path, "w");
 
@@ -1070,7 +1066,7 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
   {
     /* When called from the compose menu, the attachment isn't parsed,
      * so we need to do it here. */
-    state.fp_in = fopen(b->filename, "r");
+    state.fp_in = mutt_file_fopen(b->filename, "r");
     if (!state.fp_in)
     {
       mutt_perror("fopen");
@@ -1182,7 +1178,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
     /* interactive program */
     if (piped)
     {
-      fp_in = fopen(buf_string(newfile), "r");
+      fp_in = mutt_file_fopen(buf_string(newfile), "r");
       if (!fp_in)
       {
         mutt_perror("fopen");
@@ -1245,7 +1241,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
       mutt_debug(LL_DEBUG2, "successfully decoded %s type attachment to %s\n",
                  type, buf_string(newfile));
 
-      fp_in = fopen(buf_string(newfile), "r");
+      fp_in = mutt_file_fopen(buf_string(newfile), "r");
       if (!fp_in)
       {
         mutt_perror("fopen");

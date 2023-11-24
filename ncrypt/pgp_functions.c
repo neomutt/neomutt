@@ -116,7 +116,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
  */
 static int op_verify_key(struct PgpData *pd, int op)
 {
-  FILE *fp_null = fopen("/dev/null", "w");
+  FILE *fp_null = mutt_file_fopen("/dev/null", "w");
   if (!fp_null)
   {
     mutt_perror(_("Can't open /dev/null"));

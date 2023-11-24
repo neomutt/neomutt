@@ -1780,7 +1780,7 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
   /* restore final destination and substitute the tempfile for input */
   state->fp_out = fp;
   fp = state->fp_in;
-  state->fp_in = fopen(buf_string(signedfile), "r");
+  state->fp_in = mutt_file_fopen(buf_string(signedfile), "r");
 
   /* restore the prefix */
   state->prefix = save_prefix;

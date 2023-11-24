@@ -886,7 +886,7 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
     if (mutt_str_equal(buf_string(tunique), unique))
     {
       buf_printf(fname, "%s/%s/%s", folder, subfolder, de->d_name);
-      fp = fopen(buf_string(fname), "r");
+      fp = mutt_file_fopen(buf_string(fname), "r");
       oe = errno;
       break;
     }
@@ -1025,7 +1025,7 @@ bool maildir_parse_message(const char *fname, bool is_old, struct Email *e)
   if (!fname || !e)
     return false;
 
-  FILE *fp = fopen(fname, "r");
+  FILE *fp = mutt_file_fopen(fname, "r");
   if (!fp)
     return false;
 
@@ -1606,14 +1606,13 @@ static bool maildir_msg_open(struct Mailbox *m, struct Message *msg, struct Emai
 
   snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
 
-  msg->fp = fopen(path, "r");
+  msg->fp = mutt_file_fopen(path, "r");
   if (!msg->fp && (errno == ENOENT))
     msg->fp = maildir_open_find_message(mailbox_path(m), e->path, NULL);
 
   if (!msg->fp)
   {
     mutt_perror("%s", path);
-    mutt_debug(LL_DEBUG1, "fopen: %s: %s (errno %d)\n", path, strerror(errno), errno);
     return false;
   }
 

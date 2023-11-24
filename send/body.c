@@ -337,7 +337,7 @@ int mutt_write_mime_body(struct Body *b, FILE *fp, struct ConfigSubset *sub)
     return 0;
   }
 
-  fp_in = fopen(b->filename, "r");
+  fp_in = mutt_file_fopen(b->filename, "r");
   if (!fp_in)
   {
     mutt_debug(LL_DEBUG1, "%s no longer exists\n", b->filename);

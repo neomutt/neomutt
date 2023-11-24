@@ -214,7 +214,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
     return NULL;
   }
 
-  fp = fopen(fname, "r");
+  fp = mutt_file_fopen(fname, "r");
   if (!fp)
   {
     mutt_debug(LL_DEBUG1, "%s: %s (errno %d)\n", fname, strerror(errno), errno);

@@ -290,7 +290,7 @@ cleanup:
   FREE(&linebuf);
   if (fp_tmp)
   {
-    if ((fflush(fp_tmp) == 0) && (fp = fopen(NONULL(c_history_file), "w")))
+    if ((fflush(fp_tmp) == 0) && (fp = mutt_file_fopen(NONULL(c_history_file), "w")))
     {
       rewind(fp_tmp);
       mutt_file_copy_stream(fp_tmp, fp);
