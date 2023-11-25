@@ -779,10 +779,6 @@ main
   if (!OptNoCurses && !isatty(1))
     goto main_curses;
 
-  /* Always create the mutt_windows because batch mode has some shared code
-   * paths that end up referencing them. */
-  rootwin_new();
-
   /* This must come before mutt_init() because curses needs to be started
    * before calling the init_pair() function to set the color scheme.  */
   if (!OptNoCurses)
@@ -790,7 +786,14 @@ main
     int crc = start_curses();
     if (crc != 0)
       goto main_curses; // TEST08: can't test -- fake term?
+  }
 
+  /* Always create the mutt_windows because batch mode has some shared code
+   * paths that end up referencing them. */
+  rootwin_new();
+
+  if (!OptNoCurses)
+  {
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
     mutt_resize_screen();
