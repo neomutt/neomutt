@@ -349,19 +349,6 @@ struct MxOps
   int (*path_canon)(struct Buffer *path);
 
   /**
-   * @defgroup mx_path_parent path_parent()
-   * @ingroup mx_api
-   *
-   * path_parent - Find the parent of a Mailbox path
-   * @param path Path to modify
-   * @retval  0 Success
-   * @retval -1 Failure
-   *
-   * @pre path is not NULL
-   */
-  int (*path_parent)(struct Buffer *path);
-
-  /**
    * @defgroup mx_path_is_empty path_is_empty()
    * @ingroup mx_api
    *

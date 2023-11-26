@@ -2371,18 +2371,6 @@ int imap_expand_path(struct Buffer *path)
 }
 
 /**
- * imap_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int imap_path_parent(struct Buffer *path)
-{
-  char tmp[PATH_MAX] = { 0 };
-
-  imap_get_parent_path(buf_string(path), tmp, sizeof(tmp));
-  buf_strcpy(path, tmp);
-  return 0;
-}
-
-/**
  * imap_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty() - @ingroup mx_path_is_empty
  */
 static int imap_path_is_empty(struct Buffer *path)
@@ -2421,7 +2409,6 @@ const struct MxOps MxImapOps = {
   .tags_commit      = imap_tags_commit,
   .path_probe       = imap_path_probe,
   .path_canon       = imap_path_canon,
-  .path_parent      = imap_path_parent,
   .path_is_empty    = imap_path_is_empty,
   // clang-format on
 };

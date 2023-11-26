@@ -1193,23 +1193,6 @@ static int mh_path_canon(struct Buffer *path)
 }
 
 /**
- * mh_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int mh_path_parent(struct Buffer *path)
-{
-  if (mutt_path_parent(path))
-    return 0;
-
-  if (buf_at(path, 0) == '~')
-    mutt_path_canon(path, HomeDir, true);
-
-  if (mutt_path_parent(path))
-    return 0;
-
-  return -1;
-}
-
-/**
  * mh_path_probe - Is this an mh Mailbox? - Implements MxOps::path_probe() - @ingroup mx_path_probe
  */
 static enum MailboxType mh_path_probe(const char *path, const struct stat *st)
@@ -1275,7 +1258,6 @@ const struct MxOps MxMhOps = {
   .tags_commit      = NULL,
   .path_probe       = mh_path_probe,
   .path_canon       = mh_path_canon,
-  .path_parent      = mh_path_parent,
   .path_is_empty    = mh_check_empty,
   // clang-format on
 };

@@ -913,23 +913,6 @@ static int comp_path_canon(struct Buffer *path)
 }
 
 /**
- * comp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int comp_path_parent(struct Buffer *path)
-{
-  if (mutt_path_parent(path))
-    return 0;
-
-  if (buf_at(path, 0) == '~')
-    mutt_path_canon(path, HomeDir, false);
-
-  if (mutt_path_parent(path))
-    return 0;
-
-  return -1;
-}
-
-/**
  * MxCompOps - Compressed Mailbox - Implements ::MxOps - @ingroup mx_api
  *
  * Compress only uses open, close and check.
@@ -958,7 +941,6 @@ const struct MxOps MxCompOps = {
   .tags_commit      = comp_tags_commit,
   .path_probe       = comp_path_probe,
   .path_canon       = comp_path_canon,
-  .path_parent      = comp_path_parent,
   .path_is_empty    = NULL,
   // clang-format on
 };

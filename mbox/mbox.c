@@ -1613,23 +1613,6 @@ static int mbox_path_canon(struct Buffer *path)
 }
 
 /**
- * mbox_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int mbox_path_parent(struct Buffer *path)
-{
-  if (mutt_path_parent(path))
-    return 0;
-
-  if (buf_at(path, 0) == '~')
-    mutt_path_canon(path, HomeDir, false);
-
-  if (mutt_path_parent(path))
-    return 0;
-
-  return -1;
-}
-
-/**
  * mbox_path_is_empty - Is the mailbox empty - Implements MxOps::path_is_empty() - @ingroup mx_path_is_empty
  */
 static int mbox_path_is_empty(struct Buffer *path)
@@ -1752,7 +1735,6 @@ const struct MxOps MxMboxOps = {
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
   .path_canon       = mbox_path_canon,
-  .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
   // clang-format on
 };
@@ -1783,7 +1765,6 @@ const struct MxOps MxMmdfOps = {
   .tags_commit      = NULL,
   .path_probe       = mbox_path_probe,
   .path_canon       = mbox_path_canon,
-  .path_parent      = mbox_path_parent,
   .path_is_empty    = mbox_path_is_empty,
   // clang-format on
 };
