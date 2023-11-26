@@ -2755,15 +2755,6 @@ static int nntp_path_canon(struct Buffer *path)
 }
 
 /**
- * nntp_path_parent - Find the parent of a Mailbox path - Implements MxOps::path_parent() - @ingroup mx_path_parent
- */
-static int nntp_path_parent(struct Buffer *path)
-{
-  /* Succeed, but don't do anything, for now */
-  return 0;
-}
-
-/**
  * MxNntpOps - NNTP Mailbox - Implements ::MxOps - @ingroup mx_api
  */
 const struct MxOps MxNntpOps = {
@@ -2789,6 +2780,5 @@ const struct MxOps MxNntpOps = {
   .tags_commit      = NULL,
   .path_probe       = nntp_path_probe,
   .path_canon       = nntp_path_canon,
-  .path_parent      = nntp_path_parent,
   // clang-format on
 };

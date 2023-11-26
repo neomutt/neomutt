@@ -34,7 +34,6 @@ bool        mutt_path_canon(struct Buffer *path, const char *homedir, bool is_di
 char *      mutt_path_dirname(const char *path);
 char *      mutt_path_escape(const char *src);
 const char *mutt_path_getcwd(struct Buffer *cwd);
-bool        mutt_path_parent(struct Buffer *path);
 size_t      mutt_path_realpath(struct Buffer *path);
 bool        mutt_path_tidy(struct Buffer *path, bool is_dir);
 bool        mutt_path_tidy_dotdot(char *buf);
