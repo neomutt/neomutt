@@ -769,9 +769,13 @@ int hcache_delete_email(struct HeaderCache *hc, const char *key, size_t keylen)
 
   struct Buffer *path = buf_pool_get();
 
-  keylen = buf_printf(path, "%s%s", hc->folder, key);
+  struct RealKey *rk = realkey(hc, key, keylen, true);
+  keylen = buf_printf(path, "%s%s", hc->folder, rk->key);
+
   int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(path), keylen);
+
   buf_pool_release(&path);
+
   return rc;
 }
 
@@ -785,7 +789,7 @@ int hcache_delete_raw(struct HeaderCache *hc, const char *key, size_t keylen)
 
   struct Buffer *path = buf_pool_get();
 
-  keylen = buf_printf(path, "%s%s", hc->folder, key);
+  keylen = buf_printf(path, "%s%.*s", hc->folder, (int) keylen, key);
   int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(path), keylen);
   buf_pool_release(&path);
   return rc;
