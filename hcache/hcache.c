@@ -720,10 +720,13 @@ int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen,
   }
 #endif
 
-  /* store uncompressed data */
-  struct RealKey *rk = realkey(hc, key, keylen);
-  int rc = hcache_store_raw(hc, rk->key, rk->keylen, data, dlen);
+  struct Buffer *path = buf_pool_get();
 
+  struct RealKey *rk = realkey(hc, key, keylen);
+  rk->keylen = buf_printf(path, "%s%.*s", hc->folder, (int) rk->keylen, rk->key);
+  int rc = hc->store_ops->store(hc->store_handle, buf_string(path), rk->keylen, data, dlen);
+
+  buf_pool_release(&path);
   FREE(&data);
 
   return rc;
