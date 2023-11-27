@@ -1369,8 +1369,8 @@ retry:
 
   if (mdata->hcache && initial_download)
   {
-    hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
-    hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
+    hcache_fetch_raw_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
+    hcache_fetch_raw_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
     if (mdata->modseq)
     {
       const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
@@ -1386,7 +1386,7 @@ retry:
     if (uidvalidity && uid_next && uidvalidity == mdata->uidvalidity)
     {
       evalhc = true;
-      if (hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
+      if (hcache_fetch_raw_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
       {
         if (has_qresync)
         {

@@ -633,7 +633,7 @@ end:
 }
 
 /**
- * hcache_fetch_obj_ - Fetch a message's header from the cache into a destination object
+ * hcache_fetch_raw_obj_full - Fetch a message's header from the cache into a destination object
  * @param[in]  hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param[in]  key    Message identification string
  * @param[in]  keylen Length of the string pointed to by key
@@ -642,8 +642,8 @@ end:
  * @retval true Success, the data was found and the length matches
  * @retval false Otherwise
  */
-bool hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen,
-                       void *dst, size_t dstlen)
+bool hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key,
+                               size_t keylen, void *dst, size_t dstlen)
 {
   bool rc = true;
   size_t srclen = 0;

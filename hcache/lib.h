@@ -159,8 +159,8 @@ int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen, s
 struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
 
 char *hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen);
-bool  hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
-#define hcache_fetch_obj(hc, key, keylen, dst) hcache_fetch_obj_(hc, key, keylen, dst, sizeof(*dst))
+bool  hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
+#define hcache_fetch_raw_obj(hc, key, keylen, dst) hcache_fetch_raw_obj_full(hc, key, keylen, dst, sizeof(*dst))
 
 int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
