@@ -1097,10 +1097,10 @@ static int parse_overview_line(char *line, void *data)
 
     /* try to replace with header from cache */
     snprintf(buf, sizeof(buf), ANUM, anum);
-    struct HCacheEntry hce = hcache_fetch(fc->hc, buf, strlen(buf), 0);
+    struct HCacheEntry hce = hcache_fetch_email(fc->hc, buf, strlen(buf), 0);
     if (hce.email)
     {
-      mutt_debug(LL_DEBUG2, "hcache_fetch %s\n", buf);
+      mutt_debug(LL_DEBUG2, "hcache_fetch_email %s\n", buf);
       email_free(&e);
       e = hce.email;
       m->emails[m->msg_count] = e;
@@ -1269,10 +1269,10 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 
 #ifdef USE_HCACHE
     /* try to fetch header from cache */
-    struct HCacheEntry hce = hcache_fetch(fc.hc, buf, strlen(buf), 0);
+    struct HCacheEntry hce = hcache_fetch_email(fc.hc, buf, strlen(buf), 0);
     if (hce.email)
     {
-      mutt_debug(LL_DEBUG2, "hcache_fetch %s\n", buf);
+      mutt_debug(LL_DEBUG2, "hcache_fetch_email %s\n", buf);
       e = hce.email;
       m->emails[m->msg_count] = e;
       e->edata = NULL;
@@ -1535,12 +1535,12 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
           messages[anum - first] = 1;
 
         snprintf(buf, sizeof(buf), ANUM, anum);
-        struct HCacheEntry hce = hcache_fetch(hc, buf, strlen(buf), 0);
+        struct HCacheEntry hce = hcache_fetch_email(hc, buf, strlen(buf), 0);
         if (hce.email)
         {
           bool deleted;
 
-          mutt_debug(LL_DEBUG2, "#1 hcache_fetch %s\n", buf);
+          mutt_debug(LL_DEBUG2, "#1 hcache_fetch_email %s\n", buf);
           e = hce.email;
           e->edata = NULL;
           deleted = e->deleted;
@@ -1580,10 +1580,10 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
         continue;
 
       snprintf(buf, sizeof(buf), ANUM, anum);
-      struct HCacheEntry hce = hcache_fetch(hc, buf, strlen(buf), 0);
+      struct HCacheEntry hce = hcache_fetch_email(hc, buf, strlen(buf), 0);
       if (hce.email)
       {
-        mutt_debug(LL_DEBUG2, "#2 hcache_fetch %s\n", buf);
+        mutt_debug(LL_DEBUG2, "#2 hcache_fetch_email %s\n", buf);
         mx_alloc_memory(m, m->msg_count);
 
         e = hce.email;

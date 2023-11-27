@@ -766,7 +766,7 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
   mx_alloc_memory(m, m->msg_count);
 
 #ifdef USE_HCACHE
-  e = hcache_fetch(hc, path, mutt_str_len(path), 0).email;
+  e = hcache_fetch_email(hc, path, mutt_str_len(path), 0).email;
   if (!e)
 #endif
   {

@@ -225,7 +225,7 @@ static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off,
 
 /**
  * restore_email - Restore an Email from data retrieved from the cache
- * @param d Data retrieved using hcache_fetch()
+ * @param d Data retrieved using hcache_fetch_email()
  * @retval ptr Success, the restored header (can't be NULL)
  *
  * @note The returned Email must be free'd by caller code with
@@ -579,10 +579,10 @@ void hcache_close(struct HeaderCache **ptr)
 }
 
 /**
- * hcache_fetch - Multiplexor for StoreOps::fetch
+ * hcache_fetch_email - Multiplexor for StoreOps::fetch
  */
-struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key,
-                                size_t keylen, uint32_t uidvalidity)
+struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
+                                      size_t keylen, uint32_t uidvalidity)
 {
   struct HCacheEntry hce = { 0 };
   if (!hc)

@@ -748,7 +748,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
   char *hdata = hcache_fetch_str(hc, "index", 5);
   if (hdata)
   {
-    mutt_debug(LL_DEBUG2, "hcache_fetch index: %s\n", hdata);
+    mutt_debug(LL_DEBUG2, "hcache_fetch_email index: %s\n", hdata);
     if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
     {
       old = true;

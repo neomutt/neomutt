@@ -676,7 +676,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 
     if (hc)
     {
-      hce = hcache_fetch(hc, key, keylen, 0);
+      hce = hcache_fetch_email(hc, key, keylen, 0);
     }
 
     if (hce.email && c_maildir_header_cache_verify)

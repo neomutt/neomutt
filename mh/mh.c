@@ -569,7 +569,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
 #ifdef USE_HCACHE
     const char *key = md->email->path;
     size_t keylen = strlen(key);
-    struct HCacheEntry hce = hcache_fetch(hc, key, keylen, 0);
+    struct HCacheEntry hce = hcache_fetch_email(hc, key, keylen, 0);
 
     if (hce.email)
     {

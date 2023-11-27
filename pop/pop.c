@@ -397,7 +397,7 @@ static int pop_fetch_headers(struct Mailbox *m)
       progress_update(progress, i + 1 - old_count, -1);
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
-      struct HCacheEntry hce = hcache_fetch(hc, edata->uid, strlen(edata->uid), 0);
+      struct HCacheEntry hce = hcache_fetch_email(hc, edata->uid, strlen(edata->uid), 0);
       if (hce.email)
       {
         /* Detach the private data */

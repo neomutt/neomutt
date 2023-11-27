@@ -146,7 +146,7 @@ void hcache_close(struct HeaderCache **ptr);
 int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen, struct Email *e, uint32_t uidvalidity);
 
 /**
- * hcache_fetch - Fetch and validate a  message's header from the cache
+ * hcache_fetch_email - Fetch and validate a  message's header from the cache
  * @param hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
@@ -156,7 +156,7 @@ int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen, s
  * @note This function performs a check on the validity of the data found by
  *       comparing it with the crc value of the struct HeaderCache structure.
  */
-struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
+struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
 
 char *hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen);
 bool  hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
