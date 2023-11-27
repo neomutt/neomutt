@@ -769,3 +769,19 @@ int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen)
   buf_pool_release(&path);
   return rc;
 }
+
+/**
+ * hcache_delete_raw - Multiplexor for StoreOps::delete_record
+ */
+int hcache_delete_raw(struct HeaderCache *hc, const char *key, size_t keylen)
+{
+  if (!hc)
+    return -1;
+
+  struct Buffer *path = buf_pool_get();
+
+  keylen = buf_printf(path, "%s%s", hc->folder, key);
+  int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(path), keylen);
+  buf_pool_release(&path);
+  return rc;
+}
