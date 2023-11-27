@@ -134,7 +134,7 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
 void hcache_close(struct HeaderCache **ptr);
 
 /**
- * hcache_store - Store a Header along with a validity datum
+ * hcache_store_email - Store a Header along with a validity datum
  * @param hc          Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key         Message identification string
  * @param keylen      Length of the key string
@@ -143,8 +143,7 @@ void hcache_close(struct HeaderCache **ptr);
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
-                      struct Email *e, uint32_t uidvalidity);
+int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen, struct Email *e, uint32_t uidvalidity);
 
 /**
  * hcache_fetch - Fetch and validate a  message's header from the cache

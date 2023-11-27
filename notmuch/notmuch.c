@@ -806,8 +806,8 @@ static void append_message(struct HeaderCache *hc, struct Mailbox *m,
     }
 
 #ifdef USE_HCACHE
-    hcache_store(hc, newpath ? newpath : path,
-                 mutt_str_len(newpath ? newpath : path), e, 0);
+    hcache_store_email(hc, newpath ? newpath : path,
+                       mutt_str_len(newpath ? newpath : path), e, 0);
 #endif
   }
 

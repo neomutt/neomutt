@@ -772,7 +772,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
   if (!old || (mdata->first_message != first) || (mdata->last_message != last))
   {
     snprintf(buf, sizeof(buf), ANUM " " ANUM, mdata->first_message, mdata->last_message);
-    mutt_debug(LL_DEBUG2, "hcache_store index: %s\n", buf);
+    mutt_debug(LL_DEBUG2, "hcache_store_email index: %s\n", buf);
     hcache_store_raw(hc, "index", 5, buf, strlen(buf) + 1);
   }
 }

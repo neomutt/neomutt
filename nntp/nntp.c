@@ -1122,8 +1122,8 @@ static int parse_overview_line(char *line, void *data)
     else
     {
       /* not cached yet, store header */
-      mutt_debug(LL_DEBUG2, "hcache_store %s\n", buf);
-      hcache_store(fc->hc, buf, strlen(buf), e, 0);
+      mutt_debug(LL_DEBUG2, "hcache_store_email %s\n", buf);
+      hcache_store_email(fc->hc, buf, strlen(buf), e, 0);
     }
   }
 #endif
@@ -2548,8 +2548,8 @@ static enum MxStatus nntp_mbox_sync(struct Mailbox *m)
     {
       if (e->deleted && !e->read)
         mdata->unread--;
-      mutt_debug(LL_DEBUG2, "hcache_store %s\n", buf);
-      hcache_store(hc, buf, strlen(buf), e, 0);
+      mutt_debug(LL_DEBUG2, "hcache_store_email %s\n", buf);
+      hcache_store_email(hc, buf, strlen(buf), e, 0);
     }
 #endif
   }

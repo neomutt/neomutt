@@ -703,7 +703,7 @@ static void maildir_delayed_parsing(struct Mailbox *m, struct MdEmailArray *mda,
 #ifdef USE_HCACHE
         key = maildir_hcache_key(md->email);
         keylen = maildir_hcache_keylen(key);
-        hcache_store(hc, key, keylen, md->email, 0);
+        hcache_store_email(hc, key, keylen, md->email, 0);
 #endif
       }
       else
@@ -1074,7 +1074,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
   {
     const char *key = maildir_hcache_key(e);
     size_t keylen = maildir_hcache_keylen(key);
-    hcache_store(hc, key, keylen, e, 0);
+    hcache_store_email(hc, key, keylen, e, 0);
   }
 #endif
 
@@ -1721,7 +1721,7 @@ static int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
   struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
   const char *key = maildir_hcache_key(e);
   int keylen = maildir_hcache_keylen(key);
-  rc = hcache_store(hc, key, keylen, e, 0);
+  rc = hcache_store_email(hc, key, keylen, e, 0);
   hcache_close(&hc);
 #endif
   return rc;

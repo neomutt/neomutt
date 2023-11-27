@@ -682,10 +682,10 @@ char *hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen)
 }
 
 /**
- * hcache_store - Multiplexor for StoreOps::store
+ * hcache_store_email - Multiplexor for StoreOps::store
  */
-int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
-                 struct Email *e, uint32_t uidvalidity)
+int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen,
+                       struct Email *e, uint32_t uidvalidity)
 {
   if (!hc)
     return -1;
