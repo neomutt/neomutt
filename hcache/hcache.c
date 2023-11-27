@@ -85,7 +85,7 @@ static struct RealKey *realkey(struct HeaderCache *hc, const char *key,
 {
   static struct RealKey rk;
 
-  rk.keylen = snprintf(rk.key, sizeof(rk.key), "%s%.*s", hc->folder, (int) keylen, key);
+  rk.keylen = snprintf(rk.key, sizeof(rk.key), "%s/%.*s", hc->folder, (int) keylen, key);
 
 #ifdef USE_HCACHE_COMPRESSION
   if (compress && hc->compr_ops)
