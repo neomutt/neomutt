@@ -64,6 +64,40 @@
 static unsigned int HcacheVer = 0x0;
 
 /**
+ * struct RealKey - Hcache key name (including compression method)
+ */
+struct RealKey
+{
+  char key[1024]; ///< Key name
+  size_t keylen;  ///< Length of key
+};
+
+/**
+ * realkey - Compute the real key used in the backend, taking into account the compression method
+ * @param  hc     Header cache handle
+ * @param  key    Original key
+ * @param  keylen Length of original key
+ * @retval ptr Static location holding data and length of the real key
+ */
+static struct RealKey *realkey(struct HeaderCache *hc, const char *key, size_t keylen)
+{
+  static struct RealKey rk;
+#ifdef USE_HCACHE_COMPRESSION
+  if (hc->compr_ops)
+  {
+    rk.keylen = snprintf(rk.key, sizeof(rk.key), "%.*s-%s", (int) keylen, key,
+                      hc->compr_ops->name);
+  }
+  else
+#endif
+  {
+    mutt_strn_copy(rk.key, key, keylen, sizeof(rk.key));
+    rk.keylen = keylen;
+  }
+  return &rk;
+}
+
+/**
  * hcache_free - Free a header cache
  * @param ptr header cache to free
  */
@@ -268,40 +302,6 @@ static struct Email *restore_email(const unsigned char *d)
   serial_restore_tags(&e->tags, d, &off);
 
   return e;
-}
-
-/**
- * struct RealKey - Hcache key name (including compression method)
- */
-struct RealKey
-{
-  char key[1024]; ///< Key name
-  size_t len;     ///< Length of key
-};
-
-/**
- * realkey - Compute the real key used in the backend, taking into account the compression method
- * @param  hc     Header cache handle
- * @param  key    Original key
- * @param  keylen Length of original key
- * @retval ptr Static location holding data and length of the real key
- */
-static struct RealKey *realkey(struct HeaderCache *hc, const char *key, size_t keylen)
-{
-  static struct RealKey rk;
-#ifdef USE_HCACHE_COMPRESSION
-  if (hc->compr_ops)
-  {
-    rk.len = snprintf(rk.key, sizeof(rk.key), "%.*s-%s", (int) keylen, key,
-                      hc->compr_ops->name);
-  }
-  else
-#endif
-  {
-    mutt_strn_copy(rk.key, key, keylen, sizeof(rk.key));
-    rk.len = keylen;
-  }
-  return &rk;
 }
 
 /**
@@ -590,7 +590,7 @@ struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
 
   size_t dlen = 0;
   struct RealKey *rk = realkey(hc, key, keylen);
-  void *data = fetch_raw(hc, rk->key, rk->len, &dlen);
+  void *data = fetch_raw(hc, rk->key, rk->keylen, &dlen);
   void *to_free = data;
   if (!data)
   {
@@ -722,7 +722,7 @@ int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen,
 
   /* store uncompressed data */
   struct RealKey *rk = realkey(hc, key, keylen);
-  int rc = hcache_store_raw(hc, rk->key, rk->len, data, dlen);
+  int rc = hcache_store_raw(hc, rk->key, rk->keylen, data, dlen);
 
   FREE(&data);
 
