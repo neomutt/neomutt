@@ -661,14 +661,14 @@ bool hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key,
 }
 
 /**
- * hcache_fetch_str - Fetch a string from the cache
+ * hcache_fetch_raw_str - Fetch a string from the cache
  * @param[in]  hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param[in]  key    Message identification string
  * @param[in]  keylen Length of the string pointed to by key
  * @retval ptr  Success, the data if found
  * @retval NULL Otherwise
  */
-char *hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen)
+char *hcache_fetch_raw_str(struct HeaderCache *hc, const char *key, size_t keylen)
 {
   char *res = NULL;
   size_t dlen = 0;

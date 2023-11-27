@@ -745,7 +745,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
   anum_t first = 0, last = 0;
 
   /* fetch previous values of first and last */
-  char *hdata = hcache_fetch_str(hc, "index", 5);
+  char *hdata = hcache_fetch_raw_str(hc, "index", 5);
   if (hdata)
   {
     mutt_debug(LL_DEBUG2, "hcache_fetch_email index: %s\n", hdata);
@@ -1152,7 +1152,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
           continue;
 
         /* fetch previous values of first and last */
-        char *hdata = hcache_fetch_str(hc, "index", 5);
+        char *hdata = hcache_fetch_raw_str(hc, "index", 5);
         if (hdata)
         {
           anum_t first, last;

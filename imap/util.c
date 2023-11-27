@@ -450,7 +450,7 @@ char *imap_hcache_get_uid_seqset(struct ImapMboxData *mdata)
   if (!mdata->hcache)
     return NULL;
 
-  char *seqset = hcache_fetch_str(mdata->hcache, "/UIDSEQSET", 10);
+  char *seqset = hcache_fetch_raw_str(mdata->hcache, "/UIDSEQSET", 10);
   mutt_debug(LL_DEBUG3, "Retrieved /UIDSEQSET %s\n", NONULL(seqset));
 
   return seqset;
