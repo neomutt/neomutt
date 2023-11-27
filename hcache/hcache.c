@@ -74,26 +74,28 @@ struct RealKey
 
 /**
  * realkey - Compute the real key used in the backend, taking into account the compression method
- * @param  hc     Header cache handle
- * @param  key    Original key
- * @param  keylen Length of original key
+ * @param hc       Header cache handle
+ * @param key      Original key
+ * @param keylen   Length of original key
+ * @param compress Will the data be compressed?
  * @retval ptr Static location holding data and length of the real key
  */
-static struct RealKey *realkey(struct HeaderCache *hc, const char *key, size_t keylen)
+static struct RealKey *realkey(struct HeaderCache *hc, const char *key,
+                               size_t keylen, bool compress)
 {
   static struct RealKey rk;
+
+  rk.keylen = snprintf(rk.key, sizeof(rk.key), "%.*s", (int) keylen, key);
+
 #ifdef USE_HCACHE_COMPRESSION
-  if (hc->compr_ops)
+  if (compress && hc->compr_ops)
   {
-    rk.keylen = snprintf(rk.key, sizeof(rk.key), "%.*s-%s", (int) keylen, key,
-                      hc->compr_ops->name);
+    // Append the compression type, e.g. "-zstd"
+    rk.keylen += snprintf(rk.key + rk.keylen, sizeof(rk.key) - rk.keylen, "-%s",
+                          hc->compr_ops->name);
   }
-  else
 #endif
-  {
-    mutt_strn_copy(rk.key, key, keylen, sizeof(rk.key));
-    rk.keylen = keylen;
-  }
+
   return &rk;
 }
 
@@ -589,7 +591,7 @@ struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
     return hce;
 
   size_t dlen = 0;
-  struct RealKey *rk = realkey(hc, key, keylen);
+  struct RealKey *rk = realkey(hc, key, keylen, true);
   void *data = fetch_raw(hc, rk->key, rk->keylen, &dlen);
   void *to_free = data;
   if (!data)
@@ -722,9 +724,9 @@ int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen,
 
   struct Buffer *path = buf_pool_get();
 
-  struct RealKey *rk = realkey(hc, key, keylen);
-  rk->keylen = buf_printf(path, "%s%.*s", hc->folder, (int) rk->keylen, rk->key);
-  int rc = hc->store_ops->store(hc->store_handle, buf_string(path), rk->keylen, data, dlen);
+  struct RealKey *rk = realkey(hc, key, keylen, true);
+  keylen = buf_printf(path, "%s%s", hc->folder, rk->key);
+  int rc = hc->store_ops->store(hc->store_handle, buf_string(path), keylen, data, dlen);
 
   buf_pool_release(&path);
   FREE(&data);
