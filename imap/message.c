@@ -1051,7 +1051,7 @@ fail:
   }
   m->msg_count = 0;
   m->size = 0;
-  hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
+  hcache_delete_raw(mdata->hcache, "/MODSEQ", 7);
   imap_hcache_clear_uid_seqset(mdata);
   imap_hcache_close(mdata);
 
@@ -1485,7 +1485,7 @@ retry:
     }
     else
     {
-      hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
+      hcache_delete_raw(mdata->hcache, "/MODSEQ", 7);
     }
 
     if (has_qresync)
