@@ -166,14 +166,14 @@ int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
 
 /**
- * hcache_delete_record - Delete a key / data pair
+ * hcache_delete_email - Delete a key / data pair
  * @param hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen);
+int hcache_delete_email(struct HeaderCache *hc, const char *key, size_t keylen);
 
 /**
  * hcache_delete_raw - Delete a key / data pair

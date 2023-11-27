@@ -1057,7 +1057,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
     {
       const char *key = maildir_hcache_key(e);
       size_t keylen = maildir_hcache_keylen(key);
-      hcache_delete_record(hc, key, keylen);
+      hcache_delete_email(hc, key, keylen);
     }
 #endif
     unlink(path);

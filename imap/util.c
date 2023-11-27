@@ -401,7 +401,7 @@ int imap_hcache_del(struct ImapMboxData *mdata, unsigned int uid)
   char key[16] = { 0 };
 
   snprintf(key, sizeof(key), "/%u", uid);
-  return hcache_delete_record(mdata->hcache, key, mutt_str_len(key));
+  return hcache_delete_email(mdata->hcache, key, mutt_str_len(key));
 }
 
 /**

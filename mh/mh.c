@@ -740,7 +740,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCac
       {
         const char *key = e->path;
         size_t keylen = strlen(key);
-        hcache_delete_record(hc, key, keylen);
+        hcache_delete_email(hc, key, keylen);
       }
 #endif
       unlink(path);

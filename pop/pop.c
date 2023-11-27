@@ -904,7 +904,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
         {
           mutt_bcache_del(adata->bcache, cache_id(edata->uid));
 #ifdef USE_HCACHE
-          hcache_delete_record(hc, edata->uid, strlen(edata->uid));
+          hcache_delete_email(hc, edata->uid, strlen(edata->uid));
 #endif
         }
       }

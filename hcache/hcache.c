@@ -755,9 +755,9 @@ int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
 }
 
 /**
- * hcache_delete_record - Multiplexor for StoreOps::delete_record
+ * hcache_delete_email - Multiplexor for StoreOps::delete_record
  */
-int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen)
+int hcache_delete_email(struct HeaderCache *hc, const char *key, size_t keylen)
 {
   if (!hc)
     return -1;

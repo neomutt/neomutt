@@ -761,8 +761,8 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
           continue;
 
         snprintf(buf, sizeof(buf), ANUM, current);
-        mutt_debug(LL_DEBUG2, "hcache_delete_record %s\n", buf);
-        hcache_delete_record(hc, buf, strlen(buf));
+        mutt_debug(LL_DEBUG2, "hcache_delete_email %s\n", buf);
+        hcache_delete_email(hc, buf, strlen(buf));
       }
     }
     FREE(&hdata);
