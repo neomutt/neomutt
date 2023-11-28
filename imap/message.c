@@ -770,7 +770,7 @@ static int read_headers_normal_eval_cache(struct ImapAccountData *adata,
           e->replied = h.edata->replied;
         }
 
-        /*  mailbox->emails[msgno]->received is restored from hcache_fetch() */
+        /*  mailbox->emails[msgno]->received is restored from hcache_fetch_email() */
         e->edata = h.edata;
         e->edata_free = imap_edata_free;
 
@@ -1051,7 +1051,7 @@ fail:
   }
   m->msg_count = 0;
   m->size = 0;
-  hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
+  hcache_delete_raw(mdata->hcache, "/MODSEQ", 7);
   imap_hcache_clear_uid_seqset(mdata);
   imap_hcache_close(mdata);
 
@@ -1369,8 +1369,8 @@ retry:
 
   if (mdata->hcache && initial_download)
   {
-    hcache_fetch_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
-    hcache_fetch_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
+    hcache_fetch_raw_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
+    hcache_fetch_raw_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
     if (mdata->modseq)
     {
       const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
@@ -1386,7 +1386,7 @@ retry:
     if (uidvalidity && uid_next && uidvalidity == mdata->uidvalidity)
     {
       evalhc = true;
-      if (hcache_fetch_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
+      if (hcache_fetch_raw_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
       {
         if (has_qresync)
         {
@@ -1485,7 +1485,7 @@ retry:
     }
     else
     {
-      hcache_delete_record(mdata->hcache, "/MODSEQ", 7);
+      hcache_delete_raw(mdata->hcache, "/MODSEQ", 7);
     }
 
     if (has_qresync)

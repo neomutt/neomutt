@@ -397,7 +397,7 @@ static int pop_fetch_headers(struct Mailbox *m)
       progress_update(progress, i + 1 - old_count, -1);
       struct PopEmailData *edata = pop_edata_get(m->emails[i]);
 #ifdef USE_HCACHE
-      struct HCacheEntry hce = hcache_fetch(hc, edata->uid, strlen(edata->uid), 0);
+      struct HCacheEntry hce = hcache_fetch_email(hc, edata->uid, strlen(edata->uid), 0);
       if (hce.email)
       {
         /* Detach the private data */
@@ -428,7 +428,7 @@ static int pop_fetch_headers(struct Mailbox *m)
 #ifdef USE_HCACHE
       else
       {
-        hcache_store(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
+        hcache_store_email(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
       }
 #endif
 
@@ -904,7 +904,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
         {
           mutt_bcache_del(adata->bcache, cache_id(edata->uid));
 #ifdef USE_HCACHE
-          hcache_delete_record(hc, edata->uid, strlen(edata->uid));
+          hcache_delete_email(hc, edata->uid, strlen(edata->uid));
 #endif
         }
       }
@@ -912,7 +912,7 @@ static enum MxStatus pop_mbox_sync(struct Mailbox *m)
 #ifdef USE_HCACHE
       if (m->emails[i]->changed)
       {
-        hcache_store(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
+        hcache_store_email(hc, edata->uid, strlen(edata->uid), m->emails[i], 0);
       }
 #endif
     }
@@ -1144,7 +1144,7 @@ static int pop_msg_save_hcache(struct Mailbox *m, struct Email *e)
   struct PopAccountData *adata = pop_adata_get(m);
   struct PopEmailData *edata = e->edata;
   struct HeaderCache *hc = pop_hcache_open(adata, mailbox_path(m));
-  rc = hcache_store(hc, edata->uid, strlen(edata->uid), e, 0);
+  rc = hcache_store_email(hc, edata->uid, strlen(edata->uid), e, 0);
   hcache_close(&hc);
 #endif
 

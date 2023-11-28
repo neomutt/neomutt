@@ -569,7 +569,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
 #ifdef USE_HCACHE
     const char *key = md->email->path;
     size_t keylen = strlen(key);
-    struct HCacheEntry hce = hcache_fetch(hc, key, keylen, 0);
+    struct HCacheEntry hce = hcache_fetch_email(hc, key, keylen, 0);
 
     if (hce.email)
     {
@@ -589,7 +589,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
 #ifdef USE_HCACHE
         key = md->email->path;
         keylen = strlen(key);
-        hcache_store(hc, key, keylen, md->email, 0);
+        hcache_store_email(hc, key, keylen, md->email, 0);
 #endif
       }
       else
@@ -740,7 +740,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCac
       {
         const char *key = e->path;
         size_t keylen = strlen(key);
-        hcache_delete_record(hc, key, keylen);
+        hcache_delete_email(hc, key, keylen);
       }
 #endif
       unlink(path);
@@ -771,7 +771,7 @@ int mh_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCac
   {
     const char *key = e->path;
     size_t keylen = strlen(key);
-    hcache_store(hc, key, keylen, e, 0);
+    hcache_store_email(hc, key, keylen, e, 0);
   }
 #endif
 
@@ -787,7 +787,7 @@ static int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
-  rc = hcache_store(hc, e->path, strlen(e->path), e, 0);
+  rc = hcache_store_email(hc, e->path, strlen(e->path), e, 0);
   hcache_close(&hc);
 #endif
   return rc;

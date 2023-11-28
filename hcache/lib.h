@@ -134,7 +134,7 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
 void hcache_close(struct HeaderCache **ptr);
 
 /**
- * hcache_store - Store a Header along with a validity datum
+ * hcache_store_email - Store a Header along with a validity datum
  * @param hc          Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key         Message identification string
  * @param keylen      Length of the key string
@@ -143,11 +143,10 @@ void hcache_close(struct HeaderCache **ptr);
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
-                      struct Email *e, uint32_t uidvalidity);
+int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen, struct Email *e, uint32_t uidvalidity);
 
 /**
- * hcache_fetch - Fetch and validate a  message's header from the cache
+ * hcache_fetch_email - Fetch and validate a  message's header from the cache
  * @param hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
@@ -157,23 +156,33 @@ int hcache_store(struct HeaderCache *hc, const char *key, size_t keylen,
  * @note This function performs a check on the validity of the data found by
  *       comparing it with the crc value of the struct HeaderCache structure.
  */
-struct HCacheEntry hcache_fetch(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
+struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key, size_t keylen, uint32_t uidvalidity);
 
-char *hcache_fetch_str(struct HeaderCache *hc, const char *key, size_t keylen);
-bool  hcache_fetch_obj_(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
-#define hcache_fetch_obj(hc, key, keylen, dst) hcache_fetch_obj_(hc, key, keylen, dst, sizeof(*dst))
+char *hcache_fetch_raw_str(struct HeaderCache *hc, const char *key, size_t keylen);
+bool  hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key, size_t keylen, void *dst, size_t dstlen);
+#define hcache_fetch_raw_obj(hc, key, keylen, dst) hcache_fetch_raw_obj_full(hc, key, keylen, dst, sizeof(*dst))
 
 int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
                           void *data, size_t dlen);
 
 /**
- * hcache_delete_record - Delete a key / data pair
+ * hcache_delete_email - Delete a key / data pair
  * @param hc     Pointer to the struct HeaderCache structure got by hcache_open()
  * @param key    Message identification string
  * @param keylen Length of the string pointed to by key
  * @retval 0   Success
  * @retval num Generic or backend-specific error code otherwise
  */
-int hcache_delete_record(struct HeaderCache *hc, const char *key, size_t keylen);
+int hcache_delete_email(struct HeaderCache *hc, const char *key, size_t keylen);
+
+/**
+ * hcache_delete_raw - Delete a key / data pair
+ * @param hc     Pointer to the struct HeaderCache structure got by hcache_open()
+ * @param key    Message identification string
+ * @param keylen Length of the string pointed to by key
+ * @retval 0   Success
+ * @retval num Generic or backend-specific error code otherwise
+ */
+int hcache_delete_raw(struct HeaderCache *hc, const char *key, size_t keylen);
 
 #endif /* MUTT_HCACHE_LIB_H */
