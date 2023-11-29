@@ -37,11 +37,11 @@
 #define SOME_PRIME 149711
 
 /**
- * gen_string_hash - Generate a hash from a string - Implements ::hash_gen_hash_t - @ingroup hash_gen_hash_api
+ * gen_hash_string - Generate a hash from a string - Implements ::hash_gen_hash_t - @ingroup hash_gen_hash_api
  *
  * @note If the key is NULL or empty, the retval will be 0
  */
-static size_t gen_string_hash(union HashKey key, size_t num_elems)
+static size_t gen_hash_string(union HashKey key, size_t num_elems)
 {
   size_t hash = 0;
   const unsigned char *s = (const unsigned char *) key.strkey;
@@ -56,19 +56,19 @@ static size_t gen_string_hash(union HashKey key, size_t num_elems)
 }
 
 /**
- * cmp_string_key - Compare two string keys - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
+ * cmp_key_string - Compare two string keys - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
  */
-static int cmp_string_key(union HashKey a, union HashKey b)
+static int cmp_key_string(union HashKey a, union HashKey b)
 {
   return mutt_str_cmp(a.strkey, b.strkey);
 }
 
 /**
- * gen_case_string_hash - Generate a hash from a string (ignore the case) - Implements ::hash_gen_hash_t - @ingroup hash_gen_hash_api
+ * gen_hash_case_string - Generate a hash from a string (ignore the case) - Implements ::hash_gen_hash_t - @ingroup hash_gen_hash_api
  *
  * @note If the key is NULL or empty, the retval will be 0
  */
-static size_t gen_case_string_hash(union HashKey key, size_t num_elems)
+static size_t gen_hash_case_string(union HashKey key, size_t num_elems)
 {
   size_t hash = 0;
   const unsigned char *s = (const unsigned char *) key.strkey;
@@ -83,25 +83,25 @@ static size_t gen_case_string_hash(union HashKey key, size_t num_elems)
 }
 
 /**
- * cmp_case_string_key - Compare two string keys (ignore case) - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
+ * cmp_key_case_string - Compare two string keys (ignore case) - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
  */
-static int cmp_case_string_key(union HashKey a, union HashKey b)
+static int cmp_key_case_string(union HashKey a, union HashKey b)
 {
   return mutt_istr_cmp(a.strkey, b.strkey);
 }
 
 /**
- * gen_int_hash - Generate a hash from an integer - Implements ::hash_gen_hash_t - @ingroup hash_gen_hash_api
+ * gen_hash_int - Generate a hash from an integer - Implements ::hash_gen_hash_t - @ingroup hash_gen_hash_api
  */
-static size_t gen_int_hash(union HashKey key, size_t num_elems)
+static size_t gen_hash_int(union HashKey key, size_t num_elems)
 {
   return (key.intkey % num_elems);
 }
 
 /**
- * cmp_int_key - Compare two integer keys - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
+ * cmp_key_int - Compare two integer keys - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
  */
-static int cmp_int_key(union HashKey a, union HashKey b)
+static int cmp_key_int(union HashKey a, union HashKey b)
 {
   if (a.intkey == b.intkey)
     return 0;
@@ -261,13 +261,13 @@ struct HashTable *mutt_hash_new(size_t num_elems, HashFlags flags)
   struct HashTable *table = hash_new(num_elems);
   if (flags & MUTT_HASH_STRCASECMP)
   {
-    table->gen_hash = gen_case_string_hash;
-    table->cmp_key = cmp_case_string_key;
+    table->gen_hash = gen_hash_case_string;
+    table->cmp_key = cmp_key_case_string;
   }
   else
   {
-    table->gen_hash = gen_string_hash;
-    table->cmp_key = cmp_string_key;
+    table->gen_hash = gen_hash_string;
+    table->cmp_key = cmp_key_string;
   }
   if (flags & MUTT_HASH_STRDUP_KEYS)
     table->strdup_keys = true;
@@ -285,8 +285,8 @@ struct HashTable *mutt_hash_new(size_t num_elems, HashFlags flags)
 struct HashTable *mutt_hash_int_new(size_t num_elems, HashFlags flags)
 {
   struct HashTable *table = hash_new(num_elems);
-  table->gen_hash = gen_int_hash;
-  table->cmp_key = cmp_int_key;
+  table->gen_hash = gen_hash_int;
+  table->cmp_key = cmp_key_int;
   if (flags & MUTT_HASH_ALLOW_DUPS)
     table->allow_dups = true;
   return table;
