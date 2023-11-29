@@ -29,6 +29,7 @@
 void test_mutt_hash_find_elem(void)
 {
   // struct HashElem *mutt_hash_find_elem(const struct HashTable *table, const char *strkey);
+  // struct HashElem *mutt_hash_find_elem_n(const struct HashTable *table, const char *strkey, int keylen);
 
   {
     TEST_CHECK(!mutt_hash_find_elem(NULL, "apple"));
@@ -37,5 +38,14 @@ void test_mutt_hash_find_elem(void)
   {
     struct HashTable table = { 0 };
     TEST_CHECK(!mutt_hash_find_elem(&table, NULL));
+  }
+
+  {
+    TEST_CHECK(!mutt_hash_find_elem_n(NULL, "apple", 5));
+  }
+
+  {
+    struct HashTable table = { 0 };
+    TEST_CHECK(!mutt_hash_find_elem_n(&table, NULL, 0));
   }
 }
