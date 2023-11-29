@@ -28,9 +28,9 @@
 #include <stdlib.h>
 
 /**
- * union HashKey - The data item stored in a HashElem
+ * struct HashKey - The data item stored in a HashElem
  */
-union HashKey
+struct HashKey
 {
   const char *strkey;  ///< String key
   unsigned int intkey; ///< Integer key
@@ -42,7 +42,7 @@ union HashKey
 struct HashElem
 {
   int type;              ///< Type of data stored in Hash Table, e.g. #DT_STRING
-  union HashKey key;     ///< Key representing the data
+  struct HashKey key;     ///< Key representing the data
   void *data;            ///< User-supplied data
   struct HashElem *next; ///< Linked List
 };
@@ -71,7 +71,7 @@ typedef void (*hash_hdata_free_t)(int type, void *obj, intptr_t data);
  * Turn a Key (a string or an integer) into a hash id.
  * The hash id will be a number between 0 and (num_elems-1).
  */
-typedef size_t (*hash_gen_hash_t)(union HashKey key, size_t num_elems);
+typedef size_t (*hash_gen_hash_t)(struct HashKey key, size_t num_elems);
 
 /**
  * @defgroup hash_cmp_key_api Hash Table Compare API
@@ -86,7 +86,7 @@ typedef size_t (*hash_gen_hash_t)(union HashKey key, size_t num_elems);
  *
  * This works like `strcmp()`.
  */
-typedef int (*hash_cmp_key_t)(union HashKey a, union HashKey b);
+typedef int (*hash_cmp_key_t)(struct HashKey a, struct HashKey b);
 
 /**
  * struct HashTable - A Hash Table
@@ -111,19 +111,30 @@ typedef uint8_t HashFlags;             ///< Flags for mutt_hash_new(), e.g. #MUT
 #define MUTT_HASH_STRDUP_KEYS (1 << 1) ///< make a copy of the keys
 #define MUTT_HASH_ALLOW_DUPS  (1 << 2) ///< allow duplicate keys to be inserted
 
-void              mutt_hash_delete        (struct HashTable *table, const char *strkey, const void *data);
-struct HashElem * mutt_hash_find_bucket   (const struct HashTable *table, const char *strkey);
-void *            mutt_hash_find          (const struct HashTable *table, const char *strkey);
-struct HashElem * mutt_hash_find_elem     (const struct HashTable *table, const char *strkey);
+// Set up
 void              mutt_hash_free          (struct HashTable **ptr);
-struct HashElem * mutt_hash_insert        (struct HashTable *table, const char *strkey, void *data);
-void              mutt_hash_int_delete    (struct HashTable *table, unsigned int intkey, const void *data);
-void *            mutt_hash_int_find      (const struct HashTable *table, unsigned int intkey);
-struct HashElem * mutt_hash_int_insert    (struct HashTable *table, unsigned int intkey, void *data);
 struct HashTable *mutt_hash_int_new       (size_t num_elems, HashFlags flags);
 struct HashTable *mutt_hash_new           (size_t num_elems, HashFlags flags);
 void              mutt_hash_set_destructor(struct HashTable *table, hash_hdata_free_t fn, intptr_t fn_data);
-struct HashElem * mutt_hash_typed_insert  (struct HashTable *table, const char *strkey, int type, void *data);
+
+// Manipulate string HashTable
+void              mutt_hash_delete        (      struct HashTable *table, const char *strkey, const void *data);
+void              mutt_hash_delete_n      (      struct HashTable *table, const char *strkey, int keylen, const void *data);
+void *            mutt_hash_find          (const struct HashTable *table, const char *strkey);
+void *            mutt_hash_find_n        (const struct HashTable *table, const char *strkey, int keylen);
+struct HashElem * mutt_hash_find_bucket   (const struct HashTable *table, const char *strkey);
+struct HashElem * mutt_hash_find_bucket_n (const struct HashTable *table, const char *strkey, int keylen);
+struct HashElem * mutt_hash_find_elem     (const struct HashTable *table, const char *strkey);
+struct HashElem * mutt_hash_find_elem_n   (const struct HashTable *table, const char *strkey, int keylen);
+struct HashElem * mutt_hash_insert        (      struct HashTable *table, const char *strkey, void *data);
+struct HashElem * mutt_hash_insert_n      (      struct HashTable *table, const char *strkey, int keylen, void *data);
+struct HashElem * mutt_hash_typed_insert  (      struct HashTable *table, const char *strkey, int type, void *data);
+struct HashElem * mutt_hash_typed_insert_n(      struct HashTable *table, const char *strkey, int keylen, int type, void *data);
+
+// Manipulate int HashTable
+void              mutt_hash_int_delete    (      struct HashTable *table, unsigned int intkey, const void *data);
+void *            mutt_hash_int_find      (const struct HashTable *table, unsigned int intkey);
+struct HashElem * mutt_hash_int_insert    (      struct HashTable *table, unsigned int intkey, void *data);
 
 /**
  * struct HashWalkState - Cursor to iterate through a Hash Table
@@ -137,3 +148,4 @@ struct HashWalkState
 struct HashElem *mutt_hash_walk(const struct HashTable *table, struct HashWalkState *state);
 
 #endif /* MUTT_MUTT_HASH_H */
+
