@@ -68,26 +68,6 @@ static inline bool ansi_is_end_char(char c)
 }
 
 /**
- * ansi_skip_sequence - Skip an unrecognised sequence
- * @param str String to examine
- * @retval num Number of characters to skip over
- */
-int ansi_skip_sequence(const char *str)
-{
-  if (!str || (str[0] == '\0'))
-    return 0;
-
-  int count = 1;
-  while ((str[0] != '\0') && !ansi_is_end_char(str[0]))
-  {
-    str++;
-    count++;
-  }
-
-  return count;
-}
-
-/**
  * ansi_color_seq_length - Is this an ANSI escape sequence?
  * @param str String to test
  * @retval  0 No, not an ANSI sequence
