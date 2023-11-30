@@ -31,7 +31,6 @@
 #include "color/lib.h"
 
 void ansi_color_reset(struct AnsiColor *ansi);
-int ansi_skip_sequence(const char *str);
 
 struct AnsiTest
 {
@@ -63,9 +62,6 @@ void test_ansi_color_parse_single(void)
     TEST_CHECK(len == 5);
 
     ansi_color_reset(NULL);
-
-    ansi_skip_sequence(NULL);
-    ansi_skip_sequence("");
   }
 
   // Skip
@@ -81,16 +77,6 @@ void test_ansi_color_parse_single(void)
       { NULL, 0 },
       // clang-format on
     };
-
-    int len;
-    for (int i = 0; tests[i].name; i++)
-    {
-      TEST_CASE_("<esc>%s", tests[i].name + 1);
-
-      len = ansi_skip_sequence(tests[i].name);
-      TEST_CHECK(len == tests[i].value);
-      TEST_MSG("len: Expected %d, Got %d", tests[i].value, len);
-    }
   }
 
   // Length
