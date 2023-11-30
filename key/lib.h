@@ -161,7 +161,6 @@ const char *             km_keyname                 (int c);
 void                     init_extended_keys         (void);
 int                      main_config_observer       (struct NotifyCallback *nc);
 void                     mutt_flush_macro_to_endcond(void);
-void                     mutt_flush_unget_to_endcond(void);
 void                     mutt_init_abort_key        (void);
 void                     mutt_keys_cleanup          (void);
 void                     mw_what_key                (void);

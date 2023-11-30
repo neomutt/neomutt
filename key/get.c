@@ -167,18 +167,6 @@ void mutt_flush_macro_to_endcond(void)
   array_to_endcond(&MacroEvents);
 }
 
-/**
- * mutt_flush_unget_to_endcond - Clear entries from UngetKeyEvents
- *
- * Normally, OP_END_COND should only be in the MacroEvent buffer.
- * km_error_key() (ab)uses OP_END_COND as a barrier in the unget buffer, and
- * calls this function to flush.
- */
-void mutt_flush_unget_to_endcond(void)
-{
-  array_to_endcond(&UngetKeyEvents);
-}
-
 #ifdef USE_INOTIFY
 /**
  * mutt_monitor_getch - Get a character and poll the filesystem monitor
