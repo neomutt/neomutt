@@ -723,41 +723,6 @@ size_t mutt_str_lws_len(const char *s, size_t n)
 }
 
 /**
- * mutt_str_lws_rlen - Measure the linear-white-space at the end of a string
- * @param s String to check
- * @param n Maximum number of characters to check
- * @retval num Count of whitespace characters
- *
- * Count the number of whitespace characters at the end of a string.
- * They can be `<space>`, `<tab>`, `<cr>` or `<lf>`.
- */
-size_t mutt_str_lws_rlen(const char *s, size_t n)
-{
-  if (!s)
-    return 0;
-
-  const char *p = s + n - 1;
-  size_t len = n;
-
-  if (n == 0)
-    return 0;
-
-  if (strchr("\r\n", *p)) /* LWS doesn't end with CRLF */
-    return 0;
-
-  for (; p >= s; p--)
-  {
-    if (!strchr(" \t\r\n", *p))
-    {
-      len = s + n - 1 - p;
-      break;
-    }
-  }
-
-  return len;
-}
-
-/**
  * mutt_str_dequote_comment - Un-escape characters in an email address comment
  * @param str String to be un-escaped
  *
@@ -810,27 +775,6 @@ bool mutt_str_equal(const char *a, const char *b)
 bool mutt_istr_equal(const char *a, const char *b)
 {
   return (a == b) || (mutt_istr_cmp(a, b) == 0);
-}
-
-/**
- * mutt_str_next_word - Find the next word in a string
- * @param s String to examine
- * @retval ptr Next word
- *
- * If the s is pointing to a word (non-space) is is skipped over.
- * Then, any whitespace is skipped over.
- *
- * @note What is/isn't a word is determined by isspace()
- */
-const char *mutt_str_next_word(const char *s)
-{
-  if (!s)
-    return NULL;
-
-  while (*s && !isspace(*s))
-    s++;
-  SKIPWS(s);
-  return s;
 }
 
 /**

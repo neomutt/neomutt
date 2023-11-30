@@ -26,16 +26,6 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-void test_mutt_rand32(void)
-{
-  // uint32_t mutt_rand32(void);
-
-  {
-    // Every return value is valid, so there's no point checking it
-    mutt_rand32();
-  }
-}
-
 void test_mutt_rand64(void)
 {
   // uint64_t mutt_rand64(void);
