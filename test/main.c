@@ -523,7 +523,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_prex_cleanup)                                    \
                                                                                \
   /* random */                                                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_rand32)                                          \
   NEOMUTT_TEST_ITEM(test_mutt_rand64)                                          \
   NEOMUTT_TEST_ITEM(test_mutt_rand_base32)                                     \
                                                                                \
@@ -614,8 +613,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_len)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_lower)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_lws_len)                                     \
-  NEOMUTT_TEST_ITEM(test_mutt_str_lws_rlen)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_str_next_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_remove_trailing_ws)                          \
   NEOMUTT_TEST_ITEM(test_mutt_str_replace)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_sep)                                         \

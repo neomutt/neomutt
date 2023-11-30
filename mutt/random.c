@@ -115,19 +115,6 @@ void mutt_rand_base32(char *buf, size_t buflen)
 }
 
 /**
- * mutt_rand32 - Create a 32-bit random number
- * @retval num Random number
- */
-uint32_t mutt_rand32(void)
-{
-  uint32_t num = 0;
-
-  if (mutt_randbuf(&num, sizeof(num)) < 0)
-    mutt_exit(1); // LCOV_EXCL_LINE
-  return num;
-}
-
-/**
  * mutt_rand64 - Create a 64-bit random number
  * @retval num Random number
  */

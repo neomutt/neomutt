@@ -593,8 +593,6 @@ STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_str_len.o \
 		  test/string/mutt_str_lower.o \
 		  test/string/mutt_str_lws_len.o \
-		  test/string/mutt_str_lws_rlen.o \
-		  test/string/mutt_str_next_word.o \
 		  test/string/mutt_str_remove_trailing_ws.o \
 		  test/string/mutt_str_replace.o \
 		  test/string/mutt_str_sep.o \
