@@ -140,6 +140,8 @@ if args.debug:
 if not token:
     if not args.authorize:
         sys.exit('You must run script with "--authorize" at least once.')
+    if not ENCRYPTION_PIPE:
+        sys.exit("You need to provide a suitable --encryption-pipe setting")
     print('', )
     token['registration'] = args.provider or input(
         'Available app and endpoint registrations: {regs}\nOAuth2 registration: '.format(
