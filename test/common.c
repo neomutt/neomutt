@@ -114,6 +114,9 @@ bool test_neomutt_create(void)
 
 void test_neomutt_destroy(void)
 {
+  if (!NeoMutt)
+    return;
+
   struct ConfigSet *cs = NeoMutt->sub->cs;
   neomutt_free(&NeoMutt);
   cs_free(&cs);
@@ -163,7 +166,10 @@ void test_init(void)
   success = true;
 done:
   if (!success)
+  {
     TEST_MSG("See: https://github.com/neomutt/neomutt-test-files#test-files");
+    exit(1);
+  }
 }
 
 void test_fini(void)

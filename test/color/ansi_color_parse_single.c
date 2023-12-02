@@ -64,21 +64,6 @@ void test_ansi_color_parse_single(void)
     ansi_color_reset(NULL);
   }
 
-  // Skip
-  {
-    static const struct Mapping tests[] = {
-      // clang-format off
-      { "\033[m",         3 },
-      { "\033[1m",        4 },
-      { "\033[3m",        4 },
-      { "\033[03m",       5 },
-      { "\033[48;5;123m", 5 },
-      { "\033[5;22m",     4 },
-      { NULL, 0 },
-      // clang-format on
-    };
-  }
-
   // Length
   {
     static const struct Mapping tests[] = {

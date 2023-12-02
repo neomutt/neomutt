@@ -102,8 +102,10 @@ static StoreHandle *store_rocksdb_open(const char *path)
   sdata->db = rocksdb_open(sdata->options, path, &sdata->err);
   if (sdata->err)
   {
-    rocksdb_free(sdata->err);
-    FREE(&sdata);
+    rocksdb_options_destroy(sdata->options);
+    rocksdb_readoptions_destroy(sdata->read_options);
+    rocksdb_writeoptions_destroy(sdata->write_options);
+    rocksdb_sdata_free(&sdata);
     return NULL;
   }
 

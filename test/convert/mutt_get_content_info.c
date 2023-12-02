@@ -53,6 +53,9 @@ void test_mutt_get_content_info(void)
 
   FILE *fp = fopen(buf_string(fname), "w");
   TEST_CHECK(fp != NULL);
+  if (!fp)
+    exit(1);
+
   TEST_MSG("unable to open temp file for writing");
 
   TEST_CHECK(fwrite(text, strlen(text), 1, fp) > 0);

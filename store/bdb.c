@@ -127,7 +127,7 @@ static StoreHandle *store_bdb_open(const char *path)
   sdata->fd = open(buf_string(&sdata->lockfile), O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (sdata->fd < 0)
   {
-    FREE(&sdata);
+    bdb_sdata_free(&sdata);
     return NULL;
   }
 

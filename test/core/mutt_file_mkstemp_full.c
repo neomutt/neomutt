@@ -36,12 +36,14 @@ void test_mutt_file_mkstemp_full(void)
   {
     FILE *fp = NULL;
     TEST_CHECK((fp = mutt_file_mkstemp_full(NULL, 0, "apple")) != NULL);
-    fclose(fp);
+    if (fp)
+      fclose(fp);
   }
 
   {
     FILE *fp = NULL;
     TEST_CHECK((fp = mutt_file_mkstemp_full("apple", 0, NULL)) != NULL);
-    fclose(fp);
+    if (fp)
+      fclose(fp);
   }
 }
