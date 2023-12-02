@@ -74,26 +74,28 @@ struct RealKey
 
 /**
  * realkey - Compute the real key used in the backend, taking into account the compression method
- * @param  hc     Header cache handle
- * @param  key    Original key
- * @param  keylen Length of original key
+ * @param hc       Header cache handle
+ * @param key      Original key
+ * @param keylen   Length of original key
+ * @param compress Will the data be compressed?
  * @retval ptr Static location holding data and length of the real key
  */
-static struct RealKey *realkey(struct HeaderCache *hc, const char *key, size_t keylen)
+static struct RealKey *realkey(struct HeaderCache *hc, const char *key,
+                               size_t keylen, bool compress)
 {
   static struct RealKey rk;
+
+  rk.keylen = snprintf(rk.key, sizeof(rk.key), "%s/%.*s", hc->folder, (int) keylen, key);
+
 #ifdef USE_HCACHE_COMPRESSION
-  if (hc->compr_ops)
+  if (compress && hc->compr_ops)
   {
-    rk.keylen = snprintf(rk.key, sizeof(rk.key), "%.*s-%s", (int) keylen, key,
-                      hc->compr_ops->name);
+    // Append the compression type, e.g. "-zstd"
+    rk.keylen += snprintf(rk.key + rk.keylen, sizeof(rk.key) - rk.keylen, "-%s",
+                          hc->compr_ops->name);
   }
-  else
 #endif
-  {
-    mutt_strn_copy(rk.key, key, keylen, sizeof(rk.key));
-    rk.keylen = keylen;
-  }
+
   return &rk;
 }
 
@@ -418,30 +420,6 @@ static char *get_foldername(const char *folder)
 }
 
 /**
- * fetch_raw - Fetch a message's header from the cache
- * @param[in]  hc     Pointer to the struct HeaderCache structure got by hcache_open()
- * @param[in]  key    Message identification string
- * @param[in]  keylen Length of the string pointed to by key
- * @param[out] dlen   Length of the fetched data
- * @retval ptr  Success, the data if found
- * @retval NULL Otherwise
- *
- * @note This function does not perform any check on the validity of the data found.
- * @note The returned data must be free with free_raw().
- */
-static void *fetch_raw(struct HeaderCache *hc, const char *key, size_t keylen, size_t *dlen)
-{
-  if (!hc)
-    return NULL;
-
-  struct Buffer *path = buf_pool_get();
-  keylen = buf_printf(path, "%s%.*s", hc->folder, (int) keylen, key);
-  void *blob = hc->store_ops->fetch(hc->store_handle, buf_string(path), keylen, dlen);
-  buf_pool_release(&path);
-  return blob;
-}
-
-/**
  * free_raw - Multiplexor for StoreOps::free
  */
 static void free_raw(struct HeaderCache *hc, void **data)
@@ -589,8 +567,8 @@ struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
     return hce;
 
   size_t dlen = 0;
-  struct RealKey *rk = realkey(hc, key, keylen);
-  void *data = fetch_raw(hc, rk->key, rk->keylen, &dlen);
+  struct RealKey *rk = realkey(hc, key, keylen, true);
+  void *data = hc->store_ops->fetch(hc->store_handle, rk->key, rk->keylen, &dlen);
   void *to_free = data;
   if (!data)
   {
@@ -647,7 +625,10 @@ bool hcache_fetch_raw_obj_full(struct HeaderCache *hc, const char *key,
 {
   bool rc = true;
   size_t srclen = 0;
-  void *src = fetch_raw(hc, key, keylen, &srclen);
+
+  struct RealKey *rk = realkey(hc, key, keylen, false);
+  void *src = hc->store_ops->fetch(hc->store_handle, rk->key, rk->keylen, &srclen);
+
   if (src && (srclen == dstlen))
   {
     memcpy(dst, src, dstlen);
@@ -672,7 +653,9 @@ char *hcache_fetch_raw_str(struct HeaderCache *hc, const char *key, size_t keyle
 {
   char *res = NULL;
   size_t dlen = 0;
-  void *data = fetch_raw(hc, key, keylen, &dlen);
+
+  struct RealKey *rk = realkey(hc, key, keylen, false);
+  void *data = hc->store_ops->fetch(hc->store_handle, rk->key, rk->keylen, &dlen);
   if (data)
   {
     res = mutt_strn_dup(data, dlen);
@@ -720,9 +703,8 @@ int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen,
   }
 #endif
 
-  /* store uncompressed data */
-  struct RealKey *rk = realkey(hc, key, keylen);
-  int rc = hcache_store_raw(hc, rk->key, rk->keylen, data, dlen);
+  struct RealKey *rk = realkey(hc, key, keylen, true);
+  int rc = hc->store_ops->store(hc->store_handle, rk->key, rk->keylen, data, dlen);
 
   FREE(&data);
 
@@ -745,11 +727,8 @@ int hcache_store_raw(struct HeaderCache *hc, const char *key, size_t keylen,
   if (!hc)
     return -1;
 
-  struct Buffer *path = buf_pool_get();
-
-  keylen = buf_printf(path, "%s%.*s", hc->folder, (int) keylen, key);
-  int rc = hc->store_ops->store(hc->store_handle, buf_string(path), keylen, data, dlen);
-  buf_pool_release(&path);
+  struct RealKey *rk = realkey(hc, key, keylen, false);
+  int rc = hc->store_ops->store(hc->store_handle, rk->key, rk->keylen, data, dlen);
 
   return rc;
 }
@@ -762,12 +741,9 @@ int hcache_delete_email(struct HeaderCache *hc, const char *key, size_t keylen)
   if (!hc)
     return -1;
 
-  struct Buffer *path = buf_pool_get();
+  struct RealKey *rk = realkey(hc, key, keylen, true);
 
-  keylen = buf_printf(path, "%s%s", hc->folder, key);
-  int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(path), keylen);
-  buf_pool_release(&path);
-  return rc;
+  return hc->store_ops->delete_record(hc->store_handle, rk->key, rk->keylen);
 }
 
 /**
@@ -778,10 +754,7 @@ int hcache_delete_raw(struct HeaderCache *hc, const char *key, size_t keylen)
   if (!hc)
     return -1;
 
-  struct Buffer *path = buf_pool_get();
+  struct RealKey *rk = realkey(hc, key, keylen, false);
 
-  keylen = buf_printf(path, "%s%s", hc->folder, key);
-  int rc = hc->store_ops->delete_record(hc->store_handle, buf_string(path), keylen);
-  buf_pool_release(&path);
-  return rc;
+  return hc->store_ops->delete_record(hc->store_handle, rk->key, rk->keylen);
 }

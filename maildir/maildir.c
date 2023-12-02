@@ -105,7 +105,7 @@ mode_t maildir_umask(struct Mailbox *m)
  */
 static inline const char *maildir_hcache_key(struct Email *e)
 {
-  return e->path + 3;
+  return e->path + 4;
 }
 
 /**

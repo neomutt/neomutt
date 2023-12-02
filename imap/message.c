@@ -1051,7 +1051,7 @@ fail:
   }
   m->msg_count = 0;
   m->size = 0;
-  hcache_delete_raw(mdata->hcache, "/MODSEQ", 7);
+  hcache_delete_raw(mdata->hcache, "MODSEQ", 6);
   imap_hcache_clear_uid_seqset(mdata);
   imap_hcache_close(mdata);
 
@@ -1369,8 +1369,8 @@ retry:
 
   if (mdata->hcache && initial_download)
   {
-    hcache_fetch_raw_obj(mdata->hcache, "/UIDVALIDITY", 12, &uidvalidity);
-    hcache_fetch_raw_obj(mdata->hcache, "/UIDNEXT", 8, &uid_next);
+    hcache_fetch_raw_obj(mdata->hcache, "UIDVALIDITY", 11, &uidvalidity);
+    hcache_fetch_raw_obj(mdata->hcache, "UIDNEXT", 7, &uid_next);
     if (mdata->modseq)
     {
       const bool c_imap_condstore = cs_subset_bool(NeoMutt->sub, "imap_condstore");
@@ -1386,7 +1386,7 @@ retry:
     if (uidvalidity && uid_next && uidvalidity == mdata->uidvalidity)
     {
       evalhc = true;
-      if (hcache_fetch_raw_obj(mdata->hcache, "/MODSEQ", 7, &modseq))
+      if (hcache_fetch_raw_obj(mdata->hcache, "MODSEQ", 6, &modseq))
       {
         if (has_qresync)
         {
@@ -1460,7 +1460,7 @@ retry:
     mdata->uid_next = maxuid + 1;
 
 #ifdef USE_HCACHE
-  hcache_store_raw(mdata->hcache, "/UIDVALIDITY", 12, &mdata->uidvalidity,
+  hcache_store_raw(mdata->hcache, "UIDVALIDITY", 11, &mdata->uidvalidity,
                    sizeof(mdata->uidvalidity));
   if (maxuid && (mdata->uid_next < maxuid + 1))
   {
@@ -1469,8 +1469,7 @@ retry:
   }
   if (mdata->uid_next > 1)
   {
-    hcache_store_raw(mdata->hcache, "/UIDNEXT", 8, &mdata->uid_next,
-                     sizeof(mdata->uid_next));
+    hcache_store_raw(mdata->hcache, "UIDNEXT", 7, &mdata->uid_next, sizeof(mdata->uid_next));
   }
 
   /* We currently only sync CONDSTORE and QRESYNC on the initial download.
@@ -1481,11 +1480,11 @@ retry:
   {
     if (has_condstore || has_qresync)
     {
-      hcache_store_raw(mdata->hcache, "/MODSEQ", 7, &mdata->modseq, sizeof(mdata->modseq));
+      hcache_store_raw(mdata->hcache, "MODSEQ", 6, &mdata->modseq, sizeof(mdata->modseq));
     }
     else
     {
-      hcache_delete_raw(mdata->hcache, "/MODSEQ", 7);
+      hcache_delete_raw(mdata->hcache, "MODSEQ", 6);
     }
 
     if (has_qresync)
