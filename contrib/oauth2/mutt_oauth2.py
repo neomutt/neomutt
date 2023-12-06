@@ -39,6 +39,7 @@ import shlex
 import socket
 import http.server
 import subprocess
+import readline
 
 # The token file must be encrypted because it contains multi-use bearer tokens
 # whose usage does not require additional verification. Specify whichever
