@@ -28,8 +28,10 @@
 extern const struct Mapping SortMethods[];
 
 /* ... DT_SORT */
-#define DT_SORT_LAST    (1 << 11) ///< Sort flag for -last prefix
-#define DT_SORT_REVERSE (1 << 12) ///< Sort flag for -reverse prefix
+/* Note: To save space, sets of config variable flags are packed into a uint32_t.
+ * When adding flags, check all config variables to ensure there are no overlaps of values */
+#define DT_SORT_LAST    (1 << 21) ///< Sort flag for -last prefix
+#define DT_SORT_REVERSE (1 << 22) ///< Sort flag for -reverse prefix
 
 /**
  * enum SortType - Methods for sorting

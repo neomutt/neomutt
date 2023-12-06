@@ -32,9 +32,11 @@
 struct Buffer;
 
 /* ... DT_REGEX */
-#define DT_REGEX_MATCH_CASE (1 << 6)  ///< Case-sensitive matching
-#define DT_REGEX_ALLOW_NOT  (1 << 7)  ///< Regex can begin with '!'
-#define DT_REGEX_NOSUB      (1 << 8)  ///< Do not report what was matched (REG_NOSUB)
+/* Note: To save space, sets of config variable flags are packed into a uint32_t.
+ * When adding flags, check all config variables to ensure there are no overlaps of values */
+#define DT_REGEX_MATCH_CASE (1 << 17)  ///< Case-sensitive matching
+#define DT_REGEX_ALLOW_NOT  (1 << 18)  ///< Regex can begin with '!'
+#define DT_REGEX_NOSUB      (1 << 19)  ///< Do not report what was matched (REG_NOSUB)
 
 /* This is a non-standard option supported by Solaris 2.5.x
  * which allows patterns of the form \<...\> */

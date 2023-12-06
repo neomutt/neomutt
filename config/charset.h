@@ -25,8 +25,10 @@
 
 #include <stdint.h>
 
-#define DT_CHARSET_SINGLE  (1 << 11) ///< Flag for charset_validator to allow only one charset
-#define DT_CHARSET_STRICT  (1 << 12) ///< Flag for charset_validator to use strict char check
+/* Note: To save space, sets of config variable flags are packed into a uint32_t.
+ * When adding flags, check all config variables to ensure there are no overlaps of values */
+#define DT_CHARSET_SINGLE  (1 << 24) ///< Flag for charset_validator to allow only one charset
+#define DT_CHARSET_STRICT  (1 << 25) ///< Flag for charset_validator to use strict char check
 
 struct Buffer;
 struct ConfigDef;
