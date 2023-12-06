@@ -1985,14 +1985,50 @@ static int op_compose_write_message(struct ComposeSharedData *shared, int op)
  *
  * This function handles:
  * - OP_ATTACHMENT_VIEW
+ * - OP_ATTACHMENT_VIEW_MAILCAP
+ * - OP_ATTACHMENT_VIEW_PAGER
+ * - OP_ATTACHMENT_VIEW_TEXT
  * - OP_DISPLAY_HEADERS
  */
 static int op_display_headers(struct ComposeSharedData *shared, int op)
 {
   if (!check_count(shared->adata->actx))
     return FR_NO_ACTION;
-  mutt_attach_display_loop(shared->sub, shared->adata->menu, op, shared->email,
-                           shared->adata->actx, false);
+
+  enum ViewAttachMode mode = MUTT_VA_REGULAR;
+
+  switch (op)
+  {
+    case OP_ATTACHMENT_VIEW:
+    case OP_DISPLAY_HEADERS:
+      break;
+
+    case OP_ATTACHMENT_VIEW_MAILCAP:
+      mode = MUTT_VA_MAILCAP;
+      break;
+
+    case OP_ATTACHMENT_VIEW_PAGER:
+      mode = MUTT_VA_PAGER;
+      break;
+
+    case OP_ATTACHMENT_VIEW_TEXT:
+      mode = MUTT_VA_AS_TEXT;
+      break;
+  }
+
+  if (mode == MUTT_VA_REGULAR)
+  {
+    mutt_attach_display_loop(shared->sub, shared->adata->menu, op,
+                             shared->email, shared->adata->actx, false);
+  }
+  else
+  {
+    struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
+                                                   shared->adata->menu);
+    mutt_view_attachment(NULL, cur_att->body, mode, shared->email,
+                         shared->adata->actx, shared->adata->menu->win);
+  }
+
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
   /* no send2hook, since this doesn't modify the message */
   return FR_SUCCESS;
@@ -2078,6 +2114,9 @@ static const struct ComposeFunction ComposeFunctions[] = {
   { OP_ATTACHMENT_UNGROUP,                op_attachment_ungroup },
   { OP_ATTACHMENT_UPDATE_ENCODING,        op_attachment_update_encoding },
   { OP_ATTACHMENT_VIEW,                   op_display_headers },
+  { OP_ATTACHMENT_VIEW_MAILCAP,           op_display_headers },
+  { OP_ATTACHMENT_VIEW_PAGER,             op_display_headers },
+  { OP_ATTACHMENT_VIEW_TEXT,              op_display_headers },
   { OP_COMPOSE_EDIT_FILE,                 op_compose_edit_file },
   { OP_COMPOSE_EDIT_MESSAGE,              op_compose_edit_message },
   { OP_COMPOSE_ISPELL,                    op_compose_ispell },
