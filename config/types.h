@@ -25,6 +25,9 @@
 
 #include <stdint.h>
 
+/* Note: To save space, sets of config variable flags are packed into a uint32_t.
+ * When adding flags, check all config variables to ensure there are no overlaps of values */
+
 /* Data Types */
 #define DT_ADDRESS   1  ///< e-mail address
 #define DT_BOOL      2  ///< boolean option

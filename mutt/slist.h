@@ -30,6 +30,8 @@
 
 struct Buffer;
 
+/* Note: To save space, sets of config variable flags are packed into a uint32_t.
+ * When adding flags, check all config variables to ensure there are no overlaps of values */
 #define SLIST_SEP_SPACE (1 << 17)         ///< Slist items are space-separated
 #define SLIST_SEP_COMMA (1 << 18)         ///< Slist items are comma-separated
 #define SLIST_SEP_COLON (1 << 19)         ///< Slist items are colon-separated
