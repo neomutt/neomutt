@@ -249,6 +249,11 @@ static struct PrexStorage *prex(enum Prex which)
       PREX_ACCOUNT_CMD_MATCH_MAX,
       "^([[:alpha:]]+): (.*)$"
     },
+    {
+      PREX_ALIAS_TAGS,
+      PREX_ALIAS_TAGS_MATCH_MAX,
+      "^(.*)(tags:)([[:alnum:],]*) ?(.*)$"
+    },
     // clang-format on
   };
 

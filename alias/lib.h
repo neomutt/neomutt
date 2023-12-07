@@ -51,10 +51,12 @@
 
 struct Address;
 struct AddressList;
+struct Alias;
 struct Buffer;
 struct ConfigSubset;
 struct EnterWindowData;
 struct Envelope;
+struct TagList;
 
 extern const struct CompleteOps CompleteAliasOps;
 
@@ -71,6 +73,10 @@ struct AddressList *mutt_get_address       (struct Envelope *env, const char **p
 
 enum CommandResult parse_alias  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
+
+void alias_tags_to_buffer(struct TagList *tl, struct Buffer *buf);
+void parse_alias_comments(struct Alias *alias, const char *com);
+void parse_alias_tags    (const char *tags, struct TagList *tl);
 
 int  alias_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void alias_dialog  (struct Mailbox *m, struct ConfigSubset *sub);
