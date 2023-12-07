@@ -1169,6 +1169,24 @@ bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
         return false;
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
                                            1, &av->alias->addr);
+    case MUTT_PAT_DRIVER_TAGS:
+    {
+      if (!av->alias)
+        return false;
+
+      struct Buffer *tags = buf_pool_get();
+      alias_tags_to_buffer(&av->alias->tags, tags);
+
+      bool rc = false;
+      if (!buf_is_empty(tags))
+      {
+        rc = (pat->pat_not ^ (patmatch(pat, buf_string(tags))));
+      }
+
+      buf_pool_release(&tags);
+      return rc;
+    }
+
     case MUTT_PAT_AND:
       return pat->pat_not ^ (perform_alias_and(pat->child, flags, av, cache) > 0);
     case MUTT_PAT_OR:

@@ -26,16 +26,18 @@
 
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "email/lib.h"
 
 /**
  * struct Alias - A shortcut for an email address or addresses
  */
 struct Alias
 {
-  char *name;                 ///< Short name
-  struct AddressList addr;    ///< List of Addresses the Alias expands to
-  char *comment;              ///< Free-form comment string
-  TAILQ_ENTRY(Alias) entries; ///< Linked list
+  char              *name;        ///< Short name
+  struct AddressList addr;        ///< List of Addresses the Alias expands to
+  char              *comment;     ///< Free-form comment string
+  struct TagList     tags;        ///< Tags
+  TAILQ_ENTRY(Alias) entries;     ///< Linked list
 };
 TAILQ_HEAD(AliasList, Alias);
 

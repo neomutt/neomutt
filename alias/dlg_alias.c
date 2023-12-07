@@ -118,6 +118,7 @@ static const struct Mapping AliasHelp[] = {
  * | \%n     | Index number
  * | \%r     | Address which alias expands to
  * | \%t     | Character which indicates if the alias is tagged for inclusion
+ * | \%Y     | Comma-separated tags
  */
 static const char *alias_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
@@ -157,6 +158,14 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       buf[0] = av->is_tagged ? '*' : ' ';
       buf[1] = '\0';
       break;
+    case 'Y':
+    {
+      struct Buffer *tags = buf_pool_get();
+      alias_tags_to_buffer(&av->alias->tags, tags);
+      mutt_format_s(buf, buflen, prec, buf_string(tags));
+      buf_pool_release(&tags);
+      break;
+    }
   }
 
   return src;

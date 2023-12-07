@@ -324,3 +324,7 @@ struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype,
 {
   return NULL;
 }
+
+void alias_tags_to_buffer(struct TagList *tl, struct Buffer *buf)
+{
+}

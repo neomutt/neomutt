@@ -148,6 +148,7 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
  * | \%e     | Extra information
  * | \%n     | Destination name
  * | \%t     | `*` if current entry is tagged, a space otherwise
+ * | \%Y     | Comma-separated tags
  */
 static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
                                     char op, const char *src, const char *prec,
@@ -195,6 +196,14 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       snprintf(buf, buflen, fmt, av->is_tagged ? '*' : ' ');
       break;
+    case 'Y':
+    {
+      struct Buffer *tags = buf_pool_get();
+      alias_tags_to_buffer(&av->alias->tags, tags);
+      mutt_format_s(buf, buflen, prec, buf_string(tags));
+      buf_pool_release(&tags);
+      break;
+    }
     default:
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
       snprintf(buf, buflen, fmt, op);
@@ -298,7 +307,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
       {
         alias->name = mutt_str_dup(p);
         p = strtok(NULL, "\t\n");
-        alias->comment = mutt_str_dup(p);
+        parse_alias_comments(alias, p);
       }
       TAILQ_INSERT_TAIL(al, alias, entries);
     }
