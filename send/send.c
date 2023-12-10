@@ -2385,7 +2385,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     if (c_hdrs)
       process_user_header(e_templ->env);
 
-    if (flags & SEND_BATCH)
+    if ((flags & SEND_BATCH) && !(flags & SEND_CONSUMED_STDIN))
     {
       if (mutt_file_copy_stream(stdin, fp_tmp) < 1)
       {

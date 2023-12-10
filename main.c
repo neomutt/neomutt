@@ -1070,7 +1070,9 @@ main
         if (fp_in)
         {
           mutt_file_copy_stream(fp_in, fp_out);
-          if (fp_in != stdin)
+          if (fp_in == stdin)
+            sendflags |= SEND_CONSUMED_STDIN;
+          else
             mutt_file_fclose(&fp_in);
         }
         else if (bodytext)
