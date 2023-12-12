@@ -59,7 +59,7 @@ extern const struct MxOps MxNntpOps;
 
 /* article number type and format */
 #define anum_t long
-#define ANUM "%ld"
+#define ANUM_FMT "%ld"
 
 /**
  * struct NntpAcache - NNTP article cache

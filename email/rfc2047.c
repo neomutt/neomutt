@@ -48,7 +48,7 @@
 
 #define HSPACE(ch) (((ch) == '\0') || ((ch) == ' ') || ((ch) == '\t'))
 
-#define CONTINUATION_BYTE(ch) (((ch) &0xc0) == 0x80)
+#define CONTINUATION_BYTE(ch) (((ch) & 0xc0) == 0x80)
 
 /**
  * @defgroup encoder_api Mime Encoder API

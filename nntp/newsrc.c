@@ -269,8 +269,8 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
       else
         h = b;
 
-      if ((sscanf(b, ANUM, &mdata->newsrc_ent[j].first) == 1) &&
-          (sscanf(h, ANUM, &mdata->newsrc_ent[j].last) == 1))
+      if ((sscanf(b, ANUM_FMT, &mdata->newsrc_ent[j].first) == 1) &&
+          (sscanf(h, ANUM_FMT, &mdata->newsrc_ent[j].last) == 1))
       {
         j++;
       }
@@ -478,11 +478,11 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
         buf[off++] = ',';
       if (mdata->newsrc_ent[j].first == mdata->newsrc_ent[j].last)
       {
-        snprintf(buf + off, buflen - off, ANUM, mdata->newsrc_ent[j].first);
+        snprintf(buf + off, buflen - off, ANUM_FMT, mdata->newsrc_ent[j].first);
       }
       else if (mdata->newsrc_ent[j].first < mdata->newsrc_ent[j].last)
       {
-        snprintf(buf + off, buflen - off, ANUM "-" ANUM,
+        snprintf(buf + off, buflen - off, ANUM_FMT "-" ANUM_FMT,
                  mdata->newsrc_ent[j].first, mdata->newsrc_ent[j].last);
       }
       off += strlen(buf + off);
@@ -590,8 +590,8 @@ int nntp_add_group(char *line, void *data)
     return 0;
 
   /* These sscanf limits must match the sizes of the group and desc arrays */
-  if (sscanf(line, "%1023s " ANUM " " ANUM " %c %8191[^\n]", group, &last,
-             &first, &mod, desc) < 4)
+  if (sscanf(line, "%1023s " ANUM_FMT " " ANUM_FMT " %c %8191[^\n]", group,
+             &last, &first, &mod, desc) < 4)
   {
     mutt_debug(LL_DEBUG2, "Can't parse server line: %s\n", line);
     return 0;
@@ -674,9 +674,10 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
       buflen *= 2;
       mutt_mem_realloc(&buf, buflen);
     }
-    snprintf(buf + off, buflen - off, "%s " ANUM " " ANUM " %c%s%s\n", mdata->group,
-             mdata->last_message, mdata->first_message, mdata->allowed ? 'y' : 'n',
-             mdata->desc ? " " : "", mdata->desc ? mdata->desc : "");
+    snprintf(buf + off, buflen - off, "%s " ANUM_FMT " " ANUM_FMT " %c%s%s\n",
+             mdata->group, mdata->last_message, mdata->first_message,
+             mdata->allowed ? 'y' : 'n', mdata->desc ? " " : "",
+             mdata->desc ? mdata->desc : "");
     off += strlen(buf + off);
   }
 
@@ -749,7 +750,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
   if (hdata)
   {
     mutt_debug(LL_DEBUG2, "hcache_fetch_email index: %s\n", hdata);
-    if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
+    if (sscanf(hdata, ANUM_FMT " " ANUM_FMT, &first, &last) == 2)
     {
       old = true;
       mdata->last_cached = last;
@@ -760,7 +761,7 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
         if ((current >= mdata->first_message) && (current <= mdata->last_message))
           continue;
 
-        snprintf(buf, sizeof(buf), ANUM, current);
+        snprintf(buf, sizeof(buf), ANUM_FMT, current);
         mutt_debug(LL_DEBUG2, "hcache_delete_email %s\n", buf);
         hcache_delete_email(hc, buf, strlen(buf));
       }
@@ -771,7 +772,8 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
   /* store current values of first and last */
   if (!old || (mdata->first_message != first) || (mdata->last_message != last))
   {
-    snprintf(buf, sizeof(buf), ANUM " " ANUM, mdata->first_message, mdata->last_message);
+    snprintf(buf, sizeof(buf), ANUM_FMT " " ANUM_FMT, mdata->first_message,
+             mdata->last_message);
     mutt_debug(LL_DEBUG2, "hcache_store_email index: %s\n", buf);
     hcache_store_raw(hc, "index", 5, buf, strlen(buf) + 1);
   }
@@ -788,7 +790,7 @@ static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *da
   anum_t anum;
   char c;
 
-  if (!mdata || (sscanf(id, ANUM "%c", &anum, &c) != 1) ||
+  if (!mdata || (sscanf(id, ANUM_FMT "%c", &anum, &c) != 1) ||
       (anum < mdata->first_message) || (anum > mdata->last_message))
   {
     if (mdata)
@@ -1157,7 +1159,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
         {
           anum_t first, last;
 
-          if (sscanf(hdata, ANUM " " ANUM, &first, &last) == 2)
+          if (sscanf(hdata, ANUM_FMT " " ANUM_FMT, &first, &last) == 2)
           {
             if (mdata->deleted)
             {
@@ -1167,7 +1169,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
             if ((last >= mdata->first_message) && (last <= mdata->last_message))
             {
               mdata->last_cached = last;
-              mutt_debug(LL_DEBUG2, "%s last_cached=" ANUM "\n", mdata->group, last);
+              mutt_debug(LL_DEBUG2, "%s last_cached=" ANUM_FMT "\n", mdata->group, last);
             }
           }
           FREE(&hdata);

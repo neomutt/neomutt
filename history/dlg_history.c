@@ -87,6 +87,7 @@ static const struct Mapping HistoryHelp[] = {
  *
  * | Expando | Description
  * | :------ | :-------------
+ * | \%C     | Line number
  * | \%s     | History match
  */
 static const char *history_format_str(char *buf, size_t buflen, size_t col, int cols,
