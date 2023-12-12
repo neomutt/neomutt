@@ -103,7 +103,7 @@ static struct HashElem *create_synonym(const struct ConfigSet *cs,
   struct HashElem *he_parent = cs_get_elem(cs, name);
   if (!he_parent)
   {
-    buf_printf(err, _("No such variable: %s"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return NULL;
   }
 
@@ -255,7 +255,7 @@ struct HashElem *cs_register_variable(const struct ConfigSet *cs,
   const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
   if (!cst)
   {
-    buf_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, cdef->type);
+    buf_printf(err, _("Option %s has an invalid type %d"), cdef->name, cdef->type);
     return NULL;
   }
 
@@ -442,7 +442,7 @@ int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *er
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -508,7 +508,7 @@ int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -569,7 +569,7 @@ int cs_str_initial_get(const struct ConfigSet *cs, const char *name, struct Buff
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(result, _("Unknown variable '%s'"), name);
+    buf_printf(result, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -645,7 +645,7 @@ int cs_str_string_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -765,7 +765,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -845,7 +845,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
 
   if (!cst)
   {
-    buf_printf(err, _("Variable '%s' has an invalid type %d"), cdef->name, he->type);
+    buf_printf(err, _("Option %s has an invalid type %d"), cdef->name, he->type);
     return INT_MIN;
   }
 

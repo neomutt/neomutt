@@ -984,7 +984,7 @@ msgstr "неправильне поле заголовку"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
 #, c-format
-msgid "Can't query a variable with the '%s' command"
+msgid "Can't query option with the '%s' command"
 msgstr "Не можливо запитати змінну командою '%s'"
 
 #: commands.c:973 parse/set.c:495
@@ -1424,21 +1424,16 @@ msgstr "Неправильне чотиризначне число: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Неправильне чотиризначне число: %ld"
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr "Нема такої змінної: %s"
-
 #: config/set.c:258 config/set.c:870
 #, c-format
-msgid "Variable '%s' has an invalid type %d"
+msgid "Option %s has an invalid type %d"
 msgstr "Змінна '%s' має неправильний тип %d"
 
 #: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
 #: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
 #: config/set.c:1091
 #, c-format
-msgid "Unknown variable '%s'"
+msgid "Unknown option %s"
 msgstr "Невідома змінна '%s'"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
@@ -4504,7 +4499,7 @@ msgstr "неможливо визначити ім’я вузла за допо
 
 #: init.c:634
 #, c-format
-msgid "Config variable '%s' is deprecated"
+msgid "Option %s is deprecated"
 msgstr "Змінна конфіґурації '%s' застаріла"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -6724,12 +6719,6 @@ msgstr "кінець"
 msgid "%s: unknown command"
 msgstr "%s: невідома команда"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: невідома змінна"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6746,7 +6735,7 @@ msgstr "Не можливо використовувати префікс під
 
 #: parse/set.c:519 parse/set.c:550
 #, c-format
-msgid "Can't set a variable with the '%s' command"
+msgid "Can't set option with the '%s' command"
 msgstr "Не можливо задати змінну командою '%s'"
 
 #: parse/set.c:536
@@ -7808,3 +7797,8 @@ msgstr "Параметри розробки:"
 
 #~ msgid "default colors not supported"
 #~ msgstr "типові кольори не підтримуються"
+
+#: config/set.h:305
+#, c-format
+msgid "Option %s may only be set at startup"
+msgstr ""

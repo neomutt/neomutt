@@ -950,7 +950,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 
     if (unset)
     {
-      buf_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      buf_printf(err, _("Can't query option with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 
@@ -964,7 +964,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   {
     if (unset)
     {
-      buf_printf(err, _("Can't query a variable with the '%s' command"), "unsetenv");
+      buf_printf(err, _("Can't query option with the '%s' command"), "unsetenv");
       return MUTT_CMD_WARNING;
     }
 

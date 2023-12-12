@@ -1022,7 +1022,7 @@ msgstr "en-tête invalide"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
 #, c-format
-msgid "Can't query a variable with the '%s' command"
+msgid "Can't query option with the '%s' command"
 msgstr "Impossible d'appeler une variable avec la commande '%s'"
 
 #: commands.c:973 parse/set.c:495
@@ -1494,14 +1494,9 @@ msgstr "Date relative invalide : %s"
 msgid "Invalid quad value: %ld"
 msgstr "Valeur invalide pour l'option %s : \"%s\""
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr "Variable non-existante : %s"
-
 #: config/set.c:258 config/set.c:870
 #, c-format
-msgid "Variable '%s' has an invalid type %d"
+msgid "Option %s has an invalid type %d"
 msgstr "Le type %2$d de la variable '%1$s' est invalide"
 
 # , c-format
@@ -1509,7 +1504,7 @@ msgstr "Le type %2$d de la variable '%1$s' est invalide"
 #: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
 #: config/set.c:1091
 #, c-format
-msgid "Unknown variable '%s'"
+msgid "Unknown option %s"
 msgstr "%s : variable inconnue"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
@@ -4688,7 +4683,7 @@ msgstr "impossible de déterminer nodename via uname()"
 
 #: init.c:634
 #, c-format
-msgid "Config variable '%s' is deprecated"
+msgid "Option %s is deprecated"
 msgstr "La variable de configuration '%s' est invalide"
 
 # , c-format
@@ -6980,13 +6975,6 @@ msgstr ""
 msgid "%s: unknown command"
 msgstr "%s : commande inconnue"
 
-# , c-format
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s : variable inconnue"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -7003,7 +6991,7 @@ msgstr "Impossible d'utiliser un préfixe en incrémentant ou décrémentant une
 
 #: parse/set.c:519 parse/set.c:550
 #, c-format
-msgid "Can't set a variable with the '%s' command"
+msgid "Can't set option with the '%s' command"
 msgstr "Impossible de définir une variable avec la commande '%s'"
 
 #: parse/set.c:536
@@ -8099,3 +8087,8 @@ msgstr "Options par défaut :"
 
 #~ msgid "default colors not supported"
 #~ msgstr "la couleur par défaut n'est pas disponible"
+
+#: config/set.h:305
+#, c-format
+msgid "Option %s may only be set at startup"
+msgstr ""

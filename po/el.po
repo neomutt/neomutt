@@ -990,7 +990,7 @@ msgstr "μη έγκυρο πεδίο κεφαλίδας"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
 #, c-format
-msgid "Can't query a variable with the '%s' command"
+msgid "Can't query option with the '%s' command"
 msgstr "Δεν μπορεί να γίνει εξέταση μίας μεταβλητής με την εντολή '%s'"
 
 #: commands.c:973 parse/set.c:495
@@ -1438,21 +1438,16 @@ msgstr "Μη έγκυρη quad τιμή: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Μη έγκυρη quad τιμή: %ld"
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr "Δεν υπάρχει η μεταβλητή: %s"
-
 #: config/set.c:258 config/set.c:870
 #, c-format
-msgid "Variable '%s' has an invalid type %d"
+msgid "Option %s has an invalid type %d"
 msgstr "Μεταβλητή: '%s' έχει λανθασμένο τύπο %d"
 
 #: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
 #: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
 #: config/set.c:1091
 #, c-format
-msgid "Unknown variable '%s'"
+msgid "Unknown option %s"
 msgstr "Άγνωστη μεταβλητή '%s'"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
@@ -4605,7 +4600,7 @@ msgstr "αδυναμία στον εντοπισμό του ονόματος χ�
 
 #: init.c:634
 #, c-format
-msgid "Config variable '%s' is deprecated"
+msgid "Option %s is deprecated"
 msgstr ""
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -6891,12 +6886,6 @@ msgstr ""
 msgid "%s: unknown command"
 msgstr "%s: άγνωστη εντολή"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: άγνωστη μεταβλητή"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6913,7 +6902,7 @@ msgstr "Δεν γίνεται να χρησιμοποιηθεί πρόθεμα �
 
 #: parse/set.c:519 parse/set.c:550
 #, c-format
-msgid "Can't set a variable with the '%s' command"
+msgid "Can't set option with the '%s' command"
 msgstr "Δεν γίνεται να οριστεί μεταβλητή με την εντολή '%s'"
 
 #: parse/set.c:536
@@ -8025,3 +8014,8 @@ msgstr "Προκαθορισμένοι παράμετροι:"
 
 #~ msgid "default colors not supported"
 #~ msgstr "δεν υποστηρίζονται τα εξ'ορισμού χρώματα"
+
+#: config/set.h:305
+#, c-format
+msgid "Option %s may only be set at startup"
+msgstr ""

@@ -980,7 +980,7 @@ msgstr "encabezado erróneo"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
 #, c-format
-msgid "Can't query a variable with the '%s' command"
+msgid "Can't query option with the '%s' command"
 msgstr "No puedes consultar una variable con el comando '%s'"
 
 #: commands.c:973 parse/set.c:495
@@ -1418,21 +1418,16 @@ msgstr "Valor quad incorrecto: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Valor quad incorrecto: %ld"
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr "No existe la variable: %s"
-
 #: config/set.c:258 config/set.c:870
 #, c-format
-msgid "Variable '%s' has an invalid type %d"
+msgid "Option %s has an invalid type %d"
 msgstr "La variable '%s' es de tipo incorrecto %d"
 
 #: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
 #: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
 #: config/set.c:1091
 #, c-format
-msgid "Unknown variable '%s'"
+msgid "Unknown option %s"
 msgstr "Variable desconocida: '%s'"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
@@ -4477,7 +4472,7 @@ msgstr "imposible determinar el nombre de usuario mediante uname()"
 
 #: init.c:634
 #, c-format
-msgid "Config variable '%s' is deprecated"
+msgid "Option %s is deprecated"
 msgstr "Config varible '%s' esta obsoleta"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -6720,12 +6715,6 @@ msgstr "final"
 msgid "%s: unknown command"
 msgstr "%s: comando desconocido"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: variable desconocida"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6742,7 +6731,7 @@ msgstr "No puedes utilizar el prefijo cuando aumentas o disminuyes una variable"
 
 #: parse/set.c:519 parse/set.c:550
 #, c-format
-msgid "Can't set a variable with the '%s' command"
+msgid "Can't set option with the '%s' command"
 msgstr "No puedes fijar una variable con el comando '%s'"
 
 #: parse/set.c:536
@@ -7804,3 +7793,8 @@ msgstr "Opciones de Desarrollo:"
 
 #~ msgid "maildir_field_delimiter can only be set once"
 #~ msgstr "maildir_field_delimiter puede solamente ser definido una vez"
+
+#: config/set.h:305
+#, c-format
+msgid "Option %s may only be set at startup"
+msgstr ""
