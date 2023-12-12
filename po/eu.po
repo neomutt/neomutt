@@ -997,7 +997,7 @@ msgid "invalid header field"
 msgstr "baliogabeko mezu burua"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, c-format
+#, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
 msgstr ""
 
@@ -1413,7 +1413,7 @@ msgstr "Baliogabeko hilabete eguna: %s"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr ""
 
@@ -3779,7 +3779,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s ez da onartzen (lotu 'view-attachments' tekla bati) --]\n"
 
 #: hcache/config.c:95
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr ""
 
@@ -3787,7 +3787,7 @@ msgstr ""
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
 
@@ -4063,7 +4063,7 @@ msgid "Connection to %s timed out"
 msgstr "%s-rekiko konexioa itxia"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
 
@@ -4664,7 +4664,7 @@ msgid "unable to determine nodename via uname()"
 msgstr "ezinda erabiltzaile izena aurkitu"
 
 #: init.c:634
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
@@ -6954,7 +6954,7 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr ""
 
 #: parse/set.c:519 parse/set.c:550
-#, c-format
+#, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr ""
 
@@ -7689,7 +7689,7 @@ msgstr "%s ez da gehiago existitzen"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 

@@ -983,7 +983,7 @@ msgid "invalid header field"
 msgstr "不正なへッダフィールド"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, c-format
+#, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
 msgstr ""
 
@@ -3708,7 +3708,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s 形式は未サポート (キーに 'view-attachments' を割り当てる必要がある) --]\n"
 
 #: hcache/config.c:95
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr ""
 
@@ -3716,7 +3716,7 @@ msgstr ""
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
 
@@ -3992,7 +3992,7 @@ msgid "Connection to %s timed out"
 msgstr "%s への接続がタイムアウトした"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
 
@@ -4576,7 +4576,7 @@ msgid "unable to determine nodename via uname()"
 msgstr "uname() でノード名を識別できない"
 
 #: init.c:634
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
@@ -6813,7 +6813,7 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr ""
 
 #: parse/set.c:519 parse/set.c:550
-#, c-format
+#, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr ""
 
@@ -7521,7 +7521,7 @@ msgstr "%s はもはや存在しない"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 

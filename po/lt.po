@@ -981,7 +981,7 @@ msgid "invalid header field"
 msgstr "blogas antraštės laukas"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, c-format
+#, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
 msgstr "Negalima pamatyti kintamojo reikšmės su '%s' komanda"
 
@@ -1364,7 +1364,7 @@ msgstr "'charset' turi nurodyti vieną koduotės pavadinimą"
 
 #: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Bloga parametro %s reikšmė: %s"
 
@@ -1380,7 +1380,7 @@ msgstr "Bloga parametro reikšmė: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "Parametras %s negali būti tuščias"
 
@@ -1392,7 +1392,7 @@ msgstr "Blogas skaičius: %s"
 #: config/long.c:61 config/long.c:116 config/long.c:164 config/long.c:203
 #: config/number.c:68 config/number.c:130 config/number.c:184
 #: config/number.c:226
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Parametras %s negali būti neigiamas"
 
@@ -1422,14 +1422,14 @@ msgid "Invalid quad value: %ld"
 msgstr "Bloga parametro reikšmė: %ld"
 
 #: config/set.c:258 config/set.c:870
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s has an invalid type %d"
 msgstr "Kintamojo '%s' tipas yra neleistinas (%d)"
 
 #: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
 #: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
 #: config/set.c:1091
-#, c-format
+#, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Nežinomas kintamasis '%s'"
 
@@ -3639,7 +3639,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s yra nepalaikomas ('view-attachments' turi būti susietas su klavišu) --]\n"
 
 #: hcache/config.c:95
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr "Nustatykite %s parinktį prieš nustatydami %s"
 
@@ -3647,7 +3647,7 @@ msgstr "Nustatykite %s parinktį prieš nustatydami %s"
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Parinktis %s turi būti tarp %d ir %d imtinai"
 
@@ -3920,7 +3920,7 @@ msgid "Connection to %s timed out"
 msgstr "Prisijungimui prie %s pasibaigė laikas"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Parametras %s: %s nėra tinkamas autentikatorius"
 
@@ -4490,7 +4490,7 @@ msgid "unable to determine nodename via uname()"
 msgstr "negaliu nustatyti kompiuterio vardo per uname()"
 
 #: init.c:634
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s is deprecated"
 msgstr "Konfigūracijos kintamasis '%s' yra nebenaudotinas"
 
@@ -5149,7 +5149,7 @@ msgid "Caught signal %d ...  Exiting\n"
 msgstr "Sugavau signalą %d ...  Išeinu.\n"
 
 #: mutt_logging.c:274
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Bloga parametro %s reikšmė: %ld"
 
@@ -6731,7 +6731,7 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Negalima naudoti prefikso didinant/mažinant kintamojo reikšmę"
 
 #: parse/set.c:519 parse/set.c:550
-#, c-format
+#, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr "Negalima nustatyti kintamojo reikšmės su komanda '%s'"
 
@@ -7436,7 +7436,7 @@ msgstr "%s nebeegzistuoja"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "Parametras %s negali turėti savyje shell metasimbolių: %c"
 

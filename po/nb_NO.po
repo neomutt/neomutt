@@ -977,7 +977,7 @@ msgid "invalid header field"
 msgstr "ugyldig linje i brevhode"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, c-format
+#, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
 msgstr "Kan ikke utføre variabelspørring med «%s»-kommando"
 
@@ -1360,7 +1360,7 @@ msgstr "«charset» må inneholde nøyaktig ett tegnsettnavn"
 
 #: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Ugyldig verdi for valget %s: «%s»"
 
@@ -1376,7 +1376,7 @@ msgstr "Ugyldig enum-verdi: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "Valget %s kan ikke stå tomt"
 
@@ -1388,7 +1388,7 @@ msgstr "Ugyldig long-verdi: %s"
 #: config/long.c:61 config/long.c:116 config/long.c:164 config/long.c:203
 #: config/number.c:68 config/number.c:130 config/number.c:184
 #: config/number.c:226
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Valget %s kan ikke være negativt."
 
@@ -1418,14 +1418,14 @@ msgid "Invalid quad value: %ld"
 msgstr "Ugyldig quad-verdi: %ld"
 
 #: config/set.c:258 config/set.c:870
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s has an invalid type %d"
 msgstr "Variabelen «%s» har ugyldig type %d"
 
 #: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
 #: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
 #: config/set.c:1091
-#, c-format
+#, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Ukjent variabel «%s»"
 
@@ -3624,7 +3624,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s støttes ikke («vis-vedleg» må tilknyttes en tast) --]\n"
 
 #: hcache/config.c:95
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr "Sett valget %s før du setter %s"
 
@@ -3632,7 +3632,7 @@ msgstr "Sett valget %s før du setter %s"
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Valget %s må være mellom %d og %d, inklusivt"
 
@@ -3905,7 +3905,7 @@ msgid "Connection to %s timed out"
 msgstr "Tidsavbrudd for forbindelse til %s"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Valg %s: %s er ikke en gyldig godkjenner"
 
@@ -4471,7 +4471,7 @@ msgid "unable to determine nodename via uname()"
 msgstr "kan ikke bestemme nodenavn via uname()"
 
 #: init.c:634
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s is deprecated"
 msgstr "Oppsettsvariabel «%s» er ikke lenger anbefalt å bruke"
 
@@ -5127,7 +5127,7 @@ msgid "Caught signal %d ...  Exiting\n"
 msgstr "Mottok signalet %d… Avslutter.\n"
 
 #: mutt_logging.c:274
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Ugyldig verdi for valget %s: %ld"
 
@@ -6694,7 +6694,7 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Kan ikke bruke prefiks ved økning eller substraksjon av variabel"
 
 #: parse/set.c:519 parse/set.c:550
-#, c-format
+#, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr "Kan ikke sette en variabel med «%s»-kommando"
 
@@ -7395,7 +7395,7 @@ msgstr "%s finnes ikke lenger"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "«%s»-valget må ikke inneholde metategn for skallet: %c"
 
