@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-12-12 12:48+0000\n"
-"PO-Revision-Date: 2023-10-29 18:31+0100\n"
+"PO-Revision-Date: 2023-12-12 20:19+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.3.1\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -58,7 +58,7 @@ msgstr "Kommentar: "
 
 #: alias/alias.c:477
 msgid "Tags (comma-separated): "
-msgstr ""
+msgstr "Kennzeichen (durch Kommata getrennt): "
 
 #: alias/alias.c:506
 msgid "Accept?"
