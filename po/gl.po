@@ -8114,27 +8114,3 @@ msgstr "Opcións de compilación:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opcións de compilación:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Opcións de compilación:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Erro en %s, liña %d: %s"
-
-#
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Función non permitida no modo \"adxuntar-mensaxe\"."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "¿Imprimir mensaxes marcadas?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Erro en %s, liña %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "colores por defecto non soportados"

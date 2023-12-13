@@ -7772,30 +7772,3 @@ msgstr "Параметри компілювання:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Параметри розробки:"
-
-#~ msgid "Default options:"
-#~ msgstr "Типові параметри:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Помилка в %s, рядок %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Параметр %s може не встановлюватися в режимі прикріплення листа"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Друкувати позначені листи?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Відмова надсилати порожній лист"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Спробуйте: echo | neomutt -s 'тема' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Попередження в %s, рядок %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "типові кольори не підтримуються"

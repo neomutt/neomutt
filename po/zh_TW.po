@@ -8064,25 +8064,3 @@ msgstr "編譯選項："
 #, fuzzy
 msgid "Devel options:"
 msgstr "編譯選項："
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "編譯選項："
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "%s 發生錯誤，行號 %d：%s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "功能在 attach-message 模式下不被支援"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "列印已標記的信件？"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "%s 發生錯誤，行號 %d：%s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "不支援預設的色彩"

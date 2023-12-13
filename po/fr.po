@@ -8059,33 +8059,3 @@ msgstr "Options de compilation :"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Options par défaut :"
-
-#~ msgid "Default options:"
-#~ msgstr "Options par défaut :"
-
-# , c-format
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Erreur dans %s, ligne %d : %s"
-
-# , c-format
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Fonction non autorisée en mode attach-message."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Imprimer les messages marqués ?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Refuser d'envoyer un email vide"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Essayez ceci : echo | neomutt -s 'subject' prenom.nom@example.com"
-
-# , c-format
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Erreur dans %s, ligne %d : %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "la couleur par défaut n'est pas disponible"

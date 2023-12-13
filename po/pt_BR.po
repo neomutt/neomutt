@@ -7740,30 +7740,3 @@ msgstr "Opções de compilação:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Opções de desenvolvimento:"
-
-#~ msgid "Default options:"
-#~ msgstr "Opções pré-definidas:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Erro em %s, linha %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Função %s não permitida no modo de anexar mensagem (attach-message)"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Imprimir mensagens marcadas?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Recusando a enviar um email vazio"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Tente: echo | neomutt -s 'assunto' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Aviso em %s, linha %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "cores pré-definidas não suportadas"

@@ -7870,25 +7870,3 @@ msgstr "Parametroj de la tradukaĵo:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Parametroj de la tradukaĵo:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Parametroj de la tradukaĵo:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Eraro en %s, linio %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Funkcio nepermesata dum elektado de aldonoj."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Ĉu presi markitajn mesaĝojn?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Eraro en %s, linio %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "implicitaj koloroj ne funkcias"

@@ -7786,24 +7786,3 @@ msgstr "Käännösaikaiset asetukset:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Oletusasetukset:"
-
-#~ msgid "Default options:"
-#~ msgstr "Oletusasetukset:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Virhe tiedostossa %s rivillä %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Asetusta %s ei voi asettaa liittämistilassa"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Tulostetaanko tägätyt viestit?"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Virhe tiedostossa %s rivillä %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "oletusvärejä ei tueta"

@@ -7749,33 +7749,3 @@ msgstr "Einstellungen bei der Kompilierung:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Entwickleroptionen:"
-
-#~ msgid "Default options:"
-#~ msgstr "Standard Einstellungen:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Fehler in %s, Zeile %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Option %s kann im Nachrichte-Anhangmodus nicht gesetzt werden"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Ausgewählte Nachrichten drucken?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Verweigere den Versand einer leeren E-Mail"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Versuche: echo | neomutt -s 'subject' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Warnung in %s, Zeile %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "Standardfarben werden nicht unterstützt"
-
-#~ msgid "maildir_field_delimiter can only be set once"
-#~ msgstr "maildir_field_delimiter kann nur einmal gesetzt werden"

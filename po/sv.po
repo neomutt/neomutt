@@ -8039,26 +8039,3 @@ msgstr "Kompileringsval:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Kompileringsval:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Kompileringsval:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Fel i %s, rad %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Funktionen ej tillåten i \"bifoga-meddelande\"-läge."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Skriv ut märkta meddelanden?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Fel i %s, rad %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "standardfärgerna stöds inte"

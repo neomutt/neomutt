@@ -7923,26 +7923,3 @@ msgstr "Tilvalg ved oversættelsen:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Tilvalg ved oversættelsen:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Tilvalg ved oversættelsen:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Fejl i %s, linje %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Funktionen er ikke tilladt ved vedlægning af bilag."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Udskriv udvalgte breve?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Fejl i %s, linje %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "standard-farver er ikke understøttet"

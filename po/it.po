@@ -8008,26 +8008,3 @@ msgstr "Opzioni di compilazione:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opzioni di compilazione:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Opzioni di compilazione:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Errore in %s, linea %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Funzione non permessa nella modalità attach-message."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Stampare i messaggi segnati?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Errore in %s, linea %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "i colori predefiniti non sono gestiti"

@@ -7749,26 +7749,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#~ msgid "Default options:"
-#~ msgstr "Öntanımlı seçenekler:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "%s içinde hata, satır %d: %s"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Boş bir ileti gönderme reddediliyor"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Şunu deneyin: echo | neomutt -s 'konu' kullanıcı@örnek.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "%s içinde hata, satır %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "öntanımlı renkler desteklenmiyor"
-
-#~ msgid "maildir_field_delimiter can only be set once"
-#~ msgstr "maildir_field_delimiter, yalnızca bir kez ayarlanabilir"

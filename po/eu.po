@@ -8015,26 +8015,3 @@ msgstr "Konpilazio aukerak:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Konpilazio aukerak:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Konpilazio aukerak:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Errorea %s-n, %d lerroan: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Mezu-gehitze moduan baimenik gabeko funtzioa."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Markatutako mezuak inprimatu?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Errorea %s-n, %d lerroan: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "lehenetsitako kolorea ez da onartzen"

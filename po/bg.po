@@ -8042,25 +8042,3 @@ msgstr "Опции при компилация:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Опции при компилация:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Опции при компилация:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Грешка в %s, ред %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Тази функция не може да се изпълни при прилагане на писма."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Желаете ли да отпечатате маркираните писма?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Грешка в %s, ред %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "стандартните цветове не се поддържат"

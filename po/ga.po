@@ -8124,26 +8124,3 @@ msgstr "Roghanna tiomsaithe:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Roghanna tiomsaithe:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Roghanna tiomsaithe:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Earráid i %s, líne %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Ní cheadaítear an fheidhm seo sa mhód iatáin."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Priontáil teachtaireachtaí clibeáilte?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Earráid i %s, líne %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "níl na dathanna réamhshocraithe ar fáil"

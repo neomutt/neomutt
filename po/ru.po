@@ -7891,24 +7891,3 @@ msgstr "Параметры компиляции:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Параметры по умолчанию:"
-
-#~ msgid "Default options:"
-#~ msgstr "Параметры по умолчанию:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Ошибка в %s: строка %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Опция %s не может быть установления в режиме вложения сообщения"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Напечатать отмеченные сообщения?"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Предупреждение в %s, строке %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "цвета по умолчанию не поддерживаются"

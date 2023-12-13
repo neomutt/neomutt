@@ -7785,33 +7785,3 @@ msgstr "Přeloženo s volbami:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Volby pro vývoj:"
-
-#~ msgid "Default options:"
-#~ msgstr "Výchozí volby:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Chyba v %s na řádku %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Volba %s nemůže být nastavena v režimu přikládání zpráv."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Vytisknout označené zprávy?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Odmítám poslat prázdnou zprávu"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Zkuste: echo | neomutt -s 'subject' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Pozor v %s na řádku %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "výchozí barvy nejsou podporovány"
-
-#~ msgid "maildir_field_delimiter can only be set once"
-#~ msgstr "maildir_field_delimiter smí být nastaven pouze jednou"

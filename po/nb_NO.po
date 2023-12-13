@@ -7729,30 +7729,3 @@ msgstr "Kompileringstilvalg:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Utviklervalg:"
-
-#~ msgid "Default options:"
-#~ msgstr "Forvalg:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Feil i %s, linje %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Valget %s kan ikke settes i legg-ved-melding-modus."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Skriv ut valgte meldinger?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Nekter å sende en tom e-post"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Prøv: echo | neomutt -s 'emne' bruker@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Advarsel i %s, linje %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "forvalgte farger støttes ikke"

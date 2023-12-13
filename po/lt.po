@@ -7770,33 +7770,3 @@ msgstr "Kompiliavimo parinktys:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Derinimo parinktys:"
-
-#~ msgid "Default options:"
-#~ msgstr "Įprastos parinktys:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Klaida %s, eilutė %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Negalima įjungti parametro %s laiško prisegimo režime"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Spausdinti pažymėtus laiškus?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Negalima siųsti tuščio laiško"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Bandykite echo | neomutt -s 'tema' adresas@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Įspėjimas %s, eilutė %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "įprastos spalvos nepalaikomos"
-
-#~ msgid "maildir_field_delimiter can only be set once"
-#~ msgstr "maildir_field_delimiter galima nustatyti tik vieną kartą"

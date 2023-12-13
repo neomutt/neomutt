@@ -7975,26 +7975,3 @@ msgstr "Opties tijdens compileren:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opties tijdens compileren:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Opties tijdens compileren:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Fout in %s, regel %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Optie %s kan niet ingesteld worden in 'attach-message' modus"
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Geselecteerde berichten afdrukken?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Fout in %s, op regel %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "standaardkleuren worden niet ondersteund"

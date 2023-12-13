@@ -8017,25 +8017,3 @@ msgstr "컴파일 선택사항:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "컴파일 선택사항:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "컴파일 선택사항:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "%s의 %d번 줄에 오류: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "메일 첨부 모드에서 허가되지 않는 기능임."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "표시한 메일을 프린트 할까요?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "%s의 %d번 줄에 오류: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "기본 색상들이 지원되지 않음"

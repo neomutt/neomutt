@@ -8051,26 +8051,3 @@ msgstr "Kompileerimise võtmed:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Kompileerimise võtmed:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Kompileerimise võtmed:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Viga failis %s, real %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Funktsioon ei ole teate lisamise moodis lubatud."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Trükin märgitud teated?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Viga failis %s, real %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "vaikimisi värve ei toetata"

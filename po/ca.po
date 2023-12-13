@@ -8193,25 +8193,3 @@ msgstr "Opcions de compilació:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opcions de compilació:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Opcions de compilació:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Error a «%s», línia %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "No es permet aquesta funció al mode d’adjuntar missatges."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Voleu imprimir els missatges marcats?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Error a «%s», línia %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "No es permet l’ús de colors per defecte."

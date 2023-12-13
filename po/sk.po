@@ -7769,33 +7769,3 @@ msgstr "Preložené s voľbami:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Vobľy pre vývoj:"
-
-#~ msgid "Default options:"
-#~ msgstr "Predvolené voľby:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Chyba v %s, riadok %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Voľba %s nemôže byť nastavena v režime prikladania správ"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Vytlačiť označené správy?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Odmietam poslať prázdny e-mail"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Skúste: echo | neomutt -s 'predmet' user@exmaple.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Varovánie v %s, riadok %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "štandardné farby nie sú podporované"
-
-#~ msgid "maildir_field_delimiter can only be set once"
-#~ msgstr "maildir_field_delimiter smie byť nastevený iba jedenkrát"

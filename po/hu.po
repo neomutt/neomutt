@@ -7725,33 +7725,3 @@ msgstr "Fordítási opciók:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Fejlesztői opciók:"
-
-#~ msgid "Default options:"
-#~ msgstr "Alapbeállítási opciók:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Hiba a %s-ban, sor %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "%s opció lehet hogy nincs bekapcsolva üzenet csatolás módban"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Kinyomtatod a megjelölt leveleket?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Nem küldünk el üres levelet"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Próbáld ezt: echo | neomutt -s 'tárgy' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Figyelem a %s-ban, sor %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "az alapértelmezett színek nem támogatottak"
-
-#~ msgid "maildir_field_delimiter can only be set once"
-#~ msgstr "maildir_field_delimiter -t csak egyszer lehet beállítani"

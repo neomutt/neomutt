@@ -7989,30 +7989,3 @@ msgstr "Παράμετροι μεταγλώττισης:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Προκαθορισμένοι παράμετροι:"
-
-#~ msgid "Default options:"
-#~ msgstr "Προκαθορισμένοι παράμετροι:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Σφάλμα στο %s, γραμμή %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Η λειτουργία απαγορεύεται στην κατάσταση προσάρτηση-μηνύματος."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Εκτύπωση σημειωμένων μηνυμάτων;"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Αδύνατον να σταλεί κενό email"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Δοκιμάστε: echo | neomutt -s 'θέμα' user@example.com "
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Σφάλμα στο %s, γραμμή %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "δεν υποστηρίζονται τα εξ'ορισμού χρώματα"

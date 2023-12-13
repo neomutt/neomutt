@@ -7716,30 +7716,3 @@ msgstr "编译选项："
 #: version.c:486
 msgid "Devel options:"
 msgstr "开发选项："
-
-#~ msgid "Default options:"
-#~ msgstr "默认选项："
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "%s 发生错误，第 %d 行：%s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "在附加信件(attach-message)模式下不能设置 %s 选项"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "打印已标记的信件？"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "拒绝发送空邮件"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "请尝试以下命令： echo | neomutt -s 'subject' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "%s 出现警告，第 %d 行：%s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "不支持默认的颜色"
