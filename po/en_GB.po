@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2017-04-17 17:06+0100\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: none\n"
@@ -1415,17 +1415,19 @@ msgstr "Invalid quad value: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Invalid quad value: %ld"
 
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, c-format
+msgid "Unknown option %s"
+msgstr "Unknown option %s"
+
 #: config/set.c:258 config/set.c:870
 #, c-format
 msgid "Option %s has an invalid type %d"
 msgstr "Option %s has an invalid type %d"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, c-format
-msgid "Unknown option %s"
-msgstr "Unknown option %s"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -7747,6 +7749,10 @@ msgstr "Devel options:"
 #~ msgid "Option %s may not be set when in attach-message mode"
 #~ msgstr "Option %s may not be set when in attach-message mode"
 
+#, c-format
+#~ msgid "Option %s may only be set at startup"
+#~ msgstr "Option %s may only be set at startup"
+
 #~ msgid "Print tagged messages?"
 #~ msgstr "Print tagged messages?"
 
@@ -7765,8 +7771,3 @@ msgstr "Devel options:"
 
 #~ msgid "maildir_field_delimiter can only be set once"
 #~ msgstr "maildir_field_delimiter can only be set once"
-
-#: config/set.h:305
-#, c-format
-msgid "Option %s may only be set at startup"
-msgstr "Option %s may only be set at startup"

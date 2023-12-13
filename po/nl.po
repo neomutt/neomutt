@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2017-02-22 20:12+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -997,7 +997,7 @@ msgid "invalid header field"
 msgstr "ongeldig veld in berichtenkop"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, fuzzy, c-format
+#, c-format
 msgid "Can't query option with the '%s' command"
 msgstr ""
 
@@ -1413,7 +1413,7 @@ msgstr "Ongeldige waarde voor optie %s: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
 msgstr ""
 
@@ -1454,17 +1454,19 @@ msgstr "Ongeldige maand: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Ongeldige waarde voor optie %s: %ld"
 
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "%s: onbekende variable"
+
 #: config/set.c:258 config/set.c:870
 #, fuzzy, c-format
 msgid "Option %s has an invalid type %d"
 msgstr "Fout: waarde '%s' is een ongeldig voor optie '-d'"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, fuzzy, c-format
-msgid "Unknown option %s"
-msgstr "%s: onbekende variable"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -3753,7 +3755,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s wordt niet ondersteund ('view-attachments' moet aan een toets gekoppeld zijn) --]\n"
 
 #: hcache/config.c:95
-#, fuzzy, c-format
+#, c-format
 msgid "Set option %s before setting %s"
 msgstr ""
 
@@ -3761,7 +3763,7 @@ msgstr ""
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
 
@@ -4036,7 +4038,7 @@ msgid "Connection to %s timed out"
 msgstr "Verbinding met %s beëindigd"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
 
@@ -4622,7 +4624,7 @@ msgid "unable to determine nodename via uname()"
 msgstr "Kan hostnaam niet achterhalen via uname()"
 
 #: init.c:634
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
@@ -6895,7 +6897,7 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr ""
 
 #: parse/set.c:519 parse/set.c:550
-#, fuzzy, c-format
+#, c-format
 msgid "Can't set option with the '%s' command"
 msgstr ""
 
@@ -7630,7 +7632,7 @@ msgstr "%s bestaat niet meer"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 
@@ -7996,8 +7998,3 @@ msgstr "Opties tijdens compileren:"
 
 #~ msgid "default colors not supported"
 #~ msgstr "standaardkleuren worden niet ondersteund"
-
-#: config/set.h:305
-#, c-format
-msgid "Option %s may only be set at startup"
-msgstr ""

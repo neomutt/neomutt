@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -1438,17 +1438,19 @@ msgstr "Μη έγκυρη quad τιμή: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Μη έγκυρη quad τιμή: %ld"
 
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "Άγνωστη μεταβλητή '%s'"
+
 #: config/set.c:258 config/set.c:870
 #, fuzzy, c-format
 msgid "Option %s has an invalid type %d"
 msgstr "Μεταβλητή: '%s' έχει λανθασμένο τύπο %d"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, fuzzy, c-format
-msgid "Unknown option %s"
-msgstr "Άγνωστη μεταβλητή '%s'"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -4599,7 +4601,7 @@ msgid "unable to determine nodename via uname()"
 msgstr "αδυναμία στον εντοπισμό του ονόματος χρήστη"
 
 #: init.c:634
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s is deprecated"
 msgstr ""
 
@@ -7640,7 +7642,7 @@ msgstr "Το %s δεν υπάρχει πια"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 
@@ -8014,8 +8016,3 @@ msgstr "Προκαθορισμένοι παράμετροι:"
 
 #~ msgid "default colors not supported"
 #~ msgstr "δεν υποστηρίζονται τα εξ'ορισμού χρώματα"
-
-#: config/set.h:305
-#, c-format
-msgid "Option %s may only be set at startup"
-msgstr ""
