@@ -28,6 +28,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "editor/lib.h"
+#include "common.h"
 
 void test_editor_delete_char(void)
 {
