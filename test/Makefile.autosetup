@@ -195,15 +195,12 @@ DATE_OBJS	= test/date/mutt_date_add_timeout.o \
 		  test/date/mutt_date_parse_imap.o \
 		  test/date/mutt_date_sleep_ms.o
 
-EDITOR_OBJS	= test/editor/editor_backspace.o \
+EDITOR_OBJS	= test/editor/common.o \
+		  test/editor/editor_backspace.o \
 		  test/editor/editor_backward_char.o \
 		  test/editor/editor_backward_word.o \
 		  test/editor/editor_bol.o \
-		  test/editor/editor_buffer_get_cursor.o \
-		  test/editor/editor_buffer_get_lastchar.o \
 		  test/editor/editor_buffer_is_empty.o \
-		  test/editor/editor_buffer_set.o \
-		  test/editor/editor_buffer_set_cursor.o \
 		  test/editor/editor_case_word.o \
 		  test/editor/editor_delete_char.o \
 		  test/editor/editor_eol.o \

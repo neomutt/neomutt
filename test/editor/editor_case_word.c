@@ -28,6 +28,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "editor/lib.h"
+#include "common.h"
 #include "test_common.h"
 
 void test_editor_case_word(void)
