@@ -444,6 +444,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
         /* we are adding something to the completion */
         buf_strcpy_n(buf, bestname, mutt_str_len(bestname) + 1);
         FREE(&mdata.limit);
+        search_state_free(&mdata.search_state);
         return 1;
       }
 
