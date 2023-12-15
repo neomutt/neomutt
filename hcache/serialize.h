@@ -40,7 +40,7 @@ struct TagList;
 
 unsigned char *serial_dump_address  (const struct AddressList *al,   unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_body     (const struct Body *b,           unsigned char *d, int *off, bool convert);
-unsigned char *serial_dump_tags     (const struct TagList *tags,     unsigned char *d, int *off);
+unsigned char *serial_dump_tags     (const struct TagList *tl,       unsigned char *d, int *off);
 unsigned char *serial_dump_buffer   (const struct Buffer *buf,       unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_char     (const char *c,                  unsigned char *d, int *off, bool convert);
 unsigned char *serial_dump_char_size(const char *c, ssize_t size,    unsigned char *d, int *off, bool convert);
@@ -53,7 +53,7 @@ unsigned char *serial_dump_stailq   (const struct ListHead *l,       unsigned ch
 
 void serial_restore_address  (struct AddressList *al,   const unsigned char *d, int *off, bool convert);
 void serial_restore_body     (struct Body *b,           const unsigned char *d, int *off, bool convert);
-void serial_restore_tags     (struct TagList *tags,     const unsigned char *d, int *off);
+void serial_restore_tags     (struct TagList *tl,       const unsigned char *d, int *off);
 void serial_restore_buffer   (struct Buffer *buf,       const unsigned char *d, int *off, bool convert);
 void serial_restore_char     (char **c,                 const unsigned char *d, int *off, bool convert);
 void serial_restore_envelope (struct Envelope *env,     const unsigned char *d, int *off, bool convert);

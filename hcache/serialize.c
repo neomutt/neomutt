@@ -679,22 +679,22 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
 
 /**
  * serial_dump_tags - Pack a TagList into a binary blob
- * @param[in]     tags TagList to pack
+ * @param[in]     tl   TagList to pack
  * @param[in]     d    Binary blob to add to
  * @param[in,out] off  Offset into the blob
  * @retval ptr End of the newly packed binary
  */
-unsigned char *serial_dump_tags(const struct TagList *tags, unsigned char *d, int *off)
+unsigned char *serial_dump_tags(const struct TagList *tl, unsigned char *d, int *off)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
 
   d = serial_dump_int(0xdeadbeef, d, off);
 
-  struct Tag *t = NULL;
-  STAILQ_FOREACH(t, tags, entries)
+  struct Tag *tag = NULL;
+  STAILQ_FOREACH(tag, tl, entries)
   {
-    d = serial_dump_char(t->name, d, off, false);
+    d = serial_dump_char(tag->name, d, off, false);
     counter++;
   }
 
@@ -705,11 +705,11 @@ unsigned char *serial_dump_tags(const struct TagList *tags, unsigned char *d, in
 
 /**
  * serial_restore_tags - Unpack a TagList from a binary blob
- * @param[in]     tags TagList to unpack
+ * @param[in]     tl   TagList to unpack
  * @param[in]     d    Binary blob to add to
  * @param[in,out] off  Offset into the blob
  */
-void serial_restore_tags(struct TagList *tags, const unsigned char *d, int *off)
+void serial_restore_tags(struct TagList *tl, const unsigned char *d, int *off)
 {
   unsigned int counter = 0;
 
@@ -719,7 +719,7 @@ void serial_restore_tags(struct TagList *tags, const unsigned char *d, int *off)
   {
     char *name = NULL;
     serial_restore_char(&name, d, off, false);
-    driver_tags_add(tags, name);
+    driver_tags_add(tl, name);
     counter--;
   }
 }

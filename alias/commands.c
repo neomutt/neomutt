@@ -47,11 +47,11 @@
  */
 void alias_tags_to_buffer(struct TagList *tl, struct Buffer *buf)
 {
-  struct Tag *np = NULL;
-  STAILQ_FOREACH(np, tl, entries)
+  struct Tag *tag = NULL;
+  STAILQ_FOREACH(tag, tl, entries)
   {
-    buf_addstr(buf, np->name);
-    if (STAILQ_NEXT(np, entries))
+    buf_addstr(buf, tag->name);
+    if (STAILQ_NEXT(tag, entries))
       buf_addch(buf, ',');
   }
 }
@@ -68,15 +68,18 @@ void parse_alias_tags(const char *tags, struct TagList *tl)
 
   struct Slist *sl = slist_parse(tags, SLIST_SEP_COMMA);
   if (slist_is_empty(sl))
+  {
+    slist_free(&sl);
     return;
+  }
 
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &sl->head, entries)
   {
-    struct Tag *tn = mutt_mem_calloc(1, sizeof(struct Tag));
-    tn->name = np->data; // Transfer string
+    struct Tag *tag = tag_new();
+    tag->name = np->data; // Transfer string
     np->data = NULL;
-    STAILQ_INSERT_TAIL(tl, tn, entries);
+    STAILQ_INSERT_TAIL(tl, tag, entries);
   }
   slist_free(&sl);
 }

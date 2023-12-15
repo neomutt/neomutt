@@ -573,11 +573,11 @@ retry_name:
   {
     fprintf(fp_alias, " tags:");
 
-    struct Tag *np = NULL;
-    STAILQ_FOREACH(np, &alias->tags, entries)
+    struct Tag *tag = NULL;
+    STAILQ_FOREACH(tag, &alias->tags, entries)
     {
-      fprintf(fp_alias, "%s", np->name);
-      if (STAILQ_NEXT(np, entries))
+      fprintf(fp_alias, "%s", tag->name);
+      if (STAILQ_NEXT(tag, entries))
         fprintf(fp_alias, ",");
     }
   }
@@ -685,19 +685,9 @@ void alias_free(struct Alias **ptr)
 
   FREE(&alias->name);
   FREE(&alias->comment);
-
-  struct Tag *np = STAILQ_FIRST(&alias->tags);
-  struct Tag *next = NULL;
-  while (np)
-  {
-    next = STAILQ_NEXT(np, entries);
-    FREE(&np->name);
-    FREE(&np->transformed);
-    FREE(&np);
-    np = next;
-  }
-
+  driver_tags_free(&alias->tags);
   mutt_addrlist_clear(&(alias->addr));
+
   FREE(ptr);
 }
 
