@@ -91,8 +91,7 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_strcpy_n.o \
 		  test/buffer/buf_strdup.o \
 		  test/buffer/buf_str_equal.o \
-		  test/buffer/buf_substrcpy.o \
-		  test/buffer/buf_upper.o
+		  test/buffer/buf_substrcpy.o
 
 CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_charset_lookup.o \
@@ -245,10 +244,8 @@ FILE_OBJS	= test/file/common.o \
 		  test/file/buf_file_expand_fmt_quote.o \
 		  test/file/buf_quote_filename.o \
 		  test/file/mutt_file_check_empty.o \
-		  test/file/mutt_file_chmod.o \
 		  test/file/mutt_file_chmod_add.o \
 		  test/file/mutt_file_chmod_add_stat.o \
-		  test/file/mutt_file_chmod_rm.o \
 		  test/file/mutt_file_chmod_rm_stat.o \
 		  test/file/mutt_file_copy_bytes.o \
 		  test/file/mutt_file_copy_stream.o \
@@ -518,10 +515,8 @@ SIGNAL_OBJS	= test/signal/mutt_sig_allow_interrupt.o \
 		  test/signal/mutt_sig_unblock.o \
 		  test/signal/mutt_sig_unblock_system.o
 
-SLIST_OBJS	= test/slist/slist_add_list.o \
-		  test/slist/slist_add_string.o \
+SLIST_OBJS	= test/slist/slist_add_string.o \
 		  test/slist/slist_dup.o \
-		  test/slist/slist_empty.o \
 		  test/slist/slist_equal.o \
 		  test/slist/slist_free.o \
 		  test/slist/slist_is_empty.o \

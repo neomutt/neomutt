@@ -53,7 +53,6 @@ void         mutt_flushinp(void);
 struct KeyEvent mutt_getch(GetChFlags flags);
 void         mutt_need_hard_redraw(void);
 void         mutt_paddstr(struct MuttWindow *win, int n, const char *s);
-void         mutt_perror_debug(const char *s);
 void         mutt_push_macro_event(int ch, int op);
 void         mutt_query_exit(void);
 void         mutt_refresh(void);

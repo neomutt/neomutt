@@ -674,20 +674,6 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  rc = quad_str_toggle(NULL, "Apple", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
-  {
-    TEST_MSG("Toggle succeeded when is shouldn't have");
-    return false;
-  }
-
-  rc = quad_str_toggle(NeoMutt->sub, NULL, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
-  {
-    TEST_MSG("Toggle succeeded when is shouldn't have");
-    return false;
-  }
-
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
     char before = tests[i].before;

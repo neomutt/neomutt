@@ -52,10 +52,8 @@ struct Slist
   uint32_t flags;       ///< Flags controlling list, e.g. #SLIST_SEP_SPACE
 };
 
-struct Slist *slist_add_list     (struct Slist *list, const struct Slist *add);
 struct Slist *slist_add_string   (struct Slist *list, const char *str);
 struct Slist *slist_dup          (const struct Slist *list);
-struct Slist *slist_empty        (struct Slist **list);
 bool          slist_equal        (const struct Slist *a, const struct Slist *b);
 void          slist_free         (struct Slist **ptr);
 bool          slist_is_empty     (const struct Slist *list);

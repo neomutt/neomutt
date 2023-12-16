@@ -90,14 +90,9 @@ int      cs_subset_he_string_plus_equals  (const struct ConfigSubset *sub, struc
 int      cs_subset_he_string_set          (const struct ConfigSubset *sub, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_subset_he_delete              (const struct ConfigSubset *sub, struct HashElem *he,                    struct Buffer *err);
 
-intptr_t cs_subset_str_native_get         (const struct ConfigSubset *sub, const char *name,                       struct Buffer *err);
 int      cs_subset_str_native_set         (const struct ConfigSubset *sub, const char *name,    intptr_t value,    struct Buffer *err);
-int      cs_subset_str_reset              (const struct ConfigSubset *sub, const char *name,                       struct Buffer *err);
 int      cs_subset_str_string_get         (const struct ConfigSubset *sub, const char *name,                       struct Buffer *result);
-int      cs_subset_str_string_minus_equals(const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
-int      cs_subset_str_string_plus_equals (const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
 int      cs_subset_str_string_set         (const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
-int      cs_subset_str_delete             (const struct ConfigSubset *sub, const char *name,                       struct Buffer *err);
 
 int               elem_list_sort(const void *a, const void *b, void *sdata);
 struct HashElem **get_elem_list(struct ConfigSet *cs);

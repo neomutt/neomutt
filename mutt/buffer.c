@@ -27,6 +27,9 @@
  * @page mutt_buffer Helper object for storing and parsing strings
  *
  * The Buffer object make parsing and manipulating strings easier.
+ *
+ * The following unused functions were removed:
+ * - buf_upper()
  */
 
 #include "config.h"
@@ -704,18 +707,4 @@ void buf_lower(struct Buffer *buf)
     return;
 
   mutt_str_lower(buf->data);
-}
-
-/**
- * buf_upper - Sets a buffer to  uppercase
- * @param[out] buf Buffer to transform to uppercase
- *
- * @note Modifies the buffer
- */
-void buf_upper(struct Buffer *buf)
-{
-  if (!buf)
-    return;
-
-  mutt_str_upper(buf->data);
 }
