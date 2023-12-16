@@ -10,7 +10,7 @@ jobs:
   build:
     name: ${{ matrix.cfg.name }}
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/docker-build
+    container: ghcr.io/neomutt/ubuntu
     continue-on-error: true
 
     env:

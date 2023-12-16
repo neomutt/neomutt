@@ -10,7 +10,7 @@ jobs:
   build:
     name: Coverity
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/docker-build
+    container: ghcr.io/neomutt/ubuntu
 
     env:
       TOKEN: ${{ secrets.COVERITY_SCAN_TOKEN }}

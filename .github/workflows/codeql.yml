@@ -13,7 +13,7 @@ jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/docker-build
+    container: ghcr.io/neomutt/ubuntu
     permissions:
       actions: read
       contents: read

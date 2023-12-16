@@ -13,7 +13,7 @@ jobs:
     if: github.event.pull_request.draft == false
     name: Build-${{ matrix.cfg.name }}
     runs-on: ubuntu-latest
-    container: ghcr.io/neomutt/docker-build
+    container: ghcr.io/neomutt/ubuntu
 
     strategy:
       # Limit jobs to one at a time so that ccache really helps later builds
