@@ -24,6 +24,10 @@
  * @page mutt_file File management functions
  *
  * Commonly used file/dir management routines.
+ *
+ * The following unused functions were removed:
+ * - mutt_file_chmod()
+ * - mutt_file_chmod_rm()
  */
 
 #include "config.h"
@@ -1100,22 +1104,6 @@ void mutt_file_touch_atime(int fd)
 }
 
 /**
- * mutt_file_chmod - Set permissions of a file
- * @param path Filename
- * @param mode the permissions to set
- * @retval num Same as chmod(2)
- *
- * This is essentially chmod(path, mode), see chmod(2).
- */
-int mutt_file_chmod(const char *path, mode_t mode)
-{
-  if (!path)
-    return -1;
-
-  return chmod(path, mode);
-}
-
-/**
  * mutt_file_chmod_add - Add permissions to a file
  * @param path Filename
  * @param mode the permissions to add
@@ -1169,28 +1157,6 @@ int mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st)
     st = &st2;
   }
   return chmod(path, st->st_mode | mode);
-}
-
-/**
- * mutt_file_chmod_rm - Remove permissions from a file
- * @param path Filename
- * @param mode the permissions to remove
- * @retval num Same as chmod(2)
- *
- * Removes the given permissions from the file. Permissions not mentioned in
- * mode will stay as they are. This function resembles the `chmod ugoa-rwxXst`
- * command family. Example:
- *
- *     mutt_file_chmod_rm(path, S_IWUSR | S_IWGRP | S_IWOTH);
- *
- * will remove write permissions from path but does not alter read and other
- * permissions.
- *
- * @sa mutt_file_chmod_rm_stat()
- */
-int mutt_file_chmod_rm(const char *path, mode_t mode)
-{
-  return mutt_file_chmod_rm_stat(path, mode, NULL);
 }
 
 /**

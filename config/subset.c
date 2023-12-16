@@ -24,6 +24,13 @@
  * @page config_subset Subset of config items
  *
  * Subset of config items
+ *
+ * The following unused functions were removed:
+ * - cs_subset_str_delete()
+ * - cs_subset_str_native_get()
+ * - cs_subset_str_reset()
+ * - cs_subset_str_string_minus_equals()
+ * - cs_subset_str_string_plus_equals()
  */
 
 #include "config.h"
@@ -256,22 +263,6 @@ intptr_t cs_subset_he_native_get(const struct ConfigSubset *sub,
 }
 
 /**
- * cs_subset_str_native_get - Natively get the value of a string config item
- * @param sub  Config Subset
- * @param name Name of config item
- * @param err Buffer for error messages
- * @retval intptr_t Native pointer/value
- * @retval INT_MIN  Error
- */
-intptr_t cs_subset_str_native_get(const struct ConfigSubset *sub,
-                                  const char *name, struct Buffer *err)
-{
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-
-  return cs_subset_he_native_get(sub, he, err);
-}
-
-/**
  * cs_subset_he_native_set - Natively set the value of a HashElem config item
  * @param sub   Config Subset
  * @param he    HashElem representing config item
@@ -327,20 +318,6 @@ int cs_subset_he_reset(const struct ConfigSubset *sub, struct HashElem *he, stru
     cs_subset_notify_observers(sub, he, NT_CONFIG_RESET);
 
   return rc;
-}
-
-/**
- * cs_subset_str_reset - Reset a config item to its initial value
- * @param sub  Config Subset
- * @param name Name of config item
- * @param err  Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_subset_str_reset(const struct ConfigSubset *sub, const char *name, struct Buffer *err)
-{
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-
-  return cs_subset_he_reset(sub, he, err);
 }
 
 /**
@@ -435,22 +412,6 @@ int cs_subset_he_string_plus_equals(const struct ConfigSubset *sub, struct HashE
 }
 
 /**
- * cs_subset_str_string_plus_equals - Add to a config item by string
- * @param sub   Config Subset
- * @param name  Name of config item
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_subset_str_string_plus_equals(const struct ConfigSubset *sub, const char *name,
-                                     const char *value, struct Buffer *err)
-{
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-
-  return cs_subset_he_string_plus_equals(sub, he, value, err);
-}
-
-/**
  * cs_subset_he_string_minus_equals - Remove from a config item by string
  * @param sub   Config Subset
  * @param he    HashElem representing config item
@@ -470,22 +431,6 @@ int cs_subset_he_string_minus_equals(const struct ConfigSubset *sub, struct Hash
     cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
 
   return rc;
-}
-
-/**
- * cs_subset_str_string_minus_equals - Remove from a config item by string
- * @param sub   Config Subset
- * @param name  Name of config item
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_subset_str_string_minus_equals(const struct ConfigSubset *sub, const char *name,
-                                      const char *value, struct Buffer *err)
-{
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-
-  return cs_subset_he_string_minus_equals(sub, he, value, err);
 }
 
 /**
@@ -512,18 +457,4 @@ int cs_subset_he_delete(const struct ConfigSubset *sub, struct HashElem *he, str
 
   FREE(&name);
   return rc;
-}
-
-/**
- * cs_subset_str_delete - Delete config item from a config by string
- * @param sub   Config Subset
- * @param name  Name of config item
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_subset_str_delete(const struct ConfigSubset *sub, const char *name, struct Buffer *err)
-{
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-
-  return cs_subset_he_delete(sub, he, err);
 }

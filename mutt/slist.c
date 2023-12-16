@@ -24,6 +24,10 @@
  * @page mutt_slist A separated list of strings
  *
  * A separated list of strings
+ *
+ * The following unused functions were removed:
+ * - slist_add_list()
+ * - slist_empty()
  */
 
 #include "config.h"
@@ -46,28 +50,6 @@ struct Slist *slist_new(uint32_t flags)
   list->flags = flags;
   STAILQ_INIT(&list->head);
 
-  return list;
-}
-
-/**
- * slist_add_list - Add a list to another list
- * @param list String list to add to
- * @param add  String list to add
- * @retval ptr Modified list
- */
-struct Slist *slist_add_list(struct Slist *list, const struct Slist *add)
-{
-  if (!add)
-    return list;
-  if (!list)
-    return slist_dup(add);
-
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &add->head, entries)
-  {
-    mutt_list_insert_tail(&list->head, mutt_str_dup((char *) np->data));
-    list->count++;
-  }
   return list;
 }
 
@@ -131,28 +113,6 @@ struct Slist *slist_dup(const struct Slist *list)
   }
   list_new->count = list->count;
   return list_new;
-}
-
-/**
- * slist_empty - Empty out an Slist object
- * @param list Slist to empty
- * @retval ptr New Slist object
- */
-struct Slist *slist_empty(struct Slist **list)
-{
-  if (!list || !*list)
-    return NULL;
-
-  mutt_list_free(&(*list)->head);
-
-  if ((*list)->flags & SLIST_ALLOW_EMPTY)
-  {
-    (*list)->count = 0;
-    return *list;
-  }
-
-  FREE(list);
-  return NULL;
 }
 
 /**

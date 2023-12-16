@@ -29,6 +29,9 @@
  * - Validator is passed `unsigned char`
  * - Valid user entry: #QuadValues
  * - Implementation: #CstQuad
+ *
+ * The following unused functions were removed:
+ * - quad_str_toggle()
  */
 
 #include "config.h"
@@ -230,22 +233,6 @@ int quad_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffer 
     cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
 
   return rc;
-}
-
-/**
- * quad_str_toggle - Toggle the value of a quad
- * @param sub  Config subset
- * @param name HashElem representing config item
- * @param err  Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- *
- * @sa quad_toggle()
- */
-int quad_str_toggle(struct ConfigSubset *sub, const char *name, struct Buffer *err)
-{
-  struct HashElem *he = cs_subset_create_inheritance(sub, name);
-
-  return quad_he_toggle(sub, he, err);
 }
 
 /**

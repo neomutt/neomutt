@@ -128,7 +128,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_strdup)                                           \
   NEOMUTT_TEST_ITEM(test_buf_str_equal)                                        \
   NEOMUTT_TEST_ITEM(test_buf_substrcpy)                                        \
-  NEOMUTT_TEST_ITEM(test_buf_upper)                                            \
                                                                                \
   /* charset */                                                                \
   NEOMUTT_TEST_ITEM(test_mutt_ch_canonical_charset)                            \
@@ -276,10 +275,8 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_file_expand_fmt_quote)                            \
   NEOMUTT_TEST_ITEM(test_buf_quote_filename)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_file_check_empty)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_file_chmod)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_file_chmod_add)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_file_chmod_add_stat)                             \
-  NEOMUTT_TEST_ITEM(test_mutt_file_chmod_rm)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_file_chmod_rm_stat)                              \
   NEOMUTT_TEST_ITEM(test_mutt_file_copy_bytes)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_file_copy_stream)                                \
@@ -562,10 +559,8 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_sig_unblock_system)                              \
                                                                                \
   /* slist */                                                                  \
-  NEOMUTT_TEST_ITEM(test_slist_add_list)                                       \
   NEOMUTT_TEST_ITEM(test_slist_add_string)                                     \
   NEOMUTT_TEST_ITEM(test_slist_dup)                                            \
-  NEOMUTT_TEST_ITEM(test_slist_empty)                                          \
   NEOMUTT_TEST_ITEM(test_slist_equal)                                          \
   NEOMUTT_TEST_ITEM(test_slist_free)                                           \
   NEOMUTT_TEST_ITEM(test_slist_is_empty)                                       \

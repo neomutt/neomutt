@@ -185,11 +185,6 @@ static bool test_slist_add_string(struct Buffer *err)
     slist_add_string(list, NULL);
     slist_dump(list, err);
 
-    slist_empty(&list);
-    slist_add_string(list, "");
-    slist_dump(list, err);
-
-    slist_empty(&list);
     slist_add_string(list, "apple");
     slist_dump(list, err);
     slist_add_string(list, "banana");
@@ -238,13 +233,6 @@ static bool test_slist_remove_string(struct Buffer *err)
     slist_free(&list);
   }
 
-  {
-    struct Slist *list = slist_parse("apple:ba\\:nana::cherry", SLIST_SEP_COLON);
-    slist_dump(list, err);
-    TEST_CHECK(slist_empty(&list) == NULL);
-    slist_free(&list);
-  }
-
   return true;
 }
 
@@ -274,42 +262,6 @@ static bool test_slist_is_member(struct Buffer *err)
     TEST_CHECK(slist_is_member(list, NULL) == false);
     slist_free(&list);
   }
-  return true;
-}
-
-static bool test_slist_add_list(struct Buffer *err)
-{
-  buf_reset(err);
-
-  uint32_t flags = SLIST_SEP_COLON | SLIST_ALLOW_EMPTY;
-
-  struct Slist *list1 = slist_parse("apple:banana::cherry", flags);
-  slist_dump(list1, err);
-
-  struct Slist *list2 = slist_parse("damson::apple:apple", flags);
-  slist_dump(list2, err);
-
-  list1 = slist_add_list(list1, list2);
-  slist_dump(list1, err);
-
-  list1 = slist_add_list(list1, NULL);
-  slist_dump(list1, err);
-
-  slist_free(&list1);
-  slist_free(&list2);
-
-  list1 = NULL;
-  slist_dump(list1, err);
-
-  list2 = slist_parse("damson::apple:apple", flags);
-  slist_dump(list2, err);
-
-  list1 = slist_add_list(list1, list2);
-  slist_dump(list1, err);
-
-  slist_free(&list1);
-  slist_free(&list2);
-
   return true;
 }
 
@@ -1210,7 +1162,6 @@ void test_config_slist(void)
   TEST_CHECK(test_slist_add_string(err));
   TEST_CHECK(test_slist_remove_string(err));
   TEST_CHECK(test_slist_is_member(err));
-  TEST_CHECK(test_slist_add_list(err));
   TEST_CHECK(test_slist_equal(err));
 
   TEST_CHECK(slist_test_separator(VarsColon, err));

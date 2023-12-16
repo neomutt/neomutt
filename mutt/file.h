@@ -98,10 +98,8 @@ struct MuttFileIter
 typedef bool (*mutt_file_map_t)(char *line, int line_num, void *user_data);
 
 int         mutt_file_check_empty(const char *path);
-int         mutt_file_chmod(const char *path, mode_t mode);
 int         mutt_file_chmod_add(const char *path, mode_t mode);
 int         mutt_file_chmod_add_stat(const char *path, mode_t mode, struct stat *st);
-int         mutt_file_chmod_rm(const char *path, mode_t mode);
 int         mutt_file_chmod_rm_stat(const char *path, mode_t mode, struct stat *st);
 int         mutt_file_copy_bytes(FILE *fp_in, FILE *fp_out, size_t size);
 int         mutt_file_copy_stream(FILE *fp_in, FILE *fp_out);

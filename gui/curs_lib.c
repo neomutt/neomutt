@@ -25,6 +25,9 @@
  * @page gui_curs_lib Window drawing code
  *
  * GUI miscellaneous curses (window drawing) routines
+ *
+ * The following unused functions were removed:
+ * - mutt_perror_debug()
  */
 
 #include "config.h"
@@ -161,18 +164,6 @@ void mutt_endwin(void)
   SigWinch = true;
 
   errno = e;
-}
-
-/**
- * mutt_perror_debug - Show the user an 'errno' message
- * @param s Additional text to show
- */
-void mutt_perror_debug(const char *s)
-{
-  char *p = strerror(errno);
-
-  mutt_debug(LL_DEBUG1, "%s: %s (errno = %d)\n", s, p ? p : "unknown error", errno);
-  mutt_error("%s: %s (errno = %d)", s, p ? p : _("unknown error"), errno);
 }
 
 /**
