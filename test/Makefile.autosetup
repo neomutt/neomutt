@@ -350,7 +350,6 @@ LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_str_split.o
 
 LOGGING_OBJS	= test/logging/log_disp_file.o \
-		  test/logging/log_disp_null.o \
 		  test/logging/log_disp_queue.o \
 		  test/logging/log_disp_terminal.o \
 		  test/logging/log_file_close.o \

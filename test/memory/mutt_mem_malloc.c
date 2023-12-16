@@ -26,6 +26,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 bool exit_called = false;
 

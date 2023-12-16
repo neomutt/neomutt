@@ -491,15 +491,6 @@ int log_disp_terminal(time_t stamp, const char *file, int line, const char *func
 }
 
 /**
- * log_disp_null - Discard log lines - Implements ::log_dispatcher_t - @ingroup logging_api
- */
-int log_disp_null(time_t stamp, const char *file, int line, const char *function,
-                  enum LogLevel level, const char *format, ...)
-{
-  return 0;
-}
-
-/**
  * log_multiline_full - Helper to dump multiline text to the log
  * @param level Logging level, e.g. LL_DEBUG1
  * @param str   Text to save

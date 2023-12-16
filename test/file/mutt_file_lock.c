@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_file_lock(void)
 {
