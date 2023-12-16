@@ -390,7 +390,6 @@ void test_fini(void);
                                                                                \
   /* logging */                                                                \
   NEOMUTT_TEST_ITEM(test_log_disp_file)                                        \
-  NEOMUTT_TEST_ITEM(test_log_disp_null)                                        \
   NEOMUTT_TEST_ITEM(test_log_disp_queue)                                       \
   NEOMUTT_TEST_ITEM(test_log_disp_terminal)                                    \
   NEOMUTT_TEST_ITEM(test_log_file_close)                                       \

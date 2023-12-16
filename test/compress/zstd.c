@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "compress/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 #define MIN_COMP_LEVEL 1  ///< Minimum compression level for zstd
 #define MAX_COMP_LEVEL 22 ///< Maximum compression level for zstd

@@ -30,6 +30,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 static struct ConfigDef Vars[] = {
   // clang-format off
