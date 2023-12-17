@@ -3233,7 +3233,7 @@ static struct CryptKeyInfo *crypt_getkeybyaddr(struct Address *a,
 
   if (matches)
   {
-    if (oppenc_mode)
+    if (oppenc_mode || !isatty(STDIN_FILENO))
     {
       const bool c_crypt_opportunistic_encrypt_strong_keys =
           cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
@@ -3496,7 +3496,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
         k_info = crypt_getkeybyaddr(p, KEYFLAG_CANENCRYPT, app, &forced_valid, oppenc_mode);
       }
 
-      if (!k_info && !oppenc_mode)
+      if (!k_info && !oppenc_mode && isatty(STDIN_FILENO))
       {
         snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), buf_string(p->mailbox));
 

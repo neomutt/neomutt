@@ -36,7 +36,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
+#include <unistd.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -646,7 +646,7 @@ static struct SmimeKey *smime_get_key_by_addr(const char *mailbox, KeyFlags abil
 
   if (matches)
   {
-    if (oppenc_mode)
+    if (oppenc_mode || !isatty(STDIN_FILENO))
     {
       const bool c_crypt_opportunistic_encrypt_strong_keys =
           cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
@@ -848,7 +848,7 @@ char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
   TAILQ_FOREACH(a, al, entries)
   {
     key = smime_get_key_by_addr(buf_string(a->mailbox), KEYFLAG_CANENCRYPT, true, oppenc_mode);
-    if (!key && !oppenc_mode)
+    if (!key && !oppenc_mode && isatty(STDIN_FILENO))
     {
       char buf[1024] = { 0 };
       snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), buf_string(a->mailbox));

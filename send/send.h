@@ -35,7 +35,7 @@ struct EmailArray;
 struct Envelope;
 struct Mailbox;
 
-typedef uint16_t SendFlags;             ///< Flags for mutt_send_message(), e.g. #SEND_REPLY
+typedef uint32_t SendFlags;             ///< Flags for mutt_send_message(), e.g. #SEND_REPLY
 #define SEND_NO_FLAGS               0   ///< No flags are set
 #define SEND_REPLY            (1 << 0)  ///< Reply to sender
 #define SEND_GROUP_REPLY      (1 << 1)  ///< Reply to all
@@ -53,6 +53,7 @@ typedef uint16_t SendFlags;             ///< Flags for mutt_send_message(), e.g.
 #define SEND_NEWS             (1 << 13) ///< Reply to a news article
 #define SEND_REVIEW_TO        (1 << 14) ///< Allow the user to edit the To field
 #define SEND_CONSUMED_STDIN   (1 << 15) ///< stdin has been read; don't read it twice
+#define SEND_CLI_CRYPTO       (1 << 16) ///< Enable message security in modes that by default don't enable it
 
 void            mutt_add_to_reference_headers(struct Envelope *env, struct Envelope *env_cur, struct ConfigSubset *sub);
 struct Address *mutt_default_from(struct ConfigSubset *sub);

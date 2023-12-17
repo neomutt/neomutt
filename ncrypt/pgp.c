@@ -1546,7 +1546,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
         k_info = pgp_getkeybyaddr(p, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
       }
 
-      if (!k_info && !oppenc_mode)
+      if (!k_info && !oppenc_mode && isatty(STDIN_FILENO))
       {
         snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), buf_string(p->mailbox));
         k_info = pgp_ask_for_key(buf, buf_string(p->mailbox), KEYFLAG_CANENCRYPT, PGP_PUBRING);
