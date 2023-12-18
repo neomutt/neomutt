@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2023-12-12 23:58+0000\n"
-"PO-Revision-Date: 2023-10-29 13:00+0300\n"
+"PO-Revision-Date: 2023-12-18 23:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -55,7 +55,7 @@ msgstr "Yorum: "
 
 #: alias/alias.c:477
 msgid "Tags (comma-separated): "
-msgstr ""
+msgstr "Etiketler (virgülle ayrılmış): "
 
 #: alias/alias.c:506
 msgid "Accept?"
@@ -979,9 +979,9 @@ msgid "invalid header field"
 msgstr "geçersiz başlık alanı"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, fuzzy, c-format
+#, c-format
 msgid "Can't query option with the '%s' command"
-msgstr "'%s' komutuyla bir değişken sorgulanamaz"
+msgstr "'%s' komutuyla bir seçenek sorgulanamaz"
 
 #: commands.c:973 parse/set.c:495
 msgid "Can't use a prefix when querying a variable"
@@ -1361,7 +1361,7 @@ msgstr "'charset', en az bir karakter kümesi adı içermelidir"
 
 #: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "%s seçeneği için geçersiz değer: %s"
 
@@ -1377,7 +1377,7 @@ msgstr "Geçersiz enümerasyon değeri: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
 msgstr "%s seçeneği boş olamaz"
 
@@ -1389,7 +1389,7 @@ msgstr "Geçersiz long: %s"
 #: config/long.c:61 config/long.c:116 config/long.c:164 config/long.c:203
 #: config/number.c:68 config/number.c:130 config/number.c:184
 #: config/number.c:226
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
 msgstr "%s seçeneği negatif olamaz"
 
@@ -1423,14 +1423,14 @@ msgstr "Geçersiz quad değeri: %ld"
 #: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
 #: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
 #: parse/set.c:338 parse/set.c:395
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown option %s"
-msgstr "Geçersiz değişken '%s'"
+msgstr "Geçersiz seçenek %s"
 
 #: config/set.c:258 config/set.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s has an invalid type %d"
-msgstr "'%s' değişkeninde %d geçersiz türü var"
+msgstr "'%s' seçeneğinde %d geçersiz türü var"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -3627,7 +3627,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s desteklenmiyor ('view-attachments'ın bir düğmeye atanması gerekiyor) --]\n"
 
 #: hcache/config.c:95
-#, fuzzy, c-format
+#, c-format
 msgid "Set option %s before setting %s"
 msgstr "Şunu ayarlamadan önce %s seçeneğini ayarlayın: %s"
 
@@ -3635,7 +3635,7 @@ msgstr "Şunu ayarlamadan önce %s seçeneğini ayarlayın: %s"
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "%s seçeneği %d ve %d arasında olmalıdır (dahil)"
 
@@ -3908,7 +3908,7 @@ msgid "Connection to %s timed out"
 msgstr "%s bağlantısı zaman aşımına uğradı"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "%s seçeneği: %s, geçerli bir kimlik doğrulayıcı değil"
 
@@ -4474,9 +4474,9 @@ msgid "unable to determine nodename via uname()"
 msgstr "düğüm adı uname() ile belirlenemiyor"
 
 #: init.c:634
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s is deprecated"
-msgstr "'%s' yapılandırma değişkeni artık kullanılmıyor"
+msgstr "'%s' seçeneği artık kullanılmıyor"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
 #: key/dump.c:203 key/parse.c:248 key/parse.c:301
@@ -5137,7 +5137,7 @@ msgid "Caught signal %d ...  Exiting\n"
 msgstr "%d sinyali alındı...  Çıkılıyor.\n"
 
 #: mutt_logging.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "%s seçeneği için geçersiz değer: %ld"
 
@@ -6714,9 +6714,9 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Bir değişken artırılırken veya azaltılırken önek kullanılamaz"
 
 #: parse/set.c:519 parse/set.c:550
-#, fuzzy, c-format
+#, c-format
 msgid "Can't set option with the '%s' command"
-msgstr "'%s' komutuyla bir değişken ayarlanamaz"
+msgstr "'%s' komutuyla bir seçenek ayarlanamaz"
 
 #: parse/set.c:536
 msgid "'+' and '-' must be followed by '='"
@@ -7415,7 +7415,7 @@ msgstr "%s artık mevcut değil"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "%s seçeneği, kabuk üst karakterleri içermemeli: %c"
 
