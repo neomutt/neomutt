@@ -132,19 +132,6 @@ int mutt_socket_read(struct Connection *conn, char *buf, size_t len)
 }
 
 /**
- * mutt_socket_write - Write to a Connection
- * @param conn Connection to a server
- * @param buf Buffer with data to write
- * @param len Length of data to write
- * @retval >0 Number of bytes written
- * @retval -1 Error
- */
-int mutt_socket_write(struct Connection *conn, const char *buf, size_t len)
-{
-  return conn->write(conn, buf, len);
-}
-
-/**
  * mutt_socket_write_d - Write data to a socket
  * @param conn Connection to a server
  * @param buf Buffer with data to write
