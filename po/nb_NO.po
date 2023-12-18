@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2021-05-06 05:30+0100\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Liberium <epost@anotheragency.no>\n"
@@ -977,8 +977,8 @@ msgid "invalid header field"
 msgstr "ugyldig linje i brevhode"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, c-format
-msgid "Can't query a variable with the '%s' command"
+#, fuzzy, c-format
+msgid "Can't query option with the '%s' command"
 msgstr "Kan ikke utføre variabelspørring med «%s»-kommando"
 
 #: commands.c:973 parse/set.c:495
@@ -1360,7 +1360,7 @@ msgstr "«charset» må inneholde nøyaktig ett tegnsettnavn"
 
 #: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Ugyldig verdi for valget %s: «%s»"
 
@@ -1376,7 +1376,7 @@ msgstr "Ugyldig enum-verdi: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "Valget %s kan ikke stå tomt"
 
@@ -1388,7 +1388,7 @@ msgstr "Ugyldig long-verdi: %s"
 #: config/long.c:61 config/long.c:116 config/long.c:164 config/long.c:203
 #: config/number.c:68 config/number.c:130 config/number.c:184
 #: config/number.c:226
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Valget %s kan ikke være negativt."
 
@@ -1417,22 +1417,19 @@ msgstr "Ugyldig quad-verdi: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Ugyldig quad-verdi: %ld"
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr "Ingen slik variabel: %s"
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "Ukjent variabel «%s»"
 
 #: config/set.c:258 config/set.c:870
-#, c-format
-msgid "Variable '%s' has an invalid type %d"
+#, fuzzy, c-format
+msgid "Option %s has an invalid type %d"
 msgstr "Variabelen «%s» har ugyldig type %d"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, c-format
-msgid "Unknown variable '%s'"
-msgstr "Ukjent variabel «%s»"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -3629,7 +3626,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s støttes ikke («vis-vedleg» må tilknyttes en tast) --]\n"
 
 #: hcache/config.c:95
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr "Sett valget %s før du setter %s"
 
@@ -3637,7 +3634,7 @@ msgstr "Sett valget %s før du setter %s"
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Valget %s må være mellom %d og %d, inklusivt"
 
@@ -3910,7 +3907,7 @@ msgid "Connection to %s timed out"
 msgstr "Tidsavbrudd for forbindelse til %s"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Valg %s: %s er ikke en gyldig godkjenner"
 
@@ -4476,8 +4473,8 @@ msgid "unable to determine nodename via uname()"
 msgstr "kan ikke bestemme nodenavn via uname()"
 
 #: init.c:634
-#, c-format
-msgid "Config variable '%s' is deprecated"
+#, fuzzy, c-format
+msgid "Option %s is deprecated"
 msgstr "Oppsettsvariabel «%s» er ikke lenger anbefalt å bruke"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -5132,7 +5129,7 @@ msgid "Caught signal %d ...  Exiting\n"
 msgstr "Mottok signalet %d… Avslutter.\n"
 
 #: mutt_logging.c:274
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Ugyldig verdi for valget %s: %ld"
 
@@ -6684,12 +6681,6 @@ msgstr "slutt"
 msgid "%s: unknown command"
 msgstr "%s: ukjent kommando"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: ukjent variabel"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6705,8 +6696,8 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Kan ikke bruke prefiks ved økning eller substraksjon av variabel"
 
 #: parse/set.c:519 parse/set.c:550
-#, c-format
-msgid "Can't set a variable with the '%s' command"
+#, fuzzy, c-format
+msgid "Can't set option with the '%s' command"
 msgstr "Kan ikke sette en variabel med «%s»-kommando"
 
 #: parse/set.c:536
@@ -7406,7 +7397,7 @@ msgstr "%s finnes ikke lenger"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "«%s»-valget må ikke inneholde metategn for skallet: %c"
 
@@ -7738,30 +7729,3 @@ msgstr "Kompileringstilvalg:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Utviklervalg:"
-
-#~ msgid "Default options:"
-#~ msgstr "Forvalg:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Feil i %s, linje %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Valget %s kan ikke settes i legg-ved-melding-modus."
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Skriv ut valgte meldinger?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Nekter å sende en tom e-post"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Prøv: echo | neomutt -s 'emne' bruker@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Advarsel i %s, linje %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "forvalgte farger støttes ikke"

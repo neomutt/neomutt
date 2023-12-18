@@ -631,7 +631,7 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
     {
       if (he->type & DT_DEPRECATED)
       {
-        mutt_warning(_("Config variable '%s' is deprecated"), np->data);
+        mutt_warning(_("Option %s is deprecated"), np->data);
         rc = 1;
         continue;
       }
@@ -659,7 +659,7 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
       continue;
     }
 
-    mutt_warning(_("No such variable: %s"), np->data);
+    mutt_warning(_("Unknown option %s"), np->data);
     rc = 1;
   }
 

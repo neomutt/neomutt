@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -981,8 +981,8 @@ msgid "invalid header field"
 msgstr "无效的信件头域"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, c-format
-msgid "Can't query a variable with the '%s' command"
+#, fuzzy, c-format
+msgid "Can't query option with the '%s' command"
 msgstr "无法使用 '%s' 命令查询变量"
 
 #: commands.c:973 parse/set.c:495
@@ -1363,7 +1363,7 @@ msgstr "“charset”值只能包含单个字符集名称"
 
 #: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "选项 %s 的值无效：%s"
 
@@ -1379,7 +1379,7 @@ msgstr "无效的枚举值: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "不能从分页器设置或重置选项 %s"
 
@@ -1391,7 +1391,7 @@ msgstr "无效的长精度：%s"
 #: config/long.c:61 config/long.c:116 config/long.c:164 config/long.c:203
 #: config/number.c:68 config/number.c:130 config/number.c:184
 #: config/number.c:226
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "不能从分页器设置或重置选项 %s"
 
@@ -1420,22 +1420,19 @@ msgstr "无效的四项值：%s"
 msgid "Invalid quad value: %ld"
 msgstr "无效的四项值：“%ld”"
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr "无这类变量: %s"
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "未知的变量 '%s'"
 
 #: config/set.c:258 config/set.c:870
-#, c-format
-msgid "Variable '%s' has an invalid type %d"
+#, fuzzy, c-format
+msgid "Option %s has an invalid type %d"
 msgstr "变量'%s'有一个无效类型 %d"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, c-format
-msgid "Unknown variable '%s'"
-msgstr "未知的变量 '%s'"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -3627,7 +3624,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s 尚未支持 (需要将 'view-attachments' 绑定到键！) --]\n"
 
 #: hcache/config.c:95
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr "请先设置 %s 之后再设置 %s"
 
@@ -3635,7 +3632,7 @@ msgstr "请先设置 %s 之后再设置 %s"
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "选项 %s 的值必须在 %d 和 %d 之间（闭区间）"
 
@@ -3908,7 +3905,7 @@ msgid "Connection to %s timed out"
 msgstr "到 %s 的连接已超时"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "选项 %s: %s 不是一个合法的认证方式"
 
@@ -4470,8 +4467,8 @@ msgid "unable to determine nodename via uname()"
 msgstr "无法通过 uname() 确定节点名称"
 
 #: init.c:634
-#, c-format
-msgid "Config variable '%s' is deprecated"
+#, fuzzy, c-format
+msgid "Option %s is deprecated"
 msgstr "配置变量 '%s' 已废弃"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -5121,7 +5118,7 @@ msgid "Caught signal %d ...  Exiting\n"
 msgstr "捕捉到信号 %d ...  正在退出。\n"
 
 #: mutt_logging.c:274
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "选项 %s 的值无效：“%ld”"
 
@@ -6678,12 +6675,6 @@ msgstr "结束"
 msgid "%s: unknown command"
 msgstr "%s：未知命令"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s：未知的变量"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6699,8 +6690,8 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "变量自增或自减时无法使用前缀"
 
 #: parse/set.c:519 parse/set.c:550
-#, c-format
-msgid "Can't set a variable with the '%s' command"
+#, fuzzy, c-format
+msgid "Can't set option with the '%s' command"
 msgstr "无法使用 '%s' 命令设置变量"
 
 #: parse/set.c:536
@@ -7725,30 +7716,3 @@ msgstr "编译选项："
 #: version.c:486
 msgid "Devel options:"
 msgstr "开发选项："
-
-#~ msgid "Default options:"
-#~ msgstr "默认选项："
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "%s 发生错误，第 %d 行：%s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "在附加信件(attach-message)模式下不能设置 %s 选项"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "打印已标记的信件？"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "拒绝发送空邮件"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "请尝试以下命令： echo | neomutt -s 'subject' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "%s 出现警告，第 %d 行：%s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "不支持默认的颜色"

@@ -197,7 +197,7 @@ int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *e
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -236,7 +236,7 @@ int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffe
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(result, _("Unknown variable '%s'"), name);
+    buf_printf(result, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -260,7 +260,7 @@ int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 
@@ -284,7 +284,7 @@ int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
   struct HashElem *he = cs_get_elem(cs, name);
   if (!he)
   {
-    buf_printf(err, _("Unknown variable '%s'"), name);
+    buf_printf(err, _("Unknown option %s"), name);
     return CSR_ERR_UNKNOWN;
   }
 

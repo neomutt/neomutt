@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2018-03-19 01:14-0300\n"
 "Last-Translator: Thiago Costa de Paiva <tecepe@tecepe.eng.br>\n"
 "Language-Team: \n"
@@ -978,8 +978,8 @@ msgid "invalid header field"
 msgstr "campo de cabeçalho inválido"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, c-format
-msgid "Can't query a variable with the '%s' command"
+#, fuzzy, c-format
+msgid "Can't query option with the '%s' command"
 msgstr "Não é possível consultar uma variável com o comando '%s'"
 
 #: commands.c:973 parse/set.c:495
@@ -1361,7 +1361,7 @@ msgstr "'charset' deve conter apenas um nome de conjunto de caracteres"
 
 #: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Valor inválido para opção %s: %s"
 
@@ -1377,7 +1377,7 @@ msgstr "Valor enum inválido: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "Opção %s não pode estar vazia"
 
@@ -1389,7 +1389,7 @@ msgstr "Valor longo inválido: %s"
 #: config/long.c:61 config/long.c:116 config/long.c:164 config/long.c:203
 #: config/number.c:68 config/number.c:130 config/number.c:184
 #: config/number.c:226
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Opção %s não pode ser negativa"
 
@@ -1418,22 +1418,19 @@ msgstr "Valor quad inválido: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Valor quad inválido: %ld"
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr "Variável indefinida: %s"
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "Variável desconhecida '%s'"
 
 #: config/set.c:258 config/set.c:870
-#, c-format
-msgid "Variable '%s' has an invalid type %d"
+#, fuzzy, c-format
+msgid "Option %s has an invalid type %d"
 msgstr "Variável '%s' possui um tipo inválido %d"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, c-format
-msgid "Unknown variable '%s'"
-msgstr "Variável desconhecida '%s'"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -3630,7 +3627,7 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s não é suportado ('view-attachments' deve ser associado a uma tecla) --]\n"
 
 #: hcache/config.c:95
-#, c-format
+#, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr "Defina a opção %s antes de definir %s"
 
@@ -3638,7 +3635,7 @@ msgstr "Defina a opção %s antes de definir %s"
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "A opção %s deve estar entre %d e %d, inclusive"
 
@@ -3911,7 +3908,7 @@ msgid "Connection to %s timed out"
 msgstr "Conexão com %s expirou"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Opção %s: %s não é um autenticador valido"
 
@@ -4477,8 +4474,8 @@ msgid "unable to determine nodename via uname()"
 msgstr "não foi possível determinar nodename via uname()"
 
 #: init.c:634
-#, c-format
-msgid "Config variable '%s' is deprecated"
+#, fuzzy, c-format
+msgid "Option %s is deprecated"
 msgstr "Variável de config. '%s' está descontinuada"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -5131,7 +5128,7 @@ msgid "Caught signal %d ...  Exiting\n"
 msgstr "Sinal %d interceptado... Saindo.\n"
 
 #: mutt_logging.c:274
-#, c-format
+#, fuzzy, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Valor inválido para opção %s: %ld"
 
@@ -6691,12 +6688,6 @@ msgstr "fim"
 msgid "%s: unknown command"
 msgstr "%s: comando desconhecido"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: variável desconhecida"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6712,8 +6703,8 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Não é possível usar um prefixo quando incrementando ou diminuindo uma variável"
 
 #: parse/set.c:519 parse/set.c:550
-#, c-format
-msgid "Can't set a variable with the '%s' command"
+#, fuzzy, c-format
+msgid "Can't set option with the '%s' command"
 msgstr "Não é possível definir uma variável com o comando '%s'"
 
 #: parse/set.c:536
@@ -7417,7 +7408,7 @@ msgstr "%s não mais existe"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, c-format
+#, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "Opção %s não deve conter meta caracteres da shell: %c"
 
@@ -7749,30 +7740,3 @@ msgstr "Opções de compilação:"
 #: version.c:486
 msgid "Devel options:"
 msgstr "Opções de desenvolvimento:"
-
-#~ msgid "Default options:"
-#~ msgstr "Opções pré-definidas:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Erro em %s, linha %d: %s"
-
-#, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Função %s não permitida no modo de anexar mensagem (attach-message)"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "Imprimir mensagens marcadas?"
-
-#~ msgid "Refusing to send an empty email"
-#~ msgstr "Recusando a enviar um email vazio"
-
-#~ msgid "Try: echo | neomutt -s 'subject' user@example.com"
-#~ msgstr "Tente: echo | neomutt -s 'assunto' user@example.com"
-
-#, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Aviso em %s, linha %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "cores pré-definidas não suportadas"

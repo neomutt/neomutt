@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2019-05-10 21:15+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -994,7 +994,7 @@ msgstr "ugyldig linje i brevhoved"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
 #, c-format
-msgid "Can't query a variable with the '%s' command"
+msgid "Can't query option with the '%s' command"
 msgstr ""
 
 #: commands.c:973 parse/set.c:495
@@ -1449,22 +1449,19 @@ msgstr "Ugyldig relativ dato: %s"
 msgid "Invalid quad value: %ld"
 msgstr "Ugyldig værdi for tilvalget %s: \"%s\""
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr ""
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "%s: ukendt variabel"
 
 #: config/set.c:258 config/set.c:870
 #, fuzzy, c-format
-msgid "Variable '%s' has an invalid type %d"
+msgid "Option %s has an invalid type %d"
 msgstr "Fejl: 'værdien \"%s\" er ugyldig til -d"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, fuzzy, c-format
-msgid "Unknown variable '%s'"
-msgstr "%s: ukendt variabel"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -4613,7 +4610,7 @@ msgstr "kan ikke bestemme nodenavn via uname()"
 
 #: init.c:634
 #, c-format
-msgid "Config variable '%s' is deprecated"
+msgid "Option %s is deprecated"
 msgstr ""
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -6836,12 +6833,6 @@ msgstr ""
 msgid "%s: unknown command"
 msgstr "%s: Ukendt kommando"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s: ukendt variabel"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6858,7 +6849,7 @@ msgstr ""
 
 #: parse/set.c:519 parse/set.c:550
 #, c-format
-msgid "Can't set a variable with the '%s' command"
+msgid "Can't set option with the '%s' command"
 msgstr ""
 
 #: parse/set.c:536
@@ -7932,26 +7923,3 @@ msgstr "Tilvalg ved oversættelsen:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Tilvalg ved oversættelsen:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "Tilvalg ved oversættelsen:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "Fejl i %s, linje %d: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "Funktionen er ikke tilladt ved vedlægning af bilag."
-
-#, fuzzy
-#~ msgid "Print tagged messages?"
-#~ msgstr "Udskriv udvalgte breve?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "Fejl i %s, linje %d: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "standard-farver er ikke understøttet"

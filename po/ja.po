@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-11-03\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2023-12-12 12:48+0000\n"
+"POT-Creation-Date: 2023-12-12 23:58+0000\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -984,7 +984,7 @@ msgstr "不正なへッダフィールド"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
 #, c-format
-msgid "Can't query a variable with the '%s' command"
+msgid "Can't query option with the '%s' command"
 msgstr ""
 
 #: commands.c:973 parse/set.c:495
@@ -1439,22 +1439,19 @@ msgstr "%s は不正な相対月日"
 msgid "Invalid quad value: %ld"
 msgstr "変数 %s には不正な値: \"%s\""
 
-#: config/set.c:106 init.c:662
-#, c-format
-msgid "No such variable: %s"
-msgstr ""
+#: config/set.c:106 config/set.c:445 config/set.c:511 config/set.c:572
+#: config/set.c:648 config/set.c:714 config/set.c:790 config/set.c:970
+#: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
+#: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
+#: parse/set.c:338 parse/set.c:395
+#, fuzzy, c-format
+msgid "Unknown option %s"
+msgstr "%s は不明な変数"
 
 #: config/set.c:258 config/set.c:870
 #, fuzzy, c-format
-msgid "Variable '%s' has an invalid type %d"
+msgid "Option %s has an invalid type %d"
 msgstr "エラー: 値 '%s' は -d には不正。"
-
-#: config/set.c:445 config/set.c:511 config/set.c:572 config/set.c:648
-#: config/set.c:714 config/set.c:790 config/set.c:970 config/set.c:1053
-#: config/set.c:1091
-#, fuzzy, c-format
-msgid "Unknown variable '%s'"
-msgstr "%s は不明な変数"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -4582,7 +4579,7 @@ msgstr "uname() でノード名を識別できない"
 
 #: init.c:634
 #, c-format
-msgid "Config variable '%s' is deprecated"
+msgid "Option %s is deprecated"
 msgstr ""
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -6803,12 +6800,6 @@ msgstr ""
 msgid "%s: unknown command"
 msgstr "%s: 不明なコマンド"
 
-#: parse/set.c:119 parse/set.c:174 parse/set.c:217 parse/set.c:245
-#: parse/set.c:303 parse/set.c:338 parse/set.c:395
-#, c-format
-msgid "%s: unknown variable"
-msgstr "%s は不明な変数"
-
 #: parse/set.c:352 parse/set.c:567
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
@@ -6825,7 +6816,7 @@ msgstr ""
 
 #: parse/set.c:519 parse/set.c:550
 #, c-format
-msgid "Can't set a variable with the '%s' command"
+msgid "Can't set option with the '%s' command"
 msgstr ""
 
 #: parse/set.c:536
@@ -7863,25 +7854,3 @@ msgstr "コンパイル時オプション:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "コンパイル時オプション:"
-
-#, fuzzy
-#~ msgid "Default options:"
-#~ msgstr "コンパイル時オプション:"
-
-#, c-format
-#~ msgid "Error in %s, line %d: %s"
-#~ msgstr "%s 中の %d 行目でエラー: %s"
-
-#, fuzzy, c-format
-#~ msgid "Option %s may not be set when in attach-message mode"
-#~ msgstr "この機能はメッセージ添付モードでは許可されていない。"
-
-#~ msgid "Print tagged messages?"
-#~ msgstr "タグ付きメッセージを印刷?"
-
-#, fuzzy, c-format
-#~ msgid "Warning in %s, line %d: %s"
-#~ msgstr "%s 中の %d 行目でエラー: %s"
-
-#~ msgid "default colors not supported"
-#~ msgstr "既定値の色がサポートされていない"

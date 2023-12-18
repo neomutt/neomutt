@@ -116,7 +116,7 @@ static enum CommandResult command_set_set(struct Buffer *name,
     }
     else
     {
-      buf_printf(err, _("%s: unknown variable"), name->data);
+      buf_printf(err, _("Unknown option %s"), name->data);
       return MUTT_CMD_ERROR;
     }
   }
@@ -171,7 +171,7 @@ static enum CommandResult command_set_increment(struct Buffer *name,
     }
     else
     {
-      buf_printf(err, _("%s: unknown variable"), name->data);
+      buf_printf(err, _("Unknown option %s"), name->data);
       return MUTT_CMD_ERROR;
     }
   }
@@ -214,7 +214,7 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
   }
 
@@ -242,7 +242,7 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
   }
 
@@ -300,7 +300,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
   }
 
@@ -335,7 +335,7 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
   }
 
@@ -392,7 +392,7 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
-    buf_printf(err, _("%s: unknown variable"), name->data);
+    buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
   }
 
@@ -498,7 +498,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't query a variable with the '%s' command"),
+        buf_printf(err, _("Can't query option with the '%s' command"),
                    set_commands[data]);
         return MUTT_CMD_WARNING;
       }
@@ -516,7 +516,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set a variable with the '%s' command"),
+        buf_printf(err, _("Can't set option with the '%s' command"),
                    set_commands[data]);
         return MUTT_CMD_WARNING;
       }
@@ -547,7 +547,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set a variable with the '%s' command"),
+        buf_printf(err, _("Can't set option with the '%s' command"),
                    set_commands[data]);
         return MUTT_CMD_WARNING;
       }
