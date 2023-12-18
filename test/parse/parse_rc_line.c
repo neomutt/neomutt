@@ -22,7 +22,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
+#include "config/common.h"
 #include "core/lib.h"
 #include "parse/lib.h"
 #include "common.h"

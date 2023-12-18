@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -179,4 +180,113 @@ void cs_dump_set(const struct ConfigSet *cs)
   }
 
   buf_pool_release(&result);
+}
+
+/**
+ * cs_str_delete - Delete config item from a config set
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(err, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_delete(cs, he, err);
+}
+
+/**
+ * cs_str_native_get - Natively get the value of a string config item
+ * @param cs   Config items
+ * @param name Name of config item
+ * @param err  Buffer for error messages
+ * @retval intptr_t Native pointer/value
+ * @retval INT_MIN  Error
+ */
+intptr_t cs_str_native_get(const struct ConfigSet *cs, const char *name, struct Buffer *err)
+{
+  if (!cs || !name)
+    return INT_MIN;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  return cs_he_native_get(cs, he, err);
+}
+
+/**
+ * cs_str_string_get - Get a config item as a string
+ * @param cs     Config items
+ * @param name   Name of config item
+ * @param result Buffer for results or error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffer *result)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(result, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_get(cs, he, result);
+}
+
+/**
+ * cs_str_string_minus_equals - Remove from a config item by string
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
+                               const char *value, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(err, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_minus_equals(cs, he, value, err);
+}
+
+/**
+ * cs_str_string_plus_equals - Add to a config item by string
+ * @param cs    Config items
+ * @param name  Name of config item
+ * @param value Value to set
+ * @param err   Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
+                              const char *value, struct Buffer *err)
+{
+  if (!cs || !name)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+  {
+    buf_printf(err, _("Unknown variable '%s'"), name);
+    return CSR_ERR_UNKNOWN;
+  }
+
+  return cs_he_string_plus_equals(cs, he, value, err);
 }
