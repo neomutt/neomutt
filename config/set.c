@@ -697,28 +697,6 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
 }
 
 /**
- * cs_str_string_get - Get a config item as a string
- * @param cs     Config items
- * @param name   Name of config item
- * @param result Buffer for results or error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_string_get(const struct ConfigSet *cs, const char *name, struct Buffer *result)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(result, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_string_get(cs, he, result);
-}
-
-/**
  * cs_he_native_set - Natively set the value of a HashElem config item
  * @param cs    Config items
  * @param he    HashElem representing config item
@@ -875,23 +853,6 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
 }
 
 /**
- * cs_str_native_get - Natively get the value of a string config item
- * @param cs   Config items
- * @param name Name of config item
- * @param err  Buffer for error messages
- * @retval intptr_t Native pointer/value
- * @retval INT_MIN  Error
- */
-intptr_t cs_str_native_get(const struct ConfigSet *cs, const char *name, struct Buffer *err)
-{
-  if (!cs || !name)
-    return INT_MIN;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  return cs_he_native_get(cs, he, err);
-}
-
-/**
  * cs_he_string_plus_equals - Add to a config item by string
  * @param cs    Config items
  * @param he    HashElem representing config item
@@ -948,30 +909,6 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
     he->type = cdef->type | DT_INHERITED;
 
   return rc;
-}
-
-/**
- * cs_str_string_plus_equals - Add to a config item by string
- * @param cs    Config items
- * @param name  Name of config item
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
-                              const char *value, struct Buffer *err)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(err, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_string_plus_equals(cs, he, value, err);
 }
 
 /**
@@ -1034,30 +971,6 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
 }
 
 /**
- * cs_str_string_minus_equals - Remove from a config item by string
- * @param cs    Config items
- * @param name  Name of config item
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name,
-                               const char *value, struct Buffer *err)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(err, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_string_minus_equals(cs, he, value, err);
-}
-
-/**
  * cs_he_delete - Delete config item from a config set
  * @param cs    Config items
  * @param he    HashElem representing config item
@@ -1071,26 +984,4 @@ int cs_he_delete(const struct ConfigSet *cs, struct HashElem *he, struct Buffer 
 
   mutt_hash_delete(cs->hash, he->key.strkey, he->data);
   return CSR_SUCCESS;
-}
-
-/**
- * cs_str_delete - Delete config item from a config set
- * @param cs    Config items
- * @param name  Name of config item
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_delete(const struct ConfigSet *cs, const char *name, struct Buffer *err)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(err, _("Unknown variable '%s'"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_delete(cs, he, err);
 }
