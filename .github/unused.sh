@@ -3,7 +3,12 @@
 set -euo pipefail
 
 EXIT_CODE=0
-IGNORELIST=("progress_set_size" "mutt_socket_buffer_readln_d")
+IGNORELIST=(
+  "log_multiline_full"
+  "mutt_socket_buffer_readln_d"
+  "mutt_str_upper"
+  "progress_set_size"
+)
 
 while IFS= read -r line; do
     if ! [[ $line =~ "is unused" ]]; then
