@@ -67,8 +67,8 @@ struct Envelope
   char *list_post;                     ///< This stores a mailto URL, or nothing
   char *list_subscribe;                ///< This stores a mailto URL, or nothing
   char *list_unsubscribe;              ///< This stores a mailto URL, or nothing
-  char *subject;                       ///< Email's subject
-  char *real_subj;                     ///< Offset of the real subject
+  char *const subject;                 ///< Email's subject
+  char *const real_subj;               ///< Offset of the real subject
   char *disp_subj;                     ///< Display subject (modified copy of subject)
   char *message_id;                    ///< Message ID
   char *supersedes;                    ///< Supersedes header
@@ -118,6 +118,7 @@ void             mutt_env_free       (struct Envelope **ptr);
 void             mutt_env_merge      (struct Envelope *base, struct Envelope **extra);
 struct Envelope *mutt_env_new        (void);
 bool             mutt_env_notify_send(struct Email *e, enum NotifyEnvelope type);
+void             mutt_env_set_subject(struct Envelope *env, const char *subj);
 int              mutt_env_to_intl    (struct Envelope *env, const char **tag, char **err);
 void             mutt_env_to_local   (struct Envelope *env);
 

@@ -936,7 +936,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       if ((name_len == 7) && eqi6(name + 1, "ubject"))
       {
         if (!env->subject)
-          env->subject = mutt_str_dup(body);
+          mutt_env_set_subject(env, body);
         matched = true;
       }
       else if ((name_len == 6) && eqi5(name + 1, "ender"))
@@ -1276,23 +1276,6 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
     e->body->offset = ftello(fp);
 
     rfc2047_decode_envelope(env);
-
-    if (env->subject)
-    {
-      regmatch_t pmatch[1];
-
-      const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
-      if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
-      {
-        env->real_subj = env->subject + pmatch[0].rm_eo;
-        if (env->real_subj[0] == '\0')
-          env->real_subj = NULL;
-      }
-      else
-      {
-        env->real_subj = env->subject;
-      }
-    }
 
     if (e->received < 0)
     {

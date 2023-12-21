@@ -1000,7 +1000,7 @@ main
 
     if (subject)
     {
-      mutt_str_replace(&e->env->subject, subject);
+      mutt_env_set_subject(e->env, subject);
     }
 
     if (draft_file)
@@ -1142,7 +1142,7 @@ main
         mutt_addrlist_copy(&e->env->cc, &opts_env->cc, false);
         mutt_addrlist_copy(&e->env->bcc, &opts_env->bcc, false);
         if (opts_env->subject)
-          mutt_str_replace(&e->env->subject, opts_env->subject);
+          mutt_env_set_subject(e->env, opts_env->subject);
 
         mutt_env_free(&opts_env);
         email_free(&e_tmp);

@@ -67,7 +67,6 @@ static const char *ExtPagerProgress = N_("all");
 static void process_protected_headers(struct Mailbox *m, struct Email *e)
 {
   struct Envelope *prot_headers = NULL;
-  regmatch_t pmatch[1];
 
   const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
 #ifdef USE_AUTOCRYPT
@@ -121,19 +120,8 @@ static void process_protected_headers(struct Mailbox *m, struct Email *e)
     if (m->subj_hash && e->env->real_subj)
       mutt_hash_delete(m->subj_hash, e->env->real_subj, e);
 
-    mutt_str_replace(&e->env->subject, prot_headers->subject);
+    mutt_env_set_subject(e->env, prot_headers->subject);
     FREE(&e->env->disp_subj);
-    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
-    if (mutt_regex_capture(c_reply_regex, e->env->subject, 1, pmatch))
-    {
-      e->env->real_subj = e->env->subject + pmatch[0].rm_eo;
-      if (e->env->real_subj[0] == '\0')
-        e->env->real_subj = NULL;
-    }
-    else
-    {
-      e->env->real_subj = e->env->subject;
-    }
 
     if (m->subj_hash)
       mutt_hash_insert(m->subj_hash, e->env->real_subj, e);

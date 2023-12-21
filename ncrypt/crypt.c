@@ -273,7 +273,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (c_crypt_protected_headers_write)
   {
     struct Envelope *protected_headers = mutt_env_new();
-    mutt_str_replace(&protected_headers->subject, e->env->subject);
+    mutt_env_set_subject(protected_headers, e->env->subject);
     /* Note: if other headers get added, such as to, cc, then a call to
      * mutt_env_to_intl() will need to be added here too. */
     mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
