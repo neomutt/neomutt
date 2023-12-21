@@ -22,13 +22,13 @@
 
 #define TEST_NO_MAIN
 #include "config.h"
-#include "common.h"
 #include "acutest.h"
 #include <stddef.h>
 #include <stdbool.h>
 #include "email/lib.h"
 #include "core/lib.h"
 #include "editor/lib.h"
+#include "common.h"
 
 void test_editor_kill_whole_line(void)
 {

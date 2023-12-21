@@ -498,8 +498,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't query option with the '%s' command"),
-                   set_commands[data]);
+        buf_printf(err, _("Can't query option with the '%s' command"), set_commands[data]);
         return MUTT_CMD_WARNING;
       }
 
@@ -516,8 +515,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set option with the '%s' command"),
-                   set_commands[data]);
+        buf_printf(err, _("Can't set option with the '%s' command"), set_commands[data]);
         return MUTT_CMD_WARNING;
       }
       if (*s->dptr == '+')
@@ -547,8 +545,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
 
       if (reset || unset || inv)
       {
-        buf_printf(err, _("Can't set option with the '%s' command"),
-                   set_commands[data]);
+        buf_printf(err, _("Can't set option with the '%s' command"), set_commands[data]);
         return MUTT_CMD_WARNING;
       }
 
