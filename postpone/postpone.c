@@ -597,7 +597,7 @@ int mutt_prepare_template(FILE *fp, struct Mailbox *m, struct Email *e_new,
   if (c_crypt_protected_headers_read && protected_headers && protected_headers->subject &&
       !mutt_str_equal(e_new->env->subject, protected_headers->subject))
   {
-    mutt_str_replace(&e_new->env->subject, protected_headers->subject);
+    mutt_env_set_subject(e_new->env, protected_headers->subject);
   }
   mutt_env_free(&protected_headers);
 

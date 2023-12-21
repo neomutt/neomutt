@@ -198,9 +198,6 @@ static int config_reply_regex(struct MailboxView *mv)
 
   struct Mailbox *m = mv->mailbox;
 
-  regmatch_t pmatch[1];
-
-  const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
   for (int i = 0; i < m->msg_count; i++)
   {
     struct Email *e = m->emails[i];
@@ -210,15 +207,7 @@ static int config_reply_regex(struct MailboxView *mv)
     if (!env || !env->subject)
       continue;
 
-    if (mutt_regex_capture(c_reply_regex, env->subject, 1, pmatch))
-    {
-      env->real_subj = env->subject + pmatch[0].rm_eo;
-      if (env->real_subj[0] == '\0')
-        env->real_subj = NULL;
-      continue;
-    }
-
-    env->real_subj = env->subject;
+    mutt_env_set_subject(env, env->subject);
   }
 
   OptResortInit = true; /* trigger a redraw of the index */

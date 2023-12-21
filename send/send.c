@@ -336,7 +336,7 @@ static int edit_envelope(struct Envelope *en, SendFlags flags, struct ConfigSubs
     mutt_message(_("No subject, aborting"));
     goto done;
   }
-  mutt_str_replace(&en->subject, buf_string(buf));
+  mutt_env_set_subject(en, buf_string(buf));
   rc = 0;
 
 done:
@@ -1045,7 +1045,7 @@ void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct Con
   /* set the default subject for the message. */
   mutt_make_string(buf, sizeof(buf), 0, NONULL(c_forward_format), NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
-  mutt_str_replace(&env->subject, buf);
+  mutt_env_set_subject(env, buf);
 }
 
 /**
@@ -1064,13 +1064,15 @@ void mutt_make_misc_reply_headers(struct Envelope *env, struct Envelope *env_cur
    * been taken from a List-Post header.  Is that correct?  */
   if (env_cur->real_subj)
   {
-    FREE(&env->subject);
-    mutt_str_asprintf(&(env->subject), "Re: %s", env_cur->real_subj);
+    char *subj = NULL;
+    mutt_str_asprintf(&subj, "Re: %s", env_cur->real_subj);
+    mutt_env_set_subject(env, subj);
+    FREE(&subj);
   }
   else if (!env->subject)
   {
     const char *const c_empty_subject = cs_subset_string(sub, "empty_subject");
-    env->subject = mutt_str_dup(c_empty_subject);
+    mutt_env_set_subject(env, c_empty_subject);
   }
 }
 
@@ -2958,7 +2960,7 @@ static bool send_simple_email(struct Mailbox *m, struct EmailArray *ea,
   mutt_parse_mailto(e->env, NULL, mailto);
   if (!e->env->subject)
   {
-    e->env->subject = mutt_str_dup(subj);
+    mutt_env_set_subject(e->env, subj);
   }
   if (TAILQ_EMPTY(&e->env->to) && !mutt_addrlist_parse(&e->env->to, NULL))
   {

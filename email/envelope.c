@@ -33,6 +33,8 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "config/lib.h"
+#include "core/lib.h"
 #include "envelope.h"
 #include "email.h"
 
@@ -56,6 +58,32 @@ struct Envelope *mutt_env_new(void)
   STAILQ_INIT(&env->in_reply_to);
   STAILQ_INIT(&env->userhdrs);
   return env;
+}
+
+/**
+ * mutt_env_set_subject - Set both subject and real_subj to subj
+ * @param env  Envelope
+ * @param subj Subject
+ */
+void mutt_env_set_subject(struct Envelope *env, const char *subj)
+{
+  mutt_str_replace((char **) &env->subject, subj);
+  *(char **) &env->real_subj = NULL;
+
+  if (env->subject)
+  {
+    regmatch_t match;
+    const struct Regex *c_reply_regex = cs_subset_regex(NeoMutt->sub, "reply_regex");
+    if (mutt_regex_capture(c_reply_regex, env->subject, 1, &match))
+    {
+      if (env->subject[match.rm_eo] != '\0')
+        *(char **) &env->real_subj = env->subject + match.rm_eo;
+    }
+    else
+    {
+      *(char **) &env->real_subj = env->subject;
+    }
+  }
 }
 
 #ifdef USE_AUTOCRYPT
@@ -114,7 +142,7 @@ void mutt_env_free(struct Envelope **ptr)
   FREE(&env->list_post);
   FREE(&env->list_subscribe);
   FREE(&env->list_unsubscribe);
-  FREE(&env->subject);
+  FREE((char **) &env->subject);
   /* real_subj is just an offset to subject and shouldn't be freed */
   FREE(&env->disp_subj);
   FREE(&env->message_id);
@@ -226,11 +254,11 @@ void mutt_env_merge(struct Envelope *base, struct Envelope **extra)
   /* real_subj is subordinate to subject */
   if (!base->subject)
   {
-    base->subject = (*extra)->subject;
-    base->real_subj = (*extra)->real_subj;
+    *(char **) &base->subject = (*extra)->subject;
+    *(char **) &base->real_subj = (*extra)->real_subj;
     base->disp_subj = (*extra)->disp_subj;
-    (*extra)->subject = NULL;
-    (*extra)->real_subj = NULL;
+    *(char **) &(*extra)->subject = NULL;
+    *(char **) &(*extra)->real_subj = NULL;
     (*extra)->disp_subj = NULL;
   }
   /* spam and user headers should never be hashed, and the new envelope may

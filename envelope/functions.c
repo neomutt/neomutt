@@ -287,7 +287,7 @@ static int op_envelope_edit_subject(struct EnvelopeWindowData *wdata, int op)
   if (mutt_str_equal(wdata->email->env->subject, buf_string(buf)))
     goto done; // no change
 
-  mutt_str_replace(&wdata->email->env->subject, buf_string(buf));
+  mutt_env_set_subject(wdata->email->env, buf_string(buf));
   mutt_env_notify_send(wdata->email, NT_ENVELOPE_SUBJECT);
   rc = FR_SUCCESS;
 

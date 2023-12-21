@@ -651,14 +651,14 @@ void serial_restore_envelope(struct Envelope *env, const unsigned char *d, int *
   if (c_auto_subscribe)
     mutt_auto_subscribe(env->list_post);
 
-  serial_restore_char(&env->subject, d, off, convert);
+  serial_restore_char((char **) &env->subject, d, off, convert);
   serial_restore_int((unsigned int *) (&real_subj_off), d, off);
 
   size_t len = mutt_str_len(env->subject);
   if ((real_subj_off < 0) || (real_subj_off >= len))
-    env->real_subj = NULL;
+    *(char **) &env->real_subj = NULL;
   else
-    env->real_subj = env->subject + real_subj_off;
+    *(char **) &env->real_subj = env->subject + real_subj_off;
 
   serial_restore_char(&env->message_id, d, off, false);
   serial_restore_char(&env->supersedes, d, off, false);

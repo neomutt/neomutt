@@ -838,7 +838,12 @@ void rfc2047_decode_envelope(struct Envelope *env)
   rfc2047_decode_addrlist(&env->return_path);
   rfc2047_decode_addrlist(&env->sender);
   rfc2047_decode(&env->x_label);
-  rfc2047_decode(&env->subject);
+
+  char *subj = env->subject;
+  *(char **) &env->subject = NULL;
+  rfc2047_decode(&subj);
+  mutt_env_set_subject(env, subj);
+  FREE(&subj);
 }
 
 /**
@@ -858,5 +863,10 @@ void rfc2047_encode_envelope(struct Envelope *env)
   rfc2047_encode_addrlist(&env->sender, "Sender");
   const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   rfc2047_encode(&env->x_label, NULL, sizeof("X-Label:"), c_send_charset);
-  rfc2047_encode(&env->subject, NULL, sizeof("Subject:"), c_send_charset);
+
+  char *subj = env->subject;
+  *(char **) &env->subject = NULL;
+  rfc2047_encode(&subj, NULL, sizeof("Subject:"), c_send_charset);
+  mutt_env_set_subject(env, subj);
+  FREE(&subj);
 }
