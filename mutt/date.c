@@ -462,6 +462,26 @@ uint64_t mutt_date_now_ms(void)
 }
 
 /**
+ * mutt_time_now - Set the provided time field to the current time.
+ * @param[out] tp Field to set
+ *
+ * Uses nanosecond precision if available, if not we fallback to microseconds.
+ */
+void mutt_time_now(struct timespec *tp)
+{
+#ifdef HAVE_CLOCK_GETTIME
+  if (clock_gettime(CLOCK_REALTIME, tp) != 0)
+    mutt_perror("clock_gettime");
+#else
+  struct timeval tv = { 0, 0 };
+  if (gettimeofday(&tv, NULL) != 0)
+    mutt_perror("gettimeofday");
+  tp->tv_sec = tv.tv_sec;
+  tp->tv_nsec = tv.tv_usec * 1000;
+#endif
+}
+
+/**
  * parse_small_uint - Parse a positive integer of at most 5 digits
  * @param[in]  str String to parse
  * @param[in]  end End of the string

@@ -68,5 +68,6 @@ void      mutt_date_normalize_time(struct tm *tm);
 time_t    mutt_date_parse_date(const char *s, struct Tz *tz_out);
 time_t    mutt_date_parse_imap(const char *s);
 void      mutt_date_sleep_ms(size_t ms);
+void      mutt_time_now(struct timespec *tp);
 
 #endif /* MUTT_MUTT_DATE_H */
