@@ -13,7 +13,7 @@
 # folder - složka
 # tag - značka
 # flag - příznak
-# option - volba, přepínač (?)
+# option - volba
 # enum → výčet (?)
 # quad → přepínač (?)
 # mailing list → poštovní konference
@@ -65,7 +65,7 @@ msgstr "Komentář: "
 
 #: alias/alias.c:477
 msgid "Tags (comma-separated): "
-msgstr ""
+msgstr "Tagy (oddělené čárkou): "
 
 #: alias/alias.c:506
 msgid "Accept?"
@@ -994,9 +994,9 @@ msgid "invalid header field"
 msgstr "neplatná hlavička"
 
 #: commands.c:953 commands.c:967 parse/set.c:501
-#, fuzzy, c-format
+#, c-format
 msgid "Can't query option with the '%s' command"
-msgstr "Nelze se dotázat na proměnnou příkazem „%s“"
+msgstr "Nelze se dotázat na volbu „%s“"
 
 #: commands.c:973 parse/set.c:495
 msgid "Can't use a prefix when querying a variable"
@@ -1377,9 +1377,9 @@ msgstr "„charset“ musí obsahovat právě jedno jméno znakové sady"
 
 #: config/charset.c:68 config/charset.c:100 hcache/config.c:54
 #: hcache/config.c:78 hcache/config.c:103 mutt_config.c:108
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
-msgstr "Neplatná hodnota přepínače %s: „%s“"
+msgstr "Neplatná hodnota volby %s: „%s“"
 
 #: config/enum.c:58
 #, c-format
@@ -1393,7 +1393,7 @@ msgstr "Neplatná hodnota výčtu: %ld"
 
 #: config/long.c:48 config/number.c:49 config/path.c:96 config/path.c:172
 #: config/sort.c:55 config/string.c:66 config/string.c:143
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
 msgstr "Volba %s nemůže být prázdná"
 
@@ -1405,7 +1405,7 @@ msgstr "Neplatné číslo: %s"
 #: config/long.c:61 config/long.c:116 config/long.c:164 config/long.c:203
 #: config/number.c:68 config/number.c:130 config/number.c:184
 #: config/number.c:226
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
 msgstr "Volba %s nemůže být záporná"
 
@@ -1439,14 +1439,14 @@ msgstr "Neplatná hodnota přepínače: %ld"
 #: config/set.c:1053 config/set.c:1091 init.c:662 parse/set.c:119
 #: parse/set.c:174 parse/set.c:217 parse/set.c:245 parse/set.c:303
 #: parse/set.c:338 parse/set.c:395
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown option %s"
-msgstr "Proměnná „%s“ není známa."
+msgstr "Volba „%s“ není známa."
 
 #: config/set.c:258 config/set.c:870
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s has an invalid type %d"
-msgstr "Proměnná „%s“ nemůže být typu %d"
+msgstr "Volba „%s“ nemůže být typu %d"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:939 config/set.c:1022
@@ -3658,15 +3658,15 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- Typ „%s/%s“ není podporován (je třeba svázat funkci „view-attachments“ s nějakou klávesou) --]\n"
 
 #: hcache/config.c:95
-#, fuzzy, c-format
+#, c-format
 msgid "Set option %s before setting %s"
-msgstr "Nastavit konfiguraci %s před nastavením %s"
+msgstr "Nastavit volbu %s před nastavením %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:112 send/config.c:54
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Volba %s musí být v rozmezí %d a %d"
 
@@ -3939,7 +3939,7 @@ msgid "Connection to %s timed out"
 msgstr "Vypršel časový limit spojení k %s"
 
 #: imap/config.c:59 pop/config.c:57 send/config.c:78
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Volba %s: %s není platný autentikátor"
 
@@ -4511,9 +4511,9 @@ msgid "unable to determine nodename via uname()"
 msgstr "název stroje nelze určit pomocí volání uname()"
 
 #: init.c:634
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s is deprecated"
-msgstr "Konfigurační proměnná „%s“ je zastaralá"
+msgstr "Volba „%s“ je zastaralá"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
 #: key/dump.c:203 key/parse.c:248 key/parse.c:301
@@ -5166,9 +5166,9 @@ msgid "Caught signal %d ...  Exiting\n"
 msgstr "Zachycen signál %d… Končím.\n"
 
 #: mutt_logging.c:274
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Neplatná hodnota přepínače %s: „%ld“"
+msgstr "Neplatná hodnota volby %s: „%ld“"
 
 #: mutt_lua.c:449
 msgid "Error: Couldn't load the lua interpreter"
@@ -6748,9 +6748,9 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Nelze použít prefix při navyšování nebo snižováním proměnné"
 
 #: parse/set.c:519 parse/set.c:550
-#, fuzzy, c-format
+#, c-format
 msgid "Can't set option with the '%s' command"
-msgstr "Nelze nastavit proměnnou příkazem „%s“"
+msgstr "Nelze nastavit volbu příkazem „%s“"
 
 #: parse/set.c:536
 msgid "'+' and '-' must be followed by '='"
@@ -7454,7 +7454,7 @@ msgstr "%s již neexistuje"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "Volba %s nesmí obsahovat metaznaky shellu: %c"
 
@@ -7770,8 +7770,7 @@ msgid ""
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
-msgstr ""
-"Copyright © 1996-2022 Michael R. Elkins a další.\n"
+msgstr "" "Copyright © 1996-2022 Michael R. Elkins a další.\n"
 "NeoMutt je rozšiřován BEZ JAKÉKOLI ZÁRUKY; podrobnosti získáte příkazem\n"
 "„neomutt -vv“.\n"
 "NeoMutt je volné programové vybavení. Rozšiřování tohoto programu je vítáno,\n"
