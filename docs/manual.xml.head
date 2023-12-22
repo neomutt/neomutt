@@ -19546,6 +19546,17 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
+              <entry>-C</entry>
+              <entry>
+                Enable cryptographic operations
+                in the cases in which they're disabled by default.
+                Those include
+                batch mode,
+                sending a postponed message,
+                and resending a message.
+              </entry>
+            </row>
+            <row>
               <entry>-c <literal>address</literal></entry>
               <entry>
                 Specify a carbon copy (Cc) recipient
