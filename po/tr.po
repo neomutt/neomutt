@@ -7304,7 +7304,7 @@ msgstr "Ertelenen ileti yok"
 #: progress/window.c:175
 #, c-format
 msgid "%s %s (%d%%)"
-msgstr "%s %s (%d%%)"
+msgstr "%s %s (%%%d)"
 
 #. L10N: Progress bar: `%s` loading text, `%zu` position,
 #. `%d` is the number, `%%` is the percent symbol.
@@ -7312,7 +7312,7 @@ msgstr "%s %s (%d%%)"
 #: progress/window.c:183
 #, c-format
 msgid "%s %zu (%d%%)"
-msgstr "%s %zu (%d%%)"
+msgstr "%s %zu (%%%d)"
 
 #. L10N: Progress bar: `%s` loading text, `%s` position/size
 #: progress/window.c:192
@@ -7332,7 +7332,7 @@ msgstr "%s %zu"
 #: progress/window.c:208
 #, c-format
 msgid "%s %s/%s (%d%%)"
-msgstr "%s %s/%s (%d%%)"
+msgstr "%s %s/%s (%%%d)"
 
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
@@ -7340,7 +7340,7 @@ msgstr "%s %s/%s (%d%%)"
 #: progress/window.c:216
 #, c-format
 msgid "%s %zu/%zu (%d%%)"
-msgstr "%s %zu/%zu (%d%%)"
+msgstr "%s %zu/%zu (%%%d)"
 
 #: question/question.c:184
 msgid "yes"
