@@ -30,7 +30,7 @@
 struct Buffer;
 struct NotifyCallback;
 
-extern const char *line;
+extern const char *divider_line;
 extern bool dont_fail;
 
 extern const struct ConfigSetType CstAddress;

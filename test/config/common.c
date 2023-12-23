@@ -33,7 +33,7 @@
 #include "config/lib.h"
 #include "common.h"
 
-const char *line = "--------------------------------------------------------------------------------";
+const char *divider_line = "--------------------------------------------------------------------------------";
 
 bool dont_fail = false;
 
@@ -73,12 +73,12 @@ int validator_succeed(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 void log_line(const char *fn)
 {
   int len = 44 - mutt_str_len(fn);
-  TEST_MSG("\033[36m---- %s %.*s\033[m", fn, len, line);
+  TEST_MSG("\033[36m---- %s %.*s\033[m", fn, len, divider_line);
 }
 
 void short_line(void)
 {
-  TEST_MSG("%s", line + 40);
+  TEST_MSG("%s", divider_line + 40);
 }
 
 int log_observer(struct NotifyCallback *nc)

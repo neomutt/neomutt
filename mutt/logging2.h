@@ -61,7 +61,7 @@ enum LogLevel
  * @param function Source function
  * @param level    Logging level, e.g. #LL_WARNING
  * @param format   printf()-style formatting string
- * @param ...      Format string and parameters, like printf()
+ * @param ...      Parameters, like printf()
  * @retval -1 Error
  * @retval  0 Success, filtered
  * @retval >0 Success, number of characters written

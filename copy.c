@@ -730,7 +730,7 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
       {
         mutt_error(ngettext("The length calculation was wrong by %ld byte",
                             "The length calculation was wrong by %ld bytes", fail),
-                   fail);
+                   (long) fail);
         new_length += fail;
       }
 

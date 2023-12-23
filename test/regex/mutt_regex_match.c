@@ -51,7 +51,7 @@ static bool test_simple_cases(void)
 
     const bool failed = !TEST_CHECK(mutt_regex_match(rx, "hello there")) ||
                         !TEST_CHECK(mutt_regex_match(rx, "hell is not a greeting")) ||
-                        !TEST_CHECK(mutt_regex_match(rx, "a demonic elavator is a hellevator"));
+                        !TEST_CHECK(mutt_regex_match(rx, "a demonic elevator is a hellevator"));
     regex_free(&rx);
 
     if (failed)
@@ -176,8 +176,8 @@ static bool test_old_implementation(void)
   {
     struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
     const bool old = (rx && rx->regex) &&
-                     !((regexec(rx->regex, line, 0, NULL, 0) == 0) ^ rx->pat_not);
-    const bool new = !mutt_regex_match(rx, line);
+                     !((regexec(rx->regex, not_bob_line, 0, NULL, 0) == 0) ^ rx->pat_not);
+    const bool new = !mutt_regex_match(rx, not_bob_line);
     regex_free(&rx);
 
     const bool failed_common_behavior = !TEST_CHECK(old == new);
