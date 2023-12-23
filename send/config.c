@@ -281,10 +281,10 @@ static struct ConfigDef SendVars[] = {
   { "resume_draft_files", DT_BOOL, false, 0, NULL,
     "Process draft files like postponed messages"
   },
-  { "reverse_name", DT_BOOL|R_INDEX, false, 0, NULL,
+  { "reverse_name", DT_BOOL, false, 0, NULL,
     "Set the 'From' from the address the email was sent to"
   },
-  { "reverse_real_name", DT_BOOL|R_INDEX, true, 0, NULL,
+  { "reverse_real_name", DT_BOOL, true, 0, NULL,
     "Set the 'From' from the full 'To' address the email was sent to"
   },
   { "sendmail", DT_STRING|DT_COMMAND, IP SENDMAIL " -oem -oi", 0, simple_command_validator,

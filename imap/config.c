@@ -83,7 +83,7 @@ static struct ConfigDef ImapVars[] = {
   { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, 0, 0, NULL,
     "(imap) Download headers in blocks of this size"
   },
-  { "imap_headers", DT_STRING|R_INDEX, 0, 0, NULL,
+  { "imap_headers", DT_STRING, 0, 0, NULL,
     "(imap) Additional email headers to download when getting index"
   },
   { "imap_idle", DT_BOOL, false, 0, NULL,
