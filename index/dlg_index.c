@@ -949,6 +949,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int cols, const char *buf, siz
     STAILQ_FOREACH(cl, regex_colors_get_list(MT_COLOR_STATUS), entries)
     {
       regmatch_t pmatch[cl->match + 1];
+      memset(pmatch, 0, (cl->match + 1) * sizeof(regmatch_t));
 
       if (regexec(&cl->regex, buf + offset, cl->match + 1, pmatch, 0) != 0)
         continue; /* regex doesn't match the status bar */

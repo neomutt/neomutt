@@ -367,8 +367,7 @@ char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
  */
 char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
 {
-  regmatch_t pat_match[1];
-  size_t pwnl;
+  regmatch_t pat_match[1] = { 0 };
   char *p = NULL;
 
   if (!pw || !pw->pw_gecos)
@@ -391,7 +390,7 @@ char *mutt_gecos_name(char *dest, size_t destlen, struct passwd *pw)
     mutt_str_copy(dest, pw->pw_gecos, destlen);
   }
 
-  pwnl = strlen(pw->pw_name);
+  size_t pwnl = strlen(pw->pw_name);
 
   for (int idx = 0; dest[idx]; idx++)
   {

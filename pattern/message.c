@@ -219,7 +219,7 @@ static int eat_range_by_regex(struct Pattern *pat, struct Buffer *s, int kind,
                               struct Buffer *err, struct MailboxView *mv)
 {
   int regerr;
-  regmatch_t pmatch[RANGE_RX_GROUPS];
+  regmatch_t pmatch[RANGE_RX_GROUPS] = { 0 };
   struct RangeRegex *pspec = &RangeRegexes[kind];
 
   /* First time through, compile the big regex */

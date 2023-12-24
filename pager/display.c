@@ -322,7 +322,7 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
 {
   bool is_quote = false;
   const struct Regex *c_smileys = cs_subset_regex(NeoMutt->sub, "smileys");
-  regmatch_t pmatch_internal[1];
+  regmatch_t pmatch_internal[1] = { 0 };
 
   if (!pmatch)
     pmatch = pmatch_internal;
@@ -330,7 +330,7 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
   const struct Regex *c_quote_regex = cs_subset_regex(NeoMutt->sub, "quote_regex");
   if (mutt_regex_capture(c_quote_regex, line, 1, pmatch))
   {
-    regmatch_t smatch[1];
+    regmatch_t smatch[1] = { 0 };
     if (mutt_regex_capture(c_smileys, line, 1, smatch))
     {
       if (smatch[0].rm_so > 0)
@@ -373,7 +373,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
 {
   struct RegexColor *color_line = NULL;
   struct RegexColorList *head = NULL;
-  regmatch_t pmatch[1];
+  regmatch_t pmatch[1] = { 0 };
   bool found;
   bool null_rx;
   const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
@@ -1033,7 +1033,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   int m;
   int rc = -1;
   struct AnsiColor ansi = { { COLOR_DEFAULT, 0, 0 }, { COLOR_DEFAULT, 0, 0 }, 0, NULL };
-  regmatch_t pmatch[1];
+  regmatch_t pmatch[1] = { 0 };
 
   struct PagerPrivateData *priv = win_pager->parent->wdata;
   enum PagerMode mode = priv->pview->mode;
