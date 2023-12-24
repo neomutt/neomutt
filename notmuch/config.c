@@ -174,7 +174,7 @@ bool config_init_notmuch(struct ConfigSet *cs)
   bool rc = false;
 
 #if defined(USE_NOTMUCH)
-  rc |= cs_register_variables(cs, NotmuchVars, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, NotmuchVars);
 #endif
 
   return rc;

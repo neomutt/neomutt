@@ -88,5 +88,5 @@ static struct ConfigDef BrowserVars[] = {
  */
 bool config_init_browser(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, BrowserVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, BrowserVars);
 }

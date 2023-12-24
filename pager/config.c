@@ -114,5 +114,5 @@ const char *pager_get_pager(struct ConfigSubset *sub)
  */
 bool config_init_pager(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, PagerVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, PagerVars);
 }

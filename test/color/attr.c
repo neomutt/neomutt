@@ -58,7 +58,7 @@ void test_attr_colors(void)
 {
   COLOR_PAIRS = 32;
   curses_colors_init();
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   {
     attr_color_free(NULL);

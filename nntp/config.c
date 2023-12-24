@@ -96,5 +96,5 @@ static struct ConfigDef NntpVars[] = {
  */
 bool config_init_nntp(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, NntpVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, NntpVars);
 }

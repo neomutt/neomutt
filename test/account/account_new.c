@@ -45,7 +45,7 @@ void test_account_new(void)
   }
 
   {
-    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+    TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
     struct ConfigSubset *sub = cs_subset_new("account", NULL, NULL);
     struct Account *a = account_new("dummy", sub);

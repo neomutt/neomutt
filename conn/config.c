@@ -175,26 +175,26 @@ static struct ConfigDef ConnVarsGetaddr[] = {
  */
 bool config_init_conn(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, ConnVars, DT_NO_FLAGS);
+  bool rc = cs_register_variables(cs, ConnVars);
 
 #if defined(USE_SSL)
-  rc |= cs_register_variables(cs, ConnVarsSsl, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsSsl);
 #endif
 
 #if defined(USE_SSL_GNUTLS)
-  rc |= cs_register_variables(cs, ConnVarsGnutls, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsGnutls);
 #endif
 
 #if defined(USE_SSL_OPENSSL)
-  rc |= cs_register_variables(cs, ConnVarsOpenssl, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsOpenssl);
 #endif
 
 #if defined(HAVE_SSL_PARTIAL_CHAIN)
-  rc |= cs_register_variables(cs, ConnVarsPartial, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsPartial);
 #endif
 
 #if defined(HAVE_GETADDRINFO)
-  rc |= cs_register_variables(cs, ConnVarsGetaddr, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ConnVarsGetaddr);
 #endif
 
   return rc;

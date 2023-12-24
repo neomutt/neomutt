@@ -183,19 +183,19 @@ bool config_init_hcache(struct ConfigSet *cs)
   bool rc = false;
 
 #if defined(USE_HCACHE)
-  rc |= cs_register_variables(cs, HcacheVars, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVars);
 #endif
 
 #if defined(USE_HCACHE_COMPRESSION)
-  rc |= cs_register_variables(cs, HcacheVarsComp, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVarsComp);
 #endif
 
 #if defined(HAVE_QDBM) || defined(HAVE_TC) || defined(HAVE_KC)
-  rc |= cs_register_variables(cs, HcacheVarsComp2, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVarsComp2);
 #endif
 
 #if defined(HAVE_GDBM) || defined(HAVE_BDB)
-  rc |= cs_register_variables(cs, HcacheVarsPage, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, HcacheVarsPage);
 #endif
 
   return rc;

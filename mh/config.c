@@ -57,5 +57,5 @@ static struct ConfigDef MhVars[] = {
  */
 bool config_init_mh(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, MhVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, MhVars);
 }

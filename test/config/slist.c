@@ -1126,7 +1126,7 @@ bool slist_test_separator(struct ConfigDef vars[], struct Buffer *err)
 
   StartupComplete = false;
   cs_register_type(cs, &CstSlist);
-  if (!TEST_CHECK(cs_register_variables(cs, vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, vars)))
     return false;
   StartupComplete = true;
 
@@ -1173,7 +1173,7 @@ void test_config_slist(void)
 
   StartupComplete = false;
   dont_fail = true;
-  if (!TEST_CHECK(cs_register_variables(cs, VarsOther, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, VarsOther)))
     return;
   dont_fail = false;
   StartupComplete = true;

@@ -640,14 +640,14 @@ static struct ConfigDef MainVarsIdn[] = {
  */
 static bool config_init_main(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, MainVars, DT_NO_FLAGS);
+  bool rc = cs_register_variables(cs, MainVars);
 
 #if defined(MIXMASTER)
-  rc |= cs_register_variables(cs, MainVarsMixmaster, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, MainVarsMixmaster);
 #endif
 
 #if defined(HAVE_LIBIDN)
-  rc |= cs_register_variables(cs, MainVarsIdn, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, MainVarsIdn);
 #endif
 
   return rc;

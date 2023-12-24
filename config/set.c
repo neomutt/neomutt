@@ -273,10 +273,9 @@ struct HashElem *cs_register_variable(const struct ConfigSet *cs,
  * cs_register_variables - Register a set of config items
  * @param cs    Config items
  * @param vars  Variable definition
- * @param flags Flags, e.g. #DT_DEPRECATED
  * @retval true All variables were registered successfully
  */
-bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], uint32_t flags)
+bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[])
 {
   if (!cs || !vars)
     return false;
@@ -287,7 +286,6 @@ bool cs_register_variables(const struct ConfigSet *cs, struct ConfigDef vars[], 
 
   for (size_t i = 0; vars[i].name; i++)
   {
-    vars[i].type |= flags;
     if (!cs_register_variable(cs, &vars[i], err))
     {
       mutt_debug(LL_DEBUG1, "%s\n", buf_string(err));

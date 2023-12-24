@@ -1007,7 +1007,7 @@ static bool test_path_expanding(struct Buffer *err)
 
 void test_command_set(void)
 {
-  if (!TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, ConfigVars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, ConfigVars)))
   {
     TEST_MSG("Failed to register config variables");
     return;

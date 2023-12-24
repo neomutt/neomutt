@@ -48,7 +48,7 @@ static void test_one_leak(const char *pattern)
 void test_mutt_pattern_leak(void)
 {
   MuttLogger = log_disp_null;
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   test_one_leak("~E ~F | ~D");
   test_one_leak("~D | ~E ~F");

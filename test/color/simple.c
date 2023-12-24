@@ -43,7 +43,7 @@ void test_simple_colors(void)
 {
   MuttLogger = log_disp_null;
 
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   simple_colors_init();
 

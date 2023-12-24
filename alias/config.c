@@ -73,5 +73,5 @@ static struct ConfigDef AliasVars[] = {
  */
 bool config_init_alias(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, AliasVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, AliasVars);
 }

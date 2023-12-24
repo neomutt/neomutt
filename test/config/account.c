@@ -48,7 +48,7 @@ void test_config_account(void)
   int rc = 0;
   struct ConfigSet *cs = NeoMutt->sub->cs;
 
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
 
   notify_observer_add(NeoMutt->notify, NT_CONFIG, log_observer, 0);

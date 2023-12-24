@@ -699,7 +699,7 @@ void test_config_enum(void)
   struct ConfigSet *cs = sub->cs;
 
   StartupComplete = false;
-  if (!TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS)))
+  if (!TEST_CHECK(cs_register_variables(cs, Vars)))
     return;
   StartupComplete = true;
 

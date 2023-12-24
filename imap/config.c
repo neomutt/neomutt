@@ -157,10 +157,10 @@ static struct ConfigDef ImapVarsZlib[] = {
  */
 bool config_init_imap(struct ConfigSet *cs)
 {
-  bool rc = cs_register_variables(cs, ImapVars, DT_NO_FLAGS);
+  bool rc = cs_register_variables(cs, ImapVars);
 
 #if defined(USE_ZLIB)
-  rc |= cs_register_variables(cs, ImapVarsZlib, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, ImapVarsZlib);
 #endif
 
   return rc;

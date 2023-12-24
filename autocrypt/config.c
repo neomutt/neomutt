@@ -65,7 +65,7 @@ bool config_init_autocrypt(struct ConfigSet *cs)
   bool rc = false;
 
 #if defined(USE_AUTOCRYPT)
-  rc |= cs_register_variables(cs, AutocryptVars, DT_NO_FLAGS);
+  rc |= cs_register_variables(cs, AutocryptVars);
 #endif
 
   return rc;

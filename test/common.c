@@ -105,7 +105,7 @@ bool test_neomutt_create(void)
   NeoMutt = neomutt_new(cs);
   TEST_CHECK(NeoMutt != NULL);
 
-  TEST_CHECK(cs_register_variables(cs, Vars, DT_NO_FLAGS));
+  TEST_CHECK(cs_register_variables(cs, Vars));
 
   init_tmp_dir(NeoMutt);
 

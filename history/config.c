@@ -60,5 +60,5 @@ static struct ConfigDef HistoryVars[] = {
  */
 bool config_init_history(struct ConfigSet *cs)
 {
-  return cs_register_variables(cs, HistoryVars, DT_NO_FLAGS);
+  return cs_register_variables(cs, HistoryVars);
 }
