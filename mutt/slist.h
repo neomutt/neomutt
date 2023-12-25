@@ -30,18 +30,6 @@
 
 struct Buffer;
 
-/* Note: To save space, sets of config variable flags are packed into a uint32_t.
- * When adding flags, check all config variables to ensure there are no overlaps of values */
-#define SLIST_SEP_SPACE (1 << 17)         ///< Slist items are space-separated
-#define SLIST_SEP_COMMA (1 << 18)         ///< Slist items are comma-separated
-#define SLIST_SEP_COLON (1 << 19)         ///< Slist items are colon-separated
-
-#define SLIST_SEP_MASK  0xE0000
-
-#define SLIST_ALLOW_DUPES    (1 << 21)    ///< Slist may contain duplicates
-#define SLIST_ALLOW_EMPTY    (1 << 22)    ///< Slist may be empty
-#define SLIST_CASE_SENSITIVE (1 << 23)    ///< Slist is case-sensitive
-
 /**
  * struct Slist - String list
  */
@@ -49,7 +37,7 @@ struct Slist
 {
   struct ListHead head; ///< List containing values
   size_t count;         ///< Number of values in list
-  uint32_t flags;       ///< Flags controlling list, e.g. #SLIST_SEP_SPACE
+  uint32_t flags;       ///< Flags controlling list, e.g. #D_SLIST_SEP_SPACE
 };
 
 struct Slist *slist_add_string   (struct Slist *list, const char *str);

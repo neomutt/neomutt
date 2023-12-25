@@ -60,7 +60,7 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
   assert(value);
   if (DTYPE(type) == DT_PATH)
   {
-    if (type & (DT_PATH_DIR | DT_PATH_FILE))
+    if (type & (D_PATH_DIR | D_PATH_FILE))
       buf_expand_path(value);
     else
       mutt_path_tilde(value, HomeDir);

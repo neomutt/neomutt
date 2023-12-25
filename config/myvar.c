@@ -74,10 +74,10 @@ static int myvar_string_set(const struct ConfigSet *cs, void *var, struct Config
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 

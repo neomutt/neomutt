@@ -80,7 +80,7 @@
 ** to \fIno\fP, composition will never be aborted.
 */
 
-{ "account_command", DT_COMMAND, 0 },
+{ "account_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** If set, this command is used to retrieve account credentials. The command
@@ -1042,7 +1042,7 @@
 ** individual messages in a multipart/digest.  To see these subparts, press "v" on that menu.
 */
 
-{ "display_filter", DT_COMMAND, 0 },
+{ "display_filter", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** When set, specifies a command used to filter messages.  When a message
@@ -1128,7 +1128,7 @@
 ** ignored for interoperability reasons.
 */
 
-{ "editor", DT_COMMAND, 0 },
+{ "editor", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This variable specifies which editor is used by NeoMutt.
@@ -1180,7 +1180,7 @@
 ** This value is ignored if $$use_envelope_from is \fIunset\fP.
 */
 
-{ "external_search_command", DT_COMMAND, 0 },
+{ "external_search_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** If set, contains the name of the external program used by "~I" patterns.
@@ -1293,7 +1293,7 @@
 ** If set, flagged messages can't be deleted.
 */
 
-{ "folder", DT_MAILBOX, "~/Mail" },
+{ "folder", D_STRING_MAILBOX, "~/Mail" },
 /*
 ** .pp
 ** Specifies the default location of your mailboxes.  A "+" or "=" at the
@@ -1921,7 +1921,7 @@
 ** This variable defaults to the value of $$imap_user.
 */
 
-{ "imap_oauth_refresh_command", DT_COMMAND, 0 },
+{ "imap_oauth_refresh_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** The command to run to generate an OAUTH refresh token for
@@ -2198,7 +2198,7 @@
 ** "$save-hook", "$fcc-hook" and "$fcc-save-hook", too.
 */
 
-{ "inews", DT_COMMAND, 0 },
+{ "inews", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** If set, specifies the program and arguments used to deliver news posted
@@ -2219,7 +2219,7 @@
 ** .te
 */
 
-{ "ispell", DT_COMMAND, ISPELL },
+{ "ispell", D_STRING_COMMAND, ISPELL },
 /*
 ** .pp
 ** How to invoke ispell (GNU's spell-checking software).
@@ -2393,7 +2393,7 @@
 ** will be shown. The match is always case-sensitive.
 */
 
-{ "mbox", DT_MAILBOX, "~/mbox" },
+{ "mbox", D_STRING_MAILBOX, "~/mbox" },
 /*
 ** .pp
 ** This specifies the folder into which read mail in your $$spool_file
@@ -2544,7 +2544,7 @@
 ** be attached to the newly composed message if this option is \fIset\fP.
 */
 
-{ "mime_type_query_command", DT_COMMAND, 0 },
+{ "mime_type_query_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This specifies a command to run, to determine the mime type of a
@@ -2590,7 +2590,7 @@
 ** .de
 */
 
-{ "mixmaster", DT_COMMAND, MIXMASTER },
+{ "mixmaster", D_STRING_COMMAND, MIXMASTER },
 /*
 ** .pp
 ** This variable contains the path to the Mixmaster binary on your
@@ -2627,7 +2627,7 @@
 ** See also $$read_inc, $$write_inc and $$net_inc.
 */
 
-{ "new_mail_command", DT_COMMAND, 0 },
+{ "new_mail_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** If \fIset\fP, NeoMutt will call this command after a new message is received.
@@ -2882,7 +2882,7 @@
 ** connect to news server.
 */
 
-{ "pager", DT_COMMAND, "builtin" },
+{ "pager", D_STRING_COMMAND, "builtin" },
 /*
 ** .pp
 ** This variable specifies which pager you would like to use to view
@@ -3033,7 +3033,7 @@
 ** (PGP only)
 */
 
-{ "pgp_clear_sign_command", DT_COMMAND, 0 },
+{ "pgp_clear_sign_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This format is used to create an old-style "clearsigned" PGP
@@ -3047,7 +3047,7 @@
 ** (PGP only)
 */
 
-{ "pgp_decode_command", DT_COMMAND, 0 },
+{ "pgp_decode_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This format strings specifies a command which is used to decode
@@ -3068,7 +3068,7 @@
 ** (PGP only)
 */
 
-{ "pgp_decrypt_command", DT_COMMAND, 0 },
+{ "pgp_decrypt_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to decrypt a PGP encrypted message.
@@ -3117,7 +3117,7 @@
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-{ "pgp_encrypt_only_command", DT_COMMAND, 0 },
+{ "pgp_encrypt_only_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to encrypt a body part without signing it.
@@ -3129,7 +3129,7 @@
 ** (PGP only)
 */
 
-{ "pgp_encrypt_sign_command", DT_COMMAND, 0 },
+{ "pgp_encrypt_sign_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to both sign and encrypt a body part.
@@ -3169,7 +3169,7 @@
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-{ "pgp_export_command", DT_COMMAND, 0 },
+{ "pgp_export_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to export a public key from the user's
@@ -3180,7 +3180,7 @@
 ** (PGP only)
 */
 
-{ "pgp_get_keys_command", DT_COMMAND, 0 },
+{ "pgp_get_keys_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is invoked whenever NeoMutt needs to fetch the public key associated with
@@ -3212,7 +3212,7 @@
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-{ "pgp_import_command", DT_COMMAND, 0 },
+{ "pgp_import_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to import a key from a message into
@@ -3223,7 +3223,7 @@
 ** (PGP only)
 */
 
-{ "pgp_list_pubring_command", DT_COMMAND, 0 },
+{ "pgp_list_pubring_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to list the public key ring's contents.  The
@@ -3241,7 +3241,7 @@
 ** (PGP only)
 */
 
-{ "pgp_list_secring_command", DT_COMMAND, 0 },
+{ "pgp_list_secring_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to list the secret key ring's contents.  The
@@ -3345,7 +3345,7 @@
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
-{ "pgp_sign_command", DT_COMMAND, 0 },
+{ "pgp_sign_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to create the detached PGP signature for a
@@ -3414,7 +3414,7 @@
 ** (PGP only)
 */
 
-{ "pgp_verify_command", DT_COMMAND, 0 },
+{ "pgp_verify_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to verify PGP signatures.
@@ -3424,7 +3424,7 @@
 ** (PGP only)
 */
 
-{ "pgp_verify_key_command", DT_COMMAND, 0 },
+{ "pgp_verify_key_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to verify key information from the key selection
@@ -3533,7 +3533,7 @@
 ** the \fC$<fetch-mail>\fP function.
 */
 
-{ "pop_oauth_refresh_command", DT_COMMAND, 0 },
+{ "pop_oauth_refresh_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** The command to run to generate an OAUTH refresh token for
@@ -3607,7 +3607,7 @@
 ** (Crypto only)
 */
 
-{ "postponed", DT_MAILBOX, "~/postponed" },
+{ "postponed", D_STRING_MAILBOX, "~/postponed" },
 /*
 ** .pp
 ** NeoMutt allows you to indefinitely "$postpone sending a message" which
@@ -3655,7 +3655,7 @@
 ** accidentally hit "p" often.
 */
 
-{ "print_command", DT_COMMAND, "lpr" },
+{ "print_command", D_STRING_COMMAND, "lpr" },
 /*
 ** .pp
 ** This specifies the command pipe that should be used to print messages.
@@ -3706,7 +3706,7 @@
 ** index menu when the external pager exits.
 */
 
-{ "query_command", DT_COMMAND, 0 },
+{ "query_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This specifies the command NeoMutt will use to make external address
@@ -3815,7 +3815,7 @@
 ** Also see $$postponed variable.
 */
 
-{ "record", DT_MAILBOX, "~/sent" },
+{ "record", D_STRING_MAILBOX, "~/sent" },
 /*
 ** .pp
 ** This specifies the file into which your outgoing messages should be
@@ -4128,7 +4128,7 @@
 ** NeoMutt uses $$charset as a fallback.
 */
 
-{ "sendmail", DT_COMMAND, SENDMAIL " -oem -oi" },
+{ "sendmail", D_STRING_COMMAND, SENDMAIL " -oem -oi" },
 /*
 ** .pp
 ** Specifies the program and arguments used to deliver mail sent by NeoMutt.
@@ -4159,7 +4159,7 @@
 ** will be informed as to where to find the output.
 */
 
-{ "shell", DT_COMMAND, "/bin/sh" },
+{ "shell", D_STRING_COMMAND, "/bin/sh" },
 /*
 ** .pp
 ** Command to use when spawning a subshell.
@@ -4509,7 +4509,7 @@
 ** (S/MIME only)
 */
 
-{ "smime_decrypt_command", DT_COMMAND, 0 },
+{ "smime_decrypt_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This format string specifies a command which is used to decrypt
@@ -4567,7 +4567,7 @@
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-{ "smime_encrypt_command", DT_COMMAND, 0 },
+{ "smime_encrypt_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to create encrypted S/MIME messages.
@@ -4590,7 +4590,7 @@
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-{ "smime_get_cert_command", DT_COMMAND, 0 },
+{ "smime_get_cert_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to extract X509 certificates from a PKCS7 structure.
@@ -4600,7 +4600,7 @@
 ** (S/MIME only)
 */
 
-{ "smime_get_cert_email_command", DT_COMMAND, 0 },
+{ "smime_get_cert_email_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to extract the mail address(es) used for storing
@@ -4612,7 +4612,7 @@
 ** (S/MIME only)
 */
 
-{ "smime_get_signer_cert_command", DT_COMMAND, 0 },
+{ "smime_get_signer_cert_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to extract only the signers X509 certificate from a S/MIME
@@ -4624,7 +4624,7 @@
 ** (S/MIME only)
 */
 
-{ "smime_import_cert_command", DT_COMMAND, 0 },
+{ "smime_import_cert_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to import a certificate via smime_keys.
@@ -4660,7 +4660,7 @@
 ** (S/MIME only)
 */
 
-{ "smime_pk7out_command", DT_COMMAND, 0 },
+{ "smime_pk7out_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to extract PKCS7 structures of S/MIME signatures,
@@ -4689,7 +4689,7 @@
 */
 
 #ifdef CRYPT_BACKEND_CLASSIC_SMIME
-{ "smime_sign_command", DT_COMMAND, 0 },
+{ "smime_sign_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to created S/MIME signatures of type
@@ -4716,7 +4716,7 @@
 ** (S/MIME only)
 */
 
-{ "smime_verify_command", DT_COMMAND, 0 },
+{ "smime_verify_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to verify S/MIME signatures of type \fCmultipart/signed\fP.
@@ -4726,7 +4726,7 @@
 ** (S/MIME only)
 */
 
-{ "smime_verify_opaque_command", DT_COMMAND, 0 },
+{ "smime_verify_opaque_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** This command is used to verify S/MIME signatures of type
@@ -4757,7 +4757,7 @@
 ** .te
 */
 
-{ "smtp_oauth_refresh_command", DT_COMMAND, 0 },
+{ "smtp_oauth_refresh_command", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** The command to run to generate an OAUTH refresh token for
@@ -4942,7 +4942,7 @@
 ** separator.
 */
 
-{ "spool_file", DT_MAILBOX, 0 },
+{ "spool_file", D_STRING_MAILBOX, 0 },
 /*
 ** .pp
 ** If your spool mailbox is in a non-default place where NeoMutt can't find
@@ -5372,7 +5372,7 @@
 ** command will only filter out quote levels above this number.
 */
 
-{ "trash", DT_MAILBOX, 0 },
+{ "trash", D_STRING_MAILBOX, 0 },
 /*
 ** .pp
 ** If set, this variable specifies the path of the trash folder where the
@@ -5406,7 +5406,7 @@
 ** formatting to the one used by "$$status_format".
 */
 
-{ "tunnel", DT_COMMAND, 0 },
+{ "tunnel", D_STRING_COMMAND, 0 },
 /*
 ** .pp
 ** Setting this variable will cause NeoMutt to open a pipe to a command

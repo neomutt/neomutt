@@ -39,13 +39,13 @@ static struct ConfigDef Vars[] = {
   { "Cherry",     DT_PATH,              IP "cherry",     0, NULL,              },
   { "Damson",     DT_PATH,              0,               0, NULL,              }, /* test_string_set */
   { "Elderberry", DT_PATH,              IP "elderberry", 0, NULL,              },
-  { "Fig",        DT_PATH|DT_NOT_EMPTY, IP "fig",        0, NULL,              },
+  { "Fig",        DT_PATH|D_NOT_EMPTY,  IP "fig",        0, NULL,              },
   { "Guava",      DT_PATH,              0,               0, NULL,              }, /* test_string_get */
   { "Hawthorn",   DT_PATH,              IP "hawthorn",   0, NULL,              },
   { "Ilama",      DT_PATH,              0,               0, NULL,              },
   { "Jackfruit",  DT_PATH,              0,               0, NULL,              }, /* test_native_set */
   { "Kumquat",    DT_PATH,              IP "kumquat",    0, NULL,              },
-  { "Lemon",      DT_PATH|DT_NOT_EMPTY, IP "lemon",      0, NULL,              },
+  { "Lemon",      DT_PATH|D_NOT_EMPTY,  IP "lemon",      0, NULL,              },
   { "Mango",      DT_PATH,              0,               0, NULL,              }, /* test_native_get */
   { "Nectarine",  DT_PATH,              IP "nectarine",  0, NULL,              }, /* test_reset */
   { "Olive",      DT_PATH,              IP "olive",      0, validator_fail,    },
@@ -53,7 +53,7 @@ static struct ConfigDef Vars[] = {
   { "Quince",     DT_PATH,              IP "quince",     0, validator_warn,    },
   { "Raspberry",  DT_PATH,              IP "raspberry",  0, validator_fail,    },
   { "Strawberry", DT_PATH,              0,               0, NULL,              }, /* test_inherit */
-  { "Tangerine",  DT_PATH|DT_ON_STARTUP, IP "tangerine", 0, NULL,              }, /* startup */
+  { "Tangerine",  DT_PATH|D_ON_STARTUP, IP "tangerine",  0, NULL,              }, /* startup */
   { NULL },
 };
 // clang-format on

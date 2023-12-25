@@ -189,7 +189,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
     if ((type == DT_SYNONYM) && !(flags & CS_DUMP_SHOW_SYNONYMS))
       continue;
 
-    if ((he->type & DT_DEPRECATED) && !(flags & CS_DUMP_SHOW_DEPRECATED))
+    if ((he->type & D_INTERNAL_DEPRECATED) && !(flags & CS_DUMP_SHOW_DEPRECATED))
       continue;
 
     if (type != DT_SYNONYM)
@@ -206,7 +206,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         }
 
         const struct ConfigDef *cdef = he->data;
-        if ((type == DT_STRING) && IS_SENSITIVE(cdef->type) &&
+        if ((type == DT_STRING) && (cdef->type & D_SENSITIVE) &&
             (flags & CS_DUMP_HIDE_SENSITIVE) && !buf_is_empty(value))
         {
           buf_reset(value);
@@ -235,7 +235,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
           break;          /* LCOV_EXCL_LINE */
         }
 
-        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && !(he->type & DT_MAILBOX))
+        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && !(he->type & D_STRING_MAILBOX))
           mutt_pretty_mailbox(initial->data, initial->dsize);
 
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&

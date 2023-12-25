@@ -56,7 +56,7 @@ static int long_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  if ((num < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((num < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -111,7 +111,7 @@ static int long_string_get(const struct ConfigSet *cs, void *var,
 static int long_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  if ((value < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((value < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -159,7 +159,7 @@ static int long_string_plus_equals(const struct ConfigSet *cs, void *var,
   }
 
   long result = *((long *) var) + num;
-  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((result < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -198,7 +198,7 @@ static int long_string_minus_equals(const struct ConfigSet *cs, void *var,
   }
 
   long result = *((long *) var) - num;
-  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((result < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;

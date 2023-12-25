@@ -58,22 +58,22 @@ static struct ConfigDef BrowserVars[] = {
   { "browser_abbreviate_mailboxes", DT_BOOL, true, 0, NULL,
     "Abbreviate mailboxes using '~' and '=' in the browser"
   },
-  { "folder_format", DT_STRING|DT_NOT_EMPTY, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", 0, NULL,
+  { "folder_format", DT_STRING|D_NOT_EMPTY, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", 0, NULL,
     "printf-like format string for the browser's display of folders"
   },
-  { "group_index_format", DT_STRING|DT_NOT_EMPTY, IP "%4C %M%N %5s  %-45.45f %d", 0, NULL,
+  { "group_index_format", DT_STRING|D_NOT_EMPTY, IP "%4C %M%N %5s  %-45.45f %d", 0, NULL,
     "(nntp) printf-like format string for the browser's display of newsgroups"
   },
-  { "mailbox_folder_format", DT_STRING|DT_NOT_EMPTY, IP "%2C %<n?%6n&      > %6m %i", 0, NULL,
+  { "mailbox_folder_format", DT_STRING|D_NOT_EMPTY, IP "%2C %<n?%6n&      > %6m %i", 0, NULL,
     "printf-like format string for the browser's display of mailbox folders"
   },
-  { "mask", DT_REGEX|DT_REGEX_MATCH_CASE|DT_REGEX_ALLOW_NOT|DT_REGEX_NOSUB, IP "!^\\.[^.]", 0, NULL,
+  { "mask", DT_REGEX|D_REGEX_MATCH_CASE|D_REGEX_ALLOW_NOT|D_REGEX_NOSUB, IP "!^\\.[^.]", 0, NULL,
     "Only display files/dirs matching this regex in the browser"
   },
   { "show_only_unread", DT_BOOL, false, 0, NULL,
     "(nntp) Only show subscribed newsgroups with unread articles"
   },
-  { "sort_browser", DT_SORT|DT_SORT_REVERSE, SORT_ALPHA, IP SortBrowserMethods, NULL,
+  { "sort_browser", DT_SORT|D_SORT_REVERSE, SORT_ALPHA, IP SortBrowserMethods, NULL,
     "Sort method for the browser"
   },
   { "browser_sort_dirs_first", DT_BOOL, false, 0, NULL,

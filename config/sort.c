@@ -58,7 +58,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 
   size_t plen = 0;
 
-  if (cdef->type & DT_SORT_REVERSE)
+  if (cdef->type & D_SORT_REVERSE)
   {
     plen = mutt_str_startswith(value, PREFIX_REVERSE);
     if (plen != 0)
@@ -68,7 +68,7 @@ static int sort_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
     }
   }
 
-  if (cdef->type & DT_SORT_LAST)
+  if (cdef->type & D_SORT_LAST)
   {
     plen = mutt_str_startswith(value, PREFIX_LAST);
     if (plen != 0)
@@ -140,8 +140,7 @@ static int sort_string_get(const struct ConfigSet *cs, void *var,
 
   if (!str)
   {
-    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d/%d\n",
-               cdef->type & DT_SUBTYPE_MASK, sort);
+    mutt_debug(LL_DEBUG1, "Variable has an invalid value: %d/%d\n", cdef->type, sort);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 

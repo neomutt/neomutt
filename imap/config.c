@@ -74,13 +74,13 @@ static struct ConfigDef ImapVars[] = {
   { "imap_condstore", DT_BOOL, false, 0, NULL,
     "(imap) Enable the CONDSTORE extension"
   },
-  { "imap_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, imap_auth_validator,
+  { "imap_authenticators", DT_SLIST|D_SLIST_SEP_COLON, 0, 0, imap_auth_validator,
     "(imap) List of allowed IMAP authentication methods (colon-separated)"
   },
   { "imap_delim_chars", DT_STRING, IP "/.", 0, NULL,
     "(imap) Characters that denote separators in IMAP folders"
   },
-  { "imap_fetch_chunk_size", DT_LONG|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "imap_fetch_chunk_size", DT_LONG|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "(imap) Download headers in blocks of this size"
   },
   { "imap_headers", DT_STRING, 0, 0, NULL,
@@ -89,16 +89,16 @@ static struct ConfigDef ImapVars[] = {
   { "imap_idle", DT_BOOL, false, 0, NULL,
     "(imap) Use the IMAP IDLE extension to check for new mail"
   },
-  { "imap_login", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "imap_login", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(imap) Login name for the IMAP server (defaults to `$imap_user`)"
   },
-  { "imap_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
+  { "imap_oauth_refresh_command", DT_STRING|D_STRING_COMMAND|D_SENSITIVE, 0, 0, NULL,
     "(imap) External command to generate OAUTH refresh token"
   },
-  { "imap_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "imap_pass", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(imap) Password for the IMAP server"
   },
-  { "imap_pipeline_depth", DT_NUMBER|DT_NOT_NEGATIVE, 15, 0, NULL,
+  { "imap_pipeline_depth", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 15, 0, NULL,
     "(imap) Number of IMAP commands that may be queued up"
   },
   { "imap_rfc5161", DT_BOOL, true, 0, NULL,
@@ -107,7 +107,7 @@ static struct ConfigDef ImapVars[] = {
   { "imap_server_noise", DT_BOOL, true, 0, NULL,
     "(imap) Display server warnings as error messages"
   },
-  { "imap_keep_alive", DT_NUMBER|DT_NOT_NEGATIVE, 300, 0, NULL,
+  { "imap_keep_alive", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 300, 0, NULL,
     "(imap) Time to wait before polling an open IMAP connection"
   },
   { "imap_list_subscribed", DT_BOOL, false, 0, NULL,
@@ -119,7 +119,7 @@ static struct ConfigDef ImapVars[] = {
   { "imap_peek", DT_BOOL, true, 0, NULL,
     "(imap) Don't mark messages as read when fetching them from the server"
   },
-  { "imap_poll_timeout", DT_NUMBER|DT_NOT_NEGATIVE, 15, 0, NULL,
+  { "imap_poll_timeout", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 15, 0, NULL,
     "(imap) Maximum time to wait for a server response"
   },
   { "imap_qresync", DT_BOOL, false, 0, NULL,
@@ -128,7 +128,7 @@ static struct ConfigDef ImapVars[] = {
   { "imap_send_id", DT_BOOL, false, 0, NULL,
     "(imap) Send ID command when logging in"
   },
-  { "imap_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "imap_user", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(imap) Username for the IMAP server"
   },
 

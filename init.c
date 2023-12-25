@@ -630,7 +630,7 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, np->data);
     if (he)
     {
-      if (he->type & DT_DEPRECATED)
+      if (he->type & D_INTERNAL_DEPRECATED)
       {
         mutt_warning(_("Option %s is deprecated"), np->data);
         rc = 1;

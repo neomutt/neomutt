@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/types.h"
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"
@@ -39,7 +40,7 @@ void test_mutt_convert_file_to(void)
     char data[] = "us-ascii text\nline 2 \r\nline3";
     FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
-    struct Slist *tocodes = slist_parse("utf-8", SLIST_SEP_COLON);
+    struct Slist *tocodes = slist_parse("utf-8", D_SLIST_SEP_COLON);
     int tocode = 0;
     struct Content info = initial_info;
 
@@ -82,7 +83,7 @@ void test_mutt_convert_file_to(void)
     char data[] = "line 2\r\nline3\n\xf3\xbf\x77\xb3\x00";
     FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
-    struct Slist *tocodes = slist_parse("us-ascii", SLIST_SEP_COLON);
+    struct Slist *tocodes = slist_parse("us-ascii", D_SLIST_SEP_COLON);
     int tocode = 0;
     struct Content info = initial_info;
 
@@ -99,7 +100,7 @@ void test_mutt_convert_file_to(void)
     char data[] = "line 2\r\nline3\n\xf3\xbf\x77\xb3\x00";
     FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
-    struct Slist *tocodes = slist_parse("us-ascii:iso-8859-1", SLIST_SEP_COLON);
+    struct Slist *tocodes = slist_parse("us-ascii:iso-8859-1", D_SLIST_SEP_COLON);
     int tocode = 0;
     struct Content info = initial_info;
 
@@ -116,7 +117,7 @@ void test_mutt_convert_file_to(void)
     char data[] = "line 2\r\nline3\n";
     FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
-    struct Slist *tocodes = slist_parse("us-ascii:iso-8859-1", SLIST_SEP_COLON);
+    struct Slist *tocodes = slist_parse("us-ascii:iso-8859-1", D_SLIST_SEP_COLON);
     int tocode = 0;
     struct Content info = initial_info;
 
@@ -138,7 +139,7 @@ void test_mutt_convert_file_to(void)
     char data[] = "line 2\r\nline3\n\xf3\xbf\x77\xb3\x00";
     FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
-    struct Slist *tocodes = slist_parse("us-ascii:utf-8", SLIST_SEP_COLON);
+    struct Slist *tocodes = slist_parse("us-ascii:utf-8", D_SLIST_SEP_COLON);
     int tocode = 0;
     struct Content info = initial_info;
 

@@ -38,11 +38,11 @@ static struct ConfigDef Vars[] = {
   { "Banana",     DT_REGEX,                    IP "banana.*",     0, NULL,              },
   { "Cherry",     DT_REGEX,                    IP "cherry.*",     0, NULL,              },
   { "Damson",     DT_REGEX,                    0,                 0, NULL,              }, /* test_regex_set */
-  { "Elderberry", DT_REGEX|DT_REGEX_NOSUB,     IP "elderberry.*", 0, NULL,              },
+  { "Elderberry", DT_REGEX|D_REGEX_NOSUB,      IP "elderberry.*", 0, NULL,              },
   { "Fig",        DT_REGEX,                    0,                 0, NULL,              }, /* test_regex_get */
   { "Guava",      DT_REGEX,                    IP "guava.*",      0, NULL,              },
   { "Hawthorn",   DT_REGEX,                    0,                 0, NULL,              },
-  { "Ilama",      DT_REGEX|DT_REGEX_ALLOW_NOT, 0,                 0, NULL,              }, /* test_native_set */
+  { "Ilama",      DT_REGEX|D_REGEX_ALLOW_NOT,  0,                 0, NULL,              }, /* test_native_set */
   { "Jackfruit",  DT_REGEX,                    IP "jackfruit.*",  0, NULL,              },
   { "Kumquat",    DT_REGEX,                    IP "kumquat.*",    0, NULL,              },
   { "Lemon",      DT_REGEX,                    0,                 0, NULL,              }, /* test_native_get */
@@ -53,7 +53,7 @@ static struct ConfigDef Vars[] = {
   { "Quince",     DT_REGEX,                    IP "quince.*",     0, validator_warn,    },
   { "Raspberry",  DT_REGEX,                    IP "raspberry.*",  0, validator_fail,    },
   { "Strawberry", DT_REGEX,                    0,                 0, NULL,              }, /* test_inherit */
-  { "Tangerine",  DT_REGEX|DT_ON_STARTUP,      IP "tangerine.*",  0, NULL,              }, /* startup */
+  { "Tangerine",  DT_REGEX|D_ON_STARTUP,       IP "tangerine.*",  0, NULL,              }, /* startup */
   { NULL },
 };
 // clang-format on
@@ -307,7 +307,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  r = regex_new("hello.*", DT_REGEX_NOSUB, err);
+  r = regex_new("hello.*", D_REGEX_NOSUB, err);
   const char *name = "Ilama";
   char *regex = NULL;
   bool result = false;
@@ -330,7 +330,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("%s = '%s', set by '%s'", name, NONULL(regex), r->pattern);
 
   regex_free(&r);
-  r = regex_new("!world.*", DT_REGEX_ALLOW_NOT, err);
+  r = regex_new("!world.*", D_REGEX_ALLOW_NOT, err);
   name = "Ilama";
 
   buf_reset(err);
@@ -382,14 +382,14 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   regex_free(&r);
-  r = regex_new("tangerine.*", DT_REGEX_NOSUB, err);
+  r = regex_new("tangerine.*", D_REGEX_NOSUB, err);
 
   name = "Tangerine";
   rc = cs_str_native_set(cs, name, (intptr_t) r, err);
   TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
 
   regex_free(&r);
-  r = regex_new("apple.*", DT_REGEX_NOSUB, err);
+  r = regex_new("apple.*", D_REGEX_NOSUB, err);
 
   rc = cs_str_native_set(cs, name, (intptr_t) r, err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);

@@ -50,7 +50,7 @@ static struct ConfigDef Vars[] = {
   { "Mango",      DT_QUAD, 0, 0, NULL,              }, /* test_inherit */
   { "Nectarine",  DT_QUAD, 0, 0, NULL,              }, /* test_toggle */
   { "Olive",      DT_BOOL, 0, 0, NULL,              },
-  { "Papaya",     DT_QUAD | DT_ON_STARTUP, 3, 0, NULL, }, /* startup */
+  { "Papaya",     DT_QUAD | D_ON_STARTUP, 3, 0, NULL, }, /* startup */
   { NULL },
 };
 // clang-format on

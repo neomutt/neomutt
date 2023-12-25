@@ -33,6 +33,7 @@
 #include "mutt/lib.h"
 #include "charset.h"
 #include "set.h"
+#include "types.h"
 
 /**
  * charset_validator - Validate the "charset" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
@@ -47,14 +48,14 @@ int charset_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
 
   const char *str = (const char *) value;
 
-  if ((cdef->type & DT_CHARSET_SINGLE) && strchr(str, ':'))
+  if ((cdef->type & D_CHARSET_SINGLE) && strchr(str, ':'))
   {
     buf_printf(err, _("'charset' must contain exactly one character set name"));
     return CSR_ERR_INVALID;
   }
 
   int rc = CSR_SUCCESS;
-  bool strict = (cdef->type & DT_CHARSET_STRICT);
+  bool strict = (cdef->type & D_CHARSET_STRICT);
   char *q = NULL;
   char *s = mutt_str_dup(str);
 
@@ -88,7 +89,7 @@ int charset_slist_validator(const struct ConfigSet *cs, const struct ConfigDef *
   const struct Slist *list = (const struct Slist *) value;
 
   int rc = CSR_SUCCESS;
-  bool strict = (cdef->type & DT_CHARSET_STRICT);
+  bool strict = (cdef->type & D_CHARSET_STRICT);
 
   const struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &list->head, entries)

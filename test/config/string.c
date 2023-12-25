@@ -39,13 +39,13 @@ static struct ConfigDef Vars[] = {
   { "Cherry",     DT_STRING,              IP "cherry",     0, NULL,              },
   { "Damson",     DT_STRING,              0,               0, NULL,              }, /* test_string_set */
   { "Elderberry", DT_STRING,              IP "elderberry", 0, NULL,              },
-  { "Fig",        DT_STRING|DT_NOT_EMPTY, IP "fig",        0, NULL,              },
+  { "Fig",        DT_STRING|D_NOT_EMPTY,  IP "fig",        0, NULL,              },
   { "Guava",      DT_STRING,              0,               0, NULL,              }, /* test_string_get */
   { "Hawthorn",   DT_STRING,              IP "hawthorn",   0, NULL,              },
   { "Ilama",      DT_STRING,              0,               0, NULL,              },
   { "Jackfruit",  DT_STRING,              0,               0, NULL,              }, /* test_native_set */
   { "Kumquat",    DT_STRING,              IP "kumquat",    0, NULL,              },
-  { "Lemon",      DT_STRING|DT_NOT_EMPTY, IP "lemon",      0, NULL,              },
+  { "Lemon",      DT_STRING|D_NOT_EMPTY,  IP "lemon",      0, NULL,              },
   { "Mango",      DT_STRING,              0,               0, NULL,              }, /* test_native_get */
   { "Nectarine",  DT_STRING,              IP "nectarine",  0, NULL,              }, /* test_reset */
   { "Olive",      DT_STRING,              IP "olive",      0, validator_fail,    },
@@ -54,9 +54,9 @@ static struct ConfigDef Vars[] = {
   { "Raspberry",  DT_STRING,              IP "raspberry",  0, validator_fail,    },
   { "Strawberry", DT_STRING,              0,               0, NULL,              }, /* test_inherit */
   { "Tangerine",  DT_STRING,              0,               0, NULL,              }, /* test_plus_equals */
-  { "Ugli",       DT_STRING|DT_CHARSET_SINGLE, 0,          0, charset_validator, },
-  { "Vanilla",    DT_STRING|DT_CHARSET_STRICT, 0,          0, charset_validator, },
-  { "Wolfberry",  DT_STRING|DT_ON_STARTUP, IP "wolfberry", 0, NULL,              }, /* startup */
+  { "Ugli",       DT_STRING|D_CHARSET_SINGLE, 0,           0, charset_validator, },
+  { "Vanilla",    DT_STRING|D_CHARSET_STRICT, 0,           0, charset_validator, },
+  { "Wolfberry",  DT_STRING|D_ON_STARTUP, IP "wolfberry",  0, NULL,              }, /* startup */
   { NULL },
 };
 // clang-format on

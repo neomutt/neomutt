@@ -57,7 +57,7 @@ static struct ConfigDef Vars[] = {
   { "Apple",      DT_SORT,                              1,  IP SortTestMethods, NULL,              }, /* test_initial_values */
   { "Banana",     DT_SORT,                              2,  IP SortTestMethods, NULL,              },
   { "Cherry",     DT_SORT,                              1,  IP SortTestMethods, NULL,              },
-  { "Damson",     DT_SORT|DT_SORT_REVERSE|DT_SORT_LAST, 1,  IP SortTestMethods, NULL,              }, /* test_string_set */
+  { "Damson",     DT_SORT|D_SORT_REVERSE|D_SORT_LAST,   1,  IP SortTestMethods, NULL,              }, /* test_string_set */
   { "Elderberry", DT_SORT,                              11, IP SortTestMethods, NULL,              },
   { "Fig",        DT_SORT,                              1,  IP SortTestMethods, NULL,              },
   { "Guava",      DT_SORT,                              1,  IP SortTestMethods, NULL,              },
@@ -72,7 +72,7 @@ static struct ConfigDef Vars[] = {
   { "Papaya",     DT_SORT,                              1,  IP SortTestMethods, validator_warn,    },
   { "Quince",     DT_SORT,                              1,  IP SortTestMethods, validator_fail,    },
   { "Strawberry", DT_SORT,                              1,  IP SortTestMethods, NULL,              }, /* test_inherit */
-  { "Tangerine",  DT_SORT | DT_ON_STARTUP,              1,  IP SortTestMethods, NULL,              }, /* startup */
+  { "Tangerine",  DT_SORT | D_ON_STARTUP,               1,  IP SortTestMethods, NULL,              }, /* startup */
   { NULL },
 };
 

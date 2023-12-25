@@ -36,7 +36,7 @@
  */
 static struct ConfigDef MenuVars[] = {
   // clang-format off
-  { "menu_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "menu_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the index"
   },
   { "menu_move_off", DT_BOOL, true, 0, NULL,

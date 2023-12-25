@@ -288,14 +288,14 @@ int      cs_str_string_set         (const struct ConfigSet *cs, const char *name
 extern bool StartupComplete;
 
 /**
- * startup_only - Validator function for DT_ON_STARTUP
+ * startup_only - Validator function for D_ON_STARTUP
  * @param cdef Variable definition
  * @param err  Buffer for error messages
  * @retval true Variable may only be set at startup
  */
 static inline bool startup_only(const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if ((cdef->type & DT_ON_STARTUP) && StartupComplete)
+  if ((cdef->type & D_ON_STARTUP) && StartupComplete)
   {
     buf_printf(err, _("Option %s may only be set at startup"), cdef->name);
     return true;

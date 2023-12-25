@@ -92,7 +92,7 @@ static void regex_destroy(const struct ConfigSet *cs, void *var, const struct Co
 /**
  * regex_new - Create an Regex from a string
  * @param str   Regular expression
- * @param flags Type flags, e.g. #DT_REGEX_MATCH_CASE
+ * @param flags Type flags, e.g. #D_REGEX_MATCH_CASE
  * @param err   Buffer for error messages
  * @retval ptr New Regex object
  * @retval NULL Error
@@ -109,14 +109,14 @@ struct Regex *regex_new(const char *str, uint32_t flags, struct Buffer *err)
   reg->pattern = mutt_str_dup(str);
 
   /* Should we use smart case matching? */
-  if (((flags & DT_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
+  if (((flags & D_REGEX_MATCH_CASE) == 0) && mutt_mb_is_lower(str))
     rflags |= REG_ICASE;
 
-  if ((flags & DT_REGEX_NOSUB))
+  if ((flags & D_REGEX_NOSUB))
     rflags |= REG_NOSUB;
 
   /* Is a prefix of '!' allowed? */
-  if (((flags & DT_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
+  if (((flags & D_REGEX_ALLOW_NOT) != 0) && (str[0] == '!'))
   {
     reg->pat_not = true;
     str++;
@@ -184,10 +184,10 @@ static int regex_string_set(const struct ConfigSet *cs, void *var, struct Config
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -248,7 +248,7 @@ static int regex_native_set(const struct ConfigSet *cs, void *var,
 
   if (orig && orig->pattern)
   {
-    const uint32_t flags = orig->pat_not ? DT_REGEX_ALLOW_NOT : 0;
+    const uint32_t flags = orig->pat_not ? D_REGEX_ALLOW_NOT : 0;
     r = regex_new(orig->pattern, flags, err);
     if (!r)
       rc = CSR_ERR_INVALID;

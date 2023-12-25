@@ -36,10 +36,10 @@
  */
 static struct ConfigDef HistoryVars[] = {
   // clang-format off
-  { "history", DT_NUMBER|DT_NOT_NEGATIVE, 10, 0, NULL,
+  { "history", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "Number of history entries to keep in memory per category"
   },
-  { "history_file", DT_PATH|DT_PATH_FILE, IP "~/.mutthistory", 0, NULL,
+  { "history_file", DT_PATH|D_PATH_FILE, IP "~/.mutthistory", 0, NULL,
     "File to save history in"
   },
   { "history_format", DT_STRING, IP "%s", 0, NULL,
@@ -48,7 +48,7 @@ static struct ConfigDef HistoryVars[] = {
   { "history_remove_dups", DT_BOOL, false, 0, NULL,
     "Remove duplicate entries from the history"
   },
-  { "save_history", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "save_history", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of history entries to save per category"
   },
   { NULL },

@@ -52,17 +52,17 @@ const struct Mapping SortMethods[] = {
 
 static struct ConfigDef Vars[] = {
   // clang-format off
-  { "from",              DT_ADDRESS,                 0,                     0,               NULL, },
-  { "beep",              DT_BOOL,                    true,                  0,               NULL, },
-  { "ispell",            DT_STRING|DT_COMMAND,       IP "ispell",           0,               NULL, },
-  { "mbox_type",         DT_ENUM,                    MUTT_MBOX,             IP &MboxTypeDef, NULL, },
-  { "to_chars",          DT_MBTABLE,                 IP " +TCFLR",          0,               NULL, },
-  { "net_inc",           DT_NUMBER|DT_NOT_NEGATIVE,  10,                    0,               NULL, },
-  { "signature",         DT_PATH|DT_PATH_FILE,       IP "~/.signature",     0,               NULL, },
-  { "print",             DT_QUAD,                    MUTT_ASKNO,            0,               NULL, },
-  { "mask",              DT_REGEX|DT_REGEX_NOSUB,    IP "!^\\.[^.]",        0,               NULL, },
-  { "sort",              DT_SORT|DT_SORT_LAST,       SORT_DATE,             IP SortMethods,  NULL, },
-  { "attribution_intro", DT_STRING,                  IP "On %d, %n wrote:", 0,               NULL, },
+  { "from",              DT_ADDRESS,                       0,                     0,               NULL, },
+  { "beep",              DT_BOOL,                          true,                  0,               NULL, },
+  { "ispell",            DT_STRING|D_STRING_COMMAND,       IP "ispell",           0,               NULL, },
+  { "mbox_type",         DT_ENUM,                          MUTT_MBOX,             IP &MboxTypeDef, NULL, },
+  { "to_chars",          DT_MBTABLE,                       IP " +TCFLR",          0,               NULL, },
+  { "net_inc",           DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10,                    0,               NULL, },
+  { "signature",         DT_PATH|D_PATH_FILE,              IP "~/.signature",     0,               NULL, },
+  { "print",             DT_QUAD,                          MUTT_ASKNO,            0,               NULL, },
+  { "mask",              DT_REGEX|D_REGEX_NOSUB,           IP "!^\\.[^.]",        0,               NULL, },
+  { "sort",              DT_SORT|D_SORT_LAST,              SORT_DATE,             IP SortMethods,  NULL, },
+  { "attribution_intro", DT_STRING,                        IP "On %d, %n wrote:", 0,               NULL, },
   { NULL },
   // clang-format on
 };

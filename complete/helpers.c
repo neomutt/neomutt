@@ -194,7 +194,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
         he = he_list[i];
         const int type = DTYPE(he->type);
 
-        if ((type == DT_SYNONYM) || (type & DT_DEPRECATED))
+        if ((type == DT_SYNONYM) || (type & D_INTERNAL_DEPRECATED))
           continue;
 
         candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));

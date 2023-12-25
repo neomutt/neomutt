@@ -81,7 +81,7 @@ static struct ConfigDef Vars[] = {
   { "Mango",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, validator_warn,    },
   { "Nectarine",  DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, validator_fail,    },
   { "Olive",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              }, /* test_inherit */
-  { "Papaya",     DT_ENUM | DT_ON_STARTUP, ANIMAL_ANTELOPE, IP &AnimalDef, NULL, }, /* startup */
+  { "Papaya",     DT_ENUM | D_ON_STARTUP, ANIMAL_ANTELOPE, IP &AnimalDef, NULL, }, /* startup */
   { NULL },
 };
 // clang-format on

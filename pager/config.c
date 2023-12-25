@@ -40,28 +40,28 @@ static struct ConfigDef PagerVars[] = {
   { "allow_ansi", DT_BOOL, false, 0, NULL,
     "Allow ANSI color codes in rich text messages"
   },
-  { "display_filter", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "display_filter", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command to pre-process an email before display"
   },
   { "header_color_partial", DT_BOOL, false, 0, NULL,
     "Only color the part of the header matching the regex"
   },
-  { "pager", DT_STRING|DT_COMMAND, IP "builtin", 0, NULL,
+  { "pager", DT_STRING|D_STRING_COMMAND, IP "builtin", 0, NULL,
     "External command for viewing messages, or 'builtin' to use NeoMutt's"
   },
-  { "pager_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the pager"
   },
   { "pager_format", DT_STRING, IP "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)", 0, NULL,
     "printf-like format string for the pager's status bar"
   },
-  { "pager_index_lines", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_index_lines", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of index lines to display above the pager"
   },
-  { "pager_read_delay", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_read_delay", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of seconds to wait before marking a message read"
   },
-  { "pager_skip_quoted_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "pager_skip_quoted_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Lines of context to show when skipping quoted text"
   },
   { "pager_stop", DT_BOOL, false, 0, NULL,
@@ -70,7 +70,7 @@ static struct ConfigDef PagerVars[] = {
   { "prompt_after", DT_BOOL, true, 0, NULL,
     "Pause after running an external pager"
   },
-  { "search_context", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "search_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Context to display around search matches"
   },
   { "smart_wrap", DT_BOOL, true, 0, NULL,
@@ -82,7 +82,7 @@ static struct ConfigDef PagerVars[] = {
   { "tilde", DT_BOOL, false, 0, NULL,
     "Display '~' in the pager after the end of the email"
   },
-  { "toggle_quoted_show_levels", DT_NUMBER|DT_NOT_NEGATIVE, 0, 0, NULL,
+  { "toggle_quoted_show_levels", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of quote levels to show with toggle-quoted"
   },
 

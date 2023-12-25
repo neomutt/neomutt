@@ -30,17 +30,17 @@
 
 // clang-format off
 static struct ConfigDef ConfigVars[] = {
-  { "Apple",      DT_BOOL,              true,            0, NULL, },
-  { "Banana",     DT_QUAD,              MUTT_ASKYES,     0, NULL, },
-  { "Cherry",     DT_NUMBER,            555,             0, NULL, },
-  { "Damson",     DT_STRING,            IP "damson",     0, NULL, },
-  { "Elderberry", DT_STRING|DT_MAILBOX, IP "elderberry", 0, NULL, },
-  { "Fig",        DT_STRING|DT_COMMAND, IP "fig",        0, NULL, },
-  { "Guava",      DT_PATH|DT_PATH_FILE, IP "guava",      0, NULL, },
+  { "Apple",      DT_BOOL,                    true,            0, NULL, },
+  { "Banana",     DT_QUAD,                    MUTT_ASKYES,     0, NULL, },
+  { "Cherry",     DT_NUMBER,                  555,             0, NULL, },
+  { "Damson",     DT_STRING,                  IP "damson",     0, NULL, },
+  { "Elderberry", DT_STRING|D_STRING_MAILBOX, IP "elderberry", 0, NULL, },
+  { "Fig",        DT_STRING|D_STRING_COMMAND, IP "fig",        0, NULL, },
+  { "Guava",      DT_PATH|D_PATH_FILE,        IP "guava",      0, NULL, },
   { NULL },
 };
 static struct ConfigDef MyVarDef =
-  { "my_var",     DT_MYVAR,        IP NULL,         0, NULL, };
+  { "my_var",     DT_MYVAR,                   IP NULL,         0, NULL, };
 // clang-format on
 
 /**

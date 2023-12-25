@@ -373,7 +373,7 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
       {
         if (strchr(iname + slen, ':'))
           continue;
-        if ((DTYPE(item->type) == DT_STRING) && (item->type & DT_SENSITIVE))
+        if ((DTYPE(item->type) == DT_STRING) && (item->type & D_SENSITIVE))
         {
           dot_type_string(fp, iname + slen, "***", true);
         }

@@ -32,6 +32,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include "config/types.h"
 #include "slist.h"
 #include "buffer.h"
 #include "list.h"
@@ -41,7 +42,7 @@
 
 /**
  * slist_new - Create a new string list
- * @param flags Flag to set, e.g. #SLIST_SEP_COMMA
+ * @param flags Flag to set, e.g. #D_SLIST_SEP_COMMA
  * @retval ptr New string list
  */
 struct Slist *slist_new(uint32_t flags)
@@ -67,7 +68,7 @@ struct Slist *slist_add_string(struct Slist *list, const char *str)
   if (str && (str[0] == '\0'))
     str = NULL;
 
-  if (!str && !(list->flags & SLIST_ALLOW_EMPTY))
+  if (!str && !(list->flags & D_SLIST_ALLOW_EMPTY))
     return list;
 
   mutt_list_insert_tail(&list->head, mutt_str_dup(str));
@@ -154,7 +155,7 @@ bool slist_is_member(const struct Slist *list, const char *str)
   if (!list)
     return false;
 
-  if (!str && !(list->flags & SLIST_ALLOW_EMPTY))
+  if (!str && !(list->flags & D_SLIST_ALLOW_EMPTY))
     return false;
 
   struct ListNode *np = NULL;
@@ -169,19 +170,19 @@ bool slist_is_member(const struct Slist *list, const char *str)
 /**
  * slist_parse - Parse a list of strings into a list
  * @param str   String of strings
- * @param flags Flags, e.g. #SLIST_ALLOW_EMPTY
+ * @param flags Flags, e.g. #D_SLIST_ALLOW_EMPTY
  * @retval ptr New Slist object
  */
 struct Slist *slist_parse(const char *str, uint32_t flags)
 {
   char *src = mutt_str_dup(str);
-  if (!src && !(flags & SLIST_ALLOW_EMPTY))
+  if (!src && !(flags & D_SLIST_ALLOW_EMPTY))
     return NULL;
 
   char sep = ' ';
-  if ((flags & SLIST_SEP_MASK) == SLIST_SEP_COMMA)
+  if ((flags & D_SLIST_SEP_MASK) == D_SLIST_SEP_COMMA)
     sep = ',';
-  else if ((flags & SLIST_SEP_MASK) == SLIST_SEP_COLON)
+  else if ((flags & D_SLIST_SEP_MASK) == D_SLIST_SEP_COLON)
     sep = ':';
 
   struct Slist *list = mutt_mem_calloc(1, sizeof(struct Slist));
@@ -234,7 +235,7 @@ struct Slist *slist_remove_string(struct Slist *list, const char *str)
 {
   if (!list)
     return NULL;
-  if (!str && !(list->flags & SLIST_ALLOW_EMPTY))
+  if (!str && !(list->flags & D_SLIST_ALLOW_EMPTY))
     return list;
 
   struct ListNode *prev = NULL;
@@ -275,10 +276,10 @@ int slist_to_buffer(const struct Slist *list, struct Buffer *buf)
     buf_addstr(buf, np->data);
     if (STAILQ_NEXT(np, entries))
     {
-      const int sep = (list->flags & SLIST_SEP_MASK);
-      if (sep == SLIST_SEP_COMMA)
+      const int sep = (list->flags & D_SLIST_SEP_MASK);
+      if (sep == D_SLIST_SEP_COMMA)
         buf_addch(buf, ',');
-      else if (sep == SLIST_SEP_COLON)
+      else if (sep == D_SLIST_SEP_COLON)
         buf_addch(buf, ':');
       else
         buf_addch(buf, ' ');

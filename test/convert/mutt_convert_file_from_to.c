@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "config/types.h"
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"
@@ -39,8 +40,8 @@ void test_mutt_convert_file_from_to(void)
     char data[] = "us-ascii text\nline 2 \r\nline3";
     FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
-    struct Slist *tocodes = slist_parse("utf-8", SLIST_SEP_COLON);
-    struct Slist *fromcodes = slist_parse("us-ascii", SLIST_SEP_COLON);
+    struct Slist *tocodes = slist_parse("utf-8", D_SLIST_SEP_COLON);
+    struct Slist *fromcodes = slist_parse("us-ascii", D_SLIST_SEP_COLON);
     struct Content info = initial_info;
 
     char *fromcode = NULL;
@@ -65,8 +66,8 @@ void test_mutt_convert_file_from_to(void)
     char data[] = "line 2\r\nline3\n\xc5\xbc\xc3\xb3\xc5\x82\x77";
     FILE *fp = test_make_file_with_contents(data, sizeof(data) - 1);
 
-    struct Slist *tocodes = slist_parse("iso-8859-2", SLIST_SEP_COLON);
-    struct Slist *fromcodes = slist_parse("us-ascii:utf-8", SLIST_SEP_COLON);
+    struct Slist *tocodes = slist_parse("iso-8859-2", D_SLIST_SEP_COLON);
+    struct Slist *fromcodes = slist_parse("us-ascii:utf-8", D_SLIST_SEP_COLON);
     char *fromcode = NULL;
     char *tocode = NULL;
     struct Content info = initial_info;

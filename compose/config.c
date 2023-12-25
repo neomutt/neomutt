@@ -52,7 +52,7 @@ static struct ConfigDef ComposeVars[] = {
   { "edit_headers", DT_BOOL, false, 0, NULL,
     "Let the user edit the email headers whilst editing an email"
   },
-  { "ispell", DT_STRING|DT_COMMAND, IP ISPELL, 0, NULL,
+  { "ispell", DT_STRING|D_STRING_COMMAND, IP ISPELL, 0, NULL,
     "External command to perform spell-checking"
   },
   { "postpone", DT_QUAD, MUTT_ASKYES, 0, NULL,

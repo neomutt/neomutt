@@ -66,7 +66,7 @@ void parse_alias_tags(const char *tags, struct TagList *tl)
   if (!tags || !tl)
     return;
 
-  struct Slist *sl = slist_parse(tags, SLIST_SEP_COMMA);
+  struct Slist *sl = slist_parse(tags, D_SLIST_SEP_COMMA);
   if (slist_is_empty(sl))
   {
     slist_free(&sl);

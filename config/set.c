@@ -49,7 +49,7 @@ static void cs_hashelem_free(int type, void *obj, intptr_t data)
 
   const struct ConfigSetType *cst = NULL;
 
-  if (type & DT_INHERITED)
+  if (type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = obj;
 
@@ -75,9 +75,9 @@ static void cs_hashelem_free(int type, void *obj, intptr_t data)
       cst->destroy(cs, &cdef->var, cdef);
 
     /* If we allocated the initial value, clean it up */
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
-    if (cdef->type & DT_FREE_CONFIGDEF)
+    if (cdef->type & D_INTERNAL_FREE_CONFIGDEF)
     {
       FREE(&cdef->name);
       FREE(&cdef->docs);
@@ -156,7 +156,7 @@ void cs_free(struct ConfigSet **ptr)
  */
 struct HashElem *cs_get_base(struct HashElem *he)
 {
-  if (!(he->type & DT_INHERITED))
+  if (!(he->type & D_INTERNAL_INHERITED))
     return he;
 
   struct Inheritance *i = he->data;
@@ -199,7 +199,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
 
   type = DTYPE(type);
   if (type >= mutt_array_size(cs->types))
-    return NULL;
+    return NULL; // LCOV_EXCL_LINE
 
   if (!cs->types[type].name)
     return NULL;
@@ -317,7 +317,7 @@ struct HashElem *cs_create_variable(const struct ConfigSet *cs,
 {
   struct ConfigDef *cdef_copy = mutt_mem_calloc(1, sizeof(struct ConfigDef));
   cdef_copy->name = mutt_str_dup(cdef->name);
-  cdef_copy->type = cdef->type | DT_FREE_CONFIGDEF;
+  cdef_copy->type = cdef->type | D_INTERNAL_FREE_CONFIGDEF;
   cdef_copy->initial = cdef->initial;
   cdef_copy->data = cdef->data;
   cdef_copy->validator = cdef->validator;
@@ -355,7 +355,7 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
   i->parent = he_parent;
   i->name = mutt_str_dup(name);
 
-  struct HashElem *he = mutt_hash_typed_insert(cs->hash, i->name, DT_INHERITED, i);
+  struct HashElem *he = mutt_hash_typed_insert(cs->hash, i->name, D_INTERNAL_INHERITED, i);
   if (!he)
   {
     FREE(&i->name);
@@ -392,12 +392,12 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
 
   /* An inherited var that's already pointing to its parent.
    * Return 'success', but don't send a notification. */
-  if ((he->type & DT_INHERITED) && (DTYPE(he->type) == 0))
+  if ((he->type & D_INTERNAL_INHERITED) && (DTYPE(he->type) == 0))
     return CSR_SUCCESS;
 
   int rc = CSR_SUCCESS;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -409,7 +409,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
     if (cst && cst->destroy)
       cst->destroy(cs, (void **) &i->var, cdef);
 
-    he->type = DT_INHERITED;
+    he->type = D_INTERNAL_INHERITED;
   }
   else
   {
@@ -463,7 +463,7 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
 
   struct ConfigDef *cdef = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
@@ -531,7 +531,7 @@ int cs_he_initial_get(const struct ConfigSet *cs, struct HashElem *he, struct Bu
   const struct ConfigDef *cdef = NULL;
   const struct ConfigSetType *cst = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct HashElem *he_base = cs_get_base(he);
     cdef = he_base->data;
@@ -592,7 +592,7 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -620,8 +620,8 @@ int cs_he_string_set(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }
@@ -666,7 +666,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
 
@@ -712,7 +712,7 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -740,8 +740,8 @@ int cs_he_native_set(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }
@@ -771,7 +771,7 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -793,8 +793,8 @@ int cs_str_native_set(const struct ConfigSet *cs, const char *name,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }
@@ -816,7 +816,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
 
@@ -868,7 +868,7 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -903,8 +903,8 @@ int cs_he_string_plus_equals(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }
@@ -927,7 +927,7 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
   const struct ConfigSetType *cst = NULL;
   void *var = NULL;
 
-  if (he->type & DT_INHERITED)
+  if (he->type & D_INTERNAL_INHERITED)
   {
     struct Inheritance *i = he->data;
     struct HashElem *he_base = cs_get_base(he);
@@ -962,8 +962,8 @@ int cs_he_string_minus_equals(const struct ConfigSet *cs, struct HashElem *he,
   if (CSR_RESULT(rc) != CSR_SUCCESS)
     return rc;
 
-  if (he->type & DT_INHERITED)
-    he->type = cdef->type | DT_INHERITED;
+  if (he->type & D_INTERNAL_INHERITED)
+    he->type = cdef->type | D_INTERNAL_INHERITED;
 
   return rc;
 }

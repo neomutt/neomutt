@@ -145,8 +145,8 @@ static bool test_old_implementation(void)
     //          tmp->regex.pat_not))
     //   to: if ((tmp->type & hook) && mutt_regex_match(&tmp->regex, match))
 
-    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
-    const bool old = (regexec(rx->regex, not_bob_line, 0, NULL, DT_REGEX_ALLOW_NOT) == 0) ^
+    struct Regex *rx = regex_new("!bob", D_REGEX_ALLOW_NOT, buf);
+    const bool old = (regexec(rx->regex, not_bob_line, 0, NULL, D_REGEX_ALLOW_NOT) == 0) ^
                      rx->pat_not;
     const bool new = mutt_regex_match(rx, not_bob_line);
     regex_free(&rx);
@@ -162,7 +162,7 @@ static bool test_old_implementation(void)
   }
 
   {
-    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
+    struct Regex *rx = regex_new("!bob", D_REGEX_ALLOW_NOT, buf);
     const bool old = rx && rx->regex &&
                      !((regexec(rx->regex, not_bob_line, 0, NULL, 0) == 0) ^ rx->pat_not);
     const bool new = mutt_regex_match(rx, bob_line);
@@ -174,7 +174,7 @@ static bool test_old_implementation(void)
   }
 
   {
-    struct Regex *rx = regex_new("!bob", DT_REGEX_ALLOW_NOT, buf);
+    struct Regex *rx = regex_new("!bob", D_REGEX_ALLOW_NOT, buf);
     const bool old = (rx && rx->regex) &&
                      !((regexec(rx->regex, not_bob_line, 0, NULL, 0) == 0) ^ rx->pat_not);
     const bool new = !mutt_regex_match(rx, not_bob_line);

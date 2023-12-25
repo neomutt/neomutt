@@ -47,7 +47,7 @@ static struct ConfigDef AutocryptVars[] = {
   { "autocrypt_acct_format", DT_STRING, IP "%4n %-30a %20p %10s", 0, NULL,
     "Format of the autocrypt account menu"
   },
-  { "autocrypt_dir", DT_PATH|DT_PATH_DIR, IP "~/.mutt/autocrypt", 0, NULL,
+  { "autocrypt_dir", DT_PATH|D_PATH_DIR, IP "~/.mutt/autocrypt", 0, NULL,
     "Location of autocrypt files, including the GPG keyring and SQLite database"
   },
   { "autocrypt_reply", DT_BOOL, true, 0, NULL,

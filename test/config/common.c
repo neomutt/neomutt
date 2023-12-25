@@ -140,7 +140,7 @@ void cs_dump_set(const struct ConfigSet *cs)
 
     const char *name = NULL;
 
-    if (he->type & DT_INHERITED)
+    if (he->type & D_INTERNAL_INHERITED)
     {
       struct Inheritance *inh = he->data;
       he = inh->parent;

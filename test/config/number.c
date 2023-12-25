@@ -39,10 +39,10 @@ static struct ConfigDef Vars[] = {
   { "Banana",     DT_NUMBER,                 99,  0, NULL,              },
   { "Cherry",     DT_NUMBER,                 33,  0, NULL,              },
   { "Damson",     DT_NUMBER,                 0,   0, NULL,              }, /* test_string_set */
-  { "Elderberry", DT_NUMBER|DT_NOT_NEGATIVE, 0,   0, NULL,              },
+  { "Elderberry", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,         },
   { "Fig",        DT_NUMBER,                 0,   0, NULL,              }, /* test_string_get */
   { "Guava",      DT_NUMBER,                 0,   0, NULL,              }, /* test_native_set */
-  { "Hawthorn",   DT_NUMBER|DT_NOT_NEGATIVE, 0,   0, NULL,              },
+  { "Hawthorn",   DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,         },
   { "Ilama",      DT_NUMBER,                 0,   0, NULL,              }, /* test_native_get */
   { "Jackfruit",  DT_NUMBER,                 99,  0, NULL,              }, /* test_reset */
   { "Kumquat",    DT_NUMBER,                 33,  0, validator_fail,    },
@@ -50,7 +50,7 @@ static struct ConfigDef Vars[] = {
   { "Mango",      DT_NUMBER,                 0,   0, validator_warn,    },
   { "Nectarine",  DT_NUMBER,                 0,   0, validator_fail,    },
   { "Olive",      DT_NUMBER,                 0,   0, NULL,              }, /* test_inherit */
-  { "Papaya",     DT_NUMBER | DT_ON_STARTUP, 1,   0, NULL,              }, /* startup */
+  { "Papaya",     DT_NUMBER | D_ON_STARTUP,  1,   0, NULL,              }, /* startup */
   { NULL },
 };
 // clang-format on

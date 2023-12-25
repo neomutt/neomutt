@@ -36,7 +36,7 @@
  */
 static struct ConfigDef PatternVars[] = {
   // clang-format off
-  { "external_search_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "external_search_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External search command"
   },
   { "pattern_format", DT_STRING, IP "%2n %-15e  %d", 0, NULL,

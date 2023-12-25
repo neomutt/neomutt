@@ -74,7 +74,7 @@ static struct ConfigDef MaildirVars[] = {
   { "maildir_check_cur", DT_BOOL, false, 0, NULL,
     "Check both 'new' and 'cur' directories for new mail"
   },
-  { "maildir_field_delimiter", DT_STRING|DT_NOT_EMPTY|DT_ON_STARTUP, IP ":", 0, maildir_field_delimiter_validator,
+  { "maildir_field_delimiter", DT_STRING|D_NOT_EMPTY|D_ON_STARTUP, IP ":", 0, maildir_field_delimiter_validator,
     "Field delimiter to be used for maildir email files (default is colon, recommended alternative is semi-colon)"
   },
   { "maildir_trash", DT_BOOL, false, 0, NULL,

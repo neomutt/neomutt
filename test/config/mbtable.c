@@ -51,7 +51,7 @@ static struct ConfigDef Vars[] = {
 { "Olive",      DT_MBTABLE, IP "olive",      0, validator_warn,    },
 { "Papaya",     DT_MBTABLE, IP "papaya",     0, validator_fail,    },
 { "Quince",     DT_MBTABLE, 0,               0, NULL,              }, /* test_inherit */
-{ "Raspberry",  DT_MBTABLE|DT_ON_STARTUP, IP "raspberry", 0, NULL, }, /* startup */
+{ "Raspberry",  DT_MBTABLE|D_ON_STARTUP, IP "raspberry", 0, NULL,  }, /* startup */
 { NULL },
 };
 // clang-format on

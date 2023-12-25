@@ -68,7 +68,7 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_folder_indent", DT_BOOL, false, 0, NULL,
     "(sidebar) Indent nested folders"
   },
-  { "sidebar_format", DT_STRING|DT_NOT_EMPTY, IP "%D%*  %n", 0, NULL,
+  { "sidebar_format", DT_STRING|D_NOT_EMPTY, IP "%D%*  %n", 0, NULL,
     "(sidebar) printf-like format string for the sidebar panel"
   },
   { "sidebar_indent_string", DT_STRING, IP "  ", 0, NULL,
@@ -95,7 +95,7 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_visible", DT_BOOL, false, 0, NULL,
     "(sidebar) Show the sidebar"
   },
-  { "sidebar_width", DT_NUMBER|DT_NOT_NEGATIVE, 30, 0, NULL,
+  { "sidebar_width", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 30, 0, NULL,
     "(sidebar) Width of the sidebar"
   },
   { NULL },

@@ -228,13 +228,13 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
   {
     const struct Slist *const c_attach_charset = cs_subset_slist(sub, "attach_charset");
     const struct Slist *const c_send_charset = cs_subset_slist(sub, "send_charset");
-    struct Slist *c_charset_slist = slist_parse(c_charset, SLIST_SEP_COLON);
+    struct Slist *c_charset_slist = slist_parse(c_charset, D_SLIST_SEP_COLON);
 
     const struct Slist *fchs = b->use_disp ?
                                    (c_attach_charset ? c_attach_charset : c_charset_slist) :
                                    c_charset_slist;
 
-    struct Slist *chs = slist_parse(mutt_param_get(&b->parameter, "charset"), SLIST_SEP_COLON);
+    struct Slist *chs = slist_parse(mutt_param_get(&b->parameter, "charset"), D_SLIST_SEP_COLON);
 
     if (c_charset && (chs || c_send_charset) &&
         (mutt_convert_file_from_to(fp, fchs, chs ? chs : c_send_charset, &fromcode,

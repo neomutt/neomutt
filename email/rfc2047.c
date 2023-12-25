@@ -635,7 +635,7 @@ void rfc2047_encode(char **pd, const char *specials, int col, const struct Slist
   struct Slist *fallback = NULL;
   if (!charsets)
   {
-    fallback = slist_parse("utf-8", SLIST_SEP_COLON);
+    fallback = slist_parse("utf-8", D_SLIST_SEP_COLON);
     charsets = fallback;
   }
 

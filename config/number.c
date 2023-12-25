@@ -63,7 +63,7 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  if ((num < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((num < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -125,7 +125,7 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  if ((value < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((value < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -179,7 +179,7 @@ static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((result < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -221,7 +221,7 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  if ((result < 0) && (cdef->type & DT_NOT_NEGATIVE))
+  if ((result < 0) && (cdef->type & D_INTEGER_NOT_NEGATIVE))
   {
     buf_printf(err, _("Option %s may not be negative"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;

@@ -134,7 +134,7 @@ static struct ConfigDef SendVars[] = {
   { "ask_x_comment_to", DT_BOOL, false, 0, NULL,
     "(nntp) Ask the user for the 'X-Comment-To' field before editing"
   },
-  { "attach_charset", DT_SLIST|SLIST_SEP_COLON|SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
+  { "attach_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
   },
   { "attribution_intro", DT_STRING, IP "On %d, %n wrote:", 0, NULL,
@@ -215,7 +215,7 @@ static struct ConfigDef SendVars[] = {
   { "forward_edit", DT_QUAD, MUTT_YES, 0, NULL,
     "Automatically start the editor when forwarding a message"
   },
-  { "forward_format", DT_STRING|DT_NOT_EMPTY, IP "[%a: %s]", 0, NULL,
+  { "forward_format", DT_STRING|D_NOT_EMPTY, IP "[%a: %s]", 0, NULL,
     "printf-like format string to control the subject when forwarding a message"
   },
   { "forward_references", DT_BOOL, false, 0, NULL,
@@ -239,7 +239,7 @@ static struct ConfigDef SendVars[] = {
   { "include", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Include a copy of the email that's being replied to"
   },
-  { "inews", DT_STRING|DT_COMMAND, 0, 0, simple_command_validator,
+  { "inews", DT_STRING|D_STRING_COMMAND, 0, 0, simple_command_validator,
     "(nntp) External command to post news articles"
   },
   { "me_too", DT_BOOL, false, 0, NULL,
@@ -248,7 +248,7 @@ static struct ConfigDef SendVars[] = {
   { "mime_forward_decode", DT_BOOL, false, 0, NULL,
     "Decode the forwarded message before attaching it"
   },
-  { "mime_type_query_command", DT_STRING|DT_COMMAND, 0, 0, NULL,
+  { "mime_type_query_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command to determine the MIME type of an attachment"
   },
   { "mime_type_query_first", DT_BOOL, false, 0, NULL,
@@ -287,7 +287,7 @@ static struct ConfigDef SendVars[] = {
   { "reverse_real_name", DT_BOOL, true, 0, NULL,
     "Set the 'From' from the full 'To' address the email was sent to"
   },
-  { "sendmail", DT_STRING|DT_COMMAND, IP SENDMAIL " -oem -oi", 0, simple_command_validator,
+  { "sendmail", DT_STRING|D_STRING_COMMAND, IP SENDMAIL " -oem -oi", 0, simple_command_validator,
     "External command to send email"
   },
   { "sendmail_wait", DT_NUMBER, 0, 0, NULL,
@@ -299,22 +299,22 @@ static struct ConfigDef SendVars[] = {
   { "sig_on_top", DT_BOOL, false, 0, NULL,
     "Insert the signature before the quoted text"
   },
-  { "signature", DT_PATH|DT_PATH_FILE, IP "~/.signature", 0, NULL,
+  { "signature", DT_PATH|D_PATH_FILE, IP "~/.signature", 0, NULL,
     "File containing a signature to append to all mail"
   },
-  { "smtp_authenticators", DT_SLIST|SLIST_SEP_COLON, 0, 0, smtp_auth_validator,
+  { "smtp_authenticators", DT_SLIST|D_SLIST_SEP_COLON, 0, 0, smtp_auth_validator,
     "(smtp) List of allowed authentication methods (colon-separated)"
   },
-  { "smtp_oauth_refresh_command", DT_STRING|DT_COMMAND|DT_SENSITIVE, 0, 0, NULL,
+  { "smtp_oauth_refresh_command", DT_STRING|D_STRING_COMMAND|D_SENSITIVE, 0, 0, NULL,
     "(smtp) External command to generate OAUTH refresh token"
   },
-  { "smtp_pass", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "smtp_pass", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(smtp) Password for the SMTP server"
   },
-  { "smtp_url", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "smtp_url", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(smtp) Url of the SMTP server"
   },
-  { "smtp_user", DT_STRING|DT_SENSITIVE, 0, 0, NULL,
+  { "smtp_user", DT_STRING|D_SENSITIVE, 0, 0, NULL,
     "(smtp) Username for the SMTP server"
   },
   { "use_8bit_mime", DT_BOOL, false, 0, NULL,
@@ -329,7 +329,7 @@ static struct ConfigDef SendVars[] = {
   { "user_agent", DT_BOOL, false, 0, NULL,
     "Add a 'User-Agent' header to outgoing mail"
   },
-  { "wrap_headers", DT_NUMBER|DT_NOT_NEGATIVE, 78, 0, wrapheaders_validator,
+  { "wrap_headers", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 78, 0, wrapheaders_validator,
     "Width to wrap headers in outgoing messages"
   },
   { "write_bcc", DT_BOOL, false, 0, NULL,
@@ -365,7 +365,7 @@ static struct ConfigDef SendVars[] = {
   { "reverse_realname",         DT_SYNONYM, IP "reverse_real_name",          IP "2021-03-21" },
   { "use_8bitmime",             DT_SYNONYM, IP "use_8bit_mime",              IP "2021-03-21" },
 
-  { "mime_subject", DT_DEPRECATED|DT_BOOL, 0, IP "2021-03-24" },
+  { "mime_subject", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2021-03-24" },
   { NULL },
   // clang-format on
 };

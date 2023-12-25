@@ -61,7 +61,7 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
   if (value && (value[0] == '\0'))
     value = NULL;
 
-  if (!value && (cdef->type & DT_NOT_EMPTY))
+  if (!value && (cdef->type & D_NOT_EMPTY))
   {
     buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
@@ -95,10 +95,10 @@ static int string_string_set(const struct ConfigSet *cs, void *var, struct Confi
   }
   else
   {
-    if (cdef->type & DT_INITIAL_SET)
+    if (cdef->type & D_INTERNAL_INITIAL_SET)
       FREE(&cdef->initial);
 
-    cdef->type |= DT_INITIAL_SET;
+    cdef->type |= D_INTERNAL_INITIAL_SET;
     cdef->initial = (intptr_t) mutt_str_dup(value);
   }
 
@@ -138,7 +138,7 @@ static int string_native_set(const struct ConfigSet *cs, void *var,
   if (str && (str[0] == '\0'))
     value = 0;
 
-  if ((value == 0) && (cdef->type & DT_NOT_EMPTY))
+  if ((value == 0) && (cdef->type & D_NOT_EMPTY))
   {
     buf_printf(err, _("Option %s may not be empty"), cdef->name);
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
