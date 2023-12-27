@@ -437,6 +437,9 @@ static struct ConfigDef MainVars[] = {
   { "attach_split", DT_BOOL, true, 0, NULL,
     "Save/print/pipe tagged messages individually"
   },
+  { "attachments_respect_umask", DT_BOOL, false, 0, NULL,
+    "Respect umask when saving attachments and when opening them in external programs"
+  },
   { "auto_edit", DT_BOOL, false, 0, NULL,
     "Skip the initial compose menu and edit the email"
   },

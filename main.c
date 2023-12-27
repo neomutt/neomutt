@@ -558,8 +558,6 @@ main
 
   init_locale();
 
-  umask(077);
-
   EnvList = envlist_init(envp);
   for (optind = 1; optind < double_dash;)
   {

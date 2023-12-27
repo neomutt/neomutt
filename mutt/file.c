@@ -49,6 +49,8 @@
 #include <unistd.h>
 #include <utime.h>
 #include <wchar.h>
+#include "config/lib.h"
+#include "core/lib.h"
 #include "file.h"
 #include "buffer.h"
 #include "charset.h"
@@ -577,6 +579,17 @@ int mutt_file_open(const char *path, uint32_t flags)
   struct Buffer safe_file = buf_make(0);
   struct Buffer safe_dir = buf_make(0);
 
+  mode_t current_mask;
+  if (cs_subset_bool(NeoMutt->sub, "attachments_respect_umask"))
+  {
+    // Can't read the value of it without setting it
+    mode_t current_umask = umask(077);
+    umask(current_umask);
+    // https://unix.stackexchange.com/a/287483/135796
+    current_mask = 0666 & ~current_umask;
+  }
+  else
+    current_mask = 0600;
   if (flags & O_EXCL)
   {
     buf_alloc(&safe_file, PATH_MAX);
@@ -588,7 +601,7 @@ int mutt_file_open(const char *path, uint32_t flags)
       goto cleanup;
     }
 
-    fd = open(buf_string(&safe_file), flags, 0600);
+    fd = open(buf_string(&safe_file), flags, current_mask);
     if (fd < 0)
     {
       rmdir(buf_string(&safe_dir));
@@ -604,7 +617,7 @@ int mutt_file_open(const char *path, uint32_t flags)
     }
   }
 
-  fd = open(path, flags & ~O_EXCL, 0600);
+  fd = open(path, flags & ~O_EXCL, current_mask);
   if (fd < 0)
     goto cleanup;
 

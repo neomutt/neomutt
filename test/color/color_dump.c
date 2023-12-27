@@ -32,6 +32,7 @@
 
 static struct ConfigDef Vars[] = {
   // clang-format off
+  { "attachments_respect_umask", DT_BOOL, false, 0, NULL, },
   { "color_directcolor", DT_BOOL, true, 0, NULL, },
   { NULL },
   // clang-format on
@@ -41,6 +42,8 @@ void test_color_dump(void)
 {
   // void color_dump(void);
 
+  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
+
   color_dump();
 
   curses_colors_init();
@@ -48,8 +51,6 @@ void test_color_dump(void)
   quoted_colors_init();
   regex_colors_init();
   simple_colors_init();
-
-  TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
   struct AttrColor ac = { 0 };
 
