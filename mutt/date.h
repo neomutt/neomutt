@@ -32,6 +32,7 @@
 #endif
 
 struct Buffer;
+struct timespec;
 
 /* theoretically time_t can be float but it is integer on most (if not all) systems */
 #define TIME_T_MAX ((((time_t) 1 << (sizeof(time_t) * 8 - 2)) - 1) * 2 + 1)

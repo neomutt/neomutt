@@ -44,6 +44,8 @@
 #include "regex3.h"
 #include "string2.h"
 
+struct timespec;
+
 /**
  * Weekdays - Day of the week (abbreviated)
  */

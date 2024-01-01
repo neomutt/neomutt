@@ -28,7 +28,6 @@
 #include "config.h"
 #include <string.h>
 #include <sys/stat.h>
-#include <time.h>
 #include <utime.h>
 #include "mutt/lib.h"
 #include "config/lib.h"

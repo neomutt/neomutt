@@ -90,7 +90,7 @@ void dummy_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef
 bool degenerate_tests(struct ConfigSet *cs)
 {
   const struct ConfigSetType CstDummy = {
-    DT_NUMBER, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
+    DT_REGEX, "dummy", NULL, NULL, NULL, NULL, NULL, NULL,
   };
 
   struct HashElem *he = cs_get_elem(cs, "Banana");
@@ -240,6 +240,8 @@ bool invalid_tests(struct ConfigSet *cs)
     return false;
   if (!TEST_CHECK(cs_he_string_minus_equals(cs, he, "42", NULL) != CSR_SUCCESS))
     return false;
+
+  he->type = DT_BOOL;
 
   return true;
 }
