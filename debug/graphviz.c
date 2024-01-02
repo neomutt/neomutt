@@ -603,7 +603,7 @@ void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 #ifndef GV_HIDE_CONFIG
   if (m->name)
   {
-    dot_config(fp, m->name, DT_INHERIT_MBOX, m->sub, links);
+    dot_config(fp, m->name, 0, m->sub, links);
     dot_add_link(links, m, m->name, "Mailbox Config", false, NULL);
   }
 #endif
@@ -819,7 +819,7 @@ void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
 #ifndef GV_HIDE_CONFIG
   if (a->name)
   {
-    dot_config(fp, a->name, DT_INHERIT_ACC, a->sub, links);
+    dot_config(fp, a->name, 0, a->sub, links);
     dot_add_link(links, a, a->name, "Config", false, NULL);
 
     char name[256] = { 0 };

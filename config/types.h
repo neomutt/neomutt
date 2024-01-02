@@ -55,8 +55,6 @@
 #define DT_MAILBOX       (1 << 9)  ///< Don't perform path expansions
 #define DT_SENSITIVE     (1 << 10) ///< Contains sensitive value, e.g. password
 #define DT_COMMAND       (1 << 11) ///< A command
-#define DT_INHERIT_ACC   (1 << 12) ///< Config item can be Account-specific
-#define DT_INHERIT_MBOX  (1 << 13) ///< Config item can be Mailbox-specific
 #define DT_PATH_DIR      (1 << 14) ///< Path is a directory
 #define DT_PATH_FILE     (1 << 15) ///< Path is a file
 
@@ -72,6 +70,5 @@
 #define DT_DEPRECATED     (1 << 27)  ///< Config item shouldn't be used any more
 #define DT_INHERITED      (1 << 28)  ///< Config item is inherited
 #define DT_INITIAL_SET    (1 << 29)  ///< Config item must have its initial value freed
-#define DT_DISABLED       (1 << 30)  ///< Config item is disabled
 
 #endif /* MUTT_CONFIG_TYPES_H */

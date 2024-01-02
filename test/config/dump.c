@@ -79,7 +79,7 @@ static struct ConfigDef Vars[] = {
   { "Hawthorn",   DT_ENUM,                           2,                           IP &MboxTypeDef,     NULL, },
   { "Ilama",      DT_MBTABLE,                        0,                           0,                   NULL, },
   { "Jackfruit",  DT_PATH|DT_PATH_FILE,              IP "/etc/passwd",            0,                   NULL, },
-  { "Kumquat",    DT_QUAD|DT_DISABLED,               0,                           0,                   NULL, },
+  { "Kumquat",    DT_QUAD,                           0,                           0,                   NULL, },
   { "Lemon",      DT_REGEX,                          0,                           0,                   NULL, },
   { "Mango",      DT_SORT,                           1,                           IP SortMangoMethods, NULL, },
   { "Nectarine",  DT_STRING|DT_SENSITIVE,            IP "nectarine",              0,                   NULL, },
