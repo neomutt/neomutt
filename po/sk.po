@@ -4635,21 +4635,23 @@ msgid "usage:"
 msgstr "Použitie:"
 
 #: main.c:249
+#, fuzzy
 msgid ""
-"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-Enx] [-e <príkaz>] [-F <konfigurácia>] [-H <súbor>] [-i <súbor>]\n"
+"  neomutt [-CEnx] [-e <príkaz>] [-F <konfigurácia>] [-H <súbor>] [-i <súbor>]\n"
 "          [-b <adresa>] [-c <adresa>] [-s <predmet>] [-a <súbor> [...] --]\n"
 "          <adresa> [...]"
 
 #: main.c:252
+#, fuzzy
 msgid ""
-"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-nx] [-e <príkaz>] [-F <konfigurácia>] [-b <adresa>] [-c <adresa>]\n"
+"  neomutt [-Cnx] [-e <príkaz>] [-F <konfigurácia>] [-b <adresa>] [-c <adresa>]\n"
 "          [-s <predmet>] [-a <súbor> [...] --] <adresa> [...] < správa"
 
 #: main.c:254
@@ -4732,6 +4734,11 @@ msgstr "  -B            Dávkový režim (nespustí sa užívateľské rozhranie
 #: main.c:275
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresa>   Určuje adresu pre utajenú kópiu (Bcc)"
+
+#: main.c:277
+#, fuzzy
+msgid "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"

@@ -4606,21 +4606,23 @@ msgid "usage:"
 msgstr "用法："
 
 #: main.c:249
+#, fuzzy
 msgid ""
-"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-Enx] [-e <命令>] [-F <配置>] [-H <草稿>] [-i <文件>]\n"
+"  neomutt [-CEnx] [-e <命令>] [-F <配置>] [-H <草稿>] [-i <文件>]\n"
 "          [-b <地址>] [-c <地址>] [-s <主题>] [-a <文件> [...] --]\n"
 "          <地址> [...]"
 
 #: main.c:252
+#, fuzzy
 msgid ""
-"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-nx] [-e <命令>] [-F <配置>] [-b <地址>] [-c <地址>]\n"
+"  neomutt [-Cnx] [-e <命令>] [-F <配置>] [-b <地址>] [-c <地址>]\n"
 "          [-s <主题>] [-a <文件> [...] --] <地址> [...] < 信件"
 
 #: main.c:254
@@ -4703,6 +4705,11 @@ msgstr "  -B            以批处理模式运行（不启动 ncurses 用户界�
 #: main.c:275
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <地址>     指定一个密送(BCC)收件人"
+
+#: main.c:277
+#, fuzzy
+msgid "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"

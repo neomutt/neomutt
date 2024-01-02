@@ -4632,21 +4632,23 @@ msgid "usage:"
 msgstr "użycie:"
 
 #: main.c:249
+#, fuzzy
 msgid ""
-"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-Enx] [-e <polecenie>] [-F <config>] [-H <wersja robocza>]\n"
+"  neomutt [-CEnx] [-e <polecenie>] [-F <config>] [-H <wersja robocza>]\n"
 "          [-i <plik>] [-b <adres>] [-c <adres>] [-s <temat>]\n"
 "          [-a <plik> [...] --] <adres> [...]"
 
 #: main.c:252
+#, fuzzy
 msgid ""
-"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-nx] [-e <polecenie>] [-F <config>] [-b <adres>] [-c <adres>]\n"
+"  neomutt [-Cnx] [-e <polecenie>] [-F <config>] [-b <adres>] [-c <adres>]\n"
 "          [-s <temat>] [-a <plik> [...] --] <adres> [...] < wiadomość"
 
 #: main.c:254
@@ -4731,6 +4733,11 @@ msgstr "  -B            Wykonaj w trybie wsadowym (nie uruchamiaj UI)"
 #: main.c:275
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  Wyszczególnij odbiorcę blind carbon copy (Bcc)"
+
+#: main.c:277
+#, fuzzy
+msgid "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
