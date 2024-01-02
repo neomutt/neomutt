@@ -43,6 +43,13 @@
 #define NEOMUTT_DIRECT_COLORS
 #endif
 
+// ncurses defined A_ITALIC in such a way, that we can't use #if on it.
+#ifdef A_ITALIC
+#define A_ITALIC_DEFINED
+#else
+#define A_ITALIC 0
+#endif
+
 #define ctrl(ch) ((ch) - '@')
 
 #ifdef KEY_ENTER
