@@ -40,6 +40,9 @@
 #include "gui/lib.h"
 #include "color/lib.h"
 #include "key/lib.h"
+#ifdef HAVE_SYS_PARAM_H
+#include <sys/param.h> // IWYU pragma: keep
+#endif
 
 /**
  * mw_multi_choice - Offer the user a multiple choice question - @ingroup gui_mw

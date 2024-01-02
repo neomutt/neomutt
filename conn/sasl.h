@@ -34,5 +34,6 @@ int  mutt_sasl_client_new(struct Connection *conn, sasl_conn_t **saslconn);
 void mutt_sasl_cleanup   (void);
 int  mutt_sasl_interact  (sasl_interact_t *interaction);
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn);
+int  mutt_sasl_start     (void);
 
 #endif /* MUTT_CONN_SASL_H */

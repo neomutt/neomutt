@@ -273,7 +273,7 @@ static int mutt_sasl_cb_log(void *context, int priority, const char *message)
  *
  * Call before doing an SASL exchange (initialises library if necessary).
  */
-static int mutt_sasl_start(void)
+int mutt_sasl_start(void)
 {
   static bool sasl_init = false;
 
