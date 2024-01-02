@@ -385,6 +385,7 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
     struct Buffer *token = buf_pool_get();
 
     buf_printf(&buf, "Reply-To: %s", p);
+    buf_seek(&buf, 0);
     parse_my_hdr(token, &buf, 0, &err); /* adds to UserHeader */
     buf_pool_release(&token);
   }
