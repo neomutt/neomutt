@@ -1911,6 +1911,9 @@ static int op_main_sync_folder(struct IndexSharedData *shared,
   priv->menu->max = shared->mailbox->vcount;
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
+  struct EventMailbox ev_m = { shared->mailbox };
+  notify_send(shared->mailbox->notify, NT_MAILBOX, NT_MAILBOX_CHANGE, &ev_m);
+
   return FR_SUCCESS;
 }
 
