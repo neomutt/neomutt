@@ -64,6 +64,7 @@ size_t         buf_addstr          (struct Buffer *buf, const char *s);
 size_t         buf_addstr_n        (struct Buffer *buf, const char *s, size_t len);
 int            buf_add_printf      (struct Buffer *buf, const char *fmt, ...)
                                     __attribute__((__format__(__printf__, 2, 3)));
+void           buf_join_str        (struct Buffer *str, const char *item, char sep);
 
 // Functions that INSERT into a Buffer
 size_t         buf_insert          (struct Buffer *buf, size_t offset, const char *s);

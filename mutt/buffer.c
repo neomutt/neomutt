@@ -708,3 +708,20 @@ void buf_lower(struct Buffer *buf)
 
   mutt_str_lower(buf->data);
 }
+
+/**
+ * buf_join_str - Join a buffer with a string separated by sep
+ * @param buf Buffer to append to
+ * @param str String to append
+ * @param sep separator between string item
+ */
+void buf_join_str(struct Buffer *buf, const char *str, char sep)
+{
+  if (!buf || !str)
+    return;
+
+  if ((buf_len(buf) > 0) && mutt_str_len(str))
+    buf_addch(buf, sep);
+
+  buf_addstr(buf, str);
+}

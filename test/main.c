@@ -113,6 +113,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_insert)                                           \
   NEOMUTT_TEST_ITEM(test_buf_istr_equal)                                       \
   NEOMUTT_TEST_ITEM(test_buf_is_empty)                                         \
+  NEOMUTT_TEST_ITEM(test_buf_join_str)                                         \
   NEOMUTT_TEST_ITEM(test_buf_len)                                              \
   NEOMUTT_TEST_ITEM(test_buf_lower)                                            \
   NEOMUTT_TEST_ITEM(test_buf_make)                                             \
@@ -580,7 +581,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_istrn_equal)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_istrn_rfind)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_adjust)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_append_item)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_asprintf)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoi)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_atol)                                        \

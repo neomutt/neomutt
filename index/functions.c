@@ -1363,12 +1363,12 @@ static int op_main_modify_tags(struct IndexSharedData *shared,
     goto done;
   }
 
-  char *tags = NULL;
+  struct Buffer *tags = buf_pool_get();
   if (!priv->tag_prefix)
-    tags = driver_tags_get_with_hidden(&shared->email->tags);
+    driver_tags_get_with_hidden(&shared->email->tags, tags);
   buf = buf_pool_get();
-  int rc2 = mx_tags_edit(m, tags, buf);
-  FREE(&tags);
+  int rc2 = mx_tags_edit(m, buf_string(tags), buf);
+  buf_pool_release(&tags);
   if (rc2 < 0)
   {
     goto done;

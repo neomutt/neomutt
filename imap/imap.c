@@ -923,7 +923,6 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
     return -1;
 
   char flags[1024] = { 0 };
-  char *tags = NULL;
   char uid[11] = { 0 };
 
   if (!compare_flags_for_copy(e))
@@ -953,12 +952,13 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
     if (imap_edata_get(e)->flags_system)
       mutt_str_cat(flags, sizeof(flags), imap_edata_get(e)->flags_system);
     /* set custom flags */
-    tags = driver_tags_get_with_hidden(&e->tags);
-    if (tags)
+    struct Buffer *tags = buf_pool_get();
+    driver_tags_get_with_hidden(&e->tags, tags);
+    if (!buf_is_empty(tags))
     {
-      mutt_str_cat(flags, sizeof(flags), tags);
-      FREE(&tags);
+      mutt_str_cat(flags, sizeof(flags), buf_string(tags));
     }
+    buf_pool_release(&tags);
   }
 
   mutt_str_remove_trailing_ws(flags);
@@ -1002,7 +1002,10 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
 
   /* server have now the updated flags */
   FREE(&imap_edata_get(e)->flags_remote);
-  imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
+  struct Buffer *flags_remote = buf_pool_get();
+  driver_tags_get_with_hidden(&e->tags, flags_remote);
+  imap_edata_get(e)->flags_remote = buf_strdup(flags_remote);
+  buf_pool_release(&flags_remote);
 
   if (e->deleted == imap_edata_get(e)->deleted)
     e->changed = false;
@@ -2316,7 +2319,10 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   mutt_debug(LL_DEBUG1, "NEW TAGS: %s\n", buf);
   driver_tags_replace(&e->tags, buf);
   FREE(&imap_edata_get(e)->flags_remote);
-  imap_edata_get(e)->flags_remote = driver_tags_get_with_hidden(&e->tags);
+  struct Buffer *flags_remote = buf_pool_get();
+  driver_tags_get_with_hidden(&e->tags, flags_remote);
+  imap_edata_get(e)->flags_remote = buf_strdup(flags_remote);
+  buf_pool_release(&flags_remote);
   imap_msg_save_hcache(m, e);
   return 0;
 }

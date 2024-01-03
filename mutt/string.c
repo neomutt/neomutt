@@ -335,31 +335,6 @@ char *mutt_str_replace(char **p, const char *s)
 }
 
 /**
- * mutt_str_append_item - Add string to another separated by sep
- * @param[out] str  String appended
- * @param[in]  item String to append
- * @param[in]  sep separator between string item
- *
- * Append a string to another, separating them by sep if needed.
- *
- * This function alters the pointer of the caller.
- */
-void mutt_str_append_item(char **str, const char *item, char sep)
-{
-  if (!str || !item)
-    return;
-
-  size_t sz = mutt_str_len(item);
-  size_t ssz = mutt_str_len(*str);
-
-  mutt_mem_realloc(str, ssz + (((ssz > 0) && (sep != '\0')) ? 1 : 0) + sz + 1);
-  char *p = *str + ssz;
-  if ((ssz > 0) && (sep != '\0'))
-    *p++ = sep;
-  memcpy(p, item, sz + 1);
-}
-
-/**
  * mutt_str_adjust - Shrink-to-fit a string
  * @param[out] ptr String to alter
  *

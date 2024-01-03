@@ -397,7 +397,7 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
   char fmt[128], tmp[1024];
-  char *p = NULL, *tags = NULL;
+  char *p = NULL;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   const bool threads = mutt_using_threads();
   int is_index = (flags & MUTT_FORMAT_INDEX);
@@ -766,19 +766,22 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
       break;
 
     case 'g':
-      tags = driver_tags_get_transformed(&e->tags);
+    {
+      struct Buffer *tags = buf_pool_get();
+      driver_tags_get_transformed(&e->tags, tags);
       if (!optional)
       {
         colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
-        mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, buf_string(tags));
         add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
       }
-      else if (!tags)
+      else if (buf_is_empty(tags))
       {
         optional = false;
       }
-      FREE(&tags);
+      buf_pool_release(&tags);
       break;
+    }
 
     case 'G':
     {
@@ -794,11 +797,12 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
-          tags = driver_tags_get_transformed_for(&e->tags, tag);
+          struct Buffer *tags = buf_pool_get();
+          driver_tags_get_transformed_for(&e->tags, tag, tags);
           colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAG);
-          mutt_format_s(buf + colorlen, buflen - colorlen, prec, NONULL(tags));
+          mutt_format_s(buf + colorlen, buflen - colorlen, prec, buf_string(tags));
           add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
-          FREE(&tags);
+          buf_pool_release(&tags);
         }
         src++;
       }
@@ -811,10 +815,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
         tag = mutt_hash_find(TagFormats, format);
         if (tag)
         {
-          tags = driver_tags_get_transformed_for(&e->tags, tag);
-          if (!tags)
+          struct Buffer *tags = buf_pool_get();
+          driver_tags_get_transformed_for(&e->tags, tag, tags);
+          if (buf_is_empty(tags))
             optional = false;
-          FREE(&tags);
+          buf_pool_release(&tags);
         }
       }
       break;
@@ -835,24 +840,25 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'J':
     {
       bool have_tags = true;
-      tags = driver_tags_get_transformed(&e->tags);
-      if (tags)
+      struct Buffer *tags = buf_pool_get();
+      driver_tags_get_transformed(&e->tags, tags);
+      if (!buf_is_empty(tags))
       {
         if (flags & MUTT_FORMAT_TREE)
         {
-          char *parent_tags = NULL;
+          struct Buffer *parent_tags = buf_pool_get();
           if (e->thread->prev && e->thread->prev->message)
           {
-            parent_tags = driver_tags_get_transformed(&e->thread->prev->message->tags);
+            driver_tags_get_transformed(&e->thread->prev->message->tags, parent_tags);
           }
-          if (!parent_tags && e->thread->parent && e->thread->parent->message)
+          if (buf_is_empty(parent_tags) && e->thread->parent &&
+              e->thread->parent->message)
           {
-            parent_tags = driver_tags_get_transformed(
-                &e->thread->parent->message->tags);
+            driver_tags_get_transformed(&e->thread->parent->message->tags, parent_tags);
           }
-          if (parent_tags && mutt_istr_equal(tags, parent_tags))
+          if (!buf_is_empty(parent_tags) && buf_istr_equal(tags, parent_tags))
             have_tags = false;
-          FREE(&parent_tags);
+          buf_pool_release(&parent_tags);
         }
       }
       else
@@ -865,11 +871,11 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
 
       colorlen = add_index_color(buf, buflen, flags, MT_COLOR_INDEX_TAGS);
       if (have_tags)
-        mutt_format_s(buf + colorlen, buflen - colorlen, prec, tags);
+        mutt_format_s(buf + colorlen, buflen - colorlen, prec, buf_string(tags));
       else
         mutt_format_s(buf + colorlen, buflen - colorlen, prec, "");
       add_index_color(buf + colorlen, buflen - colorlen, flags, MT_COLOR_INDEX);
-      FREE(&tags);
+      buf_pool_release(&tags);
       break;
     }
 

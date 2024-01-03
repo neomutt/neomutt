@@ -64,22 +64,19 @@ struct Tag *tag_new(void)
 }
 
 /**
- * driver_tags_getter - Get transformed tags
- * @param tl               List of tags
- * @param show_hidden      Show hidden tags
- * @param show_transformed Show transformed tags
- * @param filter           Match tags to this string
- * @retval ptr String list of tags
- *
- * Return a new allocated string containing tags separated by space
+ * driver_tags_getter - Get transformed tags separated by space
+ * @param[in]  tl               List of tags
+ * @param[in]  show_hidden      Show hidden tags
+ * @param[in]  show_transformed Show transformed tags
+ * @param[in]  filter           Match tags to this string
+ * @param[out] tags             String list of tags
  */
-static char *driver_tags_getter(struct TagList *tl, bool show_hidden,
-                                bool show_transformed, const char *filter)
+void driver_tags_getter(struct TagList *tl, bool show_hidden, bool show_transformed,
+                        const char *filter, struct Buffer *tags)
 {
   if (!tl)
-    return NULL;
+    return;
 
-  char *tags = NULL;
   struct Tag *tag = NULL;
   STAILQ_FOREACH(tag, tl, entries)
   {
@@ -88,12 +85,11 @@ static char *driver_tags_getter(struct TagList *tl, bool show_hidden,
     if (show_hidden || !tag->hidden)
     {
       if (show_transformed && tag->transformed)
-        mutt_str_append_item(&tags, tag->transformed, ' ');
+        buf_join_str(tags, tag->transformed, ' ');
       else
-        mutt_str_append_item(&tags, tag->name, ' ');
+        buf_join_str(tags, tag->name, ' ');
     }
   }
-  return tags;
 }
 
 /**
@@ -146,55 +142,48 @@ void driver_tags_free(struct TagList *tl)
 }
 
 /**
- * driver_tags_get_transformed - Get transformed tags
- * @param[in] tl List of tags
- * @retval ptr String list of tags
- *
- * Return a new allocated string containing all tags separated by space with
- * transformation
+ * driver_tags_get_transformed - Get transformed tags separated by space
+ * @param[in]  tl List of tags
+ * @param[out] tags String list of tags
  */
-char *driver_tags_get_transformed(struct TagList *tl)
+void driver_tags_get_transformed(struct TagList *tl, struct Buffer *tags)
 {
-  return driver_tags_getter(tl, false, true, NULL);
+  driver_tags_getter(tl, false, true, NULL, tags);
 }
 
 /**
- * driver_tags_get - Get tags
- * @param[in] tl List of tags
- * @retval ptr String list of tags
+ * driver_tags_get - Get tags all tags separated by space
+ * @param[in]  tl   List of tags
+ * @param[out] tags String list of tags
  *
- * Return a new allocated string containing all tags separated by space
+ * @note Hidden tags are not returned. Use driver_tags_get_with_hidden() for that.
  */
-char *driver_tags_get(struct TagList *tl)
+void driver_tags_get(struct TagList *tl, struct Buffer *tags)
 {
-  return driver_tags_getter(tl, false, false, NULL);
+  driver_tags_getter(tl, false, false, NULL, tags);
 }
 
 /**
- * driver_tags_get_with_hidden - Get tags with hiddens
- * @param[in] tl List of tags
- * @retval ptr String list of tags
- *
- * Return a new allocated string containing all tags separated by space even
- * the hiddens.
+ * driver_tags_get_with_hidden - Get all tags, also hidden ones, separated by space
+ * @param[in]  tl List of tags
+ * @param[out] tags String list of tags
  */
-char *driver_tags_get_with_hidden(struct TagList *tl)
+void driver_tags_get_with_hidden(struct TagList *tl, struct Buffer *tags)
 {
-  return driver_tags_getter(tl, true, false, NULL);
+  driver_tags_getter(tl, true, false, NULL, tags);
 }
 
 /**
- * driver_tags_get_transformed_for - Get transformed tag for a tag name from a header
+ * driver_tags_get_transformed_for - Get transformed tags for a tag name separated by space
  * @param[in] tl   List of tags
  * @param[in] name Tag to transform
- * @retval ptr String tag
+ * @param[out] tags String list of tags
  *
- * Return a new allocated string containing all tags separated by space even
- * the hiddens.
+ * @note Will also return hidden tags.
  */
-char *driver_tags_get_transformed_for(struct TagList *tl, const char *name)
+void driver_tags_get_transformed_for(struct TagList *tl, const char *name, struct Buffer *tags)
 {
-  return driver_tags_getter(tl, true, true, name);
+  driver_tags_getter(tl, true, true, name, tags);
 }
 
 /**

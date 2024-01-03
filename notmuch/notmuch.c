@@ -473,8 +473,8 @@ err:
 static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 {
   struct NmEmailData *edata = nm_edata_get(e);
-  char *new_tags = NULL;
-  char *old_tags = NULL;
+  struct Buffer *new_tags = buf_pool_get();
+  struct Buffer *old_tags = buf_pool_get();
 
   mutt_debug(LL_DEBUG2, "nm: tags update requested (%s)\n", edata->virtual_id);
 
@@ -485,31 +485,32 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
     if (!t || (*t == '\0'))
       continue;
 
-    mutt_str_append_item(&new_tags, t, ' ');
+    buf_join_str(new_tags, t, ' ');
   }
 
-  old_tags = driver_tags_get(&e->tags);
+  driver_tags_get(&e->tags, old_tags);
 
-  if (new_tags && old_tags && (mutt_str_equal(old_tags, new_tags)))
+  if (!buf_is_empty(new_tags) && !buf_is_empty(old_tags) &&
+      (buf_str_equal(old_tags, new_tags)))
   {
-    FREE(&old_tags);
-    FREE(&new_tags);
+    buf_pool_release(&new_tags);
+    buf_pool_release(&old_tags);
     mutt_debug(LL_DEBUG2, "nm: tags unchanged\n");
     return 1;
   }
-  FREE(&old_tags);
+  buf_pool_release(&old_tags);
 
   /* new version */
-  driver_tags_replace(&e->tags, new_tags);
-  FREE(&new_tags);
+  driver_tags_replace(&e->tags, buf_string(new_tags));
+  buf_reset(new_tags);
 
-  new_tags = driver_tags_get_transformed(&e->tags);
-  mutt_debug(LL_DEBUG2, "nm: new tags: '%s'\n", new_tags);
-  FREE(&new_tags);
+  driver_tags_get_transformed(&e->tags, new_tags);
+  mutt_debug(LL_DEBUG2, "nm: new tags transformed: '%s'\n", buf_string(new_tags));
+  buf_reset(new_tags);
 
-  new_tags = driver_tags_get(&e->tags);
-  mutt_debug(LL_DEBUG2, "nm: new tag transforms: '%s'\n", new_tags);
-  FREE(&new_tags);
+  driver_tags_get(&e->tags, new_tags);
+  mutt_debug(LL_DEBUG2, "nm: new tag: '%s'\n", buf_string(new_tags));
+  buf_pool_release(&new_tags);
 
   return 0;
 }
@@ -1402,9 +1403,10 @@ static int rename_filename(struct Mailbox *m, const char *old_file,
     notmuch_message_maildir_flags_to_tags(msg);
     update_email_tags(e, msg);
 
-    char *tags = driver_tags_get(&e->tags);
-    update_tags(msg, tags);
-    FREE(&tags);
+    struct Buffer *tags = buf_pool_get();
+    driver_tags_get(&e->tags, tags);
+    update_tags(msg, buf_string(tags));
+    buf_pool_release(&tags);
   }
 
   rc = 0;
@@ -1520,12 +1522,10 @@ int nm_read_entire_thread(struct Mailbox *m, struct Email *e)
   if (!id)
     goto done;
 
-  char *qstr = NULL;
-  mutt_str_append_item(&qstr, "thread:", '\0');
-  mutt_str_append_item(&qstr, id, '\0');
-
-  q = notmuch_query_create(db, qstr);
-  FREE(&qstr);
+  struct Buffer *qstr = buf_pool_get();
+  buf_printf(qstr, "thread:%s", id);
+  q = notmuch_query_create(db, buf_string(qstr));
+  buf_pool_release(&qstr);
   if (!q)
     goto done;
   apply_exclude_tags(q);
@@ -1930,9 +1930,10 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
     notmuch_message_maildir_flags_to_tags(msg);
     if (e)
     {
-      char *tags = driver_tags_get(&e->tags);
-      update_tags(msg, tags);
-      FREE(&tags);
+      struct Buffer *tags = buf_pool_get();
+      driver_tags_get(&e->tags, tags);
+      update_tags(msg, buf_string(tags));
+      buf_pool_release(&tags);
     }
     const char *const c_nm_record_tags = cs_subset_string(NeoMutt->sub, "nm_record_tags");
     if (c_nm_record_tags)
