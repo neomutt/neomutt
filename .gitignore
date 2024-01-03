@@ -47,6 +47,7 @@ hcache/hcversion.h
 *.tmp
 *~
 tags
+!tags/
 asan.*
 .env
 

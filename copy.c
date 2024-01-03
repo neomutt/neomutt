@@ -517,14 +517,16 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     }
   }
 #endif
-  char *tags = driver_tags_get(&e->tags);
-  if (tags && !(c_weed && mutt_matches_ignore("tags")))
+
+  struct Buffer *tags = buf_pool_get();
+  driver_tags_get(&e->tags, tags);
+  if (!buf_is_empty(tags) && !(c_weed && mutt_matches_ignore("tags")))
   {
     fputs("Tags: ", fp_out);
-    fputs(tags, fp_out);
+    fputs(buf_string(tags), fp_out);
     fputc('\n', fp_out);
   }
-  FREE(&tags);
+  buf_pool_release(&tags);
 
   const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");

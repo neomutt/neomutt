@@ -47,13 +47,13 @@ STAILQ_HEAD(TagList, Tag);
 void        tag_free(struct Tag **ptr);
 struct Tag *tag_new (void);
 
-void  driver_tags_free               (struct TagList *tl);
-char *driver_tags_get                (struct TagList *tl);
-char *driver_tags_get_transformed    (struct TagList *tl);
-char *driver_tags_get_transformed_for(struct TagList *tl, const char *name);
-char *driver_tags_get_with_hidden    (struct TagList *tl);
-bool  driver_tags_replace            (struct TagList *tl, const char *tags);
-void  driver_tags_add                (struct TagList *tl, char *tag);
+void driver_tags_free               (struct TagList *tl);
+void driver_tags_get                (struct TagList *tl, struct Buffer *tags);
+void driver_tags_get_transformed    (struct TagList *tl, struct Buffer *tags);
+void driver_tags_get_transformed_for(struct TagList *tl, const char *name, struct Buffer *tags);
+void driver_tags_get_with_hidden    (struct TagList *tl, struct Buffer *tags);
+bool driver_tags_replace            (struct TagList *tl, const char *tags);
+void driver_tags_add                (struct TagList *tl, char *tag);
 
 void driver_tags_init(void);
 void driver_tags_cleanup(void);

@@ -25,17 +25,40 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_driver_tags_get_transformed_for(void)
 {
-  // char *driver_tags_get_transformed_for(struct TagList *list, const char *name);
+  // char *driver_tags_get_transformed_for(struct TagList *list, const char *name, struct Buffer *tags);
+
+  struct Tags
+  {
+    struct Tag *tag;
+    const char *str;
+    char sep;
+    const char *result;
+  };
 
   {
-    struct TagList taghead = { 0 };
-    TEST_CHECK(!driver_tags_get_transformed_for(&taghead, NULL));
-  }
+    // clang-format off
+    struct Tag tags[] = {
+      { "foo",    "bar",    false },
+      { "foo",    "blubb",  false },
+      { "banana", "peach",  false },
+      { "foo",    "hidden", true  },
+    };
+    // clang-format on
 
-  {
-    TEST_CHECK(!driver_tags_get_transformed_for(NULL, "apple"));
+    struct TagList tl = STAILQ_HEAD_INITIALIZER(tl);
+
+    for (size_t i = 0; i < mutt_array_size(tags); i++)
+    {
+      STAILQ_INSERT_TAIL(&tl, &tags[i], entries);
+    }
+
+    struct Buffer *buf = buf_pool_get();
+    driver_tags_get_transformed_for(&tl, "foo", buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), "bar blubb hidden");
+    buf_pool_release(&buf);
   }
 }

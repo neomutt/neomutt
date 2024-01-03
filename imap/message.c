@@ -259,16 +259,22 @@ static char *msg_parse_flags(struct ImapHeader *h, char *s)
       ctmp = *s;
       *s = '\0';
 
+      struct Buffer *buf = buf_pool_get();
       if (is_system_keyword)
       {
         /* store other system flags as well (mainly \\Draft) */
-        mutt_str_append_item(&edata->flags_system, flag_word, ' ');
+        buf_addstr(buf, edata->flags_system);
+        buf_join_str(buf, flag_word, ' ');
+        edata->flags_system = buf_strdup(buf);
       }
       else
       {
         /* store custom flags as well */
-        mutt_str_append_item(&edata->flags_remote, flag_word, ' ');
+        buf_addstr(buf, edata->flags_remote);
+        buf_join_str(buf, flag_word, ' ');
+        edata->flags_remote = buf_strdup(buf);
       }
+      buf_pool_release(&buf);
 
       *s = ctmp;
     }
