@@ -711,6 +711,22 @@ static bool crypt_key_is_valid(struct CryptKeyInfo *k)
   return true;
 }
 
+/**
+ * crypt_keys_are_valid - Are all these keys valid?
+ * @param keys Set of keys to test
+ * @retval true All keys are valid
+ */
+bool crypt_keys_are_valid(struct CryptKeyInfo *keys)
+{
+  for (struct CryptKeyInfo *k = keys; k != NULL; k = k->next)
+  {
+    if (!crypt_key_is_valid(k))
+      return false;
+  }
+
+  return true;
+}
+
 // -----------------------------------------------------------------------------
 
 /**

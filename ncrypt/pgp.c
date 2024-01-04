@@ -1496,7 +1496,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        if (!oppenc_mode && c_crypt_confirm_hook)
+        if (!oppenc_mode && c_crypt_confirm_hook && isatty(STDIN_FILENO))
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid,
                    buf_string(p->mailbox));

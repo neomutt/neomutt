@@ -61,6 +61,7 @@
 #include "send/lib.h"
 #include "crypt.h"
 #include "globals.h"
+#include "gpgme_functions.h"
 #include "handler.h"
 #include "hook.h"
 #include "mutt_logging.h"
@@ -3325,9 +3326,21 @@ static struct CryptKeyInfo *crypt_getkeybystr(const char *p, KeyFlags abilities,
 
   if (matches)
   {
-    k = dlg_gpgme(matches, NULL, p, app, forced_valid);
-    crypt_key_free(&matches);
-    return k;
+    if (isatty(STDIN_FILENO))
+    {
+      k = dlg_gpgme(matches, NULL, p, app, forced_valid);
+
+      crypt_key_free(&matches);
+      return k;
+    }
+    else
+    {
+      if (crypt_keys_are_valid(matches))
+        return matches;
+
+      crypt_key_free(&matches);
+      return NULL;
+    }
   }
 
   return NULL;
@@ -3447,7 +3460,7 @@ static char *find_keys(const struct AddressList *addrlist, unsigned int app, boo
       {
         keyid = crypt_hook->data;
         enum QuadOption ans = MUTT_YES;
-        if (!oppenc_mode && c_crypt_confirm_hook)
+        if (!oppenc_mode && c_crypt_confirm_hook && isatty(STDIN_FILENO))
         {
           snprintf(buf, sizeof(buf), _("Use keyID = \"%s\" for %s?"), keyid,
                    buf_string(p->mailbox));
