@@ -38,6 +38,17 @@ void test_buf_copy(void)
 
   {
     struct Buffer *buf1 = buf_pool_get();
+
+    size_t len = buf_copy(buf1, NULL);
+
+    TEST_CHECK(len == 0);
+    TEST_CHECK(buf_is_empty(buf1) == true);
+
+    buf_pool_release(&buf1);
+  }
+
+  {
+    struct Buffer *buf1 = buf_pool_get();
     struct Buffer *buf2 = buf_pool_get();
 
     size_t len = buf_copy(buf2, buf1);

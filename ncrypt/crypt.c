@@ -1042,7 +1042,7 @@ void crypt_opportunistic_encrypt(struct Email *e)
 
   char *pgpkeylist = NULL;
 
-  crypt_get_keys(e, &pgpkeylist, 1);
+  crypt_get_keys(e, &pgpkeylist, true);
   if (pgpkeylist)
   {
     e->security |= SEC_ENCRYPT;

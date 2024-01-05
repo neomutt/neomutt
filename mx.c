@@ -36,7 +36,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
-#include "mutt/buffer.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"

@@ -2797,7 +2797,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       /* save the decrypted attachments */
       clear_content = e_templ->body;
 
-      if ((crypt_get_keys(e_templ, &pgpkeylist, 0) == -1) ||
+      if ((crypt_get_keys(e_templ, &pgpkeylist, false) == -1) ||
           (mutt_protect(e_templ, pgpkeylist, false) == -1))
       {
         if (mutt_istr_equal(e_templ->body->subtype, "mixed"))
