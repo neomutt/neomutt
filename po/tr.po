@@ -2060,7 +2060,7 @@ msgstr "İmzala"
 
 #: envelope/window.c:419
 msgid "None"
-msgstr "Hiçbiri"
+msgstr "Yok"
 
 #: envelope/window.c:429
 msgid " (inline PGP)"
