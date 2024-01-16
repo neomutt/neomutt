@@ -47,7 +47,7 @@ struct HeaderCache;
 
 extern const struct MxOps MxMaildirOps;
 
-int           maildir_check_empty      (struct Buffer *path);
+int           maildir_path_is_empty      (struct Buffer *path);
 struct Email *maildir_email_new        (void);
 void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);
 bool          maildir_msg_open_new     (struct Mailbox *m, struct Message *msg, const struct Email *e);

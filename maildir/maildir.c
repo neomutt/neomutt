@@ -1129,13 +1129,13 @@ cleanup:
 }
 
 /**
- * maildir_check_empty - Is the mailbox empty
+ * maildir_path_is_empty - Is the mailbox empty
  * @param path Mailbox to check
  * @retval 1 Mailbox is empty
  * @retval 0 Mailbox contains mail
  * @retval -1 Error
  */
-int maildir_check_empty(struct Buffer *path)
+int maildir_path_is_empty(struct Buffer *path)
 {
   DIR *dir = NULL;
   struct dirent *de = NULL;
@@ -1782,6 +1782,6 @@ const struct MxOps MxMaildirOps = {
   .tags_commit      = NULL,
   .path_probe       = maildir_path_probe,
   .path_canon       = maildir_path_canon,
-  .path_is_empty    = maildir_check_empty,
+  .path_is_empty    = maildir_path_is_empty,
   // clang-format on
 };
