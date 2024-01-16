@@ -27,35 +27,23 @@
  *
  * | File               | Description               |
  * | :----------------- | :------------------------ |
+ * | maildir/account.c  | @subpage maildir_account  |
  * | maildir/config.c   | @subpage maildir_config   |
  * | maildir/edata.c    | @subpage maildir_edata    |
+ * | maildir/mailbox.c  | @subpage maildir_mailbox  |
  * | maildir/maildir.c  | @subpage maildir_maildir  |
  * | maildir/mdata.c    | @subpage maildir_mdata    |
  * | maildir/mdemail.c  | @subpage maildir_mdemail  |
+ * | maildir/message.c  | @subpage maildir_message  |
+ * | maildir/path.c     | @subpage maildir_path     |
+ * | maildir/shared.c   | @subpage maildir_shared   |
  */
 
 #ifndef MUTT_MAILDIR_LIB_H
 #define MUTT_MAILDIR_LIB_H
 
-#include <stdbool.h>
-#include <stdio.h>
 #include "core/lib.h"
 
-struct Buffer;
-struct Email;
-struct HeaderCache;
-
 extern const struct MxOps MxMaildirOps;
-
-int           maildir_path_is_empty      (struct Buffer *path);
-struct Email *maildir_email_new        (void);
-void          maildir_gen_flags        (char *dest, size_t destlen, struct Email *e);
-bool          maildir_msg_open_new     (struct Mailbox *m, struct Message *msg, const struct Email *e);
-FILE *        maildir_open_find_message(const char *folder, const char *msg, char **newname);
-void          maildir_parse_flags      (struct Email *e, const char *path);
-bool          maildir_parse_message    (const char *fname, bool is_old, struct Email *e);
-bool          maildir_parse_stream     (FILE *fp, const char *fname, bool is_old, struct Email *e);
-bool          maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct HeaderCache *hc);
-bool          maildir_update_flags     (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
 
 #endif /* MUTT_MAILDIR_LIB_H */
