@@ -27,11 +27,14 @@
 #include <stdint.h>
 #include "core/lib.h"
 
-enum MxStatus      maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags);
+struct Email;
+
 enum MxStatus      maildir_mbox_check      (struct Mailbox *m);
+enum MxStatus      maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags);
 enum MxStatus      maildir_mbox_close      (struct Mailbox *m);
-bool               maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags);
 enum MxOpenReturns maildir_mbox_open       (struct Mailbox *m);
+bool               maildir_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags);
 enum MxStatus      maildir_mbox_sync       (struct Mailbox *m);
+void               maildir_parse_flags     (struct Email *e, const char *path);
 
 #endif /* MUTT_MAILDIR_MAILBOX_H */

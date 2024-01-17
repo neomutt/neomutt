@@ -30,6 +30,7 @@
  * | maildir/account.c  | @subpage maildir_account  |
  * | maildir/config.c   | @subpage maildir_config   |
  * | maildir/edata.c    | @subpage maildir_edata    |
+ * | maildir/hcache.c   | @subpage maildir_hcache   |
  * | maildir/mailbox.c  | @subpage maildir_mailbox  |
  * | maildir/maildir.c  | @subpage maildir_maildir  |
  * | maildir/mdata.c    | @subpage maildir_mdata    |

@@ -27,10 +27,13 @@
  */
 
 #include "config.h"
+#include <dirent.h>
 #include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <sys/stat.h>
+#include "mutt/lib.h"
 #include "path.h"
-#include "lib.h"
 #include "globals.h"
 
 // Mailbox API -----------------------------------------------------------------

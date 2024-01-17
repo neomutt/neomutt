@@ -36,12 +36,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "mutt.h"
-#include "lib.h"
-#include "account.h"
-#include "mailbox.h"
 #include "mdata.h"
-#include "message.h"
-#include "path.h"
 #include "protos.h"
 
 /**
@@ -64,32 +59,6 @@ mode_t maildir_umask(struct Mailbox *m)
 
   return 0777 & ~st.st_mode;
 }
-
-/**
- * maildir_hcache_key - Get the header cache key for an Email
- * @param e Email
- * @retval str Header cache key string
- */
-const char *maildir_hcache_key(struct Email *e)
-{
-  return e->path + 4;
-}
-
-#ifdef USE_HCACHE
-/**
- * maildir_hcache_keylen - Calculate the length of the Maildir path
- * @param fn File name
- * @retval num Length in bytes
- *
- * @note This length excludes the flags, which will vary
- */
-size_t maildir_hcache_keylen(const char *fn)
-{
-  const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
-  const char *p = strrchr(fn, c_maildir_field_delimiter);
-  return p ? (size_t) (p - fn) : mutt_str_len(fn);
-}
-#endif
 
 /**
  * maildir_canon_filename - Generate the canonical filename for a Maildir folder

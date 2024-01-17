@@ -27,30 +27,30 @@
  */
 
 #include "config.h"
+#include <dirent.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <inttypes.h>
 #include <limits.h>
 #include <stdio.h>
-#include <sys/fcntl.h>
+#include <string.h>
 #include <sys/stat.h>
-#include <time.h>
+#include <unistd.h>
 #include <utime.h>
+#include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "mutt.h"
 #include "message.h"
 #include "copy.h"
 #include "edata.h"
 #include "globals.h"
+#include "hcache.h"
 #include "mx.h"
 #include "shared.h"
 #include "sort.h"
-#ifdef USE_HCACHE
-#include "hcache/lib.h"
-#else
+
 struct HeaderCache;
-#endif
 
 int nm_update_filename(struct Mailbox *m, const char *old_file,
                        const char *new_file, struct Email *e);
@@ -318,14 +318,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
   {
     char path[PATH_MAX] = { 0 };
     snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
-#ifdef USE_HCACHE
-    if (hc)
-    {
-      const char *key = maildir_hcache_key(e);
-      size_t keylen = maildir_hcache_keylen(key);
-      hcache_delete_email(hc, key, keylen);
-    }
-#endif
+    maildir_hcache_delete(hc, e);
     unlink(path);
   }
   else if (e->changed || e->attach_del ||
@@ -335,14 +328,8 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
       return false;
   }
 
-#ifdef USE_HCACHE
-  if (hc && e->changed)
-  {
-    const char *key = maildir_hcache_key(e);
-    size_t keylen = maildir_hcache_keylen(key);
-    hcache_store_email(hc, key, keylen, e, 0);
-  }
-#endif
+  if (e->changed)
+    maildir_hcache_store(hc, e);
 
   return true;
 }
@@ -629,13 +616,10 @@ int maildir_msg_close(struct Mailbox *m, struct Message *msg)
 int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
-#ifdef USE_HCACHE
-  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
-  const char *key = maildir_hcache_key(e);
-  int keylen = maildir_hcache_keylen(key);
-  rc = hcache_store_email(hc, key, keylen, e, 0);
-  hcache_close(&hc);
-#endif
+
+  struct HeaderCache *hc = maildir_hcache_open(m);
+  rc = maildir_hcache_store(hc, e);
+  maildir_hcache_close(&hc);
+
   return rc;
 }
