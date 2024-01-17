@@ -77,7 +77,7 @@ void maildir_gen_flags(char *dest, size_t destlen, struct Email *e)
 
   struct MaildirEmailData *edata = maildir_edata_get(e);
   if (edata)
-    flags = edata->maildir_flags;
+    flags = edata->custom_flags;
 
   /* The maildir specification requires that all files in the cur
    * subdirectory have the :unique string appended, regardless of whether

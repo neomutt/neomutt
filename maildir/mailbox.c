@@ -93,8 +93,8 @@ void maildir_parse_flags(struct Email *e, const char *path)
   {
     p += 3;
 
-    mutt_str_replace(&edata->maildir_flags, p);
-    q = edata->maildir_flags;
+    mutt_str_replace(&edata->custom_flags, p);
+    q = edata->custom_flags;
 
     while (*p)
     {
@@ -131,8 +131,8 @@ void maildir_parse_flags(struct Email *e, const char *path)
     }
   }
 
-  if (q == edata->maildir_flags)
-    FREE(&edata->maildir_flags);
+  if (q == edata->custom_flags)
+    FREE(&edata->custom_flags);
   else if (q)
     *q = '\0';
 }
