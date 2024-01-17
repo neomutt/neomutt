@@ -28,7 +28,6 @@
 
 #include "config.h"
 #include "account.h"
-#include "lib.h"
 
 // Mailbox API -----------------------------------------------------------------
 

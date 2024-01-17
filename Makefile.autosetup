@@ -544,7 +544,9 @@ LIBMAILDIROBJS= maildir/account.o maildir/config.o maildir/edata.o \
 		maildir/mailbox.o maildir/maildir.o maildir/mdata.o \
 		maildir/mdemail.o maildir/message.o maildir/path.o \
 		maildir/shared.o
-
+@if USE_HCACHE
+LIBMAILDIROBJS+=maildir/hcache.o
+@endif
 CLEANFILES+=	$(LIBMAILDIR) $(LIBMAILDIROBJS)
 ALLOBJS+=	$(LIBMAILDIROBJS)
 

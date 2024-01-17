@@ -26,16 +26,15 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include "core/lib.h"
 
 struct Buffer;
 struct Email;
 struct HeaderCache;
+struct Mailbox;
+struct Message;
 
 // These are needed by Maildir
 void          maildir_canon_filename      (struct Buffer *dest, const char *src);
-const char *  maildir_hcache_key          (struct Email *e);
-size_t        maildir_hcache_keylen       (const char *fn);
 mode_t        maildir_umask               (struct Mailbox *m);
 bool          maildir_update_flags        (struct Mailbox *m, struct Email *e_old, struct Email *e_new);
 
