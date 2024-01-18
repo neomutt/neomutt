@@ -436,10 +436,29 @@ size_t buf_strcpy_n(struct Buffer *buf, const char *s, size_t len)
  */
 void buf_dequote_comment(struct Buffer *buf)
 {
-  if (!buf)
+  if (!buf || !buf->data || (buf->dsize == 0))
     return;
 
-  mutt_str_dequote_comment(buf->data);
+  buf_seek(buf, 0);
+
+  char *s = buf->data;
+  for (; *buf->dptr; buf->dptr++)
+  {
+    if (*buf->dptr == '\\')
+    {
+      if (!*++buf->dptr)
+        break; /* error? */
+      *s++ = *buf->dptr;
+    }
+    else if (*buf->dptr != '\"')
+    {
+      if (s != buf->dptr)
+        *s = *buf->dptr;
+      s++;
+    }
+  }
+  *s = '\0';
+
   buf_fix_dptr(buf);
 }
 

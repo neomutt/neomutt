@@ -591,7 +591,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_cat)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_coll)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_copy)                                        \
-  NEOMUTT_TEST_ITEM(test_mutt_str_dequote_comment)                             \
   NEOMUTT_TEST_ITEM(test_mutt_str_dup)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_equal)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \

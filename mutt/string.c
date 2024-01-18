@@ -698,37 +698,6 @@ size_t mutt_str_lws_len(const char *s, size_t n)
 }
 
 /**
- * mutt_str_dequote_comment - Un-escape characters in an email address comment
- * @param str String to be un-escaped
- *
- * @note The string is changed in-place
- */
-void mutt_str_dequote_comment(char *str)
-{
-  if (!str)
-    return;
-
-  char *w = str;
-
-  for (; *str; str++)
-  {
-    if (*str == '\\')
-    {
-      if (!*++str)
-        break; /* error? */
-      *w++ = *str;
-    }
-    else if (*str != '\"')
-    {
-      if (w != str)
-        *w = *str;
-      w++;
-    }
-  }
-  *w = '\0';
-}
-
-/**
  * mutt_str_equal - Compare two strings
  * @param a First string
  * @param b Second string
