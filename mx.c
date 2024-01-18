@@ -36,6 +36,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "mutt/buffer.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "email/lib.h"
@@ -1381,7 +1382,7 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
     {
       if (((buf_at(path, 2) == '/') || (buf_at(path, 2) == '\0')))
       {
-        mutt_str_inline_replace(path->data, path->dsize, 2, LastFolder);
+        buf_inline_replace(path, 0, 2, LastFolder);
       }
     }
     else if ((buf_at(path, 0) == '+') || (buf_at(path, 0) == '='))
@@ -1390,11 +1391,11 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
       if ((folder_len > 0) && (folder[folder_len - 1] != '/'))
       {
         path->data[0] = '/';
-        mutt_str_inline_replace(path->data, path->dsize, 0, folder);
+        buf_inline_replace(path, 0, 0, folder);
       }
       else
       {
-        mutt_str_inline_replace(path->data, path->dsize, 1, folder);
+        buf_inline_replace(path, 0, 1, folder);
       }
     }
     else if ((buf_at(path, 1) == '/') || (buf_at(path, 1) == '\0'))
@@ -1402,29 +1403,29 @@ int mx_path_canon(struct Buffer *path, const char *folder, enum MailboxType *typ
       if (buf_at(path, 0) == '!')
       {
         const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
-        mutt_str_inline_replace(path->data, path->dsize, 1, c_spool_file);
+        buf_inline_replace(path, 0, 1, c_spool_file);
       }
       else if (buf_at(path, 0) == '-')
       {
-        mutt_str_inline_replace(path->data, path->dsize, 1, LastFolder);
+        buf_inline_replace(path, 0, 1, LastFolder);
       }
       else if (buf_at(path, 0) == '<')
       {
         const char *const c_record = cs_subset_string(NeoMutt->sub, "record");
-        mutt_str_inline_replace(path->data, path->dsize, 1, c_record);
+        buf_inline_replace(path, 0, 1, c_record);
       }
       else if (buf_at(path, 0) == '>')
       {
         const char *const c_mbox = cs_subset_string(NeoMutt->sub, "mbox");
-        mutt_str_inline_replace(path->data, path->dsize, 1, c_mbox);
+        buf_inline_replace(path, 0, 1, c_mbox);
       }
       else if (buf_at(path, 0) == '^')
       {
-        mutt_str_inline_replace(path->data, path->dsize, 1, CurrentFolder);
+        buf_inline_replace(path, 0, 1, CurrentFolder);
       }
       else if (buf_at(path, 0) == '~')
       {
-        mutt_str_inline_replace(path->data, path->dsize, 1, HomeDir);
+        buf_inline_replace(path, 0, 1, HomeDir);
       }
     }
     else if (buf_at(path, 0) == '@')

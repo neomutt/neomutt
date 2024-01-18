@@ -129,16 +129,16 @@ void dot_type_number(FILE *fp, const char *name, int num)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-void dot_type_string_escape(char *buf, size_t buflen)
+void dot_type_string_escape(struct Buffer *buf)
 {
-  for (; buf[0]; buf++)
+  for (int i = buf_len(buf) - 1; i > 0; i--)
   {
-    if (buf[0] == '<')
-      mutt_str_inline_replace(buf, buflen, 1, "&lt;");
-    else if (buf[0] == '>')
-      mutt_str_inline_replace(buf, buflen, 1, "&gt;");
-    else if (buf[0] == '&')
-      mutt_str_inline_replace(buf, buflen, 1, "&amp;");
+    if (buf_at(buf, i) == '<')
+      buf_inline_replace(buf, i, 1, "&lt;");
+    else if (buf_at(buf, i) == '>')
+      buf_inline_replace(buf, i, 1, "&gt;");
+    else if (buf_at(buf, 1) == '&')
+      buf_inline_replace(buf, i, 1, "&amp;");
   }
 }
 
@@ -147,24 +147,23 @@ void dot_type_string(FILE *fp, const char *name, const char *str, bool force)
   if ((!str || (str[0] == '\0')) && !force)
     return;
 
-  char buf[1024] = "[NULL]";
+  struct Buffer *buf = buf_new(str);
 
-  if (str)
-  {
-    mutt_str_copy(buf, str, sizeof(buf));
-    dot_type_string_escape(buf, sizeof(buf));
-  }
+  if (buf_len(buf) > 0)
+    dot_type_string_escape(buf);
 
-  bool quoted = ((buf[0] != '[') && (buf[0] != '*'));
+  bool quoted = ((buf_at(buf, 0) != '[') && (buf_at(buf, 0) != '*'));
 
   fprintf(fp, "\t\t<tr>\n");
   fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", name);
   fprintf(fp, "\t\t\t<td border=\"0\">=</td>\n");
   if (quoted)
-    fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">\"%s\"</td>\n", buf);
+    fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">\"%s\"</td>\n", buf_string(buf));
   else
-    fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", buf);
+    fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", buf_string(buf));
   fprintf(fp, "\t\t</tr>\n");
+
+  buf_free(&buf);
 }
 
 #ifndef GV_HIDE_MDATA

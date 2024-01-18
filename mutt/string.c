@@ -816,33 +816,6 @@ const char *mutt_str_getenv(const char *name)
 }
 
 /**
- * mutt_str_inline_replace - Replace the beginning of a string
- * @param buf    Buffer to modify
- * @param buflen Length of buffer
- * @param xlen   Length of string to overwrite
- * @param rstr   Replacement string
- * @retval true Success
- *
- * String (`XX<OOOOOO>......`, 16, 2, `RRRR`) becomes `RRRR<OOOOOO>....`
- */
-bool mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr)
-{
-  if (!buf || !rstr || (xlen >= buflen))
-    return false;
-
-  size_t slen = mutt_str_len(buf + xlen);
-  size_t rlen = mutt_str_len(rstr);
-
-  if ((slen + rlen) >= buflen)
-    return false;
-
-  memmove(buf + rlen, buf + xlen, slen + 1);
-  memmove(buf, rstr, rlen);
-
-  return true;
-}
-
-/**
  * mutt_istr_remall - Remove all occurrences of substring, ignoring case
  * @param str     String containing the substring
  * @param target  Target substring for removal

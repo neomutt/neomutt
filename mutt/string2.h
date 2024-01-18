@@ -59,7 +59,6 @@ int         mutt_str_coll(const char *a, const char *b);
 const char *mutt_str_find_word(const char *src);
 const char *mutt_str_getenv(const char *name);
 void        mutt_str_hyphenate(char *buf, size_t buflen, const char *str);
-bool        mutt_str_inline_replace(char *buf, size_t buflen, size_t xlen, const char *rstr);
 bool        mutt_str_is_ascii(const char *str, size_t len);
 size_t      mutt_str_len(const char *a);
 char *      mutt_str_lower(char *str);
