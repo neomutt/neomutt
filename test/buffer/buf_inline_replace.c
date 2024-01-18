@@ -52,6 +52,7 @@ void test_buf_inline_replace(void)
     { "XXXXbanana", 0, 4, "OOOOOOOO",  "OOOOOOOObanana"  },
     { "XXXXbanana", 0, 4, "OOOOOOOOO", "OOOOOOOOObanana" },
     { "11XX222",    2, 2, "YYYY",      "11YYYY222"       },
+    { "11XX222",    2, 2, "",          "11222"           },
   };
   // clang-format on
 
