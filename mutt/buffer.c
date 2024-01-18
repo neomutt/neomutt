@@ -766,7 +766,7 @@ void buf_inline_replace(struct Buffer *buf, size_t pos, size_t len, const char *
   if (new_size > buf->dsize)
     buf_alloc(buf, new_size);
 
-  memmove(buf->data + pos + rlen, buf->data + pos + len, olen - len);
+  memmove(buf->data + pos + rlen, buf->data + pos + len, olen - pos - len);
   memmove(buf->data + pos, str, rlen);
 
   buf_fix_dptr(buf);
