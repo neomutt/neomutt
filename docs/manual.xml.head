@@ -13172,7 +13172,7 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
 
       <sect2 id="account-cmd-support">
         <title>Support</title>
-        <para><emphasis role="bold">Since:</emphasis> NeoMutt 2022-xx-yy</para>
+        <para><emphasis role="bold">Since:</emphasis> NeoMutt 2022-05-16</para>
         <para><emphasis role="bold">Dependencies:</emphasis> None</para>
       </sect2>
 

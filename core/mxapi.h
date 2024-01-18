@@ -57,7 +57,7 @@ typedef uint8_t CheckStatsFlags;                ///< Flags for mutt_mailbox_chec
 
 /**
  * enum MxStatus - Return values from mbox_check(), mbox_check_stats(),
- * mbox_snc(), and mbox_close()
+ * mbox_sync(), and mbox_close()
  */
 enum MxStatus
 {

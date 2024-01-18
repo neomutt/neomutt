@@ -30,7 +30,7 @@
 #include "history/lib.h"
 
 /**
- * enum EnterRedrawFlags - Redraw flags for mutt_enter_string_full()
+ * enum EnterRedrawFlags - Redraw flags for mw_get_field()
  */
 enum EnterRedrawFlags
 {

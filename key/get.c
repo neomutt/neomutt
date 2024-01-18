@@ -426,7 +426,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
        *
        * Originally this returned -1, however that results in an unbuffered
        * username or password prompt being aborted.  Returning OP_NULL allows
-       * mutt_enter_string_full() to display the keybinding pressed instead.
+       * mw_get_field() to display the keybinding pressed instead.
        *
        * It may be unexpected for a macro's keybinding to be returned,
        * but less so than aborting the prompt.  */

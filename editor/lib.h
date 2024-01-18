@@ -23,7 +23,7 @@
 /**
  * @page lib_editor Edit a string
  *
- * Select a Mailbox from a list
+ * Edit a string
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
