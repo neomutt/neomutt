@@ -110,6 +110,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_fix_dptr)                                         \
   NEOMUTT_TEST_ITEM(test_buf_free)                                             \
   NEOMUTT_TEST_ITEM(test_buf_init)                                             \
+  NEOMUTT_TEST_ITEM(test_buf_inline_replace)                                   \
   NEOMUTT_TEST_ITEM(test_buf_insert)                                           \
   NEOMUTT_TEST_ITEM(test_buf_istr_equal)                                       \
   NEOMUTT_TEST_ITEM(test_buf_is_empty)                                         \
@@ -596,7 +597,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_getenv)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_hyphenate)                                   \
-  NEOMUTT_TEST_ITEM(test_mutt_str_inline_replace)                              \
   NEOMUTT_TEST_ITEM(test_mutt_str_is_ascii)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_is_email_wsp)                                \
   NEOMUTT_TEST_ITEM(test_mutt_str_len)                                         \

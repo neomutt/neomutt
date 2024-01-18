@@ -744,3 +744,28 @@ void buf_join_str(struct Buffer *buf, const char *str, char sep)
 
   buf_addstr(buf, str);
 }
+
+/*
+ * buf_inline_replace - Replace part of a string
+ * @param buf   Buffer to modify
+ * @param pos   Starting position of string to overwrite
+ * @param len   Length of string to overwrite
+ * @param str   Replacement string
+ *
+ * String (`11XXXOOOOOO`, 2, 3, `YYYY`) becomes `11YYYY000000`
+ */
+void buf_inline_replace(struct Buffer *buf, size_t pos, size_t len, const char *str)
+{
+  if (!buf || !str)
+    return;
+
+  size_t olen = buf->dsize;
+  size_t rlen = mutt_str_len(str);
+
+  buf_alloc(buf, buf->dsize - len + rlen + 1);
+
+  memmove(buf->data + pos + rlen, buf->data + pos + len, olen - len);
+  memmove(buf->data + pos, str, rlen);
+
+  buf_fix_dptr(buf);
+}

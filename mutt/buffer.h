@@ -80,6 +80,7 @@ size_t         buf_strcpy_n        (struct Buffer *buf, const char *s, size_t le
 size_t         buf_substrcpy       (struct Buffer *buf, const char *beg, const char *end);
 void           buf_dequote_comment (struct Buffer *buf);
 void           buf_lower           (struct Buffer *buf);
+void           buf_inline_replace  (struct Buffer *buf, size_t pos, size_t len, const char *str);
 
 /**
  * buf_string - Convert a buffer to a const char * "string"
