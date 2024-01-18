@@ -737,6 +737,8 @@ struct Mailbox *change_folder_notmuch(struct Menu *menu, char *buf, int buflen, 
 
   struct Mailbox *m_query = mx_path_resolve(buf);
   change_folder_mailbox(menu, m_query, oldcount, shared, read_only);
+  if (!shared->mailbox_view)
+    mailbox_free(&m_query);
   return m_query;
 }
 #endif
