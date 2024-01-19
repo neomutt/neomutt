@@ -1045,7 +1045,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
     return NULL;
   }
 
-  msg = mutt_mem_calloc(1, sizeof(struct Message));
+  msg = message_new();
   msg->write = true;
 
   if (e)
@@ -1085,7 +1085,7 @@ struct Message *mx_msg_open_new(struct Mailbox *m, const struct Email *e, MsgOpe
   }
   else
   {
-    FREE(&msg);
+    message_free(&msg);
   }
 
   return msg;
