@@ -722,39 +722,6 @@ bool mutt_istr_equal(const char *a, const char *b)
 }
 
 /**
- * mutt_strn_rfind - Find last instance of a substring
- * @param haystack        String to search through
- * @param haystack_length Length of the string
- * @param needle          String to find
- * @retval NULL String not found
- * @retval ptr  Location of string
- *
- * Return the last instance of needle in the haystack, or NULL.
- * Like strstr(), only backwards, and for a limited haystack length.
- */
-const char *mutt_strn_rfind(const char *haystack, size_t haystack_length, const char *needle)
-{
-  if (!haystack || (haystack_length == 0) || !needle)
-    return NULL;
-
-  int needle_length = strlen(needle);
-  const char *haystack_end = haystack + haystack_length - needle_length;
-
-  for (const char *p = haystack_end; p >= haystack; --p)
-  {
-    for (size_t i = 0; i < needle_length; i++)
-    {
-      if (p[i] != needle[i])
-        goto next;
-    }
-    return p;
-
-  next:;
-  }
-  return NULL;
-}
-
-/**
  * mutt_str_is_ascii - Is a string ASCII (7-bit)?
  * @param str String to examine
  * @param len Length of string to examine

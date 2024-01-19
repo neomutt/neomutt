@@ -88,6 +88,7 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_new.o \
 		  test/buffer/buf_printf.o \
 		  test/buffer/buf_reset.o \
+		  test/buffer/buf_rfind.o \
 		  test/buffer/buf_startswith.o \
 		  test/buffer/buf_strcpy.o \
 		  test/buffer/buf_strcpy_n.o \
@@ -567,7 +568,6 @@ STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_strn_copy.o \
 		  test/string/mutt_strn_dup.o \
 		  test/string/mutt_strn_equal.o \
-		  test/string/mutt_strn_rfind.o \
 		  test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_asprintf.o \
 		  test/string/mutt_str_cat.o \
