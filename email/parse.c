@@ -1190,7 +1190,7 @@ struct Envelope *mutt_rfc822_read_header(FILE *fp, struct Email *e, bool user_hd
   {
     LOFF_T line_start_loc = loc;
     size_t len = mutt_rfc822_read_line(fp, line);
-    if (buf_len(line) == 0)
+    if (buf_is_empty(line))
     {
       break;
     }

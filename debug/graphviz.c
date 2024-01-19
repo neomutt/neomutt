@@ -149,7 +149,7 @@ void dot_type_string(FILE *fp, const char *name, const char *str, bool force)
 
   struct Buffer *buf = buf_new(str);
 
-  if (buf_len(buf) > 0)
+  if (!buf_is_empty(buf))
     dot_type_string_escape(buf);
 
   bool quoted = ((buf_at(buf, 0) != '[') && (buf_at(buf, 0) != '*'));
