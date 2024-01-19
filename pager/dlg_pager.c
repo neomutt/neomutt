@@ -53,7 +53,6 @@
 #include "sidebar/lib.h"
 #include "display.h"
 #include "functions.h"
-#include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "mview.h"

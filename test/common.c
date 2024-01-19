@@ -42,8 +42,6 @@ struct PagerView;
 bool StartupComplete = true;
 
 char *HomeDir = NULL;
-int SigInt = 0;
-int SigWinch = 0;
 char *ShortHostname = "example";
 bool MonitorContextChanged = false;
 

@@ -24,7 +24,6 @@
 #define MUTT_GLOBALS_H
 
 #include "config.h"
-#include <signal.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "menu/lib.h"
@@ -50,10 +49,6 @@ extern struct ListHead MimeLookupList;       ///< List of mime types that that s
 extern struct ListHead Muttrc;               ///< List of config files to read
 extern struct ListHead TempAttachmentsList;  ///< List of temporary files for displaying attachments
 extern struct ListHead UserHeader;           ///< List of custom headers to add to outgoing emails
-
-/* flags for received signals */
-extern SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
-extern SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
 
 extern enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
 

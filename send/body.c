@@ -32,7 +32,6 @@
 #include "email/lib.h"
 #include "body.h"
 #include "ncrypt/lib.h"
-#include "globals.h"
 #include "header.h"
 #include "muttlib.h"
 
