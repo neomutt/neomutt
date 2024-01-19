@@ -92,14 +92,13 @@ done:
  * mutt_nm_query_complete - Complete to the nearest notmuch tag
  * @param cd      Completion Data
  * @param buf     Buffer for the result
- * @param pos     Cursor position in the buffer
  * @param numtabs Number of times the user has hit 'tab'
  * @retval true  Success, a match
  * @retval false Error, no match
  *
- * Complete the nearest "tag:"-prefixed string previous to pos.
+ * Complete the last "tag:"-prefixed string.
  */
-bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int pos, int numtabs)
+bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int numtabs)
 {
   char *pt = buf->data;
   int spaces;
@@ -107,7 +106,7 @@ bool mutt_nm_query_complete(struct CompletionData *cd, struct Buffer *buf, int p
   SKIPWS(pt);
   spaces = pt - buf->data;
 
-  pt = (char *) mutt_strn_rfind((char *) buf, pos, "tag:");
+  pt = (char *) buf_rfind(buf, "tag:");
   if (pt)
   {
     pt += 4;
@@ -218,8 +217,7 @@ int complete_nm_query(struct EnterWindowData *wdata, int op)
 
   int rc = FR_SUCCESS;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-  size_t len = buf_len(wdata->buffer);
-  if (!mutt_nm_query_complete(wdata->cd, wdata->buffer, len, wdata->tabs))
+  if (!mutt_nm_query_complete(wdata->cd, wdata->buffer, wdata->tabs))
     rc = FR_ERROR;
 
   replace_part(wdata->state, 0, buf_string(wdata->buffer));

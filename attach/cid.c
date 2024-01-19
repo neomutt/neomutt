@@ -188,7 +188,7 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
 
   /* ensure tmpfile has the same file extension as filename otherwise an
    * HTML file may be opened as plain text by the viewer */
-  const char *suffix = mutt_strn_rfind(buf_string(filename), buf_len(filename), ".");
+  const char *suffix = buf_rfind(filename, ".");
   if (suffix && *(suffix++))
     buf_mktemp_pfx_sfx(tmpfile, "neomutt", suffix);
   else

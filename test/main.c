@@ -124,6 +124,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_pool_release)                                     \
   NEOMUTT_TEST_ITEM(test_buf_printf)                                           \
   NEOMUTT_TEST_ITEM(test_buf_reset)                                            \
+  NEOMUTT_TEST_ITEM(test_buf_rfind)                                            \
   NEOMUTT_TEST_ITEM(test_buf_startswith)                                       \
   NEOMUTT_TEST_ITEM(test_buf_strcpy)                                           \
   NEOMUTT_TEST_ITEM(test_buf_strcpy_n)                                         \
@@ -614,7 +615,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_strn_copy)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_strn_dup)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_strn_equal)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_strn_rfind)                                      \
                                                                                \
   /* tags */                                                                   \
   NEOMUTT_TEST_ITEM(test_driver_tags_free)                                     \

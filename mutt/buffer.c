@@ -771,3 +771,34 @@ void buf_inline_replace(struct Buffer *buf, size_t pos, size_t len, const char *
 
   buf_fix_dptr(buf);
 }
+
+/**
+ * buf_rfind - Find last instance of a substring
+ * @param buf   Buffer to search through
+ * @param str   String to find
+ * @retval NULL String not found
+ * @retval ptr  Location of string
+ *
+ * Return the last instance of str in the buffer, or NULL.
+ */
+const char *buf_rfind(const struct Buffer *buf, const char *str)
+{
+  if (buf_is_empty(buf) || !str)
+    return NULL;
+
+  int len = strlen(str);
+  const char *end = buf->data + buf->dsize - len;
+
+  for (const char *p = end; p >= buf->data; --p)
+  {
+    for (size_t i = 0; i < len; i++)
+    {
+      if (p[i] != str[i])
+        goto next;
+    }
+    return p;
+
+  next:;
+  }
+  return NULL;
+}

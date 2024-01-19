@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for mutt_strn_rfind()
+ * Test code for buf_rfind()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,36 +26,31 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 
-struct RstrnTest
+struct RfindTest
 {
   const char *str;
-  size_t len;
+  bool success;
   size_t offset;
 };
 
-void test_mutt_strn_rfind(void)
+void test_buf_rfind(void)
 {
-  // const char *mutt_strn_rfind(const char *haystack, size_t haystack_length, const char *needle);
-
-  {
-    TEST_CHECK(mutt_strn_rfind(NULL, 10, "apple") == NULL);
-    TEST_CHECK(mutt_strn_rfind("apple", 0, "apple") == NULL);
-    TEST_CHECK(mutt_strn_rfind("apple", 10, NULL) == NULL);
-    TEST_CHECK(mutt_strn_rfind("", 1, "apple") == NULL);
-    TEST_CHECK(mutt_strn_rfind("text", 1, "apple") == NULL);
-    TEST_CHECK(mutt_strn_rfind("textapple", 8, "apple") == NULL);
-  }
+  // const char *buf_rfind(const struct Buffer *buf, const char *str);
 
   // clang-format off
-  struct RstrnTest rstrn_tests[] =
+  struct RfindTest rstrn_tests[] =
   {
-    { "appleTEXT",      9,  0 },
-    { "TEXTappleTEXT",  13, 4 },
-    { "TEXTapple",      9,  4 },
+    { NULL,             false, 0 },
+    { "",               false, 0 },
+    { "text",           false, 0 },
 
-    { "TEXTappleapple", 14, 9 },
-    { "appleTEXTapple", 14, 9 },
-    { "appleappleTEXT", 14, 5 },
+    { "appleTEXT",      true, 0  },
+    { "TEXTappleTEXT",  true, 4  },
+    { "TEXTapple",      true, 4  },
+
+    { "TEXTappleapple", true, 9  },
+    { "appleTEXTapple", true, 9  },
+    { "appleappleTEXT", true, 5  },
   };
   // clang-format on
 
@@ -64,11 +59,21 @@ void test_mutt_strn_rfind(void)
 
     for (size_t i = 0; i < mutt_array_size(rstrn_tests); i++)
     {
-      struct RstrnTest *t = &rstrn_tests[i];
-      TEST_CASE_("'%s'", t->str);
+      struct Buffer *buf = NULL;
 
-      const char *result = mutt_strn_rfind(t->str, t->len, find);
-      TEST_CHECK(result == (t->str + t->offset));
+      struct RfindTest *t = &rstrn_tests[i];
+      if (t->str)
+        buf = buf_new(t->str);
+
+      TEST_CASE_("buf_rfind('%s', '%s') == %d", t->str, find, t->offset);
+
+      const char *result = buf_rfind(buf, find);
+      if (t->success)
+        TEST_CHECK(result == buf->data + t->offset);
+      else
+        TEST_CHECK(result == NULL);
+
+      buf_free(&buf);
     }
   }
 }

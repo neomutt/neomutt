@@ -84,7 +84,6 @@ char *      mutt_strn_cat(char *dest, size_t l, const char *s, size_t sl);
 char *      mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize);
 char *      mutt_strn_dup(const char *begin, size_t l);
 bool        mutt_strn_equal(const char *a, const char *b, size_t num);
-const char *mutt_strn_rfind(const char *haystack, size_t haystack_length, const char *needle);
 
 /* case-insensitive flavours */
 int         mutt_istr_cmp(const char *a, const char *b);
