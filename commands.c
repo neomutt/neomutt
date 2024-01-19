@@ -349,7 +349,7 @@ static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
 {
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   buf_expand_path(buf);
-  if (buf_len(buf) == 0)
+  if (buf_is_empty(buf))
   {
     if (HomeDir)
     {

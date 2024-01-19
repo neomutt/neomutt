@@ -739,7 +739,7 @@ void buf_join_str(struct Buffer *buf, const char *str, char sep)
   if (!buf || !str)
     return;
 
-  if ((buf_len(buf) > 0) && mutt_str_len(str))
+  if (!buf_is_empty(buf) && mutt_str_len(str))
     buf_addch(buf, sep);
 
   buf_addstr(buf, str);

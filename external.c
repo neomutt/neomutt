@@ -417,7 +417,7 @@ void mutt_pipe_message(struct Mailbox *m, struct EmailArray *ea)
     goto cleanup;
   }
 
-  if (buf_len(buf) == 0)
+  if (buf_is_empty(buf))
     goto cleanup;
 
   buf_expand_path(buf);
@@ -857,7 +857,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
 
   /* This is an undocumented feature of ELM pointed out to me by Felix von
    * Leitner <leitner@prz.fu-berlin.de> */
-  if (buf_len(&LastSaveFolder) == 0)
+  if (buf_is_empty(&LastSaveFolder))
     buf_alloc(&LastSaveFolder, PATH_MAX);
   if (mutt_str_equal(buf_string(buf), "."))
     buf_copy(buf, &LastSaveFolder);

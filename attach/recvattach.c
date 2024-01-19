@@ -735,7 +735,7 @@ void mutt_pipe_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     goto cleanup;
   }
 
-  if (buf_len(buf) == 0)
+  if (buf_is_empty(buf))
     goto cleanup;
 
   buf_expand_path(buf);
