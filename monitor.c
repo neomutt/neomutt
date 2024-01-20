@@ -48,7 +48,7 @@
 /// Set to true when a monitored file has changed
 bool MonitorFilesChanged = false;
 /// Set to true when the current mailbox has changed
-bool MonitorContextChanged = false;
+bool MonitorCurMboxChanged = false;
 
 /// Inotify file descriptor
 static int INotifyFd = -1;
@@ -61,7 +61,7 @@ static size_t PollFdsLen = 0;
 /// Array of monitored file descriptors
 static struct pollfd *PollFds = NULL;
 /// Monitor file descriptor of the current mailbox
-static int MonitorContextDescriptor = -1;
+static int MonitorCurMboxDescriptor = -1;
 
 #define INOTIFY_MASK_DIR (IN_MOVED_TO | IN_ATTRIB | IN_CLOSE_WRITE | IN_ISDIR)
 #define INOTIFY_MASK_FILE IN_CLOSE_WRITE
@@ -300,8 +300,8 @@ static int monitor_handle_ignore(int desc)
       mutt_debug(LL_DEBUG3, "cleanup watch (implicitly removed) - descriptor=%d\n", desc);
     }
 
-    if (MonitorContextDescriptor == desc)
-      MonitorContextDescriptor = new_desc;
+    if (MonitorCurMboxDescriptor == desc)
+      MonitorCurMboxDescriptor = new_desc;
 
     if (new_desc == -1)
     {
@@ -453,8 +453,8 @@ int mutt_monitor_poll(void)
                            event->wd, event->mask);
                 if (event->mask & IN_IGNORED)
                   monitor_handle_ignore(event->wd);
-                else if (event->wd == MonitorContextDescriptor)
-                  MonitorContextChanged = true;
+                else if (event->wd == MonitorCurMboxDescriptor)
+                  MonitorCurMboxChanged = true;
                 ptr += sizeof(struct inotify_event) + event->len;
               }
             }
@@ -486,7 +486,7 @@ int mutt_monitor_add(struct Mailbox *m)
   if (desc != RESOLVE_RES_OK_NOTEXISTING)
   {
     if (!m && (desc == RESOLVE_RES_OK_EXISTING))
-      MonitorContextDescriptor = info.monitor->desc;
+      MonitorCurMboxDescriptor = info.monitor->desc;
     rc = (desc == RESOLVE_RES_OK_EXISTING) ? 0 : -1;
     goto cleanup;
   }
@@ -503,7 +503,7 @@ int mutt_monitor_add(struct Mailbox *m)
 
   mutt_debug(LL_DEBUG3, "inotify_add_watch descriptor=%d for '%s'\n", desc, info.path);
   if (!m)
-    MonitorContextDescriptor = desc;
+    MonitorCurMboxDescriptor = desc;
 
   monitor_new(&info, desc);
 
@@ -529,8 +529,8 @@ int mutt_monitor_remove(struct Mailbox *m)
 
   if (!m)
   {
-    MonitorContextDescriptor = -1;
-    MonitorContextChanged = false;
+    MonitorCurMboxDescriptor = -1;
+    MonitorCurMboxChanged = false;
   }
 
   if (monitor_resolve(&info, m) != RESOLVE_RES_OK_EXISTING)

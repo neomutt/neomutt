@@ -585,9 +585,9 @@ static enum MxStatus maildir_check(struct Mailbox *m)
    * noticed during the SAME group of mtime stat updates.  To work around
    * the problem, don't update the stat times for a monitor caused check. */
 #ifdef USE_INOTIFY
-  if (MonitorContextChanged)
+  if (MonitorCurMboxChanged)
   {
-    MonitorContextChanged = false;
+    MonitorCurMboxChanged = false;
   }
   else
 #endif
