@@ -59,7 +59,7 @@
 extern char **environ;
 #endif
 
-static SIG_ATOMIC_VOLATILE_T SigAlrm; ///< true after SIGALRM is received
+static volatile sig_atomic_t SigAlrm; ///< true after SIGALRM is received
 
 ARRAY_HEAD(SendmailArgArray, const char *);
 

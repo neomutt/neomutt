@@ -60,8 +60,8 @@ static sig_handler_t ExitHandler = mutt_sig_exit_handler;
 /// Function to handle SIGSEGV (11) signals
 static sig_handler_t SegvHandler = mutt_sig_exit_handler;
 
-SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
-SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
+volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
+volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
 
 /**
  * mutt_sig_empty_handler - Dummy signal handler

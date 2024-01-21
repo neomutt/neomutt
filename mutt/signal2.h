@@ -24,11 +24,11 @@
 #define MUTT_MUTT_SIGNAL2_H
 
 #include "config.h"
-#include <signal.h> // IWYU pragma: keep
+#include <signal.h>
 #include <stdbool.h>
 
-extern SIG_ATOMIC_VOLATILE_T SigInt;   ///< true after SIGINT is received
-extern SIG_ATOMIC_VOLATILE_T SigWinch; ///< true after SIGWINCH is received
+extern volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
+extern volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
 
 /**
  * @defgroup sig_handler_api Signal Handling API

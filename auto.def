@@ -373,9 +373,7 @@ if {1} {
 
 ###############################################################################
 # signal-related checks
-# Let's always use volatile for sig_atomic_t
 cc-check-includes signal.h
-define SIG_ATOMIC_VOLATILE_T "volatile sig_atomic_t"
 
 cc-with {-includes "signal.h unistd.h"} {
   cc-check-decls sys_siglist
@@ -1200,7 +1198,6 @@ set bare_rep {
   ICONV_CONST
   LOFF_T
   OFF_T_FMT
-  SIG_ATOMIC_VOLATILE_T
 }
 set str_rep {
   PACKAGE_VERSION
