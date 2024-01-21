@@ -857,7 +857,8 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_DELETED:
       return pat->pat_not ^ e->deleted;
     case MUTT_PAT_MESSAGE:
-      return pat->pat_not ^ ((EMSG(e) >= pat->min) && (EMSG(e) <= pat->max));
+      return pat->pat_not ^
+             ((email_msgno(e) >= pat->min) && (email_msgno(e) <= pat->max));
     case MUTT_PAT_DATE:
       if (pat->dynamic)
         match_update_dynamic_date(pat);

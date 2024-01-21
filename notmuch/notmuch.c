@@ -65,7 +65,7 @@
 #include "adata.h"
 #include "commands.h"
 #include "edata.h"
-#include "maildir/shared.h" // IWYU pragma: keep
+#include "maildir/shared.h"
 #include "mdata.h"
 #include "mutt_thread.h"
 #include "mx.h"

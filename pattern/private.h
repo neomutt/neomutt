@@ -25,6 +25,7 @@
 
 #include <stdbool.h>
 #include "mutt/lib.h"
+#include "email/lib.h"
 #include "lib.h"
 
 struct MailboxView;
@@ -126,7 +127,15 @@ enum RangeSide
   RANGE_S_RIGHT, ///< Right side of range
 };
 
-#define EMSG(e) (((e)->msgno) + 1)
+/**
+ * email_msgno - Helper to get the Email's message number
+ * @param e Email
+ * @retval num Message number
+ */
+static inline int email_msgno(struct Email *e)
+{
+  return e->msgno + 1;
+}
 
 #define MUTT_MAXRANGE -1
 
