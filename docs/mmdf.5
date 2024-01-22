@@ -23,14 +23,14 @@ mailbox is a text file containing an arbitrary number of e-mail messages.
 Each message consists of a postmark, followed by an e-mail message formatted
 according to \fBRFC822\fP / \fBRFC2822\fP, followed by a postmark. The file
 format is line-oriented. Lines are separated by line feed characters (ASCII
-10). A postmark line consists of the four characters "^A^A^A^A" (Control-A;
+10). A postmark line consists of the four characters "\[ha]A\[ha]A\[ha]A\[ha]A" (Control-A;
 ASCII 1).
 .TP
 Example of a \fBMMDF\fP mailbox holding two mails:
 .RS
 .nf
 .sp
-^A^A^A^A
+\[ha]A\[ha]A\[ha]A\[ha]A
 .br
 From: example@example.com
 .br
@@ -43,9 +43,9 @@ Subject: test
 >From what I learned about the MMDF-format:
 .br
 .br
-^A^A^A^A
+\[ha]A\[ha]A\[ha]A\[ha]A
 .br
-^A^A^A^A
+\[ha]A\[ha]A\[ha]A\[ha]A
 .br
 From: example@example.com
 .br
@@ -57,7 +57,7 @@ Subject: test 2
 .br
 bar
 .br
-^A^A^A^A
+\[ha]A\[ha]A\[ha]A\[ha]A
 .fi
 .RE
 .PP
