@@ -564,7 +564,7 @@ while processing attachments to determine their MIME type.
 The full NeoMutt manual in HTML, PDF or plain text format.
 .
 .TP
-.IR "/tmp/neomutt-XXXX-XXXX-XXXX"
+.IR /tmp/neomutt- XXXX-XXXX-XXXX
 Temporary files created by NeoMutt.
 For custom locations
 look at description of the environment variable \fBTMPDIR\fP above.
