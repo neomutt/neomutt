@@ -19,17 +19,19 @@
 .\"
 .TH pgpewrap 1 "2013-05" Unix "User Manuals"
 .SH NAME
-pgpewrap \- NeoMutt command line munging tool
+pgpewrap
+\-
+NeoMutt command line munging tool
 
 .SH SYNTAX
 \fBpgpewrap\fP [ \fBflags\fP ] \-\- \fBprefix\fP [ \fBrecipients\fP ]
 
 .SH DESCRIPTION
-This is a little C program which does some command line munging: The
-first argument is a command to be executed.  When \fBpgpewrap\fP
-encounters a "\-\-" (dash\-dash) argument, it will interpret the next
-argument as a prefix which is put in front of all following
-arguments.
+This is a little C program which does some command line munging:
+The first argument is a command to be executed.
+When \fBpgpewrap\fP encounters a "\-\-" (dash\-dash) argument,
+it will interpret the next argument
+as a prefix which is put in front of all following arguments.
 
 .SH EXAMPLE
 
@@ -39,6 +41,7 @@ will execute:
 
         pgpe file -r a -r b -r c
 
-This script is needed with PGP 5 and with GPG, since their command
-line interfaces can't be properly served by neomutt's format mechanism.
+This script is needed with PGP 5 and with GPG,
+since their command line interfaces
+can't be properly served by neomutt's format mechanism.
 
