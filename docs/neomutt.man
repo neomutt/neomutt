@@ -46,9 +46,9 @@ The NeoMutt Mail User Agent (MUA)
 .RB [ \-s\~\c
 .IR subject ]
 .RB [ \-a\~\c
-.IR file \~[ .\|.\|.\& ]]
+.IR file ]\~.\|.\|.\&
 .RB [ \-\- ]
-.IR address \~[ .\|.\|.\& ]
+.IR address \~.\|.\|.
 .YS
 .
 .SY neomutt
@@ -64,9 +64,9 @@ The NeoMutt Mail User Agent (MUA)
 .RB [ \-s\~\c
 .IR subject ]
 .RB [ \-a\~\c
-.IR file \~[ .\|.\|.\& ]]
+.IR file ]\~.\|.\|.\&
 .RB [ \-\- ]
-.IR address \~[ .\|.\|.\& ]
+.IR address \~.\|.\|.\&
 .BI <\~ message
 .YS
 .
