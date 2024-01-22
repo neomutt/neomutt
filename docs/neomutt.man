@@ -144,7 +144,6 @@ neomutt \- The NeoMutt Mail User Agent (MUA)
 .\" --------------------------------------------------------------------
 .SH DESCRIPTION
 .\" --------------------------------------------------------------------
-.PP
 NeoMutt is a small but very powerful text based program for reading and sending
 electronic mail under Unix operating systems, including support for color
 terminals, MIME, OpenPGP, and a threaded sorting mode.
@@ -178,7 +177,6 @@ addresses after the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .BI "neomutt \-a " "image.jpg *.png " "\-\- " "address1 address2 "
 .EE
 .RE
-.IP
 .
 .TP
 .BI \-B
@@ -440,7 +438,6 @@ described in \fIFILES\fP section below. This variable defaults to
 .\" --------------------------------------------------------------------
 .SS "\s-1Configuration files\s0"
 .\" --------------------------------------------------------------------
-.PP
 NeoMutt will read just the first found configuration file of system-wide and
 user-specific category, from the list below and in that order.
 .
@@ -495,12 +492,10 @@ r c li .
 l s s .
 \0\fB*\fP) Note the case of the filename
 .TE
-.PP
 .ad
 .
 .SS "\s-1Other relevant files\s0"
 .\" --------------------------------------------------------------------
-.PP
 Unless otherwise stated, NeoMutt will process all grouped files in the order
 (from top to bottom) as they are specified in that listing.
 .
@@ -543,13 +538,11 @@ process ID and/or other random data.
 .\" --------------------------------------------------------------------
 .SH BUGS
 .\" --------------------------------------------------------------------
-.PP
 See issue tracker at <https://github.com/neomutt/neomutt/issues>.
 .
 .\" --------------------------------------------------------------------
 .SH NO WARRANTIES
 .\" --------------------------------------------------------------------
-.PP
 This program is distributed in the hope that it will be useful, but WITHOUT ANY
 WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
 A PARTICULAR PURPOSE. See the GNU General Public License for more details.
@@ -557,7 +550,6 @@ A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 .\" --------------------------------------------------------------------
 .SH SEE ALSO
 .\" --------------------------------------------------------------------
-.PP
 .\" sorted by category and name
 .BR gettext (1),
 .BR msmtp (1),
@@ -584,7 +576,6 @@ For further NeoMutt information:
 .\" --------------------------------------------------------------------
 .SH AUTHOR
 .\" --------------------------------------------------------------------
-.PP
 Michael Elkins, and others. Use <neomutt-devel@\:neomutt.org> to contact the
 developers.
 .
