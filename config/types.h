@@ -25,7 +25,7 @@
 
 #include <stdint.h>
 
-enum config_type
+enum ConfigType
 {
   DT_ADDRESS,     ///< e-mail address
   DT_BOOL,        ///< boolean option
@@ -45,9 +45,9 @@ enum config_type
   DT_END,
 };
 
-#define DTYPE(t) ((enum config_type)((t) & 0xF))
+#define DTYPE(t) ((enum ConfigType)((t) & 0xF))
 
-enum config_type_field
+enum ConfigTypeField
 {
   D_B_ON_STARTUP = 4,              ///< May only be set at startup
   D_B_NOT_EMPTY,                   ///< Empty strings are not allowed
