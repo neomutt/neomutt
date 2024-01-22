@@ -78,7 +78,7 @@ The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
-.BR \-B
+.B \-B
 .YS
 .
 .SY neomutt
@@ -100,7 +100,7 @@ The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
-.BI \-G
+.B \-G
 .YS
 .
 .SY neomutt
@@ -114,7 +114,7 @@ The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
-.BI \-p
+.B \-p
 .YS
 .
 .SY neomutt
@@ -128,14 +128,14 @@ The NeoMutt Mail User Agent (MUA)
 .OP \-n
 .OP \-e command
 .OP \-F config
-.BI \-Z
+.B \-Z
 .YS
 .
 .SY neomutt
 .OP \-n
 .OP \-e command
 .OP \-F config
-.BI \-z
+.B \-z
 .OP \-f mailbox
 .YS
 .
@@ -167,7 +167,7 @@ and/or PDF format.
 .SH OPTIONS
 .\" --------------------------------------------------------------------
 .TP
-.BI \-\-
+.B \-\-
 Special argument forces NeoMutt to stop option parsing and
 treat remaining arguments as \fIaddress\fPes even if they start with a dash
 .
@@ -188,7 +188,7 @@ Add any addresses after the \(aq\fB\-\-\fP\(aq argument, e.g.:
 .RE
 .
 .TP
-.BI \-B
+.B \-B
 Run in batch mode (do not start the ncurses UI)
 .
 .TP
@@ -200,17 +200,17 @@ Specify a blind carbon copy (Bcc) recipient
 Specify a carbon copy (Cc) recipient
 .
 .TP
-.BI \-D
+.B \-D
 Dump all configuration variables as
 .RB \(aq name = value \(aq
 pairs to stdout
 .
 .TP
-.BI \-D\ \-O
+.B \-D\ \-O
 Like \fB\-D\fP, but show one-liner documentation
 .
 .TP
-.BI \-D\ \-S
+.B \-D\ \-S
 Like \fB\-D\fP, but hide the value of sensitive variables
 .
 .TP
@@ -224,7 +224,7 @@ to log the early startup process
 (before reading any configuration and hence $debug_level and $debug_file)
 .
 .TP
-.BI \-E
+.B \-E
 Edit \fIdraft\fP (\fB\-H\fP) or \fIinclude\fP (\fB\-i\fP) file
 during message composition
 .
@@ -242,7 +242,7 @@ see \fIFILES\fP section below for a list of regular configuration files
 Specify a \fImailbox\fP (as defined with \fBmailboxes\fP command) to load
 .
 .TP
-.BI \-G
+.B \-G
 Start NeoMutt with a listing of subscribed newsgroups
 .
 .TP
@@ -261,7 +261,7 @@ if an mbox "\fBFrom\~\fP" line is present,
 it will be silently discarded.
 .
 .TP
-.BI \-h
+.B \-h
 Print this help message and exit
 .
 .TP
@@ -284,11 +284,11 @@ Specify a default mailbox format \fItype\fP for newly created folders
 The \fItype\fP is either MH, MMDF, Maildir or mbox (case-insensitive)
 .
 .TP
-.BI \-n
+.B \-n
 Do not read the system-wide configuration file
 .
 .TP
-.BI \-p
+.B \-p
 Resume a prior postponed message, if any
 .
 .TP
@@ -298,7 +298,7 @@ Query a configuration \fIvariable\fP and print its value to stdout
 Add -O for one-liner documentation.
 .
 .TP
-.BI \-R
+.B \-R
 Open mailbox in read-only mode
 .
 .TP
@@ -307,25 +307,25 @@ Specify a \fIsubject\fP
 (must be enclosed in quotes if it has spaces)
 .
 .TP
-.BI \-v
+.B \-v
 Print the NeoMutt version and compile-time definitions and exit
 .
 .TP
-.BI \-vv
+.B \-vv
 Print the NeoMutt license and copyright information and exit
 .
 .TP
-.BI \-y
+.B \-y
 Start NeoMutt with a listing of all defined mailboxes
 .
 .TP
-.BI \-Z
+.B \-Z
 Open the first mailbox with new message
 or exit immediately with exit code 1
 if none is found in all defined mailboxes
 .
 .TP
-.BI \-z
+.B \-z
 Open the first or specified (\fB\-f\fP) mailbox
 if it holds any message
 or exit immediately with exit code 1 otherwise
@@ -533,27 +533,27 @@ NeoMutt will process all grouped files in the order
 as they are specified in that listing.
 .
 .TP
-.IR "~/.mailcap"
+.I "~/.mailcap"
 .TQ
-.IR "@MAN_SYSCONFDIR@/mailcap"
+.I "@MAN_SYSCONFDIR@/mailcap"
 User-specific and system-wide definitions for handling non-text MIME types,
 look at environment variable \fBMAILCAPS\fP above
 for additional search locations.
 .
 .TP
-.IR "~/.neomuttdebug0"
+.I "~/.neomuttdebug0"
 User's default debug log file.
 For further details or customising file path
 see command line options \fB\-d\fP and \fB\-l\fP above.
 .
 .TP
-.IR "/etc/mime.types"
+.I "/etc/mime.types"
 .TQ
-.IR "@MAN_SYSCONFDIR@/mime.types"
+.I "@MAN_SYSCONFDIR@/mime.types"
 .TQ
-.IR "@MAN_DATADIR@/mime.types"
+.I "@MAN_DATADIR@/mime.types"
 .TQ
-.IR "~/.mime.types"
+.I "~/.mime.types"
 Description files for
 simple plain text mapping between MIME types and filename extensions.
 NeoMutt parses these files in the stated order
