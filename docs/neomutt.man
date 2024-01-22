@@ -30,113 +30,152 @@ The NeoMutt Mail User Agent (MUA)
 .SH SYNTAX
 .\" --------------------------------------------------------------------
 .SY neomutt
-.OP \-Enx
-.OP \-e command
-.OP \-F config
-.OP \-H draft
-.OP \-i include
-.br
-.OP \-b address
-.OP \-c address
-.OP \-s subject
-.RB [ \-a
-.IR file " [" .\|.\|.\& ]
-.BR \-\- ]
-.IR address " [" .\|.\|.\& ]
+.RB [ \-Enx ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.RB [ \-H\~\c
+.IR draft ]
+.RB [ \-i\~\c
+.IR include ]
+.RB [ \-b\~\c
+.IR address ]
+.RB [ \-c\~\c
+.IR address ]
+.RB [ \-s\~\c
+.IR subject ]
+.RB [ \-a\~\c
+.IR file \~[ .\|.\|.\& ]]
+.RB [ \-\- ]
+.IR address \~[ .\|.\|.\& ]
 .YS
 .
 .SY neomutt
-.OP \-nx
-.OP \-e command
-.OP \-F config
-.OP \-b address
-.OP \-c address
-.br
-.OP \-s subject
-.RB [ \-a
-.IR file " [" .\|.\|.\& ]
-.BR \-\- ]
-.IR address " [" .\|.\|.\& "] < message"
+.RB [ \-nx ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.RB [ \-b\~\c
+.IR address ]
+.RB [ \-c\~\c
+.IR address ]
+.RB [ \-s\~\c
+.IR subject ]
+.RB [ \-a\~\c
+.IR file \~[ .\|.\|.\& ]]
+.RB [ \-\- ]
+.IR address \~[ .\|.\|.\& ]
+.BI <\~ message
 .YS
 .
 .SY neomutt
-.OP \-nRy
-.OP \-e command
-.OP \-F config
-.OP \-f mailbox
-.OP \-m type
+.RB [ \-nRy ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.RB [ \-f\~\c
+.IR mailbox ]
+.RB [ \-m\~\c
+.IR type ]
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
-.BI \-A " alias"
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.BI \-A\~ alias
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
 .B \-B
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
-.BR \-D " [" \-S ] " [" \-O ]
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.B \-D
+.RB [ \-S ]
+.RB [ \-O ]
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
-.BI \-d " level"
-.BI \-l " file"
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.BI \-d\~ level
+.BI \-l\~ file
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
 .B \-G
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
-.BI \-g " server"
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.BI \-g\~ server
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
 .B \-p
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
-.BI \-Q " variable [" \-O ]
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
+.BI \-Q\~ variable
+.RB [ \-O ]
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
 .B \-Z
 .YS
 .
 .SY neomutt
-.OP \-n
-.OP \-e command
-.OP \-F config
+.RB [ \-n ]
+.RB [ \-e\~\c
+.IR command ]
+.RB [ \-F\~\c
+.IR config ]
 .B \-z
-.OP \-f mailbox
+.RB [ \-f\~\c
+.IR mailbox ]
 .YS
 .
 .SY neomutt
