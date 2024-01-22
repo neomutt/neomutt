@@ -4635,7 +4635,6 @@ msgid "usage:"
 msgstr "Použitie:"
 
 #: main.c:249
-#, fuzzy
 msgid ""
 "  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -4646,7 +4645,6 @@ msgstr ""
 "          <adresa> [...]"
 
 #: main.c:252
-#, fuzzy
 msgid ""
 "  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -4736,9 +4734,8 @@ msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresa>   Určuje adresu pre utajenú kópiu (Bcc)"
 
 #: main.c:277
-#, fuzzy
 msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Zapnúť šifrovacie funkcie v prikazovom riadku (signing/encryption)"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
