@@ -25,7 +25,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 void test_buf_startswith(void)
 {

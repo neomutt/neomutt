@@ -26,7 +26,9 @@
 #include <limits.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"
@@ -36,6 +38,7 @@
 #include "copy.h"
 #include "mx.h"
 
+struct Email;
 struct MuttWindow;
 struct PagerView;
 

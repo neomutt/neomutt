@@ -26,6 +26,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"

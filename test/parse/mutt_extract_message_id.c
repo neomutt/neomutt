@@ -26,9 +26,7 @@
 #include <search.h>
 #include <string.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
-#include "core/lib.h"
 #include "test_common.h"
 
 int cmp(const void *a, const void *b)

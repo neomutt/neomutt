@@ -32,7 +32,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 color_t color_xterm256_to_24bit(const color_t color);
 void modify_color_by_prefix(enum ColorPrefix prefix, bool is_fg, color_t *col, int *attrs);

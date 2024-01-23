@@ -25,7 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 void test_mutt_ch_choose(void)
 {

@@ -24,7 +24,8 @@
 #define TEST_EDITOR_COMMON_H
 
 #include <stddef.h>
-#include "editor/lib.h"
+
+struct EnterState;
 
 size_t editor_buffer_get_lastchar(struct EnterState *es);
 size_t editor_buffer_get_cursor(struct EnterState *es);

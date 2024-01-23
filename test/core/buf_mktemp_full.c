@@ -25,9 +25,8 @@
 #include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 void test_buf_mktemp_full(void)
 {

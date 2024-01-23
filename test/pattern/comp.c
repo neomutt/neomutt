@@ -25,10 +25,8 @@
 #include "acutest.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "pattern/lib.h"
-#include "globals.h"
 #include "test_common.h"
 
 bool ResumeEditedDraftFiles;

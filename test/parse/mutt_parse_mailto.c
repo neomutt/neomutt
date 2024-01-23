@@ -29,9 +29,7 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
-#include "config/lib.h"
 #include "email/lib.h"
-#include "core/lib.h"
 #include "test_common.h"
 
 static void check_addrlist(struct AddressList *list, const char *const exp[], size_t num)

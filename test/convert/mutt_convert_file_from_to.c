@@ -25,7 +25,7 @@
 #include "acutest.h"
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/types.h"
+#include "config/lib.h"
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"

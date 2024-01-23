@@ -23,13 +23,13 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
-#include "common.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 extern const struct Mapping MboxTypeMap[];
 extern struct EnumDef MboxTypeDef;
