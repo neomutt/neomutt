@@ -61,11 +61,14 @@ enum ConfigTypeField
   D_B_INTERNAL_INHERITED,          ///< Config item is inherited
   D_B_INTERNAL_INITIAL_SET,        ///< Config item must have its initial value freed
 
-  D_B_CUSTOM_BIT_0,                ///< XXX
-  D_B_CUSTOM_BIT_1,                ///< XXX
-  D_B_CUSTOM_BIT_2,                ///< XXX
-  D_B_CUSTOM_BIT_3,                ///< XXX
-  D_B_CUSTOM_BIT_4,                ///< XXX
+  D_B_CUSTOM_BIT_0,                ///< 1st flag available for customising config types
+  D_B_CUSTOM_BIT_1,                ///< 2nd flag available for customising config types
+  D_B_CUSTOM_BIT_2,                ///< 3rd flag available for customising config types
+  D_B_CUSTOM_BIT_3,                ///< 4th flag available for customising config types
+  D_B_CUSTOM_BIT_4,                ///< 5th flag available for customising config types
+  D_B_CUSTOM_BIT_5,                ///< 6th flag available for customising config types
+  D_B_CUSTOM_BIT_6,                ///< 7th flag available for customising config types
+  D_B_CUSTOM_BIT_7,                ///< 8th flag available for customising config types
 
   D_B_END,
 };
