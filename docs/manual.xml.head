@@ -3986,7 +3986,7 @@ set imap_pass="`gpg --batch -q --decrypt ~/.neomutt/account.gpg`"
           <para>
             Because NeoMutt first recodes a line before it attempts to parse
             it, a conversion introducing question marks or other characters as
-            part of errors (unconvertable characters, transliteration) may
+            part of errors (unconvertible characters, transliteration) may
             introduce syntax errors or silently change the meaning of certain
             tokens (e.g. inserting question marks into regular expressions).
           </para>
@@ -6478,15 +6478,15 @@ unignore posted-to:
       </para>
       <para>
         Use <literal>-nonotify</literal> to disable notifying when new mail
-        arrives.  The <literal>-notify</literal> argument can be used to reenable
-        notifying for an existing mailbox.  If unspecified: a new
+        arrives.  The <literal>-notify</literal> argument can be used to
+        re-enable notifying for an existing mailbox.  If unspecified: a new
         mailbox will notify by default, while an existing mailbox will be
         unchanged.
       </para>
       <para>
         To disable polling, specify <literal>-nopoll</literal> before the
         mailbox name.  The <literal>-poll</literal> argument can be used to
-        reenable polling for an existing mailbox.  If unspecified: a new
+        re-enable polling for an existing mailbox.  If unspecified: a new
         mailbox will poll by default, while an existing mailbox will be
         unchanged.
       </para>

@@ -777,7 +777,7 @@
   - Address book has a comment field
   - Query menu has a comment field
 * Contrib
-  - sample.neomuttrc-starter: Do not echo promted password
+  - sample.neomuttrc-starter: Do not echo prompted password
 * Bug Fixes
   - make "news://" and "nntp://" schemes interchangeable
   - Fix CRLF to LF conversion in base64 decoding
@@ -1767,7 +1767,7 @@
   - config: drop unused paginate command
   - script: split tests up into several
   - convert credits page to markdown
-  - simpify 404 page
+  - simplify 404 page
   - improve newbie tutorial
   - remove help.html and integrate its content elsewhere
   - make: "graphviz" program is needed for generating diagram

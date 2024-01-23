@@ -42,7 +42,7 @@ void test_curses_colors(void)
   curses_colors_init();
 
   {
-    // Degnerate test -- no colour
+    // Degenerate test -- no colour
     struct CursesColor *cc = curses_color_new(COLOR_DEFAULT, COLOR_DEFAULT);
     TEST_CHECK(cc == NULL);
   }

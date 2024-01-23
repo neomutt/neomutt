@@ -137,7 +137,7 @@ retry:
     return 0;
 
   /* when avail_out was 0 on last call, we need to call inflate again, because
-   * more data might be available using the current input, so avoid callling
+   * more data might be available using the current input, so avoid calling
    * read on the underlying stream in that case (for it might block) */
   if ((zctx->read.pos == 0) && !zctx->read.conn_eof)
   {

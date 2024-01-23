@@ -48,7 +48,7 @@ void test_envlist_set(void)
     envlist_free(&env);
   }
 
-  // insert non-existant key
+  // insert non-existent key
   {
     char **env = envlist_init(test_env_empty);
     TEST_CHECK(envlist_set(&env, "fig", "value", false));
