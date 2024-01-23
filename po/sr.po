@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-12-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-01-20 21:24+0000\n"
-"PO-Revision-Date: 2023-12-14 22:29+0100\n"
+"PO-Revision-Date: 2024-01-23 20:58+0100\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.7.2\n"
+"X-Generator: poe 1.7.2-3-gca4ced9\n"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:399
@@ -4631,7 +4631,6 @@ msgid "usage:"
 msgstr "употреба:"
 
 #: main.c:249
-#, fuzzy
 msgid ""
 "  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -4642,7 +4641,6 @@ msgstr ""
 "          <адреса> [...]"
 
 #: main.c:252
-#, fuzzy
 msgid ""
 "  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -4733,9 +4731,8 @@ msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <адреса>   Задавање примаоца невидљиве копије (Bcc)"
 
 #: main.c:277
-#, fuzzy
 msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Укључује крипто (потписивање/енкрипцију) из командне линије"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
