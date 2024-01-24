@@ -28,7 +28,7 @@
 #include "config/common.h" // IWYU pragma: keep
 #include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 // clang-format off
 static struct ConfigDef Vars[] = {

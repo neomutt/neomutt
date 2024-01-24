@@ -21,18 +21,17 @@
  */
 
 #define TEST_NO_MAIN
-
 #include "config.h"
 #include "acutest.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
 #include "convert/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 static struct ConfigDef CharsetVars[] = {
   // clang-format off

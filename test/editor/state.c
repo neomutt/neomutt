@@ -24,9 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include <stdbool.h>
-#include "email/lib.h"
-#include "core/lib.h"
 #include "editor/lib.h"
 
 void test_editor_state(void)

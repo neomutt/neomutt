@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include "mutt/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
 

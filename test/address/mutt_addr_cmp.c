@@ -25,6 +25,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
+#include "mutt/lib.h"
 #include "address/lib.h"
 
 void test_mutt_addr_cmp(void)

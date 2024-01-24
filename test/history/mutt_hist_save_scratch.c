@@ -28,7 +28,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "history/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 bool config_init_history(struct ConfigSet *cs);
 

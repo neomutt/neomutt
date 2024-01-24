@@ -24,7 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include <stdbool.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color/lib.h"

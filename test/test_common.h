@@ -23,15 +23,17 @@
 #ifndef TEST_TEST_COMMON_H
 #define TEST_TEST_COMMON_H
 
+#include "config.h"
+#include "acutest.h"
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "config.h"
+#include <time.h>
 #include "mutt/lib.h"
 
 void test_gen_path(char *buf, size_t buflen, const char *fmt);
 
-bool test_neomutt_create (void);
+bool test_neomutt_create(void);
 void test_neomutt_destroy(void);
 const char *get_test_dir(void);
 

@@ -25,21 +25,24 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include "mutt/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
-#include "history/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "ncrypt/lib.h"
 #include "mview.h"
 
 struct Address;
 struct Body;
+struct Buffer;
+struct ConfigSubset;
 struct Email;
 struct Envelope;
-struct Keymap;
+struct Mapping;
+struct MuttWindow;
 struct Pager;
 struct Pattern;
+struct State;
+struct TagList;
 
 enum WindowType
 {

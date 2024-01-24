@@ -23,8 +23,9 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
 #include "mutt/lib.h"
-#include "config/types.h"
+#include "config/lib.h"
 
 void test_slist_is_empty(void)
 {

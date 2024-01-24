@@ -25,10 +25,11 @@
 #include "acutest.h"
 #include <stddef.h>
 #include <stdbool.h>
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "test_common.h"
+#include "test_common.h" // IWYU pragma: keep
 
 #ifdef HAVE_LIBIDN
 static struct ConfigDef Vars[] = {

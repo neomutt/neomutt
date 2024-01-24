@@ -26,7 +26,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "mutt/lib.h"
 #include "store/lib.h"
 #include "test_common.h"
 

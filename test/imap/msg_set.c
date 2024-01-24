@@ -23,10 +23,15 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stddef.h>
+#include <stdbool.h>
 #include "mutt/lib.h"
-#include "imap/msg_set.h"
-#include "imap/private.h"
+#include "imap/msg_set.h" // IWYU pragma: keep
+#include "imap/lib.h"
+#include "imap/private.h" // IWYU pragma: keep
 #include "test_common.h"
+
+struct ImapAccountData;
 
 extern int ImapMaxCmdlen;
 

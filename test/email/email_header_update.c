@@ -23,14 +23,13 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <string.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "test_common.h"
 
 void test_email_header_update(void)
 {
-  // struct ListNode *header_update(sturct ListNode *hdr, const struct Buffer *buf)
+  // struct ListNode *header_update(struct ListNode *hdr, const struct Buffer *buf)
   const char *existing_header = "X-Found: foo";
   const char *new_value = "X-Found: 3.14";
 

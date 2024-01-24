@@ -639,7 +639,7 @@
 ** Please note that if setting $$charset it must be done before
 ** setting $$config_charset.
 ** .pp
-** Recoding should be avoided as it may render unconvertable
+** Recoding should be avoided as it may render unconvertible
 ** characters as question marks which can lead to undesired
 ** side effects (for example in regular expressions).
 */
@@ -2810,7 +2810,7 @@
 ** .pp
 ** This variable specifies notmuch tag which is used for unread messages. The
 ** variable is used to count unread messages in DB and set the unread flag when
-** modifiying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
+** modifying tags. All other NeoMutt commands use standard (e.g. maildir) flags.
 */
 #endif
 

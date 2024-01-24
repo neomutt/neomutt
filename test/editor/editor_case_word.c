@@ -24,11 +24,10 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include <stdbool.h>
-#include "email/lib.h"
+#include "mutt/lib.h"
 #include "core/lib.h"
 #include "editor/lib.h"
-#include "common.h"
+#include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
 void test_editor_case_word(void)
