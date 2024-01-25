@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2023-12-21\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-01-20 21:24+0000\n"
-"PO-Revision-Date: 2023-12-19 20:02+0100\n"
+"PO-Revision-Date: 2024-01-25 18:58+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -4617,7 +4617,6 @@ msgid "usage:"
 msgstr "Benutzung:"
 
 #: main.c:249
-#, fuzzy
 msgid ""
 "  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -4628,7 +4627,6 @@ msgstr ""
 "          <address> [...]"
 
 #: main.c:252
-#, fuzzy
 msgid ""
 "  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -4718,9 +4716,8 @@ msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  Verwende Adresse für unsichtbare Kopie (Bcc:) an Empfänger"
 
 #: main.c:277
-#, fuzzy
 msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Aktiviere Kommandozeilen-Crypto (signing/encryption)"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
