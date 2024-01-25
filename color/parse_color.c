@@ -283,7 +283,7 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 {
   while (true)
   {
-    if (!MoreArgsF(s, TOKEN_COMMENT))
+    if (!has_more_argsf(s, TOKEN_COMMENT))
     {
       buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
@@ -308,7 +308,7 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
       ac->attrs |= attr; // Merge with other attributes
   }
 
-  if (!MoreArgsF(s, TOKEN_COMMENT))
+  if (!has_more_argsf(s, TOKEN_COMMENT))
   {
     buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
@@ -328,7 +328,7 @@ enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
   if (!buf || !s || !ac)
     return MUTT_CMD_ERROR;
 
-  if (!MoreArgs(s))
+  if (!has_more_args(s))
   {
     buf_printf(err, _("%s: too few arguments"), "mono");
     return MUTT_CMD_WARNING;

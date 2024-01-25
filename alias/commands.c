@@ -139,7 +139,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
   struct GroupList gl = STAILQ_HEAD_INITIALIZER(gl);
   enum NotifyAlias event;
 
-  if (!MoreArgs(s))
+  if (!has_more_args(s))
   {
     buf_strcpy(err, _("alias: no address"));
     return MUTT_CMD_WARNING;
@@ -221,7 +221,7 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     }
   }
   mutt_grouplist_destroy(&gl);
-  if (!MoreArgs(s) && (s->dptr[0] == '#'))
+  if (!has_more_args(s) && (s->dptr[0] == '#'))
   {
     s->dptr++; // skip over the "# "
     if (*s->dptr == ' ')
@@ -277,6 +277,6 @@ enum CommandResult parse_unalias(struct Buffer *buf, struct Buffer *s,
       alias_free(&np);
       break;
     }
-  } while (MoreArgs(s));
+  } while (has_more_args(s));
   return MUTT_CMD_SUCCESS;
 }

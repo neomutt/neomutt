@@ -94,14 +94,14 @@ enum CommandResult mutt_parse_score(struct Buffer *buf, struct Buffer *s,
   char *pattern = NULL, *pc = NULL;
 
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  if (!MoreArgs(s))
+  if (!has_more_args(s))
   {
     buf_printf(err, _("%s: too few arguments"), "score");
     return MUTT_CMD_WARNING;
   }
   pattern = buf_strdup(buf);
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  if (MoreArgs(s))
+  if (has_more_args(s))
   {
     FREE(&pattern);
     buf_printf(err, _("%s: too many arguments"), "score");
@@ -202,7 +202,7 @@ enum CommandResult mutt_parse_unscore(struct Buffer *buf, struct Buffer *s,
 {
   struct Score *tmp = NULL, *last = NULL;
 
-  while (MoreArgs(s))
+  while (has_more_args(s))
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))
