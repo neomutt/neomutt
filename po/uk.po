@@ -1,12 +1,12 @@
 # Ukrainian messages for NeoMutt
 #
-# Copyright (c) 1998-2022 NeoMutt project.
+# Copyright (c) 1998-2023 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
 # Andrej N. Gritsenko <andrej@lucky.net>, 1998-2001
 # Maxim Krasilnikov <pseudo@avalon.org.ua>, 2013
 # Vsevolod Volkov <vvv@mutt.org.ua>, 2016-2019
-# Andrij Mizyk <andmizyk@gmail.com>, 2022
+# Andrij Mizyk <andmizyk@gmail.com>, 2022-2023
 #
 msgid ""
 msgstr ""
@@ -7761,12 +7761,12 @@ msgstr ""
 
 #: version.c:113
 msgid ""
-"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
+"Copyright (C) 2015-2024 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2022 Michael R. Elkins та інші.\n"
+"Copyright (C) 2015-2024 Richard Russon та інші.\n"
 "NeoMutt надається БЕЗ ЖОДНИХ ГАРАНТІЙ; детальніше введіть 'neomutt -vv'.\n"
 "NeoMutt є вільним ПЗ, тому вітається розповсюдження на певних умовах\n"
 "напишіть 'neomutt -vv', щоб дізнатися більше.\n"

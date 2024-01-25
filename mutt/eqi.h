@@ -3,7 +3,7 @@
  * Case-insensitive fixed-chunk comparisons
  *
  * @authors
- * Copyright (C) 2023 Steinar H. Gunderson <steinar+neomutt@gunderson.no>
+ * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

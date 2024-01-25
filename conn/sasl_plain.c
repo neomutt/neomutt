@@ -3,7 +3,8 @@
  * SASL plain authentication support
  *
  * @authors
- * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2018 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

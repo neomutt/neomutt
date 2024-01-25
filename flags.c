@@ -4,6 +4,10 @@
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017 Fabrice Bellet <fabrice@bellet.info>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -1,10 +1,11 @@
 # Portuguese (Brazil) messages for NeoMutt
 #
-# Copyright (c) 2000-2019 NeoMutt project.
+# Copyright (c) 2000-2023 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
 # Thiago Costa de Paiva - tcpaiva @github - 2018-2019
 # Marcus Brito <marcus@visaotec.com.br>, 2000
+# Anna (navi) Figueiredo Gomes <navi@vlhl.dev>, 2019,2023
 #
 msgid ""
 msgstr ""
@@ -7729,12 +7730,12 @@ msgstr ""
 
 #: version.c:113
 msgid ""
-"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
+"Copyright (C) 2015-2024 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2020 Michael R. Elkins e outros.\n"
+"Copyright (C) 2015-2024 Richard Russon e outros.\n"
 "NeoMutt vem ABSOLUTAMENTE SEM GARANTIAS; para mais detalhes digite 'neomutt -vv'.\n"
 "NeoMutt é um programa livre, e você é encorajado a redistribuí-lo\n"
 "sob certas condições; digite 'neomutt -vv' para os detalhes.\n"

@@ -3,7 +3,8 @@
  * A group of associated Mailboxes
  *
  * @authors
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

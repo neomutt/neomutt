@@ -3,8 +3,11 @@
  * Pager Dialog
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

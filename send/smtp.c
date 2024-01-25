@@ -3,9 +3,13 @@
  * Send email to an SMTP server
  *
  * @authors
- * Copyright (C) 2002 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2005-2009 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
+ * Copyright (C) 2021 Ryan Kavanagh <rak@rak.ac>
+ * Copyright (C) 2023 Alejandro Colomar <alx@kernel.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

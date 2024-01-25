@@ -3,7 +3,9 @@
  * String auto-completion routines
  *
  * @authors
- * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

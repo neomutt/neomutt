@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2000-2006,2012 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

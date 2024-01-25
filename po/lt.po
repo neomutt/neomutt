@@ -1,10 +1,10 @@
 # Lithuanian messages for NeoMutt
 #
-# Copyright (c) 2000-2020 NeoMutt project.
+# Copyright (c) 2000-2024 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
 # Tadas <btadas@is.lt>, 2000
-# Marius Gedminas <marius@gedmin.as>, 2000,2017-2020
+# Marius Gedminas <marius@gedmin.as>, 2000,2017-2024
 # Gediminas Paulauskas <menesis@delfi.lt>, 2000
 #
 msgid ""
@@ -7759,12 +7759,12 @@ msgstr ""
 
 #: version.c:113
 msgid ""
-"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
+"Copyright (C) 2015-2024 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2022 Michael R. Elkins ir kiti.\n"
+"Copyright (C) 2015-2024 Richard Russon ir kiti.\n"
 "NeoMutt ateina ABSOLIUČIAI BE JOKIOS GARANTIJOS; dėl smulkmenų paleisk 'neomutt -vv.'\n"
 "NeoMutt yra laisva programinė įranga, ir tu gali laisvai ją platinti su tam\n"
 "tikromis sąlygomis; rašyk 'neomutt -vv' dėl smulkmenų.\n"

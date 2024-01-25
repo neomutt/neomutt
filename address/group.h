@@ -3,9 +3,8 @@
  * Handling for email address groups
  *
  * @authors
- * Copyright (C) 2006 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2009 Rocco Rutte <pdmef@gmx.net>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

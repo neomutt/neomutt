@@ -3,9 +3,9 @@
  * POP network mailbox
  *
  * @authors
- * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
- * Copyright (C) 2006-2007,2009 Rocco Rutte <pdmef@gmx.net>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

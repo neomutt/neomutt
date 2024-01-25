@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2017 Damien Riegel <damien.riegel@gmail.com>
+ * Copyright (C) 2018-2022 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

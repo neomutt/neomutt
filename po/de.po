@@ -1,6 +1,6 @@
 # German messages for NeoMutt
 #
-# Copyright (c) 1998-2019 NeoMutt project.
+# Copyright (c) 1998-2023 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
 # Thomas Roessler <roessler@does-not-exist.org>, 1998-2002, 2006
@@ -9,6 +9,7 @@
 # Antonio Radici <antonio@dyne.org>, 2010, 2016
 # André Berger <andre.berger@web.de>, 2016-2018
 # Floyd Anderson <f.a@31c0.net>, 2018
+# Gerrit Rüsing <gerrit@macclub-os.de>, 2021-2023
 #
 msgid ""
 msgstr ""
@@ -7737,12 +7738,12 @@ msgstr ""
 
 #: version.c:113
 msgid ""
-"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
+"Copyright (C) 2015-2024 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2022 Michael R. Elkins und andere.\n"
+"Copyright (C) 2015-2024 Richard Russon und andere.\n"
 "NeoMutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie 'neomutt -vv', um\n"
 "weitere Details darüber zu erfahren. NeoMutt ist freie Software.\n"
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"

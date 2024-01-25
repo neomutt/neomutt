@@ -4,9 +4,18 @@
  *
  * @authors
  * Copyright (C) 2011-2016 Karel Zak <kzak@redhat.com>
- * Copyright (C) 2016-2018 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016 Kevin Velghe <kevin@paretje.be>
- * Copyright (C) 2017 Bernard 'Guyzmo' Pratz <guyzmo+github+pub@m0g.net>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017 Bernard Pratz <guyzmo+github+pub@m0g.net>
+ * Copyright (C) 2017 Bryan Bennett <bbenne10@gmail.com>
+ * Copyright (C) 2017 Julian Andres Klode <jak@jak-linux.org>
+ * Copyright (C) 2017 William Pettersson <william.pettersson@gmail.com>
+ * Copyright (C) 2018-2021 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2020 Reto Brunner <reto@slightlybroken.com>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

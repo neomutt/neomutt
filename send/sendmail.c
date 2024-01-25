@@ -3,7 +3,9 @@
  * Send email using sendmail
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

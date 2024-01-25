@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 2018 Gero Treuer <gero@70t.de>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright

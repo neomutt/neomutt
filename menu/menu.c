@@ -3,7 +3,7 @@
  * GUI present the user with a selectable list
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2012 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  *
  * @copyright

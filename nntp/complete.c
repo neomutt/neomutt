@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

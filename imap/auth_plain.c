@@ -3,8 +3,8 @@
  * IMAP plain authentication method
  *
  * @authors
- * Copyright (C) 1999-2001,2005,2009 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -3,11 +3,11 @@
  * Sidebar Window
  *
  * @authors
- * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
- * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
- * Copyright (C) 2015-2020 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2016-2017 Kevin J. McCarthy <kevin@8t8.us>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2020-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

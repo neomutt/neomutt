@@ -4,8 +4,10 @@
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

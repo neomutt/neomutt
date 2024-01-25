@@ -3,8 +3,14 @@
  * File/Mailbox Browser Dialog
  *
  * @authors
- * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2016 Pierre-Elliott Bécue <becue@crans.org>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2019-2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2022 Carlos Henrique Lima Melara <charlesmelara@outlook.com>
+ * Copyright (C) 2023 Leon Philman
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

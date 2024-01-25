@@ -3,8 +3,7 @@
  * Postponed Email Selection Dialog
  *
  * @authors
- * Copyright (C) 1996-2002,2012-2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

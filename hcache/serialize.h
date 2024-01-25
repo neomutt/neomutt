@@ -3,10 +3,8 @@
  * Email-object serialiser
  *
  * @authors
- * Copyright (C) 2004 Thomas Glanzmann <sithglan@stud.uni-erlangen.de>
- * Copyright (C) 2004 Tobias Werth <sitowert@stud.uni-erlangen.de>
- * Copyright (C) 2004 Brian Fundakowski Feldman <green@FreeBSD.org>
- * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

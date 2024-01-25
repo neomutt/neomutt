@@ -3,8 +3,7 @@
  * Wrapper around crypto functions
  *
  * @authors
- * Copyright (C) 2003 Werner Koch <wk@gnupg.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright

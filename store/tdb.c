@@ -3,7 +3,8 @@
  * Trivial DataBase (TDB) backend for the key/value Store
  *
  * @authors
- * Copyright (C) 2020 Tino Reichardt <milky-neomutt@mcmilk.de>
+ * Copyright (C) 2020 Tino Reichardt <github@mcmilk.de>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

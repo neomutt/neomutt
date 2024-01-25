@@ -4,6 +4,8 @@
  *
  * @authors
  * Copyright (C) 2000,2003 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

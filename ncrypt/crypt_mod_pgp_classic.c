@@ -3,7 +3,7 @@
  * Wrappers for calls to CLI PGP
  *
  * @authors
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

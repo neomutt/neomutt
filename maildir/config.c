@@ -3,7 +3,8 @@
  * Config used by libmaildir
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

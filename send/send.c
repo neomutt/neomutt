@@ -3,8 +3,18 @@
  * Prepare and send an email
  *
  * @authors
- * Copyright (C) 1996-2002,2004,2010,2012-2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
+ * Copyright (C) 2020 Thomas Sanchez <thomas.sanchz@gmail.com>
+ * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
+ * Copyright (C) 2021 Charalampos Kardaris <ckardaris@outlook.com>
+ * Copyright (C) 2021 Thomas Bracht Laumann Jespersen <t@laumann.xyz>
+ * Copyright (C) 2021 Viktor Cheburkin <victor.cheburkin@gmail.com>
+ * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 Whitney Cumber
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

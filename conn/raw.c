@@ -3,10 +3,9 @@
  * Low-level socket handling
  *
  * @authors
- * Copyright (C) 1998,2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2006,2008 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * Copyright (C) 2017 Damien Riegel <damien.riegel@gmail.com>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

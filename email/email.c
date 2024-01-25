@@ -3,7 +3,9 @@
  * Representation of an email
  *
  * @authors
- * Copyright (C) 1996-2009,2012 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

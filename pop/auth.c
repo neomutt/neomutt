@@ -4,7 +4,9 @@
  *
  * @authors
  * Copyright (C) 2000-2001 Vsevolod Volkov <vvv@mutt.org.ua>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

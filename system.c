@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

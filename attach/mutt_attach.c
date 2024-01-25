@@ -3,8 +3,11 @@
  * Handling of email attachments
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2013 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
+ * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

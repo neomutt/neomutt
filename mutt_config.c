@@ -3,8 +3,12 @@
  * Definitions of config variables
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
+ * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
+ * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

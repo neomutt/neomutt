@@ -3,7 +3,14 @@
  * Time and date handling routines
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Victor Fernandes <criw@pm.me>
+ * Copyright (C) 2021 Reto Brunner <reto@slightlybroken.com>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023 Rayford Shireman
+ * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

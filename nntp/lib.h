@@ -3,9 +3,7 @@
  * Usenet network mailbox type; talk to an NNTP server
  *
  * @authors
- * Copyright (C) 1998 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999 Andrej Gritsenko <andrej@lucky.net>
- * Copyright (C) 2000-2012 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -3,10 +3,8 @@
  * IMAP search routines
  *
  * @authors
- * Copyright (C) 1996-1998,2012 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2009,2012,2017 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

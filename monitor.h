@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018 Gero Treuner <gero@70t.de>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

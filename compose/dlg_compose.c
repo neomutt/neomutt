@@ -3,10 +3,8 @@
  * Compose Email Dialog
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2007,2010,2012 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

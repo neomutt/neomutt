@@ -3,7 +3,7 @@
  * Signing/encryption multiplexor
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright

@@ -3,8 +3,8 @@
  * Handling of GnuTLS encryption
  *
  * @authors
- * Copyright (C) 2001 Marco d'Itri <md@linux.it>
- * Copyright (C) 2001-2004 Andrew McDonald <andrew@mcdonald.org.uk>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -4,6 +4,9 @@
  *
  * @authors
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

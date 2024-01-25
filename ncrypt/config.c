@@ -3,7 +3,9 @@
  * Config used by libncrypt
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

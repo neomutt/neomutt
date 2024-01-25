@@ -3,8 +3,7 @@
  * An open network connection (socket)
  *
  * @authors
- * Copyright (C) 1998 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2021 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

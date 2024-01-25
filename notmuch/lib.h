@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2011 Karel Zak <kzak@redhat.com>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -3,7 +3,8 @@
  * Data shared between Index, Pager and Sidebar
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

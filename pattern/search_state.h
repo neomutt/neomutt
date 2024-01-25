@@ -3,6 +3,7 @@
  * Holds state of a search
  *
  * @authors
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright

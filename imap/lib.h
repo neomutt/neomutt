@@ -3,9 +3,8 @@
  * IMAP network mailbox
  *
  * @authors
- * Copyright (C) 1996-1998 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2007,2017 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

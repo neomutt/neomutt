@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

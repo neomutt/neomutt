@@ -3,7 +3,10 @@
  * A separated list of strings
  *
  * @authors
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

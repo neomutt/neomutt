@@ -4,8 +4,13 @@
  *
  * @authors
  * Copyright (C) 1996-2002,2004,2007 Michael R. Elkins <me@mutt.org>, and others
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016 Thomas Adam <thomas@xteddy.org>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2019 Naveen Nathan <naveen@lastninja.net>
  * Copyright (C) 2022 Oliver Bandel <oliver@first.in-berlin.de>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

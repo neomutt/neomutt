@@ -3,7 +3,7 @@
  * Array of Alias Views
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

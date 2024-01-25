@@ -3,8 +3,7 @@
  * Body Caching (local copies of email bodies)
  *
  * @authors
- * Copyright (C) 2006-2007 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2006 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

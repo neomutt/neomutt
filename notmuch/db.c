@@ -3,7 +3,10 @@
  * Notmuch database handling
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2022 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2019 Karel Zak <kzak@redhat.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

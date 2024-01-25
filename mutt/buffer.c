@@ -7,6 +7,8 @@
  * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023 Simon Reichel <simonreichel@giese-optik.de>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

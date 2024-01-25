@@ -1,3 +1,11 @@
+# Esperanto messages for NeoMutt
+#
+# Copyright (c) 2000-2017 NeoMutt project.
+# This file is distributed under the same license as the NeoMutt package.
+#
+# Edmund GRIMLEY EVANS <edmundo@rano.org>, 2000-2003, 2007
+# Benno Schulenberg <benno@vertaalt.nl>, 2015-2017
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2023-12-21\n"
@@ -7858,12 +7866,12 @@ msgstr ""
 #: version.c:113
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
+"Copyright (C) 2015-2024 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
 "NeoMutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
-"Kopirajto (C) 1996-2020 Michael R. Elkins kaj aliaj.\n"
+"Kopirajto (C) 2015-2024 Richard Russon kaj aliaj.\n"
 "NeoMutt venas kun ABSOLUTE NENIA GARANTIO; por detaloj tajpu 'neomutt -vv'.\n"
 "NeoMutt estas libera programo, kaj vi rajtas pludoni kopiojn\n"
 "sub difinitaj kondiĉoj; tajpu 'neomutt -vv' por detaloj.\n"

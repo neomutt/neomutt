@@ -3,7 +3,8 @@
  * Support of Mixmaster anonymous remailer
  *
  * @authors
- * Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2018-2022 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

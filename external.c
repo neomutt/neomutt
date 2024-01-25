@@ -3,9 +3,10 @@
  * Manage where the email is piped to external commands
  *
  * @authors
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

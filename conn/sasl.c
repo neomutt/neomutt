@@ -3,7 +3,8 @@
  * SASL authentication support
  *
  * @authors
- * Copyright (C) 2000-2008,2012,2014 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

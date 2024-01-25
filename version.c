@@ -3,9 +3,8 @@
  * Display version and copyright about NeoMutt
  *
  * @authors
- * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2016-2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -70,16 +69,16 @@ extern unsigned char configure_options[];
 
 /// CLI Version: Authors' copyrights
 static const char *Copyright =
-    "Copyright (C) 1996-2020 Michael R. Elkins <me@mutt.org>\n"
-    "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-    "Copyright (C) 1997-2009 Thomas Roessler <roessler@does-not-exist.org>\n"
-    "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-    "Copyright (C) 1999-2017 Brendan Cully <brendan@kublai.com>\n"
-    "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-    "Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
-    "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
-    "Copyright (C) 2014-2020 Kevin J. McCarthy <kevin@8t8.us>\n"
-    "Copyright (C) 2015-2022 Richard Russon <rich@flatcap.org>\n";
+    "Copyright (C) 2015-2024 Richard Russon <rich@flatcap.org>\n"
+    "Copyright (C) 2016-2023 Pietro Cerutti <gahr@gahr.ch>\n"
+    "Copyright (C) 2017-2019 Mehdi Abaakouk <sileht@sileht.net>\n"
+    "Copyright (C) 2018-2020 Federico Kircheis <federico.kircheis@gmail.com>\n"
+    "Copyright (C) 2017-2022 Austin Ray <austin@austinray.io>\n"
+    "Copyright (C) 2023-2024 Dennis Schön <mail@dennis-schoen.de>\n"
+    "Copyright (C) 2016-2017 Damien Riegel <damien.riegel@gmail.com>\n"
+    "Copyright (C) 2023      Rayford Shireman\n"
+    "Copyright (C) 2021-2023 David Purton <dcpurton@marshwiggle.net>\n"
+    "Copyright (C) 2020-2023 наб <nabijaczleweli@nabijaczleweli.xyz>\n";
 
 /// CLI Version: Thanks
 static const char *Thanks = N_("Many others not mentioned here contributed code, fixes,\n"
@@ -110,7 +109,7 @@ static const char *ReachingUs = N_("To learn more about NeoMutt, visit: https://
 // clang-format off
 /// CLI Version: Warranty notice
 static const char *Notice =
-    N_("Copyright (C) 1996-2022 Michael R. Elkins and others.\n"
+    N_("Copyright (C) 2015-2024 Richard Russon and friends\n"
        "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
        "NeoMutt is free software, and you are welcome to redistribute it\n"
        "under certain conditions; type 'neomutt -vv' for details.\n");

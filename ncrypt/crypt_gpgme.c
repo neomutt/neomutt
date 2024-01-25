@@ -3,13 +3,12 @@
  * Wrapper for PGP/SMIME calls to GPGME
  *
  * @authors
- * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1998-2000 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
- * Copyright (C) 2002-2004, 2018 g10 Code GmbH
- * Copyright (C) 2010,2012-2013 Michael R. Elkins <me@sigpipe.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
+ * Copyright (C) 2021 ftilde <ftilde@tamepointer.de>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

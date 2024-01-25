@@ -3,7 +3,7 @@
  * Definitions of user functions
  *
  * @authors
- * Copyright (C) 1996-2000,2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

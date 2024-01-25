@@ -3,7 +3,9 @@
  * RFC2231 MIME Charset routines
  *
  * @authors
- * Copyright (C) 1999-2001 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2018-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

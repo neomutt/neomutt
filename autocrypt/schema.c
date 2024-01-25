@@ -3,6 +3,7 @@
  * Autocrypt database schema
  *
  * @authors
+ * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Kevin J. McCarthy <kevin@8t8.us>
  *
  * @copyright

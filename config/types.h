@@ -3,7 +3,8 @@
  * Constants for all the config types
  *
  * @authors
- * Copyright (C) 2017-2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

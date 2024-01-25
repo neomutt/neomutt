@@ -8,15 +8,14 @@ vim: ts=2 sw=2 sts=2 expandtab:
   <bookinfo>
     <title>The NeoMutt E-Mail Client</title>
     <author>
-      <firstname>Michael</firstname>
-      <surname>Elkins</surname>
-      <email>me@cs.hmc.edu</email>
+      <firstname>Richard</firstname>
+      <surname>Russon</surname>
+      <email>rich@flatcap.org</email>
     </author>
     <releaseinfo>version @VERSION@</releaseinfo>
     <abstract>
       <para>
-        <quote>All mail clients suck. This one just sucks less.</quote>
-        &mdash; me, circa 1995
+        <quote>Teaching an old dog new tricks</quote>
       </para>
     </abstract>
   </bookinfo>
@@ -181,8 +180,8 @@ vim: ts=2 sw=2 sts=2 expandtab:
     <sect1 id="copyright">
       <title>Copyright</title>
       <para>
-        NeoMutt is Copyright © 1996-2021 Michael R. Elkins
-        <email>me@mutt.org</email> and others.
+        NeoMutt is Copyright © 2015-2024 Richard Russon
+        <email>rich@flatcap.org</email> and friends.
       </para>
       <para>
         This program is free software; you can redistribute it and/or modify it
@@ -6660,8 +6659,8 @@ my_hdr Organization: A Really Big Company, Anytown, USA
 <screen>
 <emphasis role="comment"># default: save all to ~/Mail/&lt;author name&gt;</emphasis>
 save-hook . ~/Mail/%F
-<emphasis role="comment"># save from me@turing.cs.hmc.edu and me@cs.hmc.edu to $folder/elkins</emphasis>
-save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
+<emphasis role="comment"># save from john@turing.ox.ac.uk and john@ox.ac.uk to $folder/smith</emphasis>
+save-hook john@(turing\\.)?ox\\.ac\\.uk$ +smith
 <emphasis role="comment"># save from aol.com to $folder/spam</emphasis>
 save-hook aol\\.com$ +spam
 </screen>
@@ -10070,7 +10069,7 @@ ma@yew.com      Murray Abraham  Oscar
         UNIX. All messages are stored in a single file. Each message has
         a line of the form:
       </para>
-      <screen>From me@cs.hmc.edu Fri, 11 Apr 1997 11:44:56 PST</screen>
+      <screen>From me@ox.ac.uk Fri, 11 Apr 1997 11:44:56 PST</screen>
       <para>
         to denote the start of a new message (this is often referred to as the
         <quote>From_</quote> line). The mbox format requires mailbox locking,

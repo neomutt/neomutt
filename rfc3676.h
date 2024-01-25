@@ -6,6 +6,7 @@
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
  * Copyright (C) 2005,2007 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

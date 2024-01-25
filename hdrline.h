@@ -3,8 +3,9 @@
  * String processing routines to generate the mail index
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

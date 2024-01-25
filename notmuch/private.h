@@ -3,7 +3,8 @@
  * Notmuch private types
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021 Austin Ray <austin@austinray.io>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

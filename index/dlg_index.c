@@ -3,8 +3,12 @@
  * Index Dialog
  *
  * @authors
- * Copyright (C) 1996-2000,2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2016-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
+ * Copyright (C) 2021 Eric Blake <eblake@redhat.com>
+ * Copyright (C) 2022 Igor Serebryany <igor47@moomers.org>
+ * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

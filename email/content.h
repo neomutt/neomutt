@@ -3,7 +3,8 @@
  * Information about the content of an attachment
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

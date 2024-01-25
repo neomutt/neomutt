@@ -4,7 +4,9 @@
  *
  * @authors
  * Copyright (C) 2017 Ian Zimmerman <itz@primate.net>
- * Copyright (C) 2017-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2023 Simon Reichel <simonreichel@giese-optik.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

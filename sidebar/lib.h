@@ -3,9 +3,7 @@
  * GUI display the mailboxes in a side panel
  *
  * @authors
- * Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
- * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
- * Copyright (C) 2015-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -2,6 +2,7 @@
  * @file
  * Zlib compression of network traffic
  *
+ * @authors
  * Copyright (C) 2019 Fabian Groffen <grobian@gentoo.org>
  *
  * @copyright

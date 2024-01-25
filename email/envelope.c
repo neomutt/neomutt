@@ -3,8 +3,9 @@
  * Representation of an email header (envelope)
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

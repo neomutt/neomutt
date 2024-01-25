@@ -3,8 +3,10 @@
  * String manipulation functions
  *
  * @authors
- * Copyright (C) 2017 Richard Russon <rich@flatcap.org>
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021 Austin Ray <austin@austinray.io>
+ * Copyright (C) 2022 Claes Nästén <pekdon@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

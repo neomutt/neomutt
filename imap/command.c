@@ -6,7 +6,12 @@
  * Copyright (C) 1996-1998,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009,2011 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018 Mehdi Abaakouk <sileht@sileht.net>
+ * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2019 Fabian Groffen <grobian@gentoo.org>
+ * Copyright (C) 2019 Federico Kircheis <federico.kircheis@gmail.com>
+ * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -3,7 +3,9 @@
  * Validator for the "charset" config variables
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
+ * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
+ * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

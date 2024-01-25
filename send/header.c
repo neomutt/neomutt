@@ -3,7 +3,9 @@
  * Write a MIME Email Header to a file
  *
  * @authors
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 David Purton <dcpurton@marshwiggle.net>
+ * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

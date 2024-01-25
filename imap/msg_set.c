@@ -2,6 +2,7 @@
  * @file
  * IMAP Message Sets
  *
+ * @authors
  * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright

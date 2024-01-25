@@ -1,8 +1,7 @@
 '\" t
 .\" -*- nroff -*-
 .\"
-.\"     Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
-.\"     Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
+.\"     Copyright (C) 2015-2024 Richard Russon <rich@flatcap.org>
 .\"
 .\"     This program is free software; you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -1303,7 +1302,7 @@ For example:
 .
 .PP
 would select messages which contain the word \(lqwork\(rq in the list of
-recipients \fBand\fP that have the word \(lqelkins\(rq in the \(lqFrom:\(rq
+recipients \fBand\fP that have the word \(lqsmith\(rq in the \(lqFrom:\(rq
 header field.
 .
 .PP
@@ -1322,7 +1321,7 @@ search patterns:
 .PP
 Here is an example illustrating a complex search pattern. This pattern will
 select all messages which do \fBnot\fP contain \(lqwork\(rq in the \(lqTo:\(rq
-\fBor\fP \(lqCc:\(rq field \fBand\fP which are from \(lqelkins\(rq.
+\fBor\fP \(lqCc:\(rq field \fBand\fP which are from \(lqsmith\(rq.
 .
 .IP
 Using boolean operators in patterns:

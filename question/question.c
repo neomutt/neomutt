@@ -3,7 +3,8 @@
  * Ask the user a question
  *
  * @authors
- * Copyright (C) 2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022 Gerrit Rüsing <gerrit@macclub-os.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

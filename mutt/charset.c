@@ -3,7 +3,10 @@
  * Conversion between different character encodings
  *
  * @authors
- * Copyright (C) 1999-2002,2007 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2017 Tobias Angele <toogley@mailbox.org>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Steinar H Gunderson <steinar+neomutt@gunderson.no>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

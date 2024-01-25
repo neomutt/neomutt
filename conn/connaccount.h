@@ -3,7 +3,7 @@
  * Connection Credentials
  *
  * @authors
- * Copyright (C) 2000-2005,2008 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2018-2020 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

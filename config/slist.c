@@ -3,7 +3,8 @@
  * Type representing a list of strings
  *
  * @authors
- * Copyright (C) 2018-2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

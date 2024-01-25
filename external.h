@@ -3,7 +3,9 @@
  * Manage where the email is piped to external commands
  *
  * @authors
- * Copyright (C) 2018 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -3,10 +3,10 @@
  * SMIME helper routines
  *
  * @authors
- * Copyright (C) 2001-2002 Oliver Ehli <elmy@acm.org>
- * Copyright (C) 2002 Mike Schiraldi <raldi@research.netsol.com>
- * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2020 Lars Haalck <lars.haalck@uni-muenster.de>
+ * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
