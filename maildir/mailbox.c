@@ -40,7 +40,6 @@
 #include "mailbox.h"
 #include "progress/lib.h"
 #include "edata.h"
-#include "globals.h"
 #include "hcache.h"
 #include "mdata.h"
 #include "mdemail.h"

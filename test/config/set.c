@@ -31,7 +31,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "common.h" // IWYU pragma: keep
+#include "common.h"      // IWYU pragma: keep
 #include "test_common.h" // IWYU pragma: keep
 
 // clang-format off

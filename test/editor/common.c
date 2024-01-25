@@ -20,6 +20,9 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#define TEST_NO_MAIN
+#include "config.h"
+#include "acutest.h"
 #include "mutt/lib.h"
 #include "common.h"
 #include "editor/lib.h"

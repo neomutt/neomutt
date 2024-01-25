@@ -59,6 +59,24 @@ static void win_dump(struct MuttWindow *win, int indent)
 }
 
 #ifdef DEBUG_SHOW_SERIALISE
+static const char *win_size(struct MuttWindow *win)
+{
+  if (!win)
+    return "???";
+
+  switch (win->size)
+  {
+    case MUTT_WIN_SIZE_FIXED:
+      return "FIX";
+    case MUTT_WIN_SIZE_MAXIMISE:
+      return "MAX";
+    case MUTT_WIN_SIZE_MINIMISE:
+      return "MIN";
+  }
+
+  return "???";
+}
+
 static void win_serialise(struct MuttWindow *win, struct Buffer *buf)
 {
   if (!mutt_window_is_visible(win))
