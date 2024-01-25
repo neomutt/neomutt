@@ -234,7 +234,7 @@ static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus
   /* menu name */
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   char *p = buf->data;
-  if (MoreArgs(s))
+  if (has_more_args(s))
   {
     while (i < max_menus)
     {
@@ -263,7 +263,7 @@ static char *parse_keymap(enum MenuType *mtypes, struct Buffer *s, int max_menus
     {
       buf_printf(err, _("%s: null key sequence"), bind ? "bind" : "macro");
     }
-    else if (MoreArgs(s))
+    else if (has_more_args(s))
     {
       result = buf_strdup(buf);
       goto done;
@@ -345,7 +345,7 @@ enum CommandResult mutt_parse_push(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
   parse_extract_token(buf, s, TOKEN_CONDENSE);
-  if (MoreArgs(s))
+  if (has_more_args(s))
   {
     buf_printf(err, _("%s: too many arguments"), "push");
     return MUTT_CMD_ERROR;
@@ -385,7 +385,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
 
   /* function to execute */
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-  if (MoreArgs(s))
+  if (has_more_args(s))
   {
     buf_printf(err, _("%s: too many arguments"), "bind");
     rc = MUTT_CMD_ERROR;
@@ -487,7 +487,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
     parse_menu(menu_matches, buf->data, err);
   }
 
-  if (MoreArgs(s))
+  if (has_more_args(s))
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     key = buf->data;
@@ -497,7 +497,7 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
     all_keys = true;
   }
 
-  if (MoreArgs(s))
+  if (has_more_args(s))
   {
     const char *cmd = (data & MUTT_UNMACRO) ? "unmacro" : "unbind";
 
@@ -586,12 +586,12 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
   }
   else
   {
-    if (MoreArgs(s))
+    if (has_more_args(s))
     {
       char *seq = mutt_str_dup(buf->data);
       parse_extract_token(buf, s, TOKEN_CONDENSE);
 
-      if (MoreArgs(s))
+      if (has_more_args(s))
       {
         buf_printf(err, _("%s: too many arguments"), "macro");
       }
@@ -650,7 +650,7 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
   const struct MenuFuncOp *funcs = NULL;
   char *function = NULL;
 
-  if (!MoreArgs(s))
+  if (!has_more_args(s))
   {
     buf_strcpy(err, _("exec: no arguments"));
     return MUTT_CMD_ERROR;
@@ -679,7 +679,7 @@ enum CommandResult mutt_parse_exec(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
     nops++;
-  } while (MoreArgs(s) && nops < mutt_array_size(ops));
+  } while (has_more_args(s) && nops < mutt_array_size(ops));
 
   while (nops)
     mutt_push_macro_event(0, ops[--nops]);

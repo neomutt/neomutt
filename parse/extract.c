@@ -304,3 +304,43 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
   SKIPWS(tok->dptr);
   return 0;
 }
+
+/**
+ * has_more_args - Check if the buffer at the current position contains more args
+ * @param  buf   String to check
+ * @retval true  Contains more args 
+ * @retval false Does not contain more args 
+ */
+bool has_more_args(struct Buffer *buf)
+{
+  if (buf_is_empty(buf))
+    return false;
+
+  return has_more_argsf(buf, TOKEN_SPACE);
+  // TODO: is this really easier to understand than:
+  // return *buf->dptr && *buf->dptr != ';' && *buf->dptr != '#';
+}
+
+/**
+ * has_more_argsf - Check if the buffer at the current position contains more args
+ * @param buf   String to check
+ * @param flags Flags, see #TokenFlags
+ * @retval true  Contains more args 
+ * @retval false Does not contain more args 
+ * 
+ * @note The same conditions as in mutt_extract_token()
+ */
+bool has_more_argsf(struct Buffer *buf, int flags)
+{
+  if (buf_is_empty(buf))
+    return false;
+
+  return *buf->dptr && (!isspace(*buf->dptr) || (flags & TOKEN_SPACE)) &&
+         (*buf->dptr != '#' || (flags & TOKEN_COMMENT)) &&
+         (*buf->dptr != '+' || !(flags & TOKEN_PLUS)) &&
+         (*buf->dptr != '-' || !(flags & TOKEN_MINUS)) &&
+         (*buf->dptr != '=' || !(flags & TOKEN_EQUAL)) &&
+         (*buf->dptr != '?' || !(flags & TOKEN_QUESTION)) &&
+         (*buf->dptr != ';' || (flags & TOKEN_SEMICOLON)) &&
+         (!((flags) &TOKEN_PATTERN) || strchr("~%=!|", *(buf)->dptr));
+}

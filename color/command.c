@@ -180,7 +180,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_istr_equal(buf->data, "compose"))
   {
-    if (!MoreArgs(s))
+    if (!has_more_args(s))
     {
       buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
@@ -231,7 +231,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 {
   if (OptNoCurses) // No GUI, so quietly discard the command
   {
-    while (MoreArgs(s))
+    while (has_more_args(s))
     {
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     }
@@ -265,7 +265,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return quoted_colors_parse_uncolor(cid, ql, err);
   }
 
-  if ((cid == MT_COLOR_STATUS) && !MoreArgs(s))
+  if ((cid == MT_COLOR_STATUS) && !has_more_args(s))
   {
     color_debug(LL_DEBUG5, "simple\n");
     simple_color_reset(cid); // default colour for the status bar
@@ -279,7 +279,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_SUCCESS;
   }
 
-  if (!MoreArgs(s))
+  if (!has_more_args(s))
   {
     if (regex_colors_parse_uncolor(cid, NULL, uncolor))
       return MUTT_CMD_SUCCESS;
@@ -300,7 +300,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
     regex_colors_parse_uncolor(cid, buf->data, uncolor);
 
-  } while (MoreArgs(s));
+  } while (has_more_args(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -328,7 +328,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   enum CommandResult rc = MUTT_CMD_ERROR;
   struct AttrColor *ac = NULL;
 
-  if (!MoreArgs(s))
+  if (!has_more_args(s))
   {
     if (StartupComplete)
     {
@@ -387,7 +387,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   if (mutt_color_has_pattern(cid) && (cid != MT_COLOR_STATUS))
   {
     color_debug(LL_DEBUG5, "regex needed\n");
-    if (MoreArgs(s))
+    if (has_more_args(s))
     {
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     }
@@ -397,7 +397,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     }
   }
 
-  if (MoreArgs(s) && (cid != MT_COLOR_STATUS))
+  if (has_more_args(s) && (cid != MT_COLOR_STATUS))
   {
     buf_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
     rc = MUTT_CMD_WARNING;
@@ -416,7 +416,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
     goto done;
     // do nothing
   }
-  else if ((cid == MT_COLOR_STATUS) && MoreArgs(s))
+  else if ((cid == MT_COLOR_STATUS) && has_more_args(s))
   {
     color_debug(LL_DEBUG5, "status\n");
     /* 'color status fg bg' can have up to 2 arguments:
@@ -425,7 +425,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
      * 2 arguments: colorize nth submatch of pattern */
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-    if (MoreArgs(s))
+    if (has_more_args(s))
     {
       struct Buffer *tmp = buf_pool_get();
       parse_extract_token(tmp, s, TOKEN_NO_FLAGS);
@@ -439,7 +439,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
       buf_pool_release(&tmp);
     }
 
-    if (MoreArgs(s))
+    if (has_more_args(s))
     {
       buf_printf(err, _("%s: too many arguments"), color ? "color" : "mono");
       rc = MUTT_CMD_WARNING;
@@ -479,7 +479,7 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
 {
   if (OptNoCurses) // No GUI, so quietly discard the command
   {
-    while (MoreArgs(s))
+    while (has_more_args(s))
     {
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     }
@@ -511,7 +511,7 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
   // No GUI, or no colours, so quietly discard the command
   if (OptNoCurses || (COLORS == 0))
   {
-    while (MoreArgs(s))
+    while (has_more_args(s))
     {
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     }
@@ -533,7 +533,7 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
   // No GUI, or colours available, so quietly discard the command
   if (OptNoCurses || (COLORS != 0))
   {
-    while (MoreArgs(s))
+    while (has_more_args(s))
     {
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     }

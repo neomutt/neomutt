@@ -510,7 +510,7 @@ enum CommandResult mutt_lua_source_file(struct Buffer *buf, struct Buffer *s,
     buf_printf(err, _("source: error at %s"), s->dptr);
     return MUTT_CMD_ERROR;
   }
-  if (MoreArgs(s))
+  if (has_more_args(s))
   {
     buf_printf(err, _("%s: too many arguments"), "source");
     return MUTT_CMD_WARNING;
