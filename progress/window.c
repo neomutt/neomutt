@@ -142,8 +142,8 @@ static int progress_window_recalc(struct MuttWindow *win)
   if (wdata->is_bytes)
     mutt_str_pretty_size(wdata->pretty_pos, sizeof(wdata->pretty_pos), wdata->display_pos);
 
-  if (wdata->update_percent < 0)
-    wdata->display_percent = 100.0 * wdata->display_pos / wdata->size;
+  if ((wdata->update_percent < 0) && (wdata->size != 0))
+    wdata->display_percent = 100 * wdata->display_pos / wdata->size;
   else
     wdata->display_percent = wdata->update_percent;
 
