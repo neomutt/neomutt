@@ -13378,6 +13378,85 @@ color   attach_headers     brightmagenta   default    "invalid node with packet 
       </sect2>
     </sect1>
 
+    <sect1 id="cli-crypto">
+      <title>Command-line Crypto (-C) Feature</title>
+      <subtitle>Enable message security in modes that by default don't
+      enable it</subtitle>
+
+      <sect2 id="cli-crypto-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> NeoMutt 2024-01-21
+        </para>
+        <para>
+          <emphasis role="bold">Dependencies:</emphasis> Gpgme
+        </para>
+      </sect2>
+
+      <sect2 id="cli-crypto-intro">
+        <title>Introduction</title>
+        <para>
+          This feature allows enabling message security in modes that
+          don't enable it by default.  Those include batch mode, sending
+          a postponed message, and resending a message.
+        </para>
+        <para>
+          This allows using NeoMutt as a driver for git-send-email(1),
+          to send patches in signed and/or encrypted mail.
+        </para>
+      </sect2>
+
+      <sect2 id="cli-crypto-usage">
+        <title>Usage</title>
+        <para>
+          To send an email from a file, enabling cryptographic
+          operations as when sending interactively, simply use the
+          <literal>-C</literal> flag.
+        </para>
+        <screen>$ neomutt -C -H - &lt; /mail/to/be/sent</screen>
+      </sect2>
+
+      <sect2 id="cli-crypto-neomuttrc">
+        <title>neomuttrc</title>
+
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the cli-crypto feature.</emphasis>
+
+set pgp_default_key = "1111111111111111111111111111111111111111"
+<emphasis role="comment"># Sign all mail</emphasis>
+set crypt_autosign = yes
+<emphasis role="comment"># Encrypt mail if all recipients have valid public keys</emphasis>
+set crypt_opportunistic_encrypt = yes
+<emphasis role="comment"># Sign/encrypt protected headers (Subject)</emphasis>
+set crypt_protected_headers_write = yes
+<emphasis role="comment"># Self encrypt mail</emphasis>
+set crypt_self_encrypt = yes
+
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+</screen>
+
+      </sect2>
+
+      <sect2 id="cli-crypto-gitconfig">
+        <title>neomuttrc</title>
+
+<screen>
+<emphasis role="comment"># Example .gitconfig config file for the cli-crypto feature.</emphasis>
+
+[sendemail]
+sendmailcmd = neomutt -C -H - &amp;&amp; true
+</screen>
+
+      </sect2>
+
+      <sect2 id="cli-crypto-credits">
+        <title>Credits</title>
+        <para>
+          Alejandro Colomar, Richard Russon, Jenya Sovetkin
+        </para>
+      </sect2>
+    </sect1>
+
     <sect1 id="compose-to-sender">
       <title>Compose to Sender Feature</title>
       <subtitle>Send new mail to the sender of the current mail</subtitle>
@@ -19543,6 +19622,14 @@ neomutt -a image.jpg *.png -- address1 address2
               <entry>-b <literal>address</literal></entry>
               <entry>
                 Specify a blind carbon copy (Bcc) recipient
+              </entry>
+            </row>
+            <row>
+              <entry>-C</entry>
+              <entry>
+                Enable cryptographic operations in the cases in which they're
+                disabled by default. Those include batch mode, sending a
+                postponed message, and resending a message.
               </entry>
             </row>
             <row>

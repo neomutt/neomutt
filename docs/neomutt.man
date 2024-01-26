@@ -235,6 +235,22 @@ Run in batch mode (do not start the ncurses UI)
 Specify a blind carbon copy (Bcc) recipient
 .
 .TP
+.BI \-C
+Enable cryptographic operations
+in the cases in which they're disabled by default.
+Those include:
+.RS
+.PD 0
+.IP \(bu 3
+Batch mode.
+.IP \(bu
+Sending a postponed message.
+.IP \(bu
+Resending a message.
+.PD
+.RE
+.
+.TP
 .BI \-c " address"
 Specify a carbon copy (Cc) recipient
 .

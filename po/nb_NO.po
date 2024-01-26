@@ -4612,21 +4612,23 @@ msgid "usage:"
 msgstr "bruk:"
 
 #: main.c:249
+#, fuzzy
 msgid ""
-"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-Enx] [-e <kommando>] [-F <oppsett>] [-H <kladd>] [-i <inkluder>]\n"
+"  neomutt [-CEnx] [-e <kommando>] [-F <oppsett>] [-H <kladd>] [-i <inkluder>]\n"
 "          [-b <adresse>] [-c <adresse>] [-s <emne>] [-a <fil> [...] --]\n"
 "          <adresse> [...]"
 
 #: main.c:252
+#, fuzzy
 msgid ""
-"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-nx] [-e <kommando>] [-F <oppsett>] [-b <adresse>] [-c <adresse>]\n"
+"  neomutt [-Cnx] [-e <kommando>] [-F <oppsett>] [-b <adresse>] [-c <adresse>]\n"
 "          [-s <emne>] [-a <fil> [...] --] <adresse> [...] < melding"
 
 #: main.c:254
@@ -4709,6 +4711,11 @@ msgstr "  -B            Kjør i knippe-modus (ikke start ncurses-grensesnittet)"
 #: main.c:275
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresse>  Angi en blindkopi (Bcc)-mottager"
+
+#: main.c:277
+#, fuzzy
+msgid "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"

@@ -2540,11 +2540,12 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
    * 3) we are resending a message
    * 4) we are recalling a postponed message (don't override the user's saved settings)
    * 5) we are in batch mode
+   * But 3, 4, and 5, can be overridden with '-C' in the command line (flags & SEND_CLI_CRYPTO)
    *
    * This is done after allowing the user to edit the message so that security
    * settings can be configured with send2-hook and $edit_headers.  */
   if ((WithCrypto != 0) && (e_templ->security == 0) &&
-      !(flags & (SEND_BATCH | SEND_POSTPONED | SEND_RESEND)))
+      ((flags & SEND_CLI_CRYPTO) || !(flags & (SEND_BATCH | SEND_POSTPONED | SEND_RESEND))))
   {
     bool c_autocrypt = false;
     bool c_autocrypt_reply = false;
@@ -2806,6 +2807,14 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
         FREE(&pgpkeylist);
 
         decode_descriptions(e_templ->body);
+
+        if (flags & SEND_BATCH)
+        {
+          mutt_message(_("Missing encryption key; mail not sent"));
+          rc = -1;
+          goto cleanup;
+        }
+
         goto main_loop;
       }
       mutt_encode_descriptions(e_templ->body, false, sub);

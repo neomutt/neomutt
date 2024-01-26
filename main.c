@@ -246,10 +246,10 @@ static bool usage(void)
   // clang-format off
   /* L10N: Try to limit to 80 columns */
   puts(_("usage:"));
-  puts(_("  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+  puts(_("  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
          "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
          "          <address> [...]"));
-  puts(_("  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+  puts(_("  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
          "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"));
   puts(_("  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"));
@@ -274,6 +274,7 @@ static bool usage(void)
   puts(_("  -B            Run in batch mode (do not start the ncurses UI)"));
   puts(_("  -b <address>  Specify a blind carbon copy (Bcc) recipient"));
   puts(_("  -c <address>  Specify a carbon copy (Cc) recipient"));
+  puts(_("  -C            Enable Command-line Crypto (signing/encryption)"));
   puts(_("  -D            Dump all config variables as 'name=value' pairs to stdout"));
   puts(_("  -D -O         Like -D, but show one-liner documentation"));
   puts(_("  -D -S         Like -D, but hide the value of sensitive variables"));
@@ -579,7 +580,7 @@ main
         argv[nargc++] = argv[optind];
     }
 
-    i = getopt(argc, argv, "+A:a:Bb:F:f:c:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvxyzZ");
+    i = getopt(argc, argv, "+A:a:Bb:F:f:Cc:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvxyzZ");
     if (i != EOF)
     {
       switch (i)
@@ -595,6 +596,9 @@ main
           break;
         case 'b':
           mutt_list_insert_tail(&bcc_list, mutt_str_dup(optarg));
+          break;
+        case 'C':
+          sendflags |= SEND_CLI_CRYPTO;
           break;
         case 'c':
           mutt_list_insert_tail(&cc_list, mutt_str_dup(optarg));
@@ -770,7 +774,7 @@ main
       dump_variables || batch_mode)
   {
     OptNoCurses = true;
-    sendflags = SEND_BATCH;
+    sendflags |= SEND_BATCH;
     MuttLogger = log_disp_terminal;
     log_queue_flush(log_disp_terminal);
   }

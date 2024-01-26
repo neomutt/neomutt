@@ -110,6 +110,22 @@ bool pgp_key_is_valid(struct PgpKeyInfo *k)
 }
 
 /**
+ * pgp_keys_are_valid - Are all these PGP keys valid?
+ * @param keys Set of keys to examine
+ * @retval true All keys are valid
+ */
+bool pgp_keys_are_valid(struct PgpKeyInfo *keys)
+{
+  for (struct PgpKeyInfo *k = keys; k != NULL; k = k->next)
+  {
+    if (!pgp_key_is_valid(k))
+      return false;
+  }
+
+  return true;
+}
+
+/**
  * pgp_id_is_strong - Is a PGP key strong?
  * @param uid UID of a PGP key
  * @retval true Key is strong
@@ -444,7 +460,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities,
 
   if (matches)
   {
-    if (oppenc_mode)
+    if (oppenc_mode || !isatty(STDIN_FILENO))
     {
       const bool c_crypt_opportunistic_encrypt_strong_keys =
           cs_subset_bool(NeoMutt->sub, "crypt_opportunistic_encrypt_strong_keys");
@@ -563,16 +579,24 @@ struct PgpKeyInfo *pgp_getkeybystr(const char *cp, KeyFlags abilities, enum PgpR
 
   pgp_key_free(&keys);
 
+  k = NULL;
   if (matches)
   {
-    k = dlg_pgp(matches, NULL, p);
-    if (k)
-      pgp_remove_key(&matches, k);
-    pgp_key_free(&matches);
-  }
-  else
-  {
-    k = NULL;
+    if (isatty(STDIN_FILENO))
+    {
+      k = dlg_pgp(matches, NULL, p);
+      if (k)
+        pgp_remove_key(&matches, k);
+      pgp_key_free(&matches);
+    }
+    else if (pgp_keys_are_valid(matches))
+    {
+      k = matches;
+    }
+    else
+    {
+      mutt_error(_("A key can't be used: expired/disabled/revoked"));
+    }
   }
 
   FREE(&pfcopy);

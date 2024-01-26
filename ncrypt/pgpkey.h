@@ -47,6 +47,7 @@ struct PgpKeyInfo *pgp_getkeybyaddr(struct Address *a, KeyFlags abilities, enum 
 struct PgpKeyInfo *pgp_getkeybystr(const char *p, KeyFlags abilities, enum PgpRing keyring);
 struct PgpKeyInfo *pgp_principal_key(struct PgpKeyInfo *key);
 bool               pgp_key_is_valid(struct PgpKeyInfo *k);
+bool               pgp_keys_are_valid(struct PgpKeyInfo *keys);
 bool               pgp_id_is_valid(struct PgpUid *uid);
 bool               pgp_id_is_strong(struct PgpUid *uid);
 

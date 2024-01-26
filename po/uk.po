@@ -4639,21 +4639,23 @@ msgid "usage:"
 msgstr "викор.:"
 
 #: main.c:249
+#, fuzzy
 msgid ""
-"  neomutt [-Enx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-Enx] [-e <команда>] [-F <конфіґ>] [-H <чернетка>] [-i <врахувати>]\n"
+"  neomutt [-CEnx] [-e <команда>] [-F <конфіґ>] [-H <чернетка>] [-i <врахувати>]\n"
 "          [-b <адреса>] [-c <адреса>] [-s <тема>] [-a <файл> [...] --]\n"
 "          <адреса> [...]"
 
 #: main.c:252
+#, fuzzy
 msgid ""
-"  neomutt [-nx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-nx] [-e <команда>] [-F <конфіґ>] [-b <адреса>] [-c <адреса>]\n"
+"  neomutt [-Cnx] [-e <команда>] [-F <конфіґ>] [-b <адреса>] [-c <адреса>]\n"
 "          [-s <тема>] [-a <файл> [...] --] <адреса> [...] < повідомлення"
 
 #: main.c:254
@@ -4736,6 +4738,11 @@ msgstr "  -B            Запустити в пакетному режимі (�
 #: main.c:275
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <адреса>  Визначає отримувача прихованої перебивної копії (Bcc)"
+
+#: main.c:277
+#, fuzzy
+msgid "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
 
 #: main.c:276
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
