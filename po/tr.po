@@ -6284,9 +6284,8 @@ msgid "PGP Key %s"
 msgstr "PGP Anahtarı %s"
 
 #: ncrypt/pgpkey.c:599
-#, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
-msgstr "Bu anahtar kullanılamaz: Süresi dolmuş/etkin değil/yürürlükten kaldırılmış"
+msgstr "Bu anahtar kullanılamıyor: Süresi dolmuş/devre dışı/yürürlükten kalkmış"
 
 #: ncrypt/smime.c:173
 msgid "Enter S/MIME passphrase:"
@@ -7574,7 +7573,7 @@ msgstr "Haber grubu belirtilmemiş"
 
 #: send/send.c:2823
 msgid "Missing encryption key; mail not sent"
-msgstr ""
+msgstr "Şifreleme anahtarı eksik: İleti gönderilmedi"
 
 #: send/send.c:2847 send/smtp.c:263
 msgid "Sending message..."
