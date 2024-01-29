@@ -6303,7 +6303,6 @@ msgid "PGP Key %s"
 msgstr "PGP kľúč %s"
 
 #: ncrypt/pgpkey.c:599
-#, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Tento kľúč nemôže byť použitý: je expirovaný/zakázaný/odvolaný"
 
