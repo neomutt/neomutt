@@ -121,6 +121,7 @@
 ** .dt %n  .dd Index number
 ** .dt %r  .dd Address which alias expands to
 ** .dt %t  .dd Character which indicates if the alias is tagged for inclusion
+** .dt %Y  .dd Comma-separated tags
 ** .dt %>X .dd right justify the rest of the string and pad with character "X"
 ** .dt %|X .dd pad to the end of the line with character "X"
 ** .dt %*X .dd soft-fill with character "X" as pad
@@ -3730,6 +3731,7 @@
 ** .dt %e  .dd * .dd Extra information
 ** .dt %n  .dd   .dd Destination name
 ** .dt %t  .dd   .dd "*" if current entry is tagged, a space otherwise
+** .dt %Y  .dd   .dd Comma-separated tags
 ** .dt %>X .dd   .dd Right justify the rest of the string and pad with "X"
 ** .dt %|X .dd   .dd Pad to the end of the line with "X"
 ** .dt %*X .dd   .dd Soft-fill with character "X" as pad
