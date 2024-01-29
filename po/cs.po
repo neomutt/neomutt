@@ -7612,7 +7612,7 @@ msgstr "Nezadány žádné diskusní skupiny"
 
 #: send/send.c:2823
 msgid "Missing encryption key; mail not sent"
-msgstr ""
+msgstr "Chybí šifrovací klíč; zpráva nebyla odeslána"
 
 #: send/send.c:2847 send/smtp.c:263
 msgid "Sending message..."
