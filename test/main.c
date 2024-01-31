@@ -541,6 +541,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_header)                              \
   NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_line)                                \
   NEOMUTT_TEST_ITEM(test_parse_extract_token)                                  \
+  NEOMUTT_TEST_ITEM(test_parse_extract_word)                                   \
   NEOMUTT_TEST_ITEM(test_parse_rc)                                             \
   NEOMUTT_TEST_ITEM(test_parse_set)                                            \
                                                                                \

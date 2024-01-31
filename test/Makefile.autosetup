@@ -494,6 +494,7 @@ PARSE_OBJS	= test/parse/common.o \
 		  test/parse/mutt_rfc822_read_header.o \
 		  test/parse/mutt_rfc822_read_line.o \
 		  test/parse/parse_extract_token.o \
+		  test/parse/parse_extract_word.o \
 		  test/parse/parse_rc.o \
 		  test/parse/parse_rc_line.o \
 		  test/parse/parse_set.o

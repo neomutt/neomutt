@@ -304,3 +304,39 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
   SKIPWS(tok->dptr);
   return 0;
 }
+
+/**
+ * parse_extract_word - Extract the next word from a string
+ * @param dest  Buffer for the result
+ * @param buf   Buffer containing tokens
+ * @retval  true  Success
+ * @retval  false No word found
+ *
+ * Extracts the next set of consecutive non-whitespace characters from a string
+ * _excluding_ comments.
+ */
+bool parse_extract_word(struct Buffer *dest, struct Buffer *buf)
+{
+  buf_reset(dest);
+
+  if (buf_is_empty(buf) || !*buf->dptr)
+    return false;
+
+  SKIPWS(buf->dptr);
+  char ch;
+  while ((ch = *buf->dptr))
+  {
+    if (isspace(ch) || ch == '#')
+      break;
+
+    buf_addch(dest, ch);
+    buf->dptr++;
+  }
+
+  SKIPWS(buf->dptr);
+
+  if (buf_is_empty(dest))
+    return false;
+
+  return true;
+}
