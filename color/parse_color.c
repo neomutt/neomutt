@@ -70,6 +70,33 @@ static struct Mapping AttributeNames[] = {
 };
 
 /**
+ * parse_extract_color_name - Extract the next color name from a string
+ * @param dest  Buffer for the result
+ * @param buf   Buffer containing tokens
+ * @retval  0 Success
+ * @retval -1 Error
+ */
+static bool parse_extract_color_name(struct Buffer *dest, struct Buffer *buf)
+{
+  if (buf_is_empty(buf) || !*buf->dptr)
+    return false;
+
+  buf_reset(dest);
+
+  SKIPWS(buf->dptr);
+  char ch;
+  while ((ch = *buf->dptr++) && !isspace(ch))
+    buf_addch(dest, ch);
+
+  SKIPWS(buf->dptr);
+
+  if (buf_is_empty(dest))
+    return false;
+
+  return true;
+}
+
+/**
  * parse_color_prefix - Parse a colour prefix, e.g. "bright"
  * @param[in]  s      String to parse
  * @param[out] prefix parsed prefix, see #ColorPrefix
@@ -283,13 +310,12 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 {
   while (true)
   {
-    if (!MoreArgsF(s, TOKEN_COMMENT))
+    if (!parse_extract_color_name(buf, s))
     {
       buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
     }
 
-    parse_extract_token(buf, s, TOKEN_COMMENT);
     if (buf_is_empty(buf))
       continue;
 
@@ -308,13 +334,11 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
       ac->attrs |= attr; // Merge with other attributes
   }
 
-  if (!MoreArgsF(s, TOKEN_COMMENT))
+  if (!parse_extract_color_name(buf, s))
   {
     buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
   }
-
-  parse_extract_token(buf, s, TOKEN_COMMENT);
 
   return parse_color_name(buf->data, &ac->bg, err);
 }
