@@ -283,13 +283,12 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 {
   while (true)
   {
-    if (!MoreArgsF(s, TOKEN_COMMENT))
+    if (!parse_extract_word(buf, s))
     {
       buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
     }
 
-    parse_extract_token(buf, s, TOKEN_COMMENT);
     if (buf_is_empty(buf))
       continue;
 
@@ -308,13 +307,11 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
       ac->attrs |= attr; // Merge with other attributes
   }
 
-  if (!MoreArgsF(s, TOKEN_COMMENT))
+  if (!parse_extract_word(buf, s))
   {
     buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
   }
-
-  parse_extract_token(buf, s, TOKEN_COMMENT);
 
   return parse_color_name(buf->data, &ac->bg, err);
 }

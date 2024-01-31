@@ -353,7 +353,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
 static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_word(buf, s);
   buf_expand_path(buf);
   if (buf_is_empty(buf))
   {
@@ -388,7 +388,7 @@ static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
     buf_printf(err, _("%s: too few arguments"), "echo");
     return MUTT_CMD_WARNING;
   }
-  parse_extract_token(buf, s, TOKEN_NO_FLAGS);
+  parse_extract_word(buf, s);
   OptForceRefresh = true;
   mutt_message("%s", buf->data);
   OptForceRefresh = false;

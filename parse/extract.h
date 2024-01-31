@@ -31,17 +31,6 @@ struct Buffer;
 
 #define MoreArgs(buf) (*(buf)->dptr && (*(buf)->dptr != ';') && (*(buf)->dptr != '#'))
 
-/* The same conditions as in mutt_extract_token() */
-#define MoreArgsF(buf, flags) (*(buf)->dptr && \
-    (!isspace(*(buf)->dptr) || ((flags) & TOKEN_SPACE)) && \
-    ((*(buf)->dptr != '#') ||  ((flags) & TOKEN_COMMENT)) && \
-    ((*(buf)->dptr != '+') || !((flags) & TOKEN_PLUS)) && \
-    ((*(buf)->dptr != '-') || !((flags) & TOKEN_MINUS)) && \
-    ((*(buf)->dptr != '=') || !((flags) & TOKEN_EQUAL)) && \
-    ((*(buf)->dptr != '?') || !((flags) & TOKEN_QUESTION)) && \
-    ((*(buf)->dptr != ';') || ((flags) & TOKEN_SEMICOLON)) && \
-    (!((flags) & TOKEN_PATTERN) || strchr("~%=!|", *(buf)->dptr)))
-
 typedef uint16_t TokenFlags;          ///< Flags for parse_extract_token(), e.g. #TOKEN_EQUAL
 #define TOKEN_NO_FLAGS            0   ///< No flags are set
 #define TOKEN_EQUAL         (1 << 0)  ///< Treat '=' as a special
@@ -58,5 +47,6 @@ typedef uint16_t TokenFlags;          ///< Flags for parse_extract_token(), e.g.
 #define TOKEN_MINUS         (1 << 11) ///< Treat '-' as a special
 
 int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
+bool parse_extract_word(struct Buffer *dest, struct Buffer *buf);
 
 #endif /* MUTT_PARSE_EXTRACT_H */
