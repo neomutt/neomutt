@@ -6303,7 +6303,6 @@ msgid "PGP Key %s"
 msgstr "PGP kľúč %s"
 
 #: ncrypt/pgpkey.c:599
-#, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Tento kľúč nemôže byť použitý: je expirovaný/zakázaný/odvolaný"
 
@@ -7598,7 +7597,7 @@ msgstr "Nebola specifikovaná žiadna diskusná skupina"
 
 #: send/send.c:2823
 msgid "Missing encryption key; mail not sent"
-msgstr ""
+msgstr "Chýba šifrovací kľúč; správa nebola odoslaná"
 
 #: send/send.c:2847 send/smtp.c:263
 msgid "Sending message..."
