@@ -3,7 +3,8 @@
  * Test code for mutt_replacelist_match()
  *
  * @authors
- * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

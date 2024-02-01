@@ -3,6 +3,7 @@
  * Test code for buf_insert()
  *
  * @authors
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright

@@ -15,6 +15,7 @@
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 Whitney Cumber
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

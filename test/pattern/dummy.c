@@ -3,8 +3,10 @@
  * Dummy code for working around build problems
  *
  * @authors
- * Copyright (C) 2018 Naveen Nathan <naveen@lastninja.net>
- * Copyright (C) 2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019 Naveen Nathan <naveen@lastninja.net>
+ * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2021 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -9,6 +9,7 @@
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  * Copyright (C) 2021 ftilde <ftilde@tamepointer.de>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
+ * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021-2022 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

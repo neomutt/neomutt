@@ -2,6 +2,10 @@
  * @file
  * Test code for the MyVar object
  *
+ * @authors
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023 Rayford Shireman
+ *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software

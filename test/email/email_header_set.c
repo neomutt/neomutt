@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
+ * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
