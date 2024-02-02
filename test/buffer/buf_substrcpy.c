@@ -37,6 +37,27 @@ void test_buf_substrcpy(void)
   }
 
   {
+    struct Buffer *buf = buf_pool_get();
+    const char *str = "apple banana";
+    TEST_CHECK(buf_substrcpy(buf, str, NULL) == 0);
+    buf_pool_release(&buf);
+  }
+
+  {
+    struct Buffer *buf = buf_pool_get();
+    const char *str = "apple banana";
+    TEST_CHECK(buf_substrcpy(buf, NULL, str) == 0);
+    buf_pool_release(&buf);
+  }
+
+  {
+    struct Buffer *buf = buf_pool_get();
+    const char *str = "apple banana";
+    TEST_CHECK(buf_substrcpy(buf, str + 8, str + 2) == 0);
+    buf_pool_release(&buf);
+  }
+
+  {
     char *src = "abcdefghijklmnopqrstuvwxyz";
     char *result = "jklmnopqr";
 

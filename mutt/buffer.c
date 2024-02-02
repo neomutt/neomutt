@@ -411,7 +411,13 @@ void buf_dealloc(struct Buffer *buf)
  */
 size_t buf_strcpy(struct Buffer *buf, const char *s)
 {
+  if (!buf)
+    return 0;
+
   buf_reset(buf);
+  if (!s)
+    return 0;
+
   return buf_addstr(buf, s);
 }
 
@@ -426,7 +432,13 @@ size_t buf_strcpy(struct Buffer *buf, const char *s)
  */
 size_t buf_strcpy_n(struct Buffer *buf, const char *s, size_t len)
 {
+  if (!buf)
+    return 0;
+
   buf_reset(buf);
+  if (!s)
+    return 0;
+
   return buf_addstr_n(buf, s, len);
 }
 
@@ -475,7 +487,13 @@ void buf_dequote_comment(struct Buffer *buf)
  */
 size_t buf_substrcpy(struct Buffer *buf, const char *beg, const char *end)
 {
+  if (!buf)
+    return 0;
+
   buf_reset(buf);
+  if (!beg || !end)
+    return 0;
+
   if (end <= beg)
     return 0;
 
@@ -545,8 +563,12 @@ size_t buf_concat_path(struct Buffer *buf, const char *dir, const char *fname)
 size_t buf_concatn_path(struct Buffer *buf, const char *dir, size_t dirlen,
                         const char *fname, size_t fnamelen)
 {
-  size_t len = 0;
+  if (!buf)
+    return 0;
+
   buf_reset(buf);
+
+  size_t len = 0;
   if (dirlen != 0)
     len += buf_addstr_n(buf, dir, dirlen);
   if ((dirlen != 0) && (fnamelen != 0))
@@ -616,7 +638,10 @@ size_t buf_copy(struct Buffer *dst, const struct Buffer *src)
  */
 void buf_seek(struct Buffer *buf, size_t offset)
 {
-  if (buf && (offset < buf_len(buf)))
+  if (!buf)
+    return;
+
+  if ((offset < buf_len(buf)))
   {
     buf->dptr = buf->data ? buf->data + offset : NULL;
   }
@@ -700,6 +725,9 @@ bool buf_istr_equal(const struct Buffer *a, const struct Buffer *b)
  */
 size_t buf_startswith(const struct Buffer *buf, const char *prefix)
 {
+  if (!buf || !prefix)
+    return 0;
+
   return mutt_str_startswith(buf_string(buf), prefix);
 }
 

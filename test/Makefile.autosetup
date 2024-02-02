@@ -89,6 +89,7 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_printf.o \
 		  test/buffer/buf_reset.o \
 		  test/buffer/buf_rfind.o \
+		  test/buffer/buf_seek.o \
 		  test/buffer/buf_startswith.o \
 		  test/buffer/buf_strcpy.o \
 		  test/buffer/buf_strcpy_n.o \

@@ -3,7 +3,7 @@
  * Test code for the Slist object
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
@@ -152,6 +152,7 @@ static bool test_slist_parse(struct Buffer *err)
     "apple",
     "apple:banana",
     "apple:banana:cherry",
+    "apple\\:banana:cherry",
     ":apple",
     "banana:",
     ":",
@@ -169,7 +170,7 @@ static bool test_slist_parse(struct Buffer *err)
   struct Slist *list = NULL;
   for (size_t i = 0; i < mutt_array_size(init); i++)
   {
-    TEST_MSG(">>%s<<", init[i] ? init[i] : "NULL");
+    TEST_CASE_(">>%s<<", init[i] ? init[i] : "NULL");
     list = slist_parse(init[i], flags);
     slist_dump(list, err);
     slist_free(&list);
@@ -180,6 +181,20 @@ static bool test_slist_parse(struct Buffer *err)
 
 static bool test_slist_add_string(struct Buffer *err)
 {
+  {
+    slist_add_string(NULL, NULL);
+  }
+
+  {
+    struct Slist *list = slist_parse(NULL, D_SLIST_ALLOW_EMPTY);
+    slist_dump(list, err);
+
+    slist_add_string(list, "");
+    slist_dump(list, err);
+
+    slist_free(&list);
+  }
+
   {
     struct Slist *list = slist_parse(NULL, D_SLIST_ALLOW_EMPTY);
     slist_dump(list, err);

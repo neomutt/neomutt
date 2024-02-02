@@ -132,6 +132,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_printf)                                           \
   NEOMUTT_TEST_ITEM(test_buf_reset)                                            \
   NEOMUTT_TEST_ITEM(test_buf_rfind)                                            \
+  NEOMUTT_TEST_ITEM(test_buf_seek)                                             \
   NEOMUTT_TEST_ITEM(test_buf_startswith)                                       \
   NEOMUTT_TEST_ITEM(test_buf_strcpy)                                           \
   NEOMUTT_TEST_ITEM(test_buf_strcpy_n)                                         \

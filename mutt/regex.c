@@ -277,8 +277,7 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
   struct Regex *rx = mutt_regex_compile(pat, REG_ICASE);
   if (!rx)
   {
-    if (err)
-      buf_printf(err, _("Bad regex: %s"), pat);
+    buf_printf(err, _("Bad regex: %s"), pat);
     return -1;
   }
 
