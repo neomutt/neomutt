@@ -45,7 +45,7 @@ struct AccountEntry
 {
   int num;                          ///< Number in the index
   struct AutocryptAccount *account; ///< Account details
-  struct Address *addr; ///< Email address associated with the account
+  struct Address *addr;             ///< Email address associated with the account
 };
 
 int                            mutt_autocrypt_account_init(bool prompt);

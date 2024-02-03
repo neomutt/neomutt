@@ -15261,7 +15261,7 @@ color index-object foreground background [pattern]
               </row>
               <row>
                 <entry><literal>index_tag</literal></entry>
-                <entry>Nessage tags, <literal>%G</literal></entry>
+                <entry>Message tags, <literal>%G</literal></entry>
               </row>
               <row>
                 <entry><literal>index_tags</literal></entry>
