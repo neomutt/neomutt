@@ -13437,7 +13437,7 @@ set crypt_self_encrypt = yes
       </sect2>
 
       <sect2 id="cli-crypto-gitconfig">
-        <title>neomuttrc</title>
+        <title>gitconfig</title>
 
 <screen>
 <emphasis role="comment"># Example .gitconfig config file for the cli-crypto feature.</emphasis>
