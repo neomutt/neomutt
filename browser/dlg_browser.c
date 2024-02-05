@@ -272,11 +272,11 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
         }
 
-        mutt_format_s(buf, buflen, prec, date);
+        mutt_format(buf, buflen, prec, date, false);
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -336,7 +336,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -355,7 +355,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                              (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
                    "");
 
-      mutt_format_s(buf, buflen, prec, fn);
+      mutt_format(buf, buflen, prec, fn, false);
       break;
     }
     case 'F':
@@ -380,7 +380,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                  ((folder->ff->mode & S_ISVTX) != 0) ? 't' :
                  ((folder->ff->mode & S_IXOTH) != 0) ? 'x' :
                                                        '-');
-        mutt_format_s(buf, buflen, prec, permission);
+        mutt_format(buf, buflen, prec, permission, false);
       }
       else if (folder->ff->imap)
       {
@@ -388,11 +388,11 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         /* mark folders with subfolders AND mail */
         snprintf(permission, sizeof(permission), "IMAP %c",
                  (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
-        mutt_format_s(buf, buflen, prec, permission);
+        mutt_format(buf, buflen, prec, permission, false);
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
     }
@@ -403,7 +403,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         struct group *gr = getgrgid(folder->ff->gid);
         if (gr)
         {
-          mutt_format_s(buf, buflen, prec, gr->gr_name);
+          mutt_format(buf, buflen, prec, gr->gr_name, false);
         }
         else
         {
@@ -413,7 +413,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -434,7 +434,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                              (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
                    "");
 
-      mutt_format_s(buf, buflen, prec, fn);
+      mutt_format(buf, buflen, prec, fn, false);
       break;
     }
 
@@ -446,7 +446,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -460,7 +460,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, "");
+          mutt_format(buf, buflen, prec, "", false);
         }
       }
       else if (folder->ff->msg_count == 0)
@@ -484,7 +484,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, "");
+          mutt_format(buf, buflen, prec, "", false);
         }
       }
       else if (folder->ff->msg_unread == 0)
@@ -515,7 +515,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -530,7 +530,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         struct passwd *pw = getpwuid(folder->ff->uid);
         if (pw)
         {
-          mutt_format_s(buf, buflen, prec, pw->pw_name);
+          mutt_format(buf, buflen, prec, pw->pw_name, false);
         }
         else
         {
@@ -540,7 +540,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 

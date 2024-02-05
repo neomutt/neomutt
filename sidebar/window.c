@@ -395,7 +395,7 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
       size_t off = add_indent(indented, ilen, sbe);
       snprintf(indented + off, ilen - off, "%s",
                ((op == 'D') && sbe->mailbox->name) ? sbe->mailbox->name : sbe->box);
-      mutt_format_s(buf, buflen, prec, indented);
+      mutt_format(buf, buflen, prec, indented, false);
       break;
     }
 
@@ -535,20 +535,20 @@ static const char *sidebar_format_str(char *buf, size_t buflen, size_t col, int 
     case '!':
       if (m->msg_flagged == 0)
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       else if (m->msg_flagged == 1)
       {
-        mutt_format_s(buf, buflen, prec, "!");
+        mutt_format(buf, buflen, prec, "!", false);
       }
       else if (m->msg_flagged == 2)
       {
-        mutt_format_s(buf, buflen, prec, "!!");
+        mutt_format(buf, buflen, prec, "!!", false);
       }
       else
       {
         snprintf(fmt, sizeof(fmt), "%d!", m->msg_flagged);
-        mutt_format_s(buf, buflen, prec, fmt);
+        mutt_format(buf, buflen, prec, fmt, false);
       }
       break;
   }

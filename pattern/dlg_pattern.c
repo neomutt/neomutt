@@ -113,10 +113,10 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
   switch (op)
   {
     case 'd':
-      mutt_format_s(buf, buflen, prec, NONULL(entry->desc));
+      mutt_format(buf, buflen, prec, NONULL(entry->desc), false);
       break;
     case 'e':
-      mutt_format_s(buf, buflen, prec, NONULL(entry->expr));
+      mutt_format(buf, buflen, prec, NONULL(entry->expr), false);
       break;
     case 'n':
     {

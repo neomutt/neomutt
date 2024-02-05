@@ -134,10 +134,10 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
   switch (op)
   {
     case 'a':
-      mutt_format_s(buf, buflen, prec, alias->name);
+      mutt_format(buf, buflen, prec, alias->name, false);
       break;
     case 'c':
-      mutt_format_s(buf, buflen, prec, alias->comment);
+      mutt_format(buf, buflen, prec, alias->comment, false);
       break;
     case 'f':
       snprintf(tmp, sizeof(tmp), "%%%ss", prec);
@@ -153,7 +153,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
       mutt_addrlist_write(&alias->addr, tmpbuf, true);
       mutt_str_copy(tmp, buf_string(tmpbuf), sizeof(tmp));
       buf_pool_release(&tmpbuf);
-      mutt_format_s(buf, buflen, prec, tmp);
+      mutt_format(buf, buflen, prec, tmp, false);
       break;
     }
     case 't':
@@ -164,7 +164,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
     {
       struct Buffer *tags = buf_pool_get();
       alias_tags_to_buffer(&av->alias->tags, tags);
-      mutt_format_s(buf, buflen, prec, buf_string(tags));
+      mutt_format(buf, buflen, prec, buf_string(tags), false);
       buf_pool_release(&tags);
       break;
     }

@@ -109,7 +109,7 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
     }
     case 's':
     {
-      mutt_format_s(buf, buflen, prec, NONULL(h->history));
+      mutt_format(buf, buflen, prec, NONULL(h->history), false);
       break;
     }
   }

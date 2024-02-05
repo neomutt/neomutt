@@ -176,7 +176,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
         tmp[len] = '>';
         tmp[len + 1] = '\0';
       }
-      mutt_format_s(buf, buflen, prec, tmp);
+      mutt_format(buf, buflen, prec, tmp, false);
       break;
     }
     case 'c':
@@ -185,12 +185,12 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
       break;
     case 'e':
       if (!optional)
-        mutt_format_s(buf, buflen, prec, NONULL(alias->comment));
+        mutt_format(buf, buflen, prec, NONULL(alias->comment), false);
       else if (!alias->comment || (*alias->comment == '\0'))
         optional = false;
       break;
     case 'n':
-      mutt_format_s(buf, buflen, prec, NONULL(alias->name));
+      mutt_format(buf, buflen, prec, NONULL(alias->name), false);
       break;
     case 't':
       snprintf(fmt, sizeof(fmt), "%%%sc", prec);
@@ -200,7 +200,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
     {
       struct Buffer *tags = buf_pool_get();
       alias_tags_to_buffer(&av->alias->tags, tags);
-      mutt_format_s(buf, buflen, prec, buf_string(tags));
+      mutt_format(buf, buflen, prec, buf_string(tags), false);
       buf_pool_release(&tags);
       break;
     }

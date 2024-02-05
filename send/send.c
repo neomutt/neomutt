@@ -694,7 +694,7 @@ static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int
   switch (op)
   {
     case 'n':
-      mutt_format_s(buf, buflen, prec, mutt_get_name(to));
+      mutt_format(buf, buflen, prec, mutt_get_name(to), false);
       break;
 
     case 'u':
@@ -708,19 +708,19 @@ static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int
       {
         buf2[0] = '\0';
       }
-      mutt_format_s(buf, buflen, prec, buf2);
+      mutt_format(buf, buflen, prec, buf2, false);
       break;
 
     case 'v':
       if (to)
-        mutt_format_s(buf2, sizeof(buf2), prec, mutt_get_name(to));
+        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(to), false);
       else if (cc)
-        mutt_format_s(buf2, sizeof(buf2), prec, mutt_get_name(cc));
+        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(cc), false);
       else
         *buf2 = '\0';
       if ((p = strpbrk(buf2, " %@")))
         *p = '\0';
-      mutt_format_s(buf, buflen, prec, buf2);
+      mutt_format(buf, buflen, prec, buf2, false);
       break;
 
     default:

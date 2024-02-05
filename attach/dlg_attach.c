@@ -165,11 +165,11 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         if (mutt_is_text_part(aptr->body) &&
             mutt_body_get_charset(aptr->body, charset, sizeof(charset)))
         {
-          mutt_format_s(buf, buflen, prec, charset);
+          mutt_format(buf, buflen, prec, charset, false);
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, "");
+          mutt_format(buf, buflen, prec, "", false);
         }
       }
       else if (!mutt_is_text_part(aptr->body) ||
@@ -198,7 +198,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       {
         if (aptr->body->description)
         {
-          mutt_format_s(buf, buflen, prec, aptr->body->description);
+          mutt_format(buf, buflen, prec, aptr->body->description, false);
           break;
         }
         if (mutt_is_message_type(aptr->body->type, aptr->body->subtype) &&
@@ -210,13 +210,13 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
                            MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
           if (*s)
           {
-            mutt_format_s(buf, buflen, prec, s);
+            mutt_format(buf, buflen, prec, s, false);
             break;
           }
         }
         if (!aptr->body->d_filename && !aptr->body->filename)
         {
-          mutt_format_s(buf, buflen, prec, "<no description>");
+          mutt_format(buf, buflen, prec, "<no description>", false);
           break;
         }
       }
@@ -234,7 +234,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       {
         if (aptr->body->d_filename)
         {
-          mutt_format_s(buf, buflen, prec, aptr->body->d_filename);
+          mutt_format(buf, buflen, prec, aptr->body->d_filename, false);
           break;
         }
       }
@@ -254,12 +254,12 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 
           buf_strcpy(path, aptr->body->filename);
           buf_pretty_mailbox(path);
-          mutt_format_s(buf, buflen, prec, buf_string(path));
+          mutt_format(buf, buflen, prec, buf_string(path), false);
           buf_pool_release(&path);
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, NONULL(aptr->body->filename));
+          mutt_format(buf, buflen, prec, NONULL(aptr->body->filename), false);
         }
       }
       else if (!aptr->body->filename)
@@ -275,7 +275,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'e':
       if (!optional)
-        mutt_format_s(buf, buflen, prec, ENCODING(aptr->body->encoding));
+        mutt_format(buf, buflen, prec, ENCODING(aptr->body->encoding), false);
       break;
     case 'I':
       if (optional)
@@ -298,11 +298,11 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'm':
       if (!optional)
-        mutt_format_s(buf, buflen, prec, TYPE(aptr->body));
+        mutt_format(buf, buflen, prec, TYPE(aptr->body), false);
       break;
     case 'M':
       if (!optional)
-        mutt_format_s(buf, buflen, prec, aptr->body->subtype);
+        mutt_format(buf, buflen, prec, aptr->body->subtype, false);
       else if (!aptr->body->subtype)
         optional = false;
       break;
@@ -321,7 +321,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       else
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        mutt_format_s(buf, buflen, fmt, "Q");
+        mutt_format(buf, buflen, fmt, "Q", false);
       }
       break;
     case 's':
@@ -340,7 +340,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       {
         char tmp[128] = { 0 };
         mutt_str_pretty_size(tmp, sizeof(tmp), l);
-        mutt_format_s(buf, buflen, prec, tmp);
+        mutt_format(buf, buflen, prec, tmp, false);
       }
       else if (l == 0)
       {
@@ -357,7 +357,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'T':
       if (!optional)
-        mutt_format_s_tree(buf, buflen, prec, NONULL(aptr->tree));
+        mutt_format(buf, buflen, prec, NONULL(aptr->tree), true);
       else if (!aptr->tree)
         optional = false;
       break;
