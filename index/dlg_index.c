@@ -794,10 +794,8 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
  *
  * @sa $index_format, index_format_str()
  */
-void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
-  buf[0] = '\0';
-
   if (!menu || !menu->mdata)
     return;
 
@@ -882,8 +880,8 @@ void index_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
 
   const char *const c_index_format = cs_subset_string(shared->sub, "index_format");
   int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : 0;
-  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format),
-                   m, msg_in_pager, e, flags, NULL);
+  mutt_make_string(buf->data, buf->dsize, menu->win->state.cols,
+                   NONULL(c_index_format), m, msg_in_pager, e, flags, NULL);
 }
 
 /**

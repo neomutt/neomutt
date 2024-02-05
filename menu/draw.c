@@ -321,7 +321,7 @@ void menu_redraw_full(struct Menu *menu)
  */
 void menu_redraw_index(struct Menu *menu)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   const struct AttrColor *ac = NULL;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -334,8 +334,9 @@ void menu_redraw_index(struct Menu *menu)
     {
       ac = menu->color(menu, i);
 
-      menu->make_entry(menu, buf, sizeof(buf), i);
-      menu_pad_string(menu, buf, sizeof(buf));
+      buf_reset(buf);
+      menu->make_entry(menu, i, buf);
+      menu_pad_string(menu, buf->data, buf->dsize);
 
       mutt_curses_set_color(ac);
       mutt_window_move(menu->win, 0, i - menu->top);
@@ -359,9 +360,15 @@ void menu_redraw_index(struct Menu *menu)
       }
 
       if ((i == menu->current) && !c_arrow_cursor)
-        print_enriched_string(menu->win, i, ac, ac_ind, (unsigned char *) buf, menu->sub);
+      {
+        print_enriched_string(menu->win, i, ac, ac_ind,
+                              (unsigned char *) buf->data, menu->sub);
+      }
       else
-        print_enriched_string(menu->win, i, ac, NULL, (unsigned char *) buf, menu->sub);
+      {
+        print_enriched_string(menu->win, i, ac, NULL,
+                              (unsigned char *) buf->data, menu->sub);
+      }
     }
     else
     {
@@ -371,6 +378,7 @@ void menu_redraw_index(struct Menu *menu)
   }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   menu->redraw = MENU_REDRAW_NO_FLAGS;
+  buf_pool_release(&buf);
 }
 
 /**
@@ -379,7 +387,7 @@ void menu_redraw_index(struct Menu *menu)
  */
 void menu_redraw_motion(struct Menu *menu)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
 
   /* Note: menu->color() for the index can end up retrieving a message
    * over imap (if matching against ~h for instance).  This can
@@ -400,11 +408,11 @@ void menu_redraw_motion(struct Menu *menu)
     mutt_window_printf(menu->win, "%*s", arrow_width + 1, "");
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
-    menu->make_entry(menu, buf, sizeof(buf), menu->old_current);
-    menu_pad_string(menu, buf, sizeof(buf));
+    menu->make_entry(menu, menu->old_current, buf);
+    menu_pad_string(menu, buf->data, buf->dsize);
     mutt_window_move(menu->win, arrow_width + 1, menu->old_current - menu->top);
     print_enriched_string(menu->win, menu->old_current, old_color, NULL,
-                          (unsigned char *) buf, menu->sub);
+                          (unsigned char *) buf->data, menu->sub);
 
     /* now draw it in the new location */
     mutt_curses_set_color(ac_ind);
@@ -414,22 +422,24 @@ void menu_redraw_motion(struct Menu *menu)
   {
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     /* erase the current indicator */
-    menu->make_entry(menu, buf, sizeof(buf), menu->old_current);
-    menu_pad_string(menu, buf, sizeof(buf));
+    menu->make_entry(menu, menu->old_current, buf);
+    menu_pad_string(menu, buf->data, buf->dsize);
     print_enriched_string(menu->win, menu->old_current, old_color, NULL,
-                          (unsigned char *) buf, menu->sub);
+                          (unsigned char *) buf->data, menu->sub);
 
     /* now draw the new one to reflect the change */
     const struct AttrColor *cur_color = menu->color(menu, menu->current);
     cur_color = merged_color_overlay(cur_color, ac_ind);
-    menu->make_entry(menu, buf, sizeof(buf), menu->current);
-    menu_pad_string(menu, buf, sizeof(buf));
+    buf_reset(buf);
+    menu->make_entry(menu, menu->current, buf);
+    menu_pad_string(menu, buf->data, buf->dsize);
     mutt_window_move(menu->win, 0, menu->current - menu->top);
     mutt_curses_set_color(cur_color);
     print_enriched_string(menu->win, menu->current, cur_color, ac_ind,
-                          (unsigned char *) buf, menu->sub);
+                          (unsigned char *) buf->data, menu->sub);
   }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  buf_pool_release(&buf);
 }
 
 /**
@@ -438,12 +448,12 @@ void menu_redraw_motion(struct Menu *menu)
  */
 void menu_redraw_current(struct Menu *menu)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   const struct AttrColor *ac = menu->color(menu, menu->current);
 
   mutt_window_move(menu->win, 0, menu->current - menu->top);
-  menu->make_entry(menu, buf, sizeof(buf), menu->current);
-  menu_pad_string(menu, buf, sizeof(buf));
+  menu->make_entry(menu, menu->current, buf);
+  menu_pad_string(menu, buf->data, buf->dsize);
 
   struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -454,16 +464,17 @@ void menu_redraw_current(struct Menu *menu)
     mutt_window_addstr(menu->win, c_arrow_string);
     mutt_curses_set_color(ac);
     mutt_window_addch(menu->win, ' ');
-    menu_pad_string(menu, buf, sizeof(buf));
+    menu_pad_string(menu, buf->data, buf->dsize);
     print_enriched_string(menu->win, menu->current, ac, NULL,
-                          (unsigned char *) buf, menu->sub);
+                          (unsigned char *) buf->data, menu->sub);
   }
   else
   {
     print_enriched_string(menu->win, menu->current, ac, ac_ind,
-                          (unsigned char *) buf, menu->sub);
+                          (unsigned char *) buf->data, menu->sub);
   }
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+  buf_pool_release(&buf);
 }
 
 /**

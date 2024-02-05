@@ -897,7 +897,7 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
  *
  * @sa $folder_format, $group_index_format, $mailbox_folder_format, folder_format_str()
  */
-static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void folder_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct BrowserState *bstate = menu->mdata;
   struct BrowserEntryArray *entry = &bstate->entry;
@@ -909,22 +909,23 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   if (OptNews)
   {
     const char *const c_group_index_format = cs_subset_string(NeoMutt->sub, "group_index_format");
-    mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
+    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
                         NONULL(c_group_index_format), group_index_format_str,
                         (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else if (bstate->is_mailbox_list)
   {
     const char *const c_mailbox_folder_format = cs_subset_string(NeoMutt->sub, "mailbox_folder_format");
-    mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
+    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
                         NONULL(c_mailbox_folder_format), folder_format_str,
                         (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
   {
     const char *const c_folder_format = cs_subset_string(NeoMutt->sub, "folder_format");
-    mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_folder_format),
-                        folder_format_str, (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
+    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+                        NONULL(c_folder_format), folder_format_str,
+                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
 }
 

@@ -42,7 +42,6 @@
 #define MUTT_MENU_LIB_H
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -89,11 +88,10 @@ struct Menu
    *
    * make_entry - Format a item for a menu
    * @param[in]  menu   Menu containing items
-   * @param[out] buf    Buffer in which to save string
-   * @param[in]  buflen Buffer length
    * @param[in]  line   Menu line number
+   * @param[out] buf    Buffer for the result
    */
-  void (*make_entry)(struct Menu *menu, char *buf, size_t buflen, int line);
+  void (*make_entry)(struct Menu *menu, int line, struct Buffer *buf);
 
   /**
    * @defgroup menu_search search()

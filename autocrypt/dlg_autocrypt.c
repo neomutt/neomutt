@@ -180,12 +180,12 @@ static const char *autocrypt_format_str(char *buf, size_t buflen, size_t col, in
  *
  * @sa $autocrypt_acct_format, autocrypt_format_str()
  */
-static void autocrypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
+static void autocrypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
-  struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[num];
+  struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[line];
 
   const char *const c_autocrypt_acct_format = cs_subset_string(NeoMutt->sub, "autocrypt_acct_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
                       NONULL(c_autocrypt_acct_format), autocrypt_format_str,
                       (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }

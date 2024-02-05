@@ -230,7 +230,7 @@ static const char *query_format_str(char *buf, size_t buflen, size_t col, int co
  *
  * @sa $query_format, query_format_str()
  */
-static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void query_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
@@ -238,7 +238,7 @@ static void query_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 
   const char *const c_query_format = cs_subset_string(mdata->sub, "query_format");
 
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_query_format),
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols, NONULL(c_query_format),
                       query_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 

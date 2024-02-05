@@ -441,7 +441,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
  *
  * @sa $pgp_entry_format, pgp_entry_format_str()
  */
-static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct PgpUid **key_table = menu->mdata;
 
@@ -450,7 +450,7 @@ static void pgp_make_entry(struct Menu *menu, char *buf, size_t buflen, int line
   entry.num = line + 1;
 
   const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
                       NONULL(c_pgp_entry_format), pgp_entry_format_str,
                       (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
 }

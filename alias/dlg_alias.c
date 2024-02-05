@@ -178,7 +178,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
  *
  * @sa $alias_format, alias_format_str()
  */
-static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void alias_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
@@ -186,7 +186,7 @@ static void alias_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
 
   const char *const c_alias_format = cs_subset_string(mdata->sub, "alias_format");
 
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_alias_format),
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols, NONULL(c_alias_format),
                       alias_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
 }
 

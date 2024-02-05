@@ -135,13 +135,14 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
  *
  * @sa $pattern_format, pattern_format_str()
  */
-static void make_pattern_entry(struct Menu *menu, char *buf, size_t buflen, int num)
+static void make_pattern_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
-  struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[num];
+  struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
 
   const char *const c_pattern_format = cs_subset_string(NeoMutt->sub, "pattern_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_pattern_format),
-                      pattern_format_str, (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+                      NONULL(c_pattern_format), pattern_format_str,
+                      (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**
