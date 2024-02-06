@@ -1172,11 +1172,11 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
               const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
               if (c_new_mail_command)
               {
-                char cmd[1024] = { 0 };
-                menu_status_line(cmd, sizeof(cmd), shared, NULL, sizeof(cmd),
-                                 NONULL(c_new_mail_command));
-                if (mutt_system(cmd) != 0)
-                  mutt_error(_("Error running \"%s\""), cmd);
+                struct Buffer *cmd = buf_pool_get();
+                menu_status_line(cmd, shared, NULL, cmd->dsize, NONULL(c_new_mail_command));
+                if (mutt_system(buf_string(cmd)) != 0)
+                  mutt_error(_("Error running \"%s\""), buf_string(cmd));
+                buf_pool_release(&cmd);
               }
               break;
             }
@@ -1217,11 +1217,11 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
           const char *const c_new_mail_command = cs_subset_string(shared->sub, "new_mail_command");
           if (c_new_mail_command)
           {
-            char cmd[1024] = { 0 };
-            menu_status_line(cmd, sizeof(cmd), shared, priv->menu, sizeof(cmd),
-                             NONULL(c_new_mail_command));
-            if (mutt_system(cmd) != 0)
-              mutt_error(_("Error running \"%s\""), cmd);
+            struct Buffer *cmd = buf_pool_get();
+            menu_status_line(cmd, shared, priv->menu, cmd->dsize, NONULL(c_new_mail_command));
+            if (mutt_system(buf_string(cmd)) != 0)
+              mutt_error(_("Error running \"%s\""), buf_string(cmd));
+            buf_pool_release(&cmd);
           }
         }
       }

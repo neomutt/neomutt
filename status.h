@@ -23,11 +23,10 @@
 #ifndef MUTT_STATUS_H
 #define MUTT_STATUS_H
 
-#include <stdio.h>
-
+struct Buffer;
 struct IndexSharedData;
 struct Menu;
 
-void menu_status_line(char *buf, size_t buflen, struct IndexSharedData *shared, struct Menu *menu, int cols, const char *fmt);
+void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared, struct Menu *menu, int cols, const char *fmt);
 
 #endif /* MUTT_STATUS_H */
