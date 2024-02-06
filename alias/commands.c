@@ -221,7 +221,8 @@ enum CommandResult parse_alias(struct Buffer *buf, struct Buffer *s,
     }
   }
   mutt_grouplist_destroy(&gl);
-  if (!has_more_tokens(s) && (s->dptr[0] == '#'))
+
+  if (s->dptr[0] == '#')
   {
     s->dptr++; // skip over the "# "
     if (*s->dptr == ' ')
