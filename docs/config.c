@@ -1312,6 +1312,7 @@
 ** personal taste.  This string is similar to $$index_format, but has
 ** its own set of \fCprintf(3)\fP-like sequences:
 ** .dl
+** .dt %a  .dd   .dd Alert: 1 if user is notified of new mail
 ** .dt %C  .dd   .dd Current file number
 ** .dt %d  .dd   .dd Date/time folder was last modified
 ** .dt %D  .dd   .dd Date/time folder was last modified using $$date_format.
@@ -1326,6 +1327,7 @@
 ** .dt %m  .dd * .dd Number of messages in the mailbox
 ** .dt %n  .dd * .dd Number of unread messages in the mailbox
 ** .dt %N  .dd   .dd "N" if mailbox has new mail, " " (space) otherwise
+** .dt %p  .dd   .dd Poll: 1 if Mailbox is checked for new mail
 ** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
 ** .dt %t  .dd   .dd "*" if the file is tagged, blank otherwise
 ** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
@@ -1538,12 +1540,14 @@
 ** your personal taste.  This string is similar to "$index_format", but
 ** has its own set of printf()-like sequences:
 ** .dl
+** .dt %a  .dd Alert: 1 if user is notified of new mail
 ** .dt %C  .dd Current newsgroup number
 ** .dt %d  .dd Description of newsgroup (becomes from server)
 ** .dt %f  .dd Newsgroup name
 ** .dt %M  .dd - if newsgroup not allowed for direct post (moderated for example)
 ** .dt %N  .dd N if newsgroup is new, u if unsubscribed, blank otherwise
 ** .dt %n  .dd Number of new articles in newsgroup
+** .dt %p  .dd Poll: 1 if Mailbox is checked for new mail
 ** .dt %s  .dd Number of unread articles in newsgroup
 ** .dt %>X .dd Right justify the rest of the string and pad with character "X"
 ** .dt %|X .dd Pad to the end of the line with character "X"
@@ -4253,6 +4257,7 @@
 ** similar to $$index_format, but has its own set of \fCprintf(3)\fP-like
 ** sequences:
 ** .dl
+** .dt %a .dd     .dd Alert: 1 if user is notified of new mail
 ** .dt %B .dd     .dd Name of the mailbox
 ** .dt %d .dd * @ .dd Number of deleted messages in the mailbox
 ** .dt %D .dd     .dd Descriptive name of the mailbox
@@ -4261,6 +4266,7 @@
 ** .dt %n .dd     .dd "N" if mailbox has new mail, " " (space) otherwise
 ** .dt %N .dd *   .dd Number of unread messages in the mailbox (seen or unseen)
 ** .dt %o .dd *   .dd Number of old messages in the mailbox (unread, seen)
+** .dt %p .dd     .dd Poll: 1 if Mailbox is checked for new mail
 ** .dt %r .dd *   .dd Number of read messages in the mailbox (read, seen)
 ** .dt %S .dd *   .dd Size of mailbox (total number of messages)
 ** .dt %t .dd * @ .dd Number of tagged messages in the mailbox

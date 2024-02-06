@@ -87,13 +87,13 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarApple = cs_subset_myvar(sub, "Apple");
   const char *VarBanana = cs_subset_myvar(sub, "Banana");
 
-  if (!TEST_CHECK(mutt_str_equal(VarApple, "apple")))
+  if (!TEST_CHECK_STR_EQ(VarApple, "apple"))
   {
     TEST_MSG("Error: initial values were wrong: Apple = %s", VarApple);
     return false;
   }
 
-  if (!TEST_CHECK(mutt_str_equal(VarBanana, "banana")))
+  if (!TEST_CHECK_STR_EQ(VarBanana, "banana"))
   {
     TEST_MSG("Error: initial values were wrong: Banana = %s", VarBanana);
     return false;
@@ -118,7 +118,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarApple = cs_subset_myvar(sub, "Apple");
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "apple")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "apple"))
   {
     TEST_MSG("Apple's initial value is wrong: '%s'", buf_string(value));
     return false;
@@ -135,7 +135,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarBanana = cs_subset_myvar(sub, "Banana");
-  if (!TEST_CHECK(mutt_str_equal(buf_string(value), "banana")))
+  if (!TEST_CHECK_STR_EQ(buf_string(value), "banana"))
   {
     TEST_MSG("Banana's initial value is wrong: '%s'", buf_string(value));
     return false;
@@ -202,7 +202,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarDamson = cs_subset_myvar(sub, "Damson");
-    if (!TEST_CHECK(mutt_str_equal(VarDamson, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarDamson, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed", name);
       return false;
@@ -239,7 +239,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarElderberry = cs_subset_myvar(sub, "Elderberry");
-    if (!TEST_CHECK(mutt_str_equal(VarElderberry, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarElderberry, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed", name);
       return false;
@@ -323,7 +323,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarJackfruit = cs_subset_myvar(sub, "Jackfruit");
-    if (!TEST_CHECK(mutt_str_equal(VarJackfruit, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarJackfruit, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed", name);
       return false;
@@ -360,7 +360,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     const char *VarKumquat = cs_subset_myvar(sub, "Kumquat");
-    if (!TEST_CHECK(mutt_str_equal(VarKumquat, valid[i])))
+    if (!TEST_CHECK_STR_EQ(VarKumquat, valid[i]))
     {
       TEST_MSG("Value of %s wasn't changed", name);
       return false;
@@ -385,7 +385,7 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarMango = cs_subset_myvar(sub, "Mango");
   buf_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
-  if (!TEST_CHECK(mutt_str_equal(VarMango, (char *) value)))
+  if (!TEST_CHECK_STR_EQ(VarMango, (char *) value))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -442,7 +442,7 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
       return false;
     }
 
-    if (!TEST_CHECK(mutt_str_equal(PlusTests[i][2], buf_string(err))))
+    if (!TEST_CHECK_STR_EQ(PlusTests[i][2], buf_string(err)))
     {
       TEST_MSG("Expected: %s", PlusTests[i][2]);
       TEST_MSG("Actual  : %s", buf_string(err));
@@ -485,7 +485,7 @@ static bool test_non_existing(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
-  if (!TEST_CHECK(mutt_str_equal("", buf_string(err))))
+  if (!TEST_CHECK_STR_EQ("", buf_string(err)))
   {
     TEST_MSG("Expected: '%s'", "");
     TEST_MSG("Actual  : '%s'", buf_string(err));
@@ -542,7 +542,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
-  if (!TEST_CHECK(mutt_str_equal(buf_string(err), "nectarine")))
+  if (!TEST_CHECK_STR_EQ(buf_string(err), "nectarine"))
   {
     TEST_MSG("Reset failed: expected = %s, got = %s", "nectarine", buf_string(err));
     return false;

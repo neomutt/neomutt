@@ -341,7 +341,7 @@ int rfc3676_handler(struct Body *b_email, struct State *state)
 
   while ((buf = mutt_file_read_line(buf, &sz, state->fp_in, NULL, MUTT_RL_NO_FLAGS)))
   {
-    const size_t buf_len = mutt_str_len(buf);
+    const size_t buflen = mutt_str_len(buf);
     const unsigned int newql = get_quote_level(buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
@@ -361,11 +361,11 @@ int rfc3676_handler(struct Body *b_email, struct State *state)
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
-    const bool fixed = (buf_len == buf_off) || (buf[buf_len - 1] != ' ') || sigsep;
+    const bool fixed = (buflen == buf_off) || (buf[buflen - 1] != ' ') || sigsep;
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */
-    if ((fixed && ((fst.width == 0) || (buf_len == 0))) || sigsep)
+    if ((fixed && ((fst.width == 0) || (buflen == 0))) || sigsep)
     {
       /* if we're within a flowed paragraph, terminate it */
       flush_par(state, &fst);
@@ -375,7 +375,7 @@ int rfc3676_handler(struct Body *b_email, struct State *state)
 
     /* for DelSp=yes, we need to strip one SP prior to CRLF on flowed lines */
     if (delsp && !fixed)
-      buf[buf_len - 1] = '\0';
+      buf[buflen - 1] = '\0';
 
     print_flowed_line(buf + buf_off, state, quotelevel, &fst, fixed);
   }

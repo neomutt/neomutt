@@ -234,7 +234,7 @@ static bool test_set(struct Buffer *err)
       TEST_MSG("Failed to get %s: %s", "my_var", buf_string(err));
       return false;
     }
-    if (!TEST_CHECK(mutt_str_equal(err->data, "newbar")))
+    if (!TEST_CHECK_STR_EQ(err->data, "newbar"))
     {
       TEST_MSG("Variable not set %s: %s", "my_var", buf_string(err));
       return false;
@@ -552,7 +552,7 @@ static bool test_reset(struct Buffer *err)
         buf_pool_release(&buf);
         return false;
       }
-      if (!TEST_CHECK(mutt_str_equal(err->data, buf->data)))
+      if (!TEST_CHECK_STR_EQ(err->data, buf->data))
       {
         TEST_MSG("Variable not reset %s: %s != %s", ConfigVars[v].name,
                  buf_string(err), buf_string(buf));

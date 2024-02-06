@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_date_localtime_format(void)
 {
@@ -49,6 +50,6 @@ void test_mutt_date_localtime_format(void)
     const char *format = "%Y-%m-%d %H:%M:%S %z";
     TEST_CHECK(mutt_date_localtime_format(buf, sizeof(buf), format, t) > 0);
     TEST_MSG(buf);
-    TEST_CHECK(mutt_str_equal(buf, "2000-06-25 11:00:00 +0000"));
+    TEST_CHECK_STR_EQ(buf, "2000-06-25 11:00:00 +0000");
   }
 }
