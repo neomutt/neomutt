@@ -274,6 +274,31 @@ enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
 }
 
 /**
+ * parse_extract_color_name - Extract a color name (eg. red or #FF66EE) from a string
+ * @param dest  Buffer for the result
+ * @param buf   Buffer containing tokens
+ * @retval  true  Success
+ * @retval  false No color name found
+ */
+static bool parse_extract_color_name(struct Buffer *dest, struct Buffer *buf)
+{
+  if (buf_is_empty(buf) || !*buf->dptr)
+    return false;
+
+  buf_reset(dest);
+
+  SKIPWS(buf->dptr);
+  char ch;
+  while ((ch = *buf->dptr++) && !isspace(ch))
+    buf_addch(dest, ch);
+
+  if (buf_is_empty(dest))
+    return false;
+
+  return true;
+}
+
+/**
  * parse_color_pair - Parse a pair of colours - Implements ::parser_callback_t - @ingroup parser_callback_api
  *
  * Parse a pair of colours, e.g. "red default"
@@ -283,7 +308,7 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
 {
   while (true)
   {
-    if (!parse_extract_word(buf, s))
+    if (!parse_extract_color_name(buf, s))
     {
       buf_printf(err, _("%s: too few arguments"), "color");
       return MUTT_CMD_WARNING;
@@ -307,7 +332,7 @@ enum CommandResult parse_color_pair(struct Buffer *buf, struct Buffer *s,
       ac->attrs |= attr; // Merge with other attributes
   }
 
-  if (!parse_extract_word(buf, s))
+  if (!parse_extract_color_name(buf, s))
   {
     buf_printf(err, _("%s: too few arguments"), "color");
     return MUTT_CMD_WARNING;
