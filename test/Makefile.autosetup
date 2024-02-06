@@ -478,6 +478,7 @@ PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_set.o
 
 PARSE_OBJS	= test/parse/common.o \
+		  test/parse/has_more_tokens.o \
 		  test/parse/mutt_auto_subscribe.o \
 		  test/parse/mutt_check_encoding.o \
 		  test/parse/mutt_check_mime_type.o \

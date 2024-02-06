@@ -525,6 +525,7 @@ void test_fini(void);
                                                                                \
   /* parse */                                                                  \
   NEOMUTT_TEST_ITEM(test_command_set)                                          \
+  NEOMUTT_TEST_ITEM(test_has_more_tokens)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_auto_subscribe)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_check_encoding)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_check_mime_type)                                 \

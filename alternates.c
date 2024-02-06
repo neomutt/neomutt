@@ -108,7 +108,7 @@ enum CommandResult parse_alternates(struct Buffer *buf, struct Buffer *s,
 
     if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
       goto bail;
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   mutt_grouplist_destroy(&gl);
 
@@ -139,7 +139,7 @@ enum CommandResult parse_unalternates(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
 
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   mutt_debug(LL_NOTIFY, "NT_ALTERN_DELETE: %s\n", buf->data);
   notify_send(AlternatesNotify, NT_ALTERN, NT_ALTERN_DELETE, NULL);

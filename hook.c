@@ -141,7 +141,7 @@ enum CommandResult mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buff
     buf_printf(err, _("%s: too few arguments"), buf->data);
     rc = MUTT_CMD_WARNING;
   }
-  else if (MoreArgs(s))
+  else if (has_more_tokens(s))
   {
     buf_printf(err, _("%s: too many arguments"), buf->data);
     buf_reset(s); // clean up buffer to avoid a mess with further rcfile processing
@@ -191,7 +191,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     if (folder_or_mbox && mutt_str_equal(buf_string(pattern), "-noregex"))
     {
       use_regex = false;
-      if (!MoreArgs(s))
+      if (!has_more_tokens(s))
       {
         buf_printf(err, _("%s: too few arguments"), buf->data);
         rc = MUTT_CMD_WARNING;
@@ -200,7 +200,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
       parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
     }
 
-    if (!MoreArgs(s))
+    if (!has_more_tokens(s))
     {
       buf_printf(err, _("%s: too few arguments"), buf->data);
       rc = MUTT_CMD_WARNING;
@@ -221,7 +221,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     goto cleanup;
   }
 
-  if (MoreArgs(s))
+  if (has_more_tokens(s))
   {
     buf_printf(err, _("%s: too many arguments"), buf->data);
     rc = MUTT_CMD_WARNING;
@@ -449,7 +449,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
     mutt_hash_set_destructor(IdxFmtHooks, idxfmt_hashelem_free, 0);
   }
 
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
@@ -465,7 +465,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
   }
   parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
 
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), buf->data);
     goto out;
@@ -476,7 +476,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
   if (!exp)
     goto out;
 
-  if (MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too many arguments"), buf->data);
     goto out;
@@ -572,7 +572,7 @@ static HookFlags mutt_get_hook_type(const char *name)
 static enum CommandResult mutt_parse_unhook(struct Buffer *buf, struct Buffer *s,
                                             intptr_t data, struct Buffer *err)
 {
-  while (MoreArgs(s))
+  while (has_more_tokens(s))
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     if (mutt_str_equal("*", buf->data))

@@ -325,7 +325,7 @@ enum CommandResult parse_attr_spec(struct Buffer *buf, struct Buffer *s,
   if (!buf || !s || !ac)
     return MUTT_CMD_ERROR;
 
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), "mono");
     return MUTT_CMD_WARNING;
