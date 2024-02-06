@@ -46,11 +46,11 @@ typedef uint16_t StateFlags;          ///< Flags for State->flags, e.g. #STATE_D
  */
 struct State
 {
-  FILE      *fp_in;   ///< File to read from
-  FILE      *fp_out;  ///< File to write to
-  char      *prefix;  ///< String to add to the beginning of each output line
-  StateFlags flags;   ///< Flags, e.g. #STATE_DISPLAY
-  int        wraplen; ///< Width to wrap lines to (when flags & #STATE_DISPLAY)
+  FILE       *fp_in;   ///< File to read from
+  FILE       *fp_out;  ///< File to write to
+  const char *prefix;  ///< String to add to the beginning of each output line
+  StateFlags  flags;   ///< Flags, e.g. #STATE_DISPLAY
+  int         wraplen; ///< Width to wrap lines to (when flags & #STATE_DISPLAY)
 };
 
 #define state_set_prefix(state)   ((state)->flags |= STATE_PENDINGPREFIX)

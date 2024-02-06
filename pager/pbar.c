@@ -91,14 +91,13 @@ struct PBarPrivateData
  */
 static int pbar_recalc(struct MuttWindow *win)
 {
-  char buf[1024] = { 0 };
-
   struct PBarPrivateData *pbar_data = win->wdata;
   struct IndexSharedData *shared = pbar_data->shared;
   struct PagerPrivateData *priv = pbar_data->priv;
   if (!priv || !priv->pview)
     return 0;
 
+  struct Buffer *buf = buf_pool_get();
   char pager_progress_str[65] = { 0 }; /* Lots of space for translations */
 
   long offset;
@@ -130,21 +129,21 @@ static int pbar_recalc(struct MuttWindow *win)
     int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : -1;
 
     const char *c_pager_format = cs_subset_string(shared->sub, "pager_format");
-    mutt_make_string(buf, sizeof(buf), win->state.cols, NONULL(c_pager_format),
-                     shared->mailbox, msg_in_pager, shared->email,
-                     MUTT_FORMAT_NO_FLAGS, pager_progress_str);
+    mutt_make_string(buf, win->state.cols, NONULL(c_pager_format), shared->mailbox,
+                     msg_in_pager, shared->email, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
   }
   else
   {
-    snprintf(buf, sizeof(buf), "%s (%s)", priv->pview->banner, pager_progress_str);
+    buf_printf(buf, "%s (%s)", priv->pview->banner, pager_progress_str);
   }
 
-  if (!mutt_str_equal(buf, pbar_data->pager_format))
+  if (!mutt_str_equal(buf_string(buf), pbar_data->pager_format))
   {
-    mutt_str_replace(&pbar_data->pager_format, buf);
+    mutt_str_replace(&pbar_data->pager_format, buf_string(buf));
     win->actions |= WA_REPAINT;
   }
 
+  buf_pool_release(&buf);
   return 0;
 }
 

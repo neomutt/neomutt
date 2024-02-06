@@ -307,16 +307,16 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   if (!msg)
     return -1;
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   const char *const c_pager_format = cs_subset_string(NeoMutt->sub, "pager_format");
   const int screen_width = RootWindow->state.cols;
-  mutt_make_string(buf, sizeof(buf), screen_width, NONULL(c_pager_format), m,
-                   -1, e, MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
+  mutt_make_string(buf, screen_width, NONULL(c_pager_format), m, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, _(ExtPagerProgress));
 
   struct Buffer *tempfile = buf_pool_get();
 
   CopyMessageFlags cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
-  int rc = email_to_file(msg, tempfile, m, e, buf, screen_width, &cmflags);
+  int rc = email_to_file(msg, tempfile, m, e, buf_string(buf), screen_width, &cmflags);
   if (rc < 0)
     goto cleanup;
 
@@ -346,6 +346,7 @@ int external_pager(struct MailboxView *mv, struct Email *e, const char *command)
   }
 
 cleanup:
+  buf_pool_release(&buf);
   mx_msg_close(m, &msg);
   buf_pool_release(&tempfile);
   return rc;

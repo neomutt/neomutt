@@ -1326,7 +1326,7 @@ static int multipart_handler(struct Body *b_email, struct State *state)
 static int run_decode_and_handler(struct Body *b, struct State *state,
                                   handler_t handler, bool plaintext)
 {
-  char *save_prefix = NULL;
+  const char *save_prefix = NULL;
   FILE *fp = NULL;
   size_t tmplength = 0;
   LOFF_T tmpoffset = 0;

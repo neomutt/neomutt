@@ -1770,7 +1770,7 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
 
   /* if we are decoding binary bodies, we don't want to prefix each
    * line with the prefix or else the data will get corrupted.  */
-  char *save_prefix = state->prefix;
+  const char *save_prefix = state->prefix;
   state->prefix = NULL;
 
   mutt_decode_attachment(b, state);

@@ -403,10 +403,11 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *b, sho
  * @param fp_out File to write to
  * @param prefix Prefix for each line (OPTIONAL)
  */
-static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_out, char *prefix)
+static void include_header(bool quote, FILE *fp_in, struct Email *e,
+                           FILE *fp_out, const char *prefix)
 {
   CopyHeaderFlags chflags = CH_DECODE;
-  char prefix2[128] = { 0 };
+  struct Buffer *prefix2 = buf_pool_get();
 
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (c_weed)
@@ -417,26 +418,27 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_ou
     const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
     if (prefix)
     {
-      mutt_str_copy(prefix2, prefix, sizeof(prefix2));
+      buf_strcpy(prefix2, prefix);
     }
     else if (!c_text_flowed)
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix2, sizeof(prefix2), 0, NONULL(c_indent_string),
-                       NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix2, 0, NONULL(c_indent_string), NULL, -1, e,
+                       MUTT_FORMAT_NO_FLAGS, NULL);
       setlocale(LC_TIME, "");
     }
     else
     {
-      mutt_str_copy(prefix2, ">", sizeof(prefix2));
+      buf_strcpy(prefix2, ">");
     }
 
     chflags |= CH_PREFIX;
   }
 
-  mutt_copy_header(fp_in, e, fp_out, chflags, quote ? prefix2 : NULL, 0);
+  mutt_copy_header(fp_in, e, fp_out, chflags, quote ? buf_string(prefix2) : NULL, 0);
+  buf_pool_release(&prefix2);
 }
 
 /**
@@ -480,9 +482,9 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
   bool mime_fwd_any = true;
   struct Email *e_parent = NULL;
   FILE *fp_parent = NULL;
-  char prefix[256] = { 0 };
   enum QuadOption ans = MUTT_NO;
   struct Buffer *tmpbody = NULL;
+  struct Buffer *prefix = buf_pool_get();
 
   /* First, find the parent message.
    * Note: This could be made an option by just
@@ -523,20 +525,20 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
     if (c_text_flowed)
     {
-      mutt_str_copy(prefix, ">", sizeof(prefix));
+      buf_strcpy(prefix, ">");
     }
     else
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(c_indent_string), NULL,
-                       -1, e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix, 0, NONULL(c_indent_string), NULL, -1, e_parent,
+                       MUTT_FORMAT_NO_FLAGS, NULL);
       setlocale(LC_TIME, "");
     }
   }
 
-  include_header(c_forward_quote, fp_parent, e_parent, fp_tmp, prefix);
+  include_header(c_forward_quote, fp_parent, e_parent, fp_tmp, buf_string(prefix));
 
   /* Now, we have prepared the first part of the message body: The
    * original message's header.
@@ -569,7 +571,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   struct State state = { 0 };
   if (c_forward_quote)
-    state.prefix = prefix;
+    state.prefix = buf_string(prefix);
   state.flags = STATE_CHARCONV;
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (c_weed)
@@ -628,6 +630,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
                     NeoMutt->sub);
   ARRAY_FREE(&ea);
   buf_pool_release(&tmpbody);
+  buf_pool_release(&prefix);
   return;
 
 bail:
@@ -637,6 +640,7 @@ bail:
     mutt_file_unlink(buf_string(tmpbody));
   }
   buf_pool_release(&tmpbody);
+  buf_pool_release(&prefix);
 
   email_free(&e_tmp);
 }
@@ -956,7 +960,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
   struct Buffer *tmpbody = NULL;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
 
-  char prefix[128] = { 0 };
+  struct Buffer *prefix = buf_pool_get();
 
   if (flags & SEND_NEWS)
     OptNewsSend = true;
@@ -984,7 +988,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     const enum QuadOption ans = query_quadoption(_("Can't decode all tagged attachments.  MIME-encapsulate the others?"),
                                                  NeoMutt->sub, "mime_forward_rest");
     if (ans == MUTT_ABORT)
-      return;
+      goto cleanup;
     if (ans == MUTT_YES)
       mime_reply_any = true;
   }
@@ -1022,19 +1026,19 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     const bool c_text_flowed = cs_subset_bool(NeoMutt->sub, "text_flowed");
     if (c_text_flowed)
     {
-      mutt_str_copy(prefix, ">", sizeof(prefix));
+      buf_strcpy(prefix, ">");
     }
     else
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
       const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, sizeof(prefix), 0, NONULL(c_indent_string), m,
-                       -1, e_parent, MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix, 0, NONULL(c_indent_string), m, -1, e_parent,
+                       MUTT_FORMAT_NO_FLAGS, NULL);
       setlocale(LC_TIME, "");
     }
 
-    state.prefix = prefix;
+    state.prefix = buf_string(prefix);
     state.flags = STATE_CHARCONV;
 
     const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
@@ -1043,7 +1047,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
 
     const bool c_header = cs_subset_bool(NeoMutt->sub, "header");
     if (c_header)
-      include_header(true, fp_parent, e_parent, fp_tmp, prefix);
+      include_header(true, fp_parent, e_parent, fp_tmp, buf_string(prefix));
 
     if (b)
     {
@@ -1110,6 +1114,7 @@ cleanup:
     mutt_file_unlink(buf_string(tmpbody));
   }
   buf_pool_release(&tmpbody);
+  buf_pool_release(&prefix);
   email_free(&e_tmp);
   ARRAY_FREE(&ea);
 }

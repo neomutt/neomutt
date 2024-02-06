@@ -204,15 +204,16 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         if (mutt_is_message_type(aptr->body->type, aptr->body->subtype) &&
             c_message_format && aptr->body->email)
         {
-          char s[128] = { 0 };
-          mutt_make_string(s, sizeof(s), cols, c_message_format, NULL, -1,
-                           aptr->body->email,
+          struct Buffer *s = buf_pool_get();
+          mutt_make_string(s, cols, c_message_format, NULL, -1, aptr->body->email,
                            MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
-          if (*s)
-          {
-            mutt_format(buf, buflen, prec, s, false);
+          bool empty = buf_is_empty(s);
+          if (!empty)
+            mutt_format(buf, buflen, prec, buf_string(s), false);
+
+          buf_pool_release(&s);
+          if (!empty)
             break;
-          }
         }
         if (!aptr->body->d_filename && !aptr->body->filename)
         {
