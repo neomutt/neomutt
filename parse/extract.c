@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -38,6 +39,23 @@
 #include "core/lib.h"
 #include "extract.h"
 #include "globals.h"
+
+/**
+ * has_more_tokens - Check if the buffer contains more tokens
+ * @param tok   Buffer with string
+ * @retval true Success
+ * @retval false Error
+ *
+ * Checks if the current buffer location is not NULL and is not a character
+ * indicating the end of the command (eg. ';' or '#').
+ */
+bool has_more_tokens(struct Buffer *buf)
+{
+  if (buf_is_empty(buf))
+    return false;
+
+  return *buf->dptr && *buf->dptr != ';' && *buf->dptr != '#';
+}
 
 /**
  * parse_extract_token - Extract one token from a string

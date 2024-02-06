@@ -175,12 +175,12 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   FILE *fp_out = NULL;
   bool dump_all = false, bind = (data == 0);
 
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
     dump_all = true;
   else
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-  if (MoreArgs(s))
+  if (has_more_tokens(s))
   {
     /* More arguments potentially means the user is using the
      * ::command_t :bind command thus we delegate the task. */

@@ -25,11 +25,10 @@
 #define MUTT_PARSE_EXTRACT_H
 
 #include <ctype.h>
+#include <stdbool.h>
 #include <stdint.h>
 
 struct Buffer;
-
-#define MoreArgs(buf) (*(buf)->dptr && (*(buf)->dptr != ';') && (*(buf)->dptr != '#'))
 
 typedef uint16_t TokenFlags;          ///< Flags for parse_extract_token(), e.g. #TOKEN_EQUAL
 #define TOKEN_NO_FLAGS            0   ///< No flags are set
@@ -46,6 +45,7 @@ typedef uint16_t TokenFlags;          ///< Flags for parse_extract_token(), e.g.
 #define TOKEN_PLUS          (1 << 10) ///< Treat '+' as a special
 #define TOKEN_MINUS         (1 << 11) ///< Treat '-' as a special
 
+bool has_more_tokens(struct Buffer *buf);
 int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flags);
 bool parse_extract_word(struct Buffer *dest, struct Buffer *buf);
 

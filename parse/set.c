@@ -637,7 +637,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     // the current variable failed.
     if (rc != MUTT_CMD_SUCCESS)
       return rc;
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }

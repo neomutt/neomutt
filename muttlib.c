@@ -825,7 +825,7 @@ void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const c
         }
         buf_addch(&cmd, '\'');
         buf_addch(&cmd, ' ');
-      } while (MoreArgs(&srcbuf));
+      } while (has_more_tokens(&srcbuf));
 
       mutt_debug(LL_DEBUG3, "fmtpipe > %s\n", cmd.data);
 

@@ -132,7 +132,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
 {
   while (mutt_istr_equal(buf->data, "-group"))
   {
-    if (!MoreArgs(s))
+    if (!has_more_tokens(s))
     {
       buf_strcpy(err, _("-group: no group name"));
       return -1;
@@ -142,7 +142,7 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s,
 
     mutt_grouplist_add(gl, mutt_pattern_group(buf->data));
 
-    if (!MoreArgs(s))
+    if (!has_more_tokens(s))
     {
       buf_strcpy(err, _("out of arguments"));
       return -1;
@@ -383,7 +383,7 @@ static enum CommandResult parse_cd(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), "echo");
     return MUTT_CMD_WARNING;
@@ -407,7 +407,7 @@ static enum CommandResult parse_echo(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_finish(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  if (MoreArgs(s))
+  if (has_more_tokens(s))
   {
     buf_printf(err, _("%s: too many arguments"), "finish");
     return MUTT_CMD_WARNING;
@@ -491,7 +491,7 @@ static enum CommandResult parse_group(struct Buffer *buf, struct Buffer *s,
         }
       }
     }
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
 out:
   mutt_grouplist_destroy(&gl);
@@ -540,7 +540,7 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
 #endif
              || mutt_str_getenv(buf->data); // an environment variable?
 
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), (data ? "ifndef" : "ifdef"));
     return MUTT_CMD_WARNING;
@@ -572,7 +572,7 @@ static enum CommandResult parse_ignore(struct Buffer *buf, struct Buffer *s,
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     remove_from_stailq(&UnIgnore, buf->data);
     add_to_stailq(&Ignore, buf->data);
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -599,7 +599,7 @@ static enum CommandResult parse_lists(struct Buffer *buf, struct Buffer *s,
 
     if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
       goto bail;
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
@@ -724,7 +724,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
   struct Buffer *mailbox = buf_pool_get();
 
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-  while (MoreArgs(s))
+  while (has_more_tokens(s))
   {
     bool label_set = false;
     enum TriBool notify = TB_UNSET;
@@ -737,7 +737,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
 
       if (mutt_str_equal(buf_string(buf), "-label"))
       {
-        if (!MoreArgs(s))
+        if (!has_more_tokens(s))
         {
           buf_printf(err, _("%s: too few arguments"), "mailboxes -label");
           goto done;
@@ -769,7 +769,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       }
       else if ((data & MUTT_NAMED) && !label_set)
       {
-        if (!MoreArgs(s))
+        if (!has_more_tokens(s))
         {
           buf_printf(err, _("%s: too few arguments"), "named-mailboxes");
           goto done;
@@ -783,7 +783,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
         buf_copy(mailbox, buf);
         break;
       }
-    } while (MoreArgs(s));
+    } while (has_more_tokens(s));
 
     if (buf_is_empty(mailbox))
     {
@@ -903,7 +903,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
   bool prefix = false;
   bool unset = (data == MUTT_SET_UNSET);
 
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     if (!StartupComplete)
     {
@@ -1030,7 +1030,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     SKIPWS(s->dptr);
   }
 
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), "setenv");
     return MUTT_CMD_WARNING;
@@ -1068,7 +1068,7 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
 
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1079,7 +1079,7 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_nospam(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), "nospam");
     return MUTT_CMD_ERROR;
@@ -1088,7 +1088,7 @@ static enum CommandResult parse_nospam(struct Buffer *buf, struct Buffer *s,
   // Extract the first token, a regex or "*"
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-  if (MoreArgs(s))
+  if (has_more_tokens(s))
   {
     buf_printf(err, _("%s: too many arguments"), "finish");
     return MUTT_CMD_ERROR;
@@ -1119,7 +1119,7 @@ static enum CommandResult parse_nospam(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_spam(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  if (!MoreArgs(s))
+  if (!has_more_tokens(s))
   {
     buf_printf(err, _("%s: too few arguments"), "spam");
     return MUTT_CMD_ERROR;
@@ -1129,7 +1129,7 @@ static enum CommandResult parse_spam(struct Buffer *buf, struct Buffer *s,
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
   // If there's a second parameter, it's a template for the spam tag
-  if (MoreArgs(s))
+  if (has_more_tokens(s))
   {
     struct Buffer *templ = buf_pool_get();
     parse_extract_token(templ, s, TOKEN_NO_FLAGS);
@@ -1161,7 +1161,7 @@ static enum CommandResult parse_stailq(struct Buffer *buf, struct Buffer *s,
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
     add_to_stailq((struct ListHead *) data, buf->data);
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1190,7 +1190,7 @@ static enum CommandResult parse_subscribe(struct Buffer *buf, struct Buffer *s,
       goto bail;
     if (mutt_grouplist_add_regex(&gl, buf->data, REG_ICASE, err) != 0)
       goto bail;
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   mutt_grouplist_destroy(&gl);
   return MUTT_CMD_SUCCESS;
@@ -1215,11 +1215,11 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
 
   buf_reset(err);
 
-  if (MoreArgs(s))
+  if (has_more_tokens(s))
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-    if (MoreArgs(s))
+    if (has_more_tokens(s))
     {
       buf_printf(err, _("%s: too many arguments"), "subscribe-to");
       return MUTT_CMD_WARNING;
@@ -1262,7 +1262,7 @@ static enum CommandResult parse_tag_formats(struct Buffer *buf, struct Buffer *s
   struct Buffer *tagbuf = buf_pool_get();
   struct Buffer *fmtbuf = buf_pool_get();
 
-  while (MoreArgs(s))
+  while (has_more_tokens(s))
   {
     parse_extract_token(tagbuf, s, TOKEN_NO_FLAGS);
     const char *tag = buf_string(tagbuf);
@@ -1304,7 +1304,7 @@ static enum CommandResult parse_tag_transforms(struct Buffer *buf, struct Buffer
   struct Buffer *tagbuf = buf_pool_get();
   struct Buffer *trnbuf = buf_pool_get();
 
-  while (MoreArgs(s))
+  while (has_more_tokens(s))
   {
     parse_extract_token(tagbuf, s, TOKEN_NO_FLAGS);
     const char *tag = buf_string(tagbuf);
@@ -1345,7 +1345,7 @@ static enum CommandResult parse_unignore(struct Buffer *buf, struct Buffer *s,
       add_to_stailq(&UnIgnore, buf->data);
 
     remove_from_stailq(&Ignore, buf->data);
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1368,7 +1368,7 @@ static enum CommandResult parse_unlists(struct Buffer *buf, struct Buffer *s,
     {
       return MUTT_CMD_ERROR;
     }
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1422,7 +1422,7 @@ static void do_unmailboxes_star(void)
 enum CommandResult parse_unmailboxes(struct Buffer *buf, struct Buffer *s,
                                      intptr_t data, struct Buffer *err)
 {
-  while (MoreArgs(s))
+  while (has_more_tokens(s))
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
@@ -1488,7 +1488,7 @@ static enum CommandResult parse_unmy_hdr(struct Buffer *buf, struct Buffer *s,
         header_free(&UserHeader, np);
       }
     }
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
   return MUTT_CMD_SUCCESS;
 }
 
@@ -1510,7 +1510,7 @@ static enum CommandResult parse_unstailq(struct Buffer *buf, struct Buffer *s,
       break;
     }
     remove_from_stailq((struct ListHead *) data, buf->data);
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1532,7 +1532,7 @@ static enum CommandResult parse_unsubscribe(struct Buffer *buf, struct Buffer *s
     {
       return MUTT_CMD_ERROR;
     }
-  } while (MoreArgs(s));
+  } while (has_more_tokens(s));
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1550,11 +1550,11 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
   if (!buf || !s || !err)
     return MUTT_CMD_ERROR;
 
-  if (MoreArgs(s))
+  if (has_more_tokens(s))
   {
     parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-    if (MoreArgs(s))
+    if (has_more_tokens(s))
     {
       buf_printf(err, _("%s: too many arguments"), "unsubscribe-from");
       return MUTT_CMD_WARNING;
