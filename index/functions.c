@@ -84,6 +84,7 @@
 #include <libintl.h>
 #endif
 #endif
+#include "debug/lib.h"
 
 /// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
@@ -2078,6 +2079,9 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
  */
 static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
+  dump_graphviz_email(shared->email, "test");
+  dump_graphviz_body(shared->email->body);
+  return FR_SUCCESS;
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
   mutt_print_message(shared->mailbox, &ea);
