@@ -153,7 +153,7 @@ int mutt_account_getpass(struct ConnAccount *cac)
   }
   else
   {
-    char prompt[256] = { 0 };
+    char prompt[512] = { 0 };
     snprintf(prompt, sizeof(prompt), _("Password for %s@%s: "),
              (cac->flags & MUTT_ACCT_LOGIN) ? cac->login : cac->user, cac->host);
     cac->pass[0] = '\0';

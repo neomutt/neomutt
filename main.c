@@ -927,7 +927,7 @@ main
     skip |= (nntp_path_probe(buf_string(fpath), NULL) == MUTT_NNTP);
     if (!skip && (stat(buf_string(fpath), &st) == -1) && (errno == ENOENT))
     {
-      char msg2[256];
+      char msg2[256] = { 0 };
       snprintf(msg2, sizeof(msg2), _("%s does not exist. Create it?"), c_folder);
       if (query_yesorno(msg2, MUTT_YES) == MUTT_YES)
       {

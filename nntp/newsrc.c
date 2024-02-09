@@ -933,7 +933,8 @@ const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char
 {
   struct NntpAccountData *adata = (struct NntpAccountData *) data;
   struct ConnAccount *cac = &adata->conn->account;
-  char fn[128], fmt[128];
+  char fn[128] = { 0 };
+  char fmt[128] = { 0 };
 
   switch (op)
   {

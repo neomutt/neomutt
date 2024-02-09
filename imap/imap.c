@@ -436,7 +436,8 @@ static int complete_hosts(struct Buffer *buf)
  */
 int imap_create_mailbox(struct ImapAccountData *adata, const char *mailbox)
 {
-  char buf[2048], mbox[1024];
+  char buf[2048] = { 0 };
+  char mbox[1024] = { 0 };
 
   imap_munge_mbox_name(adata->unicode, mbox, sizeof(mbox), mailbox);
   snprintf(buf, sizeof(buf), "CREATE %s", mbox);

@@ -435,7 +435,7 @@ static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int db
 static int nntp_auth(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[1024] = { 0 };
+  char buf[1536] = { 0 };
   char authenticators[1024] = "USER";
   char *method = NULL, *a = NULL, *p = NULL;
   unsigned char flags = conn->account.flags;

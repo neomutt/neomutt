@@ -376,7 +376,8 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   if (!buf || !name)
     return;
 
-  char in[1024], scratch[1024 + 10];
+  char in[1024] = { 0 };
+  char scratch[1024 + 10] = { 0 };
 
   mutt_str_copy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
@@ -591,8 +592,8 @@ const char *mutt_ch_charset_lookup(const char *chs)
  */
 iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t flags)
 {
-  char tocode1[128];
-  char fromcode1[128];
+  char tocode1[128] = { 0 };
+  char fromcode1[128] = { 0 };
   const char *tocode2 = NULL, *fromcode2 = NULL;
   const char *tmp = NULL;
 

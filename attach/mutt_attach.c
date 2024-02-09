@@ -422,7 +422,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
   bool use_pipe = false;
   bool use_pager = true;
   char type[256] = { 0 };
-  char desc[256] = { 0 };
+  char desc[512] = { 0 };
   char *fname = NULL;
   struct MailcapEntry *entry = NULL;
   int rc = -1;

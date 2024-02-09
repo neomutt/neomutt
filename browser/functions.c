@@ -217,7 +217,7 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, int op)
       return FR_ERROR;
     }
 
-    char tmp2[256];
+    char tmp2[256] = { 0 };
     int index = menu_get_index(priv->menu);
     struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
     mutt_str_copy(tmp2, ff->name, sizeof(tmp2));
@@ -950,7 +950,7 @@ static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op)
   regex_t rx = { 0 };
   int index = menu_get_index(priv->menu);
 
-  char tmp2[256];
+  char tmp2[256] = { 0 };
 
   struct Buffer *buf = buf_pool_get();
   if (op == OP_SUBSCRIBE_PATTERN)

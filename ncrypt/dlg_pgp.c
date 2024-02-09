@@ -362,7 +362,7 @@ static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, in
       break;
     case '[':
     {
-      char buf2[128];
+      char buf2[128] = { 0 };
       bool use_c_locale = false;
       size_t len;
 

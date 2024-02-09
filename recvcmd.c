@@ -406,7 +406,7 @@ static struct AttachPtr *find_parent(struct AttachCtx *actx, struct Body *b, sho
 static void include_header(bool quote, FILE *fp_in, struct Email *e, FILE *fp_out, char *prefix)
 {
   CopyHeaderFlags chflags = CH_DECODE;
-  char prefix2[128];
+  char prefix2[128] = { 0 };
 
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   if (c_weed)

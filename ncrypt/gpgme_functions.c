@@ -760,7 +760,7 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
   if (OptPgpCheckTrust && (!crypt_id_is_valid(cur_key) || !crypt_id_is_strong(cur_key)))
   {
     const char *warn_s = NULL;
-    char buf2[1024];
+    char buf2[1024] = { 0 };
 
     if (cur_key->flags & KEYFLAG_CANTUSE)
     {

@@ -1533,7 +1533,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     return -1;
 
   FILE *fp = NULL;
-  char buf[2048];
+  char buf[2048] = { 0 };
   char internaldate[IMAP_DATELEN] = { 0 };
   char imap_flags[128] = { 0 };
   size_t len;

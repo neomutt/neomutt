@@ -127,7 +127,7 @@ static const char *alias_format_str(char *buf, size_t buflen, size_t col, int co
                                     const char *if_str, const char *else_str,
                                     intptr_t data, MuttFormatFlags flags)
 {
-  char tmp[1024];
+  char tmp[1024] = { 0 };
   struct AliasView *av = (struct AliasView *) data;
   struct Alias *alias = av->alias;
 

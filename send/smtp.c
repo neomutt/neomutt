@@ -452,7 +452,7 @@ static int smtp_code(const struct Buffer *buf, int *n)
   if (buf_len(buf) < 3)
     return false;
 
-  char code[4];
+  char code[4] = { 0 };
   const char *str = buf_string(buf);
 
   code[0] = str[0];

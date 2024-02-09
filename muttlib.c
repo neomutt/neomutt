@@ -740,15 +740,17 @@ void mutt_safe_path(struct Buffer *dest, const struct Address *a)
 void mutt_expando_format(char *buf, size_t buflen, size_t col, int cols, const char *src,
                          format_t callback, intptr_t data, MuttFormatFlags flags)
 {
-  char prefix[128], tmp[1024];
+  char prefix[128] = { 0 };
+  char tmp[1024] = { 0 };
   char *cp = NULL, *wptr = buf;
   char ch;
-  char if_str[128], else_str[128];
+  char if_str[128] = { 0 };
+  char else_str[128] = { 0 };
   size_t wlen, count, len, wid;
   FILE *fp_filter = NULL;
   char *recycler = NULL;
 
-  char src2[1024];
+  char src2[1024] = { 0 };
   mutt_str_copy(src2, src, mutt_str_len(src) + 1);
   src = src2;
 

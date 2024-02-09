@@ -1371,7 +1371,8 @@ static pid_t smime_invoke_sign(FILE **fp_smime_in, FILE **fp_smime_out,
  */
 struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
 {
-  char buf[1024], certfile[PATH_MAX];
+  char buf[1024] = { 0 };
+  char certfile[PATH_MAX] = { 0 };
   char *cert_end = NULL;
   FILE *fp_smime_in = NULL, *fp_smime_err = NULL, *fp_out = NULL, *fp_tmp = NULL;
   struct Body *b_enc = NULL;

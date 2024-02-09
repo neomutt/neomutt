@@ -205,7 +205,7 @@ void dot_add_link(struct ListHead *links, void *src, void *dst,
 
   char obj1[64] = { 0 };
   char obj2[64] = { 0 };
-  char text[256] = { 0 };
+  char text[512] = { 0 };
   char lstr[128] = { 0 };
 
   dot_ptr_name(obj1, sizeof(obj1), src);

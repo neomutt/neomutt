@@ -149,7 +149,7 @@ static void encode_8bit(struct FgetConv *fc, FILE *fp_out)
 static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
 {
   int c, linelen = 0;
-  char line[77], savechar;
+  char line[77] = { 0 };
 
   while ((c = mutt_ch_fgetconv(fc)) != EOF)
   {
@@ -172,7 +172,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
       }
       else
       {
-        savechar = line[linelen - 1];
+        char savechar = line[linelen - 1];
         line[linelen - 1] = '=';
         line[linelen] = 0;
         fputs(line, fp_out);
@@ -262,7 +262,7 @@ static void encode_quoted(struct FgetConv *fc, FILE *fp_out, bool istext)
       }
       else
       {
-        savechar = line[linelen - 1];
+        char savechar = line[linelen - 1];
         line[linelen - 1] = '=';
         line[linelen] = 0;
         fputs(line, fp_out);

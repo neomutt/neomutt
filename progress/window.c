@@ -77,7 +77,8 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
     return;
 
   va_list ap;
-  char buf[256], buf2[256];
+  char buf[256] = { 0 };
+  char buf2[256] = { 0 };
   int w = (percent * win->state.cols) / 100;
   size_t l;
 

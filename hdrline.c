@@ -402,7 +402,8 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
                                     intptr_t data, MuttFormatFlags flags)
 {
   struct HdrFormatInfo *hfi = (struct HdrFormatInfo *) data;
-  char fmt[128], tmp[1024];
+  char fmt[128] = { 0 };
+  char tmp[1024] = { 0 };
   char *p = NULL;
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   const bool threads = mutt_using_threads();

@@ -461,7 +461,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
 
     case '[':
     {
-      char buf2[128];
+      char buf2[128] = { 0 };
       bool use_c_locale = false;
       struct tm tm = { 0 };
 

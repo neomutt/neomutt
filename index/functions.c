@@ -1230,7 +1230,7 @@ static int op_main_limit(struct IndexSharedData *shared, struct IndexPrivateData
   int old_index = shared->email ? shared->email->index : -1;
   if (op == OP_TOGGLE_READ)
   {
-    char buf2[1024];
+    char buf2[1024] = { 0 };
 
     if (!lmt || !mutt_strn_equal(shared->mailbox_view->pattern, "!~R!~D~s", 8))
     {
@@ -1831,7 +1831,7 @@ static int op_main_show_limit(struct IndexSharedData *shared,
 {
   if (mview_has_limit(shared->mailbox_view))
   {
-    char buf2[256];
+    char buf2[256] = { 0 };
     /* L10N: ask for a limit to apply */
     snprintf(buf2, sizeof(buf2), _("Limit: %s"), shared->mailbox_view->pattern);
     mutt_message("%s", buf2);

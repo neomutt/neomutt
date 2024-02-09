@@ -75,7 +75,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
   if (OptPgpCheckTrust && (!pgp_id_is_valid(cur_key) || !pgp_id_is_strong(cur_key)))
   {
     const char *str = "";
-    char buf2[1024];
+    char buf2[1024] = { 0 };
 
     if (cur_key->flags & KEYFLAG_CANTUSE)
     {

@@ -483,7 +483,8 @@ int mutt_addrlist_parse(struct AddressList *al, const char *s)
     return 0;
 
   int parsed = 0;
-  char comment[1024], phrase[1024];
+  char comment[1024] = { 0 };
+  char phrase[1024] = { 0 };
   size_t phraselen = 0, commentlen = 0;
 
   bool ws_pending = mutt_str_is_email_wsp(*s);

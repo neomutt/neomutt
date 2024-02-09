@@ -106,7 +106,8 @@ static const char *compose_format_str(char *buf, size_t buflen, size_t col, int 
                                       const char *if_str, const char *else_str,
                                       intptr_t data, MuttFormatFlags flags)
 {
-  char fmt[128], tmp[128];
+  char fmt[128] = { 0 };
+  char tmp[128] = { 0 };
   bool optional = (flags & MUTT_FORMAT_OPTIONAL);
   struct ComposeSharedData *shared = (struct ComposeSharedData *) data;
 

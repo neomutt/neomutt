@@ -685,7 +685,7 @@ static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int
 {
   struct Email *e = (struct Email *) data;
   char *p = NULL;
-  char buf2[256];
+  char buf2[256] = { 0 };
 
   const struct Address *to = TAILQ_FIRST(&e->env->to);
   const struct Address *cc = TAILQ_FIRST(&e->env->cc);

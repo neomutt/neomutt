@@ -64,7 +64,8 @@
  */
 void crypt_current_time(struct State *state, const char *app_name)
 {
-  char p[256], tmp[256];
+  char p[256] = { 0 };
+  char tmp[512] = { 0 };
 
   if (!WithCrypto)
     return;

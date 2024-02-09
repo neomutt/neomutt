@@ -96,7 +96,8 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
  */
 enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *method)
 {
-  char ibuf[2048], obuf[1024];
+  char ibuf[2048] = { 0 };
+  char obuf[1024] = { 0 };
   unsigned char hmac_response[MD5_DIGEST_LEN];
   int len;
   int rc;
