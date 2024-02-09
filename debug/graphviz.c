@@ -46,7 +46,6 @@
 #include "mbox/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
-#include "notmuch/lib.h"
 #include "pattern/lib.h"
 #include "pop/lib.h"
 #include "imap/adata.h"    // IWYU pragma: keep
@@ -57,11 +56,14 @@
 #include "mview.h"
 #include "nntp/adata.h"      // IWYU pragma: keep
 #include "nntp/mdata.h"      // IWYU pragma: keep
+#include "pop/adata.h"       // IWYU pragma: keep
+#include "pop/private.h"     // IWYU pragma: keep
+#ifdef USE_NOTMUCH
+#include "notmuch/lib.h"
 #include "notmuch/adata.h"   // IWYU pragma: keep
 #include "notmuch/mdata.h"   // IWYU pragma: keep
 #include "notmuch/private.h" // IWYU pragma: keep
-#include "pop/adata.h"       // IWYU pragma: keep
-#include "pop/private.h"     // IWYU pragma: keep
+#endif
 
 // #define GV_HIDE_MVIEW
 #define GV_HIDE_MVIEW_CONTENTS
@@ -131,7 +133,7 @@ void dot_type_number(FILE *fp, const char *name, int num)
 
 void dot_type_string_escape(struct Buffer *buf)
 {
-  for (int i = buf_len(buf) - 1; i > 0; i--)
+  for (int i = buf_len(buf) - 1; i >= 0; i--)
   {
     if (buf_at(buf, i) == '<')
       buf_inline_replace(buf, i, 1, "&lt;");
@@ -513,12 +515,14 @@ void dot_mailbox_nntp(FILE *fp, struct NntpMboxData *mdata, struct ListHead *lin
   dot_object_footer(fp);
 }
 
+#ifdef USE_NOTMUCH
 void dot_mailbox_notmuch(FILE *fp, struct NmMboxData *mdata, struct ListHead *links)
 {
   dot_object_header(fp, mdata, "NmMboxData", "#60c060");
   dot_type_number(fp, "db_limit", mdata->db_limit);
   dot_object_footer(fp);
 }
+#endif
 
 void dot_mailbox_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
 {
@@ -586,8 +590,10 @@ void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
       dot_mailbox_mbox(fp, m->mdata, links);
     else if (m->type == MUTT_NNTP)
       dot_mailbox_nntp(fp, m->mdata, links);
+#ifdef USE_NOTMUCH
     else if (m->type == MUTT_NOTMUCH)
       dot_mailbox_notmuch(fp, m->mdata, links);
+#endif
 
     dot_add_link(links, m, m->mdata, "Mailbox->mdata", false, NULL);
   }
@@ -761,12 +767,14 @@ void dot_account_nntp(FILE *fp, struct NntpAccountData *adata, struct ListHead *
   }
 }
 
+#ifdef USE_NOTMUCH
 void dot_account_notmuch(FILE *fp, struct NmAccountData *adata, struct ListHead *links)
 {
   dot_object_header(fp, adata, "NmAccountData", "#60c0c0");
   dot_ptr(fp, "db", adata->db, NULL);
   dot_object_footer(fp);
 }
+#endif
 
 void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *links)
 {
@@ -808,8 +816,10 @@ void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
       dot_account_mbox(fp, a->adata, links);
     else if (a->type == MUTT_NNTP)
       dot_account_nntp(fp, a->adata, links);
+#ifdef USE_NOTMUCH
     else if (a->type == MUTT_NOTMUCH)
       dot_account_notmuch(fp, a->adata, links);
+#endif
 
     dot_add_link(links, a, a->adata, "Account->adata", false, NULL);
   }
