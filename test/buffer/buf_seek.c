@@ -52,5 +52,4 @@ void test_buf_seek(void)
     TEST_CHECK(buf->dptr == buf->data);
     buf_pool_release(&buf);
   }
-
 }

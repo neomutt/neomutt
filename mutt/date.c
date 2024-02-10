@@ -510,7 +510,7 @@ static int parse_small_uint(const char *str, const char *end, int *val)
   while ((ptr < end) && (ptr < (str + 5)) && (*ptr >= '0') && (*ptr <= '9'))
   {
     v = (v * 10) + (*ptr - '0');
-    ++ptr;
+    ptr++;
   }
   *val = v;
   return ptr - str;
@@ -548,8 +548,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   while ((len > 0) && (*s == ' '))
   {
-    ++s;
-    --len;
+    s++;
+    len--;
   }
 
   if ((len == 0) || (*s < '0') || (*s > '9'))
@@ -566,8 +566,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   if ((len == 0) || (*s != ' '))
     return -1;
-  ++s;
-  --len;
+  s++;
+  len--;
 
   /* Month */
   if (len < 3)
@@ -580,8 +580,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   if ((len == 0) || (*s != ' '))
     return -1;
-  ++s;
-  --len;
+  s++;
+  len--;
 
   /* Year */
   int year_len = parse_small_uint(s, s + len, &tm.tm_year);
@@ -596,8 +596,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   if ((len == 0) || (*s != ' '))
     return -1;
-  ++s;
-  --len;
+  s++;
+  len--;
 
   /* Hour */
   if ((len < 3) || (s[0] < '0') || (s[0] > '2') || (s[1] < '0') ||
@@ -623,8 +623,8 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
   /* Second (optional) */
   if ((len > 0) && (s[0] == ':'))
   {
-    ++s;
-    --len;
+    s++;
+    len--;
     if ((len < 2) || (s[0] < '0') || (s[0] > '5') || (s[1] < '0') || (s[1] > '9'))
       return -1;
     tm.tm_sec = ((s[0] - '0') * 10) + (s[1] - '0');
@@ -636,14 +636,14 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
 
   while ((len > 0) && (*s == ' '))
   {
-    ++s;
-    --len;
+    s++;
+    len--;
   }
 
   /* Strip optional time zone comment and white space from the end
    * (this is the only one that is very common) */
   while ((len > 0) && (s[len - 1] == ' '))
-    --len;
+    len--;
   if ((len >= 2) && (s[len - 1] == ')'))
   {
     for (int i = len - 1; i-- > 0;)
@@ -658,7 +658,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
     }
   }
   while ((len > 0) && (s[len - 1] == ' '))
-    --len;
+    len--;
 
   /* Time zone (optional) */
   int zhours = 0;

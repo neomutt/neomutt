@@ -658,7 +658,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
     {
       iconv_close(IconvCache[IconvCacheUsed - 1].cd);
     }
-    --IconvCacheUsed;
+    IconvCacheUsed--;
   }
 
   /* make room for this one at the top */
@@ -667,7 +667,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
     IconvCache[j + 1] = IconvCache[j];
   }
 
-  ++IconvCacheUsed;
+  IconvCacheUsed++;
 
   mutt_debug(LL_DEBUG2, "iconv: adding %s -> %s to the cache\n", fromcode1, tocode1);
   IconvCache[0].fromcode1 = strdup(fromcode1);

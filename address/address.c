@@ -1161,7 +1161,7 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
       if (in_group && !a->mailbox && !a->personal)
       {
         buf_addch(buf, ';');
-        ++cur_col;
+        cur_col++;
         in_group = false;
       }
       if (next && (next->mailbox || next->personal))
