@@ -566,6 +566,7 @@ static int trash_append(struct Mailbox *m)
         // L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
         mutt_error(_("Unable to append to trash folder"));
         m_trash->append = old_append;
+        mailbox_free(&m_trash);
         return -1;
       }
     }
