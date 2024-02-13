@@ -47,6 +47,7 @@
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "key/lib.h"
@@ -84,6 +85,7 @@
 #include <libintl.h>
 #endif
 #endif
+#include "debug/lib.h"
 
 /// Error message for unavailable functions
 static const char *Not_available_in_this_menu = N_("Not available in this menu");
@@ -2078,6 +2080,11 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
  */
 static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
+#ifdef USE_DEBUG_GRAPHVIZ
+  const struct Expando *c_index_format = cs_subset_expando(shared->sub, "index_format");
+  dump_graphviz_expando_node(c_index_format->tree);
+  return FR_SUCCESS;
+#endif
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
   mutt_print_message(shared->mailbox, &ea);
