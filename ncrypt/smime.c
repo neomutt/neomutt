@@ -374,18 +374,17 @@ static const char *smime_command_format_str(char *buf, size_t buflen, size_t col
 /**
  * smime_command - Format an SMIME command string
  * @param buf    Buffer for the result
- * @param buflen Length of buffer
  * @param cctx   Data to pass to the formatter
  * @param fmt    printf-like formatting string
  *
  * @sa smime_command_format_str()
  */
-static void smime_command(char *buf, size_t buflen,
-                          struct SmimeCommandContext *cctx, const char *fmt)
+static void smime_command(struct Buffer *buf, struct SmimeCommandContext *cctx,
+                          const char *fmt)
 {
-  mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), smime_command_format_str,
-                      (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
-  mutt_debug(LL_DEBUG2, "%s\n", buf);
+  mutt_expando_format(buf->data, buf->dsize, 0, buf->dsize, NONULL(fmt),
+                      smime_command_format_str, (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
+  mutt_debug(LL_DEBUG2, "%s\n", buf_string(buf));
 }
 
 /**
@@ -417,7 +416,6 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
                           const char *intermediates, const char *format)
 {
   struct SmimeCommandContext cctx = { 0 };
-  char cmd[STR_COMMAND] = { 0 };
 
   if (!format || (*format == '\0'))
     return (pid_t) -1;
@@ -430,10 +428,13 @@ static pid_t smime_invoke(FILE **fp_smime_in, FILE **fp_smime_out, FILE **fp_smi
   cctx.certificates = certificates;
   cctx.intermediates = intermediates;
 
-  smime_command(cmd, sizeof(cmd), &cctx, format);
+  struct Buffer *cmd = buf_pool_get();
+  smime_command(cmd, &cctx, format);
 
-  return filter_create_fd(cmd, fp_smime_in, fp_smime_out, fp_smime_err,
-                          fp_smime_infd, fp_smime_outfd, fp_smime_errfd, EnvList);
+  pid_t pid = filter_create_fd(buf_string(cmd), fp_smime_in, fp_smime_out, fp_smime_err,
+                               fp_smime_infd, fp_smime_outfd, fp_smime_errfd, EnvList);
+  buf_pool_release(&cmd);
+  return pid;
 }
 
 /**
@@ -1770,7 +1771,7 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
 
   /* if we are decoding binary bodies, we don't want to prefix each
    * line with the prefix or else the data will get corrupted.  */
-  char *save_prefix = state->prefix;
+  const char *save_prefix = state->prefix;
   state->prefix = NULL;
 
   mutt_decode_attachment(b, state);

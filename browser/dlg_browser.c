@@ -272,11 +272,11 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
           mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
         }
 
-        mutt_format_s(buf, buflen, prec, date);
+        mutt_format(buf, buflen, prec, date, false);
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -336,7 +336,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -355,7 +355,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                              (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
                    "");
 
-      mutt_format_s(buf, buflen, prec, fn);
+      mutt_format(buf, buflen, prec, fn, false);
       break;
     }
     case 'F':
@@ -380,7 +380,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                  ((folder->ff->mode & S_ISVTX) != 0) ? 't' :
                  ((folder->ff->mode & S_IXOTH) != 0) ? 'x' :
                                                        '-');
-        mutt_format_s(buf, buflen, prec, permission);
+        mutt_format(buf, buflen, prec, permission, false);
       }
       else if (folder->ff->imap)
       {
@@ -388,11 +388,11 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         /* mark folders with subfolders AND mail */
         snprintf(permission, sizeof(permission), "IMAP %c",
                  (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
-        mutt_format_s(buf, buflen, prec, permission);
+        mutt_format(buf, buflen, prec, permission, false);
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
     }
@@ -403,7 +403,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         struct group *gr = getgrgid(folder->ff->gid);
         if (gr)
         {
-          mutt_format_s(buf, buflen, prec, gr->gr_name);
+          mutt_format(buf, buflen, prec, gr->gr_name, false);
         }
         else
         {
@@ -413,7 +413,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -434,7 +434,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
                              (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
                    "");
 
-      mutt_format_s(buf, buflen, prec, fn);
+      mutt_format(buf, buflen, prec, fn, false);
       break;
     }
 
@@ -446,7 +446,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -460,7 +460,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, "");
+          mutt_format(buf, buflen, prec, "", false);
         }
       }
       else if (folder->ff->msg_count == 0)
@@ -484,7 +484,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, "");
+          mutt_format(buf, buflen, prec, "", false);
         }
       }
       else if (folder->ff->msg_unread == 0)
@@ -515,7 +515,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -530,7 +530,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
         struct passwd *pw = getpwuid(folder->ff->uid);
         if (pw)
         {
-          mutt_format_s(buf, buflen, prec, pw->pw_name);
+          mutt_format(buf, buflen, prec, pw->pw_name, false);
         }
         else
         {
@@ -540,7 +540,7 @@ static const char *folder_format_str(char *buf, size_t buflen, size_t col, int c
       }
       else
       {
-        mutt_format_s(buf, buflen, prec, "");
+        mutt_format(buf, buflen, prec, "", false);
       }
       break;
 
@@ -897,7 +897,7 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
  *
  * @sa $folder_format, $group_index_format, $mailbox_folder_format, folder_format_str()
  */
-static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void folder_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct BrowserState *bstate = menu->mdata;
   struct BrowserEntryArray *entry = &bstate->entry;
@@ -909,22 +909,23 @@ static void folder_make_entry(struct Menu *menu, char *buf, size_t buflen, int l
   if (OptNews)
   {
     const char *const c_group_index_format = cs_subset_string(NeoMutt->sub, "group_index_format");
-    mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
+    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
                         NONULL(c_group_index_format), group_index_format_str,
                         (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else if (bstate->is_mailbox_list)
   {
     const char *const c_mailbox_folder_format = cs_subset_string(NeoMutt->sub, "mailbox_folder_format");
-    mutt_expando_format(buf, buflen, 0, menu->win->state.cols,
+    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
                         NONULL(c_mailbox_folder_format), folder_format_str,
                         (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
   else
   {
     const char *const c_folder_format = cs_subset_string(NeoMutt->sub, "folder_format");
-    mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_folder_format),
-                        folder_format_str, (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
+    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+                        NONULL(c_folder_format), folder_format_str,
+                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
   }
 }
 

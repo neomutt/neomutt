@@ -100,13 +100,13 @@ static const struct Mapping PostponedHelp[] = {
  *
  * @sa $index_format, index_format_str()
  */
-static void post_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void post_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct MailboxView *mv = menu->mdata;
   struct Mailbox *m = mv->mailbox;
 
   const char *const c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, buflen, menu->win->state.cols, NONULL(c_index_format), m, -1,
+  mutt_make_string(buf, menu->win->state.cols, NONULL(c_index_format), m, -1,
                    m->emails[line], MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 

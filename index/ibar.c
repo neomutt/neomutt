@@ -88,19 +88,18 @@ struct IBarPrivateData
  */
 static int ibar_recalc(struct MuttWindow *win)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
 
   struct IBarPrivateData *ibar_data = win->wdata;
   struct IndexSharedData *shared = ibar_data->shared;
   struct IndexPrivateData *priv = ibar_data->priv;
 
   const char *c_status_format = cs_subset_string(shared->sub, "status_format");
-  menu_status_line(buf, sizeof(buf), shared, priv->menu, win->state.cols,
-                   NONULL(c_status_format));
+  menu_status_line(buf, shared, priv->menu, win->state.cols, NONULL(c_status_format));
 
-  if (!mutt_str_equal(buf, ibar_data->status_format))
+  if (!mutt_str_equal(buf_string(buf), ibar_data->status_format))
   {
-    mutt_str_replace(&ibar_data->status_format, buf);
+    mutt_str_replace(&ibar_data->status_format, buf_string(buf));
     win->actions |= WA_REPAINT;
     mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
   }
@@ -109,26 +108,25 @@ static int ibar_recalc(struct MuttWindow *win)
   if (c_ts_enabled && TsSupported)
   {
     const char *c_ts_status_format = cs_subset_string(shared->sub, "ts_status_format");
-    menu_status_line(buf, sizeof(buf), shared, priv->menu, sizeof(buf),
-                     NONULL(c_ts_status_format));
-    if (!mutt_str_equal(buf, ibar_data->ts_status_format))
+    menu_status_line(buf, shared, priv->menu, buf->dsize, NONULL(c_ts_status_format));
+    if (!mutt_str_equal(buf_string(buf), ibar_data->ts_status_format))
     {
-      mutt_str_replace(&ibar_data->ts_status_format, buf);
+      mutt_str_replace(&ibar_data->ts_status_format, buf_string(buf));
       win->actions |= WA_REPAINT;
       mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
     }
 
     const char *c_ts_icon_format = cs_subset_string(shared->sub, "ts_icon_format");
-    menu_status_line(buf, sizeof(buf), shared, priv->menu, sizeof(buf),
-                     NONULL(c_ts_icon_format));
-    if (!mutt_str_equal(buf, ibar_data->ts_icon_format))
+    menu_status_line(buf, shared, priv->menu, buf->dsize, NONULL(c_ts_icon_format));
+    if (!mutt_str_equal(buf_string(buf), ibar_data->ts_icon_format))
     {
-      mutt_str_replace(&ibar_data->ts_icon_format, buf);
+      mutt_str_replace(&ibar_data->ts_icon_format, buf_string(buf));
       win->actions |= WA_REPAINT;
       mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
     }
   }
 
+  buf_pool_release(&buf);
   return 0;
 }
 

@@ -191,16 +191,17 @@ static const char *mix_format_str(char *buf, size_t buflen, size_t col, int cols
  *
  * @sa $mix_entry_format, mix_format_str()
  */
-static void mix_make_entry(struct Menu *menu, char *buf, size_t buflen, int num)
+static void mix_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct RemailerArray *ra = menu->mdata;
-  struct Remailer **r = ARRAY_GET(ra, num);
+  struct Remailer **r = ARRAY_GET(ra, line);
   if (!r)
     return;
 
   const char *const c_mix_entry_format = cs_subset_string(NeoMutt->sub, "mix_entry_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_mix_entry_format),
-                      mix_format_str, (intptr_t) *r, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+                      NONULL(c_mix_entry_format), mix_format_str, (intptr_t) *r,
+                      MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

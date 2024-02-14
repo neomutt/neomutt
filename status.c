@@ -472,7 +472,6 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
 /**
  * menu_status_line - Create the status line
  * @param[out] buf      Buffer in which to save string
- * @param[in]  buflen   Buffer length
  * @param[in]  shared   Shared Index data
  * @param[in]  menu     Current menu
  * @param[in]  cols     Maximum number of columns to use
@@ -480,11 +479,11 @@ static const char *status_format_str(char *buf, size_t buflen, size_t col, int c
  *
  * @sa status_format_str()
  */
-void menu_status_line(char *buf, size_t buflen, struct IndexSharedData *shared,
+void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared,
                       struct Menu *menu, int cols, const char *fmt)
 {
   struct MenuStatusLineData data = { shared, menu };
 
-  mutt_expando_format(buf, buflen, 0, cols, fmt, status_format_str,
+  mutt_expando_format(buf->data, buf->dsize, 0, cols, fmt, status_format_str,
                       (intptr_t) &data, MUTT_FORMAT_NO_FLAGS);
 }

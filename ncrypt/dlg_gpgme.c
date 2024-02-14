@@ -541,7 +541,7 @@ static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int co
  *
  * @sa $pgp_entry_format, crypt_format_str()
  */
-static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void crypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct CryptKeyInfo **key_table = menu->mdata;
   struct CryptEntry entry = { 0 };
@@ -550,8 +550,9 @@ static void crypt_make_entry(struct Menu *menu, char *buf, size_t buflen, int li
   entry.num = line + 1;
 
   const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_pgp_entry_format),
-                      crypt_format_str, (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+                      NONULL(c_pgp_entry_format), crypt_format_str,
+                      (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

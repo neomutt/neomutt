@@ -165,11 +165,11 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
         if (mutt_is_text_part(aptr->body) &&
             mutt_body_get_charset(aptr->body, charset, sizeof(charset)))
         {
-          mutt_format_s(buf, buflen, prec, charset);
+          mutt_format(buf, buflen, prec, charset, false);
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, "");
+          mutt_format(buf, buflen, prec, "", false);
         }
       }
       else if (!mutt_is_text_part(aptr->body) ||
@@ -198,25 +198,26 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       {
         if (aptr->body->description)
         {
-          mutt_format_s(buf, buflen, prec, aptr->body->description);
+          mutt_format(buf, buflen, prec, aptr->body->description, false);
           break;
         }
         if (mutt_is_message_type(aptr->body->type, aptr->body->subtype) &&
             c_message_format && aptr->body->email)
         {
-          char s[128] = { 0 };
-          mutt_make_string(s, sizeof(s), cols, c_message_format, NULL, -1,
-                           aptr->body->email,
+          struct Buffer *s = buf_pool_get();
+          mutt_make_string(s, cols, c_message_format, NULL, -1, aptr->body->email,
                            MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
-          if (*s)
-          {
-            mutt_format_s(buf, buflen, prec, s);
+          bool empty = buf_is_empty(s);
+          if (!empty)
+            mutt_format(buf, buflen, prec, buf_string(s), false);
+
+          buf_pool_release(&s);
+          if (!empty)
             break;
-          }
         }
         if (!aptr->body->d_filename && !aptr->body->filename)
         {
-          mutt_format_s(buf, buflen, prec, "<no description>");
+          mutt_format(buf, buflen, prec, "<no description>", false);
           break;
         }
       }
@@ -234,7 +235,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       {
         if (aptr->body->d_filename)
         {
-          mutt_format_s(buf, buflen, prec, aptr->body->d_filename);
+          mutt_format(buf, buflen, prec, aptr->body->d_filename, false);
           break;
         }
       }
@@ -254,12 +255,12 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
 
           buf_strcpy(path, aptr->body->filename);
           buf_pretty_mailbox(path);
-          mutt_format_s(buf, buflen, prec, buf_string(path));
+          mutt_format(buf, buflen, prec, buf_string(path), false);
           buf_pool_release(&path);
         }
         else
         {
-          mutt_format_s(buf, buflen, prec, NONULL(aptr->body->filename));
+          mutt_format(buf, buflen, prec, NONULL(aptr->body->filename), false);
         }
       }
       else if (!aptr->body->filename)
@@ -275,7 +276,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'e':
       if (!optional)
-        mutt_format_s(buf, buflen, prec, ENCODING(aptr->body->encoding));
+        mutt_format(buf, buflen, prec, ENCODING(aptr->body->encoding), false);
       break;
     case 'I':
       if (optional)
@@ -298,11 +299,11 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'm':
       if (!optional)
-        mutt_format_s(buf, buflen, prec, TYPE(aptr->body));
+        mutt_format(buf, buflen, prec, TYPE(aptr->body), false);
       break;
     case 'M':
       if (!optional)
-        mutt_format_s(buf, buflen, prec, aptr->body->subtype);
+        mutt_format(buf, buflen, prec, aptr->body->subtype, false);
       else if (!aptr->body->subtype)
         optional = false;
       break;
@@ -321,7 +322,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       else
       {
         snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        mutt_format_s(buf, buflen, fmt, "Q");
+        mutt_format(buf, buflen, fmt, "Q", false);
       }
       break;
     case 's':
@@ -340,7 +341,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       {
         char tmp[128] = { 0 };
         mutt_str_pretty_size(tmp, sizeof(tmp), l);
-        mutt_format_s(buf, buflen, prec, tmp);
+        mutt_format(buf, buflen, prec, tmp, false);
       }
       else if (l == 0)
       {
@@ -357,7 +358,7 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
       break;
     case 'T':
       if (!optional)
-        mutt_format_s_tree(buf, buflen, prec, NONULL(aptr->tree));
+        mutt_format(buf, buflen, prec, NONULL(aptr->tree), true);
       else if (!aptr->tree)
         optional = false;
       break;
@@ -402,15 +403,15 @@ const char *attach_format_str(char *buf, size_t buflen, size_t col, int cols, ch
  *
  * @sa $attach_format, attach_format_str()
  */
-static void attach_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void attach_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct AttachPrivateData *priv = menu->mdata;
   struct AttachCtx *actx = priv->actx;
 
   const char *const c_attach_format = cs_subset_string(NeoMutt->sub, "attach_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_attach_format),
-                      attach_format_str, (intptr_t) (actx->idx[actx->v2r[line]]),
-                      MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+                      NONULL(c_attach_format), attach_format_str,
+                      (intptr_t) (actx->idx[actx->v2r[line]]), MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

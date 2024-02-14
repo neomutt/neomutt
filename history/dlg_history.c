@@ -109,7 +109,7 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
     }
     case 's':
     {
-      mutt_format_s(buf, buflen, prec, NONULL(h->history));
+      mutt_format(buf, buflen, prec, NONULL(h->history), false);
       break;
     }
   }
@@ -122,15 +122,16 @@ static const char *history_format_str(char *buf, size_t buflen, size_t col, int 
  *
  * @sa history_format_str()
  */
-static void history_make_entry(struct Menu *menu, char *buf, size_t buflen, int line)
+static void history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   char *entry = ((char **) menu->mdata)[line];
 
   struct HistoryEntry h = { line, entry };
 
   const char *const c_history_format = cs_subset_string(NeoMutt->sub, "history_format");
-  mutt_expando_format(buf, buflen, 0, menu->win->state.cols, NONULL(c_history_format),
-                      history_format_str, (intptr_t) &h, MUTT_FORMAT_ARROWCURSOR);
+  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
+                      NONULL(c_history_format), history_format_str,
+                      (intptr_t) &h, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /**

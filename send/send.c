@@ -456,13 +456,14 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_intro, NULL, -1,
-                   e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, 0, c_forward_attribution_intro, NULL, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
-  fputs(buf, fp);
+  fputs(buf_string(buf), fp);
   fputs("\n\n", fp);
+  buf_pool_release(&buf);
 }
 
 /**
@@ -479,14 +480,15 @@ void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, c_forward_attribution_trailer, NULL, -1,
-                   e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, 0, c_forward_attribution_trailer, NULL, -1, e,
+                   MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
-  fputs(buf, fp);
+  fputs(buf_string(buf), fp);
   fputc('\n', fp);
+  buf_pool_release(&buf);
 }
 
 /**
@@ -639,12 +641,13 @@ static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, sizeof(buf), 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
-  fputs(buf, fp_out);
+  fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
+  buf_pool_release(&buf);
 }
 
 /**
@@ -694,7 +697,7 @@ static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int
   switch (op)
   {
     case 'n':
-      mutt_format_s(buf, buflen, prec, mutt_get_name(to));
+      mutt_format(buf, buflen, prec, mutt_get_name(to), false);
       break;
 
     case 'u':
@@ -708,19 +711,19 @@ static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int
       {
         buf2[0] = '\0';
       }
-      mutt_format_s(buf, buflen, prec, buf2);
+      mutt_format(buf, buflen, prec, buf2, false);
       break;
 
     case 'v':
       if (to)
-        mutt_format_s(buf2, sizeof(buf2), prec, mutt_get_name(to));
+        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(to), false);
       else if (cc)
-        mutt_format_s(buf2, sizeof(buf2), prec, mutt_get_name(cc));
+        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(cc), false);
       else
         *buf2 = '\0';
       if ((p = strpbrk(buf2, " %@")))
         *p = '\0';
-      mutt_format_s(buf, buflen, prec, buf2);
+      mutt_format(buf, buflen, prec, buf2, false);
       break;
 
     default:
@@ -1052,11 +1055,11 @@ void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct Con
 
   const char *const c_forward_format = cs_subset_string(sub, "forward_format");
 
-  char buf[256] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   /* set the default subject for the message. */
-  mutt_make_string(buf, sizeof(buf), 0, NONULL(c_forward_format), NULL, -1, e,
-                   MUTT_FORMAT_NO_FLAGS, NULL);
-  mutt_env_set_subject(env, buf);
+  mutt_make_string(buf, 0, NONULL(c_forward_format), NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_env_set_subject(env, buf_string(buf));
+  buf_pool_release(&buf);
 }
 
 /**

@@ -287,34 +287,6 @@ static const char *compress_format_str(char *buf, size_t buflen, size_t col, int
 }
 
 /**
- * expand_command_str - Expand placeholders in command string
- * @param m      Mailbox for paths
- * @param cmd    Template command to be expanded
- * @param buf    Buffer to store the command
- * @param buflen Size of the buffer
- *
- * This function takes a hook command and expands the filename placeholders
- * within it.  The function calls mutt_expando_format() to do the replacement
- * which calls our callback function compress_format_str(). e.g.
- *
- * Template command:
- *      gzip -cd '%f' > '%t'
- *
- * Result:
- *      gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
- *
- * @sa compress_format_str()
- */
-static void expand_command_str(const struct Mailbox *m, const char *cmd, char *buf, int buflen)
-{
-  if (!m || !cmd || !buf)
-    return;
-
-  mutt_expando_format(buf, buflen, 0, buflen, cmd, compress_format_str,
-                      (intptr_t) m, MUTT_FORMAT_NO_FLAGS);
-}
-
-/**
  * execute_command - Run a system command
  * @param m        Mailbox to work with
  * @param command  Command string to execute
@@ -334,23 +306,26 @@ static bool execute_command(struct Mailbox *m, const char *command, const char *
     mutt_message(progress, m->realpath);
 
   bool rc = true;
-  char sys_cmd[STR_COMMAND] = { 0 };
+  struct Buffer *sys_cmd = buf_pool_get();
+  buf_alloc(sys_cmd, STR_COMMAND);
 
   mutt_sig_block();
   endwin();
   fflush(stdout);
 
-  expand_command_str(m, command, sys_cmd, sizeof(sys_cmd));
+  mutt_expando_format(sys_cmd->data, sys_cmd->dsize, 0, sys_cmd->dsize, command,
+                      compress_format_str, (intptr_t) m, MUTT_FORMAT_NO_FLAGS);
 
-  if (mutt_system(sys_cmd) != 0)
+  if (mutt_system(buf_string(sys_cmd)) != 0)
   {
     rc = false;
     mutt_any_key_to_continue(NULL);
-    mutt_error(_("Error running \"%s\""), sys_cmd);
+    mutt_error(_("Error running \"%s\""), buf_string(sys_cmd));
   }
 
   mutt_sig_unblock();
 
+  buf_pool_release(&sys_cmd);
   return rc;
 }
 

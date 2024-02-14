@@ -164,18 +164,17 @@ static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, 
 /**
  * mutt_pgp_command - Prepare a PGP Command
  * @param buf    Buffer for the result
- * @param buflen Length of buffer
  * @param cctx   Data to pass to the formatter
  * @param fmt    printf-like formatting string
  *
  * @sa pgp_command_format_str()
  */
-static void mutt_pgp_command(char *buf, size_t buflen,
-                             struct PgpCommandContext *cctx, const char *fmt)
+static void mutt_pgp_command(struct Buffer *buf, struct PgpCommandContext *cctx,
+                             const char *fmt)
 {
-  mutt_expando_format(buf, buflen, 0, buflen, NONULL(fmt), pgp_command_format_str,
-                      (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
-  mutt_debug(LL_DEBUG2, "%s\n", buf);
+  mutt_expando_format(buf->data, buf->dsize, 0, buf->dsize, NONULL(fmt),
+                      pgp_command_format_str, (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
+  mutt_debug(LL_DEBUG2, "%s\n", buf_string(buf));
 }
 
 /**
@@ -203,7 +202,6 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         const char *sig_fname, const char *ids, const char *format)
 {
   struct PgpCommandContext cctx = { 0 };
-  char cmd[STR_COMMAND] = { 0 };
 
   if (!format || (*format == '\0'))
     return (pid_t) -1;
@@ -219,10 +217,13 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
     cctx.signas = c_pgp_default_key;
   cctx.ids = ids;
 
-  mutt_pgp_command(cmd, sizeof(cmd), &cctx, format);
+  struct Buffer *cmd = buf_pool_get();
+  mutt_pgp_command(cmd, &cctx, format);
 
-  return filter_create_fd(cmd, fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in,
-                          fd_pgp_out, fd_pgp_err, EnvList);
+  pid_t pid = filter_create_fd(buf_string(cmd), fp_pgp_in, fp_pgp_out, fp_pgp_err,
+                               fd_pgp_in, fd_pgp_out, fd_pgp_err, EnvList);
+  buf_pool_release(&cmd);
+  return pid;
 }
 
 /*
@@ -404,10 +405,10 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
  */
 void pgp_class_invoke_import(const char *fname)
 {
-  char cmd[STR_COMMAND] = { 0 };
   struct PgpCommandContext cctx = { 0 };
 
   struct Buffer *buf_fname = buf_pool_get();
+  struct Buffer *cmd = buf_pool_get();
 
   buf_quote_filename(buf_fname, fname, true);
   cctx.fname = buf_string(buf_fname);
@@ -419,11 +420,12 @@ void pgp_class_invoke_import(const char *fname)
     cctx.signas = c_pgp_default_key;
 
   const char *const c_pgp_import_command = cs_subset_string(NeoMutt->sub, "pgp_import_command");
-  mutt_pgp_command(cmd, sizeof(cmd), &cctx, c_pgp_import_command);
-  if (mutt_system(cmd) != 0)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", cmd);
+  mutt_pgp_command(cmd, &cctx, c_pgp_import_command);
+  if (mutt_system(buf_string(cmd)) != 0)
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf_string(cmd));
 
   buf_pool_release(&buf_fname);
+  buf_pool_release(&cmd);
 }
 
 /**
@@ -431,10 +433,7 @@ void pgp_class_invoke_import(const char *fname)
  */
 void pgp_class_invoke_getkeys(struct Address *addr)
 {
-  char cmd[STR_COMMAND] = { 0 };
-
   struct Buffer *personal = NULL;
-
   struct PgpCommandContext cctx = { 0 };
 
   const char *const c_pgp_get_keys_command = cs_subset_string(NeoMutt->sub, "pgp_get_keys_command");
@@ -442,6 +441,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
     return;
 
   struct Buffer *buf = buf_pool_get();
+  struct Buffer *cmd = buf_pool_get();
   personal = addr->personal;
   addr->personal = NULL;
 
@@ -455,15 +455,15 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 
   cctx.ids = buf_string(buf);
 
-  mutt_pgp_command(cmd, sizeof(cmd), &cctx, c_pgp_get_keys_command);
+  mutt_pgp_command(cmd, &cctx, c_pgp_get_keys_command);
 
   int fd_null = open("/dev/null", O_RDWR);
 
   if (!isendwin())
     mutt_message(_("Fetching PGP key..."));
 
-  if (mutt_system(cmd) != 0)
-    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", cmd);
+  if (mutt_system(buf_string(cmd)) != 0)
+    mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf_string(cmd));
 
   if (!isendwin())
     mutt_clear_error();
@@ -472,6 +472,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
     close(fd_null);
 
   buf_pool_release(&buf);
+  buf_pool_release(&cmd);
 }
 
 /**
