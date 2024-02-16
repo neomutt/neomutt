@@ -155,6 +155,7 @@
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "index/lib.h"
@@ -185,9 +186,7 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-#if defined(USE_DEBUG_NOTIFY) || defined(USE_DEBUG_BACKTRACE)
 #include "debug/lib.h"
-#endif
 
 bool StartupComplete = false; ///< When the config has been read
 
@@ -984,6 +983,10 @@ main
 
   if (batch_mode)
   {
+#ifdef USE_DEBUG_GRAPHVIZ
+    const struct Expando *c_index_format = cs_subset_expando(NeoMutt->sub, "index_format");
+    dump_graphviz_expando_node(c_index_format->node);
+#endif
     goto main_ok; // TEST22: neomutt -B
   }
   StartupComplete = true;
