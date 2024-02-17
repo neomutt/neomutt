@@ -95,7 +95,10 @@ void dot_type_char(FILE *fp, const char *name, char ch)
   fprintf(fp, "\t\t<tr>\n");
   fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%s</td>\n", name);
   fprintf(fp, "\t\t\t<td border=\"0\">=</td>\n");
-  fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">%c</td>\n", ch);
+  if (ch == '\0')
+    fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">NUL</td>\n");
+  else
+    fprintf(fp, "\t\t\t<td border=\"0\" align=\"left\">'%c'</td>\n", ch);
   fprintf(fp, "\t\t</tr>\n");
 }
 #endif
@@ -197,8 +200,8 @@ void dot_ptr(FILE *fp, const char *name, void *ptr, const char *colour)
   fprintf(fp, "\t\t</tr>\n");
 }
 
-void dot_add_link(struct ListHead *links, void *src, void *dst,
-                  const char *label, bool back, const char *colour)
+void dot_add_link(struct ListHead *links, void *src, void *dst, const char *label,
+                  const char *short_label, bool back, const char *colour)
 {
   if (!src || !dst)
     return;
@@ -209,6 +212,7 @@ void dot_add_link(struct ListHead *links, void *src, void *dst,
   char obj2[64] = { 0 };
   char text[512] = { 0 };
   char lstr[128] = { 0 };
+  char sstr[128] = { 0 };
 
   dot_ptr_name(obj1, sizeof(obj1), src);
   dot_ptr_name(obj2, sizeof(obj2), dst);
@@ -216,8 +220,11 @@ void dot_add_link(struct ListHead *links, void *src, void *dst,
   if (label)
     snprintf(lstr, sizeof(lstr), "edgetooltip=\"%s\"", label);
 
-  snprintf(text, sizeof(text), "%s -> %s [ %s %s color=\"%s\" ]", obj1, obj2,
-           back ? "dir=back" : "", lstr, colour);
+  if (short_label)
+    snprintf(sstr, sizeof(sstr), "label=\"%s\"", short_label);
+
+  snprintf(text, sizeof(text), "%s -> %s [ %s %s %s color=\"%s\" ]", obj1, obj2,
+           back ? "dir=back" : "", lstr, sstr, colour);
   mutt_list_insert_tail(links, mutt_str_dup(text));
 }
 
@@ -575,7 +582,7 @@ void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
 
   dot_object_footer(fp);
 
-  // dot_add_link(links, m, m->mdata, false, NULL);
+  // dot_add_link(links, m, m->mdata, NULL, NULL, false, NULL);
 
 #ifndef GV_HIDE_MDATA
   if (m->mdata)
@@ -595,21 +602,21 @@ void dot_mailbox(FILE *fp, struct Mailbox *m, struct ListHead *links)
       dot_mailbox_notmuch(fp, m->mdata, links);
 #endif
 
-    dot_add_link(links, m, m->mdata, "Mailbox->mdata", false, NULL);
+    dot_add_link(links, m, m->mdata, "Mailbox->mdata", NULL, false, NULL);
   }
 #endif
 
   if (m->compress_info)
   {
     dot_comp(fp, m->compress_info, links);
-    dot_add_link(links, m, m->compress_info, "Mailbox->compress_info", false, NULL);
+    dot_add_link(links, m, m->compress_info, "Mailbox->compress_info", NULL, false, NULL);
   }
 
 #ifndef GV_HIDE_CONFIG
   if (m->name)
   {
     dot_config(fp, m->name, 0, m->sub, links);
-    dot_add_link(links, m, m->name, "Mailbox Config", false, NULL);
+    dot_add_link(links, m, m->name, "Mailbox Config", NULL, false, NULL);
   }
 #endif
 }
@@ -620,7 +627,7 @@ void dot_mailbox_node(FILE *fp, struct MailboxNode *mn, struct ListHead *links)
 
   dot_mailbox(fp, mn->mailbox, links);
 
-  dot_add_link(links, mn, mn->mailbox, "MailboxNode->mailbox", false, NULL);
+  dot_add_link(links, mn, mn->mailbox, "MailboxNode->mailbox", NULL, false, NULL);
 
   struct Buffer *buf = buf_pool_get();
 
@@ -666,7 +673,7 @@ void dot_mailbox_list(FILE *fp, struct MailboxList *ml, struct ListHead *links, 
     else
       dot_mailbox_node(fp, np, links);
     if (prev)
-      dot_add_link(links, prev, np, "MailboxNode->next", false, NULL);
+      dot_add_link(links, prev, np, "MailboxNode->next", NULL, false, NULL);
     prev = np;
   }
 }
@@ -685,7 +692,7 @@ void dot_connection(FILE *fp, struct Connection *c, struct ListHead *links)
   dot_type_number(fp, "port", c->account.port);
   dot_object_footer(fp);
 
-  dot_add_link(links, c, c->inbuf, "Connection.ConnAccount", false, NULL);
+  dot_add_link(links, c, c->inbuf, "Connection.ConnAccount", NULL, false, NULL);
 }
 
 void dot_account_imap(FILE *fp, struct ImapAccountData *adata, struct ListHead *links)
@@ -706,7 +713,7 @@ void dot_account_imap(FILE *fp, struct ImapAccountData *adata, struct ListHead *
   if (adata->conn)
   {
     dot_connection(fp, adata->conn, links);
-    dot_add_link(links, adata, adata->conn, "ImapAccountData->conn", false, NULL);
+    dot_add_link(links, adata, adata->conn, "ImapAccountData->conn", NULL, false, NULL);
   }
 }
 
@@ -763,7 +770,7 @@ void dot_account_nntp(FILE *fp, struct NntpAccountData *adata, struct ListHead *
   if (adata->conn)
   {
     dot_connection(fp, adata->conn, links);
-    dot_add_link(links, adata, adata->conn, "NntpAccountData->conn", false, NULL);
+    dot_add_link(links, adata, adata->conn, "NntpAccountData->conn", NULL, false, NULL);
   }
 }
 
@@ -793,7 +800,7 @@ void dot_account_pop(FILE *fp, struct PopAccountData *adata, struct ListHead *li
   dot_object_footer(fp);
 
   dot_connection(fp, adata->conn, links);
-  dot_add_link(links, adata, adata->conn, "PopAccountData->conn", false, NULL);
+  dot_add_link(links, adata, adata->conn, "PopAccountData->conn", NULL, false, NULL);
 }
 #endif
 
@@ -821,7 +828,7 @@ void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
       dot_account_notmuch(fp, a->adata, links);
 #endif
 
-    dot_add_link(links, a, a->adata, "Account->adata", false, NULL);
+    dot_add_link(links, a, a->adata, "Account->adata", NULL, false, NULL);
   }
 #endif
 
@@ -829,7 +836,7 @@ void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
   if (a->name)
   {
     dot_config(fp, a->name, 0, a->sub, links);
-    dot_add_link(links, a, a->name, "Config", false, NULL);
+    dot_add_link(links, a, a->name, "Config", NULL, false, NULL);
 
     char name[256] = { 0 };
     struct Buffer *buf = buf_pool_get();
@@ -849,7 +856,7 @@ void dot_account(FILE *fp, struct Account *a, struct ListHead *links)
 #endif
 
   struct MailboxNode *first = STAILQ_FIRST(&a->mailboxes);
-  dot_add_link(links, a, first, "Account->mailboxes", false, NULL);
+  dot_add_link(links, a, first, "Account->mailboxes", NULL, false, NULL);
   dot_mailbox_list(fp, &a->mailboxes, links, false);
 }
 
@@ -865,7 +872,7 @@ void dot_account_list(FILE *fp, struct AccountList *al, struct ListHead *links)
 #endif
     dot_account(fp, np, links);
     if (prev)
-      dot_add_link(links, prev, np, "Account->next", false, NULL);
+      dot_add_link(links, prev, np, "Account->next", NULL, false, NULL);
 
     prev = np;
   }
@@ -912,10 +919,10 @@ void dump_graphviz(const char *title, struct MailboxView *mv)
 #ifndef GV_HIDE_NEOMUTT
   dot_node(fp, NeoMutt, "NeoMutt", "#ffa500");
   dot_add_link(&links, NeoMutt, TAILQ_FIRST(&NeoMutt->accounts),
-               "NeoMutt->accounts", false, NULL);
+               "NeoMutt->accounts", NULL, false, NULL);
 #ifndef GV_HIDE_CONFIG
   dot_config(fp, (const char *) NeoMutt->sub, 0, NeoMutt->sub, &links);
-  dot_add_link(&links, NeoMutt, NeoMutt->sub, "NeoMutt Config", false, NULL);
+  dot_add_link(&links, NeoMutt, NeoMutt->sub, "NeoMutt Config", NULL, false, NULL);
   struct Buffer *buf = buf_pool_get();
   char obj1[64] = { 0 };
   char obj2[64] = { 0 };
@@ -1031,7 +1038,7 @@ void dot_attach_ptr(FILE *fp, struct AttachPtr *aptr, struct ListHead *links)
 
   dot_object_footer(fp);
 
-  dot_add_link(links, aptr->body, aptr, "AttachPtr->body", true, NULL);
+  dot_add_link(links, aptr->body, aptr, "AttachPtr->body", NULL, true, NULL);
 }
 
 void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
@@ -1104,7 +1111,7 @@ void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
   if (!TAILQ_EMPTY(&b->parameter))
   {
     dot_parameter_list(fp, "parameter", &b->parameter);
-    dot_add_link(links, b, &b->parameter, "Body->mime_headers", false, NULL);
+    dot_add_link(links, b, &b->parameter, "Body->mime_headers", NULL, false, NULL);
   }
 #endif
 
@@ -1112,21 +1119,21 @@ void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
   if (b->mime_headers)
   {
     dot_envelope(fp, b->mime_headers, links);
-    dot_add_link(links, b, b->mime_headers, "Body->mime_headers", false, NULL);
+    dot_add_link(links, b, b->mime_headers, "Body->mime_headers", NULL, false, NULL);
   }
 #endif
 
   if (b->email)
   {
     dot_email(fp, b->email, links);
-    dot_add_link(links, b, b->email, "Body->email", false, NULL);
+    dot_add_link(links, b, b->email, "Body->email", NULL, false, NULL);
   }
 
   if (b->parts)
   {
     if (!b->email)
       dot_body(fp, b->parts, links, true);
-    dot_add_link(links, b, b->parts, "Body->parts", false, "#ff0000");
+    dot_add_link(links, b, b->parts, "Body->parts", NULL, false, "#ff0000");
   }
 
   if (b->next && link_next)
@@ -1142,7 +1149,7 @@ void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
     for (; b->next; b = b->next)
     {
       dot_body(fp, b->next, links, false);
-      dot_add_link(links, b, b->next, "Body->next", false, "#008000");
+      dot_add_link(links, b, b->next, "Body->next", NULL, false, "#008000");
 
       dot_ptr_name(name, sizeof(name), b->next);
       buf_add_printf(buf, "%s ", name);
@@ -1157,14 +1164,14 @@ void dot_body(FILE *fp, struct Body *b, struct ListHead *links, bool link_next)
     if (b->content)
     {
       dot_content(fp, b->content, links);
-      dot_add_link(links, b, b->content, "Body->content", false, NULL);
+      dot_add_link(links, b, b->content, "Body->content", NULL, false, NULL);
     }
 #endif
 
     // if (b->aptr)
     // {
     //   dot_attach_ptr(fp, b->aptr, links);
-    //   dot_add_link(links, b, b->aptr, "Body->aptr", false, NULL);
+    //   dot_add_link(links, b, b->aptr, "Body->aptr", NULL, false, NULL);
     // }
   }
 
@@ -1358,14 +1365,14 @@ void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
   if (e->body)
   {
     dot_body(fp, e->body, links, true);
-    dot_add_link(links, e, e->body, "Email->body", false, NULL);
+    dot_add_link(links, e, e->body, "Email->body", NULL, false, NULL);
   }
 
 #ifndef GV_HIDE_ENVELOPE
   if (e->env)
   {
     dot_envelope(fp, e->env, links);
-    dot_add_link(links, e, e->env, "Email->env", false, NULL);
+    dot_add_link(links, e, e->env, "Email->env", NULL, false, NULL);
 
     buf_reset(buf);
     buf_addstr(buf, "{ rank=same ");
@@ -1479,7 +1486,7 @@ void dot_array_actx_idx(FILE *fp, struct AttachPtr **idx, short idxlen,
   for (size_t i = 0; i < idxlen; i++)
   {
     dot_attach_ptr2(fp, idx[i], links);
-    dot_add_link(links, idx, idx[i], "AttachCtx-&gt;idx", false, NULL);
+    dot_add_link(links, idx, idx[i], "AttachCtx-&gt;idx", NULL, false, NULL);
   }
 }
 
@@ -1539,7 +1546,7 @@ void dot_array_actx_body_idx(FILE *fp, struct Body **body_idx, short body_len,
     if (!body_idx[i])
       continue;
     dot_body(fp, body_idx[i], links, true);
-    dot_add_link(links, body_idx, body_idx[i], "AttachCtx->Body", false, "#008000");
+    dot_add_link(links, body_idx, body_idx[i], "AttachCtx->Body", NULL, false, "#008000");
   }
 }
 
@@ -1555,25 +1562,25 @@ void dot_attach_ctx(FILE *fp, struct AttachCtx *actx, struct ListHead *links)
   if (actx->idx)
   {
     dot_array_actx_idx(fp, actx->idx, actx->idxlen, actx->idxmax, links);
-    dot_add_link(links, actx, actx->idx, "AttachCtx-&gt;idx", false, NULL);
+    dot_add_link(links, actx, actx->idx, "AttachCtx-&gt;idx", NULL, false, NULL);
   }
 
   if (actx->v2r)
   {
     dot_array_actx_v2r(fp, actx->v2r, actx->vcount, links);
-    dot_add_link(links, actx, actx->v2r, "AttachCtx-&gt;v2r", false, NULL);
+    dot_add_link(links, actx, actx->v2r, "AttachCtx-&gt;v2r", NULL, false, NULL);
   }
 
   if (actx->fp_idx)
   {
     dot_array_actx_fp_idx(fp, actx->fp_idx, actx->fp_len, actx->fp_max, links);
-    dot_add_link(links, actx, actx->fp_idx, "AttachCtx-&gt;fp_idx", false, NULL);
+    dot_add_link(links, actx, actx->fp_idx, "AttachCtx-&gt;fp_idx", NULL, false, NULL);
   }
 
   if (actx->body_idx)
   {
     dot_array_actx_body_idx(fp, actx->body_idx, actx->body_len, actx->body_max, links);
-    dot_add_link(links, actx, actx->body_idx, "AttachCtx-&gt;body_idx", false, NULL);
+    dot_add_link(links, actx, actx->body_idx, "AttachCtx-&gt;body_idx", NULL, false, NULL);
   }
 }
 
@@ -1705,7 +1712,7 @@ void dot_pattern(FILE *fp, struct Pattern *pat, struct ListHead *links)
   {
     dot_patternlist(fp, pat->child, links);
     struct Pattern *first = SLIST_FIRST(pat->child);
-    dot_add_link(links, pat, first, "Patern->child", false, "#00ff00");
+    dot_add_link(links, pat, first, "Pattern->child", NULL, false, "#00ff00");
   }
   buf_pool_release(&buf);
 }
@@ -1723,7 +1730,7 @@ void dot_patternlist(FILE *fp, struct PatternList *pl, struct ListHead *links)
   {
     dot_pattern(fp, np, links);
     if (prev)
-      dot_add_link(links, prev, np, "PatternList->next", false, "#ff0000");
+      dot_add_link(links, prev, np, "PatternList->next", NULL, false, "#ff0000");
     prev = np;
 
     dot_ptr_name(name, sizeof(name), np);
