@@ -40,6 +40,8 @@
 #ifndef MUTT_MIXMASTER_LIB_H
 #define MUTT_MIXMASTER_LIB_H
 
+#include "remailer.h"
+
 struct Email;
 struct ListHead;
 

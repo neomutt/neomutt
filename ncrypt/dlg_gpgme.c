@@ -103,15 +103,6 @@ static const struct Mapping GpgmeHelp[] = {
 };
 
 /**
- * struct CryptEntry - An entry in the Select-Key menu
- */
-struct CryptEntry
-{
-  size_t num;               ///< Index number
-  struct CryptKeyInfo *key; ///< Key
-};
-
-/**
  * crypt_sort_address - Compare two keys by their addresses - Implements ::sort_t - @ingroup sort_api
  */
 static int crypt_sort_address(const void *a, const void *b, void *sdata)

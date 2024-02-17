@@ -78,6 +78,15 @@ enum KeyCap
   KEY_CAP_CAN_CERTIFY, ///< Key can be used to certify
 };
 
+/**
+ * struct CryptEntry - An entry in the Select-Key menu
+ */
+struct CryptEntry
+{
+  size_t num;               ///< Index number
+  struct CryptKeyInfo *key; ///< Key
+};
+
 void                 pgp_gpgme_set_sender           (const char *sender);
 
 int                  pgp_gpgme_application_handler  (struct Body *b, struct State *state);
