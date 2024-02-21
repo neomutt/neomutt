@@ -211,8 +211,8 @@ mutt_oauth2.py userid@myschool.edu.tokens \
     --authorize \
     --provider [google|microsoft] \
     --encryption-pipe "gpg --encrypt --recipient <gpg-recipient@email.com>" \
-    --cloud-id <id> \
-    --cloud-secret <id> \
+    --client-id <id> \
+    --client-secret <id> \
     --authflow [authcode|localhostauthcode|devicecode]
 ```
 
