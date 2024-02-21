@@ -288,7 +288,7 @@ static void menu_pad_string(struct Menu *menu, struct Buffer *buf)
 {
   int max_cols = menu->win->state.cols;
 // FIXME(g0mb4): Remove this
-#if 0
+#if 1
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {
@@ -330,7 +330,7 @@ void menu_redraw_index(struct Menu *menu)
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
   const int arrow_width = mutt_strwidth(c_arrow_string);
-  //struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
+  struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);
   for (int i = menu->top; i < (menu->top + menu->page_len); i++)
   {
     if (i < menu->max)
@@ -345,12 +345,12 @@ void menu_redraw_index(struct Menu *menu)
       mutt_window_move(menu->win, 0, i - menu->top);
 
       // FIXME(g0mb4): Remove this
-      //if (i == menu->current)
-      //  mutt_curses_set_color(ac_ind);
+      if (i == menu->current)
+        mutt_curses_set_color(ac_ind);
 
       (void) arrow_width;
       (void) c_arrow_cursor;
-#if 0
+#if 1
       if (c_arrow_cursor)
       {
         if (i == menu->current)
