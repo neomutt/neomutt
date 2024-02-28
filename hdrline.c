@@ -486,20 +486,22 @@ static const char *index_format_str(char *buf, size_t buflen, size_t col, int co
     case 'b':
       if (m)
       {
-        p = strrchr(mailbox_path(m), '/');
+        p = NULL;
 #ifdef USE_NOTMUCH
         if (m->type == MUTT_NOTMUCH)
         {
-          char *rel_path = nm_email_get_folder_rel_db(m, e);
-          if (rel_path)
-            p = rel_path;
+          p = nm_email_get_folder_rel_db(m, e);
         }
 #endif
-
-        if (p)
-          mutt_str_copy(buf, p + 1, buflen);
-        else
-          mutt_str_copy(buf, mailbox_path(m), buflen);
+        if (!p)
+        {
+          p = strrchr(mailbox_path(m), '/');
+          if (p)
+          {
+            p++;
+          }
+        }
+        mutt_str_copy(buf, p ? p : mailbox_path(m), buflen);
       }
       else
       {
