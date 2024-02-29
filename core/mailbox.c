@@ -117,6 +117,14 @@ void mailbox_free(struct Mailbox **ptr)
   for (size_t i = 0; i < m->email_max; i++)
     email_free(&m->emails[i]);
 
+  m->email_max = 0;
+  m->msg_count = 0;
+  m->msg_deleted = 0;
+  m->msg_flagged = 0;
+  m->msg_new = 0;
+  m->msg_tagged = 0;
+  m->msg_unread = 0;
+
   if (m->mdata_free && m->mdata)
     m->mdata_free(&m->mdata);
 
