@@ -32,6 +32,7 @@
 #include "private.h"
 #include "config/lib.h"
 #include "expando/lib.h"
+#include "menu/lib.h"
 
 // clang-format off
 char *AutocryptSignAs = NULL;     ///< Autocrypt Key id to sign as
@@ -46,6 +47,7 @@ char *AutocryptDefaultKey = NULL; ///< Autocrypt default key id (used for postpo
  */
 static const struct ExpandoDefinition AutocryptFormatDef[] = {
   // clang-format off
+  { "^", "arrow",          ED_GLOBAL,    ED_MEN_ARROW,          E_TYPE_STRING, NULL },
   { "*", "padding-soft",   ED_GLOBAL,    ED_GLO_PADDING_SOFT,   E_TYPE_STRING, node_padding_parse },
   { ">", "padding-hard",   ED_GLOBAL,    ED_GLO_PADDING_HARD,   E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",    ED_GLOBAL,    ED_GLO_PADDING_EOL,    E_TYPE_STRING, node_padding_parse },
@@ -66,7 +68,7 @@ static struct ConfigDef AutocryptVars[] = {
   { "autocrypt", DT_BOOL, false, 0, NULL,
     "Enables the Autocrypt feature"
   },
-  { "autocrypt_acct_format", DT_EXPANDO, IP "%4n %-30a %20p %10s", IP &AutocryptFormatDef, NULL,
+  { "autocrypt_acct_format", DT_EXPANDO, IP "%^%4n %-30a %20p %10s", IP &AutocryptFormatDef, NULL,
     "Format of the autocrypt account menu"
   },
   { "autocrypt_dir", DT_PATH|D_PATH_DIR, IP "~/.mutt/autocrypt", 0, NULL,

@@ -32,6 +32,7 @@
 #include "config/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
+#include "menu/lib.h"
 
 /**
  * HistoryFormatDef - Expando definitions
@@ -41,6 +42,7 @@
  */
 static const struct ExpandoDefinition HistoryFormatDef[] = {
   // clang-format off
+  { "^", "arrow",        ED_GLOBAL,  ED_MEN_ARROW,        E_TYPE_STRING, NULL },
   { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
   { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
@@ -61,7 +63,7 @@ static struct ConfigDef HistoryVars[] = {
   { "history_file", DT_PATH|D_PATH_FILE, IP "~/.mutthistory", 0, NULL,
     "File to save history in"
   },
-  { "history_format", DT_EXPANDO, IP "%s", IP &HistoryFormatDef, NULL,
+  { "history_format", DT_EXPANDO, IP "%^%s", IP &HistoryFormatDef, NULL,
     "printf-like format string for the history menu"
   },
   { "history_remove_dups", DT_BOOL, false, 0, NULL,

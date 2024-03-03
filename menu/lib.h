@@ -65,6 +65,7 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
  */
 enum ExpandoDataMenu
 {
+  ED_MEN_ARROW = 1,            ///< Arrow cursor
   ED_MEN_PERCENTAGE,           ///< Menu.top, ...
 };
 
