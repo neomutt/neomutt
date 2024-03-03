@@ -108,6 +108,24 @@ static const char *mix_format_caps(const struct Remailer *r)
 }
 
 /**
+ * mix_arrow_num - Mixmaster: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long mix_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct Remailer *remailer = data;
+  return 0;
+}
+
+/**
+ * mix_arrow - Mixmaster: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void mix_arrow(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct Remailer *remailer = data;
+}
+
+/**
  * mix_a - Mixmaster: Email address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
 void mix_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
@@ -232,6 +250,7 @@ struct Remailer *win_hosts_get_selection(struct MuttWindow *win)
  */
 const struct ExpandoRenderData MixRenderData[] = {
   // clang-format off
+  { ED_GLOBAL,    ED_MEN_ARROW,        mix_arrow, mix_arrow_num },
   { ED_MIXMASTER, ED_MIX_ADDRESS,      mix_a,     NULL },
   { ED_MIXMASTER, ED_MIX_CAPABILITIES, mix_c,     NULL },
   { ED_MIXMASTER, ED_MIX_NUMBER,       NULL,      mix_n_num },

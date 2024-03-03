@@ -131,6 +131,24 @@ static int attach_config_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * attach_arrow_num - Attachment: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long attach_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct AttachPtr *aptr = data;
+  return 0;
+}
+
+/**
+ * attach_arrow - Attachment: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void attach_arrow(const struct ExpandoNode *node, void *data,
+                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct AttachPtr *aptr = data;
+}
+
+/**
  * attach_c - Attachment: Requires conversion flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
 void attach_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
@@ -179,7 +197,7 @@ void attach_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
       c_message_format && aptr->body->email)
   {
     mutt_make_string(buf, max_cols, c_message_format, NULL, -1, aptr->body->email,
-                     MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL);
+                     MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_ARROWCURSOR, NULL, false);
 
     return;
   }
@@ -620,6 +638,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
  */
 const struct ExpandoRenderData AttachRenderData[] = {
   // clang-format off
+  { ED_GLOBAL, ED_MEN_ARROW,            attach_arrow, attach_arrow_num },
   { ED_ATTACH, ED_ATT_CHARSET,          attach_C,     NULL },
   { ED_BODY,   ED_BOD_CHARSET_CONVERT,  attach_c,     NULL },
   { ED_BODY,   ED_BOD_DELETED,          attach_D,     attach_D_num },

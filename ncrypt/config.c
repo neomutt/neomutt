@@ -36,6 +36,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "expando/lib.h"
+#include "menu/lib.h"
 #include "pgp.h"
 #include "pgplib.h"
 #include "smime.h"
@@ -79,6 +80,7 @@ struct ExpandoNode *parse_pgp_date(const char *str, const char **parsed_until,
  */
 static const struct ExpandoDefinition PgpEntryFormatDef[] = {
   // clang-format off
+  { "^", "arrow",             ED_GLOBAL,  ED_MEN_ARROW,             E_TYPE_STRING, NULL },
   { "*", "padding-soft",      ED_GLOBAL,  ED_GLO_PADDING_SOFT,      E_TYPE_STRING, node_padding_parse },
   { ">", "padding-hard",      ED_GLOBAL,  ED_GLO_PADDING_HARD,      E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",       ED_GLOBAL,  ED_GLO_PADDING_EOL,       E_TYPE_STRING, node_padding_parse },
@@ -138,7 +140,7 @@ static struct ConfigDef NcryptVars[] = {
   { "pgp_default_key", DT_STRING, 0, 0, NULL,
     "Default key to use for PGP operations"
   },
-  { "pgp_entry_format", DT_EXPANDO|D_NOT_EMPTY, IP "%4n %t%f %4l/0x%k %-4a %2c %u", IP &PgpEntryFormatDef, NULL,
+  { "pgp_entry_format", DT_EXPANDO|D_NOT_EMPTY, IP "%^%4n %t%f %4l/0x%k %-4a %2c %u", IP &PgpEntryFormatDef, NULL,
     "printf-like format string for the PGP key selection menu"
   },
   { "pgp_ignore_subkeys", DT_BOOL, true, 0, NULL,

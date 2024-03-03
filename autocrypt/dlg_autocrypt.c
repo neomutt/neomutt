@@ -112,6 +112,24 @@ static const struct Mapping AutocryptHelp[] = {
 };
 
 /**
+ * autocrypt_arrow_num - Autocrypt: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long autocrypt_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct AccountEntry *entry = data;
+  return 0;
+}
+
+/**
+ * autocrypt_arrow - Autocrypt: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void autocrypt_arrow(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct AccountEntry *entry = data;
+}
+
+/**
  * autocrypt_a - Autocrypt: Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
 void autocrypt_a(const struct ExpandoNode *node, void *data,
@@ -392,6 +410,7 @@ void dlg_autocrypt(void)
  */
 const struct ExpandoRenderData AutocryptRenderData[] = {
   // clang-format off
+  { ED_GLOBAL,    ED_MEN_ARROW,          autocrypt_arrow, autocrypt_arrow_num },
   { ED_AUTOCRYPT, ED_AUT_ADDRESS,        autocrypt_a,     NULL },
   { ED_AUTOCRYPT, ED_AUT_KEYID,          autocrypt_k,     NULL },
   { ED_AUTOCRYPT, ED_AUT_NUMBER,         NULL,            autocrypt_n_num },

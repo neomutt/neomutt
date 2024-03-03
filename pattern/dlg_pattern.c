@@ -95,6 +95,24 @@ static const struct Mapping PatternHelp[] = {
 };
 
 /**
+ * pattern_arrow_num - Pattern: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pattern_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct PatternEntry *entry = data;
+  return 0;
+}
+
+/**
+ * pattern_arrow - Pattern: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pattern_arrow(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct PatternEntry *entry = data;
+}
+
+/**
  * pattern_d - Pattern: pattern description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
 void pattern_d(const struct ExpandoNode *node, void *data,
@@ -391,6 +409,7 @@ bool dlg_pattern(char *buf, size_t buflen)
  */
 const struct ExpandoRenderData PatternRenderData[] = {
   // clang-format off
+  { ED_GLOBAL,  ED_MEN_ARROW,       pattern_arrow, pattern_arrow_num },
   { ED_PATTERN, ED_PAT_DESCRIPTION, pattern_d,     NULL },
   { ED_PATTERN, ED_PAT_EXPRESION,   pattern_e,     NULL },
   { ED_PATTERN, ED_PAT_NUMBER,      NULL,          pattern_n_num },

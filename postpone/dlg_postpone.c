@@ -114,7 +114,7 @@ static int post_make_entry(struct Menu *menu, int line, int max_cols, struct Buf
 
   const struct Expando *c_index_format = cs_subset_expando(NeoMutt->sub, "index_format");
   return mutt_make_string(buf, max_cols, c_index_format, m, -1, m->emails[line],
-                          MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
+                          MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL, false);
 }
 
 /**

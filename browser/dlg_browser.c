@@ -251,6 +251,24 @@ void folder_space(const struct ExpandoNode *node, void *data,
 }
 
 /**
+ * folder_arrow_num - Browser: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct Folder *folder = data;
+  return 0;
+}
+
+/**
+ * folder_arrow - Browser: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_arrow(const struct ExpandoNode *node, void *data,
+                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct Folder *folder = data;
+}
+
+/**
  * folder_a_num - Browser: Alert for new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
  */
 long folder_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -1565,6 +1583,7 @@ bail:
  */
 const struct ExpandoRenderData FolderRenderData[] = {
   // clang-format off
+  { ED_GLOBAL, ED_MEN_ARROW,         folder_arrow, folder_arrow_num },
   { ED_FOLDER, ED_FOL_NOTIFY,        NULL,         folder_a_num },
   { ED_FOLDER, ED_FOL_NUMBER,        NULL,         folder_C_num },
   { ED_FOLDER, ED_FOL_DATE,          folder_d,     folder_d_num },

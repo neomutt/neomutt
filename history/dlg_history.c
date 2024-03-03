@@ -84,6 +84,24 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
+ * history_arrow_num - History: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long history_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct HistoryEntry *entry = data;
+  return 0;
+}
+
+/**
+ * history_arrow - History: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void history_arrow(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct HistoryEntry *entry = data;
+}
+
+/**
  * history_C_num - History: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
  */
 long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -194,6 +212,7 @@ void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
  */
 const struct ExpandoRenderData HistoryRenderData[] = {
   // clang-format off
+  { ED_GLOBAL,  ED_MEN_ARROW,  history_arrow, history_arrow_num },
   { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_C_num },
   { ED_HISTORY, ED_HIS_MATCH,  history_s,     NULL },
   { -1, -1, NULL, NULL },

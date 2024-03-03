@@ -32,6 +32,7 @@
 #include "private.h"
 #include "config/lib.h"
 #include "expando/lib.h"
+#include "menu/lib.h"
 
 /**
  * PatternFormatDef - Expando definitions
@@ -41,6 +42,7 @@
  */
 static const struct ExpandoDefinition PatternFormatDef[] = {
   // clang-format off
+  { "^", "arrow",        ED_GLOBAL,  ED_MEN_ARROW,        E_TYPE_STRING, NULL },
   { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
   { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
@@ -59,7 +61,7 @@ static struct ConfigDef PatternVars[] = {
   { "external_search_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External search command"
   },
-  { "pattern_format", DT_EXPANDO, IP "%2n %-15e  %d", IP &PatternFormatDef, NULL,
+  { "pattern_format", DT_EXPANDO, IP "%^%2n %-15e  %d", IP &PatternFormatDef, NULL,
     "printf-like format string for the pattern completion menu"
   },
   { "thorough_search", DT_BOOL, true, 0, NULL,

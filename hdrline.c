@@ -47,10 +47,12 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "hdrline.h"
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"
+#include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "hook.h"
 #include "maillist.h"
@@ -74,6 +76,7 @@ struct HdrFormatInfo
   int msg_in_pager;           ///< Index of Email displayed in the Pager
   struct Email *email;        ///< Current Email
   const char *pager_progress; ///< String representing Pager position through Email
+  bool show_arrow;            ///< true for the current Menu item
 };
 
 /**
@@ -1783,20 +1786,64 @@ void index_Z(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
+ * index_arrow_num - Index: Arrow cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long index_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  return hfi->show_arrow;
+}
+
+/**
+ * index_arrow - Index: Arrow cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_arrow(const struct ExpandoNode *node, void *data,
+                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const bool c_arrow_cursor = cs_subset_bool(NeoMutt->sub, "arrow_cursor");
+  const struct HdrFormatInfo *hfi = data;
+
+  if (c_arrow_cursor)
+  {
+    const bool show_arrow = hfi->show_arrow;
+    // FIXME(g0mb4): Uncomment this, just for debugging.
+    //const char *c_arrow_string = cs_subset_string(NeoMutt->sub, "arrow_string");
+    const char *c_arrow_string = "XX";
+    const int arrow_width = mutt_strwidth(c_arrow_string);
+
+    if (show_arrow)
+    {
+      node_expando_set_color(node, MT_COLOR_INDICATOR);
+      buf_strcpy(buf, c_arrow_string);
+    }
+    else
+    {
+      node_expando_set_color(node, MT_COLOR_NONE);
+      buf_printf(buf, "%*s", arrow_width, " ");
+    }
+  }
+  else
+  {
+    node_expando_set_color(node, MT_COLOR_NONE);
+  }
+}
+
+/**
  * mutt_make_string - Create formatted strings using mailbox expandos
- * @param buf      Buffer for the result
- * @param max_cols Number of screen columns (-1 means unlimited)
- * @param exp      Expando containing expando tree
- * @param m        Mailbox
- * @param inpgr    Message shown in the pager
- * @param e        Email
- * @param flags    Flags, see #MuttFormatFlags
- * @param progress Pager progress string
+ * @param buf        Buffer for the result
+ * @param max_cols   Number of screen columns (-1 means unlimited)
+ * @param exp        Expando containing expando tree
+ * @param m          Mailbox
+ * @param inpgr      Message shown in the pager
+ * @param e          Email
+ * @param flags      Flags, see #MuttFormatFlags
+ * @param progress   Pager progress string
+ * @param show_arrow true if this is the current Menu item
  * @retval num Number of screen columns used
  */
-int mutt_make_string(struct Buffer *buf, size_t max_cols,
-                     const struct Expando *exp, struct Mailbox *m, int inpgr,
-                     struct Email *e, MuttFormatFlags flags, const char *progress)
+int mutt_make_string(struct Buffer *buf, size_t max_cols, const struct Expando *exp,
+                     struct Mailbox *m, int inpgr, struct Email *e,
+                     MuttFormatFlags flags, const char *progress, bool show_arrow)
 {
   if (!exp)
     return 0;
@@ -1807,6 +1854,7 @@ int mutt_make_string(struct Buffer *buf, size_t max_cols,
   hfi.mailbox = m;
   hfi.msg_in_pager = inpgr;
   hfi.pager_progress = progress;
+  hfi.show_arrow = show_arrow;
 
   return expando_render(exp, IndexRenderData, &hfi, flags, max_cols, buf);
 }
@@ -1818,6 +1866,7 @@ int mutt_make_string(struct Buffer *buf, size_t max_cols,
  */
 const struct ExpandoRenderData IndexRenderData[] = {
   // clang-format off
+  { ED_GLOBAL,   ED_MEN_ARROW,               index_arrow,           index_arrow_num },
   { ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL,     index_date_recv_local, index_date_recv_local_num },
   { ED_EMAIL,    ED_EMA_INDEX_HOOK,          index_format_hook,     NULL },
   { ED_ENVELOPE, ED_ENV_FROM,                index_a,               NULL },
