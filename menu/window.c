@@ -106,9 +106,12 @@ static int menu_repaint(struct MuttWindow *win)
   /* move the cursor out of the way */
   if (c_arrow_cursor)
   {
+// FIXME(g0mb4): Remove this
+#if 0
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
     const int arrow_width = mutt_strwidth(c_arrow_string);
     mutt_window_move(menu->win, arrow_width, menu->current - menu->top);
+#endif
   }
   else if (c_braille_friendly)
   {
