@@ -888,7 +888,9 @@ int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *b
     max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
-  return mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
+  const bool show_arrow = menu->current == line;
+  return mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e,
+                          flags, NULL, show_arrow);
 }
 
 /**

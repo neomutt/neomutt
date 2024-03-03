@@ -130,6 +130,7 @@ static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDe
  */
 static const struct ExpandoDefinition AttachFormatDef[] = {
   // clang-format off
+  { "^", "arrow",            ED_GLOBAL, ED_MEN_ARROW,            E_TYPE_STRING, NULL },
   { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     E_TYPE_STRING, node_padding_parse },
   { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      E_TYPE_STRING, node_padding_parse },
@@ -294,6 +295,7 @@ struct ExpandoNode *parse_subject(const char *str, const char **parsed_until,
  */
 const struct ExpandoDefinition IndexFormatDef[] = {
   // clang-format off
+  { "^",  "arrow",               ED_GLOBAL,   ED_MEN_ARROW,               E_TYPE_STRING, NULL },
   { "*",  "padding-soft",        ED_GLOBAL,   ED_GLO_PADDING_SOFT,        E_TYPE_STRING, node_padding_parse },
   { ">",  "padding-hard",        ED_GLOBAL,   ED_GLO_PADDING_HARD,        E_TYPE_STRING, node_padding_parse },
   { "|",  "padding-eol",         ED_GLOBAL,   ED_GLO_PADDING_EOL,         E_TYPE_STRING, node_padding_parse },
@@ -352,8 +354,11 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   // clang-format on
 };
 
-/// IndexFormatDefNoPadding - Index format definitions, without padding
-static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[3]);
+/// IndexFormatDefNoPadding - Index format definitions, without padding or arrow
+static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[4]);
+
+/// IndexFormatDefNoArrow - Index format definitions, without arrow
+static const struct ExpandoDefinition *const IndexFormatDefNoArrow = &(IndexFormatDef[1]);
 
 /**
  * StatusFormatDef - Expando definitions
@@ -422,7 +427,7 @@ static struct ConfigDef MainVars[] = {
   { "assumed_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
-  { "attach_format", DT_EXPANDO|D_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] ", IP &AttachFormatDef, NULL,
+  { "attach_format", DT_EXPANDO|D_NOT_EMPTY, IP "%^%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] ", IP &AttachFormatDef, NULL,
     "printf-like format string for the attachment menu"
   },
   { "attach_save_dir", DT_PATH|D_PATH_DIR, IP "./", 0, NULL,
@@ -581,7 +586,7 @@ static struct ConfigDef MainVars[] = {
   { "indent_string", DT_EXPANDO, IP "> ", IP IndexFormatDefNoPadding, NULL,
     "String used to indent 'reply' text"
   },
-  { "index_format", DT_EXPANDO|D_NOT_EMPTY, IP "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", IP &IndexFormatDef, NULL,
+  { "index_format", DT_EXPANDO|D_NOT_EMPTY, IP "%^%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", IP &IndexFormatDef, NULL,
     "printf-like format string for the index menu (emails)"
   },
   { "keep_flagged", DT_BOOL, false, 0, NULL,
@@ -626,7 +631,7 @@ static struct ConfigDef MainVars[] = {
   { "message_cache_dir", DT_PATH|D_PATH_DIR, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
   },
-  { "message_format", DT_EXPANDO|D_NOT_EMPTY, IP "%s", IP &IndexFormatDef, NULL,
+  { "message_format", DT_EXPANDO|D_NOT_EMPTY, IP "%s", IP IndexFormatDefNoArrow, NULL,
     "printf-like format string for listing attached messages"
   },
   { "meta_key", DT_BOOL, false, 0, NULL,

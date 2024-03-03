@@ -140,6 +140,26 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 }
 
 /**
+ * query_arrow_num - Query: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long query_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct AliasView *av = data;
+  // const struct Alias *alias = av->alias;
+  return 0;
+}
+
+/**
+ * query_arrow - Query: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_arrow(const struct ExpandoNode *node, void *data,
+                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct AliasView *av = data;
+  // const struct Alias *alias = av->alias;
+}
+
+/**
  * query_a - Query: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
@@ -629,6 +649,7 @@ done:
  */
 const struct ExpandoRenderData QueryRenderData[] = {
   // clang-format off
+  { ED_GLOBAL, ED_MEN_ARROW,   query_arrow, query_arrow_num },
   { ED_ALIAS,  ED_ALI_ADDRESS, query_a,     NULL },
   { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
   { ED_ALIAS,  ED_ALI_COMMENT, query_e,     NULL },

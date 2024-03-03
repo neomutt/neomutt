@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "expando/lib.h"
+#include "menu/lib.h"
 #include "gui.h"
 
 /**
@@ -56,6 +57,7 @@ static const struct Mapping SortAliasMethods[] = {
  */
 static const struct ExpandoDefinition AliasFormatDef[] = {
   // clang-format off
+  { "^", "arrow",        ED_GLOBAL, ED_MEN_ARROW,        E_TYPE_STRING, NULL },
   { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
   { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
@@ -78,6 +80,7 @@ static const struct ExpandoDefinition AliasFormatDef[] = {
  */
 static const struct ExpandoDefinition QueryFormatDef[] = {
   // clang-format off
+  { "^", "arrow",        ED_GLOBAL, ED_MEN_ARROW,        E_TYPE_STRING, NULL },
   { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
   { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
@@ -99,7 +102,7 @@ static struct ConfigDef AliasVars[] = {
   { "alias_file", DT_PATH|D_PATH_FILE, IP "~/.neomuttrc", 0, NULL,
     "Save new aliases to this file"
   },
-  { "alias_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3n %f%t %-15a %-56r | %c", IP &AliasFormatDef, NULL,
+  { "alias_format", DT_EXPANDO|D_NOT_EMPTY, IP "%^%3n %f%t %-15a %-56r | %c", IP &AliasFormatDef, NULL,
     "printf-like format string for the alias menu"
   },
   { "sort_alias", DT_SORT|D_SORT_REVERSE, SORT_ALIAS, IP SortAliasMethods, NULL,
@@ -108,7 +111,7 @@ static struct ConfigDef AliasVars[] = {
   { "query_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command to query and external address book"
   },
-  { "query_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3c %t %-25.25n %-25.25a | %e", IP &QueryFormatDef, NULL,
+  { "query_format", DT_EXPANDO|D_NOT_EMPTY, IP "%^%3c %t %-25.25n %-25.25a | %e", IP &QueryFormatDef, NULL,
     "printf-like format string for the query menu (address book)"
   },
   { NULL },

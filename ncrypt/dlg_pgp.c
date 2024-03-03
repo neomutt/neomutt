@@ -250,6 +250,32 @@ static char pgp_flags(KeyFlags flags)
 }
 
 /**
+ * pgp_entry_pgp_arrow_num - PGP: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  // const struct PgpEntry *entry = data;
+  // const struct PgpUid *uid = entry->uid;
+  // const struct PgpKeyInfo *key = uid->parent;
+#endif
+  return 0;
+}
+
+/**
+ * pgp_entry_pgp_arrow - PGP: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_arrow(const struct ExpandoNode *node, void *data,
+                         MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  // const struct PgpEntry *entry = data;
+  // const struct PgpUid *uid = entry->uid;
+  // const struct PgpKeyInfo *key = uid->parent;
+#endif
+}
+
+/**
  * pgp_entry_pgp_date_num - PGP: Date of the key - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_pgp_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -759,6 +785,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
  */
 const struct ExpandoRenderData PgpEntryRenderData[] = {
   // clang-format off
+  { ED_GLOBAL,  ED_MEN_ARROW,             pgp_entry_pgp_arrow, pgp_entry_pgp_arrow_num },
   { ED_PGP,     ED_PGP_NUMBER,            NULL,                pgp_entry_pgp_n_num },
   { ED_PGP,     ED_PGP_TRUST,             pgp_entry_pgp_t,     NULL },
   { ED_PGP,     ED_PGP_USER_ID,           pgp_entry_pgp_u,     NULL },

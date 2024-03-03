@@ -752,7 +752,7 @@ static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, str
           hook->regex.pat_not)
       {
         buf_alloc(path, PATH_MAX);
-        mutt_make_string(path, -1, hook->expando, m, -1, e, MUTT_FORMAT_PLAIN, NULL);
+        mutt_make_string(path, -1, hook->expando, m, -1, e, MUTT_FORMAT_PLAIN, NULL, false);
         buf_fix_dptr(path);
         return 0;
       }

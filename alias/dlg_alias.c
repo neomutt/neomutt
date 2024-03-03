@@ -111,6 +111,26 @@ static const struct Mapping AliasHelp[] = {
 };
 
 /**
+ * alias_arrow_num - Alias: Arrow Cursor - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long alias_arrow_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  // const struct AliasView *av = data;
+  // const struct Alias *alias = av->alias;
+  return 0;
+}
+
+/**
+ * alias_arrow - Alias: Arrow Cursor - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void alias_arrow(const struct ExpandoNode *node, void *data,
+                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  // const struct AliasView *av = data;
+  // const struct Alias *alias = av->alias;
+}
+
+/**
  * alias_a - Alias: Alias name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void alias_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
@@ -624,6 +644,7 @@ done:
  */
 const struct ExpandoRenderData AliasRenderData[] = {
   // clang-format off
+  { ED_GLOBAL, ED_MEN_ARROW,   alias_arrow, alias_arrow_num },
   { ED_ALIAS,  ED_ALI_NAME,    alias_a,     NULL },
   { ED_ALIAS,  ED_ALI_COMMENT, alias_c,     NULL },
   { ED_ALIAS,  ED_ALI_FLAGS,   alias_f,     alias_f_num },
