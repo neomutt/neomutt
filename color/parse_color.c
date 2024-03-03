@@ -150,7 +150,7 @@ enum CommandResult parse_color_namedcolor(const char *s, struct ColorElement *el
 }
 
 /**
- * parse_color_colornnn - Parse a colorNNN, e.g. "color123".
+ * parse_color_colornnn - Parse a colorNNN, e.g. "color123"
  * @param[in]  s     String to parse
  * @param[out] elem  Colour element to update
  * @param[out] err   Buffer for error messages

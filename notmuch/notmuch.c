@@ -1081,7 +1081,7 @@ static bool nm_message_has_tag(notmuch_message_t *msg, char *tag)
 }
 
 /**
- * sync_email_path_with_nm - Synchronize Neomutt's Email path with notmuch.
+ * sync_email_path_with_nm - Synchronize Neomutt's Email path with notmuch
  * @param e Email in Neomutt
  * @param msg Email from notmuch
  */
@@ -1675,7 +1675,7 @@ void nm_query_window_backward(void)
 }
 
 /**
- * nm_query_window_reset - Resets the vfolder window position to the present.
+ * nm_query_window_reset - Resets the vfolder window position to the present
  */
 void nm_query_window_reset(void)
 {
@@ -1861,7 +1861,7 @@ done:
 }
 
 /**
- * get_default_mailbox - Get Mailbox for notmuch without any parameters.
+ * get_default_mailbox - Get Mailbox for notmuch without any parameters
  * @retval ptr Mailbox pointer
  */
 static struct Mailbox *get_default_mailbox(void)

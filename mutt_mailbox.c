@@ -309,7 +309,7 @@ void mutt_mailbox_set_notified(struct Mailbox *m)
 }
 
 /**
- * find_next_mailbox - Find the next mailbox with new or unread mail.
+ * find_next_mailbox - Find the next mailbox with new or unread mail
  * @param s         Buffer containing name of current mailbox
  * @param find_new  Boolean controlling new or unread check
  * @retval ptr Mailbox

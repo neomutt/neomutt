@@ -471,7 +471,7 @@ uint64_t mutt_date_now_ms(void)
 }
 
 /**
- * mutt_time_now - Set the provided time field to the current time.
+ * mutt_time_now - Set the provided time field to the current time
  * @param[out] tp Field to set
  *
  * Uses nanosecond precision if available, if not we fallback to microseconds.

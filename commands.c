@@ -842,7 +842,7 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * set_dump - Dump list of config variables into a file/pager.
+ * set_dump - Dump list of config variables into a file/pager
  * @param flags what configs to dump: see #ConfigDumpFlags
  * @param err buffer for error message
  * @return num See #CommandResult

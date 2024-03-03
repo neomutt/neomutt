@@ -397,6 +397,9 @@
 ** .dt %n  .dd current entry number
 ** .dt %p  .dd prefer-encrypt flag
 ** .dt %s  .dd status flag (active/inactive)
+** .dt %>X .dd right justify the rest of the string and pad with character "X"
+** .dt %|X .dd pad to the end of the line with character "X"
+** .dt %*X .dd soft-fill with character "X" as pad
 ** .de
 ** .pp
 ** (Autocrypt only)
@@ -1551,6 +1554,7 @@
 ** .dt %s  .dd Number of unread articles in newsgroup
 ** .dt %>X .dd Right justify the rest of the string and pad with character "X"
 ** .dt %|X .dd Pad to the end of the line with character "X"
+** .dt %*X .dd Soft-fill with character "X" as pad
 ** .de
 */
 
@@ -1721,8 +1725,11 @@
 ** This string is similar to $$index_format, but has its own
 ** set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt %C .dd Line number
-** .dt %s .dd History match
+** .dt %C  .dd Line number
+** .dt %s  .dd History match
+** .dt %>X .dd right justify the rest of the string and pad with character "X"
+** .dt %|X .dd pad to the end of the line with character "X"
+** .dt %*X .dd soft-fill with character "X" as pad
 ** .de
 */
 
@@ -2101,56 +2108,55 @@
 ** .dt %A .dd Reply-to address (if present; otherwise: address of author)
 ** .dt %b .dd Filename of the original message folder (think mailbox)
 ** .dt %B .dd Same as %K
-** .dt %C .dd Current message number
 ** .dt %c .dd Number of characters (bytes) in the body of the message (see $formatstrings-size)
+** .dt %C .dd Current message number
 ** .dt %cr .dd Number of characters (bytes) in the raw message, including the header (see $formatstrings-size)
-** .dt %D .dd Date and time of message using $date_format and local timezone
-**            It is encouraged to use "%[fmt]" instead, where "fmt" is the value of $$date_format.
 ** .dt %d .dd Date and time of message using $date_format and sender's timezone
 **            It is encouraged to use "%{fmt}" instead, where "fmt" is the value of $$date_format.
+** .dt %D .dd Date and time of message using $date_format and local timezone
+**            It is encouraged to use "%[fmt]" instead, where "fmt" is the value of $$date_format.
 ** .dt %e .dd Current message number in thread
 ** .dt %E .dd Number of messages in current thread
+** .dt %f .dd Sender (address + real name), either From: or Return-Path:
 ** .dt %F .dd Author name, or recipient name if the message is from you
 ** .dt %Fp .dd Like %F, but plain. No contextual formatting is applied to recipient name
-** .dt %f .dd Sender (address + real name), either From: or Return-Path:
-** .dt %g .dd Newsgroup name (if compiled with NNTP support)
 ** .dt %g .dd Message tags (e.g. notmuch tags/imap flags)
 ** .dt %Gx .dd Individual message tag (e.g. notmuch tags/imap flags)
 ** .dt %H .dd Spam attribute(s) of this message
-** .dt %I .dd Initials of author
 ** .dt %i .dd Message-id of the current message
+** .dt %I .dd Initials of author
 ** .dt %J .dd Message tags (if present, tree unfolded, and != parent's tags)
 ** .dt %K .dd The list to which the letter was sent (if any; otherwise: empty)
+** .dt %l .dd number of lines in the unprocessed message (may not work with
+**            maildir, mh, and IMAP folders)
 ** .dt %L .dd If an address in the "To:" or "Cc:" header field matches an address
 **            Defined by the user's "$subscribe" command, this displays
 **            "To <list-name>", otherwise the same as %F
-** .dt %l .dd number of lines in the unprocessed message (may not work with
-**            maildir, mh, and IMAP folders)
-** .dt %M .dd Number of hidden messages if the thread is collapsed
 ** .dt %m .dd Total number of message in the mailbox
-** .dt %N .dd Message score
+** .dt %M .dd Number of hidden messages if the thread is collapsed
 ** .dt %n .dd Author's real name (or address if missing)
+** .dt %N .dd Message score
 ** .dt %O .dd Original save folder where NeoMutt would formerly have
 **            Stashed the message: list name or recipient name
 **            If not sent to a list
 ** .dt %P .dd Progress indicator for the built-in pager (how much of the file has been displayed)
 ** .dt %q .dd Newsgroup name (if compiled with NNTP support)
-** .dt %R .dd Comma separated list of "Cc:" recipients
 ** .dt %r .dd Comma separated list of "To:" recipients
-** .dt %S .dd Single character status of the message ("N"/"O"/"D"/"d"/"!"/"r"/"\(as")
+** .dt %R .dd Comma separated list of "Cc:" recipients
 ** .dt %s .dd Subject of the message
-** .dt %T .dd The appropriate character from the $$to_chars string
+** .dt %S .dd Single character status of the message ("N"/"O"/"D"/"d"/"!"/"r"/"\(as")
 ** .dt %t .dd "To:" field (recipients)
+** .dt %T .dd The appropriate character from the $$to_chars string
 ** .dt %u .dd User (login) name of the author
 ** .dt %v .dd First name of the author, or the recipient if the message is from you
 ** .dt %W .dd Name of organization of author ("Organization:" field)
 ** .dt %x .dd "X-Comment-To:" field (if present and compiled with NNTP support)
 ** .dt %X .dd Number of MIME attachments
 **            (please see the "$attachments" section for possible speed effects)
+** .dt %y .dd "X-Label:" field, if present
 ** .dt %Y .dd "X-Label:" field, if present, and \fI(1)\fP not at part of a thread tree,
 **            \fI(2)\fP at the top of a thread, or \fI(3)\fP "X-Label:" is different from
 **            Preceding message's "X-Label:"
-** .dt %y .dd "X-Label:" field, if present
 ** .dt %Z .dd A three character set of message status flags.
 **            The first character is new/read/replied flags ("n"/"o"/"r"/"O"/"N").
 **            The second is deleted or encryption flags ("D"/"d"/"S"/"P"/"s"/"K").
@@ -2977,6 +2983,9 @@
 ** .dt %d  .dd pattern description
 ** .dt %e  .dd pattern expression
 ** .dt %n  .dd index number
+** .dt %>X .dd right justify the rest of the string and pad with character "X"
+** .dt %|X .dd pad to the end of the line with character "X"
+** .dt %*X .dd soft-fill with character "X" as pad
 ** .de
 ** .pp
 */
@@ -3164,6 +3173,9 @@
 ** .dt %t     .dd Trust/validity of the key-uid association
 ** .dt %u     .dd User id
 ** .dt %[<s>] .dd Date of the key where <s> is an \fCstrftime(3)\fP expression
+** .dt %>X    .dd Right justify the rest of the string and pad with character "X"
+** .dt %|X    .dd Pad to the end of the line with character "X"
+** .dt %*X    .dd Soft-fill with character "X" as pad
 ** .de
 ** .pp
 ** See the section "Sending Cryptographically Signed/Encrypted Messages" of the
@@ -4526,17 +4538,17 @@
 ** The OpenSSL command formats have their own set of \fCprintf(3)\fP-like sequences
 ** similar to PGP's:
 ** .dl
-** .dt %f .dd Expands to the name of a file containing a message.
-** .dt %s .dd Expands to the name of a file containing the signature part
-**            of a \fCmultipart/signed\fP attachment when verifying it.
-** .dt %k .dd The key-pair specified with $$smime_default_key
-** .dt %i .dd Intermediate certificates
-** .dt %c .dd One or more certificate IDs.
 ** .dt %a .dd The algorithm used for encryption.
-** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.
+** .dt %c .dd One or more certificate IDs.
 ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
 **            points to a directory or file, this expands to
 **            "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
+** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.
+** .dt %f .dd Expands to the name of a file containing a message.
+** .dt %i .dd Intermediate certificates
+** .dt %k .dd The key-pair specified with $$smime_default_key
+** .dt %s .dd Expands to the name of a file containing the signature part
+**            of a \fCmultipart/signed\fP attachment when verifying it.
 ** .de
 ** .pp
 ** For examples on how to configure these formats, see the \fCsmime.rc\fP in
