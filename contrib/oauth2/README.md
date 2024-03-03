@@ -278,8 +278,8 @@ set imap_authenticators="oauthbearer:xoauth2"
 set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py \
        ${imap_user}.tokens \
        --provider ${provider} \
-       --client_id ${client_id} \
-       --client_secret ${client_id}"
+       --client-id ${client_id} \
+       --client-secret ${client_id}"
 
 set smtp_authenticators=${imap_authenticators}
 set smtp_oauth_refresh_command=${imap_oauth_refresh_command}
