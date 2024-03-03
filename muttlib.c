@@ -202,15 +202,15 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
         if ((mb_type == MUTT_IMAP) && ((c_folder[strlen(c_folder) - 1] == '}') ||
                                        (c_folder[strlen(c_folder) - 1] == '/')))
         {
-          buf_strcpy(p, NONULL(c_folder));
+          buf_strcpy(p, c_folder);
         }
         else if (mb_type == MUTT_NOTMUCH)
         {
-          buf_strcpy(p, NONULL(c_folder));
+          buf_strcpy(p, c_folder);
         }
         else if (c_folder && (c_folder[strlen(c_folder) - 1] == '/'))
         {
-          buf_strcpy(p, NONULL(c_folder));
+          buf_strcpy(p, c_folder);
         }
         else
         {

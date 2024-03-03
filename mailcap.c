@@ -114,7 +114,7 @@ int mailcap_expand_command(struct Body *b, const char *filename,
         if (c_mailcap_sanitize)
           buf_sanitize_filename(param, NONULL(pvalue2), false);
         else
-          buf_strcpy(param, NONULL(pvalue2));
+          buf_strcpy(param, pvalue2);
 
         buf_quote_filename(quoted, buf_string(param), true);
         buf_addstr(buf, buf_string(quoted));
@@ -362,7 +362,7 @@ static bool rfc1524_mailcap_parse(struct Body *b, const char *filename, const ch
             if (c_mailcap_sanitize)
               buf_sanitize_filename(afilename, NONULL(b->filename), true);
             else
-              buf_strcpy(afilename, NONULL(b->filename));
+              buf_strcpy(afilename, b->filename);
             if (mailcap_expand_command(b, buf_string(afilename), type, command) == 1)
             {
               mutt_debug(LL_DEBUG1, "mailcap command needs a pipe: %s\n",

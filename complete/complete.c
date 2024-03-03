@@ -112,9 +112,9 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   {
     buf_addch(dirpart, ch);
     if (ch == '!')
-      buf_strcpy(exp_dirpart, NONULL(c_spool_file));
+      buf_strcpy(exp_dirpart, c_spool_file);
     else
-      buf_strcpy(exp_dirpart, NONULL(c_folder));
+      buf_strcpy(exp_dirpart, c_folder);
     p = strrchr(buf_string(buf), '/');
     if (p)
     {

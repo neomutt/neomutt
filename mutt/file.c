@@ -105,7 +105,7 @@ static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *ne
   int rc = 0;
 
   struct Buffer parent = buf_make(PATH_MAX);
-  buf_strcpy(&parent, NONULL(path));
+  buf_strcpy(&parent, path);
 
   char *p = strrchr(parent.data, '/');
   if (p)

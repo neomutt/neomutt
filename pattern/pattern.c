@@ -298,7 +298,7 @@ int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt)
   struct Progress *progress = NULL;
   struct Buffer *buf = buf_pool_get();
 
-  buf_strcpy(buf, NONULL(mv->pattern));
+  buf_strcpy(buf, mv->pattern);
   if (prompt || (op != MUTT_LIMIT))
   {
     if ((mw_get_field(prompt, buf, MUTT_COMP_CLEAR, HC_PATTERN, &CompletePatternOps, NULL) != 0) ||
