@@ -115,7 +115,9 @@ A popular choice is gpg. To use this:
   unlock the token store.
 - Pass your GPG identity (your email address or whatever you picked above)
   to `mutt_oauth2.py` via `--encryption-pipe`
-  example: `--encryption-pipe "gpg --encrypt --recipient YOUR_GPG_IDENTITY"`
+  example: `--encryption-pipe "gpg --encrypt --recipient YOUR_GPG_IDENTITY"`.
+  You may also not specify the `--encryption-pipe` option, in which case the
+  default key will be used.
 - For the `gpg-agent` to be able to ask you the unlock passphrase, the
   environment variable `GPG_TTY` must be set to the current tty. Typically you
   would put the following inside your .profile or equivalent: `export GPG_TTY=$(tty)`
@@ -277,7 +279,6 @@ set smtp_url="smtp://${imap_user}@smtp.office365.com:587/"
 set imap_authenticators="oauthbearer:xoauth2"
 set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py \
        ${imap_user}.tokens \
-       --provider ${provider} \
        --client-id ${client_id} \
        --client-secret ${client_id}"
 

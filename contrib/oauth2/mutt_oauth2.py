@@ -44,9 +44,8 @@ import readline
 # The token file must be encrypted because it contains multi-use bearer tokens
 # whose usage does not require additional verification. Specify whichever
 # encryption and decryption pipes you prefer. They should read from standard
-# input and write to standard output. The example values here invoke GPG,
-# although won't work until an appropriate identity appears in the first line.
-ENCRYPTION_PIPE = ['gpg', '--encrypt', '--recipient', 'YOUR_GPG_IDENTITY']
+# input and write to standard output. The example values here invoke GPG.
+ENCRYPTION_PIPE = ['gpg', '--encrypt', '--default-recipient-self']
 DECRYPTION_PIPE = ['gpg', '--decrypt']
 
 registrations = {
@@ -94,7 +93,7 @@ ap.add_argument('--decryption-pipe', type=shlex.split, default=DECRYPTION_PIPE,
                 help='decryption command (string), reads from stdin and writes '
                 'to stdout, default: "{}"'.format(
                     " ".join(DECRYPTION_PIPE)))
-ap.add_argument('--encryption-pipe', type=shlex.split,
+ap.add_argument('--encryption-pipe', type=shlex.split, default=ENCRYPTION_PIPE,
                 help='encryption command (string), reads from stdin and writes '
                 'to stdout, suggested: "{}"'.format(
                     " ".join(ENCRYPTION_PIPE)))
@@ -244,7 +243,7 @@ if args.authorize:
                     if 'code' in querydict:
                         authcode = querydict['code'][0]
                     self.do_HEAD()
-                    self.wfile.write(b'<html><head><title>Authorizaton result</title></head>')
+                    self.wfile.write(b'<html><head><title>Authorization result</title></head>')
                     self.wfile.write(b'<body><p>Authorization redirect completed. You may '
                                      b'close this window.</p></body></html>')
             with http.server.HTTPServer(('127.0.0.1', listen_port), MyHandler) as httpd:
