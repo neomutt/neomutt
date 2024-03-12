@@ -33,7 +33,6 @@
 #include <limits.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "gui/lib.h"
 #include "node_expando.h"
 #include "color/lib.h"
 #include "definition.h"

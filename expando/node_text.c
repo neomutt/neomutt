@@ -30,7 +30,6 @@
 #include "config.h"
 #include <assert.h>
 #include <stdbool.h>
-#include "gui/lib.h"
 #include "node_text.h"
 #include "format.h"
 #include "node.h"

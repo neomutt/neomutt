@@ -25,7 +25,16 @@
 
 #include <stddef.h>
 #include <stdbool.h>
-#include "gui/lib.h"
+
+/**
+ * enum FormatJustify - Alignment for format_string()
+ */
+enum FormatJustify
+{
+  JUSTIFY_LEFT   = -1,       ///< Left justify the text
+  JUSTIFY_CENTER =  0,       ///< Centre the text
+  JUSTIFY_RIGHT  =  1,       ///< Right justify the text
+};
 
 struct Buffer;
 

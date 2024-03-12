@@ -25,7 +25,7 @@
 #define MUTT_EXPANDO_NODE_H
 
 #include "mutt/lib.h"
-#include "gui/lib.h"
+#include "format.h"
 #include "render.h"
 
 /**
