@@ -218,7 +218,7 @@ void alias_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  *
  * @sa $alias_format
  */
-static void alias_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int alias_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
@@ -233,7 +233,8 @@ static void alias_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_alias_format = cs_subset_expando(mdata->sub, "alias_format");
-  expando_render(c_alias_format, AliasRenderData, av, MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_alias_format, AliasRenderData, av,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

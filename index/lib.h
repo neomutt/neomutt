@@ -88,7 +88,7 @@ struct MailboxView *    get_current_mailbox_view(void);
 struct Menu *           get_current_menu        (void);
 void                    index_change_folder     (struct MuttWindow *dlg, struct Mailbox *m);
 const struct AttrColor *index_color             (struct Menu *menu, int line);
-void                    index_make_entry        (struct Menu *menu, int line, struct Buffer *buf);
+int                     index_make_entry        (struct Menu *menu, int line, struct Buffer *buf);
 struct MuttWindow *     index_pager_init        (void);
 int                     mutt_dlgindex_observer  (struct NotifyCallback *nc);
 void                    mutt_draw_statusline    (struct MuttWindow *win, int max_cols, const char *buf, size_t buflen);

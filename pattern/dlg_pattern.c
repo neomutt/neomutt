@@ -129,11 +129,11 @@ long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
 }
 
 /**
- * make_pattern_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * pattern_make_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $pattern_format
  */
-static void pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
 
@@ -146,8 +146,8 @@ static void pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_pattern_format = cs_subset_expando(NeoMutt->sub, "pattern_format");
-  expando_render(c_pattern_format, PatternRenderData, entry,
-                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_pattern_format, PatternRenderData, entry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

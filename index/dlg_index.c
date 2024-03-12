@@ -795,10 +795,10 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
  *
  * @sa $index_format
  */
-void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+int index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   if (!menu || !menu->mdata)
-    return;
+    return 0;
 
   struct IndexPrivateData *priv = menu->mdata;
   struct IndexSharedData *shared = priv->shared;
@@ -807,11 +807,11 @@ void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
     menu->current = -1;
 
   if (!m || (line < 0) || (line >= m->email_max))
-    return;
+    return 0;
 
   struct Email *e = mutt_get_virt_email(m, line);
   if (!e)
-    return;
+    return 0;
 
   MuttFormatFlags flags = MUTT_FORMAT_ARROWCURSOR | MUTT_FORMAT_INDEX;
   struct MuttThread *tmp = NULL;
@@ -890,7 +890,7 @@ void index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
     max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
-  mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
+  return mutt_make_string(buf, max_cols, c_index_format, m, msg_in_pager, e, flags, NULL);
 }
 
 /**

@@ -228,7 +228,7 @@ void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  *
  * @sa $query_format
  */
-static void query_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int query_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
@@ -243,7 +243,8 @@ static void query_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_query_format = cs_subset_expando(mdata->sub, "query_format");
-  expando_render(c_query_format, QueryRenderData, av, MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_query_format, QueryRenderData, av,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

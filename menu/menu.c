@@ -34,6 +34,7 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 #include "type.h"
 
 struct ConfigSubset;

@@ -100,7 +100,7 @@ static const struct Mapping PostponedHelp[] = {
  *
  * @sa $index_format
  */
-static void post_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int post_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct MailboxView *mv = menu->mdata;
   struct Mailbox *m = mv->mailbox;
@@ -114,8 +114,8 @@ static void post_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_index_format = cs_subset_expando(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, max_cols, c_index_format, m, -1, m->emails[line],
-                   MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
+  return mutt_make_string(buf, max_cols, c_index_format, m, -1, m->emails[line],
+                          MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
 /**

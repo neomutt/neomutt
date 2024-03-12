@@ -214,7 +214,7 @@ static int compose_attach_tag(struct Menu *menu, int sel, int act)
  *
  * @sa $attach_format
  */
-static void compose_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int compose_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct ComposeAttachData *adata = menu->mdata;
   struct AttachCtx *actx = adata->actx;
@@ -230,8 +230,8 @@ static void compose_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_attach_format = cs_subset_expando(sub, "attach_format");
-  expando_render(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
-                 MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
+                        MUTT_FORMAT_STAT_FILE | MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
