@@ -61,6 +61,7 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "muttlib.h"
 #include "wdata.h"
 
@@ -78,7 +79,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
 
   va_list ap;
   char buf[1024] = { 0 };
-  char buf2[1024] = { 0 };
+  struct Buffer *buf2 = buf_pool_get();
   int w = (percent * win->state.cols) / 100;
   size_t l;
 
@@ -87,8 +88,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
   l = mutt_strwidth(buf);
   va_end(ap);
 
-  mutt_simple_format(buf2, sizeof(buf2), 0, win->state.cols - 2, JUSTIFY_LEFT,
-                     0, buf, sizeof(buf), false);
+  format_string(buf2, 0, win->state.cols - 2, JUSTIFY_LEFT, 0, buf, sizeof(buf), false);
 
   mutt_window_move(win, 0, 0);
 
@@ -98,7 +98,7 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
     {
       /* The string fits within the colour bar */
       mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROGRESS);
-      mutt_window_addstr(win, buf2);
+      mutt_window_addstr(win, buf_string(buf2));
       w -= l;
       while (w-- > 0)
       {
@@ -109,23 +109,24 @@ static void message_bar(struct MuttWindow *win, int percent, const char *fmt, ..
     else
     {
       /* The string is too long for the colour bar */
-      int off = mutt_wstr_trunc(buf2, sizeof(buf2), w, NULL);
+      int off = mutt_wstr_trunc(buf_string(buf2), buf2->dsize, w, NULL);
 
-      char ch = buf2[off];
-      buf2[off] = '\0';
+      char ch = buf_at(buf2, off);
+      buf2->data[off] = '\0';
       mutt_curses_set_normal_backed_color_by_id(MT_COLOR_PROGRESS);
-      mutt_window_addstr(win, buf2);
-      buf2[off] = ch;
+      mutt_window_addstr(win, buf_string(buf2));
+      buf2->data[off] = ch;
       mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
-      mutt_window_addstr(win, &buf2[off]);
+      mutt_window_addstr(win, buf2->data + off);
     }
   }
   else
   {
-    mutt_window_addstr(win, buf2);
+    mutt_window_addstr(win, buf_string(buf2));
   }
 
   mutt_window_clrtoeol(win);
+  buf_pool_release(&buf2);
 }
 
 /**
