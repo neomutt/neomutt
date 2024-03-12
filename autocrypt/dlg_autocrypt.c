@@ -194,7 +194,7 @@ void autocrypt_s(const struct ExpandoNode *node, void *data,
  *
  * @sa $autocrypt_acct_format
  */
-static void autocrypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int autocrypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[line];
 
@@ -207,8 +207,8 @@ static void autocrypt_make_entry(struct Menu *menu, int line, struct Buffer *buf
   }
 
   const struct Expando *c_autocrypt_acct_format = cs_subset_expando(NeoMutt->sub, "autocrypt_acct_format");
-  expando_render(c_autocrypt_acct_format, AutocryptRenderData, entry,
-                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_autocrypt_acct_format, AutocryptRenderData, entry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

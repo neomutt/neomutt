@@ -108,7 +108,7 @@ void history_s(const struct ExpandoNode *node, void *data,
 /**
  * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
-static void history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   char *entry = ((char **) menu->mdata)[line];
 
@@ -123,8 +123,8 @@ static void history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_history_format = cs_subset_expando(NeoMutt->sub, "history_format");
-  expando_render(c_history_format, HistoryRenderData, &h,
-                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_history_format, HistoryRenderData, &h,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

@@ -524,7 +524,7 @@ long pgp_entry_pgp_L_num(const struct ExpandoNode *node, void *data, MuttFormatF
  *
  * @sa $pgp_entry_format
  */
-static void pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct PgpUid **key_table = menu->mdata;
 
@@ -541,8 +541,8 @@ static void pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
-  expando_render(c_pgp_entry_format, PgpEntryRenderData, &entry,
-                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_pgp_entry_format, PgpEntryRenderData, &entry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

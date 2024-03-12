@@ -158,12 +158,12 @@ void mix_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  *
  * @sa $mix_entry_format
  */
-static void mix_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int mix_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct RemailerArray *ra = menu->mdata;
   struct Remailer **r = ARRAY_GET(ra, line);
   if (!r)
-    return;
+    return 0;
 
   int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -174,8 +174,8 @@ static void mix_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_mix_entry_format = cs_subset_expando(NeoMutt->sub, "mix_entry_format");
-  expando_render(c_mix_entry_format, MixRenderData, *r, MUTT_FORMAT_ARROWCURSOR,
-                 max_cols, buf);
+  return expando_render(c_mix_entry_format, MixRenderData, *r,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**

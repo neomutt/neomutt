@@ -1800,13 +1800,14 @@ void index_Z(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * @param e        Email
  * @param flags    Flags, see #MuttFormatFlags
  * @param progress Pager progress string
+ * @retval num Number of screen columns used
  */
-void mutt_make_string(struct Buffer *buf, size_t cols, const struct Expando *exp,
-                      struct Mailbox *m, int inpgr, struct Email *e,
-                      MuttFormatFlags flags, const char *progress)
+int mutt_make_string(struct Buffer *buf, size_t cols, const struct Expando *exp,
+                     struct Mailbox *m, int inpgr, struct Email *e,
+                     MuttFormatFlags flags, const char *progress)
 {
   if (!exp)
-    return;
+    return 0;
 
   struct HdrFormatInfo hfi = { 0 };
 
@@ -1815,7 +1816,7 @@ void mutt_make_string(struct Buffer *buf, size_t cols, const struct Expando *exp
   hfi.msg_in_pager = inpgr;
   hfi.pager_progress = progress;
 
-  expando_render(exp, IndexRenderData, &hfi, flags, cols, buf);
+  return expando_render(exp, IndexRenderData, &hfi, flags, cols, buf);
 }
 
 /**

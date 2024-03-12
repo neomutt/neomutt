@@ -100,8 +100,9 @@ struct Menu
    * @param[in]  menu   Menu containing items
    * @param[in]  line   Menu line number
    * @param[out] buf    Buffer for the result
+   * @retval num Number of screen columns used
    */
-  void (*make_entry)(struct Menu *menu, int line, struct Buffer *buf);
+  int (*make_entry)(struct Menu *menu, int line, struct Buffer *buf);
 
   /**
    * @defgroup menu_search search()

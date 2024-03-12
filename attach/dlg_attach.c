@@ -459,7 +459,7 @@ long attach_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  *
  * @sa $attach_format
  */
-static void attach_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int attach_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct AttachPrivateData *priv = menu->mdata;
   struct AttachCtx *actx = priv->actx;
@@ -473,8 +473,8 @@ static void attach_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   }
 
   const struct Expando *c_attach_format = cs_subset_expando(NeoMutt->sub, "attach_format");
-  expando_render(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
-                 MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+  return expando_render(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
