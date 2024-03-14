@@ -131,11 +131,11 @@ static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int 
 }
 
 /**
- * make_pattern_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
+ * pattern_make_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $pattern_format, pattern_format_str()
  */
-static void make_pattern_entry(struct Menu *menu, int line, struct Buffer *buf)
+static void pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
 
@@ -179,7 +179,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   struct PatternEntry *entries = mutt_mem_calloc(num_entries, sizeof(struct PatternEntry));
 
   struct Menu *menu = dlg->wdata;
-  menu->make_entry = make_pattern_entry;
+  menu->make_entry = pattern_make_entry;
   menu->mdata = entries;
   menu->mdata_free = free_pattern_menu;
   menu->max = num_entries;
