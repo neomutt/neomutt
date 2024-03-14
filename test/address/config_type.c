@@ -56,6 +56,7 @@ struct ConfigDef Vars[] = {
   { "Olive",      DT_ADDRESS, IP "olive@example.com",      0, validator_warn,    },
   { "Papaya",     DT_ADDRESS, IP "papaya@example.com",     0, validator_fail,    },
   { "Quince",     DT_ADDRESS, 0,                           0, NULL,              }, /* test_inherit */
+  { "Raspberry",  DT_ADDRESS|D_NOT_EMPTY, IP "raspberry",  0, NULL,              },
   { NULL },
 };
 // clang-format on
@@ -166,7 +167,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   log_line(__func__);
   struct ConfigSet *cs = sub->cs;
 
-  const char *valid[] = { "hello@example.com", "world@example.com", NULL };
+  const char *valid[] = { "hello@example.com", "world@example.com", "", NULL };
   const char *name = "Damson";
   struct Buffer *addr = NULL;
 
@@ -211,6 +212,13 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
       return false;
     }
     TEST_MSG("%s = '%s', set by '%s'", name, buf_string(addr), NONULL(valid[i]));
+  }
+
+  name = "Raspberry";
+  rc = cs_str_string_set(cs, name, "", err);
+  if (TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS))
+  {
+    TEST_MSG("Expected error: %s", buf_string(err));
   }
 
   log_line(__func__);

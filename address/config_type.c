@@ -75,10 +75,21 @@ static void address_destroy(const struct ConfigSet *cs, void *var, const struct 
 static int address_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                               const char *value, struct Buffer *err)
 {
+  /* Store empty address as NULL */
+  if (value && (value[0] == '\0'))
+    value = NULL;
+
   struct Address *addr = NULL;
 
-  /* An empty address "" will be stored as NULL */
-  if (var && value && (value[0] != '\0'))
+  int rc = CSR_SUCCESS;
+
+  if (!value && (cdef->type & D_NOT_EMPTY))
+  {
+    buf_printf(err, _("Option %s may not be empty"), cdef->name);
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+  }
+
+  if (var && value)
   {
     // TODO - config can only store one
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
@@ -86,8 +97,6 @@ static int address_string_set(const struct ConfigSet *cs, void *var, struct Conf
     addr = mutt_addr_copy(TAILQ_FIRST(&al));
     mutt_addrlist_clear(&al);
   }
-
-  int rc = CSR_SUCCESS;
 
   if (var)
   {
