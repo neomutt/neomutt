@@ -306,6 +306,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_expando_node)                                         \
   NEOMUTT_TEST_ITEM(test_expando_node_condbool)                                \
   NEOMUTT_TEST_ITEM(test_expando_node_conddate)                                \
+  NEOMUTT_TEST_ITEM(test_expando_node_container)                               \
   NEOMUTT_TEST_ITEM(test_expando_node_expando)                                 \
   NEOMUTT_TEST_ITEM(test_expando_node_expando_format)                          \
   NEOMUTT_TEST_ITEM(test_expando_node_padding)                                 \
