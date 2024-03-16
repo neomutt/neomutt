@@ -40,6 +40,7 @@ enum ExpandoNodeType
   ENT_CONDITION,      ///< True/False condition
   ENT_CONDBOOL,       ///< True/False boolean condition
   ENT_CONDDATE,       ///< True/False date condition
+  ENT_CONTAINER,      ///< Container for other nodes
 };
 
 ARRAY_HEAD(ExpandoNodeArray, struct ExpandoNode *);

@@ -270,6 +270,7 @@ EXPANDO_OBJS	= test/expando/colors_render.o \
 		  test/expando/node.o \
 		  test/expando/node_condbool.o \
 		  test/expando/node_conddate.o \
+		  test/expando/node_container.o \
 		  test/expando/node_expando.o \
 		  test/expando/node_padding.o \
 		  test/expando/old_if_else.o \

@@ -1259,41 +1259,18 @@ void index_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   if (!e || !e->env)
     return;
 
+  if ((flags & MUTT_FORMAT_TREE) && !e->collapsed && !(flags & MUTT_FORMAT_FORCESUBJ))
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
+
   subjrx_apply_mods(e->env);
-  char *subj = NULL;
 
   if (e->env->disp_subj)
-    subj = e->env->disp_subj;
+    buf_strcpy(buf, e->env->disp_subj);
   else
-    subj = e->env->subject;
-
-  if (flags & MUTT_FORMAT_TREE && !e->collapsed)
-  {
-    if (flags & MUTT_FORMAT_FORCESUBJ)
-    {
-      if (flags & MUTT_FORMAT_INDEX)
-        node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
-      node_expando_set_has_tree(node, true);
-
-      buf_printf(buf, "%s%s", e->tree, NONULL(subj));
-    }
-    else
-    {
-      if (flags & MUTT_FORMAT_INDEX)
-        node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
-      node_expando_set_has_tree(node, true);
-
-      const char *s = e->tree;
-      buf_strcpy(buf, s);
-    }
-  }
-  else
-  {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
-    const char *s = subj;
-    buf_strcpy(buf, s);
-  }
+    buf_strcpy(buf, e->env->subject);
 }
 
 /**
@@ -1385,6 +1362,24 @@ void index_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
                       " ";
 
   buf_strcpy(buf, s);
+}
+
+/**
+ * index_tree - Index: Thread tree - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_tree(const struct ExpandoNode *node, void *data,
+                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  if (!(flags & MUTT_FORMAT_TREE) || e->collapsed)
+    return;
+
+  node_expando_set_has_tree(node, true);
+  buf_strcpy(buf, e->tree);
 }
 
 /**
@@ -1864,6 +1859,7 @@ const struct ExpandoRenderData IndexRenderData[] = {
   { ED_ENVELOPE, ED_ENV_SUBJECT,             index_s,               NULL },
   { ED_ENVELOPE, ED_ENV_TO,                  index_t,               NULL },
   { ED_EMAIL,    ED_EMA_TO_CHARS,            index_T,               NULL },
+  { ED_ENVELOPE, ED_ENV_THREAD_TREE,         index_tree,            NULL },
   { ED_ENVELOPE, ED_ENV_USERNAME,            index_u,               NULL },
   { ED_ENVELOPE, ED_ENV_FIRST_NAME,          index_v,               NULL },
   { ED_ENVELOPE, ED_ENV_ORGANIZATION,        index_W,               NULL },

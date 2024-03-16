@@ -114,6 +114,7 @@ enum ExpandoDataEnvelope
   ED_ENV_SENDER_PLAIN,         ///< Envelope, make_from()
   ED_ENV_SPAM,                 ///< Envelope.spam
   ED_ENV_SUBJECT,              ///< Envelope.subject, Envelope.disp_subj
+  ED_ENV_THREAD_TREE,          ///< Email.tree
   ED_ENV_THREAD_X_LABEL,       ///< Envelope.x_label
   ED_ENV_TO,                   ///< Envelope.to, Envelope.cc (first)
   ED_ENV_TO_ALL,               ///< Envelope.to (all)

@@ -255,6 +255,34 @@ struct ExpandoNode *parse_tags_transformed(const char *str, const char **parsed_
 }
 
 /**
+ * parse_subject - Parse a Subject Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ *
+ * Parse a Subject Expando, "%s", into two separate Nodes.
+ * One for the tree, one for the subject.
+ */
+struct ExpandoNode *parse_subject(const char *str, const char **parsed_until,
+                                  int did, int uid, ExpandoParserFlags flags,
+                                  struct ExpandoParseError *error)
+{
+  // Let the basic expando parser do the work
+  flags |= EP_NO_CUSTOM_PARSE;
+  struct ExpandoNode *node_subj = node_expando_parse(str, parsed_until,
+                                                     IndexFormatDef, flags, error);
+
+  struct ExpandoNode *node_tree = node_expando_new(node_subj->start, node_subj->end,
+                                                   NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
+  node_tree->next = node_subj;
+
+  // Move the formatting info to the container
+  struct ExpandoNode *node_cont = node_container_new();
+  node_cont->format = node_subj->format;
+  node_subj->format = NULL;
+
+  node_set_child(node_cont, 0, node_tree);
+  return node_cont;
+}
+
+/**
  * IndexFormatDef - Expando definitions
  *
  * Config:
@@ -306,7 +334,7 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "q",  "newsgroup",           ED_ENVELOPE, ED_ENV_NEWSGROUP,           E_TYPE_STRING, NULL },
   { "r",  "to-all",              ED_ENVELOPE, ED_ENV_TO_ALL,              E_TYPE_STRING, NULL },
   { "R",  "cc-all",              ED_ENVELOPE, ED_ENV_CC_ALL,              E_TYPE_STRING, NULL },
-  { "s",  "subject",             ED_ENVELOPE, ED_ENV_SUBJECT,             E_TYPE_STRING, NULL },
+  { "s",  "subject",             ED_ENVELOPE, ED_ENV_SUBJECT,             E_TYPE_STRING, parse_subject },
   { "S",  "flag-chars",          ED_EMAIL,    ED_EMA_FLAG_CHARS,          E_TYPE_STRING, NULL },
   { "t",  "to",                  ED_ENVELOPE, ED_ENV_TO,                  E_TYPE_STRING, NULL },
   { "T",  "to-chars",            ED_EMAIL,    ED_EMA_TO_CHARS,            E_TYPE_STRING, NULL },
