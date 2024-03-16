@@ -170,13 +170,8 @@ static void smime_make_entry(struct Menu *menu, int line, struct Buffer *buf)
          Expired, Invalid, Revoked, Trusted, Unverified, Verified, and Unknown.  */
       truststate = _("Unknown   ");
   }
-
-  int bytes = buf_printf(buf, " 0x%s %s %s %-35.35s %s", key->hash,
-                         smime_key_flags(key->flags), truststate, key->email, key->label);
-  if (bytes < 0)
-    bytes = 0;
-
-  return mutt_strnwidth(buf_string(buf), bytes);
+  buf_printf(buf, " 0x%s %s %s %-35.35s %s", key->hash,
+             smime_key_flags(key->flags), truststate, key->email, key->label);
 }
 
 /**
