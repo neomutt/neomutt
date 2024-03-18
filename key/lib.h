@@ -163,7 +163,7 @@ void                     mutt_flush_macro_to_endcond(void);
 void                     mutt_init_abort_key        (void);
 void                     mutt_keys_cleanup          (void);
 void                     mw_what_key                (void);
-void                     run_events                 (struct MuttWindow *win);
+struct KeyEvent *        get_event                  (void);
 
 // Private to libkey
 struct Keymap *    alloc_keys                  (size_t len, keycode_t *keys);

@@ -45,6 +45,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "hook.h"
 #include "attach/lib.h"
 #include "compmbox/lib.h"
@@ -57,6 +58,7 @@
 #include "commands.h"
 #include "globals.h"
 #include "hdrline.h"
+#include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"
 
@@ -1002,7 +1004,27 @@ void mutt_shutdown_hook(struct MuttWindow *win)
     }
 
     // the shutdown hook might have put events in the queue
-    run_events(win);
+    struct KeyEvent *event;
+    while ((event = get_event()))
+    {
+      int op = event->op;
+
+      // abort, timeout, repaint
+      if (op <= OP_NULL)
+        continue;
+
+      mutt_clear_error();
+
+      const char *op_name = opcodes_get_name(op);
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", op_name, op);
+
+      int rc = index_function_dispatcher(win, op);
+      if (rc == FR_UNKNOWN)
+        rc = global_function_dispatcher(NULL, op);
+
+      if (rc != FR_SUCCESS)
+        mutt_error("Failed to run %s", op_name);
+    }
   }
 }
 
