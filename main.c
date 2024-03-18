@@ -1360,7 +1360,7 @@ main
 
     struct Mailbox *m_cur = mailbox_find(buf_string(&folder));
     mutt_folder_hook(buf_string(&folder), m_cur ? m_cur->name : NULL);
-    mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
+    mutt_startup_hook();
     mutt_debug(LL_NOTIFY, "NT_GLOBAL_STARTUP\n");
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
