@@ -68,7 +68,8 @@ const struct Expando *mutt_idxfmt_hook             (const char *name, struct Mai
 void                  mutt_message_hook            (struct Mailbox *m, struct Email *e, HookFlags type);
 enum CommandResult    mutt_parse_charset_iconv_hook(struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 void                  mutt_select_fcc              (struct Buffer *path, struct Email *e);
-void                  mutt_startup_shutdown_hook   (HookFlags type);
+void                  mutt_startup_hook            (void);
+void                  mutt_shutdown_hook           (struct MuttWindow *win);
 void                  mutt_timeout_hook            (void);
 
 #endif /* MUTT_HOOK_H */

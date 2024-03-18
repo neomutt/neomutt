@@ -1710,7 +1710,7 @@ int main(int argc, char *argv[], char *envp[])
     const char *name = m_cur ? mutt_str_dup(m_cur->name) : NULL;
     mutt_folder_hook(buf_string(folder), name);
     FREE(&name);
-    mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
+    mutt_startup_hook();
     mutt_debug(LL_NOTIFY, "NT_GLOBAL_STARTUP\n");
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_STARTUP, NULL);
 
