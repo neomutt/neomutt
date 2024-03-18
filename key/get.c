@@ -34,11 +34,9 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "globals.h"
-#include "mutt_logging.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif
@@ -468,27 +466,7 @@ int km_dokey(enum MenuType mtype, GetChFlags flags)
   return km_dokey_event(mtype, flags).op;
 }
 
-void run_events(struct MuttWindow *win)
+struct KeyEvent *get_event(void)
 {
-  struct KeyEvent *event;
-  while ((event = array_pop(&MacroEvents)))
-  {
-    int op = event->op;
-
-    // abort, timeout, repaint
-    if (op <= OP_NULL)
-      continue;
-
-    mutt_clear_error();
-
-    const char *op_name = opcodes_get_name(op);
-    mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", op_name, op);
-
-    int rc = index_function_dispatcher(win, op);
-    if (rc == FR_UNKNOWN)
-      rc = global_function_dispatcher(NULL, op);
-
-    if (rc != FR_SUCCESS)
-      mutt_error("Failed to run %s", op_name);
-  }
+  return array_pop(&MacroEvents);
 }
