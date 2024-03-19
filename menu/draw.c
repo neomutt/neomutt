@@ -121,12 +121,9 @@ static void print_enriched_string(struct MuttWindow *win, int index,
   {
     if (*s < MUTT_TREE_MAX)
     {
-      const struct AttrColor *ac_merge = merged_color_overlay(ac_def, simple_color_get(MT_COLOR_TREE));
-      ac_merge = merged_color_overlay(ac_merge, ac_ind);
-
       /* Combining tree fg color and another bg color requires having
        * use_default_colors, because the other bg color may be undefined. */
-      mutt_curses_set_color(ac_merge);
+      mutt_curses_set_color(ac_ind);
 
       while (*s && (*s < MUTT_TREE_MAX))
       {
@@ -245,7 +242,7 @@ static void print_enriched_string(struct MuttWindow *win, int index,
         s++;
         n--;
       }
-      ac_merge = merged_color_overlay(ac_def, ac_ind);
+      const struct AttrColor *ac_merge = merged_color_overlay(ac_def, ac_ind);
       mutt_curses_set_color(ac_merge);
     }
     else if (*s == MUTT_SPECIAL_INDEX)

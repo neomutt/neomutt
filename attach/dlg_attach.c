@@ -76,6 +76,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
@@ -417,6 +418,7 @@ void attach_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 {
   const struct AttachPtr *aptr = data;
 
+  node_expando_set_color(node, MT_COLOR_TREE);
   node_expando_set_has_tree(node, true);
   const char *s = aptr->tree;
   buf_strcpy(buf, s);

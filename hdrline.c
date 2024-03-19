@@ -1374,6 +1374,7 @@ void index_tree(const struct ExpandoNode *node, void *data,
   if (!(flags & MUTT_FORMAT_TREE) || e->collapsed)
     return;
 
+  node_expando_set_color(node, MT_COLOR_TREE);
   node_expando_set_has_tree(node, true);
   buf_strcpy(buf, e->tree);
 }
