@@ -108,13 +108,12 @@ void history_s(const struct ExpandoNode *node, void *data,
 /**
  * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
-static int history_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int history_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   char *entry = ((char **) menu->mdata)[line];
 
   struct HistoryEntry h = { line, entry };
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

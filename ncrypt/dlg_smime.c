@@ -107,7 +107,7 @@ static char *smime_key_flags(KeyFlags flags)
 /**
  * smime_make_entry - Format an S/MIME Key for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
-static int smime_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int smime_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct SmimeKey **table = menu->mdata;
   struct SmimeKey *key = table[line];

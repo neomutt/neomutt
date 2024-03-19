@@ -214,14 +214,13 @@ static int compose_attach_tag(struct Menu *menu, int sel, int act)
  *
  * @sa $attach_format
  */
-static int compose_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int compose_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct ComposeAttachData *adata = menu->mdata;
   struct AttachCtx *actx = adata->actx;
   struct ComposeSharedData *shared = menu->win->parent->wdata;
   struct ConfigSubset *sub = shared->sub;
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

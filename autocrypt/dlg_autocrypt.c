@@ -194,11 +194,10 @@ void autocrypt_s(const struct ExpandoNode *node, void *data,
  *
  * @sa $autocrypt_acct_format
  */
-static int autocrypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int autocrypt_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[line];
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

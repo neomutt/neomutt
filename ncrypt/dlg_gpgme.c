@@ -538,7 +538,7 @@ long pgp_entry_gpgme_l_num(const struct ExpandoNode *node, void *data, MuttForma
  *
  * @sa $pgp_entry_format
  */
-static int crypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int crypt_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct CryptKeyInfo **key_table = menu->mdata;
   struct CryptEntry entry = { 0 };
@@ -546,7 +546,6 @@ static int crypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   entry.key = key_table[line];
   entry.num = line + 1;
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

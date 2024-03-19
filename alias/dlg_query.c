@@ -228,13 +228,12 @@ void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  *
  * @sa $query_format
  */
-static int query_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int query_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
   struct AliasView *av = ARRAY_GET(ava, line);
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

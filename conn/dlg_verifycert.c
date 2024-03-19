@@ -130,7 +130,7 @@ static int menu_dialog_translate_op(int op)
 /**
  * cert_make_entry - Create a Certificate for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
-static int cert_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int cert_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct CertMenuData *mdata = menu->mdata;
 

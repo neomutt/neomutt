@@ -338,7 +338,7 @@ void menu_redraw_index(struct Menu *menu)
       ac = menu->color(menu, i);
 
       buf_reset(buf);
-      menu->make_entry(menu, i, buf);
+      menu->make_entry(menu, i, menu->win->state.cols, buf);
       menu_pad_string(menu, buf);
 
       mutt_curses_set_color(ac);
@@ -409,7 +409,7 @@ void menu_redraw_motion(struct Menu *menu)
     mutt_window_printf(menu->win, "%*s", arrow_width + 1, "");
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
-    menu->make_entry(menu, menu->old_current, buf);
+    menu->make_entry(menu, menu->old_current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
     mutt_window_move(menu->win, arrow_width + 1, menu->old_current - menu->top);
     print_enriched_string(menu->win, menu->old_current, old_color, NULL, buf, menu->sub);
@@ -422,7 +422,7 @@ void menu_redraw_motion(struct Menu *menu)
   {
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     /* erase the current indicator */
-    menu->make_entry(menu, menu->old_current, buf);
+    menu->make_entry(menu, menu->old_current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
     print_enriched_string(menu->win, menu->old_current, old_color, NULL, buf, menu->sub);
 
@@ -430,7 +430,7 @@ void menu_redraw_motion(struct Menu *menu)
     const struct AttrColor *cur_color = menu->color(menu, menu->current);
     cur_color = merged_color_overlay(cur_color, ac_ind);
     buf_reset(buf);
-    menu->make_entry(menu, menu->current, buf);
+    menu->make_entry(menu, menu->current, menu->win->state.cols, buf);
     menu_pad_string(menu, buf);
     mutt_window_move(menu->win, 0, menu->current - menu->top);
     mutt_curses_set_color(cur_color);
@@ -450,7 +450,7 @@ void menu_redraw_current(struct Menu *menu)
   const struct AttrColor *ac = menu->color(menu, menu->current);
 
   mutt_window_move(menu->win, 0, menu->current - menu->top);
-  menu->make_entry(menu, menu->current, buf);
+  menu->make_entry(menu, menu->current, menu->win->state.cols, buf);
   menu_pad_string(menu, buf);
 
   struct AttrColor *ac_ind = simple_color_get(MT_COLOR_INDICATOR);

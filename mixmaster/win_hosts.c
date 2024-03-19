@@ -158,14 +158,13 @@ void mix_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  *
  * @sa $mix_entry_format
  */
-static int mix_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int mix_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct RemailerArray *ra = menu->mdata;
   struct Remailer **r = ARRAY_GET(ra, line);
   if (!r)
     return 0;
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

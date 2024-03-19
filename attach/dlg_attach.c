@@ -460,12 +460,11 @@ long attach_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  *
  * @sa $attach_format
  */
-static int attach_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int attach_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct AttachPrivateData *priv = menu->mdata;
   struct AttachCtx *actx = priv->actx;
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

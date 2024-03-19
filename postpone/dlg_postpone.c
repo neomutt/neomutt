@@ -100,12 +100,11 @@ static const struct Mapping PostponedHelp[] = {
  *
  * @sa $index_format
  */
-static int post_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int post_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct MailboxView *mv = menu->mdata;
   struct Mailbox *m = mv->mailbox;
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

@@ -28,10 +28,12 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <assert.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "node_container.h"
+#include "format.h"
 #include "node.h"
 #include "render.h"
 

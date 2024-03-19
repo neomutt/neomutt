@@ -524,7 +524,7 @@ long pgp_entry_pgp_L_num(const struct ExpandoNode *node, void *data, MuttFormatF
  *
  * @sa $pgp_entry_format
  */
-static int pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int pgp_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct PgpUid **key_table = menu->mdata;
 
@@ -532,7 +532,6 @@ static int pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   entry.uid = key_table[line];
   entry.num = line + 1;
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

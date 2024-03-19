@@ -795,7 +795,7 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
  *
  * @sa $index_format
  */
-int index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+int index_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   if (!menu || !menu->mdata)
     return 0;
@@ -882,7 +882,6 @@ int index_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   const struct Expando *c_index_format = cs_subset_expando(shared->sub, "index_format");
   int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : 0;
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

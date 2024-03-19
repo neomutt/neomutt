@@ -97,12 +97,13 @@ struct Menu
    * @ingroup menu_api
    *
    * make_entry - Format a item for a menu
-   * @param[in]  menu   Menu containing items
-   * @param[in]  line   Menu line number
-   * @param[out] buf    Buffer for the result
+   * @param[in]  menu     Menu containing items
+   * @param[in]  line     Menu line number
+   * @param[in]  max_cols Maximum number of screen columns to use
+   * @param[out] buf      Buffer for the result
    * @retval num Number of screen columns used
    */
-  int (*make_entry)(struct Menu *menu, int line, struct Buffer *buf);
+  int (*make_entry)(struct Menu *menu, int line, int max_cols, struct Buffer *buf);
 
   /**
    * @defgroup menu_search search()

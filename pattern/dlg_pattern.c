@@ -133,11 +133,10 @@ long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  *
  * @sa $pattern_format
  */
-static int pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int pattern_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {

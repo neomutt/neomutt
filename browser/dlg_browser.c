@@ -957,7 +957,7 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
  *
  * @sa $folder_format, $group_index_format, $mailbox_folder_format
  */
-static int folder_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int folder_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct BrowserState *bstate = menu->mdata;
   struct BrowserEntryArray *entry = &bstate->entry;
@@ -966,7 +966,6 @@ static int folder_make_entry(struct Menu *menu, int line, struct Buffer *buf)
     .num = line,
   };
 
-  int max_cols = menu->win->state.cols;
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
   {
