@@ -665,7 +665,7 @@ FILE *mutt_file_fopen_full(const char *path, const char *mode, const char *file,
   FILE *fp = NULL;
   if (mode[0] == 'w')
   {
-    uint32_t flags = O_CREAT | O_EXCL | O_NOFOLLOW;
+    uint32_t flags = O_CREAT | O_EXCL | O_NOFOLLOW | O_TRUNC;
 
     if (mode[1] == '+')
       flags |= O_RDWR;
