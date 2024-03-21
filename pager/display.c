@@ -1317,7 +1317,10 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     if (flags & MUTT_PAGER_STRIPES)
     {
       const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
-      mutt_curses_set_color_by_id(cid);
+      const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
+      const struct AttrColor *stripe_color = simple_color_get(cid);
+      const struct AttrColor *ac_eol = merged_color_overlay(ac_normal, stripe_color);
+      mutt_curses_set_color(ac_eol);
     }
     mutt_window_clrtoeol(win_pager);
   }
