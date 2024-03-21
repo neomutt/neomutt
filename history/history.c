@@ -229,7 +229,7 @@ static void shrink_histfile(void)
     if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
         (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
     {
-      mutt_error(_("Bad history file format (line %d)"), line);
+      mutt_error(_("%s:%d: Bad history file format"), c_history_file, line);
       regen_file = true;
       continue;
     }
@@ -610,7 +610,7 @@ void mutt_hist_read_file(void)
     if ((sscanf(linebuf, "%d:%n", &hclass, &read) < 1) || (read == 0) ||
         (*(p = linebuf + strlen(linebuf) - 1) != '|') || (hclass < 0))
     {
-      mutt_error(_("Bad history file format (line %d)"), line);
+      mutt_error(_("%s:%d: Bad history file format"), c_history_file, line);
       continue;
     }
     /* silently ignore too high class (probably newer neomutt) */

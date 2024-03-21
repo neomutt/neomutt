@@ -3894,8 +3894,8 @@ msgstr "Query '%s'"
 
 #: history/history.c:232 history/history.c:274 history/history.c:618
 #, c-format
-msgid "Bad history file format (line %d)"
-msgstr "Format berkas sejarah salah (baris %d)"
+msgid "%s:%d: Bad history file format"
+msgstr "%s:%d: Format berkas sejarah salah"
 
 #: history/history.c:264 ncrypt/crypt_gpgme.c:572 ncrypt/crypt_gpgme.c:1893
 #: ncrypt/crypt_gpgme.c:1917 ncrypt/crypt_gpgme.c:1976
