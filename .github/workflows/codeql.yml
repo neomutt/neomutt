@@ -34,7 +34,7 @@ jobs:
         run: ./configure --disable-doc $CONFIGURE_OPTIONS
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@v3
         with:
           languages: cpp
           config-file: ./.github/codeql.yml
@@ -44,6 +44,6 @@ jobs:
         run: make -j ${{steps.cpu-cores.outputs.count}} -s
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
         with:
           category: "/language:cpp"
