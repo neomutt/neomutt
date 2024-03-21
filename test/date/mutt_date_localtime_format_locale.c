@@ -31,8 +31,6 @@ void test_mutt_date_localtime_format_locale(void)
 {
   // size_t mutt_date_localtime_format_locale(char *buf, size_t buflen, const char *format, time_t t, locale_t loc);
 
-  putenv("TZ=UTC0");
-
   {
     char buf[64] = { 0 };
     mutt_date_localtime_format_locale(NULL, sizeof(buf), "%y", 1698521050,

@@ -129,6 +129,8 @@ void test_neomutt_destroy(void)
 
 void test_init(void)
 {
+  setenv("TZ", "UTC", 1); // Default to UTC
+
   const char *path = get_test_dir();
   bool success = false;
 

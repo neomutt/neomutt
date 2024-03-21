@@ -33,8 +33,6 @@ void test_mutt_date_localtime_format(void)
 {
   // size_t mutt_date_localtime_format(char *buf, size_t buflen, char *format, time_t t);
 
-  putenv("TZ=UTC0");
-
   {
     TEST_CHECK(mutt_date_localtime_format(NULL, 10, "apple", 0) == 0);
   }
