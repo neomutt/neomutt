@@ -1072,15 +1072,24 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       goto out;
     }
 
-    cur_line->cid = MT_COLOR_MESSAGE_LOG;
-    if (buf[11] == 'M')
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_MESSAGE);
-    else if (buf[11] == 'W')
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_WARNING);
-    else if (buf[11] == 'E')
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_ERROR);
+    if ((cur_line->cont_line) && (line_num > 0))
+    {
+      struct Line *const old_line = &(*lines)[line_num - 1];
+      cur_line->cid = old_line->cid;
+      cur_line->syntax[0].attr_color = old_line->syntax[0].attr_color;
+    }
     else
-      cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_NORMAL);
+    {
+      cur_line->cid = MT_COLOR_MESSAGE_LOG;
+      if (buf[11] == 'M')
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_MESSAGE);
+      else if (buf[11] == 'W')
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_WARNING);
+      else if (buf[11] == 'E')
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_ERROR);
+      else
+        cur_line->syntax[0].attr_color = simple_color_get(MT_COLOR_NORMAL);
+    }
   }
 
   /* only do color highlighting if we are viewing a message */
