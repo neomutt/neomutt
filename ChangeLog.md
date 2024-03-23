@@ -1,3 +1,32 @@
+2024-03-23  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - #4185 c441f5957 Fix memory leak in trash_append()
+  - #4189 Fix off-by-one error in %b with notmuch
+  - #4190 Zero-out mailbox counters on delete
+  - #4204 colour: honour the normal colour
+  - #4205 match folder-hook also against mailbox name (fixes #4201)
+  - wrap colour in <show-log-messages>
+  - history: fix saving file
+  - history: improve error message format
+* Docs
+  - #4182 docs: -C: Fix some accidents
+  - #4188 Update oauth2 README
+  - #4193 Update oauth2 README
+  - fix typos, lots of tidying
+  - tidy license info
+* Build
+  - #4196 use FreeBSD 14.0 in Cirrus CI
+  - actions: update cpu count
+  - actions: use codeql v3
+* Code
+  - #4186 Buffer refactoring: make_entry()
+  - address: tidy config handling
+  - coverage: buf, slist
+  - graphviz: link labels
+  - tidy buf_strcpy() calls
+  - tidy char buffers
+  - test: default timezone to UTC
+
 2024-02-01  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #4134 Command-line Crypto (neomutt -C)
