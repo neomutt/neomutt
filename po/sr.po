@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: poe 1.7.2-3-gca4ced9\n"
+"X-Generator: poe 1.7.8\n"
 
 #: address/config_type.c:88 config/long.c:50 config/number.c:52
 #: config/path.c:99 config/path.c:175 config/sort.c:57 config/string.c:68
@@ -163,7 +163,7 @@ msgstr "Направи Алијас"
 
 #: alias/dlg_query.c:108 history/dlg_history.c:80
 msgid "Search"
-msgstr "Search"
+msgstr "Претрага"
 
 #: alias/dlg_query.c:292
 msgid "Waiting for response..."
