@@ -160,8 +160,8 @@ void mutt_update_tree(struct AttachCtx *actx)
         actx->idx[rindex]->level)
     {
       s = buf + 2 * (actx->idx[rindex]->level - 1);
-      *s++ = (actx->idx[rindex]->body->next) ? '\005' : '\006';
-      *s++ = '\006';
+      *s++ = (actx->idx[rindex]->body->next) ? MUTT_TREE_VLINE : MUTT_TREE_SPACE;
+      *s++ = MUTT_TREE_SPACE;
     }
   }
 }
@@ -373,7 +373,7 @@ cleanup:
 }
 
 /**
- * save_without_prompting - Save the attachment, without prompting each time.
+ * save_without_prompting - Save the attachment, without prompting each time
  * @param[in]  fp File handle to the attachment (OPTIONAL)
  * @param[in]  b  Attachment
  * @param[in]  e  Email

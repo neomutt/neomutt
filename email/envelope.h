@@ -3,7 +3,7 @@
  * Representation of an email header (envelope)
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -88,6 +88,40 @@ struct Envelope
   struct AutocryptHeader *autocrypt_gossip; ///< Autocrypt Gossip header
 #endif
   unsigned char changed; ///< Changed fields, e.g. #MUTT_ENV_CHANGED_SUBJECT
+};
+
+/**
+ * ExpandoDataEnvelope - Expando UIDs for Envelopes
+ *
+ * @sa ED_ENVELOPE, ExpandoDomain
+ */
+enum ExpandoDataEnvelope
+{
+  ED_ENV_CC_ALL = 1,           ///< Envelope.cc
+  ED_ENV_FIRST_NAME,           ///< Envelope.from, Envelope.to, Envelope.cc
+  ED_ENV_FROM,                 ///< Envelope.from (first)
+  ED_ENV_FROM_FULL,            ///< Envelope.from (all)
+  ED_ENV_INITIALS,             ///< Envelope.from (first)
+  ED_ENV_LIST_ADDRESS,         ///< Envelope.to, Envelope.cc
+  ED_ENV_LIST_EMPTY,           ///< Envelope.to, Envelope.cc
+  ED_ENV_MESSAGE_ID,           ///< Envelope.message_id
+  ED_ENV_NAME,                 ///< Envelope.from (first)
+  ED_ENV_NEWSGROUP,            ///< Envelope.newsgroups
+  ED_ENV_ORGANIZATION,         ///< Envelope.organization
+  ED_ENV_REAL_NAME,            ///< Envelope.to (first)
+  ED_ENV_REPLY_TO,             ///< Envelope.reply_to
+  ED_ENV_SENDER,               ///< Envelope, make_from()
+  ED_ENV_SENDER_PLAIN,         ///< Envelope, make_from()
+  ED_ENV_SPAM,                 ///< Envelope.spam
+  ED_ENV_SUBJECT,              ///< Envelope.subject, Envelope.disp_subj
+  ED_ENV_THREAD_TREE,          ///< Email.tree
+  ED_ENV_THREAD_X_LABEL,       ///< Envelope.x_label
+  ED_ENV_TO,                   ///< Envelope.to, Envelope.cc (first)
+  ED_ENV_TO_ALL,               ///< Envelope.to (all)
+  ED_ENV_USERNAME,             ///< Envelope.from
+  ED_ENV_USER_NAME,            ///< Envelope.to (first)
+  ED_ENV_X_COMMENT_TO,         ///< Envelope.x_comment_to
+  ED_ENV_X_LABEL,              ///< Envelope.x_label
 };
 
 /**

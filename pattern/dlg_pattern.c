@@ -4,7 +4,8 @@
  *
  * @authors
  * Copyright (C) 2019 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -69,20 +70,19 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
+
+const struct ExpandoRenderData PatternRenderData[];
 
 /// Help Bar for the Pattern selection dialog
 static const struct Mapping PatternHelp[] = {
@@ -95,54 +95,58 @@ static const struct Mapping PatternHelp[] = {
 };
 
 /**
- * pattern_format_str - Format a string for the pattern completion menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :---------------------
- * | \%d     | Pattern description
- * | \%e     | Pattern expression
- * | \%n     | Index number
+ * pattern_d - Pattern: pattern description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
-static const char *pattern_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                      char op, const char *src, const char *prec,
-                                      const char *if_str, const char *else_str,
-                                      intptr_t data, MuttFormatFlags flags)
+void pattern_d(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
-  struct PatternEntry *entry = (struct PatternEntry *) data;
+  const struct PatternEntry *entry = data;
 
-  switch (op)
-  {
-    case 'd':
-      mutt_format(buf, buflen, prec, NONULL(entry->desc), false);
-      break;
-    case 'e':
-      mutt_format(buf, buflen, prec, NONULL(entry->expr), false);
-      break;
-    case 'n':
-    {
-      char tmp[32] = { 0 };
-      snprintf(tmp, sizeof(tmp), "%%%sd", prec);
-      snprintf(buf, buflen, tmp, entry->num);
-      break;
-    }
-  }
+  const char *s = entry->desc;
+  buf_strcpy(buf, s);
+}
 
-  return src;
+/**
+ * pattern_e - Pattern: pattern expression - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pattern_e(const struct ExpandoNode *node, void *data,
+               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PatternEntry *entry = data;
+
+  const char *s = entry->expr;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pattern_n_num - Pattern: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct PatternEntry *entry = data;
+
+  return entry->num;
 }
 
 /**
  * pattern_make_entry - Create a Pattern for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $pattern_format, pattern_format_str()
+ * @sa $pattern_format
  */
-static void pattern_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int pattern_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
 
-  const char *const c_pattern_format = cs_subset_string(NeoMutt->sub, "pattern_format");
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                      NONULL(c_pattern_format), pattern_format_str,
-                      (intptr_t) entry, MUTT_FORMAT_ARROWCURSOR);
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_pattern_format = cs_subset_expando(NeoMutt->sub, "pattern_format");
+  return expando_render(c_pattern_format, PatternRenderData, entry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -379,3 +383,17 @@ bool dlg_pattern(char *buf, size_t buflen)
   simple_dialog_free(&dlg);
   return pd.selection;
 }
+
+/**
+ * PatternRenderData - Callbacks for Pattern Expandos
+ *
+ * @sa PatternFormatDef, ExpandoDataGlobal, ExpandoDataPattern
+ */
+const struct ExpandoRenderData PatternRenderData[] = {
+  // clang-format off
+  { ED_PATTERN, ED_PAT_DESCRIPTION, pattern_d,     NULL },
+  { ED_PATTERN, ED_PAT_EXPRESION,   pattern_e,     NULL },
+  { ED_PATTERN, ED_PAT_NUMBER,      NULL,          pattern_n_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

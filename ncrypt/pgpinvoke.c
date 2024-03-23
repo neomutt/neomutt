@@ -3,8 +3,9 @@
  * Wrapper around calls to external PGP program
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +33,6 @@
 #include "config.h"
 #include <fcntl.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -42,138 +42,87 @@
 #include "gui/lib.h"
 #include "pgpinvoke.h"
 #include "lib.h"
-#include "format_flags.h"
+#include "expando/lib.h"
 #include "globals.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "pgpkey.h"
 #include "protos.h"
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #endif
 
+const struct ExpandoRenderData PgpCommandRenderData[];
+
 /**
- * pgp_command_format_str - Format a PGP command string - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :----------------------------------------------------------------
- * | \%a     | Value of `$pgp_sign_as` if set, otherwise `$pgp_default_key`
- * | \%f     | File containing a message
- * | \%p     | Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty string otherwise
- * | \%r     | One or more key IDs (or fingerprints if available)
- * | \%s     | File containing the signature part of a multipart/signed attachment when verifying it
+ * pgp_command_a - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
-static const char *pgp_command_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                          char op, const char *src, const char *prec,
-                                          const char *if_str, const char *else_str,
-                                          intptr_t data, MuttFormatFlags flags)
+void pgp_command_a(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
-  char fmt[128] = { 0 };
-  struct PgpCommandContext *cctx = (struct PgpCommandContext *) data;
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
+  const struct PgpCommandContext *cctx = data;
 
-  switch (op)
-  {
-    case 'a':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->signas));
-      }
-      else if (!cctx->signas)
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 'f':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->fname));
-      }
-      else if (!cctx->fname)
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 'p':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, cctx->need_passphrase ? "PGPPASSFD=0" : "");
-      }
-      else if (!cctx->need_passphrase || pgp_use_gpg_agent())
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 'r':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->ids));
-      }
-      else if (!cctx->ids)
-      {
-        optional = false;
-      }
-      break;
-    }
-    case 's':
-    {
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(cctx->sig_fname));
-      }
-      else if (!cctx->sig_fname)
-      {
-        optional = false;
-      }
-      break;
-    }
-    default:
-    {
-      *buf = '\0';
-      break;
-    }
-  }
+  const char *s = cctx->signas;
+  buf_strcpy(buf, s);
+}
 
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, pgp_command_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str,
-                        pgp_command_format_str, data, MUTT_FORMAT_NO_FLAGS);
-  }
+/**
+ * pgp_command_f - PGP Command: Filename of message - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_f(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
 
-  /* We return the format string, unchanged */
-  return src;
+  const char *s = cctx->fname;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_p - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_p(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->need_passphrase ? "PGPPASSFD=0" : "";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_r - PGP Command: key IDs - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_r(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->ids;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_s - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_command_s(const struct ExpandoNode *node, void *data,
+                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->sig_fname;
+  buf_strcpy(buf, s);
 }
 
 /**
  * mutt_pgp_command - Prepare a PGP Command
  * @param buf    Buffer for the result
  * @param cctx   Data to pass to the formatter
- * @param fmt    printf-like formatting string
- *
- * @sa pgp_command_format_str()
+ * @param exp    Expando to use
  */
 static void mutt_pgp_command(struct Buffer *buf, struct PgpCommandContext *cctx,
-                             const char *fmt)
+                             const struct Expando *exp)
 {
-  mutt_expando_format(buf->data, buf->dsize, 0, buf->dsize, NONULL(fmt),
-                      pgp_command_format_str, (intptr_t) cctx, MUTT_FORMAT_NO_FLAGS);
+  expando_render(exp, PgpCommandRenderData, cctx, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(buf));
 }
 
@@ -189,7 +138,7 @@ static void mutt_pgp_command(struct Buffer *buf, struct PgpCommandContext *cctx,
  * @param[in]  fname           Filename to pass to the command
  * @param[in]  sig_fname       Signature filename to pass to the command
  * @param[in]  ids             List of IDs/fingerprints, space separated
- * @param[in]  format          printf-like format string
+ * @param[in]  exp             Expando format string
  * @retval num PID of the created process
  * @retval -1  Error creating pipes or forking
  *
@@ -198,12 +147,12 @@ static void mutt_pgp_command(struct Buffer *buf, struct PgpCommandContext *cctx,
  */
 static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
-                        bool need_passphrase, const char *fname,
-                        const char *sig_fname, const char *ids, const char *format)
+                        bool need_passphrase, const char *fname, const char *sig_fname,
+                        const char *ids, const struct Expando *exp)
 {
   struct PgpCommandContext cctx = { 0 };
 
-  if (!format || (*format == '\0'))
+  if (!exp)
     return (pid_t) -1;
 
   cctx.need_passphrase = need_passphrase;
@@ -218,7 +167,7 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   cctx.ids = ids;
 
   struct Buffer *cmd = buf_pool_get();
-  mutt_pgp_command(cmd, &cctx, format);
+  mutt_pgp_command(cmd, &cctx, exp);
 
   pid_t pid = filter_create_fd(buf_string(cmd), fp_pgp_in, fp_pgp_out, fp_pgp_err,
                                fd_pgp_in, fd_pgp_out, fd_pgp_err, EnvList);
@@ -252,7 +201,7 @@ pid_t pgp_invoke_decode(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                         const char *fname, bool need_passphrase)
 {
-  const char *const c_pgp_decode_command = cs_subset_string(NeoMutt->sub, "pgp_decode_command");
+  const struct Expando *c_pgp_decode_command = cs_subset_expando(NeoMutt->sub, "pgp_decode_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out, fd_pgp_err,
                     need_passphrase, fname, NULL, NULL, c_pgp_decode_command);
 }
@@ -277,7 +226,7 @@ pid_t pgp_invoke_verify(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err,
                         const char *fname, const char *sig_fname)
 {
-  const char *const c_pgp_verify_command = cs_subset_string(NeoMutt->sub, "pgp_verify_command");
+  const struct Expando *c_pgp_verify_command = cs_subset_expando(NeoMutt->sub, "pgp_verify_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, false, fname, sig_fname, NULL, c_pgp_verify_command);
 }
@@ -300,7 +249,7 @@ pid_t pgp_invoke_verify(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 pid_t pgp_invoke_decrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                          int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname)
 {
-  const char *const c_pgp_decrypt_command = cs_subset_string(NeoMutt->sub, "pgp_decrypt_command");
+  const struct Expando *c_pgp_decrypt_command = cs_subset_expando(NeoMutt->sub, "pgp_decrypt_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, true, fname, NULL, NULL, c_pgp_decrypt_command);
 }
@@ -323,7 +272,7 @@ pid_t pgp_invoke_decrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 pid_t pgp_invoke_sign(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                       int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *fname)
 {
-  const char *const c_pgp_sign_command = cs_subset_string(NeoMutt->sub, "pgp_sign_command");
+  const struct Expando *c_pgp_sign_command = cs_subset_expando(NeoMutt->sub, "pgp_sign_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, true, fname, NULL, NULL, c_pgp_sign_command);
 }
@@ -351,13 +300,13 @@ pid_t pgp_invoke_encrypt(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 {
   if (sign)
   {
-    const char *const c_pgp_encrypt_sign_command = cs_subset_string(NeoMutt->sub, "pgp_encrypt_sign_command");
+    const struct Expando *c_pgp_encrypt_sign_command = cs_subset_expando(NeoMutt->sub, "pgp_encrypt_sign_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, true, fname, NULL, uids, c_pgp_encrypt_sign_command);
   }
   else
   {
-    const char *const c_pgp_encrypt_only_command = cs_subset_string(NeoMutt->sub, "pgp_encrypt_only_command");
+    const struct Expando *c_pgp_encrypt_only_command = cs_subset_expando(NeoMutt->sub, "pgp_encrypt_only_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, false, fname, NULL, uids, c_pgp_encrypt_only_command);
   }
@@ -386,15 +335,15 @@ pid_t pgp_invoke_traditional(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_
 {
   if (flags & SEC_ENCRYPT)
   {
-    const char *const c_pgp_encrypt_only_command = cs_subset_string(NeoMutt->sub, "pgp_encrypt_only_command");
-    const char *const c_pgp_encrypt_sign_command = cs_subset_string(NeoMutt->sub, "pgp_encrypt_sign_command");
+    const struct Expando *c_pgp_encrypt_only_command = cs_subset_expando(NeoMutt->sub, "pgp_encrypt_only_command");
+    const struct Expando *c_pgp_encrypt_sign_command = cs_subset_expando(NeoMutt->sub, "pgp_encrypt_sign_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, (flags & SEC_SIGN), fname, NULL, uids,
                       (flags & SEC_SIGN) ? c_pgp_encrypt_sign_command : c_pgp_encrypt_only_command);
   }
   else
   {
-    const char *const c_pgp_clear_sign_command = cs_subset_string(NeoMutt->sub, "pgp_clear_sign_command");
+    const struct Expando *c_pgp_clear_sign_command = cs_subset_expando(NeoMutt->sub, "pgp_clear_sign_command");
     return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                       fd_pgp_err, true, fname, NULL, NULL, c_pgp_clear_sign_command);
   }
@@ -419,7 +368,7 @@ void pgp_class_invoke_import(const char *fname)
   else
     cctx.signas = c_pgp_default_key;
 
-  const char *const c_pgp_import_command = cs_subset_string(NeoMutt->sub, "pgp_import_command");
+  const struct Expando *c_pgp_import_command = cs_subset_expando(NeoMutt->sub, "pgp_import_command");
   mutt_pgp_command(cmd, &cctx, c_pgp_import_command);
   if (mutt_system(buf_string(cmd)) != 0)
     mutt_debug(LL_DEBUG1, "Error running \"%s\"\n", buf_string(cmd));
@@ -436,7 +385,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
   struct Buffer *personal = NULL;
   struct PgpCommandContext cctx = { 0 };
 
-  const char *const c_pgp_get_keys_command = cs_subset_string(NeoMutt->sub, "pgp_get_keys_command");
+  const struct Expando *c_pgp_get_keys_command = cs_subset_expando(NeoMutt->sub, "pgp_get_keys_command");
   if (!c_pgp_get_keys_command)
     return;
 
@@ -493,7 +442,7 @@ void pgp_class_invoke_getkeys(struct Address *addr)
 pid_t pgp_invoke_export(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                         int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids)
 {
-  const char *const c_pgp_export_command = cs_subset_string(NeoMutt->sub, "pgp_export_command");
+  const struct Expando *c_pgp_export_command = cs_subset_expando(NeoMutt->sub, "pgp_export_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, false, NULL, NULL, uids, c_pgp_export_command);
 }
@@ -516,7 +465,7 @@ pid_t pgp_invoke_export(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
 pid_t pgp_invoke_verify_key(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
                             int fd_pgp_in, int fd_pgp_out, int fd_pgp_err, const char *uids)
 {
-  const char *const c_pgp_verify_key_command = cs_subset_string(NeoMutt->sub, "pgp_verify_key_command");
+  const struct Expando *c_pgp_verify_key_command = cs_subset_expando(NeoMutt->sub, "pgp_verify_key_command");
   return pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in, fd_pgp_out,
                     fd_pgp_err, false, NULL, NULL, uids, c_pgp_verify_key_command);
 }
@@ -553,8 +502,8 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
       buf_addch(uids, ' ');
   }
 
-  const char *const c_pgp_list_pubring_command = cs_subset_string(NeoMutt->sub, "pgp_list_pubring_command");
-  const char *const c_pgp_list_secring_command = cs_subset_string(NeoMutt->sub, "pgp_list_secring_command");
+  const struct Expando *c_pgp_list_pubring_command = cs_subset_expando(NeoMutt->sub, "pgp_list_pubring_command");
+  const struct Expando *c_pgp_list_secring_command = cs_subset_expando(NeoMutt->sub, "pgp_list_secring_command");
   pid_t rc = pgp_invoke(fp_pgp_in, fp_pgp_out, fp_pgp_err, fd_pgp_in,
                         fd_pgp_out, fd_pgp_err, 0, NULL, NULL, buf_string(uids),
                         (keyring == PGP_SECRING) ? c_pgp_list_secring_command :
@@ -564,3 +513,19 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
   buf_pool_release(&quoted);
   return rc;
 }
+
+/**
+ * PgpCommandRenderData - Callbacks for PGP Command Expandos
+ *
+ * @sa PgpCommandFormatDef, ExpandoDataPgpCmd
+ */
+const struct ExpandoRenderData PgpCommandRenderData[] = {
+  // clang-format off
+  { ED_PGP_CMD, ED_PGC_SIGN_AS,        pgp_command_a, NULL },
+  { ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   pgp_command_f, NULL },
+  { ED_PGP_CMD, ED_PGC_NEED_PASS,      pgp_command_p, NULL },
+  { ED_PGP_CMD, ED_PGC_KEY_IDS,        pgp_command_r, NULL },
+  { ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, pgp_command_s, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

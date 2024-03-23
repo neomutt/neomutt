@@ -3,7 +3,7 @@
  * Create a GraphViz dot file from the NeoMutt objects
  *
  * @authors
- * Copyright (C) 2018-2020 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -78,6 +78,7 @@
 void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
 void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
 void dot_patternlist(FILE *fp, struct PatternList *pl, struct ListHead *links);
+void dot_expando_node_tree(FILE *fp, struct ExpandoNode *node, struct ListHead *links);
 
 void dot_type_bool(FILE *fp, const char *name, bool val)
 {
@@ -415,9 +416,9 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
 void dot_comp(FILE *fp, struct CompressInfo *ci, struct ListHead *links)
 {
   dot_object_header(fp, ci, "CompressInfo", "#c0c060");
-  dot_type_string(fp, "append", ci->cmd_append, true);
-  dot_type_string(fp, "close", ci->cmd_close, true);
-  dot_type_string(fp, "open", ci->cmd_open, true);
+  dot_type_string(fp, "append", ci->cmd_append->string, true);
+  dot_type_string(fp, "close", ci->cmd_close->string, true);
+  dot_type_string(fp, "open", ci->cmd_open->string, true);
   dot_object_footer(fp);
 }
 
@@ -1759,6 +1760,343 @@ void dump_graphviz_patternlist(struct PatternList *pl)
   dot_graph_header(fp);
 
   dot_patternlist(fp, pl, &links);
+
+  dot_graph_footer(fp, &links);
+  fclose(fp);
+  mutt_list_free(&links);
+}
+
+void dot_expando_node_empty(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  dot_object_header(fp, node, "Empty", "#ffffff");
+  // dot_type_string(fp, "type", "ENT_EMPTY", true);
+  dot_object_footer(fp);
+}
+
+void dot_expando_node_text(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "Text", "#ffff80");
+  // dot_type_string(fp, "type", "ENT_TEXT", true);
+
+  if (node->start && node->end)
+  {
+    size_t len = node->end - node->start;
+    char text[64] = { 0 };
+    mutt_strn_copy(text, node->start, len, sizeof(text));
+    dot_type_string(fp, "text", text, true);
+  }
+
+  dot_object_footer(fp);
+
+  buf_pool_release(&buf);
+}
+
+void dot_expando_node_pad(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "Pad", "#80ffff");
+  // dot_type_string(fp, "type", "ENT_PADDING", true);
+
+  struct NodePaddingPrivate *priv = node->ndata;
+  char *pad = "UNKNOWN";
+  switch (priv->pad_type)
+  {
+    case EPT_FILL_EOL:
+      pad = "EPT_FILL_EOL";
+      break;
+    case EPT_HARD_FILL:
+      pad = "EPT_HARD_FILL";
+      break;
+    case EPT_SOFT_FILL:
+      pad = "EPT_SOFT_FILL";
+      break;
+  }
+  dot_type_string(fp, "type", pad, true);
+
+  if (node->start && node->end)
+  {
+    size_t len = node->end - node->start;
+    char text[64] = { 0 };
+    mutt_strn_copy(text, node->start, len, sizeof(text));
+    dot_type_string(fp, "char", text, true);
+  }
+
+  dot_object_footer(fp);
+
+  struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
+  if (left)
+  {
+    dot_expando_node_tree(fp, left, links);
+    dot_add_link(links, node, left, "Pad->left", "left", false, "#80ff80");
+  }
+
+  struct ExpandoNode *right = node_get_child(node, ENP_RIGHT);
+  if (right)
+  {
+    dot_expando_node_tree(fp, right, links);
+    dot_add_link(links, node, right, "Pad->right", "right", false, "#ff8080");
+  }
+
+  buf_pool_release(&buf);
+}
+
+void dot_expando_node_condition(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "Condition", "#ff8080");
+  // dot_type_string(fp, "type", "ENT_CONDITION", true);
+
+  if (node->start && node->end)
+  {
+    size_t len = node->end - node->start;
+
+    char str[64] = { 0 };
+    mutt_strn_copy(str, node->start, len, sizeof(str));
+    dot_type_string(fp, "string", str, true);
+  }
+
+  dot_object_footer(fp);
+
+  struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
+  struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
+  struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+
+  dot_expando_node_tree(fp, condition, links);
+  dot_add_link(links, node, condition, "Condition->condition", "condition", false, "#ff80ff");
+  if (if_true_tree)
+  {
+    dot_expando_node_tree(fp, if_true_tree, links);
+    dot_add_link(links, node, if_true_tree, "Condition->true", "true", false, "#80ff80");
+  }
+  if (if_false_tree)
+  {
+    dot_expando_node_tree(fp, if_false_tree, links);
+    dot_add_link(links, node, if_false_tree, "Condition->false", "false", false, "#ff8080");
+  }
+
+  buf_pool_release(&buf);
+}
+
+void dot_expando_node_conditional_bool(FILE *fp, struct ExpandoNode *node,
+                                       struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "CondBool", "#c0c0ff");
+  // dot_type_string(fp, "type", "ENT_CONDBOOL", true);
+  dot_type_string(fp, "did", name_expando_domain(node->did), true);
+  dot_type_string(fp, "uid", name_expando_uid(node->did, node->uid), true);
+
+  if (node->start && node->end)
+  {
+    size_t len = node->end - node->start;
+
+    char str[64] = { 0 };
+    mutt_strn_copy(str, node->start, len, sizeof(str));
+    dot_type_string(fp, "string", str, true);
+  }
+
+  dot_object_footer(fp);
+
+  buf_pool_release(&buf);
+}
+
+void dot_expando_node_conditional_date(FILE *fp, struct ExpandoNode *node,
+                                       struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "CondDate", "#c0c0ff");
+  // dot_type_string(fp, "type", "ENT_CONDDATE", true);
+  dot_type_string(fp, "did", name_expando_domain(node->did), true);
+  dot_type_string(fp, "uid", name_expando_uid(node->did, node->uid), true);
+
+  if (node->start && node->end)
+  {
+    size_t len = node->end - node->start;
+
+    char str[64] = { 0 };
+    mutt_strn_copy(str, node->start, len, sizeof(str));
+    dot_type_string(fp, "string", str, true);
+  }
+
+  struct NodeCondDatePrivate *priv = node->ndata;
+  if (priv)
+  {
+    dot_type_number(fp, "count", priv->count);
+    dot_type_char(fp, "period", priv->period);
+  }
+
+  dot_object_footer(fp);
+
+  buf_pool_release(&buf);
+}
+
+void dot_format(FILE *fp, struct ExpandoFormat *fmt)
+{
+  if (!fmt)
+    return;
+
+  dot_type_number(fp, "min_cols", fmt->min_cols);
+  dot_type_number(fp, "max_cols", fmt->max_cols);
+
+  char *just = "UNKNOWN";
+  switch (fmt->justification)
+  {
+    case JUSTIFY_LEFT:
+      just = "JUSTIFY_LEFT";
+      break;
+    case JUSTIFY_CENTER:
+      just = "JUSTIFY_CENTER";
+      break;
+    case JUSTIFY_RIGHT:
+      just = "JUSTIFY_RIGHT";
+      break;
+  }
+  dot_type_string(fp, "justification", just, true);
+  dot_type_char(fp, "leader", fmt->leader);
+}
+
+void dot_expando_node_container(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "Container", "#80ffff");
+  // dot_type_string(fp, "type", "ENT_CONTAINER", true);
+
+  dot_format(fp, node->format);
+
+  dot_object_footer(fp);
+
+  struct ExpandoNode **enp = NULL;
+  ARRAY_FOREACH(enp, &node->children)
+  {
+    struct ExpandoNode *child = *enp;
+
+    dot_expando_node_tree(fp, child, links);
+    dot_add_link(links, node, child, "Node->child", "child", false, "#80ff80");
+  }
+
+  buf_pool_release(&buf);
+}
+
+void dot_expando_node_expando(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "Expando", "#80ff80");
+
+  // dot_type_number(fp, "type", node->type);
+  dot_type_string(fp, "did", name_expando_domain(node->did), true);
+  dot_type_string(fp, "uid", name_expando_uid(node->did, node->uid), true);
+
+  if (node->start && node->end)
+  {
+    size_t len = node->end - node->start;
+
+    char str[64] = { 0 };
+    mutt_strn_copy(str, node->start, len, sizeof(str));
+    dot_type_string(fp, "string", str, true);
+  }
+
+  dot_format(fp, node->format);
+
+  dot_object_footer(fp);
+
+  buf_pool_release(&buf);
+}
+
+void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+  dot_object_header(fp, node, "UNKNOWN", "#ff0000");
+
+  dot_type_number(fp, "type", node->type);
+  dot_type_number(fp, "did", node->did);
+  dot_type_number(fp, "uid", node->uid);
+
+  if (node->start && node->end)
+  {
+    size_t len = node->end - node->start;
+
+    char str[64] = { 0 };
+    mutt_strn_copy(str, node->start, len, sizeof(str));
+    dot_type_string(fp, "string", str, true);
+  }
+
+  dot_object_footer(fp);
+
+  buf_pool_release(&buf);
+}
+
+void dot_expando_node_tree(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+{
+  struct Buffer *buf = buf_pool_get();
+
+  char name[256] = { 0 };
+  buf_addstr(buf, "{ rank=same ");
+
+  struct ExpandoNode *prev = NULL;
+  for (; node; node = node->next)
+  {
+    switch (node->type)
+    {
+      case ENT_CONDITION:
+        dot_expando_node_condition(fp, node, links);
+        break;
+      case ENT_CONDBOOL:
+        dot_expando_node_conditional_bool(fp, node, links);
+        break;
+      case ENT_CONDDATE:
+        dot_expando_node_conditional_date(fp, node, links);
+        break;
+      case ENT_CONTAINER:
+        dot_expando_node_container(fp, node, links);
+        break;
+      case ENT_EMPTY:
+        dot_expando_node_empty(fp, node, links);
+        break;
+      case ENT_EXPANDO:
+        dot_expando_node_expando(fp, node, links);
+        break;
+      case ENT_PADDING:
+        dot_expando_node_pad(fp, node, links);
+        break;
+      case ENT_TEXT:
+        dot_expando_node_text(fp, node, links);
+        break;
+      default:
+        dot_expando_node(fp, node, links);
+        break;
+    }
+
+    if (prev)
+      dot_add_link(links, prev, node, "ExpandoNode->next", NULL, false, "#808080");
+    prev = node;
+
+    dot_ptr_name(name, sizeof(name), node);
+    buf_add_printf(buf, "%s ", name);
+  }
+
+  buf_addstr(buf, "}");
+
+  mutt_list_insert_tail(links, buf_strdup(buf));
+  buf_pool_release(&buf);
+}
+
+void dump_graphviz_expando_node(struct ExpandoNode *node)
+{
+  char name[256] = { 0 };
+  struct ListHead links = STAILQ_HEAD_INITIALIZER(links);
+
+  time_t now = time(NULL);
+  mutt_date_localtime_format(name, sizeof(name), "%T-expando.gv", now);
+
+  umask(022);
+  FILE *fp = fopen(name, "w");
+  if (!fp)
+    return;
+
+  dot_graph_header(fp);
+
+  dot_expando_node_tree(fp, node, &links);
 
   dot_graph_footer(fp, &links);
   fclose(fp);

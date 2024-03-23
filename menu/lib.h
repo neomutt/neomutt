@@ -59,6 +59,16 @@ typedef uint8_t MenuRedrawFlags;       ///< Flags, e.g. #MENU_REDRAW_INDEX
 #define MENU_REDRAW_FULL      (1 << 3) ///< Redraw everything
 
 /**
+ * ExpandoDataMenu - Expando UIDs for Menus
+ *
+ * @sa ED_MENU, ExpandoDomain
+ */
+enum ExpandoDataMenu
+{
+  ED_MEN_PERCENTAGE,           ///< Menu.top, ...
+};
+
+/**
  * @defgroup menu_api Menu API
  *
  * The Menu API
@@ -87,11 +97,13 @@ struct Menu
    * @ingroup menu_api
    *
    * make_entry - Format a item for a menu
-   * @param[in]  menu   Menu containing items
-   * @param[in]  line   Menu line number
-   * @param[out] buf    Buffer for the result
+   * @param[in]  menu     Menu containing items
+   * @param[in]  line     Menu line number
+   * @param[in]  max_cols Maximum number of screen columns to use
+   * @param[out] buf      Buffer for the result
+   * @retval num Number of screen columns used
    */
-  void (*make_entry)(struct Menu *menu, int line, struct Buffer *buf);
+  int (*make_entry)(struct Menu *menu, int line, int max_cols, struct Buffer *buf);
 
   /**
    * @defgroup menu_search search()

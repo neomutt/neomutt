@@ -148,6 +148,18 @@ struct Mailbox
 };
 
 /**
+ * ExpandoDataMailbox - Expando UIDs for Mailboxes
+ *
+ * @sa ED_MAILBOX, ExpandoDomain
+ */
+enum ExpandoDataMailbox
+{
+  ED_MBX_MAILBOX_NAME = 1,     ///< Mailbox, mailbox_path()
+  ED_MBX_MESSAGE_COUNT,        ///< Mailbox.msg_count
+  ED_MBX_PERCENTAGE,           ///< HdrFormatInfo.pager_progress
+};
+
+/**
  * struct MailboxNode - List of Mailboxes
  */
 struct MailboxNode

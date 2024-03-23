@@ -4,13 +4,14 @@
  *
  * @authors
  * Copyright (C) 2016 Pierre-Elliott Bécue <becue@crans.org>
- * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Austin Ray <austin@austinray.io>
  * Copyright (C) 2019-2022 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  * Copyright (C) 2022 Carlos Henrique Lima Melara <charlesmelara@outlook.com>
  * Copyright (C) 2023 Leon Philman
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -73,6 +74,7 @@
  */
 
 #include "config.h"
+#include <assert.h>
 #include <dirent.h>
 #include <errno.h>
 #include <grp.h>
@@ -80,7 +82,6 @@
 #include <locale.h>
 #include <pwd.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -91,11 +92,11 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "expando/lib.h"
 #include "imap/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "nntp/lib.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "globals.h"
 #include "mutt_logging.h"
@@ -105,6 +106,9 @@
 #include "nntp/adata.h"
 #include "nntp/mdata.h"
 #include "private_data.h"
+
+const struct ExpandoRenderData FolderRenderData[];
+const struct ExpandoRenderData GroupIndexRenderData[];
 
 /// Help Bar for the File/Dir/Mailbox browser dialog
 static const struct Mapping FolderHelp[] = {
@@ -186,383 +190,439 @@ bool link_is_dir(const char *folder, const char *path)
 }
 
 /**
- * folder_format_str - Format a string for the folder browser - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Alert: 1 if user is notified of new mail
- * | \%C     | Current file number
- * | \%d     | Date/time folder was last modified
- * | \%D     | Date/time folder was last modified using `$date_format.`
- * | \%F     | File permissions
- * | \%f     | Filename (with suffix `/`, `@` or `*`)
- * | \%g     | Group name (or numeric gid, if missing)
- * | \%i     | Description of the folder
- * | \%l     | Number of hard links
- * | \%m     | Number of messages in the mailbox
- * | \%N     | "N" if mailbox has new mail, " " (space) otherwise
- * | \%n     | Number of unread messages in the mailbox
- * | \%p     | Poll: 1 if Mailbox is checked for new mail
- * | \%s     | Size in bytes
- * | \%t     | `*` if the file is tagged, blank otherwise
- * | \%u     | Owner name (or numeric uid, if missing)
- * | \%[fmt] | Date folder was last modified using strftime(3)
+ * folder_date_num - Browser: Last modified (strftime) - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
  */
-static const char *folder_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                     char op, const char *src, const char *prec,
-                                     const char *if_str, const char *else_str,
-                                     intptr_t data, MuttFormatFlags flags)
+long folder_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  char fn[128] = { 0 };
-  char fmt[128] = { 0 };
-  struct Folder *folder = (struct Folder *) data;
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
+  const struct Folder *folder = data;
 
-  switch (op)
+  if (!folder->ff->local)
+    return 0;
+
+  return folder->ff->mtime;
+}
+
+/**
+ * folder_date - Browser: Last modified (strftime) - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_date(const struct ExpandoNode *node, void *data,
+                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  if (!folder->ff->local)
+    return;
+
+  char tmp[128] = { 0 };
+  char tmp2[128] = { 0 };
+  int len = node->end - node->start;
+  const char *start = node->start;
+
+  struct tm tm = mutt_date_localtime(folder->ff->mtime);
+  bool use_c_locale = false;
+  if (*start == '!')
   {
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->notify_user);
-      }
-      else
-      {
-        if (folder->ff->notify_user == 0)
-          optional = false;
-      }
-      break;
+    use_c_locale = true;
+    start++;
+    len--;
+  }
+  assert(len < sizeof(tmp2));
+  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
 
-    case 'C':
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, folder->num + 1);
-      break;
-
-    case 'd':
-    case 'D':
-      if (folder->ff->local)
-      {
-        bool use_c_locale = false;
-
-        const char *t_fmt = NULL;
-        if (op == 'D')
-        {
-          const char *const c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
-          t_fmt = NONULL(c_date_format);
-          if (*t_fmt == '!')
-          {
-            t_fmt++;
-            use_c_locale = true;
-          }
-        }
-        else
-        {
-          static const time_t one_year = 31536000;
-          t_fmt = ((mutt_date_now() - folder->ff->mtime) < one_year) ? "%b %d %H:%M" : "%b %d  %Y";
-        }
-
-        char date[128] = { 0 };
-        if (use_c_locale)
-        {
-          mutt_date_localtime_format_locale(date, sizeof(date), t_fmt,
-                                            folder->ff->mtime, NeoMutt->time_c_locale);
-        }
-        else
-        {
-          mutt_date_localtime_format(date, sizeof(date), t_fmt, folder->ff->mtime);
-        }
-
-        mutt_format(buf, buflen, prec, date, false);
-      }
-      else
-      {
-        mutt_format(buf, buflen, prec, "", false);
-      }
-      break;
-
-    case '[':
-      if (folder->ff->local)
-      {
-        char buf2[128] = { 0 };
-        bool use_c_locale = false;
-        struct tm tm = { 0 };
-
-        char *p = buf;
-
-        const char *cp = src;
-        if (*cp == '!')
-        {
-          use_c_locale = true;
-          cp++;
-        }
-
-        size_t len = buflen - 1;
-        while ((len > 0) && (*cp != ']'))
-        {
-          if (*cp == '%')
-          {
-            cp++;
-            if (len >= 2)
-            {
-              *p++ = '%';
-              *p++ = *cp;
-              len -= 2;
-            }
-            else
-            {
-              break; /* not enough space */
-            }
-            cp++;
-          }
-          else
-          {
-            *p++ = *cp++;
-            len--;
-          }
-        }
-        *p = '\0';
-
-        tm = mutt_date_localtime(folder->ff->mtime);
-
-        if (use_c_locale)
-          strftime_l(buf2, sizeof(buf2), buf, &tm, NeoMutt->time_c_locale);
-        else
-          strftime(buf2, sizeof(buf2), buf, &tm);
-
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, buf2);
-        if (len > 0)
-          src = cp + 1;
-      }
-      else
-      {
-        mutt_format(buf, buflen, prec, "", false);
-      }
-      break;
-
-    case 'f':
-    {
-      char *s = NULL;
-
-      s = NONULL(folder->ff->name);
-
-      snprintf(fn, sizeof(fn), "%s%s", s,
-               folder->ff->local ?
-                   (S_ISLNK(folder->ff->mode) ?
-                        "@" :
-                        (S_ISDIR(folder->ff->mode) ?
-                             "/" :
-                             (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
-                   "");
-
-      mutt_format(buf, buflen, prec, fn, false);
-      break;
-    }
-    case 'F':
-    {
-      if (folder->ff->local)
-      {
-        char permission[11] = { 0 };
-        snprintf(permission, sizeof(permission), "%c%c%c%c%c%c%c%c%c%c",
-                 S_ISDIR(folder->ff->mode) ? 'd' : (S_ISLNK(folder->ff->mode) ? 'l' : '-'),
-                 ((folder->ff->mode & S_IRUSR) != 0) ? 'r' : '-',
-                 ((folder->ff->mode & S_IWUSR) != 0) ? 'w' : '-',
-                 ((folder->ff->mode & S_ISUID) != 0) ? 's' :
-                 ((folder->ff->mode & S_IXUSR) != 0) ? 'x' :
-                                                       '-',
-                 ((folder->ff->mode & S_IRGRP) != 0) ? 'r' : '-',
-                 ((folder->ff->mode & S_IWGRP) != 0) ? 'w' : '-',
-                 ((folder->ff->mode & S_ISGID) != 0) ? 's' :
-                 ((folder->ff->mode & S_IXGRP) != 0) ? 'x' :
-                                                       '-',
-                 ((folder->ff->mode & S_IROTH) != 0) ? 'r' : '-',
-                 ((folder->ff->mode & S_IWOTH) != 0) ? 'w' : '-',
-                 ((folder->ff->mode & S_ISVTX) != 0) ? 't' :
-                 ((folder->ff->mode & S_IXOTH) != 0) ? 'x' :
-                                                       '-');
-        mutt_format(buf, buflen, prec, permission, false);
-      }
-      else if (folder->ff->imap)
-      {
-        char permission[11] = { 0 };
-        /* mark folders with subfolders AND mail */
-        snprintf(permission, sizeof(permission), "IMAP %c",
-                 (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
-        mutt_format(buf, buflen, prec, permission, false);
-      }
-      else
-      {
-        mutt_format(buf, buflen, prec, "", false);
-      }
-      break;
-    }
-
-    case 'g':
-      if (folder->ff->local)
-      {
-        struct group *gr = getgrgid(folder->ff->gid);
-        if (gr)
-        {
-          mutt_format(buf, buflen, prec, gr->gr_name, false);
-        }
-        else
-        {
-          snprintf(fmt, sizeof(fmt), "%%%sld", prec);
-          snprintf(buf, buflen, fmt, folder->ff->gid);
-        }
-      }
-      else
-      {
-        mutt_format(buf, buflen, prec, "", false);
-      }
-      break;
-
-    case 'i':
-    {
-      char *s = NULL;
-      if (folder->ff->desc)
-        s = folder->ff->desc;
-      else
-        s = folder->ff->name;
-
-      snprintf(fn, sizeof(fn), "%s%s", s,
-               folder->ff->local ?
-                   (S_ISLNK(folder->ff->mode) ?
-                        "@" :
-                        (S_ISDIR(folder->ff->mode) ?
-                             "/" :
-                             (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
-                   "");
-
-      mutt_format(buf, buflen, prec, fn, false);
-      break;
-    }
-
-    case 'l':
-      if (folder->ff->local)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->nlink);
-      }
-      else
-      {
-        mutt_format(buf, buflen, prec, "", false);
-      }
-      break;
-
-    case 'm':
-      if (!optional)
-      {
-        if (folder->ff->has_mailbox)
-        {
-          snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-          snprintf(buf, buflen, fmt, folder->ff->msg_count);
-        }
-        else
-        {
-          mutt_format(buf, buflen, prec, "", false);
-        }
-      }
-      else if (folder->ff->msg_count == 0)
-      {
-        optional = false;
-      }
-      break;
-
-    case 'N':
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      snprintf(buf, buflen, fmt, folder->ff->has_new_mail ? 'N' : ' ');
-      break;
-
-    case 'n':
-      if (!optional)
-      {
-        if (folder->ff->has_mailbox)
-        {
-          snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-          snprintf(buf, buflen, fmt, folder->ff->msg_unread);
-        }
-        else
-        {
-          mutt_format(buf, buflen, prec, "", false);
-        }
-      }
-      else if (folder->ff->msg_unread == 0)
-      {
-        optional = false;
-      }
-      break;
-
-    case 'p':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, folder->ff->poll_new_mail);
-      }
-      else
-      {
-        if (folder->ff->poll_new_mail == 0)
-          optional = false;
-      }
-      break;
-
-    case 's':
-      if (folder->ff->local)
-      {
-        mutt_str_pretty_size(fn, sizeof(fn), folder->ff->size);
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, fn);
-      }
-      else
-      {
-        mutt_format(buf, buflen, prec, "", false);
-      }
-      break;
-
-    case 't':
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      snprintf(buf, buflen, fmt, folder->ff->tagged ? '*' : ' ');
-      break;
-
-    case 'u':
-      if (folder->ff->local)
-      {
-        struct passwd *pw = getpwuid(folder->ff->uid);
-        if (pw)
-        {
-          mutt_format(buf, buflen, prec, pw->pw_name, false);
-        }
-        else
-        {
-          snprintf(fmt, sizeof(fmt), "%%%sld", prec);
-          snprintf(buf, buflen, fmt, folder->ff->uid);
-        }
-      }
-      else
-      {
-        mutt_format(buf, buflen, prec, "", false);
-      }
-      break;
-
-    default:
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      snprintf(buf, buflen, fmt, op);
-      break;
+  if (use_c_locale)
+  {
+    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    strftime(tmp, sizeof(tmp), tmp2, &tm);
   }
 
-  if (optional)
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * folder_space - Fixed whitespace - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_space(const struct ExpandoNode *node, void *data,
+                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  buf_addstr(buf, " ");
+}
+
+/**
+ * folder_a_num - Browser: Alert for new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->ff->notify_user;
+}
+
+/**
+ * folder_C_num - Browser: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->num + 1;
+}
+
+/**
+ * folder_d_num - Browser: Last modified - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->local)
+    return 0;
+
+  return folder->ff->mtime;
+}
+
+/**
+ * folder_d - Browser: Last modified - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->local)
+    return;
+
+  static const time_t one_year = 31536000;
+  const char *t_fmt = ((mutt_date_now() - folder->ff->mtime) < one_year) ?
+                          "%b %d %H:%M" :
+                          "%b %d  %Y";
+
+  char tmp[128] = { 0 };
+
+  mutt_date_localtime_format(tmp, sizeof(tmp), t_fmt, folder->ff->mtime);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * folder_D_num - Browser: Last modified ($date_format) - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->local)
+    return 0;
+
+  return folder->ff->mtime;
+}
+
+/**
+ * folder_D - Browser: Last modified ($date_format) - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->local)
+    return;
+
+  char tmp[128] = { 0 };
+  bool use_c_locale = false;
+  const char *const c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
+  const char *t_fmt = NONULL(c_date_format);
+  if (*t_fmt == '!')
   {
-    mutt_expando_format(buf, buflen, col, cols, if_str, folder_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, folder_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
+    t_fmt++;
+    use_c_locale = true;
   }
 
-  /* We return the format string, unchanged */
-  return src;
+  if (use_c_locale)
+  {
+    mutt_date_localtime_format_locale(tmp, sizeof(tmp), t_fmt,
+                                      folder->ff->mtime, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    mutt_date_localtime_format(tmp, sizeof(tmp), t_fmt, folder->ff->mtime);
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * folder_f - Browser: Filename - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = NONULL(folder->ff->name);
+
+  buf_printf(buf, "%s%s", s,
+             folder->ff->local ?
+                 (S_ISLNK(folder->ff->mode) ?
+                      "@" :
+                      (S_ISDIR(folder->ff->mode) ?
+                           "/" :
+                           (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
+                 "");
+}
+
+/**
+ * folder_F - Browser: File permissions - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  if (folder->ff->local)
+  {
+    buf_printf(buf, "%c%c%c%c%c%c%c%c%c%c",
+               S_ISDIR(folder->ff->mode) ? 'd' : (S_ISLNK(folder->ff->mode) ? 'l' : '-'),
+               ((folder->ff->mode & S_IRUSR) != 0) ? 'r' : '-',
+               ((folder->ff->mode & S_IWUSR) != 0) ? 'w' : '-',
+               ((folder->ff->mode & S_ISUID) != 0) ? 's' :
+               ((folder->ff->mode & S_IXUSR) != 0) ? 'x' :
+                                                     '-',
+               ((folder->ff->mode & S_IRGRP) != 0) ? 'r' : '-',
+               ((folder->ff->mode & S_IWGRP) != 0) ? 'w' : '-',
+               ((folder->ff->mode & S_ISGID) != 0) ? 's' :
+               ((folder->ff->mode & S_IXGRP) != 0) ? 'x' :
+                                                     '-',
+               ((folder->ff->mode & S_IROTH) != 0) ? 'r' : '-',
+               ((folder->ff->mode & S_IWOTH) != 0) ? 'w' : '-',
+               ((folder->ff->mode & S_ISVTX) != 0) ? 't' :
+               ((folder->ff->mode & S_IXOTH) != 0) ? 'x' :
+                                                     '-');
+  }
+  else if (folder->ff->imap)
+  {
+    /* mark folders with subfolders AND mail */
+    buf_printf(buf, "IMAP %c", (folder->ff->inferiors && folder->ff->selectable) ? '+' : ' ');
+  }
+}
+
+/**
+ * folder_g - Browser: Group name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_g(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->local)
+    return;
+
+  struct group *gr = getgrgid(folder->ff->gid);
+  if (gr)
+  {
+    buf_addstr(buf, gr->gr_name);
+  }
+  else
+  {
+    buf_printf(buf, "%u", folder->ff->gid);
+  }
+}
+
+/**
+ * folder_i - Browser: Description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_i(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  const char *s = NULL;
+  if (folder->ff->desc)
+    s = folder->ff->desc;
+  else
+    s = folder->ff->name;
+
+  buf_printf(buf, "%s%s", s,
+             folder->ff->local ?
+                 (S_ISLNK(folder->ff->mode) ?
+                      "@" :
+                      (S_ISDIR(folder->ff->mode) ?
+                           "/" :
+                           (((folder->ff->mode & S_IXUSR) != 0) ? "*" : ""))) :
+                 "");
+}
+
+/**
+ * folder_l_num - Browser: Hard links - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  if (folder->ff->local)
+    return folder->ff->nlink;
+
+  return 0;
+}
+
+/**
+ * folder_l - Browser: Hard links - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_l(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->local)
+    return;
+
+  buf_add_printf(buf, "%d", (int) folder->ff->nlink);
+}
+
+/**
+ * folder_m_num - Browser: Number of messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  if (folder->ff->has_mailbox)
+    return folder->ff->msg_count;
+
+  return 0;
+}
+
+/**
+ * folder_m - Browser: Number of messages - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_m(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->has_mailbox)
+    return;
+
+  buf_add_printf(buf, "%d", folder->ff->msg_count);
+}
+
+/**
+ * folder_n_num - Browser: Number of unread messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  if (folder->ff->has_mailbox)
+    return folder->ff->msg_unread;
+
+  return 0;
+}
+
+/**
+ * folder_n - Browser: Number of unread messages - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->has_mailbox)
+    return;
+
+  buf_add_printf(buf, "%d", folder->ff->msg_unread);
+}
+
+/**
+ * folder_N_num - Browser: New mail flag - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_N_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+  return folder->ff->has_new_mail;
+}
+
+/**
+ * folder_N - Browser: New mail flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_N(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = folder->ff->has_new_mail ? "N" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * folder_p_num - Browser: Poll for new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+
+  return folder->ff->poll_new_mail;
+}
+
+/**
+ * folder_s_num - Browser: Size in bytes - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+  return folder->ff->size;
+}
+
+/**
+ * folder_s - Browser: Size in bytes - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  char tmp[128] = { 0 };
+
+  mutt_str_pretty_size(tmp, sizeof(tmp), folder->ff->size);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * folder_t_num - Browser: Is Tagged - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long folder_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct Folder *folder = data;
+  return folder->ff->tagged;
+}
+
+/**
+ * folder_t - Browser: Is Tagged - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = folder->ff->tagged ? "*" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * folder_u - Browser: Owner name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void folder_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+              int max_cols, struct Buffer *buf)
+{
+  const struct Folder *folder = data;
+  if (!folder->ff->local)
+    return;
+
+  struct passwd *pw = getpwuid(folder->ff->uid);
+  if (pw)
+  {
+    buf_addstr(buf, pw->pw_name);
+  }
+  else
+  {
+    buf_printf(buf, "%u", folder->ff->uid);
+  }
 }
 
 /**
@@ -895,9 +955,9 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 /**
  * folder_make_entry - Format a Folder for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $folder_format, $group_index_format, $mailbox_folder_format, folder_format_str()
+ * @sa $folder_format, $group_index_format, $mailbox_folder_format
  */
-static void folder_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int folder_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct BrowserState *bstate = menu->mdata;
   struct BrowserEntryArray *entry = &bstate->entry;
@@ -906,27 +966,30 @@ static void folder_make_entry(struct Menu *menu, int line, struct Buffer *buf)
     .num = line,
   };
 
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
   if (OptNews)
   {
-    const char *const c_group_index_format = cs_subset_string(NeoMutt->sub, "group_index_format");
-    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                        NONULL(c_group_index_format), group_index_format_str,
-                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
+    const struct Expando *c_group_index_format = cs_subset_expando(NeoMutt->sub, "group_index_format");
+    return expando_render(c_group_index_format, GroupIndexRenderData, &folder,
+                          MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
   }
-  else if (bstate->is_mailbox_list)
+
+  if (bstate->is_mailbox_list)
   {
-    const char *const c_mailbox_folder_format = cs_subset_string(NeoMutt->sub, "mailbox_folder_format");
-    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                        NONULL(c_mailbox_folder_format), folder_format_str,
-                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
+    const struct Expando *c_mailbox_folder_format = cs_subset_expando(NeoMutt->sub, "mailbox_folder_format");
+    return expando_render(c_mailbox_folder_format, FolderRenderData, &folder,
+                          MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
   }
-  else
-  {
-    const char *const c_folder_format = cs_subset_string(NeoMutt->sub, "folder_format");
-    mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                        NONULL(c_folder_format), folder_format_str,
-                        (intptr_t) &folder, MUTT_FORMAT_ARROWCURSOR);
-  }
+
+  const struct Expando *c_folder_format = cs_subset_expando(NeoMutt->sub, "folder_format");
+  return expando_render(c_folder_format, FolderRenderData, &folder,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -1494,3 +1557,52 @@ bail:
   simple_dialog_free(&dlg);
   browser_private_data_free(&priv);
 }
+
+/**
+ * FolderRenderData - Callbacks for Browser Expandos
+ *
+ * @sa FolderFormatDef, ExpandoDataFolder, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData FolderRenderData[] = {
+  // clang-format off
+  { ED_FOLDER, ED_FOL_NOTIFY,        NULL,         folder_a_num },
+  { ED_FOLDER, ED_FOL_NUMBER,        NULL,         folder_C_num },
+  { ED_FOLDER, ED_FOL_DATE,          folder_d,     folder_d_num },
+  { ED_FOLDER, ED_FOL_DATE_FORMAT,   folder_D,     folder_D_num },
+  { ED_FOLDER, ED_FOL_FILE_MODE,     folder_F,     NULL },
+  { ED_FOLDER, ED_FOL_FILENAME,      folder_f,     NULL },
+  { ED_FOLDER, ED_FOL_FILE_GROUP,    folder_g,     NULL },
+  { ED_FOLDER, ED_FOL_DESCRIPTION,   folder_i,     NULL },
+  { ED_FOLDER, ED_FOL_HARD_LINKS,    folder_l,     folder_l_num },
+  { ED_FOLDER, ED_FOL_MESSAGE_COUNT, folder_m,     folder_m_num },
+  { ED_FOLDER, ED_FOL_NEW_MAIL,      folder_N,     folder_N_num },
+  { ED_FOLDER, ED_FOL_UNREAD_COUNT,  folder_n,     folder_n_num },
+  { ED_FOLDER, ED_FOL_POLL,          NULL,         folder_p_num },
+  { ED_FOLDER, ED_FOL_FILE_SIZE,     folder_s,     folder_s_num },
+  { ED_FOLDER, ED_FOL_TAGGED,        folder_t,     folder_t_num },
+  { ED_FOLDER, ED_FOL_FILE_OWNER,    folder_u,     NULL },
+  { ED_FOLDER, ED_FOL_STRF,          folder_date,  folder_date_num },
+  { ED_GLOBAL, ED_GLO_PADDING_SPACE, folder_space, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};
+
+/**
+ * GroupIndexRenderData - Callbacks for Nntp Browser Expandos
+ *
+ * @sa GroupIndexFormatDef, ExpandoDataFolder
+ */
+const struct ExpandoRenderData GroupIndexRenderData[] = {
+  // clang-format off
+  { ED_FOLDER, ED_FOL_NOTIFY,       NULL,          group_index_a_num },
+  { ED_FOLDER, ED_FOL_NUMBER,       NULL,          group_index_C_num },
+  { ED_FOLDER, ED_FOL_DESCRIPTION,  group_index_d, NULL },
+  { ED_FOLDER, ED_FOL_NEWSGROUP,    group_index_f, NULL },
+  { ED_FOLDER, ED_FOL_FLAGS,        group_index_M, NULL },
+  { ED_FOLDER, ED_FOL_FLAGS2,       group_index_N, NULL },
+  { ED_FOLDER, ED_FOL_NEW_COUNT,    NULL,          group_index_n_num },
+  { ED_FOLDER, ED_FOL_POLL,         NULL,          group_index_p_num },
+  { ED_FOLDER, ED_FOL_UNREAD_COUNT, NULL,          group_index_s_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

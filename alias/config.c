@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Romeu Vieira <romeu.bizz@gmail.com>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
@@ -33,6 +33,8 @@
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "expando/lib.h"
+#include "gui.h"
 
 /**
  * SortAliasMethods - Sort methods for email aliases
@@ -47,6 +49,49 @@ static const struct Mapping SortAliasMethods[] = {
 };
 
 /**
+ * AliasFormatDef - Expando definitions
+ *
+ * Config:
+ * - $alias_format
+ */
+static const struct ExpandoDefinition AliasFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
+  { "a", "name",         ED_ALIAS,  ED_ALI_NAME,         E_TYPE_STRING, NULL },
+  { "c", "comment",      ED_ALIAS,  ED_ALI_COMMENT,      E_TYPE_STRING, NULL },
+  { "f", "flags",        ED_ALIAS,  ED_ALI_FLAGS,        E_TYPE_STRING, NULL },
+  { "n", "number",       ED_ALIAS,  ED_ALI_NUMBER,       E_TYPE_NUMBER, NULL },
+  { "r", "address",      ED_ALIAS,  ED_ALI_ADDRESS,      E_TYPE_STRING, NULL },
+  { "t", "tagged",       ED_ALIAS,  ED_ALI_TAGGED,       E_TYPE_STRING, NULL },
+  { "Y", "tags",         ED_ALIAS,  ED_ALI_TAGS,         E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
+/**
+ * QueryFormatDef - Expando definitions
+ *
+ * Config:
+ * - $query_format
+ */
+static const struct ExpandoDefinition QueryFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
+  { "a", "address",      ED_ALIAS,  ED_ALI_ADDRESS,      E_TYPE_STRING, NULL },
+  { "c", "number",       ED_ALIAS,  ED_ALI_NUMBER,       E_TYPE_NUMBER, NULL },
+  { "e", "comment",      ED_ALIAS,  ED_ALI_COMMENT,      E_TYPE_STRING, NULL },
+  { "n", "name",         ED_ALIAS,  ED_ALI_NAME,         E_TYPE_STRING, NULL },
+  { "t", "tagged",       ED_ALIAS,  ED_ALI_TAGGED,       E_TYPE_STRING, NULL },
+  { "Y", "tags",         ED_ALIAS,  ED_ALI_TAGS,         E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
+/**
  * AliasVars - Config definitions for the alias library
  */
 static struct ConfigDef AliasVars[] = {
@@ -54,7 +99,7 @@ static struct ConfigDef AliasVars[] = {
   { "alias_file", DT_PATH|D_PATH_FILE, IP "~/.neomuttrc", 0, NULL,
     "Save new aliases to this file"
   },
-  { "alias_format", DT_STRING|D_NOT_EMPTY, IP "%3n %f%t %-15a %-56r | %c", 0, NULL,
+  { "alias_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3n %f%t %-15a %-56r | %c", IP &AliasFormatDef, NULL,
     "printf-like format string for the alias menu"
   },
   { "sort_alias", DT_SORT|D_SORT_REVERSE, SORT_ALIAS, IP SortAliasMethods, NULL,
@@ -63,7 +108,7 @@ static struct ConfigDef AliasVars[] = {
   { "query_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command to query and external address book"
   },
-  { "query_format", DT_STRING|D_NOT_EMPTY, IP "%3c %t %-25.25n %-25.25a | %e", 0, NULL,
+  { "query_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3c %t %-25.25n %-25.25a | %e", IP &QueryFormatDef, NULL,
     "printf-like format string for the query menu (address book)"
   },
   { NULL },

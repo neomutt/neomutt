@@ -3,11 +3,12 @@
  * Address book
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Romeu Vieira <romeu.bizz@gmail.com>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -75,7 +76,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
@@ -84,16 +84,17 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
 #include "alias.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "gui.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
+
+const struct ExpandoRenderData AliasRenderData[];
 
 /// Help Bar for the Alias dialog (address book)
 static const struct Mapping AliasHelp[] = {
@@ -110,84 +111,129 @@ static const struct Mapping AliasHelp[] = {
 };
 
 /**
- * alias_format_str - Format a string for the alias list - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Alias name
- * | \%c     | Comments
- * | \%f     | Flags - currently, a 'd' for an alias marked for deletion
- * | \%n     | Index number
- * | \%r     | Address which alias expands to
- * | \%t     | Character which indicates if the alias is tagged for inclusion
- * | \%Y     | Comma-separated tags
+ * alias_a - Alias: Alias name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
-static const char *alias_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                    char op, const char *src, const char *prec,
-                                    const char *if_str, const char *else_str,
-                                    intptr_t data, MuttFormatFlags flags)
+void alias_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
 {
-  char tmp[1024] = { 0 };
-  struct AliasView *av = (struct AliasView *) data;
-  struct Alias *alias = av->alias;
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
 
-  switch (op)
-  {
-    case 'a':
-      mutt_format(buf, buflen, prec, alias->name, false);
-      break;
-    case 'c':
-      mutt_format(buf, buflen, prec, alias->comment, false);
-      break;
-    case 'f':
-      snprintf(tmp, sizeof(tmp), "%%%ss", prec);
-      snprintf(buf, buflen, tmp, av->is_deleted ? "D" : " ");
-      break;
-    case 'n':
-      snprintf(tmp, sizeof(tmp), "%%%sd", prec);
-      snprintf(buf, buflen, tmp, av->num + 1);
-      break;
-    case 'r':
-    {
-      struct Buffer *tmpbuf = buf_pool_get();
-      mutt_addrlist_write(&alias->addr, tmpbuf, true);
-      mutt_str_copy(tmp, buf_string(tmpbuf), sizeof(tmp));
-      buf_pool_release(&tmpbuf);
-      mutt_format(buf, buflen, prec, tmp, false);
-      break;
-    }
-    case 't':
-      buf[0] = av->is_tagged ? '*' : ' ';
-      buf[1] = '\0';
-      break;
-    case 'Y':
-    {
-      struct Buffer *tags = buf_pool_get();
-      alias_tags_to_buffer(&av->alias->tags, tags);
-      mutt_format(buf, buflen, prec, buf_string(tags), false);
-      buf_pool_release(&tags);
-      break;
-    }
-  }
+  const char *s = alias->name;
+  buf_strcpy(buf, s);
+}
 
-  return src;
+/**
+ * alias_c - Alias: Comment - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void alias_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  const char *s = alias->comment;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * alias_f_num - Alias: Flags - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long alias_f_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AliasView *av = data;
+  return av->is_deleted;
+}
+
+/**
+ * alias_f - Alias: Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void alias_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+
+  // NOTE(g0mb4): use $flag_chars?
+  const char *s = av->is_deleted ? "D" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * alias_n_num - Alias: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long alias_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AliasView *av = data;
+
+  return av->num + 1;
+}
+
+/**
+ * alias_r - Alias: Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void alias_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  mutt_addrlist_write(&alias->addr, buf, true);
+}
+
+/**
+ * alias_t_num - Alias: Tagged char - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long alias_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AliasView *av = data;
+  return av->is_tagged;
+}
+
+/**
+ * alias_t - Alias: Tagged char - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void alias_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+
+  // NOTE(g0mb4): use $flag_chars?
+  const char *s = av->is_tagged ? "*" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * alias_Y - Alias: Tags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void alias_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+
+  alias_tags_to_buffer(&av->alias->tags, buf);
 }
 
 /**
  * alias_make_entry - Format an Alias for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $alias_format, alias_format_str()
+ * @sa $alias_format
  */
-static void alias_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int alias_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
-  const struct AliasView *av = ARRAY_GET(ava, line);
+  struct AliasView *av = ARRAY_GET(ava, line);
 
-  const char *const c_alias_format = cs_subset_string(mdata->sub, "alias_format");
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
 
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols, NONULL(c_alias_format),
-                      alias_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
+  const struct Expando *c_alias_format = cs_subset_expando(mdata->sub, "alias_format");
+  return expando_render(c_alias_format, AliasRenderData, av,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -570,3 +616,21 @@ done:
   FREE(&mdata.title);
   search_state_free(&mdata.search_state);
 }
+
+/**
+ * AliasRenderData - Callbacks for Alias Expandos
+ *
+ * @sa AliasFormatDef, ExpandoDataAlias, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData AliasRenderData[] = {
+  // clang-format off
+  { ED_ALIAS,  ED_ALI_NAME,    alias_a,     NULL },
+  { ED_ALIAS,  ED_ALI_COMMENT, alias_c,     NULL },
+  { ED_ALIAS,  ED_ALI_FLAGS,   alias_f,     alias_f_num },
+  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        alias_n_num },
+  { ED_ALIAS,  ED_ALI_ADDRESS, alias_r,     NULL },
+  { ED_ALIAS,  ED_ALI_TAGGED,  alias_t,     alias_t_num },
+  { ED_ALIAS,  ED_ALI_TAGS,    alias_Y,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

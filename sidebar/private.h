@@ -3,7 +3,7 @@
  * GUI display the mailboxes in a side panel
  *
  * @authors
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,6 +47,30 @@ struct SbEntry
   const struct AttrColor *color;  ///< Colour to use
 };
 ARRAY_HEAD(SbEntryArray, struct SbEntry *);
+
+/**
+ * ExpandoDataSidebar - Expando UIDs for the Sidebar
+ *
+ * @sa ED_SIDEBAR, ExpandoDomain
+ */
+enum ExpandoDataSidebar
+{
+  ED_SID_DELETED_COUNT = 1,    ///< Mailbox.msg_deleted
+  ED_SID_DESCRIPTION,          ///< Mailbox.name
+  ED_SID_FLAGGED,              ///< Mailbox.msg_flagged
+  ED_SID_FLAGGED_COUNT,        ///< Mailbox.msg_flagged
+  ED_SID_LIMITED_COUNT,        ///< Mailbox.vcount
+  ED_SID_MESSAGE_COUNT,        ///< Mailbox.msg_count
+  ED_SID_NAME,                 ///< SbEntry.box
+  ED_SID_NEW_MAIL,             ///< Mailbox.has_new
+  ED_SID_NOTIFY,               ///< Mailbox.notify_user
+  ED_SID_OLD_COUNT,            ///< Mailbox.msg_unread, Mailbox.msg_new
+  ED_SID_POLL,                 ///< Mailbox.poll_new_mail
+  ED_SID_READ_COUNT,           ///< Mailbox.msg_count, Mailbox.msg_unread
+  ED_SID_TAGGED_COUNT,         ///< Mailbox.msg_tagged
+  ED_SID_UNREAD_COUNT,         ///< Mailbox.msg_unread
+  ED_SID_UNSEEN_COUNT,         ///< Mailbox.msg_new
+};
 
 /**
  * enum DivType - Source of the sidebar divider character

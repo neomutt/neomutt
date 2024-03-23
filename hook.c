@@ -11,6 +11,7 @@
  * Copyright (C) 2019 Naveen Nathan <naveen@lastninja.net>
  * Copyright (C) 2022 Oliver Bandel <oliver@first.in-berlin.de>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -47,16 +48,18 @@
 #include "hook.h"
 #include "attach/lib.h"
 #include "compmbox/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "hdrline.h"
 #include "muttlib.h"
 #include "mx.h"
+
+extern const struct ExpandoDefinition IndexFormatDef[];
 
 /**
  * struct Hook - A list of user hooks
@@ -68,6 +71,7 @@ struct Hook
   char *command;               ///< Filename, command or pattern to execute
   char *source_file;           ///< Used for relative-directory source
   struct PatternList *pattern; ///< Used for fcc,save,send-hook
+  struct Expando *expando;     ///< Used for format hooks
   TAILQ_ENTRY(Hook) entries;   ///< Linked list
 };
 TAILQ_HEAD(HookList, Hook);
@@ -101,6 +105,7 @@ static void hook_free(struct Hook **ptr)
     FREE(&h->regex.regex);
   }
   mutt_pattern_free(&h->pattern);
+  expando_free(&h->expando);
   FREE(ptr);
 }
 
@@ -354,6 +359,10 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
   }
 
+  struct Expando *exp = NULL;
+  if (data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
+    exp = expando_parse(buf_string(cmd), IndexFormatDef, err);
+
   hook = hook_new();
   hook->type = data;
   hook->command = buf_strdup(cmd);
@@ -362,6 +371,8 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   hook->regex.pattern = buf_strdup(pattern);
   hook->regex.regex = rx;
   hook->regex.pat_not = pat_not;
+  hook->expando = exp;
+
   TAILQ_INSERT_TAIL(&Hooks, hook, entries);
   rc = MUTT_CMD_SUCCESS;
 
@@ -430,6 +441,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
   struct Buffer *name = buf_pool_get();
   struct Buffer *pattern = buf_pool_get();
   struct Buffer *fmtstring = buf_pool_get();
+  struct Expando *exp = NULL;
 
   if (!IdxFmtHooks)
   {
@@ -460,6 +472,10 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
   }
   parse_extract_token(fmtstring, s, TOKEN_NO_FLAGS);
 
+  exp = expando_parse(buf_string(fmtstring), IndexFormatDef, err);
+  if (!exp)
+    goto out;
+
   if (MoreArgs(s))
   {
     buf_printf(err, _("%s: too many arguments"), buf->data);
@@ -479,7 +495,9 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
       if ((hook->regex.pat_not == pat_not) &&
           mutt_str_equal(buf_string(pattern), hook->regex.pattern))
       {
-        mutt_str_replace(&hook->command, buf_string(fmtstring));
+        expando_free(&hook->expando);
+        hook->expando = exp;
+        exp = NULL;
         rc = MUTT_CMD_SUCCESS;
         goto out;
       }
@@ -500,12 +518,14 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
 
   hook = hook_new();
   hook->type = MUTT_IDXFMTHOOK;
-  hook->command = buf_strdup(fmtstring);
+  hook->command = NULL;
   hook->source_file = mutt_get_sourced_cwd();
   hook->pattern = pat;
   hook->regex.pattern = buf_strdup(pattern);
   hook->regex.regex = NULL;
   hook->regex.pat_not = pat_not;
+  hook->expando = exp;
+  exp = NULL;
 
   if (!hl)
   {
@@ -521,6 +541,7 @@ out:
   buf_pool_release(&name);
   buf_pool_release(&pattern);
   buf_pool_release(&fmtstring);
+  expando_free(&exp);
 
   return rc;
 }
@@ -730,7 +751,8 @@ static int addr_hook(struct Buffer *path, HookFlags type, struct Mailbox *m, str
       if ((mutt_pattern_exec(SLIST_FIRST(hook->pattern), 0, m, e, &cache) > 0) ^
           hook->regex.pat_not)
       {
-        mutt_make_string(path, 0, hook->command, m, -1, e, MUTT_FORMAT_PLAIN, NULL);
+        buf_alloc(path, PATH_MAX);
+        mutt_make_string(path, -1, hook->expando, m, -1, e, MUTT_FORMAT_PLAIN, NULL);
         buf_fix_dptr(path);
         return 0;
       }
@@ -958,10 +980,10 @@ void mutt_startup_shutdown_hook(HookFlags type)
  * @param name Hook name
  * @param m    Mailbox
  * @param e    Email
- * @retval ptr  printf(3)-like format string
+ * @retval ptr  Expando
  * @retval NULL No matching hook
  */
-const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *e)
+const struct Expando *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *e)
 {
   if (!IdxFmtHooks)
     return NULL;
@@ -973,7 +995,7 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
   CurrentHookType = MUTT_IDXFMTHOOK;
 
   struct PatternCache cache = { 0 };
-  const char *fmtstring = NULL;
+  const struct Expando *exp = NULL;
   struct Hook *hook = NULL;
 
   TAILQ_FOREACH(hook, hl, entries)
@@ -981,14 +1003,14 @@ const char *mutt_idxfmt_hook(const char *name, struct Mailbox *m, struct Email *
     struct Pattern *pat = SLIST_FIRST(hook->pattern);
     if ((mutt_pattern_exec(pat, 0, m, e, &cache) > 0) ^ hook->regex.pat_not)
     {
-      fmtstring = hook->command;
+      exp = hook->expando;
       break;
     }
   }
 
   CurrentHookType = MUTT_HOOK_NO_FLAGS;
 
-  return fmtstring;
+  return exp;
 }
 
 /**

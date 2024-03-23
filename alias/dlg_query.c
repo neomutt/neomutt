@@ -3,9 +3,10 @@
  * Routines for querying an external address book
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -70,7 +71,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -83,18 +83,19 @@
 #include "mutt.h"
 #include "lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "send/lib.h"
 #include "alias.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "globals.h"
 #include "gui.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
+
+const struct ExpandoRenderData QueryRenderData[];
 
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
@@ -139,107 +140,110 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 }
 
 /**
- * query_format_str - Format a string for the query menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Destination address
- * | \%c     | Current entry number
- * | \%e     | Extra information
- * | \%n     | Destination name
- * | \%t     | `*` if current entry is tagged, a space otherwise
- * | \%Y     | Comma-separated tags
+ * query_a - Query: Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
-static const char *query_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                    char op, const char *src, const char *prec,
-                                    const char *if_str, const char *else_str,
-                                    intptr_t data, MuttFormatFlags flags)
+void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
 {
-  struct AliasView *av = (struct AliasView *) data;
-  struct Alias *alias = av->alias;
-  char fmt[128] = { 0 };
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
 
-  switch (op)
-  {
-    case 'a':
-    {
-      struct Buffer *tmpbuf = buf_pool_get();
-      char tmp[256] = { 0 };
-      tmp[0] = '<';
-      mutt_addrlist_write(&alias->addr, tmpbuf, true);
-      mutt_str_copy(tmp + 1, buf_string(tmpbuf), sizeof(tmp) - 1);
-      buf_pool_release(&tmpbuf);
-      const size_t len = strlen(tmp);
-      if (len < (sizeof(tmp) - 1))
-      {
-        tmp[len] = '>';
-        tmp[len + 1] = '\0';
-      }
-      mutt_format(buf, buflen, prec, tmp, false);
-      break;
-    }
-    case 'c':
-      snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-      snprintf(buf, buflen, fmt, av->num + 1);
-      break;
-    case 'e':
-      if (!optional)
-        mutt_format(buf, buflen, prec, NONULL(alias->comment), false);
-      else if (!alias->comment || (*alias->comment == '\0'))
-        optional = false;
-      break;
-    case 'n':
-      mutt_format(buf, buflen, prec, NONULL(alias->name), false);
-      break;
-    case 't':
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      snprintf(buf, buflen, fmt, av->is_tagged ? '*' : ' ');
-      break;
-    case 'Y':
-    {
-      struct Buffer *tags = buf_pool_get();
-      alias_tags_to_buffer(&av->alias->tags, tags);
-      mutt_format(buf, buflen, prec, buf_string(tags), false);
-      buf_pool_release(&tags);
-      break;
-    }
-    default:
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      snprintf(buf, buflen, fmt, op);
-      break;
-  }
+  struct Buffer *addrs = buf_pool_get();
+  mutt_addrlist_write(&alias->addr, addrs, true);
 
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, query_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, query_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
-  }
+  buf_printf(buf, "<%s>", buf_string(addrs));
+}
 
-  /* We return the format string, unchanged */
-  return src;
+/**
+ * query_c_num - Query: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long query_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AliasView *av = data;
+
+  return av->num + 1;
+}
+
+/**
+ * query_e - Query: Extra information - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  const char *s = alias->comment;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * query_n - Query: Name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  const char *s = alias->name;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * query_t_num - Query: Tagged char - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long query_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AliasView *av = data;
+  return av->is_tagged;
+}
+
+/**
+ * query_t - Query: Tagged char - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+
+  // NOTE(g0mb4): use $flag_chars?
+  const char *s = av->is_tagged ? "*" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * query_Y - Query: Tags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+
+  alias_tags_to_buffer(&av->alias->tags, buf);
 }
 
 /**
  * query_make_entry - Format an Alias for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $query_format, query_format_str()
+ * @sa $query_format
  */
-static void query_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int query_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   const struct AliasMenuData *mdata = menu->mdata;
   const struct AliasViewArray *ava = &mdata->ava;
   struct AliasView *av = ARRAY_GET(ava, line);
 
-  const char *const c_query_format = cs_subset_string(mdata->sub, "query_format");
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
 
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols, NONULL(c_query_format),
-                      query_format_str, (intptr_t) av, MUTT_FORMAT_ARROWCURSOR);
+  const struct Expando *c_query_format = cs_subset_expando(mdata->sub, "query_format");
+  return expando_render(c_query_format, QueryRenderData, av,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -606,3 +610,20 @@ done:
   aliaslist_clear(&al);
   buf_pool_release(&buf);
 }
+
+/**
+ * QueryRenderData - Callbacks for Query Expandos
+ *
+ * @sa QueryFormatDef, ExpandoDataAlias, ExpandoDataGlobal
+ */
+const struct ExpandoRenderData QueryRenderData[] = {
+  // clang-format off
+  { ED_ALIAS,  ED_ALI_ADDRESS, query_a,     NULL },
+  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
+  { ED_ALIAS,  ED_ALI_COMMENT, query_e,     NULL },
+  { ED_ALIAS,  ED_ALI_NAME,    query_n,     NULL },
+  { ED_ALIAS,  ED_ALI_TAGGED,  query_t,     query_t_num },
+  { ED_ALIAS,  ED_ALI_TAGS,    query_Y,     NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

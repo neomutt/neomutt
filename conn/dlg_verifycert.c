@@ -130,15 +130,22 @@ static int menu_dialog_translate_op(int op)
 /**
  * cert_make_entry - Create a Certificate for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  */
-static void cert_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int cert_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct CertMenuData *mdata = menu->mdata;
 
   menu->current = -1; /* hide menubar */
 
+  int total_cols = 0;
+
   const char **line_ptr = ARRAY_GET(mdata->carr, line);
   if (line_ptr)
-    buf_addstr(buf, *line_ptr);
+  {
+    const int bytes = buf_addstr(buf, *line_ptr);
+    total_cols = mutt_strnwidth(buf_string(buf), bytes);
+  }
+
+  return total_cols;
 }
 
 /**

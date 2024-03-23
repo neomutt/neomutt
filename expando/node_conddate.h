@@ -1,9 +1,10 @@
 /**
  * @file
- * Simple string formatting
+ * Expando Node for a Conditional Date
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
+ * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -20,23 +21,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_GUI_FORMAT_H
-#define MUTT_GUI_FORMAT_H
+#ifndef MUTT_EXPANDO_NODE_CONDDATE_H
+#define MUTT_EXPANDO_NODE_CONDDATE_H
 
-#include <stddef.h>
-#include <stdbool.h>
+struct ExpandoParseError;
 
 /**
- * enum FormatJustify - Alignment for mutt_simple_format()
+ * struct NodeCondDatePrivate - Private data for a Conditional Date
  */
-enum FormatJustify
+struct NodeCondDatePrivate
 {
-  JUSTIFY_LEFT = -1,  ///< Left justify the text
-  JUSTIFY_CENTER = 0, ///< Centre the text
-  JUSTIFY_RIGHT = 1,  ///< Right justify the text
+  int    count;         ///< Number of 'units' to count
+  char   period;        ///< Units, e.g. 'd' Day or 'm' Month
 };
 
-void mutt_format       (char *buf, size_t buflen, const char *prec, const char *s, bool arboreal);
-void mutt_simple_format(char *buf, size_t buflen, int min_width, int max_width, enum FormatJustify justify, char pad_char, const char *s, size_t n, bool arboreal);
+struct ExpandoNode *node_conddate_parse(const char *s, const char **parsed_until, int did, int uid, struct ExpandoParseError *error);
 
-#endif /* MUTT_GUI_FORMAT_H */
+#endif /* MUTT_EXPANDO_NODE_CONDDATE_H */

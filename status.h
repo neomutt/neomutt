@@ -3,7 +3,7 @@
  * GUI display a user-configurable status line
  *
  * @authors
- * Copyright (C) 2018-2021 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -24,9 +24,10 @@
 #define MUTT_STATUS_H
 
 struct Buffer;
+struct Expando;
 struct IndexSharedData;
 struct Menu;
 
-void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared, struct Menu *menu, int cols, const char *fmt);
+void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared, struct Menu *menu, int max_cols, const struct Expando *exp);
 
 #endif /* MUTT_STATUS_H */

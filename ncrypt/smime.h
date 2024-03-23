@@ -3,7 +3,7 @@
  * SMIME helper routines
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -62,6 +62,22 @@ struct SmimeCommandContext
   const char *sig_fname;     ///< %s
   const char *certificates;  ///< %c
   const char *intermediates; ///< %i
+};
+
+/**
+ * ExpandoDataSmimeCmd - Expando UIDs for Smime Commands
+ *
+ * @sa ED_SMIME_CMD, ExpandoDomain
+ */
+enum ExpandoDataSmimeCmd
+{
+  ED_SMI_ALGORITHM = 1,        ///< SmimeCommandContext.cryptalg
+  ED_SMI_CERTIFICATE_IDS,      ///< SmimeCommandContext.certificates
+  ED_SMI_DIGEST_ALGORITHM,     ///< SmimeCommandContext.digestalg
+  ED_SMI_INTERMEDIATE_IDS,     ///< SmimeCommandContext.intermediates
+  ED_SMI_KEY,                  ///< SmimeCommandContext.key
+  ED_SMI_MESSAGE_FILE,         ///< SmimeCommandContext.fname
+  ED_SMI_SIGNATURE_FILE,       ///< SmimeCommandContext.sig_fname
 };
 
 void smime_init(void);

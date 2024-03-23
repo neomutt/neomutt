@@ -3,10 +3,11 @@
  * Read/parse/write an NNTP config file of subscribed newsgroups
  *
  * @authors
- * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2019 Ian Zimmerman <itz@no-use.mooo.com>
  * Copyright (C) 2022 Ramkumar Ramachandra <r@artagnon.com>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +33,6 @@
 #include "config.h"
 #include <dirent.h>
 #include <errno.h>
-#include <inttypes.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -48,9 +48,9 @@
 #include "mutt.h"
 #include "lib.h"
 #include "bcache/lib.h"
+#include "expando/lib.h"
 #include "adata.h"
 #include "edata.h"
-#include "format_flags.h"
 #include "mdata.h"
 #include "mutt_account.h"
 #include "mutt_logging.h"
@@ -62,6 +62,8 @@
 #endif
 
 struct BodyCache;
+
+const struct ExpandoRenderData NntpRenderData[];
 
 /**
  * mdata_find - Find NntpMboxData for given newsgroup or add it
@@ -916,76 +918,119 @@ void nntp_clear_cache(struct NntpAccountData *adata)
 }
 
 /**
- * nntp_format_str - Expand the newsrc filename - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%a     | Account url
- * | \%p     | Port
- * | \%P     | Port if specified
- * | \%s     | News server name
- * | \%S     | Url schema
- * | \%u     | Username
+ * nntp_a - Newsrc: Account url - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
-const char *nntp_format_str(char *buf, size_t buflen, size_t col, int cols, char op,
-                            const char *src, const char *prec, const char *if_str,
-                            const char *else_str, intptr_t data, MuttFormatFlags flags)
+void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
 {
-  struct NntpAccountData *adata = (struct NntpAccountData *) data;
+  struct NntpAccountData *adata = data;
   struct ConnAccount *cac = &adata->conn->account;
-  char fn[128] = { 0 };
-  char fmt[128] = { 0 };
 
-  switch (op)
+  char tmp[128] = { 0 };
+
+  struct Url url = { 0 };
+  mutt_account_tourl(cac, &url);
+  url_tostring(&url, tmp, sizeof(tmp), U_PATH);
+  char *p = strchr(tmp, '/');
+  if (p)
   {
-    case 'a':
-    {
-      struct Url url = { 0 };
-      mutt_account_tourl(cac, &url);
-      url_tostring(&url, fn, sizeof(fn), U_PATH);
-      char *p = strchr(fn, '/');
-      if (p)
-        *p = '\0';
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, fn);
-      break;
-    }
-    case 'p':
-      snprintf(fmt, sizeof(fmt), "%%%su", prec);
-      snprintf(buf, buflen, fmt, cac->port);
-      break;
-    case 'P':
-      *buf = '\0';
-      if (cac->flags & MUTT_ACCT_PORT)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%su", prec);
-        snprintf(buf, buflen, fmt, cac->port);
-      }
-      break;
-    case 's':
-      mutt_str_copy(fn, cac->host, sizeof(fn));
-      mutt_str_lower(fn);
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, fn);
-      break;
-    case 'S':
-    {
-      struct Url url = { 0 };
-      mutt_account_tourl(cac, &url);
-      url_tostring(&url, fn, sizeof(fn), U_PATH);
-      char *p = strchr(fn, ':');
-      if (p)
-        *p = '\0';
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, fn);
-      break;
-    }
-    case 'u':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, cac->user);
-      break;
+    *p = '\0';
   }
-  return src;
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * nntp_p_num - Newsrc: Port - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  return cac->port;
+}
+
+/**
+ * nntp_P_num - Newsrc: Port if specified - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  if (cac->flags & MUTT_ACCT_PORT)
+    return cac->port;
+
+  return 0;
+}
+
+/**
+ * nntp_P - Newsrc: Port if specified - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  if (cac->flags & MUTT_ACCT_PORT)
+  {
+    buf_add_printf(buf, "%hd", cac->port);
+  }
+}
+
+/**
+ * nntp_s - Newsrc: News server name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  char tmp[128] = { 0 };
+
+  mutt_str_copy(tmp, cac->host, sizeof(tmp));
+  mutt_str_lower(tmp);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * nntp_S - Newsrc: Url schema - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  struct NntpAccountData *adata = data;
+  struct ConnAccount *cac = &adata->conn->account;
+
+  char tmp[128] = { 0 };
+
+  struct Url url = { 0 };
+  mutt_account_tourl(cac, &url);
+  url_tostring(&url, tmp, sizeof(tmp), U_PATH);
+  char *p = strchr(tmp, ':');
+  if (p)
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * nntp_u - Newsrc: Username - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void nntp_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+            int max_cols, struct Buffer *buf)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  const char *s = cac->user;
+  buf_strcpy(buf, s);
 }
 
 /**
@@ -1020,7 +1065,7 @@ static const char *nntp_get_field(enum ConnAccountField field, void *gf_data)
  * system has broken mtimes, this might mean the file is reloaded every time,
  * which we'd have to fix.
  *
- * @sa $newsrc, nntp_format_str()
+ * @sa $newsrc
  */
 struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server, bool leave_lock)
 {
@@ -1105,11 +1150,12 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   /* load .newsrc */
   if (rc >= 0)
   {
-    const char *const c_newsrc = cs_subset_path(NeoMutt->sub, "newsrc");
-    mutt_expando_format(file, sizeof(file), 0, sizeof(file), NONULL(c_newsrc),
-                        nntp_format_str, (intptr_t) adata, MUTT_FORMAT_NO_FLAGS);
-    mutt_expand_path(file, sizeof(file));
-    adata->newsrc_file = mutt_str_dup(file);
+    const struct Expando *c_newsrc = cs_subset_expando(NeoMutt->sub, "newsrc");
+    struct Buffer *buf = buf_pool_get();
+    expando_render(c_newsrc, NntpRenderData, adata, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    mutt_expand_path(buf->data, buf->dsize);
+    adata->newsrc_file = buf_strdup(buf);
+    buf_pool_release(&buf);
     rc = nntp_newsrc_parse(adata);
   }
   if (rc >= 0)
@@ -1415,3 +1461,20 @@ void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen)
     break;
   }
 }
+
+/**
+ * NntpRenderData - Callbacks for Newsrc Expandos
+ *
+ * @sa NntpFormatDef, ExpandoDataNntp
+ */
+const struct ExpandoRenderData NntpRenderData[] = {
+  // clang-format off
+  { ED_NNTP, ED_NTP_ACCOUNT,  nntp_a, NULL },
+  { ED_NNTP, ED_NTP_PORT,     NULL,   nntp_p_num },
+  { ED_NNTP, ED_NTP_PORT_IF,  nntp_P, nntp_P_num },
+  { ED_NNTP, ED_NTP_SCHEMA,   nntp_S, NULL },
+  { ED_NNTP, ED_NTP_SERVER,   nntp_s, NULL },
+  { ED_NNTP, ED_NTP_USERNAME, nntp_u, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 1996-2000,2002,2014 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
@@ -43,11 +43,11 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "copy.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "ncrypt/lib.h"
 #include "pager/lib.h"
 #include "send/lib.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -668,11 +668,10 @@ int mutt_copy_message_fp(FILE *fp_out, FILE *fp_in, struct Email *e,
     else
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
-      const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
+      const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       struct Mailbox *m_cur = get_current_mailbox();
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, wraplen, NONULL(c_indent_string), m_cur, -1, e,
-                       MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix, -1, c_indent_string, m_cur, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
       setlocale(LC_TIME, "");
     }
   }

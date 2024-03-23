@@ -3,7 +3,7 @@
  * Wrapper for PGP/SMIME calls to GPGME
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2021 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright

@@ -244,6 +244,49 @@ ENVLIST_OBJS	= test/envlist/envlist_free.o \
 
 EQI_OBJS	= test/eqi/eqi.o
 
+EXPANDO_OBJS	= test/expando/colors_render.o \
+		  test/expando/common.o \
+		  test/expando/complex_if_else.o \
+		  test/expando/conditional_date.o \
+		  test/expando/conditional_date_render.o \
+		  test/expando/conditional_date_render2.o \
+		  test/expando/config.o \
+		  test/expando/date_render.o \
+		  test/expando/debug_print.o \
+		  test/expando/emoji_text.o \
+		  test/expando/empty.o \
+		  test/expando/empty_if_else.o \
+		  test/expando/empty_if_else_render.o \
+		  test/expando/expando.o \
+		  test/expando/format.o \
+		  test/expando/formatted_expando.o \
+		  test/expando/helpers.o \
+		  test/expando/if_else_false_render.o \
+		  test/expando/if_else_true_render.o \
+		  test/expando/justify.o \
+		  test/expando/nested_if_else.o \
+		  test/expando/nested_if_else_render.o \
+		  test/expando/new_if_else.o \
+		  test/expando/node.o \
+		  test/expando/node_condbool.o \
+		  test/expando/node_conddate.o \
+		  test/expando/node_container.o \
+		  test/expando/node_expando.o \
+		  test/expando/node_padding.o \
+		  test/expando/old_if_else.o \
+		  test/expando/padding.o \
+		  test/expando/padding_render.o \
+		  test/expando/parse.o \
+		  test/expando/percent_sign_text.o \
+		  test/expando/serial.o \
+		  test/expando/simple_expando.o \
+		  test/expando/simple_expando_render.o \
+		  test/expando/simple_text.o \
+		  test/expando/two_char_expando.o \
+		  test/expando/two_char_expando_render.o \
+		  test/expando/unicode_padding.o  \
+		  test/expando/validation.o
+
 FILE_OBJS	= test/file/common.o \
 		  test/file/buf_file_expand_fmt_quote.o \
 		  test/file/buf_quote_filename.o \
@@ -621,7 +664,7 @@ BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/color $(PWD)/test/compress $(PWD)/test/config \
 		  $(PWD)/test/convert $(PWD)/test/core $(PWD)/test/date \
 		  $(PWD)/test/editor $(PWD)/test/email $(PWD)/test/envelope \
-		  $(PWD)/test/envlist $(PWD)/test/eqi $(PWD)/test/file \
+		  $(PWD)/test/envlist $(PWD)/test/eqi $(PWD)/test/expando $(PWD)/test/file \
 		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
 		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
 		  $(PWD)/test/idna $(PWD)/test/imap $(PWD)/test/list \
@@ -656,6 +699,7 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(ENVELOPE_OBJS) \
 		  $(ENVLIST_OBJS) \
 		  $(EQI_OBJS) \
+		  $(EXPANDO_OBJS) \
 		  $(FILE_OBJS) \
 		  $(FILTER_OBJS) \
 		  $(FROM_OBJS) \

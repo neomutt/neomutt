@@ -7,6 +7,7 @@
  * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Leon Philman
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -44,11 +45,11 @@
 #include "recvcmd.h"
 #include "attach/lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "copy.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -423,10 +424,9 @@ static void include_header(bool quote, FILE *fp_in, struct Email *e,
     else if (!c_text_flowed)
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
-      const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
+      const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix2, 0, NONULL(c_indent_string), NULL, -1, e,
-                       MUTT_FORMAT_NO_FLAGS, NULL);
+      mutt_make_string(prefix2, -1, c_indent_string, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
       setlocale(LC_TIME, "");
     }
     else
@@ -530,9 +530,9 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
     else
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
-      const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
+      const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, 0, NONULL(c_indent_string), NULL, -1, e_parent,
+      mutt_make_string(prefix, -1, c_indent_string, NULL, -1, e_parent,
                        MUTT_FORMAT_NO_FLAGS, NULL);
       setlocale(LC_TIME, "");
     }
@@ -1031,9 +1031,9 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
     else
     {
       const char *const c_attribution_locale = cs_subset_string(NeoMutt->sub, "attribution_locale");
-      const char *const c_indent_string = cs_subset_string(NeoMutt->sub, "indent_string");
+      const struct Expando *c_indent_string = cs_subset_expando(NeoMutt->sub, "indent_string");
       setlocale(LC_TIME, NONULL(c_attribution_locale));
-      mutt_make_string(prefix, 0, NONULL(c_indent_string), m, -1, e_parent,
+      mutt_make_string(prefix, -1, c_indent_string, m, -1, e_parent,
                        MUTT_FORMAT_NO_FLAGS, NULL);
       setlocale(LC_TIME, "");
     }

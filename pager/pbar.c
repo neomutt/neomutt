@@ -3,7 +3,7 @@
  * Pager Bar
  *
  * @authors
- * Copyright (C) 2021-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -69,9 +69,9 @@
 #include "pbar.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "display.h"
-#include "format_flags.h"
 #include "hdrline.h"
 #include "mview.h"
 #include "private_data.h"
@@ -128,9 +128,9 @@ static int pbar_recalc(struct MuttWindow *win)
   {
     int msg_in_pager = shared->mailbox_view ? shared->mailbox_view->msg_in_pager : -1;
 
-    const char *c_pager_format = cs_subset_string(shared->sub, "pager_format");
-    mutt_make_string(buf, win->state.cols, NONULL(c_pager_format), shared->mailbox,
-                     msg_in_pager, shared->email, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
+    const struct Expando *c_pager_format = cs_subset_expando(shared->sub, "pager_format");
+    mutt_make_string(buf, win->state.cols, c_pager_format, shared->mailbox, msg_in_pager,
+                     shared->email, MUTT_FORMAT_NO_FLAGS, pager_progress_str);
   }
   else
   {

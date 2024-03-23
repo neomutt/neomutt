@@ -16,6 +16,7 @@
  * Copyright (C) 2023 Whitney Cumber
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -59,6 +60,7 @@
 #include "browser/lib.h"
 #include "compose/lib.h"
 #include "editor/lib.h"
+#include "expando/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "ncrypt/lib.h"
@@ -69,7 +71,6 @@
 #include "question/lib.h"
 #include "body.h"
 #include "copy.h"
-#include "format_flags.h"
 #include "globals.h"
 #include "handler.h"
 #include "hdrline.h"
@@ -98,6 +99,8 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
+
+const struct ExpandoRenderData GreetingRenderData[];
 
 /**
  * append_signature - Append a signature to an email
@@ -450,7 +453,7 @@ static void process_user_header(struct Envelope *env)
  */
 void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
-  const char *const c_forward_attribution_intro = cs_subset_string(sub, "forward_attribution_intro");
+  const struct Expando *c_forward_attribution_intro = cs_subset_expando(sub, "forward_attribution_intro");
   if (!c_forward_attribution_intro || !fp)
     return;
 
@@ -458,7 +461,7 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, 0, c_forward_attribution_intro, NULL, -1, e,
+  mutt_make_string(buf, -1, c_forward_attribution_intro, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf_string(buf), fp);
@@ -474,7 +477,7 @@ void mutt_forward_intro(struct Email *e, FILE *fp, struct ConfigSubset *sub)
  */
 void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 {
-  const char *const c_forward_attribution_trailer = cs_subset_string(sub, "forward_attribution_trailer");
+  const struct Expando *c_forward_attribution_trailer = cs_subset_expando(sub, "forward_attribution_trailer");
   if (!c_forward_attribution_trailer || !fp)
     return;
 
@@ -482,7 +485,7 @@ void mutt_forward_trailer(struct Email *e, FILE *fp, struct ConfigSubset *sub)
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, 0, c_forward_attribution_trailer, NULL, -1, e,
+  mutt_make_string(buf, -1, c_forward_attribution_trailer, NULL, -1, e,
                    MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputc('\n', fp);
@@ -628,22 +631,22 @@ cleanup:
 
 /**
  * format_attribution - Format an attribution prefix/suffix
- * @param s      String to format
+ * @param exp    Expando to format
  * @param e      Email
  * @param fp_out File to write to
  * @param sub    Config Subset
  */
-static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
-                               struct ConfigSubset *sub)
+static void format_attribution(const struct Expando *exp, struct Email *e,
+                               FILE *fp_out, struct ConfigSubset *sub)
 {
-  if (!s || !fp_out)
+  if (!exp || !fp_out)
     return;
 
   const char *const c_attribution_locale = cs_subset_string(sub, "attribution_locale");
 
   struct Buffer *buf = buf_pool_get();
   setlocale(LC_TIME, NONULL(c_attribution_locale));
-  mutt_make_string(buf, 0, s, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, -1, exp, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   setlocale(LC_TIME, "");
   fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
@@ -658,7 +661,7 @@ static void format_attribution(const char *s, struct Email *e, FILE *fp_out,
  */
 void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  format_attribution(cs_subset_string(sub, "attribution_intro"), e, fp_out, sub);
+  format_attribution(cs_subset_expando(sub, "attribution_intro"), e, fp_out, sub);
 }
 
 /**
@@ -669,72 +672,74 @@ void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSub
  */
 void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  format_attribution(cs_subset_string(sub, "attribution_trailer"), e, fp_out, sub);
+  format_attribution(cs_subset_expando(sub, "attribution_trailer"), e, fp_out, sub);
 }
 
 /**
- * greeting_format_str - Format a greetings string - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :----------------------------------------------------------------
- * | \%n     | Recipient's real name (or address if missing)
- * | \%u     | User (login) name of the recipient
- * | \%v     | First name of the recipient
+ * greeting_n - Greeting: Real name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
-static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                       char op, const char *src, const char *prec,
-                                       const char *if_str, const char *else_str,
-                                       intptr_t data, MuttFormatFlags flags)
+void greeting_n(const struct ExpandoNode *node, void *data,
+                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
-  struct Email *e = (struct Email *) data;
-  char *p = NULL;
-  char buf2[256] = { 0 };
+  const struct Email *e = data;
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
 
+  const char *s = mutt_get_name(to);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * greeting_u - Greeting: Login name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void greeting_u(const struct ExpandoNode *node, void *data,
+                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Email *e = data;
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
+
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  if (to)
+  {
+    mutt_str_copy(tmp, mutt_addr_for_display(to), sizeof(tmp));
+    if ((p = strpbrk(tmp, "%@")))
+    {
+      *p = '\0';
+    }
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * greeting_v - Greeting: First name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void greeting_v(const struct ExpandoNode *node, void *data,
+                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct Email *e = data;
   const struct Address *to = TAILQ_FIRST(&e->env->to);
   const struct Address *cc = TAILQ_FIRST(&e->env->cc);
 
-  buf[0] = '\0';
-  switch (op)
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  if (to)
   {
-    case 'n':
-      mutt_format(buf, buflen, prec, mutt_get_name(to), false);
-      break;
-
-    case 'u':
-      if (to)
-      {
-        mutt_str_copy(buf2, mutt_addr_for_display(to), sizeof(buf2));
-        if ((p = strpbrk(buf2, "%@")))
-          *p = '\0';
-      }
-      else
-      {
-        buf2[0] = '\0';
-      }
-      mutt_format(buf, buflen, prec, buf2, false);
-      break;
-
-    case 'v':
-      if (to)
-        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(to), false);
-      else if (cc)
-        mutt_format(buf2, sizeof(buf2), prec, mutt_get_name(cc), false);
-      else
-        *buf2 = '\0';
-      if ((p = strpbrk(buf2, " %@")))
-        *p = '\0';
-      mutt_format(buf, buflen, prec, buf2, false);
-      break;
-
-    default:
-      snprintf(buf, buflen, "%%%s%c", prec, op);
-      break;
+    const char *s = mutt_get_name(to);
+    mutt_str_copy(tmp, s, sizeof(tmp));
+  }
+  else if (cc)
+  {
+    const char *s = mutt_get_name(cc);
+    mutt_str_copy(tmp, s, sizeof(tmp));
   }
 
-  if (flags & MUTT_FORMAT_OPTIONAL)
-    mutt_expando_format(buf, buflen, col, cols, else_str, greeting_format_str, data, flags);
+  if ((p = strpbrk(tmp, " %@")))
+    *p = '\0';
 
-  return src;
+  buf_strcpy(buf, tmp);
 }
 
 /**
@@ -743,21 +748,21 @@ static const char *greeting_format_str(char *buf, size_t buflen, size_t col, int
  * @param fp_out File to write to
  * @param sub    Config Subset
  *
- * @sa $greeting, greeting_format_str()
+ * @sa $greeting
  */
 static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
-  const char *const c_greeting = cs_subset_string(sub, "greeting");
+  const struct Expando *c_greeting = cs_subset_expando(sub, "greeting");
   if (!c_greeting || !fp_out)
     return;
 
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
 
-  mutt_expando_format(buf, sizeof(buf), 0, 0, c_greeting, greeting_format_str,
-                      (intptr_t) e, TOKEN_NO_FLAGS);
+  expando_render(c_greeting, GreetingRenderData, e, TOKEN_NO_FLAGS, buf->dsize, buf);
 
-  fputs(buf, fp_out);
+  fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);
+  buf_pool_release(&buf);
 }
 
 /**
@@ -1053,11 +1058,11 @@ void mutt_make_forward_subject(struct Envelope *env, struct Email *e, struct Con
   if (!env)
     return;
 
-  const char *const c_forward_format = cs_subset_string(sub, "forward_format");
+  const struct Expando *c_forward_format = cs_subset_expando(sub, "forward_format");
 
   struct Buffer *buf = buf_pool_get();
   /* set the default subject for the message. */
-  mutt_make_string(buf, 0, NONULL(c_forward_format), NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
+  mutt_make_string(buf, -1, c_forward_format, NULL, -1, e, MUTT_FORMAT_NO_FLAGS, NULL);
   mutt_env_set_subject(env, buf_string(buf));
   buf_pool_release(&buf);
 }
@@ -3074,3 +3079,17 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
 
   return rc;
 }
+
+/**
+ * GreetingRenderData - Callbacks for Greeting Expandos
+ *
+ * @sa GreetingFormatDef, ExpandoDataEnvelope
+ */
+const struct ExpandoRenderData GreetingRenderData[] = {
+  // clang-format off
+  { ED_ENVELOPE, ED_ENV_REAL_NAME,  greeting_n, NULL },
+  { ED_ENVELOPE, ED_ENV_USER_NAME,  greeting_u, NULL },
+  { ED_ENVELOPE, ED_ENV_FIRST_NAME, greeting_v, NULL },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

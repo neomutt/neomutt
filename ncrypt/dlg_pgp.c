@@ -3,8 +3,9 @@
  * PGP Key Selection Dialog
  *
  * @authors
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -67,10 +68,9 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <assert.h>
 #include <locale.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
@@ -79,16 +79,17 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
-#include "format_flags.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
 #include "pgp.h"
 #include "pgp_functions.h"
 #include "pgpkey.h"
 #include "pgplib.h"
 #include "sort.h"
+
+const struct ExpandoRenderData PgpEntryRenderData[];
 
 /// Help Bar for the PGP key selection dialog
 static const struct Mapping PgpHelp[] = {
@@ -250,198 +251,280 @@ static char pgp_flags(KeyFlags flags)
 }
 
 /**
- * pgp_entry_format_str - Format an entry on the PGP key selection menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%n     | Number
- * | \%t     | Trust/validity of the key-uid association
- * | \%u     | User id
- * | \%[fmt] | Date of key using strftime(3)
- * |         |
- * | \%a     | Algorithm
- * | \%c     | Capabilities
- * | \%f     | Flags
- * | \%k     | Key id
- * | \%l     | Length
- * |         |
- * | \%A     | Algorithm of the principal key
- * | \%C     | Capabilities of the principal key
- * | \%F     | Flags of the principal key
- * | \%K     | Key id of the principal key
- * | \%L     | Length of the principal key
+ * pgp_entry_pgp_date_num - PGP: Date of the key - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
  */
-static const char *pgp_entry_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                        char op, const char *src, const char *prec,
-                                        const char *if_str, const char *else_str,
-                                        intptr_t data, MuttFormatFlags flags)
+long pgp_entry_pgp_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  char fmt[128] = { 0 };
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
 
-  struct PgpEntry *entry = (struct PgpEntry *) data;
-  struct PgpUid *uid = entry->uid;
+  return key->gen_time;
+#endif
+  return 0;
+}
+
+/**
+ * pgp_entry_pgp_date - PGP: Date of the key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_date(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  char tmp[128] = { 0 };
+  char datestr[128] = { 0 };
+
+  int len = node->end - node->start;
+  const char *start = node->start;
+  bool use_c_locale = false;
+  if (*start == '!')
+  {
+    use_c_locale = true;
+    start++;
+    len--;
+  }
+
+  assert(len < sizeof(datestr));
+  mutt_strn_copy(datestr, start, len, sizeof(datestr));
+
+  if (use_c_locale)
+  {
+    mutt_date_localtime_format_locale(tmp, sizeof(tmp), datestr, key->gen_time,
+                                      NeoMutt->time_c_locale);
+  }
+  else
+  {
+    mutt_date_localtime_format(tmp, sizeof(tmp), datestr, key->gen_time);
+  }
+
+  buf_strcpy(buf, tmp);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_n_num - PGP: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  return entry->num;
+#else
+  return 0;
+#endif
+}
+
+/**
+ * pgp_entry_pgp_t - PGP: Trust/validity - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_t(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+
+  buf_printf(buf, "%c", TrustFlags[uid->trust & 0x03]);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_u - PGP: User id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_u(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+
+  const char *s = uid->addr;
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_a - PGP: Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_a(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  const char *s = key->algorithm;
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_A - PGP: Principal Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_A(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
   struct PgpKeyInfo *key = uid->parent;
   struct PgpKeyInfo *pkey = pgp_principal_key(key);
 
-  if (isupper((unsigned char) op))
-    key = pkey;
+  const char *s = pkey->algorithm;
+  buf_strcpy(buf, s);
+#endif
+}
 
-  KeyFlags kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
+/**
+ * pgp_entry_pgp_c - PGP: Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_c(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
 
-  switch (tolower(op))
-  {
-    case 'a':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, key->algorithm);
-      }
-      break;
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, pgp_key_abilities(kflags));
-      }
-      else if (!(kflags & KEYFLAG_ABILITIES))
-      {
-        optional = false;
-      }
-      break;
-    case 'f':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, pgp_flags(kflags));
-      }
-      else if (!(kflags & KEYFLAG_RESTRICTIONS))
-      {
-        optional = false;
-      }
-      break;
-    case 'k':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, pgp_this_keyid(key));
-      }
-      break;
-    case 'l':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, key->keylen);
-      }
-      break;
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, entry->num);
-      }
-      break;
-    case 't':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, TrustFlags[uid->trust & 0x03]);
-      }
-      else if (!(uid->trust & 0x03))
-      {
-        /* undefined trust */
-        optional = false;
-      }
-      break;
-    case 'u':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, NONULL(uid->addr));
-      }
-      break;
-    case '[':
-    {
-      char buf2[128] = { 0 };
-      bool use_c_locale = false;
-      size_t len;
+  const KeyFlags kflags = key->flags | uid->flags;
 
-      char *p = buf;
+  const char *s = pgp_key_abilities(kflags);
+  buf_strcpy(buf, s);
+#endif
+}
 
-      const char *cp = src;
-      if (*cp == '!')
-      {
-        use_c_locale = true;
-        cp++;
-      }
+/**
+ * pgp_entry_pgp_C - PGP: Principal Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_C(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
 
-      len = buflen - 1;
-      while ((len > 0) && (*cp != ']'))
-      {
-        if (*cp == '%')
-        {
-          cp++;
-          if (len >= 2)
-          {
-            *p++ = '%';
-            *p++ = *cp;
-            len -= 2;
-          }
-          else
-          {
-            break; /* not enough space */
-          }
-          cp++;
-        }
-        else
-        {
-          *p++ = *cp++;
-          len--;
-        }
-      }
-      *p = '\0';
+  const KeyFlags kflags = (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
 
-      if (use_c_locale)
-      {
-        mutt_date_localtime_format_locale(buf2, sizeof(buf2), buf,
-                                          key->gen_time, NeoMutt->time_c_locale);
-      }
-      else
-      {
-        mutt_date_localtime_format(buf2, sizeof(buf2), buf, key->gen_time);
-      }
+  const char *s = pgp_key_abilities(kflags);
+  buf_strcpy(buf, s);
+#endif
+}
 
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, buf2);
-      if (len > 0)
-        src = cp + 1;
-      break;
-    }
-    default:
-      *buf = '\0';
-  }
+/**
+ * pgp_entry_pgp_f - PGP: Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_f(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
 
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, pgp_entry_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, pgp_entry_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
-  }
+  const KeyFlags kflags = key->flags | uid->flags;
 
-  /* We return the format string, unchanged */
-  return src;
+  buf_printf(buf, "%c", pgp_flags(kflags));
+#endif
+}
+
+/**
+ * pgp_entry_pgp_F - PGP: Principal Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_F(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  const KeyFlags kflags = (pkey->flags & KEYFLAG_RESTRICTIONS) | uid->flags;
+
+  buf_printf(buf, "%c", pgp_flags(kflags));
+#endif
+}
+
+/**
+ * pgp_entry_pgp_k - PGP: Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_k(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+
+  const char *s = pgp_this_keyid(key);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_K - PGP: Principal Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_pgp_K(const struct ExpandoNode *node, void *data,
+                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  const char *s = pgp_this_keyid(pkey);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_pgp_l_num - PGP: Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  const struct PgpKeyInfo *key = uid->parent;
+
+  return key->keylen;
+#else
+  return 0;
+#endif
+}
+
+/**
+ * pgp_entry_pgp_L_num - PGP: Principal Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_pgp_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PGP
+  const struct PgpEntry *entry = data;
+  const struct PgpUid *uid = entry->uid;
+  struct PgpKeyInfo *key = uid->parent;
+  struct PgpKeyInfo *pkey = pgp_principal_key(key);
+
+  return pkey->keylen;
+#else
+  return 0;
+#endif
 }
 
 /**
  * pgp_make_entry - Format a PGP Key for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $pgp_entry_format, pgp_entry_format_str()
+ * @sa $pgp_entry_format
  */
-static void pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int pgp_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct PgpUid **key_table = menu->mdata;
 
@@ -449,10 +532,16 @@ static void pgp_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   entry.uid = key_table[line];
   entry.num = line + 1;
 
-  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                      NONULL(c_pgp_entry_format), pgp_entry_format_str,
-                      (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
+  return expando_render(c_pgp_entry_format, PgpEntryRenderData, &entry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -655,3 +744,28 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
   simple_dialog_free(&dlg);
   return pd.key;
 }
+
+/**
+ * PgpEntryRenderData- Callbacks for PGP Key Expandos
+ *
+ * @sa PgpEntryFormatDef, ExpandoDataGlobal, ExpandoDataPgp, ExpandoDataPgpKey
+ */
+const struct ExpandoRenderData PgpEntryRenderData[] = {
+  // clang-format off
+  { ED_PGP,     ED_PGP_NUMBER,            NULL,                pgp_entry_pgp_n_num },
+  { ED_PGP,     ED_PGP_TRUST,             pgp_entry_pgp_t,     NULL },
+  { ED_PGP,     ED_PGP_USER_ID,           pgp_entry_pgp_u,     NULL },
+  { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_pgp_date,  pgp_entry_pgp_date_num },
+  { ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     pgp_entry_pgp_a,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  pgp_entry_pgp_c,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_FLAGS,         pgp_entry_pgp_f,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_ID,            pgp_entry_pgp_k,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_LENGTH,        NULL,                pgp_entry_pgp_l_num },
+  { ED_PGP_KEY, ED_PGK_PKEY_ALGORITHM,    pgp_entry_pgp_A,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_CAPABILITIES, pgp_entry_pgp_C,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        pgp_entry_pgp_F,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_ID,           pgp_entry_pgp_K,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL,                pgp_entry_pgp_L_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

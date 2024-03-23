@@ -4,10 +4,11 @@
  *
  * @authors
  * Copyright (C) 2020 Yousef Akbar <yousef@yhakbar.com>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2022 raf <raf@raf.org>
  * Copyright (C) 2023 Whitney Cumber
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -37,10 +38,19 @@
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
+#include "expando/lib.h"
 #include "smtp.h"
 #ifdef USE_SASL_CYRUS
 #include "conn/lib.h"
 #endif
+
+extern const struct ExpandoDefinition IndexFormatDef[];
+
+/// IndexFormatDefNoPadding - Index format definitions, without padding or arrow
+static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[4]);
+
+extern const struct ExpandoDefinition NntpFormatDef[];
 
 /**
  * wrapheaders_validator - Validate the "wrap_headers" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
@@ -87,7 +97,7 @@ static int smtp_auth_validator(const struct ConfigSet *cs, const struct ConfigDe
 }
 
 /**
- * simple_command_validator - Validate the "sendmail" and "inews" config variables - Implements ConfigDef::validator() - @ingroup cfg_def_validator
+ * simple_command_validator - Validate the "sendmail" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator
  */
 static int simple_command_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                                     intptr_t value, struct Buffer *err)
@@ -105,6 +115,21 @@ static int simple_command_validator(const struct ConfigSet *cs, const struct Con
   buf_printf(err, _("Option %s must not contain shell metacharacters: %c"), cdef->name, c);
   return CSR_ERR_INVALID;
 }
+
+/**
+ * GreetingFormatDef - Expando definitions
+ *
+ * Config:
+ * - $greeting
+ */
+static const struct ExpandoDefinition GreetingFormatDef[] = {
+  // clang-format off
+  { "n", "real-name",  ED_ENVELOPE, ED_ENV_REAL_NAME,  E_TYPE_STRING, NULL },
+  { "u", "user-name",  ED_ENVELOPE, ED_ENV_USER_NAME,  E_TYPE_STRING, NULL },
+  { "v", "first-name", ED_ENVELOPE, ED_ENV_FIRST_NAME, E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
 
 /**
  * SendVars - Config definitions for the send library
@@ -141,13 +166,13 @@ static struct ConfigDef SendVars[] = {
   { "attach_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
   },
-  { "attribution_intro", DT_STRING, IP "On %d, %n wrote:", 0, NULL,
+  { "attribution_intro", DT_EXPANDO, IP "On %d, %n wrote:", IP IndexFormatDefNoPadding, NULL,
     "Message to start a reply, 'On DATE, PERSON wrote:'"
   },
   { "attribution_locale", DT_STRING, 0, 0, NULL,
     "Locale for dates in the attribution message"
   },
-  { "attribution_trailer", DT_STRING, 0, 0, NULL,
+  { "attribution_trailer", DT_EXPANDO, 0, IP IndexFormatDefNoPadding, NULL,
     "Suffix message to add after reply text"
   },
   { "bounce_delivered", DT_BOOL, true, 0, NULL,
@@ -207,10 +232,10 @@ static struct ConfigDef SendVars[] = {
   { "forward_attachments", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Forward attachments when forwarding a message"
   },
-  { "forward_attribution_intro", DT_STRING, IP "----- Forwarded message from %f -----", 0, NULL,
+  { "forward_attribution_intro", DT_EXPANDO, IP "----- Forwarded message from %f -----", IP IndexFormatDefNoPadding, NULL,
     "Prefix message for forwarded messages"
   },
-  { "forward_attribution_trailer", DT_STRING, IP "----- End forwarded message -----", 0, NULL,
+  { "forward_attribution_trailer", DT_EXPANDO, IP "----- End forwarded message -----", IP IndexFormatDefNoPadding, NULL,
     "Suffix message for forwarded messages"
   },
   { "forward_decrypt", DT_BOOL, true, 0, NULL,
@@ -219,13 +244,13 @@ static struct ConfigDef SendVars[] = {
   { "forward_edit", DT_QUAD, MUTT_YES, 0, NULL,
     "Automatically start the editor when forwarding a message"
   },
-  { "forward_format", DT_STRING|D_NOT_EMPTY, IP "[%a: %s]", 0, NULL,
+  { "forward_format", DT_EXPANDO|D_NOT_EMPTY, IP "[%a: %s]", IP IndexFormatDefNoPadding, NULL,
     "printf-like format string to control the subject when forwarding a message"
   },
   { "forward_references", DT_BOOL, false, 0, NULL,
     "Set the 'In-Reply-To' and 'References' headers when forwarding a message"
   },
-  { "greeting", DT_STRING, 0, 0, NULL,
+  { "greeting", DT_EXPANDO, 0, IP &GreetingFormatDef, NULL,
     "Greeting string added to the top of all messages"
   },
   { "hdrs", DT_BOOL, true, 0, NULL,

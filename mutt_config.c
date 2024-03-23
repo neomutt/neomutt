@@ -6,9 +6,10 @@
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Louis Brauer <louis@openbooking.ch>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Ashish Panigrahi <ashish.panigrahi@protonmail.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,13 +36,22 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
+#include "attach/lib.h"
+#include "expando/lib.h"
+#include "index/lib.h"
+#include "menu/lib.h"
+#include "mixmaster/lib.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
+
+extern const struct ExpandoDefinition IndexFormatDef[];
 
 #define CONFIG_INIT_TYPE(CS, NAME)                                             \
   extern const struct ConfigSetType Cst##NAME;                                 \
@@ -114,6 +124,285 @@ static int multipart_validator(const struct ConfigSet *cs, const struct ConfigDe
 }
 
 /**
+ * AttachFormatDef - Expando definitions
+ *
+ * Config:
+ * - $attach_format
+ */
+static const struct ExpandoDefinition AttachFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     E_TYPE_STRING, node_padding_parse },
+  { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     E_TYPE_STRING, node_padding_parse },
+  { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      E_TYPE_STRING, node_padding_parse },
+  { "c", "charset-convert",  ED_BODY,   ED_BOD_CHARSET_CONVERT,  E_TYPE_STRING, NULL },
+  { "C", "charset",          ED_ATTACH, ED_ATT_CHARSET,          E_TYPE_STRING, NULL },
+  { "d", "description",      ED_BODY,   ED_BOD_DESCRIPTION,      E_TYPE_STRING, NULL },
+  { "D", "deleted",          ED_BODY,   ED_BOD_DELETED,          E_TYPE_STRING, NULL },
+  { "e", "mime-encoding",    ED_BODY,   ED_BOD_MIME_ENCODING,    E_TYPE_STRING, NULL },
+  { "f", "file",             ED_BODY,   ED_BOD_FILE,             E_TYPE_STRING, NULL },
+  { "F", "file-disposition", ED_BODY,   ED_BOD_FILE_DISPOSITION, E_TYPE_STRING, NULL },
+  { "I", "disposition",      ED_BODY,   ED_BOD_DISPOSITION,      E_TYPE_STRING, NULL },
+  { "m", "mime-major",       ED_BODY,   ED_BOD_MIME_MAJOR,       E_TYPE_STRING, NULL },
+  { "M", "mime-minor",       ED_BODY,   ED_BOD_MIME_MINOR,       E_TYPE_STRING, NULL },
+  { "n", "number",           ED_ATTACH, ED_ATT_NUMBER,           E_TYPE_NUMBER, NULL },
+  { "Q", "attach-qualifies", ED_BODY,   ED_BOD_ATTACH_QUALIFIES, E_TYPE_NUMBER, NULL },
+  { "s", "file-size",        ED_BODY,   ED_BOD_FILE_SIZE,        E_TYPE_NUMBER, NULL },
+  { "t", "tagged",           ED_BODY,   ED_BOD_TAGGED,           E_TYPE_STRING, NULL },
+  { "T", "tree",             ED_ATTACH, ED_ATT_TREE,             E_TYPE_STRING, NULL },
+  { "u", "unlink",           ED_BODY,   ED_BOD_UNLINK,           E_TYPE_STRING, NULL },
+  { "X", "attach-count",     ED_BODY,   ED_BOD_ATTACH_COUNT,     E_TYPE_NUMBER, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
+/**
+ * parse_index_date_recv_local - Parse a Date Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ *
+ * Parse a custom Expando of the form, "%(string)".
+ * The "string" will be passed to strftime().
+ */
+struct ExpandoNode *parse_index_date_recv_local(const char *str, const char **parsed_until,
+                                                int did, int uid, ExpandoParserFlags flags,
+                                                struct ExpandoParseError *error)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
+  }
+
+  return node_expando_parse_enclosure(str, parsed_until, did, uid, ')', error);
+}
+
+/**
+ * parse_index_date_local - Parse a Date Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ *
+ * Parse a custom expando of the form, "%[string]".
+ * The "string" will be passed to strftime().
+ */
+struct ExpandoNode *parse_index_date_local(const char *str, const char **parsed_until,
+                                           int did, int uid, ExpandoParserFlags flags,
+                                           struct ExpandoParseError *error)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
+  }
+
+  return node_expando_parse_enclosure(str, parsed_until, did, uid, ']', error);
+}
+
+/**
+ * parse_index_date - Parse a Date Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ *
+ * Parse a custom Expando of the form, "%{string}".
+ * The "string" will be passed to strftime().
+ */
+struct ExpandoNode *parse_index_date(const char *str, const char **parsed_until,
+                                     int did, int uid, ExpandoParserFlags flags,
+                                     struct ExpandoParseError *error)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
+  }
+
+  return node_expando_parse_enclosure(str, parsed_until, did, uid, '}', error);
+}
+
+/**
+ * parse_index_hook - Parse an index-hook - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ *
+ * Parse a custom Expando of the form, "%@name@".
+ * The "name" will be looked up as an index-hook, then the result parsed as an
+ * Expando.
+ */
+struct ExpandoNode *parse_index_hook(const char *str, const char **parsed_until,
+                                     int did, int uid, ExpandoParserFlags flags,
+                                     struct ExpandoParseError *error)
+{
+  if (flags & EP_CONDITIONAL)
+  {
+    snprintf(error->message, sizeof(error->message), "index-hook cannot be used as a condition");
+    error->position = str;
+    return NULL;
+  }
+
+  return node_expando_parse_enclosure(str, parsed_until, did, uid, '@', error);
+}
+
+/**
+ * parse_tags_transformed - Parse a Tags-Transformed Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ *
+ * Parse a custom expando of the form, "%G?" where '?' is an alphabetic character.
+ */
+struct ExpandoNode *parse_tags_transformed(const char *str, const char **parsed_until,
+                                           int did, int uid, ExpandoParserFlags flags,
+                                           struct ExpandoParseError *error)
+{
+  if (flags & EP_CONDITIONAL)
+    return NULL;
+
+  // Let the basic expando parser do the work
+  flags |= EP_NO_CUSTOM_PARSE;
+  struct ExpandoNode *node = node_expando_parse(str, parsed_until,
+                                                IndexFormatDef, flags, error);
+
+  // but adjust the node to take one more character
+  node->end++;
+  (*parsed_until)++;
+
+  return node;
+}
+
+/**
+ * parse_subject - Parse a Subject Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ *
+ * Parse a Subject Expando, "%s", into two separate Nodes.
+ * One for the tree, one for the subject.
+ */
+struct ExpandoNode *parse_subject(const char *str, const char **parsed_until,
+                                  int did, int uid, ExpandoParserFlags flags,
+                                  struct ExpandoParseError *error)
+{
+  // Let the basic expando parser do the work
+  flags |= EP_NO_CUSTOM_PARSE;
+  struct ExpandoNode *node_subj = node_expando_parse(str, parsed_until,
+                                                     IndexFormatDef, flags, error);
+
+  struct ExpandoNode *node_tree = node_expando_new(node_subj->start, node_subj->end,
+                                                   NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
+  node_tree->next = node_subj;
+
+  // Move the formatting info to the container
+  struct ExpandoNode *node_cont = node_container_new();
+  node_cont->format = node_subj->format;
+  node_subj->format = NULL;
+
+  node_set_child(node_cont, 0, node_tree);
+  return node_cont;
+}
+
+/**
+ * IndexFormatDef - Expando definitions
+ *
+ * Config:
+ * - $attribution_intro
+ * - $attribution_trailer
+ * - $forward_attribution_intro
+ * - $forward_attribution_trailer
+ * - $forward_format
+ * - $index_format
+ * - $message_format
+ * - $pager_format
+ */
+const struct ExpandoDefinition IndexFormatDef[] = {
+  // clang-format off
+  { "*",  "padding-soft",        ED_GLOBAL,   ED_GLO_PADDING_SOFT,        E_TYPE_STRING, node_padding_parse },
+  { ">",  "padding-hard",        ED_GLOBAL,   ED_GLO_PADDING_HARD,        E_TYPE_STRING, node_padding_parse },
+  { "|",  "padding-eol",         ED_GLOBAL,   ED_GLO_PADDING_EOL,         E_TYPE_STRING, node_padding_parse },
+  { "(",  NULL,                  ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL,     E_TYPE_STRING, parse_index_date_recv_local },
+  { "@",  NULL,                  ED_EMAIL,    ED_EMA_INDEX_HOOK,          E_TYPE_STRING, parse_index_hook },
+  { "a",  "from",                ED_ENVELOPE, ED_ENV_FROM,                E_TYPE_STRING, NULL },
+  { "A",  "reply-to",            ED_ENVELOPE, ED_ENV_REPLY_TO,            E_TYPE_STRING, NULL },
+  { "b",  "mailbox-name",        ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        E_TYPE_STRING, NULL },
+  { "B",  "list-address",        ED_ENVELOPE, ED_ENV_LIST_ADDRESS,        E_TYPE_STRING, NULL },
+  { "c",  "size",                ED_EMAIL,    ED_EMA_SIZE,                E_TYPE_STRING, NULL },
+  { "C",  "number",              ED_EMAIL,    ED_EMA_NUMBER,              E_TYPE_NUMBER, NULL },
+  { "cr", "body-characters",     ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     E_TYPE_NUMBER, NULL },
+  { "d",  "date-format",         ED_EMAIL,    ED_EMA_DATE_FORMAT,         E_TYPE_STRING, NULL },
+  { "D",  "date-format-local",   ED_EMAIL,    ED_EMA_DATE_FORMAT_LOCAL,   E_TYPE_STRING, NULL },
+  { "e",  "thread-number",       ED_EMAIL,    ED_EMA_THREAD_NUMBER,       E_TYPE_NUMBER, NULL },
+  { "E",  "thread-count",        ED_EMAIL,    ED_EMA_THREAD_COUNT,        E_TYPE_NUMBER, NULL },
+  { "f",  "from-full",           ED_ENVELOPE, ED_ENV_FROM_FULL,           E_TYPE_STRING, NULL },
+  { "F",  "sender",              ED_ENVELOPE, ED_ENV_SENDER,              E_TYPE_STRING, NULL },
+  { "Fp", "sender-plain",        ED_ENVELOPE, ED_ENV_SENDER_PLAIN,        E_TYPE_STRING, NULL },
+  { "g",  "tags",                ED_EMAIL,    ED_EMA_TAGS,                E_TYPE_STRING, NULL },
+  { "G",  "tags-transformed",    ED_EMAIL,    ED_EMA_TAGS_TRANSFORMED,    E_TYPE_STRING, parse_tags_transformed },
+  { "H",  "spam",                ED_ENVELOPE, ED_ENV_SPAM,                E_TYPE_STRING, NULL },
+  { "i",  "message-id",          ED_ENVELOPE, ED_ENV_MESSAGE_ID,          E_TYPE_STRING, NULL },
+  { "I",  "initials",            ED_ENVELOPE, ED_ENV_INITIALS,            E_TYPE_STRING, NULL },
+  { "J",  "thread-tags",         ED_EMAIL,    ED_EMA_THREAD_TAGS,         E_TYPE_STRING, NULL },
+  { "K",  "list-empty",          ED_ENVELOPE, ED_ENV_LIST_EMPTY,          E_TYPE_STRING, NULL },
+  { "l",  "lines",               ED_EMAIL,    ED_EMA_LINES,               E_TYPE_NUMBER, NULL },
+  { "L",  "from-list",           ED_EMAIL,    ED_EMA_FROM_LIST,           E_TYPE_STRING, NULL },
+  { "m",  "message-count",       ED_MAILBOX,  ED_MBX_MESSAGE_COUNT,       E_TYPE_NUMBER, NULL },
+  { "M",  "thread-hidden-count", ED_EMAIL,    ED_EMA_THREAD_HIDDEN_COUNT, E_TYPE_NUMBER, NULL },
+  { "n",  "name",                ED_ENVELOPE, ED_ENV_NAME,                E_TYPE_STRING, NULL },
+  { "N",  "score",               ED_EMAIL,    ED_EMA_SCORE,               E_TYPE_NUMBER, NULL },
+  { "O",  "save-folder",         ED_EMAIL,    ED_EMA_LIST_OR_SAVE_FOLDER, E_TYPE_STRING, NULL },
+  { "P",  "percentage",          ED_MAILBOX,  ED_MBX_PERCENTAGE,          E_TYPE_STRING, NULL },
+  { "q",  "newsgroup",           ED_ENVELOPE, ED_ENV_NEWSGROUP,           E_TYPE_STRING, NULL },
+  { "r",  "to-all",              ED_ENVELOPE, ED_ENV_TO_ALL,              E_TYPE_STRING, NULL },
+  { "R",  "cc-all",              ED_ENVELOPE, ED_ENV_CC_ALL,              E_TYPE_STRING, NULL },
+  { "s",  "subject",             ED_ENVELOPE, ED_ENV_SUBJECT,             E_TYPE_STRING, parse_subject },
+  { "S",  "flag-chars",          ED_EMAIL,    ED_EMA_FLAG_CHARS,          E_TYPE_STRING, NULL },
+  { "t",  "to",                  ED_ENVELOPE, ED_ENV_TO,                  E_TYPE_STRING, NULL },
+  { "T",  "to-chars",            ED_EMAIL,    ED_EMA_TO_CHARS,            E_TYPE_STRING, NULL },
+  { "u",  "username",            ED_ENVELOPE, ED_ENV_USERNAME,            E_TYPE_STRING, NULL },
+  { "v",  "first-name",          ED_ENVELOPE, ED_ENV_FIRST_NAME,          E_TYPE_STRING, NULL },
+  { "W",  "organization",        ED_ENVELOPE, ED_ENV_ORGANIZATION,        E_TYPE_STRING, NULL },
+  { "x",  "x-comment-to",        ED_ENVELOPE, ED_ENV_X_COMMENT_TO,        E_TYPE_STRING, NULL },
+  { "X",  "attachment-count",    ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    E_TYPE_NUMBER, NULL },
+  { "y",  "x-label",             ED_ENVELOPE, ED_ENV_X_LABEL,             E_TYPE_STRING, NULL },
+  { "Y",  "thread-x-label",      ED_ENVELOPE, ED_ENV_THREAD_X_LABEL,      E_TYPE_STRING, NULL },
+  { "Z",  "combined-flags",      ED_EMAIL,    ED_EMA_COMBINED_FLAGS,      E_TYPE_STRING, NULL },
+  { "zc", "crypto-flags",        ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        E_TYPE_STRING, NULL },
+  { "zs", "status-flags",        ED_EMAIL,    ED_EMA_STATUS_FLAGS,        E_TYPE_STRING, NULL },
+  { "zt", "message-flags",       ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       E_TYPE_STRING, NULL },
+  { "[",  NULL,                  ED_EMAIL,    ED_EMA_STRF_LOCAL,          E_TYPE_STRING, parse_index_date_local },
+  { "{",  NULL,                  ED_EMAIL,    ED_EMA_STRF,                E_TYPE_STRING, parse_index_date },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
+/// IndexFormatDefNoPadding - Index format definitions, without padding or arrow
+static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[4]);
+
+/**
+ * StatusFormatDef - Expando definitions
+ *
+ * Config:
+ * - $new_mail_command
+ * - $status_format
+ * - $ts_icon_format
+ * - $ts_status_format
+ */
+static const struct ExpandoDefinition StatusFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     E_TYPE_STRING, node_padding_parse },
+  { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     E_TYPE_STRING, node_padding_parse },
+  { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      E_TYPE_STRING, node_padding_parse },
+  { "b", "unread-mailboxes", ED_INDEX,  ED_IND_UNREAD_MAILBOXES, E_TYPE_NUMBER, NULL },
+  { "d", "deleted-count",    ED_INDEX,  ED_IND_DELETED_COUNT,    E_TYPE_NUMBER, NULL },
+  { "D", "description",      ED_INDEX,  ED_IND_DESCRIPTION,      E_TYPE_STRING, NULL },
+  { "f", "mailbox-path",     ED_INDEX,  ED_IND_MAILBOX_PATH,     E_TYPE_STRING, NULL },
+  { "F", "flagged-count",    ED_INDEX,  ED_IND_FLAGGED_COUNT,    E_TYPE_NUMBER, NULL },
+  { "h", "hostname",         ED_GLOBAL, ED_GLO_HOSTNAME,         E_TYPE_STRING, NULL },
+  { "l", "mailbox-size",     ED_INDEX,  ED_IND_MAILBOX_SIZE,     E_TYPE_NUMBER, NULL },
+  { "L", "limit-size",       ED_INDEX,  ED_IND_LIMIT_SIZE,       E_TYPE_NUMBER, NULL },
+  { "m", "message-count",    ED_INDEX,  ED_IND_MESSAGE_COUNT,    E_TYPE_NUMBER, NULL },
+  { "M", "limit-count",      ED_INDEX,  ED_IND_LIMIT_COUNT,      E_TYPE_NUMBER, NULL },
+  { "n", "new-count",        ED_INDEX,  ED_IND_NEW_COUNT,        E_TYPE_NUMBER, NULL },
+  { "o", "old-count",        ED_INDEX,  ED_IND_OLD_COUNT,        E_TYPE_NUMBER, NULL },
+  { "p", "postponed-count",  ED_INDEX,  ED_IND_POSTPONED_COUNT,  E_TYPE_NUMBER, NULL },
+  { "P", "percentage",       ED_MENU,   ED_MEN_PERCENTAGE,       E_TYPE_NUMBER, NULL },
+  { "r", "readonly",         ED_INDEX,  ED_IND_READONLY,         E_TYPE_NUMBER, NULL },
+  { "R", "read-count",       ED_INDEX,  ED_IND_READ_COUNT,       E_TYPE_NUMBER, NULL },
+  { "s", "sort",             ED_GLOBAL, ED_GLO_SORT,             E_TYPE_STRING, NULL },
+  { "S", "sort-aux",         ED_GLOBAL, ED_GLO_SORT_AUX,         E_TYPE_STRING, NULL },
+  { "t", "tagged-count",     ED_INDEX,  ED_IND_TAGGED_COUNT,     E_TYPE_NUMBER, NULL },
+  { "T", "use-threads",      ED_GLOBAL, ED_GLO_USE_THREADS,      E_TYPE_STRING, NULL },
+  { "u", "unread-count",     ED_INDEX,  ED_IND_UNREAD_COUNT,     E_TYPE_NUMBER, NULL },
+  { "v", "version",          ED_GLOBAL, ED_GLO_VERSION,          E_TYPE_STRING, NULL },
+  { "V", "limit-pattern",    ED_INDEX,  ED_IND_LIMIT_PATTERN,    E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
+/// StatusFormatDefNoPadding - Status format definitions, without padding
+const struct ExpandoDefinition *const StatusFormatDefNoPadding = &(StatusFormatDef[3]);
+
+/**
  * MainVars - General Config definitions for NeoMutt
  */
 static struct ConfigDef MainVars[] = {
@@ -136,7 +425,7 @@ static struct ConfigDef MainVars[] = {
   { "assumed_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "If a message is missing a character set, assume this character set"
   },
-  { "attach_format", DT_STRING|D_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] ", 0, NULL,
+  { "attach_format", DT_EXPANDO|D_NOT_EMPTY, IP "%u%D%I %t%4n %T%d %> [%.7m/%.10M, %.6e%<C?, %C>, %s] ", IP &AttachFormatDef, NULL,
     "printf-like format string for the attachment menu"
   },
   { "attach_save_dir", DT_PATH|D_PATH_DIR, IP "./", 0, NULL,
@@ -292,10 +581,10 @@ static struct ConfigDef MainVars[] = {
   { "include_only_first", DT_BOOL, false, 0, NULL,
     "Only include the first attachment when replying"
   },
-  { "indent_string", DT_STRING, IP "> ", 0, NULL,
+  { "indent_string", DT_EXPANDO, IP "> ", IP &IndexFormatDefNoPadding, NULL,
     "String used to indent 'reply' text"
   },
-  { "index_format", DT_STRING|D_NOT_EMPTY, IP "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", 0, NULL,
+  { "index_format", DT_EXPANDO|D_NOT_EMPTY, IP "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", IP &IndexFormatDef, NULL,
     "printf-like format string for the index menu (emails)"
   },
   { "keep_flagged", DT_BOOL, false, 0, NULL,
@@ -340,7 +629,7 @@ static struct ConfigDef MainVars[] = {
   { "message_cache_dir", DT_PATH|D_PATH_DIR, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
   },
-  { "message_format", DT_STRING|D_NOT_EMPTY, IP "%s", 0, NULL,
+  { "message_format", DT_EXPANDO|D_NOT_EMPTY, IP "%s", IP IndexFormatDef, NULL,
     "printf-like format string for listing attached messages"
   },
   { "meta_key", DT_BOOL, false, 0, NULL,
@@ -361,7 +650,7 @@ static struct ConfigDef MainVars[] = {
   { "net_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
   },
-  { "new_mail_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
+  { "new_mail_command", DT_EXPANDO|D_STRING_COMMAND, 0, IP StatusFormatDefNoPadding, NULL,
     "External command to run when new mail arrives"
   },
   { "pipe_decode", DT_BOOL, false, 0, NULL,
@@ -505,7 +794,7 @@ static struct ConfigDef MainVars[] = {
   { "status_chars", DT_MBTABLE, IP "-*%A", 0, NULL,
     "Indicator characters for the status bar"
   },
-  { "status_format", DT_STRING, IP "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---", 0, NULL,
+  { "status_format", DT_EXPANDO, IP "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---", IP &StatusFormatDef, NULL,
     "printf-like format string for the index's status line"
   },
   { "status_on_top", DT_BOOL, false, 0, NULL,
@@ -541,10 +830,10 @@ static struct ConfigDef MainVars[] = {
   { "ts_enabled", DT_BOOL, false, 0, NULL,
     "Allow NeoMutt to set the terminal status line and icon"
   },
-  { "ts_icon_format", DT_STRING, IP "M%<n?AIL&ail>", 0, NULL,
+  { "ts_icon_format", DT_EXPANDO, IP "M%<n?AIL&ail>", IP StatusFormatDefNoPadding, NULL,
     "printf-like format string for the terminal's icon title"
   },
-  { "ts_status_format", DT_STRING, IP "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>", 0, NULL,
+  { "ts_status_format", DT_EXPANDO, IP "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>", IP StatusFormatDefNoPadding, NULL,
     "printf-like format string for the terminal's status (window title)"
   },
   { "use_domain", DT_BOOL, true, 0, NULL,
@@ -606,12 +895,32 @@ static struct ConfigDef MainVars[] = {
 #else
 #define MIXMASTER_DEFAULT ""
 #endif
+
+/**
+ * MixFormatDef - Expando definitions
+ *
+ * Config:
+ * - $mix_entry_format
+ */
+static const struct ExpandoDefinition MixFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft", ED_GLOBAL,    ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL,    ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL,    ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
+  { "a", "address",      ED_MIXMASTER, ED_MIX_ADDRESS,      E_TYPE_STRING, NULL },
+  { "c", "capabilities", ED_MIXMASTER, ED_MIX_CAPABILITIES, E_TYPE_STRING, NULL },
+  { "n", "number",       ED_MIXMASTER, ED_MIX_NUMBER,       E_TYPE_NUMBER, NULL },
+  { "s", "short-name",   ED_MIXMASTER, ED_MIX_SHORT_NAME,   E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
 /**
  * MainVarsMixmaster - Config definitions for the Mixmaster library
  */
 static struct ConfigDef MainVarsMixmaster[] = {
   // clang-format off
-  { "mix_entry_format", DT_STRING|D_NOT_EMPTY, IP "%4n %c %-16s %a", 0, NULL,
+  { "mix_entry_format", DT_EXPANDO|D_NOT_EMPTY, IP "%4n %c %-16s %a", IP &MixFormatDef, NULL,
     "(mixmaster) printf-like format string for the mixmaster chain"
   },
   { "mixmaster", DT_STRING|D_STRING_COMMAND, IP MIXMASTER_DEFAULT, 0, NULL,
@@ -668,6 +977,7 @@ static void init_types(struct ConfigSet *cs)
   CONFIG_INIT_TYPE(cs, Address);
   CONFIG_INIT_TYPE(cs, Bool);
   CONFIG_INIT_TYPE(cs, Enum);
+  CONFIG_INIT_TYPE(cs, Expando);
   CONFIG_INIT_TYPE(cs, Long);
   CONFIG_INIT_TYPE(cs, Mbtable);
   CONFIG_INIT_TYPE(cs, MyVar);

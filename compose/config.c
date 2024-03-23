@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,17 +31,38 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include "config/lib.h"
+#include "expando/lib.h"
+#include "shared_data.h"
 
 #ifndef ISPELL
 #define ISPELL "ispell"
 #endif
 
 /**
+ * ComposeFormatDef - Expando definitions
+ *
+ * Config:
+ * - $compose_format
+ */
+static const struct ExpandoDefinition ComposeFormatDef[] = {
+  // clang-format off
+  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
+  { "a", "attach-count", ED_COMPOSE, ED_COM_ATTACH_COUNT, E_TYPE_STRING, NULL },
+  { "h", "hostname",     ED_GLOBAL,  ED_GLO_HOSTNAME,     E_TYPE_STRING, NULL },
+  { "l", "attach-size",  ED_COMPOSE, ED_COM_ATTACH_SIZE,  E_TYPE_STRING, NULL },
+  { "v", "version",      ED_GLOBAL,  ED_GLO_VERSION,      E_TYPE_STRING, NULL },
+  { NULL, NULL, 0, -1, -1, NULL }
+  // clang-format on
+};
+
+/**
  * ComposeVars - Config definitions for compose
  */
 static struct ConfigDef ComposeVars[] = {
   // clang-format off
-  { "compose_format", DT_STRING, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", 0, NULL,
+  { "compose_format", DT_EXPANDO, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", IP &ComposeFormatDef, NULL,
     "printf-like format string for the Compose panel's status bar"
   },
   { "compose_show_user_headers", DT_BOOL, true, 0, NULL,

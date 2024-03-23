@@ -28,12 +28,14 @@
  */
 
 #include "config.h"
+#include <limits.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 #include "type.h"
 
 struct ConfigSubset;
@@ -56,7 +58,7 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
   struct Buffer *buf = buf_pool_get();
 
-  menu->make_entry(menu, line, buf);
+  menu->make_entry(menu, line, INT_MAX, buf);
   int rc = regexec(rx, buf->data, 0, NULL, 0);
   buf_pool_release(&buf);
 

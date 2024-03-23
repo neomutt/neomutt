@@ -367,7 +367,9 @@ LIBDEBUGOBJS+=	debug/notify.o
 LIBDEBUGOBJS+=	debug/window.o
 @endif
 @if USE_DEBUG_BACKTRACE || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_KEYMAP || USE_DEBUG_LOGGING || USE_DEBUG_NAMES || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
-LIBDEBUGOBJS+=	debug/common.o debug/names.o
+LIBDEBUGOBJS+=	debug/names.o
+@endif
+LIBDEBUGOBJS+=	debug/common.o debug/names_expando.o
 LIBDEBUG=	libdebug.a
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 ALLOBJS+=	$(LIBDEBUGOBJS)
@@ -377,7 +379,6 @@ $(LIBDEBUG): $(PWD)/debug $(LIBDEBUGOBJS)
 	$(RANLIB) $@
 $(PWD)/debug:
 	$(MKDIR_P) $(PWD)/debug
-@endif
 
 ###############################################################################
 # libeditor
@@ -422,13 +423,31 @@ $(PWD)/envelope:
 	$(MKDIR_P) $(PWD)/envelope
 
 ###############################################################################
+# libexpando
+LIBEXPANDO=	libexpando.a
+LIBEXPANDOOBJS=	expando/config_type.o expando/expando.o expando/format.o \
+		expando/helpers.o expando/node.o expando/node_condbool.o \
+		expando/node_conddate.o expando/node_condition.o \
+		expando/node_container.o expando/node_expando.o \
+		expando/node_padding.o expando/node_text.o expando/parse.o \
+		expando/render.o
+CLEANFILES+=	$(LIBEXPANDO) $(LIBEXPANDOOBJS)
+ALLOBJS+=	$(LIBEXPANDOOBJS)
+
+$(LIBEXPANDO): $(PWD)/expando $(LIBEXPANDOOBJS)
+	$(AR) cr $@ $(LIBEXPANDOOBJS)
+	$(RANLIB) $@
+$(PWD)/expando:
+	$(MKDIR_P) $(PWD)/expando
+
+###############################################################################
 # libgui
 LIBGUI=		libgui.a
 LIBGUIOBJS=	gui/curs_lib.o gui/dialog.o gui/functions.o gui/global.o \
 		gui/msgcont.o gui/msgwin.o gui/msgwin_wdata.o \
 		gui/mutt_curses.o gui/mutt_window.o gui/opcodes.o gui/reflow.o \
 		gui/resize.o gui/rootwin.o gui/sbar.o gui/simple.o \
-		gui/terminal.o gui/format.o
+		gui/terminal.o
 CLEANFILES+=	$(LIBGUI) $(LIBGUIOBJS)
 ALLOBJS+=	$(LIBGUIOBJS)
 
@@ -891,7 +910,7 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIB
 		$(LIBHELPBAR) $(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) $(LIBCOMPLETE) $(LIBNNTP) \
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
-		$(LIBCORE) $(LIBPARSE) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
+		$(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
 		$(LIBDEBUG) $(LIBMUTT)
 
 # neomutt
@@ -974,6 +993,7 @@ coverage: all test
 	  --directory core \
 	  --directory editor \
 	  --directory email \
+	  --directory expando \
 	  --directory imap \
 	  --directory mutt \
 	  --directory notmuch \

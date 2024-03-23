@@ -3,9 +3,10 @@
  * GPGME Key Selection Dialog
  *
  * @authors
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Rayford Shireman
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -68,11 +69,10 @@
  */
 
 #include "config.h"
-#include <ctype.h>
+#include <assert.h>
 #include <gpgme.h>
 #include <locale.h>
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <time.h>
 #include "private.h"
@@ -82,14 +82,16 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "crypt_gpgme.h"
-#include "format_flags.h"
 #include "gpgme_functions.h"
 #include "mutt_logging.h"
-#include "muttlib.h"
+#include "pgplib.h"
 #include "sort.h"
+
+const struct ExpandoRenderData PgpEntryGpgmeRenderData[];
 
 /// Help Bar for the GPGME key selection dialog
 static const struct Mapping GpgmeHelp[] = {
@@ -268,271 +270,275 @@ static char *crypt_key_abilities(KeyFlags flags)
  *
  * The returned character describes the most important flag.
  */
-static char crypt_flags(KeyFlags flags)
+static char *crypt_flags(KeyFlags flags)
 {
   if (flags & KEYFLAG_REVOKED)
-    return 'R';
+    return "R";
   if (flags & KEYFLAG_EXPIRED)
-    return 'X';
+    return "X";
   if (flags & KEYFLAG_DISABLED)
-    return 'd';
+    return "d";
   if (flags & KEYFLAG_CRITICAL)
-    return 'c';
+    return "c";
 
-  return ' ';
+  return " ";
 }
 
 /**
- * crypt_format_str - Format a string for the key selection menu - Implements ::format_t - @ingroup expando_api
- *
- * | Expando | Description
- * | :------ | :-------------------------------------------------------
- * | \%n     | Number
- * | \%p     | Protocol
- * | \%t     | Trust/validity of the key-uid association
- * | \%u     | User id
- * | \%[fmt] | Date of key using strftime(3)
- * |         |
- * | \%a     | Algorithm
- * | \%c     | Capabilities
- * | \%f     | Flags
- * | \%i     | Key fingerprint (or long key id if non-existent)
- * | \%k     | Key id
- * | \%l     | Length
- * |         |
- * | \%A     | Algorithm of the principal key
- * | \%C     | Capabilities of the principal key
- * | \%F     | Flags of the principal key
- * | \%I     | Key fingerprint of the principal key (or long key id if non-existent)
- * | \%K     | Key id of the principal key
- * | \%L     | Length of the principal key
+ * pgp_entry_gpgme_date_num - GPGME: Date of the key - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
  */
-static const char *crypt_format_str(char *buf, size_t buflen, size_t col, int cols,
-                                    char op, const char *src, const char *prec,
-                                    const char *if_str, const char *else_str,
-                                    intptr_t data, MuttFormatFlags flags)
+long pgp_entry_gpgme_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  char fmt[128] = { 0 };
-  bool optional = (flags & MUTT_FORMAT_OPTIONAL);
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+  return key->kobj->subkeys->timestamp;
+#endif
+  return 0;
+}
 
-  struct CryptEntry *entry = (struct CryptEntry *) data;
+/**
+ * pgp_entry_gpgme_date - GPGME: Date of the key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_date(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+
+  char tmp[128] = { 0 };
+  char datestr[128] = { 0 };
+
+  int len = node->end - node->start;
+  const char *start = node->start;
+  bool use_c_locale = false;
+  if (*start == '!')
+  {
+    use_c_locale = true;
+    start++;
+    len--;
+  }
+
+  assert(len < sizeof(datestr));
+  mutt_strn_copy(datestr, start, len, sizeof(datestr));
+
+  struct tm tm = { 0 };
+  if (key->kobj->subkeys && (key->kobj->subkeys->timestamp > 0))
+  {
+    tm = mutt_date_localtime(key->kobj->subkeys->timestamp);
+  }
+  else
+  {
+    tm = mutt_date_localtime(0); // Default to 1970-01-01
+  }
+
+  if (use_c_locale)
+  {
+    strftime_l(tmp, sizeof(tmp), datestr, &tm, NeoMutt->time_c_locale);
+  }
+  else
+  {
+    strftime(tmp, sizeof(tmp), datestr, &tm);
+  }
+
+  buf_strcpy(buf, tmp);
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_n_num - GPGME: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_gpgme_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  return entry->num;
+#else
+  return 0;
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_p - GPGME: Protocol - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_p(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+
+  const char *s = gpgme_get_protocol_name(key->kobj->protocol);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_t - GPGME: Trust/validity - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_t(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+
+  const char *s = "";
+  if ((key->flags & KEYFLAG_ISX509))
+  {
+    s = "x";
+  }
+  else
+  {
+    switch (key->validity)
+    {
+      case GPGME_VALIDITY_FULL:
+        s = "f";
+        break;
+      case GPGME_VALIDITY_MARGINAL:
+        s = "m";
+        break;
+      case GPGME_VALIDITY_NEVER:
+        s = "n";
+        break;
+      case GPGME_VALIDITY_ULTIMATE:
+        s = "u";
+        break;
+      case GPGME_VALIDITY_UNDEFINED:
+        s = "q";
+        break;
+      case GPGME_VALIDITY_UNKNOWN:
+      default:
+        s = "?";
+        break;
+    }
+  }
+
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_u - GPGME: User id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_u(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+
+  const char *s = key->uid;
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_a - GPGME: Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_a(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+
+  const char *s = NULL;
+  if (key->kobj->subkeys)
+    s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
+  else
+    s = "?";
+
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_c - GPGME: Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_c(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+
+  const char *s = crypt_key_abilities(key->flags);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_f - GPGME: Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_f(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
+
+  const char *s = crypt_flags(key->flags);
+  buf_strcpy(buf, s);
+#endif
+}
+
+/**
+ * pgp_entry_gpgme_i - GPGME: Key fingerprint - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_i(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
   struct CryptKeyInfo *key = entry->key;
 
-  KeyFlags kflags = (key->flags);
+  /* fixme: we need a way to distinguish between main and subkeys.
+   * Store the idx in entry? */
+  const char *s = crypt_fpr_or_lkeyid(key);
+  buf_strcpy(buf, s);
+#endif
+}
 
-  switch (tolower(op))
-  {
-    case 'a':
-      if (!optional)
-      {
-        const char *s = NULL;
-        snprintf(fmt, sizeof(fmt), "%%%s.3s", prec);
-        if (key->kobj->subkeys)
-          s = gpgme_pubkey_algo_name(key->kobj->subkeys->pubkey_algo);
-        else
-          s = "?";
-        snprintf(buf, buflen, fmt, s);
-      }
-      break;
+/**
+ * pgp_entry_gpgme_k - GPGME: Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void pgp_entry_gpgme_k(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  struct CryptKeyInfo *key = entry->key;
 
-    case 'c':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, crypt_key_abilities(kflags));
-      }
-      else if (!(kflags & KEYFLAG_ABILITIES))
-      {
-        optional = false;
-      }
-      break;
+  /* fixme: we need a way to distinguish between main and subkeys.
+   * Store the idx in entry? */
+  const char *s = crypt_keyid(key);
+  buf_strcpy(buf, s);
+#endif
+}
 
-    case 'f':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-        snprintf(buf, buflen, fmt, crypt_flags(kflags));
-      }
-      else if (!(kflags & KEYFLAG_RESTRICTIONS))
-      {
-        optional = false;
-      }
-      break;
+/**
+ * pgp_entry_gpgme_l_num - GPGME: Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ */
+long pgp_entry_gpgme_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+#ifdef HAVE_PKG_GPGME
+  const struct CryptEntry *entry = data;
+  const struct CryptKeyInfo *key = entry->key;
 
-    case 'i':
-      if (!optional)
-      {
-        /* fixme: we need a way to distinguish between main and subkeys.
-         * Store the idx in entry? */
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, crypt_fpr_or_lkeyid(key));
-      }
-      break;
-
-    case 'k':
-      if (!optional)
-      {
-        /* fixme: we need a way to distinguish between main and subkeys.
-         * Store the idx in entry? */
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, crypt_keyid(key));
-      }
-      break;
-
-    case 'l':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%slu", prec);
-        unsigned long val;
-        if (key->kobj->subkeys)
-          val = key->kobj->subkeys->length;
-        else
-          val = 0;
-        snprintf(buf, buflen, fmt, val);
-      }
-      break;
-
-    case 'n':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%sd", prec);
-        snprintf(buf, buflen, fmt, entry->num);
-      }
-      break;
-
-    case 'p':
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, gpgme_get_protocol_name(key->kobj->protocol));
-      break;
-
-    case 't':
-    {
-      char *s = NULL;
-      if ((kflags & KEYFLAG_ISX509))
-      {
-        s = "x";
-      }
-      else
-      {
-        switch (key->validity)
-        {
-          case GPGME_VALIDITY_FULL:
-            s = "f";
-            break;
-          case GPGME_VALIDITY_MARGINAL:
-            s = "m";
-            break;
-          case GPGME_VALIDITY_NEVER:
-            s = "n";
-            break;
-          case GPGME_VALIDITY_ULTIMATE:
-            s = "u";
-            break;
-          case GPGME_VALIDITY_UNDEFINED:
-            s = "q";
-            break;
-          case GPGME_VALIDITY_UNKNOWN:
-          default:
-            s = "?";
-            break;
-        }
-      }
-      snprintf(fmt, sizeof(fmt), "%%%sc", prec);
-      snprintf(buf, buflen, fmt, *s);
-      break;
-    }
-
-    case 'u':
-      if (!optional)
-      {
-        snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-        snprintf(buf, buflen, fmt, key->uid);
-      }
-      break;
-
-    case '[':
-    {
-      char buf2[128] = { 0 };
-      bool use_c_locale = false;
-      struct tm tm = { 0 };
-
-      char *p = buf;
-
-      const char *cp = src;
-      if (*cp == '!')
-      {
-        use_c_locale = true;
-        cp++;
-      }
-
-      size_t len = buflen - 1;
-      while ((len > 0) && (*cp != ']'))
-      {
-        if (*cp == '%')
-        {
-          cp++;
-          if (len >= 2)
-          {
-            *p++ = '%';
-            *p++ = *cp;
-            len -= 2;
-          }
-          else
-          {
-            break; /* not enough space */
-          }
-          cp++;
-        }
-        else
-        {
-          *p++ = *cp++;
-          len--;
-        }
-      }
-      *p = '\0';
-
-      if (key->kobj->subkeys && (key->kobj->subkeys->timestamp > 0))
-        tm = mutt_date_localtime(key->kobj->subkeys->timestamp);
-      else
-        tm = mutt_date_localtime(0); // Default to 1970-01-01
-
-      if (use_c_locale)
-        strftime_l(buf2, sizeof(buf2), buf, &tm, NeoMutt->time_c_locale);
-      else
-        strftime(buf2, sizeof(buf2), buf, &tm);
-
-      snprintf(fmt, sizeof(fmt), "%%%ss", prec);
-      snprintf(buf, buflen, fmt, buf2);
-      if (len > 0)
-        src = cp + 1;
-      break;
-    }
-
-    default:
-      *buf = '\0';
-  }
-
-  if (optional)
-  {
-    mutt_expando_format(buf, buflen, col, cols, if_str, crypt_format_str, data,
-                        MUTT_FORMAT_NO_FLAGS);
-  }
-  else if (flags & MUTT_FORMAT_OPTIONAL)
-  {
-    mutt_expando_format(buf, buflen, col, cols, else_str, crypt_format_str,
-                        data, MUTT_FORMAT_NO_FLAGS);
-  }
-
-  /* We return the format string, unchanged */
-  return src;
+  return key->kobj->subkeys ? key->kobj->subkeys->length : 0;
+#else
+  return 0;
+#endif
 }
 
 /**
  * crypt_make_entry - Format a PGP Key for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $pgp_entry_format, crypt_format_str()
+ * @sa $pgp_entry_format
  */
-static void crypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int crypt_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct CryptKeyInfo **key_table = menu->mdata;
   struct CryptEntry entry = { 0 };
@@ -540,10 +546,16 @@ static void crypt_make_entry(struct Menu *menu, int line, struct Buffer *buf)
   entry.key = key_table[line];
   entry.num = line + 1;
 
-  const char *const c_pgp_entry_format = cs_subset_string(NeoMutt->sub, "pgp_entry_format");
-  mutt_expando_format(buf->data, buf->dsize, 0, menu->win->state.cols,
-                      NONULL(c_pgp_entry_format), crypt_format_str,
-                      (intptr_t) &entry, MUTT_FORMAT_ARROWCURSOR);
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
+  return expando_render(c_pgp_entry_format, PgpEntryGpgmeRenderData, &entry,
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
 /**
@@ -766,3 +778,32 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   simple_dialog_free(&dlg);
   return gd.key;
 }
+
+/**
+ * PgpEntryGpgmeRenderData - Callbacks for GPGME Key Expandos
+ *
+ * @sa PgpEntryFormatDef, ExpandoDataGlobal, ExpandoDataPgpKeyGpgme
+ */
+const struct ExpandoRenderData PgpEntryGpgmeRenderData[] = {
+  // clang-format off
+  { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_gpgme_date,  pgp_entry_gpgme_date_num },
+  { ED_PGP,     ED_PGP_NUMBER,            NULL,                  pgp_entry_gpgme_n_num },
+  { ED_PGP,     ED_PGP_TRUST,             pgp_entry_gpgme_t,     NULL },
+  { ED_PGP,     ED_PGP_USER_ID,           pgp_entry_gpgme_u,     NULL },
+  { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_gpgme_date,  pgp_entry_gpgme_date_num },
+  { ED_PGP_KEY, ED_PGK_PROTOCOL,          pgp_entry_gpgme_p,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     pgp_entry_gpgme_a,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  pgp_entry_gpgme_c,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_FINGERPRINT,   pgp_entry_gpgme_i,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_FLAGS,         pgp_entry_gpgme_f,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_ID,            pgp_entry_gpgme_k,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_LENGTH,        NULL,                  pgp_entry_gpgme_l_num },
+  { ED_PGP_KEY, ED_PGK_PKEY_ALGORITHM,    pgp_entry_gpgme_a,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_CAPABILITIES, pgp_entry_gpgme_c,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_FINGERPRINT,  pgp_entry_gpgme_i,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        pgp_entry_gpgme_f,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_ID,           pgp_entry_gpgme_k,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL,                  pgp_entry_gpgme_l_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

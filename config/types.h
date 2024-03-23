@@ -31,6 +31,7 @@ enum ConfigType
   DT_ADDRESS,     ///< e-mail address
   DT_BOOL,        ///< boolean option
   DT_ENUM,        ///< an enumeration
+  DT_EXPANDO,     ///< an expando
   DT_HCACHE,      ///< header cache backend
   DT_LONG,        ///< a number (long)
   DT_MBTABLE,     ///< multibyte char table
@@ -46,11 +47,11 @@ enum ConfigType
   DT_END,
 };
 
-#define DTYPE(t) ((enum ConfigType)((t) & 0xF))
+#define DTYPE(t) ((enum ConfigType)((t) & 0x1F))
 
 enum ConfigTypeField
 {
-  D_B_ON_STARTUP = 4,              ///< May only be set at startup
+  D_B_ON_STARTUP = 5,              ///< May only be set at startup
   D_B_NOT_EMPTY,                   ///< Empty strings are not allowed
   D_B_SENSITIVE,                   ///< Contains sensitive value, e.g. password
 

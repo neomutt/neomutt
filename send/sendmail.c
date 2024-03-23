@@ -6,6 +6,7 @@
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2021 Ihor Antonov <ihor@antonovs.family>
+ * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -45,11 +46,10 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "sendmail.h"
+#include "expando/lib.h"
 #include "nntp/lib.h"
 #include "pager/lib.h"
-#include "format_flags.h"
 #include "globals.h"
-#include "muttlib.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #else
@@ -292,7 +292,7 @@ static void add_args(struct SendmailArgArray *args, struct AddressList *al)
  * @retval  0 Success
  * @retval -1 Failure
  *
- * @sa $inews, nntp_format_str()
+ * @sa $inews
  */
 int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
                          struct AddressList *to, struct AddressList *cc,
@@ -306,19 +306,20 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
 
   if (OptNewsSend)
   {
-    char cmd[1024] = { 0 };
+    struct Buffer *cmd = buf_pool_get();
 
-    const char *const c_inews = cs_subset_string(sub, "inews");
-    mutt_expando_format(cmd, sizeof(cmd), 0, sizeof(cmd), NONULL(c_inews),
-                        nntp_format_str, 0, MUTT_FORMAT_NO_FLAGS);
-    if (*cmd == '\0')
+    const struct Expando *c_inews = cs_subset_expando(sub, "inews");
+    expando_render(c_inews, NntpRenderData, 0, MUTT_FORMAT_NO_FLAGS, cmd->dsize, cmd);
+    if (buf_is_empty(cmd))
     {
       i = nntp_post(m, msg);
       unlink(msg);
+      buf_pool_release(&cmd);
       return i;
     }
 
-    s = mutt_str_dup(cmd);
+    s = buf_strdup(cmd);
+    buf_pool_release(&cmd);
   }
   else
   {

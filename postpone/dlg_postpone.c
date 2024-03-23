@@ -74,11 +74,11 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pattern/lib.h"
-#include "format_flags.h"
 #include "functions.h"
 #include "hdrline.h"
 #include "mutt_logging.h"
@@ -98,16 +98,23 @@ static const struct Mapping PostponedHelp[] = {
 /**
  * post_make_entry - Format an Email for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
- * @sa $index_format, index_format_str()
+ * @sa $index_format
  */
-static void post_make_entry(struct Menu *menu, int line, struct Buffer *buf)
+static int post_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
   struct MailboxView *mv = menu->mdata;
   struct Mailbox *m = mv->mailbox;
 
-  const char *const c_index_format = cs_subset_string(NeoMutt->sub, "index_format");
-  mutt_make_string(buf, menu->win->state.cols, NONULL(c_index_format), m, -1,
-                   m->emails[line], MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
+  const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
+  if (c_arrow_cursor)
+  {
+    const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
+    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+  }
+
+  const struct Expando *c_index_format = cs_subset_expando(NeoMutt->sub, "index_format");
+  return mutt_make_string(buf, max_cols, c_index_format, m, -1, m->emails[line],
+                          MUTT_FORMAT_INDEX | MUTT_FORMAT_ARROWCURSOR, NULL);
 }
 
 /**

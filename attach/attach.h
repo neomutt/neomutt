@@ -3,7 +3,7 @@
  * Handling of email attachments
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -25,8 +25,10 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include "expando/lib.h"
 
 struct Body;
+struct Buffer;
 
 /**
  * struct AttachPtr - An email to which things will be attached
@@ -42,6 +44,18 @@ struct AttachPtr
   bool unowned : 1;     ///< Don't unlink on detach
   bool decrypted : 1;   ///< Not part of message as stored in the email->body
   bool collapsed : 1;   ///< Group is collapsed
+};
+
+/**
+ * ExpandoDataAttach - Expando UIDs for Attachments
+ *
+ * @sa ED_ATTACH, ExpandoDomain
+ */
+enum ExpandoDataAttach
+{
+  ED_ATT_CHARSET = 1,          ///< AttachPtr.body
+  ED_ATT_NUMBER,               ///< AttachPtr.num
+  ED_ATT_TREE,                 ///< AttachPtr.tree
 };
 
 /**
@@ -78,5 +92,25 @@ struct AttachCtx *mutt_actx_new         (void);
 
 void              mutt_aptr_free(struct AttachPtr **ptr);
 struct AttachPtr *mutt_aptr_new (void);
+
+void attach_arrow(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_C    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_c    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_D    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_d    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_e    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_F    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_f    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_I    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_M    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_m    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_Q    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_s    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_T    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_t    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+void attach_u    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+
+long attach_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
+long attach_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
 
 #endif /* MUTT_ATTACH_ATTACH_H */
