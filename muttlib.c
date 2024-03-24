@@ -1024,24 +1024,31 @@ void mutt_str_pretty_size(struct Buffer *buf, size_t num)
   }
   else if (c_size_show_fractions && (num < 10189)) /* 0.1K - 9.9K */
   {
-    snprintf(buf->data, buf->dsize, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
-             (num < 103) ? 0.1 : (num / (float) one_kilobyte));
+    int written = snprintf(buf->data, buf->dsize, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
+                           (num < 103) ? 0.1 : (num / (float) one_kilobyte));
+    buf->dptr += written;
   }
   else if (!c_size_show_mb || (num < 1023949)) /* 10K - 999K */
   {
     /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    snprintf(buf->data, buf->dsize, c_size_units_on_left ? ("K%zu") : ("%zuK"),
-             (num + 51) / one_kilobyte);
+    int written = snprintf(buf->data, buf->dsize,
+                           c_size_units_on_left ? ("K%zu") : ("%zuK"),
+                           (num + 51) / one_kilobyte);
+    buf->dptr += written;
   }
   else if (c_size_show_fractions && (num < 10433332)) /* 1.0M - 9.9M */
   {
-    snprintf(buf->data, buf->dsize, c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
+    int written = snprintf(buf->data, buf->dsize,
+                           c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
+    buf->dptr += written;
   }
   else /* 10M+ */
   {
     /* (10433332 + 52428) / 1048576 = 10 */
-    snprintf(buf->data, buf->dsize, c_size_units_on_left ? ("M%zu") : ("%zuM"),
-             (num + 52428) / 1048576);
+    int written = snprintf(buf->data, buf->dsize,
+                           c_size_units_on_left ? ("M%zu") : ("%zuM"),
+                           (num + 52428) / 1048576);
+    buf->dptr += written;
   }
 }
 
