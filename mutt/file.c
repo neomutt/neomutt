@@ -170,10 +170,14 @@ int mutt_file_fclose_full(FILE **fp, const char *file, int line, const char *fun
   int rc = fclose(*fp);
 
   if (rc == 0)
+  {
     MuttLogger(0, file, line, func, LL_DEBUG2, "File closed (fd=%d)\n", fd);
+  }
   else
+  {
     MuttLogger(0, file, line, func, LL_DEBUG2, "File close failed (fd=%d), errno=%d, %s\n",
                fd, errno, strerror(errno));
+  }
 
   *fp = NULL;
   return rc;

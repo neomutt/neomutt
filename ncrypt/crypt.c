@@ -289,7 +289,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
    *
    * This is important to note because the user could toggle
    * $crypt_protected_headers_write or $autocrypt off back in the
-   * compose menu.  We don't want mutt_write_rfc822_header() to write
+   * compose menu.  We don't want mutt_rfc822_write_header() to write
    * stale data from one option if the other is set.
    */
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");

@@ -45,7 +45,7 @@ static const struct ExpandoDefinition PatternFormatDef[] = {
   { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
   { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
   { "d", "description",  ED_PATTERN, ED_PAT_DESCRIPTION,  E_TYPE_STRING, NULL },
-  { "e", "expresion",    ED_PATTERN, ED_PAT_EXPRESION,    E_TYPE_STRING, NULL },
+  { "e", "expression",   ED_PATTERN, ED_PAT_EXPRESION,    E_TYPE_STRING, NULL },
   { "n", "number",       ED_PATTERN, ED_PAT_NUMBER,       E_TYPE_NUMBER, NULL },
   { NULL, NULL, 0, -1, -1, NULL }
   // clang-format on

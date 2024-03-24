@@ -190,7 +190,6 @@ void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
 bool dlg_pattern(char *buf, size_t buflen);
 
-int mutt_which_case(const char *s);
 bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);

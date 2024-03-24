@@ -38,7 +38,7 @@
  * @param  recurse Whether to recurse into groups or not
  * @retval num     Number of bodies
  * @retval -1      Failure
- * */
+ */
 int attach_body_count(struct Body *body, bool recurse)
 {
   if (!body)

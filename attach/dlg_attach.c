@@ -160,7 +160,7 @@ void attach_C(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_d - Attachment: Descripion - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_d - Attachment: Description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
 void attach_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)

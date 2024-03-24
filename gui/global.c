@@ -85,8 +85,11 @@ static int op_shell_escape(int op)
   if (mutt_shell_escape())
   {
     struct Mailbox *m_cur = get_current_mailbox();
-    m_cur->last_checked = 0; // force a check on the next mx_mbox_check() call
-    mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
+    if (m_cur)
+    {
+      m_cur->last_checked = 0; // force a check on the next mx_mbox_check() call
+      mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
+    }
   }
   return FR_SUCCESS;
 }

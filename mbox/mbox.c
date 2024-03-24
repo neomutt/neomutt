@@ -1308,7 +1308,6 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   }
 
   mutt_file_fclose(&fp);
-  fp = NULL;
   mbox_unlock_mailbox(m);
 
   if ((mutt_file_fclose(&adata->fp) != 0) || (i == -1))
