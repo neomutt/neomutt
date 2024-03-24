@@ -998,45 +998,50 @@ void buf_sanitize_filename(struct Buffer *buf, const char *path, short slash)
 /**
  * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
  * @param buf    Buffer for the result
- * @param buflen Length of the buffer
  * @param num    Number to abbreviate
  */
-void mutt_str_pretty_size(char *buf, size_t buflen, size_t num)
+void mutt_str_pretty_size(struct Buffer *buf, size_t num)
 {
-  if (!buf || (buflen == 0))
+  if (!buf || !buf->data || (buf->dsize == 0))
     return;
 
+  // Retrieve the configuration options
   const bool c_size_show_bytes = cs_subset_bool(NeoMutt->sub, "size_show_bytes");
   const bool c_size_show_fractions = cs_subset_bool(NeoMutt->sub, "size_show_fractions");
   const bool c_size_show_mb = cs_subset_bool(NeoMutt->sub, "size_show_mb");
   const bool c_size_units_on_left = cs_subset_bool(NeoMutt->sub, "size_units_on_left");
 
-  if (c_size_show_bytes && (num < 1024))
+  const int one_kilobyte = 1024;
+
+  if (c_size_show_bytes && (num < one_kilobyte))
   {
-    snprintf(buf, buflen, "%d", (int) num);
+    int written = snprintf(buf->data, buf->dsize, "%d", (int) num);
+    buf->dptr += written;
   }
   else if (num == 0)
   {
-    mutt_str_copy(buf, c_size_units_on_left ? "K0" : "0K", buflen);
+    mutt_str_copy(buf->data, c_size_units_on_left ? "K0" : "0K", buf->dsize);
   }
   else if (c_size_show_fractions && (num < 10189)) /* 0.1K - 9.9K */
   {
-    snprintf(buf, buflen, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
-             (num < 103) ? 0.1 : (num / 1024.0));
+    snprintf(buf->data, buf->dsize, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
+             (num < 103) ? 0.1 : (num / (float) one_kilobyte));
   }
   else if (!c_size_show_mb || (num < 1023949)) /* 10K - 999K */
   {
     /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    snprintf(buf, buflen, c_size_units_on_left ? ("K%zu") : ("%zuK"), (num + 51) / 1024);
+    snprintf(buf->data, buf->dsize, c_size_units_on_left ? ("K%zu") : ("%zuK"),
+             (num + 51) / one_kilobyte);
   }
   else if (c_size_show_fractions && (num < 10433332)) /* 1.0M - 9.9M */
   {
-    snprintf(buf, buflen, c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
+    snprintf(buf->data, buf->dsize, c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
   }
   else /* 10M+ */
   {
     /* (10433332 + 52428) / 1048576 = 10 */
-    snprintf(buf, buflen, c_size_units_on_left ? ("M%zu") : ("%zuM"), (num + 52428) / 1048576);
+    snprintf(buf->data, buf->dsize, c_size_units_on_left ? ("M%zu") : ("%zuM"),
+             (num + 52428) / 1048576);
   }
 }
 
