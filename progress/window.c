@@ -143,10 +143,8 @@ static int progress_window_recalc(struct MuttWindow *win)
 
   if (wdata->is_bytes)
   {
-    struct Buffer *pretty = buf_pool_get();
-    mutt_str_pretty_size(pretty, wdata->display_pos);
-    mutt_str_copy(wdata->pretty_pos, buf_string(pretty), sizeof(wdata->pretty_pos));
-    buf_pool_release(&pretty);
+    buf_reset(wdata->pretty_pos_buf);
+    mutt_str_pretty_size(wdata->pretty_pos_buf, wdata->display_pos);
   }
 
   if ((wdata->update_percent < 0) && (wdata->size != 0))
@@ -179,8 +177,8 @@ static int progress_window_repaint(struct MuttWindow *win)
         /* L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
            `%d` is the number, `%%` is the percent symbol.
            `%d` and `%%` may be reordered, or space inserted, if you wish. */
-        message_bar(wdata->win, wdata->display_percent, _("%s %s (%d%%)"),
-                    wdata->msg, wdata->pretty_pos, wdata->display_percent);
+        message_bar(wdata->win, wdata->display_percent, _("%s %s (%d%%)"), wdata->msg,
+                    buf_string(wdata->pretty_pos_buf), wdata->display_percent);
       }
       else
       {
@@ -196,7 +194,7 @@ static int progress_window_repaint(struct MuttWindow *win)
       if (wdata->is_bytes)
       {
         /* L10N: Progress bar: `%s` loading text, `%s` position/size */
-        message_bar(wdata->win, -1, _("%s %s"), wdata->msg, wdata->pretty_pos);
+        message_bar(wdata->win, -1, _("%s %s"), wdata->msg, buf_string(wdata->pretty_pos_buf));
       }
       else
       {
@@ -213,7 +211,8 @@ static int progress_window_repaint(struct MuttWindow *win)
          `%d` is the number, `%%` is the percent symbol.
          `%d` and `%%` may be reordered, or space inserted, if you wish. */
       message_bar(wdata->win, wdata->display_percent, _("%s %s/%s (%d%%)"),
-                  wdata->msg, wdata->pretty_pos, wdata->pretty_size, wdata->display_percent);
+                  wdata->msg, buf_string(wdata->pretty_pos_buf),
+                  buf_string(wdata->pretty_size_buf), wdata->display_percent);
     }
     else
     {
@@ -334,10 +333,8 @@ struct MuttWindow *progress_window_new(size_t size, size_t size_inc,
 
   if (is_bytes)
   {
-    struct Buffer *pretty = buf_pool_get();
-    mutt_str_pretty_size(pretty, size);
-    mutt_str_copy(wdata->pretty_size, buf_string(pretty), sizeof(wdata->pretty_size));
-    buf_pool_release(&pretty);
+    buf_reset(wdata->pretty_size_buf);
+    mutt_str_pretty_size(wdata->pretty_size_buf, size);
   }
 
   win->wdata = wdata;
