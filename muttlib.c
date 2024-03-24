@@ -981,51 +981,53 @@ void buf_sanitize_filename(struct Buffer *buf, const char *path, short slash)
 }
 
 /**
+ * format_pretty_size - Display an abbreviated size, like 3.4K
+ * @param buf    Buffer to write into
+ * @param num    Number to abbreviate
+ * @param show_bytes Show the number of bytes
+ * @param show_fractions Show fractions
+ * @param show_mb Show in megabytes
+ * @param units_on_left Show units on the left
+ * @retval num   Number of characters written
+ * @retval 0     Error
+ *
+ * Formats a number to be more human-readable by appending a unit (K, M, G, etc.) if needed if needed.
+ * If necessary, the buffer is expanded.
+ */
+
+/**
  * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
- * @param[out] buf Buffer for the result
- * @param[in]  num Number to abbreviate
- * @retval num Bytes written to buf
+ * @param buf    Buffer to write into
+ * @param num    Number to abbreviate
+ * @retval num   Number of characters written
+ * @retval 0     Error
+ *
+ * Formats a number to be more human-readable by appending a unit (K, M, G, etc.) if needed if needed.
+ * If necessary, the buffer is expanded.
+ *
+ * The following configuration options affect the formatting:
+ *
+ * - `size_show_bytes`: No prefix is used if `num` is less than 1024.
+ *
+ * - `size_units_on_left`: The unit is placed on the left side of the number.
+ *
+ * - `size_show_fractions`: the number is displayed with one decimal place if `num` is less than 10240 (e.g. 1.2K)
+ *
+ * - `size_show_mb`: The number is displayed in megabytes if `num` is greater than 1023949 (e.g. 1.2M)
  */
 int mutt_str_pretty_size(struct Buffer *buf, size_t num)
 {
-  if (!buf)
+  if (!buf || !buf->data || (buf->dsize == 0))
     return 0;
 
+  // Retrieve the configuration options
   const bool c_size_show_bytes = cs_subset_bool(NeoMutt->sub, "size_show_bytes");
   const bool c_size_show_fractions = cs_subset_bool(NeoMutt->sub, "size_show_fractions");
   const bool c_size_show_mb = cs_subset_bool(NeoMutt->sub, "size_show_mb");
   const bool c_size_units_on_left = cs_subset_bool(NeoMutt->sub, "size_units_on_left");
 
-  if (c_size_show_bytes && (num < 1024))
-  {
-    return buf_add_printf(buf, "%d", (int) num);
-  }
-
-  if (num == 0)
-  {
-    return buf_addstr(buf, c_size_units_on_left ? "K0" : "0K");
-  }
-
-  if (c_size_show_fractions && (num < 10189)) /* 0.1K - 9.9K */
-  {
-    return buf_add_printf(buf, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
-                          (num < 103) ? 0.1 : (num / 1024.0));
-  }
-
-  if (!c_size_show_mb || (num < 1023949)) /* 10K - 999K */
-  {
-    /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    return buf_add_printf(buf, c_size_units_on_left ? ("K%zu") : ("%zuK"), (num + 51) / 1024);
-  }
-
-  if (c_size_show_fractions && (num < 10433332)) /* 1.0M - 9.9M */
-  {
-    return buf_add_printf(buf, c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
-  }
-
-  /* 10M+ -- (10433332 + 52428) / 1048576 = 10 */
-  return buf_add_printf(buf, c_size_units_on_left ? ("M%zu") : ("%zuM"),
-                        (num + 52428) / 1048576);
+  return format_pretty_size(buf, num, c_size_show_bytes, c_size_show_fractions,
+                            c_size_show_mb, c_size_units_on_left);
 }
 
 /**
