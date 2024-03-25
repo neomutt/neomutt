@@ -219,6 +219,68 @@ static intptr_t expando_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * expando_string_plus_equals - Add to an Expando by string - Implements ConfigSetType::string_plus_equals() - @ingroup cfg_type_string_plus_equals
+ */
+static int expando_string_plus_equals(const struct ConfigSet *cs, void *var,
+                                      const struct ConfigDef *cdef,
+                                      const char *value, struct Buffer *err)
+{
+  /* Skip if the value is missing or empty string*/
+  if (!value || (value[0] == '\0'))
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+
+  if (value && startup_only(cdef, err))
+    return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
+
+  int rc = CSR_SUCCESS;
+
+  char *str = NULL;
+  struct Expando *exp_old = *(struct Expando **) var;
+
+  if (exp_old && exp_old->string)
+    mutt_str_asprintf(&str, "%s%s", exp_old->string, value);
+  else
+    str = mutt_str_dup(value);
+
+  const struct ExpandoDefinition *defs = (const struct ExpandoDefinition *) cdef->data;
+  struct Expando *exp_new = expando_parse(str, defs, err);
+  FREE(&str);
+
+  if (!exp_new && !buf_is_empty(err))
+  {
+    char opt[128] = { 0 };
+    snprintf(opt, sizeof(opt), _("Option %s: "), cdef->name);
+    buf_insert(err, 0, opt);
+    return CSR_ERR_INVALID;
+  }
+
+  if (expando_equal(exp_new, exp_old))
+  {
+    expando_free(&exp_new);
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+  }
+
+  if (cdef->validator)
+  {
+    rc = cdef->validator(cs, cdef, (intptr_t) exp_new, err);
+
+    if (CSR_RESULT(rc) != CSR_SUCCESS)
+    {
+      expando_free(&exp_new);
+      return rc | CSR_INV_VALIDATOR;
+    }
+  }
+
+  expando_destroy(cs, var, cdef);
+
+  *(struct Expando **) var = exp_new;
+  if (!exp_new)
+    rc |= CSR_SUC_EMPTY;
+
+  return rc;
+}
+
+/**
  * expando_reset - Reset an Expando to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int expando_reset(const struct ConfigSet *cs, void *var,
@@ -281,7 +343,7 @@ const struct ConfigSetType CstExpando = {
   expando_string_get,
   expando_native_set,
   expando_native_get,
-  NULL, // string_plus_equals
+  expando_string_plus_equals,
   NULL, // string_minus_equals
   expando_reset,
   expando_destroy,
