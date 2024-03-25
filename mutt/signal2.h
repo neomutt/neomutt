@@ -27,6 +27,8 @@
 #include <signal.h>
 #include <stdbool.h>
 
+void show_backtrace(void);
+
 extern volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
 extern volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
 
@@ -39,6 +41,29 @@ extern volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
  */
 typedef void (*sig_handler_t)(int sig);
 
+#ifdef DEBUG
+#if __GNUC__
+#define ASSERT_STOP __builtin_trap()
+#elif _MSC_VER
+#define ASSERT_STOP __debugbreak()
+#else
+#define ASSERT_STOP (*(volatile int *) 0 = 0)
+#endif
+#define ASSERT(COND)                                                                        \
+  do                                                                                        \
+  {                                                                                         \
+    if (!(COND))                                                                            \
+    {                                                                                       \
+      endwin();                                                                             \
+      show_backtrace();                                                                     \
+      printf("%s:%d:%s() -- assertion failed (%s)\n", __FILE__, __LINE__, __func__, #COND); \
+      ASSERT_STOP;                                                                          \
+    }                                                                                       \
+  } while (false);
+#else
+#define ASSERT(COND)
+#endif
+
 void mutt_sig_allow_interrupt(bool allow);
 void mutt_sig_block(void);
 void mutt_sig_block_system(void);
@@ -49,3 +74,4 @@ void mutt_sig_unblock(void);
 void mutt_sig_unblock_system(bool restore);
 
 #endif /* MUTT_MUTT_SIGNAL2_H */
+
