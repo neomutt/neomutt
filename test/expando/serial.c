@@ -181,20 +181,9 @@ static void dump_node_padding(const struct ExpandoNode *node, struct Buffer *buf
   struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
   struct ExpandoNode *right = node_get_child(node, ENP_RIGHT);
 
-  switch (priv->pad_type)
-  {
-    case EPT_FILL_EOL:
-      buf_addstr(buf, "EOL:");
-      break;
-    case EPT_HARD_FILL:
-      buf_addstr(buf, "HARD:");
-      break;
-    case EPT_SOFT_FILL:
-      buf_addstr(buf, "SOFT:");
-      break;
-    default:
-      assert(false);
-  }
+  const char *pt = name_expando_pad_type(priv->pad_type);
+  pt += 4; // Skip "EPT_" prefix
+  buf_add_printf(buf, "%s:", pt);
 
   assert(node->start);
   assert(node->end);
