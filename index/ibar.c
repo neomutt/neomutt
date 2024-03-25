@@ -107,6 +107,7 @@ static int ibar_recalc(struct MuttWindow *win)
   const bool c_ts_enabled = cs_subset_bool(shared->sub, "ts_enabled");
   if (c_ts_enabled && TsSupported)
   {
+    buf_reset(buf);
     const char *c_ts_status_format = cs_subset_string(shared->sub, "ts_status_format");
     menu_status_line(buf, shared, priv->menu, buf->dsize, NONULL(c_ts_status_format));
     if (!mutt_str_equal(buf_string(buf), ibar_data->ts_status_format))
@@ -116,6 +117,7 @@ static int ibar_recalc(struct MuttWindow *win)
       mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
     }
 
+    buf_reset(buf);
     const char *c_ts_icon_format = cs_subset_string(shared->sub, "ts_icon_format");
     menu_status_line(buf, shared, priv->menu, buf->dsize, NONULL(c_ts_icon_format));
     if (!mutt_str_equal(buf_string(buf), ibar_data->ts_icon_format))
