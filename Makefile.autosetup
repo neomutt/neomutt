@@ -283,8 +283,10 @@ $(PWD)/config:
 # libconn
 LIBCONN=	libconn.a
 LIBCONNOBJS=	conn/accountcmd.o conn/config.o conn/connaccount.o \
-		conn/getdomain.o conn/raw.o conn/sasl_plain.o conn/socket.o \
-		conn/tunnel.o
+		conn/raw.o conn/sasl_plain.o conn/socket.o conn/tunnel.o
+@if !DOMAIN
+LIBCONNOBJS+=	conn/getdomain.o 
+@endif
 @if USE_SASL_GNU
 LIBCONNOBJS+=	conn/gsasl.o
 @endif
@@ -369,7 +371,10 @@ LIBDEBUGOBJS+=	debug/window.o
 @if USE_DEBUG_BACKTRACE || USE_DEBUG_COLOR || USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ || USE_DEBUG_KEYMAP || USE_DEBUG_LOGGING || USE_DEBUG_NAMES || USE_DEBUG_NOTIFY || USE_DEBUG_WINDOW
 LIBDEBUGOBJS+=	debug/names.o
 @endif
-LIBDEBUGOBJS+=	debug/common.o debug/names_expando.o
+@if USE_DEBUG_EMAIL || USE_DEBUG_GRAPHVIZ
+LIBDEBUGOBJS+=	debug/common.o
+@endif
+LIBDEBUGOBJS+=	debug/names_expando.o
 LIBDEBUG=	libdebug.a
 CLEANFILES+=	$(LIBDEBUG) $(LIBDEBUGOBJS)
 ALLOBJS+=	$(LIBDEBUGOBJS)
