@@ -316,3 +316,9 @@ bool subjrx_apply_mods(struct Envelope *env)
 {
   return false;
 }
+
+#ifdef USE_DEBUG_BACKTRACE
+void show_backtrace(void)
+{
+}
+#endif

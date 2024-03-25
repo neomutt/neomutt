@@ -27,6 +27,12 @@
 #include <signal.h>
 #include <stdbool.h>
 
+#ifdef USE_DEBUG_BACKTRACE
+void show_backtrace(void);
+#else
+static inline void show_backtrace(void) {}
+#endif
+
 extern volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
 extern volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
 
@@ -38,6 +44,35 @@ extern volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
  * @param sig Signal number, e.g. SIGINT
  */
 typedef void (*sig_handler_t)(int sig);
+
+void assertion_dump(const char *file, int line, const char *func, const char *cond);
+
+#ifndef NDEBUG
+#if __GNUC__
+#define ASSERT_STOP __builtin_trap()
+#elif _MSC_VER
+#define ASSERT_STOP __debugbreak()
+#else
+#define ASSERT_STOP (*(volatile int *) 0 = 0)
+#endif
+#define ASSERT(COND)                                                           \
+  do                                                                           \
+  {                                                                            \
+    if (!(COND))                                                               \
+    {                                                                          \
+      assertion_dump(__FILE__, __LINE__, __func__, #COND);                     \
+      ASSERT_STOP;                                                             \
+    }                                                                          \
+  } while (false);
+#else
+#define ASSERT(COND)                                                           \
+  do                                                                           \
+  {                                                                            \
+    if (COND)                                                                  \
+    {                                                                          \
+    }                                                                          \
+  } while (false);
+#endif
 
 void mutt_sig_allow_interrupt(bool allow);
 void mutt_sig_block(void);

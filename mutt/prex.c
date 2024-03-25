@@ -34,6 +34,7 @@
 #include "prex.h"
 #include "logging2.h"
 #include "memory.h"
+#include "signal2.h"
 
 #ifdef HAVE_PCRE2
 #define PCRE2_CODE_UNIT_WIDTH 8
