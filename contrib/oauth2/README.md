@@ -277,10 +277,7 @@ set imap_user="userid@myschool.edu"
 set folder="imap://outlook.office365.com/"
 set smtp_url="smtp://${imap_user}@smtp.office365.com:587/"
 set imap_authenticators="oauthbearer:xoauth2"
-set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py \
-       ${imap_user}.tokens \
-       --client-id ${client_id} \
-       --client-secret ${client_id}"
+set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py ${imap_user}.tokens"
 
 set smtp_authenticators=${imap_authenticators}
 set smtp_oauth_refresh_command=${imap_oauth_refresh_command}
