@@ -52,8 +52,6 @@ static long test_d_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 
 void test_expando_node_conddate(void)
 {
-  setenv("TZ", "UTC", 1); // Ensure dates are consistent
-
   // struct NodeCondDatePrivate *node_conddate_private_new(int count, char period);
   // void node_conddate_private_free(void **ptr);
   {
