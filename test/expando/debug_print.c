@@ -23,6 +23,7 @@
 #include "config.h"
 #include <assert.h>
 #include <stdio.h>
+#include "debug/lib.h"
 #include "debug_print.h"
 #include "expando/lib.h"
 #include "mutt_thread.h"
@@ -86,24 +87,8 @@ static void print_pad_node(FILE *fp, const struct ExpandoNode *node, int indent)
   assert(node->ndata);
   struct NodePaddingPrivate *priv = node->ndata;
 
-  const char *pt = NULL;
-  switch (priv->pad_type)
-  {
-    case EPT_FILL_EOL:
-      pt = "FILL_EOL";
-      break;
-
-    case EPT_HARD_FILL:
-      pt = "HARD_FILL";
-      break;
-
-    case EPT_SOFT_FILL:
-      pt = "SOFT_FILL";
-      break;
-
-    default:
-      assert(0 && "Unknown pad type.");
-  }
+  const char *pt = name_expando_pad_type(priv->pad_type);
+  pt += 4; // Skip "EPT_" prefix
 
   const int len = node->end - node->start;
   fprintf(fp, "%*sPAD: `%.*s` (type=%s)\n", indent, "", len, node->start, pt);
