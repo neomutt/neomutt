@@ -292,11 +292,16 @@ cleanup:
   FREE(&linebuf);
   if (fp_tmp)
   {
-    if ((fflush(fp_tmp) == 0) && (fp = mutt_file_fopen(NONULL(c_history_file), "w")))
+    if (fflush(fp_tmp) == 0)
     {
-      rewind(fp_tmp);
-      mutt_file_copy_stream(fp_tmp, fp);
-      mutt_file_fclose(&fp);
+      truncate(c_history_file, 0);
+      fp = mutt_file_fopen(c_history_file, "w");
+      if (fp)
+      {
+        rewind(fp_tmp);
+        mutt_file_copy_stream(fp_tmp, fp);
+        mutt_file_fclose(&fp);
+      }
     }
     mutt_file_fclose(&fp_tmp);
   }
