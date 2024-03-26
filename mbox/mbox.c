@@ -59,6 +59,7 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
+#include "sort.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
@@ -1081,14 +1082,9 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
 
   /* sort message by their position in the mailbox on disk */
   const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
   if (c_sort != SORT_ORDER)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
-    cs_subset_str_native_set(NeoMutt->sub, "use_threads", UT_FLAT, NULL);
-    mailbox_changed(m, NT_MAILBOX_RESORT);
-    cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
-    cs_subset_str_native_set(NeoMutt->sub, "use_threads", c_use_threads, NULL);
+    mutt_sort_order(m);
     need_sort = true;
   }
 

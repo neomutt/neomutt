@@ -52,6 +52,7 @@ int mutt_compare_emails(const struct Email *a, const struct Email *b,
                         enum MailboxType type, short sort, short sort_aux);
 
 void mutt_sort_headers(struct MailboxView *mv, bool init);
+void mutt_sort_order(struct Mailbox *m);
 
 const char *mutt_get_name(const struct Address *a);
 
