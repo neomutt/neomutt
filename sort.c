@@ -438,3 +438,19 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
 
   return;
 }
+
+/**
+ * mutt_sort_order - Sort emails by their disk order
+ * @param m Mailbox
+ */
+void mutt_sort_order(struct Mailbox *m)
+{
+  if (!m)
+    return;
+
+  struct EmailCompare cmp = { 0 };
+  cmp.type = mx_type(m);
+  cmp.sort = SORT_ORDER;
+  mutt_qsort_r((void *) m->emails, m->msg_count, sizeof(struct Email *),
+               compare_email_shim, &cmp);
+}
