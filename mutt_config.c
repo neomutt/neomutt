@@ -239,9 +239,6 @@ struct ExpandoNode *parse_tags_transformed(const char *str, const char **parsed_
                                            int did, int uid, ExpandoParserFlags flags,
                                            struct ExpandoParseError *error)
 {
-  if (flags & EP_CONDITIONAL)
-    return NULL;
-
   // Let the basic expando parser do the work
   flags |= EP_NO_CUSTOM_PARSE;
   struct ExpandoNode *node = node_expando_parse(str, parsed_until,
