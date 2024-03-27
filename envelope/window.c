@@ -308,11 +308,12 @@ static int calc_user_hdrs(const struct ListHead *hdrs)
 static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdata)
 {
   int rows = 4; // 'From:', 'Subject:', 'Reply-To:', 'Fcc:'
+  struct Email *e = wdata->email;
 #ifdef MIXMASTER
-  rows++;
+  if (!STAILQ_EMPTY(&e->chain))
+    rows++;
 #endif
 
-  struct Email *e = wdata->email;
   struct Envelope *env = e->env;
   const int cols = win->state.cols - MaxHeaderWidth;
 
@@ -501,22 +502,17 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
  * @param chain List of chain links
  * @param win   Window to draw on
  * @param row   Window row to start drawing
+ *
+ * @pre `chain` points to a nonempty list.
  */
 static void draw_mix_line(struct ListHead *chain, struct MuttWindow *win, int row)
 {
   char *t = NULL;
+  int c = MaxHeaderWidth;
+  struct ListNode *np = NULL;
 
   draw_header(win, row, HDR_MIX);
 
-  if (STAILQ_EMPTY(chain))
-  {
-    mutt_window_addstr(win, _("<no chain defined>"));
-    mutt_window_clrtoeol(win);
-    return;
-  }
-
-  int c = 12;
-  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, chain, entries)
   {
     t = np->data;
@@ -755,7 +751,8 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
     row += draw_crypt_lines(win, wdata, row);
 
 #ifdef MIXMASTER
-  draw_mix_line(&e->chain, win, row++);
+  if (!STAILQ_EMPTY(&e->chain))
+    draw_mix_line(&e->chain, win, row++);
 #endif
   const bool c_compose_show_user_headers = cs_subset_bool(wdata->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
