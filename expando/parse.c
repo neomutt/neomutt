@@ -156,6 +156,8 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
         {
           error->position = next;
           snprintf(error->message, sizeof(error->message),
+                   // L10N: Expando is missing a terminator character
+                   //       e.g. "%[..." is missing the final ']'
                    _("Conditional expando is missing '%c'"), '?');
           node_free(&condition);
           return NULL;
@@ -173,6 +175,8 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
         {
           error->position = if_true_end;
           snprintf(error->message, sizeof(error->message),
+                   // L10N: Expando is missing a terminator character
+                   //       e.g. "%[..." is missing the final ']'
                    _("Conditional expando is missing '&' or '%c'"), end_terminator);
           node_free(&condition);
           return NULL;
@@ -216,6 +220,8 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
           {
             error->position = if_false_start;
             snprintf(error->message, sizeof(error->message),
+                     // L10N: Expando is missing a terminator character
+                     //       e.g. "%[..." is missing the final ']'
                      _("Conditional expando is missing '%c'"), end_terminator);
             node_free(&if_true_tree);
             node_free(&condition);

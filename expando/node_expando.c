@@ -195,6 +195,7 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
     if (!isdigit(*start))
     {
       error->position = start;
+      // L10N: Expando format expected a number
       snprintf(error->message, sizeof(error->message), _("Number is expected"));
       FREE(&fmt);
       return NULL;
@@ -270,6 +271,7 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
   }
 
   error->position = format_end;
+  // L10N: e.g. "Unknown expando: %Q"
   snprintf(error->message, sizeof(error->message), _("Unknown expando: %%%.*s"),
            expando_len, format_end);
   FREE(&fmt);
@@ -300,6 +302,8 @@ struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **p
   {
     error->position = expando_end;
     snprintf(error->message, sizeof(error->message),
+             // L10N: Expando is missing a terminator character
+             //       e.g. "%[..." is missing the final ']'
              _("Expando is missing terminator: '%c'"), terminator);
     return NULL;
   }
