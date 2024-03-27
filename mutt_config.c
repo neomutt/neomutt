@@ -855,6 +855,7 @@ static struct ConfigDef MainVars[] = {
     "Update the progress bar after this many records written (0 to disable)"
   },
 
+  { "cursor_overlay",            D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2020-07-20" },
   { "escape",                    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
   { "ignore_linear_white_space", D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2021-03-18" },
   { "visual",                    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
