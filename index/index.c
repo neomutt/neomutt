@@ -454,6 +454,17 @@ static int index_index_observer(struct NotifyCallback *nc)
   struct MuttWindow *win = nc->global_data;
   win->actions |= WA_RECALC;
 
+  if ((nc->event_type == NT_MAILBOX) && (nc->event_subtype == NT_MAILBOX_CHANGE))
+  {
+    struct EventMailbox *ev_m = nc->event_data;
+    if (ev_m->ea_new && ev_m->ea_changed && ev_m->ea_deleted)
+    {
+      mutt_debug(LL_DEBUG1, "\033[1;7mQWQ Mailbox: %zu new, %zu changed, %zu deleted\033[0m\n",
+                 ARRAY_SIZE(ev_m->ea_new), ARRAY_SIZE(ev_m->ea_changed),
+                 ARRAY_SIZE(ev_m->ea_deleted));
+    }
+  }
+
   struct Menu *menu = win->wdata;
   menu_queue_redraw(menu, MENU_REDRAW_INDEX);
   mutt_debug(LL_DEBUG5, "index done, request WA_RECALC\n");

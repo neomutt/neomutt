@@ -30,6 +30,8 @@
 #include "config.h"
 #include <ctype.h>
 #include <stdbool.h>
+#include <string.h>
+#include <strings.h>
 #include "hash.h"
 #include "memory.h"
 #include "string2.h"
@@ -41,15 +43,18 @@
  *
  * @note If the key is NULL or empty, the retval will be 0
  */
-static size_t gen_hash_string(union HashKey key, size_t num_elems)
+static size_t gen_hash_string(struct HashKey key, size_t num_elems)
 {
   size_t hash = 0;
   const unsigned char *s = (const unsigned char *) key.strkey;
   if (!s)
-    return 0;
+    return 0; // LCOV_EXCL_LINE
 
-  while (*s != '\0')
-    hash += ((hash << 7) + *s++);
+  for (size_t i = 0; ((key.intkey == 0) || (i < key.intkey)) && (*s != '\0'); i++, s++)
+  {
+    hash += ((hash << 7) + *s);
+  }
+
   hash = (hash * SOME_PRIME) % num_elems;
 
   return hash;
@@ -58,9 +63,26 @@ static size_t gen_hash_string(union HashKey key, size_t num_elems)
 /**
  * cmp_key_string - Compare two string keys - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
  */
-static int cmp_key_string(union HashKey a, union HashKey b)
+static int cmp_key_string(struct HashKey a, struct HashKey b)
 {
-  return mutt_str_cmp(a.strkey, b.strkey);
+  if ((a.intkey == 0) && (b.intkey == 0))
+    return mutt_str_cmp(a.strkey, b.strkey);
+
+  if (a.intkey == b.intkey)
+    return strncmp(a.strkey, b.strkey, a.intkey);
+
+  int length = MAX(a.intkey, b.intkey);
+  int rc = strncmp(a.strkey, b.strkey, length);
+  if (rc != 0)
+    return rc;
+
+  if ((a.intkey == 0) && (a.strkey[b.intkey] == '\0'))
+    return 0;
+
+  if ((b.intkey == 0) && (b.strkey[a.intkey] == '\0'))
+    return 0;
+
+  return 1; // LCOV_EXCL_LINE
 }
 
 /**
@@ -68,15 +90,18 @@ static int cmp_key_string(union HashKey a, union HashKey b)
  *
  * @note If the key is NULL or empty, the retval will be 0
  */
-static size_t gen_hash_case_string(union HashKey key, size_t num_elems)
+static size_t gen_hash_case_string(struct HashKey key, size_t num_elems)
 {
   size_t hash = 0;
   const unsigned char *s = (const unsigned char *) key.strkey;
   if (!s)
-    return 0;
+    return 0; // LCOV_EXCL_LINE
 
-  while (*s != '\0')
-    hash += ((hash << 7) + tolower(*s++));
+  for (size_t i = 0; ((key.intkey == 0) || (i < key.intkey)) && (*s != '\0'); i++, s++)
+  {
+    hash += ((hash << 7) + tolower(*s));
+  }
+
   hash = (hash * SOME_PRIME) % num_elems;
 
   return hash;
@@ -85,15 +110,32 @@ static size_t gen_hash_case_string(union HashKey key, size_t num_elems)
 /**
  * cmp_key_case_string - Compare two string keys (ignore case) - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
  */
-static int cmp_key_case_string(union HashKey a, union HashKey b)
+static int cmp_key_case_string(struct HashKey a, struct HashKey b)
 {
-  return mutt_istr_cmp(a.strkey, b.strkey);
+  if ((a.intkey == 0) && (b.intkey == 0))
+    return mutt_istr_cmp(a.strkey, b.strkey);
+
+  if (a.intkey == b.intkey)
+    return strncasecmp(a.strkey, b.strkey, a.intkey);
+
+  int length = MAX(a.intkey, b.intkey);
+  int rc = strncasecmp(a.strkey, b.strkey, length);
+  if (rc != 0)
+    return rc;
+
+  if ((a.intkey == 0) && (a.strkey[b.intkey] == '\0'))
+    return 0;
+
+  if ((b.intkey == 0) && (b.strkey[a.intkey] == '\0'))
+    return 0;
+
+  return 1; // LCOV_EXCL_LINE
 }
 
 /**
  * gen_hash_int - Generate a hash from an integer - Implements ::hash_gen_hash_t - @ingroup hash_gen_hash_api
  */
-static size_t gen_hash_int(union HashKey key, size_t num_elems)
+static size_t gen_hash_int(struct HashKey key, size_t num_elems)
 {
   return (key.intkey % num_elems);
 }
@@ -101,7 +143,7 @@ static size_t gen_hash_int(union HashKey key, size_t num_elems)
 /**
  * cmp_key_int - Compare two integer keys - Implements ::hash_cmp_key_t - @ingroup hash_cmp_key_api
  */
-static int cmp_key_int(union HashKey a, union HashKey b)
+static int cmp_key_int(struct HashKey a, struct HashKey b)
 {
   if (a.intkey == b.intkey)
     return 0;
@@ -137,7 +179,7 @@ static struct HashTable *hash_new(size_t num_elems)
  * @retval ptr Newly inserted HashElem
  */
 static struct HashElem *union_hash_insert(struct HashTable *table,
-                                          union HashKey key, int type, void *data)
+                                          struct HashKey key, int type, void *data)
 {
   if (!table)
     return NULL; // LCOV_EXCL_LINE
@@ -183,7 +225,7 @@ static struct HashElem *union_hash_insert(struct HashTable *table,
  * @param key   Key (either string or integer)
  * @retval ptr HashElem matching the key
  */
-static struct HashElem *union_hash_find_elem(const struct HashTable *table, union HashKey key)
+static struct HashElem *union_hash_find_elem(const struct HashTable *table, struct HashKey key)
 {
   if (!table)
     return NULL; // LCOV_EXCL_LINE
@@ -204,7 +246,7 @@ static struct HashElem *union_hash_find_elem(const struct HashTable *table, unio
  * @param key   Key (either string or integer)
  * @retval ptr Data attached to the HashElem matching the key
  */
-static void *union_hash_find(const struct HashTable *table, union HashKey key)
+static void *union_hash_find(const struct HashTable *table, struct HashKey key)
 {
   if (!table)
     return NULL; // LCOV_EXCL_LINE
@@ -220,7 +262,7 @@ static void *union_hash_find(const struct HashTable *table, union HashKey key)
  * @param key     Key (either string or integer)
  * @param data    Private data to match (or NULL for any match)
  */
-static void union_hash_delete(struct HashTable *table, union HashKey key, const void *data)
+static void union_hash_delete(struct HashTable *table, struct HashKey key, const void *data)
 {
   if (!table)
     return; // LCOV_EXCL_LINE
@@ -307,6 +349,40 @@ void mutt_hash_set_destructor(struct HashTable *table, hash_hdata_free_t fn, int
 }
 
 /**
+ * mutt_hash_typed_insert_n - Insert a string with type info into a Hash Table
+ * @param table  Hash Table to use
+ * @param strkey String key
+ * @param keylen Length of the key
+ * @param type   Type to associate with the key
+ * @param data   Private data associated with the key
+ * @retval ptr Newly inserted HashElem
+ */
+struct HashElem *mutt_hash_typed_insert_n(struct HashTable *table, const char *strkey,
+                                          int keylen, int type, void *data)
+{
+  if (!table || !strkey || (*strkey == '\0'))
+    return NULL;
+
+  struct HashKey key = { 0 };
+
+  if (table->strdup_keys)
+  {
+    if (keylen == 0)
+      key.strkey = mutt_str_dup(strkey);
+    else
+      key.strkey = mutt_strn_dup(strkey, keylen);
+  }
+  else
+  {
+    key.strkey = strkey;
+  }
+
+  key.intkey = keylen;
+
+  return union_hash_insert(table, key, type, data);
+}
+
+/**
  * mutt_hash_typed_insert - Insert a string with type info into a Hash Table
  * @param table  Hash Table to use
  * @param strkey String key
@@ -317,12 +393,21 @@ void mutt_hash_set_destructor(struct HashTable *table, hash_hdata_free_t fn, int
 struct HashElem *mutt_hash_typed_insert(struct HashTable *table,
                                         const char *strkey, int type, void *data)
 {
-  if (!table || !strkey)
-    return NULL;
+  return mutt_hash_typed_insert_n(table, strkey, 0, type, data);
+}
 
-  union HashKey key;
-  key.strkey = table->strdup_keys ? mutt_str_dup(strkey) : strkey;
-  return union_hash_insert(table, key, type, data);
+/**
+ * mutt_hash_insert_n - Add a new element to the Hash Table (with string keys)
+ * @param table  Hash Table (with string keys)
+ * @param strkey String key
+ * @param keylen Length of the key
+ * @param data   Private data associated with the key
+ * @retval ptr Newly inserted HashElem
+ */
+struct HashElem *mutt_hash_insert_n(struct HashTable *table, const char *strkey,
+                                    int keylen, void *data)
+{
+  return mutt_hash_typed_insert_n(table, strkey, keylen, -1, data);
 }
 
 /**
@@ -334,7 +419,7 @@ struct HashElem *mutt_hash_typed_insert(struct HashTable *table,
  */
 struct HashElem *mutt_hash_insert(struct HashTable *table, const char *strkey, void *data)
 {
-  return mutt_hash_typed_insert(table, strkey, -1, data);
+  return mutt_hash_typed_insert_n(table, strkey, 0, -1, data);
 }
 
 /**
@@ -348,9 +433,25 @@ struct HashElem *mutt_hash_int_insert(struct HashTable *table, unsigned int intk
 {
   if (!table)
     return NULL;
-  union HashKey key;
+  struct HashKey key = { 0 };
   key.intkey = intkey;
   return union_hash_insert(table, key, -1, data);
+}
+
+/**
+ * mutt_hash_find_n - Find the HashElem data in a Hash Table element using a key
+ * @param table  Hash Table to search
+ * @param strkey String key to search for
+ * @param keylen Length of the key
+ * @retval ptr Data attached to the HashElem matching the key
+ */
+void *mutt_hash_find_n(const struct HashTable *table, const char *strkey, int keylen)
+{
+  if (!table || !strkey)
+    return NULL;
+
+  struct HashKey key = { strkey, keylen };
+  return union_hash_find(table, key);
 }
 
 /**
@@ -361,11 +462,24 @@ struct HashElem *mutt_hash_int_insert(struct HashTable *table, unsigned int intk
  */
 void *mutt_hash_find(const struct HashTable *table, const char *strkey)
 {
+  return mutt_hash_find_n(table, strkey, 0);
+}
+
+/**
+ * mutt_hash_find_elem_n - Find the HashElem in a Hash Table element using a key
+ * @param table  Hash Table to search
+ * @param strkey String key to search for
+ * @param keylen Length of the key
+ * @retval ptr HashElem matching the key
+ */
+struct HashElem *mutt_hash_find_elem_n(const struct HashTable *table,
+                                       const char *strkey, int keylen)
+{
   if (!table || !strkey)
     return NULL;
-  union HashKey key;
-  key.strkey = strkey;
-  return union_hash_find(table, key);
+
+  struct HashKey key = { strkey, keylen };
+  return union_hash_find_elem(table, key);
 }
 
 /**
@@ -376,11 +490,7 @@ void *mutt_hash_find(const struct HashTable *table, const char *strkey)
  */
 struct HashElem *mutt_hash_find_elem(const struct HashTable *table, const char *strkey)
 {
-  if (!table || !strkey)
-    return NULL;
-  union HashKey key;
-  key.strkey = strkey;
-  return union_hash_find_elem(table, key);
+  return mutt_hash_find_elem_n(table, strkey, 0);
 }
 
 /**
@@ -393,9 +503,30 @@ void *mutt_hash_int_find(const struct HashTable *table, unsigned int intkey)
 {
   if (!table)
     return NULL;
-  union HashKey key;
+  struct HashKey key = { 0 };
   key.intkey = intkey;
   return union_hash_find(table, key);
+}
+
+/**
+ * mutt_hash_find_bucket_n - Find the HashElem in a Hash Table element using a key
+ * @param table Hash Table to search
+ * @param strkey String key to search for
+ * @param keylen Length of the key
+ * @retval ptr HashElem matching the key
+ *
+ * Unlike mutt_hash_find_elem(), this will return the first matching entry.
+ */
+struct HashElem *mutt_hash_find_bucket_n(const struct HashTable *table,
+                                         const char *strkey, int keylen)
+{
+  if (!table || !strkey)
+    return NULL;
+
+  struct HashKey key = { strkey, keylen };
+
+  size_t hash = table->gen_hash(key, table->num_elems);
+  return table->table[hash];
 }
 
 /**
@@ -408,14 +539,34 @@ void *mutt_hash_int_find(const struct HashTable *table, unsigned int intkey)
  */
 struct HashElem *mutt_hash_find_bucket(const struct HashTable *table, const char *strkey)
 {
-  if (!table || !strkey)
-    return NULL;
+  return mutt_hash_find_bucket_n(table, strkey, 0);
+}
 
-  union HashKey key;
+/**
+ * mutt_hash_delete_n - Remove an element from a Hash Table
+ * @param table  Hash Table to use
+ * @param strkey String key to match
+ * @param keylen Length of the key
+ * @param data    Private data to match (or NULL for any match)
+ */
+void mutt_hash_delete_n(struct HashTable *table, const char *strkey, int keylen,
+                        const void *data)
+{
+  if (!table || !strkey || (strkey[0] == '\0'))
+    return;
 
-  key.strkey = strkey;
-  size_t hash = table->gen_hash(key, table->num_elems);
-  return table->table[hash];
+  struct HashKey key = { 0 };
+
+  // Copy the key because union_hash_delete() may use it after the HashElem is freed.
+  if (keylen == 0)
+    key.strkey = mutt_str_dup(strkey);
+  else
+    key.strkey = mutt_strn_dup(strkey, keylen);
+
+  key.intkey = keylen;
+
+  union_hash_delete(table, key, data);
+  FREE(&key.strkey);
 }
 
 /**
@@ -426,13 +577,7 @@ struct HashElem *mutt_hash_find_bucket(const struct HashTable *table, const char
  */
 void mutt_hash_delete(struct HashTable *table, const char *strkey, const void *data)
 {
-  if (!table || !strkey || (strkey[0] == '\0'))
-    return;
-  union HashKey key;
-  // Copy the key because union_hash_delete() may use it after the HashElem is freed.
-  key.strkey = mutt_str_dup(strkey);
-  union_hash_delete(table, key, data);
-  FREE(&key.strkey);
+  mutt_hash_delete_n(table, strkey, 0, data);
 }
 
 /**
@@ -445,7 +590,7 @@ void mutt_hash_int_delete(struct HashTable *table, unsigned int intkey, const vo
 {
   if (!table)
     return;
-  union HashKey key;
+  struct HashKey key = { 0 };
   key.intkey = intkey;
   union_hash_delete(table, key, data);
 }

@@ -49,8 +49,11 @@
 #include "mx.h"
 #include "shared.h"
 #include "sort.h"
-
+#ifdef USE_HCACHE
+#include "hcache/lib.h"
+#else
 struct HeaderCache;
+#endif
 
 int nm_update_filename(struct Mailbox *m, const char *old_file,
                        const char *new_file, struct Email *e);
@@ -122,7 +125,7 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
   FILE *fp = NULL;
   int oe = ENOENT;
 
-  buf_printf(dirname, "%s/%s", folder, subfolder);
+  buf_concat_path(dirname, folder, subfolder);
 
   DIR *dir = mutt_file_opendir(buf_string(dirname), MUTT_OPENDIR_CREATE);
   if (!dir)
@@ -318,7 +321,14 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
   {
     char path[PATH_MAX] = { 0 };
     snprintf(path, sizeof(path), "%s/%s", mailbox_path(m), e->path);
-    maildir_hcache_delete(hc, e);
+#ifdef USE_HCACHE
+    if (hc)
+    {
+      const char *key = maildir_hcache_key(e);
+      size_t keylen = maildir_hcache_keylen(key);
+      hcache_delete_email(hc, key, keylen);
+    }
+#endif
     unlink(path);
   }
   else if (e->changed || e->attach_del ||
@@ -328,8 +338,14 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
       return false;
   }
 
-  if (e->changed)
-    maildir_hcache_store(hc, e);
+#ifdef USE_HCACHE
+  if (hc && e->changed)
+  {
+    const char *key = maildir_hcache_key(e);
+    size_t keylen = maildir_hcache_keylen(key);
+    hcache_store_email(hc, key, keylen, e, 0);
+  }
+#endif
 
   return true;
 }
@@ -616,10 +632,13 @@ int maildir_msg_close(struct Mailbox *m, struct Message *msg)
 int maildir_msg_save_hcache(struct Mailbox *m, struct Email *e)
 {
   int rc = 0;
-
-  struct HeaderCache *hc = maildir_hcache_open(m);
-  rc = maildir_hcache_store(hc, e);
-  maildir_hcache_close(&hc);
-
+#ifdef USE_HCACHE
+  const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
+  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
+  const char *key = maildir_hcache_key(e);
+  int keylen = maildir_hcache_keylen(key);
+  rc = hcache_store_email(hc, key, keylen, e, 0);
+  hcache_close(&hc);
+#endif
   return rc;
 }
