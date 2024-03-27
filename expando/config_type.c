@@ -81,6 +81,7 @@ static int expando_string_set(const struct ConfigSet *cs, void *var, struct Conf
     if (!exp && !buf_is_empty(err))
     {
       char opt[128] = { 0 };
+      // L10N: e.g. "Option index_format:" plus an error message
       snprintf(opt, sizeof(opt), _("Option %s: "), cdef->name);
       buf_insert(err, 0, opt);
       return CSR_ERR_INVALID;
@@ -249,6 +250,7 @@ static int expando_string_plus_equals(const struct ConfigSet *cs, void *var,
   if (!exp_new && !buf_is_empty(err))
   {
     char opt[128] = { 0 };
+    // L10N: e.g. "Option index_format:" plus an error message
     snprintf(opt, sizeof(opt), _("Option %s: "), cdef->name);
     buf_insert(err, 0, opt);
     return CSR_ERR_INVALID;
