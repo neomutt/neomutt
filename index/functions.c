@@ -2078,6 +2078,7 @@ static int op_prev_entry(struct IndexSharedData *shared, struct IndexPrivateData
  */
 static int op_print(struct IndexSharedData *shared, struct IndexPrivateData *priv, int op)
 {
+  ASSERT((priv->menu->current % 2) == 1);
   struct EmailArray ea = ARRAY_HEAD_INITIALIZER;
   ea_add_tagged(&ea, shared->mailbox_view, shared->email, priv->tag_prefix);
   mutt_print_message(shared->mailbox, &ea);

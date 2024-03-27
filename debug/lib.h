@@ -61,7 +61,11 @@ struct PagerPrivateData;
 void        add_flag               (struct Buffer *buf, bool is_set, const char *name);
 
 // Backtrace
+#ifdef USE_DEBUG_BACKTRACE
 void show_backtrace(void);
+#else
+static inline void show_backtrace(void) {}
+#endif
 
 // Email
 char        body_name              (const struct Body *b);
