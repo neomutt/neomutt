@@ -31,6 +31,7 @@
 
 #include "config.h"
 #include <stdlib.h>
+#include <string.h>
 #include "memory.h"
 #include "exit.h"
 #include "logging2.h"
@@ -136,4 +137,30 @@ void mutt_mem_realloc(void *ptr, size_t size)
   }
 
   *p = r;
+}
+
+/**
+ * mutt_mem_realloc_zero - Resize a block of memory on the heap
+ * @param ptr Memory block to resize
+ * @param cur_size Current size
+ * @param new_size New size
+ *
+ * @note On error, this function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * If the new size is zero, the block will be freed.
+ */
+void mutt_mem_realloc_zero(void *ptr, size_t cur_size, size_t new_size)
+{
+  if (!ptr)
+    return;
+
+  mutt_mem_realloc(ptr, new_size);
+
+  unsigned char *cp = *(unsigned char **) ptr;
+
+  if (!cp || (new_size == 0) || (new_size <= cur_size))
+    return;
+
+  memset(cp + cur_size, '\0', new_size - cur_size);
 }
