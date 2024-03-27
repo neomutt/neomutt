@@ -233,6 +233,55 @@ int buf_add_printf(struct Buffer *buf, const char *fmt, ...)
 }
 
 /**
+ * buf_gets - Read a line from a file stream
+ * @param buf Buffer
+ * @param fp  FILE pointer
+ * @retval num Characters read
+ */
+size_t buf_gets(struct Buffer *buf, FILE *fp)
+{
+  if (!buf || !fp)
+  {
+    return 0;
+  }
+
+  char chunk[1024] = { 0 };
+  size_t read = 0;
+
+#define BUF_GETS_MAX 8192
+  while (true)
+  {
+    if (!fgets(chunk, sizeof(chunk), fp))
+    {
+      break;
+    }
+
+    const size_t len = strlen(chunk);
+    if (len == 0)
+    {
+      break;
+    }
+
+    if ((read + len) > BUF_GETS_MAX)
+    {
+      fseek(fp, -len, SEEK_CUR);
+      break;
+    }
+
+    read += buf_addstr_n(buf, chunk, len);
+    if (*(buf->dptr - 1) == '\n')
+    {
+      --read;
+      *--buf->dptr = '\0';
+      break;
+    }
+  }
+#undef BUF_GETS_MAX
+
+  return read;
+}
+
+/**
  * buf_addstr - Add a string to a Buffer
  * @param buf Buffer to add to
  * @param s   String to add

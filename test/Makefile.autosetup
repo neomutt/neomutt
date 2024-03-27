@@ -76,6 +76,7 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_find_string.o \
 		  test/buffer/buf_fix_dptr.o \
 		  test/buffer/buf_free.o \
+		  test/buffer/buf_gets.o \
 		  test/buffer/buf_init.o \
 		  test/buffer/buf_inline_replace.o \
 		  test/buffer/buf_insert.o \
