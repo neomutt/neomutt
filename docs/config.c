@@ -3906,11 +3906,14 @@
 { "reply_regex", DT_REGEX, "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*" },
 /*
 ** .pp
-** A regular expression used to recognize reply messages when threading
-** and replying. The default value corresponds to the standard Latin "Re:"
-** prefix, the German "Aw:" or the Swedish "Sv:".  You can add your
-** own prefixes by swapping out or appending to that list.  For example:
-** \fC"^(re|se)"\fP or \fC"^(re|aw|se)"\fP.
+** A regular expression used to recognize reply messages when
+** threading and replying. The default value corresponds to the
+** standard Latin "Re:" prefix.
+** .pp
+** This value may have been localized by the translator for your
+** locale, adding other prefixes that are common in the locale. You
+** can add your own prefixes by appending inside \fC"^(re)"\fP.  For
+** example: \fC"^(re|sv)"\fP or \fC"^(re|aw|sv)"\fP.
 ** .pp
 ** The second parenthesized expression matches zero or more
 ** bracketed numbers following the prefix, such as \fC"Re[1]: "\fP.
@@ -3926,6 +3929,14 @@
 ** double quoted string.  If you use a single quoted string, you
 ** would have to type an actual tab character, and would need to
 ** convert the double-backslashes to single backslashes.
+** .pp
+** Note: the result of this regex match against the subject is
+** stored in the header cache.  Mutt isn't smart enough to
+** invalidate a header cache entry based on changing $$reply_regex,
+** so if you aren't seeing correct values in the index, try
+** temporarily turning off the header cache.  If that fixes the
+** problem, then once the variable is set to your liking, remove
+** your stale header cache files and turn the header cache back on.
 */
 
 { "reply_self", DT_BOOL, false },

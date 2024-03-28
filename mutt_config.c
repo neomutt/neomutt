@@ -710,7 +710,26 @@ static struct ConfigDef MainVars[] = {
   { "reflow_wrap", DT_NUMBER, 78, 0, NULL,
     "Maximum paragraph width for reformatting 'format=flowed' text"
   },
-  { "reply_regex", DT_REGEX, IP "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*", 0, NULL,
+  // L10N: $reply_regex default format
+  //
+  // This is a regular expression that matches reply subject lines.
+  // By default, it only matches an initial "Re: ", which is the
+  // standardized Latin prefix.
+  //
+  // However, many locales have other prefixes that are commonly used
+  // too, such as Aw in Germany.  To add other prefixes, modify the first
+  // parenthesized expression, such as:
+  //    "^(re|aw)
+  // you can add multiple values, for example:
+  //    "^(re|aw|sv)
+  //
+  // Important:
+  // - Use all lower case letters.
+  // - Don't remove the 're' prefix from the list of choices.
+  // - Please test the value you use inside Mutt.  A mistake here will break
+  //   NeoMutt's threading behavior.  Note: the header cache can interfere with
+  //   testing, so be sure to test with $header_cache unset.
+  { "reply_regex", DT_REGEX|D_L10N_STRING, IP N_("^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*"), 0, NULL,
     "Regex to match message reply subjects like 're: '"
   },
   { "resolve", DT_BOOL, true, 0, NULL,
@@ -791,7 +810,8 @@ static struct ConfigDef MainVars[] = {
   { "status_chars", DT_MBTABLE, IP "-*%A", 0, NULL,
     "Indicator characters for the status bar"
   },
-  { "status_format", DT_EXPANDO, IP "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---", IP &StatusFormatDef, NULL,
+  // L10N: $status_format default format
+  { "status_format", DT_EXPANDO|D_L10N_STRING, IP N_("-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"), IP &StatusFormatDef, NULL,
     "printf-like format string for the index's status line"
   },
   { "status_on_top", DT_BOOL, false, 0, NULL,
@@ -827,10 +847,12 @@ static struct ConfigDef MainVars[] = {
   { "ts_enabled", DT_BOOL, false, 0, NULL,
     "Allow NeoMutt to set the terminal status line and icon"
   },
-  { "ts_icon_format", DT_EXPANDO, IP "M%<n?AIL&ail>", IP StatusFormatDefNoPadding, NULL,
+  // L10N: $ts_icon_format default format
+  { "ts_icon_format", DT_EXPANDO|D_L10N_STRING, IP N_("M%<n?AIL&ail>"), IP StatusFormatDefNoPadding, NULL,
     "printf-like format string for the terminal's icon title"
   },
-  { "ts_status_format", DT_EXPANDO, IP "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>", IP StatusFormatDefNoPadding, NULL,
+  // L10N: $ts_status_format default format
+  { "ts_status_format", DT_EXPANDO|D_L10N_STRING, IP N_("NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"), IP StatusFormatDefNoPadding, NULL,
     "printf-like format string for the terminal's status (window title)"
   },
   { "use_domain", DT_BOOL, true, 0, NULL,
