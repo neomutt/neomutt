@@ -93,20 +93,23 @@ typedef int (*handler_t)(struct Body *b_email, struct State *state);
 static void print_part_line(struct State *state, struct Body *b_email, int n)
 {
   char length[5] = { 0 };
-  mutt_str_pretty_size(length, sizeof(length), b_email->length);
+  struct Buffer *length_buf = buf_new(length);
+
+  mutt_str_pretty_size(length_buf, b_email->length);
+
   state_mark_attach(state);
   char *charset = mutt_param_get(&b_email->parameter, "charset");
   if (n == 0)
   {
     state_printf(state, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
-                 charset ? charset : "", ENCODING(b_email->encoding), length);
+                 charset ? charset : "", ENCODING(b_email->encoding), length_buf->data);
   }
   else
   {
     state_printf(state, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  n, TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
-                 charset ? charset : "", ENCODING(b_email->encoding), length);
+                 charset ? charset : "", ENCODING(b_email->encoding), length_buf->data);
   }
 }
 
