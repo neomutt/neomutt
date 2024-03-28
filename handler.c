@@ -1902,7 +1902,7 @@ bool mutt_can_decode(struct Body *b)
  * @param b Body of the email
  * @param state State of text being processed
  */
-void mutt_decode_attachment(struct Body *b, struct State *state)
+void mutt_decode_attachment(const struct Body *b, struct State *state)
 {
   int istext = mutt_is_text_part(b) && (b->disposition == DISP_INLINE);
   iconv_t cd = ICONV_T_INVALID;

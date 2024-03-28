@@ -1100,7 +1100,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       break;
     }
 
-    if (isspace(line[0]) && buf_is_empty(buf))
+    if (mutt_str_is_email_wsp(line[0]) && buf_is_empty(buf))
     {
       read = linelen;
       break;
@@ -1115,7 +1115,7 @@ size_t mutt_rfc822_read_line(FILE *fp, struct Buffer *buf)
       do
       {
         line[off] = '\0';
-      } while (off && isspace(line[--off]));
+      } while (off && mutt_str_is_email_wsp(line[--off]));
 
       /* check to see if the next line is a continuation line */
       int ch = fgetc(fp);
@@ -1672,6 +1672,34 @@ static struct Body *rfc822_parse_message(FILE *fp, struct Body *parent, int *cou
 }
 
 /**
+ * mailto_header_allowed - Is the string in the list
+ * @param s String to match
+ * @param h Head of the List
+ * @retval true String matches a List item (or List contains "*")
+ *
+ * This is a very specific function.  It searches a List of strings looking for
+ * a match.  If the list contains a string "*", then it match any input string.
+ *
+ * This is similar to mutt_list_match(), except that it
+ * doesn't allow prefix matches.
+ *
+ * @note The case of the strings is ignored.
+ */
+static bool mailto_header_allowed(const char *s, struct ListHead *h)
+{
+  if (!h)
+    return false;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, h, entries)
+  {
+    if ((*np->data == '*') || mutt_istr_equal(s, np->data))
+      return true;
+  }
+  return false;
+}
+
+/**
  * mutt_parse_mailto - Parse a mailto:// url
  * @param[in]  env  Envelope to fill
  * @param[out] body Body to
@@ -1712,7 +1740,7 @@ bool mutt_parse_mailto(struct Envelope *env, char **body, const char *src)
      * a message if any of the headers are considered dangerous; it may also
      * choose to create a message with only a subset of the headers given in
      * the URL.  */
-    if (mutt_list_match(tag, &MailToAllow))
+    if (mailto_header_allowed(tag, &MailToAllow))
     {
       if (mutt_istr_equal(tag, "body"))
       {

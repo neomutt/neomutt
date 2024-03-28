@@ -438,13 +438,13 @@ const char *km_keyname(int c)
   {
     snprintf(buf, sizeof(buf), "<F%d>", c - KEY_F0);
   }
-  else if (IsPrint(c))
+  else if ((c < 256) && (c >= -128) && IsPrint(c))
   {
     snprintf(buf, sizeof(buf), "%c", (unsigned char) c);
   }
   else
   {
-    snprintf(buf, sizeof(buf), "\\x%hx", (unsigned short) c);
+    snprintf(buf, sizeof(buf), "<%ho>", (unsigned short) c);
   }
   return buf;
 }

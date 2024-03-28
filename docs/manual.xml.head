@@ -1499,6 +1499,11 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
           </listitem>
           <listitem>
             <para>
+              mailboxes
+            </para>
+          </listitem>
+          <listitem>
+            <para>
               filenames
             </para>
           </listitem>
@@ -3320,14 +3325,16 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
       </para>
       <para>
         Forwarding can be done by including the original message in the new
-        message's body (surrounded by indicating lines) or including it as
-        a MIME attachment, depending on the value of the
-        <link linkend="mime-forward">$mime_forward</link> variable. Decoding of
-        attachments, like in the pager, can be controlled by the
+        message's body (surrounded by indicating lines: see
+        <link linkend="forward-attribution-intro">$forward_attribution_intro</link>
+        and <link linkend="forward-attribution-trailer">$forward_attribution_trailer</link>)
+        or including it as a MIME attachment, depending on the value of the
+        <link linkend="mime-forward">$mime_forward</link> variable.  Decoding
+        of attachments, like in the pager, can be controlled by the
         <link linkend="forward-decode">$forward_decode</link> and
         <link linkend="mime-forward-decode">$mime_forward_decode</link>
-        variables, respectively. The desired forwarding format may depend on
-        the content, therefore
+        variables, respectively.
+        The desired forwarding format may depend on the content, therefore
         <link linkend="mime-forward">$mime_forward</link> is a quadoption
         which, for example, can be set to <quote>ask-no</quote>.
       </para>
@@ -3343,6 +3350,8 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
         The inclusion of headers is controlled by the current setting of the
         <link linkend="weed">$weed</link> variable, unless
         <link linkend="mime-forward">$mime_forward</link> is set.
+        The subject of the email is controlled by
+        <link linkend="forward-format">$forward_format</link>.
       </para>
       <para>
         By default a forwarded message does not reference the messages it
@@ -4443,8 +4452,11 @@ set alias_file=~/.mail_aliases
           equivalent. An alternative form is to specify the key as a three digit
           octal number prefixed with a <quote>\</quote> (for example
           <emphasis>\177</emphasis> is equivalent to <emphasis>\c?</emphasis>).
-          In addition, <emphasis>key</emphasis> may be a symbolic name as shown
-          in <xref linkend="tab-key-names" />.
+          You can also use the form <emphasis>&lt;177&gt;</emphasis>, which
+          allows octal numbers with an arbitrary number of digits.  In addition,
+          <emphasis>key</emphasis> may be a symbolic name as shown in <xref
+          linkend="tab-key-names"/>.
+
         </para>
 
         <table id="tab-key-names">
@@ -10458,7 +10470,8 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           When in the index menu and being idle (also see
           <link linkend="timeout">$timeout</link>), NeoMutt periodically checks
           for new mail in all folders which have been configured via the
-          <command>mailboxes</command> command. The interval depends on the
+          <command>mailboxes</command> command (excepting those specified with
+          the <literal>-nopoll</literal> flag). The interval depends on the
           folder type: for local/IMAP folders it consults
           <link linkend="mail-check">$mail_check</link> and
           <link linkend="pop-check-interval">$pop_check_interval</link> for POP
@@ -10503,7 +10516,8 @@ subjectrx '\[[^]]*\]:? *' '%L%R'
           files is supported (Linux only) and not disabled at compilation time,
           NeoMutt immediately notifies about new mail for all folders configured
           via the <link linkend="mailboxes"><command>mailboxes</command></link>
-          command.  Dependent on <link linkend="mailbox-formats">mailbox format</link>
+          command (excepting those specified with the <literal>-nopoll</literal> flag).
+          Dependent on <link linkend="mailbox-formats">mailbox format</link>
           also added <emphasis>old</emphasis> mails are tracked (not for Maildir).
         </para>
         <para>
@@ -10539,9 +10553,9 @@ mailboxes `find ~/.mail/ -type d -name cur | sed -e 's:/cur/*$::' -e 's/ /\\ /g'
           If <link linkend="mail-check-stats">$mail_check_stats</link> is set,
           NeoMutt will periodically calculate the unread, flagged, and total
           message counts for each mailbox watched by the
-          <command>mailboxes</command> command. This calculation takes place at
-          the same time as new mail polling, but is controlled by a separate
-          timer:
+          <command>mailboxes</command> command.  (Note: IMAP mailboxes only support
+          unread and total counts).  This calculation takes place at the same
+          time as new mail polling, but is controlled by a separate timer:
           <link linkend="mail-check-stats-interval">$mail_check_stats_interval</link>.
         </para>
         <para>
@@ -11931,7 +11945,10 @@ alternative_order text/enriched text/plain text application/postscript image/*
           </listitem>
           <listitem>
             <para>
-              Failing that, NeoMutt will look for any text type.
+              Failing that, NeoMutt will look first for
+              <literal>text/enriched</literal>, followed by
+              <literal>text/plain</literal>, and finally
+              <literal>text/html</literal>.
             </para>
           </listitem>
           <listitem>
@@ -18043,7 +18060,7 @@ set sort_browser="reverse-size"
             <tbody>
               <row>
                 <entry><literal>alpha</literal></entry>
-                <entry>Alphabetically by path</entry>
+                <entry>Alphabetically by path or label</entry>
               </row>
               <row>
                 <entry><literal>count</literal></entry>
@@ -18059,7 +18076,7 @@ set sort_browser="reverse-size"
               </row>
               <row>
                 <entry><literal>name</literal></entry>
-                <entry>Alphabetically by path</entry>
+                <entry>Alphabetically by path or label</entry>
               </row>
               <row>
                 <entry><literal>new</literal></entry>
@@ -18067,7 +18084,7 @@ set sort_browser="reverse-size"
               </row>
               <row>
                 <entry><literal>path</literal></entry>
-                <entry>Alphabetically by path</entry>
+                <entry>Alphabetically by path (ignores label)</entry>
               </row>
               <row>
                 <entry><literal>unread</literal></entry>
@@ -19418,7 +19435,9 @@ set use_threads=threads sort=last-date sort_aux=date
         </para>
         <para>
           To prevent these issues, NeoMutt by default only accepts the
-          <literal>Subject</literal> and <literal>Body</literal> headers.
+          <literal>Subject</literal>, <literal>Body</literal>,
+          <literal>Cc</literal>, <literal>In-Reply-To</literal>, and
+          <literal>References</literal> headers.
           Allowed headers can be adjusted with the
           <link linkend="mailto-allow"><command>mailto_allow</command></link>
           and
@@ -19921,12 +19940,14 @@ neomutt -s "data set for run #2" professor@bigschool.edu &lt; ~/run2.dat
       </para>
       <para>
         A draft file passed with <literal>-H</literal> will be used as the
-        initial header and body for the message. Multipart messages can be used
-        as a draft file. When combined with <literal>-E</literal>, the draft
-        file will be updated to the final state of the message after
-        composition, regardless of whether the message is sent, aborted, or
-        even postponed. Note that if the message is sent encrypted or signed,
-        the draft file will be saved that way too.
+        initial header and body for the message. Multipart messages can be
+        used as a draft file, and are processed the same in interactive and
+        batch mode; they are not passed through untouched.  For example,
+        encrypted draft files will be decrypted.  When combined with
+        <literal>-E</literal>, the draft file will be updated to the final
+        state of the message after composition, regardless of whether the
+        message is sent, aborted, or even postponed.  Note that if the message
+        is sent encrypted or signed, the draft file will be saved that way too.
       </para>
       <para>
         All files passed with <literal>-a</literal> <emphasis>file</emphasis>

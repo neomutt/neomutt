@@ -529,8 +529,8 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
     else if (((WithCrypto & APPLICATION_SMIME) != 0) &&
              ((mutt_is_application_smime(e->body) & SMIME_ENCRYPT) == SMIME_ENCRYPT))
     {
-      chflags |= CH_MIME | CH_TXTPLAIN;
-      cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
+      chflags |= CH_MIME | CH_NONEWLINE;
+      cmflags = MUTT_CM_DECODE_SMIME;
       pgp &= ~SMIME_ENCRYPT;
     }
   }

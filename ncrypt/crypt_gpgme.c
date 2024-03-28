@@ -2106,15 +2106,15 @@ static int pgp_gpgme_extract_keys(gpgme_data_t keydata, FILE **fp)
       tt = subkey->timestamp;
       mutt_date_localtime_format(date, sizeof(date), "%Y-%m-%d", tt);
 
-      if (more)
+      fprintf(*fp, "%s %5.5s %u/%8s %s\n", more ? "sub" : "pub",
+              gpgme_pubkey_algo_name(subkey->pubkey_algo), subkey->length, shortid, date);
+      if (!more)
       {
-        fprintf(*fp, "sub %5.5s %u/%8s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
-                subkey->length, shortid, date);
-      }
-      else
-      {
-        fprintf(*fp, "pub %5.5s %u/%8s %s %s\n", gpgme_pubkey_algo_name(subkey->pubkey_algo),
-                subkey->length, shortid, date, (uid ? uid->uid : ""));
+        while (uid)
+        {
+          fprintf(*fp, "uid %s\n", NONULL(uid->uid));
+          uid = uid->next;
+        }
       }
       subkey = subkey->next;
       more = true;

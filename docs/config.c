@@ -2268,9 +2268,6 @@
 ** since the last time you opened the mailbox.  When \fIunset\fP, NeoMutt will notify you
 ** if any new mail exists in the mailbox, regardless of whether you have visited it
 ** recently.
-** .pp
-** When \fI$$mark_old\fP is set, NeoMutt does not consider the mailbox to contain new
-** mail if only old messages exist.
 */
 
 { "mail_check_stats", DT_BOOL, false },
@@ -2278,10 +2275,13 @@
 ** .pp
 ** When \fIset\fP, NeoMutt will periodically calculate message
 ** statistics of a mailbox while polling for new mail.  It will
-** check for unread, flagged, and total message counts.  Because
-** this operation is more performance intensive, it defaults to
-** \fIunset\fP, and has a separate option, $$mail_check_stats_interval, to
-** control how often to update these counts.
+** check for unread, flagged, and total message counts.
+** (Note: IMAP mailboxes only support unread and total counts).
+** .pp
+** Because this operation is more performance intensive, it defaults
+** to \fIunset\fP, and has a separate option,
+** $$mail_check_stats_interval, to control how often to update these
+** counts.
 ** .pp
 ** Message statistics can also be explicitly calculated by invoking the
 ** \fC<check-stats>\fP function.
@@ -3891,8 +3891,25 @@
 /*
 ** .pp
 ** A regular expression used to recognize reply messages when threading
-** and replying. The default value corresponds to the English "Re:", the
-** German "Aw:" and the Swedish "Sv:".
+** and replying. The default value corresponds to the standard Latin "Re:"
+** prefix, the German "Aw:" or the Swedish "Sv:".  You can add your
+** own prefixes by swapping out or appending to that list.  For example:
+** \fC"^(re|se)"\fP or \fC"^(re|aw|se)"\fP.
+** .pp
+** The second parenthesized expression matches zero or more
+** bracketed numbers following the prefix, such as \fC"Re[1]: "\fP.
+** The initial \fC"\\["\fP means a literal left-bracket character.
+** Note the backslash must be doubled when used inside a double
+** quoted string in the neomuttrc.  \fC"[0-9]+"\fP means one or more
+** numbers.  \fC"\\]"\fP means a literal right-bracket.  Finally the
+** whole parenthesized expression has a \fC"*"\fP suffix, meaning it
+** can occur zero or more times.
+** .pp
+** The last part matches a colon followed by an optional space or
+** tab.  Note \fC"\t"\fP is converted to a literal tab inside a
+** double quoted string.  If you use a single quoted string, you
+** would have to type an actual tab character, and would need to
+** convert the double-backslashes to single backslashes.
 */
 
 { "reply_self", DT_BOOL, false },
@@ -4155,6 +4172,13 @@
 ** adding a \fC--\fP delimiter (if not already present).  Additional
 ** flags, such as for $$use_8bit_mime, $$use_envelope_from,
 ** $$dsn_notify, or $$dsn_return will be added before the delimiter.
+** .pp
+** \fBNote:\fP This command is invoked differently from most other
+** commands in NeoMutt.  It is tokenized by space, and invoked directly
+** via \fCexecvp(3)\fP with an array of arguments - so commands or
+** arguments with spaces in them are not supported.  The shell is
+** not used to run the command, so shell quoting is also not
+** supported.
 ** .pp
 ** \fBSee also:\fP $$write_bcc.
 */
@@ -4574,7 +4598,8 @@
 ** set to the keyid (the hash-value that OpenSSL generates) to work properly.
 ** .pp
 ** It will be used for encryption (see $$postpone_encrypt and
-** $$smime_self_encrypt).
+** $$smime_self_encrypt). If GPGME is enabled, this is the key id displayed
+** by gpgsm.
 ** .pp
 ** It will be used for decryption unless $$smime_decrypt_use_default_key
 ** is \fIunset\fP.
@@ -5469,10 +5494,11 @@
 { "uncollapse_new", DT_BOOL, true },
 /*
 ** .pp
-** When \fIset\fP, NeoMutt will automatically uncollapse any collapsed thread
-** that receives a new message. When \fIunset\fP, collapsed threads will
-** remain collapsed. the presence of the new message will still affect
-** index sorting, though.
+** When \fIset\fP, NeoMutt will automatically uncollapse any collapsed
+** thread that receives a newly delivered message.  When
+** \fIunset\fP, collapsed threads will remain collapsed. The
+** presence of the newly delivered message will still affect index
+** sorting, though.
 */
 
 { "use_8bit_mime", DT_BOOL, false },

@@ -125,8 +125,6 @@ void mutt_edit_file(const char *editor, const char *file)
   }
   /* the terminal may have been resized while the editor owned it */
   mutt_resize_screen();
-  keypad(stdscr, true);
-  clearok(stdscr, true);
 
   buf_pool_release(&cmd);
 }

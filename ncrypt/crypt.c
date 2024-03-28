@@ -531,7 +531,7 @@ SecurityFlags mutt_is_malformed_multipart_pgp_encrypted(struct Body *b)
  * @retval >0 Message uses PGP, e.g. #PGP_ENCRYPT
  * @retval  0 Message doesn't use PGP, (#SEC_NO_FLAGS)
  */
-SecurityFlags mutt_is_application_pgp(struct Body *b)
+SecurityFlags mutt_is_application_pgp(const struct Body *b)
 {
   SecurityFlags t = SEC_NO_FLAGS;
   char *p = NULL;

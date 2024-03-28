@@ -1122,6 +1122,13 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
 
   const struct Address *c_envelope_from_address = cs_subset_address(adata.sub, "envelope_from_address");
 
+  if (smtp_fill_account(&adata, &cac) < 0)
+    return rc;
+
+  adata.conn = mutt_conn_find(&cac);
+  if (!adata.conn)
+    return -1;
+
   /* it might be better to synthesize an envelope from from user and host
    * but this condition is most likely arrived at accidentally */
   if (c_envelope_from_address)
@@ -1135,15 +1142,9 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   else
   {
     mutt_error(_("No from address given"));
+    mutt_socket_close(adata.conn);
     return -1;
   }
-
-  if (smtp_fill_account(&adata, &cac) < 0)
-    return rc;
-
-  adata.conn = mutt_conn_find(&cac);
-  if (!adata.conn)
-    return -1;
 
   const char *const c_dsn_return = cs_subset_string(adata.sub, "dsn_return");
 

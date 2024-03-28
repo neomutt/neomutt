@@ -97,7 +97,8 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
   {
     wdata->templen = wdata->state->lastchar;
     mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
-    memcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen * sizeof(wchar_t));
+    if (wdata->tempbuf)
+      memcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen * sizeof(wchar_t));
   }
   else
   {
@@ -136,7 +137,8 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
   {
     wdata->templen = wdata->state->lastchar - i;
     mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
-    memcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen * sizeof(wchar_t));
+    if (wdata->tempbuf)
+      memcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen * sizeof(wchar_t));
   }
   else
   {

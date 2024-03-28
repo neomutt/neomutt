@@ -32,11 +32,14 @@ Utility to add S/MIME certificate to the internal database used by neomutt
 The purpose of this tool is to
 manipulate the internal database of S/MIME certificates
 used by neomutt to sign mail messages which will be sent
-or to verify mail messages received and signed with S/MIME
+or to verify mail messages received and signed with S/MIME.
 .SH OPTIONS
 .IP \fBinit\fP
 no files needed,
 inits directory structure.
+.IP \fBrefresh\fP
+no files needed. refreshes index files, including
+trust flag/expiration.
 .IP \fBlist\fP
 lists the certificates stored in database.
 .IP \fBlabel\fP
@@ -45,12 +48,12 @@ changes/removes/adds label.
 .IP \fBremove\fP
 keyID required.
 .IP \fBverify\fP
-1=keyID and optionally 2=CRL
+1=keyID and optionally 2=CRL.
 Verifies the certificate chain,
 and optionally
 whether this certificate is included in supplied CRL (PEM format).
 Note: to verify all certificates at the same time,
-replace keyID with "all"
+replace keyID with "all".
 .IP \fBadd_cert\fP
 certificate required.
 .IP \fBadd_chain\fP
@@ -66,7 +69,7 @@ Adds keypair to database.
 .IP \fBadd_root\fP
 one file reqd.
 Adds PEM root certificate to the location
-specified within muttrc (smime_verify_* command)
+specified within muttrc (smime_verify_* command).
 .SH NO WARRANTIES
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY;

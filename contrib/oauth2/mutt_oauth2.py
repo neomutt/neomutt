@@ -261,6 +261,7 @@ if args.authorize:
                   'code': authcode,
                   'client_secret': token['client_secret'],
                   'code_verifier': verifier})
+        print('Exchanging the authorization code for an access token')
         try:
             response = urllib.request.urlopen(registration['token_endpoint'],
                                               urllib.parse.urlencode(p).encode())

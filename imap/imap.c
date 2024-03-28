@@ -1925,7 +1925,9 @@ static enum MxOpenReturns imap_mbox_open(struct Mailbox *m)
     if (rc != IMAP_RES_CONTINUE)
       break;
 
-    pc = adata->buf + 2;
+    if (!mutt_strn_equal(adata->buf, "* ", 2))
+      continue;
+    pc = imap_next_word(adata->buf);
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */

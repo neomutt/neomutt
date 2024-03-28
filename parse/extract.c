@@ -174,7 +174,12 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
         {
           /* skip any quoted chars */
           if (*pc == '\\')
-            pc += 2;
+          {
+            if (*(pc + 1))
+              pc += 2;
+            else
+              pc = NULL;
+          }
         }
       } while (pc && (pc[0] != '`'));
       if (!pc)

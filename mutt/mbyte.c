@@ -361,18 +361,17 @@ bool mutt_mb_is_lower(const char *s)
   size_t l;
 
   memset(&mbstate, 0, sizeof(mbstate));
+  size_t n = mutt_str_len(s);
 
-  for (; (l = mbrtowc(&wc, s, MB_CUR_MAX, &mbstate)) != 0; s += l)
+  for (; (n > 0) && (*s != '\0') && (l = mbrtowc(&wc, s, n, &mbstate)) != 0; s += l, n -= l)
   {
-    if (l == ICONV_BUF_TOO_SMALL)
-      continue; /* shift sequences */
-    if (l == ICONV_ILLEGAL_SEQ)
-      return false;
+    if ((l == ICONV_BUF_TOO_SMALL) || (l == ICONV_ILLEGAL_SEQ))
+      return false; // error; assume upper-case
     if (iswalpha((wint_t) wc) && iswupper((wint_t) wc))
-      return false;
+      return false; // upper-case
   }
 
-  return true;
+  return true; // lower-case
 }
 
 /**
@@ -401,6 +400,10 @@ bool mutt_mb_is_display_corrupting_utf8(wchar_t wc)
   /* left-to-right embedding, right-to-left embedding, pop directional formatting,
    * left-to-right override, right-to-left override */
   if ((wc >= (wchar_t) 0x202a) && (wc <= (wchar_t) 0x202e))
+    return true;
+
+  /* arabic letter mark */
+  if (wc == (wchar_t) 0x061c)
     return true;
 
   return false;
