@@ -133,5 +133,11 @@ void test_expando_helpers(void)
     end = skip_classic_expando(str + 1, TestFormatDef);
     TEST_CHECK(end != NULL);
     TEST_CHECK(*end == 'a');
+
+    str = "%";
+
+    end = skip_classic_expando(str + 1, TestFormatDef);
+    TEST_CHECK(end != NULL);
+    TEST_CHECK(*end == '\0');
   }
 }
