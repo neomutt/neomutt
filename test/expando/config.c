@@ -457,6 +457,67 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   return true;
 }
 
+static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err)
+{
+  log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
+
+  const char *name = "Tangerine";
+  static char *PlusTests[][3] = {
+    // clang-format off
+    // Initial,        Plus,     Result
+    { "",              "",       ""         }, // Add nothing to various strings
+    { "%a",            "",       "%a"       },
+    { "%a %b",         "",       "%a %b"    },
+    { "%a %b %c",      "",       "%a %b %c" },
+
+    { "",              "%c",     "%c"             }, // Add an item to various strings
+    { "%a",            " %c",    "%a %c"          },
+    { "%a %b",         " %c",    "%a %b %c"       },
+    { "%a %b three",   " %c",    "%a %b three %c" },
+    // clang-format on
+  };
+
+  int rc;
+  for (unsigned int i = 0; i < mutt_array_size(PlusTests); i++)
+  {
+    buf_reset(err);
+    rc = cs_str_string_set(cs, name, PlusTests[i][0], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Set failed: %s", buf_string(err));
+      return false;
+    }
+
+    rc = cs_str_string_plus_equals(cs, name, PlusTests[i][1], err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("PlusEquals failed: %s", buf_string(err));
+      return false;
+    }
+
+    rc = cs_str_string_get(cs, name, err);
+    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    {
+      TEST_MSG("Get failed: %s", buf_string(err));
+      return false;
+    }
+
+    if (!TEST_CHECK_STR_EQ(buf_string(err), PlusTests[i][2]))
+      return false;
+  }
+
+  rc = cs_str_string_plus_equals(cs, name, "%Q", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  name = "Wolfberry";
+  rc = cs_str_string_plus_equals(cs, name, "apple", err);
+  TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  log_line(__func__);
+  return true;
+}
+
 static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 {
   log_line(__func__);
@@ -774,6 +835,7 @@ void test_expando_config(void)
   TEST_CHECK(test_string_get(sub, err));
   TEST_CHECK(test_native_set(sub, err));
   TEST_CHECK(test_native_get(sub, err));
+  TEST_CHECK(test_string_plus_equals(sub, err));
   TEST_CHECK(test_reset(sub, err));
   TEST_CHECK(test_validator(sub, err));
   TEST_CHECK(test_inherit(cs, err));

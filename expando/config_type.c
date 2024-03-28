@@ -256,8 +256,8 @@ static int expando_string_plus_equals(const struct ConfigSet *cs, void *var,
 
   if (expando_equal(exp_new, exp_old))
   {
-    expando_free(&exp_new);
-    return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
+    expando_free(&exp_new);                 // LCOV_EXCL_LINE
+    return CSR_SUCCESS | CSR_SUC_NO_CHANGE; // LCOV_EXCL_LINE
   }
 
   if (cdef->validator)
@@ -272,10 +272,7 @@ static int expando_string_plus_equals(const struct ConfigSet *cs, void *var,
   }
 
   expando_destroy(cs, var, cdef);
-
   *(struct Expando **) var = exp_new;
-  if (!exp_new)
-    rc |= CSR_SUC_EMPTY;
 
   return rc;
 }

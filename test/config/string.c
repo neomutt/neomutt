@@ -415,12 +415,12 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
   static char *PlusTests[][3] = {
     // clang-format off
     // Initial,        Plus,     Result
-    { "",              "",       ""                   }, // Add nothing to various lists
+    { "",              "",       ""                   }, // Add nothing to various strings
     { "one",           "",       "one"                },
     { "one two",       "",       "one two"            },
     { "one two three", "",       "one two three"      },
 
-    { "",              "nine",   "nine"               }, // Add an item to various lists
+    { "",              "nine",   "nine"               }, // Add an item to various strings
     { "one",           " nine",   "one nine"           },
     { "one two",       " nine",   "one two nine"       },
     { "one two three", " nine",   "one two three nine" },

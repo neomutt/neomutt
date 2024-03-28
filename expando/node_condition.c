@@ -46,8 +46,11 @@ static int node_condition_render(const struct ExpandoNode *node,
 
   const struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
 
-  // Condition node won't use the buffer, they just return a bool
-  int rc = node_cond->render(node_cond, rdata, buf, max_cols, data, flags);
+  // Discard any text returned, just use the return value as a bool
+  struct Buffer *buf_cond = buf_pool_get();
+  int rc = node_cond->render(node_cond, rdata, buf_cond, max_cols, data, flags);
+  buf_pool_release(&buf_cond);
+
   if (rc == true)
   {
     const struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
