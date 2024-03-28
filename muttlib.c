@@ -997,13 +997,28 @@ void buf_sanitize_filename(struct Buffer *buf, const char *path, short slash)
 
 /**
  * mutt_str_pretty_size - Display an abbreviated size, like 3.4K
- * @param buf    Buffer for the result
+ * @param buf    Buffer to write into
  * @param num    Number to abbreviate
+ * @retval num   Number of characters written
+ * @retval 0     Error
+ *
+ * Formats a number to be more human-readable by appending a unit (K, M, G, etc.) if needed if needed.
+ * If necessary, the buffer is expanded.
+ *
+ * The following configuration options affect the formatting:
+ *
+ * - `size_show_bytes`: No prefix is used if `num` is less than 1024.
+ *
+ * - `size_units_on_left`: The unit is placed on the left side of the number.
+ *
+ * - `size_show_fractions`: the number is displayed with one decimal place if `num` is less than 10240 (e.g. 1.2K)
+ *
+ * - `size_show_mb`: The number is displayed in megabytes if `num` is greater than 1023949 (e.g. 1.2M)
  */
 void mutt_str_pretty_size(struct Buffer *buf, size_t num)
 {
   if (!buf || !buf->data || (buf->dsize == 0))
-    return;
+    return 0;
 
   // Retrieve the configuration options
   const bool c_size_show_bytes = cs_subset_bool(NeoMutt->sub, "size_show_bytes");
@@ -1012,44 +1027,40 @@ void mutt_str_pretty_size(struct Buffer *buf, size_t num)
   const bool c_size_units_on_left = cs_subset_bool(NeoMutt->sub, "size_units_on_left");
 
   const int one_kilobyte = 1024;
+  int num_characters_written;
 
   if (c_size_show_bytes && (num < one_kilobyte))
   {
-    int written = snprintf(buf->data, buf->dsize, "%d", (int) num);
-    buf->dptr += written;
+    num_characters_written = buf_add_printf(buf, "%zu", num);
   }
   else if (num == 0)
   {
-    mutt_str_copy(buf->data, c_size_units_on_left ? "K0" : "0K", buf->dsize);
+    return buf_addstr(buf, c_size_units_on_left ? "K0" : "0K");
   }
   else if (c_size_show_fractions && (num < 10189)) /* 0.1K - 9.9K */
   {
-    int written = snprintf(buf->data, buf->dsize, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
-                           (num < 103) ? 0.1 : (num / (float) one_kilobyte));
-    buf->dptr += written;
+    num_characters_written = buf_add_printf(buf, c_size_units_on_left ? "K%3.1f" : "%3.1fK",
+                                            (num < 103) ? 0.1 : (num / (float) one_kilobyte));
   }
   else if (!c_size_show_mb || (num < 1023949)) /* 10K - 999K */
   {
     /* 51 is magic which causes 10189/10240 to be rounded up to 10 */
-    int written = snprintf(buf->data, buf->dsize,
-                           c_size_units_on_left ? ("K%zu") : ("%zuK"),
-                           (num + 51) / one_kilobyte);
-    buf->dptr += written;
+    num_characters_written = buf_add_printf(buf, c_size_units_on_left ? "K%zu" : "%zuK",
+                                            (num + 51) / one_kilobyte);
   }
   else if (c_size_show_fractions && (num < 10433332)) /* 1.0M - 9.9M */
   {
-    int written = snprintf(buf->data, buf->dsize,
-                           c_size_units_on_left ? "M%3.1f" : "%3.1fM", num / 1048576.0);
-    buf->dptr += written;
+    num_characters_written = buf_add_printf(buf, c_size_units_on_left ? "M%3.1f" : "%3.1fM",
+                                            num / 1048576.0);
   }
   else /* 10M+ */
   {
     /* (10433332 + 52428) / 1048576 = 10 */
-    int written = snprintf(buf->data, buf->dsize,
-                           c_size_units_on_left ? ("M%zu") : ("%zuM"),
-                           (num + 52428) / 1048576);
-    buf->dptr += written;
+    num_characters_written = buf_add_printf(buf, c_size_units_on_left ? "M%zu" : "%zuM",
+                                            (num + 52428) / 1048576);
   }
+
+  return num_characters_written * (num_characters_written > 0);
 }
 
 /**
