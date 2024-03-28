@@ -372,8 +372,6 @@ void attach_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 {
   const struct AttachPtr *aptr = data;
 
-  char tmp[128] = { 0 };
-
   size_t l = 0;
   if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
   {
@@ -384,8 +382,8 @@ void attach_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
     l = aptr->body->length;
   }
 
-  mutt_str_pretty_size(tmp, sizeof(tmp), l);
-  buf_strcpy(buf, tmp);
+  buf_reset(buf);
+  mutt_str_pretty_size(buf, l);
 }
 
 /**
