@@ -56,7 +56,7 @@ void        mutt_safe_path(struct Buffer *dest, const struct Address *a);
 int         mutt_save_confirm(const char *s, struct stat *st);
 void        mutt_save_path(char *d, size_t dsize, const struct Address *a);
 void        mutt_sleep(short s);
-void        mutt_str_pretty_size(char *buf, size_t buflen, size_t num);
+int         mutt_str_pretty_size(struct Buffer *buf, size_t num);
 
 void add_to_stailq     (struct ListHead *head, const char *str);
 void remove_from_stailq(struct ListHead *head, const char *str);
