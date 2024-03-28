@@ -78,20 +78,19 @@ struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *d
   if (!str || !defs)
     return NULL;
 
-  struct Expando *exp = expando_new(str);
-
   struct ExpandoParseError error = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, exp->string, defs, &error);
+  node_tree_parse(&root, str, defs, &error);
 
   if (error.position)
   {
     buf_strcpy(err, error.message);
-    expando_free(&exp);
+    node_tree_free(&root);
     return NULL;
   }
 
+  struct Expando *exp = expando_new(str);
   exp->tree = root;
   return exp;
 }
