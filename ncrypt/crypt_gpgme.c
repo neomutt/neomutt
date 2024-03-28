@@ -1410,6 +1410,37 @@ static void print_smime_keyinfo(const char *msg, gpgme_signature_t sig,
 }
 
 /**
+ * show_one_recipient - Show information about one encryption recipient
+ * @param state State to write to
+ * @param r     Encryption recipient
+ */
+static void show_one_recipient(struct State *state, gpgme_recipient_t r)
+{
+  const char *algo = gpgme_pubkey_algo_name(r->pubkey_algo);
+  if (!algo)
+    algo = "?";
+
+  // L10N: Show the algorithm and key ID of the encryption recipients, e.g
+  //       Recipient: RSA key, ID 1111111111111111
+  state_printf(state, _("Recipient: %s key, ID %s\n"), algo, r->keyid);
+}
+
+/**
+ * show_encryption_info - Show encryption information
+ * @param state  State to write to
+ * @param result Decryption result
+ */
+static void show_encryption_info(struct State *state, gpgme_decrypt_result_t result)
+{
+  state_attach_puts(state, _("[-- Begin encryption information --]\n"));
+
+  for (gpgme_recipient_t r = result->recipients; r; r = r->next)
+    show_one_recipient(state, r);
+
+  state_attach_puts(state, _("[-- End encryption information --]\n\n"));
+}
+
+/**
  * show_one_sig_status - Show information about one signature
  * @param ctx   GPGME handle of a successful verification
  * @param idx   Index
@@ -1704,6 +1735,7 @@ static struct Body *decrypt_part(struct Body *b, struct State *state,
   struct Body *tattach = NULL;
   gpgme_error_t err = GPG_ERR_NO_ERROR;
   gpgme_data_t ciphertext = NULL, plaintext = NULL;
+  gpgme_decrypt_result_t result = NULL;
   bool maybe_signed = false;
   bool anywarn = false;
   int sig_stat = 0;
@@ -1752,6 +1784,10 @@ restart:
     goto cleanup;
 #endif
 
+  result = gpgme_op_decrypt_result(ctx);
+  if (result && (state->flags & STATE_DISPLAY))
+    show_encryption_info(state, result);
+
   if (err != GPG_ERR_NO_ERROR)
   {
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
@@ -1760,9 +1796,6 @@ restart:
        * header told us.  Retry then.  gpgsm returns the error information
        * "unsupported Algorithm '?'" but GPGME will not store this unknown
        * algorithm, thus we test that it has not been set. */
-      gpgme_decrypt_result_t result = NULL;
-
-      result = gpgme_op_decrypt_result(ctx);
       if (result && !result->unsupported_algorithm)
       {
         maybe_signed = true;
@@ -2584,6 +2617,10 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
           }
         }
         redraw_if_needed(ctx);
+
+        gpgme_decrypt_result_t result = gpgme_op_decrypt_result(ctx);
+        if (result && (state->flags & STATE_DISPLAY))
+          show_encryption_info(state, result);
 
         if (err != GPG_ERR_NO_ERROR)
         {
