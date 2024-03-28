@@ -143,7 +143,10 @@ const char *skip_until_classic_expando(const char *start)
  */
 const char *skip_classic_expando(const char *str, const struct ExpandoDefinition *defs)
 {
-  assert(*str != '\0');
+  assert(str);
+  if (*str == '\0')
+    return str;
+
   const struct ExpandoDefinition *definitions = defs;
 
   while (definitions && definitions->short_name)
