@@ -175,7 +175,7 @@ static int progress_window_repaint(struct MuttWindow *win)
            `%d` is the number, `%%` is the percent symbol.
            `%d` and `%%` may be reordered, or space inserted, if you wish. */
         message_bar(wdata->win, wdata->display_percent, _("%s %s (%d%%)"),
-                    wdata->msg, wdata->pretty_pos, wdata->display_percent);
+                    wdata->msg, wdata->pretty_pos_buf->data, wdata->display_percent);
       }
       else
       {
@@ -191,7 +191,8 @@ static int progress_window_repaint(struct MuttWindow *win)
       if (wdata->is_bytes)
       {
         /* L10N: Progress bar: `%s` loading text, `%s` position/size */
-        message_bar(wdata->win, -1, _("%s %s"), wdata->msg, wdata->pretty_pos);
+        message_bar(wdata->win, -1, _("%s %s"), wdata->msg,
+                    wdata->pretty_pos_buf->data);
       }
       else
       {
