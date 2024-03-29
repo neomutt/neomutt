@@ -1015,7 +1015,7 @@ void buf_sanitize_filename(struct Buffer *buf, const char *path, short slash)
  *
  * - `size_show_mb`: The number is displayed in megabytes if `num` is greater than 1023949 (e.g. 1.2M)
  */
-void mutt_str_pretty_size(struct Buffer *buf, size_t num)
+int mutt_str_pretty_size(struct Buffer *buf, size_t num)
 {
   if (!buf || !buf->data || (buf->dsize == 0))
     return 0;

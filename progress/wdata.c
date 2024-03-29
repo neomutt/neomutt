@@ -36,7 +36,11 @@
  */
 struct ProgressWindowData *progress_wdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ProgressWindowData));
+  struct ProgressWindowData *wdata = mutt_mem_calloc(1, sizeof(struct ProgressWindowData));
+  wdata->pretty_size_buf = buf_new(NULL);
+  wdata->pretty_pos_buf = buf_new(NULL);
+
+  return wdata;
 }
 
 /**
