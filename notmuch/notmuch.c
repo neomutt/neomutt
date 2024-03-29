@@ -1495,7 +1495,13 @@ char *nm_email_get_folder_rel_db(struct Mailbox *m, struct Email *e)
   if (!db_path)
     return NULL;
 
-  return full_folder + strlen(db_path);
+  size_t prefix = mutt_str_startswith(full_folder, db_path);
+
+  char *path = full_folder + prefix;
+  if (*path == '/')
+    path++;
+
+  return path;
 }
 
 /**
