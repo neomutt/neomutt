@@ -103,6 +103,7 @@
 #include "slist.h"
 #include "state.h"
 #include "string2.h"
+#include "format.h"
 // IWYU pragma: end_keep
 
 #if defined(COMPILER_IS_CLANG) || defined(COMPILER_IS_GCC)
