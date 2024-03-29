@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-23\n"
+"Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-03-23 15:52+0000\n"
+"POT-Creation-Date: 2024-03-29 15:52+0000\n"
 "PO-Revision-Date: 2021-05-06 05:30+0100\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Liberium <epost@anotheragency.no>\n"

@@ -15,9 +15,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-23\n"
+"Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-03-23 15:52+0000\n"
+"POT-Creation-Date: 2024-03-29 15:52+0000\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
