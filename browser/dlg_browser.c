@@ -575,7 +575,8 @@ void folder_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 {
   const struct Folder *folder = data;
 
-  buf_reset(buf) mutt_str_pretty_size(buf, folder->ff->size);
+  buf_reset(buf);
+  mutt_str_pretty_size(buf, folder->ff->size);
 }
 
 /**
