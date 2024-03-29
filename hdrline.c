@@ -641,13 +641,11 @@ void index_cr(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   if (!e)
     return;
 
-  char tmp[128] = { 0 };
-
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
 
-  mutt_str_pretty_size(tmp, sizeof(tmp), email_size(e));
-  buf_strcpy(buf, tmp);
+  buf_reset(buf);
+  mutt_str_pretty_size(buf, email_size(e));
 }
 
 /**

@@ -299,11 +299,10 @@ void status_l(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct IndexSharedData *shared = msld->shared;
   const struct Mailbox *m = shared->mailbox;
 
-  char tmp[128] = { 0 };
-
   const off_t num = m ? m->size : 0;
-  mutt_str_pretty_size(tmp, sizeof(tmp), num);
-  buf_strcpy(buf, tmp);
+
+  buf_reset(buf);
+  mutt_str_pretty_size(buf, num);
 }
 
 /**
@@ -428,11 +427,9 @@ void status_L(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct IndexSharedData *shared = msld->shared;
   const struct MailboxView *mailbox_view = shared->mailbox_view;
 
-  char tmp[128] = { 0 };
-
   const off_t num = mailbox_view ? mailbox_view->vsize : 0;
-  mutt_str_pretty_size(tmp, sizeof(tmp), num);
-  buf_strcpy(buf, tmp);
+  buf_reset(buf);
+  mutt_str_pretty_size(buf, num);
 }
 
 /**
