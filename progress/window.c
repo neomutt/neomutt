@@ -142,7 +142,7 @@ static int progress_window_recalc(struct MuttWindow *win)
   wdata->display_time = wdata->update_time;
 
   if (wdata->is_bytes)
-    mutt_str_pretty_size(wdata->pretty_pos, sizeof(wdata->pretty_pos), wdata->display_pos);
+    mutt_str_pretty_size(wdata->pretty_pos_buf, wdata->display_pos);
 
   if ((wdata->update_percent < 0) && (wdata->size != 0))
     wdata->display_percent = 100 * wdata->display_pos / wdata->size;
@@ -208,7 +208,8 @@ static int progress_window_repaint(struct MuttWindow *win)
          `%d` is the number, `%%` is the percent symbol.
          `%d` and `%%` may be reordered, or space inserted, if you wish. */
       message_bar(wdata->win, wdata->display_percent, _("%s %s/%s (%d%%)"),
-                  wdata->msg, wdata->pretty_pos, wdata->pretty_size, wdata->display_percent);
+                  wdata->msg, wdata->pretty_pos_buf->data,
+                  wdata->pretty_size_buf->data, wdata->display_percent);
     }
     else
     {
@@ -329,7 +330,7 @@ struct MuttWindow *progress_window_new(size_t size, size_t size_inc,
   wdata->is_bytes = is_bytes;
 
   if (is_bytes)
-    mutt_str_pretty_size(wdata->pretty_size, sizeof(wdata->pretty_size), size);
+    mutt_str_pretty_size(wdata->pretty_size_buf, size);
 
   win->wdata = wdata;
   win->wdata_free = progress_wdata_free;

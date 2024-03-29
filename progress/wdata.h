@@ -38,7 +38,7 @@ struct ProgressWindowData
 
   // Settings for the Progress Bar
   char   msg[1024];             ///< Message to display
-  char   pretty_size[24];       ///< Pretty string for size
+  struct Buffer *pretty_size_buf;///< Buffer for pretty_size
   size_t size;                  ///< Total expected size
   size_t size_inc;              ///< Size increment
   size_t time_inc;              ///< Time increment
@@ -48,7 +48,7 @@ struct ProgressWindowData
   size_t   display_pos;         ///< Displayed position
   int      display_percent;     ///< Displayed percentage complete
   uint64_t display_time;        ///< Time of last display
-  char     pretty_pos[24];      ///< Pretty string for the position
+  struct Buffer *pretty_pos_buf;///< Buffer for pretty_pos
 
   // Updates waiting for display
   size_t   update_pos;          ///< Updated position
