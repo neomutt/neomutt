@@ -14569,6 +14569,52 @@ set smime_default_key = "SMIME-KEY"
       </sect2>
     </sect1>
 
+    <sect1 id="encryption-info">
+      <title>Encryption information block</title>
+      <subtitle>Show a block of encryption information about a message
+      </subtitle>
+
+      <sect2 id="encryption-info-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> NeoMutt 2024-04-10
+        </para>
+        <para>
+          <emphasis role="bold">Dependencies:</emphasis> Gpgme
+        </para>
+      </sect2>
+
+      <sect2 id="encryption-info-intro">
+        <title>Introduction</title>
+        <para>
+          This feature shows a block of information that provides
+          information about an encrypted message;
+          mainly about its recipients.
+          Here is an example of such a block:
+        </para>
+<screen>
+[-- Begin encryption information --]
+Recipient: RSA key, ID 00C14A7DBBDD521C
+Recipient: RSA key, ID 0000000000000000
+[-- End encryption information --]
+</screen>
+      </sect2>
+
+      <sect2 id="encryption-info-usage">
+        <title>Usage</title>
+        <para>
+          It's always enabled.
+        </para>
+      </sect2>
+
+      <sect2 id="encryption-info-credits">
+        <title>Credits</title>
+        <para>
+          Alejandro Colomar, Richard Russon
+        </para>
+      </sect2>
+    </sect1>
+
     <sect1 id="fmemopen">
       <title>Fmemopen Feature</title>
       <subtitle>Replace some temporary files with memory buffers</subtitle>
