@@ -802,11 +802,12 @@ static int external_body_handler(struct Body *b_email, struct State *state)
     if (state->flags & (STATE_DISPLAY | STATE_PRINTING))
     {
       char pretty_size[10] = { 0 };
+      struct Buffer *pretty_size_buf = buf_new(pretty_size);
       char *length = mutt_param_get(&b_email->parameter, "length");
       if (length)
       {
         long size = strtol(length, NULL, 10);
-        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), size);
+        mutt_str_pretty_size(pretty_size_buf, size);
         if (expire != -1)
         {
           str = ngettext(
@@ -854,7 +855,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
       }
       else
       {
-        pretty_size[0] = '\0';
+        pretty_size_buf->data[0] = '\0';
         if (expire != -1)
         {
           /* L10N: If the translation of this string is a multi line string, then
@@ -876,7 +877,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
       }
 
       snprintf(strbuf, sizeof(strbuf), str, TYPE(b_email->parts),
-               b_email->parts->subtype, pretty_size, expiration);
+               b_email->parts->subtype, pretty_size_buf->data, expiration);
       state_attach_puts(state, strbuf);
       if (b_email->parts->filename)
       {
