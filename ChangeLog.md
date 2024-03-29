@@ -1,4 +1,4 @@
-2024-03-23  Richard Russon  \<rich@flatcap.org\>
+2024-03-29  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - #4185 c441f5957 Fix memory leak in trash_append()
   - #4189 Fix off-by-one error in %b with notmuch
@@ -26,6 +26,9 @@
   - tidy buf_strcpy() calls
   - tidy char buffers
   - test: default timezone to UTC
+
+2024-03-23  Richard Russon  \<rich@flatcap.org\>
+* Do NOT use this release
 
 2024-02-01  Richard Russon  \<rich@flatcap.org\>
 * Features
