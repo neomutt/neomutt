@@ -995,6 +995,20 @@ void buf_sanitize_filename(struct Buffer *buf, const char *path, short slash)
   }
 }
 
+/**
+ * format_pretty_size - Display an abbreviated size, like 3.4K
+ * @param buf    Buffer to write into
+ * @param num    Number to abbreviate
+ * @param show_bytes Show the number of bytes
+ * @param show_fractions Show fractions
+ * @param show_mb Show in megabytes
+ * @param units_on_left Show units on the left
+ * @retval num   Number of characters written
+ * @retval 0     Error
+ *
+ * Formats a number to be more human-readable by appending a unit (K, M, G, etc.) if needed if needed.
+ * If necessary, the buffer is expanded.
+ */
 int format_pretty_size(struct Buffer *buf, size_t num, bool show_bytes,
                        bool show_fractions, bool show_mb, bool units_on_left)
 {
