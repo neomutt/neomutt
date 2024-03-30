@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-03-29 15:52+0000\n"
+"POT-Creation-Date: 2024-03-30 13:52+0000\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: address/config_type.c:88 config/long.c:50 config/number.c:52
 #: config/path.c:99 config/path.c:175 config/sort.c:57 config/string.c:68
-#: config/string.c:145
+#: config/string.c:145 expando/config_type.c:70 expando/config_type.c:170
 #, c-format
 msgid "Option %s may not be empty"
 msgstr "Parametras %s negali būti tuščias"
@@ -46,7 +46,7 @@ msgid "Address: "
 msgstr "Adresas: "
 
 #: alias/alias.c:453 conn/raw.c:158 conn/raw.c:215 envelope/functions.c:133
-#: external.c:136 recvcmd.c:230 send/send.c:215
+#: external.c:136 recvcmd.c:231 send/send.c:218
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Blogas IDN: '%s'"
@@ -99,86 +99,86 @@ msgstr "Įspėjimas: blogas adresas '%s' aliase '%s'"
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Įspėjimas: blogas IDN '%s' aliase '%s'"
 
-#: alias/dlg_alias.c:101 alias/dlg_query.c:102 attach/dlg_attach.c:95
-#: autocrypt/dlg_autocrypt.c:89 browser/dlg_browser.c:112
-#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:68 history/dlg_history.c:78
-#: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:74
+#: alias/dlg_alias.c:102 alias/dlg_query.c:103 attach/dlg_attach.c:100
+#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:116
+#: browser/dlg_browser.c:128 conn/dlg_verifycert.c:68 history/dlg_history.c:78
+#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:74
 #: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
 #: pager/dlg_pager.c:111 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:90
 msgid "Exit"
 msgstr "Išeit"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:106 index/dlg_index.c:121
+#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:122
 #: pager/dlg_pager.c:100 pager/dlg_pager.c:116 postpone/dlg_postpone.c:91
 msgid "Del"
 msgstr "Trint"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:122
+#: alias/dlg_alias.c:104 index/dlg_index.c:108 index/dlg_index.c:123
 #: postpone/dlg_postpone.c:92
 msgid "Undel"
 msgstr "Grąžint"
 
-#: alias/dlg_alias.c:104 alias/dlg_query.c:106
+#: alias/dlg_alias.c:105 alias/dlg_query.c:107
 msgid "Sort"
 msgstr "Rikiuot"
 
-#: alias/dlg_alias.c:105 alias/dlg_query.c:107
+#: alias/dlg_alias.c:106 alias/dlg_query.c:108
 msgid "Rev-Sort"
 msgstr "Rik.atv."
 
-#: alias/dlg_alias.c:106 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:98
-#: ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
+#: alias/dlg_alias.c:107 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:100
+#: ncrypt/dlg_pgp.c:98 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
 msgid "Select"
 msgstr "Pasirinkti"
 
-#: alias/dlg_alias.c:107 alias/dlg_query.c:109 attach/dlg_attach.c:99
-#: autocrypt/dlg_autocrypt.c:108 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:130 compose/dlg_compose.c:103
+#: alias/dlg_alias.c:108 alias/dlg_query.c:110 attach/dlg_attach.c:104
+#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:120
+#: browser/dlg_browser.c:134 compose/dlg_compose.c:103
 #: compose/dlg_compose.c:117 conn/dlg_verifycert.c:69 editor/window.c:51
-#: history/dlg_history.c:81 index/dlg_index.c:112 index/dlg_index.c:127
-#: ncrypt/dlg_gpgme.c:100 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:76
+#: history/dlg_history.c:81 index/dlg_index.c:113 index/dlg_index.c:128
+#: ncrypt/dlg_gpgme.c:102 ncrypt/dlg_pgp.c:100 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:78 pager/dlg_pager.c:103 pager/dlg_pager.c:118
 #: pattern/dlg_pattern.c:92 postpone/dlg_postpone.c:93
 msgid "Help"
 msgstr "Pagalba"
 
-#: alias/dlg_alias.c:329
+#: alias/dlg_alias.c:375
 msgid "You have no aliases"
 msgstr "Tu neturi aliasų"
 
-#: alias/dlg_alias.c:334
+#: alias/dlg_alias.c:380
 msgid "Aliases"
 msgstr "Aliasai"
 
-#: alias/dlg_query.c:103 index/dlg_index.c:109
+#: alias/dlg_query.c:104 index/dlg_index.c:110
 msgid "Mail"
 msgstr "Rašyt"
 
-#: alias/dlg_query.c:104
+#: alias/dlg_query.c:105
 msgid "New Query"
 msgstr "Nauja užklausa"
 
-#: alias/dlg_query.c:105
+#: alias/dlg_query.c:106
 msgid "Make Alias"
 msgstr "Padaryti aliasą"
 
-#: alias/dlg_query.c:108 history/dlg_history.c:80
+#: alias/dlg_query.c:109 history/dlg_history.c:80
 msgid "Search"
 msgstr "Ieškoti"
 
-#: alias/dlg_query.c:292
+#: alias/dlg_query.c:296
 msgid "Waiting for response..."
 msgstr "Laukiu atsakymo..."
 
-#: alias/dlg_query.c:374
+#: alias/dlg_query.c:378
 msgid "Query"
 msgstr "Užklausa"
 
-#: alias/dlg_query.c:474 alias/dlg_query.c:552
+#: alias/dlg_query.c:478 alias/dlg_query.c:556
 msgid "Query command not defined"
 msgstr "Užklausos komanda nenurodyta"
 
-#: alias/dlg_query.c:562 alias/functions.c:260 alias/functions.c:278
+#: alias/dlg_query.c:566 alias/functions.c:260 alias/functions.c:278
 msgid "Query: "
 msgstr "Užklausa: "
 
@@ -227,19 +227,19 @@ msgstr "unattachments: trūksta dispozicijos"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: neteisinga dispozicija"
 
-#: attach/dlg_attach.c:96 index/dlg_index.c:108 index/dlg_index.c:123
+#: attach/dlg_attach.c:101 index/dlg_index.c:109 index/dlg_index.c:124
 msgid "Save"
 msgstr "Saugoti"
 
-#: attach/dlg_attach.c:97
+#: attach/dlg_attach.c:102
 msgid "Pipe"
 msgstr "Pipe"
 
-#: attach/dlg_attach.c:98
+#: attach/dlg_attach.c:103
 msgid "Print"
 msgstr "Spausdinti"
 
-#: attach/dlg_attach.c:510
+#: attach/dlg_attach.c:575
 msgid "Attachments"
 msgstr "Priedai"
 
@@ -293,9 +293,9 @@ msgstr "Negaliu rasti tinkančio vardo, tęsti?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap kūrimo įrašui reikia %%s"
 
-#: attach/mutt_attach.c:165 attach/mutt_attach.c:304 compmbox/compress.c:323
-#: compose/functions.c:1845 gui/curs_lib.c:124 index/dlg_index.c:1178
-#: index/dlg_index.c:1223 pager/dlg_pager.c:456 pager/do_pager.c:167
+#: attach/mutt_attach.c:165 attach/mutt_attach.c:304 compmbox/compress.c:345
+#: compose/functions.c:1845 gui/curs_lib.c:124 index/dlg_index.c:1187
+#: index/dlg_index.c:1232 pager/dlg_pager.c:456 pager/do_pager.c:167
 #: pager/message.c:329 send/sendlib.c:580
 #, c-format
 msgid "Error running \"%s\""
@@ -438,7 +438,7 @@ msgstr "%s neegzistuoja. Sukurti ją?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:84 bcache/bcache.c:230 hcache/hcache.c:330 init.c:586
-#: main.c:935 nntp/newsrc.c:1100
+#: main.c:935 nntp/newsrc.c:1145
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Negaliu sukurti %s: %s"
@@ -538,10 +538,8 @@ msgstr "Pašto dėžutė"
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr "Ieškoti autocrypt antraščių kitoje dėžutėje?"
 
-#. L10N: s is the path to the database.
-#. For some reason sqlite3 failed to open that database file.
-#. L10N: Error message if autocrypt couldn't open the SQLite database
-#. for some reason.  The %s is the full path of the database file.
+#. L10N: autocrypt couldn't open the SQLite database.
+#. The %s is the full path of the database file.
 #: autocrypt/db.c:71 autocrypt/db.c:105
 #, c-format
 msgid "Unable to open autocrypt database %s"
@@ -549,13 +547,13 @@ msgstr "Negaliu atidaryti autocrypt duomenų bazės %s"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
-#: autocrypt/dlg_autocrypt.c:92
+#: autocrypt/dlg_autocrypt.c:93
 msgid "Create"
 msgstr "Sukurti"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:95 mixmaster/dlg_mixmaster.c:83
+#: autocrypt/dlg_autocrypt.c:96 mixmaster/dlg_mixmaster.c:83
 msgid "Delete"
 msgstr "Trinti"
 
@@ -564,7 +562,7 @@ msgstr "Trinti"
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:101
+#: autocrypt/dlg_autocrypt.c:102
 msgid "Tgl Active"
 msgstr "(De)aktyvuoti"
 
@@ -573,37 +571,37 @@ msgstr "(De)aktyvuoti"
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:107
+#: autocrypt/dlg_autocrypt.c:108
 msgid "Prf Encr"
 msgstr "Šifr. auto"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt set
-#: autocrypt/dlg_autocrypt.c:149
+#: autocrypt/dlg_autocrypt.c:159
 msgid "prefer encrypt"
 msgstr "šifruoti automatiškai"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt unset;
 #. thus encryption will need to be manually enabled.
-#: autocrypt/dlg_autocrypt.c:156
+#: autocrypt/dlg_autocrypt.c:166
 msgid "manual encrypt"
 msgstr "šifruoti rankomis"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is enabled/active
-#: autocrypt/dlg_autocrypt.c:164
+#: autocrypt/dlg_autocrypt.c:182
 msgid "active"
 msgstr "aktyvi"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is disabled/inactive
-#: autocrypt/dlg_autocrypt.c:170
+#: autocrypt/dlg_autocrypt.c:188
 msgid "inactive"
 msgstr "neaktyvi"
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:329
+#: autocrypt/dlg_autocrypt.c:349
 msgid "Autocrypt Accounts"
 msgstr "Autocrypt paskyros"
 
@@ -683,65 +681,65 @@ msgstr "Podėlis išjungtas, $message_cache_dir nėra katalogas: %s"
 msgid "Message cache isn't a directory: %s"
 msgstr "Pranešimų podėlis nėra katalogas: %s"
 
-#: browser/dlg_browser.c:113
+#: browser/dlg_browser.c:117
 msgid "Chdir"
 msgstr "Pereiti"
 
-#: browser/dlg_browser.c:114
+#: browser/dlg_browser.c:118
 msgid "Goto"
 msgstr "Eiti"
 
-#: browser/dlg_browser.c:115 browser/dlg_browser.c:129
+#: browser/dlg_browser.c:119 browser/dlg_browser.c:133
 msgid "Mask"
 msgstr "Kaukė"
 
-#: browser/dlg_browser.c:125
+#: browser/dlg_browser.c:129
 msgid "List"
 msgstr "Sąrašas"
 
-#: browser/dlg_browser.c:126
+#: browser/dlg_browser.c:130
 msgid "Subscribe"
 msgstr "Užsakyti"
 
-#: browser/dlg_browser.c:127
+#: browser/dlg_browser.c:131
 msgid "Unsubscribe"
 msgstr "Atsisakyti"
 
-#: browser/dlg_browser.c:128 index/dlg_index.c:126
+#: browser/dlg_browser.c:132 index/dlg_index.c:127
 msgid "Catchup"
 msgstr "Pasivyti"
 
-#: browser/dlg_browser.c:703 browser/functions.c:436 browser/functions.c:776
+#: browser/dlg_browser.c:763 browser/functions.c:436 browser/functions.c:776
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s nėra katalogas"
 
-#: browser/dlg_browser.c:986
+#: browser/dlg_browser.c:1049
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Užsakiau naujienų grupes"
 
-#: browser/dlg_browser.c:990
+#: browser/dlg_browser.c:1053
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Naujienų grupės serveryje [%s]"
 
-#: browser/dlg_browser.c:998
+#: browser/dlg_browser.c:1061
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Pašto dėžutės [%d]"
 
-#: browser/dlg_browser.c:1010
+#: browser/dlg_browser.c:1073
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Užsakytos [%s], Bylų kaukė: %s"
 
-#: browser/dlg_browser.c:1015
+#: browser/dlg_browser.c:1078
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Katalogas [%s], Bylų kaukė: %s"
 
-#: browser/dlg_browser.c:1078
+#: browser/dlg_browser.c:1141
 msgid "Can't attach a directory"
 msgstr "Negaliu prisegti katalogo"
 
@@ -849,8 +847,8 @@ msgstr "%s: nėra tokio objekto"
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:366
 #: commands.c:388 commands.c:529 commands.c:545 commands.c:742 commands.c:774
 #: commands.c:790 commands.c:910 commands.c:1035 commands.c:1084
-#: commands.c:1124 hook.c:136 hook.c:191 hook.c:200 hook.c:214 hook.c:442
-#: hook.c:458 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:101
+#: commands.c:1124 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
+#: hook.c:470 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:101
 #: subjectrx.c:109
 #, c-format
 msgid "%s: too few arguments"
@@ -872,7 +870,7 @@ msgid "%s: color not supported by term"
 msgstr "%s: spalva nepalaikoma terminalo"
 
 #: color/command.c:402 color/command.c:444 commands.c:412 commands.c:1093
-#: commands.c:1224 commands.c:1559 hook.c:141 hook.c:221 hook.c:465
+#: commands.c:1224 commands.c:1559 hook.c:146 hook.c:226 hook.c:481
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
 #: mutt_lua.c:515 score.c:107
 #, c-format
@@ -1055,49 +1053,49 @@ msgstr "Plėtinio analizės klaida: %s"
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Negaliu papildyti be append-hook ar close-hook: %s"
 
-#: compmbox/compress.c:440 compmbox/compress.c:503 compmbox/compress.c:578
-#: compmbox/compress.c:616 mbox/mbox.c:1110
+#: compmbox/compress.c:462 compmbox/compress.c:525 compmbox/compress.c:600
+#: compmbox/compress.c:638 mbox/mbox.c:1106
 msgid "Unable to lock mailbox"
 msgstr "Negaliu užrakinti dėžutės"
 
-#: compmbox/compress.c:444 compmbox/compress.c:510 compmbox/compress.c:582
+#: compmbox/compress.c:466 compmbox/compress.c:532 compmbox/compress.c:604
 #, c-format
 msgid "Decompressing %s"
 msgstr "Išskleidžiu %s"
 
-#: compmbox/compress.c:452
+#: compmbox/compress.c:474
 msgid "Can't identify the contents of the compressed file"
 msgstr "Negaliu identifikuoti suspaustos bylos turinio"
 
-#: compmbox/compress.c:459 compmbox/compress.c:532
+#: compmbox/compress.c:481 compmbox/compress.c:554
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Negaliu rasti pašto dėžutės operacijų pašto dėžutės tipui %d"
 
-#: compmbox/compress.c:512
+#: compmbox/compress.c:534
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Suspaudimo komanda nepavyko: %s"
 
-#: compmbox/compress.c:525
+#: compmbox/compress.c:547
 msgid "Unsupported mailbox type for appending"
 msgstr "Papildymui nepalaikomas pašto dėžutės tipas"
 
-#: compmbox/compress.c:606
+#: compmbox/compress.c:628
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Negaliu išsaugoti suspaustos bylos be close-hook"
 
-#: compmbox/compress.c:628 compmbox/compress.c:679
+#: compmbox/compress.c:650 compmbox/compress.c:701
 #, c-format
 msgid "Compressing %s"
 msgstr "Suspaudžiu %s"
 
-#: compmbox/compress.c:674
+#: compmbox/compress.c:696
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Papildau suspaustą %s..."
 
-#: compmbox/compress.c:685 editmsg.c:265
+#: compmbox/compress.c:707 editmsg.c:265
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Klaida. Išsaugau laikiną bylą: %s"
@@ -1315,7 +1313,7 @@ msgstr "Esamas priedas bus konvertuotas"
 msgid "Attachment is not 'multipart'"
 msgstr "Priedas nėra sudarytas iš kelių dalių"
 
-#: compose/functions.c:1766 send/send.c:2756
+#: compose/functions.c:1766 send/send.c:2761
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Blogas IDN '%s': '%s'"
@@ -1375,7 +1373,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr "'charset' turi nurodyti vieną koduotės pavadinimą"
 
 #: config/charset.c:71 config/charset.c:103 hcache/config.c:56
-#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:112
+#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:122
 #, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Bloga parametro %s reikšmė: %s"
@@ -1403,6 +1401,8 @@ msgid "Option %s may not be negative"
 msgstr "Parametras %s negali būti neigiamas"
 
 #: config/number.c:59 config/number.c:174 config/number.c:216
+#: expando/node_conddate.c:164 expando/node_expando.c:182
+#: expando/node_expando.c:211
 #, c-format
 msgid "Invalid number: %s"
 msgstr "Blogas skaičius: %s"
@@ -1502,59 +1502,59 @@ msgstr "Komanda grąžino tuščią rezultatą"
 msgid "OAUTH token is too big: %ld"
 msgstr "OAUTH žetonas per didelis: %ld"
 
-#: conn/dlg_verifycert.c:196
+#: conn/dlg_verifycert.c:203
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "(a)tmesti, (p)riimti šįkart, (v)isada priimti, p(r)aleisti"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:200
+#: conn/dlg_verifycert.c:207
 msgid "roas"
 msgstr "apvr"
 
-#: conn/dlg_verifycert.c:204
+#: conn/dlg_verifycert.c:211
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(a)tmesti, (p)riimti šįkart, (v)isada priimti"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:208
+#: conn/dlg_verifycert.c:215
 msgid "roa"
 msgstr "apv"
 
-#: conn/dlg_verifycert.c:215
+#: conn/dlg_verifycert.c:222
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "(a)tmesti, (p)riimti šįkart, p(r)aleisti"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:219
+#: conn/dlg_verifycert.c:226
 msgid "ros"
 msgstr "apr"
 
-#: conn/dlg_verifycert.c:223
+#: conn/dlg_verifycert.c:230
 msgid "(r)eject, accept (o)nce"
 msgstr "(a)tmesti, (p)riimti šįkart"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:227
+#: conn/dlg_verifycert.c:234
 msgid "ro"
 msgstr "ap"
 
-#: conn/dlg_verifycert.c:286
+#: conn/dlg_verifycert.c:293
 msgid "Jumping is not implemented for dialogs"
 msgstr "Šokinėjimas dialoguose neįgyvendintas"
 
-#: conn/dlg_verifycert.c:293
+#: conn/dlg_verifycert.c:300
 msgid "Search is not implemented for this menu"
 msgstr "Paieška šiam meniu neįgyvendinta"
 
-#: conn/gnutls.c:146 conn/gnutls.c:635
+#: conn/gnutls.c:146 conn/gnutls.c:642
 msgid "Unable to get certificate from peer"
 msgstr "Nepavyko gauti sertifikato iš serverio"
 
@@ -1568,103 +1568,108 @@ msgstr "Sertifikato patikrinimo klaida (%s)"
 msgid "[unable to calculate]"
 msgstr "[negaliu suskaičiuoti]"
 
-#: conn/gnutls.c:324 conn/gnutls.c:489
+#: conn/gnutls.c:324 conn/gnutls.c:496
 msgid "Error initialising gnutls certificate data"
 msgstr "Klaida inicializuojant gnutls sertifikato duomenis"
 
-#: conn/gnutls.c:330 conn/gnutls.c:495
+#: conn/gnutls.c:330 conn/gnutls.c:502
 msgid "Error processing certificate data"
 msgstr "Klaida apdorojant sertifikato duomenis"
 
-#: conn/gnutls.c:500 conn/openssl.c:900
+#: conn/gnutls.c:489 conn/openssl.c:900
+#, fuzzy
+msgid "Untrusted server certificate"
+msgstr "Įspėjimas: Negalėjau išsaugoti sertifikato"
+
+#: conn/gnutls.c:507 conn/openssl.c:907
 msgid "This certificate belongs to:"
 msgstr "Šis sertifikatas priklauso: "
 
-#: conn/gnutls.c:502 conn/openssl.c:902
+#: conn/gnutls.c:509 conn/openssl.c:909
 msgid "This certificate was issued by:"
 msgstr "Šis sertifikatas buvo išduotas:"
 
-#: conn/gnutls.c:505 conn/openssl.c:906
+#: conn/gnutls.c:512 conn/openssl.c:913
 msgid "This certificate is valid"
 msgstr "Šis sertifikatas galioja"
 
-#: conn/gnutls.c:510 conn/openssl.c:907
+#: conn/gnutls.c:517 conn/openssl.c:914
 #, c-format
 msgid "   from %s"
 msgstr "    nuo %s"
 
-#: conn/gnutls.c:515 conn/openssl.c:909
+#: conn/gnutls.c:522 conn/openssl.c:916
 #, c-format
 msgid "     to %s"
 msgstr "    iki %s"
 
-#: conn/gnutls.c:521 conn/openssl.c:915
+#: conn/gnutls.c:528 conn/openssl.c:922
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 pirštų atspaudas: %s"
 
-#: conn/gnutls.c:527 conn/gnutls.c:529 conn/openssl.c:921 conn/openssl.c:924
+#: conn/gnutls.c:534 conn/gnutls.c:536 conn/openssl.c:928 conn/openssl.c:931
 msgid "SHA256 Fingerprint: "
 msgstr "SHA256 pirštų atspaudas: "
 
-#: conn/gnutls.c:538
+#: conn/gnutls.c:545
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "ĮSPĖJIMAS: Serverio sertifikatas dar negalioja"
 
-#: conn/gnutls.c:542
+#: conn/gnutls.c:549
 msgid "WARNING: Server certificate has expired"
 msgstr "ĮSPĖJIMAS: Serverio sertifikatas paseno"
 
-#: conn/gnutls.c:546
+#: conn/gnutls.c:553
 msgid "WARNING: Server certificate has been revoked"
 msgstr "ĮSPĖJIMAS: Serverio sertifikatas buvo atšauktas"
 
-#: conn/gnutls.c:550
+#: conn/gnutls.c:557
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "ĮSPĖJIMAS: Serverio vardas neatitinka sertifikato"
 
-#: conn/gnutls.c:554
+#: conn/gnutls.c:561
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "ĮSPĖJIMAS: Serverio sertifikatas pasirašytas ne sertifikatų tarnybos"
 
-#: conn/gnutls.c:558
+#: conn/gnutls.c:565
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "Įspėjimas: Serverio sertifikatas pasirašytas nesaugiu algoritmu"
 
-#: conn/gnutls.c:562 conn/openssl.c:937
+#: conn/gnutls.c:569 conn/openssl.c:944
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "SSL sertifikato patikrinimas (sertifikatas nr. %zu iš %zu grandinėje)"
 
-#: conn/gnutls.c:596 conn/openssl.c:971
+#: conn/gnutls.c:603 conn/openssl.c:978
 msgid "Certificate saved"
 msgstr "Sertifikatas išsaugotas"
 
-#: conn/gnutls.c:598 conn/openssl.c:973
+#: conn/gnutls.c:605 conn/openssl.c:980
 msgid "Warning: Couldn't save certificate"
 msgstr "Įspėjimas: Negalėjau išsaugoti sertifikato"
 
-#: conn/gnutls.c:798 conn/gnutls.c:844
+#: conn/gnutls.c:805 conn/gnutls.c:851
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Visi galimi protokolai TLS/SSL jungčiai išjungti"
 
-#: conn/gnutls.c:851
+#: conn/gnutls.c:858
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "Šifro pasirinkimas per $ssl_ciphers nepalaikomas"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:921 conn/openssl.c:1154
+#: conn/gnutls.c:928 conn/openssl.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Įspėjimas: negaliu nustatyti TLS SNI serverio vardo"
 
-#: conn/gnutls.c:967
+#: conn/gnutls.c:974
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL/TLS jungtis, naudojant %s (%s/%s/%s)"
 
-#: conn/gnutls.c:1049 conn/gnutls.c:1078
+#: conn/gnutls.c:1056 conn/gnutls.c:1085
 msgid "Error: no TLS socket open"
 msgstr "Klaida: TLS jungtis neatidaryta"
 
@@ -1711,20 +1716,20 @@ msgstr "nepavyko gauti sertifikato bendrojo vardo"
 msgid "certificate owner does not match hostname %s"
 msgstr "sertifikato savininkas neatitinka serverio vardo %s"
 
-#: conn/openssl.c:1074
+#: conn/openssl.c:1081
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Sertifikato patikrinimas nepavyko: %s"
 
-#: conn/openssl.c:1170
+#: conn/openssl.c:1177
 msgid "I/O error"
 msgstr "Įvedimo/išvedimo klaida"
 
-#: conn/openssl.c:1176 conn/raw.c:266 mutt_logging.c:108
+#: conn/openssl.c:1183 conn/raw.c:266 mutt_logging.c:108
 msgid "unknown error"
 msgstr "nežinoma klaida"
 
-#: conn/openssl.c:1179
+#: conn/openssl.c:1186
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL nepavyko: %s"
@@ -1732,11 +1737,11 @@ msgstr "SSL nepavyko: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1215
+#: conn/openssl.c:1222
 msgid "Unable to create SSL context"
 msgstr "Negaliu sukurti SSL konteksto"
 
-#: conn/openssl.c:1277
+#: conn/openssl.c:1284
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "Įspėjimas: nepavyko įjungti ssl_verify_partial_chains"
 
@@ -1819,7 +1824,7 @@ msgstr "Tunelis į %s grąžino klaidą %d (%s)"
 msgid "%s isn't a regular file"
 msgstr "%s nėra paprasta byla"
 
-#: copy.c:735
+#: copy.c:734
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
@@ -1827,7 +1832,7 @@ msgstr[0] "Ilgio skaičiavimas suklydo %ld baitu"
 msgstr[1] "Ilgio skaičiavimas suklydo %ld baitais"
 msgstr[2] "Ilgio skaičiavimas suklydo %ld baitų"
 
-#: copy.c:828
+#: copy.c:827
 msgid "No decryption engine available for message"
 msgstr "Nėra iššifravimo mechanizmo laiškui"
 
@@ -1947,22 +1952,22 @@ msgid "From: "
 msgstr "Nuo: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:284
+#: envelope/window.c:97 send/send.c:287
 msgid "To: "
 msgstr "Kam: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:291
+#: envelope/window.c:99 send/send.c:294
 msgid "Cc: "
 msgstr "Kopija: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101 send/send.c:298
+#: envelope/window.c:101 send/send.c:301
 msgid "Bcc: "
 msgstr "Slapta kopija: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103 send/send.c:343
+#: envelope/window.c:103 send/send.c:346
 msgid "Subject: "
 msgstr "Tema: "
 
@@ -1992,7 +1997,7 @@ msgstr "Saugumas: "
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
 #: envelope/window.c:119 ncrypt/crypt_gpgme.c:3867 ncrypt/pgp.c:2020
-#: ncrypt/smime.c:2230
+#: ncrypt/smime.c:2189
 msgid "Sign as: "
 msgstr "Pasirašyti kaip: "
 
@@ -2022,7 +2027,7 @@ msgstr "Antraštės: "
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
-#: envelope/window.c:138 envelope/window.c:483
+#: envelope/window.c:138 envelope/window.c:484
 msgid "Off"
 msgstr "išjungtas"
 
@@ -2055,58 +2060,54 @@ msgstr "galimas"
 msgid "Yes"
 msgstr "įjungtas"
 
-#: envelope/window.c:404
+#: envelope/window.c:405
 msgid "Sign, Encrypt"
 msgstr "Pasirašyti, užšifruoti"
 
-#: envelope/window.c:409 envelope/window.c:478
+#: envelope/window.c:410 envelope/window.c:479
 msgid "Encrypt"
 msgstr "Užšifruoti"
 
-#: envelope/window.c:414
+#: envelope/window.c:415
 msgid "Sign"
 msgstr "Pasirašyti"
 
-#: envelope/window.c:420
+#: envelope/window.c:421
 msgid "None"
 msgstr "Jokio"
 
-#: envelope/window.c:430
+#: envelope/window.c:431
 msgid " (inline PGP)"
 msgstr " (PGP tekste)"
 
-#: envelope/window.c:432
+#: envelope/window.c:433
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: envelope/window.c:436
+#: envelope/window.c:437
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: envelope/window.c:442
+#: envelope/window.c:443
 msgid " (OppEnc mode)"
 msgstr " (OpŠifr režimas)"
 
-#: envelope/window.c:451 envelope/window.c:459
+#: envelope/window.c:452 envelope/window.c:460
 msgid "<default>"
 msgstr "<įprastas>"
 
-#: envelope/window.c:466
+#: envelope/window.c:467
 msgid "Encrypt with: "
 msgstr "Užšifruoti: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: envelope/window.c:489
+#: envelope/window.c:490
 msgid "Recommendation: "
 msgstr "Rekomendacija: "
 
-#: envelope/window.c:513
-msgid "<no chain defined>"
-msgstr "<nėra grandinės>"
-
-#: envelope/window.c:597
+#: envelope/window.c:593
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
@@ -2170,19 +2171,19 @@ msgstr "Sąlygai trūksta '&' arba '%c'"
 msgid "Warning: message contains no From: header"
 msgstr "Įspėjimas: laiškas neturi From: antraštės"
 
-#: external.c:116 recvcmd.c:207
+#: external.c:116 recvcmd.c:208
 msgid "Bounce message to: "
 msgstr "Nukreipti laišką kam: "
 
-#: external.c:118 recvcmd.c:209
+#: external.c:118 recvcmd.c:210
 msgid "Bounce tagged messages to: "
 msgstr "Nukreipti pažymėtus laiškus kam: "
 
-#: external.c:128 recvcmd.c:221
+#: external.c:128 recvcmd.c:222
 msgid "Error parsing address"
 msgstr "Klaida nagrinėjant adresą"
 
-#: external.c:144 recvcmd.c:239
+#: external.c:144 recvcmd.c:240
 #, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
@@ -2190,14 +2191,14 @@ msgstr[0] "Nukreipti laišką į %s?"
 msgstr[1] "Nukreipti laiškus į %s?"
 msgstr[2] "Nukreipti laiškus į %s?"
 
-#: external.c:150 recvcmd.c:245
+#: external.c:150 recvcmd.c:246
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Laiškas nenukreiptas"
 msgstr[1] "Laiškai nenukreipti"
 msgstr[2] "Laiškai nenukreipti"
 
-#: external.c:176 recvcmd.c:272
+#: external.c:176 recvcmd.c:273
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "Laiškas nukreiptas"
@@ -2373,1123 +2374,1771 @@ msgstr "Išvalyti vėliavėlę"
 msgid "Set flag"
 msgstr "Uždėti vėliavėlę"
 
-#: gui/curs_lib.c:142 index/functions.c:771
+#: gui/curs_lib.c:140 index/functions.c:771
 msgid "Exit NeoMutt without saving?"
 msgstr "Išeiti iš NeoMutt neišsaugojus pakeitimų?"
 
-#: gui/curs_lib.c:195
+#: gui/curs_lib.c:193
 msgid "Press any key to continue..."
 msgstr "Spausk bet kokį klavišą..."
 
-#: gui/curs_lib.c:253
+#: gui/curs_lib.c:251
 msgid " ('?' for list): "
 msgstr " ('?' parodo sąrašą): "
 
-#: gui/curs_lib.c:508
+#: gui/curs_lib.c:506
 #, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "Paspausk klavišus (%s nutraukia): "
 
-#: gui/curs_lib.c:557
+#: gui/curs_lib.c:555
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr "Simbolis = %s, aštuonetaine sistema = %o, dešimtaine = %d\n"
 
-#: gui/opcodes.h:41
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
+#. Compose Dialog: <op_attachment_attach_file>
+#: gui/opcodes.h:43
 msgid "attach files to this message"
 msgstr "prisegti bylas prie šio laiško"
 
-#: gui/opcodes.h:42
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
+#. Compose Dialog: <op_attachment_attach_message>
+#: gui/opcodes.h:46
 msgid "attach messages to this message"
 msgstr "prisegti laiškus prie šio laiško"
 
-#: gui/opcodes.h:43
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
+#. Compose Dialog: <op_attachment_attach_message>
+#: gui/opcodes.h:49
 msgid "attach news articles to this message"
 msgstr "prisegti naujienų straipsnius prie šio laiško"
 
-#: gui/opcodes.h:44
+#. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
+#. Attach Dialog: <op_attachment_collapse>
+#: gui/opcodes.h:52
 msgid "toggle display of subparts"
 msgstr "perjungti vidinių dalių rodymą"
 
-#: gui/opcodes.h:45 gui/opcodes.h:46 gui/opcodes.h:119
+#. L10N: Help screen description for OP_ATTACHMENT_DELETE
+#. Attach Dialog: <op_attachment_delete>
+#. L10N: Help screen description for OP_ATTACHMENT_DETACH
+#. Compose Dialog: <op_attachment_detach>
+#. L10N: Help screen description for OP_DELETE
+#. Alias Dialog: <op_delete>
+#. Index: <op_delete>
+#. Postponed Dialog: <op_delete>
+#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:274
 msgid "delete the current entry"
 msgstr "ištrinti esamą įrašą"
 
-#: gui/opcodes.h:47
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
+#. Compose Dialog: <op_attachment_edit_content_id>
+#: gui/opcodes.h:61
 msgid "edit the 'Content-ID' of the attachment"
 msgstr "taisyti priedo 'Content-ID' antraštę"
 
-#: gui/opcodes.h:48
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
+#. Compose Dialog: <op_attachment_edit_description>
+#: gui/opcodes.h:64
 msgid "edit attachment description"
 msgstr "taisyti priedo aprašymą"
 
-#: gui/opcodes.h:49
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
+#. Compose Dialog: <op_attachment_edit_encoding>
+#: gui/opcodes.h:67
 msgid "edit attachment transfer-encoding"
 msgstr "taisyti priedo Transfer-Encoding"
 
-#: gui/opcodes.h:50
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
+#. Compose Dialog: <op_attachment_edit_language>
+#: gui/opcodes.h:70
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "taisyti priedo 'Content-Language' antraštę"
 
-#: gui/opcodes.h:51
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
+#. Compose Dialog: <op_attachment_edit_mime>
+#: gui/opcodes.h:73
 msgid "edit attachment using mailcap entry"
 msgstr "taisyti priedą naudojant mailcap įrašą"
 
-#: gui/opcodes.h:52
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE
+#. Attach Dialog: <op_attachment_edit_type>
+#. Compose Dialog: <op_attachment_edit_type>
+#. Index: <op_attachment_edit_type>
+#: gui/opcodes.h:78
 msgid "edit attachment content type"
 msgstr "keisti priedo Content-Type"
 
-#: gui/opcodes.h:53
+#. L10N: Help screen description for OP_ATTACHMENT_FILTER
+#. Compose Dialog: <op_attachment_filter>
+#: gui/opcodes.h:81
 msgid "filter attachment through a shell command"
 msgstr "filtruoti priedą per aplinkos komandą"
 
-#: gui/opcodes.h:54
+#. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
+#. Compose Dialog: <op_attachment_get_attachment>
+#: gui/opcodes.h:84
 msgid "get a temporary copy of an attachment"
 msgstr "gauti laikiną priedo kopiją"
 
-#: gui/opcodes.h:55
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
+#. Compose Dialog: <op_attachment_group_alts>
+#: gui/opcodes.h:87
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr "grupuoti pažymėtus priedus kaip alternatyvas (multipart/alternative)"
 
-#: gui/opcodes.h:56
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL
+#. Compose Dialog: <op_attachment_group_lingual>
+#: gui/opcodes.h:90
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr "grupuoti pažymėtus priedus kaip kalbų alternatyvas (multipart/multilingual)"
 
-#: gui/opcodes.h:57
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED
+#. Compose Dialog: <op_attachment_group_related>
+#: gui/opcodes.h:93
 msgid "group tagged attachments as 'multipart/related'"
 msgstr "grupuoti pažymėtus priedus kaip susijusius (multipart/related)"
 
-#: gui/opcodes.h:58
+#. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
+#. Compose Dialog: <op_attachment_move_down>
+#: gui/opcodes.h:96
 msgid "move an attachment down in the attachment list"
 msgstr "perkelti priedą žemiau sąraše"
 
-#: gui/opcodes.h:59
+#. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
+#. Compose Dialog: <op_attachment_move_up>
+#: gui/opcodes.h:99
 msgid "move an attachment up in the attachment list"
 msgstr "perkelti priedą aukščiau sąraše"
 
-#: gui/opcodes.h:60
+#. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
+#. Compose Dialog: <op_attachment_new_mime>
+#: gui/opcodes.h:102
 msgid "compose new attachment using mailcap entry"
 msgstr "sukurti naują priedą naudojant mailcap įrašą"
 
-#: gui/opcodes.h:61 gui/opcodes.h:242
+#. L10N: Help screen description for OP_ATTACHMENT_PIPE
+#. L10N: Help screen description for OP_PIPE
+#. Compose Dialog: <op_attachment_filter>
+#. Attach Dialog: <op_attachment_pipe>
+#. Index: <op_pipe>
+#: gui/opcodes.h:104 gui/opcodes.h:666
 msgid "pipe message/attachment to a shell command"
 msgstr "filtruoti laišką/priedą per shell komandą"
 
-#: gui/opcodes.h:62 gui/opcodes.h:247
+#. L10N: Help screen description for OP_ATTACHMENT_PRINT
+#. Attach Dialog: <op_attachment_print>
+#. Compose Dialog: <op_attachment_print>
+#. L10N: Help screen description for OP_PRINT
+#. Index: <op_print>
+#: gui/opcodes.h:108 gui/opcodes.h:684
 msgid "print the current entry"
 msgstr "spausdinti esamą įrašą"
 
-#: gui/opcodes.h:63
+#. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
+#. Compose Dialog: <op_attachment_rename_attachment>
+#: gui/opcodes.h:111
 msgid "send attachment with a different name"
 msgstr "siųsti priedą kitu vardu"
 
-#: gui/opcodes.h:64 gui/opcodes.h:260
+#. L10N: Help screen description for OP_ATTACHMENT_SAVE
+#. Attach Dialog: <op_attachment_save>
+#. Compose Dialog: <op_attachment_save>
+#. L10N: Help screen description for OP_SAVE
+#. Index: <op_save>
+#. Pager: <op_save>
+#: gui/opcodes.h:115 gui/opcodes.h:729
 msgid "save message/attachment to a mailbox/file"
 msgstr "išsaugoti laišką/priedą į dėžutę/bylą"
 
-#: gui/opcodes.h:65
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
+#. Compose Dialog: <op_attachment_toggle_disposition>
+#: gui/opcodes.h:118
 msgid "toggle disposition between inline/attachment"
 msgstr "perjungti, ar siųsti laiške, ar priede"
 
-#: gui/opcodes.h:66
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
+#. Compose Dialog: <op_attachment_toggle_recode>
+#: gui/opcodes.h:121
 msgid "toggle recoding of this attachment"
 msgstr "perjungti šio priedo perkodavimą"
 
-#: gui/opcodes.h:67
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
+#. Compose Dialog: <op_attachment_toggle_unlink>
+#: gui/opcodes.h:124
 msgid "toggle whether to delete file after sending it"
 msgstr "perjungti, ar ištrinti bylą, ją išsiuntus"
 
-#: gui/opcodes.h:68 gui/opcodes.h:282
+#. L10N: Help screen description for OP_ATTACHMENT_UNDELETE
+#. Attach Dialog: <op_attachment_undelete>
+#. L10N: Help screen description for OP_UNDELETE
+#. Alias Dialog: <op_delete>
+#. Postponed Dialog: <op_delete>
+#. Index: <op_undelete>
+#: gui/opcodes.h:127 gui/opcodes.h:815
 msgid "undelete the current entry"
 msgstr "sugrąžinti esamą įrašą"
 
-#: gui/opcodes.h:69
+#. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
+#. Compose Dialog: <op_attachment_ungroup>
+#: gui/opcodes.h:130
 msgid "ungroup 'multipart' attachment"
 msgstr "atgrupuoti kelių dalių priedą"
 
-#: gui/opcodes.h:70
+#. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
+#. Compose Dialog: <op_attachment_update_encoding>
+#: gui/opcodes.h:133
 msgid "update an attachment's encoding info"
 msgstr "atnaujinti priedo koduotės info."
 
-#: gui/opcodes.h:71
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW
+#. Attach Dialog: <op_attachment_view>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:137
 msgid "view attachment using mailcap entry if necessary"
 msgstr "rodyti priedą naudojant mailcap įrašą, jei reikia"
 
-#: gui/opcodes.h:72
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
+#. Attach Dialog: <op_attachment_view_mailcap>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:141
 msgid "force viewing of attachment using mailcap"
 msgstr "priverstinai rodyti priedą naudojant mailcap įrašą"
 
-#: gui/opcodes.h:73
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
+#. Attach Dialog: <op_attachment_view_pager>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:145
 msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "priverstinai rodyti priedą naudojant copiousoutput mailcap įrašą"
 
-#: gui/opcodes.h:74
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
+#. Attach Dialog: <op_attachment_view_text>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:149
 msgid "view attachment as text"
 msgstr "žiūrėti priedą kaip tekstą"
 
-#: gui/opcodes.h:78
+#. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
+#. Index: <op_autocrypt_acct_menu>
+#: gui/opcodes.h:155
 msgid "manage autocrypt accounts"
 msgstr "tvarkyti autocrypt paskyras"
 
-#: gui/opcodes.h:79
+#. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
+#. Autocrypt Dialog: <op_autocrypt_create_acct>
+#: gui/opcodes.h:158
 msgid "create a new autocrypt account"
 msgstr "sukurti naują autocrypt paskyrą"
 
-#: gui/opcodes.h:80
+#. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
+#. Autocrypt Dialog: <op_autocrypt_delete_acct>
+#: gui/opcodes.h:161
 msgid "delete the current account"
 msgstr "ištrinti pasirinktą paskyrą"
 
-#: gui/opcodes.h:81
+#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
+#. Autocrypt Dialog: <op_autocrypt_toggle_active>
+#: gui/opcodes.h:164
 msgid "toggle the current account active/inactive"
 msgstr "aktyvuoti/deaktyvuoti pasirinktą paskyrą"
 
-#: gui/opcodes.h:82
+#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
+#. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
+#: gui/opcodes.h:167
 msgid "toggle the current account prefer-encrypt flag"
 msgstr "įjungti/išjungti automatinį šifravimą pasirinktai paskyrai"
 
-#: gui/opcodes.h:83
+#. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
+#. Envelope Window: <op_compose_autocrypt_menu>
+#: gui/opcodes.h:170
 msgid "show autocrypt compose menu options"
 msgstr "rodyti automatinio šifravimo meniu parinktis"
 
-#: gui/opcodes.h:89
+#. L10N: Help screen description for OP_ALIAS_DIALOG
+#. Index: <op_alias_dialog>
+#: gui/opcodes.h:178
 msgid "open the aliases dialog"
 msgstr "atidaryti aliasų dialogą"
 
-#: gui/opcodes.h:90
+#. L10N: Help screen description for OP_BOTTOM_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:181
 msgid "move to the bottom of the page"
 msgstr "eiti į puslapio apačią"
 
-#: gui/opcodes.h:91
+#. L10N: Help screen description for OP_BOUNCE_MESSAGE
+#. Attach Dialog: <op_bounce_message>
+#. Index: <op_bounce_message>
+#: gui/opcodes.h:185
 msgid "remail a message to another user"
 msgstr "vėl siųsti laišką kitam vartotojui"
 
-#: gui/opcodes.h:92
+#. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:188
 msgid "swap the current folder position with $folder if it exists"
 msgstr "sukeisti dabartinio aplanko poziciją su $folder jei jis yra"
 
-#: gui/opcodes.h:93
+#. L10N: Help screen description for OP_BROWSER_NEW_FILE
+#. Browser: <op_browser_new_file>
+#: gui/opcodes.h:191
 msgid "select a new file in this directory"
 msgstr "pasirink naują bylą šiame kataloge"
 
-#: gui/opcodes.h:94
+#. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
+#. Browser: <op_browser_subscribe>
+#: gui/opcodes.h:194
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "užsakyti esamą aplanką (tik IMAP/NNTP)"
 
-#: gui/opcodes.h:95
+#. L10N: Help screen description for OP_BROWSER_TELL
+#. Browser: <op_browser_tell>
+#: gui/opcodes.h:197
 msgid "display the currently selected file's name"
 msgstr "parodyti dabar pažymėtos bylos vardą"
 
-#: gui/opcodes.h:96
+#. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
+#. Browser: <op_browser_toggle_lsub>
+#: gui/opcodes.h:200
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "perjungti visų/užsakytų dėžučių rodymą (tik IMAP)"
 
-#: gui/opcodes.h:97
+#. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
+#. Browser: <op_browser_subscribe>
+#: gui/opcodes.h:203
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "atsisakyti esamo aplanko (tik IMAP/NNTP)"
 
-#: gui/opcodes.h:98
+#. L10N: Help screen description for OP_BROWSER_VIEW_FILE
+#. Browser: <op_browser_view_file>
+#: gui/opcodes.h:206
 msgid "view file"
 msgstr "žiūrėti bylą"
 
-#: gui/opcodes.h:99
+#. L10N: Help screen description for OP_CATCHUP
+#. Browser: <op_catchup>
+#. Index: <op_catchup>
+#: gui/opcodes.h:210
 msgid "mark all articles in newsgroup as read"
 msgstr "pažymėti visus straipsnius naujienų grupėje skaitytais"
 
-#: gui/opcodes.h:100
+#. L10N: Help screen description for OP_CHANGE_DIRECTORY
+#. Browser: <op_change_directory>
+#: gui/opcodes.h:213
 msgid "change directories"
 msgstr "keisti katalogus"
 
-#: gui/opcodes.h:101
+#. L10N: Help screen description for OP_CHECK_NEW
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:216
 msgid "check mailboxes for new mail"
 msgstr "tikrinti, ar dėžutėse yra naujo pašto"
 
-#: gui/opcodes.h:102
+#. L10N: Help screen description for OP_CHECK_STATS
+#. Global: <op_check_stats>
+#: gui/opcodes.h:219
 msgid "calculate message statistics for all mailboxes"
 msgstr "suskaičiuoti laiškų statistiką visoms dėžutėms"
 
-#: gui/opcodes.h:103
+#. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
+#. Compose Dialog: <op_compose_edit_file>
+#: gui/opcodes.h:222
 msgid "edit the file to be attached"
 msgstr "taisyti bylą, skirtą prisegimui"
 
-#: gui/opcodes.h:104
+#. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
+#. Compose Dialog: <op_compose_edit_message>
+#: gui/opcodes.h:225
 msgid "edit the message"
 msgstr "taisyti laišką"
 
-#: gui/opcodes.h:105
+#. L10N: Help screen description for OP_COMPOSE_ISPELL
+#. Compose Dialog: <op_compose_ispell>
+#: gui/opcodes.h:228
 msgid "run ispell on the message"
 msgstr "paleisti ispell laiškui"
 
-#: gui/opcodes.h:106
+#. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
+#. Compose Dialog: <op_compose_postpone_message>
+#: gui/opcodes.h:231
 msgid "save this message to send later"
 msgstr "išsaugoti šį laišką vėlesniam siuntimui"
 
-#: gui/opcodes.h:107
+#. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
+#. Compose Dialog: <op_compose_rename_file>
+#: gui/opcodes.h:234
 msgid "rename/move an attached file"
 msgstr "pervadinti/perkelti prisegtą bylą"
 
-#: gui/opcodes.h:108
+#. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
+#. Compose Dialog: <op_compose_send_message>
+#: gui/opcodes.h:237
 msgid "send the message"
 msgstr "siųsti laišką"
 
-#: gui/opcodes.h:109
+#. L10N: Help screen description for OP_COMPOSE_TO_SENDER
+#. Attach Dialog: <op_compose_to_sender>
+#. Index: <op_compose_to_sender>
+#: gui/opcodes.h:241
 msgid "compose new message to the current message sender"
 msgstr "sukurti naują laišką dabartinio laiško siuntėjui"
 
-#: gui/opcodes.h:110
+#. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
+#. Compose Dialog: <op_compose_write_message>
+#: gui/opcodes.h:244
 msgid "write the message to a folder"
 msgstr "įrašyti laišką į aplanką"
 
-#: gui/opcodes.h:111
+#. L10N: Help screen description for OP_COPY_MESSAGE
+#. Index: <op_save>
+#: gui/opcodes.h:247
 msgid "copy a message to a file/mailbox"
 msgstr "kopijuoti laišką į bylą/dėžutę"
 
-#: gui/opcodes.h:112
+#. L10N: Help screen description for OP_CREATE_ALIAS
+#. Alias Dialog: <op_create_alias>
+#. Index: <op_create_alias>
+#: gui/opcodes.h:251
 msgid "create an alias from a message sender"
 msgstr "sukurti aliasą laiško siuntėjui"
 
-#: gui/opcodes.h:113
+#. L10N: Help screen description for OP_CREATE_MAILBOX
+#. Browser: <op_create_mailbox>
+#: gui/opcodes.h:254
 msgid "create a new mailbox (IMAP only)"
 msgstr "sukurti naują dėžutę (tik IMAP)"
 
-#: gui/opcodes.h:114
+#. L10N: Help screen description for OP_CURRENT_BOTTOM
+#. Menu: <menu_movement>
+#: gui/opcodes.h:257
 msgid "move entry to bottom of screen"
 msgstr "rodyti įrašą į ekrano apačioje"
 
-#: gui/opcodes.h:115
+#. L10N: Help screen description for OP_CURRENT_MIDDLE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:260
 msgid "move entry to middle of screen"
 msgstr "rodyti įrašą į ekrano viduryje"
 
-#: gui/opcodes.h:116
+#. L10N: Help screen description for OP_CURRENT_TOP
+#. Menu: <menu_movement>
+#: gui/opcodes.h:263
 msgid "move entry to top of screen"
 msgstr "rodyti įrašą į ekrano viršuje"
 
-#: gui/opcodes.h:117
+#. L10N: Help screen description for OP_DECODE_COPY
+#. Index: <op_save>
+#: gui/opcodes.h:266
 msgid "make decoded (text/plain) copy"
 msgstr "padaryti iškoduotą (text/plain) kopiją"
 
-#: gui/opcodes.h:118
+#. L10N: Help screen description for OP_DECODE_SAVE
+#. Index: <op_save>
+#: gui/opcodes.h:269
 msgid "make decoded copy (text/plain) and delete"
 msgstr "padaryti iškoduotą (text/plain) kopiją ir ištrinti"
 
-#: gui/opcodes.h:120
+#. L10N: Help screen description for OP_DELETE_MAILBOX
+#. Browser: <op_delete_mailbox>
+#: gui/opcodes.h:277
 msgid "delete the current mailbox (IMAP only)"
 msgstr "ištrinti esamą dėžutę (tik IMAP)"
 
-#: gui/opcodes.h:121
+#. L10N: Help screen description for OP_DELETE_SUBTHREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:280
 msgid "delete all messages in subthread"
 msgstr "ištrinti visus laiškus subgijoje"
 
-#: gui/opcodes.h:122
+#. L10N: Help screen description for OP_DELETE_THREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:283
 msgid "delete all messages in thread"
 msgstr "ištrinti visus laiškus gijoje"
 
-#: gui/opcodes.h:123
+#. L10N: Help screen description for OP_DESCEND_DIRECTORY
+#. Browser: <op_generic_select_entry>
+#: gui/opcodes.h:286
 msgid "descend into a directory"
 msgstr "nusileisti į katalogą"
 
-#: gui/opcodes.h:124
+#. L10N: Help screen description for OP_DISPLAY_ADDRESS
+#. Index: <op_display_address>
+#: gui/opcodes.h:289
 msgid "display full address of sender"
 msgstr "rodyti pilną siuntėjo adresą"
 
-#: gui/opcodes.h:125
+#. L10N: Help screen description for OP_DISPLAY_HEADERS
+#. Attach Dialog: <op_attachment_view>
+#. Compose Dialog: <op_display_headers>
+#. Index: <op_display_message>
+#: gui/opcodes.h:294
 msgid "display message and toggle header weeding"
 msgstr "rodyti laišką ir perjungti antraščių rodymą"
 
-#: gui/opcodes.h:126
+#. L10N: Help screen description for OP_DISPLAY_MESSAGE
+#. Index: <op_display_message>
+#: gui/opcodes.h:297
 msgid "display a message"
 msgstr "rodyti laišką"
 
-#: gui/opcodes.h:127
+#. L10N: Help screen description for OP_EDITOR_BACKSPACE
+#. Text Entry: <op_editor_backspace>
+#: gui/opcodes.h:300
 msgid "delete the char in front of the cursor"
 msgstr "ištrinti simbolį prieš žymeklį"
 
-#: gui/opcodes.h:128
+#. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
+#. Text Entry: <op_editor_backward_char>
+#: gui/opcodes.h:303
 msgid "move the cursor one character to the left"
 msgstr "perkelti žymeklį vienu simboliu kairėn"
 
-#: gui/opcodes.h:129
+#. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
+#. Text Entry: <op_editor_backward_word>
+#: gui/opcodes.h:306
 msgid "move the cursor to the beginning of the word"
 msgstr "perkelti žymeklį į žodžio pradžią"
 
-#: gui/opcodes.h:130
+#. L10N: Help screen description for OP_EDITOR_BOL
+#. Text Entry: <op_editor_bol>
+#: gui/opcodes.h:309
 msgid "jump to the beginning of the line"
 msgstr "peršokti į eilutės pradžią"
 
-#: gui/opcodes.h:131
+#. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:312
 msgid "capitalize the word"
 msgstr "pradėti žodį didžiąja raide"
 
-#: gui/opcodes.h:132
+#. L10N: Help screen description for OP_EDITOR_COMPLETE
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:315
 msgid "complete filename or alias"
 msgstr "užbaigti bylos vardą ar aliasą"
 
-#: gui/opcodes.h:133
+#. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:318
 msgid "complete address with query"
 msgstr "užbaigti adresą su užklausa"
 
-#: gui/opcodes.h:134
+#. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
+#. Text Entry: <op_editor_delete_char>
+#: gui/opcodes.h:321
 msgid "delete the char under the cursor"
 msgstr "ištrinti simbolį po žymekliu"
 
-#: gui/opcodes.h:135
+#. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:324
 msgid "convert the word to lower case"
 msgstr "perrašyti žodį mažosiomis raidėmis"
 
-#: gui/opcodes.h:136
+#. L10N: Help screen description for OP_EDITOR_EOL
+#. Text Entry: <op_editor_eol>
+#: gui/opcodes.h:327
 msgid "jump to the end of the line"
 msgstr "peršokti į eilutės galą"
 
-#: gui/opcodes.h:137
+#. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
+#. Text Entry: <op_editor_forward_char>
+#: gui/opcodes.h:330
 msgid "move the cursor one character to the right"
 msgstr "perkelti žymeklį vienu simboliu dešinėn"
 
-#: gui/opcodes.h:138
+#. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
+#. Text Entry: <op_editor_forward_word>
+#: gui/opcodes.h:333
 msgid "move the cursor to the end of the word"
 msgstr "perkelti žymeklį į žodžio pabaigą"
 
-#: gui/opcodes.h:139
+#. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
+#. Text Entry: <op_editor_history_down>
+#: gui/opcodes.h:336
 msgid "scroll down through the history list"
 msgstr "slinktis žemyn istorijos sąraše"
 
-#: gui/opcodes.h:140
+#. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
+#. Text Entry: <op_editor_history_search>
+#: gui/opcodes.h:339
 msgid "search through the history list"
 msgstr "ieškoti istorijos sąraše"
 
-#: gui/opcodes.h:141
+#. L10N: Help screen description for OP_EDITOR_HISTORY_UP
+#. Text Entry: <op_editor_history_up>
+#: gui/opcodes.h:342
 msgid "scroll up through the history list"
 msgstr "slinktis aukštyn istorijos sąraše"
 
-#: gui/opcodes.h:142
+#. L10N: Help screen description for OP_EDITOR_KILL_EOL
+#. Text Entry: <op_editor_kill_eol>
+#: gui/opcodes.h:345
 msgid "delete chars from cursor to end of line"
 msgstr "ištrinti simbolius nuo žymeklio iki eilutės galo"
 
-#: gui/opcodes.h:143
+#. L10N: Help screen description for OP_EDITOR_KILL_EOW
+#. Text Entry: <op_editor_kill_eow>
+#: gui/opcodes.h:348
 msgid "delete chars from the cursor to the end of the word"
 msgstr "ištrinti simbolius nuo žymeklio iki žodžio galo"
 
-#: gui/opcodes.h:144
+#. L10N: Help screen description for OP_EDITOR_KILL_LINE
+#. Text Entry: <op_editor_kill_line>
+#: gui/opcodes.h:351
 msgid "delete chars from cursor to beginning the line"
 msgstr "ištrinti simbolius nuo žymeklio iki eilutės pradžios"
 
-#: gui/opcodes.h:145
+#. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
+#. Text Entry: <op_editor_kill_whole_line>
+#: gui/opcodes.h:354
 msgid "delete all chars on the line"
 msgstr "ištrinti visus simbolius eilutėje"
 
-#: gui/opcodes.h:146
+#. L10N: Help screen description for OP_EDITOR_KILL_WORD
+#. Text Entry: <op_editor_kill_word>
+#: gui/opcodes.h:357
 msgid "delete the word in front of the cursor"
 msgstr "ištrinti žodį prieš žymeklį"
 
-#: gui/opcodes.h:147
+#. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:360
 msgid "cycle among incoming mailboxes"
 msgstr "eiti ratu per gaunamo pašto dėžutes"
 
-#: gui/opcodes.h:148
+#. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
+#. Text Entry: <op_editor_quote_char>
+#: gui/opcodes.h:363
 msgid "quote the next typed key"
 msgstr "cituoti sekantį nuspaustą klavišą"
 
-#: gui/opcodes.h:149
+#. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
+#. Text Entry: <op_editor_transpose_chars>
+#: gui/opcodes.h:366
 msgid "transpose character under cursor with previous"
 msgstr "sukeisti simbolį po žymekliu su praeitu"
 
-#: gui/opcodes.h:150
+#. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:369
 msgid "convert the word to upper case"
 msgstr "perrašyti žodį didžiosiomis raidėmis"
 
-#: gui/opcodes.h:151
+#. L10N: Help screen description for OP_EDIT_LABEL
+#. Index: <op_edit_label>
+#: gui/opcodes.h:372
 msgid "add, change, or delete a message's label"
 msgstr "pridėti, pakeisti ar išmesti laiško etiketę"
 
-#: gui/opcodes.h:152
+#. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:375
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "keisti gryną laišką jei pašto dėžutė nėra tik skaitoma, kitaip rodyti jį"
 
-#: gui/opcodes.h:153
+#. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:378
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr "redaguoti gryną laišką (edit ir edit-raw-message yra sinonimai)"
 
-#: gui/opcodes.h:154
+#. L10N: Help screen description for OP_END_COND
+#. Index: <op_end_cond>
+#: gui/opcodes.h:381
 msgid "end of conditional execution (noop)"
 msgstr "baigti sąlyginį vykdymą (nieko nedaryti)"
 
-#: gui/opcodes.h:155
+#. L10N: Help screen description for OP_ENTER_COMMAND
+#. Global: <op_enter_command>
+#: gui/opcodes.h:384
 msgid "enter a neomuttrc command"
 msgstr "įvesti neomuttrc komandą"
 
-#: gui/opcodes.h:156
+#. L10N: Help screen description for OP_ENTER_MASK
+#. Browser: <op_enter_mask>
+#: gui/opcodes.h:387
 msgid "enter a file mask"
 msgstr "įvesti bylų kaukę"
 
-#: gui/opcodes.h:157
+#. L10N: Help screen description for OP_EXIT
+#. Alias Dialog: <op_exit>
+#. Attach Dialog: <op_exit>
+#. Autocrypt Dialog: <op_exit>
+#. Browser: <op_exit>
+#. Compose Dialog: <op_exit>
+#. GPGME Key Selection Dialog: <op_exit>
+#. Index: <op_exit>
+#. Mixmaster Dialog: <op_exit>
+#. Pager: <op_exit>
+#. PGP Key Selection Dialog: <op_exit>
+#. Postponed Dialog: <op_exit>
+#. Smime Key Selection Dialog: <op_exit>
+#: gui/opcodes.h:401
 msgid "exit this menu"
 msgstr "išeiti iš šio meniu"
 
-#: gui/opcodes.h:158
+#. L10N: Help screen description for OP_FIRST_ENTRY
+#. Menu: <menu_movement>
+#: gui/opcodes.h:404
 msgid "move to the first entry"
 msgstr "eiti į pirmą įrašą"
 
-#: gui/opcodes.h:159
+#. L10N: Help screen description for OP_FLAG_MESSAGE
+#. Index: <op_flag_message>
+#: gui/opcodes.h:407
 msgid "toggle a message's 'important' flag"
 msgstr "perjungti laiško 'svarbumo' vėliavėlę"
 
-#: gui/opcodes.h:160
+#. L10N: Help screen description for OP_FOLLOWUP
+#. Attach Dialog: <op_followup>
+#. Index: <op_post>
+#: gui/opcodes.h:411
 msgid "followup to newsgroup"
 msgstr "pratęsti į naujienų grupę"
 
-#: gui/opcodes.h:161
+#. L10N: Help screen description for OP_FORWARD_MESSAGE
+#. Attach Dialog: <op_forward_message>
+#. Index: <op_forward_message>
+#: gui/opcodes.h:415
 msgid "forward a message with comments"
 msgstr "persiųsti laišką su komentarais"
 
-#: gui/opcodes.h:162
+#. L10N: Help screen description for OP_FORWARD_TO_GROUP
+#. Attach Dialog: <op_forward_to_group>
+#. Index: <op_post>
+#: gui/opcodes.h:419
 msgid "forward to newsgroup"
 msgstr "persiųsti į naujienų grupę"
 
-#: gui/opcodes.h:163
+#. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
+#. Alias Dialog: <op_generic_select_entry>
+#. Browser: <op_generic_select_entry>
+#. GPGME Key Selection Dialog: <op_generic_select_entry>
+#. History Dialog: <op_generic_select_entry>
+#. Pattern Dialog: <op_generic_select_entry>
+#. PGP Key Selection Dialog: <op_generic_select_entry>
+#. Postponed Dialog: <op_generic_select_entry>
+#. Smime Key Selection Dialog: <op_generic_select_entry>
+#. Mixmaster Dialog: <op_mix_append>
+#: gui/opcodes.h:430
 msgid "select the current entry"
 msgstr "pasirinkti esamą įrašą"
 
-#: gui/opcodes.h:164
+#. L10N: Help screen description for OP_GET_CHILDREN
+#. Index: <op_get_children>
+#: gui/opcodes.h:433
 msgid "get all children of the current message"
 msgstr "gauti visus atsakymus į dabartinį laišką"
 
-#: gui/opcodes.h:165
+#. L10N: Help screen description for OP_GET_MESSAGE
+#. Index: <op_get_message>
+#: gui/opcodes.h:436
 msgid "get message with Message-Id"
 msgstr "gauti laišką pagal ID"
 
-#: gui/opcodes.h:166
+#. L10N: Help screen description for OP_GET_PARENT
+#. Index: <op_get_message>
+#: gui/opcodes.h:439
 msgid "get parent of the current message"
 msgstr "gauti tėvinį laišką"
 
-#: gui/opcodes.h:167
+#. L10N: Help screen description for OP_GOTO_PARENT
+#. Browser: <op_change_directory>
+#: gui/opcodes.h:442
 msgid "go to parent directory"
 msgstr "eiti į tėvinį katalogą"
 
-#: gui/opcodes.h:168
+#. L10N: Help screen description for OP_GROUP_CHAT_REPLY
+#. Index: <op_group_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:446
 msgid "reply to all recipients preserving To/Cc"
 msgstr "atsakyti visiems gavėjams išsaugant To/Cc"
 
-#: gui/opcodes.h:169
+#. L10N: Help screen description for OP_GROUP_REPLY
+#. Index: <op_group_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:450
 msgid "reply to all recipients"
 msgstr "atsakyti visiems gavėjams"
 
-#: gui/opcodes.h:170
+#. L10N: Help screen description for OP_HALF_DOWN
+#. Menu: <menu_movement>
+#. Pager: <op_pager_half_down>
+#: gui/opcodes.h:454
 msgid "scroll down 1/2 page"
 msgstr "slinktis žemyn per 1/2 puslapio"
 
-#: gui/opcodes.h:171
+#. L10N: Help screen description for OP_HALF_UP
+#. Menu: <menu_movement>
+#. Pager: <op_pager_half_up>
+#: gui/opcodes.h:458
 msgid "scroll up 1/2 page"
 msgstr "slinktis aukštyn per 1/2 puslapio"
 
-#: gui/opcodes.h:172
+#. L10N: Help screen description for OP_HELP
+#. Text Entry: <op_help>
+#. Menu: <op_help>
+#. Pager: <op_help>
+#: gui/opcodes.h:463
 msgid "this screen"
 msgstr "šis ekranas"
 
-#: gui/opcodes.h:173 gui/opcodes.h:174 gui/opcodes.h:175 gui/opcodes.h:176
-#: gui/opcodes.h:177 gui/opcodes.h:178 gui/opcodes.h:179 gui/opcodes.h:180
-#: gui/opcodes.h:181 gui/opcodes.h:182
+#. L10N: Help screen description for OP_JUMP
+#. Index: <op_jump>
+#. Menu: <op_jump>
+#: gui/opcodes.h:467 gui/opcodes.h:468 gui/opcodes.h:469 gui/opcodes.h:470
+#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
+#: gui/opcodes.h:475 gui/opcodes.h:476
 msgid "jump to an index number"
 msgstr "šokti į indekso numerį"
 
-#: gui/opcodes.h:183
+#. L10N: Help screen description for OP_LAST_ENTRY
+#. Menu: <menu_movement>
+#: gui/opcodes.h:479
 msgid "move to the last entry"
 msgstr "eiti į paskutinį įrašą"
 
-#: gui/opcodes.h:184
+#. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
+#. Index: <op_main_limit>
+#: gui/opcodes.h:482
 msgid "limit view to current thread"
 msgstr "apriboti vaizdą esama gija"
 
-#: gui/opcodes.h:185
+#. L10N: Help screen description for OP_LIST_REPLY
+#. Index: <op_list_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:486
 msgid "reply to specified mailing list"
 msgstr "atsakyti nurodytai konferencijai"
 
-#: gui/opcodes.h:186
+#. L10N: Help screen description for OP_LIST_SUBSCRIBE
+#. Attach Dialog: <op_list_subscribe>
+#. Index: <op_list_subscribe>
+#: gui/opcodes.h:490
 msgid "subscribe to a mailing list"
 msgstr "prenumeruoti konferenciją"
 
-#: gui/opcodes.h:187
+#. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
+#. Attach Dialog: <op_list_unsubscribe>
+#. Index: <op_list_unsubscribe>
+#: gui/opcodes.h:494
 msgid "unsubscribe from a mailing list"
 msgstr "atsisakyti konferencijos"
 
-#: gui/opcodes.h:188
+#. L10N: Help screen description for OP_LOAD_ACTIVE
+#. Browser: <op_load_active>
+#: gui/opcodes.h:497
 msgid "load list of all newsgroups from NNTP server"
 msgstr "užkrauti sąrašą naujienų grupių iš NNTP serverio"
 
-#: gui/opcodes.h:189
+#. L10N: Help screen description for OP_MACRO
+#: gui/opcodes.h:499
 msgid "execute a macro"
 msgstr "įvykdyti macro"
 
-#: gui/opcodes.h:190
+#. L10N: Help screen description for OP_MAIL
+#. Alias Dialog: <op_generic_select_entry>
+#. Index: <op_mail>
+#: gui/opcodes.h:503
 msgid "compose a new mail message"
 msgstr "sukurti naują laišką"
 
-#: gui/opcodes.h:191
+#. L10N: Help screen description for OP_MAILBOX_LIST
+#. Browser: <op_mailbox_list>
+#. Index: <op_mailbox_list>
+#: gui/opcodes.h:507
 msgid "list mailboxes with new mail"
 msgstr "rodyti dėžutės su nauju paštu"
 
-#: gui/opcodes.h:192
+#. L10N: Help screen description for OP_MAIN_BREAK_THREAD
+#. Index: <op_main_break_thread>
+#: gui/opcodes.h:510
 msgid "break the thread in two"
 msgstr "perskelti giją į dvi"
 
-#: gui/opcodes.h:193
+#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:513
 msgid "open a different folder"
 msgstr "atidaryti kitą aplanką"
 
-#: gui/opcodes.h:194
+#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:516
 msgid "open a different folder in read only mode"
 msgstr "atidaryti kitą aplanką tik skaitymo režimu"
 
-#: gui/opcodes.h:195
+#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
+#. Index: <op_main_change_group>
+#: gui/opcodes.h:519
 msgid "open a different newsgroup"
 msgstr "atidaryti kitą naujienų grupę"
 
-#: gui/opcodes.h:196
+#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
+#. Index: <op_main_change_group>
+#: gui/opcodes.h:522
 msgid "open a different newsgroup in read only mode"
 msgstr "atidaryti kitą naujienų grupę tik skaitymo režimu"
 
-#: gui/opcodes.h:197
+#. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
+#. Index: <op_main_set_flag>
+#: gui/opcodes.h:525
 msgid "clear a status flag from a message"
 msgstr "išvalyti laiško būsenos vėliavėlę"
 
-#: gui/opcodes.h:198
+#. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
+#. Index: <op_main_collapse_all>
+#: gui/opcodes.h:528
 msgid "collapse/uncollapse all threads"
 msgstr "sutraukti/išskleisti visas gijas"
 
-#: gui/opcodes.h:199
+#. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
+#. Index: <op_main_collapse_thread>
+#: gui/opcodes.h:531
 msgid "collapse/uncollapse current thread"
 msgstr "sutraukti/išskleisti esamą giją"
 
-#: gui/opcodes.h:200
+#. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
+#. Index: <op_main_delete_pattern>
+#: gui/opcodes.h:534
 msgid "delete non-hidden messages matching a pattern"
 msgstr "ištrinti nepaslėptus laiškus, tenkinančius šabloną"
 
-#: gui/opcodes.h:201
+#. L10N: Help screen description for OP_MAIN_FETCH_MAIL
+#. Index: <op_main_fetch_mail>
+#: gui/opcodes.h:537
 msgid "retrieve mail from POP server"
 msgstr "parsiųsti paštą iš POP serverio"
 
-#: gui/opcodes.h:202
+#. L10N: Help screen description for OP_MAIN_IMAP_FETCH
+#. Index: <op_main_imap_fetch>
+#: gui/opcodes.h:540
 msgid "force retrieval of mail from IMAP server"
 msgstr "parsiųsti paštą iš IMAP serverio"
 
-#: gui/opcodes.h:203
+#. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
+#. Index: <op_main_imap_logout_all>
+#: gui/opcodes.h:543
 msgid "logout from all IMAP servers"
 msgstr "atsijungti nuo visų IMAP serverių"
 
-#: gui/opcodes.h:204
+#. L10N: Help screen description for OP_MAIN_LIMIT
+#. Alias Dialog: <op_main_limit>
+#. Index: <op_main_limit>
+#: gui/opcodes.h:547
 msgid "show only messages matching a pattern"
 msgstr "rodyti tik laiškus, tenkinančius šabloną"
 
-#: gui/opcodes.h:205
+#. L10N: Help screen description for OP_MAIN_LINK_THREADS
+#. Index: <op_main_link_threads>
+#: gui/opcodes.h:550
 msgid "link tagged message to the current one"
 msgstr "prijungti pažymėtą laišką po dabartiniu"
 
-#: gui/opcodes.h:206
+#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
+#. Index: <op_main_modify_tags>
+#: gui/opcodes.h:553
 msgid "modify (notmuch/imap) tags"
 msgstr "keisti (notmuch/imap) etiketes"
 
-#: gui/opcodes.h:207
+#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
+#. Index: <op_main_modify_tags>
+#: gui/opcodes.h:556
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "keisti (notmuch/imap) etiketes ir paslėpti laišką"
 
-#: gui/opcodes.h:208
+#. L10N: Help screen description for OP_MAIN_NEXT_NEW
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:559
 msgid "jump to the next new message"
 msgstr "šokti į kitą naują laišką"
 
-#: gui/opcodes.h:209
+#. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:562
 msgid "jump to the next new or unread message"
 msgstr "šokti į kitą naują ar neskaitytą laišką"
 
-#: gui/opcodes.h:210
+#. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:565
 msgid "jump to the next subthread"
 msgstr "šokti į kitą subgiją"
 
-#: gui/opcodes.h:211
+#. L10N: Help screen description for OP_MAIN_NEXT_THREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:568
 msgid "jump to the next thread"
 msgstr "šokti į kitą giją"
 
-#: gui/opcodes.h:212
+#. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
+#. Index: <op_main_next_undeleted>
+#: gui/opcodes.h:571
 msgid "move to the next undeleted message"
 msgstr "eiti į kitą neištrintą laišką"
 
-#: gui/opcodes.h:213
+#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:574
 msgid "jump to the next unread message"
 msgstr "šokti į kitą neskaitytą laišką"
 
-#: gui/opcodes.h:214
+#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
+#. Index: <op_main_next_unread_mailbox>
+#: gui/opcodes.h:577
 msgid "open next mailbox with new mail"
 msgstr "atidaryti kitą dėžutę su nauju paštu"
 
-#: gui/opcodes.h:215
+#. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
+#. Index: <op_main_root_message>
+#: gui/opcodes.h:580
 msgid "jump to parent message in thread"
 msgstr "šokti į tėvinį laišką gijoje"
 
-#: gui/opcodes.h:216
+#. L10N: Help screen description for OP_MAIN_PREV_NEW
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:583
 msgid "jump to the previous new message"
 msgstr "šokti į praeitą naują laišką"
 
-#: gui/opcodes.h:217
+#. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:586
 msgid "jump to the previous new or unread message"
 msgstr "šokti į praeitą naują ar neskaitytą laišką"
 
-#: gui/opcodes.h:218
+#. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:589
 msgid "jump to previous subthread"
 msgstr "šokti į praeitą subgiją"
 
-#: gui/opcodes.h:219
+#. L10N: Help screen description for OP_MAIN_PREV_THREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:592
 msgid "jump to previous thread"
 msgstr "šokti į praeitą giją"
 
-#: gui/opcodes.h:220
+#. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
+#. Index: <op_main_prev_undeleted>
+#: gui/opcodes.h:595
 msgid "move to the previous undeleted message"
 msgstr "eiti į praeitą neištrintą laišką"
 
-#: gui/opcodes.h:221
+#. L10N: Help screen description for OP_MAIN_PREV_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:598
 msgid "jump to the previous unread message"
 msgstr "šokti į praeitą neskaitytą laišką"
 
-#: gui/opcodes.h:222
+#. L10N: Help screen description for OP_MAIN_QUASI_DELETE
+#. Index: <op_main_quasi_delete>
+#: gui/opcodes.h:601
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "išmesti iš NeoMutt, bet neliesti disko"
 
-#: gui/opcodes.h:223
+#. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
+#. Index: <op_main_read_thread>
+#: gui/opcodes.h:604
 msgid "mark the current subthread as read"
 msgstr "pažymėti esamą subgiją skaityta"
 
-#: gui/opcodes.h:224
+#. L10N: Help screen description for OP_MAIN_READ_THREAD
+#. Index: <op_main_read_thread>
+#: gui/opcodes.h:607
 msgid "mark the current thread as read"
 msgstr "pažymėti esamą giją skaityta"
 
-#: gui/opcodes.h:225
+#. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
+#. Index: <op_main_root_message>
+#: gui/opcodes.h:610
 msgid "jump to root message in thread"
 msgstr "šokti į pradinį laišką gijoje"
 
-#: gui/opcodes.h:226
+#. L10N: Help screen description for OP_MAIN_SET_FLAG
+#. Index: <op_main_set_flag>
+#: gui/opcodes.h:613
 msgid "set a status flag on a message"
 msgstr "uždėti būsenos vėliavėlę laiškui"
 
-#: gui/opcodes.h:227
+#. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
+#. Index: <op_main_show_limit>
+#: gui/opcodes.h:616
 msgid "show currently active limit pattern"
 msgstr "parodyti dabar aktyvų ribojimo šabloną"
 
-#: gui/opcodes.h:228
+#. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
+#. Index: <op_main_sync_folder>
+#: gui/opcodes.h:619
 msgid "save changes to mailbox"
 msgstr "išsaugoti dėžutės pakeitimus"
 
-#: gui/opcodes.h:229
+#. L10N: Help screen description for OP_MAIN_TAG_PATTERN
+#. Index: <op_main_tag_pattern>
+#: gui/opcodes.h:622
 msgid "tag non-hidden messages matching a pattern"
 msgstr "pažymėti nepaslėptus laiškus, tenkinančius šabloną"
 
-#: gui/opcodes.h:230
+#. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
+#. Index: <op_main_undelete_pattern>
+#: gui/opcodes.h:625
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "sugrąžinti nepaslėptus laiškus, tenkinančius šabloną"
 
-#: gui/opcodes.h:231
+#. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
+#. Index: <op_main_untag_pattern>
+#: gui/opcodes.h:628
 msgid "untag non-hidden messages matching a pattern"
 msgstr "atžymėti nepaslėptus laiškus, tenkinančius šabloną"
 
-#: gui/opcodes.h:232
+#. L10N: Help screen description for OP_MARK_MSG
+#. Index: <op_mark_msg>
+#: gui/opcodes.h:631
 msgid "create a hotkey macro for the current message"
 msgstr "sukurti makrokomandą grįžimui prie dabartinio laiško"
 
-#: gui/opcodes.h:233
+#. L10N: Help screen description for OP_MIDDLE_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:634
 msgid "move to the middle of the page"
 msgstr "eiti į puslapio vidurį"
 
-#: gui/opcodes.h:234
+#. L10N: Help screen description for OP_NEXT_ENTRY
+#. Menu: <menu_movement>
+#. Index: <op_next_entry>
+#: gui/opcodes.h:638
 msgid "move to the next entry"
 msgstr "eiti į kitą įrašą"
 
-#: gui/opcodes.h:235
+#. L10N: Help screen description for OP_NEXT_LINE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_next_line>
+#: gui/opcodes.h:642
 msgid "scroll down one line"
 msgstr "slinktis viena eilute žemyn"
 
-#: gui/opcodes.h:236
+#. L10N: Help screen description for OP_NEXT_PAGE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_next_page>
+#: gui/opcodes.h:646
 msgid "move to the next page"
 msgstr "eiti į kitą puslapį"
 
-#: gui/opcodes.h:237
+#. L10N: Help screen description for OP_PAGER_BOTTOM
+#. Pager: <op_pager_bottom>
+#: gui/opcodes.h:649
 msgid "jump to the bottom of the message"
 msgstr "šokti į laiško apačią"
 
-#: gui/opcodes.h:238
+#. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
+#. Pager: <op_pager_hide_quoted>
+#: gui/opcodes.h:652
 msgid "toggle display of quoted text"
 msgstr "perjungti cituojamo teksto rodymą"
 
-#: gui/opcodes.h:239
+#. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
+#. Pager: <op_pager_skip_headers>
+#: gui/opcodes.h:655
 msgid "jump to first line after headers"
 msgstr "šokti į pirmą eilutę po antraštėmis"
 
-#: gui/opcodes.h:240
+#. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
+#. Pager: <op_pager_skip_quoted>
+#: gui/opcodes.h:658
 msgid "skip beyond quoted text"
 msgstr "praleisti cituojamą tekstą"
 
-#: gui/opcodes.h:241
+#. L10N: Help screen description for OP_PAGER_TOP
+#. Pager: <op_pager_top>
+#: gui/opcodes.h:661
 msgid "jump to the top of the message"
 msgstr "šokti į laiško viršų"
 
-#: gui/opcodes.h:243
+#. L10N: Help screen description for OP_POST
+#. Index: <op_post>
+#: gui/opcodes.h:669
 msgid "post message to newsgroup"
 msgstr "siųsti laišką į naujienų grupę"
 
-#: gui/opcodes.h:244
+#. L10N: Help screen description for OP_PREV_ENTRY
+#. Menu: <menu_movement>
+#. Index: <op_prev_entry>
+#: gui/opcodes.h:673
 msgid "move to the previous entry"
 msgstr "eiti į praeitą įrašą"
 
-#: gui/opcodes.h:245
+#. L10N: Help screen description for OP_PREV_LINE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_prev_line>
+#: gui/opcodes.h:677
 msgid "scroll up one line"
 msgstr "slinktis viena eilute aukštyn"
 
-#: gui/opcodes.h:246
+#. L10N: Help screen description for OP_PREV_PAGE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_prev_page>
+#: gui/opcodes.h:681
 msgid "move to the previous page"
 msgstr "eiti į praeitą puslapį"
 
-#: gui/opcodes.h:248
+#. L10N: Help screen description for OP_PURGE_MESSAGE
+#. Index: <op_delete>
+#: gui/opcodes.h:687
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "išmesti esamą įrašą, neperkeliant į šiukšlių aplanką"
 
-#: gui/opcodes.h:249
+#. L10N: Help screen description for OP_PURGE_THREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:690
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "išmesti esamą giją, neperkeliant į šiukšlių aplanką"
 
-#: gui/opcodes.h:250
+#. L10N: Help screen description for OP_QUERY
+#. Alias Dialog: <op_query>
+#. Index: <op_query>
+#: gui/opcodes.h:694
 msgid "query external program for addresses"
 msgstr "užklausti išorinę programą adresams rasti"
 
-#: gui/opcodes.h:251
+#. L10N: Help screen description for OP_QUERY_APPEND
+#. Alias Dialog: <op_query>
+#: gui/opcodes.h:697
 msgid "append new query results to current results"
 msgstr "pridurti naujos užklausos rezultatus prie esamų"
 
-#: gui/opcodes.h:252
+#. L10N: Help screen description for OP_QUIT
+#. History Dialog: <op_quit>
+#. Index: <op_quit>
+#. Pattern Dialog: <op_quit>
+#: gui/opcodes.h:702
 msgid "save changes to mailbox and quit"
 msgstr "išsaugoti dėžutės pakeitimus ir išeiti"
 
-#: gui/opcodes.h:253
+#. L10N: Help screen description for OP_RECALL_MESSAGE
+#. Index: <op_recall_message>
+#: gui/opcodes.h:705
 msgid "recall a postponed message"
 msgstr "tęsti atidėtą laišką"
 
-#: gui/opcodes.h:254
+#. L10N: Help screen description for OP_RECONSTRUCT_THREAD
+#. Index: <op_get_children>
+#: gui/opcodes.h:708
 msgid "reconstruct thread containing current message"
 msgstr "rekonstruoti dabartinio laiško giją"
 
-#: gui/opcodes.h:255
+#. L10N: Help screen description for OP_REDRAW
+#. Text Entry: <op_redraw>
+#. Global: <op_redraw>
+#: gui/opcodes.h:712
 msgid "clear and redraw the screen"
 msgstr "išvalyti ir perpiešti ekraną"
 
-#: gui/opcodes.h:256
+#. L10N: Help screen description for OP_REFORMAT_WINCH
+#: gui/opcodes.h:714
 msgid "{internal}"
 msgstr "{vidinė}"
 
-#: gui/opcodes.h:257
+#. L10N: Help screen description for OP_RENAME_MAILBOX
+#. Browser: <op_rename_mailbox>
+#: gui/opcodes.h:717
 msgid "rename the current mailbox (IMAP only)"
 msgstr "pervadinti esamą dėžutę (tik IMAP)"
 
-#: gui/opcodes.h:258
+#. L10N: Help screen description for OP_REPLY
+#. Attach Dialog: <op_reply>
+#. Index: <op_reply>
+#: gui/opcodes.h:721
 msgid "reply to a message"
 msgstr "atsakyti į laišką"
 
-#: gui/opcodes.h:259
+#. L10N: Help screen description for OP_RESEND
+#. Attach Dialog: <op_resend>
+#. Index: <op_resend>
+#: gui/opcodes.h:725
 msgid "use the current message as a template for a new one"
 msgstr "naudoti esamą laišką kaip šabloną naujam"
 
-#: gui/opcodes.h:261
+#. L10N: Help screen description for OP_SEARCH
+#. Menu: <menu_search>
+#. Pager: <op_pager_search>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:736
 msgid "search for a regular expression"
 msgstr "ieškoti reguliarios išraiškos"
 
-#: gui/opcodes.h:262
+#. L10N: Help screen description for OP_SEARCH_NEXT
+#. Menu: <menu_search>
+#. Pager: <op_pager_search_next>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:743
 msgid "search for next match"
 msgstr "ieškoti kito tinkamo"
 
-#: gui/opcodes.h:263
+#. L10N: Help screen description for OP_SEARCH_OPPOSITE
+#. Menu: <menu_search>
+#. Pager: <op_pager_search_next>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:750
 msgid "search for next match in opposite direction"
 msgstr "ieškoti kito tinkamo priešinga kryptimi"
 
-#: gui/opcodes.h:264
+#. L10N: Help screen description for OP_SEARCH_REVERSE
+#. Menu: <menu_search>
+#. Pager: <op_pager_search>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:757
 msgid "search backwards for a regular expression"
 msgstr "ieškoti reguliarios išraiškos atgal"
 
-#: gui/opcodes.h:265
+#. L10N: Help screen description for OP_SEARCH_TOGGLE
+#. Pager: <op_search_toggle>
+#: gui/opcodes.h:760
 msgid "toggle search pattern coloring"
 msgstr "perjungti paieškos šablono spalvojimą"
 
-#: gui/opcodes.h:266
+#. L10N: Help screen description for OP_SHELL_ESCAPE
+#. Global: <op_shell_escape>
+#: gui/opcodes.h:763
 msgid "invoke a command in a subshell"
 msgstr "kviesti komandą subshell'e"
 
-#: gui/opcodes.h:267
+#. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
+#. Global: <op_show_log_messages>
+#: gui/opcodes.h:766
 msgid "show log (and debug) messages"
 msgstr "rodyti žurnalo (ir derinimo) pranešimus"
 
-#: gui/opcodes.h:268
+#. L10N: Help screen description for OP_SORT
+#. Alias Dialog: <op_sort>
+#. Browser: <op_sort>
+#. Index: <op_sort>
+#: gui/opcodes.h:771
 msgid "sort messages"
 msgstr "rikiuoti laiškus"
 
-#: gui/opcodes.h:269
+#. L10N: Help screen description for OP_SORT_REVERSE
+#. Alias Dialog: <op_sort>
+#. Browser: <op_sort>
+#. Index: <op_sort>
+#: gui/opcodes.h:776
 msgid "sort messages in reverse order"
 msgstr "rikiuoti laiškus atvirkščia tvarka"
 
-#: gui/opcodes.h:270
+#. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
+#. Browser: <op_subscribe_pattern>
+#: gui/opcodes.h:779
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "prenumeruoti naujienų grupes pagal šabloną"
 
-#: gui/opcodes.h:271
+#. L10N: Help screen description for OP_TAG
+#. Index: <op_tag>
+#: gui/opcodes.h:782
 msgid "tag the current entry"
 msgstr "pažymėti esamą įrašą"
 
-#: gui/opcodes.h:272
+#. L10N: Help screen description for OP_TAG_PREFIX
+#: gui/opcodes.h:784
 msgid "apply next function to tagged messages"
 msgstr "pritaikyti kitą funkciją pažymėtiems laiškams"
 
-#: gui/opcodes.h:273
+#. L10N: Help screen description for OP_TAG_PREFIX_COND
+#: gui/opcodes.h:786
 msgid "apply next function ONLY to tagged messages"
 msgstr "pritaikyti kitą funkciją TIK pažymėtiems laiškams"
 
-#: gui/opcodes.h:274
+#. L10N: Help screen description for OP_TAG_SUBTHREAD
+#. Index: <op_tag_thread>
+#: gui/opcodes.h:789
 msgid "tag the current subthread"
 msgstr "pažymėti esamą subgiją"
 
-#: gui/opcodes.h:275
+#. L10N: Help screen description for OP_TAG_THREAD
+#. Index: <op_tag_thread>
+#: gui/opcodes.h:792
 msgid "tag the current thread"
 msgstr "pažymėti esamą giją"
 
-#: gui/opcodes.h:276
+#. L10N: Help screen description for OP_TOGGLE_MAILBOXES
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:795
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "perjungti, ar naršyti pašto dėžutes, ar visas bylas"
 
-#: gui/opcodes.h:277
+#. L10N: Help screen description for OP_TOGGLE_NEW
+#. Index: <op_toggle_new>
+#: gui/opcodes.h:798
 msgid "toggle a message's 'new' flag"
 msgstr "perjungti laiško 'naujumo' vėliavėlę"
 
-#: gui/opcodes.h:278
+#. L10N: Help screen description for OP_TOGGLE_READ
+#. Index: <op_main_limit>
+#: gui/opcodes.h:801
 msgid "toggle view of read messages"
 msgstr "rodyti arba slėpti skaitytus laiškus"
 
-#: gui/opcodes.h:279
+#. L10N: Help screen description for OP_TOGGLE_WRITE
+#. Index: <op_toggle_write>
+#: gui/opcodes.h:804
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "perjungti, ar dėžutė bus perrašoma"
 
-#: gui/opcodes.h:280
+#. L10N: Help screen description for OP_TOP_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:807
 msgid "move to the top of the page"
 msgstr "eiti į puslapio viršų"
 
-#: gui/opcodes.h:281
+#. L10N: Help screen description for OP_UNCATCHUP
+#. Browser: <op_catchup>
+#: gui/opcodes.h:810
 msgid "mark all articles in newsgroup as unread"
 msgstr "pažymėti visus straipsnius naujienų grupėje neskaitytais"
 
-#: gui/opcodes.h:283
+#. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
+#. Index: <op_undelete_thread>
+#: gui/opcodes.h:818
 msgid "undelete all messages in subthread"
 msgstr "sugrąžinti visus laiškus subgijoje"
 
-#: gui/opcodes.h:284
+#. L10N: Help screen description for OP_UNDELETE_THREAD
+#. Index: <op_undelete_thread>
+#: gui/opcodes.h:821
 msgid "undelete all messages in thread"
 msgstr "sugrąžinti visus laiškus gijoje"
 
-#: gui/opcodes.h:285
+#. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
+#. Browser: <op_subscribe_pattern>
+#: gui/opcodes.h:824
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "atsisakyti naujienų grupių pagal šabloną"
 
-#: gui/opcodes.h:286
+#. L10N: Help screen description for OP_VERSION
+#. Global: <op_version>
+#: gui/opcodes.h:827
 msgid "show the NeoMutt version number and date"
 msgstr "parodyti NeoMutt versijos numerį ir datą"
 
-#: gui/opcodes.h:287
+#. L10N: Help screen description for OP_VIEW_ATTACHMENTS
+#. Index: <op_view_attachments>
+#. Pager: <op_view_attachments>
+#: gui/opcodes.h:831
 msgid "show MIME attachments"
 msgstr "rodyti MIME priedus"
 
-#: gui/opcodes.h:288
+#. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:834
 msgid "show the raw message"
 msgstr "rodyti gryną laišką"
 
-#: gui/opcodes.h:289
+#. L10N: Help screen description for OP_WHAT_KEY
+#. Global: <op_what_key>
+#: gui/opcodes.h:837
 msgid "display the keycode for a key press"
 msgstr "parodyti klavišų kodus"
 
-#: gui/opcodes.h:292
+#. L10N: Help screen description for OP_DECRYPT_COPY
+#. Index: <op_save>
+#: gui/opcodes.h:842
 msgid "make decrypted copy"
 msgstr "padaryti iššifruotą kopiją"
 
-#: gui/opcodes.h:293
+#. L10N: Help screen description for OP_DECRYPT_SAVE
+#. Index: <op_save>
+#: gui/opcodes.h:845
 msgid "make decrypted copy and delete"
 msgstr "padaryti iššifruotą kopiją ir ištrinti"
 
-#: gui/opcodes.h:294
+#. L10N: Help screen description for OP_EXTRACT_KEYS
+#. Attach Dialog: <op_extract_keys>
+#. Index: <op_extract_keys>
+#: gui/opcodes.h:849
 msgid "extract supported public keys"
 msgstr "ištraukti palaikomus viešus raktus"
 
-#: gui/opcodes.h:295
+#. L10N: Help screen description for OP_FORGET_PASSPHRASE
+#. Attach Dialog: <op_forget_passphrase>
+#. Compose Dialog: <op_forget_passphrase>
+#. Index: <op_forget_passphrase>
+#: gui/opcodes.h:854
 msgid "wipe passphrases from memory"
 msgstr "užmiršti slaptas frazes"
 
-#: gui/opcodes.h:298
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
+#. Envelope Window: <op_envelope_edit_bcc>
+#: gui/opcodes.h:859
 msgid "edit the BCC list"
 msgstr "taisyti BCC sąrašą"
 
-#: gui/opcodes.h:299
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
+#. Envelope Window: <op_envelope_edit_cc>
+#: gui/opcodes.h:862
 msgid "edit the CC list"
 msgstr "taisyti CC sąrašą"
 
-#: gui/opcodes.h:300
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
+#. Envelope Window: <op_envelope_edit_fcc>
+#: gui/opcodes.h:865
 msgid "enter a file to save a copy of this message in"
 msgstr "įvesk bylą, į kurią išsaugoti šio laiško kopiją"
 
-#: gui/opcodes.h:301
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
+#. Envelope Window: <op_envelope_edit_followup_to>
+#: gui/opcodes.h:868
 msgid "edit the Followup-To field"
 msgstr "taisyti Followup-To lauką"
 
-#: gui/opcodes.h:302
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
+#. Envelope Window: <op_envelope_edit_from>
+#: gui/opcodes.h:871
 msgid "edit the from field"
 msgstr "taisyti From lauką"
 
-#: gui/opcodes.h:303
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
+#. Compose Dialog: <op_envelope_edit_headers>
+#: gui/opcodes.h:874
 msgid "edit the message with headers"
 msgstr "taisyti laišką su antraštėmis"
 
-#: gui/opcodes.h:304
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
+#. Envelope Window: <op_envelope_edit_newsgroups>
+#: gui/opcodes.h:877
 msgid "edit the newsgroups list"
 msgstr "taisyti naujienų grupių sąrašą"
 
-#: gui/opcodes.h:305
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
+#. Envelope Window: <op_envelope_edit_reply_to>
+#: gui/opcodes.h:880
 msgid "edit the Reply-To field"
 msgstr "taisyti Reply-To lauką"
 
-#: gui/opcodes.h:306
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
+#. Envelope Window: <op_envelope_edit_subject>
+#: gui/opcodes.h:883
 msgid "edit the subject of this message"
 msgstr "taisyti šio laiško temą"
 
-#: gui/opcodes.h:307
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
+#. Envelope Window: <op_envelope_edit_to>
+#: gui/opcodes.h:886
 msgid "edit the TO list"
 msgstr "taisyti To sąrašą"
 
-#: gui/opcodes.h:308
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
+#. Envelope Window: <op_envelope_edit_x_comment_to>
+#: gui/opcodes.h:889
 msgid "edit the X-Comment-To field"
 msgstr "taisyti X-Comment-To lauką"
 
-#: gui/opcodes.h:312
+#. L10N: Help screen description for OP_COMPOSE_MIX
+#. Envelope Window: <op_compose_mix>
+#: gui/opcodes.h:895
 msgid "send the message through a mixmaster remailer chain"
 msgstr "pasiųsti pranešimą per mixmaster persiuntėjų grandinę"
 
-#: gui/opcodes.h:313
+#. L10N: Help screen description for OP_MIX_APPEND
+#. Mixmaster Dialog: <op_mix_append>
+#: gui/opcodes.h:898
 msgid "append a remailer to the chain"
 msgstr "pridėti persiuntėją prie grandinės"
 
-#: gui/opcodes.h:314
+#. L10N: Help screen description for OP_MIX_CHAIN_NEXT
+#. Mixmaster Dialog: <op_mix_chain_next>
+#: gui/opcodes.h:901
 msgid "select the next element of the chain"
 msgstr "pasirinkti tolesnį elementą grandinėje"
 
-#: gui/opcodes.h:315
+#. L10N: Help screen description for OP_MIX_CHAIN_PREV
+#. Mixmaster Dialog: <op_mix_chain_prev>
+#: gui/opcodes.h:904
 msgid "select the previous element of the chain"
 msgstr "pasirinkti ankstesnį elementą grandinėje"
 
-#: gui/opcodes.h:316
+#. L10N: Help screen description for OP_MIX_DELETE
+#. Mixmaster Dialog: <op_mix_delete>
+#: gui/opcodes.h:907
 msgid "delete a remailer from the chain"
 msgstr "pašalinti persiuntėją iš grandinės"
 
-#: gui/opcodes.h:317
+#. L10N: Help screen description for OP_MIX_INSERT
+#. Mixmaster Dialog: <op_mix_insert>
+#: gui/opcodes.h:910
 msgid "insert a remailer into the chain"
 msgstr "įterpti persiuntėją į grandinę"
 
-#: gui/opcodes.h:318
+#. L10N: Help screen description for OP_MIX_USE
+#. Mixmaster Dialog: <op_mix_use>
+#: gui/opcodes.h:913
 msgid "accept the chain constructed"
 msgstr "priimti sukonstruotą grandinę"
 
-#: gui/opcodes.h:325
+#. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:922
 msgid "open a different virtual folder"
 msgstr "atidaryti kitą virtualų aplanką"
 
-#: gui/opcodes.h:326
+#. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
+#. Index: <op_main_entire_thread>
+#: gui/opcodes.h:925
 msgid "read entire thread of the current message"
 msgstr "skaityti visą esamo laiško giją"
 
-#: gui/opcodes.h:327
+#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
+#. Index: <op_main_vfolder_from_query>
+#: gui/opcodes.h:928
 msgid "generate virtual folder from query"
 msgstr "sukurti virtualų aplanką pagal užklausą"
 
-#: gui/opcodes.h:328
+#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
+#. Index: <op_main_vfolder_from_query>
+#: gui/opcodes.h:931
 msgid "generate a read-only virtual folder from query"
 msgstr "sukurti virtualų aplanką tik skaitymui pagal užklausą"
 
-#: gui/opcodes.h:329
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:934
 msgid "shifts virtual folder time window backwards"
 msgstr "perkelti virtualaus aplanko laiko langą atgal"
 
-#: gui/opcodes.h:330
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:937
 msgid "shifts virtual folder time window forwards"
 msgstr "perkelti virtualaus aplanko laiko langą pirmyn"
 
-#: gui/opcodes.h:331
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:940
 msgid "resets virtual folder time window to the present"
 msgstr "atstato virtualaus aplanko laiko tarpą į dabartį"
 
-#: gui/opcodes.h:337
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
+#. Compose Dialog: <op_attachment_attach_key>
+#: gui/opcodes.h:948
 msgid "attach a PGP public key"
 msgstr "prisegti PGP viešą raktą"
 
-#: gui/opcodes.h:338
+#. L10N: Help screen description for OP_CHECK_TRADITIONAL
+#. Attach Dialog: <op_check_traditional>
+#. Index: <op_check_traditional>
+#: gui/opcodes.h:952
 msgid "check for classic PGP"
 msgstr "ieškoti klasikinio PGP"
 
-#: gui/opcodes.h:339
+#. L10N: Help screen description for OP_COMPOSE_PGP_MENU
+#. Envelope Window: <op_compose_pgp_menu>
+#: gui/opcodes.h:955
 msgid "show PGP options"
 msgstr "rodyti PGP parinktis"
 
-#: gui/opcodes.h:340
+#. L10N: Help screen description for OP_MAIL_KEY
+#. Index: <op_mail_key>
+#: gui/opcodes.h:958
 msgid "mail a PGP public key"
 msgstr "siųsti PGP viešą raktą"
 
-#: gui/opcodes.h:341
+#. L10N: Help screen description for OP_VERIFY_KEY
+#. GPGME Key Selection Dialog: <op_verify_key>
+#. PGP Key Selection Dialog: <op_verify_key>
+#: gui/opcodes.h:962
 msgid "verify a PGP public key"
 msgstr "patikrinti PGP viešą raktą"
 
-#: gui/opcodes.h:342
+#. L10N: Help screen description for OP_VIEW_ID
+#. GPGME Key Selection Dialog: <op_view_id>
+#. PGP Key Selection Dialog: <op_view_id>
+#: gui/opcodes.h:966
 msgid "view the key's user id"
 msgstr "žiūrėti rakto vartotojo id"
 
-#: gui/opcodes.h:345
+#. L10N: Help screen description for OP_SIDEBAR_FIRST
+#. Sidebar: <op_sidebar_first>
+#: gui/opcodes.h:971
 msgid "move the highlight to the first mailbox"
 msgstr "pasirinkti pirmą pašto dėžutę"
 
-#: gui/opcodes.h:346
+#. L10N: Help screen description for OP_SIDEBAR_LAST
+#. Sidebar: <op_sidebar_last>
+#: gui/opcodes.h:974
 msgid "move the highlight to the last mailbox"
 msgstr "pasirinkti paskutinę pašto dėžutę"
 
-#: gui/opcodes.h:347
+#. L10N: Help screen description for OP_SIDEBAR_NEXT
+#. Sidebar: <op_sidebar_next>
+#: gui/opcodes.h:977
 msgid "move the highlight to next mailbox"
 msgstr "pasirinkti kitą pašto dėžutę"
 
-#: gui/opcodes.h:348
+#. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
+#. Sidebar: <op_sidebar_next_new>
+#: gui/opcodes.h:980
 msgid "move the highlight to next mailbox with new mail"
 msgstr "pasirinkti kitą pašto dėžutę su nauju paštu"
 
-#: gui/opcodes.h:349
+#. L10N: Help screen description for OP_SIDEBAR_OPEN
+#. Sidebar: <op_sidebar_open>
+#: gui/opcodes.h:983
 msgid "open highlighted mailbox"
 msgstr "atidaryti pasirinktą pašto dėžutę"
 
-#: gui/opcodes.h:350
+#. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
+#. Sidebar: <op_sidebar_page_down>
+#: gui/opcodes.h:986
 msgid "scroll the sidebar down 1 page"
 msgstr "slinkti šoninę juostą žemyn per 1 puslapį"
 
-#: gui/opcodes.h:351
+#. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
+#. Sidebar: <op_sidebar_page_up>
+#: gui/opcodes.h:989
 msgid "scroll the sidebar up 1 page"
 msgstr "slinkti šoninę juostą aukštyn per 1 puslapį"
 
-#: gui/opcodes.h:352
+#. L10N: Help screen description for OP_SIDEBAR_PREV
+#. Sidebar: <op_sidebar_prev>
+#: gui/opcodes.h:992
 msgid "move the highlight to previous mailbox"
 msgstr "pasirinkti ankstesnę pašto dėžutę"
 
-#: gui/opcodes.h:353
+#. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
+#. Sidebar: <op_sidebar_prev_new>
+#: gui/opcodes.h:995
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "pasirinkti ankstesnę pašto dėžutę su nauju paštu"
 
-#: gui/opcodes.h:354
+#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
+#. Sidebar: <op_sidebar_toggle_virtual>
+#: gui/opcodes.h:998
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "perjungti, ar naršyti tikras, ar virtualias pašto dėžutes"
 
-#: gui/opcodes.h:355
+#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
+#. Sidebar: <op_sidebar_toggle_visible>
+#: gui/opcodes.h:1001
 msgid "make the sidebar (in)visible"
 msgstr "rodyti/slėpti šoninę juostą"
 
-#: gui/opcodes.h:358
+#. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
+#. Envelope Window: <op_compose_smime_menu>
+#: gui/opcodes.h:1006
 msgid "show S/MIME options"
 msgstr "rodyti S/MIME parinktis"
 
-#: gui/opcodes.h:361
+#: gui/opcodes.h:1009
 msgid "null operation"
 msgstr "nulinė operacija"
 
@@ -3705,7 +4354,7 @@ msgstr "Nustatykite %s parametrą prieš nustatydami %s"
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:114 send/config.c:58
+#: hcache/config.c:114 send/config.c:68
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "Parametras %s turi būti tarp %d ir %d imtinai"
@@ -3828,12 +4477,12 @@ msgstr "Laiškų ženklinimas:"
 msgid "Help for %s"
 msgstr "Pagalba apie %s"
 
-#: history/dlg_history.c:153
+#: history/dlg_history.c:145
 #, c-format
 msgid "History '%s'"
 msgstr "Istorija '%s''"
 
-#: history/history.c:232 history/history.c:613
+#: history/history.c:232 history/history.c:618
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: Blogas istorijos bylos formatas"
@@ -3846,37 +4495,37 @@ msgstr "%s:%d: Blogas istorijos bylos formatas"
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:591 ncrypt/pgp.c:598
 #: ncrypt/pgp.c:926 ncrypt/pgp.c:1043 ncrypt/pgp.c:1200 ncrypt/pgp.c:1224
 #: ncrypt/pgp.c:1257 ncrypt/pgp.c:1614 ncrypt/pgp_functions.c:131
-#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:899
-#: ncrypt/smime.c:907 ncrypt/smime.c:1005 ncrypt/smime.c:1115
-#: ncrypt/smime.c:1181 ncrypt/smime.c:1188 ncrypt/smime.c:1397
-#: ncrypt/smime.c:1796 ncrypt/smime.c:1875 ncrypt/smime.c:1882
-#: ncrypt/smime.c:1989 ncrypt/smime.c:2119 ncrypt/smime.c:2135 nntp/nntp.c:1316
+#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:854
+#: ncrypt/smime.c:862 ncrypt/smime.c:961 ncrypt/smime.c:1071
+#: ncrypt/smime.c:1138 ncrypt/smime.c:1145 ncrypt/smime.c:1355
+#: ncrypt/smime.c:1755 ncrypt/smime.c:1834 ncrypt/smime.c:1841
+#: ncrypt/smime.c:1948 ncrypt/smime.c:2078 ncrypt/smime.c:2094 nntp/nntp.c:1316
 #: nntp/nntp.c:2178 pattern/exec.c:149 pop/pop.c:124
 msgid "Can't create temporary file"
 msgstr "Negaliu sukurti laikinos bylos"
 
-#: hook.c:233
+#: hook.c:238
 msgid "current mailbox shortcut '^' is unset"
 msgstr "dabartinės pašto dėžutės trumpinys '^' yra nenustatytas"
 
-#: hook.c:245
+#: hook.c:250
 msgid "mailbox shortcut expanded to empty regex"
 msgstr "pašto dėžutės trumpinys išplėstas atitinka tuščią šabloną"
 
-#: hook.c:264
+#: hook.c:269
 msgid "badly formatted command string"
 msgstr "blogai suformuota komanda"
 
-#: hook.c:561
+#: hook.c:582
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: negalima išmesti kablių kablio viduje"
 
-#: hook.c:574
+#: hook.c:595
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: nežinomas hook tipas: %s"
 
-#: hook.c:584
+#: hook.c:605
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: negaliu išmesti %s %s viduje"
@@ -3978,7 +4627,7 @@ msgstr "IMAP komanda nepavyko: %s"
 msgid "Connection to %s timed out"
 msgstr "Prisijungimui prie %s pasibaigė laikas"
 
-#: imap/config.c:61 pop/config.c:59 send/config.c:82
+#: imap/config.c:61 pop/config.c:59 send/config.c:92
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Parametras %s: %s nėra tinkamas autentikatorius"
@@ -4027,7 +4676,7 @@ msgstr[0] "Kopijuoju %d laišką į %s..."
 msgstr[1] "Kopijuoju %d laiškus į %s..."
 msgstr[2] "Kopijuoju %d laiškų į %s..."
 
-#: imap/imap.c:1432 imap/imap.c:2088 imap/message.c:1819 muttlib.c:1379
+#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1819 muttlib.c:836
 #, c-format
 msgid "Create %s?"
 msgstr "Sukurti %s?"
@@ -4073,15 +4722,15 @@ msgstr "imap_sync_mailbox: EXPUNGE komanda nepavyko"
 msgid "Selecting %s..."
 msgstr "Parenku %s..."
 
-#: imap/imap.c:2055
+#: imap/imap.c:2057
 msgid "Error opening mailbox"
 msgstr "Klaida atidarant pašto dėžutę"
 
-#: imap/imap.c:2199
+#: imap/imap.c:2201
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP serveris nepalaiko savadarbių vėliavėlių"
 
-#: imap/imap.c:2243
+#: imap/imap.c:2245
 msgid "Invalid IMAP flags"
 msgstr "Blogos IMAP vėliavėlės"
 
@@ -4144,62 +4793,62 @@ msgstr "Serverinė paieška nepalaikoma: %s"
 msgid "Continue?"
 msgstr "Tęsti?"
 
-#: index/dlg_index.c:105 index/dlg_index.c:120
+#: index/dlg_index.c:106 index/dlg_index.c:121
 msgid "Quit"
 msgstr "Išeit"
 
-#: index/dlg_index.c:110 pager/dlg_pager.c:101
+#: index/dlg_index.c:111 pager/dlg_pager.c:101
 msgid "Reply"
 msgstr "Atsakyt"
 
-#: index/dlg_index.c:111
+#: index/dlg_index.c:112
 msgid "Group"
 msgstr "Grupei"
 
-#: index/dlg_index.c:124 pager/dlg_pager.c:114
+#: index/dlg_index.c:125 pager/dlg_pager.c:114
 msgid "Post"
 msgstr "Siųsti"
 
-#: index/dlg_index.c:125 pager/dlg_pager.c:115
+#: index/dlg_index.c:126 pager/dlg_pager.c:115
 msgid "Followup"
 msgstr "Pratęsti"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index/dlg_index.c:147
+#: index/dlg_index.c:148
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: veiksmas neleidžiamas pagal ACL"
 
-#: index/dlg_index.c:738
+#: index/dlg_index.c:739
 msgid "Failed to create query, aborting"
 msgstr "Nepavyko sukurti užklausos, atšaukiu"
 
-#: index/dlg_index.c:783 muttlib.c:1363 mx.c:203 mx.c:341
+#: index/dlg_index.c:784 muttlib.c:820 mx.c:203 mx.c:341
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s nėra pašto dėžutė"
 
-#: index/dlg_index.c:1159
+#: index/dlg_index.c:1167
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Dėžutė buvo išoriškai pakeista.  Flagai gali būti neteisingi."
 
-#: index/dlg_index.c:1168 pager/dlg_pager.c:431
+#: index/dlg_index.c:1176 pager/dlg_pager.c:431
 msgid "New mail in this mailbox"
 msgstr "Naujas paštas šioje dėžutėje"
 
-#: index/dlg_index.c:1187
+#: index/dlg_index.c:1196
 msgid "Mailbox was externally modified"
 msgstr "Pašto dėžutė buvo išoriškai pakeista"
 
-#: index/dlg_index.c:1299 index/functions.c:3076 pattern/message.c:288
+#: index/dlg_index.c:1307 index/functions.c:3076 pattern/message.c:288
 msgid "No mailbox is open"
 msgstr "Jokia dėžutė neatidaryta"
 
-#: index/dlg_index.c:1307
+#: index/dlg_index.c:1315
 msgid "No tagged messages"
 msgstr "Nėra pažymėtų laiškų"
 
-#: index/dlg_index.c:1312 index/functions.c:924
+#: index/dlg_index.c:1320 index/functions.c:924
 msgid "Nothing to do"
 msgstr "Nėra, ką daryti"
 
@@ -4346,12 +4995,12 @@ msgid "No unread messages"
 msgstr "Nėra neskaitytų laiškų"
 
 #: index/functions.c:1570 menu/functions.c:108 pager/functions.c:766
-#: pattern/pattern.c:518 pattern/pattern.c:674
+#: pattern/pattern.c:535 pattern/pattern.c:691
 msgid "Search wrapped to top"
 msgstr "Paieška peršoko į viršų"
 
-#: index/functions.c:1575 pager/functions.c:796 pattern/pattern.c:531
-#: pattern/pattern.c:687
+#: index/functions.c:1575 pager/functions.c:796 pattern/pattern.c:548
+#: pattern/pattern.c:704
 msgid "Search wrapped to bottom"
 msgstr "Paieška peršoko į apačią"
 
@@ -4663,14 +5312,14 @@ msgstr "maildir_field_delimiter negali būti raidė, skaičius, arba '-.\\/'"
 msgid "Scanning %s..."
 msgstr "Skaitau %s..."
 
-#: maildir/mailbox.c:511 mbox/mbox.c:216 mbox/mbox.c:386 mh/mh.c:696 mx.c:354
+#: maildir/mailbox.c:511 mbox/mbox.c:217 mbox/mbox.c:387 mh/mh.c:696 mx.c:354
 #, c-format
 msgid "Reading %s..."
 msgstr "Skaitau %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/mailbox.c:849 mbox/mbox.c:1178 mh/mh.c:1079 mx.c:462
-#: notmuch/notmuch.c:2242
+#: maildir/mailbox.c:849 mbox/mbox.c:1174 mh/mh.c:1079 mx.c:462
+#: notmuch/notmuch.c:2248
 #, c-format
 msgid "Writing %s..."
 msgstr "Rašau %s..."
@@ -4941,7 +5590,7 @@ msgstr "Klaida: -d reikšmė '%s' yra netinkama"
 msgid "Failed to parse mailto: link"
 msgstr "Nepavyko išanalizuoti mailto: nuorodos"
 
-#: main.c:1003 main.c:1270 send/send.c:304 send/send.c:2745 send/send.c:2749
+#: main.c:1003 main.c:1270 send/send.c:307 send/send.c:2750 send/send.c:2754
 msgid "No recipients specified"
 msgstr "Nenurodyti jokie gavėjai"
 
@@ -4971,60 +5620,60 @@ msgstr "Neapibrėžta nė viena paštą gaunanti dėžutė"
 msgid "Mailbox is empty"
 msgstr "Dėžutė yra tuščia"
 
-#: mbox/mbox.c:255 mbox/mbox.c:321
+#: mbox/mbox.c:256 mbox/mbox.c:322
 msgid "Mailbox is corrupt"
 msgstr "Dėžutė yra sugadinta"
 
-#: mbox/mbox.c:906
+#: mbox/mbox.c:907
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "Nepavyko užrakinti %s"
 
-#: mbox/mbox.c:1055
+#: mbox/mbox.c:1056
 msgid "Mailbox was corrupted"
 msgstr "Dėžutė buvo sugadinta"
 
-#: mbox/mbox.c:1101 mbox/mbox.c:1352
+#: mbox/mbox.c:1097 mbox/mbox.c:1347
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Baisi klaida!  Negaliu vėl atidaryti dėžutės!"
 
-#: mbox/mbox.c:1138 pager/message.c:221
+#: mbox/mbox.c:1134 pager/message.c:221
 msgid "Could not create temporary file"
 msgstr "Negaliu sukurti laikinos bylos"
 
-#: mbox/mbox.c:1156
+#: mbox/mbox.c:1152
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: mbox pakeista, bet nėra pakeistų laiškų (pranešk šią klaidą)"
 
-#: mbox/mbox.c:1297
+#: mbox/mbox.c:1293
 msgid "Committing changes..."
 msgstr "Fiksuoju pakeitimus..."
 
-#: mbox/mbox.c:1331
+#: mbox/mbox.c:1326
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Įrašyti nepavyko!  Dėžutė dalinai išsaugota į %s"
 
-#: mbox/mbox.c:1416
+#: mbox/mbox.c:1411
 msgid "Could not reopen mailbox"
 msgstr "Negaliu vėl atidaryti dėžutės"
 
-#: mbox/mbox.c:1514 mbox/mbox.c:1635
+#: mbox/mbox.c:1509 mbox/mbox.c:1630
 msgid "Can't write message"
 msgstr "Negaliu įrašyti laiško"
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:451
-#: pattern/pattern.c:608
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
+#: pattern/pattern.c:625
 msgid "Reverse search for: "
 msgstr "Atgal ieškoti ko: "
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:451
-#: pattern/pattern.c:608
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
+#: pattern/pattern.c:625
 msgid "Search for: "
 msgstr "Ieškoti ko: "
 
 #: menu/functions.c:127 pager/functions.c:695 pager/functions.c:762
-#: pager/functions.c:792 pattern/pattern.c:582 pattern/pattern.c:735
+#: pager/functions.c:792 pattern/pattern.c:599 pattern/pattern.c:752
 msgid "Not found"
 msgstr "Nerasta"
 
@@ -5099,7 +5748,7 @@ msgstr "Teisingai nustatyk hostname kintamąjį, kai naudoji mixmaster'į"
 msgid "Error sending message, child exited %d\n"
 msgstr "Klaida siunčiant laišką, klaidos kodas %d.\n"
 
-#: mixmaster/mixmaster.c:128 send/send.c:2408
+#: mixmaster/mixmaster.c:128 send/send.c:2413
 msgid "Error sending message"
 msgstr "Klaida siunčiant laišką"
 
@@ -5135,25 +5784,25 @@ msgstr "Persiuntėjų grandinė jau tuščia"
 msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "Klaida: %s negali būti naudojamas kaip galutinis persiuntėjas grandinėje"
 
-#: mutt/file.c:780
+#: mutt/file.c:784
 #, c-format
 msgid "Failed to seek file: %s"
 msgstr "Nepavyko pozicionuoti bylos: %s"
 
-#: mutt/file.c:1272
+#: mutt/file.c:1276
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "Viršytas leistinas laikas siekiant fcntl užrakto"
 
-#: mutt/file.c:1278
+#: mutt/file.c:1282
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Laukiu fcntl užrakto... %d"
 
-#: mutt/file.c:1338
+#: mutt/file.c:1342
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "Viršytas leistinas laikas siekiant flock užrakto"
 
-#: mutt/file.c:1345
+#: mutt/file.c:1349
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Laukiu fcntl užrakto... %d"
@@ -5254,43 +5903,43 @@ msgstr "Tėvinis laiškas nematomas šiame ribotame vaizde"
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
-#: muttlib.c:598
+#: muttlib.c:595
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "Byla yra katalogas, saugoti joje? (t)aip, (n)e, (v)isiems"
 
-#: muttlib.c:598
+#: muttlib.c:595
 msgid "yna"
 msgstr "tnv"
 
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:616
+#: muttlib.c:613
 msgid "File is a directory, save under it?"
 msgstr "Byla yra katalogas, saugoti joje?"
 
-#: muttlib.c:622
+#: muttlib.c:619
 msgid "File under directory: "
 msgstr "Byla kataloge: "
 
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:638
+#: muttlib.c:635
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Byla egzistuoja, (u)žrašyti, (p)ridurti, arba (n)utraukti?"
 
-#: muttlib.c:639
+#: muttlib.c:636
 msgid "oac"
 msgstr "upn"
 
-#: muttlib.c:1332
+#: muttlib.c:789
 msgid "Can't save message to POP mailbox"
 msgstr "Negaliu išsaugoti laiško į POP dėžutę"
 
-#: muttlib.c:1342
+#: muttlib.c:799
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Pridurti laiškus prie %s?"
 
-#: muttlib.c:1355
+#: muttlib.c:812
 msgid "Can't save message to news server"
 msgstr "Negaliu išsaugoti laiško naujienų serveryje"
 
@@ -5442,7 +6091,7 @@ msgstr "Kviečiu PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Laiško nepavyko išsiųsti inline formatu.  Naudoti PGP/MIME?"
 
-#: ncrypt/crypt.c:221 send/send.c:2724
+#: ncrypt/crypt.c:221 send/send.c:2729
 msgid "Mail not sent"
 msgstr "Laiškas neišsiųstas"
 
@@ -5844,7 +6493,7 @@ msgstr "gpgme_op_keylist_next nepavyko: %s"
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Ieškau raktų, tenkinančių \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:3411 ncrypt/pgpkey.c:247 ncrypt/smime.c:752
+#: ncrypt/crypt_gpgme.c:3411 ncrypt/pgpkey.c:247 ncrypt/smime.c:707
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr "Neradau raktų, tenkinančių \"%s\""
@@ -5854,8 +6503,8 @@ msgstr "Neradau raktų, tenkinančių \"%s\""
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Naudoti raktą ID = \"%s\", skirtą %s?"
 
-#: ncrypt/crypt_gpgme.c:3514 ncrypt/pgp.c:1550 ncrypt/smime.c:776
-#: ncrypt/smime.c:856
+#: ncrypt/crypt_gpgme.c:3514 ncrypt/pgp.c:1550 ncrypt/smime.c:731
+#: ncrypt/smime.c:811
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Įvesk rakto ID, skirtą %s: "
@@ -5963,54 +6612,54 @@ msgstr "Nepavyko išsiaiškinti, kas siuntėjas"
 msgid "Invoking S/MIME..."
 msgstr "Kviečiu S/MIME..."
 
-#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:98
+#: ncrypt/dlg_gpgme.c:101 ncrypt/dlg_pgp.c:99
 msgid "Check key"
 msgstr "Tikrinti raktą"
 
-#: ncrypt/dlg_gpgme.c:658
+#: ncrypt/dlg_gpgme.c:670
 msgid "All matching keys are marked expired/revoked"
 msgstr "Visi rasti raktai pažymėti kaip pasenę arba atšaukti"
 
-#: ncrypt/dlg_gpgme.c:709
+#: ncrypt/dlg_gpgme.c:721
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP ir S/MIME raktai, atitinkantys"
 
-#: ncrypt/dlg_gpgme.c:711
+#: ncrypt/dlg_gpgme.c:723
 msgid "PGP keys matching"
 msgstr "PGP raktai, atitinkantys"
 
-#: ncrypt/dlg_gpgme.c:713
+#: ncrypt/dlg_gpgme.c:725
 msgid "S/MIME keys matching"
 msgstr "S/MIME raktai, atitinkantys"
 
-#: ncrypt/dlg_gpgme.c:715
+#: ncrypt/dlg_gpgme.c:727
 msgid "keys matching"
 msgstr "raktai, atitinkantys"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:723
+#: ncrypt/dlg_gpgme.c:735
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:728
+#: ncrypt/dlg_gpgme.c:740
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:571
+#: ncrypt/dlg_pgp.c:660
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Visi rasti raktai yra pasenę, atšaukti ar uždrausti"
 
-#: ncrypt/dlg_pgp.c:616
+#: ncrypt/dlg_pgp.c:705
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP raktai, tenkinantys <%s>"
 
-#: ncrypt/dlg_pgp.c:618
+#: ncrypt/dlg_pgp.c:707
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP raktai, tenkinantys \"%s\""
@@ -6078,7 +6727,7 @@ msgstr "Patikrintas"
 msgid "Unknown   "
 msgstr "Nežinomas  "
 
-#: ncrypt/dlg_smime.c:227
+#: ncrypt/dlg_smime.c:232
 #, c-format
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME sertifikatai, atitinkantys \"%s\""
@@ -6255,7 +6904,7 @@ msgstr ""
 "[-- Klaida: negalėjau sukurti PGP subproceso --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1111 ncrypt/pgp.c:1133 ncrypt/smime.c:1974
+#: ncrypt/pgp.c:1111 ncrypt/pgp.c:1133 ncrypt/smime.c:1933
 #: postpone/postpone.c:432
 msgid "Decryption failed"
 msgstr "Nepavyko iššifruoti"
@@ -6350,7 +6999,7 @@ msgstr "šsabn"
 msgid "Can't open /dev/null"
 msgstr "Negaliu atidaryti /dev/null"
 
-#: ncrypt/pgpinvoke.c:463
+#: ncrypt/pgpinvoke.c:412
 msgid "Fetching PGP key..."
 msgstr "Paimu PGP raktą..."
 
@@ -6363,49 +7012,49 @@ msgstr "PGP raktas %s"
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Raktas negali būti naudojamas: pasenęs/uždraustas/atšauktas"
 
-#: ncrypt/smime.c:174
+#: ncrypt/smime.c:176
 msgid "Enter S/MIME passphrase:"
 msgstr "Įvesk slaptą S/MIME frazę:"
 
-#: ncrypt/smime.c:736
+#: ncrypt/smime.c:691
 msgid "Enter keyID: "
 msgstr "Įvesk rakto ID: "
 
-#: ncrypt/smime.c:862
+#: ncrypt/smime.c:817
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "Neradau (galiojančio) %s sertifikato"
 
-#: ncrypt/smime.c:916 ncrypt/smime.c:945 ncrypt/smime.c:1024
-#: ncrypt/smime.c:1059 ncrypt/smime.c:1136 ncrypt/smime.c:1217
+#: ncrypt/smime.c:872 ncrypt/smime.c:901 ncrypt/smime.c:980 ncrypt/smime.c:1015
+#: ncrypt/smime.c:1093 ncrypt/smime.c:1175
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "Klaida: negaliu sukurti OpenSSL subproceso"
 
-#: ncrypt/smime.c:1196
+#: ncrypt/smime.c:1153
 msgid "Label for certificate: "
 msgstr "Sertifikato etiketė: "
 
-#: ncrypt/smime.c:1300
+#: ncrypt/smime.c:1258
 msgid "no certfile"
 msgstr "nėra sertifikato bylos"
 
-#: ncrypt/smime.c:1305
+#: ncrypt/smime.c:1263
 msgid "no mbox"
 msgstr "(nėra dėžutės)"
 
-#: ncrypt/smime.c:1467 ncrypt/smime.c:1636
+#: ncrypt/smime.c:1425 ncrypt/smime.c:1594
 msgid "No output from OpenSSL..."
 msgstr "Trūksta OpenSSL išvesties..."
 
-#: ncrypt/smime.c:1554
+#: ncrypt/smime.c:1512
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Negaliu pasirašyti: nenurodytas raktas.  Naudokite \"Pasirašyti kaip\"."
 
-#: ncrypt/smime.c:1603
+#: ncrypt/smime.c:1561
 msgid "Can't open OpenSSL subprocess"
 msgstr "Negaliu atidaryti OpenSSL subproceso"
 
-#: ncrypt/smime.c:1834 ncrypt/smime.c:1953
+#: ncrypt/smime.c:1793 ncrypt/smime.c:1912
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -6413,19 +7062,19 @@ msgstr ""
 "[-- OpenSSL išvesties pabaiga --]\n"
 "\n"
 
-#: ncrypt/smime.c:1911 ncrypt/smime.c:1923
+#: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso --]\n"
 
-#: ncrypt/smime.c:1958
+#: ncrypt/smime.c:1917
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Toliau einantys duomenys yra užšifruoti su S/MIME --]\n"
 
-#: ncrypt/smime.c:1962
+#: ncrypt/smime.c:1921
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Toliau einantys duomenys yra pasirašyti su S/MIME --]\n"
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2021
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -6433,7 +7082,7 @@ msgstr ""
 "\n"
 "[-- S/MIME užšifruotų duomenų pabaiga. --]\n"
 
-#: ncrypt/smime.c:2064
+#: ncrypt/smime.c:2023
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -6442,64 +7091,64 @@ msgstr ""
 "[-- S/MIME pasirašytų duomenų pabaiga. --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2199
+#: ncrypt/smime.c:2158
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME: pa(s)irašyti, šifruo(t)i su, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2201
+#: ncrypt/smime.c:2160
 msgid "swaco"
 msgstr "stano"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2209
+#: ncrypt/smime.c:2168
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME: ši(f)ruoti, pa(s)irašyti, šifruo(t)i su, pasirašyt k(a)ip, a(b)u, (n)ereikia ar įjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2211
+#: ncrypt/smime.c:2170
 msgid "eswabco"
 msgstr "fstabno"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2218
+#: ncrypt/smime.c:2177
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME: ši(f)ruoti, pa(s)irašyti, užšifruo(t)i su, pasirašyt k(a)ip, a(b)u ar (n)ereikia?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2220
+#: ncrypt/smime.c:2179
 msgid "eswabc"
 msgstr "fstabn"
 
-#: ncrypt/smime.c:2286
+#: ncrypt/smime.c:2245
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Pasirinkite algoritmą: (1) DES, (2) RC2, (3) AES ar (n)ereikia?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2288
+#: ncrypt/smime.c:2247
 msgid "123c"
 msgstr "123n"
 
-#: ncrypt/smime.c:2291
+#: ncrypt/smime.c:2250
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) 3DES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2293
+#: ncrypt/smime.c:2252
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2307
+#: ncrypt/smime.c:2266
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2309 ncrypt/smime.c:2329
+#: ncrypt/smime.c:2268 ncrypt/smime.c:2288
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2327
+#: ncrypt/smime.c:2286
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
@@ -6507,15 +7156,15 @@ msgstr "(1) AES128, (2) AES192, (3) AES256?"
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "Šis ID yra nepatikimas. Ar tikrai nori naudoti šį raktą?"
 
-#: nntp/newsrc.c:641
+#: nntp/newsrc.c:643
 msgid "Loading list of groups from cache..."
 msgstr "Užkraunu sąrašą grupių iš podėlio..."
 
-#: nntp/newsrc.c:1035
+#: nntp/newsrc.c:1080
 msgid "No news server defined"
 msgstr "Nenurodytas nė vienas naujienų serveris"
 
-#: nntp/newsrc.c:1053
+#: nntp/newsrc.c:1098
 #, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s yra bloga naujienų serverio specifikacija"
@@ -6624,7 +7273,7 @@ msgstr "Nepavyko atidaryti notmuch duomenų bazės: %s: %s"
 msgid "unknown reason"
 msgstr "nežinoma priežastis"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1797
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1803
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "nepavyko išanalizuoti notmuch url: %s"
@@ -6638,16 +7287,16 @@ msgstr "nepavyko išanalizuoti notmuch ribojimo: %s"
 msgid "Reading messages..."
 msgstr "Skaitau laiškus..."
 
-#: notmuch/notmuch.c:1556
+#: notmuch/notmuch.c:1562
 msgid "No more messages in the thread"
 msgstr "Gijoje daugiau nėra laiškų"
 
-#: notmuch/notmuch.c:1812
+#: notmuch/notmuch.c:1818
 #, c-format
 msgid "failed to parse limit: %s"
 msgstr "nepavyko išanalizuoti ribojimo: %s"
 
-#: notmuch/notmuch.c:2322
+#: notmuch/notmuch.c:2328
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
@@ -6655,7 +7304,7 @@ msgstr[0] "Nepavyko išsaugoti %d laiško nes pašto dėžutė buvo pakeista iš
 msgstr[1] "Nepavyko išsaugoti %d laiškų nes pašto dėžutė buvo pakeista išoriškai"
 msgstr[2] "Nepavyko išsaugoti %d laiškų nes pašto dėžutė buvo pakeista išoriškai"
 
-#: notmuch/notmuch.c:2382
+#: notmuch/notmuch.c:2388
 msgid "Can't write to virtual folder"
 msgstr "Negaliu rašyti į virtualų aplanką"
 
@@ -6719,7 +7368,7 @@ msgstr "Išsaugota į %s"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:61 pager/pbar.c:121 status.c:318
+#: pager/message.c:61 pager/pbar.c:121 status.c:381
 msgid "all"
 msgstr "visi"
 
@@ -6774,7 +7423,7 @@ msgstr "%ld%%"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:123 status.c:316
+#: pager/pbar.c:123 status.c:379
 msgid "end"
 msgstr "pabaiga"
 
@@ -6847,11 +7496,11 @@ msgstr "Blogas mėnuo: %s"
 msgid "Invalid relative date: %s"
 msgstr "Bloga data: %s"
 
-#: pattern/compile.c:924 pattern/compile.c:1139
+#: pattern/compile.c:924 pattern/compile.c:1138
 msgid "empty pattern"
 msgstr "tuščias šablonas"
 
-#: pattern/compile.c:954 pattern/compile.c:1131
+#: pattern/compile.c:954 pattern/compile.c:1129
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "klaida šablone: %s"
@@ -6861,34 +7510,34 @@ msgstr "klaida šablone: %s"
 msgid "missing pattern: %s"
 msgstr "trūksta šablono: %s"
 
-#: pattern/compile.c:999 pattern/compile.c:1100
+#: pattern/compile.c:999 pattern/compile.c:1099
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "trūkstami skliausteliai: %s"
 
-#: pattern/compile.c:1034
+#: pattern/compile.c:1033
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: blogas šablono modifikatorius"
 
-#: pattern/compile.c:1039
+#: pattern/compile.c:1038
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nepalaikomas šiame režime"
 
-#: pattern/compile.c:1062
+#: pattern/compile.c:1061
 msgid "missing parameter"
 msgstr "trūksta parametro"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:189
+#: pattern/dlg_pattern.c:193
 msgid "Patterns"
 msgstr "Šablonai"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlg_pattern.c:205
+#: pattern/dlg_pattern.c:209
 msgid "EXPR"
 msgstr "IŠRAIŠKA"
 
@@ -6896,7 +7545,7 @@ msgstr "IŠRAIŠKA"
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlg_pattern.c:213
+#: pattern/dlg_pattern.c:217
 msgid "RANGE"
 msgstr "INTERVALAS"
 
@@ -6904,7 +7553,7 @@ msgstr "INTERVALAS"
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlg_pattern.c:220
+#: pattern/dlg_pattern.c:224
 msgid "DATERANGE"
 msgstr "DATŲ-INTERVALAS"
 
@@ -6912,7 +7561,7 @@ msgstr "DATŲ-INTERVALAS"
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlg_pattern.c:227
+#: pattern/dlg_pattern.c:231
 msgid "QUERY"
 msgstr "UŽKLAUSA"
 
@@ -6920,22 +7569,22 @@ msgstr "UŽKLAUSA"
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlg_pattern.c:245
+#: pattern/dlg_pattern.c:249
 msgid "PATTERN"
 msgstr "ŠABLONAS"
 
 #. L10N: Pattern Completion Menu description for ~()
-#: pattern/dlg_pattern.c:252
+#: pattern/dlg_pattern.c:256
 msgid "messages in threads containing messages matching PATTERN"
 msgstr "laiškai gijose turinčiose laiškų atitinkančių ŠABLONĄ"
 
 #. L10N: Pattern Completion Menu description for ~<()
-#: pattern/dlg_pattern.c:260
+#: pattern/dlg_pattern.c:264
 msgid "messages whose immediate parent matches PATTERN"
 msgstr "laiškai kurių tėvinis laiškas atitinka ŠABLONĄ"
 
 #. L10N: Pattern Completion Menu description for ~>()
-#: pattern/dlg_pattern.c:268
+#: pattern/dlg_pattern.c:272
 msgid "messages having an immediate child matching PATTERN"
 msgstr "laiškai kurių tiesioginiai atsakymai atitinka ŠABLONĄ"
 
@@ -7223,34 +7872,34 @@ msgstr "IMAP serverio paieška pagal IŠRAIŠKĄ"
 msgid "No current message"
 msgstr "Nėra dabartinio laiško"
 
-#: pattern/pattern.c:207 pattern/pattern.c:312 pattern/pattern.c:475
-#: pattern/pattern.c:631
+#: pattern/pattern.c:207 pattern/pattern.c:313 pattern/pattern.c:492
+#: pattern/pattern.c:648
 msgid "Compiling search pattern..."
 msgstr "Kompiliuoju paieškos šabloną..."
 
-#: pattern/pattern.c:235 pattern/pattern.c:334
+#: pattern/pattern.c:235 pattern/pattern.c:335
 msgid "Executing command on matching messages..."
 msgstr "Vykdau komandą tinkantiems laiškams..."
 
-#: pattern/pattern.c:407
+#: pattern/pattern.c:421
 msgid "No messages matched criteria"
 msgstr "Jokie laiškai netenkina kriterijaus"
 
-#: pattern/pattern.c:506 pattern/pattern.c:662
+#: pattern/pattern.c:433 pattern/pattern.c:591 pattern/pattern.c:744
+msgid "Search interrupted"
+msgstr "Paieška pertraukta"
+
+#: pattern/pattern.c:523 pattern/pattern.c:679
 msgid "Searching..."
 msgstr "Ieškau..."
 
-#: pattern/pattern.c:522 pattern/pattern.c:678
+#: pattern/pattern.c:539 pattern/pattern.c:695
 msgid "Search hit bottom without finding match"
 msgstr "Paieška pasiekė apačią nieko neradusi"
 
-#: pattern/pattern.c:535 pattern/pattern.c:691
+#: pattern/pattern.c:552 pattern/pattern.c:708
 msgid "Search hit top without finding match"
 msgstr "Paieška pasiekė viršų nieko neradusi"
-
-#: pattern/pattern.c:574 pattern/pattern.c:727
-msgid "Search interrupted"
-msgstr "Paieška pertraukta"
 
 #: pop/auth.c:332
 msgid "POP timestamp is invalid"
@@ -7361,7 +8010,7 @@ msgstr "Pažymiu laiškus ištrintais..."
 msgid "Can't write message to temporary file"
 msgstr "Negaliu įrašyti laiško į laikiną bylą"
 
-#: postpone/dlg_postpone.c:222
+#: postpone/dlg_postpone.c:229
 msgid "Postponed Messages"
 msgstr "Atidėti laiškai"
 
@@ -7388,7 +8037,7 @@ msgstr "Nėra atidėtų laiškų"
 #. L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:176
+#: progress/window.c:177
 #, c-format
 msgid "%s %s (%d%%)"
 msgstr "%s %s (%d%%)"
@@ -7396,19 +8045,19 @@ msgstr "%s %s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu` position,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:184
+#: progress/window.c:185
 #, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
 #. L10N: Progress bar: `%s` loading text, `%s` position/size
-#: progress/window.c:193
+#: progress/window.c:194
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. L10N: Progress bar: `%s` loading text, `%zu` position
-#: progress/window.c:198
+#: progress/window.c:199
 #, c-format
 msgid "%s %zu"
 msgstr "%s %zu"
@@ -7416,7 +8065,7 @@ msgstr "%s %zu"
 #. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:209
+#: progress/window.c:210
 #, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
@@ -7424,7 +8073,7 @@ msgstr "%s %s/%s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:217
+#: progress/window.c:218
 #, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
@@ -7437,11 +8086,11 @@ msgstr "taip"
 msgid "no"
 msgstr "ne"
 
-#: recvcmd.c:76
+#: recvcmd.c:77
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Tu gali nukreipti tik message/rfc822 priedus"
 
-#: recvcmd.c:274
+#: recvcmd.c:275
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
 msgstr[0] "Klaida siunčiant laišką."
@@ -7474,7 +8123,7 @@ msgstr "Negaliu sukurti %s"
 msgid "Can't find any tagged messages"
 msgstr "Negaliu rasti nė vieno pažymėto laiško"
 
-#: recvcmd.c:886 send/send.c:1189
+#: recvcmd.c:886 send/send.c:1194
 msgid "No mailing lists found"
 msgstr "Nerasta jokia konferencija"
 
@@ -7502,16 +8151,16 @@ msgid "%s no longer exists"
 msgstr "%s nebeegzistuoja"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
-#: send/config.c:105
+#: send/config.c:115
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "Parametras %s negali turėti savyje shell metasimbolių: %c"
 
-#: send/send.c:345
+#: send/send.c:348
 msgid "No subject, abort?"
 msgstr "Nėra temos, nutraukti?"
 
-#: send/send.c:347
+#: send/send.c:350
 msgid "No subject, aborting"
 msgstr "Nėra temos, nutraukiu"
 
@@ -7521,43 +8170,43 @@ msgstr "Nėra temos, nutraukiu"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:605
+#: send/send.c:608
 msgid "Forward attachments?"
 msgstr "Persiųsti priedus?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:895
+#: send/send.c:900
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Atsakyti %s%s?"
 
-#: send/send.c:942
+#: send/send.c:947
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Pratęsti-į %s%s?"
 
-#: send/send.c:1231
+#: send/send.c:1236
 msgid "Include message in reply?"
 msgstr "Įtraukti laišką į atsakymą?"
 
-#: send/send.c:1237
+#: send/send.c:1242
 msgid "Including quoted message..."
 msgstr "Įtraukiu cituojamą laišką..."
 
-#: send/send.c:1244
+#: send/send.c:1249
 msgid "Could not include all requested messages"
 msgstr "Negalėjau įtraukti visų prašytų laiškų"
 
-#: send/send.c:1256
+#: send/send.c:1261
 msgid "Forward as attachment?"
 msgstr "Persiųsti kaip priedą?"
 
-#: send/send.c:1261
+#: send/send.c:1266
 msgid "Preparing forwarded message..."
 msgstr "Paruošiu persiunčiamą laišką..."
 
-#: send/send.c:1763
+#: send/send.c:1768
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Įspėjimas: Fcc į IMAP dėžutę nepalaikoma automatiniame režime"
 
@@ -7566,12 +8215,12 @@ msgstr "Įspėjimas: Fcc į IMAP dėžutę nepalaikoma automatiniame režime"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1769
+#: send/send.c:1774
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Praleidžiu Fcc į %s"
 
-#: send/send.c:1809 send/send.c:1821 send/send.c:1847
+#: send/send.c:1814 send/send.c:1826 send/send.c:1852
 msgid "Save attachments in Fcc?"
 msgstr "Išsaugoti priedus Fcc?"
 
@@ -7579,112 +8228,112 @@ msgstr "Išsaugoti priedus Fcc?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1869
+#: send/send.c:1874
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fcc nepavyko.  (b)andyti vėl, naudoti kitą (d)ėžutę, ar (p)raleisti?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1873
+#: send/send.c:1878
 msgid "rms"
 msgstr "bdp"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1879
+#: send/send.c:1884
 msgid "Fcc mailbox"
 msgstr "Fcc dėžutė"
 
-#: send/send.c:1948
+#: send/send.c:1953
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Negaliu atidėti.  $postponed nenustatytas"
 
-#: send/send.c:1985 send/send.c:2002
+#: send/send.c:1990 send/send.c:2007
 msgid "Error encrypting message. Check your crypt settings."
 msgstr "Klaida šifruojant laišką.  Patikrinkite šifravimo nuostatas."
 
-#: send/send.c:2096
+#: send/send.c:2101
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Laiške yra tekstas, atitinkantis \"$abort_noattach_regex\". Nesiunčiu."
 
-#: send/send.c:2100
+#: send/send.c:2105
 msgid "No attachments, cancel sending?"
 msgstr "Nėra priedų, atšaukti siuntimą?"
 
-#: send/send.c:2151
+#: send/send.c:2156
 msgid "Recall postponed message?"
 msgstr "Tęsti atidėtą laišką?"
 
-#: send/send.c:2497
+#: send/send.c:2502
 msgid "Edit forwarded message?"
 msgstr "Redaguoti persiunčiamą laišką?"
 
-#: send/send.c:2538
+#: send/send.c:2543
 msgid "Abort unmodified message?"
 msgstr "Nutraukti nepakeistą laišką?"
 
-#: send/send.c:2540
+#: send/send.c:2545
 msgid "Aborted unmodified message"
 msgstr "Nutrauktas nepakeistas laiškas"
 
-#: send/send.c:2682
+#: send/send.c:2687
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Kriptografijos mechanizmas nesukonfigūruotas.  Išjungiu laiškų saugumo nustatymus."
 
-#: send/send.c:2722
+#: send/send.c:2727
 msgid "Article not posted"
 msgstr "Straipsnis neišsiųstas"
 
-#: send/send.c:2731
+#: send/send.c:2736
 msgid "Message postponed"
 msgstr "Laiškas atidėtas"
 
-#: send/send.c:2766
+#: send/send.c:2771
 msgid "No subject, abort sending?"
 msgstr "Nėra temos, nutraukti siuntimą?"
 
-#: send/send.c:2770 send/send.c:2776
+#: send/send.c:2775 send/send.c:2781
 msgid "No subject specified"
 msgstr "Nenurodyta jokia tema"
 
-#: send/send.c:2782
+#: send/send.c:2787
 msgid "No newsgroup specified"
 msgstr "Nenurodyta jokia naujienų grupė"
 
-#: send/send.c:2827
+#: send/send.c:2832
 msgid "Missing encryption key; mail not sent"
 msgstr "Nėra šifravimo rakto; laiškas neišsiųstas"
 
-#: send/send.c:2851 send/smtp.c:263
+#: send/send.c:2856 send/smtp.c:263
 msgid "Sending message..."
 msgstr "Siunčiu laišką..."
 
-#: send/send.c:2897
+#: send/send.c:2902
 msgid "Could not send the message"
 msgstr "Negalėjau išsiųsti laiško"
 
-#: send/send.c:2907
+#: send/send.c:2912
 msgid "Sending in background"
 msgstr "Siunčiu fone"
 
-#: send/send.c:2908
+#: send/send.c:2913
 msgid "Article posted"
 msgstr "Straipsnis išsiųstas"
 
-#: send/send.c:2909
+#: send/send.c:2914
 msgid "Mail sent"
 msgstr "Laiškas išsiųstas"
 
-#: send/send.c:2990
+#: send/send.c:2995
 msgid "No recipient specified"
 msgstr "Nenurodytas gavėjas"
 
-#: send/send.c:3037
+#: send/send.c:3042
 msgid "No List-Subscribe header found"
 msgstr "Nėra List-Subscribe antraštės"
 
-#: send/send.c:3066
+#: send/send.c:3071
 msgid "No List-Unsubscribe header found"
 msgstr "Nėra List-Unsubscribe antraštės"
 
@@ -7702,16 +8351,16 @@ msgstr "Negalėjau atidaryti %s"
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Blogas IDN %s bandant paruošti Resent-From: antraštę"
 
-#: send/sendmail.c:331
+#: send/sendmail.c:332
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail turi būti nurodytas norint siųsti laiškus"
 
-#: send/sendmail.c:436
+#: send/sendmail.c:437
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Klaida siunčiant laišką, klaidos kodas %d (%s)"
 
-#: send/sendmail.c:448
+#: send/sendmail.c:449
 msgid "Output of the delivery process"
 msgstr "Pristatymo proceso išvestis"
 
@@ -7734,19 +8383,19 @@ msgstr "Blogas SMTP URL: %s"
 msgid "SMTP server does not support authentication"
 msgstr "SMTP serveris nepalaiko autentikacijos"
 
-#: send/smtp.c:1137
+#: send/smtp.c:1144
 msgid "No from address given"
 msgstr "Nenurodytas siuntėjo adresas"
 
-#: send/smtp.c:1204
+#: send/smtp.c:1205
 msgid "SMTP session failed: read error"
 msgstr "SMTP sesija nepavyko: skaitymo klaida"
 
-#: send/smtp.c:1206
+#: send/smtp.c:1207
 msgid "SMTP session failed: write error"
 msgstr "SMTP sesija nepavyko: rašymo klaida"
 
-#: send/smtp.c:1208
+#: send/smtp.c:1209
 msgid "Invalid server response"
 msgstr "Blogas serverio atsakymas"
 
@@ -7758,14 +8407,14 @@ msgstr "Negalėjau rasti rikiavimo funkcijos [pranešk šią klaidą]"
 msgid "Sorting mailbox..."
 msgstr "Rikiuoju dėžutę..."
 
-#: status.c:180
+#: status.c:163
 msgid "(no mailbox)"
 msgstr "(nėra dėžutės)"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: status.c:326
+#: status.c:389
 #, c-format
 msgid "%d%%"
 msgstr "%d%%"
@@ -7837,3 +8486,6 @@ msgstr "Kompiliavimo parinktys:"
 #: version.c:485
 msgid "Devel options:"
 msgstr "Derinimo parinktys:"
+
+#~ msgid "<no chain defined>"
+#~ msgstr "<nėra grandinės>"

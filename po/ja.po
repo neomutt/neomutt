@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-03-29 15:52+0000\n"
+"POT-Creation-Date: 2024-03-30 13:52+0000\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -22,7 +22,7 @@ msgstr ""
 
 #: address/config_type.c:88 config/long.c:50 config/number.c:52
 #: config/path.c:99 config/path.c:175 config/sort.c:57 config/string.c:68
-#: config/string.c:145
+#: config/string.c:145 expando/config_type.c:70 expando/config_type.c:170
 #, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "オプション %s はセットできない, もしくはpagerによりリセットされた"
@@ -45,7 +45,7 @@ msgid "Address: "
 msgstr "アドレス: "
 
 #: alias/alias.c:453 conn/raw.c:158 conn/raw.c:215 envelope/functions.c:133
-#: external.c:136 recvcmd.c:230 send/send.c:215
+#: external.c:136 recvcmd.c:231 send/send.c:218
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "不正な IDN: '%s'"
@@ -100,86 +100,86 @@ msgstr "警告: 不正な IDN '%s' がエイリアス '%s' 中にある。"
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "警告: 不正な IDN '%s' がエイリアス '%s' 中にある。"
 
-#: alias/dlg_alias.c:101 alias/dlg_query.c:102 attach/dlg_attach.c:95
-#: autocrypt/dlg_autocrypt.c:89 browser/dlg_browser.c:112
-#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:68 history/dlg_history.c:78
-#: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:74
+#: alias/dlg_alias.c:102 alias/dlg_query.c:103 attach/dlg_attach.c:100
+#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:116
+#: browser/dlg_browser.c:128 conn/dlg_verifycert.c:68 history/dlg_history.c:78
+#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:74
 #: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
 #: pager/dlg_pager.c:111 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:90
 msgid "Exit"
 msgstr "戻る"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:106 index/dlg_index.c:121
+#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:122
 #: pager/dlg_pager.c:100 pager/dlg_pager.c:116 postpone/dlg_postpone.c:91
 msgid "Del"
 msgstr "削除"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:122
+#: alias/dlg_alias.c:104 index/dlg_index.c:108 index/dlg_index.c:123
 #: postpone/dlg_postpone.c:92
 msgid "Undel"
 msgstr "削除を取り消し"
 
-#: alias/dlg_alias.c:104 alias/dlg_query.c:106
+#: alias/dlg_alias.c:105 alias/dlg_query.c:107
 msgid "Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:105 alias/dlg_query.c:107
+#: alias/dlg_alias.c:106 alias/dlg_query.c:108
 msgid "Rev-Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:106 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:98
-#: ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
+#: alias/dlg_alias.c:107 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:100
+#: ncrypt/dlg_pgp.c:98 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
 msgid "Select"
 msgstr "選択"
 
-#: alias/dlg_alias.c:107 alias/dlg_query.c:109 attach/dlg_attach.c:99
-#: autocrypt/dlg_autocrypt.c:108 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:130 compose/dlg_compose.c:103
+#: alias/dlg_alias.c:108 alias/dlg_query.c:110 attach/dlg_attach.c:104
+#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:120
+#: browser/dlg_browser.c:134 compose/dlg_compose.c:103
 #: compose/dlg_compose.c:117 conn/dlg_verifycert.c:69 editor/window.c:51
-#: history/dlg_history.c:81 index/dlg_index.c:112 index/dlg_index.c:127
-#: ncrypt/dlg_gpgme.c:100 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:76
+#: history/dlg_history.c:81 index/dlg_index.c:113 index/dlg_index.c:128
+#: ncrypt/dlg_gpgme.c:102 ncrypt/dlg_pgp.c:100 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:78 pager/dlg_pager.c:103 pager/dlg_pager.c:118
 #: pattern/dlg_pattern.c:92 postpone/dlg_postpone.c:93
 msgid "Help"
 msgstr "ヘルプ"
 
-#: alias/dlg_alias.c:329
+#: alias/dlg_alias.c:375
 msgid "You have no aliases"
 msgstr "別名がない"
 
-#: alias/dlg_alias.c:334
+#: alias/dlg_alias.c:380
 msgid "Aliases"
 msgstr "別名"
 
-#: alias/dlg_query.c:103 index/dlg_index.c:109
+#: alias/dlg_query.c:104 index/dlg_index.c:110
 msgid "Mail"
 msgstr "メール"
 
-#: alias/dlg_query.c:104
+#: alias/dlg_query.c:105
 msgid "New Query"
 msgstr "新規問い合わせ"
 
-#: alias/dlg_query.c:105
+#: alias/dlg_query.c:106
 msgid "Make Alias"
 msgstr "別名作成"
 
-#: alias/dlg_query.c:108 history/dlg_history.c:80
+#: alias/dlg_query.c:109 history/dlg_history.c:80
 msgid "Search"
 msgstr "検索"
 
-#: alias/dlg_query.c:292
+#: alias/dlg_query.c:296
 msgid "Waiting for response..."
 msgstr "応答待ち..."
 
-#: alias/dlg_query.c:374
+#: alias/dlg_query.c:378
 msgid "Query"
 msgstr "問い合わせ"
 
-#: alias/dlg_query.c:474 alias/dlg_query.c:552
+#: alias/dlg_query.c:478 alias/dlg_query.c:556
 msgid "Query command not defined"
 msgstr "問い合わせコマンドは定義されていない。"
 
-#: alias/dlg_query.c:562 alias/functions.c:260 alias/functions.c:278
+#: alias/dlg_query.c:566 alias/functions.c:260 alias/functions.c:278
 msgid "Query: "
 msgstr "問い合わせ: "
 
@@ -230,19 +230,19 @@ msgstr "unattachments: 引数 disposition の指定がない"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: 引数 disposition が不正"
 
-#: attach/dlg_attach.c:96 index/dlg_index.c:108 index/dlg_index.c:123
+#: attach/dlg_attach.c:101 index/dlg_index.c:109 index/dlg_index.c:124
 msgid "Save"
 msgstr "保存"
 
-#: attach/dlg_attach.c:97
+#: attach/dlg_attach.c:102
 msgid "Pipe"
 msgstr "パイプ"
 
-#: attach/dlg_attach.c:98
+#: attach/dlg_attach.c:103
 msgid "Print"
 msgstr "印刷"
 
-#: attach/dlg_attach.c:510
+#: attach/dlg_attach.c:575
 msgid "Attachments"
 msgstr "添付ファイル"
 
@@ -297,9 +297,9 @@ msgstr "名前のテンプレートに一致させられない。続行?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 編集エントリに %%s が必要"
 
-#: attach/mutt_attach.c:165 attach/mutt_attach.c:304 compmbox/compress.c:323
-#: compose/functions.c:1845 gui/curs_lib.c:124 index/dlg_index.c:1178
-#: index/dlg_index.c:1223 pager/dlg_pager.c:456 pager/do_pager.c:167
+#: attach/mutt_attach.c:165 attach/mutt_attach.c:304 compmbox/compress.c:345
+#: compose/functions.c:1845 gui/curs_lib.c:124 index/dlg_index.c:1187
+#: index/dlg_index.c:1232 pager/dlg_pager.c:456 pager/do_pager.c:167
 #: pager/message.c:329 send/sendlib.c:580
 #, c-format
 msgid "Error running \"%s\""
@@ -438,7 +438,7 @@ msgstr "%s が存在しない。作成?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:84 bcache/bcache.c:230 hcache/hcache.c:330 init.c:586
-#: main.c:935 nntp/newsrc.c:1100
+#: main.c:935 nntp/newsrc.c:1145
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "%s が %s のために作成できない。"
@@ -538,10 +538,8 @@ msgstr "スキャンするメールボックス"
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr "Autocrypt ヘッダをスキャンするメールボックスがまだある?"
 
-#. L10N: s is the path to the database.
-#. For some reason sqlite3 failed to open that database file.
-#. L10N: Error message if autocrypt couldn't open the SQLite database
-#. for some reason.  The %s is the full path of the database file.
+#. L10N: autocrypt couldn't open the SQLite database.
+#. The %s is the full path of the database file.
 #: autocrypt/db.c:71 autocrypt/db.c:105
 #, c-format
 msgid "Unable to open autocrypt database %s"
@@ -549,13 +547,13 @@ msgstr "autocrypt データベースがオープンできない (%s)"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
-#: autocrypt/dlg_autocrypt.c:92
+#: autocrypt/dlg_autocrypt.c:93
 msgid "Create"
 msgstr "作成"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:95 mixmaster/dlg_mixmaster.c:83
+#: autocrypt/dlg_autocrypt.c:96 mixmaster/dlg_mixmaster.c:83
 msgid "Delete"
 msgstr "削除"
 
@@ -564,7 +562,7 @@ msgstr "削除"
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:101
+#: autocrypt/dlg_autocrypt.c:102
 msgid "Tgl Active"
 msgstr "有効切替"
 
@@ -573,37 +571,37 @@ msgstr "有効切替"
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:107
+#: autocrypt/dlg_autocrypt.c:108
 msgid "Prf Encr"
 msgstr "暗号優先"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt set
-#: autocrypt/dlg_autocrypt.c:149
+#: autocrypt/dlg_autocrypt.c:159
 msgid "prefer encrypt"
 msgstr "可能な限り暗号化"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt unset;
 #. thus encryption will need to be manually enabled.
-#: autocrypt/dlg_autocrypt.c:156
+#: autocrypt/dlg_autocrypt.c:166
 msgid "manual encrypt"
 msgstr "手動でのみ暗号化"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is enabled/active
-#: autocrypt/dlg_autocrypt.c:164
+#: autocrypt/dlg_autocrypt.c:182
 msgid "active"
 msgstr "有効"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is disabled/inactive
-#: autocrypt/dlg_autocrypt.c:170
+#: autocrypt/dlg_autocrypt.c:188
 msgid "inactive"
 msgstr "無効"
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:329
+#: autocrypt/dlg_autocrypt.c:349
 msgid "Autocrypt Accounts"
 msgstr "Autocrypt アカウント"
 
@@ -683,65 +681,65 @@ msgstr "%s はディレクトリではない。"
 msgid "Message cache isn't a directory: %s"
 msgstr "%s はディレクトリではない。"
 
-#: browser/dlg_browser.c:113
+#: browser/dlg_browser.c:117
 msgid "Chdir"
 msgstr "ディレクトリ変更"
 
-#: browser/dlg_browser.c:114
+#: browser/dlg_browser.c:118
 msgid "Goto"
 msgstr ""
 
-#: browser/dlg_browser.c:115 browser/dlg_browser.c:129
+#: browser/dlg_browser.c:119 browser/dlg_browser.c:133
 msgid "Mask"
 msgstr "マスク"
 
-#: browser/dlg_browser.c:125
+#: browser/dlg_browser.c:129
 msgid "List"
 msgstr "リスト"
 
-#: browser/dlg_browser.c:126
+#: browser/dlg_browser.c:130
 msgid "Subscribe"
 msgstr "購読開始"
 
-#: browser/dlg_browser.c:127
+#: browser/dlg_browser.c:131
 msgid "Unsubscribe"
 msgstr "購読取消"
 
-#: browser/dlg_browser.c:128 index/dlg_index.c:126
+#: browser/dlg_browser.c:132 index/dlg_index.c:127
 msgid "Catchup"
 msgstr ""
 
-#: browser/dlg_browser.c:703 browser/functions.c:436 browser/functions.c:776
+#: browser/dlg_browser.c:763 browser/functions.c:436 browser/functions.c:776
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s はディレクトリではない。"
 
-#: browser/dlg_browser.c:986
+#: browser/dlg_browser.c:1049
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "%s を購読を開始した"
 
-#: browser/dlg_browser.c:990
+#: browser/dlg_browser.c:1053
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser/dlg_browser.c:998
+#: browser/dlg_browser.c:1061
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "メールボックス [%d]"
 
-#: browser/dlg_browser.c:1010
+#: browser/dlg_browser.c:1073
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "購読 [%s], ファイルマスク: %s"
 
-#: browser/dlg_browser.c:1015
+#: browser/dlg_browser.c:1078
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "ディレクトリ [%s], ファイルマスク: %s"
 
-#: browser/dlg_browser.c:1078
+#: browser/dlg_browser.c:1141
 msgid "Can't attach a directory"
 msgstr "ディレクトリは添付できない"
 
@@ -853,8 +851,8 @@ msgstr "%s というオブジェクトはない"
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:366
 #: commands.c:388 commands.c:529 commands.c:545 commands.c:742 commands.c:774
 #: commands.c:790 commands.c:910 commands.c:1035 commands.c:1084
-#: commands.c:1124 hook.c:136 hook.c:191 hook.c:200 hook.c:214 hook.c:442
-#: hook.c:458 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:101
+#: commands.c:1124 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
+#: hook.c:470 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:101
 #: subjectrx.c:109
 #, c-format
 msgid "%s: too few arguments"
@@ -876,7 +874,7 @@ msgid "%s: color not supported by term"
 msgstr "色 %s はこの端末ではサポートされていない"
 
 #: color/command.c:402 color/command.c:444 commands.c:412 commands.c:1093
-#: commands.c:1224 commands.c:1559 hook.c:141 hook.c:221 hook.c:465
+#: commands.c:1224 commands.c:1559 hook.c:146 hook.c:226 hook.c:481
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
 #: mutt_lua.c:515 score.c:107
 #, c-format
@@ -1048,54 +1046,59 @@ msgstr "%s の購読を取り消した"
 msgid "Could not unsubscribe from %s"
 msgstr "%s の購読を取り消した"
 
-#: compmbox/compress.c:358 compmbox/compress.c:491
+#: compmbox/compress.c:224
+#, c-format
+msgid "Expando parse error: %s"
+msgstr ""
+
+#: compmbox/compress.c:380 compmbox/compress.c:513
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "append-hook か close-hook がないと追加できない : %s"
 
-#: compmbox/compress.c:440 compmbox/compress.c:503 compmbox/compress.c:578
-#: compmbox/compress.c:616 mbox/mbox.c:1110
+#: compmbox/compress.c:462 compmbox/compress.c:525 compmbox/compress.c:600
+#: compmbox/compress.c:638 mbox/mbox.c:1106
 msgid "Unable to lock mailbox"
 msgstr "メールボックスロック不能"
 
-#: compmbox/compress.c:444 compmbox/compress.c:510 compmbox/compress.c:582
+#: compmbox/compress.c:466 compmbox/compress.c:532 compmbox/compress.c:604
 #, c-format
 msgid "Decompressing %s"
 msgstr "%s を展開中"
 
-#: compmbox/compress.c:452
+#: compmbox/compress.c:474
 msgid "Can't identify the contents of the compressed file"
 msgstr "圧縮ファイルの内容を識別できない"
 
-#: compmbox/compress.c:459 compmbox/compress.c:532
+#: compmbox/compress.c:481 compmbox/compress.c:554
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "メールボックス形式 %d に合う関数が見つからない"
 
-#: compmbox/compress.c:512
+#: compmbox/compress.c:534
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "圧縮コマンドが失敗した: %s"
 
-#: compmbox/compress.c:525
+#: compmbox/compress.c:547
 msgid "Unsupported mailbox type for appending"
 msgstr "追加を未サポートのメールボックス形式。"
 
-#: compmbox/compress.c:606
+#: compmbox/compress.c:628
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "close-hook がないと圧縮ファイルを同期できない"
 
-#: compmbox/compress.c:628 compmbox/compress.c:679
+#: compmbox/compress.c:650 compmbox/compress.c:701
 #, c-format
 msgid "Compressing %s"
 msgstr "%s を圧縮中"
 
-#: compmbox/compress.c:674
+#: compmbox/compress.c:696
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "%s に圧縮追加中..."
 
-#: compmbox/compress.c:685 editmsg.c:265
+#: compmbox/compress.c:707 editmsg.c:265
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "エラー。一時ファイル %s は保管"
@@ -1324,7 +1327,7 @@ msgstr "現在の添付ファイルは変換される。"
 msgid "Attachment is not 'multipart'"
 msgstr "添付ファイルを保存した。"
 
-#: compose/functions.c:1766 send/send.c:2756
+#: compose/functions.c:1766 send/send.c:2761
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "'%s' 中に不正な IDN: '%s'"
@@ -1388,7 +1391,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr "'charset'はただ1つの文字セットでなければならない"
 
 #: config/charset.c:71 config/charset.c:103 hcache/config.c:56
-#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:112
+#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:122
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "変数 %s には不正な値: \"%s\""
@@ -1416,6 +1419,8 @@ msgid "Option %s may not be negative"
 msgstr "オプション %s はセットできない, もしくはpagerによりリセットされた"
 
 #: config/number.c:59 config/number.c:174 config/number.c:216
+#: expando/node_conddate.c:164 expando/node_expando.c:182
+#: expando/node_expando.c:211
 #, fuzzy, c-format
 msgid "Invalid number: %s"
 msgstr "エラー: score: 不正な数値"
@@ -1517,59 +1522,59 @@ msgstr "コマンドの戻り値が空文字列(empty string)"
 msgid "OAUTH token is too big: %ld"
 msgstr ""
 
-#: conn/dlg_verifycert.c:196
+#: conn/dlg_verifycert.c:203
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "r:拒否, o:今回のみ承認, a:常に承認, s:無視"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:200
+#: conn/dlg_verifycert.c:207
 msgid "roas"
 msgstr "roas"
 
-#: conn/dlg_verifycert.c:204
+#: conn/dlg_verifycert.c:211
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "r:拒否, o:今回のみ承認, a:常に承認"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:208
+#: conn/dlg_verifycert.c:215
 msgid "roa"
 msgstr "roa"
 
-#: conn/dlg_verifycert.c:215
+#: conn/dlg_verifycert.c:222
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "r:拒否, o:今回のみ承認, s:無視"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:219
+#: conn/dlg_verifycert.c:226
 msgid "ros"
 msgstr "ros"
 
-#: conn/dlg_verifycert.c:223
+#: conn/dlg_verifycert.c:230
 msgid "(r)eject, accept (o)nce"
 msgstr "r:拒否, o:今回のみ承認"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:227
+#: conn/dlg_verifycert.c:234
 msgid "ro"
 msgstr "ro"
 
-#: conn/dlg_verifycert.c:286
+#: conn/dlg_verifycert.c:293
 msgid "Jumping is not implemented for dialogs"
 msgstr "ジャンプ機能はダイアログでは実装されていない。"
 
-#: conn/dlg_verifycert.c:293
+#: conn/dlg_verifycert.c:300
 msgid "Search is not implemented for this menu"
 msgstr "このメニューでは検索機能が実装されていない。"
 
-#: conn/gnutls.c:146 conn/gnutls.c:635
+#: conn/gnutls.c:146 conn/gnutls.c:642
 msgid "Unable to get certificate from peer"
 msgstr "接続先から証明書を得られなかった"
 
@@ -1583,103 +1588,108 @@ msgstr "証明書の検証エラー (%s)"
 msgid "[unable to calculate]"
 msgstr "[計算不能]"
 
-#: conn/gnutls.c:324 conn/gnutls.c:489
+#: conn/gnutls.c:324 conn/gnutls.c:496
 msgid "Error initialising gnutls certificate data"
 msgstr "gnutls 証明書データ初期化エラー"
 
-#: conn/gnutls.c:330 conn/gnutls.c:495
+#: conn/gnutls.c:330 conn/gnutls.c:502
 msgid "Error processing certificate data"
 msgstr "証明書データ処理エラー"
 
-#: conn/gnutls.c:500 conn/openssl.c:900
+#: conn/gnutls.c:489 conn/openssl.c:900
+#, fuzzy
+msgid "Untrusted server certificate"
+msgstr "警告: 証明書を保存できなかった"
+
+#: conn/gnutls.c:507 conn/openssl.c:907
 msgid "This certificate belongs to:"
 msgstr "この証明書の所属先:"
 
-#: conn/gnutls.c:502 conn/openssl.c:902
+#: conn/gnutls.c:509 conn/openssl.c:909
 msgid "This certificate was issued by:"
 msgstr "この証明書の発行元:"
 
-#: conn/gnutls.c:505 conn/openssl.c:906
+#: conn/gnutls.c:512 conn/openssl.c:913
 msgid "This certificate is valid"
 msgstr "この証明書の有効期間は"
 
-#: conn/gnutls.c:510 conn/openssl.c:907
+#: conn/gnutls.c:517 conn/openssl.c:914
 #, c-format
 msgid "   from %s"
 msgstr "   %s から"
 
-#: conn/gnutls.c:515 conn/openssl.c:909
+#: conn/gnutls.c:522 conn/openssl.c:916
 #, c-format
 msgid "     to %s"
 msgstr "   %s まで"
 
-#: conn/gnutls.c:521 conn/openssl.c:915
+#: conn/gnutls.c:528 conn/openssl.c:922
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 フィンガープリント: %s"
 
-#: conn/gnutls.c:527 conn/gnutls.c:529 conn/openssl.c:921 conn/openssl.c:924
+#: conn/gnutls.c:534 conn/gnutls.c:536 conn/openssl.c:928 conn/openssl.c:931
 msgid "SHA256 Fingerprint: "
 msgstr "SHA256 フィンガープリント: "
 
-#: conn/gnutls.c:538
+#: conn/gnutls.c:545
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "警告: サーバの証明書はまだ有効でない"
 
-#: conn/gnutls.c:542
+#: conn/gnutls.c:549
 msgid "WARNING: Server certificate has expired"
 msgstr "警告: サーバの証明書が期限切れ"
 
-#: conn/gnutls.c:546
+#: conn/gnutls.c:553
 msgid "WARNING: Server certificate has been revoked"
 msgstr "警告: サーバの証明書が廃棄済み"
 
-#: conn/gnutls.c:550
+#: conn/gnutls.c:557
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "警告: サーバのホスト名が証明書と一致しない"
 
-#: conn/gnutls.c:554
+#: conn/gnutls.c:561
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "警告: サーバの証明書は署名者が CA でない"
 
-#: conn/gnutls.c:558
+#: conn/gnutls.c:565
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "警告: 安全でないアルゴリズムで署名されたサーバ証明書"
 
-#: conn/gnutls.c:562 conn/openssl.c:937
+#: conn/gnutls.c:569 conn/openssl.c:944
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "SSL 証明書検査 (連鎖内 %2$zu のうち %1$zu 個目)"
 
-#: conn/gnutls.c:596 conn/openssl.c:971
+#: conn/gnutls.c:603 conn/openssl.c:978
 msgid "Certificate saved"
 msgstr "証明書を保存した"
 
-#: conn/gnutls.c:598 conn/openssl.c:973
+#: conn/gnutls.c:605 conn/openssl.c:980
 msgid "Warning: Couldn't save certificate"
 msgstr "警告: 証明書を保存できなかった"
 
-#: conn/gnutls.c:798 conn/gnutls.c:844
+#: conn/gnutls.c:805 conn/gnutls.c:851
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "TLS/SSL 接続に利用可能なプロトコルがすべて無効"
 
-#: conn/gnutls.c:851
+#: conn/gnutls.c:858
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "$ssl_ciphers による明示的な暗号スイート選択はサポートされていない"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:921 conn/openssl.c:1154
+#: conn/gnutls.c:928 conn/openssl.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "警告: TLS SNI のホスト名が設定不能"
 
-#: conn/gnutls.c:967
+#: conn/gnutls.c:974
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "%s を使った SSL/TLS 接続 (%s/%s/%s)"
 
-#: conn/gnutls.c:1049 conn/gnutls.c:1078
+#: conn/gnutls.c:1056 conn/gnutls.c:1085
 msgid "Error: no TLS socket open"
 msgstr "エラー: TLS ソケットが開いていない"
 
@@ -1726,20 +1736,20 @@ msgstr "証明書の common name を得られない"
 msgid "certificate owner does not match hostname %s"
 msgstr "証明書所有者がホスト名に一致しない: %s"
 
-#: conn/openssl.c:1074
+#: conn/openssl.c:1081
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "証明書ホスト検査に不合格: %s"
 
-#: conn/openssl.c:1170
+#: conn/openssl.c:1177
 msgid "I/O error"
 msgstr "I/O エラー"
 
-#: conn/openssl.c:1176 conn/raw.c:266 mutt_logging.c:108
+#: conn/openssl.c:1183 conn/raw.c:266 mutt_logging.c:108
 msgid "unknown error"
 msgstr "不明なエラー"
 
-#: conn/openssl.c:1179
+#: conn/openssl.c:1186
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL は %s で失敗。"
@@ -1747,11 +1757,11 @@ msgstr "SSL は %s で失敗。"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1215
+#: conn/openssl.c:1222
 msgid "Unable to create SSL context"
 msgstr "SSL コンテクスト作成不能"
 
-#: conn/openssl.c:1277
+#: conn/openssl.c:1284
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "警告: ssl_verify_partial_chains エラー"
 
@@ -1834,13 +1844,13 @@ msgstr "%s へのトンネルがエラー %d (%s) を返した"
 msgid "%s isn't a regular file"
 msgstr "%s は通常のファイルではない。"
 
-#: copy.c:735
+#: copy.c:734
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 
-#: copy.c:828
+#: copy.c:827
 msgid "No decryption engine available for message"
 msgstr "利用できる復号化エンジンがない"
 
@@ -1962,22 +1972,22 @@ msgid "From: "
 msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:284
+#: envelope/window.c:97 send/send.c:287
 msgid "To: "
 msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:291
+#: envelope/window.c:99 send/send.c:294
 msgid "Cc: "
 msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101 send/send.c:298
+#: envelope/window.c:101 send/send.c:301
 msgid "Bcc: "
 msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103 send/send.c:343
+#: envelope/window.c:103 send/send.c:346
 msgid "Subject: "
 msgstr "Subject: "
 
@@ -2007,7 +2017,7 @@ msgstr "暗号と署名: "
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
 #: envelope/window.c:119 ncrypt/crypt_gpgme.c:3867 ncrypt/pgp.c:2020
-#: ncrypt/smime.c:2230
+#: ncrypt/smime.c:2189
 msgid "Sign as: "
 msgstr "署名に使う鍵: "
 
@@ -2039,7 +2049,7 @@ msgstr ""
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
-#: envelope/window.c:138 envelope/window.c:483
+#: envelope/window.c:138 envelope/window.c:484
 msgid "Off"
 msgstr "機能オフ"
 
@@ -2072,91 +2082,139 @@ msgstr "選択可能"
 msgid "Yes"
 msgstr "暗号化する"
 
-#: envelope/window.c:404
+#: envelope/window.c:405
 msgid "Sign, Encrypt"
 msgstr "署名 + 暗号化"
 
-#: envelope/window.c:409 envelope/window.c:478
+#: envelope/window.c:410 envelope/window.c:479
 msgid "Encrypt"
 msgstr "暗号化"
 
-#: envelope/window.c:414
+#: envelope/window.c:415
 msgid "Sign"
 msgstr "署名"
 
-#: envelope/window.c:420
+#: envelope/window.c:421
 msgid "None"
 msgstr "なし"
 
-#: envelope/window.c:430
+#: envelope/window.c:431
 msgid " (inline PGP)"
 msgstr " (インライン PGP)"
 
-#: envelope/window.c:432
+#: envelope/window.c:433
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
-#: envelope/window.c:436
+#: envelope/window.c:437
 msgid " (S/MIME)"
 msgstr " (S/MIME)"
 
-#: envelope/window.c:442
+#: envelope/window.c:443
 msgid " (OppEnc mode)"
 msgstr " (日和見暗号)"
 
-#: envelope/window.c:451 envelope/window.c:459
+#: envelope/window.c:452 envelope/window.c:460
 msgid "<default>"
 msgstr "<既定値>"
 
-#: envelope/window.c:466
+#: envelope/window.c:467
 msgid "Encrypt with: "
 msgstr "  暗号化方式: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: envelope/window.c:489
+#: envelope/window.c:490
 msgid "Recommendation: "
 msgstr "暗号推奨: "
 
-#: envelope/window.c:513
-msgid "<no chain defined>"
-msgstr ""
-
-#: envelope/window.c:597
+#: envelope/window.c:593
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
 msgstr[0] ""
 
-#: external.c:110 recvcmd.c:184 recvcmd.c:196
+#. L10N: e.g. "Option index_format:" plus an error message
+#: expando/config_type.c:85 expando/config_type.c:254
+#, fuzzy, c-format
+msgid "Option %s: "
+msgstr "コンパイル時オプション:"
+
+#. L10N: e.g. "Unknown expando: %Q"
+#: expando/node_condbool.c:103 expando/node_expando.c:275
+#, fuzzy, c-format
+msgid "Unknown expando: %%%.*s"
+msgstr "%s は不明な変数"
+
+#. L10N: The 'ymwdHM' should not be translated
+#: expando/node_conddate.c:178
+#, c-format
+msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
+msgstr ""
+
+#. L10N: Expando format expected a number
+#: expando/node_expando.c:199
+#, c-format
+msgid "Number is expected"
+msgstr ""
+
+#. L10N: Expando is missing a terminator character
+#. e.g. "%[..." is missing the final ']'
+#: expando/node_expando.c:307
+#, c-format
+msgid "Expando is missing terminator: '%c'"
+msgstr ""
+
+#. L10N: Conditional Expandos can only depend on other Expandos
+#. e.g. "%<X?apple>" displays "apple" if "%X" is true.
+#: expando/node_padding.c:241
+#, c-format
+msgid "Padding cannot be used as a condition"
+msgstr ""
+
+#. L10N: Expando is missing a terminator character
+#. e.g. "%[..." is missing the final ']'
+#: expando/parse.c:161 expando/parse.c:225
+#, c-format
+msgid "Conditional expando is missing '%c'"
+msgstr ""
+
+#. L10N: Expando is missing a terminator character
+#. e.g. "%[..." is missing the final ']'
+#: expando/parse.c:180
+#, c-format
+msgid "Conditional expando is missing '&' or '%c'"
+msgstr ""
+
+#: external.c:110 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
 msgstr "警告: メッセージに From: ヘッダがない"
 
-#: external.c:116 recvcmd.c:207
+#: external.c:116 recvcmd.c:208
 msgid "Bounce message to: "
 msgstr "メッセージの再送先: "
 
-#: external.c:118 recvcmd.c:209
+#: external.c:118 recvcmd.c:210
 msgid "Bounce tagged messages to: "
 msgstr "タグ付きメッセージの再送先: "
 
-#: external.c:128 recvcmd.c:221
+#: external.c:128 recvcmd.c:222
 msgid "Error parsing address"
 msgstr "アドレス解析エラー"
 
-#: external.c:144 recvcmd.c:239
+#: external.c:144 recvcmd.c:240
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "%s へメッセージ再送"
 
-#: external.c:150 recvcmd.c:245
+#: external.c:150 recvcmd.c:246
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "メッセージは再送されなかった。"
 
-#: external.c:176 recvcmd.c:272
+#: external.c:176 recvcmd.c:273
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "メッセージを再送した。"
@@ -2338,1170 +2396,1818 @@ msgstr "フラグ解除"
 msgid "Set flag"
 msgstr "フラグ設定"
 
-#: gui/curs_lib.c:142 index/functions.c:771
+#: gui/curs_lib.c:140 index/functions.c:771
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "保存しないで NeoMutt を抜ける?"
 
-#: gui/curs_lib.c:195
+#: gui/curs_lib.c:193
 msgid "Press any key to continue..."
 msgstr "続けるには何かキーを..."
 
-#: gui/curs_lib.c:253
+#: gui/curs_lib.c:251
 msgid " ('?' for list): "
 msgstr "('?' で一覧): "
 
-#: gui/curs_lib.c:508
+#: gui/curs_lib.c:506
 #, fuzzy, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "キーを押すと開始 (終了は ^G): "
 
-#: gui/curs_lib.c:557
+#: gui/curs_lib.c:555
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr "文字 = %s, 8進 = %o, 10進 = %d\n"
 
-#: gui/opcodes.h:41
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
+#. Compose Dialog: <op_attachment_attach_file>
+#: gui/opcodes.h:43
 #, fuzzy
 msgid "attach files to this message"
 msgstr "このメッセージにファイルを添付"
 
-#: gui/opcodes.h:42
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
+#. Compose Dialog: <op_attachment_attach_message>
+#: gui/opcodes.h:46
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "このメッセージにメッセージを添付"
 
-#: gui/opcodes.h:43
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
+#. Compose Dialog: <op_attachment_attach_message>
+#: gui/opcodes.h:49
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "このメッセージにファイルを添付"
 
-#: gui/opcodes.h:44
+#. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
+#. Attach Dialog: <op_attachment_collapse>
+#: gui/opcodes.h:52
 msgid "toggle display of subparts"
 msgstr "副パートの表示を切替"
 
-#: gui/opcodes.h:45 gui/opcodes.h:46 gui/opcodes.h:119
+#. L10N: Help screen description for OP_ATTACHMENT_DELETE
+#. Attach Dialog: <op_attachment_delete>
+#. L10N: Help screen description for OP_ATTACHMENT_DETACH
+#. Compose Dialog: <op_attachment_detach>
+#. L10N: Help screen description for OP_DELETE
+#. Alias Dialog: <op_delete>
+#. Index: <op_delete>
+#. Postponed Dialog: <op_delete>
+#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:274
 msgid "delete the current entry"
 msgstr "現在のエントリを削除"
 
-#: gui/opcodes.h:47
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
+#. Compose Dialog: <op_attachment_edit_content_id>
+#: gui/opcodes.h:61
 #, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
 msgstr "添付するファイルを編集"
 
-#: gui/opcodes.h:48
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
+#. Compose Dialog: <op_attachment_edit_description>
+#: gui/opcodes.h:64
 msgid "edit attachment description"
 msgstr "添付ファイルの内容説明文を編集"
 
-#: gui/opcodes.h:49
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
+#. Compose Dialog: <op_attachment_edit_encoding>
+#: gui/opcodes.h:67
 msgid "edit attachment transfer-encoding"
 msgstr "添付ファイルの content-trasfer-encoding を編集"
 
-#: gui/opcodes.h:50
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
+#. Compose Dialog: <op_attachment_edit_language>
+#: gui/opcodes.h:70
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "添付するファイルを編集"
 
-#: gui/opcodes.h:51
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
+#. Compose Dialog: <op_attachment_edit_mime>
+#: gui/opcodes.h:73
 msgid "edit attachment using mailcap entry"
 msgstr "添付ファイルを mailcap エントリを使って編集"
 
-#: gui/opcodes.h:52
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE
+#. Attach Dialog: <op_attachment_edit_type>
+#. Compose Dialog: <op_attachment_edit_type>
+#. Index: <op_attachment_edit_type>
+#: gui/opcodes.h:78
 msgid "edit attachment content type"
 msgstr "添付ファイルの content-type を編集"
 
-#: gui/opcodes.h:53
+#. L10N: Help screen description for OP_ATTACHMENT_FILTER
+#. Compose Dialog: <op_attachment_filter>
+#: gui/opcodes.h:81
 msgid "filter attachment through a shell command"
 msgstr "シェルコマンドを通して添付ファイルを表示"
 
-#: gui/opcodes.h:54
+#. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
+#. Compose Dialog: <op_attachment_get_attachment>
+#: gui/opcodes.h:84
 msgid "get a temporary copy of an attachment"
 msgstr "添付ファイルの一時的なコピーを作成"
 
-#: gui/opcodes.h:55
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
+#. Compose Dialog: <op_attachment_group_alts>
+#: gui/opcodes.h:87
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
-#: gui/opcodes.h:56
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL
+#. Compose Dialog: <op_attachment_group_lingual>
+#: gui/opcodes.h:90
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
-#: gui/opcodes.h:57
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED
+#. Compose Dialog: <op_attachment_group_related>
+#: gui/opcodes.h:93
 #, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
 msgstr "添付ファイルを保存した。"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: gui/opcodes.h:58
+#. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
+#. Compose Dialog: <op_attachment_move_down>
+#: gui/opcodes.h:96
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "添付ファイルを別の名前で送る: "
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: gui/opcodes.h:59
+#. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
+#. Compose Dialog: <op_attachment_move_up>
+#: gui/opcodes.h:99
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "添付ファイルを別の名前で送る: "
 
-#: gui/opcodes.h:60
+#. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
+#. Compose Dialog: <op_attachment_new_mime>
+#: gui/opcodes.h:102
 msgid "compose new attachment using mailcap entry"
 msgstr "mailcap エントリを使って添付ファイルを作成"
 
-#: gui/opcodes.h:61 gui/opcodes.h:242
+#. L10N: Help screen description for OP_ATTACHMENT_PIPE
+#. L10N: Help screen description for OP_PIPE
+#. Compose Dialog: <op_attachment_filter>
+#. Attach Dialog: <op_attachment_pipe>
+#. Index: <op_pipe>
+#: gui/opcodes.h:104 gui/opcodes.h:666
 msgid "pipe message/attachment to a shell command"
 msgstr "メッセージ/添付ファイルをコマンドにパイプ"
 
-#: gui/opcodes.h:62 gui/opcodes.h:247
+#. L10N: Help screen description for OP_ATTACHMENT_PRINT
+#. Attach Dialog: <op_attachment_print>
+#. Compose Dialog: <op_attachment_print>
+#. L10N: Help screen description for OP_PRINT
+#. Index: <op_print>
+#: gui/opcodes.h:108 gui/opcodes.h:684
 msgid "print the current entry"
 msgstr "現在のエントリを印刷"
 
 # OP_COMPOSE_RENAME_ATTACHMENT つまり名前を変えるとき
-#: gui/opcodes.h:63
+#. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
+#. Compose Dialog: <op_attachment_rename_attachment>
+#: gui/opcodes.h:111
 msgid "send attachment with a different name"
 msgstr "添付ファイルを別の名前で送る"
 
-#: gui/opcodes.h:64 gui/opcodes.h:260
+#. L10N: Help screen description for OP_ATTACHMENT_SAVE
+#. Attach Dialog: <op_attachment_save>
+#. Compose Dialog: <op_attachment_save>
+#. L10N: Help screen description for OP_SAVE
+#. Index: <op_save>
+#. Pager: <op_save>
+#: gui/opcodes.h:115 gui/opcodes.h:729
 msgid "save message/attachment to a mailbox/file"
 msgstr "メール/添付ファイルをボックス/ファイルに保存"
 
-#: gui/opcodes.h:65
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
+#. Compose Dialog: <op_attachment_toggle_disposition>
+#: gui/opcodes.h:118
 msgid "toggle disposition between inline/attachment"
 msgstr "disposition の inline/attachment を切替"
 
-#: gui/opcodes.h:66
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
+#. Compose Dialog: <op_attachment_toggle_recode>
+#: gui/opcodes.h:121
 msgid "toggle recoding of this attachment"
 msgstr "この添付ファイルのコード変換の有無を切替"
 
-#: gui/opcodes.h:67
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
+#. Compose Dialog: <op_attachment_toggle_unlink>
+#: gui/opcodes.h:124
 msgid "toggle whether to delete file after sending it"
 msgstr "送信後にファイルを消すかどうかを切替"
 
-#: gui/opcodes.h:68 gui/opcodes.h:282
+#. L10N: Help screen description for OP_ATTACHMENT_UNDELETE
+#. Attach Dialog: <op_attachment_undelete>
+#. L10N: Help screen description for OP_UNDELETE
+#. Alias Dialog: <op_delete>
+#. Postponed Dialog: <op_delete>
+#. Index: <op_undelete>
+#: gui/opcodes.h:127 gui/opcodes.h:815
 msgid "undelete the current entry"
 msgstr "エントリの削除状態を解除"
 
-#: gui/opcodes.h:69
+#. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
+#. Compose Dialog: <op_attachment_ungroup>
+#: gui/opcodes.h:130
 msgid "ungroup 'multipart' attachment"
 msgstr ""
 
-#: gui/opcodes.h:70
+#. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
+#. Compose Dialog: <op_attachment_update_encoding>
+#: gui/opcodes.h:133
 msgid "update an attachment's encoding info"
 msgstr "添付ファイルのエンコード情報を更新"
 
-#: gui/opcodes.h:71
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW
+#. Attach Dialog: <op_attachment_view>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:137
 msgid "view attachment using mailcap entry if necessary"
 msgstr "添付ファイル閲覧(必要ならmailcapエントリ使用)"
 
-#: gui/opcodes.h:72
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
+#. Attach Dialog: <op_attachment_view_mailcap>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:141
 msgid "force viewing of attachment using mailcap"
 msgstr "mailcap を使って添付ファイルを強制表示"
 
-#: gui/opcodes.h:73
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
+#. Attach Dialog: <op_attachment_view_pager>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:145
 #, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "mailcap を使って添付ファイルを強制表示"
 
-#: gui/opcodes.h:74
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
+#. Attach Dialog: <op_attachment_view_text>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:149
 msgid "view attachment as text"
 msgstr "添付ファイルをテキストとして表示"
 
-#: gui/opcodes.h:78
+#. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
+#. Index: <op_autocrypt_acct_menu>
+#: gui/opcodes.h:155
 msgid "manage autocrypt accounts"
 msgstr "autocrypt アカウントを管理"
 
-#: gui/opcodes.h:79
+#. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
+#. Autocrypt Dialog: <op_autocrypt_create_acct>
+#: gui/opcodes.h:158
 msgid "create a new autocrypt account"
 msgstr "autocrypt アカウントを新規作成"
 
-#: gui/opcodes.h:80
+#. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
+#. Autocrypt Dialog: <op_autocrypt_delete_acct>
+#: gui/opcodes.h:161
 msgid "delete the current account"
 msgstr "現在のアカウントを削除"
 
-#: gui/opcodes.h:81
+#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
+#. Autocrypt Dialog: <op_autocrypt_toggle_active>
+#: gui/opcodes.h:164
 msgid "toggle the current account active/inactive"
 msgstr "現在のアカウントを有効/無効に切替"
 
-#: gui/opcodes.h:82
+#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
+#. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
+#: gui/opcodes.h:167
 msgid "toggle the current account prefer-encrypt flag"
 msgstr "現在のアカウントの prefer-encrypt フラグを切替"
 
-#: gui/opcodes.h:83
+#. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
+#. Envelope Window: <op_compose_autocrypt_menu>
+#: gui/opcodes.h:170
 msgid "show autocrypt compose menu options"
 msgstr "autocrypt オプションを表示"
 
-#: gui/opcodes.h:89
+#. L10N: Help screen description for OP_ALIAS_DIALOG
+#. Index: <op_alias_dialog>
+#: gui/opcodes.h:178
 #, fuzzy
 msgid "open the aliases dialog"
 msgstr "すでに最後のメッセージ。"
 
-#: gui/opcodes.h:90
+#. L10N: Help screen description for OP_BOTTOM_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:181
 msgid "move to the bottom of the page"
 msgstr "ページの一番下に移動"
 
-#: gui/opcodes.h:91
+#. L10N: Help screen description for OP_BOUNCE_MESSAGE
+#. Attach Dialog: <op_bounce_message>
+#. Index: <op_bounce_message>
+#: gui/opcodes.h:185
 msgid "remail a message to another user"
 msgstr "メッセージを他のユーザに再送"
 
-#: gui/opcodes.h:92
+#. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:188
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: gui/opcodes.h:93
+#. L10N: Help screen description for OP_BROWSER_NEW_FILE
+#. Browser: <op_browser_new_file>
+#: gui/opcodes.h:191
 msgid "select a new file in this directory"
 msgstr "このディレクトリ中の新しいファイルを選択"
 
-#: gui/opcodes.h:94
+#. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
+#. Browser: <op_browser_subscribe>
+#: gui/opcodes.h:194
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "現在のメールボックスを購読(IMAPのみ)"
 
-#: gui/opcodes.h:95
+#. L10N: Help screen description for OP_BROWSER_TELL
+#. Browser: <op_browser_tell>
+#: gui/opcodes.h:197
 msgid "display the currently selected file's name"
 msgstr "選択中のファイル名を表示"
 
-#: gui/opcodes.h:96
+#. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
+#. Browser: <op_browser_toggle_lsub>
+#: gui/opcodes.h:200
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "「全ボックス/購読中のみ」閲覧切替(IMAPのみ)"
 
-#: gui/opcodes.h:97
+#. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
+#. Browser: <op_browser_subscribe>
+#: gui/opcodes.h:203
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "現在のメールボックスの購読を中止(IMAPのみ)"
 
-#: gui/opcodes.h:98
+#. L10N: Help screen description for OP_BROWSER_VIEW_FILE
+#. Browser: <op_browser_view_file>
+#: gui/opcodes.h:206
 msgid "view file"
 msgstr "ファイルを閲覧"
 
-#: gui/opcodes.h:99
+#. L10N: Help screen description for OP_CATCHUP
+#. Browser: <op_catchup>
+#. Index: <op_catchup>
+#: gui/opcodes.h:210
 msgid "mark all articles in newsgroup as read"
 msgstr "ニュースグループ内の記事を全て既読にする"
 
-#: gui/opcodes.h:100
+#. L10N: Help screen description for OP_CHANGE_DIRECTORY
+#. Browser: <op_change_directory>
+#: gui/opcodes.h:213
 msgid "change directories"
 msgstr "ディレクトリを変更"
 
-#: gui/opcodes.h:101
+#. L10N: Help screen description for OP_CHECK_NEW
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:216
 msgid "check mailboxes for new mail"
 msgstr "メールボックスに新着メールがあるか検査"
 
 # $mail_check_stats 変数と同様のチェックを
 # 手動でする <check-stats> コマンドの説明。
 # 未読、フラグ、合計のメッセージ数をチェック
-#: gui/opcodes.h:102
+#. L10N: Help screen description for OP_CHECK_STATS
+#. Global: <op_check_stats>
+#: gui/opcodes.h:219
 msgid "calculate message statistics for all mailboxes"
 msgstr "すべてのメールボックスのメッセージ数を確認"
 
-#: gui/opcodes.h:103
+#. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
+#. Compose Dialog: <op_compose_edit_file>
+#: gui/opcodes.h:222
 msgid "edit the file to be attached"
 msgstr "添付するファイルを編集"
 
-#: gui/opcodes.h:104
+#. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
+#. Compose Dialog: <op_compose_edit_message>
+#: gui/opcodes.h:225
 msgid "edit the message"
 msgstr "メッセージを編集"
 
-#: gui/opcodes.h:105
+#. L10N: Help screen description for OP_COMPOSE_ISPELL
+#. Compose Dialog: <op_compose_ispell>
+#: gui/opcodes.h:228
 msgid "run ispell on the message"
 msgstr "メッセージに ispell を実行"
 
-#: gui/opcodes.h:106
+#. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
+#. Compose Dialog: <op_compose_postpone_message>
+#: gui/opcodes.h:231
 msgid "save this message to send later"
 msgstr "このメッセージを「書きかけ」にする"
 
-#: gui/opcodes.h:107
+#. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
+#. Compose Dialog: <op_compose_rename_file>
+#: gui/opcodes.h:234
 msgid "rename/move an attached file"
 msgstr "添付ファイルをリネーム(移動)"
 
-#: gui/opcodes.h:108
+#. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
+#. Compose Dialog: <op_compose_send_message>
+#: gui/opcodes.h:237
 msgid "send the message"
 msgstr "メッセージを送信"
 
-#: gui/opcodes.h:109
+#. L10N: Help screen description for OP_COMPOSE_TO_SENDER
+#. Attach Dialog: <op_compose_to_sender>
+#. Index: <op_compose_to_sender>
+#: gui/opcodes.h:241
 msgid "compose new message to the current message sender"
 msgstr "現在のメッセージの送信者に新規メッセージを作成"
 
-#: gui/opcodes.h:110
+#. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
+#. Compose Dialog: <op_compose_write_message>
+#: gui/opcodes.h:244
 msgid "write the message to a folder"
 msgstr "フォルダにメッセージを書き込む"
 
-#: gui/opcodes.h:111
+#. L10N: Help screen description for OP_COPY_MESSAGE
+#. Index: <op_save>
+#: gui/opcodes.h:247
 msgid "copy a message to a file/mailbox"
 msgstr "メッセージをファイルやメールボックスにコピー"
 
-#: gui/opcodes.h:112
+#. L10N: Help screen description for OP_CREATE_ALIAS
+#. Alias Dialog: <op_create_alias>
+#. Index: <op_create_alias>
+#: gui/opcodes.h:251
 msgid "create an alias from a message sender"
 msgstr "メッセージの送信者から別名を作成"
 
-#: gui/opcodes.h:113
+#. L10N: Help screen description for OP_CREATE_MAILBOX
+#. Browser: <op_create_mailbox>
+#: gui/opcodes.h:254
 msgid "create a new mailbox (IMAP only)"
 msgstr "新しいメールボックスを作成(IMAPのみ)"
 
-#: gui/opcodes.h:114
+#. L10N: Help screen description for OP_CURRENT_BOTTOM
+#. Menu: <menu_movement>
+#: gui/opcodes.h:257
 msgid "move entry to bottom of screen"
 msgstr "スクリーンの一番下にエントリ移動"
 
-#: gui/opcodes.h:115
+#. L10N: Help screen description for OP_CURRENT_MIDDLE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:260
 msgid "move entry to middle of screen"
 msgstr "スクリーンの中央にエントリ移動"
 
-#: gui/opcodes.h:116
+#. L10N: Help screen description for OP_CURRENT_TOP
+#. Menu: <menu_movement>
+#: gui/opcodes.h:263
 msgid "move entry to top of screen"
 msgstr "スクリーンの一番上にエントリ移動"
 
-#: gui/opcodes.h:117
+#. L10N: Help screen description for OP_DECODE_COPY
+#. Index: <op_save>
+#: gui/opcodes.h:266
 msgid "make decoded (text/plain) copy"
 msgstr "text/plain にデコードしたコピーを作成"
 
-#: gui/opcodes.h:118
+#. L10N: Help screen description for OP_DECODE_SAVE
+#. Index: <op_save>
+#: gui/opcodes.h:269
 msgid "make decoded copy (text/plain) and delete"
 msgstr "text/plain にデコードしたコピーを作成し削除"
 
-#: gui/opcodes.h:120
+#. L10N: Help screen description for OP_DELETE_MAILBOX
+#. Browser: <op_delete_mailbox>
+#: gui/opcodes.h:277
 msgid "delete the current mailbox (IMAP only)"
 msgstr "現在のメールボックスを削除(IMAPのみ)"
 
-#: gui/opcodes.h:121
+#. L10N: Help screen description for OP_DELETE_SUBTHREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:280
 msgid "delete all messages in subthread"
 msgstr "副スレッドのメッセージをすべて削除"
 
-#: gui/opcodes.h:122
+#. L10N: Help screen description for OP_DELETE_THREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:283
 msgid "delete all messages in thread"
 msgstr "スレッドのメッセージをすべて削除"
 
-#: gui/opcodes.h:123
+#. L10N: Help screen description for OP_DESCEND_DIRECTORY
+#. Browser: <op_generic_select_entry>
+#: gui/opcodes.h:286
 msgid "descend into a directory"
 msgstr "ディレクトリに入る"
 
-#: gui/opcodes.h:124
+#. L10N: Help screen description for OP_DISPLAY_ADDRESS
+#. Index: <op_display_address>
+#: gui/opcodes.h:289
 msgid "display full address of sender"
 msgstr "送信者の完全なアドレスを表示"
 
-#: gui/opcodes.h:125
+#. L10N: Help screen description for OP_DISPLAY_HEADERS
+#. Attach Dialog: <op_attachment_view>
+#. Compose Dialog: <op_display_headers>
+#. Index: <op_display_message>
+#: gui/opcodes.h:294
 msgid "display message and toggle header weeding"
 msgstr "メッセージを表示し、ヘッダ抑止を切替"
 
-#: gui/opcodes.h:126
+#. L10N: Help screen description for OP_DISPLAY_MESSAGE
+#. Index: <op_display_message>
+#: gui/opcodes.h:297
 msgid "display a message"
 msgstr "メッセージを表示"
 
-#: gui/opcodes.h:127
+#. L10N: Help screen description for OP_EDITOR_BACKSPACE
+#. Text Entry: <op_editor_backspace>
+#: gui/opcodes.h:300
 msgid "delete the char in front of the cursor"
 msgstr "カーソルの前の文字を削除"
 
-#: gui/opcodes.h:128
+#. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
+#. Text Entry: <op_editor_backward_char>
+#: gui/opcodes.h:303
 msgid "move the cursor one character to the left"
 msgstr "カーソルを一文字左に移動"
 
-#: gui/opcodes.h:129
+#. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
+#. Text Entry: <op_editor_backward_word>
+#: gui/opcodes.h:306
 msgid "move the cursor to the beginning of the word"
 msgstr "カーソルを単語の先頭に移動"
 
-#: gui/opcodes.h:130
+#. L10N: Help screen description for OP_EDITOR_BOL
+#. Text Entry: <op_editor_bol>
+#: gui/opcodes.h:309
 msgid "jump to the beginning of the line"
 msgstr "行頭に移動"
 
-#: gui/opcodes.h:131
+#. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:312
 msgid "capitalize the word"
 msgstr "単語の先頭文字を大文字化"
 
-#: gui/opcodes.h:132
+#. L10N: Help screen description for OP_EDITOR_COMPLETE
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:315
 msgid "complete filename or alias"
 msgstr "ファイル名や別名を補完"
 
-#: gui/opcodes.h:133
+#. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:318
 msgid "complete address with query"
 msgstr "問い合わせによりアドレスを補完"
 
-#: gui/opcodes.h:134
+#. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
+#. Text Entry: <op_editor_delete_char>
+#: gui/opcodes.h:321
 msgid "delete the char under the cursor"
 msgstr "カーソルの下の字を削除"
 
-#: gui/opcodes.h:135
+#. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:324
 msgid "convert the word to lower case"
 msgstr "単語を小文字化"
 
-#: gui/opcodes.h:136
+#. L10N: Help screen description for OP_EDITOR_EOL
+#. Text Entry: <op_editor_eol>
+#: gui/opcodes.h:327
 msgid "jump to the end of the line"
 msgstr "行末に移動"
 
-#: gui/opcodes.h:137
+#. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
+#. Text Entry: <op_editor_forward_char>
+#: gui/opcodes.h:330
 msgid "move the cursor one character to the right"
 msgstr "カーソルを一文字右に移動"
 
-#: gui/opcodes.h:138
+#. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
+#. Text Entry: <op_editor_forward_word>
+#: gui/opcodes.h:333
 msgid "move the cursor to the end of the word"
 msgstr "カーソルを単語の最後に移動"
 
-#: gui/opcodes.h:139
+#. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
+#. Text Entry: <op_editor_history_down>
+#: gui/opcodes.h:336
 msgid "scroll down through the history list"
 msgstr "履歴リストを下にスクロール"
 
-#: gui/opcodes.h:140
+#. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
+#. Text Entry: <op_editor_history_search>
+#: gui/opcodes.h:339
 msgid "search through the history list"
 msgstr "履歴リストを検索"
 
-#: gui/opcodes.h:141
+#. L10N: Help screen description for OP_EDITOR_HISTORY_UP
+#. Text Entry: <op_editor_history_up>
+#: gui/opcodes.h:342
 msgid "scroll up through the history list"
 msgstr "履歴リストを上にスクロール"
 
-#: gui/opcodes.h:142
+#. L10N: Help screen description for OP_EDITOR_KILL_EOL
+#. Text Entry: <op_editor_kill_eol>
+#: gui/opcodes.h:345
 msgid "delete chars from cursor to end of line"
 msgstr "カーソルから行末まで削除"
 
-#: gui/opcodes.h:143
+#. L10N: Help screen description for OP_EDITOR_KILL_EOW
+#. Text Entry: <op_editor_kill_eow>
+#: gui/opcodes.h:348
 msgid "delete chars from the cursor to the end of the word"
 msgstr "カーソルから単語末まで削除"
 
-#: gui/opcodes.h:144
+#. L10N: Help screen description for OP_EDITOR_KILL_LINE
+#. Text Entry: <op_editor_kill_line>
+#: gui/opcodes.h:351
 #, fuzzy
 msgid "delete chars from cursor to beginning the line"
 msgstr "カーソルから行末まで削除"
 
-#: gui/opcodes.h:145
+#. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
+#. Text Entry: <op_editor_kill_whole_line>
+#: gui/opcodes.h:354
 msgid "delete all chars on the line"
 msgstr "その行の文字をすべて削除"
 
-#: gui/opcodes.h:146
+#. L10N: Help screen description for OP_EDITOR_KILL_WORD
+#. Text Entry: <op_editor_kill_word>
+#: gui/opcodes.h:357
 msgid "delete the word in front of the cursor"
 msgstr "カーソルの前方の単語を削除"
 
-#: gui/opcodes.h:147
+#. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:360
 msgid "cycle among incoming mailboxes"
 msgstr "到着用メールボックスを巡回"
 
-#: gui/opcodes.h:148
+#. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
+#. Text Entry: <op_editor_quote_char>
+#: gui/opcodes.h:363
 msgid "quote the next typed key"
 msgstr "次にタイプする文字を引用符でくくる"
 
-#: gui/opcodes.h:149
+#. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
+#. Text Entry: <op_editor_transpose_chars>
+#: gui/opcodes.h:366
 msgid "transpose character under cursor with previous"
 msgstr "カーソル位置の文字とその前の文字とを入れ換え"
 
-#: gui/opcodes.h:150
+#. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:369
 msgid "convert the word to upper case"
 msgstr "単語を大文字化"
 
-#: gui/opcodes.h:151
+#. L10N: Help screen description for OP_EDIT_LABEL
+#. Index: <op_edit_label>
+#: gui/opcodes.h:372
 msgid "add, change, or delete a message's label"
 msgstr "メッセージのラベルを追加、編集、削除"
 
-#: gui/opcodes.h:152
+#. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:375
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "元のメッセージを編集、読み取り専用の場合は閲覧のみ"
 
-#: gui/opcodes.h:153
+#. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:378
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
-#: gui/opcodes.h:154
+#. L10N: Help screen description for OP_END_COND
+#. Index: <op_end_cond>
+#: gui/opcodes.h:381
 msgid "end of conditional execution (noop)"
 msgstr "条件付き実行の終了 (何もしない)"
 
-#: gui/opcodes.h:155
+#. L10N: Help screen description for OP_ENTER_COMMAND
+#. Global: <op_enter_command>
+#: gui/opcodes.h:384
 msgid "enter a neomuttrc command"
 msgstr "neomuttrc のコマンドを入力"
 
-#: gui/opcodes.h:156
+#. L10N: Help screen description for OP_ENTER_MASK
+#. Browser: <op_enter_mask>
+#: gui/opcodes.h:387
 msgid "enter a file mask"
 msgstr "ファイルマスクを入力"
 
-#: gui/opcodes.h:157
+#. L10N: Help screen description for OP_EXIT
+#. Alias Dialog: <op_exit>
+#. Attach Dialog: <op_exit>
+#. Autocrypt Dialog: <op_exit>
+#. Browser: <op_exit>
+#. Compose Dialog: <op_exit>
+#. GPGME Key Selection Dialog: <op_exit>
+#. Index: <op_exit>
+#. Mixmaster Dialog: <op_exit>
+#. Pager: <op_exit>
+#. PGP Key Selection Dialog: <op_exit>
+#. Postponed Dialog: <op_exit>
+#. Smime Key Selection Dialog: <op_exit>
+#: gui/opcodes.h:401
 msgid "exit this menu"
 msgstr "このメニューを終了"
 
-#: gui/opcodes.h:158
+#. L10N: Help screen description for OP_FIRST_ENTRY
+#. Menu: <menu_movement>
+#: gui/opcodes.h:404
 msgid "move to the first entry"
 msgstr "最初のエントリに移動"
 
-#: gui/opcodes.h:159
+#. L10N: Help screen description for OP_FLAG_MESSAGE
+#. Index: <op_flag_message>
+#: gui/opcodes.h:407
 msgid "toggle a message's 'important' flag"
 msgstr "「重要」フラグの切替"
 
-#: gui/opcodes.h:160
+#. L10N: Help screen description for OP_FOLLOWUP
+#. Attach Dialog: <op_followup>
+#. Index: <op_post>
+#: gui/opcodes.h:411
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "%s%s へのフォローアップ?"
 
-#: gui/opcodes.h:161
+#. L10N: Help screen description for OP_FORWARD_MESSAGE
+#. Attach Dialog: <op_forward_message>
+#. Index: <op_forward_message>
+#: gui/opcodes.h:415
 msgid "forward a message with comments"
 msgstr "コメント付きでメッセージを転送"
 
-#: gui/opcodes.h:162
+#. L10N: Help screen description for OP_FORWARD_TO_GROUP
+#. Attach Dialog: <op_forward_to_group>
+#. Index: <op_post>
+#: gui/opcodes.h:419
 msgid "forward to newsgroup"
 msgstr "ニュースグループへ転送"
 
-#: gui/opcodes.h:163
+#. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
+#. Alias Dialog: <op_generic_select_entry>
+#. Browser: <op_generic_select_entry>
+#. GPGME Key Selection Dialog: <op_generic_select_entry>
+#. History Dialog: <op_generic_select_entry>
+#. Pattern Dialog: <op_generic_select_entry>
+#. PGP Key Selection Dialog: <op_generic_select_entry>
+#. Postponed Dialog: <op_generic_select_entry>
+#. Smime Key Selection Dialog: <op_generic_select_entry>
+#. Mixmaster Dialog: <op_mix_append>
+#: gui/opcodes.h:430
 msgid "select the current entry"
 msgstr "現在のエントリを選択"
 
-#: gui/opcodes.h:164
+#. L10N: Help screen description for OP_GET_CHILDREN
+#. Index: <op_get_children>
+#: gui/opcodes.h:433
 msgid "get all children of the current message"
 msgstr "全ての子メッセージを取得"
 
-#: gui/opcodes.h:165
+#. L10N: Help screen description for OP_GET_MESSAGE
+#. Index: <op_get_message>
+#: gui/opcodes.h:436
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "メッセージをヘッダごと編集"
 
-#: gui/opcodes.h:166
+#. L10N: Help screen description for OP_GET_PARENT
+#. Index: <op_get_message>
+#: gui/opcodes.h:439
 msgid "get parent of the current message"
 msgstr "親メッセージを取得"
 
-#: gui/opcodes.h:167
+#. L10N: Help screen description for OP_GOTO_PARENT
+#. Browser: <op_change_directory>
+#: gui/opcodes.h:442
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s はディレクトリではない。"
 
-#: gui/opcodes.h:168
+#. L10N: Help screen description for OP_GROUP_CHAT_REPLY
+#. Index: <op_group_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:446
 msgid "reply to all recipients preserving To/Cc"
 msgstr "すべての受信者に返信 (Cc はそのまま)"
 
-#: gui/opcodes.h:169
+#. L10N: Help screen description for OP_GROUP_REPLY
+#. Index: <op_group_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:450
 msgid "reply to all recipients"
 msgstr "すべての受信者に返信"
 
-#: gui/opcodes.h:170
+#. L10N: Help screen description for OP_HALF_DOWN
+#. Menu: <menu_movement>
+#. Pager: <op_pager_half_down>
+#: gui/opcodes.h:454
 msgid "scroll down 1/2 page"
 msgstr "半ページ下にスクロール"
 
-#: gui/opcodes.h:171
+#. L10N: Help screen description for OP_HALF_UP
+#. Menu: <menu_movement>
+#. Pager: <op_pager_half_up>
+#: gui/opcodes.h:458
 msgid "scroll up 1/2 page"
 msgstr "半ページ上にスクロール"
 
-#: gui/opcodes.h:172
+#. L10N: Help screen description for OP_HELP
+#. Text Entry: <op_help>
+#. Menu: <op_help>
+#. Pager: <op_help>
+#: gui/opcodes.h:463
 msgid "this screen"
 msgstr "この画面"
 
-#: gui/opcodes.h:173 gui/opcodes.h:174 gui/opcodes.h:175 gui/opcodes.h:176
-#: gui/opcodes.h:177 gui/opcodes.h:178 gui/opcodes.h:179 gui/opcodes.h:180
-#: gui/opcodes.h:181 gui/opcodes.h:182
+#. L10N: Help screen description for OP_JUMP
+#. Index: <op_jump>
+#. Menu: <op_jump>
+#: gui/opcodes.h:467 gui/opcodes.h:468 gui/opcodes.h:469 gui/opcodes.h:470
+#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
+#: gui/opcodes.h:475 gui/opcodes.h:476
 msgid "jump to an index number"
 msgstr "インデックス番号に飛ぶ"
 
-#: gui/opcodes.h:183
+#. L10N: Help screen description for OP_LAST_ENTRY
+#. Menu: <menu_movement>
+#: gui/opcodes.h:479
 msgid "move to the last entry"
 msgstr "最後のエントリに移動"
 
-#: gui/opcodes.h:184
+#. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
+#. Index: <op_main_limit>
+#: gui/opcodes.h:482
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "現在のスレッドにタグを付ける"
 
-#: gui/opcodes.h:185
+#. L10N: Help screen description for OP_LIST_REPLY
+#. Index: <op_list_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:486
 msgid "reply to specified mailing list"
 msgstr "指定済みメーリングリスト宛てに返信"
 
-#: gui/opcodes.h:186
+#. L10N: Help screen description for OP_LIST_SUBSCRIBE
+#. Attach Dialog: <op_list_subscribe>
+#. Index: <op_list_subscribe>
+#: gui/opcodes.h:490
 #, fuzzy
 msgid "subscribe to a mailing list"
 msgstr "指定済みメーリングリスト宛てに返信"
 
-#: gui/opcodes.h:187
+#. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
+#. Attach Dialog: <op_list_unsubscribe>
+#. Index: <op_list_unsubscribe>
+#: gui/opcodes.h:494
 #, fuzzy
 msgid "unsubscribe from a mailing list"
 msgstr "%s の購読を取り消した"
 
-#: gui/opcodes.h:188
+#. L10N: Help screen description for OP_LOAD_ACTIVE
+#. Browser: <op_load_active>
+#: gui/opcodes.h:497
 msgid "load list of all newsgroups from NNTP server"
 msgstr "NNTPサーバから全てのニュースグループ一覧を取得"
 
-#: gui/opcodes.h:189
+#. L10N: Help screen description for OP_MACRO
+#: gui/opcodes.h:499
 msgid "execute a macro"
 msgstr "マクロを実行"
 
-#: gui/opcodes.h:190
+#. L10N: Help screen description for OP_MAIL
+#. Alias Dialog: <op_generic_select_entry>
+#. Index: <op_mail>
+#: gui/opcodes.h:503
 msgid "compose a new mail message"
 msgstr "新規メッセージを作成"
 
-#: gui/opcodes.h:191
+#. L10N: Help screen description for OP_MAILBOX_LIST
+#. Browser: <op_mailbox_list>
+#. Index: <op_mailbox_list>
+#: gui/opcodes.h:507
 msgid "list mailboxes with new mail"
 msgstr "新着メールのあるメールボックスを一覧表示"
 
-#: gui/opcodes.h:192
+#. L10N: Help screen description for OP_MAIN_BREAK_THREAD
+#. Index: <op_main_break_thread>
+#: gui/opcodes.h:510
 msgid "break the thread in two"
 msgstr "スレッドをはずす"
 
-#: gui/opcodes.h:193
+#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:513
 msgid "open a different folder"
 msgstr "別のフォルダをオープン"
 
-#: gui/opcodes.h:194
+#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:516
 msgid "open a different folder in read only mode"
 msgstr "読み出し専用モードで別のフォルダをオープン"
 
-#: gui/opcodes.h:195
+#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
+#. Index: <op_main_change_group>
+#: gui/opcodes.h:519
 msgid "open a different newsgroup"
 msgstr "別のニュースグループをオープン"
 
-#: gui/opcodes.h:196
+#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
+#. Index: <op_main_change_group>
+#: gui/opcodes.h:522
 msgid "open a different newsgroup in read only mode"
 msgstr "読み出し専用モードで別のニュースグループをオープン"
 
-#: gui/opcodes.h:197
+#. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
+#. Index: <op_main_set_flag>
+#: gui/opcodes.h:525
 msgid "clear a status flag from a message"
 msgstr "メッセージのステータスフラグを解除"
 
-#: gui/opcodes.h:198
+#. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
+#. Index: <op_main_collapse_all>
+#: gui/opcodes.h:528
 msgid "collapse/uncollapse all threads"
 msgstr "すべてのスレッドを展開/非展開"
 
-#: gui/opcodes.h:199
+#. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
+#. Index: <op_main_collapse_thread>
+#: gui/opcodes.h:531
 msgid "collapse/uncollapse current thread"
 msgstr "現在のスレッドを展開/非展開"
 
-#: gui/opcodes.h:200
+#. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
+#. Index: <op_main_delete_pattern>
+#: gui/opcodes.h:534
 #, fuzzy
 msgid "delete non-hidden messages matching a pattern"
 msgstr "パターンに一致したメッセージを削除"
 
-#: gui/opcodes.h:201
+#. L10N: Help screen description for OP_MAIN_FETCH_MAIL
+#. Index: <op_main_fetch_mail>
+#: gui/opcodes.h:537
 msgid "retrieve mail from POP server"
 msgstr "POP サーバからメールを取得"
 
-#: gui/opcodes.h:202
+#. L10N: Help screen description for OP_MAIN_IMAP_FETCH
+#. Index: <op_main_imap_fetch>
+#: gui/opcodes.h:540
 msgid "force retrieval of mail from IMAP server"
 msgstr "IMAP サーバからメールを取得"
 
-#: gui/opcodes.h:203
+#. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
+#. Index: <op_main_imap_logout_all>
+#: gui/opcodes.h:543
 msgid "logout from all IMAP servers"
 msgstr "すべての IMAP サーバからログアウト"
 
-#: gui/opcodes.h:204
+#. L10N: Help screen description for OP_MAIN_LIMIT
+#. Alias Dialog: <op_main_limit>
+#. Index: <op_main_limit>
+#: gui/opcodes.h:547
 msgid "show only messages matching a pattern"
 msgstr "パターンに一致したメッセージだけ表示"
 
-#: gui/opcodes.h:205
+#. L10N: Help screen description for OP_MAIN_LINK_THREADS
+#. Index: <op_main_link_threads>
+#: gui/opcodes.h:550
 msgid "link tagged message to the current one"
 msgstr "タグ付きメッセージを現在位置につなぐ"
 
-#: gui/opcodes.h:206
+#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
+#. Index: <op_main_modify_tags>
+#: gui/opcodes.h:553
 msgid "modify (notmuch/imap) tags"
 msgstr "(notmuch/imap) タグを変更"
 
-#: gui/opcodes.h:207
+#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
+#. Index: <op_main_modify_tags>
+#: gui/opcodes.h:556
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "すでに最初のメッセージ。"
 
-#: gui/opcodes.h:208
+#. L10N: Help screen description for OP_MAIN_NEXT_NEW
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:559
 msgid "jump to the next new message"
 msgstr "次の新着メッセージに移動"
 
-#: gui/opcodes.h:209
+#. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:562
 msgid "jump to the next new or unread message"
 msgstr "次の新着または未読のメッセージへ移動"
 
-#: gui/opcodes.h:210
+#. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:565
 msgid "jump to the next subthread"
 msgstr "次のサブスレッドに移動"
 
-#: gui/opcodes.h:211
+#. L10N: Help screen description for OP_MAIN_NEXT_THREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:568
 msgid "jump to the next thread"
 msgstr "次のスレッドに移動"
 
-#: gui/opcodes.h:212
+#. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
+#. Index: <op_main_next_undeleted>
+#: gui/opcodes.h:571
 msgid "move to the next undeleted message"
 msgstr "次の未削除メッセージに移動"
 
-#: gui/opcodes.h:213
+#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:574
 msgid "jump to the next unread message"
 msgstr "次の未読メッセージへ移動"
 
-#: gui/opcodes.h:214
+#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
+#. Index: <op_main_next_unread_mailbox>
+#: gui/opcodes.h:577
 msgid "open next mailbox with new mail"
 msgstr "新着のある次のメールボックスを開く"
 
-#: gui/opcodes.h:215
+#. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
+#. Index: <op_main_root_message>
+#: gui/opcodes.h:580
 msgid "jump to parent message in thread"
 msgstr "スレッドの親メッセージに移動"
 
-#: gui/opcodes.h:216
+#. L10N: Help screen description for OP_MAIN_PREV_NEW
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:583
 msgid "jump to the previous new message"
 msgstr "前の新着メッセージに移動"
 
-#: gui/opcodes.h:217
+#. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:586
 msgid "jump to the previous new or unread message"
 msgstr "前の新着または未読メッセージに移動"
 
-#: gui/opcodes.h:218
+#. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:589
 msgid "jump to previous subthread"
 msgstr "前のサブスレッドに移動"
 
-#: gui/opcodes.h:219
+#. L10N: Help screen description for OP_MAIN_PREV_THREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:592
 msgid "jump to previous thread"
 msgstr "前のスレッドに移動"
 
-#: gui/opcodes.h:220
+#. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
+#. Index: <op_main_prev_undeleted>
+#: gui/opcodes.h:595
 msgid "move to the previous undeleted message"
 msgstr "前の未削除メッセージに移動"
 
-#: gui/opcodes.h:221
+#. L10N: Help screen description for OP_MAIN_PREV_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:598
 msgid "jump to the previous unread message"
 msgstr "前の未読メッセージに移動"
 
-#: gui/opcodes.h:222
+#. L10N: Help screen description for OP_MAIN_QUASI_DELETE
+#. Index: <op_main_quasi_delete>
+#: gui/opcodes.h:601
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "NeoMuttから削除, ディスク上のデータは変更しない"
 
-#: gui/opcodes.h:223
+#. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
+#. Index: <op_main_read_thread>
+#: gui/opcodes.h:604
 msgid "mark the current subthread as read"
 msgstr "現在のサブスレッドを既読にする"
 
-#: gui/opcodes.h:224
+#. L10N: Help screen description for OP_MAIN_READ_THREAD
+#. Index: <op_main_read_thread>
+#: gui/opcodes.h:607
 msgid "mark the current thread as read"
 msgstr "現在のスレッドを既読にする"
 
-#: gui/opcodes.h:225
+#. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
+#. Index: <op_main_root_message>
+#: gui/opcodes.h:610
 msgid "jump to root message in thread"
 msgstr "スレッドのルートメッセージに移動"
 
-#: gui/opcodes.h:226
+#. L10N: Help screen description for OP_MAIN_SET_FLAG
+#. Index: <op_main_set_flag>
+#: gui/opcodes.h:613
 msgid "set a status flag on a message"
 msgstr "メッセージにステータスフラグを設定"
 
-#: gui/opcodes.h:227
+#. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
+#. Index: <op_main_show_limit>
+#: gui/opcodes.h:616
 msgid "show currently active limit pattern"
 msgstr "現在有効な制限パターンの値を表示"
 
-#: gui/opcodes.h:228
+#. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
+#. Index: <op_main_sync_folder>
+#: gui/opcodes.h:619
 msgid "save changes to mailbox"
 msgstr "変更をメールボックスに保存"
 
-#: gui/opcodes.h:229
+#. L10N: Help screen description for OP_MAIN_TAG_PATTERN
+#. Index: <op_main_tag_pattern>
+#: gui/opcodes.h:622
 #, fuzzy
 msgid "tag non-hidden messages matching a pattern"
 msgstr "パターンに一致したメッセージにタグを付ける"
 
-#: gui/opcodes.h:230
+#. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
+#. Index: <op_main_undelete_pattern>
+#: gui/opcodes.h:625
 #, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "パターンに一致したメッセージの削除状態を解除"
 
-#: gui/opcodes.h:231
+#. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
+#. Index: <op_main_untag_pattern>
+#: gui/opcodes.h:628
 #, fuzzy
 msgid "untag non-hidden messages matching a pattern"
 msgstr "パターンに一致したメッセージのタグをはずす"
 
-#: gui/opcodes.h:232
+#. L10N: Help screen description for OP_MARK_MSG
+#. Index: <op_mark_msg>
+#: gui/opcodes.h:631
 msgid "create a hotkey macro for the current message"
 msgstr "現在のメッセージに戻るホットキーマクロを作成"
 
-#: gui/opcodes.h:233
+#. L10N: Help screen description for OP_MIDDLE_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:634
 msgid "move to the middle of the page"
 msgstr "ページの中央に移動"
 
-#: gui/opcodes.h:234
+#. L10N: Help screen description for OP_NEXT_ENTRY
+#. Menu: <menu_movement>
+#. Index: <op_next_entry>
+#: gui/opcodes.h:638
 msgid "move to the next entry"
 msgstr "次のエントリに移動"
 
-#: gui/opcodes.h:235
+#. L10N: Help screen description for OP_NEXT_LINE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_next_line>
+#: gui/opcodes.h:642
 msgid "scroll down one line"
 msgstr "一行下にスクロール"
 
-#: gui/opcodes.h:236
+#. L10N: Help screen description for OP_NEXT_PAGE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_next_page>
+#: gui/opcodes.h:646
 msgid "move to the next page"
 msgstr "次ページへ移動"
 
-#: gui/opcodes.h:237
+#. L10N: Help screen description for OP_PAGER_BOTTOM
+#. Pager: <op_pager_bottom>
+#: gui/opcodes.h:649
 msgid "jump to the bottom of the message"
 msgstr "メッセージの一番下に移動"
 
-#: gui/opcodes.h:238
+#. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
+#. Pager: <op_pager_hide_quoted>
+#: gui/opcodes.h:652
 msgid "toggle display of quoted text"
 msgstr "引用文の表示をするかどうか切替"
 
-#: gui/opcodes.h:239
+#. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
+#. Pager: <op_pager_skip_headers>
+#: gui/opcodes.h:655
 #, fuzzy
 msgid "jump to first line after headers"
 msgstr "次のスレッドに移動"
 
-#: gui/opcodes.h:240
+#. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
+#. Pager: <op_pager_skip_quoted>
+#: gui/opcodes.h:658
 msgid "skip beyond quoted text"
 msgstr "引用文をスキップする"
 
-#: gui/opcodes.h:241
+#. L10N: Help screen description for OP_PAGER_TOP
+#. Pager: <op_pager_top>
+#: gui/opcodes.h:661
 msgid "jump to the top of the message"
 msgstr "メッセージの一番上に移動"
 
-#: gui/opcodes.h:243
+#. L10N: Help screen description for OP_POST
+#. Index: <op_post>
+#: gui/opcodes.h:669
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "マクロ化するための Message-ID がない。"
 
-#: gui/opcodes.h:244
+#. L10N: Help screen description for OP_PREV_ENTRY
+#. Menu: <menu_movement>
+#. Index: <op_prev_entry>
+#: gui/opcodes.h:673
 msgid "move to the previous entry"
 msgstr "前のエントリに移動"
 
-#: gui/opcodes.h:245
+#. L10N: Help screen description for OP_PREV_LINE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_prev_line>
+#: gui/opcodes.h:677
 msgid "scroll up one line"
 msgstr "一行上にスクロール"
 
-#: gui/opcodes.h:246
+#. L10N: Help screen description for OP_PREV_PAGE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_prev_page>
+#: gui/opcodes.h:681
 msgid "move to the previous page"
 msgstr "前のページに移動"
 
-#: gui/opcodes.h:248
+#. L10N: Help screen description for OP_PURGE_MESSAGE
+#. Index: <op_delete>
+#: gui/opcodes.h:687
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "ごみ箱に入れず、現在のエントリを即座に削除"
 
-#: gui/opcodes.h:249
+#. L10N: Help screen description for OP_PURGE_THREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:690
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "ごみ箱に入れず、現在のエントリを即座に削除"
 
-#: gui/opcodes.h:250
+#. L10N: Help screen description for OP_QUERY
+#. Alias Dialog: <op_query>
+#. Index: <op_query>
+#: gui/opcodes.h:694
 msgid "query external program for addresses"
 msgstr "外部プログラムにアドレスを問い合わせ"
 
-#: gui/opcodes.h:251
+#. L10N: Help screen description for OP_QUERY_APPEND
+#. Alias Dialog: <op_query>
+#: gui/opcodes.h:697
 msgid "append new query results to current results"
 msgstr "新たな問い合わせ結果を現在の結果に追加"
 
-#: gui/opcodes.h:252
+#. L10N: Help screen description for OP_QUIT
+#. History Dialog: <op_quit>
+#. Index: <op_quit>
+#. Pattern Dialog: <op_quit>
+#: gui/opcodes.h:702
 msgid "save changes to mailbox and quit"
 msgstr "変更をメールボックスに保存後終了"
 
-#: gui/opcodes.h:253
+#. L10N: Help screen description for OP_RECALL_MESSAGE
+#. Index: <op_recall_message>
+#: gui/opcodes.h:705
 msgid "recall a postponed message"
 msgstr "書きかけのメッセージを呼び出す"
 
-#: gui/opcodes.h:254
+#. L10N: Help screen description for OP_RECONSTRUCT_THREAD
+#. Index: <op_get_children>
+#: gui/opcodes.h:708
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "スレッド中に未読メッセージがある。"
 
-#: gui/opcodes.h:255
+#. L10N: Help screen description for OP_REDRAW
+#. Text Entry: <op_redraw>
+#. Global: <op_redraw>
+#: gui/opcodes.h:712
 msgid "clear and redraw the screen"
 msgstr "画面をクリアし再描画"
 
-#: gui/opcodes.h:256
+#. L10N: Help screen description for OP_REFORMAT_WINCH
+#: gui/opcodes.h:714
 msgid "{internal}"
 msgstr "{内部}"
 
-#: gui/opcodes.h:257
+#. L10N: Help screen description for OP_RENAME_MAILBOX
+#. Browser: <op_rename_mailbox>
+#: gui/opcodes.h:717
 msgid "rename the current mailbox (IMAP only)"
 msgstr "現在のメールボックスをリネーム(IMAPのみ)"
 
-#: gui/opcodes.h:258
+#. L10N: Help screen description for OP_REPLY
+#. Attach Dialog: <op_reply>
+#. Index: <op_reply>
+#: gui/opcodes.h:721
 msgid "reply to a message"
 msgstr "メッセージに返信"
 
 # これでギリギリ一行におさまるハズ
-#: gui/opcodes.h:259
+#. L10N: Help screen description for OP_RESEND
+#. Attach Dialog: <op_resend>
+#. Index: <op_resend>
+#: gui/opcodes.h:725
 msgid "use the current message as a template for a new one"
 msgstr "現在のメッセージを新しいものの原形として利用"
 
-#: gui/opcodes.h:261
+#. L10N: Help screen description for OP_SEARCH
+#. Menu: <menu_search>
+#. Pager: <op_pager_search>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:736
 msgid "search for a regular expression"
 msgstr "正規表現検索"
 
-#: gui/opcodes.h:262
+#. L10N: Help screen description for OP_SEARCH_NEXT
+#. Menu: <menu_search>
+#. Pager: <op_pager_search_next>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:743
 msgid "search for next match"
 msgstr "次に一致するものを検索"
 
-#: gui/opcodes.h:263
+#. L10N: Help screen description for OP_SEARCH_OPPOSITE
+#. Menu: <menu_search>
+#. Pager: <op_pager_search_next>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:750
 msgid "search for next match in opposite direction"
 msgstr "逆順で一致するものを検索"
 
-#: gui/opcodes.h:264
+#. L10N: Help screen description for OP_SEARCH_REVERSE
+#. Menu: <menu_search>
+#. Pager: <op_pager_search>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:757
 msgid "search backwards for a regular expression"
 msgstr "逆順の正規表現検索"
 
-#: gui/opcodes.h:265
+#. L10N: Help screen description for OP_SEARCH_TOGGLE
+#. Pager: <op_search_toggle>
+#: gui/opcodes.h:760
 msgid "toggle search pattern coloring"
 msgstr "検索パターンを着色するかどうか切替"
 
-#: gui/opcodes.h:266
+#. L10N: Help screen description for OP_SHELL_ESCAPE
+#. Global: <op_shell_escape>
+#: gui/opcodes.h:763
 msgid "invoke a command in a subshell"
 msgstr "サブシェルでコマンドを起動"
 
-#: gui/opcodes.h:267
+#. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
+#. Global: <op_show_log_messages>
+#: gui/opcodes.h:766
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "メッセージを整列"
 
-#: gui/opcodes.h:268
+#. L10N: Help screen description for OP_SORT
+#. Alias Dialog: <op_sort>
+#. Browser: <op_sort>
+#. Index: <op_sort>
+#: gui/opcodes.h:771
 msgid "sort messages"
 msgstr "メッセージを整列"
 
-#: gui/opcodes.h:269
+#. L10N: Help screen description for OP_SORT_REVERSE
+#. Alias Dialog: <op_sort>
+#. Browser: <op_sort>
+#. Index: <op_sort>
+#: gui/opcodes.h:776
 msgid "sort messages in reverse order"
 msgstr "メッセージを逆順で整列"
 
-#: gui/opcodes.h:270
+#. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
+#. Browser: <op_subscribe_pattern>
+#: gui/opcodes.h:779
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "パターンに一致したメッセージのタグをはずす"
 
-#: gui/opcodes.h:271
+#. L10N: Help screen description for OP_TAG
+#. Index: <op_tag>
+#: gui/opcodes.h:782
 msgid "tag the current entry"
 msgstr "メッセージにタグ付け"
 
-#: gui/opcodes.h:272
+#. L10N: Help screen description for OP_TAG_PREFIX
+#: gui/opcodes.h:784
 msgid "apply next function to tagged messages"
 msgstr "次に入力する機能をタグ付きメッセージに適用"
 
-#: gui/opcodes.h:273
+#. L10N: Help screen description for OP_TAG_PREFIX_COND
+#: gui/opcodes.h:786
 msgid "apply next function ONLY to tagged messages"
 msgstr "次に入力する機能をタグ付きメッセージにのみ適用"
 
-#: gui/opcodes.h:274
+#. L10N: Help screen description for OP_TAG_SUBTHREAD
+#. Index: <op_tag_thread>
+#: gui/opcodes.h:789
 msgid "tag the current subthread"
 msgstr "現在のサブスレッドにタグを付ける"
 
-#: gui/opcodes.h:275
+#. L10N: Help screen description for OP_TAG_THREAD
+#. Index: <op_tag_thread>
+#: gui/opcodes.h:792
 msgid "tag the current thread"
 msgstr "現在のスレッドにタグを付ける"
 
-#: gui/opcodes.h:276
+#. L10N: Help screen description for OP_TOGGLE_MAILBOXES
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:795
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "閲覧法を「メールボックス/全ファイル」間で切替"
 
-#: gui/opcodes.h:277
+#. L10N: Help screen description for OP_TOGGLE_NEW
+#. Index: <op_toggle_new>
+#: gui/opcodes.h:798
 msgid "toggle a message's 'new' flag"
 msgstr "メッセージの「新着」フラグを切替"
 
-#: gui/opcodes.h:278
+#. L10N: Help screen description for OP_TOGGLE_READ
+#. Index: <op_main_limit>
+#: gui/opcodes.h:801
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "前の新着または未読メッセージに移動"
 
-#: gui/opcodes.h:279
+#. L10N: Help screen description for OP_TOGGLE_WRITE
+#. Index: <op_toggle_write>
+#: gui/opcodes.h:804
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "メールボックスに変更を書き込むかどうかを切替"
 
-#: gui/opcodes.h:280
+#. L10N: Help screen description for OP_TOP_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:807
 msgid "move to the top of the page"
 msgstr "ページの一番上に移動"
 
-#: gui/opcodes.h:281
+#. L10N: Help screen description for OP_UNCATCHUP
+#. Browser: <op_catchup>
+#: gui/opcodes.h:810
 msgid "mark all articles in newsgroup as unread"
 msgstr "ニュースグループ内の全ての記事を未読にする"
 
-#: gui/opcodes.h:283
+#. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
+#. Index: <op_undelete_thread>
+#: gui/opcodes.h:818
 msgid "undelete all messages in subthread"
 msgstr "サブスレッドのすべてのメッセージの削除を解除"
 
-#: gui/opcodes.h:284
+#. L10N: Help screen description for OP_UNDELETE_THREAD
+#. Index: <op_undelete_thread>
+#: gui/opcodes.h:821
 msgid "undelete all messages in thread"
 msgstr "スレッドのすべてのメッセージの削除状態を解除"
 
-#: gui/opcodes.h:285
+#. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
+#. Browser: <op_subscribe_pattern>
+#: gui/opcodes.h:824
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "パターンに一致したメッセージのタグをはずす"
 
-#: gui/opcodes.h:286
+#. L10N: Help screen description for OP_VERSION
+#. Global: <op_version>
+#: gui/opcodes.h:827
 msgid "show the NeoMutt version number and date"
 msgstr "NeoMutt のバージョンの番号と日付を表示"
 
-#: gui/opcodes.h:287
+#. L10N: Help screen description for OP_VIEW_ATTACHMENTS
+#. Index: <op_view_attachments>
+#. Pager: <op_view_attachments>
+#: gui/opcodes.h:831
 msgid "show MIME attachments"
 msgstr "MIME 添付ファイルを表示"
 
-#: gui/opcodes.h:288
+#. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:834
 #, fuzzy
 msgid "show the raw message"
 msgstr "生のメッセージを編集"
 
-#: gui/opcodes.h:289
+#. L10N: Help screen description for OP_WHAT_KEY
+#. Global: <op_what_key>
+#: gui/opcodes.h:837
 msgid "display the keycode for a key press"
 msgstr "次に押すキーのコードを表示"
 
-#: gui/opcodes.h:292
+#. L10N: Help screen description for OP_DECRYPT_COPY
+#. Index: <op_save>
+#: gui/opcodes.h:842
 msgid "make decrypted copy"
 msgstr "復号化したコピーを作成"
 
-#: gui/opcodes.h:293
+#. L10N: Help screen description for OP_DECRYPT_SAVE
+#. Index: <op_save>
+#: gui/opcodes.h:845
 msgid "make decrypted copy and delete"
 msgstr "復号化したコピーを作ってから削除"
 
-#: gui/opcodes.h:294
+#. L10N: Help screen description for OP_EXTRACT_KEYS
+#. Attach Dialog: <op_extract_keys>
+#. Index: <op_extract_keys>
+#: gui/opcodes.h:849
 msgid "extract supported public keys"
 msgstr "サポートされている公開鍵を抽出"
 
-#: gui/opcodes.h:295
+#. L10N: Help screen description for OP_FORGET_PASSPHRASE
+#. Attach Dialog: <op_forget_passphrase>
+#. Compose Dialog: <op_forget_passphrase>
+#. Index: <op_forget_passphrase>
+#: gui/opcodes.h:854
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "パスフレーズをすべてメモリから消去"
 
-#: gui/opcodes.h:298
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
+#. Envelope Window: <op_envelope_edit_bcc>
+#: gui/opcodes.h:859
 msgid "edit the BCC list"
 msgstr "BCCリストを編集"
 
-#: gui/opcodes.h:299
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
+#. Envelope Window: <op_envelope_edit_cc>
+#: gui/opcodes.h:862
 msgid "edit the CC list"
 msgstr "CCリストを編集"
 
-#: gui/opcodes.h:300
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
+#. Envelope Window: <op_envelope_edit_fcc>
+#: gui/opcodes.h:865
 msgid "enter a file to save a copy of this message in"
 msgstr "メッセージのコピーを保存するファイル名を入力"
 
-#: gui/opcodes.h:301
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
+#. Envelope Window: <op_envelope_edit_followup_to>
+#: gui/opcodes.h:868
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "Reply-To フィールドを編集"
 
-#: gui/opcodes.h:302
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
+#. Envelope Window: <op_envelope_edit_from>
+#: gui/opcodes.h:871
 msgid "edit the from field"
 msgstr "From フィールドを編集"
 
-#: gui/opcodes.h:303
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
+#. Compose Dialog: <op_envelope_edit_headers>
+#: gui/opcodes.h:874
 msgid "edit the message with headers"
 msgstr "メッセージをヘッダごと編集"
 
-#: gui/opcodes.h:304
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
+#. Envelope Window: <op_envelope_edit_newsgroups>
+#: gui/opcodes.h:877
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "CCリストを編集"
 
-#: gui/opcodes.h:305
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
+#. Envelope Window: <op_envelope_edit_reply_to>
+#: gui/opcodes.h:880
 msgid "edit the Reply-To field"
 msgstr "Reply-To フィールドを編集"
 
-#: gui/opcodes.h:306
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
+#. Envelope Window: <op_envelope_edit_subject>
+#: gui/opcodes.h:883
 msgid "edit the subject of this message"
 msgstr "メッセージの題名を編集"
 
-#: gui/opcodes.h:307
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
+#. Envelope Window: <op_envelope_edit_to>
+#: gui/opcodes.h:886
 msgid "edit the TO list"
 msgstr "TO リストを編集"
 
-#: gui/opcodes.h:308
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
+#. Envelope Window: <op_envelope_edit_x_comment_to>
+#: gui/opcodes.h:889
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "Reply-To フィールドを編集"
 
-#: gui/opcodes.h:312
+#. L10N: Help screen description for OP_COMPOSE_MIX
+#. Envelope Window: <op_compose_mix>
+#: gui/opcodes.h:895
 msgid "send the message through a mixmaster remailer chain"
 msgstr "mixmaster remailer チェーンを使って送信"
 
-#: gui/opcodes.h:313
+#. L10N: Help screen description for OP_MIX_APPEND
+#. Mixmaster Dialog: <op_mix_append>
+#: gui/opcodes.h:898
 msgid "append a remailer to the chain"
 msgstr "チェーンに remailer を追加"
 
-#: gui/opcodes.h:314
+#. L10N: Help screen description for OP_MIX_CHAIN_NEXT
+#. Mixmaster Dialog: <op_mix_chain_next>
+#: gui/opcodes.h:901
 msgid "select the next element of the chain"
 msgstr "次のチェーンエレメントを選択"
 
-#: gui/opcodes.h:315
+#. L10N: Help screen description for OP_MIX_CHAIN_PREV
+#. Mixmaster Dialog: <op_mix_chain_prev>
+#: gui/opcodes.h:904
 msgid "select the previous element of the chain"
 msgstr "前のチェーンエレメントを選択"
 
-#: gui/opcodes.h:316
+#. L10N: Help screen description for OP_MIX_DELETE
+#. Mixmaster Dialog: <op_mix_delete>
+#: gui/opcodes.h:907
 msgid "delete a remailer from the chain"
 msgstr "チェーンから remailer を削除"
 
-#: gui/opcodes.h:317
+#. L10N: Help screen description for OP_MIX_INSERT
+#. Mixmaster Dialog: <op_mix_insert>
+#: gui/opcodes.h:910
 msgid "insert a remailer into the chain"
 msgstr "チェーンに remailer を挿入"
 
 # remailer.c の OP_MIX_USE つまり「OK」の説明
-#: gui/opcodes.h:318
+#. L10N: Help screen description for OP_MIX_USE
+#. Mixmaster Dialog: <op_mix_use>
+#: gui/opcodes.h:913
 msgid "accept the chain constructed"
 msgstr "構築されたチェーンを受容"
 
-#: gui/opcodes.h:325
+#. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:922
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "別のフォルダをオープン"
 
-#: gui/opcodes.h:326
+#. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
+#. Index: <op_main_entire_thread>
+#: gui/opcodes.h:925
 msgid "read entire thread of the current message"
 msgstr "メッセージに関連したスレッド全体を読む"
 
-#: gui/opcodes.h:327
+#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
+#. Index: <op_main_vfolder_from_query>
+#: gui/opcodes.h:928
 msgid "generate virtual folder from query"
 msgstr "クエリからバーチャルフォルダを作成"
 
-#: gui/opcodes.h:328
+#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
+#. Index: <op_main_vfolder_from_query>
+#: gui/opcodes.h:931
 msgid "generate a read-only virtual folder from query"
 msgstr "クエリから読み取り専用のバーチャルフォルダを作成"
 
-#: gui/opcodes.h:329
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:934
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: gui/opcodes.h:330
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:937
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: gui/opcodes.h:331
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:940
 msgid "resets virtual folder time window to the present"
 msgstr ""
 
-#: gui/opcodes.h:337
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
+#. Compose Dialog: <op_attachment_attach_key>
+#: gui/opcodes.h:948
 msgid "attach a PGP public key"
 msgstr "PGP 公開鍵を添付"
 
-#: gui/opcodes.h:338
+#. L10N: Help screen description for OP_CHECK_TRADITIONAL
+#. Attach Dialog: <op_check_traditional>
+#. Index: <op_check_traditional>
+#: gui/opcodes.h:952
 msgid "check for classic PGP"
 msgstr "旧形式の PGP をチェック"
 
-#: gui/opcodes.h:339
+#. L10N: Help screen description for OP_COMPOSE_PGP_MENU
+#. Envelope Window: <op_compose_pgp_menu>
+#: gui/opcodes.h:955
 msgid "show PGP options"
 msgstr "PGP オプションを表示"
 
-#: gui/opcodes.h:340
+#. L10N: Help screen description for OP_MAIL_KEY
+#. Index: <op_mail_key>
+#: gui/opcodes.h:958
 msgid "mail a PGP public key"
 msgstr "PGP 公開鍵をメール送信"
 
-#: gui/opcodes.h:341
+#. L10N: Help screen description for OP_VERIFY_KEY
+#. GPGME Key Selection Dialog: <op_verify_key>
+#. PGP Key Selection Dialog: <op_verify_key>
+#: gui/opcodes.h:962
 msgid "verify a PGP public key"
 msgstr "PGP 公開鍵を検証"
 
-#: gui/opcodes.h:342
+#. L10N: Help screen description for OP_VIEW_ID
+#. GPGME Key Selection Dialog: <op_view_id>
+#. PGP Key Selection Dialog: <op_view_id>
+#: gui/opcodes.h:966
 msgid "view the key's user id"
 msgstr "鍵のユーザ ID を表示"
 
-#: gui/opcodes.h:345
+#. L10N: Help screen description for OP_SIDEBAR_FIRST
+#. Sidebar: <op_sidebar_first>
+#: gui/opcodes.h:971
 msgid "move the highlight to the first mailbox"
 msgstr "(サイドバー) 最初のメールボックスを選択"
 
-#: gui/opcodes.h:346
+#. L10N: Help screen description for OP_SIDEBAR_LAST
+#. Sidebar: <op_sidebar_last>
+#: gui/opcodes.h:974
 msgid "move the highlight to the last mailbox"
 msgstr "(サイドバー) 最後のメールボックスを選択"
 
-#: gui/opcodes.h:347
+#. L10N: Help screen description for OP_SIDEBAR_NEXT
+#. Sidebar: <op_sidebar_next>
+#: gui/opcodes.h:977
 msgid "move the highlight to next mailbox"
 msgstr "(サイドバー) 次のメールボックスを選択"
 
-#: gui/opcodes.h:348
+#. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
+#. Sidebar: <op_sidebar_next_new>
+#: gui/opcodes.h:980
 msgid "move the highlight to next mailbox with new mail"
 msgstr "(サイドバー) 次の新着ありメールボックスを選択"
 
-#: gui/opcodes.h:349
+#. L10N: Help screen description for OP_SIDEBAR_OPEN
+#. Sidebar: <op_sidebar_open>
+#: gui/opcodes.h:983
 msgid "open highlighted mailbox"
 msgstr "(サイドバー) 選択したメールボックスをオープン"
 
-#: gui/opcodes.h:350
+#. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
+#. Sidebar: <op_sidebar_page_down>
+#: gui/opcodes.h:986
 msgid "scroll the sidebar down 1 page"
 msgstr "(サイドバー) 1ページ下にスクロール"
 
-#: gui/opcodes.h:351
+#. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
+#. Sidebar: <op_sidebar_page_up>
+#: gui/opcodes.h:989
 msgid "scroll the sidebar up 1 page"
 msgstr "(サイドバー) 1ページ上にスクロール"
 
-#: gui/opcodes.h:352
+#. L10N: Help screen description for OP_SIDEBAR_PREV
+#. Sidebar: <op_sidebar_prev>
+#: gui/opcodes.h:992
 msgid "move the highlight to previous mailbox"
 msgstr "(サイドバー) 前のメールボックスを選択"
 
-#: gui/opcodes.h:353
+#. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
+#. Sidebar: <op_sidebar_prev_new>
+#: gui/opcodes.h:995
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "(サイドバー) 前の新着ありメールボックスを選択"
 
-#: gui/opcodes.h:354
+#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
+#. Sidebar: <op_sidebar_toggle_virtual>
+#: gui/opcodes.h:998
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "閲覧法を「メールボックス/全ファイル」間で切替"
 
-#: gui/opcodes.h:355
+#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
+#. Sidebar: <op_sidebar_toggle_visible>
+#: gui/opcodes.h:1001
 msgid "make the sidebar (in)visible"
 msgstr "サイドバーを(不)可にする"
 
-#: gui/opcodes.h:358
+#. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
+#. Envelope Window: <op_compose_smime_menu>
+#: gui/opcodes.h:1006
 msgid "show S/MIME options"
 msgstr "S/MIME オプションを表示"
 
-#: gui/opcodes.h:361
+#: gui/opcodes.h:1009
 msgid "null operation"
 msgstr "動作の指定がない"
 
@@ -3717,7 +4423,7 @@ msgstr ""
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:114 send/config.c:58
+#: hcache/config.c:114 send/config.c:68
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
@@ -3840,12 +4546,12 @@ msgstr ""
 msgid "Help for %s"
 msgstr "%s のヘルプ"
 
-#: history/dlg_history.c:153
+#: history/dlg_history.c:145
 #, c-format
 msgid "History '%s'"
 msgstr "履歴 '%s'"
 
-#: history/history.c:232 history/history.c:613
+#: history/history.c:232 history/history.c:618
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: 不正な履歴ファイル形式"
@@ -3858,38 +4564,38 @@ msgstr "%s:%d: 不正な履歴ファイル形式"
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:591 ncrypt/pgp.c:598
 #: ncrypt/pgp.c:926 ncrypt/pgp.c:1043 ncrypt/pgp.c:1200 ncrypt/pgp.c:1224
 #: ncrypt/pgp.c:1257 ncrypt/pgp.c:1614 ncrypt/pgp_functions.c:131
-#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:899
-#: ncrypt/smime.c:907 ncrypt/smime.c:1005 ncrypt/smime.c:1115
-#: ncrypt/smime.c:1181 ncrypt/smime.c:1188 ncrypt/smime.c:1397
-#: ncrypt/smime.c:1796 ncrypt/smime.c:1875 ncrypt/smime.c:1882
-#: ncrypt/smime.c:1989 ncrypt/smime.c:2119 ncrypt/smime.c:2135 nntp/nntp.c:1316
+#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:854
+#: ncrypt/smime.c:862 ncrypt/smime.c:961 ncrypt/smime.c:1071
+#: ncrypt/smime.c:1138 ncrypt/smime.c:1145 ncrypt/smime.c:1355
+#: ncrypt/smime.c:1755 ncrypt/smime.c:1834 ncrypt/smime.c:1841
+#: ncrypt/smime.c:1948 ncrypt/smime.c:2078 ncrypt/smime.c:2094 nntp/nntp.c:1316
 #: nntp/nntp.c:2178 pattern/exec.c:149 pop/pop.c:124
 msgid "Can't create temporary file"
 msgstr "一時ファイルを作成できない"
 
-#: hook.c:233
+#: hook.c:238
 msgid "current mailbox shortcut '^' is unset"
 msgstr "現在のメールボックスが未設定なのに記号 '^' を使っている"
 
-#: hook.c:245
+#: hook.c:250
 msgid "mailbox shortcut expanded to empty regex"
 msgstr "メールボックス記号ショートカットが空の正規表現に展開される"
 
 # %f と %t の両方が存在する必要がある
-#: hook.c:264
+#: hook.c:269
 msgid "badly formatted command string"
 msgstr "不適切なコマンド文字列"
 
-#: hook.c:561
+#: hook.c:582
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: フック内からは unhook * できない"
 
-#: hook.c:574
+#: hook.c:595
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: %s は不明なフックタイプ"
 
-#: hook.c:584
+#: hook.c:605
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: %s を %s 内から削除できない。"
@@ -3993,7 +4699,7 @@ msgstr "圧縮コマンドが失敗した: %s"
 msgid "Connection to %s timed out"
 msgstr "%s への接続がタイムアウトした"
 
-#: imap/config.c:61 pop/config.c:59 send/config.c:82
+#: imap/config.c:61 pop/config.c:59 send/config.c:92
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
@@ -4041,7 +4747,7 @@ msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d メッセージを %s にコピー中..."
 
-#: imap/imap.c:1432 imap/imap.c:2088 imap/message.c:1819 muttlib.c:1379
+#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1819 muttlib.c:836
 #, c-format
 msgid "Create %s?"
 msgstr "%s を作成?"
@@ -4083,17 +4789,17 @@ msgstr "imap_sync_mailbox: 削除に失敗した"
 msgid "Selecting %s..."
 msgstr "%s を選択中..."
 
-#: imap/imap.c:2055
+#: imap/imap.c:2057
 msgid "Error opening mailbox"
 msgstr "メールボックスオープン時エラー"
 
-#: imap/imap.c:2199
+#: imap/imap.c:2201
 #, fuzzy
 msgid "IMAP server doesn't support custom flags"
 msgstr "SMTP サーバがユーザ認証をサポートしていない"
 
 # 不正より不信か？
-#: imap/imap.c:2243
+#: imap/imap.c:2245
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "不正      "
@@ -4160,64 +4866,64 @@ msgstr "サーバサイドカスタム検索はサポートされていない: %
 msgid "Continue?"
 msgstr "継続?"
 
-#: index/dlg_index.c:105 index/dlg_index.c:120
+#: index/dlg_index.c:106 index/dlg_index.c:121
 msgid "Quit"
 msgstr "中止"
 
-#: index/dlg_index.c:110 pager/dlg_pager.c:101
+#: index/dlg_index.c:111 pager/dlg_pager.c:101
 msgid "Reply"
 msgstr "返信"
 
-#: index/dlg_index.c:111
+#: index/dlg_index.c:112
 msgid "Group"
 msgstr "全員に返信"
 
-#: index/dlg_index.c:124 pager/dlg_pager.c:114
+#: index/dlg_index.c:125 pager/dlg_pager.c:114
 msgid "Post"
 msgstr "投稿"
 
-#: index/dlg_index.c:125 pager/dlg_pager.c:115
+#: index/dlg_index.c:126 pager/dlg_pager.c:115
 #, fuzzy
 msgid "Followup"
 msgstr "%s%s へのフォローアップ?"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index/dlg_index.c:147
+#: index/dlg_index.c:148
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "%s: 操作が ACL で許可されていない"
 
-#: index/dlg_index.c:738
+#: index/dlg_index.c:739
 msgid "Failed to create query, aborting"
 msgstr "クエリの作成に失敗. 中止する."
 
-#: index/dlg_index.c:783 muttlib.c:1363 mx.c:203 mx.c:341
+#: index/dlg_index.c:784 muttlib.c:820 mx.c:203 mx.c:341
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s はメールボックスではない"
 
 # 「不正な可能性あり」だと重大なことのように思えてしまうので変更した。
-#: index/dlg_index.c:1159
+#: index/dlg_index.c:1167
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "メールボックスが外部から変更された。フラグが正確でないかもしれない。"
 
-#: index/dlg_index.c:1168 pager/dlg_pager.c:431
+#: index/dlg_index.c:1176 pager/dlg_pager.c:431
 msgid "New mail in this mailbox"
 msgstr "このメールボックスに新着メール。"
 
-#: index/dlg_index.c:1187
+#: index/dlg_index.c:1196
 msgid "Mailbox was externally modified"
 msgstr "メールボックスが外部から変更された。"
 
-#: index/dlg_index.c:1299 index/functions.c:3076 pattern/message.c:288
+#: index/dlg_index.c:1307 index/functions.c:3076 pattern/message.c:288
 msgid "No mailbox is open"
 msgstr "開いているメールボックスがない。"
 
-#: index/dlg_index.c:1307
+#: index/dlg_index.c:1315
 msgid "No tagged messages"
 msgstr "タグ付きメッセージがない。"
 
-#: index/dlg_index.c:1312 index/functions.c:924
+#: index/dlg_index.c:1320 index/functions.c:924
 msgid "Nothing to do"
 msgstr "何もしない。"
 
@@ -4367,12 +5073,12 @@ msgid "No unread messages"
 msgstr "未読メッセージがない。"
 
 #: index/functions.c:1570 menu/functions.c:108 pager/functions.c:766
-#: pattern/pattern.c:518 pattern/pattern.c:674
+#: pattern/pattern.c:535 pattern/pattern.c:691
 msgid "Search wrapped to top"
 msgstr "検索は一番上に戻った。"
 
-#: index/functions.c:1575 pager/functions.c:796 pattern/pattern.c:531
-#: pattern/pattern.c:687
+#: index/functions.c:1575 pager/functions.c:796 pattern/pattern.c:548
+#: pattern/pattern.c:704
 msgid "Search wrapped to bottom"
 msgstr "検索は一番下に戻った。"
 
@@ -4692,14 +5398,14 @@ msgstr ""
 msgid "Scanning %s..."
 msgstr "%s をスキャン中..."
 
-#: maildir/mailbox.c:511 mbox/mbox.c:216 mbox/mbox.c:386 mh/mh.c:696 mx.c:354
+#: maildir/mailbox.c:511 mbox/mbox.c:217 mbox/mbox.c:387 mh/mh.c:696 mx.c:354
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 読み出し中..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/mailbox.c:849 mbox/mbox.c:1178 mh/mh.c:1079 mx.c:462
-#: notmuch/notmuch.c:2242
+#: maildir/mailbox.c:849 mbox/mbox.c:1174 mh/mh.c:1079 mx.c:462
+#: notmuch/notmuch.c:2248
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 書き込み中..."
@@ -4951,7 +5657,7 @@ msgstr "エラー: 値 '%s' は -d には不正。"
 msgid "Failed to parse mailto: link"
 msgstr "\"mailto:\" リンクの解析に失敗"
 
-#: main.c:1003 main.c:1270 send/send.c:304 send/send.c:2745 send/send.c:2749
+#: main.c:1003 main.c:1270 send/send.c:307 send/send.c:2750 send/send.c:2754
 msgid "No recipients specified"
 msgstr "受信者が指定されていない。"
 
@@ -4981,60 +5687,60 @@ msgstr "到着用メールボックスが未定義。"
 msgid "Mailbox is empty"
 msgstr "メールボックスが空。"
 
-#: mbox/mbox.c:255 mbox/mbox.c:321
+#: mbox/mbox.c:256 mbox/mbox.c:322
 msgid "Mailbox is corrupt"
 msgstr "メールボックスがこわれている"
 
-#: mbox/mbox.c:906
+#: mbox/mbox.c:907
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "%s をロックできなかった"
 
-#: mbox/mbox.c:1055
+#: mbox/mbox.c:1056
 msgid "Mailbox was corrupted"
 msgstr "メールボックスがこわれた"
 
-#: mbox/mbox.c:1101 mbox/mbox.c:1352
+#: mbox/mbox.c:1097 mbox/mbox.c:1347
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "致命的なエラー! メールボックスを再オープンできなかった!"
 
-#: mbox/mbox.c:1138 pager/message.c:221
+#: mbox/mbox.c:1134 pager/message.c:221
 msgid "Could not create temporary file"
 msgstr "一時ファイルを作成できなかった"
 
-#: mbox/mbox.c:1156
+#: mbox/mbox.c:1152
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: メールボックスが変更されたが、変更メッセージがない(このバグを報告せよ)"
 
-#: mbox/mbox.c:1297
+#: mbox/mbox.c:1293
 msgid "Committing changes..."
 msgstr "変更結果を反映中..."
 
-#: mbox/mbox.c:1331
+#: mbox/mbox.c:1326
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "書き込み失敗! メールボックスの断片を %s に保存した"
 
-#: mbox/mbox.c:1416
+#: mbox/mbox.c:1411
 msgid "Could not reopen mailbox"
 msgstr "メールボックスを再オープンできなかった"
 
-#: mbox/mbox.c:1514 mbox/mbox.c:1635
+#: mbox/mbox.c:1509 mbox/mbox.c:1630
 msgid "Can't write message"
 msgstr "メッセージを書き込めない"
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:451
-#: pattern/pattern.c:608
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
+#: pattern/pattern.c:625
 msgid "Reverse search for: "
 msgstr "逆順検索パターン: "
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:451
-#: pattern/pattern.c:608
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
+#: pattern/pattern.c:625
 msgid "Search for: "
 msgstr "検索パターン: "
 
 #: menu/functions.c:127 pager/functions.c:695 pager/functions.c:762
-#: pager/functions.c:792 pattern/pattern.c:582 pattern/pattern.c:735
+#: pager/functions.c:792 pattern/pattern.c:599 pattern/pattern.c:752
 msgid "Not found"
 msgstr "見つからなかった。"
 
@@ -5109,7 +5815,7 @@ msgstr "mixmaster を使う時には、hostname 変数に適切な値を設定�
 msgid "Error sending message, child exited %d\n"
 msgstr "メッセージ送信エラー、子プロセスが %d で終了。\n"
 
-#: mixmaster/mixmaster.c:128 send/send.c:2408
+#: mixmaster/mixmaster.c:128 send/send.c:2413
 msgid "Error sending message"
 msgstr "メッセージ送信エラー。"
 
@@ -5145,25 +5851,25 @@ msgstr "remailer チェーンはすでに空。"
 msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "エラー: %s は最後の remailer チェーンには使えない。"
 
-#: mutt/file.c:780
+#: mutt/file.c:784
 #, fuzzy, c-format
 msgid "Failed to seek file: %s"
 msgstr "ファイルのリネーム (移動) に失敗。"
 
-#: mutt/file.c:1272
+#: mutt/file.c:1276
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "fcntl ロック中にタイムアウト発生"
 
-#: mutt/file.c:1278
+#: mutt/file.c:1282
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "fcntl ロック待ち... %d"
 
-#: mutt/file.c:1338
+#: mutt/file.c:1342
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "flock ロック中にタイムアウト発生"
 
-#: mutt/file.c:1345
+#: mutt/file.c:1349
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "flock ロック待ち... %d"
@@ -5266,44 +5972,44 @@ msgstr "親メッセージはこの制限された表示範囲では不可視。
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
-#: muttlib.c:598
+#: muttlib.c:595
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "そこはディレクトリ。その中に保存? (y)する, (n)しない, (a)すべて保存)"
 
-#: muttlib.c:598
+#: muttlib.c:595
 msgid "yna"
 msgstr "yna"
 
 # 参考: "Save to file: " => "保存するファイル: " (alias.c, recvattach.c)
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:616
+#: muttlib.c:613
 msgid "File is a directory, save under it?"
 msgstr "そこはディレクトリ。その中に保存?"
 
-#: muttlib.c:622
+#: muttlib.c:619
 msgid "File under directory: "
 msgstr "ディレクトリ配下のファイル: "
 
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:638
+#: muttlib.c:635
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "ファイルが存在する。(o)上書き, (a)追加, (c)中止"
 
-#: muttlib.c:639
+#: muttlib.c:636
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1332
+#: muttlib.c:789
 msgid "Can't save message to POP mailbox"
 msgstr "POP メールボックスにはメッセージを保存できない"
 
-#: muttlib.c:1342
+#: muttlib.c:799
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s にメッセージを追加?"
 
-#: muttlib.c:1355
+#: muttlib.c:812
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "サーバにメッセージを残せない。"
@@ -5452,7 +6158,7 @@ msgstr "PGP 起動中..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "メッセージをインラインで送信できない。PGP/MIME を使う?"
 
-#: ncrypt/crypt.c:221 send/send.c:2724
+#: ncrypt/crypt.c:221 send/send.c:2729
 msgid "Mail not sent"
 msgstr "メールは未送信。"
 
@@ -5854,7 +6560,7 @@ msgstr "gpgme_op_keylist_next 失敗: %s"
 msgid "Looking for keys matching \"%s\"..."
 msgstr "\"%s\" に一致する鍵を検索中..."
 
-#: ncrypt/crypt_gpgme.c:3411 ncrypt/pgpkey.c:247 ncrypt/smime.c:752
+#: ncrypt/crypt_gpgme.c:3411 ncrypt/pgpkey.c:247 ncrypt/smime.c:707
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr "\"%s\" と一致する鍵が見つからない"
@@ -5864,8 +6570,8 @@ msgstr "\"%s\" と一致する鍵が見つからない"
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "鍵 ID = \"%s\" を %s に使う?"
 
-#: ncrypt/crypt_gpgme.c:3514 ncrypt/pgp.c:1550 ncrypt/smime.c:776
-#: ncrypt/smime.c:856
+#: ncrypt/crypt_gpgme.c:3514 ncrypt/pgp.c:1550 ncrypt/smime.c:731
+#: ncrypt/smime.c:811
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "%s の鍵 ID 入力: "
@@ -5974,27 +6680,27 @@ msgstr "送信者の識別に失敗した"
 msgid "Invoking S/MIME..."
 msgstr "S/MIME 起動中..."
 
-#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:98
+#: ncrypt/dlg_gpgme.c:101 ncrypt/dlg_pgp.c:99
 msgid "Check key"
 msgstr "鍵検査"
 
-#: ncrypt/dlg_gpgme.c:658
+#: ncrypt/dlg_gpgme.c:670
 msgid "All matching keys are marked expired/revoked"
 msgstr "一致した鍵はすべて期限切れか廃棄済み。"
 
-#: ncrypt/dlg_gpgme.c:709
+#: ncrypt/dlg_gpgme.c:721
 msgid "PGP and S/MIME keys matching"
 msgstr "一致する PGP および S/MIME 鍵"
 
-#: ncrypt/dlg_gpgme.c:711
+#: ncrypt/dlg_gpgme.c:723
 msgid "PGP keys matching"
 msgstr "一致する PGP 鍵"
 
-#: ncrypt/dlg_gpgme.c:713
+#: ncrypt/dlg_gpgme.c:725
 msgid "S/MIME keys matching"
 msgstr "一致する S/MIME 鍵"
 
-#: ncrypt/dlg_gpgme.c:715
+#: ncrypt/dlg_gpgme.c:727
 msgid "keys matching"
 msgstr "一致する鍵"
 
@@ -6002,27 +6708,27 @@ msgstr "一致する鍵"
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:723
+#: ncrypt/dlg_gpgme.c:735
 #, c-format
 msgid "%s <%s>"
 msgstr "<%2$s> に%1$s。"
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:728
+#: ncrypt/dlg_gpgme.c:740
 #, c-format
 msgid "%s \"%s\""
 msgstr "「%2$s」に%1$s。"
 
-#: ncrypt/dlg_pgp.c:571
+#: ncrypt/dlg_pgp.c:660
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "一致した鍵はすべて期限切れか廃棄済み、または使用禁止。"
 
-#: ncrypt/dlg_pgp.c:616
+#: ncrypt/dlg_pgp.c:705
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP 鍵は <%s> に一致。"
 
-#: ncrypt/dlg_pgp.c:618
+#: ncrypt/dlg_pgp.c:707
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP 鍵は \"%s\" に一致。"
@@ -6091,7 +6797,7 @@ msgstr "検証済み  "
 msgid "Unknown   "
 msgstr "不明      "
 
-#: ncrypt/dlg_smime.c:227
+#: ncrypt/dlg_smime.c:232
 #, c-format
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME 証明書は \"%s\" に一致。"
@@ -6270,7 +6976,7 @@ msgstr ""
 "[-- エラー: PGP 子プロセスを作成できなかった --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1111 ncrypt/pgp.c:1133 ncrypt/smime.c:1974
+#: ncrypt/pgp.c:1111 ncrypt/pgp.c:1133 ncrypt/smime.c:1933
 #: postpone/postpone.c:432
 msgid "Decryption failed"
 msgstr "復号化に失敗した。"
@@ -6365,7 +7071,7 @@ msgstr "esabc"
 msgid "Can't open /dev/null"
 msgstr "/dev/null をオープンできない"
 
-#: ncrypt/pgpinvoke.c:463
+#: ncrypt/pgpinvoke.c:412
 msgid "Fetching PGP key..."
 msgstr "PGP 鍵を取得中..."
 
@@ -6379,49 +7085,49 @@ msgstr "PGP 鍵 %s"
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "この鍵は期限切れか使用不可か廃棄済みのため、使えない。"
 
-#: ncrypt/smime.c:174
+#: ncrypt/smime.c:176
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME パスフレーズ入力:"
 
-#: ncrypt/smime.c:736
+#: ncrypt/smime.c:691
 msgid "Enter keyID: "
 msgstr "鍵ID入力: "
 
-#: ncrypt/smime.c:862
+#: ncrypt/smime.c:817
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "%s の (正しい) 証明書が見つからない。"
 
-#: ncrypt/smime.c:916 ncrypt/smime.c:945 ncrypt/smime.c:1024
-#: ncrypt/smime.c:1059 ncrypt/smime.c:1136 ncrypt/smime.c:1217
+#: ncrypt/smime.c:872 ncrypt/smime.c:901 ncrypt/smime.c:980 ncrypt/smime.c:1015
+#: ncrypt/smime.c:1093 ncrypt/smime.c:1175
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "エラー: OpenSSL 子プロセス作成不能"
 
-#: ncrypt/smime.c:1196
+#: ncrypt/smime.c:1153
 msgid "Label for certificate: "
 msgstr "証明書のラベル: "
 
-#: ncrypt/smime.c:1300
+#: ncrypt/smime.c:1258
 msgid "no certfile"
 msgstr "証明書ファイルがない"
 
-#: ncrypt/smime.c:1305
+#: ncrypt/smime.c:1263
 msgid "no mbox"
 msgstr "メールボックスがない"
 
-#: ncrypt/smime.c:1467 ncrypt/smime.c:1636
+#: ncrypt/smime.c:1425 ncrypt/smime.c:1594
 msgid "No output from OpenSSL..."
 msgstr "OpenSSL から出力がない..."
 
-#: ncrypt/smime.c:1554
+#: ncrypt/smime.c:1512
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "鍵が未指定のため署名不能: 「署名鍵選択」をせよ。"
 
-#: ncrypt/smime.c:1603
+#: ncrypt/smime.c:1561
 msgid "Can't open OpenSSL subprocess"
 msgstr "OpenSSL 子プロセスオープン不能"
 
-#: ncrypt/smime.c:1834 ncrypt/smime.c:1953
+#: ncrypt/smime.c:1793 ncrypt/smime.c:1912
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -6429,19 +7135,19 @@ msgstr ""
 "[-- OpenSSL 出力終了 --]\n"
 "\n"
 
-#: ncrypt/smime.c:1911 ncrypt/smime.c:1923
+#: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- エラー: OpenSSL 子プロセスを作成できなかった --]\n"
 
-#: ncrypt/smime.c:1958
+#: ncrypt/smime.c:1917
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- 以下のデータは S/MIME で暗号化されている --]\n"
 
-#: ncrypt/smime.c:1962
+#: ncrypt/smime.c:1921
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- 以下のデータは S/MIME で署名されている --]\n"
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2021
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -6449,7 +7155,7 @@ msgstr ""
 "\n"
 "[-- S/MIME 暗号化データ終了 --]\n"
 
-#: ncrypt/smime.c:2064
+#: ncrypt/smime.c:2023
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -6458,64 +7164,64 @@ msgstr ""
 "[-- S/MIME 署名データ終了 --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2199
+#: ncrypt/smime.c:2158
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME (s)署名, (w)暗号選択, (a)署名鍵選択, (c)なし, (o)日和見暗号オフ "
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2201
+#: ncrypt/smime.c:2160
 msgid "swaco"
 msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2209
+#: ncrypt/smime.c:2168
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME (e)暗号化,(s)署名,(w)暗号選択,(a)署名鍵選択,(b)暗号+署名,(c)なし,(o)日和見暗号 "
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2211
+#: ncrypt/smime.c:2170
 msgid "eswabco"
 msgstr "eswabco"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2218
+#: ncrypt/smime.c:2177
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME (e)暗号化, (s)署名, (w)暗号選択, (a)署名鍵選択, (b)暗号+署名, (c)なし "
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2220
+#: ncrypt/smime.c:2179
 msgid "eswabc"
 msgstr "eswabc"
 
-#: ncrypt/smime.c:2286
+#: ncrypt/smime.c:2245
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "アルゴリズムを選択: (1) DES系, (2) RC2系, (3) AES系, c:なし?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2288
+#: ncrypt/smime.c:2247
 msgid "123c"
 msgstr "123c"
 
-#: ncrypt/smime.c:2291
+#: ncrypt/smime.c:2250
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) トリプルDES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2293
+#: ncrypt/smime.c:2252
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2307
+#: ncrypt/smime.c:2266
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2309 ncrypt/smime.c:2329
+#: ncrypt/smime.c:2268 ncrypt/smime.c:2288
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2327
+#: ncrypt/smime.c:2286
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
@@ -6524,15 +7230,15 @@ msgstr "(1) AES128, (2) AES192, (3) AES256?"
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "ID は信用されていない。 本当にこの鍵を使用?"
 
-#: nntp/newsrc.c:641
+#: nntp/newsrc.c:643
 msgid "Loading list of groups from cache..."
 msgstr "グループの一覧をキャッシュから読み込み中..."
 
-#: nntp/newsrc.c:1035
+#: nntp/newsrc.c:1080
 msgid "No news server defined"
 msgstr "ニュースサーバが指定されていない"
 
-#: nntp/newsrc.c:1053
+#: nntp/newsrc.c:1098
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s は不正な POP パス"
@@ -6650,7 +7356,7 @@ msgstr "notmuch データベースを開けない: %s: %s"
 msgid "unknown reason"
 msgstr "不明なエラー"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1797
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1803
 #, fuzzy, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr "\"mailto:\" リンクの解析に失敗\n"
@@ -6665,23 +7371,23 @@ msgstr "\"mailto:\" リンクの解析に失敗\n"
 msgid "Reading messages..."
 msgstr "送信中..."
 
-#: notmuch/notmuch.c:1556
+#: notmuch/notmuch.c:1562
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "この制限された表示範囲には新着メッセージがない。"
 
-#: notmuch/notmuch.c:1812
+#: notmuch/notmuch.c:1818
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "\"mailto:\" リンクの解析に失敗\n"
 
-#: notmuch/notmuch.c:2322
+#: notmuch/notmuch.c:2328
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 
-#: notmuch/notmuch.c:2382
+#: notmuch/notmuch.c:2388
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "ごみ箱をオープンできない"
@@ -6746,7 +7452,7 @@ msgstr ""
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:61 pager/pbar.c:121 status.c:318
+#: pager/message.c:61 pager/pbar.c:121 status.c:381
 msgid "all"
 msgstr ""
 
@@ -6801,7 +7507,7 @@ msgstr "%ld%%"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:123 status.c:316
+#: pager/pbar.c:123 status.c:379
 msgid "end"
 msgstr ""
 
@@ -6875,11 +7581,11 @@ msgstr "%s は不正な月"
 msgid "Invalid relative date: %s"
 msgstr "%s は不正な相対月日"
 
-#: pattern/compile.c:924 pattern/compile.c:1139
+#: pattern/compile.c:924 pattern/compile.c:1138
 msgid "empty pattern"
 msgstr "パターンが空"
 
-#: pattern/compile.c:954 pattern/compile.c:1131
+#: pattern/compile.c:954 pattern/compile.c:1129
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "%s パターン中にエラー"
@@ -6889,34 +7595,34 @@ msgstr "%s パターン中にエラー"
 msgid "missing pattern: %s"
 msgstr "パターンが不足: %s"
 
-#: pattern/compile.c:999 pattern/compile.c:1100
+#: pattern/compile.c:999 pattern/compile.c:1099
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "対応する括弧がない: %s"
 
-#: pattern/compile.c:1034
+#: pattern/compile.c:1033
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c は不正なパターン修飾子"
 
-#: pattern/compile.c:1039
+#: pattern/compile.c:1038
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c はこのモードではサポートされていない"
 
-#: pattern/compile.c:1062
+#: pattern/compile.c:1061
 msgid "missing parameter"
 msgstr "パラメータがない"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:189
+#: pattern/dlg_pattern.c:193
 msgid "Patterns"
 msgstr "パターン"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlg_pattern.c:205
+#: pattern/dlg_pattern.c:209
 msgid "EXPR"
 msgstr "EXPR"
 
@@ -6924,7 +7630,7 @@ msgstr "EXPR"
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlg_pattern.c:213
+#: pattern/dlg_pattern.c:217
 msgid "RANGE"
 msgstr "RANGE"
 
@@ -6932,7 +7638,7 @@ msgstr "RANGE"
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlg_pattern.c:220
+#: pattern/dlg_pattern.c:224
 msgid "DATERANGE"
 msgstr "DATERANGE"
 
@@ -6940,7 +7646,7 @@ msgstr "DATERANGE"
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlg_pattern.c:227
+#: pattern/dlg_pattern.c:231
 msgid "QUERY"
 msgstr ""
 
@@ -6948,22 +7654,22 @@ msgstr ""
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlg_pattern.c:245
+#: pattern/dlg_pattern.c:249
 msgid "PATTERN"
 msgstr "PATTERN"
 
 #. L10N: Pattern Completion Menu description for ~()
-#: pattern/dlg_pattern.c:252
+#: pattern/dlg_pattern.c:256
 msgid "messages in threads containing messages matching PATTERN"
 msgstr "PATTERN に一致するメッセージを含むスレッド内のメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~<()
-#: pattern/dlg_pattern.c:260
+#: pattern/dlg_pattern.c:264
 msgid "messages whose immediate parent matches PATTERN"
 msgstr "直接の親が PATTERN に一致するメッセージ"
 
 #. L10N: Pattern Completion Menu description for ~>()
-#: pattern/dlg_pattern.c:268
+#: pattern/dlg_pattern.c:272
 msgid "messages having an immediate child matching PATTERN"
 msgstr "直接の子が PATTERN に一致するメッセージ"
 
@@ -7259,34 +7965,34 @@ msgstr ""
 msgid "No current message"
 msgstr "未読メッセージがない。"
 
-#: pattern/pattern.c:207 pattern/pattern.c:312 pattern/pattern.c:475
-#: pattern/pattern.c:631
+#: pattern/pattern.c:207 pattern/pattern.c:313 pattern/pattern.c:492
+#: pattern/pattern.c:648
 msgid "Compiling search pattern..."
 msgstr "検索パターンをコンパイル中..."
 
-#: pattern/pattern.c:235 pattern/pattern.c:334
+#: pattern/pattern.c:235 pattern/pattern.c:335
 msgid "Executing command on matching messages..."
 msgstr "メッセージパターン検索のためにコマンド実行中..."
 
-#: pattern/pattern.c:407
+#: pattern/pattern.c:421
 msgid "No messages matched criteria"
 msgstr "パターンに一致するメッセージがなかった。"
 
-#: pattern/pattern.c:506 pattern/pattern.c:662
+#: pattern/pattern.c:433 pattern/pattern.c:591 pattern/pattern.c:744
+msgid "Search interrupted"
+msgstr "検索が中断された。"
+
+#: pattern/pattern.c:523 pattern/pattern.c:679
 msgid "Searching..."
 msgstr "検索中..."
 
-#: pattern/pattern.c:522 pattern/pattern.c:678
+#: pattern/pattern.c:539 pattern/pattern.c:695
 msgid "Search hit bottom without finding match"
 msgstr "一番下まで、何も検索に一致しなかった。"
 
-#: pattern/pattern.c:535 pattern/pattern.c:691
+#: pattern/pattern.c:552 pattern/pattern.c:708
 msgid "Search hit top without finding match"
 msgstr "一番上まで、何も検索に一致しなかった。"
-
-#: pattern/pattern.c:574 pattern/pattern.c:727
-msgid "Search interrupted"
-msgstr "検索が中断された。"
 
 #: pop/auth.c:332
 msgid "POP timestamp is invalid"
@@ -7391,7 +8097,7 @@ msgstr "メッセージに削除をマーク中..."
 msgid "Can't write message to temporary file"
 msgstr "メッセージを一時ファイルに書き込めない"
 
-#: postpone/dlg_postpone.c:222
+#: postpone/dlg_postpone.c:229
 msgid "Postponed Messages"
 msgstr "書きかけのメッセージ"
 
@@ -7419,7 +8125,7 @@ msgstr "書きかけメッセージがない。"
 #. L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:176
+#: progress/window.c:177
 #, c-format
 msgid "%s %s (%d%%)"
 msgstr "%s %s (%d%%)"
@@ -7427,19 +8133,19 @@ msgstr "%s %s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu` position,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:184
+#: progress/window.c:185
 #, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
 #. L10N: Progress bar: `%s` loading text, `%s` position/size
-#: progress/window.c:193
+#: progress/window.c:194
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. L10N: Progress bar: `%s` loading text, `%zu` position
-#: progress/window.c:198
+#: progress/window.c:199
 #, c-format
 msgid "%s %zu"
 msgstr "%s %zu"
@@ -7447,7 +8153,7 @@ msgstr "%s %zu"
 #. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:209
+#: progress/window.c:210
 #, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
@@ -7455,7 +8161,7 @@ msgstr "%s %s/%s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:217
+#: progress/window.c:218
 #, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
@@ -7468,11 +8174,11 @@ msgstr "yes"
 msgid "no"
 msgstr "no"
 
-#: recvcmd.c:76
+#: recvcmd.c:77
 msgid "You may only bounce message/rfc822 parts"
 msgstr "message/rfc822 パートのみ再送してもよい。"
 
-#: recvcmd.c:274
+#: recvcmd.c:275
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
@@ -7504,7 +8210,7 @@ msgstr "%s を作成できない。"
 msgid "Can't find any tagged messages"
 msgstr "タグ付きメッセージが一つも見つからない。"
 
-#: recvcmd.c:886 send/send.c:1189
+#: recvcmd.c:886 send/send.c:1194
 msgid "No mailing lists found"
 msgstr "メーリングリストが見つからなかった"
 
@@ -7532,16 +8238,16 @@ msgid "%s no longer exists"
 msgstr "%s はもはや存在しない"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
-#: send/config.c:105
+#: send/config.c:115
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 
-#: send/send.c:345
+#: send/send.c:348
 msgid "No subject, abort?"
 msgstr "題名がない。中止?"
 
-#: send/send.c:347
+#: send/send.c:350
 msgid "No subject, aborting"
 msgstr "無題で中止する。"
 
@@ -7551,44 +8257,44 @@ msgstr "無題で中止する。"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:605
+#: send/send.c:608
 msgid "Forward attachments?"
 msgstr "非テキスト添付ファイルも転送?"
 
 # ここで no だと from に返信する。
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:895
+#: send/send.c:900
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "%s%s への返信?"
 
-#: send/send.c:942
+#: send/send.c:947
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "%s%s へのフォローアップ?"
 
-#: send/send.c:1231
+#: send/send.c:1236
 msgid "Include message in reply?"
 msgstr "返信にメッセージを含めるか?"
 
-#: send/send.c:1237
+#: send/send.c:1242
 msgid "Including quoted message..."
 msgstr "引用メッセージを取り込み中..."
 
-#: send/send.c:1244
+#: send/send.c:1249
 msgid "Could not include all requested messages"
 msgstr "すべての要求されたメッセージを取り込めなかった"
 
-#: send/send.c:1256
+#: send/send.c:1261
 msgid "Forward as attachment?"
 msgstr "添付ファイルとして転送?"
 
-#: send/send.c:1261
+#: send/send.c:1266
 msgid "Preparing forwarded message..."
 msgstr "転送メッセージを準備中..."
 
-#: send/send.c:1763
+#: send/send.c:1768
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "警告: バッチモードでは IMAP メールボックスへの Fcc がサポートされていない"
 
@@ -7597,12 +8303,12 @@ msgstr "警告: バッチモードでは IMAP メールボックスへの Fcc �
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1769
+#: send/send.c:1774
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Fcc は %s をスキップする"
 
-#: send/send.c:1809 send/send.c:1821 send/send.c:1847
+#: send/send.c:1814 send/send.c:1826 send/send.c:1852
 msgid "Save attachments in Fcc?"
 msgstr "Fcc に添付ファイルも保存?"
 
@@ -7610,7 +8316,7 @@ msgstr "Fcc に添付ファイルも保存?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1869
+#: send/send.c:1874
 #, fuzzy
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fccに失敗. (r)etry 再試行, alternate (m)ailbox 別のメールボックス, (s)kip スキップ "
@@ -7618,108 +8324,108 @@ msgstr "Fccに失敗. (r)etry 再試行, alternate (m)ailbox 別のメールボ�
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1873
+#: send/send.c:1878
 msgid "rms"
 msgstr "rms"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1879
+#: send/send.c:1884
 msgid "Fcc mailbox"
 msgstr "Fcc のメールボックス"
 
-#: send/send.c:1948
+#: send/send.c:1953
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1985 send/send.c:2002
+#: send/send.c:1990 send/send.c:2007
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2096
+#: send/send.c:2101
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "メッセージは \"$abort_noattach_regex\" を含んでいる.送信しない."
 
-#: send/send.c:2100
+#: send/send.c:2105
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "添付ファイルの content-trasfer-encoding を編集"
 
-#: send/send.c:2151
+#: send/send.c:2156
 msgid "Recall postponed message?"
 msgstr "書きかけのメッセージを呼び出す?"
 
-#: send/send.c:2497
+#: send/send.c:2502
 msgid "Edit forwarded message?"
 msgstr "転送メッセージを編集?"
 
-#: send/send.c:2538
+#: send/send.c:2543
 msgid "Abort unmodified message?"
 msgstr "メッセージは未変更。中止?"
 
-#: send/send.c:2540
+#: send/send.c:2545
 msgid "Aborted unmodified message"
 msgstr "未変更のメッセージを中止した。"
 
-#: send/send.c:2682
+#: send/send.c:2687
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "暗号バックエンドの設定がない. メッセージのセキュリティ設定を無効化した."
 
-#: send/send.c:2722
+#: send/send.c:2727
 msgid "Article not posted"
 msgstr "記事は未投稿。"
 
-#: send/send.c:2731
+#: send/send.c:2736
 msgid "Message postponed"
 msgstr "メッセージは書きかけで保留された。"
 
-#: send/send.c:2766
+#: send/send.c:2771
 msgid "No subject, abort sending?"
 msgstr "題名がない。送信を中止?"
 
-#: send/send.c:2770 send/send.c:2776
+#: send/send.c:2775 send/send.c:2781
 msgid "No subject specified"
 msgstr "題名が指定されていない。"
 
-#: send/send.c:2782
+#: send/send.c:2787
 msgid "No newsgroup specified"
 msgstr "ニュースグループが指定されていない。"
 
-#: send/send.c:2827
+#: send/send.c:2832
 msgid "Missing encryption key; mail not sent"
 msgstr ""
 
-#: send/send.c:2851 send/smtp.c:263
+#: send/send.c:2856 send/smtp.c:263
 msgid "Sending message..."
 msgstr "送信中..."
 
-#: send/send.c:2897
+#: send/send.c:2902
 msgid "Could not send the message"
 msgstr "メッセージを送信できなかった。"
 
-#: send/send.c:2907
+#: send/send.c:2912
 msgid "Sending in background"
 msgstr "バックグラウンドで送信。"
 
-#: send/send.c:2908
+#: send/send.c:2913
 msgid "Article posted"
 msgstr "記事を投稿した。"
 
-#: send/send.c:2909
+#: send/send.c:2914
 msgid "Mail sent"
 msgstr "メールを送信した。"
 
-#: send/send.c:2990
+#: send/send.c:2995
 #, fuzzy
 msgid "No recipient specified"
 msgstr "受信者が指定されていない。"
 
-#: send/send.c:3037
+#: send/send.c:3042
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "秘密鍵が見付からない"
 
-#: send/send.c:3066
+#: send/send.c:3071
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "%s の購読を取り消した"
@@ -7739,16 +8445,16 @@ msgstr "%s をオープンできなかった"
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "不正な IDN %s を resent-from の準備中に発見。"
 
-#: send/sendmail.c:331
+#: send/sendmail.c:332
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail を設定しないとメールを送信できない。"
 
-#: send/sendmail.c:436
+#: send/sendmail.c:437
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "メッセージ送信エラー。子プロセスが %d (%s) で終了した。"
 
-#: send/sendmail.c:448
+#: send/sendmail.c:449
 msgid "Output of the delivery process"
 msgstr "配信プロセスの出力"
 
@@ -7771,19 +8477,19 @@ msgstr "不正な SMTP URL: %s"
 msgid "SMTP server does not support authentication"
 msgstr "SMTP サーバがユーザ認証をサポートしていない"
 
-#: send/smtp.c:1137
+#: send/smtp.c:1144
 msgid "No from address given"
 msgstr "From アドレスが指定されていない"
 
-#: send/smtp.c:1204
+#: send/smtp.c:1205
 msgid "SMTP session failed: read error"
 msgstr "SMTP セッション失敗: 読み出しエラー"
 
-#: send/smtp.c:1206
+#: send/smtp.c:1207
 msgid "SMTP session failed: write error"
 msgstr "SMTP セッション失敗: 書き込みエラー"
 
-#: send/smtp.c:1208
+#: send/smtp.c:1209
 msgid "Invalid server response"
 msgstr "サーバからの不正な応答"
 
@@ -7795,14 +8501,14 @@ msgstr "整列機能が見つからなかった [このバグを報告せよ]"
 msgid "Sorting mailbox..."
 msgstr "メールボックス整列中..."
 
-#: status.c:180
+#: status.c:163
 msgid "(no mailbox)"
 msgstr "(メールボックスがない)"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: status.c:326
+#: status.c:389
 #, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"

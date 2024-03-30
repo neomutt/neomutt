@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-03-29 15:52+0000\n"
+"POT-Creation-Date: 2024-03-30 13:52+0000\n"
 "PO-Revision-Date: 2016-11-09 22:45+0000\n"
 "Last-Translator: Velko Hristov <hristov@informatik.hu-berlin.de>\n"
 "Language-Team: none\n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: address/config_type.c:88 config/long.c:50 config/number.c:52
 #: config/path.c:99 config/path.c:175 config/sort.c:57 config/string.c:68
-#: config/string.c:145
+#: config/string.c:145 expando/config_type.c:70 expando/config_type.c:170
 #, c-format
 msgid "Option %s may not be empty"
 msgstr ""
@@ -48,7 +48,7 @@ msgid "Address: "
 msgstr "Адрес:"
 
 #: alias/alias.c:453 conn/raw.c:158 conn/raw.c:215 envelope/functions.c:133
-#: external.c:136 recvcmd.c:230 send/send.c:215
+#: external.c:136 recvcmd.c:231 send/send.c:218
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Лош IDN: '%s'"
@@ -104,86 +104,86 @@ msgstr "Предупреждение: Лош IDN '%s' в псевдонима '%
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Предупреждение: Лош IDN '%s' в псевдонима '%s'"
 
-#: alias/dlg_alias.c:101 alias/dlg_query.c:102 attach/dlg_attach.c:95
-#: autocrypt/dlg_autocrypt.c:89 browser/dlg_browser.c:112
-#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:68 history/dlg_history.c:78
-#: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:74
+#: alias/dlg_alias.c:102 alias/dlg_query.c:103 attach/dlg_attach.c:100
+#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:116
+#: browser/dlg_browser.c:128 conn/dlg_verifycert.c:68 history/dlg_history.c:78
+#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:74
 #: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
 #: pager/dlg_pager.c:111 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:90
 msgid "Exit"
 msgstr "Изход"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:106 index/dlg_index.c:121
+#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:122
 #: pager/dlg_pager.c:100 pager/dlg_pager.c:116 postpone/dlg_postpone.c:91
 msgid "Del"
 msgstr "Изтр."
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:122
+#: alias/dlg_alias.c:104 index/dlg_index.c:108 index/dlg_index.c:123
 #: postpone/dlg_postpone.c:92
 msgid "Undel"
 msgstr "Възст."
 
-#: alias/dlg_alias.c:104 alias/dlg_query.c:106
+#: alias/dlg_alias.c:105 alias/dlg_query.c:107
 msgid "Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:105 alias/dlg_query.c:107
+#: alias/dlg_alias.c:106 alias/dlg_query.c:108
 msgid "Rev-Sort"
 msgstr ""
 
-#: alias/dlg_alias.c:106 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:98
-#: ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
+#: alias/dlg_alias.c:107 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:100
+#: ncrypt/dlg_pgp.c:98 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
 msgid "Select"
 msgstr "Избор"
 
-#: alias/dlg_alias.c:107 alias/dlg_query.c:109 attach/dlg_attach.c:99
-#: autocrypt/dlg_autocrypt.c:108 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:130 compose/dlg_compose.c:103
+#: alias/dlg_alias.c:108 alias/dlg_query.c:110 attach/dlg_attach.c:104
+#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:120
+#: browser/dlg_browser.c:134 compose/dlg_compose.c:103
 #: compose/dlg_compose.c:117 conn/dlg_verifycert.c:69 editor/window.c:51
-#: history/dlg_history.c:81 index/dlg_index.c:112 index/dlg_index.c:127
-#: ncrypt/dlg_gpgme.c:100 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:76
+#: history/dlg_history.c:81 index/dlg_index.c:113 index/dlg_index.c:128
+#: ncrypt/dlg_gpgme.c:102 ncrypt/dlg_pgp.c:100 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:78 pager/dlg_pager.c:103 pager/dlg_pager.c:118
 #: pattern/dlg_pattern.c:92 postpone/dlg_postpone.c:93
 msgid "Help"
 msgstr "Помощ"
 
-#: alias/dlg_alias.c:329
+#: alias/dlg_alias.c:375
 msgid "You have no aliases"
 msgstr "В адресната книга няма записи"
 
-#: alias/dlg_alias.c:334
+#: alias/dlg_alias.c:380
 msgid "Aliases"
 msgstr "Псевдоними"
 
-#: alias/dlg_query.c:103 index/dlg_index.c:109
+#: alias/dlg_query.c:104 index/dlg_index.c:110
 msgid "Mail"
 msgstr "Ново"
 
-#: alias/dlg_query.c:104
+#: alias/dlg_query.c:105
 msgid "New Query"
 msgstr "Ново запитване"
 
-#: alias/dlg_query.c:105
+#: alias/dlg_query.c:106
 msgid "Make Alias"
 msgstr "Създаване на псевдоним"
 
-#: alias/dlg_query.c:108 history/dlg_history.c:80
+#: alias/dlg_query.c:109 history/dlg_history.c:80
 msgid "Search"
 msgstr "Търсене"
 
-#: alias/dlg_query.c:292
+#: alias/dlg_query.c:296
 msgid "Waiting for response..."
 msgstr "Чакане на отговор..."
 
-#: alias/dlg_query.c:374
+#: alias/dlg_query.c:378
 msgid "Query"
 msgstr "Запитване"
 
-#: alias/dlg_query.c:474 alias/dlg_query.c:552
+#: alias/dlg_query.c:478 alias/dlg_query.c:556
 msgid "Query command not defined"
 msgstr "Команда за запитване не е дефинирана"
 
-#: alias/dlg_query.c:562 alias/functions.c:260 alias/functions.c:278
+#: alias/dlg_query.c:566 alias/functions.c:260 alias/functions.c:278
 msgid "Query: "
 msgstr "Запитване: "
 
@@ -237,19 +237,19 @@ msgstr "променя описанието на приложението"
 msgid "unattachments: invalid disposition"
 msgstr ""
 
-#: attach/dlg_attach.c:96 index/dlg_index.c:108 index/dlg_index.c:123
+#: attach/dlg_attach.c:101 index/dlg_index.c:109 index/dlg_index.c:124
 msgid "Save"
 msgstr "Запис"
 
-#: attach/dlg_attach.c:97
+#: attach/dlg_attach.c:102
 msgid "Pipe"
 msgstr "Pipe"
 
-#: attach/dlg_attach.c:98
+#: attach/dlg_attach.c:103
 msgid "Print"
 msgstr "Отпечатване"
 
-#: attach/dlg_attach.c:510
+#: attach/dlg_attach.c:575
 msgid "Attachments"
 msgstr "Приложения"
 
@@ -306,9 +306,9 @@ msgstr "Няма шаблон с това име. Желаете ли да пр�
 msgid "Mailcap compose entry requires %%s"
 msgstr "Записът \"compose\" в mailcap изисква %%s"
 
-#: attach/mutt_attach.c:165 attach/mutt_attach.c:304 compmbox/compress.c:323
-#: compose/functions.c:1845 gui/curs_lib.c:124 index/dlg_index.c:1178
-#: index/dlg_index.c:1223 pager/dlg_pager.c:456 pager/do_pager.c:167
+#: attach/mutt_attach.c:165 attach/mutt_attach.c:304 compmbox/compress.c:345
+#: compose/functions.c:1845 gui/curs_lib.c:124 index/dlg_index.c:1187
+#: index/dlg_index.c:1232 pager/dlg_pager.c:456 pager/do_pager.c:167
 #: pager/message.c:329 send/sendlib.c:580
 #, c-format
 msgid "Error running \"%s\""
@@ -450,7 +450,7 @@ msgstr "%s не съществува. Да бъде ли създаден?"
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
 #: autocrypt/autocrypt.c:84 bcache/bcache.c:230 hcache/hcache.c:330 init.c:586
-#: main.c:935 nntp/newsrc.c:1100
+#: main.c:935 nntp/newsrc.c:1145
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Грешка при създаване на %s: %s"
@@ -553,10 +553,8 @@ msgstr "Няма пощенска кутия.\n"
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr ""
 
-#. L10N: s is the path to the database.
-#. For some reason sqlite3 failed to open that database file.
-#. L10N: Error message if autocrypt couldn't open the SQLite database
-#. for some reason.  The %s is the full path of the database file.
+#. L10N: autocrypt couldn't open the SQLite database.
+#. The %s is the full path of the database file.
 #: autocrypt/db.c:71 autocrypt/db.c:105
 #, fuzzy, c-format
 msgid "Unable to open autocrypt database %s"
@@ -564,14 +562,14 @@ msgstr "Грешка при заключване на пощенската ку�
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
-#: autocrypt/dlg_autocrypt.c:92
+#: autocrypt/dlg_autocrypt.c:93
 #, fuzzy
 msgid "Create"
 msgstr "Желаете ли да създадете %s?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:95 mixmaster/dlg_mixmaster.c:83
+#: autocrypt/dlg_autocrypt.c:96 mixmaster/dlg_mixmaster.c:83
 msgid "Delete"
 msgstr "Изтриване"
 
@@ -580,7 +578,7 @@ msgstr "Изтриване"
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:101
+#: autocrypt/dlg_autocrypt.c:102
 msgid "Tgl Active"
 msgstr ""
 
@@ -589,37 +587,37 @@ msgstr ""
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:107
+#: autocrypt/dlg_autocrypt.c:108
 msgid "Prf Encr"
 msgstr ""
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt set
-#: autocrypt/dlg_autocrypt.c:149
+#: autocrypt/dlg_autocrypt.c:159
 msgid "prefer encrypt"
 msgstr ""
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt unset;
 #. thus encryption will need to be manually enabled.
-#: autocrypt/dlg_autocrypt.c:156
+#: autocrypt/dlg_autocrypt.c:166
 msgid "manual encrypt"
 msgstr ""
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is enabled/active
-#: autocrypt/dlg_autocrypt.c:164
+#: autocrypt/dlg_autocrypt.c:182
 msgid "active"
 msgstr ""
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is disabled/inactive
-#: autocrypt/dlg_autocrypt.c:170
+#: autocrypt/dlg_autocrypt.c:188
 msgid "inactive"
 msgstr ""
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:329
+#: autocrypt/dlg_autocrypt.c:349
 msgid "Autocrypt Accounts"
 msgstr ""
 
@@ -700,67 +698,67 @@ msgstr "%s не е директория"
 msgid "Message cache isn't a directory: %s"
 msgstr "%s не е директория"
 
-#: browser/dlg_browser.c:113
+#: browser/dlg_browser.c:117
 msgid "Chdir"
 msgstr "Директория"
 
-#: browser/dlg_browser.c:114
+#: browser/dlg_browser.c:118
 msgid "Goto"
 msgstr ""
 
-#: browser/dlg_browser.c:115 browser/dlg_browser.c:129
+#: browser/dlg_browser.c:119 browser/dlg_browser.c:133
 msgid "Mask"
 msgstr "Маска"
 
-#: browser/dlg_browser.c:125
+#: browser/dlg_browser.c:129
 msgid "List"
 msgstr ""
 
-#: browser/dlg_browser.c:126
+#: browser/dlg_browser.c:130
 #, fuzzy
 msgid "Subscribe"
 msgstr "Абониране за %s..."
 
-#: browser/dlg_browser.c:127
+#: browser/dlg_browser.c:131
 #, fuzzy
 msgid "Unsubscribe"
 msgstr "Отписване от %s..."
 
-#: browser/dlg_browser.c:128 index/dlg_index.c:126
+#: browser/dlg_browser.c:132 index/dlg_index.c:127
 msgid "Catchup"
 msgstr ""
 
-#: browser/dlg_browser.c:703 browser/functions.c:436 browser/functions.c:776
+#: browser/dlg_browser.c:763 browser/functions.c:436 browser/functions.c:776
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s не е директория"
 
-#: browser/dlg_browser.c:986
+#: browser/dlg_browser.c:1049
 #, fuzzy, c-format
 msgid "Subscribed newsgroups"
 msgstr "Абониране за %s..."
 
-#: browser/dlg_browser.c:990
+#: browser/dlg_browser.c:1053
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr ""
 
-#: browser/dlg_browser.c:998
+#: browser/dlg_browser.c:1061
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Пощенски кутии [%d]"
 
-#: browser/dlg_browser.c:1010
+#: browser/dlg_browser.c:1073
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Абониран [%s], Файлова маска: %s"
 
-#: browser/dlg_browser.c:1015
+#: browser/dlg_browser.c:1078
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Директория [%s], Файлова маска: %s"
 
-#: browser/dlg_browser.c:1078
+#: browser/dlg_browser.c:1141
 msgid "Can't attach a directory"
 msgstr "Не може да прилагате директория"
 
@@ -875,8 +873,8 @@ msgstr "%s: няма такъв обект"
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:366
 #: commands.c:388 commands.c:529 commands.c:545 commands.c:742 commands.c:774
 #: commands.c:790 commands.c:910 commands.c:1035 commands.c:1084
-#: commands.c:1124 hook.c:136 hook.c:191 hook.c:200 hook.c:214 hook.c:442
-#: hook.c:458 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:101
+#: commands.c:1124 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
+#: hook.c:470 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:101
 #: subjectrx.c:109
 #, c-format
 msgid "%s: too few arguments"
@@ -898,7 +896,7 @@ msgid "%s: color not supported by term"
 msgstr "%s: терминалът не поддържа цветове"
 
 #: color/command.c:402 color/command.c:444 commands.c:412 commands.c:1093
-#: commands.c:1224 commands.c:1559 hook.c:141 hook.c:221 hook.c:465
+#: commands.c:1224 commands.c:1559 hook.c:146 hook.c:226 hook.c:481
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
 #: mutt_lua.c:515 score.c:107
 #, c-format
@@ -1072,54 +1070,59 @@ msgstr "Отписване от %s..."
 msgid "Could not unsubscribe from %s"
 msgstr "Отписване от %s..."
 
-#: compmbox/compress.c:358 compmbox/compress.c:491
+#: compmbox/compress.c:224
+#, c-format
+msgid "Expando parse error: %s"
+msgstr ""
+
+#: compmbox/compress.c:380 compmbox/compress.c:513
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr ""
 
-#: compmbox/compress.c:440 compmbox/compress.c:503 compmbox/compress.c:578
-#: compmbox/compress.c:616 mbox/mbox.c:1110
+#: compmbox/compress.c:462 compmbox/compress.c:525 compmbox/compress.c:600
+#: compmbox/compress.c:638 mbox/mbox.c:1106
 msgid "Unable to lock mailbox"
 msgstr "Грешка при заключване на пощенската кутия"
 
-#: compmbox/compress.c:444 compmbox/compress.c:510 compmbox/compress.c:582
+#: compmbox/compress.c:466 compmbox/compress.c:532 compmbox/compress.c:604
 #, c-format
 msgid "Decompressing %s"
 msgstr ""
 
-#: compmbox/compress.c:452
+#: compmbox/compress.c:474
 msgid "Can't identify the contents of the compressed file"
 msgstr ""
 
-#: compmbox/compress.c:459 compmbox/compress.c:532
+#: compmbox/compress.c:481 compmbox/compress.c:554
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr ""
 
-#: compmbox/compress.c:512
+#: compmbox/compress.c:534
 #, fuzzy, c-format
 msgid "Compress command failed: %s"
 msgstr "Грешка при изпълнение на командата \"preconnect\""
 
-#: compmbox/compress.c:525
+#: compmbox/compress.c:547
 msgid "Unsupported mailbox type for appending"
 msgstr ""
 
-#: compmbox/compress.c:606
+#: compmbox/compress.c:628
 msgid "Can't sync a compressed file without a close-hook"
 msgstr ""
 
-#: compmbox/compress.c:628 compmbox/compress.c:679
+#: compmbox/compress.c:650 compmbox/compress.c:701
 #, fuzzy, c-format
 msgid "Compressing %s"
 msgstr "Създаване на копие в %s..."
 
-#: compmbox/compress.c:674
+#: compmbox/compress.c:696
 #, fuzzy, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Създаване на копие в %s..."
 
-#: compmbox/compress.c:685 editmsg.c:265
+#: compmbox/compress.c:707 editmsg.c:265
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Грешка. Запазване на временния файл: %s"
@@ -1350,7 +1353,7 @@ msgstr "Това приложение ще бъде прекодирано"
 msgid "Attachment is not 'multipart'"
 msgstr "Приложението е записано на диска"
 
-#: compose/functions.c:1766 send/send.c:2756
+#: compose/functions.c:1766 send/send.c:2761
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Лош IDN в '%s': '%s'"
@@ -1413,7 +1416,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr ""
 
 #: config/charset.c:71 config/charset.c:103 hcache/config.c:56
-#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:112
+#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:122
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Невалиден ден от месеца: %s"
@@ -1441,6 +1444,8 @@ msgid "Option %s may not be negative"
 msgstr "Тази функция не може да се изпълни при прилагане на писма."
 
 #: config/number.c:59 config/number.c:174 config/number.c:216
+#: expando/node_conddate.c:164 expando/node_expando.c:182
+#: expando/node_expando.c:211
 #, fuzzy, c-format
 msgid "Invalid number: %s"
 msgstr "%d: невалиден номер на писмо.\n"
@@ -1541,7 +1546,7 @@ msgstr ""
 msgid "OAUTH token is too big: %ld"
 msgstr ""
 
-#: conn/dlg_verifycert.c:196
+#: conn/dlg_verifycert.c:203
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 msgstr "отхвърляне(r), еднократно приемане(o), приемане винаги(a)"
@@ -1549,23 +1554,23 @@ msgstr "отхвърляне(r), еднократно приемане(o), пр�
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:200
+#: conn/dlg_verifycert.c:207
 #, fuzzy
 msgid "roas"
 msgstr "roas"
 
-#: conn/dlg_verifycert.c:204
+#: conn/dlg_verifycert.c:211
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "отхвърляне(r), еднократно приемане(o), приемане винаги(a)"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (a)ccept always"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:208
+#: conn/dlg_verifycert.c:215
 msgid "roa"
 msgstr "roa"
 
-#: conn/dlg_verifycert.c:215
+#: conn/dlg_verifycert.c:222
 #, fuzzy
 msgid "(r)eject, accept (o)nce, (s)kip"
 msgstr "отхвърляне(r), еднократно приемане(o)"
@@ -1573,31 +1578,31 @@ msgstr "отхвърляне(r), еднократно приемане(o)"
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce, (s)kip"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:219
+#: conn/dlg_verifycert.c:226
 #, fuzzy
 msgid "ros"
 msgstr "ros"
 
-#: conn/dlg_verifycert.c:223
+#: conn/dlg_verifycert.c:230
 msgid "(r)eject, accept (o)nce"
 msgstr "отхвърляне(r), еднократно приемане(o)"
 
 #. L10N: The letters correspond to the choices in the string:
 #. "(r)eject, accept (o)nce"
 #. This is an interactive certificate confirmation prompt for an SSL connection.
-#: conn/dlg_verifycert.c:227
+#: conn/dlg_verifycert.c:234
 msgid "ro"
 msgstr "ro"
 
-#: conn/dlg_verifycert.c:286
+#: conn/dlg_verifycert.c:293
 msgid "Jumping is not implemented for dialogs"
 msgstr "Скоковете не са имплементирани за диалози"
 
-#: conn/dlg_verifycert.c:293
+#: conn/dlg_verifycert.c:300
 msgid "Search is not implemented for this menu"
 msgstr "За това меню не е имплементирано търсене"
 
-#: conn/gnutls.c:146 conn/gnutls.c:635
+#: conn/gnutls.c:146 conn/gnutls.c:642
 msgid "Unable to get certificate from peer"
 msgstr "От сървъра не може да бъде получен сертификат"
 
@@ -1611,109 +1616,114 @@ msgstr ""
 msgid "[unable to calculate]"
 msgstr "[грешка при пресмятане]"
 
-#: conn/gnutls.c:324 conn/gnutls.c:489
+#: conn/gnutls.c:324 conn/gnutls.c:496
 #, fuzzy
 msgid "Error initialising gnutls certificate data"
 msgstr "Грешка при инициализация на терминала."
 
-#: conn/gnutls.c:330 conn/gnutls.c:495
+#: conn/gnutls.c:330 conn/gnutls.c:502
 msgid "Error processing certificate data"
 msgstr ""
 
-#: conn/gnutls.c:500 conn/openssl.c:900
+#: conn/gnutls.c:489 conn/openssl.c:900
+#, fuzzy
+msgid "Untrusted server certificate"
+msgstr "Предупреждение: Сертификатът не може да бъде запазен"
+
+#: conn/gnutls.c:507 conn/openssl.c:907
 msgid "This certificate belongs to:"
 msgstr "Този сертификат принадлежи на:"
 
-#: conn/gnutls.c:502 conn/openssl.c:902
+#: conn/gnutls.c:509 conn/openssl.c:909
 msgid "This certificate was issued by:"
 msgstr "Този сертификат е издаден от:"
 
-#: conn/gnutls.c:505 conn/openssl.c:906
+#: conn/gnutls.c:512 conn/openssl.c:913
 msgid "This certificate is valid"
 msgstr "Този сертификат е валиден"
 
-#: conn/gnutls.c:510 conn/openssl.c:907
+#: conn/gnutls.c:517 conn/openssl.c:914
 #, c-format
 msgid "   from %s"
 msgstr "   от %s"
 
-#: conn/gnutls.c:515 conn/openssl.c:909
+#: conn/gnutls.c:522 conn/openssl.c:916
 #, c-format
 msgid "     to %s"
 msgstr "    до %s"
 
-#: conn/gnutls.c:521 conn/openssl.c:915
+#: conn/gnutls.c:528 conn/openssl.c:922
 #, fuzzy, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Пръстов отпечатък: %s"
 
-#: conn/gnutls.c:527 conn/gnutls.c:529 conn/openssl.c:921 conn/openssl.c:924
+#: conn/gnutls.c:534 conn/gnutls.c:536 conn/openssl.c:928 conn/openssl.c:931
 #, fuzzy
 msgid "SHA256 Fingerprint: "
 msgstr "Пръстов отпечатък: %s"
 
-#: conn/gnutls.c:538
+#: conn/gnutls.c:545
 #, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "Сертификатът на сървъра все още не е валиден"
 
-#: conn/gnutls.c:542
+#: conn/gnutls.c:549
 #, fuzzy
 msgid "WARNING: Server certificate has expired"
 msgstr "Сертификатът на сървъра е изтекъл"
 
-#: conn/gnutls.c:546
+#: conn/gnutls.c:553
 #, fuzzy
 msgid "WARNING: Server certificate has been revoked"
 msgstr "Сертификатът на сървъра е изтекъл"
 
-#: conn/gnutls.c:550
+#: conn/gnutls.c:557
 msgid "WARNING: Server hostname does not match certificate"
 msgstr ""
 
-#: conn/gnutls.c:554
+#: conn/gnutls.c:561
 #, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "Сертификатът на сървъра все още не е валиден"
 
-#: conn/gnutls.c:558
+#: conn/gnutls.c:565
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 
-#: conn/gnutls.c:562 conn/openssl.c:937
+#: conn/gnutls.c:569 conn/openssl.c:944
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
 
-#: conn/gnutls.c:596 conn/openssl.c:971
+#: conn/gnutls.c:603 conn/openssl.c:978
 msgid "Certificate saved"
 msgstr "Сертификатът е записан"
 
-#: conn/gnutls.c:598 conn/openssl.c:973
+#: conn/gnutls.c:605 conn/openssl.c:980
 msgid "Warning: Couldn't save certificate"
 msgstr "Предупреждение: Сертификатът не може да бъде запазен"
 
-#: conn/gnutls.c:798 conn/gnutls.c:844
+#: conn/gnutls.c:805 conn/gnutls.c:851
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr ""
 
-#: conn/gnutls.c:851
+#: conn/gnutls.c:858
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:921 conn/openssl.c:1154
+#: conn/gnutls.c:928 conn/openssl.c:1161
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/gnutls.c:967
+#: conn/gnutls.c:974
 #, fuzzy, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL връзка, използваща %s (%s)"
 
-#: conn/gnutls.c:1049 conn/gnutls.c:1078
+#: conn/gnutls.c:1056 conn/gnutls.c:1085
 msgid "Error: no TLS socket open"
 msgstr ""
 
@@ -1763,20 +1773,20 @@ msgstr "От сървъра не може да бъде получен серт�
 msgid "certificate owner does not match hostname %s"
 msgstr "Притежателят на S/MIME сертификата не съвпада с подателя на писмото."
 
-#: conn/openssl.c:1074
+#: conn/openssl.c:1081
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Сертификатът е записан"
 
-#: conn/openssl.c:1170
+#: conn/openssl.c:1177
 msgid "I/O error"
 msgstr "входно-изходна грешка"
 
-#: conn/openssl.c:1176 conn/raw.c:266 mutt_logging.c:108
+#: conn/openssl.c:1183 conn/raw.c:266 mutt_logging.c:108
 msgid "unknown error"
 msgstr "непозната грешка"
 
-#: conn/openssl.c:1179
+#: conn/openssl.c:1186
 #, c-format
 msgid "SSL failed: %s"
 msgstr "Неуспешен SSL: %s"
@@ -1784,12 +1794,12 @@ msgstr "Неуспешен SSL: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1215
+#: conn/openssl.c:1222
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "Грешка: не може да бъде стартиран дъщерен OpenSSL процес!"
 
-#: conn/openssl.c:1277
+#: conn/openssl.c:1284
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -1873,14 +1883,14 @@ msgstr ""
 msgid "%s isn't a regular file"
 msgstr "%s не е обикновен файл"
 
-#: copy.c:735
+#: copy.c:734
 #, c-format
 msgid "The length calculation was wrong by %ld byte"
 msgid_plural "The length calculation was wrong by %ld bytes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: copy.c:828
+#: copy.c:827
 msgid "No decryption engine available for message"
 msgstr ""
 
@@ -2003,22 +2013,22 @@ msgid "From: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:284
+#: envelope/window.c:97 send/send.c:287
 msgid "To: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:291
+#: envelope/window.c:99 send/send.c:294
 msgid "Cc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101 send/send.c:298
+#: envelope/window.c:101 send/send.c:301
 msgid "Bcc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103 send/send.c:343
+#: envelope/window.c:103 send/send.c:346
 msgid "Subject: "
 msgstr ""
 
@@ -2049,7 +2059,7 @@ msgstr ""
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
 #: envelope/window.c:119 ncrypt/crypt_gpgme.c:3867 ncrypt/pgp.c:2020
-#: ncrypt/smime.c:2230
+#: ncrypt/smime.c:2189
 msgid "Sign as: "
 msgstr "Подпис като: "
 
@@ -2081,7 +2091,7 @@ msgstr ""
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
-#: envelope/window.c:138 envelope/window.c:483
+#: envelope/window.c:138 envelope/window.c:484
 msgid "Off"
 msgstr ""
 
@@ -2115,96 +2125,144 @@ msgstr ""
 msgid "Yes"
 msgstr "yes"
 
-#: envelope/window.c:404
+#: envelope/window.c:405
 msgid "Sign, Encrypt"
 msgstr "Подпис, Шифроване"
 
-#: envelope/window.c:409 envelope/window.c:478
+#: envelope/window.c:410 envelope/window.c:479
 msgid "Encrypt"
 msgstr "Шифроване"
 
-#: envelope/window.c:414
+#: envelope/window.c:415
 msgid "Sign"
 msgstr "Подпис"
 
-#: envelope/window.c:420
+#: envelope/window.c:421
 msgid "None"
 msgstr ""
 
-#: envelope/window.c:430
+#: envelope/window.c:431
 #, fuzzy
 msgid " (inline PGP)"
 msgstr "(по-нататък)\n"
 
-#: envelope/window.c:432
+#: envelope/window.c:433
 msgid " (PGP/MIME)"
 msgstr ""
 
-#: envelope/window.c:436
+#: envelope/window.c:437
 msgid " (S/MIME)"
 msgstr ""
 
-#: envelope/window.c:442
+#: envelope/window.c:443
 msgid " (OppEnc mode)"
 msgstr ""
 
-#: envelope/window.c:451 envelope/window.c:459
+#: envelope/window.c:452 envelope/window.c:460
 msgid "<default>"
 msgstr "<по подразбиране>"
 
-#: envelope/window.c:466
+#: envelope/window.c:467
 msgid "Encrypt with: "
 msgstr "Шифроване c: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: envelope/window.c:489
+#: envelope/window.c:490
 #, fuzzy
 msgid "Recommendation: "
 msgstr "редактира получателя на отговор от писмото (Reply-To)"
 
-#: envelope/window.c:513
-msgid "<no chain defined>"
-msgstr ""
-
-#: envelope/window.c:597
+#: envelope/window.c:593
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: external.c:110 recvcmd.c:184 recvcmd.c:196
+#. L10N: e.g. "Option index_format:" plus an error message
+#: expando/config_type.c:85 expando/config_type.c:254
+#, fuzzy, c-format
+msgid "Option %s: "
+msgstr "Опции при компилация:"
+
+#. L10N: e.g. "Unknown expando: %Q"
+#: expando/node_condbool.c:103 expando/node_expando.c:275
+#, fuzzy, c-format
+msgid "Unknown expando: %%%.*s"
+msgstr "%s: непозната променлива"
+
+#. L10N: The 'ymwdHM' should not be translated
+#: expando/node_conddate.c:178
+#, c-format
+msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
+msgstr ""
+
+#. L10N: Expando format expected a number
+#: expando/node_expando.c:199
+#, c-format
+msgid "Number is expected"
+msgstr ""
+
+#. L10N: Expando is missing a terminator character
+#. e.g. "%[..." is missing the final ']'
+#: expando/node_expando.c:307
+#, c-format
+msgid "Expando is missing terminator: '%c'"
+msgstr ""
+
+#. L10N: Conditional Expandos can only depend on other Expandos
+#. e.g. "%<X?apple>" displays "apple" if "%X" is true.
+#: expando/node_padding.c:241
+#, c-format
+msgid "Padding cannot be used as a condition"
+msgstr ""
+
+#. L10N: Expando is missing a terminator character
+#. e.g. "%[..." is missing the final ']'
+#: expando/parse.c:161 expando/parse.c:225
+#, c-format
+msgid "Conditional expando is missing '%c'"
+msgstr ""
+
+#. L10N: Expando is missing a terminator character
+#. e.g. "%[..." is missing the final ']'
+#: expando/parse.c:180
+#, c-format
+msgid "Conditional expando is missing '&' or '%c'"
+msgstr ""
+
+#: external.c:110 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
 msgstr ""
 
-#: external.c:116 recvcmd.c:207
+#: external.c:116 recvcmd.c:208
 msgid "Bounce message to: "
 msgstr "Препращане на писмото към: "
 
-#: external.c:118 recvcmd.c:209
+#: external.c:118 recvcmd.c:210
 msgid "Bounce tagged messages to: "
 msgstr "Препращане на маркираните писма към: "
 
-#: external.c:128 recvcmd.c:221
+#: external.c:128 recvcmd.c:222
 msgid "Error parsing address"
 msgstr "Грешка при разчитане на адресът"
 
-#: external.c:144 recvcmd.c:239
+#: external.c:144 recvcmd.c:240
 #, fuzzy, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "Препращане на писмото към %s?"
 msgstr[1] "Препращане на писмото към %s?"
 
-#: external.c:150 recvcmd.c:245
+#: external.c:150 recvcmd.c:246
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "Писмото не е препратено"
 msgstr[1] "Писмото не е препратено"
 
-#: external.c:176 recvcmd.c:272
+#: external.c:176 recvcmd.c:273
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "Писмото е препратено"
@@ -2395,1196 +2453,1844 @@ msgstr "Изтриване на маркировка"
 msgid "Set flag"
 msgstr "Поставяне на маркировка"
 
-#: gui/curs_lib.c:142 index/functions.c:771
+#: gui/curs_lib.c:140 index/functions.c:771
 #, fuzzy
 msgid "Exit NeoMutt without saving?"
 msgstr "Желаете ли да напуснете NeoMutt без да запишете промените?"
 
-#: gui/curs_lib.c:195
+#: gui/curs_lib.c:193
 msgid "Press any key to continue..."
 msgstr "Натиснете някой клавиш..."
 
-#: gui/curs_lib.c:253
+#: gui/curs_lib.c:251
 msgid " ('?' for list): "
 msgstr " (използвайте'?' за избор от списък): "
 
-#: gui/curs_lib.c:508
+#: gui/curs_lib.c:506
 #, fuzzy, c-format
 msgid "Enter keys (%s to abort): "
 msgstr "Въведете ключове (^G за прекъсване): "
 
-#: gui/curs_lib.c:557
+#: gui/curs_lib.c:555
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d\n"
 msgstr "Символ = %s, Осмично = %o, Десетично = %d\n"
 
-#: gui/opcodes.h:41
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
+#. Compose Dialog: <op_attachment_attach_file>
+#: gui/opcodes.h:43
 #, fuzzy
 msgid "attach files to this message"
 msgstr "прилага файл(ове) към писмото"
 
-#: gui/opcodes.h:42
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
+#. Compose Dialog: <op_attachment_attach_message>
+#: gui/opcodes.h:46
 #, fuzzy
 msgid "attach messages to this message"
 msgstr "прилага писмо към това писмо"
 
-#: gui/opcodes.h:43
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
+#. Compose Dialog: <op_attachment_attach_message>
+#: gui/opcodes.h:49
 #, fuzzy
 msgid "attach news articles to this message"
 msgstr "прилага файл(ове) към писмото"
 
-#: gui/opcodes.h:44
+#. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
+#. Attach Dialog: <op_attachment_collapse>
+#: gui/opcodes.h:52
 #, fuzzy
 msgid "toggle display of subparts"
 msgstr "показва/скрива подчасти"
 
-#: gui/opcodes.h:45 gui/opcodes.h:46 gui/opcodes.h:119
+#. L10N: Help screen description for OP_ATTACHMENT_DELETE
+#. Attach Dialog: <op_attachment_delete>
+#. L10N: Help screen description for OP_ATTACHMENT_DETACH
+#. Compose Dialog: <op_attachment_detach>
+#. L10N: Help screen description for OP_DELETE
+#. Alias Dialog: <op_delete>
+#. Index: <op_delete>
+#. Postponed Dialog: <op_delete>
+#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:274
 msgid "delete the current entry"
 msgstr "изтрива избрания запис"
 
-#: gui/opcodes.h:47
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
+#. Compose Dialog: <op_attachment_edit_content_id>
+#: gui/opcodes.h:61
 #, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
 msgstr "избор на файл, който да бъде приложен"
 
-#: gui/opcodes.h:48
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
+#. Compose Dialog: <op_attachment_edit_description>
+#: gui/opcodes.h:64
 msgid "edit attachment description"
 msgstr "променя описанието на приложението"
 
-#: gui/opcodes.h:49
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
+#. Compose Dialog: <op_attachment_edit_encoding>
+#: gui/opcodes.h:67
 msgid "edit attachment transfer-encoding"
 msgstr "променя кодирането на приложението"
 
-#: gui/opcodes.h:50
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
+#. Compose Dialog: <op_attachment_edit_language>
+#: gui/opcodes.h:70
 #, fuzzy
 msgid "edit the 'Content-Language' of the attachment"
 msgstr "избор на файл, който да бъде приложен"
 
-#: gui/opcodes.h:51
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
+#. Compose Dialog: <op_attachment_edit_mime>
+#: gui/opcodes.h:73
 msgid "edit attachment using mailcap entry"
 msgstr "редактира приложение, посредством вписване в mailcap"
 
-#: gui/opcodes.h:52
+#. L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE
+#. Attach Dialog: <op_attachment_edit_type>
+#. Compose Dialog: <op_attachment_edit_type>
+#. Index: <op_attachment_edit_type>
+#: gui/opcodes.h:78
 msgid "edit attachment content type"
 msgstr "редактира типа на приложението"
 
-#: gui/opcodes.h:53
+#. L10N: Help screen description for OP_ATTACHMENT_FILTER
+#. Compose Dialog: <op_attachment_filter>
+#: gui/opcodes.h:81
 msgid "filter attachment through a shell command"
 msgstr "филтрира приложението през команда на командния интерпретатор"
 
-#: gui/opcodes.h:54
+#. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
+#. Compose Dialog: <op_attachment_get_attachment>
+#: gui/opcodes.h:84
 msgid "get a temporary copy of an attachment"
 msgstr "създава временно копие на приложението"
 
-#: gui/opcodes.h:55
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
+#. Compose Dialog: <op_attachment_group_alts>
+#: gui/opcodes.h:87
 msgid "group tagged attachments as 'multipart/alternative'"
 msgstr ""
 
-#: gui/opcodes.h:56
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_LINGUAL
+#. Compose Dialog: <op_attachment_group_lingual>
+#: gui/opcodes.h:90
 msgid "group tagged attachments as 'multipart/multilingual'"
 msgstr ""
 
-#: gui/opcodes.h:57
+#. L10N: Help screen description for OP_ATTACHMENT_GROUP_RELATED
+#. Compose Dialog: <op_attachment_group_related>
+#: gui/opcodes.h:93
 #, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
 msgstr "Приложението е записано на диска"
 
-#: gui/opcodes.h:58
+#. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
+#. Compose Dialog: <op_attachment_move_down>
+#: gui/opcodes.h:96
 #, fuzzy
 msgid "move an attachment down in the attachment list"
 msgstr "показва приложението като текст"
 
-#: gui/opcodes.h:59
+#. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
+#. Compose Dialog: <op_attachment_move_up>
+#: gui/opcodes.h:99
 #, fuzzy
 msgid "move an attachment up in the attachment list"
 msgstr "показва приложението като текст"
 
-#: gui/opcodes.h:60
+#. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
+#. Compose Dialog: <op_attachment_new_mime>
+#: gui/opcodes.h:102
 msgid "compose new attachment using mailcap entry"
 msgstr "създава на ново приложение, с използване на вписване в mailcap"
 
-#: gui/opcodes.h:61 gui/opcodes.h:242
+#. L10N: Help screen description for OP_ATTACHMENT_PIPE
+#. L10N: Help screen description for OP_PIPE
+#. Compose Dialog: <op_attachment_filter>
+#. Attach Dialog: <op_attachment_pipe>
+#. Index: <op_pipe>
+#: gui/opcodes.h:104 gui/opcodes.h:666
 msgid "pipe message/attachment to a shell command"
 msgstr "изпраща писмо или приложение към команда на командния интерпретатор"
 
-#: gui/opcodes.h:62 gui/opcodes.h:247
+#. L10N: Help screen description for OP_ATTACHMENT_PRINT
+#. Attach Dialog: <op_attachment_print>
+#. Compose Dialog: <op_attachment_print>
+#. L10N: Help screen description for OP_PRINT
+#. Index: <op_print>
+#: gui/opcodes.h:108 gui/opcodes.h:684
 msgid "print the current entry"
 msgstr "отпечатва текущото писмо"
 
-#: gui/opcodes.h:63
+#. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
+#. Compose Dialog: <op_attachment_rename_attachment>
+#: gui/opcodes.h:111
 #, fuzzy
 msgid "send attachment with a different name"
 msgstr "променя кодирането на приложението"
 
-#: gui/opcodes.h:64 gui/opcodes.h:260
+#. L10N: Help screen description for OP_ATTACHMENT_SAVE
+#. Attach Dialog: <op_attachment_save>
+#. Compose Dialog: <op_attachment_save>
+#. L10N: Help screen description for OP_SAVE
+#. Index: <op_save>
+#. Pager: <op_save>
+#: gui/opcodes.h:115 gui/opcodes.h:729
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "записва писмо или приложение във файл"
 
-#: gui/opcodes.h:65
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
+#. Compose Dialog: <op_attachment_toggle_disposition>
+#: gui/opcodes.h:118
 msgid "toggle disposition between inline/attachment"
 msgstr "превключва между вмъкнат в писмото или приложен файл"
 
-#: gui/opcodes.h:66
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
+#. Compose Dialog: <op_attachment_toggle_recode>
+#: gui/opcodes.h:121
 msgid "toggle recoding of this attachment"
 msgstr "включва/изключва прекодирането на това приложение"
 
-#: gui/opcodes.h:67
+#. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
+#. Compose Dialog: <op_attachment_toggle_unlink>
+#: gui/opcodes.h:124
 msgid "toggle whether to delete file after sending it"
 msgstr "превключва между режим на изтриване или запазване на файла след изпращане"
 
-#: gui/opcodes.h:68 gui/opcodes.h:282
+#. L10N: Help screen description for OP_ATTACHMENT_UNDELETE
+#. Attach Dialog: <op_attachment_undelete>
+#. L10N: Help screen description for OP_UNDELETE
+#. Alias Dialog: <op_delete>
+#. Postponed Dialog: <op_delete>
+#. Index: <op_undelete>
+#: gui/opcodes.h:127 gui/opcodes.h:815
 msgid "undelete the current entry"
 msgstr "възстановява текущото писмо"
 
-#: gui/opcodes.h:69
+#. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
+#. Compose Dialog: <op_attachment_ungroup>
+#: gui/opcodes.h:130
 msgid "ungroup 'multipart' attachment"
 msgstr ""
 
-#: gui/opcodes.h:70
+#. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
+#. Compose Dialog: <op_attachment_update_encoding>
+#: gui/opcodes.h:133
 msgid "update an attachment's encoding info"
 msgstr "актуализира информацията за кодиране на приложението"
 
-#: gui/opcodes.h:71
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW
+#. Attach Dialog: <op_attachment_view>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:137
 msgid "view attachment using mailcap entry if necessary"
 msgstr "показва приложение, използвайки mailcap"
 
-#: gui/opcodes.h:72
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
+#. Attach Dialog: <op_attachment_view_mailcap>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:141
 msgid "force viewing of attachment using mailcap"
 msgstr "показва принудително приложението след търсене в mailcap"
 
-#: gui/opcodes.h:73
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
+#. Attach Dialog: <op_attachment_view_pager>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:145
 #, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
 msgstr "показва принудително приложението след търсене в mailcap"
 
-#: gui/opcodes.h:74
+#. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
+#. Attach Dialog: <op_attachment_view_text>
+#. Compose Dialog: <op_display_headers>
+#: gui/opcodes.h:149
 msgid "view attachment as text"
 msgstr "показва приложението като текст"
 
-#: gui/opcodes.h:78
+#. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
+#. Index: <op_autocrypt_acct_menu>
+#: gui/opcodes.h:155
 msgid "manage autocrypt accounts"
 msgstr ""
 
-#: gui/opcodes.h:79
+#. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
+#. Autocrypt Dialog: <op_autocrypt_create_acct>
+#: gui/opcodes.h:158
 msgid "create a new autocrypt account"
 msgstr ""
 
-#: gui/opcodes.h:80
+#. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
+#. Autocrypt Dialog: <op_autocrypt_delete_acct>
+#: gui/opcodes.h:161
 #, fuzzy
 msgid "delete the current account"
 msgstr "изтрива избрания запис"
 
-#: gui/opcodes.h:81
+#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
+#. Autocrypt Dialog: <op_autocrypt_toggle_active>
+#: gui/opcodes.h:164
 msgid "toggle the current account active/inactive"
 msgstr ""
 
-#: gui/opcodes.h:82
+#. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
+#. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
+#: gui/opcodes.h:167
 msgid "toggle the current account prefer-encrypt flag"
 msgstr ""
 
-#: gui/opcodes.h:83
+#. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
+#. Envelope Window: <op_compose_autocrypt_menu>
+#: gui/opcodes.h:170
 msgid "show autocrypt compose menu options"
 msgstr ""
 
-#: gui/opcodes.h:89
+#. L10N: Help screen description for OP_ALIAS_DIALOG
+#. Index: <op_alias_dialog>
+#: gui/opcodes.h:178
 #, fuzzy
 msgid "open the aliases dialog"
 msgstr "Това е последното писмо"
 
-#: gui/opcodes.h:90
+#. L10N: Help screen description for OP_BOTTOM_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:181
 msgid "move to the bottom of the page"
 msgstr "придвижване до края на страницата"
 
-#: gui/opcodes.h:91
+#. L10N: Help screen description for OP_BOUNCE_MESSAGE
+#. Attach Dialog: <op_bounce_message>
+#. Index: <op_bounce_message>
+#: gui/opcodes.h:185
 msgid "remail a message to another user"
 msgstr "препраща писмото на друг адрес"
 
-#: gui/opcodes.h:92
+#. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:188
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
-#: gui/opcodes.h:93
+#. L10N: Help screen description for OP_BROWSER_NEW_FILE
+#. Browser: <op_browser_new_file>
+#: gui/opcodes.h:191
 msgid "select a new file in this directory"
 msgstr "избор на нов файл в тази директория"
 
-#: gui/opcodes.h:94
+#. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
+#. Browser: <op_browser_subscribe>
+#: gui/opcodes.h:194
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "абонира текущо избраната пощенска кутия (само IMAP)"
 
-#: gui/opcodes.h:95
+#. L10N: Help screen description for OP_BROWSER_TELL
+#. Browser: <op_browser_tell>
+#: gui/opcodes.h:197
 msgid "display the currently selected file's name"
 msgstr "показва името на текущо маркирания файл"
 
-#: gui/opcodes.h:96
+#. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
+#. Browser: <op_browser_toggle_lsub>
+#: gui/opcodes.h:200
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "показва всички или само абонираните пощенски кутии (само IMAP)"
 
-#: gui/opcodes.h:97
+#. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
+#. Browser: <op_browser_subscribe>
+#: gui/opcodes.h:203
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "отписва абонамента на текущо избраната пощенска кутия (само IMAP)"
 
-#: gui/opcodes.h:98
+#. L10N: Help screen description for OP_BROWSER_VIEW_FILE
+#. Browser: <op_browser_view_file>
+#: gui/opcodes.h:206
 msgid "view file"
 msgstr "разглеждане на файл"
 
-#: gui/opcodes.h:99
+#. L10N: Help screen description for OP_CATCHUP
+#. Browser: <op_catchup>
+#. Index: <op_catchup>
+#: gui/opcodes.h:210
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
-#: gui/opcodes.h:100
+#. L10N: Help screen description for OP_CHANGE_DIRECTORY
+#. Browser: <op_change_directory>
+#: gui/opcodes.h:213
 msgid "change directories"
 msgstr "промяна на директориите"
 
-#: gui/opcodes.h:101
+#. L10N: Help screen description for OP_CHECK_NEW
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:216
 msgid "check mailboxes for new mail"
 msgstr "проверява пощенските кутии за нови писма"
 
-#: gui/opcodes.h:102
+#. L10N: Help screen description for OP_CHECK_STATS
+#. Global: <op_check_stats>
+#: gui/opcodes.h:219
 #, fuzzy
 msgid "calculate message statistics for all mailboxes"
 msgstr "записва писмо или приложение във файл"
 
-#: gui/opcodes.h:103
+#. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
+#. Compose Dialog: <op_compose_edit_file>
+#: gui/opcodes.h:222
 msgid "edit the file to be attached"
 msgstr "избор на файл, който да бъде приложен"
 
-#: gui/opcodes.h:104
+#. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
+#. Compose Dialog: <op_compose_edit_message>
+#: gui/opcodes.h:225
 msgid "edit the message"
 msgstr "редактира писмо"
 
-#: gui/opcodes.h:105
+#. L10N: Help screen description for OP_COMPOSE_ISPELL
+#. Compose Dialog: <op_compose_ispell>
+#: gui/opcodes.h:228
 msgid "run ispell on the message"
 msgstr "извършва правописна проверка на писмото с ispell"
 
-#: gui/opcodes.h:106
+#. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
+#. Compose Dialog: <op_compose_postpone_message>
+#: gui/opcodes.h:231
 msgid "save this message to send later"
 msgstr "записва писмото като чернова за по-късно изпращане"
 
-#: gui/opcodes.h:107
+#. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
+#. Compose Dialog: <op_compose_rename_file>
+#: gui/opcodes.h:234
 msgid "rename/move an attached file"
 msgstr "променя името или преместване на приложение"
 
-#: gui/opcodes.h:108
+#. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
+#. Compose Dialog: <op_compose_send_message>
+#: gui/opcodes.h:237
 msgid "send the message"
 msgstr "изпраща писмото"
 
-#: gui/opcodes.h:109
+#. L10N: Help screen description for OP_COMPOSE_TO_SENDER
+#. Attach Dialog: <op_compose_to_sender>
+#. Index: <op_compose_to_sender>
+#: gui/opcodes.h:241
 #, fuzzy
 msgid "compose new message to the current message sender"
 msgstr "създава ново писмо"
 
-#: gui/opcodes.h:110
+#. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
+#. Compose Dialog: <op_compose_write_message>
+#: gui/opcodes.h:244
 msgid "write the message to a folder"
 msgstr "записва писмото в пощенска кутия"
 
-#: gui/opcodes.h:111
+#. L10N: Help screen description for OP_COPY_MESSAGE
+#. Index: <op_save>
+#: gui/opcodes.h:247
 msgid "copy a message to a file/mailbox"
 msgstr "копира писмо във файл/пощенска кутия"
 
-#: gui/opcodes.h:112
+#. L10N: Help screen description for OP_CREATE_ALIAS
+#. Alias Dialog: <op_create_alias>
+#. Index: <op_create_alias>
+#: gui/opcodes.h:251
 msgid "create an alias from a message sender"
 msgstr "вписва подателя на писмото в адресната книга"
 
-#: gui/opcodes.h:113
+#. L10N: Help screen description for OP_CREATE_MAILBOX
+#. Browser: <op_create_mailbox>
+#: gui/opcodes.h:254
 msgid "create a new mailbox (IMAP only)"
 msgstr "създава нова пощенска кутия (само IMAP)"
 
-#: gui/opcodes.h:114
+#. L10N: Help screen description for OP_CURRENT_BOTTOM
+#. Menu: <menu_movement>
+#: gui/opcodes.h:257
 msgid "move entry to bottom of screen"
 msgstr "премества записа към долния край на екрана"
 
-#: gui/opcodes.h:115
+#. L10N: Help screen description for OP_CURRENT_MIDDLE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:260
 msgid "move entry to middle of screen"
 msgstr "премества записа към средата на екрана"
 
-#: gui/opcodes.h:116
+#. L10N: Help screen description for OP_CURRENT_TOP
+#. Menu: <menu_movement>
+#: gui/opcodes.h:263
 msgid "move entry to top of screen"
 msgstr "премества записa към горния край на екрана"
 
-#: gui/opcodes.h:117
+#. L10N: Help screen description for OP_DECODE_COPY
+#. Index: <op_save>
+#: gui/opcodes.h:266
 msgid "make decoded (text/plain) copy"
 msgstr "създава декодирано (text/plain) копие"
 
-#: gui/opcodes.h:118
+#. L10N: Help screen description for OP_DECODE_SAVE
+#. Index: <op_save>
+#: gui/opcodes.h:269
 msgid "make decoded copy (text/plain) and delete"
 msgstr "създаване на декодирано (text/plain) копие на писмото и изтриване"
 
-#: gui/opcodes.h:120
+#. L10N: Help screen description for OP_DELETE_MAILBOX
+#. Browser: <op_delete_mailbox>
+#: gui/opcodes.h:277
 msgid "delete the current mailbox (IMAP only)"
 msgstr "изтрива текущата пощенска кутия (само IMAP)"
 
-#: gui/opcodes.h:121
+#. L10N: Help screen description for OP_DELETE_SUBTHREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:280
 msgid "delete all messages in subthread"
 msgstr "изтрива всички писма в поднишката"
 
-#: gui/opcodes.h:122
+#. L10N: Help screen description for OP_DELETE_THREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:283
 msgid "delete all messages in thread"
 msgstr "изтрива всички писма в нишката"
 
-#: gui/opcodes.h:123
+#. L10N: Help screen description for OP_DESCEND_DIRECTORY
+#. Browser: <op_generic_select_entry>
+#: gui/opcodes.h:286
 #, fuzzy
 msgid "descend into a directory"
 msgstr "%s не е директория"
 
-#: gui/opcodes.h:124
+#. L10N: Help screen description for OP_DISPLAY_ADDRESS
+#. Index: <op_display_address>
+#: gui/opcodes.h:289
 msgid "display full address of sender"
 msgstr "показва пълния адрес на подателя на писмото"
 
-#: gui/opcodes.h:125
+#. L10N: Help screen description for OP_DISPLAY_HEADERS
+#. Attach Dialog: <op_attachment_view>
+#. Compose Dialog: <op_display_headers>
+#. Index: <op_display_message>
+#: gui/opcodes.h:294
 msgid "display message and toggle header weeding"
 msgstr "показва писмо и включва/изключва показването на заглавните части"
 
-#: gui/opcodes.h:126
+#. L10N: Help screen description for OP_DISPLAY_MESSAGE
+#. Index: <op_display_message>
+#: gui/opcodes.h:297
 msgid "display a message"
 msgstr "показва писмо"
 
-#: gui/opcodes.h:127
+#. L10N: Help screen description for OP_EDITOR_BACKSPACE
+#. Text Entry: <op_editor_backspace>
+#: gui/opcodes.h:300
 msgid "delete the char in front of the cursor"
 msgstr "изтрива символа пред курсора"
 
-#: gui/opcodes.h:128
+#. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
+#. Text Entry: <op_editor_backward_char>
+#: gui/opcodes.h:303
 msgid "move the cursor one character to the left"
 msgstr "премества курсора с един символ наляво"
 
-#: gui/opcodes.h:129
+#. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
+#. Text Entry: <op_editor_backward_word>
+#: gui/opcodes.h:306
 msgid "move the cursor to the beginning of the word"
 msgstr "премества курсора към началото на думата"
 
-#: gui/opcodes.h:130
+#. L10N: Help screen description for OP_EDITOR_BOL
+#. Text Entry: <op_editor_bol>
+#: gui/opcodes.h:309
 msgid "jump to the beginning of the line"
 msgstr "скок към началото на реда"
 
-#: gui/opcodes.h:131
+#. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:312
 #, fuzzy
 msgid "capitalize the word"
 msgstr "capitalize the word"
 
-#: gui/opcodes.h:132
+#. L10N: Help screen description for OP_EDITOR_COMPLETE
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:315
 msgid "complete filename or alias"
 msgstr "допълва името на файл или на псевдоним"
 
-#: gui/opcodes.h:133
+#. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:318
 msgid "complete address with query"
 msgstr "допълва адрес чрез запитване"
 
-#: gui/opcodes.h:134
+#. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
+#. Text Entry: <op_editor_delete_char>
+#: gui/opcodes.h:321
 msgid "delete the char under the cursor"
 msgstr "изтрива символа под курсора"
 
-#: gui/opcodes.h:135
+#. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:324
 msgid "convert the word to lower case"
 msgstr "конвертиране на думата до букви от долен регистър"
 
-#: gui/opcodes.h:136
+#. L10N: Help screen description for OP_EDITOR_EOL
+#. Text Entry: <op_editor_eol>
+#: gui/opcodes.h:327
 msgid "jump to the end of the line"
 msgstr "скок към края на реда"
 
-#: gui/opcodes.h:137
+#. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
+#. Text Entry: <op_editor_forward_char>
+#: gui/opcodes.h:330
 msgid "move the cursor one character to the right"
 msgstr "премества курсора с един символ надясно"
 
-#: gui/opcodes.h:138
+#. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
+#. Text Entry: <op_editor_forward_word>
+#: gui/opcodes.h:333
 msgid "move the cursor to the end of the word"
 msgstr "премества курсора към края на думата"
 
-#: gui/opcodes.h:139
+#. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
+#. Text Entry: <op_editor_history_down>
+#: gui/opcodes.h:336
 msgid "scroll down through the history list"
 msgstr "превърта надолу в списъка с историята"
 
-#: gui/opcodes.h:140
+#. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
+#. Text Entry: <op_editor_history_search>
+#: gui/opcodes.h:339
 #, fuzzy
 msgid "search through the history list"
 msgstr "превърта нагоре в списъка с историята"
 
-#: gui/opcodes.h:141
+#. L10N: Help screen description for OP_EDITOR_HISTORY_UP
+#. Text Entry: <op_editor_history_up>
+#: gui/opcodes.h:342
 msgid "scroll up through the history list"
 msgstr "превърта нагоре в списъка с историята"
 
-#: gui/opcodes.h:142
+#. L10N: Help screen description for OP_EDITOR_KILL_EOL
+#. Text Entry: <op_editor_kill_eol>
+#: gui/opcodes.h:345
 msgid "delete chars from cursor to end of line"
 msgstr "изтрива символите от курсора до края на реда"
 
-#: gui/opcodes.h:143
+#. L10N: Help screen description for OP_EDITOR_KILL_EOW
+#. Text Entry: <op_editor_kill_eow>
+#: gui/opcodes.h:348
 msgid "delete chars from the cursor to the end of the word"
 msgstr "изтрива символите от курсора до края на думата"
 
-#: gui/opcodes.h:144
+#. L10N: Help screen description for OP_EDITOR_KILL_LINE
+#. Text Entry: <op_editor_kill_line>
+#: gui/opcodes.h:351
 #, fuzzy
 msgid "delete chars from cursor to beginning the line"
 msgstr "изтрива символите от курсора до края на реда"
 
-#: gui/opcodes.h:145
+#. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
+#. Text Entry: <op_editor_kill_whole_line>
+#: gui/opcodes.h:354
 msgid "delete all chars on the line"
 msgstr "изтрива всички символи на реда"
 
-#: gui/opcodes.h:146
+#. L10N: Help screen description for OP_EDITOR_KILL_WORD
+#. Text Entry: <op_editor_kill_word>
+#: gui/opcodes.h:357
 msgid "delete the word in front of the cursor"
 msgstr "изтрива думата преди курсора"
 
-#: gui/opcodes.h:147
+#. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
+#. Text Entry: <op_editor_complete>
+#: gui/opcodes.h:360
 msgid "cycle among incoming mailboxes"
 msgstr "циклично превъртане между входните пощенски кутии"
 
-#: gui/opcodes.h:148
+#. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
+#. Text Entry: <op_editor_quote_char>
+#: gui/opcodes.h:363
 msgid "quote the next typed key"
 msgstr "буквално приемане на следващия клавиш"
 
-#: gui/opcodes.h:149
+#. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
+#. Text Entry: <op_editor_transpose_chars>
+#: gui/opcodes.h:366
 msgid "transpose character under cursor with previous"
 msgstr "разменя текущия символ с предишния"
 
-#: gui/opcodes.h:150
+#. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
+#. Text Entry: <op_editor_capitalize_word>
+#: gui/opcodes.h:369
 msgid "convert the word to upper case"
 msgstr "конвертиране на думата до букви от горен регистър"
 
-#: gui/opcodes.h:151
+#. L10N: Help screen description for OP_EDIT_LABEL
+#. Index: <op_edit_label>
+#: gui/opcodes.h:372
 msgid "add, change, or delete a message's label"
 msgstr ""
 
-#: gui/opcodes.h:152
+#. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:375
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
-#: gui/opcodes.h:153
+#. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:378
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
-#: gui/opcodes.h:154
+#. L10N: Help screen description for OP_END_COND
+#. Index: <op_end_cond>
+#: gui/opcodes.h:381
 msgid "end of conditional execution (noop)"
 msgstr "край на условното изпълнение (noop)"
 
-#: gui/opcodes.h:155
+#. L10N: Help screen description for OP_ENTER_COMMAND
+#. Global: <op_enter_command>
+#: gui/opcodes.h:384
 msgid "enter a neomuttrc command"
 msgstr "въвеждане нa neomuttrc команда"
 
-#: gui/opcodes.h:156
+#. L10N: Help screen description for OP_ENTER_MASK
+#. Browser: <op_enter_mask>
+#: gui/opcodes.h:387
 msgid "enter a file mask"
 msgstr "въвеждане на файлова маска"
 
-#: gui/opcodes.h:157
+#. L10N: Help screen description for OP_EXIT
+#. Alias Dialog: <op_exit>
+#. Attach Dialog: <op_exit>
+#. Autocrypt Dialog: <op_exit>
+#. Browser: <op_exit>
+#. Compose Dialog: <op_exit>
+#. GPGME Key Selection Dialog: <op_exit>
+#. Index: <op_exit>
+#. Mixmaster Dialog: <op_exit>
+#. Pager: <op_exit>
+#. PGP Key Selection Dialog: <op_exit>
+#. Postponed Dialog: <op_exit>
+#. Smime Key Selection Dialog: <op_exit>
+#: gui/opcodes.h:401
 msgid "exit this menu"
 msgstr "напуска това меню"
 
-#: gui/opcodes.h:158
+#. L10N: Help screen description for OP_FIRST_ENTRY
+#. Menu: <menu_movement>
+#: gui/opcodes.h:404
 msgid "move to the first entry"
 msgstr "преместване към първият запис"
 
-#: gui/opcodes.h:159
+#. L10N: Help screen description for OP_FLAG_MESSAGE
+#. Index: <op_flag_message>
+#: gui/opcodes.h:407
 msgid "toggle a message's 'important' flag"
 msgstr "включва/изключва маркировката за важност на писмото"
 
-#: gui/opcodes.h:160
+#. L10N: Help screen description for OP_FOLLOWUP
+#. Attach Dialog: <op_followup>
+#. Index: <op_post>
+#: gui/opcodes.h:411
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Желаете ли да проследите до %s%s?"
 
-#: gui/opcodes.h:161
+#. L10N: Help screen description for OP_FORWARD_MESSAGE
+#. Attach Dialog: <op_forward_message>
+#. Index: <op_forward_message>
+#: gui/opcodes.h:415
 msgid "forward a message with comments"
 msgstr "препраща писмо с коментар"
 
-#: gui/opcodes.h:162
+#. L10N: Help screen description for OP_FORWARD_TO_GROUP
+#. Attach Dialog: <op_forward_to_group>
+#. Index: <op_post>
+#: gui/opcodes.h:419
 msgid "forward to newsgroup"
 msgstr ""
 
-#: gui/opcodes.h:163
+#. L10N: Help screen description for OP_GENERIC_SELECT_ENTRY
+#. Alias Dialog: <op_generic_select_entry>
+#. Browser: <op_generic_select_entry>
+#. GPGME Key Selection Dialog: <op_generic_select_entry>
+#. History Dialog: <op_generic_select_entry>
+#. Pattern Dialog: <op_generic_select_entry>
+#. PGP Key Selection Dialog: <op_generic_select_entry>
+#. Postponed Dialog: <op_generic_select_entry>
+#. Smime Key Selection Dialog: <op_generic_select_entry>
+#. Mixmaster Dialog: <op_mix_append>
+#: gui/opcodes.h:430
 msgid "select the current entry"
 msgstr "избира текущият запис"
 
-#: gui/opcodes.h:164
+#. L10N: Help screen description for OP_GET_CHILDREN
+#. Index: <op_get_children>
+#: gui/opcodes.h:433
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "Това е първото писмо."
 
-#: gui/opcodes.h:165
+#. L10N: Help screen description for OP_GET_MESSAGE
+#. Index: <op_get_message>
+#: gui/opcodes.h:436
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "редактира писмо и заглавните му полета"
 
-#: gui/opcodes.h:166
+#. L10N: Help screen description for OP_GET_PARENT
+#. Index: <op_get_message>
+#: gui/opcodes.h:439
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "Това е първото писмо."
 
-#: gui/opcodes.h:167
+#. L10N: Help screen description for OP_GOTO_PARENT
+#. Browser: <op_change_directory>
+#: gui/opcodes.h:442
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s не е директория."
 
-#: gui/opcodes.h:168
+#. L10N: Help screen description for OP_GROUP_CHAT_REPLY
+#. Index: <op_group_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:446
 #, fuzzy
 msgid "reply to all recipients preserving To/Cc"
 msgstr "отговор на всички получатели"
 
-#: gui/opcodes.h:169
+#. L10N: Help screen description for OP_GROUP_REPLY
+#. Index: <op_group_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:450
 msgid "reply to all recipients"
 msgstr "отговор на всички получатели"
 
-#: gui/opcodes.h:170
+#. L10N: Help screen description for OP_HALF_DOWN
+#. Menu: <menu_movement>
+#. Pager: <op_pager_half_down>
+#: gui/opcodes.h:454
 msgid "scroll down 1/2 page"
 msgstr "превърта екрана надолу с 1/2 страница"
 
-#: gui/opcodes.h:171
+#. L10N: Help screen description for OP_HALF_UP
+#. Menu: <menu_movement>
+#. Pager: <op_pager_half_up>
+#: gui/opcodes.h:458
 msgid "scroll up 1/2 page"
 msgstr "превърта екрана нагоре с 1/2 страница"
 
-#: gui/opcodes.h:172
+#. L10N: Help screen description for OP_HELP
+#. Text Entry: <op_help>
+#. Menu: <op_help>
+#. Pager: <op_help>
+#: gui/opcodes.h:463
 msgid "this screen"
 msgstr "този екран"
 
-#: gui/opcodes.h:173 gui/opcodes.h:174 gui/opcodes.h:175 gui/opcodes.h:176
-#: gui/opcodes.h:177 gui/opcodes.h:178 gui/opcodes.h:179 gui/opcodes.h:180
-#: gui/opcodes.h:181 gui/opcodes.h:182
+#. L10N: Help screen description for OP_JUMP
+#. Index: <op_jump>
+#. Menu: <op_jump>
+#: gui/opcodes.h:467 gui/opcodes.h:468 gui/opcodes.h:469 gui/opcodes.h:470
+#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
+#: gui/opcodes.h:475 gui/opcodes.h:476
 msgid "jump to an index number"
 msgstr "скок към индексен номер"
 
-#: gui/opcodes.h:183
+#. L10N: Help screen description for OP_LAST_ENTRY
+#. Menu: <menu_movement>
+#: gui/opcodes.h:479
 msgid "move to the last entry"
 msgstr "преместване към последният запис"
 
-#: gui/opcodes.h:184
+#. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
+#. Index: <op_main_limit>
+#: gui/opcodes.h:482
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "маркира текущата нишка"
 
-#: gui/opcodes.h:185
+#. L10N: Help screen description for OP_LIST_REPLY
+#. Index: <op_list_reply>
+#. Attach Dialog: <op_reply>
+#: gui/opcodes.h:486
 msgid "reply to specified mailing list"
 msgstr "отговор на указания mailing list"
 
-#: gui/opcodes.h:186
+#. L10N: Help screen description for OP_LIST_SUBSCRIBE
+#. Attach Dialog: <op_list_subscribe>
+#. Index: <op_list_subscribe>
+#: gui/opcodes.h:490
 #, fuzzy
 msgid "subscribe to a mailing list"
 msgstr "отговор на указания mailing list"
 
-#: gui/opcodes.h:187
+#. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
+#. Attach Dialog: <op_list_unsubscribe>
+#. Index: <op_list_unsubscribe>
+#: gui/opcodes.h:494
 #, fuzzy
 msgid "unsubscribe from a mailing list"
 msgstr "Отписване от %s..."
 
-#: gui/opcodes.h:188
+#. L10N: Help screen description for OP_LOAD_ACTIVE
+#. Browser: <op_load_active>
+#: gui/opcodes.h:497
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
-#: gui/opcodes.h:189
+#. L10N: Help screen description for OP_MACRO
+#: gui/opcodes.h:499
 msgid "execute a macro"
 msgstr "изпълнява макрос"
 
-#: gui/opcodes.h:190
+#. L10N: Help screen description for OP_MAIL
+#. Alias Dialog: <op_generic_select_entry>
+#. Index: <op_mail>
+#: gui/opcodes.h:503
 msgid "compose a new mail message"
 msgstr "създава ново писмо"
 
-#: gui/opcodes.h:191
+#. L10N: Help screen description for OP_MAILBOX_LIST
+#. Browser: <op_mailbox_list>
+#. Index: <op_mailbox_list>
+#: gui/opcodes.h:507
 msgid "list mailboxes with new mail"
 msgstr "показва пощенските кутии, съдържащи нови писма."
 
-#: gui/opcodes.h:192
+#. L10N: Help screen description for OP_MAIN_BREAK_THREAD
+#. Index: <op_main_break_thread>
+#: gui/opcodes.h:510
 msgid "break the thread in two"
 msgstr ""
 
-#: gui/opcodes.h:193
+#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:513
 msgid "open a different folder"
 msgstr "отваря друга пощенска кутия"
 
-#: gui/opcodes.h:194
+#. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:516
 msgid "open a different folder in read only mode"
 msgstr "отваря друга пощенска кутия само за четене"
 
-#: gui/opcodes.h:195
+#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
+#. Index: <op_main_change_group>
+#: gui/opcodes.h:519
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "отваря друга пощенска кутия"
 
-#: gui/opcodes.h:196
+#. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
+#. Index: <op_main_change_group>
+#: gui/opcodes.h:522
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "отваря друга пощенска кутия само за четене"
 
-#: gui/opcodes.h:197
+#. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
+#. Index: <op_main_set_flag>
+#: gui/opcodes.h:525
 msgid "clear a status flag from a message"
 msgstr "отстранява маркировката за статус от писмо"
 
-#: gui/opcodes.h:198
+#. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
+#. Index: <op_main_collapse_all>
+#: gui/opcodes.h:528
 msgid "collapse/uncollapse all threads"
 msgstr "свива/разтваря всички нишки"
 
-#: gui/opcodes.h:199
+#. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
+#. Index: <op_main_collapse_thread>
+#: gui/opcodes.h:531
 msgid "collapse/uncollapse current thread"
 msgstr "свива/разтваря текущата нишка"
 
-#: gui/opcodes.h:200
+#. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
+#. Index: <op_main_delete_pattern>
+#: gui/opcodes.h:534
 #, fuzzy
 msgid "delete non-hidden messages matching a pattern"
 msgstr "изтрива писма, отговарящи на шаблон"
 
-#: gui/opcodes.h:201
+#. L10N: Help screen description for OP_MAIN_FETCH_MAIL
+#. Index: <op_main_fetch_mail>
+#: gui/opcodes.h:537
 msgid "retrieve mail from POP server"
 msgstr "изтегля писма от POP сървър"
 
-#: gui/opcodes.h:202
+#. L10N: Help screen description for OP_MAIN_IMAP_FETCH
+#. Index: <op_main_imap_fetch>
+#: gui/opcodes.h:540
 msgid "force retrieval of mail from IMAP server"
 msgstr "изтегля принудително писма от IMAP сървър"
 
-#: gui/opcodes.h:203
+#. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
+#. Index: <op_main_imap_logout_all>
+#: gui/opcodes.h:543
 msgid "logout from all IMAP servers"
 msgstr ""
 
-#: gui/opcodes.h:204
+#. L10N: Help screen description for OP_MAIN_LIMIT
+#. Alias Dialog: <op_main_limit>
+#. Index: <op_main_limit>
+#: gui/opcodes.h:547
 msgid "show only messages matching a pattern"
 msgstr "показва само писма, отговарящи на шаблон"
 
-#: gui/opcodes.h:205
+#. L10N: Help screen description for OP_MAIN_LINK_THREADS
+#. Index: <op_main_link_threads>
+#: gui/opcodes.h:550
 #, fuzzy
 msgid "link tagged message to the current one"
 msgstr "Препращане на маркираните писма към: "
 
-#: gui/opcodes.h:206
+#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
+#. Index: <op_main_modify_tags>
+#: gui/opcodes.h:553
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
-#: gui/opcodes.h:207
+#. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
+#. Index: <op_main_modify_tags>
+#: gui/opcodes.h:556
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "Това е първото писмо."
 
-#: gui/opcodes.h:208
+#. L10N: Help screen description for OP_MAIN_NEXT_NEW
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:559
 msgid "jump to the next new message"
 msgstr "скок към следващото ново писмо"
 
-#: gui/opcodes.h:209
+#. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:562
 msgid "jump to the next new or unread message"
 msgstr "скок към следващото ново или непрочетено писмо"
 
-#: gui/opcodes.h:210
+#. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:565
 msgid "jump to the next subthread"
 msgstr "скок към следващата поднишка"
 
-#: gui/opcodes.h:211
+#. L10N: Help screen description for OP_MAIN_NEXT_THREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:568
 msgid "jump to the next thread"
 msgstr "скок към следващата нишка"
 
-#: gui/opcodes.h:212
+#. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
+#. Index: <op_main_next_undeleted>
+#: gui/opcodes.h:571
 msgid "move to the next undeleted message"
 msgstr "преместване към следващото възстановено писмо"
 
-#: gui/opcodes.h:213
+#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:574
 msgid "jump to the next unread message"
 msgstr "скок към следващото непрочетено писмо"
 
-#: gui/opcodes.h:214
+#. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
+#. Index: <op_main_next_unread_mailbox>
+#: gui/opcodes.h:577
 #, fuzzy
 msgid "open next mailbox with new mail"
 msgstr "Няма пощенска кутия с нови писма."
 
-#: gui/opcodes.h:215
+#. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
+#. Index: <op_main_root_message>
+#: gui/opcodes.h:580
 msgid "jump to parent message in thread"
 msgstr "скок към родителското писмо в нишката"
 
-#: gui/opcodes.h:216
+#. L10N: Help screen description for OP_MAIN_PREV_NEW
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:583
 msgid "jump to the previous new message"
 msgstr "скок към предишното ново писмо"
 
-#: gui/opcodes.h:217
+#. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:586
 msgid "jump to the previous new or unread message"
 msgstr "скок към предишното ново или непрочетено писмо"
 
-#: gui/opcodes.h:218
+#. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:589
 msgid "jump to previous subthread"
 msgstr "скок към предишната поднишка"
 
-#: gui/opcodes.h:219
+#. L10N: Help screen description for OP_MAIN_PREV_THREAD
+#. Index: <op_main_next_thread>
+#: gui/opcodes.h:592
 msgid "jump to previous thread"
 msgstr "скок към предишната нишка"
 
-#: gui/opcodes.h:220
+#. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
+#. Index: <op_main_prev_undeleted>
+#: gui/opcodes.h:595
 msgid "move to the previous undeleted message"
 msgstr "преместване към предишното възстановено писмо"
 
-#: gui/opcodes.h:221
+#. L10N: Help screen description for OP_MAIN_PREV_UNREAD
+#. Index: <op_main_next_new>
+#: gui/opcodes.h:598
 msgid "jump to the previous unread message"
 msgstr "скок към предишното непрочетено писмо"
 
-#: gui/opcodes.h:222
+#. L10N: Help screen description for OP_MAIN_QUASI_DELETE
+#. Index: <op_main_quasi_delete>
+#: gui/opcodes.h:601
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
-#: gui/opcodes.h:223
+#. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
+#. Index: <op_main_read_thread>
+#: gui/opcodes.h:604
 msgid "mark the current subthread as read"
 msgstr "маркира текущата поднишка като прочетена"
 
-#: gui/opcodes.h:224
+#. L10N: Help screen description for OP_MAIN_READ_THREAD
+#. Index: <op_main_read_thread>
+#: gui/opcodes.h:607
 msgid "mark the current thread as read"
 msgstr "маркира текущата нишка като прочетена"
 
-#: gui/opcodes.h:225
+#. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
+#. Index: <op_main_root_message>
+#: gui/opcodes.h:610
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "скок към родителското писмо в нишката"
 
-#: gui/opcodes.h:226
+#. L10N: Help screen description for OP_MAIN_SET_FLAG
+#. Index: <op_main_set_flag>
+#: gui/opcodes.h:613
 msgid "set a status flag on a message"
 msgstr "поставя маркировката за статус на писмо"
 
-#: gui/opcodes.h:227
+#. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
+#. Index: <op_main_show_limit>
+#: gui/opcodes.h:616
 msgid "show currently active limit pattern"
 msgstr "показва активния ограничителен шаблон"
 
-#: gui/opcodes.h:228
+#. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
+#. Index: <op_main_sync_folder>
+#: gui/opcodes.h:619
 msgid "save changes to mailbox"
 msgstr "записва промените в пощенската кутия"
 
-#: gui/opcodes.h:229
+#. L10N: Help screen description for OP_MAIN_TAG_PATTERN
+#. Index: <op_main_tag_pattern>
+#: gui/opcodes.h:622
 #, fuzzy
 msgid "tag non-hidden messages matching a pattern"
 msgstr "маркира писма, отговарящи на шаблон"
 
-#: gui/opcodes.h:230
+#. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
+#. Index: <op_main_undelete_pattern>
+#: gui/opcodes.h:625
 #, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "възстановява писма, отговарящи на шаблон"
 
-#: gui/opcodes.h:231
+#. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
+#. Index: <op_main_untag_pattern>
+#: gui/opcodes.h:628
 #, fuzzy
 msgid "untag non-hidden messages matching a pattern"
 msgstr "премахва маркировката от писма, отговарящи на шаблон"
 
-#: gui/opcodes.h:232
+#. L10N: Help screen description for OP_MARK_MSG
+#. Index: <op_mark_msg>
+#: gui/opcodes.h:631
 #, fuzzy
 msgid "create a hotkey macro for the current message"
 msgstr "Това е първото писмо."
 
-#: gui/opcodes.h:233
+#. L10N: Help screen description for OP_MIDDLE_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:634
 msgid "move to the middle of the page"
 msgstr "преместване към средата на страницата"
 
-#: gui/opcodes.h:234
+#. L10N: Help screen description for OP_NEXT_ENTRY
+#. Menu: <menu_movement>
+#. Index: <op_next_entry>
+#: gui/opcodes.h:638
 msgid "move to the next entry"
 msgstr "преместване към следващия запис"
 
-#: gui/opcodes.h:235
+#. L10N: Help screen description for OP_NEXT_LINE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_next_line>
+#: gui/opcodes.h:642
 msgid "scroll down one line"
 msgstr "превърта надолу с един ред"
 
-#: gui/opcodes.h:236
+#. L10N: Help screen description for OP_NEXT_PAGE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_next_page>
+#: gui/opcodes.h:646
 msgid "move to the next page"
 msgstr "преместване към следващата страница"
 
-#: gui/opcodes.h:237
+#. L10N: Help screen description for OP_PAGER_BOTTOM
+#. Pager: <op_pager_bottom>
+#: gui/opcodes.h:649
 msgid "jump to the bottom of the message"
 msgstr "скок към края на писмото"
 
-#: gui/opcodes.h:238
+#. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
+#. Pager: <op_pager_hide_quoted>
+#: gui/opcodes.h:652
 msgid "toggle display of quoted text"
 msgstr "показва/скрива цитиран текст"
 
-#: gui/opcodes.h:239
+#. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
+#. Pager: <op_pager_skip_headers>
+#: gui/opcodes.h:655
 #, fuzzy
 msgid "jump to first line after headers"
 msgstr "скок към следващата нишка"
 
-#: gui/opcodes.h:240
+#. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
+#. Pager: <op_pager_skip_quoted>
+#: gui/opcodes.h:658
 msgid "skip beyond quoted text"
 msgstr "прескача цитирания текст"
 
-#: gui/opcodes.h:241
+#. L10N: Help screen description for OP_PAGER_TOP
+#. Pager: <op_pager_top>
+#: gui/opcodes.h:661
 msgid "jump to the top of the message"
 msgstr "скок към началото на писмото"
 
-#: gui/opcodes.h:243
+#. L10N: Help screen description for OP_POST
+#. Index: <op_post>
+#: gui/opcodes.h:669
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Препращане на писмото към %s"
 
-#: gui/opcodes.h:244
+#. L10N: Help screen description for OP_PREV_ENTRY
+#. Menu: <menu_movement>
+#. Index: <op_prev_entry>
+#: gui/opcodes.h:673
 msgid "move to the previous entry"
 msgstr "преместване към предишния запис"
 
-#: gui/opcodes.h:245
+#. L10N: Help screen description for OP_PREV_LINE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_prev_line>
+#: gui/opcodes.h:677
 msgid "scroll up one line"
 msgstr "превъртане нагоре с един ред"
 
-#: gui/opcodes.h:246
+#. L10N: Help screen description for OP_PREV_PAGE
+#. Menu: <menu_movement>
+#. Pager: <op_pager_prev_page>
+#: gui/opcodes.h:681
 msgid "move to the previous page"
 msgstr "преместване към предишната страница"
 
-#: gui/opcodes.h:248
+#. L10N: Help screen description for OP_PURGE_MESSAGE
+#. Index: <op_delete>
+#: gui/opcodes.h:687
 msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
-#: gui/opcodes.h:249
+#. L10N: Help screen description for OP_PURGE_THREAD
+#. Index: <op_delete_thread>
+#: gui/opcodes.h:690
 msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
-#: gui/opcodes.h:250
+#. L10N: Help screen description for OP_QUERY
+#. Alias Dialog: <op_query>
+#. Index: <op_query>
+#: gui/opcodes.h:694
 msgid "query external program for addresses"
 msgstr "изпраща запитване към външна програма за адрес"
 
-#: gui/opcodes.h:251
+#. L10N: Help screen description for OP_QUERY_APPEND
+#. Alias Dialog: <op_query>
+#: gui/opcodes.h:697
 msgid "append new query results to current results"
 msgstr "добавя резултатите от запитването към досегашните"
 
-#: gui/opcodes.h:252
+#. L10N: Help screen description for OP_QUIT
+#. History Dialog: <op_quit>
+#. Index: <op_quit>
+#. Pattern Dialog: <op_quit>
+#: gui/opcodes.h:702
 msgid "save changes to mailbox and quit"
 msgstr "записва промените в пощенската кутия и напуска програмата"
 
-#: gui/opcodes.h:253
+#. L10N: Help screen description for OP_RECALL_MESSAGE
+#. Index: <op_recall_message>
+#: gui/opcodes.h:705
 msgid "recall a postponed message"
 msgstr "редактира чернова"
 
-#: gui/opcodes.h:254
+#. L10N: Help screen description for OP_RECONSTRUCT_THREAD
+#. Index: <op_get_children>
+#: gui/opcodes.h:708
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "Нишката съдържа непрочетени писма."
 
-#: gui/opcodes.h:255
+#. L10N: Help screen description for OP_REDRAW
+#. Text Entry: <op_redraw>
+#. Global: <op_redraw>
+#: gui/opcodes.h:712
 msgid "clear and redraw the screen"
 msgstr "изтрива и прерисува екрана"
 
-#: gui/opcodes.h:256
+#. L10N: Help screen description for OP_REFORMAT_WINCH
+#: gui/opcodes.h:714
 msgid "{internal}"
 msgstr "{вътрешно}"
 
-#: gui/opcodes.h:257
+#. L10N: Help screen description for OP_RENAME_MAILBOX
+#. Browser: <op_rename_mailbox>
+#: gui/opcodes.h:717
 #, fuzzy
 msgid "rename the current mailbox (IMAP only)"
 msgstr "изтрива текущата пощенска кутия (само IMAP)"
 
-#: gui/opcodes.h:258
+#. L10N: Help screen description for OP_REPLY
+#. Attach Dialog: <op_reply>
+#. Index: <op_reply>
+#: gui/opcodes.h:721
 msgid "reply to a message"
 msgstr "отговор на писмо"
 
-#: gui/opcodes.h:259
+#. L10N: Help screen description for OP_RESEND
+#. Attach Dialog: <op_resend>
+#. Index: <op_resend>
+#: gui/opcodes.h:725
 msgid "use the current message as a template for a new one"
 msgstr "използва текущото писмо като шаблон за ново"
 
-#: gui/opcodes.h:261
+#. L10N: Help screen description for OP_SEARCH
+#. Menu: <menu_search>
+#. Pager: <op_pager_search>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:736
 msgid "search for a regular expression"
 msgstr "търсене на регулярен израз"
 
-#: gui/opcodes.h:262
+#. L10N: Help screen description for OP_SEARCH_NEXT
+#. Menu: <menu_search>
+#. Pager: <op_pager_search_next>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:743
 msgid "search for next match"
 msgstr "търси следващото попадение"
 
-#: gui/opcodes.h:263
+#. L10N: Help screen description for OP_SEARCH_OPPOSITE
+#. Menu: <menu_search>
+#. Pager: <op_pager_search_next>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:750
 msgid "search for next match in opposite direction"
 msgstr "търси следващото попадение в обратната посока"
 
-#: gui/opcodes.h:264
+#. L10N: Help screen description for OP_SEARCH_REVERSE
+#. Menu: <menu_search>
+#. Pager: <op_pager_search>
+#. Alias Dialog: <op_search>
+#. Index: <op_search>
+#. Postponed Dialog: <op_search>
+#: gui/opcodes.h:757
 msgid "search backwards for a regular expression"
 msgstr "търсене на регулярен израз в обратната посока"
 
-#: gui/opcodes.h:265
+#. L10N: Help screen description for OP_SEARCH_TOGGLE
+#. Pager: <op_search_toggle>
+#: gui/opcodes.h:760
 msgid "toggle search pattern coloring"
 msgstr "включва/изключва оцветяването при търсене"
 
-#: gui/opcodes.h:266
+#. L10N: Help screen description for OP_SHELL_ESCAPE
+#. Global: <op_shell_escape>
+#: gui/opcodes.h:763
 msgid "invoke a command in a subshell"
 msgstr "изпълнява команда в командния интерпретатор"
 
-#: gui/opcodes.h:267
+#. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
+#. Global: <op_show_log_messages>
+#: gui/opcodes.h:766
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "подрежда писмата"
 
-#: gui/opcodes.h:268
+#. L10N: Help screen description for OP_SORT
+#. Alias Dialog: <op_sort>
+#. Browser: <op_sort>
+#. Index: <op_sort>
+#: gui/opcodes.h:771
 msgid "sort messages"
 msgstr "подрежда писмата"
 
-#: gui/opcodes.h:269
+#. L10N: Help screen description for OP_SORT_REVERSE
+#. Alias Dialog: <op_sort>
+#. Browser: <op_sort>
+#. Index: <op_sort>
+#: gui/opcodes.h:776
 msgid "sort messages in reverse order"
 msgstr "подрежда писмата в обратен ред"
 
-#: gui/opcodes.h:270
+#. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
+#. Browser: <op_subscribe_pattern>
+#: gui/opcodes.h:779
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "премахва маркировката от писма, отговарящи на шаблон"
 
-#: gui/opcodes.h:271
+#. L10N: Help screen description for OP_TAG
+#. Index: <op_tag>
+#: gui/opcodes.h:782
 msgid "tag the current entry"
 msgstr "маркира текущият запис"
 
-#: gui/opcodes.h:272
+#. L10N: Help screen description for OP_TAG_PREFIX
+#: gui/opcodes.h:784
 msgid "apply next function to tagged messages"
 msgstr "прилага следващата функция върху маркираните писма"
 
-#: gui/opcodes.h:273
+#. L10N: Help screen description for OP_TAG_PREFIX_COND
+#: gui/opcodes.h:786
 msgid "apply next function ONLY to tagged messages"
 msgstr "прилага следващата функция САМО върху маркираните писма"
 
-#: gui/opcodes.h:274
+#. L10N: Help screen description for OP_TAG_SUBTHREAD
+#. Index: <op_tag_thread>
+#: gui/opcodes.h:789
 msgid "tag the current subthread"
 msgstr "маркира текущата поднишка"
 
-#: gui/opcodes.h:275
+#. L10N: Help screen description for OP_TAG_THREAD
+#. Index: <op_tag_thread>
+#: gui/opcodes.h:792
 msgid "tag the current thread"
 msgstr "маркира текущата нишка"
 
-#: gui/opcodes.h:276
+#. L10N: Help screen description for OP_TOGGLE_MAILBOXES
+#. Browser: <op_toggle_mailboxes>
+#: gui/opcodes.h:795
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "превключва търсенето между пощенски кутии или всички файлове"
 
-#: gui/opcodes.h:277
+#. L10N: Help screen description for OP_TOGGLE_NEW
+#. Index: <op_toggle_new>
+#: gui/opcodes.h:798
 msgid "toggle a message's 'new' flag"
 msgstr "включва/изключва индикатора, дали писмото е ново"
 
-#: gui/opcodes.h:278
+#. L10N: Help screen description for OP_TOGGLE_READ
+#. Index: <op_main_limit>
+#: gui/opcodes.h:801
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "скок към предишното ново или непрочетено писмо"
 
-#: gui/opcodes.h:279
+#. L10N: Help screen description for OP_TOGGLE_WRITE
+#. Index: <op_toggle_write>
+#: gui/opcodes.h:804
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "включва/изключва презаписът на пощенската кутия"
 
-#: gui/opcodes.h:280
+#. L10N: Help screen description for OP_TOP_PAGE
+#. Menu: <menu_movement>
+#: gui/opcodes.h:807
 msgid "move to the top of the page"
 msgstr "преместване към началото на страницата"
 
-#: gui/opcodes.h:281
+#. L10N: Help screen description for OP_UNCATCHUP
+#. Browser: <op_catchup>
+#: gui/opcodes.h:810
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
-#: gui/opcodes.h:283
+#. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
+#. Index: <op_undelete_thread>
+#: gui/opcodes.h:818
 msgid "undelete all messages in subthread"
 msgstr "възстановява всички писма в поднишката"
 
-#: gui/opcodes.h:284
+#. L10N: Help screen description for OP_UNDELETE_THREAD
+#. Index: <op_undelete_thread>
+#: gui/opcodes.h:821
 msgid "undelete all messages in thread"
 msgstr "възстановява всички писма в нишката"
 
-#: gui/opcodes.h:285
+#. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
+#. Browser: <op_subscribe_pattern>
+#: gui/opcodes.h:824
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "премахва маркировката от писма, отговарящи на шаблон"
 
-#: gui/opcodes.h:286
+#. L10N: Help screen description for OP_VERSION
+#. Global: <op_version>
+#: gui/opcodes.h:827
 msgid "show the NeoMutt version number and date"
 msgstr "показва версията на neomutt"
 
-#: gui/opcodes.h:287
+#. L10N: Help screen description for OP_VIEW_ATTACHMENTS
+#. Index: <op_view_attachments>
+#. Pager: <op_view_attachments>
+#: gui/opcodes.h:831
 msgid "show MIME attachments"
 msgstr "показва MIME приложения"
 
-#: gui/opcodes.h:288
+#. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
+#. Index: <op_edit_raw_message>
+#: gui/opcodes.h:834
 #, fuzzy
 msgid "show the raw message"
 msgstr "редактира необработеното писмо"
 
-#: gui/opcodes.h:289
+#. L10N: Help screen description for OP_WHAT_KEY
+#. Global: <op_what_key>
+#: gui/opcodes.h:837
 msgid "display the keycode for a key press"
 msgstr "показва кода на натиснат клавиш"
 
-#: gui/opcodes.h:292
+#. L10N: Help screen description for OP_DECRYPT_COPY
+#. Index: <op_save>
+#: gui/opcodes.h:842
 msgid "make decrypted copy"
 msgstr "създава дешифрирано копие"
 
-#: gui/opcodes.h:293
+#. L10N: Help screen description for OP_DECRYPT_SAVE
+#. Index: <op_save>
+#: gui/opcodes.h:845
 msgid "make decrypted copy and delete"
 msgstr "създава дешифрирано копие и изтрива"
 
-#: gui/opcodes.h:294
+#. L10N: Help screen description for OP_EXTRACT_KEYS
+#. Attach Dialog: <op_extract_keys>
+#. Index: <op_extract_keys>
+#: gui/opcodes.h:849
 msgid "extract supported public keys"
 msgstr "извлича поддържаните публични ключове"
 
-#: gui/opcodes.h:295
+#. L10N: Help screen description for OP_FORGET_PASSPHRASE
+#. Attach Dialog: <op_forget_passphrase>
+#. Compose Dialog: <op_forget_passphrase>
+#. Index: <op_forget_passphrase>
+#: gui/opcodes.h:854
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "отстранява паролите от паметта"
 
-#: gui/opcodes.h:298
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
+#. Envelope Window: <op_envelope_edit_bcc>
+#: gui/opcodes.h:859
 msgid "edit the BCC list"
 msgstr "променя списъка на получателите на сляпо копие от писмото (BCC)"
 
-#: gui/opcodes.h:299
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
+#. Envelope Window: <op_envelope_edit_cc>
+#: gui/opcodes.h:862
 msgid "edit the CC list"
 msgstr "променя списъка на получателите на копие от писмото (CC)"
 
-#: gui/opcodes.h:300
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
+#. Envelope Window: <op_envelope_edit_fcc>
+#: gui/opcodes.h:865
 msgid "enter a file to save a copy of this message in"
 msgstr "избор на файл, в който да бъде записано копие от това писмо"
 
-#: gui/opcodes.h:301
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
+#. Envelope Window: <op_envelope_edit_followup_to>
+#: gui/opcodes.h:868
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "редактира получателя на отговор от писмото (Reply-To)"
 
-#: gui/opcodes.h:302
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
+#. Envelope Window: <op_envelope_edit_from>
+#: gui/opcodes.h:871
 msgid "edit the from field"
 msgstr "променя изпращача (From)"
 
-#: gui/opcodes.h:303
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
+#. Compose Dialog: <op_envelope_edit_headers>
+#: gui/opcodes.h:874
 msgid "edit the message with headers"
 msgstr "редактира писмо и заглавните му полета"
 
-#: gui/opcodes.h:304
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
+#. Envelope Window: <op_envelope_edit_newsgroups>
+#: gui/opcodes.h:877
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "променя списъка на получателите на копие от писмото (CC)"
 
-#: gui/opcodes.h:305
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
+#. Envelope Window: <op_envelope_edit_reply_to>
+#: gui/opcodes.h:880
 msgid "edit the Reply-To field"
 msgstr "редактира получателя на отговор от писмото (Reply-To)"
 
-#: gui/opcodes.h:306
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
+#. Envelope Window: <op_envelope_edit_subject>
+#: gui/opcodes.h:883
 msgid "edit the subject of this message"
 msgstr "редактира темата на писмо"
 
-#: gui/opcodes.h:307
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
+#. Envelope Window: <op_envelope_edit_to>
+#: gui/opcodes.h:886
 msgid "edit the TO list"
 msgstr "редактира списъка на получателите"
 
-#: gui/opcodes.h:308
+#. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
+#. Envelope Window: <op_envelope_edit_x_comment_to>
+#: gui/opcodes.h:889
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "редактира получателя на отговор от писмото (Reply-To)"
 
-#: gui/opcodes.h:312
+#. L10N: Help screen description for OP_COMPOSE_MIX
+#. Envelope Window: <op_compose_mix>
+#: gui/opcodes.h:895
 msgid "send the message through a mixmaster remailer chain"
 msgstr "изпраща писмото през mixmaster remailer верига"
 
-#: gui/opcodes.h:313
+#. L10N: Help screen description for OP_MIX_APPEND
+#. Mixmaster Dialog: <op_mix_append>
+#: gui/opcodes.h:898
 #, fuzzy
 msgid "append a remailer to the chain"
 msgstr "добавя remailer към веригата"
 
-#: gui/opcodes.h:314
+#. L10N: Help screen description for OP_MIX_CHAIN_NEXT
+#. Mixmaster Dialog: <op_mix_chain_next>
+#: gui/opcodes.h:901
 #, fuzzy
 msgid "select the next element of the chain"
 msgstr "избира следващия елемент от веригата"
 
-#: gui/opcodes.h:315
+#. L10N: Help screen description for OP_MIX_CHAIN_PREV
+#. Mixmaster Dialog: <op_mix_chain_prev>
+#: gui/opcodes.h:904
 #, fuzzy
 msgid "select the previous element of the chain"
 msgstr "избира предишния елемент от веригата"
 
-#: gui/opcodes.h:316
+#. L10N: Help screen description for OP_MIX_DELETE
+#. Mixmaster Dialog: <op_mix_delete>
+#: gui/opcodes.h:907
 #, fuzzy
 msgid "delete a remailer from the chain"
 msgstr "изтрива remailer от веригата"
 
-#: gui/opcodes.h:317
+#. L10N: Help screen description for OP_MIX_INSERT
+#. Mixmaster Dialog: <op_mix_insert>
+#: gui/opcodes.h:910
 #, fuzzy
 msgid "insert a remailer into the chain"
 msgstr "вмъква remailer във веригата"
 
-#: gui/opcodes.h:318
+#. L10N: Help screen description for OP_MIX_USE
+#. Mixmaster Dialog: <op_mix_use>
+#: gui/opcodes.h:913
 #, fuzzy
 msgid "accept the chain constructed"
 msgstr "одобрява конструираната верига"
 
-#: gui/opcodes.h:325
+#. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
+#. Index: <op_main_change_folder>
+#: gui/opcodes.h:922
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "отваря друга пощенска кутия"
 
-#: gui/opcodes.h:326
+#. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
+#. Index: <op_main_entire_thread>
+#: gui/opcodes.h:925
 msgid "read entire thread of the current message"
 msgstr ""
 
-#: gui/opcodes.h:327
+#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
+#. Index: <op_main_vfolder_from_query>
+#: gui/opcodes.h:928
 msgid "generate virtual folder from query"
 msgstr ""
 
-#: gui/opcodes.h:328
+#. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
+#. Index: <op_main_vfolder_from_query>
+#: gui/opcodes.h:931
 msgid "generate a read-only virtual folder from query"
 msgstr ""
 
-#: gui/opcodes.h:329
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:934
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
-#: gui/opcodes.h:330
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:937
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
-#: gui/opcodes.h:331
+#. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
+#. Index: <op_main_windowed_vfolder>
+#: gui/opcodes.h:940
 msgid "resets virtual folder time window to the present"
 msgstr ""
 
-#: gui/opcodes.h:337
+#. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
+#. Compose Dialog: <op_attachment_attach_key>
+#: gui/opcodes.h:948
 msgid "attach a PGP public key"
 msgstr "прилага PGP публичен ключ"
 
-#: gui/opcodes.h:338
+#. L10N: Help screen description for OP_CHECK_TRADITIONAL
+#. Attach Dialog: <op_check_traditional>
+#. Index: <op_check_traditional>
+#: gui/opcodes.h:952
 #, fuzzy
 msgid "check for classic PGP"
 msgstr "проверява за класически pgp"
 
-#: gui/opcodes.h:339
+#. L10N: Help screen description for OP_COMPOSE_PGP_MENU
+#. Envelope Window: <op_compose_pgp_menu>
+#: gui/opcodes.h:955
 msgid "show PGP options"
 msgstr "показва PGP настройките"
 
-#: gui/opcodes.h:340
+#. L10N: Help screen description for OP_MAIL_KEY
+#. Index: <op_mail_key>
+#: gui/opcodes.h:958
 msgid "mail a PGP public key"
 msgstr "изпраща PGP публичен ключ"
 
-#: gui/opcodes.h:341
+#. L10N: Help screen description for OP_VERIFY_KEY
+#. GPGME Key Selection Dialog: <op_verify_key>
+#. PGP Key Selection Dialog: <op_verify_key>
+#: gui/opcodes.h:962
 msgid "verify a PGP public key"
 msgstr "потвърждава PGP публичен ключ"
 
-#: gui/opcodes.h:342
+#. L10N: Help screen description for OP_VIEW_ID
+#. GPGME Key Selection Dialog: <op_view_id>
+#. PGP Key Selection Dialog: <op_view_id>
+#: gui/opcodes.h:966
 msgid "view the key's user id"
 msgstr "показва потребителския номер към ключ"
 
-#: gui/opcodes.h:345
+#. L10N: Help screen description for OP_SIDEBAR_FIRST
+#. Sidebar: <op_sidebar_first>
+#: gui/opcodes.h:971
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "преместване към предишната страница"
 
-#: gui/opcodes.h:346
+#. L10N: Help screen description for OP_SIDEBAR_LAST
+#. Sidebar: <op_sidebar_last>
+#: gui/opcodes.h:974
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "преместване към предишната страница"
 
-#: gui/opcodes.h:347
+#. L10N: Help screen description for OP_SIDEBAR_NEXT
+#. Sidebar: <op_sidebar_next>
+#: gui/opcodes.h:977
 msgid "move the highlight to next mailbox"
 msgstr ""
 
-#: gui/opcodes.h:348
+#. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
+#. Sidebar: <op_sidebar_next_new>
+#: gui/opcodes.h:980
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "Няма пощенска кутия с нови писма."
 
-#: gui/opcodes.h:349
+#. L10N: Help screen description for OP_SIDEBAR_OPEN
+#. Sidebar: <op_sidebar_open>
+#: gui/opcodes.h:983
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "Повторно отваряне на пощенската кутия..."
 
-#: gui/opcodes.h:350
+#. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
+#. Sidebar: <op_sidebar_page_down>
+#: gui/opcodes.h:986
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "превърта екрана надолу с 1/2 страница"
 
-#: gui/opcodes.h:351
+#. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
+#. Sidebar: <op_sidebar_page_up>
+#: gui/opcodes.h:989
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "превърта екрана нагоре с 1/2 страница"
 
-#: gui/opcodes.h:352
+#. L10N: Help screen description for OP_SIDEBAR_PREV
+#. Sidebar: <op_sidebar_prev>
+#: gui/opcodes.h:992
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "преместване към предишната страница"
 
-#: gui/opcodes.h:353
+#. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
+#. Sidebar: <op_sidebar_prev_new>
+#: gui/opcodes.h:995
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "Няма пощенска кутия с нови писма."
 
-#: gui/opcodes.h:354
+#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
+#. Sidebar: <op_sidebar_toggle_virtual>
+#: gui/opcodes.h:998
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "превключва търсенето между пощенски кутии или всички файлове"
 
-#: gui/opcodes.h:355
+#. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
+#. Sidebar: <op_sidebar_toggle_visible>
+#: gui/opcodes.h:1001
 msgid "make the sidebar (in)visible"
 msgstr ""
 
-#: gui/opcodes.h:358
+#. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
+#. Envelope Window: <op_compose_smime_menu>
+#: gui/opcodes.h:1006
 msgid "show S/MIME options"
 msgstr "показва S/MIME настройките"
 
-#: gui/opcodes.h:361
+#: gui/opcodes.h:1009
 msgid "null operation"
 msgstr "празна функция"
 
@@ -3801,7 +4507,7 @@ msgstr ""
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:114 send/config.c:58
+#: hcache/config.c:114 send/config.c:68
 #, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr ""
@@ -3924,12 +4630,12 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Помощ за %s"
 
-#: history/dlg_history.c:153
+#: history/dlg_history.c:145
 #, fuzzy, c-format
 msgid "History '%s'"
 msgstr "Запитване '%s'"
 
-#: history/history.c:232 history/history.c:613
+#: history/history.c:232 history/history.c:618
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr ""
@@ -3942,37 +4648,37 @@ msgstr ""
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:591 ncrypt/pgp.c:598
 #: ncrypt/pgp.c:926 ncrypt/pgp.c:1043 ncrypt/pgp.c:1200 ncrypt/pgp.c:1224
 #: ncrypt/pgp.c:1257 ncrypt/pgp.c:1614 ncrypt/pgp_functions.c:131
-#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:899
-#: ncrypt/smime.c:907 ncrypt/smime.c:1005 ncrypt/smime.c:1115
-#: ncrypt/smime.c:1181 ncrypt/smime.c:1188 ncrypt/smime.c:1397
-#: ncrypt/smime.c:1796 ncrypt/smime.c:1875 ncrypt/smime.c:1882
-#: ncrypt/smime.c:1989 ncrypt/smime.c:2119 ncrypt/smime.c:2135 nntp/nntp.c:1316
+#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:854
+#: ncrypt/smime.c:862 ncrypt/smime.c:961 ncrypt/smime.c:1071
+#: ncrypt/smime.c:1138 ncrypt/smime.c:1145 ncrypt/smime.c:1355
+#: ncrypt/smime.c:1755 ncrypt/smime.c:1834 ncrypt/smime.c:1841
+#: ncrypt/smime.c:1948 ncrypt/smime.c:2078 ncrypt/smime.c:2094 nntp/nntp.c:1316
 #: nntp/nntp.c:2178 pattern/exec.c:149 pop/pop.c:124
 msgid "Can't create temporary file"
 msgstr "Грешка при създаване на временен файл"
 
-#: hook.c:233
+#: hook.c:238
 msgid "current mailbox shortcut '^' is unset"
 msgstr ""
 
-#: hook.c:245
+#: hook.c:250
 msgid "mailbox shortcut expanded to empty regex"
 msgstr ""
 
-#: hook.c:264
+#: hook.c:269
 msgid "badly formatted command string"
 msgstr ""
 
-#: hook.c:561
+#: hook.c:582
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Не може да извършите unhook * от hook"
 
-#: hook.c:574
+#: hook.c:595
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: непознат hook тип: %s"
 
-#: hook.c:584
+#: hook.c:605
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Не може да изтриете %s от %s"
@@ -4077,7 +4783,7 @@ msgstr "Грешка при изпълнение на командата \"preco
 msgid "Connection to %s timed out"
 msgstr "Връзката с %s е затворена"
 
-#: imap/config.c:61 pop/config.c:59 send/config.c:82
+#: imap/config.c:61 pop/config.c:59 send/config.c:92
 #, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr ""
@@ -4126,7 +4832,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Копиране на %d съобщения в %s..."
 msgstr[1] "Копиране на %d съобщения в %s..."
 
-#: imap/imap.c:1432 imap/imap.c:2088 imap/message.c:1819 muttlib.c:1379
+#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1819 muttlib.c:836
 #, c-format
 msgid "Create %s?"
 msgstr "Желаете ли да създадете %s?"
@@ -4171,15 +4877,15 @@ msgstr "imap_sync_mailbo: неуспешен EXPUNGE"
 msgid "Selecting %s..."
 msgstr "Избиране на %s..."
 
-#: imap/imap.c:2055
+#: imap/imap.c:2057
 msgid "Error opening mailbox"
 msgstr "Грешка при отваряне на пощенската кутия"
 
-#: imap/imap.c:2199
+#: imap/imap.c:2201
 msgid "IMAP server doesn't support custom flags"
 msgstr ""
 
-#: imap/imap.c:2243
+#: imap/imap.c:2245
 #, fuzzy
 msgid "Invalid IMAP flags"
 msgstr "Невалиден   "
@@ -4248,63 +4954,63 @@ msgstr ""
 msgid "Continue?"
 msgstr "Желаете ли да продължите?"
 
-#: index/dlg_index.c:105 index/dlg_index.c:120
+#: index/dlg_index.c:106 index/dlg_index.c:121
 msgid "Quit"
 msgstr "Изход"
 
-#: index/dlg_index.c:110 pager/dlg_pager.c:101
+#: index/dlg_index.c:111 pager/dlg_pager.c:101
 msgid "Reply"
 msgstr "Отговор"
 
-#: index/dlg_index.c:111
+#: index/dlg_index.c:112
 msgid "Group"
 msgstr "Груп. отг."
 
-#: index/dlg_index.c:124 pager/dlg_pager.c:114
+#: index/dlg_index.c:125 pager/dlg_pager.c:114
 msgid "Post"
 msgstr ""
 
-#: index/dlg_index.c:125 pager/dlg_pager.c:115
+#: index/dlg_index.c:126 pager/dlg_pager.c:115
 #, fuzzy
 msgid "Followup"
 msgstr "Желаете ли да проследите до %s%s?"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index/dlg_index.c:147
+#: index/dlg_index.c:148
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr ""
 
-#: index/dlg_index.c:738
+#: index/dlg_index.c:739
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:783 muttlib.c:1363 mx.c:203 mx.c:341
+#: index/dlg_index.c:784 muttlib.c:820 mx.c:203 mx.c:341
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s не е пощенска кутия"
 
-#: index/dlg_index.c:1159
+#: index/dlg_index.c:1167
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Пощенската кутия е променена от друга програма. Маркировките може да са остарели."
 
-#: index/dlg_index.c:1168 pager/dlg_pager.c:431
+#: index/dlg_index.c:1176 pager/dlg_pager.c:431
 msgid "New mail in this mailbox"
 msgstr "Нови писма в тази пощенска кутия"
 
-#: index/dlg_index.c:1187
+#: index/dlg_index.c:1196
 msgid "Mailbox was externally modified"
 msgstr "Пощенската кутия е променена от друга програма"
 
-#: index/dlg_index.c:1299 index/functions.c:3076 pattern/message.c:288
+#: index/dlg_index.c:1307 index/functions.c:3076 pattern/message.c:288
 msgid "No mailbox is open"
 msgstr "Няма отворена пощенска кутия"
 
-#: index/dlg_index.c:1307
+#: index/dlg_index.c:1315
 msgid "No tagged messages"
 msgstr "Няма маркирани писма"
 
-#: index/dlg_index.c:1312 index/functions.c:924
+#: index/dlg_index.c:1320 index/functions.c:924
 msgid "Nothing to do"
 msgstr "Няма какво да се прави"
 
@@ -4462,12 +5168,12 @@ msgid "No unread messages"
 msgstr "Няма непрочетени писма"
 
 #: index/functions.c:1570 menu/functions.c:108 pager/functions.c:766
-#: pattern/pattern.c:518 pattern/pattern.c:674
+#: pattern/pattern.c:535 pattern/pattern.c:691
 msgid "Search wrapped to top"
 msgstr "Търсенето е започнато отгоре"
 
-#: index/functions.c:1575 pager/functions.c:796 pattern/pattern.c:531
-#: pattern/pattern.c:687
+#: index/functions.c:1575 pager/functions.c:796 pattern/pattern.c:548
+#: pattern/pattern.c:704
 msgid "Search wrapped to bottom"
 msgstr "Търсенето е започнато отдолу"
 
@@ -4795,14 +5501,14 @@ msgstr ""
 msgid "Scanning %s..."
 msgstr "Избиране на %s..."
 
-#: maildir/mailbox.c:511 mbox/mbox.c:216 mbox/mbox.c:386 mh/mh.c:696 mx.c:354
+#: maildir/mailbox.c:511 mbox/mbox.c:217 mbox/mbox.c:387 mh/mh.c:696 mx.c:354
 #, c-format
 msgid "Reading %s..."
 msgstr "Зареждане на %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/mailbox.c:849 mbox/mbox.c:1178 mh/mh.c:1079 mx.c:462
-#: notmuch/notmuch.c:2242
+#: maildir/mailbox.c:849 mbox/mbox.c:1174 mh/mh.c:1079 mx.c:462
+#: notmuch/notmuch.c:2248
 #, c-format
 msgid "Writing %s..."
 msgstr "Запис на %s..."
@@ -5055,7 +5761,7 @@ msgstr "Грешка: '%s' е невалиден IDN"
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:1003 main.c:1270 send/send.c:304 send/send.c:2745 send/send.c:2749
+#: main.c:1003 main.c:1270 send/send.c:307 send/send.c:2750 send/send.c:2754
 msgid "No recipients specified"
 msgstr "Не са указани получатели"
 
@@ -5085,60 +5791,60 @@ msgstr "Не са дефинирани входни пощенски кутии"
 msgid "Mailbox is empty"
 msgstr "Пощенската кутия е празна"
 
-#: mbox/mbox.c:255 mbox/mbox.c:321
+#: mbox/mbox.c:256 mbox/mbox.c:322
 msgid "Mailbox is corrupt"
 msgstr "Пощенската кутия е повредена"
 
-#: mbox/mbox.c:906
+#: mbox/mbox.c:907
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "Невъзможно заключване на %s"
 
-#: mbox/mbox.c:1055
+#: mbox/mbox.c:1056
 msgid "Mailbox was corrupted"
 msgstr "Пощенската кутия е повредена"
 
-#: mbox/mbox.c:1101 mbox/mbox.c:1352
+#: mbox/mbox.c:1097 mbox/mbox.c:1347
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Непоправима грешка! Грешка при повторното отваряне на пощенската кутия!"
 
-#: mbox/mbox.c:1138 pager/message.c:221
+#: mbox/mbox.c:1134 pager/message.c:221
 msgid "Could not create temporary file"
 msgstr "Невъзможно създаването на временен файл"
 
-#: mbox/mbox.c:1156
+#: mbox/mbox.c:1152
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "sync: пощенската кутия е променена, но няма променени писма (моля, съобщете за тази грешка)"
 
-#: mbox/mbox.c:1297
+#: mbox/mbox.c:1293
 msgid "Committing changes..."
 msgstr "Съхраняване на промените..."
 
-#: mbox/mbox.c:1331
+#: mbox/mbox.c:1326
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Грешка при запис! Пощенската кутия е записана частично в %s"
 
-#: mbox/mbox.c:1416
+#: mbox/mbox.c:1411
 msgid "Could not reopen mailbox"
 msgstr "Грешка при повторното отваряне на пощенската кутия"
 
-#: mbox/mbox.c:1514 mbox/mbox.c:1635
+#: mbox/mbox.c:1509 mbox/mbox.c:1630
 msgid "Can't write message"
 msgstr "Невъзможен запис на писмо"
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:451
-#: pattern/pattern.c:608
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
+#: pattern/pattern.c:625
 msgid "Reverse search for: "
 msgstr "Обратно търсене: "
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:451
-#: pattern/pattern.c:608
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
+#: pattern/pattern.c:625
 msgid "Search for: "
 msgstr "Търсене: "
 
 #: menu/functions.c:127 pager/functions.c:695 pager/functions.c:762
-#: pager/functions.c:792 pattern/pattern.c:582 pattern/pattern.c:735
+#: pager/functions.c:792 pattern/pattern.c:599 pattern/pattern.c:752
 msgid "Not found"
 msgstr "Няма резултати от търсенето"
 
@@ -5213,7 +5919,7 @@ msgstr "Моля, поставете валидна стойност в пром
 msgid "Error sending message, child exited %d\n"
 msgstr "Грешка (%d) при изпращане на писмото.\n"
 
-#: mixmaster/mixmaster.c:128 send/send.c:2408
+#: mixmaster/mixmaster.c:128 send/send.c:2413
 msgid "Error sending message"
 msgstr "Грешка при изпращане на писмото"
 
@@ -5249,25 +5955,25 @@ msgstr "remailer веригата вече е празна"
 msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "Грешка: %s не може да се използва като последен remailer във веригата"
 
-#: mutt/file.c:780
+#: mutt/file.c:784
 #, fuzzy, c-format
 msgid "Failed to seek file: %s"
 msgstr "Грешка при отваряне на файла за прочит на заглавната информация"
 
-#: mutt/file.c:1272
+#: mutt/file.c:1276
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "fcntl заключване не е получено в определеното време (timeout)"
 
-#: mutt/file.c:1278
+#: mutt/file.c:1282
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Чакане за fcntl заключване... %d"
 
-#: mutt/file.c:1338
+#: mutt/file.c:1342
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "flock заключване не е получено в определеното време (timeout)"
 
-#: mutt/file.c:1345
+#: mutt/file.c:1349
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Чакане за flock заключване... %d"
@@ -5370,43 +6076,43 @@ msgstr "Родителското писмо не е видимо в този о�
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
-#: muttlib.c:598
+#: muttlib.c:595
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "Файлът е директория. Желаете ли да запишете в нея? (y) да, (n) не, (a) всички"
 
-#: muttlib.c:598
+#: muttlib.c:595
 msgid "yna"
 msgstr "yna"
 
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:616
+#: muttlib.c:613
 msgid "File is a directory, save under it?"
 msgstr "Файлът е директория. Желаете ли да запишете в нея?"
 
-#: muttlib.c:622
+#: muttlib.c:619
 msgid "File under directory: "
 msgstr "Файл в тази директория: "
 
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:638
+#: muttlib.c:635
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Файлът съществува. Презапис(o), добавяне(a) или отказ(c)?"
 
-#: muttlib.c:639
+#: muttlib.c:636
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1332
+#: muttlib.c:789
 msgid "Can't save message to POP mailbox"
 msgstr "Запис на писмо на POP сървър не е възможно"
 
-#: muttlib.c:1342
+#: muttlib.c:799
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Желаете ли да добавите писмата към %s?"
 
-#: muttlib.c:1355
+#: muttlib.c:812
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "Редактирането на писмо на POP сървър не е възможно"
@@ -5560,7 +6266,7 @@ msgstr "Стартиране на PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: ncrypt/crypt.c:221 send/send.c:2724
+#: ncrypt/crypt.c:221 send/send.c:2729
 msgid "Mail not sent"
 msgstr "Писмото не е изпратено"
 
@@ -5974,7 +6680,7 @@ msgstr ""
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Търсене на ключове, отговарящи на \"%s\"..."
 
-#: ncrypt/crypt_gpgme.c:3411 ncrypt/pgpkey.c:247 ncrypt/smime.c:752
+#: ncrypt/crypt_gpgme.c:3411 ncrypt/pgpkey.c:247 ncrypt/smime.c:707
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr ""
@@ -5984,8 +6690,8 @@ msgstr ""
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Желаете ли използвате ключовия идентификатор \"%s\" за %s?"
 
-#: ncrypt/crypt_gpgme.c:3514 ncrypt/pgp.c:1550 ncrypt/smime.c:776
-#: ncrypt/smime.c:856
+#: ncrypt/crypt_gpgme.c:3514 ncrypt/pgp.c:1550 ncrypt/smime.c:731
+#: ncrypt/smime.c:811
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Въведете ключов идентификатор за %s: "
@@ -6104,31 +6810,31 @@ msgstr "Грешка при отваряне на файла за прочит �
 msgid "Invoking S/MIME..."
 msgstr "Стартиране на PGP..."
 
-#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:98
+#: ncrypt/dlg_gpgme.c:101 ncrypt/dlg_pgp.c:99
 msgid "Check key"
 msgstr "Проверка на ключ"
 
-#: ncrypt/dlg_gpgme.c:658
+#: ncrypt/dlg_gpgme.c:670
 #, fuzzy
 msgid "All matching keys are marked expired/revoked"
 msgstr "Всички подходящи ключове са остарели, анулирани или деактивирани"
 
-#: ncrypt/dlg_gpgme.c:709
+#: ncrypt/dlg_gpgme.c:721
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP ключове, съвпадащи с \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:711
+#: ncrypt/dlg_gpgme.c:723
 #, fuzzy
 msgid "PGP keys matching"
 msgstr "PGP ключове, съвпадащи с \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:713
+#: ncrypt/dlg_gpgme.c:725
 #, fuzzy
 msgid "S/MIME keys matching"
 msgstr "S/MIME сертификати, съвпадащи с \"%s\"."
 
-#: ncrypt/dlg_gpgme.c:715
+#: ncrypt/dlg_gpgme.c:727
 #, fuzzy
 msgid "keys matching"
 msgstr "PGP ключове, съвпадащи с \"%s\"."
@@ -6136,27 +6842,27 @@ msgstr "PGP ключове, съвпадащи с \"%s\"."
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:723
+#: ncrypt/dlg_gpgme.c:735
 #, c-format
 msgid "%s <%s>"
 msgstr ""
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:728
+#: ncrypt/dlg_gpgme.c:740
 #, c-format
 msgid "%s \"%s\""
 msgstr ""
 
-#: ncrypt/dlg_pgp.c:571
+#: ncrypt/dlg_pgp.c:660
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Всички подходящи ключове са остарели, анулирани или деактивирани"
 
-#: ncrypt/dlg_pgp.c:616
+#: ncrypt/dlg_pgp.c:705
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP ключове, съвпадащи с <%s>"
 
-#: ncrypt/dlg_pgp.c:618
+#: ncrypt/dlg_pgp.c:707
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP ключове, съвпадащи с \"%s\""
@@ -6224,7 +6930,7 @@ msgstr "Проверен   "
 msgid "Unknown   "
 msgstr "Неизвестен   "
 
-#: ncrypt/dlg_smime.c:227
+#: ncrypt/dlg_smime.c:232
 #, c-format
 msgid "S/MIME certificates matching \"%s\""
 msgstr "S/MIME сертификати, съвпадащи с \"%s\""
@@ -6415,7 +7121,7 @@ msgstr ""
 "[-- Грешка: не може да бъде стартиран дъщерен PGP процес --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1111 ncrypt/pgp.c:1133 ncrypt/smime.c:1974
+#: ncrypt/pgp.c:1111 ncrypt/pgp.c:1133 ncrypt/smime.c:1933
 #: postpone/postpone.c:432
 msgid "Decryption failed"
 msgstr "Неуспешно разшифроване"
@@ -6519,7 +7225,7 @@ msgstr "esabf"
 msgid "Can't open /dev/null"
 msgstr "Грешка при отваряне на /dev/null"
 
-#: ncrypt/pgpinvoke.c:463
+#: ncrypt/pgpinvoke.c:412
 msgid "Fetching PGP key..."
 msgstr "Получаване на PGP ключ..."
 
@@ -6533,52 +7239,52 @@ msgstr "PGP ключ %s"
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Този ключ не може да бъде използван, защото е остарял, деактивиран или анулиран"
 
-#: ncrypt/smime.c:174
+#: ncrypt/smime.c:176
 #, fuzzy
 msgid "Enter S/MIME passphrase:"
 msgstr "Въвеждане на SMIME парола:"
 
-#: ncrypt/smime.c:736
+#: ncrypt/smime.c:691
 msgid "Enter keyID: "
 msgstr "Въведете ключов идентификатор: "
 
-#: ncrypt/smime.c:862
+#: ncrypt/smime.c:817
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "Не е намерен (валиден) сертификат за %s"
 
-#: ncrypt/smime.c:916 ncrypt/smime.c:945 ncrypt/smime.c:1024
-#: ncrypt/smime.c:1059 ncrypt/smime.c:1136 ncrypt/smime.c:1217
+#: ncrypt/smime.c:872 ncrypt/smime.c:901 ncrypt/smime.c:980 ncrypt/smime.c:1015
+#: ncrypt/smime.c:1093 ncrypt/smime.c:1175
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "Грешка: не може да бъде стартиран дъщерен OpenSSL процес"
 
-#: ncrypt/smime.c:1196
+#: ncrypt/smime.c:1153
 #, fuzzy
 msgid "Label for certificate: "
 msgstr "От сървъра не може да бъде получен сертификат"
 
-#: ncrypt/smime.c:1300
+#: ncrypt/smime.c:1258
 #, fuzzy
 msgid "no certfile"
 msgstr "no certfile"
 
-#: ncrypt/smime.c:1305
+#: ncrypt/smime.c:1263
 msgid "no mbox"
 msgstr "няма пощенска кутия"
 
-#: ncrypt/smime.c:1467 ncrypt/smime.c:1636
+#: ncrypt/smime.c:1425 ncrypt/smime.c:1594
 msgid "No output from OpenSSL..."
 msgstr "Няма резултат от дъщерния OpenSSL процес..."
 
-#: ncrypt/smime.c:1554
+#: ncrypt/smime.c:1512
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 
-#: ncrypt/smime.c:1603
+#: ncrypt/smime.c:1561
 msgid "Can't open OpenSSL subprocess"
 msgstr "Не може да бъде стартиран дъщерен OpenSSL процес"
 
-#: ncrypt/smime.c:1834 ncrypt/smime.c:1953
+#: ncrypt/smime.c:1793 ncrypt/smime.c:1912
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -6586,19 +7292,19 @@ msgstr ""
 "[-- Край на OpenSSL-резултата --]\n"
 "\n"
 
-#: ncrypt/smime.c:1911 ncrypt/smime.c:1923
+#: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Грешка: не може да бъде стартиран дъщерен OpenSSL процес --]\n"
 
-#: ncrypt/smime.c:1958
+#: ncrypt/smime.c:1917
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Следните данни са шифровани със S/MIME --]\n"
 
-#: ncrypt/smime.c:1962
+#: ncrypt/smime.c:1921
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Следните данни са подписани със S/MIME --]\n"
 
-#: ncrypt/smime.c:2062
+#: ncrypt/smime.c:2021
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -6606,7 +7312,7 @@ msgstr ""
 "\n"
 "[-- Край на шифрованите със S/MIME данни --]\n"
 
-#: ncrypt/smime.c:2064
+#: ncrypt/smime.c:2023
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -6615,70 +7321,70 @@ msgstr ""
 "[-- Край на подписаните със S/MIME данни --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2199
+#: ncrypt/smime.c:2158
 #, fuzzy
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME шифроване(e), подпис(s), шифроване с(w), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2201
+#: ncrypt/smime.c:2160
 #, fuzzy
 msgid "swaco"
 msgstr "eswabf"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2209
+#: ncrypt/smime.c:2168
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME шифроване(e), подпис(s), шифроване с(w), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2211
+#: ncrypt/smime.c:2170
 #, fuzzy
 msgid "eswabco"
 msgstr "eswabf"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2218
+#: ncrypt/smime.c:2177
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME шифроване(e), подпис(s), шифроване с(w), подпис като(a), и двете(b) или без тях(f)?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2220
+#: ncrypt/smime.c:2179
 #, fuzzy
 msgid "eswabc"
 msgstr "eswabf"
 
-#: ncrypt/smime.c:2286
+#: ncrypt/smime.c:2245
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr ""
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2288
+#: ncrypt/smime.c:2247
 msgid "123c"
 msgstr ""
 
-#: ncrypt/smime.c:2291
+#: ncrypt/smime.c:2250
 msgid "(1) DES, (2) Triple-DES?"
 msgstr ""
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2293
+#: ncrypt/smime.c:2252
 msgid "12"
 msgstr ""
 
-#: ncrypt/smime.c:2307
+#: ncrypt/smime.c:2266
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr ""
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2309 ncrypt/smime.c:2329
+#: ncrypt/smime.c:2268 ncrypt/smime.c:2288
 msgid "123"
 msgstr ""
 
-#: ncrypt/smime.c:2327
+#: ncrypt/smime.c:2286
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr ""
 
@@ -6687,15 +7393,15 @@ msgstr ""
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "Този идентификатор не не е валиден. Действително ли искате да използвате този ключ?"
 
-#: nntp/newsrc.c:641
+#: nntp/newsrc.c:643
 msgid "Loading list of groups from cache..."
 msgstr ""
 
-#: nntp/newsrc.c:1035
+#: nntp/newsrc.c:1080
 msgid "No news server defined"
 msgstr ""
 
-#: nntp/newsrc.c:1053
+#: nntp/newsrc.c:1098
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s не е валидна POP пътека"
@@ -6810,7 +7516,7 @@ msgstr ""
 msgid "unknown reason"
 msgstr "непозната грешка"
 
-#: notmuch/mdata.c:83 notmuch/notmuch.c:1797
+#: notmuch/mdata.c:83 notmuch/notmuch.c:1803
 #, c-format
 msgid "failed to parse notmuch url: %s"
 msgstr ""
@@ -6825,24 +7531,24 @@ msgstr ""
 msgid "Reading messages..."
 msgstr "Изпращане на писмото..."
 
-#: notmuch/notmuch.c:1556
+#: notmuch/notmuch.c:1562
 #, fuzzy
 msgid "No more messages in the thread"
 msgstr "Родителското писмо не е видимо в този ограничен изглед"
 
-#: notmuch/notmuch.c:1812
+#: notmuch/notmuch.c:1818
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
 msgstr "Прилагането на %s е невъзможно"
 
-#: notmuch/notmuch.c:2322
+#: notmuch/notmuch.c:2328
 #, c-format
 msgid "Unable to sync %d message due to external mailbox modification"
 msgid_plural "Unable to sync %d messages due to external mailbox modification"
 msgstr[0] ""
 msgstr[1] ""
 
-#: notmuch/notmuch.c:2382
+#: notmuch/notmuch.c:2388
 #, fuzzy
 msgid "Can't write to virtual folder"
 msgstr "Грешка при добавянето на писмо към пощенската кутия: %s"
@@ -6907,7 +7613,7 @@ msgstr ""
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:61 pager/pbar.c:121 status.c:318
+#: pager/message.c:61 pager/pbar.c:121 status.c:381
 msgid "all"
 msgstr ""
 
@@ -6962,7 +7668,7 @@ msgstr "%ld%%"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:123 status.c:316
+#: pager/pbar.c:123 status.c:379
 msgid "end"
 msgstr ""
 
@@ -7037,11 +7743,11 @@ msgstr "Невалиден месец: %s"
 msgid "Invalid relative date: %s"
 msgstr "Невалидна дата: %s"
 
-#: pattern/compile.c:924 pattern/compile.c:1139
+#: pattern/compile.c:924 pattern/compile.c:1138
 msgid "empty pattern"
 msgstr "празен шаблон"
 
-#: pattern/compile.c:954 pattern/compile.c:1131
+#: pattern/compile.c:954 pattern/compile.c:1129
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "грешка в шаблона при: %s"
@@ -7051,34 +7757,34 @@ msgstr "грешка в шаблона при: %s"
 msgid "missing pattern: %s"
 msgstr "липсва параметър"
 
-#: pattern/compile.c:999 pattern/compile.c:1100
+#: pattern/compile.c:999 pattern/compile.c:1099
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "неподходящо поставени скоби: %s"
 
-#: pattern/compile.c:1034
+#: pattern/compile.c:1033
 #, fuzzy, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: невалидна команда"
 
-#: pattern/compile.c:1039
+#: pattern/compile.c:1038
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: не се поддържа в този режим"
 
-#: pattern/compile.c:1062
+#: pattern/compile.c:1061
 msgid "missing parameter"
 msgstr "липсва параметър"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:189
+#: pattern/dlg_pattern.c:193
 msgid "Patterns"
 msgstr ""
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlg_pattern.c:205
+#: pattern/dlg_pattern.c:209
 msgid "EXPR"
 msgstr ""
 
@@ -7086,7 +7792,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlg_pattern.c:213
+#: pattern/dlg_pattern.c:217
 msgid "RANGE"
 msgstr ""
 
@@ -7094,7 +7800,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlg_pattern.c:220
+#: pattern/dlg_pattern.c:224
 msgid "DATERANGE"
 msgstr ""
 
@@ -7102,7 +7808,7 @@ msgstr ""
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlg_pattern.c:227
+#: pattern/dlg_pattern.c:231
 msgid "QUERY"
 msgstr ""
 
@@ -7110,22 +7816,22 @@ msgstr ""
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlg_pattern.c:245
+#: pattern/dlg_pattern.c:249
 msgid "PATTERN"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~()
-#: pattern/dlg_pattern.c:252
+#: pattern/dlg_pattern.c:256
 msgid "messages in threads containing messages matching PATTERN"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~<()
-#: pattern/dlg_pattern.c:260
+#: pattern/dlg_pattern.c:264
 msgid "messages whose immediate parent matches PATTERN"
 msgstr ""
 
 #. L10N: Pattern Completion Menu description for ~>()
-#: pattern/dlg_pattern.c:268
+#: pattern/dlg_pattern.c:272
 msgid "messages having an immediate child matching PATTERN"
 msgstr ""
 
@@ -7442,35 +8148,35 @@ msgstr ""
 msgid "No current message"
 msgstr "Няма непрочетени писма"
 
-#: pattern/pattern.c:207 pattern/pattern.c:312 pattern/pattern.c:475
-#: pattern/pattern.c:631
+#: pattern/pattern.c:207 pattern/pattern.c:313 pattern/pattern.c:492
+#: pattern/pattern.c:648
 msgid "Compiling search pattern..."
 msgstr "Компилиране на шаблона за търсене..."
 
-#: pattern/pattern.c:235 pattern/pattern.c:334
+#: pattern/pattern.c:235 pattern/pattern.c:335
 msgid "Executing command on matching messages..."
 msgstr "Изпълняване на команда върху писмата..."
 
-#: pattern/pattern.c:407
+#: pattern/pattern.c:421
 msgid "No messages matched criteria"
 msgstr "Няма писма, отговарящи на този критерий"
 
-#: pattern/pattern.c:506 pattern/pattern.c:662
+#: pattern/pattern.c:433 pattern/pattern.c:591 pattern/pattern.c:744
+msgid "Search interrupted"
+msgstr "Търсенето е прекъснато"
+
+#: pattern/pattern.c:523 pattern/pattern.c:679
 #, fuzzy
 msgid "Searching..."
 msgstr "Записване..."
 
-#: pattern/pattern.c:522 pattern/pattern.c:678
+#: pattern/pattern.c:539 pattern/pattern.c:695
 msgid "Search hit bottom without finding match"
 msgstr "Търсенето достигна до края, без да бъде намерено съвпадение"
 
-#: pattern/pattern.c:535 pattern/pattern.c:691
+#: pattern/pattern.c:552 pattern/pattern.c:708
 msgid "Search hit top without finding match"
 msgstr "Търсенето достигна до началото, без да бъде намерено съвпадение"
-
-#: pattern/pattern.c:574 pattern/pattern.c:727
-msgid "Search interrupted"
-msgstr "Търсенето е прекъснато"
 
 #: pop/auth.c:332
 msgid "POP timestamp is invalid"
@@ -7580,7 +8286,7 @@ msgstr "Маркиране на %d съобщения за изтриване...
 msgid "Can't write message to temporary file"
 msgstr "Грешка при запис на писмото във временен файл"
 
-#: postpone/dlg_postpone.c:222
+#: postpone/dlg_postpone.c:229
 msgid "Postponed Messages"
 msgstr "Чернови"
 
@@ -7610,7 +8316,7 @@ msgstr "Няма запазени чернови"
 #. L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:176
+#: progress/window.c:177
 #, c-format
 msgid "%s %s (%d%%)"
 msgstr "%s %s (%d%%)"
@@ -7618,19 +8324,19 @@ msgstr "%s %s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu` position,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:184
+#: progress/window.c:185
 #, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
 #. L10N: Progress bar: `%s` loading text, `%s` position/size
-#: progress/window.c:193
+#: progress/window.c:194
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. L10N: Progress bar: `%s` loading text, `%zu` position
-#: progress/window.c:198
+#: progress/window.c:199
 #, c-format
 msgid "%s %zu"
 msgstr "%s %zu"
@@ -7638,7 +8344,7 @@ msgstr "%s %zu"
 #. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:209
+#: progress/window.c:210
 #, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
@@ -7646,7 +8352,7 @@ msgstr "%s %s/%s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:217
+#: progress/window.c:218
 #, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
@@ -7659,11 +8365,11 @@ msgstr "yes"
 msgid "no"
 msgstr "no"
 
-#: recvcmd.c:76
+#: recvcmd.c:77
 msgid "You may only bounce message/rfc822 parts"
 msgstr "Може да изпращате отново само message/rfc822 части"
 
-#: recvcmd.c:274
+#: recvcmd.c:275
 #, fuzzy
 msgid "Error bouncing message"
 msgid_plural "Error bouncing messages"
@@ -7696,7 +8402,7 @@ msgstr "Грешка при създаване на %s"
 msgid "Can't find any tagged messages"
 msgstr "Няма маркирани писма"
 
-#: recvcmd.c:886 send/send.c:1189
+#: recvcmd.c:886 send/send.c:1194
 msgid "No mailing lists found"
 msgstr "Няма mailing list-ове"
 
@@ -7725,16 +8431,16 @@ msgid "%s no longer exists"
 msgstr "%s вече не съществува"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
-#: send/config.c:105
+#: send/config.c:115
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr ""
 
-#: send/send.c:345
+#: send/send.c:348
 msgid "No subject, abort?"
 msgstr "Писмото няма тема, желаете ли да прекъснете изпращането?"
 
-#: send/send.c:347
+#: send/send.c:350
 msgid "No subject, aborting"
 msgstr "Прекъсване поради липса на тема"
 
@@ -7744,44 +8450,44 @@ msgstr "Прекъсване поради липса на тема"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:605
+#: send/send.c:608
 #, fuzzy
 msgid "Forward attachments?"
 msgstr "Желаете ли да ги препратите като приложения?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:895
+#: send/send.c:900
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Желаете ли да отговорите на %s%s?"
 
-#: send/send.c:942
+#: send/send.c:947
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Желаете ли да проследите до %s%s?"
 
-#: send/send.c:1231
+#: send/send.c:1236
 msgid "Include message in reply?"
 msgstr "Желаете ли да прикачите писмото към отговора?"
 
-#: send/send.c:1237
+#: send/send.c:1242
 msgid "Including quoted message..."
 msgstr "Прикачване на цитирано писмо..."
 
-#: send/send.c:1244
+#: send/send.c:1249
 msgid "Could not include all requested messages"
 msgstr "Не всички поискани писма могат да бъдат прикачени"
 
-#: send/send.c:1256
+#: send/send.c:1261
 msgid "Forward as attachment?"
 msgstr "Желаете ли да го препратите като приложение?"
 
-#: send/send.c:1261
+#: send/send.c:1266
 msgid "Preparing forwarded message..."
 msgstr "Подготовка за препращане..."
 
-#: send/send.c:1763
+#: send/send.c:1768
 #, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "%c: не се поддържа в този режим"
@@ -7791,12 +8497,12 @@ msgstr "%c: не се поддържа в този режим"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1769
+#: send/send.c:1774
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr ""
 
-#: send/send.c:1809 send/send.c:1821 send/send.c:1847
+#: send/send.c:1814 send/send.c:1826 send/send.c:1852
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "показва приложението като текст"
@@ -7805,118 +8511,118 @@ msgstr "показва приложението като текст"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1869
+#: send/send.c:1874
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1873
+#: send/send.c:1878
 msgid "rms"
 msgstr ""
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1879
+#: send/send.c:1884
 #, fuzzy
 msgid "Fcc mailbox"
 msgstr "Няма пощенска кутия.\n"
 
-#: send/send.c:1948
+#: send/send.c:1953
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1985 send/send.c:2002
+#: send/send.c:1990 send/send.c:2007
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2096
+#: send/send.c:2101
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send/send.c:2100
+#: send/send.c:2105
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "променя кодирането на приложението"
 
-#: send/send.c:2151
+#: send/send.c:2156
 msgid "Recall postponed message?"
 msgstr "Желаете ли да редактирате чернова?"
 
-#: send/send.c:2497
+#: send/send.c:2502
 msgid "Edit forwarded message?"
 msgstr "Желаете ли да редактирате писмото преди препращане?"
 
-#: send/send.c:2538
+#: send/send.c:2543
 msgid "Abort unmodified message?"
 msgstr "Желаете ли да изтриете непромененото писмо?"
 
-#: send/send.c:2540
+#: send/send.c:2545
 msgid "Aborted unmodified message"
 msgstr "Непромененото писмо е изтрито"
 
-#: send/send.c:2682
+#: send/send.c:2687
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send/send.c:2722
+#: send/send.c:2727
 #, fuzzy
 msgid "Article not posted"
 msgstr "Писмото не е изпратено"
 
-#: send/send.c:2731
+#: send/send.c:2736
 msgid "Message postponed"
 msgstr "Писмото е записано като чернова"
 
-#: send/send.c:2766
+#: send/send.c:2771
 msgid "No subject, abort sending?"
 msgstr "Липсва тема на писмото. Желаете ли да прекъснете изпращането?"
 
-#: send/send.c:2770 send/send.c:2776
+#: send/send.c:2775 send/send.c:2781
 msgid "No subject specified"
 msgstr "Липсва тема"
 
-#: send/send.c:2782
+#: send/send.c:2787
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "Липсва тема"
 
-#: send/send.c:2827
+#: send/send.c:2832
 msgid "Missing encryption key; mail not sent"
 msgstr ""
 
-#: send/send.c:2851 send/smtp.c:263
+#: send/send.c:2856 send/smtp.c:263
 msgid "Sending message..."
 msgstr "Изпращане на писмото..."
 
-#: send/send.c:2897
+#: send/send.c:2902
 msgid "Could not send the message"
 msgstr "Писмото не може да бъде изпратено"
 
-#: send/send.c:2907
+#: send/send.c:2912
 msgid "Sending in background"
 msgstr "Изпращане на заден фон"
 
-#: send/send.c:2908
+#: send/send.c:2913
 msgid "Article posted"
 msgstr ""
 
-#: send/send.c:2909
+#: send/send.c:2914
 msgid "Mail sent"
 msgstr "Писмото е изпратенo"
 
-#: send/send.c:2990
+#: send/send.c:2995
 #, fuzzy
 msgid "No recipient specified"
 msgstr "Не са указани получатели"
 
-#: send/send.c:3037
+#: send/send.c:3042
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "Няма резултати от търсенето"
 
-#: send/send.c:3066
+#: send/send.c:3071
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Отписване от %s..."
@@ -7936,16 +8642,16 @@ msgstr "Грешка при отваряне на %s"
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Лош IDN %s докато формата за повторно изпращане беше подготвяна"
 
-#: send/sendmail.c:331
+#: send/sendmail.c:332
 msgid "$sendmail must be set in order to send mail"
 msgstr ""
 
-#: send/sendmail.c:436
+#: send/sendmail.c:437
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Грешка %d (%s) при изпращане на писмото"
 
-#: send/sendmail.c:448
+#: send/sendmail.c:449
 msgid "Output of the delivery process"
 msgstr "Изпращащ процес:"
 
@@ -7968,19 +8674,19 @@ msgstr "Невалиден   "
 msgid "SMTP server does not support authentication"
 msgstr ""
 
-#: send/smtp.c:1137
+#: send/smtp.c:1144
 msgid "No from address given"
 msgstr ""
 
-#: send/smtp.c:1204
+#: send/smtp.c:1205
 msgid "SMTP session failed: read error"
 msgstr ""
 
-#: send/smtp.c:1206
+#: send/smtp.c:1207
 msgid "SMTP session failed: write error"
 msgstr ""
 
-#: send/smtp.c:1208
+#: send/smtp.c:1209
 msgid "Invalid server response"
 msgstr ""
 
@@ -7992,14 +8698,14 @@ msgstr "Не може да бъде намерена функция за под�
 msgid "Sorting mailbox..."
 msgstr "Подреждане на пощенската кутия..."
 
-#: status.c:180
+#: status.c:163
 msgid "(no mailbox)"
 msgstr "(няма пощенска кутия)"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: status.c:326
+#: status.c:389
 #, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"
