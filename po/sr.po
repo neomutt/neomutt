@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-03-30 13:52+0000\n"
-"PO-Revision-Date: 2024-01-27 23:20+0100\n"
+"PO-Revision-Date: 2024-03-30 18:19+0100\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -1576,9 +1576,8 @@ msgid "Error processing certificate data"
 msgstr "Грешка при обради података о сертификату"
 
 #: conn/gnutls.c:489 conn/openssl.c:900
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Упозорење: Не може се сачувати сертификат"
+msgstr "Серверски сертификат без поверења"
 
 #: conn/gnutls.c:507 conn/openssl.c:907
 msgid "This certificate belongs to:"
