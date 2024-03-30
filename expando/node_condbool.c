@@ -99,6 +99,7 @@ struct ExpandoNode *node_condbool_parse(const char *s, const char **parsed_until
   }
 
   error->position = format_end;
+  // L10N: e.g. "Unknown expando: %Q"
   snprintf(error->message, sizeof(error->message), _("Unknown expando: %%%.*s"),
            expando_len, format_end);
   return NULL;

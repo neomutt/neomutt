@@ -174,6 +174,7 @@ struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_unt
   {
     error->position = str;
     snprintf(error->message, sizeof(error->message),
+             // L10N: The 'ymwdHM' should not be translated
              _("Invalid time period: '%c', must be one of 'ymwdHM'"), *str);
     return NULL;
   }
