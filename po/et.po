@@ -8769,3 +8769,63 @@ msgstr "Kompileerimise võtmed:"
 #, fuzzy
 msgid "Devel options:"
 msgstr "Kompileerimise võtmed:"
+
+#. L10N: $compose_format default format
+#: compose/config.c:66
+msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
+msgstr ""
+
+#. L10N: $reply_regex default format
+#.
+#. This is a regular expression that matches reply subject lines.
+#. By default, it only matches an initial "Re: ", which is the
+#. standardized Latin prefix.
+#.
+#. However, many locales have other prefixes that are commonly used
+#. too, such as Aw in Germany.  To add other prefixes, modify the first
+#. parenthesized expression, such as:
+#. "^(re|aw)
+#. you can add multiple values, for example:
+#. "^(re|aw|sv)
+#.
+#. Important:
+#. - Use all lower case letters.
+#. - Don't remove the 're' prefix from the list of choices.
+#. - Please test the value you use inside Mutt.  A mistake here will break
+#. NeoMutt's threading behavior.  Note: the header cache can interfere with
+#. testing, so be sure to test with $header_cache unset.
+#: mutt_config.c:732
+msgid "^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*"
+msgstr ""
+
+#. L10N: $status_format default format
+#: mutt_config.c:814
+msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
+msgstr ""
+
+#. L10N: $ts_icon_format default format
+#: mutt_config.c:851
+msgid "M%<n?AIL&ail>"
+msgstr ""
+
+#. L10N: $ts_status_format default format
+#: mutt_config.c:855
+msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
+msgstr ""
+
+#. L10N: $attribution_intro default format
+#: send/config.c:170
+#, c-format
+msgid "On %d, %n wrote:"
+msgstr ""
+
+#. L10N: $forward_attribution_intro default format
+#: send/config.c:237
+#, c-format
+msgid "----- Forwarded message from %f -----"
+msgstr ""
+
+#. L10N: $forward_attribution_trailer default format
+#: send/config.c:241
+msgid "----- End forwarded message -----"
+msgstr ""
