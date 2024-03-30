@@ -729,7 +729,7 @@ static struct ConfigDef MainVars[] = {
   // - Please test the value you use inside Mutt.  A mistake here will break
   //   NeoMutt's threading behavior.  Note: the header cache can interfere with
   //   testing, so be sure to test with $header_cache unset.
-  { "reply_regex", DT_REGEX|D_L10N_STRING, IP N_("^((re|aw|sv)(\\[[0-9]+\\])*:[ \t]*)*"), 0, NULL,
+  { "reply_regex", DT_REGEX|D_L10N_STRING, IP N_("^((re)(\\[[0-9]+\\])*:[ \t]*)*"), 0, NULL,
     "Regex to match message reply subjects like 're: '"
   },
   { "resolve", DT_BOOL, true, 0, NULL,
