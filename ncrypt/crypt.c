@@ -271,8 +271,15 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   {
     struct Envelope *protected_headers = mutt_env_new();
     mutt_env_set_subject(protected_headers, e->env->subject);
-    /* Note: if other headers get added, such as to, cc, then a call to
-     * mutt_env_to_intl() will need to be added here too. */
+    mutt_addrlist_copy(&protected_headers->return_path, &e->env->return_path, false);
+    mutt_addrlist_copy(&protected_headers->from, &e->env->from, false);
+    mutt_addrlist_copy(&protected_headers->to, &e->env->to, false);
+    mutt_addrlist_copy(&protected_headers->cc, &e->env->cc, false);
+    mutt_addrlist_copy(&protected_headers->sender, &e->env->sender, false);
+    mutt_addrlist_copy(&protected_headers->reply_to, &e->env->reply_to, false);
+    mutt_addrlist_copy(&protected_headers->mail_followup_to, &e->env->mail_followup_to, false);
+    mutt_addrlist_copy(&protected_headers->x_original_to, &e->env->x_original_to, false);
+    mutt_env_to_intl(protected_headers, NULL, NULL);
     mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
 
     mutt_env_free(&e->body->mime_headers);
