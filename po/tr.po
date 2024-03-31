@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-03-30 13:52+0000\n"
-"PO-Revision-Date: 2024-01-20 16:00+0300\n"
+"PO-Revision-Date: 2024-03-30 16:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -36,7 +36,7 @@ msgstr "Farklı arma oluştur: "
 
 #: alias/alias.c:410
 msgid "You already have an alias defined with that name"
-msgstr "Bu adda bir arma zaten tanımlanmış!"
+msgstr "Bu adda bir arma halihazırda tanımlanmış!"
 
 #: alias/alias.c:416
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -1044,7 +1044,7 @@ msgstr "%s aboneliğinden çıkılamadı"
 #: compmbox/compress.c:224
 #, c-format
 msgid "Expando parse error: %s"
-msgstr ""
+msgstr "Expando ayrıştırma hatası: %s"
 
 #: compmbox/compress.c:380 compmbox/compress.c:513
 #, c-format
@@ -1574,9 +1574,8 @@ msgid "Error processing certificate data"
 msgstr "Sertifika verisi işlenirken hata oluştu"
 
 #: conn/gnutls.c:489 conn/openssl.c:900
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Uyarı: Sertifika kaydedilemedi"
+msgstr "Güvenilmeyen sunucu sertifikası"
 
 #: conn/gnutls.c:507 conn/openssl.c:907
 msgid "This certificate belongs to:"
@@ -2112,55 +2111,55 @@ msgstr[1] "(+%d daha fazla)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
 #: expando/config_type.c:85 expando/config_type.c:254
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: "
-msgstr "seçenekler:"
+msgstr "%s seçeneği: "
 
 #. L10N: e.g. "Unknown expando: %Q"
 #: expando/node_condbool.c:103 expando/node_expando.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%%.*s"
-msgstr "Geçersiz seçenek %s"
+msgstr "Geçersiz expando: %%%.*s"
 
 #. L10N: The 'ymwdHM' should not be translated
 #: expando/node_conddate.c:178
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
-msgstr ""
+msgstr "Geçersiz zaman dönemi: '%c', 'ymwdHM' içinden biri olmalı"
 
 #. L10N: Expando format expected a number
 #: expando/node_expando.c:199
-#, fuzzy, c-format
+#, c-format
 msgid "Number is expected"
-msgstr "ileti silindi"
+msgstr "Sayı bekleniyordu"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/node_expando.c:307
 #, c-format
 msgid "Expando is missing terminator: '%c'"
-msgstr ""
+msgstr "Expando'da sonlandırıcı eksik: '%c'"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
 #: expando/node_padding.c:241
 #, c-format
 msgid "Padding cannot be used as a condition"
-msgstr ""
+msgstr "Dolgu bir koşul olarak kullanılamaz"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/parse.c:161 expando/parse.c:225
 #, c-format
 msgid "Conditional expando is missing '%c'"
-msgstr ""
+msgstr "Koşullu expando'da '%c' eksik"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/parse.c:180
 #, c-format
 msgid "Conditional expando is missing '&' or '%c'"
-msgstr ""
+msgstr "Koşullu expando'da '&' veya '%c' eksik"
 
 #: external.c:110 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
@@ -5749,11 +5748,11 @@ msgstr "-- Yeniden postalayıcı zinciri [Uzunluk: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
-msgstr "Zincirin zaten son elemanını seçmiş durumdasınız"
+msgstr "Zincirin halihazırda son elemanını seçmiş durumdasınız"
 
 #: mixmaster/win_chain.c:321
 msgid "You already have the first chain element selected"
-msgstr "Zincirin zaten ilk elemanını seçmiş durumdasınız"
+msgstr "Zincirin halihazırda ilk elemanını seçmiş durumdasınız"
 
 #. L10N The '%d' here hard-coded to 19
 #: mixmaster/win_chain.c:372
@@ -5763,7 +5762,7 @@ msgstr "Mixmaster zincirleri %d sayıda ögeyle sınırlandırılmıştır"
 
 #: mixmaster/win_chain.c:404
 msgid "The remailer chain is already empty"
-msgstr "Postacı zinciri zaten boş"
+msgstr "Postacı zinciri halihazırda boş"
 
 #: mixmaster/win_chain.c:432
 #, c-format
@@ -5910,7 +5909,7 @@ msgstr "Dosyayı dizin altına kaydet: "
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
 #: muttlib.c:635
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Dosya zaten var, ü(z)erine yaz, (e)kle, i(p)tal?"
+msgstr "Dosya halihazırda var, ü(z)erine yaz, (e)kle, i(p)tal?"
 
 #: muttlib.c:636
 msgid "oac"
