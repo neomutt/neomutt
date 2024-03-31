@@ -35,7 +35,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -357,18 +356,18 @@ const struct ConfigSetType CstExpando = {
  */
 const struct Expando *cs_subset_expando(const struct ConfigSubset *sub, const char *name)
 {
-  assert(sub && name);
+  ASSERT(sub && name);
 
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
-  assert(he);
+  ASSERT(he);
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  assert(DTYPE(he_base->type) == DT_EXPANDO);
+  ASSERT(DTYPE(he_base->type) == DT_EXPANDO);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
+  ASSERT(value != INT_MIN);
 
   return (const struct Expando *) value;
 }

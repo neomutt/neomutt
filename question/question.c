@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <langinfo.h>
 #include <limits.h>
@@ -344,10 +343,10 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  assert(DTYPE(he_base->type) == DT_BOOL);
+  ASSERT(DTYPE(he_base->type) == DT_BOOL);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
+  ASSERT(value != INT_MIN);
 
   struct ConfigDef *cdef = he_base->data;
   return mw_yesorno(prompt, def, cdef);
@@ -367,10 +366,10 @@ enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, c
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  assert(DTYPE(he_base->type) == DT_QUAD);
+  ASSERT(DTYPE(he_base->type) == DT_QUAD);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
+  ASSERT(value != INT_MIN);
 
   if ((value == MUTT_YES) || (value == MUTT_NO))
     return value;

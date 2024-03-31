@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "node_condbool.h"
@@ -112,7 +111,7 @@ int node_condbool_render(const struct ExpandoNode *node,
                          const struct ExpandoRenderData *rdata, struct Buffer *buf,
                          int max_cols, void *data, MuttFormatFlags flags)
 {
-  assert(node->type == ENT_CONDBOOL);
+  ASSERT(node->type == ENT_CONDBOOL);
 
   const struct ExpandoRenderData *rd_match = find_get_number(rdata, node->did, node->uid);
   if (rd_match)

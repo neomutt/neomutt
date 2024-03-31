@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -1013,7 +1012,7 @@ fail:
  */
 static int imap_verify_qresync(struct Mailbox *m)
 {
-  assert(m);
+  ASSERT(m);
   struct ImapAccountData *adata = imap_adata_get(m);
   struct ImapMboxData *mdata = imap_mdata_get(m);
   if (!adata || (adata->mailbox != m))

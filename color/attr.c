@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -326,7 +325,7 @@ color_t color_xterm256_to_24bit(const color_t color)
     0x0000ff, 0xff00ff, 0x00ffff, 0xffffff,
   };
 
-  assert(color < 256);
+  ASSERT(color < 256);
 
   if (color < 0)
     return color;

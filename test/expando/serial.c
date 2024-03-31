@@ -22,7 +22,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -43,8 +42,8 @@ static void dump_node_condition(const struct ExpandoNode *node, struct Buffer *b
 {
   buf_addstr(buf, "<COND");
 
-  // assert(node->start);
-  // assert(node->end);
+  // ASSERT(node->start);
+  // ASSERT(node->end);
   // int len = node->end - node->start;
   // buf_add_printf(buf, ":'%.*s':", len, node->start);
 
@@ -60,7 +59,7 @@ static void dump_node_condition(const struct ExpandoNode *node, struct Buffer *b
   struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
   struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
 
-  assert(condition);
+  ASSERT(condition);
   buf_addstr(buf, ":");
   dump_node(condition, buf);
   buf_addstr(buf, "|");
@@ -75,15 +74,15 @@ static void dump_node_condbool(const struct ExpandoNode *node, struct Buffer *bu
 {
   buf_addstr(buf, "<BOOL");
 
-  assert(node->start);
-  assert(node->end);
+  ASSERT(node->start);
+  ASSERT(node->end);
   int len = node->end - node->start;
   buf_add_printf(buf, ":'%.*s':", len, node->start);
 
   dump_did_uid(node, buf);
 
-  assert(node->ndata == NULL);
-  assert(node->ndata_free == NULL);
+  ASSERT(node->ndata == NULL);
+  ASSERT(node->ndata_free == NULL);
 
   buf_addstr(buf, ">");
 }
@@ -92,15 +91,15 @@ static void dump_node_conddate(const struct ExpandoNode *node, struct Buffer *bu
 {
   buf_addstr(buf, "<DATE:");
 
-  // assert(node->start);
-  // assert(node->end);
+  // ASSERT(node->start);
+  // ASSERT(node->end);
   // int len = node->end - node->start;
   // buf_add_printf(buf, ":'%.*s':", len, node->start);
 
   dump_did_uid(node, buf);
 
-  assert(node->ndata);
-  assert(node->ndata_free);
+  ASSERT(node->ndata);
+  ASSERT(node->ndata_free);
   struct NodeCondDatePrivate *priv = node->ndata;
   buf_add_printf(buf, ":%d:%c", priv->count, priv->period);
 
@@ -138,17 +137,17 @@ static void dump_node_expando(const struct ExpandoNode *node, struct Buffer *buf
 {
   buf_addstr(buf, "<EXP:");
 
-  assert(node->start);
-  assert(node->end);
+  ASSERT(node->start);
+  ASSERT(node->end);
   int len = node->end - node->start;
   buf_add_printf(buf, "'%.*s'", len, node->start);
 
-  assert(node->did != 0);
-  assert(node->uid != 0);
+  ASSERT(node->did != 0);
+  ASSERT(node->uid != 0);
   dump_did_uid(node, buf);
 
-  assert(node->ndata);
-  assert(node->ndata_free);
+  ASSERT(node->ndata);
+  ASSERT(node->ndata_free);
 
   const struct ExpandoFormat *fmt = node->format;
   if (fmt)
@@ -174,8 +173,8 @@ static void dump_node_padding(const struct ExpandoNode *node, struct Buffer *buf
 {
   buf_addstr(buf, "<PAD:");
 
-  assert(node->ndata);
-  assert(node->ndata_free);
+  ASSERT(node->ndata);
+  ASSERT(node->ndata_free);
   struct NodePaddingPrivate *priv = node->ndata;
 
   struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
@@ -185,8 +184,8 @@ static void dump_node_padding(const struct ExpandoNode *node, struct Buffer *buf
   pt += 4; // Skip "EPT_" prefix
   buf_add_printf(buf, "%s:", pt);
 
-  assert(node->start);
-  assert(node->end);
+  ASSERT(node->start);
+  ASSERT(node->end);
   int len = node->end - node->start;
   if (len > 0)
     buf_add_printf(buf, "'%.*s'", len, node->start);
@@ -211,8 +210,8 @@ static void dump_node_text(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<TEXT:");
 
-  assert(node->start);
-  assert(node->end);
+  ASSERT(node->start);
+  ASSERT(node->end);
   int len = node->end - node->start;
   buf_add_printf(buf, "'%.*s'", len, node->start);
 
@@ -260,7 +259,7 @@ static void dump_node(const struct ExpandoNode *node, struct Buffer *buf)
         dump_node_text(node, buf);
         break;
       default:
-        assert(false);
+        ASSERT(false);
     }
   }
 }

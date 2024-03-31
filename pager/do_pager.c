@@ -57,7 +57,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -122,10 +121,10 @@ static int dopager_window_observer(struct NotifyCallback *nc)
  */
 int mutt_do_pager(struct PagerView *pview, struct Email *e)
 {
-  assert(pview);
-  assert(pview->pdata);
-  assert(pview->pdata->fname);
-  assert((pview->mode == PAGER_MODE_ATTACH) ||
+  ASSERT(pview);
+  ASSERT(pview->pdata);
+  ASSERT(pview->pdata->fname);
+  ASSERT((pview->mode == PAGER_MODE_ATTACH) ||
          (pview->mode == PAGER_MODE_HELP) || (pview->mode == PAGER_MODE_OTHER));
 
   struct MuttWindow *dlg = mutt_window_new(WT_DLG_PAGER, MUTT_WIN_ORIENT_VERTICAL,

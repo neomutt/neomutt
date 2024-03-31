@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include "prex.h"
@@ -259,9 +258,9 @@ static struct PrexStorage *prex(enum Prex which)
     // clang-format on
   };
 
-  assert((which < PREX_MAX) && "Invalid 'which' argument");
+  ASSERT((which < PREX_MAX) && "Invalid 'which' argument");
   struct PrexStorage *h = &storage[which];
-  assert((which == h->which) && "Fix 'storage' array");
+  ASSERT((which == h->which) && "Fix 'storage' array");
   if (!h->re)
   {
 #ifdef HAVE_PCRE2
@@ -270,16 +269,16 @@ static struct PrexStorage *prex(enum Prex which)
     PCRE2_SIZE eoff = 0;
     h->re = pcre2_compile((PCRE2_SPTR8) h->str, PCRE2_ZERO_TERMINATED, opt,
                           &eno, &eoff, NULL);
-    assert(h->re && "Fix your RE");
+    ASSERT(h->re && "Fix your RE");
     h->mdata = pcre2_match_data_create_from_pattern(h->re, NULL);
     uint32_t ccount = 0;
     pcre2_pattern_info(h->re, PCRE2_INFO_CAPTURECOUNT, &ccount);
-    assert(((ccount + 1) == h->nmatches) && "Number of matches do not match (...)");
+    ASSERT(((ccount + 1) == h->nmatches) && "Number of matches do not match (...)");
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
 #else
     h->re = mutt_mem_calloc(1, sizeof(*h->re));
     const int rc = regcomp(h->re, h->str, REG_EXTENDED);
-    assert(rc == 0 && "Fix your RE");
+    ASSERT(rc == 0 && "Fix your RE");
     h->matches = mutt_mem_calloc(h->nmatches, sizeof(*h->matches));
 #endif
   }
@@ -325,7 +324,7 @@ regmatch_t *mutt_prex_capture(enum Prex which, const char *str)
   if (regexec(h->re, str, h->nmatches, h->matches, 0))
     return NULL;
 
-  assert((h->re->re_nsub == (h->nmatches - 1)) &&
+  ASSERT((h->re->re_nsub == (h->nmatches - 1)) &&
          "Regular expression and matches enum are out of sync");
 #endif
   return h->matches;

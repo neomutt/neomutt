@@ -58,7 +58,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -354,7 +353,7 @@ int find_first_message(struct MailboxView *mv)
       reverse = !(c_sort & SORT_REVERSE);
       break;
     default:
-      assert(false);
+      ASSERT(false);
   }
 
   if (reverse || (m->vcount == 0))
@@ -511,7 +510,7 @@ static void update_index_unthreaded(struct MailboxView *mv, enum MxStatus check)
           mutt_pattern_exec(SLIST_FIRST(mv->limit_pattern),
                             MUTT_MATCH_FULL_ADDRESS, mv->mailbox, e, NULL))
       {
-        assert(mv->mailbox->vcount < mv->mailbox->msg_count);
+        ASSERT(mv->mailbox->vcount < mv->mailbox->msg_count);
         e->vnum = mv->mailbox->vcount;
         mv->mailbox->v2r[mv->mailbox->vcount] = i;
         e->visible = true;

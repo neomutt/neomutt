@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
@@ -47,7 +46,7 @@
  */
 static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const char *cmd)
 {
-  assert(buf && cac);
+  ASSERT(buf && cac);
 
   buf_addstr(buf, cmd);
   buf_add_printf(buf, " --hostname %s", cac->host);
@@ -57,7 +56,7 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
   }
 
   static const char *types[] = { "", "imap", "pop", "smtp", "nntp" };
-  assert(sizeof(types) / sizeof(*types) == MUTT_ACCT_TYPE_MAX);
+  ASSERT(sizeof(types) / sizeof(*types) == MUTT_ACCT_TYPE_MAX);
   if (cac->type != MUTT_ACCT_TYPE_NONE)
   {
     buf_add_printf(buf, " --type %s%c", types[cac->type],
@@ -74,7 +73,7 @@ static void make_cmd(struct Buffer *buf, const struct ConnAccount *cac, const ch
  */
 static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
 {
-  assert(cac && line);
+  ASSERT(cac && line);
 
   const regmatch_t *match = mutt_prex_capture(PREX_ACCOUNT_CMD, line);
   if (!match)
@@ -132,7 +131,7 @@ static MuttAccountFlags parse_one(struct ConnAccount *cac, char *line)
  */
 static MuttAccountFlags call_cmd(struct ConnAccount *cac, const struct Buffer *cmd)
 {
-  assert(cac && cmd);
+  ASSERT(cac && cmd);
 
   MuttAccountFlags rc = MUTT_ACCT_NO_FLAGS;
 

@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include "group.h"
@@ -235,7 +234,7 @@ static void group_add_addrlist(struct Group *g, const struct AddressList *al)
     TAILQ_REMOVE(&al_new, a, entries);
     mutt_addrlist_append(&g->al, a);
   }
-  assert(TAILQ_EMPTY(&al_new));
+  ASSERT(TAILQ_EMPTY(&al_new));
 }
 
 /**

@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -288,7 +287,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
     }
   }
 
-  assert(false && "Internal parsing error"); // LCOV_EXCL_LINE
+  ASSERT(false && "Internal parsing error"); // LCOV_EXCL_LINE
   return NULL;
 }
 

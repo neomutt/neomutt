@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -262,7 +261,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   FREE(&token);
 
   size_t encoded_len = oalen * 4 / 3 + 10;
-  assert(encoded_len < 6010); // Assure LGTM that we won't overflow
+  ASSERT(encoded_len < 6010); // Assure LGTM that we won't overflow
 
   char *encoded_token = mutt_mem_malloc(encoded_len);
   mutt_b64_encode(oauthbearer, oalen, encoded_token, encoded_len);

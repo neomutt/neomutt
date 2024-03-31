@@ -35,7 +35,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <inttypes.h>
 #include <stdbool.h>
 #include <string.h>
@@ -162,9 +161,9 @@ static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enu
     case PAGER_MODE_UNKNOWN:
     case PAGER_MODE_MAX:
     default:
-      assert(false); // something went really wrong
+      ASSERT(false); // something went really wrong
   }
-  assert(result);
+  ASSERT(result);
   return result;
 }
 
@@ -218,11 +217,11 @@ int dlg_pager(struct PagerView *pview)
   //===========================================================================
   // ACT 1 - Ensure sanity of the caller and determine the mode
   //===========================================================================
-  assert(pview);
-  assert((pview->mode > PAGER_MODE_UNKNOWN) && (pview->mode < PAGER_MODE_MAX));
-  assert(pview->pdata); // view can't exist in a vacuum
-  assert(pview->win_pager);
-  assert(pview->win_pbar);
+  ASSERT(pview);
+  ASSERT((pview->mode > PAGER_MODE_UNKNOWN) && (pview->mode < PAGER_MODE_MAX));
+  ASSERT(pview->pdata); // view can't exist in a vacuum
+  ASSERT(pview->win_pager);
+  ASSERT(pview->win_pbar);
 
   struct MuttWindow *dlg = dialog_find(pview->win_pager);
   struct IndexSharedData *shared = dlg->wdata;
@@ -234,10 +233,10 @@ int dlg_pager(struct PagerView *pview)
       // This case was previously identified by IsEmail macro
       // we expect data to contain email and not contain body
       // We also expect email to always belong to some mailbox
-      assert(shared->mailbox_view);
-      assert(shared->mailbox);
-      assert(shared->email);
-      assert(!pview->pdata->body);
+      ASSERT(shared->mailbox_view);
+      ASSERT(shared->mailbox);
+      ASSERT(shared->email);
+      ASSERT(!pview->pdata->body);
       break;
 
     case PAGER_MODE_ATTACH:
@@ -245,7 +244,7 @@ int dlg_pager(struct PagerView *pview)
       // macros, we expect data to contain:
       //  - body (viewing regular attachment)
       //  - fp and body->email in special case of viewing an attached email.
-      assert(pview->pdata->body);
+      ASSERT(pview->pdata->body);
       if (pview->pdata->fp && pview->pdata->body->email)
       {
         // Special case: attachment is a full-blown email message.
@@ -256,9 +255,9 @@ int dlg_pager(struct PagerView *pview)
 
     case PAGER_MODE_HELP:
     case PAGER_MODE_OTHER:
-      assert(!shared->mailbox_view);
-      assert(!shared->email);
-      assert(!pview->pdata->body);
+      ASSERT(!shared->mailbox_view);
+      ASSERT(!shared->email);
+      ASSERT(!pview->pdata->body);
       break;
 
     case PAGER_MODE_UNKNOWN:
@@ -267,7 +266,7 @@ int dlg_pager(struct PagerView *pview)
       // Unexpected mode. Catch fire and explode.
       // This *should* happen if mode is PAGER_MODE_ATTACH_E, since
       // we do not expect any caller to pass it to us.
-      assert(false);
+      ASSERT(false);
       break;
   }
 

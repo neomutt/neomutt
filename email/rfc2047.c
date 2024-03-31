@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
@@ -201,7 +200,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   if (fromcode)
   {
     iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
-    assert(iconv_t_valid(cd));
+    ASSERT(iconv_t_valid(cd));
     ib = d;
     ibl = dlen;
     ob = buf;
@@ -209,8 +208,8 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
     if ((iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl) == ICONV_ILLEGAL_SEQ) ||
         (iconv(cd, NULL, NULL, &ob, &obl) == ICONV_ILLEGAL_SEQ))
     {
-      assert(errno == E2BIG);
-      assert(ib > d);
+      ASSERT(errno == E2BIG);
+      ASSERT(ib > d);
       return ((ib - d) == dlen) ? dlen : ib - d + 1;
     }
   }
@@ -226,7 +225,7 @@ static size_t try_block(const char *d, size_t dlen, const char *fromcode,
   for (char *p = buf; p < ob; p++)
   {
     unsigned char c = *p;
-    assert(strchr(MimeSpecials, '?'));
+    ASSERT(strchr(MimeSpecials, '?'));
     if ((c >= 0x7f) || (c < 0x20) || (*p == '_') ||
         ((c != ' ') && strchr(MimeSpecials, *p)))
     {
@@ -281,7 +280,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   }
 
   const iconv_t cd = mutt_ch_iconv_open(tocode, fromcode, MUTT_ICONV_NO_FLAGS);
-  assert(iconv_t_valid(cd));
+  ASSERT(iconv_t_valid(cd));
   const char *ib = buf;
   size_t ibl = buflen;
   char tmp[ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 1];
@@ -289,7 +288,7 @@ static size_t encode_block(char *str, char *buf, size_t buflen, const char *from
   size_t obl = sizeof(tmp) - strlen(tocode);
   const size_t n1 = iconv(cd, (ICONV_CONST char **) &ib, &ibl, &ob, &obl);
   const size_t n2 = iconv(cd, NULL, NULL, &ob, &obl);
-  assert((n1 != ICONV_ILLEGAL_SEQ) && (n2 != ICONV_ILLEGAL_SEQ));
+  ASSERT((n1 != ICONV_ILLEGAL_SEQ) && (n2 != ICONV_ILLEGAL_SEQ));
   return (*encoder)(str, tmp, ob - tmp, tocode);
 }
 
@@ -317,12 +316,12 @@ static size_t choose_block(char *d, size_t dlen, int col, const char *fromcode,
   size_t n = dlen;
   while (true)
   {
-    assert(n > 0);
+    ASSERT(n > 0);
     const size_t nn = try_block(d, n, fromcode, tocode, encoder, wlen);
     if ((nn == 0) && (((col + *wlen) <= (ENCWORD_LEN_MAX + 1)) || (n <= 1)))
       break;
     n = ((nn != 0) ? nn : n) - 1;
-    assert(n > 0);
+    ASSERT(n > 0);
     if (utf8)
       while ((n > 1) && CONTINUATION_BYTE(d[n]))
         n--;
@@ -368,7 +367,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
   const char *it = s;
   const char *end = s + len;
 
-  assert(*end == '\0');
+  ASSERT(*end == '\0');
 
   if (enc == ENC_QUOTED_PRINTABLE)
   {
@@ -408,7 +407,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
     return out;
   }
 
-  assert(0); /* The enc parameter has an invalid value */
+  ASSERT(0); /* The enc parameter has an invalid value */
   return NULL;
 }
 
@@ -572,7 +571,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
          * there is too much us-ascii stuff after it to use a single
          * encoded word. We add the next word to the encoded region
          * and try again. */
-        assert(t1 < (u + ulen));
+        ASSERT(t1 < (u + ulen));
         for (t1++; (t1 < (u + ulen)) && !HSPACE(*t1); t1++)
           ; // do nothing
 
@@ -591,7 +590,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
       mutt_mem_realloc(&buf, buflen);
     }
     r = encode_block(buf + bufpos, t, n, icode, tocode, encoder);
-    assert(r == wlen);
+    ASSERT(r == wlen);
     bufpos += wlen;
     memcpy(buf + bufpos, line_break, lb_len);
     bufpos += lb_len;
@@ -605,7 +604,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
   buflen = bufpos + wlen + (u + ulen - t1);
   mutt_mem_realloc(&buf, buflen + 1);
   r = encode_block(buf + bufpos, t, t1 - t, icode, tocode, encoder);
-  assert(r == wlen);
+  ASSERT(r == wlen);
   bufpos += wlen;
   memcpy(buf + bufpos, t1, u + ulen - t1);
 

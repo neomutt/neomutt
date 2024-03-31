@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <assert.h>
 #include <stdbool.h>
 #include "mutt/lib.h"
 #include "node_container.h"
@@ -45,7 +44,7 @@ int node_container_render(const struct ExpandoNode *node,
                           const struct ExpandoRenderData *rdata, struct Buffer *buf,
                           int max_cols, void *data, MuttFormatFlags flags)
 {
-  assert(node->type == ENT_CONTAINER);
+  ASSERT(node->type == ENT_CONTAINER);
 
   const struct ExpandoFormat *fmt = node->format;
   if (fmt)

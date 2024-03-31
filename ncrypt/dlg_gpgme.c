@@ -69,7 +69,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <gpgme.h>
 #include <locale.h>
 #include <stdbool.h>
@@ -320,7 +319,7 @@ void pgp_entry_gpgme_date(const struct ExpandoNode *node, void *data,
     len--;
   }
 
-  assert(len < sizeof(datestr));
+  ASSERT(len < sizeof(datestr));
   mutt_strn_copy(datestr, start, len, sizeof(datestr));
 
   struct tm tm = { 0 };

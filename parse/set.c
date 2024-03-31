@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
@@ -59,7 +58,7 @@
  */
 static void command_set_expand_value(uint32_t type, struct Buffer *value)
 {
-  assert(value);
+  ASSERT(value);
   if (DTYPE(type) == DT_PATH)
   {
     if (type & (D_PATH_DIR | D_PATH_FILE))
@@ -101,8 +100,8 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
 static enum CommandResult command_set_set(struct Buffer *name,
                                           struct Buffer *value, struct Buffer *err)
 {
-  assert(name);
-  assert(value);
+  ASSERT(name);
+  ASSERT(value);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -156,8 +155,8 @@ static enum CommandResult command_set_set(struct Buffer *name,
 static enum CommandResult command_set_increment(struct Buffer *name,
                                                 struct Buffer *value, struct Buffer *err)
 {
-  assert(name);
-  assert(value);
+  ASSERT(name);
+  ASSERT(value);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -211,8 +210,8 @@ static enum CommandResult command_set_increment(struct Buffer *name,
 static enum CommandResult command_set_decrement(struct Buffer *name,
                                                 struct Buffer *value, struct Buffer *err)
 {
-  assert(name);
-  assert(value);
+  ASSERT(name);
+  ASSERT(value);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -240,7 +239,7 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
  */
 static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -279,7 +278,7 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
  */
 static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   // Handle special "reset all" syntax
   if (mutt_str_equal(name->data, "all"))
   {
@@ -333,7 +332,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
  */
 static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
   if (!he)
   {
@@ -369,7 +368,7 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
  */
 static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
 {
-  assert(name);
+  ASSERT(name);
   // In the interactive case (outside of the initial parsing of neomuttrc) we
   // support additional syntax: "set" (no arguments) and "set all".
   // If not in interactive mode, we recognise them but do nothing.
@@ -573,15 +572,15 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     // Each of inv, unset reset, query, equals implies that the others are not set.
     // If none of them are set, then we are dealing with a "set foo" command.
     // clang-format off
-    assert(!inv    || !(       unset || reset || query || equals          ));
-    assert(!unset  || !(inv ||          reset || query || equals          ));
-    assert(!reset  || !(inv || unset ||          query || equals          ));
-    assert(!query  || !(inv || unset || reset ||          equals          ));
-    assert(!equals || !(inv || unset || reset || query ||           prefix));
+    ASSERT(!inv    || !(       unset || reset || query || equals          ));
+    ASSERT(!unset  || !(inv ||          reset || query || equals          ));
+    ASSERT(!reset  || !(inv || unset ||          query || equals          ));
+    ASSERT(!query  || !(inv || unset || reset ||          equals          ));
+    ASSERT(!equals || !(inv || unset || reset || query ||           prefix));
     // clang-format on
-    assert(!(increment && decrement)); // only one of increment or decrement is set
-    assert(!(increment || decrement) || equals); // increment/decrement implies equals
-    assert(!inv || bool_or_quad); // inv (aka toggle) implies bool or quad
+    ASSERT(!(increment && decrement)); // only one of increment or decrement is set
+    ASSERT(!(increment || decrement) || equals); // increment/decrement implies equals
+    ASSERT(!inv || bool_or_quad); // inv (aka toggle) implies bool or quad
 
     enum CommandResult rc = MUTT_CMD_ERROR;
     if (query)

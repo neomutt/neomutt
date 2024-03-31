@@ -68,7 +68,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <locale.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -289,7 +288,7 @@ void pgp_entry_pgp_date(const struct ExpandoNode *node, void *data,
     len--;
   }
 
-  assert(len < sizeof(datestr));
+  ASSERT(len < sizeof(datestr));
   mutt_strn_copy(datestr, start, len, sizeof(datestr));
 
   if (use_c_locale)

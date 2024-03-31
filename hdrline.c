@@ -36,7 +36,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -341,7 +340,7 @@ void index_date_recv_local(const struct ExpandoNode *node, void *data,
     start++;
     len--;
   }
-  assert(len < sizeof(tmp2));
+  ASSERT(len < sizeof(tmp2));
   mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
 
   if (use_c_locale)
@@ -397,7 +396,7 @@ void index_date_local(const struct ExpandoNode *node, void *data,
     start++;
     len--;
   }
-  assert(len < sizeof(tmp2));
+  ASSERT(len < sizeof(tmp2));
   mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
 
   if (use_c_locale)
@@ -459,7 +458,7 @@ void index_date(const struct ExpandoNode *node, void *data,
     start++;
     len--;
   }
-  assert(len < sizeof(tmp2));
+  ASSERT(len < sizeof(tmp2));
   mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
 
   if (use_c_locale)

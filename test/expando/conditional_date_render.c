@@ -23,7 +23,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
@@ -46,7 +45,7 @@ static long cond_date_num(const struct ExpandoNode *node, void *data, MuttFormat
 static void cond_date(const struct ExpandoNode *node, void *data,
                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
-  assert(node->type == ENT_EXPANDO);
+  ASSERT(node->type == ENT_EXPANDO);
 
   const struct CondDateData *dd = data;
   struct tm tm = mutt_date_localtime(dd->t);
