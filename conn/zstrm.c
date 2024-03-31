@@ -184,7 +184,7 @@ retry:
       break;
 
     case Z_STREAM_END: /* everything flushed, nothing remaining */
-      mutt_debug(LL_DEBUG5, "inflate returned Z_STREAM_END.\n");
+      mutt_debug(LL_DEBUG5, "inflate returned Z_STREAM_END\n");
       zrc = len - zctx->read.z.avail_out; /* "returned" bytes */
       zctx->read.stream_eof = true;
       break;
@@ -192,7 +192,7 @@ retry:
     case Z_BUF_ERROR: /* no progress was possible */
       if (!zctx->read.conn_eof)
       {
-        mutt_debug(LL_DEBUG5, "inflate returned Z_BUF_ERROR. retrying.\n");
+        mutt_debug(LL_DEBUG5, "inflate returned Z_BUF_ERROR. retrying\n");
         goto retry;
       }
       zrc = 0;
@@ -200,7 +200,7 @@ retry:
 
     default:
       /* bail on other rcs, such as Z_DATA_ERROR, or Z_MEM_ERROR */
-      mutt_debug(LL_DEBUG5, "inflate returned %d. aborting.\n", zrc);
+      mutt_debug(LL_DEBUG5, "inflate returned %d. aborting\n", zrc);
       zrc = -1;
       break;
   }

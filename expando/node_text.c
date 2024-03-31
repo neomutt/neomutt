@@ -38,7 +38,7 @@
 struct Buffer;
 
 /**
- * node_text_render - Render a Text Node - Implements ExpandoNode::render - @ingroup expando_render
+ * node_text_render - Render a Text Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 static int node_text_render(const struct ExpandoNode *node,
                             const struct ExpandoRenderData *rdata, struct Buffer *buf,

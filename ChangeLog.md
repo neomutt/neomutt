@@ -1027,7 +1027,7 @@
   - `$crypt_use_gpgme`                         - Now defaults to 'yes' (enabled)
   - `$abort_backspace`                         - Hitting backspace against an empty prompt aborts the prompt
   - `$abort_key`                               - String representation of key to abort prompts
-  - `$arrow_string`                            - Use an custom string for `$arrow_cursor`
+  - `$arrow_string`                            - Use a custom string for `$arrow_cursor`
   - `$crypt_opportunistic_encrypt_strong_keys` - Enable encryption only when strong a key is available
   - `$header_cache_compress_dictionary`        - Filepath to dictionary for zstd compression
   - `$header_cache_compress_level`             - Level of compression for method

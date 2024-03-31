@@ -95,7 +95,7 @@ static const struct Mapping PatternHelp[] = {
 };
 
 /**
- * pattern_d - Pattern: pattern description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pattern_d - Pattern: pattern description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pattern_d(const struct ExpandoNode *node, void *data,
                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -107,7 +107,7 @@ void pattern_d(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pattern_e - Pattern: pattern expression - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pattern_e - Pattern: pattern expression - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pattern_e(const struct ExpandoNode *node, void *data,
                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -119,7 +119,7 @@ void pattern_e(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pattern_n_num - Pattern: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pattern_n_num - Pattern: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {

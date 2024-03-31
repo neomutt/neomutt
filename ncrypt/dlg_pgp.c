@@ -251,7 +251,7 @@ static char pgp_flags(KeyFlags flags)
 }
 
 /**
- * pgp_entry_pgp_date_num - PGP: Date of the key - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pgp_entry_pgp_date_num - PGP: Date of the key - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_pgp_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -266,7 +266,7 @@ long pgp_entry_pgp_date_num(const struct ExpandoNode *node, void *data, MuttForm
 }
 
 /**
- * pgp_entry_pgp_date - PGP: Date of the key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_date - PGP: Date of the key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_date(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -307,7 +307,7 @@ void pgp_entry_pgp_date(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_n_num - PGP: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pgp_entry_pgp_n_num - PGP: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_pgp_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -320,7 +320,7 @@ long pgp_entry_pgp_n_num(const struct ExpandoNode *node, void *data, MuttFormatF
 }
 
 /**
- * pgp_entry_pgp_t - PGP: Trust/validity - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_t - PGP: Trust/validity - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_t(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -334,7 +334,7 @@ void pgp_entry_pgp_t(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_u - PGP: User id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_u - PGP: User id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_u(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -349,7 +349,7 @@ void pgp_entry_pgp_u(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_a - PGP: Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_a - PGP: Key Algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_a(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -365,7 +365,7 @@ void pgp_entry_pgp_a(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_A - PGP: Principal Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_A - PGP: Principal Key Algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_A(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -382,7 +382,7 @@ void pgp_entry_pgp_A(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_c - PGP: Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_c - PGP: Key Capabilities - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_c(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -400,7 +400,7 @@ void pgp_entry_pgp_c(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_C - PGP: Principal Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_C - PGP: Principal Key Capabilities - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_C(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -419,7 +419,7 @@ void pgp_entry_pgp_C(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_f - PGP: Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_f - PGP: Key Flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_f(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -436,7 +436,7 @@ void pgp_entry_pgp_f(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_F - PGP: Principal Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_F - PGP: Principal Key Flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_F(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -454,7 +454,7 @@ void pgp_entry_pgp_F(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_k - PGP: Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_k - PGP: Key id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_k(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -470,7 +470,7 @@ void pgp_entry_pgp_k(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_K - PGP: Principal Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_pgp_K - PGP: Principal Key id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_pgp_K(const struct ExpandoNode *node, void *data,
                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -487,7 +487,7 @@ void pgp_entry_pgp_K(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_pgp_l_num - PGP: Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pgp_entry_pgp_l_num - PGP: Key length - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_pgp_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -503,7 +503,7 @@ long pgp_entry_pgp_l_num(const struct ExpandoNode *node, void *data, MuttFormatF
 }
 
 /**
- * pgp_entry_pgp_L_num - PGP: Principal Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pgp_entry_pgp_L_num - PGP: Principal Key length - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_pgp_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {

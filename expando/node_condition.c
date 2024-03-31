@@ -36,7 +36,7 @@
 #include "render.h"
 
 /**
- * node_condition_render - Render a Conditional Node - Implements ExpandoNode::render - @ingroup expando_render
+ * node_condition_render - Render a Conditional Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 static int node_condition_render(const struct ExpandoNode *node,
                                  const struct ExpandoRenderData *rdata, struct Buffer *buf,

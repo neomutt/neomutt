@@ -156,7 +156,7 @@ static const struct ExpandoDefinition AttachFormatDef[] = {
 };
 
 /**
- * parse_index_date_recv_local - Parse a Date Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * parse_index_date_recv_local - Parse a Date Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a custom Expando of the form, "%(string)".
  * The "string" will be passed to strftime().
@@ -174,7 +174,7 @@ struct ExpandoNode *parse_index_date_recv_local(const char *str, const char **pa
 }
 
 /**
- * parse_index_date_local - Parse a Date Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * parse_index_date_local - Parse a Date Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a custom expando of the form, "%[string]".
  * The "string" will be passed to strftime().
@@ -192,7 +192,7 @@ struct ExpandoNode *parse_index_date_local(const char *str, const char **parsed_
 }
 
 /**
- * parse_index_date - Parse a Date Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * parse_index_date - Parse a Date Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a custom Expando of the form, "%{string}".
  * The "string" will be passed to strftime().
@@ -210,7 +210,7 @@ struct ExpandoNode *parse_index_date(const char *str, const char **parsed_until,
 }
 
 /**
- * parse_index_hook - Parse an index-hook - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * parse_index_hook - Parse an index-hook - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a custom Expando of the form, "%@name@".
  * The "name" will be looked up as an index-hook, then the result parsed as an
@@ -231,7 +231,7 @@ struct ExpandoNode *parse_index_hook(const char *str, const char **parsed_until,
 }
 
 /**
- * parse_tags_transformed - Parse a Tags-Transformed Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * parse_tags_transformed - Parse a Tags-Transformed Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a custom expando of the form, "%G?" where '?' is an alphabetic character.
  */
@@ -252,7 +252,7 @@ struct ExpandoNode *parse_tags_transformed(const char *str, const char **parsed_
 }
 
 /**
- * parse_subject - Parse a Subject Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * parse_subject - Parse a Subject Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a Subject Expando, "%s", into two separate Nodes.
  * One for the tree, one for the subject.
@@ -414,7 +414,7 @@ static struct ConfigDef MainVars[] = {
     "Use an arrow '->' instead of highlighting in the index"
   },
   { "arrow_string", DT_STRING|D_NOT_EMPTY, IP "->", 0, NULL,
-    "Use an custom string for arrow_cursor"
+    "Use a custom string for arrow_cursor"
   },
   { "ascii_chars", DT_BOOL, false, 0, NULL,
     "Use plain ASCII characters, when drawing email threads"

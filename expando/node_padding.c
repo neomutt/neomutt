@@ -54,7 +54,7 @@ struct NodePaddingPrivate *node_padding_private_new(enum ExpandoPadType pad_type
 }
 
 /**
- * node_padding_private_free - Free Padding private data
+ * node_padding_private_free - Free Padding private data - Implements ExpandoNode::ndata_free()
  * @param ptr Data to free
  */
 void node_padding_private_free(void **ptr)
@@ -97,7 +97,7 @@ int pad_string(const struct ExpandoNode *node, struct Buffer *buf, int max_cols)
 }
 
 /**
- * node_padding_render_eol - Render End-of-Line Padding - Implements ExpandoNode::render - @ingroup expando_render
+ * node_padding_render_eol - Render End-of-Line Padding - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_padding_render_eol(const struct ExpandoNode *node,
                             const struct ExpandoRenderData *rdata, struct Buffer *buf,
@@ -113,7 +113,7 @@ int node_padding_render_eol(const struct ExpandoNode *node,
 }
 
 /**
- * node_padding_render_hard - Render Hard Padding - Implements ExpandoNode::render - @ingroup expando_render
+ * node_padding_render_hard - Render Hard Padding - Implements ExpandoNode::render() - @ingroup expando_render
  *
  * Text to the left of the padding is hard and will be preserved if possible.
  * Text to the right of the padding will be truncated.
@@ -151,7 +151,7 @@ int node_padding_render_hard(const struct ExpandoNode *node,
 }
 
 /**
- * node_padding_render_soft - Render Soft Padding - Implements ExpandoNode::render - @ingroup expando_render
+ * node_padding_render_soft - Render Soft Padding - Implements ExpandoNode::render() - @ingroup expando_render
  *
  * Text to the right of the padding is hard and will be preserved if possible.
  * Text to the left of the padding will be truncated.
@@ -224,7 +224,7 @@ struct ExpandoNode *node_padding_new(enum ExpandoPadType pad_type,
 }
 
 /**
- * node_padding_parse - Parse a Padding Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * node_padding_parse - Parse a Padding Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a Padding Expando of the form, "%|X", "%>X" or "%*X",
  * where the character 'X' will be used to fill the space.

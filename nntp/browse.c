@@ -40,7 +40,7 @@
 #include "mdata.h"
 
 /**
- * group_index_a_num - NNTP: Alert for new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * group_index_a_num - NNTP: Alert for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -50,7 +50,7 @@ long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 /**
- * group_index_C_num - NNTP: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * group_index_C_num - NNTP: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -60,7 +60,7 @@ long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 /**
- * group_index_d - NNTP: Description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * group_index_d - NNTP: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void group_index_d(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -86,7 +86,7 @@ void group_index_d(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * group_index_f - NNTP: Newsgroup name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * group_index_f - NNTP: Newsgroup name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void group_index_f(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -98,7 +98,7 @@ void group_index_f(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * group_index_M - NNTP: Moderated flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * group_index_M - NNTP: Moderated flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void group_index_M(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -120,7 +120,7 @@ void group_index_M(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * group_index_n_num - NNTP: Number of new articles - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * group_index_n_num - NNTP: Number of new articles - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -139,7 +139,7 @@ long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 /**
- * group_index_N - NNTP: New flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * group_index_N - NNTP: New flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void group_index_N(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -161,7 +161,7 @@ void group_index_N(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * group_index_p_num - NNTP: Poll for new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * group_index_p_num - NNTP: Poll for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -171,7 +171,7 @@ long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 /**
- * group_index_s_num - NNTP: Number of unread articles - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * group_index_s_num - NNTP: Number of unread articles - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {

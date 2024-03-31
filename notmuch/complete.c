@@ -208,7 +208,7 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int num
 }
 
 /**
- * complete_nm_query - Complete a Notmuch Query - Implements ::complete_function_t - @ingroup complete_api
+ * complete_nm_query - Complete a Notmuch Query - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 int complete_nm_query(struct EnterWindowData *wdata, int op)
 {
@@ -225,7 +225,7 @@ int complete_nm_query(struct EnterWindowData *wdata, int op)
 }
 
 /**
- * complete_nm_tag - Complete a Notmuch Tag - Implements ::complete_function_t - @ingroup complete_api
+ * complete_nm_tag - Complete a Notmuch Tag - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 int complete_nm_tag(struct EnterWindowData *wdata, int op)
 {

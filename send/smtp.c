@@ -110,6 +110,8 @@ struct SmtpAccountData
 struct SmtpAuth
 {
   /**
+   * @defgroup smtp_authenticate SMTP Authentication API
+   *
    * authenticate - Authenticate an SMTP connection
    * @param adata  Smtp Account data
    * @param method Use this named method, or any available method if NULL
@@ -505,7 +507,7 @@ static int smtp_get_auth_response(struct Connection *conn, struct Buffer *input_
 }
 
 /**
- * smtp_auth_gsasl - Authenticate using SASL
+ * smtp_auth_gsasl - Authenticate using SASL - Implements SmtpAuth::authenticate() - @ingroup smtp_authenticate
  * @param adata    SMTP Account data
  * @param mechlist List of mechanisms to use
  * @retval  0 Success
@@ -528,7 +530,7 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
 
   if (mutt_gsasl_client_new(adata->conn, chosen_mech, &gsasl_session) < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection\n");
     return SMTP_AUTH_UNAVAIL;
   }
 
@@ -612,7 +614,7 @@ fail:
 
 #ifdef USE_SASL_CYRUS
 /**
- * smtp_auth_sasl - Authenticate using SASL
+ * smtp_auth_sasl - Authenticate using SASL - Implements SmtpAuth::authenticate() - @ingroup smtp_authenticate
  * @param adata    SMTP Account data
  * @param mechlist List of mechanisms to use
  * @retval  0 Success
@@ -764,7 +766,7 @@ static int smtp_auth_oauth_xoauth2(struct SmtpAccountData *adata, const char *me
 }
 
 /**
- * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER
+ * smtp_auth_oauth - Authenticate an SMTP connection using OAUTHBEARER - Implements SmtpAuth::authenticate() - @ingroup smtp_authenticate
  * @param adata   SMTP Account data
  * @param method  Authentication method (not used)
  * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
@@ -775,7 +777,7 @@ static int smtp_auth_oauth(struct SmtpAccountData *adata, const char *method)
 }
 
 /**
- * smtp_auth_xoauth2 - Authenticate an SMTP connection using XOAUTH2
+ * smtp_auth_xoauth2 - Authenticate an SMTP connection using XOAUTH2 - Implements SmtpAuth::authenticate() - @ingroup smtp_authenticate
  * @param adata   SMTP Account data
  * @param method  Authentication method (not used)
  * @retval num Result, e.g. #SMTP_AUTH_SUCCESS
@@ -786,7 +788,7 @@ static int smtp_auth_xoauth2(struct SmtpAccountData *adata, const char *method)
 }
 
 /**
- * smtp_auth_plain - Authenticate using plain text
+ * smtp_auth_plain - Authenticate using plain text - Implements SmtpAuth::authenticate() - @ingroup smtp_authenticate
  * @param adata SMTP Account data
  * @param method     Authentication method (not used)
  * @retval  0 Success
@@ -833,7 +835,7 @@ error:
 }
 
 /**
- * smtp_auth_login - Authenticate using plain text
+ * smtp_auth_login - Authenticate using plain text - Implements SmtpAuth::authenticate() - @ingroup smtp_authenticate
  * @param adata  SMTP Account data
  * @param method Authentication method (not used)
  * @retval  0 Success
@@ -981,13 +983,13 @@ static int smtp_authenticate(struct SmtpAccountData *adata)
   {
     /* Fall back to default: any authenticator */
 #if defined(USE_SASL_CYRUS)
-    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_sasl, if using sasl.\n");
+    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_sasl, if using sasl\n");
     r = smtp_auth_sasl(adata, adata->auth_mechs);
 #elif defined(USE_SASL_GNU)
-    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_gsasl, if using gsasl.\n");
+    mutt_debug(LL_DEBUG2, "Falling back to smtp_auth_gsasl, if using gsasl\n");
     r = smtp_auth_gsasl(adata, adata->auth_mechs);
 #else
-    mutt_debug(LL_DEBUG2, "Falling back to using any authenticator available.\n");
+    mutt_debug(LL_DEBUG2, "Falling back to using any authenticator available\n");
     /* Try all available authentication methods */
     for (size_t i = 0; i < mutt_array_size(SmtpAuthenticators); i++)
     {

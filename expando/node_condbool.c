@@ -63,7 +63,7 @@ struct ExpandoNode *node_condbool_new(const char *start, const char *end, int di
 }
 
 /**
- * node_condbool_parse - Parse a CondBool format string - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * node_condbool_parse - Parse a CondBool format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  */
 struct ExpandoNode *node_condbool_parse(const char *s, const char **parsed_until,
                                         const struct ExpandoDefinition *defs,
@@ -106,7 +106,7 @@ struct ExpandoNode *node_condbool_parse(const char *s, const char **parsed_until
 }
 
 /**
- * node_condbool_render - Callback for every bool node - Implements ExpandoNode::render - @ingroup expando_render
+ * node_condbool_render - Callback for every bool node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_condbool_render(const struct ExpandoNode *node,
                          const struct ExpandoRenderData *rdata, struct Buffer *buf,

@@ -55,7 +55,6 @@
 #include "copy.h"
 #include "globals.h"
 #include "mutt_header.h"
-#include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"

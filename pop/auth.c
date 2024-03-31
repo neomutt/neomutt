@@ -71,7 +71,7 @@ static enum PopAuthRes pop_auth_gsasl(struct PopAccountData *adata, const char *
 
   if (mutt_gsasl_client_new(adata->conn, chosen_mech, &gsasl_session) < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection\n");
     return POP_A_UNAVAIL;
   }
 

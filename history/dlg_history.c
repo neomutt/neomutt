@@ -84,7 +84,7 @@ static const struct Mapping HistoryHelp[] = {
 };
 
 /**
- * history_C_num - History: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * history_C_num - History: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -94,7 +94,7 @@ long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
 }
 
 /**
- * history_s - History: History match - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * history_s - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void history_s(const struct ExpandoNode *node, void *data,
                MuttFormatFlags flags, int max_cols, struct Buffer *buf)

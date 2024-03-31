@@ -58,7 +58,7 @@ struct NodeCondDatePrivate *node_conddate_private_new(int count, char period)
 }
 
 /**
- * node_conddate_private_free - Free CondDate private data
+ * node_conddate_private_free - Free CondDate private data - Implements ExpandoNode::ndata_free()
  * @param ptr Data to free
  */
 void node_conddate_private_free(void **ptr)
@@ -70,7 +70,7 @@ void node_conddate_private_free(void **ptr)
 }
 
 /**
- * node_conddate_render - Render a CondDate Node - Implements ExpandoNode::render - @ingroup expando_render
+ * node_conddate_render - Render a CondDate Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_conddate_render(const struct ExpandoNode *node,
                          const struct ExpandoRenderData *rdata, struct Buffer *buf,
@@ -144,7 +144,7 @@ struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid)
 }
 
 /**
- * node_conddate_parse - Parse a CondDate format string - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * node_conddate_parse - Parse a CondDate format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  */
 struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_until,
                                         int did, int uid, struct ExpandoParseError *error)

@@ -1477,7 +1477,7 @@ static void parse_part(FILE *fp, struct Body *b, int *counter)
 
   if (recurse_level >= MUTT_MIME_MAX_DEPTH)
   {
-    mutt_debug(LL_DEBUG1, "recurse level too deep. giving up.\n");
+    mutt_debug(LL_DEBUG1, "recurse level too deep. giving up\n");
     return;
   }
   recurse_level++;

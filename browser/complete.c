@@ -41,7 +41,7 @@
 #include "muttlib.h"
 
 /**
- * complete_file_mbox - Complete a Mailbox - Implements ::complete_function_t - @ingroup complete_api
+ * complete_file_mbox - Complete a Mailbox - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 int complete_file_mbox(struct EnterWindowData *wdata, int op)
 {
@@ -109,7 +109,7 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
 }
 
 /**
- * complete_file_simple - Complete a filename - Implements ::complete_function_t - @ingroup complete_api
+ * complete_file_simple - Complete a filename - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 int complete_file_simple(struct EnterWindowData *wdata, int op)
 {

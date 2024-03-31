@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"

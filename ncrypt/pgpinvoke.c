@@ -54,7 +54,7 @@
 const struct ExpandoRenderData PgpCommandRenderData[];
 
 /**
- * pgp_command_a - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_command_a - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_command_a(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -66,7 +66,7 @@ void pgp_command_a(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_f - PGP Command: Filename of message - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_command_f - PGP Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_command_f(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -78,7 +78,7 @@ void pgp_command_f(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_p - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_command_p - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_command_p(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -90,7 +90,7 @@ void pgp_command_p(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_r - PGP Command: key IDs - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_command_r - PGP Command: key IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_command_r(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -102,7 +102,7 @@ void pgp_command_r(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_s - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_command_s - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_command_s(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)

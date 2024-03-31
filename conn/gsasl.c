@@ -133,7 +133,7 @@ static bool mutt_gsasl_init(void)
   if (rc != GSASL_OK)
   {
     MuttGsaslCtx = NULL;
-    mutt_debug(LL_DEBUG1, "libgsasl initialisation failed (%d): %s.\n", rc,
+    mutt_debug(LL_DEBUG1, "libgsasl initialisation failed (%d): %s\n", rc,
                gsasl_strerror(rc));
     return false;
   }
@@ -204,7 +204,7 @@ int mutt_gsasl_client_new(struct Connection *conn, const char *mech, Gsasl_sessi
   if (rc != GSASL_OK)
   {
     *sctx = NULL;
-    mutt_debug(LL_DEBUG1, "gsasl_client_start failed (%d): %s.\n", rc, gsasl_strerror(rc));
+    mutt_debug(LL_DEBUG1, "gsasl_client_start failed (%d): %s\n", rc, gsasl_strerror(rc));
     return -1;
   }
 

@@ -131,7 +131,7 @@ static int attach_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * attach_c - Attachment: Requires conversion flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_c - Attachment: Requires conversion flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -144,7 +144,7 @@ void attach_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_C - Attachment: Charset - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_C - Attachment: Charset - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_C(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -160,7 +160,7 @@ void attach_C(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_d - Attachment: Description - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_d - Attachment: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -195,7 +195,7 @@ void attach_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_D_num - Attachment: Deleted - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * attach_D_num - Attachment: Deleted - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long attach_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -204,7 +204,7 @@ long attach_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * attach_D - Attachment: Deleted - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_D - Attachment: Deleted - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -217,7 +217,7 @@ void attach_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_e - Attachment: MIME type - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_e - Attachment: MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -229,7 +229,7 @@ void attach_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_f - Attachment: Filename - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_f - Attachment: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -253,7 +253,7 @@ void attach_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_F - Attachment: Filename in header - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_F - Attachment: Filename in header - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -271,7 +271,7 @@ void attach_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_I - Attachment: Disposition flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_I - Attachment: Disposition flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_I(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -296,7 +296,7 @@ void attach_I(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_m - Attachment: Major MIME type - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_m - Attachment: Major MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_m(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -308,7 +308,7 @@ void attach_m(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_M - Attachment: MIME subtype - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_M - Attachment: MIME subtype - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_M(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -320,7 +320,7 @@ void attach_M(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_n_num - Attachment: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * attach_n_num - Attachment: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long attach_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -330,7 +330,7 @@ long attach_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * attach_Q_num - Attachment: Attachment counting - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * attach_Q_num - Attachment: Attachment counting - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long attach_Q_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -339,7 +339,7 @@ long attach_Q_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * attach_Q - Attachment: Attachment counting - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_Q - Attachment: Attachment counting - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_Q(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -352,7 +352,7 @@ void attach_Q(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_s_num - Attachment: Size - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * attach_s_num - Attachment: Size - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long attach_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -365,7 +365,7 @@ long attach_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * attach_s - Attachment: Size - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_s - Attachment: Size - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -389,7 +389,7 @@ void attach_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_t_num - Attachment: Is Tagged - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * attach_t_num - Attachment: Is Tagged - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long attach_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -398,7 +398,7 @@ long attach_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * attach_t - Attachment: Is Tagged - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_t - Attachment: Is Tagged - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -411,7 +411,7 @@ void attach_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_T - Attachment: Tree characters - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_T - Attachment: Tree characters - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -425,7 +425,7 @@ void attach_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_u_num - Attachment: Unlink flag - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * attach_u_num - Attachment: Unlink flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long attach_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -434,7 +434,7 @@ long attach_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * attach_u - Attachment: Unlink flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * attach_u - Attachment: Unlink flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void attach_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -447,7 +447,7 @@ void attach_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * attach_X_num - Attachment: Number of MIME parts - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * attach_X_num - Attachment: Number of MIME parts - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long attach_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {

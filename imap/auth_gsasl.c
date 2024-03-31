@@ -58,7 +58,7 @@ enum ImapAuthRes imap_auth_gsasl(struct ImapAccountData *adata, const char *meth
 
   if (mutt_gsasl_client_new(adata->conn, chosen_mech, &gsasl_session) < 0)
   {
-    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection.\n");
+    mutt_debug(LL_DEBUG1, "Error allocating GSASL connection\n");
     return IMAP_AUTH_UNAVAIL;
   }
 

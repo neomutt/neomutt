@@ -35,7 +35,9 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
+#ifdef USE_SASL_CYRUS
 #include "conn/lib.h"
+#endif
 
 /**
  * pop_auth_validator - Validate the "pop_authenticators" config variable - Implements ConfigDef::validator() - @ingroup cfg_def_validator

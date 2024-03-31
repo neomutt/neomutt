@@ -140,7 +140,7 @@ notmuch_database_t *nm_db_do_open(const char *filename, bool writable, bool verb
     if ((st == NOTMUCH_STATUS_NO_CONFIG) && !mutt_str_equal(config_file, ""))
     {
       mutt_debug(LL_DEBUG1, "nm: Could not find notmuch configuration file: %s\n", config_file);
-      mutt_debug(LL_DEBUG1, "nm: Attempting to open notmuch db without configuration file.\n");
+      mutt_debug(LL_DEBUG1, "nm: Attempting to open notmuch db without configuration file\n");
 
       FREE(&msg);
 

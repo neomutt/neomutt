@@ -111,7 +111,7 @@ static const struct Mapping AliasHelp[] = {
 };
 
 /**
- * alias_a - Alias: Alias name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * alias_a - Alias: Alias name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void alias_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -124,7 +124,7 @@ void alias_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * alias_c - Alias: Comment - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * alias_c - Alias: Comment - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void alias_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -137,7 +137,7 @@ void alias_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * alias_f_num - Alias: Flags - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * alias_f_num - Alias: Flags - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long alias_f_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -146,7 +146,7 @@ long alias_f_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
 }
 
 /**
- * alias_f - Alias: Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * alias_f - Alias: Flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void alias_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -159,7 +159,7 @@ void alias_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * alias_n_num - Alias: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * alias_n_num - Alias: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long alias_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -169,7 +169,7 @@ long alias_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
 }
 
 /**
- * alias_r - Alias: Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * alias_r - Alias: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void alias_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -181,7 +181,7 @@ void alias_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * alias_t_num - Alias: Tagged char - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * alias_t_num - Alias: Tagged char - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long alias_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -190,7 +190,7 @@ long alias_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
 }
 
 /**
- * alias_t - Alias: Tagged char - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * alias_t - Alias: Tagged char - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void alias_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -203,7 +203,7 @@ void alias_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * alias_Y - Alias: Tags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * alias_Y - Alias: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void alias_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)

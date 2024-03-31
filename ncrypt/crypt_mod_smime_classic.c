@@ -35,7 +35,7 @@
 #endif
 
 /**
- * smime_class_init - Initialise smime
+ * smime_class_init - Initialise smime - Implements CryptModuleSpecs::init() - @ingroup crypto_init
  */
 static void smime_class_init(void)
 {
@@ -43,7 +43,7 @@ static void smime_class_init(void)
 }
 
 /**
- * smime_class_cleanup - Clean up smime
+ * smime_class_cleanup - Clean up smime - Implements ::CryptModuleSpecs::cleanup() - @ingroup crypto_cleanup
  */
 static void smime_class_cleanup(void)
 {

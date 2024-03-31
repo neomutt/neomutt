@@ -112,7 +112,7 @@ static const struct Mapping AutocryptHelp[] = {
 };
 
 /**
- * autocrypt_a - Autocrypt: Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * autocrypt_a - Autocrypt: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_a(const struct ExpandoNode *node, void *data,
                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -123,7 +123,7 @@ void autocrypt_a(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_k - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * autocrypt_k - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_k(const struct ExpandoNode *node, void *data,
                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -135,7 +135,7 @@ void autocrypt_k(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_n_num - Autocrypt: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * autocrypt_n_num - Autocrypt: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long autocrypt_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -145,7 +145,7 @@ long autocrypt_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags
 }
 
 /**
- * autocrypt_p - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * autocrypt_p - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_p(const struct ExpandoNode *node, void *data,
                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -168,7 +168,7 @@ void autocrypt_p(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_s - Autocrypt: Status flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * autocrypt_s - Autocrypt: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_s(const struct ExpandoNode *node, void *data,
                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)

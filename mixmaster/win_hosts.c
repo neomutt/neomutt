@@ -108,7 +108,7 @@ static const char *mix_format_caps(const struct Remailer *r)
 }
 
 /**
- * mix_a - Mixmaster: Email address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * mix_a - Mixmaster: Email address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void mix_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
            int max_cols, struct Buffer *buf)
@@ -120,7 +120,7 @@ void mix_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * mix_c - Mixmaster: Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * mix_c - Mixmaster: Capabilities - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void mix_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
            int max_cols, struct Buffer *buf)
@@ -132,7 +132,7 @@ void mix_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * mix_n_num - Mixmaster: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * mix_n_num - Mixmaster: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long mix_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -142,7 +142,7 @@ long mix_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags
 }
 
 /**
- * mix_s - Mixmaster: Short name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * mix_s - Mixmaster: Short name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void mix_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
            int max_cols, struct Buffer *buf)

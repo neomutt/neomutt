@@ -421,7 +421,7 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
 }
 
 /**
- * complete_command - Complete a NeoMutt Command - Implements ::complete_function_t - @ingroup complete_api
+ * complete_command - Complete a NeoMutt Command - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 int complete_command(struct EnterWindowData *wdata, int op)
 {
@@ -446,7 +446,7 @@ int complete_command(struct EnterWindowData *wdata, int op)
 }
 
 /**
- * complete_label - Complete a label - Implements ::complete_function_t - @ingroup complete_api
+ * complete_label - Complete a label - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 int complete_label(struct EnterWindowData *wdata, int op)
 {

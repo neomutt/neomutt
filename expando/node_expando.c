@@ -58,7 +58,7 @@ struct NodeExpandoPrivate *node_expando_private_new(void)
 }
 
 /**
- * node_expando_private_free - Free Expando private data
+ * node_expando_private_free - Free Expando private data - Implements ExpandoNode::ndata_free()
  * @param ptr Data to free
  */
 void node_expando_private_free(void **ptr)
@@ -334,7 +334,7 @@ void add_color(struct Buffer *buf, enum ColorId cid)
 }
 
 /**
- * node_expando_render - Render an Expando Node - Implements ExpandoNode::render - @ingroup expando_render
+ * node_expando_render - Render an Expando Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_expando_render(const struct ExpandoNode *node,
                         const struct ExpandoRenderData *rdata, struct Buffer *buf,

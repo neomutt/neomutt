@@ -79,7 +79,7 @@ struct MenuStatusLineData
 };
 
 /**
- * status_r - Status: Modified/read-only flag - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_r - Status: Modified/read-only flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -112,7 +112,7 @@ void status_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_D - Status: Description of the mailbox - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_D - Status: Description of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -133,7 +133,7 @@ void status_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_f - Status: pathname of the mailbox - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_f - Status: pathname of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -167,7 +167,7 @@ void status_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_M_num - Status: Number of messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_M_num - Status: Number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_M_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -179,7 +179,7 @@ long status_M_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_m_num - Status: Number of messages in the mailbox - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_m_num - Status: Number of messages in the mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -191,7 +191,7 @@ long status_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_n_num - Status: Number of new messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_n_num - Status: Number of new messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -203,7 +203,7 @@ long status_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_o_num - Status: Number of old messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_o_num - Status: Number of old messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_o_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -215,7 +215,7 @@ long status_o_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_d_num - Status: Number of deleted messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_d_num - Status: Number of deleted messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -227,7 +227,7 @@ long status_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_F_num - Status: Number of flagged messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_F_num - Status: Number of flagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_F_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -239,7 +239,7 @@ long status_F_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_t_num - Status: Number of tagged messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_t_num - Status: Number of tagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -251,7 +251,7 @@ long status_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_p_num - Status: Number of postponed messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_p_num - Status: Number of postponed messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -263,7 +263,7 @@ long status_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_b_num - Status: Number of mailboxes with new mail - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_b_num - Status: Number of mailboxes with new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_b_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -275,7 +275,7 @@ long status_b_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_l_num - Status: Size of the current mailbox - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_l_num - Status: Size of the current mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -289,7 +289,7 @@ long status_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_l - Status: Size of the current mailbox - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_l - Status: Size of the current mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_l(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -306,7 +306,7 @@ void status_l(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_T - Status: Current threading mode - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_T - Status: Current threading mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -317,7 +317,7 @@ void status_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_s - Status: Sorting mode - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_s - Status: Sorting mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -330,7 +330,7 @@ void status_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_S - Status: Aux sorting method - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_S - Status: Aux sorting method - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -343,7 +343,7 @@ void status_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_P_num - Status: Percentage through index - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_P_num - Status: Percentage through index - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -359,7 +359,7 @@ long status_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_P - Status: Percentage through index - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_P - Status: Percentage through index - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -394,7 +394,7 @@ void status_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_h - Status: Local hostname - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_h - Status: Local hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_h(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -404,7 +404,7 @@ void status_h(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_L_num - Status: Size of the messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_L_num - Status: Size of the messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -418,7 +418,7 @@ long status_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_L - Status: Size of the messages - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_L - Status: Size of the messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_L(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -435,7 +435,7 @@ void status_L(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_R_num - Status: Number of read messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_R_num - Status: Number of read messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_R_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -447,7 +447,7 @@ long status_R_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_u_num - Status: Number of unread messages - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * status_u_num - Status: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long status_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -459,7 +459,7 @@ long status_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
 }
 
 /**
- * status_v - Status: Version string - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_v - Status: Version string - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_v(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -469,7 +469,7 @@ void status_v(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * status_V - Status: Active limit pattern - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * status_V - Status: Active limit pattern - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_V(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)

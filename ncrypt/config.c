@@ -54,7 +54,7 @@ static const struct Mapping SortKeyMethods[] = {
 };
 
 /**
- * parse_pgp_date - Parse a Date Expando - Implements ExpandoDefinition::parse - @ingroup expando_parse_api
+ * parse_pgp_date - Parse a Date Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
  * Parse a custom Expando of the form, "%[string]".
  * The "string" will be passed to strftime().

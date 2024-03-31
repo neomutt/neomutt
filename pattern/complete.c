@@ -36,7 +36,7 @@
 #include "editor/lib.h"
 
 /**
- * complete_pattern - Complete a NeoMutt Pattern - Implements ::complete_function_t - @ingroup complete_api
+ * complete_pattern - Complete a NeoMutt Pattern - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
 int complete_pattern(struct EnterWindowData *wdata, int op)
 {

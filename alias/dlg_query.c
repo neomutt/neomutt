@@ -140,7 +140,7 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 }
 
 /**
- * query_a - Query: Address - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * query_a - Query: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -155,7 +155,7 @@ void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * query_c_num - Query: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * query_c_num - Query: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long query_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -165,7 +165,7 @@ long query_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
 }
 
 /**
- * query_e - Query: Extra information - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * query_e - Query: Extra information - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -178,7 +178,7 @@ void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * query_n - Query: Name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * query_n - Query: Name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -191,7 +191,7 @@ void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * query_t_num - Query: Tagged char - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * query_t_num - Query: Tagged char - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long query_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -200,7 +200,7 @@ long query_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
 }
 
 /**
- * query_t - Query: Tagged char - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * query_t - Query: Tagged char - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -213,7 +213,7 @@ void query_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * query_Y - Query: Tags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * query_Y - Query: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)

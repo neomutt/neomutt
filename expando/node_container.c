@@ -38,7 +38,7 @@
 #include "render.h"
 
 /**
- * node_container_render - Callback for a Container Node - Implements ExpandoNode::render - @ingroup expando_render
+ * node_container_render - Callback for a Container Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_container_render(const struct ExpandoNode *node,
                           const struct ExpandoRenderData *rdata, struct Buffer *buf,

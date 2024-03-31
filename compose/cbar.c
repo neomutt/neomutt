@@ -93,7 +93,7 @@ static int num_attachments(const struct ComposeAttachData *adata)
 }
 
 /**
- * compose_a_num - Compose: Number of attachments - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * compose_a_num - Compose: Number of attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long compose_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -103,7 +103,7 @@ long compose_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
 }
 
 /**
- * compose_h - Compose: Hostname - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * compose_h - Compose: Hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compose_h(const struct ExpandoNode *node, void *data,
                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -113,7 +113,7 @@ void compose_h(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * compose_l_num - Compose: Size in bytes - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * compose_l_num - Compose: Size in bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long compose_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -122,7 +122,7 @@ long compose_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
 }
 
 /**
- * compose_l - Compose: Size in bytes - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * compose_l - Compose: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compose_l(const struct ExpandoNode *node, void *data,
                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -136,7 +136,7 @@ void compose_l(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * compose_v - Compose: Version - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * compose_v - Compose: Version - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compose_v(const struct ExpandoNode *node, void *data,
                MuttFormatFlags flags, int max_cols, struct Buffer *buf)

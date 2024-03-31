@@ -918,7 +918,7 @@ void nntp_clear_cache(struct NntpAccountData *adata)
 }
 
 /**
- * nntp_a - Newsrc: Account url - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * nntp_a - Newsrc: Account url - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
             int max_cols, struct Buffer *buf)
@@ -941,7 +941,7 @@ void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * nntp_p_num - Newsrc: Port - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * nntp_p_num - Newsrc: Port - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -952,7 +952,7 @@ long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flag
 }
 
 /**
- * nntp_P_num - Newsrc: Port if specified - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * nntp_P_num - Newsrc: Port if specified - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -966,7 +966,7 @@ long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flag
 }
 
 /**
- * nntp_P - Newsrc: Port if specified - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * nntp_P - Newsrc: Port if specified - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
             int max_cols, struct Buffer *buf)
@@ -981,7 +981,7 @@ void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * nntp_s - Newsrc: News server name - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * nntp_s - Newsrc: News server name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
             int max_cols, struct Buffer *buf)
@@ -998,7 +998,7 @@ void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * nntp_S - Newsrc: Url schema - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * nntp_S - Newsrc: Url schema - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
             int max_cols, struct Buffer *buf)
@@ -1021,7 +1021,7 @@ void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
- * nntp_u - Newsrc: Username - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * nntp_u - Newsrc: Username - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
             int max_cols, struct Buffer *buf)

@@ -285,7 +285,7 @@ static char *crypt_flags(KeyFlags flags)
 }
 
 /**
- * pgp_entry_gpgme_date_num - GPGME: Date of the key - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pgp_entry_gpgme_date_num - GPGME: Date of the key - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_gpgme_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -298,7 +298,7 @@ long pgp_entry_gpgme_date_num(const struct ExpandoNode *node, void *data, MuttFo
 }
 
 /**
- * pgp_entry_gpgme_date - GPGME: Date of the key - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_date - GPGME: Date of the key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_date(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -347,7 +347,7 @@ void pgp_entry_gpgme_date(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_n_num - GPGME: Index number - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pgp_entry_gpgme_n_num - GPGME: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_gpgme_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -360,7 +360,7 @@ long pgp_entry_gpgme_n_num(const struct ExpandoNode *node, void *data, MuttForma
 }
 
 /**
- * pgp_entry_gpgme_p - GPGME: Protocol - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_p - GPGME: Protocol - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_p(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -375,7 +375,7 @@ void pgp_entry_gpgme_p(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_t - GPGME: Trust/validity - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_t - GPGME: Trust/validity - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_t(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -420,7 +420,7 @@ void pgp_entry_gpgme_t(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_u - GPGME: User id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_u - GPGME: User id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_u(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -435,7 +435,7 @@ void pgp_entry_gpgme_u(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_a - GPGME: Key Algorithm - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_a - GPGME: Key Algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_a(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -455,7 +455,7 @@ void pgp_entry_gpgme_a(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_c - GPGME: Key Capabilities - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_c - GPGME: Key Capabilities - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_c(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -470,7 +470,7 @@ void pgp_entry_gpgme_c(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_f - GPGME: Key Flags - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_f - GPGME: Key Flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_f(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -485,7 +485,7 @@ void pgp_entry_gpgme_f(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_i - GPGME: Key fingerprint - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_i - GPGME: Key fingerprint - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_i(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -502,7 +502,7 @@ void pgp_entry_gpgme_i(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_k - GPGME: Key id - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ * pgp_entry_gpgme_k - GPGME: Key id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void pgp_entry_gpgme_k(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -519,7 +519,7 @@ void pgp_entry_gpgme_k(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_entry_gpgme_l_num - GPGME: Key length - Implements ExpandoRenderData::get_number - @ingroup expando_get_number_api
+ * pgp_entry_gpgme_l_num - GPGME: Key length - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long pgp_entry_gpgme_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
