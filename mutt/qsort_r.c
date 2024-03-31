@@ -30,10 +30,10 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include "mutt/lib.h"
 #include "qsort_r.h"
 
 #if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)
-#include <assert.h>
 /// Original comparator in fallback implementation
 static sort_t GlobalCompar = NULL;
 /// Original opaque data in fallback implementation
@@ -74,7 +74,7 @@ void mutt_qsort_r(void *base, size_t nmemb, size_t size, sort_t compar, void *sd
   qsort_r(base, nmemb, size, compar, sdata);
 #else
   /* This fallback is not re-entrant. */
-  assert(!GlobalCompar && !GlobalData);
+  ASSERT(!GlobalCompar && !GlobalData);
   GlobalCompar = compar;
   GlobalData = sdata;
   qsort(base, nmemb, size, relay_compar);

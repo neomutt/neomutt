@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
@@ -753,7 +752,7 @@ static int compare_threads(const void *a, const void *b, void *sdata)
   const struct MuttThread *ta = *(struct MuttThread const *const *) a;
   const struct MuttThread *tb = *(struct MuttThread const *const *) b;
   const struct ThreadsContext *tctx = sdata;
-  assert(ta->parent == tb->parent);
+  ASSERT(ta->parent == tb->parent);
 
   /* If c_sort ties, remember we are building the thread array in
    * reverse from the index the mails had in the mailbox.  */
@@ -797,8 +796,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
   if ((c_sort & SORT_MASK) == SORT_THREADS)
   {
-    assert(!(c_sort & SORT_REVERSE) != reverse);
-    assert(cs_subset_enum(NeoMutt->sub, "use_threads") == UT_UNSET);
+    ASSERT(!(c_sort & SORT_REVERSE) != reverse);
+    ASSERT(cs_subset_enum(NeoMutt->sub, "use_threads") == UT_UNSET);
     c_sort = c_sort_aux;
   }
   c_sort ^= SORT_REVERSE;
@@ -1043,7 +1042,7 @@ void mutt_sort_threads(struct ThreadsContext *tctx, bool init)
   struct MuttThread top = { 0 };
   struct ListNode *ref = NULL;
 
-  assert(m->msg_count > 0);
+  ASSERT(m->msg_count > 0);
   if (!tctx->hash)
     init = true;
 

@@ -29,7 +29,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <sys/stat.h>
 #include "config/lib.h"
 #include "email/lib.h"
@@ -298,7 +297,7 @@ static struct EmailGarbageCollector GC = { 0 };
  */
 void mailbox_gc_add(struct Email *e)
 {
-  assert(e);
+  ASSERT(e);
   if (GC.idx == mutt_array_size(GC.arr))
   {
     mailbox_gc_run();

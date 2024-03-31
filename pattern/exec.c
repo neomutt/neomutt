@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -113,7 +112,7 @@ static void print_crypt_pattern_op_error(int op)
  */
 static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg)
 {
-  assert(msg);
+  ASSERT(msg);
 
   bool match = false;
 

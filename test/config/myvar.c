@@ -24,7 +24,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <assert.h>
 #include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -67,14 +66,14 @@ static struct ConfigDef Vars[] = {
  */
 const char *cs_subset_myvar(const struct ConfigSubset *sub, const char *name)
 {
-  assert(sub && name);
+  ASSERT(sub && name);
 
   struct HashElem *he = cs_subset_lookup(sub, name);
-  assert(he);
-  assert(DTYPE(he->type) == DT_MYVAR);
+  ASSERT(he);
+  ASSERT(DTYPE(he->type) == DT_MYVAR);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
-  assert(value != INT_MIN);
+  ASSERT(value != INT_MIN);
 
   return (const char *) value;
 }

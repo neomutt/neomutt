@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <limits.h>
 #include <stdio.h>
@@ -76,10 +75,10 @@ int node_conddate_render(const struct ExpandoNode *node,
                          const struct ExpandoRenderData *rdata, struct Buffer *buf,
                          int max_cols, void *data, MuttFormatFlags flags)
 {
-  assert(node->type == ENT_CONDDATE);
+  ASSERT(node->type == ENT_CONDDATE);
 
   const struct ExpandoRenderData *rd_match = find_get_number(rdata, node->did, node->uid);
-  assert(rd_match && "Unknown UID");
+  ASSERT(rd_match && "Unknown UID");
 
   const long t_test = rd_match->get_number(node, data, flags);
 

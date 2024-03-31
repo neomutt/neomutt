@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <stdbool.h>
 #include "node_text.h"
 #include "format.h"
@@ -44,7 +43,7 @@ static int node_text_render(const struct ExpandoNode *node,
                             const struct ExpandoRenderData *rdata, struct Buffer *buf,
                             int max_cols, void *data, MuttFormatFlags flags)
 {
-  assert(node->type == ENT_TEXT);
+  ASSERT(node->type == ENT_TEXT);
 
   const int num_bytes = node->end - node->start;
   return format_string(buf, 0, max_cols, JUSTIFY_LEFT, ' ', node->start, num_bytes, false);

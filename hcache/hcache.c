@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <errno.h>
 #include <limits.h>
 #include <stdbool.h>
@@ -235,7 +234,7 @@ static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off,
   d = serial_dump_uint32_t((uidvalidity != 0) ? uidvalidity : mutt_date_now(), d, off);
   d = serial_dump_int(hc->crc, d, off);
 
-  assert((size_t) *off == header_size());
+  ASSERT((size_t) *off == header_size());
 
   uint32_t packed = email_pack_flags(e);
   d = serial_dump_uint32_t(packed, d, off);
@@ -583,7 +582,7 @@ struct HCacheEntry hcache_fetch_email(struct HeaderCache *hc, const char *key,
   int off = 0;
   serial_restore_uint32_t(&hce.uidvalidity, data, &off);
   serial_restore_int(&hce.crc, data, &off);
-  assert((size_t) off == hlen);
+  ASSERT((size_t) off == hlen);
   if ((hce.crc != hc->crc) || ((uidvalidity != 0) && (uidvalidity != hce.uidvalidity)))
   {
     goto end;

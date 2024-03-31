@@ -28,7 +28,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <ctype.h>
 #include <limits.h>
 #include <stdio.h>
@@ -333,7 +332,7 @@ struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **p
  */
 void add_color(struct Buffer *buf, enum ColorId cid)
 {
-  assert(cid < MT_COLOR_MAX);
+  ASSERT(cid < MT_COLOR_MAX);
 
   buf_addch(buf, MUTT_SPECIAL_INDEX);
   buf_addch(buf, cid);
@@ -346,7 +345,7 @@ int node_expando_render(const struct ExpandoNode *node,
                         const struct ExpandoRenderData *rdata, struct Buffer *buf,
                         int max_cols, void *data, MuttFormatFlags flags)
 {
-  assert(node->type == ENT_EXPANDO);
+  ASSERT(node->type == ENT_EXPANDO);
 
   struct Buffer *buf_expando = buf_pool_get();
 
@@ -358,7 +357,7 @@ int node_expando_render(const struct ExpandoNode *node,
   else
   {
     rd_match = find_get_number(rdata, node->did, node->uid);
-    assert(rd_match && "Unknown UID");
+    ASSERT(rd_match && "Unknown UID");
 
     const long num = rd_match->get_number(node, data, flags);
     buf_printf(buf_expando, "%ld", num);

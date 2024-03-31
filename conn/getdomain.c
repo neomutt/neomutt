@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <netdb.h>
 #include <string.h>
 #include <sys/socket.h>
@@ -51,8 +50,8 @@
  */
 static struct addrinfo *mutt_getaddrinfo_a(const char *node, const struct addrinfo *hints)
 {
-  assert(node);
-  assert(hints);
+  ASSERT(node);
+  ASSERT(hints);
   struct addrinfo *result = NULL;
 
   /* Allow 0.1 seconds to get the FQDN (fully-qualified domain name).
@@ -102,8 +101,8 @@ static struct addrinfo *mutt_getaddrinfo_a(const char *node, const struct addrin
  */
 static struct addrinfo *mutt_getaddrinfo(const char *node, const struct addrinfo *hints)
 {
-  assert(node);
-  assert(hints);
+  ASSERT(node);
+  ASSERT(hints);
   struct addrinfo *result = NULL;
   mutt_debug(LL_DEBUG3, "before getaddrinfo\n");
   int rc = getaddrinfo(node, NULL, hints, &result);
@@ -124,7 +123,7 @@ static struct addrinfo *mutt_getaddrinfo(const char *node, const struct addrinfo
  */
 int getdnsdomainname(struct Buffer *result)
 {
-  assert(result);
+  ASSERT(result);
   int rc = -1;
 
 #if defined(HAVE_GETADDRINFO) || defined(HAVE_GETADDRINFO_A)

@@ -74,7 +74,6 @@
  */
 
 #include "config.h"
-#include <assert.h>
 #include <dirent.h>
 #include <errno.h>
 #include <grp.h>
@@ -226,7 +225,7 @@ void folder_date(const struct ExpandoNode *node, void *data,
     start++;
     len--;
   }
-  assert(len < sizeof(tmp2));
+  ASSERT(len < sizeof(tmp2));
   mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
 
   if (use_c_locale)
