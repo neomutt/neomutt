@@ -1109,10 +1109,6 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
     {
       const bool display = (state->flags & STATE_DISPLAY);
 
-      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-      if (display && c_weed && mutt_matches_ignore("subject"))
-        return 0;
-
       state_mark_protected_header(state);
       const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
       int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
