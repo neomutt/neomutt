@@ -340,6 +340,7 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "W",  "organization",        ED_ENVELOPE, ED_ENV_ORGANIZATION,        E_TYPE_STRING, NULL },
   { "x",  "x-comment-to",        ED_ENVELOPE, ED_ENV_X_COMMENT_TO,        E_TYPE_STRING, NULL },
   { "X",  "attachment-count",    ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    E_TYPE_NUMBER, NULL },
+  { "X@", "attachment-symbol",   ED_EMAIL,    ED_EMA_ATTACHMENT_SYMBOL,   E_TYPE_STRING, NULL },
   { "y",  "x-label",             ED_ENVELOPE, ED_ENV_X_LABEL,             E_TYPE_STRING, NULL },
   { "Y",  "thread-x-label",      ED_ENVELOPE, ED_ENV_THREAD_X_LABEL,      E_TYPE_STRING, NULL },
   { "Z",  "combined-flags",      ED_EMAIL,    ED_EMA_COMBINED_FLAGS,      E_TYPE_STRING, NULL },

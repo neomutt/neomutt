@@ -137,6 +137,7 @@ ARRAY_HEAD(EmailArray, struct Email *);
 enum ExpandoDataEmail
 {
   ED_EMA_ATTACHMENT_COUNT = 1, ///< Email, mutt_count_body_parts()
+  ED_EMA_ATTACHMENT_SYMBOL,    ///< Email, mutt_count_body_parts()
   ED_EMA_BODY_CHARACTERS,      ///< Body.length
   ED_EMA_COMBINED_FLAGS,       ///< Email.read, Email.old, thread_is_new(), ...
   ED_EMA_CRYPTO_FLAGS,         ///< Email.security, #SecurityFlags

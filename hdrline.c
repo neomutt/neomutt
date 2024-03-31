@@ -1504,6 +1504,31 @@ long index_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
 }
 
 /**
+ * index_Xat - Index: Attachment symbol - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
+ */
+void index_Xat(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  int num = 0;
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (e)
+  {
+    struct Mailbox *m = hfi->mailbox;
+
+    struct Message *msg = mx_msg_open(m, e);
+    if (msg)
+    {
+      num = mutt_count_body_parts(m, e, msg->fp);
+      mx_msg_close(m, &msg);
+    }
+  }
+
+  const char *s = (num > 0 ? "@" : " ");
+  buf_strcpy(buf, s);
+}
+
+/**
  * index_y - Index: X-Label - Implements ExpandoRenderData::get_string - @ingroup expando_get_string_api
  */
 void index_y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
@@ -1861,6 +1886,7 @@ const struct ExpandoRenderData IndexRenderData[] = {
   { ED_ENVELOPE, ED_ENV_FIRST_NAME,          index_v,               NULL },
   { ED_ENVELOPE, ED_ENV_ORGANIZATION,        index_W,               NULL },
   { ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    NULL,                  index_X_num },
+  { ED_EMAIL,    ED_EMA_ATTACHMENT_SYMBOL,   index_Xat,             NULL },
   { ED_ENVELOPE, ED_ENV_X_COMMENT_TO,        index_x,               NULL },
   { ED_ENVELOPE, ED_ENV_THREAD_X_LABEL,      index_Y,               NULL },
   { ED_ENVELOPE, ED_ENV_X_LABEL,             index_y,               NULL },

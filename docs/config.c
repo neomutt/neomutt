@@ -2153,6 +2153,7 @@
 ** .dt %x .dd "X-Comment-To:" field (if present and compiled with NNTP support)
 ** .dt %X .dd Number of MIME attachments
 **            (please see the "$attachments" section for possible speed effects)
+** .dt %X@ .dd Display '@' character if MIME attachments
 ** .dt %y .dd "X-Label:" field, if present
 ** .dt %Y .dd "X-Label:" field, if present, and \fI(1)\fP not at part of a thread tree,
 **            \fI(2)\fP at the top of a thread, or \fI(3)\fP "X-Label:" is different from
