@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include "buffer.h"
 #include "queue.h"
 
 /**
@@ -58,5 +59,6 @@ struct ListNode *mutt_list_insert_head (struct ListHead *h, char *s);
 struct ListNode *mutt_list_insert_tail (struct ListHead *h, char *s);
 bool             mutt_list_match       (const char *s, struct ListHead *h);
 size_t           mutt_list_str_split   (struct ListHead *head, const char *src, char sep);
+size_t           mutt_list_write       (const struct ListHead *h, struct Buffer *buf);
 
 #endif /* MUTT_MUTT_LIST_H */
