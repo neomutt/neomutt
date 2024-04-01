@@ -997,13 +997,8 @@ int mutt_fetch_recips(struct Envelope *out, struct Envelope *in,
  */
 static void add_references(struct ListHead *head, struct Envelope *env)
 {
-  struct ListNode *np = NULL;
-
   struct ListHead *src = STAILQ_EMPTY(&env->references) ? &env->in_reply_to : &env->references;
-  STAILQ_FOREACH(np, src, entries)
-  {
-    mutt_list_insert_tail(head, mutt_str_dup(np->data));
-  }
+  mutt_list_copy_tail(head, src);
 }
 
 /**

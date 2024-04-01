@@ -48,6 +48,7 @@ STAILQ_HEAD(ListHead, ListNode);
 typedef void (*list_free_t)(void **ptr);
 
 void             mutt_list_clear       (struct ListHead *h);
+void             mutt_list_copy_tail   (struct ListHead *dst, const struct ListHead *src);
 bool             mutt_list_equal       (const struct ListHead *ah, const struct ListHead *bh);
 struct ListNode *mutt_list_find        (const struct ListHead *h, const char *data);
 void             mutt_list_free        (struct ListHead *h);

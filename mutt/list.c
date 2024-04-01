@@ -265,3 +265,18 @@ size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
 
   return count;
 }
+
+/**
+ * mutt_list_copy_tail - Copy a list into another list
+ * @param dst   Destination list
+ * @param src   Source list
+ */
+void mutt_list_copy_tail(struct ListHead *dst, const struct ListHead *src)
+{
+  const struct ListNode *np = NULL;
+
+  STAILQ_FOREACH(np, src, entries)
+  {
+    mutt_list_insert_tail(dst, mutt_str_dup(np->data));
+  }
+}
