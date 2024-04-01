@@ -1123,13 +1123,13 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
+  const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NO_FLAGS;
 
   if (b_email->mime_headers->subject &&
       (!display || !c_weed || !mutt_matches_ignore("subject")))
   {
-    mutt_write_one_header(state->fp_out, "Subject",
-                          b_email->mime_headers->subject, state->prefix, wraplen,
-                          display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
+    mutt_write_one_header(state->fp_out, "Subject", b_email->mime_headers->subject,
+                          state->prefix, wraplen, chflags, NeoMutt->sub);
   }
 
 blank:
