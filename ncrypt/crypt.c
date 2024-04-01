@@ -1189,6 +1189,21 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
 
+  if (!display || !c_weed || !mutt_matches_ignore("references"))
+  {
+    buf_reset(buf);
+    mutt_list_write(&b_email->mime_headers->references, buf);
+    mutt_write_one_header(state->fp_out, "References", buf_string(buf),
+                          state->prefix, wraplen, chflags, NeoMutt->sub);
+  }
+  if (!display || !c_weed || !mutt_matches_ignore("in-reply-to"))
+  {
+    buf_reset(buf);
+    mutt_list_write(&b_email->mime_headers->in_reply_to, buf);
+    mutt_write_one_header(state->fp_out, "In-Reply-To", buf_string(buf),
+                          state->prefix, wraplen, chflags, NeoMutt->sub);
+  }
+
   buf_pool_release(&buf);
 
 blank:
