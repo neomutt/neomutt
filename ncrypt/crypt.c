@@ -279,6 +279,8 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
     mutt_addrlist_copy(&protected_headers->reply_to, &e->env->reply_to, false);
     mutt_addrlist_copy(&protected_headers->mail_followup_to, &e->env->mail_followup_to, false);
     mutt_addrlist_copy(&protected_headers->x_original_to, &e->env->x_original_to, false);
+    mutt_list_copy_tail(&protected_headers->references, &e->env->references);
+    mutt_list_copy_tail(&protected_headers->in_reply_to, &e->env->in_reply_to);
     mutt_env_to_intl(protected_headers, NULL, NULL);
     mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
 
