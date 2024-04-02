@@ -113,8 +113,9 @@ int expando_render(const struct Expando *exp, const struct ExpandoRenderData *rd
   if (!exp || !exp->tree || !rdata)
     return 0;
 
+  // Give enough space for a long command line
   if (max_cols == -1)
-    max_cols = INT_MAX;
+    max_cols = 8192;
 
   struct ExpandoNode *root = exp->tree;
   return node_tree_render(root, rdata, buf, max_cols, data, flags);

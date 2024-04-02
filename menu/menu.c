@@ -58,7 +58,7 @@ static int generic_search(struct Menu *menu, regex_t *rx, int line)
 {
   struct Buffer *buf = buf_pool_get();
 
-  menu->make_entry(menu, line, INT_MAX, buf);
+  menu->make_entry(menu, line, -1, buf);
   int rc = regexec(rx, buf->data, 0, NULL, 0);
   buf_pool_release(&buf);
 
