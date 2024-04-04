@@ -38,6 +38,7 @@
 #include "buffer.h"
 #include "charset.h"
 #include "memory.h"
+#include "pool.h"
 #include "string2.h"
 
 bool OptLocales; ///< (pseudo) set if user has valid locale definition
@@ -431,7 +432,7 @@ int mutt_mb_filter_unprintable(char **s)
   mbstate_t mbstate1 = { 0 };
   mbstate_t mbstate2 = { 0 };
 
-  struct Buffer buf = buf_make(0);
+  struct Buffer *buf = buf_pool_get();
   for (; (k = mbrtowc(&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
   {
     if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
@@ -446,9 +447,15 @@ int mutt_mb_filter_unprintable(char **s)
       continue;
     k2 = wcrtomb(scratch, wc, &mbstate2);
     scratch[k2] = '\0';
-    buf_addstr(&buf, scratch);
+    buf_addstr(buf, scratch);
   }
   FREE(s);
-  *s = buf.data ? buf.data : mutt_mem_calloc(1, 1);
+
+  if (buf_is_empty(buf))
+    *s = mutt_mem_calloc(1, 1); // Fake empty string
+  else
+    *s = buf_strdup(buf);
+
+  buf_pool_release(&buf);
   return 0;
 }
