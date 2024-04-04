@@ -47,7 +47,6 @@ void           buf_fix_dptr        (struct Buffer *buf);
 struct Buffer *buf_init            (struct Buffer *buf);
 bool           buf_is_empty        (const struct Buffer *buf);
 size_t         buf_len             (const struct Buffer *buf);
-struct Buffer  buf_make            (size_t size);
 void           buf_reset           (struct Buffer *buf);
 char *         buf_strdup          (const struct Buffer *buf);
 struct Buffer *buf_dup             (const struct Buffer *buf);

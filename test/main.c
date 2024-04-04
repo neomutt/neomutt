@@ -124,7 +124,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_join_str)                                         \
   NEOMUTT_TEST_ITEM(test_buf_len)                                              \
   NEOMUTT_TEST_ITEM(test_buf_lower)                                            \
-  NEOMUTT_TEST_ITEM(test_buf_make)                                             \
   NEOMUTT_TEST_ITEM(test_buf_new)                                              \
   NEOMUTT_TEST_ITEM(test_buf_pool_cleanup)                                     \
   NEOMUTT_TEST_ITEM(test_buf_pool_get)                                         \
