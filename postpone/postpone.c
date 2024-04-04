@@ -318,14 +318,14 @@ SecurityFlags mutt_parse_crypt_hdr(const char *p, bool set_empty_signas, Securit
   /* the cryptalg field must not be empty */
   if (((WithCrypto & APPLICATION_SMIME) != 0) && *smime_cryptalg)
   {
-    struct Buffer errmsg = buf_make(0);
+    struct Buffer *errmsg = buf_pool_get();
     int rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                      smime_cryptalg, &errmsg);
+                                      smime_cryptalg, errmsg);
 
-    if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(&errmsg))
-      mutt_error("%s", buf_string(&errmsg));
+    if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(errmsg))
+      mutt_error("%s", buf_string(errmsg));
 
-    buf_dealloc(&errmsg);
+    buf_pool_release(&errmsg);
   }
 
   /* Set {Smime,Pgp}SignAs, if desired. */

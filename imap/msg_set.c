@@ -133,7 +133,7 @@ int imap_make_msg_set(struct UidArray *uida, struct Buffer *buf, int *pos)
 int imap_exec_msg_set(struct ImapAccountData *adata, const char *pre,
                       const char *post, struct UidArray *uida)
 {
-  struct Buffer cmd = buf_make(ImapMaxCmdlen);
+  struct Buffer *cmd = buf_pool_get();
 
   int count = 0;
   int pos = 0;
@@ -141,13 +141,13 @@ int imap_exec_msg_set(struct ImapAccountData *adata, const char *pre,
 
   do
   {
-    buf_reset(&cmd);
-    buf_add_printf(&cmd, "%s ", pre);
-    rc = imap_make_msg_set(uida, &cmd, &pos);
+    buf_reset(cmd);
+    buf_add_printf(cmd, "%s ", pre);
+    rc = imap_make_msg_set(uida, cmd, &pos);
     if (rc > 0)
     {
-      buf_add_printf(&cmd, " %s", post);
-      if (imap_exec(adata, buf_string(&cmd), IMAP_CMD_QUEUE) != IMAP_EXEC_SUCCESS)
+      buf_add_printf(cmd, " %s", post);
+      if (imap_exec(adata, buf_string(cmd), IMAP_CMD_QUEUE) != IMAP_EXEC_SUCCESS)
       {
         rc = -1;
         goto out;
@@ -159,6 +159,6 @@ int imap_exec_msg_set(struct ImapAccountData *adata, const char *pre,
   rc = count;
 
 out:
-  buf_dealloc(&cmd);
+  buf_pool_release(&cmd);
   return rc;
 }

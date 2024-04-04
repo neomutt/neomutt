@@ -217,12 +217,12 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
       pbuf++;
     match_all = mutt_str_equal(pbuf, "~A");
 
-    struct Buffer err = buf_make(0);
-    pat = mutt_pattern_comp(NULL, menu, buf->data, MUTT_PC_FULL_MSG, &err);
+    struct Buffer *err = buf_pool_get();
+    pat = mutt_pattern_comp(NULL, menu, buf->data, MUTT_PC_FULL_MSG, err);
     if (!pat)
     {
-      mutt_error("%s", buf_string(&err));
-      buf_dealloc(&err);
+      mutt_error("%s", buf_string(err));
+      buf_pool_release(&err);
       goto bail;
     }
   }

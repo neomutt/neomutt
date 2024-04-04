@@ -1817,7 +1817,7 @@ cleanup:
  */
 static struct Body *smime_handle_entity(struct Body *b, struct State *state, FILE *fp_out_file)
 {
-  struct Buffer tmpfname = buf_make(0);
+  struct Buffer *tmpfname = buf_pool_get();
   FILE *fp_smime_out = NULL, *fp_smime_in = NULL, *fp_smime_err = NULL;
   FILE *fp_tmp = NULL, *fp_out = NULL;
   struct Body *p = NULL;
@@ -1842,11 +1842,11 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
     goto cleanup;
   }
 
-  buf_mktemp(&tmpfname);
-  fp_tmp = mutt_file_fopen(buf_string(&tmpfname), "w+");
+  buf_mktemp(tmpfname);
+  fp_tmp = mutt_file_fopen(buf_string(tmpfname), "w+");
   if (!fp_tmp)
   {
-    mutt_perror("%s", buf_string(&tmpfname));
+    mutt_perror("%s", buf_string(tmpfname));
     goto cleanup;
   }
 
@@ -1862,9 +1862,9 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
 
   if ((type & SEC_ENCRYPT) &&
       ((pid = smime_invoke_decrypt(&fp_smime_in, NULL, NULL, -1, fileno(fp_smime_out),
-                                   fileno(fp_smime_err), buf_string(&tmpfname))) == -1))
+                                   fileno(fp_smime_err), buf_string(tmpfname))) == -1))
   {
-    mutt_file_unlink(buf_string(&tmpfname));
+    mutt_file_unlink(buf_string(tmpfname));
     if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
@@ -1874,9 +1874,9 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   else if ((type & SEC_SIGNOPAQUE) &&
            ((pid = smime_invoke_verify(&fp_smime_in, NULL, NULL, -1,
                                        fileno(fp_smime_out), fileno(fp_smime_err), NULL,
-                                       buf_string(&tmpfname), SEC_SIGNOPAQUE)) == -1))
+                                       buf_string(tmpfname), SEC_SIGNOPAQUE)) == -1))
   {
-    mutt_file_unlink(buf_string(&tmpfname));
+    mutt_file_unlink(buf_string(tmpfname));
     if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, _("[-- Error: unable to create OpenSSL subprocess --]\n"));
@@ -1895,7 +1895,7 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   mutt_file_fclose(&fp_smime_in);
 
   filter_wait(pid);
-  mutt_file_unlink(buf_string(&tmpfname));
+  mutt_file_unlink(buf_string(tmpfname));
 
   if (state->flags & STATE_DISPLAY)
   {
@@ -2011,7 +2011,7 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   if (!fp_out_file)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(buf_string(&tmpfname));
+    mutt_file_unlink(buf_string(tmpfname));
   }
   fp_out = NULL;
 
@@ -2046,7 +2046,7 @@ cleanup:
   mutt_file_fclose(&fp_smime_err);
   mutt_file_fclose(&fp_tmp);
   mutt_file_fclose(&fp_out);
-  buf_dealloc(&tmpfname);
+  buf_pool_release(&tmpfname);
   return p;
 }
 
@@ -2240,7 +2240,7 @@ SecurityFlags smime_class_send_menu(struct Email *e)
         e->security |= SEC_ENCRYPT;
         do
         {
-          struct Buffer errmsg = buf_make(0);
+          struct Buffer *errmsg = buf_pool_get();
           int rc = CSR_SUCCESS;
           switch (mw_multi_choice(_("Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"),
                                   // L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
@@ -2253,11 +2253,11 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               {
                 case 1:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "des", &errmsg);
+                                                "des", errmsg);
                   break;
                 case 2:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "des3", &errmsg);
+                                                "des3", errmsg);
                   break;
               }
               break;
@@ -2269,15 +2269,15 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               {
                 case 1:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "rc2-40", &errmsg);
+                                                "rc2-40", errmsg);
                   break;
                 case 2:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "rc2-64", &errmsg);
+                                                "rc2-64", errmsg);
                   break;
                 case 3:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "rc2-128", &errmsg);
+                                                "rc2-128", errmsg);
                   break;
               }
               break;
@@ -2289,22 +2289,21 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               {
                 case 1:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "aes128", &errmsg);
+                                                "aes128", errmsg);
                   break;
                 case 2:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "aes192", &errmsg);
+                                                "aes192", errmsg);
                   break;
                 case 3:
                   rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                                "aes256", &errmsg);
+                                                "aes256", errmsg);
                   break;
               }
               break;
 
             case 4:
-              rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with",
-                                            NULL, &errmsg);
+              rc = cs_subset_str_string_set(NeoMutt->sub, "smime_encrypt_with", NULL, errmsg);
               /* (c)lear */
               FALLTHROUGH;
 
@@ -2313,10 +2312,10 @@ SecurityFlags smime_class_send_menu(struct Email *e)
               break;
           }
 
-          if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(&errmsg))
-            mutt_error("%s", buf_string(&errmsg));
+          if ((CSR_RESULT(rc) != CSR_SUCCESS) && !buf_is_empty(errmsg))
+            mutt_error("%s", buf_string(errmsg));
 
-          buf_dealloc(&errmsg);
+          buf_pool_release(&errmsg);
         } while (choice == -1);
         break;
       }

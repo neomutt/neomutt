@@ -257,7 +257,7 @@ static void transform_to_7bit(struct Body *b, FILE *fp_in, struct ConfigSubset *
  */
 void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
 {
-  struct Buffer temp = buf_make(0);
+  struct Buffer *temp = buf_pool_get();
   FILE *fp_in = NULL;
   FILE *fp_out = NULL;
   struct stat st = { 0 };
@@ -284,8 +284,8 @@ void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   }
 
   /* Avoid buffer pool due to recursion */
-  buf_mktemp(&temp);
-  fp_out = mutt_file_fopen(buf_string(&temp), "w+");
+  buf_mktemp(temp);
+  fp_out = mutt_file_fopen(buf_string(temp), "w+");
   if (!fp_out)
   {
     mutt_perror("fopen");
@@ -317,7 +317,7 @@ void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   b->d_filename = b->filename;
   if (b->filename && b->unlink)
     unlink(b->filename);
-  b->filename = buf_strdup(&temp);
+  b->filename = buf_strdup(temp);
   b->unlink = true;
   if (stat(b->filename, &st) == -1)
   {
@@ -335,10 +335,10 @@ cleanup:
   if (fp_out)
   {
     mutt_file_fclose(&fp_out);
-    mutt_file_unlink(buf_string(&temp));
+    mutt_file_unlink(buf_string(temp));
   }
 
-  buf_dealloc(&temp);
+  buf_pool_release(&temp);
 }
 
 /**

@@ -372,26 +372,27 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
 
   if (enc == ENC_QUOTED_PRINTABLE)
   {
-    struct Buffer buf = buf_make(0);
+    struct Buffer *buf = buf_pool_get();
     for (; it < end; it++)
     {
       if (*it == '_')
       {
-        buf_addch(&buf, ' ');
+        buf_addch(buf, ' ');
       }
       else if ((it[0] == '=') && (!(it[1] & ~127) && (hexval(it[1]) != -1)) &&
                (!(it[2] & ~127) && (hexval(it[2]) != -1)))
       {
-        buf_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));
+        buf_addch(buf, (hexval(it[1]) << 4) | hexval(it[2]));
         it += 2;
       }
       else
       {
-        buf_addch(&buf, *it);
+        buf_addch(buf, *it);
       }
     }
-    buf_addch(&buf, '\0');
-    return buf.data;
+    char *str = buf_strdup(buf);
+    buf_pool_release(&buf);
+    return str;
   }
   else if (enc == ENC_BASE64)
   {

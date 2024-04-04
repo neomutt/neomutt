@@ -35,7 +35,7 @@ void test_buf_init(void)
   }
 
   {
-    struct Buffer buf = buf_make(0);
+    struct Buffer buf = { 0 };
     TEST_CHECK(buf_init(&buf) != NULL);
   }
 }
