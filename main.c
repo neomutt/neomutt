@@ -333,7 +333,7 @@ static int start_curses(void)
     mutt_error(_("Error initializing terminal"));
     return 1;
   }
-  mutt_signal_init();
+
   mutt_colors_init();
   keypad(stdscr, true);
   cbreak();
