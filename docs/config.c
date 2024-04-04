@@ -2893,11 +2893,11 @@
 ** connect to news server.
 */
 
-{ "pager", D_STRING_COMMAND, "builtin" },
+{ "pager", D_STRING_COMMAND, "" },
 /*
 ** .pp
 ** This variable specifies which pager you would like to use to view
-** messages. The value "builtin" means to use the built-in pager, otherwise this
+** messages. When empty, NeoMutt will use the built-in pager, otherwise this
 ** variable should specify the pathname of the external pager you would
 ** like to use.
 ** .pp
@@ -2949,8 +2949,7 @@
 ** marked as read.  A value of 0 results in the message being marked
 ** read unconditionally; for other values, navigating to another
 ** message or exiting the pager before the timeout will leave the
-** message marked unread.  This setting is ignored if $$pager is not
-** \fBbuiltin\fP.
+** message marked unread.  This setting is ignored if $$pager is set.
 */
 
 { "pager_skip_quoted_context", DT_NUMBER, 0 },

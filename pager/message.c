@@ -472,7 +472,7 @@ int mutt_display_message(struct MuttWindow *win_index, struct IndexSharedData *s
 
     notify_crypto(shared->email, msg, cmflags);
 
-    /* Invoke the builtin pager */
+    /* Invoke the built-in pager */
     struct PagerData pdata = { 0 };
     struct PagerView pview = { &pdata };
 
