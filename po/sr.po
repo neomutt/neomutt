@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-03-29\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-04-05 03:20+0100\n"
-"PO-Revision-Date: 2024-04-05 19:52+0200\n"
+"PO-Revision-Date: 2024-04-05 20:07+0200\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -1112,7 +1112,7 @@ msgstr "Грешка. Сачувана привремена датотека: %s
 #. L10N: $compose_format default format
 #: compose/config.c:69
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
-msgstr ""
+msgstr "-- NeoMutt: Писање  [Прибл. вел. поруке: %l   Прил: %a]%>-"
 
 #: compose/dlg_compose.c:93 compose/dlg_compose.c:111
 msgid "Send"
@@ -5997,7 +5997,7 @@ msgstr "Ухваћен сигнал %d ...  Излазак\n"
 #. testing, so be sure to test with $header_cache unset.
 #: mutt_config.c:732
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
-msgstr ""
+msgstr "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 
 #. L10N: $status_format default format
 #: mutt_config.c:814
@@ -6006,16 +6006,19 @@ msgid ""
 " Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l?"
 " %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr ""
+"-%r-NeoMutt: %D [Пор:%<M?%M/>%m%<n? Нов:%n>%<o? Ста:%o>%<d? Обр:%d>%<F?"
+" Зас:%F>%<t? Озн:%t>%<p? Одл:%p>%<b? Дол:%b>%<l?"
+" %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:851
 msgid "M%<n?AIL&ail>"
-msgstr ""
+msgstr "М%<n?ЕЈЛ&ејл>"
 
 #. L10N: $ts_status_format default format
 #: mutt_config.c:855
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
-msgstr ""
+msgstr "NeoMutt %<m?са порука: %m&без порука>%<n? [%n НОВИХ]>"
 
 #: mutt_logging.c:275
 #, c-format
@@ -8308,18 +8311,18 @@ msgstr "Опција %s не сме садржати мета-знакове љ�
 #: send/config.c:170
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "Дана %d, %n написа:"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:237
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "----- Прослеђена порука од %f -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:241
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Крај прослеђене поруке -----"
 
 #: send/send.c:348
 msgid "No subject, abort?"
