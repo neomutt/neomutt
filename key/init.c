@@ -129,7 +129,7 @@ static const char *find_ext_name(const char *key)
  *
  * Determine the keycodes for ncurses extended keys and fill in the KeyNames array.
  *
- * This function must be called *after* initscr(), or tigetstr() returns -1.
+ * This function must be called *after* initscr(), or mutt_tigetstr() fails.
  * This creates a bit of a chicken-and-egg problem because km_init() is called
  * prior to start_curses().  This means that the default keybindings can't
  * include any of the extended keys because they won't be defined until later.
@@ -147,7 +147,7 @@ void init_extended_keys(void)
 
       if (keyname)
       {
-        char *s = tigetstr((char *) keyname);
+        const char *s = mutt_tigetstr((char *) keyname);
         if (s && ((long) (s) != -1))
         {
           int code = key_defined(s);

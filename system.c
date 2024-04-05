@@ -77,14 +77,8 @@ int mutt_system(const char *cmd)
   {
     act.sa_flags = 0;
 
-    /* reset signals for the child; not really needed, but... */
     mutt_sig_unblock_system(false);
-    act.sa_handler = SIG_DFL;
-    act.sa_flags = 0;
-    sigemptyset(&act.sa_mask);
-    sigaction(SIGTERM, &act, NULL);
-    sigaction(SIGTSTP, &act, NULL);
-    sigaction(SIGCONT, &act, NULL);
+    mutt_sig_reset_child_signals();
 
     execle(EXEC_SHELL, "sh", "-c", cmd, NULL, EnvList);
     _exit(127); /* execl error */

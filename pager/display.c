@@ -356,6 +356,130 @@ bool mutt_is_quote_line(char *line, regmatch_t *pmatch)
 }
 
 /**
+ * match_body_patterns - Match body patterns, e.g. color quoted
+ * @param pat      Pattern to match
+ * @param lines    Lines of text in the pager
+ * @param line_num Current line number
+ */
+static void match_body_patterns(char *pat, struct Line *lines, int line_num)
+{
+  // don't consider line endings part of the buffer for regex matching
+  bool has_nl = false;
+  size_t buflen = mutt_str_len(pat);
+  if ((buflen > 0) && (pat[buflen - 1] == '\n'))
+  {
+    has_nl = true;
+    pat[buflen - 1] = '\0';
+  }
+
+  int i = 0;
+  int offset = 0;
+  struct RegexColor *color_line = NULL;
+  struct RegexColorList *head = NULL;
+  bool found = false;
+  bool null_rx = false;
+  regmatch_t pmatch[1] = { 0 };
+
+  lines[line_num].syntax_arr_size = 0;
+  if (lines[line_num].cid == MT_COLOR_HDRDEFAULT)
+  {
+    head = regex_colors_get_list(MT_COLOR_HEADER);
+  }
+  else
+  {
+    head = regex_colors_get_list(MT_COLOR_BODY);
+  }
+  STAILQ_FOREACH(color_line, head, entries)
+  {
+    color_line->stop_matching = false;
+  }
+
+  do
+  {
+    /* if has_nl, we've stripped off a trailing newline */
+    if (offset >= (buflen - has_nl))
+      break;
+
+    if (!pat[offset])
+      break;
+
+    found = false;
+    null_rx = false;
+    STAILQ_FOREACH(color_line, head, entries)
+    {
+      if (color_line->stop_matching)
+        continue;
+
+      if ((regexec(&color_line->regex, pat + offset, 1, pmatch,
+                   ((offset != 0) ? REG_NOTBOL : 0)) != 0))
+      {
+        /* Once a regex fails to match, don't try matching it again.
+         * On very long lines this can cause a performance issue if there
+         * are other regexes that have many matches. */
+        color_line->stop_matching = true;
+        continue;
+      }
+
+      if (pmatch[0].rm_eo == pmatch[0].rm_so)
+      {
+        null_rx = true; // empty regex; don't add it, but keep looking
+        continue;
+      }
+
+      if (!found)
+      {
+        // Abort if we fill up chunks. Yes, this really happened.
+        if (lines[line_num].syntax_arr_size == SHRT_MAX)
+        {
+          null_rx = false;
+          break;
+        }
+        if (++(lines[line_num].syntax_arr_size) > 1)
+        {
+          mutt_mem_realloc(&(lines[line_num].syntax),
+                           (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
+          // Zero the new entry
+          const int index = lines[line_num].syntax_arr_size - 1;
+          struct TextSyntax *ts = &lines[line_num].syntax[index];
+          memset(ts, 0, sizeof(*ts));
+        }
+      }
+      i = lines[line_num].syntax_arr_size - 1;
+      pmatch[0].rm_so += offset;
+      pmatch[0].rm_eo += offset;
+
+      if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
+          ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
+           (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
+      {
+        (lines[line_num].syntax)[i].attr_color = &color_line->attr_color;
+        (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
+        (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
+      }
+      else if ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
+               (pmatch[0].rm_eo == (lines[line_num].syntax)[i].last))
+      {
+        (lines[line_num].syntax)[i].attr_color = merged_color_overlay(
+            (lines[line_num].syntax)[i].attr_color, &color_line->attr_color);
+        (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
+        (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
+      }
+
+      found = true;
+      null_rx = false;
+    }
+
+    if (null_rx)
+      offset++; /* avoid degenerate cases */
+    else
+      offset = (lines[line_num].syntax)[i].last;
+  } while (found || null_rx);
+
+  if (has_nl)
+    pat[buflen - 1] = '\n';
+}
+
+/**
  * resolve_types - Determine the style for a line of text
  * @param[in]  win          Window
  * @param[in]  buf          Formatted text
@@ -374,10 +498,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
                           bool *force_redraw, bool q_classify)
 {
   struct RegexColor *color_line = NULL;
-  struct RegexColorList *head = NULL;
   regmatch_t pmatch[1] = { 0 };
-  bool found;
-  bool null_rx;
   const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
@@ -494,108 +615,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   if ((lines[line_num].cid == MT_COLOR_NORMAL) || (lines[line_num].cid == MT_COLOR_QUOTED) ||
       ((lines[line_num].cid == MT_COLOR_HDRDEFAULT) && c_header_color_partial))
   {
-    size_t nl;
-
-    /* don't consider line endings part of the buffer
-     * for regex matching */
-    nl = mutt_str_len(buf);
-    if ((nl > 0) && (buf[nl - 1] == '\n'))
-      buf[nl - 1] = '\0';
-
-    i = 0;
-    offset = 0;
-    lines[line_num].syntax_arr_size = 0;
-    if (lines[line_num].cid == MT_COLOR_HDRDEFAULT)
-    {
-      head = regex_colors_get_list(MT_COLOR_HEADER);
-    }
-    else
-    {
-      head = regex_colors_get_list(MT_COLOR_BODY);
-    }
-    STAILQ_FOREACH(color_line, head, entries)
-    {
-      color_line->stop_matching = false;
-    }
-
-    do
-    {
-      if (!buf[offset])
-        break;
-
-      found = false;
-      null_rx = false;
-      STAILQ_FOREACH(color_line, head, entries)
-      {
-        if (color_line->stop_matching)
-          continue;
-
-        if ((regexec(&color_line->regex, buf + offset, 1, pmatch,
-                     ((offset != 0) ? REG_NOTBOL : 0)) != 0))
-        {
-          /* Once a regex fails to match, don't try matching it again.
-           * On very long lines this can cause a performance issue if there
-           * are other regexes that have many matches. */
-          color_line->stop_matching = true;
-          continue;
-        }
-
-        if (pmatch[0].rm_eo == pmatch[0].rm_so)
-        {
-          null_rx = true; /* empty regex; don't add it, but keep looking */
-          continue;
-        }
-
-        if (!found)
-        {
-          // Abort if we fill up chunks. Yes, this really happened.
-          if (lines[line_num].syntax_arr_size == SHRT_MAX)
-          {
-            null_rx = false;
-            break;
-          }
-          if (++(lines[line_num].syntax_arr_size) > 1)
-          {
-            mutt_mem_realloc(&(lines[line_num].syntax),
-                             (lines[line_num].syntax_arr_size) * sizeof(struct TextSyntax));
-            // Zero the new entry
-            const int index = lines[line_num].syntax_arr_size - 1;
-            struct TextSyntax *ts = &lines[line_num].syntax[index];
-            memset(ts, 0, sizeof(*ts));
-          }
-        }
-        i = lines[line_num].syntax_arr_size - 1;
-        pmatch[0].rm_so += offset;
-        pmatch[0].rm_eo += offset;
-
-        if (!found || (pmatch[0].rm_so < (lines[line_num].syntax)[i].first) ||
-            ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
-             (pmatch[0].rm_eo > (lines[line_num].syntax)[i].last)))
-        {
-          (lines[line_num].syntax)[i].attr_color = &color_line->attr_color;
-          (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
-          (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
-        }
-        else if ((pmatch[0].rm_so == (lines[line_num].syntax)[i].first) &&
-                 (pmatch[0].rm_eo == (lines[line_num].syntax)[i].last))
-        {
-          (lines[line_num].syntax)[i].attr_color = merged_color_overlay(
-              (lines[line_num].syntax)[i].attr_color, &color_line->attr_color);
-          (lines[line_num].syntax)[i].first = pmatch[0].rm_so;
-          (lines[line_num].syntax)[i].last = pmatch[0].rm_eo;
-        }
-
-        found = true;
-        null_rx = false;
-      }
-
-      if (null_rx)
-        offset++; /* avoid degenerate cases */
-      else
-        offset = (lines[line_num].syntax)[i].last;
-    } while (found || null_rx);
-    if (nl > 0)
-      buf[nl] = '\n';
+    match_body_patterns(buf, lines, line_num);
   }
 
   /* attachment patterns */
@@ -612,6 +632,8 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     offset = 0;
     lines[line_num].syntax_arr_size = 0;
     struct AttrColor *ac_attach = simple_color_get(MT_COLOR_ATTACHMENT);
+    bool found = false;
+    bool null_rx = false;
     do
     {
       if (!buf[offset])

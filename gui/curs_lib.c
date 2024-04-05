@@ -361,7 +361,7 @@ void mutt_paddstr(struct MuttWindow *win, int n, const char *s)
     {
       if (w > n)
         break;
-      mutt_window_addnstr(win, (char *) s, k);
+      mutt_addwch(win, wc);
       n -= w;
     }
   }

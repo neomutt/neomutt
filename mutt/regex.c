@@ -37,7 +37,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "config/types.h"
 #include "atoi.h"
 #include "buffer.h"
@@ -45,6 +44,7 @@
 #include "mbyte.h"
 #include "memory.h"
 #include "message.h"
+#include "pool.h"
 #include "queue.h"
 #include "regex3.h"
 #include "string2.h"
@@ -361,38 +361,24 @@ int mutt_replacelist_add(struct ReplaceList *rl, const char *pat,
 /**
  * mutt_replacelist_apply - Apply replacements to a buffer
  * @param rl     ReplaceList to apply
- * @param buf    Buffer for the result
- * @param buflen Length of the buffer
  * @param str    String to manipulate
- * @retval ptr Pointer to 'buf'
+ * @retval ptr New string with replacements
  *
- * If 'buf' is NULL, a new string will be returned.  It must be freed by the caller.
- *
- * @note This function uses a fixed size buffer of 1024 and so should
- * only be used for visual modifications, such as disp_subj.
+ * @note Caller must free the returned string
  */
-char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, const char *str)
+char *mutt_replacelist_apply(struct ReplaceList *rl, const char *str)
 {
+  if (!rl || !str || (*str == '\0'))
+    return NULL;
+
   static regmatch_t *pmatch = NULL;
   static size_t nmatch = 0;
-  static char twinbuf[2][1024];
-  int switcher = 0;
   char *p = NULL;
-  size_t cpysize, tlen;
-  char *src = NULL, *dst = NULL;
 
-  if (buf && (buflen != 0))
-    buf[0] = '\0';
+  struct Buffer *src = buf_pool_get();
+  struct Buffer *dst = buf_pool_get();
 
-  if (!rl || !str || (*str == '\0') || (buf && (buflen == 0)))
-    return buf;
-
-  twinbuf[0][0] = '\0';
-  twinbuf[1][0] = '\0';
-  src = twinbuf[switcher];
-  dst = src;
-
-  mutt_str_copy(src, str, sizeof(*twinbuf));
+  buf_strcpy(src, str);
 
   struct Replace *np = NULL;
   STAILQ_FOREACH(np, rl, entries)
@@ -404,18 +390,14 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
       nmatch = np->nmatch;
     }
 
-    if (mutt_regex_capture(np->regex, src, np->nmatch, pmatch))
+    if (mutt_regex_capture(np->regex, buf_string(src), np->nmatch, pmatch))
     {
-      tlen = 0;
-      switcher ^= 1;
-      dst = twinbuf[switcher];
+      mutt_debug(LL_DEBUG5, "%s matches %s\n", buf_string(src), np->regex->pattern);
 
-      mutt_debug(LL_DEBUG5, "%s matches %s\n", src, np->regex->pattern);
-
-      /* Copy into other twinbuf with substitutions */
+      buf_reset(dst);
       if (np->templ)
       {
-        for (p = np->templ; *p && (tlen < (sizeof(*twinbuf) - 1));)
+        for (p = np->templ; *p;)
         {
           if (*p == '%')
           {
@@ -423,49 +405,42 @@ char *mutt_replacelist_apply(struct ReplaceList *rl, char *buf, size_t buflen, c
             if (*p == 'L')
             {
               p++;
-              cpysize = MIN(pmatch[0].rm_so, (sizeof(*twinbuf) - 1) - tlen);
-              strncpy(&dst[tlen], src, cpysize);
-              tlen += cpysize;
+              buf_addstr_n(dst, buf_string(src), pmatch[0].rm_so);
             }
             else if (*p == 'R')
             {
               p++;
-              cpysize = MIN(strlen(src) - pmatch[0].rm_eo, (sizeof(*twinbuf) - 1) - tlen);
-              strncpy(&dst[tlen], &src[pmatch[0].rm_eo], cpysize);
-              tlen += cpysize;
+              buf_addstr(dst, src->data + pmatch[0].rm_eo);
             }
             else
             {
               long n = strtoul(p, &p, 10); /* get subst number */
               if (n < np->nmatch)
               {
-                while (isdigit((unsigned char) *p)) /* skip subst token */
-                  p++;
-                for (int i = pmatch[n].rm_so;
-                     (i < pmatch[n].rm_eo) && (tlen < (sizeof(*twinbuf) - 1)); i++)
-                {
-                  dst[tlen++] = src[i];
-                }
+                buf_addstr_n(dst, src->data + pmatch[n].rm_so,
+                             pmatch[n].rm_eo - pmatch[n].rm_so);
               }
+              while (isdigit((unsigned char) *p)) /* skip subst token */
+                p++;
             }
           }
           else
           {
-            dst[tlen++] = *p++;
+            buf_addch(dst, *p++);
           }
         }
       }
-      dst[tlen] = '\0';
-      mutt_debug(LL_DEBUG5, "subst %s\n", dst);
+
+      buf_strcpy(src, buf_string(dst));
+      mutt_debug(LL_DEBUG5, "subst %s\n", buf_string(dst));
     }
-    src = dst;
   }
 
-  if (buf)
-    mutt_str_copy(buf, dst, buflen);
-  else
-    buf = mutt_str_dup(dst);
-  return buf;
+  char *result = buf_strdup(src);
+
+  buf_pool_release(&src);
+  buf_pool_release(&dst);
+  return result;
 }
 
 /**

@@ -62,6 +62,9 @@ static const struct ExpandoDefinition ComposeFormatDef[] = {
  */
 static struct ConfigDef ComposeVars[] = {
   // clang-format off
+  { "compose_confirm_detach_first", DT_BOOL, true, 0, NULL,
+    "Prevent the accidental deletion of the composed message"
+  },
   { "compose_format", DT_EXPANDO, IP "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-", IP &ComposeFormatDef, NULL,
     "printf-like format string for the Compose panel's status bar"
   },

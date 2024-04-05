@@ -2234,16 +2234,12 @@ static int op_save(struct IndexSharedData *shared, struct IndexPrivateData *priv
   const int rc = mutt_save_message(shared->mailbox, &ea, save_opt, transform_opt);
   if ((rc == 0) && (save_opt == SAVE_MOVE))
   {
-    if (priv->tag_prefix)
-    {
-      menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
-    }
-    else
-    {
-      resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED);
-    }
+    resolve_email(priv, shared, RESOLVE_NEXT_UNDELETED);
   }
   ARRAY_FREE(&ea);
+
+  if (priv->tag_prefix)
+    menu_queue_redraw(priv->menu, MENU_REDRAW_INDEX);
 
   return (rc == -1) ? FR_ERROR : FR_SUCCESS;
 }
@@ -3146,6 +3142,7 @@ static const struct IndexFunction IndexFunctions[] = {
   { OP_GET_CHILDREN,                        op_get_children,                      CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_READONLY | CHECK_VISIBLE },
   { OP_GET_MESSAGE,                         op_get_message,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_READONLY },
   { OP_GET_PARENT,                          op_get_message,                       CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
+  { OP_GENERIC_SELECT_ENTRY,                op_display_message,                   CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_CHAT_REPLY,                    op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_GROUP_REPLY,                         op_group_reply,                       CHECK_ATTACH | CHECK_IN_MAILBOX | CHECK_MSGCOUNT | CHECK_VISIBLE },
   { OP_JUMP,                                op_jump,                              CHECK_IN_MAILBOX },

@@ -1007,6 +1007,8 @@ main
 
     if (subject)
     {
+      /* prevent header injection */
+      mutt_filter_commandline_header_value(subject);
       mutt_env_set_subject(e->env, subject);
     }
 

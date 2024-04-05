@@ -510,6 +510,8 @@
 ** .ts
 ** set certificate_file=~/.neomutt/certificates
 ** .te
+** .pp
+** (OpenSSL and GnuTLS only)
 */
 #endif
 
@@ -604,6 +606,19 @@
 ** .pp
 ** Note: This variable must be set before using any `color` commands.
 ** .pp
+*/
+
+{ "compose_confirm_detach_first", DT_BOOL, true },
+/*
+** .pp
+** When \fIset\fP, NeoMutt will prompt for confirmation when trying to use
+** \fC<detach-file>\fP on the first entry in the compose menu. This is to help
+** prevent irreversible loss of the typed message by accidentally hitting 'D' in
+** the menu.
+** .pp
+** Note: NeoMutt only prompts for the first entry.  It doesn't keep track of
+** which message is the typed message if the entries are reordered, or if the
+** first entry was already deleted.
 */
 
 { "compose_format", DT_STRING, "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
@@ -1173,7 +1188,7 @@
 /*
 ** .pp
 ** The file which includes random data that is used to initialize SSL
-** library functions.
+** library functions. (OpenSSL only)
 */
 #endif
 
@@ -2599,6 +2614,8 @@
 ** .dt %|X .dd pad to the end of the line with character "X"
 ** .dt %*X .dd soft-fill with character "X" as pad
 ** .de
+** .pp
+** (Mixmaster only)
 */
 
 { "mixmaster", D_STRING_COMMAND, MIXMASTER },
@@ -2607,7 +2624,7 @@
 ** This variable contains the path to the Mixmaster binary on your
 ** system.  It is used with various sets of parameters to gather the
 ** list of known remailers, and to finally send a message through the
-** mixmaster chain.
+** mixmaster chain. (Mixmaster only)
 */
 #endif
 

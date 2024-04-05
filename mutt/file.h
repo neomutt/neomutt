@@ -119,7 +119,6 @@ bool        mutt_file_map_lines(mutt_file_map_t func, void *user_data, FILE *fp,
 int         mutt_file_mkdir(const char *path, mode_t mode);
 int         mutt_file_open(const char *path, uint32_t flags);
 DIR *       mutt_file_opendir(const char *path, enum MuttOpenDirMode mode);
-size_t      mutt_file_quote_filename(const char *filename, char *buf, size_t buflen);
 char *      mutt_file_read_keyword(const char *file, char *buf, size_t buflen);
 char *      mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, ReadLineFlags flags);
 int         mutt_file_rename(const char *oldfile, const char *newfile);

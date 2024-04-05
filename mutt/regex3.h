@@ -121,7 +121,7 @@ struct RegexNode *mutt_regexlist_new   (void);
 int               mutt_regexlist_remove(struct RegexList *rl, const char *str);
 
 int             mutt_replacelist_add   (struct ReplaceList *rl, const char *pat, const char *templ, struct Buffer *err);
-char *          mutt_replacelist_apply (struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
+char *          mutt_replacelist_apply (struct ReplaceList *rl, const char *str);
 void            mutt_replacelist_free  (struct ReplaceList *rl);
 bool            mutt_replacelist_match (struct ReplaceList *rl, char *buf, size_t buflen, const char *str);
 struct Replace *mutt_replacelist_new   (void);

@@ -48,6 +48,22 @@ static const char *TSL = "\033]0;"; // Escape
 static const char *FSL = "\007"; // Ctrl-G (BEL)
 
 /**
+ * mutt_tigetstr - Get terminal capabilities
+ * @param name Name of capability
+ * @retval str Capability
+ *
+ * @note Do not free the returned string
+ */
+const char *mutt_tigetstr(const char *name)
+{
+  char *cap = tigetstr(name);
+  if (!cap || (cap == (char *) -1) || (*cap == '\0'))
+    return NULL;
+
+  return cap;
+}
+
+/**
  * mutt_ts_capability - Check terminal capabilities
  * @retval true Terminal is capable of having its title/icon set
  *
@@ -62,14 +78,14 @@ bool mutt_ts_capability(void)
 
 #ifdef HAVE_USE_EXTENDED_NAMES
   /* If tsl is set, then terminfo says that status lines work. */
-  char *tcaps = tigetstr("tsl");
-  if (tcaps && (tcaps != (char *) -1) && *tcaps)
+  const char *tcaps = mutt_tigetstr("tsl");
+  if (tcaps)
   {
     /* update the static definitions of tsl/fsl from terminfo */
     TSL = tcaps;
 
-    tcaps = tigetstr("fsl");
-    if (tcaps && (tcaps != (char *) -1) && *tcaps)
+    tcaps = mutt_tigetstr("fsl");
+    if (tcaps)
       FSL = tcaps;
 
     return true;
@@ -85,9 +101,9 @@ bool mutt_ts_capability(void)
   /* Check term types that are known to support the standard escape without
    * necessarily asserting it in terminfo. */
   const char *term = mutt_str_getenv("TERM");
-  for (const char **termp = known; termp; termp++)
+  for (const char **termp = known; *termp; termp++)
   {
-    if (term && *termp && !mutt_istr_startswith(term, *termp))
+    if (term && !mutt_istr_startswith(term, *termp))
       return true;
   }
 
