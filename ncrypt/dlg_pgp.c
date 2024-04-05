@@ -520,6 +520,14 @@ long pgp_entry_pgp_L_num(const struct ExpandoNode *node, void *data, MuttFormatF
 }
 
 /**
+ * pgp_entry_ignore - PGP: Field not supported - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void pgp_entry_ignore(const struct ExpandoNode *node, void *data,
+                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+}
+
+/**
  * pgp_make_entry - Format a PGP Key for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $pgp_entry_format
@@ -758,14 +766,17 @@ const struct ExpandoRenderData PgpEntryRenderData[] = {
   { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_pgp_date,  pgp_entry_pgp_date_num },
   { ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     pgp_entry_pgp_a,     NULL },
   { ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  pgp_entry_pgp_c,     NULL },
+  { ED_PGP_KEY, ED_PGK_KEY_FINGERPRINT,   pgp_entry_ignore,    NULL },
   { ED_PGP_KEY, ED_PGK_KEY_FLAGS,         pgp_entry_pgp_f,     NULL },
   { ED_PGP_KEY, ED_PGK_KEY_ID,            pgp_entry_pgp_k,     NULL },
   { ED_PGP_KEY, ED_PGK_KEY_LENGTH,        NULL,                pgp_entry_pgp_l_num },
   { ED_PGP_KEY, ED_PGK_PKEY_ALGORITHM,    pgp_entry_pgp_A,     NULL },
   { ED_PGP_KEY, ED_PGK_PKEY_CAPABILITIES, pgp_entry_pgp_C,     NULL },
+  { ED_PGP_KEY, ED_PGK_PKEY_FINGERPRINT,  pgp_entry_ignore,    NULL },
   { ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        pgp_entry_pgp_F,     NULL },
   { ED_PGP_KEY, ED_PGK_PKEY_ID,           pgp_entry_pgp_K,     NULL },
   { ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL,                pgp_entry_pgp_L_num },
+  { ED_PGP,     ED_PGK_PROTOCOL,          pgp_entry_ignore,    NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };

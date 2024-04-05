@@ -791,7 +791,7 @@ const struct ExpandoRenderData PgpEntryGpgmeRenderData[] = {
   { ED_PGP,     ED_PGP_TRUST,             pgp_entry_gpgme_t,     NULL },
   { ED_PGP,     ED_PGP_USER_ID,           pgp_entry_gpgme_u,     NULL },
   { ED_PGP_KEY, ED_PGK_DATE,              pgp_entry_gpgme_date,  pgp_entry_gpgme_date_num },
-  { ED_PGP_KEY, ED_PGK_PROTOCOL,          pgp_entry_gpgme_p,     NULL },
+  { ED_PGP,     ED_PGK_PROTOCOL,          pgp_entry_gpgme_p,     NULL },
   { ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     pgp_entry_gpgme_a,     NULL },
   { ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  pgp_entry_gpgme_c,     NULL },
   { ED_PGP_KEY, ED_PGK_KEY_FINGERPRINT,   pgp_entry_gpgme_i,     NULL },
