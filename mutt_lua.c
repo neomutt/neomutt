@@ -103,7 +103,7 @@ static int lua_mutt_call(lua_State *l)
   mutt_debug(LL_DEBUG2, " * lua_mutt_call()\n");
   struct Buffer *err = buf_pool_get();
   struct Buffer *token = buf_pool_get();
-  char buf[1024] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   const struct Command *cmd = NULL;
   int rc = 0;
 
@@ -122,17 +122,11 @@ static int lua_mutt_call(lua_State *l)
 
   for (int i = 2; i <= lua_gettop(l); i++)
   {
-    const char *s = lua_tostring(l, i);
-    mutt_strn_cat(buf, sizeof(buf), s, mutt_str_len(s));
-    mutt_strn_cat(buf, sizeof(buf), " ", 1);
+    buf_addstr(buf, lua_tostring(l, i));
+    buf_addch(buf, ' ');
   }
 
-  struct Buffer expn = buf_make(0);
-  expn.data = buf;
-  expn.dptr = buf;
-  expn.dsize = mutt_str_len(buf);
-
-  if (cmd->parse(token, &expn, cmd->data, err))
+  if (cmd->parse(token, buf, cmd->data, err))
   {
     luaL_error(l, "NeoMutt error: %s", buf_string(err));
     rc = -1;
@@ -145,6 +139,7 @@ static int lua_mutt_call(lua_State *l)
       rc++;
   }
 
+  buf_pool_release(&buf);
   buf_pool_release(&token);
   buf_pool_release(&err);
   return rc;
@@ -161,7 +156,7 @@ static int lua_mutt_set(lua_State *l)
   const char *param = lua_tostring(l, -2);
   mutt_debug(LL_DEBUG2, " * lua_mutt_set(%s)\n", param);
 
-  struct Buffer err = buf_make(256);
+  struct Buffer *err = buf_pool_get();
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, param);
   if (!he)
   {
@@ -171,7 +166,7 @@ static int lua_mutt_set(lua_State *l)
       struct ConfigDef my_cdef = { 0 };
       my_cdef.name = param;
       my_cdef.type = DT_MYVAR;
-      he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, &err);
+      he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, err);
       if (!he)
         return -1;
     }
@@ -200,13 +195,13 @@ static int lua_mutt_set(lua_State *l)
     {
       const char *value = lua_tostring(l, -1);
       size_t val_size = lua_rawlen(l, -1);
-      struct Buffer value_buf = buf_make(val_size);
-      buf_strcpy_n(&value_buf, value, val_size);
+      struct Buffer *value_buf = buf_pool_get();
+      buf_strcpy_n(value_buf, value, val_size);
       if (DTYPE(he->type) == DT_PATH)
-        buf_expand_path(&value_buf);
+        buf_expand_path(value_buf);
 
-      int rv = cs_subset_he_string_set(NeoMutt->sub, he, value_buf.data, &err);
-      buf_dealloc(&value_buf);
+      int rv = cs_subset_he_string_set(NeoMutt->sub, he, buf_string(value_buf), err);
+      buf_pool_release(&value_buf);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -215,7 +210,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_QUAD:
     {
       const intptr_t value = lua_tointeger(l, -1);
-      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, &err);
+      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -223,7 +218,7 @@ static int lua_mutt_set(lua_State *l)
     case DT_BOOL:
     {
       const intptr_t value = lua_toboolean(l, -1);
-      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, &err);
+      int rv = cs_subset_he_native_set(NeoMutt->sub, he, value, err);
       if (CSR_RESULT(rv) != CSR_SUCCESS)
         rc = -1;
       break;
@@ -234,7 +229,7 @@ static int lua_mutt_set(lua_State *l)
       break;
   }
 
-  buf_dealloc(&err);
+  buf_pool_release(&err);
   return rc;
 }
 
@@ -270,19 +265,19 @@ static int lua_mutt_get(lua_State *l)
     case DT_SORT:
     case DT_STRING:
     {
-      struct Buffer value = buf_make(256);
-      int rc = cs_subset_he_string_get(NeoMutt->sub, he, &value);
+      struct Buffer *value = buf_pool_get();
+      int rc = cs_subset_he_string_get(NeoMutt->sub, he, value);
       if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
-        buf_dealloc(&value);
+        buf_pool_release(&value);
         return -1;
       }
 
-      struct Buffer escaped = buf_make(256);
-      escape_string(&escaped, value.data);
-      lua_pushstring(l, escaped.data);
-      buf_dealloc(&value);
-      buf_dealloc(&escaped);
+      struct Buffer *escaped = buf_pool_get();
+      escape_string(escaped, buf_string(value));
+      lua_pushstring(l, buf_string(escaped));
+      buf_pool_release(&value);
+      buf_pool_release(&escaped);
       return 1;
     }
     case DT_QUAD:

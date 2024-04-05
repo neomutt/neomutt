@@ -46,20 +46,20 @@ static StoreHandle *store_kyotocabinet_open(const char *path)
   if (!db)
     return NULL;
 
-  struct Buffer kcdbpath = buf_make(1024);
+  struct Buffer *kcdbpath = buf_pool_get();
 
-  buf_printf(&kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
+  buf_printf(kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
 
-  if (!kcdbopen(db, buf_string(&kcdbpath), KCOWRITER | KCOCREATE))
+  if (!kcdbopen(db, buf_string(kcdbpath), KCOWRITER | KCOCREATE))
   {
     int ecode = kcdbecode(db);
     mutt_debug(LL_DEBUG2, "kcdbopen failed for %s: %s (ecode %d)\n",
-               buf_string(&kcdbpath), kcdbemsg(db), ecode);
+               buf_string(kcdbpath), kcdbemsg(db), ecode);
     kcdbdel(db);
     db = NULL;
   }
 
-  buf_dealloc(&kcdbpath);
+  buf_pool_release(&kcdbpath);
   // Return an opaque pointer
   return (StoreHandle *) db;
 }

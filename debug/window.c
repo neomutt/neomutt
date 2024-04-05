@@ -100,10 +100,10 @@ void debug_win_dump(void)
   win_dump(RootWindow, 0);
   mutt_debug(LL_DEBUG1, "\n");
 #ifdef DEBUG_SHOW_SERIALISE
-  struct Buffer buf = buf_make(1024);
-  win_serialise(RootWindow, &buf);
-  mutt_debug(LL_DEBUG1, "%s\n", buf_string(&buf));
-  buf_dealloc(&buf);
+  struct Buffer buf = buf_pool_get();
+  win_serialise(RootWindow, buf);
+  mutt_debug(LL_DEBUG1, "%s\n", buf_string(buf));
+  buf_pool_release(&buf);
 #endif
   WinFocus = NULL;
 }

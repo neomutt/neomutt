@@ -956,23 +956,20 @@ void mutt_timeout_hook(void)
 void mutt_startup_shutdown_hook(HookFlags type)
 {
   struct Hook *hook = NULL;
-  struct Buffer err = buf_make(0);
-  char buf[256] = { 0 };
-
-  err.data = buf;
-  err.dsize = sizeof(buf);
+  struct Buffer *err = buf_pool_get();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
     if (!(hook->command && (hook->type & type)))
       continue;
 
-    if (parse_rc_line_cwd(hook->command, hook->source_file, &err) == MUTT_CMD_ERROR)
+    if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
     {
-      mutt_error("%s", err.data);
-      buf_reset(&err);
+      mutt_error("%s", buf_string(err));
+      buf_reset(err);
     }
   }
+  buf_pool_release(&err);
 }
 
 /**

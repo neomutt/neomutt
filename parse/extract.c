@@ -212,8 +212,9 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       tok->dptr = pc + 1;
 
       /* read line */
-      struct Buffer expn = buf_make(0);
-      expn.data = mutt_file_read_line(NULL, &expn.dsize, fp, NULL, MUTT_RL_NO_FLAGS);
+      char *expn = NULL;
+      size_t expn_len = 0;
+      expn = mutt_file_read_line(expn, &expn_len, fp, NULL, MUTT_RL_NO_FLAGS);
       mutt_file_fclose(&fp);
       int rc = filter_wait(pid);
       if (rc != 0)
@@ -227,23 +228,22 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
        * plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to
        * the token */
-      if (expn.data)
+      if (expn)
       {
         if (qc)
         {
-          buf_addstr(dest, expn.data);
+          buf_addstr(dest, expn);
         }
         else
         {
           struct Buffer *copy = buf_pool_get();
-          buf_fix_dptr(&expn);
-          buf_copy(copy, &expn);
+          buf_strcpy(copy, expn);
           buf_addstr(copy, tok->dptr);
           buf_copy(tok, copy);
           buf_seek(tok, 0);
           buf_pool_release(&copy);
         }
-        FREE(&expn.data);
+        FREE(&expn);
       }
     }
     else if ((ch == '$') && (!qc || (qc == '"')) &&

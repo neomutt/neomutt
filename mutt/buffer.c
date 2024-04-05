@@ -66,24 +66,6 @@ struct Buffer *buf_init(struct Buffer *buf)
 }
 
 /**
- * buf_make - Make a new buffer on the stack
- * @param size Initial size
- * @retval obj Initialized buffer
- *
- * The buffer must be released using buf_dealloc
- */
-struct Buffer buf_make(size_t size)
-{
-  struct Buffer buf = { 0 };
-  if (size != 0)
-  {
-    buf.dptr = buf.data = mutt_mem_calloc(1, size);
-    buf.dsize = size;
-  }
-  return buf;
-}
-
-/**
  * buf_reset - Reset an existing Buffer
  * @param buf Buffer to reset
  *

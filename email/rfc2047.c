@@ -372,26 +372,27 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
 
   if (enc == ENC_QUOTED_PRINTABLE)
   {
-    struct Buffer buf = buf_make(0);
+    struct Buffer *buf = buf_pool_get();
     for (; it < end; it++)
     {
       if (*it == '_')
       {
-        buf_addch(&buf, ' ');
+        buf_addch(buf, ' ');
       }
       else if ((it[0] == '=') && (!(it[1] & ~127) && (hexval(it[1]) != -1)) &&
                (!(it[2] & ~127) && (hexval(it[2]) != -1)))
       {
-        buf_addch(&buf, (hexval(it[1]) << 4) | hexval(it[2]));
+        buf_addch(buf, (hexval(it[1]) << 4) | hexval(it[2]));
         it += 2;
       }
       else
       {
-        buf_addch(&buf, *it);
+        buf_addch(buf, *it);
       }
     }
-    buf_addch(&buf, '\0');
-    return buf.data;
+    char *str = buf_strdup(buf);
+    buf_pool_release(&buf);
+    return str;
   }
   else if (enc == ENC_BASE64)
   {
@@ -663,7 +664,7 @@ void rfc2047_decode(char **pd)
   if (!pd || !*pd)
     return;
 
-  struct Buffer buf = buf_make(0);      // Output buffer
+  struct Buffer *buf = buf_pool_get();  // Output buffer
   char *s = *pd;                        // Read pointer
   char *beg = NULL;                     // Begin of encoded word
   enum ContentEncoding enc = ENC_OTHER; // ENC_BASE64 or ENC_QUOTED_PRINTABLE
@@ -675,9 +676,9 @@ void rfc2047_decode(char **pd)
   /* Keep some state in case the next decoded word is using the same charset
    * and it happens to be split in the middle of a multibyte character.
    * See https://github.com/neomutt/neomutt/issues/1015 */
-  struct Buffer prev = buf_make(0); /* Previously decoded word  */
-  char *prev_charset = NULL;        /* Previously used charset                */
-  size_t prev_charsetlen = 0;       /* Length of the previously used charset  */
+  struct Buffer *prev = buf_pool_get(); /* Previously decoded word  */
+  char *prev_charset = NULL;  /* Previously used charset                */
+  size_t prev_charsetlen = 0; /* Length of the previously used charset  */
 
   const struct Slist *c_assumed_charset = cc_assumed_charset();
   const char *c_charset = cc_charset();
@@ -697,21 +698,21 @@ void rfc2047_decode(char **pd)
       }
 
       /* If we have some previously decoded text, add it now */
-      if (!buf_is_empty(&prev))
+      if (!buf_is_empty(prev))
       {
-        finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
+        finalize_chunk(buf, prev, prev_charset, prev_charsetlen);
       }
 
       /* Add non-encoded part */
       if (slist_is_empty(c_assumed_charset))
       {
-        buf_addstr_n(&buf, s, holelen);
+        buf_addstr_n(buf, s, holelen);
       }
       else
       {
         char *conv = mutt_strn_dup(s, holelen);
         mutt_ch_convert_nonmime_string(c_assumed_charset, c_charset, &conv);
-        buf_addstr(&buf, conv);
+        buf_addstr(buf, conv);
         FREE(&conv);
       }
       s += holelen;
@@ -723,18 +724,17 @@ void rfc2047_decode(char **pd)
       char *decoded = decode_word(text, textlen, enc);
       if (!decoded)
       {
-        buf_dealloc(&buf);
-        return;
+        goto done;
       }
-      if (prev.data && ((prev_charsetlen != charsetlen) ||
-                        !mutt_strn_equal(prev_charset, charset, charsetlen)))
+      if (!buf_is_empty(prev) && ((prev_charsetlen != charsetlen) ||
+                                  !mutt_strn_equal(prev_charset, charset, charsetlen)))
       {
         /* Different charset, convert the previous chunk and add it to the
          * final result */
-        finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
+        finalize_chunk(buf, prev, prev_charset, prev_charsetlen);
       }
 
-      buf_addstr(&prev, decoded);
+      buf_addstr(prev, decoded);
       FREE(&decoded);
       prev_charset = charset;
       prev_charsetlen = charsetlen;
@@ -743,14 +743,17 @@ void rfc2047_decode(char **pd)
   }
 
   /* Save the last chunk */
-  if (prev.data)
+  if (!buf_is_empty(prev))
   {
-    finalize_chunk(&buf, &prev, prev_charset, prev_charsetlen);
+    finalize_chunk(buf, prev, prev_charset, prev_charsetlen);
   }
 
-  buf_addch(&buf, '\0');
   FREE(pd);
-  *pd = buf.data;
+  *pd = buf_strdup(buf);
+
+done:
+  buf_pool_release(&buf);
+  buf_pool_release(&prev);
 }
 
 /**

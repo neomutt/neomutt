@@ -1366,7 +1366,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   if (imap_adata_find(dest, &dest_adata, &dest_mdata) < 0)
     return -1;
 
-  struct Buffer sync_cmd = buf_make(0);
+  struct Buffer *sync_cmd = buf_pool_get();
 
   /* check that the save-to folder is in the same account */
   if (!imap_account_match(&(adata->conn->account), &(dest_adata->conn->account)))
@@ -1382,7 +1382,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
       break;
     if (e->active && e->changed && e->deleted && !e->purge)
     {
-      rc = imap_sync_message_for_copy(m, e, &sync_cmd, &err_continue);
+      rc = imap_sync_message_for_copy(m, e, sync_cmd, &err_continue);
       if (rc < 0)
       {
         mutt_debug(LL_DEBUG1, "could not sync\n");
@@ -1452,7 +1452,7 @@ int imap_fast_trash(struct Mailbox *m, const char *dest)
   rc = IMAP_EXEC_SUCCESS;
 
 out:
-  buf_dealloc(&sync_cmd);
+  buf_pool_release(&sync_cmd);
   imap_mdata_free((void *) &dest_mdata);
 
   return ((rc == IMAP_EXEC_SUCCESS) ? 0 : -1);
@@ -2290,17 +2290,17 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   /* Remove old custom flags */
   if (imap_edata_get(e)->flags_remote)
   {
-    struct Buffer cmd = buf_make(128); // just a guess
-    buf_addstr(&cmd, "UID STORE ");
-    buf_addstr(&cmd, uid);
-    buf_addstr(&cmd, " -FLAGS.SILENT (");
-    buf_addstr(&cmd, imap_edata_get(e)->flags_remote);
-    buf_addstr(&cmd, ")");
+    struct Buffer *cmd = buf_pool_get();
+    buf_addstr(cmd, "UID STORE ");
+    buf_addstr(cmd, uid);
+    buf_addstr(cmd, " -FLAGS.SILENT (");
+    buf_addstr(cmd, imap_edata_get(e)->flags_remote);
+    buf_addstr(cmd, ")");
 
     /* Should we return here, or we are fine and we could
      * continue to add new flags */
-    int rc = imap_exec(adata, cmd.data, IMAP_CMD_NO_FLAGS);
-    buf_dealloc(&cmd);
+    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NO_FLAGS);
+    buf_pool_release(&cmd);
     if (rc != IMAP_EXEC_SUCCESS)
     {
       return -1;
@@ -2310,15 +2310,15 @@ static int imap_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   /* Add new custom flags */
   if (buf)
   {
-    struct Buffer cmd = buf_make(128); // just a guess
-    buf_addstr(&cmd, "UID STORE ");
-    buf_addstr(&cmd, uid);
-    buf_addstr(&cmd, " +FLAGS.SILENT (");
-    buf_addstr(&cmd, buf);
-    buf_addstr(&cmd, ")");
+    struct Buffer *cmd = buf_pool_get();
+    buf_addstr(cmd, "UID STORE ");
+    buf_addstr(cmd, uid);
+    buf_addstr(cmd, " +FLAGS.SILENT (");
+    buf_addstr(cmd, buf);
+    buf_addstr(cmd, ")");
 
-    int rc = imap_exec(adata, cmd.data, IMAP_CMD_NO_FLAGS);
-    buf_dealloc(&cmd);
+    int rc = imap_exec(adata, buf_string(cmd), IMAP_CMD_NO_FLAGS);
+    buf_pool_release(&cmd);
     if (rc != IMAP_EXEC_SUCCESS)
     {
       mutt_debug(LL_DEBUG1, "fail to add new flags\n");

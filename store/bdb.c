@@ -73,7 +73,7 @@ static struct BdbStoreData *bdb_sdata_new(void)
 {
   struct BdbStoreData *sdata = mutt_mem_calloc(1, sizeof(struct BdbStoreData));
 
-  sdata->lockfile = buf_make(128);
+  buf_alloc(&sdata->lockfile, 128);
 
   return sdata;
 }

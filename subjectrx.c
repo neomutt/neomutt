@@ -93,13 +93,14 @@ static enum CommandResult parse_unreplace_list(struct Buffer *buf, struct Buffer
 static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *s,
                                              struct ReplaceList *list, struct Buffer *err)
 {
-  struct Buffer templ = buf_make(0);
+  struct Buffer *templ = buf_pool_get();
+  int rc = MUTT_CMD_WARNING;
 
   /* First token is a regex. */
   if (!MoreArgs(s))
   {
     buf_printf(err, _("%s: too few arguments"), "subjectrx");
-    return MUTT_CMD_WARNING;
+    goto done;
   }
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
@@ -107,18 +108,21 @@ static enum CommandResult parse_replace_list(struct Buffer *buf, struct Buffer *
   if (!MoreArgs(s))
   {
     buf_printf(err, _("%s: too few arguments"), "subjectrx");
-    return MUTT_CMD_WARNING;
+    goto done;
   }
-  parse_extract_token(&templ, s, TOKEN_NO_FLAGS);
+  parse_extract_token(templ, s, TOKEN_NO_FLAGS);
 
-  if (mutt_replacelist_add(list, buf->data, templ.data, err) != 0)
+  if (mutt_replacelist_add(list, buf->data, buf_string(templ), err) != 0)
   {
-    FREE(&templ.data);
-    return MUTT_CMD_ERROR;
+    rc = MUTT_CMD_ERROR;
+    goto done;
   }
-  FREE(&templ.data);
 
-  return MUTT_CMD_SUCCESS;
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  buf_pool_release(&templ);
+  return rc;
 }
 
 /**

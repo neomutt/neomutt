@@ -822,13 +822,13 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
     return;
 
 #ifdef USE_HCACHE
-  struct Buffer file = buf_make(PATH_MAX);
-  nntp_hcache_namer(mdata->group, &file);
-  cache_expand(file.data, file.dsize, &mdata->adata->conn->account, buf_string(&file));
-  unlink(buf_string(&file));
+  struct Buffer *file = buf_pool_get();
+  nntp_hcache_namer(mdata->group, file);
+  cache_expand(file->data, file->dsize, &mdata->adata->conn->account, buf_string(file));
+  unlink(buf_string(file));
   mdata->last_cached = 0;
-  mutt_debug(LL_DEBUG2, "%s\n", buf_string(&file));
-  buf_dealloc(&file);
+  mutt_debug(LL_DEBUG2, "%s\n", buf_string(file));
+  buf_pool_release(&file);
 #endif
 
   if (!mdata->bcache)

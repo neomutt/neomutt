@@ -84,7 +84,6 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_join_str.o \
 		  test/buffer/buf_len.o \
 		  test/buffer/buf_lower.o \
-		  test/buffer/buf_make.o \
 		  test/buffer/buf_new.o \
 		  test/buffer/buf_printf.o \
 		  test/buffer/buf_reset.o \

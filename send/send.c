@@ -2120,7 +2120,7 @@ static bool abort_for_missing_attachments(const struct Body *b, struct ConfigSub
 int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfile,
                       struct Mailbox *m, struct EmailArray *ea, struct ConfigSubset *sub)
 {
-  struct Buffer fcc = buf_make(0); /* where to copy this message */
+  struct Buffer *fcc = buf_pool_get(); /* where to copy this message */
   FILE *fp_tmp = NULL;
   struct Body *pbody = NULL;
   int i;
@@ -2161,10 +2161,6 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       flags |= SEND_POSTPONED;
   }
 
-  /* Allocate the buffer due to the long lifetime, but
-   * pre-resize it to ensure there are no NULL data field issues */
-  buf_alloc(&fcc, 1024);
-
   if (flags & SEND_POSTPONED)
   {
     if (WithCrypto & APPLICATION_PGP)
@@ -2189,7 +2185,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
     if (flags == SEND_POSTPONED)
     {
-      rc = mutt_get_postponed(m, e_templ, &e_cur, &fcc);
+      rc = mutt_get_postponed(m, e_templ, &e_cur, fcc);
       if (rc < 0)
       {
         flags = SEND_POSTPONED;
@@ -2514,7 +2510,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       else if (c_edit_headers)
       {
         mutt_env_to_local(e_templ->env);
-        mutt_edit_headers(c_editor, b->filename, e_templ, &fcc);
+        mutt_edit_headers(c_editor, b->filename, e_templ, fcc);
         mutt_env_to_intl(e_templ->env, NULL, NULL);
       }
       else
@@ -2693,7 +2689,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   const enum QuadOption c_copy = cs_subset_quad(sub, "copy");
 
-  if (buf_is_empty(&fcc) && !(flags & SEND_POSTPONED_FCC) &&
+  if (buf_is_empty(fcc) && !(flags & SEND_POSTPONED_FCC) &&
       (!(flags & SEND_BATCH) || (c_copy & 0x1)))
   {
     /* set the default FCC */
@@ -2702,7 +2698,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     {
       mutt_addrlist_append(&e_templ->env->from, mutt_default_from(sub));
     }
-    mutt_select_fcc(&fcc, e_templ);
+    mutt_select_fcc(fcc, e_templ);
     if (killfrom)
     {
       mutt_addrlist_clear(&e_templ->env->from);
@@ -2717,8 +2713,8 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   {
   main_loop:
 
-    buf_pretty_mailbox(&fcc);
-    i = dlg_compose(e_templ, &fcc,
+    buf_pretty_mailbox(fcc);
+    i = dlg_compose(e_templ, fcc,
                     ((flags & SEND_NO_FREE_HEADER) ? MUTT_COMPOSE_NOFREEHEADER : 0), sub);
     if (i == -1)
     {
@@ -2731,7 +2727,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
     else if (i == 1)
     {
-      if (postpone_message(e_templ, e_cur, buf_string(&fcc), flags, sub) != 0)
+      if (postpone_message(e_templ, e_cur, buf_string(fcc), flags, sub) != 0)
         goto main_loop;
       mutt_message(_("Message postponed"));
       rc = 1;
@@ -2859,7 +2855,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
 
   const bool c_fcc_before_send = cs_subset_bool(sub, "fcc_before_send");
   if (c_fcc_before_send)
-    save_fcc(m, e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
+    save_fcc(m, e_templ, fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
   i = invoke_mta(m, e_templ, sub);
   if (i < 0)
@@ -2905,7 +2901,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   }
 
   if (!c_fcc_before_send)
-    save_fcc(m, e_templ, &fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
+    save_fcc(m, e_templ, fcc, clear_content, pgpkeylist, flags, &finalpath, sub);
 
   if (!OptNoCurses)
   {
@@ -2944,7 +2940,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
   rc = 0;
 
 cleanup:
-  buf_dealloc(&fcc);
+  buf_pool_release(&fcc);
 
   if (flags & SEND_POSTPONED)
   {
