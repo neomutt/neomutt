@@ -578,7 +578,7 @@ static struct ConfigDef MainVars[] = {
   { "include_only_first", DT_BOOL, false, 0, NULL,
     "Only include the first attachment when replying"
   },
-  { "indent_string", DT_EXPANDO, IP "> ", IP &IndexFormatDefNoPadding, NULL,
+  { "indent_string", DT_EXPANDO, IP "> ", IP IndexFormatDefNoPadding, NULL,
     "String used to indent 'reply' text"
   },
   { "index_format", DT_EXPANDO|D_NOT_EMPTY, IP "%4C %Z %{%b %d} %-15.15L (%<l?%4l&%4c>) %s", IP &IndexFormatDef, NULL,
@@ -626,7 +626,7 @@ static struct ConfigDef MainVars[] = {
   { "message_cache_dir", DT_PATH|D_PATH_DIR, 0, 0, NULL,
     "(imap/pop) Directory for the message cache"
   },
-  { "message_format", DT_EXPANDO|D_NOT_EMPTY, IP "%s", IP IndexFormatDef, NULL,
+  { "message_format", DT_EXPANDO|D_NOT_EMPTY, IP "%s", IP &IndexFormatDef, NULL,
     "printf-like format string for listing attached messages"
   },
   { "meta_key", DT_BOOL, false, 0, NULL,
