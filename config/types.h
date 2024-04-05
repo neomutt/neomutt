@@ -54,6 +54,7 @@ enum ConfigTypeField
   D_B_ON_STARTUP = 5,              ///< May only be set at startup
   D_B_NOT_EMPTY,                   ///< Empty strings are not allowed
   D_B_SENSITIVE,                   ///< Contains sensitive value, e.g. password
+  D_B_L10N_STRING,                 ///< String can be localised
 
   D_B_CHARSET_SINGLE,              ///< Flag for charset_validator to allow only one charset
   D_B_CHARSET_STRICT,              ///< Flag for charset_validator to use strict char check
@@ -78,6 +79,7 @@ enum ConfigTypeField
 #define D_ON_STARTUP               (1 << D_B_ON_STARTUP)               ///< May only be set at startup
 #define D_NOT_EMPTY                (1 << D_B_NOT_EMPTY)                ///< Empty strings are not allowed
 #define D_SENSITIVE                (1 << D_B_SENSITIVE)                ///< Contains sensitive value, e.g. password
+#define D_L10N_STRING              (1 << D_B_L10N_STRING)              ///< String can be localised
 
 #define D_CHARSET_SINGLE           (1 << D_B_CHARSET_SINGLE)           ///< Flag for charset_validator to allow only one charset
 #define D_CHARSET_STRICT           (1 << D_B_CHARSET_STRICT)           ///< Flag for charset_validator to use strict char check

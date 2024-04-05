@@ -224,6 +224,43 @@ static void reset_tilde(struct ConfigSet *cs)
   buf_pool_release(&value);
 }
 
+#ifdef ENABLE_NLS
+/**
+ * localise_config - Localise some config
+ * @param cs Config Set
+ */
+static void localise_config(struct ConfigSet *cs)
+{
+  static const char *names[] = {
+    "attribution_intro",
+    "compose_format",
+    "forward_attribution_intro",
+    "forward_attribution_trailer",
+    "reply_regex",
+    "status_format",
+    "ts_icon_format",
+    "ts_status_format",
+  };
+
+  struct Buffer *value = buf_pool_get();
+  for (size_t i = 0; i < mutt_array_size(names); i++)
+  {
+    struct HashElem *he = cs_get_elem(cs, names[i]);
+    if (!he)
+      continue;
+    buf_reset(value);
+    cs_he_initial_get(cs, he, value);
+
+    // Lookup the translation
+    const char *l10n = gettext(buf_string(value));
+
+    cs_he_initial_set(cs, he, l10n, NULL);
+    cs_he_reset(cs, he, NULL);
+  }
+  buf_pool_release(&value);
+}
+#endif
+
 /**
  * mutt_exit - Leave NeoMutt NOW
  * @param code Value to return to the calling environment
@@ -729,6 +766,9 @@ main
     goto main_exit;
 
   reset_tilde(cs);
+#ifdef ENABLE_NLS
+  localise_config(cs);
+#endif
 
   if (dfile)
   {

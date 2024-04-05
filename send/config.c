@@ -166,7 +166,8 @@ static struct ConfigDef SendVars[] = {
   { "attach_charset", DT_SLIST|D_SLIST_SEP_COLON|D_SLIST_ALLOW_EMPTY, 0, 0, charset_slist_validator,
     "When attaching files, use one of these character sets"
   },
-  { "attribution_intro", DT_EXPANDO, IP "On %d, %n wrote:", IP IndexFormatDefNoPadding, NULL,
+  // L10N: $attribution_intro default format
+  { "attribution_intro", DT_EXPANDO|D_L10N_STRING, IP N_("On %d, %n wrote:"), IP IndexFormatDefNoPadding, NULL,
     "Message to start a reply, 'On DATE, PERSON wrote:'"
   },
   { "attribution_locale", DT_STRING, 0, 0, NULL,
@@ -232,10 +233,12 @@ static struct ConfigDef SendVars[] = {
   { "forward_attachments", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Forward attachments when forwarding a message"
   },
-  { "forward_attribution_intro", DT_EXPANDO, IP "----- Forwarded message from %f -----", IP IndexFormatDefNoPadding, NULL,
+  // L10N: $forward_attribution_intro default format
+  { "forward_attribution_intro", DT_EXPANDO|D_L10N_STRING, IP N_("----- Forwarded message from %f -----"), IP IndexFormatDefNoPadding, NULL,
     "Prefix message for forwarded messages"
   },
-  { "forward_attribution_trailer", DT_EXPANDO, IP "----- End forwarded message -----", IP IndexFormatDefNoPadding, NULL,
+  // L10N: $forward_attribution_trailer default format
+  { "forward_attribution_trailer", DT_EXPANDO|D_L10N_STRING, IP N_("----- End forwarded message -----"), IP IndexFormatDefNoPadding, NULL,
     "Suffix message for forwarded messages"
   },
   { "forward_decrypt", DT_BOOL, true, 0, NULL,
