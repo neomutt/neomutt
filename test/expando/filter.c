@@ -57,31 +57,33 @@ void test_expando_filter(void)
     };
     TEST_CHECK(!check_for_pipe(NULL));
 
-    struct ExpandoNode *node = node_new();
+    struct ExpandoNode *root = node_new();
+    struct ExpandoNode *first = node_new();
     struct ExpandoNode *last = node_new();
 
-    node->next = last;
+    node_add_child(root, first);
+    node_add_child(root, last);
 
-    TEST_CHECK(!check_for_pipe(node));
+    TEST_CHECK(!check_for_pipe(root));
 
-    node->type = ENT_TEXT;
-    TEST_CHECK(!check_for_pipe(node));
+    first->type = ENT_TEXT;
+    TEST_CHECK(!check_for_pipe(root));
 
     last->type = ENT_TEXT;
-    TEST_CHECK(!check_for_pipe(node));
+    TEST_CHECK(!check_for_pipe(root));
 
     const char *str = "hello|";
     last->start = str + 5;
     last->end = str;
-    TEST_CHECK(!check_for_pipe(node));
+    TEST_CHECK(!check_for_pipe(root));
 
     last->start = str;
     last->end = str;
-    TEST_CHECK(!check_for_pipe(node));
+    TEST_CHECK(!check_for_pipe(root));
 
     last->start = str;
     last->end = str + 5;
-    TEST_CHECK(!check_for_pipe(node));
+    TEST_CHECK(!check_for_pipe(root));
 
     for (size_t i = 0; i < mutt_array_size(tests); i++)
     {
@@ -90,10 +92,10 @@ void test_expando_filter(void)
       last->start = str;
       size_t len = strlen(str);
       last->end = last->start + len;
-      TEST_CHECK(check_for_pipe(node) == tests[i].value);
+      TEST_CHECK(check_for_pipe(root) == tests[i].value);
     }
 
-    node_tree_free(&node);
+    node_free(&root);
   }
 
   // void filter_text(struct Buffer *buf);

@@ -38,16 +38,15 @@ void test_expando_complex_if_else(void)
     // clang-format on
   };
   const char *input = "if: %<l?pre %4lpost> if-else: %<l?pre %4lpost&pre %4cpost>";
-  struct ExpandoParseError err = { 0 };
-  struct ExpandoNode *root = NULL;
+  struct Buffer *err = buf_pool_get();
 
-  node_tree_parse(&root, input, TestFormatDef, &err);
+  struct Expando *exp = expando_parse(input, TestFormatDef, err);
 
-  TEST_CHECK(err.position == NULL);
-  check_node_text(get_nth_node(root, 0), "if: ");
+  TEST_CHECK(buf_is_empty(err));
+  check_node_text(node_get_child(exp->node, 0), "if: ");
 
   {
-    struct ExpandoNode *node = get_nth_node(root, 1);
+    struct ExpandoNode *node = node_get_child(exp->node, 1);
     check_node_cond(node);
 
     struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
@@ -62,17 +61,17 @@ void test_expando_complex_if_else(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
 
-    check_node_text(get_nth_node(node_true, 0), "pre ");
-    check_node_expando(get_nth_node(node_true, 1), "l", &fmt);
-    check_node_text(get_nth_node(node_true, 2), "post");
+    check_node_text(node_get_child(node_true, 0), "pre ");
+    check_node_expando(node_get_child(node_true, 1), "l", &fmt);
+    check_node_text(node_get_child(node_true, 2), "post");
 
     TEST_CHECK(node_false == NULL);
   }
 
-  check_node_text(get_nth_node(root, 2), " if-else: ");
+  check_node_text(node_get_child(exp->node, 2), " if-else: ");
 
   {
-    struct ExpandoNode *node = get_nth_node(root, 3);
+    struct ExpandoNode *node = node_get_child(exp->node, 3);
     check_node_cond(node);
 
     struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
@@ -87,14 +86,15 @@ void test_expando_complex_if_else(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
 
-    check_node_text(get_nth_node(node_true, 0), "pre ");
-    check_node_expando(get_nth_node(node_true, 1), "l", &fmt);
-    check_node_text(get_nth_node(node_true, 2), "post");
+    check_node_text(node_get_child(node_true, 0), "pre ");
+    check_node_expando(node_get_child(node_true, 1), "l", &fmt);
+    check_node_text(node_get_child(node_true, 2), "post");
 
-    check_node_text(get_nth_node(node_false, 0), "pre ");
-    check_node_expando(get_nth_node(node_false, 1), "c", &fmt);
-    check_node_text(get_nth_node(node_false, 2), "post");
+    check_node_text(node_get_child(node_false, 0), "pre ");
+    check_node_expando(node_get_child(node_false, 1), "c", &fmt);
+    check_node_text(node_get_child(node_false, 2), "post");
   }
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

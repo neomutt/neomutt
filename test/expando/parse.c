@@ -54,7 +54,7 @@ void test_expando_parser(void)
   static const char *TestStrings[][2] = {
     // clang-format off
     // Formatting
-    { "",       "<EMPTY>" },
+    { "",       "" },
     { "%X",     "<EXP:'X'(EMAIL,ATTACHMENT_COUNT)>" },
     { "%5X",    "<EXP:'X'(EMAIL,ATTACHMENT_COUNT):{5,MAX,RIGHT,' '}>" },
     { "%.7X",   "<EXP:'X'(EMAIL,ATTACHMENT_COUNT):{0,7,RIGHT,' '}>" },
@@ -65,19 +65,19 @@ void test_expando_parser(void)
     { "%05X",   "<EXP:'X'(EMAIL,ATTACHMENT_COUNT):{5,MAX,RIGHT,'0'}>" },
 
     // Conditional (old form)
-    { "%?X??",        "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<EMPTY>|>" },
-    { "%?X?&?",       "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<EMPTY>|<EMPTY>>" },
+    { "%?X??",        "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>||>" },
+    { "%?X?&?",       "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>||>" },
     { "%?X?AAA?",     "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
-    { "%?X?AAA&?",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<EMPTY>>" },
-    { "%?X?&BBB?",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<EMPTY>|<TEXT:'BBB'>>" },
+    { "%?X?AAA&?",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
+    { "%?X?&BBB?",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>||<TEXT:'BBB'>>" },
     { "%?X?AAA&BBB?", "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
 
     // Conditional (new form)
-    { "%<X?>",        "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<EMPTY>|>" },
-    { "%<X?&>",       "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<EMPTY>|<EMPTY>>" },
+    { "%<X?>",        "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>||>" },
+    { "%<X?&>",       "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>||>" },
     { "%<X?AAA>",     "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
-    { "%<X?AAA&>",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<EMPTY>>" },
-    { "%<X?&BBB>",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<EMPTY>|<TEXT:'BBB'>>" },
+    { "%<X?AAA&>",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
+    { "%<X?&BBB>",    "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>||<TEXT:'BBB'>>" },
     { "%<X?AAA&BBB>", "<COND:<BOOL:'X':(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
 
     // Dates

@@ -92,3 +92,63 @@ struct ExpandoNode *node_container_new(void)
 
   return node;
 }
+
+/**
+ * node_container_collapse - Remove an unnecessary Container
+ * @param ptr Pointer to a Container
+ */
+void node_container_collapse(struct ExpandoNode **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ExpandoNode *node = *ptr;
+
+  if (node->type != ENT_CONTAINER)
+    return;
+
+  struct ExpandoNode *child = NULL;
+  struct ExpandoNode **np = NULL;
+  size_t size = 0;
+  ARRAY_FOREACH(np, &node->children)
+  {
+    if (!np || !*np)
+      continue;
+
+    size++;
+    child = *np;
+  }
+
+  if (size > 1)
+    return;
+
+  if (size == 0)
+  {
+    node_free(ptr);
+    return;
+  }
+
+  ARRAY_FREE(&node->children);
+  node_free(ptr);
+  *ptr = child;
+}
+
+/**
+ * node_container_collapse_all - Remove unnecessary Containers
+ * @param ptr Pointer to the parent node
+ */
+void node_container_collapse_all(struct ExpandoNode **ptr)
+{
+  if (!ptr || !*ptr)
+    return;
+
+  struct ExpandoNode *parent = *ptr;
+
+  struct ExpandoNode **np = NULL;
+  ARRAY_FOREACH(np, &parent->children)
+  {
+    node_container_collapse_all(np);
+  }
+
+  node_container_collapse(ptr);
+}
