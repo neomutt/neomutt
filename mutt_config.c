@@ -352,8 +352,8 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   // clang-format on
 };
 
-/// IndexFormatDefNoPadding - Index format definitions, without padding or arrow
-static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[4]);
+/// IndexFormatDefNoPadding - Index format definitions, without padding
+static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[3]);
 
 /**
  * StatusFormatDef - Expando definitions

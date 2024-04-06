@@ -48,7 +48,7 @@
 extern const struct ExpandoDefinition IndexFormatDef[];
 
 /// IndexFormatDefNoPadding - Index format definitions, without padding or arrow
-static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[4]);
+static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[3]);
 
 extern const struct ExpandoDefinition NntpFormatDef[];
 
