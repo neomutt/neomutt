@@ -29,15 +29,22 @@
 
 void test_expando_percent_sign_text(void)
 {
+  static const struct ExpandoDefinition FormatDef[] = {
+    // clang-format off
+    { NULL, NULL, 0, -1, -1, NULL }
+    // clang-format on
+  };
+
   const char *input = "percent %%";
-  struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, NULL, &error);
+  struct Buffer *err = buf_pool_get();
+  struct Expando *exp = expando_parse(input, FormatDef, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
 
-  TEST_CHECK(error.position == NULL);
-  check_node_test(get_nth_node(root, 0), "percent ");
-  check_node_test(get_nth_node(root, 1), "%");
+  check_node_test(node_get_child(exp->node, 0), "percent ");
+  check_node_test(node_get_child(exp->node, 1), "%");
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

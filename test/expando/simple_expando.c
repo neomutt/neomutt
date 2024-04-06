@@ -37,15 +37,16 @@ void test_expando_simple_expando(void)
     // clang-format on
   };
   const char *input = "%a %b";
-  struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, TestFormatDef, &error);
+  struct Buffer *err = buf_pool_get();
+  struct Expando *exp = expando_parse(input, TestFormatDef, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
 
-  TEST_CHECK(error.position == NULL);
-  check_node_expando(get_nth_node(root, 0), "a", NULL);
-  check_node_test(get_nth_node(root, 1), " ");
-  check_node_expando(get_nth_node(root, 2), "b", NULL);
+  check_node_expando(node_get_child(exp->node, 0), "a", NULL);
+  check_node_test(node_get_child(exp->node, 1), " ");
+  check_node_expando(node_get_child(exp->node, 2), "b", NULL);
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

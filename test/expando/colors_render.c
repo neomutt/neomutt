@@ -69,11 +69,6 @@ static void simple_C(const struct ExpandoNode *node, void *data,
 void test_expando_colors_render(void)
 {
   {
-    const char *input = "%C - %s";
-
-    struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
-
     const struct ExpandoDefinition defs[] = {
       // clang-format off
       { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
@@ -85,17 +80,18 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    const char *input = "%C - %s";
 
-    TEST_CHECK(error.position == NULL);
-    check_node_expando(get_nth_node(root, 0), "C", NULL);
-    check_node_test(get_nth_node(root, 1), " - ");
-    check_node_expando(get_nth_node(root, 2), "s", NULL);
+    struct Buffer *err = buf_pool_get();
 
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
+    struct Expando *exp = expando_parse(input, defs, err);
+
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
+
+    check_node_expando(node_get_child(exp->node, 0), "C", NULL);
+    check_node_test(node_get_child(exp->node, 1), " - ");
+    check_node_expando(node_get_child(exp->node, 2), "s", NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },
@@ -119,22 +115,18 @@ void test_expando_colors_render(void)
     expected[15] = MT_COLOR_INDEX;
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, buf->dsize, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_INDEX, buf->dsize, buf);
 
     const int expected_width = mutt_str_len(expected) - 8;
     TEST_CHECK(mutt_strwidth(expected) == expected_width);
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
-    node_tree_free(&root);
+    expando_free(&exp);
     buf_pool_release(&buf);
+    buf_pool_release(&err);
   }
 
   {
-    const char *input = "%C %* %s";
-
-    struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
-
     const struct ExpandoDefinition defs[] = {
       // clang-format off
       { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
@@ -146,25 +138,24 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    const char *input = "%C %* %s";
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, " ", EPT_SOFT_FILL);
+    struct Buffer *err = buf_pool_get();
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct Expando *exp = expando_parse(input, defs, err);
 
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
+    check_node_padding(exp->node, " ", EPT_SOFT_FILL);
+
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
     TEST_CHECK(left != NULL);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
     TEST_CHECK(right != NULL);
 
-    check_node_expando(get_nth_node(left, 0), "C", NULL);
-    check_node_test(get_nth_node(left, 1), " ");
-    check_node_expando(get_nth_node(right, 0), "s", NULL);
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
+    check_node_expando(node_get_child(left, 0), "C", NULL);
+    check_node_test(node_get_child(left, 1), " ");
+    check_node_expando(right, "s", NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },
@@ -188,7 +179,7 @@ void test_expando_colors_render(void)
     expected[15] = MT_COLOR_INDEX;
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 8, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_INDEX, 8, buf);
 
     const int expected_width = mutt_str_len(expected) - 8;
     TEST_CHECK(mutt_strwidth(expected) == expected_width);
@@ -205,22 +196,18 @@ void test_expando_colors_render(void)
     expected2[13] = MT_COLOR_INDEX;
 
     buf_reset(buf);
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 6, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_INDEX, 6, buf);
 
     const int expected_width2 = mutt_str_len(expected2) - 8;
     TEST_CHECK(mutt_strwidth(expected2) == expected_width2);
     TEST_CHECK_STR_EQ(buf_string(buf), expected2);
 
-    node_tree_free(&root);
+    expando_free(&exp);
     buf_pool_release(&buf);
+    buf_pool_release(&err);
   }
 
   {
-    const char *input = "%s %* %s";
-
-    struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
-
     const struct ExpandoDefinition defs[] = {
       // clang-format off
       { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
@@ -232,25 +219,25 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    const char *input = "%s %* %s";
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, " ", EPT_SOFT_FILL);
+    struct Buffer *err = buf_pool_get();
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct Expando *exp = expando_parse(input, defs, err);
+
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
+    check_node_padding(exp->node, " ", EPT_SOFT_FILL);
+
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_expando(get_nth_node(left, 0), "s", NULL);
-    check_node_test(get_nth_node(left, 1), " ");
-    check_node_expando(get_nth_node(right, 0), "s", NULL);
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
+    check_node_expando(node_get_child(left, 0), "s", NULL);
+    check_node_test(node_get_child(left, 1), " ");
+    check_node_expando(right, "s", NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },
@@ -274,7 +261,7 @@ void test_expando_colors_render(void)
     expected[13] = MT_COLOR_INDEX;
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 6, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_INDEX, 6, buf);
 
     const int expected_width = mutt_str_len(expected) - 8;
     TEST_CHECK(mutt_strwidth(expected) == expected_width);
@@ -282,16 +269,12 @@ void test_expando_colors_render(void)
     // TEST_MSG("Expected: %s", expected);
     // TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
     buf_pool_release(&buf);
+    buf_pool_release(&err);
   }
 
   {
-    const char *input = "%s %* %s";
-
-    struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
-
     const struct ExpandoDefinition defs[] = {
       // clang-format off
       { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
@@ -303,25 +286,25 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    const char *input = "%s %* %s";
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, " ", EPT_SOFT_FILL);
+    struct Buffer *err = buf_pool_get();
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct Expando *exp = expando_parse(input, defs, err);
+
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
+    check_node_padding(exp->node, " ", EPT_SOFT_FILL);
+
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_expando(get_nth_node(left, 0), "s", NULL);
-    check_node_test(get_nth_node(left, 1), " ");
-    check_node_expando(get_nth_node(right, 0), "s", NULL);
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
+    check_node_expando(node_get_child(left, 0), "s", NULL);
+    check_node_test(node_get_child(left, 1), " ");
+    check_node_expando(right, "s", NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },
@@ -336,14 +319,15 @@ void test_expando_colors_render(void)
 
     char expected[] = "\x0e\x63Tá\x0e\x5b\x0e\x63Táéí\x0e\x5b";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 6, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_INDEX, 6, buf);
 
     TEST_CHECK(mutt_strwidth(expected) == 6);
     // TEST_CHECK_STR_EQ(buf_string(buf), expected);
     // TEST_MSG("Expected: %s", expected);
     // TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
     buf_pool_release(&buf);
+    buf_pool_release(&err);
   }
 }

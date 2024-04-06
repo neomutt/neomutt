@@ -32,6 +32,9 @@
 #include "mutt/lib.h"
 #include "expando.h"
 #include "node.h"
+#include "node_condition.h"
+#include "node_container.h"
+#include "node_padding.h"
 #include "parse.h"
 #include "render.h"
 
@@ -44,6 +47,7 @@ struct Expando *expando_new(const char *format)
 {
   struct Expando *exp = mutt_mem_calloc(1, sizeof(struct Expando));
   exp->string = mutt_str_dup(format);
+  exp->node = node_container_new();
   return exp;
 }
 
@@ -58,7 +62,7 @@ void expando_free(struct Expando **ptr)
 
   struct Expando *exp = *ptr;
 
-  node_tree_free(&exp->node);
+  node_free(&exp->node);
   FREE(&exp->string);
 
   FREE(ptr);
@@ -74,25 +78,38 @@ void expando_free(struct Expando **ptr)
 struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *defs,
                               struct Buffer *err)
 {
-  if (!str || !defs)
+  if (!str || (*str == '\0') || !defs)
     return NULL;
 
   struct Expando *exp = expando_new(str);
 
   struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, exp->string, defs, &error);
+  const char *end = NULL;
+  const char *start = exp->string;
+
+  while (*start)
+  {
+    struct ExpandoNode *node = node_parse(start, NULL, CON_NO_CONDITION, &end, defs, &error);
+    if (!node)
+      break;
+
+    node_add_child(exp->node, node);
+    start = end;
+  }
 
   if (error.position)
   {
     buf_strcpy(err, error.message);
-    node_tree_free(&root);
     expando_free(&exp);
     return NULL;
   }
 
-  exp->node = root;
+  // void dump_graphviz_expando_node(struct ExpandoNode *node);
+  // dump_graphviz_expando_node(exp->node);
+  node_padding_repad(&exp->node);
+  node_container_collapse_all(&exp->node);
+
   return exp;
 }
 

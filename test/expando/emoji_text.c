@@ -29,14 +29,19 @@
 
 void test_expando_emoji_text(void)
 {
+  const struct ExpandoDefinition defs[] = {
+    { NULL, NULL, 0, 0, 0, NULL },
+  };
+
   const char *input = "emoji text😀😀😀😀";
-  struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
+  struct Buffer *err = buf_pool_get();
 
-  node_tree_parse(&root, input, NULL, &error);
+  struct Expando *exp = expando_parse(input, defs, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
 
-  TEST_CHECK(error.position == NULL);
-  check_node_test(get_nth_node(root, 0), input);
+  check_node_test(exp->node, input);
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

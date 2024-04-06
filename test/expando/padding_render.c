@@ -45,30 +45,25 @@ void test_expando_padding_render(void)
     // clang-format on
   };
 
-  struct ExpandoParseError error = { 0 };
+  struct Buffer *err = buf_pool_get();
 
   {
     const char *input = "text1%|-text2";
-    struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    struct Expando *exp = expando_parse(input, FormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, "-", EPT_FILL_EOL);
+    check_node_padding(exp->node, "-", EPT_FILL_EOL);
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
     check_node_test(left, "text1");
     check_node_test(right, "text2");
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { -1, -1, NULL },
@@ -78,38 +73,32 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1---";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_MSG("Expected: %s", expected);
     TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 
   {
     const char *input = "text1%|-text2";
-    struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    struct Expando *exp = expando_parse(input, FormatDef, err);
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, "-", EPT_FILL_EOL);
+    check_node_padding(exp->node, "-", EPT_FILL_EOL);
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
     check_node_test(left, "text1");
     check_node_test(right, "text2");
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { -1, -1, NULL },
@@ -119,36 +108,32 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1--------";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 
   {
     const char *input = "text1%>-text2";
-    struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    struct Expando *exp = expando_parse(input, FormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, "-", EPT_HARD_FILL);
+    check_node_padding(exp->node, "-", EPT_HARD_FILL);
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
     check_node_test(left, "text1");
     check_node_test(right, "text2");
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { -1, -1, NULL },
@@ -158,37 +143,33 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1tex";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_MSG("Expected: %s", expected);
     TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 
   {
     const char *input = "text1%>-text2";
-    struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    struct Expando *exp = expando_parse(input, FormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, "-", EPT_HARD_FILL);
+    check_node_padding(exp->node, "-", EPT_HARD_FILL);
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
     check_node_test(left, "text1");
     check_node_test(right, "text2");
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { -1, -1, NULL },
@@ -198,38 +179,34 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1---text2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_MSG("Expected: %s", expected);
     TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 
   {
     const char *input = "text1%*-text2";
-    struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    struct Expando *exp = expando_parse(input, FormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, "-", EPT_SOFT_FILL);
+    check_node_padding(exp->node, "-", EPT_SOFT_FILL);
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
     check_node_test(left, "text1");
     check_node_test(right, "text2");
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { -1, -1, NULL },
@@ -239,38 +216,34 @@ void test_expando_padding_render(void)
 
     const char *expected = "textext2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_MSG("Expected: %s", expected);
     TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 
   {
     const char *input = "text1%*-text2";
-    struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    struct Expando *exp = expando_parse(input, FormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, "-", EPT_SOFT_FILL);
+    check_node_padding(exp->node, "-", EPT_SOFT_FILL);
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
     check_node_test(left, "text1");
     check_node_test(right, "text2");
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { -1, -1, NULL },
@@ -280,38 +253,34 @@ void test_expando_padding_render(void)
 
     const char *expected = "text1---text2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_MSG("Expected: %s", expected);
     TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 
   {
     const char *input = "text1%*-text2";
-    struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    struct Expando *exp = expando_parse(input, FormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    TEST_CHECK(error.position == NULL);
-    check_node_padding(root, "-", EPT_SOFT_FILL);
+    check_node_padding(exp->node, "-", EPT_SOFT_FILL);
 
-    struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-    struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+    struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+    struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
     check_node_test(left, "text1");
     check_node_test(right, "text2");
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { -1, -1, NULL },
@@ -321,13 +290,14 @@ void test_expando_padding_render(void)
 
     const char *expected = "text2";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, 5, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 5, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     TEST_MSG("Expected: %s", expected);
     TEST_MSG("Actual:   %s", buf_string(buf));
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 }

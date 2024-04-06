@@ -1960,24 +1960,43 @@ void dot_format(FILE *fp, struct ExpandoFormat *fmt)
 
 void dot_expando_node_container(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
 {
-  struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "Container", "#80ffff");
   // dot_type_string(fp, "type", "ENT_CONTAINER", true);
-
+  dot_type_number(fp, "children", ARRAY_SIZE(&node->children));
   dot_format(fp, node->format);
-
   dot_object_footer(fp);
 
   struct ExpandoNode **enp = NULL;
+  enp = ARRAY_FIRST(&node->children);
+  if (!enp)
+    return;
+
+  struct ExpandoNode *child = *enp;
+  dot_add_link(links, node, child, "Node->children", "children", false, "#80ff80");
+
+  char name[256] = { 0 };
+  struct Buffer *rank = buf_pool_get();
+  buf_addstr(rank, "{ rank=same ");
+
+  struct ExpandoNode *prev = NULL;
   ARRAY_FOREACH(enp, &node->children)
   {
-    struct ExpandoNode *child = *enp;
+    child = *enp;
 
     dot_expando_node(fp, child, links);
-    dot_add_link(links, node, child, "Node->child", "child", false, "#80ff80");
+    if (prev)
+    {
+      dot_add_link(links, prev, child, "Node->next", "next", false, "#80ff80");
+    }
+    prev = child;
+
+    dot_ptr_name(name, sizeof(name), child);
+    buf_add_printf(rank, "%s ", name);
   }
 
-  buf_pool_release(&buf);
+  buf_addstr(rank, "}");
+  mutt_list_insert_tail(links, buf_strdup(rank));
+  buf_pool_release(&rank);
 }
 
 void dot_expando_node_expando(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
@@ -2030,57 +2049,36 @@ void dot_expando_node_unknown(FILE *fp, struct ExpandoNode *node, struct ListHea
 
 void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
 {
-  struct Buffer *buf = buf_pool_get();
-
-  char name[256] = { 0 };
-  buf_addstr(buf, "{ rank=same ");
-
-  struct ExpandoNode *prev = NULL;
-  for (; node; node = node->next)
+  switch (node->type)
   {
-    switch (node->type)
-    {
-      case ENT_CONDITION:
-        dot_expando_node_condition(fp, node, links);
-        break;
-      case ENT_CONDBOOL:
-        dot_expando_node_conditional_bool(fp, node, links);
-        break;
-      case ENT_CONDDATE:
-        dot_expando_node_conditional_date(fp, node, links);
-        break;
-      case ENT_CONTAINER:
-        dot_expando_node_container(fp, node, links);
-        break;
-      case ENT_EMPTY:
-        dot_expando_node_empty(fp, node, links);
-        break;
-      case ENT_EXPANDO:
-        dot_expando_node_expando(fp, node, links);
-        break;
-      case ENT_PADDING:
-        dot_expando_node_pad(fp, node, links);
-        break;
-      case ENT_TEXT:
-        dot_expando_node_text(fp, node, links);
-        break;
-      default:
-        dot_expando_node_unknown(fp, node, links);
-        break;
-    }
-
-    if (prev)
-      dot_add_link(links, prev, node, "ExpandoNode->next", NULL, false, "#808080");
-    prev = node;
-
-    dot_ptr_name(name, sizeof(name), node);
-    buf_add_printf(buf, "%s ", name);
+    case ENT_CONDITION:
+      dot_expando_node_condition(fp, node, links);
+      break;
+    case ENT_CONDBOOL:
+      dot_expando_node_conditional_bool(fp, node, links);
+      break;
+    case ENT_CONDDATE:
+      dot_expando_node_conditional_date(fp, node, links);
+      break;
+    case ENT_CONTAINER:
+      dot_expando_node_container(fp, node, links);
+      break;
+    case ENT_EMPTY:
+      dot_expando_node_empty(fp, node, links);
+      break;
+    case ENT_EXPANDO:
+      dot_expando_node_expando(fp, node, links);
+      break;
+    case ENT_PADDING:
+      dot_expando_node_pad(fp, node, links);
+      break;
+    case ENT_TEXT:
+      dot_expando_node_text(fp, node, links);
+      break;
+    default:
+      dot_expando_node_unknown(fp, node, links);
+      break;
   }
-
-  buf_addstr(buf, "}");
-
-  mutt_list_insert_tail(links, buf_strdup(buf));
-  buf_pool_release(&buf);
 }
 
 void dump_graphviz_expando_node(struct ExpandoNode *node)

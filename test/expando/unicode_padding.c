@@ -39,12 +39,14 @@ void test_expando_unicode_padding(void)
   };
 
   const char *input = "%|😀";
-  struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, FormatDef, &error);
+  struct Buffer *err = buf_pool_get();
+  struct Expando *exp = expando_parse(input, FormatDef, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
 
-  TEST_CHECK(error.position == NULL);
-  check_node_padding(get_nth_node(root, 0), "😀", EPT_FILL_EOL);
-  node_tree_free(&root);
+  check_node_padding(exp->node, "😀", EPT_FILL_EOL);
+
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

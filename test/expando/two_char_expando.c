@@ -30,8 +30,6 @@
 void test_expando_two_char_expando(void)
 {
   const char *input = "%cr %ab";
-  struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
 
   struct ExpandoDefinition defs[] = {
     { "cr", NULL, 0, 0, 0, NULL },
@@ -39,13 +37,16 @@ void test_expando_two_char_expando(void)
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &error);
+  struct Buffer *err = buf_pool_get();
+  struct Expando *exp = expando_parse(input, defs, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
 
-  TEST_CHECK(error.position == NULL);
-  check_node_expando(get_nth_node(root, 0), "cr", NULL);
-  check_node_test(get_nth_node(root, 1), " ");
-  check_node_expando(get_nth_node(root, 2), "a", NULL);
-  check_node_test(get_nth_node(root, 3), "b");
+  check_node_expando(node_get_child(exp->node, 0), "cr", NULL);
+  check_node_test(node_get_child(exp->node, 1), " ");
+  check_node_expando(node_get_child(exp->node, 2), "a", NULL);
+  check_node_test(node_get_child(exp->node, 3), "b");
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

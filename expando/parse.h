@@ -24,7 +24,8 @@
 #ifndef MUTT_EXPANDO_PARSER_H
 #define MUTT_EXPANDO_PARSER_H
 
-struct ExpandoNode;
+#include "node_condition.h"
+
 struct ExpandoDefinition;
 
 /**
@@ -36,6 +37,10 @@ struct ExpandoParseError
   const char *position;       ///< Position of error in original string
 };
 
-void node_tree_parse(struct ExpandoNode **root, const char *string, const struct ExpandoDefinition *defs, struct ExpandoParseError *error);
+struct ExpandoNode *node_parse(const char *str, const char *end,
+                               enum ExpandoConditionStart condition_start,
+                               const char **parsed_until,
+                               const struct ExpandoDefinition *defs,
+                               struct ExpandoParseError *error);
 
 #endif /* MUTT_EXPANDO_PARSER_H */

@@ -27,36 +27,6 @@
 #include "mutt/lib.h"
 #include "common.h"
 
-struct ExpandoNode *get_nth_node(struct ExpandoNode *node, int n)
-{
-  TEST_CHECK(node != NULL);
-
-  int i = 0;
-
-  while (node)
-  {
-    if (i++ == n)
-    {
-      return node;
-    }
-
-    node = node->next;
-  }
-
-  if (!TEST_CHECK(0))
-  {
-    TEST_MSG("Node is not found\n");
-  }
-
-  return NULL;
-}
-
-void check_node_empty(struct ExpandoNode *node)
-{
-  TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_EMPTY);
-}
-
 void check_node_test(struct ExpandoNode *node, const char *text)
 {
   TEST_CHECK(node != NULL);

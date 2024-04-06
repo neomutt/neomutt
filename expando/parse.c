@@ -37,8 +37,8 @@
 #include "node.h"
 #include "node_condbool.h"
 #include "node_condition.h"
+#include "node_container.h"
 #include "node_expando.h"
-#include "node_padding.h"
 #include "node_text.h"
 
 /**
@@ -127,7 +127,10 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
                                const struct ExpandoDefinition *defs,
                                struct ExpandoParseError *error)
 {
-  while (*str && (end ? (str <= end) : 1))
+  if (!str || (*str == '\0'))
+    return NULL;
+
+  while (*str && (end ? (str <= end) : true))
   {
     // %X -> expando
     // if there is condition like <X..., the `%` is implicit
@@ -186,7 +189,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
         }
 
         const char *if_true_parsed = NULL;
-        struct ExpandoNode *node_true = NULL;
+        struct ExpandoNode *node_true = node_container_new();
 
         while (start_true < end_true)
         {
@@ -194,18 +197,14 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
                                                 &if_true_parsed, defs, error);
           if (!node)
           {
+            node_free(&node_true);
             node_free(&condition);
             return NULL;
           }
 
-          node_append(&node_true, node);
+          node_add_child(node_true, node);
 
           start_true = if_true_parsed;
-        }
-
-        if ((start_true == end_true) && !node_true)
-        {
-          node_true = node_new();
         }
 
         if (only_true)
@@ -232,7 +231,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
           }
 
           const char *if_false_parsed = NULL;
-          struct ExpandoNode *node_false = NULL;
+          struct ExpandoNode *node_false = node_container_new();
 
           while (start_false < end_false)
           {
@@ -241,18 +240,14 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
             if (!node)
             {
               node_free(&node_true);
+              node_free(&node_false);
               node_free(&condition);
               return NULL;
             }
 
-            node_append(&node_false, node);
+            node_add_child(node_false, node);
 
             start_false = if_false_parsed;
-          }
-
-          if ((start_false == end_false) && !node_false)
-          {
-            node_false = node_new();
           }
 
           *parsed_until = end_false + 1;
@@ -289,36 +284,4 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
 
   ASSERT(false && "Internal parsing error"); // LCOV_EXCL_LINE
   return NULL;
-}
-
-/**
- * node_tree_parse - Parse a format string into ExpandoNodes
- * @param[in,out] root   Parent ExpandoNode
- * @param[in]     string String to parse
- * @param[in]     defs   Expando definitions
- * @param[out]    error  Buffer for errors
- */
-void node_tree_parse(struct ExpandoNode **root, const char *string,
-                     const struct ExpandoDefinition *defs, struct ExpandoParseError *error)
-{
-  if (!string || !*string)
-  {
-    node_append(root, node_new());
-    return;
-  }
-
-  const char *end = NULL;
-  const char *start = string;
-
-  while (*start)
-  {
-    struct ExpandoNode *node = node_parse(start, NULL, CON_NO_CONDITION, &end, defs, error);
-    if (!node)
-      break;
-
-    node_append(root, node);
-    start = end;
-  }
-
-  node_padding_repad(root);
 }

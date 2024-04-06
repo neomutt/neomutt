@@ -41,23 +41,18 @@ void test_expando_nested_if_else(void)
     { NULL, NULL, 0, -1, -1, NULL }
     // clang-format on
   };
-  struct ExpandoParseError error = { 0 };
+  struct Buffer *err = buf_pool_get();
 
   {
     const char *input = "%<a?%<b?%c&%d>&%<e?%f&%g>>";
 
-    struct ExpandoNode *root = NULL;
+    struct Expando *exp = expando_parse(input, TestFormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
-
-    TEST_CHECK(error.position == NULL);
-
-    struct ExpandoNode *node = get_nth_node(root, 0);
-    check_node_cond(node);
-
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *condition = node_get_child(exp->node, ENC_CONDITION);
+    struct ExpandoNode *if_true_tree = node_get_child(exp->node, ENC_TRUE);
+    struct ExpandoNode *if_false_tree = node_get_child(exp->node, ENC_FALSE);
 
     check_node_condbool(condition, "a");
 
@@ -83,24 +78,19 @@ void test_expando_nested_if_else(void)
     check_node_expando(if_true_tree, "f", NULL);
     check_node_expando(if_false_tree, "g", NULL);
 
-    node_tree_free(&root);
+    expando_free(&exp);
   }
 
   {
     const char *input = "%<a?%<b?%c&%d>&%<e?%f>>";
 
-    struct ExpandoNode *root = NULL;
+    struct Expando *exp = expando_parse(input, TestFormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
-
-    TEST_CHECK(error.position == NULL);
-
-    struct ExpandoNode *node = get_nth_node(root, 0);
-    check_node_cond(node);
-
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *condition = node_get_child(exp->node, ENC_CONDITION);
+    struct ExpandoNode *if_true_tree = node_get_child(exp->node, ENC_TRUE);
+    struct ExpandoNode *if_false_tree = node_get_child(exp->node, ENC_FALSE);
 
     check_node_condbool(condition, "a");
 
@@ -126,24 +116,19 @@ void test_expando_nested_if_else(void)
     check_node_expando(if_true_tree, "f", NULL);
     TEST_CHECK(if_false_tree == NULL);
 
-    node_tree_free(&root);
+    expando_free(&exp);
   }
 
   {
     const char *input = "%<a?%<b?%c&%d>&%<e?&%f>>";
 
-    struct ExpandoNode *root = NULL;
+    struct Expando *exp = expando_parse(input, TestFormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
-
-    TEST_CHECK(error.position == NULL);
-
-    struct ExpandoNode *node = get_nth_node(root, 0);
-    check_node_cond(node);
-
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *condition = node_get_child(exp->node, ENC_CONDITION);
+    struct ExpandoNode *if_true_tree = node_get_child(exp->node, ENC_TRUE);
+    struct ExpandoNode *if_false_tree = node_get_child(exp->node, ENC_FALSE);
 
     check_node_condbool(condition, "a");
 
@@ -166,27 +151,22 @@ void test_expando_nested_if_else(void)
     if_false_tree = node_get_child(f, ENC_FALSE);
 
     check_node_condbool(condition, "e");
-    check_node_empty(if_true_tree);
+    TEST_CHECK(if_true_tree == NULL);
     check_node_expando(if_false_tree, "f", NULL);
 
-    node_tree_free(&root);
+    expando_free(&exp);
   }
 
   {
     const char *input = "%<a?%<b?%c>&%<e?%f&%g>>";
 
-    struct ExpandoNode *root = NULL;
+    struct Expando *exp = expando_parse(input, TestFormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
-
-    TEST_CHECK(error.position == NULL);
-
-    struct ExpandoNode *node = get_nth_node(root, 0);
-    check_node_cond(node);
-
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *condition = node_get_child(exp->node, ENC_CONDITION);
+    struct ExpandoNode *if_true_tree = node_get_child(exp->node, ENC_TRUE);
+    struct ExpandoNode *if_false_tree = node_get_child(exp->node, ENC_FALSE);
 
     check_node_condbool(condition, "a");
 
@@ -212,24 +192,19 @@ void test_expando_nested_if_else(void)
     check_node_expando(if_true_tree, "f", NULL);
     check_node_expando(if_false_tree, "g", NULL);
 
-    node_tree_free(&root);
+    expando_free(&exp);
   }
 
   {
     const char *input = "%<a?%<b?&%c>&%<e?%f&%g>>";
 
-    struct ExpandoNode *root = NULL;
+    struct Expando *exp = expando_parse(input, TestFormatDef, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
-
-    TEST_CHECK(error.position == NULL);
-
-    struct ExpandoNode *node = get_nth_node(root, 0);
-    check_node_cond(node);
-
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *condition = node_get_child(exp->node, ENC_CONDITION);
+    struct ExpandoNode *if_true_tree = node_get_child(exp->node, ENC_TRUE);
+    struct ExpandoNode *if_false_tree = node_get_child(exp->node, ENC_FALSE);
 
     check_node_condbool(condition, "a");
 
@@ -244,7 +219,7 @@ void test_expando_nested_if_else(void)
     if_false_tree = node_get_child(t, ENC_FALSE);
 
     check_node_condbool(condition, "b");
-    check_node_empty(if_true_tree);
+    TEST_CHECK(if_true_tree == NULL);
     check_node_expando(if_false_tree, "c", NULL);
 
     condition = node_get_child(f, ENC_CONDITION);
@@ -255,6 +230,8 @@ void test_expando_nested_if_else(void)
     check_node_expando(if_true_tree, "f", NULL);
     check_node_expando(if_false_tree, "g", NULL);
 
-    node_tree_free(&root);
+    expando_free(&exp);
   }
+
+  buf_pool_release(&err);
 }

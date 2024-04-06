@@ -57,8 +57,6 @@ static void simple_date(const struct ExpandoNode *node, void *data,
 
 void test_expando_date_render(void)
 {
-  struct ExpandoParseError error = { 0 };
-
   struct SimpleDateData data = {
     .t = 1457341200,
   };
@@ -66,26 +64,21 @@ void test_expando_date_render(void)
   {
     const char *input = "%[%Y-%m-%d] date";
 
-    struct ExpandoNode *root = NULL;
-
     const struct ExpandoDefinition defs[] = {
       { "[", NULL, 1, 0, 0, parse_date },
       { NULL, NULL, 0, 0, 0, NULL },
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    struct Buffer *err = buf_pool_get();
 
-    TEST_CHECK(error.position == NULL);
+    struct Expando *exp = expando_parse(input, defs, err);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
-    check_node_expando(get_nth_node(root, 0), "%Y-%m-%d", NULL);
-    check_node_test(get_nth_node(root, 1), " date");
+    check_node_expando(node_get_child(exp->node, 0), "%Y-%m-%d", NULL);
+    check_node_test(node_get_child(exp->node, 1), " date");
 
     const char *expected = "2016-03-07 date";
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_date },
@@ -93,27 +86,28 @@ void test_expando_date_render(void)
     };
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
-    node_tree_free(&root);
+    expando_free(&exp);
     buf_pool_release(&buf);
+    buf_pool_release(&err);
   }
 
   {
     const char *input = "%-12[%Y-%m-%d]";
-
-    struct ExpandoNode *root = NULL;
 
     const struct ExpandoDefinition defs[] = {
       { "[", NULL, 1, 0, 0, parse_date },
       { NULL, NULL, 0, 0, 0, NULL },
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    struct Buffer *err = buf_pool_get();
+    struct Expando *exp = expando_parse(input, defs, err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(exp != NULL);
+    TEST_CHECK(buf_is_empty(err));
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 12;
@@ -121,14 +115,9 @@ void test_expando_date_render(void)
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
 
-    check_node_expando(get_nth_node(root, 0), "%Y-%m-%d", &fmt);
+    check_node_expando(exp->node, "%Y-%m-%d", &fmt);
 
     const char *expected = "2016-03-07  ";
-
-    const struct Expando expando = {
-      .string = input,
-      .node = root,
-    };
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_date },
@@ -136,11 +125,12 @@ void test_expando_date_render(void)
     };
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
-    node_tree_free(&root);
+    expando_free(&exp);
+    buf_pool_release(&err);
     buf_pool_release(&buf);
   }
 }

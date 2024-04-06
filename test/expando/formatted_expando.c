@@ -37,14 +37,15 @@ void test_expando_formatted_expando(void)
     // clang-format on
   };
   const char *input = "%X %8X %-8X %08X %.8X %8.8X %-8.8X %=8X";
-  struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, TestFormatDef, &error);
+  struct Buffer *err = buf_pool_get();
 
-  TEST_CHECK(error.position == NULL);
-  check_node_expando(get_nth_node(root, 0), "X", NULL);
-  check_node_test(get_nth_node(root, 1), " ");
+  struct Expando *exp = expando_parse(input, TestFormatDef, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
+
+  check_node_expando(node_get_child(exp->node, 0), "X", NULL);
+  check_node_test(node_get_child(exp->node, 1), " ");
 
   {
     struct ExpandoFormat fmt = { 0 };
@@ -52,8 +53,8 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(get_nth_node(root, 2), "X", &fmt);
-    check_node_test(get_nth_node(root, 3), " ");
+    check_node_expando(node_get_child(exp->node, 2), "X", &fmt);
+    check_node_test(node_get_child(exp->node, 3), " ");
   }
 
   {
@@ -62,8 +63,8 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
-    check_node_expando(get_nth_node(root, 4), "X", &fmt);
-    check_node_test(get_nth_node(root, 5), " ");
+    check_node_expando(node_get_child(exp->node, 4), "X", &fmt);
+    check_node_test(node_get_child(exp->node, 5), " ");
   }
 
   {
@@ -72,8 +73,8 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = '0';
-    check_node_expando(get_nth_node(root, 6), "X", &fmt);
-    check_node_test(get_nth_node(root, 7), " ");
+    check_node_expando(node_get_child(exp->node, 6), "X", &fmt);
+    check_node_test(node_get_child(exp->node, 7), " ");
   }
 
   {
@@ -82,8 +83,8 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(get_nth_node(root, 8), "X", &fmt);
-    check_node_test(get_nth_node(root, 9), " ");
+    check_node_expando(node_get_child(exp->node, 8), "X", &fmt);
+    check_node_test(node_get_child(exp->node, 9), " ");
   }
 
   {
@@ -92,8 +93,8 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(get_nth_node(root, 10), "X", &fmt);
-    check_node_test(get_nth_node(root, 11), " ");
+    check_node_expando(node_get_child(exp->node, 10), "X", &fmt);
+    check_node_test(node_get_child(exp->node, 11), " ");
   }
 
   {
@@ -102,8 +103,8 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
-    check_node_expando(get_nth_node(root, 12), "X", &fmt);
-    check_node_test(get_nth_node(root, 13), " ");
+    check_node_expando(node_get_child(exp->node, 12), "X", &fmt);
+    check_node_test(node_get_child(exp->node, 13), " ");
   }
 
   {
@@ -112,8 +113,9 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_CENTER;
     fmt.leader = ' ';
-    check_node_expando(get_nth_node(root, 14), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 14), "X", &fmt);
   }
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

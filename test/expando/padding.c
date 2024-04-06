@@ -39,24 +39,25 @@ void test_expando_padding(void)
   };
 
   const char *input = "%|A %>B %*C";
-  struct ExpandoParseError error = { 0 };
-  struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, FormatDef, &error);
+  struct Buffer *err = buf_pool_get();
+  struct Expando *exp = expando_parse(input, FormatDef, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
 
-  TEST_CHECK(error.position == NULL);
-  check_node_padding(get_nth_node(root, 0), "A", EPT_FILL_EOL);
+  check_node_padding(exp->node, "A", EPT_FILL_EOL);
 
-  struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
-  struct ExpandoNode *right = node_get_child(root, ENP_RIGHT);
+  struct ExpandoNode *left = node_get_child(exp->node, ENP_LEFT);
+  struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
 
   TEST_CHECK(left == NULL);
   TEST_CHECK(right != NULL);
 
-  check_node_test(get_nth_node(right, 0), " ");
-  check_node_padding(get_nth_node(right, 1), "B", EPT_HARD_FILL);
-  check_node_test(get_nth_node(right, 2), " ");
-  check_node_padding(get_nth_node(right, 3), "C", EPT_SOFT_FILL);
+  check_node_test(node_get_child(right, 0), " ");
+  check_node_padding(node_get_child(right, 1), "B", EPT_HARD_FILL);
+  check_node_test(node_get_child(right, 2), " ");
+  check_node_padding(node_get_child(right, 3), "C", EPT_SOFT_FILL);
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }
