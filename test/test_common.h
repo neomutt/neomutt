@@ -33,7 +33,7 @@
 #include <time.h>
 #include "mutt/lib.h"
 
-void test_gen_path(char *buf, size_t buflen, const char *fmt);
+void test_gen_path(struct Buffer *buf, const char *fmt);
 
 bool test_neomutt_create(void);
 void test_neomutt_destroy(void);

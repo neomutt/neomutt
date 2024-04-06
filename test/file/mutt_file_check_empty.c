@@ -48,14 +48,17 @@ void test_mutt_file_check_empty(void)
   };
   // clang-format on
 
-  char first[256] = { 0 };
+  struct Buffer *first = buf_pool_get();
+
   int rc;
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
-    test_gen_path(first, sizeof(first), tests[i].first);
+    test_gen_path(first, tests[i].first);
 
-    TEST_CASE(first);
-    rc = mutt_file_check_empty(first);
+    TEST_CASE(buf_string(first));
+    rc = mutt_file_check_empty(buf_string(first));
     TEST_CHECK(rc == tests[i].retval);
   }
+
+  buf_pool_release(&first);
 }

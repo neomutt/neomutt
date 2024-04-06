@@ -26,17 +26,18 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "mutt/lib.h"
 #include "store/lib.h"
 #include "test_common.h"
 
-bool test_store_setup(char *buf, size_t buflen)
+bool test_store_setup(struct Buffer *path)
 {
-  if (!buf)
+  if (!path)
     return false;
 
-  test_gen_path(buf, buflen, "%s/tmp/XXXXXX");
+  test_gen_path(path, "%s/tmp/XXXXXX");
 
-  if (!mkdtemp(buf))
+  if (!mkdtemp(path->data))
     return false;
 
   return true;

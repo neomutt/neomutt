@@ -55,18 +55,19 @@ void test_mutt_file_stat_compare(void)
   int rc;
   struct stat st1;
   struct stat st2;
-  char first[256] = { 0 };
-  char second[256] = { 0 };
+  struct Buffer *first = buf_pool_get();
+  struct Buffer *second = buf_pool_get();
+
   for (size_t i = 0; i < mutt_array_size(tests); i++)
   {
     memset(&st1, 0, sizeof(st1));
     memset(&st2, 0, sizeof(st2));
-    test_gen_path(first, sizeof(first), tests[i].first);
-    test_gen_path(second, sizeof(second), tests[i].second);
+    test_gen_path(first, tests[i].first);
+    test_gen_path(second, tests[i].second);
 
-    TEST_CASE(first);
-    TEST_CHECK(stat(first, &st1) == 0);
-    TEST_CHECK(stat(second, &st2) == 0);
+    TEST_CASE(buf_string(first));
+    TEST_CHECK(stat(buf_string(first), &st1) == 0);
+    TEST_CHECK(stat(buf_string(second), &st2) == 0);
 
     rc = mutt_file_stat_compare(&st1, MUTT_STAT_MTIME, &st2, MUTT_STAT_MTIME);
     if (!TEST_CHECK(rc == tests[i].retval))
@@ -75,4 +76,7 @@ void test_mutt_file_stat_compare(void)
       TEST_MSG("Actual:   %d", rc);
     }
   }
+
+  buf_pool_release(&first);
+  buf_pool_release(&second);
 }
