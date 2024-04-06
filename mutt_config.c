@@ -275,14 +275,14 @@ struct ExpandoNode *parse_subject(const char *str, int did, int uid,
 
   struct ExpandoNode *node_tree = node_expando_new(node_subj->start, node_subj->end,
                                                    NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
-  node_tree->next = node_subj;
-
   // Move the formatting info to the container
   struct ExpandoNode *node_cont = node_container_new();
   node_cont->format = node_subj->format;
   node_subj->format = NULL;
 
-  ARRAY_ADD(&node_cont->children, node_tree);
+  node_add_child(node_cont, node_tree);
+  node_add_child(node_cont, node_subj);
+
   return node_cont;
 }
 

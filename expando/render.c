@@ -45,15 +45,8 @@
 int node_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata,
                 struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags)
 {
-  int total_cols = 0;
+  if (!node || !node->render)
+    return 0;
 
-  for (; node && (total_cols < max_cols); node = node->next)
-  {
-    if (!node->render)
-      continue;
-
-    total_cols += node->render(node, rdata, buf, max_cols - total_cols, data, flags);
-  }
-
-  return total_cols;
+  return node->render(node, rdata, buf, max_cols, data, flags);
 }

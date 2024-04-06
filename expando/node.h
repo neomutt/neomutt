@@ -68,7 +68,6 @@ struct ExpandoFormat
 struct ExpandoNode
 {
   enum ExpandoNodeType      type;        ///< Type of Node, e.g. #ENT_EXPANDO
-  struct ExpandoNode       *next;        ///< Linked list
   int                       did;         ///< Domain ID, e.g. #ED_EMAIL
   int                       uid;         ///< Unique ID, e.g. #ED_EMA_SIZE
 
@@ -97,11 +96,9 @@ struct ExpandoNode
 };
 
 struct ExpandoNode *node_new(void);
+void                node_free(struct ExpandoNode **ptr);
 
-void node_free     (struct ExpandoNode **ptr);
-void node_tree_free(struct ExpandoNode **ptr);
-
-void                node_append   (struct ExpandoNode **root, struct ExpandoNode *new_node);
+void                node_add_child(struct ExpandoNode *node, struct ExpandoNode *child);
 struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index);
 
 struct ExpandoNode *node_last (struct ExpandoNode *node);
