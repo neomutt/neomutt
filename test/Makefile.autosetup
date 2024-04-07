@@ -613,7 +613,6 @@ STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_strn_equal.o \
 		  test/string/mutt_str_adjust.o \
 		  test/string/mutt_str_asprintf.o \
-		  test/string/mutt_str_cat.o \
 		  test/string/mutt_str_coll.o \
 		  test/string/mutt_str_copy.o \
 		  test/string/mutt_str_dup.o \

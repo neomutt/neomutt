@@ -72,7 +72,6 @@ const char *mutt_str_sysexit(int e);
 char *      mutt_str_upper(char *str);
 
 /* case-sensitive flavours */
-char *      mutt_str_cat(char *buf, size_t buflen, const char *s);
 int         mutt_str_cmp(const char *a, const char *b);
 size_t      mutt_str_copy(char *dest, const char *src, size_t dsize);
 char *      mutt_str_dup(const char *str);

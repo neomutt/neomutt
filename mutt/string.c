@@ -259,32 +259,6 @@ char *mutt_str_dup(const char *str)
 }
 
 /**
- * mutt_str_cat - Concatenate two strings
- * @param buf    Buffer containing source string
- * @param buflen Length of buffer
- * @param s      String to add
- * @retval ptr Start of the buffer
- */
-char *mutt_str_cat(char *buf, size_t buflen, const char *s)
-{
-  if (!buf || (buflen == 0) || !s)
-    return buf;
-
-  char *p = buf;
-
-  buflen--; /* Space for the trailing '\0'. */
-
-  for (; (*buf != '\0') && buflen; buflen--)
-    buf++;
-  for (; *s && buflen; buflen--)
-    *buf++ = *s++;
-
-  *buf = '\0';
-
-  return p;
-}
-
-/**
  * mutt_strn_cat - Concatenate two strings
  * @param d  Buffer containing source string
  * @param l  Length of buffer
