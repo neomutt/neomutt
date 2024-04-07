@@ -607,7 +607,6 @@ STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_istr_equal.o \
 		  test/string/mutt_istr_find.o \
 		  test/string/mutt_istr_remall.o \
-		  test/string/mutt_strn_cat.o \
 		  test/string/mutt_strn_copy.o \
 		  test/string/mutt_strn_dup.o \
 		  test/string/mutt_strn_equal.o \

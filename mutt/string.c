@@ -259,35 +259,6 @@ char *mutt_str_dup(const char *str)
 }
 
 /**
- * mutt_strn_cat - Concatenate two strings
- * @param d  Buffer containing source string
- * @param l  Length of buffer
- * @param s  String to add
- * @param sl Maximum amount of string to add
- * @retval ptr Start of joined string
- *
- * Add a string to a maximum of @a sl bytes.
- */
-char *mutt_strn_cat(char *d, size_t l, const char *s, size_t sl)
-{
-  if (!d || (l == 0) || !s)
-    return d;
-
-  char *p = d;
-
-  l--; /* Space for the trailing '\0'. */
-
-  for (; *d && l; l--)
-    d++;
-  for (; *s && l && sl; l--, sl--)
-    *d++ = *s++;
-
-  *d = '\0';
-
-  return p;
-}
-
-/**
  * mutt_str_replace - Replace one string with another
  * @param[out] p String to replace
  * @param[in]  s New string
