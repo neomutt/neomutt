@@ -1103,7 +1103,7 @@ msgstr "Klaida. Išsaugau laikiną bylą: %s"
 #. L10N: $compose_format default format
 #: compose/config.c:69
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
-msgstr ""
+msgstr "-- NeoMutt: Kūrimas  [Apyt. laiško dydis: %l   Priedų: %a]%>-"
 
 #: compose/dlg_compose.c:93 compose/dlg_compose.c:111
 msgid "Send"
@@ -1176,9 +1176,8 @@ msgstr "Tu negali ištrinti vienintelio priedo"
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
 #: compose/functions.c:363
-#, fuzzy
 msgid "Really delete the main message?"
-msgstr "Tikrai ištrinti pašto dėžutę \"%s\"?"
+msgstr "Tikrai ištrinti pagrindinį laiško tekstą?"
 
 #: compose/functions.c:379 compose/functions.c:571
 msgid "Can't leave group with only one attachment"
@@ -1591,9 +1590,8 @@ msgid "Error processing certificate data"
 msgstr "Klaida apdorojant sertifikato duomenis"
 
 #: conn/gnutls.c:489 conn/openssl.c:900
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Įspėjimas: Negalėjau išsaugoti sertifikato"
+msgstr "Nepatikimas serverio sertifikatas"
 
 #: conn/gnutls.c:507 conn/openssl.c:907
 msgid "This certificate belongs to:"
@@ -5895,22 +5893,22 @@ msgstr "Sugavau signalą %d ...  Išeinu.\n"
 #. testing, so be sure to test with $header_cache unset.
 #: mutt_config.c:732
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
-msgstr ""
+msgstr "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 
 #. L10N: $status_format default format
 #: mutt_config.c:814
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr ""
+msgstr "-%r-NeoMutt: %D [Laiškų:%<M?%M/>%m%<n? naujų:%n>%<o? senų:%o>%<d? išm.:%d>%<F? !:%F>%<t? paž.:%t>%<p? atidėtų:%p>%<b? Įein.:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:851
 msgid "M%<n?AIL&ail>"
-msgstr ""
+msgstr "P%<n?AŠTAS&aštas>"
 
 #. L10N: $ts_status_format default format
 #: mutt_config.c:855
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
-msgstr ""
+msgstr "NeoMutt %<m?su %m laiškų&be laiškų>%<n? [naujų: %n]>"
 
 #: mutt_logging.c:275
 #, c-format
@@ -8212,18 +8210,18 @@ msgstr "Parametras %s negali turėti savyje shell metasimbolių: %c"
 #: send/config.c:170
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "%d, %n rašė:"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:237
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "----- Persiųstas laiškas nuo %f -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:241
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Persiųsto laiško pabaiga -----"
 
 #: send/send.c:348
 msgid "No subject, abort?"
