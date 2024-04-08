@@ -397,58 +397,65 @@ bool print_version(FILE *fp)
 
   struct utsname uts = { 0 };
   bool tty = isatty(fileno(fp));
-  const char *fmt = "%s\n";
+
+  const char *col_cyan = "";
+  const char *col_bold = "";
+  const char *col_end = "";
 
   if (tty)
-    fmt = "\033[1;36m%s\033[0m\n"; // Escape, cyan
+  {
+    col_cyan = "\033[1;36m"; // Escape, cyan
+    col_bold = "\033[1m";    // Escape, bold
+    col_end = "\033[0m";     // Escape, end
+  }
 
-  fprintf(fp, fmt, mutt_make_version());
+  fprintf(fp, "%s%s%s\n", col_cyan, mutt_make_version(), col_end);
   fprintf(fp, "%s\n", _(Notice));
 
   uname(&uts);
 
+  fprintf(fp, "%sSystem:%s ", col_bold, col_end);
 #ifdef SCO
-  fprintf(fp, "System: SCO %s", uts.release);
+  fprintf(fp, "SCO %s", uts.release);
 #else
-  fprintf(fp, "System: %s %s", uts.sysname, uts.release);
+  fprintf(fp, "%s %s", uts.sysname, uts.release);
 #endif
 
   fprintf(fp, " (%s)", uts.machine);
 
+  fprintf(fp, "\n%sncurses:%s %s", col_bold, col_end, curses_version());
 #ifdef NCURSES_VERSION
-  fprintf(fp, "\nncurses: %s (compiled with %s.%d)", curses_version(),
-          NCURSES_VERSION, NCURSES_VERSION_PATCH);
-#else
-  fprintf(fp, "\nncurses: %s", curses_version());
+  fprintf(fp, " (compiled with %s.%d)", NCURSES_VERSION, NCURSES_VERSION_PATCH);
 #endif
 
 #ifdef _LIBICONV_VERSION
-  fprintf(fp, "\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
+  fprintf(fp, "\n%slibiconv:%s %d.%d", col_bold, col_end,
+          _LIBICONV_VERSION >> 8, _LIBICONV_VERSION & 0xff);
 #endif
 
 #ifdef HAVE_LIBIDN
-  fprintf(fp, "\n%s", mutt_idna_print_version());
+  fprintf(fp, "\n%slibidn2:%s %s", col_bold, col_end, mutt_idna_print_version());
 #endif
 
 #ifdef CRYPT_BACKEND_GPGME
-  fprintf(fp, "\nGPGME: %s", mutt_gpgme_print_version());
+  fprintf(fp, "\n%sGPGME:%s %s", col_bold, col_end, mutt_gpgme_print_version());
 #endif
 
 #ifdef USE_SSL_OPENSSL
 #ifdef LIBRESSL_VERSION_TEXT
-  fprintf(fp, "\nLibreSSL: %s", LIBRESSL_VERSION_TEXT);
+  fprintf(fp, "\n%sLibreSSL:%s %s", col_bold, col_end, LIBRESSL_VERSION_TEXT);
 #endif
 #ifdef OPENSSL_VERSION_TEXT
-  fprintf(fp, "\nOpenSSL: %s", OPENSSL_VERSION_TEXT);
+  fprintf(fp, "\n%sOpenSSL:%s %s", col_bold, col_end, OPENSSL_VERSION_TEXT);
 #endif
 #endif
 
 #ifdef USE_SSL_GNUTLS
-  fprintf(fp, "\nGnuTLS: %s", GNUTLS_VERSION);
+  fprintf(fp, "\n%sGnuTLS:%s %s", col_bold, col_end, GNUTLS_VERSION);
 #endif
 
 #ifdef HAVE_NOTMUCH
-  fprintf(fp, "\nlibnotmuch: %d.%d.%d", LIBNOTMUCH_MAJOR_VERSION,
+  fprintf(fp, "\n%slibnotmuch:%s %d.%d.%d", col_bold, col_end, LIBNOTMUCH_MAJOR_VERSION,
           LIBNOTMUCH_MINOR_VERSION, LIBNOTMUCH_MICRO_VERSION);
 #endif
 
@@ -456,33 +463,33 @@ bool print_version(FILE *fp)
   {
     char version[24] = { 0 };
     pcre2_config(PCRE2_CONFIG_VERSION, version);
-    fprintf(fp, "\nPCRE2: %s", version);
+    fprintf(fp, "\n%sPCRE2:%s %s", col_bold, col_end, version);
   }
 #endif
 
 #ifdef USE_HCACHE
   const char *backends = store_backend_list();
-  fprintf(fp, "\nstorage: %s", backends);
+  fprintf(fp, "\n%sstorage:%s %s", col_bold, col_end, backends);
   FREE(&backends);
 #ifdef USE_HCACHE_COMPRESSION
   backends = compress_list();
-  fprintf(fp, "\ncompression: %s", backends);
+  fprintf(fp, "\n%scompression:%s %s", col_bold, col_end, backends);
   FREE(&backends);
 #endif
 #endif
 
   rstrip_in_place((char *) configure_options);
-  fprintf(fp, "\n\nConfigure options: %s\n", (char *) configure_options);
+  fprintf(fp, "\n\n%sConfigure options:%s %s\n", col_bold, col_end, (char *) configure_options);
 
   rstrip_in_place((char *) cc_cflags);
-  fprintf(fp, "\nCompilation CFLAGS: %s\n", (char *) cc_cflags);
+  fprintf(fp, "\n%sCompilation CFLAGS:%s %s\n", col_bold, col_end, (char *) cc_cflags);
 
-  fprintf(fp, "\n%s\n", _("Compile options:"));
+  fprintf(fp, "\n%s%s%s\n", col_bold, _("Compile options:"), col_end);
   print_compile_options(CompOpts, fp);
 
   if (DebugOpts[0].name)
   {
-    fprintf(fp, "\n%s\n", _("Devel options:"));
+    fprintf(fp, "\n%s%s%s\n", col_bold, _("Devel options:"), col_end);
     print_compile_options(DebugOpts, fp);
   }
 

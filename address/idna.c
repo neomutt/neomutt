@@ -273,7 +273,7 @@ const char *mutt_idna_print_version(void)
 {
   static char vstring[256] = { 0 };
 
-  snprintf(vstring, sizeof(vstring), "libidn2: %s (compiled with %s)",
+  snprintf(vstring, sizeof(vstring), "%s (compiled with %s)",
            idn2_check_version(NULL), IDN2_VERSION);
 
   return vstring;
