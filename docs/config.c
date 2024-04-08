@@ -873,7 +873,7 @@
 ** (Crypto only)
 */
 
-{ "crypt_protected_headers_write", DT_BOOL, false },
+{ "crypt_protected_headers_write", DT_BOOL, true },
 /*
 ** .pp
 ** When set, NeoMutt will generate protected headers for signed and encrypted
