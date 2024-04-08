@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <gpg-error.h>
 #include <gpgme.h>
 #include <langinfo.h>
 #include <stdio.h>
@@ -632,7 +633,7 @@ static void verify_key(struct CryptKeyInfo *key)
 {
   const char *s = NULL;
   gpgme_ctx_t listctx = NULL;
-  gpgme_error_t err;
+  gpgme_error_t err = GPG_ERR_NO_ERROR;
   gpgme_key_t k = NULL;
   int maxdepth = 100;
 
@@ -658,9 +659,9 @@ static void verify_key(struct CryptKeyInfo *key)
     err = gpgme_op_keylist_start(listctx, s, 0);
     gpgme_key_unref(k);
     k = NULL;
-    if (err == 0)
+    if (err == GPG_ERR_NO_ERROR)
       err = gpgme_op_keylist_next(listctx, &k);
-    if (err != 0)
+    if (err != GPG_ERR_NO_ERROR)
     {
       fprintf(fp, _("Error finding issuer key: %s\n"), gpgme_strerror(err));
       goto leave;

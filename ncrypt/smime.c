@@ -1335,7 +1335,8 @@ struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
   char *cert_end = NULL;
   FILE *fp_smime_in = NULL, *fp_smime_err = NULL, *fp_out = NULL, *fp_tmp = NULL;
   struct Body *b_enc = NULL;
-  int err = 0, empty, off;
+  bool err = false;
+  int empty, off;
   pid_t pid;
 
   struct Buffer *tempfile = buf_pool_get();
@@ -1409,7 +1410,7 @@ struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
   rewind(fp_smime_err);
   while (fgets(buf, sizeof(buf) - 1, fp_smime_err))
   {
-    err = 1;
+    err = true;
     fputs(buf, stdout);
   }
   mutt_file_fclose(&fp_smime_err);
@@ -1421,7 +1422,7 @@ struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (err == 0)
+    if (!err)
       mutt_any_key_to_continue(_("No output from OpenSSL..."));
     mutt_file_unlink(buf_string(tempfile));
     goto cleanup;
@@ -1499,7 +1500,7 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   char buf[1024] = { 0 };
   struct Buffer *filetosign = NULL, *signedfile = NULL;
   FILE *fp_smime_in = NULL, *fp_smime_out = NULL, *fp_smime_err = NULL, *fp_sign = NULL;
-  int err = 0;
+  bool err = false;
   int empty = 0;
   pid_t pid;
   const char *intermediates = NULL;
@@ -1569,12 +1570,12 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   filter_wait(pid);
 
   /* check for errors from OpenSSL */
-  err = 0;
+  err = false;
   fflush(fp_smime_err);
   rewind(fp_smime_err);
   while (fgets(buf, sizeof(buf) - 1, fp_smime_err))
   {
-    err = 1;
+    err = true;
     fputs(buf, stdout);
   }
   mutt_file_fclose(&fp_smime_err);
