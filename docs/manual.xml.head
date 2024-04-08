@@ -13475,8 +13475,6 @@ set pgp_default_key = "1111111111111111111111111111111111111111"
 set crypt_autosign = yes
 <emphasis role="comment"># Encrypt mail if all recipients have valid public keys</emphasis>
 set crypt_opportunistic_encrypt = yes
-<emphasis role="comment"># Sign/encrypt protected headers (Subject)</emphasis>
-set crypt_protected_headers_write = yes
 <emphasis role="comment"># Self encrypt mail</emphasis>
 set crypt_self_encrypt = yes
 

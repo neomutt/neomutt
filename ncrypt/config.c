@@ -123,7 +123,7 @@ static struct ConfigDef NcryptVars[] = {
   { "crypt_protected_headers_subject", DT_STRING, IP "...", 0, NULL,
     "Use this as the subject for encrypted emails"
   },
-  { "crypt_protected_headers_write", DT_BOOL, false, 0, NULL,
+  { "crypt_protected_headers_write", DT_BOOL, true, 0, NULL,
     "Generate protected header (Memory Hole) for signed and encrypted emails"
   },
   { "crypt_timestamp", DT_BOOL, true, 0, NULL,
