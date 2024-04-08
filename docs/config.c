@@ -864,26 +864,11 @@
 { "crypt_protected_headers_subject", DT_STRING, "..." },
 /*
 ** .pp
-** When $$crypt_protected_headers_write is set, and the message is marked
-** for encryption, this will be substituted into the Subject field in the
-** message headers.
+** When the message is marked for encryption,
+** this will be substituted into the Subject field in the message headers.
 ** .pp
 ** To prevent a subject from being substituted, unset this variable, or set it
 ** to the empty string.
-** (Crypto only)
-*/
-
-{ "crypt_protected_headers_write", DT_BOOL, true },
-/*
-** .pp
-** When set, NeoMutt will generate protected headers for signed and encrypted
-** emails.
-** .pp
-** Protected headers are stored inside the encrypted or signed part of an
-** an email, to prevent disclosure or tampering.
-** For more information see https://github.com/autocrypt/protected-headers
-** .pp
-** Currently NeoMutt only supports the Subject header.
 ** (Crypto only)
 */
 

@@ -895,13 +895,12 @@ int mutt_write_mime_header(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   if (b->encoding != ENC_7BIT)
     fprintf(fp, "Content-Transfer-Encoding: %s\n", ENCODING(b->encoding));
 
-  const bool c_crypt_protected_headers_write = cs_subset_bool(sub, "crypt_protected_headers_write");
   bool c_autocrypt = false;
 #ifdef USE_AUTOCRYPT
   c_autocrypt = cs_subset_bool(sub, "autocrypt");
 #endif
 
-  if ((c_crypt_protected_headers_write || c_autocrypt) && b->mime_headers)
+  if (b->mime_headers)
   {
     mutt_rfc822_write_header(fp, b->mime_headers, NULL, MUTT_WRITE_HEADER_MIME,
                              false, false, sub);

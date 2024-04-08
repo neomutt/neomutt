@@ -123,9 +123,6 @@ static struct ConfigDef NcryptVars[] = {
   { "crypt_protected_headers_subject", DT_STRING, IP "...", 0, NULL,
     "Use this as the subject for encrypted emails"
   },
-  { "crypt_protected_headers_write", DT_BOOL, true, 0, NULL,
-    "Generate protected header (Memory Hole) for signed and encrypted emails"
-  },
   { "crypt_timestamp", DT_BOOL, true, 0, NULL,
     "Add a timestamp to PGP or SMIME output to prevent spoofing"
   },
@@ -202,6 +199,7 @@ static struct ConfigDef NcryptVars[] = {
 
   { "pgp_encrypt_self",   D_INTERNAL_DEPRECATED|DT_QUAD, 0, IP "2019-09-09" },
   { "smime_encrypt_self", D_INTERNAL_DEPRECATED|DT_QUAD, 0, IP "2019-09-09" },
+  { "crypt_protected_headers_write", D_INTERNAL_DEPRECATED|DT_BOOL, 0, IP "2024-04-08" },
 
   { NULL },
   // clang-format on

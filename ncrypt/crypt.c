@@ -266,19 +266,15 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
       mutt_addr_free(&from);
   }
 
-  const bool c_crypt_protected_headers_write = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_write");
-  if (c_crypt_protected_headers_write)
-  {
-    struct Envelope *protected_headers = mutt_env_new();
-    mutt_env_set_subject(protected_headers, e->env->subject);
-    /* Note: if other headers get added, such as to, cc, then a call to
-     * mutt_env_to_intl() will need to be added here too. */
-    mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
+  struct Envelope *protected_headers = mutt_env_new();
+  mutt_env_set_subject(protected_headers, e->env->subject);
+  /* Note: if other headers get added, such as to, cc, then a call to
+   * mutt_env_to_intl() will need to be added here too. */
+  mutt_prepare_envelope(protected_headers, 0, NeoMutt->sub);
 
-    mutt_env_free(&e->body->mime_headers);
-    e->body->mime_headers = protected_headers;
-    mutt_param_set(&e->body->parameter, "protected-headers", "v1");
-  }
+  mutt_env_free(&e->body->mime_headers);
+  e->body->mime_headers = protected_headers;
+  mutt_param_set(&e->body->parameter, "protected-headers", "v1");
 
 #ifdef USE_AUTOCRYPT
   /* A note about e->body->mime_headers.  If postpone or send
@@ -286,11 +282,6 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
    * compose menu.  So despite the "robustness" code above and in the
    * gen_gossip_list function below, mime_headers will not be set when
    * entering mutt_protect().
-   *
-   * This is important to note because the user could toggle
-   * $crypt_protected_headers_write or $autocrypt off back in the
-   * compose menu.  We don't want mutt_rfc822_write_header() to write
-   * stale data from one option if the other is set.
    */
   const bool c_autocrypt = cs_subset_bool(NeoMutt->sub, "autocrypt");
   if (c_autocrypt && !postpone && (security & SEC_AUTOCRYPT))
@@ -1085,10 +1076,9 @@ static void crypt_fetch_signatures(struct Body ***b_sigs, struct Body *b, int *n
  */
 bool mutt_should_hide_protected_subject(struct Email *e)
 {
-  const bool c_crypt_protected_headers_write = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_write");
   const char *const c_crypt_protected_headers_subject =
       cs_subset_string(NeoMutt->sub, "crypt_protected_headers_subject");
-  if (c_crypt_protected_headers_write && (e->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) &&
+  if ((e->security & (SEC_ENCRYPT | SEC_AUTOCRYPT)) &&
       !(e->security & SEC_INLINE) && c_crypt_protected_headers_subject)
   {
     return true;
