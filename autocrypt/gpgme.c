@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <gpg-error.h>
 #include <gpgme.h>
 #include <stdbool.h>
 #include "private.h"
@@ -51,9 +52,9 @@ static int create_gpgme_context(gpgme_ctx_t *ctx)
 {
   const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   gpgme_error_t err = gpgme_new(ctx);
-  if (!err)
+  if (err == GPG_ERR_NO_ERROR)
     err = gpgme_ctx_set_engine_info(*ctx, GPGME_PROTOCOL_OpenPGP, NULL, c_autocrypt_dir);
-  if (err)
+  if (err != GPG_ERR_NO_ERROR)
   {
     mutt_error(_("error creating GPGME context: %s"), gpgme_strerror(err));
     return -1;
@@ -180,7 +181,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   gpgme_error_t err = gpgme_op_createkey(ctx, buf_string(buf), "ed25519", 0, 0, NULL,
                                          GPGME_CREATE_NOPASSWD | GPGME_CREATE_FORCE |
                                              GPGME_CREATE_NOEXPIRE);
-  if (err)
+  if (err != GPG_ERR_NO_ERROR)
   {
     /* L10N: GPGME was unable to generate a key for some reason.
        %s is the error message returned by GPGME.  */
@@ -201,7 +202,7 @@ int mutt_autocrypt_gpgme_create_key(struct Address *addr, struct Buffer *keyid,
   /* Secondary key */
   err = gpgme_op_createsubkey(ctx, primary_key, "cv25519", 0, 0,
                               GPGME_CREATE_NOPASSWD | GPGME_CREATE_NOEXPIRE);
-  if (err)
+  if (err != GPG_ERR_NO_ERROR)
   {
     mutt_error(_("Error creating autocrypt key: %s"), gpgme_strerror(err));
     goto cleanup;

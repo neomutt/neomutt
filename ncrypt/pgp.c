@@ -1593,7 +1593,7 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
   char buf[1024] = { 0 };
   FILE *fp_pgp_in = NULL, *fp_tmp = NULL;
   struct Body *b_enc = NULL;
-  int err = 0;
+  bool err = false;
   bool empty = false;
   pid_t pid;
   struct Buffer *tempfile = buf_pool_get();
@@ -1669,7 +1669,7 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
   rewind(fp_pgp_err);
   while (fgets(buf, sizeof(buf) - 1, fp_pgp_err))
   {
-    err = 1;
+    err = true;
     fputs(buf, stdout);
   }
   mutt_file_fclose(&fp_pgp_err);
