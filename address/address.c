@@ -1149,7 +1149,7 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
     // wrap if needed
     const size_t cur_len = buf_len(buf);
     cur_col += mutt_addr_write(buf, a, display);
-    if (cur_col > cols)
+    if ((cols > 0) && (cur_col > cols) && (a != TAILQ_FIRST(al)))
     {
       buf_insert(buf, cur_len, "\n\t");
       cur_col = 8;

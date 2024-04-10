@@ -21,6 +21,7 @@ ADDRESS_OBJS	= test/address/config_type.o \
 		  test/address/mutt_addrlist_to_local.o \
 		  test/address/mutt_addrlist_write.o \
 		  test/address/mutt_addrlist_write_list.o \
+		  test/address/mutt_addrlist_write_wrap.o \
 		  test/address/mutt_addr_cat.o \
 		  test/address/mutt_addr_cmp.o \
 		  test/address/mutt_addr_copy.o \
