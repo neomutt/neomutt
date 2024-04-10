@@ -1124,7 +1124,7 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
  *
  */
 size_t mutt_addrlist_write(const struct AddressList *al, struct Buffer *buf,
-                             bool display, const char *header, int cols)
+                           bool display, const char *header, int cols)
 {
   if (!buf || !al || TAILQ_EMPTY(al))
     return 0;
@@ -1134,11 +1134,13 @@ size_t mutt_addrlist_write(const struct AddressList *al, struct Buffer *buf,
     buf_printf(buf, "%s: ", header);
   }
 
+  int i = 0;
   size_t cur_col = buf_len(buf);
   bool in_group = false;
   struct Address *a = NULL;
   TAILQ_FOREACH(a, al, entries)
   {
+    i++;
     struct Address *next = TAILQ_NEXT(a, entries);
 
     if (a->group)
@@ -1149,7 +1151,7 @@ size_t mutt_addrlist_write(const struct AddressList *al, struct Buffer *buf,
     // wrap if needed
     const size_t cur_len = buf_len(buf);
     cur_col += mutt_addr_write(buf, a, display);
-    if (cols > 0 && cur_col > cols)
+    if (i > 1 && cols > 0 && cur_col > cols)
     {
       buf_insert(buf, cur_len, "\n\t");
       cur_col = 8;
