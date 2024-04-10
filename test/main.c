@@ -76,6 +76,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_to_local)                               \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_write)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_addrlist_write_list)                             \
+  NEOMUTT_TEST_ITEM(test_mutt_addrlist_write_wrap)                             \
                                                                                \
   /* array */                                                                  \
   NEOMUTT_TEST_ITEM(test_mutt_array_api)                                       \
