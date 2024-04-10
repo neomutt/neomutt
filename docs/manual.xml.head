@@ -14603,14 +14603,16 @@ Recipient: RSA key, ID 0000000000000000
       <sect2 id="encryption-info-usage">
         <title>Usage</title>
         <para>
-          It's always enabled.
+          It's enabled by default.
+          The variable to control it is
+          <literal>crypt_encryption_info</literal>.
         </para>
       </sect2>
 
       <sect2 id="encryption-info-credits">
         <title>Credits</title>
         <para>
-          Alejandro Colomar, Richard Russon
+          Alejandro Colomar, Richard Russon, наб
         </para>
       </sect2>
     </sect1>

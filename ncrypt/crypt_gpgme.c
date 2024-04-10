@@ -1432,6 +1432,9 @@ static void show_one_recipient(struct State *state, gpgme_recipient_t r)
  */
 static void show_encryption_info(struct State *state, gpgme_decrypt_result_t result)
 {
+  if (!cs_subset_bool(NeoMutt->sub, "crypt_encryption_info"))
+    return;
+
   state_attach_puts(state, _("[-- Begin encryption information --]\n"));
 
   for (gpgme_recipient_t r = result->recipients; r; r = r->next)
