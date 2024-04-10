@@ -1162,7 +1162,7 @@ static int address_header_decode(char **h)
   {
     struct Buffer buf = { 0 };
     (*h)[l - 1] = '\0';
-    mutt_addrlist_write_wrap(&al, &buf, *h);
+    mutt_addrlist_write(&al, &buf, false, *h, 74);
     buf_addch(&buf, '\n');
     *h = buf.data;
   }

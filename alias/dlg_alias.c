@@ -177,7 +177,7 @@ void alias_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct AliasView *av = data;
   const struct Alias *alias = av->alias;
 
-  mutt_addrlist_write(&alias->addr, buf, true);
+  mutt_addrlist_write(&alias->addr, buf, true, NULL, -1);
 }
 
 /**
@@ -534,7 +534,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     if (!avp->is_tagged)
       continue;
 
-    mutt_addrlist_write(&avp->alias->addr, tmpbuf, true);
+    mutt_addrlist_write(&avp->alias->addr, tmpbuf, true, NULL, -1);
     buf_addstr(tmpbuf, ", ");
   }
   buf_copy(buf, tmpbuf);

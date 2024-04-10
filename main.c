@@ -920,7 +920,7 @@ main
         /* output in machine-readable form */
         mutt_addrlist_to_intl(al, NULL);
         struct Buffer *buf = buf_pool_get();
-        mutt_addrlist_write(al, buf, false);
+        mutt_addrlist_write(al, buf, false, NULL, -1);
         printf("%s\n", buf_string(buf));
         buf_pool_release(&buf);
       }

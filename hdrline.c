@@ -820,7 +820,7 @@ void index_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   if (!e || !e->env)
     return;
 
-  mutt_addrlist_write(&e->env->from, buf, true);
+  mutt_addrlist_write(&e->env->from, buf, true, NULL, -1);
 }
 
 /**
@@ -1227,7 +1227,7 @@ void index_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   if (!e || !e->env)
     return;
 
-  mutt_addrlist_write(&e->env->to, buf, true);
+  mutt_addrlist_write(&e->env->to, buf, true, NULL, -1);
 }
 
 /**
@@ -1241,7 +1241,7 @@ void index_R(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   if (!e || !e->env)
     return;
 
-  mutt_addrlist_write(&e->env->cc, buf, true);
+  mutt_addrlist_write(&e->env->cc, buf, true, NULL, -1);
 }
 
 /**

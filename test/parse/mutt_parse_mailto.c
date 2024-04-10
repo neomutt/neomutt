@@ -36,7 +36,7 @@
 static void check_addrlist(struct AddressList *list, const char *const exp[], size_t num)
 {
   struct Buffer *parsed = buf_pool_get();
-  if (mutt_addrlist_write(list, parsed, false) == 0)
+  if (mutt_addrlist_write(list, parsed, false, NULL, -1) == 0)
   {
     TEST_MSG("Expected: parsed %s (...)", exp[0]);
     TEST_MSG("Actual  : not parsed");

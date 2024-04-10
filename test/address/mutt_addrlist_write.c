@@ -36,12 +36,12 @@ void test_mutt_addrlist_write(void)
 
   {
     struct AddressList al = { 0 };
-    TEST_CHECK(mutt_addrlist_write(&al, NULL, false) == 0);
+    TEST_CHECK(mutt_addrlist_write(&al, NULL, false, NULL, -1) == 0);
   }
 
   {
     struct Buffer buf = { 0 };
-    TEST_CHECK(mutt_addrlist_write(NULL, &buf, false) == 0);
+    TEST_CHECK(mutt_addrlist_write(NULL, &buf, false, NULL, -1) == 0);
   }
 
   {
@@ -51,7 +51,7 @@ void test_mutt_addrlist_write(void)
     TEST_CHECK(parsed == 3);
 
     struct Buffer *buf = buf_pool_get();
-    mutt_addrlist_write(&al, buf, false);
+    mutt_addrlist_write(&al, buf, false, NULL, -1);
     TEST_CHECK_STR_EQ(buf_string(buf), in);
     buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
@@ -63,7 +63,7 @@ void test_mutt_addrlist_write(void)
     int parsed = mutt_addrlist_parse(&al, in);
     TEST_CHECK(parsed == 4);
     struct Buffer *buf = buf_pool_get();
-    mutt_addrlist_write(&al, buf, false);
+    mutt_addrlist_write(&al, buf, false, NULL, -1);
     TEST_CHECK_STR_EQ(buf_string(buf), in);
     buf_pool_release(&buf);
     mutt_addrlist_clear(&al);
@@ -75,7 +75,7 @@ void test_mutt_addrlist_write(void)
     int parsed = mutt_addrlist_parse(&al, in);
     TEST_CHECK(parsed == 0);
     struct Buffer *buf = buf_pool_get();
-    mutt_addrlist_write(&al, buf, false);
+    mutt_addrlist_write(&al, buf, false, NULL, -1);
     // We always add a space after the colon. No big deal
     TEST_CHECK_STR_EQ(buf_string(buf), "undisclosaed-recipients: ;");
     buf_pool_release(&buf);

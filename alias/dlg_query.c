@@ -149,7 +149,7 @@ void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct Alias *alias = av->alias;
 
   struct Buffer *addrs = buf_pool_get();
-  mutt_addrlist_write(&alias->addr, addrs, true);
+  mutt_addrlist_write(&alias->addr, addrs, true, NULL, -1);
 
   buf_printf(buf, "<%s>", buf_string(addrs));
 }
@@ -504,7 +504,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     {
       mutt_addrlist_to_local(&addr);
       buf_reset(buf);
-      mutt_addrlist_write(&addr, buf, false);
+      mutt_addrlist_write(&addr, buf, false, NULL, -1);
       mutt_addrlist_clear(&addr);
       mutt_clear_error();
     }
@@ -540,7 +540,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
     if (alias_to_addrlist(&al_copy, avp->alias))
     {
       mutt_addrlist_to_local(&al_copy);
-      mutt_addrlist_write(&al_copy, buf, false);
+      mutt_addrlist_write(&al_copy, buf, false, NULL, -1);
       mutt_addrlist_clear(&al_copy);
     }
   }

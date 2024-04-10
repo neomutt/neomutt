@@ -1111,7 +1111,7 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
 }
 
 /**
- * addrlist_write - Write an AddressList to a buffer, optionally perform line wrapping and display conversion
+ * mutt_addrlist_write - Write an AddressList to a buffer, optionally perform line wrapping and display conversion
  * @param al        AddressList to display
  * @param buf       Buffer for the Address
  * @param display   True if these addresses will be displayed to the user
@@ -1123,7 +1123,7 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
  * reversible.
  *
  */
-static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
+size_t mutt_addrlist_write(const struct AddressList *al, struct Buffer *buf,
                              bool display, const char *header, int cols)
 {
   if (!buf || !al || TAILQ_EMPTY(al))
@@ -1180,39 +1180,6 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
 }
 
 /**
- * mutt_addrlist_write_wrap - Write an AddressList to a buffer, perform line wrapping
- * @param al        AddressList to display
- * @param buf       Buffer for the Address
- * @param header    Header name; if present, addresses we be written after ": "
- * @retval num      Length of the string written to buf
- *
- * If 'display' is set, then it doesn't matter if the transformation isn't
- * reversible.
- *
- */
-size_t mutt_addrlist_write_wrap(const struct AddressList *al,
-                                struct Buffer *buf, const char *header)
-{
-  return addrlist_write(al, buf, false, header, 74);
-}
-
-/**
- * mutt_addrlist_write - Write an Address to a buffer
- * @param al        AddressList to display
- * @param buf       Buffer for the Address
- * @param display   This address will be displayed to the user
- * @retval num      Length of the string written to buf
- *
- * If 'display' is set, then it doesn't matter if the transformation isn't
- * reversible.
- *
- */
-size_t mutt_addrlist_write(const struct AddressList *al, struct Buffer *buf, bool display)
-{
-  return addrlist_write(al, buf, display, NULL, -1);
-}
-
-/**
  * mutt_addrlist_write_list - Write Addresses to a List
  * @param al   AddressList to write
  * @param list List for the Addresses
@@ -1252,7 +1219,7 @@ size_t mutt_addrlist_write_list(const struct AddressList *al, struct ListHead *l
 void mutt_addrlist_write_file(const struct AddressList *al, FILE *fp, const char *header)
 {
   struct Buffer *buf = buf_pool_get();
-  mutt_addrlist_write_wrap(al, buf, header);
+  mutt_addrlist_write(al, buf, false, header, 74);
   fputs(buf_string(buf), fp);
   buf_pool_release(&buf);
   fputc('\n', fp);

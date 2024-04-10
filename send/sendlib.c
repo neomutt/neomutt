@@ -949,7 +949,7 @@ int mutt_bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     return -1;
   }
   struct Buffer *resent_from = buf_pool_get();
-  mutt_addrlist_write(&from_list, resent_from, false);
+  mutt_addrlist_write(&from_list, resent_from, false, NULL, -1);
 
   OptNewsSend = false;
 

@@ -88,8 +88,8 @@ bool   mutt_addrlist_search      (const struct AddressList *haystack, const stru
 int    mutt_addrlist_to_intl     (struct AddressList *al, char **err);
 int    mutt_addrlist_to_local    (struct AddressList *al);
 bool   mutt_addrlist_uses_unicode(const struct AddressList *al);
-size_t mutt_addrlist_write       (const struct AddressList *al, struct Buffer *buf, bool display);
-size_t mutt_addrlist_write_wrap  (const struct AddressList *al, struct Buffer *buf, const char *header);
+size_t mutt_addrlist_write       (const struct AddressList *al, struct Buffer *buf, bool display, const char *header, int cols);
+
 void   mutt_addrlist_write_file  (const struct AddressList *al, FILE *fp,           const char *header);
 size_t mutt_addrlist_write_list  (const struct AddressList *al, struct ListHead *list);
 

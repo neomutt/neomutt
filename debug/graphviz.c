@@ -1210,7 +1210,7 @@ void dot_addr_list(FILE *fp, const char *name, const struct AddressList *al,
     return;
 
   struct Buffer *buf = buf_pool_get();
-  mutt_addrlist_write(al, buf, true);
+  mutt_addrlist_write(al, buf, true, NULL, -1);
   dot_type_string(fp, name, buf_string(buf), false);
   buf_pool_release(&buf);
 }

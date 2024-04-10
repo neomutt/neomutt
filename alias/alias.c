@@ -478,7 +478,7 @@ retry_name:
   }
 
   buf_reset(buf);
-  mutt_addrlist_write(&alias->addr, buf, true);
+  mutt_addrlist_write(&alias->addr, buf, true, NULL, -1);
   prompt = buf_pool_get();
 
   buf_printf(prompt, "alias %s %s", alias->name, buf_string(buf));
@@ -561,7 +561,7 @@ retry_name:
   fprintf(fp_alias, "alias %s ", buf_string(buf));
   buf_reset(buf);
 
-  mutt_addrlist_write(&alias->addr, buf, false);
+  mutt_addrlist_write(&alias->addr, buf, false, NULL, -1);
   recode_buf(buf);
   write_safe_address(fp_alias, buf_string(buf));
   if (alias->comment)

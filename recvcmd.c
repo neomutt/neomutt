@@ -235,7 +235,7 @@ void attach_bounce_message(struct Mailbox *m, FILE *fp, struct AttachCtx *actx,
 
   buf_reset(buf);
   buf_alloc(buf, 8192);
-  mutt_addrlist_write(&al, buf, true);
+  mutt_addrlist_write(&al, buf, true, NULL, -1);
 
   buf_printf(prompt, ngettext("Bounce message to %s?", "Bounce messages to %s?", num_msg),
              buf_string(buf));

@@ -139,7 +139,7 @@ void index_bounce_message(struct Mailbox *m, struct EmailArray *ea)
   }
 
   buf_reset(buf);
-  mutt_addrlist_write(&al, buf, true);
+  mutt_addrlist_write(&al, buf, true, NULL, -1);
 
   buf_printf(prompt, ngettext("Bounce message to %s?", "Bounce messages to %s?", msg_count),
              buf_string(buf));
@@ -672,7 +672,7 @@ void mutt_display_address(struct Envelope *env)
    * paste the on-the-wire form of the address to other, IDN-unable
    * software.  */
   struct Buffer *buf = buf_pool_get();
-  mutt_addrlist_write(al, buf, false);
+  mutt_addrlist_write(al, buf, false, NULL, -1);
   mutt_message("%s: %s", pfx, buf_string(buf));
   buf_pool_release(&buf);
 }
