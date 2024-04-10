@@ -918,6 +918,15 @@
 ** (Crypto only)
 */
 
+{ "crypt_encryption_info", DT_BOOL, true },
+/*
+** .pp
+** If \fIset\fP, NeoMutt will include an informative block
+** before an encrypted part,
+** with details about the encryption.
+** (Crypto only)
+*/
+
 { "crypt_timestamp", DT_BOOL, true },
 /*
 ** .pp

@@ -126,6 +126,9 @@ static struct ConfigDef NcryptVars[] = {
   { "crypt_protected_headers_write", DT_BOOL, false, 0, NULL,
     "Generate protected header (Memory Hole) for signed and encrypted emails"
   },
+  { "crypt_encryption_info", DT_BOOL, true, 0, NULL,
+    "Add an informative block with details about the encryption"
+  },
   { "crypt_timestamp", DT_BOOL, true, 0, NULL,
     "Add a timestamp to PGP or SMIME output to prevent spoofing"
   },
