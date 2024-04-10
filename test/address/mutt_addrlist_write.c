@@ -30,55 +30,108 @@
 #include "address/lib.h"
 #include "test_common.h"
 
+static const char *test_name(const char *str)
+{
+  if (!str)
+    return "[NULL]";
+  if (!*str)
+    return "[empty]";
+  return str;
+}
+
+struct TestCase
+{
+  const char *address_list;
+  const char *header;
+  bool display;
+  int cols;
+  size_t ret_num;
+  const char *expected;
+};
+
+// size_t mutt_addrlist_write(const struct AddressList *al, struct Buffer *buf,
+//                             bool display, const char *header, int cols)
+
 void test_mutt_addrlist_write(void)
 {
-  // size_t mutt_addrlist_write(char *buf, size_t buflen, const struct AddressList *al, bool display);
+  static const struct TestCase tests[] = {
+    { NULL, NULL, false, -1, 0, "" },
+    { "undisclosed-recipients:;", NULL, false, -1, 25, "undisclosed-recipients: ;" },
+    {
+        "test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>",
+        NULL,
+        false,
+        -1,
+        75,
+        "test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>",
+    },
+    {
+        "some-group: first@example.com, second@example.com;, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>",
+        NULL,
+        false,
+        -1,
+        109,
+        "some-group: first@example.com, second@example.com;, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>",
+    },
+    {
+        "foo@bar.com, sooooooooooooooooooooooooomthing@looooooooooooooooooooooooong.com, foo@bar.com",
+        "To",
+        false,
+        -1,
+        95,
+        "To: foo@bar.com, sooooooooooooooooooooooooomthing@looooooooooooooooooooooooong.com, foo@bar.com",
+    },
+    {
+        "foo@bar.com, sooooooooooooooooooooooooomthing@looooooooooooooooooooooooong.com, foo@bar.com",
+        "To",
+        false,
+        74,
+        97,
+        "To: foo@bar.com, \n\tsooooooooooooooooooooooooomthing@looooooooooooooooooooooooong.com, foo@bar.com",
+    },
+    {
+        "foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com",
+        "To",
+        false,
+        -1,
+        93,
+        "To: foo@bar.com, foo@bar.com, foo@bar.com, foo@bar.com, foo@bar.com, foo@bar.com, foo@bar.com",
+    },
+    {
+        "foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com,foo@bar.com",
+        "To",
+        false,
+        74,
+        95,
+        "To: foo@bar.com, foo@bar.com, foo@bar.com, foo@bar.com, foo@bar.com, \n\tfoo@bar.com, foo@bar.com",
+    },
+  };
 
   {
+    for (size_t i = 0; i < mutt_array_size(tests); i++)
+    {
+      TEST_CASE(test_name(tests[i].address_list));
+
+      struct AddressList al = { 0 };
+      if (tests[i].address_list)
+      {
+        struct AddressList parsed = TAILQ_HEAD_INITIALIZER(parsed);
+        mutt_addrlist_parse(&parsed, tests[i].address_list);
+        al = parsed;
+      }
+
+      struct Buffer *buf = buf_pool_get();
+      int buf_len = mutt_addrlist_write(&al, buf, tests[i].display,
+                                        tests[i].header, tests[i].cols);
+      TEST_CHECK(buf_len == tests[i].ret_num);
+      TEST_CHECK_STR_EQ(buf_string(buf), tests[i].expected);
+      buf_pool_release(&buf);
+      mutt_addrlist_clear(&al);
+    }
+  }
+
+  { // no buffer
     struct AddressList al = { 0 };
     TEST_CHECK(mutt_addrlist_write(&al, NULL, false, NULL, -1) == 0);
-  }
-
-  {
-    struct Buffer buf = { 0 };
-    TEST_CHECK(mutt_addrlist_write(NULL, &buf, false, NULL, -1) == 0);
-  }
-
-  {
-    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    const char in[] = "test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
-    int parsed = mutt_addrlist_parse(&al, in);
-    TEST_CHECK(parsed == 3);
-
-    struct Buffer *buf = buf_pool_get();
-    mutt_addrlist_write(&al, buf, false, NULL, -1);
-    TEST_CHECK_STR_EQ(buf_string(buf), in);
-    buf_pool_release(&buf);
-    mutt_addrlist_clear(&al);
-  }
-
-  {
-    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    const char in[] = "some-group: first@example.com, second@example.com;, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
-    int parsed = mutt_addrlist_parse(&al, in);
-    TEST_CHECK(parsed == 4);
-    struct Buffer *buf = buf_pool_get();
-    mutt_addrlist_write(&al, buf, false, NULL, -1);
-    TEST_CHECK_STR_EQ(buf_string(buf), in);
-    buf_pool_release(&buf);
-    mutt_addrlist_clear(&al);
-  }
-
-  {
-    struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    const char in[] = "undisclosaed-recipients:;";
-    int parsed = mutt_addrlist_parse(&al, in);
-    TEST_CHECK(parsed == 0);
-    struct Buffer *buf = buf_pool_get();
-    mutt_addrlist_write(&al, buf, false, NULL, -1);
-    // We always add a space after the colon. No big deal
-    TEST_CHECK_STR_EQ(buf_string(buf), "undisclosaed-recipients: ;");
-    buf_pool_release(&buf);
-    mutt_addrlist_clear(&al);
   }
 }
