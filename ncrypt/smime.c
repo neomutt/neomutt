@@ -2019,9 +2019,9 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   if (state->flags & STATE_DISPLAY)
   {
     if (type & SEC_ENCRYPT)
-      state_attach_puts(state, _("\n[-- End of S/MIME encrypted data. --]\n"));
+      state_attach_puts(state, _("[-- End of S/MIME encrypted data. --]\n"));
     else
-      state_attach_puts(state, _("\n[-- End of S/MIME signed data. --]\n"));
+      state_attach_puts(state, _("[-- End of S/MIME signed data. --]\n"));
   }
 
   if (type & SEC_SIGNOPAQUE)
