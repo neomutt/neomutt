@@ -1238,7 +1238,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
       top->badsig = !goodsig;
 
       /* Now display the signed body */
-      state_attach_puts(state, _("[-- The following data is signed --]\n\n"));
+      state_attach_puts(state, _("[-- The following data is signed --]\n"));
 
       mutt_protected_headers_handler(b_email, state);
 
@@ -1253,7 +1253,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
   rc = mutt_body_handler(b_email, state);
 
   if ((state->flags & STATE_DISPLAY) && (sigcnt != 0))
-    state_attach_puts(state, _("\n[-- End of signed data --]\n"));
+    state_attach_puts(state, _("[-- End of signed data --]\n"));
 
   return rc;
 }

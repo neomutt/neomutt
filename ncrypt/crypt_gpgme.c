@@ -2745,8 +2745,8 @@ int pgp_gpgme_encrypted_handler(struct Body *b, struct State *state)
     if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, is_signed ?
-                                   _("[-- The following data is PGP/MIME signed and encrypted --]\n\n") :
-                                   _("[-- The following data is PGP/MIME encrypted --]\n\n"));
+                                   _("[-- The following data is PGP/MIME signed and encrypted --]\n") :
+                                   _("[-- The following data is PGP/MIME encrypted --]\n"));
       mutt_protected_headers_handler(tattach, state);
     }
 
@@ -2781,7 +2781,6 @@ int pgp_gpgme_encrypted_handler(struct Body *b, struct State *state)
 
     if (state->flags & STATE_DISPLAY)
     {
-      state_puts(state, "\n");
       state_attach_puts(state, is_signed ?
                                    _("[-- End of PGP/MIME signed and encrypted data --]\n") :
                                    _("[-- End of PGP/MIME encrypted data --]\n"));
@@ -2839,8 +2838,8 @@ int smime_gpgme_application_handler(struct Body *b, struct State *state)
     if (state->flags & STATE_DISPLAY)
     {
       state_attach_puts(state, is_signed ?
-                                   _("[-- The following data is S/MIME signed --]\n\n") :
-                                   _("[-- The following data is S/MIME encrypted --]\n\n"));
+                                   _("[-- The following data is S/MIME signed --]\n") :
+                                   _("[-- The following data is S/MIME encrypted --]\n"));
       mutt_protected_headers_handler(tattach, state);
     }
 
@@ -2883,7 +2882,6 @@ int smime_gpgme_application_handler(struct Body *b, struct State *state)
 
     if (state->flags & STATE_DISPLAY)
     {
-      state_puts(state, "\n");
       state_attach_puts(state, is_signed ? _("[-- End of S/MIME signed data --]\n") :
                                            _("[-- End of S/MIME encrypted data --]\n"));
     }
