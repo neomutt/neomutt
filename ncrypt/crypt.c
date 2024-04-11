@@ -1105,8 +1105,10 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   if (!cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read"))
     return 0;
 
+  state_mark_protected_header(state);
+
   if (!b_email->mime_headers)
-    return 0;
+    goto blank;
 
   const bool display = (state->flags & STATE_DISPLAY);
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
@@ -1116,16 +1118,15 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   if (b_email->mime_headers->subject)
   {
     if (display && c_weed && mutt_matches_ignore("subject"))
-      return 0;
-
-    state_mark_protected_header(state);
+      goto blank;
 
     mutt_write_one_header(state->fp_out, "Subject",
                           b_email->mime_headers->subject, state->prefix, wraplen,
                           display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
-    state_puts(state, "\n");
   }
 
+blank:
+  state_puts(state, "\n");
   return 0;
 }
 
