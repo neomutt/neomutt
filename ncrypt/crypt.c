@@ -1115,11 +1115,9 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
 
-  if (b_email->mime_headers->subject)
+  if (b_email->mime_headers->subject &&
+      (!display || !c_weed || !mutt_matches_ignore("subject")))
   {
-    if (display && c_weed && mutt_matches_ignore("subject"))
-      goto blank;
-
     mutt_write_one_header(state->fp_out, "Subject",
                           b_email->mime_headers->subject, state->prefix, wraplen,
                           display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
