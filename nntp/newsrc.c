@@ -528,19 +528,11 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
   char file[PATH_MAX] = { 0 };
 
   /* server subdirectory */
-  if (cac)
-  {
-    struct Url url = { 0 };
-
-    mutt_account_tourl(cac, &url);
-    url.path = mutt_str_dup(src);
-    url_tostring(&url, file, sizeof(file), U_PATH);
-    FREE(&url.path);
-  }
-  else
-  {
-    mutt_str_copy(file, src ? src : "", sizeof(file));
-  }
+  struct Url url = { 0 };
+  mutt_account_tourl(cac, &url);
+  url.path = mutt_str_dup(src);
+  url_tostring(&url, file, sizeof(file), U_PATH);
+  FREE(&url.path);
 
   const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
   snprintf(dst, dstlen, "%s/%s", c_news_cache_dir, file);
