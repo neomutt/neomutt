@@ -92,9 +92,9 @@ int alias_array_alias_delete(struct AliasViewArray *ava, const struct Alias *ali
  * alias_array_count_visible - Count number of visible Aliases
  * @param ava Array of Aliases
  */
-int alias_array_count_visible(struct AliasViewArray *ava)
+size_t alias_array_count_visible(struct AliasViewArray *ava)
 {
-  int count = 0;
+  size_t count = 0;
 
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, ava)

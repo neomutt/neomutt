@@ -81,9 +81,9 @@ enum ExpandoDataAlias
 
 int alias_config_observer(struct NotifyCallback *nc);
 
-int  alias_array_alias_add    (struct AliasViewArray *ava, struct Alias *alias);
-int  alias_array_alias_delete (struct AliasViewArray *ava, const struct Alias *alias);
-int  alias_array_count_visible(struct AliasViewArray *ava);
+int    alias_array_alias_add    (struct AliasViewArray *ava, struct Alias *alias);
+int    alias_array_alias_delete (struct AliasViewArray *ava, const struct Alias *alias);
+size_t alias_array_count_visible(struct AliasViewArray *ava);
 
 void alias_set_title(struct MuttWindow *sbar, char *menu_name, char *limit);
 int alias_recalc(struct MuttWindow *win);
