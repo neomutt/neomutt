@@ -107,7 +107,9 @@
  *       explicitly set. In that case, the memory returned is all zeroes.
  */
 #define ARRAY_GET(head, idx)                                                   \
-  ((head)->size > (idx) ? &(head)->entries[(idx)] : NULL)
+  ((idx >= 0 ?                                                                 \
+    ((head)->size > ((size_t)idx) ? &(head)->entries[((size_t)idx)] : NULL)    \
+    : NULL))
 
 /**
  * ARRAY_SET - Set an element in the array
@@ -121,10 +123,12 @@
  *       if the insertion happens after the last element.
  */
 #define ARRAY_SET(head, idx, elem)                                             \
-  (((head)->capacity > (idx)                                                   \
+  ((idx >= 0 ?                                                                 \
+    ((head)->capacity > ((size_t)idx)                                          \
     ? true                                                                     \
-    : ARRAY_RESERVE((head), (idx) + 1)),                                       \
-   ARRAY_SET_NORESERVE((head), (idx), (elem)))
+    : ARRAY_RESERVE((head), ((size_t)idx) + 1)),                               \
+   ARRAY_SET_NORESERVE((head), ((size_t)idx), (elem))                          \
+   : false))
 
 /**
  * ARRAY_FIRST - Convenience method to get the first element
