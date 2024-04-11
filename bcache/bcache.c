@@ -62,9 +62,6 @@ struct BodyCache
  */
 static int bcache_path(struct ConnAccount *account, const char *mailbox, struct BodyCache *bcache)
 {
-  char host[256] = { 0 };
-  struct Url url = { 0 };
-
   const char *const c_message_cache_dir = cs_subset_path(NeoMutt->sub, "message_cache_dir");
   if (!account || !c_message_cache_dir || !bcache)
     return -1;
@@ -76,28 +73,36 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
     return -1;
   }
 
+  struct Url url = { 0 };
+  struct Buffer *host = buf_pool_get();
+
   /* make up a Url we can turn into a string */
   mutt_account_tourl(account, &url);
   /* mutt_account_tourl() just sets up some pointers;
    * if this ever changes, we have a memleak here */
   url.path = NULL;
-  if (url_tostring(&url, host, sizeof(host), U_PATH) < 0)
+  if (url_tostring(&url, host->data, host->dsize, U_PATH) < 0)
   {
     mutt_debug(LL_DEBUG1, "URL to string failed\n");
+    buf_pool_release(&host);
     return -1;
   }
+  buf_fix_dptr(host);
+
+  buf_addstr(host, mailbox);
 
   struct Buffer *path = buf_pool_get();
   struct Buffer *dst = buf_pool_get();
-  mutt_encode_path(path, NONULL(mailbox));
+  mutt_encode_path(path, buf_string(host));
 
-  buf_printf(dst, "%s/%s%s", c_message_cache_dir, host, buf_string(path));
+  buf_printf(dst, "%s/%s", c_message_cache_dir, buf_string(path));
   if (*(dst->dptr - 1) != '/')
     buf_addch(dst, '/');
 
   mutt_debug(LL_DEBUG3, "path: '%s'\n", buf_string(dst));
   bcache->path = buf_strdup(dst);
 
+  buf_pool_release(&host);
   buf_pool_release(&path);
   buf_pool_release(&dst);
   return 0;
