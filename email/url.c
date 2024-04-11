@@ -355,7 +355,7 @@ err:
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
+int url_tobuffer(const struct Url *url, struct Buffer *buf, uint8_t flags)
 {
   if (!url || !buf)
     return -1;
@@ -420,7 +420,7 @@ int url_tobuffer(struct Url *url, struct Buffer *buf, uint8_t flags)
  * @retval  0 Success
  * @retval -1 Error
  */
-int url_tostring(struct Url *url, char *dest, size_t len, uint8_t flags)
+int url_tostring(const struct Url *url, char *dest, size_t len, uint8_t flags)
 {
   if (!url || !dest)
     return -1;
