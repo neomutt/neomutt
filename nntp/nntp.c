@@ -1458,7 +1458,7 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
  */
 static enum MxStatus check_mailbox(struct Mailbox *m)
 {
-  if (!m)
+  if (!m || !m->mdata)
     return MX_STATUS_ERROR;
 
   struct NntpMboxData *mdata = m->mdata;

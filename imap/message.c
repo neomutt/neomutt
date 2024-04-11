@@ -1393,7 +1393,7 @@ retry:
         has_qresync = true;
     }
 
-    if (uidvalidity && uid_next && uidvalidity == mdata->uidvalidity)
+    if (uidvalidity && uid_next && (uidvalidity == mdata->uidvalidity))
     {
       evalhc = true;
       if (hcache_fetch_raw_obj(mdata->hcache, "MODSEQ", 6, &modseq))

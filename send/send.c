@@ -2313,7 +2313,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
      *
      * If there is already a from address recorded in 'e_templ->env->from',
      * then it theoretically comes from `$reverse_name` handling, and we don't use
-     * the 'X-Orig-To header'.  */
+     * the 'X-Original-To header'.  */
     if (!TAILQ_EMPTY(&e_cur->env->x_original_to) && TAILQ_EMPTY(&e_templ->env->from))
     {
       mutt_addrlist_copy(&e_templ->env->from, &e_cur->env->x_original_to, false);
