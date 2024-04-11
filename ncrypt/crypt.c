@@ -1102,8 +1102,10 @@ bool mutt_should_hide_protected_subject(struct Email *e)
  */
 int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
 {
-  const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
-  if (c_crypt_protected_headers_read && b_email->mime_headers)
+  if (!cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read"))
+    return 0;
+
+  if (b_email->mime_headers)
   {
     if (b_email->mime_headers->subject)
     {
