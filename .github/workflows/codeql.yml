@@ -43,7 +43,12 @@ jobs:
       - name: Build Neomutt
         run: make -j ${{steps.cpu-cores.outputs.count}} -s
 
-      - name: Perform CodeQL Analysis
+      - name: Perform C CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:cpp"
+
+      - name: Perform Python CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:python"
