@@ -1105,25 +1105,25 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   if (!cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read"))
     return 0;
 
-  if (b_email->mime_headers)
+  if (!b_email->mime_headers)
+    return 0;
+
+  if (b_email->mime_headers->subject)
   {
-    if (b_email->mime_headers->subject)
-    {
-      const bool display = (state->flags & STATE_DISPLAY);
+    const bool display = (state->flags & STATE_DISPLAY);
 
-      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-      if (display && c_weed && mutt_matches_ignore("subject"))
-        return 0;
+    const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+    if (display && c_weed && mutt_matches_ignore("subject"))
+      return 0;
 
-      state_mark_protected_header(state);
-      const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
-      int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
+    state_mark_protected_header(state);
+    const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+    int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
 
-      mutt_write_one_header(state->fp_out, "Subject",
-                            b_email->mime_headers->subject, state->prefix, wraplen,
-                            display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
-      state_puts(state, "\n");
-    }
+    mutt_write_one_header(state->fp_out, "Subject",
+                          b_email->mime_headers->subject, state->prefix, wraplen,
+                          display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
+    state_puts(state, "\n");
   }
 
   return 0;
