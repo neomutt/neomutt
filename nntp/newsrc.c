@@ -524,7 +524,6 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
  */
 static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, const char *src)
 {
-  char *c = NULL;
   char file[PATH_MAX] = { 0 };
 
   /* server subdirectory */
@@ -534,19 +533,18 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
   url_tostring(&url, file, sizeof(file), U_PATH);
   FREE(&url.path);
 
-  const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
-  snprintf(dst, dstlen, "%s/%s", c_news_cache_dir, file);
-
   /* remove trailing slash */
-  c = dst + strlen(dst) - 1;
+  char *c = file + strlen(file) - 1;
   if (*c == '/')
     *c = '\0';
 
   struct Buffer *tmp = buf_pool_get();
-  buf_addstr(tmp, dst);
-  buf_expand_path(tmp);
-  mutt_encode_path(tmp, dst);
-  mutt_str_copy(dst, buf_string(tmp), dstlen);
+  buf_addstr(tmp, file);
+  mutt_encode_path(tmp, file);
+
+  const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
+  snprintf(dst, dstlen, "%s/%s", c_news_cache_dir, buf_string(tmp));
+
   buf_pool_release(&tmp);
 }
 

@@ -376,6 +376,7 @@ static void hcache_per_folder(struct HeaderCache *hc, struct Buffer *hcpath,
   if (namer)
   {
     namer(hc->folder, hcfile);
+    mutt_encode_path(hcfile, buf_string(hcfile));
     buf_concat_path(hcpath, path, buf_string(hcfile));
   }
   else
@@ -392,11 +393,11 @@ static void hcache_per_folder(struct HeaderCache *hc, struct Buffer *hcpath,
     mutt_md5(buf_string(name), m);
     buf_reset(name);
     mutt_md5_toascii(m, name->data);
+    mutt_encode_path(name, buf_string(name));
     buf_printf(hcpath, "%s%s%s", path, slash ? "" : "/", buf_string(name));
     buf_pool_release(&name);
   }
 
-  mutt_encode_path(hcpath, buf_string(hcpath));
   create_hcache_dir(buf_string(hcpath));
   buf_pool_release(&hcfile);
 }
