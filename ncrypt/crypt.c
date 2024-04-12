@@ -1122,10 +1122,12 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
 
   const bool display = (state->flags & STATE_DISPLAY);
   const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  const bool c_crypt_protected_headers_weed = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_weed");
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
   const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
   const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NO_FLAGS;
   struct Buffer *buf = buf_pool_get();
+  const bool weed = (display && c_weed && c_crypt_protected_headers_weed);
 
   if (b_email->mime_headers->date && (!display || !c_weed || !mutt_matches_ignore("date")))
   {
@@ -1133,55 +1135,55 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
 
-  if (!display || !c_weed || !mutt_matches_ignore("return-path"))
+  if (!weed || !mutt_matches_ignore("return-path"))
   {
     mutt_addrlist_write(&b_email->mime_headers->return_path, buf, display);
     mutt_write_one_header(state->fp_out, "Return-Path", buf_string(buf),
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("from"))
+  if (!weed || !mutt_matches_ignore("from"))
   {
     buf_reset(buf);
     mutt_addrlist_write(&b_email->mime_headers->from, buf, display);
     mutt_write_one_header(state->fp_out, "From", buf_string(buf), state->prefix,
                           wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("to"))
+  if (!weed || !mutt_matches_ignore("to"))
   {
     buf_reset(buf);
     mutt_addrlist_write(&b_email->mime_headers->to, buf, display);
     mutt_write_one_header(state->fp_out, "To", buf_string(buf), state->prefix,
                           wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("cc"))
+  if (!weed || !mutt_matches_ignore("cc"))
   {
     buf_reset(buf);
     mutt_addrlist_write(&b_email->mime_headers->cc, buf, display);
     mutt_write_one_header(state->fp_out, "Cc", buf_string(buf), state->prefix,
                           wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("sender"))
+  if (!weed || !mutt_matches_ignore("sender"))
   {
     buf_reset(buf);
     mutt_addrlist_write(&b_email->mime_headers->sender, buf, display);
     mutt_write_one_header(state->fp_out, "Sender", buf_string(buf),
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("reply-to"))
+  if (!weed || !mutt_matches_ignore("reply-to"))
   {
     buf_reset(buf);
     mutt_addrlist_write(&b_email->mime_headers->reply_to, buf, display);
     mutt_write_one_header(state->fp_out, "Reply-To", buf_string(buf),
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("mail-followup-to"))
+  if (!weed || !mutt_matches_ignore("mail-followup-to"))
   {
     buf_reset(buf);
     mutt_addrlist_write(&b_email->mime_headers->mail_followup_to, buf, display);
     mutt_write_one_header(state->fp_out, "Mail-Followup-To", buf_string(buf),
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("x-original-to"))
+  if (!weed || !mutt_matches_ignore("x-original-to"))
   {
     buf_reset(buf);
     mutt_addrlist_write(&b_email->mime_headers->x_original_to, buf, display);
@@ -1189,21 +1191,20 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
 
-  if (b_email->mime_headers->subject &&
-      (!display || !c_weed || !mutt_matches_ignore("subject")))
+  if (b_email->mime_headers->subject && (!weed || !mutt_matches_ignore("subject")))
   {
     mutt_write_one_header(state->fp_out, "Subject", b_email->mime_headers->subject,
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
 
-  if (!display || !c_weed || !mutt_matches_ignore("references"))
+  if (!weed || !mutt_matches_ignore("references"))
   {
     buf_reset(buf);
     mutt_list_write(&b_email->mime_headers->references, buf);
     mutt_write_one_header(state->fp_out, "References", buf_string(buf),
                           state->prefix, wraplen, chflags, NeoMutt->sub);
   }
-  if (!display || !c_weed || !mutt_matches_ignore("in-reply-to"))
+  if (!weed || !mutt_matches_ignore("in-reply-to"))
   {
     buf_reset(buf);
     mutt_list_write(&b_email->mime_headers->in_reply_to, buf);

@@ -873,6 +873,13 @@
 ** (Crypto only)
 */
 
+{ "crypt_protected_headers_weed", DT_BOOL, false },
+/*
+** .pp
+** Controls whether NeoMutt will weed protected header fields.
+** (Crypto only)
+*/
+
 { "crypt_protected_headers_write", DT_BOOL, true },
 /*
 ** .pp
