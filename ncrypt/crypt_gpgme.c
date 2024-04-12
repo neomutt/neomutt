@@ -1745,14 +1745,15 @@ restart:
   }
   gpgme_data_release(ciphertext);
   ciphertext = NULL;
+
+#ifdef USE_AUTOCRYPT
+  // Abort right away and silently.  Autocrypt will retry on the normal keyring.
+  if (OptAutocryptGpgme && (err != GPG_ERR_NO_ERROR))
+    goto cleanup;
+#endif
+
   if (err != GPG_ERR_NO_ERROR)
   {
-#ifdef USE_AUTOCRYPT
-    /* Abort right away and silently.
-     * Autocrypt will retry on the normal keyring. */
-    if (OptAutocryptGpgme)
-      goto cleanup;
-#endif
     if (is_smime && !maybe_signed && (gpg_err_code(err) == GPG_ERR_NO_DATA))
     {
       /* Check whether this might be a signed message despite what the mime
