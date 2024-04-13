@@ -30,7 +30,6 @@
  */
 
 #include "config.h"
-#include <ctype.h>
 #include <errno.h>
 #include <iconv.h>
 #include <langinfo.h>
@@ -43,6 +42,7 @@
 #include "list.h"
 #include "logging2.h"
 #include "memory.h"
+#include "pool.h"
 #include "queue.h"
 #include "regex3.h"
 #include "slist.h"
@@ -378,6 +378,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   char in[1024] = { 0 };
   char scratch[1024 + 10] = { 0 };
+  struct Buffer *canon = buf_pool_get();
 
   mutt_str_copy(in, name, sizeof(in));
   char *ext = strchr(in, '/');
@@ -386,7 +387,7 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
 
   if (mutt_istr_equal(in, "utf-8") || mutt_istr_equal(in, "utf8"))
   {
-    mutt_str_copy(buf, "utf-8", buflen);
+    buf_strcpy(canon, "utf-8");
     goto out;
   }
 
@@ -407,23 +408,23 @@ void mutt_ch_canonical_charset(char *buf, size_t buflen, const char *name)
   {
     if (mutt_istr_equal(scratch, PreferredMimeNames[i].key))
     {
-      mutt_str_copy(buf, PreferredMimeNames[i].pref, buflen);
+      buf_strcpy(canon, PreferredMimeNames[i].pref);
       goto out;
     }
   }
 
-  mutt_str_copy(buf, scratch, buflen);
-
-  /* for cosmetics' sake, transform to lowercase. */
-  for (char *p = buf; *p; p++)
-    *p = tolower(*p);
+  buf_strcpy(canon, scratch);
+  buf_lower(canon); // for cosmetics' sake
 
 out:
-  if (ext && *ext)
+  if (ext && (*ext != '\0'))
   {
-    mutt_str_cat(buf, buflen, "/");
-    mutt_str_cat(buf, buflen, ext);
+    buf_addch(canon, '/');
+    buf_addstr(canon, ext);
   }
+
+  mutt_str_copy(buf, buf_string(canon), buflen);
+  buf_pool_release(&canon);
 }
 
 /**
