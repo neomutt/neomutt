@@ -46,7 +46,7 @@
  * @param[in]  challenge Challenge from server
  * @param[out] response  Buffer for the response
  */
-static void hmac_md5(const char *password, char *challenge, unsigned char *response)
+static void hmac_md5(const char *password, const char *challenge, unsigned char *response)
 {
   struct Md5Ctx md5ctx = { 0 };
   unsigned char ipad[MD5_BLOCK_LEN] = { 0 };
@@ -96,12 +96,6 @@ static void hmac_md5(const char *password, char *challenge, unsigned char *respo
  */
 enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *method)
 {
-  char ibuf[2048] = { 0 };
-  char obuf[1024] = { 0 };
-  unsigned char hmac_response[MD5_DIGEST_LEN];
-  int len;
-  int rc;
-
   if (!(adata->capabilities & IMAP_CAP_AUTH_CRAM_MD5))
     return IMAP_AUTH_UNAVAIL;
 
@@ -116,6 +110,12 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
 
   imap_cmd_start(adata, "AUTHENTICATE CRAM-MD5");
 
+  struct Buffer *ibuf = buf_pool_get();
+  struct Buffer *obuf = buf_pool_get();
+  unsigned char hmac_response[MD5_DIGEST_LEN];
+  int rc_step;
+  enum ImapAuthRes rc = IMAP_AUTH_FAILURE;
+
   /* From RFC2195:
    * The data encoded in the first ready response contains a presumptively
    * arbitrary string of random digits, a timestamp, and the fully-qualified
@@ -123,24 +123,22 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
    * correspond to that of an RFC822 'msg-id' [RFC822] as described in [POP3].  */
   do
   {
-    rc = imap_cmd_step(adata);
-  } while (rc == IMAP_RES_CONTINUE);
+    rc_step = imap_cmd_step(adata);
+  } while (rc_step == IMAP_RES_CONTINUE);
 
-  if (rc != IMAP_RES_RESPOND)
+  if (rc_step != IMAP_RES_RESPOND)
   {
-    mutt_debug(LL_DEBUG1, "Invalid response from server: %s\n", ibuf);
+    mutt_debug(LL_DEBUG1, "Invalid response from server\n");
     goto bail;
   }
 
-  len = mutt_b64_decode(adata->buf + 2, obuf, sizeof(obuf));
-  if (len == -1)
+  if (mutt_b64_decode(adata->buf + 2, obuf->data, obuf->dsize) == -1)
   {
     mutt_debug(LL_DEBUG1, "Error decoding base64 response\n");
     goto bail;
   }
 
-  obuf[len] = '\0';
-  mutt_debug(LL_DEBUG2, "CRAM challenge: %s\n", obuf);
+  mutt_debug(LL_DEBUG2, "CRAM challenge: %s\n", buf_string(obuf));
 
   /* The client makes note of the data and then responds with a string
    * consisting of the user name, a space, and a 'digest'. The latter is
@@ -152,34 +150,40 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
    *   spaces, there is no ambiguity. Some servers get this wrong, we'll work
    *   around them when the bug report comes in. Until then, we'll remain
    *   blissfully RFC-compliant.  */
-  hmac_md5(adata->conn->account.pass, obuf, hmac_response);
+  hmac_md5(adata->conn->account.pass, buf_string(obuf), hmac_response);
   /* dubious optimisation I saw elsewhere: make the whole string in one call */
-  int off = snprintf(obuf, sizeof(obuf), "%s ", adata->conn->account.user);
-  mutt_md5_toascii(hmac_response, obuf + off);
-  mutt_debug(LL_DEBUG2, "CRAM response: %s\n", obuf);
+  int off = buf_printf(obuf, "%s ", adata->conn->account.user);
+  mutt_md5_toascii(hmac_response, obuf->data + off);
+  mutt_debug(LL_DEBUG2, "CRAM response: %s\n", buf_string(obuf));
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
   mutt_b64_encode(obuf, strlen(obuf), ibuf, sizeof(ibuf) - 2);
-  mutt_str_cat(ibuf, sizeof(ibuf), "\r\n");
+  buf_addstr(ibuf, "\r\n");
   mutt_socket_send(adata->conn, ibuf);
 
   do
   {
-    rc = imap_cmd_step(adata);
-  } while (rc == IMAP_RES_CONTINUE);
+    rc_step = imap_cmd_step(adata);
+  } while (rc_step == IMAP_RES_CONTINUE);
 
-  if (rc != IMAP_RES_OK)
+  if (rc_step != IMAP_RES_OK)
   {
     mutt_debug(LL_DEBUG1, "Error receiving server response\n");
     goto bail;
   }
 
   if (imap_code(adata->buf))
-    return IMAP_AUTH_SUCCESS;
+    rc = IMAP_AUTH_SUCCESS;
 
 bail:
-  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-  mutt_error(_("%s authentication failed"), "CRAM-MD5");
-  return IMAP_AUTH_FAILURE;
+  if (rc != IMAP_AUTH_SUCCESS)
+  {
+    // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+    mutt_error(_("%s authentication failed"), "CRAM-MD5");
+  }
+
+  buf_pool_release(&ibuf);
+  buf_pool_release(&obuf);
+  return rc;
 }
