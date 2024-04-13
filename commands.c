@@ -718,6 +718,19 @@ static enum CommandResult mailbox_add(const char *folder, const char *mailbox,
 }
 
 /**
+ * mailbox_add_simple - Add a new Mailbox
+ * @param mailbox Mailbox to add
+ * @param err     Buffer for error messages
+ * @retval true Success
+ */
+bool mailbox_add_simple(const char *mailbox, struct Buffer *err)
+{
+  enum CommandResult rc = mailbox_add("", mailbox, NULL, TB_UNSET, TB_UNSET, err);
+
+  return (rc == MUTT_CMD_SUCCESS);
+}
+
+/**
  * parse_mailboxes - Parse the 'mailboxes' command - Implements Command::parse() - @ingroup command_parse
  *
  * This is also used by 'virtual-mailboxes'.

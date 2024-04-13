@@ -24,6 +24,7 @@
 #define MUTT_COMMANDS_H
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include "config/lib.h"
 #include "core/lib.h"
@@ -45,6 +46,7 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s, 
 
 enum CommandResult parse_rc_line_cwd(const char *line, char *cwd, struct Buffer *err);
 char *mutt_get_sourced_cwd(void);
+bool mailbox_add_simple(const char *mailbox, struct Buffer *err);
 
 int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, struct Buffer *err);
 void source_stack_cleanup(void);
