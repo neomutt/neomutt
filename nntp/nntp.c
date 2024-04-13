@@ -142,7 +142,6 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
   bool mode_reader = false;
-  char buf[1024] = { 0 };
   char authinfo[1024] = { 0 };
 
   adata->hasCAPABILITIES = false;
@@ -154,58 +153,67 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   adata->hasOVER = false;
   FREE(&adata->authenticators);
 
+  struct Buffer *buf = buf_pool_get();
+
   if ((mutt_socket_send(conn, "CAPABILITIES\r\n") < 0) ||
-      (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
+      (mutt_socket_buffer_readln(buf, conn) < 0))
   {
+    buf_pool_release(&buf);
     return nntp_connect_error(adata);
   }
 
   /* no capabilities */
-  if (!mutt_str_startswith(buf, "101"))
+  if (!mutt_str_startswith(buf_string(buf), "101"))
+  {
+    buf_pool_release(&buf);
     return 1;
+  }
   adata->hasCAPABILITIES = true;
 
   /* parse capabilities */
   do
   {
     size_t plen = 0;
-    if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if (mutt_socket_buffer_readln(buf, conn) < 0)
+    {
+      buf_pool_release(&buf);
       return nntp_connect_error(adata);
-    if (mutt_str_equal("STARTTLS", buf))
+    }
+    if (mutt_str_equal("STARTTLS", buf_string(buf)))
     {
       adata->hasSTARTTLS = true;
     }
-    else if (mutt_str_equal("MODE-READER", buf))
+    else if (mutt_str_equal("MODE-READER", buf_string(buf)))
     {
       mode_reader = true;
     }
-    else if (mutt_str_equal("READER", buf))
+    else if (mutt_str_equal("READER", buf_string(buf)))
     {
       adata->hasDATE = true;
       adata->hasLISTGROUP = true;
       adata->hasLISTGROUPrange = true;
     }
-    else if ((plen = mutt_str_startswith(buf, "AUTHINFO ")))
+    else if ((plen = mutt_str_startswith(buf_string(buf), "AUTHINFO ")))
     {
-      mutt_str_cat(buf, sizeof(buf), " ");
-      mutt_str_copy(authinfo, buf + plen - 1, sizeof(authinfo));
+      buf_addch(buf, ' ');
+      mutt_str_copy(authinfo, buf->data + plen - 1, sizeof(authinfo));
     }
 #ifdef USE_SASL_CYRUS
-    else if ((plen = mutt_str_startswith(buf, "SASL ")))
+    else if ((plen = mutt_str_startswith(buf_string(buf), "SASL ")))
     {
-      char *p = buf + plen;
+      char *p = buf->data + plen;
       while (*p == ' ')
         p++;
       adata->authenticators = mutt_str_dup(p);
     }
 #endif
-    else if (mutt_str_equal("OVER", buf))
+    else if (mutt_str_equal("OVER", buf_string(buf)))
     {
       adata->hasOVER = true;
     }
-    else if (mutt_str_startswith(buf, "LIST "))
+    else if (mutt_str_startswith(buf_string(buf), "LIST "))
     {
-      char *p = strstr(buf, " NEWSGROUPS");
+      const char *p = buf_find_string(buf, " NEWSGROUPS");
       if (p)
       {
         p += 11;
@@ -213,19 +221,21 @@ static int nntp_capabilities(struct NntpAccountData *adata)
           adata->hasLIST_NEWSGROUPS = true;
       }
     }
-  } while (!mutt_str_equal(".", buf));
-  *buf = '\0';
+  } while (!mutt_str_equal(".", buf_string(buf)));
+  buf_reset(buf);
+
 #ifdef USE_SASL_CYRUS
   if (adata->authenticators && mutt_istr_find(authinfo, " SASL "))
-    mutt_str_copy(buf, adata->authenticators, sizeof(buf));
+    buf_strcpy(buf, adata->authenticators);
 #endif
   if (mutt_istr_find(authinfo, " USER "))
   {
-    if (*buf != '\0')
-      mutt_str_cat(buf, sizeof(buf), " ");
-    mutt_str_cat(buf, sizeof(buf), "USER");
+    if (!buf_is_empty(buf))
+      buf_addch(buf, ' ');
+    buf_addstr(buf, "USER");
   }
-  mutt_str_replace(&adata->authenticators, buf);
+  mutt_str_replace(&adata->authenticators, buf_string(buf));
+  buf_pool_release(&buf);
 
   /* current mode is reader */
   if (adata->hasDATE)
