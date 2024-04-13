@@ -928,7 +928,9 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
                                struct Buffer *cmd, enum QuadOption *err_continue)
 {
   struct ImapAccountData *adata = imap_adata_get(m);
-  if (!adata || (adata->mailbox != m))
+  struct ImapEmailData *edata = imap_edata_get(e);
+
+  if (!adata || (adata->mailbox != m) || !e)
     return -1;
 
   char flags[1024] = { 0 };
@@ -936,12 +938,12 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
 
   if (!compare_flags_for_copy(e))
   {
-    if (e->deleted == imap_edata_get(e)->deleted)
+    if (e->deleted == edata->deleted)
       e->changed = false;
     return 0;
   }
 
-  snprintf(uid, sizeof(uid), "%u", imap_edata_get(e)->uid);
+  snprintf(uid, sizeof(uid), "%u", edata->uid);
   buf_reset(cmd);
   buf_addstr(cmd, "UID STORE ");
   buf_addstr(cmd, uid);
@@ -952,21 +954,19 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   set_flag(m, MUTT_ACL_WRITE, e->old, "Old ", flags, sizeof(flags));
   set_flag(m, MUTT_ACL_WRITE, e->flagged, "\\Flagged ", flags, sizeof(flags));
   set_flag(m, MUTT_ACL_WRITE, e->replied, "\\Answered ", flags, sizeof(flags));
-  set_flag(m, MUTT_ACL_DELETE, imap_edata_get(e)->deleted, "\\Deleted ", flags,
-           sizeof(flags));
+  set_flag(m, MUTT_ACL_DELETE, edata->deleted, "\\Deleted ", flags, sizeof(flags));
 
   if (m->rights & MUTT_ACL_WRITE)
   {
     /* restore system flags */
-    if (imap_edata_get(e)->flags_system)
-      mutt_str_cat(flags, sizeof(flags), imap_edata_get(e)->flags_system);
+    if (edata->flags_system)
+      mutt_str_cat(flags, sizeof(flags), edata->flags_system);
+
     /* set custom flags */
     struct Buffer *tags = buf_pool_get();
     driver_tags_get_with_hidden(&e->tags, tags);
     if (!buf_is_empty(tags))
-    {
       mutt_str_cat(flags, sizeof(flags), buf_string(tags));
-    }
     buf_pool_release(&tags);
   }
 
@@ -980,12 +980,11 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
     set_flag(m, MUTT_ACL_WRITE, true, "Old ", flags, sizeof(flags));
     set_flag(m, MUTT_ACL_WRITE, true, "\\Flagged ", flags, sizeof(flags));
     set_flag(m, MUTT_ACL_WRITE, true, "\\Answered ", flags, sizeof(flags));
-    set_flag(m, MUTT_ACL_DELETE, !imap_edata_get(e)->deleted, "\\Deleted ",
-             flags, sizeof(flags));
+    set_flag(m, MUTT_ACL_DELETE, !edata->deleted, "\\Deleted ", flags, sizeof(flags));
 
     /* erase custom flags */
-    if ((m->rights & MUTT_ACL_WRITE) && imap_edata_get(e)->flags_remote)
-      mutt_str_cat(flags, sizeof(flags), imap_edata_get(e)->flags_remote);
+    if ((m->rights & MUTT_ACL_WRITE) && edata->flags_remote)
+      mutt_str_cat(flags, sizeof(flags), edata->flags_remote);
 
     mutt_str_remove_trailing_ws(flags);
 
@@ -999,6 +998,8 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   buf_addstr(cmd, flags);
   buf_addstr(cmd, ")");
 
+  int rc = -1;
+
   /* after all this it's still possible to have no flags, if you
    * have no ACL rights */
   if (*flags && (imap_exec(adata, cmd->data, IMAP_CMD_NO_FLAGS) != IMAP_EXEC_SUCCESS) &&
@@ -1006,20 +1007,23 @@ int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e,
   {
     *err_continue = imap_continue("imap_sync_message: STORE failed", adata->buf);
     if (*err_continue != MUTT_YES)
-      return -1;
+      goto done;
   }
 
   /* server have now the updated flags */
-  FREE(&imap_edata_get(e)->flags_remote);
+  FREE(&edata->flags_remote);
   struct Buffer *flags_remote = buf_pool_get();
   driver_tags_get_with_hidden(&e->tags, flags_remote);
-  imap_edata_get(e)->flags_remote = buf_strdup(flags_remote);
+  edata->flags_remote = buf_strdup(flags_remote);
   buf_pool_release(&flags_remote);
 
-  if (e->deleted == imap_edata_get(e)->deleted)
+  if (e->deleted == edata->deleted)
     e->changed = false;
 
-  return 0;
+  rc = 0;
+
+done:
+  return rc;
 }
 
 /**
