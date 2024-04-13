@@ -44,6 +44,7 @@
 #include "logging2.h"
 #include "memory.h"
 #include "message.h"
+#include "pool.h"
 #include "string2.h"
 
 /**
@@ -334,31 +335,27 @@ bool mutt_path_to_absolute(char *path, const char *reference)
   if (!path || !reference)
     return false;
 
-  char abs_path[PATH_MAX] = { 0 };
-  int path_len;
-
   /* if path is already absolute, don't do anything */
   if ((strlen(path) > 1) && (path[0] == '/'))
   {
     return true;
   }
 
+  struct Buffer *abs_path = buf_pool_get();
+
   char *dirpath = mutt_path_dirname(reference);
-  mutt_str_copy(abs_path, dirpath, sizeof(abs_path));
+  buf_printf(abs_path, "%s/%s", dirpath, path);
   FREE(&dirpath);
-  mutt_strn_cat(abs_path, sizeof(abs_path), "/", 1); /* append a / at the end of the path */
 
-  path_len = sizeof(abs_path) - strlen(path);
-
-  mutt_strn_cat(abs_path, sizeof(abs_path), path, (path_len > 0) ? path_len : 0);
-
-  path = realpath(abs_path, path);
+  path = realpath(buf_string(abs_path), path);
   if (!path && (errno != ENOENT))
   {
     mutt_perror(_("Error: converting path to absolute"));
+    buf_pool_release(&abs_path);
     return false;
   }
 
+  buf_pool_release(&abs_path);
   return true;
 }
 
