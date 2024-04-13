@@ -42,7 +42,8 @@
 enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *method)
 {
   static const char auth_plain_cmd[] = "AUTHENTICATE PLAIN";
-  static const size_t apc_len = sizeof(auth_plain_cmd);
+  // Subtract 1 (for the \0) to get the string length
+  static const size_t apc_len = sizeof(auth_plain_cmd) - 1;
 
   struct ConnAccount *cac = &adata->conn->account;
 
@@ -55,29 +56,29 @@ enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *meth
 
   int rc_step = IMAP_RES_CONTINUE;
   enum ImapAuthRes rc = IMAP_AUTH_SUCCESS;
-  char buf[256] = { 0 };
+  struct Buffer *buf = buf_pool_get();
 
   /* Prepare full AUTHENTICATE PLAIN message */
-  mutt_sasl_plain_msg(buf, sizeof(buf), auth_plain_cmd, cac->user, cac->user, cac->pass);
+  mutt_sasl_plain_msg(buf, auth_plain_cmd, cac->user, cac->user, cac->pass);
 
   if (adata->capabilities & IMAP_CAP_SASL_IR)
   {
-    imap_cmd_start(adata, buf);
+    imap_cmd_start(adata, buf_string(buf));
   }
   else
   {
     /* Split the message so we send AUTHENTICATE PLAIN first, and the
      * credentials after the first command continuation request */
-    buf[apc_len - 1] = '\0';
-    imap_cmd_start(adata, buf);
+    buf->data[apc_len] = '\0';
+    imap_cmd_start(adata, buf_string(buf));
     while (rc_step == IMAP_RES_CONTINUE)
     {
       rc_step = imap_cmd_step(adata);
     }
     if (rc_step == IMAP_RES_RESPOND)
     {
-      mutt_str_cat(buf + apc_len, sizeof(buf) - apc_len, "\r\n");
-      mutt_socket_send(adata->conn, buf + apc_len);
+      buf_addstr(buf, "\r\n");
+      mutt_socket_send(adata->conn, buf->data + apc_len + 1);
       rc_step = IMAP_RES_CONTINUE;
     }
   }
@@ -98,5 +99,6 @@ enum ImapAuthRes imap_auth_plain(struct ImapAccountData *adata, const char *meth
   }
 
   mutt_clear_error();
+  buf_pool_release(&buf);
   return rc;
 }

@@ -795,7 +795,7 @@ static int smtp_auth_xoauth2(struct SmtpAccountData *adata, const char *method)
  */
 static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = NULL;
   struct ConnAccount *cac = &adata->conn->account;
   int rc = -1;
 
@@ -804,15 +804,12 @@ static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
     goto error;
 
   /* Build the initial client response. */
-  size_t len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", cac->user,
-                                   cac->user, cac->pass);
-
-  /* Terminate as per SMTP protocol. Bail out if there's no room left. */
-  if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
-    goto error;
+  buf = buf_pool_get();
+  mutt_sasl_plain_msg(buf, "AUTH PLAIN", cac->user, cac->user, cac->pass);
+  buf_add_printf(buf, "\r\n");
 
   /* Send request, receive response (with a check for OK code). */
-  if ((mutt_socket_send(adata->conn, buf) < 0) || smtp_get_resp(adata))
+  if ((mutt_socket_send(adata->conn, buf_string(buf)) < 0) || smtp_get_resp(adata))
     goto error;
 
   rc = 0; // Auth was successful
@@ -823,7 +820,7 @@ error:
     // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
     mutt_error(_("%s authentication failed"), "SASL");
   }
-
+  buf_pool_release(&buf);
   return rc;
 }
 
