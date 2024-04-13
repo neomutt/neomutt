@@ -32,7 +32,7 @@
 #include "type.h"
 
 /**
- * Menus - Menu name lookup table
+ * MenuNames - Menu name lookup table
  */
 const struct Mapping MenuNames[] = {
   // clang-format off
