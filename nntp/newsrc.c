@@ -851,70 +851,72 @@ void nntp_delete_group_cache(struct NntpMboxData *mdata)
  */
 void nntp_clear_cache(struct NntpAccountData *adata)
 {
-  char file[PATH_MAX] = { 0 };
-  char *fp = NULL;
-  struct dirent *de = NULL;
-  DIR *dir = NULL;
-
   if (!adata || !adata->cacheable)
     return;
 
-  cache_expand(file, sizeof(file), &adata->conn->account, NULL);
-  dir = mutt_file_opendir(file, MUTT_OPENDIR_NONE);
-  if (dir)
-  {
-    mutt_strn_cat(file, sizeof(file), "/", 1);
-    fp = file + strlen(file);
-    while ((de = readdir(dir)))
-    {
-      char *group = de->d_name;
-      struct stat st = { 0 };
-      struct NntpMboxData *mdata = NULL;
-      struct NntpMboxData tmp_mdata = { 0 };
+  struct dirent *de = NULL;
+  DIR *dir = NULL;
+  struct Buffer *cache = buf_pool_get();
+  struct Buffer *file = buf_pool_get();
 
-      if (mutt_str_equal(group, ".") || mutt_str_equal(group, ".."))
-        continue;
-      *fp = '\0';
-      mutt_strn_cat(file, sizeof(file), group, strlen(group));
-      if (stat(file, &st) != 0)
-        continue;
+  cache_expand(cache->data, cache->dsize, &adata->conn->account, NULL);
+  dir = mutt_file_opendir(buf_string(cache), MUTT_OPENDIR_NONE);
+  if (!dir)
+    goto done;
+
+  buf_addch(cache, '/');
+  const bool c_save_unsubscribed = cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
+
+  while ((de = readdir(dir)))
+  {
+    char *group = de->d_name;
+    if (mutt_str_equal(group, ".") || mutt_str_equal(group, ".."))
+      continue;
+
+    buf_printf(file, "%s%s", buf_string(cache), group);
+    struct stat st = { 0 };
+    if (stat(buf_string(file), &st) != 0)
+      continue;
 
 #ifdef USE_HCACHE
-      if (S_ISREG(st.st_mode))
-      {
-        char *ext = group + strlen(group) - 7;
-        if ((strlen(group) < 8) || !mutt_str_equal(ext, ".hcache"))
-          continue;
-        *ext = '\0';
-      }
-      else
-#endif
-          if (!S_ISDIR(st.st_mode))
+    if (S_ISREG(st.st_mode))
+    {
+      char *ext = group + strlen(group) - 7;
+      if ((strlen(group) < 8) || !mutt_str_equal(ext, ".hcache"))
         continue;
-
-      const bool c_save_unsubscribed = cs_subset_bool(NeoMutt->sub, "save_unsubscribed");
-      mdata = mutt_hash_find(adata->groups_hash, group);
-      if (!mdata)
-      {
-        mdata = &tmp_mdata;
-        mdata->adata = adata;
-        mdata->group = group;
-        mdata->bcache = NULL;
-      }
-      else if (mdata->newsrc_ent || mdata->subscribed || c_save_unsubscribed)
-      {
-        continue;
-      }
-
-      nntp_delete_group_cache(mdata);
-      if (S_ISDIR(st.st_mode))
-      {
-        rmdir(file);
-        mutt_debug(LL_DEBUG2, "%s\n", file);
-      }
+      *ext = '\0';
     }
-    closedir(dir);
+    else
+#endif
+        if (!S_ISDIR(st.st_mode))
+      continue;
+
+    struct NntpMboxData tmp_mdata = { 0 };
+    struct NntpMboxData *mdata = mutt_hash_find(adata->groups_hash, group);
+    if (!mdata)
+    {
+      mdata = &tmp_mdata;
+      mdata->adata = adata;
+      mdata->group = group;
+      mdata->bcache = NULL;
+    }
+    else if (mdata->newsrc_ent || mdata->subscribed || c_save_unsubscribed)
+    {
+      continue;
+    }
+
+    nntp_delete_group_cache(mdata);
+    if (S_ISDIR(st.st_mode))
+    {
+      rmdir(buf_string(file));
+      mutt_debug(LL_DEBUG2, "%s\n", buf_string(file));
+    }
   }
+  closedir(dir);
+
+done:
+  buf_pool_release(&cache);
+  buf_pool_release(&file);
 }
 
 /**
