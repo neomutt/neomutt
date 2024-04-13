@@ -49,8 +49,8 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
-#include "parse/lib.h"
 #include "adata.h"
+#include "commands.h"
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
@@ -694,24 +694,22 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
 
   mutt_debug(LL_DEBUG3, "Subscribing to %s\n", list.name);
 
-  char buf[256] = { 0 };
-  char quoted_name[256] = { 0 };
+  struct Buffer *buf = buf_pool_get();
   struct Buffer *err = buf_pool_get();
   struct Url url = { 0 };
 
-  mutt_str_copy(buf, "mailboxes \"", sizeof(buf));
   mutt_account_tourl(&adata->conn->account, &url);
-  /* escape \ and " */
-  imap_quote_string(quoted_name, sizeof(quoted_name), list.name, true);
-  url.path = quoted_name + 1;
-  url.path[strlen(url.path) - 1] = '\0';
+  url.path = list.name;
+
   const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");
   if (mutt_str_equal(url.user, c_imap_user))
     url.user = NULL;
-  url_tostring(&url, buf + 11, sizeof(buf) - 11, U_NO_FLAGS);
-  mutt_str_cat(buf, sizeof(buf), "\"");
-  if (parse_rc_line(buf, err))
+  url_tobuffer(&url, buf, U_NO_FLAGS);
+
+  if (!mailbox_add_simple(buf_string(buf), err))
     mutt_debug(LL_DEBUG1, "Error adding subscribed mailbox: %s\n", buf_string(err));
+
+  buf_pool_release(&buf);
   buf_pool_release(&err);
 }
 
