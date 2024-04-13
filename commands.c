@@ -611,6 +611,13 @@ bail:
 
 /**
  * mailbox_add - Add a new Mailbox
+ * @param folder  Path to use for '+' abbreviations
+ * @param mailbox Mailbox to add
+ * @param label   Descriptive label
+ * @param poll    Enable mailbox polling?
+ * @param notify  Enable mailbox notification?
+ * @param err     Buffer for error messages
+ * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  */
 static enum CommandResult mailbox_add(const char *folder, const char *mailbox,
                                       const char *label, enum TriBool poll,

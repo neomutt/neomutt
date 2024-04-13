@@ -172,6 +172,7 @@ void curses_colors_dump(struct Buffer *buf)
 
 /**
  * merged_colors_dump - Dump all the Merged colours
+ * @param buf   Buffer for result
  */
 void merged_colors_dump(struct Buffer *buf)
 {
