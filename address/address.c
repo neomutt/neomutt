@@ -1185,10 +1185,6 @@ static size_t addrlist_write(const struct AddressList *al, struct Buffer *buf,
  * @param buf       Buffer for the Address
  * @param header    Header name; if present, addresses we be written after ": "
  * @retval num      Length of the string written to buf
- *
- * If 'display' is set, then it doesn't matter if the transformation isn't
- * reversible.
- *
  */
 size_t mutt_addrlist_write_wrap(const struct AddressList *al,
                                 struct Buffer *buf, const char *header)
