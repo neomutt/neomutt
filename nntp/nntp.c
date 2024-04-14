@@ -261,6 +261,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
   char buf[1024] = { 0 };
+  int rc = -1;
 
   /* no CAPABILITIES, trying DATE, LISTGROUP, LIST NEWSGROUPS */
   if (!adata->hasCAPABILITIES)
@@ -268,7 +269,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "DATE\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      goto fail;
     }
     if (!mutt_str_startswith(buf, "500"))
       adata->hasDATE = true;
@@ -276,7 +277,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "LISTGROUP\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      goto fail;
     }
     if (!mutt_str_startswith(buf, "500"))
       adata->hasLISTGROUP = true;
@@ -284,7 +285,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "LIST NEWSGROUPS +\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      goto fail;
     }
     if (!mutt_str_startswith(buf, "500"))
       adata->hasLIST_NEWSGROUPS = true;
@@ -293,7 +294,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       do
       {
         if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
-          return nntp_connect_error(adata);
+          goto fail;
       } while (!mutt_str_equal(".", buf));
     }
   }
@@ -304,7 +305,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "XGTITLE\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      goto fail;
     }
     if (!mutt_str_startswith(buf, "500"))
       adata->hasXGTITLE = true;
@@ -316,7 +317,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "XOVER\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      goto fail;
     }
     if (!mutt_str_startswith(buf, "500"))
       adata->hasXOVER = true;
@@ -328,7 +329,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "LIST OVERVIEW.FMT\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      goto fail;
     }
     if (!mutt_str_startswith(buf, "215"))
     {
@@ -355,7 +356,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
         if (chunk < 0)
         {
           FREE(&adata->overview_fmt);
-          return nntp_connect_error(adata);
+          goto fail;
         }
 
         if (!cont && mutt_str_equal(".", adata->overview_fmt + off))
@@ -389,7 +390,13 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       mutt_mem_realloc(&adata->overview_fmt, off);
     }
   }
-  return 0;
+  rc = 0; // Success
+
+fail:
+  if (rc < 0)
+    nntp_connect_error(adata);
+
+  return rc;
 }
 
 #ifdef USE_SASL_CYRUS
