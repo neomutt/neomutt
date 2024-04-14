@@ -26,6 +26,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -34,7 +35,6 @@
 #include "config/common.h" // IWYU pragma: keep
 #include "config/lib.h"
 #include "core/lib.h"
-#include "limits.h"
 #include "test_common.h"
 
 // clang-format off

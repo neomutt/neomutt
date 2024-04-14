@@ -25,14 +25,14 @@
 #include "config.h"
 #include "acutest.h"
 #include <assert.h>
+#include <limits.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "common.h" // IWYU pragma: keep
-#include "limits.h"
+#include "common.h"      // IWYU pragma: keep
 #include "test_common.h" // IWYU pragma: keep
 
 // clang-format off

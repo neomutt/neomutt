@@ -25,10 +25,9 @@
 #include "acutest.h"
 #include <stddef.h>
 #include <string.h>
-#include <time.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
-#include "alias/gui.h"
+#include "alias/lib.h"
+#include "alias/gui.h" // IWYU pragma: keep
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
