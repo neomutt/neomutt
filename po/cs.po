@@ -20,9 +20,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -1059,7 +1059,7 @@ msgstr "Nelze odhlásit odběr %s"
 #: compmbox/compress.c:224
 #, c-format
 msgid "Expando parse error: %s"
-msgstr ""
+msgstr "Chyba parsování formátu: %s"
 
 #: compmbox/compress.c:380 compmbox/compress.c:513
 #, c-format
@@ -1111,12 +1111,12 @@ msgstr "Komprimuje se a připojuje k %s…"
 #: compmbox/compress.c:707 editmsg.c:265
 #, c-format
 msgid "Error. Preserving temporary file: %s"
-msgstr "Chyba. Zachovávám dočasný soubor %s."
+msgstr "Chyba. Zachovávám dočasný soubor: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
-msgstr ""
+msgstr "-- NeoMutt: Psaní  [Přibližná velikost zprávy: %l   Příloh: %a]%>-"
 
 #: compose/dlg_compose.c:93 compose/dlg_compose.c:111
 msgid "Send"
@@ -1189,9 +1189,8 @@ msgstr "Nemůžete smazat jedinou přílohu"
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
 #: compose/functions.c:363
-#, fuzzy
 msgid "Really delete the main message?"
-msgstr "Skutečně chcete smazat schránku „%s“?"
+msgstr "Skutečně chcete smazat hlavní zprávu?"
 
 #: compose/functions.c:379 compose/functions.c:571
 msgid "Can't leave group with only one attachment"
@@ -1604,9 +1603,8 @@ msgid "Error processing certificate data"
 msgstr "Chyba při zpracování certifikačních údajů"
 
 #: conn/gnutls.c:489 conn/openssl.c:900
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Pozor: Certifikát nelze uložit"
+msgstr "Nedůvěryhodný certifikát serveru"
 
 #: conn/gnutls.c:507 conn/openssl.c:907
 msgid "This certificate belongs to:"
@@ -2146,55 +2144,55 @@ msgstr[2] "(+%d dalších)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
 #: expando/config_type.c:85 expando/config_type.c:254
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: "
-msgstr "Přepínače:"
+msgstr "Volba %s: "
 
 #. L10N: e.g. "Unknown expando: %Q"
 #: expando/node_condbool.c:103 expando/node_expando.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%%.*s"
-msgstr "Volba „%s“ není známa."
+msgstr "Neznámý formát: %%%.*s"
 
 #. L10N: The 'ymwdHM' should not be translated
 #: expando/node_conddate.c:178
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
-msgstr ""
+msgstr "Neplatná časová jednotka: „%c“, musí být jedna z „ymwdHM“"
 
 #. L10N: Expando format expected a number
 #: expando/node_expando.c:199
-#, fuzzy, c-format
+#, c-format
 msgid "Number is expected"
-msgstr "zpráva je smazána"
+msgstr "Očekávám číslo"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/node_expando.c:307
 #, c-format
 msgid "Expando is missing terminator: '%c'"
-msgstr ""
+msgstr "Formátu chybí ukončení: „%c“"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
 #: expando/node_padding.c:241
 #, c-format
 msgid "Padding cannot be used as a condition"
-msgstr ""
+msgstr "Vyplnění nelze použít v podmínce"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/parse.c:161 expando/parse.c:225
 #, c-format
 msgid "Conditional expando is missing '%c'"
-msgstr ""
+msgstr "Podmíněnému formátu chybí „%c“"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/parse.c:180
 #, c-format
 msgid "Conditional expando is missing '&' or '%c'"
-msgstr ""
+msgstr "Podmíněnému formátu chybí „&“ nebo „%c“"
 
 #: external.c:110 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
@@ -5910,22 +5908,22 @@ msgstr "Zachycen signál %d… Končím.\n"
 #. testing, so be sure to test with $header_cache unset.
 #: mutt_config.c:732
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
-msgstr ""
+msgstr "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 
 #. L10N: $status_format default format
 #: mutt_config.c:814
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr ""
+msgstr "-%r-NeoMutt: %D [Zpráv:%<M?%M/>%m%<n? Nové:%n>%<o? Nepřečtené:%o>%<d? Smazané:%d>%<F? S Příznakem:%F>%<t? Označené:%t>%<p? Odložené:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:851
 msgid "M%<n?AIL&ail>"
-msgstr ""
+msgstr "Z%<n?PRÁVA&práva>"
 
 #. L10N: $ts_status_format default format
 #: mutt_config.c:855
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
-msgstr ""
+msgstr "NeoMutt %<m?s %m zprávami&bez zpráv>%<n? [%n NOVÉ]>"
 
 #: mutt_logging.c:275
 #, c-format
@@ -6717,16 +6715,16 @@ msgstr "%s <%s>"
 msgid "%s \"%s\""
 msgstr "%s „%s“"
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Všem vyhovujícím klíčům vypršela platnost, byly odvolány nebo zakázány"
 
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "klíče PGP vyhovující <%s>"
 
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "klíče PGP vyhovující „%s“"
@@ -8228,18 +8226,18 @@ msgstr "Volba %s nesmí obsahovat metaznaky shellu: %c"
 #: send/config.c:170
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "Dne %d, %n napsal:"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:237
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "----- Přeposlaná zpráva od %f -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:241
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Konec přeposlané zprávy -----"
 
 #: send/send.c:348
 msgid "No subject, abort?"
@@ -8563,10 +8561,10 @@ msgstr ""
 "musíte ovšem dodržet určitá pravidla; další informace získáte příkazem\n"
 "„neomutt -vv“.\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
 
-#: version.c:485
+#: version.c:492
 msgid "Devel options:"
 msgstr "Volby pro vývoj:"

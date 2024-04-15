@@ -15,9 +15,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2018-09-19 03:36+0200\n"
 "Last-Translator: Flammie A Pirinen <flammie@iki.fi>\n"
 "Language-Team: Finnish\n"
@@ -1108,7 +1108,7 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Virhe. Varattaessa väliaikaistiedostoa: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr ""
 
@@ -6721,16 +6721,16 @@ msgstr "%s <%s>"
 msgid "%s \"%s\""
 msgstr "%s ”%s”"
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Kaikki täsmäävät avaimet ovat joko vanhentuneet, poistettu käytöstä tai pois päältä"
 
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP-avaimet täsmäävät <%s>."
 
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP-avaimet täsmäävät %s"
@@ -8567,11 +8567,11 @@ msgstr ""
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; lisätietoja komennolla `mutt -vv'.\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "Käännösaikaiset asetukset:"
 
-#: version.c:485
+#: version.c:492
 #, fuzzy
 msgid "Devel options:"
 msgstr "Oletusasetukset:"
