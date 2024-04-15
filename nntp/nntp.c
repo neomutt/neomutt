@@ -1948,6 +1948,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
   struct NntpMboxData *mdata = NULL;
   struct NntpMboxData tmp_mdata = { 0 };
   char buf[1024] = { 0 };
+  int rc = -1;
 
   if (m && (m->type == MUTT_NNTP))
   {
@@ -1958,7 +1959,7 @@ int nntp_post(struct Mailbox *m, const char *msg)
     const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
     CurrentNewsSrv = nntp_select_server(m, c_news_server, false);
     if (!CurrentNewsSrv)
-      return -1;
+      goto done;
 
     mdata = &tmp_mdata;
     mdata->adata = CurrentNewsSrv;
@@ -1969,20 +1970,20 @@ int nntp_post(struct Mailbox *m, const char *msg)
   if (!fp)
   {
     mutt_perror("%s", msg);
-    return -1;
+    goto done;
   }
 
   mutt_str_copy(buf, "POST\r\n", sizeof(buf));
   if (nntp_query(mdata, buf, sizeof(buf)) < 0)
   {
     mutt_file_fclose(&fp);
-    return -1;
+    goto done;
   }
   if (buf[0] != '3')
   {
     mutt_error(_("Can't post article: %s"), buf);
     mutt_file_fclose(&fp);
-    return -1;
+    goto done;
   }
 
   buf[0] = '.';
@@ -2001,7 +2002,8 @@ int nntp_post(struct Mailbox *m, const char *msg)
                            MUTT_SOCK_LOG_FULL) < 0)
     {
       mutt_file_fclose(&fp);
-      return nntp_connect_error(mdata->adata);
+      nntp_connect_error(mdata->adata);
+      goto done;
     }
   }
   mutt_file_fclose(&fp);
@@ -2011,14 +2013,18 @@ int nntp_post(struct Mailbox *m, const char *msg)
       (mutt_socket_send_d(mdata->adata->conn, ".\r\n", MUTT_SOCK_LOG_FULL) < 0) ||
       (mutt_socket_readln(buf, sizeof(buf), mdata->adata->conn) < 0))
   {
-    return nntp_connect_error(mdata->adata);
+    nntp_connect_error(mdata->adata);
+    goto done;
   }
   if (buf[0] != '2')
   {
     mutt_error(_("Can't post article: %s"), buf);
-    return -1;
+    goto done;
   }
-  return 0;
+  rc = 0;
+
+done:
+  return rc;
 }
 
 /**
