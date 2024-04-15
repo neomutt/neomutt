@@ -53,9 +53,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2019-05-15 01:16-0400\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -1178,7 +1178,7 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Error.  Es manté el fitxer temporal: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr ""
 
@@ -7007,18 +7007,18 @@ msgstr "%s <%s>"
 msgid "%s \"%s\""
 msgstr "%s «%s»"
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Totes les claus concordants han expirat o estan revocades o inhabilitades"
 
 # Una adreça..  ivb
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "Claus PGP que concorden amb <%s>"
 
 # Un nom.  ivb
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "Claus PGP que concordem amb «%s»"
@@ -8972,11 +8972,11 @@ msgstr ""
 "detalls.  NeoMutt és programari lliure, i podeu, si voleu, redistribuir‐lo sota\n"
 "certes condicions; empreu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "Opcions de compilació:"
 
-#: version.c:485
+#: version.c:492
 #, fuzzy
 msgid "Devel options:"
 msgstr "Opcions de compilació:"

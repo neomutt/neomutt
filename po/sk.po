@@ -13,9 +13,9 @@
 # message-id - Message-Id vs ID správy
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1105,7 +1105,7 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Chyba. Zachovávam dočasný súbor: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr "-- NeoMutt: Písanie  [Približná veľkosť správy: %l   Príloh: %a]%>-"
 
@@ -5898,7 +5898,6 @@ msgstr "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 
 #. L10N: $status_format default format
 #: mutt_config.c:814
-#, fuzzy
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr "-%r-NeoMutt: %D [Správ:%<M?%M/>%m%<n? Nové:%n>%<o? Neprečítané:%o>%<d? Zmazané:%d>%<F? S príznakom:%F>%<t? Označené:%t>%<p? Odložené:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
@@ -6702,16 +6701,16 @@ msgstr "%s <%s>"
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Všetkým vyhovujúcom kľúčom buď vypršala platnosť, boli odvolané alebo zakázané"
 
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP kľúče vyhovujúce <%s>"
 
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP kľúče vyhovujúce „%s“"
@@ -8546,10 +8545,10 @@ msgstr ""
 "NeoMutt je voľné programové vybavenie. Šírenie tohto programu je vítáno\n"
 "za určitých podmienok; dalšie informácie získáte príkazom 'neomutt -vv'.\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "Preložené s voľbami:"
 
-#: version.c:485
+#: version.c:492
 msgid "Devel options:"
 msgstr "Vobľy pre vývoj:"

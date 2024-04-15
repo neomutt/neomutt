@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -1124,7 +1124,7 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "發生錯誤，保留暫存檔：%s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr ""
 
@@ -6911,17 +6911,17 @@ msgstr "%s 【%s】\n"
 msgid "%s \"%s\""
 msgstr "%s 【%s】\n"
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 #, fuzzy
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "所有符合的鑰匙經已過期或取消"
 
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP 鑰匙符合 <%s>"
 
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP 鑰匙符合 \"%s\""
@@ -8843,11 +8843,11 @@ msgstr ""
 "NeoMutt 是一個自由軟體, 歡迎您在某些特定的條件上，重新將它分發。\n"
 "若需要更詳細的資料, 請鍵入 'neomutt -vv'\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "編譯選項："
 
-#: version.c:485
+#: version.c:492
 #, fuzzy
 msgid "Devel options:"
 msgstr "編譯選項："

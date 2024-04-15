@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
@@ -1103,7 +1103,7 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Помилка. Зберігання тимчасового файлу: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr ""
 
@@ -6708,16 +6708,16 @@ msgstr "%s <%s>"
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Усі відповідні ключі прострочено, відкликано чи заборонено"
 
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP ключі, що відповідають <%s>"
 
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP ключі, що відповідають \"%s\""
@@ -8554,10 +8554,10 @@ msgstr ""
 "NeoMutt є вільним ПЗ, тому вітається розповсюдження на певних умовах\n"
 "напишіть 'neomutt -vv', щоб дізнатися більше.\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "Параметри компілювання:"
 
-#: version.c:485
+#: version.c:492
 msgid "Devel options:"
 msgstr "Параметри розробки:"

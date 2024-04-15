@@ -20,9 +20,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -1114,7 +1114,7 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Chyba. Zachovávám dočasný soubor: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr "-- NeoMutt: Psaní  [Přibližná velikost zprávy: %l   Příloh: %a]%>-"
 
@@ -5912,7 +5912,6 @@ msgstr "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 
 #. L10N: $status_format default format
 #: mutt_config.c:814
-#, fuzzy
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr "-%r-NeoMutt: %D [Zpráv:%<M?%M/>%m%<n? Nové:%n>%<o? Nepřečtené:%o>%<d? Smazané:%d>%<F? S Příznakem:%F>%<t? Označené:%t>%<p? Odložené:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
@@ -6716,16 +6715,16 @@ msgstr "%s <%s>"
 msgid "%s \"%s\""
 msgstr "%s „%s“"
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Všem vyhovujícím klíčům vypršela platnost, byly odvolány nebo zakázány"
 
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "klíče PGP vyhovující <%s>"
 
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "klíče PGP vyhovující „%s“"
@@ -8562,10 +8561,10 @@ msgstr ""
 "musíte ovšem dodržet určitá pravidla; další informace získáte příkazem\n"
 "„neomutt -vv“.\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "Přeloženo s volbami:"
 
-#: version.c:485
+#: version.c:492
 msgid "Devel options:"
 msgstr "Volby pro vývoj:"

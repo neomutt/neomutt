@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-03-29\n"
+"Project-Id-Version: neomutt-2024-04-16\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-05 03:20+0100\n"
+"POT-Creation-Date: 2024-04-15 23:55+0100\n"
 "PO-Revision-Date: 2024-03-30 16:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
@@ -1099,7 +1099,7 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Hata. Geçici dosya korunuyor: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:69
+#: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr ""
 
@@ -6684,16 +6684,16 @@ msgstr "%s <%s>"
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:660
+#: ncrypt/dlg_pgp.c:668
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Eşleşen tüm anahtarların süresi dolmuş, yürürlükten kalkmış veya devre dışı"
 
-#: ncrypt/dlg_pgp.c:705
+#: ncrypt/dlg_pgp.c:713
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "<%s> ile eşleşen PGP anahtarları"
 
-#: ncrypt/dlg_pgp.c:707
+#: ncrypt/dlg_pgp.c:715
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "\"%s\" ile eşleşen PGP anahtarları"
@@ -8526,10 +8526,10 @@ msgstr ""
 "NeoMutt özgür yazılımdır ve belirli koşullar altında özgürce dağıtılabilir.\n"
 "Ayrıntılar için `neomutt -vv' yazın.\n"
 
-#: version.c:480
+#: version.c:487
 msgid "Compile options:"
 msgstr "Derleme seçenekleri:"
 
-#: version.c:485
+#: version.c:492
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
