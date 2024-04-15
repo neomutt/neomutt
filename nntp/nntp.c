@@ -1760,22 +1760,26 @@ static int fetch_children(char *line, void *data)
  */
 int nntp_open_connection(struct NntpAccountData *adata)
 {
-  struct Connection *conn = adata->conn;
-  char buf[256] = { 0 };
-  int cap;
-  bool posting = false, auth = true;
-
   if (adata->status == NNTP_OK)
     return 0;
   if (adata->status == NNTP_BYE)
     return -1;
   adata->status = NNTP_NONE;
 
+  struct Connection *conn = adata->conn;
   if (mutt_socket_open(conn) < 0)
     return -1;
 
+  char buf[256] = { 0 };
+  int cap;
+  bool posting = false, auth = true;
+  int rc = -1;
+
   if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
-    return nntp_connect_error(adata);
+  {
+    nntp_connect_error(adata);
+    goto done;
+  }
 
   if (mutt_str_startswith(buf, "200"))
   {
@@ -1786,13 +1790,13 @@ int nntp_open_connection(struct NntpAccountData *adata)
     mutt_socket_close(conn);
     mutt_str_remove_trailing_ws(buf);
     mutt_error("%s", buf);
-    return -1;
+    goto done;
   }
 
   /* get initial capabilities */
   cap = nntp_capabilities(adata);
   if (cap < 0)
-    return -1;
+    goto done;
 
   /* tell news server to switch to mode reader if it isn't so */
   if (cap > 0)
@@ -1800,7 +1804,8 @@ int nntp_open_connection(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "MODE READER\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      nntp_connect_error(adata);
+      goto done;
     }
 
     if (mutt_str_startswith(buf, "200"))
@@ -1816,7 +1821,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
       /* error if has capabilities, ignore result if no capabilities */
       mutt_socket_close(conn);
       mutt_error(_("Could not switch to reader mode"));
-      return -1;
+      goto done;
     }
 
     /* recheck capabilities after MODE READER */
@@ -1824,7 +1829,7 @@ int nntp_open_connection(struct NntpAccountData *adata)
     {
       cap = nntp_capabilities(adata);
       if (cap < 0)
-        return -1;
+        goto done;
     }
   }
 
@@ -1850,7 +1855,8 @@ int nntp_open_connection(struct NntpAccountData *adata)
       if ((mutt_socket_send(conn, "STARTTLS\r\n") < 0) ||
           (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
       {
-        return nntp_connect_error(adata);
+        nntp_connect_error(adata);
+        goto done;
       }
       // Clear any data after the STARTTLS acknowledgement
       mutt_socket_empty(conn);
@@ -1865,14 +1871,14 @@ int nntp_open_connection(struct NntpAccountData *adata)
         adata->status = NNTP_NONE;
         mutt_socket_close(adata->conn);
         mutt_error(_("Could not negotiate TLS connection"));
-        return -1;
+        goto done;
       }
       else
       {
         /* recheck capabilities after STARTTLS */
         cap = nntp_capabilities(adata);
         if (cap < 0)
-          return -1;
+          goto done;
       }
     }
   }
@@ -1889,7 +1895,8 @@ int nntp_open_connection(struct NntpAccountData *adata)
     if ((mutt_socket_send(conn, "STAT\r\n") < 0) ||
         (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
     {
-      return nntp_connect_error(adata);
+      nntp_connect_error(adata);
+      goto done;
     }
     if (!mutt_str_startswith(buf, "480"))
       auth = false;
@@ -1897,28 +1904,31 @@ int nntp_open_connection(struct NntpAccountData *adata)
 
   /* authenticate */
   if (auth && (nntp_auth(adata) < 0))
-    return -1;
+    goto done;
 
   /* get final capabilities after authentication */
   if (adata->hasCAPABILITIES && (auth || (cap > 0)))
   {
     cap = nntp_capabilities(adata);
     if (cap < 0)
-      return -1;
+      goto done;
     if (cap > 0)
     {
       mutt_socket_close(conn);
       mutt_error(_("Could not switch to reader mode"));
-      return -1;
+      goto done;
     }
   }
 
   /* attempt features */
   if (nntp_attempt_features(adata) < 0)
-    return -1;
+    goto done;
 
+  rc = 0;
   adata->status = NNTP_OK;
-  return 0;
+
+done:
+  return rc;
 }
 
 /**
