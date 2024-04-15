@@ -730,29 +730,30 @@ static int nntp_auth(struct NntpAccountData *adata)
 static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
 {
   struct NntpAccountData *adata = mdata->adata;
-  char buf[1024] = { 0 };
-
   if (adata->status == NNTP_BYE)
     return -1;
+
+  char buf[1024] = { 0 };
+  int rc = -1;
 
   while (true)
   {
     if (adata->status == NNTP_OK)
     {
-      int rc = 0;
+      int rc_send = 0;
 
       if (*line)
       {
-        rc = mutt_socket_send(adata->conn, line);
+        rc_send = mutt_socket_send(adata->conn, line);
       }
       else if (mdata->group)
       {
         snprintf(buf, sizeof(buf), "GROUP %s\r\n", mdata->group);
-        rc = mutt_socket_send(adata->conn, buf);
+        rc_send = mutt_socket_send(adata->conn, buf);
       }
-      if (rc >= 0)
-        rc = mutt_socket_readln(buf, sizeof(buf), adata->conn);
-      if (rc >= 0)
+      if (rc_send >= 0)
+        rc_send = mutt_socket_readln(buf, sizeof(buf), adata->conn);
+      if (rc_send >= 0)
         break;
     }
 
@@ -768,7 +769,7 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
       if (query_yesorno(buf, MUTT_YES) != MUTT_YES)
       {
         adata->status = NNTP_BYE;
-        return -1;
+        goto done;
       }
     }
 
@@ -779,7 +780,8 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
       if ((mutt_socket_send(adata->conn, buf) < 0) ||
           (mutt_socket_readln(buf, sizeof(buf), adata->conn) < 0))
       {
-        return nntp_connect_error(adata);
+        nntp_connect_error(adata);
+        goto done;
       }
     }
     if (*line == '\0')
@@ -787,7 +789,10 @@ static int nntp_query(struct NntpMboxData *mdata, char *line, size_t linelen)
   }
 
   mutt_str_copy(line, buf, linelen);
-  return 0;
+  rc = 0;
+
+done:
+  return rc;
 }
 
 /**
