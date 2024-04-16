@@ -886,11 +886,11 @@ bail:
 static FILE *save_attachment_open(const char *path, enum SaveAttach opt)
 {
   if (opt == MUTT_SAVE_APPEND)
-    return mutt_file_fopen(path, "a");
+    return mutt_file_fopen_masked(path, "a");
   if (opt == MUTT_SAVE_OVERWRITE)
-    return mutt_file_fopen(path, "w");
+    return mutt_file_fopen_masked(path, "w");
 
-  return mutt_file_fopen(path, "w");
+  return mutt_file_fopen_masked(path, "w");
 }
 
 /**
@@ -1049,11 +1049,11 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
   state.flags = flags;
 
   if (opt == MUTT_SAVE_APPEND)
-    state.fp_out = mutt_file_fopen(path, "a");
+    state.fp_out = mutt_file_fopen_masked(path, "a");
   else if (opt == MUTT_SAVE_OVERWRITE)
-    state.fp_out = mutt_file_fopen(path, "w");
+    state.fp_out = mutt_file_fopen_masked(path, "w");
   else
-    state.fp_out = mutt_file_fopen(path, "w");
+    state.fp_out = mutt_file_fopen_masked(path, "w");
 
   if (!state.fp_out)
   {
