@@ -29,7 +29,6 @@
 
 #include "config.h"
 #include <stddef.h>
-#include <limits.h>
 #include "mutt/lib.h"
 #include "expando.h"
 #include "node.h"
