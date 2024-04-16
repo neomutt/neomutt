@@ -4311,8 +4311,8 @@ msgstr "자동 보기 명령 실행: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- %s를 실행할 수 없음. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- %s를 실행할 수 없음 --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4403,8 +4403,7 @@ msgstr "[-- 이름: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- 이 %s/%s 첨부물은 포함되지 않음, --]\n"
 "[-- 지정된 외부 소스가 만기됨 --]\n"
@@ -4419,8 +4418,8 @@ msgstr ""
 "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- 오류:  Multipart/Alternative 부분을 표시 수 없음 --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- 오류: Multipart/Alternative 부분을 표시 수 없음 --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1269
@@ -6326,7 +6325,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Warning: %s/%s 서명을 확인 할 수 없음 --]\n"
@@ -6342,7 +6341,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- 경고: 서명을 찾을 수 없음. --]\n"
@@ -6608,7 +6607,7 @@ msgstr "[-- PGP 메일 끝 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2680 ncrypt/pgp.c:750
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[-- PGP 공개 열쇠 부분 끝--]\n"
+msgstr "[-- PGP 공개 열쇠 부분 끝 --]\n"
 
 #: ncrypt/crypt_gpgme.c:2682 ncrypt/pgp.c:754
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
@@ -7339,7 +7338,7 @@ msgstr ""
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME 암호화 자료 끝 --]\n"
@@ -7347,7 +7346,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME 서명 자료 끝 --]\n"

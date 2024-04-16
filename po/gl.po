@@ -4348,7 +4348,7 @@ msgstr "Chamando ó comando de automostra: %s"
 
 #: handler.c:598
 #, fuzzy, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- o %s --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4358,7 +4358,7 @@ msgstr "[-- Automostra da stderr de %s --]\n"
 
 #: handler.c:780
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- Erro: mensaxe/corpo externo non ten parámetro \"access-type\"--]\n"
+msgstr "[-- Erro: mensaxe/corpo externo non ten parámetro \"access-type\" --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -4444,11 +4444,10 @@ msgstr "[-- nome: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Este adxunto %s/%s non está incluido --]\n"
-"[-- e a fonte externa indicada expirou--]\n"
+"[-- e a fonte externa indicada expirou --]\n"
 
 #: handler.c:922
 #, fuzzy, c-format
@@ -4460,8 +4459,8 @@ msgstr ""
 "[-- e o \"access-type\" %s indicado non está soportado --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Erro: ¡Non foi posible amosar ningunha parte de Multipart/Alternative--]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Erro: ¡Non foi posible amosar ningunha parte de Multipart/Alternative --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1269
@@ -6383,7 +6382,7 @@ msgstr "[-- Erro: estructura multiparte/asinada inconsistente --]\n"
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Atención: non é posible verificar sinaturas %s/%s --]\n"
@@ -6400,7 +6399,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Atención: non se atoparon sinaturas. --]\n"
@@ -7420,7 +7419,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Fin dos datos con encriptación S/MIME --]\n"
@@ -7429,7 +7428,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Fin dos datos asinados --]\n"

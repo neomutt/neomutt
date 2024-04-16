@@ -4166,7 +4166,7 @@ msgstr "Kendiliğinden görüntüleme komutu çalıştırılıyor: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- %s çalıştırılamıyor --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4261,12 +4261,10 @@ msgstr "[-- ad: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Bu %s/%s eki içerilmedi --]\n"
-"[-- ve belirtilen dış kaynak artık geçerli --]\n"
-"[-- değil. --]\n"
+"[-- ve belirtilen dış kaynak artık geçerli değil. --]\n"
 
 #: handler.c:922
 #, c-format
@@ -4278,7 +4276,7 @@ msgstr ""
 "[-- ve belirtilen %s erişim tipi desteklenmiyor --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Hata: Multipart/Alternative'e ait bir bölüm görüntülenemiyor --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6161,7 +6159,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Uyarı: %s/%s imzaları doğrulanamıyor. --]\n"
@@ -6177,7 +6175,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Uyarı: Herhangi bir imza bulunamıyor. --]\n"
@@ -7110,7 +7108,7 @@ msgstr "[-- Aşağıdaki bilgi S/MIME ile imzalanmıştır --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME ile şifrelenmiş bilginin sonu --]\n"
@@ -7118,7 +7116,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME ile imzalanmış bilginin sonu --]\n"

@@ -4289,8 +4289,8 @@ msgstr "Commando wordt aangeroepen: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Kan %s niet uitvoeren. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Kan %s niet uitvoeren --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4386,12 +4386,10 @@ msgstr "[-- naam: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Deze %s/%s-bijlage is niet bijgesloten, --]\n"
-"[-- en de aangegeven externe bron is --]\n"
-"[-- vervallen. --]\n"
+"[-- en de aangegeven externe bron is vervallen. --]\n"
 
 # FIXME: why the split?
 #: handler.c:922
@@ -4404,7 +4402,7 @@ msgstr ""
 "[-- en het aangegeven toegangs-type %s wordt niet ondersteund --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Fout: Kon geen enkel multipart/alternative-gedeelte weergeven --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6298,7 +6296,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Waarschuwing: %s/%s-handtekeningen kunnen niet gecontroleerd worden --]\n"
@@ -6314,7 +6312,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Waarschuwing: kan geen enkele handtekening vinden --]\n"
@@ -7281,7 +7279,7 @@ msgstr ""
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Einde van S/MIME versleutelde data --]\n"
@@ -7289,7 +7287,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Einde van S/MIME ondertekende gegevens --]\n"

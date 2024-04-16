@@ -4167,7 +4167,7 @@ msgstr "Megjelenítő parancs indítása: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- Nem futtatható: %s --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4251,7 +4251,7 @@ msgstr ""
 #: handler.c:871
 #, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Ez a %s/%s melléklet  törölve lett --]\n"
+msgstr "[-- Ez a %s/%s melléklet törölve lett --]\n"
 
 #: handler.c:881
 #, c-format
@@ -4262,12 +4262,10 @@ msgstr "[-- név: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- A %s/%s melléklet nem lett beágyazva, --]\n"
-"[-- és a jelzett külső forrás --]\n"
-"[-- megszűnt. --]\n"
+"[-- és a jelzett külső forrás megszűnt. --]\n"
 
 #: handler.c:922
 #, c-format
@@ -4279,8 +4277,8 @@ msgstr ""
 "[-- és a jelzett elérési-típus, %s nem támogatott --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Hiba:  Egy Többrészes/Alternatív rész sem jeleníthető meg --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Hiba: Egy Többrészes/Alternatív rész sem jeleníthető meg --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1269
@@ -6156,7 +6154,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Figyelem: Nem tudtam leellenőrizni a %s/%s aláírásokat. --]\n"
@@ -6172,7 +6170,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Figyelem: Nem találtam egy aláírást sem. --]\n"
@@ -7104,7 +7102,7 @@ msgstr "[-- A következő adatok S/MIME-vel alá vannak írva --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME titkosított adat vége. --]\n"
@@ -7112,7 +7110,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME aláírt adat vége --]\n"

@@ -4166,7 +4166,7 @@ msgstr "Starter autovisningskommando: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- Kan ikke kjøre %s --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4261,12 +4261,10 @@ msgstr "[-- navn: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Dette %s/%s-vedlegget er ikke inkludert, --]\n"
-"[-- og den den indikerte eksterne kilden har --] \n"
-"[-- utløpt. --]\n"
+"[-- og den den indikerte eksterne kilden har utløpt. --]\n"
 
 #: handler.c:922
 #, c-format
@@ -4278,7 +4276,7 @@ msgstr ""
 "[-- og den indikerte tilgangstypen %s støttes ikke --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Feil: Kunne ikke vise noen deler av multidel/alternativ --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6157,7 +6155,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr "[-- Advarsel: %s/%s-signaturer kan ikke kontrolleres. --]\n"
 
@@ -6171,7 +6169,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr "[-- Advarsel: Finner ingen signaturer. --]\n"
 
@@ -7097,7 +7095,7 @@ msgstr "[-- Følgende data er S/MIME-signert --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Slutt på S/MIME-kryptert data --]\n"
@@ -7105,7 +7103,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Slutt på S/MIME-signert data --]\n"

@@ -4265,7 +4265,7 @@ msgstr "Κλήση της εντολής autoview: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- Αδυναμία εκτέλεσης στις %s --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4361,12 +4361,10 @@ msgstr "[-- όνομα: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Αυτό το %s/%s συνημμένο δεν περιλαμβάνεται, --]\n"
-"[-- και η ενδεδειγμένη εξωτερική πηγή έχει --]\n"
-"[-- λήξει. --]\n"
+"[-- και η ενδεδειγμένη εξωτερική πηγή έχει λήξει. --]\n"
 
 #: handler.c:922
 #, c-format
@@ -4378,7 +4376,7 @@ msgstr ""
 "[-- και ο ενδεδειγμένος τύπος πρόσβασης %s δεν υποστηρίζεται --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Σφάλμα: Αδυναμία απεικόνισης σε όλα τα μέρη του Multipart/Alternative --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6281,7 +6279,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Προειδοποίηση: αδυναμία επιβεβαίωσης %s%s υπογραφών --]\n"
@@ -6297,7 +6295,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Προειδοποίηση: Αδυναμία εύρεσης υπογραφών. --]\n"
@@ -7288,7 +7286,7 @@ msgstr "[-- Τα επόμενα δεδομένα είναι υπογεγραμμ
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Τέλος δεδομένων κρυπτογραφημένων μέσω S/MIME --]\n"
@@ -7296,7 +7294,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Τέλος δεδομένων υπογεγραμμένων με S/MIME --]\n"

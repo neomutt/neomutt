@@ -4175,8 +4175,8 @@ msgstr "Покретање наредбе за аутопреглед: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Не може се покренути %s. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Не може се покренути %s --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4274,12 +4274,10 @@ msgstr "[-- назив: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Овај %s/%s прилог није укључен, --]\n"
-"[-- а наведени спољашњи извор је --]\n"
-"[-- истекао. --]\n"
+"[-- а наведени спољашњи извор је истекао. --]\n"
 
 #: handler.c:922
 #, c-format
@@ -4291,8 +4289,8 @@ msgstr ""
 "[-- а наведени access-type %s није подржан --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Грешка:  Не може се приказати ниједан од делова Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Грешка: Не може се приказати ниједан од делова Multipart/Alternative --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1269
@@ -6182,7 +6180,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Упозорење: Потписи %s/%s се не могу верификовати. --]\n"
@@ -6198,7 +6196,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Упозорење: Није пронађен ниједан потпис. --]\n"
@@ -6512,7 +6510,7 @@ msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr ""
-"[-- Следећи подаци су потписани преко S/MIME-а--]\n"
+"[-- Следећи подаци су потписани преко S/MIME-а --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2839
@@ -7132,7 +7130,7 @@ msgstr "[-- Следећи подаци су потписани преко S/MIM
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Крај података шифрованих преко S/MIME-а. --]\n"
@@ -7140,7 +7138,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Крај података потписаних преко S/MIME-а. --]\n"

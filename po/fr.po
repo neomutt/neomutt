@@ -4335,8 +4335,8 @@ msgstr "Invocation de la commande de visualisation automatique : %s"
 # , c-format
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Impossible d'exécuter %s. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Impossible d'exécuter %s --]\n"
 
 # , c-format
 #: handler.c:624 handler.c:645
@@ -4436,8 +4436,7 @@ msgstr "[-- nom : %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Cette pièce jointe %s/%s n'est pas incluse, --]\n"
 "[-- et la source externe indiquée a expiré. --]\n"
@@ -4452,8 +4451,8 @@ msgstr ""
 "[-- et l'access-type %s indiqué n'est pas supporté --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée  --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée --]\n"
 
 # , c-format
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6383,7 +6382,7 @@ msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Erreur : Protocole multipart/signed %s inconnu  --]\n"
+"[-- Erreur : Protocole multipart/signed %s inconnu --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1191
@@ -6397,7 +6396,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Attention : les signatures %s/%s ne peuvent pas être vérifiées. --]\n"
@@ -6413,7 +6412,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Attention : Impossible de trouver des signatures. --]\n"
@@ -6694,12 +6693,12 @@ msgid ""
 "[-- Error: could not find beginning of PGP message --]\n"
 "\n"
 msgstr ""
-"[-- Erreur : impossible de trouver le début du message PGP  --]\n"
+"[-- Erreur : impossible de trouver le début du message PGP --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:2731 ncrypt/crypt_gpgme.c:2825 ncrypt/pgp.c:1259
 msgid "[-- Error: could not create temporary file --]\n"
-msgstr "[-- Erreur : impossible de créer le fichier temporaire  --]\n"
+msgstr "[-- Erreur : impossible de créer le fichier temporaire --]\n"
 
 #: ncrypt/crypt_gpgme.c:2744
 msgid ""
@@ -7197,7 +7196,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess --]\n"
 "\n"
 msgstr ""
-"[-- Erreur : impossible de créer un sous-processus PGP  --]\n"
+"[-- Erreur : impossible de créer un sous-processus PGP --]\n"
 "\n"
 
 #: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1933
@@ -7363,7 +7362,7 @@ msgstr ""
 
 #: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
-msgstr "[-- Erreur : impossible de créer le sous-processus OpenSSL  --]\n"
+msgstr "[-- Erreur : impossible de créer le sous-processus OpenSSL --]\n"
 
 #: ncrypt/smime.c:1917
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -7376,7 +7375,7 @@ msgstr "[-- Les données suivantes sont signées avec S/MIME --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Fin des données chiffrées avec S/MIME. --]\n"
@@ -7384,7 +7383,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Fin des données signées avec S/MIME. --]\n"

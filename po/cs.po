@@ -4192,7 +4192,7 @@ msgstr "Vyvolávám příkaz %s pro automatické zobrazování"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- %s nelze spustit --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4291,8 +4291,7 @@ msgstr "[-- jméno: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Tato příloha typu „%s/%s“ není přítomna, --]\n"
 "[-- a udaný externí zdroj již není platný --]\n"
@@ -4308,7 +4307,7 @@ msgstr ""
 "[-- není podporována --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Chyba: Žádnou z částí „Multipart/Alternative“ nelze zobrazit --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6192,7 +6191,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Pozor: Podpisy typu %s/%s nelze ověřit. --]\n"
@@ -6208,7 +6207,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Pozor: Nemohu nalézt žádný podpis. --]\n"
@@ -6454,7 +6453,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2649 ncrypt/pgp.c:691
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
-msgstr "[--ZAČÁTEK VEŘEJNÉHO KLÍČE PGP --]\n"
+msgstr "[-- ZAČÁTEK VEŘEJNÉHO KLÍČE PGP --]\n"
 
 #: ncrypt/crypt_gpgme.c:2651 ncrypt/pgp.c:693
 msgid ""
@@ -7142,7 +7141,7 @@ msgstr "[-- Následují data podepsaná pomocí S/MIME --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Konec dat zašifrovaných ve formátu S/MIME --]\n"
@@ -7150,7 +7149,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Konec dat podepsaných pomocí S/MIME --]\n"

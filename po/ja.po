@@ -4247,8 +4247,8 @@ msgstr "自動表示コマンド %s 起動"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- %s を実行できない。 --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- %s を実行できない --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4341,12 +4341,10 @@ msgstr "[-- 名前: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- この %s/%s 形式添付ファイルは含まれておらず、 --]\n"
-"[-- かつ、指定された外部のソースは期限が --]\n"
-"[-- 満了している。 --]\n"
+"[-- かつ、指定された外部のソースは期限が 満了している。 --]\n"
 
 # 一行にしても大丈夫だと思うのだがなぁ……
 #: handler.c:922
@@ -4359,7 +4357,7 @@ msgstr ""
 "[-- かつ、指定された access-type %s は未サポート --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- エラー: どの Multipart/Alternative パートも表示できなかった --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6246,7 +6244,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- 警告: この NeoMutt では %s/%s 署名を検証できない --]\n"
@@ -6262,7 +6260,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- 警告: 一つも署名を検出できなかった --]\n"
@@ -7202,7 +7200,7 @@ msgstr "[-- 以下のデータは S/MIME で署名されている --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME 暗号化データ終了 --]\n"
@@ -7210,7 +7208,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME 署名データ終了 --]\n"

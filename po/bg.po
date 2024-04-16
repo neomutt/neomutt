@@ -4330,8 +4330,8 @@ msgstr "Автоматично показване посредством: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Грешка при стартиране на %s. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Грешка при стартиране на %s --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4426,8 +4426,7 @@ msgstr "[-- име: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Това %s/%s приложение не е включено в писмото, --]\n"
 "[-- а файлът, определен за прикачване вече не съществува. --]\n"
@@ -4442,7 +4441,7 @@ msgstr ""
 "[-- а указаният метод на достъп %s не се подържа. --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Грешка: Невъзможно е показването на която и да е от алтернативните части на писмото --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -4493,7 +4492,7 @@ msgstr "[-- %s/%s не се поддържа --]\n"
 #: handler.c:1802
 #, fuzzy, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
-msgstr "[-- Това %s/%s приложение  (използвайте'%s' за да видите тази част) --]\n"
+msgstr "[-- Това %s/%s приложение (използвайте'%s' за да видите тази част) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
@@ -6355,7 +6354,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Предупреждение: %s/%s-подписи не могат да бъдат проверявани. --]\n"
@@ -6371,7 +6370,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Предупреждение: не могат да бъдат намерени подписи. --]\n"
@@ -7359,7 +7358,7 @@ msgstr "[-- Следните данни са подписани със S/MIME --
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Край на шифрованите със S/MIME данни --]\n"
@@ -7367,7 +7366,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Край на подписаните със S/MIME данни --]\n"

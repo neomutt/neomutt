@@ -1226,7 +1226,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
             continue;
           }
 
-          state_printf(state, _("[-- Warning: We can't verify %s/%s signatures. --]\n\n"),
+          state_printf(state, _("[-- Warning: We can't verify %s/%s signatures --]\n\n"),
                        TYPE(signatures[i]), signatures[i]->subtype);
         }
       }
@@ -1246,7 +1246,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
     }
     else
     {
-      state_attach_puts(state, _("[-- Warning: Can't find any signatures. --]\n\n"));
+      state_attach_puts(state, _("[-- Warning: Can't find any signatures --]\n\n"));
     }
   }
 

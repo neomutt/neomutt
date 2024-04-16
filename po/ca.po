@@ -4382,8 +4382,8 @@ msgstr "Ordre de visualització automàtica: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- No s’ha pogut executar «%s». --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- No s’ha pogut executar «%s» --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4489,8 +4489,7 @@ msgstr "[-- Nom: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Aquesta adjunció de tipus «%s/%s» no s’inclou, --]\n"
 "[-- i la font externa indicada ha expirat. --]\n"
@@ -4505,7 +4504,7 @@ msgstr ""
 "[-- i no es pot emprar el mètode d’accés indicat, «%s». --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Error: No s’ha pogut mostrar cap part del «multipart/alternative». --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6460,7 +6459,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Avís: No es poden verificar les signatures «%s/%s». --]\n"
@@ -6476,7 +6475,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Avís: No s’ha trobat cap signatura. --]\n"
@@ -7479,7 +7478,7 @@ msgstr "[-- Les dades següents es troben signades amb S/MIME: --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Final de les dades xifrades amb S/MIME. --]\n"
@@ -7487,7 +7486,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Final de les dades signades amb S/MIME. --]\n"

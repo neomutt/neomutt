@@ -4332,8 +4332,8 @@ msgstr "Käivitan autovaate käskluse: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- %s ei saa käivitada.--]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- %s ei saa käivitada --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4428,8 +4428,7 @@ msgstr "[-- nimi: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Seda %s/%s lisa ei ole kaasatud, --]\n"
 "[-- ja näidatud väline allikas on aegunud --]\n"
@@ -4444,8 +4443,8 @@ msgstr ""
 "[-- ja näidatud juurdepääsu tüüpi %s ei toetata --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Viga:  Multipart/Alternative osasid ei saa näidata --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Viga: Multipart/Alternative osasid ei saa näidata --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1269
@@ -6361,7 +6360,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Hoiatus: Me ai saa kontrollida %s/%s allkirju. --]\n"
@@ -6377,7 +6376,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Hoiatus: Ei leia ühtegi allkirja. --]\n"
@@ -7368,7 +7367,7 @@ msgstr "[-- Järgneb S/MIME allkirjastatud info --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME krüptitud info lõpp --]\n"
@@ -7376,7 +7375,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME Allkirjastatud info lõpp --]\n"

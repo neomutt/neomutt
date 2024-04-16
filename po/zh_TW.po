@@ -4320,8 +4320,8 @@ msgstr "執行自動顯示指令：%s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- 不能執行 %s 。 --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- 不能執行 %s --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4412,12 +4412,10 @@ msgstr "[-- 名稱：%s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- 這個 %s/%s 附件無法被附上, --]\n"
-"[-- 並且被指示的外部原始檔已 --]\n"
-"[-- 過期。 --]\n"
+"[-- 並且被指示的外部原始檔已 過期。 --]\n"
 
 #: handler.c:922
 #, fuzzy, c-format
@@ -4429,7 +4427,7 @@ msgstr ""
 "[-- 並且被指示的存取類型 (access-type) %s 不被支援 --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- 錯誤： 無法顯示 Multipart/Alternative！ --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6340,7 +6338,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- 警告：我們不能證實 %s/%s 簽名。 --]\n"
@@ -6357,7 +6355,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- 警告：找不到任何的簽名。 --]\n"
@@ -7380,7 +7378,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME 加密資料結束 --]\n"
@@ -7389,7 +7387,7 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- 簽署的資料結束 --]\n"

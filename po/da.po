@@ -4278,7 +4278,7 @@ msgstr "Starter autovisning kommando: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- Kan ikke køre %s --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4374,8 +4374,7 @@ msgstr "[-- navn %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Denne %s/%s-del er ikke medtaget, --]\n"
 "[-- og den angivne eksterne kilde findes ikke mere. --]\n"
@@ -4390,7 +4389,7 @@ msgstr ""
 "[-- og den angivne \"access-type\" %s er ikke understøttet --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Fejl: Kunne ikke vise nogen del af \"Multipart/Alternative\" --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6279,7 +6278,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr "[-- Advarsel: %s/%s underskrifter kan ikke kontrolleres. --]\n"
 
@@ -6293,7 +6292,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr "[-- Advarsel: Kan ikke finde nogen underskrifter. --]\n"
 
@@ -7232,7 +7231,7 @@ msgstr "[-- Følgende data er S/MIME-underskrevet --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Slut på S/MIME-krypteret data --]\n"
@@ -7240,7 +7239,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Slut på S/MIME-underskrevne data --]\n"

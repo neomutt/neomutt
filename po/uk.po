@@ -4185,8 +4185,8 @@ msgstr "Виклик команди автоперегляду: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Неможливо запустити %s. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Неможливо запустити %s --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4284,12 +4284,10 @@ msgstr "[-- назва: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Це %s/%s прикріплення не враховане --]\n"
-"[-- і зазначене зовнішнє джерело --]\n"
-"[-- застаріле. --]\n"
+"[-- і зазначене зовнішнє джерело застаріле. --]\n"
 
 #: handler.c:922
 #, c-format
@@ -4301,7 +4299,7 @@ msgstr ""
 "[-- і зазначений тип доступу %s не підтримується --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Помилка: жодну частину Multipart/Alternative не вийшло відобразити --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6187,7 +6185,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Увага: не можливо перевірити %s/%s підписи. --]\n"
@@ -6203,7 +6201,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Увага: не можливо знайти жодного підпису. --]\n"
@@ -7136,7 +7134,7 @@ msgstr "[-- Наступні дані підписано S/MIME --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Кінець даних, зашифрованих S/MIME --]\n"
@@ -7144,7 +7142,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Кінець підписаних S/MIME даних --]\n"

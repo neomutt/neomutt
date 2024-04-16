@@ -4205,8 +4205,8 @@ msgstr "Avataan automaattinen näyttö: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Ei voitu suorittaa %s. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Ei voitu suorittaa %s --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4300,8 +4300,7 @@ msgstr "[-- nimi: %s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Liite %s/%s ei ole mukana, --]\n"
 "[-- ja ulkoinen lähde on vanhentunut --]\n"
@@ -4313,11 +4312,11 @@ msgid ""
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
 "[-- Liite %s/%s ei ole mukana, --]\n"
-"[-- eikä annettua access-typeä %s tueta  --]\n"
+"[-- eikä annettua access-typeä %s tueta --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Virhe:  Ei voitu näyttää tyypin Multipart/Alternative osia --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Virhe: Ei voitu näyttää tyypin Multipart/Alternative osia --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1269
@@ -6198,7 +6197,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Varoitus: Ei voitu tarkistaa %s/%s allekirjoitusta. --]\n"
@@ -6214,7 +6213,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Varoitus: Ei löydetty allekirjoituksia. --]\n"
@@ -7148,7 +7147,7 @@ msgstr "[-- Seuraava data on S/MIME-allekirjoitettu --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME-salatun datan loppu. --]\n"
@@ -7156,7 +7155,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME-allekirjoitetun datan loppu. --]\n"

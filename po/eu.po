@@ -4315,8 +4315,8 @@ msgstr "Autoikusketarako komandoa deitzen: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Ezin da %s abiarazi. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Ezin da %s abiarazi --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4351,10 +4351,10 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[--  %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
+"[-- %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
 "[-- %s-an --]\n"
 msgstr[1] ""
-"[--  %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
+"[-- %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
 "[-- %s-an --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -4375,8 +4375,8 @@ msgstr[1] ""
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[--  %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
-msgstr[1] "[--  %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
+msgstr[0] "[-- %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
+msgstr[1] "[-- %s/%s gehigarri hau (tamaina %s byte) ezabatua izan da --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -4391,7 +4391,7 @@ msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
 msgstr ""
-"[--  %s/%s gehigarri hau ezabatua izan da --]\n"
+"[-- %s/%s gehigarri hau ezabatua izan da --]\n"
 "[-- %4$s-an --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
@@ -4400,7 +4400,7 @@ msgstr ""
 #: handler.c:871
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[--  %s/%s gehigarri hau ezabatua izan da --]\n"
+msgstr "[-- %s/%s gehigarri hau ezabatua izan da --]\n"
 
 #: handler.c:881
 #, c-format
@@ -4411,12 +4411,10 @@ msgstr "[-- izena: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- %s/%s gehigarria ez dago gehiturik, --]\n"
-"[-- ezarritako kanpoko jatorria denboraz --]\n"
-"[-- kanpo dago. --]\n"
+"[-- ezarritako kanpoko jatorria denboraz kanpo dago. --]\n"
 
 #: handler.c:922
 #, fuzzy, c-format
@@ -4428,8 +4426,8 @@ msgstr ""
 "[-- eta ezarritako access type %s ez da onartzen --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Errorea:  Ezin da Multipart/Alternative zatirik bistarazi --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
+msgstr "[-- Errorea: Ezin da Multipart/Alternative zatirik bistarazi --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
 #: handler.c:1269
@@ -4468,7 +4466,7 @@ msgstr "Errorea: zati anitzeko sinadurak ez du protokolorik"
 #: handler.c:1785
 #, fuzzy
 msgid "[-- This is an attachment --]\n"
-msgstr "[--  %s/%s gehigarri hau --]\n"
+msgstr "[-- %s/%s gehigarri hau --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1790
@@ -4480,7 +4478,7 @@ msgstr "[-- %s/%s ez da onartzen --]\n"
 #: handler.c:1802
 #, fuzzy, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
-msgstr "[--  %s/%s gehigarri hau ('%s' erabili zati hau ikusteko) --]\n"
+msgstr "[-- %s/%s gehigarri hau ('%s' erabili zati hau ikusteko) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
@@ -4492,7 +4490,7 @@ msgstr "[-- %s/%s ez da onartzen ('%s' erabili zati hau ikusteko) --]\n"
 #: handler.c:1817
 #, fuzzy
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
-msgstr "[--  %s/%s gehigarri hau (lotu 'view-attachments' tekla bati) --]\n"
+msgstr "[-- %s/%s gehigarri hau (lotu 'view-attachments' tekla bati) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #: handler.c:1822
@@ -6344,7 +6342,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Kontuz: Ezin dira %s/%s sinadurak egiaztatu. --]\n"
@@ -6360,7 +6358,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Kontuz: Ez da sinadurarik aurkitu. --]\n"
@@ -6623,7 +6621,7 @@ msgstr ""
 
 #: ncrypt/crypt_gpgme.c:2678 ncrypt/pgp.c:731
 msgid "[-- END PGP MESSAGE --]\n"
-msgstr "[-- PGP MEZU BUKAERA--]\n"
+msgstr "[-- PGP MEZU BUKAERA --]\n"
 
 #: ncrypt/crypt_gpgme.c:2680 ncrypt/pgp.c:750
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
@@ -7325,7 +7323,7 @@ msgstr ""
 
 #: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
-msgstr "[-- Errorea: Ezin da OpenSSL azpiprozesua sortu--]\n"
+msgstr "[-- Errorea: Ezin da OpenSSL azpiprozesua sortu --]\n"
 
 #: ncrypt/smime.c:1917
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -7338,7 +7336,7 @@ msgstr "[-- Hurrengo datu hauek S/MIME sinaturik daude --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME enkriptaturiko duen amaiera --]\n"
@@ -7346,7 +7344,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME sinatutako datuen amaiera. --]\n"

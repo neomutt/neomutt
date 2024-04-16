@@ -4168,7 +4168,7 @@ msgstr "执行自动显示指令：%s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
+msgid "[-- Can't run %s --]\n"
 msgstr "[-- 无法运行 %s --]\n"
 
 #: handler.c:624 handler.c:645
@@ -4259,12 +4259,10 @@ msgstr "[-- 名称：%s --]\n"
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- 此 %s/%s 附件未被包含， --]\n"
-"[-- 并且其标明的外部源已 --]\n"
-"[-- 过期。 --]\n"
+"[-- 并且其标明的外部源已 过期。 --]\n"
 
 #: handler.c:922
 #, c-format
@@ -4276,7 +4274,7 @@ msgstr ""
 "[-- 并且其标明的访问类型 %s 不被支持 --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- 错误：无法显示 Multipart/Alternative 的任何部分！ --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6143,7 +6141,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- 警告：我们不能证实 %s/%s 签名。 --]\n"
@@ -6159,7 +6157,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- 警告：找不到任何的签名。 --]\n"
@@ -7092,7 +7090,7 @@ msgstr "[-- 以下数据已由 S/MIME 签署 --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME 加密数据结束 --]\n"
@@ -7100,7 +7098,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- S/MIME 签署的数据结束 --]\n"

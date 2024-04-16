@@ -4296,8 +4296,8 @@ msgstr "Menjalankan perintah tampil-otomatis: %s"
 
 #: handler.c:598
 #, c-format
-msgid "[-- Can't run %s. --]\n"
-msgstr "[-- Tidak bisa menjalankan %s. --]\n"
+msgid "[-- Can't run %s --]\n"
+msgstr "[-- Tidak bisa menjalankan %s --]\n"
 
 #: handler.c:624 handler.c:645
 #, c-format
@@ -4306,7 +4306,7 @@ msgstr "[-- Stderr dari tampil-otomatis %s --]\n"
 
 #: handler.c:780
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- Error:  message/external-body tidak punya parameter access-type --]\n"
+msgstr "[-- Error: message/external-body tidak punya parameter access-type --]\n"
 
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
@@ -4388,12 +4388,10 @@ msgstr "[-- nama: %s --]\n"
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
-"[-- and the indicated external source has --]\n"
-"[-- expired. --]\n"
+"[-- and the indicated external source has expired --]\n"
 msgstr ""
 "[-- Lampiran %s/%s ini tidak disertakan, --]\n"
-"[-- dan sumber eksternal yg disebutkan telah --]\n"
-"[-- kadaluwarsa. --]\n"
+"[-- dan sumber eksternal yg disebutkan telah kadaluwarsa. --]\n"
 
 #: handler.c:922
 #, fuzzy, c-format
@@ -4405,7 +4403,7 @@ msgstr ""
 "[-- dan tipe akses %s tsb tidak didukung --]\n"
 
 #: handler.c:1115
-msgid "[-- Error:  Could not display any parts of Multipart/Alternative --]\n"
+msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan --]\n"
 
 #. L10N: %s is the attachment description, filename or form_name.
@@ -6312,7 +6310,7 @@ msgstr ""
 #: ncrypt/crypt.c:1229
 #, c-format
 msgid ""
-"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"[-- Warning: We can't verify %s/%s signatures --]\n"
 "\n"
 msgstr ""
 "[-- Warning: Tidak dapat mem-verifikasi tandatangan %s/%s. --]\n"
@@ -6328,7 +6326,7 @@ msgstr ""
 
 #: ncrypt/crypt.c:1249
 msgid ""
-"[-- Warning: Can't find any signatures. --]\n"
+"[-- Warning: Can't find any signatures --]\n"
 "\n"
 msgstr ""
 "[-- Warning: Tidak dapat menemukan tandatangan. --]\n"
@@ -7303,7 +7301,7 @@ msgstr "[-- Data berikut ditandatangani dg S/MIME --]\n"
 #: ncrypt/smime.c:2021
 msgid ""
 "\n"
-"[-- End of S/MIME encrypted data. --]\n"
+"[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Akhir data yang dienkripsi dg S/MIME. --]\n"
@@ -7311,7 +7309,7 @@ msgstr ""
 #: ncrypt/smime.c:2023
 msgid ""
 "\n"
-"[-- End of S/MIME signed data. --]\n"
+"[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Akhir data yg ditandatangani dg S/MIME. --]\n"

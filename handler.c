@@ -595,7 +595,7 @@ static int autoview_handler(struct Body *b_email, struct State *state)
       if (state->flags & STATE_DISPLAY)
       {
         state_mark_attach(state);
-        state_printf(state, _("[-- Can't run %s. --]\n"), buf_string(cmd));
+        state_printf(state, _("[-- Can't run %s --]\n"), buf_string(cmd));
       }
       rc = -1;
       goto bail;
@@ -897,7 +897,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
          each line should start with "[-- " and end with " --]".
          The "%s/%s" is a MIME type, e.g. "text/plain". */
       snprintf(strbuf, sizeof(strbuf),
-               _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"),
+               _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has expired --]\n"),
                TYPE(b_email->parts), b_email->parts->subtype);
       state_attach_puts(state, strbuf);
 
@@ -1112,7 +1112,7 @@ static int alternative_handler(struct Body *b_email, struct State *state)
   {
     /* didn't find anything that we could display! */
     state_mark_attach(state);
-    state_puts(state, _("[-- Error:  Could not display any parts of Multipart/Alternative --]\n"));
+    state_puts(state, _("[-- Error: Could not display any parts of Multipart/Alternative --]\n"));
     rc = -1;
   }
 
