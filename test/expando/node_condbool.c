@@ -24,12 +24,9 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include <time.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
-#include "test_common.h"
 
 struct ExpandoNode *node_condbool_new(const char *start, const char *end, int did, int uid);
 struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid);

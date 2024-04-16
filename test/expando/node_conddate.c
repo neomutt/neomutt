@@ -26,10 +26,8 @@
 #include <stddef.h>
 #include <time.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
-#include "test_common.h"
 
 struct NodeCondDatePrivate *node_conddate_private_new(int count, char period);
 void node_conddate_private_free(void **ptr);

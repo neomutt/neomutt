@@ -29,7 +29,6 @@
 #include "mutt/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
-#include "test_common.h"
 
 struct ExpandoFormat *parse_format(const char *start, const char *end,
                                    struct ExpandoParseError *error);

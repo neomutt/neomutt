@@ -160,25 +160,22 @@ static int tls_verify_peers(gnutls_session_t tlsstate, gnutls_certificate_status
 static void tls_fingerprint(gnutls_digest_algorithm_t algo, char *buf,
                             size_t buflen, const gnutls_datum_t *data)
 {
-  unsigned char md[64];
-  size_t n;
-
-  n = 64;
+  unsigned char md[128] = { 0 };
+  size_t n = 64;
 
   if (gnutls_fingerprint(algo, data, (char *) md, &n) < 0)
   {
     snprintf(buf, buflen, _("[unable to calculate]"));
+    return;
   }
-  else
+
+  for (size_t i = 0; i < n; i++)
   {
-    for (int i = 0; i < (int) n; i++)
-    {
-      char ch[8] = { 0 };
-      snprintf(ch, 8, "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_cat(buf, buflen, ch);
-    }
-    buf[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
+    char ch[8] = { 0 };
+    snprintf(ch, 8, "%02X%s", md[i], ((i % 2) ? " " : ""));
+    mutt_str_cat(buf, buflen, ch);
   }
+  buf[2 * n + n / 2 - 1] = '\0'; /* don't want trailing space */
 }
 
 /**

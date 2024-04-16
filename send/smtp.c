@@ -796,39 +796,35 @@ static int smtp_auth_xoauth2(struct SmtpAccountData *adata, const char *method)
 static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
 {
   char buf[1024] = { 0 };
+  struct ConnAccount *cac = &adata->conn->account;
+  int rc = -1;
 
   /* Get username and password. Bail out of any can't be retrieved. */
-  if ((mutt_account_getuser(&adata->conn->account) < 0) ||
-      (mutt_account_getpass(&adata->conn->account) < 0))
-  {
+  if ((mutt_account_getuser(cac) < 0) || (mutt_account_getpass(cac) < 0))
     goto error;
-  }
 
   /* Build the initial client response. */
-  size_t len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN",
-                                   adata->conn->account.user,
-                                   adata->conn->account.user,
-                                   adata->conn->account.pass);
+  size_t len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", cac->user,
+                                   cac->user, cac->pass);
 
   /* Terminate as per SMTP protocol. Bail out if there's no room left. */
   if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
-  {
     goto error;
-  }
 
   /* Send request, receive response (with a check for OK code). */
   if ((mutt_socket_send(adata->conn, buf) < 0) || smtp_get_resp(adata))
-  {
     goto error;
-  }
 
-  /* If we got here, auth was successful. */
-  return 0;
+  rc = 0; // Auth was successful
 
 error:
-  // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-  mutt_error(_("%s authentication failed"), "SASL");
-  return -1;
+  if (rc != 0)
+  {
+    // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
+    mutt_error(_("%s authentication failed"), "SASL");
+  }
+
+  return rc;
 }
 
 /**

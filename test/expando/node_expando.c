@@ -26,10 +26,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
-#include <time.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
-#include "gui/lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep

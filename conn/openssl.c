@@ -387,20 +387,19 @@ static char *x509_get_part(X509_NAME *name, int nid)
 static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfunc)(void) )
 {
   unsigned char md[EVP_MAX_MD_SIZE];
-  unsigned int n;
+  unsigned int n = 0;
 
   if (X509_digest(cert, hashfunc(), md, &n) == 0) // Failure
   {
     snprintf(s, l, "%s", _("[unable to calculate]"));
+    return;
   }
-  else
+
+  for (unsigned int i = 0; i < n; i++)
   {
-    for (unsigned int i = 0; i < n; i++)
-    {
-      char ch[8] = { 0 };
-      snprintf(ch, sizeof(ch), "%02X%s", md[i], ((i % 2) ? " " : ""));
-      mutt_str_cat(s, l, ch);
-    }
+    char ch[8] = { 0 };
+    snprintf(ch, sizeof(ch), "%02X%s", md[i], ((i % 2) ? " " : ""));
+    mutt_str_cat(s, l, ch);
   }
 }
 
