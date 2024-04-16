@@ -35,7 +35,6 @@
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "email/lib.h"
@@ -2893,16 +2892,23 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
       mutt_message(_("No virtual folder and no Message-Id, aborting"));
       return FR_ERROR;
     } // no virtual folder, but we have message-id, reconstruct thread on-the-fly
-    char buf[PATH_MAX] = { 0 };
-    strncpy(buf, "id:", sizeof(buf));
+
+    struct Buffer *buf = buf_pool_get();
+    buf_alloc(buf, PATH_MAX);
+    buf_addstr(buf, "id:");
+
     int msg_id_offset = 0;
     if ((shared->email->env->message_id)[0] == '<')
       msg_id_offset = 1;
-    mutt_str_cat(buf, sizeof(buf), (shared->email->env->message_id) + msg_id_offset);
-    if (buf[strlen(buf) - 1] == '>')
-      buf[strlen(buf) - 1] = '\0';
 
-    change_folder_notmuch(priv->menu, buf, sizeof(buf), &priv->oldcount, shared, false);
+    buf_addstr(buf, shared->email->env->message_id + msg_id_offset);
+
+    size_t len = buf_len(buf);
+    if (buf->data[len - 1] == '>')
+      buf->data[len - 1] = '\0';
+
+    change_folder_notmuch(priv->menu, buf->data, buf->dsize, &priv->oldcount, shared, false);
+    buf_pool_release(&buf);
 
     // If notmuch doesn't contain the message, we're left in an empty
     // vfolder. No messages are found, but nm_read_entire_thread assumes

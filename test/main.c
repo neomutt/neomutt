@@ -638,7 +638,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_atoui)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoul)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_str_atoull)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_str_cat)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_coll)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_copy)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_dup)                                         \
@@ -659,7 +658,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_startswith)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_str_sysexit)                                     \
   NEOMUTT_TEST_ITEM(test_mutt_str_upper)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_strn_cat)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_strn_copy)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_strn_dup)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_strn_equal)                                      \

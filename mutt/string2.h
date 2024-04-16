@@ -72,7 +72,6 @@ const char *mutt_str_sysexit(int e);
 char *      mutt_str_upper(char *str);
 
 /* case-sensitive flavours */
-char *      mutt_str_cat(char *buf, size_t buflen, const char *s);
 int         mutt_str_cmp(const char *a, const char *b);
 size_t      mutt_str_copy(char *dest, const char *src, size_t dsize);
 char *      mutt_str_dup(const char *str);
@@ -80,7 +79,6 @@ bool        mutt_str_equal(const char *a, const char *b);
 size_t      mutt_str_startswith(const char *str, const char *prefix);
 
 /* case-sensitive, length-bound flavours */
-char *      mutt_strn_cat(char *dest, size_t l, const char *s, size_t sl);
 char *      mutt_strn_copy(char *dest, const char *src, size_t len, size_t dsize);
 char *      mutt_strn_dup(const char *begin, size_t l);
 bool        mutt_strn_equal(const char *a, const char *b, size_t num);

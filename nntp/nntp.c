@@ -142,7 +142,6 @@ static int nntp_capabilities(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
   bool mode_reader = false;
-  char buf[1024] = { 0 };
   char authinfo[1024] = { 0 };
 
   adata->hasCAPABILITIES = false;
@@ -154,58 +153,67 @@ static int nntp_capabilities(struct NntpAccountData *adata)
   adata->hasOVER = false;
   FREE(&adata->authenticators);
 
+  struct Buffer *buf = buf_pool_get();
+
   if ((mutt_socket_send(conn, "CAPABILITIES\r\n") < 0) ||
-      (mutt_socket_readln(buf, sizeof(buf), conn) < 0))
+      (mutt_socket_buffer_readln(buf, conn) < 0))
   {
+    buf_pool_release(&buf);
     return nntp_connect_error(adata);
   }
 
   /* no capabilities */
-  if (!mutt_str_startswith(buf, "101"))
+  if (!mutt_str_startswith(buf_string(buf), "101"))
+  {
+    buf_pool_release(&buf);
     return 1;
+  }
   adata->hasCAPABILITIES = true;
 
   /* parse capabilities */
   do
   {
     size_t plen = 0;
-    if (mutt_socket_readln(buf, sizeof(buf), conn) < 0)
+    if (mutt_socket_buffer_readln(buf, conn) < 0)
+    {
+      buf_pool_release(&buf);
       return nntp_connect_error(adata);
-    if (mutt_str_equal("STARTTLS", buf))
+    }
+    if (mutt_str_equal("STARTTLS", buf_string(buf)))
     {
       adata->hasSTARTTLS = true;
     }
-    else if (mutt_str_equal("MODE-READER", buf))
+    else if (mutt_str_equal("MODE-READER", buf_string(buf)))
     {
       mode_reader = true;
     }
-    else if (mutt_str_equal("READER", buf))
+    else if (mutt_str_equal("READER", buf_string(buf)))
     {
       adata->hasDATE = true;
       adata->hasLISTGROUP = true;
       adata->hasLISTGROUPrange = true;
     }
-    else if ((plen = mutt_str_startswith(buf, "AUTHINFO ")))
+    else if ((plen = mutt_str_startswith(buf_string(buf), "AUTHINFO ")))
     {
-      mutt_str_cat(buf, sizeof(buf), " ");
-      mutt_str_copy(authinfo, buf + plen - 1, sizeof(authinfo));
+      buf_addch(buf, ' ');
+      mutt_str_copy(authinfo, buf->data + plen - 1, sizeof(authinfo));
     }
 #ifdef USE_SASL_CYRUS
-    else if ((plen = mutt_str_startswith(buf, "SASL ")))
+    else if ((plen = mutt_str_startswith(buf_string(buf), "SASL ")))
     {
-      char *p = buf + plen;
+      char *p = buf->data + plen;
       while (*p == ' ')
         p++;
       adata->authenticators = mutt_str_dup(p);
     }
 #endif
-    else if (mutt_str_equal("OVER", buf))
+    else if (mutt_str_equal("OVER", buf_string(buf)))
     {
       adata->hasOVER = true;
     }
-    else if (mutt_str_startswith(buf, "LIST "))
+    else if (mutt_str_startswith(buf_string(buf), "LIST "))
     {
-      char *p = strstr(buf, " NEWSGROUPS");
+      const char *p = buf_find_string(buf, " NEWSGROUPS");
       if (p)
       {
         p += 11;
@@ -213,19 +221,21 @@ static int nntp_capabilities(struct NntpAccountData *adata)
           adata->hasLIST_NEWSGROUPS = true;
       }
     }
-  } while (!mutt_str_equal(".", buf));
-  *buf = '\0';
+  } while (!mutt_str_equal(".", buf_string(buf)));
+  buf_reset(buf);
+
 #ifdef USE_SASL_CYRUS
   if (adata->authenticators && mutt_istr_find(authinfo, " SASL "))
-    mutt_str_copy(buf, adata->authenticators, sizeof(buf));
+    buf_strcpy(buf, adata->authenticators);
 #endif
   if (mutt_istr_find(authinfo, " USER "))
   {
-    if (*buf != '\0')
-      mutt_str_cat(buf, sizeof(buf), " ");
-    mutt_str_cat(buf, sizeof(buf), "USER");
+    if (!buf_is_empty(buf))
+      buf_addch(buf, ' ');
+    buf_addstr(buf, "USER");
   }
-  mutt_str_replace(&adata->authenticators, buf);
+  mutt_str_replace(&adata->authenticators, buf_string(buf));
+  buf_pool_release(&buf);
 
   /* current mode is reader */
   if (adata->hasDATE)
@@ -435,10 +445,10 @@ static void nntp_log_binbuf(const char *buf, size_t len, const char *pfx, int db
 static int nntp_auth(struct NntpAccountData *adata)
 {
   struct Connection *conn = adata->conn;
-  char buf[1536] = { 0 };
   char authenticators[1024] = "USER";
   char *method = NULL, *a = NULL, *p = NULL;
   unsigned char flags = conn->account.flags;
+  struct Buffer *buf = buf_pool_get();
 
   const char *const c_nntp_authenticators = cs_subset_string(NeoMutt->sub, "nntp_authenticators");
   while (true)
@@ -509,35 +519,41 @@ static int nntp_auth(struct NntpAccountData *adata)
       {
         // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
         mutt_message(_("Authenticating (%s)..."), method);
-        snprintf(buf, sizeof(buf), "AUTHINFO USER %s\r\n", conn->account.user);
-        if ((mutt_socket_send(conn, buf) < 0) ||
-            (mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0))
+        buf_printf(buf, "AUTHINFO USER %s\r\n", conn->account.user);
+        if ((mutt_socket_send(conn, buf_string(buf)) < 0) ||
+            (mutt_socket_buffer_readln_d(buf, conn, MUTT_SOCK_LOG_FULL) < 0))
         {
           break;
         }
 
         /* authenticated, password is not required */
-        if (mutt_str_startswith(buf, "281"))
+        if (mutt_str_startswith(buf_string(buf), "281"))
+        {
+          buf_pool_release(&buf);
           return 0;
+        }
 
         /* username accepted, sending password */
-        if (mutt_str_startswith(buf, "381"))
+        if (mutt_str_startswith(buf_string(buf), "381"))
         {
           mutt_debug(MUTT_SOCK_LOG_FULL, "%d> AUTHINFO PASS *\n", conn->fd);
-          snprintf(buf, sizeof(buf), "AUTHINFO PASS %s\r\n", conn->account.pass);
-          if ((mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0) ||
-              (mutt_socket_readln_d(buf, sizeof(buf), conn, MUTT_SOCK_LOG_FULL) < 0))
+          buf_printf(buf, "AUTHINFO PASS %s\r\n", conn->account.pass);
+          if ((mutt_socket_send_d(conn, buf_string(buf), MUTT_SOCK_LOG_FULL) < 0) ||
+              (mutt_socket_buffer_readln_d(buf, conn, MUTT_SOCK_LOG_FULL) < 0))
           {
             break;
           }
 
           /* authenticated */
-          if (mutt_str_startswith(buf, "281"))
+          if (mutt_str_startswith(buf_string(buf), "281"))
+          {
+            buf_pool_release(&buf);
             return 0;
+          }
         }
 
         /* server doesn't support AUTHINFO USER, trying next method */
-        if (*buf == '5')
+        if (buf_at(buf, 0) == '5')
           continue;
       }
       else
@@ -574,7 +590,7 @@ static int nntp_auth(struct NntpAccountData *adata)
 
         // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
         mutt_message(_("Authenticating (%s)..."), method);
-        snprintf(buf, sizeof(buf), "AUTHINFO SASL %s", method);
+        buf_printf(buf, "AUTHINFO SASL %s", method);
 
         /* looping protocol */
         while ((rc == SASL_CONTINUE) || ((rc == SASL_OK) && client_len))
@@ -583,19 +599,19 @@ static int nntp_auth(struct NntpAccountData *adata)
           if (client_len)
           {
             nntp_log_binbuf(client_out, client_len, "SASL", MUTT_SOCK_LOG_FULL);
-            if (*buf != '\0')
-              mutt_str_cat(buf, sizeof(buf), " ");
-            len = strlen(buf);
-            if (sasl_encode64(client_out, client_len, buf + len,
-                              sizeof(buf) - len, &len) != SASL_OK)
+            if (!buf_is_empty(buf))
+              buf_addch(buf, ' ');
+            len = buf_len(buf);
+            if (sasl_encode64(client_out, client_len, buf->data + len,
+                              buf->dsize - len, &len) != SASL_OK)
             {
               mutt_debug(LL_DEBUG1, "error base64-encoding client response\n");
               break;
             }
           }
 
-          mutt_str_cat(buf, sizeof(buf), "\r\n");
-          if (strchr(buf, ' '))
+          buf_addstr(buf, "\r\n");
+          if (buf_find_char(buf, ' '))
           {
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> AUTHINFO SASL %s%s\n", conn->fd,
                        method, client_len ? " sasl_data" : "");
@@ -605,7 +621,7 @@ static int nntp_auth(struct NntpAccountData *adata)
             mutt_debug(MUTT_SOCK_LOG_CMD, "%d> sasl_data\n", conn->fd);
           }
           client_len = 0;
-          if ((mutt_socket_send_d(conn, buf, MUTT_SOCK_LOG_FULL) < 0) ||
+          if ((mutt_socket_send_d(conn, buf_string(buf), MUTT_SOCK_LOG_FULL) < 0) ||
               (mutt_socket_readln_d(inbuf, sizeof(inbuf), conn, MUTT_SOCK_LOG_FULL) < 0))
           {
             break;
@@ -620,20 +636,21 @@ static int nntp_auth(struct NntpAccountData *adata)
 
           if (mutt_str_equal("=", inbuf + 4))
             len = 0;
-          else if (sasl_decode64(inbuf + 4, strlen(inbuf + 4), buf,
-                                 sizeof(buf) - 1, &len) != SASL_OK)
+          else if (sasl_decode64(inbuf + 4, strlen(inbuf + 4), buf->data,
+                                 buf->dsize - 1, &len) != SASL_OK)
           {
             mutt_debug(LL_DEBUG1, "error base64-decoding server response\n");
             break;
           }
           else
           {
-            nntp_log_binbuf(buf, len, "SASL", MUTT_SOCK_LOG_FULL);
+            nntp_log_binbuf(buf_string(buf), len, "SASL", MUTT_SOCK_LOG_FULL);
           }
 
           while (true)
           {
-            rc = sasl_client_step(saslconn, buf, len, &interaction, &client_out, &client_len);
+            rc = sasl_client_step(saslconn, buf_string(buf), len, &interaction,
+                                  &client_out, &client_len);
             if (rc != SASL_INTERACT)
               break;
             mutt_sasl_interact(interaction);
@@ -641,12 +658,13 @@ static int nntp_auth(struct NntpAccountData *adata)
           if (*inbuf != '3')
             break;
 
-          *buf = '\0';
+          buf_reset(buf);
         } /* looping protocol */
 
         if ((rc == SASL_OK) && (client_len == 0) && (*inbuf == '2'))
         {
           mutt_sasl_setup_conn(conn, saslconn);
+          buf_pool_release(&buf);
           return 0;
         }
 
@@ -689,6 +707,8 @@ static int nntp_auth(struct NntpAccountData *adata)
   {
     mutt_socket_close(conn);
   }
+
+  buf_pool_release(&buf);
   return -1;
 }
 

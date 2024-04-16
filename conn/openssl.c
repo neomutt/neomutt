@@ -379,27 +379,28 @@ static char *x509_get_part(X509_NAME *name, int nid)
 
 /**
  * x509_fingerprint - Generate a fingerprint for an X509 certificate
- * @param s        Buffer for fingerprint
- * @param l        Length of buffer
+ * @param buf      Buffer for fingerprint
  * @param cert     Certificate
  * @param hashfunc Hashing function
  */
-static void x509_fingerprint(char *s, int l, X509 *cert, const EVP_MD *(*hashfunc)(void) )
+static void x509_fingerprint(struct Buffer *buf, X509 *cert, const EVP_MD *(*hashfunc)(void) )
 {
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int n = 0;
 
   if (X509_digest(cert, hashfunc(), md, &n) == 0) // Failure
   {
-    snprintf(s, l, "%s", _("[unable to calculate]"));
+    buf_strcpy(buf, _("[unable to calculate]"));
     return;
   }
 
   for (unsigned int i = 0; i < n; i++)
   {
-    char ch[8] = { 0 };
-    snprintf(ch, sizeof(ch), "%02X%s", md[i], ((i % 2) ? " " : ""));
-    mutt_str_cat(s, l, ch);
+    buf_add_printf(buf, "%02X", md[i]);
+
+    // Put a space after a pair of bytes (except for the last one)
+    if (((i % 2) == 1) && (i < (n - 1)))
+      buf_addch(buf, ' ');
   }
 }
 
@@ -900,8 +901,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
     return 0;
   }
 
-  char buf[256] = { 0 };
   struct CertArray carr = ARRAY_HEAD_INITIALIZER;
+  struct Buffer *buf = buf_pool_get();
 
   add_cert(_("This certificate belongs to:"), cert, false, &carr);
   ARRAY_ADD(&carr, NULL);
@@ -916,18 +917,15 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   ARRAY_ADD(&carr, line);
 
   ARRAY_ADD(&carr, NULL);
-  buf[0] = '\0';
-  x509_fingerprint(buf, sizeof(buf), cert, EVP_sha1);
-  mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf);
+  x509_fingerprint(buf, cert, EVP_sha1);
+  mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf_string(buf));
   ARRAY_ADD(&carr, line);
-  buf[0] = '\0';
-  buf[40] = '\0'; /* Ensure the second printed line is null terminated */
-  x509_fingerprint(buf, sizeof(buf), cert, EVP_sha256);
-  buf[39] = '\0'; /* Divide into two lines of output */
-  mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf);
+  x509_fingerprint(buf, cert, EVP_sha256);
+  buf->data[39] = '\0'; /* Divide into two lines of output */
+  mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf_string(buf));
   ARRAY_ADD(&carr, line);
-  mutt_str_asprintf(&line, "%*s%s",
-                    (int) mutt_str_len(_("SHA256 Fingerprint: ")), "", buf + 40);
+  mutt_str_asprintf(&line, "%*s%s", (int) mutt_str_len(_("SHA256 Fingerprint: ")),
+                    "", buf->data + 40);
   ARRAY_ADD(&carr, line);
 
   bool allow_skip = false;
@@ -988,6 +986,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   }
 
   cert_array_clear(&carr);
+  buf_pool_release(&buf);
+
   return (rc > 1);
 }
 

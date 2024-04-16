@@ -579,7 +579,6 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
 {
   struct ImapList *list = NULL;
   struct ImapList lb = { 0 };
-  char delimbuf[5] = { 0 }; /* worst case: "\\"\0 */
   unsigned int litlen;
 
   if (adata->cmdresult)
@@ -616,8 +615,8 @@ static void cmd_parse_list(struct ImapAccountData *adata, char *s)
   /* Delimiter */
   if (!mutt_istr_startswith(s, "NIL"))
   {
-    delimbuf[0] = '\0';
-    mutt_str_cat(delimbuf, 5, s);
+    char delimbuf[5] = { 0 }; // worst case: "\\"\0
+    snprintf(delimbuf, sizeof(delimbuf), "%s", s);
     imap_unquote_string(delimbuf);
     list->delim = delimbuf[0];
   }

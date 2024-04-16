@@ -26,7 +26,9 @@
 
 #include <stdlib.h>
 
-size_t mutt_sasl_plain_msg(char *buf, size_t buflen, const char *cmd,
+struct Buffer;
+
+size_t mutt_sasl_plain_msg(struct Buffer *buf, const char *cmd,
                            const char *authz, const char *user, const char *pass);
 
 #endif /* MUTT_CONN_SASL_PLAIN_H */

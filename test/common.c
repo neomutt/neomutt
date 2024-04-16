@@ -87,9 +87,9 @@ static void init_tmp_dir(struct NeoMutt *n)
   cs_str_reset(n->sub->cs, "tmp_dir", NULL);
 }
 
-void test_gen_path(char *buf, size_t buflen, const char *fmt)
+void test_gen_path(struct Buffer *buf, const char *fmt)
 {
-  snprintf(buf, buflen, NONULL(fmt), NONULL(get_test_dir()));
+  buf_printf(buf, NONULL(fmt), NONULL(get_test_dir()));
 }
 
 bool test_neomutt_create(void)

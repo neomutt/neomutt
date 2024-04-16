@@ -1535,7 +1535,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   FILE *fp = NULL;
   char buf[2048] = { 0 };
   struct Buffer *internaldate = NULL;
-  char imap_flags[128] = { 0 };
+  struct Buffer *imap_flags = NULL;
   size_t len;
   struct Progress *progress = NULL;
   size_t sent;
@@ -1576,20 +1576,19 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
   internaldate = buf_pool_get();
   mutt_date_make_imap(internaldate, msg->received);
 
-  imap_flags[0] = '\0';
-  imap_flags[1] = '\0';
+  imap_flags = buf_pool_get();
 
   if (msg->flags.read)
-    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Seen");
+    buf_addstr(imap_flags, " \\Seen");
   if (msg->flags.replied)
-    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Answered");
+    buf_addstr(imap_flags, " \\Answered");
   if (msg->flags.flagged)
-    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Flagged");
+    buf_addstr(imap_flags, " \\Flagged");
   if (msg->flags.draft)
-    mutt_str_cat(imap_flags, sizeof(imap_flags), " \\Draft");
+    buf_addstr(imap_flags, " \\Draft");
 
   snprintf(buf, sizeof(buf), "APPEND %s (%s) \"%s\" {%lu}", mdata->munge_name,
-           imap_flags + 1, buf_string(internaldate), (unsigned long) len);
+           imap_flags->data + 1, buf_string(internaldate), (unsigned long) len);
   buf_pool_release(&internaldate);
 
   imap_cmd_start(adata, buf);
@@ -1618,7 +1617,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     }
   }
 
-  if (len)
+  if (len > 0)
     if (flush_buffer(buf, &len, adata->conn) < 0)
       goto fail;
 
@@ -1635,6 +1634,7 @@ int imap_append_message(struct Mailbox *m, struct Message *msg)
     goto cmd_step_fail;
 
   progress_free(&progress);
+  buf_pool_release(&imap_flags);
   return 0;
 
 cmd_step_fail:
@@ -1650,6 +1650,7 @@ cmd_step_fail:
 fail:
   mutt_file_fclose(&fp);
   progress_free(&progress);
+  buf_pool_release(&imap_flags);
   return -1;
 }
 

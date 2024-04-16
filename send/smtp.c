@@ -795,7 +795,7 @@ static int smtp_auth_xoauth2(struct SmtpAccountData *adata, const char *method)
  */
 static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
 {
-  char buf[1024] = { 0 };
+  struct Buffer *buf = NULL;
   struct ConnAccount *cac = &adata->conn->account;
   int rc = -1;
 
@@ -804,15 +804,12 @@ static int smtp_auth_plain(struct SmtpAccountData *adata, const char *method)
     goto error;
 
   /* Build the initial client response. */
-  size_t len = mutt_sasl_plain_msg(buf, sizeof(buf), "AUTH PLAIN", cac->user,
-                                   cac->user, cac->pass);
-
-  /* Terminate as per SMTP protocol. Bail out if there's no room left. */
-  if (snprintf(buf + len, sizeof(buf) - len, "\r\n") != 2)
-    goto error;
+  buf = buf_pool_get();
+  mutt_sasl_plain_msg(buf, "AUTH PLAIN", cac->user, cac->user, cac->pass);
+  buf_add_printf(buf, "\r\n");
 
   /* Send request, receive response (with a check for OK code). */
-  if ((mutt_socket_send(adata->conn, buf) < 0) || smtp_get_resp(adata))
+  if ((mutt_socket_send(adata->conn, buf_string(buf)) < 0) || smtp_get_resp(adata))
     goto error;
 
   rc = 0; // Auth was successful
@@ -823,7 +820,7 @@ error:
     // L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
     mutt_error(_("%s authentication failed"), "SASL");
   }
-
+  buf_pool_release(&buf);
   return rc;
 }
 
@@ -1107,7 +1104,6 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   struct SmtpAccountData adata = { 0 };
   struct ConnAccount cac = { { 0 } };
   const char *envfrom = NULL;
-  char buf[1024] = { 0 };
   int rc = -1;
 
   adata.sub = sub;
@@ -1143,6 +1139,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
 
   const char *const c_dsn_return = cs_subset_string(adata.sub, "dsn_return");
 
+  struct Buffer *buf = buf_pool_get();
   do
   {
     /* send our greeting */
@@ -1152,22 +1149,21 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
     FREE(&adata.auth_mechs);
 
     /* send the sender's address */
-    int len = snprintf(buf, sizeof(buf), "MAIL FROM:<%s>", envfrom);
+    buf_printf(buf, "MAIL FROM:<%s>", envfrom);
     if (eightbit && (adata.capabilities & SMTP_CAP_EIGHTBITMIME))
-    {
-      mutt_strn_cat(buf, sizeof(buf), " BODY=8BITMIME", 15);
-      len += 14;
-    }
+      buf_addstr(buf, " BODY=8BITMIME");
+
     if (c_dsn_return && (adata.capabilities & SMTP_CAP_DSN))
-      len += snprintf(buf + len, sizeof(buf) - len, " RET=%s", c_dsn_return);
+      buf_add_printf(buf, " RET=%s", c_dsn_return);
+
     if ((adata.capabilities & SMTP_CAP_SMTPUTF8) &&
         (mutt_addr_uses_unicode(envfrom) || mutt_addrlist_uses_unicode(to) ||
          mutt_addrlist_uses_unicode(cc) || mutt_addrlist_uses_unicode(bcc)))
     {
-      snprintf(buf + len, sizeof(buf) - len, " SMTPUTF8");
+      buf_addstr(buf, " SMTPUTF8");
     }
-    mutt_strn_cat(buf, sizeof(buf), "\r\n", 3);
-    if (mutt_socket_send(adata.conn, buf) == -1)
+    buf_addstr(buf, "\r\n");
+    if (mutt_socket_send(adata.conn, buf_string(buf)) == -1)
     {
       rc = SMTP_ERR_WRITE;
       break;
@@ -1203,5 +1199,6 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
   else if (rc == SMTP_ERR_CODE)
     mutt_error(_("Invalid server response"));
 
+  buf_pool_release(&buf);
   return rc;
 }
