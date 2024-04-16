@@ -246,16 +246,12 @@ bool mutt_mailbox_notify(struct Mailbox *m_cur)
  */
 bool mutt_mailbox_list(void)
 {
-  char mailboxlist[512] = { 0 };
-  size_t pos = 0;
-  int first = 1;
-
   int have_unnotified = MailboxNotify;
 
   struct Buffer *path = buf_pool_get();
+  struct Buffer *mailboxlist = buf_pool_get();
 
-  mailboxlist[0] = '\0';
-  pos += strlen(strncat(mailboxlist, _("New mail in "), sizeof(mailboxlist) - 1 - pos));
+  buf_addstr(mailboxlist, _("New mail in "));
   struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
   neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
   struct MailboxNode *np = NULL;
@@ -268,30 +264,31 @@ bool mutt_mailbox_list(void)
     buf_strcpy(path, mailbox_path(np->mailbox));
     buf_pretty_mailbox(path);
 
-    if (!first)
-      pos += strlen(strncat(mailboxlist + pos, ", ", sizeof(mailboxlist) - 1 - pos));
+    if (!buf_is_empty(mailboxlist))
+      buf_addstr(mailboxlist, ", ");
 
     if (!np->mailbox->notified)
     {
       np->mailbox->notified = true;
       MailboxNotify--;
     }
-    pos += strlen(strncat(mailboxlist + pos, buf_string(path), sizeof(mailboxlist) - 1 - pos));
-    first = 0;
+    buf_addstr(mailboxlist, buf_string(path));
   }
   neomutt_mailboxlist_clear(&ml);
 
   buf_pool_release(&path);
 
-  if (!first)
+  if (!buf_is_empty(mailboxlist))
   {
-    mutt_message("%s", mailboxlist);
+    mutt_message("%s", buf_string(mailboxlist));
+    buf_pool_release(&mailboxlist);
     return true;
   }
 
   /* there were no mailboxes needing to be notified, so clean up since
     * MailboxNotify has somehow gotten out of sync */
   MailboxNotify = 0;
+  buf_pool_release(&mailboxlist);
   return false;
 }
 
