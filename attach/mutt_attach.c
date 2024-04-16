@@ -542,8 +542,9 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
     const bool c_wait_key = cs_subset_bool(NeoMutt->sub, "wait_key");
     if (use_pager || use_pipe)
     {
-      if (use_pager && ((fd_pager = mutt_file_open(buf_string(pagerfile),
-                                                   O_CREAT | O_EXCL | O_WRONLY)) == -1))
+      if (use_pager &&
+          ((fd_pager = mutt_file_open(buf_string(pagerfile),
+                                      O_CREAT | O_EXCL | O_WRONLY, 0600)) == -1))
       {
         mutt_perror("open");
         goto return_error;
@@ -745,7 +746,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
 
   if (outfile && *outfile)
   {
-    out = mutt_file_open(outfile, O_CREAT | O_EXCL | O_WRONLY);
+    out = mutt_file_open(outfile, O_CREAT | O_EXCL | O_WRONLY, 0600);
     if (out < 0)
     {
       mutt_perror("open");

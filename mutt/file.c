@@ -569,10 +569,11 @@ const char *mutt_file_rotate(const char *path, int count)
  * mutt_file_open - Open a file
  * @param path  Pathname to open
  * @param flags Flags, e.g. O_EXCL
+ * @param mode  Permissions of the file (Relevant only when writing or appending)
  * @retval >0 Success, file handle
  * @retval -1 Error
  */
-int mutt_file_open(const char *path, uint32_t flags)
+int mutt_file_open(const char *path, uint32_t flags, mode_t mode)
 {
   if (!path)
     return -1;
@@ -592,7 +593,7 @@ int mutt_file_open(const char *path, uint32_t flags)
       goto cleanup;
     }
 
-    fd = open(buf_string(safe_file), flags, 0600);
+    fd = open(buf_string(safe_file), flags, mode);
     if (fd < 0)
     {
       rmdir(buf_string(safe_dir));
@@ -651,6 +652,7 @@ DIR *mutt_file_opendir(const char *path, enum MuttOpenDirMode mode)
  * mutt_file_fopen_full - Call fopen() safely
  * @param path  Filename
  * @param mode  Mode e.g. "r" readonly; "w" read-write
+ * @param perms Permissions of the file (Relevant only when writing or appending)
  * @param file  Source file
  * @param line  Source line number
  * @param func  Source function
@@ -660,8 +662,8 @@ DIR *mutt_file_opendir(const char *path, enum MuttOpenDirMode mode)
  * When opening files for writing, make sure the file doesn't already exist to
  * avoid race conditions.
  */
-FILE *mutt_file_fopen_full(const char *path, const char *mode, const char *file,
-                           int line, const char *func)
+FILE *mutt_file_fopen_full(const char *path, const char *mode, const mode_t perms,
+                           const char *file, int line, const char *func)
 {
   if (!path || !mode)
     return NULL;
@@ -676,7 +678,7 @@ FILE *mutt_file_fopen_full(const char *path, const char *mode, const char *file,
     else
       flags |= O_WRONLY;
 
-    int fd = mutt_file_open(path, flags);
+    int fd = mutt_file_open(path, flags, perms);
     if (fd >= 0)
     {
       fp = fdopen(fd, mode);

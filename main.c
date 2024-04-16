@@ -595,8 +595,6 @@ main
 
   init_locale();
 
-  umask(077);
-
   EnvList = envlist_init(envp);
   for (optind = 1; optind < double_dash;)
   {
@@ -754,6 +752,9 @@ main
 
   NeoMutt = neomutt_new(cs);
   init_config(cs);
+
+  // Change the current umask, and save the original one
+  NeoMutt->user_default_umask = umask(077);
   subjrx_init();
   attach_init();
   alternates_init();

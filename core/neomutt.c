@@ -30,6 +30,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <errno.h>
+#include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "neomutt.h"
@@ -209,4 +210,30 @@ size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
   }
 
   return count;
+}
+
+/**
+ * mutt_file_fopen_masked_full - Wrapper around mutt_file_fopen_full()
+ * @param path  Filename
+ * @param mode  Mode e.g. "r" readonly; "w" read-write
+ * @param file  Source file
+ * @param line  Source line number
+ * @param func  Source function
+ * @retval ptr  FILE handle
+ * @retval NULL Error, see errno
+ *
+ * Apply the user's umask, then call mutt_file_fopen_full().
+ */
+FILE *mutt_file_fopen_masked_full(const char *path, const char *mode,
+                                  const char *file, int line, const char *func)
+{
+  // Set the user's umask (saved on startup)
+  mode_t old_umask = umask(NeoMutt->user_default_umask);
+
+  // The permissions will be limited by the umask
+  FILE *fp = mutt_file_fopen_full(path, mode, 0666, file, line, func);
+
+  umask(old_umask); // Immediately restore the umask
+
+  return fp;
 }
