@@ -1,3 +1,59 @@
+2024-04-16  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4216 Compose: Hide MixMaster chain if chain is empty
+  - Expando upgrade
+  - version: bold labels
+* Contrib
+  - mutt_oauth2.py: Detect recipient for oauth automatically
+  - mutt_oauth2.py: imap_oauth_refresh_command does not need options
+* Bug Fixes
+  - #4210 mbox: fix sorting for `mbox_resync()`
+  - #4241 only wrap after first address in header lines
+  - status: reset Buffer before reuse
+  - history: truncate file before writing over it
+  - notmuch: strip leading / from short path
+  - Fix smtp client `$envelope_from_address` possible dangling pointer
+  - Fix non-printable keyname printing to use `<octal>` syntax
+  - Filter Arabic Letter Mark due to display corruption
+  - Loosen `imap_open_mailbox()` SELECT response data parsing
+  - Change `mailto_allow` to be exact match only
+  - Fix `mutt_read_rfc822_line()` to use `is_email_wsp()`
+  - Improve pattern compiler whitespace skipping
+  - Fix gpgme crash when listing keys in a public key block
+  - Add SigInt handler for pattern functions
+  - Fix some mailbox prompts to use mailbox history ring
+  - Improve GPGME inline processing
+  - Reset SIGPIPE signal handler in child process before `exec()`
+  - Filter headers passed via the command line
+  - Remove trailing slashes when opening maildir/mh mailboxes
+  - Fix `mutt_paddstr()` to properly filter unprintable chars
+  - Minor fixes to `match_body_patterns()`
+  - Fix `mutt_ts_capability()` fallback list loop
+  - Ensure SIGALRM interrupts connect() in batch mode
+  - Tighten `$query_command` parsing to allow empty name field
+* Changed Config
+  - #4224 config: add L10N support
+  - New: `set compose_confirm_detach_first = yes`
+    Prevent the accidental deletion of the composed message
+  - Changed: `set reply_regex = "^((re)(\\[[0-9]+\\])*:[ \t]*)*"`
+    Regex to match message reply subjects like 're: '
+  - Changed: `set pager = ""`
+    External command for viewing messages, or empty to use NeoMutt's
+* Translations
+  - 100% Czech
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Slovak
+  - 99% Turkish
+  - l10n: document functions
+  - config: add L10N support
+* Docs
+  - Clarify the manual section on POP3 support
+  - Document the `<1234>` key syntax for bind
+  - Document `$sendmail` invocation behavior
+  - Clarify -H usage in batch mode is not a "pass through" option
+
 2024-03-29  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - #4185 c441f5957 Fix memory leak in trash_append()
