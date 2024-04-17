@@ -6334,10 +6334,8 @@ msgstr ""
 #: ncrypt/crypt.c:1241
 msgid ""
 "[-- The following data is signed --]\n"
-"\n"
 msgstr ""
 "[-- 아래의 자료는 서명 되었음 --]\n"
-"\n"
 
 #: ncrypt/crypt.c:1249
 msgid ""
@@ -6349,10 +6347,8 @@ msgstr ""
 
 #: ncrypt/crypt.c:1256
 msgid ""
-"\n"
 "[-- End of signed data --]\n"
 msgstr ""
-"\n"
 "[-- 서명 자료의 끝 --]\n"
 
 #: ncrypt/crypt_gpgme.c:384
@@ -6629,18 +6625,14 @@ msgstr "[-- 오류: 임시 파일을 만들 수가 없음 --]\n"
 #, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
-"\n"
 msgstr ""
 "[-- 아래의 자료는 PGP/MIME 암호화 되었음 --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2745 ncrypt/pgp.c:1272
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- 아래의 자료는 PGP/MIME 암호화 되었음 --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2782
 #, fuzzy
@@ -6661,19 +6653,15 @@ msgstr "메일을 복사할 수 없음"
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
-"\n"
 msgstr ""
 "[-- 아래의 자료는 S/MIME 서명 되었음 --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2839
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- 아래의 자료는 S/MIME 암호화 되었음 --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2883
 #, fuzzy
@@ -7322,34 +7310,6 @@ msgstr ""
 #: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- 오류: OpenSSL 하부 프로세스를 생성할 수 없음 --]\n"
-
-#: ncrypt/smime.c:1917
-msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- 아래의 자료는 S/MIME 암호화 되었음 --]\n"
-"\n"
-
-#: ncrypt/smime.c:1921
-msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- 아래의 자료는 S/MIME 서명 되었음 --]\n"
-"\n"
-
-#: ncrypt/smime.c:2021
-msgid ""
-"\n"
-"[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME 암호화 자료 끝 --]\n"
-
-#: ncrypt/smime.c:2023
-msgid ""
-"\n"
-"[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME 서명 자료 끝 --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2158
