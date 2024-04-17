@@ -158,9 +158,9 @@ enum ImapAuthRes imap_auth_cram_md5(struct ImapAccountData *adata, const char *m
 
   /* ibuf must be long enough to store the base64 encoding of obuf,
    * plus the additional debris */
-  mutt_b64_encode(obuf, strlen(obuf), ibuf, sizeof(ibuf) - 2);
+  mutt_b64_encode(obuf->data, obuf->dsize, ibuf->data, ibuf->dsize - 2);
   buf_addstr(ibuf, "\r\n");
-  mutt_socket_send(adata->conn, ibuf);
+  mutt_socket_send(adata->conn, buf_string(ibuf));
 
   do
   {
