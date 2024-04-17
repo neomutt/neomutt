@@ -6163,10 +6163,8 @@ msgstr ""
 #: ncrypt/crypt.c:1241
 msgid ""
 "[-- The following data is signed --]\n"
-"\n"
 msgstr ""
 "[-- A következő adatok alá vannak írva --]\n"
-"\n"
 
 #: ncrypt/crypt.c:1249
 msgid ""
@@ -6178,10 +6176,8 @@ msgstr ""
 
 #: ncrypt/crypt.c:1256
 msgid ""
-"\n"
 "[-- End of signed data --]\n"
 msgstr ""
-"\n"
 "[-- Aláírt adat vége --]\n"
 
 #: ncrypt/crypt_gpgme.c:384
@@ -6453,18 +6449,14 @@ msgstr "[-- Hiba: nem lehet létrehozni az ideiglenes fájlt --]\n"
 #: ncrypt/crypt_gpgme.c:2744
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
-"\n"
 msgstr ""
 "[-- A következő adat PGP/MIME-vel aláírt és titkosított --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2745 ncrypt/pgp.c:1272
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- A következő adat PGP/MIME-vel titkosított --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2782
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
@@ -6482,15 +6474,12 @@ msgstr "A PGP üzenetet nem tudtam dekódolni"
 #: ncrypt/crypt_gpgme.c:2838
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
-"\n"
 msgstr ""
 "[-- A következő adat S/MIME-mal aláírva --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2839
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
-"\n"
 msgstr "[-- A következő adat S/MIME-el titkosítva --]\n"
 
 #: ncrypt/crypt_gpgme.c:2883
@@ -7090,30 +7079,6 @@ msgstr ""
 #: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Hiba: nem lehet létrehozni az OpenSSL alfolyamatot --]\n"
-
-#: ncrypt/smime.c:1917
-msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr "[-- A következő adat S/MIME-vel titkosított --]\n"
-
-#: ncrypt/smime.c:1921
-msgid "[-- The following data is S/MIME signed --]\n"
-msgstr "[-- A következő adatok S/MIME-vel alá vannak írva --]\n"
-
-#: ncrypt/smime.c:2021
-msgid ""
-"\n"
-"[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME titkosított adat vége. --]\n"
-
-#: ncrypt/smime.c:2023
-msgid ""
-"\n"
-"[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME aláírt adat vége --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2158

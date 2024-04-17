@@ -6392,10 +6392,8 @@ msgstr ""
 #, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
-"\n"
 msgstr ""
 "[-- Os datos a continuación están asinados --]\n"
-"\n"
 
 #: ncrypt/crypt.c:1249
 msgid ""
@@ -6408,10 +6406,8 @@ msgstr ""
 #: ncrypt/crypt.c:1256
 #, fuzzy
 msgid ""
-"\n"
 "[-- End of signed data --]\n"
 msgstr ""
-"\n"
 "[-- Fin dos datos asinados --]\n"
 
 #: ncrypt/crypt_gpgme.c:384
@@ -6694,18 +6690,14 @@ msgstr "[-- Erro: ¡non foi posible crea-lo ficheiro temporal --]\n"
 #, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Os datos a continuación están encriptados con PGP/MIME --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2745 ncrypt/pgp.c:1272
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Os datos a continuación están encriptados con PGP/MIME --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2782
 #, fuzzy
@@ -6731,19 +6723,15 @@ msgstr "Non foi posible copia-la mensaxe."
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
-"\n"
 msgstr ""
 "[-- Os datos a continuación están asinados --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2839
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Os datos a continuación están encriptados con S/MIME --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2883
 #, fuzzy
@@ -7400,38 +7388,6 @@ msgstr "[-- Fin da saída OpenSSL --]\n"
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Erro: ¡non foi posible crear subproceso OpenSSL --]\n"
-
-#: ncrypt/smime.c:1917
-#, fuzzy
-msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- Os datos a continuación están encriptados con S/MIME --]\n"
-"\n"
-
-#: ncrypt/smime.c:1921
-#, fuzzy
-msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- Os datos a continuación están asinados --]\n"
-"\n"
-
-#: ncrypt/smime.c:2021
-#, fuzzy
-msgid ""
-"\n"
-"[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Fin dos datos con encriptación S/MIME --]\n"
-
-#: ncrypt/smime.c:2023
-#, fuzzy
-msgid ""
-"\n"
-"[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- Fin dos datos asinados --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2158
