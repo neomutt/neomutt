@@ -6370,10 +6370,8 @@ msgstr ""
 #: ncrypt/crypt.c:1241
 msgid ""
 "[-- The following data is signed --]\n"
-"\n"
 msgstr ""
 "[-- Järgnev info on allkirjastatud --]\n"
-"\n"
 
 #: ncrypt/crypt.c:1249
 msgid ""
@@ -6385,10 +6383,8 @@ msgstr ""
 
 #: ncrypt/crypt.c:1256
 msgid ""
-"\n"
 "[-- End of signed data --]\n"
 msgstr ""
-"\n"
 "[-- Allkirjastatud info lõpp --]\n"
 
 #: ncrypt/crypt_gpgme.c:384
@@ -6665,18 +6661,14 @@ msgstr "[-- Viga: ajutise faili loomine ebaõnnestus --]\n"
 #, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Järgneb PGP/MIME krüptitud info --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2745 ncrypt/pgp.c:1272
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Järgneb PGP/MIME krüptitud info --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2782
 #, fuzzy
@@ -6697,14 +6689,12 @@ msgstr "Teadet ei õnnestu kopeerida."
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
-"\n"
 msgstr "[-- Järgneb S/MIME allkirjastatud info --]\n"
 
 #: ncrypt/crypt_gpgme.c:2839
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
-"\n"
 msgstr "[-- Järgneb S/MIME krüptitud info --]\n"
 
 #: ncrypt/crypt_gpgme.c:2883
@@ -7356,30 +7346,6 @@ msgstr ""
 #: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Viga: ei õnnestu luua OpenSSL alamprotsessi --]\n"
-
-#: ncrypt/smime.c:1917
-msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr "[-- Järgneb S/MIME krüptitud info --]\n"
-
-#: ncrypt/smime.c:1921
-msgid "[-- The following data is S/MIME signed --]\n"
-msgstr "[-- Järgneb S/MIME allkirjastatud info --]\n"
-
-#: ncrypt/smime.c:2021
-msgid ""
-"\n"
-"[-- End of S/MIME encrypted data. --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME krüptitud info lõpp --]\n"
-
-#: ncrypt/smime.c:2023
-msgid ""
-"\n"
-"[-- End of S/MIME signed data. --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME Allkirjastatud info lõpp --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2158

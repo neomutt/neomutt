@@ -6262,10 +6262,8 @@ msgstr ""
 #: ncrypt/crypt.c:1241
 msgid ""
 "[-- The following data is signed --]\n"
-"\n"
 msgstr ""
 "[-- Начало подписанных данных --]\n"
-"\n"
 
 #: ncrypt/crypt.c:1249
 msgid ""
@@ -6277,10 +6275,8 @@ msgstr ""
 
 #: ncrypt/crypt.c:1256
 msgid ""
-"\n"
 "[-- End of signed data --]\n"
 msgstr ""
-"\n"
 "[-- Конец подписанных данных --]\n"
 
 #: ncrypt/crypt_gpgme.c:384
@@ -6552,18 +6548,14 @@ msgstr "[-- Ошибка: не удалось создать временный 
 #: ncrypt/crypt_gpgme.c:2744
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Начало данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2745 ncrypt/pgp.c:1272
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Начало данных, зашифрованных в формате PGP/MIME --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2782
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
@@ -6581,18 +6573,14 @@ msgstr "Не удалось расшифровать PGP-сообщение"
 #: ncrypt/crypt_gpgme.c:2838
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
-"\n"
 msgstr ""
 "[-- Начало данных, подписанных в формате S/MIME --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2839
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
-"\n"
 msgstr ""
 "[-- Начало данных, зашифрованных в формате S/MIME --]\n"
-"\n"
 
 #: ncrypt/crypt_gpgme.c:2883
 msgid "[-- End of S/MIME signed data --]\n"
@@ -7213,30 +7201,6 @@ msgstr ""
 #: ncrypt/smime.c:1870 ncrypt/smime.c:1882
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Ошибка: не удалось создать OpenSSL-подпроцесс --]\n"
-
-#: ncrypt/smime.c:1917
-msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr "[-- Начало данных, зашифрованных в формате S/MIME --]\n"
-
-#: ncrypt/smime.c:1921
-msgid "[-- The following data is S/MIME signed --]\n"
-msgstr "[-- Начало данных, подписанных в формате S/MIME --]\n"
-
-#: ncrypt/smime.c:2021
-msgid ""
-"\n"
-"[-- End of S/MIME encrypted data. --]\n"
-msgstr ""
-"\n"
-"[-- Конец данных, зашифрованных в формате S/MIME --]\n"
-
-#: ncrypt/smime.c:2023
-msgid ""
-"\n"
-"[-- End of S/MIME signed data. --]\n"
-msgstr ""
-"\n"
-"[-- Конец данных, подписанных в формате S/MIME --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
 #: ncrypt/smime.c:2158
