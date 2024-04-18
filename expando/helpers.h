@@ -24,6 +24,7 @@
 #ifndef MUTT_EXPANDO_HELPERS_H
 #define MUTT_EXPANDO_HELPERS_H
 
+struct Buffer;
 struct ExpandoDefinition;
 struct ExpandoRenderData;
 
@@ -33,5 +34,7 @@ const char *skip_until_classic_expando(const char *start);
 
 const struct ExpandoRenderData *find_get_number(const struct ExpandoRenderData *rdata, int did, int uid);
 const struct ExpandoRenderData *find_get_string(const struct ExpandoRenderData *rdata, int did, int uid);
+
+void buf_lower_special(struct Buffer *buf);
 
 #endif /* MUTT_EXPANDO_HELPERS_H */

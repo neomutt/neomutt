@@ -24,6 +24,7 @@
 #ifndef MUTT_EXPANDO_NODE_H
 #define MUTT_EXPANDO_NODE_H
 
+#include <stdbool.h>
 #include "mutt/lib.h"
 #include "format.h"
 #include "render.h"
@@ -54,8 +55,9 @@ struct ExpandoFormat
   int                max_cols;        ///< Maximum number of screen columns
   enum FormatJustify justification;   ///< Justification: left, centre, right
   char               leader;          ///< Leader character, 0 or space
-  const char         *start;          ///< Start of Expando specifier string
-  const char         *end;            ///< End of Expando specifier string
+  bool               lower;           ///< Display in lower case
+  const char        *start;           ///< Start of Expando specifier string
+  const char        *end;             ///< End of Expando specifier string
 };
 
 /**

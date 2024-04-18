@@ -40,6 +40,8 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
                                        const struct ExpandoDefinition *defs,
                                        ExpandoParserFlags flags,
                                        struct ExpandoParseError *error);
+struct ExpandoFormat *parse_format(const char *start, const char *end,
+                                   struct ExpandoParseError *error);
 
 static long test_y_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -200,10 +202,11 @@ void test_expando_node_expando(void)
     TEST_CHECK_STR_EQ(buf_string(buf), "hello");
     node_free(&node);
 
-    str = "%d";
+    str = "%_d";
     parsed_until = NULL;
     buf_reset(buf);
     node = node_expando_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node->format = parse_format(str + 1, str + 2, &err);
     TEST_CHECK(node != NULL);
     node_expando_set_color(node, 42);
     rc = node_expando_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
