@@ -105,4 +105,7 @@ void                node_append   (struct ExpandoNode **root, struct ExpandoNode
 struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index);
 void                node_set_child(struct ExpandoNode *node, int index, struct ExpandoNode *child);
 
+struct ExpandoNode *node_first(struct ExpandoNode *node);
+struct ExpandoNode *node_last (struct ExpandoNode *node);
+
 #endif /* MUTT_EXPANDO_NODE_H */
