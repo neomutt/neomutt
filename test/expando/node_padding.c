@@ -192,7 +192,7 @@ void test_expando_node_padding(void)
       { "%>X%c%d",              "<PAD:HARD_FILL:'X':|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
       { "%a%>X%c",              "<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'c'(ALIAS,FLAGS)>>" },
       { "%a%b%>X%c%d",          "<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
-      { "%<a?%a%>X%b&%c%>X%d>", "<PAD:HARD_FILL:'X':<COND:<BOOL:'a':(ALIAS,ADDRESS)>|<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|>|><TEXT:'X'><EXP:'b'(ALIAS,COMMENT)><TEXT:'&'><EXP:'c'(ALIAS,FLAGS)>|<EXP:'d'(ALIAS,NAME)><TEXT:'>'>>" },
+      { "%<a?%a%>X%b&%c%>X%d>", "<COND:<BOOL:'a':(ALIAS,ADDRESS)>|<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'b'(ALIAS,COMMENT)>>|<PAD:HARD_FILL:'X':<EXP:'c'(ALIAS,FLAGS)>|<EXP:'d'(ALIAS,NAME)>>>" },
 
       { "%*X",                  "<PAD:SOFT_FILL:'X':|>" },
       { "%a%*X",                "<PAD:SOFT_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|>" },

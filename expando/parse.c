@@ -51,24 +51,26 @@
 static const char *skip_until_if_true_end(const char *start, char end_terminator)
 {
   int ctr = 0;
+  char prev = '\0';
   while (*start)
   {
-    if ((ctr == 0) && ((*start == end_terminator) || (*start == '&')))
+    if ((ctr == 0) && (((*start == end_terminator) && (prev != '%')) || (*start == '&')))
     {
       break;
     }
 
     // handle nested if-else-s
-    if (*start == '<')
+    if ((prev == '%') && (*start == '<'))
     {
       ctr++;
     }
 
-    if (*start == '>')
+    if ((*start == '>') && (prev != '%'))
     {
       ctr--;
     }
 
+    prev = *start;
     start++;
   }
 
@@ -84,24 +86,26 @@ static const char *skip_until_if_true_end(const char *start, char end_terminator
 static const char *skip_until_if_false_end(const char *start, char end_terminator)
 {
   int ctr = 0;
+  char prev = '\0';
   while (*start)
   {
-    if ((ctr == 0) && (*start == end_terminator))
+    if ((ctr == 0) && (*start == end_terminator) && (prev != '%'))
     {
       break;
     }
 
-    // handle nested if-esle-s
-    if (*start == '<')
+    // handle nested if-else-s
+    if ((prev == '%') && (*start == '<'))
     {
       ctr++;
     }
 
-    if (*start == '>')
+    if ((*start == '>') && (prev != '%'))
     {
       ctr--;
     }
 
+    prev = *start;
     start++;
   }
 
