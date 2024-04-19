@@ -497,7 +497,7 @@ void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared,
 {
   struct MenuStatusLineData data = { shared, menu };
 
-  expando_render(exp, StatusRenderData, &data, MUTT_FORMAT_NO_FLAGS, max_cols, buf);
+  expando_filter(exp, StatusRenderData, &data, MUTT_FORMAT_NO_FLAGS, max_cols, buf);
 }
 
 /**

@@ -145,7 +145,7 @@ static int pattern_make_entry(struct Menu *menu, int line, int max_cols, struct 
   }
 
   const struct Expando *c_pattern_format = cs_subset_expando(NeoMutt->sub, "pattern_format");
-  return expando_render(c_pattern_format, PatternRenderData, entry,
+  return expando_filter(c_pattern_format, PatternRenderData, entry,
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 

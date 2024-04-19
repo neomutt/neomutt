@@ -173,7 +173,7 @@ static int mix_make_entry(struct Menu *menu, int line, int max_cols, struct Buff
   }
 
   const struct Expando *c_mix_entry_format = cs_subset_expando(NeoMutt->sub, "mix_entry_format");
-  return expando_render(c_mix_entry_format, MixRenderData, *r,
+  return expando_filter(c_mix_entry_format, MixRenderData, *r,
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 

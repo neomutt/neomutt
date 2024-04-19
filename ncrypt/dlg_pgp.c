@@ -548,7 +548,7 @@ static int pgp_make_entry(struct Menu *menu, int line, int max_cols, struct Buff
   }
 
   const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
-  return expando_render(c_pgp_entry_format, PgpEntryRenderData, &entry,
+  return expando_filter(c_pgp_entry_format, PgpEntryRenderData, &entry,
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 
