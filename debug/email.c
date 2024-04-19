@@ -233,7 +233,6 @@ void dump_email(const struct Email *e)
   // struct TagList tags
 
   // void *edata
-  buf_dealloc(&buf);
 }
 
 void dump_param_list(const struct ParameterList *pl)

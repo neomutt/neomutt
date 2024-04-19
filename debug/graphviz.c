@@ -1352,7 +1352,7 @@ void dot_email(FILE *fp, struct Email *e, struct ListHead *links)
     snprintf(zone, sizeof(zone), " (%c%02u%02u)", e->zoccident ? '-' : '+',
              e->zhours, e->zminutes);
     struct Buffer *date = buf_pool_get();
-    buf_printf(date, "%s%s", attr, zone);
+    buf_printf(date, "%s%s", arr, zone);
     dot_type_string(fp, "date_sent", buf_string(date), false);
     buf_pool_release(&date);
   }
