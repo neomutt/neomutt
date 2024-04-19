@@ -62,8 +62,9 @@ int node_container_render(const struct ExpandoNode *node,
 
   if (fmt)
   {
+    int min_cols = MIN(fmt->min_cols, max_cols);
     struct Buffer *tmp2 = buf_pool_get();
-    total_cols = format_string(tmp2, fmt->min_cols, fmt->max_cols, fmt->justification,
+    total_cols = format_string(tmp2, min_cols, max_cols, fmt->justification,
                                fmt->leader, buf_string(tmp), buf_len(tmp), true);
     if (fmt->lower)
       buf_lower_special(tmp2);
