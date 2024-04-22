@@ -30,6 +30,7 @@
  * | :-------------------------------- | :------------------------------ |
  * | expando/config_type.c             | @subpage expando_config_type    |
  * | expando/expando.c                 | @subpage expando_expando        |
+ * | expando/filter.c                  | @subpage expando_filter         |
  * | expando/format.c                  | @subpage expando_format         |
  * | expando/helpers.c                 | @subpage expando_helpers        |
  * | expando/node.c                    | @subpage expando_node           |
@@ -51,6 +52,7 @@
 #include "definition.h"
 #include "domain.h"
 #include "expando.h"
+#include "filter.h"
 #include "format.h"
 #include "helpers.h"
 #include "node.h"

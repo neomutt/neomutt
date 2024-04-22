@@ -35,6 +35,7 @@
 #include "mutt/lib.h"
 #include "helpers.h"
 #include "definition.h"
+#include "mutt_thread.h"
 #include "render.h"
 
 /**
@@ -165,4 +166,35 @@ const char *skip_classic_expando(const char *str, const struct ExpandoDefinition
 
   str++;
   return str;
+}
+
+/**
+ * buf_lower_special - Convert to lowercase, excluding special characters
+ * @param buf String to lowercase
+ *
+ * The string is transformed in place.
+ */
+void buf_lower_special(struct Buffer *buf)
+{
+  if (!buf || !buf->data)
+    return;
+
+  char *p = buf->data;
+
+  while (*p)
+  {
+    if (*p == MUTT_SPECIAL_INDEX)
+    {
+      p += 2;
+      continue;
+    }
+    else if (*p < MUTT_TREE_MAX)
+    {
+      p++;
+      continue;
+    }
+
+    *p = tolower((unsigned char) *p);
+    p++;
+  }
 }

@@ -498,7 +498,7 @@ void index_format_hook(const struct ExpandoNode *node, void *data,
   if (!exp)
     return;
 
-  expando_render(exp, IndexRenderData, data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_filter(exp, IndexRenderData, data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 }
 
 /**
@@ -1808,7 +1808,7 @@ int mutt_make_string(struct Buffer *buf, size_t max_cols,
   hfi.msg_in_pager = inpgr;
   hfi.pager_progress = progress;
 
-  return expando_render(exp, IndexRenderData, &hfi, flags, max_cols, buf);
+  return expando_filter(exp, IndexRenderData, &hfi, flags, max_cols, buf);
 }
 
 /**

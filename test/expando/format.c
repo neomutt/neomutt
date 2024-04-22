@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <string.h>
 #include "mutt/lib.h"
 #include "expando/lib.h"
@@ -39,6 +40,7 @@ struct TestCase
   char leader;
   int min_cols;
   int max_cols;
+  bool lower;
   enum FormatJustify justify;
 };
 
@@ -46,14 +48,21 @@ void test_expando_node_expando_format(void)
 {
   static const struct TestCase tests[] = {
     // clang-format off
-    { "5x",    ' ', 5, INT_MAX, JUSTIFY_RIGHT  },
-    { ".7x",   ' ', 0, 7,       JUSTIFY_RIGHT  },
-    { "5.7x",  ' ', 5, 7,       JUSTIFY_RIGHT  },
-    { "-5x",   ' ', 5, INT_MAX, JUSTIFY_LEFT   },
-    { "-.7x",  ' ', 0, 7,       JUSTIFY_LEFT   },
-    { "-5.7x", ' ', 5, 7,       JUSTIFY_LEFT   },
-    { "05x",   '0', 5, INT_MAX, JUSTIFY_RIGHT  },
-    { "=5x",   ' ', 5, INT_MAX, JUSTIFY_CENTER },
+    { "5x",      ' ', 5, INT_MAX, false, JUSTIFY_RIGHT  },
+    { ".7x",     ' ', 0, 7,       false, JUSTIFY_RIGHT  },
+    { "5.7x",    ' ', 5, 7,       false, JUSTIFY_RIGHT  },
+    { "-5x",     ' ', 5, INT_MAX, false, JUSTIFY_LEFT   },
+    { "-.7x",    ' ', 0, 7,       false, JUSTIFY_LEFT   },
+    { "-5.7x",   ' ', 5, 7,       false, JUSTIFY_LEFT   },
+    { "05x",     '0', 5, INT_MAX, false, JUSTIFY_RIGHT  },
+    { "=5x",     ' ', 5, INT_MAX, false, JUSTIFY_CENTER },
+    { "_x",      ' ', 0, INT_MAX, true,  JUSTIFY_RIGHT  },
+    { "5_x",     ' ', 5, INT_MAX, true,  JUSTIFY_RIGHT  },
+    { ".7_x",    ' ', 0, 7,       true,  JUSTIFY_RIGHT  },
+    { "5.7_x",   ' ', 5, 7,       true,  JUSTIFY_RIGHT  },
+    { "-5_x",    ' ', 5, INT_MAX, true,  JUSTIFY_LEFT   },
+    { "-.7_x",   ' ', 0, 7,       true,  JUSTIFY_LEFT   },
+    { "-5.7_x",  ' ', 5, 7,       true,  JUSTIFY_LEFT   },
     // clang-format on
   };
 
@@ -74,6 +83,7 @@ void test_expando_node_expando_format(void)
       TEST_CHECK(fmt->min_cols == tests[i].min_cols);
       TEST_CHECK(fmt->max_cols == tests[i].max_cols);
       TEST_CHECK(fmt->justification == tests[i].justify);
+      TEST_CHECK(fmt->lower == tests[i].lower);
       FREE(&fmt);
     }
   }

@@ -104,4 +104,46 @@ void test_expando_node(void)
 
     node_free(&node);
   }
+
+  // struct ExpandoNode *node_first(struct ExpandoNode *node);
+  // struct ExpandoNode *node_last (struct ExpandoNode *node);
+  {
+    struct ExpandoNode *root = node_new();
+    struct ExpandoNode *child0 = node_new();
+    struct ExpandoNode *child1 = node_new();
+    struct ExpandoNode *child2 = node_new();
+    struct ExpandoNode *next0 = node_new();
+    struct ExpandoNode *next1 = node_new();
+    struct ExpandoNode *next2 = node_new();
+    struct ExpandoNode *n2child0 = node_new();
+    struct ExpandoNode *n2child1 = node_new();
+    struct ExpandoNode *n2child2 = node_new();
+
+    node_set_child(root, 0, child0);
+    node_set_child(root, 1, child1);
+    node_set_child(root, 2, child2);
+    root->next = next0;
+    next0->next = next1;
+    next1->next = next2;
+
+    node_set_child(next2, 0, n2child0);
+    node_set_child(next2, 1, n2child1);
+    node_set_child(next2, 2, n2child2);
+
+    struct ExpandoNode *node = NULL;
+
+    node = node_first(NULL);
+    TEST_CHECK(node == NULL);
+
+    node = node_first(root);
+    TEST_CHECK(node == child0);
+
+    node = node_last(NULL);
+    TEST_CHECK(node == NULL);
+
+    node = node_last(root);
+    TEST_CHECK(node == n2child2);
+
+    node_tree_free(&root);
+  }
 }

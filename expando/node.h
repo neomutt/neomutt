@@ -24,6 +24,7 @@
 #ifndef MUTT_EXPANDO_NODE_H
 #define MUTT_EXPANDO_NODE_H
 
+#include <stdbool.h>
 #include "mutt/lib.h"
 #include "format.h"
 #include "render.h"
@@ -54,8 +55,9 @@ struct ExpandoFormat
   int                max_cols;        ///< Maximum number of screen columns
   enum FormatJustify justification;   ///< Justification: left, centre, right
   char               leader;          ///< Leader character, 0 or space
-  const char         *start;          ///< Start of Expando specifier string
-  const char         *end;            ///< End of Expando specifier string
+  bool               lower;           ///< Display in lower case
+  const char        *start;           ///< Start of Expando specifier string
+  const char        *end;             ///< End of Expando specifier string
 };
 
 /**
@@ -102,5 +104,8 @@ void node_tree_free(struct ExpandoNode **ptr);
 void                node_append   (struct ExpandoNode **root, struct ExpandoNode *new_node);
 struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index);
 void                node_set_child(struct ExpandoNode *node, int index, struct ExpandoNode *child);
+
+struct ExpandoNode *node_first(struct ExpandoNode *node);
+struct ExpandoNode *node_last (struct ExpandoNode *node);
 
 #endif /* MUTT_EXPANDO_NODE_H */

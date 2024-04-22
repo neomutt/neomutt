@@ -295,6 +295,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_expando_empty_if_else)                                \
   NEOMUTT_TEST_ITEM(test_expando_empty_if_else_render)                         \
   NEOMUTT_TEST_ITEM(test_expando_expando)                                      \
+  NEOMUTT_TEST_ITEM(test_expando_filter)                                       \
   NEOMUTT_TEST_ITEM(test_expando_formatted_expando)                            \
   NEOMUTT_TEST_ITEM(test_expando_helpers)                                      \
   NEOMUTT_TEST_ITEM(test_expando_if_else_false_render)                         \

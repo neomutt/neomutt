@@ -102,7 +102,7 @@ void test_expando_node_container(void)
       // clang-format off
       { "ONEaaaONEbbbONEcccTW", 25 },
       { "ONEaaaONEbbbONE", 15 },
-      { "ONEaaaONEb     ", 10 },
+      { "ONEaaaONEb", 10 },
       { "", 0 },
       // clang-format on
     };
@@ -134,6 +134,16 @@ void test_expando_node_container(void)
     rc = node_tree_render(cont, TestRenderData, buf, 50, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 50);
     TEST_CHECK_STR_EQ(buf_string(buf), "ONEaaaONEbbbONEcccTWOaaaTWObbbTWOcccTHREEaaaTHREEb");
+
+    fmt_str = "_-15.20x";
+    fmt_end = strchr(fmt_str, 'x');
+    cont->format = parse_format(fmt_str, fmt_end, &err);
+    buf_reset(buf);
+    rc = node_tree_render(cont, TestRenderData, buf, 20, NULL, MUTT_FORMAT_NO_FLAGS);
+    TEST_CHECK(rc == 20);
+    TEST_CHECK_STR_EQ(buf_string(buf), "oneaaaonebbboneccctw");
+
+    FREE(&cont->format);
 
     node_free(&cont);
     buf_pool_release(&buf);

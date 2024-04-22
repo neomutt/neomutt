@@ -475,7 +475,7 @@ static int attach_make_entry(struct Menu *menu, int line, int max_cols, struct B
   }
 
   const struct Expando *c_attach_format = cs_subset_expando(NeoMutt->sub, "attach_format");
-  return expando_render(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
+  return expando_filter(c_attach_format, AttachRenderData, (actx->idx[actx->v2r[line]]),
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 

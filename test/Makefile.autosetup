@@ -258,6 +258,7 @@ EXPANDO_OBJS	= test/expando/colors_render.o \
 		  test/expando/empty_if_else.o \
 		  test/expando/empty_if_else_render.o \
 		  test/expando/expando.o \
+		  test/expando/filter.o \
 		  test/expando/format.o \
 		  test/expando/formatted_expando.o \
 		  test/expando/helpers.o \

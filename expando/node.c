@@ -146,3 +146,57 @@ void node_append(struct ExpandoNode **root, struct ExpandoNode *new_node)
 
   node->next = new_node;
 }
+
+/**
+ * node_first - First the first Node in a tree
+ * @param node Root Node
+ * @retval ptr First Node
+ */
+struct ExpandoNode *node_first(struct ExpandoNode *node)
+{
+  if (!node)
+    return NULL;
+
+  while (true)
+  {
+    struct ExpandoNode *first = node_get_child(node, 0);
+    if (!first)
+      break;
+
+    node = first;
+  }
+
+  return node;
+}
+
+/**
+ * node_last - Find the last Node in a tree
+ * @param node Root Node
+ * @retval ptr Last Node
+ */
+struct ExpandoNode *node_last(struct ExpandoNode *node)
+{
+  if (!node)
+    return NULL;
+
+  while (true)
+  {
+    if (node->next)
+    {
+      node = node->next;
+      continue;
+    }
+
+    size_t size = ARRAY_SIZE(&node->children);
+    if (size == 0)
+      break;
+
+    struct ExpandoNode *last = node_get_child(node, size - 1);
+    if (!last)
+      break; // LCOV_EXCL_LINE
+
+    node = last;
+  }
+
+  return node;
+}

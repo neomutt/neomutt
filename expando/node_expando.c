@@ -217,6 +217,12 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
     start = end_ptr;
   }
 
+  if (*start == '_')
+  {
+    fmt->lower = true;
+    start++;
+  }
+
   return fmt;
 }
 
@@ -374,6 +380,8 @@ int node_expando_render(const struct ExpandoNode *node,
     total_cols += format_string(tmp, min_cols, max_cols, fmt->justification,
                                 fmt->leader, buf_string(buf_expando),
                                 buf_len(buf_expando), priv->has_tree);
+    if (fmt->lower)
+      buf_lower_special(tmp);
   }
   else
   {
