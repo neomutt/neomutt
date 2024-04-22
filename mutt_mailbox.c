@@ -282,7 +282,7 @@ bool mutt_mailbox_list(void)
 
   buf_pool_release(&path);
 
-  if (!buf_is_empty(mailboxlist))
+  if (!first)
   {
     mutt_message("%s", buf_string(mailboxlist));
     buf_pool_release(&mailboxlist);
