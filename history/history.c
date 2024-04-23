@@ -71,6 +71,7 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -295,7 +296,8 @@ cleanup:
   {
     if (fflush(fp_tmp) == 0)
     {
-      truncate(c_history_file, 0);
+      if (truncate(c_history_file, 0) < 0)
+        mutt_debug(LL_DEBUG1, "truncate: %s\n", strerror(errno));
       fp = mutt_file_fopen(c_history_file, "w");
       if (fp)
       {

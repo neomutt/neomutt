@@ -354,7 +354,7 @@ static int query_save_attachment(FILE *fp, struct Body *b, struct Email *e, char
                                       (e || !is_message) ? e : b->email) == 0)
     {
       // This uses ngettext to avoid duplication of messages
-      const int num = 1;
+      int num = 1;
       mutt_message(ngettext("Attachment saved", "%d attachments saved", num), num);
       rc = 0;
       goto cleanup;
