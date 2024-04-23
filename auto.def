@@ -109,7 +109,7 @@ set valid_options {
   with-sysroot:path         => "Target system root"
   with-tmpdir:=/tmp         => "location of the tmp directory"
 # Misc
-  include-path-in-cflags=1  => "Remove include paths from CFLAGS in the output of neomutt -v"
+  paths-in-cflags=1         => "Remove paths from CFLAGS in the output of neomutt -v"
 # Testing
   asan=0                    => "Enable the Address Sanitizer"
   ubsan=0                   => "Enable the Undefined Behaviour Sanitizer"
@@ -142,6 +142,7 @@ set deprecated_options  {
   with-gpgme:
   with-lz4:
   with-zstd:
+  include-path-in-cflags:=
 }
 
 foreach dep $deprecated_options {
@@ -175,9 +176,10 @@ if {1} {
     asan autocrypt bdb compile-commands coverage debug-backtrace debug-color
     debug-email debug-graphviz debug-keymap debug-logging debug-names
     debug-notify debug-queue debug-window doc everything fmemopen full-doc
-    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 include-path-in-cflags
-    inotify kyotocabinet lmdb locales-fix lua lz4 mixmaster nls notmuch pcre2
-    pgp qdbm rocksdb sasl smime sqlite ssl tdb tokyocabinet ubsan zlib zstd
+    fuzzing gdbm gnutls gpgme gsasl gss homespool idn2 inotify kyotocabinet
+    lmdb locales-fix lua lz4 mixmaster nls notmuch paths-in-cflags pcre2 pgp
+    qdbm rocksdb sasl smime sqlite ssl tdb
+    tokyocabinet ubsan zlib zstd
   } {
     define want-$opt [opt-bool $opt]
   }
@@ -1150,11 +1152,22 @@ if {[get-define debug_build]} {
 
 ###############################################################################
 # Generate conststrings.c
+proc remove-paths-from-cflags {} {
+  lkill [get-define CFLAGS] {{x} {
+    foreach cflag {{-I} {-ffile-prefix-map=}} {
+      if {[string equal -length [string length $cflag] $x $cflag]} {
+        return 1
+      }
+    }
+    return 0
+  }}
+}
+
 set conststrings "\
   unsigned char cc_cflags\[\] = {[text2c [expr {
-    [get-define want-include-path-in-cflags]
+    [get-define want-paths-in-cflags]
     ? [get-define CFLAGS]
-    : [lkill [get-define CFLAGS] {{x} {string equal -length 2 $x {-I}}}]
+    : [remove-paths-from-cflags]
   }]]};\n\
   unsigned char configure_options\[\] = {[text2c $conf_options]};\n"
 if {[catch {set fd [open conststrings.c w]
