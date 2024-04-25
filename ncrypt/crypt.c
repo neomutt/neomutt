@@ -270,6 +270,7 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   if (c_crypt_protected_headers_write)
   {
     struct Envelope *protected_headers = mutt_env_new();
+    mutt_str_replace(&protected_headers->date, e->env->date);
     mutt_env_set_subject(protected_headers, e->env->subject);
     mutt_addrlist_copy(&protected_headers->return_path, &e->env->return_path, false);
     mutt_addrlist_copy(&protected_headers->from, &e->env->from, false);
