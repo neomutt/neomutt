@@ -1127,6 +1127,12 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
   const CopyHeaderFlags chflags = display ? CH_DISPLAY : CH_NO_FLAGS;
   struct Buffer *buf = buf_pool_get();
 
+  if (b_email->mime_headers->date && (!display || !c_weed || !mutt_matches_ignore("date")))
+  {
+    mutt_write_one_header(state->fp_out, "Date", b_email->mime_headers->date,
+                          state->prefix, wraplen, chflags, NeoMutt->sub);
+  }
+
   if (!display || !c_weed || !mutt_matches_ignore("return-path"))
   {
     mutt_addrlist_write(&b_email->mime_headers->return_path, buf, display);
