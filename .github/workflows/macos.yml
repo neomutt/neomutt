@@ -7,8 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  EXTRA_LDFLAGS: "-L/usr/local/opt/ncurses/lib"
-  EXTRA_CFLAGS: "-I/usr/local/opt/ncurses/include -pipe"
+  EXTRA_CFLAGS: "-pipe"
 
 jobs:
   build:
@@ -19,6 +18,13 @@ jobs:
     - name: Get number of CPU cores
       uses: SimenB/github-actions-cpu-cores@v2
       id: cpu-cores
+
+    - name: Set up Homebrew
+      id: set-up-homebrew
+      uses: Homebrew/actions/setup-homebrew@master
+
+    - name: Install dependencies
+      run: brew install notmuch libidn2 libiconv ncurses lmdb
 
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -38,7 +44,7 @@ jobs:
       uses: hendrikmuhs/ccache-action@v1
 
     - name: Configure Neomutt
-      run: ./configure --disable-doc --disable-nls
+      run: ./configure --disable-doc --disable-nls --notmuch --with-notmuch=/opt/homebrew/opt/notmuch --lmdb --zlib --idn2 --with-idn=/opt/homebrew/opt/libidn2 --with-iconv=/opt/homebrew/opt/libiconv --with-ncurses=/opt/homebrew/opt/ncurses 
 
     - name: Build Neomutt
       run: make -j ${{steps.cpu-cores.outputs.count}} neomutt
