@@ -212,6 +212,7 @@ void test_attr_colors(void)
     }
   }
 
+#ifdef NEOMUTT_DIRECT_COLORS
   {
     color_t Colors[][2] = {
       // clang-format off
@@ -245,6 +246,7 @@ void test_attr_colors(void)
     color_t col = color_xterm256_to_24bit(123);
     TEST_CHECK(col == 123);
   }
+#endif
 
   {
     struct CursesColor *cc = curses_color_new(123, 207);
