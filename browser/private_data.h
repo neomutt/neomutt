@@ -45,7 +45,7 @@ struct BrowserPrivateData
   bool                 multiple;                ///< Allow multiple selections
   bool                 folder;                  ///< Select folders
   char                 goto_swapper[PATH_MAX];  ///< Saved path after `<goto-folder>`
-  struct Buffer       *OldLastDir;              ///< Previous to last dir
+  struct Buffer       *old_last_dir;            ///< Previous to last dir
   struct Buffer       *prefix;                  ///< Folder prefix string
   int                  last_selected_mailbox;   ///< Index of last selected Mailbox
   struct MuttWindow   *sbar;                    ///< Status Bar
