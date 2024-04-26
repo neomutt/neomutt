@@ -104,17 +104,17 @@ void test_expando_node_conddate(void)
     static const struct TestDates test_dates[] = {
       // clang-format off
       { "%<[2y?aaa&bbb>", 2*365*24*60*60 },
-      { "%<[y?aaa&bbb>",    365*24*60*60 },
+      { "%<[1y?aaa&bbb>",   365*24*60*60 },
       { "%<[2m?aaa&bbb>",  2*30*24*60*60 },
-      { "%<[m?aaa&bbb>",     30*24*60*60 },
+      { "%<[1m?aaa&bbb>",    30*24*60*60 },
       { "%<[2w?aaa&bbb>",   2*7*24*60*60 },
-      { "%<[w?aaa&bbb>",      7*24*60*60 },
+      { "%<[1w?aaa&bbb>",     7*24*60*60 },
       { "%<[2d?aaa&bbb>",     2*24*60*60 },
-      { "%<[d?aaa&bbb>",        24*60*60 },
+      { "%<[1d?aaa&bbb>",       24*60*60 },
       { "%<[2H?aaa&bbb>",        2*60*60 },
-      { "%<[H?aaa&bbb>",           60*60 },
+      { "%<[1H?aaa&bbb>",          60*60 },
       { "%<[2M?aaa&bbb>",           2*60 },
-      { "%<[M?aaa&bbb>",              60 },
+      { "%<[1M?aaa&bbb>",             60 },
       // clang-format off
     };
 
@@ -133,7 +133,7 @@ void test_expando_node_conddate(void)
 
       int rc = node_conddate_render(node, TestRenderData, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
       TEST_CHECK(rc == 1);
-      TEST_MSG("Expected: %d", 0);
+      TEST_MSG("Expected: %d", 1);
       TEST_MSG("Actual:   %d", rc);
       TEST_CHECK(buf_is_empty(buf));
 
