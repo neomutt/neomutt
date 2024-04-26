@@ -69,6 +69,93 @@ void node_conddate_private_free(void **ptr)
 }
 
 /**
+ * cutoff_number - Calculate the cutoff time for n units
+ * @param period Time period, from [ymwdHM]
+ * @param count  Number of time periods
+ * @retval num Cutoff time
+ *
+ * Calculate the cutoff time for, say, 3 months, or 2 hours.
+ */
+time_t cutoff_number(char period, int count)
+{
+  time_t t = mutt_date_now();
+  struct tm tm = { 0 };
+  localtime_r(&t, &tm);
+
+  switch (period)
+  {
+    case 'y':
+      tm.tm_year -= count;
+      break;
+
+    case 'm':
+      tm.tm_mon -= count;
+      break;
+
+    case 'w':
+      tm.tm_mday -= (7 * count);
+      break;
+
+    case 'd':
+      tm.tm_mday -= count;
+      break;
+
+    case 'H':
+      tm.tm_hour -= count;
+      break;
+
+    case 'M':
+      tm.tm_min -= count;
+      break;
+  }
+
+  return mktime(&tm);
+}
+
+/**
+ * cutoff_this - Calculcate the cutoff time of this unit
+ * @param period Time period, from [ymwdHM]
+ * @retval num Cutoff time
+ *
+ * Calculate the cutoff time of, say, this day (today), this month.
+ */
+time_t cutoff_this(char period)
+{
+  time_t t = mutt_date_now();
+  struct tm tm = { 0 };
+  localtime_r(&t, &tm);
+
+  switch (period)
+  {
+    case 'y':
+      tm.tm_mon = 0; // January
+      FALLTHROUGH;
+
+    case 'm':
+      tm.tm_mday = 1; // 1st of the month
+      FALLTHROUGH;
+
+    case 'd':
+      tm.tm_hour = 0; // Beginning of day (Midnight)
+      FALLTHROUGH;
+
+    case 'H':
+      tm.tm_min = 0; // Beginning of hour
+      FALLTHROUGH;
+
+    case 'M':
+      tm.tm_sec = 0; // Beginning of minute
+      break;
+
+    case 'w':
+      tm.tm_mday = 1;
+      break;
+  }
+
+  return mktime(&tm);
+}
+
+/**
  * node_conddate_render - Render a CondDate Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_conddate_render(const struct ExpandoNode *node,
@@ -84,38 +171,11 @@ int node_conddate_render(const struct ExpandoNode *node,
 
   const struct NodeCondDatePrivate *priv = node->ndata;
 
-  time_t t = mutt_date_now();
-  struct tm tm = { 0 };
-  gmtime_r(&t, &tm);
-
-  switch (priv->period)
-  {
-    case 'y':
-      tm.tm_year -= priv->count;
-      break;
-
-    case 'm':
-      tm.tm_mon -= priv->count;
-      break;
-
-    case 'w':
-      tm.tm_mday -= (7 * priv->count);
-      break;
-
-    case 'd':
-      tm.tm_mday -= priv->count;
-      break;
-
-    case 'H':
-      tm.tm_hour -= priv->count;
-      break;
-
-    case 'M':
-      tm.tm_min -= priv->count;
-      break;
-  }
-
-  const time_t t_cutoff = mktime(&tm);
+  time_t t_cutoff;
+  if (priv->count == 0)
+    t_cutoff = cutoff_this(priv->period);
+  else
+    t_cutoff = cutoff_number(priv->period, priv->count);
 
   return (t_test > t_cutoff); // bool-ify
 }
@@ -148,7 +208,7 @@ struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid)
 struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_until,
                                         int did, int uid, struct ExpandoParseError *error)
 {
-  int count = 1;
+  int count = 0;
   char period = '\0';
 
   if (isdigit(*str))
