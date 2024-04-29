@@ -271,7 +271,7 @@ static struct ConfigDef SendVars[] = {
   { "include", DT_QUAD, MUTT_ASKYES, 0, NULL,
     "Include a copy of the email that's being replied to"
   },
-  { "inews", DT_STRING|D_STRING_COMMAND, 0, 0, simple_command_validator,
+  { "inews", DT_EXPANDO|D_STRING_COMMAND, 0, 0, NULL,
     "(nntp) External command to post news articles"
   },
   { "me_too", DT_BOOL, false, 0, NULL,
