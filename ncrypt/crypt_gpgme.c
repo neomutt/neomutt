@@ -1787,8 +1787,10 @@ restart:
     goto cleanup;
 #endif
 
+  const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
+
   result = gpgme_op_decrypt_result(ctx);
-  if (result && (state->flags & STATE_DISPLAY))
+  if (c_devel_security && result && (state->flags & STATE_DISPLAY))
     show_encryption_info(state, result);
 
   if (err != GPG_ERR_NO_ERROR)
@@ -2621,8 +2623,9 @@ int pgp_gpgme_application_handler(struct Body *b, struct State *state)
         }
         redraw_if_needed(ctx);
 
+        const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
         gpgme_decrypt_result_t result = gpgme_op_decrypt_result(ctx);
-        if (result && (state->flags & STATE_DISPLAY))
+        if (c_devel_security && result && (state->flags & STATE_DISPLAY))
           show_encryption_info(state, result);
 
         if (err != GPG_ERR_NO_ERROR)

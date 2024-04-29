@@ -906,6 +906,10 @@ static struct ConfigDef MainVars[] = {
   { "xterm_set_titles",          DT_SYNONYM, IP "ts_enabled",                 IP "2021-03-21" },
   { "xterm_title",               DT_SYNONYM, IP "ts_status_format",           IP "2021-03-21" },
 
+  { "devel_security", DT_BOOL, false, 0, NULL,
+    "Devel feature: Security -- https://github.com/neomutt/neomutt/discussions/4251"
+  },
+
   { NULL },
   // clang-format on
 };

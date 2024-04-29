@@ -1070,6 +1070,13 @@
 ** or when you save it to another folder.
 */
 
+{ "devel_security", DT_BOOL, false },
+/*
+** .pp
+** If this option is \fIset\fP, NeoMutt will enable the \fBSecurity\fP development features.
+** See: https://github.com/neomutt/neomutt/discussions/4251
+*/
+
 { "digest_collapse", DT_BOOL, true },
 /*
 ** .pp
