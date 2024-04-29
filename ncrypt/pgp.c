@@ -1269,7 +1269,7 @@ int pgp_class_encrypted_handler(struct Body *b, struct State *state)
   {
     if (state->flags & STATE_DISPLAY)
     {
-      state_attach_puts(state, _("[-- The following data is PGP/MIME encrypted --]\n\n"));
+      state_attach_puts(state, _("[-- The following data is PGP/MIME encrypted --]\n"));
       mutt_protected_headers_handler(tattach, state);
     }
 
@@ -1303,10 +1303,7 @@ int pgp_class_encrypted_handler(struct Body *b, struct State *state)
       b->goodsig |= tattach->goodsig;
 
     if (state->flags & STATE_DISPLAY)
-    {
-      state_puts(state, "\n");
       state_attach_puts(state, _("[-- End of PGP/MIME encrypted data --]\n"));
-    }
 
     mutt_body_free(&tattach);
     /* clear 'Invoking...' message, since there's no error */

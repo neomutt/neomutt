@@ -1102,28 +1102,29 @@ bool mutt_should_hide_protected_subject(struct Email *e)
  */
 int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
 {
-  const bool c_crypt_protected_headers_read = cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read");
-  if (c_crypt_protected_headers_read && b_email->mime_headers)
+  if (!cs_subset_bool(NeoMutt->sub, "crypt_protected_headers_read"))
+    return 0;
+
+  state_mark_protected_header(state);
+
+  if (!b_email->mime_headers)
+    goto blank;
+
+  const bool display = (state->flags & STATE_DISPLAY);
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
+  const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
+  const int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
+
+  if (b_email->mime_headers->subject &&
+      (!display || !c_weed || !mutt_matches_ignore("subject")))
   {
-    if (b_email->mime_headers->subject)
-    {
-      const bool display = (state->flags & STATE_DISPLAY);
-
-      const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
-      if (display && c_weed && mutt_matches_ignore("subject"))
-        return 0;
-
-      state_mark_protected_header(state);
-      const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
-      int wraplen = display ? mutt_window_wrap_cols(state->wraplen, c_wrap) : 0;
-
-      mutt_write_one_header(state->fp_out, "Subject",
-                            b_email->mime_headers->subject, state->prefix, wraplen,
-                            display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
-      state_puts(state, "\n");
-    }
+    mutt_write_one_header(state->fp_out, "Subject",
+                          b_email->mime_headers->subject, state->prefix, wraplen,
+                          display ? CH_DISPLAY : CH_NO_FLAGS, NeoMutt->sub);
   }
 
+blank:
+  state_puts(state, "\n");
   return 0;
 }
 
@@ -1238,7 +1239,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
       top->badsig = !goodsig;
 
       /* Now display the signed body */
-      state_attach_puts(state, _("[-- The following data is signed --]\n\n"));
+      state_attach_puts(state, _("[-- The following data is signed --]\n"));
 
       mutt_protected_headers_handler(b_email, state);
 
@@ -1253,7 +1254,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
   rc = mutt_body_handler(b_email, state);
 
   if ((state->flags & STATE_DISPLAY) && (sigcnt != 0))
-    state_attach_puts(state, _("\n[-- End of signed data --]\n"));
+    state_attach_puts(state, _("[-- End of signed data --]\n"));
 
   return rc;
 }
