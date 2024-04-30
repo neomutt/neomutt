@@ -1848,12 +1848,6 @@ msgstr[1] "Die Längenberechnung weicht um %ld Byte(s) ab"
 msgid "No decryption engine available for message"
 msgstr "Kein Entschlüsselungsmechanismus für Nachricht vorhanden"
 
-#: core/neomutt.c:64 imap/msn.c:49 mutt/buffer.c:103 mutt/buffer.c:352
-#: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:836
-#: mx.c:1219
-msgid "Out of memory"
-msgstr "Kein Speicher verfügbar"
-
 #: editmsg.c:76
 #, c-format
 msgid "could not create temporary folder: %s"
