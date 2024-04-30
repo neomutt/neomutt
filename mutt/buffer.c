@@ -35,6 +35,7 @@
  */
 
 #include "config.h"
+#include <errno.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -100,7 +101,7 @@ size_t buf_addstr_n(struct Buffer *buf, const char *s, size_t len)
   if (len > (SIZE_MAX - BufferStepSize))
   {
     // LCOV_EXCL_START
-    mutt_error(_("Out of memory"));
+    mutt_error("%s", strerror(ENOMEM));
     mutt_exit(1);
     // LCOV_EXCL_STOP
   }

@@ -31,6 +31,7 @@
 
 #include "config.h"
 #include <ctype.h>
+#include <errno.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -258,8 +259,8 @@ char *mutt_str_dup(const char *str)
   char *p = strdup(str);
   if (!p)
   {
-    mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
-    mutt_exit(1);                   // LCOV_EXCL_LINE
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    mutt_exit(1);                      // LCOV_EXCL_LINE
   }
   return p;
 }
@@ -784,8 +785,8 @@ int mutt_str_asprintf(char **strp, const char *fmt, ...)
    * is undefined when the return code is -1.  */
   if (n < 0)
   {
-    mutt_error(_("Out of memory")); /* LCOV_EXCL_LINE */
-    mutt_exit(1);                   /* LCOV_EXCL_LINE */
+    mutt_error("%s", strerror(errno)); /* LCOV_EXCL_LINE */
+    mutt_exit(1);                      /* LCOV_EXCL_LINE */
   }
 
   if (n == 0)

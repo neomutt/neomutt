@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <stddef.h>
+#include <errno.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "neomutt.h"
@@ -61,8 +62,8 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
 
   if (!n->time_c_locale)
   {
-    mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
-    mutt_exit(1);                   // LCOV_EXCL_LINE
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    mutt_exit(1);                      // LCOV_EXCL_LINE
   }
 
   n->notify_timeout = notify_new();
