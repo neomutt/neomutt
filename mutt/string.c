@@ -255,7 +255,13 @@ char *mutt_str_dup(const char *str)
   if (!str || (*str == '\0'))
     return NULL;
 
-  return strdup(str);
+  char *p = strdup(str);
+  if (!p)
+  {
+    mutt_error(_("Out of memory")); // LCOV_EXCL_LINE
+    mutt_exit(1);                   // LCOV_EXCL_LINE
+  }
+  return p;
 }
 
 /**
