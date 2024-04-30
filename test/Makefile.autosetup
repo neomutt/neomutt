@@ -382,6 +382,7 @@ IMAP_OBJS	= test/imap/msg_set.o
 
 LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_clear.o \
+		  test/list/mutt_list_copy_tail.o \
 		  test/list/mutt_list_equal.o \
 		  test/list/mutt_list_find.o \
 		  test/list/mutt_list_free.o \
