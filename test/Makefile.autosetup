@@ -391,7 +391,8 @@ LIST_OBJS	= test/list/common.o \
 		  test/list/mutt_list_insert_head.o \
 		  test/list/mutt_list_insert_tail.o \
 		  test/list/mutt_list_match.o \
-		  test/list/mutt_list_str_split.o
+		  test/list/mutt_list_str_split.o \
+		  test/list/mutt_list_write.o
 
 LOGGING_OBJS	= test/logging/log_disp_file.o \
 		  test/logging/log_disp_queue.o \
