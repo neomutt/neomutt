@@ -124,15 +124,14 @@ void mutt_list_free(struct ListHead *h)
   if (!h)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h);
-  struct ListNode *next = NULL;
-  while (np)
+  struct ListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
-    next = STAILQ_NEXT(np, entries);
+    STAILQ_REMOVE(h, np, ListNode, entries);
     FREE(&np->data);
     FREE(&np);
-    np = next;
   }
+
   STAILQ_INIT(h);
 }
 
@@ -146,15 +145,14 @@ void mutt_list_free_type(struct ListHead *h, list_free_t fn)
   if (!h || !fn)
     return;
 
-  struct ListNode *np = STAILQ_FIRST(h);
-  struct ListNode *next = NULL;
-  while (np)
+  struct ListNode *np = NULL, *tmp = NULL;
+  STAILQ_FOREACH_SAFE(np, h, entries, tmp)
   {
-    next = STAILQ_NEXT(np, entries);
+    STAILQ_REMOVE(h, np, ListNode, entries);
     fn((void **) &np->data);
     FREE(&np);
-    np = next;
   }
+
   STAILQ_INIT(h);
 }
 
