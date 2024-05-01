@@ -205,8 +205,8 @@ int imap_browse(const char *path, struct BrowserState *state)
   const char *list_cmd = NULL;
   int len;
   int n;
-  char ctmp;
   bool showparents = false;
+  int rc = -1;
 
   if (imap_parse_path(path, &cac, buf, sizeof(buf)))
   {
@@ -262,9 +262,9 @@ int imap_browse(const char *path, struct BrowserState *state)
     n = mutt_str_len(mbox);
   }
 
-  if (n)
+  if (n > 0)
   {
-    int rc;
+    int rc_step;
     mutt_debug(LL_DEBUG3, "mbox: %s\n", mbox);
 
     /* if our target exists and has inferiors, enter it if we
@@ -278,8 +278,8 @@ int imap_browse(const char *path, struct BrowserState *state)
     do
     {
       list.name = 0;
-      rc = imap_cmd_step(adata);
-      if ((rc == IMAP_RES_CONTINUE) && list.name)
+      rc_step = imap_cmd_step(adata);
+      if ((rc_step == IMAP_RES_CONTINUE) && list.name)
       {
         if (!list.noinferiors && list.name[0] &&
             (imap_mxcmp(list.name, mbox) == 0) && (n < sizeof(mbox) - 1))
@@ -288,7 +288,7 @@ int imap_browse(const char *path, struct BrowserState *state)
           mbox[n] = '\0';
         }
       }
-    } while (rc == IMAP_RES_CONTINUE);
+    } while (rc_step == IMAP_RES_CONTINUE);
     adata->cmdresult = NULL;
 
     /* if we're descending a folder, mark it as current in browser_state */
@@ -313,7 +313,7 @@ int imap_browse(const char *path, struct BrowserState *state)
     {
       /* forget the check, it is too delicate (see above). Have we ever
        * had the parent not exist? */
-      ctmp = mbox[n];
+      char ctmp = mbox[n];
       mbox[n] = '\0';
 
       if (showparents)
@@ -375,15 +375,12 @@ int imap_browse(const char *path, struct BrowserState *state)
   }
 
   mutt_clear_error();
-
-  cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed",
-                           c_imap_check_subscribed, NULL);
-  return 0;
+  rc = 0;
 
 fail:
   cs_subset_str_native_set(NeoMutt->sub, "imap_check_subscribed",
                            c_imap_check_subscribed, NULL);
-  return -1;
+  return rc;
 }
 
 /**

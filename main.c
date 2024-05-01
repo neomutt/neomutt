@@ -1334,8 +1334,7 @@ main
       {
         const char *const c_news_server = cs_subset_string(NeoMutt->sub, "news_server");
         OptNews = true;
-        struct Mailbox *m_cur = get_current_mailbox();
-        CurrentNewsSrv = nntp_select_server(m_cur, c_news_server, false);
+        CurrentNewsSrv = nntp_select_server(NULL, c_news_server, false);
         if (!CurrentNewsSrv)
           goto main_curses; // TEST38: neomutt -G (unset news_server)
       }
@@ -1345,8 +1344,7 @@ main
         goto main_curses; // TEST39: neomutt -n -F /dev/null -y
       }
       buf_reset(folder);
-      struct Mailbox *m_cur = get_current_mailbox();
-      dlg_browser(folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, m_cur, NULL, NULL);
+      dlg_browser(folder, MUTT_SEL_FOLDER | MUTT_SEL_MAILBOX, NULL, NULL, NULL);
       if (buf_is_empty(folder))
       {
         goto main_ok; // TEST40: neomutt -y (quit selection)

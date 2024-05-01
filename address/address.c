@@ -65,7 +65,7 @@ const char AddressSpecials[] = "\"(),.:;<>@[\\]";
  * 32 to bring the values down to 2 to 61.
  */
 #define is_special(ch, mask)                                                   \
-  ((ch) >= 32 && (ch) < 96 && ((mask >> ((ch) -32)) & 1))
+  ((ch) >= 32 && (ch) < 96 && ((mask >> ((ch) - 32)) & 1))
 
 /** #AddressSpecials, for is_special() */
 #define ADDRESS_SPECIAL_MASK 0x380000015c005304ULL

@@ -674,7 +674,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
         (type == MUTT_UNKNOWN) || ff->inferiors)
     {
       /* save the old directory */
-      buf_copy(priv->OldLastDir, &LastDir);
+      buf_copy(priv->old_last_dir, &LastDir);
 
       if (mutt_str_equal(ff->name, ".."))
       {
@@ -751,7 +751,7 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
                               buf_string(&LastDir), buf_string(priv->prefix)) == -1)
         {
           /* try to restore the old values */
-          buf_copy(&LastDir, priv->OldLastDir);
+          buf_copy(&LastDir, priv->old_last_dir);
           if (examine_directory(priv->mailbox, priv->menu, &priv->state,
                                 buf_string(&LastDir), buf_string(priv->prefix)) == -1)
           {
