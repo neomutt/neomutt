@@ -65,25 +65,33 @@ static sig_handler_t SegvHandler = mutt_sig_exit_handler;
 volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
 volatile sig_atomic_t SigWinch; ///< true after SIGWINCH is received
 
-static void exit_print_int_recursive(int n)
+/**
+ * exit_print_uint - AS-safe version of printf("%u", n)
+ * @param n Number to be printed
+ */
+static void exit_print_uint(unsigned int n)
 {
   char digit;
 
   if (n > 9)
-    exit_print_int_recursive(n / 10);
+    exit_print_uint(n / 10);
 
   digit = '0' + (n % 10);
-  write(1, &digit, 1);
+  write(STDOUT_FILENO, &digit, 1);
 }
 
+/**
+ * exit_print_int - AS-safe version of printf("%d", n)
+ * @param n Number to be printed
+ */
 static void exit_print_int(int n)
 {
   if (n < 0)
   {
-    write(1, "-", 1);
+    write(STDOUT_FILENO, "-", 1);
     n = -n;
   }
-  exit_print_int_recursive(n);
+  exit_print_uint(n);
 }
 
 /**
