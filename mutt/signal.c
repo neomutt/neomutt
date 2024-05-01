@@ -32,6 +32,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include "message.h"
 #include "signal2.h"
@@ -85,18 +86,16 @@ static void exit_print_int(int n)
   exit_print_int_recursive(n);
 }
 
+/**
+ * exit_print_string - AS-safe version of printf("%s", str)
+ * @param str String to be printed
+ */
 static void exit_print_string(const char *str)
 {
-  size_t len = 0;
-
   if (!str)
     return;
 
-  while (str[len])
-    len++;
-
-  if (len > 0)
-    write(1, str, len);
+  write(STDOUT_FILENO, str, strlen(str));
 }
 
 /**
