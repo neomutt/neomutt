@@ -1850,12 +1850,6 @@ msgstr[2] "Obliczenie długości pomyliło się o %ld bajtów"
 msgid "No decryption engine available for message"
 msgstr "Nieznany sposób odszyfrowania tej wiadomości"
 
-#: core/neomutt.c:64 imap/msn.c:49 mutt/buffer.c:103 mutt/buffer.c:352
-#: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:836
-#: mx.c:1219
-msgid "Out of memory"
-msgstr "Brak pamięci"
-
 #: editmsg.c:76
 #, c-format
 msgid "could not create temporary folder: %s"

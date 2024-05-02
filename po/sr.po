@@ -1847,12 +1847,6 @@ msgstr[2] "Рачунање дужине је погрешно за %ld бајт
 msgid "No decryption engine available for message"
 msgstr "Ниједан погон за дешифровање није доступан"
 
-#: core/neomutt.c:64 imap/msn.c:49 mutt/buffer.c:103 mutt/buffer.c:352
-#: mutt/memory.c:58 mutt/memory.c:98 mutt/memory.c:134 mutt/string.c:836
-#: mx.c:1219
-msgid "Out of memory"
-msgstr "Нема меморије"
-
 #: editmsg.c:76
 #, c-format
 msgid "could not create temporary folder: %s"

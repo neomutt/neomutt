@@ -1216,7 +1216,7 @@ void mx_alloc_memory(struct Mailbox *m, int req_size)
   const size_t s = MAX(sizeof(struct Email *), sizeof(int));
   if ((req_size * s) < (m->email_max * s))
   {
-    mutt_error(_("Out of memory"));
+    mutt_error("%s", strerror(ENOMEM));
     mutt_exit(1);
   }
 
