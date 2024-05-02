@@ -792,6 +792,8 @@ main
   mutt_log_prep();
   MuttLogger = log_disp_queue;
   log_translation();
+  mutt_debug(LL_DEBUG1, "user's umask %03o\n", NeoMutt->user_default_umask);
+  mutt_debug(LL_DEBUG3, "umask set to 077\n");
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {

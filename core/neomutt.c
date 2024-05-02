@@ -229,11 +229,13 @@ FILE *mutt_file_fopen_masked_full(const char *path, const char *mode,
 {
   // Set the user's umask (saved on startup)
   mode_t old_umask = umask(NeoMutt->user_default_umask);
+  mutt_debug(LL_DEBUG3, "umask set to %03o\n", NeoMutt->user_default_umask);
 
   // The permissions will be limited by the umask
   FILE *fp = mutt_file_fopen_full(path, mode, 0666, file, line, func);
 
   umask(old_umask); // Immediately restore the umask
+  mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);
 
   return fp;
 }
