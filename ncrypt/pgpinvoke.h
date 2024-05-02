@@ -26,7 +26,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
+#include <sys/types.h>
 #include "lib.h"
 #include "pgpkey.h"
 

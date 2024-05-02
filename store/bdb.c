@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include <db.h>
 #include <errno.h>
 #include <fcntl.h>

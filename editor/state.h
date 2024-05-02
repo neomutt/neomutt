@@ -23,7 +23,7 @@
 #ifndef MUTT_EDITOR_STATE_H
 #define MUTT_EDITOR_STATE_H
 
-#include <wchar.h>
+#include <stddef.h>
 
 /**
  * struct EnterState - Keep our place when entering a string

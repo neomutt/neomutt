@@ -35,6 +35,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"

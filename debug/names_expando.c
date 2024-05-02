@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/gui.h"

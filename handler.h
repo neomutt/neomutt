@@ -26,6 +26,7 @@
 
 #include <iconv.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 struct Body;
 struct State;

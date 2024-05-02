@@ -31,7 +31,7 @@
  */
 
 #include "config.h"
-#include <stdarg.h>
+#include <stdarg.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

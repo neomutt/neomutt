@@ -24,8 +24,8 @@
 #ifndef MUTT_GUI_CURS_LIB_H
 #define MUTT_GUI_CURS_LIB_H
 
+#include <stddef.h>
 #include <stdbool.h>
-#include <wchar.h>
 #include "browser/lib.h"
 #include "key/lib.h"
 

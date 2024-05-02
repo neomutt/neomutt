@@ -27,6 +27,7 @@
 #include <signal.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include "attach/lib.h"
 
 struct Address;

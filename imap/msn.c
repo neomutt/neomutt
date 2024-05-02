@@ -31,6 +31,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <string.h>
 #include "mutt/lib.h"
 #include "msn.h"
 #include "mdata.h" // IWYU pragma: keep

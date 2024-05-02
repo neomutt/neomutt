@@ -25,6 +25,7 @@
 #include "acutest.h"
 #include <stddef.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "mutt/lib.h"
 
 void test_mutt_file_get_stat_timespec(void)

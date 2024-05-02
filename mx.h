@@ -27,7 +27,6 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "config/lib.h"
 #include "core/lib.h"
 
 struct Buffer;
