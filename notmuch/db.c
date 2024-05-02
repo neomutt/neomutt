@@ -35,6 +35,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"

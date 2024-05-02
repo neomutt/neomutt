@@ -32,7 +32,7 @@
 #include "config.h"
 #include <ctype.h>
 #include <errno.h>
-#include <stdarg.h>
+#include <stdarg.h> // IWYU pragma: keep
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,7 +41,6 @@
 #include "exit.h"
 #include "logging2.h"
 #include "memory.h"
-#include "message.h"
 #include "string2.h"
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>

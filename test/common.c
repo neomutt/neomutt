@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"

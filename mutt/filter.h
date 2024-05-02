@@ -24,7 +24,7 @@
 #define MUTT_MUTT_FILTER_H
 
 #include <stdio.h>
-#include <unistd.h>
+#include <sys/types.h>
 
 #define EXEC_SHELL "/bin/sh"
 

@@ -34,7 +34,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include <unistd.h>
+#include <sys/types.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"

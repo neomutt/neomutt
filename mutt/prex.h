@@ -24,7 +24,7 @@
 #ifndef MUTT_MUTT_PREX_H
 #define MUTT_MUTT_PREX_H
 
-#include "regex3.h"
+#include <regex.h>
 
 /**
  * enum Prex - Predefined list of regular expressions

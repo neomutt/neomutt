@@ -26,6 +26,7 @@
 #include <stddef.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <sys/types.h>
 #include "account.h"
 #include "mailbox.h"
 #ifdef __APPLE__

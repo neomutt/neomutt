@@ -30,7 +30,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdlib.h>
-#include "mutt/lib.h"
+#include "mutt/lib.h" // IWYU pragma: keep
 #include "qsort_r.h"
 
 #if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)

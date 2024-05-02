@@ -26,9 +26,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include "config/lib.h"
 
 struct Buffer;
+struct ConfigDef;
+struct ConfigSet;
 struct NotifyCallback;
 
 extern const char *divider_line;

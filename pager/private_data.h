@@ -24,11 +24,11 @@
 #define MUTT_PAGER_PRIVATE_DATA_H
 
 #include "config.h"
+#include <regex.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <sys/stat.h>
-#include "mutt/lib.h"
 #include "lib.h"
 #include "color/lib.h"
 

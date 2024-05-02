@@ -30,7 +30,7 @@
 #include "config.h"
 #include <inttypes.h>
 #include <limits.h>
-#include <stdarg.h>
+#include <stdarg.h> // IWYU pragma: keep
 #include <stdio.h>
 #include <wchar.h>
 #include "state.h"

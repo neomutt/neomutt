@@ -36,7 +36,6 @@
 #include "memory.h"
 #include "exit.h"
 #include "logging2.h"
-#include "message.h"
 
 /**
  * mutt_mem_calloc - Allocate zeroed memory on the heap
