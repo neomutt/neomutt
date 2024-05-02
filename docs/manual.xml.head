@@ -11039,6 +11039,36 @@ macro index ,a "&lt;save-message&gt;=archive&lt;enter&gt;&lt;enter-command&gt;ec
             </varlistentry>
           </variablelist>
         </sect3>
+
+        <sect3 id="attach-saving">
+          <title>Saving Attachments</title>
+
+          <variablelist>
+            <varlistentry>
+              <term>
+                <literal>&lt;save-entry&gt;</literal>
+                (default keybinding: s)
+              </term>
+              <listitem>
+                <para>
+                  This will save the attachment to disk.
+                </para>
+                <para>
+                  The permissions of the saved file will depend on the user's
+                  <literal>umask</literal>. e.g. <literal>umask 022</literal>
+                  will create a file with permissions <literal>rw-r--r--</literal>.
+                </para>
+                <para>
+                  See also: <link linkend="attach-save-dir">$attach_save_dir</link>,
+                  <link linkend="attach-save-without-prompting">$attach_save_without_prompting</link>,
+                  <link linkend="attach-sep">$attach_sep</link>,
+                  <link linkend="attach-split">$attach_split</link>
+                </para>
+              </listitem>
+            </varlistentry>
+          </variablelist>
+        </sect3>
+
       </sect2>
 
       <sect2 id="compose-menu">

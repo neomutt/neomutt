@@ -75,7 +75,10 @@ bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
   int fd;
   char path[PATH_MAX] = { 0 };
 
-  mode_t omask = umask(mh_umask(m));
+  mode_t new_umask = mh_umask(m);
+  mode_t old_umask = umask(new_umask);
+  mutt_debug(LL_DEBUG3, "umask set to %03o\n", new_umask);
+
   while (true)
   {
     snprintf(path, sizeof(path), "%s/.neomutt-%s-%d-%" PRIu64, mailbox_path(m),
@@ -86,7 +89,8 @@ bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
       if (errno != EEXIST)
       {
         mutt_perror("%s", path);
-        umask(omask);
+        umask(old_umask);
+        mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);
         return false;
       }
     }
@@ -96,7 +100,8 @@ bool mh_mkstemp(struct Mailbox *m, FILE **fp, char **tgt)
       break;
     }
   }
-  umask(omask);
+  umask(old_umask);
+  mutt_debug(LL_DEBUG3, "umask set to %03o\n", old_umask);
 
   *fp = fdopen(fd, "w");
   if (!*fp)

@@ -595,8 +595,6 @@ main
 
   init_locale();
 
-  umask(077);
-
   EnvList = envlist_init(envp);
   for (optind = 1; optind < double_dash;)
   {
@@ -754,6 +752,9 @@ main
 
   NeoMutt = neomutt_new(cs);
   init_config(cs);
+
+  // Change the current umask, and save the original one
+  NeoMutt->user_default_umask = umask(077);
   subjrx_init();
   attach_init();
   alternates_init();
@@ -791,6 +792,8 @@ main
   mutt_log_prep();
   MuttLogger = log_disp_queue;
   log_translation();
+  mutt_debug(LL_DEBUG1, "user's umask %03o\n", NeoMutt->user_default_umask);
+  mutt_debug(LL_DEBUG3, "umask set to 077\n");
 
   if (!STAILQ_EMPTY(&cc_list) || !STAILQ_EMPTY(&bcc_list))
   {

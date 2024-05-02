@@ -471,7 +471,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
   struct Buffer *buf = buf_pool_get();
   buf_mktemp(buf);
-  fp = mutt_file_fopen(buf_string(buf), "w+");
+  fp = mutt_file_fopen_masked(buf_string(buf), "w+");
   if (!fp)
   {
     buf_pool_release(&buf);

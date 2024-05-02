@@ -31,6 +31,6 @@ void test_mutt_file_open(void)
   // int mutt_file_open(const char *path, uint32_t flags);
 
   {
-    TEST_CHECK(mutt_file_open(NULL, 0) != 0);
+    TEST_CHECK(mutt_file_open(NULL, 0, 0644) != 0);
   }
 }
