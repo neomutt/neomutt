@@ -58,7 +58,7 @@ void expando_free(struct Expando **ptr)
 
   struct Expando *exp = *ptr;
 
-  node_tree_free(&exp->tree);
+  node_tree_free(&exp->node);
   FREE(&exp->string);
 
   FREE(ptr);
@@ -92,7 +92,7 @@ struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *d
     return NULL;
   }
 
-  exp->tree = root;
+  exp->node = root;
   return exp;
 }
 
@@ -109,15 +109,14 @@ struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *d
 int expando_render(const struct Expando *exp, const struct ExpandoRenderData *rdata,
                    void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
-  if (!exp || !exp->tree || !rdata)
+  if (!exp || !exp->node || !rdata)
     return 0;
 
   // Give enough space for a long command line
   if (max_cols == -1)
     max_cols = 8192;
 
-  struct ExpandoNode *root = exp->tree;
-  return node_tree_render(root, rdata, buf, max_cols, data, flags);
+  return node_tree_render(exp->node, rdata, buf, max_cols, data, flags);
 }
 
 /**

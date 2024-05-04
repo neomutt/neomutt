@@ -40,7 +40,7 @@ struct ExpandoDefinition;
 struct Expando
 {
   const char         *string;  ///< Pointer to the parsed string
-  struct ExpandoNode *tree;    ///< Parsed tree
+  struct ExpandoNode *node;    ///< Parsed tree
 };
 
 void            expando_free(struct Expando **ptr);

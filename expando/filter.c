@@ -145,12 +145,12 @@ void filter_text(struct Buffer *buf)
 int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rdata,
                    void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
-  if (!exp || !exp->tree)
+  if (!exp || !exp->node)
     return 0;
 
-  struct ExpandoNode *root = exp->tree;
+  struct ExpandoNode *node = exp->node;
 
-  bool is_pipe = check_for_pipe(root);
+  bool is_pipe = check_for_pipe(node);
   int old_cols = max_cols;
   if (is_pipe)
     max_cols = -1;

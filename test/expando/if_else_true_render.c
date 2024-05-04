@@ -114,7 +114,7 @@ void test_expando_if_else_true_render(void)
 
   const struct Expando expando = {
     .string = input,
-    .tree = root,
+    .node = root,
   };
 
   const struct ExpandoRenderData render[] = {

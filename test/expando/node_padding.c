@@ -264,7 +264,7 @@ void test_expando_node_padding(void)
       exp = expando_parse(format, TestFormatDef, err);
       TEST_CHECK(buf_is_empty(err));
       TEST_MSG(buf_string(err));
-      rc = node_padding_render_eol(exp->tree, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
+      rc = node_padding_render_eol(exp->node, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
       TEST_CHECK(rc == 19);
       TEST_CHECK_STR_EQ(buf_string(buf), expected);
       expando_free(&exp);
@@ -357,7 +357,7 @@ void test_expando_node_padding(void)
       exp = expando_parse(format, TestFormatDef, err);
       TEST_CHECK(buf_is_empty(err));
       TEST_MSG(buf_string(err));
-      rc = node_padding_render_hard(exp->tree, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
+      rc = node_padding_render_hard(exp->node, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
       TEST_CHECK(rc == 19);
       TEST_CHECK_STR_EQ(buf_string(buf), expected);
       expando_free(&exp);
@@ -450,7 +450,7 @@ void test_expando_node_padding(void)
       exp = expando_parse(format, TestFormatDef, err);
       TEST_CHECK(buf_is_empty(err));
       TEST_MSG(buf_string(err));
-      rc = node_padding_render_soft(exp->tree, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
+      rc = node_padding_render_soft(exp->node, TestRenderData, buf, 19, NULL, MUTT_FORMAT_NO_FLAGS);
       TEST_CHECK(rc == 19);
       TEST_CHECK_STR_EQ(buf_string(buf), expected);
       expando_free(&exp);

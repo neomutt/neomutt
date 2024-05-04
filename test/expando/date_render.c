@@ -85,7 +85,7 @@ void test_expando_date_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
@@ -128,7 +128,7 @@ void test_expando_date_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {

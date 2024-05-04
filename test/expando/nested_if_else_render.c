@@ -108,7 +108,7 @@ void test_expando_nested_if_else_render(void)
 
   const struct Expando expando = {
     .string = input,
-    .tree = root,
+    .node = root,
   };
 
   const struct ExpandoRenderData render[] = {

@@ -67,7 +67,7 @@ void test_expando_padding_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
@@ -108,7 +108,7 @@ void test_expando_padding_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
@@ -147,7 +147,7 @@ void test_expando_padding_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
@@ -187,7 +187,7 @@ void test_expando_padding_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
@@ -228,7 +228,7 @@ void test_expando_padding_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
@@ -269,7 +269,7 @@ void test_expando_padding_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
@@ -310,7 +310,7 @@ void test_expando_padding_render(void)
 
     const struct Expando expando = {
       .string = input,
-      .tree = root,
+      .node = root,
     };
 
     const struct ExpandoRenderData render[] = {
