@@ -31,7 +31,7 @@ struct Buffer;
 struct ExpandoNode;
 struct ExpandoParseError;
 
-struct ExpandoNode *node_condbool_parse(const char *s, const char **parsed_until,
+struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_until,
                                        const struct ExpandoDefinition *defs,
                                        ExpandoParserFlags flags,
                                        struct ExpandoParseError *error);

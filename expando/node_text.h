@@ -25,6 +25,6 @@
 #define MUTT_EXPANDO_NODE_TEXT_H
 
 struct ExpandoNode *node_text_new(const char *start, const char *end);
-struct ExpandoNode *node_text_parse(const char *s, const char *end, const char **parsed_until);
+struct ExpandoNode *node_text_parse(const char *str, const char *end, const char **parsed_until);
 
 #endif /* MUTT_EXPANDO_NODE_TEXT_H */
