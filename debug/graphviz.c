@@ -78,7 +78,7 @@
 void dot_email(FILE *fp, struct Email *e, struct ListHead *links);
 void dot_envelope(FILE *fp, struct Envelope *env, struct ListHead *links);
 void dot_patternlist(FILE *fp, struct PatternList *pl, struct ListHead *links);
-void dot_expando_node_tree(FILE *fp, struct ExpandoNode *node, struct ListHead *links);
+void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links);
 
 void dot_type_bool(FILE *fp, const char *name, bool val)
 {
@@ -1829,14 +1829,14 @@ void dot_expando_node_pad(FILE *fp, struct ExpandoNode *node, struct ListHead *l
   struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
   if (left)
   {
-    dot_expando_node_tree(fp, left, links);
+    dot_expando_node(fp, left, links);
     dot_add_link(links, node, left, "Pad->left", "left", false, "#80ff80");
   }
 
   struct ExpandoNode *right = node_get_child(node, ENP_RIGHT);
   if (right)
   {
-    dot_expando_node_tree(fp, right, links);
+    dot_expando_node(fp, right, links);
     dot_add_link(links, node, right, "Pad->right", "right", false, "#ff8080");
   }
 
@@ -1864,16 +1864,16 @@ void dot_expando_node_condition(FILE *fp, struct ExpandoNode *node, struct ListH
   struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
   struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
 
-  dot_expando_node_tree(fp, condition, links);
+  dot_expando_node(fp, condition, links);
   dot_add_link(links, node, condition, "Condition->condition", "condition", false, "#ff80ff");
   if (if_true_tree)
   {
-    dot_expando_node_tree(fp, if_true_tree, links);
+    dot_expando_node(fp, if_true_tree, links);
     dot_add_link(links, node, if_true_tree, "Condition->true", "true", false, "#80ff80");
   }
   if (if_false_tree)
   {
-    dot_expando_node_tree(fp, if_false_tree, links);
+    dot_expando_node(fp, if_false_tree, links);
     dot_add_link(links, node, if_false_tree, "Condition->false", "false", false, "#ff8080");
   }
 
@@ -1973,7 +1973,7 @@ void dot_expando_node_container(FILE *fp, struct ExpandoNode *node, struct ListH
   {
     struct ExpandoNode *child = *enp;
 
-    dot_expando_node_tree(fp, child, links);
+    dot_expando_node(fp, child, links);
     dot_add_link(links, node, child, "Node->child", "child", false, "#80ff80");
   }
 
@@ -2005,7 +2005,7 @@ void dot_expando_node_expando(FILE *fp, struct ExpandoNode *node, struct ListHea
   buf_pool_release(&buf);
 }
 
-void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node_unknown(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "UNKNOWN", "#ff0000");
@@ -2028,7 +2028,7 @@ void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links
   buf_pool_release(&buf);
 }
 
-void dot_expando_node_tree(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
+void dot_expando_node(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
 {
   struct Buffer *buf = buf_pool_get();
 
@@ -2065,7 +2065,7 @@ void dot_expando_node_tree(FILE *fp, struct ExpandoNode *node, struct ListHead *
         dot_expando_node_text(fp, node, links);
         break;
       default:
-        dot_expando_node(fp, node, links);
+        dot_expando_node_unknown(fp, node, links);
         break;
     }
 
@@ -2098,7 +2098,7 @@ void dump_graphviz_expando_node(struct ExpandoNode *node)
 
   dot_graph_header(fp);
 
-  dot_expando_node_tree(fp, node, &links);
+  dot_expando_node(fp, node, &links);
 
   dot_graph_footer(fp, &links);
   fclose(fp);
