@@ -75,7 +75,6 @@ struct ExpandoNode *node_condition_new(struct ExpandoNode *condition,
                                        struct ExpandoNode *node_false)
 {
   assert(condition);
-  assert(node_true);
 
   struct ExpandoNode *node = node_new();
 

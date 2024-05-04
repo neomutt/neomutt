@@ -222,7 +222,8 @@ struct ExpandoNode *parse_index_hook(const char *str, const char **parsed_until,
 {
   if (flags & EP_CONDITIONAL)
   {
-    snprintf(error->message, sizeof(error->message), "index-hook cannot be used as a condition");
+    snprintf(error->message, sizeof(error->message),
+             _("index-hook cannot be used as a condition"));
     error->position = str;
     return NULL;
   }

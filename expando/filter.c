@@ -53,10 +53,6 @@ bool check_for_pipe(struct ExpandoNode *root)
   if (!root)
     return false;
 
-  struct ExpandoNode *first = node_first(root);
-  if (first->type != ENT_TEXT)
-    return false;
-
   struct ExpandoNode *last = node_last(root);
   if (!last || (last->type != ENT_TEXT))
     return false;

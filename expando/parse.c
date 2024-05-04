@@ -122,11 +122,11 @@ static const char *skip_until_if_false_end(const char *start, char end_terminato
  * @param[out] error           Buffer for errors
  * @retval ptr Tree of ExpandoNodes representing the format string
  */
-static struct ExpandoNode *node_parse(const char *str, const char *end,
-                                      enum ExpandoConditionStart condition_start,
-                                      const char **parsed_until,
-                                      const struct ExpandoDefinition *defs,
-                                      struct ExpandoParseError *error)
+struct ExpandoNode *node_parse(const char *str, const char *end,
+                               enum ExpandoConditionStart condition_start,
+                               const char **parsed_until,
+                               const struct ExpandoDefinition *defs,
+                               struct ExpandoParseError *error)
 {
   while (*str && (end ? (str <= end) : 1))
   {
@@ -260,8 +260,7 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
           return node_condition_new(condition, node_true, node_false);
         }
       }
-      // expando
-      else
+      else // expando
       {
         ExpandoParserFlags flags = (condition_start == CON_START) ? EP_CONDITIONAL : EP_NO_FLAGS;
         struct ExpandoNode *node = NULL;
@@ -283,8 +282,7 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
         return node;
       }
     }
-    // text
-    else
+    else // text
     {
       return node_text_parse(str, end, parsed_until);
     }
