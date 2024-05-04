@@ -252,7 +252,6 @@ EXPANDO_OBJS	= test/expando/colors_render.o \
 		  test/expando/conditional_date_render2.o \
 		  test/expando/config.o \
 		  test/expando/date_render.o \
-		  test/expando/debug_print.o \
 		  test/expando/emoji_text.o \
 		  test/expando/empty.o \
 		  test/expando/empty_if_else.o \
