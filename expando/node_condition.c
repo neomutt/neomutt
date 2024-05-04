@@ -66,16 +66,16 @@ static int node_condition_render(const struct ExpandoNode *node,
 /**
  * node_condition_new - Create a new Condition Expando Node
  * @param condition     Expando Node that will be tested
- * @param if_true_tree  Node tree for the 'true' case
- * @param if_false_tree Node tree for the 'false' case
+ * @param node_true  Node tree for the 'true' case
+ * @param node_false Node tree for the 'false' case
  * @retval ptr New Condition Expando Node
  */
 struct ExpandoNode *node_condition_new(struct ExpandoNode *condition,
-                                       struct ExpandoNode *if_true_tree,
-                                       struct ExpandoNode *if_false_tree)
+                                       struct ExpandoNode *node_true,
+                                       struct ExpandoNode *node_false)
 {
   assert(condition);
-  assert(if_true_tree);
+  assert(node_true);
 
   struct ExpandoNode *node = node_new();
 
@@ -83,8 +83,8 @@ struct ExpandoNode *node_condition_new(struct ExpandoNode *condition,
   node->render = node_condition_render;
 
   ARRAY_SET(&node->children, ENC_CONDITION, condition);
-  ARRAY_SET(&node->children, ENC_TRUE, if_true_tree);
-  ARRAY_SET(&node->children, ENC_FALSE, if_false_tree);
+  ARRAY_SET(&node->children, ENC_TRUE, node_true);
+  ARRAY_SET(&node->children, ENC_FALSE, node_false);
 
   return node;
 }
