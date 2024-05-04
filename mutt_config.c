@@ -275,7 +275,7 @@ struct ExpandoNode *parse_subject(const char *str, const char **parsed_until,
   node_cont->format = node_subj->format;
   node_subj->format = NULL;
 
-  node_set_child(node_cont, 0, node_tree);
+  ARRAY_ADD(&node_cont->children, node_tree);
   return node_cont;
 }
 

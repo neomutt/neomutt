@@ -67,29 +67,18 @@ void test_expando_node(void)
   }
 
   // struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index);
-  // void node_set_child(struct ExpandoNode *node, int index, struct ExpandoNode *child);
   {
     struct ExpandoNode *node = node_new();
 
     // Consecutive
-    node_set_child(node, 0, node_new());
-    node_set_child(node, 1, node_new());
-    node_set_child(node, 2, node_new());
+    ARRAY_SET(&node->children, 0, node_new());
+    ARRAY_SET(&node->children, 1, node_new());
+    ARRAY_SET(&node->children, 2, node_new());
 
     // Skips
-    node_set_child(node, 4, node_new());
-    node_set_child(node, 6, node_new());
-    node_set_child(node, 8, node_new());
-
-    // Overwrite
-    node_set_child(node, 1, node_new());
-    node_set_child(node, 2, node_new());
-    node_set_child(node, 2, node_new());
-
-    struct ExpandoNode *n2 = node_new();
-    node_set_child(NULL, 2, n2);
-    node_set_child(n2, 2, NULL);
-    node_free(&n2);
+    ARRAY_SET(&node->children, 4, node_new());
+    ARRAY_SET(&node->children, 6, node_new());
+    ARRAY_SET(&node->children, 8, node_new());
 
     TEST_CHECK(node_get_child(node, 0) != NULL);
     TEST_CHECK(node_get_child(node, 1) != NULL);
@@ -119,16 +108,16 @@ void test_expando_node(void)
     struct ExpandoNode *n2child1 = node_new();
     struct ExpandoNode *n2child2 = node_new();
 
-    node_set_child(root, 0, child0);
-    node_set_child(root, 1, child1);
-    node_set_child(root, 2, child2);
+    ARRAY_SET(&root->children, 0, child0);
+    ARRAY_SET(&root->children, 1, child1);
+    ARRAY_SET(&root->children, 2, child2);
     root->next = next0;
     next0->next = next1;
     next1->next = next2;
 
-    node_set_child(next2, 0, n2child0);
-    node_set_child(next2, 1, n2child1);
-    node_set_child(next2, 2, n2child2);
+    ARRAY_SET(&next2->children, 0, n2child0);
+    ARRAY_SET(&next2->children, 1, n2child1);
+    ARRAY_SET(&next2->children, 2, n2child2);
 
     struct ExpandoNode *node = NULL;
 

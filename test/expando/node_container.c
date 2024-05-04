@@ -113,9 +113,9 @@ void test_expando_node_container(void)
     struct ExpandoNode *cont = node_container_new();
     cont->format = parse_format(fmt_str, fmt_end, &err);
 
-    node_set_child(cont, 0, make_children('a'));
-    node_set_child(cont, 1, make_children('b'));
-    node_set_child(cont, 2, make_children('c'));
+    ARRAY_ADD(&cont->children, make_children('a'));
+    ARRAY_ADD(&cont->children, make_children('b'));
+    ARRAY_ADD(&cont->children, make_children('c'));
 
     struct Buffer *buf = buf_pool_get();
     int rc;
