@@ -54,12 +54,12 @@ static int node_condition_render(const struct ExpandoNode *node,
   if (rc == true)
   {
     const struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
-    return node_tree_render(node_true, rdata, buf, max_cols, data, flags);
+    return node_render(node_true, rdata, buf, max_cols, data, flags);
   }
   else
   {
     const struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
-    return node_tree_render(node_false, rdata, buf, max_cols, data, flags);
+    return node_render(node_false, rdata, buf, max_cols, data, flags);
   }
 }
 

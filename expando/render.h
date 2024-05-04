@@ -79,7 +79,7 @@ struct ExpandoRenderData
   long (*get_number)(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
 };
 
-int node_tree_render(const struct ExpandoNode *node,
+int node_render(const struct ExpandoNode *node,
                      const struct ExpandoRenderData *rdata, struct Buffer *buf,
                      int max_cols, void *data, MuttFormatFlags flags);
 

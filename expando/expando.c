@@ -116,7 +116,7 @@ int expando_render(const struct Expando *exp, const struct ExpandoRenderData *rd
   if (max_cols == -1)
     max_cols = 8192;
 
-  return node_tree_render(exp->node, rdata, buf, max_cols, data, flags);
+  return node_render(exp->node, rdata, buf, max_cols, data, flags);
 }
 
 /**

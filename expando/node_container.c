@@ -57,7 +57,7 @@ int node_container_render(const struct ExpandoNode *node,
   struct ExpandoNode **enp = NULL;
   ARRAY_FOREACH(enp, &node->children)
   {
-    total_cols += node_tree_render(*enp, rdata, tmp, max_cols - total_cols, data, flags);
+    total_cols += node_render(*enp, rdata, tmp, max_cols - total_cols, data, flags);
   }
 
   if (fmt)

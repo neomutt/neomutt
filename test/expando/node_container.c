@@ -124,14 +124,14 @@ void test_expando_node_container(void)
     {
       TEST_CASE_("%d", tests[i].value);
       buf_reset(buf);
-      rc = node_tree_render(cont, TestRenderData, buf, tests[i].value, NULL, MUTT_FORMAT_NO_FLAGS);
+      rc = node_render(cont, TestRenderData, buf, tests[i].value, NULL, MUTT_FORMAT_NO_FLAGS);
       TEST_CHECK(rc == strlen(tests[i].name));
       TEST_CHECK_STR_EQ(buf_string(buf), tests[i].name);
     }
 
     FREE(&cont->format);
     buf_reset(buf);
-    rc = node_tree_render(cont, TestRenderData, buf, 50, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_render(cont, TestRenderData, buf, 50, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 50);
     TEST_CHECK_STR_EQ(buf_string(buf), "ONEaaaONEbbbONEcccTWOaaaTWObbbTWOcccTHREEaaaTHREEb");
 
@@ -139,7 +139,7 @@ void test_expando_node_container(void)
     fmt_end = strchr(fmt_str, 'x');
     cont->format = parse_format(fmt_str, fmt_end, &err);
     buf_reset(buf);
-    rc = node_tree_render(cont, TestRenderData, buf, 20, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_render(cont, TestRenderData, buf, 20, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 20);
     TEST_CHECK_STR_EQ(buf_string(buf), "oneaaaonebbboneccctw");
 

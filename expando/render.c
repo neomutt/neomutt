@@ -33,7 +33,7 @@
 #include "node.h"
 
 /**
- * node_tree_render - Render a tree of ExpandoNodes into a string
+ * node_render - Render a tree of ExpandoNodes into a string
  * @param node     Root of tree
  * @param rdata    Expando Render data
  * @param buf      Buffer for the result
@@ -42,9 +42,8 @@
  * @param flags    Flags to control behaviour
  * @retval num Number of screen columns used
  */
-int node_tree_render(const struct ExpandoNode *node,
-                     const struct ExpandoRenderData *rdata, struct Buffer *buf,
-                     int max_cols, void *data, MuttFormatFlags flags)
+int node_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata,
+                struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags)
 {
   int total_cols = 0;
 

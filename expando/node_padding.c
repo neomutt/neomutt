@@ -105,7 +105,7 @@ int node_padding_render_eol(const struct ExpandoNode *node,
 {
   struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
 
-  int total_cols = node_tree_render(left, rdata, buf, max_cols, data, flags);
+  int total_cols = node_render(left, rdata, buf, max_cols, data, flags);
 
   total_cols += pad_string(node, buf, max_cols - total_cols);
 
@@ -130,11 +130,11 @@ int node_padding_render_hard(const struct ExpandoNode *node,
 
   struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
   if (left)
-    cols_used += node_tree_render(left, rdata, buf_left, max_cols - cols_used, data, flags);
+    cols_used += node_render(left, rdata, buf_left, max_cols - cols_used, data, flags);
 
   struct ExpandoNode *right = node_get_child(node, ENP_RIGHT);
   if (right)
-    cols_used += node_tree_render(right, rdata, buf_right, max_cols - cols_used, data, flags);
+    cols_used += node_render(right, rdata, buf_right, max_cols - cols_used, data, flags);
 
   if (max_cols > cols_used)
     cols_used += pad_string(node, buf_pad, max_cols - cols_used);
@@ -168,11 +168,11 @@ int node_padding_render_soft(const struct ExpandoNode *node,
 
   struct ExpandoNode *right = node_get_child(node, ENP_RIGHT);
   if (right)
-    cols_used += node_tree_render(right, rdata, buf_right, max_cols - cols_used, data, flags);
+    cols_used += node_render(right, rdata, buf_right, max_cols - cols_used, data, flags);
 
   struct ExpandoNode *left = node_get_child(node, ENP_LEFT);
   if (left)
-    cols_used += node_tree_render(left, rdata, buf_left, max_cols - cols_used, data, flags);
+    cols_used += node_render(left, rdata, buf_left, max_cols - cols_used, data, flags);
 
   if (max_cols > cols_used)
     cols_used += pad_string(node, buf_pad, max_cols - cols_used);
