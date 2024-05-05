@@ -71,7 +71,7 @@ struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
  * @param name  Name for Mailbox
  * @retval ptr New ImapMboxData
  */
-struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
+struct ImapMboxData *imap_mdata_nocache_new(struct ImapAccountData *adata, const char *name)
 {
   char buf[1024] = { 0 };
   struct ImapMboxData *mdata = MUTT_MEM_CALLOC(1, struct ImapMboxData);
@@ -94,6 +94,20 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   mdata->reopen &= IMAP_REOPEN_ALLOW;
 
   STAILQ_INIT(&mdata->flags);
+
+  return mdata;
+}
+
+/**
+ * imap_mdata_new - Allocate and initialise a new ImapMboxData structure and
+ * call cache function on it
+ * @param adata Imap Account data
+ * @param name  Name for Mailbox
+ * @retval ptr New ImapMboxData
+ */
+struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
+{
+  struct ImapMboxData *mdata = imap_mdata_nocache_new(adata, name);
 
 #ifdef USE_HCACHE
   imap_hcache_open(adata, mdata, false);
