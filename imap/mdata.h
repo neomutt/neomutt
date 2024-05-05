@@ -67,5 +67,6 @@ struct ImapMboxData
 void                 imap_mdata_free(void **ptr);
 struct ImapMboxData *imap_mdata_get (struct Mailbox *m);
 struct ImapMboxData *imap_mdata_new (struct ImapAccountData *adata, const char* name);
+struct ImapMboxData *imap_mdata_nocache_new (struct ImapAccountData *adata, const char* name);
 
 #endif /* MUTT_IMAP_MDATA_H */
