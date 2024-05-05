@@ -189,6 +189,7 @@ int imap_login(struct ImapAccountData *adata);
 int imap_sync_message_for_copy(struct Mailbox *m, struct Email *e, struct Buffer *cmd, enum QuadOption *err_continue);
 bool imap_has_flag(struct ListHead *flag_list, const char *flag);
 int imap_adata_find(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
+int imap_adata_find_nocache(const char *path, struct ImapAccountData **adata, struct ImapMboxData **mdata);
 
 /* auth.c */
 int imap_authenticate(struct ImapAccountData *adata);
