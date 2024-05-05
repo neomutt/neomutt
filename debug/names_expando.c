@@ -529,6 +529,7 @@ const char *name_expando_uid(enum ExpandoDomain did, int uid)
       return name_expando_uid_smime_cmd(uid);
     default:
       assert(false);
+      return "UNKNOWN";
   }
 }
 

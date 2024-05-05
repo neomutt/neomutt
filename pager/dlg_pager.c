@@ -139,7 +139,7 @@ void pager_queue_redraw(struct PagerPrivateData *priv, PagerRedrawFlags redraw)
  */
 static const struct Mapping *pager_resolve_help_mapping(enum PagerMode mode, enum MailboxType type)
 {
-  const struct Mapping *result;
+  const struct Mapping *result = NULL;
   switch (mode)
   {
     case PAGER_MODE_EMAIL:

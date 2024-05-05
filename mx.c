@@ -913,7 +913,7 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
   if (m->dontwrite)
   {
     char buf[512] = { 0 };
-    char tmp[256] = { 0 };
+    char tmp[768] = { 0 };
     if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_INDEX, OP_TOGGLE_WRITE)))
       snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
     else
