@@ -1283,7 +1283,7 @@ int imap_complete(struct Buffer *buf, const char *path)
   int completions = 0;
   int rc;
 
-  if (imap_adata_find(path, &adata, &mdata) < 0)
+  if (imap_adata_find_nocache(path, &adata, &mdata) < 0)
   {
     buf_strcpy(buf, path);
     return complete_hosts(buf);

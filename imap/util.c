@@ -63,15 +63,16 @@
 #endif
 
 /**
- * imap_adata_find - Find the Account data for this path
+ * imap_adata_lookup - Find the Account data for this path
  * @param path  Path to search for
  * @param adata Imap Account data
  * @param mdata Imap Mailbox data
+ * @param cache If true and path is found use cache on it
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_adata_find(const char *path, struct ImapAccountData **adata,
-                    struct ImapMboxData **mdata)
+int imap_adata_lookup(const char *path, struct ImapAccountData **adata,
+                      struct ImapMboxData **mdata, bool cache)
 {
   struct ConnAccount cac = { { 0 } };
   struct ImapAccountData *tmp_adata = NULL;
@@ -91,13 +92,43 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
       continue;
     if (imap_account_match(&tmp_adata->conn->account, &cac))
     {
-      *mdata = imap_mdata_new(tmp_adata, tmp);
+      *mdata = cache ? imap_mdata_new(tmp_adata, tmp) :
+                       imap_mdata_nocache_new(tmp_adata, tmp);
       *adata = tmp_adata;
       return 0;
     }
   }
   mutt_debug(LL_DEBUG3, "no ImapAccountData found\n");
   return -1;
+}
+
+/**
+ * imap_adata_find - Find the Account data for this path
+ * @param path  Path to search for
+ * @param adata Imap Account data
+ * @param mdata Imap Mailbox data
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+int imap_adata_find(const char *path, struct ImapAccountData **adata,
+                    struct ImapMboxData **mdata)
+{
+  return imap_adata_lookup(path, adata, mdata, true);
+}
+
+/**
+ * imap_adata_find_nocache - Same behaviour as imap_data_find() but does not
+ * cache the result to avoid cache directory pollution
+ * @param path  Path to search for
+ * @param adata Imap Account data
+ * @param mdata Imap Mailbox data
+ * @retval  0 Success
+ * @retval -1 Failure
+ */
+int imap_adata_find_nocache(const char *path, struct ImapAccountData **adata,
+                            struct ImapMboxData **mdata)
+{
+  return imap_adata_lookup(path, adata, mdata, false);
 }
 
 /**
