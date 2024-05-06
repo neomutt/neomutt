@@ -53,10 +53,6 @@ bool check_for_pipe(struct ExpandoNode *root)
   if (!root)
     return false;
 
-  struct ExpandoNode *first = node_first(root);
-  if (first->type != ENT_TEXT)
-    return false;
-
   struct ExpandoNode *last = node_last(root);
   if (!last || (last->type != ENT_TEXT))
     return false;
@@ -145,12 +141,12 @@ void filter_text(struct Buffer *buf)
 int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rdata,
                    void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
-  if (!exp || !exp->tree)
+  if (!exp || !exp->node)
     return 0;
 
-  struct ExpandoNode *root = exp->tree;
+  struct ExpandoNode *node = exp->node;
 
-  bool is_pipe = check_for_pipe(root);
+  bool is_pipe = check_for_pipe(node);
   int old_cols = max_cols;
   if (is_pipe)
     max_cols = -1;

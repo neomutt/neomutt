@@ -222,7 +222,8 @@ struct ExpandoNode *parse_index_hook(const char *str, const char **parsed_until,
 {
   if (flags & EP_CONDITIONAL)
   {
-    snprintf(error->message, sizeof(error->message), "index-hook cannot be used as a condition");
+    snprintf(error->message, sizeof(error->message),
+             _("index-hook cannot be used as a condition"));
     error->position = str;
     return NULL;
   }
@@ -275,7 +276,7 @@ struct ExpandoNode *parse_subject(const char *str, const char **parsed_until,
   node_cont->format = node_subj->format;
   node_subj->format = NULL;
 
-  node_set_child(node_cont, 0, node_tree);
+  ARRAY_ADD(&node_cont->children, node_tree);
   return node_cont;
 }
 

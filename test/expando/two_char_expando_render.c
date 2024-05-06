@@ -82,7 +82,7 @@ void test_expando_two_char_expando_render(void)
 
   const struct Expando expando = {
     .string = input,
-    .tree = root,
+    .node = root,
   };
 
   const struct ExpandoRenderData render[] = {

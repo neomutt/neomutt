@@ -270,5 +270,5 @@ void expando_serialise(const struct Expando *exp, struct Buffer *buf)
   if (!exp || !buf)
     return;
 
-  dump_node(exp->tree, buf);
+  dump_node(exp->node, buf);
 }

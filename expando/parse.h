@@ -32,7 +32,7 @@ struct ExpandoDefinition;
  */
 struct ExpandoParseError
 {
-  char        message[128];   ///< Error message
+  char        message[256];   ///< Error message
   const char *position;       ///< Position of error in original string
 };
 

@@ -122,11 +122,11 @@ static const char *skip_until_if_false_end(const char *start, char end_terminato
  * @param[out] error           Buffer for errors
  * @retval ptr Tree of ExpandoNodes representing the format string
  */
-static struct ExpandoNode *node_parse(const char *str, const char *end,
-                                      enum ExpandoConditionStart condition_start,
-                                      const char **parsed_until,
-                                      const struct ExpandoDefinition *defs,
-                                      struct ExpandoParseError *error)
+struct ExpandoNode *node_parse(const char *str, const char *end,
+                               enum ExpandoConditionStart condition_start,
+                               const char **parsed_until,
+                               const struct ExpandoDefinition *defs,
+                               struct ExpandoParseError *error)
 {
   while (*str && (end ? (str <= end) : 1))
   {
@@ -169,15 +169,15 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
 
         str = next + 1;
 
-        const char *if_true_start = str;
+        const char *start_true = str;
         // nested if-else only allowed in the new style
-        const char *if_true_end = skip_until_if_true_end(str, end_terminator);
-        bool only_true = (*if_true_end == end_terminator);
-        bool invalid = ((*if_true_end != '&') && !only_true);
+        const char *end_true = skip_until_if_true_end(str, end_terminator);
+        bool only_true = (*end_true == end_terminator);
+        bool invalid = ((*end_true != '&') && !only_true);
 
         if (invalid)
         {
-          error->position = if_true_end;
+          error->position = end_true;
           snprintf(error->message, sizeof(error->message),
                    // L10N: Expando is missing a terminator character
                    //       e.g. "%[..." is missing the final ']'
@@ -187,11 +187,11 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
         }
 
         const char *if_true_parsed = NULL;
-        struct ExpandoNode *if_true_tree = NULL;
+        struct ExpandoNode *node_true = NULL;
 
-        while (if_true_start < if_true_end)
+        while (start_true < end_true)
         {
-          struct ExpandoNode *node = node_parse(if_true_start, if_true_end, CON_NO_CONDITION,
+          struct ExpandoNode *node = node_parse(start_true, end_true, CON_NO_CONDITION,
                                                 &if_true_parsed, defs, error);
           if (!node)
           {
@@ -199,69 +199,68 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
             return NULL;
           }
 
-          node_append(&if_true_tree, node);
+          node_append(&node_true, node);
 
-          if_true_start = if_true_parsed;
+          start_true = if_true_parsed;
         }
 
-        if ((if_true_start == if_true_end) && !if_true_tree)
+        if ((start_true == end_true) && !node_true)
         {
-          if_true_tree = node_new();
+          node_true = node_new();
         }
 
         if (only_true)
         {
-          *parsed_until = if_true_end + 1;
-          return node_condition_new(condition, if_true_tree, NULL);
+          *parsed_until = end_true + 1;
+          return node_condition_new(condition, node_true, NULL);
         }
         else
         {
-          const char *if_false_start = if_true_end + 1;
+          const char *start_false = end_true + 1;
           // nested if-else only allowed in the new style
-          const char *if_false_end = skip_until_if_false_end(if_false_start, end_terminator);
+          const char *end_false = skip_until_if_false_end(start_false, end_terminator);
 
-          if (*if_false_end != end_terminator)
+          if (*end_false != end_terminator)
           {
-            error->position = if_false_start;
+            error->position = start_false;
             snprintf(error->message, sizeof(error->message),
                      // L10N: Expando is missing a terminator character
                      //       e.g. "%[..." is missing the final ']'
                      _("Conditional expando is missing '%c'"), end_terminator);
-            node_free(&if_true_tree);
+            node_free(&node_true);
             node_free(&condition);
             return NULL;
           }
 
           const char *if_false_parsed = NULL;
-          struct ExpandoNode *if_false_tree = NULL;
+          struct ExpandoNode *node_false = NULL;
 
-          while (if_false_start < if_false_end)
+          while (start_false < end_false)
           {
-            struct ExpandoNode *node = node_parse(if_false_start, if_false_end, CON_NO_CONDITION,
+            struct ExpandoNode *node = node_parse(start_false, end_false, CON_NO_CONDITION,
                                                   &if_false_parsed, defs, error);
             if (!node)
             {
-              node_free(&if_true_tree);
+              node_free(&node_true);
               node_free(&condition);
               return NULL;
             }
 
-            node_append(&if_false_tree, node);
+            node_append(&node_false, node);
 
-            if_false_start = if_false_parsed;
+            start_false = if_false_parsed;
           }
 
-          if ((if_false_start == if_false_end) && !if_false_tree)
+          if ((start_false == end_false) && !node_false)
           {
-            if_false_tree = node_new();
+            node_false = node_new();
           }
 
-          *parsed_until = if_false_end + 1;
-          return node_condition_new(condition, if_true_tree, if_false_tree);
+          *parsed_until = end_false + 1;
+          return node_condition_new(condition, node_true, node_false);
         }
       }
-      // expando
-      else
+      else // expando
       {
         ExpandoParserFlags flags = (condition_start == CON_START) ? EP_CONDITIONAL : EP_NO_FLAGS;
         struct ExpandoNode *node = NULL;
@@ -283,8 +282,7 @@ static struct ExpandoNode *node_parse(const char *str, const char *end,
         return node;
       }
     }
-    // text
-    else
+    else // text
     {
       return node_text_parse(str, end, parsed_until);
     }

@@ -109,23 +109,6 @@ struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index)
 }
 
 /**
- * node_set_child - Set the child of an ExpandoNode
- * @param node  Parent node
- * @param index Index of child to set
- * @param child Child node
- */
-void node_set_child(struct ExpandoNode *node, int index, struct ExpandoNode *child)
-{
-  if (!node)
-    return;
-
-  struct ExpandoNode *old = node_get_child(node, index);
-  node_tree_free(&old);
-
-  ARRAY_SET(&node->children, index, child);
-}
-
-/**
  * node_append - Append an ExpandoNode to an existing node
  * @param[in,out] root     Existing node (may be NULL)
  * @param[in]     new_node Node to add

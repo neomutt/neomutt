@@ -52,6 +52,6 @@ enum ENCondition
   ENC_FALSE,          ///< Index of False Node
 };
 
-struct ExpandoNode *node_condition_new(struct ExpandoNode *condition, struct ExpandoNode *if_true_tree, struct ExpandoNode *if_false_tree);
+struct ExpandoNode *node_condition_new(struct ExpandoNode *condition, struct ExpandoNode *node_true, struct ExpandoNode *node_false);
 
 #endif /* MUTT_EXPANDO_NODE_CONDITION_H */
