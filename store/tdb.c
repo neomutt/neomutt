@@ -29,8 +29,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <fcntl.h>
+#include <stddef.h>
 #include <tdb.h>
 #include "mutt/lib.h"
 #include "lib.h"

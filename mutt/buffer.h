@@ -26,8 +26,8 @@
 #ifndef MUTT_MUTT_BUFFER_H
 #define MUTT_MUTT_BUFFER_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 /**
  * struct Buffer - String manipulation buffer

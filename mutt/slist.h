@@ -23,8 +23,8 @@
 #ifndef MUTT_MUTT_SLIST_H
 #define MUTT_MUTT_SLIST_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "list.h"
 

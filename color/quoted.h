@@ -24,8 +24,8 @@
 #define MUTT_COLOR_QUOTED_H
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "core/lib.h"
 #include "attr.h"
 #include "color.h"

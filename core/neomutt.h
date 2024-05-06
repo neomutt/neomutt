@@ -23,9 +23,9 @@
 #ifndef MUTT_CORE_NEOMUTT_H
 #define MUTT_CORE_NEOMUTT_H
 
-#include <stddef.h>
 #include <locale.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <sys/types.h>
 #include "account.h"
 #include "mailbox.h"

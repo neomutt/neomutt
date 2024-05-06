@@ -67,8 +67,8 @@
 #ifndef MUTT_HCACHE_LIB_H
 #define MUTT_HCACHE_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "compress/lib.h"
 #include "store/lib.h"

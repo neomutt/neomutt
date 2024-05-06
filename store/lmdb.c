@@ -30,8 +30,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <lmdb.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "lib.h"

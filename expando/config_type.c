@@ -34,8 +34,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"

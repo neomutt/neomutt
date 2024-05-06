@@ -65,8 +65,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"

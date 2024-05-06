@@ -31,8 +31,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <wchar.h>
 #include <wctype.h>

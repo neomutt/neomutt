@@ -30,9 +30,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
 #include <lz4.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "lib.h"

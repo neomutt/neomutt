@@ -27,10 +27,10 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <errno.h>
 #include <signal.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"

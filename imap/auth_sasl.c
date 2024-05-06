@@ -29,10 +29,10 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include "private.h"

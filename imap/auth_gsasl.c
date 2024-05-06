@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <gsasl.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "conn/lib.h"

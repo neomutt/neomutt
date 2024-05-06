@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"

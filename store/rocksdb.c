@@ -29,8 +29,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <rocksdb/c.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "lib.h"
 

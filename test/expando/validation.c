@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep

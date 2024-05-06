@@ -42,8 +42,8 @@
 #ifndef MUTT_NOTMUCH_LIB_H
 #define MUTT_NOTMUCH_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "core/lib.h"
 #include "complete/lib.h"
 
