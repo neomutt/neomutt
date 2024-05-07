@@ -23,8 +23,8 @@
 #ifndef MUTT_EXPANDO_FORMAT_H
 #define MUTT_EXPANDO_FORMAT_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 /**
  * enum FormatJustify - Alignment for format_string()

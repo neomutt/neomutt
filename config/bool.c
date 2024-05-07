@@ -33,9 +33,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <limits.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "bool.h"

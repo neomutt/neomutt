@@ -23,8 +23,8 @@
 #ifndef MUTT_MAILLIST_H
 #define MUTT_MAILLIST_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 struct Address;
 struct AddressList;

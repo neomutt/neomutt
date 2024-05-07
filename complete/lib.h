@@ -36,8 +36,8 @@
 #ifndef MUTT_COMPLETE_LIB_H
 #define MUTT_COMPLETE_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 // IWYU pragma: begin_keep
 #include "compapi.h"
 #include "data.h"

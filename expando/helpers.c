@@ -28,9 +28,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "helpers.h"
 #include "definition.h"

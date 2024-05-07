@@ -24,8 +24,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 
 struct ListHead test_list_create(const char *items[], bool copy)

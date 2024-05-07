@@ -30,8 +30,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "core/lib.h"
 #include "account.h"
 #include "mailbox.h"

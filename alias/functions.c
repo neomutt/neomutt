@@ -31,8 +31,8 @@
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "address/lib.h"

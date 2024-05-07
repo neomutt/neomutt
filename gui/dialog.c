@@ -68,8 +68,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "dialog.h"
 #include "mutt_window.h"

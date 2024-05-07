@@ -24,8 +24,8 @@
 #ifndef MUTT_MUTT_LIST_H
 #define MUTT_MUTT_LIST_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "queue.h"
 
 /**

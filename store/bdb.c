@@ -29,11 +29,11 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <db.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <sys/stat.h>
 #include <unistd.h>

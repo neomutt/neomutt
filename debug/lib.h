@@ -41,8 +41,8 @@
 #ifndef MUTT_DEBUG_LIB_H
 #define MUTT_DEBUG_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <time.h>
 #include "mutt/lib.h"
 #include "email/lib.h"

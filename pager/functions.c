@@ -30,9 +30,9 @@
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else
-#include <stddef.h>
 #include <inttypes.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include "mutt/lib.h"

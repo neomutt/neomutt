@@ -27,8 +27,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "notify.h"
 #include "logging2.h"
 #include "memory.h"

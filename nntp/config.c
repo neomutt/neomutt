@@ -28,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "config/lib.h"
 #include "conn/lib.h"
 #include "expando/lib.h"

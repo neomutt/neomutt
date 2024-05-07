@@ -29,10 +29,10 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <gpg-error.h>
 #include <gpgme.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "address/lib.h"

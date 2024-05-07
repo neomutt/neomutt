@@ -29,9 +29,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <gdbm.h>
 #include <limits.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "lib.h"
 

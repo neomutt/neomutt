@@ -30,9 +30,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <sqlite3.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <sys/stat.h>
 #include "private.h"
 #include "mutt/lib.h"

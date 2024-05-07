@@ -28,9 +28,9 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <errno.h>
 #include <locale.h>
+#include <stddef.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>

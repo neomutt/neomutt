@@ -23,8 +23,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include "email/lib.h"
 #include "convert/lib.h"
 #include "convert_common.h"

@@ -43,8 +43,8 @@
 #ifndef MUTT_ALIAS_LIB_H
 #define MUTT_ALIAS_LIB_H
 
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "core/lib.h"
 #include "complete/lib.h"

@@ -23,9 +23,9 @@
 #ifndef MUTT_PROGRESS_WINDOW_H
 #define MUTT_PROGRESS_WINDOW_H
 
-#include <stddef.h>
 #include <stdarg.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 struct MuttWindow;
 

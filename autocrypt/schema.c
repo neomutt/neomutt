@@ -28,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <sqlite3.h>
+#include <stddef.h>
 #include "private.h"
 #include "mutt/lib.h"
 

@@ -25,8 +25,8 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/common.h" // IWYU pragma: keep

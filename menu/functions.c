@@ -28,8 +28,8 @@
  */
 
 #include "config.h"
-#include <stddef.h>
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
