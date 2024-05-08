@@ -356,17 +356,20 @@ static int delete_attachment(struct AttachCtx *actx, int aidx)
       return -1;
     }
 
-    /* L10N: Prompt when trying to hit <detach-file> on the first entry in
-       the compose menu.  This entry is most likely the message they just
-       typed.  Hitting yes will remove the entry and unlink the file, so
-       it's worth confirming they really meant to do it. */
-    enum QuadOption ans = query_yesorno_help(_("Really delete the main message?"),
-                                             MUTT_NO, NeoMutt->sub,
-                                             "compose_confirm_detach_first");
-    if (ans == MUTT_NO)
+    if (cs_subset_bool(NeoMutt->sub, "compose_confirm_detach_first"))
     {
-      idx[aidx]->body->tagged = false;
-      return -1;
+      /* L10N: Prompt when trying to hit <detach-file> on the first entry in
+         the compose menu.  This entry is most likely the message they just
+         typed.  Hitting yes will remove the entry and unlink the file, so
+         it's worth confirming they really meant to do it. */
+      enum QuadOption ans = query_yesorno_help(_("Really delete the main message?"),
+                                               MUTT_NO, NeoMutt->sub,
+                                               "compose_confirm_detach_first");
+      if (ans == MUTT_NO)
+      {
+        idx[aidx]->body->tagged = false;
+        return -1;
+      }
     }
   }
 
