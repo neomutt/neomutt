@@ -271,8 +271,6 @@ int mutt_protect(struct Email *e, char *keylist, bool postpone)
   {
     const bool c_devel_security = cs_subset_bool(NeoMutt->sub, "devel_security");
     struct Envelope *protected_headers = mutt_env_new();
-    if (c_devel_security)
-      mutt_str_replace(&protected_headers->date, e->env->date);
     mutt_env_set_subject(protected_headers, e->env->subject);
     if (c_devel_security)
     {
