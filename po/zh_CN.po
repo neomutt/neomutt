@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-04-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-04-15 23:55+0100\n"
+"POT-Creation-Date: 2024-05-08 19:10+0100\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -26,9 +26,9 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: address/config_type.c:88 config/long.c:50 config/number.c:52
+#: address/config_type.c:87 config/long.c:50 config/number.c:52
 #: config/path.c:99 config/path.c:175 config/sort.c:57 config/string.c:68
-#: config/string.c:145 expando/config_type.c:70 expando/config_type.c:170
+#: config/string.c:145 expando/config_type.c:69 expando/config_type.c:169
 #, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "不能从分页器设置或重置选项 %s"
@@ -50,8 +50,8 @@ msgstr "警告：此别名可能无法工作。要修正它吗？"
 msgid "Address: "
 msgstr "地址："
 
-#: alias/alias.c:448 conn/raw.c:175 conn/raw.c:232 envelope/functions.c:133
-#: external.c:136 recvcmd.c:231 send/send.c:218
+#: alias/alias.c:448 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:133
+#: external.c:135 recvcmd.c:231 send/send.c:219
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "错误的 IDN：'%s'"
@@ -105,20 +105,20 @@ msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "警告：错误的 IDN '%s' 在别名 '%s' 中"
 
 #: alias/dlg_alias.c:102 alias/dlg_query.c:103 attach/dlg_attach.c:100
-#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:128 conn/dlg_verifycert.c:68 history/dlg_history.c:78
-#: ncrypt/dlg_gpgme.c:99 ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:74
-#: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
-#: pager/dlg_pager.c:111 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:90
+#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:115
+#: browser/dlg_browser.c:127 conn/dlg_verifycert.c:68 history/dlg_history.c:78
+#: ncrypt/dlg_gpgme.c:98 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:74
+#: pager/dlg_pager.c:74 pager/dlg_pager.c:85 pager/dlg_pager.c:95
+#: pager/dlg_pager.c:110 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:90
 msgid "Exit"
 msgstr "退出"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:107 index/dlg_index.c:122
-#: pager/dlg_pager.c:100 pager/dlg_pager.c:116 postpone/dlg_postpone.c:91
+#: alias/dlg_alias.c:103 index/dlg_index.c:106 index/dlg_index.c:121
+#: pager/dlg_pager.c:99 pager/dlg_pager.c:115 postpone/dlg_postpone.c:91
 msgid "Del"
 msgstr "删除"
 
-#: alias/dlg_alias.c:104 index/dlg_index.c:108 index/dlg_index.c:123
+#: alias/dlg_alias.c:104 index/dlg_index.c:107 index/dlg_index.c:122
 #: postpone/dlg_postpone.c:92
 msgid "Undel"
 msgstr "反删除"
@@ -131,18 +131,18 @@ msgstr "排序"
 msgid "Rev-Sort"
 msgstr "反向排序"
 
-#: alias/dlg_alias.c:107 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:100
-#: ncrypt/dlg_pgp.c:98 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
+#: alias/dlg_alias.c:107 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:99
+#: ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
 msgid "Select"
 msgstr "选择"
 
 #: alias/dlg_alias.c:108 alias/dlg_query.c:110 attach/dlg_attach.c:104
-#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:120
-#: browser/dlg_browser.c:134 compose/dlg_compose.c:103
+#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:119
+#: browser/dlg_browser.c:133 compose/dlg_compose.c:103
 #: compose/dlg_compose.c:117 conn/dlg_verifycert.c:69 editor/window.c:51
-#: history/dlg_history.c:81 index/dlg_index.c:113 index/dlg_index.c:128
-#: ncrypt/dlg_gpgme.c:102 ncrypt/dlg_pgp.c:100 ncrypt/dlg_smime.c:76
-#: pager/dlg_pager.c:78 pager/dlg_pager.c:103 pager/dlg_pager.c:118
+#: history/dlg_history.c:81 index/dlg_index.c:112 index/dlg_index.c:127
+#: ncrypt/dlg_gpgme.c:101 ncrypt/dlg_pgp.c:99 ncrypt/dlg_smime.c:76
+#: pager/dlg_pager.c:77 pager/dlg_pager.c:102 pager/dlg_pager.c:117
 #: pattern/dlg_pattern.c:92 postpone/dlg_postpone.c:93
 msgid "Help"
 msgstr "帮助"
@@ -155,7 +155,7 @@ msgstr "您没有别名信息"
 msgid "Aliases"
 msgstr "别名"
 
-#: alias/dlg_query.c:104 index/dlg_index.c:110
+#: alias/dlg_query.c:104 index/dlg_index.c:109
 msgid "Mail"
 msgstr "信件"
 
@@ -207,7 +207,7 @@ msgid "adu"
 msgstr "adu"
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:81 index/functions.c:1836
+#: alias/gui.c:81 index/functions.c:1835
 #, c-format
 msgid "Limit: %s"
 msgstr "限制：%s"
@@ -232,7 +232,7 @@ msgstr "去掉附件：无处理方式"
 msgid "unattachments: invalid disposition"
 msgstr "去掉附件：无效的处理方式"
 
-#: attach/dlg_attach.c:101 index/dlg_index.c:109 index/dlg_index.c:124
+#: attach/dlg_attach.c:101 index/dlg_index.c:108 index/dlg_index.c:123
 msgid "Save"
 msgstr "保存"
 
@@ -248,16 +248,16 @@ msgstr "打印"
 msgid "Attachments"
 msgstr "附件"
 
-#: attach/functions.c:55 browser/functions.c:66 index/functions.c:89
+#: attach/functions.c:55 browser/functions.c:66 index/functions.c:88
 #: pager/functions.c:62
 msgid "Not available in this menu"
 msgstr "在此菜单中不可用"
 
-#: attach/functions.c:58 index/functions.c:3098
+#: attach/functions.c:58 index/functions.c:3104
 msgid "Function not permitted in attach-message mode"
 msgstr "功能在附加信件(attach-message)模式下不被支持"
 
-#: attach/functions.c:190 index/functions.c:3092 mx.c:927
+#: attach/functions.c:190 index/functions.c:3098 mx.c:929
 msgid "Mailbox is read-only"
 msgstr "信箱是只读的"
 
@@ -285,93 +285,93 @@ msgstr "从已签名的信件中删除附件可能导致签名失效"
 msgid "Only deletion of multipart attachments is supported"
 msgstr "只支持删除多部分附件"
 
-#: attach/functions.c:645 index/functions.c:2852
+#: attach/functions.c:645 index/functions.c:2851
 msgid "Reply by mail as poster prefers?"
 msgstr "按发帖人的偏好通过邮件回复？"
 
-#: attach/mutt_attach.c:144 attach/mutt_attach.c:284
+#: attach/mutt_attach.c:145 attach/mutt_attach.c:285
 msgid "Can't match 'nametemplate', continue?"
 msgstr "无法匹配名称模板，继续？"
 
-#: attach/mutt_attach.c:156
+#: attach/mutt_attach.c:157
 #, c-format
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 撰写条目需要 %%s"
 
-#: attach/mutt_attach.c:165 attach/mutt_attach.c:304 compmbox/compress.c:345
-#: compose/functions.c:1858 gui/curs_lib.c:124 index/dlg_index.c:1187
-#: index/dlg_index.c:1232 pager/dlg_pager.c:456 pager/do_pager.c:167
-#: pager/message.c:329 send/sendlib.c:580
+#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:345
+#: compose/functions.c:1861 gui/curs_lib.c:124 index/dlg_index.c:1186
+#: index/dlg_index.c:1231 pager/dlg_pager.c:455 pager/do_pager.c:166
+#: pager/message.c:330 send/sendlib.c:581
 #, c-format
 msgid "Error running \"%s\""
 msgstr "执行 \"%s\" 时出错"
 
-#: attach/mutt_attach.c:172
+#: attach/mutt_attach.c:173
 msgid "Failure to open file to parse headers"
 msgstr "为分析信件头而打开文件时失败"
 
-#: attach/mutt_attach.c:211
+#: attach/mutt_attach.c:212
 msgid "Failure to open file to strip headers"
 msgstr "为去除信件头而打开文件时失败"
 
-#: attach/mutt_attach.c:221
+#: attach/mutt_attach.c:222
 msgid "Failure to rename file"
 msgstr "重命名文件失败"
 
-#: attach/mutt_attach.c:231
+#: attach/mutt_attach.c:232
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file"
 msgstr "没有 %s 的 mailcap 撰写条目，正在创建空文件"
 
-#: attach/mutt_attach.c:296
+#: attach/mutt_attach.c:297
 #, c-format
 msgid "Mailcap Edit entry requires %%s"
 msgstr "Mailcap 编辑条目需要 %%s"
 
-#: attach/mutt_attach.c:318
+#: attach/mutt_attach.c:319
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "没有 %s 的 mailcap 编辑条目"
 
-#: attach/mutt_attach.c:462
+#: attach/mutt_attach.c:463
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "没有发现匹配的 mailcap 条目。以文本方式显示"
 
-#: attach/mutt_attach.c:477
+#: attach/mutt_attach.c:478
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME 类型未定义。无法显示附件"
 
-#: attach/mutt_attach.c:573 attach/mutt_attach.c:771 attach/mutt_attach.c:1195
-#: attach/mutt_attach.c:1260 handler.c:594 ncrypt/pgp_functions.c:149
-#: ncrypt/pgpkey.c:300
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
+#: attach/mutt_attach.c:1262 handler.c:594 ncrypt/pgp_functions.c:150
+#: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "无法建立过滤器"
 
-#: attach/mutt_attach.c:581
+#: attach/mutt_attach.c:583
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
 msgstr "---命令：%-20.20s 描述：%s"
 
-#: attach/mutt_attach.c:586
+#: attach/mutt_attach.c:588
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
 msgstr "---命令：%-30.30s 附件：%s"
 
-#: attach/mutt_attach.c:670
+#: attach/mutt_attach.c:672
 #, c-format
 msgid "---Attachment: %s: %s"
 msgstr "---附件：%s：%s"
 
-#: attach/mutt_attach.c:672
+#: attach/mutt_attach.c:674
 #, c-format
 msgid "---Attachment: %s"
 msgstr "---附件：%s"
 
-#: attach/mutt_attach.c:1013 attach/mutt_attach.c:1021
+#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
 msgid "Write fault"
 msgstr "写入出错"
 
-#: attach/mutt_attach.c:1284
+#: attach/mutt_attach.c:1286
 msgid "I don't know how to print that"
 msgstr "我不知道要如何打印它"
 
@@ -431,15 +431,15 @@ msgstr "无法解密加密信件"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:971
+#: autocrypt/autocrypt.c:77 main.c:975
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s 不存在。创建它吗？"
 
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:230 hcache/hcache.c:330 init.c:586
-#: main.c:975 nntp/newsrc.c:1145
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:235 hcache/hcache.c:329 init.c:586
+#: main.c:979 nntp/newsrc.c:1138
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "无法创建 %s：%s"
@@ -618,20 +618,20 @@ msgstr "更新帐号记录出错"
 msgid "Really delete account \"%s\"?"
 msgstr "真的要删除 \"%s\" 帐号吗？"
 
-#: autocrypt/gpgme.c:58 ncrypt/crypt_gpgme.c:375
+#: autocrypt/gpgme.c:59 ncrypt/crypt_gpgme.c:375
 #, c-format
 msgid "error creating GPGME context: %s"
 msgstr "创建 GPGME 上下文出错：%s"
 
 #. L10N: Message displayed just before a GPG key is generated for a created
 #. autocrypt account.
-#: autocrypt/gpgme.c:177
+#: autocrypt/gpgme.c:178
 msgid "Generating autocrypt key..."
 msgstr "生成 autocrypt 密钥..."
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
-#: autocrypt/gpgme.c:187 autocrypt/gpgme.c:206
+#: autocrypt/gpgme.c:188 autocrypt/gpgme.c:207
 #, c-format
 msgid "Error creating autocrypt key: %s"
 msgstr "生成 autocrypt 密钥时出错：%s"
@@ -640,7 +640,7 @@ msgstr "生成 autocrypt 密钥时出错：%s"
 #. this is displayed if the key was revoked/expired/disabled/invalid
 #. or can't be used for both signing and encryption.
 #. %s is the key fingerprint.
-#: autocrypt/gpgme.c:254
+#: autocrypt/gpgme.c:255
 #, c-format
 msgid "The key %s is not usable for autocrypt"
 msgstr "密钥 %s 不能用于 autocrypt"
@@ -648,19 +648,19 @@ msgstr "密钥 %s 不能用于 autocrypt"
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
-#: autocrypt/gpgme.c:286
+#: autocrypt/gpgme.c:287
 msgid "(c)reate new, or (s)elect existing GPG key?"
 msgstr "创建新密钥(c)，或选择(s)现有的 GPG 密钥？"
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
-#: autocrypt/gpgme.c:289
+#: autocrypt/gpgme.c:290
 msgid "cs"
 msgstr "cs"
 
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
-#: autocrypt/gpgme.c:301
+#: autocrypt/gpgme.c:302
 msgid "Create a new GPG key for this account, instead?"
 msgstr "要为该帐号创建新的 GPG 密钥吗？"
 
@@ -672,75 +672,75 @@ msgstr "要为该帐号创建新的 GPG 密钥吗？"
 msgid "Autocrypt database version is too new"
 msgstr "Autocrypt 数据库版本太新"
 
-#: bcache/bcache.c:75
+#: bcache/bcache.c:72
 #, c-format
 msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
 msgstr "已禁用缓存，$message_cache_dir 不是一个目录：%s"
 
-#: bcache/bcache.c:222
+#: bcache/bcache.c:227
 #, c-format
 msgid "Message cache isn't a directory: %s"
 msgstr "信件缓存不是一个目录：%s"
 
-#: browser/dlg_browser.c:117
+#: browser/dlg_browser.c:116
 msgid "Chdir"
 msgstr "改变目录"
 
-#: browser/dlg_browser.c:118
+#: browser/dlg_browser.c:117
 msgid "Goto"
 msgstr "转到"
 
-#: browser/dlg_browser.c:119 browser/dlg_browser.c:133
+#: browser/dlg_browser.c:118 browser/dlg_browser.c:132
 msgid "Mask"
 msgstr "掩码"
 
-#: browser/dlg_browser.c:129
+#: browser/dlg_browser.c:128
 msgid "List"
 msgstr "列表"
 
-#: browser/dlg_browser.c:130
+#: browser/dlg_browser.c:129
 msgid "Subscribe"
 msgstr "已订阅"
 
-#: browser/dlg_browser.c:131
+#: browser/dlg_browser.c:130
 msgid "Unsubscribe"
 msgstr "退订"
 
-#: browser/dlg_browser.c:132 index/dlg_index.c:127
+#: browser/dlg_browser.c:131 index/dlg_index.c:126
 msgid "Catchup"
 msgstr "跟上"
 
-#: browser/dlg_browser.c:763 browser/functions.c:436 browser/functions.c:776
+#: browser/dlg_browser.c:762 browser/functions.c:436 browser/functions.c:776
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s 不是目录"
 
-#: browser/dlg_browser.c:1049
+#: browser/dlg_browser.c:1048
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "已订阅新闻组"
 
-#: browser/dlg_browser.c:1053
+#: browser/dlg_browser.c:1052
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "新闻组服务器[%s]"
 
-#: browser/dlg_browser.c:1061
+#: browser/dlg_browser.c:1060
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "信箱 [%d]"
 
-#: browser/dlg_browser.c:1073
+#: browser/dlg_browser.c:1072
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "已订阅 [%s], 文件掩码: %s"
 
-#: browser/dlg_browser.c:1078
+#: browser/dlg_browser.c:1077
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "目录 [%s], 文件掩码：%s"
 
-#: browser/dlg_browser.c:1141
+#: browser/dlg_browser.c:1140
 msgid "Can't attach a directory"
 msgstr "无法附加目录"
 
@@ -846,10 +846,10 @@ msgid "%s: no such object"
 msgstr "%s：没有这个对象"
 
 #: color/command.c:185 color/command.c:340 color/parse_color.c:288
-#: color/parse_color.c:313 color/parse_color.c:333 commands.c:366
-#: commands.c:388 commands.c:529 commands.c:545 commands.c:742 commands.c:774
-#: commands.c:790 commands.c:910 commands.c:1035 commands.c:1084
-#: commands.c:1124 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
+#: color/parse_color.c:313 color/parse_color.c:333 commands.c:367
+#: commands.c:389 commands.c:530 commands.c:546 commands.c:763 commands.c:795
+#: commands.c:811 commands.c:931 commands.c:1056 commands.c:1105
+#: commands.c:1145 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
 #: hook.c:470 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:102
 #: subjectrx.c:110
 #, c-format
@@ -871,8 +871,8 @@ msgstr "不支持默认的颜色"
 msgid "%s: color not supported by term"
 msgstr "%s：终端不支持显示颜色"
 
-#: color/command.c:402 color/command.c:444 commands.c:412 commands.c:1093
-#: commands.c:1224 commands.c:1559 hook.c:146 hook.c:226 hook.c:481
+#: color/command.c:402 color/command.c:444 commands.c:413 commands.c:1114
+#: commands.c:1245 commands.c:1580 hook.c:146 hook.c:226 hook.c:481
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
 #: mutt_lua.c:510 score.c:107
 #, c-format
@@ -911,8 +911,8 @@ msgid "# Status Colors\n"
 msgstr ""
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:862 commands.c:921 commands.c:1601
-#: imap/message.c:1155 key/dump.c:231
+#: color/dump.c:460 commands.c:883 commands.c:942 commands.c:1622
+#: imap/message.c:1154 key/dump.c:231
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "无法创建临时文件 %s"
@@ -932,113 +932,113 @@ msgstr "%s：没有这个属性"
 msgid "Maximum quoting level is %d"
 msgstr "最高支持 %d 层引用"
 
-#: commands.c:137
+#: commands.c:138
 msgid "-group: no group name"
 msgstr "-group：无组名称"
 
-#: commands.c:147
+#: commands.c:148
 msgid "out of arguments"
 msgstr "参数不够"
 
-#: commands.c:229
+#: commands.c:230
 #, c-format
 msgid "Error: Can't build path of '%s'"
 msgstr "错误：无法构建“%s”的路径"
 
-#: commands.c:242
+#: commands.c:243
 #, c-format
 msgid "Error: Cyclic sourcing of configuration file '%s'"
 msgstr "错误：循环读取配置文件“%s”"
 
-#: commands.c:322
+#: commands.c:323
 #, c-format
 msgid "source: errors in %s"
 msgstr "source：%s 中有错误"
 
-#: commands.c:322
+#: commands.c:323
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source：读取因 %s 中错误过多而中止"
 
-#: commands.c:331
+#: commands.c:332
 #, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
 msgstr[0] "source：%2$s 中出现 %1$d 个警告"
 
-#: commands.c:453
+#: commands.c:454
 #, c-format
 msgid "%sgroup: missing -rx or -addr"
 msgstr "%sgroup：缺少 -rx 或 -addr"
 
-#: commands.c:479
+#: commands.c:480
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'"
 msgstr "%sgroup：警告：错误的 IDN '%s'"
 
-#: commands.c:556
+#: commands.c:557
 #, c-format
 msgid "Error: %s"
 msgstr "错误：%s"
 
-#: commands.c:821
+#: commands.c:842
 msgid "invalid header field"
 msgstr "无效的信件头域"
 
-#: commands.c:959 commands.c:973 parse/set.c:503
+#: commands.c:980 commands.c:994 parse/set.c:502
 #, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
 msgstr "无法使用 '%s' 命令查询变量"
 
-#: commands.c:979 parse/set.c:497
+#: commands.c:1000 parse/set.c:496
 msgid "Can't use a prefix when querying a variable"
 msgstr "查询变量时无法使用前缀"
 
-#: commands.c:1011 commands.c:1019
+#: commands.c:1032 commands.c:1040
 #, c-format
 msgid "%s is unset"
 msgstr "%s 没有被设定"
 
-#: commands.c:1059 mutt_lua.c:505
+#: commands.c:1080 mutt_lua.c:505
 #, c-format
 msgid "source: error at %s"
 msgstr "source：%s 有错误"
 
-#: commands.c:1067
+#: commands.c:1088
 #, c-format
 msgid "source: file %s could not be sourced"
 msgstr "source：文件 %s 无法被加载"
 
-#: commands.c:1233 imap/imap.c:1257
+#: commands.c:1254 imap/imap.c:1258
 #, c-format
 msgid "Subscribed to %s"
 msgstr "已订阅 %s"
 
-#: commands.c:1237
+#: commands.c:1258
 #, c-format
 msgid "Could not subscribe to %s"
 msgstr "无法订阅 %s"
 
-#: commands.c:1245 commands.c:1580
+#: commands.c:1266 commands.c:1601
 msgid "No folder specified"
 msgstr "没有指定文件夹"
 
-#: commands.c:1279
+#: commands.c:1300
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr "标签格式 '%s' 已被注册为 '%s'"
 
-#: commands.c:1321
+#: commands.c:1342
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr "标签变换 '%s' 已被注册为 '%s'"
 
-#: commands.c:1568 imap/imap.c:1259
+#: commands.c:1589 imap/imap.c:1260
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "已退订 %s"
 
-#: commands.c:1572
+#: commands.c:1593
 #, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "无法退订 %s"
@@ -1054,7 +1054,7 @@ msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "没有 append-hook 或者 close-hook 无法追加 : %s"
 
 #: compmbox/compress.c:462 compmbox/compress.c:525 compmbox/compress.c:600
-#: compmbox/compress.c:638 mbox/mbox.c:1105
+#: compmbox/compress.c:638 mbox/mbox.c:1107
 msgid "Unable to lock mailbox"
 msgstr "无法锁住信箱"
 
@@ -1095,7 +1095,7 @@ msgstr "正在压缩中 %s"
 msgid "Compressed-appending to %s..."
 msgstr "正在压缩到 %s..."
 
-#: compmbox/compress.c:707 editmsg.c:265
+#: compmbox/compress.c:707 editmsg.c:266
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "错误。保留临时文件：%s"
@@ -1129,7 +1129,7 @@ msgstr "抄送"
 msgid "Subj"
 msgstr "主题"
 
-#: compose/dlg_compose.c:101 compose/dlg_compose.c:115 compose/functions.c:739
+#: compose/dlg_compose.c:101 compose/dlg_compose.c:115 compose/functions.c:742
 msgid "Attach file"
 msgstr "附加文件"
 
@@ -1175,199 +1175,199 @@ msgstr "您不可以删除唯一的附件"
 #. the compose menu.  This entry is most likely the message they just
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
-#: compose/functions.c:363
+#: compose/functions.c:365
 #, fuzzy
 msgid "Really delete the main message?"
 msgstr "真的要删除 \"%s\" 信箱吗？"
 
-#: compose/functions.c:379 compose/functions.c:571
+#: compose/functions.c:382 compose/functions.c:574
 msgid "Can't leave group with only one attachment"
 msgstr "组合内的附件不能少于两个"
 
-#: compose/functions.c:539 compose/functions.c:553
+#: compose/functions.c:542 compose/functions.c:556
 msgid "Attachments to be grouped must have the same parent"
 msgstr "要组合的附件必须在同一级"
 
-#: compose/functions.c:760
+#: compose/functions.c:763
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "正在附加已选择的文件..."
 
-#: compose/functions.c:780
+#: compose/functions.c:783
 #, c-format
 msgid "Unable to attach %s"
 msgstr "无法附加 %s"
 
-#: compose/functions.c:832
+#: compose/functions.c:835
 msgid "Open mailbox to attach message from"
 msgstr "打开信箱并从中附加信件"
 
-#: compose/functions.c:842
+#: compose/functions.c:845
 msgid "Open newsgroup to attach message from"
 msgstr "打开新闻组并从中附加信件"
 
-#: compose/functions.c:895 main.c:1421
+#: compose/functions.c:898 main.c:1423
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "无法打开信箱 %s"
 
-#: compose/functions.c:906
+#: compose/functions.c:909
 msgid "No messages in that folder"
 msgstr "这个文件夹中没有信件"
 
-#: compose/functions.c:915
+#: compose/functions.c:918
 msgid "Tag the messages you want to attach"
 msgstr "请标记您要附加的信件"
 
-#: compose/functions.c:953
+#: compose/functions.c:956
 msgid "Unable to attach"
 msgstr "无法附加"
 
-#: compose/functions.c:1050
+#: compose/functions.c:1053
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
 msgstr "Content-ID 只能包含这些字符：-.0-9@A-Z_a-z"
 
-#: compose/functions.c:1129
+#: compose/functions.c:1132
 msgid "Invalid encoding"
 msgstr "无效的编码"
 
-#: compose/functions.c:1166
+#: compose/functions.c:1169
 msgid "Empty 'Content-Language'"
 msgstr "空的 'Content-Language'"
 
-#: compose/functions.c:1229
+#: compose/functions.c:1232
 msgid "Can't filter multipart attachments"
 msgstr "无法过滤多部分附件"
 
-#: compose/functions.c:1264
+#: compose/functions.c:1267
 msgid "Can't get multipart attachments"
 msgstr "无法获取多部分附件"
 
-#: compose/functions.c:1286
+#: compose/functions.c:1289
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "组合备选部分需要至少标记两个信件"
 
-#: compose/functions.c:1300
+#: compose/functions.c:1303
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "组合多语言部分需要至少标记两个信件"
 
-#: compose/functions.c:1312
+#: compose/functions.c:1315
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "有些部分没有设置 'Content-Language' ，是否继续？"
 
-#: compose/functions.c:1315
+#: compose/functions.c:1318
 msgid "Not sending this message"
 msgstr "未发送此信件"
 
-#: compose/functions.c:1330
+#: compose/functions.c:1333
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr "组合关联部分需要至少标记两个信件"
 
-#: compose/functions.c:1369 compose/functions.c:1388
+#: compose/functions.c:1372 compose/functions.c:1391
 msgid "Attachment is already at bottom"
 msgstr "附件已在底部"
 
-#: compose/functions.c:1375 compose/functions.c:1428
+#: compose/functions.c:1378 compose/functions.c:1431
 msgid "Attachment can't be moved out of group"
 msgstr "附件无法从组中移除"
 
-#: compose/functions.c:1423
+#: compose/functions.c:1426
 msgid "Attachment is already at top"
 msgstr "附件已在顶部"
 
-#: compose/functions.c:1455
+#: compose/functions.c:1458
 msgid "New file: "
 msgstr "新文件："
 
-#: compose/functions.c:1475
+#: compose/functions.c:1478
 msgid "Content-Type is of the form base/sub"
 msgstr "内容类型(Content-Type)的格式是 base/sub"
 
-#: compose/functions.c:1482
+#: compose/functions.c:1485
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "未知的内容类型(Content-Type) %s"
 
-#: compose/functions.c:1491
+#: compose/functions.c:1494
 #, c-format
 msgid "Can't create file %s"
 msgstr "无法创建文件 %s"
 
-#: compose/functions.c:1499
+#: compose/functions.c:1502
 #, fuzzy
 msgid "Error attaching file"
 msgstr "目前情况是我们无法加上附件"
 
-#: compose/functions.c:1541
+#: compose/functions.c:1544
 msgid "Can't print multipart attachments"
 msgstr "无法打印多部分附件"
 
-#: compose/functions.c:1567
+#: compose/functions.c:1570
 msgid "Send attachment with name: "
 msgstr "使用什么名字发送附件："
 
-#: compose/functions.c:1592
+#: compose/functions.c:1595
 msgid "Can't save multipart attachments"
 msgstr "无法保存多部分附件"
 
-#: compose/functions.c:1627
+#: compose/functions.c:1630
 msgid "Recoding only affects text attachments"
 msgstr "重新编码只对文本附件有效"
 
-#: compose/functions.c:1632
+#: compose/functions.c:1635
 msgid "The current attachment won't be converted"
 msgstr "当前附件不会被转换"
 
-#: compose/functions.c:1634
+#: compose/functions.c:1637
 msgid "The current attachment will be converted"
 msgstr "当前附件将被转换"
 
-#: compose/functions.c:1663
+#: compose/functions.c:1666
 msgid "Attachment is not 'multipart'"
 msgstr "附件不是多部分的"
 
-#: compose/functions.c:1779 send/send.c:2757
+#: compose/functions.c:1782 send/send.c:2753
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "在 '%s' 中有错误的 IDN：'%s'"
 
-#: compose/functions.c:1812
+#: compose/functions.c:1815
 msgid "Can't edit multipart attachments"
 msgstr "无法编辑多部分附件"
 
-#: compose/functions.c:1893
+#: compose/functions.c:1896
 msgid "Can't rename multipart attachments"
 msgstr "无法重命名多部分附件"
 
-#: compose/functions.c:1900
+#: compose/functions.c:1903
 msgid "Rename to: "
 msgstr "重命名为："
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1908 convert/content_info.c:208 editmsg.c:103
-#: editmsg.c:136 editmsg.c:155
+#: compose/functions.c:1911 convert/content_info.c:208 editmsg.c:104
+#: editmsg.c:137 editmsg.c:156
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "无法 stat %s：%s"
 
-#: compose/functions.c:1951
+#: compose/functions.c:1954
 msgid "Save a copy of this message?"
 msgstr "保存这封信件的副本吗？"
 
-#: compose/functions.c:1977
+#: compose/functions.c:1980
 msgid "Write message to mailbox"
 msgstr "将信件写入到信箱"
 
-#: compose/functions.c:1981
+#: compose/functions.c:1984
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "写入信件到 %s ..."
 
-#: compose/functions.c:1989
+#: compose/functions.c:1992
 msgid "Message written"
 msgstr "信件已写入"
 
-#: compose/functions.c:2057
+#: compose/functions.c:2060
 msgid "Save (postpone) draft message?"
 msgstr "要保存（延迟寄出的）信件草稿吗？"
 
@@ -1414,8 +1414,8 @@ msgid "Option %s may not be negative"
 msgstr "不能从分页器设置或重置选项 %s"
 
 #: config/number.c:59 config/number.c:174 config/number.c:216
-#: expando/node_conddate.c:164 expando/node_expando.c:182
-#: expando/node_expando.c:211
+#: expando/node_conddate.c:163 expando/node_expando.c:181
+#: expando/node_expando.c:210
 #, c-format
 msgid "Invalid number: %s"
 msgstr "无效的数字: %s"
@@ -1441,9 +1441,9 @@ msgid "Invalid quad value: %ld"
 msgstr "无效的四项值：“%ld”"
 
 #: config/set.c:109 config/set.c:446 config/set.c:512 config/set.c:573
-#: config/set.c:649 config/set.c:769 init.c:665 parse/set.c:121 parse/set.c:176
-#: parse/set.c:219 parse/set.c:247 parse/set.c:305 parse/set.c:340
-#: parse/set.c:397
+#: config/set.c:649 config/set.c:769 init.c:665 parse/set.c:120 parse/set.c:175
+#: parse/set.c:218 parse/set.c:246 parse/set.c:304 parse/set.c:339
+#: parse/set.c:396
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "未知的变量 '%s'"
@@ -1469,28 +1469,28 @@ msgstr "无效的排序姓名：%s"
 msgid "Invalid sort type: %ld"
 msgstr "无效的排序类型：%ld"
 
-#: conn/accountcmd.c:82
+#: conn/accountcmd.c:81
 #, c-format
 msgid "Line is malformed: expected <key: val>, got <%s>"
 msgstr ""
 
-#: conn/accountcmd.c:122
+#: conn/accountcmd.c:121
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
 msgstr ""
 
-#: conn/accountcmd.c:143
+#: conn/accountcmd.c:142
 #, fuzzy
 msgid "Unable to run account command"
 msgstr "无法运行刷新命令"
 
 #. L10N: Example: Username at myhost.com
-#: conn/connaccount.c:80
+#: conn/connaccount.c:79
 #, c-format
 msgid "Username at %s: "
 msgstr "在 %s 的用户名："
 
-#: conn/connaccount.c:157
+#: conn/connaccount.c:156
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "%s@%s 的密码："
@@ -1499,19 +1499,19 @@ msgstr "%s@%s 的密码："
 #. one of your $*_authenticators and (2) you do not have the corresponding
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
-#: conn/connaccount.c:212
+#: conn/connaccount.c:211
 msgid "No OAUTH refresh command defined"
 msgstr "OAUTH 刷新命令未定义"
 
-#: conn/connaccount.c:220
+#: conn/connaccount.c:219
 msgid "Unable to run refresh command"
 msgstr "无法运行刷新命令"
 
-#: conn/connaccount.c:235
+#: conn/connaccount.c:234
 msgid "Command returned empty string"
 msgstr "命令返回了空字符串"
 
-#: conn/connaccount.c:242
+#: conn/connaccount.c:241
 #, c-format
 msgid "OAUTH token is too big: %ld"
 msgstr "OAUTH 令牌太大: %ld"
@@ -1568,7 +1568,7 @@ msgstr "对话模式中未实现跳跃"
 msgid "Search is not implemented for this menu"
 msgstr "此菜单未实现搜寻"
 
-#: conn/gnutls.c:146 conn/gnutls.c:642
+#: conn/gnutls.c:146 conn/gnutls.c:640
 msgid "Unable to get certificate from peer"
 msgstr "无法从对端获得证书"
 
@@ -1577,113 +1577,112 @@ msgstr "无法从对端获得证书"
 msgid "Certificate verification error (%s)"
 msgstr "证书验证错误 (%s)"
 
-#: conn/gnutls.c:170 conn/openssl.c:394
-#, c-format
+#: conn/gnutls.c:167 conn/openssl.c:393
 msgid "[unable to calculate]"
 msgstr "[无法计算]"
 
-#: conn/gnutls.c:324 conn/gnutls.c:496
+#: conn/gnutls.c:323 conn/gnutls.c:495
 msgid "Error initialising gnutls certificate data"
 msgstr "无法初始化 gnutls 证书数据"
 
-#: conn/gnutls.c:330 conn/gnutls.c:502
+#: conn/gnutls.c:329 conn/gnutls.c:501
 msgid "Error processing certificate data"
 msgstr "处理证书数据出错"
 
-#: conn/gnutls.c:489 conn/openssl.c:900
+#: conn/gnutls.c:488 conn/openssl.c:900
 #, fuzzy
 msgid "Untrusted server certificate"
 msgstr "警告：无法保存证书"
 
-#: conn/gnutls.c:507 conn/openssl.c:907
+#: conn/gnutls.c:506 conn/openssl.c:907
 msgid "This certificate belongs to:"
 msgstr "此证书属于："
 
-#: conn/gnutls.c:509 conn/openssl.c:909
+#: conn/gnutls.c:508 conn/openssl.c:909
 msgid "This certificate was issued by:"
 msgstr "此证书发布自："
 
-#: conn/gnutls.c:512 conn/openssl.c:913
+#: conn/gnutls.c:511 conn/openssl.c:913
 msgid "This certificate is valid"
 msgstr "此证书有效"
 
-#: conn/gnutls.c:517 conn/openssl.c:914
+#: conn/gnutls.c:516 conn/openssl.c:914
 #, c-format
 msgid "   from %s"
 msgstr "   来自 %s"
 
-#: conn/gnutls.c:522 conn/openssl.c:916
+#: conn/gnutls.c:521 conn/openssl.c:916
 #, c-format
 msgid "     to %s"
 msgstr "   发往 %s"
 
-#: conn/gnutls.c:528 conn/openssl.c:922
+#: conn/gnutls.c:527 conn/openssl.c:921
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 指纹：%s"
 
-#: conn/gnutls.c:534 conn/gnutls.c:536 conn/openssl.c:928 conn/openssl.c:931
+#: conn/gnutls.c:532 conn/gnutls.c:534 conn/openssl.c:925 conn/openssl.c:927
 msgid "SHA256 Fingerprint: "
 msgstr "SHA256 指纹："
 
-#: conn/gnutls.c:545
+#: conn/gnutls.c:543
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "警告：服务器证书尚未有效"
 
-#: conn/gnutls.c:549
+#: conn/gnutls.c:547
 msgid "WARNING: Server certificate has expired"
 msgstr "警告：服务器证书已过期"
 
-#: conn/gnutls.c:553
+#: conn/gnutls.c:551
 msgid "WARNING: Server certificate has been revoked"
 msgstr "警告：服务器证书已吊销"
 
-#: conn/gnutls.c:557
+#: conn/gnutls.c:555
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "警告：服务器主机名与证书不匹配"
 
-#: conn/gnutls.c:561
+#: conn/gnutls.c:559
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "警告：服务器证书签署者不是证书颁发机构(CA)"
 
-#: conn/gnutls.c:565
+#: conn/gnutls.c:563
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr "警告：服务器证书是使用不安全的算法签署的"
 
-#: conn/gnutls.c:569 conn/openssl.c:944
+#: conn/gnutls.c:567 conn/openssl.c:941
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "SSL 证书检查 (检查链中有 %zu 个证书，共 %zu 个)"
 
-#: conn/gnutls.c:603 conn/openssl.c:978
+#: conn/gnutls.c:600 conn/openssl.c:975
 msgid "Certificate saved"
 msgstr "证书已保存"
 
-#: conn/gnutls.c:605 conn/openssl.c:980
+#: conn/gnutls.c:602 conn/openssl.c:977
 msgid "Warning: Couldn't save certificate"
 msgstr "警告：无法保存证书"
 
-#: conn/gnutls.c:805 conn/gnutls.c:851
+#: conn/gnutls.c:803 conn/gnutls.c:849
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "所有用于 TLS/SSL 连接的可用协议已禁用"
 
-#: conn/gnutls.c:858
+#: conn/gnutls.c:856
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "通过 $ssl_ciphers 明确选择密码套件是不支持的"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:928 conn/openssl.c:1161
+#: conn/gnutls.c:926 conn/openssl.c:1160
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "警告：无法设置 TLS SNI 主机名"
 
-#: conn/gnutls.c:974
+#: conn/gnutls.c:972
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "使用 %s 的 SSL/TLS 连接 (%s/%s/%s)"
 
-#: conn/gnutls.c:1056 conn/gnutls.c:1085
+#: conn/gnutls.c:1054 conn/gnutls.c:1083
 msgid "Error: no TLS socket open"
 msgstr "错误：没有打开 TLS 套接字"
 
@@ -1730,20 +1729,20 @@ msgstr "无法获取证书通用名称"
 msgid "certificate owner does not match hostname %s"
 msgstr "证书所有者与主机名称 %s 不匹配"
 
-#: conn/openssl.c:1081
+#: conn/openssl.c:1080
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "证书主机检查失败：%s"
 
-#: conn/openssl.c:1177
+#: conn/openssl.c:1176
 msgid "I/O error"
 msgstr "输入输出(I/O)出错"
 
-#: conn/openssl.c:1183 conn/raw.c:283 mutt_logging.c:108
+#: conn/openssl.c:1182 conn/raw.c:285 mutt_logging.c:108
 msgid "unknown error"
 msgstr "未知错误"
 
-#: conn/openssl.c:1186
+#: conn/openssl.c:1185
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL 失败：%s"
@@ -1751,40 +1750,40 @@ msgstr "SSL 失败：%s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1222
+#: conn/openssl.c:1221
 msgid "Unable to create SSL context"
 msgstr "无法创建 SSL 上下文"
 
-#: conn/openssl.c:1284
+#: conn/openssl.c:1283
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr "警告：启用 ssl_verify_partial_chains 出错"
 
-#: conn/raw.c:183 conn/raw.c:240
+#: conn/raw.c:185 conn/raw.c:242
 #, c-format
 msgid "Looking up %s..."
 msgstr "正在查找 %s..."
 
-#: conn/raw.c:193 conn/raw.c:250
+#: conn/raw.c:195 conn/raw.c:252
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "无法找到主机 \"%s\""
 
-#: conn/raw.c:198 conn/raw.c:256
+#: conn/raw.c:200 conn/raw.c:258
 #, c-format
 msgid "Connecting to %s..."
 msgstr "正在连接到 %s..."
 
-#: conn/raw.c:282
+#: conn/raw.c:284
 #, c-format
 msgid "Could not connect to %s (%s)"
 msgstr "无法连接到 %s (%s)"
 
-#: conn/raw.c:305 conn/raw.c:338
+#: conn/raw.c:307 conn/raw.c:340
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "与 %s 通话出错(%s)"
 
-#: conn/raw.c:312
+#: conn/raw.c:314
 #, c-format
 msgid "Connection to %s has been aborted"
 msgstr "到 %s 的连接已关闭"
@@ -1848,40 +1847,40 @@ msgstr[0] "长度计算错误，偏差 %ld 字节"
 msgid "No decryption engine available for message"
 msgstr "对于信件没有解密引擎"
 
-#: editmsg.c:76
+#: editmsg.c:77
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "无法创建临时文件夹：%s"
 
-#: editmsg.c:96
+#: editmsg.c:97
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "无法创建临时邮件夹：%s"
 
-#: editmsg.c:115
+#: editmsg.c:116
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
 msgstr "无法截断临时邮件夹：%s"
 
-#: editmsg.c:161
+#: editmsg.c:162
 msgid "Message file is empty"
 msgstr "信件文件是空的"
 
-#: editmsg.c:168
+#: editmsg.c:169
 msgid "Message not modified"
 msgstr "信件未改动"
 
-#: editmsg.c:175
+#: editmsg.c:176
 msgid "Message of read-only mailbox modified! Ignoring changes."
 msgstr "只读模式信箱中的信件已被修改！忽略这些变动"
 
-#: editmsg.c:191
+#: editmsg.c:192
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "无法打开信件文件：%s"
 
 #. L10N: %s is from strerror(errno)
-#: editmsg.c:199 editmsg.c:229
+#: editmsg.c:200 editmsg.c:230
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "无法添加到文件夹末尾：%s"
@@ -1958,22 +1957,22 @@ msgid "From: "
 msgstr "From: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:287
+#: envelope/window.c:97 send/send.c:288
 msgid "To: "
 msgstr "To: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:294
+#: envelope/window.c:99 send/send.c:295
 msgid "Cc: "
 msgstr "Cc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101 send/send.c:301
+#: envelope/window.c:101 send/send.c:302
 msgid "Bcc: "
 msgstr "Bcc: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103 send/send.c:346
+#: envelope/window.c:103 send/send.c:347
 msgid "Subject: "
 msgstr "Subject: "
 
@@ -2002,8 +2001,8 @@ msgstr "安全："
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: envelope/window.c:119 ncrypt/crypt_gpgme.c:3925 ncrypt/pgp.c:2019
-#: ncrypt/smime.c:2189
+#: envelope/window.c:119 ncrypt/crypt_gpgme.c:3970 ncrypt/pgp.c:2016
+#: ncrypt/smime.c:2191
 msgid "Sign as: "
 msgstr "选择身份签署："
 
@@ -2121,32 +2120,32 @@ msgid_plural "(+%d more)"
 msgstr[0] "(+%d 更多)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
-#: expando/config_type.c:85 expando/config_type.c:254
+#: expando/config_type.c:84 expando/config_type.c:253
 #, fuzzy, c-format
 msgid "Option %s: "
 msgstr "选项："
 
 #. L10N: e.g. "Unknown expando: %Q"
-#: expando/node_condbool.c:103 expando/node_expando.c:275
+#: expando/node_condbool.c:102 expando/node_expando.c:280
 #, fuzzy, c-format
 msgid "Unknown expando: %%%.*s"
 msgstr "未知的变量 '%s'"
 
 #. L10N: The 'ymwdHM' should not be translated
-#: expando/node_conddate.c:178
+#: expando/node_conddate.c:177
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
 msgstr ""
 
 #. L10N: Expando format expected a number
-#: expando/node_expando.c:199
+#: expando/node_expando.c:198
 #, c-format
 msgid "Number is expected"
 msgstr ""
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
-#: expando/node_expando.c:307
+#: expando/node_expando.c:312
 #, c-format
 msgid "Expando is missing terminator: '%c'"
 msgstr ""
@@ -2160,202 +2159,202 @@ msgstr ""
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
-#: expando/parse.c:161 expando/parse.c:225
+#: expando/parse.c:164 expando/parse.c:228
 #, c-format
 msgid "Conditional expando is missing '%c'"
 msgstr ""
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
-#: expando/parse.c:180
+#: expando/parse.c:183
 #, c-format
 msgid "Conditional expando is missing '&' or '%c'"
 msgstr ""
 
-#: external.c:110 recvcmd.c:185 recvcmd.c:197
+#: external.c:109 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
 msgstr "警告：信件未包含 From: 信件头"
 
-#: external.c:116 recvcmd.c:208
+#: external.c:115 recvcmd.c:208
 msgid "Bounce message to: "
 msgstr "重发信件至："
 
-#: external.c:118 recvcmd.c:210
+#: external.c:117 recvcmd.c:210
 msgid "Bounce tagged messages to: "
 msgstr "重发已标记的信件至："
 
-#: external.c:128 recvcmd.c:222
+#: external.c:127 recvcmd.c:222
 msgid "Error parsing address"
 msgstr "解析地址出错"
 
-#: external.c:144 recvcmd.c:240
+#: external.c:143 recvcmd.c:240
 #, c-format
 msgid "Bounce message to %s?"
 msgid_plural "Bounce messages to %s?"
 msgstr[0] "重发信件至 %s?"
 
-#: external.c:150 recvcmd.c:246
+#: external.c:149 recvcmd.c:246
 msgid "Message not bounced"
 msgid_plural "Messages not bounced"
 msgstr[0] "信件未重发"
 
-#: external.c:176 recvcmd.c:273
+#: external.c:175 recvcmd.c:273
 msgid "Message bounced"
 msgid_plural "Messages bounced"
 msgstr[0] "信件已重发"
 
-#: external.c:310 external.c:356 external.c:376
+#: external.c:309 external.c:355 external.c:375
 msgid "Can't create filter process"
 msgstr "无法创建过滤进程"
 
-#: external.c:415
+#: external.c:414
 msgid "Pipe to command: "
 msgstr "用管道输出至命令："
 
-#: external.c:448
+#: external.c:447
 msgid "No printing command has been defined"
 msgstr "未定义打印命令"
 
-#: external.c:453
+#: external.c:452
 msgid "Print message?"
 msgid_plural "Print tagged messages?"
 msgstr[0] "打印信件？"
 
-#: external.c:463
+#: external.c:462
 msgid "Message printed"
 msgid_plural "Messages printed"
 msgstr[0] "信件已打印"
 
-#: external.c:467
+#: external.c:466
 msgid "Message could not be printed"
 msgid_plural "Messages could not be printed"
 msgstr[0] "信件无法打印"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: external.c:483
+#: external.c:482
 msgid "Rev-Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "按日期(d),发信人(f),收信时间(r),主题(s),收信人(o),线索(t),不排(u),大小(z),分数(c),垃圾邮件(p),标签(l)反向排序?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: external.c:485
+#: external.c:484
 msgid "Sort (d)ate,(f)rm,(r)ecv,(s)ubj,t(o),(t)hread,(u)nsort,si(z)e,s(c)ore,s(p)am,(l)abel?"
 msgstr "按日期(d),发信人(f),收信时间(r),主题(s),收信人(o),线索(t),不排(u),大小(z),分数(c),垃圾邮件(p),标签(l)反向排序?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: external.c:487
+#: external.c:486
 msgid "dfrsotuzcpl"
 msgstr "dfrsotuzcpl"
 
-#: external.c:585
+#: external.c:584
 msgid "Shell command: "
 msgstr "Shell 指令："
 
 #. L10N: Progress meter message when copying tagged messages
-#: external.c:805
+#: external.c:804
 msgid "Copying tagged messages..."
 msgstr "正在复制标记的信件..."
 
-#: external.c:809
+#: external.c:808
 msgid "Copy tagged to mailbox"
 msgstr "复制已标记的信件到信箱"
 
-#: external.c:809
+#: external.c:808
 msgid "Copy to mailbox"
 msgstr "复制到信箱"
 
-#: external.c:812
+#: external.c:811
 msgid "Decrypt-copy tagged to mailbox"
 msgstr "解密复制已标记的信件到信箱"
 
-#: external.c:813
+#: external.c:812
 msgid "Decrypt-copy to mailbox"
 msgstr "解密复制到信箱"
 
-#: external.c:816
+#: external.c:815
 msgid "Decode-copy tagged to mailbox"
 msgstr "解码复制已标记的信件到信箱"
 
-#: external.c:817
+#: external.c:816
 msgid "Decode-copy to mailbox"
 msgstr "解码复制到信箱"
 
 #. L10N: Progress meter message when saving tagged messages
-#: external.c:824
+#: external.c:823
 msgid "Saving tagged messages..."
 msgstr "正在保存标记的信件..."
 
-#: external.c:828
+#: external.c:827
 msgid "Save tagged to mailbox"
 msgstr "保存已标记的信件到信箱"
 
-#: external.c:828
+#: external.c:827
 msgid "Save to mailbox"
 msgstr "保存到信箱"
 
-#: external.c:831
+#: external.c:830
 msgid "Decrypt-save tagged to mailbox"
 msgstr "解密保存已标记的信件到信箱"
 
-#: external.c:832
+#: external.c:831
 msgid "Decrypt-save to mailbox"
 msgstr "解密保存到信箱"
 
-#: external.c:835
+#: external.c:834
 msgid "Decode-save tagged to mailbox"
 msgstr "解码保存已标记的信件到信箱"
 
-#: external.c:836
+#: external.c:835
 msgid "Decode-save to mailbox"
 msgstr "解码保存到信箱"
 
-#: external.c:879
+#: external.c:878
 #, c-format
 msgid "Copying to %s..."
 msgstr "正在复制到 %s..."
 
 #. L10N: Message when an index tagged save operation fails for some reason
-#: external.c:1032
+#: external.c:1031
 msgid "Error saving tagged messages"
 msgstr "无法保存标记的信件"
 
 #. L10N: Message when an index/pager save operation fails for some reason
-#: external.c:1037
+#: external.c:1036
 msgid "Error saving message"
 msgstr "保存信件出错"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
-#: external.c:1044
+#: external.c:1043
 msgid "Error copying tagged messages"
 msgstr "无法复制标记的信件"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
-#: external.c:1049
+#: external.c:1048
 msgid "Error copying message"
 msgstr "复制信件出错"
 
-#: external.c:1119
+#: external.c:1118
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "发送时转换为 %s？"
 
-#: external.c:1130
+#: external.c:1129
 #, c-format
 msgid "Content-Type changed to %s"
 msgstr "内容类型(Content-Type)改变为 %s"
 
-#: external.c:1135
+#: external.c:1134
 #, c-format
 msgid "Character set changed to %s; not converting"
 msgstr "字符集改变为 %s；不进行转换"
 
-#: external.c:1136
+#: external.c:1135
 #, c-format
 msgid "Character set changed to %s; converting"
 msgstr "字符集改变为 %s；正在转换"
 
-#: flags.c:393 index/functions.c:1049 index/functions.c:1152
-#: index/functions.c:1168 index/functions.c:1307 mutt_thread.c:1299
-#: mutt_thread.c:1365 mutt_thread.c:1451
+#: flags.c:393 index/functions.c:1048 index/functions.c:1151
+#: index/functions.c:1167 index/functions.c:1306 mutt_thread.c:1298
+#: mutt_thread.c:1364 mutt_thread.c:1450
 msgid "Threading is not enabled"
 msgstr "线索功能尚未启用"
 
@@ -2367,7 +2366,7 @@ msgstr "清除标记"
 msgid "Set flag"
 msgstr "设定标记"
 
-#: gui/curs_lib.c:140 index/functions.c:771
+#: gui/curs_lib.c:140 index/functions.c:770
 msgid "Exit NeoMutt without saving?"
 msgstr "不保存便退出 NeoMutt 吗？"
 
@@ -4471,25 +4470,25 @@ msgstr "%s 的帮助"
 msgid "History '%s'"
 msgstr "记录 '%s'"
 
-#: history/history.c:233 history/history.c:619
+#: history/history.c:234 history/history.c:621
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: 错误的历史文件格式"
 
-#: history/history.c:266 ncrypt/crypt_gpgme.c:572 ncrypt/crypt_gpgme.c:1893
-#: ncrypt/crypt_gpgme.c:1917 ncrypt/crypt_gpgme.c:1976
-#: ncrypt/crypt_gpgme.c:1993 ncrypt/crypt_gpgme.c:2026
-#: ncrypt/crypt_gpgme.c:2044 ncrypt/crypt_gpgme.c:2085
-#: ncrypt/crypt_gpgme.c:2728 ncrypt/crypt_gpgme.c:2822
-#: ncrypt/gpgme_functions.c:644 ncrypt/pgp.c:590 ncrypt/pgp.c:597
+#: history/history.c:267 ncrypt/crypt_gpgme.c:574 ncrypt/crypt_gpgme.c:1937
+#: ncrypt/crypt_gpgme.c:1961 ncrypt/crypt_gpgme.c:2020
+#: ncrypt/crypt_gpgme.c:2037 ncrypt/crypt_gpgme.c:2070
+#: ncrypt/crypt_gpgme.c:2088 ncrypt/crypt_gpgme.c:2128
+#: ncrypt/crypt_gpgme.c:2776 ncrypt/crypt_gpgme.c:2869
+#: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:590 ncrypt/pgp.c:597
 #: ncrypt/pgp.c:925 ncrypt/pgp.c:1042 ncrypt/pgp.c:1199 ncrypt/pgp.c:1223
-#: ncrypt/pgp.c:1256 ncrypt/pgp.c:1613 ncrypt/pgp_functions.c:131
-#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:854
-#: ncrypt/smime.c:862 ncrypt/smime.c:961 ncrypt/smime.c:1071
-#: ncrypt/smime.c:1138 ncrypt/smime.c:1145 ncrypt/smime.c:1355
-#: ncrypt/smime.c:1755 ncrypt/smime.c:1834 ncrypt/smime.c:1841
-#: ncrypt/smime.c:1948 ncrypt/smime.c:2078 ncrypt/smime.c:2094 nntp/nntp.c:1316
-#: nntp/nntp.c:2178 pattern/exec.c:149 pop/pop.c:124
+#: ncrypt/pgp.c:1256 ncrypt/pgp.c:1610 ncrypt/pgp_functions.c:132
+#: ncrypt/pgpkey.c:283 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:855
+#: ncrypt/smime.c:863 ncrypt/smime.c:962 ncrypt/smime.c:1072
+#: ncrypt/smime.c:1139 ncrypt/smime.c:1146 ncrypt/smime.c:1357
+#: ncrypt/smime.c:1757 ncrypt/smime.c:1836 ncrypt/smime.c:1843
+#: ncrypt/smime.c:1950 ncrypt/smime.c:2080 ncrypt/smime.c:2096 nntp/nntp.c:1348
+#: nntp/nntp.c:2226 pattern/exec.c:148 pop/pop.c:124
 msgid "Can't create temporary file"
 msgstr "无法创建临时文件"
 
@@ -4524,9 +4523,9 @@ msgid "No authenticators available or wrong credentials"
 msgstr "无可用认证方式或错误的凭据"
 
 #. L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
-#: imap/auth_anon.c:56 imap/auth_cram.c:109 imap/auth_gsasl.c:65
+#: imap/auth_anon.c:56 imap/auth_cram.c:103 imap/auth_gsasl.c:65
 #: imap/auth_gss.c:169 imap/auth_oauth.c:73 imap/auth_sasl.c:126
-#: nntp/nntp.c:511 nntp/nntp.c:576 pop/auth.c:78 pop/auth.c:192 pop/auth.c:337
+#: nntp/nntp.c:528 nntp/nntp.c:599 pop/auth.c:78 pop/auth.c:192 pop/auth.c:337
 #: pop/auth.c:432 send/smtp.c:538 send/smtp.c:657 send/smtp.c:743
 #, c-format
 msgid "Authenticating (%s)..."
@@ -4534,8 +4533,8 @@ msgstr "认证中 (%s)..."
 
 #. L10N: %s is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
 #: imap/auth_anon.c:89 imap/auth_cram.c:183 imap/auth_gss.c:350
-#: imap/auth_oauth.c:104 imap/auth_sasl.c:260 nntp/nntp.c:675 pop/auth.c:290
-#: pop/auth.c:358 send/smtp.c:830 send/smtp.c:904 send/smtp.c:1008
+#: imap/auth_oauth.c:104 imap/auth_sasl.c:260 nntp/nntp.c:700 pop/auth.c:290
+#: pop/auth.c:358 send/smtp.c:821 send/smtp.c:897 send/smtp.c:1001
 #, c-format
 msgid "%s authentication failed"
 msgstr "%s 认证失败"
@@ -4548,11 +4547,11 @@ msgstr "SASL 认证失败。"
 msgid "LOGIN disabled on this server"
 msgstr "LOGIN 在此服务器已禁用"
 
-#: imap/auth_login.c:62 imap/auth_plain.c:53 pop/auth.c:374
+#: imap/auth_login.c:62 imap/auth_plain.c:55 pop/auth.c:374
 msgid "Logging in..."
 msgstr "登录中..."
 
-#: imap/auth_login.c:81 imap/auth_plain.c:93 pop/auth.c:416
+#: imap/auth_login.c:81 imap/auth_plain.c:97 pop/auth.c:416
 msgid "Login failed"
 msgstr "登录失败"
 
@@ -4571,33 +4570,33 @@ msgstr "正在获取文件夹列表..."
 msgid "No such folder: %s"
 msgstr "无此文件夹: %s"
 
-#: imap/browse.c:418
+#: imap/browse.c:415
 msgid "Create mailbox: "
 msgstr "创建信箱："
 
-#: imap/browse.c:426 imap/browse.c:487
+#: imap/browse.c:423 imap/browse.c:484
 msgid "Mailbox must have a name"
 msgstr "信箱必须有名字"
 
-#: imap/browse.c:434
+#: imap/browse.c:431
 msgid "Mailbox created"
 msgstr "信箱已创建"
 
-#: imap/browse.c:468
+#: imap/browse.c:465
 msgid "Can't rename root folder"
 msgstr "无法重命名根文件夹"
 
-#: imap/browse.c:475
+#: imap/browse.c:472
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "重命名信箱 %s 为："
 
-#: imap/browse.c:495
+#: imap/browse.c:492
 #, c-format
 msgid "Rename failed: %s"
 msgstr "重命名失败：%s"
 
-#: imap/browse.c:499
+#: imap/browse.c:496
 msgid "Mailbox renamed"
 msgstr "信箱已重命名"
 
@@ -4606,12 +4605,12 @@ msgstr "信箱已重命名"
 msgid "Mailbox %s@%s closed"
 msgstr "信箱 %s@%s 已关闭"
 
-#: imap/command.c:1228
+#: imap/command.c:1225
 #, c-format
 msgid "IMAP command failed: %s"
 msgstr "IMAP 命令失败：%s"
 
-#: imap/command.c:1332 imap/command.c:1453
+#: imap/command.c:1329 imap/command.c:1450
 #, c-format
 msgid "Connection to %s timed out"
 msgstr "到 %s 的连接已超时"
@@ -4625,127 +4624,127 @@ msgstr "选项 %s: %s 不是一个合法的认证方式"
 msgid "This IMAP server is ancient. NeoMutt does not work with it."
 msgstr "这个 IMAP 服务器已过时，NeoMutt 无法与之工作"
 
-#: imap/imap.c:447
+#: imap/imap.c:446
 #, c-format
 msgid "CREATE failed: %s"
 msgstr "CREATE(创建)失败：%s"
 
-#: imap/imap.c:571
+#: imap/imap.c:570
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "正在关闭到 %s 的连接..."
 
-#: imap/imap.c:773 nntp/nntp.c:1816 pop/lib.c:340 send/smtp.c:1052
+#: imap/imap.c:772 nntp/nntp.c:1853 pop/lib.c:340 send/smtp.c:1045
 msgid "Secure connection with TLS?"
 msgstr "使用 TLS 安全连接？"
 
-#: imap/imap.c:790 nntp/nntp.c:1840 pop/lib.c:362 send/smtp.c:1070
+#: imap/imap.c:789 nntp/nntp.c:1878 pop/lib.c:362 send/smtp.c:1063
 msgid "Could not negotiate TLS connection"
 msgstr "无法协商 TLS 连接"
 
-#: imap/imap.c:805 imap/imap.c:822 pop/lib.c:379
+#: imap/imap.c:804 imap/imap.c:821 pop/lib.c:379
 msgid "Encrypted connection unavailable"
 msgstr "加密连接不可用"
 
-#: imap/imap.c:1231
+#: imap/imap.c:1232
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "正在订阅 %s..."
 
-#: imap/imap.c:1233
+#: imap/imap.c:1234
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "正在退订 %s..."
 
-#: imap/imap.c:1414 imap/message.c:1803
+#: imap/imap.c:1415 imap/message.c:1803
 #, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "正在复制 %d 封信件到 %s ..."
 
-#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1821 muttlib.c:836
+#: imap/imap.c:1433 imap/imap.c:2091 imap/message.c:1821 muttlib.c:836
 #, c-format
 msgid "Create %s?"
 msgstr "创建 %s 吗？"
 
-#: imap/imap.c:1505
+#: imap/imap.c:1506
 msgid "Expunge failed"
 msgstr "执行删除失败"
 
-#: imap/imap.c:1523
+#: imap/imap.c:1524
 #, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
 msgstr[0] "正在标记 %d 封信件为已删除..."
 
-#: imap/imap.c:1562
+#: imap/imap.c:1563
 #, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
 msgstr[0] "正在保存已改变的信件... [%d/%d]"
 
-#: imap/imap.c:1605
+#: imap/imap.c:1606
 msgid "Error saving flags. Close anyway?"
 msgstr "保存标记出错。仍然关闭吗？"
 
-#: imap/imap.c:1613
+#: imap/imap.c:1614
 msgid "Error saving flags"
 msgstr "保存标记时出错"
 
-#: imap/imap.c:1640
+#: imap/imap.c:1641
 msgid "Expunging messages from server..."
 msgstr "正在服务器上执行信件删除..."
 
-#: imap/imap.c:1646
+#: imap/imap.c:1647
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox：EXPUNGE(执行删除)失败"
 
-#: imap/imap.c:1889 nntp/nntp.c:2404
+#: imap/imap.c:1890 nntp/nntp.c:2452
 #, c-format
 msgid "Selecting %s..."
 msgstr "正在选择 %s..."
 
-#: imap/imap.c:2057
+#: imap/imap.c:2058
 msgid "Error opening mailbox"
 msgstr "打开信箱时出错"
 
-#: imap/imap.c:2201
+#: imap/imap.c:2202
 msgid "IMAP server doesn't support custom flags"
 msgstr "IMAP 服务器不支持自定义标记"
 
-#: imap/imap.c:2245
+#: imap/imap.c:2246
 msgid "Invalid IMAP flags"
 msgstr "无效的 IMAP 标记"
 
 #. L10N: This prompt is made if the user hits Ctrl-C when opening an IMAP mailbox
-#: imap/message.c:510
+#: imap/message.c:509
 msgid "Abort download and close mailbox?"
 msgstr "要中止下载并关闭信箱吗？"
 
-#: imap/message.c:700 imap/message.c:840
+#: imap/message.c:699 imap/message.c:839
 msgid "Evaluating cache..."
 msgstr "正在评估缓存..."
 
-#: imap/message.c:930
+#: imap/message.c:929
 msgid "Fetching flag updates..."
 msgstr "正在取回标记更新..."
 
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
 #. download.
-#: imap/message.c:1073
+#: imap/message.c:1072
 msgid "QRESYNC failed.  Reopening mailbox."
 msgstr "QRESYNC 失败。正在重新打开信箱。"
 
-#: imap/message.c:1142
+#: imap/message.c:1141
 msgid "Unable to fetch headers from this IMAP server version"
 msgstr "无法取回此版本的 IMAP 服务器的信件头"
 
-#: imap/message.c:1164 index/functions.c:2609 nntp/nntp.c:1253 pop/pop.c:372
+#: imap/message.c:1163 index/functions.c:2608 nntp/nntp.c:1285 pop/pop.c:372
 msgid "Fetching message headers..."
 msgstr "正在取回信件信件头..."
 
-#: imap/message.c:1573
+#: imap/message.c:1572
 msgid "Uploading message..."
 msgstr "正在上传信件..."
 
@@ -4754,7 +4753,7 @@ msgstr "正在上传信件..."
 msgid "Copying message %d to %s..."
 msgstr "正在复制信件 %d 到 %s ..."
 
-#: imap/message.c:2009 nntp/nntp.c:2634 pop/pop.c:1047
+#: imap/message.c:2009 nntp/nntp.c:2682 pop/pop.c:1047
 msgid "Fetching message..."
 msgstr "正在取回信件..."
 
@@ -4776,67 +4775,67 @@ msgstr "服务器端的自定义搜索不被支持：%s"
 msgid "Continue?"
 msgstr "继续？"
 
-#: index/dlg_index.c:106 index/dlg_index.c:121
+#: index/dlg_index.c:105 index/dlg_index.c:120
 msgid "Quit"
 msgstr "离开"
 
-#: index/dlg_index.c:111 pager/dlg_pager.c:101
+#: index/dlg_index.c:110 pager/dlg_pager.c:100
 msgid "Reply"
 msgstr "回复"
 
-#: index/dlg_index.c:112
+#: index/dlg_index.c:111
 msgid "Group"
 msgstr "群组"
 
-#: index/dlg_index.c:125 pager/dlg_pager.c:114
+#: index/dlg_index.c:124 pager/dlg_pager.c:113
 msgid "Post"
 msgstr "发表"
 
-#: index/dlg_index.c:126 pager/dlg_pager.c:115
+#: index/dlg_index.c:125 pager/dlg_pager.c:114
 msgid "Followup"
 msgstr "回帖"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
-#: index/dlg_index.c:148
+#: index/dlg_index.c:147
 #, c-format
 msgid "%s: Operation not permitted by ACL"
 msgstr "无法 %s：操作不被访问控制列表(ACL)所允许"
 
-#: index/dlg_index.c:739
+#: index/dlg_index.c:738
 msgid "Failed to create query, aborting"
 msgstr "无法创建查询，正在中止"
 
-#: index/dlg_index.c:784 muttlib.c:820 mx.c:203 mx.c:341
+#: index/dlg_index.c:783 muttlib.c:820 mx.c:205 mx.c:343
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s 不是信箱"
 
-#: index/dlg_index.c:1167
+#: index/dlg_index.c:1166
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "信箱已有外部修改。标记可能有错误。"
 
-#: index/dlg_index.c:1176 pager/dlg_pager.c:431
+#: index/dlg_index.c:1175 pager/dlg_pager.c:430
 msgid "New mail in this mailbox"
 msgstr "此信箱中有新邮件"
 
-#: index/dlg_index.c:1196
+#: index/dlg_index.c:1195
 msgid "Mailbox was externally modified"
 msgstr "信箱已有外部修改"
 
-#: index/dlg_index.c:1307 index/functions.c:3072 pattern/message.c:288
+#: index/dlg_index.c:1306 index/functions.c:3078 pattern/message.c:288
 msgid "No mailbox is open"
 msgstr "没有已打开信箱"
 
-#: index/dlg_index.c:1315
+#: index/dlg_index.c:1314
 msgid "No tagged messages"
 msgstr "没有已标记的信件"
 
-#: index/dlg_index.c:1320 index/functions.c:924
+#: index/dlg_index.c:1319 index/functions.c:923
 msgid "Nothing to do"
 msgstr "无事可做"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:525
+#: index/functions.c:524
 msgid "Can't delete message"
 msgstr "无法删除信件"
 
@@ -4844,13 +4843,13 @@ msgstr "无法删除信件"
 #. L10N: Due to the implementation details we do not know whether we
 #. delete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:565 index/functions.c:1210
+#: index/functions.c:564 index/functions.c:1209
 msgid "Can't delete messages"
 msgstr "无法删除信件"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
-#: index/functions.c:691
+#: index/functions.c:690
 #, c-format
 msgid "%d label changed"
 msgid_plural "%d labels changed"
@@ -4859,153 +4858,153 @@ msgstr[0] "已改变 %d 封信件的标签"
 #. L10N: This is displayed when editing an x-label, but no messages
 #. were updated.  Possibly due to canceling at the prompt or if the new
 #. label is the same as the old label.
-#: index/functions.c:701
+#: index/functions.c:700
 msgid "No labels changed"
 msgstr "没有标签改变"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:721
+#: index/functions.c:720
 msgid "Can't edit message"
 msgstr "无法编辑信件"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:808
+#: index/functions.c:807
 msgid "Can't flag message"
 msgstr "无法标记信件"
 
-#: index/functions.c:921
+#: index/functions.c:920
 msgid "Jump to message: "
 msgstr "跳到信件："
 
-#: index/functions.c:929
+#: index/functions.c:928
 msgid "Argument must be a message number"
 msgstr "参数必须是信件编号"
 
-#: index/functions.c:933
+#: index/functions.c:932
 msgid "Invalid message number"
 msgstr "无效的信件编号"
 
-#: index/functions.c:937
+#: index/functions.c:936
 msgid "That message is not visible"
 msgstr "这封信件不可见"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1040
+#: index/functions.c:1039
 msgid "Can't break thread"
 msgstr "不能中断线索"
 
-#: index/functions.c:1063
+#: index/functions.c:1062
 msgid "Thread broken"
 msgstr "已拆分线索"
 
-#: index/functions.c:1069
+#: index/functions.c:1068
 msgid "Thread can't be broken, message is not part of a thread"
 msgstr "无法拆分线索，信件不是该线索的一部分"
 
-#: index/functions.c:1094
+#: index/functions.c:1093
 msgid "Open mailbox in read-only mode"
 msgstr "用只读模式打开信箱"
 
-#: index/functions.c:1099
+#: index/functions.c:1098
 msgid "Open mailbox"
 msgstr "打开信箱"
 
-#: index/functions.c:1191
+#: index/functions.c:1190
 msgid "Thread contains unread or flagged messages"
 msgstr "线索中有尚未读取或者被标记的信件"
 
-#: index/functions.c:1213
+#: index/functions.c:1212
 msgid "Delete messages matching: "
 msgstr "删除符合此模式的信件："
 
-#: index/functions.c:1253
+#: index/functions.c:1252
 msgid "Limit to messages matching: "
 msgstr "限制到符合此模式的信件："
 
-#: index/functions.c:1283
+#: index/functions.c:1282
 msgid "To view all messages, limit to \"all\""
 msgstr "要查看所有信件，请将限制设为 \"all\""
 
 #. L10N: CHECK_ACL
-#: index/functions.c:1296
+#: index/functions.c:1295
 msgid "Can't link threads"
 msgstr "无法链接线索"
 
-#: index/functions.c:1311
+#: index/functions.c:1310
 msgid "No Message-ID: header available to link thread"
 msgstr "无 Message-ID: 信件头可用于链接线索"
 
-#: index/functions.c:1325
+#: index/functions.c:1324
 msgid "Threads linked"
 msgstr "线索已链接"
 
-#: index/functions.c:1330
+#: index/functions.c:1329
 msgid "No thread linked"
 msgstr "无线索来链接"
 
-#: index/functions.c:1359 mx.c:1280 mx.c:1300
+#: index/functions.c:1358 mx.c:1282 mx.c:1302
 msgid "Folder doesn't support tagging, aborting"
 msgstr "文件夹不支持标签，正在终止"
 
-#: index/functions.c:1380
+#: index/functions.c:1379
 msgid "No tag specified, aborting"
 msgstr "没有特殊标签，正在中止"
 
-#: index/functions.c:1391
+#: index/functions.c:1390
 msgid "Update tags..."
 msgstr "更新标签中..."
 
-#: index/functions.c:1431
+#: index/functions.c:1430
 msgid "Failed to modify tags, aborting"
 msgstr "无法修改标签，正在中止"
 
-#: index/functions.c:1545
+#: index/functions.c:1544
 msgid "No new messages in this limited view"
 msgstr "没有新的信件在此限制视图中"
 
-#: index/functions.c:1547
+#: index/functions.c:1546
 msgid "No new messages"
 msgstr "没有新信件"
 
-#: index/functions.c:1552
+#: index/functions.c:1551
 msgid "No unread messages in this limited view"
 msgstr "在此限制视图中没有未读信件"
 
-#: index/functions.c:1554
+#: index/functions.c:1553
 msgid "No unread messages"
 msgstr "没有尚未读取的信件"
 
-#: index/functions.c:1570 menu/functions.c:108 pager/functions.c:766
+#: index/functions.c:1569 menu/functions.c:108 pager/functions.c:766
 #: pattern/pattern.c:535 pattern/pattern.c:691
 msgid "Search wrapped to top"
 msgstr "搜寻从开头重新开始"
 
-#: index/functions.c:1575 pager/functions.c:796 pattern/pattern.c:548
+#: index/functions.c:1574 pager/functions.c:796 pattern/pattern.c:548
 #: pattern/pattern.c:704
 msgid "Search wrapped to bottom"
 msgstr "搜寻从结尾重新开始"
 
-#: index/functions.c:1619
+#: index/functions.c:1618
 msgid "No more threads"
 msgstr "没有更多的线索"
 
-#: index/functions.c:1621
+#: index/functions.c:1620
 msgid "You are on the first thread"
 msgstr "您在第一个线索上"
 
-#: index/functions.c:1639 index/functions.c:2031
+#: index/functions.c:1638 index/functions.c:2030
 msgid "You are on the last message"
 msgstr "您已经在最后一封信了"
 
-#: index/functions.c:1656 index/functions.c:1711
+#: index/functions.c:1655 index/functions.c:1710
 msgid "No undeleted messages"
 msgstr "没有要反删除的信件"
 
-#: index/functions.c:1677
+#: index/functions.c:1676
 msgid "No mailboxes have new mail"
 msgstr "没有信箱有新信件"
 
-#: index/functions.c:1695 index/functions.c:2069
+#: index/functions.c:1694 index/functions.c:2068
 msgid "You are on the first message"
 msgstr "您已经在第一封信了"
 
@@ -5013,15 +5012,15 @@ msgstr "您已经在第一封信了"
 #. L10N: Due to the implementation details we do not know whether we
 #. mark zero, 1, 12, ... messages as read. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1764
+#: index/functions.c:1763
 msgid "Can't mark messages as read"
 msgstr "无法标记信件为已读"
 
-#: index/functions.c:1841
+#: index/functions.c:1840
 msgid "No limit pattern is in effect"
 msgstr "当前没有限制模式起作用"
 
-#: index/functions.c:1928
+#: index/functions.c:1927
 msgid "Tag messages matching: "
 msgstr "标记符合此模式的信件："
 
@@ -5029,134 +5028,134 @@ msgstr "标记符合此模式的信件："
 #. L10N: Due to the implementation details we do not know whether we
 #. undelete zero, 1, 12, ... messages. So in English we use
 #. "messages". Your language might have other means to express this.
-#: index/functions.c:1944 index/functions.c:2458
+#: index/functions.c:1943 index/functions.c:2457
 msgid "Can't undelete messages"
 msgstr "不能反删除信件"
 
-#: index/functions.c:1948
+#: index/functions.c:1947
 msgid "Undelete messages matching: "
 msgstr "反删除符合此模式的信件："
 
-#: index/functions.c:1962
+#: index/functions.c:1961
 msgid "Untag messages matching: "
 msgstr "反标记符合此模式的信件："
 
 #. L10N: This is the prompt for <mark-message>.  Whatever they
 #. enter will be prefixed by $mark_macro_prefix and will become
 #. a macro hotkey to jump to the currently selected message.
-#: index/functions.c:1985
+#: index/functions.c:1984
 msgid "Enter macro stroke: "
 msgstr "请输入宏按键："
 
 #. L10N: "message hotkey" is the key bindings menu description of a
 #. macro created by <mark-message>.
-#: index/functions.c:2001
+#: index/functions.c:2000
 msgid "message hotkey"
 msgstr "信件热键"
 
 #. L10N: This is echoed after <mark-message> creates a new hotkey
 #. macro.  %s is the hotkey string ($mark_macro_prefix followed
 #. by whatever they typed at the prompt.)
-#: index/functions.c:2006
+#: index/functions.c:2005
 #, c-format
 msgid "Message bound to %s"
 msgstr "信件已重发给 %s"
 
 #. L10N: This error is printed if <mark-message> can't find a
 #. Message-ID for the currently selected message in the index.
-#: index/functions.c:2016
+#: index/functions.c:2015
 msgid "No message ID to macro"
 msgstr "没有可标记的信件 ID"
 
-#: index/functions.c:2114
+#: index/functions.c:2113
 msgid "Quit NeoMutt?"
 msgstr "离开 NeoMutt？"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2370
+#: index/functions.c:2369
 msgid "Can't toggle new"
 msgstr "无法切换新信件标记"
 
 #. L10N: CHECK_ACL
-#: index/functions.c:2422
+#: index/functions.c:2421
 msgid "Can't undelete message"
 msgstr "不能反删除信件"
 
-#: index/functions.c:2557
+#: index/functions.c:2556
 msgid "Logged out of IMAP servers"
 msgstr "已从 IMAP 服务器退出"
 
-#: index/functions.c:2605
+#: index/functions.c:2604
 msgid "No Message-Id. Unable to perform operation."
 msgstr "没有信件 ID。无法执行操作"
 
-#: index/functions.c:2675
+#: index/functions.c:2674
 msgid "No deleted messages found in the thread"
 msgstr "在该线程中没有发现被删除的信件"
 
-#: index/functions.c:2700
+#: index/functions.c:2699
 msgid "Enter Message-Id: "
 msgstr "请输入信件 ID："
 
-#: index/functions.c:2712
+#: index/functions.c:2711
 msgid "Article has no parent reference"
 msgstr "帖子没有父索引"
 
-#: index/functions.c:2735
+#: index/functions.c:2734
 msgid "Message is not visible in limited view"
 msgstr "信件在此限制视图中不可见"
 
-#: index/functions.c:2740
+#: index/functions.c:2739
 #, c-format
 msgid "Fetching %s from server..."
 msgstr "正在从服务器上取回 %s..."
 
-#: index/functions.c:2753 nntp/nntp.c:2671
+#: index/functions.c:2752 nntp/nntp.c:2719
 #, c-format
 msgid "Article %s not found on the server"
 msgstr "帖子 %s 没有在服务器上找到"
 
-#: index/functions.c:2781
+#: index/functions.c:2780
 msgid "Open newsgroup in read-only mode"
 msgstr "用只读模式打开新闻组"
 
-#: index/functions.c:2786
+#: index/functions.c:2785
 msgid "Open newsgroup"
 msgstr "打开新闻组"
 
-#: index/functions.c:2857
+#: index/functions.c:2856
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "不允许在这个组里发帖，帖子可能会被审核，继续？"
 
-#: index/functions.c:2893
+#: index/functions.c:2892
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "没有虚拟文件夹及 Message-Id，正在中止"
 
-#: index/functions.c:2914
+#: index/functions.c:2920
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
 msgstr "在 notmuch 数据库中查找信件失败。请尝试运行“notmuch new”。"
 
-#: index/functions.c:2926
+#: index/functions.c:2932
 msgid "Failed to read thread, aborting"
 msgstr "无法读取线索，正在中止"
 
-#: index/functions.c:2966
+#: index/functions.c:2972
 msgid "No query, aborting"
 msgstr "没有查询，正在中止"
 
-#: index/functions.c:3009
+#: index/functions.c:3015
 msgid "Windowed queries disabled"
 msgstr "窗口查询已禁用"
 
-#: index/functions.c:3015
+#: index/functions.c:3021
 msgid "No notmuch vfolder currently loaded"
 msgstr "现在没有加载 notmuch 虚拟文件夹"
 
-#: index/functions.c:3078
+#: index/functions.c:3084
 msgid "There are no messages"
 msgstr "没有信件"
 
-#: index/functions.c:3086
+#: index/functions.c:3092
 msgid "No visible messages"
 msgstr "无可见信件"
 
@@ -5201,16 +5200,16 @@ msgstr "%s：该菜单无绑定"
 msgid "%s: no macros for this menu"
 msgstr "%s：该菜单无宏"
 
-#: key/get.c:300
+#: key/get.c:301
 msgid "Key is not bound"
 msgstr "此键还未绑定功能"
 
-#: key/get.c:306
+#: key/get.c:307
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "此键还未绑定功能。按 '%s' 以获得帮助信息"
 
-#: key/get.c:441
+#: key/get.c:442
 msgid "Macro loop detected"
 msgstr "检测到宏中有回环"
 
@@ -5293,32 +5292,32 @@ msgstr ""
 msgid "Scanning %s..."
 msgstr "正在扫描 %s..."
 
-#: maildir/mailbox.c:513 mbox/mbox.c:216 mbox/mbox.c:386 mh/mh.c:698 mx.c:354
+#: maildir/mailbox.c:513 mbox/mbox.c:218 mbox/mbox.c:388 mh/mh.c:698 mx.c:356
 #, c-format
 msgid "Reading %s..."
 msgstr "正在读取 %s..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/mailbox.c:851 mbox/mbox.c:1173 mh/mh.c:1081 mx.c:462
+#: maildir/mailbox.c:851 mbox/mbox.c:1175 mh/mh.c:1081 mx.c:464
 #: notmuch/notmuch.c:2248
 #, c-format
 msgid "Writing %s..."
 msgstr "正在写入 %s..."
 
-#: maildir/message.c:368 mh/mh.c:256
+#: maildir/message.c:369 mh/mh.c:256
 msgid "Could not flush message to disk"
 msgstr "无法将信件导出到硬盘"
 
-#: maildir/message.c:414
+#: maildir/message.c:415
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message()：无法给文件设置时间"
 
 #. L10N: Try to limit to 80 columns
-#: main.c:288
+#: main.c:289
 msgid "usage:"
 msgstr "用法："
 
-#: main.c:289
+#: main.c:290
 #, fuzzy
 msgid ""
 "  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -5329,7 +5328,7 @@ msgstr ""
 "          [-b <地址>] [-c <地址>] [-s <主题>] [-a <文件> [...] --]\n"
 "          <地址> [...]"
 
-#: main.c:292
+#: main.c:293
 #, fuzzy
 msgid ""
 "  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
@@ -5338,60 +5337,60 @@ msgstr ""
 "  neomutt [-Cnx] [-e <命令>] [-F <配置>] [-b <地址>] [-c <地址>]\n"
 "          [-s <主题>] [-a <文件> [...] --] <地址> [...] < 信件"
 
-#: main.c:294
+#: main.c:295
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr "  neomutt [-nRy] [-e <命令>] [-F <配置>] [-f <信箱>] [-m <类型>]"
 
-#: main.c:295
+#: main.c:296
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -A <别名>"
 
-#: main.c:296
+#: main.c:297
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -B"
 
-#: main.c:297
+#: main.c:298
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -D [-S] [-O]"
 
-#: main.c:298
+#: main.c:299
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -d <级别> -l <文件>"
 
-#: main.c:299
+#: main.c:300
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -G"
 
-#: main.c:300
+#: main.c:301
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -g <服务器>"
 
-#: main.c:301
+#: main.c:302
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -p"
 
-#: main.c:302
+#: main.c:303
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -Q <变量> [-O]"
 
-#: main.c:303
+#: main.c:304
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -Z"
 
-#: main.c:304
+#: main.c:305
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr "  neomutt [-n] [-e <命令>] [-F <配置>] -z [-f <信箱>]"
 
-#: main.c:305
+#: main.c:306
 msgid "  neomutt -v[v]\n"
 msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:308
+#: main.c:309
 msgid "options:"
 msgstr "选项："
 
-#: main.c:309
+#: main.c:310
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -5399,11 +5398,11 @@ msgstr ""
 "  --            特殊参数使 NeoMutt 停止选项解析并将剩余参数当作地址，\n"
 "                即使它们以短划线开头"
 
-#: main.c:311
+#: main.c:312
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr "  -A <别名>     扩展给出的别名并退出"
 
-#: main.c:312
+#: main.c:313
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -5411,36 +5410,36 @@ msgstr ""
 "  -a <文件>     给信件添加一个或多个附件（必须是最后一个参数）\n"
 "                在 '--' 参数后添加地址"
 
-#: main.c:314
+#: main.c:315
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr "  -B            以批处理模式运行（不启动 ncurses 用户界面）"
 
-#: main.c:315
+#: main.c:316
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <地址>     指定一个密送(BCC)收件人"
 
-#: main.c:316
+#: main.c:317
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr "  -c <地址>     指定一个抄送(CC)收件人"
 
-#: main.c:317
+#: main.c:318
 #, fuzzy
 msgid "  -C            Enable Command-line Crypto (signing/encryption)"
 msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
 
-#: main.c:318
+#: main.c:319
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr "  -D            以 '键=值' 对的格式显示所有配置变量"
 
-#: main.c:319
+#: main.c:320
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr "  -D -O         类似 -D，但显示单行文档"
 
-#: main.c:320
+#: main.c:321
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr "  -D -S         类似 -D，但隐藏敏感变量的值"
 
-#: main.c:321
+#: main.c:322
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -5448,47 +5447,47 @@ msgstr ""
 "  -d <级别>     将调试输出记录到一个文件（默认 \"~/.neomuttdebug0\"）\n"
 "                级别的范围为1-5并影响复杂度"
 
-#: main.c:323
+#: main.c:324
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr "  -E            撰写信件时编辑草稿 (-H) 或包含文件 (-i)"
 
-#: main.c:324
+#: main.c:325
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr "  -e <命令>     指定初始化后要执行的命令"
 
-#: main.c:325
+#: main.c:326
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr "  -F <配置>     指定替代的初始化文件"
 
-#: main.c:326
+#: main.c:327
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr "  -f <信箱>     指定要读取的信箱"
 
-#: main.c:327
+#: main.c:328
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr "  -G            以已订阅新闻组列表开始 NeoMutt"
 
-#: main.c:328
+#: main.c:329
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr "  -g <服务器>   类似 -G，但从指定的新闻服务器开始"
 
-#: main.c:329
+#: main.c:330
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr "  -H <草稿>     指定草稿文件以读取信件头和正文"
 
-#: main.c:330
+#: main.c:331
 msgid "  -h            Print this help message and exit"
 msgstr "  -h            显示此帮助消息并退出"
 
-#: main.c:331
+#: main.c:332
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr "  -i <文件>     指定要嵌入正文的文件"
 
-#: main.c:332
+#: main.c:333
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr "  -l <文件>     指定调试输出的文件（默认 \"~/.neomuttdebug0\"）"
 
-#: main.c:333
+#: main.c:334
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -5496,15 +5495,15 @@ msgstr ""
 "  -m <类型>     指定新创建信箱默认使用的信箱类型\n"
 "                类型可以是 MH, MMDF, Maildir 或 mbox（大小写不敏感）"
 
-#: main.c:335
+#: main.c:336
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr "  -n            不读取系统范围的配置文件"
 
-#: main.c:336
+#: main.c:337
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            继续一个之前延迟寄送的信件，如果有"
 
-#: main.c:337
+#: main.c:338
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -5513,128 +5512,128 @@ msgstr ""
 "  -Q <变量>     查询一个配置变量（在读取配置和执行命令后）\n"
 "                加 -O 以显示单行文档"
 
-#: main.c:340
+#: main.c:341
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "  -R            以只读模式打开信箱"
 
-#: main.c:341
+#: main.c:342
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr "  -s <主题>     指定一个主题（如果有空格的话必须使用引号引起来）"
 
-#: main.c:342
+#: main.c:343
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr "  -v            显示 NeoMutt 版本和编译时定义并退出"
 
-#: main.c:343
+#: main.c:344
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr "  -vv           显示 NeoMutt 协议和版权信息并退出"
 
-#: main.c:344
+#: main.c:345
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr "  -y            以已定义信箱列表开始 NeoMutt"
 
-#: main.c:345
+#: main.c:346
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr "  -Z            打开第一个有新信件的信箱，如果一个也没有的话立即退出并返回 1"
 
-#: main.c:347
+#: main.c:348
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr "  -z            打开非空的第一个或 (-f) 指定的信箱否则立即退出并返回 1"
 
-#: main.c:370
+#: main.c:371
 msgid "Error initializing terminal"
 msgstr "初始化终端时出错"
 
-#: main.c:440
+#: main.c:441
 msgid "unable to determine username"
 msgstr "无法确定用户名"
 
-#: main.c:446
+#: main.c:447
 msgid "unable to determine home directory"
 msgstr "无法确定用户主目录"
 
-#: main.c:784
+#: main.c:786
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "错误：变量'%s'对于 -d 来说无效"
 
-#: main.c:1028
+#: main.c:1032
 msgid "Failed to parse mailto: link"
 msgstr "解析 mailto: 链接失败"
 
-#: main.c:1043 main.c:1312 send/send.c:307 send/send.c:2746 send/send.c:2750
+#: main.c:1047 main.c:1316 send/send.c:308 send/send.c:2742 send/send.c:2746
 msgid "No recipients specified"
 msgstr "没有指定接收者"
 
-#: main.c:1078
+#: main.c:1082
 msgid "Can't use -E flag with stdin"
 msgstr "无法使用 -E 选项在stdin情况下"
 
-#: main.c:1168
+#: main.c:1172
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "无法解析信件模板：%s"
 
-#: main.c:1234 mutt_header.c:349
+#: main.c:1238 mutt_header.c:350
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：无法附加文件"
 
-#: main.c:1324
+#: main.c:1328
 msgid "No mailbox with new mail"
 msgstr "没有信箱有新信件"
 
-#: main.c:1344
+#: main.c:1347
 msgid "No incoming mailboxes defined"
 msgstr "未定义收信信箱"
 
-#: main.c:1398
+#: main.c:1400
 msgid "Mailbox is empty"
 msgstr "信箱是空的"
 
-#: mbox/mbox.c:255 mbox/mbox.c:321
+#: mbox/mbox.c:257 mbox/mbox.c:323
 msgid "Mailbox is corrupt"
 msgstr "信箱损坏了"
 
-#: mbox/mbox.c:906
+#: mbox/mbox.c:908
 #, c-format
 msgid "Couldn't lock %s"
 msgstr "无法锁住 %s"
 
-#: mbox/mbox.c:1055
+#: mbox/mbox.c:1057
 msgid "Mailbox was corrupted"
 msgstr "信箱已损坏"
 
-#: mbox/mbox.c:1096 mbox/mbox.c:1346
+#: mbox/mbox.c:1098 mbox/mbox.c:1348
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "严重错误！无法重新打开信箱！"
 
-#: mbox/mbox.c:1133 pager/message.c:221
+#: mbox/mbox.c:1135 pager/message.c:222
 msgid "Could not create temporary file"
 msgstr "无法创建临时文件"
 
-#: mbox/mbox.c:1151
+#: mbox/mbox.c:1153
 msgid "sync: mbox modified, but no modified messages (report this bug)"
 msgstr "同步：信箱已被修改，但没有被修改过的信件！(请报告这个错误)"
 
-#: mbox/mbox.c:1292
+#: mbox/mbox.c:1294
 msgid "Committing changes..."
 msgstr "正在提交修改..."
 
-#: mbox/mbox.c:1325
+#: mbox/mbox.c:1327
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "写入失败！已把部分的信箱保存至 %s"
 
-#: mbox/mbox.c:1410
+#: mbox/mbox.c:1412
 msgid "Could not reopen mailbox"
 msgstr "无法重开信箱"
 
-#: mbox/mbox.c:1508 mbox/mbox.c:1629
+#: mbox/mbox.c:1510 mbox/mbox.c:1631
 msgid "Can't write message"
 msgstr "无法写入信件"
 
@@ -5724,11 +5723,11 @@ msgstr "使用 mixmaster 时请给 hostname(主机名) 变量设置合适的值"
 msgid "Error sending message, child exited %d\n"
 msgstr "发送信件出错，子进程已退出 %d。\n"
 
-#: mixmaster/mixmaster.c:128 send/send.c:2409
+#: mixmaster/mixmaster.c:128 send/send.c:2405
 msgid "Error sending message"
 msgstr "发送信件出错"
 
-#: mixmaster/remailer.c:148
+#: mixmaster/remailer.c:149
 msgid "<random>"
 msgstr "<随机>"
 
@@ -5760,25 +5759,29 @@ msgstr "转发者链已经为空"
 msgid "Error: %s can't be used as the final remailer of a chain"
 msgstr "错误：%s 不能用作链的最终转发者"
 
-#: mutt/file.c:784
+#: mutt/buffer.c:353
+msgid "Out of memory"
+msgstr ""
+
+#: mutt/file.c:787
 #, c-format
 msgid "Failed to seek file: %s"
 msgstr "读文件失败：%s"
 
-#: mutt/file.c:1228
+#: mutt/file.c:1231
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "尝试 fcntl 加锁时超时"
 
-#: mutt/file.c:1234
+#: mutt/file.c:1237
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "正在等待 fcntl 加锁... %d"
 
-#: mutt/file.c:1294
+#: mutt/file.c:1297
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "尝试 flock 加锁时超时"
 
-#: mutt/file.c:1301
+#: mutt/file.c:1304
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "正在等待尝试 flock... %d"
@@ -5798,21 +5801,21 @@ msgstr "正在使用级别 %d 进行调试，输出到文件 '%s'"
 msgid "Logging at level %d to file '%s'"
 msgstr "正在使用级别 %d 记录日志到文件 '%s'"
 
-#: mutt/path.c:358
+#: mutt/path.c:353
 msgid "Error: converting path to absolute"
 msgstr "错误：转化路径到绝对路径"
 
-#: mutt/random.c:61
+#: mutt/random.c:62
 #, c-format
 msgid "mutt_randbuf buflen=%zu"
 msgstr "mutt_randbuf buflen=%zu"
 
-#: mutt/random.c:86
+#: mutt/random.c:87
 #, c-format
 msgid "open /dev/urandom: %s"
 msgstr "打开 /dev/urandom：%s"
 
-#: mutt/random.c:93
+#: mutt/random.c:94
 #, c-format
 msgid "read /dev/urandom: %s"
 msgstr "读取 /dev/urandom：%s"
@@ -5826,15 +5829,10 @@ msgstr "错误的正则表达式：%s"
 msgid "Not enough subexpressions for template"
 msgstr "没有足够的子表达式来对应模板"
 
-#: mutt/signal.c:84 mutt/signal.c:86 mutt/signal.c:88
+#: mutt_config.c:226
 #, c-format
-msgid "Caught signal %d (%s) ...  Exiting\n"
-msgstr "捕捉到信号 %d (%s) ...  正在退出。\n"
-
-#: mutt/signal.c:90
-#, c-format
-msgid "Caught signal %d ...  Exiting\n"
-msgstr "捕捉到信号 %d ...  正在退出。\n"
+msgid "index-hook cannot be used as a condition"
+msgstr ""
 
 #. L10N: $reply_regex default format
 #.
@@ -5855,22 +5853,22 @@ msgstr "捕捉到信号 %d ...  正在退出。\n"
 #. - Please test the value you use inside Mutt.  A mistake here will break
 #. NeoMutt's threading behavior.  Note: the header cache can interfere with
 #. testing, so be sure to test with $header_cache unset.
-#: mutt_config.c:732
+#: mutt_config.c:733
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 msgstr ""
 
 #. L10N: $status_format default format
-#: mutt_config.c:814
+#: mutt_config.c:815
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr ""
 
 #. L10N: $ts_icon_format default format
-#: mutt_config.c:851
+#: mutt_config.c:852
 msgid "M%<n?AIL&ail>"
 msgstr ""
 
 #. L10N: $ts_status_format default format
-#: mutt_config.c:855
+#: mutt_config.c:856
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
 msgstr ""
 
@@ -5888,7 +5886,7 @@ msgstr "错误：无法加载 lua 解释器"
 msgid "Couldn't source lua source: %s"
 msgstr "无法读取 Lua 源码：%s"
 
-#: mutt_mailbox.c:258
+#: mutt_mailbox.c:255
 msgid "New mail in "
 msgstr "有新信件在 "
 
@@ -5897,20 +5895,20 @@ msgstr "有新信件在 "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL 不可用，无法连接到 %s"
 
-#: mutt_thread.c:114
+#: mutt_thread.c:113
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "%s 中 'threads' 不能和 'last-' 前缀一同使用"
 
-#: mutt_thread.c:1386
+#: mutt_thread.c:1385
 msgid "Parent message is not available"
 msgstr "父信件不可用"
 
-#: mutt_thread.c:1392
+#: mutt_thread.c:1391
 msgid "Root message is not visible in this limited view"
 msgstr "根信件在此限制视图中不可见"
 
-#: mutt_thread.c:1394
+#: mutt_thread.c:1393
 msgid "Parent message is not visible in this limited view"
 msgstr "父信件在此限制视图中不可见"
 
@@ -5957,102 +5955,102 @@ msgstr "附加信件到 %s 末尾?"
 msgid "Can't save message to news server"
 msgstr "无法将信件保存到新闻服务器"
 
-#: mx.c:386
+#: mx.c:388
 #, c-format
 msgid "Reading from %s interrupted..."
 msgstr "读取 %s 已中断..."
 
 #. L10N: Displayed if a mailbox sync fails
-#: mx.c:472
+#: mx.c:474
 #, c-format
 msgid "Unable to write %s"
 msgstr "无法写入 %s"
 
 #. L10N: Although we know the precise number of messages, we do not show it to the user.
 #. So feel free to use a "generic plural" as plural translation if your language has one.
-#: mx.c:529
+#: mx.c:531
 msgid "message not deleted"
 msgid_plural "messages not deleted"
 msgstr[0] "信件未被删除"
 
-#: mx.c:549
+#: mx.c:551
 msgid "Can't open trash folder"
 msgstr "无法打开回收站"
 
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
-#: mx.c:567
+#: mx.c:569
 msgid "Unable to append to trash folder"
 msgstr "无法附加到垃圾箱"
 
-#: mx.c:624
+#: mx.c:626
 msgid "Mark all articles read?"
 msgstr "标记所有的帖子为已读？"
 
 #. L10N: The first argument is the number of read messages to be
 #. moved, the second argument is the target mailbox.
-#: mx.c:673
+#: mx.c:675
 #, c-format
 msgid "Move %d read message to %s?"
 msgid_plural "Move %d read messages to %s?"
 msgstr[0] "移动 %d 封已读取的信件到 %s？"
 
-#: mx.c:686 mx.c:943
+#: mx.c:688 mx.c:945
 #, c-format
 msgid "Purge %d deleted message?"
 msgid_plural "Purge %d deleted messages?"
 msgstr[0] "清除 %d 封已经被删除的信件？"
 
-#: mx.c:709
+#: mx.c:711
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "正在搬移已经读取的信件到 %s ..."
 
-#: mx.c:794 mx.c:934
+#: mx.c:796 mx.c:936
 msgid "Mailbox is unchanged"
 msgstr "信箱没有改变"
 
-#: mx.c:852
+#: mx.c:854
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
 msgstr "保留 %d 封，移动 %d 封，删除 %d 封"
 
-#: mx.c:857 mx.c:996
+#: mx.c:859 mx.c:998
 #, c-format
 msgid "%d kept, %d deleted"
 msgstr "保留 %d 封，删除 %d 封"
 
-#: mx.c:918
+#: mx.c:920
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " 请按下 '%s' 来切换写入"
 
-#: mx.c:920
+#: mx.c:922
 msgid "Use 'toggle-write' to re-enable write"
 msgstr "请使用 'toggle-write' 来重新启用写入"
 
-#: mx.c:922
+#: mx.c:924
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "信箱已标记为不可写。%s"
 
-#: mx.c:991
+#: mx.c:993
 msgid "Mailbox checkpointed"
 msgstr "信箱已检查"
 
-#: mx.c:1345
+#: mx.c:1347
 #, c-format
 msgid "Can't open %s: it is a pipe"
 msgstr "无法打开 %s：这是管道设备文件"
 
-#: mx.c:1812
+#: mx.c:1814
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "无法在只读信箱切换可写"
 
-#: mx.c:1819
+#: mx.c:1821
 msgid "Changes to folder will be written on folder exit"
 msgstr "在退出文件夹后将会把改变写入文件夹"
 
-#: mx.c:1824
+#: mx.c:1826
 msgid "Changes to folder will not be written"
 msgstr "将不会把改变写入文件夹"
 
@@ -6090,8 +6088,8 @@ msgstr "嵌入 PGP 不支持 format=flowed。回到使用 PGP/MIME 吗？"
 msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "信件无法发送：嵌入 PGP 不能用于 format=flowed"
 
-#: ncrypt/crypt.c:208 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:137
-#: ncrypt/pgpkey.c:295
+#: ncrypt/crypt.c:208 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:138
+#: ncrypt/pgpkey.c:296
 msgid "Invoking PGP..."
 msgstr "正在调用 PGP..."
 
@@ -6099,23 +6097,23 @@ msgstr "正在调用 PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "无法将信件嵌入发送。回到使用 PGP/MIME 吗？"
 
-#: ncrypt/crypt.c:221 send/send.c:2725
+#: ncrypt/crypt.c:221 send/send.c:2721
 msgid "Mail not sent"
 msgstr "信件没有寄出"
 
-#: ncrypt/crypt.c:639
+#: ncrypt/crypt.c:655
 msgid "S/MIME messages with no hints on content are unsupported"
 msgstr "不支持没有内容提示的 S/MIME 消息"
 
-#: ncrypt/crypt.c:884
+#: ncrypt/crypt.c:900
 msgid "Trying to extract PGP keys...\n"
 msgstr "正在尝试提取 PGP 密钥...\n"
 
-#: ncrypt/crypt.c:911
+#: ncrypt/crypt.c:927
 msgid "Trying to extract S/MIME certificates..."
 msgstr "正在尝试提取 S/MIME 证书..."
 
-#: ncrypt/crypt.c:1150
+#: ncrypt/crypt.c:1257
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -6124,7 +6122,7 @@ msgstr ""
 "[-- 错误：未知的 multipart/signed 协议 %s！ --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1191
+#: ncrypt/crypt.c:1298
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
@@ -6132,7 +6130,7 @@ msgstr ""
 "[-- 错误：缺失或格式错误的 multipart/signed 签名！ --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1229
+#: ncrypt/crypt.c:1336
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures --]\n"
@@ -6141,13 +6139,11 @@ msgstr ""
 "[-- 警告：我们不能证实 %s/%s 签名。 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1241
-msgid ""
-"[-- The following data is signed --]\n"
-msgstr ""
-"[-- 以下数据已签署 --]\n"
+#: ncrypt/crypt.c:1348
+msgid "[-- The following data is signed --]\n"
+msgstr "[-- 以下数据已签署 --]\n"
 
-#: ncrypt/crypt.c:1249
+#: ncrypt/crypt.c:1356
 msgid ""
 "[-- Warning: Can't find any signatures --]\n"
 "\n"
@@ -6155,11 +6151,9 @@ msgstr ""
 "[-- 警告：找不到任何的签名。 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1256
-msgid ""
-"[-- End of signed data --]\n"
-msgstr ""
-"[-- 签署的数据结束 --]\n"
+#: ncrypt/crypt.c:1363
+msgid "[-- End of signed data --]\n"
+msgstr "[-- 签署的数据结束 --]\n"
 
 #: ncrypt/crypt_gpgme.c:384
 #, c-format
@@ -6171,183 +6165,204 @@ msgstr "开启 CMS 协议时出错：%s"
 msgid "error creating GPGME data object: %s"
 msgstr "创建 GPGME 数据对象时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:473 ncrypt/crypt_gpgme.c:500 ncrypt/crypt_gpgme.c:1562
-#: ncrypt/crypt_gpgme.c:2281
+#: ncrypt/crypt_gpgme.c:473 ncrypt/crypt_gpgme.c:500 ncrypt/crypt_gpgme.c:1601
+#: ncrypt/crypt_gpgme.c:2324
 #, c-format
 msgid "error allocating data object: %s"
 msgstr "分配数据对象时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:522
+#: ncrypt/crypt_gpgme.c:524
 #, c-format
 msgid "error rewinding data object: %s"
 msgstr "倒回数据对象时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:538
+#: ncrypt/crypt_gpgme.c:540
 msgid "[tempfile]"
 msgstr "[临时文件]"
 
-#: ncrypt/crypt_gpgme.c:544 ncrypt/crypt_gpgme.c:598
+#: ncrypt/crypt_gpgme.c:546 ncrypt/crypt_gpgme.c:602
 #, c-format
 msgid "error reading data object: %s"
 msgstr "读取数据对象时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:665
+#: ncrypt/crypt_gpgme.c:670
 #, c-format
 msgid "secret key '%s' not found: %s"
 msgstr "未找到密钥'%s'：%s"
 
-#: ncrypt/crypt_gpgme.c:682
+#: ncrypt/crypt_gpgme.c:687
 #, c-format
 msgid "ambiguous specification of secret key '%s'"
 msgstr "密钥 '%s' 的说明有歧义"
 
-#: ncrypt/crypt_gpgme.c:698
+#: ncrypt/crypt_gpgme.c:703
 #, c-format
 msgid "error setting secret key '%s': %s"
 msgstr "设置密钥'%s'时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:761
+#: ncrypt/crypt_gpgme.c:766
 #, c-format
 msgid "error setting PKA signature notation: %s"
 msgstr "设置公钥认证(PKA)签名注释时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:823
+#: ncrypt/crypt_gpgme.c:828
 #, c-format
 msgid "error encrypting data: %s"
 msgstr "加密数据时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:950
+#: ncrypt/crypt_gpgme.c:955
 #, c-format
 msgid "error signing data: %s"
 msgstr "签署数据时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:960
+#: ncrypt/crypt_gpgme.c:965
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
 msgstr "$pgp_sign_as 没有设置并且 ~/.gnupg/gpg.conf 没有指定默认密钥"
 
-#: ncrypt/crypt_gpgme.c:1138
+#: ncrypt/crypt_gpgme.c:1143
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "警告：密钥中有一个已经被吊销\n"
 
-#: ncrypt/crypt_gpgme.c:1147
+#: ncrypt/crypt_gpgme.c:1152
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "警告：用来创建签名的密钥已于此日期过期："
 
-#: ncrypt/crypt_gpgme.c:1153
+#: ncrypt/crypt_gpgme.c:1158
 msgid "Warning: At least one certification key has expired\n"
 msgstr "警告：至少有一个证书密钥已过期\n"
 
-#: ncrypt/crypt_gpgme.c:1167
+#: ncrypt/crypt_gpgme.c:1172
 msgid "Warning: The signature expired at: "
 msgstr "警告：签名已于此日期过期："
 
-#: ncrypt/crypt_gpgme.c:1174
+#: ncrypt/crypt_gpgme.c:1179
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "由于缺少密钥或证书而无法验证\n"
 
-#: ncrypt/crypt_gpgme.c:1179
+#: ncrypt/crypt_gpgme.c:1184
 msgid "The CRL is not available\n"
 msgstr "证书吊销列表(CRL)不可用\n"
 
-#: ncrypt/crypt_gpgme.c:1185
+#: ncrypt/crypt_gpgme.c:1190
 msgid "Available CRL is too old\n"
 msgstr "可用的证书吊销列表(CRL)太旧\n"
 
-#: ncrypt/crypt_gpgme.c:1190
+#: ncrypt/crypt_gpgme.c:1195
 msgid "A policy requirement was not met\n"
 msgstr "未满足策略要求\n"
 
-#: ncrypt/crypt_gpgme.c:1199
+#: ncrypt/crypt_gpgme.c:1204
 msgid "A system error occurred"
 msgstr "发生系统错误"
 
-#: ncrypt/crypt_gpgme.c:1232
+#: ncrypt/crypt_gpgme.c:1237
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "警告：公钥认证(PKA)项与发送者地址不匹配："
 
-#: ncrypt/crypt_gpgme.c:1238
+#: ncrypt/crypt_gpgme.c:1243
 msgid "PKA verified signer's address is: "
 msgstr "公钥认证(PKA)确认的发送者地址为："
 
-#: ncrypt/crypt_gpgme.c:1257 ncrypt/gpgme_functions.c:62
+#: ncrypt/crypt_gpgme.c:1262 ncrypt/gpgme_functions.c:63
 msgid "Fingerprint: "
 msgstr "指纹："
 
-#: ncrypt/crypt_gpgme.c:1320
+#: ncrypt/crypt_gpgme.c:1325
 msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
 msgstr "警告：我们“无法”证实密钥是否属于上面列出名字的人\n"
 
-#: ncrypt/crypt_gpgme.c:1325
+#: ncrypt/crypt_gpgme.c:1330
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "警告：密钥“不属于”上面列出名字的人\n"
 
-#: ncrypt/crypt_gpgme.c:1328
+#: ncrypt/crypt_gpgme.c:1333
 msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
 msgstr "警告：“无法”确定密钥属于上面列出名字的人\n"
 
-#: ncrypt/crypt_gpgme.c:1363 ncrypt/crypt_gpgme.c:1368
-#: ncrypt/gpgme_functions.c:61
+#: ncrypt/crypt_gpgme.c:1368 ncrypt/crypt_gpgme.c:1373
+#: ncrypt/gpgme_functions.c:62
 msgid "aka: "
 msgstr "亦即："
 
-#: ncrypt/crypt_gpgme.c:1380
+#: ncrypt/crypt_gpgme.c:1385
 msgid "KeyID "
 msgstr "KeyID "
 
 #. L10N: You will see this message in place of "KeyID "
 #. if the S/MIME key has no ID. This is quite an error.
-#: ncrypt/crypt_gpgme.c:1387
+#: ncrypt/crypt_gpgme.c:1392
 msgid "no signature fingerprint available"
 msgstr "无可用签名指纹"
 
-#: ncrypt/crypt_gpgme.c:1396 ncrypt/crypt_gpgme.c:1401
+#: ncrypt/crypt_gpgme.c:1401 ncrypt/crypt_gpgme.c:1406
 msgid "created: "
 msgstr "创建于："
 
-#: ncrypt/crypt_gpgme.c:1478
+#. L10N: Show the algorithm and key ID of the encryption recipients, e.g
+#. Recipient: RSA key, ID 1111111111111111
+#: ncrypt/crypt_gpgme.c:1425
+#, c-format
+msgid "Recipient: %s key, ID %s\n"
+msgstr ""
+
+#: ncrypt/crypt_gpgme.c:1438
+#, fuzzy
+msgid "[-- Begin encryption information --]\n"
+msgstr "[-- 签名信息开始 --]\n"
+
+#: ncrypt/crypt_gpgme.c:1443
+#, fuzzy
+msgid ""
+"[-- End encryption information --]\n"
+"\n"
+msgstr ""
+"[-- 签名信息结束 --]\n"
+"\n"
+
+#: ncrypt/crypt_gpgme.c:1517
 #, c-format
 msgid "Error getting key information for KeyID %s: %s\n"
 msgstr "获取密钥 ID %s 的密钥信息出错：%s\n"
 
-#: ncrypt/crypt_gpgme.c:1485 ncrypt/crypt_gpgme.c:1500
+#: ncrypt/crypt_gpgme.c:1524 ncrypt/crypt_gpgme.c:1539
 msgid "Good signature from:"
 msgstr "正确的签名来自："
 
-#: ncrypt/crypt_gpgme.c:1492
+#: ncrypt/crypt_gpgme.c:1531
 msgid "*BAD* signature from:"
 msgstr "*错误*的签名来自："
 
-#: ncrypt/crypt_gpgme.c:1508
+#: ncrypt/crypt_gpgme.c:1547
 msgid "Problem signature from:"
 msgstr "有问题的签名来自："
 
 #. L10N: This is trying to match the width of the
 #. "Problem signature from:" translation just above.
-#: ncrypt/crypt_gpgme.c:1514
+#: ncrypt/crypt_gpgme.c:1553
 msgid "               expires: "
 msgstr "  已于此日期过期："
 
-#: ncrypt/crypt_gpgme.c:1569 ncrypt/crypt_gpgme.c:1802
-#: ncrypt/crypt_gpgme.c:2612
+#: ncrypt/crypt_gpgme.c:1608 ncrypt/crypt_gpgme.c:1846
+#: ncrypt/crypt_gpgme.c:2660
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- 签名信息开始 --]\n"
 
-#: ncrypt/crypt_gpgme.c:1580
+#: ncrypt/crypt_gpgme.c:1619
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "错误：验证失败：%s\n"
 
-#: ncrypt/crypt_gpgme.c:1631
+#: ncrypt/crypt_gpgme.c:1670
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** 注释开始 (由 %s 签署) ***\n"
 
-#: ncrypt/crypt_gpgme.c:1650
+#: ncrypt/crypt_gpgme.c:1689
 msgid "*** End Notation ***\n"
 msgstr "*** 注释结束 ***\n"
 
-#: ncrypt/crypt_gpgme.c:1658 ncrypt/crypt_gpgme.c:1816
-#: ncrypt/crypt_gpgme.c:2622
+#: ncrypt/crypt_gpgme.c:1697 ncrypt/crypt_gpgme.c:1860
+#: ncrypt/crypt_gpgme.c:2670
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -6355,7 +6370,7 @@ msgstr ""
 "[-- 签名信息结束 --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:1776
+#: ncrypt/crypt_gpgme.c:1820
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -6364,26 +6379,26 @@ msgstr ""
 "[-- 错误：解密失败：%s --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2288
+#: ncrypt/crypt_gpgme.c:2331
 #, c-format
 msgid "Error importing key: %s"
 msgstr "导入密钥时出错：%s"
 
-#: ncrypt/crypt_gpgme.c:2588
+#: ncrypt/crypt_gpgme.c:2636
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "错误：解密/验证失败：%s\n"
 
-#: ncrypt/crypt_gpgme.c:2595 ncrypt/crypt_gpgme.c:2787 ncrypt/pgp.c:745
-#: ncrypt/pgp.c:1313
+#: ncrypt/crypt_gpgme.c:2643 ncrypt/crypt_gpgme.c:2834 ncrypt/pgp.c:745
+#: ncrypt/pgp.c:1310
 msgid "PGP message successfully decrypted"
 msgstr "PGP 信件成功解密"
 
-#: ncrypt/crypt_gpgme.c:2634
+#: ncrypt/crypt_gpgme.c:2682
 msgid "Error: copy data failed\n"
 msgstr "错误：复制数据失败\n"
 
-#: ncrypt/crypt_gpgme.c:2647 ncrypt/pgp.c:689
+#: ncrypt/crypt_gpgme.c:2695 ncrypt/pgp.c:689
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -6391,11 +6406,11 @@ msgstr ""
 "[-- PGP 消息开始 --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2649 ncrypt/pgp.c:691
+#: ncrypt/crypt_gpgme.c:2697 ncrypt/pgp.c:691
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公钥块开始 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2651 ncrypt/pgp.c:693
+#: ncrypt/crypt_gpgme.c:2699 ncrypt/pgp.c:693
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -6403,19 +6418,19 @@ msgstr ""
 "[-- PGP 签署的信件开始 --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2678 ncrypt/pgp.c:731
+#: ncrypt/crypt_gpgme.c:2726 ncrypt/pgp.c:731
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- PGP 消息结束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2680 ncrypt/pgp.c:750
+#: ncrypt/crypt_gpgme.c:2728 ncrypt/pgp.c:750
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- PGP 公钥块结束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2682 ncrypt/pgp.c:754
+#: ncrypt/crypt_gpgme.c:2730 ncrypt/pgp.c:754
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- PGP 签署的信件结束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2704 ncrypt/pgp.c:787
+#: ncrypt/crypt_gpgme.c:2752 ncrypt/pgp.c:787
 msgid ""
 "[-- Error: could not find beginning of PGP message --]\n"
 "\n"
@@ -6423,99 +6438,91 @@ msgstr ""
 "[-- 错误：找不到 PGP 消息的开头！ --]\n"
 "\n"
 
-#: ncrypt/crypt_gpgme.c:2731 ncrypt/crypt_gpgme.c:2825 ncrypt/pgp.c:1259
+#: ncrypt/crypt_gpgme.c:2779 ncrypt/crypt_gpgme.c:2872 ncrypt/pgp.c:1259
 msgid "[-- Error: could not create temporary file --]\n"
 msgstr "[-- 错误：无法创建临时文件！ --]\n"
 
-#: ncrypt/crypt_gpgme.c:2744
-msgid ""
-"[-- The following data is PGP/MIME signed and encrypted --]\n"
-msgstr ""
-"[-- 以下数据已由 PGP/MIME 签署并加密 --]\n"
+#: ncrypt/crypt_gpgme.c:2792
+msgid "[-- The following data is PGP/MIME signed and encrypted --]\n"
+msgstr "[-- 以下数据已由 PGP/MIME 签署并加密 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2745 ncrypt/pgp.c:1272
-msgid ""
-"[-- The following data is PGP/MIME encrypted --]\n"
-msgstr ""
-"[-- 以下数据已由 PGP/MIME 加密 --]\n"
+#: ncrypt/crypt_gpgme.c:2793 ncrypt/pgp.c:1272
+msgid "[-- The following data is PGP/MIME encrypted --]\n"
+msgstr "[-- 以下数据已由 PGP/MIME 加密 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2782
+#: ncrypt/crypt_gpgme.c:2829
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- PGP/MIME 签署并加密的数据结束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2783 ncrypt/pgp.c:1308
+#: ncrypt/crypt_gpgme.c:2830 ncrypt/pgp.c:1306
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- PGP/MIME 加密数据结束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2795 ncrypt/pgp.c:680 ncrypt/pgp.c:734
-#: ncrypt/pgp.c:1317
+#: ncrypt/crypt_gpgme.c:2842 ncrypt/pgp.c:680 ncrypt/pgp.c:734
+#: ncrypt/pgp.c:1314
 msgid "Could not decrypt PGP message"
 msgstr "无法解密 PGP 信件"
 
-#: ncrypt/crypt_gpgme.c:2838
-msgid ""
-"[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- 以下数据已由 S/MIME 签署 --]\n"
+#: ncrypt/crypt_gpgme.c:2885 ncrypt/smime.c:1923
+msgid "[-- The following data is S/MIME signed --]\n"
+msgstr "[-- 以下数据已由 S/MIME 签署 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2839
-msgid ""
-"[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- 以下数据已由 S/MIME 加密 --]\n"
+#: ncrypt/crypt_gpgme.c:2886 ncrypt/smime.c:1919
+msgid "[-- The following data is S/MIME encrypted --]\n"
+msgstr "[-- 以下数据已由 S/MIME 加密 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2883
+#: ncrypt/crypt_gpgme.c:2929 ncrypt/smime.c:2025
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- S/MIME 签署的数据结束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:2884
+#: ncrypt/crypt_gpgme.c:2930 ncrypt/smime.c:2023
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- S/MIME 加密的数据结束 --]\n"
 
-#: ncrypt/crypt_gpgme.c:3071 ncrypt/crypt_gpgme.c:3122
+#: ncrypt/crypt_gpgme.c:3117 ncrypt/crypt_gpgme.c:3168
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start 失败：%s"
 
-#: ncrypt/crypt_gpgme.c:3110 ncrypt/crypt_gpgme.c:3161
-#: ncrypt/crypt_gpgme.c:3691
+#: ncrypt/crypt_gpgme.c:3156 ncrypt/crypt_gpgme.c:3207
+#: ncrypt/crypt_gpgme.c:3737
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next 失败：%s"
 
-#: ncrypt/crypt_gpgme.c:3225 ncrypt/crypt_gpgme.c:3345 ncrypt/pgpkey.c:398
-#: ncrypt/pgpkey.c:530
+#: ncrypt/crypt_gpgme.c:3271 ncrypt/crypt_gpgme.c:3391 ncrypt/pgpkey.c:399
+#: ncrypt/pgpkey.c:531
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "正寻找匹配 \"%s\" 的密钥..."
 
-#: ncrypt/crypt_gpgme.c:3469 ncrypt/pgpkey.c:247 ncrypt/smime.c:707
+#: ncrypt/crypt_gpgme.c:3515 ncrypt/pgpkey.c:248 ncrypt/smime.c:708
 #, c-format
 msgid "No matching keys found for \"%s\""
 msgstr "未找到匹配 \"%s\" 的密钥"
 
-#: ncrypt/crypt_gpgme.c:3523 ncrypt/pgp.c:1499
+#: ncrypt/crypt_gpgme.c:3569 ncrypt/pgp.c:1496
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "要使用 keyID = \"%s\" 用于 %s 吗？"
 
-#: ncrypt/crypt_gpgme.c:3572 ncrypt/pgp.c:1549 ncrypt/smime.c:731
-#: ncrypt/smime.c:811
+#: ncrypt/crypt_gpgme.c:3618 ncrypt/pgp.c:1546 ncrypt/smime.c:732
+#: ncrypt/smime.c:812
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "请输入 %s 的 keyID："
 
 #. L10N: mutt_gpgme_select_secret_key() tries to list all secret keys to choose
 #. from.  This error is displayed if no results were found.
-#: ncrypt/crypt_gpgme.c:3698
+#: ncrypt/crypt_gpgme.c:3744
 msgid "No secret keys found"
 msgstr "未找到密钥"
 
-#: ncrypt/crypt_gpgme.c:3731 ncrypt/pgpkey.c:268
+#: ncrypt/crypt_gpgme.c:3776 ncrypt/pgpkey.c:269
 msgid "Please enter the key ID: "
 msgstr "请输入密钥 ID："
 
-#: ncrypt/crypt_gpgme.c:3744
+#: ncrypt/crypt_gpgme.c:3789
 #, c-format
 msgid "Error exporting key: %s"
 msgstr "导出密钥时出错：%s"
@@ -6523,84 +6530,84 @@ msgstr "导出密钥时出错：%s"
 #. L10N: MIME description for exported (attached) keys.
 #. You can translate this entry to a non-ASCII string (it will be encoded),
 #. but it may be safer to keep it untranslated.
-#: ncrypt/crypt_gpgme.c:3762
+#: ncrypt/crypt_gpgme.c:3807
 #, c-format
 msgid "PGP Key 0x%s"
 msgstr "PGP 密钥 0x%s"
 
-#: ncrypt/crypt_gpgme.c:3802
+#: ncrypt/crypt_gpgme.c:3847
 msgid "GPGME: OpenPGP protocol not available"
 msgstr "GPGME：OpenPGP 协议不可用"
 
-#: ncrypt/crypt_gpgme.c:3813
+#: ncrypt/crypt_gpgme.c:3858
 msgid "GPGME: CMS protocol not available"
 msgstr "GPGME：CMS 协议不可用"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3864
+#: ncrypt/crypt_gpgme.c:3909
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME 签署(s)，选择身份签署(a)，(p)gp，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3866
+#: ncrypt/crypt_gpgme.c:3911
 msgid "sapco"
 msgstr "sapco"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3872
+#: ncrypt/crypt_gpgme.c:3917
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP 签署(s)，选择身份签署(a)，s/(m)ime，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/crypt_gpgme.c:3874
+#: ncrypt/crypt_gpgme.c:3919
 msgid "samco"
 msgstr "samco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3884
+#: ncrypt/crypt_gpgme.c:3929
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3886
+#: ncrypt/crypt_gpgme.c:3931
 msgid "esabpco"
 msgstr "esabpco"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3892
+#: ncrypt/crypt_gpgme.c:3937
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/crypt_gpgme.c:3894
+#: ncrypt/crypt_gpgme.c:3939
 msgid "esabmco"
 msgstr "esabmco"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:3904
+#: ncrypt/crypt_gpgme.c:3949
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，(p)gp或清除(c)？"
 
 #. L10N: S/MIME options
-#: ncrypt/crypt_gpgme.c:3906
+#: ncrypt/crypt_gpgme.c:3951
 msgid "esabpc"
 msgstr "esabpc"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:3912
+#: ncrypt/crypt_gpgme.c:3957
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，s/(m)ime 或清除(c)？"
 
 #. L10N: PGP options
-#: ncrypt/crypt_gpgme.c:3914
+#: ncrypt/crypt_gpgme.c:3959
 msgid "esabmc"
 msgstr "esabmc"
 
-#: ncrypt/crypt_gpgme.c:4079
+#: ncrypt/crypt_gpgme.c:4124
 msgid "Failed to verify sender"
 msgstr "验证发送者失败"
 
-#: ncrypt/crypt_gpgme.c:4084
+#: ncrypt/crypt_gpgme.c:4129
 msgid "Failed to figure out sender"
 msgstr "找出发送者失败"
 
@@ -6608,54 +6615,54 @@ msgstr "找出发送者失败"
 msgid "Invoking S/MIME..."
 msgstr "正在调用 S/MIME..."
 
-#: ncrypt/dlg_gpgme.c:101 ncrypt/dlg_pgp.c:99
+#: ncrypt/dlg_gpgme.c:100 ncrypt/dlg_pgp.c:98
 msgid "Check key"
 msgstr "检查密钥"
 
-#: ncrypt/dlg_gpgme.c:670
+#: ncrypt/dlg_gpgme.c:669
 msgid "All matching keys are marked expired/revoked"
 msgstr "所有符合的密钥都被标记为过期/吊销"
 
-#: ncrypt/dlg_gpgme.c:721
+#: ncrypt/dlg_gpgme.c:720
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP 和 S/MIME 密钥匹配"
 
-#: ncrypt/dlg_gpgme.c:723
+#: ncrypt/dlg_gpgme.c:722
 msgid "PGP keys matching"
 msgstr "PGP 密钥匹配"
 
-#: ncrypt/dlg_gpgme.c:725
+#: ncrypt/dlg_gpgme.c:724
 msgid "S/MIME keys matching"
 msgstr "S/MIME 密钥匹配"
 
-#: ncrypt/dlg_gpgme.c:727
+#: ncrypt/dlg_gpgme.c:726
 msgid "keys matching"
 msgstr "密钥匹配"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:735
+#: ncrypt/dlg_gpgme.c:734
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:740
+#: ncrypt/dlg_gpgme.c:739
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:668
+#: ncrypt/dlg_pgp.c:667
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "所有匹配的密钥已过期，吊销或禁用"
 
-#: ncrypt/dlg_pgp.c:713
+#: ncrypt/dlg_pgp.c:712
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "符合<%s>的 PGP 密钥"
 
-#: ncrypt/dlg_pgp.c:715
+#: ncrypt/dlg_pgp.c:714
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "符合 \"%s\" 的 PGP 密钥"
@@ -6731,134 +6738,134 @@ msgstr "S/MIME 证书匹配 \"%s\""
 #. L10N: The following are the headers for the "verify key" output from the
 #. GPGME key selection menu (bound to "c" in the key selection menu).
 #. They will be automatically aligned.
-#: ncrypt/gpgme_functions.c:61
+#: ncrypt/gpgme_functions.c:62
 msgid "Name: "
 msgstr "名称："
 
-#: ncrypt/gpgme_functions.c:61
+#: ncrypt/gpgme_functions.c:62
 msgid "Valid From: "
 msgstr "从此有效："
 
-#: ncrypt/gpgme_functions.c:61
+#: ncrypt/gpgme_functions.c:62
 msgid "Valid To: "
 msgstr "有效至："
 
-#: ncrypt/gpgme_functions.c:62
+#: ncrypt/gpgme_functions.c:63
 msgid "Key Type: "
 msgstr "密钥类型："
 
-#: ncrypt/gpgme_functions.c:62
+#: ncrypt/gpgme_functions.c:63
 msgid "Key Usage: "
 msgstr "密钥用法："
 
-#: ncrypt/gpgme_functions.c:62
+#: ncrypt/gpgme_functions.c:63
 msgid "Serial-No: "
 msgstr "序列号："
 
-#: ncrypt/gpgme_functions.c:63
+#: ncrypt/gpgme_functions.c:64
 msgid "Issued By: "
 msgstr "发放者："
 
-#: ncrypt/gpgme_functions.c:63
+#: ncrypt/gpgme_functions.c:64
 msgid "Subkey: "
 msgstr "子密钥："
 
-#: ncrypt/gpgme_functions.c:355
+#: ncrypt/gpgme_functions.c:356
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[无法显示用户 ID (未知编码)]"
 
-#: ncrypt/gpgme_functions.c:359
+#: ncrypt/gpgme_functions.c:360
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[无法显示用户 ID (无效编码)]"
 
-#: ncrypt/gpgme_functions.c:376
+#: ncrypt/gpgme_functions.c:377
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[无法显示用户 ID (无效 DN)]"
 
 #. L10N: comes after the Name or aka if the key is invalid
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:428 ncrypt/gpgme_functions.c:563
+#: ncrypt/gpgme_functions.c:429 ncrypt/gpgme_functions.c:564
 msgid "[Invalid]"
 msgstr "[无效]"
 
 #. L10N: This is printed after "Key Type: " and looks like this: PGP, 2048 bit RSA
-#: ncrypt/gpgme_functions.c:468 ncrypt/gpgme_functions.c:603
+#: ncrypt/gpgme_functions.c:469 ncrypt/gpgme_functions.c:604
 #, c-format
 msgid "%s, %lu bit %s\n"
 msgid_plural "%s, %lu bit %s\n"
 msgstr[0] "%s，%lu 位 %s\n"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/gpgme_functions.c:476 ncrypt/gpgme_functions.c:610
+#: ncrypt/gpgme_functions.c:477 ncrypt/gpgme_functions.c:611
 msgid "encryption"
 msgstr "加密"
 
-#: ncrypt/gpgme_functions.c:477 ncrypt/gpgme_functions.c:483
-#: ncrypt/gpgme_functions.c:611 ncrypt/gpgme_functions.c:616
+#: ncrypt/gpgme_functions.c:478 ncrypt/gpgme_functions.c:484
+#: ncrypt/gpgme_functions.c:612 ncrypt/gpgme_functions.c:617
 msgid ", "
 msgstr ", "
 
 #. L10N: value in Key Usage: field
-#: ncrypt/gpgme_functions.c:482 ncrypt/gpgme_functions.c:615
+#: ncrypt/gpgme_functions.c:483 ncrypt/gpgme_functions.c:616
 msgid "signing"
 msgstr "正在签署"
 
 #. L10N: value in Key Usage: field
-#: ncrypt/gpgme_functions.c:488 ncrypt/gpgme_functions.c:620
+#: ncrypt/gpgme_functions.c:489 ncrypt/gpgme_functions.c:621
 msgid "certification"
 msgstr "证书"
 
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:557
+#: ncrypt/gpgme_functions.c:558
 msgid "[Revoked]"
 msgstr "[已吊销]"
 
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:569
+#: ncrypt/gpgme_functions.c:570
 msgid "[Expired]"
 msgstr "[已过期]"
 
 #. L10N: describes a subkey
-#: ncrypt/gpgme_functions.c:575
+#: ncrypt/gpgme_functions.c:576
 msgid "[Disabled]"
 msgstr "[已禁用]"
 
-#: ncrypt/gpgme_functions.c:647
+#: ncrypt/gpgme_functions.c:648
 msgid "Collecting data..."
 msgstr "正在收集数据..."
 
-#: ncrypt/gpgme_functions.c:665
+#: ncrypt/gpgme_functions.c:666
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "查找发放者密钥出错：%s\n"
 
-#: ncrypt/gpgme_functions.c:674
+#: ncrypt/gpgme_functions.c:675
 msgid "Error: certification chain too long - stopping here\n"
 msgstr "错误：证书链过长 - 就此打住\n"
 
-#: ncrypt/gpgme_functions.c:685 ncrypt/pgp_functions.c:160
+#: ncrypt/gpgme_functions.c:686 ncrypt/pgp_functions.c:161
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "密钥 ID：0x%s"
 
-#: ncrypt/gpgme_functions.c:754 ncrypt/pgp_functions.c:70
+#: ncrypt/gpgme_functions.c:755 ncrypt/pgp_functions.c:71
 msgid "This key can't be used: expired/disabled/revoked"
 msgstr "无法使用这个密钥：已过期/已禁用/已吊销"
 
-#: ncrypt/gpgme_functions.c:766 ncrypt/pgp_functions.c:82
+#: ncrypt/gpgme_functions.c:767 ncrypt/pgp_functions.c:83
 #: ncrypt/smime_functions.c:65
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
 msgstr "ID 已过期/已禁用/已吊销。您真的要使用此密钥吗？"
 
-#: ncrypt/gpgme_functions.c:774 ncrypt/pgp_functions.c:92
+#: ncrypt/gpgme_functions.c:775 ncrypt/pgp_functions.c:93
 msgid "ID is not valid. Do you really want to use the key?"
 msgstr "ID 无效。您真的要使用此密钥吗？"
 
-#: ncrypt/gpgme_functions.c:777 ncrypt/pgp_functions.c:95
+#: ncrypt/gpgme_functions.c:778 ncrypt/pgp_functions.c:96
 msgid "ID is only marginally valid. Do you really want to use the key?"
 msgstr "ID 仅勉强有效。您真的要使用此密钥吗？"
 
-#: ncrypt/gpgme_functions.c:784 ncrypt/pgp_functions.c:89
+#: ncrypt/gpgme_functions.c:785 ncrypt/pgp_functions.c:90
 #: ncrypt/smime_functions.c:68
 msgid "ID has undefined validity. Do you really want to use the key?"
 msgstr "ID 有效性未定义。您真的要使用此密钥吗？"
@@ -6898,98 +6905,98 @@ msgstr ""
 "[-- 错误：无法创建 PGP 子进程！ --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1933
-#: postpone/postpone.c:432
+#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1935
+#: postpone/postpone.c:433
 msgid "Decryption failed"
 msgstr "解密失败"
 
-#: ncrypt/pgp.c:1374
+#: ncrypt/pgp.c:1371
 msgid "Can't open PGP subprocess"
 msgstr "无法打开 PGP 子进程"
 
-#: ncrypt/pgp.c:1814
+#: ncrypt/pgp.c:1811
 msgid "Can't invoke PGP"
 msgstr "不能调用 PGP"
 
 #. L10N: The next string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1923
+#: ncrypt/pgp.c:1920
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
 #. L10N: The previous string MUST have the same highlighted letter
 #. One of them will appear in each of the three strings marked "(inline"), below.
-#: ncrypt/pgp.c:1929
+#: ncrypt/pgp.c:1926
 msgid "(i)nline"
 msgstr "嵌入(i)"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
-#: ncrypt/pgp.c:1942
+#: ncrypt/pgp.c:1939
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP 签署(s)，选择身份签署(a)，%s 格式，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1947
+#: ncrypt/pgp.c:1944
 msgid "saico"
 msgstr "saico"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1953
+#: ncrypt/pgp.c:1950
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "PGP 签署(s)，选择身份签署(a)，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is on)
-#: ncrypt/pgp.c:1955
+#: ncrypt/pgp.c:1952
 msgid "saco"
 msgstr "saco"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
-#: ncrypt/pgp.c:1969
+#: ncrypt/pgp.c:1966
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s 格式，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1974
+#: ncrypt/pgp.c:1971
 msgid "esabico"
 msgstr "esabico"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1980
+#: ncrypt/pgp.c:1977
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: PGP options (opportunistic encryption is off)
-#: ncrypt/pgp.c:1982
+#: ncrypt/pgp.c:1979
 msgid "esabco"
 msgstr "esabco"
 
 #. L10N: PGP options (inline)
-#: ncrypt/pgp.c:1993
+#: ncrypt/pgp.c:1990
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，同时(b)，%s 格式，或清除(c)？"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
-#: ncrypt/pgp.c:1998
+#: ncrypt/pgp.c:1995
 msgid "esabic"
 msgstr "esabic"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:2004
+#: ncrypt/pgp.c:2001
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
 msgstr "PGP 加密(e)，签署(s)，选择身份签署(a)，两者皆要(b)，或清除(c)？"
 
 #. L10N: PGP options
-#: ncrypt/pgp.c:2006
+#: ncrypt/pgp.c:2003
 msgid "esabc"
 msgstr "esabc"
 
-#: ncrypt/pgp_functions.c:122 ncrypt/pgpkey.c:289
+#: ncrypt/pgp_functions.c:123 ncrypt/pgpkey.c:290
 msgid "Can't open /dev/null"
 msgstr "无法打开 /dev/null"
 
@@ -6997,59 +7004,59 @@ msgstr "无法打开 /dev/null"
 msgid "Fetching PGP key..."
 msgstr "正在取回 PGP 密钥..."
 
-#: ncrypt/pgpkey.c:318
+#: ncrypt/pgpkey.c:319
 #, c-format
 msgid "PGP Key %s"
 msgstr "PGP 密钥 %s"
 
-#: ncrypt/pgpkey.c:600
+#: ncrypt/pgpkey.c:601
 #, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "无法使用这个密钥：已过期/已禁用/已吊销"
 
-#: ncrypt/smime.c:176
+#: ncrypt/smime.c:177
 msgid "Enter S/MIME passphrase:"
 msgstr "请输入 S/MIME 通行密码："
 
-#: ncrypt/smime.c:691
+#: ncrypt/smime.c:692
 msgid "Enter keyID: "
 msgstr "请输入密钥 ID："
 
-#: ncrypt/smime.c:817
+#: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "未找到可用于 %s 的(有效)证书"
 
-#: ncrypt/smime.c:872 ncrypt/smime.c:901 ncrypt/smime.c:980 ncrypt/smime.c:1015
-#: ncrypt/smime.c:1093 ncrypt/smime.c:1175
+#: ncrypt/smime.c:873 ncrypt/smime.c:902 ncrypt/smime.c:981 ncrypt/smime.c:1016
+#: ncrypt/smime.c:1094 ncrypt/smime.c:1176
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "错误：无法创建 OpenSSL 子进程"
 
-#: ncrypt/smime.c:1153
+#: ncrypt/smime.c:1154
 msgid "Label for certificate: "
 msgstr "证书标签："
 
-#: ncrypt/smime.c:1258
+#: ncrypt/smime.c:1259
 msgid "no certfile"
 msgstr "无证书文件"
 
-#: ncrypt/smime.c:1263
+#: ncrypt/smime.c:1264
 msgid "no mbox"
 msgstr "没有信箱"
 
-#: ncrypt/smime.c:1425 ncrypt/smime.c:1594
+#: ncrypt/smime.c:1427 ncrypt/smime.c:1596
 msgid "No output from OpenSSL..."
 msgstr "OpenSSL 没有输出..."
 
-#: ncrypt/smime.c:1512
+#: ncrypt/smime.c:1514
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "无法签署：没有指定密钥。请使用指定身份签署(Sign As)"
 
-#: ncrypt/smime.c:1561
+#: ncrypt/smime.c:1563
 msgid "Can't open OpenSSL subprocess"
 msgstr "无法打开 OpenSSL 子进程"
 
-#: ncrypt/smime.c:1793 ncrypt/smime.c:1912
+#: ncrypt/smime.c:1795 ncrypt/smime.c:1914
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -7057,69 +7064,69 @@ msgstr ""
 "[-- OpenSSL 输出结束 --]\n"
 "\n"
 
-#: ncrypt/smime.c:1870 ncrypt/smime.c:1882
+#: ncrypt/smime.c:1872 ncrypt/smime.c:1884
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- 错误：无法创建 OpenSSL 子进程！ --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2158
+#: ncrypt/smime.c:2160
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME 签署(s)，选择身份加密(w)，选择身份签署(a)，清除(c)，或关闭机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2160
+#: ncrypt/smime.c:2162
 msgid "swaco"
 msgstr "swaco"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2168
+#: ncrypt/smime.c:2170
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(a)，两者皆要(b)，清除(c)，或使用机遇加密模式(o)？"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2170
+#: ncrypt/smime.c:2172
 msgid "eswabco"
 msgstr "eswabco"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2177
+#: ncrypt/smime.c:2179
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME 加密(e)，签署(s)，选择身份加密(w)，选择身份签署(a)，两者皆要(b)，或清除(c)？"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2179
+#: ncrypt/smime.c:2181
 msgid "eswabc"
 msgstr "eswabc"
 
-#: ncrypt/smime.c:2245
+#: ncrypt/smime.c:2247
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "选择算法类别：(1) DES, (2) RC2, (3) AES, 或(c)清除？"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2247
+#: ncrypt/smime.c:2249
 msgid "123c"
 msgstr "123c"
 
-#: ncrypt/smime.c:2250
+#: ncrypt/smime.c:2252
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) 三重DES"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2252
+#: ncrypt/smime.c:2254
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2266
+#: ncrypt/smime.c:2268
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2268 ncrypt/smime.c:2288
+#: ncrypt/smime.c:2270 ncrypt/smime.c:2290
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2286
+#: ncrypt/smime.c:2288
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
@@ -7127,94 +7134,94 @@ msgstr "(1) AES128, (2) AES192, (3) AES256?"
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "ID 不可信。您真的要使用此密钥吗？"
 
-#: nntp/newsrc.c:643
+#: nntp/newsrc.c:634
 msgid "Loading list of groups from cache..."
 msgstr "正在从缓存中加载新闻组列表..."
 
-#: nntp/newsrc.c:1080
+#: nntp/newsrc.c:1073
 msgid "No news server defined"
 msgstr "未定义新闻服务器"
 
-#: nntp/newsrc.c:1098
+#: nntp/newsrc.c:1091
 #, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s 是无效的新闻服务器 URL"
 
-#: nntp/nntp.c:130 nntp/nntp.c:686 pop/lib.c:417 pop/pop.c:685
+#: nntp/nntp.c:130 nntp/nntp.c:711 pop/lib.c:417 pop/pop.c:685
 msgid "Server closed connection"
 msgstr "服务器关闭了连接"
 
-#: nntp/nntp.c:240
+#: nntp/nntp.c:250
 msgid "Server doesn't support reader mode"
 msgstr "服务器不支持阅读模式"
 
-#: nntp/nntp.c:482 pop/auth.c:620 send/smtp.c:1012
+#: nntp/nntp.c:499 pop/auth.c:620 send/smtp.c:1005
 msgid "No authenticators available"
 msgstr "无可用认证方式"
 
-#: nntp/nntp.c:739
+#: nntp/nntp.c:767
 #, c-format
 msgid "Connection to %s lost. Reconnect?"
 msgstr "到 %s 的连接已关闭。重新连接吗？"
 
-#: nntp/nntp.c:1204
+#: nntp/nntp.c:1236
 msgid "Fetching list of articles..."
 msgstr "正在取回帖子列表..."
 
-#: nntp/nntp.c:1474 nntp/nntp.c:2073 pop/pop.c:557 pop/pop.c:838
+#: nntp/nntp.c:1506 nntp/nntp.c:2121 pop/pop.c:557 pop/pop.c:838
 msgid "Checking for new messages..."
 msgstr "正在检查新信件..."
 
-#: nntp/nntp.c:1791 nntp/nntp.c:1884
+#: nntp/nntp.c:1828 nntp/nntp.c:1923
 msgid "Could not switch to reader mode"
 msgstr "无法切换到阅读模式"
 
-#: nntp/nntp.c:1804
+#: nntp/nntp.c:1841
 #, c-format
 msgid "Connected to %s. %s"
 msgstr "已连接到 %s。%s"
 
-#: nntp/nntp.c:1805
+#: nntp/nntp.c:1842
 msgid "Posting is NOT ok"
 msgstr "不允许发帖"
 
-#: nntp/nntp.c:1805
+#: nntp/nntp.c:1842
 msgid "Posting is ok"
 msgstr "允许发帖"
 
-#: nntp/nntp.c:1941 nntp/nntp.c:1976
+#: nntp/nntp.c:1984 nntp/nntp.c:2021
 #, c-format
 msgid "Can't post article: %s"
 msgstr "无法发帖：%s"
 
-#: nntp/nntp.c:1997
+#: nntp/nntp.c:2045
 #, c-format
 msgid "Loading list of groups from server %s..."
 msgstr "正在从服务器 %s 加载新闻组列表..."
 
-#: nntp/nntp.c:2040 nntp/nntp.c:2135
+#: nntp/nntp.c:2088 nntp/nntp.c:2183
 msgid "Loading descriptions..."
 msgstr "加载描述中..."
 
-#: nntp/nntp.c:2062
+#: nntp/nntp.c:2110
 msgid "Checking for new newsgroups..."
 msgstr "正在检查新新闻组..."
 
-#: nntp/nntp.c:2275
+#: nntp/nntp.c:2323
 msgid "Unable to find child articles because server does not support XPAT command"
 msgstr "无法找到子帖因为服务器不支持 XPAT 命令"
 
-#: nntp/nntp.c:2352
+#: nntp/nntp.c:2400
 #, c-format
 msgid "%s is an invalid newsgroup specification"
 msgstr "%s 是无效的新闻组 URL"
 
-#: nntp/nntp.c:2393
+#: nntp/nntp.c:2441
 #, c-format
 msgid "Newsgroup %s not found on the server"
 msgstr "新闻组 %s 没有在服务器上找到"
 
-#: nntp/nntp.c:2416
+#: nntp/nntp.c:2464
 #, c-format
 msgid "Newsgroup %s has been removed from the server"
 msgstr "新闻组 %s 已经从服务器上被移除"
@@ -7230,17 +7237,17 @@ msgstr "nm_default_url 必须为: notmuch://<absolute path> 。目前是：%s"
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "非法的 nm_query_window_timebase 值(合法值是：小时，天，周，月或年)"
 
-#: notmuch/db.c:167
+#: notmuch/db.c:168
 #, c-format
 msgid "Waiting for notmuch DB... (%d sec)"
 msgstr "正在等待 notmuch 数据库...（已等待 %d 秒）"
 
-#: notmuch/db.c:187
+#: notmuch/db.c:188
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
 msgstr "无法打开 notmuch 数据库：%s：%s"
 
-#: notmuch/db.c:188
+#: notmuch/db.c:189
 msgid "unknown reason"
 msgstr "未知原因"
 
@@ -7282,21 +7289,21 @@ msgstr "无法向虚拟文件夹写入"
 msgid "failed to parse notmuch query type: %s"
 msgstr "无法解析 notmuch 查询类型：%s"
 
-#: pager/dlg_pager.c:76 pager/dlg_pager.c:87 pager/dlg_pager.c:97
-#: pager/dlg_pager.c:112
+#: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
+#: pager/dlg_pager.c:111
 msgid "PrevPg"
 msgstr "上一页"
 
-#: pager/dlg_pager.c:77 pager/dlg_pager.c:88 pager/dlg_pager.c:98
-#: pager/dlg_pager.c:113
+#: pager/dlg_pager.c:76 pager/dlg_pager.c:87 pager/dlg_pager.c:97
+#: pager/dlg_pager.c:112
 msgid "NextPg"
 msgstr "下一页"
 
-#: pager/dlg_pager.c:99
+#: pager/dlg_pager.c:98
 msgid "View Attachm."
 msgstr "显示附件"
 
-#: pager/dlg_pager.c:102 pager/dlg_pager.c:117
+#: pager/dlg_pager.c:101 pager/dlg_pager.c:116
 msgid "Next"
 msgstr "下一个"
 
@@ -7337,48 +7344,48 @@ msgstr ""
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
-#: pager/message.c:61 pager/pbar.c:121 status.c:381
+#: pager/message.c:62 pager/pbar.c:121 status.c:382
 msgid "all"
 msgstr "所有"
 
 #. L10N: Used for the $crypt_verify_sig prompt
-#: pager/message.c:195
+#: pager/message.c:196
 msgid "Verify signature?"
 msgstr "验证签名?"
 
-#: pager/message.c:234
+#: pager/message.c:235
 msgid "Can't create display filter"
 msgstr "无法创建显示过滤器"
 
-#: pager/message.c:258
+#: pager/message.c:259
 msgid "Could not copy message"
 msgstr "无法复制信件"
 
-#: pager/message.c:340
+#: pager/message.c:341
 msgid "Command: "
 msgstr "命令："
 
-#: pager/message.c:368
+#: pager/message.c:369
 msgid "S/MIME signature successfully verified"
 msgstr "S/MIME 签名验证成功"
 
-#: pager/message.c:370
+#: pager/message.c:371
 msgid "S/MIME certificate owner does not match sender"
 msgstr "S/MIME 证书所有者与发送者不匹配"
 
-#: pager/message.c:374 pager/message.c:387
+#: pager/message.c:375 pager/message.c:388
 msgid "Warning: Part of this message has not been signed"
 msgstr "警告：此信件的部分内容未签署"
 
-#: pager/message.c:378
+#: pager/message.c:379
 msgid "S/MIME signature could NOT be verified"
 msgstr "S/MIME 签名“无法”验证"
 
-#: pager/message.c:385
+#: pager/message.c:386
 msgid "PGP signature successfully verified"
 msgstr "PGP 签名验证成功"
 
-#: pager/message.c:389
+#: pager/message.c:390
 msgid "PGP signature could NOT be verified"
 msgstr "PGP 签名“无法”验证"
 
@@ -7392,7 +7399,7 @@ msgstr "%ld%%"
 
 #. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
-#: pager/pbar.c:123 status.c:379
+#: pager/pbar.c:123 status.c:380
 msgid "end"
 msgstr "结束"
 
@@ -7401,100 +7408,100 @@ msgstr "结束"
 msgid "%s: unknown command"
 msgstr "%s：未知命令"
 
-#: parse/set.c:354 parse/set.c:566
+#: parse/set.c:353 parse/set.c:565
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr "命令 '%s' 只能用于布尔值和四项值变量"
 
-#: parse/set.c:469
+#: parse/set.c:468
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "'%s' 命令不能使用 'inv', 'no', '&' 或 '?'"
 
-#: parse/set.c:514
+#: parse/set.c:513
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "变量自增或自减时无法使用前缀"
 
-#: parse/set.c:520 parse/set.c:550
+#: parse/set.c:519 parse/set.c:549
 #, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr "无法使用 '%s' 命令设置变量"
 
-#: parse/set.c:536
+#: parse/set.c:535
 msgid "'+' and '-' must be followed by '='"
 msgstr ""
 
-#: parse/set.c:544
+#: parse/set.c:543
 msgid "Can't use prefix when setting a variable"
 msgstr "设置变量时无法使用前缀"
 
-#: parse/set.c:562
+#: parse/set.c:561
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
 msgstr "前缀 'no' 和 'inv' 只能用于布尔值和四项值变量"
 
-#: pattern/compile.c:75 pattern/compile.c:162 pattern/compile.c:723
+#: pattern/compile.c:76 pattern/compile.c:163 pattern/compile.c:724
 #, c-format
 msgid "Error in expression: %s"
 msgstr "表达式有错误：%s"
 
-#: pattern/compile.c:80 pattern/compile.c:167 pattern/compile.c:729
+#: pattern/compile.c:81 pattern/compile.c:168 pattern/compile.c:730
 msgid "Empty expression"
 msgstr "空表达式"
 
-#: pattern/compile.c:154
+#: pattern/compile.c:155
 msgid "No search command defined"
 msgstr "未定义搜索命令"
 
-#: pattern/compile.c:189
+#: pattern/compile.c:190
 #, c-format
 msgid "Running search command: %s ..."
 msgstr "正在运行搜索命令：%s ..."
 
-#: pattern/compile.c:307 pattern/compile.c:322
+#: pattern/compile.c:308 pattern/compile.c:323
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "无效的日子：%s"
 
-#: pattern/compile.c:312 pattern/compile.c:336
+#: pattern/compile.c:313 pattern/compile.c:337
 #, c-format
 msgid "Invalid month: %s"
 msgstr "无效的月份：%s"
 
-#: pattern/compile.c:447
+#: pattern/compile.c:448
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "无效的相对日期：%s"
 
-#: pattern/compile.c:924 pattern/compile.c:1138
+#: pattern/compile.c:925 pattern/compile.c:1139
 msgid "empty pattern"
 msgstr "空模式"
 
-#: pattern/compile.c:954 pattern/compile.c:1129
+#: pattern/compile.c:955 pattern/compile.c:1130
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "模式有错误：%s"
 
-#: pattern/compile.c:981
+#: pattern/compile.c:982
 #, c-format
 msgid "missing pattern: %s"
 msgstr "缺少模式：%s"
 
-#: pattern/compile.c:999 pattern/compile.c:1099
+#: pattern/compile.c:1000 pattern/compile.c:1100
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "不匹配的圆括号：%s"
 
-#: pattern/compile.c:1033
+#: pattern/compile.c:1034
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c：无效模式修饰符"
 
-#: pattern/compile.c:1038
+#: pattern/compile.c:1039
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c：此模式下不支持"
 
-#: pattern/compile.c:1061
+#: pattern/compile.c:1062
 msgid "missing parameter"
 msgstr "缺少参数"
 
@@ -7560,35 +7567,35 @@ msgstr "直接子信件匹配 PATTERN 的信件"
 #. L10N: One of the crypt pattern operators: ~g, ~G, ~k, ~V
 #. was invoked when NeoMutt was compiled without crypto support.
 #. %c is the pattern character, i.e. "g".
-#: pattern/exec.c:96
+#: pattern/exec.c:95
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
 msgstr "模式操作符 '~%c' 不可用"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:102 pattern/exec.c:1115
+#: pattern/exec.c:101 pattern/exec.c:1114
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "错误：未知操作(op) %d (请报告这个错误)"
 
-#: pattern/exec.c:142
+#: pattern/exec.c:141
 msgid "Error opening 'memory stream'"
 msgstr "打开内存流临时文件时出错"
 
-#: pattern/exec.c:195
+#: pattern/exec.c:194
 msgid "Error re-opening 'memory stream'"
 msgstr "重新打开内存流临时文件时出错"
 
-#: pattern/exec.c:205
+#: pattern/exec.c:204
 msgid "Error opening /dev/null"
 msgstr "打开 /dev/null 时出错"
 
-#: pattern/exec.c:215
+#: pattern/exec.c:214
 msgid "Error checking length of temporary file"
 msgstr "获取临时文件大小时出错"
 
-#: pattern/exec.c:898
+#: pattern/exec.c:897
 msgid "error: server custom search only supported with IMAP"
 msgstr "错误：仅 IMAP 支持服务器端的自定义搜索"
 
@@ -7977,24 +7984,24 @@ msgstr "无法将新建写入临时文件"
 msgid "Postponed Messages"
 msgstr "信件已经被延迟寄出"
 
-#: postpone/postpone.c:233
+#: postpone/postpone.c:234
 msgid "Illegal S/MIME header"
 msgstr "非法的 S/MIME 信件头"
 
-#: postpone/postpone.c:265 postpone/postpone.c:304 postpone/postpone.c:313
+#: postpone/postpone.c:266 postpone/postpone.c:305 postpone/postpone.c:314
 msgid "Illegal crypto header"
 msgstr "非法的加密(crypto)信件头"
 
-#: postpone/postpone.c:427 postpone/postpone.c:533
+#: postpone/postpone.c:428 postpone/postpone.c:534
 msgid "Decrypting message..."
 msgstr "正在解密信件..."
 
-#: postpone/postpone.c:541
+#: postpone/postpone.c:542
 #, fuzzy
 msgid "Could not decrypt postponed message"
 msgstr "无法解密 PGP 信件"
 
-#: postpone/postpone.c:674 postpone/postpone.c:685
+#: postpone/postpone.c:675 postpone/postpone.c:686
 msgid "No postponed messages"
 msgstr "没有被延迟寄出的信件"
 
@@ -8043,12 +8050,12 @@ msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
 # Don't translate this!!
-#: question/question.c:181
+#: question/question.c:180
 msgid "yes"
 msgstr "yes"
 
 # Don't translate this!!
-#: question/question.c:182
+#: question/question.c:181
 msgid "no"
 msgstr "no"
 
@@ -8087,7 +8094,7 @@ msgstr "无法创建 %s"
 msgid "Can't find any tagged messages"
 msgstr "无法找到任何已标记的信件"
 
-#: recvcmd.c:886 send/send.c:1194
+#: recvcmd.c:886 send/send.c:1190
 msgid "No mailing lists found"
 msgstr "没有找到邮件列表"
 
@@ -8137,11 +8144,11 @@ msgstr ""
 msgid "----- End forwarded message -----"
 msgstr ""
 
-#: send/send.c:348
+#: send/send.c:349
 msgid "No subject, abort?"
 msgstr "没有主题，中止吗？"
 
-#: send/send.c:350
+#: send/send.c:351
 msgid "No subject, aborting"
 msgstr "没有主题，正在中止"
 
@@ -8151,43 +8158,43 @@ msgstr "没有主题，正在中止"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:608
+#: send/send.c:609
 msgid "Forward attachments?"
 msgstr "要转发附件吗？"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:900
+#: send/send.c:901
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "回信到 %s%s？"
 
-#: send/send.c:947
+#: send/send.c:948
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "发送后续信件到 %s%s？"
 
-#: send/send.c:1236
+#: send/send.c:1232
 msgid "Include message in reply?"
 msgstr "回信时包含原信件吗？"
 
-#: send/send.c:1242
+#: send/send.c:1238
 msgid "Including quoted message..."
 msgstr "正在包含引用信件..."
 
-#: send/send.c:1249
+#: send/send.c:1245
 msgid "Could not include all requested messages"
 msgstr "无法包含所有请求的信件"
 
-#: send/send.c:1261
+#: send/send.c:1257
 msgid "Forward as attachment?"
 msgstr "作为附件转发？"
 
-#: send/send.c:1266
+#: send/send.c:1262
 msgid "Preparing forwarded message..."
 msgstr "正在准备转发信件..."
 
-#: send/send.c:1768
+#: send/send.c:1764
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "警告：不支持在批量模式下 Fcc 到 IMAP 信箱"
 
@@ -8196,12 +8203,12 @@ msgstr "警告：不支持在批量模式下 Fcc 到 IMAP 信箱"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1774
+#: send/send.c:1770
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "跳过到 %s 的 Fcc"
 
-#: send/send.c:1814 send/send.c:1826 send/send.c:1852
+#: send/send.c:1810 send/send.c:1822 send/send.c:1848
 msgid "Save attachments in Fcc?"
 msgstr "将附件保存到 Fcc 吗？"
 
@@ -8209,139 +8216,139 @@ msgstr "将附件保存到 Fcc 吗？"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1874
+#: send/send.c:1870
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fcc 失败。重试(r)，更改信箱(m)，或跳过(s)？"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1878
+#: send/send.c:1874
 msgid "rms"
 msgstr "rms"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1884
+#: send/send.c:1880
 msgid "Fcc mailbox"
 msgstr "Fcc 信箱"
 
-#: send/send.c:1953
+#: send/send.c:1949
 msgid "Can't postpone.  $postponed is unset"
 msgstr "无法延迟寄出。未设置 $postponed 值"
 
-#: send/send.c:1990 send/send.c:2007
+#: send/send.c:1986 send/send.c:2003
 msgid "Error encrypting message. Check your crypt settings."
 msgstr "加密信件出错。请检查你的加密设置。"
 
-#: send/send.c:2101
+#: send/send.c:2097
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "信件内容匹配 \"$abort_noattach_regex\"。没有发送。"
 
-#: send/send.c:2105
+#: send/send.c:2101
 msgid "No attachments, cancel sending?"
 msgstr "没有附件，取消发送？"
 
-#: send/send.c:2156
+#: send/send.c:2152
 msgid "Recall postponed message?"
 msgstr "叫出延迟寄出的信件吗？"
 
-#: send/send.c:2498
+#: send/send.c:2494
 msgid "Edit forwarded message?"
 msgstr "编辑已转发的信件吗？"
 
-#: send/send.c:2539
+#: send/send.c:2535
 msgid "Abort unmodified message?"
 msgstr "中止未修改过的信件？"
 
-#: send/send.c:2541
+#: send/send.c:2537
 msgid "Aborted unmodified message"
 msgstr "已中止未修改过的信件"
 
-#: send/send.c:2683
+#: send/send.c:2679
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "没有配置加密后端。已禁用信件安全设置。"
 
-#: send/send.c:2723
+#: send/send.c:2719
 msgid "Article not posted"
 msgstr "帖子没有发表"
 
-#: send/send.c:2732
+#: send/send.c:2728
 msgid "Message postponed"
 msgstr "信件被延迟寄出"
 
-#: send/send.c:2767
+#: send/send.c:2763
 msgid "No subject, abort sending?"
 msgstr "没有主题，要中止发送吗?"
 
-#: send/send.c:2771 send/send.c:2777
+#: send/send.c:2767 send/send.c:2773
 msgid "No subject specified"
 msgstr "没有指定主题"
 
-#: send/send.c:2783
+#: send/send.c:2779
 msgid "No newsgroup specified"
 msgstr "没有指定新闻组"
 
-#: send/send.c:2828
+#: send/send.c:2824
 msgid "Missing encryption key; mail not sent"
 msgstr ""
 
-#: send/send.c:2852 send/smtp.c:263
+#: send/send.c:2848 send/smtp.c:263
 msgid "Sending message..."
 msgstr "正在发送信件..."
 
-#: send/send.c:2898
+#: send/send.c:2894
 msgid "Could not send the message"
 msgstr "无法发送此信件"
 
-#: send/send.c:2908
+#: send/send.c:2904
 msgid "Sending in background"
 msgstr "正在后台发送"
 
-#: send/send.c:2909
+#: send/send.c:2905
 msgid "Article posted"
 msgstr "帖子已发表"
 
-#: send/send.c:2910
+#: send/send.c:2906
 msgid "Mail sent"
 msgstr "信件已发送"
 
-#: send/send.c:2991
+#: send/send.c:2987
 msgid "No recipient specified"
 msgstr "没有指定接收者"
 
-#: send/send.c:3038
+#: send/send.c:3034
 msgid "No List-Subscribe header found"
 msgstr "未找到 List-Subscribe 头"
 
-#: send/send.c:3067
+#: send/send.c:3063
 msgid "No List-Unsubscribe header found"
 msgstr "未找到 List-Unsubscribe 头"
 
-#: send/sendlib.c:176
+#: send/sendlib.c:177
 msgid "Could not find any mime.types file"
 msgstr "找不到任何 mime.types 文件。"
 
-#: send/sendlib.c:271
+#: send/sendlib.c:272
 #, c-format
 msgid "Could not open %s"
 msgstr "无法打开 %s"
 
-#: send/sendlib.c:946
+#: send/sendlib.c:947
 #, c-format
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "准备 resent-from 时发生错误的 IDN %s"
 
-#: send/sendmail.c:334
+#: send/sendmail.c:335
 msgid "$sendmail must be set in order to send mail"
 msgstr "为了发送邮件必须配置 $sendmail"
 
-#: send/sendmail.c:439
+#: send/sendmail.c:440
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "发送信件出错，子进程已退出 %d (%s)"
 
-#: send/sendmail.c:451
+#: send/sendmail.c:452
 msgid "Output of the delivery process"
 msgstr "投递进程的输出"
 
@@ -8360,23 +8367,23 @@ msgstr "SMTP 会话失败：无法打开 %s"
 msgid "Invalid SMTP URL: %s"
 msgstr "无效的 SMTP 链接(URL)：%s"
 
-#: send/smtp.c:1085
+#: send/smtp.c:1078
 msgid "SMTP server does not support authentication"
 msgstr "SMTP 服务器不支持认证"
 
-#: send/smtp.c:1143
+#: send/smtp.c:1135
 msgid "No from address given"
 msgstr "没有给出发信地址"
 
-#: send/smtp.c:1204
+#: send/smtp.c:1196
 msgid "SMTP session failed: read error"
 msgstr "SMTP 会话失败：读错误"
 
-#: send/smtp.c:1206
+#: send/smtp.c:1198
 msgid "SMTP session failed: write error"
 msgstr "SMTP 会话失败：写错误"
 
-#: send/smtp.c:1208
+#: send/smtp.c:1200
 msgid "Invalid server response"
 msgstr "无效的服务器回应"
 
@@ -8388,14 +8395,14 @@ msgstr "找不到排序函数！[请报告这个问题]"
 msgid "Sorting mailbox..."
 msgstr "正在排序信箱..."
 
-#: status.c:163
+#: status.c:164
 msgid "(no mailbox)"
 msgstr "(没有信箱)"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: status.c:389
+#: status.c:390
 #, fuzzy, c-format
 msgid "%d%%"
 msgstr "%d%%"
@@ -8461,3 +8468,11 @@ msgstr "编译选项："
 #: version.c:492
 msgid "Devel options:"
 msgstr "开发选项："
+
+#, c-format
+#~ msgid "Caught signal %d (%s) ...  Exiting\n"
+#~ msgstr "捕捉到信号 %d (%s) ...  正在退出。\n"
+
+#, c-format
+#~ msgid "Caught signal %d ...  Exiting\n"
+#~ msgstr "捕捉到信号 %d ...  正在退出。\n"
