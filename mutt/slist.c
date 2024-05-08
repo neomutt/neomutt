@@ -110,11 +110,7 @@ struct Slist *slist_dup(const struct Slist *list)
 
   struct Slist *list_new = slist_new(list->flags);
 
-  struct ListNode *np = NULL;
-  STAILQ_FOREACH(np, &list->head, entries)
-  {
-    mutt_list_insert_tail(&list_new->head, mutt_str_dup(np->data));
-  }
+  mutt_list_copy_tail(&list_new->head, &list->head);
   list_new->count = list->count;
   return list_new;
 }

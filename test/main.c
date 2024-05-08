@@ -427,6 +427,7 @@ void test_fini(void);
                                                                                \
   /* list */                                                                   \
   NEOMUTT_TEST_ITEM(test_mutt_list_clear)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_list_copy_tail)                                  \
   NEOMUTT_TEST_ITEM(test_mutt_list_equal)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_list_find)                                       \
   NEOMUTT_TEST_ITEM(test_mutt_list_free)                                       \
@@ -436,6 +437,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_list_insert_tail)                                \
   NEOMUTT_TEST_ITEM(test_mutt_list_match)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_list_str_split)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_list_write)                                      \
                                                                                \
   /* logging */                                                                \
   NEOMUTT_TEST_ITEM(test_log_disp_file)                                        \

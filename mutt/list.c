@@ -30,6 +30,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include "list.h"
+#include "buffer.h"
 #include "memory.h"
 #include "queue.h"
 #include "string2.h"
@@ -264,4 +265,43 @@ size_t mutt_list_str_split(struct ListHead *head, const char *src, char sep)
   }
 
   return count;
+}
+
+/**
+ * mutt_list_copy_tail - Copy a list into another list
+ * @param dst   Destination list
+ * @param src   Source list
+ */
+void mutt_list_copy_tail(struct ListHead *dst, const struct ListHead *src)
+{
+  const struct ListNode *np = NULL;
+
+  STAILQ_FOREACH(np, src, entries)
+  {
+    mutt_list_insert_tail(dst, mutt_str_dup(np->data));
+  }
+}
+
+/**
+ * mutt_list_write - Write a list to a buffer
+ * @param h    List to write
+ * @param buf  Buffer for the list
+ *
+ * Elements separated by a space.  References, and In-Reply-To, use this
+ * format.
+ */
+size_t mutt_list_write(const struct ListHead *h, struct Buffer *buf)
+{
+  if (!buf || !h)
+    return 0;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, h, entries)
+  {
+    buf_addstr(buf, np->data);
+    if (STAILQ_NEXT(np, entries))
+      buf_addstr(buf, " ");
+  }
+
+  return buf_len(buf);
 }

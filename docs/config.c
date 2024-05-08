@@ -873,7 +873,14 @@
 ** (Crypto only)
 */
 
-{ "crypt_protected_headers_write", DT_BOOL, false },
+{ "crypt_protected_headers_weed", DT_BOOL, false },
+/*
+** .pp
+** Controls whether NeoMutt will weed protected header fields.
+** (Crypto only)
+*/
+
+{ "crypt_protected_headers_write", DT_BOOL, true },
 /*
 ** .pp
 ** When set, NeoMutt will generate protected headers for signed and encrypted
@@ -915,6 +922,15 @@
 ** messages which are automatically encrypted.  This works around
 ** the problem noted in $$crypt_reply_sign, that NeoMutt is not able
 ** to find out whether an encrypted message is also signed.
+** (Crypto only)
+*/
+
+{ "crypt_encryption_info", DT_BOOL, true },
+/*
+** .pp
+** If \fIset\fP, NeoMutt will include an informative block
+** before an encrypted part,
+** with details about the encryption.
 ** (Crypto only)
 */
 
@@ -1052,6 +1068,13 @@
 ** If this option is \fIset\fP, NeoMutt will untag messages when marking them
 ** for deletion.  This applies when you either explicitly delete a message,
 ** or when you save it to another folder.
+*/
+
+{ "devel_security", DT_BOOL, false },
+/*
+** .pp
+** If this option is \fIset\fP, NeoMutt will enable the \fBSecurity\fP development features.
+** See: https://github.com/neomutt/neomutt/discussions/4251
 */
 
 { "digest_collapse", DT_BOOL, true },

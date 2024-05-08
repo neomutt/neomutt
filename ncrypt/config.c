@@ -123,8 +123,14 @@ static struct ConfigDef NcryptVars[] = {
   { "crypt_protected_headers_subject", DT_STRING, IP "...", 0, NULL,
     "Use this as the subject for encrypted emails"
   },
-  { "crypt_protected_headers_write", DT_BOOL, false, 0, NULL,
+  { "crypt_protected_headers_weed", DT_BOOL, false, 0, NULL,
+    "Controls wether NeoMutt will weed protected header fields"
+  },
+  { "crypt_protected_headers_write", DT_BOOL, true, 0, NULL,
     "Generate protected header (Memory Hole) for signed and encrypted emails"
+  },
+  { "crypt_encryption_info", DT_BOOL, true, 0, NULL,
+    "Add an informative block with details about the encryption"
   },
   { "crypt_timestamp", DT_BOOL, true, 0, NULL,
     "Add a timestamp to PGP or SMIME output to prevent spoofing"
