@@ -687,7 +687,7 @@ static void encode_headers(struct ListHead *h, struct ConfigSubset *sub)
       continue;
 
     rfc2047_encode(&tmp, NULL, i + 2, c_send_charset);
-    mutt_mem_reallocarray(&np->data, i + 2 + mutt_str_len(tmp) + 1, sizeof(char));
+    MUTT_MEM_REALLOC(&np->data, i + 2 + mutt_str_len(tmp) + 1, char);
 
     sprintf(np->data + i + 2, "%s", tmp);
 

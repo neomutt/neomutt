@@ -225,7 +225,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
   if (u8len)
     *u8len = p - buf;
 
-  mutt_mem_reallocarray(&buf, p - buf, sizeof(char));
+  MUTT_MEM_REALLOC(&buf, p - buf, char);
   if (u8)
     *u8 = buf;
   return buf;
@@ -379,7 +379,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
   *p++ = '\0';
   if (u7len)
     *u7len = p - buf;
-  mutt_mem_reallocarray(&buf, p - buf, sizeof(char));
+  MUTT_MEM_REALLOC(&buf, p - buf, char);
   if (u7)
     *u7 = buf;
   return buf;

@@ -822,7 +822,7 @@ char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
 
     keyid = key->hash;
     keylist_size += mutt_str_len(keyid) + 2;
-    mutt_mem_reallocarray(&keylist, keylist_size, sizeof(char));
+    MUTT_MEM_REALLOC(&keylist, keylist_size, char);
     sprintf(keylist + keylist_used, "%s%s", keylist_used ? " " : "", keyid);
     keylist_used = mutt_str_len(keylist);
 
