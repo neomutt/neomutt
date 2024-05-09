@@ -58,7 +58,7 @@ void matches_ensure_morespace(struct CompletionData *cd, int new_size)
 
   new_size = ROUND_UP(new_size + 2, 512);
 
-  mutt_mem_reallocarray(&cd->match_list, new_size, sizeof(char *));
+  MUTT_MEM_REALLOC(&cd->match_list, new_size, const char *);
   memset(&cd->match_list[cd->match_list_len], 0, new_size - cd->match_list_len);
 
   cd->match_list_len = new_size;
