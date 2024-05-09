@@ -60,7 +60,7 @@ static int tunnel_socket_open(struct Connection *conn)
 {
   int pin[2], pout[2];
 
-  struct TunnelSockData *tunnel = mutt_mem_mallocarray(1, sizeof(struct TunnelSockData));
+  struct TunnelSockData *tunnel = MUTT_MEM_MALLOC(1, struct TunnelSockData);
   conn->sockdata = tunnel;
 
   const char *const c_tunnel = cs_subset_string(NeoMutt->sub, "tunnel");

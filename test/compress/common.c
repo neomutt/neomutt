@@ -119,7 +119,7 @@ static void one_test(const struct ComprOps *compr_ops, short level, size_t size)
   if (!TEST_CHECK(clen != 0))
     return;
 
-  void *copy = mutt_mem_mallocarray(clen, sizeof(char));
+  void *copy = MUTT_MEM_MALLOC(clen, char);
   memcpy(copy, cdata, clen);
 
   void *ddata = compr_ops->decompress(compr_handle, copy, clen);
