@@ -58,7 +58,7 @@ void pager_private_data_free(struct MuttWindow *win, void **ptr)
  */
 struct PagerPrivateData *pager_private_data_new(void)
 {
-  struct PagerPrivateData *priv = mutt_mem_calloc(1, sizeof(struct PagerPrivateData));
+  struct PagerPrivateData *priv = MUTT_MEM_CALLOC(1, struct PagerPrivateData);
 
   priv->notify = notify_new();
 

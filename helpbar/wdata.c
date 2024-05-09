@@ -38,7 +38,7 @@
  */
 struct HelpbarWindowData *helpbar_wdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct HelpbarWindowData));
+  return MUTT_MEM_CALLOC(1, struct HelpbarWindowData);
 }
 
 /**

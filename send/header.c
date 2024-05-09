@@ -527,7 +527,7 @@ void mutt_write_references(const struct ListHead *r, FILE *fp, size_t trim)
       break;
   }
 
-  struct ListNode **ref = mutt_mem_calloc(length, sizeof(struct ListNode *));
+  struct ListNode **ref = MUTT_MEM_CALLOC(length, struct ListNode *);
 
   // store in reverse order
   size_t tmp = length;

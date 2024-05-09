@@ -49,7 +49,7 @@ void nntp_edata_free(void **ptr)
  */
 struct NntpEmailData *nntp_edata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct NntpEmailData));
+  return MUTT_MEM_CALLOC(1, struct NntpEmailData);
 }
 
 /**

@@ -235,7 +235,7 @@ struct CryptKeyInfo *crypt_copy_key(struct CryptKeyInfo *key)
 {
   struct CryptKeyInfo *k = NULL;
 
-  k = mutt_mem_calloc(1, sizeof(*k));
+  k = MUTT_MEM_CALLOC(1, struct CryptKeyInfo);
   k->kobj = key->kobj;
   gpgme_key_ref(key->kobj);
   k->idx = key->idx;
@@ -3020,7 +3020,7 @@ static char *list_to_pattern(struct ListHead *list)
     n++; /* delimiter or end of string */
   }
   n++; /* make sure to allocate at least one byte */
-  p = mutt_mem_calloc(1, n);
+  p = MUTT_MEM_CALLOC(n, char);
   pattern = p;
   STAILQ_FOREACH(np, list, entries)
   {
@@ -3100,7 +3100,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
     if (n == 0)
       goto no_pgphints;
 
-    char **patarr = mutt_mem_calloc(n + 1, sizeof(*patarr));
+    char **patarr = MUTT_MEM_CALLOC(n + 1, char *);
     n = 0;
     STAILQ_FOREACH(np, hints, entries)
     {
@@ -3138,7 +3138,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
 
       for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
       {
-        k = mutt_mem_calloc(1, sizeof(*k));
+        k = MUTT_MEM_CALLOC(1, struct CryptKeyInfo);
         k->kobj = key;
         gpgme_key_ref(k->kobj);
         k->idx = idx;
@@ -3189,7 +3189,7 @@ static struct CryptKeyInfo *get_candidates(struct ListHead *hints, SecurityFlags
 
       for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
       {
-        k = mutt_mem_calloc(1, sizeof(*k));
+        k = MUTT_MEM_CALLOC(1, struct CryptKeyInfo);
         k->kobj = key;
         gpgme_key_ref(k->kobj);
         k->idx = idx;
@@ -3719,7 +3719,7 @@ int mutt_gpgme_select_secret_key(struct Buffer *keyid)
     int idx;
     for (idx = 0, uid = key->uids; uid; idx++, uid = uid->next)
     {
-      k = mutt_mem_calloc(1, sizeof(*k));
+      k = MUTT_MEM_CALLOC(1, struct CryptKeyInfo);
       k->kobj = key;
       gpgme_key_ref(k->kobj);
       k->idx = idx;

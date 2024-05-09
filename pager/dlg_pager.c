@@ -318,7 +318,7 @@ int dlg_pager(struct PagerView *pview)
   //---------- initialize redraw pdata  -----------------------------------------
   pview->win_pager->size = MUTT_WIN_SIZE_MAXIMISE;
   priv->lines_max = LINES; // number of lines on screen, from curses
-  priv->lines = mutt_mem_calloc(priv->lines_max, sizeof(struct Line));
+  priv->lines = MUTT_MEM_CALLOC(priv->lines_max, struct Line);
   priv->fp = mutt_file_fopen(pview->pdata->fname, "r");
   priv->has_types = ((pview->mode == PAGER_MODE_EMAIL) || (pview->flags & MUTT_SHOWCOLOR)) ?
                         MUTT_TYPES :
@@ -328,7 +328,7 @@ int dlg_pager(struct PagerView *pview)
   {
     priv->lines[i].cid = -1;
     priv->lines[i].search_arr_size = -1;
-    priv->lines[i].syntax = mutt_mem_calloc(1, sizeof(struct TextSyntax));
+    priv->lines[i].syntax = MUTT_MEM_CALLOC(1, struct TextSyntax);
     (priv->lines[i].syntax)[0].first = -1;
     (priv->lines[i].syntax)[0].last = -1;
   }

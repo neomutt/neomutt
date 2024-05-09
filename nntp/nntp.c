@@ -1223,7 +1223,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   fc.first = first;
   fc.last = last;
   fc.restore = restore;
-  fc.messages = mutt_mem_calloc(last - first + 1, sizeof(unsigned char));
+  fc.messages = MUTT_MEM_CALLOC(last - first + 1, unsigned char);
   if (!fc.messages)
     return -1;
   fc.hc = hc;
@@ -1545,7 +1545,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
     if (c_nntp_context && ((mdata->last_message - first + 1) > c_nntp_context))
       first = mdata->last_message - c_nntp_context + 1;
-    messages = mutt_mem_calloc(mdata->last_loaded - first + 1, sizeof(unsigned char));
+    messages = MUTT_MEM_CALLOC(mdata->last_loaded - first + 1, unsigned char);
     hc = nntp_hcache_open(mdata);
     nntp_hcache_update(mdata, hc);
 #endif

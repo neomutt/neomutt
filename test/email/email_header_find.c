@@ -33,7 +33,7 @@ void test_email_header_find(void)
   char *header = "X-TestHeader: 123";
 
   struct ListHead hdrlist = STAILQ_HEAD_INITIALIZER(hdrlist);
-  struct ListNode *n = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *n = MUTT_MEM_CALLOC(1, struct ListNode);
   n->data = mutt_str_dup(header);
   STAILQ_INSERT_TAIL(&hdrlist, n, entries);
 

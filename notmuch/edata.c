@@ -60,7 +60,7 @@ void nm_edata_free(void **ptr)
  */
 struct NmEmailData *nm_edata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct NmEmailData));
+  return MUTT_MEM_CALLOC(1, struct NmEmailData);
 }
 
 /**
