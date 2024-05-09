@@ -740,7 +740,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
  */
 void mutt_sasl_setup_conn(struct Connection *conn, sasl_conn_t *saslconn)
 {
-  struct SaslSockData *sasldata = mutt_mem_malloc(sizeof(struct SaslSockData));
+  struct SaslSockData *sasldata = mutt_mem_mallocarray(1, sizeof(struct SaslSockData));
   /* work around sasl_getprop aliasing issues */
   const void *tmp = NULL;
 
