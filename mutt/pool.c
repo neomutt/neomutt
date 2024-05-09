@@ -52,7 +52,7 @@ static void pool_increase_size(void)
   BufferPoolLen += BufferPoolIncrement;
   mutt_debug(LL_DEBUG1, "%zu\n", BufferPoolLen);
 
-  mutt_mem_realloc(&BufferPool, BufferPoolLen * sizeof(struct Buffer *));
+  mutt_mem_reallocarray(&BufferPool, BufferPoolLen, sizeof(struct Buffer *));
   while (BufferPoolCount < BufferPoolIncrement)
   {
     struct Buffer *newbuf = buf_new(NULL);
@@ -111,7 +111,7 @@ void buf_pool_release(struct Buffer **ptr)
       (buf->dsize < BufferPoolInitialBufferSize))
   {
     buf->dsize = BufferPoolInitialBufferSize;
-    mutt_mem_realloc(&buf->data, buf->dsize);
+    mutt_mem_reallocarray(&buf->data, buf->dsize, sizeof(char));
   }
   buf_reset(buf);
   BufferPool[BufferPoolCount++] = buf;

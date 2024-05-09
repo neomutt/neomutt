@@ -255,7 +255,7 @@ static void enriched_flush(struct EnrichedState *enriched, bool wrap)
     if (enriched->line_used > enriched->line_max)
     {
       enriched->line_max = enriched->line_used;
-      mutt_mem_realloc(&enriched->line, (enriched->line_max + 1) * sizeof(wchar_t));
+      mutt_mem_reallocarray(&enriched->line, enriched->line_max + 1, sizeof(wchar_t));
     }
     wcscat(enriched->line, enriched->buffer);
     enriched->line_len += enriched->word_len;
@@ -282,7 +282,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
     if (enriched->tag_level[RICH_COLOR])
     {
       if ((enriched->param_used + 1) >= enriched->param_len)
-        mutt_mem_realloc(&enriched->param, (enriched->param_len += 256) * sizeof(wchar_t));
+        mutt_mem_reallocarray(&enriched->param, (enriched->param_len += 256), sizeof(wchar_t));
 
       enriched->param[enriched->param_used++] = c;
     }
@@ -293,7 +293,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + 3)) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
+    mutt_mem_reallocarray(&enriched->buffer, enriched->buf_len + 1, sizeof(wchar_t));
   }
 
   if ((!enriched->tag_level[RICH_NOFILL] && iswspace(c)) || (c == (wchar_t) '\0'))
@@ -356,7 +356,7 @@ static void enriched_puts(const char *s, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + mutt_str_len(s))) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
+    mutt_mem_reallocarray(&enriched->buffer, enriched->buf_len + 1, sizeof(wchar_t));
   }
   c = s;
   while (*c)
