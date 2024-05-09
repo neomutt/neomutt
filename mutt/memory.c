@@ -71,11 +71,8 @@ void mutt_mem_free(void *ptr)
   if (!ptr)
     return;
   void **p = (void **) ptr;
-  if (*p)
-  {
-    free(*p);
-    *p = NULL;
-  }
+  free(*p);
+  *p = NULL;
 }
 
 /**
@@ -146,11 +143,8 @@ void mutt_mem_reallocarray(void *ptr, size_t nmemb, size_t size)
 
   if ((nmemb == 0) || (size == 0))
   {
-    if (*p)
-    {
-      free(*p);
-      *p = NULL;
-    }
+    free(*p);
+    *p = NULL;
     return;
   }
 
