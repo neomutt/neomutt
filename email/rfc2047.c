@@ -587,7 +587,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
     if ((bufpos + wlen + lb_len) > buflen)
     {
       buflen = bufpos + wlen + lb_len;
-      mutt_mem_realloc(&buf, buflen);
+      mutt_mem_reallocarray(&buf, buflen, sizeof(char));
     }
     r = encode_block(buf + bufpos, t, n, icode, tocode, encoder);
     ASSERT(r == wlen);
@@ -602,7 +602,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
 
   /* Add last encoded word and us-ascii suffix to buffer. */
   buflen = bufpos + wlen + (u + ulen - t1);
-  mutt_mem_realloc(&buf, buflen + 1);
+  mutt_mem_reallocarray(&buf, buflen + 1, sizeof(char));
   r = encode_block(buf + bufpos, t, t1 - t, icode, tocode, encoder);
   ASSERT(r == wlen);
   bufpos += wlen;

@@ -1149,7 +1149,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
   {
     if (len == adata->blen)
     {
-      mutt_mem_realloc(&adata->buf, adata->blen + IMAP_CMD_BUFSIZE);
+      mutt_mem_reallocarray(&adata->buf, adata->blen + IMAP_CMD_BUFSIZE, sizeof(char));
       adata->blen = adata->blen + IMAP_CMD_BUFSIZE;
       mutt_debug(LL_DEBUG3, "grew buffer to %zu bytes\n", adata->blen);
     }
@@ -1175,7 +1175,7 @@ int imap_cmd_step(struct ImapAccountData *adata)
   /* don't let one large string make cmd->buf hog memory forever */
   if ((adata->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
   {
-    mutt_mem_realloc(&adata->buf, IMAP_CMD_BUFSIZE);
+    mutt_mem_reallocarray(&adata->buf, IMAP_CMD_BUFSIZE, sizeof(char));
     adata->blen = IMAP_CMD_BUFSIZE;
     mutt_debug(LL_DEBUG3, "shrank buffer to %zu bytes\n", adata->blen);
   }

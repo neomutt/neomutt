@@ -360,7 +360,7 @@ void buf_alloc(struct Buffer *buf, size_t new_size)
 
   buf->dsize = ROUND_UP(new_size + 1, BufferStepSize);
 
-  mutt_mem_realloc(&buf->data, buf->dsize);
+  mutt_mem_reallocarray(&buf->data, buf->dsize, sizeof(char));
   buf->dptr = buf->data + offset;
 
   // Ensures that initially NULL buf->data is properly terminated

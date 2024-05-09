@@ -127,7 +127,7 @@ static void mutt_poll_fd_add(int fd, short events)
     if (PollFdsCount == PollFdsLen)
     {
       PollFdsLen += 2;
-      mutt_mem_realloc(&PollFds, PollFdsLen * sizeof(struct pollfd));
+      mutt_mem_reallocarray(&PollFds, PollFdsLen, sizeof(struct pollfd));
     }
     PollFdsCount++;
     PollFds[i].fd = fd;
