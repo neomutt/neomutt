@@ -90,7 +90,7 @@ unsigned char *pgp_read_packet(FILE *fp, size_t *len)
   if (PacketBufLen == 0)
   {
     PacketBufLen = CHUNK_SIZE;
-    PacketBuf = mutt_mem_malloc(PacketBufLen);
+    PacketBuf = mutt_mem_mallocarray(PacketBufLen, sizeof(unsigned char));
   }
 
   if (fread(&ctb, 1, 1, fp) < 1)

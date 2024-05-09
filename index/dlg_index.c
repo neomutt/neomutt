@@ -422,7 +422,7 @@ static void update_index_threaded(struct MailboxView *mv, enum MxStatus check, i
   if ((check != MX_STATUS_REOPENED) && (oldcount > 0) &&
       (lmt || c_uncollapse_new) && (num_new > 0))
   {
-    save_new = mutt_mem_malloc(num_new * sizeof(struct Email *));
+    save_new = mutt_mem_mallocarray(num_new, sizeof(struct Email *));
     for (int i = oldcount; i < m->msg_count; i++)
       save_new[i - oldcount] = m->emails[i];
   }

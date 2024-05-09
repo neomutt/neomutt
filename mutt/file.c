@@ -816,7 +816,7 @@ char *mutt_file_read_line(char *line, size_t *size, FILE *fp, int *line_num, Rea
   if (!line)
   {
     *size = 256;
-    line = mutt_mem_malloc(*size);
+    line = mutt_mem_mallocarray(*size, sizeof(char));
   }
 
   while (true)

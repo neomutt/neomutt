@@ -145,7 +145,7 @@ static char *nm_get_default_url(void)
 {
   // path to DB + query + url "decoration"
   size_t len = PATH_MAX + 1024 + 32;
-  char *url = mutt_mem_malloc(len);
+  char *url = mutt_mem_mallocarray(len, sizeof(char));
 
   // Try to use `$nm_default_url` or `$folder`.
   // If neither are set, it is impossible to create a Notmuch URL.
