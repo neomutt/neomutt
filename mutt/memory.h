@@ -41,7 +41,20 @@ void *mutt_mem_calloc(size_t nmemb, size_t size);
 void  mutt_mem_free(void *ptr);
 void *mutt_mem_malloc(size_t size);
 void  mutt_mem_realloc(void *ptr, size_t size);
+void  mutt_mem_recalloc(void *ptr, size_t cur_size, size_t new_size);
 
 #define FREE(x) mutt_mem_free(x)
+
+/**
+ * mutt_mem_recallocarray - Reallocate memory with calloc() style params
+ * @param ptr        Memory block to resize
+ * @param cur_num    Current number of blocks
+ * @param new_num    New number of blocks
+ * @param block_size Size of the block
+ */
+static inline void mutt_mem_recallocarray(void *ptr, size_t cur_num, size_t new_num, size_t block_size)
+{
+  mutt_mem_recalloc(ptr, cur_num * block_size, new_num * block_size);
+}
 
 #endif /* MUTT_MUTT_MEMORY_H */
