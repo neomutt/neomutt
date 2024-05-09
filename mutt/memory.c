@@ -71,11 +71,8 @@ void mutt_mem_free(void *ptr)
   if (!ptr)
     return;
   void **p = (void **) ptr;
-  if (*p)
-  {
-    free(*p);
-    *p = NULL;
-  }
+  free(*p);
+  *p = NULL;
 }
 
 /**
@@ -121,11 +118,8 @@ void mutt_mem_realloc(void *ptr, size_t size)
 
   if (size == 0)
   {
-    if (*p)
-    {
-      free(*p);
-      *p = NULL;
-    }
+    free(*p);
+    *p = NULL;
     return;
   }
 
