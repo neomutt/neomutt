@@ -211,7 +211,7 @@ static void join_continuations(struct ParameterList *pl, struct Rfc2231Parameter
 
       const size_t vl = strlen(par->value);
 
-      mutt_mem_reallocarray(&value, l + vl + 1, sizeof(char));
+      MUTT_MEM_REALLOC(&value, l + vl + 1, char);
       strcpy(value + l, par->value);
       l += vl;
 

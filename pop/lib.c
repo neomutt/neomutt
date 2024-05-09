@@ -556,7 +556,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
       lenbuf = 0;
     }
 
-    mutt_mem_reallocarray(&inbuf, lenbuf + sizeof(buf), sizeof(char));
+    MUTT_MEM_REALLOC(&inbuf, lenbuf + sizeof(buf), char);
   }
 
   FREE(&inbuf);
