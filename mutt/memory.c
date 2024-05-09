@@ -90,15 +90,24 @@ void mutt_mem_free(void *ptr)
  */
 void *mutt_mem_malloc(size_t size)
 {
-  if (size == 0)
-    return NULL;
+  return mutt_mem_mallocarray(size, 1);
+}
 
-  void *p = malloc(size);
-  if (!p)
-  {
-    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
-    mutt_exit(1);                      // LCOV_EXCL_LINE
-  }
+/**
+ * mutt_mem_mallocarray - Allocate memory on the heap (array version)
+ * @param nmemb Number of blocks
+ * @param size  Size of blocks
+ * @retval ptr  Memory on the heap
+ *
+ * @note On error, this function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * The caller should call mutt_mem_free() to release the memory
+ */
+void *mutt_mem_mallocarray(size_t nmemb, size_t size)
+{
+  void *p = NULL;
+  mutt_mem_reallocarray(&p, nmemb, size);
   return p;
 }
 
