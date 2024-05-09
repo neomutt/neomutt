@@ -55,8 +55,7 @@ int editor_backspace(struct EnterState *es)
     i--;
   if (i > 0)
     i--;
-  memmove(es->wbuf + i, es->wbuf + es->curpos,
-          (es->lastchar - es->curpos) * sizeof(wchar_t));
+  wmemmove(es->wbuf + i, es->wbuf + es->curpos, es->lastchar - es->curpos);
   es->lastchar -= es->curpos - i;
   es->curpos = i;
 
@@ -165,7 +164,7 @@ int editor_delete_char(struct EnterState *es)
     i++;
   while ((i < es->lastchar) && COMB_CHAR(es->wbuf[i]))
     i++;
-  memmove(es->wbuf + es->curpos, es->wbuf + i, (es->lastchar - i) * sizeof(wchar_t));
+  wmemmove(es->wbuf + es->curpos, es->wbuf + i, es->lastchar - i);
   es->lastchar -= i - es->curpos;
 
   return FR_SUCCESS;
@@ -278,7 +277,7 @@ int editor_kill_eow(struct EnterState *es)
     }
   }
 
-  memmove(es->wbuf + es->curpos, es->wbuf + i, (es->lastchar - i) * sizeof(wchar_t));
+  wmemmove(es->wbuf + es->curpos, es->wbuf + i, es->lastchar - i);
   es->lastchar += es->curpos - i;
   return FR_SUCCESS;
 }
@@ -296,7 +295,7 @@ int editor_kill_line(struct EnterState *es)
 
   size_t len = es->lastchar - es->curpos;
 
-  memmove(es->wbuf, es->wbuf + es->curpos, len * sizeof(wchar_t));
+  wmemmove(es->wbuf, es->wbuf + es->curpos, len);
 
   es->lastchar = len;
   es->curpos = 0;
@@ -347,8 +346,7 @@ int editor_kill_word(struct EnterState *es)
       i--;
     }
   }
-  memmove(es->wbuf + i, es->wbuf + es->curpos,
-          (es->lastchar - es->curpos) * sizeof(wchar_t));
+  wmemmove(es->wbuf + i, es->wbuf + es->curpos, es->lastchar - es->curpos);
   es->lastchar += i - es->curpos;
   es->curpos = i;
 

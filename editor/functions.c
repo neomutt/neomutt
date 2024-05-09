@@ -31,6 +31,7 @@
 #include "docs/makedoc_defs.h"
 #else
 #include <string.h>
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
@@ -138,7 +139,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
   if (savelen)
   {
     savebuf = mutt_mem_calloc(savelen, sizeof(wchar_t));
-    memcpy(savebuf, es->wbuf + es->curpos, savelen * sizeof(wchar_t));
+    wmemcpy(savebuf, es->wbuf + es->curpos, savelen);
   }
 
   /* Convert to wide characters */
@@ -154,7 +155,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
     }
 
     /* Restore suffix */
-    memcpy(es->wbuf + es->curpos, savebuf, savelen * sizeof(wchar_t));
+    wmemcpy(es->wbuf + es->curpos, savebuf, savelen);
     FREE(&savebuf);
   }
 
