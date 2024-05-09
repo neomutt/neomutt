@@ -64,7 +64,7 @@ void nntp_adata_free(void **ptr)
  */
 struct NntpAccountData *nntp_adata_new(struct Connection *conn)
 {
-  struct NntpAccountData *adata = mutt_mem_calloc(1, sizeof(struct NntpAccountData));
+  struct NntpAccountData *adata = MUTT_MEM_CALLOC(1, struct NntpAccountData);
   adata->conn = conn;
   adata->groups_hash = mutt_hash_new(1009, MUTT_HASH_NO_FLAGS);
   mutt_hash_set_destructor(adata->groups_hash, nntp_hashelem_free, 0);

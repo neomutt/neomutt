@@ -74,10 +74,10 @@ size_t mutt_convert_file_to(FILE *fp, const char *fromcode, struct Slist const *
     return -1;
 
   int ncodes = tocodes->count;
-  iconv_t *cd = mutt_mem_calloc(ncodes, sizeof(iconv_t));
-  size_t *score = mutt_mem_calloc(ncodes, sizeof(size_t));
-  struct ContentState *states = mutt_mem_calloc(ncodes, sizeof(struct ContentState));
-  struct Content *infos = mutt_mem_calloc(ncodes, sizeof(struct Content));
+  iconv_t *cd = MUTT_MEM_CALLOC(ncodes, iconv_t);
+  size_t *score = MUTT_MEM_CALLOC(ncodes, size_t);
+  struct ContentState *states = MUTT_MEM_CALLOC(ncodes, struct ContentState);
+  struct Content *infos = MUTT_MEM_CALLOC(ncodes, struct Content);
 
   struct ListNode *np = NULL;
   int ni = 0;
@@ -222,7 +222,7 @@ size_t mutt_convert_file_from_to(FILE *fp, const struct Slist *fromcodes,
   struct ListNode *np = NULL;
 
   /* Copy them */
-  tcode = mutt_mem_calloc(tocodes->count, sizeof(char *));
+  tcode = MUTT_MEM_CALLOC(tocodes->count, char *);
   np = NULL;
   cn = 0;
   STAILQ_FOREACH(np, &tocodes->head, entries)

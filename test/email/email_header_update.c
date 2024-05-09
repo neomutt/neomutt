@@ -34,7 +34,7 @@ void test_email_header_update(void)
   const char *existing_header = "X-Found: foo";
   const char *new_value = "X-Found: 3.14";
 
-  struct ListNode *n = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *n = MUTT_MEM_CALLOC(1, struct ListNode);
   n->data = mutt_str_dup(existing_header);
 
   {

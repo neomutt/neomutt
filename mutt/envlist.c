@@ -66,7 +66,7 @@ char **envlist_init(char **envp)
   for (src = envp; src && *src; src++)
     count++;
 
-  char **env_copy = mutt_mem_calloc(count + 1, sizeof(char *));
+  char **env_copy = MUTT_MEM_CALLOC(count + 1, char *);
   for (src = envp, dst = env_copy; src && *src; src++, dst++)
     *dst = mutt_str_dup(*src);
 

@@ -59,7 +59,7 @@ void msgwin_wdata_free(struct MuttWindow *win, void **ptr)
  */
 struct MsgWinWindowData *msgwin_wdata_new(void)
 {
-  struct MsgWinWindowData *wdata = mutt_mem_calloc(1, sizeof(struct MsgWinWindowData));
+  struct MsgWinWindowData *wdata = MUTT_MEM_CALLOC(1, struct MsgWinWindowData);
 
   wdata->text = buf_new(NULL);
 

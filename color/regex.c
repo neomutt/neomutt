@@ -150,9 +150,7 @@ void regex_color_free(struct RegexColorList *list, struct RegexColor **ptr)
  */
 struct RegexColor *regex_color_new(void)
 {
-  struct RegexColor *rcol = mutt_mem_calloc(1, sizeof(*rcol));
-
-  return rcol;
+  return MUTT_MEM_CALLOC(1, struct RegexColor);
 }
 
 /**

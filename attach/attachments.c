@@ -83,7 +83,7 @@ static void attachmatch_free(struct AttachMatch **ptr)
  */
 static struct AttachMatch *attachmatch_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AttachMatch));
+  return MUTT_MEM_CALLOC(1, struct AttachMatch);
 }
 
 /**

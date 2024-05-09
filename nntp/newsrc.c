@@ -252,7 +252,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     while (*b)
       if (*b++ == ',')
         j++;
-    mdata->newsrc_ent = mutt_mem_calloc(j, sizeof(struct NewsrcEntry));
+    mdata->newsrc_ent = MUTT_MEM_CALLOC(j, struct NewsrcEntry);
     mdata->subscribed = subs;
 
     /* parse entries */
@@ -321,7 +321,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   if (!entries)
   {
     entries = 5;
-    mdata->newsrc_ent = mutt_mem_calloc(entries, sizeof(struct NewsrcEntry));
+    mdata->newsrc_ent = MUTT_MEM_CALLOC(entries, struct NewsrcEntry);
   }
 
   /* Set up to fake initial sequence from 1 to the article before the
@@ -450,7 +450,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
   int rc = -1;
 
   size_t buflen = 10240;
-  char *buf = mutt_mem_calloc(1, buflen);
+  char *buf = MUTT_MEM_CALLOC(buflen, char);
   size_t off = 0;
 
   /* we will generate full newsrc here */
@@ -652,7 +652,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
     return 0;
 
   size_t buflen = 10240;
-  char *buf = mutt_mem_calloc(1, buflen);
+  char *buf = MUTT_MEM_CALLOC(buflen, char);
   snprintf(buf, buflen, "%lu\n", (unsigned long) adata->newgroups_time);
   size_t off = strlen(buf);
 
@@ -1298,7 +1298,7 @@ struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, cha
   mdata->subscribed = true;
   if (!mdata->newsrc_ent)
   {
-    mdata->newsrc_ent = mutt_mem_calloc(1, sizeof(struct NewsrcEntry));
+    mdata->newsrc_ent = MUTT_MEM_CALLOC(1, struct NewsrcEntry);
     mdata->newsrc_len = 1;
     mdata->newsrc_ent[0].first = 1;
     mdata->newsrc_ent[0].last = 0;
