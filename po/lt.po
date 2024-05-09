@@ -5790,7 +5790,7 @@ msgstr "Klaida: %s negali būti naudojamas kaip galutinis persiuntėjas grandin�
 
 #: mutt/buffer.c:353
 msgid "Out of memory"
-msgstr ""
+msgstr "Trūksta atminties"
 
 #: mutt/file.c:787
 #, c-format
@@ -5859,9 +5859,9 @@ msgid "Not enough subexpressions for template"
 msgstr "Nepakanka pogrupių šablonui"
 
 #: mutt_config.c:226
-#, fuzzy, c-format
+#, c-format
 msgid "index-hook cannot be used as a condition"
-msgstr "Sąlygoje negalima naudoti užpildymo"
+msgstr "index-hook negalima naudoti kaip sąlygos"
 
 #. L10N: $reply_regex default format
 #.
@@ -6338,20 +6338,18 @@ msgstr "sukurtas: "
 #: ncrypt/crypt_gpgme.c:1425
 #, c-format
 msgid "Recipient: %s key, ID %s\n"
-msgstr ""
+msgstr "Gavėjas: %s raktas, ID %s\n"
 
 #: ncrypt/crypt_gpgme.c:1438
-#, fuzzy
 msgid "[-- Begin encryption information --]\n"
-msgstr "[-- Parašo informacija --]\n"
+msgstr "[-- Šifravimo informacija --]\n"
 
 #: ncrypt/crypt_gpgme.c:1443
-#, fuzzy
 msgid ""
 "[-- End encryption information --]\n"
 "\n"
 msgstr ""
-"[-- Parašo informacijos pabaiga --]\n"
+"[-- Šifravimo informacijos pabaiga --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:1517
