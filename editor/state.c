@@ -73,7 +73,7 @@ void enter_state_resize(struct EnterState *es, size_t num)
  */
 struct EnterState *enter_state_new(void)
 {
-  struct EnterState *es = mutt_mem_calloc(1, sizeof(struct EnterState));
+  struct EnterState *es = MUTT_MEM_CALLOC(1, struct EnterState);
 
   enter_state_resize(es, 1);
 

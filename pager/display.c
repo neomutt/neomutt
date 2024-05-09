@@ -1077,7 +1077,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       memset(&((*lines)[ch]), 0, sizeof(struct Line));
       (*lines)[ch].cid = -1;
       (*lines)[ch].search_arr_size = -1;
-      (*lines)[ch].syntax = mutt_mem_calloc(1, sizeof(struct TextSyntax));
+      (*lines)[ch].syntax = MUTT_MEM_CALLOC(1, struct TextSyntax);
       ((*lines)[ch].syntax)[0].first = -1;
       ((*lines)[ch].syntax)[0].last = -1;
     }
@@ -1208,7 +1208,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       }
       else
       {
-        cur_line->search = mutt_mem_calloc(1, sizeof(struct TextSyntax));
+        cur_line->search = MUTT_MEM_CALLOC(1, struct TextSyntax);
       }
       pmatch[0].rm_so += offset;
       pmatch[0].rm_eo += offset;

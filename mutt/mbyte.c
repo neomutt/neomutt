@@ -452,7 +452,7 @@ int mutt_mb_filter_unprintable(char **s)
   FREE(s);
 
   if (buf_is_empty(buf))
-    *s = mutt_mem_calloc(1, 1); // Fake empty string
+    *s = MUTT_MEM_CALLOC(1, char); // Fake empty string
   else
     *s = buf_strdup(buf);
 
