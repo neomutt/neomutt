@@ -491,7 +491,7 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
     if (results_count == results_len)
     {
       results_len += 5;
-      mutt_mem_realloc(&results, results_len * sizeof(struct AutocryptAccount *));
+      mutt_mem_reallocarray(&results, results_len, sizeof(struct AutocryptAccount *));
     }
 
     struct AutocryptAccount *account = mutt_autocrypt_db_account_new();
