@@ -520,7 +520,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
   if (rc < 0)
     return rc;
 
-  char *inbuf = mutt_mem_mallocarray(sizeof(buf), sizeof(char));
+  char *inbuf = MUTT_MEM_MALLOC(sizeof(buf), char);
 
   while (true)
   {

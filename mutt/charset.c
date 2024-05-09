@@ -344,7 +344,7 @@ int mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset,
   {
     char const *c = np->data;
     size_t n = mutt_str_len(c);
-    char *fromcode = mutt_mem_mallocarray(n + 1, sizeof(char));
+    char *fromcode = MUTT_MEM_MALLOC(n + 1, char);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
     int m = mutt_ch_convert_string(&s, fromcode, charset, MUTT_ICONV_NO_FLAGS);
@@ -804,7 +804,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
     return -1;
 
   size_t outlen = MB_LEN_MAX * slen;
-  char *out = mutt_mem_mallocarray(outlen + 1, sizeof(char));
+  char *out = MUTT_MEM_MALLOC(outlen + 1, char);
   char *saved_out = out;
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, &outlen);
@@ -865,7 +865,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
     return -1;
   }
   size_t obl = MB_LEN_MAX * ibl;
-  char *buf = mutt_mem_mallocarray(obl + 1, sizeof(char));
+  char *buf = MUTT_MEM_MALLOC(obl + 1, char);
   char *ob = buf;
 
   mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);
@@ -942,7 +942,7 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *t
   {
     static const char *repls[] = { "\357\277\275", "?", 0 };
 
-    fc = mutt_mem_mallocarray(1, sizeof(struct FgetConv));
+    fc = MUTT_MEM_MALLOC(1, struct FgetConv);
     fc->p = fc->bufo;
     fc->ob = fc->bufo;
     fc->ib = fc->bufi;
@@ -951,7 +951,7 @@ struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *t
   }
   else
   {
-    fc = mutt_mem_mallocarray(1, sizeof(struct FgetConvNot));
+    fc = MUTT_MEM_MALLOC(1, struct FgetConvNot);
   }
   fc->fp = fp;
   fc->cd = cd;

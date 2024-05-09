@@ -1578,7 +1578,7 @@ enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close)
 #endif
 
   /* presort here to avoid doing 10 resorts in imap_exec_msg_set */
-  emails = mutt_mem_mallocarray(m->msg_count, sizeof(struct Email *));
+  emails = MUTT_MEM_MALLOC(m->msg_count, struct Email *);
   memcpy(emails, m->emails, m->msg_count * sizeof(struct Email *));
   mutt_qsort_r(emails, m->msg_count, sizeof(struct Email *), imap_sort_email_uid, NULL);
 
