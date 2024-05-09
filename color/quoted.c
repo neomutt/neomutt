@@ -232,7 +232,7 @@ void qstyle_free_tree(struct QuoteStyle **quote_list)
  */
 static struct QuoteStyle *qstyle_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct QuoteStyle));
+  return MUTT_MEM_CALLOC(1, struct QuoteStyle);
 }
 
 /**

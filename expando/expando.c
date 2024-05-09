@@ -42,7 +42,7 @@
  */
 struct Expando *expando_new(const char *format)
 {
-  struct Expando *exp = mutt_mem_calloc(1, sizeof(struct Expando));
+  struct Expando *exp = MUTT_MEM_CALLOC(1, struct Expando);
   exp->string = mutt_str_dup(format);
   return exp;
 }

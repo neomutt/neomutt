@@ -252,7 +252,7 @@ static struct CompressInfo *set_compress_info(struct Mailbox *m)
   const char *c = mutt_find_hook(MUTT_CLOSE_HOOK, mailbox_path(m));
   const char *a = mutt_find_hook(MUTT_APPEND_HOOK, mailbox_path(m));
 
-  struct CompressInfo *ci = mutt_mem_calloc(1, sizeof(struct CompressInfo));
+  struct CompressInfo *ci = MUTT_MEM_CALLOC(1, struct CompressInfo);
   m->compress_info = ci;
 
   ci->cmd_open = validate_compress_expando(o);

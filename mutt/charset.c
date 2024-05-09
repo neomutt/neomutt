@@ -268,7 +268,7 @@ static const struct MimeNames PreferredMimeNames[] = {
  */
 static struct Lookup *lookup_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Lookup));
+  return MUTT_MEM_CALLOC(1, struct Lookup);
 }
 
 /**
@@ -512,7 +512,7 @@ bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
   if (!pat || !replace)
     return false;
 
-  regex_t *rx = mutt_mem_calloc(1, sizeof(regex_t));
+  regex_t *rx = MUTT_MEM_CALLOC(1, regex_t);
   int rc = REG_COMP(rx, pat, REG_ICASE);
   if (rc != 0)
   {

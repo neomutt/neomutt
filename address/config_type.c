@@ -51,7 +51,7 @@
  */
 struct Address *address_new(const char *addr)
 {
-  struct Address *a = mutt_mem_calloc(1, sizeof(*a));
+  struct Address *a = MUTT_MEM_CALLOC(1, struct Address);
   a->mailbox = buf_new(addr);
   return a;
 }
@@ -166,7 +166,7 @@ static struct Address *address_dup(struct Address *addr)
   if (!addr)
     return NULL; /* LCOV_EXCL_LINE */
 
-  struct Address *a = mutt_mem_calloc(1, sizeof(*a));
+  struct Address *a = MUTT_MEM_CALLOC(1, struct Address);
   a->personal = buf_dup(addr->personal);
   a->mailbox = buf_dup(addr->mailbox);
   return a;

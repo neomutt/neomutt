@@ -50,7 +50,7 @@
  */
 struct Slist *slist_new(uint32_t flags)
 {
-  struct Slist *list = mutt_mem_calloc(1, sizeof(*list));
+  struct Slist *list = MUTT_MEM_CALLOC(1, struct Slist);
   list->flags = flags;
   STAILQ_INIT(&list->head);
 
@@ -184,7 +184,7 @@ struct Slist *slist_parse(const char *str, uint32_t flags)
   else if ((flags & D_SLIST_SEP_MASK) == D_SLIST_SEP_COLON)
     sep = ':';
 
-  struct Slist *list = mutt_mem_calloc(1, sizeof(struct Slist));
+  struct Slist *list = MUTT_MEM_CALLOC(1, struct Slist);
   list->flags = flags;
   STAILQ_INIT(&list->head);
 

@@ -135,7 +135,7 @@ static struct SmimeKey *smime_copy_key(struct SmimeKey *key)
 
   struct SmimeKey *copy = NULL;
 
-  copy = mutt_mem_calloc(1, sizeof(struct SmimeKey));
+  copy = MUTT_MEM_CALLOC(1, struct SmimeKey);
   copy->email = mutt_str_dup(key->email);
   copy->hash = mutt_str_dup(key->hash);
   copy->label = mutt_str_dup(key->label);
@@ -404,7 +404,7 @@ static struct SmimeKey *smime_parse_key(char *buf)
   char *pend = NULL, *p = NULL;
   int field = 0;
 
-  struct SmimeKey *key = mutt_mem_calloc(1, sizeof(struct SmimeKey));
+  struct SmimeKey *key = MUTT_MEM_CALLOC(1, struct SmimeKey);
 
   for (p = buf; p; p = pend)
   {
@@ -914,7 +914,7 @@ static int smime_handle_cert_email(const char *certificate, const char *mailbox,
   if (copy && buffer && num)
   {
     (*num) = count;
-    *buffer = mutt_mem_calloc(count, sizeof(char *));
+    *buffer = MUTT_MEM_CALLOC(count, char *);
     count = 0;
 
     rewind(fp_out);
@@ -923,7 +923,7 @@ static int smime_handle_cert_email(const char *certificate, const char *mailbox,
       size_t len = mutt_str_len(email);
       if (len && (email[len - 1] == '\n'))
         email[len - 1] = '\0';
-      (*buffer)[count] = mutt_mem_calloc(mutt_str_len(email) + 1, sizeof(char));
+      (*buffer)[count] = MUTT_MEM_CALLOC(mutt_str_len(email) + 1, char);
       strncpy((*buffer)[count], email, mutt_str_len(email));
       count++;
     }

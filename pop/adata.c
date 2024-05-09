@@ -62,7 +62,7 @@ void pop_adata_free(void **ptr)
  */
 struct PopAccountData *pop_adata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct PopAccountData));
+  return MUTT_MEM_CALLOC(1, struct PopAccountData);
 }
 
 /**

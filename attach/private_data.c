@@ -49,7 +49,5 @@ void attach_private_data_free(struct Menu *menu, void **ptr)
  */
 struct AttachPrivateData *attach_private_data_new(void)
 {
-  struct AttachPrivateData *priv = mutt_mem_calloc(1, sizeof(struct AttachPrivateData));
-
-  return priv;
+  return MUTT_MEM_CALLOC(1, struct AttachPrivateData);
 }

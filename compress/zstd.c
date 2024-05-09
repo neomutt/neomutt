@@ -72,7 +72,7 @@ void zstd_cdata_free(struct ZstdComprData **ptr)
  */
 static struct ZstdComprData *zstd_cdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ZstdComprData));
+  return MUTT_MEM_CALLOC(1, struct ZstdComprData);
 }
 
 /**
@@ -82,7 +82,7 @@ static ComprHandle *compr_zstd_open(short level)
 {
   struct ZstdComprData *cdata = zstd_cdata_new();
 
-  cdata->buf = mutt_mem_calloc(1, ZSTD_compressBound(1024 * 128));
+  cdata->buf = mutt_mem_calloc(ZSTD_compressBound(1024 * 128), 1);
   cdata->cctx = ZSTD_createCCtx();
   cdata->dctx = ZSTD_createDCtx();
 
