@@ -30,6 +30,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <string.h>
+#include <wchar.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
@@ -70,8 +71,7 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
   /* see if the path has changed from the last time */
   if ((!wdata->tempbuf && !wdata->state->lastchar) ||
       (wdata->tempbuf && (wdata->templen == wdata->state->lastchar) &&
-       (memcmp(wdata->tempbuf, wdata->state->wbuf,
-               wdata->state->lastchar * sizeof(wchar_t)) == 0)))
+       (wmemcmp(wdata->tempbuf, wdata->state->wbuf, wdata->state->lastchar) == 0)))
   {
     SelectFileFlags flags = MUTT_SEL_NO_FLAGS;
     if (wdata->hclass == HC_MAILBOX)
@@ -98,7 +98,7 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
     wdata->templen = wdata->state->lastchar;
     mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
     if (wdata->tempbuf)
-      memcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen * sizeof(wchar_t));
+      wmemcpy(wdata->tempbuf, wdata->state->wbuf, wdata->templen);
   }
   else
   {
@@ -124,8 +124,7 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
   }
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf + i, wdata->state->curpos - i);
   if (wdata->tempbuf && (wdata->templen == (wdata->state->lastchar - i)) &&
-      (memcmp(wdata->tempbuf, wdata->state->wbuf + i,
-              (wdata->state->lastchar - i) * sizeof(wchar_t)) == 0))
+      (wmemcmp(wdata->tempbuf, wdata->state->wbuf + i, wdata->state->lastchar - i) == 0))
   {
     dlg_browser(wdata->buffer, MUTT_SEL_NO_FLAGS, NULL, NULL, NULL);
     if (!buf_is_empty(wdata->buffer))
@@ -138,7 +137,7 @@ int complete_file_simple(struct EnterWindowData *wdata, int op)
     wdata->templen = wdata->state->lastchar - i;
     mutt_mem_realloc(&wdata->tempbuf, wdata->templen * sizeof(wchar_t));
     if (wdata->tempbuf)
-      memcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen * sizeof(wchar_t));
+      wmemcpy(wdata->tempbuf, wdata->state->wbuf + i, wdata->templen);
   }
   else
   {
