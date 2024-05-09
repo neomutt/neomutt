@@ -54,7 +54,7 @@ static int read_material(size_t material, size_t *used, FILE *fp)
   {
     PacketBufLen = *used + material + CHUNK_SIZE;
 
-    mutt_mem_reallocarray(&PacketBuf, PacketBufLen, sizeof(unsigned char));
+    MUTT_MEM_REALLOC(&PacketBuf, PacketBufLen, unsigned char);
   }
 
   if (fread(PacketBuf + *used, 1, material, fp) < material)

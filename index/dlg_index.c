@@ -975,7 +975,7 @@ void mutt_draw_statusline(struct MuttWindow *win, int max_cols, const char *buf,
       if (!found)
       {
         chunks++;
-        mutt_mem_reallocarray(&syntax, chunks, sizeof(struct StatusSyntax));
+        MUTT_MEM_REALLOC(&syntax, chunks, struct StatusSyntax);
       }
 
       i = chunks - 1;

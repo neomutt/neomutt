@@ -72,8 +72,8 @@ void mutt_actx_add_attach(struct AttachCtx *actx, struct AttachPtr *attach)
   if (actx->idxlen == actx->idxmax)
   {
     actx->idxmax += grow;
-    mutt_mem_reallocarray(&actx->idx, actx->idxmax, sizeof(struct AttachPtr *));
-    mutt_mem_reallocarray(&actx->v2r, actx->idxmax, sizeof(short));
+    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
+    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
 
     memset(&actx->idx[actx->idxlen], 0, grow * sizeof(struct AttachPtr *));
     memset(&actx->v2r[actx->idxlen], 0, grow * sizeof(short));
@@ -99,8 +99,8 @@ void mutt_actx_ins_attach(struct AttachCtx *actx, struct AttachPtr *attach, int 
   if (actx->idxlen == actx->idxmax)
   {
     actx->idxmax += 5;
-    mutt_mem_reallocarray(&actx->idx, actx->idxmax, sizeof(struct AttachPtr *));
-    mutt_mem_reallocarray(&actx->v2r, actx->idxmax, sizeof(short));
+    MUTT_MEM_REALLOC(&actx->idx, actx->idxmax, struct AttachPtr *);
+    MUTT_MEM_REALLOC(&actx->v2r, actx->idxmax, short);
     for (int i = actx->idxlen; i < actx->idxmax; i++)
       actx->idx[i] = NULL;
   }
@@ -126,7 +126,7 @@ void mutt_actx_add_fp(struct AttachCtx *actx, FILE *fp_new)
   if (actx->fp_len == actx->fp_max)
   {
     actx->fp_max += 5;
-    mutt_mem_reallocarray(&actx->fp_idx, actx->fp_max, sizeof(FILE *));
+    MUTT_MEM_REALLOC(&actx->fp_idx, actx->fp_max, FILE *);
     for (int i = actx->fp_len; i < actx->fp_max; i++)
       actx->fp_idx[i] = NULL;
   }
@@ -147,7 +147,7 @@ void mutt_actx_add_body(struct AttachCtx *actx, struct Body *b)
   if (actx->body_len == actx->body_max)
   {
     actx->body_max += 5;
-    mutt_mem_reallocarray(&actx->body_idx, actx->body_max, sizeof(struct Body *));
+    MUTT_MEM_REALLOC(&actx->body_idx, actx->body_max, struct Body *);
     for (int i = actx->body_len; i < actx->body_max; i++)
       actx->body_idx[i] = NULL;
   }
