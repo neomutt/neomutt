@@ -107,7 +107,7 @@ static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len
 {
   int b, ch, k;
 
-  char *buf = mutt_mem_malloc(u7len + u7len / 8 + 1);
+  char *buf = mutt_mem_mallocarray(u7len + u7len / 8 + 1, sizeof(char));
   char *p = buf;
   int pair1 = 0;
 
@@ -257,7 +257,7 @@ static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len
 
   /* In the worst case we convert 2 chars to 7 chars. For example:
    * "\x10&\x10&..." -> "&ABA-&-&ABA-&-...".  */
-  char *buf = mutt_mem_malloc((u8len / 2) * 7 + 6);
+  char *buf = mutt_mem_mallocarray((u8len / 2) * 7 + 6, sizeof(char));
   char *p = buf;
 
   while (u8len)

@@ -263,7 +263,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   size_t encoded_len = oalen * 4 / 3 + 10;
   ASSERT(encoded_len < 6010); // Assure LGTM that we won't overflow
 
-  char *encoded_token = mutt_mem_malloc(encoded_len);
+  char *encoded_token = mutt_mem_mallocarray(encoded_len, sizeof(char));
   mutt_b64_encode(oauthbearer, oalen, encoded_token, encoded_len);
 
   return encoded_token;
