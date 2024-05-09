@@ -54,7 +54,7 @@ static void mh_seq_alloc(struct MhSequences *mhs, int i)
 
   const int newmax = i + 128;
   int j = mhs->flags ? mhs->max + 1 : 0;
-  mutt_mem_realloc(&mhs->flags, sizeof(mhs->flags[0]) * (newmax + 1));
+  mutt_mem_reallocarray(&mhs->flags, newmax + 1, sizeof(mhs->flags[0]));
   while (j <= newmax)
     mhs->flags[j++] = 0;
 
