@@ -114,12 +114,28 @@ void *mutt_mem_malloc(size_t size)
  */
 void mutt_mem_realloc(void *ptr, size_t size)
 {
+  mutt_mem_reallocarray(ptr, size, 1);
+}
+
+/**
+ * mutt_mem_reallocarray - Resize a block of memory on the heap (array version)
+ * @param ptr   Memory block to resize
+ * @param nmemb Number of blocks
+ * @param size  Size of blocks
+ *
+ * @note On error, this function will never return NULL.
+ *       It will print an error and exit the program.
+ *
+ * If the new size is zero, the block will be freed.
+ */
+void mutt_mem_reallocarray(void *ptr, size_t nmemb, size_t size)
+{
   if (!ptr)
     return;
 
   void **p = (void **) ptr;
 
-  if (size == 0)
+  if ((nmemb == 0) || (size == 0))
   {
     if (*p)
     {
@@ -129,7 +145,7 @@ void mutt_mem_realloc(void *ptr, size_t size)
     return;
   }
 
-  void *r = realloc(*p, size);
+  void *r = reallocarray(*p, nmemb, size);
   if (!r)
   {
     mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
