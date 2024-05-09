@@ -1559,7 +1559,7 @@ char *pgp_class_find_keys(const struct AddressList *addrlist, bool oppenc_mode)
 
     bypass_selection:
       keylist_size += mutt_str_len(keyid) + 4;
-      mutt_mem_reallocarray(&keylist, keylist_size, sizeof(char));
+      MUTT_MEM_REALLOC(&keylist, keylist_size, char);
       sprintf(keylist + keylist_used, "%s0x%s", keylist_used ? " " : "", keyid);
       keylist_used = mutt_str_len(keylist);
 

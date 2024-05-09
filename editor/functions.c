@@ -150,7 +150,7 @@ void replace_part(struct EnterState *es, size_t from, const char *buf)
     if (es->curpos + savelen > es->wbuflen)
     {
       es->wbuflen = es->curpos + savelen;
-      mutt_mem_reallocarray(&es->wbuf, es->wbuflen, sizeof(wchar_t));
+      MUTT_MEM_REALLOC(&es->wbuf, es->wbuflen, wchar_t);
     }
 
     /* Restore suffix */
