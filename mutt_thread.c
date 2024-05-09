@@ -406,8 +406,8 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
   /* Do the visibility calculations and free the old thread chars.
    * From now on we can simply ignore invisible subtrees */
   calculate_visibility(tree, &max_depth);
-  pfx = mutt_mem_mallocarray((width * max_depth) + 2, sizeof(char));
-  arrow = mutt_mem_mallocarray((width * max_depth) + 2, sizeof(char));
+  pfx = MUTT_MEM_MALLOC((width * max_depth) + 2, char);
+  arrow = MUTT_MEM_MALLOC((width * max_depth) + 2, char);
   const bool c_hide_limited = cs_subset_bool(NeoMutt->sub, "hide_limited");
   const bool c_hide_missing = cs_subset_bool(NeoMutt->sub, "hide_missing");
   while (tree)
@@ -432,7 +432,7 @@ void mutt_draw_tree(struct ThreadsContext *tctx)
       {
         myarrow[width] = MUTT_TREE_RARROW;
         myarrow[width + 1] = 0;
-        new_tree = mutt_mem_mallocarray(((size_t) depth * width) + 2, sizeof(char));
+        new_tree = MUTT_MEM_MALLOC(((size_t) depth * width) + 2, char);
         if (start_depth > 1)
         {
           strncpy(new_tree, pfx, (size_t) width * (start_depth - 1));

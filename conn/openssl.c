@@ -316,7 +316,7 @@ static void ssl_dprint_err_stack(void)
   long buflen = BIO_get_mem_data(bio, &buf);
   if (buflen > 0)
   {
-    char *output = mutt_mem_mallocarray(buflen + 1, sizeof(char));
+    char *output = MUTT_MEM_MALLOC(buflen + 1, char);
     memcpy(output, buf, buflen);
     output[buflen] = '\0';
     mutt_debug(LL_DEBUG1, "SSL error stack: %s\n", output);
@@ -781,7 +781,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
-    buf = mutt_mem_mallocarray((size_t) bufsize, sizeof(char));
+    buf = MUTT_MEM_MALLOC((size_t) bufsize, char);
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
