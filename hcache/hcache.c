@@ -229,7 +229,7 @@ static void *dump_email(struct HeaderCache *hc, const struct Email *e, int *off,
   bool convert = !CharsetIsUtf8;
 
   *off = 0;
-  unsigned char *d = mutt_mem_mallocarray(4096, sizeof(unsigned char));
+  unsigned char *d = MUTT_MEM_MALLOC(4096, unsigned char);
 
   d = serial_dump_uint32_t((uidvalidity != 0) ? uidvalidity : mutt_date_now(), d, off);
   d = serial_dump_int(hc->crc, d, off);
@@ -410,7 +410,7 @@ static char *get_foldername(const char *folder)
 {
   /* if the folder is local, canonify the path to ensure equivalent paths share
    * the hcache */
-  char *p = mutt_mem_mallocarray(PATH_MAX + 1, sizeof(char));
+  char *p = MUTT_MEM_MALLOC(PATH_MAX + 1, char);
   if (!realpath(folder, p))
     mutt_str_replace(&p, folder);
 
@@ -695,7 +695,7 @@ int hcache_store_email(struct HeaderCache *hc, const char *key, size_t keylen,
       return -1;
     }
 
-    char *whole = mutt_mem_mallocarray(hlen + clen, sizeof(char));
+    char *whole = MUTT_MEM_MALLOC(hlen + clen, char);
     memcpy(whole, data, hlen);
     memcpy(whole + hlen, cdata, clen);
 

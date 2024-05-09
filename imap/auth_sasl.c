@@ -126,7 +126,7 @@ enum ImapAuthRes imap_auth_sasl(struct ImapAccountData *adata, const char *metho
   mutt_message(_("Authenticating (%s)..."), mech);
 
   bufsize = MAX((olen * 2), 1024);
-  buf = mutt_mem_mallocarray(bufsize, sizeof(char));
+  buf = MUTT_MEM_MALLOC(bufsize, char);
 
   snprintf(buf, bufsize, "AUTHENTICATE %s", mech);
   if ((adata->capabilities & IMAP_CAP_SASL_IR) && client_start)
