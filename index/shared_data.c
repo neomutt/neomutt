@@ -306,7 +306,7 @@ void index_shared_data_free(struct MuttWindow *win, void **ptr)
  */
 struct IndexSharedData *index_shared_data_new(void)
 {
-  struct IndexSharedData *shared = mutt_mem_calloc(1, sizeof(struct IndexSharedData));
+  struct IndexSharedData *shared = MUTT_MEM_CALLOC(1, struct IndexSharedData);
 
   shared->notify = notify_new();
   shared->sub = NeoMutt->sub;

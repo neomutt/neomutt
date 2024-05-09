@@ -303,7 +303,7 @@ bool buf_is_empty(const struct Buffer *buf)
  */
 struct Buffer *buf_new(const char *str)
 {
-  struct Buffer *buf = mutt_mem_calloc(1, sizeof(struct Buffer));
+  struct Buffer *buf = MUTT_MEM_CALLOC(1, struct Buffer);
 
   if (str)
     buf_addstr(buf, str);

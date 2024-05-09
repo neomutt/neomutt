@@ -53,7 +53,7 @@ void attach_data_free(struct Menu *menu, void **ptr)
  */
 struct ComposeAttachData *attach_data_new(struct Email *e)
 {
-  struct ComposeAttachData *attach_data = mutt_mem_calloc(1, sizeof(struct ComposeAttachData));
+  struct ComposeAttachData *attach_data = MUTT_MEM_CALLOC(1, struct ComposeAttachData);
 
   attach_data->actx = mutt_actx_new();
   attach_data->actx->email = e;

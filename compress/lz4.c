@@ -70,7 +70,7 @@ void lz4_cdata_free(struct Lz4ComprData **ptr)
  */
 static struct Lz4ComprData *lz4_cdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Lz4ComprData));
+  return MUTT_MEM_CALLOC(1, struct Lz4ComprData);
 }
 
 /**
@@ -80,7 +80,7 @@ static ComprHandle *compr_lz4_open(short level)
 {
   struct Lz4ComprData *cdata = lz4_cdata_new();
 
-  cdata->buf = mutt_mem_calloc(1, LZ4_compressBound(1024 * 32));
+  cdata->buf = mutt_mem_calloc(LZ4_compressBound(1024 * 32), 1);
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
