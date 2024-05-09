@@ -226,7 +226,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     FREE(&mdata->newsrc_ent);
   }
 
-  line = mutt_mem_malloc(st.st_size + 1);
+  line = mutt_mem_mallocarray(st.st_size + 1, sizeof(char));
   while (st.st_size && fgets(line, st.st_size + 1, adata->fp_newsrc))
   {
     char *b = NULL, *h = NULL;

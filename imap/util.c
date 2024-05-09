@@ -558,8 +558,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     return 0;
   }
 
-  b1 = mutt_mem_malloc(strlen(mx1) + 1);
-  b2 = mutt_mem_malloc(strlen(mx2) + 1);
+  b1 = mutt_mem_mallocarray(strlen(mx1) + 1, sizeof(char));
+  b2 = mutt_mem_mallocarray(strlen(mx2) + 1, sizeof(char));
 
   imap_fix_path('\0', mx1, b1, strlen(mx1) + 1);
   imap_fix_path('\0', mx2, b2, strlen(mx2) + 1);
