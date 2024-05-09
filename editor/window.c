@@ -150,7 +150,7 @@ bool self_insert(struct EnterWindowData *wdata, int ch)
     if (wdata->state->lastchar >= wdata->state->wbuflen)
     {
       wdata->state->wbuflen = wdata->state->lastchar + 20;
-      mutt_mem_realloc(&wdata->state->wbuf, wdata->state->wbuflen * sizeof(wchar_t));
+      mutt_mem_reallocarray(&wdata->state->wbuf, wdata->state->wbuflen, sizeof(wchar_t));
     }
     memmove(wdata->state->wbuf + wdata->state->curpos + 1,
             wdata->state->wbuf + wdata->state->curpos,
