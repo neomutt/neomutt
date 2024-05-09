@@ -192,7 +192,7 @@ static enum PopAuthRes pop_auth_sasl(struct PopAccountData *adata, const char *m
   mutt_message(_("Authenticating (%s)..."), "SASL");
 
   size_t bufsize = MAX((olen * 2), 1024);
-  char *buf = mutt_mem_mallocarray(bufsize, sizeof(char));
+  char *buf = MUTT_MEM_MALLOC(bufsize, char);
 
   snprintf(buf, bufsize, "AUTH %s", mech);
   olen = strlen(buf);

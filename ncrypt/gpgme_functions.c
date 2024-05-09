@@ -83,7 +83,7 @@ struct DnArray
  */
 static void print_utf8(FILE *fp, const char *buf, size_t len)
 {
-  char *tstr = mutt_mem_mallocarray(len + 1, sizeof(char));
+  char *tstr = MUTT_MEM_MALLOC(len + 1, char);
   memcpy(tstr, buf, len);
   tstr[len] = 0;
 
@@ -186,7 +186,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
   n = s - str;
   if (n == 0)
     return NULL; /* empty key */
-  array->key = mutt_mem_mallocarray(n + 1, sizeof(char));
+  array->key = MUTT_MEM_MALLOC(n + 1, char);
   p = array->key;
   memcpy(p, str, n); /* fixme: trim trailing spaces */
   p[n] = 0;
@@ -201,7 +201,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
     if ((n == 0) || (n & 1))
       return NULL; /* empty or odd number of digits */
     n /= 2;
-    p = mutt_mem_mallocarray(n + 1, sizeof(char));
+    p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
     for (s1 = str; n; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
@@ -244,7 +244,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
       }
     }
 
-    p = mutt_mem_mallocarray(n + 1, sizeof(char));
+    p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
     for (s = str; n; s++, n--)
     {
@@ -285,7 +285,7 @@ static struct DnArray *parse_dn(const char *str)
   size_t arrayidx, arraysize;
 
   arraysize = 7; /* C,ST,L,O,OU,CN,email */
-  array = mutt_mem_mallocarray(arraysize + 1, sizeof(*array));
+  array = MUTT_MEM_MALLOC(arraysize + 1, struct DnArray);
   arrayidx = 0;
   while (*str)
   {
@@ -297,7 +297,7 @@ static struct DnArray *parse_dn(const char *str)
     {
       /* neomutt lacks a real mutt_mem_realloc - so we need to copy */
       arraysize += 5;
-      struct DnArray *a2 = mutt_mem_mallocarray(arraysize + 1, sizeof(*array));
+      struct DnArray *a2 = MUTT_MEM_MALLOC(arraysize + 1, struct DnArray);
       for (int i = 0; i < arrayidx; i++)
       {
         a2[i].key = array[i].key;

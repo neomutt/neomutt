@@ -311,10 +311,10 @@ void mutt_zstrm_wrap_conn(struct Connection *conn)
 
   /* allocate/setup (de)compression buffers */
   zctx->read.len = 8192;
-  zctx->read.buf = mutt_mem_mallocarray(zctx->read.len, sizeof(char));
+  zctx->read.buf = MUTT_MEM_MALLOC(zctx->read.len, char);
   zctx->read.pos = 0;
   zctx->write.len = 8192;
-  zctx->write.buf = mutt_mem_mallocarray(zctx->write.len, sizeof(char));
+  zctx->write.buf = MUTT_MEM_MALLOC(zctx->write.len, char);
   zctx->write.pos = 0;
 
   /* initialise zlib for inflate and deflate for RFC4978 */
