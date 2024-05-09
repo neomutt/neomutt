@@ -37,6 +37,14 @@
 
 #define mutt_array_size(x) (sizeof(x) / sizeof((x)[0]))
 
+#define MUTT_MEM_CALLOC(n, type)  ((type *) mutt_mem_calloc(n, sizeof(type)))
+#define MUTT_MEM_MALLOC(n, type)  ((type *) mutt_mem_mallocarray(n, sizeof(type)))
+
+#define MUTT_MEM_REALLOC(ptr, n, type)                                        \
+(                                                                             \
+  _Generic(*(ptr), type *: mutt_mem_reallocarray(ptr, n, sizeof(type)))       \
+)
+
 void *mutt_mem_calloc(size_t nmemb, size_t size);
 void  mutt_mem_free(void *ptr);
 void *mutt_mem_malloc(size_t size);
