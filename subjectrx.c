@@ -27,6 +27,8 @@
  */
 
 #include "config.h"
+#include <errno.h>
+#include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -125,6 +127,48 @@ done:
   return rc;
 }
 
+char *subject_sanitizer(const char *subject, size_t n)
+{
+  struct Buffer *buf = buf_pool_get();
+  wchar_t wc = 0;
+  size_t k = 0;
+  char scratch[MB_LEN_MAX] = { 0 };
+  mbstate_t mbstate1 = { 0 };
+  mbstate_t mbstate2 = { 0 };
+
+  for (; (n > 0) && (k = mbrtowc(&wc, subject, n, &mbstate1)); subject += k, n -= k)
+  {
+    if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
+    {
+      if ((k == ICONV_ILLEGAL_SEQ) && (errno == EILSEQ))
+        memset(&mbstate1, 0, sizeof(mbstate1));
+
+      k = (k == ICONV_ILLEGAL_SEQ) ? 1 : n;
+      wc = ReplacementChar;
+    }
+
+    //if (iswspace(wc) || wc == '?')
+    if (iswspace(wc))
+    {
+      wc = '-';
+    }
+    else if (!IsWPrint(wc))
+    {
+      wc = ReplacementChar;
+    }
+
+    size_t k2 = wcrtomb(scratch, wc, &mbstate2);
+    if (k2 == ICONV_ILLEGAL_SEQ)
+      continue; // LCOV_EXCL_LINE
+
+    buf_addstr_n(buf, scratch, k2);
+  }
+
+  char *result = buf_strdup(buf);
+  buf_pool_release(&buf);
+  return result;
+}
+
 /**
  * subjrx_apply_mods - Apply regex modifications to the subject
  * @param env Envelope of Email
@@ -138,10 +182,12 @@ bool subjrx_apply_mods(struct Envelope *env)
   if (env->disp_subj)
     return true;
 
+  env->disp_subj = subject_sanitizer(env->subject, strlen(env->subject));
+
   if (STAILQ_EMPTY(&SubjectRegexList))
     return false;
 
-  env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, env->subject);
+  // env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, env->subject);
   return true;
 }
 
