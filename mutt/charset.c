@@ -932,29 +932,26 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
  */
 struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags)
 {
-  struct FgetConv *fc = NULL;
   iconv_t cd = ICONV_T_INVALID;
 
   if (from && to)
     cd = mutt_ch_iconv_open(to, from, flags);
 
+  struct FgetConv *fc = MUTT_MEM_CALLOC(1, struct FgetConv);
+  fc->fp = fp;
+  fc->cd = cd;
+
   if (iconv_t_valid(cd))
   {
     static const char *repls[] = { "\357\277\275", "?", 0 };
 
-    fc = MUTT_MEM_MALLOC(1, struct FgetConv);
     fc->p = fc->bufo;
     fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
     fc->inrepls = mutt_ch_is_utf8(to) ? repls : repls + 1;
   }
-  else
-  {
-    fc = MUTT_MEM_MALLOC(1, struct FgetConvNot);
-  }
-  fc->fp = fp;
-  fc->cd = cd;
+
   return fc;
 }
 
