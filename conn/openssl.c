@@ -781,7 +781,7 @@ static int check_host(X509 *x509cert, const char *hostname, char *err, size_t er
       goto out;
     }
     bufsize++; /* space for the terminal nul char */
-    buf = MUTT_MEM_MALLOC((size_t) bufsize, char);
+    buf = MUTT_MEM_MALLOC(bufsize, char);
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName, buf, bufsize) == -1)
     {
       if (err && errlen)
