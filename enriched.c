@@ -282,7 +282,10 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
     if (enriched->tag_level[RICH_COLOR])
     {
       if ((enriched->param_used + 1) >= enriched->param_len)
-        MUTT_MEM_REALLOC(&enriched->param, (enriched->param_len += 256), wchar_t);
+      {
+        enriched->param_len += 256;
+        MUTT_MEM_REALLOC(&enriched->param, enriched->param_len, wchar_t);
+      }
 
       enriched->param[enriched->param_used++] = c;
     }
