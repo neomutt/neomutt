@@ -92,7 +92,7 @@ static struct NntpMboxData *mdata_find(struct NntpAccountData *adata, const char
   if (adata->groups_num >= adata->groups_max)
   {
     adata->groups_max *= 2;
-    mutt_mem_reallocarray(&adata->groups_list, adata->groups_max, sizeof(mdata));
+    MUTT_MEM_REALLOC(&adata->groups_list, adata->groups_max, struct NntpMboxData *);
   }
   adata->groups_list[adata->groups_num++] = mdata;
 
