@@ -1085,7 +1085,7 @@ static void crypt_fetch_signatures(struct Body ***b_sigs, struct Body *b, int *n
     else
     {
       if ((*n % 5) == 0)
-        mutt_mem_realloc(b_sigs, (*n + 6) * sizeof(struct Body **));
+        mutt_mem_realloc(b_sigs, (*n + 6) * sizeof(struct Body *));
 
       (*b_sigs)[(*n)++] = b;
     }
