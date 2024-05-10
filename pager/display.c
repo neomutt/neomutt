@@ -1070,7 +1070,8 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
 
   if (*lines_used == *lines_max)
   {
-    MUTT_MEM_REALLOC(lines, (*lines_max += LINES), struct Line);
+    *lines_max += LINES;
+    MUTT_MEM_REALLOC(lines, *lines_max, struct Line);
     for (ch = *lines_used; ch < *lines_max; ch++)
     {
       memset(&((*lines)[ch]), 0, sizeof(struct Line));

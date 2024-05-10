@@ -855,7 +855,10 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
         for (i = 0; thread; i++, thread = thread->prev)
         {
           if (i >= array_size)
-            MUTT_MEM_REALLOC(&array, (array_size *= 2), struct MuttThread *);
+          {
+            array_size *= 2;
+            MUTT_MEM_REALLOC(&array, array_size, struct MuttThread *);
+          }
 
           array[i] = thread;
         }
