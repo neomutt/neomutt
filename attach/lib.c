@@ -116,7 +116,7 @@ bool attach_body_parent(struct Body *start, struct Body *start_parent,
 struct Body *attach_body_ancestor(struct Body *start, struct Body *body, const char *subtype)
 {
   if (!start || !body)
-    return false;
+    return NULL;
 
   struct Body *b = body;
   struct Body *b_parent = NULL;

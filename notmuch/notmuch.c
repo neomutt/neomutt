@@ -987,10 +987,10 @@ static notmuch_threads_t *get_threads(notmuch_query_t *query)
   notmuch_threads_t *threads = NULL;
 #if LIBNOTMUCH_CHECK_VERSION(5, 0, 0)
   if (notmuch_query_search_threads(query, &threads) != NOTMUCH_STATUS_SUCCESS)
-    return false;
+    return NULL;
 #elif LIBNOTMUCH_CHECK_VERSION(4, 3, 0)
   if (notmuch_query_search_threads_st(query, &threads) != NOTMUCH_STATUS_SUCCESS)
-    return false;
+    return NULL;
 #else
   threads = notmuch_query_search_threads(query);
 #endif
