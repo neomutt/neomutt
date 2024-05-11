@@ -127,6 +127,12 @@ done:
   return rc;
 }
 
+/**
+ * subject_sanitizer - Replace characters like new lines into whitespace
+ * @param subject Original (unmodified) subject
+ * @param n Size of the subject
+ * @retval true Subject modified
+ */
 char *subject_sanitizer(const char *subject, size_t n)
 {
   struct Buffer *buf = buf_pool_get();
@@ -147,14 +153,9 @@ char *subject_sanitizer(const char *subject, size_t n)
       wc = ReplacementChar;
     }
 
-    //if (iswspace(wc) || wc == '?')
     if (iswspace(wc))
     {
-      wc = '-';
-    }
-    else if (!IsWPrint(wc))
-    {
-      wc = ReplacementChar;
+      wc = ' ';
     }
 
     size_t k2 = wcrtomb(scratch, wc, &mbstate2);
@@ -174,21 +175,15 @@ char *subject_sanitizer(const char *subject, size_t n)
  * @param env Envelope of Email
  * @retval true Subject modified
  */
-bool subjrx_apply_mods(struct Envelope *env)
+void subjrx_apply_mods(struct Envelope *env)
 {
-  if (!env || !env->subject || (*env->subject == '\0'))
-    return false;
-
-  if (env->disp_subj)
-    return true;
+  if (!env || !env->subject || (*env->subject == '\0') || env->disp_subj)
+    return;
 
   env->disp_subj = subject_sanitizer(env->subject, strlen(env->subject));
 
-  if (STAILQ_EMPTY(&SubjectRegexList))
-    return false;
-
-  // env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, env->subject);
-  return true;
+  if (!STAILQ_EMPTY(&SubjectRegexList))
+    env->disp_subj = mutt_replacelist_apply(&SubjectRegexList, env->disp_subj);
 }
 
 /**
