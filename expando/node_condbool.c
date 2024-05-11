@@ -50,9 +50,6 @@ struct ExpandoNode *node_condbool_new(const char *start, const char *end, int di
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_CONDBOOL;
-  node->start = start;
-  node->end = end;
-
   node->did = did;
   node->uid = uid;
   node->render = node_condbool_render;

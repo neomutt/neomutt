@@ -326,17 +326,16 @@ enum IndexDateChoice
 
 /**
  * index_email_date - Index: Sent/Received Local/Sender date and time
- * @param node       ExpandoNode containing the callback
- * @param e          Email
- * @param which      Which date to use
- * @param flags      Flags, see #MuttFormatFlags
- * @param buf        Buffer for the result
- * @param format     Format string
- * @param format_len Length of format string
+ * @param node   ExpandoNode containing the callback
+ * @param e      Email
+ * @param which  Which date to use
+ * @param flags  Flags, see #MuttFormatFlags
+ * @param buf    Buffer for the result
+ * @param format Format string
  */
 static void index_email_date(const struct ExpandoNode *node, const struct Email *e,
                              enum IndexDateChoice which, MuttFormatFlags flags,
-                             struct Buffer *buf, const char *format, size_t format_len)
+                             struct Buffer *buf, const char *format)
 {
   struct tm tm = { 0 };
   switch (which)
@@ -361,7 +360,7 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
     }
   }
 
-  char *fmt = mutt_strn_dup(format, format_len);
+  char *fmt = mutt_str_dup(format);
 
   const bool use_c_locale = (*fmt == '!');
 
@@ -402,10 +401,7 @@ void index_date_recv_local(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  int len = node->end - node->start;
-  const char *start = node->start;
-
-  index_email_date(node, e, RECV_LOCAL, flags, buf, start, len);
+  index_email_date(node, e, RECV_LOCAL, flags, buf, node->text);
 }
 
 /**
@@ -432,10 +428,7 @@ void index_date_local(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  int len = node->end - node->start;
-  const char *start = node->start;
-
-  index_email_date(node, e, SENT_LOCAL, flags, buf, start, len);
+  index_email_date(node, e, SENT_LOCAL, flags, buf, node->text);
 }
 
 /**
@@ -462,10 +455,7 @@ void index_date(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  int len = node->end - node->start;
-  const char *start = node->start;
-
-  index_email_date(node, e, SENT_SENDER, flags, buf, start, len);
+  index_email_date(node, e, SENT_SENDER, flags, buf, node->text);
 }
 
 /**
@@ -481,12 +471,7 @@ void index_format_hook(const struct ExpandoNode *node, void *data,
 
   struct Mailbox *m = hfi->mailbox;
 
-  char tmp[128] = { 0 };
-  const int len = node->end - node->start;
-
-  mutt_strn_copy(tmp, node->start, len, sizeof(tmp));
-
-  const struct Expando *exp = mutt_idxfmt_hook(tmp, m, e);
+  const struct Expando *exp = mutt_idxfmt_hook(node->text, m, e);
   if (!exp)
     return;
 
@@ -695,7 +680,7 @@ void index_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
   const char *cp = NONULL(c_date_format);
 
-  index_email_date(node, e, SENT_SENDER, flags, buf, cp, strlen(cp));
+  index_email_date(node, e, SENT_SENDER, flags, buf, cp);
 }
 
 /**
@@ -712,7 +697,7 @@ void index_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
   const char *cp = NONULL(c_date_format);
 
-  index_email_date(node, e, SENT_LOCAL, flags, buf, cp, strlen(cp));
+  index_email_date(node, e, SENT_LOCAL, flags, buf, cp);
 }
 
 /**
@@ -835,13 +820,7 @@ void index_G(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   if (!e)
     return;
 
-  char tag_format[3] = { 0 };
-
-  tag_format[0] = 'G';
-  tag_format[1] = node->start[1];
-  tag_format[2] = '\0';
-
-  char *tag = mutt_hash_find(TagFormats, tag_format);
+  char *tag = mutt_hash_find(TagFormats, node->text);
   if (!tag)
     return;
 

@@ -1781,14 +1781,7 @@ void dot_expando_node_text(FILE *fp, struct ExpandoNode *node, struct ListHead *
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "Text", "#ffff80");
   // dot_type_string(fp, "type", "ENT_TEXT", true);
-
-  if (node->start && node->end)
-  {
-    size_t len = node->end - node->start;
-    char text[64] = { 0 };
-    mutt_strn_copy(text, node->start, len, sizeof(text));
-    dot_type_string(fp, "text", text, true);
-  }
+  dot_type_string(fp, "text", node->text, false);
 
   dot_object_footer(fp);
 
@@ -1816,14 +1809,7 @@ void dot_expando_node_pad(FILE *fp, struct ExpandoNode *node, struct ListHead *l
       break;
   }
   dot_type_string(fp, "type", pad, true);
-
-  if (node->start && node->end)
-  {
-    size_t len = node->end - node->start;
-    char text[64] = { 0 };
-    mutt_strn_copy(text, node->start, len, sizeof(text));
-    dot_type_string(fp, "char", text, true);
-  }
+  dot_type_string(fp, "char", node->text, false);
 
   dot_object_footer(fp);
 
@@ -1849,15 +1835,7 @@ void dot_expando_node_condition(FILE *fp, struct ExpandoNode *node, struct ListH
   struct Buffer *buf = buf_pool_get();
   dot_object_header(fp, node, "Condition", "#ff8080");
   // dot_type_string(fp, "type", "ENT_CONDITION", true);
-
-  if (node->start && node->end)
-  {
-    size_t len = node->end - node->start;
-
-    char str[64] = { 0 };
-    mutt_strn_copy(str, node->start, len, sizeof(str));
-    dot_type_string(fp, "string", str, true);
-  }
+  dot_type_string(fp, "text", node->text, false);
 
   dot_object_footer(fp);
 
@@ -1889,15 +1867,7 @@ void dot_expando_node_conditional_bool(FILE *fp, struct ExpandoNode *node,
   // dot_type_string(fp, "type", "ENT_CONDBOOL", true);
   dot_type_string(fp, "did", name_expando_domain(node->did), true);
   dot_type_string(fp, "uid", name_expando_uid(node->did, node->uid), true);
-
-  if (node->start && node->end)
-  {
-    size_t len = node->end - node->start;
-
-    char str[64] = { 0 };
-    mutt_strn_copy(str, node->start, len, sizeof(str));
-    dot_type_string(fp, "string", str, true);
-  }
+  dot_type_string(fp, "text", node->text, false);
 
   dot_object_footer(fp);
 
@@ -1912,15 +1882,7 @@ void dot_expando_node_conditional_date(FILE *fp, struct ExpandoNode *node,
   // dot_type_string(fp, "type", "ENT_CONDDATE", true);
   dot_type_string(fp, "did", name_expando_domain(node->did), true);
   dot_type_string(fp, "uid", name_expando_uid(node->did, node->uid), true);
-
-  if (node->start && node->end)
-  {
-    size_t len = node->end - node->start;
-
-    char str[64] = { 0 };
-    mutt_strn_copy(str, node->start, len, sizeof(str));
-    dot_type_string(fp, "string", str, true);
-  }
+  dot_type_string(fp, "text", node->text, false);
 
   struct NodeCondDatePrivate *priv = node->ndata;
   if (priv)
@@ -2008,15 +1970,7 @@ void dot_expando_node_expando(FILE *fp, struct ExpandoNode *node, struct ListHea
   // dot_type_number(fp, "type", node->type);
   dot_type_string(fp, "did", name_expando_domain(node->did), true);
   dot_type_string(fp, "uid", name_expando_uid(node->did, node->uid), true);
-
-  if (node->start && node->end)
-  {
-    size_t len = node->end - node->start;
-
-    char str[64] = { 0 };
-    mutt_strn_copy(str, node->start, len, sizeof(str));
-    dot_type_string(fp, "string", str, true);
-  }
+  dot_type_string(fp, "text", node->text, false);
 
   dot_format(fp, node->format);
 
@@ -2033,15 +1987,7 @@ void dot_expando_node_unknown(FILE *fp, struct ExpandoNode *node, struct ListHea
   dot_type_number(fp, "type", node->type);
   dot_type_number(fp, "did", node->did);
   dot_type_number(fp, "uid", node->uid);
-
-  if (node->start && node->end)
-  {
-    size_t len = node->end - node->start;
-
-    char str[64] = { 0 };
-    mutt_strn_copy(str, node->start, len, sizeof(str));
-    dot_type_string(fp, "string", str, true);
-  }
+  dot_type_string(fp, "text", node->text, false);
 
   dot_object_footer(fp);
 

@@ -72,9 +72,9 @@ void test_expando_simple_expando_render(void)
   TEST_CHECK(exp != NULL);
   TEST_CHECK(buf_is_empty(err));
 
-  check_node_expando(node_get_child(exp->node, 0), "s", NULL);
+  check_node_expando(node_get_child(exp->node, 0), NULL, NULL);
   check_node_text(node_get_child(exp->node, 1), " - ");
-  check_node_expando(node_get_child(exp->node, 2), "d", NULL);
+  check_node_expando(node_get_child(exp->node, 2), NULL, NULL);
 
   const char *expected = "Test - 1";
 

@@ -42,9 +42,9 @@ void test_expando_two_char_expando(void)
   TEST_CHECK(exp != NULL);
   TEST_CHECK(buf_is_empty(err));
 
-  check_node_expando(node_get_child(exp->node, 0), "cr", NULL);
+  check_node_expando(node_get_child(exp->node, 0), NULL, NULL);
   check_node_text(node_get_child(exp->node, 1), " ");
-  check_node_expando(node_get_child(exp->node, 2), "a", NULL);
+  check_node_expando(node_get_child(exp->node, 2), NULL, NULL);
   check_node_text(node_get_child(exp->node, 3), "b");
 
   expando_free(&exp);

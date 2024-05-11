@@ -56,8 +56,6 @@ struct ExpandoFormat
   enum FormatJustify justification;   ///< Justification: left, centre, right
   char               leader;          ///< Leader character, 0 or space
   bool               lower;           ///< Display in lower case
-  const char        *start;           ///< Start of Expando specifier string
-  const char        *end;             ///< End of Expando specifier string
 };
 
 /**
@@ -72,11 +70,9 @@ struct ExpandoNode
   int                       uid;         ///< Unique ID, e.g. #ED_EMA_SIZE
 
   struct ExpandoFormat     *format;      ///< Formatting info
+  const char               *text;        ///< Node-specific text
 
   struct ExpandoNodeArray   children;    ///< Children nodes
-
-  const char               *start;       ///< Start of string data
-  const char               *end;         ///< End of string data
 
   void  *ndata;                          ///< Private node data
   void (*ndata_free)(void **ptr);        ///< Function to free the private node data

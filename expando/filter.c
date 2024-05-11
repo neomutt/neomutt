@@ -45,8 +45,8 @@
  * @param root Root Node
  * @retval true Yes, pipe it
  *
+ * - Check the last Node is text
  * - Check for a trailing | (pipe) character
- * - Check the first Node is text
  */
 bool check_for_pipe(struct ExpandoNode *root)
 {
@@ -57,21 +57,18 @@ bool check_for_pipe(struct ExpandoNode *root)
   if (!last || (last->type != ENT_TEXT))
     return false;
 
-  if (!last->start || !last->end)
-    return false;
-
-  int len = last->end - last->start;
+  size_t len = mutt_str_len(last->text);
   if (len < 1)
     return false;
 
-  if (last->start[len - 1] != '|')
+  if (last->text[len - 1] != '|')
     return false;
 
   // Count any preceding backslashes
   int count = 0;
   for (int i = len - 2; i >= 0; i--)
   {
-    if (last->start[i] == '\\')
+    if (last->text[i] == '\\')
       count++;
   }
 

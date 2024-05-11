@@ -44,7 +44,7 @@ void test_expando_formatted_expando(void)
   TEST_CHECK(exp != NULL);
   TEST_CHECK(buf_is_empty(err));
 
-  check_node_expando(node_get_child(exp->node, 0), "X", NULL);
+  check_node_expando(node_get_child(exp->node, 0), NULL, NULL);
   check_node_text(node_get_child(exp->node, 1), " ");
 
   {
@@ -53,7 +53,7 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(node_get_child(exp->node, 2), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 2), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 3), " ");
   }
 
@@ -63,7 +63,7 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
-    check_node_expando(node_get_child(exp->node, 4), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 4), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 5), " ");
   }
 
@@ -73,7 +73,7 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = '0';
-    check_node_expando(node_get_child(exp->node, 6), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 6), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 7), " ");
   }
 
@@ -83,7 +83,7 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(node_get_child(exp->node, 8), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 8), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 9), " ");
   }
 
@@ -93,7 +93,7 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(node_get_child(exp->node, 10), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 10), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 11), " ");
   }
 
@@ -103,7 +103,7 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
-    check_node_expando(node_get_child(exp->node, 12), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 12), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 13), " ");
   }
 
@@ -113,7 +113,7 @@ void test_expando_formatted_expando(void)
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_CENTER;
     fmt.leader = ' ';
-    check_node_expando(node_get_child(exp->node, 14), "X", &fmt);
+    check_node_expando(node_get_child(exp->node, 14), NULL, &fmt);
   }
 
   expando_free(&exp);

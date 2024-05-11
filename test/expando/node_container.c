@@ -65,9 +65,9 @@ void test_three(const struct ExpandoNode *node, void *data,
 struct ExpandoNode *make_children(char ch)
 {
   struct ExpandoNode *cont = node_container_new();
-  struct ExpandoNode *n1 = node_expando_new(NULL, NULL, NULL, (ch - 'a' + 1) * 10, 1);
-  struct ExpandoNode *n2 = node_expando_new(NULL, NULL, NULL, (ch - 'a' + 1) * 10, 2);
-  struct ExpandoNode *n3 = node_expando_new(NULL, NULL, NULL, (ch - 'a' + 1) * 10, 3);
+  struct ExpandoNode *n1 = node_expando_new(NULL, (ch - 'a' + 1) * 10, 1);
+  struct ExpandoNode *n2 = node_expando_new(NULL, (ch - 'a' + 1) * 10, 2);
+  struct ExpandoNode *n3 = node_expando_new(NULL, (ch - 'a' + 1) * 10, 3);
 
   node_add_child(cont, n1);
   node_add_child(cont, n2);
@@ -202,12 +202,11 @@ void test_expando_node_container(void)
   }
 
   {
-    const char *str = "a";
     struct Expando exp = { 0 };
     struct ExpandoNode *cont1 = node_container_new();
     struct ExpandoNode *cont2 = node_container_new();
     struct ExpandoNode *cont3 = node_container_new();
-    struct ExpandoNode *node = node_expando_new(str, str + 1, NULL, ED_EMAIL, 1);
+    struct ExpandoNode *node = node_expando_new(NULL, ED_EMAIL, 1);
     struct Buffer *buf = buf_pool_get();
 
     node_add_child(cont1, cont2);
@@ -219,7 +218,7 @@ void test_expando_node_container(void)
 
     exp.node = cont1;
     expando_serialise(&exp, buf);
-    TEST_CHECK_STR_EQ(buf_string(buf), "<EXP:'a'(EMAIL,ATTACHMENT_COUNT)>");
+    TEST_CHECK_STR_EQ(buf_string(buf), "<EXP:(EMAIL,ATTACHMENT_COUNT)>");
     node_free(&cont1);
 
     buf_pool_release(&buf);

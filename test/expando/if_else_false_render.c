@@ -93,8 +93,8 @@ void test_expando_if_else_false_render(void)
     struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "c");
-    check_node_expando(node_true, "t", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
     TEST_CHECK(node_false == NULL);
   }
 
@@ -106,9 +106,9 @@ void test_expando_if_else_false_render(void)
     struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "c");
-    check_node_expando(node_true, "t", NULL);
-    check_node_expando(node_false, "f", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
   }
 
   const char *expected = "3";

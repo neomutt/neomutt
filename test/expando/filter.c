@@ -72,29 +72,20 @@ void test_expando_filter(void)
     last->type = ENT_TEXT;
     TEST_CHECK(!check_for_pipe(root));
 
-    const char *str = "hello|";
-    last->start = str + 5;
-    last->end = str;
+    last->text = "";
     TEST_CHECK(!check_for_pipe(root));
 
-    last->start = str;
-    last->end = str;
-    TEST_CHECK(!check_for_pipe(root));
-
-    last->start = str;
-    last->end = str + 5;
+    last->text = "hello";
     TEST_CHECK(!check_for_pipe(root));
 
     for (size_t i = 0; i < mutt_array_size(tests); i++)
     {
-      str = tests[i].name;
-      TEST_CASE(str);
-      last->start = str;
-      size_t len = strlen(str);
-      last->end = last->start + len;
+      TEST_CASE(tests[i].name);
+      last->text = tests[i].name;
       TEST_CHECK(check_for_pipe(root) == tests[i].value);
     }
 
+    last->text = NULL; // we own the string
     node_free(&root);
   }
 

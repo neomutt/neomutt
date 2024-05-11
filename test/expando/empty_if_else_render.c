@@ -78,9 +78,9 @@ void test_expando_empty_if_else_render(void)
   struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
   struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
-  check_node_condbool(node_cond, "c");
+  check_node_condbool(node_cond);
   TEST_CHECK(node_true == NULL);
-  check_node_expando(node_false, "f", NULL);
+  check_node_expando(node_false, NULL, NULL);
 
   const struct ExpandoRenderData render[] = {
     { 1, 0, simple_c },

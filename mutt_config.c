@@ -246,7 +246,7 @@ struct ExpandoNode *parse_tags_transformed(const char *str, int did, int uid,
                                                 parsed_until, err);
 
   // but adjust the node to take one more character
-  node->end++;
+  node->text = mutt_strn_dup((*parsed_until) - 1, 2);
   (*parsed_until)++;
 
   if (flags & EP_CONDITIONAL)
@@ -273,8 +273,7 @@ struct ExpandoNode *parse_subject(const char *str, int did, int uid,
   struct ExpandoNode *node_subj = node_expando_parse(str, IndexFormatDef, flags,
                                                      parsed_until, err);
 
-  struct ExpandoNode *node_tree = node_expando_new(node_subj->start, node_subj->end,
-                                                   NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
+  struct ExpandoNode *node_tree = node_expando_new(NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
   // Move the formatting info to the container
   struct ExpandoNode *node_cont = node_container_new();
   node_cont->format = node_subj->format;

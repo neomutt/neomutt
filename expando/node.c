@@ -63,6 +63,7 @@ void node_free(struct ExpandoNode **ptr)
     node->ndata_free(&node->ndata);
 
   FREE(&node->format);
+  FREE(&node->text);
 
   FREE(ptr);
 }

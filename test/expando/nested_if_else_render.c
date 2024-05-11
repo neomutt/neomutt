@@ -78,7 +78,7 @@ void test_expando_nested_if_else_render(void)
   struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
   struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
-  check_node_condbool(node_cond, "x");
+  check_node_condbool(node_cond);
 
   struct ExpandoNode *t = node_true;
   check_node_cond(t);
@@ -90,7 +90,7 @@ void test_expando_nested_if_else_render(void)
   node_true = node_get_child(t, ENC_TRUE);
   node_false = node_get_child(t, ENC_FALSE);
 
-  check_node_condbool(node_cond, "y");
+  check_node_condbool(node_cond);
   check_node_text(node_true, "XY");
   check_node_text(node_false, "X");
 
@@ -98,7 +98,7 @@ void test_expando_nested_if_else_render(void)
   node_true = node_get_child(f, ENC_TRUE);
   node_false = node_get_child(f, ENC_FALSE);
 
-  check_node_condbool(node_cond, "y");
+  check_node_condbool(node_cond);
   check_node_text(node_true, "Y");
   check_node_text(node_false, "NONE");
 

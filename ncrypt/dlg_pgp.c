@@ -275,30 +275,23 @@ void pgp_entry_pgp_date(const struct ExpandoNode *node, void *data,
   const struct PgpUid *uid = entry->uid;
   const struct PgpKeyInfo *key = uid->parent;
 
-  char tmp[128] = { 0 };
-  char datestr[128] = { 0 };
-
-  int len = node->end - node->start;
-  const char *start = node->start;
   bool use_c_locale = false;
-  if (*start == '!')
+  const char *text = node->text;
+  if (*text == '!')
   {
     use_c_locale = true;
-    start++;
-    len--;
+    text++;
   }
 
-  ASSERT(len < sizeof(datestr));
-  mutt_strn_copy(datestr, start, len, sizeof(datestr));
-
+  char tmp[128] = { 0 };
   if (use_c_locale)
   {
-    mutt_date_localtime_format_locale(tmp, sizeof(tmp), datestr, key->gen_time,
+    mutt_date_localtime_format_locale(tmp, sizeof(tmp), text, key->gen_time,
                                       NeoMutt->time_c_locale);
   }
   else
   {
-    mutt_date_localtime_format(tmp, sizeof(tmp), datestr, key->gen_time);
+    mutt_date_localtime_format(tmp, sizeof(tmp), text, key->gen_time);
   }
 
   buf_strcpy(buf, tmp);

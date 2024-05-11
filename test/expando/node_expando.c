@@ -67,7 +67,7 @@ static struct ExpandoNode *parse_test(const char *str, int did, int uid,
                                       ExpandoParserFlags flags, const char **parsed_until,
                                       struct ExpandoParseError *err)
 {
-  return node_expando_new(str, str + 1, NULL, did, uid);
+  return node_expando_new(NULL, did, uid);
 }
 
 void test_expando_node_expando(void)
@@ -105,8 +105,7 @@ void test_expando_node_expando(void)
 
   // struct ExpandoNode *node_expando_new(const char *start, const char *end, struct ExpandoFormat *fmt, int did, int uid);
   {
-    const char *str = "%a";
-    struct ExpandoNode *node = node_expando_new(str + 1, str + 2, NULL, 1, 2);
+    struct ExpandoNode *node = node_expando_new(NULL, 1, 2);
     TEST_CHECK(node != NULL);
     node_free(&node);
   }
@@ -114,8 +113,7 @@ void test_expando_node_expando(void)
   // void node_expando_set_color(const struct ExpandoNode *node, int cid);
   // void node_expando_set_has_tree(const struct ExpandoNode *node, bool has_tree);
   {
-    const char *str = "%a";
-    struct ExpandoNode *node = node_expando_new(str + 1, str + 2, NULL, 1, 2);
+    struct ExpandoNode *node = node_expando_new(NULL, 1, 2);
     TEST_CHECK(node != NULL);
 
     node_expando_set_color(NULL, 42);

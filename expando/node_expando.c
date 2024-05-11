@@ -70,22 +70,16 @@ void node_expando_private_free(void **ptr)
 
 /**
  * node_expando_new - Create a new Expando ExpandoNode
- * @param start  Start of Expando string
- * @param end    End of Expando string
  * @param fmt    Formatting data
  * @param did    Domain ID
  * @param uid    Unique ID
  * @retval ptr New Expando ExpandoNode
  */
-struct ExpandoNode *node_expando_new(const char *start, const char *end,
-                                     struct ExpandoFormat *fmt, int did, int uid)
+struct ExpandoNode *node_expando_new(struct ExpandoFormat *fmt, int did, int uid)
 {
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_EXPANDO;
-  node->start = start;
-  node->end = end;
-
   node->did = did;
   node->uid = uid;
   node->render = node_expando_render;
@@ -146,8 +140,6 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
   struct ExpandoFormat *fmt = mutt_mem_calloc(1, sizeof(struct ExpandoFormat));
 
   fmt->leader = ' ';
-  fmt->start = start;
-  fmt->end = end;
   fmt->justification = JUSTIFY_RIGHT;
   fmt->min_cols = 0;
   fmt->max_cols = INT_MAX;
@@ -265,7 +257,7 @@ struct ExpandoNode *node_expando_parse(const char *str, const struct ExpandoDefi
       else
       {
         *parsed_until = expando_end;
-        return node_expando_new(format_end, expando_end, fmt, def->did, def->uid);
+        return node_expando_new(fmt, def->did, def->uid);
       }
     }
 
@@ -319,7 +311,10 @@ struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int u
   }
 
   *parsed_until = expando_end + 1;
-  return node_expando_new(format_end, expando_end, fmt, did, uid);
+
+  struct ExpandoNode *node = node_expando_new(fmt, did, uid);
+  node->text = mutt_strn_dup(format_end, expando_end - format_end);
+  return node;
 }
 
 /**

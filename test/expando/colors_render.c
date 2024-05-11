@@ -89,9 +89,9 @@ void test_expando_colors_render(void)
     TEST_CHECK(exp != NULL);
     TEST_CHECK(buf_is_empty(err));
 
-    check_node_expando(node_get_child(exp->node, 0), "C", NULL);
+    check_node_expando(node_get_child(exp->node, 0), NULL, NULL);
     check_node_text(node_get_child(exp->node, 1), " - ");
-    check_node_expando(node_get_child(exp->node, 2), "s", NULL);
+    check_node_expando(node_get_child(exp->node, 2), NULL, NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },
@@ -153,9 +153,9 @@ void test_expando_colors_render(void)
     struct ExpandoNode *right = node_get_child(exp->node, ENP_RIGHT);
     TEST_CHECK(right != NULL);
 
-    check_node_expando(node_get_child(left, 0), "C", NULL);
+    check_node_expando(node_get_child(left, 0), NULL, NULL);
     check_node_text(node_get_child(left, 1), " ");
-    check_node_expando(right, "s", NULL);
+    check_node_expando(right, NULL, NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },
@@ -235,9 +235,9 @@ void test_expando_colors_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_expando(node_get_child(left, 0), "s", NULL);
+    check_node_expando(node_get_child(left, 0), NULL, NULL);
     check_node_text(node_get_child(left, 1), " ");
-    check_node_expando(right, "s", NULL);
+    check_node_expando(right, NULL, NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },
@@ -302,9 +302,9 @@ void test_expando_colors_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_expando(node_get_child(left, 0), "s", NULL);
+    check_node_expando(node_get_child(left, 0), NULL, NULL);
     check_node_text(node_get_child(left, 1), " ");
-    check_node_expando(right, "s", NULL);
+    check_node_expando(right, NULL, NULL);
 
     const struct ExpandoRenderData render[] = {
       { 1, 0, simple_s },

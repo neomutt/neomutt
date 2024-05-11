@@ -54,14 +54,14 @@ void test_expando_new_if_else(void)
     struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "l");
+    check_node_condbool(node_cond);
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(node_true, "l", &fmt);
+    check_node_expando(node_true, NULL, &fmt);
     TEST_CHECK(node_false == NULL);
   }
 
@@ -75,15 +75,15 @@ void test_expando_new_if_else(void)
     struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "l");
+    check_node_condbool(node_cond);
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(node_true, "l", &fmt);
-    check_node_expando(node_false, "c", &fmt);
+    check_node_expando(node_true, NULL, &fmt);
+    check_node_expando(node_false, NULL, &fmt);
   }
 
   expando_free(&exp);

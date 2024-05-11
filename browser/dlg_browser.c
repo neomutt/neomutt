@@ -212,29 +212,24 @@ void folder_date(const struct ExpandoNode *node, void *data,
   if (!folder->ff->local)
     return;
 
-  char tmp[128] = { 0 };
-  char tmp2[128] = { 0 };
-  int len = node->end - node->start;
-  const char *start = node->start;
-
-  struct tm tm = mutt_date_localtime(folder->ff->mtime);
   bool use_c_locale = false;
-  if (*start == '!')
+  const char *text = node->text;
+  if (*text == '!')
   {
     use_c_locale = true;
-    start++;
-    len--;
+    text++;
   }
-  ASSERT(len < sizeof(tmp2));
-  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
+
+  char tmp[128] = { 0 };
+  struct tm tm = mutt_date_localtime(folder->ff->mtime);
 
   if (use_c_locale)
   {
-    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
+    strftime_l(tmp, sizeof(tmp), text, &tm, NeoMutt->time_c_locale);
   }
   else
   {
-    strftime(tmp, sizeof(tmp), tmp2, &tm);
+    strftime(tmp, sizeof(tmp), text, &tm);
   }
 
   buf_strcpy(buf, tmp);

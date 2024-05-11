@@ -46,12 +46,7 @@ static void simple_date(const struct ExpandoNode *node, void *data,
   struct tm tm = mutt_date_localtime(dd->t);
 
   char tmp[128] = { 0 };
-  char tmp2[128] = { 0 };
-
-  const int len = node->end - node->start;
-  memcpy(tmp2, node->start, len);
-
-  strftime(tmp, sizeof(tmp), tmp2, &tm);
+  strftime(tmp, sizeof(tmp), node->text, &tm);
   buf_strcpy(buf, tmp);
 }
 

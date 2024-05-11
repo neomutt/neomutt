@@ -75,15 +75,15 @@ void node_padding_private_free(void **ptr)
  */
 int pad_string(const struct ExpandoNode *node, struct Buffer *buf, int max_cols)
 {
-  const int pad_len = node->end - node->start;
-  const int pad_cols = mutt_strnwidth(node->start, pad_len);
+  const int pad_len = mutt_str_len(node->text);
+  const int pad_cols = mutt_strnwidth(node->text, pad_len);
   int total_cols = 0;
 
   if (pad_len != 0)
   {
     while (pad_cols <= max_cols)
     {
-      buf_addstr_n(buf, node->start, pad_len);
+      buf_addstr_n(buf, node->text, pad_len);
 
       max_cols -= pad_cols;
       total_cols += pad_cols;
@@ -204,8 +204,7 @@ struct ExpandoNode *node_padding_new(enum ExpandoPadType pad_type,
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_PADDING;
-  node->start = start;
-  node->end = end;
+  node->text = mutt_strn_dup(start, end - start);
 
   switch (pad_type)
   {

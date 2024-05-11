@@ -306,21 +306,13 @@ void pgp_entry_gpgme_date(const struct ExpandoNode *node, void *data,
   const struct CryptEntry *entry = data;
   const struct CryptKeyInfo *key = entry->key;
 
-  char tmp[128] = { 0 };
-  char datestr[128] = { 0 };
-
-  int len = node->end - node->start;
-  const char *start = node->start;
+  const char *text = node->text;
   bool use_c_locale = false;
-  if (*start == '!')
+  if (*text == '!')
   {
     use_c_locale = true;
-    start++;
-    len--;
+    text++;
   }
-
-  ASSERT(len < sizeof(datestr));
-  mutt_strn_copy(datestr, start, len, sizeof(datestr));
 
   struct tm tm = { 0 };
   if (key->kobj->subkeys && (key->kobj->subkeys->timestamp > 0))
@@ -332,13 +324,14 @@ void pgp_entry_gpgme_date(const struct ExpandoNode *node, void *data,
     tm = mutt_date_localtime(0); // Default to 1970-01-01
   }
 
+  char tmp[128] = { 0 };
   if (use_c_locale)
   {
-    strftime_l(tmp, sizeof(tmp), datestr, &tm, NeoMutt->time_c_locale);
+    strftime_l(tmp, sizeof(tmp), text, &tm, NeoMutt->time_c_locale);
   }
   else
   {
-    strftime(tmp, sizeof(tmp), datestr, &tm);
+    strftime(tmp, sizeof(tmp), text, &tm);
   }
 
   buf_strcpy(buf, tmp);

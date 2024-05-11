@@ -104,6 +104,7 @@ struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *d
     return NULL;
   }
 
+  // Optimise the tree layout
   node_padding_repad(&exp->node);
   node_container_collapse_all(&exp->node);
 

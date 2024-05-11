@@ -54,7 +54,7 @@ void test_expando_nested_if_else(void)
     struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "a");
+    check_node_condbool(node_cond);
 
     struct ExpandoNode *t = node_true;
     check_node_cond(t);
@@ -66,17 +66,17 @@ void test_expando_nested_if_else(void)
     node_true = node_get_child(t, ENC_TRUE);
     node_false = node_get_child(t, ENC_FALSE);
 
-    check_node_condbool(node_cond, "b");
-    check_node_expando(node_true, "c", NULL);
-    check_node_expando(node_false, "d", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     node_cond = node_get_child(f, ENC_CONDITION);
     node_true = node_get_child(f, ENC_TRUE);
     node_false = node_get_child(f, ENC_FALSE);
 
-    check_node_condbool(node_cond, "e");
-    check_node_expando(node_true, "f", NULL);
-    check_node_expando(node_false, "g", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     expando_free(&exp);
   }
@@ -92,7 +92,7 @@ void test_expando_nested_if_else(void)
     struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "a");
+    check_node_condbool(node_cond);
 
     struct ExpandoNode *t = node_true;
     check_node_cond(t);
@@ -104,16 +104,16 @@ void test_expando_nested_if_else(void)
     node_true = node_get_child(t, ENC_TRUE);
     node_false = node_get_child(t, ENC_FALSE);
 
-    check_node_condbool(node_cond, "b");
-    check_node_expando(node_true, "c", NULL);
-    check_node_expando(node_false, "d", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     node_cond = node_get_child(f, ENC_CONDITION);
     node_true = node_get_child(f, ENC_TRUE);
     node_false = node_get_child(f, ENC_FALSE);
 
-    check_node_condbool(node_cond, "e");
-    check_node_expando(node_true, "f", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
     TEST_CHECK(node_false == NULL);
 
     expando_free(&exp);
@@ -130,7 +130,7 @@ void test_expando_nested_if_else(void)
     struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "a");
+    check_node_condbool(node_cond);
 
     struct ExpandoNode *t = node_true;
     check_node_cond(t);
@@ -142,17 +142,17 @@ void test_expando_nested_if_else(void)
     node_true = node_get_child(t, ENC_TRUE);
     node_false = node_get_child(t, ENC_FALSE);
 
-    check_node_condbool(node_cond, "b");
-    check_node_expando(node_true, "c", NULL);
-    check_node_expando(node_false, "d", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     node_cond = node_get_child(f, ENC_CONDITION);
     node_true = node_get_child(f, ENC_TRUE);
     node_false = node_get_child(f, ENC_FALSE);
 
-    check_node_condbool(node_cond, "e");
+    check_node_condbool(node_cond);
     TEST_CHECK(node_true == NULL);
-    check_node_expando(node_false, "f", NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     expando_free(&exp);
   }
@@ -168,7 +168,7 @@ void test_expando_nested_if_else(void)
     struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "a");
+    check_node_condbool(node_cond);
 
     struct ExpandoNode *t = node_true;
     check_node_cond(t);
@@ -180,17 +180,17 @@ void test_expando_nested_if_else(void)
     node_true = node_get_child(t, ENC_TRUE);
     node_false = node_get_child(t, ENC_FALSE);
 
-    check_node_condbool(node_cond, "b");
-    check_node_expando(node_true, "c", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
     TEST_CHECK(node_false == NULL);
 
     node_cond = node_get_child(f, ENC_CONDITION);
     node_true = node_get_child(f, ENC_TRUE);
     node_false = node_get_child(f, ENC_FALSE);
 
-    check_node_condbool(node_cond, "e");
-    check_node_expando(node_true, "f", NULL);
-    check_node_expando(node_false, "g", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     expando_free(&exp);
   }
@@ -206,7 +206,7 @@ void test_expando_nested_if_else(void)
     struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "a");
+    check_node_condbool(node_cond);
 
     struct ExpandoNode *t = node_true;
     check_node_cond(t);
@@ -218,17 +218,17 @@ void test_expando_nested_if_else(void)
     node_true = node_get_child(t, ENC_TRUE);
     node_false = node_get_child(t, ENC_FALSE);
 
-    check_node_condbool(node_cond, "b");
+    check_node_condbool(node_cond);
     TEST_CHECK(node_true == NULL);
-    check_node_expando(node_false, "c", NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     node_cond = node_get_child(f, ENC_CONDITION);
     node_true = node_get_child(f, ENC_TRUE);
     node_false = node_get_child(f, ENC_FALSE);
 
-    check_node_condbool(node_cond, "e");
-    check_node_expando(node_true, "f", NULL);
-    check_node_expando(node_false, "g", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
 
     expando_free(&exp);
   }
