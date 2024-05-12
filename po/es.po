@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-04-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-05-08 19:10+0100\n"
+"POT-Creation-Date: 2024-05-12 23:29+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adán Somoza\n"
 "Language-Team: \n"
@@ -94,7 +94,7 @@ msgstr "alias: sin dirección"
 #: alias/commands.c:164
 #, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "Aviso: Mala dirección '%s' en alias '%s'"
+msgstr "Aviso: Mala dirección '%s' inválido en alias '%s'"
 
 #: alias/commands.c:173
 #, c-format
@@ -674,7 +674,7 @@ msgstr "La base de datos de autocrypt es demasiado nueva"
 #: bcache/bcache.c:72
 #, c-format
 msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
-msgstr "Caché deshabilitados, $message_cache_dir no es un directorio: %s"
+msgstr "Caché desactivado, $message_cache_dir no es un directorio: %s"
 
 #: bcache/bcache.c:227
 #, c-format
@@ -1237,11 +1237,11 @@ msgstr "'Content-Language' vacío"
 
 #: compose/functions.c:1232
 msgid "Can't filter multipart attachments"
-msgstr "No se puede filtrar archivos adjuntos de varias partes"
+msgstr "No se puede filtrar adjuntos multiparte"
 
 #: compose/functions.c:1267
 msgid "Can't get multipart attachments"
-msgstr "No se puede obtener archivos adjuntos de varias partes"
+msgstr "No se pudo conseguir adjuntos multiparte"
 
 #: compose/functions.c:1289
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1261,7 +1261,7 @@ msgstr "No se envió este mensaje"
 
 #: compose/functions.c:1333
 msgid "Grouping 'related' requires at least 2 tagged messages"
-msgstr "Agrupar 'related' requiere al menos 2 mensajes marcados"
+msgstr "Agrupar como 'relacionado' requiere al menos 2 mensajes marcados"
 
 #: compose/functions.c:1372 compose/functions.c:1391
 msgid "Attachment is already at bottom"
@@ -1299,7 +1299,7 @@ msgstr "Error adjuntando archivo"
 
 #: compose/functions.c:1544
 msgid "Can't print multipart attachments"
-msgstr "No se puede imprimir archivos adjuntos de varias partes"
+msgstr "No se puede imprimir adjuntos multiparte"
 
 #: compose/functions.c:1570
 msgid "Send attachment with name: "
@@ -1307,7 +1307,7 @@ msgstr "Enviar adjuntos con nombre: "
 
 #: compose/functions.c:1595
 msgid "Can't save multipart attachments"
-msgstr "No se puede guardar archivos adjuntos de varias partes"
+msgstr "No se puede guarfar adjuntos multiparte"
 
 #: compose/functions.c:1630
 msgid "Recoding only affects text attachments"
@@ -1323,7 +1323,7 @@ msgstr "El archivo adjunto actual será convertido"
 
 #: compose/functions.c:1666
 msgid "Attachment is not 'multipart'"
-msgstr "Archivo adjunto no es 'multipart'"
+msgstr "Archivo adjunto no es 'multiparte'"
 
 #: compose/functions.c:1782 send/send.c:2753
 #, c-format
@@ -1332,11 +1332,11 @@ msgstr "IDN inválido en '%s': '%s'"
 
 #: compose/functions.c:1815
 msgid "Can't edit multipart attachments"
-msgstr "No se puede editar archivos adjuntos multiparte"
+msgstr "No se puede editar adjuntos multiparte"
 
 #: compose/functions.c:1896
 msgid "Can't rename multipart attachments"
-msgstr "No se puede renombrar archivos adjuntos multiparte"
+msgstr "No se puede renombrar adjuntos de tipo "
 
 #: compose/functions.c:1903
 msgid "Rename to: "
@@ -1403,7 +1403,7 @@ msgstr "Valor incorrecto para el valor enum: %ld"
 #: config/long.c:57 config/long.c:159 config/long.c:198
 #, c-format
 msgid "Invalid long: %s"
-msgstr "Número incorrecto: %s"
+msgstr "Long incorrecto: %s"
 
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
 #: config/number.c:71 config/number.c:133 config/number.c:187
@@ -1480,7 +1480,7 @@ msgstr "Llave sin manejar en la linea <%s: %s>"
 
 #: conn/accountcmd.c:142
 msgid "Unable to run account command"
-msgstr "No es posible correr el comando de cuenta"
+msgstr "Incapáz de correr comando de cuenta"
 
 #. L10N: Example: Username at myhost.com
 #: conn/connaccount.c:79
@@ -2320,22 +2320,22 @@ msgstr "Copiando a %s..."
 #. L10N: Message when an index tagged save operation fails for some reason
 #: external.c:1031
 msgid "Error saving tagged messages"
-msgstr "Error al guardar mensajes marcados"
+msgstr "Error guardando mensajes etiquetados"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: external.c:1036
 msgid "Error saving message"
-msgstr "Error al guardar el mensaje"
+msgstr "Error guardando el mensaje"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: external.c:1043
 msgid "Error copying tagged messages"
-msgstr "Error copiando mensajes marcados..."
+msgstr "Error copiando mensajes etiquetados"
 
 #. L10N: Message when an index/pager copy operation fails for some reason
 #: external.c:1048
 msgid "Error copying message"
-msgstr "Error al copiar el mensaje"
+msgstr "Error copiando el mensaje"
 
 #: external.c:1118
 #, c-format
@@ -2433,7 +2433,7 @@ msgstr "borrar la entrada actual"
 #. Compose Dialog: <op_attachment_edit_content_id>
 #: gui/opcodes.h:61
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "editar el campo 'Content-ID' del adjunto"
+msgstr "editar el 'Content-Id' del archivo adjunto"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attachment_edit_description>
@@ -2495,7 +2495,7 @@ msgstr "Agrupar los adjuntos marcados como 'múltiples/multilingües'"
 #. Compose Dialog: <op_attachment_group_related>
 #: gui/opcodes.h:93
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "agrupar los adjuntos marcados como 'multiparte/relacionados'"
+msgstr "agrupar los adjuntos marcados como 'múltiples/relacionados'"
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
 #. Compose Dialog: <op_attachment_move_down>
@@ -2608,7 +2608,7 @@ msgstr "forzar la muestra de archivos adjuntos usando mailcap"
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:145
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "Ver archivo adjunto en una página usando copiousoutput mailcap"
+msgstr "mostrar adjuntos en pager usando copiousoutput mailcap"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
 #. Attach Dialog: <op_attachment_view_text>
@@ -2657,7 +2657,7 @@ msgstr "Mostrar opciones del menú compuesto de autocrypt"
 #. Index: <op_alias_dialog>
 #: gui/opcodes.h:178
 msgid "open the aliases dialog"
-msgstr "Está en el último mensaje"
+msgstr "abrir los aliases del diálogo"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
@@ -2987,7 +2987,7 @@ msgstr "suprimir caracteres desde el cursor hasta el final de la palabra"
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:351
 msgid "delete chars from cursor to beginning the line"
-msgstr "eliminar caracteres desde el cursor hasta el inicio de la línea"
+msgstr "suprimir caracteres desde el cursor hasta el inicio de la línea"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
@@ -3218,14 +3218,14 @@ msgstr "responder a la lista de correo"
 #. Index: <op_list_subscribe>
 #: gui/opcodes.h:490
 msgid "subscribe to a mailing list"
-msgstr "subscribirse a la lista de correo"
+msgstr "subscribirse en lista de correo"
 
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
 #: gui/opcodes.h:494
 msgid "unsubscribe from a mailing list"
-msgstr "desuscribirse de la lista de correo"
+msgstr "desuscribirse de lista de correo"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
@@ -3542,7 +3542,7 @@ msgstr "cambiar a visualización del texto citado"
 #. Pager: <op_pager_skip_headers>
 #: gui/opcodes.h:655
 msgid "jump to first line after headers"
-msgstr "saltar a la primera linea después del encabezado"
+msgstr "saltarse a la primera linea después del encabezado"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
@@ -4545,7 +4545,7 @@ msgstr "La autenticación %s falló"
 
 #: imap/auth_gsasl.c:147 pop/auth.c:136
 msgid "SASL authentication failed"
-msgstr "Verificación de SASL falló"
+msgstr "Auntenticación SASL falló"
 
 #: imap/auth_login.c:53
 msgid "LOGIN disabled on this server"
@@ -4620,7 +4620,7 @@ msgid "Connection to %s timed out"
 msgstr "Venció la conexión a %s"
 
 #: imap/config.c:61 pop/config.c:61 send/config.c:92
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "Opción %s: %s no es un autenticador válido"
 
@@ -4741,7 +4741,7 @@ msgstr "Actualizando marcas..."
 #. download.
 #: imap/message.c:1072
 msgid "QRESYNC failed.  Reopening mailbox."
-msgstr "Imposible reabrir buzón"
+msgstr "QRESYNC falló.  Reabriendo buzón"
 
 #: imap/message.c:1141
 msgid "Unable to fetch headers from this IMAP server version"
@@ -5805,7 +5805,7 @@ msgstr ""
 #: mutt/file.c:787
 #, c-format
 msgid "Failed to seek file: %s"
-msgstr "Fallo al buscar archivo: %s"
+msgstr "Falla al buscar archivo: %s"
 
 #: mutt/file.c:1231
 msgid "Timeout exceeded while attempting fcntl lock"
@@ -6020,7 +6020,7 @@ msgstr "Imposible abrir carpeta de basura"
 #. L10N: Displayed if appending to $trash fails when syncing or closing a mailbox
 #: mx.c:569
 msgid "Unable to append to trash folder"
-msgstr "No es posible adjuntar a la carpeta de reciclaje"
+msgstr "Incapáz de adjuntar a papelera de reciclaje"
 
 #: mx.c:626
 msgid "Mark all articles read?"
@@ -6104,7 +6104,7 @@ msgstr " (fecha actual: %c)"
 #: ncrypt/crypt.c:83
 #, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- salida %s resulta%s --]\n"
+msgstr "[-- salida %s sigue%s --]\n"
 
 #. L10N: Due to the implementation details (e.g. some passwords are managed
 #. by gpg-agent) we can't know whether we forgot zero, 1, 12, ...
@@ -6169,7 +6169,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Error: Falta o formato erróneo de Firma multiparte/firma --]\n"
+"[-- Error: Firma multiparte/signed faltante o de formato erróneo --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1336
@@ -6216,7 +6216,7 @@ msgstr "Error al localizar objeto de datos: %s"
 #: ncrypt/crypt_gpgme.c:524
 #, c-format
 msgid "error rewinding data object: %s"
-msgstr "Error al rebobinar  los datos del objeto: %s"
+msgstr "error al rebobinar objecto de datos: %s"
 
 #: ncrypt/crypt_gpgme.c:540
 msgid "[tempfile]"
@@ -7272,7 +7272,7 @@ msgstr "nm_default_url debe ser: notmuch://<absolute path> . Actualmente: %s"
 #. They should not be translated.
 #: notmuch/config.c:95 notmuch/notmuch.c:321
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr "Valor nm_query_window_timebase no válido (los valores válidos son: hora, día, semana, mes, o año)"
+msgstr "Valor nm_query_window_timebase inválido (los valores válidos son: hour, day, week, month, o year)"
 
 #: notmuch/db.c:168
 #, c-format
@@ -8162,7 +8162,7 @@ msgstr "%s ya no existe"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
 #: send/config.c:115
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "Opción %s no puede contener metacaracteres de terminal: %c"
 
@@ -8354,15 +8354,15 @@ msgstr "Mensaje enviado"
 
 #: send/send.c:2987
 msgid "No recipient specified"
-msgstr "No se ha especificado destinatarios"
+msgstr "Ningún destinatario especificado"
 
 #: send/send.c:3034
 msgid "No List-Subscribe header found"
-msgstr "No se encontro encabezado Lista-Suscribir"
+msgstr "Ningún encabezado Lista-Subscribirse encontrado"
 
 #: send/send.c:3063
 msgid "No List-Unsubscribe header found"
-msgstr "Patrón de anular inscripción: "
+msgstr "Ningún encabezado Lista-Desubscribirse encontrado"
 
 #: send/sendlib.c:177
 msgid "Could not find any mime.types file"
@@ -8503,21 +8503,13 @@ msgid ""
 msgstr ""
 "Copyright (C) 2015-2024 Richard Russon y otros.\n"
 "NeoMutt viene con ABSOLUTAMENTE NINGUNA GARANTÍA; para obtener detalles\n"
-"ingrese 'neomutt -vv'. NeoMutt es software libre, y puede ser redistribuido\n"
-"bajo ciertas condiciones; ingrese 'neomutt -vv' para más detalles.\n"
+"teclee 'neomutt -vv'. NeoMutt es software libre, y eres bienvenido a \n"
+"redistribuirlo bajo ciertas condiciones; teclee 'neomutt -vv' para más detalles.\n"
 
 #: version.c:487
 msgid "Compile options:"
-msgstr "Opciones especificadas al compilar:"
+msgstr "Opciones de compilación:"
 
 #: version.c:492
 msgid "Devel options:"
-msgstr "Opciones de Desarrollo:"
-
-#, c-format
-#~ msgid "Caught signal %d (%s) ...  Exiting\n"
-#~ msgstr "Recibida señal %d (%s) ...  Saliendo.\n"
-
-#, c-format
-#~ msgid "Caught signal %d ...  Exiting\n"
-#~ msgstr "Señal %d recibida...  Saliendo.\n"
+msgstr "Opciones de desarrollo:"
