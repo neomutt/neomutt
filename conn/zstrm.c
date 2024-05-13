@@ -105,9 +105,9 @@ static int zstrm_close(struct Connection *conn)
 
   mutt_debug(LL_DEBUG5, "read %lu->%lu (%.1fx) wrote %lu<-%lu (%.1fx)\n",
              zctx->read.z.total_in, zctx->read.z.total_out,
-             (float) zctx->read.z.total_out / (float) zctx->read.z.total_in,
+             (double) zctx->read.z.total_out / (double) zctx->read.z.total_in,
              zctx->write.z.total_in, zctx->write.z.total_out,
-             (float) zctx->write.z.total_in / (float) zctx->write.z.total_out);
+             (double) zctx->write.z.total_in / (double) zctx->write.z.total_out);
 
   // Restore the Connection's original functions
   conn->sockdata = zctx->next_conn.sockdata;
