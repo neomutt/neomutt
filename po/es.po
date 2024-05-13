@@ -26,9 +26,9 @@ msgstr ""
 #: address/config_type.c:87 config/long.c:50 config/number.c:52
 #: config/path.c:99 config/path.c:175 config/sort.c:57 config/string.c:68
 #: config/string.c:145 expando/config_type.c:69 expando/config_type.c:169
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
-msgstr "La opción %s podrá no estar vacía"
+msgstr "La opción %s podría no estar vacía"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:396
@@ -63,7 +63,7 @@ msgstr "Comentario: "
 
 #: alias/alias.c:474
 msgid "Tags (comma-separated): "
-msgstr ""
+msgstr "Etiquetas (separados por comas)"
 
 #: alias/alias.c:503
 msgid "Accept?"
@@ -985,9 +985,9 @@ msgid "invalid header field"
 msgstr "encabezado erróneo"
 
 #: commands.c:980 commands.c:994 parse/set.c:502
-#, fuzzy, c-format
+#, c-format
 msgid "Can't query option with the '%s' command"
-msgstr "No puedes consultar una variable con el comando '%s'"
+msgstr "No puedes consultar una opción con el comando '%s'"
 
 #: commands.c:1000 parse/set.c:496
 msgid "Can't use a prefix when querying a variable"
@@ -1045,7 +1045,7 @@ msgstr "No se pudo cancelar la suscripción de %s"
 #: compmbox/compress.c:224
 #, c-format
 msgid "Expando parse error: %s"
-msgstr ""
+msgstr "Error al interpretar: %s"
 
 #: compmbox/compress.c:380 compmbox/compress.c:513
 #, c-format
@@ -1102,7 +1102,7 @@ msgstr "Error. Preservando el archivo temporal: %s"
 #. L10N: $compose_format default format
 #: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
-msgstr ""
+msgstr "-- NeoMutt: Compuso  [Aprox. tamaño msg: %l   Atrbs: %a]%>-"
 
 #: compose/dlg_compose.c:93 compose/dlg_compose.c:111
 msgid "Send"
@@ -1175,9 +1175,8 @@ msgstr "No se puede borrar el único adjunto"
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
 #: compose/functions.c:365
-#, fuzzy
 msgid "Really delete the main message?"
-msgstr "¿Estás sequro que quieres borrar el buzón \"%s\"?"
+msgstr "¿Estás seguro que quieres borrar el mensaje principal?"
 
 #: compose/functions.c:382 compose/functions.c:574
 msgid "Can't leave group with only one attachment"
@@ -1386,7 +1385,7 @@ msgstr "'charset' debe contener exactamente un nombre de set de caracteres"
 
 #: config/charset.c:71 config/charset.c:103 hcache/config.c:56
 #: hcache/config.c:80 hcache/config.c:105 mutt_config.c:122
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Valor no válido para la opción %s: %s"
 
@@ -1408,9 +1407,9 @@ msgstr "Long incorrecto: %s"
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
 #: config/number.c:71 config/number.c:133 config/number.c:187
 #: config/number.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "La opción %s podrá no ser negativa"
+msgstr "La opción %s podría no ser negativa"
 
 #: config/number.c:59 config/number.c:174 config/number.c:216
 #: expando/node_conddate.c:163 expando/node_expando.c:181
@@ -1443,14 +1442,14 @@ msgstr "Valor quad incorrecto: %ld"
 #: config/set.c:649 config/set.c:769 init.c:665 parse/set.c:120 parse/set.c:175
 #: parse/set.c:218 parse/set.c:246 parse/set.c:304 parse/set.c:339
 #: parse/set.c:396
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown option %s"
-msgstr "Variable desconocida: '%s'"
+msgstr "Opción desconocida: '%s'"
 
 #: config/set.c:261 config/set.c:849
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s has an invalid type %d"
-msgstr "La variable '%s' es de tipo incorrecto %d"
+msgstr "La opción '%s' es de tipo incorrecto %d"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:901 config/set.c:960
@@ -1588,9 +1587,8 @@ msgid "Error processing certificate data"
 msgstr "Error al procesar los datos del certificado"
 
 #: conn/gnutls.c:488 conn/openssl.c:900
-#, fuzzy
 msgid "Untrusted server certificate"
-msgstr "Aviso: no se pudo guardar el certificado"
+msgstr "Certificado de servidor no confiable"
 
 #: conn/gnutls.c:506 conn/openssl.c:907
 msgid "This certificate belongs to:"
@@ -2120,55 +2118,55 @@ msgstr[1] "(+%d más)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
 #: expando/config_type.c:84 expando/config_type.c:253
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: "
-msgstr "opciones:"
+msgstr "Opción %s: "
 
 #. L10N: e.g. "Unknown expando: %Q"
 #: expando/node_condbool.c:102 expando/node_expando.c:280
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown expando: %%%.*s"
-msgstr "Variable desconocida: '%s'"
+msgstr "Expando desconocido: %%%.*s"
 
 #. L10N: The 'ymwdHM' should not be translated
 #: expando/node_conddate.c:177
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
-msgstr ""
+msgstr "Periodo de tiempo inválido: '%c', debe ser uno de 'ymwdHM'"
 
 #. L10N: Expando format expected a number
 #: expando/node_expando.c:198
-#, fuzzy, c-format
+#, c-format
 msgid "Number is expected"
-msgstr "el mensaje esta eliminado"
+msgstr "Se espera un número"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/node_expando.c:312
 #, c-format
 msgid "Expando is missing terminator: '%c'"
-msgstr ""
+msgstr "Le falta character final a Expando: '%c'"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
 #: expando/node_padding.c:241
 #, c-format
 msgid "Padding cannot be used as a condition"
-msgstr ""
+msgstr "Relleno no puede usarse como condición"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/parse.c:164 expando/parse.c:228
 #, c-format
 msgid "Conditional expando is missing '%c'"
-msgstr ""
+msgstr "Expando condicional esta faltando '%c'"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
 #: expando/parse.c:183
 #, c-format
 msgid "Conditional expando is missing '&' or '%c'"
-msgstr ""
+msgstr "Expando condicional esta faltando '&' o '%c'"
 
 #: external.c:109 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
@@ -4339,17 +4337,17 @@ msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s no está soportado (se necesita 'ver adjuntos' enlazado a una tecla) --]\n"
 
 #: hcache/config.c:97
-#, fuzzy, c-format
+#, c-format
 msgid "Set option %s before setting %s"
-msgstr "Establezca la opción %s antes de configurar %s"
+msgstr "Setee la opción %s antes de setear %s"
 
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
 #: hcache/config.c:114 send/config.c:68
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s must be between %d and %d inclusive"
-msgstr "La opción %s debe ir entre %d y %d, ambos inclusive"
+msgstr "La opción %s debe estar entre %d y %d, incluyendolos"
 
 #: help.c:343
 msgid "ERROR: please report this bug"
@@ -5186,9 +5184,9 @@ msgid "unable to determine nodename via uname()"
 msgstr "imposible determinar el nombre de usuario mediante uname()"
 
 #: init.c:637
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s is deprecated"
-msgstr "Config varible '%s' esta obsoleta"
+msgstr "La opción '%s' esta obsoleta"
 
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
 #: key/dump.c:204 key/parse.c:248 key/parse.c:301
@@ -5326,7 +5324,6 @@ msgid "usage:"
 msgstr "uso:"
 
 #: main.c:290
-#, fuzzy
 msgid ""
 "  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
@@ -5337,7 +5334,6 @@ msgstr ""
 "          <address> [...]"
 
 #: main.c:293
-#, fuzzy
 msgid ""
 "  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
@@ -5433,9 +5429,8 @@ msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr "  -c <dirección>  Specify a carbon copy (Cc) recipient"
 
 #: main.c:318
-#, fuzzy
 msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Activar linea de comand Crypto (firma/encriptado)"
 
 #: main.c:319
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
@@ -5773,7 +5768,7 @@ msgstr "<random>"
 #: mixmaster/win_chain.c:65
 #, c-format
 msgid "-- Remailer chain [Length: %d]"
-msgstr ""
+msgstr "-- Cadena de servidor de reenvío [Largo: %d]"
 
 #: mixmaster/win_chain.c:295
 msgid "You already have the last chain element selected"
@@ -5800,7 +5795,7 @@ msgstr "Error: %s no puede ser usado como remailer final de una cadena"
 
 #: mutt/buffer.c:353
 msgid "Out of memory"
-msgstr ""
+msgstr "Sin memoria"
 
 #: mutt/file.c:787
 #, c-format
@@ -5871,7 +5866,7 @@ msgstr "Subexpresiones insuficientes para la plantilla"
 #: mutt_config.c:226
 #, c-format
 msgid "index-hook cannot be used as a condition"
-msgstr ""
+msgstr "index-hook no puede ser utilizado como condición"
 
 #. L10N: $reply_regex default format
 #.
@@ -5894,27 +5889,27 @@ msgstr ""
 #. testing, so be sure to test with $header_cache unset.
 #: mutt_config.c:733
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
-msgstr ""
+msgstr "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 
 #. L10N: $status_format default format
 #: mutt_config.c:815
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr ""
+msgstr "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? Nuevos:%n>%<o? Antiguos:%o>%<d? Elim:%d>%<F? Marc:%F>%<t? Etiq:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:852
 msgid "M%<n?AIL&ail>"
-msgstr ""
+msgstr "M%<n?AIL&ail>"
 
 #. L10N: $ts_status_format default format
 #: mutt_config.c:856
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
-msgstr ""
+msgstr "NeoMutt con %<m?%m mensajes&no mensajes>%<n? [%n NUEVOS]>"
 
 #: mutt_logging.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Valor erróneo para la opción %s: %ld"
+msgstr "Valor no válido para la opción %s: %ld"
 
 #: mutt_lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
@@ -6345,19 +6340,19 @@ msgstr "Creado: "
 #: ncrypt/crypt_gpgme.c:1425
 #, c-format
 msgid "Recipient: %s key, ID %s\n"
-msgstr ""
+msgstr "Destinatario: %s llave, ID %s\n"
 
 #: ncrypt/crypt_gpgme.c:1438
-#, fuzzy
 msgid "[-- Begin encryption information --]\n"
-msgstr "[-- Inicio de la información de la firma --]\n"
+msgstr "[-- Inicio de la información del encriptado --]\n"
 
 #: ncrypt/crypt_gpgme.c:1443
-#, fuzzy
 msgid ""
 "[-- End encryption information --]\n"
 "\n"
-msgstr "[-- Fin de datos firmados --]\n"
+msgstr ""
+"[-- Fin de la información del encriptado --]\n"
+"\n"
 
 #: ncrypt/crypt_gpgme.c:1517
 #, c-format
@@ -7047,9 +7042,8 @@ msgid "PGP Key %s"
 msgstr "Clave PGP %s"
 
 #: ncrypt/pgpkey.c:601
-#, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
-msgstr "Esta clave no puede usarse: expirada/desactivada/revocada"
+msgstr "Una llave no puede usarse: expirada/desactivada/revocada"
 
 #: ncrypt/smime.c:177
 msgid "Enter S/MIME passphrase:"
@@ -7461,9 +7455,9 @@ msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "No puedes utilizar el prefijo cuando aumentas o disminuyes una variable"
 
 #: parse/set.c:519 parse/set.c:549
-#, fuzzy, c-format
+#, c-format
 msgid "Can't set option with the '%s' command"
-msgstr "No puedes fijar una variable con el comando '%s'"
+msgstr "No puedes fijar una opción con el comando '%s'"
 
 #: parse/set.c:535
 msgid "'+' and '-' must be followed by '='"
@@ -8164,24 +8158,24 @@ msgstr "%s ya no existe"
 #: send/config.c:115
 #, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
-msgstr "Opción %s no puede contener metacaracteres de terminal: %c"
+msgstr "Opción %s no debe contener metacaracteres de terminal: %c"
 
 #. L10N: $attribution_intro default format
 #: send/config.c:170
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "En %d, %n escribió:"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:237
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "-----  Mensaje reenviado desde %f -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:241
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Fin del mensaje reenviado -----"
 
 #: send/send.c:349
 msgid "No subject, abort?"
@@ -8330,7 +8324,7 @@ msgstr "Grupo de noticias no especificado"
 
 #: send/send.c:2824
 msgid "Missing encryption key; mail not sent"
-msgstr ""
+msgstr "Falta llave de encriptado; el correo no se ha enviado"
 
 #: send/send.c:2848 send/smtp.c:263
 msgid "Sending message..."
