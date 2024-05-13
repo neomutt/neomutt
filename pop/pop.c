@@ -567,7 +567,8 @@ void pop_fetch_mail(void)
     goto finish;
   }
 
-  sscanf(buf, "+OK %d %d", &msgs, &bytes);
+  if (sscanf(buf, "+OK %d %d", &msgs, &bytes) != 2)
+    goto fail;
 
   /* only get unread messages */
   const bool c_pop_last = cs_subset_bool(NeoMutt->sub, "pop_last");

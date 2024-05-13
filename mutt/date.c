@@ -760,10 +760,15 @@ time_t mutt_date_parse_date(const char *s, struct Tz *tz_out)
 
   /* Time */
   int hour = 0, min = 0, sec = 0;
-  sscanf(s + mutt_regmatch_start(mhour), "%d", &hour);
-  sscanf(s + mutt_regmatch_start(mminute), "%d", &min);
+  if (sscanf(s + mutt_regmatch_start(mhour), "%d", &hour) != 1)
+    return -1;
+  if (sscanf(s + mutt_regmatch_start(mminute), "%d", &min) != 1)
+    return -1;
   if (mutt_regmatch_start(msecond) != -1)
-    sscanf(s + mutt_regmatch_start(msecond), "%d", &sec);
+  {
+    if (sscanf(s + mutt_regmatch_start(msecond), "%d", &sec) != 1)
+      return -1;
+  }
   if ((hour > 23) || (min > 59) || (sec > 60))
     return -1;
   tm.tm_hour = hour;
@@ -865,11 +870,14 @@ time_t mutt_date_parse_imap(const char *s)
 
   struct tm tm = { 0 };
 
-  sscanf(s + mutt_regmatch_start(mday), " %d", &tm.tm_mday);
+  if (sscanf(s + mutt_regmatch_start(mday), " %d", &tm.tm_mday) != 1)
+    return 0;
   tm.tm_mon = mutt_date_check_month(s + mutt_regmatch_start(mmonth));
-  sscanf(s + mutt_regmatch_start(myear), "%d", &tm.tm_year);
+  if (sscanf(s + mutt_regmatch_start(myear), "%d", &tm.tm_year) != 1)
+    return 0;
   tm.tm_year -= 1900;
-  sscanf(s + mutt_regmatch_start(mtime), "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec);
+  if (sscanf(s + mutt_regmatch_start(mtime), "%d:%d:%d", &tm.tm_hour, &tm.tm_min, &tm.tm_sec) != 3)
+    return 0;
 
   char direction = '\0';
   int zhours = 0, zminutes = 0;
