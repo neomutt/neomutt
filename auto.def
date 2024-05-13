@@ -313,12 +313,12 @@ if {1} {
 # C compiler definitions and related tools
 if {1} {
 
-  # First off, require c99
-  if {[cc-check-standards c99] eq {}} {
-    user-error "C99 is required"
+  # First off, require c11
+  if {[cc-check-standards c11] eq {}} {
+    user-error "C11 is required"
   }
-  define-append CFLAGS_FOR_BUILD -std=c99
-  define-append CFLAGS -std=c99
+  define-append CFLAGS_FOR_BUILD -std=c11
+  define-append CFLAGS -std=c11
   define LDFLAGS_FOR_BUILD {}
 
   # Check for tools and programs
