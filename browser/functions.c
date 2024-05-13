@@ -217,12 +217,13 @@ static int op_browser_subscribe(struct BrowserPrivateData *priv, int op)
       return FR_ERROR;
     }
 
-    char tmp2[256] = { 0 };
+    struct Buffer *buf = buf_pool_get();
     int index = menu_get_index(priv->menu);
     struct FolderFile *ff = ARRAY_GET(&priv->state.entry, index);
-    mutt_str_copy(tmp2, ff->name, sizeof(tmp2));
-    mutt_expand_path(tmp2, sizeof(tmp2));
-    imap_subscribe(tmp2, (op == OP_BROWSER_SUBSCRIBE));
+    buf_strcpy(buf, ff->name);
+    buf_expand_path(buf);
+    imap_subscribe(buf_string(buf), (op == OP_BROWSER_SUBSCRIBE));
+    buf_pool_release(&buf);
   }
   return FR_SUCCESS;
 }

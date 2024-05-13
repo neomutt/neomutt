@@ -1220,7 +1220,7 @@ int imap_mailbox_status(struct Mailbox *m, bool queue)
  * @retval  0 Success
  * @retval -1 Failure
  */
-int imap_subscribe(char *path, bool subscribe)
+int imap_subscribe(const char *path, bool subscribe)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;

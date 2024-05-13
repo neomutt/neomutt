@@ -289,11 +289,6 @@ int mutt_complete(char *buf, size_t buflen)
   return 0;
 }
 
-char *mutt_expand_path(char *buf, size_t buflen)
-{
-  return NULL;
-}
-
 void mutt_help(enum MenuType menu)
 {
 }
