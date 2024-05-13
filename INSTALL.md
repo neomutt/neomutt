@@ -35,7 +35,7 @@ See [Signing Releases](https://neomutt.org/dev/signing#source-example) for detai
 
 To build NeoMutt, you will need, at the very minimum:
 
-- A C99 compiler such as gcc or clang
+- A C11 compiler such as gcc or clang
 - SysV-compatible curses library: ncurses
 - Some common libraries, such as iconv and regex
 - DocBook XSL stylesheets and DTDs (for building the docs)
