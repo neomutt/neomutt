@@ -391,8 +391,8 @@ static void set_encoding(struct Body *b, struct Content *info, struct ConfigSubs
   else
   {
     /* Determine which encoding is smaller  */
-    if (1.33 * (float) (info->lobin + info->hibin + info->ascii) <
-        3.0 * (float) (info->lobin + info->hibin) + (float) info->ascii)
+    if (1.33f * (float) (info->lobin + info->hibin + info->ascii) <
+        3.0f * (float) (info->lobin + info->hibin) + (float) info->ascii)
     {
       b->encoding = ENC_BASE64;
     }
