@@ -78,7 +78,7 @@ int imap_delete_mailbox(struct Mailbox *m, char *path);
 enum MxStatus imap_sync_mailbox(struct Mailbox *m, bool expunge, bool close);
 int imap_path_status(const char *path, bool queue);
 int imap_mailbox_status(struct Mailbox *m, bool queue);
-int imap_subscribe(char *path, bool subscribe);
+int imap_subscribe(const char *path, bool subscribe);
 int imap_complete(struct Buffer *buf, const char *path);
 int imap_fast_trash(struct Mailbox *m, const char *dest);
 enum MailboxType imap_path_probe(const char *path, const struct stat *st);

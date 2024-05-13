@@ -1071,25 +1071,29 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
 static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
                                        intptr_t data, struct Buffer *err)
 {
-  char path[PATH_MAX] = { 0 };
+  struct Buffer *path = buf_pool_get();
 
   do
   {
     if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
     {
       buf_printf(err, _("source: error at %s"), s->dptr);
+      buf_pool_release(&path);
       return MUTT_CMD_ERROR;
     }
-    mutt_str_copy(path, buf->data, sizeof(path));
-    mutt_expand_path(path, sizeof(path));
+    buf_copy(path, buf);
+    buf_expand_path(path);
 
-    if (source_rc(path, err) < 0)
+    if (source_rc(buf_string(path), err) < 0)
     {
-      buf_printf(err, _("source: file %s could not be sourced"), path);
+      buf_printf(err, _("source: file %s could not be sourced"), buf_string(path));
+      buf_pool_release(&path);
       return MUTT_CMD_ERROR;
     }
 
   } while (MoreArgs(s));
+
+  buf_pool_release(&path);
 
   return MUTT_CMD_SUCCESS;
 }
@@ -1249,7 +1253,8 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
     if (!buf_is_empty(buf))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), true) == 0)
+      buf_expand_path(buf);
+      if (imap_subscribe(buf_string(buf), true) == 0)
       {
         mutt_message(_("Subscribed to %s"), buf->data);
         return MUTT_CMD_SUCCESS;
@@ -1584,7 +1589,8 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
     if (buf->data && (*buf->data != '\0'))
     {
       /* Expand and subscribe */
-      if (imap_subscribe(mutt_expand_path(buf->data, buf->dsize), false) == 0)
+      buf_expand_path(buf);
+      if (imap_subscribe(buf_string(buf), false) == 0)
       {
         mutt_message(_("Unsubscribed from %s"), buf->data);
         return MUTT_CMD_SUCCESS;

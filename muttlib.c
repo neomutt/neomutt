@@ -113,19 +113,6 @@ void mutt_adv_mktemp(struct Buffer *buf)
 }
 
 /**
- * mutt_expand_path - Create the canonical path
- * @param buf    Buffer with path
- * @param buflen Length of buffer
- * @retval ptr The expanded string
- *
- * @note The path is expanded in-place
- */
-char *mutt_expand_path(char *buf, size_t buflen)
-{
-  return mutt_expand_path_regex(buf, buflen, false);
-}
-
-/**
  * buf_expand_path_regex - Create the canonical path (with regex char escaping)
  * @param buf     Buffer with path
  * @param regex If true, escape any regex characters
@@ -328,28 +315,6 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
 void buf_expand_path(struct Buffer *buf)
 {
   buf_expand_path_regex(buf, false);
-}
-
-/**
- * mutt_expand_path_regex - Create the canonical path (with regex char escaping)
- * @param buf     Buffer with path
- * @param buflen  Length of buffer
- * @param regex If true, escape any regex characters
- * @retval ptr The expanded string
- *
- * @note The path is expanded in-place
- */
-char *mutt_expand_path_regex(char *buf, size_t buflen, bool regex)
-{
-  struct Buffer *tmp = buf_pool_get();
-
-  buf_addstr(tmp, NONULL(buf));
-  buf_expand_path_regex(tmp, regex);
-  mutt_str_copy(buf, buf_string(tmp), buflen);
-
-  buf_pool_release(&tmp);
-
-  return buf;
 }
 
 /**
