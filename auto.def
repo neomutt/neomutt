@@ -318,6 +318,7 @@ if {1} {
     user-error "C99 is required"
   }
   define-append CFLAGS_FOR_BUILD -std=c99
+  define-append CFLAGS -std=c99
   define LDFLAGS_FOR_BUILD {}
 
   # Check for tools and programs
