@@ -122,17 +122,17 @@ enum CommandResult parse_color_namedcolor(const char *s, struct ColorElement *el
   if (!s || !elem)
     return MUTT_CMD_ERROR;
 
+  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
+  s += parse_color_prefix(s, &prefix);
+
   // COLOR_DEFAULT (-1) interferes with mutt_map_get_value()
   if (mutt_str_equal(s, "default"))
   {
     elem->color = COLOR_DEFAULT;
     elem->type = CT_SIMPLE;
-    elem->prefix = COLOR_PREFIX_NONE;
+    elem->prefix = prefix;
     return MUTT_CMD_SUCCESS;
   }
-
-  enum ColorPrefix prefix = COLOR_PREFIX_NONE;
-  s += parse_color_prefix(s, &prefix);
 
   int color = mutt_map_get_value(s, ColorNames);
   if (color == -1)
