@@ -206,7 +206,7 @@ static void shrink_histfile(void)
 {
   FILE *fp_tmp = NULL;
   int n[HC_MAX] = { 0 };
-  int line, hclass, read;
+  int line, hclass = 0, read = 0;
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
   bool regen_file = false;
@@ -607,7 +607,7 @@ void mutt_hist_read_file(void)
   if (!fp)
     return;
 
-  int line = 0, hclass, read;
+  int line = 0, hclass = 0, read = 0;
   char *linebuf = NULL, *p = NULL;
   size_t buflen;
 

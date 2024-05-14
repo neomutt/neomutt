@@ -577,8 +577,8 @@ int nntp_add_group(char *line, void *data)
   struct NntpMboxData *mdata = NULL;
   char group[1024] = { 0 };
   char desc[8192] = { 0 };
-  char mod;
-  anum_t first, last;
+  char mod = '\0';
+  anum_t first = 0, last = 0;
 
   if (!adata || !line)
     return 0;
@@ -781,8 +781,8 @@ void nntp_hcache_update(struct NntpMboxData *mdata, struct HeaderCache *hc)
 static int nntp_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
   struct NntpMboxData *mdata = data;
-  anum_t anum;
-  char c;
+  anum_t anum = 0;
+  char c = '\0';
 
   if (!mdata || (sscanf(id, ANUM_FMT "%c", &anum, &c) != 1) ||
       (anum < mdata->first_message) || (anum > mdata->last_message))
@@ -1198,7 +1198,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
         char *hdata = hcache_fetch_raw_str(hc, "index", 5);
         if (hdata)
         {
-          anum_t first, last;
+          anum_t first = 0, last = 0;
 
           if (sscanf(hdata, ANUM_FMT " " ANUM_FMT, &first, &last) == 2)
           {
