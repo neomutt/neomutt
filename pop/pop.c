@@ -521,7 +521,7 @@ void pop_fetch_mail(void)
 
   char buf[1024] = { 0 };
   char msgbuf[128] = { 0 };
-  int last = 0, msgs, bytes, rset = 0, rc;
+  int last = 0, msgs = 0, bytes = 0, rset = 0, rc;
   struct ConnAccount cac = { { 0 } };
 
   char *p = mutt_mem_calloc(strlen(c_pop_host) + 7, sizeof(char));

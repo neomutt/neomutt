@@ -168,8 +168,8 @@ static int msg_cache_commit(struct Mailbox *m, struct Email *e)
  */
 static int imap_bcache_delete(const char *id, struct BodyCache *bcache, void *data)
 {
-  uint32_t uv;
-  unsigned int uid;
+  uint32_t uv = 0;
+  unsigned int uid = 0;
   struct ImapMboxData *mdata = data;
 
   if (sscanf(id, "%u-%u", &uv, &uid) != 2)

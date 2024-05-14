@@ -973,7 +973,7 @@ static void nntp_parse_xref(struct Mailbox *m, struct Email *e)
   char *p = buf;
   while (p)
   {
-    anum_t anum;
+    anum_t anum = 0;
 
     /* skip to next word */
     p += strspn(p, " \t");
@@ -1026,7 +1026,7 @@ static int fetch_tempfile(char *line, void *data)
 static int fetch_numbers(char *line, void *data)
 {
   struct FetchCtx *fc = data;
-  anum_t anum;
+  anum_t anum = 0;
 
   if (!line)
     return 0;
@@ -1059,7 +1059,7 @@ static int parse_overview_line(char *line, void *data)
   struct Email *e = NULL;
   char *header = NULL, *field = NULL;
   bool save = true;
-  anum_t anum;
+  anum_t anum = 0;
 
   /* parse article number */
   field = strchr(line, '\t');
@@ -1441,7 +1441,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
 static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
 {
   char buf[1024] = { 0 };
-  anum_t count, first, last;
+  anum_t count = 0, first = 0, last = 0;
 
   /* use GROUP command to poll newsgroup */
   if (nntp_query(mdata, buf, sizeof(buf)) < 0)
@@ -1736,7 +1736,7 @@ static int nntp_date(struct NntpAccountData *adata, time_t *now)
 static int fetch_children(char *line, void *data)
 {
   struct ChildCtx *cc = data;
-  anum_t anum;
+  anum_t anum = 0;
 
   if (!line || (sscanf(line, ANUM_FMT, &anum) != 1))
     return 0;
@@ -2390,7 +2390,7 @@ static enum MxOpenReturns nntp_mbox_open(struct Mailbox *m)
   char *group = NULL;
   int rc;
   struct HeaderCache *hc = NULL;
-  anum_t first, last, count = 0;
+  anum_t first = 0, last = 0, count = 0;
 
   struct Url *url = url_parse(mailbox_path(m));
   if (!url || !url->host || !url->path ||
