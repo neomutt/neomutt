@@ -73,7 +73,7 @@ static struct RocksDbStoreData *rocksdb_sdata_new(void)
 /**
  * store_rocksdb_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_rocksdb_open(const char *path)
+static StoreHandle *store_rocksdb_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
@@ -85,7 +85,10 @@ static StoreHandle *store_rocksdb_open(const char *path)
 
   /* setup generic options, create new db and limit log to one file */
   sdata->options = rocksdb_options_create();
-  rocksdb_options_set_create_if_missing(sdata->options, 1);
+  if (create)
+  {
+    rocksdb_options_set_create_if_missing(sdata->options, 1);
+  }
   rocksdb_options_set_keep_log_file_num(sdata->options, 1);
 
   /* setup read options, we verify with checksums */

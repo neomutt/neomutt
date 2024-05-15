@@ -468,7 +468,7 @@ static unsigned int generate_hcachever(void)
 /**
  * hcache_open - Multiplexor for StoreOps::open
  */
-struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_namer_t namer)
+struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_namer_t namer, bool create)
 {
   if (!path || (path[0] == '\0'))
     return NULL;
@@ -512,13 +512,13 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
   struct Buffer *hcpath = buf_pool_get();
   hcache_per_folder(hc, hcpath, path, namer);
 
-  hc->store_handle = hc->store_ops->open(buf_string(hcpath));
+  hc->store_handle = hc->store_ops->open(buf_string(hcpath), create);
   if (!hc->store_handle)
   {
     /* remove a possibly incompatible version */
     if (unlink(buf_string(hcpath)) == 0)
     {
-      hc->store_handle = hc->store_ops->open(buf_string(hcpath));
+      hc->store_handle = hc->store_ops->open(buf_string(hcpath), create);
       if (!hc->store_handle)
       {
         if (hc->compr_ops)

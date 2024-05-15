@@ -38,7 +38,7 @@
 /**
  * store_tokyocabinet_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_tokyocabinet_open(const char *path)
+static StoreHandle *store_tokyocabinet_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
@@ -46,7 +46,7 @@ static StoreHandle *store_tokyocabinet_open(const char *path)
   TCBDB *db = tcbdbnew();
   if (!db)
     return NULL;
-  if (!tcbdbopen(db, path, BDBOWRITER | BDBOCREAT))
+  if (!tcbdbopen(db, path, BDBOWRITER | (create ? BDBOCREAT : 0)))
   {
     int ecode = tcbdbecode(db);
     mutt_debug(LL_DEBUG2, "tcbdbopen failed for %s: %s (ecode %d)\n", path,

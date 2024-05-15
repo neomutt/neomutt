@@ -118,10 +118,11 @@ typedef void (*hcache_namer_t)(const char *path, struct Buffer *dest);
  * @param folder Name of the folder containing the messages
  * @param namer  Optional (might be NULL) client-specific function to form the
  *               final name of the hcache database file.
+ * @param create Create the file if it's not there?
  * @retval ptr  Success, struct HeaderCache struct
  * @retval NULL Otherwise
  */
-struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_namer_t namer);
+struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_namer_t namer, bool create);
 
 /**
  * hcache_close - Close the connection to the header cache

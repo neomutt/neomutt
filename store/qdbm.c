@@ -39,12 +39,12 @@
 /**
  * store_qdbm_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_qdbm_open(const char *path)
+static StoreHandle *store_qdbm_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
 
-  VILLA *db = vlopen(path, VL_OWRITER | VL_OCREAT, VL_CMPLEX);
+  VILLA *db = vlopen(path, VL_OWRITER | (create ? VL_OCREAT : 0), VL_CMPLEX);
 
   // Return an opaque pointer
   return (StoreHandle *) db;
