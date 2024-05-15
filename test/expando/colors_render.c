@@ -92,7 +92,7 @@ void test_expando_colors_render(void)
     check_node_text(get_nth_node(root, 1), " - ");
     check_node_expando(get_nth_node(root, 2), "s", NULL);
 
-    const struct Expando expando = {
+    const struct Expando exp = {
       .string = input,
       .node = root,
     };
@@ -119,7 +119,7 @@ void test_expando_colors_render(void)
     expected[15] = MT_COLOR_INDEX;
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, buf->dsize, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_INDEX, buf->dsize, buf);
 
     const int expected_width = mutt_str_len(expected) - 8;
     TEST_CHECK(mutt_strwidth(expected) == expected_width);
@@ -161,7 +161,7 @@ void test_expando_colors_render(void)
     check_node_text(get_nth_node(left, 1), " ");
     check_node_expando(get_nth_node(right, 0), "s", NULL);
 
-    const struct Expando expando = {
+    const struct Expando exp = {
       .string = input,
       .node = root,
     };
@@ -188,7 +188,7 @@ void test_expando_colors_render(void)
     expected[15] = MT_COLOR_INDEX;
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 8, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_INDEX, 8, buf);
 
     const int expected_width = mutt_str_len(expected) - 8;
     TEST_CHECK(mutt_strwidth(expected) == expected_width);
@@ -205,7 +205,7 @@ void test_expando_colors_render(void)
     expected2[13] = MT_COLOR_INDEX;
 
     buf_reset(buf);
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 6, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_INDEX, 6, buf);
 
     const int expected_width2 = mutt_str_len(expected2) - 8;
     TEST_CHECK(mutt_strwidth(expected2) == expected_width2);
@@ -247,7 +247,7 @@ void test_expando_colors_render(void)
     check_node_text(get_nth_node(left, 1), " ");
     check_node_expando(get_nth_node(right, 0), "s", NULL);
 
-    const struct Expando expando = {
+    const struct Expando exp = {
       .string = input,
       .node = root,
     };
@@ -274,7 +274,7 @@ void test_expando_colors_render(void)
     expected[13] = MT_COLOR_INDEX;
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 6, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_INDEX, 6, buf);
 
     const int expected_width = mutt_str_len(expected) - 8;
     TEST_CHECK(mutt_strwidth(expected) == expected_width);
@@ -318,7 +318,7 @@ void test_expando_colors_render(void)
     check_node_text(get_nth_node(left, 1), " ");
     check_node_expando(get_nth_node(right, 0), "s", NULL);
 
-    const struct Expando expando = {
+    const struct Expando exp = {
       .string = input,
       .node = root,
     };
@@ -336,7 +336,7 @@ void test_expando_colors_render(void)
 
     char expected[] = "\x0e\x63Tá\x0e\x5b\x0e\x63Táéí\x0e\x5b";
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_INDEX, 6, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_INDEX, 6, buf);
 
     TEST_CHECK(mutt_strwidth(expected) == 6);
     // TEST_CHECK_STR_EQ(buf_string(buf), expected);

@@ -68,18 +68,18 @@ void check_node_text(struct ExpandoNode *node, const char *text)
   TEST_CHECK(mutt_strn_equal(node->start, text, n));
 }
 
-void check_node_expando(struct ExpandoNode *node, const char *expando,
+void check_node_expando(struct ExpandoNode *node, const char *exp,
                         const struct ExpandoFormat *fmt_expected)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_EXPANDO);
   TEST_CHECK(node->ndata != NULL);
 
-  const size_t n = mutt_str_len(expando);
+  const size_t n = mutt_str_len(exp);
   const size_t m = node->end - node->start;
 
   TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, expando, n));
+  TEST_CHECK(mutt_strn_equal(node->start, exp, n));
 
   struct ExpandoFormat *fmt = node->format;
 
@@ -119,17 +119,17 @@ void check_node_cond(struct ExpandoNode *node)
   TEST_CHECK(node->type == ENT_CONDITION);
 }
 
-void check_node_condbool(struct ExpandoNode *node, const char *expando)
+void check_node_condbool(struct ExpandoNode *node, const char *exp)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_CONDBOOL);
   TEST_CHECK(node->ndata == NULL);
 
-  const size_t n = mutt_str_len(expando);
+  const size_t n = mutt_str_len(exp);
   const size_t m = node->end - node->start;
 
   TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, expando, n));
+  TEST_CHECK(mutt_strn_equal(node->start, exp, n));
 
   struct ExpandoFormat *fmt = node->format;
   TEST_CHECK(fmt == NULL);

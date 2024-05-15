@@ -26,10 +26,10 @@
 #include "expando/lib.h"
 
 void check_node_cond    (struct ExpandoNode *node);
-void check_node_condbool(struct ExpandoNode *node, const char *expando);
+void check_node_condbool(struct ExpandoNode *node, const char *exp);
 void check_node_conddate(struct ExpandoNode *node, int count, char period);
 void check_node_empty   (struct ExpandoNode *node);
-void check_node_expando (struct ExpandoNode *node, const char *expando, const struct ExpandoFormat *fmt_expected);
+void check_node_expando (struct ExpandoNode *node, const char *exp, const struct ExpandoFormat *fmt_expected);
 void check_node_padding (struct ExpandoNode *node, const char *pad_char, enum ExpandoPadType pad_type);
 void check_node_text    (struct ExpandoNode *node, const char *text);
 

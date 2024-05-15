@@ -113,7 +113,7 @@ void test_expando_if_else_false_render(void)
 
   const char *expected = "3";
 
-  const struct Expando expando = {
+  const struct Expando exp = {
     .string = input,
     .node = root,
   };
@@ -134,7 +134,7 @@ void test_expando_if_else_false_render(void)
       .f = 3,
     };
 
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
   }

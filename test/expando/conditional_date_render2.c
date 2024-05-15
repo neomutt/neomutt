@@ -87,7 +87,7 @@ void test_expando_conditional_date_render2(void)
   check_node_expando(node_true, "%d-%m-%Y", NULL);
   check_node_expando(node_false, "%Y-%m-%d", NULL);
 
-  const struct Expando expando = {
+  const struct Expando exp = {
     .string = input,
     .node = root,
   };
@@ -107,7 +107,7 @@ void test_expando_conditional_date_render2(void)
     strftime(expected, sizeof(expected), "%d-%m-%Y", &tm);
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     buf_pool_release(&buf);
@@ -123,7 +123,7 @@ void test_expando_conditional_date_render2(void)
     strftime(expected, sizeof(expected), "%Y-%m-%d", &tm);
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     buf_pool_release(&buf);
