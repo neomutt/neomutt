@@ -43,9 +43,9 @@ void test_expando_two_char_expando(void)
 
   TEST_CHECK(err.position == NULL);
   check_node_expando(get_nth_node(root, 0), "cr", NULL);
-  check_node_test(get_nth_node(root, 1), " ");
+  check_node_text(get_nth_node(root, 1), " ");
   check_node_expando(get_nth_node(root, 2), "a", NULL);
-  check_node_test(get_nth_node(root, 3), "b");
+  check_node_text(get_nth_node(root, 3), "b");
 
   node_tree_free(&root);
 }

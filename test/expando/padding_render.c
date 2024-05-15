@@ -62,8 +62,8 @@ void test_expando_padding_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_test(left, "text1");
-    check_node_test(right, "text2");
+    check_node_text(left, "text1");
+    check_node_text(right, "text2");
 
     const struct Expando expando = {
       .string = input,
@@ -103,8 +103,8 @@ void test_expando_padding_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_test(left, "text1");
-    check_node_test(right, "text2");
+    check_node_text(left, "text1");
+    check_node_text(right, "text2");
 
     const struct Expando expando = {
       .string = input,
@@ -142,8 +142,8 @@ void test_expando_padding_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_test(left, "text1");
-    check_node_test(right, "text2");
+    check_node_text(left, "text1");
+    check_node_text(right, "text2");
 
     const struct Expando expando = {
       .string = input,
@@ -182,8 +182,8 @@ void test_expando_padding_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_test(left, "text1");
-    check_node_test(right, "text2");
+    check_node_text(left, "text1");
+    check_node_text(right, "text2");
 
     const struct Expando expando = {
       .string = input,
@@ -223,8 +223,8 @@ void test_expando_padding_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_test(left, "text1");
-    check_node_test(right, "text2");
+    check_node_text(left, "text1");
+    check_node_text(right, "text2");
 
     const struct Expando expando = {
       .string = input,
@@ -264,8 +264,8 @@ void test_expando_padding_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_test(left, "text1");
-    check_node_test(right, "text2");
+    check_node_text(left, "text1");
+    check_node_text(right, "text2");
 
     const struct Expando expando = {
       .string = input,
@@ -305,8 +305,8 @@ void test_expando_padding_render(void)
     TEST_CHECK(left != NULL);
     TEST_CHECK(right != NULL);
 
-    check_node_test(left, "text1");
-    check_node_test(right, "text2");
+    check_node_text(left, "text1");
+    check_node_text(right, "text2");
 
     const struct Expando expando = {
       .string = input,

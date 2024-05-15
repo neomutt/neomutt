@@ -57,7 +57,7 @@ void check_node_empty(struct ExpandoNode *node)
   TEST_CHECK(node->type == ENT_EMPTY);
 }
 
-void check_node_test(struct ExpandoNode *node, const char *text)
+void check_node_text(struct ExpandoNode *node, const char *text)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_TEXT);

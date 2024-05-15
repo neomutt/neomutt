@@ -44,7 +44,7 @@ void test_expando_formatted_expando(void)
 
   TEST_CHECK(err.position == NULL);
   check_node_expando(get_nth_node(root, 0), "X", NULL);
-  check_node_test(get_nth_node(root, 1), " ");
+  check_node_text(get_nth_node(root, 1), " ");
 
   {
     struct ExpandoFormat fmt = { 0 };
@@ -53,7 +53,7 @@ void test_expando_formatted_expando(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
     check_node_expando(get_nth_node(root, 2), "X", &fmt);
-    check_node_test(get_nth_node(root, 3), " ");
+    check_node_text(get_nth_node(root, 3), " ");
   }
 
   {
@@ -63,7 +63,7 @@ void test_expando_formatted_expando(void)
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
     check_node_expando(get_nth_node(root, 4), "X", &fmt);
-    check_node_test(get_nth_node(root, 5), " ");
+    check_node_text(get_nth_node(root, 5), " ");
   }
 
   {
@@ -73,7 +73,7 @@ void test_expando_formatted_expando(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = '0';
     check_node_expando(get_nth_node(root, 6), "X", &fmt);
-    check_node_test(get_nth_node(root, 7), " ");
+    check_node_text(get_nth_node(root, 7), " ");
   }
 
   {
@@ -83,7 +83,7 @@ void test_expando_formatted_expando(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
     check_node_expando(get_nth_node(root, 8), "X", &fmt);
-    check_node_test(get_nth_node(root, 9), " ");
+    check_node_text(get_nth_node(root, 9), " ");
   }
 
   {
@@ -93,7 +93,7 @@ void test_expando_formatted_expando(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
     check_node_expando(get_nth_node(root, 10), "X", &fmt);
-    check_node_test(get_nth_node(root, 11), " ");
+    check_node_text(get_nth_node(root, 11), " ");
   }
 
   {
@@ -103,7 +103,7 @@ void test_expando_formatted_expando(void)
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
     check_node_expando(get_nth_node(root, 12), "X", &fmt);
-    check_node_test(get_nth_node(root, 13), " ");
+    check_node_text(get_nth_node(root, 13), " ");
   }
 
   {

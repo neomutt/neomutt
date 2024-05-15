@@ -74,7 +74,7 @@ void test_expando_simple_expando_render(void)
 
   TEST_CHECK(err.position == NULL);
   check_node_expando(get_nth_node(root, 0), "s", NULL);
-  check_node_test(get_nth_node(root, 1), " - ");
+  check_node_text(get_nth_node(root, 1), " - ");
   check_node_expando(get_nth_node(root, 2), "d", NULL);
 
   const char *expected = "Test - 1";

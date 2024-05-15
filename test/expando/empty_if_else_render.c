@@ -77,13 +77,13 @@ void test_expando_empty_if_else_render(void)
   struct ExpandoNode *node = get_nth_node(root, 0);
   check_node_cond(node);
 
-  struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-  struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-  struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+  struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+  struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+  struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-  check_node_condbool(condition, "c");
-  check_node_empty(if_true_tree);
-  check_node_expando(if_false_tree, "f", NULL);
+  check_node_condbool(node_cond, "c");
+  check_node_empty(node_true);
+  check_node_expando(node_false, "f", NULL);
 
   const struct Expando expando = {
     .string = input,

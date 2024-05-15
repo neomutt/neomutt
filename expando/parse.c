@@ -150,9 +150,9 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
 
         const char *cond_end = skip_until_ch(str, '?');
         const char *next = NULL;
-        struct ExpandoNode *condition = node_parse(str, cond_end, CON_START,
+        struct ExpandoNode *node_cond = node_parse(str, cond_end, CON_START,
                                                    &next, defs, err);
-        if (!condition)
+        if (!node_cond)
           return NULL;
 
         if (*next != '?')
@@ -162,7 +162,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
                    // L10N: Expando is missing a terminator character
                    //       e.g. "%[..." is missing the final ']'
                    _("Conditional expando is missing '%c'"), '?');
-          node_free(&condition);
+          node_free(&node_cond);
           return NULL;
         }
 
@@ -181,7 +181,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
                    // L10N: Expando is missing a terminator character
                    //       e.g. "%[..." is missing the final ']'
                    _("Conditional expando is missing '&' or '%c'"), end_terminator);
-          node_free(&condition);
+          node_free(&node_cond);
           return NULL;
         }
 
@@ -194,7 +194,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
                                                 &if_true_parsed, defs, err);
           if (!node)
           {
-            node_free(&condition);
+            node_free(&node_cond);
             return NULL;
           }
 
@@ -211,7 +211,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
         if (only_true)
         {
           *parsed_until = end_true + 1;
-          return node_condition_new(condition, node_true, NULL);
+          return node_condition_new(node_cond, node_true, NULL);
         }
         else
         {
@@ -227,7 +227,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
                      //       e.g. "%[..." is missing the final ']'
                      _("Conditional expando is missing '%c'"), end_terminator);
             node_free(&node_true);
-            node_free(&condition);
+            node_free(&node_cond);
             return NULL;
           }
 
@@ -241,7 +241,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
             if (!node)
             {
               node_free(&node_true);
-              node_free(&condition);
+              node_free(&node_cond);
               return NULL;
             }
 
@@ -256,7 +256,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
           }
 
           *parsed_until = end_false + 1;
-          return node_condition_new(condition, node_true, node_false);
+          return node_condition_new(node_cond, node_true, node_false);
         }
       }
       else // expando

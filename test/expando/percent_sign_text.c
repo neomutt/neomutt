@@ -36,8 +36,8 @@ void test_expando_percent_sign_text(void)
   node_tree_parse(&root, input, NULL, &err);
 
   TEST_CHECK(err.position == NULL);
-  check_node_test(get_nth_node(root, 0), "percent ");
-  check_node_test(get_nth_node(root, 1), "%");
+  check_node_text(get_nth_node(root, 0), "percent ");
+  check_node_text(get_nth_node(root, 1), "%");
 
   node_tree_free(&root);
 }

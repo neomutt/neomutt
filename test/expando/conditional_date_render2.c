@@ -79,13 +79,13 @@ void test_expando_conditional_date_render2(void)
   struct ExpandoNode *node = get_nth_node(root, 0);
   check_node_cond(node);
 
-  struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-  struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-  struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+  struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+  struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+  struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-  check_node_conddate(condition, 1, 'm');
-  check_node_expando(if_true_tree, "%d-%m-%Y", NULL);
-  check_node_expando(if_false_tree, "%Y-%m-%d", NULL);
+  check_node_conddate(node_cond, 1, 'm');
+  check_node_expando(node_true, "%d-%m-%Y", NULL);
+  check_node_expando(node_false, "%Y-%m-%d", NULL);
 
   const struct Expando expando = {
     .string = input,

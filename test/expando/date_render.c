@@ -78,7 +78,7 @@ void test_expando_date_render(void)
     TEST_CHECK(err.position == NULL);
 
     check_node_expando(get_nth_node(root, 0), "%Y-%m-%d", NULL);
-    check_node_test(get_nth_node(root, 1), " date");
+    check_node_text(get_nth_node(root, 1), " date");
 
     const char *expected = "2016-03-07 date";
 

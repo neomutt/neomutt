@@ -44,17 +44,17 @@ void test_expando_complex_if_else(void)
   node_tree_parse(&root, input, TestFormatDef, &err);
 
   TEST_CHECK(err.position == NULL);
-  check_node_test(get_nth_node(root, 0), "if: ");
+  check_node_text(get_nth_node(root, 0), "if: ");
 
   {
     struct ExpandoNode *node = get_nth_node(root, 1);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "l");
+    check_node_condbool(node_cond, "l");
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
@@ -62,24 +62,24 @@ void test_expando_complex_if_else(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
 
-    check_node_test(get_nth_node(if_true_tree, 0), "pre ");
-    check_node_expando(get_nth_node(if_true_tree, 1), "l", &fmt);
-    check_node_test(get_nth_node(if_true_tree, 2), "post");
+    check_node_text(get_nth_node(node_true, 0), "pre ");
+    check_node_expando(get_nth_node(node_true, 1), "l", &fmt);
+    check_node_text(get_nth_node(node_true, 2), "post");
 
-    TEST_CHECK(if_false_tree == NULL);
+    TEST_CHECK(node_false == NULL);
   }
 
-  check_node_test(get_nth_node(root, 2), " if-else: ");
+  check_node_text(get_nth_node(root, 2), " if-else: ");
 
   {
     struct ExpandoNode *node = get_nth_node(root, 3);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "l");
+    check_node_condbool(node_cond, "l");
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
@@ -87,13 +87,13 @@ void test_expando_complex_if_else(void)
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
 
-    check_node_test(get_nth_node(if_true_tree, 0), "pre ");
-    check_node_expando(get_nth_node(if_true_tree, 1), "l", &fmt);
-    check_node_test(get_nth_node(if_true_tree, 2), "post");
+    check_node_text(get_nth_node(node_true, 0), "pre ");
+    check_node_expando(get_nth_node(node_true, 1), "l", &fmt);
+    check_node_text(get_nth_node(node_true, 2), "post");
 
-    check_node_test(get_nth_node(if_false_tree, 0), "pre ");
-    check_node_expando(get_nth_node(if_false_tree, 1), "c", &fmt);
-    check_node_test(get_nth_node(if_false_tree, 2), "post");
+    check_node_text(get_nth_node(node_false, 0), "pre ");
+    check_node_expando(get_nth_node(node_false, 1), "c", &fmt);
+    check_node_text(get_nth_node(node_false, 2), "post");
   }
 
   node_tree_free(&root);

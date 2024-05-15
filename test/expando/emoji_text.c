@@ -36,7 +36,7 @@ void test_expando_emoji_text(void)
   node_tree_parse(&root, input, NULL, &err);
 
   TEST_CHECK(err.position == NULL);
-  check_node_test(get_nth_node(root, 0), input);
+  check_node_text(get_nth_node(root, 0), input);
 
   node_tree_free(&root);
 }

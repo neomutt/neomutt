@@ -89,7 +89,7 @@ void test_expando_colors_render(void)
 
     TEST_CHECK(err.position == NULL);
     check_node_expando(get_nth_node(root, 0), "C", NULL);
-    check_node_test(get_nth_node(root, 1), " - ");
+    check_node_text(get_nth_node(root, 1), " - ");
     check_node_expando(get_nth_node(root, 2), "s", NULL);
 
     const struct Expando expando = {
@@ -158,7 +158,7 @@ void test_expando_colors_render(void)
     TEST_CHECK(right != NULL);
 
     check_node_expando(get_nth_node(left, 0), "C", NULL);
-    check_node_test(get_nth_node(left, 1), " ");
+    check_node_text(get_nth_node(left, 1), " ");
     check_node_expando(get_nth_node(right, 0), "s", NULL);
 
     const struct Expando expando = {
@@ -244,7 +244,7 @@ void test_expando_colors_render(void)
     TEST_CHECK(right != NULL);
 
     check_node_expando(get_nth_node(left, 0), "s", NULL);
-    check_node_test(get_nth_node(left, 1), " ");
+    check_node_text(get_nth_node(left, 1), " ");
     check_node_expando(get_nth_node(right, 0), "s", NULL);
 
     const struct Expando expando = {
@@ -315,7 +315,7 @@ void test_expando_colors_render(void)
     TEST_CHECK(right != NULL);
 
     check_node_expando(get_nth_node(left, 0), "s", NULL);
-    check_node_test(get_nth_node(left, 1), " ");
+    check_node_text(get_nth_node(left, 1), " ");
     check_node_expando(get_nth_node(right, 0), "s", NULL);
 
     const struct Expando expando = {

@@ -74,7 +74,7 @@ void test_expando_two_char_expando_render(void)
 
   TEST_CHECK(err.position == NULL);
   check_node_expando(get_nth_node(root, 0), "ss", NULL);
-  check_node_test(get_nth_node(root, 1), " - ");
+  check_node_text(get_nth_node(root, 1), " - ");
   check_node_expando(get_nth_node(root, 2), "dd", NULL);
 
   const char *expected = "Test2 - 12";

@@ -87,26 +87,26 @@ void test_expando_if_else_true_render(void)
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "c");
-    check_node_expando(if_true_tree, "t", NULL);
-    TEST_CHECK(if_false_tree == NULL);
+    check_node_condbool(node_cond, "c");
+    check_node_expando(node_true, "t", NULL);
+    TEST_CHECK(node_false == NULL);
   }
 
   {
     struct ExpandoNode *node = get_nth_node(root, 1);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "c");
-    check_node_expando(if_true_tree, "t", NULL);
-    check_node_expando(if_false_tree, "f", NULL);
+    check_node_condbool(node_cond, "c");
+    check_node_expando(node_true, "t", NULL);
+    check_node_expando(node_false, "f", NULL);
   }
 
   const char *expected = "22";
