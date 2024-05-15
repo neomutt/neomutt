@@ -34,7 +34,7 @@ struct ExpandoNode;
 struct ExpandoParseError;
 
 /**
- * struct NodeExpandoPrivate - Private data for an Expando
+ * struct NodeExpandoPrivate - Private data for an Expando - @extends ExpandoNode
  */
 struct NodeExpandoPrivate
 {

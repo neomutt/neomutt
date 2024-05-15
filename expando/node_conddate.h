@@ -27,7 +27,7 @@
 struct ExpandoParseError;
 
 /**
- * struct NodeCondDatePrivate - Private data for a Conditional Date
+ * struct NodeCondDatePrivate - Private data for a Conditional Date - @extends ExpandoNode
  */
 struct NodeCondDatePrivate
 {

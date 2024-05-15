@@ -58,7 +58,7 @@ enum ENPad
 };
 
 /**
- * struct NodePaddingPrivate - Private data for a Padding Node
+ * struct NodePaddingPrivate - Private data for a Padding Node - @extends ExpandoNode
  */
 struct NodePaddingPrivate
 {
