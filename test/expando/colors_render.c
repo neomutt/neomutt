@@ -72,7 +72,7 @@ void test_expando_colors_render(void)
     const char *input = "%C - %s";
 
     struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
+    struct ExpandoParseError err = { 0 };
 
     const struct ExpandoDefinition defs[] = {
       // clang-format off
@@ -85,9 +85,9 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_expando(get_nth_node(root, 0), "C", NULL);
     check_node_test(get_nth_node(root, 1), " - ");
     check_node_expando(get_nth_node(root, 2), "s", NULL);
@@ -133,7 +133,7 @@ void test_expando_colors_render(void)
     const char *input = "%C %* %s";
 
     struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
+    struct ExpandoParseError err = { 0 };
 
     const struct ExpandoDefinition defs[] = {
       // clang-format off
@@ -146,9 +146,9 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, " ", EPT_SOFT_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -219,7 +219,7 @@ void test_expando_colors_render(void)
     const char *input = "%s %* %s";
 
     struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
+    struct ExpandoParseError err = { 0 };
 
     const struct ExpandoDefinition defs[] = {
       // clang-format off
@@ -232,9 +232,9 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, " ", EPT_SOFT_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -290,7 +290,7 @@ void test_expando_colors_render(void)
     const char *input = "%s %* %s";
 
     struct ExpandoNode *root = NULL;
-    struct ExpandoParseError error = { 0 };
+    struct ExpandoParseError err = { 0 };
 
     const struct ExpandoDefinition defs[] = {
       // clang-format off
@@ -303,9 +303,9 @@ void test_expando_colors_render(void)
       // clang-format on
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, " ", EPT_SOFT_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);

@@ -70,7 +70,7 @@ static void simple_f(const struct ExpandoNode *node, void *data,
 void test_expando_if_else_true_render(void)
 {
   const char *input = "%<c?%t>%<c?%t&%f>";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
   const struct ExpandoDefinition defs[] = {
@@ -80,9 +80,9 @@ void test_expando_if_else_true_render(void)
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &error);
+  node_tree_parse(&root, input, defs, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
   {
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);

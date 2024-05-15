@@ -34,7 +34,7 @@ struct ExpandoParseError;
 struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_until,
                                        const struct ExpandoDefinition *defs,
                                        ExpandoParserFlags flags,
-                                       struct ExpandoParseError *error);
+                                       struct ExpandoParseError *err);
 
 int node_condbool_render(const struct ExpandoNode *node,
                          const struct ExpandoRenderData *rdata, struct Buffer *buf,

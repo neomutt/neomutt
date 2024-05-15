@@ -41,16 +41,16 @@ void test_expando_nested_if_else(void)
     { NULL, NULL, 0, -1, -1, NULL }
     // clang-format on
   };
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   {
     const char *input = "%<a?%<b?%c&%d>&%<e?%f&%g>>";
 
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
+    node_tree_parse(&root, input, TestFormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);
@@ -91,9 +91,9 @@ void test_expando_nested_if_else(void)
 
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
+    node_tree_parse(&root, input, TestFormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);
@@ -134,9 +134,9 @@ void test_expando_nested_if_else(void)
 
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
+    node_tree_parse(&root, input, TestFormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);
@@ -177,9 +177,9 @@ void test_expando_nested_if_else(void)
 
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
+    node_tree_parse(&root, input, TestFormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);
@@ -220,9 +220,9 @@ void test_expando_nested_if_else(void)
 
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, TestFormatDef, &error);
+    node_tree_parse(&root, input, TestFormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);

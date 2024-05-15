@@ -39,12 +39,12 @@ void test_expando_padding(void)
   };
 
   const char *input = "%|A %>B %*C";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, FormatDef, &error);
+  node_tree_parse(&root, input, FormatDef, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
   check_node_padding(get_nth_node(root, 0), "A", EPT_FILL_EOL);
 
   struct ExpandoNode *left = node_get_child(root, ENP_LEFT);

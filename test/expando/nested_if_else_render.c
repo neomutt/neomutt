@@ -62,7 +62,7 @@ static void nested_y(const struct ExpandoNode *node, void *data,
 void test_expando_nested_if_else_render(void)
 {
   const char *input = "%<x?%<y?XY&X>&%<y?Y&NONE>>";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
   const struct ExpandoDefinition defs[] = {
@@ -71,9 +71,9 @@ void test_expando_nested_if_else_render(void)
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &error);
+  node_tree_parse(&root, input, defs, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
 
   struct ExpandoNode *node = get_nth_node(root, 0);
   check_node_cond(node);

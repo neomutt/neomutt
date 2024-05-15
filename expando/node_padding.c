@@ -234,15 +234,15 @@ struct ExpandoNode *node_padding_new(enum ExpandoPadType pad_type,
  */
 struct ExpandoNode *node_padding_parse(const char *str, const char **parsed_until,
                                        int did, int uid, ExpandoParserFlags flags,
-                                       struct ExpandoParseError *error)
+                                       struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    snprintf(error->message, sizeof(error->message),
+    snprintf(err->message, sizeof(err->message),
              // L10N: Conditional Expandos can only depend on other Expandos
              //       e.g. "%<X?apple>" displays "apple" if "%X" is true.
              _("Padding cannot be used as a condition"));
-    error->position = str;
+    err->position = str;
     return NULL;
   }
 

@@ -118,14 +118,14 @@ static const char *skip_until_if_false_end(const char *start, char end_terminato
  * @param[in]  condition_start Flag for conditional expandos
  * @param[out] parsed_until    First character after parsed string
  * @param[in]  defs            Expando definitions
- * @param[out] error           Buffer for errors
+ * @param[out] err             Buffer for errors
  * @retval ptr Tree of ExpandoNodes representing the format string
  */
 struct ExpandoNode *node_parse(const char *str, const char *end,
                                enum ExpandoConditionStart condition_start,
                                const char **parsed_until,
                                const struct ExpandoDefinition *defs,
-                               struct ExpandoParseError *error)
+                               struct ExpandoParseError *err)
 {
   while (*str && (end ? (str <= end) : 1))
   {
@@ -151,14 +151,14 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
         const char *cond_end = skip_until_ch(str, '?');
         const char *next = NULL;
         struct ExpandoNode *condition = node_parse(str, cond_end, CON_START,
-                                                   &next, defs, error);
+                                                   &next, defs, err);
         if (!condition)
           return NULL;
 
         if (*next != '?')
         {
-          error->position = next;
-          snprintf(error->message, sizeof(error->message),
+          err->position = next;
+          snprintf(err->message, sizeof(err->message),
                    // L10N: Expando is missing a terminator character
                    //       e.g. "%[..." is missing the final ']'
                    _("Conditional expando is missing '%c'"), '?');
@@ -176,8 +176,8 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
 
         if (invalid)
         {
-          error->position = end_true;
-          snprintf(error->message, sizeof(error->message),
+          err->position = end_true;
+          snprintf(err->message, sizeof(err->message),
                    // L10N: Expando is missing a terminator character
                    //       e.g. "%[..." is missing the final ']'
                    _("Conditional expando is missing '&' or '%c'"), end_terminator);
@@ -191,7 +191,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
         while (start_true < end_true)
         {
           struct ExpandoNode *node = node_parse(start_true, end_true, CON_NO_CONDITION,
-                                                &if_true_parsed, defs, error);
+                                                &if_true_parsed, defs, err);
           if (!node)
           {
             node_free(&condition);
@@ -221,8 +221,8 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
 
           if (*end_false != end_terminator)
           {
-            error->position = start_false;
-            snprintf(error->message, sizeof(error->message),
+            err->position = start_false;
+            snprintf(err->message, sizeof(err->message),
                      // L10N: Expando is missing a terminator character
                      //       e.g. "%[..." is missing the final ']'
                      _("Conditional expando is missing '%c'"), end_terminator);
@@ -237,7 +237,7 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
           while (start_false < end_false)
           {
             struct ExpandoNode *node = node_parse(start_false, end_false, CON_NO_CONDITION,
-                                                  &if_false_parsed, defs, error);
+                                                  &if_false_parsed, defs, err);
             if (!node)
             {
               node_free(&node_true);
@@ -265,14 +265,14 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
         struct ExpandoNode *node = NULL;
         if (flags & EP_CONDITIONAL)
         {
-          node = node_condbool_parse(str, parsed_until, defs, flags, error);
+          node = node_condbool_parse(str, parsed_until, defs, flags, err);
         }
         else
         {
-          node = node_expando_parse(str, parsed_until, defs, flags, error);
+          node = node_expando_parse(str, parsed_until, defs, flags, err);
         }
 
-        if (!node || error->position)
+        if (!node || err->position)
         {
           node_free(&node);
           return NULL;
@@ -296,10 +296,10 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
  * @param[in,out] root   Parent ExpandoNode
  * @param[in]     string String to parse
  * @param[in]     defs   Expando definitions
- * @param[out]    error  Buffer for errors
+ * @param[out]    err    Buffer for errors
  */
 void node_tree_parse(struct ExpandoNode **root, const char *string,
-                     const struct ExpandoDefinition *defs, struct ExpandoParseError *error)
+                     const struct ExpandoDefinition *defs, struct ExpandoParseError *err)
 {
   if (!string || !*string)
   {
@@ -312,7 +312,7 @@ void node_tree_parse(struct ExpandoNode **root, const char *string,
 
   while (*start)
   {
-    struct ExpandoNode *node = node_parse(start, NULL, CON_NO_CONDITION, &end, defs, error);
+    struct ExpandoNode *node = node_parse(start, NULL, CON_NO_CONDITION, &end, defs, err);
     if (!node)
       break;
 

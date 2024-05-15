@@ -45,15 +45,15 @@ void test_expando_padding_render(void)
     // clang-format on
   };
 
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   {
     const char *input = "text1%|-text2";
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    node_tree_parse(&root, input, FormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, "-", EPT_FILL_EOL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -92,9 +92,9 @@ void test_expando_padding_render(void)
     const char *input = "text1%|-text2";
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    node_tree_parse(&root, input, FormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, "-", EPT_FILL_EOL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -131,9 +131,9 @@ void test_expando_padding_render(void)
     const char *input = "text1%>-text2";
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    node_tree_parse(&root, input, FormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, "-", EPT_HARD_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -171,9 +171,9 @@ void test_expando_padding_render(void)
     const char *input = "text1%>-text2";
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    node_tree_parse(&root, input, FormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, "-", EPT_HARD_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -212,9 +212,9 @@ void test_expando_padding_render(void)
     const char *input = "text1%*-text2";
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    node_tree_parse(&root, input, FormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, "-", EPT_SOFT_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -253,9 +253,9 @@ void test_expando_padding_render(void)
     const char *input = "text1%*-text2";
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    node_tree_parse(&root, input, FormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, "-", EPT_SOFT_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);
@@ -294,9 +294,9 @@ void test_expando_padding_render(void)
     const char *input = "text1%*-text2";
     struct ExpandoNode *root = NULL;
 
-    node_tree_parse(&root, input, FormatDef, &error);
+    node_tree_parse(&root, input, FormatDef, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
     check_node_padding(root, "-", EPT_SOFT_FILL);
 
     struct ExpandoNode *left = node_get_child(root, ENP_LEFT);

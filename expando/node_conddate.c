@@ -146,7 +146,7 @@ struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid)
  * node_conddate_parse - Parse a CondDate format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  */
 struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_until,
-                                        int did, int uid, struct ExpandoParseError *error)
+                                        int did, int uid, struct ExpandoParseError *err)
 {
   int count = 1;
   char period = '\0';
@@ -159,8 +159,8 @@ struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_unt
     // NOTE(g0mb4): str is NOT null-terminated
     if (!end_ptr || (number == USHRT_MAX))
     {
-      error->position = str;
-      snprintf(error->message, sizeof(error->message), _("Invalid number: %s"), str);
+      err->position = str;
+      snprintf(err->message, sizeof(err->message), _("Invalid number: %s"), str);
       return NULL;
     }
 
@@ -171,8 +171,8 @@ struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_unt
   // Allowed periods: year, month, week, day, hour, minute
   if (!strchr("ymwdHM", *str))
   {
-    error->position = str;
-    snprintf(error->message, sizeof(error->message),
+    err->position = str;
+    snprintf(err->message, sizeof(err->message),
              // L10N: The 'ymwdHM' should not be translated
              _("Invalid time period: '%c', must be one of 'ymwdHM'"), *str);
     return NULL;

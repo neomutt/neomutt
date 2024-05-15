@@ -66,7 +66,7 @@ struct ExpandoNode *node_condbool_new(const char *start, const char *end, int di
 struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_until,
                                         const struct ExpandoDefinition *defs,
                                         ExpandoParserFlags flags,
-                                        struct ExpandoParseError *error)
+                                        struct ExpandoParseError *err)
 {
   const struct ExpandoDefinition *definition = defs;
 
@@ -83,7 +83,7 @@ struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_unt
       if (definition->parse)
       {
         return definition->parse(str, parsed_until, definition->did,
-                                 definition->uid, flags, error);
+                                 definition->uid, flags, err);
       }
       else
       {
@@ -96,9 +96,9 @@ struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_unt
     definition++;
   }
 
-  error->position = format_end;
+  err->position = format_end;
   // L10N: e.g. "Unknown expando: %Q"
-  snprintf(error->message, sizeof(error->message), _("Unknown expando: %%%.*s"),
+  snprintf(err->message, sizeof(err->message), _("Unknown expando: %%%.*s"),
            expando_len, format_end);
   return NULL;
 }

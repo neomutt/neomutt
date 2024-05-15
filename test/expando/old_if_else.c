@@ -38,12 +38,12 @@ void test_expando_old_if_else(void)
     // clang-format on
   };
   const char *input = "if: %?l?%4l?  if-else: %?l?%4l&%4c?";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, TestFormatDef, &error);
+  node_tree_parse(&root, input, TestFormatDef, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
   check_node_test(get_nth_node(root, 0), "if: ");
 
   {

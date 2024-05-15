@@ -37,12 +37,12 @@ void test_expando_formatted_expando(void)
     // clang-format on
   };
   const char *input = "%X %8X %-8X %08X %.8X %8.8X %-8.8X %=8X";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, TestFormatDef, &error);
+  node_tree_parse(&root, input, TestFormatDef, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
   check_node_expando(get_nth_node(root, 0), "X", NULL);
   check_node_test(get_nth_node(root, 1), " ");
 

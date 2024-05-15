@@ -30,12 +30,12 @@
 void test_expando_empty(void)
 {
   const char *input = "";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, NULL, &error);
+  node_tree_parse(&root, input, NULL, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
   check_node_empty(get_nth_node(root, 0));
 
   node_tree_free(&root);

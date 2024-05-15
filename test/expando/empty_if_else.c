@@ -37,12 +37,12 @@ void test_expando_empty_if_else(void)
     { NULL, NULL, 0, -1, -1, NULL }
     // clang-format on
   };
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   const char *input1 = "%<c?>";
   struct ExpandoNode *root1 = NULL;
-  node_tree_parse(&root1, input1, TestFormatDef, &error);
-  TEST_CHECK(error.position == NULL);
+  node_tree_parse(&root1, input1, TestFormatDef, &err);
+  TEST_CHECK(err.position == NULL);
   {
     struct ExpandoNode *node = get_nth_node(root1, 0);
     check_node_cond(node);
@@ -59,8 +59,8 @@ void test_expando_empty_if_else(void)
 
   const char *input2 = "%<c?&>";
   struct ExpandoNode *root2 = NULL;
-  node_tree_parse(&root2, input2, TestFormatDef, &error);
-  TEST_CHECK(error.position == NULL);
+  node_tree_parse(&root2, input2, TestFormatDef, &err);
+  TEST_CHECK(err.position == NULL);
   {
     struct ExpandoNode *node = get_nth_node(root2, 0);
     check_node_cond(node);
@@ -77,8 +77,8 @@ void test_expando_empty_if_else(void)
 
   const char *input3 = "%<c?%t&>";
   struct ExpandoNode *root3 = NULL;
-  node_tree_parse(&root3, input3, TestFormatDef, &error);
-  TEST_CHECK(error.position == NULL);
+  node_tree_parse(&root3, input3, TestFormatDef, &err);
+  TEST_CHECK(err.position == NULL);
   {
     struct ExpandoNode *node = get_nth_node(root3, 0);
     check_node_cond(node);
@@ -95,8 +95,8 @@ void test_expando_empty_if_else(void)
 
   const char *input4 = "%<c?&%f>";
   struct ExpandoNode *root4 = NULL;
-  node_tree_parse(&root4, input4, TestFormatDef, &error);
-  TEST_CHECK(error.position == NULL);
+  node_tree_parse(&root4, input4, TestFormatDef, &err);
+  TEST_CHECK(err.position == NULL);
   {
     struct ExpandoNode *node = get_nth_node(root4, 0);
     check_node_cond(node);

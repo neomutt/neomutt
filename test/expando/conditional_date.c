@@ -32,16 +32,16 @@ void test_expando_conditional_date(void)
   const char *input = "%<[1m?%[%d-%m-%Y]&%[%Y-%m-%d]>";
 
   struct ExpandoNode *root = NULL;
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   const struct ExpandoDefinition defs[] = {
     { "[", NULL, 1, 0, 0, parse_date },
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &error);
+  node_tree_parse(&root, input, defs, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
 
   struct ExpandoNode *node = get_nth_node(root, 0);
   check_node_cond(node);

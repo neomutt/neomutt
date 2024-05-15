@@ -57,7 +57,7 @@ static void simple_date(const struct ExpandoNode *node, void *data,
 
 void test_expando_date_render(void)
 {
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   struct SimpleDateData data = {
     .t = 1457341200,
@@ -73,9 +73,9 @@ void test_expando_date_render(void)
       { NULL, NULL, 0, 0, 0, NULL },
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     check_node_expando(get_nth_node(root, 0), "%Y-%m-%d", NULL);
     check_node_test(get_nth_node(root, 1), " date");
@@ -111,9 +111,9 @@ void test_expando_date_render(void)
       { NULL, NULL, 0, 0, 0, NULL },
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 12;
