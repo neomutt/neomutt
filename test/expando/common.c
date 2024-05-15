@@ -147,15 +147,15 @@ void check_node_conddate(struct ExpandoNode *node, int count, char period)
   TEST_CHECK(priv->period == period);
 }
 
-struct ExpandoNode *parse_date(const char *s, const char **parsed_until,
-                               int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_date(const char *str, int did, int uid,
+                               ExpandoParserFlags flags, const char **parsed_until,
                                struct ExpandoParseError *error)
 {
-  // s-1 is always something valid
-  if (*(s - 1) == '<')
+  // str-1 is always something valid
+  if (*(str - 1) == '<')
   {
-    return node_conddate_parse(s + 1, parsed_until, did, uid, error);
+    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
   }
 
-  return node_expando_parse_enclosure(s, parsed_until, did, uid, ']', error);
+  return node_expando_parse_enclosure(str, parsed_until, did, uid, ']', error);
 }

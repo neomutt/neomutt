@@ -232,8 +232,8 @@ struct ExpandoNode *node_padding_new(enum ExpandoPadType pad_type,
  * Parse a Padding Expando of the form, "%|X", "%>X" or "%*X",
  * where the character 'X' will be used to fill the space.
  */
-struct ExpandoNode *node_padding_parse(const char *str, const char **parsed_until,
-                                       int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *node_padding_parse(const char *str, int did, int uid,
+                                       ExpandoParserFlags flags, const char **parsed_until,
                                        struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)

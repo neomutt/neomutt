@@ -82,7 +82,7 @@ struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_unt
     {
       if (def->parse)
       {
-        return def->parse(str, parsed_until, def->did, def->uid, flags, err);
+        return def->parse(str, def->did, def->uid, flags, parsed_until, err);
       }
       else
       {

@@ -52,8 +52,8 @@ static void test_n(const struct ExpandoNode *node, void *data,
 {
 }
 
-static struct ExpandoNode *parse_test(const char *str, const char **parsed_until,
-                                      int did, int uid, ExpandoParserFlags flags,
+static struct ExpandoNode *parse_test(const char *str, int did, int uid,
+                                      ExpandoParserFlags flags, const char **parsed_until,
                                       struct ExpandoParseError *error)
 {
   return node_condbool_new(str, str + 1, did, uid);

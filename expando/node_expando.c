@@ -261,7 +261,7 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
       if (def->parse && !(flags & EP_NO_CUSTOM_PARSE))
       {
         FREE(&fmt);
-        return def->parse(str, parsed_until, def->did, def->uid, flags, err);
+        return def->parse(str, def->did, def->uid, flags, parsed_until, err);
       }
       else
       {

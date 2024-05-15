@@ -65,7 +65,7 @@ struct NodePaddingPrivate
   enum ExpandoPadType  pad_type;        ///< Padding type
 };
 
-struct ExpandoNode *node_padding_parse(const char *str, const char **parsed_until, int did, int uid, ExpandoParserFlags flags, struct ExpandoParseError *err);
+struct ExpandoNode *node_padding_parse(const char *str, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
 
 void node_padding_repad(struct ExpandoNode **parent);
 
