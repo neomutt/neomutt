@@ -147,12 +147,12 @@ const char *skip_classic_expando(const char *str, const struct ExpandoDefinition
   if (*str == '\0')
     return str;
 
-  const struct ExpandoDefinition *definitions = defs;
+  const struct ExpandoDefinition *def = defs;
 
-  while (definitions && definitions->short_name)
+  while (def && def->short_name)
   {
-    const bool is_two_char = mutt_str_len(definitions->short_name) == 2;
-    const char *name = definitions->short_name;
+    const bool is_two_char = mutt_str_len(def->short_name) == 2;
+    const char *name = def->short_name;
 
     if (is_two_char && (name[0] == *str) && (name[1] == *(str + 1)))
     {
@@ -160,7 +160,7 @@ const char *skip_classic_expando(const char *str, const struct ExpandoDefinition
       break;
     }
 
-    definitions++;
+    def++;
   }
 
   str++;

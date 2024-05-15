@@ -68,7 +68,7 @@ struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_unt
                                         ExpandoParserFlags flags,
                                         struct ExpandoParseError *err)
 {
-  const struct ExpandoDefinition *definition = defs;
+  const struct ExpandoDefinition *def = defs;
 
   const char *format_end = skip_until_classic_expando(str);
   const char *expando_end = skip_classic_expando(format_end, defs);
@@ -76,24 +76,22 @@ struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_unt
   const int expando_len = expando_end - format_end;
   mutt_strn_copy(expando, format_end, expando_len, sizeof(expando));
 
-  while (definition && definition->short_name)
+  while (def && def->short_name)
   {
-    if (mutt_str_equal(definition->short_name, expando))
+    if (mutt_str_equal(def->short_name, expando))
     {
-      if (definition->parse)
+      if (def->parse)
       {
-        return definition->parse(str, parsed_until, definition->did,
-                                 definition->uid, flags, err);
+        return def->parse(str, parsed_until, def->did, def->uid, flags, err);
       }
       else
       {
         *parsed_until = expando_end;
-        return node_condbool_new(format_end, expando_end, definition->did,
-                                 definition->uid);
+        return node_condbool_new(format_end, expando_end, def->did, def->uid);
       }
     }
 
-    definition++;
+    def++;
   }
 
   err->position = format_end;
