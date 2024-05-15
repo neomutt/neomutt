@@ -468,7 +468,8 @@ static unsigned int generate_hcachever(void)
 /**
  * hcache_open - Multiplexor for StoreOps::open
  */
-struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_namer_t namer, bool create)
+struct HeaderCache *hcache_open(const char *path, const char *folder,
+                                hcache_namer_t namer, bool create)
 {
   if (!path || (path[0] == '\0'))
     return NULL;

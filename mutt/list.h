@@ -26,8 +26,9 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-#include "buffer.h"
 #include "queue.h"
+
+struct Buffer;
 
 /**
  * struct ListNode - A List node for strings

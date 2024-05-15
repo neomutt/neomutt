@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <kclangc.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "lib.h"

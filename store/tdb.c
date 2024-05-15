@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <fcntl.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <tdb.h>
 #include "mutt/lib.h"
@@ -50,7 +51,8 @@ static StoreHandle *store_tdb_open(const char *path, bool create)
   const int flags = TDB_NOLOCK | TDB_INCOMPATIBLE_HASH | TDB_NOSYNC;
   const int hash_size = 33533; // Based on test timings for 100K emails
 
-  struct tdb_context *db = tdb_open(path, hash_size, flags, (create ? O_CREAT : 0) | O_RDWR, 00600);
+  struct tdb_context *db = tdb_open(path, hash_size, flags,
+                                    (create ? O_CREAT : 0) | O_RDWR, 00600);
 
   // Return an opaque pointer
   return (StoreHandle *) db;

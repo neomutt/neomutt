@@ -31,6 +31,7 @@
 #include "config.h"
 #include <gdbm.h>
 #include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "lib.h"
@@ -45,7 +46,8 @@ static StoreHandle *store_gdbm_open(const char *path, bool create)
 
   const int pagesize = 4096;
 
-  GDBM_FILE db = gdbm_open((char *) path, pagesize, create ? GDBM_WRCREAT : GDBM_WRITER, 00600, NULL);
+  GDBM_FILE db = gdbm_open((char *) path, pagesize,
+                           create ? GDBM_WRCREAT : GDBM_WRITER, 00600, NULL);
   if (!db)
   {
     /* if rw failed try ro */

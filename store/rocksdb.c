@@ -30,6 +30,7 @@
 
 #include "config.h"
 #include <rocksdb/c.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "lib.h"

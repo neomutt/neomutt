@@ -29,12 +29,11 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include "mutt/lib.h"
 #include "node_text.h"
 #include "format.h"
 #include "node.h"
 #include "render.h"
-
-struct Buffer;
 
 /**
  * node_text_render - Render a Text Node - Implements ExpandoNode::render() - @ingroup expando_render

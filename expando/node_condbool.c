@@ -34,7 +34,6 @@
 #include "definition.h"
 #include "helpers.h"
 #include "node.h"
-#include "node_expando.h"
 #include "parse.h"
 #include "render.h"
 

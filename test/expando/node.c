@@ -95,7 +95,6 @@ void test_expando_node(void)
     node_free(&node);
   }
 
-  // struct ExpandoNode *node_first(struct ExpandoNode *node);
   // struct ExpandoNode *node_last (struct ExpandoNode *node);
   {
     struct ExpandoNode *root = node_new();
@@ -121,12 +120,6 @@ void test_expando_node(void)
     ARRAY_SET(&next2->children, 2, n2child2);
 
     struct ExpandoNode *node = NULL;
-
-    node = node_first(NULL);
-    TEST_CHECK(node == NULL);
-
-    node = node_first(root);
-    TEST_CHECK(node == child0);
 
     node = node_last(NULL);
     TEST_CHECK(node == NULL);

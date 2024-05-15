@@ -104,7 +104,6 @@ void node_tree_free(struct ExpandoNode **ptr);
 void                node_append   (struct ExpandoNode **root, struct ExpandoNode *new_node);
 struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index);
 
-struct ExpandoNode *node_first(struct ExpandoNode *node);
 struct ExpandoNode *node_last (struct ExpandoNode *node);
 
 #endif /* MUTT_EXPANDO_NODE_H */

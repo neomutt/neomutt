@@ -123,7 +123,8 @@ static StoreHandle *store_bdb_open(const char *path, bool create)
 
   buf_printf(&sdata->lockfile, "%s-lock-hack", path);
 
-  sdata->fd = open(buf_string(&sdata->lockfile), O_WRONLY | (create ? O_CREAT : 0), S_IRUSR | S_IWUSR);
+  sdata->fd = open(buf_string(&sdata->lockfile),
+                   O_WRONLY | (create ? O_CREAT : 0), S_IRUSR | S_IWUSR);
   if (sdata->fd < 0)
   {
     bdb_sdata_free(&sdata);

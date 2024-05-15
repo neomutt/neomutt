@@ -30,7 +30,6 @@
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else
-#include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
 #include "config/lib.h"

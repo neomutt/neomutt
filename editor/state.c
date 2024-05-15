@@ -27,7 +27,6 @@
  */
 
 #include "config.h"
-#include <string.h>
 #include <wchar.h>
 #include "mutt/lib.h"
 #include "state.h"

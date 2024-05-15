@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include "private.h"
 #include "core/lib.h"
 #include "mdata.h"
