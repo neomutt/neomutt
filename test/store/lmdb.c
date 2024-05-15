@@ -46,7 +46,7 @@ void test_store_lmdb(void)
   buf_addch(path, '/');
   buf_addstr(path, DB_NAME);
 
-  StoreHandle *store_handle = store_ops->open(buf_string(path));
+  StoreHandle *store_handle = store_ops->open(buf_string(path), true);
   TEST_CHECK(store_handle != NULL);
 
   TEST_CHECK(test_store_db(store_ops, store_handle) == true);

@@ -52,7 +52,7 @@ bool test_store_degenerate(const struct StoreOps *store_ops, const char *name)
   if (!TEST_CHECK_STR_EQ(store_ops->name, name))
     return false;
 
-  if (!TEST_CHECK(store_ops->open(NULL) == NULL))
+  if (!TEST_CHECK(store_ops->open(NULL, false) == NULL))
     return false;
 
   if (!TEST_CHECK(store_ops->fetch(NULL, NULL, 0, NULL) == NULL))
