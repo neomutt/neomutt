@@ -528,6 +528,10 @@ struct HeaderCache *hcache_open(const char *path, const char *folder, hcache_nam
         hcache_free(&hc);
       }
     }
+    else
+    {
+      hcache_free(&hc);
+    }
   }
 
   buf_pool_release(&hcpath);
