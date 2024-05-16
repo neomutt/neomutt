@@ -33,6 +33,7 @@
 #include <lmdb.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <unistd.h>
 #include "mutt/lib.h"
 #include "lib.h"
 
@@ -145,10 +146,15 @@ static int lmdb_get_write_txn(struct LmdbStoreData *sdata)
 /**
  * store_lmdb_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_lmdb_open(const char *path)
+static StoreHandle *store_lmdb_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
+
+  if (!create && access(path, F_OK) != 0)
+  {
+    return NULL;
+  }
 
   struct LmdbStoreData *sdata = lmdb_sdata_new();
 

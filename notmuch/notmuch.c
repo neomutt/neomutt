@@ -119,7 +119,7 @@ static struct HeaderCache *nm_hcache_open(struct Mailbox *m)
 {
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  return hcache_open(c_header_cache, mailbox_path(m), NULL);
+  return hcache_open(c_header_cache, mailbox_path(m), NULL, true);
 #else
   return NULL;
 #endif

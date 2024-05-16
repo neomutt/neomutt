@@ -722,7 +722,7 @@ struct HeaderCache *nntp_hcache_open(struct NntpMboxData *mdata)
   url.path = mdata->group;
   url_tostring(&url, file, sizeof(file), U_PATH);
   const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
-  return hcache_open(c_news_cache_dir, file, nntp_hcache_namer);
+  return hcache_open(c_news_cache_dir, file, nntp_hcache_namer, true);
 }
 
 /**

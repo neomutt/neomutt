@@ -296,7 +296,7 @@ static void imap_hcache_namer(const char *path, struct Buffer *dest)
  * @param adata Imap Account data
  * @param mdata Imap Mailbox data
  */
-void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
+void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool create)
 {
   if (!adata || !mdata)
     return;
@@ -325,7 +325,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata)
   url_tobuffer(&url, cachepath, U_PATH);
 
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  hc = hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer);
+  hc = hcache_open(c_header_cache, buf_string(cachepath), imap_hcache_namer, create);
 
 cleanup:
   buf_pool_release(&mbox);

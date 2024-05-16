@@ -553,7 +553,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
 
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
+  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL, true);
 #endif
 
   struct MhEmail *md = NULL;
@@ -788,7 +788,7 @@ static int mh_msg_save_hcache(struct Mailbox *m, struct Email *e)
   int rc = 0;
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
+  struct HeaderCache *hc = hcache_open(c_header_cache, mailbox_path(m), NULL, true);
   rc = hcache_store_email(hc, e->path, strlen(e->path), e, 0);
   hcache_close(&hc);
 #endif
@@ -1071,7 +1071,7 @@ static enum MxStatus mh_mbox_sync(struct Mailbox *m)
   struct HeaderCache *hc = NULL;
 #ifdef USE_HCACHE
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
-  hc = hcache_open(c_header_cache, mailbox_path(m), NULL);
+  hc = hcache_open(c_header_cache, mailbox_path(m), NULL, true);
 #endif
 
   struct Progress *progress = NULL;

@@ -216,7 +216,7 @@ int imap_msg_save_hcache(struct Mailbox *m, struct Email *e);
 
 /* util.c */
 #ifdef USE_HCACHE
-void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata);
+void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata, bool create);
 void imap_hcache_close(struct ImapMboxData *mdata);
 struct Email *imap_hcache_get(struct ImapMboxData *mdata, unsigned int uid);
 int imap_hcache_put(struct ImapMboxData *mdata, struct Email *e);

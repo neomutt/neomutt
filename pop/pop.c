@@ -301,7 +301,7 @@ static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const c
 {
   const char *const c_header_cache = cs_subset_path(NeoMutt->sub, "header_cache");
   if (!adata || !adata->conn)
-    return hcache_open(c_header_cache, path, NULL);
+    return hcache_open(c_header_cache, path, NULL, true);
 
   struct Url url = { 0 };
   char p[1024] = { 0 };
@@ -309,7 +309,7 @@ static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const c
   mutt_account_tourl(&adata->conn->account, &url);
   url.path = HC_FNAME;
   url_tostring(&url, p, sizeof(p), U_PATH);
-  return hcache_open(c_header_cache, p, pop_hcache_namer);
+  return hcache_open(c_header_cache, p, pop_hcache_namer, true);
 }
 #endif
 

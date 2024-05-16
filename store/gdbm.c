@@ -38,14 +38,14 @@
 /**
  * store_gdbm_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_gdbm_open(const char *path)
+static StoreHandle *store_gdbm_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
 
   const int pagesize = 4096;
 
-  GDBM_FILE db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
+  GDBM_FILE db = gdbm_open((char *) path, pagesize, create ? GDBM_WRCREAT : GDBM_WRITER, 00600, NULL);
   if (!db)
   {
     /* if rw failed try ro */

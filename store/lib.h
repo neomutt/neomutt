@@ -75,6 +75,7 @@ struct StoreOps
    *
    * open - Open a connection to a Store
    * @param[in] path Path to the database file
+   * @param[in] create Create the file if it's not there?
    * @retval ptr  Success, Store pointer
    * @retval NULL Failure
    *
@@ -82,7 +83,7 @@ struct StoreOps
    * connection to the database file specified by the path parameter. Backends
    * MUST return non-NULL specific handle information on success.
    */
-  StoreHandle *(*open)(const char *path);
+  StoreHandle *(*open)(const char *path, bool create);
 
   /**
    * @defgroup store_fetch fetch()

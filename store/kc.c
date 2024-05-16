@@ -37,7 +37,7 @@
 /**
  * store_kyotocabinet_open - Open a connection to a Store - Implements StoreOps::open() - @ingroup store_open
  */
-static StoreHandle *store_kyotocabinet_open(const char *path)
+static StoreHandle *store_kyotocabinet_open(const char *path, bool create)
 {
   if (!path)
     return NULL;
@@ -50,7 +50,7 @@ static StoreHandle *store_kyotocabinet_open(const char *path)
 
   buf_printf(kcdbpath, "%s#type=kct#opts=l#rcomp=lex", path);
 
-  if (!kcdbopen(db, buf_string(kcdbpath), KCOWRITER | KCOCREATE))
+  if (!kcdbopen(db, buf_string(kcdbpath), KCOWRITER | (create ? KCOCREATE : 0)))
   {
     int ecode = kcdbecode(db);
     mutt_debug(LL_DEBUG2, "kcdbopen failed for %s: %s (ecode %d)\n",
