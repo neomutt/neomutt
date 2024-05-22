@@ -697,7 +697,7 @@ static int tls_check_certificate(struct Connection *conn)
  * @param conn Connection to a server
  *
  * @note This function grabs the CN out of the client cert but appears to do
- *       nothing with it.  It does contain a call to mutt_account_getuser().
+ *       nothing with it.
  */
 static void tls_get_client_cert(struct Connection *conn)
 {
@@ -736,10 +736,6 @@ static void tls_get_client_cert(struct Connection *conn)
       goto err;
     }
     mutt_debug(LL_DEBUG2, "client certificate CN: %s\n", cn);
-
-    /* if we are using a client cert, SASL may expect an external auth name */
-    if (mutt_account_getuser(&conn->account) < 0)
-      mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
   }
 
 err:

@@ -613,10 +613,6 @@ static void ssl_get_client_cert(struct SslSockData *ssldata, struct Connection *
   SSL_CTX_set_default_passwd_cb(ssldata->sctx, ssl_passwd_cb);
   SSL_CTX_use_certificate_file(ssldata->sctx, c_ssl_client_cert, SSL_FILETYPE_PEM);
   SSL_CTX_use_PrivateKey_file(ssldata->sctx, c_ssl_client_cert, SSL_FILETYPE_PEM);
-
-  /* if we are using a client cert, SASL may expect an external auth name */
-  if (mutt_account_getuser(&conn->account) < 0)
-    mutt_debug(LL_DEBUG1, "Couldn't get user info\n");
 }
 
 /**
