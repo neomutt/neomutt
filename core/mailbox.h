@@ -197,7 +197,10 @@ enum NotifyMailbox
  */
 struct EventMailbox
 {
-  struct Mailbox *mailbox; ///< The Mailbox this Event relates to
+  struct Mailbox *mailbox;        ///< The Mailbox this Event relates to
+  struct EmailArray *ea_new;      ///< New Emails     during current "run"
+  struct EmailArray *ea_changed;  ///< Changed Emails during current "run"
+  struct EmailArray *ea_deleted;  ///< Deleted Emails during current "run"
 };
 
 void            mailbox_changed   (struct Mailbox *m, enum NotifyMailbox action);

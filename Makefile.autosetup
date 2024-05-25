@@ -998,8 +998,10 @@ coverage: all test
 	  --directory core \
 	  --directory editor \
 	  --directory email \
+	  --directory hcache \
 	  --directory expando \
 	  --directory imap \
+	  --directory maildir \
 	  --directory mutt \
 	  --directory notmuch \
 	  --directory parse \
