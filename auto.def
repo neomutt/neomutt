@@ -72,7 +72,7 @@ set valid_options {
   nls=1                     => "Disable Native Language Support"
   with-nls:path             => "Location of libintl"
 # IDN
-  idn2=1                    => "Enable GNU libidn2 for internationalized domain names"
+  idn2=1                    => "Disable GNU libidn2 for internationalized domain names"
   with-idn2:path            => "Location of GNU libidn2"
 # PCRE2
   pcre2=0                   => "Enable PCRE2 regular expressions"
