@@ -3,7 +3,7 @@
 # Copyright (c) 2021-2023 NeoMutt project.
 # This file is distributed under the same license as the NeoMutt package.
 #
-# Страхиња Радић <contact@strahinja.org>, 2021-2023
+# Страхиња Радић <contact@strahinja.org>, 2021-2024
 #
 msgid ""
 msgstr ""
