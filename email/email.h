@@ -89,9 +89,6 @@ struct Email
    */
   void (*edata_free)(void **ptr);
 
-#ifdef MIXMASTER
-  struct ListHead chain;       ///< Mixmaster chain
-#endif
 #ifdef USE_NOTMUCH
   void *nm_edata;              ///< Notmuch private data
 #endif

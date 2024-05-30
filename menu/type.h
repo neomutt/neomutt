@@ -49,9 +49,6 @@ enum MenuType
   MENU_KEY_SELECT_SMIME, ///< Select a SMIME key
 #endif
   MENU_INDEX,            ///< Index panel (list of emails)
-#ifdef MIXMASTER
-  MENU_MIXMASTER,        ///< Create/edit a Mixmaster chain
-#endif
   MENU_PAGER,            ///< Pager pager (email viewer)
   MENU_PGP,              ///< PGP encryption menu
   MENU_POSTPONED,        ///< Select a postponed email

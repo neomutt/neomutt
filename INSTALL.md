@@ -66,7 +66,6 @@ For a list of the currently supported options and a brief help text, run:
 | `--fmemopen`            |      | Optional Feature (Dangerous)                 |
 | `--lua`                 | Path | Optional Feature                             |
 | `--notmuch`             | Path | Optional Feature                             |
-| `--mixmaster`           |      | Optional Feature                             |
 |                         |      |                                              |
 | `--bdb`                 | Path | Header cache backend                         |
 | `--gdbm`                | Path | Header cache backend                         |

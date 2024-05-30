@@ -2621,36 +2621,6 @@
 ** mime.types lookup.
 */
 
-#ifdef MIXMASTER
-{ "mix_entry_format", DT_STRING, "%4n %c %-16s %a" },
-/*
-** .pp
-** This variable describes the format of a remailer line on the mixmaster
-** chain selection screen.  The following \fCprintf(3)\fP-like sequences are
-** supported:
-** .dl
-** .dt %a  .dd The remailer's e-mail address
-** .dt %c  .dd Remailer capabilities
-** .dt %n  .dd The running number on the menu
-** .dt %s  .dd The remailer's short name
-** .dt %>X .dd right justify the rest of the string and pad with character "X"
-** .dt %|X .dd pad to the end of the line with character "X"
-** .dt %*X .dd soft-fill with character "X" as pad
-** .de
-** .pp
-** (Mixmaster only)
-*/
-
-{ "mixmaster", D_STRING_COMMAND, MIXMASTER },
-/*
-** .pp
-** This variable contains the path to the Mixmaster binary on your
-** system.  It is used with various sets of parameters to gather the
-** list of known remailers, and to finally send a message through the
-** mixmaster chain. (Mixmaster only)
-*/
-#endif
-
 { "move", DT_QUAD, MUTT_NO },
 /*
 ** .pp

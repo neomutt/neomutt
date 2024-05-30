@@ -20,7 +20,7 @@ jobs:
       security-events: write
 
     env:
-      CONFIGURE_OPTIONS: --bdb --gdbm --gnutls --gpgme --homespool --kyotocabinet --lmdb --lua --mixmaster --notmuch --qdbm --sasl --tokyocabinet --with-domain=example.com --with-lock=flock
+      CONFIGURE_OPTIONS: --bdb --gdbm --gnutls --gpgme --homespool --kyotocabinet --lmdb --lua --notmuch --qdbm --sasl --tokyocabinet --with-domain=example.com --with-lock=flock
 
     steps:
       - name: Get number of CPU cores

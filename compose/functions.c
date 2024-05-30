@@ -78,9 +78,6 @@
 #ifdef ENABLE_NLS
 #include <libintl.h>
 #endif
-#ifdef MIXMASTER
-#include "mixmaster/lib.h"
-#endif
 #endif
 
 // clang-format off
@@ -125,9 +122,6 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "group-multilingual",            OP_ATTACHMENT_GROUP_LINGUAL },
   { "group-related",                 OP_ATTACHMENT_GROUP_RELATED },
   { "ispell",                        OP_COMPOSE_ISPELL },
-#ifdef MIXMASTER
-  { "mix",                           OP_COMPOSE_MIX },
-#endif
   { "move-down",                     OP_ATTACHMENT_MOVE_DOWN },
   { "move-up",                       OP_ATTACHMENT_MOVE_UP },
   { "new-mime",                      OP_ATTACHMENT_NEW_MIME },
@@ -193,9 +187,6 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_COMPOSE_EDIT_FILE,                  "\033e" },          // <Alt-e>
   { OP_COMPOSE_EDIT_MESSAGE,               "e" },
   { OP_COMPOSE_ISPELL,                     "i" },
-#ifdef MIXMASTER
-  { OP_COMPOSE_MIX,                        "M" },
-#endif
   { OP_COMPOSE_PGP_MENU,                   "p" },
   { OP_COMPOSE_POSTPONE_MESSAGE,           "P" },
   { OP_COMPOSE_RENAME_FILE,                "R" },
@@ -1943,11 +1934,6 @@ static int op_compose_send_message(struct ComposeSharedData *shared, int op)
     menu_queue_redraw(shared->adata->menu, MENU_REDRAW_FULL);
     return FR_NO_ACTION;
   }
-
-#ifdef MIXMASTER
-  if (!STAILQ_EMPTY(&shared->email->chain) && (mix_check_message(shared->email) != 0))
-    return FR_NO_ACTION;
-#endif
 
   if (!shared->fcc_set && !buf_is_empty(shared->fcc))
   {

@@ -1190,23 +1190,6 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
     fputc('\n', msg->fp);
   }
 
-#ifdef MIXMASTER
-  /* (postponement) if the mail is to be sent through a mixmaster
-   * chain, save that information */
-
-  if (post && !STAILQ_EMPTY(&e->chain))
-  {
-    fputs("Mutt-Mix:", msg->fp);
-    struct ListNode *p = NULL;
-    STAILQ_FOREACH(p, &e->chain, entries)
-    {
-      fprintf(msg->fp, " %s", (char *) p->data);
-    }
-
-    fputc('\n', msg->fp);
-  }
-#endif
-
   if (fp_tmp)
   {
     mutt_write_mime_body(e->body, fp_tmp, sub);

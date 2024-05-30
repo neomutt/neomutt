@@ -48,9 +48,6 @@ extern const struct MenuFuncOp OpBrowser[];
 extern const struct MenuFuncOp OpCompose[];
 extern const struct MenuFuncOp OpEditor[];
 extern const struct MenuFuncOp OpIndex[];
-#ifdef MIXMASTER
-extern const struct MenuFuncOp OpMixmaster[];
-#endif
 extern const struct MenuFuncOp OpPager[];
 extern const struct MenuFuncOp OpPgp[];
 extern const struct MenuFuncOp OpPostponed[];
@@ -554,10 +551,6 @@ const struct MenuFuncOp *km_get_table(enum MenuType mtype)
       return OpPgp;
     case MENU_KEY_SELECT_SMIME:
       return OpSmime;
-#endif
-#ifdef MIXMASTER
-    case MENU_MIXMASTER:
-      return OpMixmaster;
 #endif
     case MENU_PAGER:
       return OpPager;

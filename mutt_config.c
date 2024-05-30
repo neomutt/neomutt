@@ -45,7 +45,6 @@
 #include "expando/lib.h"
 #include "index/lib.h"
 #include "menu/lib.h"
-#include "mixmaster/lib.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
@@ -914,51 +913,9 @@ static struct ConfigDef MainVars[] = {
   // clang-format on
 };
 
-#if defined(MIXMASTER)
-#ifdef MIXMASTER
-#define MIXMASTER_DEFAULT MIXMASTER
-#else
-#define MIXMASTER_DEFAULT ""
-#endif
-
-/**
- * MixFormatDef - Expando definitions
- *
- * Config:
- * - $mix_entry_format
- */
-static const struct ExpandoDefinition MixFormatDef[] = {
-  // clang-format off
-  { "*", "padding-soft", ED_GLOBAL,    ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-  { ">", "padding-hard", ED_GLOBAL,    ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-  { "|", "padding-eol",  ED_GLOBAL,    ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-  { "a", "address",      ED_MIXMASTER, ED_MIX_ADDRESS,      E_TYPE_STRING, NULL },
-  { "c", "capabilities", ED_MIXMASTER, ED_MIX_CAPABILITIES, E_TYPE_STRING, NULL },
-  { "n", "number",       ED_MIXMASTER, ED_MIX_NUMBER,       E_TYPE_NUMBER, NULL },
-  { "s", "short-name",   ED_MIXMASTER, ED_MIX_SHORT_NAME,   E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
-  // clang-format on
-};
-
-/**
- * MainVarsMixmaster - Config definitions for the Mixmaster library
- */
-static struct ConfigDef MainVarsMixmaster[] = {
-  // clang-format off
-  { "mix_entry_format", DT_EXPANDO|D_NOT_EMPTY, IP "%4n %c %-16s %a", IP &MixFormatDef, NULL,
-    "(mixmaster) printf-like format string for the mixmaster chain"
-  },
-  { "mixmaster", DT_STRING|D_STRING_COMMAND, IP MIXMASTER_DEFAULT, 0, NULL,
-    "(mixmaster) External command to route a mixmaster message"
-  },
-  { NULL },
-  // clang-format on
-};
-#endif
-
 #if defined(HAVE_LIBIDN)
 /**
- * MainVarsIdn - IDN Config definitions for the Mixmaster library
+ * MainVarsIdn - IDN Config definitions
  */
 static struct ConfigDef MainVarsIdn[] = {
   // clang-format off
@@ -979,10 +936,6 @@ static struct ConfigDef MainVarsIdn[] = {
 static bool config_init_main(struct ConfigSet *cs)
 {
   bool rc = cs_register_variables(cs, MainVars);
-
-#if defined(MIXMASTER)
-  rc |= cs_register_variables(cs, MainVarsMixmaster);
-#endif
 
 #if defined(HAVE_LIBIDN)
   rc |= cs_register_variables(cs, MainVarsIdn);

@@ -33,7 +33,6 @@
 #include "expando/lib.h"
 #include "history/lib.h"
 #include "index/lib.h"
-#include "mixmaster/lib.h"
 #include "compose/shared_data.h"
 #include "ncrypt/pgp.h"
 #include "ncrypt/pgplib.h"
@@ -101,7 +100,6 @@ const char *name_expando_domain(enum ExpandoDomain did)
     DEBUG_NAME(ED_INDEX);
     DEBUG_NAME(ED_MAILBOX);
     DEBUG_NAME(ED_MENU);
-    DEBUG_NAME(ED_MIXMASTER);
     DEBUG_NAME(ED_NNTP);
     DEBUG_NAME(ED_PATTERN);
     DEBUG_NAME(ED_PGP);
@@ -359,18 +357,6 @@ const char *name_expando_uid_menu(int uid)
   }
 }
 
-const char *name_expando_uid_mixmaster(int uid)
-{
-  switch (uid)
-  {
-    DEBUG_NAME(ED_MIX_ADDRESS);
-    DEBUG_NAME(ED_MIX_CAPABILITIES);
-    DEBUG_NAME(ED_MIX_NUMBER);
-    DEBUG_NAME(ED_MIX_SHORT_NAME);
-    DEBUG_DEFAULT;
-  }
-}
-
 const char *name_expando_uid_nntp(int uid)
 {
   switch (uid)
@@ -511,8 +497,6 @@ const char *name_expando_uid(enum ExpandoDomain did, int uid)
       return name_expando_uid_mailbox(uid);
     case ED_MENU:
       return name_expando_uid_menu(uid);
-    case ED_MIXMASTER:
-      return name_expando_uid_mixmaster(uid);
     case ED_NNTP:
       return name_expando_uid_nntp(uid);
     case ED_PATTERN:

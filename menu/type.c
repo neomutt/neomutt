@@ -54,9 +54,6 @@ const struct Mapping MenuNames[] = {
   { "key_select_pgp",   MENU_KEY_SELECT_PGP },
   { "key_select_smime", MENU_KEY_SELECT_SMIME },
 #endif
-#ifdef MIXMASTER
-  { "mix",              MENU_MIXMASTER },
-#endif
   { "query",            MENU_QUERY },
   { "generic",          MENU_GENERIC },
   { NULL, 0 },

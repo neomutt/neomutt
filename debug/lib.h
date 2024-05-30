@@ -95,7 +95,6 @@ const char *name_expando_uid_history      (int uid);
 const char *name_expando_uid_index        (int uid);
 const char *name_expando_uid_mailbox      (int uid);
 const char *name_expando_uid_menu         (int uid);
-const char *name_expando_uid_mixmaster    (int uid);
 const char *name_expando_uid_nntp         (int uid);
 const char *name_expando_uid_pattern      (int uid);
 const char *name_expando_uid_pgp          (int uid);

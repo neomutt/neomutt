@@ -39,9 +39,6 @@ enum HeaderField
   HDR_SUBJECT, ///< "Subject:" field
   HDR_REPLYTO, ///< "Reply-To:" field
   HDR_FCC,     ///< "Fcc:" (save folder) field
-#ifdef MIXMASTER
-  HDR_MIX, ///< "Mix:" field (Mixmaster chain)
-#endif
   HDR_CRYPT,     ///< "Security:" field (encryption/signing info)
   HDR_CRYPTINFO, ///< "Sign as:" field (encryption/signing info)
 #ifdef USE_AUTOCRYPT

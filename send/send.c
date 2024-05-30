@@ -91,9 +91,6 @@
 #include "sendmail.h"
 #include "smtp.h"
 #include "sort.h"
-#ifdef MIXMASTER
-#include "mixmaster/lib.h"
-#endif
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif
@@ -1508,14 +1505,8 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
   if (c_smtp_url)
     cs_subset_str_native_set(sub, "write_bcc", false, NULL);
 
-#ifdef MIXMASTER
-  mutt_rfc822_write_header(fp_tmp, e->env, e->body, MUTT_WRITE_HEADER_NORMAL,
-                           !STAILQ_EMPTY(&e->chain),
-                           mutt_should_hide_protected_subject(e), sub);
-#else
   mutt_rfc822_write_header(fp_tmp, e->env, e->body, MUTT_WRITE_HEADER_NORMAL,
                            false, mutt_should_hide_protected_subject(e), sub);
-#endif
 
   cs_subset_str_native_set(sub, "write_bcc", c_write_bcc, NULL);
 
@@ -1530,14 +1521,6 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
     unlink(buf_string(tempfile));
     goto cleanup;
   }
-
-#ifdef MIXMASTER
-  if (!STAILQ_EMPTY(&e->chain))
-  {
-    rc = mix_send_message(&e->chain, buf_string(tempfile));
-    goto cleanup;
-  }
-#endif
 
   if (OptNewsSend)
     goto sendmail;

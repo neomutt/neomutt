@@ -4,8 +4,8 @@ FUNCTION_SRC = $(SRCDIR)/gui/functions.c $(SRCDIR)/alias/functions.c \
 	       $(SRCDIR)/attach/functions.c $(SRCDIR)/autocrypt/functions.c \
 	       $(SRCDIR)/browser/functions.c $(SRCDIR)/compose/functions.c \
 	       $(SRCDIR)/editor/functions.c $(SRCDIR)/index/functions.c \
-	       $(SRCDIR)/mixmaster/functions.c $(SRCDIR)/ncrypt/functions.c \
-	       $(SRCDIR)/pager/functions.c $(SRCDIR)/postpone/functions.c
+	       $(SRCDIR)/ncrypt/functions.c $(SRCDIR)/pager/functions.c \
+	       $(SRCDIR)/postpone/functions.c
 
 docs/makedoc$(EXEEXT): $(SRCDIR)/docs/makedoc.c
 	$(CC_FOR_BUILD) -I. $(CFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) \

@@ -105,10 +105,6 @@ const char *const Prompts[] = {
   N_("Reply-To: "),
   /* L10N: Compose menu field.  May not want to translate. */
   N_("Fcc: "),
-#ifdef MIXMASTER
-  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
-  N_("Mix: "),
-#endif
   /* L10N: Compose menu field.  Holds "Encrypt", "Sign" related information */
   N_("Security: "),
   /* L10N: This string is used by the compose menu.
@@ -309,10 +305,6 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
 {
   int rows = 4; // 'From:', 'Subject:', 'Reply-To:', 'Fcc:'
   struct Email *e = wdata->email;
-#ifdef MIXMASTER
-  if (!STAILQ_EMPTY(&e->chain))
-    rows++;
-#endif
 
   struct Envelope *env = e->env;
   const int cols = win->state.cols - MaxHeaderWidth;
@@ -495,41 +487,6 @@ static int draw_crypt_lines(struct MuttWindow *win, struct EnvelopeWindowData *w
 #endif
   return used;
 }
-
-#ifdef MIXMASTER
-/**
- * draw_mix_line - Redraw the Mixmaster chain
- * @param chain List of chain links
- * @param win   Window to draw on
- * @param row   Window row to start drawing
- *
- * @pre `chain` points to a nonempty list.
- */
-static void draw_mix_line(struct ListHead *chain, struct MuttWindow *win, int row)
-{
-  char *t = NULL;
-  int c = MaxHeaderWidth;
-  struct ListNode *np = NULL;
-
-  draw_header(win, row, HDR_MIX);
-
-  STAILQ_FOREACH(np, chain, entries)
-  {
-    t = np->data;
-    if (t && (t[0] == '0') && (t[1] == '\0'))
-      t = "<random>";
-
-    if ((c + mutt_str_len(t) + 2) >= win->state.cols)
-      break;
-
-    mutt_window_addstr(win, NONULL(t));
-    if (STAILQ_NEXT(np, entries))
-      mutt_window_addstr(win, ", ");
-
-    c += mutt_str_len(t) + 2;
-  }
-}
-#endif
 
 /**
  * draw_envelope_addr - Write addresses to the compose window
@@ -750,10 +707,6 @@ static void draw_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wda
   if (WithCrypto)
     row += draw_crypt_lines(win, wdata, row);
 
-#ifdef MIXMASTER
-  if (!STAILQ_EMPTY(&e->chain))
-    draw_mix_line(&e->chain, win, row++);
-#endif
   const bool c_compose_show_user_headers = cs_subset_bool(wdata->sub, "compose_show_user_headers");
   if (c_compose_show_user_headers)
     row += draw_envelope_user_hdrs(win, wdata, row);

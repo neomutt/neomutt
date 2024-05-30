@@ -2884,8 +2884,7 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
         </note>
         <para>
           After exiting the compose menu via <literal>&lt;send-message&gt;</literal>,
-          the message will be sent.  If configured and enabled, this can happen via
-          <link linkend="sending-mixmaster">mixmaster</link> or
+          the message will be sent.  This happens via
           <link linkend="smtp">$smtp_url</link>.  Otherwise
           <link linkend="sendmail">$sendmail</link> will be invoked.  Prior to
           version 2019-11-29, NeoMutt enabled <link linkend="write-bcc">$write_bcc</link> by
@@ -3019,24 +3018,6 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
             <quote>thread hijacking</quote>.
           </para>
         </sect3>
-
-        <sect3 id="mutt-mix-header">
-          <title>Mutt-Mix: Pseudo Header</title>
-          <para>
-            If you want to use <link linkend="sending-mixmaster">Mixmaster</link>,
-            you can specify the chain via:
-          </para>
-          <para>
-            <literal>Mutt-Mix:</literal>
-            [ <emphasis>remailer1</emphasis>
-            [ <emphasis>remailer2</emphasis>
-            [ ... ] ] ]
-          </para>
-          <para>
-            The chain can later be changed in the mixmaster menu.
-          </para>
-        </sect3>
-
       </sect2>
 
       <sect2 id="sending-crypto">
@@ -4426,16 +4407,6 @@ set alias_file=~/.mail_aliases
               <para>
                 The query menu is the browser for results returned by
                 <link linkend="query-command">$query_command</link>.
-              </para>
-            </listitem>
-          </varlistentry>
-          <varlistentry>
-            <term>mix</term>
-            <listitem>
-              <para>
-                The mixmaster screen is used to select remailer options for
-                outgoing messages (if NeoMutt is compiled with Mixmaster
-                support).
               </para>
             </listitem>
           </varlistentry>
@@ -13197,51 +13168,6 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
           occasionally.
         </para>
       </sect2>
-    </sect1>
-
-    <sect1 id="sending-mixmaster">
-      <title>Sending Anonymous Messages via Mixmaster</title>
-      <para>
-        You may also have compiled NeoMutt to co-operate with Mixmaster, an
-        anonymous remailer. Mixmaster permits you to send your messages
-        anonymously using a chain of remailers. Mixmaster support in NeoMutt is
-        for mixmaster version 2.04 or later.
-      </para>
-      <para>
-        To use it, you'll have to obey certain restrictions. Most important,
-        you cannot use the <literal>Cc</literal> and <literal>Bcc</literal>
-        headers. To tell NeoMutt to use mixmaster, you have to select
-        a remailer chain, using the mix function on the compose menu.
-      </para>
-      <para>
-        The chain selection screen is divided into two parts. In the (larger)
-        upper part, you get a list of remailers you may use. In the lower part,
-        you see the currently selected chain of remailers.
-      </para>
-      <para>
-        You can navigate in the chain using the
-        <literal>&lt;chain-prev&gt;</literal> and
-        <literal>&lt;chain-next&gt;</literal> functions, which are by default
-        bound to the left and right arrows and to the <literal>h</literal> and
-        <literal>l</literal> keys (think vi keyboard bindings). To insert
-        a remailer at the current chain position, use the
-        <literal>&lt;insert&gt;</literal> function. To append a remailer behind
-        the current chain position, use <literal>&lt;select-entry&gt;</literal>
-        or <literal>&lt;append&gt;</literal>. You can also delete entries from
-        the chain, using the corresponding function. Finally, to abandon your
-        changes, leave the menu, or <literal>&lt;accept&gt;</literal> them
-        pressing (by default) the <literal>Return</literal> key.
-      </para>
-      <para>
-        Note that different remailers do have different capabilities, indicated
-        in the %c entry of the remailer menu lines (see
-        <link linkend="mix-entry-format">$mix_entry_format</link>). Most
-        important is the <quote>middleman</quote> capability, indicated by
-        a capital <quote>M</quote>: This means that the remailer in question
-        cannot be used as the final element of a chain, but will only forward
-        messages to other mixmaster remailers. For details on the other
-        capabilities, please have a look at the mixmaster documentation.
-      </para>
     </sect1>
 
     <sect1 id="account-cmd">

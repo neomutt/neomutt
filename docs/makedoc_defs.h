@@ -60,9 +60,6 @@
 #ifndef HAVE_ZSTD
 #define HAVE_ZSTD
 #endif
-#ifndef MIXMASTER
-#define MIXMASTER "mixmaster"
-#endif
 #ifndef USE_AUTOCRYPT
 #define USE_AUTOCRYPT
 #endif

@@ -70,7 +70,6 @@ enum WindowType
   WT_DLG_PGP,         ///< Pgp Dialog,         dlg_pgp()
   WT_DLG_POSTPONED,   ///< Postponed Dialog,   dlg_postponed()
   WT_DLG_QUERY,       ///< Query Dialog,       dlg_query()
-  WT_DLG_MIXMASTER,   ///< Mixmaster Dialog,   dlg_mixmaster()
   WT_DLG_SMIME,       ///< Smime Dialog,       dlg_smime()
 
   // Common Windows
@@ -100,7 +99,6 @@ const struct MenuFuncOp OpCompose = { 0 };
 const struct MenuFuncOp OpDialog = { 0 };
 const struct MenuFuncOp OpGeneric[] = { 0 };
 const struct MenuFuncOp OpIndex = { 0 };
-const struct MenuFuncOp OpMixmaster = { 0 };
 const struct MenuFuncOp OpPager = { 0 };
 const struct MenuFuncOp OpPgp = { 0 };
 const struct MenuFuncOp OpPostponed = { 0 };
