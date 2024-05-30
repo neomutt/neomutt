@@ -46,7 +46,6 @@ enum ExpandoDomain
   ED_INDEX,        ///< Index         ED_IND_ #ExpandoDataIndex
   ED_MAILBOX,      ///< Mailbox       ED_MBX_ #ExpandoDataMailbox
   ED_MENU,         ///< Menu          ED_MEN_ #ExpandoDataMenu
-  ED_MIXMASTER,    ///< Mixmaster     ED_MIX_ #ExpandoDataMixmaster
   ED_NNTP,         ///< Nntp          ED_NTP_ #ExpandoDataNntp
   ED_PATTERN,      ///< Pattern       ED_PAT_ #ExpandoDataPattern
   ED_PGP,          ///< Pgp           ED_PGP_ #ExpandoDataPgp

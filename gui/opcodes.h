@@ -393,7 +393,6 @@ const char *opcodes_get_name       (int op);
   /*       Compose Dialog: <op_exit> */ \
   /*       GPGME Key Selection Dialog: <op_exit> */ \
   /*       Index: <op_exit> */ \
-  /*       Mixmaster Dialog: <op_exit> */ \
   /*       Pager: <op_exit> */ \
   /*       PGP Key Selection Dialog: <op_exit> */ \
   /*       Postponed Dialog: <op_exit> */ \
@@ -426,7 +425,6 @@ const char *opcodes_get_name       (int op);
   /*       PGP Key Selection Dialog: <op_generic_select_entry> */ \
   /*       Postponed Dialog: <op_generic_select_entry> */ \
   /*       Smime Key Selection Dialog: <op_generic_select_entry> */ \
-  /*       Mixmaster Dialog: <op_mix_append> */ \
   _fmt(OP_GENERIC_SELECT_ENTRY,               N_("select the current entry")) \
   /* L10N: Help screen description for OP_GET_CHILDREN */ \
   /*       Index: <op_get_children> */ \
@@ -888,33 +886,6 @@ const char *opcodes_get_name       (int op);
   /*       Envelope Window: <op_envelope_edit_x_comment_to> */ \
   _fmt(OP_ENVELOPE_EDIT_X_COMMENT_TO,         N_("edit the X-Comment-To field")) \
 
-#ifdef MIXMASTER
-#define OPS_MIX(_fmt) \
-  /* L10N: Help screen description for OP_COMPOSE_MIX */ \
-  /*       Envelope Window: <op_compose_mix> */ \
-  _fmt(OP_COMPOSE_MIX,                        N_("send the message through a mixmaster remailer chain")) \
-  /* L10N: Help screen description for OP_MIX_APPEND */ \
-  /*       Mixmaster Dialog: <op_mix_append> */ \
-  _fmt(OP_MIX_APPEND,                         N_("append a remailer to the chain")) \
-  /* L10N: Help screen description for OP_MIX_CHAIN_NEXT */ \
-  /*       Mixmaster Dialog: <op_mix_chain_next> */ \
-  _fmt(OP_MIX_CHAIN_NEXT,                     N_("select the next element of the chain")) \
-  /* L10N: Help screen description for OP_MIX_CHAIN_PREV */ \
-  /*       Mixmaster Dialog: <op_mix_chain_prev> */ \
-  _fmt(OP_MIX_CHAIN_PREV,                     N_("select the previous element of the chain")) \
-  /* L10N: Help screen description for OP_MIX_DELETE */ \
-  /*       Mixmaster Dialog: <op_mix_delete> */ \
-  _fmt(OP_MIX_DELETE,                         N_("delete a remailer from the chain")) \
-  /* L10N: Help screen description for OP_MIX_INSERT */ \
-  /*       Mixmaster Dialog: <op_mix_insert> */ \
-  _fmt(OP_MIX_INSERT,                         N_("insert a remailer into the chain")) \
-  /* L10N: Help screen description for OP_MIX_USE */ \
-  /*       Mixmaster Dialog: <op_mix_use> */ \
-  _fmt(OP_MIX_USE,                            N_("accept the chain constructed"))
-#else
-#define OPS_MIX(_)
-#endif
-
 #ifdef USE_NOTMUCH
 #define OPS_NOTMUCH(_fmt) \
   /* L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER */ \
@@ -1012,7 +983,6 @@ const char *opcodes_get_name       (int op);
   OPS_CORE(_fmt) \
   OPS_CRYPT(_fmt) \
   OPS_ENVELOPE(_fmt) \
-  OPS_MIX(_fmt) \
   OPS_NOTMUCH(_fmt) \
   OPS_PGP(_fmt) \
   OPS_SIDEBAR(_fmt) \

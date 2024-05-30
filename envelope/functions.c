@@ -50,9 +50,6 @@
 #include "mutt_logging.h"
 #include "muttlib.h"
 #include "wdata.h"
-#ifdef MIXMASTER
-#include "mixmaster/lib.h"
-#endif
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
@@ -498,19 +495,6 @@ static int op_envelope_edit_x_comment_to(struct EnvelopeWindowData *wdata, int o
   return rc;
 }
 
-#ifdef MIXMASTER
-/**
- * op_compose_mix - Send the message through a mixmaster remailer chain - Implements ::envelope_function_t - @ingroup envelope_function_api
- */
-static int op_compose_mix(struct EnvelopeWindowData *wdata, int op)
-{
-  dlg_mixmaster(&wdata->email->chain);
-  mutt_message_hook(NULL, wdata->email, MUTT_SEND2_HOOK);
-  mutt_env_notify_send(wdata->email, NT_ENVELOPE_MIXMASTER);
-  return FR_SUCCESS;
-}
-#endif
-
 // -----------------------------------------------------------------------------
 
 /**
@@ -520,9 +504,6 @@ static const struct EnvelopeFunction EnvelopeFunctions[] = {
 // clang-format off
 #ifdef USE_AUTOCRYPT
   { OP_COMPOSE_AUTOCRYPT_MENU,            op_compose_autocrypt_menu },
-#endif
-#ifdef MIXMASTER
-  { OP_COMPOSE_MIX,                       op_compose_mix },
 #endif
   { OP_COMPOSE_PGP_MENU,                  op_compose_pgp_menu },
   { OP_COMPOSE_SMIME_MENU,                op_compose_smime_menu },

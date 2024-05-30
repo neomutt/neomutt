@@ -139,7 +139,6 @@ enum NotifyEnvelope
   NT_ENVELOPE_FCC,             ///< "Fcc:"          header has changed
   NT_ENVELOPE_FOLLOWUP_TO,     ///< "Followup-To:"  header has changed
   NT_ENVELOPE_FROM,            ///< "From:"         header has changed
-  NT_ENVELOPE_MIXMASTER,       ///< MixMaster chain        has changed
   NT_ENVELOPE_NEWSGROUPS,      ///< "Newsgroups:"   header has changed
   NT_ENVELOPE_REPLY_TO,        ///< "Reply-To:"     header has changed
   NT_ENVELOPE_SUBJECT,         ///< "Subject:"      header has changed

@@ -61,7 +61,6 @@ static const struct Mapping WindowNames[] = {
   { "WT_DLG_PGP",         WT_DLG_PGP },
   { "WT_DLG_POSTPONED",   WT_DLG_POSTPONED },
   { "WT_DLG_QUERY",       WT_DLG_QUERY },
-  { "WT_DLG_MIXMASTER",   WT_DLG_MIXMASTER },
   { "WT_DLG_SMIME",       WT_DLG_SMIME },
   { "WT_HELP_BAR",        WT_HELP_BAR },
   { "WT_INDEX",           WT_INDEX },

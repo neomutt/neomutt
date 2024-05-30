@@ -158,9 +158,6 @@ const char *name_menu_type(enum MenuType mt)
     DEBUG_NAME(MENU_KEY_SELECT_SMIME);
 #endif
     DEBUG_NAME(MENU_INDEX);
-#ifdef MIXMASTER
-    DEBUG_NAME(MENU_MIXMASTER);
-#endif
     DEBUG_NAME(MENU_PAGER);
     DEBUG_NAME(MENU_PGP);
     DEBUG_NAME(MENU_POSTPONED);
@@ -244,7 +241,6 @@ const char *name_window_type(const struct MuttWindow *win)
     DEBUG_NAME(WT_DLG_PGP);
     DEBUG_NAME(WT_DLG_POSTPONED);
     DEBUG_NAME(WT_DLG_QUERY);
-    DEBUG_NAME(WT_DLG_MIXMASTER);
     DEBUG_NAME(WT_DLG_SMIME);
     DEBUG_NAME(WT_HELP_BAR);
     DEBUG_NAME(WT_INDEX);

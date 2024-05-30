@@ -48,9 +48,6 @@ extern const struct MenuOpSeq BrowserDefaultBindings[];
 extern const struct MenuOpSeq ComposeDefaultBindings[];
 extern const struct MenuOpSeq EditorDefaultBindings[];
 extern const struct MenuOpSeq IndexDefaultBindings[];
-#ifdef MIXMASTER
-extern const struct MenuOpSeq MixmasterDefaultBindings[];
-#endif
 extern const struct MenuOpSeq PagerDefaultBindings[];
 extern const struct MenuOpSeq PgpDefaultBindings[];
 extern const struct MenuOpSeq PostponedDefaultBindings[];
@@ -192,9 +189,6 @@ void km_init(void)
   create_bindings(EditorDefaultBindings, MENU_EDITOR);
   create_bindings(GenericDefaultBindings, MENU_GENERIC);
   create_bindings(IndexDefaultBindings, MENU_INDEX);
-#ifdef MIXMASTER
-  create_bindings(MixmasterDefaultBindings, MENU_MIXMASTER);
-#endif
   create_bindings(PagerDefaultBindings, MENU_PAGER);
   create_bindings(PostponedDefaultBindings, MENU_POSTPONED);
   create_bindings(QueryDefaultBindings, MENU_QUERY);

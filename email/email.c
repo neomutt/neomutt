@@ -61,9 +61,6 @@ void email_free(struct Email **ptr)
   mutt_body_free(&e->body);
   FREE(&e->tree);
   FREE(&e->path);
-#ifdef MIXMASTER
-  mutt_list_free(&e->chain);
-#endif
 #ifdef USE_NOTMUCH
   nm_edata_free(&e->nm_edata);
 #endif
@@ -82,9 +79,6 @@ struct Email *email_new(void)
   static size_t sequence = 0;
 
   struct Email *e = mutt_mem_calloc(1, sizeof(struct Email));
-#ifdef MIXMASTER
-  STAILQ_INIT(&e->chain);
-#endif
   STAILQ_INIT(&e->tags);
   e->visible = true;
   e->sequence = sequence++;
