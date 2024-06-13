@@ -1431,7 +1431,7 @@ struct Body *mutt_read_mime_header(FILE *fp, bool digest)
           if (id[cid_len - 1] == '>')
             id[cid_len - 1] = '\0';
         }
-        mutt_param_set(&b->parameter, "content-id", id);
+        mutt_str_replace(&b->content_id, id);
       }
     }
     else if ((plen = mutt_istr_startswith(line, "x-sun-")))

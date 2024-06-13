@@ -75,6 +75,7 @@ void mutt_body_free(struct Body **ptr)
       mutt_debug(LL_DEBUG1, "%sunlinking %s\n", b->unlink ? "" : "not ", b->filename);
     }
 
+    FREE(&b->content_id);
     FREE(&b->filename);
     FREE(&b->d_filename);
     FREE(&b->charset);
