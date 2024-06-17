@@ -105,7 +105,7 @@ static void cid_save_attachment(struct Body *b, struct CidMapList *cid_map_list)
   if (!b || !cid_map_list)
     return;
 
-  char *id = mutt_param_get(&b->parameter, "content-id");
+  char *id = b->content_id;
   if (!id)
     return;
 

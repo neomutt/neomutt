@@ -1024,7 +1024,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
   struct AttachPtr *cur_att = current_attachment(shared->adata->actx,
                                                  shared->adata->menu);
 
-  char *id = mutt_param_get(&cur_att->body->parameter, "content-id");
+  char *id = cur_att->body->content_id;
   if (id)
   {
     buf_strcpy(buf, id);
@@ -1042,7 +1042,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
     {
       if (check_cid(buf_string(buf)))
       {
-        mutt_param_set(&cur_att->body->parameter, "content-id", buf_string(buf));
+        mutt_str_replace(&cur_att->body->content_id, buf_string(buf));
         menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
         notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
         mutt_message_hook(NULL, shared->email, MUTT_SEND2_HOOK);
@@ -1340,15 +1340,14 @@ static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
     if (!b->tagged || (b->type == TYPE_MULTIPART))
       continue;
 
-    char *id = mutt_param_get(&b->parameter, "content-id");
+    char *id = b->content_id;
     if (id)
       continue;
 
     id = gen_cid();
     if (id)
     {
-      mutt_param_set(&b->parameter, "content-id", id);
-      FREE(&id);
+      mutt_str_replace(&b->content_id, id);
     }
   }
 

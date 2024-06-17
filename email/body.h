@@ -55,6 +55,7 @@ struct Body
   char *description;              ///< content-description
   char *d_filename;               ///< filename to be used for the content-disposition header
                                   ///< If NULL, filename is used instead.
+  char *content_id;               ///< Content-Id (RFC2392)
   char *filename;                 ///< When sending a message, this is the file to which this structure refers
   char *form_name;                ///< Content-Disposition form-data name param
   char *subtype;                  ///< content-type subtype
