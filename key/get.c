@@ -465,3 +465,8 @@ int km_dokey(enum MenuType mtype, GetChFlags flags)
 {
   return km_dokey_event(mtype, flags).op;
 }
+
+struct KeyEvent *get_event(void)
+{
+  return array_pop(&MacroEvents);
+}
