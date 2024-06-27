@@ -42,7 +42,7 @@ struct Buffer;
  * @retval  0 Success
  * @retval -1 Error
  */
-typedef int (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
+typedef enum CommandResult (*parser_callback_t)(struct Buffer *buf, struct Buffer *s, struct AttrColor *ac, struct Buffer *err);
 
 enum CommandResult mutt_parse_color  (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);
 enum CommandResult mutt_parse_mono   (struct Buffer *buf, struct Buffer *s, intptr_t data, struct Buffer *err);

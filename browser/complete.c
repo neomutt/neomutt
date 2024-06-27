@@ -43,7 +43,7 @@
 /**
  * complete_file_mbox - Complete a Mailbox - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_file_mbox(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_file_mbox(struct EnterWindowData *wdata, int op)
 {
   if (!wdata)
     return FR_NO_ACTION;
@@ -110,7 +110,7 @@ int complete_file_mbox(struct EnterWindowData *wdata, int op)
 /**
  * complete_file_simple - Complete a filename - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_file_simple(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_file_simple(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;

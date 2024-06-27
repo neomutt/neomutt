@@ -38,7 +38,7 @@
 /**
  * complete_alias_complete - Complete an Alias - Implements CompleteOps::complete() - @ingroup complete_api
  */
-int complete_alias_complete(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_alias_complete(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || (op != OP_EDITOR_COMPLETE))
     return FR_NO_ACTION;
@@ -67,7 +67,7 @@ int complete_alias_complete(struct EnterWindowData *wdata, int op)
 /**
  * complete_alias_query - Complete an Alias Query - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_alias_query(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_alias_query(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || (op != OP_EDITOR_COMPLETE_QUERY))
     return FR_NO_ACTION;
@@ -92,7 +92,7 @@ int complete_alias_query(struct EnterWindowData *wdata, int op)
 /**
  * complete_alias - Alias completion wrapper - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_alias(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_alias(struct EnterWindowData *wdata, int op)
 {
   if (op == OP_EDITOR_COMPLETE)
     return complete_alias_complete(wdata, op);

@@ -423,7 +423,7 @@ int mutt_var_value_complete(struct CompletionData *cd, struct Buffer *buf, int p
 /**
  * complete_command - Complete a NeoMutt Command - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_command(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_command(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
@@ -448,7 +448,7 @@ int complete_command(struct EnterWindowData *wdata, int op)
 /**
  * complete_label - Complete a label - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_label(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_label(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
