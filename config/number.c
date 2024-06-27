@@ -43,13 +43,13 @@
 #include "subset.h"
 #include "types.h"
 
+#define TOGGLE_BIT ((SHRT_MAX + 1) << 1)
 /**
  * native_get - Get an int from a Number config item
  */
 static intptr_t native_get(void *var)
 {
-  intptr_t val = *(short *) var;
-  return (val & 1) ? 0 : val >> 1;
+  return (*(intptr_t *) var & TOGGLE_BIT) ? 0 : *(short *) var;
 }
 
 /**
@@ -57,7 +57,7 @@ static intptr_t native_get(void *var)
  */
 static void native_set(void *var, intptr_t val)
 {
-  *(short *) var = val << 1;
+  *(short *) var = val;
 }
 
 /**
@@ -65,7 +65,7 @@ static void native_set(void *var, intptr_t val)
  */
 static void native_toggle(void *var)
 {
-  *(short *) var = *(short *)var ^ 1;
+  *(intptr_t *)var = *(uintptr_t*)var ^ TOGGLE_BIT;
 }
 
 /**
