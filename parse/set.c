@@ -33,6 +33,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "config/types.h"
 #include "core/lib.h"
 #include "mutt.h"
 #include "set.h"
@@ -321,7 +322,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
 }
 
 /**
- * command_set_toggle - Toggle a boolean or quad variable
+ * command_set_toggle - Toggle a boolean, quad, or number variable
  * @param[in]  name Name of the config variable to be toggled
  * @param[out] err  Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
@@ -347,6 +348,10 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
   else if (DTYPE(he->type) == DT_QUAD)
   {
     quad_he_toggle(NeoMutt->sub, he, err);
+  }
+  else if (DTYPE(he->type) == DT_NUMBER)
+  {
+    number_he_toggle(NeoMutt->sub, he, err);
   }
   else
   {
@@ -477,6 +482,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
 
     bool bool_or_quad = false;
+    bool invertible = false;
     bool equals = false;
     bool increment = false;
     bool decrement = false;
@@ -487,6 +493,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       // Use the correct name if a synonym is used
       buf_strcpy(buf, he->key.strkey);
       bool_or_quad = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
+      invertible = (bool_or_quad || (DTYPE(he->type) == DT_NUMBER));
     }
 
     if (*s->dptr == '?')
@@ -554,15 +561,15 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
       s->dptr++;
     }
 
-    if (!bool_or_quad && (inv || (unset && prefix)))
+    if (!invertible && (inv || (unset && prefix)))
     {
       if (data == MUTT_SET_SET)
       {
-        buf_printf(err, _("Prefixes 'no' and 'inv' may only be used with bool/quad variables"));
+        buf_printf(err, _("Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"));
       }
       else
       {
-        buf_printf(err, _("Command '%s' can only be used with bool/quad variables"),
+        buf_printf(err, _("Command '%s' can only be used with bool/quad/number variables"),
                    set_commands[data]);
       }
       return MUTT_CMD_WARNING;
@@ -580,7 +587,7 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     // clang-format on
     ASSERT(!(increment && decrement)); // only one of increment or decrement is set
     ASSERT(!(increment || decrement) || equals); // increment/decrement implies equals
-    ASSERT(!inv || bool_or_quad); // inv (aka toggle) implies bool or quad
+    ASSERT(!inv || invertible); // inv (aka toggle) implies bool or quad
 
     enum CommandResult rc = MUTT_CMD_ERROR;
     if (query)
