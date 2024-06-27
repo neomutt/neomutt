@@ -960,6 +960,7 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
   if (!he)
     return false;
 
+  int value = 0;
   const int initial = cs_subset_number(sub, name);
 
   rc = number_he_toggle(sub, he, err);
@@ -969,7 +970,7 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
       return false;
   }
 
-  int value = cs_subset_number(sub, name);
+  value = cs_subset_number(sub, name);
   if (!TEST_CHECK(value == 0))
   {
       TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
@@ -987,6 +988,20 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
   if (!TEST_CHECK(value == initial))
   {
       TEST_MSG("Toggle value is wrong: %d, expected: %d", value, initial);
+      return false;
+  }
+
+  rc = number_he_toggle(sub, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+      TEST_MSG("Toggle failed: %s", buf_string(err));
+      return false;
+  }
+
+  value = cs_subset_number(sub, name);
+  if (!TEST_CHECK(value == 0))
+  {
+      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
       return false;
   }
 
