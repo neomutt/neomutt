@@ -210,7 +210,7 @@ bool mutt_nm_tag_complete(struct CompletionData *cd, struct Buffer *buf, int num
 /**
  * complete_nm_query - Complete a Notmuch Query - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_nm_query(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_nm_query(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
@@ -227,7 +227,7 @@ int complete_nm_query(struct EnterWindowData *wdata, int op)
 /**
  * complete_nm_tag - Complete a Notmuch Tag - Implements CompleteOps::complete() - @ingroup compapi_complete
  */
-int complete_nm_tag(struct EnterWindowData *wdata, int op)
+enum FunctionRetval complete_nm_tag(struct EnterWindowData *wdata, int op)
 {
   if (!wdata || ((op != OP_EDITOR_COMPLETE) && (op != OP_EDITOR_COMPLETE_QUERY)))
     return FR_NO_ACTION;
