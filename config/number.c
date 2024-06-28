@@ -75,14 +75,8 @@ static void native_toggle(void *var)
 static int number_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                              const char *value, struct Buffer *err)
 {
-  if (!value || (value[0] == '\0'))
-  {
-    buf_printf(err, _("Option %s may not be empty"), cdef->name);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
-  }
-
   int num = 0;
-  if (!mutt_str_atoi_full(value, &num))
+  if (value && *value && !mutt_str_atoi_full(value, &num))
   {
     buf_printf(err, _("Invalid number: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
