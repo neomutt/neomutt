@@ -38,8 +38,36 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
+#include "number.h"
 #include "set.h"
+#include "subset.h"
 #include "types.h"
+
+#define TOGGLE_BIT ((SHRT_MAX + 1) << 1)
+/**
+ * native_get - Get an int from a Number config item
+ */
+static intptr_t native_get(void *var)
+{
+  return (*(intptr_t *) var & TOGGLE_BIT) ? 0 : *(short *) var;
+}
+
+/**
+ * native_set - Set an int into a Number config item
+ */
+static void native_set(void *var, intptr_t val)
+{
+  *(intptr_t *) var = 0; // clear any pending toggle status
+  *(short *) var = val;
+}
+
+/**
+ * native_toggle - Toggle a Number config item
+ */
+static void native_toggle(void *var)
+{
+  *(intptr_t *)var = *(uintptr_t *)var ^ TOGGLE_BIT;
+}
 
 /**
  * number_string_set - Set a Number by string - Implements ConfigSetType::string_set() - @ingroup cfg_type_string_set
@@ -47,14 +75,8 @@
 static int number_string_set(const struct ConfigSet *cs, void *var, struct ConfigDef *cdef,
                              const char *value, struct Buffer *err)
 {
-  if (!value || (value[0] == '\0'))
-  {
-    buf_printf(err, _("Option %s may not be empty"), cdef->name);
-    return CSR_ERR_INVALID | CSR_INV_TYPE;
-  }
-
   int num = 0;
-  if (!mutt_str_atoi_full(value, &num))
+  if (value && *value && !mutt_str_atoi_full(value, &num))
   {
     buf_printf(err, _("Invalid number: %s"), value);
     return CSR_ERR_INVALID | CSR_INV_TYPE;
@@ -74,7 +96,7 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
 
   if (var)
   {
-    if (num == (*(short *) var))
+    if (num == native_get(var))
       return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
     if (cdef->validator)
@@ -88,7 +110,7 @@ static int number_string_set(const struct ConfigSet *cs, void *var, struct Confi
     if (startup_only(cdef, err))
       return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
-    *(short *) var = num;
+    native_set(var, num);
   }
   else
   {
@@ -107,7 +129,7 @@ static int number_string_get(const struct ConfigSet *cs, void *var,
   int value;
 
   if (var)
-    value = *(short *) var;
+    value = native_get(var);
   else
     value = (int) cdef->initial;
 
@@ -134,7 +156,7 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
   }
 
-  if (value == (*(short *) var))
+  if (value == native_get(var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
@@ -148,7 +170,7 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
   if (startup_only(cdef, err))
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
-  *(short *) var = value;
+  native_set(var, value);
   return CSR_SUCCESS;
 }
 
@@ -158,7 +180,7 @@ static int number_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t number_native_get(const struct ConfigSet *cs, void *var,
                                   const struct ConfigDef *cdef, struct Buffer *err)
 {
-  return *(short *) var;
+  return native_get(var);
 }
 
 /**
@@ -175,7 +197,7 @@ static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  int result = *((short *) var) + num;
+  int result = number_native_get(NULL, var, NULL, NULL) + num;
   if ((result < SHRT_MIN) || (result > SHRT_MAX))
   {
     buf_printf(err, _("Number is too big: %s"), value);
@@ -199,7 +221,7 @@ static int number_string_plus_equals(const struct ConfigSet *cs, void *var,
   if (startup_only(cdef, err))
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
-  *(short *) var = result;
+  native_set(var, result);
   return CSR_SUCCESS;
 }
 
@@ -217,7 +239,7 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
     return CSR_ERR_INVALID | CSR_INV_TYPE;
   }
 
-  int result = *((short *) var) - num;
+  int result = native_get(var) - num;
   if ((result < SHRT_MIN) || (result > SHRT_MAX))
   {
     buf_printf(err, _("Number is too big: %s"), value);
@@ -241,7 +263,7 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
   if (startup_only(cdef, err))
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
-  *(short *) var = result;
+  native_set(var, result);
   return CSR_SUCCESS;
 }
 
@@ -251,7 +273,7 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
 static int number_reset(const struct ConfigSet *cs, void *var,
                         const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (cdef->initial == (*(short *) var))
+  if (cdef->initial == native_get(var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
   if (cdef->validator)
@@ -265,7 +287,31 @@ static int number_reset(const struct ConfigSet *cs, void *var,
   if (startup_only(cdef, err))
     return CSR_ERR_INVALID | CSR_INV_VALIDATOR;
 
-  *(short *) var = cdef->initial;
+  native_set(var, cdef->initial);
+  return CSR_SUCCESS;
+}
+
+/**
+ * number_he_toggle - Toggle the value of a number (value <-> 0)
+ * @param sub Config Subset
+ * @param he  HashElem representing config item
+ * @param err Buffer for error messages
+ * @retval num Result, e.g. #CSR_SUCCESS
+ */
+int number_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffer *err)
+{
+  if (!sub || !he || !he->data)
+    return CSR_ERR_CODE;
+
+  struct HashElem *he_base = cs_get_base(he);
+  if (DTYPE(he_base->type) != DT_NUMBER)
+    return CSR_ERR_CODE;
+
+  struct ConfigDef *cdef = he_base->data;
+  native_toggle(&cdef->var);
+
+  cs_subset_notify_observers(sub, he, NT_CONFIG_SET);
+
   return CSR_SUCCESS;
 }
 

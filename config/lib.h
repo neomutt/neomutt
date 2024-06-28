@@ -58,6 +58,7 @@
 #include "helpers.h"
 #include "inheritance.h"
 #include "mbtable.h"
+#include "number.h"
 #include "quad.h"
 #include "regex2.h"
 #include "set.h"
