@@ -155,9 +155,9 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   log_line(__func__);
   struct ConfigSet *cs = sub->cs;
 
-  const char *valid[] = { "-123", "0", "-42", "456" };
-  const int numbers[] = { -123, 0, -42, 456 };
-  const char *invalid[] = { "-32769", "32768", "junk", "", NULL };
+  const char *valid[] = { "-123", "0", "-42", "456", "", NULL };
+  const int numbers[] = { -123, 0, -42, 456, 0, 0 };
+  const char *invalid[] = { "-32769", "32768", "junk" };
   const char *name = "Damson";
 
   int rc;
