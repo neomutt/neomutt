@@ -46,11 +46,11 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "hdrline.h"
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"
 #include "ncrypt/lib.h"
+#include "hdrline.h"
 #include "hook.h"
 #include "maillist.h"
 #include "mutt_thread.h"
@@ -425,6 +425,40 @@ long index_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags 
 
   return e->date_sent;
 }
+/**
+ * @brief Replaces `%z` and `%Z` in the string.
+ * 
+ * It is used in `$index_format`s `%{%z}` and `%{%Z}`.
+ * 
+ * @param string format string of `strftime()`
+ * @param buf_len length of the buffer of the format string 
+ * @param zZ_string replacement string
+ */
+static void replace_zZ(char *string, size_t buf_len, char *zZ_string)
+{
+  size_t string_len = mutt_str_len(string);
+  const size_t zZ_len = mutt_str_len(zZ_string);
+  char *p = string;
+
+  while (*p)
+  {
+    if (*p == '%' && (*(p + 1) == 'z' || *(p + 1) == 'Z'))
+    {
+      ASSERT(buf_len > string_len + zZ_len - 2);
+      const size_t rem_len = mutt_str_len(p + 2);
+
+      memmove(p + zZ_len, p + 2, rem_len);
+      memcpy(p, zZ_string, zZ_len);
+
+      string_len += zZ_len - 2;
+      p += zZ_len;
+    }
+    else
+    {
+      ++p;
+    }
+  }
+}
 
 /**
  * index_date - Index: Sender's date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
@@ -447,6 +481,7 @@ void index_date(const struct ExpandoNode *node, void *data,
 
   char tmp[128] = { 0 };
   char tmp2[128] = { 0 };
+  char zZ_string[8] = { 0 };
 
   int len = node->end - node->start;
   const char *start = node->start;
@@ -460,6 +495,11 @@ void index_date(const struct ExpandoNode *node, void *data,
   }
   ASSERT(len < sizeof(tmp2));
   mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
+
+  snprintf(zZ_string, sizeof(zZ_string), "%c%02u%02u", e->zoccident ? '-' : '+',
+           e->zhours, e->zminutes);
+
+  replace_zZ(tmp2, sizeof(tmp2), zZ_string);
 
   if (use_c_locale)
   {
