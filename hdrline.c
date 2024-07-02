@@ -459,6 +459,13 @@ void index_date(const struct ExpandoNode *node, void *data,
   ASSERT(len < sizeof(tmp2));
   mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
 
+  // The sender's time zone might only be available as a numerical offset, so "%Z" behaves like "%z".
+  char *bigz = strstr(tmp2, "%Z");
+  if (bigz)
+  {
+    bigz[1] = 'z';
+  }
+
   if (use_c_locale)
   {
     strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
