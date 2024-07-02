@@ -45,7 +45,7 @@
  */
 struct ZlibComprData
 {
-  void *buf;   ///< Temporary buffer
+  char *buf;   ///< Temporary buffer
   short level; ///< Compression Level to be used
 };
 
@@ -80,7 +80,7 @@ static ComprHandle *compr_zlib_open(short level)
 {
   struct ZlibComprData *cdata = zlib_cdata_new();
 
-  cdata->buf = mutt_mem_calloc(compressBound(1024 * 32), 1);
+  cdata->buf = MUTT_MEM_CALLOC(compressBound(1024 * 32), char);
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -98,7 +98,7 @@ static ComprHandle *compr_zlib_open(short level)
 /**
  * compr_zlib_compress - Compress header cache data - Implements ComprOps::compress() - @ingroup compress_compress
  */
-static void *compr_zlib_compress(ComprHandle *handle, const char *data,
+static char *compr_zlib_compress(ComprHandle *handle, const char *data,
                                  size_t dlen, size_t *clen)
 {
   if (!handle)
@@ -108,9 +108,9 @@ static void *compr_zlib_compress(ComprHandle *handle, const char *data,
   struct ZlibComprData *cdata = handle;
 
   uLong len = compressBound(dlen);
-  mutt_mem_realloc(&cdata->buf, len + 4);
+  MUTT_MEM_REALLOC(&cdata->buf, len + 4, char);
   Bytef *cbuf = (unsigned char *) cdata->buf + 4;
-  const void *ubuf = data;
+  const char *ubuf = data;
   int rc = compress2(cbuf, &len, ubuf, dlen, cdata->level);
   if (rc != Z_OK)
     return NULL; // LCOV_EXCL_LINE
@@ -132,7 +132,7 @@ static void *compr_zlib_compress(ComprHandle *handle, const char *data,
 /**
  * compr_zlib_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
+static char *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
   if (!handle)
     return NULL;
@@ -148,7 +148,7 @@ static void *compr_zlib_decompress(ComprHandle *handle, const char *cbuf, size_t
   if (ulen == 0)
     return NULL;
 
-  mutt_mem_realloc(&cdata->buf, ulen);
+  MUTT_MEM_REALLOC(&cdata->buf, ulen, char);
   Bytef *ubuf = cdata->buf;
   cs = (const unsigned char *) cbuf;
   int rc = uncompress(ubuf, &ulen, cs + 4, clen - 4);

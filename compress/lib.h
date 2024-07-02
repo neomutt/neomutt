@@ -92,7 +92,7 @@ struct ComprOps
    * @note This function returns a pointer to data, which will be freed by the
    *       close() function.
    */
-  void *(*compress)(ComprHandle *handle, const char *data, size_t dlen, size_t *clen);
+  char *(*compress)(ComprHandle *handle, const char *data, size_t dlen, size_t *clen);
 
   /**
    * @defgroup compress_decompress decompress()
@@ -108,7 +108,7 @@ struct ComprOps
    * @note This function returns a pointer to data, which will be freed by the
    *       close() function.
    */
-  void *(*decompress)(ComprHandle *handle, const char *cbuf, size_t clen);
+  char *(*decompress)(ComprHandle *handle, const char *cbuf, size_t clen);
 
   /**
    * @defgroup compress_close close()
