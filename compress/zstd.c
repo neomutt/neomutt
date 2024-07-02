@@ -44,7 +44,7 @@
  */
 struct ZstdComprData
 {
-  void *buf;   ///< Temporary buffer
+  char *buf;   ///< Temporary buffer
   short level; ///< Compression Level to be used
 
   ZSTD_CCtx *cctx; ///< Compression context
@@ -82,7 +82,7 @@ static ComprHandle *compr_zstd_open(short level)
 {
   struct ZstdComprData *cdata = zstd_cdata_new();
 
-  cdata->buf = mutt_mem_calloc(ZSTD_compressBound(1024 * 128), 1);
+  cdata->buf = MUTT_MEM_CALLOC(ZSTD_compressBound(1024 * 128), char);
   cdata->cctx = ZSTD_createCCtx();
   cdata->dctx = ZSTD_createDCtx();
 
@@ -112,7 +112,7 @@ static ComprHandle *compr_zstd_open(short level)
 /**
  * compr_zstd_compress - Compress header cache data - Implements ComprOps::compress() - @ingroup compress_compress
  */
-static void *compr_zstd_compress(ComprHandle *handle, const char *data,
+static char *compr_zstd_compress(ComprHandle *handle, const char *data,
                                  size_t dlen, size_t *clen)
 {
   if (!handle)
@@ -122,7 +122,7 @@ static void *compr_zstd_compress(ComprHandle *handle, const char *data,
   struct ZstdComprData *cdata = handle;
 
   size_t len = ZSTD_compressBound(dlen);
-  mutt_mem_realloc(&cdata->buf, len);
+  MUTT_MEM_REALLOC(&cdata->buf, len, char);
 
   size_t rc = ZSTD_compressCCtx(cdata->cctx, cdata->buf, len, data, dlen, cdata->level);
   if (ZSTD_isError(rc))
@@ -136,7 +136,7 @@ static void *compr_zstd_compress(ComprHandle *handle, const char *data,
 /**
  * compr_zstd_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
+static char *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
   if (!handle)
     return NULL;
@@ -151,7 +151,7 @@ static void *compr_zstd_decompress(ComprHandle *handle, const char *cbuf, size_t
     return NULL;
   else if (len == 0)
     return NULL; // LCOV_EXCL_LINE
-  mutt_mem_realloc(&cdata->buf, len);
+  MUTT_MEM_REALLOC(&cdata->buf, len, char);
 
   size_t rc = ZSTD_decompressDCtx(cdata->dctx, cdata->buf, len, cbuf, clen);
   if (ZSTD_isError(rc))

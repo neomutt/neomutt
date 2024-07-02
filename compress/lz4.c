@@ -45,7 +45,7 @@
  */
 struct Lz4ComprData
 {
-  void *buf;   ///< Temporary buffer
+  char *buf;   ///< Temporary buffer
   short level; ///< Compression Level to be used
 };
 
@@ -80,7 +80,7 @@ static ComprHandle *compr_lz4_open(short level)
 {
   struct Lz4ComprData *cdata = lz4_cdata_new();
 
-  cdata->buf = mutt_mem_calloc(LZ4_compressBound(1024 * 32), 1);
+  cdata->buf = MUTT_MEM_CALLOC(LZ4_compressBound(1024 * 32), char);
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
@@ -98,7 +98,7 @@ static ComprHandle *compr_lz4_open(short level)
 /**
  * compr_lz4_compress - Compress header cache data - Implements ComprOps::compress() - @ingroup compress_compress
  */
-static void *compr_lz4_compress(ComprHandle *handle, const char *data,
+static char *compr_lz4_compress(ComprHandle *handle, const char *data,
                                 size_t dlen, size_t *clen)
 {
   if (!handle || (dlen > INT_MAX))
@@ -111,7 +111,7 @@ static void *compr_lz4_compress(ComprHandle *handle, const char *data,
   int len = LZ4_compressBound(dlen);
   if (len > (INT_MAX - 4))
     return NULL; // LCOV_EXCL_LINE
-  mutt_mem_realloc(&cdata->buf, len + 4);
+  MUTT_MEM_REALLOC(&cdata->buf, len + 4, char);
   char *cbuf = cdata->buf;
 
   len = LZ4_compress_fast(data, cbuf + 4, datalen, len, cdata->level);
@@ -135,7 +135,7 @@ static void *compr_lz4_compress(ComprHandle *handle, const char *data,
 /**
  * compr_lz4_decompress - Decompress header cache data - Implements ComprOps::decompress() - @ingroup compress_decompress
  */
-static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
+static char *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t clen)
 {
   if (!handle)
     return NULL;
@@ -151,10 +151,10 @@ static void *compr_lz4_decompress(ComprHandle *handle, const char *cbuf, size_t 
   if (ulen > INT_MAX)
     return NULL; // LCOV_EXCL_LINE
   if (ulen == 0)
-    return (void *) cbuf;
+    return (char *) cbuf;
 
-  mutt_mem_realloc(&cdata->buf, ulen);
-  void *ubuf = cdata->buf;
+  MUTT_MEM_REALLOC(&cdata->buf, ulen, char);
+  char *ubuf = cdata->buf;
   const char *data = cbuf;
   int rc = LZ4_decompress_safe(data + 4, ubuf, clen - 4, ulen);
   if (rc < 0)
