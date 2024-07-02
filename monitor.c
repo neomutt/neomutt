@@ -127,7 +127,7 @@ static void mutt_poll_fd_add(int fd, short events)
     if (PollFdsCount == PollFdsLen)
     {
       PollFdsLen += 2;
-      mutt_mem_realloc(&PollFds, PollFdsLen * sizeof(struct pollfd));
+      MUTT_MEM_REALLOC(&PollFds, PollFdsLen, struct pollfd);
     }
     PollFdsCount++;
     PollFds[i].fd = fd;
@@ -216,7 +216,7 @@ static void monitor_check_cleanup(void)
  */
 static struct Monitor *monitor_new(struct MonitorInfo *info, int descriptor)
 {
-  struct Monitor *monitor = mutt_mem_calloc(1, sizeof(struct Monitor));
+  struct Monitor *monitor = MUTT_MEM_CALLOC(1, struct Monitor);
   monitor->type = info->type;
   monitor->st_dev = info->st_dev;
   monitor->st_ino = info->st_ino;

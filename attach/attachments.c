@@ -83,7 +83,7 @@ static void attachmatch_free(struct AttachMatch **ptr)
  */
 static struct AttachMatch *attachmatch_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AttachMatch));
+  return MUTT_MEM_CALLOC(1, struct AttachMatch);
 }
 
 /**
@@ -350,7 +350,7 @@ static enum CommandResult parse_attach_list(struct Buffer *buf, struct Buffer *s
     }
 
     len = strlen(a->minor);
-    tmpminor = mutt_mem_malloc(len + 3);
+    tmpminor = MUTT_MEM_MALLOC(len + 3, char);
     strcpy(&tmpminor[1], a->minor);
     tmpminor[0] = '^';
     tmpminor[len + 1] = '$';

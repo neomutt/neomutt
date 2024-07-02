@@ -413,7 +413,7 @@ int log_disp_queue(time_t stamp, const char *file, int line, const char *functio
     level = LL_ERROR;
   }
 
-  struct LogLine *ll = mutt_mem_calloc(1, sizeof(*ll));
+  struct LogLine *ll = MUTT_MEM_CALLOC(1, struct LogLine);
   ll->time = (stamp != 0) ? stamp : mutt_date_now();
   ll->file = file;
   ll->line = line;

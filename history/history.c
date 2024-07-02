@@ -139,7 +139,7 @@ static void init_history(struct History *h)
 
   const short c_history = cs_subset_number(NeoMutt->sub, "history");
   if (c_history != 0)
-    h->hist = mutt_mem_calloc(c_history + 1, sizeof(char *));
+    h->hist = MUTT_MEM_CALLOC(c_history + 1, char *);
 
   h->cur = 0;
   h->last = 0;
@@ -686,7 +686,7 @@ void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
 void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
 {
   const short c_history = cs_subset_number(NeoMutt->sub, "history");
-  char **matches = mutt_mem_calloc(c_history, sizeof(char *));
+  char **matches = MUTT_MEM_CALLOC(c_history, char *);
   int match_count = mutt_hist_search(buf, hclass, matches);
   if (match_count)
   {

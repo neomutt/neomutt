@@ -245,7 +245,7 @@ static int tls_compare_certificates(const gnutls_datum_t *peercert)
     return 0;
 
   b64_data.size = st.st_size;
-  b64_data_data = mutt_mem_calloc(1, b64_data.size + 1);
+  b64_data_data = MUTT_MEM_CALLOC(b64_data.size + 1, unsigned char);
   b64_data.data = b64_data_data;
 
   FILE *fp = mutt_file_fopen(c_certificate_file, "r");
@@ -729,7 +729,7 @@ static void tls_get_client_cert(struct Connection *conn)
                                      0, NULL, &cnlen);
   if (((rc >= 0) || (rc == GNUTLS_E_SHORT_MEMORY_BUFFER)) && (cnlen > 0))
   {
-    cn = mutt_mem_calloc(1, cnlen);
+    cn = MUTT_MEM_CALLOC(cnlen, char);
     if (gnutls_x509_crt_get_dn_by_oid(clientcrt, GNUTLS_OID_X520_COMMON_NAME, 0,
                                       0, cn, &cnlen) < 0)
     {
@@ -871,7 +871,7 @@ static int tls_set_priority(struct TlsSockData *data)
  */
 static int tls_negotiate(struct Connection *conn)
 {
-  struct TlsSockData *data = mutt_mem_calloc(1, sizeof(struct TlsSockData));
+  struct TlsSockData *data = MUTT_MEM_CALLOC(1, struct TlsSockData);
   conn->sockdata = data;
   int err = gnutls_certificate_allocate_credentials(&data->xcred);
   if (err < 0)
