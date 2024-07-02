@@ -460,8 +460,7 @@ void index_date(const struct ExpandoNode *node, void *data,
   mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
 
   // The sender's time zone might only be available as a numerical offset, so "%Z" behaves like "%z".
-  char *bigz = strstr(tmp2, "%Z");
-  if (bigz)
+  for (char *bigz = tmp2; (bigz = strstr(bigz, "%Z")); bigz += 2)
   {
     bigz[1] = 'z';
   }
