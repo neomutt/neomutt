@@ -380,6 +380,8 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
     strftime(tmp, sizeof(tmp), tmp2, &tm);
   }
 
+  if (use_c_locale)
+    tmp2--;
   FREE(&tmp2);
 
   if (flags & MUTT_FORMAT_INDEX)
