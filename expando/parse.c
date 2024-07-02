@@ -64,7 +64,7 @@ static const char *skip_until_if_true_end(const char *start, char end_terminator
       ctr++;
     }
 
-    if ((*start == '>') && (prev != '%'))
+    if ((ctr > 0) && (*start == '>') && (prev != '%'))
     {
       ctr--;
     }

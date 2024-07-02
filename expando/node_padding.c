@@ -262,7 +262,12 @@ struct ExpandoNode *node_padding_parse(const char *str, const char **parsed_unti
   }
   str++;
 
-  const size_t consumed = mutt_mb_charlen(str, NULL);
+  size_t consumed = mutt_mb_charlen(str, NULL);
+  if (consumed == 0)
+  {
+    str = " "; // Default to a space
+    consumed = 1;
+  }
 
   *parsed_until = str + consumed;
   return node_padding_new(pt, str, str + consumed);
