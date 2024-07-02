@@ -351,42 +351,34 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
     }
   }
 
-  char tmp[128] = { 0 };
-  char *tmp2 = mutt_strn_dup(format, format_len);
+  char *fmt = mutt_strn_dup(format, format_len);
 
-  bool use_c_locale = false;
-  if (*format == '!')
-  {
-    use_c_locale = true;
-    tmp2++;
-    format_len--;
-  }
+  const bool use_c_locale = (*fmt == '!');
 
   if (which != RECV_LOCAL)
   {
     // The sender's time zone might only be available as a numerical offset, so "%Z" behaves like "%z".
-    for (char *bigz = tmp2; (bigz = strstr(bigz, "%Z")); bigz += 2)
+    for (char *bigz = fmt; (bigz = strstr(bigz, "%Z")); bigz += 2)
     {
       bigz[1] = 'z';
     }
   }
 
+  char out[128] = { 0 };
   if (use_c_locale)
   {
-    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
+    strftime_l(out, sizeof(out), fmt + 1, &tm, NeoMutt->time_c_locale);
   }
   else
   {
-    strftime(tmp, sizeof(tmp), tmp2, &tm);
+    strftime(out, sizeof(out), fmt, &tm);
   }
 
-  if (use_c_locale)
-    tmp2--;
-  FREE(&tmp2);
+  FREE(&fmt);
 
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_DATE);
-  buf_strcpy(buf, tmp);
+  buf_strcpy(buf, out);
 }
 
 /**
