@@ -314,34 +314,62 @@ long index_date_recv_local_num(const struct ExpandoNode *node, void *data, MuttF
   return e->received;
 }
 
-/**
- * index_date_recv_local - Index: Local received date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void index_date_recv_local(const struct ExpandoNode *node, void *data,
-                           MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+enum IndexDateChoice
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
+  SENT_SENDER,
+  SENT_LOCAL,
+  RECV_LOCAL
+};
 
-  struct tm tm = mutt_date_localtime(e->received);
+/**
+ * index_email_date - Index: Sent/Received Local/Sender date and time
+ */
+static void index_email_date(const struct ExpandoNode *node, const struct Email *e,
+                             enum IndexDateChoice which, MuttFormatFlags flags,
+                             struct Buffer *buf, const char *format, size_t format_len)
+{
+  struct tm tm = { 0 };
+  switch (which)
+  {
+    case SENT_SENDER:
+    {
+      int offset = (e->zhours * 3600 + e->zminutes * 60) * (e->zoccident ? -1 : 1);
+      const time_t now = e->date_sent + offset;
+      tm = mutt_date_gmtime(now);
+      tm.tm_gmtoff = offset;
+      break;
+    }
+    case SENT_LOCAL:
+    {
+      tm = mutt_date_localtime(e->date_sent);
+      break;
+    }
+    case RECV_LOCAL:
+    {
+      tm = mutt_date_localtime(e->received);
+      break;
+    }
+  }
 
   char tmp[128] = { 0 };
-  char tmp2[128] = { 0 };
-
-  int len = node->end - node->start;
-  const char *start = node->start;
+  char *tmp2 = mutt_strn_dup(format, format_len);
 
   bool use_c_locale = false;
-  if (*start == '!')
+  if (*format == '!')
   {
     use_c_locale = true;
-    start++;
-    len--;
+    tmp2++;
+    format_len--;
   }
-  ASSERT(len < sizeof(tmp2));
-  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
+
+  if (which != RECV_LOCAL)
+  {
+    // The sender's time zone might only be available as a numerical offset, so "%Z" behaves like "%z".
+    for (char *bigz = tmp2; (bigz = strstr(bigz, "%Z")); bigz += 2)
+    {
+      bigz[1] = 'z';
+    }
+  }
 
   if (use_c_locale)
   {
@@ -355,6 +383,23 @@ void index_date_recv_local(const struct ExpandoNode *node, void *data,
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_DATE);
   buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_date_recv_local - Index: Received local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void index_date_recv_local(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  int len = node->end - node->start;
+  const char *start = node->start;
+
+  index_email_date(node, e, RECV_LOCAL, flags, buf, start, len);
 }
 
 /**
@@ -371,7 +416,7 @@ long index_date_local_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * index_date_local - Index: Local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_date_local - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_date_local(const struct ExpandoNode *node, void *data,
                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -381,36 +426,10 @@ void index_date_local(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  struct tm tm = mutt_date_localtime(e->date_sent);
-
-  char tmp[128] = { 0 };
-  char tmp2[128] = { 0 };
-
   int len = node->end - node->start;
   const char *start = node->start;
 
-  bool use_c_locale = false;
-  if (*start == '!')
-  {
-    use_c_locale = true;
-    start++;
-    len--;
-  }
-  ASSERT(len < sizeof(tmp2));
-  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
-
-  if (use_c_locale)
-  {
-    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
-  }
-  else
-  {
-    strftime(tmp, sizeof(tmp), tmp2, &tm);
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
-  buf_strcpy(buf, tmp);
+  index_email_date(node, e, SENT_LOCAL, flags, buf, start, len);
 }
 
 /**
@@ -427,7 +446,7 @@ long index_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags 
 }
 
 /**
- * index_date - Index: Sender's date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_date - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_date(const struct ExpandoNode *node, void *data,
                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
@@ -437,46 +456,10 @@ void index_date(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  int offset = (e->zhours * 3600 + e->zminutes * 60) * (e->zoccident ? -1 : 1);
-  const time_t now = e->date_sent + offset;
-
-  struct tm tm = mutt_date_gmtime(now);
-  tm.tm_gmtoff = offset;
-
-  char tmp[128] = { 0 };
-  char tmp2[128] = { 0 };
-
   int len = node->end - node->start;
   const char *start = node->start;
 
-  bool use_c_locale = false;
-  if (*start == '!')
-  {
-    use_c_locale = true;
-    start++;
-    len--;
-  }
-  ASSERT(len < sizeof(tmp2));
-  mutt_strn_copy(tmp2, start, len, sizeof(tmp2));
-
-  // The sender's time zone might only be available as a numerical offset, so "%Z" behaves like "%z".
-  for (char *bigz = tmp2; (bigz = strstr(bigz, "%Z")); bigz += 2)
-  {
-    bigz[1] = 'z';
-  }
-
-  if (use_c_locale)
-  {
-    strftime_l(tmp, sizeof(tmp), tmp2, &tm, NeoMutt->time_c_locale);
-  }
-  else
-  {
-    strftime(tmp, sizeof(tmp), tmp2, &tm);
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
-  buf_strcpy(buf, tmp);
+  index_email_date(node, e, SENT_SENDER, flags, buf, start, len);
 }
 
 /**
@@ -693,7 +676,7 @@ long index_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
 }
 
 /**
- * index_d - Index: Senders Date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_d - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              int max_cols, struct Buffer *buf)
@@ -705,36 +688,25 @@ void index_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 
   const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
   const char *cp = NONULL(c_date_format);
-  bool use_c_locale = false;
-  if (*cp == '!')
-  {
-    use_c_locale = true;
-    cp++;
-  }
 
-  /* restore sender's time zone */
-  time_t now = e->date_sent;
-  if (e->zoccident)
-    now -= (e->zhours * 3600 + e->zminutes * 60);
-  else
-    now += (e->zhours * 3600 + e->zminutes * 60);
+  index_email_date(node, e, SENT_SENDER, flags, buf, cp, strlen(cp));
+}
 
-  struct tm tm = mutt_date_gmtime(now);
-  char tmp[128] = { 0 };
+/**
+ * index_D - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void index_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             int max_cols, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
 
-  if (use_c_locale)
-  {
-    strftime_l(tmp, sizeof(tmp), cp, &tm, NeoMutt->time_c_locale);
-  }
-  else
-  {
-    strftime(tmp, sizeof(tmp), cp, &tm);
-  }
+  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
+  const char *cp = NONULL(c_date_format);
 
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
-
-  buf_strcpy(buf, tmp);
+  index_email_date(node, e, SENT_LOCAL, flags, buf, cp, strlen(cp));
 }
 
 /**
@@ -748,44 +720,6 @@ long index_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
     return 0;
 
   return e->date_sent;
-}
-
-/**
- * index_D - Index: Local Date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void index_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
-  const char *cp = NONULL(c_date_format);
-  bool use_c_locale = false;
-  if (*cp == '!')
-  {
-    use_c_locale = true;
-    cp++;
-  }
-
-  struct tm tm = mutt_date_localtime(e->date_sent);
-  char tmp[128] = { 0 };
-
-  if (use_c_locale)
-  {
-    strftime_l(tmp, sizeof(tmp), cp, &tm, NeoMutt->time_c_locale);
-  }
-  else
-  {
-    strftime(tmp, sizeof(tmp), cp, &tm);
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_DATE);
-
-  buf_strcpy(buf, tmp);
 }
 
 /**
