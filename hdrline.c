@@ -380,6 +380,8 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
     strftime(tmp, sizeof(tmp), tmp2, &tm);
   }
 
+  FREE(&tmp2);
+
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_DATE);
   buf_strcpy(buf, tmp);
