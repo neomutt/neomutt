@@ -437,13 +437,11 @@ void index_date(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  time_t now = e->date_sent;
-  if (e->zoccident)
-    now -= (e->zhours * 3600 + e->zminutes * 60);
-  else
-    now += (e->zhours * 3600 + e->zminutes * 60);
+  int offset = (e->zhours * 3600 + e->zminutes * 60) * (e->zoccident ? -1 : 1);
+  const time_t now = e->date_sent + offset;
 
   struct tm tm = mutt_date_gmtime(now);
+  tm.tm_gmtoff = offset;
 
   char tmp[128] = { 0 };
   char tmp2[128] = { 0 };
