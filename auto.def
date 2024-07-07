@@ -831,7 +831,7 @@ if {[get-define want-bdb]} {
     return 0
   }
 
-  set bdb_versions [opt-val with-bdb-version { 5.3 6.2 4.8 }] ;# Will be checked in order
+  set bdb_versions [opt-val with-bdb-version { 18.1 5.3 6.2 4.8 }] ;# Will be checked in order
   set bdb_prefix [opt-val with-bdb $prefix]
 
   foreach ver $bdb_versions {
