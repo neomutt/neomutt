@@ -106,6 +106,8 @@ int mutt_autocrypt_init(bool can_create)
   if (!c_autocrypt || !c_autocrypt_dir)
     return -1;
 
+  mutt_flushinp();
+
   if (autocrypt_dir_init(can_create))
     goto bail;
 

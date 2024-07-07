@@ -249,7 +249,7 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
   window_redraw(NULL);
   while (true)
   {
-    event = mutt_getch(GETCH_IGNORE_MACRO);
+    event = mutt_getch(GETCH_NO_FLAGS);
     if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
     {
       window_redraw(NULL);
