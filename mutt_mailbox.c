@@ -182,10 +182,11 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
   if ((flags == MUTT_MAILBOX_CHECK_NO_FLAGS) && ((t - MailboxTime) < c_mail_check))
     return MailboxCount;
 
+  bool force_stats = false;
   if ((flags & MUTT_MAILBOX_CHECK_FORCE_STATS) ||
       (c_mail_check_stats && ((t - MailboxStatsTime) >= c_mail_check_stats_interval)))
   {
-    flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
+    force_stats = true;
     MailboxStatsTime = t;
   }
 
@@ -212,12 +213,12 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
     if (!m->visible || !m->poll_new_mail)
       continue;
 
-    CheckStatsFlags m_flags = flags;
-    if (!m->first_check_stats_done && c_mail_check_stats)
+    CheckStatsFlags mb_flags = MUTT_MAILBOX_CHECK_NO_FLAGS;
+    if (force_stats || (!m->first_check_stats_done && c_mail_check_stats))
     {
-      m_flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
+      mb_flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
     }
-    mailbox_check(m_cur, m, &st_cur, m_flags);
+    mailbox_check(m_cur, m, &st_cur, mb_flags);
     if (m->has_new)
       MailboxCount++;
     m->first_check_stats_done = true;
