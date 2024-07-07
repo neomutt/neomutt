@@ -213,12 +213,12 @@ int mutt_mailbox_check(struct Mailbox *m_cur, CheckStatsFlags flags)
     if (!m->visible || !m->poll_new_mail)
       continue;
 
-    CheckStatsFlags mb_flags = MUTT_MAILBOX_CHECK_NO_FLAGS;
+    CheckStatsFlags m_flags = MUTT_MAILBOX_CHECK_NO_FLAGS;
     if (force_stats || (!m->first_check_stats_done && c_mail_check_stats))
     {
-      mb_flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
+      m_flags |= MUTT_MAILBOX_CHECK_FORCE_STATS;
     }
-    mailbox_check(m_cur, m, &st_cur, mb_flags);
+    mailbox_check(m_cur, m, &st_cur, m_flags);
     if (m->has_new)
       MailboxCount++;
     m->first_check_stats_done = true;
