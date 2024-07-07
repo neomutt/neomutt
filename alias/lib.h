@@ -84,8 +84,6 @@ void alias_dialog  (struct Mailbox *m, struct ConfigSubset *sub);
 int  query_complete(struct Buffer *buf, struct ConfigSubset *sub);
 void query_index   (struct Mailbox *m, struct ConfigSubset *sub);
 
-int complete_alias(struct EnterWindowData *wdata, int op);
-
 struct Address *alias_reverse_lookup(const struct Address *addr);
 
 #endif /* MUTT_ALIAS_LIB_H */
