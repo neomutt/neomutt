@@ -81,6 +81,8 @@ struct PrexStorage
 };
 
 #define PREX_MONTH "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
+#define PREX_MONTH_LAX                                                         \
+  "(Jan|January|Feb|February|Mar|March|Apr|April|May|Jun|June|Jul|July|Aug|August|Sep|September|Oct|October|Nov|November|Dec|December)"
 #define PREX_DOW "(Mon|Tue|Wed|Thu|Fri|Sat|Sun)"
 #define PREX_DOW_NOCASE                                                        \
   "([Mm][Oo][Nn]|[Tt][Uu][Ee]|[Ww][Ee][Dd]|[Tt][Hh][Uu]|[Ff][Rr][Ii]|[Ss][Aa][Tt]|[Ss][Uu][Nn])"
@@ -171,7 +173,7 @@ static struct PrexStorage *prex(enum Prex which)
         CFWS
         "(([[:alpha:]]+)" CFWS ", *)?"   // Day of week (or whatever)
         CFWS "([[:digit:]]{1,2}) "       // Day
-        CFWS PREX_MONTH                  // Month
+        CFWS PREX_MONTH_LAX              // Month
         CFWS "([[:digit:]]{2,4}) "       // Year
         CFWS "([[:digit:]]{1,2})"        // Hour
         ":" CFWS "([[:digit:]]{1,2})"    // Minute

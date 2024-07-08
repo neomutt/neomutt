@@ -791,6 +791,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       if (e)
       {
         struct Tz tz = { 0 };
+        // the caller will check e->date_sent for -1
         e->date_sent = mutt_date_parse_date(body, &tz);
         if (e->date_sent > 0)
         {
@@ -803,10 +804,13 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
       break;
 
     case 'e':
-      if ((name_len == 7) && eqi6(name + 1, "xpires") && e &&
-          (mutt_date_parse_date(body, NULL) < mutt_date_now()))
+      if ((name_len == 7) && eqi6(name + 1, "xpires") && e)
       {
-        e->expired = true;
+        const time_t expired = mutt_date_parse_date(body, NULL);
+        if ((expired != -1) && (expired < mutt_date_now()))
+        {
+          e->expired = true;
+        }
       }
       break;
 
@@ -970,6 +974,7 @@ int mutt_rfc822_parse_line(struct Envelope *env, struct Email *e,
           if (d)
           {
             d = mutt_str_skip_email_wsp(d + 1);
+            // the caller will check e->received for -1
             e->received = mutt_date_parse_date(d, NULL);
           }
         }

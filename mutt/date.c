@@ -706,7 +706,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
  * mutt_date_parse_date - Parse a date string in RFC822 format
  * @param[in]  s      String to parse
  * @param[out] tz_out Pointer to timezone (optional)
- * @retval num Unix time in seconds
+ * @retval num Unix time in seconds, or -1 on failure
  *
  * Parse a date of the form:
  * `[ weekday , ] day-of-month month year hour:minute:second [ timezone ]`
