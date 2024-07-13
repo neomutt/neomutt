@@ -46,12 +46,12 @@ If they aren't available, Autosetup will use a version bundled with NeoMutt.
 
 ### Configure
 
-Autosetup's  `configure.autosetup` performs two tasks.  It allows the user to
+The Autosetup `configure` script performs two tasks.  It allows the user to
 enable/disable certain features of NeoMutt and it checks that all the build
 dependencies are present.
 
 For a list of the currently supported options and a brief help text, run:
-`./configure.autosetup --help`
+`./configure --help`
 
 | Configure option        | Path | Notes                                        |
 | :---------------------- | :--- | :------------------------------------------- |
