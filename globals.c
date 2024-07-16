@@ -54,8 +54,6 @@ struct ListHead TempAttachmentsList  = STAILQ_HEAD_INITIALIZER(TempAttachmentsLi
 struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);           ///< List of custom headers to add to outgoing emails
 // clang-format on
 
-enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
-
 /* pseudo options */
 // clang-format off
 #ifdef USE_AUTOCRYPT

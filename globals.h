@@ -50,8 +50,6 @@ extern struct ListHead Muttrc;               ///< List of config files to read
 extern struct ListHead TempAttachmentsList;  ///< List of temporary files for displaying attachments
 extern struct ListHead UserHeader;           ///< List of custom headers to add to outgoing emails
 
-extern enum MenuType CurrentMenu; ///< Current Menu, e.g. #MENU_PAGER
-
 /* pseudo options */
 #ifdef USE_AUTOCRYPT
 extern bool OptAutocryptGpgme;      ///< (pseudo) use Autocrypt context inside ncrypt/crypt_gpgme.c
