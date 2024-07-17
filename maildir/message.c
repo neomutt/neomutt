@@ -223,7 +223,7 @@ static int maildir_sync_message(struct Mailbox *m, struct Email *e)
   struct Buffer *partpath = NULL;
   struct Buffer *fullpath = NULL;
   struct Buffer *oldpath = NULL;
-  char suffix[16] = { 0 };
+  char suffix[PATH_MAX] = { 0 };
   int rc = 0;
 
   if (e->attach_del || e->env->changed)
@@ -361,7 +361,7 @@ bool maildir_sync_mailbox_message(struct Mailbox *m, struct Email *e, struct Hea
 static int maildir_commit_message(struct Mailbox *m, struct Message *msg, struct Email *e)
 {
   char subdir[4] = { 0 };
-  char suffix[16] = { 0 };
+  char suffix[PATH_MAX] = { 0 };
   int rc = 0;
 
   if (mutt_file_fsync_close(&msg->fp))
@@ -533,7 +533,7 @@ bool maildir_msg_open_new(struct Mailbox *m, struct Message *msg, const struct E
 {
   int fd;
   char path[PATH_MAX] = { 0 };
-  char suffix[16] = { 0 };
+  char suffix[PATH_MAX] = { 0 };
   char subdir[16] = { 0 };
 
   if (e)
