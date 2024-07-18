@@ -96,13 +96,13 @@ enum MailboxType maildir_path_probe(const char *path, const struct stat *st)
   if (!st || !S_ISDIR(st->st_mode))
     return MUTT_UNKNOWN;
 
+  static const char *subs[] = { "cur", "new" };
   char sub[PATH_MAX] = { 0 };
-  struct stat stsub = { 0 };
-  char *subs[] = { "cur", "new" };
-  for (size_t i = 0; i < mutt_array_size(subs); ++i)
+  struct stat st_sub = { 0 };
+  for (size_t i = 0; i < mutt_array_size(subs); i++)
   {
     snprintf(sub, sizeof(sub), "%s/%s", path, subs[i]);
-    if ((stat(sub, &stsub) == 0) && S_ISDIR(stsub.st_mode))
+    if ((stat(sub, &st_sub) == 0) && S_ISDIR(st_sub.st_mode))
       return MUTT_MAILDIR;
   }
 
