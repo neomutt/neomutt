@@ -50,8 +50,7 @@
  */
 static int op_check_stats(int op)
 {
-  mutt_mailbox_check(get_current_mailbox(),
-                     MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS);
+  mutt_mailbox_check(get_current_mailbox(), MUTT_MAILBOX_CHECK_POSTPONED | MUTT_MAILBOX_CHECK_STATS);
   return FR_SUCCESS;
 }
 
@@ -88,7 +87,7 @@ static int op_shell_escape(int op)
     if (m_cur)
     {
       m_cur->last_checked = 0; // force a check on the next mx_mbox_check() call
-      mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_FORCE);
+      mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_POSTPONED);
     }
   }
   return FR_SUCCESS;

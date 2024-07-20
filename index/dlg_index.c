@@ -714,7 +714,7 @@ void change_folder_mailbox(struct Menu *menu, struct Mailbox *m, int *oldcount,
   mutt_clear_error();
   /* force the mailbox check after we have changed the folder */
   struct EventMailbox ev_m = { shared->mailbox };
-  mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_FORCE);
+  mutt_mailbox_check(ev_m.mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   mutt_pattern_free(&shared->search_state->pattern);
 }
@@ -1100,7 +1100,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
   if (!shared->attach_msg)
   {
     /* force the mailbox check after we enter the folder */
-    mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_FORCE);
+    mutt_mailbox_check(shared->mailbox, MUTT_MAILBOX_CHECK_POSTPONED);
   }
 #ifdef USE_INOTIFY
   mutt_monitor_add(NULL);

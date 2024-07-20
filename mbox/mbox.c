@@ -1688,7 +1688,7 @@ static enum MxStatus mbox_mbox_check_stats(struct Mailbox *m, uint8_t flags)
   if (m->newly_created && ((st.st_ctime != st.st_mtime) || (st.st_ctime != st.st_atime)))
     m->newly_created = false;
 
-  if (flags & (MUTT_MAILBOX_CHECK_FORCE | MUTT_MAILBOX_CHECK_FORCE_STATS))
+  if (flags & MUTT_MAILBOX_CHECK_STATS)
   {
     struct MboxAccountData *adata = mbox_adata_get(m);
     if (adata && mutt_file_stat_timespec_compare(&st, MUTT_STAT_MTIME,
