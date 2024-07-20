@@ -1265,14 +1265,16 @@ int imap_subscribe(const char *path, bool subscribe)
 /**
  * imap_complete - Try to complete an IMAP folder path
  * @param buf  Buffer for result
- * @param path Partial mailbox name to complete
+ * @param path1 Partial mailbox name to complete, first part
+ * @param path2 Partial mailbox name to complete, second part, might be NULL
  * @retval  0 Success
  * @retval -1 Failure
  *
  * Given a partial IMAP folder path, return a string which adds as much to the
- * path as is unique
+ * path as is unique. If the path is given in two chunks, it is joined using
+ * the correct IMAP delimiter.
  */
-int imap_complete(struct Buffer *buf, const char *path)
+int imap_complete(struct Buffer *buf, const char *path1, const char *path2)
 {
   struct ImapAccountData *adata = NULL;
   struct ImapMboxData *mdata = NULL;
@@ -1283,10 +1285,31 @@ int imap_complete(struct Buffer *buf, const char *path)
   int completions = 0;
   int rc;
 
-  if (imap_adata_find(path, &adata, &mdata) < 0)
+  if (imap_adata_find(path1, &adata, &mdata) < 0)
   {
-    buf_strcpy(buf, path);
+    buf_concat_path(buf, path1, path2);
     return complete_hosts(buf);
+  }
+
+  if (path2)
+  {
+    struct Buffer *full = buf_pool_get();
+    if (mdata->real_name)
+    {
+      buf_printf(full, "%s%c%s", path1, adata->delim, path2);
+    }
+    else
+    {
+      buf_concat_path(full, path1, path2);
+    }
+    imap_mdata_free((void *) &mdata);
+    rc = imap_adata_find(buf_string(full), &adata, &mdata);
+    buf_pool_release(&full);
+    if (rc < 0)
+    {
+      buf_concat_path(buf, path1, path2);
+      return complete_hosts(buf);
+    }
   }
 
   /* fire off command */
