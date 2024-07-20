@@ -65,7 +65,6 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   struct Buffer *exp_dirpart = NULL;
   struct Buffer *filepart = NULL;
   struct Buffer *tmp = NULL;
-  struct Buffer *imap_path = NULL;
   int rc;
 
   mutt_debug(LL_DEBUG2, "completing %s\n", buf_string(buf));
@@ -76,8 +75,6 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   const char *const c_spool_file = cs_subset_string(NeoMutt->sub, "spool_file");
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
 
-  imap_path = buf_pool_get();
-  /* we can use '/' as a delimiter, imap_complete rewrites it */
   char ch = buf_at(buf, 0);
   if ((ch == '=') || (ch == '+') || (ch == '!'))
   {
@@ -85,22 +82,17 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
       p = NONULL(c_spool_file);
     else
       p = NONULL(c_folder);
-
-    buf_concat_path(imap_path, p, buf_string(buf) + 1);
-  }
-  else
-  {
-    buf_copy(imap_path, buf);
   }
 
-  if (imap_path_probe(buf_string(imap_path), NULL) == MUTT_IMAP)
+  if (imap_path_probe(p ? p : buf_string(buf), NULL))
   {
-    rc = imap_complete(buf, buf_string(imap_path));
-    buf_pool_release(&imap_path);
+    struct Buffer *path = buf_pool_get();
+    buf_copy(path, buf);
+    rc = imap_complete(buf, p ? p : buf_string(path),
+                            p ? buf_string(path) + 1 : NULL);
+    buf_pool_release(&path);
     return rc;
   }
-
-  buf_pool_release(&imap_path);
 
   dirpart = buf_pool_get();
   exp_dirpart = buf_pool_get();
