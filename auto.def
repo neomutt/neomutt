@@ -424,10 +424,6 @@ if {1} {
   cc-check-function-in-lib getaddrinfo_a anl
   cc-check-function-in-lib nanosleep rt
 
-  cc-with {-includes time.h} {
-    cc-check-types "struct timespec"
-  }
-
   cc-with {-includes sys/stat.h} {
     cc-check-members "struct stat.st_atim.tv_nsec"
   }

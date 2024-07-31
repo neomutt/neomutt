@@ -41,18 +41,7 @@ typedef uint8_t ReadLineFlags;             ///< Flags for mutt_file_read_line(),
 #define MUTT_RL_CONT      (1 << 0) ///< \-continuation
 #define MUTT_RL_EOL       (1 << 1) ///< don't strip `\n` / `\r\n`
 
-#ifdef HAVE_STRUCT_TIMESPEC
 struct timespec;
-#else
-/**
- * struct timespec - Time value with nanosecond precision
- */
-struct timespec
-{
-  time_t tv_sec; ///< Number of seconds since the epoch
-  long tv_nsec;  ///< Number of nanosecond, on top
-};
-#endif
 
 /**
  * enum MuttStatType - Flags for mutt_file_get_stat_timespec
