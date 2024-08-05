@@ -313,13 +313,13 @@ static bool test_unset(struct Buffer *err)
     }
   }
 
-  // unset number must fail
+  // unset number sets it to 0
   {
     buf_reset(err);
     enum CommandResult rc = parse_rc_line("unset Cherry", err);
-    if (!TEST_CHECK(rc == MUTT_CMD_ERROR))
+    if (!TEST_CHECK(rc == MUTT_CMD_SUCCESS))
     {
-      TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_ERROR, rc,
+      TEST_MSG("Expected %d, but got %d; err is: '%s'", MUTT_CMD_SUCCESS, rc,
                buf_string(err));
       return false;
     }

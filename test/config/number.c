@@ -53,6 +53,7 @@ static struct ConfigDef Vars[] = {
   { "Nectarine",  DT_NUMBER,                 0,   0, validator_fail,    },
   { "Olive",      DT_NUMBER,                 0,   0, NULL,              }, /* test_inherit */
   { "Papaya",     DT_NUMBER | D_ON_STARTUP,  1,   0, NULL,              }, /* startup */
+  { "Quandong",   DT_NUMBER,               123,   0, NULL,              }, /* test_toggle */
   { NULL },
 };
 // clang-format on
@@ -154,9 +155,9 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   log_line(__func__);
   struct ConfigSet *cs = sub->cs;
 
-  const char *valid[] = { "-123", "0", "-42", "456" };
-  const int numbers[] = { -123, 0, -42, 456 };
-  const char *invalid[] = { "-32769", "32768", "junk", "", NULL };
+  const char *valid[] = { "-123", "0", "-42", "456", "", NULL };
+  const int numbers[] = { -123, 0, -42, 456, 0, 0 };
+  const char *invalid[] = { "-32769", "32768", "junk" };
   const char *name = "Damson";
 
   int rc;
@@ -948,6 +949,107 @@ ti_out:
   return result;
 }
 
+static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
+{
+  log_line(__func__);
+  struct ConfigSet *cs = sub->cs;
+  const char *name = "Quandong";
+  int rc;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+    return false;
+
+  int value = 0;
+  const int initial = cs_subset_number(sub, name);
+
+  rc = number_he_toggle(sub, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+      TEST_MSG("Toggle failed: %s", buf_string(err));
+      return false;
+  }
+
+  value = cs_subset_number(sub, name);
+  if (!TEST_CHECK(value == 0))
+  {
+      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
+      return false;
+  }
+
+  rc = number_he_toggle(sub, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+      TEST_MSG("Toggle failed: %s", buf_string(err));
+      return false;
+  }
+
+  value = cs_subset_number(sub, name);
+  if (!TEST_CHECK(value == initial))
+  {
+      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, initial);
+      return false;
+  }
+
+  rc = number_he_toggle(sub, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+      TEST_MSG("Toggle failed: %s", buf_string(err));
+      return false;
+  }
+
+  value = cs_subset_number(sub, name);
+  if (!TEST_CHECK(value == 0))
+  {
+      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
+      return false;
+  }
+
+  rc = cs_str_native_set(cs, name, -123, err); 
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+      TEST_MSG("Set failed: %s", buf_string(err));
+      return false;
+  }
+
+  value = cs_subset_number(sub, name);
+  if (!TEST_CHECK(value == -123))
+  {
+      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, -123);
+      return false;
+  }
+
+  rc = number_he_toggle(sub, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+      TEST_MSG("Toggle failed: %s", buf_string(err));
+      return false;
+  }
+
+  value = cs_subset_number(sub, name);
+  if (!TEST_CHECK(value == 0))
+  {
+      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
+      return false;
+  }
+
+  rc = number_he_toggle(sub, he, err);
+  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  {
+      TEST_MSG("Toggle failed: %s", buf_string(err));
+      return false;
+  }
+
+  value = cs_subset_number(sub, name);
+  if (!TEST_CHECK(value == -123))
+  {
+      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, -123);
+      return false;
+  }
+
+  return true;
+}
+
 void test_config_number(void)
 {
   struct ConfigSubset *sub = NeoMutt->sub;
@@ -975,5 +1077,6 @@ void test_config_number(void)
   TEST_CHECK(test_reset(sub, err));
   TEST_CHECK(test_validator(sub, err));
   TEST_CHECK(test_inherit(cs, err));
+  TEST_CHECK(test_toggle(sub, err));
   buf_pool_release(&err);
 }
