@@ -2365,27 +2365,24 @@ int imap_path_canon(struct Buffer *path)
   char tmp[PATH_MAX] = { 0 };
   char tmp2[PATH_MAX];
 
-  imap_fix_path('\0', url->path, tmp, sizeof(tmp));
+  struct ImapAccountData *adata = NULL;
+  struct ImapMboxData *mdata = NULL;
+  imap_adata_find(buf_string(path), &adata, &mdata);
+  if (adata)
+  {
+    imap_fix_path_with_delim(adata->delim, url->path, tmp, sizeof(tmp));
+  }
+  else
+  {
+    imap_fix_path(url->path, tmp, sizeof(tmp));
+  }
   url->path = tmp;
   url_tostring(url, tmp2, sizeof(tmp2), U_NO_FLAGS);
   buf_strcpy(path, tmp2);
   url_free(&url);
+  imap_mdata_free((void *) &mdata);
 
   return 0;
-}
-
-/**
- * imap_expand_path - Buffer wrapper around imap_path_canon()
- * @param path Path to expand
- * @retval  0 Success
- * @retval -1 Failure
- *
- * @note The path is expanded in place
- */
-int imap_expand_path(struct Buffer *path)
-{
-  buf_alloc(path, PATH_MAX);
-  return imap_path_canon(path);
 }
 
 /**

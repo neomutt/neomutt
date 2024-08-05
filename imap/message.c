@@ -1721,7 +1721,7 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea,
     return 1;
   }
 
-  imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
+  imap_fix_path_with_delim(adata->delim, buf, mbox, sizeof(mbox));
   if (*mbox == '\0')
     mutt_str_copy(mbox, "INBOX", sizeof(mbox));
   imap_munge_mbox_name(adata->unicode, mmbox, sizeof(mmbox), mbox);

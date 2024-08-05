@@ -561,8 +561,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
   b1 = mutt_mem_malloc(strlen(mx1) + 1);
   b2 = mutt_mem_malloc(strlen(mx2) + 1);
 
-  imap_fix_path('\0', mx1, b1, strlen(mx1) + 1);
-  imap_fix_path('\0', mx2, b2, strlen(mx2) + 1);
+  imap_fix_path(mx1, b1, strlen(mx1) + 1);
+  imap_fix_path(mx2, b2, strlen(mx2) + 1);
 
   rc = mutt_str_cmp(b1, b2);
   FREE(&b1);
@@ -662,14 +662,13 @@ void imap_error(const char *where, const char *msg)
 
 /**
  * imap_fix_path - Fix up the imap path
- * @param delim     Delimiter specified by the server, '\0' for `$imap_delim_chars`
  * @param mailbox   Mailbox path
  * @param path      Buffer for the result
  * @param plen      Length of buffer
  * @retval ptr      Fixed-up path
  *
- * @note if delim is '\0', the first character in mailbox matching any of the
- * characters in `$imap_delim_chars` is used as a delimiter.
+ * @note the first character in mailbox matching any of the characters in
+ * `$imap_delim_chars` is used as a delimiter.
  *
  * This is necessary because the rest of neomutt assumes a hierarchy delimiter of
  * '/', which is not necessarily true in IMAP.  Additionally, the filesystem
@@ -677,28 +676,65 @@ void imap_error(const char *where, const char *msg)
  * to "/".  IMAP servers are not required to do this.
  * Moreover, IMAP servers may dislike the path ending with the delimiter.
  */
-char *imap_fix_path(char delim, const char *mailbox, char *path, size_t plen)
+char *imap_fix_path(const char *mailbox, char *path, size_t plen)
 {
-  int i = 0;
   const char *const c_imap_delim_chars = cs_subset_string(NeoMutt->sub, "imap_delim_chars");
-  for (; mailbox && *mailbox && (i < (plen - 1)); i++)
+
+  char *out = path;
+  size_t space_left = plen - 1;
+
+  if (mailbox)
   {
-    if ((*mailbox == delim) || (!delim && strchr(NONULL(c_imap_delim_chars), *mailbox)))
+    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
     {
-      delim = *mailbox;
-      /* Skip multiple occurrences of delim */
-      while (*mailbox && *(mailbox + 1) == delim)
-        mailbox++;
+      if (strchr(NONULL(c_imap_delim_chars), *c))
+      {
+        return imap_fix_path_with_delim(*c, mailbox, path, plen);
+      }
+      *out++ = *c;
     }
-    path[i] = *mailbox++;
   }
 
-  /* Do not terminate with a delimiter */
-  if ((i != 0) && (path[i - 1] == delim))
-    i--;
+  *out= '\0';
+  return path;
+}
 
-  /* Ensure null termination */
-  path[i] = '\0';
+/**
+ * imap_fix_path_with_delim - Fix up the imap path
+ * @param delim     Delimiter specified by the server
+ * @param mailbox   Mailbox path
+ * @param path      Buffer for the result
+ * @param plen      Length of buffer
+ * @retval ptr      Fixed-up path
+ *
+ */
+char *imap_fix_path_with_delim(const char delim, const char *mailbox, char *path, size_t plen)
+{
+  char *out = path;
+  size_t space_left = plen - 1;
+
+  if (mailbox)
+  {
+    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
+    {
+      if (*c == delim || *c == '/')
+      {
+        while (*c && *(c + 1) == *c)
+          c++;
+        *out++ = delim;
+      }
+      else
+      {
+        *out++ = *c;
+      }
+    }
+  }
+
+  if (out != path && *(out - 1) == delim)
+  {
+    --out;
+  }
+  *out= '\0';
   return path;
 }
 

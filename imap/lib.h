@@ -99,7 +99,6 @@ int imap_copy_messages(struct Mailbox *m, struct EmailArray *ea, const char *des
 void imap_logout_all(void);
 
 /* util.c */
-int imap_expand_path(struct Buffer *buf);
 int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, size_t mailboxlen);
 void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder);
 int imap_mxcmp(const char *mx1, const char *mx2);
