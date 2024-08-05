@@ -149,13 +149,8 @@ int format_string(struct Buffer *buf, int min_cols, int max_cols, enum FormatJus
     }
     else
     {
-#ifdef HAVE_ISWBLANK
-      if (iswblank(wc))
-        wc = ' ';
-      else
-#endif
-          if (!IsWPrint(wc))
-        wc = '?';
+      if (!IsWPrint(wc))
+        wc = ReplacementChar;
       w = wcwidth(wc);
     }
 
