@@ -89,6 +89,7 @@ bool        mutt_istr_equal(const char *a, const char *b);
 const char *mutt_istr_find(const char *haystack, const char *needle);
 int         mutt_istr_remall(char *str, const char *target);
 size_t      mutt_istr_startswith(const char *str, const char *prefix);
+int         mutt_str_inbox_cmp(const char *a, const char *b);
 
 /* case-insensitive, length-bound flavours */
 int         mutt_istrn_cmp(const char *a, const char *b, size_t num);

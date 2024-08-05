@@ -621,6 +621,7 @@ STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_str_find_word.o \
 		  test/string/mutt_str_getenv.o \
 		  test/string/mutt_str_hyphenate.o \
+		  test/string/mutt_str_inbox_cmp.o \
 		  test/string/mutt_str_is_ascii.o \
 		  test/string/mutt_str_is_email_wsp.o \
 		  test/string/mutt_str_len.o \

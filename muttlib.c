@@ -974,68 +974,6 @@ void mutt_get_parent_path(const char *path, char *buf, size_t buflen)
 }
 
 /**
- * mutt_inbox_cmp - Do two folders share the same path and one is an inbox - @ingroup sort_api
- * @param a First path
- * @param b Second path
- * @retval -1 a is INBOX of b
- * @retval  0 None is INBOX
- * @retval  1 b is INBOX for a
- *
- * This function compares two folder paths. It first looks for the position of
- * the last common '/' character. If a valid position is found and it's not the
- * last character in any of the two paths, the remaining parts of the paths are
- * compared (case insensitively) with the string "INBOX". If one of the two
- * paths matches, it's reported as being less than the other and the function
- * returns -1 (a < b) or 1 (a > b). If no paths match the requirements, the two
- * paths are considered equivalent and this function returns 0.
- *
- * Examples:
- * * mutt_inbox_cmp("/foo/bar",      "/foo/baz") --> 0
- * * mutt_inbox_cmp("/foo/bar/",     "/foo/bar/inbox") --> 0
- * * mutt_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
- * * mutt_inbox_cmp("=INBOX",        "=Drafts") --> -1
- */
-int mutt_inbox_cmp(const char *a, const char *b)
-{
-  /* fast-track in case the paths have been mutt_pretty_mailbox'ified */
-  if ((a[0] == '+') && (b[0] == '+'))
-  {
-    return mutt_istr_equal(a + 1, "inbox") ? -1 :
-           mutt_istr_equal(b + 1, "inbox") ? 1 :
-                                             0;
-  }
-
-  const char *a_end = strrchr(a, '/');
-  const char *b_end = strrchr(b, '/');
-
-  /* If one path contains a '/', but not the other */
-  if ((!a_end) ^ (!b_end))
-    return 0;
-
-  /* If neither path contains a '/' */
-  if (!a_end)
-    return 0;
-
-  /* Compare the subpaths */
-  size_t a_len = a_end - a;
-  size_t b_len = b_end - b;
-  size_t min = MIN(a_len, b_len);
-  int same = (a[min] == '/') && (b[min] == '/') && (a[min + 1] != '\0') &&
-             (b[min + 1] != '\0') && mutt_istrn_equal(a, b, min);
-
-  if (!same)
-    return 0;
-
-  if (mutt_istr_equal(&a[min + 1], "inbox"))
-    return -1;
-
-  if (mutt_istr_equal(&b[min + 1], "inbox"))
-    return 1;
-
-  return 0;
-}
-
-/**
  * buf_sanitize_filename - Replace unsafe characters in a filename
  * @param buf   Buffer for the result
  * @param path  Filename to make safe

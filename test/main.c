@@ -648,6 +648,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_getenv)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_hyphenate)                                   \
+  NEOMUTT_TEST_ITEM(test_mutt_str_inbox_cmp)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_is_ascii)                                    \
   NEOMUTT_TEST_ITEM(test_mutt_str_is_email_wsp)                                \
   NEOMUTT_TEST_ITEM(test_mutt_str_len)                                         \
