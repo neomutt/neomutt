@@ -43,12 +43,13 @@ static int sort(const void *a, const void *b, void *state)
 
 void test_mutt_str_inbox_cmp(void)
 {
-  char *folders[] = { "+Inbox", "+Foo", "+Inbox.Archive", "+Bar", "+FooBar", "+FooBar.Baz" };
+  char *folders[] = { "+Inbox", "+Foo", "+Inbox.Archive", "+", "+Bar", "+FooBar", "+FooBar.Baz" };
   mutt_qsort_r(&folders, mutt_array_size(folders), sizeof(*folders), sort, NULL);
   TEST_CHECK_STR_EQ(folders[0], "+Inbox");
   TEST_CHECK_STR_EQ(folders[1], "+Inbox.Archive");
-  TEST_CHECK_STR_EQ(folders[2], "+Bar");
-  TEST_CHECK_STR_EQ(folders[3], "+Foo");
-  TEST_CHECK_STR_EQ(folders[4], "+FooBar");
-  TEST_CHECK_STR_EQ(folders[5], "+FooBar.Baz");
+  TEST_CHECK_STR_EQ(folders[2], "+");
+  TEST_CHECK_STR_EQ(folders[3], "+Bar");
+  TEST_CHECK_STR_EQ(folders[4], "+Foo");
+  TEST_CHECK_STR_EQ(folders[5], "+FooBar");
+  TEST_CHECK_STR_EQ(folders[6], "+FooBar.Baz");
 }
