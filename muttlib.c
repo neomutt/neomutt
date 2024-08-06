@@ -303,7 +303,7 @@ void buf_expand_path_regex(struct Buffer *buf, bool regex)
   /* Rewrite IMAP path in canonical form - aids in string comparisons of
    * folders. May possibly fail, in which case buf should be the same. */
   if (imap_path_probe(buf_string(buf), NULL) == MUTT_IMAP)
-    imap_expand_path(buf);
+    imap_path_canon(buf);
 }
 
 /**

@@ -76,11 +76,16 @@ struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *n
   char buf[1024] = { 0 };
   struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
 
-  mdata->real_name = mutt_str_dup(name);
-
-  imap_fix_path(adata->delim, name, buf, sizeof(buf));
+  imap_fix_path_with_delim(adata->delim, name, buf, sizeof(buf));
   if (buf[0] == '\0')
+  {
     mutt_str_copy(buf, "INBOX", sizeof(buf));
+    mdata->real_name = mutt_str_dup(name);
+  }
+  else
+  {
+    mdata->real_name = mutt_str_dup(buf);
+  }
   mdata->name = mutt_str_dup(buf);
 
   imap_munge_mbox_name(adata->unicode, buf, sizeof(buf), mdata->name);
