@@ -91,7 +91,10 @@ int imap_adata_find(const char *path, struct ImapAccountData **adata,
       continue;
     if (imap_account_match(&tmp_adata->conn->account, &cac))
     {
-      *mdata = imap_mdata_new(tmp_adata, tmp);
+      if (mdata)
+      {
+        *mdata = imap_mdata_new(tmp_adata, tmp);
+      }
       *adata = tmp_adata;
       return 0;
     }

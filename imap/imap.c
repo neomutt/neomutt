@@ -2363,24 +2363,24 @@ int imap_path_canon(struct Buffer *path)
     return 0;
 
   char tmp[PATH_MAX] = { 0 };
-  char tmp2[PATH_MAX];
-
-  struct ImapAccountData *adata = NULL;
-  struct ImapMboxData *mdata = NULL;
-  imap_adata_find(buf_string(path), &adata, &mdata);
-  if (adata)
+  char tmp2[PATH_MAX] = { 0 };
+  if (url->path)
   {
-    imap_fix_path_with_delim(adata->delim, url->path, tmp, sizeof(tmp));
+    struct ImapAccountData *adata = NULL;
+    imap_adata_find(buf_string(path), &adata, NULL);
+    if (adata)
+    {
+      imap_fix_path_with_delim(adata->delim, url->path, tmp, sizeof(tmp));
+    }
+    else
+    {
+      imap_fix_path(url->path, tmp, sizeof(tmp));
+    }
+    url->path = tmp;
   }
-  else
-  {
-    imap_fix_path(url->path, tmp, sizeof(tmp));
-  }
-  url->path = tmp;
   url_tostring(url, tmp2, sizeof(tmp2), U_NO_FLAGS);
   buf_strcpy(path, tmp2);
   url_free(&url);
-  imap_mdata_free((void *) &mdata);
 
   return 0;
 }
