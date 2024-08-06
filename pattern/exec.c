@@ -1077,12 +1077,15 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->env->x_label && patmatch(pat, e->env->x_label));
     case MUTT_PAT_DRIVER_TAGS:
     {
-      struct Buffer *tags = buf_pool_get();
-      driver_tags_get_with_hidden(&e->tags, tags);
-      const bool rc = (pat->pat_not ^
-                       (!buf_is_empty(tags) && patmatch(pat, buf_string(tags))));
-      buf_pool_release(&tags);
-      return rc;
+      struct Tag *tag = NULL;
+      STAILQ_FOREACH(tag, &e->tags, entries)
+      {
+        if (pat->pat_not ^ patmatch(pat, tag->name))
+        {
+          return true;
+        }
+      }
+      return false;
     }
     case MUTT_PAT_HORMEL:
       if (!e->env)
