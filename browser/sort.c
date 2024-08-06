@@ -58,7 +58,7 @@ static int browser_sort_subject(const void *a, const void *b, void *sdata)
   const struct FolderFile *pb = (const struct FolderFile *) b;
 
   /* inbox should be sorted ahead of its siblings */
-  int rc = mutt_inbox_cmp(pa->name, pb->name);
+  int rc = mutt_str_inbox_cmp(pa->name, pb->name);
   if (rc == 0)
     rc = mutt_str_coll(pa->name, pb->name);
 

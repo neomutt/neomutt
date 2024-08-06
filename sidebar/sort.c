@@ -104,7 +104,7 @@ static int sb_sort_path(const void *a, const void *b, void *sdata)
   const bool sort_reverse = *(bool *) sdata;
 
   int rc = 0;
-  rc = mutt_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
+  rc = mutt_str_inbox_cmp(mailbox_path(m1), mailbox_path(m2));
   if (rc == 0)
     rc = mutt_str_coll(mailbox_path(m1), mailbox_path(m2));
 
