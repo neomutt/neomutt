@@ -115,7 +115,7 @@ static void hook_free(struct Hook **ptr)
  */
 static struct Hook *hook_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Hook));
+  return MUTT_MEM_CALLOC(1, struct Hook);
 }
 
 /**
@@ -349,7 +349,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
   else if (~data & MUTT_GLOBAL_HOOK) /* NOT a global hook */
   {
     /* Hooks not allowing full patterns: Check syntax of regex */
-    rx = mutt_mem_calloc(1, sizeof(regex_t));
+    rx = MUTT_MEM_CALLOC(1, regex_t);
     int rc2 = REG_COMP(rx, buf_string(pattern), ((data & MUTT_CRYPT_HOOK) ? REG_ICASE : 0));
     if (rc2 != 0)
     {
@@ -529,7 +529,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
 
   if (!hl)
   {
-    hl = mutt_mem_calloc(1, sizeof(*hl));
+    hl = MUTT_MEM_CALLOC(1, struct HookList);
     TAILQ_INIT(hl);
     mutt_hash_insert(IdxFmtHooks, buf_string(name), hl);
   }

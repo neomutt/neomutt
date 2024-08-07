@@ -36,7 +36,7 @@
  */
 struct ProgressWindowData *progress_wdata_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct ProgressWindowData));
+  return MUTT_MEM_CALLOC(1, struct ProgressWindowData);
 }
 
 /**

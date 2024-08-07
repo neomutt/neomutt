@@ -189,8 +189,8 @@
 #define ARRAY_RESERVE(head, num)                                               \
   (((head)->capacity > (num)) ?                                                \
        (head)->capacity :                                                      \
-       ((mutt_mem_realloc(                                                     \
-         &(head)->entries, ((num) + ARRAY_HEADROOM) * ARRAY_ELEM_SIZE(head))), \
+       ((mutt_mem_reallocarray(                                                \
+         &(head)->entries, (num) + ARRAY_HEADROOM, ARRAY_ELEM_SIZE(head))),    \
         (memset((head)->entries + (head)->capacity, 0,                         \
                 ((num) + ARRAY_HEADROOM - (head)->capacity) *                  \
                 ARRAY_ELEM_SIZE(head))),                                       \

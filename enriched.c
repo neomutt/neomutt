@@ -255,7 +255,7 @@ static void enriched_flush(struct EnrichedState *enriched, bool wrap)
     if (enriched->line_used > enriched->line_max)
     {
       enriched->line_max = enriched->line_used;
-      mutt_mem_realloc(&enriched->line, (enriched->line_max + 1) * sizeof(wchar_t));
+      MUTT_MEM_REALLOC(&enriched->line, enriched->line_max + 1, wchar_t);
     }
     wcscat(enriched->line, enriched->buffer);
     enriched->line_len += enriched->word_len;
@@ -282,7 +282,10 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
     if (enriched->tag_level[RICH_COLOR])
     {
       if ((enriched->param_used + 1) >= enriched->param_len)
-        mutt_mem_realloc(&enriched->param, (enriched->param_len += 256) * sizeof(wchar_t));
+      {
+        enriched->param_len += 256;
+        MUTT_MEM_REALLOC(&enriched->param, enriched->param_len, wchar_t);
+      }
 
       enriched->param[enriched->param_used++] = c;
     }
@@ -293,7 +296,7 @@ static void enriched_putwc(wchar_t c, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + 3)) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
+    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, wchar_t);
   }
 
   if ((!enriched->tag_level[RICH_NOFILL] && iswspace(c)) || (c == (wchar_t) '\0'))
@@ -356,7 +359,7 @@ static void enriched_puts(const char *s, struct EnrichedState *enriched)
   if ((enriched->buf_len < (enriched->buf_used + mutt_str_len(s))) || !enriched->buffer)
   {
     enriched->buf_len += 1024;
-    mutt_mem_realloc(&enriched->buffer, (enriched->buf_len + 1) * sizeof(wchar_t));
+    MUTT_MEM_REALLOC(&enriched->buffer, enriched->buf_len + 1, wchar_t);
   }
   c = s;
   while (*c)
@@ -488,8 +491,8 @@ int text_enriched_handler(struct Body *b_email, struct State *state)
                              state->wraplen - 4 :
                              72;
   enriched.line_max = enriched.wrap_margin * 4;
-  enriched.line = mutt_mem_calloc((enriched.line_max + 1), sizeof(wchar_t));
-  enriched.param = mutt_mem_calloc(256, sizeof(wchar_t));
+  enriched.line = MUTT_MEM_CALLOC(enriched.line_max + 1, wchar_t);
+  enriched.param = MUTT_MEM_CALLOC(256, wchar_t);
 
   enriched.param_len = 256;
   enriched.param_used = 0;

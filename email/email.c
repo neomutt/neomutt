@@ -78,7 +78,7 @@ struct Email *email_new(void)
 {
   static size_t sequence = 0;
 
-  struct Email *e = mutt_mem_calloc(1, sizeof(struct Email));
+  struct Email *e = MUTT_MEM_CALLOC(1, struct Email);
   STAILQ_INIT(&e->tags);
   e->visible = true;
   e->sequence = sequence++;

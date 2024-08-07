@@ -558,8 +558,8 @@ int imap_mxcmp(const char *mx1, const char *mx2)
     return 0;
   }
 
-  b1 = mutt_mem_malloc(strlen(mx1) + 1);
-  b2 = mutt_mem_malloc(strlen(mx2) + 1);
+  b1 = MUTT_MEM_MALLOC(strlen(mx1) + 1, char);
+  b2 = MUTT_MEM_MALLOC(strlen(mx2) + 1, char);
 
   imap_fix_path('\0', mx1, b1, strlen(mx1) + 1);
   imap_fix_path('\0', mx2, b2, strlen(mx2) + 1);
@@ -1089,7 +1089,7 @@ struct SeqsetIterator *mutt_seqset_iterator_new(const char *seqset)
   if (!seqset || (*seqset == '\0'))
     return NULL;
 
-  struct SeqsetIterator *iter = mutt_mem_calloc(1, sizeof(struct SeqsetIterator));
+  struct SeqsetIterator *iter = MUTT_MEM_CALLOC(1, struct SeqsetIterator);
   iter->full_seqset = mutt_str_dup(seqset);
   iter->eostr = strchr(iter->full_seqset, '\0');
   iter->substr_cur = iter->substr_end = iter->full_seqset;

@@ -48,7 +48,7 @@
  */
 struct NodeExpandoPrivate *node_expando_private_new(void)
 {
-  struct NodeExpandoPrivate *priv = mutt_mem_calloc(1, sizeof(struct NodeExpandoPrivate));
+  struct NodeExpandoPrivate *priv = MUTT_MEM_CALLOC(1, struct NodeExpandoPrivate);
 
   // NOTE(g0mb4): Expando definition should contain this
   priv->color = -1;
@@ -143,7 +143,7 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
   if (start == end)
     return NULL;
 
-  struct ExpandoFormat *fmt = mutt_mem_calloc(1, sizeof(struct ExpandoFormat));
+  struct ExpandoFormat *fmt = MUTT_MEM_CALLOC(1, struct ExpandoFormat);
 
   fmt->leader = ' ';
   fmt->start = start;
