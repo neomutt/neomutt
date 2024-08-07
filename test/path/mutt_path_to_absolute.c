@@ -41,11 +41,13 @@ void test_mutt_path_to_absolute(void)
   }
 
   {
-    TEST_CHECK(!mutt_path_to_absolute("apple", NULL));
+    char path[PATH_MAX] = "apple";
+    TEST_CHECK(!mutt_path_to_absolute(path, NULL));
   }
 
   {
-    TEST_CHECK(mutt_path_to_absolute("/apple", "banana"));
+    char path[PATH_MAX] = "/apple";
+    TEST_CHECK(mutt_path_to_absolute(path, "banana"));
   }
 
   {
@@ -79,26 +81,6 @@ void test_mutt_path_to_absolute(void)
     snprintf(expected, sizeof(expected), "%s/notmuch/%s", test_dir, relative);
 
     TEST_CHECK(mutt_path_to_absolute(path, reference));
-    TEST_CHECK_STR_EQ(path, expected);
-  }
-
-  {
-    // Unreadable dir
-    char path[PATH_MAX] = { 0 };
-    char reference[PATH_MAX] = { 0 };
-    char expected[PATH_MAX] = { 0 };
-
-    const char *test_dir = get_test_dir();
-    const char *relative = "tmp";
-
-    strncpy(path, relative, sizeof(path));
-    snprintf(reference, sizeof(reference), "%s/maildir/damson/cur", test_dir);
-    snprintf(expected, sizeof(expected), "%s/maildir/damson/%s", test_dir, relative);
-
-    // We don't check the return value here.
-    // If the tests are run as root, like under GitHub Actions, then realpath() will succeed.
-    // If they're run as a non-root user, realpath() will fail.
-    mutt_path_to_absolute(path, reference);
     TEST_CHECK_STR_EQ(path, expected);
   }
 }
