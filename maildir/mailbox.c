@@ -547,7 +547,6 @@ static enum MxStatus maildir_check(struct Mailbox *m)
   struct HashTable *hash_names = NULL; // Hash Table: "base-filename" -> MdEmail
   struct MaildirMboxData *mdata = maildir_mdata_get(m);
 
-  /* XXX seems like this check belongs in mx_mbox_check() rather than here.  */
   const bool c_check_new = cs_subset_bool(NeoMutt->sub, "check_new");
   if (!c_check_new)
     return MX_STATUS_OK;
@@ -809,7 +808,7 @@ enum MxStatus maildir_mbox_check(struct Mailbox *m)
  */
 enum MxStatus maildir_mbox_check_stats(struct Mailbox *m, uint8_t flags)
 {
-  bool check_stats = flags & MUTT_MAILBOX_CHECK_FORCE_STATS;
+  bool check_stats = flags & MUTT_MAILBOX_CHECK_STATS;
   bool check_new = true;
 
   if (check_stats)
