@@ -1078,14 +1078,12 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_DRIVER_TAGS:
     {
       struct Tag *tag = NULL;
+      bool matched = false;
       STAILQ_FOREACH(tag, &e->tags, entries)
       {
-        if (pat->pat_not ^ patmatch(pat, tag->name))
-        {
-          return true;
-        }
+        matched |= patmatch(pat, tag->name);
       }
-      return false;
+      return pat->pat_not ^ matched;
     }
     case MUTT_PAT_HORMEL:
       if (!e->env)
