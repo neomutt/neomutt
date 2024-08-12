@@ -368,7 +368,7 @@ struct Mailbox *mutt_mailbox_next(struct Mailbox *m_cur, struct Buffer *s)
     if (m_res)
       return m_res;
 
-    mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_POSTPONED); /* mailbox was wrong - resync things */
+    mutt_mailbox_check(m_cur, MUTT_MAILBOX_CHECK_POSTPONED);
   }
 
   buf_reset(s); // no folders with new mail
