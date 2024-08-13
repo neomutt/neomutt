@@ -389,14 +389,31 @@ static int perform_alias_or(struct PatternList *pat, PatternExecFlags flags,
 }
 
 /**
- * match_addrlist - Match a Pattern against an Address list
- * @param pat            Pattern to find
- * @param match_personal If true, also match the pattern against the real name
- * @param n              Number of Addresses supplied
- * @param ...            Variable number of Addresses
+ * match_tags - match a pattern against a tags list
+ * @param pat  pattern to find
+ * @param tags tags list
+ * @retval true if any tag match
+ */
+static bool match_tags(struct Pattern *pat, struct TagList *tags)
+{
+  struct Tag *tag = NULL;
+  bool matched = false;
+  STAILQ_FOREACH(tag, tags, entries)
+  {
+    matched |= patmatch(pat, tag->name);
+  }
+  return pat->pat_not ^ matched;
+}
+
+/**
+ * match_addrlist - match a pattern against an address list
+ * @param pat            pattern to find
+ * @param match_personal if true, also match the pattern against the real name
+ * @param n              number of addresses supplied
+ * @param ...            variable number of addresses
  * @retval true
- * - One Address matches (all_addr is false)
- * - All the Addresses match (all_addr is true)
+ * - one address matches (all_addr is false)
+ * - all the addresses match (all_addr is true)
  */
 static int match_addrlist(struct Pattern *pat, bool match_personal, int n, ...)
 {
@@ -1077,12 +1094,7 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (e->env->x_label && patmatch(pat, e->env->x_label));
     case MUTT_PAT_DRIVER_TAGS:
     {
-      struct Buffer *tags = buf_pool_get();
-      driver_tags_get_with_hidden(&e->tags, tags);
-      const bool rc = (pat->pat_not ^
-                       (!buf_is_empty(tags) && patmatch(pat, buf_string(tags))));
-      buf_pool_release(&tags);
-      return rc;
+      return match_tags(pat, &e->tags);
     }
     case MUTT_PAT_HORMEL:
       if (!e->env)
@@ -1175,23 +1187,9 @@ bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ match_addrlist(pat, (flags & MUTT_MATCH_FULL_ADDRESS),
                                            1, &av->alias->addr);
     case MUTT_PAT_DRIVER_TAGS:
-    {
       if (!av->alias)
         return false;
-
-      struct Buffer *tags = buf_pool_get();
-      alias_tags_to_buffer(&av->alias->tags, tags);
-
-      bool rc = false;
-      if (!buf_is_empty(tags))
-      {
-        rc = (pat->pat_not ^ (patmatch(pat, buf_string(tags))));
-      }
-
-      buf_pool_release(&tags);
-      return rc;
-    }
-
+      return match_tags(pat, &av->alias->tags); 
     case MUTT_PAT_AND:
       return pat->pat_not ^ (perform_alias_and(pat->child, flags, av, cache) > 0);
     case MUTT_PAT_OR:
