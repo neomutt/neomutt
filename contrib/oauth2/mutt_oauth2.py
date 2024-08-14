@@ -375,8 +375,20 @@ if args.verbose:
 print(token['access_token'])
 
 
-def build_sasl_string(user, host, port, bearer_token):
-    '''Build appropriate SASL string, which depends on cloud server's supported SASL method.'''
+def build_sasl_string(protocol):
+    '''Build appropriate SASL string, which depends on cloud server's supported SASL method and used protocol.'''
+    user = token['email']
+    bearer_token = token['access_token']
+    if protocol == 'imap':
+        host, port = registration['imap_endpoint'], 993
+    elif protocol == 'pop':
+        host, port = registration['pop_endpoint'], 995
+    elif protocol == 'smtp':
+        # SMTP_SSL would be simpler but Microsoft does not answer on port 465.
+        host, port = registration['smtp_endpoint'], 587
+    else:
+        sys.exit(f'Unknown protocol {protocol}')
+
     if registration['sasl_method'] == 'OAUTHBEARER':
         return f'n,a={user},\1host={host}\1port={port}\1auth=Bearer {bearer_token}\1\1'
     if registration['sasl_method'] == 'XOAUTH2':
@@ -388,8 +400,7 @@ if args.test:
     errors = False
 
     imap_conn = imaplib.IMAP4_SSL(registration['imap_endpoint'])
-    sasl_string = build_sasl_string(token['email'], registration['imap_endpoint'], 993,
-                                    token['access_token'])
+    sasl_string = build_sasl_string('imap')
     if args.debug:
         imap_conn.debug = 4
     try:
@@ -406,8 +417,7 @@ if args.test:
         errors = True
 
     pop_conn = poplib.POP3_SSL(registration['pop_endpoint'])
-    sasl_string = build_sasl_string(token['email'], registration['pop_endpoint'], 995,
-                                    token['access_token'])
+    sasl_string = build_sasl_string('pop')
     if args.debug:
         pop_conn.set_debuglevel(2)
     try:
@@ -422,10 +432,8 @@ if args.test:
         print('POP authentication FAILED (does your account allow POP?):', e.args[0].decode())
         errors = True
 
-    # SMTP_SSL would be simpler but Microsoft does not answer on port 465.
     smtp_conn = smtplib.SMTP(registration['smtp_endpoint'], 587)
-    sasl_string = build_sasl_string(token['email'], registration['smtp_endpoint'], 587,
-                                    token['access_token'])
+    sasl_string = build_sasl_string('smtp')
     smtp_conn.ehlo('test')
     smtp_conn.starttls()
     smtp_conn.ehlo('test')
