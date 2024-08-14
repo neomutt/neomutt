@@ -88,6 +88,8 @@ ap.add_argument('-d', '--debug', action='store_true', help='enable debug output'
 ap.add_argument('tokenfile', help='persistent token storage')
 ap.add_argument('-a', '--authorize', action='store_true', help='manually authorize new tokens')
 ap.add_argument('--authflow', help='authcode | localhostauthcode | devicecode')
+ap.add_argument('-s', '--sasl', type=str, choices=['imap', 'pop', 'smtp'],
+                help='return SASL method and base64 encoded token string for the specified protocol (instead of plain token)')
 ap.add_argument('-t', '--test', action='store_true', help='test IMAP/POP/SMTP endpoints')
 ap.add_argument('--decryption-pipe', type=shlex.split, default=DECRYPTION_PIPE,
                 help='decryption command (string), reads from stdin and writes '
@@ -370,11 +372,6 @@ if not access_token_valid():
     sys.exit('ERROR: No valid access token. This should not be able to happen.')
 
 
-if args.verbose:
-    print('Access Token: ', end='')
-print(token['access_token'])
-
-
 def build_sasl_string(protocol):
     '''Build appropriate SASL string, which depends on cloud server's supported SASL method and used protocol.'''
     user = token['email']
@@ -394,6 +391,16 @@ def build_sasl_string(protocol):
     if registration['sasl_method'] == 'XOAUTH2':
         return f'user={user}\1auth=Bearer {bearer_token}\1\1'
     sys.exit(f'Unknown SASL method {registration["sasl_method"]}.')
+
+
+if args.sasl:
+    if args.verbose:
+        print('SASL Method and String: ', end='')
+    print(registration['sasl_method'], base64.standard_b64encode(build_sasl_string(args.sasl).encode()).decode())
+else:
+    if args.verbose:
+        print('Access Token: ', end='')
+    print(token['access_token'])
 
 
 if args.test:
