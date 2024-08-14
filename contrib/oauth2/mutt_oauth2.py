@@ -88,6 +88,13 @@ ap.add_argument('-d', '--debug', action='store_true', help='enable debug output'
 ap.add_argument('tokenfile', help='persistent token storage')
 ap.add_argument('-a', '--authorize', action='store_true', help='manually authorize new tokens')
 ap.add_argument('--authflow', help='authcode | localhostauthcode | devicecode')
+ap.add_argument('--format', type=str, choices=['token', 'sasl', 'msasl'], default='token',
+                help='''output format:
+    token - plain access token (default);
+    sasl - base64 encoded SASL token string for the specified protocol [--protocol] and user [--email];
+    msasl - like sasl, preceeded with the SASL method''')
+ap.add_argument('--protocol', type=str, choices=['imap', 'pop', 'smtp'], default='imap',
+                help='protocol used for SASL output (default: imap)')
 ap.add_argument('-t', '--test', action='store_true', help='test IMAP/POP/SMTP endpoints')
 ap.add_argument('--decryption-pipe', type=shlex.split, default=DECRYPTION_PIPE,
                 help='decryption command (string), reads from stdin and writes '
@@ -370,14 +377,9 @@ if not access_token_valid():
     sys.exit('ERROR: No valid access token. This should not be able to happen.')
 
 
-if args.verbose:
-    print('Access Token: ', end='')
-print(token['access_token'])
-
-
-def build_sasl_string(protocol):
+def build_sasl_string(protocol, user=None):
     '''Build appropriate SASL string, which depends on cloud server's supported SASL method and used protocol.'''
-    user = token['email']
+    user = user or token['email']
     bearer_token = token['access_token']
     if protocol == 'imap':
         host, port = registration['imap_endpoint'], 993
@@ -394,6 +396,20 @@ def build_sasl_string(protocol):
     if registration['sasl_method'] == 'XOAUTH2':
         return f'user={user}\1auth=Bearer {bearer_token}\1\1'
     sys.exit(f'Unknown SASL method {registration["sasl_method"]}.')
+
+
+if args.format == 'msasl':
+    if args.verbose:
+        print('SASL Method and String: ', end='')
+    print(registration['sasl_method'], base64.standard_b64encode(build_sasl_string(args.protocol, args.email).encode()).decode())
+elif args.format == 'sasl':
+    if args.verbose:
+        print('SASL String: ', end='')
+    print(base64.standard_b64encode(build_sasl_string(args.protocol, args.email).encode()).decode())
+else:
+    if args.verbose:
+        print('Access Token: ', end='')
+    print(token['access_token'])
 
 
 if args.test:
