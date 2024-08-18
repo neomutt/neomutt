@@ -75,7 +75,7 @@ static int autocrypt_dir_init(bool can_create)
      for some reason (e.g. autocrypt, header cache, bcache), but it
      doesn't exist.  The prompt is asking whether to create the directory */
   buf_printf(prompt, _("%s does not exist. Create it?"), c_autocrypt_dir);
-  if (query_yesorno(buf_string(prompt), MUTT_YES) == MUTT_YES)
+  if (query_yesorno_interactive(buf_string(prompt), MUTT_YES) == MUTT_YES)
   {
     if (mutt_file_mkdir(c_autocrypt_dir, S_IRWXU) < 0)
     {
@@ -105,8 +105,6 @@ int mutt_autocrypt_init(bool can_create)
   const char *const c_autocrypt_dir = cs_subset_path(NeoMutt->sub, "autocrypt_dir");
   if (!c_autocrypt || !c_autocrypt_dir)
     return -1;
-
-  mutt_flushinp();
 
   if (autocrypt_dir_init(can_create))
     goto bail;
@@ -155,7 +153,7 @@ int mutt_autocrypt_account_init(bool prompt)
     /* L10N: The first time NeoMutt is started with $autocrypt set, it will
        create $autocrypt_dir and then prompt to create an autocrypt account
        with this message.  */
-    if (query_yesorno(_("Create an initial autocrypt account?"), MUTT_YES) != MUTT_YES)
+    if (query_yesorno_interactive(_("Create an initial autocrypt account?"), MUTT_YES) != MUTT_YES)
       return 0;
   }
 
@@ -218,7 +216,7 @@ int mutt_autocrypt_account_init(bool prompt)
      enabled.
      Otherwise the UI will show encryption is "available" but the user
      will be required to enable encryption manually.  */
-  if (query_yesorno(_("Prefer encryption?"), MUTT_NO) == MUTT_YES)
+  if (query_yesorno_interactive(_("Prefer encryption?"), MUTT_NO) == MUTT_YES)
     prefer_encrypt = true;
 
   if (mutt_autocrypt_db_account_insert(addr, buf_string(keyid), buf_string(keydata), prefer_encrypt))
@@ -927,7 +925,7 @@ void mutt_autocrypt_scan_mailboxes(void)
      through one or more mailboxes for Autocrypt: headers.  Those headers are
      then captured in the database as peer records and used for encryption.
      If this is answered yes, they will be prompted for a mailbox.  */
-  enum QuadOption scan = query_yesorno(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
+  enum QuadOption scan = query_yesorno_interactive(_("Scan a mailbox for autocrypt headers?"), MUTT_YES);
   while (scan == MUTT_YES)
   {
     struct Mailbox *m_cur = get_current_mailbox();
@@ -953,7 +951,7 @@ void mutt_autocrypt_scan_mailboxes(void)
        I'm purposely being extra verbose; asking first then prompting
        for a mailbox.  This is because this is a one-time operation
        and I don't want them to accidentally ctrl-g and abort it.  */
-    scan = query_yesorno(_("Scan another mailbox for autocrypt headers?"), MUTT_YES);
+    scan = query_yesorno_interactive(_("Scan another mailbox for autocrypt headers?"), MUTT_YES);
   }
 
 #ifdef USE_HCACHE
