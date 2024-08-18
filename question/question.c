@@ -330,6 +330,19 @@ enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
 }
 
 /**
+ * query_yesorno_interactive - Ask the user a Yes/No question interactively only
+ * @param prompt Prompt
+ * @param def Default answer, e.g. #MUTT_YES
+ * @retval enum #QuadOption, Selection made
+ *
+ * Like query_yesorno but don't read from the macro events buffer.
+ */
+enum QuadOption query_yesorno_interactive(const char *prompt, enum QuadOption def)
+{
+  return mw_yesorno(prompt, def, NULL, GETCH_IGNORE_MACRO);
+}
+
+/**
  * query_yesorno_help - Ask the user a Yes/No question offering help
  * @param prompt Prompt
  * @param def    Default answer, e.g. #MUTT_YES
