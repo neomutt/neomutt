@@ -153,6 +153,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * @param prompt Prompt
  * @param def    Default answer, e.g. #MUTT_YES
  * @param cdef   Config definition for help
+ * @param flags  mutt_getch Flags, e.g. #GETCH_IGNORE_MACRO
  * @retval enum #QuadOption, Selection made
  *
  * This function uses a message window.
@@ -171,7 +172,7 @@ int mw_multi_choice(const char *prompt, const char *letters)
  * Additionally, if `$help` is set, a link to the config's documentation is shown.
  */
 static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
-                                  struct ConfigDef *cdef)
+                                  struct ConfigDef *cdef, GetChFlags flags)
 {
   struct MuttWindow *win = msgwin_new(true);
   if (!win)
@@ -249,7 +250,7 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
   window_redraw(NULL);
   while (true)
   {
-    event = mutt_getch(GETCH_NO_FLAGS);
+    event = mutt_getch(flags);
     if ((event.op == OP_TIMEOUT) || (event.op == OP_REPAINT))
     {
       window_redraw(NULL);
@@ -325,7 +326,7 @@ static enum QuadOption mw_yesorno(const char *prompt, enum QuadOption def,
  */
 enum QuadOption query_yesorno(const char *prompt, enum QuadOption def)
 {
-  return mw_yesorno(prompt, def, NULL);
+  return mw_yesorno(prompt, def, NULL, GETCH_NO_FLAGS);
 }
 
 /**
@@ -349,7 +350,7 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
   ASSERT(value != INT_MIN);
 
   struct ConfigDef *cdef = he_base->data;
-  return mw_yesorno(prompt, def, cdef);
+  return mw_yesorno(prompt, def, cdef, GETCH_NO_FLAGS);
 }
 
 /**
@@ -376,5 +377,5 @@ enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, c
 
   struct ConfigDef *cdef = he_base->data;
   enum QuadOption def = (value == MUTT_ASKYES) ? MUTT_YES : MUTT_NO;
-  return mw_yesorno(prompt, def, cdef);
+  return mw_yesorno(prompt, def, cdef, GETCH_NO_FLAGS);
 }
