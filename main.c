@@ -287,10 +287,10 @@ static bool usage(void)
   // clang-format off
   /* L10N: Try to limit to 80 columns */
   puts(_("usage:"));
-  puts(_("  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+  puts(_("  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
          "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
          "          <address> [...]"));
-  puts(_("  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+  puts(_("  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
          "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"));
   puts(_("  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"));
@@ -619,7 +619,7 @@ main
         argv[nargc++] = argv[optind];
     }
 
-    i = getopt(argc, argv, "+A:a:Bb:F:f:Cc:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvxyzZ");
+    i = getopt(argc, argv, "+A:a:Bb:F:f:Cc:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvyzZ");
     if (i != EOF)
     {
       switch (i)
