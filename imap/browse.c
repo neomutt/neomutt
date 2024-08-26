@@ -258,7 +258,7 @@ int imap_browse(const char *path, struct BrowserState *state)
   }
   else
   {
-    imap_fix_path(adata->delim, buf, mbox, sizeof(mbox));
+    imap_fix_path_with_delim(adata->delim, buf, mbox, sizeof(mbox));
     n = mutt_str_len(mbox);
   }
 
@@ -485,7 +485,7 @@ int imap_mailbox_rename(const char *path)
     goto done;
   }
 
-  imap_fix_path(adata->delim, buf_string(newname), buf->data, buf->dsize);
+  imap_fix_path_with_delim(adata->delim, buf_string(newname), buf->data, buf->dsize);
 
   if (imap_rename_mailbox(adata, mdata->name, buf_string(buf)) < 0)
   {
