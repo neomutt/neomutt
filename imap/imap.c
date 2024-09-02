@@ -2367,8 +2367,7 @@ int imap_path_canon(struct Buffer *path)
   if (url->path)
   {
     struct ImapAccountData *adata = NULL;
-    imap_adata_find(buf_string(path), &adata, NULL);
-    if (adata)
+    if (imap_adata_find(buf_string(path), &adata, NULL) == 0)
     {
       imap_fix_path_with_delim(adata->delim, url->path, tmp, sizeof(tmp));
     }
