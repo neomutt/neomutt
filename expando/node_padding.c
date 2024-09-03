@@ -79,18 +79,21 @@ int pad_string(const struct ExpandoNode *node, struct Buffer *buf, int max_cols)
   const int pad_cols = mutt_strnwidth(node->start, pad_len);
   int total_cols = 0;
 
-  while (pad_cols <= max_cols)
+  if (pad_len != 0)
   {
-    buf_addstr_n(buf, node->start, pad_len);
+    while (pad_cols <= max_cols)
+    {
+      buf_addstr_n(buf, node->start, pad_len);
 
-    max_cols -= pad_cols;
-    total_cols += pad_cols;
+      max_cols -= pad_cols;
+      total_cols += pad_cols;
+    }
   }
 
-  for (; (max_cols > 0); buf++, max_cols--)
+  if (max_cols > 0)
   {
-    buf_addch(buf, ' ');
-    total_cols++;
+    buf_add_printf(buf, "%*s", max_cols, "");
+    total_cols += max_cols;
   }
 
   return total_cols;
