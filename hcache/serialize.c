@@ -533,6 +533,7 @@ unsigned char *serial_dump_body(const struct Body *b, unsigned char *d, int *off
   d = serial_dump_parameter(&b->parameter, d, off, convert);
 
   d = serial_dump_char(b->description, d, off, convert);
+  d = serial_dump_char(b->content_id, d, off, convert);
   d = serial_dump_char(b->form_name, d, off, convert);
   d = serial_dump_char(b->filename, d, off, convert);
   d = serial_dump_char(b->d_filename, d, off, convert);
@@ -568,6 +569,7 @@ void serial_restore_body(struct Body *b, const unsigned char *d, int *off, bool 
   serial_restore_parameter(&b->parameter, d, off, convert);
 
   serial_restore_char(&b->description, d, off, convert);
+  serial_restore_char(&b->content_id, d, off, convert);
   serial_restore_char(&b->form_name, d, off, convert);
   serial_restore_char(&b->filename, d, off, convert);
   serial_restore_char(&b->d_filename, d, off, convert);
