@@ -80,6 +80,7 @@ int mutt_body_copy(FILE *fp, struct Body **b_dst, struct Body *b_src)
   b->parts = NULL;
   b->next = NULL;
 
+  b->content_id = mutt_str_dup(b->content_id);
   b->filename = buf_strdup(tmp);
   b->use_disp = use_disp;
   b->unlink = true;
