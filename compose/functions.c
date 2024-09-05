@@ -1331,14 +1331,9 @@ static int op_attachment_group_related(struct ComposeSharedData *shared, int op)
     if (!b->tagged || (b->type == TYPE_MULTIPART))
       continue;
 
-    char *id = b->content_id;
-    if (id)
-      continue;
-
-    id = gen_cid();
-    if (id)
+    if (!b->content_id)
     {
-      mutt_str_replace(&b->content_id, id);
+      b->content_id = gen_cid();
     }
   }
 
