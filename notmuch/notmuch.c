@@ -1640,7 +1640,7 @@ bool nm_query_window_available(void)
   const short c_nm_query_window_duration = cs_subset_number(NeoMutt->sub, "nm_query_window_duration");
   const bool c_nm_query_window_enable = cs_subset_bool(NeoMutt->sub, "nm_query_window_enable");
 
-  return c_nm_query_window_enable || (c_nm_query_window_duration > 0);
+  return c_nm_query_window_enable && (c_nm_query_window_duration > 0);
 }
 
 /**
