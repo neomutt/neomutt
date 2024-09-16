@@ -2301,6 +2301,9 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
     }
   }
 
+  if (!e_templ->env->message_id)
+    e_templ->env->message_id = mutt_gen_msgid();
+
   const bool c_resume_draft_files = cs_subset_bool(sub, "resume_draft_files");
   if (!(flags & (SEND_POSTPONED | SEND_RESEND)) &&
       !((flags & SEND_DRAFT_FILE) && c_resume_draft_files))

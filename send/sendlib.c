@@ -728,7 +728,7 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
 }
 
 /**
- * gen_msgid - Generate a random Message ID
+ * mutt_gen_msgid - Generate a random Message ID
  * @retval ptr Message ID
  *
  * The length of the message id is chosen such that it is maximal and fits in
@@ -750,7 +750,7 @@ const char *mutt_fqdn(bool may_hide_host, const struct ConfigSubset *sub)
  *
  * @note The caller should free the string
  */
-static char *gen_msgid(void)
+char *mutt_gen_msgid(void)
 {
   const int ID_LEFT_LEN = 50;
   const int ID_RIGHT_LEN = 12;
@@ -801,7 +801,7 @@ void mutt_prepare_envelope(struct Envelope *env, bool final, struct ConfigSubset
     mutt_set_followup_to(env, sub);
 
     if (!env->message_id)
-      env->message_id = gen_msgid();
+      env->message_id = mutt_gen_msgid();
   }
 
   /* Take care of 8-bit => 7-bit conversion. */
@@ -874,7 +874,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
     fprintf(fp_tmp, "Resent-Date: %s\n", buf_string(date));
     buf_pool_release(&date);
 
-    char *msgid_str = gen_msgid();
+    char *msgid_str = mutt_gen_msgid();
     fprintf(fp_tmp, "Resent-Message-ID: %s\n", msgid_str);
     FREE(&msgid_str);
     mutt_addrlist_write_file(to, fp_tmp, "Resent-To");
