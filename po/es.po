@@ -5325,20 +5325,20 @@ msgstr "uso:"
 
 #: main.c:290
 msgid ""
-"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-CEnx] [-e <comando>] [-F <config>] [-H <borrador>] [-i <incluir>]\n"
+"  neomutt [-CEn] [-e <comando>] [-F <config>] [-H <borrador>] [-i <incluir>]\n"
 "          [-b <dirección>] [-c <dirección>] [-s <asunto>] [-a <archivo> [...] --]\n"
 "          <address> [...]"
 
 #: main.c:293
 msgid ""
-"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-Cnx] [-e <comando>] [-F <config>] [-b <dirección>] [-c <dirección>]\n"
+"  neomutt [-Cn] [-e <comando>] [-F <config>] [-b <dirección>] [-c <dirección>]\n"
 "          [-s <asunto>] [-a <archivo> [...] --] <dirección> [...] < mensaje"
 
 #: main.c:295

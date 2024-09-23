@@ -5346,21 +5346,21 @@ msgstr "użycie:"
 #: main.c:290
 #, fuzzy
 msgid ""
-"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
-"  neomutt [-CEnx] [-e <polecenie>] [-F <config>] [-H <wersja robocza>]\n"
+"  neomutt [-CEn] [-e <polecenie>] [-F <config>] [-H <wersja robocza>]\n"
 "          [-i <plik>] [-b <adres>] [-c <adres>] [-s <temat>]\n"
 "          [-a <plik> [...] --] <adres> [...]"
 
 #: main.c:293
 #, fuzzy
 msgid ""
-"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
-"  neomutt [-Cnx] [-e <polecenie>] [-F <config>] [-b <adres>] [-c <adres>]\n"
+"  neomutt [-Cn] [-e <polecenie>] [-F <config>] [-b <adres>] [-c <adres>]\n"
 "          [-s <temat>] [-a <plik> [...] --] <adres> [...] < wiadomość"
 
 #: main.c:295
