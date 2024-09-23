@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-04-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-05-08 19:10+0100\n"
+"POT-Creation-Date: 2024-09-23 10:34+0100\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -45,8 +45,8 @@ msgstr "경고: 이 알리아스는 작동하지 않습니다. 고칠까요?"
 msgid "Address: "
 msgstr "주소: "
 
-#: alias/alias.c:448 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:133
-#: external.c:135 recvcmd.c:231 send/send.c:219
+#: alias/alias.c:448 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:130
+#: external.c:135 recvcmd.c:231 send/send.c:216
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "잘못된 IDN: '%s'"
@@ -304,7 +304,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 작성 항목은 %%s가 필요함"
 
 #: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:345
-#: compose/functions.c:1861 gui/curs_lib.c:124 index/dlg_index.c:1186
+#: compose/functions.c:1846 gui/curs_lib.c:124 index/dlg_index.c:1186
 #: index/dlg_index.c:1231 pager/dlg_pager.c:455 pager/do_pager.c:166
 #: pager/message.c:330 send/sendlib.c:581
 #, c-format
@@ -453,28 +453,28 @@ msgstr "%s를 만들 수 없음: %s"
 #. L10N: The first time NeoMutt is started with $autocrypt set, it will
 #. create $autocrypt_dir and then prompt to create an autocrypt account
 #. with this message.
-#: autocrypt/autocrypt.c:158
+#: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
 msgstr ""
 
 #. L10N: Autocrypt is asking for the email address to use for the
 #. autocrypt account.  This will generate a key and add a record
 #. to the database for use in autocrypt operations.
-#: autocrypt/autocrypt.c:182
+#: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
 msgstr ""
 
 #. L10N: Autocrypt prompts for an account email address, and requires
 #. a single address.  This is shown if they entered something invalid,
 #. nothing, or more than one address for some reason.
-#: autocrypt/autocrypt.c:191
+#: autocrypt/autocrypt.c:189
 msgid "Please enter a single email address"
 msgstr ""
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
 #. they just entered.
-#: autocrypt/autocrypt.c:208
+#: autocrypt/autocrypt.c:206
 msgid "That email address already has an autocrypt account"
 msgstr ""
 
@@ -484,26 +484,26 @@ msgstr ""
 #. enabled.
 #. Otherwise the UI will show encryption is "available" but the user
 #. will be required to enable encryption manually.
-#: autocrypt/autocrypt.c:221
+#: autocrypt/autocrypt.c:219
 #, fuzzy
 msgid "Prefer encryption?"
 msgstr "암호화"
 
 #. L10N: Message displayed after an autocrypt account is successfully created.
-#: autocrypt/autocrypt.c:235
+#: autocrypt/autocrypt.c:233
 msgid "Autocrypt account creation succeeded"
 msgstr ""
 
 #. L10N: Error message displayed if creating an autocrypt account failed
 #. or was aborted by the user.
-#: autocrypt/autocrypt.c:241
+#: autocrypt/autocrypt.c:239
 msgid "Autocrypt account creation aborted"
 msgstr ""
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the engine is not available.
-#: autocrypt/autocrypt.c:578 autocrypt/autocrypt.c:587
-#: autocrypt/autocrypt.c:594
+#: autocrypt/autocrypt.c:576 autocrypt/autocrypt.c:585
+#: autocrypt/autocrypt.c:592
 #, fuzzy
 msgid "Autocrypt is not available"
 msgstr "부모 메일이 존재하지 않음"
@@ -512,7 +512,7 @@ msgstr "부모 메일이 존재하지 않음"
 #. email when the account does not exist or is not enabled.
 #. %s is the From email address used to look up the Autocrypt account.
 #.
-#: autocrypt/autocrypt.c:606
+#: autocrypt/autocrypt.c:604
 #, c-format
 msgid "Autocrypt is not enabled for %s"
 msgstr ""
@@ -520,7 +520,7 @@ msgstr ""
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
 #. The message is printed and they are returned to the compose menu.
-#: autocrypt/autocrypt.c:631 autocrypt/autocrypt.c:662
+#: autocrypt/autocrypt.c:629 autocrypt/autocrypt.c:660
 #, fuzzy, c-format
 msgid "No (valid) autocrypt key found for %s"
 msgstr "%s를 위한 인증서를 찾을 수 없음"
@@ -529,12 +529,12 @@ msgstr "%s를 위한 인증서를 찾을 수 없음"
 #. through one or more mailboxes for Autocrypt: headers.  Those headers are
 #. then captured in the database as peer records and used for encryption.
 #. If this is answered yes, they will be prompted for a mailbox.
-#: autocrypt/autocrypt.c:930
+#: autocrypt/autocrypt.c:928
 msgid "Scan a mailbox for autocrypt headers?"
 msgstr ""
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
-#: autocrypt/autocrypt.c:935
+#: autocrypt/autocrypt.c:933
 #, fuzzy
 msgid "Scan mailbox"
 msgstr "메일함 없음.\n"
@@ -544,7 +544,7 @@ msgstr "메일함 없음.\n"
 #. I'm purposely being extra verbose; asking first then prompting
 #. for a mailbox.  This is because this is a one-time operation
 #. and I don't want them to accidentally ctrl-g and abort it.
-#: autocrypt/autocrypt.c:956
+#: autocrypt/autocrypt.c:954
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr ""
 
@@ -564,7 +564,7 @@ msgstr "%s를 만들까요?"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:96 mixmaster/dlg_mixmaster.c:83
+#: autocrypt/dlg_autocrypt.c:96
 msgid "Delete"
 msgstr "삭제"
 
@@ -723,7 +723,7 @@ msgstr "%s에서 가입 탈퇴 중..."
 msgid "Catchup"
 msgstr ""
 
-#: browser/dlg_browser.c:762 browser/functions.c:436 browser/functions.c:776
+#: browser/dlg_browser.c:762 browser/functions.c:437 browser/functions.c:777
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s는 디렉토리가 아닙니다"
@@ -771,89 +771,89 @@ msgstr "파일 매스크와 일치하는 파일 없음."
 msgid "There are no mailboxes"
 msgstr "메일이 없음"
 
-#: browser/functions.c:261 browser/functions.c:586 browser/functions.c:645
+#: browser/functions.c:262 browser/functions.c:587 browser/functions.c:646
 msgid "No files match the file mask"
 msgstr "파일 매스크와 일치하는 파일 없음."
 
-#: browser/functions.c:276
+#: browser/functions.c:277
 msgid "Can't view a directory"
 msgstr "디렉토리를 볼 수 없음"
 
-#: browser/functions.c:292
+#: browser/functions.c:293
 msgid "Error trying to view file"
 msgstr "파일 보기 시도 중 오류"
 
-#: browser/functions.c:360
+#: browser/functions.c:361
 msgid "Chdir to: "
 msgstr "이동할 디렉토리: "
 
-#: browser/functions.c:423 browser/functions.c:579
+#: browser/functions.c:424 browser/functions.c:580
 msgid "Error scanning directory"
 msgstr "디렉토리 검사중 오류"
 
-#: browser/functions.c:456
+#: browser/functions.c:457
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "생성은 IMAP 메일함에서만 지원됨"
 
-#: browser/functions.c:487
+#: browser/functions.c:488
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "삭제는 IMAP 메일함에서만 지원됨"
 
-#: browser/functions.c:498
+#: browser/functions.c:499
 #, fuzzy
 msgid "Can't delete currently selected mailbox"
 msgstr "현재 선택된 파일의 이름 보기"
 
-#: browser/functions.c:502
+#: browser/functions.c:503
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "정말로 \"%s\" 메일함을 지울까요?"
 
-#: browser/functions.c:505
+#: browser/functions.c:506
 msgid "Mailbox not deleted"
 msgstr "메일함이 삭제되지 않음"
 
-#: browser/functions.c:511
+#: browser/functions.c:512
 #, fuzzy
 msgid "Mailbox deletion failed"
 msgstr "메일함 삭제됨"
 
-#: browser/functions.c:520
+#: browser/functions.c:521
 msgid "Mailbox deleted"
 msgstr "메일함 삭제됨"
 
-#: browser/functions.c:534
+#: browser/functions.c:535
 msgid "File Mask: "
 msgstr "파일 매스크: "
 
-#: browser/functions.c:852
+#: browser/functions.c:853
 #, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "생성은 IMAP 메일함에서만 지원됨"
 
 #. L10N: The highlighted letters must match the "Sort" options
-#: browser/functions.c:887
+#: browser/functions.c:888
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "역순정렬 방법: 날짜(d), 낱말(a), 크기(z), 안함(n)?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
-#: browser/functions.c:889
+#: browser/functions.c:890
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
 msgstr "정렬 방법: 날짜(d), 글자(a), 크기(z), 안함(n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
-#: browser/functions.c:891
+#: browser/functions.c:892
 msgid "dazecwn"
 msgstr ""
 
-#: browser/functions.c:957
+#: browser/functions.c:958
 #, fuzzy, c-format
 msgid "Subscribe pattern: "
 msgstr "%s에 가입 중..."
 
-#: browser/functions.c:959
+#: browser/functions.c:960
 #, fuzzy, c-format
 msgid "Unsubscribe pattern: "
 msgstr "%s에서 가입 탈퇴 중..."
@@ -867,8 +867,8 @@ msgstr "%s: 항목 없음"
 #: color/command.c:185 color/command.c:340 color/parse_color.c:288
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:367
 #: commands.c:389 commands.c:530 commands.c:546 commands.c:763 commands.c:795
-#: commands.c:811 commands.c:931 commands.c:1056 commands.c:1105
-#: commands.c:1145 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
+#: commands.c:811 commands.c:931 commands.c:1056 commands.c:1109
+#: commands.c:1149 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
 #: hook.c:470 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:102
 #: subjectrx.c:110
 #, c-format
@@ -890,10 +890,10 @@ msgstr "기본 색상들이 지원되지 않음"
 msgid "%s: color not supported by term"
 msgstr "%s: 터미널에서 지원되지 않는 색."
 
-#: color/command.c:402 color/command.c:444 commands.c:413 commands.c:1114
-#: commands.c:1245 commands.c:1580 hook.c:146 hook.c:226 hook.c:481
+#: color/command.c:402 color/command.c:444 commands.c:413 commands.c:1118
+#: commands.c:1249 commands.c:1585 hook.c:146 hook.c:226 hook.c:481
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
-#: mutt_lua.c:510 score.c:107
+#: mutt_lua.c:507 score.c:107
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: 인수가 너무 많음"
@@ -930,7 +930,7 @@ msgid "# Status Colors\n"
 msgstr ""
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:883 commands.c:942 commands.c:1622
+#: color/dump.c:460 commands.c:883 commands.c:942 commands.c:1628
 #: imap/message.c:1154 key/dump.c:231
 #, c-format
 msgid "Could not create temporary file %s"
@@ -1019,47 +1019,47 @@ msgstr ""
 msgid "%s is unset"
 msgstr "%s 설정 해제"
 
-#: commands.c:1080 mutt_lua.c:505
+#: commands.c:1080 mutt_lua.c:502
 #, c-format
 msgid "source: error at %s"
 msgstr "source: %s에 오류"
 
-#: commands.c:1088
+#: commands.c:1089
 #, fuzzy, c-format
 msgid "source: file %s could not be sourced"
 msgstr "메일들을 프린트 할 수 없음"
 
-#: commands.c:1254 imap/imap.c:1258
+#: commands.c:1259 imap/imap.c:1258
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "%s에 가입 중..."
 
-#: commands.c:1258
+#: commands.c:1263
 #, fuzzy, c-format
 msgid "Could not subscribe to %s"
 msgstr "%s에 가입 중..."
 
-#: commands.c:1266 commands.c:1601
+#: commands.c:1271 commands.c:1607
 #, fuzzy
 msgid "No folder specified"
 msgstr "제목이 지정되지 않음."
 
-#: commands.c:1300
+#: commands.c:1305
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
 msgstr ""
 
-#: commands.c:1342
+#: commands.c:1347
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
 msgstr ""
 
-#: commands.c:1589 imap/imap.c:1260
+#: commands.c:1595 imap/imap.c:1260
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s에서 가입 탈퇴 중..."
 
-#: commands.c:1593
+#: commands.c:1599
 #, fuzzy, c-format
 msgid "Could not unsubscribe from %s"
 msgstr "%s에서 가입 탈퇴 중..."
@@ -1131,7 +1131,6 @@ msgid "Send"
 msgstr "보냄"
 
 #: compose/dlg_compose.c:94 compose/dlg_compose.c:112
-#: mixmaster/dlg_mixmaster.c:84
 msgid "Abort"
 msgstr "취소"
 
@@ -1150,7 +1149,7 @@ msgstr ""
 msgid "Subj"
 msgstr ""
 
-#: compose/dlg_compose.c:101 compose/dlg_compose.c:115 compose/functions.c:742
+#: compose/dlg_compose.c:101 compose/dlg_compose.c:115 compose/functions.c:733
 msgid "Attach file"
 msgstr "파일 첨부"
 
@@ -1167,7 +1166,7 @@ msgstr "제목이 지정되지 않음."
 msgid "-- Attachments"
 msgstr "-- 첨부물"
 
-#: compose/functions.c:229
+#: compose/functions.c:220
 msgid "There are no attachments"
 msgstr "첨부물이 없음"
 
@@ -1175,7 +1174,7 @@ msgstr "첨부물이 없음"
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose/functions.c:298
+#: compose/functions.c:289
 #, fuzzy, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "%s [#%d]는 더 이상 존재하지 않음"
@@ -1184,12 +1183,12 @@ msgstr "%s [#%d]는 더 이상 존재하지 않음"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose/functions.c:315
+#: compose/functions.c:306
 #, fuzzy, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "%s [#%d] 변경됨. 다시 인코딩할까요?"
 
-#: compose/functions.c:355
+#: compose/functions.c:346
 msgid "You may not delete the only attachment"
 msgstr "첨부물만을 삭제할 수는 없습니다"
 
@@ -1197,213 +1196,213 @@ msgstr "첨부물만을 삭제할 수는 없습니다"
 #. the compose menu.  This entry is most likely the message they just
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
-#: compose/functions.c:365
+#: compose/functions.c:356
 #, fuzzy
 msgid "Really delete the main message?"
 msgstr "정말로 \"%s\" 메일함을 지울까요?"
 
-#: compose/functions.c:382 compose/functions.c:574
+#: compose/functions.c:373 compose/functions.c:565
 #, fuzzy
 msgid "Can't leave group with only one attachment"
 msgstr "첨부물만을 삭제할 수는 없습니다"
 
-#: compose/functions.c:542 compose/functions.c:556
+#: compose/functions.c:533 compose/functions.c:547
 msgid "Attachments to be grouped must have the same parent"
 msgstr ""
 
-#: compose/functions.c:763
+#: compose/functions.c:754
 #, fuzzy
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "선택된 파일을 첨부중..."
 
-#: compose/functions.c:783
+#: compose/functions.c:774
 #, c-format
 msgid "Unable to attach %s"
 msgstr "%s를 첨부할 수 없음"
 
-#: compose/functions.c:835
+#: compose/functions.c:826
 msgid "Open mailbox to attach message from"
 msgstr "메일을 첨부하기 위해 메일함을 염"
 
-#: compose/functions.c:845
+#: compose/functions.c:836
 #, fuzzy
 msgid "Open newsgroup to attach message from"
 msgstr "메일을 첨부하기 위해 메일함을 염"
 
-#: compose/functions.c:898 main.c:1423
+#: compose/functions.c:889 main.c:1423
 #, fuzzy, c-format
 msgid "Unable to open mailbox %s"
 msgstr "메일함을 잠글 수 없음!"
 
-#: compose/functions.c:909
+#: compose/functions.c:900
 msgid "No messages in that folder"
 msgstr "폴더에 메일이 없음"
 
-#: compose/functions.c:918
+#: compose/functions.c:909
 msgid "Tag the messages you want to attach"
 msgstr "첨부하고자 하는 메일을 표시하세요."
 
-#: compose/functions.c:956
+#: compose/functions.c:947
 msgid "Unable to attach"
 msgstr "첨부할 수 없음"
 
-#: compose/functions.c:1053
+#: compose/functions.c:1044
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
 msgstr ""
 
-#: compose/functions.c:1132
+#: compose/functions.c:1123
 msgid "Invalid encoding"
 msgstr "잘못된 인코딩"
 
-#: compose/functions.c:1169
+#: compose/functions.c:1160
 msgid "Empty 'Content-Language'"
 msgstr ""
 
-#: compose/functions.c:1232
+#: compose/functions.c:1223
 #, fuzzy
 msgid "Can't filter multipart attachments"
 msgstr "다중체계 첨부물의 삭제만이 지원됩니다"
 
-#: compose/functions.c:1267
+#: compose/functions.c:1258
 #, fuzzy
 msgid "Can't get multipart attachments"
 msgstr "다중체계 첨부물의 삭제만이 지원됩니다"
 
-#: compose/functions.c:1289
+#: compose/functions.c:1280
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1303
+#: compose/functions.c:1294
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1315
+#: compose/functions.c:1306
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr ""
 
-#: compose/functions.c:1318
+#: compose/functions.c:1309
 #, fuzzy
 msgid "Not sending this message"
 msgstr "메일 보내는 중 오류"
 
-#: compose/functions.c:1333
+#: compose/functions.c:1324
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr ""
 
-#: compose/functions.c:1372 compose/functions.c:1391
+#: compose/functions.c:1357 compose/functions.c:1376
 #, fuzzy
 msgid "Attachment is already at bottom"
 msgstr "첨부물 필터됨"
 
-#: compose/functions.c:1378 compose/functions.c:1431
+#: compose/functions.c:1363 compose/functions.c:1416
 msgid "Attachment can't be moved out of group"
 msgstr ""
 
-#: compose/functions.c:1426
+#: compose/functions.c:1411
 #, fuzzy
 msgid "Attachment is already at top"
 msgstr "첨부물 저장됨"
 
-#: compose/functions.c:1458
+#: compose/functions.c:1443
 msgid "New file: "
 msgstr "새 파일: "
 
-#: compose/functions.c:1478
+#: compose/functions.c:1463
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type이 base/sub 형식임."
 
-#: compose/functions.c:1485
+#: compose/functions.c:1470
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "알 수 없는 Content-Type %s"
 
-#: compose/functions.c:1494
+#: compose/functions.c:1479
 #, c-format
 msgid "Can't create file %s"
 msgstr "%s 파일을 만들 수 없음"
 
-#: compose/functions.c:1502
+#: compose/functions.c:1487
 #, fuzzy
 msgid "Error attaching file"
 msgstr "여기에 있는 것들은 첨부 과정에서 실패한 것들입니다."
 
-#: compose/functions.c:1544
+#: compose/functions.c:1529
 #, fuzzy
 msgid "Can't print multipart attachments"
 msgstr "태그가 붙은 첨부물 출력?"
 
-#: compose/functions.c:1570
+#: compose/functions.c:1555
 #, fuzzy
 msgid "Send attachment with name: "
 msgstr "첨부물을 text로 보기"
 
-#: compose/functions.c:1595
+#: compose/functions.c:1580
 #, fuzzy
 msgid "Can't save multipart attachments"
 msgstr "다중체계 첨부물의 삭제만이 지원됩니다"
 
-#: compose/functions.c:1630
+#: compose/functions.c:1615
 msgid "Recoding only affects text attachments"
 msgstr "저장은 텍스트 첨부물에만 적용됨"
 
-#: compose/functions.c:1635
+#: compose/functions.c:1620
 msgid "The current attachment won't be converted"
 msgstr "현재 첨부물은 변환할수 없음"
 
-#: compose/functions.c:1637
+#: compose/functions.c:1622
 msgid "The current attachment will be converted"
 msgstr "현재 첨부물은 변환 가능함"
 
-#: compose/functions.c:1666
+#: compose/functions.c:1651
 #, fuzzy
 msgid "Attachment is not 'multipart'"
 msgstr "첨부물 저장됨"
 
-#: compose/functions.c:1782 send/send.c:2753
+#: compose/functions.c:1767 send/send.c:2739
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "잘못된 IDN '%s': '%s'"
 
-#: compose/functions.c:1815
+#: compose/functions.c:1800
 #, fuzzy
 msgid "Can't edit multipart attachments"
 msgstr "다중체계 첨부물의 삭제만이 지원됩니다"
 
-#: compose/functions.c:1896
+#: compose/functions.c:1881
 #, fuzzy
 msgid "Can't rename multipart attachments"
 msgstr "다중체계 첨부물의 삭제만이 지원됩니다"
 
-#: compose/functions.c:1903
+#: compose/functions.c:1888
 msgid "Rename to: "
 msgstr "이름 바꾸기: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1911 convert/content_info.c:208 editmsg.c:104
+#: compose/functions.c:1896 convert/content_info.c:208 editmsg.c:104
 #: editmsg.c:137 editmsg.c:156
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "%s: %s의 상태를 알수 없음."
 
-#: compose/functions.c:1954
+#: compose/functions.c:1934
 msgid "Save a copy of this message?"
 msgstr "이 메일의 복사본을 저장할까요?"
 
-#: compose/functions.c:1980
+#: compose/functions.c:1960
 msgid "Write message to mailbox"
 msgstr "메일함에 메일 쓰기"
 
-#: compose/functions.c:1984
+#: compose/functions.c:1964
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "%s에 메일 쓰는중..."
 
-#: compose/functions.c:1992
+#: compose/functions.c:1972
 msgid "Message written"
 msgstr "메일 쓰기 완료"
 
-#: compose/functions.c:2060
+#: compose/functions.c:2040
 #, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "발송 연기된 메일을 다시 부를까요?"
@@ -1423,7 +1422,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr ""
 
 #: config/charset.c:71 config/charset.c:103 hcache/config.c:56
-#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:122
+#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:121
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "잘못된 날짜 입력: %s"
@@ -1631,39 +1630,39 @@ msgstr "터미널 초기화 오류."
 msgid "Error processing certificate data"
 msgstr ""
 
-#: conn/gnutls.c:488 conn/openssl.c:900
+#: conn/gnutls.c:488 conn/openssl.c:896
 #, fuzzy
 msgid "Untrusted server certificate"
 msgstr "경고: 인증서를 저장하지 못함"
 
-#: conn/gnutls.c:506 conn/openssl.c:907
+#: conn/gnutls.c:506 conn/openssl.c:903
 msgid "This certificate belongs to:"
 msgstr "이 인증서는 다음에 속함:"
 
-#: conn/gnutls.c:508 conn/openssl.c:909
+#: conn/gnutls.c:508 conn/openssl.c:905
 msgid "This certificate was issued by:"
 msgstr "이 인증서의 발행인은:"
 
-#: conn/gnutls.c:511 conn/openssl.c:913
+#: conn/gnutls.c:511 conn/openssl.c:909
 msgid "This certificate is valid"
 msgstr "이 인증서는 유효함"
 
-#: conn/gnutls.c:516 conn/openssl.c:914
+#: conn/gnutls.c:516 conn/openssl.c:910
 #, c-format
 msgid "   from %s"
 msgstr "   from %s"
 
-#: conn/gnutls.c:521 conn/openssl.c:916
+#: conn/gnutls.c:521 conn/openssl.c:912
 #, c-format
 msgid "     to %s"
 msgstr "     to %s"
 
-#: conn/gnutls.c:527 conn/openssl.c:921
+#: conn/gnutls.c:527 conn/openssl.c:917
 #, fuzzy, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Fingerprint: %s"
 
-#: conn/gnutls.c:532 conn/gnutls.c:534 conn/openssl.c:925 conn/openssl.c:927
+#: conn/gnutls.c:532 conn/gnutls.c:534 conn/openssl.c:921 conn/openssl.c:923
 #, fuzzy
 msgid "SHA256 Fingerprint: "
 msgstr "Fingerprint: %s"
@@ -1696,40 +1695,40 @@ msgstr "서버 인증서가 아직 유효하지 않음 "
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 
-#: conn/gnutls.c:567 conn/openssl.c:941
+#: conn/gnutls.c:567 conn/openssl.c:937
 #, c-format
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr ""
 
-#: conn/gnutls.c:600 conn/openssl.c:975
+#: conn/gnutls.c:600 conn/openssl.c:971
 msgid "Certificate saved"
 msgstr "인증서 저장됨"
 
-#: conn/gnutls.c:602 conn/openssl.c:977
+#: conn/gnutls.c:602 conn/openssl.c:973
 msgid "Warning: Couldn't save certificate"
 msgstr "경고: 인증서를 저장하지 못함"
 
-#: conn/gnutls.c:803 conn/gnutls.c:849
+#: conn/gnutls.c:799 conn/gnutls.c:845
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr ""
 
-#: conn/gnutls.c:856
+#: conn/gnutls.c:852
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:926 conn/openssl.c:1160
+#: conn/gnutls.c:922 conn/openssl.c:1156
 msgid "Warning: unable to set TLS SNI host name"
 msgstr ""
 
-#: conn/gnutls.c:972
+#: conn/gnutls.c:968
 #, fuzzy, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "%s를 사용해 SSL 연결 (%s)"
 
-#: conn/gnutls.c:1054 conn/gnutls.c:1083
+#: conn/gnutls.c:1050 conn/gnutls.c:1079
 msgid "Error: no TLS socket open"
 msgstr ""
 
@@ -1764,35 +1763,35 @@ msgstr "서버 인증서가 만기됨"
 msgid "Failed to find enough entropy on your system"
 msgstr "시스템에서 충분한 엔트로피를 찾을 수 없음"
 
-#: conn/openssl.c:775
+#: conn/openssl.c:771
 #, fuzzy
 msgid "can't get certificate subject"
 msgstr "지정한 곳에서 인증서를 가져올 수 없음"
 
-#: conn/openssl.c:784 conn/openssl.c:792
+#: conn/openssl.c:780 conn/openssl.c:788
 #, fuzzy
 msgid "can't get certificate common name"
 msgstr "지정한 곳에서 인증서를 가져올 수 없음"
 
-#: conn/openssl.c:806
+#: conn/openssl.c:802
 #, fuzzy, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "S/MIME 인증서 소유자와 보낸이가 일치하지 않음."
 
-#: conn/openssl.c:1080
+#: conn/openssl.c:1076
 #, fuzzy, c-format
 msgid "Certificate host check failed: %s"
 msgstr "인증서 저장됨"
 
-#: conn/openssl.c:1176
+#: conn/openssl.c:1172
 msgid "I/O error"
 msgstr "입/출력 오류"
 
-#: conn/openssl.c:1182 conn/raw.c:285 mutt_logging.c:108
+#: conn/openssl.c:1178 conn/raw.c:285 mutt_logging.c:108
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 
-#: conn/openssl.c:1185
+#: conn/openssl.c:1181
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL 실패: %s"
@@ -1800,12 +1799,12 @@ msgstr "SSL 실패: %s"
 #. L10N: an SSL context is a data structure returned by the OpenSSL
 #. function SSL_CTX_new().  In this case it returned NULL: an
 #. error condition.
-#: conn/openssl.c:1221
+#: conn/openssl.c:1217
 #, fuzzy
 msgid "Unable to create SSL context"
 msgstr "오류: OpenSSL 하부 프로세스를 생성할 수 없음!"
 
-#: conn/openssl.c:1283
+#: conn/openssl.c:1279
 msgid "Warning: error enabling ssl_verify_partial_chains"
 msgstr ""
 
@@ -1970,7 +1969,7 @@ msgstr ""
 msgid "Kill Word"
 msgstr ""
 
-#: email/parse.c:1588
+#: email/parse.c:1593
 msgid "multipart message has no boundary parameter"
 msgstr "다중 파트 메일에 경계 변수가 없음"
 
@@ -1978,29 +1977,29 @@ msgstr "다중 파트 메일에 경계 변수가 없음"
 #. (e)ncrypt enables encryption via autocrypt.
 #. (c)lear sets cleartext.
 #. (a)utomatic defers to the recommendation.
-#: envelope/functions.c:72
+#: envelope/functions.c:69
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
 msgstr ""
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
-#: envelope/functions.c:78
+#: envelope/functions.c:75
 msgid "eca"
 msgstr ""
 
-#: envelope/functions.c:325
+#: envelope/functions.c:322
 msgid "No PGP backend configured"
 msgstr ""
 
-#: envelope/functions.c:332 envelope/functions.c:407
+#: envelope/functions.c:329 envelope/functions.c:404
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "이미 S/MIME이 선택됨. 지우고 계속할까요?"
 
-#: envelope/functions.c:363
+#: envelope/functions.c:360
 msgid "No S/MIME backend configured"
 msgstr ""
 
-#: envelope/functions.c:371
+#: envelope/functions.c:368
 msgid "PGP already selected. Clear and continue?"
 msgstr "PGP가 선택됨. 지우고 계속할까요?"
 
@@ -2010,22 +2009,22 @@ msgid "From: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:288
+#: envelope/window.c:97 send/send.c:285
 msgid "To: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:295
+#: envelope/window.c:99 send/send.c:292
 msgid "Cc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101 send/send.c:302
+#: envelope/window.c:101 send/send.c:299
 msgid "Bcc: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103 send/send.c:347
+#: envelope/window.c:103 send/send.c:344
 msgid "Subject: "
 msgstr ""
 
@@ -2040,13 +2039,8 @@ msgstr "답장"
 msgid "Fcc: "
 msgstr ""
 
-#. L10N: "Mix" refers to the MixMaster chain for anonymous email
-#: envelope/window.c:110
-msgid "Mix: "
-msgstr ""
-
 #. L10N: Compose menu field.  Holds "Encrypt", "Sign" related information
-#: envelope/window.c:113
+#: envelope/window.c:109
 msgid "Security: "
 msgstr ""
 
@@ -2055,46 +2049,46 @@ msgstr ""
 #. other compose menu fields.  However, if possible, it should not be longer
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
-#: envelope/window.c:119 ncrypt/crypt_gpgme.c:3970 ncrypt/pgp.c:2016
+#: envelope/window.c:115 ncrypt/crypt_gpgme.c:3970 ncrypt/pgp.c:2016
 #: ncrypt/smime.c:2191
 msgid "Sign as: "
 msgstr "사용 서명: "
 
 #. L10N: The compose menu autocrypt line
-#: envelope/window.c:122
+#: envelope/window.c:118
 msgid "Autocrypt: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:125
+#: envelope/window.c:121
 msgid "Newsgroups: "
 msgstr ""
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:127
+#: envelope/window.c:123
 #, fuzzy
 msgid "Followup-To: "
 msgstr "%s%s에게 댓글?"
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:129
+#: envelope/window.c:125
 #, fuzzy
 msgid "X-Comment-To: "
 msgstr "Reply-To 필드 편집"
 
-#: envelope/window.c:130
+#: envelope/window.c:126
 msgid "Headers: "
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
-#: envelope/window.c:138 envelope/window.c:484
+#: envelope/window.c:134 envelope/window.c:476
 msgid "Off"
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: no.
 #. This is displayed when Autocrypt cannot encrypt to the recipients.
-#: envelope/window.c:141
+#: envelope/window.c:137
 msgid "No"
 msgstr ""
 
@@ -2102,7 +2096,7 @@ msgstr ""
 #. This is displayed when Autocrypt believes encryption should not be used.
 #. This might occur if one of the recipient Autocrypt Keys has not been
 #. used recently, or if the only key available is a Gossip Header key.
-#: envelope/window.c:146
+#: envelope/window.c:142
 msgid "Discouraged"
 msgstr ""
 
@@ -2110,68 +2104,68 @@ msgstr ""
 #. This is displayed when Autocrypt believes encryption is possible, but
 #. leaves enabling it up to the sender.  Probably because "prefer encrypt"
 #. is not set in both the sender and recipient keys.
-#: envelope/window.c:151
+#: envelope/window.c:147
 msgid "Available"
 msgstr ""
 
 #. L10N: Autocrypt recommendation flag: yes.
 #. This is displayed when Autocrypt would normally enable encryption
 #. automatically.
-#: envelope/window.c:155
+#: envelope/window.c:151
 #, fuzzy
 msgid "Yes"
 msgstr "yes"
 
-#: envelope/window.c:405
+#: envelope/window.c:397
 msgid "Sign, Encrypt"
 msgstr "서명, 암호화"
 
-#: envelope/window.c:410 envelope/window.c:479
+#: envelope/window.c:402 envelope/window.c:471
 msgid "Encrypt"
 msgstr "암호화"
 
-#: envelope/window.c:415
+#: envelope/window.c:407
 msgid "Sign"
 msgstr "서명"
 
-#: envelope/window.c:421
+#: envelope/window.c:413
 msgid "None"
 msgstr ""
 
-#: envelope/window.c:431
+#: envelope/window.c:423
 #, fuzzy
 msgid " (inline PGP)"
 msgstr "(계속)\n"
 
-#: envelope/window.c:433
+#: envelope/window.c:425
 msgid " (PGP/MIME)"
 msgstr ""
 
-#: envelope/window.c:437
+#: envelope/window.c:429
 msgid " (S/MIME)"
 msgstr ""
 
-#: envelope/window.c:443
+#: envelope/window.c:435
 msgid " (OppEnc mode)"
 msgstr ""
 
-#: envelope/window.c:452 envelope/window.c:460
+#: envelope/window.c:444 envelope/window.c:452
 msgid "<default>"
 msgstr "<기본값>"
 
-#: envelope/window.c:467
+#: envelope/window.c:459
 msgid "Encrypt with: "
 msgstr "암호화 방식: "
 
 #. L10N: The autocrypt compose menu Recommendation field.
 #. Displays the output of the recommendation engine
 #. (Off, No, Discouraged, Available, Yes)
-#: envelope/window.c:490
+#: envelope/window.c:482
 #, fuzzy
 msgid "Recommendation: "
 msgstr "Reply-To 필드 편집"
 
-#: envelope/window.c:593
+#: envelope/window.c:550
 #, c-format
 msgid "(+%d more)"
 msgid_plural "(+%d more)"
@@ -2184,7 +2178,7 @@ msgid "Option %s: "
 msgstr "컴파일 선택사항:"
 
 #. L10N: e.g. "Unknown expando: %Q"
-#: expando/node_condbool.c:102 expando/node_expando.c:280
+#: expando/node_condbool.c:101 expando/node_expando.c:280
 #, fuzzy, c-format
 msgid "Unknown expando: %%%.*s"
 msgstr "%s: 알 수 없는 변수"
@@ -2210,7 +2204,7 @@ msgstr ""
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
-#: expando/node_padding.c:241
+#: expando/node_padding.c:244
 #, c-format
 msgid "Padding cannot be used as a condition"
 msgstr ""
@@ -2601,7 +2595,7 @@ msgstr "mailcap 항목을 사용해 새로운 첨부물 작성"
 #. Compose Dialog: <op_attachment_filter>
 #. Attach Dialog: <op_attachment_pipe>
 #. Index: <op_pipe>
-#: gui/opcodes.h:104 gui/opcodes.h:666
+#: gui/opcodes.h:104 gui/opcodes.h:664
 msgid "pipe message/attachment to a shell command"
 msgstr "메일/첨부물을 쉘 명령으로 연결하기"
 
@@ -2610,7 +2604,7 @@ msgstr "메일/첨부물을 쉘 명령으로 연결하기"
 #. Compose Dialog: <op_attachment_print>
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
-#: gui/opcodes.h:108 gui/opcodes.h:684
+#: gui/opcodes.h:108 gui/opcodes.h:682
 msgid "print the current entry"
 msgstr "현재 항목 출력"
 
@@ -2627,7 +2621,7 @@ msgstr "첨부물 전송 부호화 방법 편집"
 #. L10N: Help screen description for OP_SAVE
 #. Index: <op_save>
 #. Pager: <op_save>
-#: gui/opcodes.h:115 gui/opcodes.h:729
+#: gui/opcodes.h:115 gui/opcodes.h:727
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "메일/첨부물 파일로 저장"
@@ -2656,7 +2650,7 @@ msgstr "발신 후 파일을 지울지 선택"
 #. Alias Dialog: <op_delete>
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
-#: gui/opcodes.h:127 gui/opcodes.h:815
+#: gui/opcodes.h:127 gui/opcodes.h:813
 msgid "undelete the current entry"
 msgstr "현재 항목 복구"
 
@@ -3162,31 +3156,30 @@ msgstr "파일 매스크 입력"
 #. Compose Dialog: <op_exit>
 #. GPGME Key Selection Dialog: <op_exit>
 #. Index: <op_exit>
-#. Mixmaster Dialog: <op_exit>
 #. Pager: <op_exit>
 #. PGP Key Selection Dialog: <op_exit>
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
-#: gui/opcodes.h:401
+#: gui/opcodes.h:400
 msgid "exit this menu"
 msgstr "현재 메뉴 나감"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:404
+#: gui/opcodes.h:403
 msgid "move to the first entry"
 msgstr "처음 항목으로 이동"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
-#: gui/opcodes.h:407
+#: gui/opcodes.h:406
 msgid "toggle a message's 'important' flag"
 msgstr "메일의 '중요' 플래그 상태 바꾸기"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
-#: gui/opcodes.h:411
+#: gui/opcodes.h:410
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "%s%s에게 댓글?"
@@ -3194,14 +3187,14 @@ msgstr "%s%s에게 댓글?"
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
-#: gui/opcodes.h:415
+#: gui/opcodes.h:414
 msgid "forward a message with comments"
 msgstr "메일 포워딩"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
-#: gui/opcodes.h:419
+#: gui/opcodes.h:418
 msgid "forward to newsgroup"
 msgstr ""
 
@@ -3214,35 +3207,34 @@ msgstr ""
 #. PGP Key Selection Dialog: <op_generic_select_entry>
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
-#. Mixmaster Dialog: <op_mix_append>
-#: gui/opcodes.h:430
+#: gui/opcodes.h:428
 msgid "select the current entry"
 msgstr "현재 항목 선택"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
-#: gui/opcodes.h:433
+#: gui/opcodes.h:431
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "첫번째 메세지입니다."
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
-#: gui/opcodes.h:436
+#: gui/opcodes.h:434
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "헤더를 포함한 메세지 편집"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
-#: gui/opcodes.h:439
+#: gui/opcodes.h:437
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "첫번째 메세지입니다."
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:442
+#: gui/opcodes.h:440
 #, fuzzy
 msgid "go to parent directory"
 msgstr "%s는 디렉토리가 아닙니다."
@@ -3250,7 +3242,7 @@ msgstr "%s는 디렉토리가 아닙니다."
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:446
+#: gui/opcodes.h:444
 #, fuzzy
 msgid "reply to all recipients preserving To/Cc"
 msgstr "모든 수신자에게 답장"
@@ -3258,21 +3250,21 @@ msgstr "모든 수신자에게 답장"
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:450
+#: gui/opcodes.h:448
 msgid "reply to all recipients"
 msgstr "모든 수신자에게 답장"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
-#: gui/opcodes.h:454
+#: gui/opcodes.h:452
 msgid "scroll down 1/2 page"
 msgstr "1/2 페이지 내리기"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
-#: gui/opcodes.h:458
+#: gui/opcodes.h:456
 msgid "scroll up 1/2 page"
 msgstr "1/2 페이지 올리기"
 
@@ -3280,28 +3272,28 @@ msgstr "1/2 페이지 올리기"
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
-#: gui/opcodes.h:463
+#: gui/opcodes.h:461
 msgid "this screen"
 msgstr "현재 화면"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
 #. Menu: <op_jump>
-#: gui/opcodes.h:467 gui/opcodes.h:468 gui/opcodes.h:469 gui/opcodes.h:470
-#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
-#: gui/opcodes.h:475 gui/opcodes.h:476
+#: gui/opcodes.h:465 gui/opcodes.h:466 gui/opcodes.h:467 gui/opcodes.h:468
+#: gui/opcodes.h:469 gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472
+#: gui/opcodes.h:473 gui/opcodes.h:474
 msgid "jump to an index number"
 msgstr "번호로 이동"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:479
+#: gui/opcodes.h:477
 msgid "move to the last entry"
 msgstr "마지막 항목으로 이동"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
-#: gui/opcodes.h:482
+#: gui/opcodes.h:480
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "현재 글타래에 태그 붙임"
@@ -3309,14 +3301,14 @@ msgstr "현재 글타래에 태그 붙임"
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:486
+#: gui/opcodes.h:484
 msgid "reply to specified mailing list"
 msgstr "지정된 메일링 리스트로 답장하기"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
-#: gui/opcodes.h:490
+#: gui/opcodes.h:488
 #, fuzzy
 msgid "subscribe to a mailing list"
 msgstr "지정된 메일링 리스트로 답장하기"
@@ -3324,355 +3316,355 @@ msgstr "지정된 메일링 리스트로 답장하기"
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
-#: gui/opcodes.h:494
+#: gui/opcodes.h:492
 #, fuzzy
 msgid "unsubscribe from a mailing list"
 msgstr "%s에서 가입 탈퇴 중..."
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
-#: gui/opcodes.h:497
+#: gui/opcodes.h:495
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
 #. L10N: Help screen description for OP_MACRO
-#: gui/opcodes.h:499
+#: gui/opcodes.h:497
 msgid "execute a macro"
 msgstr "매크로 실행"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
-#: gui/opcodes.h:503
+#: gui/opcodes.h:501
 msgid "compose a new mail message"
 msgstr "새로운 메일 작성"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
-#: gui/opcodes.h:507
+#: gui/opcodes.h:505
 msgid "list mailboxes with new mail"
 msgstr "새 메일이 도착한 메일함 목록."
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
-#: gui/opcodes.h:510
+#: gui/opcodes.h:508
 msgid "break the thread in two"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:513
+#: gui/opcodes.h:511
 msgid "open a different folder"
 msgstr "다른 폴더 열기"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:516
+#: gui/opcodes.h:514
 msgid "open a different folder in read only mode"
 msgstr "다른 폴더를 읽기 전용으로 열기"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:519
+#: gui/opcodes.h:517
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "다른 폴더 열기"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:522
+#: gui/opcodes.h:520
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "다른 폴더를 읽기 전용으로 열기"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:525
+#: gui/opcodes.h:523
 msgid "clear a status flag from a message"
 msgstr "메일의 상태 플래그 해제하기"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
-#: gui/opcodes.h:528
+#: gui/opcodes.h:526
 msgid "collapse/uncollapse all threads"
 msgstr "모든 글타래 펴기/접기"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
-#: gui/opcodes.h:531
+#: gui/opcodes.h:529
 msgid "collapse/uncollapse current thread"
 msgstr "현재 글타래 펴기/접기"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
-#: gui/opcodes.h:534
+#: gui/opcodes.h:532
 #, fuzzy
 msgid "delete non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일 삭제"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
-#: gui/opcodes.h:537
+#: gui/opcodes.h:535
 msgid "retrieve mail from POP server"
 msgstr "POP 서버에서 메일 가져오기"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
-#: gui/opcodes.h:540
+#: gui/opcodes.h:538
 msgid "force retrieval of mail from IMAP server"
 msgstr "IMAP 서버에서 메일 가져오기"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
-#: gui/opcodes.h:543
+#: gui/opcodes.h:541
 msgid "logout from all IMAP servers"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
-#: gui/opcodes.h:547
+#: gui/opcodes.h:545
 msgid "show only messages matching a pattern"
 msgstr "패턴과 일치하는 메일만 보임"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
-#: gui/opcodes.h:550
+#: gui/opcodes.h:548
 #, fuzzy
 msgid "link tagged message to the current one"
 msgstr "선택한 메일을 전달한 주소: "
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:553
+#: gui/opcodes.h:551
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:556
+#: gui/opcodes.h:554
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "첫번째 메세지입니다."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:559
+#: gui/opcodes.h:557
 msgid "jump to the next new message"
 msgstr "다음 새 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:562
+#: gui/opcodes.h:560
 msgid "jump to the next new or unread message"
 msgstr "읽지 않은 다음 메일/새 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:565
+#: gui/opcodes.h:563
 msgid "jump to the next subthread"
 msgstr "다음 부속 글타래로 이동"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:568
+#: gui/opcodes.h:566
 msgid "jump to the next thread"
 msgstr "다음 글타래로 이동"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
-#: gui/opcodes.h:571
+#: gui/opcodes.h:569
 msgid "move to the next undeleted message"
 msgstr "삭제되지 않은 다음 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:574
+#: gui/opcodes.h:572
 msgid "jump to the next unread message"
 msgstr "읽지 않은 다음 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
-#: gui/opcodes.h:577
+#: gui/opcodes.h:575
 #, fuzzy
 msgid "open next mailbox with new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:580
+#: gui/opcodes.h:578
 msgid "jump to parent message in thread"
 msgstr "글타래의 부모 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:583
+#: gui/opcodes.h:581
 msgid "jump to the previous new message"
 msgstr "이전 새 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:586
+#: gui/opcodes.h:584
 msgid "jump to the previous new or unread message"
 msgstr "읽지 않은 이전 메일/새 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:589
+#: gui/opcodes.h:587
 msgid "jump to previous subthread"
 msgstr "이전 부속 글타래로 이동"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:592
+#: gui/opcodes.h:590
 msgid "jump to previous thread"
 msgstr "이전 글타래로 이동"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
-#: gui/opcodes.h:595
+#: gui/opcodes.h:593
 msgid "move to the previous undeleted message"
 msgstr "삭제되지 않은 이전 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:598
+#: gui/opcodes.h:596
 msgid "jump to the previous unread message"
 msgstr "읽지 않은 이전 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
-#: gui/opcodes.h:601
+#: gui/opcodes.h:599
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:604
+#: gui/opcodes.h:602
 msgid "mark the current subthread as read"
 msgstr "현재 부속 글타래에 읽은 표시하기"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:607
+#: gui/opcodes.h:605
 msgid "mark the current thread as read"
 msgstr "현재 글타래에 읽은 표시하기"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:610
+#: gui/opcodes.h:608
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "글타래의 부모 메일로 이동"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:613
+#: gui/opcodes.h:611
 msgid "set a status flag on a message"
 msgstr "메일의 상태 플래그 설정하기"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
-#: gui/opcodes.h:616
+#: gui/opcodes.h:614
 msgid "show currently active limit pattern"
 msgstr "현재 제한 패턴 보기"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
-#: gui/opcodes.h:619
+#: gui/opcodes.h:617
 msgid "save changes to mailbox"
 msgstr "메일함 변경 사항 저장"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
-#: gui/opcodes.h:622
+#: gui/opcodes.h:620
 #, fuzzy
 msgid "tag non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일에 태그 붙임"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
-#: gui/opcodes.h:625
+#: gui/opcodes.h:623
 #, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일 복구"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
-#: gui/opcodes.h:628
+#: gui/opcodes.h:626
 #, fuzzy
 msgid "untag non-hidden messages matching a pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
-#: gui/opcodes.h:631
+#: gui/opcodes.h:629
 #, fuzzy
 msgid "create a hotkey macro for the current message"
 msgstr "첫번째 메세지입니다."
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:634
+#: gui/opcodes.h:632
 msgid "move to the middle of the page"
 msgstr "페이지 중간으로 이동"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
-#: gui/opcodes.h:638
+#: gui/opcodes.h:636
 msgid "move to the next entry"
 msgstr "다음 항목으로 이동"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
-#: gui/opcodes.h:642
+#: gui/opcodes.h:640
 msgid "scroll down one line"
 msgstr "한줄씩 내리기"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
-#: gui/opcodes.h:646
+#: gui/opcodes.h:644
 msgid "move to the next page"
 msgstr "다음 페이지로 이동"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
-#: gui/opcodes.h:649
+#: gui/opcodes.h:647
 msgid "jump to the bottom of the message"
 msgstr "메세지 마지막으로 이동"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
-#: gui/opcodes.h:652
+#: gui/opcodes.h:650
 msgid "toggle display of quoted text"
 msgstr "인용문의 표시 상태 바꾸기"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
-#: gui/opcodes.h:655
+#: gui/opcodes.h:653
 #, fuzzy
 msgid "jump to first line after headers"
 msgstr "다음 글타래로 이동"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
-#: gui/opcodes.h:658
+#: gui/opcodes.h:656
 msgid "skip beyond quoted text"
 msgstr "인용문 다음으로 넘어가기"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
-#: gui/opcodes.h:661
+#: gui/opcodes.h:659
 msgid "jump to the top of the message"
 msgstr "메세지 처음으로 이동"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
-#: gui/opcodes.h:669
+#: gui/opcodes.h:667
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "%s에게 메일 전달"
@@ -3680,46 +3672,46 @@ msgstr "%s에게 메일 전달"
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
-#: gui/opcodes.h:673
+#: gui/opcodes.h:671
 msgid "move to the previous entry"
 msgstr "이전 항목으로 이동"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
-#: gui/opcodes.h:677
+#: gui/opcodes.h:675
 msgid "scroll up one line"
 msgstr "한줄씩 올리기"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
-#: gui/opcodes.h:681
+#: gui/opcodes.h:679
 msgid "move to the previous page"
 msgstr "이전 페이지로 이동"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
-#: gui/opcodes.h:687
+#: gui/opcodes.h:685
 msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:690
+#: gui/opcodes.h:688
 msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
-#: gui/opcodes.h:694
+#: gui/opcodes.h:692
 msgid "query external program for addresses"
 msgstr "주소를 얻기 위해 외부 프로그램 실행"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
-#: gui/opcodes.h:697
+#: gui/opcodes.h:695
 msgid "append new query results to current results"
 msgstr "쿼리 결과를 현재 결과에 추가"
 
@@ -3727,19 +3719,19 @@ msgstr "쿼리 결과를 현재 결과에 추가"
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
-#: gui/opcodes.h:702
+#: gui/opcodes.h:700
 msgid "save changes to mailbox and quit"
 msgstr "메일함의 변경 사항 저장 후 끝내기"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
-#: gui/opcodes.h:705
+#: gui/opcodes.h:703
 msgid "recall a postponed message"
 msgstr "발송 연기한 메일 다시 부르기"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
-#: gui/opcodes.h:708
+#: gui/opcodes.h:706
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "글타래에 읽지 않은 메세지 있음."
@@ -3747,18 +3739,18 @@ msgstr "글타래에 읽지 않은 메세지 있음."
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
-#: gui/opcodes.h:712
+#: gui/opcodes.h:710
 msgid "clear and redraw the screen"
 msgstr "화면 다시 그리기"
 
 #. L10N: Help screen description for OP_REFORMAT_WINCH
-#: gui/opcodes.h:714
+#: gui/opcodes.h:712
 msgid "{internal}"
 msgstr "{내부의}"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
-#: gui/opcodes.h:717
+#: gui/opcodes.h:715
 #, fuzzy
 msgid "rename the current mailbox (IMAP only)"
 msgstr "현재 메일함을 삭제 (IMAP에서만)"
@@ -3766,14 +3758,14 @@ msgstr "현재 메일함을 삭제 (IMAP에서만)"
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
-#: gui/opcodes.h:721
+#: gui/opcodes.h:719
 msgid "reply to a message"
 msgstr "메일에 답장하기"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
-#: gui/opcodes.h:725
+#: gui/opcodes.h:723
 msgid "use the current message as a template for a new one"
 msgstr "현재 메일을 새 메일의 템플레이트로 사용함"
 
@@ -3783,7 +3775,7 @@ msgstr "현재 메일을 새 메일의 템플레이트로 사용함"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:736
+#: gui/opcodes.h:734
 msgid "search for a regular expression"
 msgstr "정규 표현식을 이용해 검색"
 
@@ -3793,7 +3785,7 @@ msgstr "정규 표현식을 이용해 검색"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:743
+#: gui/opcodes.h:741
 msgid "search for next match"
 msgstr "다음 찾기"
 
@@ -3803,7 +3795,7 @@ msgstr "다음 찾기"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:750
+#: gui/opcodes.h:748
 msgid "search for next match in opposite direction"
 msgstr "역순으로 찾기"
 
@@ -3813,25 +3805,25 @@ msgstr "역순으로 찾기"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:757
+#: gui/opcodes.h:755
 msgid "search backwards for a regular expression"
 msgstr "정규 표현식을 이용해 역순 검색"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
-#: gui/opcodes.h:760
+#: gui/opcodes.h:758
 msgid "toggle search pattern coloring"
 msgstr "검색 패턴 컬러링 선택"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
-#: gui/opcodes.h:763
+#: gui/opcodes.h:761
 msgid "invoke a command in a subshell"
 msgstr "하부 쉘 실행"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
-#: gui/opcodes.h:766
+#: gui/opcodes.h:764
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "메일 정렬"
@@ -3840,7 +3832,7 @@ msgstr "메일 정렬"
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:771
+#: gui/opcodes.h:769
 msgid "sort messages"
 msgstr "메일 정렬"
 
@@ -3848,143 +3840,143 @@ msgstr "메일 정렬"
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:776
+#: gui/opcodes.h:774
 msgid "sort messages in reverse order"
 msgstr "메일 역순 정렬"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:779
+#: gui/opcodes.h:777
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
-#: gui/opcodes.h:782
+#: gui/opcodes.h:780
 msgid "tag the current entry"
 msgstr "현재 항목에 태그 붙임"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
-#: gui/opcodes.h:784
+#: gui/opcodes.h:782
 msgid "apply next function to tagged messages"
 msgstr "다음 기능을 태그가 붙은 메일에 적용"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
-#: gui/opcodes.h:786
+#: gui/opcodes.h:784
 msgid "apply next function ONLY to tagged messages"
 msgstr "다음 기능을 태그가 붙은 메일에 적용"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:789
+#: gui/opcodes.h:787
 msgid "tag the current subthread"
 msgstr "현재 부속 글타래에 태그 붙임"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:792
+#: gui/opcodes.h:790
 msgid "tag the current thread"
 msgstr "현재 글타래에 태그 붙임"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:795
+#: gui/opcodes.h:793
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "메일함을 볼지 모든 파일을 볼지 선택"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
-#: gui/opcodes.h:798
+#: gui/opcodes.h:796
 msgid "toggle a message's 'new' flag"
 msgstr "메일의 '새글' 플래그 상태 바꿈"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
-#: gui/opcodes.h:801
+#: gui/opcodes.h:799
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "읽지 않은 이전 메일/새 메일로 이동"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
-#: gui/opcodes.h:804
+#: gui/opcodes.h:802
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "메일함을 다시 쓸 것인지 선택"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:807
+#: gui/opcodes.h:805
 msgid "move to the top of the page"
 msgstr "첫 페이지로 이동"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
-#: gui/opcodes.h:810
+#: gui/opcodes.h:808
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:818
+#: gui/opcodes.h:816
 msgid "undelete all messages in subthread"
 msgstr "부속 글타래의 모든 메일 복구하기"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:821
+#: gui/opcodes.h:819
 msgid "undelete all messages in thread"
 msgstr "글타래의 모든 메일 복구하기"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:824
+#: gui/opcodes.h:822
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "패턴과 일치하는 메일의 태그 해제"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
-#: gui/opcodes.h:827
+#: gui/opcodes.h:825
 msgid "show the NeoMutt version number and date"
 msgstr "NeoMutt의 버젼과 제작일 보기"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
-#: gui/opcodes.h:831
+#: gui/opcodes.h:829
 msgid "show MIME attachments"
 msgstr "MIME 첨부물 보기"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:834
+#: gui/opcodes.h:832
 #, fuzzy
 msgid "show the raw message"
 msgstr "저장된 상태의 메일 편집"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
-#: gui/opcodes.h:837
+#: gui/opcodes.h:835
 msgid "display the keycode for a key press"
 msgstr "눌려진 키 값 표시하기"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:842
+#: gui/opcodes.h:840
 msgid "make decrypted copy"
 msgstr "해독 사본 만들기"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:845
+#: gui/opcodes.h:843
 msgid "make decrypted copy and delete"
 msgstr "해독 사본 만든 후 삭제하기"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
-#: gui/opcodes.h:849
+#: gui/opcodes.h:847
 msgid "extract supported public keys"
 msgstr "공개 열쇠 추출"
 
@@ -3992,293 +3984,245 @@ msgstr "공개 열쇠 추출"
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
-#: gui/opcodes.h:854
+#: gui/opcodes.h:852
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "메모리에서 암호 문구 지움"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
-#: gui/opcodes.h:859
+#: gui/opcodes.h:857
 msgid "edit the BCC list"
 msgstr "BCC 목록 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
-#: gui/opcodes.h:862
+#: gui/opcodes.h:860
 msgid "edit the CC list"
 msgstr "CC 목록 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
-#: gui/opcodes.h:865
+#: gui/opcodes.h:863
 msgid "enter a file to save a copy of this message in"
 msgstr "현재 메세지의 복사본을 저장할 파일 선택"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
-#: gui/opcodes.h:868
+#: gui/opcodes.h:866
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "Reply-To 필드 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
-#: gui/opcodes.h:871
+#: gui/opcodes.h:869
 msgid "edit the from field"
 msgstr "from 필드 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
-#: gui/opcodes.h:874
+#: gui/opcodes.h:872
 msgid "edit the message with headers"
 msgstr "헤더를 포함한 메세지 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
-#: gui/opcodes.h:877
+#: gui/opcodes.h:875
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "CC 목록 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
-#: gui/opcodes.h:880
+#: gui/opcodes.h:878
 msgid "edit the Reply-To field"
 msgstr "Reply-To 필드 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
-#: gui/opcodes.h:883
+#: gui/opcodes.h:881
 msgid "edit the subject of this message"
 msgstr "제목 편집"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
-#: gui/opcodes.h:886
+#: gui/opcodes.h:884
 msgid "edit the TO list"
 msgstr "TO 목록 편집하기"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
-#: gui/opcodes.h:889
+#: gui/opcodes.h:887
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "Reply-To 필드 편집"
 
-#. L10N: Help screen description for OP_COMPOSE_MIX
-#. Envelope Window: <op_compose_mix>
-#: gui/opcodes.h:895
-msgid "send the message through a mixmaster remailer chain"
-msgstr "mixmaster 리메일러 체인을 통한 메일 보내기"
-
-#. L10N: Help screen description for OP_MIX_APPEND
-#. Mixmaster Dialog: <op_mix_append>
-#: gui/opcodes.h:898
-#, fuzzy
-msgid "append a remailer to the chain"
-msgstr "체인에 리메일러 첨가"
-
-#. L10N: Help screen description for OP_MIX_CHAIN_NEXT
-#. Mixmaster Dialog: <op_mix_chain_next>
-#: gui/opcodes.h:901
-#, fuzzy
-msgid "select the next element of the chain"
-msgstr "체인의 다음 항목 선택"
-
-#. L10N: Help screen description for OP_MIX_CHAIN_PREV
-#. Mixmaster Dialog: <op_mix_chain_prev>
-#: gui/opcodes.h:904
-#, fuzzy
-msgid "select the previous element of the chain"
-msgstr "체인의 이전 항목 선택"
-
-#. L10N: Help screen description for OP_MIX_DELETE
-#. Mixmaster Dialog: <op_mix_delete>
-#: gui/opcodes.h:907
-#, fuzzy
-msgid "delete a remailer from the chain"
-msgstr "체인에서 리메일러 삭제"
-
-#. L10N: Help screen description for OP_MIX_INSERT
-#. Mixmaster Dialog: <op_mix_insert>
-#: gui/opcodes.h:910
-#, fuzzy
-msgid "insert a remailer into the chain"
-msgstr "체인에 리메일러 삽입"
-
-#. L10N: Help screen description for OP_MIX_USE
-#. Mixmaster Dialog: <op_mix_use>
-#: gui/opcodes.h:913
-#, fuzzy
-msgid "accept the chain constructed"
-msgstr "체인 구조를 허가함"
-
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:922
+#: gui/opcodes.h:893
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "다른 폴더 열기"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
-#: gui/opcodes.h:925
+#: gui/opcodes.h:896
 msgid "read entire thread of the current message"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:928
+#: gui/opcodes.h:899
 msgid "generate virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:931
+#: gui/opcodes.h:902
 msgid "generate a read-only virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:934
+#: gui/opcodes.h:905
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:937
+#: gui/opcodes.h:908
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:940
+#: gui/opcodes.h:911
 msgid "resets virtual folder time window to the present"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
 #. Compose Dialog: <op_attachment_attach_key>
-#: gui/opcodes.h:948
+#: gui/opcodes.h:919
 msgid "attach a PGP public key"
 msgstr "PGP 공개 열쇠 첨부"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
-#: gui/opcodes.h:952
+#: gui/opcodes.h:923
 #, fuzzy
 msgid "check for classic PGP"
 msgstr "Classic PGP 확인"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
-#: gui/opcodes.h:955
+#: gui/opcodes.h:926
 msgid "show PGP options"
 msgstr "PGP 옵션 보기"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
-#: gui/opcodes.h:958
+#: gui/opcodes.h:929
 msgid "mail a PGP public key"
 msgstr "PGP 공개 열쇠 발송"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
-#: gui/opcodes.h:962
+#: gui/opcodes.h:933
 msgid "verify a PGP public key"
 msgstr "PGP 공개 열쇠 확인"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
-#: gui/opcodes.h:966
+#: gui/opcodes.h:937
 msgid "view the key's user id"
 msgstr "열쇠의 사용자 ID 보기"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
-#: gui/opcodes.h:971
+#: gui/opcodes.h:942
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "이전 페이지로 이동"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
-#: gui/opcodes.h:974
+#: gui/opcodes.h:945
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "이전 페이지로 이동"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
-#: gui/opcodes.h:977
+#: gui/opcodes.h:948
 msgid "move the highlight to next mailbox"
 msgstr ""
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
-#: gui/opcodes.h:980
+#: gui/opcodes.h:951
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
-#: gui/opcodes.h:983
+#: gui/opcodes.h:954
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "메일함을 다시 여는 중..."
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
-#: gui/opcodes.h:986
+#: gui/opcodes.h:957
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "1/2 페이지 내리기"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
-#: gui/opcodes.h:989
+#: gui/opcodes.h:960
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "1/2 페이지 올리기"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
-#: gui/opcodes.h:992
+#: gui/opcodes.h:963
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "이전 페이지로 이동"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
-#: gui/opcodes.h:995
+#: gui/opcodes.h:966
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
-#: gui/opcodes.h:998
+#: gui/opcodes.h:969
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "메일함을 볼지 모든 파일을 볼지 선택"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
-#: gui/opcodes.h:1001
+#: gui/opcodes.h:972
 msgid "make the sidebar (in)visible"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
-#: gui/opcodes.h:1006
+#: gui/opcodes.h:977
 msgid "show S/MIME options"
 msgstr "S/MIME 옵션 보기"
 
-#: gui/opcodes.h:1009
+#: gui/opcodes.h:980
 msgid "null operation"
 msgstr "공백 연산"
 
@@ -4814,7 +4758,7 @@ msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
 msgstr[0] "%d개의 메세지를 %s로 복사 중..."
 
-#: imap/imap.c:1433 imap/imap.c:2091 imap/message.c:1821 muttlib.c:836
+#: imap/imap.c:1433 imap/imap.c:2091 imap/message.c:1821 muttlib.c:801
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
@@ -4930,7 +4874,7 @@ msgstr ""
 msgid "Server-side custom search not supported: %s"
 msgstr ""
 
-#: imap/util.c:649
+#: imap/util.c:653
 msgid "Continue?"
 msgstr "계속할까요?"
 
@@ -4965,7 +4909,7 @@ msgstr ""
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:783 muttlib.c:820 mx.c:205 mx.c:343
+#: index/dlg_index.c:783 muttlib.c:785 mx.c:205 mx.c:343
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s는 메일함이 아님"
@@ -5400,11 +5344,11 @@ msgstr "정의되지 않은 글쇠. 도움말 보기는 '%s'"
 msgid "Macro loop detected"
 msgstr "매크로 루프가 발생"
 
-#: key/init.c:250
+#: key/init.c:244
 msgid "Abort key is not set, defaulting to Ctrl-G"
 msgstr ""
 
-#: key/init.c:256
+#: key/init.c:250
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr ""
@@ -5486,7 +5430,7 @@ msgid "Reading %s..."
 msgstr "%s 읽는 중..."
 
 #. L10N: Displayed before/as a mailbox is being synced
-#: maildir/mailbox.c:851 mbox/mbox.c:1175 mh/mh.c:1081 mx.c:464
+#: maildir/mailbox.c:850 mbox/mbox.c:1175 mh/mh.c:1081 mx.c:464
 #: notmuch/notmuch.c:2248
 #, c-format
 msgid "Writing %s..."
@@ -5509,14 +5453,14 @@ msgstr ""
 
 #: main.c:290
 msgid ""
-"  neomutt [-CEnx] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
+"  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 msgstr ""
 
 #: main.c:293
 msgid ""
-"  neomutt [-Cnx] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
+"  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 msgstr ""
 
@@ -5740,7 +5684,7 @@ msgstr "오류: '%s'는 잘못된 IDN"
 msgid "Failed to parse mailto: link"
 msgstr ""
 
-#: main.c:1047 main.c:1316 send/send.c:308 send/send.c:2742 send/send.c:2746
+#: main.c:1047 main.c:1316 send/send.c:305 send/send.c:2728 send/send.c:2732
 msgid "No recipients specified"
 msgstr "수신자가 지정되지 않음"
 
@@ -5865,75 +5809,6 @@ msgstr "태그를 붙이는 것을 지원하지 않음"
 msgid "No tagged entries"
 msgstr "태그가 붙은 항목 없음"
 
-#: mixmaster/dlg_mixmaster.c:81
-msgid "Append"
-msgstr "첨가"
-
-#: mixmaster/dlg_mixmaster.c:82
-msgid "Insert"
-msgstr "삽입"
-
-#: mixmaster/dlg_mixmaster.c:85
-msgid "OK"
-msgstr "확인"
-
-#: mixmaster/dlg_mixmaster.c:155
-msgid "Select a remailer chain"
-msgstr "리메일러 체인 선택"
-
-#: mixmaster/dlg_mixmaster.c:193
-msgid "Can't get mixmaster's type2.list"
-msgstr "mixmaster의 type2.list를 찾지 못함"
-
-#: mixmaster/mixmaster.c:56
-msgid "Mixmaster doesn't accept Cc or Bcc headers"
-msgstr "Mixmaster는 Cc 또는 Bcc 헤더를 허용하지 않음"
-
-#: mixmaster/mixmaster.c:81
-msgid "Please set the hostname variable to a proper value when using mixmaster"
-msgstr "mixmaster를 사용하기 위한 적당한 호스트 변수를 사용하세요"
-
-#: mixmaster/mixmaster.c:124
-#, c-format
-msgid "Error sending message, child exited %d\n"
-msgstr "메일 보내는 중 오류 %d.\n"
-
-#: mixmaster/mixmaster.c:128 send/send.c:2405
-msgid "Error sending message"
-msgstr "메일 보내는 중 오류"
-
-#: mixmaster/remailer.c:149
-msgid "<random>"
-msgstr ""
-
-#: mixmaster/win_chain.c:65
-#, c-format
-msgid "-- Remailer chain [Length: %d]"
-msgstr ""
-
-#: mixmaster/win_chain.c:295
-msgid "You already have the last chain element selected"
-msgstr "이미 마지막 체인을 선택했음"
-
-#: mixmaster/win_chain.c:321
-msgid "You already have the first chain element selected"
-msgstr "이미 첫번째 체인을 선택했음"
-
-#. L10N The '%d' here hard-coded to 19
-#: mixmaster/win_chain.c:372
-#, c-format
-msgid "Mixmaster chains are limited to %d elements"
-msgstr "Mixmaster 체인은 %d개의 제한이 있음"
-
-#: mixmaster/win_chain.c:404
-msgid "The remailer chain is already empty"
-msgstr "리메일러 체인이 이미 비어 있음"
-
-#: mixmaster/win_chain.c:432
-#, c-format
-msgid "Error: %s can't be used as the final remailer of a chain"
-msgstr "오류: %s는 체인의 마지막 리메일러로 사용할수 없음"
-
 #: mutt/buffer.c:353
 msgid "Out of memory"
 msgstr ""
@@ -6005,7 +5880,7 @@ msgstr ""
 msgid "Not enough subexpressions for template"
 msgstr ""
 
-#: mutt_config.c:226
+#: mutt_config.c:225
 #, c-format
 msgid "index-hook cannot be used as a condition"
 msgstr ""
@@ -6029,22 +5904,22 @@ msgstr ""
 #. - Please test the value you use inside Mutt.  A mistake here will break
 #. NeoMutt's threading behavior.  Note: the header cache can interfere with
 #. testing, so be sure to test with $header_cache unset.
-#: mutt_config.c:733
+#: mutt_config.c:732
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 msgstr ""
 
 #. L10N: $status_format default format
-#: mutt_config.c:815
+#: mutt_config.c:814
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr ""
 
 #. L10N: $ts_icon_format default format
-#: mutt_config.c:852
+#: mutt_config.c:851
 msgid "M%<n?AIL&ail>"
 msgstr ""
 
 #. L10N: $ts_status_format default format
-#: mutt_config.c:856
+#: mutt_config.c:855
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
 msgstr ""
 
@@ -6053,11 +5928,11 @@ msgstr ""
 msgid "Invalid value for option %s: %ld"
 msgstr "잘못된 날짜 입력: %s"
 
-#: mutt_lua.c:448
+#: mutt_lua.c:447
 msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
-#: mutt_lua.c:518
+#: mutt_lua.c:517
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "%s를 잠글 수 없음.\n"
@@ -6092,44 +5967,44 @@ msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임"
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
-#: muttlib.c:595
+#: muttlib.c:560
 #, fuzzy
 msgid "File is a directory, save under it: (y)es, (n)o, (a)ll?"
 msgstr "파일이 아니라 디렉토리입니다, 그 아래에 저장할까요? (y)네, (n)아니오, (a)모두"
 
-#: muttlib.c:595
+#: muttlib.c:560
 msgid "yna"
 msgstr ""
 
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
-#: muttlib.c:613
+#: muttlib.c:578
 msgid "File is a directory, save under it?"
 msgstr "파일이 아니라 디렉토리입니다, 그 아래에 저장할까요?"
 
-#: muttlib.c:619
+#: muttlib.c:584
 msgid "File under directory: "
 msgstr "디렉토리안에 저장할 파일:"
 
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
-#: muttlib.c:635
+#: muttlib.c:600
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "파일이 존재함, 덮어쓰기(o), 첨가(a), 취소(c)?"
 
-#: muttlib.c:636
+#: muttlib.c:601
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:789
+#: muttlib.c:754
 msgid "Can't save message to POP mailbox"
 msgstr "POP 메일함에 메일을 저장할 수 없음"
 
-#: muttlib.c:799
+#: muttlib.c:764
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s에 메일을 첨가할까요?"
 
-#: muttlib.c:812
+#: muttlib.c:777
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "POP 서버의 메일을 수정할 수 없음"
@@ -6280,23 +6155,23 @@ msgstr "PGP를 구동합니다..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: ncrypt/crypt.c:221 send/send.c:2721
+#: ncrypt/crypt.c:221 send/send.c:2707
 msgid "Mail not sent"
 msgstr "보내지 않음"
 
-#: ncrypt/crypt.c:655
+#: ncrypt/crypt.c:653
 msgid "S/MIME messages with no hints on content are unsupported"
 msgstr "내용에 S/MIME 표시가 없는 경우는 지원하지 않음"
 
-#: ncrypt/crypt.c:900
+#: ncrypt/crypt.c:898
 msgid "Trying to extract PGP keys...\n"
 msgstr "PGP 열쇠를 추출하는 중...\n"
 
-#: ncrypt/crypt.c:927
+#: ncrypt/crypt.c:925
 msgid "Trying to extract S/MIME certificates..."
 msgstr "S/MIME 인증서 추출하는 중..."
 
-#: ncrypt/crypt.c:1257
+#: ncrypt/crypt.c:1255
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -6305,7 +6180,7 @@ msgstr ""
 "[-- 오류: 알 수 없는 multipart/signed 프로토콜 %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1298
+#: ncrypt/crypt.c:1296
 #, fuzzy
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
@@ -6314,7 +6189,7 @@ msgstr ""
 "[-- 오류: 일치하지 않는 multipart/signed 구조 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1336
+#: ncrypt/crypt.c:1334
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures --]\n"
@@ -6323,11 +6198,11 @@ msgstr ""
 "[-- Warning: %s/%s 서명을 확인 할 수 없음 --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1348
+#: ncrypt/crypt.c:1346
 msgid "[-- The following data is signed --]\n"
 msgstr "[-- 아래의 자료는 서명 되었음 --]\n"
 
-#: ncrypt/crypt.c:1356
+#: ncrypt/crypt.c:1354
 msgid ""
 "[-- Warning: Can't find any signatures --]\n"
 "\n"
@@ -6335,7 +6210,7 @@ msgstr ""
 "[-- 경고: 서명을 찾을 수 없음. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1363
+#: ncrypt/crypt.c:1361
 msgid "[-- End of signed data --]\n"
 msgstr "[-- 서명 자료의 끝 --]\n"
 
@@ -7838,7 +7713,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1114
+#: pattern/exec.c:101 pattern/exec.c:1126
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "오류: 알 수 없는 작동 %d (오류 보고 바람)"
@@ -7863,7 +7738,7 @@ msgstr "/dev/null를 열 수 없음"
 msgid "Error checking length of temporary file"
 msgstr "임시 파일을 저장하는 중 오류: %s"
 
-#: pattern/exec.c:897
+#: pattern/exec.c:914
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -8347,11 +8222,11 @@ msgstr "%s %s/%s (%d%%)"
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
 
-#: question/question.c:180
+#: question/question.c:181
 msgid "yes"
 msgstr "yes"
 
-#: question/question.c:181
+#: question/question.c:182
 msgid "no"
 msgstr "no"
 
@@ -8391,7 +8266,7 @@ msgstr "%s를 만들 수 없음"
 msgid "Can't find any tagged messages"
 msgstr "표시된 메일이 없습니다"
 
-#: recvcmd.c:886 send/send.c:1190
+#: recvcmd.c:886 send/send.c:1187
 msgid "No mailing lists found"
 msgstr "메일링 리스트를 찾을 수 없음"
 
@@ -8442,11 +8317,11 @@ msgstr ""
 msgid "----- End forwarded message -----"
 msgstr ""
 
-#: send/send.c:349
+#: send/send.c:346
 msgid "No subject, abort?"
 msgstr "제목 없음. 끝낼까요?"
 
-#: send/send.c:351
+#: send/send.c:348
 msgid "No subject, aborting"
 msgstr "제목 없음. 끝냅니다"
 
@@ -8456,44 +8331,44 @@ msgstr "제목 없음. 끝냅니다"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:609
+#: send/send.c:606
 #, fuzzy
 msgid "Forward attachments?"
 msgstr "첨부물로 포워딩?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:901
+#: send/send.c:898
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "%s%s에게 답장?"
 
-#: send/send.c:948
+#: send/send.c:945
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "%s%s에게 댓글?"
 
-#: send/send.c:1232
+#: send/send.c:1229
 msgid "Include message in reply?"
 msgstr "답장에 원본을 포함시킵니까?"
 
-#: send/send.c:1238
+#: send/send.c:1235
 msgid "Including quoted message..."
 msgstr "인용 메일 포함 중..."
 
-#: send/send.c:1245
+#: send/send.c:1242
 msgid "Could not include all requested messages"
 msgstr "요청된 모든 메일을 포함할 수 없음"
 
-#: send/send.c:1257
+#: send/send.c:1254
 msgid "Forward as attachment?"
 msgstr "첨부물로 포워딩?"
 
-#: send/send.c:1262
+#: send/send.c:1259
 msgid "Preparing forwarded message..."
 msgstr "메일 포워딩을 준비 중..."
 
-#: send/send.c:1764
+#: send/send.c:1747
 #, fuzzy
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "%c: 이 모드에서 지원되지 않음"
@@ -8503,12 +8378,12 @@ msgstr "%c: 이 모드에서 지원되지 않음"
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1770
+#: send/send.c:1753
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr ""
 
-#: send/send.c:1810 send/send.c:1822 send/send.c:1848
+#: send/send.c:1793 send/send.c:1805 send/send.c:1831
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "첨부물을 text로 보기"
@@ -8517,118 +8392,122 @@ msgstr "첨부물을 text로 보기"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1870
+#: send/send.c:1853
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr ""
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1874
+#: send/send.c:1857
 msgid "rms"
 msgstr ""
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1880
+#: send/send.c:1863
 #, fuzzy
 msgid "Fcc mailbox"
 msgstr "메일함 없음.\n"
 
-#: send/send.c:1949
+#: send/send.c:1932
 msgid "Can't postpone.  $postponed is unset"
 msgstr ""
 
-#: send/send.c:1986 send/send.c:2003
+#: send/send.c:1969 send/send.c:1986
 msgid "Error encrypting message. Check your crypt settings."
 msgstr ""
 
-#: send/send.c:2097
+#: send/send.c:2080
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr ""
 
-#: send/send.c:2101
+#: send/send.c:2084
 #, fuzzy
 msgid "No attachments, cancel sending?"
 msgstr "첨부물 전송 부호화 방법 편집"
 
-#: send/send.c:2152
+#: send/send.c:2135
 msgid "Recall postponed message?"
 msgstr "발송 연기된 메일을 다시 부를까요?"
 
-#: send/send.c:2494
+#: send/send.c:2391
+msgid "Error sending message"
+msgstr "메일 보내는 중 오류"
+
+#: send/send.c:2480
 msgid "Edit forwarded message?"
 msgstr "포워딩된 메일을 수정할까요?"
 
-#: send/send.c:2535
+#: send/send.c:2521
 msgid "Abort unmodified message?"
 msgstr "변경되지 않은 메일을 취소할까요?"
 
-#: send/send.c:2537
+#: send/send.c:2523
 msgid "Aborted unmodified message"
 msgstr "변경되지 않은 메일 취소함"
 
-#: send/send.c:2679
+#: send/send.c:2665
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr ""
 
-#: send/send.c:2719
+#: send/send.c:2705
 #, fuzzy
 msgid "Article not posted"
 msgstr "보내지 않음"
 
-#: send/send.c:2728
+#: send/send.c:2714
 msgid "Message postponed"
 msgstr "발송 연기됨"
 
-#: send/send.c:2763
+#: send/send.c:2749
 msgid "No subject, abort sending?"
 msgstr "제목 없음, 보내기를 취소할까요?"
 
-#: send/send.c:2767 send/send.c:2773
+#: send/send.c:2753 send/send.c:2759
 msgid "No subject specified"
 msgstr "제목이 지정되지 않음"
 
-#: send/send.c:2779
+#: send/send.c:2765
 #, fuzzy
 msgid "No newsgroup specified"
 msgstr "제목이 지정되지 않음"
 
-#: send/send.c:2824
+#: send/send.c:2810
 msgid "Missing encryption key; mail not sent"
 msgstr ""
 
-#: send/send.c:2848 send/smtp.c:263
+#: send/send.c:2834 send/smtp.c:263
 msgid "Sending message..."
 msgstr "메일 보내는 중..."
 
-#: send/send.c:2894
+#: send/send.c:2880
 msgid "Could not send the message"
 msgstr "메일을 보낼 수 없음"
 
-#: send/send.c:2904
+#: send/send.c:2890
 msgid "Sending in background"
 msgstr "백그라운드로 보냄"
 
-#: send/send.c:2905
+#: send/send.c:2891
 msgid "Article posted"
 msgstr ""
 
-#: send/send.c:2906
+#: send/send.c:2892
 msgid "Mail sent"
 msgstr "메일 보냄"
 
-#: send/send.c:2987
+#: send/send.c:2973
 #, fuzzy
 msgid "No recipient specified"
 msgstr "수신자가 지정되지 않음"
 
-#: send/send.c:3034
+#: send/send.c:3020
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "찾을 수 없음"
 
-#: send/send.c:3063
+#: send/send.c:3049
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "%s에서 가입 탈퇴 중..."
@@ -8758,14 +8637,20 @@ msgstr ""
 "바랍니다. NeoMutt은 공개 소프트웨어이며, 일정 사항만 지킨다면 여러분께서 자유\n"
 "로이 재배포할 수 있습니다. 자세한 사항은 'neomutt -vv'로 확인하시기 바랍니다.\n"
 
-#: version.c:487
+#: version.c:482
 msgid "Compile options:"
 msgstr "컴파일 선택사항:"
 
-#: version.c:492
+#: version.c:487
 #, fuzzy
 msgid "Devel options:"
 msgstr "컴파일 선택사항:"
+
+#~ msgid "Append"
+#~ msgstr "첨가"
+
+#~ msgid "Can't get mixmaster's type2.list"
+#~ msgstr "mixmaster의 type2.list를 찾지 못함"
 
 #, fuzzy, c-format
 #~ msgid "Caught signal %d (%s) ...  Exiting\n"
@@ -8774,3 +8659,66 @@ msgstr "컴파일 선택사항:"
 #, fuzzy, c-format
 #~ msgid "Caught signal %d ...  Exiting\n"
 #~ msgstr "%d 신호 발견... 종료함.\n"
+
+#, c-format
+#~ msgid "Error sending message, child exited %d\n"
+#~ msgstr "메일 보내는 중 오류 %d.\n"
+
+#, c-format
+#~ msgid "Error: %s can't be used as the final remailer of a chain"
+#~ msgstr "오류: %s는 체인의 마지막 리메일러로 사용할수 없음"
+
+#~ msgid "Insert"
+#~ msgstr "삽입"
+
+#, c-format
+#~ msgid "Mixmaster chains are limited to %d elements"
+#~ msgstr "Mixmaster 체인은 %d개의 제한이 있음"
+
+#~ msgid "Mixmaster doesn't accept Cc or Bcc headers"
+#~ msgstr "Mixmaster는 Cc 또는 Bcc 헤더를 허용하지 않음"
+
+#~ msgid "OK"
+#~ msgstr "확인"
+
+#~ msgid "Please set the hostname variable to a proper value when using mixmaster"
+#~ msgstr "mixmaster를 사용하기 위한 적당한 호스트 변수를 사용하세요"
+
+#~ msgid "Select a remailer chain"
+#~ msgstr "리메일러 체인 선택"
+
+#~ msgid "The remailer chain is already empty"
+#~ msgstr "리메일러 체인이 이미 비어 있음"
+
+#~ msgid "You already have the first chain element selected"
+#~ msgstr "이미 첫번째 체인을 선택했음"
+
+#~ msgid "You already have the last chain element selected"
+#~ msgstr "이미 마지막 체인을 선택했음"
+
+#, fuzzy
+#~ msgid "accept the chain constructed"
+#~ msgstr "체인 구조를 허가함"
+
+#, fuzzy
+#~ msgid "append a remailer to the chain"
+#~ msgstr "체인에 리메일러 첨가"
+
+#, fuzzy
+#~ msgid "delete a remailer from the chain"
+#~ msgstr "체인에서 리메일러 삭제"
+
+#, fuzzy
+#~ msgid "insert a remailer into the chain"
+#~ msgstr "체인에 리메일러 삽입"
+
+#, fuzzy
+#~ msgid "select the next element of the chain"
+#~ msgstr "체인의 다음 항목 선택"
+
+#, fuzzy
+#~ msgid "select the previous element of the chain"
+#~ msgstr "체인의 이전 항목 선택"
+
+#~ msgid "send the message through a mixmaster remailer chain"
+#~ msgstr "mixmaster 리메일러 체인을 통한 메일 보내기"
