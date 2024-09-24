@@ -320,15 +320,15 @@ char *mutt_path_dirname(const char *path)
 }
 
 /**
- * mutt_path_to_absolute - Convert relative filepath to an absolute path
- * @param path      Relative path
- * @param reference Absolute path that \a path is relative to
- * @retval true  Success
- * @retval false Failure
+ * mutt_path_to_absolute - Convert a relative path to its absolute form
+ * @param[in,out] path      Relative path
+ * @param[in]     reference Absolute path that \a path is relative to
+ * @retval true  Success, path was changed into its absolute form
+ * @retval false Failure, path is untouched
  *
  * Use POSIX functions to convert a path to absolute, relatively to another path
  *
- * @note \a path should be at least of PATH_MAX length
+ * @note \a path should be able to store PATH_MAX characters + the terminator.
  */
 bool mutt_path_to_absolute(char *path, const char *reference)
 {
@@ -347,15 +347,22 @@ bool mutt_path_to_absolute(char *path, const char *reference)
   buf_printf(abs_path, "%s/%s", dirpath, path);
   FREE(&dirpath);
 
-  path = realpath(buf_string(abs_path), path);
-  if (!path && (errno != ENOENT))
+  char rpath[PATH_MAX + 1] = { 0 };
+  const char *result = realpath(buf_string(abs_path), rpath);
+  buf_pool_release(&abs_path);
+  if (!result)
   {
-    mutt_perror(_("Error: converting path to absolute"));
-    buf_pool_release(&abs_path);
+    if (errno != ENOENT)
+    {
+      mutt_perror(_("Error: converting path to absolute"));
+    }
     return false;
   }
+  else
+  {
+    mutt_str_copy(path, rpath, PATH_MAX);
+  }
 
-  buf_pool_release(&abs_path);
   return true;
 }
 

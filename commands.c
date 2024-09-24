@@ -210,7 +210,7 @@ int source_rc(const char *rcfile_path, struct Buffer *err)
   struct Buffer *token = NULL, *linebuf = NULL;
   char *line = NULL;
   char *currentline = NULL;
-  char rcfile[PATH_MAX] = { 0 };
+  char rcfile[PATH_MAX + 1] = { 0 };
   size_t linelen = 0;
   pid_t pid;
 
