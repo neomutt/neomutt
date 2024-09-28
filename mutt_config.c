@@ -880,6 +880,8 @@ static struct ConfigDef MainVars[] = {
   { "cursor_overlay",            D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2020-07-20" },
   { "escape",                    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
   { "ignore_linear_white_space", D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2021-03-18" },
+  { "mixmaster",                 D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2024-05-30" },
+  { "mix_entry_format",          D_INTERNAL_DEPRECATED|DT_EXPANDO,0, IP "2024-05-30" },
   { "visual",                    D_INTERNAL_DEPRECATED|DT_STRING, 0, IP "2021-03-18" },
 
   { "autoedit",                  DT_SYNONYM, IP "auto_edit",                  IP "2021-03-21" },

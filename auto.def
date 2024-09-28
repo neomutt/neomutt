@@ -141,6 +141,8 @@ set deprecated_options  {
   with-lz4:
   with-zstd:
   include-path-in-cflags:=
+  mixmaster:=
+  with-mixmaster:=
 }
 
 foreach dep $deprecated_options {
