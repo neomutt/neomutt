@@ -42,8 +42,8 @@
 
 /**
  * node_conddate_private_new - Create new CondDate private data
- * @param count      Number of 'units' to count          
- * @param period     Units, e.g. 'd' Day or 'm' Month    
+ * @param count      Number of 'units' to count
+ * @param period     Units, e.g. 'd' Day or 'm' Month
  * @retval ptr New CondDate private data
  */
 struct NodeCondDatePrivate *node_conddate_private_new(int count, char period)
@@ -122,8 +122,8 @@ int node_conddate_render(const struct ExpandoNode *node,
 
 /**
  * node_conddate_new - Create a new CondDate ExpandoNode
- * @param count      Number of 'units' to count          
- * @param period     Units, e.g. 'd' Day or 'm' Month    
+ * @param count      Number of 'units' to count
+ * @param period     Units, e.g. 'd' Day or 'm' Month
  * @param did        Domain ID
  * @param uid        Unique ID
  * @retval ptr New CondDate ExpandoNode

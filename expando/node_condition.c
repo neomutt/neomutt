@@ -64,7 +64,7 @@ static int node_condition_render(const struct ExpandoNode *node,
 
 /**
  * node_condition_new - Create a new Condition Expando Node
- * @param condition     Expando Node that will be tested
+ * @param condition  Expando Node that will be tested
  * @param node_true  Node tree for the 'true' case
  * @param node_false Node tree for the 'false' case
  * @retval ptr New Condition Expando Node

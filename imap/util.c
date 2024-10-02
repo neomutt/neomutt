@@ -698,7 +698,7 @@ char *imap_fix_path(const char *mailbox, char *path, size_t plen)
     }
   }
 
-  *out= '\0';
+  *out = '\0';
   return path;
 }
 
@@ -737,7 +737,7 @@ char *imap_fix_path_with_delim(const char delim, const char *mailbox, char *path
   {
     --out;
   }
-  *out= '\0';
+  *out = '\0';
   return path;
 }
 

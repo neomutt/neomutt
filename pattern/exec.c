@@ -1194,7 +1194,7 @@ bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_DRIVER_TAGS:
       if (!av->alias)
         return false;
-      return match_tags(pat, &av->alias->tags); 
+      return match_tags(pat, &av->alias->tags);
     case MUTT_PAT_AND:
       return pat->pat_not ^ (perform_alias_and(pat->child, flags, av, cache) > 0);
     case MUTT_PAT_OR:

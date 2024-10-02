@@ -3,8 +3,7 @@
  * Test code for mutt_list_copy_tail()
  *
  * @authors
- * Copyright (C) 2019-2023, Richard Russon <rich@flatcap.org>
- * Copyright (C) 2024, Alejandro Colomar <alx@kernel.org>
+ * Copyright (C) 2024 Alejandro Colomar <alx@kernel.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under

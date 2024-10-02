@@ -314,15 +314,25 @@ long index_date_recv_local_num(const struct ExpandoNode *node, void *data, MuttF
   return e->received;
 }
 
+/**
+ * IndexDateChoice - Which email date to display in the Index
+ */
 enum IndexDateChoice
 {
-  SENT_SENDER,
-  SENT_LOCAL,
-  RECV_LOCAL
+  SENT_SENDER,      ///< Date sent in the sender's timezone
+  SENT_LOCAL,       ///< Date sent in the local timezone
+  RECV_LOCAL        ///< Date received in the local timezone
 };
 
 /**
  * index_email_date - Index: Sent/Received Local/Sender date and time
+ * @param node       ExpandoNode containing the callback
+ * @param e          Email
+ * @param which      Which date to use
+ * @param flags      Flags, see #MuttFormatFlags
+ * @param buf        Buffer for the result
+ * @param format     Format string
+ * @param format_len Length of format string
  */
 static void index_email_date(const struct ExpandoNode *node, const struct Email *e,
                              enum IndexDateChoice which, MuttFormatFlags flags,

@@ -882,7 +882,7 @@ void mutt_str_hyphenate(char *buf, size_t buflen, const char *str)
  * * mutt_str_inbox_cmp("/foo/bar/sent", "/foo/bar/inbox") --> 1
  * * mutt_str_inbox_cmp("=INBOX",        "=Drafts") --> -1
  * * mutt_str_inbox_cmp("=INBOX",        "=INBOX.Foo") --> 0
- * * mutt_str_inbox_cmp("=INBOX.Foo",    "=Drafts") --> -1 
+ * * mutt_str_inbox_cmp("=INBOX.Foo",    "=Drafts") --> -1
  */
 int mutt_str_inbox_cmp(const char *a, const char *b)
 {

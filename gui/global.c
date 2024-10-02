@@ -50,7 +50,8 @@
  */
 static int op_check_stats(int op)
 {
-  mutt_mailbox_check(get_current_mailbox(), MUTT_MAILBOX_CHECK_POSTPONED | MUTT_MAILBOX_CHECK_STATS);
+  mutt_mailbox_check(get_current_mailbox(),
+                     MUTT_MAILBOX_CHECK_POSTPONED | MUTT_MAILBOX_CHECK_STATS);
   return FR_SUCCESS;
 }
 
