@@ -124,7 +124,7 @@ static struct ConfigDef NcryptVars[] = {
     "Use this as the subject for encrypted emails"
   },
   { "crypt_protected_headers_weed", DT_BOOL, false, 0, NULL,
-    "Controls wether NeoMutt will weed protected header fields"
+    "Controls whether NeoMutt will weed protected header fields"
   },
   { "crypt_protected_headers_write", DT_BOOL, true, 0, NULL,
     "Generate protected header (Memory Hole) for signed and encrypted emails"
