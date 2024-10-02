@@ -1,3 +1,64 @@
+2024-10-02  Richard Russon  <rich@flatcap.org>
+* Security
+  - #4243 - security: kill unnecessary blank lines
+  - #4251 - more security improvements
+  - #4282 - improve NeoMutt bailout handling
+* Features
+  - #4329 - remove mixmaster
+  - #4149 - honour umask in attach save
+* Bug Fixes
+  - #3945 - do not force username in addition to client certificate
+  - #4341 - Fix '%z' and '%Z in '%{...}' expando
+  - #4356 - Allow longer maildir filename suffixes
+  - #4357 - Don't force mbox stats calculations on startup
+  - #4365 - Fix sorting INBOX and its subfolders
+  - #4367 - Let `~Y` match each tag individually
+  - #4371 - ignore macro events during autocrypt initialization
+  - #4383 - Generate the Message-ID earlier
+  - compose: fix `$compose_confirm_detach_first`
+* Changed Config
+  - `set crypt_encryption_info = yes`
+    Add an informative block with details about the encryption
+  - `set crypt_protected_headers_weed = no`
+    Controls wether NeoMutt will weed protected header fields
+  - `set devel_security = no`
+    Devel feature: Security -- https://github.com/neomutt/neomutt/discussions/4251
+  - `$mixmaster` is deprecated
+  - `$mix_entry_format` is deprecated
+* Translations
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Spanish
+  - 81% French
+* Docs
+  - #4350 - Fix configure script name in INSTALL.md
+  - fix para ordering
+* Build
+  - #4280 - Update autosetup
+  - #4281 - Update acutest to the latest upstream commit
+  - #4289 - don't treat stddef.h specially
+  - #4306 - Add -std to CFLAGS too
+  - #4307 - require C11
+  - #4347 - Support BerkeleyDB 18.1
+  - #4362 - Assume 'struct timespec' exists
+  - fix idn2 typo
+* Code
+  - #4113 - Close the hcache handle on failure to open the store
+  - #4214 - upgrade `assert()`
+  - #4283 - mutt/list.c: Use `STAILQ_FOREACH_SAFE()` in stailq deallocators
+  - #4296 - Use `wmem*()` functions with wide-character strings
+  - #4297 - ncrypt/crypt.c: Fix allocation size calculation
+  - #4305 - remove `mutt_expand_path()`
+  - #4308 - fix `-Wdouble-promotion` warnings
+  - #4310 - scanf: initialise out-vars
+  - #4312 - Allow opening the header cache in non-`O_CREAT` mode
+  - #4337 - Fix function pointer types
+  - #4348 - Check `mutt_date_parse_date()`s return value
+  - #4366 - Fix up slashes in `imap_fix_path()`
+  - #4378 - Fix padding with an empty string
+  - tidy expando library
+
 2024-04-25  Richard Russon  \<rich@flatcap.org\>
 - Bug Fixes
   - #4263 fix: cache naming
