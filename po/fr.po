@@ -5,6 +5,7 @@
 #
 # Marc Baudoin <babafou@babafou.eu.org>, 1998-2019
 # Vincent Lefevre <vincent@vinc17.net>, 1998-2023
+# Ryan d'Huart <homoelectromagneticus@protonmail.com>, 2024
 #
 # Traductions possibles de "timestamp":
 # _ horodatage
@@ -19,9 +20,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-04-25\n"
+"Project-Id-Version: neomutt-2024-10-02\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-09-23 10:34+0100\n"
+"POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -50,7 +51,7 @@ msgstr "Vous avez déjà défini un alias ayant ce nom"
 
 #: alias/alias.c:411
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr "Attention : ce nom d'alias peut ne pas fonctionner. Corriger?"
+msgstr "Attention : ce nom d'alias peut ne pas fonctionner. Corriger ?"
 
 #: alias/alias.c:436
 msgid "Address: "
@@ -79,7 +80,7 @@ msgstr ""
 # , c-format
 #: alias/alias.c:503
 msgid "Accept?"
-msgstr "Accepter?"
+msgstr "Accepter ?"
 
 #: alias/alias.c:518 attach/recvattach.c:306 attach/recvattach.c:329
 #: attach/recvattach.c:347 attach/recvattach.c:364 attach/recvattach.c:491
@@ -197,9 +198,8 @@ msgid "Query: "
 msgstr "Requête : "
 
 #: alias/functions.c:238
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "Limiter aux messages correspondant à : "
+msgstr "Limiter aux adresses emails correspondant à : "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:355
@@ -228,18 +228,22 @@ msgid "attachments: no disposition"
 msgstr "attachments : pas de disposition"
 
 #: attach/attachments.c:493
+#, fuzzy
 msgid "Current attachments settings:"
 msgstr "Editer la description de l'attachement:"
 
 #: attach/attachments.c:525
+#, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "attachments : disposition invalide"
 
 #: attach/attachments.c:545
+#, fuzzy
 msgid "unattachments: no disposition"
 msgstr "unattachments : pas de disposition"
 
 #: attach/attachments.c:585
+#, fuzzy
 msgid "unattachments: invalid disposition"
 msgstr "unattachments : disposition invalide"
 
@@ -257,7 +261,7 @@ msgstr "Imprimer"
 
 #: attach/dlg_attach.c:575
 msgid "Attachments"
-msgstr "Attachements"
+msgstr "Pièces jointes"
 
 #: attach/functions.c:55 browser/functions.c:66 index/functions.c:88
 #: pager/functions.c:62
@@ -278,22 +282,27 @@ msgid "There are no subparts to show"
 msgstr "Il n'y a pas de sous-parties à montrer"
 
 #: attach/functions.c:277
+#, fuzzy
 msgid "Can't delete attachment from POP server"
 msgstr "Impossible d'effacer l'attachement depuis le serveur POP"
 
 #: attach/functions.c:284
+#, fuzzy
 msgid "Can't delete attachment from news server"
 msgstr "Impossible d'effacer l'attachement depuis le serveur usenet"
 
 #: attach/functions.c:290
+#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported"
 msgstr "L'effacement d'attachements de messages chiffrés n'est pas supporté"
 
 #: attach/functions.c:295
+#, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature"
 msgstr "L'effacement d'attachements de messages signés peut invalider la signature"
 
 #: attach/functions.c:311 attach/functions.c:335
+#, fuzzy
 msgid "Only deletion of multipart attachments is supported"
 msgstr "Seul l'effacement d'attachements multipart est supporté"
 
@@ -353,7 +362,7 @@ msgstr "Pas d'entrée mailcap correspondante. Visualisation en texte."
 
 #: attach/mutt_attach.c:478
 msgid "MIME type not defined.  Can't view attachment."
-msgstr "Type MIME non défini. Impossible de visualiser l'attachement."
+msgstr "Type MIME non défini. Impossible de afficher la pièce jointe."
 
 #: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
 #: attach/mutt_attach.c:1262 handler.c:594 ncrypt/pgp_functions.c:150
@@ -364,22 +373,22 @@ msgstr "Impossible de créer le filtre"
 #: attach/mutt_attach.c:583
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr "---Commande: %-20.20s Description: %s"
+msgstr "---Commande : %-20.20s Description : %s"
 
 #: attach/mutt_attach.c:588
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr "---Commande: %-30.30s Attachement: %s"
+msgstr "---Commande : %-30.30s Pièce jointe : %s"
 
 #: attach/mutt_attach.c:672
 #, c-format
 msgid "---Attachment: %s: %s"
-msgstr "---Attachement: %s: %s"
+msgstr "---Pièce jointe : %s: %s"
 
 #: attach/mutt_attach.c:674
 #, c-format
 msgid "---Attachment: %s"
-msgstr "---Attachement: %s"
+msgstr "---Pièce jointe : %s"
 
 #: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
 msgid "Write fault"
@@ -407,6 +416,7 @@ msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ATTENTION ! Vous allez écraser %s, continuer?"
 
 #: attach/recvattach.c:575
+#, fuzzy
 msgid "Attachment filtered"
 msgstr "Attachement filtré"
 
@@ -422,7 +432,7 @@ msgstr "Passer à la commande : "
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
 #: attach/recvattach.c:796
-#, c-format
+#, fuzzy, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Je ne sais pas comment imprimer %s attachements"
 
@@ -436,9 +446,10 @@ msgstr[1] "Imprimer les %d pièces jointes marquées ?"
 #: attach/recvattach.c:901
 #, c-format
 msgid "Print attachment?"
-msgstr "Imprimer l'attachement?"
+msgstr "Imprimer la pièce jointe ?"
 
 #: attach/recvattach.c:942
+#, fuzzy
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Les changements structurels sur attachements déchiffrés ne sont pas supportés"
 
@@ -846,13 +857,13 @@ msgstr "Le renommage n'est supporté que pour les boîtes aux lettres IMAP"
 #: browser/functions.c:888
 #, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Tri inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier?"
+msgstr "Trier inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser/functions.c:890
 #, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Tri par (d)ate, (a)lphabétique, (t)aille, des(c)ription, (n)ombre, nou(v)eau nombre, ou ne (p)as trier?"
+msgstr "Trier par (d)ate, (a)lphabétique, (t)aille, des(c)ription, (n)ombre, nou(v)eau nombre, ou ne (p)as trier ?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser/functions.c:892
@@ -998,6 +1009,7 @@ msgstr "source : erreurs dans %s"
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source : lecture interrompue car trop d'erreurs dans %s"
 
+# RdH: need more context on what %d is here
 # , c-format
 #: commands.c:332
 #, fuzzy, c-format
@@ -1059,9 +1071,9 @@ msgstr "Abonné à %s"
 
 # , c-format
 #: commands.c:1263
-#, fuzzy, c-format
+#, c-format
 msgid "Could not subscribe to %s"
-msgstr "Abonné à %s"
+msgstr "Échec d'abonnement à %s"
 
 #: commands.c:1271 commands.c:1607
 msgid "No folder specified"
@@ -1085,9 +1097,9 @@ msgstr "Désabonné de %s"
 
 # , c-format
 #: commands.c:1599
-#, fuzzy, c-format
+#, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "Désabonné de %s"
+msgstr "Échec de désabonnement de %s"
 
 #: compmbox/compress.c:224
 #, c-format
@@ -1191,11 +1203,11 @@ msgstr "Pas d'objet (Subject) spécifié."
 
 #: compose/dlg_compose.c:269
 msgid "-- Attachments"
-msgstr "-- Attachements"
+msgstr "-- Pièces jointes"
 
 #: compose/functions.c:220
 msgid "There are no attachments"
-msgstr "Il n'y a pas d'attachements"
+msgstr "Il n'y a pas de pièces jointes"
 
 # , c-format
 #. L10N: This message is displayed in the compose menu when an attachment
@@ -1205,7 +1217,7 @@ msgstr "Il n'y a pas d'attachements"
 #: compose/functions.c:289
 #, c-format
 msgid "Attachment #%d no longer exists: %s"
-msgstr "L'attachement #%d n'existe plus : %s"
+msgstr "La pièce jointe #%d n'existe plus : %s"
 
 # , c-format
 #. L10N: This message is displayed in the compose menu when an attachment
@@ -1215,9 +1227,10 @@ msgstr "L'attachement #%d n'existe plus : %s"
 #: compose/functions.c:306
 #, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
-msgstr "Attachement #%d modifié. Mettre à jour le codage pour %s ?"
+msgstr "La pièce jointe #%d a été modifiée. Mettre à jour le codage pour %s ?"
 
 #: compose/functions.c:346
+#, fuzzy
 msgid "You may not delete the only attachment"
 msgstr "Vous ne pouvez pas supprimer l'unique attachement"
 
@@ -1228,7 +1241,7 @@ msgstr "Vous ne pouvez pas supprimer l'unique attachement"
 #: compose/functions.c:356
 #, fuzzy
 msgid "Really delete the main message?"
-msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\"?"
+msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
 
 #: compose/functions.c:373 compose/functions.c:565
 #, fuzzy
@@ -1310,9 +1323,8 @@ msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Toutes les parties n'ont pas leur 'Content-Language' indiqué. Continuer ?"
 
 #: compose/functions.c:1309
-#, fuzzy
 msgid "Not sending this message"
-msgstr "Erreur en envoyant le message"
+msgstr "Ce message ne sera pas envoyé"
 
 #: compose/functions.c:1324
 #, fuzzy
@@ -1352,37 +1364,44 @@ msgid "Can't create file %s"
 msgstr "Impossible de créer le fichier %s"
 
 #: compose/functions.c:1487
-#, fuzzy
 msgid "Error attaching file"
-msgstr "Nous sommes en présence d'un échec de fabrication d'un attachement"
+msgstr "Erreur dans l'attachement du fichier"
 
+# RdH: multipart could be translated as a kind of adjective:
+#   en plusiers parties
+#   à plusieurs parties
+# « multipartie » is a french word, but it's only used in political contexts
 #: compose/functions.c:1529
 #, fuzzy
 msgid "Can't print multipart attachments"
-msgstr "Imprimer la pièce jointe marquée ?"
+msgstr "Les pièces jointes en plusieurs parties ne peuvent pas être imprimées"
 
 #: compose/functions.c:1555
 msgid "Send attachment with name: "
-msgstr "Envoyer l'attachement avec le nom : "
+msgstr "Envoyer la pièce jointe avec le nom : "
 
 #: compose/functions.c:1580
 #, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Seul l'effacement d'attachements multipart est supporté"
+msgstr "Impossible de sauvegarder les pièces jointes en plusiers parties"
 
 #: compose/functions.c:1615
+#, fuzzy
 msgid "Recoding only affects text attachments"
-msgstr "Le recodage affecte uniquement les attachements textuels"
+msgstr "Le recodage affecte uniquement les pièces jointes textuelles"
 
+# "current" in english usually translates much better to « actuel » in french.
+# there are contexts where « courant » works, but this is not one of them
 #: compose/functions.c:1620
 msgid "The current attachment won't be converted"
-msgstr "L'attachement courant ne sera pas converti"
+msgstr "La pièce jointe actuelle ne sera pas convertie"
 
 #: compose/functions.c:1622
 msgid "The current attachment will be converted"
-msgstr "L'attachement courant sera converti"
+msgstr "La pièce jointe actuelle sera convertie"
 
 #: compose/functions.c:1651
+#, fuzzy
 msgid "Attachment is not 'multipart'"
 msgstr "La pièce jointe n'est pas au format 'multipart'"
 
@@ -1394,12 +1413,12 @@ msgstr "Mauvais IDN dans « %s » : '%s'"
 #: compose/functions.c:1800
 #, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "Seul l'effacement d'attachements multipart est supporté"
+msgstr "Seul l'effacement des pièces jointes multipart est supporté"
 
 #: compose/functions.c:1881
 #, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "Seul l'effacement d'attachements multipart est supporté"
+msgstr "Seul l'effacement des pièces jointes multipart est supporté"
 
 #: compose/functions.c:1888
 msgid "Rename to: "
@@ -1415,7 +1434,7 @@ msgstr "Impossible d'obtenir le statut de %s : %s"
 
 #: compose/functions.c:1934
 msgid "Save a copy of this message?"
-msgstr "Sauver une copie de ce message?"
+msgstr "Sauver une copie de ce message ?"
 
 #: compose/functions.c:1960
 msgid "Write message to mailbox"
@@ -1434,7 +1453,7 @@ msgstr "Message écrit"
 #: compose/functions.c:2040
 #, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Rappeler un message ajourné?"
+msgstr "Rappeler un message ajourné ?"
 
 # , c-format
 #: config/bool.c:76
@@ -1579,7 +1598,7 @@ msgstr "Mot de passe pour %s@%s : "
 #: conn/connaccount.c:211
 #, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Commande de requête non définie"
+msgstr "Commande de rafraîchissement 'OATH' non définie"
 
 #: conn/connaccount.c:219
 msgid "Unable to run refresh command"
@@ -2110,7 +2129,7 @@ msgstr "Newsgroups : "
 #: envelope/window.c:123
 #, fuzzy
 msgid "Followup-To: "
-msgstr "Suivi de la discussion à %s%s?"
+msgstr "Suivi de la discussion à %s%s ?"
 
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:125
@@ -2391,9 +2410,8 @@ msgstr "Décoder-copier vers une boîte mail"
 
 #. L10N: Progress meter message when saving tagged messages
 #: external.c:823
-#, fuzzy
 msgid "Saving tagged messages..."
-msgstr "Imprimer les messages marqués ?"
+msgstr "Sauvegarde des messages marqués en cours..."
 
 #: external.c:827
 #, fuzzy
@@ -2501,7 +2519,7 @@ msgstr "Appuyez sur une touche pour continuer..."
 
 #: gui/curs_lib.c:251
 msgid " ('?' for list): "
-msgstr " ('?' pour avoir la liste) : "
+msgstr " ('?' pour voir la liste) : "
 
 # , c-format
 #: gui/curs_lib.c:506
@@ -2517,26 +2535,26 @@ msgstr "Caractère = %s, Octal = %o, Décimal = %d\n"
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_FILE
 #. Compose Dialog: <op_attachment_attach_file>
 #: gui/opcodes.h:43
-#, fuzzy
 msgid "attach files to this message"
-msgstr "attacher des fichiers à ce message"
+msgstr "joindre des fichiers à ce message"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
 #. Compose Dialog: <op_attachment_attach_message>
 #: gui/opcodes.h:46
 #, fuzzy
 msgid "attach messages to this message"
-msgstr "attacher des messages à ce message"
+msgstr "joindre des messages à ce message"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_NEWS_MESSAGE
 #. Compose Dialog: <op_attachment_attach_message>
 #: gui/opcodes.h:49
 msgid "attach news articles to this message"
-msgstr "attacher des fichiers de groupes de discussion à ce message"
+msgstr "joindre des fichiers de groupes de discussion à ce message"
 
 #. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
 #. Attach Dialog: <op_attachment_collapse>
 #: gui/opcodes.h:52
+#, fuzzy
 msgid "toggle display of subparts"
 msgstr "inverser l'affichage des sous-parties"
 
@@ -2550,7 +2568,7 @@ msgstr "inverser l'affichage des sous-parties"
 #. Postponed Dialog: <op_delete>
 #: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:274
 msgid "delete the current entry"
-msgstr "effacer l'entrée courante"
+msgstr "effacer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attachment_edit_content_id>
@@ -2563,11 +2581,12 @@ msgstr "éditer le 'Content-Language' de la pièce jointe"
 #. Compose Dialog: <op_attachment_edit_description>
 #: gui/opcodes.h:64
 msgid "edit attachment description"
-msgstr "éditer la description de l'attachement"
+msgstr "éditer la description de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
 #. Compose Dialog: <op_attachment_edit_encoding>
 #: gui/opcodes.h:67
+#, fuzzy
 msgid "edit attachment transfer-encoding"
 msgstr "éditer le transfer-encoding de l'attachement"
 
@@ -2581,7 +2600,7 @@ msgstr "éditer le 'Content-Language' de la pièce jointe"
 #. Compose Dialog: <op_attachment_edit_mime>
 #: gui/opcodes.h:73
 msgid "edit attachment using mailcap entry"
-msgstr "éditer l'attachement en utilisant l'entrée mailcap"
+msgstr "éditer la pièce jointe en utilisant l'entrée mailcap"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE
 #. Attach Dialog: <op_attachment_edit_type>
@@ -2589,19 +2608,19 @@ msgstr "éditer l'attachement en utilisant l'entrée mailcap"
 #. Index: <op_attachment_edit_type>
 #: gui/opcodes.h:78
 msgid "edit attachment content type"
-msgstr "éditer le content-type de l'attachement"
+msgstr "éditer le content-type de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_FILTER
 #. Compose Dialog: <op_attachment_filter>
 #: gui/opcodes.h:81
 msgid "filter attachment through a shell command"
-msgstr "filtrer un attachement au moyen d'une commande shell"
+msgstr "filtrer la pièce jointe au moyen d'une commande shell"
 
 #. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
 #. Compose Dialog: <op_attachment_get_attachment>
 #: gui/opcodes.h:84
 msgid "get a temporary copy of an attachment"
-msgstr "obtenir une copie temporaire d'un attachement"
+msgstr "obtenir une copie temporaire d'une pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_GROUP_ALTS
 #. Compose Dialog: <op_attachment_group_alts>
@@ -2640,7 +2659,7 @@ msgstr "Envoyer l'attachement avec le nom : "
 #. Compose Dialog: <op_attachment_new_mime>
 #: gui/opcodes.h:102
 msgid "compose new attachment using mailcap entry"
-msgstr "composer un nouvel attachement en utilisant l'entrée mailcap"
+msgstr "composer une nouvelle pièce jointe en utilisant l'entrée mailcap"
 
 #. L10N: Help screen description for OP_ATTACHMENT_PIPE
 #. L10N: Help screen description for OP_PIPE
@@ -2649,7 +2668,7 @@ msgstr "composer un nouvel attachement en utilisant l'entrée mailcap"
 #. Index: <op_pipe>
 #: gui/opcodes.h:104 gui/opcodes.h:664
 msgid "pipe message/attachment to a shell command"
-msgstr "passer le message/l'attachement à une commande shell"
+msgstr "passer le message/la pièce jointe à une commande shell"
 
 #. L10N: Help screen description for OP_ATTACHMENT_PRINT
 #. Attach Dialog: <op_attachment_print>
@@ -2658,13 +2677,13 @@ msgstr "passer le message/l'attachement à une commande shell"
 #. Index: <op_print>
 #: gui/opcodes.h:108 gui/opcodes.h:682
 msgid "print the current entry"
-msgstr "imprimer l'entrée courante"
+msgstr "imprimer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_ATTACHMENT_RENAME_ATTACHMENT
 #. Compose Dialog: <op_attachment_rename_attachment>
 #: gui/opcodes.h:111
 msgid "send attachment with a different name"
-msgstr "envoyer l'attachement avec un nom différent"
+msgstr "envoyer la pièce jointe avec un autre nom"
 
 #. L10N: Help screen description for OP_ATTACHMENT_SAVE
 #. Attach Dialog: <op_attachment_save>
@@ -2674,7 +2693,7 @@ msgstr "envoyer l'attachement avec un nom différent"
 #. Pager: <op_save>
 #: gui/opcodes.h:115 gui/opcodes.h:727
 msgid "save message/attachment to a mailbox/file"
-msgstr "sauver le message/l'attachement dans une boîte aux lettres ou un fichier"
+msgstr "sauver le message/la pièce jointe dans une boîte aux lettres ou un fichier"
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attachment_toggle_disposition>
@@ -2682,17 +2701,19 @@ msgstr "sauver le message/l'attachement dans une boîte aux lettres ou un fichie
 msgid "toggle disposition between inline/attachment"
 msgstr "changer la disposition (en ligne/attachement)"
 
+# RdH: not confident about « recodage » here...
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
 #. Compose Dialog: <op_attachment_toggle_recode>
 #: gui/opcodes.h:121
+#, fuzzy
 msgid "toggle recoding of this attachment"
-msgstr "inverser le recodage de cet attachement"
+msgstr "basculer le recodage de cette pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
 #. Compose Dialog: <op_attachment_toggle_unlink>
 #: gui/opcodes.h:124
 msgid "toggle whether to delete file after sending it"
-msgstr "changer l'option de suppression de fichier après envoi"
+msgstr "basculer l'option de suppression de fichier après envoi"
 
 #. L10N: Help screen description for OP_ATTACHMENT_UNDELETE
 #. Attach Dialog: <op_attachment_undelete>
@@ -2702,7 +2723,7 @@ msgstr "changer l'option de suppression de fichier après envoi"
 #. Index: <op_undelete>
 #: gui/opcodes.h:127 gui/opcodes.h:813
 msgid "undelete the current entry"
-msgstr "récupérer l'entrée courante"
+msgstr "récupérer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
 #. Compose Dialog: <op_attachment_ungroup>
@@ -2714,21 +2735,21 @@ msgstr ""
 #. Compose Dialog: <op_attachment_update_encoding>
 #: gui/opcodes.h:133
 msgid "update an attachment's encoding info"
-msgstr "mettre à jour les informations de codage d'un attachement"
+msgstr "mettre à jour les informations de codage d'une pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW
 #. Attach Dialog: <op_attachment_view>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:137
 msgid "view attachment using mailcap entry if necessary"
-msgstr "visualiser l'attachement en utilisant l'entrée mailcap si nécessaire"
+msgstr "visualiser la pièce jointe en utilisant l'entrée mailcap si nécessaire"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_MAILCAP
 #. Attach Dialog: <op_attachment_view_mailcap>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:141
 msgid "force viewing of attachment using mailcap"
-msgstr "forcer la visualisation d'un attachment en utilisant le fichier mailcap"
+msgstr "forcer la visualisation d'une pièce jointe en utilisant le fichier mailcap"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_PAGER
 #. Attach Dialog: <op_attachment_view_pager>
@@ -2742,8 +2763,9 @@ msgstr "forcer la visualisation d'un attachment en utilisant le fichier mailcap"
 #. Attach Dialog: <op_attachment_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:149
+#, fuzzy
 msgid "view attachment as text"
-msgstr "visualiser un attachment en tant que texte"
+msgstr "visualiser la pièce jointe en tant que texte"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
@@ -2761,13 +2783,15 @@ msgstr "créer un nouveau compte autocrypt"
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
 #: gui/opcodes.h:161
 msgid "delete the current account"
-msgstr "supprimer le compte courant"
+msgstr "supprimer le compte actuel"
 
+# RdH: I think we prefer to use « basculer » in this context
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:164
+#, fuzzy
 msgid "toggle the current account active/inactive"
-msgstr "inverser l'état du compte courant en actif/inactif"
+msgstr "inverser l'état du compte actuel en actif/inactif"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
@@ -3002,6 +3026,7 @@ msgstr "afficher l'adresse complète de l'expéditeur"
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:294
+#, fuzzy
 msgid "display message and toggle header weeding"
 msgstr "afficher le message et inverser la restriction des en-têtes"
 
@@ -3227,7 +3252,7 @@ msgstr "modifier l'indicateur 'important' d'un message"
 #: gui/opcodes.h:410
 #, fuzzy
 msgid "followup to newsgroup"
-msgstr "Suivi de la discussion à %s%s?"
+msgstr "Suivi de la discussion à %s%s ?"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
@@ -3680,6 +3705,7 @@ msgstr "aller à la fin du message"
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
 #: gui/opcodes.h:650
+#, fuzzy
 msgid "toggle display of quoted text"
 msgstr "inverser l'affichage du texte cité"
 
@@ -3852,6 +3878,7 @@ msgstr "rechercher en arrière une expression rationnelle"
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
 #: gui/opcodes.h:758
+#, fuzzy
 msgid "toggle search pattern coloring"
 msgstr "inverser la coloration du motif de recherche"
 
@@ -3866,7 +3893,7 @@ msgstr "exécuter une commande dans un sous-shell"
 #: gui/opcodes.h:764
 #, fuzzy
 msgid "show log (and debug) messages"
-msgstr "affiher les messages de log (et de debug)"
+msgstr "afficher les messages de log (et de debug)"
 
 #. L10N: Help screen description for OP_SORT
 #. Alias Dialog: <op_sort>
@@ -3927,6 +3954,7 @@ msgstr "changer entre l'affichage des boîte mail et celui de tous les fichiers"
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:796
+#, fuzzy
 msgid "toggle a message's 'new' flag"
 msgstr "inverser l'indicateur 'nouveau' d'un message"
 
@@ -3985,7 +4013,7 @@ msgstr "afficher la version de NeoMutt (numéro et date)"
 #. Pager: <op_view_attachments>
 #: gui/opcodes.h:829
 msgid "show MIME attachments"
-msgstr "afficher les attachements MIME"
+msgstr "afficher les pièces jointes MIME"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
@@ -4316,10 +4344,10 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
+"[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
 "[-- le %s --]\n"
 msgstr[1] ""
-"[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
+"[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
 "[-- le %s --]\n"
 
 # , c-format
@@ -4341,8 +4369,8 @@ msgstr[1] ""
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
-msgstr[1] "[-- Cet attachement %s/%s (taille %s octets) a été effacé --]\n"
+msgstr[0] "[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
+msgstr[1] "[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
 
 # , c-format
 #. L10N: If the translation of this string is a multi line string, then
@@ -4833,7 +4861,7 @@ msgstr[1] "La sauvegarde a changé des messages... [%d/%d]"
 
 #: imap/imap.c:1606
 msgid "Error saving flags. Close anyway?"
-msgstr "Erreur en sauvant les indicateurs. Fermer tout de même?"
+msgstr "Erreur en sauvant les indicateurs. Fermer tout de même ?"
 
 #: imap/imap.c:1614
 msgid "Error saving flags"
@@ -4951,7 +4979,7 @@ msgstr "Poster"
 #: index/dlg_index.c:125 pager/dlg_pager.c:114
 #, fuzzy
 msgid "Followup"
-msgstr "Suivi de la discussion à %s%s?"
+msgstr "Suivi de la discussion à %s%s ?"
 
 #. L10N: %s is one of the CHECK_ACL entries below.
 #: index/dlg_index.c:147
@@ -5237,6 +5265,7 @@ msgstr "Quitter NeoMutt?"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:2369
+#, fuzzy
 msgid "Can't toggle new"
 msgstr "Impossible d'inverser l'indic. 'nouveau'"
 
@@ -5495,7 +5524,7 @@ msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
 #. L10N: Try to limit to 80 columns
 #: main.c:289
 msgid "usage:"
-msgstr "utilisation:"
+msgstr "utilisation :"
 
 #: main.c:290
 #, fuzzy
@@ -5684,7 +5713,6 @@ msgid ""
 msgstr ""
 
 #: main.c:341
-#, fuzzy
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "Ouvrir la boîte aux lettres en lecture seule"
 
@@ -6044,7 +6072,7 @@ msgstr "ont"
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #: muttlib.c:578
 msgid "File is a directory, save under it?"
-msgstr "Le fichier est un répertoire, sauver dans celui-ci?"
+msgstr "Le fichier est un répertoire, sauver dans celui-ci ?"
 
 #: muttlib.c:584
 msgid "File under directory: "
@@ -6053,7 +6081,7 @@ msgstr "Fichier dans le répertoire : "
 #. L10N: Options for: File %s exists, (o)verwrite, (a)ppend, or (c)ancel?
 #: muttlib.c:600
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
-msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler?"
+msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler ?"
 
 #: muttlib.c:601
 msgid "oac"
@@ -6067,7 +6095,7 @@ msgstr "Impossible de sauver le message dans la boîte aux lettres POP"
 #: muttlib.c:764
 #, c-format
 msgid "Append messages to %s?"
-msgstr "Ajouter les messages à %s?"
+msgstr "Ajouter les messages à %s ?"
 
 #: muttlib.c:777
 #, fuzzy
@@ -6150,7 +6178,7 @@ msgstr "%d gardé(s), %d effacé(s)"
 
 # , c-format
 #: mx.c:920
-#, c-format
+#, fuzzy, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Appuyez sur '%s' pour inverser l'écriture autorisée"
 
@@ -7010,26 +7038,26 @@ msgstr "Cette clé ne peut pas être utilisée : expirée/désactivée/révoqué
 #: ncrypt/smime_functions.c:65
 #, fuzzy
 msgid "ID is expired/disabled/revoked. Do you really want to use the key?"
-msgstr "L'ID est expiré/désactivé/révoqué. Voulez-vous vraiment utiliser la clé?"
+msgstr "L'ID est expiré/désactivé/révoqué. Voulez-vous vraiment utiliser la clé ?"
 
 # , c-format
 #: ncrypt/gpgme_functions.c:775 ncrypt/pgp_functions.c:93
 #, fuzzy
 msgid "ID is not valid. Do you really want to use the key?"
-msgstr "L'ID n'est pas valide. Voulez-vous vraiment utiliser la clé?"
+msgstr "L'ID n'est pas valide. Voulez-vous vraiment utiliser la clé ?"
 
 # , c-format
 #: ncrypt/gpgme_functions.c:778 ncrypt/pgp_functions.c:96
 #, fuzzy
 msgid "ID is only marginally valid. Do you really want to use the key?"
-msgstr "L'ID n'est que peu valide. Voulez-vous vraiment utiliser la clé?"
+msgstr "L'ID n'est que peu valide. Voulez-vous vraiment utiliser la clé ?"
 
 # , c-format
 #: ncrypt/gpgme_functions.c:785 ncrypt/pgp_functions.c:90
 #: ncrypt/smime_functions.c:68
 #, fuzzy
 msgid "ID has undefined validity. Do you really want to use the key?"
-msgstr "L'ID a une validité indéfinie. Voulez-vous vraiment utiliser la clé?"
+msgstr "L'ID a une validité indéfinie. Voulez-vous vraiment utiliser la clé ?"
 
 #: ncrypt/pgp.c:102
 msgid "Enter PGP passphrase:"
@@ -7095,7 +7123,7 @@ msgstr "en l(I)gne"
 #: ncrypt/pgp.c:1939
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off?"
-msgstr "(S)igner pgp, (E)n tant que, format %s, (R)ien, ou mode (O)ppenc inactif?"
+msgstr "(S)igner pgp, (E)n tant que, format %s, (R)ien, ou mode (O)ppenc inactif ?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is on)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -7106,7 +7134,7 @@ msgstr "seiro"
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1950
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off?"
-msgstr "(S)igner pgp, (E)n tant que, (R)ien, ou mode (O)ppenc inactif?"
+msgstr "(S)igner pgp, (E)n tant que, (R)ien, ou mode (O)ppenc inactif ?"
 
 #. L10N: PGP options (opportunistic encryption is on)
 #: ncrypt/pgp.c:1952
@@ -7117,7 +7145,7 @@ msgstr "sero"
 #: ncrypt/pgp.c:1966
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode?"
-msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, format %s, (R)ien, ou (O)ppenc?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, format %s, (R)ien, ou (O)ppenc ?"
 
 #. L10N: PGP options (inline) (opportunistic encryption is off)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -7128,7 +7156,7 @@ msgstr "csediro"
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1977
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
-msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, (R)ien, ou mode (O)ppenc?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, (R)ien, ou mode (O)ppenc ?"
 
 #. L10N: PGP options (opportunistic encryption is off)
 #: ncrypt/pgp.c:1979
@@ -7139,7 +7167,7 @@ msgstr "csedro"
 #: ncrypt/pgp.c:1990
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear?"
-msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, format %s, ou (R)ien?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, format %s, ou (R)ien ?"
 
 #. L10N: PGP options (inline)
 #. The 'i' is from the "PGP/M(i)ME" or "(i)nline", above.
@@ -7150,7 +7178,7 @@ msgstr "csedir"
 #. L10N: PGP options
 #: ncrypt/pgp.c:2001
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear?"
-msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, ou (R)ien?"
+msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, ou (R)ien ?"
 
 #. L10N: PGP options
 #: ncrypt/pgp.c:2003
@@ -7347,9 +7375,9 @@ msgstr "impossible d'écrire dans le dossier temporaire : %s"
 
 # , c-format
 #: nntp/nntp.c:1841
-#, fuzzy, c-format
+#, c-format
 msgid "Connected to %s. %s"
-msgstr "Connexion à %s..."
+msgstr "Connexion établie à %s. %s"
 
 #: nntp/nntp.c:1842
 msgid "Posting is NOT ok"
@@ -7766,7 +7794,7 @@ msgstr ""
 # , c-format
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1126
+#: pattern/exec.c:101 pattern/exec.c:1131
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "erreur : opération inconnue %d (signalez cette erreur)"
@@ -7788,7 +7816,7 @@ msgstr "Impossible d'ouvrir /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Erreur. Préservation du fichier temporaire : %s"
 
-#: pattern/exec.c:914
+#: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
@@ -8000,6 +8028,7 @@ msgstr "messages dont l'en-tête References correspond à EXPR"
 
 #. L10N: Pattern Completion Menu description for ~X
 #: pattern/flags.c:167
+#, fuzzy
 msgid "messages with RANGE attachments"
 msgstr "messages avec MIN-MAX attachements"
 
@@ -8277,12 +8306,13 @@ msgid "Can't open temporary file %s"
 msgstr "Impossible d'ouvrir le fichier temporaire %s"
 
 #: recvcmd.c:549
+#, fuzzy
 msgid "Forward as attachments?"
-msgstr "Faire suivre sous forme d'attachements?"
+msgstr "Faire suivre sous forme de pièce jointe ?"
 
 #: recvcmd.c:562
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
-msgstr "Impossible de décoder tous les attachements marqués. Faire suivre les autres?"
+msgstr "Impossible de décoder tous les pièces jointe marquées. Faire suivre les autres?"
 
 #: recvcmd.c:695
 msgid "Forward MIME encapsulated?"
@@ -8304,7 +8334,7 @@ msgstr "Pas de liste de diffusion trouvée"
 
 #: recvcmd.c:988
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
-msgstr "Impossible de décoder ts les attachements marqués. MIME-encapsuler les autres?"
+msgstr "Impossible de décoder tous les pièces jointes marquées. MIME-encapsuler les autres?"
 
 #. L10N: You will see this error message if you invoke <compose-to-sender>
 #. when you are on a normal attachment.
@@ -8365,7 +8395,7 @@ msgstr "Pas d'objet (Subject), abandon"
 #. be added as attachments to the new mail, if this is answered yes.
 #: send/send.c:606
 msgid "Forward attachments?"
-msgstr "Faire suivre les attachements ?"
+msgstr "Faire suivre les pièces jointes ?"
 
 # , c-format
 #. L10N: Asks whether the user respects the reply-to header.
@@ -8394,8 +8424,9 @@ msgid "Could not include all requested messages"
 msgstr "Tous les messages demandés n'ont pas pu être inclus"
 
 #: send/send.c:1254
+#, fuzzy
 msgid "Forward as attachment?"
-msgstr "Faire suivre sous forme d'attachement?"
+msgstr "Faire suivre sous forme de pièce jointe ?"
 
 #: send/send.c:1259
 msgid "Preparing forwarded message..."
@@ -8418,7 +8449,7 @@ msgstr "Omission du Fcc dans %s"
 
 #: send/send.c:1793 send/send.c:1805 send/send.c:1831
 msgid "Save attachments in Fcc?"
-msgstr "Sauver les attachements dans Fcc?"
+msgstr "Sauver les pièces jointes dans Fcc?"
 
 #. L10N: Called when saving to $record or Fcc failed after sending.
 #. (r)etry tries the same mailbox again.
@@ -8450,12 +8481,13 @@ msgid "Error encrypting message. Check your crypt settings."
 msgstr "Erreur de chiffrement du message. Vérifiez vos paramètres de chiffrement."
 
 #: send/send.c:2080
+#, fuzzy
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "L'attachement qui correspond à \"$abort_noattach_regex est manquant dans le message"
 
 #: send/send.c:2084
 msgid "No attachments, cancel sending?"
-msgstr "Pas d'attachements, abandonner l'envoi ?"
+msgstr "Pas de pièce jointe, abandonner l'envoi ?"
 
 #: send/send.c:2135
 msgid "Recall postponed message?"

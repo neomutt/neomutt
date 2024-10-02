@@ -7,9 +7,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-04-25\n"
+"Project-Id-Version: neomutt-2024-10-02\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-09-23 10:34+0100\n"
+"POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2021-05-06 05:30+0100\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Liberium <epost@anotheragency.no>\n"
@@ -7461,7 +7461,7 @@ msgstr "Mønsteroperator «~%c» er slått av"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1126
+#: pattern/exec.c:101 pattern/exec.c:1131
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "feil: ukjent operasjon %d (innrapporter denne feilen)"
@@ -7482,7 +7482,7 @@ msgstr "Kunne ikke åpne /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Kunne ikke sjekke lengde på midlertidig fil"
 
-#: pattern/exec.c:914
+#: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
 msgstr "feil: egendefinert tjenersøk støttes kun med IMAP"
 

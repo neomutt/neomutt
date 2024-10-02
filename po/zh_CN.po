@@ -13,9 +13,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-04-25\n"
+"Project-Id-Version: neomutt-2024-10-02\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-09-23 10:34+0100\n"
+"POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2022-04-23 12:04+0000\n"
 "Last-Translator: Mingcong Bai <jeffbai@aosc.io>\n"
 "Language-Team: i18n-zh <i18n-zh@googlegroups.com>\n"
@@ -7455,7 +7455,7 @@ msgstr "模式操作符 '~%c' 不可用"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1126
+#: pattern/exec.c:101 pattern/exec.c:1131
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "错误：未知操作(op) %d (请报告这个错误)"
@@ -7476,7 +7476,7 @@ msgstr "打开 /dev/null 时出错"
 msgid "Error checking length of temporary file"
 msgstr "获取临时文件大小时出错"
 
-#: pattern/exec.c:914
+#: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
 msgstr "错误：仅 IMAP 支持服务器端的自定义搜索"
 

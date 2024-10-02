@@ -13,9 +13,9 @@
 # message-id - Message-Id vs ID správy
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-04-25\n"
+"Project-Id-Version: neomutt-2024-10-02\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-09-23 10:34+0100\n"
+"POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2016-11-23 21:20+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -7494,7 +7494,7 @@ msgstr "Operátor vzoru „~%c“ je neaktívny"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1126
+#: pattern/exec.c:101 pattern/exec.c:1131
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "chyba: neznámy operand %d (ohláste túto chybu)"
@@ -7515,7 +7515,7 @@ msgstr "Chyba pri otvárání /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Chyba kontroly dlžky dočasného súboru"
 
-#: pattern/exec.c:914
+#: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
 msgstr "chyba: vyhľadávanie na strane servera je podporované iba s IMAP"
 

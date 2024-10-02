@@ -10,9 +10,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-04-25\n"
+"Project-Id-Version: neomutt-2024-10-02\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-09-23 10:34+0100\n"
+"POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2024-03-30 16:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
@@ -7474,7 +7474,7 @@ msgstr "Dizgi işleci '~%c', devre dışı"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1126
+#: pattern/exec.c:101 pattern/exec.c:1131
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "hata: Bilinmeyen işlem kodu %d (bu hatayı bildirin)"
@@ -7495,7 +7495,7 @@ msgstr "/dev/null açılırken hata"
 msgid "Error checking length of temporary file"
 msgstr "Geçici dosyanın uzunluğu denetlenirken hata"
 
-#: pattern/exec.c:914
+#: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
 msgstr "hata: Sunucuya özel arama yalnızca IMAP ile desteklenir"
 
