@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-04-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-09-23 10:34+0100\n"
+"POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2019-11-12 11:18+0100\n"
 "Last-Translator: Marcin Rajner <marcin.rajner@pw.edu.pl>\n"
 "Language-Team: none\n"
@@ -7498,7 +7498,7 @@ msgstr "Operator wzorca '~%c' jest niedostępny"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1126
+#: pattern/exec.c:101 pattern/exec.c:1131
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "błąd: nieznany op %d (zgłoś ten błąd)"
@@ -7519,7 +7519,7 @@ msgstr "Nie można otworzyć /dev/null"
 msgid "Error checking length of temporary file"
 msgstr "Błąd sprawdzania rozmiaru pliku tymczasowego"
 
-#: pattern/exec.c:914
+#: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
 msgstr "błąd: szukanie na serwerze dostępne tylko przez IMAP"
 

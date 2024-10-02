@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-04-25\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-09-23 10:34+0100\n"
+"POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2008-05-20 22:39+0200\n"
 "Last-Translator: Piarres Beobide <pi@beobide.net>\n"
 "Language-Team: Euskara <debian-l10n-basque@lists.debian.org>\n"
@@ -7714,7 +7714,7 @@ msgstr ""
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1126
+#: pattern/exec.c:101 pattern/exec.c:1131
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "errorea:%d aukera ezezaguna (errore honen berri eman)"
@@ -7739,7 +7739,7 @@ msgstr "Ezin da /dev/null ireki"
 msgid "Error checking length of temporary file"
 msgstr "Errorea. Behin behineko fitxategi gordetzen: %s"
 
-#: pattern/exec.c:914
+#: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
 msgstr ""
 
