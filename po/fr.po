@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
-"Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
+"Last-Translator: Ryan d'Huart <homoelectromagneticus@protonmail.com>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr ""
 #: config/string.c:145 expando/config_type.c:69 expando/config_type.c:169
 #, fuzzy, c-format
 msgid "Option %s may not be empty"
-msgstr "L'option %s ne peut être vide"
+msgstr "L'option %s ne peut pas être vide"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:396
@@ -214,7 +214,7 @@ msgstr "Trier par (a)lias, a(d)resse ou ne (p)as trier ?"
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:359
 msgid "adu"
-msgstr ""
+msgstr "adp"
 
 # , c-format
 #. L10N: ask for a limit to apply
@@ -227,6 +227,7 @@ msgstr "Limite : %s"
 msgid "attachments: no disposition"
 msgstr "attachments : pas de disposition"
 
+# TODO: need context here
 #: attach/attachments.c:493
 #, fuzzy
 msgid "Current attachments settings:"
@@ -281,30 +282,38 @@ msgstr "La boîte aux lettres est en lecture seule"
 msgid "There are no subparts to show"
 msgstr "Il n'y a pas de sous-parties à montrer"
 
+# TODO: not sure about « depuis le » vs « du » here. Need to consult l'Académie
+# française
 #: attach/functions.c:277
 #, fuzzy
 msgid "Can't delete attachment from POP server"
-msgstr "Impossible d'effacer l'attachement depuis le serveur POP"
+msgstr "Impossible d'effacer la pièce jointe depuis le serveur POP"
 
+# TODO: not sure about « depuis le » vs « du » here. Need to consult l'Académie
+# française
 #: attach/functions.c:284
 #, fuzzy
 msgid "Can't delete attachment from news server"
-msgstr "Impossible d'effacer l'attachement depuis le serveur usenet"
+msgstr "Impossible d'effacer la pièce jointe depuis le serveur usenet"
 
+# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
+# « pas supporté »
 #: attach/functions.c:290
 #, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported"
-msgstr "L'effacement d'attachements de messages chiffrés n'est pas supporté"
+msgstr "L'effacement des pièces jointes de messages chiffrés n'est pas supporté"
 
 #: attach/functions.c:295
 #, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature"
-msgstr "L'effacement d'attachements de messages signés peut invalider la signature"
+msgstr "L'effacement des pièces jointes de messages signés peut invalider la signature"
 
+# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
+# « pas supporté ». Need to fix « multipartes » as well.
 #: attach/functions.c:311 attach/functions.c:335
 #, fuzzy
 msgid "Only deletion of multipart attachments is supported"
-msgstr "Seul l'effacement d'attachements multipart est supporté"
+msgstr "Seul l'effacement des pièces jointes multipartes est supporté"
 
 #: attach/functions.c:645 index/functions.c:2851
 msgid "Reply by mail as poster prefers?"
@@ -431,10 +440,11 @@ msgstr "Passer à la commande : "
 # , c-format
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
+# TODO: get an example of this
 #: attach/recvattach.c:796
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments"
-msgstr "Je ne sais pas comment imprimer %s attachements"
+msgstr "Je ne sais pas comment imprimer une pièce jointe de format %s"
 
 #: attach/recvattach.c:900
 #, c-format
@@ -448,10 +458,12 @@ msgstr[1] "Imprimer les %d pièces jointes marquées ?"
 msgid "Print attachment?"
 msgstr "Imprimer la pièce jointe ?"
 
+# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
+# « pas supporté »
 #: attach/recvattach.c:942
 #, fuzzy
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr "Les changements structurels sur attachements déchiffrés ne sont pas supportés"
+msgstr "Les changements structurels sur des pièces jointes déchiffrés ne sont pas supportés"
 
 #: attach/recvattach.c:1160
 msgid "Can't decrypt encrypted message"
@@ -1230,9 +1242,8 @@ msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "La pièce jointe #%d a été modifiée. Mettre à jour le codage pour %s ?"
 
 #: compose/functions.c:346
-#, fuzzy
 msgid "You may not delete the only attachment"
-msgstr "Vous ne pouvez pas supprimer l'unique attachement"
+msgstr "Vous ne pouvez pas supprimer la seule pièce jointe"
 
 #. L10N: Prompt when trying to hit <detach-file> on the first entry in
 #. the compose menu.  This entry is most likely the message they just
@@ -1301,6 +1312,7 @@ msgstr "Codage invalide"
 msgid "Empty 'Content-Language'"
 msgstr "'Content-Language' vide"
 
+# TODO: get context
 #: compose/functions.c:1223
 #, fuzzy
 msgid "Can't filter multipart attachments"
@@ -2585,10 +2597,11 @@ msgstr "éditer la description de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
 #. Compose Dialog: <op_attachment_edit_encoding>
+# TODO: how to translate "transfer-encoding"
 #: gui/opcodes.h:67
 #, fuzzy
 msgid "edit attachment transfer-encoding"
-msgstr "éditer le transfer-encoding de l'attachement"
+msgstr "éditer le transfer-encoding de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
 #. Compose Dialog: <op_attachment_edit_language>
