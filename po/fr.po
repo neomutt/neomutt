@@ -4071,7 +4071,7 @@ msgstr "effacer les phrases de passe de la mémoire"
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:857
 msgid "edit the BCC list"
-msgstr "éditer la liste BCC"
+msgstr "éditer la liste CCI"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
@@ -5633,6 +5633,7 @@ msgstr ""
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 
+# TODO: Figure out why the englsh text is in parentheses here
 #: main.c:316
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  indique un destinataire en Cci (Blind Carbon Copy - Bcc)"
@@ -7926,7 +7927,7 @@ msgstr "messages contenant une clé PGP"
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
 msgid "messages whose BCC header matches EXPR"
-msgstr "messages dont l'en-tête BCC correspond à EXPR"
+msgstr "messages dont l'en-tête CCI correspond à EXPR"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
@@ -8379,24 +8380,28 @@ msgstr "L'option %s ne doit pas contenir les métacaractères sheel : %c"
 #: send/config.c:170
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "Le %d, %n a écrit :"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:237
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "----- Début du message transféré de %f -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:241
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Fin du message transféré -----"
 
+# TODO: Figure out why the english word "subject" is in parentheses here
 #: send/send.c:346
+#, fuzzy
 msgid "No subject, abort?"
 msgstr "Pas d'objet (Subject), abandonner?"
 
+# TODO: Figure out why the english word "subject" is in parentheses here
 #: send/send.c:348
+#, fuzzy
 msgid "No subject, aborting"
 msgstr "Pas d'objet (Subject), abandon"
 
@@ -8666,9 +8671,9 @@ msgstr "(pas de boîte aux lettres)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:390
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
-msgstr "%d%%"
+msgstr "%d %%"
 
 #: version.c:85
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
