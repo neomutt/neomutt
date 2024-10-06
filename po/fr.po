@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-10-02 10:27+0100\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
-"Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
+"Last-Translator: Ryan d'Huart <homoelectromagneticus@protonmail.com>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
@@ -38,7 +38,7 @@ msgstr ""
 #: config/string.c:145 expando/config_type.c:69 expando/config_type.c:169
 #, fuzzy, c-format
 msgid "Option %s may not be empty"
-msgstr "L'option %s ne peut être vide"
+msgstr "L'option %s ne peut pas être vide"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:396
@@ -126,7 +126,7 @@ msgstr "Quitter"
 #: alias/dlg_alias.c:103 index/dlg_index.c:106 index/dlg_index.c:121
 #: pager/dlg_pager.c:99 pager/dlg_pager.c:115 postpone/dlg_postpone.c:91
 msgid "Del"
-msgstr "Effacer"
+msgstr "Supprimer"
 
 #: alias/dlg_alias.c:104 index/dlg_index.c:107 index/dlg_index.c:122
 #: postpone/dlg_postpone.c:92
@@ -214,7 +214,7 @@ msgstr "Trier par (a)lias, a(d)resse ou ne (p)as trier ?"
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:359
 msgid "adu"
-msgstr ""
+msgstr "adp"
 
 # , c-format
 #. L10N: ask for a limit to apply
@@ -227,6 +227,7 @@ msgstr "Limite : %s"
 msgid "attachments: no disposition"
 msgstr "attachments : pas de disposition"
 
+# TODO: need context here
 #: attach/attachments.c:493
 #, fuzzy
 msgid "Current attachments settings:"
@@ -282,29 +283,33 @@ msgid "There are no subparts to show"
 msgstr "Il n'y a pas de sous-parties à montrer"
 
 #: attach/functions.c:277
-#, fuzzy
 msgid "Can't delete attachment from POP server"
-msgstr "Impossible d'effacer l'attachement depuis le serveur POP"
+msgstr "Impossible de supprimer la pièce jointe du serveur POP"
 
 #: attach/functions.c:284
-#, fuzzy
 msgid "Can't delete attachment from news server"
-msgstr "Impossible d'effacer l'attachement depuis le serveur usenet"
+msgstr "Impossible de supprimer la pièce jointe du serveur usenet"
 
+# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
+# « pas supporté »
 #: attach/functions.c:290
 #, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported"
-msgstr "L'effacement d'attachements de messages chiffrés n'est pas supporté"
+msgstr "La suppression des pièces jointes de messages chiffrés n'est pas supporté"
 
+# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
+# « pas supporté »
 #: attach/functions.c:295
 #, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature"
-msgstr "L'effacement d'attachements de messages signés peut invalider la signature"
+msgstr "La suppression des pièces jointes de messages signés peut invalider la signature"
 
+# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
+# « pas supporté ». Need to fix « multipartes » as well.
 #: attach/functions.c:311 attach/functions.c:335
 #, fuzzy
 msgid "Only deletion of multipart attachments is supported"
-msgstr "Seul l'effacement d'attachements multipart est supporté"
+msgstr "Seul la suppression des pièces jointes multipartes est supporté"
 
 #: attach/functions.c:645 index/functions.c:2851
 msgid "Reply by mail as poster prefers?"
@@ -431,10 +436,11 @@ msgstr "Passer à la commande : "
 # , c-format
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
+# TODO: get an example of this
 #: attach/recvattach.c:796
 #, fuzzy, c-format
 msgid "I don't know how to print %s attachments"
-msgstr "Je ne sais pas comment imprimer %s attachements"
+msgstr "Je ne sais pas comment imprimer une pièce jointe de format %s"
 
 #: attach/recvattach.c:900
 #, c-format
@@ -448,10 +454,12 @@ msgstr[1] "Imprimer les %d pièces jointes marquées ?"
 msgid "Print attachment?"
 msgstr "Imprimer la pièce jointe ?"
 
+# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
+# « pas supporté »
 #: attach/recvattach.c:942
 #, fuzzy
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr "Les changements structurels sur attachements déchiffrés ne sont pas supportés"
+msgstr "Les changements structurels sur des pièces jointes déchiffrés ne sont pas supportés"
 
 #: attach/recvattach.c:1160
 msgid "Can't decrypt encrypted message"
@@ -1009,7 +1017,7 @@ msgstr "source : erreurs dans %s"
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source : lecture interrompue car trop d'erreurs dans %s"
 
-# RdH: need more context on what %d is here
+# TODO: need more context on what %d is here
 # , c-format
 #: commands.c:332
 #, fuzzy, c-format
@@ -1230,9 +1238,8 @@ msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "La pièce jointe #%d a été modifiée. Mettre à jour le codage pour %s ?"
 
 #: compose/functions.c:346
-#, fuzzy
 msgid "You may not delete the only attachment"
-msgstr "Vous ne pouvez pas supprimer l'unique attachement"
+msgstr "Vous ne pouvez pas supprimer la seule pièce jointe"
 
 #. L10N: Prompt when trying to hit <detach-file> on the first entry in
 #. the compose menu.  This entry is most likely the message they just
@@ -1301,10 +1308,11 @@ msgstr "Codage invalide"
 msgid "Empty 'Content-Language'"
 msgstr "'Content-Language' vide"
 
+# TODO: get context
 #: compose/functions.c:1223
 #, fuzzy
 msgid "Can't filter multipart attachments"
-msgstr "Seul l'effacement d'attachements multipart est supporté"
+msgstr "Seul la suppression d'attachements multipart est supporté"
 
 #: compose/functions.c:1258
 msgid "Can't get multipart attachments"
@@ -1367,7 +1375,7 @@ msgstr "Impossible de créer le fichier %s"
 msgid "Error attaching file"
 msgstr "Erreur dans l'attachement du fichier"
 
-# RdH: multipart could be translated as a kind of adjective:
+# TODO: multipart could be translated as a kind of adjective:
 #   en plusiers parties
 #   à plusieurs parties
 # « multipartie » is a french word, but it's only used in political contexts
@@ -1383,7 +1391,7 @@ msgstr "Envoyer la pièce jointe avec le nom : "
 #: compose/functions.c:1580
 #, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Impossible de sauvegarder les pièces jointes en plusiers parties"
+msgstr "Impossible de sauvegarder les pièces jointes en plusieurs parties"
 
 #: compose/functions.c:1615
 #, fuzzy
@@ -2568,7 +2576,7 @@ msgstr "inverser l'affichage des sous-parties"
 #. Postponed Dialog: <op_delete>
 #: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:274
 msgid "delete the current entry"
-msgstr "effacer l'entrée actuelle"
+msgstr "supprimer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attachment_edit_content_id>
@@ -2585,10 +2593,11 @@ msgstr "éditer la description de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
 #. Compose Dialog: <op_attachment_edit_encoding>
+# TODO: how to translate "transfer-encoding"
 #: gui/opcodes.h:67
 #, fuzzy
 msgid "edit attachment transfer-encoding"
-msgstr "éditer le transfer-encoding de l'attachement"
+msgstr "éditer le transfer-encoding de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
 #. Compose Dialog: <op_attachment_edit_language>
@@ -2695,13 +2704,14 @@ msgstr "envoyer la pièce jointe avec un autre nom"
 msgid "save message/attachment to a mailbox/file"
 msgstr "sauver le message/la pièce jointe dans une boîte aux lettres ou un fichier"
 
+# TODO: Probably « basculer » would be better here
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attachment_toggle_disposition>
 #: gui/opcodes.h:118
 msgid "toggle disposition between inline/attachment"
 msgstr "changer la disposition (en ligne/attachement)"
 
-# RdH: not confident about « recodage » here...
+# TODO: not confident about « recodage » here...
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
 #. Compose Dialog: <op_attachment_toggle_recode>
 #: gui/opcodes.h:121
@@ -2785,7 +2795,7 @@ msgstr "créer un nouveau compte autocrypt"
 msgid "delete the current account"
 msgstr "supprimer le compte actuel"
 
-# RdH: I think we prefer to use « basculer » in this context
+# TODO: I think we prefer to use « basculer » in this context
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:164
@@ -2989,7 +2999,7 @@ msgstr "faire une copie décodée (text/plain)"
 #. Index: <op_save>
 #: gui/opcodes.h:269
 msgid "make decoded copy (text/plain) and delete"
-msgstr "faire une copie décodée (text/plain) et effacer"
+msgstr "faire une copie décodée (text/plain) et supprimer"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
@@ -3001,13 +3011,13 @@ msgstr "supprimer la boîte mail courante (IMAP seulement)"
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:280
 msgid "delete all messages in subthread"
-msgstr "effacer tous les messages dans la sous-discussion"
+msgstr "supprimer tous les messages dans la sous-discussion"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
 #: gui/opcodes.h:283
 msgid "delete all messages in thread"
-msgstr "effacer tous les messages dans la discussion"
+msgstr "supprimer tous les messages dans la discussion"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
@@ -3040,7 +3050,7 @@ msgstr "afficher un message"
 #. Text Entry: <op_editor_backspace>
 #: gui/opcodes.h:300
 msgid "delete the char in front of the cursor"
-msgstr "effacer le caractère situé devant le curseur"
+msgstr "supprimer le caractère situé devant le curseur"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
@@ -3082,7 +3092,7 @@ msgstr "compléter une adresse grâce à une requête"
 #. Text Entry: <op_editor_delete_char>
 #: gui/opcodes.h:321
 msgid "delete the char under the cursor"
-msgstr "effacer le caractère situé sous le curseur"
+msgstr "supprimer le caractère situé sous le curseur"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
@@ -3130,32 +3140,31 @@ msgstr "remonter dans l'historique"
 #. Text Entry: <op_editor_kill_eol>
 #: gui/opcodes.h:345
 msgid "delete chars from cursor to end of line"
-msgstr "effacer la fin de la ligne à partir du curseur"
+msgstr "supprimer jusqu'à la fin de la ligne à partir du curseur"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
 #: gui/opcodes.h:348
 msgid "delete chars from the cursor to the end of the word"
-msgstr "effacer la fin du mot à partir du curseur"
+msgstr "supprimer jusqu'à la fin du mot à partir du curseur"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
 #: gui/opcodes.h:351
-#, fuzzy
 msgid "delete chars from cursor to beginning the line"
-msgstr "effacer la fin de la ligne à partir du curseur"
+msgstr "supprimer jusqu'au début de la ligne à partir du curseur"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
 #: gui/opcodes.h:354
 msgid "delete all chars on the line"
-msgstr "effacer tous les caractères de la ligne"
+msgstr "supprimer tous les caractères de la ligne"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
 #: gui/opcodes.h:357
 msgid "delete the word in front of the cursor"
-msgstr "effacer le mot situé devant le curseur"
+msgstr "supprimer le mot devant le curseur"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
@@ -3470,7 +3479,7 @@ msgstr "comprimer/décomprimer la discussion courante"
 #: gui/opcodes.h:532
 #, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "effacer les messages correspondant à un motif"
+msgstr "supprimer les messages correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
@@ -3544,7 +3553,7 @@ msgstr "aller à la discussion suivante"
 #. Index: <op_main_next_undeleted>
 #: gui/opcodes.h:569
 msgid "move to the next undeleted message"
-msgstr "aller au message non effacé suivant"
+msgstr "aller au message non supprimé suivant"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
@@ -3592,7 +3601,7 @@ msgstr "aller à la discussion précédente"
 #. Index: <op_main_prev_undeleted>
 #: gui/opcodes.h:593
 msgid "move to the previous undeleted message"
-msgstr "aller au message non effacé précédent"
+msgstr "aller au message non supprimé précédent"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
@@ -4037,7 +4046,7 @@ msgstr "faire une copie déchiffrée"
 #. Index: <op_save>
 #: gui/opcodes.h:843
 msgid "make decrypted copy and delete"
-msgstr "faire une copie déchiffrée et effacer"
+msgstr "faire une copie déchiffrée et supprimer"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
@@ -4046,6 +4055,10 @@ msgstr "faire une copie déchiffrée et effacer"
 msgid "extract supported public keys"
 msgstr "extraire les clés publiques supportées"
 
+# Normally when we talk of deleting something in a computing context, the word
+# « supprimer » is better than « effacer ». However, in this case « effacer »
+# is more appropriate as it implies deleting and then wiping the data so it's 
+# not recoverable.
 #. L10N: Help screen description for OP_FORGET_PASSPHRASE
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
@@ -4058,7 +4071,7 @@ msgstr "effacer les phrases de passe de la mémoire"
 #. Envelope Window: <op_envelope_edit_bcc>
 #: gui/opcodes.h:857
 msgid "edit the BCC list"
-msgstr "éditer la liste BCC"
+msgstr "éditer la liste CCI"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
@@ -4344,10 +4357,10 @@ msgid_plural ""
 "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
 "[-- on %s --]\n"
 msgstr[0] ""
-"[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
+"[-- Cette pièce jointe %s/%s (taille %s octets) a été supprimée --]\n"
 "[-- le %s --]\n"
 msgstr[1] ""
-"[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
+"[-- Cette pièce jointe %s/%s (taille %s octets) a été supprimée --]\n"
 "[-- le %s --]\n"
 
 # , c-format
@@ -4369,8 +4382,8 @@ msgstr[1] ""
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
-msgstr[0] "[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
-msgstr[1] "[-- Cette pièce jointe %s/%s (taille %s octets) a été effacée --]\n"
+msgstr[0] "[-- Cette pièce jointe %s/%s (taille %s octets) a été supprimée --]\n"
+msgstr[1] "[-- Cette pièce jointe %s/%s (taille %s octets) a été supprimée --]\n"
 
 # , c-format
 #. L10N: If the translation of this string is a multi line string, then
@@ -4385,7 +4398,7 @@ msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
 msgstr ""
-"[-- Cette pièce jointe %s/%s a été effacée --]\n"
+"[-- Cette pièce jointe %s/%s a été supprimée --]\n"
 "[-- le %4$s --]\n"
 
 # , c-format
@@ -4395,7 +4408,7 @@ msgstr ""
 #: handler.c:871
 #, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
-msgstr "[-- Cette pièce jointe %s/%s a été effacée --]\n"
+msgstr "[-- Cette pièce jointe %s/%s a été supprimée --]\n"
 
 # , c-format
 #: handler.c:881
@@ -4848,8 +4861,8 @@ msgstr "Expunge a échoué"
 #, fuzzy, c-format
 msgid "Marking %d message deleted..."
 msgid_plural "Marking %d messages deleted..."
-msgstr[0] "Marquage de %d messages à effacer..."
-msgstr[1] "Marquage de %d messages à effacer..."
+msgstr[0] "Marquage de %d messages à supprimer..."
+msgstr[1] "Marquage de %d messages à supprimer..."
 
 # , c-format
 #: imap/imap.c:1563
@@ -4867,6 +4880,7 @@ msgstr "Erreur en sauvant les indicateurs. Fermer tout de même ?"
 msgid "Error saving flags"
 msgstr "Erreur en sauvant les indicateurs"
 
+# TODO: Check if this is a good usage of « effacement »
 #: imap/imap.c:1641
 msgid "Expunging messages from server..."
 msgstr "Effacement des messages sur le serveur..."
@@ -5025,7 +5039,7 @@ msgstr "Rien à faire"
 #. L10N: CHECK_ACL
 #: index/functions.c:524
 msgid "Can't delete message"
-msgstr "Impossible d'effacer le message"
+msgstr "Impossible de supprimer le message"
 
 #. L10N: CHECK_ACL
 #. L10N: Due to the implementation details we do not know whether we
@@ -5033,7 +5047,7 @@ msgstr "Impossible d'effacer le message"
 #. "messages". Your language might have other means to express this.
 #: index/functions.c:564 index/functions.c:1209
 msgid "Can't delete messages"
-msgstr "Impossible d'effacer le(s) message(s)"
+msgstr "Impossible de supprimer le(s) message(s)"
 
 #. L10N: This is displayed when the x-label on one or more
 #. messages is edited.
@@ -5102,11 +5116,11 @@ msgstr "Ouvrir la boîte aux lettres"
 #: index/functions.c:1190
 #, fuzzy
 msgid "Thread contains unread or flagged messages"
-msgstr "Cette discussion contient des messages non-lus"
+msgstr "Cette discussion contient des messages non lus"
 
 #: index/functions.c:1212
 msgid "Delete messages matching: "
-msgstr "Effacer les messages correspondant à : "
+msgstr "Supprimer les messages correspondant à : "
 
 #: index/functions.c:1252
 msgid "Limit to messages matching: "
@@ -5189,7 +5203,7 @@ msgstr "Vous êtes sur le dernier message"
 
 #: index/functions.c:1655 index/functions.c:1710
 msgid "No undeleted messages"
-msgstr "Pas de message non effacé"
+msgstr "Pas de message non supprimé"
 
 #: index/functions.c:1676
 msgid "No mailboxes have new mail"
@@ -5620,6 +5634,7 @@ msgstr ""
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 
+# TODO: Figure out why the englsh text is in parentheses here
 #: main.c:316
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  indique un destinataire en Cci (Blind Carbon Copy - Bcc)"
@@ -6120,8 +6135,8 @@ msgstr "Impossible d'attacher %s "
 #, fuzzy
 msgid "message not deleted"
 msgid_plural "messages not deleted"
-msgstr[0] "message(s) non effacé(s)"
-msgstr[1] "message(s) non effacé(s)"
+msgstr[0] "message(s) non supprimé(s)"
+msgstr[1] "message(s) non supprimé(s)"
 
 # , c-format
 #: mx.c:551
@@ -6147,6 +6162,8 @@ msgid_plural "Move %d read messages to %s?"
 msgstr[0] "Déplacer %d messages lus dans %s ?"
 msgstr[1] "Déplacer %d messages lus dans %s ?"
 
+# TODO: « Effacer » could be the right word here. Need to validate what "purge"
+#       really means in this context
 #: mx.c:688 mx.c:945
 #, fuzzy, c-format
 msgid "Purge %d deleted message?"
@@ -6168,13 +6185,13 @@ msgstr "La boîte aux lettres est inchangée"
 #: mx.c:854
 #, c-format
 msgid "%d kept, %d moved, %d deleted"
-msgstr "%d gardé(s), %d déplacé(s), %d effacé(s)"
+msgstr "%d gardé(s), %d déplacé(s), %d supprimé(s)"
 
 # , c-format
 #: mx.c:859 mx.c:998
 #, c-format
 msgid "%d kept, %d deleted"
-msgstr "%d gardé(s), %d effacé(s)"
+msgstr "%d gardé(s), %d supprimé(s)"
 
 # , c-format
 #: mx.c:920
@@ -7853,7 +7870,7 @@ msgstr "messages envoyés dans la plage de dates MIN-MAX"
 #. L10N: Pattern Completion Menu description for ~D
 #: pattern/flags.c:62
 msgid "deleted messages"
-msgstr "messages effacés"
+msgstr "messages supprimés"
 
 #. L10N: Pattern Completion Menu description for ~e
 #: pattern/flags.c:65
@@ -7913,7 +7930,7 @@ msgstr "messages contenant une clé PGP"
 #. L10N: Pattern Completion Menu description for ~K
 #: pattern/flags.c:98
 msgid "messages whose BCC header matches EXPR"
-msgstr "messages dont l'en-tête BCC correspond à EXPR"
+msgstr "messages dont l'en-tête CCI correspond à EXPR"
 
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
@@ -8176,7 +8193,7 @@ msgstr "Aucun nouveau message dans la boîte aux lettres POP"
 
 #: pop/pop.c:601
 msgid "Delete messages from server?"
-msgstr "Effacer les messages sur le serveur?"
+msgstr "Supprimer les messages du serveur?"
 
 # , c-format
 #: pop/pop.c:605
@@ -8206,8 +8223,9 @@ msgstr "Récupération de la liste des messages..."
 
 # , c-format
 #: pop/pop.c:891
+#, fuzzy
 msgid "Marking messages deleted..."
-msgstr "Marquage des messages à effacer..."
+msgstr "Marquage des messages à supprimer..."
 
 #: pop/pop.c:1070
 msgid "Can't write message to temporary file"
@@ -8366,24 +8384,28 @@ msgstr "L'option %s ne doit pas contenir les métacaractères sheel : %c"
 #: send/config.c:170
 #, c-format
 msgid "On %d, %n wrote:"
-msgstr ""
+msgstr "Le %d, %n a écrit :"
 
 #. L10N: $forward_attribution_intro default format
 #: send/config.c:237
 #, c-format
 msgid "----- Forwarded message from %f -----"
-msgstr ""
+msgstr "----- Début du message transféré de %f -----"
 
 #. L10N: $forward_attribution_trailer default format
 #: send/config.c:241
 msgid "----- End forwarded message -----"
-msgstr ""
+msgstr "----- Fin du message transféré -----"
 
+# TODO: Figure out why the english word "subject" is in parentheses here
 #: send/send.c:346
+#, fuzzy
 msgid "No subject, abort?"
 msgstr "Pas d'objet (Subject), abandonner?"
 
+# TODO: Figure out why the english word "subject" is in parentheses here
 #: send/send.c:348
+#, fuzzy
 msgid "No subject, aborting"
 msgstr "Pas d'objet (Subject), abandon"
 
@@ -8653,9 +8675,9 @@ msgstr "(pas de boîte aux lettres)"
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
 #: status.c:390
-#, fuzzy, c-format
+#, c-format
 msgid "%d%%"
-msgstr "%d%%"
+msgstr "%d %%"
 
 #: version.c:85
 msgid "Many others not mentioned here contributed code, fixes and suggestions.\n"
