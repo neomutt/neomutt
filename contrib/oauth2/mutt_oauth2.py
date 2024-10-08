@@ -297,7 +297,7 @@ if args.authorize:
         print(response['message'])
         del p['scope']
         p.update({'grant_type': 'urn:ietf:params:oauth:grant-type:device_code',
-                  'client_secret': registration['client_secret'],
+                  'client_secret': token['client_secret'],
                   'device_code': response['device_code']})
         interval = int(response['interval'])
         print('Polling...', end='', flush=True)
