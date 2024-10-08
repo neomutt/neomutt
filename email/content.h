@@ -25,7 +25,6 @@
 #define MUTT_EMAIL_CONTENT_H
 
 #include <stdbool.h>
-#include <stddef.h>
 
 /**
  * struct Content - Info about an attachment

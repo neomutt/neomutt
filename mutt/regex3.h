@@ -29,6 +29,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "queue.h"
+#include <stddef.h>
 
 struct Buffer;
 

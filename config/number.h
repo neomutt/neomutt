@@ -1,6 +1,6 @@
 /**
  * @file
- * Type representing a number 
+ * Type representing a number
  *
  * @authors
  * Copyright (C) 2024 Pietro Cerutti <gahr@gahr.ch>

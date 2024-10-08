@@ -37,7 +37,6 @@
 #include "sort.h"
 #include "lib.h"
 #include "globals.h"
-#include "muttlib.h"
 
 /**
  * struct CompareData - Private data for browser_sort_helper()

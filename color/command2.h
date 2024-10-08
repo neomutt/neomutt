@@ -26,9 +26,9 @@
 #include "config.h"
 #include <stdint.h>
 #include "core/lib.h"
+#include "mutt/lib.h"
 
 struct AttrColor;
-struct Buffer;
 
 /**
  * @defgroup parser_callback_api Colour Parsing API

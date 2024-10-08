@@ -49,7 +49,6 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt.h"
-#include "complete/lib.h"
 #include "search_state.h"
 
 struct AliasMenuData;

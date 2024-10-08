@@ -43,7 +43,6 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include "mutt/lib.h"
-#include "complete/lib.h"
 
 struct Mailbox;
 struct Menu;

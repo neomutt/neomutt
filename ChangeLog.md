@@ -20,7 +20,7 @@
   - `set crypt_encryption_info = yes`
     Add an informative block with details about the encryption
   - `set crypt_protected_headers_weed = no`
-    Controls wether NeoMutt will weed protected header fields
+    Controls whether NeoMutt will weed protected header fields
   - `set devel_security = no`
     Devel feature: Security -- https://github.com/neomutt/neomutt/discussions/4251
   - `$mixmaster` is deprecated

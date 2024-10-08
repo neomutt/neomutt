@@ -45,7 +45,7 @@
 struct ImapAuth
 {
   /**
-   * @defgroup imap_authenticate IMAP Authenticaion API
+   * @defgroup imap_authenticate IMAP Authentication API
    *
    * authenticate - Authenticate an IMAP connection
    * @param adata Imap Account data

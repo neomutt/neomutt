@@ -66,7 +66,7 @@ static void native_set(void *var, intptr_t val)
  */
 static void native_toggle(void *var)
 {
-  *(intptr_t *)var = *(uintptr_t *)var ^ TOGGLE_BIT;
+  *(intptr_t *) var = *(uintptr_t *) var ^ TOGGLE_BIT;
 }
 
 /**

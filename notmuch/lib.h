@@ -45,7 +45,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "core/lib.h"
-#include "complete/lib.h"
 
 struct Email;
 struct stat;

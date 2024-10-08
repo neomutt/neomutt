@@ -41,6 +41,7 @@
 #include "lib.h"
 #include "attach/lib.h"
 #include "compmbox/lib.h"
+#include "expando/lib.h"
 #include "imap/lib.h"
 #include "maildir/lib.h"
 #include "mbox/lib.h"

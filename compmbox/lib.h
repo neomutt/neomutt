@@ -36,7 +36,8 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "core/lib.h"
+
+struct Mailbox;
 
 /**
  * ExpandoDataCompress - Expando UIDs for Compression

@@ -33,7 +33,6 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
-#include "config/types.h"
 #include "core/lib.h"
 #include "mutt.h"
 #include "set.h"

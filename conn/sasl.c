@@ -101,7 +101,7 @@ struct SaslSockData
 };
 
 /**
- * SaslAuthenticators - Authenticaion methods supported by Cyrus SASL
+ * SaslAuthenticators - Authentication methods supported by Cyrus SASL
  */
 static const char *const SaslAuthenticators[] = {
   "ANONYMOUS",     "CRAM-MD5",       "DIGEST-MD5",    "EXTERNAL",

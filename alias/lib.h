@@ -44,17 +44,14 @@
 #define MUTT_ALIAS_LIB_H
 
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 #include "core/lib.h"
-#include "complete/lib.h"
 
 struct Address;
 struct AddressList;
 struct Alias;
 struct Buffer;
 struct ConfigSubset;
-struct EnterWindowData;
 struct Envelope;
 struct TagList;
 

@@ -319,9 +319,9 @@ long index_date_recv_local_num(const struct ExpandoNode *node, void *data, MuttF
  */
 enum IndexDateChoice
 {
-  SENT_SENDER,      ///< Date sent in the sender's timezone
-  SENT_LOCAL,       ///< Date sent in the local timezone
-  RECV_LOCAL        ///< Date received in the local timezone
+  SENT_SENDER, ///< Date sent in the sender's timezone
+  SENT_LOCAL,  ///< Date sent in the local timezone
+  RECV_LOCAL   ///< Date received in the local timezone
 };
 
 /**

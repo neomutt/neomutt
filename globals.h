@@ -25,8 +25,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include "mutt/lib.h"
-#include "menu/lib.h"
 
 extern bool ErrorBufMessage; ///< true if the last message was an error
 extern char ErrorBuf[1024];  ///< Copy of the last error message

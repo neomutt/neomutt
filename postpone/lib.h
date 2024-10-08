@@ -37,6 +37,7 @@
 
 #include <stdbool.h>
 #include "ncrypt/lib.h"
+#include <stdio.h>
 
 struct Buffer;
 struct Email;

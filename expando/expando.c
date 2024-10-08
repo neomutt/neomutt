@@ -104,7 +104,7 @@ struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *d
  * @param[in]  flags    Callback flags
  * @param[in]  max_cols Number of screen columns (-1 means unlimited)
  * @param[out] buf      Buffer in which to save string
- * @retval obj Number of bytes written to buf and screen columns used
+ * @retval num Number of bytes written to buf and screen columns used
  */
 int expando_render(const struct Expando *exp, const struct ExpandoRenderData *rdata,
                    void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf)

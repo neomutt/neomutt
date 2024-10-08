@@ -966,85 +966,85 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
   rc = number_he_toggle(sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-      TEST_MSG("Toggle failed: %s", buf_string(err));
-      return false;
+    TEST_MSG("Toggle failed: %s", buf_string(err));
+    return false;
   }
 
   value = cs_subset_number(sub, name);
   if (!TEST_CHECK(value == 0))
   {
-      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
-      return false;
+    TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
+    return false;
   }
 
   rc = number_he_toggle(sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-      TEST_MSG("Toggle failed: %s", buf_string(err));
-      return false;
+    TEST_MSG("Toggle failed: %s", buf_string(err));
+    return false;
   }
 
   value = cs_subset_number(sub, name);
   if (!TEST_CHECK(value == initial))
   {
-      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, initial);
-      return false;
+    TEST_MSG("Toggle value is wrong: %d, expected: %d", value, initial);
+    return false;
   }
 
   rc = number_he_toggle(sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-      TEST_MSG("Toggle failed: %s", buf_string(err));
-      return false;
+    TEST_MSG("Toggle failed: %s", buf_string(err));
+    return false;
   }
 
   value = cs_subset_number(sub, name);
   if (!TEST_CHECK(value == 0))
   {
-      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
-      return false;
+    TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
+    return false;
   }
 
-  rc = cs_str_native_set(cs, name, -123, err); 
+  rc = cs_str_native_set(cs, name, -123, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-      TEST_MSG("Set failed: %s", buf_string(err));
-      return false;
+    TEST_MSG("Set failed: %s", buf_string(err));
+    return false;
   }
 
   value = cs_subset_number(sub, name);
   if (!TEST_CHECK(value == -123))
   {
-      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, -123);
-      return false;
+    TEST_MSG("Toggle value is wrong: %d, expected: %d", value, -123);
+    return false;
   }
 
   rc = number_he_toggle(sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-      TEST_MSG("Toggle failed: %s", buf_string(err));
-      return false;
+    TEST_MSG("Toggle failed: %s", buf_string(err));
+    return false;
   }
 
   value = cs_subset_number(sub, name);
   if (!TEST_CHECK(value == 0))
   {
-      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
-      return false;
+    TEST_MSG("Toggle value is wrong: %d, expected: %d", value, 0);
+    return false;
   }
 
   rc = number_he_toggle(sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
-      TEST_MSG("Toggle failed: %s", buf_string(err));
-      return false;
+    TEST_MSG("Toggle failed: %s", buf_string(err));
+    return false;
   }
 
   value = cs_subset_number(sub, name);
   if (!TEST_CHECK(value == -123))
   {
-      TEST_MSG("Toggle value is wrong: %d, expected: %d", value, -123);
-      return false;
+    TEST_MSG("Toggle value is wrong: %d, expected: %d", value, -123);
+    return false;
   }
 
   return true;

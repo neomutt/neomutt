@@ -24,7 +24,6 @@
 #define MUTT_EMAIL_GLOBALS_H
 
 #include <stdbool.h>
-#include "mutt/lib.h"
 
 extern struct HashTable  *AutoSubscribeCache;
 extern struct ListHead    Ignore;
