@@ -321,7 +321,15 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
          * based upon some other information. */
         FREE(&hook->command);
         hook->command = buf_strdup(cmd);
+        FREE(&hook->source_file);
         hook->source_file = mutt_get_sourced_cwd();
+
+        if (data & (MUTT_IDXFMTHOOK | MUTT_MBOX_HOOK | MUTT_SAVE_HOOK | MUTT_FCC_HOOK))
+        {
+          expando_free(&hook->expando);
+          hook->expando = expando_parse(buf_string(cmd), IndexFormatDef, err);
+        }
+
         rc = MUTT_CMD_SUCCESS;
         goto cleanup;
       }
