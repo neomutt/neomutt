@@ -4537,11 +4537,11 @@ msgstr ""
 # , c-format
 #: help.c:420
 msgid "message is deleted"
-msgstr ""
+msgstr "le message a été supprimé"
 
 #: help.c:422
 msgid "attachment is deleted"
-msgstr ""
+msgstr "la pièce jointe a été supprimée"
 
 #: help.c:424
 msgid "message has been replied to"
@@ -4549,15 +4549,15 @@ msgstr ""
 
 #: help.c:425
 msgid "message has been read"
-msgstr ""
+msgstr "le message a été lu"
 
 #: help.c:426
 msgid "message is new"
-msgstr ""
+msgstr "le message est nouveau"
 
 #: help.c:428
 msgid "thread has been read"
-msgstr ""
+msgstr "le fil a été lu"
 
 #: help.c:430
 msgid "thread has at least one new message"
@@ -4632,6 +4632,8 @@ msgstr "Affectations génériques :"
 msgid "Unbound functions:"
 msgstr "Fonctions non affectées :"
 
+# TODO: think about « drapeau » here. this is a fairly common translation for
+#       this application of the english word "flag"
 #: help.c:512
 msgid "Message flags:"
 msgstr ""
