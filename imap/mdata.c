@@ -74,7 +74,7 @@ struct ImapMboxData *imap_mdata_get(struct Mailbox *m)
 struct ImapMboxData *imap_mdata_new(struct ImapAccountData *adata, const char *name)
 {
   char buf[1024] = { 0 };
-  struct ImapMboxData *mdata = mutt_mem_calloc(1, sizeof(struct ImapMboxData));
+  struct ImapMboxData *mdata = MUTT_MEM_CALLOC(1, struct ImapMboxData);
 
   imap_fix_path_with_delim(adata->delim, name, buf, sizeof(buf));
   if (buf[0] == '\0')

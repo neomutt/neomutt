@@ -69,7 +69,7 @@ static void group_free(struct Group **ptr)
  */
 static struct Group *group_new(const char *pat)
 {
-  struct Group *g = mutt_mem_calloc(1, sizeof(struct Group));
+  struct Group *g = MUTT_MEM_CALLOC(1, struct Group);
 
   g->name = mutt_str_dup(pat);
   STAILQ_INIT(&g->rs);
@@ -190,7 +190,7 @@ void mutt_grouplist_add(struct GroupList *gl, struct Group *group)
     if (np->group == group)
       return;
   }
-  np = mutt_mem_calloc(1, sizeof(struct GroupNode));
+  np = MUTT_MEM_CALLOC(1, struct GroupNode);
   np->group = group;
   STAILQ_INSERT_TAIL(gl, np, entries);
 }

@@ -61,7 +61,7 @@ struct Notify
  */
 struct Notify *notify_new(void)
 {
-  struct Notify *notify = mutt_mem_calloc(1, sizeof(*notify));
+  struct Notify *notify = MUTT_MEM_CALLOC(1, struct Notify);
 
   STAILQ_INIT(&notify->observers);
 
@@ -204,12 +204,12 @@ bool notify_observer_add(struct Notify *notify, enum NotifyType type,
       return true;
   }
 
-  struct Observer *o = mutt_mem_calloc(1, sizeof(*o));
+  struct Observer *o = MUTT_MEM_CALLOC(1, struct Observer);
   o->type = type;
   o->callback = callback;
   o->global_data = global_data;
 
-  np = mutt_mem_calloc(1, sizeof(*np));
+  np = MUTT_MEM_CALLOC(1, struct ObserverNode);
   np->observer = o;
   STAILQ_INSERT_HEAD(&notify->observers, np, entries);
 

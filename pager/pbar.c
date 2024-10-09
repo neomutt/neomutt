@@ -314,7 +314,7 @@ static void pbar_data_free(struct MuttWindow *win, void **ptr)
 static struct PBarPrivateData *pbar_data_new(struct IndexSharedData *shared,
                                              struct PagerPrivateData *priv)
 {
-  struct PBarPrivateData *pbar_data = mutt_mem_calloc(1, sizeof(struct PBarPrivateData));
+  struct PBarPrivateData *pbar_data = MUTT_MEM_CALLOC(1, struct PBarPrivateData);
 
   pbar_data->shared = shared;
   pbar_data->priv = priv;

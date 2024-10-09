@@ -48,7 +48,7 @@ struct ListNode *mutt_list_insert_head(struct ListHead *h, char *s)
   if (!h)
     return NULL;
 
-  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
   np->data = s;
   STAILQ_INSERT_HEAD(h, np, entries);
   return np;
@@ -67,7 +67,7 @@ struct ListNode *mutt_list_insert_tail(struct ListHead *h, char *s)
   if (!h)
     return NULL;
 
-  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
   np->data = s;
   STAILQ_INSERT_TAIL(h, np, entries);
   return np;
@@ -87,7 +87,7 @@ struct ListNode *mutt_list_insert_after(struct ListHead *h, struct ListNode *n, 
   if (!h || !n)
     return NULL;
 
-  struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+  struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
   np->data = s;
   STAILQ_INSERT_AFTER(h, n, np, entries);
   return np;

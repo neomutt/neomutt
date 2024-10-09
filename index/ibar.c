@@ -319,7 +319,7 @@ static void ibar_data_free(struct MuttWindow *win, void **ptr)
 static struct IBarPrivateData *ibar_data_new(struct IndexSharedData *shared,
                                              struct IndexPrivateData *priv)
 {
-  struct IBarPrivateData *ibar_data = mutt_mem_calloc(1, sizeof(struct IBarPrivateData));
+  struct IBarPrivateData *ibar_data = MUTT_MEM_CALLOC(1, struct IBarPrivateData);
 
   ibar_data->shared = shared;
   ibar_data->priv = priv;

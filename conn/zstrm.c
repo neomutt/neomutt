@@ -290,7 +290,7 @@ static int zstrm_write(struct Connection *conn, const char *buf, size_t count)
  */
 void mutt_zstrm_wrap_conn(struct Connection *conn)
 {
-  struct ZstrmContext *zctx = mutt_mem_calloc(1, sizeof(struct ZstrmContext));
+  struct ZstrmContext *zctx = MUTT_MEM_CALLOC(1, struct ZstrmContext);
 
   /* store wrapped stream as next stream */
   zctx->next_conn.fd = conn->fd;
@@ -311,10 +311,10 @@ void mutt_zstrm_wrap_conn(struct Connection *conn)
 
   /* allocate/setup (de)compression buffers */
   zctx->read.len = 8192;
-  zctx->read.buf = mutt_mem_malloc(zctx->read.len);
+  zctx->read.buf = MUTT_MEM_MALLOC(zctx->read.len, char);
   zctx->read.pos = 0;
   zctx->write.len = 8192;
-  zctx->write.buf = mutt_mem_malloc(zctx->write.len);
+  zctx->write.buf = MUTT_MEM_MALLOC(zctx->write.len, char);
   zctx->write.pos = 0;
 
   /* initialise zlib for inflate and deflate for RFC4978 */
