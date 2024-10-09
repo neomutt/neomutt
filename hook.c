@@ -45,17 +45,20 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
+#include "gui/lib.h"
 #include "hook.h"
 #include "attach/lib.h"
 #include "compmbox/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
+#include "key/lib.h"
 #include "ncrypt/lib.h"
 #include "parse/lib.h"
 #include "pattern/lib.h"
 #include "commands.h"
 #include "globals.h"
 #include "hdrline.h"
+#include "mutt_logging.h"
 #include "muttlib.h"
 #include "mx.h"
 
@@ -955,20 +958,19 @@ void mutt_timeout_hook(void)
 }
 
 /**
- * mutt_startup_shutdown_hook - Execute any startup/shutdown hooks
- * @param type Hook type: #MUTT_STARTUP_HOOK or #MUTT_SHUTDOWN_HOOK
+ * mutt_startup_hook - Execute any startup hooks
  *
- * The user can configure hooks to be run on startup/shutdown.
+ * The user can configure hooks to be run on startup.
  * This function finds all the matching hooks and executes them.
  */
-void mutt_startup_shutdown_hook(HookFlags type)
+void mutt_startup_hook(void)
 {
   struct Hook *hook = NULL;
   struct Buffer *err = buf_pool_get();
 
   TAILQ_FOREACH(hook, &Hooks, entries)
   {
-    if (!(hook->command && (hook->type & type)))
+    if (!(hook->command && (hook->type & MUTT_STARTUP_HOOK)))
       continue;
 
     if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
@@ -977,6 +979,55 @@ void mutt_startup_shutdown_hook(HookFlags type)
       buf_reset(err);
     }
   }
+  buf_pool_release(&err);
+}
+
+/**
+ * mutt_shutdown_hook - Execute any shutdown hooks
+ *
+ * The user can configure hooks to be run on shutdown.
+ * This function finds all the matching hooks and executes them.
+ */
+void mutt_shutdown_hook(struct MuttWindow *win)
+{
+  struct Hook *hook = NULL;
+  struct Buffer *err = buf_pool_get();
+
+  TAILQ_FOREACH(hook, &Hooks, entries)
+  {
+    if (!(hook->command && (hook->type & MUTT_SHUTDOWN_HOOK)))
+      continue;
+
+    if (parse_rc_line_cwd(hook->command, hook->source_file, err) == MUTT_CMD_ERROR)
+    {
+      mutt_error("%s", err->data);
+      buf_reset(err);
+    }
+
+    // the shutdown hook might have put events in the queue
+    struct KeyEvent *event;
+    while ((event = get_event()))
+    {
+      int op = event->op;
+
+      // abort, timeout, repaint
+      if (op <= OP_NULL)
+        continue;
+
+      mutt_clear_error();
+
+      const char *op_name = opcodes_get_name(op);
+      mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", op_name, op);
+
+      int rc = index_function_dispatcher(win, op);
+      if (rc == FR_UNKNOWN)
+        rc = global_function_dispatcher(NULL, op);
+
+      if (rc != FR_SUCCESS)
+        mutt_error("Failed to run %s", op_name);
+    }
+  }
+
   buf_pool_release(&err);
 }
 
