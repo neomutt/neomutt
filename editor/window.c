@@ -383,6 +383,7 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
           goto bye;
 
         case FR_SUCCESS:
+          rc = 0;
           break;
 
         case FR_UNKNOWN:
