@@ -29,6 +29,7 @@
 void test_mutt_hash_find_bucket(void)
 {
   // struct HashElem *mutt_hash_find_bucket(const struct HashTable *table, const char *strkey);
+  // struct HashElem *mutt_hash_find_bucket_n(const struct HashTable *table, const char *strkey, int keylen);
 
   int dummy1 = 42;
   int dummy2 = 13;
@@ -51,6 +52,26 @@ void test_mutt_hash_find_bucket(void)
     mutt_hash_insert(table, "banana", &dummy3);
     mutt_hash_insert(table, "cherry", &dummy3);
     mutt_hash_find_bucket(table, "banana");
+    mutt_hash_free(&table);
+  }
+
+  {
+    TEST_CHECK(!mutt_hash_find_bucket_n(NULL, "apple", 5));
+  }
+
+  {
+    struct HashTable table = { 0 };
+    TEST_CHECK(!mutt_hash_find_bucket_n(&table, NULL, 0));
+  }
+
+  {
+    struct HashTable *table = mutt_hash_new(128, MUTT_HASH_ALLOW_DUPS);
+    mutt_hash_insert(table, "apple", &dummy1);
+    mutt_hash_insert(table, "banana", &dummy1);
+    mutt_hash_insert(table, "banana", &dummy2);
+    mutt_hash_insert(table, "banana", &dummy3);
+    mutt_hash_insert(table, "cherry", &dummy3);
+    mutt_hash_find_bucket_n(table, "banana", 6);
     mutt_hash_free(&table);
   }
 }

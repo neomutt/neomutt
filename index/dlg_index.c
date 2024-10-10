@@ -589,14 +589,23 @@ static int index_mailbox_observer(struct NotifyCallback *nc)
     return 0;
   if (!nc->global_data)
     return -1;
-  if (nc->event_subtype != NT_MAILBOX_DELETE)
-    return 0;
 
-  struct Mailbox **ptr = nc->global_data;
-  if (!*ptr)
-    return 0;
+  if (nc->event_subtype == NT_MAILBOX_DELETE)
+  {
+    struct Mailbox **ptr = nc->global_data;
+    if (!*ptr)
+      return 0;
 
-  *ptr = NULL;
+    *ptr = NULL;
+  }
+  else if (nc->event_subtype == NT_MAILBOX_CHANGE)
+  {
+    struct EventMailbox *ev_m = nc->event_data;
+    mutt_debug(LL_DEBUG1, "\033[1;7mQWQ Mailbox: %zu new, %zu changed, %zu deleted\033[0m\n",
+               ARRAY_SIZE(ev_m->ea_new), ARRAY_SIZE(ev_m->ea_changed),
+               ARRAY_SIZE(ev_m->ea_deleted));
+  }
+
   mutt_debug(LL_DEBUG5, "mailbox done\n");
   return 0;
 }
