@@ -248,6 +248,12 @@ struct ExpandoNode *parse_tags_transformed(const char *str, const char **parsed_
   node->end++;
   (*parsed_until)++;
 
+  if (flags & EP_CONDITIONAL)
+  {
+    node->type = ENT_CONDBOOL;
+    node->render = node_condbool_render;
+  }
+
   return node;
 }
 
