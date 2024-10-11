@@ -917,12 +917,12 @@ msgstr "%s : pas assez d'arguments"
 #: color/command.c:365
 #, c-format
 msgid "Direct colors support not compiled in: %s"
-msgstr ""
+msgstr "La capacité d'afficher les vraies couleurs n'est pas compilée dans : %s"
 
 #: color/command.c:372
-#, fuzzy, c-format
+#, c-format
 msgid "Direct colors support disabled: %s"
-msgstr "La couleur default n'est pas disponible"
+msgstr "La capacité d'afficher les vraies couleurs est désactivé : %s"
 
 # , c-format
 #: color/command.c:379 color/parse_color.c:188 color/parse_color.c:227
@@ -941,7 +941,7 @@ msgstr "%s: trop d'arguments"
 #: color/command.c:434
 #, c-format
 msgid "%s: invalid number: %s"
-msgstr "Erreur %s : nombre %s: invalide"
+msgstr "Erreur %s : nombre %s : invalide"
 
 #: color/curses.c:98
 #, c-format
@@ -1095,12 +1095,12 @@ msgstr "Pas de répertoire spécifié"
 #: commands.c:1305
 #, c-format
 msgid "tag format '%s' already registered as '%s'"
-msgstr ""
+msgstr "Le format d'étiquette '%s' est déjà enregistré comme '%s'"
 
 #: commands.c:1347
 #, c-format
 msgid "tag transform '%s' already registered as '%s'"
-msgstr ""
+msgstr "La transformation d'étiquette '%s' est déjà enregistrée comme '%s'"
 
 # , c-format
 #: commands.c:1595 imap/imap.c:1260
@@ -1173,10 +1173,11 @@ msgstr "Ajout avec compression à %s..."
 msgid "Error. Preserving temporary file: %s"
 msgstr "Erreur. Préservation du fichier temporaire : %s"
 
+# TODO: Is this too translation too long to fit?
 #. L10N: $compose_format default format
 #: compose/config.c:70
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
-msgstr ""
+msgstr "- NeoMutt : Composer [Taille approx du msg : %l Attributs : %a]%>-"
 
 #: compose/dlg_compose.c:93 compose/dlg_compose.c:111
 msgid "Send"
@@ -1585,7 +1586,7 @@ msgstr "Ligne non conforme. Format attendu <key: val> à la place de <%s>"
 #: conn/accountcmd.c:121
 #, c-format
 msgid "Unhandled key in line <%s: %s>"
-msgstr ""
+msgstr "Clé non gérée à la ligne <%s : %s>"
 
 #: conn/accountcmd.c:142
 #, fuzzy
@@ -1994,6 +1995,8 @@ msgstr "Le fichier contenant le message est vide"
 msgid "Message not modified"
 msgstr "Message non modifié"
 
+# TODO: Does this mean that the user or other agent tried to modify a message
+#       and something stopped them? That would change the translation...
 #: editmsg.c:176
 msgid "Message of read-only mailbox modified! Ignoring changes."
 msgstr ""
@@ -2053,7 +2056,7 @@ msgstr "le message multipart n'a pas de paramètre boundary"
 #. (a)utomatic defers to the recommendation.
 #: envelope/functions.c:69
 msgid "Autocrypt: (e)ncrypt, (c)lear, (a)utomatic?"
-msgstr "Autocrypt: (c)hiffrer, (n)ettoyer, (a)utomatique ?"
+msgstr "Autocrypt : (c)hiffrer, (n)ettoyer, (a)utomatique ?"
 
 #. L10N: The letter corresponding to the compose menu autocrypt prompt
 #. (e)ncrypt, (c)lear, (a)utomatic
@@ -5712,7 +5715,7 @@ msgstr ""
 
 #: main.c:331
 msgid "  -h            Print this help message and exit"
-msgstr " -h     imprime ce message et quitte"
+msgstr "  -h            Affiche ce message et quitte"
 
 #: main.c:332
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
@@ -5745,7 +5748,7 @@ msgstr ""
 
 #: main.c:341
 msgid "  -R            Open mailbox in read-only mode"
-msgstr "Ouvrir la boîte aux lettres en lecture seule"
+msgstr "  -R            Ouvrir la boîte aux lettres en lecture seule"
 
 #: main.c:342
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
@@ -5757,7 +5760,7 @@ msgstr "  -v            Affiche la version de NeoMutt version, définit son temp
 
 #: main.c:344
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr "  -vv          Affiche la licence NeoMutt, les informations relatives à la propriété intellectuelle et sort"
+msgstr "  -vv           Affiche la licence NeoMutt, les informations relatives à la propriété intellectuelle et sort"
 
 #: main.c:345
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
