@@ -62,7 +62,7 @@ void test_expando_simple_expando_render(void)
   const char *input = "%s - %d";
 
   struct ExpandoNode *root = NULL;
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   const struct ExpandoDefinition defs[] = {
     { "s", NULL, 1, 0, 0, NULL },
@@ -70,16 +70,16 @@ void test_expando_simple_expando_render(void)
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &error);
+  node_tree_parse(&root, input, defs, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
   check_node_expando(get_nth_node(root, 0), "s", NULL);
-  check_node_test(get_nth_node(root, 1), " - ");
+  check_node_text(get_nth_node(root, 1), " - ");
   check_node_expando(get_nth_node(root, 2), "d", NULL);
 
   const char *expected = "Test - 1";
 
-  const struct Expando expando = {
+  const struct Expando exp = {
     .string = input,
     .node = root,
   };
@@ -96,7 +96,7 @@ void test_expando_simple_expando_render(void)
   };
 
   struct Buffer *buf = buf_pool_get();
-  expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected);
 

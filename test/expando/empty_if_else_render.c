@@ -60,7 +60,7 @@ static void simple_f(const struct ExpandoNode *node, void *data,
 
 void test_expando_empty_if_else_render(void)
 {
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   const char *input = "%<c?&%f>";
 
@@ -71,21 +71,21 @@ void test_expando_empty_if_else_render(void)
   };
 
   struct ExpandoNode *root = NULL;
-  node_tree_parse(&root, input, defs, &error);
-  TEST_CHECK(error.position == NULL);
+  node_tree_parse(&root, input, defs, &err);
+  TEST_CHECK(err.position == NULL);
 
   struct ExpandoNode *node = get_nth_node(root, 0);
   check_node_cond(node);
 
-  struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-  struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-  struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+  struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+  struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+  struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-  check_node_condbool(condition, "c");
-  check_node_empty(if_true_tree);
-  check_node_expando(if_false_tree, "f", NULL);
+  check_node_condbool(node_cond, "c");
+  check_node_empty(node_true);
+  check_node_expando(node_false, "f", NULL);
 
-  const struct Expando expando = {
+  const struct Expando exp = {
     .string = input,
     .node = root,
   };
@@ -102,7 +102,7 @@ void test_expando_empty_if_else_render(void)
   };
 
   struct Buffer *buf = buf_pool_get();
-  expando_render(&expando, render, &data1, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(&exp, render, &data1, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   const char *expected1 = "3";
   TEST_CHECK_STR_EQ(buf_string(buf), expected1);
@@ -113,7 +113,7 @@ void test_expando_empty_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(&expando, render, &data2, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(&exp, render, &data2, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   const char *expected2 = "";
   TEST_CHECK_STR_EQ(buf_string(buf), expected2);

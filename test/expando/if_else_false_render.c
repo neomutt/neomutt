@@ -72,7 +72,7 @@ static void simple_f(const struct ExpandoNode *node, void *data,
 void test_expando_if_else_false_render(void)
 {
   const char *input = "%<c?%t>%<c?%t&%f>";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
   const struct ExpandoDefinition defs[] = {
@@ -82,38 +82,38 @@ void test_expando_if_else_false_render(void)
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &error);
+  node_tree_parse(&root, input, defs, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
   {
     struct ExpandoNode *node = get_nth_node(root, 0);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "c");
-    check_node_expando(if_true_tree, "t", NULL);
-    TEST_CHECK(if_false_tree == NULL);
+    check_node_condbool(node_cond, "c");
+    check_node_expando(node_true, "t", NULL);
+    TEST_CHECK(node_false == NULL);
   }
 
   {
     struct ExpandoNode *node = get_nth_node(root, 1);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "c");
-    check_node_expando(if_true_tree, "t", NULL);
-    check_node_expando(if_false_tree, "f", NULL);
+    check_node_condbool(node_cond, "c");
+    check_node_expando(node_true, "t", NULL);
+    check_node_expando(node_false, "f", NULL);
   }
 
   const char *expected = "3";
 
-  const struct Expando expando = {
+  const struct Expando exp = {
     .string = input,
     .node = root,
   };
@@ -134,7 +134,7 @@ void test_expando_if_else_false_render(void)
       .f = 3,
     };
 
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
   }

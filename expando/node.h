@@ -67,19 +67,19 @@ struct ExpandoFormat
  */
 struct ExpandoNode
 {
-  enum ExpandoNodeType    type;          ///< Type of Node, e.g. #ENT_EXPANDO
-  struct ExpandoNode     *next;          ///< Linked list
-  int                     did;           ///< Domain ID, e.g. #ED_EMAIL
-  int                     uid;           ///< Unique ID, e.g. #ED_EMA_SIZE
+  enum ExpandoNodeType      type;        ///< Type of Node, e.g. #ENT_EXPANDO
+  struct ExpandoNode       *next;        ///< Linked list
+  int                       did;         ///< Domain ID, e.g. #ED_EMAIL
+  int                       uid;         ///< Unique ID, e.g. #ED_EMA_SIZE
 
-  struct ExpandoFormat   *format;        ///< Formatting info
+  struct ExpandoFormat     *format;      ///< Formatting info
 
-  struct ExpandoNodeArray children;      ///< Children nodes
+  struct ExpandoNodeArray   children;    ///< Children nodes
 
-  const char             *start;         ///< Start of string data
-  const char             *end;           ///< End of string data
+  const char               *start;       ///< Start of string data
+  const char               *end;         ///< End of string data
 
-  void *ndata;                           ///< Private node data
+  void  *ndata;                          ///< Private node data
   void (*ndata_free)(void **ptr);        ///< Function to free the private node data
 
   /**

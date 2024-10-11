@@ -160,8 +160,9 @@ static const struct ExpandoDefinition AttachFormatDef[] = {
  * Parse a custom Expando of the form, "%(string)".
  * The "string" will be passed to strftime().
  */
-struct ExpandoNode *parse_index_date_recv_local(const char *str, const char **parsed_until,
-                                                int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_index_date_recv_local(const char *str, int did,
+                                                int uid, ExpandoParserFlags flags,
+                                                const char **parsed_until,
                                                 struct ExpandoParseError *error)
 {
   if (flags & EP_CONDITIONAL)
@@ -178,8 +179,8 @@ struct ExpandoNode *parse_index_date_recv_local(const char *str, const char **pa
  * Parse a custom expando of the form, "%[string]".
  * The "string" will be passed to strftime().
  */
-struct ExpandoNode *parse_index_date_local(const char *str, const char **parsed_until,
-                                           int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_index_date_local(const char *str, int did, int uid,
+                                           ExpandoParserFlags flags, const char **parsed_until,
                                            struct ExpandoParseError *error)
 {
   if (flags & EP_CONDITIONAL)
@@ -196,8 +197,8 @@ struct ExpandoNode *parse_index_date_local(const char *str, const char **parsed_
  * Parse a custom Expando of the form, "%{string}".
  * The "string" will be passed to strftime().
  */
-struct ExpandoNode *parse_index_date(const char *str, const char **parsed_until,
-                                     int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_index_date(const char *str, int did, int uid,
+                                     ExpandoParserFlags flags, const char **parsed_until,
                                      struct ExpandoParseError *error)
 {
   if (flags & EP_CONDITIONAL)
@@ -215,8 +216,8 @@ struct ExpandoNode *parse_index_date(const char *str, const char **parsed_until,
  * The "name" will be looked up as an index-hook, then the result parsed as an
  * Expando.
  */
-struct ExpandoNode *parse_index_hook(const char *str, const char **parsed_until,
-                                     int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_index_hook(const char *str, int did, int uid,
+                                     ExpandoParserFlags flags, const char **parsed_until,
                                      struct ExpandoParseError *error)
 {
   if (flags & EP_CONDITIONAL)
@@ -235,8 +236,8 @@ struct ExpandoNode *parse_index_hook(const char *str, const char **parsed_until,
  *
  * Parse a custom expando of the form, "%G?" where '?' is an alphabetic character.
  */
-struct ExpandoNode *parse_tags_transformed(const char *str, const char **parsed_until,
-                                           int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_tags_transformed(const char *str, int did, int uid,
+                                           ExpandoParserFlags flags, const char **parsed_until,
                                            struct ExpandoParseError *error)
 {
   // Let the basic expando parser do the work
@@ -257,8 +258,8 @@ struct ExpandoNode *parse_tags_transformed(const char *str, const char **parsed_
  * Parse a Subject Expando, "%s", into two separate Nodes.
  * One for the tree, one for the subject.
  */
-struct ExpandoNode *parse_subject(const char *str, const char **parsed_until,
-                                  int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_subject(const char *str, int did, int uid,
+                                  ExpandoParserFlags flags, const char **parsed_until,
                                   struct ExpandoParseError *error)
 {
   // Let the basic expando parser do the work

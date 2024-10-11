@@ -232,17 +232,17 @@ struct ExpandoNode *node_padding_new(enum ExpandoPadType pad_type,
  * Parse a Padding Expando of the form, "%|X", "%>X" or "%*X",
  * where the character 'X' will be used to fill the space.
  */
-struct ExpandoNode *node_padding_parse(const char *str, const char **parsed_until,
-                                       int did, int uid, ExpandoParserFlags flags,
-                                       struct ExpandoParseError *error)
+struct ExpandoNode *node_padding_parse(const char *str, int did, int uid,
+                                       ExpandoParserFlags flags, const char **parsed_until,
+                                       struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    snprintf(error->message, sizeof(error->message),
+    snprintf(err->message, sizeof(err->message),
              // L10N: Conditional Expandos can only depend on other Expandos
              //       e.g. "%<X?apple>" displays "apple" if "%X" is true.
              _("Padding cannot be used as a condition"));
-    error->position = str;
+    err->position = str;
     return NULL;
   }
 

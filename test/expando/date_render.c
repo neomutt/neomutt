@@ -57,7 +57,7 @@ static void simple_date(const struct ExpandoNode *node, void *data,
 
 void test_expando_date_render(void)
 {
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
 
   struct SimpleDateData data = {
     .t = 1457341200,
@@ -73,16 +73,16 @@ void test_expando_date_render(void)
       { NULL, NULL, 0, 0, 0, NULL },
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     check_node_expando(get_nth_node(root, 0), "%Y-%m-%d", NULL);
-    check_node_test(get_nth_node(root, 1), " date");
+    check_node_text(get_nth_node(root, 1), " date");
 
     const char *expected = "2016-03-07 date";
 
-    const struct Expando expando = {
+    const struct Expando exp = {
       .string = input,
       .node = root,
     };
@@ -93,7 +93,7 @@ void test_expando_date_render(void)
     };
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
@@ -111,9 +111,9 @@ void test_expando_date_render(void)
       { NULL, NULL, 0, 0, 0, NULL },
     };
 
-    node_tree_parse(&root, input, defs, &error);
+    node_tree_parse(&root, input, defs, &err);
 
-    TEST_CHECK(error.position == NULL);
+    TEST_CHECK(err.position == NULL);
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 12;
@@ -125,7 +125,7 @@ void test_expando_date_render(void)
 
     const char *expected = "2016-03-07  ";
 
-    const struct Expando expando = {
+    const struct Expando exp = {
       .string = input,
       .node = root,
     };
@@ -136,7 +136,7 @@ void test_expando_date_render(void)
     };
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&expando, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
 

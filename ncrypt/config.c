@@ -59,8 +59,8 @@ static const struct Mapping SortKeyMethods[] = {
  * Parse a custom Expando of the form, "%[string]".
  * The "string" will be passed to strftime().
  */
-struct ExpandoNode *parse_pgp_date(const char *str, const char **parsed_until,
-                                   int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_pgp_date(const char *str, int did, int uid,
+                                   ExpandoParserFlags flags, const char **parsed_until,
                                    struct ExpandoParseError *error)
 {
   if (flags & EP_CONDITIONAL)

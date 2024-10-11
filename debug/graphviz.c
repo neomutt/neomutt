@@ -1861,21 +1861,21 @@ void dot_expando_node_condition(FILE *fp, struct ExpandoNode *node, struct ListH
 
   dot_object_footer(fp);
 
-  struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-  struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-  struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+  struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+  struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+  struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-  dot_expando_node(fp, condition, links);
-  dot_add_link(links, node, condition, "Condition->condition", "condition", false, "#ff80ff");
-  if (if_true_tree)
+  dot_expando_node(fp, node_cond, links);
+  dot_add_link(links, node, node_cond, "Condition->condition", "condition", false, "#ff80ff");
+  if (node_true)
   {
-    dot_expando_node(fp, if_true_tree, links);
-    dot_add_link(links, node, if_true_tree, "Condition->true", "true", false, "#80ff80");
+    dot_expando_node(fp, node_true, links);
+    dot_add_link(links, node, node_true, "Condition->true", "true", false, "#80ff80");
   }
-  if (if_false_tree)
+  if (node_false)
   {
-    dot_expando_node(fp, if_false_tree, links);
-    dot_add_link(links, node, if_false_tree, "Condition->false", "false", false, "#ff8080");
+    dot_expando_node(fp, node_false, links);
+    dot_add_link(links, node, node_false, "Condition->false", "false", false, "#ff8080");
   }
 
   buf_pool_release(&buf);

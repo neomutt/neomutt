@@ -30,13 +30,13 @@
 void test_expando_simple_text(void)
 {
   const char *input = "test text";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, NULL, &error);
+  node_tree_parse(&root, input, NULL, &err);
 
-  TEST_CHECK(error.position == NULL);
-  check_node_test(get_nth_node(root, 0), input);
+  TEST_CHECK(err.position == NULL);
+  check_node_text(get_nth_node(root, 0), input);
 
   node_tree_free(&root);
 }

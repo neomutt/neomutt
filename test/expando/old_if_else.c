@@ -38,52 +38,52 @@ void test_expando_old_if_else(void)
     // clang-format on
   };
   const char *input = "if: %?l?%4l?  if-else: %?l?%4l&%4c?";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, TestFormatDef, &error);
+  node_tree_parse(&root, input, TestFormatDef, &err);
 
-  TEST_CHECK(error.position == NULL);
-  check_node_test(get_nth_node(root, 0), "if: ");
+  TEST_CHECK(err.position == NULL);
+  check_node_text(get_nth_node(root, 0), "if: ");
 
   {
     struct ExpandoNode *node = get_nth_node(root, 1);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "l");
+    check_node_condbool(node_cond, "l");
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(if_true_tree, "l", &fmt);
-    TEST_CHECK(if_false_tree == NULL);
+    check_node_expando(node_true, "l", &fmt);
+    TEST_CHECK(node_false == NULL);
   }
 
-  check_node_test(get_nth_node(root, 2), "  if-else: ");
+  check_node_text(get_nth_node(root, 2), "  if-else: ");
 
   {
     struct ExpandoNode *node = get_nth_node(root, 3);
     check_node_cond(node);
 
-    struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-    struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-    struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+    struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+    struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+    struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(condition, "l");
+    check_node_condbool(node_cond, "l");
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
     fmt.max_cols = INT_MAX;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
-    check_node_expando(if_true_tree, "l", &fmt);
-    check_node_expando(if_false_tree, "c", &fmt);
+    check_node_expando(node_true, "l", &fmt);
+    check_node_expando(node_false, "c", &fmt);
   }
 
   node_tree_free(&root);

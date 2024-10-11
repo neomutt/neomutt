@@ -30,14 +30,14 @@
 void test_expando_percent_sign_text(void)
 {
   const char *input = "percent %%";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
-  node_tree_parse(&root, input, NULL, &error);
+  node_tree_parse(&root, input, NULL, &err);
 
-  TEST_CHECK(error.position == NULL);
-  check_node_test(get_nth_node(root, 0), "percent ");
-  check_node_test(get_nth_node(root, 1), "%");
+  TEST_CHECK(err.position == NULL);
+  check_node_text(get_nth_node(root, 0), "percent ");
+  check_node_text(get_nth_node(root, 1), "%");
 
   node_tree_free(&root);
 }

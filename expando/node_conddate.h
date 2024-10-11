@@ -27,7 +27,7 @@
 struct ExpandoParseError;
 
 /**
- * struct NodeCondDatePrivate - Private data for a Conditional Date
+ * struct NodeCondDatePrivate - Private data for a Conditional Date - @extends ExpandoNode
  */
 struct NodeCondDatePrivate
 {
@@ -35,6 +35,6 @@ struct NodeCondDatePrivate
   char   period;        ///< Units, e.g. 'd' Day or 'm' Month
 };
 
-struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_until, int did, int uid, struct ExpandoParseError *error);
+struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_until, int did, int uid, struct ExpandoParseError *err);
 
 #endif /* MUTT_EXPANDO_NODE_CONDDATE_H */

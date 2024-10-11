@@ -36,6 +36,6 @@ struct ExpandoParseError
   const char *position;       ///< Position of error in original string
 };
 
-void node_tree_parse(struct ExpandoNode **root, const char *string, const struct ExpandoDefinition *defs, struct ExpandoParseError *error);
+void node_tree_parse(struct ExpandoNode **root, const char *string, const struct ExpandoDefinition *defs, struct ExpandoParseError *err);
 
 #endif /* MUTT_EXPANDO_PARSER_H */

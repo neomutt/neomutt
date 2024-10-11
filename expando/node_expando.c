@@ -132,13 +132,13 @@ void node_expando_set_has_tree(const struct ExpandoNode *node, bool has_tree)
  * parse_format - Parse a format string
  * @param start Start of string
  * @param end   End of string
- * @param error Buffer for errors
+ * @param err   Buffer for errors
  * @retval ptr New ExpandoFormat object
  *
  * Parse a printf()-style format, e.g. '-15.20x'
  */
 struct ExpandoFormat *parse_format(const char *start, const char *end,
-                                   struct ExpandoParseError *error)
+                                   struct ExpandoParseError *err)
 {
   if (start == end)
     return NULL;
@@ -177,8 +177,8 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
     // NOTE(g0mb4): start is NOT null-terminated
     if (!end_ptr || (end_ptr > end) || (number == USHRT_MAX))
     {
-      error->position = start;
-      snprintf(error->message, sizeof(error->message), _("Invalid number: %s"), start);
+      err->position = start;
+      snprintf(err->message, sizeof(err->message), _("Invalid number: %s"), start);
       FREE(&fmt);
       return NULL;
     }
@@ -193,9 +193,9 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
 
     if (!isdigit(*start))
     {
-      error->position = start;
+      err->position = start;
       // L10N: Expando format expected a number
-      snprintf(error->message, sizeof(error->message), _("Number is expected"));
+      snprintf(err->message, sizeof(err->message), _("Number is expected"));
       FREE(&fmt);
       return NULL;
     }
@@ -206,8 +206,8 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
     // NOTE(g0mb4): start is NOT null-terminated
     if (!end_ptr || (end_ptr > end) || (number == USHRT_MAX))
     {
-      error->position = start;
-      snprintf(error->message, sizeof(error->message), _("Invalid number: %s"), start);
+      err->position = start;
+      snprintf(err->message, sizeof(err->message), _("Invalid number: %s"), start);
       FREE(&fmt);
       return NULL;
     }
@@ -231,15 +231,15 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
  * @param[out] parsed_until First character after parsed string
  * @param[in]  defs         Expando definitions
  * @param[in]  flags        Flag for conditional expandos
- * @param[out] error        Buffer for errors
+ * @param[out] err          Buffer for errors
  * @retval ptr New ExpandoNode
  */
 struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_until,
                                        const struct ExpandoDefinition *defs,
                                        ExpandoParserFlags flags,
-                                       struct ExpandoParseError *error)
+                                       struct ExpandoParseError *err)
 {
-  const struct ExpandoDefinition *definition = defs;
+  const struct ExpandoDefinition *def = defs;
 
   const char *format_end = skip_until_classic_expando(str);
   const char *expando_end = skip_classic_expando(format_end, defs);
@@ -247,37 +247,35 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
   const int expando_len = expando_end - format_end;
   mutt_strn_copy(expando, format_end, expando_len, sizeof(expando));
 
-  struct ExpandoFormat *fmt = parse_format(str, format_end, error);
-  if (error->position)
+  struct ExpandoFormat *fmt = parse_format(str, format_end, err);
+  if (err->position)
   {
     FREE(&fmt);
     return NULL;
   }
 
-  while (definition && definition->short_name)
+  while (def && def->short_name)
   {
-    if (mutt_str_equal(definition->short_name, expando))
+    if (mutt_str_equal(def->short_name, expando))
     {
-      if (definition->parse && !(flags & EP_NO_CUSTOM_PARSE))
+      if (def->parse && !(flags & EP_NO_CUSTOM_PARSE))
       {
         FREE(&fmt);
-        return definition->parse(str, parsed_until, definition->did,
-                                 definition->uid, flags, error);
+        return def->parse(str, def->did, def->uid, flags, parsed_until, err);
       }
       else
       {
         *parsed_until = expando_end;
-        return node_expando_new(format_end, expando_end, fmt, definition->did,
-                                definition->uid);
+        return node_expando_new(format_end, expando_end, fmt, def->did, def->uid);
       }
     }
 
-    definition++;
+    def++;
   }
 
-  error->position = format_end;
+  err->position = format_end;
   // L10N: e.g. "Unknown expando: %Q"
-  snprintf(error->message, sizeof(error->message), _("Unknown expando: %%%.*s"),
+  snprintf(err->message, sizeof(err->message), _("Unknown expando: %%%.*s"),
            expando_len, format_end);
   FREE(&fmt);
   return NULL;
@@ -290,12 +288,12 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
  * @param did          Domain ID
  * @param uid          Unique ID
  * @param terminator   Terminating character
- * @param error        Buffer for errors
+ * @param err          Buffer for errors
  * @retval ptr New ExpandoNode
  */
 struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **parsed_until,
                                                  int did, int uid, char terminator,
-                                                 struct ExpandoParseError *error)
+                                                 struct ExpandoParseError *err)
 {
   const char *format_end = skip_until_classic_expando(str);
 
@@ -305,8 +303,8 @@ struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **p
 
   if (*expando_end != terminator)
   {
-    error->position = expando_end;
-    snprintf(error->message, sizeof(error->message),
+    err->position = expando_end;
+    snprintf(err->message, sizeof(err->message),
              // L10N: Expando is missing a terminator character
              //       e.g. "%[..." is missing the final ']'
              _("Expando is missing terminator: '%c'"), terminator);
@@ -314,8 +312,8 @@ struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **p
   }
 
   // revert skipping for fmt
-  struct ExpandoFormat *fmt = parse_format(str, format_end - 1, error);
-  if (error->position)
+  struct ExpandoFormat *fmt = parse_format(str, format_end - 1, err);
+  if (err->position)
   {
     FREE(&fmt);
     return NULL;

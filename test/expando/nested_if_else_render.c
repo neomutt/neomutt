@@ -62,7 +62,7 @@ static void nested_y(const struct ExpandoNode *node, void *data,
 void test_expando_nested_if_else_render(void)
 {
   const char *input = "%<x?%<y?XY&X>&%<y?Y&NONE>>";
-  struct ExpandoParseError error = { 0 };
+  struct ExpandoParseError err = { 0 };
   struct ExpandoNode *root = NULL;
 
   const struct ExpandoDefinition defs[] = {
@@ -71,42 +71,42 @@ void test_expando_nested_if_else_render(void)
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &error);
+  node_tree_parse(&root, input, defs, &err);
 
-  TEST_CHECK(error.position == NULL);
+  TEST_CHECK(err.position == NULL);
 
   struct ExpandoNode *node = get_nth_node(root, 0);
   check_node_cond(node);
 
-  struct ExpandoNode *condition = node_get_child(node, ENC_CONDITION);
-  struct ExpandoNode *if_true_tree = node_get_child(node, ENC_TRUE);
-  struct ExpandoNode *if_false_tree = node_get_child(node, ENC_FALSE);
+  struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
+  struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
+  struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-  check_node_condbool(condition, "x");
+  check_node_condbool(node_cond, "x");
 
-  struct ExpandoNode *t = if_true_tree;
+  struct ExpandoNode *t = node_true;
   check_node_cond(t);
 
-  struct ExpandoNode *f = if_false_tree;
+  struct ExpandoNode *f = node_false;
   check_node_cond(f);
 
-  condition = node_get_child(t, ENC_CONDITION);
-  if_true_tree = node_get_child(t, ENC_TRUE);
-  if_false_tree = node_get_child(t, ENC_FALSE);
+  node_cond = node_get_child(t, ENC_CONDITION);
+  node_true = node_get_child(t, ENC_TRUE);
+  node_false = node_get_child(t, ENC_FALSE);
 
-  check_node_condbool(condition, "y");
-  check_node_test(if_true_tree, "XY");
-  check_node_test(if_false_tree, "X");
+  check_node_condbool(node_cond, "y");
+  check_node_text(node_true, "XY");
+  check_node_text(node_false, "X");
 
-  condition = node_get_child(f, ENC_CONDITION);
-  if_true_tree = node_get_child(f, ENC_TRUE);
-  if_false_tree = node_get_child(f, ENC_FALSE);
+  node_cond = node_get_child(f, ENC_CONDITION);
+  node_true = node_get_child(f, ENC_TRUE);
+  node_false = node_get_child(f, ENC_FALSE);
 
-  check_node_condbool(condition, "y");
-  check_node_test(if_true_tree, "Y");
-  check_node_test(if_false_tree, "NONE");
+  check_node_condbool(node_cond, "y");
+  check_node_text(node_true, "Y");
+  check_node_text(node_false, "NONE");
 
-  const struct Expando expando = {
+  const struct Expando exp = {
     .string = input,
     .node = root,
   };
@@ -124,7 +124,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   struct Buffer *buf = buf_pool_get();
-  expando_render(&expando, render, &data_X, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(&exp, render, &data_X, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_X);
 
@@ -135,7 +135,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(&expando, render, &data_Y, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(&exp, render, &data_Y, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_Y);
 
@@ -146,7 +146,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(&expando, render, &data_XY, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(&exp, render, &data_XY, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_XY);
 
@@ -157,7 +157,7 @@ void test_expando_nested_if_else_render(void)
   };
 
   buf_reset(buf);
-  expando_render(&expando, render, &data_NONE, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(&exp, render, &data_NONE, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected_NONE);
 

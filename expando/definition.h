@@ -60,14 +60,15 @@ struct ExpandoDefinition
    * @defgroup expando_parse_api Expando Parse API
    *
    * parse - Custom function to parse a format string into a Node
-   * @param[in]     str          Format String to parse
-   * @param[in,out] parsed_until First character after the parsed string
-   * @param[in]     did          Domain ID of the data
-   * @param[in]     uid          Unique ID of the data
-   * @param[out]    error        Place for error message
+   * @param[in]  str          String to parse
+   * @param[in]  did          Domain ID of the data
+   * @param[in]  uid          Unique ID of the data
+   * @param[in]  flags        Flags, e.g. #EP_CONDITIONAL
+   * @param[out] parsed_until First character after the parsed string
+   * @param[out] err          Buffer for error message
    * @retval ptr Parsed Node
    */
-  struct ExpandoNode *(*parse)(const char *str, const char **parsed_until, int did, int uid, ExpandoParserFlags flags, struct ExpandoParseError *error);
+  struct ExpandoNode *(*parse)(const char *str, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
 };
 
 #endif /* MUTT_EXPANDO_DEFINITION_H */

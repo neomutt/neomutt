@@ -57,7 +57,7 @@ void check_node_empty(struct ExpandoNode *node)
   TEST_CHECK(node->type == ENT_EMPTY);
 }
 
-void check_node_test(struct ExpandoNode *node, const char *text)
+void check_node_text(struct ExpandoNode *node, const char *text)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_TEXT);
@@ -68,18 +68,18 @@ void check_node_test(struct ExpandoNode *node, const char *text)
   TEST_CHECK(mutt_strn_equal(node->start, text, n));
 }
 
-void check_node_expando(struct ExpandoNode *node, const char *expando,
+void check_node_expando(struct ExpandoNode *node, const char *exp,
                         const struct ExpandoFormat *fmt_expected)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_EXPANDO);
   TEST_CHECK(node->ndata != NULL);
 
-  const size_t n = mutt_str_len(expando);
+  const size_t n = mutt_str_len(exp);
   const size_t m = node->end - node->start;
 
   TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, expando, n));
+  TEST_CHECK(mutt_strn_equal(node->start, exp, n));
 
   struct ExpandoFormat *fmt = node->format;
 
@@ -119,17 +119,17 @@ void check_node_cond(struct ExpandoNode *node)
   TEST_CHECK(node->type == ENT_CONDITION);
 }
 
-void check_node_condbool(struct ExpandoNode *node, const char *expando)
+void check_node_condbool(struct ExpandoNode *node, const char *exp)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_CONDBOOL);
   TEST_CHECK(node->ndata == NULL);
 
-  const size_t n = mutt_str_len(expando);
+  const size_t n = mutt_str_len(exp);
   const size_t m = node->end - node->start;
 
   TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, expando, n));
+  TEST_CHECK(mutt_strn_equal(node->start, exp, n));
 
   struct ExpandoFormat *fmt = node->format;
   TEST_CHECK(fmt == NULL);
@@ -147,15 +147,15 @@ void check_node_conddate(struct ExpandoNode *node, int count, char period)
   TEST_CHECK(priv->period == period);
 }
 
-struct ExpandoNode *parse_date(const char *s, const char **parsed_until,
-                               int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_date(const char *str, int did, int uid,
+                               ExpandoParserFlags flags, const char **parsed_until,
                                struct ExpandoParseError *error)
 {
-  // s-1 is always something valid
-  if (*(s - 1) == '<')
+  // str-1 is always something valid
+  if (*(str - 1) == '<')
   {
-    return node_conddate_parse(s + 1, parsed_until, did, uid, error);
+    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
   }
 
-  return node_expando_parse_enclosure(s, parsed_until, did, uid, ']', error);
+  return node_expando_parse_enclosure(str, parsed_until, did, uid, ']', error);
 }
