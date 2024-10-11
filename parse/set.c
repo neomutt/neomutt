@@ -123,6 +123,11 @@ static enum CommandResult command_set_set(struct Buffer *name,
     }
   }
 
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
+  }
   int rc = CSR_ERR_CODE;
 
   if (DTYPE(he->type) == DT_MYVAR)
@@ -178,6 +183,12 @@ static enum CommandResult command_set_increment(struct Buffer *name,
     }
   }
 
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
+  }
+
   int rc = CSR_ERR_CODE;
 
   if (DTYPE(he->type) == DT_MYVAR)
@@ -220,6 +231,12 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
     return MUTT_CMD_ERROR;
   }
 
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
+  }
+
   command_set_expand_value(he->type, value);
   int rc = cs_subset_he_string_minus_equals(NeoMutt->sub, he, value->data, err);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
@@ -246,6 +263,12 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
   {
     buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   int rc = CSR_ERR_CODE;
@@ -306,6 +329,12 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
     return MUTT_CMD_ERROR;
   }
 
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
+  }
+
   int rc = CSR_ERR_CODE;
   if (DTYPE(he->type) == DT_MYVAR)
   {
@@ -339,6 +368,12 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
   {
     buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   if (DTYPE(he->type) == DT_BOOL)
@@ -400,6 +435,12 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   {
     buf_printf(err, _("Unknown option %s"), name->data);
     return MUTT_CMD_ERROR;
+  }
+
+  if (he->type & D_INTERNAL_DEPRECATED)
+  {
+    mutt_warning(_("Option %s is deprecated"), name->data);
+    return MUTT_CMD_SUCCESS;
   }
 
   buf_addstr(err, name->data);
