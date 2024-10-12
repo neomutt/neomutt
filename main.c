@@ -931,7 +931,7 @@ main
       else
       {
         rc = 1;
-        printf("%s\n", np->data); // TEST19: neomutt -A unknown
+        printf("%s\n", NONULL(np->data)); // TEST19: neomutt -A unknown
       }
     }
     mutt_list_free(&alias_queries);
