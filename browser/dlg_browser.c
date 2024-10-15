@@ -96,7 +96,7 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "nntp/lib.h"
-#include "functions.h"
+#include "functions.h" // <-- index/functions.h
 #include "globals.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
@@ -108,6 +108,8 @@
 
 const struct ExpandoRenderData FolderRenderData[];
 const struct ExpandoRenderData GroupIndexRenderData[];
+
+extern const struct MenuFuncOp OpBrowser[];
 
 /// Help Bar for the File/Dir/Mailbox browser dialog
 static const struct Mapping FolderHelp[] = {
@@ -1531,7 +1533,10 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     menu_tagging_dispatcher(priv->menu->win, op);
     window_redraw(NULL);
 
-    op = km_dokey(MENU_FOLDER, GETCH_NO_FLAGS);
+    void *hsmap[] = { &Keymaps[MENU_FOLDER], &Keymaps[MENU_GENERIC], 0 };
+    const void *hsfuncs[] = { OpBrowser, OpGeneric, 0 };
+    op = km_dokey2(hsmap, hsfuncs, GETCH_NO_FLAGS);
+    // op = km_dokey(MENU_FOLDER, GETCH_NO_FLAGS);
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
     if (op < 0)
       continue;
