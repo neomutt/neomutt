@@ -31,7 +31,8 @@
 #include "test_common.h"
 
 struct ExpandoFormat *parse_format(const char *start, const char *end,
-                                   struct ExpandoParseError *error);
+                                   struct ExpandoParseError *err);
+void node_container_collapse(struct ExpandoNode **ptr);
 
 void test_one(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               struct Buffer *buf)

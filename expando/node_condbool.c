@@ -63,9 +63,9 @@ struct ExpandoNode *node_condbool_new(const char *start, const char *end, int di
 /**
  * node_condbool_parse - Parse a CondBool format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  */
-struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_until,
+struct ExpandoNode *node_condbool_parse(const char *str,
                                         const struct ExpandoDefinition *defs,
-                                        ExpandoParserFlags flags,
+                                        ExpandoParserFlags flags, const char **parsed_until,
                                         struct ExpandoParseError *err)
 {
   const struct ExpandoDefinition *def = defs;

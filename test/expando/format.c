@@ -32,7 +32,7 @@
 #include "common.h" // IWYU pragma: keep
 
 struct ExpandoFormat *parse_format(const char *start, const char *end,
-                                   struct ExpandoParseError *error);
+                                   struct ExpandoParseError *err);
 
 struct TestCase
 {
@@ -66,7 +66,7 @@ void test_expando_node_expando_format(void)
     // clang-format on
   };
 
-  // struct ExpandoFormat *parse_format(const char *start, const char *end, struct ExpandoParseError *error);
+  // struct ExpandoFormat *parse_format(const char *start, const char *end, struct ExpandoParseError *err);
   {
     struct ExpandoParseError err = { 0 };
 

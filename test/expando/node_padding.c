@@ -137,7 +137,7 @@ void test_expando_node_padding(void)
     buf_pool_release(&buf);
   }
 
-  // struct ExpandoNode *node_padding_parse(const char *str, const char **parsed_until, int did, int uid, ExpandoParserFlags flags, struct ExpandoParseError *error);
+  // struct ExpandoNode *node_padding_parse(const char *str, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
   {
     struct ExpandoParseError err = { 0 };
     const char *str = NULL;

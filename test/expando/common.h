@@ -33,7 +33,6 @@ void check_node_expando (struct ExpandoNode *node, const char *exp, const struct
 void check_node_padding (struct ExpandoNode *node, const char *pad_char, enum ExpandoPadType pad_type);
 void check_node_text    (struct ExpandoNode *node, const char *text);
 
-struct ExpandoNode *get_nth_node(struct ExpandoNode *node, int n);
-struct ExpandoNode *parse_date(const char *str, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *error);
+struct ExpandoNode *parse_date(const char *str, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
 
 #endif /* TEST_EXPANDO_COMMON_H */

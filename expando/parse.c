@@ -265,11 +265,11 @@ struct ExpandoNode *node_parse(const char *str, const char *end,
         struct ExpandoNode *node = NULL;
         if (flags & EP_CONDITIONAL)
         {
-          node = node_condbool_parse(str, parsed_until, defs, flags, err);
+          node = node_condbool_parse(str, defs, flags, parsed_until, err);
         }
         else
         {
-          node = node_expando_parse(str, parsed_until, defs, flags, err);
+          node = node_expando_parse(str, defs, flags, parsed_until, err);
         }
 
         if (!node || err->position)

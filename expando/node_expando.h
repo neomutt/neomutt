@@ -47,9 +47,9 @@ struct ExpandoNode *node_expando_new(const char *start, const char *end, struct 
 void node_expando_set_color   (const struct ExpandoNode *node, int cid);
 void node_expando_set_has_tree(const struct ExpandoNode *node, bool has_tree);
 
-struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_until, const struct ExpandoDefinition *defs, ExpandoParserFlags flags, struct ExpandoParseError *err);
+struct ExpandoNode *node_expando_parse(const char *str, const struct ExpandoDefinition *defs, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
 int node_expando_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
 
-struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **parsed_until, int did, int uid, char terminator, struct ExpandoParseError *err);
+struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int uid, char terminator, const char **parsed_until, struct ExpandoParseError *err);
 
 #endif /* MUTT_EXPANDO_NODE_EXPANDO_H */

@@ -228,15 +228,14 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
 /**
  * node_expando_parse - Parse an Expando format string
  * @param[in]  str          String to parse
- * @param[out] parsed_until First character after parsed string
  * @param[in]  defs         Expando definitions
  * @param[in]  flags        Flag for conditional expandos
+ * @param[out] parsed_until First character after parsed string
  * @param[out] err          Buffer for errors
  * @retval ptr New ExpandoNode
  */
-struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_until,
-                                       const struct ExpandoDefinition *defs,
-                                       ExpandoParserFlags flags,
+struct ExpandoNode *node_expando_parse(const char *str, const struct ExpandoDefinition *defs,
+                                       ExpandoParserFlags flags, const char **parsed_until,
                                        struct ExpandoParseError *err)
 {
   const struct ExpandoDefinition *def = defs;
@@ -284,15 +283,15 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
 /**
  * node_expando_parse_enclosure - Parse an enclosed Expando
  * @param str          String to parse
- * @param parsed_until First character after the parsed string
  * @param did          Domain ID
  * @param uid          Unique ID
  * @param terminator   Terminating character
+ * @param parsed_until First character after the parsed string
  * @param err          Buffer for errors
  * @retval ptr New ExpandoNode
  */
-struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **parsed_until,
-                                                 int did, int uid, char terminator,
+struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int uid,
+                                                 char terminator, const char **parsed_until,
                                                  struct ExpandoParseError *err)
 {
   const char *format_end = skip_until_classic_expando(str);

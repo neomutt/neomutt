@@ -145,8 +145,9 @@ struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid)
 /**
  * node_conddate_parse - Parse a CondDate format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  */
-struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_until,
-                                        int did, int uid, struct ExpandoParseError *err)
+struct ExpandoNode *node_conddate_parse(const char *str, int did, int uid,
+                                        const char **parsed_until,
+                                        struct ExpandoParseError *err)
 {
   int count = 1;
   char period = '\0';
