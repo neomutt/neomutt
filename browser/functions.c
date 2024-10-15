@@ -602,7 +602,7 @@ static int op_exit(struct BrowserPrivateData *priv, int op)
     if (priv->menu->num_tagged)
     {
       *priv->numfiles = priv->menu->num_tagged;
-      tfiles = mutt_mem_calloc(*priv->numfiles, sizeof(char *));
+      tfiles = MUTT_MEM_CALLOC(*priv->numfiles, char *);
       size_t j = 0;
       struct FolderFile *ff = NULL;
       ARRAY_FOREACH(ff, &priv->state.entry)
@@ -621,7 +621,7 @@ static int op_exit(struct BrowserPrivateData *priv, int op)
     else if (!buf_is_empty(priv->file)) /* no tagged entries. return selected entry */
     {
       *priv->numfiles = 1;
-      tfiles = mutt_mem_calloc(*priv->numfiles, sizeof(char *));
+      tfiles = MUTT_MEM_CALLOC(*priv->numfiles, char *);
       buf_expand_path(priv->file);
       tfiles[0] = buf_strdup(priv->file);
       *priv->files = tfiles;

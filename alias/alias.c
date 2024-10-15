@@ -659,7 +659,7 @@ bool mutt_addr_is_user(const struct Address *addr)
  */
 struct Alias *alias_new(void)
 {
-  struct Alias *a = mutt_mem_calloc(1, sizeof(struct Alias));
+  struct Alias *a = MUTT_MEM_CALLOC(1, struct Alias);
   TAILQ_INIT(&a->addr);
   STAILQ_INIT(&a->tags);
   return a;

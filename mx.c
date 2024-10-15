@@ -1224,13 +1224,13 @@ void mx_alloc_memory(struct Mailbox *m, int req_size)
 
   if (m->emails)
   {
-    mutt_mem_realloc(&m->emails, req_size * sizeof(struct Email *));
-    mutt_mem_realloc(&m->v2r, req_size * sizeof(int));
+    MUTT_MEM_REALLOC(&m->emails, req_size, struct Email *);
+    MUTT_MEM_REALLOC(&m->v2r, req_size, int);
   }
   else
   {
-    m->emails = mutt_mem_calloc(req_size, sizeof(struct Email *));
-    m->v2r = mutt_mem_calloc(req_size, sizeof(int));
+    m->emails = MUTT_MEM_CALLOC(req_size, struct Email *);
+    m->v2r = MUTT_MEM_CALLOC(req_size, int);
   }
 
   for (int i = m->email_max; i < req_size; i++)

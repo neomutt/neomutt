@@ -45,7 +45,7 @@
  */
 struct Envelope *mutt_env_new(void)
 {
-  struct Envelope *env = mutt_mem_calloc(1, sizeof(struct Envelope));
+  struct Envelope *env = MUTT_MEM_CALLOC(1, struct Envelope);
   TAILQ_INIT(&env->return_path);
   TAILQ_INIT(&env->from);
   TAILQ_INIT(&env->to);
@@ -94,7 +94,7 @@ void mutt_env_set_subject(struct Envelope *env, const char *subj)
  */
 struct AutocryptHeader *mutt_autocrypthdr_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptHeader));
+  return MUTT_MEM_CALLOC(1, struct AutocryptHeader);
 }
 
 /**

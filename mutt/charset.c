@@ -268,7 +268,7 @@ static const struct MimeNames PreferredMimeNames[] = {
  */
 static struct Lookup *lookup_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct Lookup));
+  return MUTT_MEM_CALLOC(1, struct Lookup);
 }
 
 /**
@@ -344,7 +344,7 @@ int mutt_ch_convert_nonmime_string(const struct Slist *const assumed_charset,
   {
     char const *c = np->data;
     size_t n = mutt_str_len(c);
-    char *fromcode = mutt_mem_malloc(n + 1);
+    char *fromcode = MUTT_MEM_MALLOC(n + 1, char);
     mutt_str_copy(fromcode, c, n + 1);
     char *s = mutt_strn_dup(u, ulen);
     int m = mutt_ch_convert_string(&s, fromcode, charset, MUTT_ICONV_NO_FLAGS);
@@ -512,7 +512,7 @@ bool mutt_ch_lookup_add(enum LookupType type, const char *pat,
   if (!pat || !replace)
     return false;
 
-  regex_t *rx = mutt_mem_calloc(1, sizeof(regex_t));
+  regex_t *rx = MUTT_MEM_CALLOC(1, regex_t);
   int rc = REG_COMP(rx, pat, REG_ICASE);
   if (rc != 0)
   {
@@ -804,7 +804,7 @@ int mutt_ch_check(const char *s, size_t slen, const char *from, const char *to)
     return -1;
 
   size_t outlen = MB_LEN_MAX * slen;
-  char *out = mutt_mem_malloc(outlen + 1);
+  char *out = MUTT_MEM_MALLOC(outlen + 1, char);
   char *saved_out = out;
 
   const size_t convlen = iconv(cd, (ICONV_CONST char **) &s, &slen, &out, &outlen);
@@ -865,7 +865,7 @@ int mutt_ch_convert_string(char **ps, const char *from, const char *to, uint8_t 
     return -1;
   }
   size_t obl = MB_LEN_MAX * ibl;
-  char *buf = mutt_mem_malloc(obl + 1);
+  char *buf = MUTT_MEM_MALLOC(obl + 1, char);
   char *ob = buf;
 
   mutt_ch_iconv(cd, &ib, &ibl, &ob, &obl, inrepls, outrepl, &rc);
@@ -932,29 +932,26 @@ bool mutt_ch_check_charset(const char *cs, bool strict)
  */
 struct FgetConv *mutt_ch_fgetconv_open(FILE *fp, const char *from, const char *to, uint8_t flags)
 {
-  struct FgetConv *fc = NULL;
   iconv_t cd = ICONV_T_INVALID;
 
   if (from && to)
     cd = mutt_ch_iconv_open(to, from, flags);
 
+  struct FgetConv *fc = MUTT_MEM_CALLOC(1, struct FgetConv);
+  fc->fp = fp;
+  fc->cd = cd;
+
   if (iconv_t_valid(cd))
   {
     static const char *repls[] = { "\357\277\275", "?", 0 };
 
-    fc = mutt_mem_malloc(sizeof(struct FgetConv));
     fc->p = fc->bufo;
     fc->ob = fc->bufo;
     fc->ib = fc->bufi;
     fc->ibl = 0;
     fc->inrepls = mutt_ch_is_utf8(to) ? repls : repls + 1;
   }
-  else
-  {
-    fc = mutt_mem_malloc(sizeof(struct FgetConvNot));
-  }
-  fc->fp = fp;
-  fc->cd = cd;
+
   return fc;
 }
 

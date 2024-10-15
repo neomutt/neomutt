@@ -520,7 +520,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
   if (rc < 0)
     return rc;
 
-  char *inbuf = mutt_mem_malloc(sizeof(buf));
+  char *inbuf = MUTT_MEM_MALLOC(sizeof(buf), char);
 
   while (true)
   {
@@ -556,7 +556,7 @@ int pop_fetch_data(struct PopAccountData *adata, const char *query,
       lenbuf = 0;
     }
 
-    mutt_mem_realloc(&inbuf, lenbuf + sizeof(buf));
+    MUTT_MEM_REALLOC(&inbuf, lenbuf + sizeof(buf), char);
   }
 
   FREE(&inbuf);

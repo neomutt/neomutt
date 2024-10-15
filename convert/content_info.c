@@ -222,7 +222,7 @@ struct Content *mutt_get_content_info(const char *fname, struct Body *b,
     return NULL;
   }
 
-  info = mutt_mem_calloc(1, sizeof(struct Content));
+  info = MUTT_MEM_CALLOC(1, struct Content);
 
   const char *const c_charset = cc_charset();
   if (b && (b->type == TYPE_TEXT) && (!b->noconv && !b->force_charset))

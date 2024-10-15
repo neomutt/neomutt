@@ -81,7 +81,7 @@ struct HashElem **get_elem_list(struct ConfigSet *cs)
   if (!cs)
     return NULL;
 
-  struct HashElem **he_list = mutt_mem_calloc(1024, sizeof(struct HashElem *));
+  struct HashElem **he_list = MUTT_MEM_CALLOC(1024, struct HashElem *);
   size_t index = 0;
 
   struct HashWalkState walk = { 0 };
@@ -152,7 +152,7 @@ void cs_subset_free(struct ConfigSubset **ptr)
 struct ConfigSubset *cs_subset_new(const char *name, struct ConfigSubset *sub_parent,
                                    struct Notify *not_parent)
 {
-  struct ConfigSubset *sub = mutt_mem_calloc(1, sizeof(*sub));
+  struct ConfigSubset *sub = MUTT_MEM_CALLOC(1, struct ConfigSubset);
 
   if (sub_parent)
   {

@@ -120,11 +120,11 @@ static int cmp_key_int(union HashKey a, union HashKey b)
  */
 static struct HashTable *hash_new(size_t num_elems)
 {
-  struct HashTable *table = mutt_mem_calloc(1, sizeof(struct HashTable));
+  struct HashTable *table = MUTT_MEM_CALLOC(1, struct HashTable);
   if (num_elems == 0)
     num_elems = 2;
   table->num_elems = num_elems;
-  table->table = mutt_mem_calloc(num_elems, sizeof(struct HashElem *));
+  table->table = MUTT_MEM_CALLOC(num_elems, struct HashElem *);
   return table;
 }
 
@@ -142,7 +142,7 @@ static struct HashElem *union_hash_insert(struct HashTable *table,
   if (!table)
     return NULL; // LCOV_EXCL_LINE
 
-  struct HashElem *he = mutt_mem_calloc(1, sizeof(struct HashElem));
+  struct HashElem *he = MUTT_MEM_CALLOC(1, struct HashElem);
   size_t hash = table->gen_hash(key, table->num_elems);
   he->key = key;
   he->data = data;
