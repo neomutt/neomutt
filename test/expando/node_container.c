@@ -30,8 +30,10 @@
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
 
+void expando_serialise(const struct Expando *exp, struct Buffer *buf);
 struct ExpandoFormat *parse_format(const char *start, const char *end,
                                    struct ExpandoParseError *error);
+void node_container_collapse(struct ExpandoNode **ptr);
 
 void test_one(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               int max_cols, struct Buffer *buf)
@@ -62,14 +64,16 @@ void test_three(const struct ExpandoNode *node, void *data,
 
 struct ExpandoNode *make_children(char ch)
 {
+  struct ExpandoNode *cont = node_container_new();
   struct ExpandoNode *n1 = node_expando_new(NULL, NULL, NULL, (ch - 'a' + 1) * 10, 1);
   struct ExpandoNode *n2 = node_expando_new(NULL, NULL, NULL, (ch - 'a' + 1) * 10, 2);
   struct ExpandoNode *n3 = node_expando_new(NULL, NULL, NULL, (ch - 'a' + 1) * 10, 3);
 
-  n1->next = n2;
-  n2->next = n3;
+  node_add_child(cont, n1);
+  node_add_child(cont, n2);
+  node_add_child(cont, n3);
 
-  return n1;
+  return cont;
 }
 
 void test_expando_node_container(void)
@@ -147,5 +151,91 @@ void test_expando_node_container(void)
 
     node_free(&cont);
     buf_pool_release(&buf);
+  }
+
+  // void node_container_collapse(struct ExpandoNode **ptr);
+  {
+    struct ExpandoNode *node = NULL;
+    node_container_collapse(NULL);
+    node_container_collapse(&node);
+
+    node = node_new();
+    node->type = ENT_EXPANDO;
+    node_container_collapse(&node);
+    node_free(&node);
+  }
+
+  {
+    struct ExpandoNode *cont = node_container_new();
+    node_container_collapse(&cont);
+    TEST_CHECK(cont == NULL);
+  }
+
+  {
+    struct ExpandoNode *cont = node_container_new();
+    struct ExpandoNode *child = node_new();
+    node_add_child(cont, child);
+    node_container_collapse(&cont);
+    TEST_CHECK(cont == child);
+    node_free(&cont);
+  }
+
+  {
+    struct ExpandoNode *cont = node_container_new();
+    node_add_child(cont, node_new());
+    node_add_child(cont, node_new());
+    node_add_child(cont, node_new());
+    node_container_collapse(&cont);
+    TEST_CHECK(cont != NULL);
+    node_free(&cont);
+  }
+
+  // void node_container_collapse_all(struct ExpandoNode **ptr);
+  {
+    struct ExpandoNode *node = NULL;
+    node_container_collapse_all(NULL);
+    node_container_collapse_all(&node);
+
+    node = node_new();
+    node_container_collapse_all(&node);
+    node_free(&node);
+  }
+
+  {
+    const char *str = "a";
+    struct Expando exp = { 0 };
+    struct ExpandoNode *cont1 = node_container_new();
+    struct ExpandoNode *cont2 = node_container_new();
+    struct ExpandoNode *cont3 = node_container_new();
+    struct ExpandoNode *node = node_expando_new(str, str + 1, NULL, ED_EMAIL, 1);
+    struct Buffer *buf = buf_pool_get();
+
+    node_add_child(cont1, cont2);
+    node_add_child(cont2, cont3);
+    node_add_child(cont3, node);
+
+    node_container_collapse_all(&cont1);
+    TEST_CHECK(cont1 == node);
+
+    exp.node = cont1;
+    expando_serialise(&exp, buf);
+    TEST_CHECK_STR_EQ(buf_string(buf), "<EXP:'a'(EMAIL,ATTACHMENT_COUNT)>");
+    node_free(&cont1);
+
+    buf_pool_release(&buf);
+  }
+
+  {
+    struct ExpandoNode *cont1 = node_container_new();
+    struct ExpandoNode *cont2 = node_container_new();
+    struct ExpandoNode *cont3 = node_container_new();
+    struct ExpandoNode *cont4 = node_container_new();
+
+    node_add_child(cont1, cont2);
+    node_add_child(cont1, cont3);
+    node_add_child(cont1, cont4);
+
+    node_container_collapse_all(&cont1);
+    TEST_CHECK(cont1 == NULL);
   }
 }

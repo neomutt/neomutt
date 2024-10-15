@@ -36,35 +36,21 @@ void test_expando_node(void)
     struct ExpandoNode *node = node_new();
     node_free(&node);
     node_free(NULL);
+
+    node_add_child(NULL, NULL);
   }
 
-  // void node_tree_free(struct ExpandoNode **ptr);
+  // void node_free(struct ExpandoNode **ptr);
   {
     struct ExpandoNode *first = node_new();
-    struct ExpandoNode *last = first;
 
     for (int i = 0; i < 5; i++)
     {
       struct ExpandoNode *node = node_new();
-      last->next = node;
-      last = node;
+      node_add_child(first, node);
     }
 
-    node_tree_free(&first);
-  }
-
-  // void node_append(struct ExpandoNode **root, struct ExpandoNode *new_node);
-  {
-    struct ExpandoNode *first = NULL;
-
-    for (int i = 0; i < 5; i++)
-    {
-      struct ExpandoNode *node = node_new();
-      node_append(&first, node);
-      TEST_CHECK(first != NULL);
-    }
-
-    node_tree_free(&first);
+    node_free(&first);
   }
 
   // struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index);
@@ -89,8 +75,8 @@ void test_expando_node(void)
     TEST_CHECK(node_get_child(node, 5) == NULL);
 
     TEST_CHECK(node_get_child(NULL, 0) == NULL);
-    TEST_CHECK(node_get_child(NULL, -1) == NULL);
-    TEST_CHECK(node_get_child(NULL, 10) == NULL);
+    TEST_CHECK(node_get_child(node, -1) == NULL);
+    TEST_CHECK(node_get_child(node, 10) == NULL);
 
     node_free(&node);
   }
@@ -101,23 +87,26 @@ void test_expando_node(void)
     struct ExpandoNode *child0 = node_new();
     struct ExpandoNode *child1 = node_new();
     struct ExpandoNode *child2 = node_new();
-    struct ExpandoNode *next0 = node_new();
-    struct ExpandoNode *next1 = node_new();
-    struct ExpandoNode *next2 = node_new();
-    struct ExpandoNode *n2child0 = node_new();
-    struct ExpandoNode *n2child1 = node_new();
-    struct ExpandoNode *n2child2 = node_new();
 
-    ARRAY_SET(&root->children, 0, child0);
-    ARRAY_SET(&root->children, 1, child1);
-    ARRAY_SET(&root->children, 2, child2);
-    root->next = next0;
-    next0->next = next1;
-    next1->next = next2;
+    node_add_child(root, child0);
+    node_add_child(root, child1);
+    node_add_child(root, child2);
 
-    ARRAY_SET(&next2->children, 0, n2child0);
-    ARRAY_SET(&next2->children, 1, n2child1);
-    ARRAY_SET(&next2->children, 2, n2child2);
+    struct ExpandoNode *child00 = node_new();
+    struct ExpandoNode *child01 = node_new();
+    struct ExpandoNode *child02 = node_new();
+
+    node_add_child(child0, child00);
+    node_add_child(child0, child01);
+    node_add_child(child0, child02);
+
+    struct ExpandoNode *child20 = node_new();
+    struct ExpandoNode *child21 = node_new();
+    struct ExpandoNode *child22 = node_new();
+
+    node_add_child(child2, child20);
+    node_add_child(child2, child21);
+    node_add_child(child2, child22);
 
     struct ExpandoNode *node = NULL;
 
@@ -125,8 +114,8 @@ void test_expando_node(void)
     TEST_CHECK(node == NULL);
 
     node = node_last(root);
-    TEST_CHECK(node == n2child2);
+    TEST_CHECK(node == child22);
 
-    node_tree_free(&root);
+    node_free(&root);
   }
 }

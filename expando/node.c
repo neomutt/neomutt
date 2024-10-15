@@ -51,42 +51,33 @@ void node_free(struct ExpandoNode **ptr)
     return;
 
   struct ExpandoNode *node = *ptr;
-  if (node->ndata_free)
-  {
-    node->ndata_free(&node->ndata);
-  }
 
   struct ExpandoNode **enp = NULL;
   ARRAY_FOREACH(enp, &node->children)
   {
-    node_tree_free(enp);
+    node_free(enp);
   }
+  ARRAY_FREE(&node->children);
+
+  if (node->ndata_free)
+    node->ndata_free(&node->ndata);
 
   FREE(&node->format);
-
-  ARRAY_FREE(&node->children);
 
   FREE(ptr);
 }
 
 /**
- * node_tree_free - Free a tree of ExpandoNodes
- * @param ptr Root of tree to free
+ * node_add_child - Add a child to an ExpandoNode
+ * @param node  Parent node
+ * @param child Child node
  */
-void node_tree_free(struct ExpandoNode **ptr)
+void node_add_child(struct ExpandoNode *node, struct ExpandoNode *child)
 {
-  if (!ptr || !*ptr)
+  if (!node)
     return;
 
-  struct ExpandoNode *node = *ptr;
-  while (node)
-  {
-    struct ExpandoNode *n = node;
-    node = node->next;
-    node_free(&n);
-  }
-
-  *ptr = NULL;
+  ARRAY_ADD(&node->children, child);
 }
 
 /**
@@ -109,28 +100,6 @@ struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index)
 }
 
 /**
- * node_append - Append an ExpandoNode to an existing node
- * @param[in,out] root     Existing node (may be NULL)
- * @param[in]     new_node Node to add
- */
-void node_append(struct ExpandoNode **root, struct ExpandoNode *new_node)
-{
-  if (!*root)
-  {
-    *root = new_node;
-    return;
-  }
-
-  struct ExpandoNode *node = *root;
-  while (node->next)
-  {
-    node = node->next;
-  }
-
-  node->next = new_node;
-}
-
-/**
  * node_last - Find the last Node in a tree
  * @param node Root Node
  * @retval ptr Last Node
@@ -140,23 +109,10 @@ struct ExpandoNode *node_last(struct ExpandoNode *node)
   if (!node)
     return NULL;
 
-  while (true)
+  struct ExpandoNode **np = NULL;
+  while ((np = ARRAY_LAST(&node->children)) && *np)
   {
-    if (node->next)
-    {
-      node = node->next;
-      continue;
-    }
-
-    size_t size = ARRAY_SIZE(&node->children);
-    if (size == 0)
-      break;
-
-    struct ExpandoNode *last = node_get_child(node, size - 1);
-    if (!last)
-      break; // LCOV_EXCL_LINE
-
-    node = last;
+    node = *np;
   }
 
   return node;

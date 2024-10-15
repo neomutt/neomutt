@@ -62,35 +62,26 @@ static void cond_date(const struct ExpandoNode *node, void *data,
 
 void test_expando_conditional_date_render2(void)
 {
-  struct ExpandoParseError err = { 0 };
-
   const char *input = "%<[1m?%[%d-%m-%Y]&%[%Y-%m-%d]>";
-
-  struct ExpandoNode *root = NULL;
 
   const struct ExpandoDefinition defs[] = {
     { "[", NULL, 1, 2, 0, parse_date },
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &err);
-  TEST_CHECK(err.position == NULL);
+  struct Buffer *err = buf_pool_get();
 
-  struct ExpandoNode *node = get_nth_node(root, 0);
-  check_node_cond(node);
+  struct Expando *exp = expando_parse(input, defs, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
 
-  struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
-  struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
-  struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
+  struct ExpandoNode *node_cond = node_get_child(exp->node, ENC_CONDITION);
+  struct ExpandoNode *node_true = node_get_child(exp->node, ENC_TRUE);
+  struct ExpandoNode *node_false = node_get_child(exp->node, ENC_FALSE);
 
   check_node_conddate(node_cond, 1, 'm');
   check_node_expando(node_true, "%d-%m-%Y", NULL);
   check_node_expando(node_false, "%Y-%m-%d", NULL);
-
-  const struct Expando exp = {
-    .string = input,
-    .node = root,
-  };
 
   const struct ExpandoRenderData render[] = {
     { 1, 2, cond_date, cond_date_num },
@@ -107,7 +98,7 @@ void test_expando_conditional_date_render2(void)
     strftime(expected, sizeof(expected), "%d-%m-%Y", &tm);
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     buf_pool_release(&buf);
@@ -123,11 +114,12 @@ void test_expando_conditional_date_render2(void)
     strftime(expected, sizeof(expected), "%Y-%m-%d", &tm);
 
     struct Buffer *buf = buf_pool_get();
-    expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
     buf_pool_release(&buf);
   }
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
 }

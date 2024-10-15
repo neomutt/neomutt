@@ -172,35 +172,35 @@ void test_expando_node_padding(void)
   {
     static const char *TestStrings[][2] = {
       // clang-format off
-      { "",                     "<EMPTY>" },
+      { "",                     "" },
       { "%a",                   "<EXP:'a'(ALIAS,ADDRESS)>" },
-      { "%a%b",                 "<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>" },
+      { "%a%b",                 "<CONT:<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>>" },
 
       { "%|X",                  "<PAD:FILL_EOL:'X':|>" },
       { "%a%|X",                "<PAD:FILL_EOL:'X':<EXP:'a'(ALIAS,ADDRESS)>|>" },
-      { "%a%b%|X",              "<PAD:FILL_EOL:'X':<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>|>" },
+      { "%a%b%|X",              "<PAD:FILL_EOL:'X':<CONT:<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>>|>" },
       { "%|X%c",                "<PAD:FILL_EOL:'X':|<EXP:'c'(ALIAS,FLAGS)>>" },
-      { "%|X%c%d",              "<PAD:FILL_EOL:'X':|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
+      { "%|X%c%d",              "<PAD:FILL_EOL:'X':|<CONT:<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>>" },
       { "%a%|X%c",              "<PAD:FILL_EOL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'c'(ALIAS,FLAGS)>>" },
-      { "%a%b%|X%c%d",          "<PAD:FILL_EOL:'X':<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
+      { "%a%b%|X%c%d",          "<PAD:FILL_EOL:'X':<CONT:<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>>|<CONT:<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>>" },
       { "%<a?%a%|X%b&%c%|X%d>", "<COND:<BOOL:'a':(ALIAS,ADDRESS)>|<PAD:FILL_EOL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'b'(ALIAS,COMMENT)>>|<PAD:FILL_EOL:'X':<EXP:'c'(ALIAS,FLAGS)>|<EXP:'d'(ALIAS,NAME)>>>" },
 
       { "%>X",                  "<PAD:HARD_FILL:'X':|>" },
       { "%a%>X",                "<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|>" },
-      { "%a%b%>X",              "<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>|>" },
+      { "%a%b%>X",              "<PAD:HARD_FILL:'X':<CONT:<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>>|>" },
       { "%>X%c",                "<PAD:HARD_FILL:'X':|<EXP:'c'(ALIAS,FLAGS)>>" },
-      { "%>X%c%d",              "<PAD:HARD_FILL:'X':|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
+      { "%>X%c%d",              "<PAD:HARD_FILL:'X':|<CONT:<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>>" },
       { "%a%>X%c",              "<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'c'(ALIAS,FLAGS)>>" },
-      { "%a%b%>X%c%d",          "<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
+      { "%a%b%>X%c%d",          "<PAD:HARD_FILL:'X':<CONT:<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>>|<CONT:<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>>" },
       { "%<a?%a%>X%b&%c%>X%d>", "<COND:<BOOL:'a':(ALIAS,ADDRESS)>|<PAD:HARD_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'b'(ALIAS,COMMENT)>>|<PAD:HARD_FILL:'X':<EXP:'c'(ALIAS,FLAGS)>|<EXP:'d'(ALIAS,NAME)>>>" },
 
       { "%*X",                  "<PAD:SOFT_FILL:'X':|>" },
       { "%a%*X",                "<PAD:SOFT_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|>" },
-      { "%a%b%*X",              "<PAD:SOFT_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>|>" },
+      { "%a%b%*X",              "<PAD:SOFT_FILL:'X':<CONT:<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>>|>" },
       { "%*X%c",                "<PAD:SOFT_FILL:'X':|<EXP:'c'(ALIAS,FLAGS)>>" },
-      { "%*X%c%d",              "<PAD:SOFT_FILL:'X':|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
+      { "%*X%c%d",              "<PAD:SOFT_FILL:'X':|<CONT:<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>>" },
       { "%a%*X%c",              "<PAD:SOFT_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'c'(ALIAS,FLAGS)>>" },
-      { "%a%b%*X%c%d",          "<PAD:SOFT_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>|<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>" },
+      { "%a%b%*X%c%d",          "<PAD:SOFT_FILL:'X':<CONT:<EXP:'a'(ALIAS,ADDRESS)><EXP:'b'(ALIAS,COMMENT)>>|<CONT:<EXP:'c'(ALIAS,FLAGS)><EXP:'d'(ALIAS,NAME)>>>" },
       { "%<a?%a%*X%b&%c%*X%d>", "<COND:<BOOL:'a':(ALIAS,ADDRESS)>|<PAD:SOFT_FILL:'X':<EXP:'a'(ALIAS,ADDRESS)>|<EXP:'b'(ALIAS,COMMENT)>>|<PAD:SOFT_FILL:'X':<EXP:'c'(ALIAS,FLAGS)>|<EXP:'d'(ALIAS,NAME)>>>" },
       // clang-format off
     };
@@ -221,6 +221,7 @@ void test_expando_node_padding(void)
       TEST_CASE(format);
 
       exp = expando_parse(format, TestFormatDef, err);
+
       TEST_CHECK(buf_is_empty(err));
       TEST_MSG(buf_string(err));
       expando_serialise(exp, buf);
@@ -459,6 +460,4 @@ void test_expando_node_padding(void)
     buf_pool_release(&buf);
     buf_pool_release(&err);
   }
-
 }
-

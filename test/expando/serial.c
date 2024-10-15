@@ -112,6 +112,22 @@ static void dump_node_conddate(const struct ExpandoNode *node, struct Buffer *bu
   buf_addstr(buf, ">");
 }
 
+static void dump_node_container(const struct ExpandoNode *node, struct Buffer *buf)
+{
+  buf_addstr(buf, "<CONT:");
+
+  struct ExpandoNode **np = NULL;
+  ARRAY_FOREACH(np, &node->children)
+  {
+    if (!np || !*np)
+      continue;
+
+    dump_node(*np, buf);
+  }
+
+  buf_addstr(buf, ">");
+}
+
 static void dump_node_empty(const struct ExpandoNode *node, struct Buffer *buf)
 {
   buf_addstr(buf, "<EMPTY");
@@ -233,34 +249,34 @@ static void dump_node(const struct ExpandoNode *node, struct Buffer *buf)
   if (!node || !buf)
     return;
 
-  for (; node; node = node->next)
+  switch (node->type)
   {
-    switch (node->type)
-    {
-      case ENT_CONDITION:
-        dump_node_condition(node, buf);
-        break;
-      case ENT_CONDBOOL:
-        dump_node_condbool(node, buf);
-        break;
-      case ENT_CONDDATE:
-        dump_node_conddate(node, buf);
-        break;
-      case ENT_EMPTY:
-        dump_node_empty(node, buf);
-        break;
-      case ENT_EXPANDO:
-        dump_node_expando(node, buf);
-        break;
-      case ENT_PADDING:
-        dump_node_padding(node, buf);
-        break;
-      case ENT_TEXT:
-        dump_node_text(node, buf);
-        break;
-      default:
-        ASSERT(false);
-    }
+    case ENT_CONDITION:
+      dump_node_condition(node, buf);
+      break;
+    case ENT_CONDBOOL:
+      dump_node_condbool(node, buf);
+      break;
+    case ENT_CONDDATE:
+      dump_node_conddate(node, buf);
+      break;
+    case ENT_CONTAINER:
+      dump_node_container(node, buf);
+      break;
+    case ENT_EMPTY:
+      dump_node_empty(node, buf);
+      break;
+    case ENT_EXPANDO:
+      dump_node_expando(node, buf);
+      break;
+    case ENT_PADDING:
+      dump_node_padding(node, buf);
+      break;
+    case ENT_TEXT:
+      dump_node_text(node, buf);
+      break;
+    default:
+      ASSERT(false);
   }
 }
 
