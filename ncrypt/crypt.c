@@ -1209,6 +1209,12 @@ int mutt_protected_headers_handler(struct Body *b_email, struct State *state)
 
   if (c_devel_security)
   {
+    if (b_email->mime_headers->message_id &&
+        (!display || !c_weed || !mutt_matches_ignore("message-id")))
+    {
+      mutt_write_one_header(state->fp_out, "Message-ID", b_email->mime_headers->message_id,
+                            state->prefix, wraplen, chflags, NeoMutt->sub);
+    }
     if (!weed || !mutt_matches_ignore("references"))
     {
       buf_reset(buf);
