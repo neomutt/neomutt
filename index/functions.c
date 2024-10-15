@@ -2114,7 +2114,7 @@ static int op_quit(struct IndexSharedData *shared, struct IndexPrivateData *priv
   {
     priv->oldcount = shared->mailbox ? shared->mailbox->msg_count : 0;
 
-    mutt_startup_shutdown_hook(MUTT_SHUTDOWN_HOOK);
+    mutt_shutdown_hook(priv->win_index);
     mutt_debug(LL_NOTIFY, "NT_GLOBAL_SHUTDOWN\n");
     notify_send(NeoMutt->notify, NT_GLOBAL, NT_GLOBAL_SHUTDOWN, NULL);
 
