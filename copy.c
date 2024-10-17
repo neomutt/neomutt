@@ -35,6 +35,7 @@
 #include <locale.h>
 #include <stdbool.h>
 #include <string.h>
+#include "mutt/buffer.h"
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
@@ -90,6 +91,88 @@ static void add_one_header(struct HeaderArray *headers, size_t pos, char *value)
 }
 
 /**
+ * mutt_copy_hdr_simple - Copy header from one file to another, simple case
+ * @param fp_in     FILE pointer to read from
+ * @param fp_out    FILE pointer to write to
+ * @param off_end   Offset to finish at
+ * @param chflags   Flags, see #CopyHeaderFlags
+ * @retval -1 Failure
+ */
+int mutt_copy_hdr_simple(FILE* fp_in, FILE* fp_out, LOFF_T off_end,
+                         CopyHeaderFlags chflags)
+{
+  int rc = 0;
+  bool from = false;
+  struct Buffer *line = buf_pool_get();
+
+  while (ftello(fp_in) < off_end)
+  {
+    if (buf_gets(line, fp_in, false, false) == 0)
+    {
+      break;
+    }
+    
+    const char *buf = buf_string(line);
+
+    /* Is it the beginning of a header? */
+    if ((buf[0] != ' ') && (buf[0] != '\t'))
+    {
+      if (!from && mutt_str_startswith(buf, "From "))
+      {
+        if ((chflags & CH_FROM) == 0)
+          continue;
+        from = true;
+      }
+      else if ((chflags & CH_NOQFROM) && mutt_istr_startswith(buf, ">From "))
+      {
+        continue;
+      }
+      else if ((buf[0] == '\n') || ((buf[0] == '\r') && (buf[1] == '\n')))
+      {
+        break; /* end of header */
+      }
+
+      if ((chflags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
+          (mutt_istr_startswith(buf, "Status:") || mutt_istr_startswith(buf, "X-Status:")))
+      {
+        continue;
+      }
+      if ((chflags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
+          (mutt_istr_startswith(buf, "Content-Length:") ||
+           mutt_istr_startswith(buf, "Lines:")))
+      {
+        continue;
+      }
+      if ((chflags & CH_UPDATE_REFS) && mutt_istr_startswith(buf, "References:"))
+      {
+        continue;
+      }
+      if ((chflags & CH_UPDATE_IRT) && mutt_istr_startswith(buf, "In-Reply-To:"))
+      {
+        continue;
+      }
+      if (chflags & CH_UPDATE_LABEL && mutt_istr_startswith(buf, "X-Label:"))
+        continue;
+      if ((chflags & CH_UPDATE_SUBJECT) && mutt_istr_startswith(buf, "Subject:"))
+      {
+        continue;
+      }
+    }
+
+    if (fputs(buf, fp_out) == EOF)
+    {
+      rc = -1;
+      break;
+    }
+    fputs("\n", fp_out);
+  }
+
+  buf_pool_release(&line);
+
+  return rc;
+}
+
+/**
  * mutt_copy_hdr - Copy header from one file to another
  * @param fp_in     FILE pointer to read from
  * @param fp_out    FILE pointer to write to
@@ -108,7 +191,14 @@ static void add_one_header(struct HeaderArray *headers, size_t pos, char *value)
 int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
                   CopyHeaderFlags chflags, const char *prefix, int wraplen)
 {
-  bool from = false;
+  if ((chflags & (CH_REORDER | CH_WEED | CH_MIME | CH_DECODE | CH_PREFIX | CH_WEED_DELIVERED)) == 0)
+  {
+    /* Without these flags to complicate things we can do a more efficient line
+     * to line copying */
+    return mutt_copy_hdr_simple(fp_in, fp_out, off_end, chflags);
+  }
+
+  bool from;
   bool this_is_from = false;
   bool ignore = false;
   char buf[1024] = { 0 }; /* should be long enough to get most fields in one pass */
@@ -128,71 +218,6 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
 
   buf[0] = '\n';
   buf[1] = '\0';
-
-  if ((chflags & (CH_REORDER | CH_WEED | CH_MIME | CH_DECODE | CH_PREFIX | CH_WEED_DELIVERED)) == 0)
-  {
-    /* Without these flags to complicate things
-     * we can do a more efficient line to line copying */
-    while (ftello(fp_in) < off_end)
-    {
-      nl = strchr(buf, '\n');
-
-      if (!fgets(buf, sizeof(buf), fp_in))
-        break;
-
-      /* Is it the beginning of a header? */
-      if (nl && (buf[0] != ' ') && (buf[0] != '\t'))
-      {
-        ignore = true;
-        if (!from && mutt_str_startswith(buf, "From "))
-        {
-          if ((chflags & CH_FROM) == 0)
-            continue;
-          from = true;
-        }
-        else if ((chflags & CH_NOQFROM) && mutt_istr_startswith(buf, ">From "))
-        {
-          continue;
-        }
-        else if ((buf[0] == '\n') || ((buf[0] == '\r') && (buf[1] == '\n')))
-        {
-          break; /* end of header */
-        }
-
-        if ((chflags & (CH_UPDATE | CH_XMIT | CH_NOSTATUS)) &&
-            (mutt_istr_startswith(buf, "Status:") || mutt_istr_startswith(buf, "X-Status:")))
-        {
-          continue;
-        }
-        if ((chflags & (CH_UPDATE_LEN | CH_XMIT | CH_NOLEN)) &&
-            (mutt_istr_startswith(buf, "Content-Length:") ||
-             mutt_istr_startswith(buf, "Lines:")))
-        {
-          continue;
-        }
-        if ((chflags & CH_UPDATE_REFS) && mutt_istr_startswith(buf, "References:"))
-        {
-          continue;
-        }
-        if ((chflags & CH_UPDATE_IRT) && mutt_istr_startswith(buf, "In-Reply-To:"))
-        {
-          continue;
-        }
-        if (chflags & CH_UPDATE_LABEL && mutt_istr_startswith(buf, "X-Label:"))
-          continue;
-        if ((chflags & CH_UPDATE_SUBJECT) && mutt_istr_startswith(buf, "Subject:"))
-        {
-          continue;
-        }
-
-        ignore = false;
-      }
-
-      if (!ignore && (fputs(buf, fp_out) == EOF))
-        return -1;
-    }
-    return 0;
-  }
 
   hdr_count = 1;
   x = 0;
