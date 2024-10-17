@@ -219,9 +219,11 @@ int buf_add_printf(struct Buffer *buf, const char *fmt, ...)
  * buf_gets - Read a line from a file stream
  * @param buf Buffer
  * @param fp  FILE pointer
+ * @param append Append the the buffer instead of resetting it
+ * @param trim_nl Trim the newline character at the end of the buffer
  * @retval num Characters read
  */
-size_t buf_gets(struct Buffer *buf, FILE *fp)
+size_t buf_gets(struct Buffer *buf, FILE *fp, bool append, bool trim_nl)
 {
   if (!buf || !fp)
   {
@@ -230,6 +232,11 @@ size_t buf_gets(struct Buffer *buf, FILE *fp)
 
   char chunk[1024] = { 0 };
   size_t read = 0;
+
+  if (!append)
+  {
+    buf_reset(buf);
+  }
 
 #define BUF_GETS_MAX 8192
   while (true)
@@ -252,7 +259,7 @@ size_t buf_gets(struct Buffer *buf, FILE *fp)
     }
 
     read += buf_addstr_n(buf, chunk, len);
-    if (*(buf->dptr - 1) == '\n')
+    if (trim_nl && (*(buf->dptr - 1) == '\n'))
     {
       --read;
       *--buf->dptr = '\0';

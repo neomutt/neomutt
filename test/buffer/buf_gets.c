@@ -39,7 +39,7 @@ void test_buf_gets(void)
   buf_init(&buf);
 
   size_t read = 0;
-  read = buf_gets(&buf, fp);
+  read = buf_gets(&buf, fp, true, true);
   TEST_CHECK_STR_EQ(LINE1, buf_string(&buf));
   if (!TEST_CHECK(read == strlen(LINE1)))
   {
@@ -47,7 +47,7 @@ void test_buf_gets(void)
     TEST_MSG("Actual : %zu", read);
   }
 
-  read = buf_gets(&buf, fp);
+  read = buf_gets(&buf, fp, true, true);
   TEST_CHECK_STR_EQ(LINE1 LINE2, buf_string(&buf));
   if (!TEST_CHECK(read == strlen(LINE2)))
   {
@@ -55,7 +55,7 @@ void test_buf_gets(void)
     TEST_MSG("Actual : %zu", read);
   }
 
-  read = buf_gets(&buf, fp);
+  read = buf_gets(&buf, fp, true, true);
   TEST_CHECK_STR_EQ(LINE1 LINE2 LINE3, buf_string(&buf));
   if (!TEST_CHECK(read == strlen(LINE3)))
   {
