@@ -166,9 +166,6 @@ msgstr "Vous n'avez pas défini d'alias"
 msgid "Aliases"
 msgstr "Alias"
 
-# TODO: « Courriel » is the officially-recommended term in France and in
-#       Canada. But outside of Canada, « email » is far more common in everyday
-#       and professional communication. What to do about this?
 #: alias/dlg_query.c:104 index/dlg_index.c:109
 msgid "Mail"
 msgstr "Courriel"
@@ -201,10 +198,9 @@ msgstr "Commande de requête non définie"
 msgid "Query: "
 msgstr "Requête : "
 
-# TODO: email / courriel ?
 #: alias/functions.c:238
 msgid "Limit to addresses matching: "
-msgstr "Limiter aux adresses emails correspondant à : "
+msgstr "Limiter aux adresses courriels correspondant à : "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:355
@@ -236,7 +232,7 @@ msgstr "attachments : pas de disposition"
 #: attach/attachments.c:493
 #, fuzzy
 msgid "Current attachments settings:"
-msgstr "Editer la description de l'attachement:"
+msgstr "Éditer la description de l'attachement:"
 
 #: attach/attachments.c:525
 #, fuzzy
@@ -441,9 +437,8 @@ msgstr "Passer à la commande : "
 # , c-format
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-# TODO: get an example of this
 #: attach/recvattach.c:796
-#, fuzzy, c-format
+#, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Je ne sais pas comment imprimer une pièce jointe de format %s"
 
@@ -506,14 +501,14 @@ msgstr "Adresse du compte Autocrypt : "
 #. nothing, or more than one address for some reason.
 #: autocrypt/autocrypt.c:189
 msgid "Please enter a single email address"
-msgstr "Veuillez entrer une seule adresse email"
+msgstr "Veuillez entrer une seule adresse courriel"
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
 #. they just entered.
 #: autocrypt/autocrypt.c:206
 msgid "That email address already has an autocrypt account"
-msgstr "Cet adresse email possède déjà un compte autocrypt"
+msgstr "Cet adresse courriel possède déjà un compte autocrypt"
 
 #. L10N: Autocrypt has a setting "prefer-encrypt".
 #. When the recommendation algorithm returns "available" and BOTH sender and
@@ -864,7 +859,7 @@ msgstr "Masque de fichier : "
 
 #: browser/functions.c:853
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Le renommage n'est supporté que pour les boîtes aux lettres IMAP"
+msgstr "Le renommage n'est possible que pour les boîtes aux lettres IMAP"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser/functions.c:888
@@ -1257,9 +1252,8 @@ msgid "Really delete the main message?"
 msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
 
 #: compose/functions.c:373 compose/functions.c:565
-#, fuzzy
 msgid "Can't leave group with only one attachment"
-msgstr "Vous ne pouvez pas supprimer l'unique attachement"
+msgstr "Vous ne pouvez pas quitter le groupe avec une seule pièce jointe"
 
 #: compose/functions.c:533 compose/functions.c:547
 msgid "Attachments to be grouped must have the same parent"
@@ -1274,11 +1268,11 @@ msgstr[1] "Joindre les fichiers sélectionnés..."
 #: compose/functions.c:774
 #, c-format
 msgid "Unable to attach %s"
-msgstr "Impossible d'attacher %s"
+msgstr "Impossible de joindre %s"
 
 #: compose/functions.c:826
 msgid "Open mailbox to attach message from"
-msgstr "Ouvrir une boîte aux lettres d'où attacher un message"
+msgstr "Ouvrir une boîte aux lettres d'où joindre un message"
 
 #: compose/functions.c:836
 #, fuzzy
@@ -1292,12 +1286,13 @@ msgstr "Impossible d'ouvrir la boîte aux lettres %s"
 
 #: compose/functions.c:900
 msgid "No messages in that folder"
-msgstr "Aucun message dans ce dossier"
+msgstr "Aucun message dans ce répertoire"
 
 #: compose/functions.c:909
 msgid "Tag the messages you want to attach"
 msgstr "Marquez les messages que vous voulez attacher"
 
+# TODO: needs more context
 #: compose/functions.c:947
 msgid "Unable to attach"
 msgstr "Impossible d'attacher"
@@ -1972,16 +1967,19 @@ msgstr[1] "Les temps de calcul étaient erronés de %ld octets."
 msgid "No decryption engine available for message"
 msgstr "Pas de moteur de déchiffrement disponible pour le message"
 
+# TODO: « dossier » vs « répertoire »
 #: editmsg.c:77
 #, c-format
 msgid "could not create temporary folder: %s"
 msgstr "impossible de créer le dossier temporaire : %s"
 
+# TODO: « dossier » vs « répertoire »
 #: editmsg.c:97
 #, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "impossible d'écrire dans le dossier temporaire : %s"
 
+# TODO: « dossier » vs « répertoire »
 #: editmsg.c:116
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
@@ -2012,7 +2010,7 @@ msgstr "Impossible d'ouvrir le fichier : %s"
 #: editmsg.c:200 editmsg.c:230
 #, c-format
 msgid "Can't append to folder: %s"
-msgstr "Impossible d'ajouter au dossier : %s"
+msgstr "Impossible d'ajouter au répertoire : %s"
 
 #: editor/window.c:52
 msgid "Complete"
@@ -2960,7 +2958,7 @@ msgstr "composer un nouveau message pour l'expéditeur du message courant"
 #. Compose Dialog: <op_compose_write_message>
 #: gui/opcodes.h:244
 msgid "write the message to a folder"
-msgstr "écrire le message dans un dossier"
+msgstr "écrire le message dans un répertoire"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
@@ -3443,18 +3441,21 @@ msgstr "casser la discussion en deux"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
+# TODO: « dossier » vs « répertoire »
 #: gui/opcodes.h:511
 msgid "open a different folder"
 msgstr "ouvrir un dossier différent"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
+# TODO: « dossier » vs « répertoire »
 #: gui/opcodes.h:514
 msgid "open a different folder in read only mode"
 msgstr "ouvrir un dossier différent en lecture seule"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
+# TODO: « dossier » vs « répertoire »
 #: gui/opcodes.h:517
 #, fuzzy
 msgid "open a different newsgroup"
@@ -3462,6 +3463,7 @@ msgstr "ouvrir un dossier différent"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
+# TODO: « dossier » vs « répertoire »
 #: gui/opcodes.h:520
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
@@ -3823,7 +3825,7 @@ msgstr "rappeler un message ajourné"
 #: gui/opcodes.h:706
 #, fuzzy
 msgid "reconstruct thread containing current message"
-msgstr "Cette discussion contient des messages non-lus."
+msgstr "Cette discussion contient des messages non lus."
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
@@ -4005,7 +4007,7 @@ msgstr "aller en haut de la page"
 #. Browser: <op_catchup>
 #: gui/opcodes.h:808
 msgid "mark all articles in newsgroup as unread"
-msgstr "marquer tous les articles du newsgroup comme non-lus"
+msgstr "marquer tous les articles du newsgroup comme non lus"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
@@ -4152,6 +4154,7 @@ msgstr "éditer le champ Reply-To"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
+# TODO: « dossier » vs « répertoire »
 #: gui/opcodes.h:893
 msgid "open a different virtual folder"
 msgstr "ouvrir un dossier virtuel différent"
@@ -4758,6 +4761,7 @@ msgstr "La connexion a échoué"
 msgid "%s is an invalid IMAP path"
 msgstr "%s n'est pas un chemin IMAP valide"
 
+# TODO: « dossier » vs « répertoire »
 #: imap/browse.c:251
 msgid "Getting folder list..."
 msgstr "Récupération de la liste des dossiers..."
@@ -4767,7 +4771,7 @@ msgstr "Récupération de la liste des dossiers..."
 #: imap/browse.c:373
 #, c-format
 msgid "No such folder: %s"
-msgstr "Ce dossier n'existe pas : %s"
+msgstr "Ce répertoire n'existe pas : %s"
 
 #: imap/browse.c:415
 msgid "Create mailbox: "
@@ -4783,7 +4787,7 @@ msgstr "Boîte aux lettres créée"
 
 #: imap/browse.c:465
 msgid "Can't rename root folder"
-msgstr "Impossible de renommer le dossier racine"
+msgstr "Impossible de renommer le répertoire racine"
 
 #: imap/browse.c:472
 #, c-format
@@ -5356,6 +5360,7 @@ msgstr "Ouvrir le newsgroup"
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Poster à ce groupe n'est pas autorisé, modération possible. Continuer ?"
 
+# TODO: « dossier » vs « répertoire »
 #: index/functions.c:2892
 msgid "No virtual folder and no Message-Id, aborting"
 msgstr "Pas de dossier virtuel et pas de Message-Id, abandon"
@@ -5737,7 +5742,7 @@ msgstr ""
 
 #: main.c:337
 msgid "  -p            Resume a prior postponed message, if any"
-msgstr ""
+msgstr "  -p            Retourner à un message ajourné, s'il en existe"
 
 #: main.c:338
 msgid ""
@@ -5752,31 +5757,37 @@ msgstr "  -R            Ouvrir la boîte aux lettres en lecture seule"
 
 #: main.c:342
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
-msgstr "  -s <subject>  Crée le sujet du message  (doit être entre guillemets s'il comporte des espaces)"
+msgstr "  -s <subject>  Créer l'objet du message (doit être entre guillemets s'il comporte des espaces)"
 
 #: main.c:343
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr "  -v            Affiche la version de NeoMutt version, définit son temps de compilation et sort"
+msgstr "  -v            Afficher la version de NeoMutt version, définit son temps de compilation et sort"
 
 #: main.c:344
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr "  -vv           Affiche la licence NeoMutt, les informations relatives à la propriété intellectuelle et sort"
+msgstr "  -vv           Afficher la licence NeoMutt, les informations relatives à la propriété intellectuelle et sort"
 
 #: main.c:345
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
-msgstr ""
+msgstr "  -y            Démarrer NeoMutt avec une liste de toutes les boîtes aux lettres définies"
 
 #: main.c:346
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
 msgstr ""
+"  -Z            Ouvrir la première boîte aux lettres avec une nouveau message ou\n"
+"                quitter immédiatement avec un code de sortie de 1 s'il n'y en a\n"
+"                pas un trouvé dans toutes les boîtes aux lettres définies"
 
 #: main.c:348
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
 msgstr ""
+"  -z            Ouvrir soit la première boîtes aux lettres soit la boîte aux lettres\n"
+"                spécifiée (avec -f) si elle contient un message. Quitter immédiatement\n"
+"                avec un code de sortie de 1 sinon"
 
 #: main.c:371
 msgid "Error initializing terminal"
@@ -6057,7 +6068,7 @@ msgstr "Valeur invalide pour l'option %s : \"%s\""
 
 #: mutt_lua.c:447
 msgid "Error: Couldn't load the lua interpreter"
-msgstr ""
+msgstr "Erreur : Impossible de charger l'interpréteur lua"
 
 # , c-format
 #: mutt_lua.c:517
@@ -6244,10 +6255,12 @@ msgstr "Impossible d'ouvrir le fichier : %s"
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule"
 
+# TODO: « dossier » vs « répertoire »
 #: mx.c:1821
 msgid "Changes to folder will be written on folder exit"
 msgstr "Les modifications du dossier seront enregistrées à sa sortie"
 
+# TODO: « dossier » vs « répertoire »
 #: mx.c:1826
 msgid "Changes to folder will not be written"
 msgstr "Les modifications du dossier ne seront pas enregistrées"
@@ -7406,6 +7419,7 @@ msgstr "Récupération de la liste des messages..."
 msgid "Checking for new messages..."
 msgstr "Recherche de nouveaux messages..."
 
+# TODO: « dossier » vs « répertoire »
 #: nntp/nntp.c:1828 nntp/nntp.c:1923
 #, fuzzy
 msgid "Could not switch to reader mode"
@@ -7423,9 +7437,8 @@ msgstr "Publier n'est pas ok"
 
 # , c-format
 #: nntp/nntp.c:1842
-#, fuzzy
 msgid "Posting is ok"
-msgstr "Rien à faire"
+msgstr "Publier est ok"
 
 # , c-format
 #: nntp/nntp.c:1984 nntp/nntp.c:2021
