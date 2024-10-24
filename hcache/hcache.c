@@ -520,19 +520,16 @@ struct HeaderCache *hcache_open(const char *path, const char *folder,
     if (unlink(buf_string(hcpath)) == 0)
     {
       hc->store_handle = hc->store_ops->open(buf_string(hcpath), create);
-      if (!hc->store_handle)
-      {
-        if (hc->compr_ops)
-        {
-          hc->compr_ops->close(&hc->compr_handle);
-        }
-        hcache_free(&hc);
-      }
     }
-    else
+  }
+
+  if (!hc->store_handle)
+  {
+    if (hc->compr_ops)
     {
-      hcache_free(&hc);
+      hc->compr_ops->close(&hc->compr_handle);
     }
+    hcache_free(&hc);
   }
 
   buf_pool_release(&hcpath);
