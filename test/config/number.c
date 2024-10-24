@@ -54,6 +54,7 @@ static struct ConfigDef Vars[] = {
   { "Olive",      DT_NUMBER,                 0,   0, NULL,              }, /* test_inherit */
   { "Papaya",     DT_NUMBER | D_ON_STARTUP,  1,   0, NULL,              }, /* startup */
   { "Quandong",   DT_NUMBER,               123,   0, NULL,              }, /* test_toggle */
+  { "Raspberry",  DT_BOOL,                   0,   0, NULL,              },
   { NULL },
 };
 // clang-format on
@@ -963,6 +964,12 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
   int value = 0;
   const int initial = cs_subset_number(sub, name);
 
+  rc = number_he_toggle(NULL, he, err);
+  TEST_CHECK(rc == CSR_ERR_CODE);
+
+  rc = number_he_toggle(sub, NULL, err);
+  TEST_CHECK(rc == CSR_ERR_CODE);
+
   rc = number_he_toggle(sub, he, err);
   if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
   {
@@ -1046,6 +1053,14 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("Toggle value is wrong: %d, expected: %d", value, -123);
     return false;
   }
+
+  name = "Raspberry";
+  he = cs_get_elem(cs, name);
+  if (!he)
+    return false;
+
+  rc = number_he_toggle(sub, he, err);
+  TEST_CHECK(rc == CSR_ERR_CODE);
 
   return true;
 }
