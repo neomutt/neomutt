@@ -365,11 +365,6 @@ vim: ts=2 sw=2 sts=2 expandtab:
           <link linkend="sidebar-neomuttrc">Sidebar neomuttrc</link>.
         </para>
         <para>
-          To check if NeoMutt supports <quote>Sidebar</quote>, look for the
-          string <literal>+sidebar</literal> in the neomutt version.
-        </para>
-        <screen>neomutt -v</screen>
-        <para>
           <emphasis role="bold">Let's turn on the Sidebar:</emphasis>
         </para>
 
@@ -3435,10 +3430,8 @@ color sidebar_divider    color8  default     <emphasis role="comment"># Dark gre
         can be used.
       </para>
       <para>
-        Debug messages are not shown by default. To enable them NeoMutt must be
-        compiled with <literal>+debug</literal>. Furthermore, the debug log
-        level must be set with the
-        <link linkend="tab-commandline-options"><literal>-d</literal> command line parameter</link>
+        Debug messages are not shown by default. The debug log level must be set
+        with the <link linkend="tab-commandline-options"><literal>-d</literal> command line parameter</link>
         at startup. The <literal>-d</literal> parameter expects a debug level
         which can range from 1 to 5 and affects verbosity of the debug
         messages. A value of 2 is recommended for the start. If debug logging
