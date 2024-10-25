@@ -34,7 +34,7 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
                                    struct ExpandoParseError *error);
 
 void test_one(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   buf_addstr(buf, "ONE");
   buf_addch(buf, 'a' - 1 + node->uid);
@@ -43,7 +43,7 @@ void test_one(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 void test_two(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   buf_addstr(buf, "TWO");
   buf_addch(buf, 'a' - 1 + node->uid);
@@ -52,7 +52,7 @@ void test_two(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 void test_three(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   buf_addstr(buf, "THREE");
   buf_addch(buf, 'a' - 1 + node->uid);

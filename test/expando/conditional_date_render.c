@@ -43,7 +43,7 @@ static long cond_date_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 static void cond_date(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                      MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 

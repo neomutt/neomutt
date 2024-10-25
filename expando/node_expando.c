@@ -350,7 +350,7 @@ int node_expando_render(const struct ExpandoNode *node,
   const struct ExpandoRenderData *rd_match = find_get_string(rdata, node->did, node->uid);
   if (rd_match)
   {
-    rd_match->get_string(node, data, flags, max_cols, buf_expando);
+    rd_match->get_string(node, data, flags, buf_expando);
   }
   else
   {

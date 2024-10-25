@@ -36,7 +36,7 @@ bool check_for_pipe(struct ExpandoNode *root);
 void filter_text(struct Buffer *buf);
 
 static void test_a(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                   MuttFormatFlags flags, struct Buffer *buf)
 {
   buf_addstr(buf, "apple");
 }

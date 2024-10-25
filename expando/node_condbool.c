@@ -121,7 +121,7 @@ int node_condbool_render(const struct ExpandoNode *node,
   if (rd_match)
   {
     struct Buffer *buf_str = buf_pool_get();
-    rd_match->get_string(node, data, flags, max_cols, buf_str);
+    rd_match->get_string(node, data, flags, buf_str);
     const size_t len = buf_len(buf_str);
     buf_pool_release(&buf_str);
 

@@ -205,7 +205,7 @@ long folder_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags
  * folder_date - Browser: Last modified (strftime) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_date(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                 MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -244,7 +244,7 @@ void folder_date(const struct ExpandoNode *node, void *data,
  * folder_space - Fixed whitespace - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_space(const struct ExpandoNode *node, void *data,
-                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                  MuttFormatFlags flags, struct Buffer *buf)
 {
   buf_addstr(buf, " ");
 }
@@ -285,7 +285,7 @@ long folder_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_d - Browser: Last modified - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
   if (!folder->ff->local)
@@ -319,7 +319,7 @@ long folder_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_D - Browser: Last modified ($date_format) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
   if (!folder->ff->local)
@@ -352,7 +352,7 @@ void folder_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * folder_f - Browser: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -372,7 +372,7 @@ void folder_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * folder_F - Browser: File permissions - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -407,7 +407,7 @@ void folder_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * folder_g - Browser: Group name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_g(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
   if (!folder->ff->local)
@@ -428,7 +428,7 @@ void folder_g(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * folder_i - Browser: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_i(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -465,7 +465,7 @@ long folder_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_l - Browser: Hard links - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_l(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
   if (!folder->ff->local)
@@ -491,7 +491,7 @@ long folder_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_m - Browser: Number of messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_m(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
   if (!folder->ff->has_mailbox)
@@ -517,7 +517,7 @@ long folder_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_n - Browser: Number of unread messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
   if (!folder->ff->has_mailbox)
@@ -539,7 +539,7 @@ long folder_N_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_N - Browser: New mail flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_N(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -571,7 +571,7 @@ long folder_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_s - Browser: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -594,7 +594,7 @@ long folder_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * folder_t - Browser: Is Tagged - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -607,7 +607,7 @@ void folder_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * folder_u - Browser: Owner name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void folder_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct Folder *folder = data;
   if (!folder->ff->local)

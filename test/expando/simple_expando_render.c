@@ -36,7 +36,7 @@ struct SimpleExpandoData
 };
 
 static void simple_s(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 
@@ -47,7 +47,7 @@ static void simple_s(const struct ExpandoNode *node, void *data,
 }
 
 static void simple_d(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 

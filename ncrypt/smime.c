@@ -201,7 +201,7 @@ bool smime_class_valid_passphrase(void)
  * smime_command_a - Smime Command: algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_a(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const struct SmimeCommandContext *cctx = data;
@@ -215,7 +215,7 @@ void smime_command_a(const struct ExpandoNode *node, void *data,
  * smime_command_c - Smime Command: certificate IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_c(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const struct SmimeCommandContext *cctx = data;
@@ -229,7 +229,7 @@ void smime_command_c(const struct ExpandoNode *node, void *data,
  * smime_command_C - Smime Command: CA location - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_C(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const char *const c_smime_ca_location = cs_subset_path(NeoMutt->sub, "smime_ca_location");
@@ -264,7 +264,7 @@ void smime_command_C(const struct ExpandoNode *node, void *data,
  * smime_command_d - Smime Command: Message digest algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_d(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const struct SmimeCommandContext *cctx = data;
@@ -278,7 +278,7 @@ void smime_command_d(const struct ExpandoNode *node, void *data,
  * smime_command_f - Smime Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_f(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const struct SmimeCommandContext *cctx = data;
@@ -292,7 +292,7 @@ void smime_command_f(const struct ExpandoNode *node, void *data,
  * smime_command_i - Smime Command: Intermediate certificates - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_i(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const struct SmimeCommandContext *cctx = data;
@@ -306,7 +306,7 @@ void smime_command_i(const struct ExpandoNode *node, void *data,
  * smime_command_k - Smime Command: Key-pair - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_k(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const struct SmimeCommandContext *cctx = data;
@@ -320,7 +320,7 @@ void smime_command_k(const struct ExpandoNode *node, void *data,
  * smime_command_s - Smime Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void smime_command_s(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
 #ifdef HAVE_SMIME
   const struct SmimeCommandContext *cctx = data;

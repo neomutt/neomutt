@@ -51,7 +51,7 @@
 #include "mview.h"
 
 void status_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf);
+              struct Buffer *buf);
 
 const struct ExpandoRenderData StatusRenderData[];
 
@@ -83,7 +83,7 @@ struct MenuStatusLineData
  * status_r - Status: Modified/read-only flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct MbTable *c_status_chars = cs_subset_mbtable(NeoMutt->sub, "status_chars");
   if (!c_status_chars || !c_status_chars->len)
@@ -116,7 +116,7 @@ void status_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * status_D - Status: Description of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
@@ -130,14 +130,14 @@ void status_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
     return;
   }
 
-  status_f(node, data, flags, max_cols, buf);
+  status_f(node, data, flags, buf);
 }
 
 /**
  * status_f - Status: pathname of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
@@ -293,7 +293,7 @@ long status_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * status_l - Status: Size of the current mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_l(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
@@ -310,7 +310,7 @@ void status_l(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * status_T - Status: Current threading mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const enum UseThreads c_use_threads = mutt_thread_style();
   const char *s = get_use_threads_str(c_use_threads);
@@ -321,7 +321,7 @@ void status_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * status_s - Status: Sorting mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   char tmp[128] = { 0 };
 
@@ -334,7 +334,7 @@ void status_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * status_S - Status: Aux sorting method - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   char tmp[128] = { 0 };
 
@@ -363,7 +363,7 @@ long status_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * status_P - Status: Percentage through index - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct Menu *menu = msld->menu;
@@ -398,7 +398,7 @@ void status_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * status_h - Status: Local hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_h(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const char *s = ShortHostname;
   buf_strcpy(buf, s);
@@ -422,7 +422,7 @@ long status_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * status_L - Status: Size of the messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_L(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
@@ -463,7 +463,7 @@ long status_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fl
  * status_v - Status: Version string - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_v(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const char *s = mutt_make_version();
   buf_strcpy(buf, s);
@@ -473,7 +473,7 @@ void status_v(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * status_V - Status: Active limit pattern - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void status_V(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;

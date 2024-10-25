@@ -914,7 +914,7 @@ done:
  * nntp_a - Newsrc: Account url - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-            int max_cols, struct Buffer *buf)
+            struct Buffer *buf)
 {
   struct NntpAccountData *adata = data;
   struct ConnAccount *cac = &adata->conn->account;
@@ -962,7 +962,7 @@ long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flag
  * nntp_P - Newsrc: Port if specified - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-            int max_cols, struct Buffer *buf)
+            struct Buffer *buf)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
@@ -977,7 +977,7 @@ void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * nntp_s - Newsrc: News server name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-            int max_cols, struct Buffer *buf)
+            struct Buffer *buf)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
@@ -994,7 +994,7 @@ void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * nntp_S - Newsrc: Url schema - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-            int max_cols, struct Buffer *buf)
+            struct Buffer *buf)
 {
   struct NntpAccountData *adata = data;
   struct ConnAccount *cac = &adata->conn->account;
@@ -1017,7 +1017,7 @@ void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * nntp_u - Newsrc: Username - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void nntp_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-            int max_cols, struct Buffer *buf)
+            struct Buffer *buf)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;

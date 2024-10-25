@@ -677,7 +677,7 @@ void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigS
  * greeting_n - Greeting: Real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void greeting_n(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Email *e = data;
   const struct Address *to = TAILQ_FIRST(&e->env->to);
@@ -690,7 +690,7 @@ void greeting_n(const struct ExpandoNode *node, void *data,
  * greeting_u - Greeting: Login name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void greeting_u(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Email *e = data;
   const struct Address *to = TAILQ_FIRST(&e->env->to);
@@ -714,7 +714,7 @@ void greeting_u(const struct ExpandoNode *node, void *data,
  * greeting_v - Greeting: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void greeting_v(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Email *e = data;
   const struct Address *to = TAILQ_FIRST(&e->env->to);

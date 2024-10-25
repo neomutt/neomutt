@@ -31,7 +31,7 @@
 #include "test_common.h"
 
 static void index_a(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                    MuttFormatFlags flags, struct Buffer *buf)
 {
   buf_strcpy(buf, "apple");
 }

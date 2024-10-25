@@ -285,7 +285,7 @@ static void compress_info_free(struct Mailbox *m)
  * compress_f - Compress: From filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compress_f(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Mailbox *m = data;
 
@@ -299,7 +299,7 @@ void compress_f(const struct ExpandoNode *node, void *data,
  * compress_t - Compress: To filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compress_t(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Mailbox *m = data;
 

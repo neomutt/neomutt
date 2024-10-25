@@ -36,7 +36,7 @@ struct NestedIfElseData
 };
 
 static void nested_x(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct NestedIfElseData *sd = data;
 
@@ -48,7 +48,7 @@ static void nested_x(const struct ExpandoNode *node, void *data,
 }
 
 static void nested_y(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct NestedIfElseData *sd = data;
 

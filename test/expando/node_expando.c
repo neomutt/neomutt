@@ -49,7 +49,7 @@ static long test_y_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 static void test_y(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                   MuttFormatFlags flags, struct Buffer *buf)
 {
   buf_strcpy(buf, "hello");
 }
@@ -60,7 +60,7 @@ static long test_n_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 static void test_n(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                   MuttFormatFlags flags, struct Buffer *buf)
 {
 }
 

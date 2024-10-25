@@ -37,7 +37,7 @@ struct SimpleIfElseData
 };
 
 static void simple_c(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SimpleIfElseData *sd = data;
 
@@ -46,7 +46,7 @@ static void simple_c(const struct ExpandoNode *node, void *data,
 }
 
 static void simple_t(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 
@@ -57,7 +57,7 @@ static void simple_t(const struct ExpandoNode *node, void *data,
 }
 
 static void simple_f(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 

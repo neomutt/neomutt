@@ -38,7 +38,7 @@ struct SimpleDateData
 };
 
 static void simple_date(const struct ExpandoNode *node, void *data,
-                        MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                        MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 
