@@ -115,7 +115,7 @@ static const struct Mapping AutocryptHelp[] = {
  * autocrypt_a - Autocrypt: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_a(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                 MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AccountEntry *entry = data;
 
@@ -126,7 +126,7 @@ void autocrypt_a(const struct ExpandoNode *node, void *data,
  * autocrypt_k - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_k(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                 MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AccountEntry *entry = data;
 
@@ -148,7 +148,7 @@ long autocrypt_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags
  * autocrypt_p - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_p(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                 MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AccountEntry *entry = data;
 
@@ -171,7 +171,7 @@ void autocrypt_p(const struct ExpandoNode *node, void *data,
  * autocrypt_s - Autocrypt: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void autocrypt_s(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                 MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AccountEntry *entry = data;
 

@@ -106,7 +106,7 @@ long compose_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  * compose_h - Compose: Hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compose_h(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+               MuttFormatFlags flags, struct Buffer *buf)
 {
   const char *s = ShortHostname;
   buf_strcpy(buf, s);
@@ -125,7 +125,7 @@ long compose_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  * compose_l - Compose: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compose_l(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct ComposeSharedData *shared = data;
 
@@ -139,7 +139,7 @@ void compose_l(const struct ExpandoNode *node, void *data,
  * compose_v - Compose: Version - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void compose_v(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+               MuttFormatFlags flags, struct Buffer *buf)
 {
   const char *s = mutt_make_version();
   buf_strcpy(buf, s);

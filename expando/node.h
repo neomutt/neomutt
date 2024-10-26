@@ -56,8 +56,6 @@ struct ExpandoFormat
   enum FormatJustify justification;   ///< Justification: left, centre, right
   char               leader;          ///< Leader character, 0 or space
   bool               lower;           ///< Display in lower case
-  const char        *start;           ///< Start of Expando specifier string
-  const char        *end;             ///< End of Expando specifier string
 };
 
 /**
@@ -68,16 +66,13 @@ struct ExpandoFormat
 struct ExpandoNode
 {
   enum ExpandoNodeType      type;        ///< Type of Node, e.g. #ENT_EXPANDO
-  struct ExpandoNode       *next;        ///< Linked list
   int                       did;         ///< Domain ID, e.g. #ED_EMAIL
   int                       uid;         ///< Unique ID, e.g. #ED_EMA_SIZE
 
   struct ExpandoFormat     *format;      ///< Formatting info
+  const char               *text;        ///< Node-specific text
 
   struct ExpandoNodeArray   children;    ///< Children nodes
-
-  const char               *start;       ///< Start of string data
-  const char               *end;         ///< End of string data
 
   void  *ndata;                          ///< Private node data
   void (*ndata_free)(void **ptr);        ///< Function to free the private node data
@@ -97,11 +92,9 @@ struct ExpandoNode
 };
 
 struct ExpandoNode *node_new(void);
+void                node_free(struct ExpandoNode **ptr);
 
-void node_free     (struct ExpandoNode **ptr);
-void node_tree_free(struct ExpandoNode **ptr);
-
-void                node_append   (struct ExpandoNode **root, struct ExpandoNode *new_node);
+void                node_add_child(struct ExpandoNode *node, struct ExpandoNode *child);
 struct ExpandoNode *node_get_child(const struct ExpandoNode *node, int index);
 
 struct ExpandoNode *node_last (struct ExpandoNode *node);

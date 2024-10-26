@@ -26,4 +26,6 @@
 
 struct ExpandoNode *node_container_new(void);
 
+void node_container_collapse_all(struct ExpandoNode **ptr);
+
 #endif /* MUTT_EXPANDO_NODE_CONTAINER_H */

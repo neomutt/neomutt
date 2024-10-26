@@ -97,7 +97,7 @@ long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  * history_s - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void history_s(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HistoryEntry *entry = data;
 

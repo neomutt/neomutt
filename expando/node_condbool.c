@@ -50,9 +50,6 @@ struct ExpandoNode *node_condbool_new(const char *start, const char *end, int di
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_CONDBOOL;
-  node->start = start;
-  node->end = end;
-
   node->did = did;
   node->uid = uid;
   node->render = node_condbool_render;
@@ -63,9 +60,9 @@ struct ExpandoNode *node_condbool_new(const char *start, const char *end, int di
 /**
  * node_condbool_parse - Parse a CondBool format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  */
-struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_until,
+struct ExpandoNode *node_condbool_parse(const char *str,
                                         const struct ExpandoDefinition *defs,
-                                        ExpandoParserFlags flags,
+                                        ExpandoParserFlags flags, const char **parsed_until,
                                         struct ExpandoParseError *err)
 {
   const struct ExpandoDefinition *def = defs;
@@ -121,7 +118,7 @@ int node_condbool_render(const struct ExpandoNode *node,
   if (rd_match)
   {
     struct Buffer *buf_str = buf_pool_get();
-    rd_match->get_string(node, data, flags, max_cols, buf_str);
+    rd_match->get_string(node, data, flags, buf_str);
     const size_t len = buf_len(buf_str);
     buf_pool_release(&buf_str);
 

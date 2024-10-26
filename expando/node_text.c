@@ -44,8 +44,8 @@ static int node_text_render(const struct ExpandoNode *node,
 {
   ASSERT(node->type == ENT_TEXT);
 
-  const int num_bytes = node->end - node->start;
-  return format_string(buf, 0, max_cols, JUSTIFY_LEFT, ' ', node->start, num_bytes, false);
+  return format_string(buf, 0, max_cols, JUSTIFY_LEFT, ' ', node->text,
+                       mutt_str_len(node->text), false);
 }
 
 /**
@@ -59,8 +59,7 @@ struct ExpandoNode *node_text_new(const char *start, const char *end)
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_TEXT;
-  node->start = start;
-  node->end = end;
+  node->text = mutt_strn_dup(start, end - start);
   node->render = node_text_render;
 
   return node;

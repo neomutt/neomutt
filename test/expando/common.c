@@ -27,45 +27,12 @@
 #include "mutt/lib.h"
 #include "common.h"
 
-struct ExpandoNode *get_nth_node(struct ExpandoNode *node, int n)
-{
-  TEST_CHECK(node != NULL);
-
-  int i = 0;
-
-  while (node)
-  {
-    if (i++ == n)
-    {
-      return node;
-    }
-
-    node = node->next;
-  }
-
-  if (!TEST_CHECK(0))
-  {
-    TEST_MSG("Node is not found\n");
-  }
-
-  return NULL;
-}
-
-void check_node_empty(struct ExpandoNode *node)
-{
-  TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_EMPTY);
-}
-
 void check_node_text(struct ExpandoNode *node, const char *text)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_TEXT);
 
-  const size_t n = mutt_str_len(text);
-  const size_t m = (node->end - node->start);
-  TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, text, n));
+  TEST_CHECK(mutt_str_equal(node->text, text));
 }
 
 void check_node_expando(struct ExpandoNode *node, const char *exp,
@@ -75,11 +42,12 @@ void check_node_expando(struct ExpandoNode *node, const char *exp,
   TEST_CHECK(node->type == ENT_EXPANDO);
   TEST_CHECK(node->ndata != NULL);
 
-  const size_t n = mutt_str_len(exp);
-  const size_t m = node->end - node->start;
-
-  TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, exp, n));
+  if (exp)
+  {
+    TEST_CHECK(mutt_str_equal(node->text, exp));
+    TEST_MSG("Expected: %s", exp);
+    TEST_MSG("Actual:   %s", node->text);
+  }
 
   struct ExpandoFormat *fmt = node->format;
 
@@ -102,11 +70,7 @@ void check_node_padding(struct ExpandoNode *node, const char *pad_char, enum Exp
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_PADDING);
 
-  const size_t n = mutt_str_len(pad_char);
-  const size_t m = node->end - node->start;
-
-  TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, pad_char, n));
+  TEST_CHECK(mutt_str_equal(node->text, pad_char));
 
   TEST_CHECK(node->ndata != NULL);
   struct NodePaddingPrivate *priv = node->ndata;
@@ -119,17 +83,11 @@ void check_node_cond(struct ExpandoNode *node)
   TEST_CHECK(node->type == ENT_CONDITION);
 }
 
-void check_node_condbool(struct ExpandoNode *node, const char *exp)
+void check_node_condbool(struct ExpandoNode *node)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_CONDBOOL);
   TEST_CHECK(node->ndata == NULL);
-
-  const size_t n = mutt_str_len(exp);
-  const size_t m = node->end - node->start;
-
-  TEST_CHECK(n == m);
-  TEST_CHECK(mutt_strn_equal(node->start, exp, n));
 
   struct ExpandoFormat *fmt = node->format;
   TEST_CHECK(fmt == NULL);
@@ -147,15 +105,14 @@ void check_node_conddate(struct ExpandoNode *node, int count, char period)
   TEST_CHECK(priv->period == period);
 }
 
-struct ExpandoNode *parse_date(const char *str, int did, int uid,
-                               ExpandoParserFlags flags, const char **parsed_until,
-                               struct ExpandoParseError *error)
+struct ExpandoNode *parse_date(const char *str, int did, int uid, ExpandoParserFlags flags,
+                               const char **parsed_until, struct ExpandoParseError *err)
 {
   // str-1 is always something valid
   if (*(str - 1) == '<')
   {
-    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
+    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, parsed_until, did, uid, ']', error);
+  return node_expando_parse_enclosure(str, did, uid, ']', parsed_until, err);
 }

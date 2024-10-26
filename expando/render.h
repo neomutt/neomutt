@@ -57,12 +57,11 @@ struct ExpandoRenderData
    * @param[in]  node      ExpandoNode containing the callback
    * @param[in]  data      Private data
    * @param[in]  flags     Flags, see #MuttFormatFlags
-   * @param[in]  max_cols  Maximum number of screen columns
    * @param[out] buf       Buffer in which to save string
    *
    * Get some string data to be formatted.
    */
-  void (*get_string)(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+  void (*get_string)(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
 
   /**
    * @defgroup expando_get_number_api Expando Get Number API

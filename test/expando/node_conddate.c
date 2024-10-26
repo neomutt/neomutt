@@ -66,29 +66,29 @@ void test_expando_node_conddate(void)
     node_free(&node);
   }
 
-  // struct ExpandoNode *node_conddate_parse(const char *str, const char **parsed_until, int did, int uid, struct ExpandoParseError *error);
+  // struct ExpandoNode *node_conddate_parse(const char *str, int did, int uid, const char **parsed_until, struct ExpandoParseError *err);
   {
     const char *parsed_until = NULL;
     struct ExpandoParseError err = { 0 };
 
     const char *str = "%<[3d?aaa&bbb>";
-    struct ExpandoNode *node = node_conddate_parse(str + 3, &parsed_until, 1, 2, &err);
+    struct ExpandoNode *node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     TEST_MSG(err.message);
     node_free(&node);
 
     str = "%<[2H?aaa&bbb>";
-    node = node_conddate_parse(str + 3, &parsed_until, 1, 2, &err);
+    node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     TEST_MSG(err.message);
     node_free(&node);
 
     str = "%<[999999d?aaa&bbb>";
-    node = node_conddate_parse(str + 3, &parsed_until, 1, 2, &err);
+    node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
     str = "%<[4Q?aaa&bbb>";
-    node = node_conddate_parse(str + 3, &parsed_until, 1, 2, &err);
+    node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
     TEST_CHECK(node == NULL);
   }
 
@@ -126,7 +126,7 @@ void test_expando_node_conddate(void)
     for (size_t i = 0; i < mutt_array_size(test_dates); i++)
     {
       TEST_CASE(test_dates[i].str);
-      struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 3, &parsed_until, 1, 2, &err);
+      struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 3, 1, 2, &parsed_until, &err);
       TEST_CHECK(node != NULL);
 
       int test_date = now - ((test_dates[i].time * 9) / 10); // 10% newer

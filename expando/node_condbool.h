@@ -31,10 +31,10 @@ struct Buffer;
 struct ExpandoNode;
 struct ExpandoParseError;
 
-struct ExpandoNode *node_condbool_parse(const char *str, const char **parsed_until,
-                                       const struct ExpandoDefinition *defs,
-                                       ExpandoParserFlags flags,
-                                       struct ExpandoParseError *err);
+struct ExpandoNode *node_condbool_parse(const char *str,
+                                        const struct ExpandoDefinition *defs,
+                                        ExpandoParserFlags flags, const char **parsed_until,
+                                        struct ExpandoParseError *err);
 
 int node_condbool_render(const struct ExpandoNode *node,
                          const struct ExpandoRenderData *rdata, struct Buffer *buf,

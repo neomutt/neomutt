@@ -37,7 +37,7 @@ static long test_y_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 static void test_y(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                   MuttFormatFlags flags, struct Buffer *buf)
 {
   buf_strcpy(buf, "hello");
 }
@@ -48,13 +48,13 @@ static long test_n_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 static void test_n(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                   MuttFormatFlags flags, struct Buffer *buf)
 {
 }
 
 static struct ExpandoNode *parse_test(const char *str, int did, int uid,
                                       ExpandoParserFlags flags, const char **parsed_until,
-                                      struct ExpandoParseError *error)
+                                      struct ExpandoParseError *err)
 {
   return node_condbool_new(str, str + 1, did, uid);
 }
@@ -92,24 +92,24 @@ void test_expando_node_condbool(void)
     node_free(&node);
   }
 
-  // struct ExpandoNode *node_condbool_parse(const char *s, const char **parsed_until, const struct ExpandoDefinition *defs, ExpandoParserFlags flags, struct ExpandoParseError *error);
+  // struct ExpandoNode *node_condbool_parse(const char *str, const struct ExpandoDefinition *defs, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
   {
     const char *str = "%a";
     const char *parsed_until = NULL;
     struct ExpandoParseError err = { 0 };
 
-    struct ExpandoNode *node = node_condbool_parse(str, &parsed_until, TestFormatDef,
-                                                   EP_NO_FLAGS, &err);
+    struct ExpandoNode *node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS,
+                                                   &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
 
     str = "%c";
-    node = node_condbool_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
 
     str = "%Q";
-    node = node_condbool_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node == NULL);
   }
 
@@ -124,35 +124,35 @@ void test_expando_node_condbool(void)
     struct ExpandoParseError err = { 0 };
 
     str = "%a";
-    node = node_condbool_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     rc = node_condbool_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 1);
     node_free(&node);
 
     str = "%b";
-    node = node_condbool_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     rc = node_condbool_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 0);
     node_free(&node);
 
     str = "%c";
-    node = node_condbool_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     rc = node_condbool_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 1);
     node_free(&node);
 
     str = "%d";
-    node = node_condbool_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     rc = node_condbool_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 0);
     node_free(&node);
 
     str = "%e";
-    node = node_condbool_parse(str, &parsed_until, TestFormatDef, EP_NO_FLAGS, &err);
+    node = node_condbool_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     rc = node_condbool_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 0);

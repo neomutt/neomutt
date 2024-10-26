@@ -37,7 +37,7 @@ struct SimpleIfElseData
 };
 
 static void simple_c(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SimpleIfElseData *sd = data;
 
@@ -46,7 +46,7 @@ static void simple_c(const struct ExpandoNode *node, void *data,
 }
 
 static void simple_t(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 
@@ -57,7 +57,7 @@ static void simple_t(const struct ExpandoNode *node, void *data,
 }
 
 static void simple_f(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                     MuttFormatFlags flags, struct Buffer *buf)
 {
   ASSERT(node->type == ENT_EXPANDO);
 
@@ -70,8 +70,6 @@ static void simple_f(const struct ExpandoNode *node, void *data,
 void test_expando_if_else_true_render(void)
 {
   const char *input = "%<c?%t>%<c?%t&%f>";
-  struct ExpandoParseError err = { 0 };
-  struct ExpandoNode *root = NULL;
 
   const struct ExpandoDefinition defs[] = {
     { "c", NULL, 1, 0, 0, NULL },
@@ -80,41 +78,38 @@ void test_expando_if_else_true_render(void)
     { NULL, NULL, 0, 0, 0, NULL },
   };
 
-  node_tree_parse(&root, input, defs, &err);
+  struct Buffer *err = buf_pool_get();
+  struct Expando *exp = expando_parse(input, defs, err);
 
-  TEST_CHECK(err.position == NULL);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
   {
-    struct ExpandoNode *node = get_nth_node(root, 0);
+    struct ExpandoNode *node = node_get_child(exp->node, 0);
     check_node_cond(node);
 
     struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
     struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "c");
-    check_node_expando(node_true, "t", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
     TEST_CHECK(node_false == NULL);
   }
 
   {
-    struct ExpandoNode *node = get_nth_node(root, 1);
+    struct ExpandoNode *node = node_get_child(exp->node, 1);
     check_node_cond(node);
 
     struct ExpandoNode *node_cond = node_get_child(node, ENC_CONDITION);
     struct ExpandoNode *node_true = node_get_child(node, ENC_TRUE);
     struct ExpandoNode *node_false = node_get_child(node, ENC_FALSE);
 
-    check_node_condbool(node_cond, "c");
-    check_node_expando(node_true, "t", NULL);
-    check_node_expando(node_false, "f", NULL);
+    check_node_condbool(node_cond);
+    check_node_expando(node_true, NULL, NULL);
+    check_node_expando(node_false, NULL, NULL);
   }
 
   const char *expected = "22";
-
-  const struct Expando exp = {
-    .string = input,
-    .node = root,
-  };
 
   const struct ExpandoRenderData render[] = {
     { 1, 0, simple_c },
@@ -130,10 +125,11 @@ void test_expando_if_else_true_render(void)
   };
 
   struct Buffer *buf = buf_pool_get();
-  expando_render(&exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 
   TEST_CHECK_STR_EQ(buf_string(buf), expected);
 
-  node_tree_free(&root);
+  expando_free(&exp);
+  buf_pool_release(&err);
   buf_pool_release(&buf);
 }

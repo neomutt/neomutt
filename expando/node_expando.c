@@ -70,22 +70,16 @@ void node_expando_private_free(void **ptr)
 
 /**
  * node_expando_new - Create a new Expando ExpandoNode
- * @param start  Start of Expando string
- * @param end    End of Expando string
  * @param fmt    Formatting data
  * @param did    Domain ID
  * @param uid    Unique ID
  * @retval ptr New Expando ExpandoNode
  */
-struct ExpandoNode *node_expando_new(const char *start, const char *end,
-                                     struct ExpandoFormat *fmt, int did, int uid)
+struct ExpandoNode *node_expando_new(struct ExpandoFormat *fmt, int did, int uid)
 {
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_EXPANDO;
-  node->start = start;
-  node->end = end;
-
   node->did = did;
   node->uid = uid;
   node->render = node_expando_render;
@@ -146,8 +140,6 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
   struct ExpandoFormat *fmt = mutt_mem_calloc(1, sizeof(struct ExpandoFormat));
 
   fmt->leader = ' ';
-  fmt->start = start;
-  fmt->end = end;
   fmt->justification = JUSTIFY_RIGHT;
   fmt->min_cols = 0;
   fmt->max_cols = INT_MAX;
@@ -228,15 +220,14 @@ struct ExpandoFormat *parse_format(const char *start, const char *end,
 /**
  * node_expando_parse - Parse an Expando format string
  * @param[in]  str          String to parse
- * @param[out] parsed_until First character after parsed string
  * @param[in]  defs         Expando definitions
  * @param[in]  flags        Flag for conditional expandos
+ * @param[out] parsed_until First character after parsed string
  * @param[out] err          Buffer for errors
  * @retval ptr New ExpandoNode
  */
-struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_until,
-                                       const struct ExpandoDefinition *defs,
-                                       ExpandoParserFlags flags,
+struct ExpandoNode *node_expando_parse(const char *str, const struct ExpandoDefinition *defs,
+                                       ExpandoParserFlags flags, const char **parsed_until,
                                        struct ExpandoParseError *err)
 {
   const struct ExpandoDefinition *def = defs;
@@ -266,7 +257,7 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
       else
       {
         *parsed_until = expando_end;
-        return node_expando_new(format_end, expando_end, fmt, def->did, def->uid);
+        return node_expando_new(fmt, def->did, def->uid);
       }
     }
 
@@ -284,15 +275,15 @@ struct ExpandoNode *node_expando_parse(const char *str, const char **parsed_unti
 /**
  * node_expando_parse_enclosure - Parse an enclosed Expando
  * @param str          String to parse
- * @param parsed_until First character after the parsed string
  * @param did          Domain ID
  * @param uid          Unique ID
  * @param terminator   Terminating character
+ * @param parsed_until First character after the parsed string
  * @param err          Buffer for errors
  * @retval ptr New ExpandoNode
  */
-struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **parsed_until,
-                                                 int did, int uid, char terminator,
+struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int uid,
+                                                 char terminator, const char **parsed_until,
                                                  struct ExpandoParseError *err)
 {
   const char *format_end = skip_until_classic_expando(str);
@@ -320,7 +311,10 @@ struct ExpandoNode *node_expando_parse_enclosure(const char *str, const char **p
   }
 
   *parsed_until = expando_end + 1;
-  return node_expando_new(format_end, expando_end, fmt, did, uid);
+
+  struct ExpandoNode *node = node_expando_new(fmt, did, uid);
+  node->text = mutt_strn_dup(format_end, expando_end - format_end);
+  return node;
 }
 
 /**
@@ -350,7 +344,7 @@ int node_expando_render(const struct ExpandoNode *node,
   const struct ExpandoRenderData *rd_match = find_get_string(rdata, node->did, node->uid);
   if (rd_match)
   {
-    rd_match->get_string(node, data, flags, max_cols, buf_expando);
+    rd_match->get_string(node, data, flags, buf_expando);
   }
   else
   {

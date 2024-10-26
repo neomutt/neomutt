@@ -36,7 +36,7 @@ bool check_for_pipe(struct ExpandoNode *root);
 void filter_text(struct Buffer *buf);
 
 static void test_a(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                   MuttFormatFlags flags, struct Buffer *buf)
 {
   buf_addstr(buf, "apple");
 }
@@ -57,43 +57,36 @@ void test_expando_filter(void)
     };
     TEST_CHECK(!check_for_pipe(NULL));
 
-    struct ExpandoNode *node = node_new();
+    struct ExpandoNode *root = node_new();
+    struct ExpandoNode *first = node_new();
     struct ExpandoNode *last = node_new();
 
-    node->next = last;
+    node_add_child(root, first);
+    node_add_child(root, last);
 
-    TEST_CHECK(!check_for_pipe(node));
+    TEST_CHECK(!check_for_pipe(root));
 
-    node->type = ENT_TEXT;
-    TEST_CHECK(!check_for_pipe(node));
+    first->type = ENT_TEXT;
+    TEST_CHECK(!check_for_pipe(root));
 
     last->type = ENT_TEXT;
-    TEST_CHECK(!check_for_pipe(node));
+    TEST_CHECK(!check_for_pipe(root));
 
-    const char *str = "hello|";
-    last->start = str + 5;
-    last->end = str;
-    TEST_CHECK(!check_for_pipe(node));
+    last->text = "";
+    TEST_CHECK(!check_for_pipe(root));
 
-    last->start = str;
-    last->end = str;
-    TEST_CHECK(!check_for_pipe(node));
-
-    last->start = str;
-    last->end = str + 5;
-    TEST_CHECK(!check_for_pipe(node));
+    last->text = "hello";
+    TEST_CHECK(!check_for_pipe(root));
 
     for (size_t i = 0; i < mutt_array_size(tests); i++)
     {
-      str = tests[i].name;
-      TEST_CASE(str);
-      last->start = str;
-      size_t len = strlen(str);
-      last->end = last->start + len;
-      TEST_CHECK(check_for_pipe(node) == tests[i].value);
+      TEST_CASE(tests[i].name);
+      last->text = tests[i].name;
+      TEST_CHECK(check_for_pipe(root) == tests[i].value);
     }
 
-    node_tree_free(&node);
+    last->text = NULL; // we own the string
+    node_free(&root);
   }
 
   // void filter_text(struct Buffer *buf);

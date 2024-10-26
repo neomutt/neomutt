@@ -326,17 +326,16 @@ enum IndexDateChoice
 
 /**
  * index_email_date - Index: Sent/Received Local/Sender date and time
- * @param node       ExpandoNode containing the callback
- * @param e          Email
- * @param which      Which date to use
- * @param flags      Flags, see #MuttFormatFlags
- * @param buf        Buffer for the result
- * @param format     Format string
- * @param format_len Length of format string
+ * @param node   ExpandoNode containing the callback
+ * @param e      Email
+ * @param which  Which date to use
+ * @param flags  Flags, see #MuttFormatFlags
+ * @param buf    Buffer for the result
+ * @param format Format string
  */
 static void index_email_date(const struct ExpandoNode *node, const struct Email *e,
                              enum IndexDateChoice which, MuttFormatFlags flags,
-                             struct Buffer *buf, const char *format, size_t format_len)
+                             struct Buffer *buf, const char *format)
 {
   struct tm tm = { 0 };
   switch (which)
@@ -361,7 +360,7 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
     }
   }
 
-  char *fmt = mutt_strn_dup(format, format_len);
+  char *fmt = mutt_str_dup(format);
 
   const bool use_c_locale = (*fmt == '!');
 
@@ -395,17 +394,14 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
  * index_date_recv_local - Index: Received local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_date_recv_local(const struct ExpandoNode *node, void *data,
-                           MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                           MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
   if (!e)
     return;
 
-  int len = node->end - node->start;
-  const char *start = node->start;
-
-  index_email_date(node, e, RECV_LOCAL, flags, buf, start, len);
+  index_email_date(node, e, RECV_LOCAL, flags, buf, node->text);
 }
 
 /**
@@ -425,17 +421,14 @@ long index_date_local_num(const struct ExpandoNode *node, void *data, MuttFormat
  * index_date_local - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_date_local(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                      MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
   if (!e)
     return;
 
-  int len = node->end - node->start;
-  const char *start = node->start;
-
-  index_email_date(node, e, SENT_LOCAL, flags, buf, start, len);
+  index_email_date(node, e, SENT_LOCAL, flags, buf, node->text);
 }
 
 /**
@@ -455,24 +448,21 @@ long index_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags 
  * index_date - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_date(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
   if (!e)
     return;
 
-  int len = node->end - node->start;
-  const char *start = node->start;
-
-  index_email_date(node, e, SENT_SENDER, flags, buf, start, len);
+  index_email_date(node, e, SENT_SENDER, flags, buf, node->text);
 }
 
 /**
  * index_format_hook - Index: index-format-hook - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_format_hook(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                       MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -481,12 +471,7 @@ void index_format_hook(const struct ExpandoNode *node, void *data,
 
   struct Mailbox *m = hfi->mailbox;
 
-  char tmp[128] = { 0 };
-  const int len = node->end - node->start;
-
-  mutt_strn_copy(tmp, node->start, len, sizeof(tmp));
-
-  const struct Expando *exp = mutt_idxfmt_hook(tmp, m, e);
+  const struct Expando *exp = mutt_idxfmt_hook(node->text, m, e);
   if (!exp)
     return;
 
@@ -497,7 +482,7 @@ void index_format_hook(const struct ExpandoNode *node, void *data,
  * index_a - Index: Author Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -521,7 +506,7 @@ void index_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_A - Index: Reply-to address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_A(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -539,14 +524,14 @@ void index_A(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
     return;
   }
 
-  index_a(node, data, flags, max_cols, buf);
+  index_a(node, data, flags, buf);
 }
 
 /**
  * index_b - Index: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_b(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Mailbox *m = hfi->mailbox;
@@ -580,7 +565,7 @@ void index_b(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_B - Index: Email list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_B(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -596,7 +581,7 @@ void index_B(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
     return;
   }
 
-  index_b(node, data, flags, max_cols, buf);
+  index_b(node, data, flags, buf);
 }
 
 /**
@@ -616,7 +601,7 @@ long index_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_c - Index: Number of bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -636,7 +621,7 @@ void index_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_cr - Index: Number of raw bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_cr(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
   const struct Email *e = hfi->email;
@@ -685,7 +670,7 @@ long index_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_d - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -695,14 +680,14 @@ void index_d(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
   const char *cp = NONULL(c_date_format);
 
-  index_email_date(node, e, SENT_SENDER, flags, buf, cp, strlen(cp));
+  index_email_date(node, e, SENT_SENDER, flags, buf, cp);
 }
 
 /**
  * index_D - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -712,7 +697,7 @@ void index_D(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
   const char *cp = NONULL(c_date_format);
 
-  index_email_date(node, e, SENT_LOCAL, flags, buf, cp, strlen(cp));
+  index_email_date(node, e, SENT_LOCAL, flags, buf, cp);
 }
 
 /**
@@ -756,7 +741,7 @@ long index_E_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_f - Index: Sender - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -770,7 +755,7 @@ void index_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_F - Index: Author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -791,7 +776,7 @@ void index_F(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_Fp - Index: Plain author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_Fp(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
   struct Email *e = hfi->email;
@@ -812,7 +797,7 @@ void index_Fp(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_g - Index: Message tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_g(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -828,20 +813,14 @@ void index_g(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_G - Index: Individual tag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_G(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
   if (!e)
     return;
 
-  char tag_format[3] = { 0 };
-
-  tag_format[0] = 'G';
-  tag_format[1] = node->start[1];
-  tag_format[2] = '\0';
-
-  char *tag = mutt_hash_find(TagFormats, tag_format);
+  char *tag = mutt_hash_find(TagFormats, node->text);
   if (!tag)
     return;
 
@@ -854,7 +833,7 @@ void index_G(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_H - Index: Spam attributes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_H(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -868,7 +847,7 @@ void index_H(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_i - Index: Message-id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_i(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -883,7 +862,7 @@ void index_i(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_I - Index: Initials of author - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_I(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -903,14 +882,14 @@ void index_I(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
     return;
   }
 
-  index_a(node, data, flags, max_cols, buf);
+  index_a(node, data, flags, buf);
 }
 
 /**
  * index_J - Index: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_J(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -956,7 +935,7 @@ void index_J(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_K - Index: Mailing list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_K(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -992,7 +971,7 @@ long index_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_L - Index: List address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_L(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1026,7 +1005,7 @@ long index_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_M - Index: Number of hidden messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_M(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1079,7 +1058,7 @@ long index_M_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_n - Index: Author's real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1112,7 +1091,7 @@ long index_N_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_O - Index: List Name or Save folder - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_O(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1136,7 +1115,7 @@ void index_O(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_P - Index: Progress indicator - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
 
@@ -1148,7 +1127,7 @@ void index_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_q - Index: Newsgroup name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_q(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1163,7 +1142,7 @@ void index_q(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_r - Index: To recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1177,7 +1156,7 @@ void index_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_R - Index: Cc recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_R(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1191,7 +1170,7 @@ void index_R(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_s - Index: Subject - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1216,7 +1195,7 @@ void index_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_S - Index: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1254,7 +1233,7 @@ void index_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_t - Index: To field - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1286,7 +1265,7 @@ void index_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_T - Index: $to_chars flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -1307,7 +1286,7 @@ void index_T(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_tree - Index: Thread tree - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_tree(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1326,7 +1305,7 @@ void index_tree(const struct ExpandoNode *node, void *data,
  * index_u - Index: User name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1354,7 +1333,7 @@ void index_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_v - Index: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_v(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1399,7 +1378,7 @@ void index_v(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_W - Index: Organization - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_W(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1414,7 +1393,7 @@ void index_W(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_x - Index: X-Comment-To - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_x(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1450,7 +1429,7 @@ long index_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
  * index_y - Index: X-Label - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1468,7 +1447,7 @@ void index_y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_Y - Index: X-Label (if different) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1514,7 +1493,7 @@ void index_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_zc - Index: Message crypto flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_zc(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   const struct Email *e = hfi->email;
@@ -1554,7 +1533,7 @@ void index_zc(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_zs - Index: Message status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_zs(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -1614,7 +1593,7 @@ void index_zs(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_zt - Index: Message tag flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_zt(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-              int max_cols, struct Buffer *buf)
+              struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -1647,7 +1626,7 @@ void index_zt(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
  * index_Z - Index: Status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void index_Z(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             int max_cols, struct Buffer *buf)
+             struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;

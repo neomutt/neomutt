@@ -163,14 +163,14 @@ static const struct ExpandoDefinition AttachFormatDef[] = {
 struct ExpandoNode *parse_index_date_recv_local(const char *str, int did,
                                                 int uid, ExpandoParserFlags flags,
                                                 const char **parsed_until,
-                                                struct ExpandoParseError *error)
+                                                struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
+    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, parsed_until, did, uid, ')', error);
+  return node_expando_parse_enclosure(str, did, uid, ')', parsed_until, err);
 }
 
 /**
@@ -181,14 +181,14 @@ struct ExpandoNode *parse_index_date_recv_local(const char *str, int did,
  */
 struct ExpandoNode *parse_index_date_local(const char *str, int did, int uid,
                                            ExpandoParserFlags flags, const char **parsed_until,
-                                           struct ExpandoParseError *error)
+                                           struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
+    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, parsed_until, did, uid, ']', error);
+  return node_expando_parse_enclosure(str, did, uid, ']', parsed_until, err);
 }
 
 /**
@@ -199,14 +199,14 @@ struct ExpandoNode *parse_index_date_local(const char *str, int did, int uid,
  */
 struct ExpandoNode *parse_index_date(const char *str, int did, int uid,
                                      ExpandoParserFlags flags, const char **parsed_until,
-                                     struct ExpandoParseError *error)
+                                     struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    return node_conddate_parse(str + 1, parsed_until, did, uid, error);
+    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, parsed_until, did, uid, '}', error);
+  return node_expando_parse_enclosure(str, did, uid, '}', parsed_until, err);
 }
 
 /**
@@ -218,17 +218,17 @@ struct ExpandoNode *parse_index_date(const char *str, int did, int uid,
  */
 struct ExpandoNode *parse_index_hook(const char *str, int did, int uid,
                                      ExpandoParserFlags flags, const char **parsed_until,
-                                     struct ExpandoParseError *error)
+                                     struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    snprintf(error->message, sizeof(error->message),
+    snprintf(err->message, sizeof(err->message),
              _("index-hook cannot be used as a condition"));
-    error->position = str;
+    err->position = str;
     return NULL;
   }
 
-  return node_expando_parse_enclosure(str, parsed_until, did, uid, '@', error);
+  return node_expando_parse_enclosure(str, did, uid, '@', parsed_until, err);
 }
 
 /**
@@ -238,15 +238,15 @@ struct ExpandoNode *parse_index_hook(const char *str, int did, int uid,
  */
 struct ExpandoNode *parse_tags_transformed(const char *str, int did, int uid,
                                            ExpandoParserFlags flags, const char **parsed_until,
-                                           struct ExpandoParseError *error)
+                                           struct ExpandoParseError *err)
 {
   // Let the basic expando parser do the work
   flags |= EP_NO_CUSTOM_PARSE;
-  struct ExpandoNode *node = node_expando_parse(str, parsed_until,
-                                                IndexFormatDef, flags, error);
+  struct ExpandoNode *node = node_expando_parse(str, IndexFormatDef, flags,
+                                                parsed_until, err);
 
   // but adjust the node to take one more character
-  node->end++;
+  node->text = mutt_strn_dup((*parsed_until) - 1, 2);
   (*parsed_until)++;
 
   if (flags & EP_CONDITIONAL)
@@ -266,23 +266,22 @@ struct ExpandoNode *parse_tags_transformed(const char *str, int did, int uid,
  */
 struct ExpandoNode *parse_subject(const char *str, int did, int uid,
                                   ExpandoParserFlags flags, const char **parsed_until,
-                                  struct ExpandoParseError *error)
+                                  struct ExpandoParseError *err)
 {
   // Let the basic expando parser do the work
   flags |= EP_NO_CUSTOM_PARSE;
-  struct ExpandoNode *node_subj = node_expando_parse(str, parsed_until,
-                                                     IndexFormatDef, flags, error);
+  struct ExpandoNode *node_subj = node_expando_parse(str, IndexFormatDef, flags,
+                                                     parsed_until, err);
 
-  struct ExpandoNode *node_tree = node_expando_new(node_subj->start, node_subj->end,
-                                                   NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
-  node_tree->next = node_subj;
-
+  struct ExpandoNode *node_tree = node_expando_new(NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
   // Move the formatting info to the container
   struct ExpandoNode *node_cont = node_container_new();
   node_cont->format = node_subj->format;
   node_subj->format = NULL;
 
-  ARRAY_ADD(&node_cont->children, node_tree);
+  node_add_child(node_cont, node_tree);
+  node_add_child(node_cont, node_subj);
+
   return node_cont;
 }
 

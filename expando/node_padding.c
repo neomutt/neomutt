@@ -35,7 +35,7 @@
 #include "node_padding.h"
 #include "definition.h"
 #include "node.h"
-#include "node_condition.h"
+#include "node_container.h"
 #include "parse.h"
 #include "render.h"
 
@@ -75,15 +75,15 @@ void node_padding_private_free(void **ptr)
  */
 int pad_string(const struct ExpandoNode *node, struct Buffer *buf, int max_cols)
 {
-  const int pad_len = node->end - node->start;
-  const int pad_cols = mutt_strnwidth(node->start, pad_len);
+  const int pad_len = mutt_str_len(node->text);
+  const int pad_cols = mutt_strnwidth(node->text, pad_len);
   int total_cols = 0;
 
   if (pad_len != 0)
   {
     while (pad_cols <= max_cols)
     {
-      buf_addstr_n(buf, node->start, pad_len);
+      buf_addstr_n(buf, node->text, pad_len);
 
       max_cols -= pad_cols;
       total_cols += pad_cols;
@@ -204,8 +204,7 @@ struct ExpandoNode *node_padding_new(enum ExpandoPadType pad_type,
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_PADDING;
-  node->start = start;
-  node->end = end;
+  node->text = mutt_strn_dup(start, end - start);
 
   switch (pad_type)
   {
@@ -273,40 +272,55 @@ struct ExpandoNode *node_padding_parse(const char *str, int did, int uid,
 
 /**
  * node_padding_repad - Rearrange Padding in a tree of ExpandoNodes
- * @param parent Parent Node
+ * @param ptr Parent Node
  */
-void node_padding_repad(struct ExpandoNode **parent)
+void node_padding_repad(struct ExpandoNode **ptr)
 {
-  if (!parent || !*parent)
+  if (!ptr || !*ptr)
     return;
 
-  struct ExpandoNode *node = *parent;
-  struct ExpandoNode *prev = NULL;
-  for (; node; prev = node, node = node->next)
+  struct ExpandoNode *parent = *ptr;
+  struct ExpandoNode **np = NULL;
+  ARRAY_FOREACH(np, &parent->children)
   {
-    if (node->type == ENT_PADDING)
+    if (!np || !*np)
+      continue;
+
+    // Repad any children, recursively
+    node_padding_repad(np);
+
+    struct ExpandoNode *node = *np;
+    if (node->type != ENT_PADDING)
+      continue;
+
+    struct ExpandoNode *node_left = node_container_new();
+    struct ExpandoNode *node_right = node_container_new();
+
+    if (ARRAY_FOREACH_IDX > 0)
     {
-      if (node != *parent)
-        ARRAY_SET(&node->children, ENP_LEFT, *parent); // First sibling
-
-      ARRAY_SET(&node->children, ENP_RIGHT, node->next); // Sibling after Padding
-
-      if (prev)
-        prev->next = NULL;
-      node->next = NULL;
-      *parent = node;
-      return;
+      for (int i = 0; i < ARRAY_FOREACH_IDX; i++)
+      {
+        node_add_child(node_left, node_get_child(parent, i));
+      }
     }
 
-    if (node->type == ENT_CONDITION)
+    size_t count = ARRAY_SIZE(&parent->children);
+    if ((ARRAY_FOREACH_IDX + 1) < count)
     {
-      struct ExpandoNode **ptr = NULL;
-
-      ptr = ARRAY_GET(&node->children, ENC_TRUE);
-      node_padding_repad(ptr);
-
-      ptr = ARRAY_GET(&node->children, ENC_FALSE);
-      node_padding_repad(ptr);
+      for (int i = ARRAY_FOREACH_IDX + 1; i < count; i++)
+      {
+        node_add_child(node_right, node_get_child(parent, i));
+      }
     }
+
+    // All the children have been transferred
+    ARRAY_FREE(&parent->children);
+
+    node_add_child(node, node_left);
+    node_add_child(node, node_right);
+
+    node_add_child(parent, node);
+
+    break; // Only repad the first padding node
   }
 }

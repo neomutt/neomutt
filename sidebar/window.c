@@ -331,7 +331,7 @@ static int calc_path_depth(const char *mbox, const char *delims, const char **la
  * sidebar_bang - Sidebar: Flagged flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void sidebar_bang(const struct ExpandoNode *node, void *data,
-                  MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                  MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -371,7 +371,7 @@ long sidebar_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  * sidebar_B - Sidebar: Name of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void sidebar_B(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -405,7 +405,7 @@ long sidebar_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  * sidebar_D - Sidebar: Descriptive name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void sidebar_D(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -471,7 +471,7 @@ long sidebar_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  * sidebar_n - Sidebar: New mail flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void sidebar_n(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
