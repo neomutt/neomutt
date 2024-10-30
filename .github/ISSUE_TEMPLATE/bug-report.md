@@ -6,14 +6,18 @@ labels: "type:bug"
 ---
 
 <!--
-Sorry you've found a bug, but thanks for reporting it here.
+Sorry you've found a bug.
 
-Please try to reproduce the bug with a version of NeoMutt built off a recent
-commit: we routinely spot and fix bugs. The issue you're seeing might have
-already been solved since the last official release.
+Before reporting it here, please try to reproduce it with the latest version of NeoMutt or by building NeoMutt off a recent commit.
+
+We routinely spot and fix bugs. The issue you're seeing might have already been solved since the last official release.
 
 Please try to give as much information as you can.
 -->
+
+## NeoMutt release
+
+<!-- What NeoMutt release are you experiencing the bug with? -->
 
 ## Expected Behaviour
 
