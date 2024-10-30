@@ -15,9 +15,12 @@ We routinely spot and fix bugs. The issue you're seeing might have already been 
 Please try to give as much information as you can.
 -->
 
-## NeoMutt release
 
-<!-- What NeoMutt release are you experiencing the bug with? -->
+## NeoMutt Version
+
+```
+PUT YOUR "neomutt -v" OUTPUT HERE
+```
 
 ## Expected Behaviour
 
@@ -49,12 +52,6 @@ If NeoMutt crashed, did your OS create a 'coredump' file?
 
 - When I changed my config
   Can you narrow down **what** you changed?
-
-## NeoMutt Version
-
-```
-PUT YOUR "neomutt -v" OUTPUT HERE
-```
 
 ## Extra Info
 
