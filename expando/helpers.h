@@ -25,12 +25,7 @@
 #define MUTT_EXPANDO_HELPERS_H
 
 struct Buffer;
-struct ExpandoDefinition;
 struct ExpandoRenderData;
-
-const char *skip_classic_expando      (const char *str, const struct ExpandoDefinition *defs);
-const char *skip_until_ch             (const char *start, char terminator);
-const char *skip_until_classic_expando(const char *start);
 
 const struct ExpandoRenderData *find_get_number(const struct ExpandoRenderData *rdata, int did, int uid);
 const struct ExpandoRenderData *find_get_string(const struct ExpandoRenderData *rdata, int did, int uid);

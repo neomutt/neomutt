@@ -23,7 +23,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <limits.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "expando/lib.h"
@@ -58,7 +57,7 @@ void test_expando_complex_if_else(void)
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
-    fmt.max_cols = INT_MAX;
+    fmt.max_cols = -1;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
 
@@ -83,7 +82,7 @@ void test_expando_complex_if_else(void)
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 4;
-    fmt.max_cols = INT_MAX;
+    fmt.max_cols = -1;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
 

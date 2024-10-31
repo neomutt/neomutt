@@ -29,6 +29,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "node_text.h"
 #include "format.h"
@@ -50,58 +51,92 @@ static int node_text_render(const struct ExpandoNode *node,
 
 /**
  * node_text_new - Create a new Text ExpandoNode
- * @param start Start of text to store
- * @param end   End of text to store
+ * @param text Text to store
  * @retval ptr New Text ExpandoNode
+ *
+ * @note The text will be copied
  */
-struct ExpandoNode *node_text_new(const char *start, const char *end)
+struct ExpandoNode *node_text_new(const char *text)
 {
   struct ExpandoNode *node = node_new();
 
   node->type = ENT_TEXT;
-  node->text = mutt_strn_dup(start, end - start);
+  node->text = mutt_str_dup(text);
   node->render = node_text_render;
 
   return node;
 }
 
 /**
- * skip_until_ch_or_end - Search for a terminator character
- * @param start      Start of string
- * @param terminator Terminating character
- * @param end        End of string
- * @retval ptr Position of terminator character, or end-of-string
+ * node_text_parse - Extract a block of text
+ * @param[in]  str          String to parse
+ * @param[in]  term_chars   Terminator characters, e.g. #NTE_GREATER
+ * @param[out] parsed_until First character after parsed text
+ * @retval ptr New Text ExpandoNode
+ *
+ * Parse as much text as possible until the end of the line, or a terminator
+ * character is matched.
+ *
+ * May return NULL if a terminator character is found immediately.
+ *
+ * @note `\` before a character makes it literal
+ * @note `%%` is interpreted as a literal `%` character
+ * @note '%' is always special
  */
-static const char *skip_until_ch_or_end(const char *start, char terminator, const char *end)
+struct ExpandoNode *node_text_parse(const char *str, NodeTextTermFlags term_chars,
+                                    const char **parsed_until)
 {
-  while (*start)
+  if (!str || (str[0] == '\0') || !parsed_until)
+    return NULL;
+
+  struct Buffer *text = buf_pool_get();
+
+  while (str[0] != '\0')
   {
-    if (*start == terminator)
+    if (str[0] == '\\') // Literal character
     {
-      break;
+      if (str[1] == '\0')
+      {
+        buf_addch(text, '\\');
+        str++;
+        break;
+      }
+
+      buf_addch(text, str[1]);
+      str += 2;
+      continue;
     }
 
-    if (end && (start > (end - 1)))
+    if ((str[0] == '%') && (str[1] == '%')) // Literal %
     {
-      break;
+      buf_addch(text, '%');
+      str += 2;
+      continue;
     }
 
-    start++;
+    if (str[0] == '%') // '%' is always special
+      break;
+
+    if ((str[0] == '&') && (term_chars & NTE_AMPERSAND))
+      break;
+
+    if ((str[0] == '>') && (term_chars & NTE_GREATER))
+      break;
+
+    if ((str[0] == '?') && (term_chars & NTE_QUESTION))
+      break;
+
+    buf_addch(text, str[0]); // Plain text
+    str++;
   }
 
-  return start;
-}
+  *parsed_until = str; // First unused character
 
-/**
- * node_text_parse - Extract a block of text
- * @param str          String to parse
- * @param end          End of string
- * @param parsed_until First character after parsed text
- * @retval ptr New Text ExpandoNode
- */
-struct ExpandoNode *node_text_parse(const char *str, const char *end, const char **parsed_until)
-{
-  const char *text_end = skip_until_ch_or_end(str, '%', end);
-  *parsed_until = text_end;
-  return node_text_new(str, text_end);
+  struct ExpandoNode *node = NULL;
+  if (!buf_is_empty(text))
+    node = node_text_new(buf_string(text));
+
+  buf_pool_release(&text);
+
+  return node;
 }

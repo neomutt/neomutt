@@ -60,5 +60,19 @@ void test_expando_padding(void)
   check_node_padding(node_get_child(right, 3), "C", EPT_SOFT_FILL);
 
   expando_free(&exp);
+
+  input = "%30* ";
+  buf_reset(err);
+  exp = expando_parse(input, FormatDef, err);
+  TEST_CHECK(exp == NULL);
+  TEST_CHECK(!buf_is_empty(err));
+
+  input = "%|";
+  buf_reset(err);
+  exp = expando_parse(input, FormatDef, err);
+  TEST_CHECK(exp != NULL);
+  TEST_CHECK(buf_is_empty(err));
+  expando_free(&exp);
+
   buf_pool_release(&err);
 }

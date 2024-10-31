@@ -148,7 +148,15 @@ time_t cutoff_this(char period)
       break;
 
     case 'w':
-      tm.tm_mday = 1;
+      tm.tm_hour = 0; // Beginning of day (Midnight)
+      tm.tm_min = 0;  // Beginning of hour
+      tm.tm_sec = 0;  // Beginning of minute
+      int bow = 0;    // Beginning of week
+      if (tm.tm_wday == 0)
+        bow = 6; // LCOV_EXCL_LINE
+      else
+        bow = tm.tm_wday - 1; // LCOV_EXCL_LINE
+      tm.tm_mday -= bow;
       break;
   }
 
@@ -203,14 +211,24 @@ struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid)
 }
 
 /**
- * node_conddate_parse - Parse a CondDate format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
+ * node_conddate_parse - Parse a CondDate format string
+ * @param[in]  str          String to parse
+ * @param[in]  did          Domain ID
+ * @param[in]  uid          Unique ID
+ * @param[out] parsed_until First character after parsed string
+ * @param[out] err          Buffer for errors
  */
 struct ExpandoNode *node_conddate_parse(const char *str, int did, int uid,
                                         const char **parsed_until,
                                         struct ExpandoParseError *err)
 {
+  if (!str || (str[0] == '\0') || !parsed_until || !err)
+    return NULL;
+
   int count = 0;
   char period = '\0';
+
+  str++;
 
   if (isdigit(*str))
   {

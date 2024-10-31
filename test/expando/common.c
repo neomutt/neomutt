@@ -35,17 +35,17 @@ void check_node_text(struct ExpandoNode *node, const char *text)
   TEST_CHECK(mutt_str_equal(node->text, text));
 }
 
-void check_node_expando(struct ExpandoNode *node, const char *exp,
+void check_node_expando(struct ExpandoNode *node, const char *text,
                         const struct ExpandoFormat *fmt_expected)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_EXPANDO);
   TEST_CHECK(node->ndata != NULL);
 
-  if (exp)
+  if (text)
   {
-    TEST_CHECK(mutt_str_equal(node->text, exp));
-    TEST_MSG("Expected: %s", exp);
+    TEST_CHECK(mutt_str_equal(node->text, text));
+    TEST_MSG("Expected: %s", text);
     TEST_MSG("Actual:   %s", node->text);
   }
 
@@ -87,7 +87,7 @@ void check_node_condbool(struct ExpandoNode *node)
 {
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_CONDBOOL);
-  TEST_CHECK(node->ndata == NULL);
+  TEST_CHECK(node->ndata != NULL);
 
   struct ExpandoFormat *fmt = node->format;
   TEST_CHECK(fmt == NULL);
@@ -98,21 +98,20 @@ void check_node_conddate(struct ExpandoNode *node, int count, char period)
   TEST_CHECK(node != NULL);
   TEST_CHECK(node->type == ENT_CONDDATE);
 
-  TEST_CHECK(node->ndata != NULL);
   struct NodeCondDatePrivate *priv = node->ndata;
 
   TEST_CHECK(priv->count == count);
   TEST_CHECK(priv->period == period);
 }
 
-struct ExpandoNode *parse_date(const char *str, int did, int uid, ExpandoParserFlags flags,
+struct ExpandoNode *parse_date(const char *str, struct ExpandoFormat *fmt,
+                               int did, int uid, ExpandoParserFlags flags,
                                const char **parsed_until, struct ExpandoParseError *err)
 {
-  // str-1 is always something valid
-  if (*(str - 1) == '<')
+  if (flags & EP_CONDITIONAL)
   {
-    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
+    return node_conddate_parse(str, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, did, uid, ']', parsed_until, err);
+  return node_expando_parse_enclosure(str, did, uid, ']', fmt, parsed_until, err);
 }

@@ -313,15 +313,15 @@ void test_expando_colors_render(void)
     };
 
     struct SimpleExpandoData data = {
-      .s = "Táéí",
+      .s = "Tá éí",
       .C = 1,
     };
 
-    char expected[] = "\x0e\x63Tá\x0e\x5b\x0e\x63Táéí\x0e\x5b";
+    char expected[] = "\x0e\x63Tá \x0e\x5b\x0e\x63Táéí\x0e\x5b";
     struct Buffer *buf = buf_pool_get();
-    expando_render(exp, render, &data, MUTT_FORMAT_INDEX, 6, buf);
+    expando_render(exp, render, &data, MUTT_FORMAT_INDEX, 7, buf);
 
-    TEST_CHECK(mutt_strwidth(expected) == 6);
+    TEST_CHECK(mutt_strwidth(expected) == 7);
     // TEST_CHECK_STR_EQ(buf_string(buf), expected);
     // TEST_MSG("Expected: %s", expected);
     // TEST_MSG("Actual:   %s", buf_string(buf));

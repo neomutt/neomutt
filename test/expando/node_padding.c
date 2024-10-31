@@ -127,7 +127,7 @@ void test_expando_node_padding(void)
     buf_pool_release(&buf);
   }
 
-  // struct ExpandoNode *node_padding_parse(const char *str, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
+  // struct ExpandoNode *node_padding_parse(const char *str, struct ExpandoFormat *fmt, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
   {
     struct ExpandoParseError err = { 0 };
     const char *str = NULL;
@@ -135,25 +135,25 @@ void test_expando_node_padding(void)
     struct ExpandoNode *node = NULL;
 
     str = "?X";
-    node = node_padding_parse(str, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
+    node = node_padding_parse(str, NULL, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
     str = "|X";
-    node = node_padding_parse(str, 1, 2, EP_CONDITIONAL, &parsed_until, &err);
+    node = node_padding_parse(str, NULL, 1, 2, EP_CONDITIONAL, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
     str = "|X";
-    node = node_padding_parse(str, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
+    node = node_padding_parse(str, NULL, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
 
     str = ">X";
-    node = node_padding_parse(str, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
+    node = node_padding_parse(str, NULL, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
 
     str = "*X";
-    node = node_padding_parse(str, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
+    node = node_padding_parse(str, NULL, 1, 2, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
   }

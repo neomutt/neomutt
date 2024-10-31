@@ -31,10 +31,8 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "node_condbool.h"
-#include "definition.h"
 #include "helpers.h"
 #include "node.h"
-#include "parse.h"
 #include "render.h"
 
 /**
@@ -55,47 +53,6 @@ struct ExpandoNode *node_condbool_new(const char *start, const char *end, int di
   node->render = node_condbool_render;
 
   return node;
-}
-
-/**
- * node_condbool_parse - Parse a CondBool format string - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
- */
-struct ExpandoNode *node_condbool_parse(const char *str,
-                                        const struct ExpandoDefinition *defs,
-                                        ExpandoParserFlags flags, const char **parsed_until,
-                                        struct ExpandoParseError *err)
-{
-  const struct ExpandoDefinition *def = defs;
-
-  const char *format_end = skip_until_classic_expando(str);
-  const char *expando_end = skip_classic_expando(format_end, defs);
-  char expando[128] = { 0 };
-  const int expando_len = expando_end - format_end;
-  mutt_strn_copy(expando, format_end, expando_len, sizeof(expando));
-
-  while (def && def->short_name)
-  {
-    if (mutt_str_equal(def->short_name, expando))
-    {
-      if (def->parse)
-      {
-        return def->parse(str, def->did, def->uid, flags, parsed_until, err);
-      }
-      else
-      {
-        *parsed_until = expando_end;
-        return node_condbool_new(format_end, expando_end, def->did, def->uid);
-      }
-    }
-
-    def++;
-  }
-
-  err->position = format_end;
-  // L10N: e.g. "Unknown expando: %Q"
-  snprintf(err->message, sizeof(err->message), _("Unknown expando: %%%.*s"),
-           expando_len, format_end);
-  return NULL;
 }
 
 /**

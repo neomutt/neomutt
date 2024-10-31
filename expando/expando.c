@@ -28,15 +28,18 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "expando.h"
 #include "node.h"
-#include "node_condition.h"
 #include "node_container.h"
 #include "node_padding.h"
+#include "node_text.h"
 #include "parse.h"
 #include "render.h"
+
+struct ExpandoDefinition;
 
 /**
  * expando_new - Create an Expando from a string
@@ -84,18 +87,9 @@ struct Expando *expando_parse(const char *str, const struct ExpandoDefinition *d
   struct Expando *exp = expando_new(str);
 
   struct ExpandoParseError error = { 0 };
-  const char *end = NULL;
-  const char *start = exp->string;
 
-  while (*start)
-  {
-    struct ExpandoNode *node = node_parse(start, NULL, CON_NO_CONDITION, &end, defs, &error);
-    if (!node)
-      break;
-
-    node_add_child(exp->node, node);
-    start = end;
-  }
+  const char *parsed_until = NULL;
+  node_parse_many(exp->node, str, NTE_NO_FLAGS, defs, &parsed_until, &error);
 
   if (error.position)
   {

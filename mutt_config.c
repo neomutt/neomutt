@@ -33,6 +33,7 @@
  */
 
 #include "config.h"
+#include <ctype.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -160,17 +161,18 @@ static const struct ExpandoDefinition AttachFormatDef[] = {
  * Parse a custom Expando of the form, "%(string)".
  * The "string" will be passed to strftime().
  */
-struct ExpandoNode *parse_index_date_recv_local(const char *str, int did,
+struct ExpandoNode *parse_index_date_recv_local(const char *str,
+                                                struct ExpandoFormat *fmt, int did,
                                                 int uid, ExpandoParserFlags flags,
                                                 const char **parsed_until,
                                                 struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
+    return node_conddate_parse(str, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, did, uid, ')', parsed_until, err);
+  return node_expando_parse_enclosure(str, did, uid, ')', fmt, parsed_until, err);
 }
 
 /**
@@ -179,16 +181,17 @@ struct ExpandoNode *parse_index_date_recv_local(const char *str, int did,
  * Parse a custom expando of the form, "%[string]".
  * The "string" will be passed to strftime().
  */
-struct ExpandoNode *parse_index_date_local(const char *str, int did, int uid,
-                                           ExpandoParserFlags flags, const char **parsed_until,
+struct ExpandoNode *parse_index_date_local(const char *str, struct ExpandoFormat *fmt,
+                                           int did, int uid, ExpandoParserFlags flags,
+                                           const char **parsed_until,
                                            struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
+    return node_conddate_parse(str, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, did, uid, ']', parsed_until, err);
+  return node_expando_parse_enclosure(str, did, uid, ']', fmt, parsed_until, err);
 }
 
 /**
@@ -197,16 +200,17 @@ struct ExpandoNode *parse_index_date_local(const char *str, int did, int uid,
  * Parse a custom Expando of the form, "%{string}".
  * The "string" will be passed to strftime().
  */
-struct ExpandoNode *parse_index_date(const char *str, int did, int uid,
-                                     ExpandoParserFlags flags, const char **parsed_until,
+struct ExpandoNode *parse_index_date(const char *str, struct ExpandoFormat *fmt,
+                                     int did, int uid, ExpandoParserFlags flags,
+                                     const char **parsed_until,
                                      struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
   {
-    return node_conddate_parse(str + 1, did, uid, parsed_until, err);
+    return node_conddate_parse(str, did, uid, parsed_until, err);
   }
 
-  return node_expando_parse_enclosure(str, did, uid, '}', parsed_until, err);
+  return node_expando_parse_enclosure(str, did, uid, '}', fmt, parsed_until, err);
 }
 
 /**
@@ -216,8 +220,9 @@ struct ExpandoNode *parse_index_date(const char *str, int did, int uid,
  * The "name" will be looked up as an index-hook, then the result parsed as an
  * Expando.
  */
-struct ExpandoNode *parse_index_hook(const char *str, int did, int uid,
-                                     ExpandoParserFlags flags, const char **parsed_until,
+struct ExpandoNode *parse_index_hook(const char *str, struct ExpandoFormat *fmt,
+                                     int did, int uid, ExpandoParserFlags flags,
+                                     const char **parsed_until,
                                      struct ExpandoParseError *err)
 {
   if (flags & EP_CONDITIONAL)
@@ -228,22 +233,27 @@ struct ExpandoNode *parse_index_hook(const char *str, int did, int uid,
     return NULL;
   }
 
-  return node_expando_parse_enclosure(str, did, uid, '@', parsed_until, err);
+  return node_expando_parse_enclosure(str, did, uid, '@', fmt, parsed_until, err);
 }
 
 /**
  * parse_tags_transformed - Parse a Tags-Transformed Expando - Implements ExpandoDefinition::parse() - @ingroup expando_parse_api
  *
- * Parse a custom expando of the form, "%G?" where '?' is an alphabetic character.
+ * Parse a custom expando of the form, "%G?" where '?' is an alpha-numeric character.
  */
-struct ExpandoNode *parse_tags_transformed(const char *str, int did, int uid,
-                                           ExpandoParserFlags flags, const char **parsed_until,
+struct ExpandoNode *parse_tags_transformed(const char *str, struct ExpandoFormat *fmt,
+                                           int did, int uid, ExpandoParserFlags flags,
+                                           const char **parsed_until,
                                            struct ExpandoParseError *err)
 {
+  // Tag expando %G must use an suffix from [A-Za-z0-9], e.g. %Ga, %GL
+  if (!isalnum(str[1]))
+    return NULL;
+
   // Let the basic expando parser do the work
   flags |= EP_NO_CUSTOM_PARSE;
-  struct ExpandoNode *node = node_expando_parse(str, IndexFormatDef, flags,
-                                                parsed_until, err);
+  struct ExpandoNode *node = parse_short_name(str, IndexFormatDef, flags, fmt,
+                                              parsed_until, err);
 
   // but adjust the node to take one more character
   node->text = mutt_strn_dup((*parsed_until) - 1, 2);
@@ -264,20 +274,20 @@ struct ExpandoNode *parse_tags_transformed(const char *str, int did, int uid,
  * Parse a Subject Expando, "%s", into two separate Nodes.
  * One for the tree, one for the subject.
  */
-struct ExpandoNode *parse_subject(const char *str, int did, int uid,
-                                  ExpandoParserFlags flags, const char **parsed_until,
-                                  struct ExpandoParseError *err)
+struct ExpandoNode *parse_subject(const char *str, struct ExpandoFormat *fmt,
+                                  int did, int uid, ExpandoParserFlags flags,
+                                  const char **parsed_until, struct ExpandoParseError *err)
 {
   // Let the basic expando parser do the work
   flags |= EP_NO_CUSTOM_PARSE;
-  struct ExpandoNode *node_subj = node_expando_parse(str, IndexFormatDef, flags,
-                                                     parsed_until, err);
+  struct ExpandoNode *node_subj = parse_short_name(str, IndexFormatDef, flags,
+                                                   NULL, parsed_until, err);
 
   struct ExpandoNode *node_tree = node_expando_new(NULL, ED_ENVELOPE, ED_ENV_THREAD_TREE);
-  // Move the formatting info to the container
   struct ExpandoNode *node_cont = node_container_new();
-  node_cont->format = node_subj->format;
-  node_subj->format = NULL;
+
+  // Apply the formatting info to the container
+  node_cont->format = fmt;
 
   node_add_child(node_cont, node_tree);
   node_add_child(node_cont, node_subj);
@@ -297,6 +307,8 @@ struct ExpandoNode *parse_subject(const char *str, int did, int uid,
  * - $index_format
  * - $message_format
  * - $pager_format
+ *
+ * @note Longer Expandos must precede any similar, but shorter Expandos
  */
 const struct ExpandoDefinition IndexFormatDef[] = {
   // clang-format off
@@ -309,16 +321,16 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "A",  "reply-to",            ED_ENVELOPE, ED_ENV_REPLY_TO,            E_TYPE_STRING, NULL },
   { "b",  "mailbox-name",        ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        E_TYPE_STRING, NULL },
   { "B",  "list-address",        ED_ENVELOPE, ED_ENV_LIST_ADDRESS,        E_TYPE_STRING, NULL },
+  { "cr", "body-characters",     ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     E_TYPE_NUMBER, NULL },
   { "c",  "size",                ED_EMAIL,    ED_EMA_SIZE,                E_TYPE_STRING, NULL },
   { "C",  "number",              ED_EMAIL,    ED_EMA_NUMBER,              E_TYPE_NUMBER, NULL },
-  { "cr", "body-characters",     ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     E_TYPE_NUMBER, NULL },
   { "d",  "date-format",         ED_EMAIL,    ED_EMA_DATE_FORMAT,         E_TYPE_STRING, NULL },
   { "D",  "date-format-local",   ED_EMAIL,    ED_EMA_DATE_FORMAT_LOCAL,   E_TYPE_STRING, NULL },
   { "e",  "thread-number",       ED_EMAIL,    ED_EMA_THREAD_NUMBER,       E_TYPE_NUMBER, NULL },
   { "E",  "thread-count",        ED_EMAIL,    ED_EMA_THREAD_COUNT,        E_TYPE_NUMBER, NULL },
   { "f",  "from-full",           ED_ENVELOPE, ED_ENV_FROM_FULL,           E_TYPE_STRING, NULL },
-  { "F",  "sender",              ED_ENVELOPE, ED_ENV_SENDER,              E_TYPE_STRING, NULL },
   { "Fp", "sender-plain",        ED_ENVELOPE, ED_ENV_SENDER_PLAIN,        E_TYPE_STRING, NULL },
+  { "F",  "sender",              ED_ENVELOPE, ED_ENV_SENDER,              E_TYPE_STRING, NULL },
   { "g",  "tags",                ED_EMAIL,    ED_EMA_TAGS,                E_TYPE_STRING, NULL },
   { "G",  "tags-transformed",    ED_EMAIL,    ED_EMA_TAGS_TRANSFORMED,    E_TYPE_STRING, parse_tags_transformed },
   { "H",  "spam",                ED_ENVELOPE, ED_ENV_SPAM,                E_TYPE_STRING, NULL },

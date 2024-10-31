@@ -60,6 +60,17 @@ static void dump_node_condition(const struct ExpandoNode *node, struct Buffer *b
   buf_addstr(buf, "|");
   dump_node(node_false, buf);
 
+  const struct ExpandoFormat *fmt = node->format;
+  if (fmt)
+  {
+    const char *just = name_format_justify(fmt->justification);
+    if (fmt->max_cols == INT_MAX)
+      buf_add_printf(buf, ":{%d,MAX,%s,'%c'}", fmt->min_cols, just + 8, fmt->leader);
+    else
+      buf_add_printf(buf, ":{%d,%d,%s,'%c'}", fmt->min_cols, fmt->max_cols,
+                     just + 8, fmt->leader);
+  }
+
   buf_addstr(buf, ">");
 }
 
@@ -68,8 +79,8 @@ static void dump_node_condbool(const struct ExpandoNode *node, struct Buffer *bu
   buf_addstr(buf, "<BOOL");
   dump_did_uid(node, buf);
 
-  ASSERT(node->ndata == NULL);
-  ASSERT(node->ndata_free == NULL);
+  ASSERT(node->ndata != NULL);
+  ASSERT(node->ndata_free != NULL);
 
   buf_addstr(buf, ">");
 }

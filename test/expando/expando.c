@@ -28,6 +28,7 @@
 #include "email/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 static void index_a(const struct ExpandoNode *node, void *data,
                     MuttFormatFlags flags, struct Buffer *buf)
@@ -117,29 +118,97 @@ void test_expando_expando(void)
       // clang-format on
     };
 
-    const char *str = "%a";
+    {
+      const char *str = "%a";
 
-    struct Buffer *err = buf_pool_get();
-    struct Expando *exp = NULL;
+      struct Buffer *err = buf_pool_get();
+      struct Expando *exp = NULL;
 
-    exp = expando_parse(str, TestFormatDef, err);
-    TEST_CHECK(exp != NULL);
+      exp = expando_parse(str, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
 
-    int rc;
+      int rc;
 
-    struct Buffer *buf = buf_pool_get();
+      struct Buffer *buf = buf_pool_get();
 
-    rc = expando_render(NULL, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
-    TEST_CHECK(rc == 0);
+      rc = expando_render(NULL, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
+      TEST_CHECK(rc == 0);
 
-    rc = expando_render(exp, NULL, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
-    TEST_CHECK(rc == 0);
+      rc = expando_render(exp, NULL, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
+      TEST_CHECK(rc == 0);
 
-    rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-    TEST_CHECK(rc == 5);
+      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK(rc == 5);
 
-    buf_pool_release(&buf);
-    buf_pool_release(&err);
-    expando_free(&exp);
+      buf_pool_release(&buf);
+      buf_pool_release(&err);
+      expando_free(&exp);
+    }
+
+    {
+      const char *str = "%=30.10_<a?BBB&CCC>";
+
+      struct Buffer *err = buf_pool_get();
+      struct Expando *exp = NULL;
+
+      exp = expando_parse(str, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
+
+      int rc;
+
+      struct Buffer *buf = buf_pool_get();
+
+      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK(rc == 30);
+      TEST_CHECK_STR_EQ(buf_string(buf), "             bbb              ");
+
+      buf_pool_release(&buf);
+      buf_pool_release(&err);
+      expando_free(&exp);
+    }
+
+    {
+      const char *str = "%=30<a?BBB&CCC>";
+
+      struct Buffer *err = buf_pool_get();
+      struct Expando *exp = NULL;
+
+      exp = expando_parse(str, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
+
+      int rc;
+
+      struct Buffer *buf = buf_pool_get();
+
+      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK(rc == 30);
+      TEST_CHECK_STR_EQ(buf_string(buf), "             BBB              ");
+
+      buf_pool_release(&buf);
+      buf_pool_release(&err);
+      expando_free(&exp);
+    }
+
+    {
+      const char *str = "%.10<a?BBB&CCC>";
+
+      struct Buffer *err = buf_pool_get();
+      struct Expando *exp = NULL;
+
+      exp = expando_parse(str, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
+
+      int rc;
+
+      struct Buffer *buf = buf_pool_get();
+
+      rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+      TEST_CHECK(rc == 10);
+      TEST_CHECK_STR_EQ(buf_string(buf), "       BBB");
+
+      buf_pool_release(&buf);
+      buf_pool_release(&err);
+      expando_free(&exp);
+    }
   }
 }

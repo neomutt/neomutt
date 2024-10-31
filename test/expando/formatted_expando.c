@@ -23,7 +23,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <limits.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "expando/lib.h"
@@ -45,13 +44,15 @@ void test_expando_formatted_expando(void)
   TEST_CHECK(exp != NULL);
   TEST_CHECK(buf_is_empty(err));
 
+  // "%X"
   check_node_expando(node_get_child(exp->node, 0), NULL, NULL);
   check_node_text(node_get_child(exp->node, 1), " ");
 
   {
+    // "%8X"
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 8;
-    fmt.max_cols = INT_MAX;
+    fmt.max_cols = -1;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = ' ';
     check_node_expando(node_get_child(exp->node, 2), NULL, &fmt);
@@ -59,9 +60,10 @@ void test_expando_formatted_expando(void)
   }
 
   {
+    // "%-8X"
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 8;
-    fmt.max_cols = INT_MAX;
+    fmt.max_cols = -1;
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
     check_node_expando(node_get_child(exp->node, 4), NULL, &fmt);
@@ -69,9 +71,10 @@ void test_expando_formatted_expando(void)
   }
 
   {
+    // "%08X"
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 8;
-    fmt.max_cols = INT_MAX;
+    fmt.max_cols = -1;
     fmt.justification = JUSTIFY_RIGHT;
     fmt.leader = '0';
     check_node_expando(node_get_child(exp->node, 6), NULL, &fmt);
@@ -79,39 +82,43 @@ void test_expando_formatted_expando(void)
   }
 
   {
+    // "%.8X"
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 0;
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_RIGHT;
-    fmt.leader = ' ';
+    fmt.leader = '0';
     check_node_expando(node_get_child(exp->node, 8), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 9), " ");
   }
 
   {
+    // "%8.8X"
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 8;
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_RIGHT;
-    fmt.leader = ' ';
+    fmt.leader = '0';
     check_node_expando(node_get_child(exp->node, 10), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 11), " ");
   }
 
   {
+    // "%-8.8X"
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 8;
     fmt.max_cols = 8;
     fmt.justification = JUSTIFY_LEFT;
-    fmt.leader = ' ';
+    fmt.leader = '0';
     check_node_expando(node_get_child(exp->node, 12), NULL, &fmt);
     check_node_text(node_get_child(exp->node, 13), " ");
   }
 
   {
+    // "%=8X"
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 8;
-    fmt.max_cols = INT_MAX;
+    fmt.max_cols = -1;
     fmt.justification = JUSTIFY_CENTER;
     fmt.leader = ' ';
     check_node_expando(node_get_child(exp->node, 14), NULL, &fmt);

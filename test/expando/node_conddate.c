@@ -67,28 +67,47 @@ void test_expando_node_conddate(void)
   }
 
   // struct ExpandoNode *node_conddate_parse(const char *str, int did, int uid, const char **parsed_until, struct ExpandoParseError *err);
+  // Degenerate
+  {
+    const char *parsed_until = NULL;
+    struct ExpandoNode *node = NULL;
+    struct ExpandoParseError err = { 0 };
+
+    node = node_conddate_parse(NULL, 0, 0, &parsed_until, &err);
+    TEST_CHECK(node == NULL);
+
+    node = node_conddate_parse("", 0, 0, &parsed_until, &err);
+    TEST_CHECK(node == NULL);
+
+    node = node_conddate_parse("abc", 0, 0, NULL, &err);
+    TEST_CHECK(node == NULL);
+
+    node = node_conddate_parse("abc", 0, 0, &parsed_until, NULL);
+    TEST_CHECK(node == NULL);
+  }
+
   {
     const char *parsed_until = NULL;
     struct ExpandoParseError err = { 0 };
 
     const char *str = "%<[3d?aaa&bbb>";
-    struct ExpandoNode *node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
+    struct ExpandoNode *node = node_conddate_parse(str + 2, 1, 2, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     TEST_MSG(err.message);
     node_free(&node);
 
     str = "%<[2H?aaa&bbb>";
-    node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
+    node = node_conddate_parse(str + 2, 1, 2, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     TEST_MSG(err.message);
     node_free(&node);
 
     str = "%<[999999d?aaa&bbb>";
-    node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
+    node = node_conddate_parse(str + 2, 1, 2, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
     str = "%<[4Q?aaa&bbb>";
-    node = node_conddate_parse(str + 3, 1, 2, &parsed_until, &err);
+    node = node_conddate_parse(str + 2, 1, 2, &parsed_until, &err);
     TEST_CHECK(node == NULL);
   }
 
@@ -126,7 +145,7 @@ void test_expando_node_conddate(void)
     for (size_t i = 0; i < mutt_array_size(test_dates); i++)
     {
       TEST_CASE(test_dates[i].str);
-      struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 3, 1, 2, &parsed_until, &err);
+      struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 2, 1, 2, &parsed_until, &err);
       TEST_CHECK(node != NULL);
 
       int test_date = now - ((test_dates[i].time * 9) / 10); // 10% newer
@@ -140,6 +159,51 @@ void test_expando_node_conddate(void)
       test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
 
       rc = node_conddate_render(node, TestRenderData, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
+      TEST_CHECK(rc == 0);
+      TEST_MSG("Expected: %d", 0);
+      TEST_MSG("Actual:   %d", rc);
+      TEST_CHECK(buf_is_empty(buf));
+
+      node_free(&node);
+    }
+
+    buf_pool_release(&buf);
+  }
+
+  // int node_conddate_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  {
+    static const struct ExpandoRenderData TestRenderData[] = {
+      // clang-format off
+      { 1, 2, NULL, test_d_num },
+      { -1, -1, NULL, NULL },
+      // clang-format on
+    };
+
+    static const struct TestDates test_dates[] = {
+      // clang-format off
+      { "%<[y?aaa&bbb>", 365*24*60*60 },
+      { "%<[m?aaa&bbb>",  30*24*60*60 },
+      { "%<[w?aaa&bbb>",   7*24*60*60 },
+      { "%<[d?aaa&bbb>",     24*60*60 },
+      { "%<[H?aaa&bbb>",        60*60 },
+      { "%<[M?aaa&bbb>",           60 },
+      // clang-format off
+    };
+
+    const time_t now = time(NULL);
+    struct Buffer *buf = buf_pool_get();
+    const char *parsed_until = NULL;
+    struct ExpandoParseError err = { 0 };
+
+    for (size_t i = 0; i < mutt_array_size(test_dates); i++)
+    {
+      TEST_CASE(test_dates[i].str);
+      struct ExpandoNode *node = node_conddate_parse(test_dates[i].str + 2, 1, 2, &parsed_until, &err);
+      TEST_CHECK(node != NULL);
+
+      int test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
+
+      int rc = node_conddate_render(node, TestRenderData, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
       TEST_CHECK(rc == 0);
       TEST_MSG("Expected: %d", 0);
       TEST_MSG("Actual:   %d", rc);

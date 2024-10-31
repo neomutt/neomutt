@@ -24,23 +24,27 @@
 #ifndef MUTT_EXPANDO_PARSER_H
 #define MUTT_EXPANDO_PARSER_H
 
-#include "node_condition.h"
+#include <stdbool.h>
+#include "node_text.h"
 
 struct ExpandoDefinition;
+struct ExpandoNode;
 
 /**
  * struct ExpandoParseError - Buffer for parsing errors
  */
 struct ExpandoParseError
 {
-  char        message[256];   ///< Error message
+  char        message[1024];  ///< Error message
   const char *position;       ///< Position of error in original string
 };
 
-struct ExpandoNode *node_parse(const char *str, const char *end,
-                               enum ExpandoConditionStart condition_start,
-                               const char **parsed_until,
-                               const struct ExpandoDefinition *defs,
-                               struct ExpandoParseError *err);
+struct ExpandoNode *node_parse_one(const char *str, NodeTextTermFlags term_chars,
+                                   const struct ExpandoDefinition *defs,
+                                   const char **parsed_until, struct ExpandoParseError *err);
+
+bool node_parse_many(struct ExpandoNode *node_cont, const char *str,
+                     NodeTextTermFlags term_chars, const struct ExpandoDefinition *defs,
+                     const char **parsed_until, struct ExpandoParseError *err);
 
 #endif /* MUTT_EXPANDO_PARSER_H */

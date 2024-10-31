@@ -43,8 +43,7 @@ void test_expando_percent_sign_text(void)
   TEST_CHECK(exp != NULL);
   TEST_CHECK(buf_is_empty(err));
 
-  check_node_text(node_get_child(exp->node, 0), "percent ");
-  check_node_text(node_get_child(exp->node, 1), "%");
+  check_node_text(exp->node, "percent %");
 
   expando_free(&exp);
   buf_pool_release(&err);

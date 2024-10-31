@@ -56,17 +56,26 @@ int node_container_render(const struct ExpandoNode *node,
   struct ExpandoNode **enp = NULL;
   ARRAY_FOREACH(enp, &node->children)
   {
+    if (total_cols >= max_cols)
+      break;
     total_cols += node_render(*enp, rdata, tmp, max_cols - total_cols, data, flags);
   }
 
   if (fmt)
   {
-    int min_cols = MIN(fmt->min_cols, max_cols);
     struct Buffer *tmp2 = buf_pool_get();
-    total_cols = format_string(tmp2, min_cols, max_cols, fmt->justification,
-                               fmt->leader, buf_string(tmp), buf_len(tmp), true);
+
+    int max = max_cols;
+    if (fmt->max_cols >= 0)
+      max = MIN(max_cols, fmt->max_cols);
+    int min = MIN(fmt->min_cols, max);
+
+    total_cols = format_string(tmp2, min, max, fmt->justification, ' ',
+                               buf_string(tmp), buf_len(tmp), true);
+
     if (fmt->lower)
       buf_lower_special(tmp2);
+
     buf_addstr(buf, buf_string(tmp2));
     buf_pool_release(&tmp2);
   }

@@ -23,6 +23,7 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
@@ -56,33 +57,35 @@ void test_expando_parser(void)
     // Formatting
     { "",       "" },
     { "%X",     "<EXP:(EMAIL,ATTACHMENT_COUNT)>" },
-    { "%5X",    "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,MAX,RIGHT,' '}>" },
-    { "%.7X",   "<EXP:(EMAIL,ATTACHMENT_COUNT):{0,7,RIGHT,' '}>" },
-    { "%5.7X",  "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,7,RIGHT,' '}>" },
-    { "%-5X",   "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,MAX,LEFT,' '}>" },
-    { "%-.7X",  "<EXP:(EMAIL,ATTACHMENT_COUNT):{0,7,LEFT,' '}>" },
-    { "%-5.7X", "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,7,LEFT,' '}>" },
-    { "%05X",   "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,MAX,RIGHT,'0'}>" },
+    { "%5X",    "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,-1,RIGHT,' '}>" },
+    { "%.7X",   "<EXP:(EMAIL,ATTACHMENT_COUNT):{0,7,RIGHT,'0'}>" },
+    { "%5.7X",  "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,7,RIGHT,'0'}>" },
+    { "%-5X",   "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,-1,LEFT,' '}>" },
+    { "%-.7X",  "<EXP:(EMAIL,ATTACHMENT_COUNT):{0,7,LEFT,'0'}>" },
+    { "%-5.7X", "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,7,LEFT,'0'}>" },
+    { "%05X",   "<EXP:(EMAIL,ATTACHMENT_COUNT):{5,-1,RIGHT,'0'}>" },
 
     // Conditional (old form)
-    { "%?X??",        "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
-    { "%?X?&?",       "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
-    { "%?X?AAA?",     "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
-    { "%?X?AAA&?",    "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
-    { "%?X?&BBB?",    "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||<TEXT:'BBB'>>" },
-    { "%?X?AAA&BBB?", "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%?X??",           "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
+    { "%?X?&?",          "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
+    { "%?X?AAA?",        "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
+    { "%?X?AAA&?",       "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
+    { "%?X?&BBB?",       "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||<TEXT:'BBB'>>" },
+    { "%?X?AAA&BBB?",    "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%=30?X?AAA&BBB?", "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>:{30,-1,CENTER,' '}>" },
 
     // Conditional (new form)
-    { "%<X?>",        "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
-    { "%<X?&>",       "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
-    { "%<X?AAA>",     "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
-    { "%<X?AAA&>",    "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
-    { "%<X?&BBB>",    "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||<TEXT:'BBB'>>" },
-    { "%<X?AAA&BBB>", "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%<X?>",           "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
+    { "%<X?&>",          "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||>" },
+    { "%<X?AAA>",        "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
+    { "%<X?AAA&>",       "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|>" },
+    { "%<X?&BBB>",       "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>||<TEXT:'BBB'>>" },
+    { "%<X?AAA&BBB>",    "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
+    { "%=30<X?AAA&BBB>", "<COND:<BOOL(EMAIL,ATTACHMENT_COUNT)>|<TEXT:'AAA'>|<TEXT:'BBB'>:{30,-1,CENTER,' '}>" },
 
     // Dates
     { "%[%Y-%m-%d]",    "<EXP:'%Y-%m-%d'(EMAIL,STRF_LOCAL)>" },
-    { "%-5[%Y-%m-%d]",  "<EXP:'%Y-%m-%d'(EMAIL,STRF_LOCAL):{5,MAX,LEFT,' '}>" },
+    { "%-5[%Y-%m-%d]",  "<EXP:'%Y-%m-%d'(EMAIL,STRF_LOCAL):{5,-1,LEFT,' '}>" },
 
     // Conditional dates
     { "%<[1M?AAA&BBB>",  "<COND:<DATE:(EMAIL,STRF_LOCAL):1:M>|<TEXT:'AAA'>|<TEXT:'BBB'>>" },
@@ -140,7 +143,6 @@ void test_expando_parser(void)
       "%<[99999b?aaa&bbb>",
       "%<[a?aaa&bbb>",
       "%99999c",
-      "%4.c",
       "%4.99999c",
       "%Q",
       "%[%a",
@@ -171,5 +173,61 @@ void test_expando_parser(void)
 
     buf_pool_release(&buf);
     buf_pool_release(&err);
+  }
+
+  {
+    struct ExpandoNode *node = NULL;
+    const char *parsed_until = NULL;
+    struct ExpandoParseError err = { 0 };
+
+    // struct ExpandoNode *node_parse_one(const char *str, NodeTextTermFlags term_chars, const struct ExpandoDefinition *defs, const char **parsed_until, struct ExpandoParseError *err);
+
+    node = node_parse_one(NULL, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node == NULL);
+
+    node = node_parse_one("", NTE_NO_FLAGS, NULL, &parsed_until, &err);
+    TEST_CHECK(node == NULL);
+
+    node = node_parse_one("", NTE_NO_FLAGS, TestFormatDef, NULL, &err);
+    TEST_CHECK(node == NULL);
+
+    node = node_parse_one("", NTE_NO_FLAGS, TestFormatDef, &parsed_until, NULL);
+    TEST_CHECK(node == NULL);
+
+    node = node_parse_one("abc", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node != NULL);
+    node_free(&node);
+
+    node = node_parse_one("%<a?b&c>", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node != NULL);
+    node_free(&node);
+
+    node = node_parse_one("%a", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(node != NULL);
+    node_free(&node);
+  }
+
+  {
+    struct ExpandoNode *node = node_new();
+    const char *parsed_until = NULL;
+    struct ExpandoParseError err = { 0 };
+    bool rc = false;
+
+    rc = node_parse_many(NULL, "%a", NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(rc == false);
+
+    rc = node_parse_many(node, NULL, NTE_NO_FLAGS, TestFormatDef, &parsed_until, &err);
+    TEST_CHECK(rc == false);
+
+    rc = node_parse_many(node, "%a", NTE_NO_FLAGS, NULL, &parsed_until, &err);
+    TEST_CHECK(rc == false);
+
+    rc = node_parse_many(node, "%a", NTE_NO_FLAGS, TestFormatDef, NULL, &err);
+    TEST_CHECK(rc == false);
+
+    rc = node_parse_many(node, "%a", NTE_NO_FLAGS, TestFormatDef, &parsed_until, NULL);
+    TEST_CHECK(rc == false);
+
+    node_free(&node);
   }
 }

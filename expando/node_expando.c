@@ -124,97 +124,152 @@ void node_expando_set_has_tree(const struct ExpandoNode *node, bool has_tree)
 
 /**
  * parse_format - Parse a format string
- * @param start Start of string
- * @param end   End of string
- * @param err   Buffer for errors
+ * @param[in]  str          String to parse
+ * @param[out] parsed_until First character after the parsed string
+ * @param[out] err          Buffer for errors
  * @retval ptr New ExpandoFormat object
  *
  * Parse a printf()-style format, e.g. '-15.20x'
+ *
+ * @note A trailing `_` (underscore) means lowercase the string
  */
-struct ExpandoFormat *parse_format(const char *start, const char *end,
+struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
                                    struct ExpandoParseError *err)
 {
-  if (start == end)
+  if (!str || !parsed_until || !err)
     return NULL;
+
+  const char *start = str;
 
   struct ExpandoFormat *fmt = mutt_mem_calloc(1, sizeof(struct ExpandoFormat));
 
   fmt->leader = ' ';
   fmt->justification = JUSTIFY_RIGHT;
   fmt->min_cols = 0;
-  fmt->max_cols = INT_MAX;
+  fmt->max_cols = -1;
 
-  if (*start == '-')
+  if (*str == '-')
   {
     fmt->justification = JUSTIFY_LEFT;
-    start++;
+    str++;
   }
-  else if (*start == '=')
+  else if (*str == '=')
   {
     fmt->justification = JUSTIFY_CENTER;
-    start++;
+    str++;
   }
 
-  if (*start == '0')
+  if (*str == '0')
   {
-    fmt->leader = '0';
-    start++;
+    // Ignore '0' with left-justification
+    if (fmt->justification != JUSTIFY_LEFT)
+      fmt->leader = '0';
+    str++;
   }
 
-  if (isdigit(*start))
+  // Parse the width (min_cols)
+  if (isdigit(*str))
   {
     unsigned short number = 0;
-    const char *end_ptr = mutt_str_atous(start, &number);
+    const char *end_ptr = mutt_str_atous(str, &number);
 
-    // NOTE(g0mb4): start is NOT null-terminated
-    if (!end_ptr || (end_ptr > end) || (number == USHRT_MAX))
+    if (!end_ptr || (number == USHRT_MAX))
     {
-      err->position = start;
-      snprintf(err->message, sizeof(err->message), _("Invalid number: %s"), start);
+      err->position = str;
+      snprintf(err->message, sizeof(err->message), _("Invalid number: %s"), str);
       FREE(&fmt);
       return NULL;
     }
 
     fmt->min_cols = number;
-    start = end_ptr;
-  };
-
-  if (*start == '.')
-  {
-    start++;
-
-    if (!isdigit(*start))
-    {
-      err->position = start;
-      // L10N: Expando format expected a number
-      snprintf(err->message, sizeof(err->message), _("Number is expected"));
-      FREE(&fmt);
-      return NULL;
-    }
-
-    unsigned short number = 0;
-    const char *end_ptr = mutt_str_atous(start, &number);
-
-    // NOTE(g0mb4): start is NOT null-terminated
-    if (!end_ptr || (end_ptr > end) || (number == USHRT_MAX))
-    {
-      err->position = start;
-      snprintf(err->message, sizeof(err->message), _("Invalid number: %s"), start);
-      FREE(&fmt);
-      return NULL;
-    }
-
-    fmt->max_cols = number;
-    start = end_ptr;
+    str = end_ptr;
   }
 
-  if (*start == '_')
+  // Parse the precision (max_cols)
+  if (*str == '.')
+  {
+    str++;
+
+    unsigned short number = 1;
+
+    if (isdigit(*str))
+    {
+      const char *end_ptr = mutt_str_atous(str, &number);
+
+      if (!end_ptr || (number == USHRT_MAX))
+      {
+        err->position = str;
+        snprintf(err->message, sizeof(err->message), _("Invalid number: %s"), str);
+        FREE(&fmt);
+        return NULL;
+      }
+
+      str = end_ptr;
+    }
+    else
+    {
+      number = 0;
+    }
+
+    fmt->leader = (number == 0) ? ' ' : '0';
+    fmt->max_cols = number;
+  }
+
+  // A modifier of '_' before the letter means force lower case
+  if (*str == '_')
   {
     fmt->lower = true;
-    start++;
+    str++;
   }
 
+  if (str == start) // Failed to parse anything
+    FREE(&fmt);
+
+  if (fmt && (fmt->min_cols == 0) && (fmt->max_cols == -1) && !fmt->lower)
+    FREE(&fmt);
+
+  *parsed_until = str;
   return fmt;
+}
+
+/**
+ * parse_short_name - Create an expando by its short name
+ * @param[in]  str          String to parse
+ * @param[in]  defs         Expando definitions
+ * @param[in]  flags        Flag for conditional expandos
+ * @param[in]  fmt          Formatting info
+ * @param[out] parsed_until First character after parsed string
+ * @param[out] err          Buffer for errors
+ * @retval ptr New ExpandoNode
+ */
+struct ExpandoNode *parse_short_name(const char *str, const struct ExpandoDefinition *defs,
+                                     ExpandoParserFlags flags,
+                                     struct ExpandoFormat *fmt, const char **parsed_until,
+                                     struct ExpandoParseError *err)
+{
+  if (!str || !defs)
+    return NULL;
+
+  const struct ExpandoDefinition *def = defs;
+  for (; def && def->short_name; def++)
+  {
+    size_t len = mutt_str_len(def->short_name);
+
+    if (mutt_strn_equal(def->short_name, str, len))
+    {
+      if (def->parse && !(flags & EP_NO_CUSTOM_PARSE))
+      {
+        return def->parse(str, fmt, def->did, def->uid, flags, parsed_until, err);
+      }
+      else
+      {
+        *parsed_until = str + len;
+        return node_expando_new(fmt, def->did, def->uid);
+      }
+    }
+  }
+
+  return NULL;
 }
 
 /**
@@ -230,67 +285,77 @@ struct ExpandoNode *node_expando_parse(const char *str, const struct ExpandoDefi
                                        ExpandoParserFlags flags, const char **parsed_until,
                                        struct ExpandoParseError *err)
 {
-  const struct ExpandoDefinition *def = defs;
+  ASSERT(str[0] == '%');
+  str++;
 
-  const char *format_end = skip_until_classic_expando(str);
-  const char *expando_end = skip_classic_expando(format_end, defs);
-  char expando[128] = { 0 };
-  const int expando_len = expando_end - format_end;
-  mutt_strn_copy(expando, format_end, expando_len, sizeof(expando));
-
-  struct ExpandoFormat *fmt = parse_format(str, format_end, err);
+  struct ExpandoFormat *fmt = parse_format(str, parsed_until, err);
   if (err->position)
   {
     FREE(&fmt);
     return NULL;
   }
 
-  while (def && def->short_name)
-  {
-    if (mutt_str_equal(def->short_name, expando))
-    {
-      if (def->parse && !(flags & EP_NO_CUSTOM_PARSE))
-      {
-        FREE(&fmt);
-        return def->parse(str, def->did, def->uid, flags, parsed_until, err);
-      }
-      else
-      {
-        *parsed_until = expando_end;
-        return node_expando_new(fmt, def->did, def->uid);
-      }
-    }
+  str = *parsed_until;
 
-    def++;
-  }
+  struct ExpandoNode *node = parse_short_name(str, defs, flags, fmt, parsed_until, err);
+  if (node)
+    return node;
 
-  err->position = format_end;
+  err->position = *parsed_until;
   // L10N: e.g. "Unknown expando: %Q"
-  snprintf(err->message, sizeof(err->message), _("Unknown expando: %%%.*s"),
-           expando_len, format_end);
+  snprintf(err->message, sizeof(err->message), _("Unknown expando: %%%.1s"), *parsed_until);
   FREE(&fmt);
   return NULL;
 }
 
 /**
+ * skip_until_ch - Search a string for a terminator character
+ * @param str        Start of string
+ * @param terminator Character to find
+ * @retval ptr Position of terminator character, or end-of-string
+ */
+const char *skip_until_ch(const char *str, char terminator)
+{
+  while (str[0] != '\0')
+  {
+    if (*str == terminator)
+      break;
+
+    if (str[0] == '\\') // Literal character
+    {
+      if (str[1] == '\0')
+        return str + 1;
+
+      str++;
+    }
+
+    str++;
+  }
+
+  return str;
+}
+
+/**
  * node_expando_parse_enclosure - Parse an enclosed Expando
- * @param str          String to parse
- * @param did          Domain ID
- * @param uid          Unique ID
- * @param terminator   Terminating character
- * @param parsed_until First character after the parsed string
- * @param err          Buffer for errors
+ * @param[in]  str          String to parse
+ * @param[in]  did          Domain ID
+ * @param[in]  uid          Unique ID
+ * @param[in]  terminator   Terminating character
+ * @param[in]  fmt          Formatting info
+ * @param[out] parsed_until First character after the parsed string
+ * @param[out] err          Buffer for errors
  * @retval ptr New ExpandoNode
  */
-struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int uid,
-                                                 char terminator, const char **parsed_until,
+struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did,
+                                                 int uid, char terminator,
+                                                 struct ExpandoFormat *fmt,
+                                                 const char **parsed_until,
                                                  struct ExpandoParseError *err)
+
 {
-  const char *format_end = skip_until_classic_expando(str);
+  str++; // skip opening char
 
-  format_end++; // skip opening char
-
-  const char *expando_end = skip_until_ch(format_end, terminator);
+  const char *expando_end = skip_until_ch(str, terminator);
 
   if (*expando_end != terminator)
   {
@@ -302,18 +367,21 @@ struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int u
     return NULL;
   }
 
-  // revert skipping for fmt
-  struct ExpandoFormat *fmt = parse_format(str, format_end - 1, err);
-  if (err->position)
-  {
-    FREE(&fmt);
-    return NULL;
-  }
-
   *parsed_until = expando_end + 1;
 
   struct ExpandoNode *node = node_expando_new(fmt, did, uid);
-  node->text = mutt_strn_dup(format_end, expando_end - format_end);
+
+  struct Buffer *buf = buf_pool_get();
+  for (; str < expando_end; str++)
+  {
+    if (str[0] == '\\')
+      continue;
+    buf_addch(buf, str[0]);
+  }
+
+  node->text = buf_strdup(buf);
+  buf_pool_release(&buf);
+
   return node;
 }
 
@@ -340,11 +408,22 @@ int node_expando_render(const struct ExpandoNode *node,
   ASSERT(node->type == ENT_EXPANDO);
 
   struct Buffer *buf_expando = buf_pool_get();
+  struct Buffer *buf_format = buf_pool_get();
+
+  const struct ExpandoFormat *fmt = node->format;
+  const struct NodeExpandoPrivate *priv = node->ndata;
+
+  // ---------------------------------------------------------------------------
+  // Numbers and strings get treated slightly differently. We prefer strings.
+  // This allows dates to be stored as 1729850182, but displayed as "2024-10-25".
 
   const struct ExpandoRenderData *rd_match = find_get_string(rdata, node->did, node->uid);
   if (rd_match)
   {
     rd_match->get_string(node, data, flags, buf_expando);
+
+    if (fmt && fmt->lower)
+      buf_lower_special(buf_expando);
   }
   else
   {
@@ -352,39 +431,52 @@ int node_expando_render(const struct ExpandoNode *node,
     ASSERT(rd_match && "Unknown UID");
 
     const long num = rd_match->get_number(node, data, flags);
-    buf_printf(buf_expando, "%ld", num);
+
+    int precision = 1;
+
+    if (fmt)
+    {
+      precision = fmt->max_cols;
+      if ((precision < 0) && (fmt->leader == '0'))
+        precision = fmt->min_cols;
+    }
+
+    if (num < 0)
+      precision--; // Allow space for the '-' sign
+
+    buf_printf(buf_expando, "%.*ld", precision, num);
   }
 
-  int total_cols = 0;
+  // ---------------------------------------------------------------------------
 
-  const struct NodeExpandoPrivate *priv = node->ndata;
+  int max = max_cols;
+  int min = 0;
 
-  if (priv->color > -1)
-    add_color(buf, priv->color);
-
-  struct Buffer *tmp = buf_pool_get();
-  const struct ExpandoFormat *fmt = node->format;
   if (fmt)
   {
-    max_cols = MIN(max_cols, fmt->max_cols);
-    int min_cols = MIN(max_cols, fmt->min_cols);
-    total_cols += format_string(tmp, min_cols, max_cols, fmt->justification,
-                                fmt->leader, buf_string(buf_expando),
-                                buf_len(buf_expando), priv->has_tree);
-    if (fmt->lower)
-      buf_lower_special(tmp);
+    min = fmt->min_cols;
+    if (fmt->max_cols > 0)
+      max = MIN(max_cols, fmt->max_cols);
   }
-  else
+
+  const enum FormatJustify just = fmt ? fmt->justification : JUSTIFY_LEFT;
+
+  int total_cols = format_string(buf_format, min, max, just, ' ', buf_string(buf_expando),
+                                 buf_len(buf_expando), priv->has_tree);
+
+  if (!buf_is_empty(buf_format))
   {
-    total_cols += format_string(tmp, 0, max_cols, JUSTIFY_LEFT, 0, buf_string(buf_expando),
-                                buf_len(buf_expando), priv->has_tree);
+    if (priv->color > -1)
+      add_color(buf, priv->color);
+
+    buf_addstr(buf, buf_string(buf_format));
+
+    if (priv->color > -1)
+      add_color(buf, MT_COLOR_INDEX);
   }
-  buf_addstr(buf, buf_string(tmp));
-  buf_pool_release(&tmp);
 
-  if (priv->color > -1)
-    add_color(buf, MT_COLOR_INDEX);
-
+  buf_pool_release(&buf_format);
   buf_pool_release(&buf_expando);
+
   return total_cols;
 }

@@ -39,7 +39,7 @@ void add_color(struct Buffer *buf, enum ColorId cid);
 struct ExpandoNode *node_expando_parse(const char *str, const struct ExpandoDefinition *defs,
                                        ExpandoParserFlags flags, const char **parsed_until,
                                        struct ExpandoParseError *err);
-struct ExpandoFormat *parse_format(const char *start, const char *end,
+struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
                                    struct ExpandoParseError *err);
 
 static long test_y_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -50,7 +50,7 @@ static long test_y_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 static void test_y(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, struct Buffer *buf)
 {
-  buf_strcpy(buf, "hello");
+  buf_strcpy(buf, "HELLO");
 }
 
 static long test_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -63,11 +63,13 @@ static void test_n(const struct ExpandoNode *node, void *data,
 {
 }
 
-static struct ExpandoNode *parse_test(const char *str, int did, int uid,
-                                      ExpandoParserFlags flags, const char **parsed_until,
+static struct ExpandoNode *parse_test(const char *str, struct ExpandoFormat *fmt,
+                                      int did, int uid, ExpandoParserFlags flags,
+                                      const char **parsed_until,
                                       struct ExpandoParseError *err)
 {
-  return node_expando_new(NULL, did, uid);
+  *parsed_until = str + 1;
+  return node_expando_new(fmt, did, uid);
 }
 
 void test_expando_node_expando(void)
@@ -144,21 +146,21 @@ void test_expando_node_expando(void)
     TEST_CHECK(node != NULL);
     node_free(&node);
 
-    str = "c";
+    str = "%c";
     node = node_expando_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_free(&node);
 
-    str = "Q";
+    str = "%Q";
     node = node_expando_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node == NULL);
 
-    str = "9999Q";
+    str = "%9999Q";
     node = node_expando_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node == NULL);
   }
 
-  // struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int uid, char terminator, const char **parsed_until, struct ExpandoParseError *err);
+  // struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int uid, char terminator, struct ExpandoFormat *fmt, const char **parsed_until, struct ExpandoParseError *err);
   {
     struct ExpandoParseError err = { 0 };
     struct ExpandoNode *node = NULL;
@@ -167,16 +169,19 @@ void test_expando_node_expando(void)
     const char terminator = ']';
 
     str = "[apple]";
-    node = node_expando_parse_enclosure(str, 1, 2, terminator, &parsed_until, &err);
+    node = node_expando_parse_enclosure(str, 1, 2, terminator, NULL, &parsed_until, &err);
     TEST_CHECK(node != NULL);
+    TEST_CHECK_STR_EQ(node->text, "apple");
     node_free(&node);
 
-    str = "99999999[apple]";
-    node = node_expando_parse_enclosure(str, 1, 2, terminator, &parsed_until, &err);
-    TEST_CHECK(node == NULL);
+    str = "[ap\\]ple]";
+    node = node_expando_parse_enclosure(str, 1, 2, terminator, NULL, &parsed_until, &err);
+    TEST_CHECK(node != NULL);
+    TEST_CHECK_STR_EQ(node->text, "ap]ple");
+    node_free(&node);
 
     str = "[apple";
-    node = node_expando_parse_enclosure(str, 1, 2, terminator, &parsed_until, &err);
+    node = node_expando_parse_enclosure(str, 1, 2, terminator, NULL, &parsed_until, &err);
     TEST_CHECK(node == NULL);
   }
 
@@ -196,14 +201,34 @@ void test_expando_node_expando(void)
     TEST_CHECK(node != NULL);
     rc = node_expando_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 5);
-    TEST_CHECK_STR_EQ(buf_string(buf), "hello");
+    TEST_CHECK_STR_EQ(buf_string(buf), "HELLO");
+    node_free(&node);
+
+    str = "%20_a";
+    parsed_until = NULL;
+    buf_reset(buf);
+    node = node_expando_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
+    TEST_CHECK(node != NULL);
+    rc = node_expando_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    TEST_CHECK(rc == 20);
+    TEST_CHECK_STR_EQ(buf_string(buf), "               hello");
     node_free(&node);
 
     str = "%_d";
     parsed_until = NULL;
     buf_reset(buf);
     node = node_expando_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
-    node->format = parse_format(str + 1, str + 2, &err);
+    TEST_CHECK(node != NULL);
+    node_expando_set_color(node, 42);
+    rc = node_expando_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    TEST_CHECK(rc == 1);
+    TEST_MSG("rc = %d", rc);
+    node_free(&node);
+
+    str = "%d";
+    parsed_until = NULL;
+    buf_reset(buf);
+    node = node_expando_parse(str, TestFormatDef, EP_NO_FLAGS, &parsed_until, &err);
     TEST_CHECK(node != NULL);
     node_expando_set_color(node, 42);
     rc = node_expando_render(node, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);

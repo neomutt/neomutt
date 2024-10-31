@@ -253,12 +253,12 @@ EXPANDO_OBJS	= test/expando/colors_render.o \
 		  test/expando/config.o \
 		  test/expando/date_render.o \
 		  test/expando/emoji_text.o \
-		  test/expando/empty.o \
 		  test/expando/empty_if_else.o \
 		  test/expando/empty_if_else_render.o \
 		  test/expando/expando.o \
 		  test/expando/filter.o \
 		  test/expando/format.o \
+		  test/expando/format_number.o \
 		  test/expando/formatted_expando.o \
 		  test/expando/helpers.o \
 		  test/expando/if_else_false_render.o \
@@ -270,13 +270,16 @@ EXPANDO_OBJS	= test/expando/colors_render.o \
 		  test/expando/node.o \
 		  test/expando/node_condbool.o \
 		  test/expando/node_conddate.o \
+		  test/expando/node_condition_parse.o \
 		  test/expando/node_container.o \
 		  test/expando/node_expando.o \
 		  test/expando/node_padding.o \
+		  test/expando/node_text_parse.o \
 		  test/expando/old_if_else.o \
 		  test/expando/padding.o \
 		  test/expando/padding_render.o \
 		  test/expando/parse.o \
+		  test/expando/parse_short_name.o \
 		  test/expando/percent_sign_text.o \
 		  test/expando/serial.o \
 		  test/expando/simple_expando.o \

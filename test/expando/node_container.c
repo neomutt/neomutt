@@ -31,7 +31,7 @@
 #include "test_common.h"
 
 void expando_serialise(const struct Expando *exp, struct Buffer *buf);
-struct ExpandoFormat *parse_format(const char *start, const char *end,
+struct ExpandoFormat *parse_format(const char *str, const char **parsed_until,
                                    struct ExpandoParseError *err);
 void node_container_collapse(struct ExpandoNode **ptr);
 
@@ -113,9 +113,9 @@ void test_expando_node_container(void)
 
     struct ExpandoParseError err = { 0 };
     const char *fmt_str = "-15.20x";
-    const char *fmt_end = strchr(fmt_str, 'x');
     struct ExpandoNode *cont = node_container_new();
-    cont->format = parse_format(fmt_str, fmt_end, &err);
+    const char *parsed_until = NULL;
+    cont->format = parse_format(fmt_str, &parsed_until, &err);
 
     ARRAY_ADD(&cont->children, make_children('a'));
     ARRAY_ADD(&cont->children, make_children('b'));
@@ -139,9 +139,8 @@ void test_expando_node_container(void)
     TEST_CHECK(rc == 50);
     TEST_CHECK_STR_EQ(buf_string(buf), "ONEaaaONEbbbONEcccTWOaaaTWObbbTWOcccTHREEaaaTHREEb");
 
-    fmt_str = "_-15.20x";
-    fmt_end = strchr(fmt_str, 'x');
-    cont->format = parse_format(fmt_str, fmt_end, &err);
+    fmt_str = "-15.20_x";
+    cont->format = parse_format(fmt_str, &parsed_until, &err);
     buf_reset(buf);
     rc = node_render(cont, TestRenderData, buf, 20, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 20);

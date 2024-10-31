@@ -29,11 +29,9 @@
 
 #include "config.h"
 #include <ctype.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "helpers.h"
-#include "definition.h"
 #include "mutt_thread.h"
 #include "render.h"
 
@@ -83,88 +81,6 @@ const struct ExpandoRenderData *find_get_string(const struct ExpandoRenderData *
   }
 
   return NULL;
-}
-
-/**
- * skip_until_ch - Search a string for a terminator character
- * @param start      Start of string
- * @param terminator Character to find
- * @retval ptr Position of terminator character, or end-of-string
- */
-const char *skip_until_ch(const char *start, char terminator)
-{
-  while (*start)
-  {
-    if (*start == terminator)
-    {
-      break;
-    }
-
-    start++;
-  }
-
-  return start;
-}
-
-/**
- * is_valid_classic_expando - Is this a valid Expando character?
- * @param ch Character to test
- * @retval true Valid Expando character
- */
-static bool is_valid_classic_expando(char ch)
-{
-  // NOTE(g0mb4): Maybe rework this?
-  // if special expandos are added this list must be updated!
-  return isalpha(ch) || (ch == ' ') || (ch == '!') || (ch == '(') ||
-         (ch == '*') || (ch == '>') || (ch == '@') || (ch == '[') ||
-         (ch == '^') || (ch == '{') || (ch == '|');
-}
-
-/**
- * skip_until_classic_expando - Search through string until we reach an Expando character
- * @param start Where to start looking
- * @retval ptr Match, or end-of-string
- */
-const char *skip_until_classic_expando(const char *start)
-{
-  while (*start && !is_valid_classic_expando(*start))
-  {
-    start++;
-  }
-
-  return start;
-}
-
-/**
- * skip_classic_expando - Skip over the text of an Expando
- * @param str  Starting place
- * @param defs Expando definitions
- * @retval ptr Character after Expando, or end-of-string
- */
-const char *skip_classic_expando(const char *str, const struct ExpandoDefinition *defs)
-{
-  ASSERT(str);
-  if (*str == '\0')
-    return str;
-
-  const struct ExpandoDefinition *def = defs;
-
-  while (def && def->short_name)
-  {
-    const bool is_two_char = mutt_str_len(def->short_name) == 2;
-    const char *name = def->short_name;
-
-    if (is_two_char && (name[0] == *str) && (name[1] == *(str + 1)))
-    {
-      str++;
-      break;
-    }
-
-    def++;
-  }
-
-  str++;
-  return str;
 }
 
 /**

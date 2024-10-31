@@ -24,18 +24,10 @@
 #ifndef MUTT_EXPANDO_NODE_CONDITION_H
 #define MUTT_EXPANDO_NODE_CONDITION_H
 
-struct ExpandoNode;
+#include "node_text.h"
 
-/**
- * ExpandoConditionStart - Signals node_parse() if the parsing started in a conditional statement or not
- *
- * Easier to read than a simple true, false.
- */
-enum ExpandoConditionStart
-{
-  CON_NO_CONDITION, ///< Parser is not currently in a condition
-  CON_START         ///< Parser is working on a condition
-};
+struct ExpandoDefinition;
+struct ExpandoParseError;
 
 /**
  * enum ENCondition - Names for the Condition's children
@@ -52,6 +44,9 @@ enum ENCondition
   ENC_FALSE,          ///< Index of False Node
 };
 
-struct ExpandoNode *node_condition_new(struct ExpandoNode *condition, struct ExpandoNode *node_true, struct ExpandoNode *node_false);
+struct ExpandoNode *node_condition_parse(const char *str, NodeTextTermFlags term_chars,
+                                         const struct ExpandoDefinition *defs,
+                                         const char **parsed_until,
+                                         struct ExpandoParseError *err);
 
 #endif /* MUTT_EXPANDO_NODE_CONDITION_H */

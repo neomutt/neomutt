@@ -25,7 +25,6 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "email/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
@@ -43,14 +42,6 @@ static long index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFl
 
 void test_expando_helpers(void)
 {
-  static const struct ExpandoDefinition TestFormatDef[] = {
-    // clang-format off
-    { "a",  "from", ED_ENVELOPE, ED_ENV_FROM,      E_TYPE_STRING, NULL },
-    { "xy", "from", ED_ENVELOPE, ED_ENV_FROM_FULL, E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
-    // clang-format on
-  };
-
   static const struct ExpandoRenderData TestRenderData[] = {
     // clang-format off
     { 1, 2, index_a, index_a_num },
@@ -88,7 +79,9 @@ void test_expando_helpers(void)
 
   // const char *skip_until_ch(const char *start, char terminator);
   {
-    const char *str = "appleX";
+    const char *skip_until_ch(const char *start, char terminator);
+
+    const char *str = "appleX\\";
     const char *end = NULL;
 
     end = skip_until_ch("", 'X');
@@ -98,46 +91,8 @@ void test_expando_helpers(void)
     end = skip_until_ch(str, 'X');
     TEST_CHECK(end != NULL);
     TEST_CHECK(*end == 'X');
-  }
 
-  // const char *skip_until_classic_expando(const char *start);
-  {
-    const char *str = "%q apple";
-    const char *end = NULL;
-
-    end = skip_until_classic_expando("");
-    TEST_CHECK(end != NULL);
-    TEST_CHECK(*end == '\0');
-
-    end = skip_until_classic_expando(str);
-    TEST_CHECK(end != NULL);
-    TEST_CHECK(*end == 'q');
-  }
-
-  // const char *skip_classic_expando(const char *str, const struct ExpandoDefinition *defs);
-  {
-    const char *str = "%aXapple";
-    const char *end = NULL;
-
-    end = skip_classic_expando(str + 1, TestFormatDef);
-    TEST_CHECK(end != NULL);
-    TEST_CHECK(*end == 'X');
-
-    str = "%xyQapple";
-
-    end = skip_classic_expando(str + 1, TestFormatDef);
-    TEST_CHECK(end != NULL);
-    TEST_CHECK(*end == 'Q');
-
-    str = "%Qapple";
-
-    end = skip_classic_expando(str + 1, TestFormatDef);
-    TEST_CHECK(end != NULL);
-    TEST_CHECK(*end == 'a');
-
-    str = "%";
-
-    end = skip_classic_expando(str + 1, TestFormatDef);
+    end = skip_until_ch(str, 'Z');
     TEST_CHECK(end != NULL);
     TEST_CHECK(*end == '\0');
   }

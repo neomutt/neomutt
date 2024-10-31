@@ -291,12 +291,12 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_expando_config)                                       \
   NEOMUTT_TEST_ITEM(test_expando_date_render)                                  \
   NEOMUTT_TEST_ITEM(test_expando_emoji_text)                                   \
-  NEOMUTT_TEST_ITEM(test_expando_empty)                                        \
   NEOMUTT_TEST_ITEM(test_expando_empty_if_else)                                \
   NEOMUTT_TEST_ITEM(test_expando_empty_if_else_render)                         \
   NEOMUTT_TEST_ITEM(test_expando_expando)                                      \
   NEOMUTT_TEST_ITEM(test_expando_filter)                                       \
   NEOMUTT_TEST_ITEM(test_expando_formatted_expando)                            \
+  NEOMUTT_TEST_ITEM(test_expando_format_number)                                \
   NEOMUTT_TEST_ITEM(test_expando_helpers)                                      \
   NEOMUTT_TEST_ITEM(test_expando_if_else_false_render)                         \
   NEOMUTT_TEST_ITEM(test_expando_if_else_true_render)                          \
@@ -307,14 +307,17 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_expando_node)                                         \
   NEOMUTT_TEST_ITEM(test_expando_node_condbool)                                \
   NEOMUTT_TEST_ITEM(test_expando_node_conddate)                                \
+  NEOMUTT_TEST_ITEM(test_expando_node_condition_parse)                         \
   NEOMUTT_TEST_ITEM(test_expando_node_container)                               \
   NEOMUTT_TEST_ITEM(test_expando_node_expando)                                 \
   NEOMUTT_TEST_ITEM(test_expando_node_expando_format)                          \
   NEOMUTT_TEST_ITEM(test_expando_node_padding)                                 \
+  NEOMUTT_TEST_ITEM(test_expando_node_text_parse)                              \
   NEOMUTT_TEST_ITEM(test_expando_old_if_else)                                  \
   NEOMUTT_TEST_ITEM(test_expando_padding)                                      \
   NEOMUTT_TEST_ITEM(test_expando_padding_render)                               \
   NEOMUTT_TEST_ITEM(test_expando_parser)                                       \
+  NEOMUTT_TEST_ITEM(test_expando_parse_short_name)                             \
   NEOMUTT_TEST_ITEM(test_expando_percent_sign_text)                            \
   NEOMUTT_TEST_ITEM(test_expando_simple_expando)                               \
   NEOMUTT_TEST_ITEM(test_expando_simple_expando_render)                        \

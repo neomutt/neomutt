@@ -23,7 +23,6 @@
 #define TEST_NO_MAIN
 #include "config.h"
 #include "acutest.h"
-#include <limits.h>
 #include <stdio.h>
 #include <time.h>
 #include "mutt/lib.h"
@@ -105,7 +104,7 @@ void test_expando_date_render(void)
 
     struct ExpandoFormat fmt = { 0 };
     fmt.min_cols = 12;
-    fmt.max_cols = INT_MAX;
+    fmt.max_cols = -1;
     fmt.justification = JUSTIFY_LEFT;
     fmt.leader = ' ';
 

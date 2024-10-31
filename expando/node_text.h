@@ -24,7 +24,18 @@
 #ifndef MUTT_EXPANDO_NODE_TEXT_H
 #define MUTT_EXPANDO_NODE_TEXT_H
 
-struct ExpandoNode *node_text_new(const char *start, const char *end);
-struct ExpandoNode *node_text_parse(const char *str, const char *end, const char **parsed_until);
+#include <stdint.h>
+
+/**
+ * typedef NodeTextTermFlags - Special characters that end a text string
+ */
+typedef uint8_t NodeTextTermFlags;    ///< Flags, e.g. #NTE_NO_FLAGS
+#define NTE_NO_FLAGS               0  ///< No flags are set
+#define NTE_AMPERSAND       (1 <<  0) ///< '&' Ampersand
+#define NTE_GREATER         (1 <<  1) ///< '>' Greater than
+#define NTE_QUESTION        (1 <<  2) ///< '?' Question mark
+
+struct ExpandoNode *node_text_new(const char *text);
+struct ExpandoNode *node_text_parse(const char *str, NodeTextTermFlags term_chars, const char **parsed_until);
 
 #endif /* MUTT_EXPANDO_NODE_TEXT_H */

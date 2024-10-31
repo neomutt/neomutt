@@ -27,6 +27,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+struct ExpandoFormat;
 struct ExpandoParseError;
 
 /**
@@ -61,6 +62,7 @@ struct ExpandoDefinition
    *
    * parse - Custom function to parse a format string into a Node
    * @param[in]  str          String to parse
+   * @param[in]  fmt          Formatting information
    * @param[in]  did          Domain ID of the data
    * @param[in]  uid          Unique ID of the data
    * @param[in]  flags        Flags, e.g. #EP_CONDITIONAL
@@ -68,7 +70,7 @@ struct ExpandoDefinition
    * @param[out] err          Buffer for error message
    * @retval ptr Parsed Node
    */
-  struct ExpandoNode *(*parse)(const char *str, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
+  struct ExpandoNode *(*parse)(const char *str, struct ExpandoFormat *fmt, int did, int uid, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
 };
 
 #endif /* MUTT_EXPANDO_DEFINITION_H */
