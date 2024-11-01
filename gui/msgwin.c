@@ -147,7 +147,7 @@ void measure(struct MwCharArray *chars, const char *str, const struct AttrColor 
       }
     }
 
-    mwc = (struct MwChar){ wchar_width, consumed, ac_color };
+    mwc = (struct MwChar) { wchar_width, consumed, ac_color };
     ARRAY_ADD(chars, mwc);
 
     str += consumed;

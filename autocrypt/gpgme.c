@@ -91,7 +91,7 @@ static int export_keydata(gpgme_ctx_t ctx, gpgme_key_t key, struct Buffer *keyda
   if (gpgme_data_new(&dh))
     goto cleanup;
 
-    /* This doesn't seem to work */
+  /* This doesn't seem to work */
 #if 0
   if (gpgme_data_set_encoding (dh, GPGME_DATA_ENCODING_BASE64))
     goto cleanup;

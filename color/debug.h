@@ -24,9 +24,8 @@
 #define MUTT_COLOR_DEBUG_H
 
 #include "config.h"
+#include "mutt/lib.h"
 #include "curses2.h"
-
-struct Buffer;
 
 #ifdef USE_DEBUG_COLOR
 

@@ -29,7 +29,6 @@
 #include "conn/lib.h"
 #include "gui/lib.h"
 #include "attach/lib.h"
-#include "autocrypt/lib.h"
 #include "browser/lib.h"
 #include "compmbox/lib.h"
 #include "expando/lib.h"
@@ -50,6 +49,7 @@
 #include "ncrypt/crypt_gpgme.h"
 #endif
 #ifdef USE_AUTOCRYPT
+#include "autocrypt/lib.h"
 #include "autocrypt/private.h"
 #endif
 

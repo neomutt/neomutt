@@ -47,7 +47,6 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "expando/lib.h"
 #include "menu/lib.h"
 
@@ -55,6 +54,7 @@ struct AddressList;
 struct AttachCtx;
 struct AttachPtr;
 struct MailboxView;
+struct MuttWindow;
 struct PagerPrivateData;
 
 // Common

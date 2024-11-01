@@ -280,11 +280,11 @@ struct KeyEvent mutt_getch(GetChFlags flags)
       /* send ALT-x as ESC-x */
       ch &= ~0x80;
       mutt_unget_ch(ch);
-      return (struct KeyEvent){ '\033', OP_NULL }; // Escape
+      return (struct KeyEvent) { '\033', OP_NULL }; // Escape
     }
   }
 
-  return (struct KeyEvent){ ch, OP_NULL };
+  return (struct KeyEvent) { ch, OP_NULL };
 }
 
 /**
@@ -334,7 +334,7 @@ static struct KeyEvent retry_generic(enum MenuType mtype, keycode_t *keys,
     mutt_flushinp();
   }
 
-  return (struct KeyEvent){ mutt_getch(flags).ch, OP_NULL };
+  return (struct KeyEvent) { mutt_getch(flags).ch, OP_NULL };
 }
 
 /**
@@ -419,7 +419,7 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
     if (++pos == map->len)
     {
       if (map->op != OP_MACRO)
-        return (struct KeyEvent){ event.ch, map->op };
+        return (struct KeyEvent) { event.ch, map->op };
 
       /* #GETCH_IGNORE_MACRO turns off processing the MacroEvents buffer
        * in mutt_getch().  Generating new macro events during that time would
@@ -433,14 +433,14 @@ struct KeyEvent km_dokey_event(enum MenuType mtype, GetChFlags flags)
        * but less so than aborting the prompt.  */
       if (flags & GETCH_IGNORE_MACRO)
       {
-        return (struct KeyEvent){ event.ch, OP_NULL };
+        return (struct KeyEvent) { event.ch, OP_NULL };
       }
 
       if (n++ == 10)
       {
         mutt_flushinp();
         mutt_error(_("Macro loop detected"));
-        return (struct KeyEvent){ '\0', OP_ABORT };
+        return (struct KeyEvent) { '\0', OP_ABORT };
       }
 
       generic_tokenize_push_string(map->macro);

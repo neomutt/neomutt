@@ -177,6 +177,5 @@ long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 {
   const struct Folder *folder = data;
 
-  // NOTE(g0mb4): is long required for unread?
   return folder->ff->nd->unread;
 }

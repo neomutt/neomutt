@@ -329,7 +329,7 @@ static bool config_check_sort(const char *option)
     { "strict_threads",    R_RESORT | R_RESORT_INIT },
     { "thread_received",   R_RESORT | R_RESORT_INIT },
     { "use_threads",       R_RESORT                 },
-    { NULL, 0 }
+    { NULL, 0 },
     // clang-format on
   };
 

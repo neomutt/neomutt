@@ -151,7 +151,7 @@ int format_string(struct Buffer *buf, int min_cols, int max_cols, enum FormatJus
     {
 #ifdef HAVE_ISWBLANK
       if (iswblank(wc))
-        wc = ' ';
+        wc = ' '; // LCOV_EXCL_LINE
       else
 #endif
           if (!IsWPrint(wc))

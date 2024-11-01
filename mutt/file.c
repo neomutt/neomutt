@@ -724,7 +724,7 @@ void mutt_file_sanitize_filename(char *path, bool slash)
     switch (consumed)
     {
       case ICONV_ILLEGAL_SEQ:
-        mbstate = (mbstate_t){ 0 };
+        mbstate = (mbstate_t) { 0 };
         consumed = 1;
         memset(path, '_', consumed);
         break;

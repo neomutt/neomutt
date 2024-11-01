@@ -1769,6 +1769,31 @@ void dump_graphviz_patternlist(struct PatternList *pl)
   mutt_list_free(&links);
 }
 
+void dot_format(FILE *fp, struct ExpandoFormat *fmt)
+{
+  if (!fmt)
+    return;
+
+  dot_type_number(fp, "min_cols", fmt->min_cols);
+  dot_type_number(fp, "max_cols", fmt->max_cols);
+
+  char *just = "UNKNOWN";
+  switch (fmt->justification)
+  {
+    case JUSTIFY_LEFT:
+      just = "JUSTIFY_LEFT";
+      break;
+    case JUSTIFY_CENTER:
+      just = "JUSTIFY_CENTER";
+      break;
+    case JUSTIFY_RIGHT:
+      just = "JUSTIFY_RIGHT";
+      break;
+  }
+  dot_type_string(fp, "justification", just, true);
+  dot_type_char(fp, "leader", fmt->leader);
+}
+
 void dot_expando_node_empty(FILE *fp, struct ExpandoNode *node, struct ListHead *links)
 {
   dot_object_header(fp, node, "Empty", "#ffffff");
@@ -1836,6 +1861,7 @@ void dot_expando_node_condition(FILE *fp, struct ExpandoNode *node, struct ListH
   dot_object_header(fp, node, "Condition", "#ff8080");
   // dot_type_string(fp, "type", "ENT_CONDITION", true);
   dot_type_string(fp, "text", node->text, false);
+  dot_format(fp, node->format);
 
   dot_object_footer(fp);
 
@@ -1894,31 +1920,6 @@ void dot_expando_node_conditional_date(FILE *fp, struct ExpandoNode *node,
   dot_object_footer(fp);
 
   buf_pool_release(&buf);
-}
-
-void dot_format(FILE *fp, struct ExpandoFormat *fmt)
-{
-  if (!fmt)
-    return;
-
-  dot_type_number(fp, "min_cols", fmt->min_cols);
-  dot_type_number(fp, "max_cols", fmt->max_cols);
-
-  char *just = "UNKNOWN";
-  switch (fmt->justification)
-  {
-    case JUSTIFY_LEFT:
-      just = "JUSTIFY_LEFT";
-      break;
-    case JUSTIFY_CENTER:
-      just = "JUSTIFY_CENTER";
-      break;
-    case JUSTIFY_RIGHT:
-      just = "JUSTIFY_RIGHT";
-      break;
-  }
-  dot_type_string(fp, "justification", just, true);
-  dot_type_char(fp, "leader", fmt->leader);
 }
 
 void dot_expando_node_container(FILE *fp, struct ExpandoNode *node, struct ListHead *links)

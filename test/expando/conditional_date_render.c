@@ -24,7 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdio.h>
-#include <string.h>
 #include <time.h>
 #include "mutt/lib.h"
 #include "expando/lib.h"

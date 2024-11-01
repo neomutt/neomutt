@@ -24,7 +24,6 @@
 #include "config.h"
 #include "acutest.h"
 #include <stddef.h>
-#include <string.h>
 #include "mutt/lib.h"
 #include "alias/gui.h" // IWYU pragma: keep
 #include "alias/lib.h"

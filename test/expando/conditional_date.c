@@ -24,6 +24,7 @@
 #include "config.h"
 #include "acutest.h"
 #include <stdio.h>
+#include "mutt/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
 
