@@ -5757,7 +5757,7 @@ msgstr "Na šablonu není dost podvýrazů"
 #: mutt_config.c:225
 #, fuzzy, c-format
 msgid "index-hook cannot be used as a condition"
-msgstr "Vyplnění nelze použít v podmínce"
+msgstr "index-hook nemůže být použitý jako podmínka"
 
 #. L10N: $reply_regex default format
 #.
@@ -6234,20 +6234,18 @@ msgstr "vytvořen: "
 #: ncrypt/crypt_gpgme.c:1425
 #, c-format
 msgid "Recipient: %s key, ID %s\n"
-msgstr ""
+msgstr "Příjemce: %s klíč, ID %s\n"
 
 #: ncrypt/crypt_gpgme.c:1438
-#, fuzzy
 msgid "[-- Begin encryption information --]\n"
-msgstr "[-- Začátek podrobností o podpisu --]\n"
+msgstr "[-- Začátek podrobností o šifrování --]\n"
 
 #: ncrypt/crypt_gpgme.c:1443
-#, fuzzy
 msgid ""
 "[-- End encryption information --]\n"
 "\n"
 msgstr ""
-"[-- Konec podrobností o podpisu --]\n"
+"[-- Konec podrobností o šifrování --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:1517
