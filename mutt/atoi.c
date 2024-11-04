@@ -149,9 +149,13 @@ const char *mutt_str_atol(const char *str, long *dst)
  * mutt_str_atos - Convert ASCII string to a short
  * @param[in]  str String to read
  * @param[out] dst Store the result
- * @retval  0 Success
- * @retval -1 Error
- * @retval -2 Error, overflow
+ * @retval ptr endptr
+ *
+ * | Condition         | Description                                      |
+ * | ----------------- | ------------------------------------------------ |
+ * | endptr    == NULL | No conversion happened, or overflow              |
+ * | endptr[0] == '\0' | str was fully converted                          |
+ * | endptr[0] != '\0' | endptr points to first non converted char in str |
  *
  * This is a strtol() wrapper with range checking.
  * If @a dst is NULL, the string will be tested only (without conversion).
@@ -160,7 +164,7 @@ const char *mutt_str_atol(const char *str, long *dst)
  */
 const char *mutt_str_atos(const char *str, short *dst)
 {
-  long l;
+  long l = 0;
   const char *res = str_atol_clamp(str, &l, SHRT_MIN, SHRT_MAX);
   if (dst)
   {
@@ -187,7 +191,7 @@ const char *mutt_str_atos(const char *str, short *dst)
  */
 const char *mutt_str_atoi(const char *str, int *dst)
 {
-  long l;
+  long l = 0;
   const char *res = str_atol_clamp(str, &l, INT_MIN, INT_MAX);
   if (dst)
   {
@@ -213,7 +217,7 @@ const char *mutt_str_atoi(const char *str, int *dst)
  */
 const char *mutt_str_atoui(const char *str, unsigned int *dst)
 {
-  unsigned long long l;
+  unsigned long long l = 0;
   const char *res = str_atoull_clamp(str, &l, UINT_MAX);
   if (dst)
   {
@@ -239,7 +243,7 @@ const char *mutt_str_atoui(const char *str, unsigned int *dst)
  */
 const char *mutt_str_atoul(const char *str, unsigned long *dst)
 {
-  unsigned long long l;
+  unsigned long long l = 0;
   const char *res = str_atoull_clamp(str, &l, ULONG_MAX);
   if (dst)
   {
@@ -265,7 +269,7 @@ const char *mutt_str_atoul(const char *str, unsigned long *dst)
  */
 const char *mutt_str_atous(const char *str, unsigned short *dst)
 {
-  unsigned long long l;
+  unsigned long long l = 0;
   const char *res = str_atoull_clamp(str, &l, USHRT_MAX);
   if (dst)
   {

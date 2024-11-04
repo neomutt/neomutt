@@ -30,7 +30,7 @@
 #ifdef USE_DEBUG_BACKTRACE
 void show_backtrace(void);
 #else
-static inline void show_backtrace(void) {}
+static inline void show_backtrace(void) {} // LCOV_EXCL_LINE
 #endif
 
 extern volatile sig_atomic_t SigInt;   ///< true after SIGINT is received
