@@ -49,8 +49,12 @@ int alias_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
 
-  if (!mutt_str_equal(ev_c->name, "sort_alias"))
+  if (!mutt_str_equal(ev_c->name, "sort_alias") &&
+      !mutt_str_equal(ev_c->name, "alias_format") &&
+      !mutt_str_equal(ev_c->name, "query_format"))
+  {
     return 0;
+  }
 
   struct Menu *menu = nc->global_data;
 
