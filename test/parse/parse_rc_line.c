@@ -1034,4 +1034,18 @@ void test_command_set(void)
   TEST_CHECK(test_invalid_syntax(err));
   TEST_CHECK(test_path_expanding(err));
   buf_pool_release(&err);
+
+  struct Command *cmd = NULL;
+  size_t num = commands_array(&cmd);
+
+  TEST_CHECK(cmd != NULL);
+  TEST_CHECK(num == 4);
+
+  cmd = command_get("toggle");
+  TEST_CHECK(cmd != NULL);
+
+  cmd = command_get("apple");
+  TEST_CHECK(cmd == NULL);
+
+  commands_cleanup();
 }
