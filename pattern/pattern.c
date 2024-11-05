@@ -183,11 +183,13 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
  * mutt_pattern_alias_func - Perform some Pattern matching for Alias
  * @param prompt    Prompt to show the user
  * @param mdata     Menu data holding Aliases
+ * @param action    What to do with the results, e.g. #PAA_TAG
  * @param menu      Current menu
  * @retval  0 Success
  * @retval -1 Failure
  */
-int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu)
+int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata,
+                            enum PatternAlias action, struct Menu *menu)
 {
   int rc = -1;
   struct Progress *progress = NULL;
@@ -243,12 +245,32 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
     if (match_all ||
         mutt_pattern_alias_exec(SLIST_FIRST(pat), MUTT_MATCH_FULL_ADDRESS, avp, NULL))
     {
-      avp->is_visible = true;
-      vcounter++;
+      switch (action)
+      {
+        case PAA_TAG:
+          avp->is_tagged = true;
+          break;
+        case PAA_UNTAG:
+          avp->is_tagged = false;
+          break;
+        case PAA_VISIBLE:
+          avp->is_visible = true;
+          vcounter++;
+          break;
+      }
     }
     else
     {
-      avp->is_visible = false;
+      switch (action)
+      {
+        case PAA_TAG:
+        case PAA_UNTAG:
+          // Do nothing
+          break;
+        case PAA_VISIBLE:
+          avp->is_visible = false;
+          break;
+      }
     }
   }
   progress_free(&progress);
@@ -260,7 +282,7 @@ int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Me
     simple = NULL;
   }
 
-  if (menu)
+  if (menu && (action == PAA_VISIBLE))
   {
     menu->max = vcounter;
     menu_set_index(menu, 0);

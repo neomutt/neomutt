@@ -273,7 +273,7 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 
     if (alias_array_count_visible(&mdata->ava) != ARRAY_SIZE(&mdata->ava))
     {
-      mutt_pattern_alias_func(NULL, mdata, menu);
+      mutt_pattern_alias_func(NULL, mdata, PAA_VISIBLE, menu);
     }
   }
   else if (nc->event_subtype == NT_ALIAS_DELETE)
@@ -518,7 +518,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       alias_array_alias_add(&mdata.ava, np);
     }
 
-    mutt_pattern_alias_func(NULL, &mdata, NULL);
+    mutt_pattern_alias_func(NULL, &mdata, PAA_VISIBLE, NULL);
   }
 
   if (!dlg_alias(NULL, &mdata))
