@@ -32,6 +32,7 @@
 #include "address/lib.h"
 #include "expando.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "expando/lib.h"
 #include "alias.h"
 #include "gui.h"
@@ -46,6 +47,8 @@ static void alias_address(const struct ExpandoNode *node, void *data,
   const struct Alias *alias = av->alias;
 
   mutt_addrlist_write(&alias->addr, buf, true);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_ADDRESS);
 }
 
 /**
@@ -59,6 +62,8 @@ static void alias_alias(const struct ExpandoNode *node, void *data,
 
   const char *s = alias->name;
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_ALIAS);
 }
 
 /**
@@ -72,6 +77,8 @@ static void alias_comment(const struct ExpandoNode *node, void *data,
 
   const char *s = alias->comment;
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_COMMENT);
 }
 
 /**
@@ -92,6 +99,8 @@ static void alias_email(const struct ExpandoNode *node, void *data,
     if (next)
       buf_addstr(buf, ", ");
   }
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_EMAIL);
 }
 
 /**
@@ -112,6 +121,8 @@ static void alias_name(const struct ExpandoNode *node, void *data,
     if (next)
       buf_addstr(buf, ", ");
   }
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_NAME);
 }
 
 /**
@@ -123,6 +134,8 @@ static void alias_tags(const struct ExpandoNode *node, void *data,
   const struct AliasView *av = data;
 
   alias_tags_to_buffer(&av->alias->tags, buf);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_TAGS);
 }
 
 /**
@@ -136,6 +149,8 @@ static void alias_view_flags(const struct ExpandoNode *node, void *data,
   // NOTE(g0mb4): use $flag_chars?
   const char *s = av->is_deleted ? "D" : " ";
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
 }
 
 /**
@@ -144,6 +159,9 @@ static void alias_view_flags(const struct ExpandoNode *node, void *data,
 static long alias_view_flags_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AliasView *av = data;
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
+
   return av->is_deleted;
 }
 
@@ -153,6 +171,8 @@ static long alias_view_flags_num(const struct ExpandoNode *node, void *data, Mut
 static long alias_view_index_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AliasView *av = data;
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_NUMBER);
 
   return av->num + 1;
 }
@@ -168,6 +188,8 @@ static void alias_view_tagged(const struct ExpandoNode *node, void *data,
   // NOTE(g0mb4): use $flag_chars?
   const char *s = av->is_tagged ? "*" : " ";
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
 }
 
 /**
@@ -176,6 +198,9 @@ static void alias_view_tagged(const struct ExpandoNode *node, void *data,
 static long alias_view_tagged_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AliasView *av = data;
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
+
   return av->is_tagged;
 }
 

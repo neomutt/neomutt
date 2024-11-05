@@ -52,6 +52,15 @@
 void regex_colors_init(struct ColorModuleData *mod_data)
 {
   color_debug(LL_DEBUG5, "init AttachList, BodyList, etc\n");
+  STAILQ_INIT(&mod_data->alias_address_list);
+  STAILQ_INIT(&mod_data->alias_alias_list);
+  STAILQ_INIT(&mod_data->alias_comment_list);
+  STAILQ_INIT(&mod_data->alias_email_list);
+  STAILQ_INIT(&mod_data->alias_flags_list);
+  STAILQ_INIT(&mod_data->alias_list);
+  STAILQ_INIT(&mod_data->alias_name_list);
+  STAILQ_INIT(&mod_data->alias_number_list);
+  STAILQ_INIT(&mod_data->alias_tags_list);
   STAILQ_INIT(&mod_data->attach_list);
   STAILQ_INIT(&mod_data->body_list);
   STAILQ_INIT(&mod_data->header_list);
@@ -76,6 +85,15 @@ void regex_colors_init(struct ColorModuleData *mod_data)
 void regex_colors_reset(struct ColorModuleData *mod_data)
 {
   color_debug(LL_DEBUG5, "reset regex\n");
+  regex_color_list_clear(&mod_data->alias_address_list);
+  regex_color_list_clear(&mod_data->alias_alias_list);
+  regex_color_list_clear(&mod_data->alias_comment_list);
+  regex_color_list_clear(&mod_data->alias_email_list);
+  regex_color_list_clear(&mod_data->alias_flags_list);
+  regex_color_list_clear(&mod_data->alias_list);
+  regex_color_list_clear(&mod_data->alias_name_list);
+  regex_color_list_clear(&mod_data->alias_number_list);
+  regex_color_list_clear(&mod_data->alias_tags_list);
   regex_color_list_clear(&mod_data->attach_list);
   regex_color_list_clear(&mod_data->body_list);
   regex_color_list_clear(&mod_data->header_list);
@@ -200,6 +218,24 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
       return &mod_data->body_list;
     case MT_COLOR_HEADER:
       return &mod_data->header_list;
+    case MT_COLOR_ALIAS:
+      return &mod_data->alias_list;
+    case MT_COLOR_ALIAS_ADDRESS:
+      return &mod_data->alias_address_list;
+    case MT_COLOR_ALIAS_ALIAS:
+      return &mod_data->alias_alias_list;
+    case MT_COLOR_ALIAS_COMMENT:
+      return &mod_data->alias_comment_list;
+    case MT_COLOR_ALIAS_EMAIL:
+      return &mod_data->alias_email_list;
+    case MT_COLOR_ALIAS_FLAGS:
+      return &mod_data->alias_flags_list;
+    case MT_COLOR_ALIAS_NAME:
+      return &mod_data->alias_name_list;
+    case MT_COLOR_ALIAS_NUMBER:
+      return &mod_data->alias_number_list;
+    case MT_COLOR_ALIAS_TAGS:
+      return &mod_data->alias_tags_list;
     case MT_COLOR_INDEX:
       return &mod_data->index_list;
     case MT_COLOR_INDEX_AUTHOR:
@@ -342,6 +378,15 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
       break;
     case MT_COLOR_HEADER:
       break;
+    case MT_COLOR_ALIAS:
+    case MT_COLOR_ALIAS_ADDRESS:
+    case MT_COLOR_ALIAS_ALIAS:
+    case MT_COLOR_ALIAS_COMMENT:
+    case MT_COLOR_ALIAS_EMAIL:
+    case MT_COLOR_ALIAS_FLAGS:
+    case MT_COLOR_ALIAS_NAME:
+    case MT_COLOR_ALIAS_NUMBER:
+    case MT_COLOR_ALIAS_TAGS:
     case MT_COLOR_INDEX:
     case MT_COLOR_INDEX_AUTHOR:
     case MT_COLOR_INDEX_COLLAPSED:

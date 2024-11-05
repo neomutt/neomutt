@@ -101,12 +101,16 @@ void colors_cleanup(struct ColorModuleData *mod_data)
  */
 bool mutt_color_has_pattern(enum ColorId cid)
 {
-  return (cid == MT_COLOR_ATTACH_HEADERS) || (cid == MT_COLOR_BODY) ||
-         (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_INDEX) ||
-         (cid == MT_COLOR_INDEX_AUTHOR) || (cid == MT_COLOR_INDEX_COLLAPSED) ||
-         (cid == MT_COLOR_INDEX_DATE) || (cid == MT_COLOR_INDEX_FLAGS) ||
-         (cid == MT_COLOR_INDEX_LABEL) || (cid == MT_COLOR_INDEX_NUMBER) ||
-         (cid == MT_COLOR_INDEX_SIZE) || (cid == MT_COLOR_INDEX_SUBJECT) ||
-         (cid == MT_COLOR_INDEX_TAG) || (cid == MT_COLOR_INDEX_TAGS) ||
-         (cid == MT_COLOR_STATUS);
+  return (cid == MT_COLOR_ALIAS) || (cid == MT_COLOR_ALIAS_ADDRESS) ||
+         (cid == MT_COLOR_ALIAS_ALIAS) || (cid == MT_COLOR_ALIAS_COMMENT) ||
+         (cid == MT_COLOR_ALIAS_EMAIL) || (cid == MT_COLOR_ALIAS_FLAGS) ||
+         (cid == MT_COLOR_ALIAS_NAME) || (cid == MT_COLOR_ALIAS_NUMBER) ||
+         (cid == MT_COLOR_ALIAS_TAGS) || (cid == MT_COLOR_ATTACH_HEADERS) ||
+         (cid == MT_COLOR_BODY) || (cid == MT_COLOR_HEADER) ||
+         (cid == MT_COLOR_INDEX) || (cid == MT_COLOR_INDEX_AUTHOR) ||
+         (cid == MT_COLOR_INDEX_COLLAPSED) || (cid == MT_COLOR_INDEX_DATE) ||
+         (cid == MT_COLOR_INDEX_FLAGS) || (cid == MT_COLOR_INDEX_LABEL) ||
+         (cid == MT_COLOR_INDEX_NUMBER) || (cid == MT_COLOR_INDEX_SIZE) ||
+         (cid == MT_COLOR_INDEX_SUBJECT) || (cid == MT_COLOR_INDEX_TAG) ||
+         (cid == MT_COLOR_INDEX_TAGS) || (cid == MT_COLOR_STATUS);
 }

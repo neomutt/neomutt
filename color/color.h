@@ -94,6 +94,16 @@ enum ColorId
   MT_COLOR_INDEX_SUBJECT,            ///< Index: subject field
   MT_COLOR_INDEX_TAG,                ///< Index: tag field (%G)
   MT_COLOR_INDEX_TAGS,               ///< Index: tags field (%g, %J)
+  // Alias colours which all take a pattern
+  MT_COLOR_ALIAS,                    ///< Alias: default colour
+  MT_COLOR_ALIAS_ADDRESS,            ///< Alias: full address, %A
+  MT_COLOR_ALIAS_ALIAS,              ///< Alias: alias name, %a
+  MT_COLOR_ALIAS_COMMENT,            ///< Alias: comment, %C
+  MT_COLOR_ALIAS_EMAIL,              ///< Alias: email address, %E
+  MT_COLOR_ALIAS_FLAGS,              ///< Alias: flags, %f %t
+  MT_COLOR_ALIAS_NAME,               ///< Alias: real name, %N
+  MT_COLOR_ALIAS_NUMBER,             ///< Alias: index number, %i
+  MT_COLOR_ALIAS_TAGS,               ///< Alias: tags, %Y
   MT_COLOR_MAX,
 };
 

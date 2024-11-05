@@ -40,6 +40,15 @@ struct ColorModuleData
   struct Notify          *colors_notify;                ///< Notifications: #ColorId, #EventColor
   int                     num_quoted_colors;            ///< Number of colours for quoted email text
   struct AttrColor        simple_colors[MT_COLOR_MAX];  ///< Array of Simple colours
+  struct RegexColorList   alias_address_list;           ///< List of colours applied to the alias full address
+  struct RegexColorList   alias_alias_list;             ///< List of colours applied to the alias alias
+  struct RegexColorList   alias_comment_list;           ///< List of colours applied to the alias comment
+  struct RegexColorList   alias_email_list;             ///< List of colours applied to the alias email
+  struct RegexColorList   alias_flags_list;             ///< List of colours applied to the alias flags
+  struct RegexColorList   alias_list;                   ///< List of default colours applied to the alias list
+  struct RegexColorList   alias_name_list;              ///< List of colours applied to the alias name
+  struct RegexColorList   alias_number_list;            ///< List of colours applied to the alias index number
+  struct RegexColorList   alias_tags_list;              ///< List of colours applied to the alias tags
   struct RegexColorList   attach_list;                  ///< List of colours applied to the attachment headers
   struct RegexColorList   body_list;                    ///< List of colours applied to the email body
   struct RegexColorList   header_list;                  ///< List of colours applied to the email headers
