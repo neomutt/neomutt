@@ -109,6 +109,7 @@ const struct MenuOpSeq QueryDefaultBindings[] = { /* map: query */
   { OP_QUERY_APPEND,                       "A" },
   { OP_SORT,                               "o" },
   { OP_SORT_REVERSE,                       "O" },
+  { OP_TAG,                                "<space>" },
   { 0, NULL },
 };
 // clang-format on
