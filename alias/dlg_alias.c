@@ -121,6 +121,8 @@ void alias_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 
   const char *s = alias->name;
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_NAME);
 }
 
 /**
@@ -134,6 +136,8 @@ void alias_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 
   const char *s = alias->comment;
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_COMMENT);
 }
 
 /**
@@ -142,6 +146,9 @@ void alias_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 long alias_f_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AliasView *av = data;
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
+
   return av->is_deleted;
 }
 
@@ -156,6 +163,8 @@ void alias_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   // NOTE(g0mb4): use $flag_chars?
   const char *s = av->is_deleted ? "D" : " ";
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
 }
 
 /**
@@ -164,6 +173,8 @@ void alias_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 long alias_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AliasView *av = data;
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_NUMBER);
 
   return av->num + 1;
 }
@@ -178,6 +189,8 @@ void alias_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct Alias *alias = av->alias;
 
   mutt_addrlist_write(&alias->addr, buf, true);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_ADDRESS);
 }
 
 /**
@@ -186,6 +199,9 @@ void alias_r(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 long alias_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AliasView *av = data;
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
+
   return av->is_tagged;
 }
 
@@ -200,6 +216,8 @@ void alias_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   // NOTE(g0mb4): use $flag_chars?
   const char *s = av->is_tagged ? "*" : " ";
   buf_strcpy(buf, s);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_FLAGS);
 }
 
 /**
@@ -211,6 +229,8 @@ void alias_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct AliasView *av = data;
 
   alias_tags_to_buffer(&av->alias->tags, buf);
+
+  node_expando_set_color(node, MT_COLOR_ALIAS_TAGS);
 }
 
 /**

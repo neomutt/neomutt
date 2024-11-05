@@ -55,6 +55,13 @@
  */
 const struct Mapping ColorFields[] = {
   // clang-format off
+  { "alias",             MT_COLOR_ALIAS },
+  { "alias_address",     MT_COLOR_ALIAS_ADDRESS },
+  { "alias_comment",     MT_COLOR_ALIAS_COMMENT },
+  { "alias_flags",       MT_COLOR_ALIAS_FLAGS },
+  { "alias_name",        MT_COLOR_ALIAS_NAME },
+  { "alias_number",      MT_COLOR_ALIAS_NUMBER },
+  { "alias_tags",        MT_COLOR_ALIAS_TAGS },
   { "attachment",        MT_COLOR_ATTACHMENT },
   { "attach_headers",    MT_COLOR_ATTACH_HEADERS },
   { "body",              MT_COLOR_BODY },

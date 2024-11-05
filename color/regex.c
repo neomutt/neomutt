@@ -45,6 +45,13 @@
 #include "regex4.h"
 
 // clang-format off
+struct RegexColorList AliasAddressList;   ///< List of colours applied to the alias address
+struct RegexColorList AliasCommentList;   ///< List of colours applied to the alias comment
+struct RegexColorList AliasFlagsList;     ///< List of colours applied to the alias flags
+struct RegexColorList AliasList;          ///< List of default colours applied to the alias list
+struct RegexColorList AliasNameList;      ///< List of colours applied to the alias name
+struct RegexColorList AliasNumberList;    ///< List of colours applied to the alias index number
+struct RegexColorList AliasTagsList;      ///< List of colours applied to the alias tags
 struct RegexColorList AttachList;         ///< List of colours applied to the attachment headers
 struct RegexColorList BodyList;           ///< List of colours applied to the email body
 struct RegexColorList HeaderList;         ///< List of colours applied to the email headers
@@ -68,6 +75,13 @@ struct RegexColorList StatusList;         ///< List of colours applied to the st
 void regex_colors_init(void)
 {
   color_debug(LL_DEBUG5, "init AttachList, BodyList, etc\n");
+  STAILQ_INIT(&AliasAddressList);
+  STAILQ_INIT(&AliasCommentList);
+  STAILQ_INIT(&AliasFlagsList);
+  STAILQ_INIT(&AliasList);
+  STAILQ_INIT(&AliasNameList);
+  STAILQ_INIT(&AliasNumberList);
+  STAILQ_INIT(&AliasTagsList);
   STAILQ_INIT(&AttachList);
   STAILQ_INIT(&BodyList);
   STAILQ_INIT(&HeaderList);
@@ -91,6 +105,13 @@ void regex_colors_init(void)
 void regex_colors_cleanup(void)
 {
   color_debug(LL_DEBUG5, "clean up regex\n");
+  regex_color_list_clear(&AliasAddressList);
+  regex_color_list_clear(&AliasCommentList);
+  regex_color_list_clear(&AliasFlagsList);
+  regex_color_list_clear(&AliasList);
+  regex_color_list_clear(&AliasNameList);
+  regex_color_list_clear(&AliasNumberList);
+  regex_color_list_clear(&AliasTagsList);
   regex_color_list_clear(&AttachList);
   regex_color_list_clear(&BodyList);
   regex_color_list_clear(&HeaderList);
@@ -189,6 +210,20 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
       return &BodyList;
     case MT_COLOR_HEADER:
       return &HeaderList;
+    case MT_COLOR_ALIAS:
+      return &AliasList;
+    case MT_COLOR_ALIAS_ADDRESS:
+      return &AliasAddressList;
+    case MT_COLOR_ALIAS_COMMENT:
+      return &AliasCommentList;
+    case MT_COLOR_ALIAS_FLAGS:
+      return &AliasFlagsList;
+    case MT_COLOR_ALIAS_NAME:
+      return &AliasNameList;
+    case MT_COLOR_ALIAS_NUMBER:
+      return &AliasNumberList;
+    case MT_COLOR_ALIAS_TAGS:
+      return &AliasTagsList;
     case MT_COLOR_INDEX:
       return &IndexList;
     case MT_COLOR_INDEX_AUTHOR:
@@ -342,6 +377,13 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
       sensitive = false;
       is_index = false;
       break;
+    case MT_COLOR_ALIAS:
+    case MT_COLOR_ALIAS_ADDRESS:
+    case MT_COLOR_ALIAS_COMMENT:
+    case MT_COLOR_ALIAS_FLAGS:
+    case MT_COLOR_ALIAS_NAME:
+    case MT_COLOR_ALIAS_NUMBER:
+    case MT_COLOR_ALIAS_TAGS:
     case MT_COLOR_INDEX:
     case MT_COLOR_INDEX_AUTHOR:
     case MT_COLOR_INDEX_COLLAPSED:
