@@ -326,6 +326,11 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
         regex_color_free(&rcol);
         return MUTT_CMD_ERROR;
       }
+      struct Buffer *buf = buf_pool_get();
+      buf_strcpy(buf, s);
+      mutt_check_simple(buf, MUTT_ALIAS_SIMPLESEARCH);
+      rcol->color_pattern = mutt_pattern_comp(NULL, buf->data, MUTT_PC_NONE, err);
+      buf_pool_release(&buf);
     }
     rcol->pattern = mutt_str_dup(s);
     rcol->match = match;
@@ -387,6 +392,7 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
     case MT_COLOR_ALIAS_NAME:
     case MT_COLOR_ALIAS_NUMBER:
     case MT_COLOR_ALIAS_TAGS:
+      break;
     case MT_COLOR_INDEX:
     case MT_COLOR_INDEX_AUTHOR:
     case MT_COLOR_INDEX_COLLAPSED:

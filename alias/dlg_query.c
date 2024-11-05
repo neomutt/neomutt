@@ -316,6 +316,7 @@ static struct SimpleDialogWindows query_dialog_new(struct AliasMenuData *mdata,
   struct Menu *menu = sdw.menu;
 
   menu->make_entry = query_make_entry;
+  menu->color = alias_color;
   menu->tag = query_tag;
   menu->max = ARRAY_SIZE(&mdata->ava);
   mdata->title = mutt_str_dup(_("Query"));
