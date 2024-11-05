@@ -87,5 +87,6 @@ int  alias_array_count_visible(struct AliasViewArray *ava);
 
 void alias_set_title(struct MuttWindow *sbar, char *menu_name, char *limit);
 int alias_recalc(struct MuttWindow *win);
+const struct AttrColor *alias_color(struct Menu *menu, int line);
 
 #endif /* MUTT_ALIAS_GUI_H */

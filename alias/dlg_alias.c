@@ -316,6 +316,29 @@ static int alias_alias_observer(struct NotifyCallback *nc)
 }
 
 /**
+ * alias_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
+ */
+static int alias_color_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->global_data || !nc->event_data)
+    return -1;
+
+  struct EventColor *ev_c = nc->event_data;
+  enum ColorId cid = ev_c->cid;
+
+  if ((cid < MT_COLOR_ALIAS) || (cid > MT_COLOR_ALIAS_TAGS))
+    return 0;
+
+  struct Menu *menu = nc->global_data;
+  menu_queue_redraw(menu, MENU_REDRAW_FULL);
+  mutt_debug(LL_DEBUG5, "color done, request WA_RECALC, MENU_REDRAW_FULL\n");
+
+  return 0;
+}
+
+/**
  * alias_window_observer - Notification that a Window has changed - Implements ::observer_t - @ingroup observer_api
  *
  * This function is triggered by changes to the windows.
@@ -341,9 +364,36 @@ static int alias_window_observer(struct NotifyCallback *nc)
   notify_observer_remove(NeoMutt->notify, alias_alias_observer, menu);
   notify_observer_remove(NeoMutt->sub->notify, alias_config_observer, menu);
   notify_observer_remove(win_menu->notify, alias_window_observer, win_menu);
+  mutt_color_observer_remove(alias_color_observer, win_menu);
 
   mutt_debug(LL_DEBUG5, "window delete done\n");
   return 0;
+}
+
+/**
+ * alias_color - Calculate the colour for a line of the alias list - Implements Menu::color() - @ingroup menu_color
+ */
+const struct AttrColor *alias_color(struct Menu *menu, int line)
+{
+  const struct AliasMenuData *mdata = menu->mdata;
+  const struct AliasViewArray *ava = &mdata->ava;
+  struct AliasView *av = ARRAY_GET(ava, line);
+
+  struct RegexColor *color = NULL;
+
+  const struct AttrColor *ac_merge = simple_color_get(MT_COLOR_NORMAL);
+
+  struct RegexColorList *rcl = regex_colors_get_list(MT_COLOR_ALIAS);
+  STAILQ_FOREACH(color, rcl, entries)
+  {
+    if (mutt_pattern_alias_exec(SLIST_FIRST(color->color_pattern),
+                                MUTT_MATCH_FULL_ADDRESS, av, NULL))
+    {
+      ac_merge = merged_color_overlay(ac_merge, &color->attr_color);
+    }
+  }
+
+  return ac_merge;
 }
 
 /**
@@ -358,6 +408,7 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   struct Menu *menu = dlg->wdata;
 
   menu->make_entry = alias_make_entry;
+  menu->color = alias_color;
   menu->tag = alias_tag;
   menu->max = alias_array_count_visible(&mdata->ava);
   menu->mdata = mdata;
@@ -375,6 +426,7 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, alias_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, alias_window_observer, win_menu);
+  mutt_color_observer_add(alias_color_observer, menu);
 
   return dlg;
 }

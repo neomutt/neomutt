@@ -1199,6 +1199,8 @@ bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
       return pat->pat_not ^ (perform_alias_and(pat->child, flags, av, cache) > 0);
     case MUTT_PAT_OR:
       return pat->pat_not ^ (perform_alias_or(pat->child, flags, av, cache) > 0);
+    case MUTT_TAG:
+      return pat->pat_not ^ av->is_tagged;
   }
 
   return false;
