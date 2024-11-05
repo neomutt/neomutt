@@ -179,6 +179,16 @@ enum PatternType
   MUTT_PAT_MAX,
 };
 
+/**
+ * enum PatternAliasAction - What to do with the matching Aliases
+ */
+enum PatternAlias
+{
+  PAA_TAG,        ///< Set   AliasView.is_tagged, but don't touch the others
+  PAA_UNTAG,      ///< Unset AliasView.is_tagged, but don't touch the others
+  PAA_VISIBLE,    ///< Set   AliasView.is_visible and hide the rest
+};
+
 bool mutt_pattern_exec(struct Pattern *pat, PatternExecFlags flags, struct Mailbox *m,
                        struct Email *e, struct PatternCache *cache);
 bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
@@ -192,7 +202,7 @@ bool dlg_pattern(char *buf, size_t buflen);
 bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);
 int mutt_pattern_func(struct MailboxView *mv, int op, char *prompt);
-int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, struct Menu *menu);
+int mutt_pattern_alias_func(char *prompt, struct AliasMenuData *mdata, enum PatternAlias action, struct Menu *menu);
 int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
                         struct SearchState *state, SearchFlags flags);
 int mutt_search_alias_command(struct Menu *menu, int cur,
