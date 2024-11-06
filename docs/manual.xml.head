@@ -13037,6 +13037,179 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
       </para>
     </sect1>
 
+    <sect1 id="alias-color">
+      <title>Alias Color Feature</title>
+      <subtitle>Custom rules for theming your address book</subtitle>
+
+      <sect2 id="alias-color-support">
+        <title>Support</title>
+        <para>
+          <emphasis role="bold">Since:</emphasis> NeoMutt 2024-11-06
+        </para>
+        <variablelist>
+          <varlistentry>
+            <term>
+              <emphasis role="bold">Dependencies:</emphasis>
+            </term>
+            <listitem>
+              <para>
+                <link linkend="status-color">status-color feature</link>
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+      </sect2>
+
+      <sect2 id="alias-color-intro">
+        <title>Introduction</title>
+        <para>
+          The <quote>alias-color</quote> feature allows you to specify colors
+          for individual parts of the address book. e.g. Name, Address, Comments.
+        </para>
+        <para>
+          First choose which part of the address book you'd like to color. Then,
+          if needed, pick a pattern to match.
+        </para>
+        <para>
+          Note: The pattern does not have to refer to the object you wish to
+          color. e.g.
+        </para>
+        <screen>color alias_name red default "~Y work"</screen>
+        <para>
+          The author appears red when the tags (~Y) contain <quote>work</quote>.
+        </para>
+      </sect2>
+
+      <sect2 id="alias-color-colors">
+        <title>Colors</title>
+        <para>
+          All the colors default to <literal>default</literal>, i.e. unset.
+        </para>
+        <para>
+          The alias objects can be themed using the <literal>color</literal>
+          command and an optional pattern. A missing pattern is equivalent to
+          a match-all <literal>.*</literal> pattern.
+        </para>
+
+<screen>
+color alias-object foreground background [pattern]
+</screen>
+
+        <table id="table-alias-color-colors">
+          <title>Index Colors</title>
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Object</entry>
+                <entry>Highlights</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>alias</literal></entry>
+                <entry>Entire alias line</entry>
+              </row>
+              <row>
+                <entry><literal>alias_address</literal></entry>
+                <entry>Address which alias expands to, %r</entry>
+              </row>
+              <row>
+                <entry><literal>alias_comment</literal></entry>
+                <entry>Comment, %c</entry>
+              </row>
+              <row>
+                <entry><literal>alias_flags</literal></entry>
+                <entry>Alias flags, %f %t</entry>
+              </row>
+              <row>
+                <entry><literal>alias_name</literal></entry>
+                <entry>Alias short name, %a</entry>
+              </row>
+              <row>
+                <entry><literal>alias_number</literal></entry>
+                <entry>Index number, %n</entry>
+              </row>
+              <row>
+                <entry><literal>alias_tags</literal></entry>
+                <entry>Alias tags, %Y</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+
+      <sect2 id="alias-color-neomuttrc">
+        <title>neomuttrc</title>
+
+<screen>
+<emphasis role="comment"># Example NeoMutt config file for the alias-color feature.</emphasis>
+<emphasis role="comment"># Entire alias row</emphasis>
+color alias white black '.*'
+<emphasis role="comment"># Tagged alias rows</emphasis>
+color alias brightred white '~T'
+<emphasis role="comment"># Address column, %r</emphasis>
+color alias_address default color234 '.*'
+<emphasis role="comment"># Comment column, %c</emphasis>
+color alias_comment default brightblue
+<emphasis role="comment"># Flags column, %f %t</emphasis>
+color alias_flags brightyellow default
+<emphasis role="comment"># Alias column, %a</emphasis>
+color alias_name default brightgreen
+<emphasis role="comment"># Index number, %n</emphasis>
+color alias_number red default
+<emphasis role="comment"># Tags column, %Y</emphasis>
+color alias_tags cyan default
+<emphasis role="comment"># vim: syntax=neomuttrc</emphasis>
+</screen>
+
+      </sect2>
+
+      <sect2 id="alias-color-see-also">
+        <title>See Also</title>
+        <itemizedlist>
+          <listitem>
+            <para>
+              <link linkend="regex">Regular Expressions</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link linkend="patterns">Patterns</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link linkend="alias-format">$alias_format</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link linkend="color">Color command</link>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <link linkend="status-color">Status-Color feature</link>
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect2>
+
+      <sect2 id="alias-color-known-bugs">
+        <title>Known Bugs</title>
+        <para>
+          None
+        </para>
+      </sect2>
+
+      <sect2 id="alias-color-credits">
+        <title>Credits</title>
+        <para>
+          Richard Russon
+        </para>
+      </sect2>
+    </sect1>
+
     <sect1 id="caching">
       <title>Local Caching</title>
       <para>
