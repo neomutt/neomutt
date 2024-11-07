@@ -27,12 +27,14 @@
  */
 
 #include "config.h"
-#include "private.h"
+#include <stdbool.h>
+#include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "functions.h"
 #include "menu/lib.h"
+#include "pattern_data.h"
 
 /**
  * op_generic_select_entry - Select the current entry - Implements ::pattern_function_t - @ingroup pattern_function_api
@@ -40,8 +42,10 @@
 static int op_generic_select_entry(struct PatternData *pd, int op)
 {
   const int index = menu_get_index(pd->menu);
-  struct PatternEntry *entry = ((struct PatternEntry *) pd->menu->mdata) + index;
-  mutt_str_copy(pd->buf, entry->tag, pd->buflen);
+  struct PatternEntry *entry = ARRAY_GET(&pd->entries, index);
+
+  if (entry)
+    buf_strcpy(pd->buf, entry->tag);
 
   pd->done = true;
   pd->selection = true;
@@ -76,14 +80,13 @@ static const struct PatternFunction PatternFunctions[] = {
  */
 int pattern_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct PatternData *pd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct PatternData *pd = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; PatternFunctions[i].op != OP_NULL; i++)

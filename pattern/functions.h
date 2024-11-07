@@ -23,22 +23,9 @@
 #ifndef MUTT_PATTERN_FUNCTIONS_H
 #define MUTT_PATTERN_FUNCTIONS_H
 
-#include <stdbool.h>
-#include <stdio.h>
+#include "pattern_data.h"
 
 struct MuttWindow;
-
-/**
- * struct PatternData - Data to pass to the Pattern Functions
- */
-struct PatternData
-{
-  bool done;           ///< Should we close the Dialog?
-  bool selection;      ///< Was a selection made?
-  char *buf;           ///< Buffer for the results
-  size_t buflen;       ///< Length of the results buffer
-  struct Menu *menu;   ///< Pattern Menu
-};
 
 /**
  * @defgroup pattern_function_api Pattern Function API

@@ -37,6 +37,7 @@
  * | pattern/functions.c    | @subpage pattern_functions    |
  * | pattern/message.c      | @subpage pattern_message      |
  * | pattern/pattern.c      | @subpage pattern_pattern      |
+ * | pattern/pattern_data.c | @subpage pattern_pattern_data |
  * | pattern/search_state.c | @subpage pattern_search_state |
  */
 
@@ -45,7 +46,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "mutt.h"
@@ -197,7 +197,7 @@ bool mutt_pattern_alias_exec(struct Pattern *pat, PatternExecFlags flags,
 struct PatternList *mutt_pattern_comp(struct MailboxView *mv, struct Menu *menu, const char *s, PatternCompFlags flags, struct Buffer *err);
 void mutt_check_simple(struct Buffer *s, const char *simple);
 void mutt_pattern_free(struct PatternList **pat);
-bool dlg_pattern(char *buf, size_t buflen);
+bool dlg_pattern(struct Buffer *buf);
 
 bool mutt_is_list_recipient(bool all_addr, struct Envelope *env);
 bool mutt_is_subscribed_list_recipient(bool all_addr, struct Envelope *env);

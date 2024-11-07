@@ -46,7 +46,7 @@ enum FunctionRetval complete_pattern(struct EnterWindowData *wdata, int op)
   size_t i = wdata->state->curpos;
   if (i && (wdata->state->wbuf[i - 1] == '~'))
   {
-    if (dlg_pattern(wdata->buffer->data, wdata->buffer->dsize))
+    if (dlg_pattern(wdata->buffer))
       replace_part(wdata->state, i - 1, wdata->buffer->data);
     buf_fix_dptr(wdata->buffer);
     return FR_CONTINUE;
