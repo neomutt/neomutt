@@ -157,7 +157,7 @@ void browser_highlight_default(struct BrowserState *state, struct Menu *menu);
 int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState *state, const char *d, const char *prefix);
 int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState *state);
 void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m, struct MuttWindow *sbar);
-void init_state(struct BrowserState *state, struct Menu *menu);
+void init_state(struct BrowserState *state);
 bool link_is_dir(const char *folder, const char *path);
 void destroy_state(struct BrowserState *state);
 void dump_state(struct BrowserState *state);

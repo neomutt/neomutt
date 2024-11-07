@@ -49,7 +49,6 @@ struct BrowserPrivateData
   struct Buffer       *prefix;                  ///< Folder prefix string
   int                  last_selected_mailbox;   ///< Index of last selected Mailbox
   struct MuttWindow   *sbar;                    ///< Status Bar
-  struct MuttWindow   *win_browser;             ///< Browser Window
   bool                 done;                    ///< Should we close the Dialog?
 };
 
