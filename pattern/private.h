@@ -73,7 +73,7 @@ enum PatternEat
  */
 struct PatternFlags
 {
-  int tag;                 ///< Character used to represent this operation, e.g. 'A' for '~A'
+  char tag;                ///< Character used to represent this operation, e.g. 'A' for '~A'
   int op;                  ///< Operation to perform, e.g. #MUTT_PAT_SCORE
   PatternCompFlags flags;  ///< Pattern flags, e.g. #MUTT_PC_FULL_MSG
 

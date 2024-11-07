@@ -176,7 +176,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   int num_entries = 0, i = 0;
   struct Buffer *entrybuf = NULL;
 
-  while (Flags[num_entries].tag)
+  while (Flags[num_entries].tag != 0)
     num_entries++;
   /* Add three more hard-coded entries */
   num_entries += 3;
@@ -193,11 +193,11 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   sbar_set_title(sbar, _("Patterns"));
 
   entrybuf = buf_pool_get();
-  while (Flags[i].tag)
+  while (Flags[i].tag != 0)
   {
     entries[i].num = i + 1;
 
-    buf_printf(entrybuf, "~%c", (char) Flags[i].tag);
+    buf_printf(entrybuf, "~%c", Flags[i].tag);
     entries[i].tag = mutt_str_dup(buf_string(entrybuf));
 
     switch (Flags[i].eat_arg)
