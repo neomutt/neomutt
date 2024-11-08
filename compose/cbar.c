@@ -245,7 +245,7 @@ static int cbar_email_observer(struct NotifyCallback *nc)
 {
   if (nc->event_type != NT_EMAIL)
     return 0;
-  if (!nc->global_data || !nc->event_data)
+  if (!nc->global_data)
     return -1;
 
   struct MuttWindow *win_cbar = nc->global_data;
@@ -272,7 +272,7 @@ static int cbar_window_observer(struct NotifyCallback *nc)
 
   if (nc->event_subtype == NT_WINDOW_STATE)
   {
-    win_cbar->actions |= WA_RECALC;
+    win_cbar->actions |= WA_RECALC | WA_REPAINT;
     mutt_debug(LL_DEBUG5, "window state done, request WA_RECALC\n");
   }
   else if (nc->event_subtype == NT_WINDOW_DELETE)
