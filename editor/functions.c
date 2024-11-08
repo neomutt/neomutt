@@ -214,7 +214,7 @@ static int op_editor_history_search(struct EnterWindowData *wdata, int op)
 {
   wdata->state->curpos = wdata->state->lastchar;
   buf_mb_wcstombs(wdata->buffer, wdata->state->wbuf, wdata->state->curpos);
-  mutt_hist_complete(wdata->buffer->data, wdata->buffer->dsize, wdata->hclass);
+  mutt_hist_complete(wdata->buffer, wdata->hclass);
   replace_part(wdata->state, 0, wdata->buffer->data);
   return FR_CONTINUE;
 }

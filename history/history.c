@@ -81,6 +81,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "lib.h"
+#include "functions.h"
 
 #define HC_FIRST HC_EXT_COMMAND
 
@@ -408,35 +409,38 @@ static void remove_history_dups(enum HistoryClass hclass, const char *str)
 
 /**
  * mutt_hist_search - Find matches in a history list
- * @param[in]  search_buf String to find
- * @param[in]  hclass     History list
- * @param[out] matches    All the matching lines
+ * @param[in]  find    String to find
+ * @param[in]  hclass  History list
+ * @param[out] matches All the matching lines
  * @retval num Matches found
  */
-int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches)
+int mutt_hist_search(const char *find, enum HistoryClass hclass, struct HistoryArray *matches)
 {
-  if (!search_buf || !matches)
+  if (!find || !matches)
     return 0;
 
   struct History *h = get_history(hclass);
   if (!h)
     return 0;
 
-  int match_count = 0;
   int cur = h->last;
   const short c_history = cs_subset_number(NeoMutt->sub, "history");
+
   do
   {
     cur--;
     if (cur < 0)
       cur = c_history;
+
     if (cur == h->last)
       break;
-    if (mutt_istr_find(h->hist[cur], search_buf))
-      matches[match_count++] = h->hist[cur];
-  } while (match_count < c_history);
 
-  return match_count;
+    if (mutt_istr_find(h->hist[cur], find))
+      ARRAY_ADD(matches, h->hist[cur]);
+
+  } while (ARRAY_SIZE(matches) < c_history);
+
+  return ARRAY_SIZE(matches);
 }
 
 /**
@@ -680,22 +684,27 @@ void mutt_hist_save_scratch(enum HistoryClass hclass, const char *str)
 /**
  * mutt_hist_complete - Complete a string from a history list
  * @param buf    Buffer in which to save string
- * @param buflen Buffer length
  * @param hclass History list to use
  */
-void mutt_hist_complete(char *buf, size_t buflen, enum HistoryClass hclass)
+void mutt_hist_complete(struct Buffer *buf, enum HistoryClass hclass)
 {
-  const short c_history = cs_subset_number(NeoMutt->sub, "history");
-  char **matches = MUTT_MEM_CALLOC(c_history, char *);
-  int match_count = mutt_hist_search(buf, hclass, matches);
-  if (match_count)
+  struct HistoryArray matches = ARRAY_HEAD_INITIALIZER;
+
+  int match_count = mutt_hist_search(buf_string(buf), hclass, &matches);
+  if (match_count != 0)
   {
     if (match_count == 1)
-      mutt_str_copy(buf, matches[0], buflen);
+    {
+      const char **pstr = ARRAY_GET(&matches, 0);
+      buf_strcpy(buf, *pstr);
+    }
     else
-      dlg_history(buf, buflen, matches, match_count);
+    {
+      dlg_history(buf, &matches);
+    }
   }
-  FREE(&matches);
+
+  ARRAY_FREE(&matches);
 }
 
 /**

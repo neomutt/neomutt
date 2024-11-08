@@ -39,7 +39,10 @@
 static int op_generic_select_entry(struct HistoryData *hd, int op)
 {
   const int index = menu_get_index(hd->menu);
-  mutt_str_copy(hd->buf, hd->matches[index], hd->buflen);
+
+  const char **pentry = ARRAY_GET(hd->matches, index);
+  if (pentry)
+    buf_strcpy(hd->buf, *pentry);
 
   hd->done = true;
   hd->selection = true;
@@ -74,14 +77,13 @@ static const struct HistoryFunction HistoryFunctions[] = {
  */
 int history_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct HistoryData *hd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct HistoryData *hd = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; HistoryFunctions[i].op != OP_NULL; i++)

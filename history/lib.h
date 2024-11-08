@@ -38,7 +38,10 @@
 
 #include <stdbool.h>
 #include <stdlib.h>
+#include "functions.h"
 
+struct Buffer;
+struct HistoryArray;
 struct NotifyCallback;
 
 /**
@@ -87,10 +90,10 @@ char *mutt_hist_prev        (enum HistoryClass hclass);
 void  mutt_hist_read_file   (void);
 void  mutt_hist_reset_state (enum HistoryClass hclass);
 void  mutt_hist_save_scratch(enum HistoryClass hclass, const char *str);
-int   mutt_hist_search      (const char *search_buf, enum HistoryClass hclass, char **matches);
-void  mutt_hist_complete    (char *buf, size_t buflen, enum HistoryClass hclass);
+int   mutt_hist_search      (const char *find, enum HistoryClass hclass, struct HistoryArray *matches);
+void  mutt_hist_complete    (struct Buffer *buf, enum HistoryClass hclass);
 int   main_hist_observer    (struct NotifyCallback *nc);
 
-void  dlg_history(char *buf, size_t buflen, char **matches, int match_count);
+void dlg_history(struct Buffer *buf, struct HistoryArray *matches);
 
 #endif /* MUTT_HISTORY_LIB_H */
