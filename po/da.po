@@ -7044,10 +7044,6 @@ msgstr "Denne nøgle kan ikke bruges: udløbet/sat ud af kraft/tilbagekaldt"
 msgid "Enter S/MIME passphrase:"
 msgstr "Anfør S/MIME-løsen:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Anfør nøgle-ID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

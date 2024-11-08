@@ -6960,10 +6960,6 @@ msgstr "Tätä avainta ei voi käyttää, koska se on vanhentunut/pois käytöst
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME-salasana:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Anna avain-ID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

@@ -6917,10 +6917,6 @@ msgstr "Ez a kulcs nem használható: lejárt/letiltott/visszavont"
 msgid "Enter S/MIME passphrase:"
 msgstr "Kérlem írj be az S/MIME jelszavát:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Add meg a kulcsID-t: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

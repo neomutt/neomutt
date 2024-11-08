@@ -7088,10 +7088,6 @@ msgstr "Deze sleutel is onbruikbaar: verlopen/ingetrokken"
 msgid "Enter S/MIME passphrase:"
 msgstr "Geef S/MIME-wachtwoord in:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Geef keyID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

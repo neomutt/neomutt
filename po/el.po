@@ -7098,10 +7098,6 @@ msgstr "Αυτό το κλειδί δεν μπορεί να χρησιμοποι
 msgid "Enter S/MIME passphrase:"
 msgstr "Εισάγετε την φράση-κλειδί S/MIME:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Εισάγετε το keyID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

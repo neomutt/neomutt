@@ -7142,10 +7142,6 @@ msgstr "이 키는 사용할 수 없습니다: 만기/사용중지/취소됨"
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME 암호 문구 입력:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "keyID 입력: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

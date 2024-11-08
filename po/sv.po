@@ -7141,10 +7141,6 @@ msgstr "Den här nyckeln kan inte användas: utgången/inaktiverad/återkallad"
 msgid "Enter S/MIME passphrase:"
 msgstr "Mata in S/MIME-lösenfras:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Ange nyckel-ID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

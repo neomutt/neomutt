@@ -7216,10 +7216,6 @@ msgstr "Ní féidir an eochair seo a úsáid: as feidhm/díchumasaithe/cúlghair
 msgid "Enter S/MIME passphrase:"
 msgstr "Iontráil frása faire S/MIME:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Iontráil aitheantas na heochrach: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

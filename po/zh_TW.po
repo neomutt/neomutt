@@ -7172,11 +7172,6 @@ msgstr "這個鑰匙不能使用：過期/停用/已取消"
 msgid "Enter S/MIME passphrase:"
 msgstr "請輸入 S/MIME 通行密碼："
 
-#: ncrypt/smime.c:692
-#, fuzzy
-msgid "Enter keyID: "
-msgstr "請輸入 %s 的鑰匙 ID："
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

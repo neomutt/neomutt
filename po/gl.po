@@ -7215,11 +7215,6 @@ msgstr "Esta chave non pode ser usada: expirada/deshabilitada/revocada"
 msgid "Enter S/MIME passphrase:"
 msgstr "Introduza o contrasinal S/MIME:"
 
-#: ncrypt/smime.c:692
-#, fuzzy
-msgid "Enter keyID: "
-msgstr "Introduza keyID para %s: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

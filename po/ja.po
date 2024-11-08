@@ -7012,10 +7012,6 @@ msgstr "この鍵は期限切れか使用不可か廃棄済みのため、使え
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME パスフレーズ入力:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "鍵ID入力: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

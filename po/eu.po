@@ -7142,10 +7142,6 @@ msgstr "Gako hau ezin da erabili: iraungita/desgaitua/errebokatuta"
 msgid "Enter S/MIME passphrase:"
 msgstr "Sartu S/MIME pasahitza:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "IDgakoa sartu: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

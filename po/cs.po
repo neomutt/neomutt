@@ -6950,10 +6950,6 @@ msgstr "Klíč nelze použít: vypršela jeho platnost, nebo byl zakázán či o
 msgid "Enter S/MIME passphrase:"
 msgstr "Zadejte S/MIME heslo:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Zadejte ID klíče: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

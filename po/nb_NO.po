@@ -6908,10 +6908,6 @@ msgstr "Denne nøkkelen kan ikke brukes: utløpt/slått av/tilbakekalt"
 msgid "Enter S/MIME passphrase:"
 msgstr "Skriv inn S/MIME-passord:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Skriv inn nøkkel-ID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

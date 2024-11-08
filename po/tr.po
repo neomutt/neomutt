@@ -6916,10 +6916,6 @@ msgstr "Bu anahtar kullanılamıyor: Süresi dolmuş/devre dışı/yürürlükte
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME parolasını girin:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "keyID girin: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

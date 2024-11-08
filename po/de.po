@@ -6919,10 +6919,6 @@ msgstr "Dieser Schlüssel ist nicht verwendbar: abgelaufen/deaktiviert/zurückge
 msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME-Mantra eingeben:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "KeyID eingeben: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

@@ -6941,10 +6941,6 @@ msgstr "Овај кључ се не може користити: он је ис�
 msgid "Enter S/MIME passphrase:"
 msgstr "Унесите S/MIME приступну фразу:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Унесите ИБкључа: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

@@ -7263,11 +7263,6 @@ msgstr "Cette clé ne peut pas être utilisée : expirée/désactivée/révoqué
 msgid "Enter S/MIME passphrase:"
 msgstr "Entrez la phrase de passe S/MIME :"
 
-# , c-format
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Entrez keyID : "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

@@ -683,13 +683,13 @@ static struct SmimeKey *smime_get_key_by_str(const char *str, KeyFlags abilities
  * @param only_public_key  If true, only get the public keys
  * @retval ptr Selected SMIME key
  */
-static struct SmimeKey *smime_ask_for_key(char *prompt, KeyFlags abilities, bool only_public_key)
+static struct SmimeKey *smime_ask_for_key(const char *prompt, KeyFlags abilities, bool only_public_key)
 {
+  if (!prompt)
+    return NULL;
+
   struct SmimeKey *key = NULL;
   struct Buffer *resp = buf_pool_get();
-
-  if (!prompt)
-    prompt = _("Enter keyID: ");
 
   mutt_clear_error();
 
@@ -728,9 +728,10 @@ static void getkeys(const char *mailbox)
 
   if (!key)
   {
-    char buf[256] = { 0 };
-    snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), mailbox);
-    key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, false);
+    struct Buffer *prompt = buf_pool_get();
+    buf_printf(prompt, _("Enter keyID for %s: "), mailbox);
+    key = smime_ask_for_key(buf_string(prompt), KEYFLAG_CANENCRYPT, false);
+    buf_pool_release(&prompt);
   }
 
   const char *const c_smime_keys = cs_subset_path(NeoMutt->sub, "smime_keys");
@@ -808,9 +809,10 @@ char *smime_class_find_keys(const struct AddressList *al, bool oppenc_mode)
     key = smime_get_key_by_addr(buf_string(a->mailbox), KEYFLAG_CANENCRYPT, true, oppenc_mode);
     if (!key && !oppenc_mode && isatty(STDIN_FILENO))
     {
-      char buf[1024] = { 0 };
-      snprintf(buf, sizeof(buf), _("Enter keyID for %s: "), buf_string(a->mailbox));
-      key = smime_ask_for_key(buf, KEYFLAG_CANENCRYPT, true);
+      struct Buffer *prompt = buf_pool_get();
+      buf_printf(prompt, _("Enter keyID for %s: "), buf_string(a->mailbox));
+      key = smime_ask_for_key(buf_string(prompt), KEYFLAG_CANENCRYPT, true);
+      buf_pool_release(&prompt);
     }
     if (!key)
     {

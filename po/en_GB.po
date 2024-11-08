@@ -6906,10 +6906,6 @@ msgstr "A key can't be used: expired/disabled/revoked"
 msgid "Enter S/MIME passphrase:"
 msgstr "Enter S/MIME passphrase:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Enter keyID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

@@ -7169,10 +7169,6 @@ msgstr "Този ключ не може да бъде използван, защ
 msgid "Enter S/MIME passphrase:"
 msgstr "Въвеждане на SMIME парола:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Въведете ключов идентификатор: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

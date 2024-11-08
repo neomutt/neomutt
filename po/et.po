@@ -7179,10 +7179,6 @@ msgstr "Seda võtit ei saa kasutada: aegunud/blokeeritud/tühistatud"
 msgid "Enter S/MIME passphrase:"
 msgstr "Sisestage S/MIME parool:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Sisestage võtme ID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

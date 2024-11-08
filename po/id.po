@@ -7107,10 +7107,6 @@ msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut"
 msgid "Enter S/MIME passphrase:"
 msgstr "Masukkan passphrase S/MIME: "
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Masukkan keyID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

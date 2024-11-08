@@ -7285,10 +7285,6 @@ msgstr "No es pot emprar aquesta clau: es troba expirada, inhabilitada o revocad
 msgid "Enter S/MIME passphrase:"
 msgstr "Entreu la frase clau de S/MIME:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Entreu l’ID de clau: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

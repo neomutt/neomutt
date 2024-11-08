@@ -6937,10 +6937,6 @@ msgstr "Raktas negali būti naudojamas: pasenęs/uždraustas/atšauktas"
 msgid "Enter S/MIME passphrase:"
 msgstr "Įvesk slaptą S/MIME frazę:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Įvesk rakto ID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

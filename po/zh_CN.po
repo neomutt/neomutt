@@ -6903,10 +6903,6 @@ msgstr "无法使用这个密钥：已过期/已禁用/已吊销"
 msgid "Enter S/MIME passphrase:"
 msgstr "请输入 S/MIME 通行密码："
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "请输入密钥 ID："
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"

@@ -6945,10 +6945,6 @@ msgstr "Цей ключ неможливо використати: простр�
 msgid "Enter S/MIME passphrase:"
 msgstr "Уведіть кодову фразу S/MIME:"
 
-#: ncrypt/smime.c:692
-msgid "Enter keyID: "
-msgstr "Уведіть keyID: "
-
 #: ncrypt/smime.c:818
 #, c-format
 msgid "No (valid) certificate found for %s"
