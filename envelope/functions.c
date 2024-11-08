@@ -132,7 +132,7 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
     FREE(&err);
   }
 
-  const bool rc = !mutt_str_equal(buf_string(new_list), buf_string(old_list));
+  const bool rc = !buf_equal(new_list, old_list);
   buf_pool_release(&old_list);
   buf_pool_release(&new_list);
   return rc;

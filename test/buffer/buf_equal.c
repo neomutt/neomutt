@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for buf_str_equal()
+ * Test code for buf_equal()
  *
  * @authors
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
@@ -28,19 +28,19 @@
 #include "mutt/lib.h"
 #include "test_common.h" // IWYU pragma: keep
 
-void test_buf_str_equal(void)
+void test_buf_equal(void)
 {
-  // bool buf_str_equal(struct Buffer *a, struct Buffer *b);
+  // bool buf_equal(struct Buffer *a, struct Buffer *b);
 
   {
     // Degenerate tests
-    TEST_CHECK(buf_str_equal(NULL, NULL) == true);
+    TEST_CHECK(buf_equal(NULL, NULL) == true);
 
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("foo");
 
-    TEST_CHECK(buf_str_equal(a, NULL) == false);
-    TEST_CHECK(buf_str_equal(NULL, b) == false);
+    TEST_CHECK(buf_equal(a, NULL) == false);
+    TEST_CHECK(buf_equal(NULL, b) == false);
 
     buf_free(&a);
     buf_free(&b);
@@ -50,7 +50,7 @@ void test_buf_str_equal(void)
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("foo");
 
-    TEST_CHECK(buf_str_equal(a, b) == true);
+    TEST_CHECK(buf_equal(a, b) == true);
 
     buf_free(&a);
     buf_free(&b);
@@ -60,7 +60,7 @@ void test_buf_str_equal(void)
     struct Buffer *a = buf_new("foobar");
     struct Buffer *b = buf_new("foo");
 
-    TEST_CHECK(buf_str_equal(a, b) == false);
+    TEST_CHECK(buf_equal(a, b) == false);
 
     buf_free(&a);
     buf_free(&b);
@@ -70,7 +70,7 @@ void test_buf_str_equal(void)
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("foobar");
 
-    TEST_CHECK(buf_str_equal(a, b) == false);
+    TEST_CHECK(buf_equal(a, b) == false);
 
     buf_free(&a);
     buf_free(&b);
@@ -80,7 +80,7 @@ void test_buf_str_equal(void)
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("bar");
 
-    TEST_CHECK(buf_str_equal(a, b) == false);
+    TEST_CHECK(buf_equal(a, b) == false);
 
     buf_free(&a);
     buf_free(&b);
@@ -90,7 +90,7 @@ void test_buf_str_equal(void)
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("Foo");
 
-    TEST_CHECK(buf_str_equal(a, b) == false);
+    TEST_CHECK(buf_equal(a, b) == false);
 
     buf_free(&a);
     buf_free(&b);

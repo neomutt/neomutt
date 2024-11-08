@@ -456,7 +456,7 @@ int mutt_autocrypt_process_gossip_header(struct Email *e, struct Envelope *prot_
     /* Check to make sure the address is in the recipient list. */
     TAILQ_FOREACH(peer_addr, &recips, entries)
     {
-      if (buf_str_equal(peer_addr->mailbox, ac_hdr_addr.mailbox))
+      if (buf_equal(peer_addr->mailbox, ac_hdr_addr.mailbox))
         break;
     }
 

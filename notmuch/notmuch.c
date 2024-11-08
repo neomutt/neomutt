@@ -498,8 +498,7 @@ static int update_email_tags(struct Email *e, notmuch_message_t *msg)
 
   driver_tags_get(&e->tags, old_tags);
 
-  if (!buf_is_empty(new_tags) && !buf_is_empty(old_tags) &&
-      (buf_str_equal(old_tags, new_tags)))
+  if (!buf_is_empty(new_tags) && !buf_is_empty(old_tags) && (buf_equal(old_tags, new_tags)))
   {
     buf_pool_release(&new_tags);
     buf_pool_release(&old_tags);

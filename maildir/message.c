@@ -267,7 +267,7 @@ static int maildir_sync_message(struct Mailbox *m, struct Email *e)
     buf_printf(fullpath, "%s/%s", mailbox_path(m), buf_string(partpath));
     buf_printf(oldpath, "%s/%s", mailbox_path(m), e->path);
 
-    if (mutt_str_equal(buf_string(fullpath), buf_string(oldpath)))
+    if (buf_equal(fullpath, oldpath))
     {
       /* message hasn't really changed */
       goto cleanup;

@@ -849,8 +849,7 @@ bool mutt_addrlist_equal(const struct AddressList *ala, const struct AddressList
 
   while (ana && anb)
   {
-    if (!buf_str_equal(ana->mailbox, anb->mailbox) ||
-        !buf_str_equal(ana->personal, anb->personal))
+    if (!buf_equal(ana->mailbox, anb->mailbox) || !buf_equal(ana->personal, anb->personal))
     {
       break;
     }

@@ -137,7 +137,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_buf_strcpy)                                           \
   NEOMUTT_TEST_ITEM(test_buf_strcpy_n)                                         \
   NEOMUTT_TEST_ITEM(test_buf_strdup)                                           \
-  NEOMUTT_TEST_ITEM(test_buf_str_equal)                                        \
+  NEOMUTT_TEST_ITEM(test_buf_equal)                                            \
   NEOMUTT_TEST_ITEM(test_buf_substrcpy)                                        \
                                                                                \
   /* charset */                                                                \

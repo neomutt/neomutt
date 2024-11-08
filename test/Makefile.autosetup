@@ -73,6 +73,7 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_dealloc.o \
 		  test/buffer/buf_dequote_comment.o \
 		  test/buffer/buf_dup.o \
+		  test/buffer/buf_equal.o \
 		  test/buffer/buf_find_char.o \
 		  test/buffer/buf_find_string.o \
 		  test/buffer/buf_fix_dptr.o \
@@ -94,7 +95,6 @@ BUFFER_OBJS	= test/buffer/buf_add_printf.o \
 		  test/buffer/buf_strcpy.o \
 		  test/buffer/buf_strcpy_n.o \
 		  test/buffer/buf_strdup.o \
-		  test/buffer/buf_str_equal.o \
 		  test/buffer/buf_substrcpy.o
 
 CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \

@@ -491,7 +491,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!mutt_str_equal(buf_string(initial), buf_string(err)))
+  if (!buf_equal(initial, err))
   {
     TEST_MSG("Differ: %s '%s' '%s'", name, buf_string(initial), buf_string(err));
     return false;
@@ -516,7 +516,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!mutt_str_equal(buf_string(initial), buf_string(err)))
+  if (!buf_equal(initial, err))
   {
     TEST_MSG("Differ: %s '%s' '%s'", name, buf_string(initial), buf_string(err));
     return false;
@@ -541,7 +541,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
     return false;
   }
 
-  if (!mutt_str_equal(buf_string(initial), buf_string(err)))
+  if (!buf_equal(initial, err))
   {
     TEST_MSG("Differ: %s '%s' '%s'", name, buf_string(initial), buf_string(err));
     return false;

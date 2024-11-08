@@ -501,7 +501,7 @@ int mutt_search_command(struct MailboxView *mv, struct Menu *menu, int cur,
     buf_copy(tmp, state->string);
     const char *const c_simple_search = cs_subset_string(NeoMutt->sub, "simple_search");
     mutt_check_simple(tmp, NONULL(c_simple_search));
-    if (!buf_str_equal(tmp, state->string_expn))
+    if (!buf_equal(tmp, state->string_expn))
     {
       mutt_pattern_free(&state->pattern);
       buf_copy(state->string_expn, tmp);
@@ -657,7 +657,7 @@ int mutt_search_alias_command(struct Menu *menu, int cur,
     struct Buffer *tmp = buf_pool_get();
     buf_copy(tmp, state->string);
     mutt_check_simple(tmp, MUTT_ALIAS_SIMPLESEARCH);
-    if (!buf_str_equal(tmp, state->string_expn))
+    if (!buf_equal(tmp, state->string_expn))
     {
       mutt_pattern_free(&state->pattern);
       buf_copy(state->string_expn, tmp);

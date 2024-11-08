@@ -676,13 +676,13 @@ char buf_at(const struct Buffer *buf, size_t offset)
 }
 
 /**
- * buf_str_equal - Return if two buffers are equal
+ * buf_equal - Check if two buffers are equal
  * @param a - Buffer to compare
  * @param b - Buffer to compare
  * @retval true  Strings are equal
  * @retval false String are not equal
  */
-bool buf_str_equal(const struct Buffer *a, const struct Buffer *b)
+bool buf_equal(const struct Buffer *a, const struct Buffer *b)
 {
   return mutt_str_equal(buf_string(a), buf_string(b));
 }
