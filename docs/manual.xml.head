@@ -5145,14 +5145,11 @@ folder-hook work "set sort=threads"
           </arg>
           <arg choice="plain">
             <replaceable class="parameter">sequence</replaceable>
-          </arg>
-          <arg choice="opt">
-            <replaceable class="parameter">description</replaceable>
-          </arg>
+         </arg>
         </cmdsynopsis>
         <para>
-          <emphasis>map</emphasis> specifies from which menus the macro
-          should be removed.  Multiple maps may be specified by separating them
+          <emphasis>menu</emphasis> specifies from which menus the macro
+          should be removed.  Multiple menus may be specified by separating them
           with commas (no additional whitespace is allowed).  If
           <literal>*</literal> is given, then the macro is removed from
           all menus.  Valid menu names and their description are listed
