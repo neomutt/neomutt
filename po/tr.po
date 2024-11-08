@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-10-02\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-11-08 11:44+0000\n"
-"PO-Revision-Date: 2024-03-30 16:00+0300\n"
+"PO-Revision-Date: 2024-11-08 16:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -188,14 +188,12 @@ msgid "Limit to addresses matching: "
 msgstr "Yalnızca eşleşen adresler: "
 
 #: alias/functions.c:266
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "Şununla eşleşen iletileri imle: "
+msgstr "Eşleşen iletileri etiketle: "
 
 #: alias/functions.c:282
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "Şununla eşleşen iletilerdeki imi kaldır: "
+msgstr "Eşleşen iletilerdeki etiketi kaldır: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:397
@@ -2153,9 +2151,9 @@ msgstr "Expando'da sonlandırıcı eksik: '%c'"
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
 #: expando/node_padding.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "Padding cannot be formatted"
-msgstr "Dolgu bir koşul olarak kullanılamaz"
+msgstr "Dolgu biçimlendirilemez"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
@@ -7337,14 +7335,13 @@ msgid "Can't use prefix when setting a variable"
 msgstr "Bir değişken ayarlanırken önek kullanılamaz"
 
 #: parse/set.c:608
-#, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
-msgstr "'no' ve 'inv' önekleri yalnızca Boole/quad değişkenleriyle kullanılabilir"
+msgstr "'no' ve 'inv' önekleri yalnızca Boole/dördül/sayı ile kullanılabilir"
 
 #: parse/set.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
-msgstr "'%s' komutu yalnızca Boole/quad değişkenleriyle kullanılabilir"
+msgstr "'%s' komutu yalnızca Boole/dördül/sayı değişkenleriyle kullanılabilir"
 
 #: pattern/compile.c:76 pattern/compile.c:163 pattern/compile.c:724
 #, c-format
@@ -8388,11 +8385,3 @@ msgstr "Derleme seçenekleri:"
 #: version.c:487
 msgid "Devel options:"
 msgstr "Geliştirici seçenekleri:"
-
-#, c-format
-#~ msgid "Conditional expando is missing '&' or '%c'"
-#~ msgstr "Koşullu expando'da '&' veya '%c' eksik"
-
-#, c-format
-#~ msgid "Number is expected"
-#~ msgstr "Sayı bekleniyordu"
