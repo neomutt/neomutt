@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-10-02\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-10-02 10:27+0100\n"
+"POT-Creation-Date: 2024-11-08 11:44+0000\n"
 "PO-Revision-Date: 2021-05-16 19:33+0000\n"
 "Last-Translator: Ivan Shmakov\n"
 "Language-Team: \n"
@@ -25,9 +25,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: address/config_type.c:87 config/long.c:50 config/number.c:52
-#: config/path.c:99 config/path.c:175 config/sort.c:57 config/string.c:68
-#: config/string.c:145 expando/config_type.c:69 expando/config_type.c:169
+#: address/config_type.c:87 config/long.c:50 config/path.c:99 config/path.c:175
+#: config/sort.c:57 config/string.c:68 config/string.c:145
+#: expando/config_type.c:69 expando/config_type.c:169
 #, fuzzy, c-format
 msgid "Option %s may not be empty"
 msgstr "Опция %s не может быть пуста"
@@ -182,32 +182,42 @@ msgstr "Запрос"
 msgid "Query command not defined"
 msgstr "Команда запроса не определена"
 
-#: alias/dlg_query.c:577 alias/functions.c:260 alias/functions.c:278
+#: alias/dlg_query.c:577 alias/functions.c:302 alias/functions.c:320
 msgid "Query: "
 msgstr "Запрос: "
 
-#: alias/functions.c:238
+#: alias/functions.c:247
 #, fuzzy
 msgid "Limit to addresses matching: "
 msgstr "Ограничиться сообщениями, соответствующими: "
 
+#: alias/functions.c:266
+#, fuzzy
+msgid "Tag addresses matching: "
+msgstr "Пометить сообщения по образцу: "
+
+#: alias/functions.c:282
+#, fuzzy
+msgid "Untag addresses matching: "
+msgstr "Снять пометку с сообщений по образцу: "
+
 #. L10N: The highlighted letters must match the "Sort" options
-#: alias/functions.c:355
+#: alias/functions.c:397
 msgid "Rev-Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
-#: alias/functions.c:357
+#: alias/functions.c:399
 msgid "Sort (a)lias, a(d)dress or (u)nsorted?"
 msgstr ""
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
-#: alias/functions.c:359
+#: alias/functions.c:401
 msgid "adu"
 msgstr ""
 
 #. L10N: ask for a limit to apply
-#: alias/gui.c:81 index/functions.c:1835
+#: alias/gui.c:84 index/functions.c:1835
 #, c-format
 msgid "Limit: %s"
 msgstr "Шаблон ограничения: %s"
@@ -531,7 +541,7 @@ msgid "Scan a mailbox for autocrypt headers?"
 msgstr "Проверить наличие заголовков autocrypt в почтовом ящике?"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
-#: autocrypt/autocrypt.c:933
+#: autocrypt/autocrypt.c:934
 msgid "Scan mailbox"
 msgstr "Проверка почтового ящика"
 
@@ -540,7 +550,7 @@ msgstr "Проверка почтового ящика"
 #. I'm purposely being extra verbose; asking first then prompting
 #. for a mailbox.  This is because this is a one-time operation
 #. and I don't want them to accidentally ctrl-g and abort it.
-#: autocrypt/autocrypt.c:954
+#: autocrypt/autocrypt.c:955
 msgid "Scan another mailbox for autocrypt headers?"
 msgstr "Проверить наличие заголовков autocrypt в другом почтовом ящике?"
 
@@ -715,37 +725,37 @@ msgstr "Отписаться"
 msgid "Catchup"
 msgstr "Наверстать"
 
-#: browser/dlg_browser.c:762 browser/functions.c:437 browser/functions.c:777
+#: browser/dlg_browser.c:757 browser/functions.c:437 browser/functions.c:777
 #, c-format
 msgid "%s is not a directory"
 msgstr "%s не является каталогом"
 
-#: browser/dlg_browser.c:1048
+#: browser/dlg_browser.c:1043
 #, c-format
 msgid "Subscribed newsgroups"
 msgstr "Группы новостей на которые есть подписка"
 
-#: browser/dlg_browser.c:1052
+#: browser/dlg_browser.c:1047
 #, c-format
 msgid "Newsgroups on server [%s]"
 msgstr "Группы новостей на сервере [%s]"
 
-#: browser/dlg_browser.c:1060
+#: browser/dlg_browser.c:1055
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Почтовые ящики [%d]"
 
-#: browser/dlg_browser.c:1072
+#: browser/dlg_browser.c:1067
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Подключение [%s], маска файла: %s"
 
-#: browser/dlg_browser.c:1077
+#: browser/dlg_browser.c:1072
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Каталог [%s], маска файла: %s"
 
-#: browser/dlg_browser.c:1140
+#: browser/dlg_browser.c:1135
 msgid "Can't attach a directory"
 msgstr "Вложение каталогов не поддерживается"
 
@@ -854,8 +864,8 @@ msgstr "%s: нет такого объекта"
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:367
 #: commands.c:389 commands.c:530 commands.c:546 commands.c:763 commands.c:795
 #: commands.c:811 commands.c:931 commands.c:1056 commands.c:1109
-#: commands.c:1149 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:454
-#: hook.c:470 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:102
+#: commands.c:1149 hook.c:141 hook.c:196 hook.c:205 hook.c:219 hook.c:462
+#: hook.c:478 key/parse.c:274 score.c:99 subjectrx.c:73 subjectrx.c:102
 #: subjectrx.c:110
 #, c-format
 msgid "%s: too few arguments"
@@ -877,7 +887,7 @@ msgid "%s: color not supported by term"
 msgstr "%s: цвет не поддерживается терминалом"
 
 #: color/command.c:402 color/command.c:444 commands.c:413 commands.c:1118
-#: commands.c:1249 commands.c:1585 hook.c:146 hook.c:226 hook.c:481
+#: commands.c:1249 commands.c:1585 hook.c:146 hook.c:226 hook.c:489
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
 #: mutt_lua.c:507 score.c:107
 #, c-format
@@ -992,12 +1002,12 @@ msgstr "Ошибка: %s"
 msgid "invalid header field"
 msgstr "недопустимое поле в заголовке"
 
-#: commands.c:980 commands.c:994 parse/set.c:502
+#: commands.c:980 commands.c:994 parse/set.c:549
 #, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
 msgstr "Недопустимо обращаться к переменной в команде «%s»"
 
-#: commands.c:1000 parse/set.c:496
+#: commands.c:1000 parse/set.c:543
 #, fuzzy
 msgid "Can't use a prefix when querying a variable"
 msgstr "Недопустимо использовать префикс при обращении к переменной"
@@ -1403,7 +1413,7 @@ msgid "'charset' must contain exactly one character set name"
 msgstr "параметр «charset» должен содержать единственное имя кодировки"
 
 #: config/charset.c:71 config/charset.c:103 hcache/config.c:56
-#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:121
+#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:122
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Неверное значение для опции %s: %s"
@@ -1424,25 +1434,25 @@ msgid "Invalid long: %s"
 msgstr "Недопустимое длинное целое: %s"
 
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
-#: config/number.c:71 config/number.c:133 config/number.c:187
-#: config/number.c:229
+#: config/number.c:93 config/number.c:155 config/number.c:209
+#: config/number.c:251
 #, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Опция %s не может быть отрицательна"
 
-#: config/number.c:59 config/number.c:174 config/number.c:216
-#: expando/node_conddate.c:163 expando/node_expando.c:181
-#: expando/node_expando.c:210
+#: config/number.c:81 config/number.c:196 config/number.c:238
+#: expando/node_conddate.c:242 expando/node_expando.c:179
+#: expando/node_expando.c:202
 #, c-format
 msgid "Invalid number: %s"
 msgstr "Недопустимое число: %s"
 
-#: config/number.c:65 config/number.c:181 config/number.c:223
+#: config/number.c:87 config/number.c:203 config/number.c:245
 #, c-format
 msgid "Number is too big: %s"
 msgstr "Число слишком велико: %s"
 
-#: config/number.c:127
+#: config/number.c:149
 #, c-format
 msgid "Invalid number: %ld"
 msgstr "Недопустимое число: %ld"
@@ -1458,9 +1468,9 @@ msgid "Invalid quad value: %ld"
 msgstr ""
 
 #: config/set.c:109 config/set.c:446 config/set.c:512 config/set.c:573
-#: config/set.c:649 config/set.c:769 init.c:665 parse/set.c:120 parse/set.c:175
-#: parse/set.c:218 parse/set.c:246 parse/set.c:304 parse/set.c:339
-#: parse/set.c:396
+#: config/set.c:649 config/set.c:769 init.c:665 parse/set.c:120 parse/set.c:180
+#: parse/set.c:229 parse/set.c:263 parse/set.c:327 parse/set.c:368
+#: parse/set.c:435
 #, fuzzy, c-format
 msgid "Unknown option %s"
 msgstr "Неизвестная переменная «%s»"
@@ -2140,50 +2150,43 @@ msgstr[2] ""
 msgid "Option %s: "
 msgstr "опции:"
 
-#. L10N: e.g. "Unknown expando: %Q"
-#: expando/node_condbool.c:101 expando/node_expando.c:280
-#, fuzzy, c-format
-msgid "Unknown expando: %%%.*s"
-msgstr "Неизвестная переменная «%s»"
-
 #. L10N: The 'ymwdHM' should not be translated
-#: expando/node_conddate.c:177
+#: expando/node_conddate.c:256
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
 msgstr ""
 
-#. L10N: Expando format expected a number
-#: expando/node_expando.c:198
-#, c-format
-msgid "Number is expected"
-msgstr ""
-
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
-#: expando/node_expando.c:312
-#, c-format
-msgid "Expando is missing terminator: '%c'"
-msgstr ""
-
-#. L10N: Conditional Expandos can only depend on other Expandos
-#. e.g. "%<X?apple>" displays "apple" if "%X" is true.
-#: expando/node_padding.c:244
-#, c-format
-msgid "Padding cannot be used as a condition"
-msgstr ""
-
-#. L10N: Expando is missing a terminator character
-#. e.g. "%[..." is missing the final ']'
-#: expando/parse.c:164 expando/parse.c:228
+#: expando/node_condition.c:187 expando/node_condition.c:231
 #, c-format
 msgid "Conditional expando is missing '%c'"
 msgstr ""
 
+#. L10N: e.g. "Unknown expando: %Q"
+#: expando/node_expando.c:306
+#, fuzzy, c-format
+msgid "Unknown expando: %%%.1s"
+msgstr "Неизвестная переменная «%s»"
+
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
-#: expando/parse.c:183
+#: expando/node_expando.c:366
 #, c-format
-msgid "Conditional expando is missing '&' or '%c'"
+msgid "Expando is missing terminator: '%c'"
+msgstr ""
+
+#. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
+#: expando/node_padding.c:242
+#, c-format
+msgid "Padding cannot be formatted"
+msgstr ""
+
+#. L10N: Conditional Expandos can only depend on other Expandos
+#. e.g. "%<X?apple>" displays "apple" if "%X" is true.
+#: expando/node_padding.c:252
+#, c-format
+msgid "Padding cannot be used as a condition"
 msgstr ""
 
 #: external.c:109 recvcmd.c:185 recvcmd.c:197
@@ -4542,16 +4545,16 @@ msgstr "сокращение для почтового ящика раскрыт
 msgid "badly formatted command string"
 msgstr "плохо отфороматированная командная строка"
 
-#: hook.c:582
+#: hook.c:590
 msgid "unhook: Can't do unhook * from within a hook"
 msgstr "unhook: Невозможно выполнить unhook * из команды hook"
 
-#: hook.c:595
+#: hook.c:603
 #, c-format
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: неизвестный тип события: %s"
 
-#: hook.c:605
+#: hook.c:613
 #, c-format
 msgid "unhook: Can't delete a %s from within a %s"
 msgstr "unhook: Невозможно удалить %s из команды %s"
@@ -5033,12 +5036,12 @@ msgid "No unread messages"
 msgstr "Нет непрочитанных сообщений"
 
 #: index/functions.c:1569 menu/functions.c:108 pager/functions.c:766
-#: pattern/pattern.c:535 pattern/pattern.c:691
+#: pattern/pattern.c:557 pattern/pattern.c:713
 msgid "Search wrapped to top"
 msgstr "Достигнут конец; продолжаем поиск с начала"
 
-#: index/functions.c:1574 pager/functions.c:796 pattern/pattern.c:548
-#: pattern/pattern.c:704
+#: index/functions.c:1574 pager/functions.c:796 pattern/pattern.c:570
+#: pattern/pattern.c:726
 msgid "Search wrapped to bottom"
 msgstr "Достигнуто начало; продолжаем поиск с конца"
 
@@ -5242,7 +5245,8 @@ msgstr "Предупреждение в командной строке: %s"
 msgid "unable to determine nodename via uname()"
 msgstr "не удалось определить имя узла с помощью uname()"
 
-#: init.c:637
+#: init.c:637 parse/set.c:127 parse/set.c:187 parse/set.c:235 parse/set.c:269
+#: parse/set.c:333 parse/set.c:374 parse/set.c:441
 #, c-format
 msgid "Option %s is deprecated"
 msgstr ""
@@ -5628,7 +5632,7 @@ msgstr "Невозможно использовать ключ -E с stdin"
 msgid "Can't parse message template: %s"
 msgstr "Не удалось разобрать шаблон: %s"
 
-#: main.c:1238 mutt_header.c:350
+#: main.c:1238 mutt_header.c:349
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: не удалось вложить файл"
@@ -5687,18 +5691,18 @@ msgstr "Не удалось заново открыть почтовый ящи�
 msgid "Can't write message"
 msgstr "Ошибка записи сообщения"
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
-#: pattern/pattern.c:625
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
+#: pattern/pattern.c:647
 msgid "Reverse search for: "
 msgstr "Обратный поиск: "
 
-#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:468
-#: pattern/pattern.c:625
+#: menu/functions.c:71 pager/functions.c:587 pattern/pattern.c:490
+#: pattern/pattern.c:647
 msgid "Search for: "
 msgstr "Поиск: "
 
 #: menu/functions.c:127 pager/functions.c:695 pager/functions.c:762
-#: pager/functions.c:792 pattern/pattern.c:599 pattern/pattern.c:752
+#: pager/functions.c:792 pattern/pattern.c:621 pattern/pattern.c:774
 msgid "Not found"
 msgstr "Не найдено"
 
@@ -5782,7 +5786,7 @@ msgstr "Отладка на уровне %d в файл «%s»"
 msgid "Logging at level %d to file '%s'"
 msgstr "Протоколирование на уровне %d в файл «%s»"
 
-#: mutt/path.c:353
+#: mutt/path.c:357
 #, fuzzy
 msgid "Error: converting path to absolute"
 msgstr "Ошибка: преобразование пути в абсолютный"
@@ -5812,7 +5816,7 @@ msgstr "Некорректное регулярное выражение: %s"
 msgid "Not enough subexpressions for template"
 msgstr "Не достаточно подвыражений для шаблона"
 
-#: mutt_config.c:225
+#: mutt_config.c:231
 #, c-format
 msgid "index-hook cannot be used as a condition"
 msgstr ""
@@ -5836,22 +5840,22 @@ msgstr ""
 #. - Please test the value you use inside Mutt.  A mistake here will break
 #. NeoMutt's threading behavior.  Note: the header cache can interfere with
 #. testing, so be sure to test with $header_cache unset.
-#: mutt_config.c:732
+#: mutt_config.c:750
 msgid "^((re)(\\[[0-9]+\\])*:[ \t]*)*"
 msgstr ""
 
 #. L10N: $status_format default format
-#: mutt_config.c:814
+#: mutt_config.c:832
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 msgstr ""
 
 #. L10N: $ts_icon_format default format
-#: mutt_config.c:851
+#: mutt_config.c:869
 msgid "M%<n?AIL&ail>"
 msgstr ""
 
 #. L10N: $ts_status_format default format
-#: mutt_config.c:855
+#: mutt_config.c:873
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
 msgstr ""
 
@@ -6104,7 +6108,7 @@ msgstr "Попытка извлечь PGP ключи...\n"
 msgid "Trying to extract S/MIME certificates..."
 msgstr "Попытка извлечь S/MIME сертификаты..."
 
-#: ncrypt/crypt.c:1255
+#: ncrypt/crypt.c:1260
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
@@ -6113,7 +6117,7 @@ msgstr ""
 "[-- Ошибка: неизвестный multipart/signed протокол %s --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1296
+#: ncrypt/crypt.c:1301
 msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
@@ -6121,7 +6125,7 @@ msgstr ""
 "[-- Ошибка: отсутствует или нарушена структура multipart/signed-сообщения --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1334
+#: ncrypt/crypt.c:1339
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures --]\n"
@@ -6130,11 +6134,11 @@ msgstr ""
 "[-- Предупреждение: не удалось проверить %s/%s подписи. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1346
+#: ncrypt/crypt.c:1351
 msgid "[-- The following data is signed --]\n"
 msgstr "[-- Начало подписанных данных --]\n"
 
-#: ncrypt/crypt.c:1354
+#: ncrypt/crypt.c:1359
 msgid ""
 "[-- Warning: Can't find any signatures --]\n"
 "\n"
@@ -6142,7 +6146,7 @@ msgstr ""
 "[-- Предупреждение: не найдено ни одной подписи. --]\n"
 "\n"
 
-#: ncrypt/crypt.c:1361
+#: ncrypt/crypt.c:1366
 msgid "[-- End of signed data --]\n"
 msgstr "[-- Конец подписанных данных --]\n"
 
@@ -6618,50 +6622,50 @@ msgstr "Вызывается S/MIME..."
 msgid "Check key"
 msgstr "Тест ключа "
 
-#: ncrypt/dlg_gpgme.c:669
+#: ncrypt/dlg_gpgme.c:662
 msgid "All matching keys are marked expired/revoked"
 msgstr "Все подходящие ключи помечены как просроченные или отозванные"
 
-#: ncrypt/dlg_gpgme.c:720
+#: ncrypt/dlg_gpgme.c:713
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP и S/MIME-ключи, соответствующие"
 
-#: ncrypt/dlg_gpgme.c:722
+#: ncrypt/dlg_gpgme.c:715
 msgid "PGP keys matching"
 msgstr "PGP-ключи, соответствующие"
 
-#: ncrypt/dlg_gpgme.c:724
+#: ncrypt/dlg_gpgme.c:717
 msgid "S/MIME keys matching"
 msgstr "S/MIME-ключи, соответствующие"
 
-#: ncrypt/dlg_gpgme.c:726
+#: ncrypt/dlg_gpgme.c:719
 msgid "keys matching"
 msgstr "ключи, соответствующие"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:734
+#: ncrypt/dlg_gpgme.c:727
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:739
+#: ncrypt/dlg_gpgme.c:732
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:667
+#: ncrypt/dlg_pgp.c:660
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Все подходящие ключи помечены как просроченные, отозванные или запрещённые"
 
-#: ncrypt/dlg_pgp.c:712
+#: ncrypt/dlg_pgp.c:705
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "PGP-ключи, соответствующие <%s>"
 
-#: ncrypt/dlg_pgp.c:714
+#: ncrypt/dlg_pgp.c:707
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "PGP-ключи, соответствующие \"%s\""
@@ -6911,7 +6915,7 @@ msgstr ""
 "\n"
 
 #: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1935
-#: postpone/postpone.c:433
+#: postpone/postpone.c:432
 msgid "Decryption failed"
 msgstr "Расшифровать не удалась"
 
@@ -7435,35 +7439,40 @@ msgstr ""
 msgid "%s: unknown command"
 msgstr "%s: неизвестная команда"
 
-#: parse/set.c:353 parse/set.c:565
+#: parse/set.c:392
 #, c-format
 msgid "Command '%s' can only be used with bool/quad variables"
 msgstr ""
 
-#: parse/set.c:468
+#: parse/set.c:513
 #, c-format
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Недопустимо использовать inv, no, & или ? с командой «%s»"
 
-#: parse/set.c:513
+#: parse/set.c:560
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Недопустимо использовать префикс при инкременте или декременте переменной"
 
-#: parse/set.c:519 parse/set.c:549
+#: parse/set.c:566 parse/set.c:596
 #, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr "Недопустимо устанавливать переменную командой «%s»"
 
-#: parse/set.c:535
+#: parse/set.c:582
 msgid "'+' and '-' must be followed by '='"
 msgstr ""
 
-#: parse/set.c:543
+#: parse/set.c:590
 msgid "Can't use prefix when setting a variable"
 msgstr "Недопустимо использовать префикс при установке переменной"
 
-#: parse/set.c:561
-msgid "Prefixes 'no' and 'inv' may only be used with bool/quad variables"
+#: parse/set.c:608
+msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
+msgstr ""
+
+#: parse/set.c:612
+#, c-format
+msgid "Command '%s' can only be used with bool/quad/number variables"
 msgstr ""
 
 #: pattern/compile.c:76 pattern/compile.c:163 pattern/compile.c:724
@@ -7882,32 +7891,32 @@ msgstr ""
 msgid "No current message"
 msgstr "Нет текущего сообщения"
 
-#: pattern/pattern.c:207 pattern/pattern.c:313 pattern/pattern.c:492
-#: pattern/pattern.c:648
+#: pattern/pattern.c:209 pattern/pattern.c:335 pattern/pattern.c:514
+#: pattern/pattern.c:670
 msgid "Compiling search pattern..."
 msgstr "Образец поиска компилируется..."
 
-#: pattern/pattern.c:235 pattern/pattern.c:335
+#: pattern/pattern.c:237 pattern/pattern.c:357
 msgid "Executing command on matching messages..."
 msgstr "Исполняется команда для подходящих сообщений..."
 
-#: pattern/pattern.c:421
+#: pattern/pattern.c:443
 msgid "No messages matched criteria"
 msgstr "Ни одно сообщение не подходит под критерий"
 
-#: pattern/pattern.c:433 pattern/pattern.c:591 pattern/pattern.c:744
+#: pattern/pattern.c:455 pattern/pattern.c:613 pattern/pattern.c:766
 msgid "Search interrupted"
 msgstr "Поиск прерван"
 
-#: pattern/pattern.c:523 pattern/pattern.c:679
+#: pattern/pattern.c:545 pattern/pattern.c:701
 msgid "Searching..."
 msgstr "Поиск..."
 
-#: pattern/pattern.c:539 pattern/pattern.c:695
+#: pattern/pattern.c:561 pattern/pattern.c:717
 msgid "Search hit bottom without finding match"
 msgstr "Поиск дошел до конца, не найдя ничего подходящего"
 
-#: pattern/pattern.c:552 pattern/pattern.c:708
+#: pattern/pattern.c:574 pattern/pattern.c:730
 msgid "Search hit top without finding match"
 msgstr "Поиск дошел до начала, не найдя ничего подходящего"
 
@@ -8024,24 +8033,24 @@ msgstr "Ошибка записи сообщения во временный ф�
 msgid "Postponed Messages"
 msgstr "Отложенные сообщения"
 
-#: postpone/postpone.c:234
+#: postpone/postpone.c:233
 msgid "Illegal S/MIME header"
 msgstr "Неверный S/MIME-заголовок"
 
-#: postpone/postpone.c:266 postpone/postpone.c:305 postpone/postpone.c:314
+#: postpone/postpone.c:265 postpone/postpone.c:304 postpone/postpone.c:313
 msgid "Illegal crypto header"
 msgstr "Неверный crypto-заголовок"
 
-#: postpone/postpone.c:428 postpone/postpone.c:534
+#: postpone/postpone.c:427 postpone/postpone.c:533
 msgid "Decrypting message..."
 msgstr "Расшифровка сообщения..."
 
-#: postpone/postpone.c:542
+#: postpone/postpone.c:541
 #, fuzzy
 msgid "Could not decrypt postponed message"
 msgstr "Не удалось расшифровать PGP-сообщение"
 
-#: postpone/postpone.c:675 postpone/postpone.c:686
+#: postpone/postpone.c:674 postpone/postpone.c:685
 msgid "No postponed messages"
 msgstr "Нет отложенных сообщений"
 
