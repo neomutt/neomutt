@@ -24,6 +24,7 @@
 #define MUTT_NCRYPT_PGP_FUNCTIONS_H
 
 #include <stdbool.h>
+#include "pgplib.h"
 
 struct MuttWindow;
 
@@ -32,10 +33,10 @@ struct MuttWindow;
  */
 struct PgpData
 {
-  bool done;                   ///< Should we close the Dialog?
-  struct Menu *menu;           ///< Pgp Menu
-  struct PgpUid **key_table;   ///< Array of Keys
-  struct PgpKeyInfo *key;      ///< Selected Key
+  bool done;                      ///< Should we close the Dialog?
+  struct Menu *menu;              ///< Pgp Menu
+  struct PgpUidArray *key_table;  ///< Array of Keys
+  struct PgpKeyInfo *key;         ///< Selected Key
 };
 
 /**

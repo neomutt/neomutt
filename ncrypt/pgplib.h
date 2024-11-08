@@ -39,6 +39,7 @@ struct PgpUid
   struct PgpKeyInfo *parent; ///< Parent key
   struct PgpUid *next;       ///< Linked list
 };
+ARRAY_HEAD(PgpUidArray, struct PgpUid *);
 
 /**
  * struct PgpKeyInfo - Information about a PGP key
