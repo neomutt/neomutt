@@ -24,6 +24,7 @@
 #define MUTT_NCRYPT_SMIME_FUNCTIONS_H
 
 #include <stdbool.h>
+#include "smime.h"
 
 struct MuttWindow;
 
@@ -34,7 +35,7 @@ struct SmimeData
 {
   bool done;                 ///< Should we close the Dialog?
   struct Menu *menu;         ///< Smime Menu
-  struct SmimeKey **table;   ///< Array of Keys
+  struct SmimeKeyArray *ska; ///< Array of Keys
   struct SmimeKey *key;      ///< Selected Key
 };
 

@@ -53,11 +53,14 @@ static int op_exit(struct SmimeData *sd, int op)
 static int op_generic_select_entry(struct SmimeData *sd, int op)
 {
   const int index = menu_get_index(sd->menu);
-  struct SmimeKey *cur_key = sd->table[index];
-  if (cur_key->trust != 't')
+  struct SmimeKey **pkey = ARRAY_GET(sd->ska, index);
+  if (!pkey)
+    return FR_NO_ACTION;
+
+  if ((*pkey)->trust != 't')
   {
     const char *s = "";
-    switch (cur_key->trust)
+    switch ((*pkey)->trust)
     {
       case 'e':
       case 'i':
@@ -82,7 +85,7 @@ static int op_generic_select_entry(struct SmimeData *sd, int op)
     }
   }
 
-  sd->key = cur_key;
+  sd->key = *pkey;
   sd->done = true;
   return FR_SUCCESS;
 }
@@ -105,14 +108,13 @@ static const struct SmimeFunction SmimeFunctions[] = {
  */
 int smime_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct SmimeData *sd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct SmimeData *sd = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; SmimeFunctions[i].op != OP_NULL; i++)

@@ -27,6 +27,7 @@
 #include "config.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 #include "lib.h"
 
 struct AddressList;
@@ -49,6 +50,7 @@ struct SmimeKey
   KeyFlags flags;
   struct SmimeKey *next;
 };
+ARRAY_HEAD(SmimeKeyArray, struct SmimeKey *);
 
 /**
  * struct SmimeCommandContext - Data for a SIME command
