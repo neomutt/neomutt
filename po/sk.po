@@ -188,17 +188,15 @@ msgstr "Otázka: "
 
 #: alias/functions.c:247
 msgid "Limit to addresses matching: "
-msgstr "Obmedz na správy zodpovedajúce: "
+msgstr "Obmedz na adresy zodpovedajúce: "
 
 #: alias/functions.c:266
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "Označiť správy zodpovedajúce: "
+msgstr "Označiť adresy zodpovedajúce: "
 
 #: alias/functions.c:282
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "Odznačiť správy zodpovedajúce: "
+msgstr "Odznačiť adresy zodpovedajúce: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:397
@@ -2164,7 +2162,7 @@ msgstr "Formátu chýba ukončenie: „%c“"
 #: expando/node_padding.c:242
 #, fuzzy, c-format
 msgid "Padding cannot be formatted"
-msgstr "Vyplnenie nie je možné použiť v podmienke"
+msgstr "Vyplnenie nie je možné formatovať"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
@@ -5676,7 +5674,7 @@ msgstr "Žiadne označené položky"
 
 #: mutt/buffer.c:353
 msgid "Out of memory"
-msgstr ""
+msgstr "nedostatok pamäte"
 
 #: mutt/file.c:787
 #, c-format
@@ -7358,14 +7356,13 @@ msgid "Can't use prefix when setting a variable"
 msgstr "Nelze použiť prefix pri nastavovanie premenné"
 
 #: parse/set.c:608
-#, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
-msgstr "Prefixy „no“ a „inv“ môžu byt použité iba s premennými typu boolean/prepínač"
+msgstr "Prefixy „no“ a „inv“ môžu byt použité iba s premennými typu boolean/prepínač/číslo"
 
 #: parse/set.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
-msgstr "Príkaz „%s“ možno použiť iba s premennými typu boolean/prepínač"
+msgstr "Príkaz „%s“ možno použiť iba s premennými typu boolean/prepínač/číslo"
 
 #: pattern/compile.c:76 pattern/compile.c:163 pattern/compile.c:724
 #, c-format

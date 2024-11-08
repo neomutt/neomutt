@@ -198,14 +198,12 @@ msgid "Limit to addresses matching: "
 msgstr "Omezit na adresy odpovídající: "
 
 #: alias/functions.c:266
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "Označit zprávy shodující se s: "
+msgstr "Označit adresy shodující se s: "
 
 #: alias/functions.c:282
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "Odznačit zprávy shodující se s: "
+msgstr "Odznačit adresy shodující se s: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:397
@@ -2175,7 +2173,7 @@ msgstr "Formátu chybí ukončení: „%c“"
 #: expando/node_padding.c:242
 #, fuzzy, c-format
 msgid "Padding cannot be formatted"
-msgstr "Vyplnění nelze použít v podmínce"
+msgstr "Vyplnění nelze formátovat"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
@@ -5690,7 +5688,7 @@ msgstr "Žádné položky nejsou označeny"
 
 #: mutt/buffer.c:353
 msgid "Out of memory"
-msgstr ""
+msgstr "nedostatek paměti"
 
 #: mutt/file.c:787
 #, c-format
@@ -5761,7 +5759,7 @@ msgstr "Na šablonu není dost podvýrazů"
 #: mutt_config.c:231
 #, fuzzy, c-format
 msgid "index-hook cannot be used as a condition"
-msgstr "index-hook nemůže být použitý jako podmínka"
+msgstr "index-hook nelze použít jako podmínku"
 
 #. L10N: $reply_regex default format
 #.
@@ -7372,14 +7370,13 @@ msgid "Can't use prefix when setting a variable"
 msgstr "Nelze použít prefix při nastavování proměnné"
 
 #: parse/set.c:608
-#, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
-msgstr "Prefixy „no“ a „inv“ mohou být použity pouze s proměnnými typu boolean/přepínač"
+msgstr "Prefixy „no“ a „inv“ mohou být použity pouze s proměnnými typu boolean/přepínač/číslo"
 
 #: parse/set.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
-msgstr "Příkaz „%s“ lze použít pouze s proměnnými typu boolean/přepínač"
+msgstr "Příkaz „%s“ lze použít pouze s proměnnými typu boolean/přepínač/číslo"
 
 #: pattern/compile.c:76 pattern/compile.c:163 pattern/compile.c:724
 #, c-format
