@@ -894,7 +894,7 @@ bool mutt_addr_cmp(const struct Address *a, const struct Address *b)
     return false;
   if (!a->mailbox || !b->mailbox)
     return false;
-  if (!buf_istr_equal(a->mailbox, b->mailbox))
+  if (!buf_iequal(a->mailbox, b->mailbox))
     return false;
   return true;
 }
@@ -1410,7 +1410,7 @@ void mutt_addrlist_dedupe(struct AddressList *al)
       {
         TAILQ_FOREACH_FROM_SAFE(a2, al, entries, tmp)
         {
-          if (a2->mailbox && buf_istr_equal(a->mailbox, a2->mailbox))
+          if (a2->mailbox && buf_iequal(a->mailbox, a2->mailbox))
           {
             mutt_debug(LL_DEBUG2, "Removing %s\n", buf_string(a2->mailbox));
             TAILQ_REMOVE(al, a2, entries);

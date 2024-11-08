@@ -912,7 +912,7 @@ void index_J(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
       {
         driver_tags_get_transformed(&e->thread->parent->message->tags, parent_tags);
       }
-      if (parent_tags && buf_istr_equal(tags, parent_tags))
+      if (parent_tags && buf_iequal(tags, parent_tags))
         have_tags = false;
       buf_pool_release(&parent_tags);
     }

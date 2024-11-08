@@ -174,13 +174,12 @@ static PgpKeyValidFlags pgp_id_matches_addr(struct Address *addr,
   if (pgp_id_is_strong(uid))
     flags |= PGP_KV_STRONGID;
 
-  if (addr->mailbox && u_addr->mailbox && buf_istr_equal(addr->mailbox, u_addr->mailbox))
+  if (addr->mailbox && u_addr->mailbox && buf_iequal(addr->mailbox, u_addr->mailbox))
   {
     flags |= PGP_KV_ADDR;
   }
 
-  if (addr->personal && u_addr->personal &&
-      buf_istr_equal(addr->personal, u_addr->personal))
+  if (addr->personal && u_addr->personal && buf_iequal(addr->personal, u_addr->personal))
   {
     flags |= PGP_KV_STRING;
   }

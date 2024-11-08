@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for buf_istr_equal()
+ * Test code for buf_iequal()
  *
  * @authors
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
@@ -28,19 +28,19 @@
 #include "mutt/lib.h"
 #include "test_common.h" // IWYU pragma: keep
 
-void test_buf_istr_equal(void)
+void test_buf_iequal(void)
 {
-  // bool buf_istr_equal(struct Buffer *a, struct Buffer *b);
+  // bool buf_iequal(struct Buffer *a, struct Buffer *b);
 
   {
     // Degenerate tests
-    TEST_CHECK(buf_istr_equal(NULL, NULL) == true);
+    TEST_CHECK(buf_iequal(NULL, NULL) == true);
 
     struct Buffer *a = buf_new("apple");
     struct Buffer *b = buf_new("banana");
 
-    TEST_CHECK(buf_istr_equal(a, NULL) == false);
-    TEST_CHECK(buf_istr_equal(NULL, b) == false);
+    TEST_CHECK(buf_iequal(a, NULL) == false);
+    TEST_CHECK(buf_iequal(NULL, b) == false);
 
     buf_free(&a);
     buf_free(&b);
@@ -50,7 +50,7 @@ void test_buf_istr_equal(void)
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("foo");
 
-    TEST_CHECK(buf_istr_equal(a, b) == true);
+    TEST_CHECK(buf_iequal(a, b) == true);
 
     buf_free(&a);
     buf_free(&b);
@@ -60,7 +60,7 @@ void test_buf_istr_equal(void)
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("bar");
 
-    TEST_CHECK(buf_istr_equal(a, b) == false);
+    TEST_CHECK(buf_iequal(a, b) == false);
 
     buf_free(&a);
     buf_free(&b);
@@ -70,7 +70,7 @@ void test_buf_istr_equal(void)
     struct Buffer *a = buf_new("foo");
     struct Buffer *b = buf_new("Foo");
 
-    TEST_CHECK(buf_istr_equal(a, b) == true);
+    TEST_CHECK(buf_iequal(a, b) == true);
 
     buf_free(&a);
     buf_free(&b);

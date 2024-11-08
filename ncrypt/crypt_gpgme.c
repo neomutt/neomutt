@@ -338,13 +338,12 @@ static int crypt_id_matches_addr(struct Address *addr, struct Address *u_addr,
 
   if (addr && u_addr)
   {
-    if (addr->mailbox && u_addr->mailbox && buf_istr_equal(addr->mailbox, u_addr->mailbox))
+    if (addr->mailbox && u_addr->mailbox && buf_iequal(addr->mailbox, u_addr->mailbox))
     {
       rc |= CRYPT_KV_ADDR;
     }
 
-    if (addr->personal && u_addr->personal &&
-        buf_istr_equal(addr->personal, u_addr->personal))
+    if (addr->personal && u_addr->personal && buf_iequal(addr->personal, u_addr->personal))
     {
       rc |= CRYPT_KV_STRING;
     }
