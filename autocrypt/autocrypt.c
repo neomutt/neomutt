@@ -296,7 +296,7 @@ int mutt_autocrypt_process_autocrypt_header(struct Email *e, struct Envelope *en
     /* NOTE: this assumes the processing is occurring right after
      * mutt_parse_rfc822_line() and the from ADDR is still in the same
      * form (intl) as the autocrypt header addr field */
-    if (!mutt_istr_equal(buf_string(from->mailbox), ac_hdr->addr))
+    if (!buf_istr_equal(from->mailbox, ac_hdr->addr))
       continue;
 
     /* 1.1 spec says ignore all, if more than one valid header is found. */

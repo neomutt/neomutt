@@ -188,7 +188,7 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   }
 
   struct Buffer *filebuf = buf_pool_get();
-  if (dump_all || mutt_istr_equal(buf_string(buf), "all"))
+  if (dump_all || buf_istr_equal(buf, "all"))
   {
     if (bind)
       dump_all_binds(filebuf);

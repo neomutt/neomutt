@@ -712,6 +712,18 @@ bool buf_iequal(const struct Buffer *a, const struct Buffer *b)
 }
 
 /**
+ * buf_istr_equal - Check if a buffer and a string are equal, case insensitive
+ * @param a - Buffer to compare
+ * @param b - String to compare
+ * @retval true  Strings are equal
+ * @retval false String are not equal
+ */
+bool buf_istr_equal(const struct Buffer *a, const char *b)
+{
+  return mutt_istr_equal(buf_string(a), b);
+}
+
+/**
  * buf_startswith - Check whether a buffer starts with a prefix
  * @param buf Buffer to check
  * @param prefix Prefix to match

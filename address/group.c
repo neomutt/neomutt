@@ -377,7 +377,7 @@ bool mutt_group_match(struct Group *g, const char *s)
   struct Address *a = NULL;
   TAILQ_FOREACH(a, &g->al, entries)
   {
-    if (a->mailbox && mutt_istr_equal(s, buf_string(a->mailbox)))
+    if (a->mailbox && buf_istr_equal(a->mailbox, s))
       return true;
   }
 

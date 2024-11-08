@@ -610,7 +610,7 @@ bool mutt_addr_is_user(const struct Address *addr)
     return false;
   }
 
-  if (mutt_istr_equal(buf_string(addr->mailbox), Username))
+  if (buf_istr_equal(addr->mailbox, Username))
   {
     mutt_debug(LL_DEBUG5, "#1 yes, %s = %s\n", buf_string(addr->mailbox), Username);
     return true;

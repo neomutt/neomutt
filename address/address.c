@@ -444,7 +444,7 @@ int mutt_addrlist_remove(struct AddressList *al, const char *mailbox)
   struct Address *a = NULL, *tmp = NULL;
   TAILQ_FOREACH_SAFE(a, al, entries, tmp)
   {
-    if (mutt_istr_equal(mailbox, buf_string(a->mailbox)))
+    if (buf_istr_equal(a->mailbox, mailbox))
     {
       TAILQ_REMOVE(al, a, entries);
       mutt_addr_free(&a);

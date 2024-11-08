@@ -1108,8 +1108,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
   buf_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
   type_changed = !buf_iequal(tmp, obuf);
-  charset_changed = !mutt_istr_equal(buf_string(charset),
-                                     mutt_param_get(&b->parameter, "charset"));
+  charset_changed = !buf_istr_equal(charset, mutt_param_get(&b->parameter, "charset"));
 
   /* if in send mode, check for conversion - current setting is default. */
 

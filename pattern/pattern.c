@@ -132,40 +132,40 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (mutt_istr_equal("all", buf_string(buf)) || buf_str_equal(buf, "^") ||
+    if (buf_istr_equal(buf, "all") || buf_str_equal(buf, "^") ||
         buf_str_equal(buf, ".")) /* ~A is more efficient */
     {
       buf_strcpy(buf, "~A");
     }
-    else if (mutt_istr_equal("del", buf_string(buf)))
+    else if (buf_istr_equal(buf, "del"))
     {
       buf_strcpy(buf, "~D");
     }
-    else if (mutt_istr_equal("flag", buf_string(buf)))
+    else if (buf_istr_equal(buf, "flag"))
     {
       buf_strcpy(buf, "~F");
     }
-    else if (mutt_istr_equal("new", buf_string(buf)))
+    else if (buf_istr_equal(buf, "new"))
     {
       buf_strcpy(buf, "~N");
     }
-    else if (mutt_istr_equal("old", buf_string(buf)))
+    else if (buf_istr_equal(buf, "old"))
     {
       buf_strcpy(buf, "~O");
     }
-    else if (mutt_istr_equal("repl", buf_string(buf)))
+    else if (buf_istr_equal(buf, "repl"))
     {
       buf_strcpy(buf, "~Q");
     }
-    else if (mutt_istr_equal("read", buf_string(buf)))
+    else if (buf_istr_equal(buf, "read"))
     {
       buf_strcpy(buf, "~R");
     }
-    else if (mutt_istr_equal("tag", buf_string(buf)))
+    else if (buf_istr_equal(buf, "tag"))
     {
       buf_strcpy(buf, "~T");
     }
-    else if (mutt_istr_equal("unread", buf_string(buf)))
+    else if (buf_istr_equal(buf, "unread"))
     {
       buf_strcpy(buf, "~U");
     }

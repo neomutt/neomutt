@@ -105,7 +105,7 @@ int mailcap_expand_command(struct Body *b, const char *filename,
         /* In send mode, use the current charset, since the message hasn't
          * been converted yet.   If noconv is set, then we assume the
          * charset parameter has the correct value instead. */
-        if (mutt_istr_equal(buf_string(param), "charset") && b->charset && !b->noconv)
+        if (buf_istr_equal(param, "charset") && b->charset && !b->noconv)
           pvalue2 = b->charset;
         else
           pvalue2 = mutt_param_get(&b->parameter, buf_string(param));
