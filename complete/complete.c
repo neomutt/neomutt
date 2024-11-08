@@ -230,8 +230,8 @@ int mutt_complete(struct CompletionData *cd, struct Buffer *buf)
   else
   {
     buf_copy(buf, dirpart);
-    if (!mutt_str_equal("/", buf_string(dirpart)) &&
-        (buf_string(dirpart)[0] != '=') && (buf_string(dirpart)[0] != '+'))
+    if (!buf_str_equal(dirpart, "/") && (buf_string(dirpart)[0] != '=') &&
+        (buf_string(dirpart)[0] != '+'))
     {
       buf_addstr(buf, "/");
     }

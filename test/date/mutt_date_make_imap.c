@@ -42,8 +42,8 @@ void test_mutt_date_make_imap(void)
     time_t t = 961930800;
     TEST_CHECK(mutt_date_make_imap(buf, t) > 0);
     TEST_MSG(buf_string(buf));
-    bool result = (mutt_str_equal(buf_string(buf), "25-Jun-2000 12:00:00 +0100")) || // Expected result...
-                  (mutt_str_equal(buf_string(buf), "25-Jun-2000 11:00:00 +0000")); // but Travis seems to have locale problems
+    bool result = (buf_str_equal(buf, "25-Jun-2000 12:00:00 +0100")) || // Expected result...
+                  (buf_str_equal(buf, "25-Jun-2000 11:00:00 +0000")); // but Travis seems to have locale problems
     TEST_CHECK(result == true);
     buf_pool_release(&buf);
   }

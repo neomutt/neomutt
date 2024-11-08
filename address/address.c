@@ -1085,7 +1085,7 @@ size_t mutt_addr_write(struct Buffer *buf, struct Address *addr, bool display)
 
   if (addr->mailbox)
   {
-    if (!mutt_str_equal(buf_string(addr->mailbox), "@"))
+    if (!buf_str_equal(addr->mailbox, "@"))
     {
       const char *a = display ? mutt_addr_for_display(addr) : buf_string(addr->mailbox);
       buf_addstr(buf, a);

@@ -115,7 +115,7 @@ static void append_signature(FILE *fp, struct ConfigSubset *sub)
   struct Buffer *def_sig = buf_pool_get();
   cs_str_initial_get(sub->cs, "signature", def_sig);
   mutt_path_canon(def_sig, HomeDir, false);
-  bool notify_missing = !mutt_str_equal(c_signature, buf_string(def_sig));
+  bool notify_missing = !buf_str_equal(def_sig, c_signature);
   buf_pool_release(&def_sig);
 
   pid_t pid = 0;
@@ -1755,7 +1755,7 @@ static int save_fcc(struct Mailbox *m, struct Email *e, struct Buffer *fcc,
     return rc;
   }
 
-  if (buf_is_empty(fcc) || mutt_str_equal("/dev/null", buf_string(fcc)))
+  if (buf_is_empty(fcc) || buf_str_equal(fcc, "/dev/null"))
     return rc;
 
   struct Body *tmpbody = e->body;

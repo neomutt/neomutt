@@ -160,7 +160,7 @@ static int cbar_recalc(struct MuttWindow *win)
                  MUTT_FORMAT_NO_FLAGS, win->state.cols, buf);
 
   struct ComposeBarData *cbar_data = win->wdata;
-  if (!mutt_str_equal(buf_string(buf), cbar_data->compose_format))
+  if (!buf_str_equal(buf, cbar_data->compose_format))
   {
     mutt_str_replace(&cbar_data->compose_format, buf_string(buf));
     win->actions |= WA_REPAINT;

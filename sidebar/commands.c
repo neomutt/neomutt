@@ -66,7 +66,7 @@ enum CommandResult sb_parse_sidebar_unpin(struct Buffer *buf, struct Buffer *s,
   {
     parse_extract_token(path, s, TOKEN_BACKTICK_VARS);
     /* Check for deletion of entire list */
-    if (mutt_str_equal(buf_string(path), "*"))
+    if (buf_str_equal(path, "*"))
     {
       mutt_list_free(&SidebarPinned);
       break;

@@ -857,7 +857,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
    * Leitner <leitner@prz.fu-berlin.de> */
   if (buf_is_empty(&LastSaveFolder))
     buf_alloc(&LastSaveFolder, PATH_MAX);
-  if (mutt_str_equal(buf_string(buf), "."))
+  if (buf_str_equal(buf, "."))
     buf_copy(buf, &LastSaveFolder);
   else
     buf_strcpy(&LastSaveFolder, buf_string(buf));

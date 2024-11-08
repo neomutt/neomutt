@@ -688,6 +688,18 @@ bool buf_equal(const struct Buffer *a, const struct Buffer *b)
 }
 
 /**
+ * buf_str_equal - Check if a buffer and a string are equal
+ * @param a - Buffer to compare
+ * @param b - String to compare
+ * @retval true  Strings are equal
+ * @retval false String are not equal
+ */
+bool buf_str_equal(const struct Buffer *a, const char *b)
+{
+  return mutt_str_equal(buf_string(a), b);
+}
+
+/**
  * buf_istr_equal - Return if two buffers are equal, case insensitive
  * @param a - First buffer to compare
  * @param b - Second buffer to compare

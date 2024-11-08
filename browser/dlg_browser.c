@@ -801,7 +801,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       struct MailboxNode *np = NULL;
       STAILQ_FOREACH(np, &ml, entries)
       {
-        if (mutt_str_equal(buf_string(buf), mailbox_path(np->mailbox)))
+        if (buf_str_equal(buf, mailbox_path(np->mailbox)))
           break;
       }
 
@@ -1436,7 +1436,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
               break;
           }
         }
-        else if (!mutt_str_equal(CurrentFolder, buf_string(&LastDirBackup)))
+        else if (!buf_str_equal(&LastDirBackup, CurrentFolder))
         {
           mutt_browser_select_dir(CurrentFolder);
         }

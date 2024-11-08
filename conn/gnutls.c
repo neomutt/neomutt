@@ -209,7 +209,7 @@ static bool tls_check_stored_hostname(const gnutls_datum_t *cert, const char *ho
       linestr[mutt_regmatch_end(mhost)] = '\0';
       linestr[mutt_regmatch_end(mhash)] = '\0';
       if ((mutt_str_equal(linestr + mutt_regmatch_start(mhost), hostname)) &&
-          (mutt_str_equal(linestr + mutt_regmatch_start(mhash), buf_string(buf))))
+          (buf_str_equal(buf, linestr + mutt_regmatch_start(mhash))))
       {
         FREE(&linestr);
         mutt_file_fclose(&fp);

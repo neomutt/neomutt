@@ -590,7 +590,7 @@ static int op_pager_search(struct IndexSharedData *shared,
     goto done;
   }
 
-  if (mutt_str_equal(buf_string(buf), priv->search_str))
+  if (buf_str_equal(buf, priv->search_str))
   {
     if (priv->search_compiled)
     {

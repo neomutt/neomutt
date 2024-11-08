@@ -179,15 +179,15 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       buf_pool_release(&buf);
       return nntp_connect_error(adata);
     }
-    if (mutt_str_equal("STARTTLS", buf_string(buf)))
+    if (buf_str_equal(buf, "STARTTLS"))
     {
       adata->hasSTARTTLS = true;
     }
-    else if (mutt_str_equal("MODE-READER", buf_string(buf)))
+    else if (buf_str_equal(buf, "MODE-READER"))
     {
       mode_reader = true;
     }
-    else if (mutt_str_equal("READER", buf_string(buf)))
+    else if (buf_str_equal(buf, "READER"))
     {
       adata->hasDATE = true;
       adata->hasLISTGROUP = true;
@@ -207,7 +207,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
       adata->authenticators = mutt_str_dup(p);
     }
 #endif
-    else if (mutt_str_equal("OVER", buf_string(buf)))
+    else if (buf_str_equal(buf, "OVER"))
     {
       adata->hasOVER = true;
     }
@@ -221,7 +221,7 @@ static int nntp_capabilities(struct NntpAccountData *adata)
           adata->hasLIST_NEWSGROUPS = true;
       }
     }
-  } while (!mutt_str_equal(".", buf_string(buf)));
+  } while (!buf_str_equal(buf, "."));
   buf_reset(buf);
 
 #ifdef USE_SASL_CYRUS

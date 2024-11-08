@@ -314,7 +314,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata,
 
   imap_cachepath(adata->delim, mdata->name, mbox);
 
-  if (strstr(buf_string(mbox), "/../") || mutt_str_equal(buf_string(mbox), "..") ||
+  if (strstr(buf_string(mbox), "/../") || buf_str_equal(mbox, "..") ||
       mutt_strn_equal(buf_string(mbox), "../", 3))
   {
     goto cleanup;

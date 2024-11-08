@@ -188,7 +188,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     }
 
     parse_extract_token(pattern, s, TOKEN_NO_FLAGS);
-    if (folder_or_mbox && mutt_str_equal(buf_string(pattern), "-noregex"))
+    if (folder_or_mbox && buf_str_equal(pattern, "-noregex"))
     {
       use_regex = false;
       if (!MoreArgs(s))
@@ -290,14 +290,14 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
     if (data & MUTT_GLOBAL_HOOK)
     {
       /* Ignore duplicate global hooks */
-      if (mutt_str_equal(hook->command, buf_string(cmd)))
+      if (buf_str_equal(cmd, hook->command))
       {
         rc = MUTT_CMD_SUCCESS;
         goto cleanup;
       }
     }
     else if ((hook->type == data) && (hook->regex.pat_not == pat_not) &&
-             mutt_str_equal(buf_string(pattern), hook->regex.pattern))
+             buf_str_equal(pattern, hook->regex.pattern))
     {
       if (data & (MUTT_FOLDER_HOOK | MUTT_SEND_HOOK | MUTT_SEND2_HOOK | MUTT_MESSAGE_HOOK |
                   MUTT_ACCOUNT_HOOK | MUTT_REPLY_HOOK | MUTT_CRYPT_HOOK |
@@ -306,7 +306,7 @@ enum CommandResult mutt_parse_hook(struct Buffer *buf, struct Buffer *s,
         /* these hooks allow multiple commands with the same
          * pattern, so if we've already seen this pattern/command pair, just
          * ignore it instead of creating a duplicate */
-        if (mutt_str_equal(hook->command, buf_string(cmd)))
+        if (buf_str_equal(cmd, hook->command))
         {
           rc = MUTT_CMD_SUCCESS;
           goto cleanup;
@@ -500,8 +500,7 @@ static enum CommandResult mutt_parse_idxfmt_hook(struct Buffer *buf, struct Buff
   {
     TAILQ_FOREACH(hook, hl, entries)
     {
-      if ((hook->regex.pat_not == pat_not) &&
-          mutt_str_equal(buf_string(pattern), hook->regex.pattern))
+      if ((hook->regex.pat_not == pat_not) && buf_str_equal(pattern, hook->regex.pattern))
       {
         expando_free(&hook->expando);
         hook->expando = exp;

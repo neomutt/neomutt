@@ -132,8 +132,8 @@ void mutt_check_simple(struct Buffer *buf, const char *simple)
   if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
-    if (mutt_istr_equal("all", buf_string(buf)) || mutt_str_equal("^", buf_string(buf)) ||
-        mutt_str_equal(".", buf_string(buf))) /* ~A is more efficient */
+    if (mutt_istr_equal("all", buf_string(buf)) || buf_str_equal(buf, "^") ||
+        buf_str_equal(buf, ".")) /* ~A is more efficient */
     {
       buf_strcpy(buf, "~A");
     }

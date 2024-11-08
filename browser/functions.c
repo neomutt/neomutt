@@ -1049,7 +1049,7 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, int op)
                  buf_string(&LastDir));
       if (priv->goto_swapper[0] == '\0')
       {
-        if (!mutt_str_equal(buf_string(&LastDir), c_folder))
+        if (!buf_str_equal(&LastDir, c_folder))
         {
           /* Stores into goto_swapper LastDir, and swaps to `$folder` */
           mutt_str_copy(priv->goto_swapper, buf_string(&LastDir), sizeof(priv->goto_swapper));

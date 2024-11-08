@@ -487,7 +487,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
       FREE(&mdata.limit);
       mdata.limit = mtitle;
 
-      if (!mutt_str_equal(bestname, buf_string(buf)))
+      if (!buf_str_equal(buf, bestname))
       {
         /* we are adding something to the completion */
         buf_strcpy_n(buf, bestname, mutt_str_len(bestname) + 1);

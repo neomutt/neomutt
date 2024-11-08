@@ -340,7 +340,7 @@ static struct Mailbox *find_next_mailbox(struct Buffer *s, bool find_new)
         neomutt_mailboxlist_clear(&ml);
         return m_result;
       }
-      if (mutt_str_equal(buf_string(s), mailbox_path(np->mailbox)))
+      if (buf_str_equal(s, mailbox_path(np->mailbox)))
         found = true;
     }
     neomutt_mailboxlist_clear(&ml);

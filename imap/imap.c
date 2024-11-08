@@ -2258,7 +2258,7 @@ static int imap_tags_edit(struct Mailbox *m, const char *tags, struct Buffer *bu
   new_tag = buf->data; /* rewind */
   mutt_str_remove_trailing_ws(new_tag);
 
-  return !mutt_str_equal(tags, buf_string(buf));
+  return !buf_str_equal(buf, tags);
 }
 
 /**

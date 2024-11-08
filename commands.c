@@ -756,7 +756,7 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
       // Start by handling the options
       parse_extract_token(buf, s, TOKEN_NO_FLAGS);
 
-      if (mutt_str_equal(buf_string(buf), "-label"))
+      if (buf_str_equal(buf, "-label"))
       {
         if (!MoreArgs(s))
         {
@@ -767,24 +767,24 @@ enum CommandResult parse_mailboxes(struct Buffer *buf, struct Buffer *s,
         parse_extract_token(label, s, TOKEN_NO_FLAGS);
         label_set = true;
       }
-      else if (mutt_str_equal(buf_string(buf), "-nolabel"))
+      else if (buf_str_equal(buf, "-nolabel"))
       {
         buf_reset(label);
         label_set = true;
       }
-      else if (mutt_str_equal(buf_string(buf), "-notify"))
+      else if (buf_str_equal(buf, "-notify"))
       {
         notify = TB_TRUE;
       }
-      else if (mutt_str_equal(buf_string(buf), "-nonotify"))
+      else if (buf_str_equal(buf, "-nonotify"))
       {
         notify = TB_FALSE;
       }
-      else if (mutt_str_equal(buf_string(buf), "-poll"))
+      else if (buf_str_equal(buf, "-poll"))
       {
         poll = TB_TRUE;
       }
-      else if (mutt_str_equal(buf_string(buf), "-nopoll"))
+      else if (buf_str_equal(buf, "-nopoll"))
       {
         poll = TB_FALSE;
       }
@@ -1120,7 +1120,7 @@ static enum CommandResult parse_nospam(struct Buffer *buf, struct Buffer *s,
   }
 
   // "*" is special - clear both spam and nospam lists
-  if (mutt_str_equal(buf_string(buf), "*"))
+  if (buf_str_equal(buf, "*"))
   {
     mutt_replacelist_free(&SpamList);
     mutt_regexlist_free(&NoSpamList);

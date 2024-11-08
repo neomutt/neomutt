@@ -137,7 +137,7 @@ static int pbar_recalc(struct MuttWindow *win)
     buf_printf(buf, "%s (%s)", priv->pview->banner, pager_progress_str);
   }
 
-  if (!mutt_str_equal(buf_string(buf), pbar_data->pager_format))
+  if (!buf_str_equal(buf, pbar_data->pager_format))
   {
     mutt_str_replace(&pbar_data->pager_format, buf_string(buf));
     win->actions |= WA_REPAINT;

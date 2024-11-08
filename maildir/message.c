@@ -136,7 +136,7 @@ static FILE *maildir_open_find_message_dir(const char *folder, const char *uniqu
   {
     maildir_canon_filename(tunique, de->d_name);
 
-    if (mutt_str_equal(buf_string(tunique), unique))
+    if (buf_str_equal(tunique, unique))
     {
       buf_printf(fname, "%s/%s/%s", folder, subfolder, de->d_name);
       fp = mutt_file_fopen(buf_string(fname), "r");

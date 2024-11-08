@@ -1029,7 +1029,7 @@ static int op_attachment_edit_content_id(struct ComposeSharedData *shared, int o
 
   if (mw_get_field("Content-ID: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(id, buf_string(buf)))
+    if (!buf_str_equal(buf, id))
     {
       if (check_cid(buf_string(buf)))
       {
@@ -1073,7 +1073,7 @@ static int op_attachment_edit_description(struct ComposeSharedData *shared, int 
   /* header names should not be translated */
   if (mw_get_field("Description: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->description, buf_string(buf)))
+    if (!buf_str_equal(buf, cur_att->body->description))
     {
       mutt_str_replace(&cur_att->body->description, buf_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
@@ -1145,7 +1145,7 @@ static int op_attachment_edit_language(struct ComposeSharedData *shared, int op)
   buf_strcpy(buf, cur_att->body->language);
   if (mw_get_field("Content-Language: ", buf, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) == 0)
   {
-    if (!mutt_str_equal(cur_att->body->language, buf_string(buf)))
+    if (!buf_str_equal(buf, cur_att->body->language))
     {
       mutt_str_replace(&cur_att->body->language, buf_string(buf));
       menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
