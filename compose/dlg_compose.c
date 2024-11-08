@@ -176,7 +176,10 @@ static int compose_window_observer(struct NotifyCallback *nc)
   if (ev_w->win != dlg)
     return 0;
 
+  struct ComposeSharedData *shared = dlg->wdata;
+
   notify_observer_remove(NeoMutt->sub->notify, compose_config_observer, dlg);
+  notify_observer_remove(shared->email->notify, compose_email_observer, shared);
   notify_observer_remove(dlg->notify, compose_window_observer, dlg);
   mutt_debug(LL_DEBUG5, "window delete done\n");
 
