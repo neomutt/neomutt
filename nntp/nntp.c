@@ -341,14 +341,14 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
       size_t buflen = 2048, off = 0, b = 0;
 
       FREE(&adata->overview_fmt);
-      adata->overview_fmt = mutt_mem_malloc(buflen);
+      adata->overview_fmt = MUTT_MEM_MALLOC(buflen, char);
 
       while (true)
       {
         if ((buflen - off) < 1024)
         {
           buflen *= 2;
-          mutt_mem_realloc(&adata->overview_fmt, buflen);
+          MUTT_MEM_REALLOC(&adata->overview_fmt, buflen, char);
         }
 
         const int chunk = mutt_socket_readln_d(adata->overview_fmt + off,
@@ -387,7 +387,7 @@ static int nntp_attempt_features(struct NntpAccountData *adata)
         }
       }
       adata->overview_fmt[off++] = '\0';
-      mutt_mem_realloc(&adata->overview_fmt, off);
+      MUTT_MEM_REALLOC(&adata->overview_fmt, off, char);
     }
   }
   rc = 0; // Success
@@ -834,7 +834,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
       return 1;
     }
 
-    line = mutt_mem_malloc(sizeof(buf));
+    line = MUTT_MEM_MALLOC(sizeof(buf), char);
     rc = 0;
 
     if (msg)
@@ -880,7 +880,7 @@ static int nntp_fetch_lines(struct NntpMboxData *mdata, char *query, size_t qlen
         off = 0;
       }
 
-      mutt_mem_realloc(&line, off + sizeof(buf));
+      MUTT_MEM_REALLOC(&line, off + sizeof(buf), char);
     }
     FREE(&line);
     func(NULL, data);
@@ -1223,7 +1223,7 @@ static int nntp_fetch_headers(struct Mailbox *m, void *hc, anum_t first, anum_t 
   fc.first = first;
   fc.last = last;
   fc.restore = restore;
-  fc.messages = mutt_mem_calloc(last - first + 1, sizeof(unsigned char));
+  fc.messages = MUTT_MEM_CALLOC(last - first + 1, unsigned char);
   if (!fc.messages)
     return -1;
   fc.hc = hc;
@@ -1457,7 +1457,7 @@ static int nntp_group_poll(struct NntpMboxData *mdata, bool update_stat)
     mdata->last_cached = 0;
     if (mdata->newsrc_len)
     {
-      mutt_mem_realloc(&mdata->newsrc_ent, sizeof(struct NewsrcEntry));
+      MUTT_MEM_REALLOC(&mdata->newsrc_ent, 1, struct NewsrcEntry);
       mdata->newsrc_len = 1;
       mdata->newsrc_ent[0].first = 1;
       mdata->newsrc_ent[0].last = 0;
@@ -1545,7 +1545,7 @@ static enum MxStatus check_mailbox(struct Mailbox *m)
     const long c_nntp_context = cs_subset_long(NeoMutt->sub, "nntp_context");
     if (c_nntp_context && ((mdata->last_message - first + 1) > c_nntp_context))
       first = mdata->last_message - c_nntp_context + 1;
-    messages = mutt_mem_calloc(mdata->last_loaded - first + 1, sizeof(unsigned char));
+    messages = MUTT_MEM_CALLOC(mdata->last_loaded - first + 1, unsigned char);
     hc = nntp_hcache_open(mdata);
     nntp_hcache_update(mdata, hc);
 #endif
@@ -1751,7 +1751,7 @@ static int fetch_children(char *line, void *data)
   if (cc->num >= cc->max)
   {
     cc->max *= 2;
-    mutt_mem_realloc(&cc->child, sizeof(anum_t) * cc->max);
+    MUTT_MEM_REALLOC(&cc->child, cc->max, anum_t);
   }
   cc->child[cc->num++] = anum;
   return 0;
@@ -2303,7 +2303,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
   cc.mailbox = m;
   cc.num = 0;
   cc.max = 10;
-  cc.child = mutt_mem_malloc(sizeof(anum_t) * cc.max);
+  cc.child = MUTT_MEM_MALLOC(cc.max, anum_t);
 
   /* fetch numbers of child messages */
   snprintf(buf, sizeof(buf), "XPAT References " ANUM_FMT "-" ANUM_FMT " *%s*\r\n",

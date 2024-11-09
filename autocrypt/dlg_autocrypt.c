@@ -243,7 +243,7 @@ bool populate_menu(struct Menu *menu)
   if (mutt_autocrypt_db_account_get_all(&accounts, &num_accounts) < 0)
     return false;
 
-  struct AccountEntry *entries = mutt_mem_calloc(num_accounts, sizeof(struct AccountEntry));
+  struct AccountEntry *entries = MUTT_MEM_CALLOC(num_accounts, struct AccountEntry);
   menu->mdata = entries;
   menu->mdata_free = autocrypt_menu_free;
   menu->max = num_accounts;

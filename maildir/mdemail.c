@@ -38,7 +38,7 @@
  */
 struct MdEmail *maildir_entry_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct MdEmail));
+  return MUTT_MEM_CALLOC(1, struct MdEmail);
 }
 
 /**

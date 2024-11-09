@@ -237,7 +237,7 @@ static char *strdup_column_text(sqlite3_stmt *stmt, int index)
  */
 struct AutocryptAccount *mutt_autocrypt_db_account_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptAccount));
+  return MUTT_MEM_CALLOC(1, struct AutocryptAccount);
 }
 
 /**
@@ -491,7 +491,7 @@ int mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *
     if (results_count == results_len)
     {
       results_len += 5;
-      mutt_mem_realloc(&results, results_len * sizeof(struct AutocryptAccount *));
+      MUTT_MEM_REALLOC(&results, results_len, struct AutocryptAccount *);
     }
 
     struct AutocryptAccount *account = mutt_autocrypt_db_account_new();
@@ -527,7 +527,7 @@ cleanup:
  */
 struct AutocryptPeer *mutt_autocrypt_db_peer_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptPeer));
+  return MUTT_MEM_CALLOC(1, struct AutocryptPeer);
 }
 
 /**
@@ -748,7 +748,7 @@ cleanup:
  */
 struct AutocryptPeerHistory *mutt_autocrypt_db_peer_history_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptPeerHistory));
+  return MUTT_MEM_CALLOC(1, struct AutocryptPeerHistory);
 }
 
 /**
@@ -829,7 +829,7 @@ cleanup:
  */
 struct AutocryptGossipHistory *mutt_autocrypt_db_gossip_history_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct AutocryptGossipHistory));
+  return MUTT_MEM_CALLOC(1, struct AutocryptGossipHistory);
 }
 
 /**

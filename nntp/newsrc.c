@@ -92,7 +92,7 @@ static struct NntpMboxData *mdata_find(struct NntpAccountData *adata, const char
   if (adata->groups_num >= adata->groups_max)
   {
     adata->groups_max *= 2;
-    mutt_mem_realloc(&adata->groups_list, adata->groups_max * sizeof(mdata));
+    MUTT_MEM_REALLOC(&adata->groups_list, adata->groups_max, struct NntpMboxData *);
   }
   adata->groups_list[adata->groups_num++] = mdata;
 
@@ -226,7 +226,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     FREE(&mdata->newsrc_ent);
   }
 
-  line = mutt_mem_malloc(st.st_size + 1);
+  line = MUTT_MEM_MALLOC(st.st_size + 1, char);
   while (st.st_size && fgets(line, st.st_size + 1, adata->fp_newsrc))
   {
     char *b = NULL, *h = NULL;
@@ -252,7 +252,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     while (*b)
       if (*b++ == ',')
         j++;
-    mdata->newsrc_ent = mutt_mem_calloc(j, sizeof(struct NewsrcEntry));
+    mdata->newsrc_ent = MUTT_MEM_CALLOC(j, struct NewsrcEntry);
     mdata->subscribed = subs;
 
     /* parse entries */
@@ -288,7 +288,7 @@ int nntp_newsrc_parse(struct NntpAccountData *adata)
     if (mdata->last_message == 0)
       mdata->last_message = mdata->newsrc_ent[j - 1].last;
     mdata->newsrc_len = j;
-    mutt_mem_realloc(&mdata->newsrc_ent, j * sizeof(struct NewsrcEntry));
+    MUTT_MEM_REALLOC(&mdata->newsrc_ent, j, struct NewsrcEntry);
     nntp_group_unread_stat(mdata);
     mutt_debug(LL_DEBUG2, "%s\n", mdata->group);
   }
@@ -321,7 +321,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   if (!entries)
   {
     entries = 5;
-    mdata->newsrc_ent = mutt_mem_calloc(entries, sizeof(struct NewsrcEntry));
+    mdata->newsrc_ent = MUTT_MEM_CALLOC(entries, struct NewsrcEntry);
   }
 
   /* Set up to fake initial sequence from 1 to the article before the
@@ -345,7 +345,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
         if (mdata->newsrc_len >= entries)
         {
           entries *= 2;
-          mutt_mem_realloc(&mdata->newsrc_ent, entries * sizeof(struct NewsrcEntry));
+          MUTT_MEM_REALLOC(&mdata->newsrc_ent, entries, struct NewsrcEntry);
         }
         mdata->newsrc_ent[mdata->newsrc_len].first = first;
         mdata->newsrc_ent[mdata->newsrc_len].last = last - 1;
@@ -370,13 +370,13 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
     if (mdata->newsrc_len >= entries)
     {
       entries++;
-      mutt_mem_realloc(&mdata->newsrc_ent, entries * sizeof(struct NewsrcEntry));
+      MUTT_MEM_REALLOC(&mdata->newsrc_ent, entries, struct NewsrcEntry);
     }
     mdata->newsrc_ent[mdata->newsrc_len].first = first;
     mdata->newsrc_ent[mdata->newsrc_len].last = mdata->last_loaded;
     mdata->newsrc_len++;
   }
-  mutt_mem_realloc(&mdata->newsrc_ent, mdata->newsrc_len * sizeof(struct NewsrcEntry));
+  MUTT_MEM_REALLOC(&mdata->newsrc_ent, mdata->newsrc_len, struct NewsrcEntry);
 
   if (c_sort != SORT_ORDER)
   {
@@ -450,7 +450,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
   int rc = -1;
 
   size_t buflen = 10240;
-  char *buf = mutt_mem_calloc(1, buflen);
+  char *buf = MUTT_MEM_CALLOC(buflen, char);
   size_t off = 0;
 
   /* we will generate full newsrc here */
@@ -465,7 +465,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
     if ((off + strlen(mdata->group) + 3) > buflen)
     {
       buflen *= 2;
-      mutt_mem_realloc(&buf, buflen);
+      MUTT_MEM_REALLOC(&buf, buflen, char);
     }
     snprintf(buf + off, buflen - off, "%s%c ", mdata->group, mdata->subscribed ? ':' : '!');
     off += strlen(buf + off);
@@ -476,7 +476,7 @@ int nntp_newsrc_update(struct NntpAccountData *adata)
       if ((off + 1024) > buflen)
       {
         buflen *= 2;
-        mutt_mem_realloc(&buf, buflen);
+        MUTT_MEM_REALLOC(&buf, buflen, char);
       }
       if (j)
         buf[off++] = ',';
@@ -652,7 +652,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
     return 0;
 
   size_t buflen = 10240;
-  char *buf = mutt_mem_calloc(1, buflen);
+  char *buf = MUTT_MEM_CALLOC(buflen, char);
   snprintf(buf, buflen, "%lu\n", (unsigned long) adata->newgroups_time);
   size_t off = strlen(buf);
 
@@ -666,7 +666,7 @@ int nntp_active_save_cache(struct NntpAccountData *adata)
     if ((off + strlen(mdata->group) + (mdata->desc ? strlen(mdata->desc) : 0) + 50) > buflen)
     {
       buflen *= 2;
-      mutt_mem_realloc(&buf, buflen);
+      MUTT_MEM_REALLOC(&buf, buflen, char);
     }
     snprintf(buf + off, buflen - off, "%s " ANUM_FMT " " ANUM_FMT " %c%s%s\n",
              mdata->group, mdata->last_message, mdata->first_message,
@@ -1298,7 +1298,7 @@ struct NntpMboxData *mutt_newsgroup_subscribe(struct NntpAccountData *adata, cha
   mdata->subscribed = true;
   if (!mdata->newsrc_ent)
   {
-    mdata->newsrc_ent = mutt_mem_calloc(1, sizeof(struct NewsrcEntry));
+    mdata->newsrc_ent = MUTT_MEM_CALLOC(1, struct NewsrcEntry);
     mdata->newsrc_len = 1;
     mdata->newsrc_ent[0].first = 1;
     mdata->newsrc_ent[0].last = 0;
@@ -1352,7 +1352,7 @@ struct NntpMboxData *mutt_newsgroup_catchup(struct Mailbox *m,
 
   if (mdata->newsrc_ent)
   {
-    mutt_mem_realloc(&mdata->newsrc_ent, sizeof(struct NewsrcEntry));
+    MUTT_MEM_REALLOC(&mdata->newsrc_ent, 1, struct NewsrcEntry);
     mdata->newsrc_len = 1;
     mdata->newsrc_ent[0].first = 1;
     mdata->newsrc_ent[0].last = mdata->last_message;
@@ -1391,7 +1391,7 @@ struct NntpMboxData *mutt_newsgroup_uncatchup(struct Mailbox *m,
 
   if (mdata->newsrc_ent)
   {
-    mutt_mem_realloc(&mdata->newsrc_ent, sizeof(struct NewsrcEntry));
+    MUTT_MEM_REALLOC(&mdata->newsrc_ent, 1, struct NewsrcEntry);
     mdata->newsrc_len = 1;
     mdata->newsrc_ent[0].first = 1;
     mdata->newsrc_ent[0].last = mdata->first_message - 1;

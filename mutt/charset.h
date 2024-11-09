@@ -53,15 +53,6 @@ struct FgetConv
 };
 
 /**
- * struct FgetConvNot - A dummy converter
- */
-struct FgetConvNot
-{
-  FILE *fp;
-  iconv_t cd; ///< iconv conversion descriptor
-};
-
-/**
  * enum LookupType - Types of character set lookups
  */
 enum LookupType
