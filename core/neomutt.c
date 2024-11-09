@@ -52,7 +52,7 @@ struct NeoMutt *neomutt_new(struct ConfigSet *cs)
   if (!cs)
     return NULL;
 
-  struct NeoMutt *n = mutt_mem_calloc(1, sizeof(*NeoMutt));
+  struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
 
   TAILQ_INIT(&n->accounts);
   n->notify = notify_new();
@@ -205,7 +205,7 @@ size_t neomutt_mailboxlist_get_all(struct MailboxList *head, struct NeoMutt *n,
 
     STAILQ_FOREACH(mn, &a->mailboxes, entries)
     {
-      struct MailboxNode *mn2 = mutt_mem_calloc(1, sizeof(*mn2));
+      struct MailboxNode *mn2 = MUTT_MEM_CALLOC(1, struct MailboxNode);
       mn2->mailbox = mn->mailbox;
       STAILQ_INSERT_TAIL(head, mn2, entries);
       count++;
