@@ -27,6 +27,7 @@
 #include <gpgme.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 #include "lib.h"
 
 struct AddressList;
@@ -49,6 +50,7 @@ struct CryptKeyInfo
   KeyFlags flags;            ///< global and per uid flags (for convenience)
   gpgme_validity_t validity; ///< uid validity (cached for convenience)
 };
+ARRAY_HEAD(CryptKeyInfoArray, struct CryptKeyInfo *);
 
 /**
  * enum KeyInfo - PGP Key info

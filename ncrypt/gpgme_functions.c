@@ -745,7 +745,12 @@ static int op_exit(struct GpgmeData *gd, int op)
 static int op_generic_select_entry(struct GpgmeData *gd, int op)
 {
   const int index = menu_get_index(gd->menu);
-  struct CryptKeyInfo *cur_key = gd->key_table[index];
+  struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
+  struct CryptKeyInfo *cur_key = *pkey;
+
   /* FIXME make error reporting more verbose - this should be
    * easy because GPGME provides more information */
   if (OptPgpCheckTrust)
@@ -807,8 +812,11 @@ static int op_generic_select_entry(struct GpgmeData *gd, int op)
 static int op_verify_key(struct GpgmeData *gd, int op)
 {
   const int index = menu_get_index(gd->menu);
-  struct CryptKeyInfo *cur_key = gd->key_table[index];
-  verify_key(cur_key);
+  struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
+  verify_key(*pkey);
   menu_queue_redraw(gd->menu, MENU_REDRAW_FULL);
   return FR_SUCCESS;
 }
@@ -819,8 +827,11 @@ static int op_verify_key(struct GpgmeData *gd, int op)
 static int op_view_id(struct GpgmeData *gd, int op)
 {
   const int index = menu_get_index(gd->menu);
-  struct CryptKeyInfo *cur_key = gd->key_table[index];
-  mutt_message("%s", cur_key->uid);
+  struct CryptKeyInfo **pkey = ARRAY_GET(gd->key_table, index);
+  if (!pkey)
+    return FR_ERROR;
+
+  mutt_message("%s", (*pkey)->uid);
   return FR_SUCCESS;
 }
 
@@ -844,14 +855,13 @@ static const struct GpgmeFunction GpgmeFunctions[] = {
  */
 int gpgme_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
-  if (!dlg)
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
 
-  struct GpgmeData *gd = dlg->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct GpgmeData *gd = menu->mdata;
 
   int rc = FR_UNKNOWN;
   for (size_t i = 0; GpgmeFunctions[i].op != OP_NULL; i++)
