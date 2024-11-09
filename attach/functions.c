@@ -51,8 +51,6 @@
 #include "recvcmd.h"
 #endif
 
-/// Error message for unavailable functions
-static const char *Not_available_in_this_menu = N_("Not available in this menu");
 /// Error message for unavailable functions in attach mode
 static const char *Function_not_permitted_in_attach_message_mode = N_(
     "Function not permitted in attach-message mode");
@@ -712,13 +710,12 @@ static const struct AttachFunction AttachFunctions[] = {
  */
 int attach_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win)
-  {
-    mutt_error("%s", _(Not_available_in_this_menu));
+  // The Dispatcher may be called on any Window in the Dialog
+  struct MuttWindow *dlg = dialog_find(win);
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
-  }
 
-  struct Menu *menu = win->wdata;
+  struct Menu *menu = dlg->wdata;
   struct AttachPrivateData *priv = menu->mdata;
   if (!priv)
     return FR_ERROR;

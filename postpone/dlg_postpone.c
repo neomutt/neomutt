@@ -102,7 +102,8 @@ static const struct Mapping PostponedHelp[] = {
  */
 static int post_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct MailboxView *mv = menu->mdata;
+  struct PostponeData *pd = menu->mdata;
+  struct MailboxView *mv = pd->mailbox_view;
   struct Mailbox *m = mv->mailbox;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
@@ -177,7 +178,8 @@ static int postponed_window_observer(struct NotifyCallback *nc)
  */
 static const struct AttrColor *post_color(struct Menu *menu, int line)
 {
-  struct MailboxView *mv = menu->mdata;
+  struct PostponeData *pd = menu->mdata;
+  struct MailboxView *mv = pd->mailbox_view;
   if (!mv || (line < 0))
     return NULL;
 
@@ -216,11 +218,10 @@ struct Email *dlg_postponed(struct Mailbox *m)
   menu->make_entry = post_make_entry;
   menu->color = post_color;
   menu->max = m->msg_count;
-  menu->mdata = mv;
-  menu->mdata_free = NULL; // Menu doesn't own the data
 
   struct PostponeData pd = { mv, menu, NULL, false, search_state_new() };
-  dlg->wdata = &pd;
+  menu->mdata = &pd;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, postponed_config_observer, menu);

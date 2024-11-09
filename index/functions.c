@@ -84,9 +84,6 @@
 #endif
 #endif
 
-/// Error message for unavailable functions
-static const char *Not_available_in_this_menu = N_("Not available in this menu");
-
 // clang-format off
 /**
  * OpIndex - Functions for the Index Menu
@@ -3261,12 +3258,7 @@ static const struct IndexFunction IndexFunctions[] = {
  */
 int index_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win)
-  {
-    mutt_error("%s", _(Not_available_in_this_menu));
-    return FR_ERROR;
-  }
-
+  // The Dispatcher may be called on any Window in the Dialog
   struct MuttWindow *dlg = dialog_find(win);
   if (!dlg || !dlg->wdata || !win->parent || !win->parent->wdata)
     return FR_ERROR;

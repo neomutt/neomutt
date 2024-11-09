@@ -461,11 +461,14 @@ static const struct AliasFunction AliasFunctions[] = {
  */
 int alias_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win || !win->wdata)
-    return FR_UNKNOWN;
+  // The Dispatcher may be called on any Window in the Dialog
+  struct MuttWindow *dlg = dialog_find(win);
+  if (!dlg || !dlg->wdata)
+    return FR_ERROR;
 
-  struct Menu *menu = win->wdata;
+  struct Menu *menu = dlg->wdata;
   struct AliasMenuData *mdata = menu->mdata;
+
   int rc = FR_UNKNOWN;
   for (size_t i = 0; AliasFunctions[i].op != OP_NULL; i++)
   {
