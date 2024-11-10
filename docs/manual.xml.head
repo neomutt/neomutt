@@ -12939,7 +12939,7 @@ set imap_oauth_refresh_command="/path/to/oauth2.py --quiet --user=[email_address
       <para>
         You'll need to get your own oauth client credentials by following the
         script instructions:
-        <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/mutt_oauth2.py.README">https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/mutt_oauth2.py.README</ulink>
+        <ulink url="https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/README.md">https://github.com/neomutt/neomutt/blob/main/contrib/oauth2/README.md</ulink>
       </para>
 
 <screen>
