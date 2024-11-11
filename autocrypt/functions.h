@@ -25,16 +25,8 @@
 
 #include <stdbool.h>
 
+struct AutocryptData;
 struct MuttWindow;
-
-/**
- * struct AutocryptData - Data to pass to the Autocrypt Functions
- */
-struct AutocryptData
-{
-  bool done;           ///< Should we close the Dialog?
-  struct Menu *menu;   ///< Autocrypt Menu
-};
 
 /**
  * @defgroup autocrypt_function_api Autocrypt Function API

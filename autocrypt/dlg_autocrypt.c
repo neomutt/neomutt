@@ -79,6 +79,7 @@
 #include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "autocrypt_data.h"
 #include "functions.h"
 #include "mutt_logging.h"
 
@@ -196,7 +197,10 @@ void autocrypt_s(const struct ExpandoNode *node, void *data,
  */
 static int autocrypt_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct AccountEntry *entry = &((struct AccountEntry *) menu->mdata)[line];
+  struct AutocryptData *ad = menu->mdata;
+  struct AccountEntry **pentry = ARRAY_GET(&ad->entries, line);
+  if (!pentry)
+    return 0;
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
@@ -207,24 +211,8 @@ static int autocrypt_make_entry(struct Menu *menu, int line, int max_cols, struc
   }
 
   const struct Expando *c_autocrypt_acct_format = cs_subset_expando(NeoMutt->sub, "autocrypt_acct_format");
-  return expando_filter(c_autocrypt_acct_format, AutocryptRenderData, entry,
+  return expando_filter(c_autocrypt_acct_format, AutocryptRenderData, *pentry,
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
-}
-
-/**
- * autocrypt_menu_free - Free the Autocrypt account Menu - Implements Menu::mdata_free() - @ingroup menu_mdata_free
- */
-static void autocrypt_menu_free(struct Menu *menu, void **ptr)
-{
-  struct AccountEntry *entries = *ptr;
-
-  for (size_t i = 0; i < menu->max; i++)
-  {
-    mutt_autocrypt_db_account_free(&entries[i].account);
-    mutt_addr_free(&entries[i].addr);
-  }
-
-  FREE(ptr);
 }
 
 /**
@@ -234,34 +222,36 @@ static void autocrypt_menu_free(struct Menu *menu, void **ptr)
  */
 bool populate_menu(struct Menu *menu)
 {
+  struct AutocryptData *ad = menu->mdata;
+
   // Clear out any existing data
-  autocrypt_menu_free(menu, &menu->mdata);
+  account_entry_array_clear(&ad->entries);
   menu->max = 0;
 
-  struct AutocryptAccount **accounts = NULL;
-  int num_accounts = 0;
+  struct AutocryptAccountArray accounts = ARRAY_HEAD_INITIALIZER;
 
-  if (mutt_autocrypt_db_account_get_all(&accounts, &num_accounts) < 0)
+  if (mutt_autocrypt_db_account_get_all(&accounts) < 0)
     return false;
 
-  struct AccountEntry *entries = MUTT_MEM_CALLOC(num_accounts, struct AccountEntry);
-  menu->mdata = entries;
-  menu->mdata_free = autocrypt_menu_free;
-  menu->max = num_accounts;
+  menu->max = ARRAY_SIZE(&accounts);
 
-  for (int i = 0; i < num_accounts; i++)
+  struct AutocryptAccount **pac = NULL;
+  ARRAY_FOREACH(pac, &accounts)
   {
-    entries[i].num = i + 1;
+    struct AccountEntry *entry = MUTT_MEM_CALLOC(1, struct AccountEntry);
+
+    entry->num = ARRAY_FOREACH_IDX + 1;
     /* note: we are transferring the account pointer to the entries
      * array, and freeing the accounts array below.  the account
      * will be freed in autocrypt_menu_free().  */
-    entries[i].account = accounts[i];
+    entry->account = *pac;
 
-    entries[i].addr = mutt_addr_new();
-    entries[i].addr->mailbox = buf_new(accounts[i]->email_addr);
-    mutt_addr_to_local(entries[i].addr);
+    entry->addr = mutt_addr_new();
+    entry->addr->mailbox = buf_new((*pac)->email_addr);
+    mutt_addr_to_local(entry->addr);
+    ARRAY_ADD(&ad->entries, entry);
   }
-  FREE(&accounts);
+  ARRAY_FREE(&accounts);
 
   menu_queue_redraw(menu, MENU_REDRAW_FULL);
   return true;
@@ -338,12 +328,15 @@ void dlg_autocrypt(void)
   struct MuttWindow *dlg = simple_dialog_new(MENU_AUTOCRYPT, WT_DLG_AUTOCRYPT, AutocryptHelp);
 
   struct Menu *menu = dlg->wdata;
+
+  struct AutocryptData *ad = autocrypt_data_new();
+  ad->menu = menu;
+
   menu->make_entry = autocrypt_make_entry;
+  menu->mdata = ad;
+  menu->mdata_free = autocrypt_data_free;
 
   populate_menu(menu);
-
-  struct AutocryptData ad = { false, menu };
-  dlg->wdata = &ad;
 
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   // L10N: Autocrypt Account Management Menu title
@@ -379,7 +372,7 @@ void dlg_autocrypt(void)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
-  } while (!ad.done);
+  } while (!ad->done);
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);

@@ -79,15 +79,16 @@
  * Any changes to the database should bump the schema version by adding a call
  * in mutt_autocrypt_schema_update().
  *
- * | File                      | Description                      |
- * | :--------------------- -- | :------------------------------- |
- * | autocrypt/autocrypt.c     | @subpage autocrypt_autocrypt     |
- * | autocrypt/config.c        | @subpage autocrypt_config        |
- * | autocrypt/db.c            | @subpage autocrypt_db            |
- * | autocrypt/dlg_autocrypt.c | @subpage autocrypt_dlg_autocrypt |
- * | autocrypt/functions.c     | @subpage autocrypt_functions     |
- * | autocrypt/gpgme.c         | @subpage autocrypt_gpgme         |
- * | autocrypt/schema.c        | @subpage autocrypt_schema        |
+ * | File                       | Description                       |
+ * | :------------------------- | :-------------------------------- |
+ * | autocrypt/autocrypt.c      | @subpage autocrypt_autocrypt      |
+ * | autocrypt/autocrypt_data.c | @subpage autocrypt_autocrypt_data |
+ * | autocrypt/config.c         | @subpage autocrypt_config         |
+ * | autocrypt/db.c             | @subpage autocrypt_db             |
+ * | autocrypt/dlg_autocrypt.c  | @subpage autocrypt_dlg_autocrypt  |
+ * | autocrypt/functions.c      | @subpage autocrypt_functions      |
+ * | autocrypt/gpgme.c          | @subpage autocrypt_gpgme          |
+ * | autocrypt/schema.c         | @subpage autocrypt_schema         |
  */
 
 #ifndef MUTT_AUTOCRYPT_LIB_H
@@ -111,6 +112,7 @@ struct AutocryptAccount
   bool prefer_encrypt; ///< false = nopref, true = mutual
   bool enabled;        ///< Is this account enabled
 };
+ARRAY_HEAD(AutocryptAccountArray, struct AutocryptAccount *);
 
 /**
  * struct AutocryptPeer - Autocrypt peer
