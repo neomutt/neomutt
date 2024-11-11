@@ -5,6 +5,7 @@
  * @authors
  * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -236,9 +237,32 @@ static int compose_make_entry(struct Menu *menu, int line, int max_cols, struct 
 }
 
 /**
+ * attach_recalc - Recalculate the Window data - Implements MuttWindow::recalc() - @ingroup window_recalc
+ */
+static int attach_recalc(struct MuttWindow *win)
+{
+  struct Menu *menu = win->wdata;
+  struct ComposeAttachData *adata = menu->mdata;
+
+  const int cur_rows = win->state.rows;
+  const int new_rows = adata->actx->idxlen;
+
+  if (new_rows != cur_rows)
+  {
+    win->req_rows = new_rows;
+    mutt_window_reflow(win->parent);
+    menu_adjust(menu);
+  }
+
+  win->actions |= WA_REPAINT;
+  mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
+  return 0;
+}
+
+/**
  * attach_new - Create the Attachments Menu
- * @param parent Parent Window
- * @param shared Shared compose data
+ * @param parent     Parent Window
+ * @param shared     Shared compose data
  */
 struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedData *shared)
 {
@@ -264,4 +288,30 @@ struct MuttWindow *attach_new(struct MuttWindow *parent, struct ComposeSharedDat
   adata->menu = menu;
 
   return win_attach;
+}
+
+/**
+ * attachment_size_fixed - Make the Attachment Window fixed-size
+ * @param win Attachment Window
+ */
+void attachment_size_fixed(struct MuttWindow *win)
+{
+  if (!win || (win->size == MUTT_WIN_SIZE_FIXED))
+    return;
+
+  win->size = MUTT_WIN_SIZE_FIXED;
+  win->recalc = attach_recalc;
+}
+
+/**
+ * attachment_size_max - Make the Attachment Window maximised
+ * @param win Attachment Window
+ */
+void attachment_size_max(struct MuttWindow *win)
+{
+  if (!win || (win->size == MUTT_WIN_SIZE_MAXIMISE))
+    return;
+
+  win->size = MUTT_WIN_SIZE_MAXIMISE;
+  win->recalc = NULL;
 }

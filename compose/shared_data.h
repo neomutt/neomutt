@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2021-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -33,15 +34,18 @@ struct MuttWindow;
  */
 struct ComposeSharedData
 {
-  struct ConfigSubset *sub;          ///< Config set to use
-  struct Mailbox *mailbox;           ///< Current Mailbox
-  struct Email *email;               ///< Email being composed
-  struct ComposeAttachData *adata;   ///< Attachments
+  struct ConfigSubset *sub;              ///< Config set to use
+  struct Mailbox *mailbox;               ///< Current Mailbox
+  struct Email *email;                   ///< Email being composed
+  struct ComposeAttachData *adata;       ///< Attachments
+  struct MuttWindow *win_attach_bar;     ///< Status bar divider above attachments
+  struct MuttWindow *win_preview;        ///< Message preview window
+  struct MuttWindow *win_preview_bar;    ///< Status bar divider above preview
 
-  struct Buffer *fcc;                ///< Buffer to save FCC
-  int flags;                         ///< Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
-  bool fcc_set;                      ///< User has edited the Fcc: field
-  int rc;                            ///< Return code to leave compose
+  struct Buffer *fcc;                    ///< Buffer to save FCC
+  int flags;                             ///< Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
+  bool fcc_set;                          ///< User has edited the Fcc: field
+  int rc;                                ///< Return code to leave compose
 };
 
 /**

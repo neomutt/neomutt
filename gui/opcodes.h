@@ -147,6 +147,12 @@ const char *opcodes_get_name       (int op);
   /*       Attach Dialog: <op_attachment_view_text> */ \
   /*       Compose Dialog: <op_display_headers> */ \
   _fmt(OP_ATTACHMENT_VIEW_TEXT,               N_("view attachment as text")) \
+  /* L10N: Help screen description for OP_PREVIEW_PAGE_DOWN */ \
+  /*       Compose Dialog: <op_preview_page_down> */ \
+  _fmt(OP_PREVIEW_PAGE_DOWN,                  N_("show the next page of the message")) \
+  /* L10N: Help screen description for OP_PREVIEW_PAGE_UP */ \
+  /*       Compose Dialog: <op_preview_page_up> */ \
+  _fmt(OP_PREVIEW_PAGE_UP,                    N_("show the previous page of the message")) \
 
 #ifdef USE_AUTOCRYPT
 #define OPS_AUTOCRYPT(_fmt) \
