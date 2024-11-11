@@ -29,7 +29,6 @@
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
 
-struct ExpandoNode *node_condbool_new(const char *start, const char *end, int did, int uid);
 struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid);
 
 static long test_y_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -51,6 +50,18 @@ static long test_n_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 static void test_n(const struct ExpandoNode *node, void *data,
                    MuttFormatFlags flags, struct Buffer *buf)
 {
+}
+
+static struct ExpandoNode *node_condbool_new(const char *start, const char *end, int did, int uid)
+{
+  struct ExpandoNode *node = node_new();
+
+  node->type = ENT_CONDBOOL;
+  node->did = did;
+  node->uid = uid;
+  node->render = node_condbool_render;
+
+  return node;
 }
 
 static struct ExpandoNode *parse_test(const char *str, struct ExpandoFormat *fmt,
@@ -85,15 +96,6 @@ void test_expando_node_condbool(void)
     { -1, -1, NULL, NULL },
     // clang-format on
   };
-
-  // struct ExpandoNode *node_condbool_new(const char *start, const char *end, int did, int uid);
-  {
-    const char *str = "%x";
-
-    struct ExpandoNode *node = node_condbool_new(str + 1, str + 2, 1, 2);
-    TEST_CHECK(node != NULL);
-    node_free(&node);
-  }
 
   // int node_condbool_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {

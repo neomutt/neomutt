@@ -36,26 +36,6 @@
 #include "render.h"
 
 /**
- * node_condbool_new - Create a new CondBool ExpandoNode
- * @param start Start of string to store
- * @param end   End of string to store
- * @param did   Domain ID
- * @param uid   Unique ID
- * @retval ptr New CondBool ExpandoNode
- */
-struct ExpandoNode *node_condbool_new(const char *start, const char *end, int did, int uid)
-{
-  struct ExpandoNode *node = node_new();
-
-  node->type = ENT_CONDBOOL;
-  node->did = did;
-  node->uid = uid;
-  node->render = node_condbool_render;
-
-  return node;
-}
-
-/**
  * node_condbool_render - Callback for every bool node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_condbool_render(const struct ExpandoNode *node,
