@@ -13468,6 +13468,125 @@ sendmailcmd = neomutt -C -H - &amp;&amp; true
       </sect2>
     </sect1>
 
+    <sect1 id="compose-message-preview">
+      <title>Compose Message Preview Feature</title>
+      <subtitle>Show a preview of the message in the compose dialog</subtitle>
+
+      <sect2 id="compose-message-preview-support">
+        <title>Support</title>
+        <para><emphasis role="bold">Since:</emphasis> NeoMutt 2024-11-25</para>
+        <para><emphasis role="bold">Dependencies:</emphasis> None</para>
+      </sect2>
+
+      <sect2 id="compose-message-preview-intro">
+        <title>Introduction</title>
+        <para>
+          NeoMutt shows you a preview of the message you are about to send in
+          the compose dialog.
+        </para>
+      </sect2>
+
+      <sect2 id="compose-message-preview-variables">
+        <title>Variables</title>
+
+        <table id="table-compose-message-preview-variables">
+          <title>Message Preview Variables</title>
+          <tgroup cols="4">
+            <thead>
+              <row>
+                <entry>Name</entry>
+                <entry>Type</entry>
+                <entry>Default</entry>
+                <entry>Description</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry><literal>compose_show_preview</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>true</literal></entry>
+                <entry>Enable or disable the message preview feature</entry>
+              </row>
+              <row>
+                <entry><literal>compose_preview_min_rows</literal></entry>
+                <entry>number</entry>
+                <entry><literal>5</literal></entry>
+                <entry>Hide the preview if it has fewer than this number of rows</entry>
+              </row>
+              <row>
+                <entry><literal>compose_preview_above_attachments</literal></entry>
+                <entry>boolean</entry>
+                <entry><literal>false</literal></entry>
+                <entry>Show the message preview above the attachments list.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+
+      <sect2 id="compose-message-preview-functions">
+        <title>Functions</title>
+        <para>
+          The message preview is controller by the following functions.
+        </para>
+
+        <table id="compose-message-preview-functions-table">
+          <title>Message Preview Functions</title>
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Menus</entry>
+                <entry>Function</entry>
+                <entry>Description</entry>
+                <entry>Default</entry>
+              </row>
+            </thead>
+            <tbody>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-page-down&gt;</literal></entry>
+                <entry>show the next page of the message</entry>
+                <entry><literal>&lt;pagedown&gt;</literal></entry>
+              </row>
+              <row>
+                <entry>compose</entry>
+                <entry><literal>&lt;preview-page-up&gt;</literal></entry>
+                <entry>show the previous page of the message</entry>
+                <entry><literal>&lt;pageup&gt;</literal></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </sect2>
+
+      <sect2 id="compose-message-preview-limitations">
+        <title>Limitations</title>
+        <para>
+          This is a new feature and it's still under development. If you find
+          any problems, or you'd like to help improve it, please let us know.
+        </para>
+        <itemizedlist>
+          <listitem>
+            <para>
+              Pager displays simple text, no colour or attributes
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Text wrapping is not supported
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect2>
+
+      <sect2 id="compose-message-preview-credits">
+        <title>Credits</title>
+        <para>
+          Dennis Schön
+        </para>
+      </sect2>
+    </sect1>
+
     <sect1 id="compose-to-sender">
       <title>Compose to Sender Feature</title>
       <subtitle>Send new mail to the sender of the current mail</subtitle>

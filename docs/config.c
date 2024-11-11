@@ -688,6 +688,26 @@
 ** information on how to set $$compose_format.
 */
 
+{ "compose_preview_min_rows", DT_NUMBER, 5 },
+/*
+** .pp
+** This variable specifies the minimum number of rows that have to be
+** available for the message preview window to shown.
+*/
+
+{ "compose_preview_above_attachments", DT_BOOL, false },
+/*
+** .pp
+** Show the message preview above the attachments list.
+** By default it is shown below it.
+*/
+
+{ "compose_show_preview", DT_BOOL, true },
+/*
+** .pp
+** When \fIset\fP, Neomutt will display a preview of message in the compose view.
+*/
+
 { "compose_show_user_headers", DT_BOOL, true },
 /*
 ** .pp

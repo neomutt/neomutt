@@ -129,6 +129,8 @@ const struct MenuFuncOp OpCompose[] = { /* map: compose */
   { "pipe-entry",                    OP_PIPE },
   { "pipe-message",                  OP_PIPE },
   { "postpone-message",              OP_COMPOSE_POSTPONE_MESSAGE },
+  { "preview-page-down",             OP_PREVIEW_PAGE_DOWN },
+  { "preview-page-up",               OP_PREVIEW_PAGE_UP },
   { "print-entry",                   OP_ATTACHMENT_PRINT },
   { "rename-attachment",             OP_ATTACHMENT_RENAME_ATTACHMENT },
   { "rename-file",                   OP_COMPOSE_RENAME_FILE },
@@ -202,6 +204,8 @@ const struct MenuOpSeq ComposeDefaultBindings[] = { /* map: compose */
   { OP_ENVELOPE_EDIT_REPLY_TO,             "r" },
   { OP_ENVELOPE_EDIT_SUBJECT,              "s" },
   { OP_ENVELOPE_EDIT_TO,                   "t" },
+  { OP_PREVIEW_PAGE_DOWN,                  "<pagedown>" },
+  { OP_PREVIEW_PAGE_UP,                    "<pageup>" },
   { OP_FORGET_PASSPHRASE,                  "\006" },           // <Ctrl-F>
   { OP_TAG,                                "T" },
   { 0, NULL },
