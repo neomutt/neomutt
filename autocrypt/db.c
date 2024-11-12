@@ -210,8 +210,7 @@ static struct Address *copy_normalize_addr(struct Address *addr)
    * The normalize_addrlist above is extended to work on a list
    * because of requirements in autocrypt.c */
 
-  struct Address *norm_addr = mutt_addr_new();
-  buf_copy(norm_addr->mailbox, addr->mailbox);
+  struct Address *norm_addr = mutt_addr_create(NULL, buf_string(addr->mailbox));
   norm_addr->is_intl = addr->is_intl;
   norm_addr->intl_checked = addr->intl_checked;
 
