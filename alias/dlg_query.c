@@ -152,6 +152,7 @@ void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   mutt_addrlist_write(&alias->addr, addrs, true);
 
   buf_printf(buf, "<%s>", buf_string(addrs));
+  buf_pool_release(&addrs);
 }
 
 /**
