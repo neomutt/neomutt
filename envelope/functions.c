@@ -115,6 +115,9 @@ static bool edit_address_list(enum HeaderField field, struct AddressList *al)
   mutt_addrlist_to_local(al);
   mutt_addrlist_write(al, new_list, false);
   buf_fix_dptr(new_list);
+  if (!buf_is_empty(new_list))
+    buf_addstr(new_list, ", ");
+
   buf_copy(old_list, new_list);
   if (mw_get_field(_(Prompts[field]), new_list, MUTT_COMP_NO_FLAGS, HC_ALIAS,
                    &CompleteAliasOps, NULL) == 0)
