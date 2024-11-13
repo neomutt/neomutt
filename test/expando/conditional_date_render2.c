@@ -59,8 +59,8 @@ void test_expando_conditional_date_render2(void)
   const char *input = "%<[1m?%[%d-%m-%Y]&%[%Y-%m-%d]>";
 
   const struct ExpandoDefinition defs[] = {
-    { "[", NULL, 1, 2, 0, parse_date },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "[", NULL, 1, 2, parse_date },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_pool_get();

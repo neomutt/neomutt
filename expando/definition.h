@@ -30,15 +30,6 @@
 struct ExpandoFormat;
 struct ExpandoParseError;
 
-/**
- * enum ExpandoDataType - Type of data
- */
-enum ExpandoDataType
-{
-  E_TYPE_STRING = 0,    ///< Data is a string
-  E_TYPE_NUMBER,        ///< Data is numeric
-};
-
 typedef uint8_t ExpandoParserFlags;       ///< Flags for expando_parse(), e.g. #EP_CONDITIONAL
 #define EP_NO_FLAGS                 0     ///< No flags are set
 #define EP_CONDITIONAL        (1 << 0)    ///< Expando is being used as a condition
@@ -55,7 +46,6 @@ struct ExpandoDefinition
   const char           *long_name;       ///< Long Expando name, e.g. "name"
   short                 did;             ///< Domain ID
   short                 uid;             ///< Unique ID in domain
-  enum ExpandoDataType  data_type;       ///< Type of data
 
   /**
    * @defgroup expando_parse_api Expando Parse API

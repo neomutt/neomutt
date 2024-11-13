@@ -72,10 +72,10 @@ void test_expando_if_else_true_render(void)
   const char *input = "%<c?%t>%<c?%t&%f>";
 
   const struct ExpandoDefinition defs[] = {
-    { "c", NULL, 1, 0, 0, NULL },
-    { "t", NULL, 1, 1, 0, NULL },
-    { "f", NULL, 1, 2, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "c", NULL, 1, 0, NULL },
+    { "t", NULL, 1, 1, NULL },
+    { "f", NULL, 1, 2, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_pool_get();

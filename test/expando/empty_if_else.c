@@ -32,10 +32,10 @@ void test_expando_empty_if_else(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "c", "cherry",    1, 2, E_TYPE_STRING, NULL },
-    { "f", "fig",       1, 2, E_TYPE_STRING, NULL },
-    { "t", "tangerine", 1, 3, E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "c", "cherry",    1, 2, NULL },
+    { "f", "fig",       1, 2, NULL },
+    { "t", "tangerine", 1, 3, NULL },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
 

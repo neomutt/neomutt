@@ -72,10 +72,10 @@ static void simple_f(const struct ExpandoNode *node, void *data,
 void test_expando_if_else_false_render(void)
 {
   const struct ExpandoDefinition defs[] = {
-    { "c", NULL, 1, 0, 0, NULL },
-    { "t", NULL, 1, 1, 0, NULL },
-    { "f", NULL, 1, 2, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "c", NULL, 1, 0, NULL },
+    { "t", NULL, 1, 1, NULL },
+    { "f", NULL, 1, 2, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   const char *input = "%<c?%t>%<c?%t&%f>";

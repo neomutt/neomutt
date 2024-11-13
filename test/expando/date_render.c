@@ -58,8 +58,8 @@ void test_expando_date_render(void)
     const char *input = "%[%Y-%m-%d] date";
 
     const struct ExpandoDefinition defs[] = {
-      { "[", NULL, 1, 0, 0, parse_date },
-      { NULL, NULL, 0, 0, 0, NULL },
+      { "[", NULL, 1, 0, parse_date },
+      { NULL, NULL, 0, 0, NULL },
     };
 
     struct Buffer *err = buf_pool_get();
@@ -92,8 +92,8 @@ void test_expando_date_render(void)
     const char *input = "%-12[%Y-%m-%d]";
 
     const struct ExpandoDefinition defs[] = {
-      { "[", NULL, 1, 0, 0, parse_date },
-      { NULL, NULL, 0, 0, 0, NULL },
+      { "[", NULL, 1, 0, parse_date },
+      { NULL, NULL, 0, 0, NULL },
     };
 
     struct Buffer *err = buf_pool_get();

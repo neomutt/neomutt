@@ -32,9 +32,9 @@ void test_expando_complex_if_else(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "l",  "lime",   1, 1, E_TYPE_STRING, NULL },
-    { "c",  "cherry", 1, 2, E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "l",  "lime",   1, 1, NULL },
+    { "c",  "cherry", 1, 2, NULL },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
   const char *input = "if: %<l?pre %4lpost> if-else: %<l?pre %4lpost&pre %4cpost>";

@@ -35,13 +35,13 @@ void test_expando_validation(void)
   const char *input2 = "%a";
 
   const struct ExpandoDefinition defs1[] = {
-    { "a", NULL, 1, 0, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "a", NULL, 1, 0, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   const struct ExpandoDefinition defs2[] = {
-    { "b", NULL, 1, 0, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "b", NULL, 1, 0, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_new(NULL);

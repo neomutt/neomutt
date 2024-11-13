@@ -64,9 +64,9 @@ void test_expando_nested_if_else_render(void)
   const char *input = "%<x?%<y?XY&X>&%<y?Y&NONE>>";
 
   const struct ExpandoDefinition defs[] = {
-    { "x", NULL, 1, 0, 0, NULL },
-    { "y", NULL, 1, 1, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "x", NULL, 1, 0, NULL },
+    { "y", NULL, 1, 1, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_pool_get();

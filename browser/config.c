@@ -81,28 +81,28 @@ struct ExpandoNode *parse_folder_date(const char *str, struct ExpandoFormat *fmt
  */
 static const struct ExpandoDefinition FolderFormatDef[] = {
   // clang-format off
-  { "*", "padding-soft",  ED_GLOBAL, ED_GLO_PADDING_SOFT,  E_TYPE_STRING, node_padding_parse },
-  { ">", "padding-hard",  ED_GLOBAL, ED_GLO_PADDING_HARD,  E_TYPE_STRING, node_padding_parse },
-  { "|", "padding-eol",   ED_GLOBAL, ED_GLO_PADDING_EOL,   E_TYPE_STRING, node_padding_parse },
-  { " ", "padding-space", ED_GLOBAL, ED_GLO_PADDING_SPACE, E_TYPE_STRING, NULL },
-  { "a", "notify",        ED_FOLDER, ED_FOL_NOTIFY,        E_TYPE_NUMBER, NULL },
-  { "C", "number",        ED_FOLDER, ED_FOL_NUMBER,        E_TYPE_NUMBER, NULL },
-  { "d", "date",          ED_FOLDER, ED_FOL_DATE,          E_TYPE_STRING, NULL },
-  { "D", "date-format",   ED_FOLDER, ED_FOL_DATE_FORMAT,   E_TYPE_STRING, NULL },
-  { "f", "filename",      ED_FOLDER, ED_FOL_FILENAME,      E_TYPE_STRING, NULL },
-  { "F", "file-mode",     ED_FOLDER, ED_FOL_FILE_MODE,     E_TYPE_STRING, NULL },
-  { "g", "file-group",    ED_FOLDER, ED_FOL_FILE_GROUP,    E_TYPE_STRING, NULL },
-  { "i", "description",   ED_FOLDER, ED_FOL_DESCRIPTION,   E_TYPE_STRING, NULL },
-  { "l", "hard-links",    ED_FOLDER, ED_FOL_HARD_LINKS,    E_TYPE_STRING, NULL },
-  { "m", "message-count", ED_FOLDER, ED_FOL_MESSAGE_COUNT, E_TYPE_NUMBER, NULL },
-  { "n", "unread-count",  ED_FOLDER, ED_FOL_UNREAD_COUNT,  E_TYPE_NUMBER, NULL },
-  { "N", "new-mail",      ED_FOLDER, ED_FOL_NEW_MAIL,      E_TYPE_STRING, NULL },
-  { "p", "poll",          ED_FOLDER, ED_FOL_POLL,          E_TYPE_NUMBER, NULL },
-  { "s", "file-size",     ED_FOLDER, ED_FOL_FILE_SIZE,     E_TYPE_NUMBER, NULL },
-  { "t", "tagged",        ED_FOLDER, ED_FOL_TAGGED,        E_TYPE_STRING, NULL },
-  { "u", "file-owner",    ED_FOLDER, ED_FOL_FILE_OWNER,    E_TYPE_STRING, NULL },
-  { "[", NULL,            ED_FOLDER, ED_FOL_STRF,          E_TYPE_STRING, parse_folder_date },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "*", "padding-soft",  ED_GLOBAL, ED_GLO_PADDING_SOFT,  node_padding_parse },
+  { ">", "padding-hard",  ED_GLOBAL, ED_GLO_PADDING_HARD,  node_padding_parse },
+  { "|", "padding-eol",   ED_GLOBAL, ED_GLO_PADDING_EOL,   node_padding_parse },
+  { " ", "padding-space", ED_GLOBAL, ED_GLO_PADDING_SPACE, NULL },
+  { "a", "notify",        ED_FOLDER, ED_FOL_NOTIFY,        NULL },
+  { "C", "number",        ED_FOLDER, ED_FOL_NUMBER,        NULL },
+  { "d", "date",          ED_FOLDER, ED_FOL_DATE,          NULL },
+  { "D", "date-format",   ED_FOLDER, ED_FOL_DATE_FORMAT,   NULL },
+  { "f", "filename",      ED_FOLDER, ED_FOL_FILENAME,      NULL },
+  { "F", "file-mode",     ED_FOLDER, ED_FOL_FILE_MODE,     NULL },
+  { "g", "file-group",    ED_FOLDER, ED_FOL_FILE_GROUP,    NULL },
+  { "i", "description",   ED_FOLDER, ED_FOL_DESCRIPTION,   NULL },
+  { "l", "hard-links",    ED_FOLDER, ED_FOL_HARD_LINKS,    NULL },
+  { "m", "message-count", ED_FOLDER, ED_FOL_MESSAGE_COUNT, NULL },
+  { "n", "unread-count",  ED_FOLDER, ED_FOL_UNREAD_COUNT,  NULL },
+  { "N", "new-mail",      ED_FOLDER, ED_FOL_NEW_MAIL,      NULL },
+  { "p", "poll",          ED_FOLDER, ED_FOL_POLL,          NULL },
+  { "s", "file-size",     ED_FOLDER, ED_FOL_FILE_SIZE,     NULL },
+  { "t", "tagged",        ED_FOLDER, ED_FOL_TAGGED,        NULL },
+  { "u", "file-owner",    ED_FOLDER, ED_FOL_FILE_OWNER,    NULL },
+  { "[", NULL,            ED_FOLDER, ED_FOL_STRF,          parse_folder_date },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 
@@ -114,19 +114,19 @@ static const struct ExpandoDefinition FolderFormatDef[] = {
  */
 static const struct ExpandoDefinition GroupIndexFormatDef[] = {
   // clang-format off
-  { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-  { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-  { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-  { "a", "notify",       ED_FOLDER, ED_FOL_NOTIFY,       E_TYPE_NUMBER, NULL },
-  { "C", "number",       ED_FOLDER, ED_FOL_NUMBER,       E_TYPE_NUMBER, NULL },
-  { "d", "description",  ED_FOLDER, ED_FOL_DESCRIPTION,  E_TYPE_STRING, NULL },
-  { "f", "newsgroup",    ED_FOLDER, ED_FOL_NEWSGROUP,    E_TYPE_STRING, NULL },
-  { "M", "flags",        ED_FOLDER, ED_FOL_FLAGS,        E_TYPE_STRING, NULL },
-  { "n", "new-count",    ED_FOLDER, ED_FOL_NEW_COUNT,    E_TYPE_NUMBER, NULL },
-  { "N", "flags2",       ED_FOLDER, ED_FOL_FLAGS2,       E_TYPE_STRING, NULL },
-  { "p", "poll",         ED_FOLDER, ED_FOL_POLL,         E_TYPE_NUMBER, NULL },
-  { "s", "unread-count", ED_FOLDER, ED_FOL_UNREAD_COUNT, E_TYPE_NUMBER, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  node_padding_parse },
+  { "a", "notify",       ED_FOLDER, ED_FOL_NOTIFY,       NULL },
+  { "C", "number",       ED_FOLDER, ED_FOL_NUMBER,       NULL },
+  { "d", "description",  ED_FOLDER, ED_FOL_DESCRIPTION,  NULL },
+  { "f", "newsgroup",    ED_FOLDER, ED_FOL_NEWSGROUP,    NULL },
+  { "M", "flags",        ED_FOLDER, ED_FOL_FLAGS,        NULL },
+  { "n", "new-count",    ED_FOLDER, ED_FOL_NEW_COUNT,    NULL },
+  { "N", "flags2",       ED_FOLDER, ED_FOL_FLAGS2,       NULL },
+  { "p", "poll",         ED_FOLDER, ED_FOL_POLL,         NULL },
+  { "s", "unread-count", ED_FOLDER, ED_FOL_UNREAD_COUNT, NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 

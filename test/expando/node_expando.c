@@ -76,12 +76,12 @@ void test_expando_node_expando(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "a",  "apple",  1, 2, E_TYPE_STRING, NULL },
-    { "b",  "banana", 1, 3, E_TYPE_STRING, NULL },
-    { "c",  "cherry", 1, 4, E_TYPE_STRING, parse_test },
-    { "d",  "damson", 1, 5, E_TYPE_STRING, parse_test },
-    { "e",  "endive", 1, 6, E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "a",  "apple",  1, 2, NULL },
+    { "b",  "banana", 1, 3, NULL },
+    { "c",  "cherry", 1, 4, parse_test },
+    { "d",  "damson", 1, 5, parse_test },
+    { "e",  "endive", 1, 6, NULL },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
 

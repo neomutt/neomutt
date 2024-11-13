@@ -71,12 +71,12 @@ void test_expando_colors_render(void)
   {
     const struct ExpandoDefinition defs[] = {
       // clang-format off
-      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-      { "s", NULL, 1, 0, 0, NULL },
-      { "C", NULL, 1, 1, 0, NULL },
-      { NULL, NULL, 0, 0, 0, NULL },
+      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, node_padding_parse },
+      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, node_padding_parse },
+      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  node_padding_parse },
+      { "s", NULL, 1, 0, NULL },
+      { "C", NULL, 1, 1, NULL },
+      { NULL, NULL, 0, 0, NULL },
       // clang-format on
     };
 
@@ -129,12 +129,12 @@ void test_expando_colors_render(void)
   {
     const struct ExpandoDefinition defs[] = {
       // clang-format off
-      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-      { "s", NULL, 1, 0, 0, NULL },
-      { "C", NULL, 1, 1, 0, NULL },
-      { NULL, NULL, 0, 0, 0, NULL },
+      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, node_padding_parse },
+      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, node_padding_parse },
+      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  node_padding_parse },
+      { "s", NULL, 1, 0, NULL },
+      { "C", NULL, 1, 1, NULL },
+      { NULL, NULL, 0, 0, NULL },
       // clang-format on
     };
 
@@ -210,12 +210,12 @@ void test_expando_colors_render(void)
   {
     const struct ExpandoDefinition defs[] = {
       // clang-format off
-      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-      { "s", NULL, 1, 0, 0, NULL },
-      { "C", NULL, 1, 1, 0, NULL },
-      { NULL, NULL, 0, 0, 0, NULL },
+      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, node_padding_parse },
+      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, node_padding_parse },
+      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  node_padding_parse },
+      { "s", NULL, 1, 0, NULL },
+      { "C", NULL, 1, 1, NULL },
+      { NULL, NULL, 0, 0, NULL },
       // clang-format on
     };
 
@@ -277,12 +277,12 @@ void test_expando_colors_render(void)
   {
     const struct ExpandoDefinition defs[] = {
       // clang-format off
-      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-      { "s", NULL, 1, 0, 0, NULL },
-      { "C", NULL, 1, 1, 0, NULL },
-      { NULL, NULL, 0, 0, 0, NULL },
+      { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, node_padding_parse },
+      { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, node_padding_parse },
+      { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  node_padding_parse },
+      { "s", NULL, 1, 0, NULL },
+      { "C", NULL, 1, 1, NULL },
+      { NULL, NULL, 0, 0, NULL },
       // clang-format on
     };
 

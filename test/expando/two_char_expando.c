@@ -33,9 +33,9 @@ void test_expando_two_char_expando(void)
   const char *input = "%cr %ab";
 
   struct ExpandoDefinition defs[] = {
-    { "cr", NULL, 0, 0, 0, NULL },
-    { "a", NULL, 0, 0, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "cr", NULL, 0, 0, NULL },
+    { "a", NULL, 0, 0, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_pool_get();

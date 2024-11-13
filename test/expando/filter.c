@@ -111,8 +111,8 @@ void test_expando_filter(void)
   {
     const struct ExpandoDefinition TestFormatDef[] = {
       // clang-format off
-      { "a", "from", ED_ENVELOPE, ED_ENV_FROM, E_TYPE_STRING, NULL },
-      { NULL, NULL, 0, -1, -1, NULL }
+      { "a", "from", ED_ENVELOPE, ED_ENV_FROM, NULL },
+      { NULL, NULL, 0, -1, NULL }
       // clang-format on
     };
 

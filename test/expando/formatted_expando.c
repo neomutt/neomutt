@@ -32,8 +32,8 @@ void test_expando_formatted_expando(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "X",  "xigua", 1, 1, E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "X",  "xigua", 1, 1, NULL },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
   const char *input = "%X %8X %-8X %08X %.8X %8.8X %-8.8X %=8X";

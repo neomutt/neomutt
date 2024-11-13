@@ -32,9 +32,9 @@ void test_expando_simple_expando(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "a",  "apple",  1, 1, E_TYPE_STRING, NULL },
-    { "b",  "banana", 1, 2, E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "a",  "apple",  1, 1, NULL },
+    { "b",  "banana", 1, 2, NULL },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
   const char *input = "%a %b";

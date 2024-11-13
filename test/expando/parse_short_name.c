@@ -51,12 +51,12 @@ void test_expando_parse_short_name(void)
 
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "a",  NULL, ED_EMAIL, ED_EMA_STRF_RECV_LOCAL, E_TYPE_STRING, NULL },
-    { "ab", NULL, ED_EMAIL, ED_EMA_THREAD_COUNT,    E_TYPE_STRING, NULL },
-    { "b",  NULL, ED_EMAIL, ED_EMA_INDEX_HOOK,      E_TYPE_STRING, NULL },
-    { "c",  NULL, ED_EMAIL, ED_EMA_STRF_LOCAL,      E_TYPE_STRING, parse_test1 },
-    { "dd", NULL, ED_EMAIL, ED_EMA_STRF,            E_TYPE_STRING, parse_test1 },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "a",  NULL, ED_EMAIL, ED_EMA_STRF_RECV_LOCAL, NULL },
+    { "ab", NULL, ED_EMAIL, ED_EMA_THREAD_COUNT,    NULL },
+    { "b",  NULL, ED_EMAIL, ED_EMA_INDEX_HOOK,      NULL },
+    { "c",  NULL, ED_EMAIL, ED_EMA_STRF_LOCAL,      parse_test1 },
+    { "dd", NULL, ED_EMAIL, ED_EMA_STRF,            parse_test1 },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
 

@@ -43,13 +43,13 @@
  */
 const struct ExpandoDefinition NntpFormatDef[] = {
   // clang-format off
-  { "a", "account",  ED_NNTP, ED_NTP_ACCOUNT,  E_TYPE_STRING, NULL },
-  { "p", "port",     ED_NNTP, ED_NTP_PORT,     E_TYPE_NUMBER, NULL },
-  { "P", "port-if",  ED_NNTP, ED_NTP_PORT_IF,  E_TYPE_NUMBER, NULL },
-  { "s", "server",   ED_NNTP, ED_NTP_SERVER,   E_TYPE_STRING, NULL },
-  { "S", "schema",   ED_NNTP, ED_NTP_SCHEMA,   E_TYPE_STRING, NULL },
-  { "u", "username", ED_NNTP, ED_NTP_USERNAME, E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "a", "account",  ED_NNTP, ED_NTP_ACCOUNT,  NULL },
+  { "p", "port",     ED_NNTP, ED_NTP_PORT,     NULL },
+  { "P", "port-if",  ED_NNTP, ED_NTP_PORT_IF,  NULL },
+  { "s", "server",   ED_NNTP, ED_NTP_SERVER,   NULL },
+  { "S", "schema",   ED_NNTP, ED_NTP_SCHEMA,   NULL },
+  { "u", "username", ED_NNTP, ED_NTP_USERNAME, NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 

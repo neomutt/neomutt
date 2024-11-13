@@ -47,14 +47,14 @@
  */
 static const struct ExpandoDefinition ComposeFormatDef[] = {
   // clang-format off
-  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-  { "a", "attach-count", ED_COMPOSE, ED_COM_ATTACH_COUNT, E_TYPE_STRING, NULL },
-  { "h", "hostname",     ED_GLOBAL,  ED_GLO_HOSTNAME,     E_TYPE_STRING, NULL },
-  { "l", "attach-size",  ED_COMPOSE, ED_COM_ATTACH_SIZE,  E_TYPE_STRING, NULL },
-  { "v", "version",      ED_GLOBAL,  ED_GLO_VERSION,      E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  node_padding_parse },
+  { "a", "attach-count", ED_COMPOSE, ED_COM_ATTACH_COUNT, NULL },
+  { "h", "hostname",     ED_GLOBAL,  ED_GLO_HOSTNAME,     NULL },
+  { "l", "attach-size",  ED_COMPOSE, ED_COM_ATTACH_SIZE,  NULL },
+  { "v", "version",      ED_GLOBAL,  ED_GLO_VERSION,      NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 

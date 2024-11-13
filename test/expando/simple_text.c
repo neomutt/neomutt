@@ -31,9 +31,9 @@
 void test_expando_simple_text(void)
 {
   const struct ExpandoDefinition defs[] = {
-    { "s", NULL, 1, 0, 0, NULL },
-    { "d", NULL, 1, 1, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "s", NULL, 1, 0, NULL },
+    { "d", NULL, 1, 1, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   const char *input = "test text";

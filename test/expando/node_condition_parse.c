@@ -44,11 +44,11 @@ void test_expando_node_condition_parse(void)
 
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "a", NULL, ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL, E_TYPE_STRING, parse_test1 },
-    { "b", NULL, ED_EMAIL,    ED_EMA_INDEX_HOOK,      E_TYPE_STRING, parse_test1 },
-    { "c", NULL, ED_ENVELOPE, ED_ENV_FROM,            E_TYPE_STRING, NULL        },
-    { "d", NULL, ED_ENVELOPE, ED_ENV_SENDER,          E_TYPE_STRING, NULL        },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "a", NULL, ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL, parse_test1 },
+    { "b", NULL, ED_EMAIL,    ED_EMA_INDEX_HOOK,      parse_test1 },
+    { "c", NULL, ED_ENVELOPE, ED_ENV_FROM,            NULL        },
+    { "d", NULL, ED_ENVELOPE, ED_ENV_SENDER,          NULL        },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
 

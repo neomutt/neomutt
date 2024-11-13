@@ -35,8 +35,8 @@ void test_expando_conditional_date(void)
   struct Buffer *err = buf_pool_get();
 
   const struct ExpandoDefinition defs[] = {
-    { "[", NULL, 1, 0, 0, parse_date },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "[", NULL, 1, 0, parse_date },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Expando *exp = expando_parse(input, defs, err);

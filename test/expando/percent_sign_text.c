@@ -32,7 +32,7 @@ void test_expando_percent_sign_text(void)
 {
   static const struct ExpandoDefinition FormatDef[] = {
     // clang-format off
-    { NULL, NULL, 0, -1, -1, NULL }
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
 

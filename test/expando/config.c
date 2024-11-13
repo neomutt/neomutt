@@ -52,10 +52,10 @@ int cs_str_string_plus_equals(const struct ConfigSet *cs, const char *name,
 
 static struct ExpandoDefinition TestFormatDef[] = {
   // clang-format off
-  { "a", "aardvark", 1, 100, E_TYPE_STRING, NULL },
-  { "b", "badger",   1, 101, E_TYPE_STRING, NULL },
-  { "c", "cat",      1, 102, E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "a", "aardvark", 1, 100, NULL },
+  { "b", "badger",   1, 101, NULL },
+  { "c", "cat",      1, 102, NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 

@@ -32,14 +32,14 @@ void test_expando_nested_if_else(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "a", "apple",      1, 1, E_TYPE_STRING, NULL },
-    { "b", "banana",     1, 2, E_TYPE_STRING, NULL },
-    { "c", "cherry",     1, 3, E_TYPE_STRING, NULL },
-    { "d", "damson",     1, 4, E_TYPE_STRING, NULL },
-    { "e", "elderberry", 1, 5, E_TYPE_STRING, NULL },
-    { "f", "fig",        1, 6, E_TYPE_STRING, NULL },
-    { "g", "guava",      1, 7, E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "a", "apple",      1, 1, NULL },
+    { "b", "banana",     1, 2, NULL },
+    { "c", "cherry",     1, 3, NULL },
+    { "d", "damson",     1, 4, NULL },
+    { "e", "elderberry", 1, 5, NULL },
+    { "f", "fig",        1, 6, NULL },
+    { "g", "guava",      1, 7, NULL },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
   struct Buffer *err = buf_pool_get();

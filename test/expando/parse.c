@@ -39,16 +39,16 @@ void test_expando_parser(void)
 {
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     E_TYPE_STRING, node_padding_parse },
-    { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     E_TYPE_STRING, node_padding_parse },
-    { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      E_TYPE_STRING, node_padding_parse },
-    { "X", "attachment-count", ED_EMAIL,  ED_EMA_ATTACHMENT_COUNT, E_TYPE_NUMBER, NULL },
-    { "[", NULL,               ED_EMAIL,  ED_EMA_STRF_LOCAL,       E_TYPE_STRING, parse_date },
-    { "a", "apple",            ED_ALIAS,  ED_ALI_ADDRESS,          E_TYPE_STRING, NULL },
-    { "b", "banana",           ED_ALIAS,  ED_ALI_COMMENT,          E_TYPE_STRING, NULL },
-    { "c", "cherry",           ED_ALIAS,  ED_ALI_FLAGS,            E_TYPE_STRING, NULL },
-    { "d", "damson",           ED_ALIAS,  ED_ALI_NAME,             E_TYPE_STRING, NULL },
-    { NULL, NULL, 0, -1, -1, NULL },
+    { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     node_padding_parse },
+    { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     node_padding_parse },
+    { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      node_padding_parse },
+    { "X", "attachment-count", ED_EMAIL,  ED_EMA_ATTACHMENT_COUNT, NULL },
+    { "[", NULL,               ED_EMAIL,  ED_EMA_STRF_LOCAL,       parse_date },
+    { "a", "apple",            ED_ALIAS,  ED_ALI_ADDRESS,          NULL },
+    { "b", "banana",           ED_ALIAS,  ED_ALI_COMMENT,          NULL },
+    { "c", "cherry",           ED_ALIAS,  ED_ALI_FLAGS,            NULL },
+    { "d", "damson",           ED_ALIAS,  ED_ALI_NAME,             NULL },
+    { NULL, NULL, 0, -1, NULL },
     // clang-format on
   };
 

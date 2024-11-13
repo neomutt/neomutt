@@ -124,10 +124,10 @@ static int simple_command_validator(const struct ConfigSet *cs, const struct Con
  */
 static const struct ExpandoDefinition GreetingFormatDef[] = {
   // clang-format off
-  { "n", "real-name",  ED_ENVELOPE, ED_ENV_REAL_NAME,  E_TYPE_STRING, NULL },
-  { "u", "user-name",  ED_ENVELOPE, ED_ENV_USER_NAME,  E_TYPE_STRING, NULL },
-  { "v", "first-name", ED_ENVELOPE, ED_ENV_FIRST_NAME, E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "n", "real-name",  ED_ENVELOPE, ED_ENV_REAL_NAME,  NULL },
+  { "u", "user-name",  ED_ENVELOPE, ED_ENV_USER_NAME,  NULL },
+  { "v", "first-name", ED_ENVELOPE, ED_ENV_FIRST_NAME, NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 

@@ -63,9 +63,9 @@ void test_expando_empty_if_else_render(void)
   const char *input = "%<c?&%f>";
 
   const struct ExpandoDefinition defs[] = {
-    { "c", NULL, 1, 0, 0, NULL },
-    { "f", NULL, 1, 1, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "c", NULL, 1, 0, NULL },
+    { "f", NULL, 1, 1, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_pool_get();

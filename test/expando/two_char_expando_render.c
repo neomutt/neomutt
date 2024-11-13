@@ -62,9 +62,9 @@ void test_expando_two_char_expando_render(void)
   const char *input = "%ss - %dd";
 
   const struct ExpandoDefinition defs[] = {
-    { "ss", NULL, 1, 0, 0, NULL },
-    { "dd", NULL, 1, 1, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "ss", NULL, 1, 0, NULL },
+    { "dd", NULL, 1, 1, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_pool_get();

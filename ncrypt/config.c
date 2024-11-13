@@ -79,27 +79,27 @@ struct ExpandoNode *parse_pgp_date(const char *str, struct ExpandoFormat *fmt,
  */
 static const struct ExpandoDefinition PgpEntryFormatDef[] = {
   // clang-format off
-  { "*", "padding-soft",      ED_GLOBAL,  ED_GLO_PADDING_SOFT,      E_TYPE_STRING, node_padding_parse },
-  { ">", "padding-hard",      ED_GLOBAL,  ED_GLO_PADDING_HARD,      E_TYPE_STRING, node_padding_parse },
-  { "|", "padding-eol",       ED_GLOBAL,  ED_GLO_PADDING_EOL,       E_TYPE_STRING, node_padding_parse },
-  { "a", "key-algorithm",     ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     E_TYPE_STRING, NULL },
-  { "A", "pkey-algorithm",    ED_PGP_KEY, ED_PGK_PKEY_ALGORITHM,    E_TYPE_STRING, NULL },
-  { "c", "key-capabilities",  ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  E_TYPE_STRING, NULL },
-  { "C", "pkey-capabilities", ED_PGP_KEY, ED_PGK_PKEY_CAPABILITIES, E_TYPE_STRING, NULL },
-  { "f", "key-flags",         ED_PGP_KEY, ED_PGK_KEY_FLAGS,         E_TYPE_STRING, NULL },
-  { "F", "pkey-flags",        ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        E_TYPE_STRING, NULL },
-  { "i", "key-fingerprint",   ED_PGP_KEY, ED_PGK_KEY_FINGERPRINT,   E_TYPE_STRING, NULL },
-  { "I", "pkey-fingerprint",  ED_PGP_KEY, ED_PGK_PKEY_FINGERPRINT,  E_TYPE_STRING, NULL },
-  { "k", "key-id",            ED_PGP_KEY, ED_PGK_KEY_ID,            E_TYPE_STRING, NULL },
-  { "K", "pkey-id",           ED_PGP_KEY, ED_PGK_PKEY_ID,           E_TYPE_STRING, NULL },
-  { "l", "key-length",        ED_PGP_KEY, ED_PGK_KEY_LENGTH,        E_TYPE_NUMBER, NULL },
-  { "L", "pkey-length",       ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       E_TYPE_NUMBER, NULL },
-  { "n", "number",            ED_PGP,     ED_PGP_NUMBER,            E_TYPE_NUMBER, NULL },
-  { "p", "protocol",          ED_PGP,     ED_PGK_PROTOCOL,          E_TYPE_STRING, NULL },
-  { "t", "trust",             ED_PGP,     ED_PGP_TRUST,             E_TYPE_STRING, NULL },
-  { "u", "user-id",           ED_PGP,     ED_PGP_USER_ID,           E_TYPE_STRING, NULL },
-  { "[", "date",              ED_PGP_KEY, ED_PGK_DATE,              E_TYPE_STRING, parse_pgp_date },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "*", "padding-soft",      ED_GLOBAL,  ED_GLO_PADDING_SOFT,      node_padding_parse },
+  { ">", "padding-hard",      ED_GLOBAL,  ED_GLO_PADDING_HARD,      node_padding_parse },
+  { "|", "padding-eol",       ED_GLOBAL,  ED_GLO_PADDING_EOL,       node_padding_parse },
+  { "a", "key-algorithm",     ED_PGP_KEY, ED_PGK_KEY_ALGORITHM,     NULL },
+  { "A", "pkey-algorithm",    ED_PGP_KEY, ED_PGK_PKEY_ALGORITHM,    NULL },
+  { "c", "key-capabilities",  ED_PGP_KEY, ED_PGK_KEY_CAPABILITIES,  NULL },
+  { "C", "pkey-capabilities", ED_PGP_KEY, ED_PGK_PKEY_CAPABILITIES, NULL },
+  { "f", "key-flags",         ED_PGP_KEY, ED_PGK_KEY_FLAGS,         NULL },
+  { "F", "pkey-flags",        ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        NULL },
+  { "i", "key-fingerprint",   ED_PGP_KEY, ED_PGK_KEY_FINGERPRINT,   NULL },
+  { "I", "pkey-fingerprint",  ED_PGP_KEY, ED_PGK_PKEY_FINGERPRINT,  NULL },
+  { "k", "key-id",            ED_PGP_KEY, ED_PGK_KEY_ID,            NULL },
+  { "K", "pkey-id",           ED_PGP_KEY, ED_PGK_PKEY_ID,           NULL },
+  { "l", "key-length",        ED_PGP_KEY, ED_PGK_KEY_LENGTH,        NULL },
+  { "L", "pkey-length",       ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL },
+  { "n", "number",            ED_PGP,     ED_PGP_NUMBER,            NULL },
+  { "p", "protocol",          ED_PGP,     ED_PGK_PROTOCOL,          NULL },
+  { "t", "trust",             ED_PGP,     ED_PGP_TRUST,             NULL },
+  { "u", "user-id",           ED_PGP,     ED_PGP_USER_ID,           NULL },
+  { "[", "date",              ED_PGP_KEY, ED_PGK_DATE,              parse_pgp_date },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 
@@ -251,12 +251,12 @@ static struct ConfigDef NcryptVarsGpgme[] = {
  */
 static const struct ExpandoDefinition PgpCommandFormatDef[] = {
   // clang-format off
-  { "a", "sign-as",        ED_PGP_CMD, ED_PGC_SIGN_AS,        E_TYPE_STRING, NULL },
-  { "f", "file-message",   ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   E_TYPE_STRING, NULL },
-  { "p", "need-pass",      ED_PGP_CMD, ED_PGC_NEED_PASS,      E_TYPE_NUMBER, NULL },
-  { "r", "key-ids",        ED_PGP_CMD, ED_PGC_KEY_IDS,        E_TYPE_STRING, NULL },
-  { "s", "file-signature", ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "a", "sign-as",        ED_PGP_CMD, ED_PGC_SIGN_AS,        NULL },
+  { "f", "file-message",   ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   NULL },
+  { "p", "need-pass",      ED_PGP_CMD, ED_PGC_NEED_PASS,      NULL },
+  { "r", "key-ids",        ED_PGP_CMD, ED_PGC_KEY_IDS,        NULL },
+  { "s", "file-signature", ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 #endif
@@ -279,15 +279,15 @@ static const struct ExpandoDefinition PgpCommandFormatDef[] = {
  */
 static const struct ExpandoDefinition SmimeCommandFormatDef[] = {
   // clang-format off
-  { "a", "algorithm",        ED_SMIME_CMD, ED_SMI_ALGORITHM,        E_TYPE_STRING, NULL },
-  { "c", "certificate-ids",  ED_SMIME_CMD, ED_SMI_CERTIFICATE_IDS,  E_TYPE_STRING, NULL },
-  { "C", "certificate-path", ED_GLOBAL,    ED_GLO_CERTIFICATE_PATH, E_TYPE_STRING, NULL },
-  { "d", "digest-algorithm", ED_SMIME_CMD, ED_SMI_DIGEST_ALGORITHM, E_TYPE_STRING, NULL },
-  { "f", "message-file",     ED_SMIME_CMD, ED_SMI_MESSAGE_FILE,     E_TYPE_STRING, NULL },
-  { "i", "intermediate-ids", ED_SMIME_CMD, ED_SMI_INTERMEDIATE_IDS, E_TYPE_STRING, NULL },
-  { "k", "key",              ED_SMIME_CMD, ED_SMI_KEY,              E_TYPE_STRING, NULL },
-  { "s", "signature-file",   ED_SMIME_CMD, ED_SMI_SIGNATURE_FILE,   E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "a", "algorithm",        ED_SMIME_CMD, ED_SMI_ALGORITHM,        NULL },
+  { "c", "certificate-ids",  ED_SMIME_CMD, ED_SMI_CERTIFICATE_IDS,  NULL },
+  { "C", "certificate-path", ED_GLOBAL,    ED_GLO_CERTIFICATE_PATH, NULL },
+  { "d", "digest-algorithm", ED_SMIME_CMD, ED_SMI_DIGEST_ALGORITHM, NULL },
+  { "f", "message-file",     ED_SMIME_CMD, ED_SMI_MESSAGE_FILE,     NULL },
+  { "i", "intermediate-ids", ED_SMIME_CMD, ED_SMI_INTERMEDIATE_IDS, NULL },
+  { "k", "key",              ED_SMIME_CMD, ED_SMI_KEY,              NULL },
+  { "s", "signature-file",   ED_SMIME_CMD, ED_SMI_SIGNATURE_FILE,   NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 #endif

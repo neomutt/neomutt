@@ -62,9 +62,9 @@ void test_expando_simple_expando_render(void)
   const char *input = "%s - %d"; // Second space is: U+2002 EN SPACE
 
   const struct ExpandoDefinition defs[] = {
-    { "s", NULL, 1, 0, 0, NULL },
-    { "d", NULL, 1, 1, 0, NULL },
-    { NULL, NULL, 0, 0, 0, NULL },
+    { "s", NULL, 1, 0, NULL },
+    { "d", NULL, 1, 1, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   struct Buffer *err = buf_pool_get();

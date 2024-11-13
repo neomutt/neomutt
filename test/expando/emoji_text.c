@@ -31,7 +31,7 @@
 void test_expando_emoji_text(void)
 {
   const struct ExpandoDefinition defs[] = {
-    { NULL, NULL, 0, 0, 0, NULL },
+    { NULL, NULL, 0, 0, NULL },
   };
 
   const char *input = "emoji text😀😀😀😀";

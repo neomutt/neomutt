@@ -41,12 +41,12 @@
  */
 static const struct ExpandoDefinition HistoryFormatDef[] = {
   // clang-format off
-  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, E_TYPE_STRING, node_padding_parse },
-  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, E_TYPE_STRING, node_padding_parse },
-  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  E_TYPE_STRING, node_padding_parse },
-  { "C", "number",       ED_HISTORY, ED_HIS_NUMBER,       E_TYPE_NUMBER, NULL },
-  { "s", "match",        ED_HISTORY, ED_HIS_MATCH,        E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "*", "padding-soft", ED_GLOBAL,  ED_GLO_PADDING_SOFT, node_padding_parse },
+  { ">", "padding-hard", ED_GLOBAL,  ED_GLO_PADDING_HARD, node_padding_parse },
+  { "|", "padding-eol",  ED_GLOBAL,  ED_GLO_PADDING_EOL,  node_padding_parse },
+  { "C", "number",       ED_HISTORY, ED_HIS_NUMBER,       NULL },
+  { "s", "match",        ED_HISTORY, ED_HIS_MATCH,        NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 

@@ -104,8 +104,8 @@ void test_expando_format_number(void)
 
   static const struct ExpandoDefinition TestFormatDef[] = {
     // clang-format off
-    { "d", NULL, 1, 2, E_TYPE_NUMBER, NULL },
-    { NULL, NULL, 0, -1, -1, NULL }
+    { "d", NULL, 1, 2, NULL },
+    { NULL, NULL, 0, -1, NULL }
     // clang-format on
   };
 

@@ -46,15 +46,15 @@ char *AutocryptDefaultKey = NULL; ///< Autocrypt default key id (used for postpo
  */
 static const struct ExpandoDefinition AutocryptFormatDef[] = {
   // clang-format off
-  { "*", "padding-soft",   ED_GLOBAL,    ED_GLO_PADDING_SOFT,   E_TYPE_STRING, node_padding_parse },
-  { ">", "padding-hard",   ED_GLOBAL,    ED_GLO_PADDING_HARD,   E_TYPE_STRING, node_padding_parse },
-  { "|", "padding-eol",    ED_GLOBAL,    ED_GLO_PADDING_EOL,    E_TYPE_STRING, node_padding_parse },
-  { "a", "address",        ED_AUTOCRYPT, ED_AUT_ADDRESS,        E_TYPE_STRING, NULL },
-  { "k", "keyid",          ED_AUTOCRYPT, ED_AUT_KEYID,          E_TYPE_STRING, NULL },
-  { "n", "number",         ED_AUTOCRYPT, ED_AUT_NUMBER,         E_TYPE_NUMBER, NULL },
-  { "p", "prefer-encrypt", ED_AUTOCRYPT, ED_AUT_PREFER_ENCRYPT, E_TYPE_STRING, NULL },
-  { "s", "enabled",        ED_AUTOCRYPT, ED_AUT_ENABLED,        E_TYPE_STRING, NULL },
-  { NULL, NULL, 0, -1, -1, NULL }
+  { "*", "padding-soft",   ED_GLOBAL,    ED_GLO_PADDING_SOFT,   node_padding_parse },
+  { ">", "padding-hard",   ED_GLOBAL,    ED_GLO_PADDING_HARD,   node_padding_parse },
+  { "|", "padding-eol",    ED_GLOBAL,    ED_GLO_PADDING_EOL,    node_padding_parse },
+  { "a", "address",        ED_AUTOCRYPT, ED_AUT_ADDRESS,        NULL },
+  { "k", "keyid",          ED_AUTOCRYPT, ED_AUT_KEYID,          NULL },
+  { "n", "number",         ED_AUTOCRYPT, ED_AUT_NUMBER,         NULL },
+  { "p", "prefer-encrypt", ED_AUTOCRYPT, ED_AUT_PREFER_ENCRYPT, NULL },
+  { "s", "enabled",        ED_AUTOCRYPT, ED_AUT_ENABLED,        NULL },
+  { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
 
