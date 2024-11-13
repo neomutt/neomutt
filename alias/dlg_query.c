@@ -523,19 +523,12 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 
   buf_reset(buf);
   buf_alloc(buf, 8192);
-  bool first = true;
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata.ava)
   {
     if (!avp->is_tagged)
       continue;
 
-    if (!first)
-    {
-      buf_addstr(buf, ", ");
-    }
-
-    first = false;
     struct AddressList al_copy = TAILQ_HEAD_INITIALIZER(al_copy);
     if (alias_to_addrlist(&al_copy, avp->alias))
     {
@@ -543,6 +536,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
       mutt_addrlist_write(&al_copy, buf, false);
       mutt_addrlist_clear(&al_copy);
     }
+    buf_addstr(buf, ", ");
   }
 
 done:
