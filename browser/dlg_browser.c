@@ -1297,8 +1297,6 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   priv->state.is_mailbox_list = (flags & MUTT_SEL_MAILBOX) && priv->folder;
   priv->last_selected_mailbox = -1;
 
-  struct MuttWindow *dlg = NULL;
-
   init_lastdir();
 
   if (OptNews)
@@ -1476,9 +1474,9 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   else
     help_data = FolderHelp;
 
-  dlg = simple_dialog_new(MENU_FOLDER, WT_DLG_BROWSER, help_data);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_FOLDER, WT_DLG_BROWSER, help_data);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
   menu->make_entry = folder_make_entry;
   menu->search = select_file_search;
   menu->mdata = priv;
@@ -1487,7 +1485,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   if (priv->multiple)
     priv->menu->tag = file_tag;
 
-  priv->sbar = window_find_child(dlg, WT_STATUS_BAR);
+  priv->sbar = sdw.sbar;
 
   struct MuttWindow *win_menu = priv->menu->win;
 
@@ -1533,7 +1531,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     }
     mutt_clear_error();
 
-    int rc = browser_function_dispatcher(dlg, op);
+    int rc = browser_function_dispatcher(sdw.dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
@@ -1544,7 +1542,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
 
 bail:
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   browser_private_data_free(&priv);
 }
 

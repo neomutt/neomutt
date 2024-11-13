@@ -549,8 +549,9 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   mutt_parse_mime_message(e, fp);
   mutt_message_hook(m, e, MUTT_MESSAGE_HOOK);
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_ATTACHMENT, WT_DLG_ATTACHMENT, AttachmentHelp);
-  struct Menu *menu = dlg->wdata;
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_ATTACHMENT, WT_DLG_ATTACHMENT,
+                                                     AttachmentHelp);
+  struct Menu *menu = sdw.menu;
   menu->make_entry = attach_make_entry;
   menu->tag = attach_tag;
 
@@ -572,8 +573,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, attach_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, attach_window_observer, menu->win);
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, _("Attachments"));
+  sbar_set_title(sdw.sbar, _("Attachments"));
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
@@ -596,7 +596,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
     }
     mutt_clear_error();
 
-    rc = attach_function_dispatcher(dlg, op);
+    rc = attach_function_dispatcher(sdw.dlg, op);
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
@@ -611,7 +611,7 @@ void dlg_attachment(struct ConfigSubset *sub, struct MailboxView *mv,
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
 }
 
 /**

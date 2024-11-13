@@ -200,8 +200,8 @@ struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
   }
   /* sorting keys might be done later - TODO */
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_SMIME, WT_DLG_SMIME, SmimeHelp);
-  struct Menu *menu = dlg->wdata;
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_SMIME, WT_DLG_SMIME, SmimeHelp);
+  struct Menu *menu = sdw.menu;
 
   struct SmimeData sd = { false, menu, &ska, NULL };
 
@@ -211,9 +211,8 @@ struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
   menu->mdata_free = NULL; // Menu doesn't own the data
 
   char title[256] = { 0 };
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   snprintf(title, sizeof(title), _("S/MIME certificates matching \"%s\""), query);
-  sbar_set_title(sbar, title);
+  sbar_set_title(sdw.sbar, title);
 
   mutt_clear_error();
 
@@ -237,7 +236,7 @@ struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
     }
     mutt_clear_error();
 
-    int rc = smime_function_dispatcher(dlg, op);
+    int rc = smime_function_dispatcher(sdw.dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
@@ -246,6 +245,6 @@ struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
   } while (!sd.done);
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   return sd.key;
 }

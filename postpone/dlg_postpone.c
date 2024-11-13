@@ -210,11 +210,12 @@ static const struct AttrColor *post_color(struct Menu *menu, int line)
  */
 struct Email *dlg_postponed(struct Mailbox *m)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_POSTPONED, WT_DLG_POSTPONED, PostponedHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_POSTPONED, WT_DLG_POSTPONED,
+                                                     PostponedHelp);
   // Required to number the emails
   struct MailboxView *mv = mview_new(m, NeoMutt->notify);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
   menu->make_entry = post_make_entry;
   menu->color = post_color;
   menu->max = m->msg_count;
@@ -227,8 +228,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, postponed_config_observer, menu);
   notify_observer_add(menu->win->notify, NT_WINDOW, postponed_window_observer, menu->win);
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, _("Postponed Messages"));
+  sbar_set_title(sdw.sbar, _("Postponed Messages"));
 
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * `$sort` variable may indicate something different.   Sorting has to be
@@ -256,7 +256,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
     }
     mutt_clear_error();
 
-    int rc = postpone_function_dispatcher(dlg, op);
+    int rc = postpone_function_dispatcher(sdw.dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
@@ -269,7 +269,7 @@ struct Email *dlg_postponed(struct Mailbox *m)
   cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   search_state_free(&pd.search_state);
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
 
   return pd.email;
 }

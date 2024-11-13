@@ -377,13 +377,14 @@ static int query_window_observer(struct NotifyCallback *nc)
  * query_dialog_new - Create an Query Selection Dialog
  * @param mdata Menu data holding Aliases
  * @param query Initial query string
- * @retval ptr New Dialog
+ * @retval obj SimpleDialogWindows Tuple containing Dialog, SimpleBar and Menu pointers
  */
-static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const char *query)
+static struct SimpleDialogWindows query_dialog_new(struct AliasMenuData *mdata,
+                                                   const char *query)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_QUERY, WT_DLG_QUERY, QueryHelp);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
 
   menu->make_entry = query_make_entry;
   menu->tag = query_tag;
@@ -399,14 +400,13 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
 
   char title[256] = { 0 };
   snprintf(title, sizeof(title), "%s: %s", mdata->title, query);
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, title);
+  sbar_set_title(sdw.sbar, title);
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, alias_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, query_window_observer, win_menu);
 
-  return dlg;
+  return sdw;
 }
 
 /**
@@ -422,12 +422,10 @@ static struct MuttWindow *query_dialog_new(struct AliasMenuData *mdata, const ch
  */
 static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
 {
-  struct MuttWindow *dlg = query_dialog_new(mdata, buf_string(buf));
-  struct Menu *menu = dlg->wdata;
-  struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
-  struct MuttWindow *win_menu = window_find_child(dlg, WT_MENU);
+  struct SimpleDialogWindows sdw = query_dialog_new(mdata, buf_string(buf));
+  struct Menu *menu = sdw.menu;
   mdata->menu = menu;
-  mdata->sbar = win_sbar;
+  mdata->sbar = sdw.sbar;
   mdata->query = buf;
 
   alias_array_sort(&mdata->ava, mdata->sub);
@@ -459,16 +457,16 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
     }
     mutt_clear_error();
 
-    rc = alias_function_dispatcher(dlg, op);
+    rc = alias_function_dispatcher(sdw.dlg, op);
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(win_menu, op);
+      rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
   } while ((rc != FR_DONE) && (rc != FR_CONTINUE));
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   window_redraw(NULL);
   return (rc == FR_CONTINUE); // Was a selection made?
 }

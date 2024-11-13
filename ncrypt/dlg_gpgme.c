@@ -673,9 +673,9 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   else if (app & APPLICATION_SMIME)
     menu_to_use = MENU_KEY_SELECT_SMIME;
 
-  struct MuttWindow *dlg = simple_dialog_new(menu_to_use, WT_DLG_GPGME, GpgmeHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(menu_to_use, WT_DLG_GPGME, GpgmeHelp);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
   struct GpgmeData gd = { false, menu, &ckia, NULL, forced_valid };
 
   menu->max = ARRAY_SIZE(&ckia);
@@ -712,8 +712,7 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
     snprintf(buf, sizeof(buf), _("%s \"%s\""), ts, s);
   }
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, buf);
+  sbar_set_title(sdw.sbar, buf);
 
   mutt_clear_error();
 
@@ -737,7 +736,7 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
     }
     mutt_clear_error();
 
-    int rc = gpgme_function_dispatcher(dlg, op);
+    int rc = gpgme_function_dispatcher(sdw.dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
@@ -748,7 +747,7 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
 
   ARRAY_FREE(&ckia);
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   return gd.key;
 }
 

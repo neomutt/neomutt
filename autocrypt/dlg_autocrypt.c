@@ -325,9 +325,10 @@ void dlg_autocrypt(void)
   if (mutt_autocrypt_init(false))
     return;
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_AUTOCRYPT, WT_DLG_AUTOCRYPT, AutocryptHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_AUTOCRYPT, WT_DLG_AUTOCRYPT,
+                                                     AutocryptHelp);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
 
   struct AutocryptData *ad = autocrypt_data_new();
   ad->menu = menu;
@@ -338,9 +339,8 @@ void dlg_autocrypt(void)
 
   populate_menu(menu);
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   // L10N: Autocrypt Account Management Menu title
-  sbar_set_title(sbar, _("Autocrypt Accounts"));
+  sbar_set_title(sdw.sbar, _("Autocrypt Accounts"));
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, autocrypt_config_observer, menu);
@@ -366,7 +366,7 @@ void dlg_autocrypt(void)
     }
     mutt_clear_error();
 
-    int rc = autocrypt_function_dispatcher(dlg, op);
+    int rc = autocrypt_function_dispatcher(sdw.dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
@@ -376,7 +376,7 @@ void dlg_autocrypt(void)
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
 }
 
 /**

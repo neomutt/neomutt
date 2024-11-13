@@ -28,7 +28,17 @@
 
 struct Mapping;
 
-struct MuttWindow *simple_dialog_new(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data);
-void               simple_dialog_free(struct MuttWindow **ptr);
+/**
+ * SimpleDialogWindows - Tuple for the results of simple_dialog_new()
+ */
+struct SimpleDialogWindows
+{
+  struct MuttWindow *dlg;      ///< Main Dialog Window
+  struct MuttWindow *sbar;     ///< Simple Bar
+  struct Menu       *menu;     ///< Menu
+};
+
+struct SimpleDialogWindows simple_dialog_new(enum MenuType mtype, enum WindowType wtype, const struct Mapping *help_data);
+void                       simple_dialog_free(struct MuttWindow **ptr);
 
 #endif /* MUTT_GUI_SIMPLE_H */

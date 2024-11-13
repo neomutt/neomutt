@@ -330,13 +330,13 @@ static int alias_window_observer(struct NotifyCallback *nc)
 /**
  * alias_dialog_new - Create an Alias Selection Dialog
  * @param mdata Menu data holding Aliases
- * @retval ptr New Dialog
+ * @retval obj SimpleDialogWindows Tuple containing Dialog, SimpleBar and Menu pointers
  */
-static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
+static struct SimpleDialogWindows alias_dialog_new(struct AliasMenuData *mdata)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_ALIAS, WT_DLG_ALIAS, AliasHelp);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
 
   menu->make_entry = alias_make_entry;
   menu->tag = alias_tag;
@@ -349,15 +349,14 @@ static struct MuttWindow *alias_dialog_new(struct AliasMenuData *mdata)
   // Override the Simple Dialog's recalc()
   win_menu->recalc = alias_recalc;
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  alias_set_title(sbar, mdata->title, mdata->limit);
+  alias_set_title(sdw.sbar, mdata->title, mdata->limit);
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->notify, NT_ALIAS, alias_alias_observer, menu);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, alias_config_observer, menu);
   notify_observer_add(win_menu->notify, NT_WINDOW, alias_window_observer, win_menu);
 
-  return dlg;
+  return sdw;
 }
 
 /**
@@ -380,11 +379,10 @@ static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
   mdata->query = buf;
   mdata->title = mutt_str_dup(_("Aliases"));
 
-  struct MuttWindow *dlg = alias_dialog_new(mdata);
-  struct Menu *menu = dlg->wdata;
-  struct MuttWindow *win_sbar = window_find_child(dlg, WT_STATUS_BAR);
+  struct SimpleDialogWindows sdw = alias_dialog_new(mdata);
+  struct Menu *menu = sdw.menu;
   mdata->menu = menu;
-  mdata->sbar = win_sbar;
+  mdata->sbar = sdw.sbar;
 
   alias_array_sort(&mdata->ava, mdata->sub);
 
@@ -415,7 +413,7 @@ static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     }
     mutt_clear_error();
 
-    rc = alias_function_dispatcher(dlg, op);
+    rc = alias_function_dispatcher(sdw.dlg, op);
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
@@ -424,7 +422,7 @@ static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
   // ---------------------------------------------------------------------------
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   window_redraw(NULL);
   return (rc == FR_CONTINUE); // Was a selection made?
 }

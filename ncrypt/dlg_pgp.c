@@ -669,8 +669,8 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
     ARRAY_SORT(&pua, fn, &sort_reverse);
   }
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_PGP, WT_DLG_PGP, PgpHelp);
-  menu = dlg->wdata;
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_PGP, WT_DLG_PGP, PgpHelp);
+  menu = sdw.menu;
   struct PgpData pd = { false, menu, &pua, NULL };
 
   menu->max = ARRAY_SIZE(&pua);
@@ -687,8 +687,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
   else
     snprintf(buf, sizeof(buf), _("PGP keys matching \"%s\""), s);
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  sbar_set_title(sbar, buf);
+  sbar_set_title(sdw.sbar, buf);
 
   mutt_clear_error();
 
@@ -712,7 +711,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
     }
     mutt_clear_error();
 
-    int rc = pgp_function_dispatcher(dlg, op);
+    int rc = pgp_function_dispatcher(sdw.dlg, op);
 
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
@@ -723,7 +722,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
 
   ARRAY_FREE(&pua);
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
   return pd.key;
 }
 

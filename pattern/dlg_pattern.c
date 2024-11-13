@@ -318,10 +318,10 @@ bool dlg_pattern(struct Buffer *buf)
 {
   struct PatternData *pd = pattern_data_new();
 
-  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
+  struct SimpleDialogWindows sdw = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
   create_pattern_entries(&pd->entries);
 
-  struct Menu *menu = dlg->wdata;
+  struct Menu *menu = sdw.menu;
   pd->menu = menu;
   pd->buf = buf;
 
@@ -330,9 +330,8 @@ bool dlg_pattern(struct Buffer *buf)
   menu->make_entry = pattern_make_entry;
   menu->max = ARRAY_SIZE(&pd->entries);
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
   // L10N: Pattern completion menu title
-  sbar_set_title(sbar, _("Patterns"));
+  sbar_set_title(sdw.sbar, _("Patterns"));
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pattern_config_observer, menu);
@@ -358,7 +357,7 @@ bool dlg_pattern(struct Buffer *buf)
     }
     mutt_clear_error();
 
-    int rc = pattern_function_dispatcher(dlg, op);
+    int rc = pattern_function_dispatcher(sdw.dlg, op);
     if (rc == FR_UNKNOWN)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
@@ -369,7 +368,7 @@ bool dlg_pattern(struct Buffer *buf)
   bool rc = pd->selection;
 
   window_set_focus(old_focus);
-  simple_dialog_free(&dlg);
+  simple_dialog_free(&sdw.dlg);
 
   return rc;
 }
