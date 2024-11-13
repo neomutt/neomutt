@@ -93,7 +93,6 @@ struct AttachCtx *mutt_actx_new         (void);
 void              mutt_aptr_free(struct AttachPtr **ptr);
 struct AttachPtr *mutt_aptr_new (void);
 
-void attach_arrow(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
 void attach_C    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
 void attach_c    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
 void attach_D    (const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);

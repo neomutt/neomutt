@@ -52,7 +52,8 @@ static void test_n(const struct ExpandoNode *node, void *data,
 {
 }
 
-static struct ExpandoNode *node_condbool_new(const char *start, const char *end, int did, int uid)
+static struct ExpandoNode *node_condbool_new(const char *start, const char *end,
+                                             int did, int uid)
 {
   struct ExpandoNode *node = node_new();
 

@@ -47,7 +47,7 @@
  *
  * ## Data
  * - #Menu
- * - Menu::mdata
+ * - #Menu::mdata
  *
  * The Menu Window stores it state info in struct Menu.
  * Users of the Menu Window can store custom data in Menu::mdata.

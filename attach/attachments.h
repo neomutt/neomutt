@@ -26,7 +26,6 @@
 #include <stdio.h>
 
 struct Email;
-struct Mailbox;
 struct MailboxView;
 
 /**
