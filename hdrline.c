@@ -1420,7 +1420,7 @@ long index_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
   if (!msg)
     return 0;
 
-  const int num = mutt_count_body_parts(m, e, msg->fp);
+  const int num = mutt_count_body_parts(e, msg->fp);
   mx_msg_close(m, &msg);
   return num;
 }

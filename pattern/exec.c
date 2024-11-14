@@ -1108,13 +1108,11 @@ static bool pattern_exec(struct Pattern *pat, PatternExecFlags flags,
     case MUTT_PAT_DUPLICATED:
       return pat->pat_not ^ (e->thread && e->thread->duplicate_thread);
     case MUTT_PAT_MIMEATTACH:
-      if (!m)
-        return false;
-      {
-        int count = mutt_count_body_parts(m, e, msg->fp);
-        return pat->pat_not ^ (count >= pat->min &&
-                               (pat->max == MUTT_MAXRANGE || count <= pat->max));
-      }
+    {
+      int count = mutt_count_body_parts(e, msg->fp);
+      return pat->pat_not ^
+             (count >= pat->min && (pat->max == MUTT_MAXRANGE || count <= pat->max));
+    }
     case MUTT_PAT_MIMETYPE:
       if (!m)
         return false;
