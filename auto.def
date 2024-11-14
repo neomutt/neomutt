@@ -407,6 +407,7 @@ if {1} {
     iswblank \
     mkdtemp \
     qsort_s \
+    reallocarray \
     strsep \
     strcasestr \
     tcgetwinsize \

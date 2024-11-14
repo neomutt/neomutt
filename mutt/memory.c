@@ -31,11 +31,37 @@
 
 #include "config.h"
 #include <errno.h>
+#include <stddef.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include "memory.h"
 #include "exit.h"
 #include "logging2.h"
+
+/**
+ * reallocarray - reallocarray(3) implementation
+ * @param p     Address of memory block to resize
+ * @param n     Number of elements
+ * @param size  Size of element
+ *
+ * See reallocarray(3) for the documentation of this function.
+ * We need to implement it because MacOS is cruft from another century
+ * and doesn't have this fundamental API.  We'll remove it once all the
+ * systems we support have it.
+ */
+#if !defined(HAVE_REALLOCARRAY)
+static void *reallocarray(void *p, size_t n, size_t size)
+{
+  if ((n != 0) && (size > (SIZE_MAX / n)))
+  {
+    errno = ENOMEM;
+    return NULL;
+  }
+
+  return realloc(p, n * size);
+}
+#endif
 
 /**
  * mutt_mem_calloc - Allocate zeroed memory on the heap
