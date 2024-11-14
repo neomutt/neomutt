@@ -9,9 +9,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: neomutt-2024-10-02\n"
+"Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-11-08 11:44+0000\n"
+"POT-Creation-Date: 2024-11-14 00:55+0000\n"
 "PO-Revision-Date: 2000-11-29 21:22+0200\n"
 "Last-Translator: Marius Gedminas <marius@gedmin.as>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
@@ -1150,7 +1150,7 @@ msgstr "Apraš"
 msgid "Newsgroups"
 msgstr "Grupės"
 
-#: compose/dlg_compose.c:269
+#: compose/dlg_compose.c:272
 msgid "-- Attachments"
 msgstr "-- Priedai"
 
@@ -2006,7 +2006,7 @@ msgstr "Saugumas: "
 #. than the other compose menu fields.  Since it shares the row with "Encrypt
 #. with:", it should not be longer than 15-20 character cells.
 #: envelope/window.c:115 ncrypt/crypt_gpgme.c:3970 ncrypt/pgp.c:2016
-#: ncrypt/smime.c:2191
+#: ncrypt/smime.c:2193
 msgid "Sign as: "
 msgstr "Pasirašyti kaip: "
 
@@ -4452,11 +4452,11 @@ msgstr "%s:%d: Blogas istorijos bylos formatas"
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:590 ncrypt/pgp.c:597
 #: ncrypt/pgp.c:925 ncrypt/pgp.c:1042 ncrypt/pgp.c:1199 ncrypt/pgp.c:1223
 #: ncrypt/pgp.c:1256 ncrypt/pgp.c:1610 ncrypt/pgp_functions.c:132
-#: ncrypt/pgpkey.c:283 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:855
-#: ncrypt/smime.c:863 ncrypt/smime.c:962 ncrypt/smime.c:1072
-#: ncrypt/smime.c:1139 ncrypt/smime.c:1146 ncrypt/smime.c:1357
-#: ncrypt/smime.c:1757 ncrypt/smime.c:1836 ncrypt/smime.c:1843
-#: ncrypt/smime.c:1950 ncrypt/smime.c:2080 ncrypt/smime.c:2096 nntp/nntp.c:1348
+#: ncrypt/pgpkey.c:283 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:857
+#: ncrypt/smime.c:865 ncrypt/smime.c:964 ncrypt/smime.c:1074
+#: ncrypt/smime.c:1141 ncrypt/smime.c:1148 ncrypt/smime.c:1359
+#: ncrypt/smime.c:1759 ncrypt/smime.c:1838 ncrypt/smime.c:1845
+#: ncrypt/smime.c:1952 ncrypt/smime.c:2082 ncrypt/smime.c:2098 nntp/nntp.c:1348
 #: nntp/nntp.c:2226 pattern/exec.c:148 pop/pop.c:124
 msgid "Can't create temporary file"
 msgstr "Negaliu sukurti laikinos bylos"
@@ -6381,19 +6381,19 @@ msgstr "[-- PGP/MIME užšifruotų duomenų pabaiga --]\n"
 msgid "Could not decrypt PGP message"
 msgstr "Negalėjau iššifruoti PGP laiško"
 
-#: ncrypt/crypt_gpgme.c:2885 ncrypt/smime.c:1923
+#: ncrypt/crypt_gpgme.c:2885 ncrypt/smime.c:1925
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Toliau einantys duomenys yra pasirašyti su S/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:2886 ncrypt/smime.c:1919
+#: ncrypt/crypt_gpgme.c:2886 ncrypt/smime.c:1921
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Toliau einantys duomenys yra užšifruoti su S/MIME --]\n"
 
-#: ncrypt/crypt_gpgme.c:2929 ncrypt/smime.c:2025
+#: ncrypt/crypt_gpgme.c:2929 ncrypt/smime.c:2027
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- S/MIME pasirašytų duomenų pabaiga --]\n"
 
-#: ncrypt/crypt_gpgme.c:2930 ncrypt/smime.c:2023
+#: ncrypt/crypt_gpgme.c:2930 ncrypt/smime.c:2025
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- S/MIME užšifruotų duomenų pabaiga --]\n"
 
@@ -6425,7 +6425,7 @@ msgid "Use keyID = \"%s\" for %s?"
 msgstr "Naudoti raktą ID = \"%s\", skirtą %s?"
 
 #: ncrypt/crypt_gpgme.c:3618 ncrypt/pgp.c:1546 ncrypt/smime.c:732
-#: ncrypt/smime.c:812
+#: ncrypt/smime.c:813
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Įvesk rakto ID, skirtą %s: "
@@ -6825,7 +6825,7 @@ msgstr ""
 "[-- Klaida: negalėjau sukurti PGP subproceso --]\n"
 "\n"
 
-#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1935
+#: ncrypt/pgp.c:1110 ncrypt/pgp.c:1132 ncrypt/smime.c:1937
 #: postpone/postpone.c:432
 msgid "Decryption failed"
 msgstr "Nepavyko iššifruoti"
@@ -6937,41 +6937,41 @@ msgstr "Raktas negali būti naudojamas: pasenęs/uždraustas/atšauktas"
 msgid "Enter S/MIME passphrase:"
 msgstr "Įvesk slaptą S/MIME frazę:"
 
-#: ncrypt/smime.c:818
+#: ncrypt/smime.c:820
 #, c-format
 msgid "No (valid) certificate found for %s"
 msgstr "Neradau (galiojančio) %s sertifikato"
 
-#: ncrypt/smime.c:873 ncrypt/smime.c:902 ncrypt/smime.c:981 ncrypt/smime.c:1016
-#: ncrypt/smime.c:1094 ncrypt/smime.c:1176
+#: ncrypt/smime.c:875 ncrypt/smime.c:904 ncrypt/smime.c:983 ncrypt/smime.c:1018
+#: ncrypt/smime.c:1096 ncrypt/smime.c:1178
 msgid "Error: unable to create OpenSSL subprocess"
 msgstr "Klaida: negaliu sukurti OpenSSL subproceso"
 
-#: ncrypt/smime.c:1154
+#: ncrypt/smime.c:1156
 msgid "Label for certificate: "
 msgstr "Sertifikato etiketė: "
 
-#: ncrypt/smime.c:1259
+#: ncrypt/smime.c:1261
 msgid "no certfile"
 msgstr "nėra sertifikato bylos"
 
-#: ncrypt/smime.c:1264
+#: ncrypt/smime.c:1266
 msgid "no mbox"
 msgstr "(nėra dėžutės)"
 
-#: ncrypt/smime.c:1427 ncrypt/smime.c:1596
+#: ncrypt/smime.c:1429 ncrypt/smime.c:1598
 msgid "No output from OpenSSL..."
 msgstr "Trūksta OpenSSL išvesties..."
 
-#: ncrypt/smime.c:1514
+#: ncrypt/smime.c:1516
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Negaliu pasirašyti: nenurodytas raktas.  Naudokite \"Pasirašyti kaip\"."
 
-#: ncrypt/smime.c:1563
+#: ncrypt/smime.c:1565
 msgid "Can't open OpenSSL subprocess"
 msgstr "Negaliu atidaryti OpenSSL subproceso"
 
-#: ncrypt/smime.c:1795 ncrypt/smime.c:1914
+#: ncrypt/smime.c:1797 ncrypt/smime.c:1916
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -6979,69 +6979,69 @@ msgstr ""
 "[-- OpenSSL išvesties pabaiga --]\n"
 "\n"
 
-#: ncrypt/smime.c:1872 ncrypt/smime.c:1884
+#: ncrypt/smime.c:1874 ncrypt/smime.c:1886
 msgid "[-- Error: unable to create OpenSSL subprocess --]\n"
 msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso --]\n"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2160
+#: ncrypt/smime.c:2162
 msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off?"
 msgstr "S/MIME: pa(s)irašyti, šifruo(t)i su, pasirašyti k(a)ip, (n)ereikia ar išjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is on)
-#: ncrypt/smime.c:2162
+#: ncrypt/smime.c:2164
 msgid "swaco"
 msgstr "stano"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2170
+#: ncrypt/smime.c:2172
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode?"
 msgstr "S/MIME: ši(f)ruoti, pa(s)irašyti, šifruo(t)i su, pasirašyt k(a)ip, a(b)u, (n)ereikia ar įjungti (o)portunistinį šifravimą?"
 
 #. L10N: S/MIME options (opportunistic encryption is off)
-#: ncrypt/smime.c:2172
+#: ncrypt/smime.c:2174
 msgid "eswabco"
 msgstr "fstabno"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2179
+#: ncrypt/smime.c:2181
 msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear?"
 msgstr "S/MIME: ši(f)ruoti, pa(s)irašyti, užšifruo(t)i su, pasirašyt k(a)ip, a(b)u ar (n)ereikia?"
 
 #. L10N: S/MIME options
-#: ncrypt/smime.c:2181
+#: ncrypt/smime.c:2183
 msgid "eswabc"
 msgstr "fstabn"
 
-#: ncrypt/smime.c:2247
+#: ncrypt/smime.c:2249
 msgid "Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?"
 msgstr "Pasirinkite algoritmą: (1) DES, (2) RC2, (3) AES ar (n)ereikia?"
 
 #. L10N: Options for: Choose algorithm family: (1) DES, (2) RC2, (3) AES, or (c)lear?
-#: ncrypt/smime.c:2249
+#: ncrypt/smime.c:2251
 msgid "123c"
 msgstr "123n"
 
-#: ncrypt/smime.c:2252
+#: ncrypt/smime.c:2254
 msgid "(1) DES, (2) Triple-DES?"
 msgstr "(1) DES, (2) 3DES?"
 
 #. L10N: Options for: (1) DES, (2) Triple-DES
-#: ncrypt/smime.c:2254
+#: ncrypt/smime.c:2256
 msgid "12"
 msgstr "12"
 
-#: ncrypt/smime.c:2268
+#: ncrypt/smime.c:2270
 msgid "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 msgstr "(1) RC2-40, (2) RC2-64, (3) RC2-128?"
 
 #. L10N: Options for: (1) RC2-40, (2) RC2-64, (3) RC2-128
 #. L10N: Options for: (1) AES128, (2) AES192, (3) AES256
-#: ncrypt/smime.c:2270 ncrypt/smime.c:2290
+#: ncrypt/smime.c:2272 ncrypt/smime.c:2292
 msgid "123"
 msgstr "123"
 
-#: ncrypt/smime.c:2288
+#: ncrypt/smime.c:2290
 msgid "(1) AES128, (2) AES192, (3) AES256?"
 msgstr "(1) AES128, (2) AES192, (3) AES256?"
 
