@@ -34,7 +34,7 @@ struct ListHead test_list_create(const char *items[], bool copy)
 
   for (size_t i = 0; items[i]; i++)
   {
-    struct ListNode *np = mutt_mem_calloc(1, sizeof(struct ListNode));
+    struct ListNode *np = MUTT_MEM_CALLOC(1, struct ListNode);
     if (copy)
       np->data = mutt_str_dup(items[i]);
     else

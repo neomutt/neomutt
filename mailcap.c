@@ -444,7 +444,7 @@ static bool rfc1524_mailcap_parse(struct Body *b, const char *filename, const ch
  */
 struct MailcapEntry *mailcap_entry_new(void)
 {
-  return mutt_mem_calloc(1, sizeof(struct MailcapEntry));
+  return MUTT_MEM_CALLOC(1, struct MailcapEntry);
 }
 
 /**

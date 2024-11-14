@@ -67,14 +67,14 @@ int mailbox_gen(void)
  */
 struct Mailbox *mailbox_new(void)
 {
-  struct Mailbox *m = mutt_mem_calloc(1, sizeof(struct Mailbox));
+  struct Mailbox *m = MUTT_MEM_CALLOC(1, struct Mailbox);
 
   buf_init(&m->pathbuf);
   m->notify = notify_new();
 
   m->email_max = 25;
-  m->emails = mutt_mem_calloc(m->email_max, sizeof(struct Email *));
-  m->v2r = mutt_mem_calloc(m->email_max, sizeof(int));
+  m->emails = MUTT_MEM_CALLOC(m->email_max, struct Email *);
+  m->v2r = MUTT_MEM_CALLOC(m->email_max, int);
   m->gen = mailbox_gen();
   m->notify_user = true;
   m->poll_new_mail = true;

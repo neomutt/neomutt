@@ -48,8 +48,7 @@ void mh_mdata_free(void **ptr)
  */
 struct MhMboxData *mh_mdata_new(void)
 {
-  struct MhMboxData *mdata = mutt_mem_calloc(1, sizeof(struct MhMboxData));
-  return mdata;
+  return MUTT_MEM_CALLOC(1, struct MhMboxData);
 }
 
 /**

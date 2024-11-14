@@ -149,9 +149,9 @@ void mutt_keymap_free(struct Keymap **ptr)
  */
 struct Keymap *alloc_keys(size_t len, keycode_t *keys)
 {
-  struct Keymap *p = mutt_mem_calloc(1, sizeof(struct Keymap));
+  struct Keymap *p = MUTT_MEM_CALLOC(1, struct Keymap);
   p->len = len;
-  p->keys = mutt_mem_calloc(len, sizeof(keycode_t));
+  p->keys = MUTT_MEM_CALLOC(len, keycode_t);
   memcpy(p->keys, keys, len * sizeof(keycode_t));
   return p;
 }

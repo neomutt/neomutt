@@ -396,7 +396,7 @@ static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)
   else if (enc == ENC_BASE64)
   {
     const int olen = 3 * len / 4 + 1;
-    char *out = mutt_mem_malloc(olen);
+    char *out = MUTT_MEM_MALLOC(olen, char);
     int dlen = mutt_b64_decode(it, out, olen);
     if (dlen == -1)
     {
@@ -544,7 +544,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
 
   /* Initialise the output buffer with the us-ascii prefix. */
   buflen = 2 * ulen;
-  buf = mutt_mem_malloc(buflen);
+  buf = MUTT_MEM_MALLOC(buflen, char);
   bufpos = t0 - u;
   memcpy(buf, u, t0 - u);
 
@@ -587,7 +587,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
     if ((bufpos + wlen + lb_len) > buflen)
     {
       buflen = bufpos + wlen + lb_len;
-      mutt_mem_realloc(&buf, buflen);
+      MUTT_MEM_REALLOC(&buf, buflen, char);
     }
     r = encode_block(buf + bufpos, t, n, icode, tocode, encoder);
     ASSERT(r == wlen);
@@ -602,7 +602,7 @@ static int encode(const char *d, size_t dlen, int col, const char *fromcode,
 
   /* Add last encoded word and us-ascii suffix to buffer. */
   buflen = bufpos + wlen + (u + ulen - t1);
-  mutt_mem_realloc(&buf, buflen + 1);
+  MUTT_MEM_REALLOC(&buf, buflen + 1, char);
   r = encode_block(buf + bufpos, t, t1 - t, icode, tocode, encoder);
   ASSERT(r == wlen);
   bufpos += wlen;
