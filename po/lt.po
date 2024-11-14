@@ -187,14 +187,12 @@ msgid "Limit to addresses matching: "
 msgstr "Riboti iki adresų, tenkinančių: "
 
 #: alias/functions.c:266
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "Pažymėti laiškus, tenkinančius: "
+msgstr "Pažymėti adresus, tenkinančius: "
 
 #: alias/functions.c:282
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "Atžymėti laiškus, tenkinančius: "
+msgstr "Atžymėti adresus, tenkinančius: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:397
@@ -2158,9 +2156,9 @@ msgstr "Plėtiniui trūksta uždarančio simbolio: '%c'"
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
 #: expando/node_padding.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "Padding cannot be formatted"
-msgstr "Sąlygoje negalima naudoti užpildymo"
+msgstr "Užpildymo negalima formatuoti"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
@@ -7353,14 +7351,13 @@ msgid "Can't use prefix when setting a variable"
 msgstr "Negalima naudoti prefikso nustatant kintamojo reikšmę"
 
 #: parse/set.c:608
-#, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
-msgstr "Prefiksai 'no' bei 'inv' naudotini tik su loginiais kintamaisiais"
+msgstr "Prefiksai 'no' bei 'inv' naudotini tik su loginiais/skaitiniais kintamaisiais"
 
 #: parse/set.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
-msgstr "Komanda '%s' naudotina tik su loginiais kintamaisiais"
+msgstr "Komanda '%s' naudotina tik su loginiais/skaitiniais kintamaisiais"
 
 #: pattern/compile.c:76 pattern/compile.c:163 pattern/compile.c:724
 #, c-format
