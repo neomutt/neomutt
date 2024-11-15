@@ -291,7 +291,8 @@ static void menu_pad_string(struct Menu *menu, struct Buffer *buf)
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   int buf_cols = mutt_strwidth(buf_string(buf));

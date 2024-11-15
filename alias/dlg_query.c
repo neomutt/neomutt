@@ -239,7 +239,8 @@ static int query_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
   if (c_arrow_cursor)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
-    max_cols -= (mutt_strwidth(c_arrow_string) + 1);
+    if (max_cols > 0)
+      max_cols -= (mutt_strwidth(c_arrow_string) + 1);
   }
 
   const struct Expando *c_query_format = cs_subset_expando(mdata->sub, "query_format");
