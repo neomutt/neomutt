@@ -244,6 +244,7 @@ msgstr "attachments : pas de disposition"
 msgid "Current attachments settings:"
 msgstr "Éditer la description de l'attachement:"
 
+# TODO: need context here
 #: attach/attachments.c:525
 #, fuzzy
 msgid "attachments: invalid disposition"
@@ -301,15 +302,10 @@ msgstr "Impossible de supprimer la pièce jointe du serveur POP"
 msgid "Can't delete attachment from news server"
 msgstr "Impossible de supprimer la pièce jointe du serveur usenet"
 
-# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
-# « pas supporté »
 #: attach/functions.c:290
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported"
-msgstr "La suppression des pièces jointes de messages chiffrés n'est pas supporté"
+msgstr "Impossible de supprimer des pièces jointes des messages chiffrés"
 
-# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
-# « pas supporté »
 #: attach/functions.c:295
 #, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature"
@@ -1387,7 +1383,7 @@ msgid "Error attaching file"
 msgstr "Erreur dans l'attachement du fichier"
 
 # TODO: multipart could be translated as a kind of adjective:
-#   en plusiers parties
+#   en plusieurs parties
 #   à plusieurs parties
 # « multipartie » is a french word, but it's only used in political contexts
 #: compose/functions.c:1529
@@ -2101,12 +2097,12 @@ msgstr "À : "
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:99 send/send.c:292
 msgid "Cc: "
-msgstr "Cc : "
+msgstr "CC : "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:101 send/send.c:299
 msgid "Bcc: "
-msgstr "Cci : "
+msgstr "CCI : "
 
 #. L10N: Compose menu field.  May not want to translate.
 #: envelope/window.c:103 send/send.c:344
@@ -4179,25 +4175,27 @@ msgstr "générer un répertoire virtuel depuis la requête"
 #. Index: <op_main_vfolder_from_query>
 #: gui/opcodes.h:902
 msgid "generate a read-only virtual folder from query"
-msgstr "générer un répertoire virtuel en lecture-seule depuis la requête"
+msgstr "générer un répertoire virtuel en lecture seule depuis la requête"
 
+# TODO: Not sure about this one
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:905
 msgid "shifts virtual folder time window backwards"
-msgstr ""
+msgstr "décaler la fenêtre temporelle du répertoire virtuel vers l'arrière"
 
+# TODO: Not sure about this one
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:908
 msgid "shifts virtual folder time window forwards"
-msgstr ""
+msgstr "décaler la fenêtre temporelle du répertoire virtuel vers l'avant"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
 #: gui/opcodes.h:911
 msgid "resets virtual folder time window to the present"
-msgstr ""
+msgstr "remettre la fenêtre temporelle du répertoire virtuel au présent"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
 #. Compose Dialog: <op_attachment_attach_key>
@@ -4209,6 +4207,7 @@ msgstr "attacher une clé publique PGP"
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
 #: gui/opcodes.h:923
+#, fuzzy
 msgid "check for classic PGP"
 msgstr "reconnaissance PGP classique"
 
@@ -4566,14 +4565,16 @@ msgstr "le message a été supprimé"
 msgid "attachment is deleted"
 msgstr "la pièce jointe a été supprimée"
 
+# TODO: Est-ce qu'on préfère « on » ici ou « vous » ?
 #: help.c:424
 msgid "message has been replied to"
-msgstr ""
+msgstr "on a déjà répondu au message"
 
 #: help.c:425
 msgid "message has been read"
 msgstr "le message a été lu"
 
+#TODO: nouveau ou neuf ?
 #: help.c:426
 msgid "message is new"
 msgstr "le message est nouveau"
@@ -4584,7 +4585,7 @@ msgstr "le fil a été lu"
 
 #: help.c:430
 msgid "thread has at least one new message"
-msgstr ""
+msgstr "le fil a au moins un message"
 
 #: help.c:432
 #, c-format
@@ -5386,7 +5387,7 @@ msgstr "Requête fenêtrées désactivées"
 
 #: index/functions.c:3021
 msgid "No notmuch vfolder currently loaded"
-msgstr ""
+msgstr "Pas de répertoire virtuel présentement chargé"
 
 #: index/functions.c:3084
 msgid "There are no messages"
@@ -5646,103 +5647,124 @@ msgstr "Options par défaut :"
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
-msgstr ""
+msgstr " "
+"  --            Cet argument force NeoMutt à arrêter d'analyser des options et\n"
+"                de traiter les arguments restants comme les adresses, même s'ils\n"
+"                commencent par un tiret"
 
 #: main.c:312
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
-msgstr ""
+msgstr "  -A <alias>    Afficher une version élargie de l'alias donné sur stdout et\n"
+"                quitter"
 
 #: main.c:313
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 msgstr ""
+"  -a <fichier>  Joindre un ou plusieurs fichiers à un message (doit être la\n"
+"                dernière option). Ajoutez l'adresses ou les adresses après\n"
+"                l'argument « -- »"
 
 #: main.c:315
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
+msgstr "  -B            Partir en mode traitement par lots (ne pas démarrer\n"
+"                l'interface utilisateur ncurses)"
 
-# TODO: Figure out why the englsh text is in parentheses here
 #: main.c:316
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
-msgstr "  -b <address>  indique un destinataire en Cci (Blind Carbon Copy - Bcc)"
+msgstr "  -b <adress>   Indiquer un destinataire en copie conforme invisible (CCI)"
 
 #: main.c:317
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
-msgstr "  -c <address>  Choisir un destinataire en copie (Cc)"
+msgstr "  -c <adress>   Choisir un destinataire en copie conforme (CC)"
 
 #: main.c:318
 #, fuzzy
 msgid "  -C            Enable Command-line Crypto (signing/encryption)"
-msgstr "  -C            Enable Command-line Crypto (signing/encryption)"
+msgstr "  -C            Activer le mode « Command-line crypto » (signature\n"
+"                numérique / chiffrement)"
 
 #: main.c:319
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
-msgstr ""
+msgstr "  -D            Afficher toutes les variables de configuration sous la forme\n"
+"                « nom=valeur » sur stdout"
 
 #: main.c:320
 msgid "  -D -O         Like -D, but show one-liner documentation"
-msgstr ""
+msgstr "  -D -D         Comme -D, mais afficher la documentation d'une seule ligne"
 
 #: main.c:321
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
-msgstr ""
+msgstr "  -D -S         Comme -D, mais cacher la valeurs des variables sensibles"
 
 #: main.c:322
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
 msgstr ""
+"  -d <niveau>   Journaliser sur un fichier (fichier par default : \"~/.neomuttdebug0\")\n"
+"                Le niveau de journalisation (entre 1 et 5) affecte la verbosité"
 
 #: main.c:324
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
-msgstr ""
+msgstr "  -E            Éditer un message ajourné (-H) ou inclure (-i) un fichier\n"
+"                durant la composition du message"
 
 #: main.c:325
 msgid "  -e <command>  Specify a command to be run after reading the config files"
-msgstr ""
+msgstr "  -e <commande> Spécifier une commande à exécuter après la lecture des fichiers\n"
+"                de configuration"
 
 #: main.c:326
 msgid "  -F <config>   Specify an alternative initialization file to read"
-msgstr ""
+msgstr "  -F <fichier>  Spécifier un fichier de configuration alternatif à lire"
 
+# TODO: should the command name "mailboxes" be translated?
 #: main.c:327
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
-msgstr ""
+msgstr "  -f <boîte>    Spécifier une boîte à lettres (comme c'est défini dans la\n"
+"               commande « mailboxes ») à charger"
 
 #: main.c:328
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
-msgstr ""
+msgstr "  -G            Démarrer NeoMutt avec une liste de groupes de discussion\n"
+"               abonnées"
 
 #: main.c:329
 msgid "  -g <server>   Like -G, but start at specified news server"
-msgstr ""
+msgstr "  -g <serveur>  Comme -G, mais commencer d'un serveur spécifié"
 
 #: main.c:330
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
-msgstr ""
+msgstr "  -H <fichier>  Spécifier un brouillon avec un en-tête et un corps pour la\n"
+"               composition des messages"
 
 #: main.c:331
 msgid "  -h            Print this help message and exit"
-msgstr "  -h            Affiche ce message et quitte"
+msgstr "  -h            Afficher ce message et quitter"
 
 #: main.c:332
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
-msgstr ""
+msgstr "  -i <fichier>  Spécifier un fichier à intégrer dans le corps du message"
 
 #: main.c:333
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
-msgstr ""
+msgstr "  -l <fichier>  Spécifier un fichier pour la sortie de débogage (valeur par\n"
+"               défaut \"~/.neomuttdebug0\")"
 
 #: main.c:334
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
 msgstr ""
+"  -m <format>   Spécifier un format de boîte aux lettres par défaut pour les\n"
+"                répertoires nouvellement créés. Le format doit être un des suivants :\n"
+"                MH, MMDF, Mailir, ou mbox (non sensible à la casse)\n"
 
 #: main.c:336
 msgid "  -n            Do not read the system-wide configuration file"
-msgstr ""
+msgstr "  -n            Ne pas lire le fichier de configuration du système"
 
 #: main.c:337
 msgid "  -p            Resume a prior postponed message, if any"
@@ -5754,6 +5776,9 @@ msgid ""
 "                (after the config has been read and any commands executed)\n"
 "                Add -O for one-liner documentation"
 msgstr ""
+"  -Q <variable> Interroger une variable de configuration et afficher sa valeur sur\n"
+"                stdout (après la configuration a été lue et ses commandes exécutées)\n"
+"                Ajoutez -O pour la documentation d'une seule ligne"
 
 #: main.c:341
 msgid "  -R            Open mailbox in read-only mode"
@@ -5761,19 +5786,23 @@ msgstr "  -R            Ouvrir la boîte aux lettres en lecture seule"
 
 #: main.c:342
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
-msgstr "  -s <subject>  Créer l'objet du message (doit être entre guillemets s'il comporte des espaces)"
+msgstr "  -s <objet>    Créer l'objet du message (doit être entre guillemets s'il\n"
+"                comporte des espaces)"
 
 #: main.c:343
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
-msgstr "  -v            Afficher la version de NeoMutt version, définit son temps de compilation et sort"
+msgstr "  -v            Afficher la version de NeoMutt version, définit son temps de\n"
+"                compilation et quitter"
 
 #: main.c:344
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
-msgstr "  -vv           Afficher la licence NeoMutt, les informations relatives à la propriété intellectuelle et sort"
+msgstr "  -vv           Afficher la licence NeoMutt, les informations relatives à la\n"
+"                propriété intellectuelle et quitter"
 
 #: main.c:345
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
-msgstr "  -y            Démarrer NeoMutt avec une liste de toutes les boîtes aux lettres définies"
+msgstr "  -y            Démarrer NeoMutt avec une liste de toutes les boîtes aux\n"
+"                lettres définies"
 
 #: main.c:346
 msgid ""
@@ -7978,6 +8007,7 @@ msgstr "messages adressés à des listes connues"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:104
+#, fuzzy
 msgid "messages whose From/Sender/To/CC matches EXPR"
 msgstr "messages dont le From/Sender/To/CC correspond à EXPR"
 
