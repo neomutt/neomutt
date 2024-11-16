@@ -31,17 +31,6 @@
 struct MailboxView;
 
 /**
- * struct PatternEntry - A line in the Pattern Completion menu
- */
-struct PatternEntry
-{
-  int num;          ///< Index number
-  const char *tag;  ///< Copied to buffer if selected
-  const char *expr; ///< Displayed in the menu
-  const char *desc; ///< Description of pattern
-};
-
-/**
  * ExpandoDataPattern - Expando UIDs for Patterns
  *
  * @sa ED_PATTERN, ExpandoDomain

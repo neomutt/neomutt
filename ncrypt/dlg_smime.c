@@ -109,10 +109,13 @@ static char *smime_key_flags(KeyFlags flags)
  */
 static int smime_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct SmimeKey **table = menu->mdata;
-  struct SmimeKey *key = table[line];
+  struct SmimeData *sd = menu->mdata;
+  struct SmimeKey **pkey = ARRAY_GET(sd->ska, line);
+  if (!pkey)
+    return 0;
+
   char *truststate = NULL;
-  switch (key->trust)
+  switch ((*pkey)->trust)
   {
     case 'e':
       /* L10N: Describes the trust state of a S/MIME key.
@@ -171,22 +174,13 @@ static int smime_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
       truststate = _("Unknown   ");
   }
 
-  int bytes = buf_printf(buf, " 0x%s %s %s %-35.35s %s", key->hash,
-                         smime_key_flags(key->flags), truststate, key->email, key->label);
+  int bytes = buf_printf(buf, " 0x%s %s %s %-35.35s %s", (*pkey)->hash,
+                         smime_key_flags((*pkey)->flags), truststate,
+                         (*pkey)->email, (*pkey)->label);
   if (bytes < 0)
     bytes = 0;
 
   return mutt_strnwidth(buf_string(buf), bytes);
-}
-
-/**
- * smime_key_table_free - Free the key table - Implements Menu::mdata_free() - @ingroup menu_mdata_free
- *
- * @note The keys are owned by the caller of the dialog
- */
-static void smime_key_table_free(struct Menu *menu, void **ptr)
-{
-  FREE(ptr);
 }
 
 /**
@@ -199,33 +193,22 @@ static void smime_key_table_free(struct Menu *menu, void **ptr)
  */
 struct SmimeKey *dlg_smime(struct SmimeKey *keys, const char *query)
 {
-  struct SmimeKey **table = NULL;
-  int table_size = 0;
-  int table_index = 0;
-  struct SmimeKey *key = NULL;
-
-  for (table_index = 0, key = keys; key; key = key->next)
+  struct SmimeKeyArray ska = ARRAY_HEAD_INITIALIZER;
+  for (struct SmimeKey *key = keys; key; key = key->next)
   {
-    if (table_index == table_size)
-    {
-      table_size += 5;
-      MUTT_MEM_REALLOC(&table, table_size, struct SmimeKey *);
-    }
-
-    table[table_index++] = key;
+    ARRAY_ADD(&ska, key);
   }
-
-  struct MuttWindow *dlg = simple_dialog_new(MENU_SMIME, WT_DLG_SMIME, SmimeHelp);
-
-  struct Menu *menu = dlg->wdata;
-  menu->max = table_index;
-  menu->make_entry = smime_make_entry;
-  menu->mdata = table;
-  menu->mdata_free = smime_key_table_free;
   /* sorting keys might be done later - TODO */
 
-  struct SmimeData sd = { false, menu, table, NULL };
-  dlg->wdata = &sd;
+  struct MuttWindow *dlg = simple_dialog_new(MENU_SMIME, WT_DLG_SMIME, SmimeHelp);
+  struct Menu *menu = dlg->wdata;
+
+  struct SmimeData sd = { false, menu, &ska, NULL };
+
+  menu->max = ARRAY_SIZE(&ska);
+  menu->make_entry = smime_make_entry;
+  menu->mdata = &sd;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   char title[256] = { 0 };
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);

@@ -81,6 +81,7 @@
 #include "menu/lib.h"
 #include "functions.h"
 #include "mutt_logging.h"
+#include "pattern_data.h"
 
 const struct ExpandoRenderData PatternRenderData[];
 
@@ -135,7 +136,9 @@ long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags f
  */
 static int pattern_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct PatternEntry *entry = &((struct PatternEntry *) menu->mdata)[line];
+  struct PatternData *pd = menu->mdata;
+
+  struct PatternEntry *entry = ARRAY_GET(&pd->entries, line);
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
@@ -151,55 +154,27 @@ static int pattern_make_entry(struct Menu *menu, int line, int max_cols, struct 
 }
 
 /**
- * free_pattern_menu - Free the Pattern Completion menu - Implements Menu::mdata_free() - @ingroup menu_mdata_free
+ * create_pattern_entries - Create the Pattern Entries
+ * @param pea Pattern Entry Array to fill
  */
-static void free_pattern_menu(struct Menu *menu, void **ptr)
+static void create_pattern_entries(struct PatternEntryArray *pea)
 {
-  struct PatternEntry *entries = *ptr;
-
-  for (size_t i = 0; i < menu->max; i++)
-  {
-    FREE(&entries[i].tag);
-    FREE(&entries[i].expr);
-    FREE(&entries[i].desc);
-  }
-
-  FREE(ptr);
-}
-
-/**
- * create_pattern_menu - Create the Pattern Completion menu
- * @param dlg Dialog holding the Menu
- * @retval ptr New Menu
- */
-static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
-{
-  int num_entries = 0, i = 0;
-  struct Buffer *entrybuf = NULL;
-
+  int num_entries = 0;
   while (Flags[num_entries].tag != 0)
     num_entries++;
+
   /* Add three more hard-coded entries */
-  num_entries += 3;
-  struct PatternEntry *entries = MUTT_MEM_CALLOC(num_entries, struct PatternEntry);
+  ARRAY_RESERVE(pea, num_entries + 3);
 
-  struct Menu *menu = dlg->wdata;
-  menu->make_entry = pattern_make_entry;
-  menu->mdata = entries;
-  menu->mdata_free = free_pattern_menu;
-  menu->max = num_entries;
+  struct Buffer *buf = buf_pool_get();
 
-  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
-  // L10N: Pattern completion menu title
-  sbar_set_title(sbar, _("Patterns"));
-
-  entrybuf = buf_pool_get();
-  while (Flags[i].tag != 0)
+  struct PatternEntry entry = { 0 };
+  for (int i = 0; Flags[i].tag != '\0'; i++)
   {
-    entries[i].num = i + 1;
+    entry.num = i + 1;
 
-    buf_printf(entrybuf, "~%c", Flags[i].tag);
-    entries[i].tag = mutt_str_dup(buf_string(entrybuf));
+    buf_printf(buf, "~%c", Flags[i].tag);
+    entry.tag = buf_strdup(buf);
 
     switch (Flags[i].eat_arg)
     {
@@ -207,7 +182,7 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
         /* L10N:
            Pattern Completion Menu argument type: a regular expression
         */
-        buf_add_printf(entrybuf, " %s", _("EXPR"));
+        buf_add_printf(buf, " %s", _("EXPR"));
         break;
       case EAT_RANGE:
       case EAT_MESSAGE_RANGE:
@@ -215,29 +190,30 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
            Pattern Completion Menu argument type: a numeric range.
            Used by ~m, ~n, ~X, ~z.
         */
-        buf_add_printf(entrybuf, " %s", _("RANGE"));
+        buf_add_printf(buf, " %s", _("RANGE"));
         break;
       case EAT_DATE:
         /* L10N:
            Pattern Completion Menu argument type: a date range
            Used by ~d, ~r.
         */
-        buf_add_printf(entrybuf, " %s", _("DATERANGE"));
+        buf_add_printf(buf, " %s", _("DATERANGE"));
         break;
       case EAT_QUERY:
         /* L10N:
            Pattern Completion Menu argument type: a query
            Used by ~I.
         */
-        buf_add_printf(entrybuf, " %s", _("QUERY"));
+        buf_add_printf(buf, " %s", _("QUERY"));
         break;
       default:
         break;
     }
-    entries[i].expr = mutt_str_dup(buf_string(entrybuf));
-    entries[i].desc = mutt_str_dup(_(Flags[i].desc));
 
-    i++;
+    entry.expr = buf_strdup(buf);
+    entry.desc = mutt_str_dup(_(Flags[i].desc));
+
+    ARRAY_ADD(pea, entry);
   }
 
   /* Add struct MuttThread patterns manually.
@@ -249,32 +225,31 @@ static struct Menu *create_pattern_menu(struct MuttWindow *dlg)
   */
   const char *patternstr = _("PATTERN");
 
-  entries[i].num = i + 1;
-  entries[i].tag = mutt_str_dup("~()");
-  buf_printf(entrybuf, "~(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(buf_string(entrybuf));
+  entry.num = ARRAY_SIZE(pea) + 1;
+  entry.tag = mutt_str_dup("~()");
+  buf_printf(buf, "~(%s)", patternstr);
+  entry.expr = buf_strdup(buf);
   // L10N: Pattern Completion Menu description for ~()
-  entries[i].desc = mutt_str_dup(_("messages in threads containing messages matching PATTERN"));
-  i++;
+  entry.desc = mutt_str_dup(_("messages in threads containing messages matching PATTERN"));
+  ARRAY_ADD(pea, entry);
 
-  entries[i].num = i + 1;
-  entries[i].tag = mutt_str_dup("~<()");
-  buf_printf(entrybuf, "~<(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(buf_string(entrybuf));
+  entry.num = ARRAY_SIZE(pea) + 1;
+  entry.tag = mutt_str_dup("~<()");
+  buf_printf(buf, "~<(%s)", patternstr);
+  entry.expr = buf_strdup(buf);
   // L10N: Pattern Completion Menu description for ~<()
-  entries[i].desc = mutt_str_dup(_("messages whose immediate parent matches PATTERN"));
-  i++;
+  entry.desc = mutt_str_dup(_("messages whose immediate parent matches PATTERN"));
+  ARRAY_ADD(pea, entry);
 
-  entries[i].num = i + 1;
-  entries[i].tag = mutt_str_dup("~>()");
-  buf_printf(entrybuf, "~>(%s)", patternstr);
-  entries[i].expr = mutt_str_dup(buf_string(entrybuf));
+  entry.num = ARRAY_SIZE(pea) + 1;
+  entry.tag = mutt_str_dup("~>()");
+  buf_printf(buf, "~>(%s)", patternstr);
+  entry.expr = buf_strdup(buf);
   // L10N: Pattern Completion Menu description for ~>()
-  entries[i].desc = mutt_str_dup(_("messages having an immediate child matching PATTERN"));
+  entry.desc = mutt_str_dup(_("messages having an immediate child matching PATTERN"));
+  ARRAY_ADD(pea, entry);
 
-  buf_pool_release(&entrybuf);
-
-  return menu;
+  buf_pool_release(&buf);
 }
 
 /**
@@ -333,20 +308,31 @@ static int pattern_window_observer(struct NotifyCallback *nc)
 
 /**
  * dlg_pattern - Show menu to select a Pattern - @ingroup gui_dlg
- * @param buf    Buffer for the selected Pattern
- * @param buflen Length of buffer
+ * @param buf Buffer for the selected Pattern
  * @retval true A selection was made
  *
  * The Select Pattern Dialog shows the user a help page of Patterns.
  * They can select one to auto-complete some functions, e.g. `<limit>`
  */
-bool dlg_pattern(char *buf, size_t buflen)
+bool dlg_pattern(struct Buffer *buf)
 {
-  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
-  struct Menu *menu = create_pattern_menu(dlg);
+  struct PatternData *pd = pattern_data_new();
 
-  struct PatternData pd = { false, false, buf, buflen, menu };
-  dlg->wdata = &pd;
+  struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_PATTERN, PatternHelp);
+  create_pattern_entries(&pd->entries);
+
+  struct Menu *menu = dlg->wdata;
+  pd->menu = menu;
+  pd->buf = buf;
+
+  menu->mdata = pd;
+  menu->mdata_free = pattern_data_free;
+  menu->make_entry = pattern_make_entry;
+  menu->max = ARRAY_SIZE(&pd->entries);
+
+  struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  // L10N: Pattern completion menu title
+  sbar_set_title(sbar, _("Patterns"));
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pattern_config_observer, menu);
@@ -377,12 +363,15 @@ bool dlg_pattern(char *buf, size_t buflen)
       rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
-  } while (!pd.done);
+  } while (!pd->done);
   // ---------------------------------------------------------------------------
+
+  bool rc = pd->selection;
 
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
-  return pd.selection;
+
+  return rc;
 }
 
 /**

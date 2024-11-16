@@ -34,13 +34,13 @@ bool config_init_history(struct ConfigSet *cs);
 
 void test_mutt_hist_search(void)
 {
-  // int mutt_hist_search(const char *search_buf, enum HistoryClass hclass, char **matches);
+  // int mutt_hist_search(const char *find, enum HistoryClass hclass, struct HistoryArray *matches);
 
   config_init_history(NeoMutt->sub->cs);
 
   {
-    char *matches = NULL;
-    TEST_CHECK(mutt_hist_search(NULL, 0, &matches) == 0);
+    struct HistoryArray ha = ARRAY_HEAD_INITIALIZER;
+    TEST_CHECK(mutt_hist_search(NULL, 0, &ha) == 0);
   }
 
   {

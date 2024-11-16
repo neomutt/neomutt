@@ -526,11 +526,12 @@ void pgp_entry_ignore(const struct ExpandoNode *node, void *data,
  */
 static int pgp_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct PgpUid **key_table = menu->mdata;
+  struct PgpData *pd = menu->mdata;
+  struct PgpUid **puid = ARRAY_GET(pd->key_table, line);
+  if (!*puid)
+    return 0;
 
-  struct PgpEntry entry = { 0 };
-  entry.uid = key_table[line];
-  entry.num = line + 1;
+  struct PgpEntry entry = { line + 1, *puid };
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
@@ -543,16 +544,6 @@ static int pgp_make_entry(struct Menu *menu, int line, int max_cols, struct Buff
   const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
   return expando_filter(c_pgp_entry_format, PgpEntryRenderData, &entry,
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
-}
-
-/**
- * pgp_key_table_free - Free the key table - Implements Menu::mdata_free() - @ingroup menu_mdata_free
- *
- * @note The keys are owned by the caller of the dialog
- */
-static void pgp_key_table_free(struct Menu *menu, void **ptr)
-{
-  FREE(ptr);
 }
 
 /**
@@ -621,15 +612,12 @@ static int pgp_key_window_observer(struct NotifyCallback *nc)
  */
 struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const char *s)
 {
-  struct PgpUid **key_table = NULL;
   struct Menu *menu = NULL;
   char buf[1024] = { 0 };
-  struct PgpUid *a = NULL;
   bool unusable = false;
-  int keymax = 0;
+  struct PgpUidArray pua = ARRAY_HEAD_INITIALIZER;
 
   const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
-  int i = 0;
   for (struct PgpKeyInfo *kp = keys; kp; kp = kp->next)
   {
     if (!c_pgp_show_unusable && (kp->flags & KEYFLAG_CANTUSE))
@@ -638,7 +626,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
       continue;
     }
 
-    for (a = kp->address; a; a = a->next)
+    for (struct PgpUid *a = kp->address; a; a = a->next)
     {
       if (!c_pgp_show_unusable && (a->flags & KEYFLAG_CANTUSE))
       {
@@ -646,57 +634,49 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
         continue;
       }
 
-      if (i == keymax)
-      {
-        keymax += 5;
-        MUTT_MEM_REALLOC(&key_table, keymax, struct PgpUid *);
-      }
-
-      key_table[i++] = a;
+      ARRAY_ADD(&pua, a);
     }
   }
 
-  if ((i == 0) && unusable)
+  if ((ARRAY_SIZE(&pua) == 0) && unusable)
   {
     mutt_error(_("All matching keys are expired, revoked, or disabled"));
     return NULL;
   }
 
-  sort_t f = NULL;
+  sort_t fn = NULL;
   short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
   switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
-      f = pgp_sort_address;
+      fn = pgp_sort_address;
       break;
     case SORT_DATE:
-      f = pgp_sort_date;
+      fn = pgp_sort_date;
       break;
     case SORT_KEYID:
-      f = pgp_sort_keyid;
+      fn = pgp_sort_keyid;
       break;
     case SORT_TRUST:
     default:
-      f = pgp_sort_trust;
+      fn = pgp_sort_trust;
       break;
   }
 
-  if (key_table)
+  if (ARRAY_SIZE(&pua) > 1)
   {
     bool sort_reverse = c_pgp_sort_keys & SORT_REVERSE;
-    mutt_qsort_r(key_table, i, sizeof(struct PgpUid *), f, &sort_reverse);
+    ARRAY_SORT(&pua, fn, &sort_reverse);
   }
 
   struct MuttWindow *dlg = simple_dialog_new(MENU_PGP, WT_DLG_PGP, PgpHelp);
-
   menu = dlg->wdata;
-  menu->max = i;
-  menu->make_entry = pgp_make_entry;
-  menu->mdata = key_table;
-  menu->mdata_free = pgp_key_table_free;
+  struct PgpData pd = { false, menu, &pua, NULL };
 
-  struct PgpData pd = { false, menu, key_table, NULL };
-  dlg->wdata = &pd;
+  menu->max = ARRAY_SIZE(&pua);
+  menu->make_entry = pgp_make_entry;
+  menu->mdata = &pd;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pgp_key_config_observer, menu);
@@ -741,6 +721,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
   } while (!pd.done);
   // ---------------------------------------------------------------------------
 
+  ARRAY_FREE(&pua);
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   return pd.key;

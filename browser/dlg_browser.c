@@ -678,19 +678,12 @@ void browser_add_folder(const struct Menu *menu, struct BrowserState *state,
 /**
  * init_state - Initialise a browser state
  * @param state BrowserState to initialise
- * @param menu  Current menu
  */
-void init_state(struct BrowserState *state, struct Menu *menu)
+void init_state(struct BrowserState *state)
 {
   ARRAY_INIT(&state->entry);
   ARRAY_RESERVE(&state->entry, 256);
   state->imap_browse = false;
-
-  if (menu)
-  {
-    menu->mdata = &state->entry;
-    menu->mdata_free = NULL; // Menu doesn't own the data
-  }
 }
 
 /**
@@ -712,7 +705,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
   {
     struct NntpAccountData *adata = CurrentNewsSrv;
 
-    init_state(state, menu);
+    init_state(state);
 
     const struct Regex *c_mask = cs_subset_regex(NeoMutt->sub, "mask");
     for (unsigned int i = 0; i < adata->groups_num; i++)
@@ -768,7 +761,7 @@ int examine_directory(struct Mailbox *m, struct Menu *menu, struct BrowserState 
       goto ed_out;
     }
 
-    init_state(state, menu);
+    init_state(state);
 
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_MAILBOX_ANY);
@@ -840,7 +833,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
   {
     struct NntpAccountData *adata = CurrentNewsSrv;
 
-    init_state(state, menu);
+    init_state(state);
 
     const bool c_show_only_unread = cs_subset_bool(NeoMutt->sub, "show_only_unread");
     for (unsigned int i = 0; i < adata->groups_num; i++)
@@ -855,7 +848,7 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
   }
   else
   {
-    init_state(state, menu);
+    init_state(state);
 
     if (TAILQ_EMPTY(&NeoMutt->accounts))
       return -1;
@@ -937,7 +930,8 @@ int examine_mailboxes(struct Mailbox *m, struct Menu *menu, struct BrowserState 
  */
 static int select_file_search(struct Menu *menu, regex_t *rx, int line)
 {
-  struct BrowserEntryArray *entry = menu->mdata;
+  struct BrowserPrivateData *priv = menu->mdata;
+  struct BrowserEntryArray *entry = &priv->state.entry;
   if (OptNews)
     return regexec(rx, ARRAY_GET(entry, line)->desc, 0, NULL, 0);
   struct FolderFile *ff = ARRAY_GET(entry, line);
@@ -953,7 +947,8 @@ static int select_file_search(struct Menu *menu, regex_t *rx, int line)
  */
 static int folder_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct BrowserState *bstate = menu->mdata;
+  struct BrowserPrivateData *priv = menu->mdata;
+  struct BrowserState *bstate = &priv->state;
   struct BrowserEntryArray *entry = &bstate->entry;
   struct Folder folder = {
     .ff = ARRAY_GET(entry, line),
@@ -1128,7 +1123,8 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
  */
 static int file_tag(struct Menu *menu, int sel, int act)
 {
-  struct BrowserEntryArray *entry = menu->mdata;
+  struct BrowserPrivateData *priv = menu->mdata;
+  struct BrowserEntryArray *entry = &priv->state.entry;
   struct FolderFile *ff = ARRAY_GET(entry, sel);
   if (S_ISDIR(ff->mode) ||
       (S_ISLNK(ff->mode) && link_is_dir(buf_string(&LastDir), ff->name)))
@@ -1160,7 +1156,7 @@ static int browser_config_observer(struct NotifyCallback *nc)
 
   if (mutt_str_equal(ev_c->name, "browser_sort_dirs_first"))
   {
-    struct BrowserState *state = menu->mdata;
+    struct BrowserState *state = &priv->state;
     browser_sort(state);
     browser_highlight_default(state, menu);
   }
@@ -1296,12 +1292,12 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   priv->mailbox = m;
   priv->files = files;
   priv->numfiles = numfiles;
-  struct MuttWindow *dlg = NULL;
-
   priv->multiple = (flags & MUTT_SEL_MULTI);
   priv->folder = (flags & MUTT_SEL_FOLDER);
   priv->state.is_mailbox_list = (flags & MUTT_SEL_MAILBOX) && priv->folder;
   priv->last_selected_mailbox = -1;
+
+  struct MuttWindow *dlg = NULL;
 
   init_lastdir();
 
@@ -1333,7 +1329,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     buf_expand_path(file);
     if (imap_path_probe(buf_string(file), NULL) == MUTT_IMAP)
     {
-      init_state(&priv->state, NULL);
+      init_state(&priv->state);
       priv->state.imap_browse = true;
       if (imap_browse(buf_string(file), &priv->state) == 0)
       {
@@ -1455,7 +1451,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     if (!priv->state.is_mailbox_list &&
         (imap_path_probe(buf_string(&LastDir), NULL) == MUTT_IMAP))
     {
-      init_state(&priv->state, NULL);
+      init_state(&priv->state);
       priv->state.imap_browse = true;
       imap_browse(buf_string(&LastDir), &priv->state);
       browser_sort(&priv->state);
@@ -1482,15 +1478,16 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
 
   dlg = simple_dialog_new(MENU_FOLDER, WT_DLG_BROWSER, help_data);
 
-  priv->menu = dlg->wdata;
-  dlg->wdata = priv;
-  priv->menu->make_entry = folder_make_entry;
-  priv->menu->search = select_file_search;
+  struct Menu *menu = dlg->wdata;
+  menu->make_entry = folder_make_entry;
+  menu->search = select_file_search;
+  menu->mdata = priv;
+
+  priv->menu = menu;
   if (priv->multiple)
     priv->menu->tag = file_tag;
 
   priv->sbar = window_find_child(dlg, WT_STATUS_BAR);
-  priv->win_browser = window_find_child(dlg, WT_MENU);
 
   struct MuttWindow *win_menu = priv->menu->win;
 
@@ -1516,8 +1513,6 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
   }
 
   init_menu(&priv->state, priv->menu, m, priv->sbar);
-  // only now do we have a valid priv->state to attach
-  priv->menu->mdata = &priv->state;
 
   // ---------------------------------------------------------------------------
   // Event Loop
@@ -1538,10 +1533,10 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     }
     mutt_clear_error();
 
-    int rc = browser_function_dispatcher(priv->win_browser, op);
+    int rc = browser_function_dispatcher(dlg, op);
 
     if (rc == FR_UNKNOWN)
-      rc = menu_function_dispatcher(priv->menu->win, op);
+      rc = menu_function_dispatcher(menu->win, op);
     if (rc == FR_UNKNOWN)
       rc = global_function_dispatcher(NULL, op);
   } while (!priv->done);

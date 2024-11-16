@@ -532,11 +532,12 @@ long pgp_entry_gpgme_l_num(const struct ExpandoNode *node, void *data, MuttForma
  */
 static int crypt_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  struct CryptKeyInfo **key_table = menu->mdata;
-  struct CryptEntry entry = { 0 };
+  struct GpgmeData *gd = menu->mdata;
+  struct CryptKeyInfo **pinfo = ARRAY_GET(gd->key_table, line);
+  if (!pinfo)
+    return 0;
 
-  entry.key = key_table[line];
-  entry.num = line + 1;
+  struct CryptEntry entry = { line + 1, *pinfo };
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
@@ -549,16 +550,6 @@ static int crypt_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
   const struct Expando *c_pgp_entry_format = cs_subset_expando(NeoMutt->sub, "pgp_entry_format");
   return expando_filter(c_pgp_entry_format, PgpEntryGpgmeRenderData, &entry,
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
-}
-
-/**
- * gpgme_key_table_free - Free the key table - Implements Menu::mdata_free() - @ingroup menu_mdata_free
- *
- * @note The keys are owned by the caller of the dialog
- */
-static void gpgme_key_table_free(struct Menu *menu, void **ptr)
-{
-  FREE(ptr);
 }
 
 /**
@@ -630,17 +621,10 @@ static int gpgme_key_window_observer(struct NotifyCallback *nc)
 struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
                                const char *s, unsigned int app, bool *forced_valid)
 {
-  int keymax;
-  int i;
-  sort_t f = NULL;
-  enum MenuType menu_to_use = MENU_GENERIC;
-  bool unusable = false;
-
   /* build the key table */
-  keymax = 0;
-  i = 0;
-  struct CryptKeyInfo **key_table = NULL;
+  struct CryptKeyInfoArray ckia = ARRAY_HEAD_INITIALIZER;
   const bool c_pgp_show_unusable = cs_subset_bool(NeoMutt->sub, "pgp_show_unusable");
+  bool unusable = false;
   for (struct CryptKeyInfo *k = keys; k; k = k->next)
   {
     if (!c_pgp_show_unusable && (k->flags & KEYFLAG_CANTUSE))
@@ -649,45 +633,41 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
       continue;
     }
 
-    if (i == keymax)
-    {
-      keymax += 20;
-      MUTT_MEM_REALLOC(&key_table, keymax, struct CryptKeyInfo *);
-    }
-
-    key_table[i++] = k;
+    ARRAY_ADD(&ckia, k);
   }
 
-  if (!i && unusable)
+  if ((ARRAY_SIZE(&ckia) == 0) && unusable)
   {
     mutt_error(_("All matching keys are marked expired/revoked"));
     return NULL;
   }
 
   const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  sort_t fn = NULL;
   switch (c_pgp_sort_keys & SORT_MASK)
   {
     case SORT_ADDRESS:
-      f = crypt_sort_address;
+      fn = crypt_sort_address;
       break;
     case SORT_DATE:
-      f = crypt_sort_date;
+      fn = crypt_sort_date;
       break;
     case SORT_KEYID:
-      f = crypt_sort_keyid;
+      fn = crypt_sort_keyid;
       break;
     case SORT_TRUST:
     default:
-      f = crypt_sort_trust;
+      fn = crypt_sort_trust;
       break;
   }
 
-  if (key_table)
+  if (ARRAY_SIZE(&ckia) > 1)
   {
     bool sort_reverse = c_pgp_sort_keys & SORT_REVERSE;
-    mutt_qsort_r(key_table, i, sizeof(struct CryptKeyInfo *), f, &sort_reverse);
+    ARRAY_SORT(&ckia, fn, &sort_reverse);
   }
 
+  enum MenuType menu_to_use = MENU_GENERIC;
   if (app & APPLICATION_PGP)
     menu_to_use = MENU_KEY_SELECT_PGP;
   else if (app & APPLICATION_SMIME)
@@ -696,13 +676,12 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   struct MuttWindow *dlg = simple_dialog_new(menu_to_use, WT_DLG_GPGME, GpgmeHelp);
 
   struct Menu *menu = dlg->wdata;
-  menu->max = i;
-  menu->make_entry = crypt_make_entry;
-  menu->mdata = key_table;
-  menu->mdata_free = gpgme_key_table_free;
+  struct GpgmeData gd = { false, menu, &ckia, NULL, forced_valid };
 
-  struct GpgmeData gd = { false, menu, key_table, NULL, forced_valid };
-  dlg->wdata = &gd;
+  menu->max = ARRAY_SIZE(&ckia);
+  menu->make_entry = crypt_make_entry;
+  menu->mdata = &gd;
+  menu->mdata_free = NULL; // Menu doesn't own the data
 
   // NT_COLOR is handled by the SimpleDialog
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, gpgme_key_config_observer, menu);
@@ -767,6 +746,7 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   } while (!gd.done);
   // ---------------------------------------------------------------------------
 
+  ARRAY_FREE(&ckia);
   window_set_focus(old_focus);
   simple_dialog_free(&dlg);
   return gd.key;

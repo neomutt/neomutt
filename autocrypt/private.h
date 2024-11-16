@@ -26,10 +26,12 @@
 
 #include <sqlite3.h>
 #include <stdbool.h>
+#include "mutt/lib.h"
 
 struct Address;
 struct AddressList;
 struct AutocryptAccount;
+struct AutocryptAccountArray;
 struct AutocryptGossipHistory;
 struct AutocryptPeer;
 struct AutocryptPeerHistory;
@@ -47,6 +49,7 @@ struct AccountEntry
   struct AutocryptAccount *account; ///< Account details
   struct Address *addr;             ///< Email address associated with the account
 };
+ARRAY_HEAD(AccountEntryArray, struct AccountEntry *);
 
 /**
  * ExpandoDataAutocrypt - Expando UIDs for Autocrypt
@@ -68,7 +71,7 @@ void                           mutt_autocrypt_scan_mailboxes(void);
 int                            mutt_autocrypt_db_account_delete(struct AutocryptAccount *acct);
 void                           mutt_autocrypt_db_account_free(struct AutocryptAccount **ptr);
 int                            mutt_autocrypt_db_account_get(struct Address *addr, struct AutocryptAccount **account);
-int                            mutt_autocrypt_db_account_get_all(struct AutocryptAccount ***accounts, int *num_accounts);
+int                            mutt_autocrypt_db_account_get_all(struct AutocryptAccountArray *aaa);
 int                            mutt_autocrypt_db_account_insert(struct Address *addr, const char *keyid, const char *keydata, bool prefer_encrypt);
 struct AutocryptAccount *      mutt_autocrypt_db_account_new(void);
 int                            mutt_autocrypt_db_account_update(struct AutocryptAccount *acct);

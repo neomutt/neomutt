@@ -62,9 +62,6 @@
 #include "private_data.h"
 #endif
 
-/// Error message for unavailable functions
-static const char *Not_available_in_this_menu = N_("Not available in this menu");
-
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
 
 // clang-format off
@@ -379,12 +376,10 @@ static int op_change_directory(struct BrowserPrivateData *priv, int op)
     {
       buf_copy(&LastDir, buf);
       destroy_state(&priv->state);
-      init_state(&priv->state, NULL);
+      init_state(&priv->state);
       priv->state.imap_browse = true;
       imap_browse(buf_string(&LastDir), &priv->state);
       browser_sort(&priv->state);
-      priv->menu->mdata = &priv->state.entry;
-      priv->menu->mdata_free = NULL; // Menu doesn't own the data
       browser_highlight_default(&priv->state, priv->menu);
       init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
     }
@@ -464,12 +459,10 @@ static int op_create_mailbox(struct BrowserPrivateData *priv, int op)
   /* TODO: find a way to detect if the new folder would appear in
    *   this window, and insert it without starting over. */
   destroy_state(&priv->state);
-  init_state(&priv->state, NULL);
+  init_state(&priv->state);
   priv->state.imap_browse = true;
   imap_browse(buf_string(&LastDir), &priv->state);
   browser_sort(&priv->state);
-  priv->menu->mdata = &priv->state.entry;
-  priv->menu->mdata_free = NULL; // Menu doesn't own the data
   browser_highlight_default(&priv->state, priv->menu);
   init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
 
@@ -562,12 +555,10 @@ static int op_enter_mask(struct BrowserPrivateData *priv, int op)
   destroy_state(&priv->state);
   if (priv->state.imap_browse)
   {
-    init_state(&priv->state, NULL);
+    init_state(&priv->state);
     priv->state.imap_browse = true;
     imap_browse(buf_string(&LastDir), &priv->state);
     browser_sort(&priv->state);
-    priv->menu->mdata = &priv->state.entry;
-    priv->menu->mdata_free = NULL; // Menu doesn't own the data
     init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
   }
   else if (examine_directory(priv->mailbox, priv->menu, &priv->state,
@@ -739,12 +730,10 @@ static int op_generic_select_entry(struct BrowserPrivateData *priv, int op)
       priv->state.is_mailbox_list = false;
       if (priv->state.imap_browse)
       {
-        init_state(&priv->state, NULL);
+        init_state(&priv->state);
         priv->state.imap_browse = true;
         imap_browse(buf_string(&LastDir), &priv->state);
         browser_sort(&priv->state);
-        priv->menu->mdata = &priv->state.entry;
-        priv->menu->mdata_free = NULL; // Menu doesn't own the data
       }
       else
       {
@@ -858,12 +847,10 @@ static int op_rename_mailbox(struct BrowserPrivateData *priv, int op)
     return FR_ERROR;
 
   destroy_state(&priv->state);
-  init_state(&priv->state, NULL);
+  init_state(&priv->state);
   priv->state.imap_browse = true;
   imap_browse(buf_string(&LastDir), &priv->state);
   browser_sort(&priv->state);
-  priv->menu->mdata = &priv->state.entry;
-  priv->menu->mdata_free = NULL; // Menu doesn't own the data
   browser_highlight_default(&priv->state, priv->menu);
   init_menu(&priv->state, priv->menu, priv->mailbox, priv->sbar);
 
@@ -1075,12 +1062,10 @@ static int op_toggle_mailboxes(struct BrowserPrivateData *priv, int op)
   }
   else if (imap_path_probe(buf_string(&LastDir), NULL) == MUTT_IMAP)
   {
-    init_state(&priv->state, NULL);
+    init_state(&priv->state);
     priv->state.imap_browse = true;
     imap_browse(buf_string(&LastDir), &priv->state);
     browser_sort(&priv->state);
-    priv->menu->mdata = &priv->state.entry;
-    priv->menu->mdata_free = NULL; // Menu doesn't own the data
   }
   else if (examine_directory(priv->mailbox, priv->menu, &priv->state,
                              buf_string(&LastDir), buf_string(priv->prefix)) == -1)
@@ -1139,13 +1124,13 @@ static const struct BrowserFunction BrowserFunctions[] = {
  */
 int browser_function_dispatcher(struct MuttWindow *win, int op)
 {
-  if (!win)
-  {
-    mutt_error("%s", _(Not_available_in_this_menu));
+  // The Dispatcher may be called on any Window in the Dialog
+  struct MuttWindow *dlg = dialog_find(win);
+  if (!dlg || !dlg->wdata)
     return FR_ERROR;
-  }
 
-  struct BrowserPrivateData *priv = win->parent->wdata;
+  struct Menu *menu = dlg->wdata;
+  struct BrowserPrivateData *priv = menu->mdata;
   if (!priv)
     return FR_ERROR;
 

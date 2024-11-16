@@ -110,9 +110,13 @@ void history_s(const struct ExpandoNode *node, void *data,
  */
 static int history_make_entry(struct Menu *menu, int line, int max_cols, struct Buffer *buf)
 {
-  char *entry = ((char **) menu->mdata)[line];
+  struct HistoryData *hd = menu->mdata;
 
-  struct HistoryEntry h = { line, entry };
+  const char **pentry = ARRAY_GET(hd->matches, line);
+  if (!pentry)
+    return 0;
+
+  struct HistoryEntry h = { line, *pentry };
 
   const bool c_arrow_cursor = cs_subset_bool(menu->sub, "arrow_cursor");
   if (c_arrow_cursor)
@@ -129,32 +133,28 @@ static int history_make_entry(struct Menu *menu, int line, int max_cols, struct 
 
 /**
  * dlg_history - Select an item from a history list - @ingroup gui_dlg
- * @param[in]  buf         Buffer in which to save string
- * @param[in]  buflen      Buffer length
- * @param[out] matches     Items to choose from
- * @param[in]  match_count Number of items
+ * @param[in]  buf     Buffer in which to save string
+ * @param[out] matches Items to choose from
  *
  * The History Dialog lets the user select from the history of commands,
  * functions or files.
  */
-void dlg_history(char *buf, size_t buflen, char **matches, int match_count)
+void dlg_history(struct Buffer *buf, struct HistoryArray *matches)
 {
   struct MuttWindow *dlg = simple_dialog_new(MENU_GENERIC, WT_DLG_HISTORY, HistoryHelp);
-
   struct MuttWindow *sbar = window_find_child(dlg, WT_STATUS_BAR);
+  struct Menu *menu = dlg->wdata;
+
+  struct HistoryData hd = { false, false, buf, menu, matches };
+
   char title[256] = { 0 };
-  snprintf(title, sizeof(title), _("History '%s'"), buf);
+  snprintf(title, sizeof(title), _("History '%s'"), buf_string(buf));
   sbar_set_title(sbar, title);
 
-  struct Menu *menu = dlg->wdata;
   menu->make_entry = history_make_entry;
-  menu->max = match_count;
-  menu->mdata = matches;
+  menu->max = ARRAY_SIZE(matches);
+  menu->mdata = &hd;
   menu->mdata_free = NULL; // Menu doesn't own the data
-
-  struct HistoryData hd = { false, false,   buf,        buflen,
-                            menu,  matches, match_count };
-  dlg->wdata = &hd;
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------
