@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-11-14 00:55+0000\n"
-"PO-Revision-Date: 2024-05-28 23:21+0200\n"
+"POT-Creation-Date: 2024-11-17 16:40+0100\n"
+"PO-Revision-Date: 2024-11-17 16:36+0100\n"
 "Last-Translator: Страхиња Радић <contact@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -44,8 +44,8 @@ msgstr "Упозорење: Овај назив алијаса можда нећ
 msgid "Address: "
 msgstr "Адреса: "
 
-#: alias/alias.c:448 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:130
-#: external.c:135 recvcmd.c:231 send/send.c:216
+#: alias/alias.c:448 conn/raw.c:177 conn/raw.c:234 envelope/functions.c:133
+#: external.c:135 recvcmd.c:231 send/send.c:219
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "Лош IDN: „%s“"
@@ -173,11 +173,11 @@ msgstr "Чекање на одговор..."
 msgid "Query"
 msgstr "Упит"
 
-#: alias/dlg_query.c:489 alias/dlg_query.c:567
+#: alias/dlg_query.c:489 alias/dlg_query.c:561
 msgid "Query command not defined"
 msgstr "Наредба упита није дефинисана"
 
-#: alias/dlg_query.c:577 alias/functions.c:302 alias/functions.c:320
+#: alias/dlg_query.c:571 alias/functions.c:302 alias/functions.c:320
 msgid "Query: "
 msgstr "Упит: "
 
@@ -186,14 +186,12 @@ msgid "Limit to addresses matching: "
 msgstr "Ограничи на адресе које одговарају: "
 
 #: alias/functions.c:266
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "Означи поруке: "
+msgstr "Означи адресе које задовољавају: "
 
 #: alias/functions.c:282
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "Одозначи поруке: "
+msgstr "Одозначи адресе које задовољавају: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:397
@@ -1334,7 +1332,7 @@ msgstr "Текући прилог ће бити конвертован"
 msgid "Attachment is not 'multipart'"
 msgstr "Прилог није „multipart“"
 
-#: compose/functions.c:1767 send/send.c:2739
+#: compose/functions.c:1767 send/send.c:2742
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Лош IDN у „%s“: „%s“"
@@ -1943,19 +1941,19 @@ msgstr "Аутошифровање: шифровати (f), очистити (o)
 msgid "eca"
 msgstr "foa"
 
-#: envelope/functions.c:322
+#: envelope/functions.c:325
 msgid "No PGP backend configured"
 msgstr "Ниједан PGP бекенд није постављен"
 
-#: envelope/functions.c:329 envelope/functions.c:404
+#: envelope/functions.c:332 envelope/functions.c:407
 msgid "S/MIME already selected. Clear and continue?"
 msgstr "Већ је одабрано S/MIME. Очистити и наставити?"
 
-#: envelope/functions.c:360
+#: envelope/functions.c:363
 msgid "No S/MIME backend configured"
 msgstr "Ниједан S/MIME бекенд није постављен"
 
-#: envelope/functions.c:368
+#: envelope/functions.c:371
 msgid "PGP already selected. Clear and continue?"
 msgstr "Већ је одабран PGP. Очистити и наставити?"
 
@@ -1965,22 +1963,22 @@ msgid "From: "
 msgstr "Од: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:97 send/send.c:285
+#: envelope/window.c:97 send/send.c:288
 msgid "To: "
 msgstr "Коме: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:99 send/send.c:292
+#: envelope/window.c:99 send/send.c:295
 msgid "Cc: "
 msgstr "Копија: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:101 send/send.c:299
+#: envelope/window.c:101 send/send.c:302
 msgid "Bcc: "
 msgstr "Сакривена копија: "
 
 #. L10N: Compose menu field.  May not want to translate.
-#: envelope/window.c:103 send/send.c:344
+#: envelope/window.c:103 send/send.c:347
 msgid "Subject: "
 msgstr "Тема: "
 
@@ -2157,9 +2155,9 @@ msgstr "Експандоу недостаје завршни знак: „%c“"
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
 #: expando/node_padding.c:242
-#, fuzzy, c-format
+#, c-format
 msgid "Padding cannot be formatted"
-msgstr "Попуна се не може користити као услов"
+msgstr "Попуна се не може форматирати"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
@@ -2362,8 +2360,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Скуп знакова промењен у %s; конвертоваће се"
 
 #: flags.c:393 index/functions.c:1048 index/functions.c:1151
-#: index/functions.c:1167 index/functions.c:1306 mutt_thread.c:1298
-#: mutt_thread.c:1364 mutt_thread.c:1450
+#: index/functions.c:1167 index/functions.c:1306 mutt_thread.c:1301
+#: mutt_thread.c:1367 mutt_thread.c:1453
 msgid "Threading is not enabled"
 msgstr "Нити нису омогућене"
 
@@ -5552,7 +5550,7 @@ msgstr "Грешка: вредност „%s“ је неисправна за -
 msgid "Failed to parse mailto: link"
 msgstr "Не може се рашчланити mailto: веза"
 
-#: main.c:1047 main.c:1316 send/send.c:305 send/send.c:2728 send/send.c:2732
+#: main.c:1047 main.c:1316 send/send.c:308 send/send.c:2731 send/send.c:2735
 msgid "No recipients specified"
 msgstr "Није задат ниједан прималац"
 
@@ -5818,15 +5816,15 @@ msgstr "SSL није доступан, не може се повезати са 
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Не може се користити префикс „last-“ са  „threads“ за %s"
 
-#: mutt_thread.c:1385
+#: mutt_thread.c:1388
 msgid "Parent message is not available"
 msgstr "Надређена порука није доступна"
 
-#: mutt_thread.c:1391
+#: mutt_thread.c:1394
 msgid "Root message is not visible in this limited view"
 msgstr "Корена порука није видљива у овом ограниченом погледу"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1396
 msgid "Parent message is not visible in this limited view"
 msgstr "Надређена порука није видљива у овом ограниченом погледу"
 
@@ -6021,7 +6019,7 @@ msgstr "Покрећем PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Порука се не може послати као убачена. Вратити на PGP/MIME?"
 
-#: ncrypt/crypt.c:221 send/send.c:2707
+#: ncrypt/crypt.c:221 send/send.c:2710
 msgid "Mail not sent"
 msgstr "Порука није послата"
 
@@ -7263,8 +7261,8 @@ msgstr "Помоћ је приказана"
 msgid "Saved to: %s"
 msgstr "Сачувано у: %s"
 
-#. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
+#. L10N: Status bar message: the entire email is visible in the pager
 #: pager/message.c:62 pager/pbar.c:121 status.c:382
 msgid "all"
 msgstr "све"
@@ -7318,8 +7316,8 @@ msgstr "PGP потпис није било могуће верификовати
 msgid "%ld%%"
 msgstr "%ld%%"
 
-#. L10N: Status bar message: the end of the email is visible in the pager
 #. L10N: Status bar message: the end of the list emails is visible in the index
+#. L10N: Status bar message: the end of the email is visible in the pager
 #: pager/pbar.c:123 status.c:380
 msgid "end"
 msgstr "крај"
@@ -7357,14 +7355,13 @@ msgid "Can't use prefix when setting a variable"
 msgstr "Не може се користити префикс при постављању променљиве"
 
 #: parse/set.c:608
-#, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
-msgstr "Префикси „no“ и „inv“ се могу користити само са bool/quad променљивим"
+msgstr "Префикси „no“ и „inv“ се могу користити само са bool/quad/number променљивим"
 
 #: parse/set.c:612
-#, fuzzy, c-format
+#, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
-msgstr "Наредба „%s“ се може користити само са bool/quad променљивим"
+msgstr "Наредба „%s“ се може користити само са bool/quad/number променљивим"
 
 #: pattern/compile.c:76 pattern/compile.c:163 pattern/compile.c:724
 #, c-format
@@ -7501,7 +7498,7 @@ msgstr "Оператор шеме „~%c“ је искључен"
 
 #. L10N: An unknown pattern operator was somehow invoked.
 #. This shouldn't be possible unless there is a bug.
-#: pattern/exec.c:101 pattern/exec.c:1131
+#: pattern/exec.c:101 pattern/exec.c:1129
 #, c-format
 msgid "error: unknown op %d (report this error)"
 msgstr "грешка: непозната операција %d (пријавите ову грешку)"
@@ -8026,7 +8023,7 @@ msgstr "Не може се креирати %s"
 msgid "Can't find any tagged messages"
 msgstr "Не може се пронаћи ниједна означена порука"
 
-#: recvcmd.c:886 send/send.c:1187
+#: recvcmd.c:886 send/send.c:1190
 msgid "No mailing lists found"
 msgstr "Ниједна мејлинг листа није пронађена"
 
@@ -8076,11 +8073,11 @@ msgstr "----- Прослеђена порука од %f -----"
 msgid "----- End forwarded message -----"
 msgstr "----- Крај прослеђене поруке -----"
 
-#: send/send.c:346
+#: send/send.c:349
 msgid "No subject, abort?"
 msgstr "Нема теме, обуставити?"
 
-#: send/send.c:348
+#: send/send.c:351
 msgid "No subject, aborting"
 msgstr "Нема теме, обуставља се"
 
@@ -8090,43 +8087,43 @@ msgstr "Нема теме, обуставља се"
 #. Text/plain parts and the like will already be included in the
 #. message contents, but other attachment, such as PDF files, will also
 #. be added as attachments to the new mail, if this is answered yes.
-#: send/send.c:606
+#: send/send.c:609
 msgid "Forward attachments?"
 msgstr "Проследити прилоге?"
 
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:898
+#: send/send.c:901
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Одговорити на %s%s?"
 
-#: send/send.c:945
+#: send/send.c:948
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Наставити на %s%s?"
 
-#: send/send.c:1229
+#: send/send.c:1232
 msgid "Include message in reply?"
 msgstr "Укључити поруку у одговору?"
 
-#: send/send.c:1235
+#: send/send.c:1238
 msgid "Including quoted message..."
 msgstr "Укључивање цитиране поруке..."
 
-#: send/send.c:1242
+#: send/send.c:1245
 msgid "Could not include all requested messages"
 msgstr "Не могу се укључити све тражене поруке"
 
-#: send/send.c:1254
+#: send/send.c:1257
 msgid "Forward as attachment?"
 msgstr "Проследити као прилог?"
 
-#: send/send.c:1259
+#: send/send.c:1262
 msgid "Preparing forwarded message..."
 msgstr "Припремање прослеђене поруке..."
 
-#: send/send.c:1747
+#: send/send.c:1750
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Упозорење: FCC у IMAP сандуче није подржано у програмском режиму"
 
@@ -8135,12 +8132,12 @@ msgstr "Упозорење: FCC у IMAP сандуче није подржано
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1753
+#: send/send.c:1756
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Прескакање FCC-а %s"
 
-#: send/send.c:1793 send/send.c:1805 send/send.c:1831
+#: send/send.c:1796 send/send.c:1808 send/send.c:1834
 msgid "Save attachments in Fcc?"
 msgstr "Сачувати прилоге у FCC?"
 
@@ -8148,116 +8145,116 @@ msgstr "Сачувати прилоге у FCC?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1853
+#: send/send.c:1856
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Неуспешан FCC. Поновити (p), друго сандуче (s), или прескочити (r)?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1857
+#: send/send.c:1860
 msgid "rms"
 msgstr "psr"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1863
+#: send/send.c:1866
 msgid "Fcc mailbox"
 msgstr "Сандуче за FCC"
 
-#: send/send.c:1932
+#: send/send.c:1935
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Не може се одложити.  $postponed није постављено"
 
-#: send/send.c:1969 send/send.c:1986
+#: send/send.c:1972 send/send.c:1989
 msgid "Error encrypting message. Check your crypt settings."
 msgstr "Грешка при шифровању поруке. Проверите подешавања шифровања."
 
-#: send/send.c:2080
+#: send/send.c:2083
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "Порука садржи текст који одговара „$abort_noattach_regex“. Неће бити послата."
 
-#: send/send.c:2084
+#: send/send.c:2087
 msgid "No attachments, cancel sending?"
 msgstr "Нема прилога, поништити слање?"
 
-#: send/send.c:2135
+#: send/send.c:2138
 msgid "Recall postponed message?"
 msgstr "Вратити одложену поруку?"
 
-#: send/send.c:2391
+#: send/send.c:2394
 msgid "Error sending message"
 msgstr "Грешка приликом слања поруке"
 
-#: send/send.c:2480
+#: send/send.c:2483
 msgid "Edit forwarded message?"
 msgstr "Уредити прослеђену поруку?"
 
-#: send/send.c:2521
+#: send/send.c:2524
 msgid "Abort unmodified message?"
 msgstr "Обуставити неизмењену поруку?"
 
-#: send/send.c:2523
+#: send/send.c:2526
 msgid "Aborted unmodified message"
 msgstr "Обустављена неизмењена порука"
 
-#: send/send.c:2665
+#: send/send.c:2668
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Није постављен бекенд за криптографију.  Онемогућено подешавање безбедности порука."
 
-#: send/send.c:2705
+#: send/send.c:2708
 msgid "Article not posted"
 msgstr "Чланак није постављен"
 
-#: send/send.c:2714
+#: send/send.c:2717
 msgid "Message postponed"
 msgstr "Порука је одложена"
 
-#: send/send.c:2749
+#: send/send.c:2752
 msgid "No subject, abort sending?"
 msgstr "Нема теме, обуставити слање?"
 
-#: send/send.c:2753 send/send.c:2759
+#: send/send.c:2756 send/send.c:2762
 msgid "No subject specified"
 msgstr "Није задата тема"
 
-#: send/send.c:2765
+#: send/send.c:2768
 msgid "No newsgroup specified"
 msgstr "Није задата њузгрупа"
 
-#: send/send.c:2810
+#: send/send.c:2813
 msgid "Missing encryption key; mail not sent"
 msgstr "Недостаје кључ за енкрипцију; порука није послата"
 
-#: send/send.c:2834 send/smtp.c:263
+#: send/send.c:2837 send/smtp.c:263
 msgid "Sending message..."
 msgstr "Слање поруке..."
 
-#: send/send.c:2880
+#: send/send.c:2883
 msgid "Could not send the message"
 msgstr "Не може се послати порука"
 
-#: send/send.c:2890
+#: send/send.c:2893
 msgid "Sending in background"
 msgstr "Слање у позадини"
 
-#: send/send.c:2891
+#: send/send.c:2894
 msgid "Article posted"
 msgstr "Чланак је постављен"
 
-#: send/send.c:2892
+#: send/send.c:2895
 msgid "Mail sent"
 msgstr "Мејл је послат"
 
-#: send/send.c:2973
+#: send/send.c:2976
 msgid "No recipient specified"
 msgstr "Није задат ниједан прималац"
 
-#: send/send.c:3020
+#: send/send.c:3023
 msgid "No List-Subscribe header found"
 msgstr "Није пронађено заглавље List-Subscribe"
 
-#: send/send.c:3049
+#: send/send.c:3052
 msgid "No List-Unsubscribe header found"
 msgstr "Није пронађено заглавље List-Unubscribe"
 
