@@ -37,13 +37,11 @@ struct ComposeSharedData
   struct Mailbox *mailbox;           ///< Current Mailbox
   struct Email *email;               ///< Email being composed
   struct ComposeAttachData *adata;   ///< Attachments
-  struct ComposeEnvelopeData *edata; ///< Envelope data
 
   struct Buffer *fcc;                ///< Buffer to save FCC
   int flags;                         ///< Flags, e.g. #MUTT_COMPOSE_NOFREEHEADER
   bool fcc_set;                      ///< User has edited the Fcc: field
   int rc;                            ///< Return code to leave compose
-  bool news;                         ///< Email is a news article
 };
 
 /**
