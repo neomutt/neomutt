@@ -109,22 +109,33 @@
 ** "~/.neomuttrc" if no user neomuttrc was found.
 */
 
-{ "alias_format", DT_STRING, "%3n %f%t %-15a %-56r | %c" },
+{ "alias_format", DT_STRING, "%3i %f%t %-15a %-56A | %C%> %Y" },
 /*
 ** .pp
 ** Specifies the format of the data displayed for the "$alias" menu.  The
 ** following \fCprintf(3)\fP-style sequences are available:
 ** .dl
 ** .dt %a  .dd Alias name
-** .dt %c  .dd Comment
+** .dt %A  .dd Full Address (Name and Email)
+** .dt %C  .dd Comment
+** .dt %E  .dd Email Address
 ** .dt %f  .dd Flags - currently, a "d" for an alias marked for deletion
-** .dt %n  .dd Index number
-** .dt %r  .dd Address which alias expands to
-** .dt %t  .dd Character which indicates if the alias is tagged for inclusion
-** .dt %Y  .dd Comma-separated tags
+** .dt %i  .dd Index number
+** .dt %N  .dd Real name
+** .dt %t  .dd Alias is tagged (selected)
+** .dt %Y  .dd User-defined tags (labels)
 ** .dt %>X .dd right justify the rest of the string and pad with character "X"
 ** .dt %|X .dd pad to the end of the line with character "X"
 ** .dt %*X .dd soft-fill with character "X" as pad
+** .de
+** .pp
+** For an explanation of "soft-fill", see the $$index_format documentation.
+** .pp
+** The following sequences are deprecated; they will be removed in the future.
+** .dl
+** .dt %c  .dd Use %C instead
+** .dt %n  .dd Use %i instead
+** .dt %r  .dd Use %A instead
 ** .de
 */
 
@@ -3751,20 +3762,27 @@
 ** This variable describes the format of the "query" menu. The
 ** following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
-** .dt %a  .dd   .dd Destination address
-** .dt %c  .dd   .dd Current entry number
-** .dt %e  .dd * .dd Extra information
-** .dt %n  .dd   .dd Destination name
-** .dt %t  .dd   .dd "*" if current entry is tagged, a space otherwise
-** .dt %Y  .dd   .dd Comma-separated tags
-** .dt %>X .dd   .dd Right justify the rest of the string and pad with "X"
-** .dt %|X .dd   .dd Pad to the end of the line with "X"
-** .dt %*X .dd   .dd Soft-fill with character "X" as pad
+** .dt %A  .dd Full Address (Name and Email)
+** .dt %C  .dd Comment
+** .dt %E  .dd Email Address
+** .dt %i  .dd Index number
+** .dt %N  .dd Real name
+** .dt %t  .dd Alias is tagged (selected)
+** .dt %Y  .dd User-defined tags (labels)
+** .dt %>X .dd Right justify the rest of the string and pad with "X"
+** .dt %|X .dd Pad to the end of the line with "X"
+** .dt %*X .dd Soft-fill with character "X" as pad
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
 ** .pp
-** * = can be optionally printed if nonzero, see the $$status_format documentation.
+** The following sequences are deprecated; they will be removed in the future.
+** .dl
+** .dt %a  .dd Use %E instead
+** .dt %c  .dd Use %i instead
+** .dt %e  .dd Use %C instead
+** .dt %n  .dd Use %N instead
+** .de
 */
 
 { "quit", DT_QUAD, MUTT_YES },

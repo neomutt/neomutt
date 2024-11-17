@@ -59,15 +59,19 @@ static const struct ExpandoDefinition AliasFormatDef[] = {
   { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, node_padding_parse },
   { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, node_padding_parse },
   { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  node_padding_parse },
-  { "a", "name",         ED_ALIAS,  ED_ALI_ALIAS,        NULL },
-  { "c", "comment",      ED_ALIAS,  ED_ALI_COMMENT,      NULL },
+  { "a", "alias",        ED_ALIAS,  ED_ALI_ALIAS,        NULL },
+  { "A", "address",      ED_ALIAS,  ED_ALI_ADDRESS,      NULL },
+  { "C", "comment",      ED_ALIAS,  ED_ALI_COMMENT,      NULL },
   { "E", "email",        ED_ALIAS,  ED_ALI_EMAIL,        NULL },
   { "f", "flags",        ED_ALIAS,  ED_ALI_FLAGS,        NULL },
+  { "i", "number",       ED_ALIAS,  ED_ALI_NUMBER,       NULL },
   { "N", "name",         ED_ALIAS,  ED_ALI_NAME,         NULL },
-  { "n", "number",       ED_ALIAS,  ED_ALI_NUMBER,       NULL },
-  { "r", "address",      ED_ALIAS,  ED_ALI_ADDRESS,      NULL },
   { "t", "tagged",       ED_ALIAS,  ED_ALI_TAGGED,       NULL },
   { "Y", "tags",         ED_ALIAS,  ED_ALI_TAGS,         NULL },
+  // Deprecated
+  { "c", NULL,           ED_ALIAS,  ED_ALI_COMMENT,      NULL },
+  { "n", NULL,           ED_ALIAS,  ED_ALI_NUMBER,       NULL },
+  { "r", NULL,           ED_ALIAS,  ED_ALI_ADDRESS,      NULL },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
@@ -83,13 +87,18 @@ static const struct ExpandoDefinition QueryFormatDef[] = {
   { "*", "padding-soft", ED_GLOBAL, ED_GLO_PADDING_SOFT, node_padding_parse },
   { ">", "padding-hard", ED_GLOBAL, ED_GLO_PADDING_HARD, node_padding_parse },
   { "|", "padding-eol",  ED_GLOBAL, ED_GLO_PADDING_EOL,  node_padding_parse },
-  { "a", "address",      ED_ALIAS,  ED_ALI_ADDRESS,      NULL },
-  { "c", "number",       ED_ALIAS,  ED_ALI_NUMBER,       NULL },
-  { "e", "comment",      ED_ALIAS,  ED_ALI_COMMENT,      NULL },
+  { "A", "address",      ED_ALIAS,  ED_ALI_ADDRESS,      NULL },
+  { "C", "comment",      ED_ALIAS,  ED_ALI_COMMENT,      NULL },
   { "E", "email",        ED_ALIAS,  ED_ALI_EMAIL,        NULL },
-  { "n", "name",         ED_ALIAS,  ED_ALI_NAME,         NULL },
+  { "i", "number",       ED_ALIAS,  ED_ALI_NUMBER,       NULL },
+  { "N", "name",         ED_ALIAS,  ED_ALI_NAME,         NULL },
   { "t", "tagged",       ED_ALIAS,  ED_ALI_TAGGED,       NULL },
   { "Y", "tags",         ED_ALIAS,  ED_ALI_TAGS,         NULL },
+  // Deprecated
+  { "a", NULL,           ED_ALIAS,  ED_ALI_EMAIL,        NULL },
+  { "c", NULL,           ED_ALIAS,  ED_ALI_NUMBER,       NULL },
+  { "e", NULL,           ED_ALIAS,  ED_ALI_COMMENT,      NULL },
+  { "n", NULL,           ED_ALIAS,  ED_ALI_NAME,         NULL },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };
@@ -102,7 +111,7 @@ static struct ConfigDef AliasVars[] = {
   { "alias_file", DT_PATH|D_PATH_FILE, IP "~/.neomuttrc", 0, NULL,
     "Save new aliases to this file"
   },
-  { "alias_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3n %f%t %-15a %-56r | %c", IP &AliasFormatDef, NULL,
+  { "alias_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3i %f%t %-15a %-56A | %C%> %Y", IP &AliasFormatDef, NULL,
     "printf-like format string for the alias menu"
   },
   { "sort_alias", DT_SORT|D_SORT_REVERSE, SORT_ALIAS, IP SortAliasMethods, NULL,
@@ -111,7 +120,7 @@ static struct ConfigDef AliasVars[] = {
   { "query_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
     "External command to query and external address book"
   },
-  { "query_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3c %-56a | %e", IP &QueryFormatDef, NULL,
+  { "query_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3i %t %-25N %-25E | %C%> %Y", IP &QueryFormatDef, NULL,
     "printf-like format string for the query menu (address book)"
   },
   { NULL },
