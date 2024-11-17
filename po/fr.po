@@ -960,7 +960,7 @@ msgstr ""
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
-msgstr ""
+msgstr "# Couleurs simples\n"
 
 #: color/dump.c:359
 msgid "# Compose Colors\n"
@@ -1121,7 +1121,7 @@ msgid "Expando parse error: %s"
 msgstr ""
 
 #: compmbox/compress.c:380 compmbox/compress.c:513
-#, c-format
+#, fuzzy, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Impossible d'ajouter sans append-hook ou close-hook : %s"
 
@@ -5760,7 +5760,7 @@ msgid ""
 msgstr ""
 "  -m <format>   Spécifier un format de boîte aux lettres par défaut pour les\n"
 "                répertoires nouvellement créés. Le format doit être un des suivants :\n"
-"                MH, MMDF, Mailir, ou mbox (non sensible à la casse)\n"
+"                MH, MMDF, Mailir, ou mbox (non sensible à la casse)"
 
 #: main.c:336
 msgid "  -n            Do not read the system-wide configuration file"
@@ -5975,7 +5975,7 @@ msgstr "Pas d'entrées marquées"
 
 #: mutt/buffer.c:353
 msgid "Out of memory"
-msgstr ""
+msgstr "Mémoire épuisée"
 
 #: mutt/file.c:787
 #, fuzzy, c-format
@@ -6036,8 +6036,10 @@ msgstr ""
 msgid "open /dev/urandom: %s"
 msgstr "ouvrir /dev/urandom: %s"
 
+# TODO: Clarify if this is "read" past tense or "read" verb
 #: mutt/random.c:94
 #, c-format
+#, fuzzy
 msgid "read /dev/urandom: %s"
 msgstr "read /dev/urandom: %s"
 
@@ -6095,7 +6097,7 @@ msgstr ""
 
 # , c-format
 #: mutt_logging.c:275
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Valeur invalide pour l'option %s : \"%s\""
 
@@ -6103,11 +6105,12 @@ msgstr "Valeur invalide pour l'option %s : \"%s\""
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Erreur : Impossible de charger l'interpréteur lua"
 
+# TODO: need more context, why does this english show "source" twice?
 # , c-format
 #: mutt_lua.c:517
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Impossible de verrouiller %s\n"
+msgstr "Impossible de charger : %s\n"
 
 # , c-format
 #: mutt_mailbox.c:255
@@ -6119,6 +6122,7 @@ msgstr "Nouveau(x) message(s) dans "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL n'est pas disponible, impossible de se connecter à %s"
 
+# TODO: will the 'last-' here be in english?
 #: mutt_thread.c:113
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
@@ -7488,9 +7492,10 @@ msgstr "Descriptions en cours de chargement..."
 msgid "Checking for new newsgroups..."
 msgstr "Recherche de nouveaux messages..."
 
+# TODO: what is an article in this context?
 #: nntp/nntp.c:2323
 msgid "Unable to find child articles because server does not support XPAT command"
-msgstr ""
+msgstr "Impossible de trouver d'articles enfant parce que le serveur ne prend pas en charge des commandes XPAT"
 
 #: nntp/nntp.c:2400
 #, fuzzy, c-format
@@ -7516,7 +7521,7 @@ msgstr ""
 #. They should not be translated.
 #: notmuch/config.c:95 notmuch/notmuch.c:321
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
-msgstr ""
+msgstr "Valeur de nm_query_window_timebase non valide (les bonnes valeurs sont : hour, day, week, month, year)"
 
 # , c-format
 #: notmuch/db.c:168
@@ -7527,8 +7532,9 @@ msgstr "Attente du verrouillage fcntl... %d"
 #: notmuch/db.c:188
 #, c-format
 msgid "Can't open notmuch database: %s: %s"
-msgstr ""
+msgstr "Impossible d'ouvrir la base de données notmuch : %s : %s"
 
+# TODO: Get context
 #: notmuch/db.c:189
 #, fuzzy
 msgid "unknown reason"
@@ -7570,12 +7576,13 @@ msgstr[1] ""
 #: notmuch/notmuch.c:2388
 #, fuzzy
 msgid "Can't write to virtual folder"
-msgstr "Impossible d'ouvrir la corbeille"
+msgstr "Impossible d'écrire dans un répertoire virtuel"
 
+# TODO: Is the query type the problem, or the query itself?
 #: notmuch/query.c:116
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr ""
+msgstr "Échec pendant l'analyse de la requête notmuch de type : %s"
 
 #: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
 #: pager/dlg_pager.c:111
@@ -7589,7 +7596,7 @@ msgstr "PgSuiv"
 
 #: pager/dlg_pager.c:98
 msgid "View Attachm."
-msgstr "Voir attach."
+msgstr "Voir pièce j."
 
 #: pager/dlg_pager.c:101 pager/dlg_pager.c:116
 msgid "Next"
@@ -7625,10 +7632,11 @@ msgstr "Il n'y a plus de texte cité"
 msgid "Help is currently being shown"
 msgstr "L'aide est actuellement affichée"
 
+# TODO: find out what is being saved? gender agreement may need to change
 #: pager/functions.c:1045
 #, c-format
 msgid "Saved to: %s"
-msgstr ""
+msgstr "Enregistré sous : %s"
 
 #. L10N: Status bar message: the entire email is visible in the pager
 #. L10N: Status bar message: all the emails are visible in the index
@@ -7689,7 +7697,7 @@ msgstr "%ld%%"
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #: pager/pbar.c:123 status.c:380
 msgid "end"
-msgstr ""
+msgstr "fin"
 
 # , c-format
 #: parse/rc.c:89
@@ -7718,7 +7726,7 @@ msgstr "Impossible de définir une variable avec la commande '%s'"
 
 #: parse/set.c:582
 msgid "'+' and '-' must be followed by '='"
-msgstr ""
+msgstr "'+' et '-' doit être suivis par '='"
 
 #: parse/set.c:590
 msgid "Can't use prefix when setting a variable"
@@ -7903,7 +7911,7 @@ msgstr "Erreur. Préservation du fichier temporaire : %s"
 
 #: pattern/exec.c:919
 msgid "error: server custom search only supported with IMAP"
-msgstr ""
+msgstr "erreur : la recherche personnalisée est prise en charge seulement avec IMAP"
 
 #. L10N: Pattern Completion Menu description for ~A
 #: pattern/flags.c:44
@@ -7988,7 +7996,7 @@ msgstr "messages dont le Message-ID correspond à EXPR"
 #. L10N: Pattern Completion Menu description for ~I
 #: pattern/flags.c:92
 msgid "messages whose Message-ID is included in the results returned from an external search program"
-msgstr ""
+msgstr "message dont le Message-ID est compris dans les résultats reçus d'un logiciel de recherche externe"
 
 #. L10N: Pattern Completion Menu description for ~k
 #: pattern/flags.c:95
@@ -8126,7 +8134,7 @@ msgstr "messages dont l'en-tête X-Label correspond à EXPR"
 #. L10N: Pattern Completion Menu description for ~Y
 #: pattern/flags.c:173
 msgid "messages whose tags match EXPR"
-msgstr ""
+msgstr "messages dont les étiquettes correspondent à EXPR"
 
 #. L10N: Pattern Completion Menu description for ~z
 #: pattern/flags.c:176
@@ -8626,7 +8634,7 @@ msgstr "Pas de newsgroup spécifié"
 
 #: send/send.c:2810
 msgid "Missing encryption key; mail not sent"
-msgstr ""
+msgstr "Clé de chiffrement non trouvée ; message non envoyé"
 
 #: send/send.c:2834 send/smtp.c:263
 msgid "Sending message..."
