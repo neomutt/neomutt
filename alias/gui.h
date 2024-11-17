@@ -71,9 +71,11 @@ struct AliasMenuData
 enum ExpandoDataAlias
 {
   ED_ALI_ADDRESS = 1,          ///< Alias.addr
+  ED_ALI_ALIAS,                ///< Alias.name
   ED_ALI_COMMENT,              ///< Alias.comment
+  ED_ALI_EMAIL,                ///< Alias.addr.mailbox
   ED_ALI_FLAGS,                ///< Alias.flags
-  ED_ALI_NAME,                 ///< Alias.name
+  ED_ALI_NAME,                 ///< Alias.addr.personal
   ED_ALI_NUMBER,               ///< AliasView.num
   ED_ALI_TAGGED,               ///< AliasView.tagged
   ED_ALI_TAGS,                 ///< Alias.tags

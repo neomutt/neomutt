@@ -137,6 +137,26 @@ void alias_c(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
+ * alias_e - Alias: Email Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void alias_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &alias->addr, entries)
+  {
+    struct Address *next = TAILQ_NEXT(a, entries);
+
+    buf_add_printf(buf, "<%s>", buf_string(a->mailbox));
+    if (next)
+      buf_addstr(buf, ", ");
+  }
+}
+
+/**
  * alias_f_num - Alias: Flags - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
 long alias_f_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
@@ -166,6 +186,26 @@ long alias_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags fla
   const struct AliasView *av = data;
 
   return av->num + 1;
+}
+
+/**
+ * alias_N - Alias: Personal Name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void alias_N(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &alias->addr, entries)
+  {
+    struct Address *next = TAILQ_NEXT(a, entries);
+
+    buf_addstr(buf, buf_string(a->personal));
+    if (next)
+      buf_addstr(buf, ", ");
+  }
 }
 
 /**
@@ -623,11 +663,13 @@ done:
  */
 const struct ExpandoRenderData AliasRenderData[] = {
   // clang-format off
-  { ED_ALIAS,  ED_ALI_NAME,    alias_a,     NULL },
-  { ED_ALIAS,  ED_ALI_COMMENT, alias_c,     NULL },
-  { ED_ALIAS,  ED_ALI_FLAGS,   alias_f,     alias_f_num },
-  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        alias_n_num },
   { ED_ALIAS,  ED_ALI_ADDRESS, alias_r,     NULL },
+  { ED_ALIAS,  ED_ALI_ALIAS,   alias_a,     NULL },
+  { ED_ALIAS,  ED_ALI_COMMENT, alias_c,     NULL },
+  { ED_ALIAS,  ED_ALI_EMAIL,   alias_e,     NULL },
+  { ED_ALIAS,  ED_ALI_FLAGS,   alias_f,     alias_f_num },
+  { ED_ALIAS,  ED_ALI_NAME,    alias_N,     NULL },
+  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        alias_n_num },
   { ED_ALIAS,  ED_ALI_TAGGED,  alias_t,     alias_t_num },
   { ED_ALIAS,  ED_ALI_TAGS,    alias_Y,     NULL },
   { -1, -1, NULL, NULL },

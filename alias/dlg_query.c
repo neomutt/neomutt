@@ -140,7 +140,7 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
 }
 
 /**
- * query_a - Query: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * query_a - Query: Full Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
              struct Buffer *buf)
@@ -175,6 +175,26 @@ void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 }
 
 /**
+ * query_E - Query: Email Address Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+void query_E(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
+             struct Buffer *buf)
+{
+  const struct AliasView *av = data;
+  const struct Alias *alias = av->alias;
+
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &alias->addr, entries)
+  {
+    struct Address *next = TAILQ_NEXT(a, entries);
+
+    buf_add_printf(buf, "<%s>", buf_string(a->mailbox));
+    if (next)
+      buf_addstr(buf, ", ");
+  }
+}
+
+/**
  * query_n - Query: Name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
 void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
@@ -183,8 +203,15 @@ void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct AliasView *av = data;
   const struct Alias *alias = av->alias;
 
-  const char *s = alias->name;
-  buf_strcpy(buf, s);
+  struct Address *a = NULL;
+  TAILQ_FOREACH(a, &alias->addr, entries)
+  {
+    struct Address *next = TAILQ_NEXT(a, entries);
+
+    buf_addstr(buf, buf_string(a->personal));
+    if (next)
+      buf_addstr(buf, ", ");
+  }
 }
 
 /**
@@ -626,9 +653,10 @@ done:
 const struct ExpandoRenderData QueryRenderData[] = {
   // clang-format off
   { ED_ALIAS,  ED_ALI_ADDRESS, query_a,     NULL },
-  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
   { ED_ALIAS,  ED_ALI_COMMENT, query_e,     NULL },
+  { ED_ALIAS,  ED_ALI_EMAIL,   query_E,     NULL },
   { ED_ALIAS,  ED_ALI_NAME,    query_n,     NULL },
+  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
   { ED_ALIAS,  ED_ALI_TAGGED,  query_t,     query_t_num },
   { ED_ALIAS,  ED_ALI_TAGS,    query_Y,     NULL },
   { -1, -1, NULL, NULL },
