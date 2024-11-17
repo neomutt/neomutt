@@ -148,11 +148,7 @@ void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   const struct AliasView *av = data;
   const struct Alias *alias = av->alias;
 
-  struct Buffer *addrs = buf_pool_get();
-  mutt_addrlist_write(&alias->addr, addrs, true);
-
-  buf_printf(buf, "<%s>", buf_string(addrs));
-  buf_pool_release(&addrs);
+  mutt_addrlist_write(&alias->addr, buf, true);
 }
 
 /**
@@ -298,6 +294,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   if (verbose)
     mutt_message(_("Waiting for response..."));
 
+  struct Buffer *addr = buf_pool_get();
   /* The query protocol first reads one NL-terminated line. If an error
    * occurs, this is assumed to be an error message. Otherwise it's ignored. */
   msg = mutt_file_read_line(msg, &msglen, fp, NULL, MUTT_RL_NO_FLAGS);
@@ -313,8 +310,6 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
 
     struct Alias *alias = alias_new();
 
-    mutt_addrlist_parse(&alias->addr, tok);
-
     if (next_tok)
     {
       tok = next_tok;
@@ -322,12 +317,19 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
       if (next_tok)
         *next_tok++ = '\0';
 
-      alias->name = mutt_str_dup(tok);
+      buf_printf(addr, "%s <%s>", tok, buf);
+      mutt_addrlist_parse(&alias->addr, buf_string(addr));
+
       parse_alias_comments(alias, next_tok);
+    }
+    else
+    {
+      mutt_addrlist_parse(&alias->addr, buf); // Email address
     }
 
     TAILQ_INSERT_TAIL(al, alias, entries);
   }
+  buf_pool_release(&addr);
 
   FREE(&buf);
   mutt_file_fclose(&fp);

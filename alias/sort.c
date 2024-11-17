@@ -170,7 +170,16 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
   if (!ava || ARRAY_EMPTY(ava))
     return;
 
-  const short c_sort_alias = cs_subset_sort(sub, "sort_alias");
+  short c_sort_alias = cs_subset_sort(sub, "sort_alias");
+  if (c_sort_alias == SORT_ALIAS)
+  {
+    struct AliasView *av = ARRAY_GET(ava, 0);
+    struct Alias *a = av->alias;
+
+    if (!a->name) // We've got a Query
+      c_sort_alias = SORT_ADDRESS;
+  }
+
   bool sort_reverse = (c_sort_alias & SORT_REVERSE);
   ARRAY_SORT(ava, alias_get_sort_function(c_sort_alias), &sort_reverse);
 
