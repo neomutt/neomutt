@@ -673,7 +673,7 @@ msgstr "erreur lors de la création du contexte GPGME : %s"
 #. autocrypt account.
 #: autocrypt/gpgme.c:178
 msgid "Generating autocrypt key..."
-msgstr "Génération de la clef autocrypt..."
+msgstr "Génération de la clé autocrypt..."
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
@@ -689,14 +689,14 @@ msgstr "Erreur à l'export de la clé : %s"
 #: autocrypt/gpgme.c:255
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr "La clef %s n'est pas utilisable avec autocrypt"
+msgstr "La clé %s n'est pas utilisable avec autocrypt"
 
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
 #: autocrypt/gpgme.c:287
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr "(c)réer une nouvelle, ou (s)électionner une clef GPG existante ?"
+msgstr "(c)réer une nouvelle, ou (s)électionner une clé GPG existante ?"
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
@@ -708,7 +708,7 @@ msgstr "cs"
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:302
 msgid "Create a new GPG key for this account, instead?"
-msgstr "Plutôt créer une nouvelle clef GPG pour ce compte ?"
+msgstr "Plutôt créer une nouvelle clé GPG pour ce compte ?"
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
 #. This error occurs if the version number is too high.
@@ -2381,6 +2381,7 @@ msgstr "darosintcpl"
 msgid "Shell command: "
 msgstr "Commande shell : "
 
+# TODO: find out where the %d things came from? Can I do this within github?
 # , c-format
 #. L10N: Progress meter message when copying tagged messages
 #: external.c:804
@@ -2557,7 +2558,6 @@ msgstr "joindre des fichiers à ce message"
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_MESSAGE
 #. Compose Dialog: <op_attachment_attach_message>
 #: gui/opcodes.h:46
-#, fuzzy
 msgid "attach messages to this message"
 msgstr "joindre des messages à ce message"
 
@@ -2656,21 +2656,19 @@ msgstr "regrouper les pièces jointes marquées comme 'multipart/multilingual'"
 #: gui/opcodes.h:93
 #, fuzzy
 msgid "group tagged attachments as 'multipart/related'"
-msgstr "Regrouper les pièces jointes marquées comme 'multipart/alternative'"
+msgstr "regrouper les pièces jointes marquées comme 'multipart/alternative'"
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_DOWN
 #. Compose Dialog: <op_attachment_move_down>
 #: gui/opcodes.h:96
-#, fuzzy
 msgid "move an attachment down in the attachment list"
-msgstr "Envoyer l'attachement avec le nom : "
+msgstr "déplacer une pièce jointe vers le bas dans la liste des pièces jointes"
 
 #. L10N: Help screen description for OP_ATTACHMENT_MOVE_UP
 #. Compose Dialog: <op_attachment_move_up>
 #: gui/opcodes.h:99
-#, fuzzy
 msgid "move an attachment up in the attachment list"
-msgstr "Envoyer l'attachement avec le nom : "
+msgstr "déplacer une pièce jointe vers le haut dans la liste des pièce jointes"
 
 #. L10N: Help screen description for OP_ATTACHMENT_NEW_MIME
 #. Compose Dialog: <op_attachment_new_mime>
@@ -2775,7 +2773,7 @@ msgstr "forcer la visualisation d'une pièce jointe en utilisant le fichier mail
 #: gui/opcodes.h:145
 #, fuzzy
 msgid "view attachment in pager using copiousoutput mailcap"
-msgstr "forcer la visualisation d'un attachment en utilisant le fichier mailcap"
+msgstr "forcer la visualisation d'une pièce jointe en utilisant le fichier mailcap"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW_TEXT
 #. Attach Dialog: <op_attachment_view_text>
@@ -3269,7 +3267,7 @@ msgstr "modifier l'indicateur 'important' d'un message"
 #: gui/opcodes.h:410
 #, fuzzy
 msgid "followup to newsgroup"
-msgstr "Suivi de la discussion à %s%s ?"
+msgstr "suivi de la discussion à %s%s ?"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
@@ -5326,7 +5324,7 @@ msgstr "Pas de Message-Id. Impossible de réaliser l'opération."
 #: index/functions.c:2674
 #, fuzzy
 msgid "No deleted messages found in the thread"
-msgstr "effacer tous les messages dans la discussion"
+msgstr "Pas de messages effacés trouvés dans la discussion"
 
 # , c-format
 #: index/functions.c:2699
@@ -5340,12 +5338,12 @@ msgstr "L'article n'a pas de référence à un parent"
 #: index/functions.c:2734
 #, fuzzy
 msgid "Message is not visible in limited view"
-msgstr "Le message racine n'est pas visible dans cette vue limitée"
+msgstr "Le message n'est pas visible dans cette vue limitée"
 
 #: index/functions.c:2739
 #, fuzzy, c-format
 msgid "Fetching %s from server..."
-msgstr "Effacement des messages sur le serveur..."
+msgstr "Téléchargement de %s du serveur..."
 
 #: index/functions.c:2752 nntp/nntp.c:2719
 #, c-format
@@ -6010,15 +6008,15 @@ msgstr "Impossible d'ouvrir le fichier journal : %s"
 
 # , c-format
 #: mutt/logging.c:139
-#, fuzzy, c-format
+#, c-format
 msgid "Debugging at level %d to file '%s'"
-msgstr "Débuggage au niveau %d.\n"
+msgstr "Débogage au niveau %d sur le fichier '%s'"
 
 # , c-format
 #: mutt/logging.c:193
-#, fuzzy, c-format
+#, c-format
 msgid "Logging at level %d to file '%s'"
-msgstr "Débuggage au niveau %d.\n"
+msgstr "Débogage au niveau %d sur le fichier '%s'"
 
 # , c-format
 #: mutt/path.c:357
@@ -6756,7 +6754,7 @@ msgstr "Recherche des clés correspondant à \"%s\"..."
 #: ncrypt/crypt_gpgme.c:3515 ncrypt/pgpkey.c:248 ncrypt/smime.c:708
 #, c-format
 msgid "No matching keys found for \"%s\""
-msgstr "Aucune clef compatible trouvée pour \"%s\""
+msgstr "Aucune clé compatible trouvée pour \"%s\""
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:3569 ncrypt/pgp.c:1496
