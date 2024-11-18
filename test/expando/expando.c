@@ -210,5 +210,34 @@ void test_expando_expando(void)
       buf_pool_release(&err);
       expando_free(&exp);
     }
+
+    {
+      const char *str = "%a %a %a %a %-10.10a";
+
+      struct Buffer *err = buf_pool_get();
+      struct Expando *exp = NULL;
+
+      exp = expando_parse(str, TestFormatDef, err);
+      TEST_CHECK(exp != NULL);
+
+      struct Buffer *buf = buf_pool_get();
+
+      for (int width = 40; width >= 0; width--)
+      {
+        TEST_CASE_("%d", width);
+        buf_reset(buf);
+        int expected = MIN(34, width);
+
+        int rc = expando_render(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, width, buf);
+        TEST_CHECK(rc == expected);
+        TEST_MSG("Actual:   %d", rc);
+        TEST_MSG("Expected: %d", expected);
+        TEST_MSG(">>%s<<", buf_string(buf));
+      }
+
+      expando_free(&exp);
+      buf_pool_release(&buf);
+      buf_pool_release(&err);
+    }
   }
 }
