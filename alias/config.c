@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "expando/lib.h"
+#include "expando.h"
 #include "gui.h"
 
 /**

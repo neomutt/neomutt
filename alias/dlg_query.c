@@ -95,8 +95,6 @@
 #include "gui.h"
 #include "mutt_logging.h"
 
-const struct ExpandoRenderData QueryRenderData[];
-
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
   // clang-format off
@@ -137,114 +135,6 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
   }
 
   return true;
-}
-
-/**
- * query_a - Query: Full Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  mutt_addrlist_write(&alias->addr, buf, true);
-}
-
-/**
- * query_c_num - Query: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long query_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-
-  return av->num + 1;
-}
-
-/**
- * query_e - Query: Extra information - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  const char *s = alias->comment;
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_E - Query: Email Address Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_E(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, &alias->addr, entries)
-  {
-    struct Address *next = TAILQ_NEXT(a, entries);
-
-    buf_add_printf(buf, "<%s>", buf_string(a->mailbox));
-    if (next)
-      buf_addstr(buf, ", ");
-  }
-}
-
-/**
- * query_n - Query: Name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  struct Address *a = NULL;
-  TAILQ_FOREACH(a, &alias->addr, entries)
-  {
-    struct Address *next = TAILQ_NEXT(a, entries);
-
-    buf_addstr(buf, buf_string(a->personal));
-    if (next)
-      buf_addstr(buf, ", ");
-  }
-}
-
-/**
- * query_t_num - Query: Tagged char - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long query_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-  return av->is_tagged;
-}
-
-/**
- * query_t - Query: Tagged char - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  // NOTE(g0mb4): use $flag_chars?
-  const char *s = av->is_tagged ? "*" : " ";
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_Y - Query: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  alias_tags_to_buffer(&av->alias->tags, buf);
 }
 
 /**
@@ -644,21 +534,3 @@ done:
   aliaslist_clear(&al);
   buf_pool_release(&buf);
 }
-
-/**
- * QueryRenderData - Callbacks for Query Expandos
- *
- * @sa QueryFormatDef, ExpandoDataAlias, ExpandoDataGlobal
- */
-const struct ExpandoRenderData QueryRenderData[] = {
-  // clang-format off
-  { ED_ALIAS,  ED_ALI_ADDRESS, query_a,     NULL },
-  { ED_ALIAS,  ED_ALI_COMMENT, query_e,     NULL },
-  { ED_ALIAS,  ED_ALI_EMAIL,   query_E,     NULL },
-  { ED_ALIAS,  ED_ALI_NAME,    query_n,     NULL },
-  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
-  { ED_ALIAS,  ED_ALI_TAGGED,  query_t,     query_t_num },
-  { ED_ALIAS,  ED_ALI_TAGS,    query_Y,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};
