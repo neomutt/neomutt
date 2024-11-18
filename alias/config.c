@@ -41,8 +41,9 @@
  */
 static const struct Mapping SortAliasMethods[] = {
   // clang-format off
-  { "address",  SORT_ADDRESS },
   { "alias",    SORT_ALIAS },
+  { "email",    SORT_EMAIL },
+  { "name",     SORT_NAME },
   { "unsorted", SORT_ORDER },
   { NULL, 0 },
   // clang-format on

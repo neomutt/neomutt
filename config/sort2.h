@@ -53,6 +53,8 @@ enum SortType
   SORT_PATH     = 18, ///< Sort by the folder's path
   SORT_LABEL    = 19, ///< Sort by the emails label
   SORT_DESC     = 20, ///< Sort by the folder's description
+  SORT_NAME     = 21, ///< Sort by the alias name
+  SORT_EMAIL    = 22, ///< Sort by the email address
 
   SORT_MAX,
 };
