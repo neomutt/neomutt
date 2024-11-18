@@ -4100,9 +4100,21 @@ alternates -group me -group work address3
         <arg choice="opt" rep="repeat">
           <replaceable class="parameter">, address</replaceable>
         </arg>
-        <arg choice="opt">
-          <replaceable class="parameter"># comment</replaceable>
-        </arg>
+        <group choice="opt">
+          <arg choice="plain">
+            <replaceable class="parameter"># </replaceable>
+          </arg>
+          <group choice="opt">
+            <arg choice="plain">
+              <replaceable class="parameter">comments</replaceable>
+            </arg>
+          </group>
+          <group choice="opt">
+            <arg choice="plain">
+              <replaceable class="parameter">tags:...</replaceable>
+            </arg>
+          </group>
+        </group>
         <command>unalias</command>
         <arg choice="opt" rep="repeat">
           <option>-group</option>
@@ -4139,14 +4151,21 @@ alternates -group me -group work address3
       </para>
 
 <screen>
-<emphasis role="comment"># Some aliases, one with a comment</emphasis>
-alias alan   Alan Jones &lt;alan@example.com&gt;
-alias briony Briony Williams &lt;bw@example.com&gt;
-alias jim    James Smith &lt;js@example.com&gt; <emphasis role="comment"># Pointy-haired boss</emphasis>
+<emphasis role="comment"># Some aliases, with comments and tags</emphasis>
+alias alan   Alan Jones &lt;alan@example.com&gt;      # Al tags:friends
+alias briony Briony Williams &lt;bw@example.com&gt;   # tags:friends
+alias jim    James Smith &lt;js@example.com&gt;       # Pointy-haired boss
 
 <emphasis role="comment"># An alias that references two other aliases</emphasis>
 alias friends alan, briony
 </screen>
+
+      <para>
+        Aliases can given tags (labels) which can be used for searching or
+        limiting. Tags consist of comma-separated strings after a comment of
+        <literal>tags:</literal>.  In the Address Book, you can search for a
+        tag with <literal>~Y friends</literal> or limit the view to friends.
+      </para>
 
       <para>
       To remove an alias or aliases (<quote>*</quote> means all aliases):
