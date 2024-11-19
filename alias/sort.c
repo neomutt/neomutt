@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
+#include "sort.h"
 #include "alias.h"
 #include "gui.h"
 
@@ -181,11 +182,11 @@ static int alias_sort_name(const void *a, const void *b, void *sdata)
 }
 
 /**
- * alias_sort_unsort - Compare two Aliases by their original configuration position - Implements ::sort_t - @ingroup sort_api
+ * alias_sort_unsorted - Compare two Aliases by their original configuration position - Implements ::sort_t - @ingroup sort_api
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_unsort(const void *a, const void *b, void *sdata)
+static int alias_sort_unsorted(const void *a, const void *b, void *sdata)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
@@ -203,23 +204,23 @@ static int alias_sort_unsort(const void *a, const void *b, void *sdata)
 
 /**
  * alias_get_sort_function - Sorting function decision logic
- * @param sort Sort method, e.g. #SORT_ALIAS
+ * @param sort Sort method, e.g. #ALIAS_SORT_ALIAS
  */
 static sort_t alias_get_sort_function(short sort)
 {
   switch ((sort & SORT_MASK))
   {
-    case SORT_ALIAS:
+    case ALIAS_SORT_ALIAS:
       return alias_sort_alias;
 
-    case SORT_EMAIL:
+    case ALIAS_SORT_EMAIL:
       return alias_sort_email;
 
-    case SORT_NAME:
+    case ALIAS_SORT_NAME:
       return alias_sort_name;
 
-    case SORT_ORDER:
-      return alias_sort_unsort;
+    case ALIAS_SORT_UNSORTED:
+      return alias_sort_unsorted;
 
     default:
       return alias_sort_alias;
@@ -237,13 +238,13 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
     return;
 
   short c_sort_alias = cs_subset_sort(sub, "sort_alias");
-  if (c_sort_alias == SORT_ALIAS)
+  if (c_sort_alias == ALIAS_SORT_ALIAS)
   {
     struct AliasView *av = ARRAY_GET(ava, 0);
     struct Alias *a = av->alias;
 
     if (!a->name) // We've got a Query
-      c_sort_alias = SORT_ADDRESS;
+      c_sort_alias = ALIAS_SORT_NAME;
   }
 
   bool sort_reverse = (c_sort_alias & SORT_REVERSE);

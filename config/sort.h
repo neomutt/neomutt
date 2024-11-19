@@ -40,19 +40,16 @@ enum SortType
   SORT_RECEIVED =  7, ///< Sort by when the message were delivered locally
   SORT_TO       =  8, ///< Sort by the email's To field
   SORT_SCORE    =  9, ///< Sort by the email's score
-  SORT_ALIAS    = 10, ///< Sort by email alias
-  SORT_ADDRESS  = 11, ///< Sort by email address
-  SORT_KEYID    = 12, ///< Sort by the encryption key's ID
-  SORT_TRUST    = 13, ///< Sort by encryption key's trust level
-  SORT_SPAM     = 14, ///< Sort by the email's spam score
-  SORT_COUNT    = 15, ///< Sort by number of emails in a folder
-  SORT_UNREAD   = 16, ///< Sort by the number of unread emails
-  SORT_FLAGGED  = 17, ///< Sort by the number of flagged emails
-  SORT_PATH     = 18, ///< Sort by the folder's path
-  SORT_LABEL    = 19, ///< Sort by the emails label
-  SORT_DESC     = 20, ///< Sort by the folder's description
-  SORT_NAME     = 21, ///< Sort by the alias name
-  SORT_EMAIL    = 22, ///< Sort by the email address
+  SORT_ADDRESS  = 10, ///< Sort by email address
+  SORT_KEYID    = 11, ///< Sort by the encryption key's ID
+  SORT_TRUST    = 12, ///< Sort by encryption key's trust level
+  SORT_SPAM     = 13, ///< Sort by the email's spam score
+  SORT_COUNT    = 14, ///< Sort by number of emails in a folder
+  SORT_UNREAD   = 15, ///< Sort by the number of unread emails
+  SORT_FLAGGED  = 16, ///< Sort by the number of flagged emails
+  SORT_PATH     = 17, ///< Sort by the folder's path
+  SORT_LABEL    = 18, ///< Sort by the emails label
+  SORT_DESC     = 19, ///< Sort by the folder's description
 
   SORT_MAX,
 };

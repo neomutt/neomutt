@@ -4941,7 +4941,7 @@
 ** examples, https://neomutt.org/feature/use-threads
 */
 
-{ "sort_alias", DT_SORT, SORT_ALIAS },
+{ "sort_alias", DT_SORT, ALIAS_SORT_ALIAS },
 /*
 ** .pp
 ** Specifies how the entries in the "alias" menu are sorted.  The

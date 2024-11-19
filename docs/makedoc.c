@@ -1062,10 +1062,25 @@ static void pretty_default(char *t, size_t l, const char *s, int type)
     }
     case DT_SORT:
     {
-      /* heuristic! */
-      if (strncmp(s, "SORT_", 5) != 0)
+      const char *name = s;
+      // heuristic! A constant of SORT_XYZ means "xyz"
+      if (strncmp(s, "SORT_", 5) == 0)
+      {
+        name = s + 5;
+      }
+      else
+      {
+        // Or ABC_SORT_XYZ means "xyz"
+        const char *underscore = strchr(s, '_');
+        if ((underscore) && (strncmp(underscore + 1, "SORT_", 5) == 0))
+        {
+          name = underscore + 6;
+        }
+      }
+
+      if (name == s)
         fprintf(stderr, "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
-      strncpy(t, s + 5, l);
+      strncpy(t, name, l);
       for (; *t; t++)
         *t = tolower((unsigned char) *t);
       break;

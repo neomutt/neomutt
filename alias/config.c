@@ -35,16 +35,17 @@
 #include "config/lib.h"
 #include "expando/lib.h"
 #include "expando.h"
+#include "sort.h"
 
 /**
- * SortAliasMethods - Sort methods for email aliases
+ * AliasSortMethods - Sort methods for email aliases
  */
-static const struct Mapping SortAliasMethods[] = {
+static const struct Mapping AliasSortMethods[] = {
   // clang-format off
-  { "alias",    SORT_ALIAS },
-  { "email",    SORT_EMAIL },
-  { "name",     SORT_NAME },
-  { "unsorted", SORT_ORDER },
+  { "alias",    ALIAS_SORT_ALIAS },
+  { "email",    ALIAS_SORT_EMAIL },
+  { "name",     ALIAS_SORT_NAME },
+  { "unsorted", ALIAS_SORT_UNSORTED },
   { NULL, 0 },
   // clang-format on
 };
@@ -115,7 +116,7 @@ static struct ConfigDef AliasVars[] = {
   { "alias_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3i %f%t %-15a %-56A | %C%> %Y", IP &AliasFormatDef, NULL,
     "printf-like format string for the alias menu"
   },
-  { "sort_alias", DT_SORT|D_SORT_REVERSE, SORT_ALIAS, IP SortAliasMethods, NULL,
+  { "sort_alias", DT_SORT|D_SORT_REVERSE, ALIAS_SORT_ALIAS, IP AliasSortMethods, NULL,
     "Sort method for the alias menu"
   },
   { "query_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,

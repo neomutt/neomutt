@@ -50,6 +50,7 @@
 #include "alias.h"
 #include "functions.h"
 #include "gui.h"
+#include "sort.h"
 #endif
 
 // clang-format off
@@ -405,19 +406,19 @@ static int op_sort(struct AliasMenuData *mdata, int op)
       break;
 
     case 1: /* (a)lias */
-      sort = SORT_ALIAS;
+      sort = ALIAS_SORT_ALIAS;
       break;
 
     case 2: /* (n)ame */
-      sort = SORT_NAME;
+      sort = ALIAS_SORT_NAME;
       break;
 
     case 3: /* (e)mail */
-      sort = SORT_EMAIL;
+      sort = ALIAS_SORT_EMAIL;
       break;
 
     case 4: /* (u)nsorted */
-      sort = SORT_ORDER;
+      sort = ALIAS_SORT_UNSORTED;
       break;
   }
 
