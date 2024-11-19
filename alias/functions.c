@@ -389,7 +389,7 @@ static int op_search(struct AliasMenuData *mdata, int op)
  */
 static int op_sort(struct AliasMenuData *mdata, int op)
 {
-  int sort = cs_subset_sort(mdata->sub, "sort_alias");
+  int sort = cs_subset_sort(mdata->sub, "alias_sort");
   bool resort = true;
   bool reverse = (op == OP_SORT_REVERSE);
 
@@ -427,7 +427,7 @@ static int op_sort(struct AliasMenuData *mdata, int op)
     sort |= reverse ? SORT_REVERSE : 0;
 
     // This will trigger a WA_RECALC
-    cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
+    cs_subset_str_native_set(mdata->sub, "alias_sort", sort, NULL);
   }
 
   return FR_SUCCESS;

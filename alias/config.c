@@ -116,7 +116,7 @@ static struct ConfigDef AliasVars[] = {
   { "alias_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3i %f%t %-15a %-56A | %C%> %Y", IP &AliasFormatDef, NULL,
     "printf-like format string for the alias menu"
   },
-  { "sort_alias", DT_SORT|D_SORT_REVERSE, ALIAS_SORT_ALIAS, IP AliasSortMethods, NULL,
+  { "alias_sort", DT_SORT|D_SORT_REVERSE, ALIAS_SORT_ALIAS, IP AliasSortMethods, NULL,
     "Sort method for the alias menu"
   },
   { "query_command", DT_STRING|D_STRING_COMMAND, 0, 0, NULL,
@@ -125,6 +125,9 @@ static struct ConfigDef AliasVars[] = {
   { "query_format", DT_EXPANDO|D_NOT_EMPTY, IP "%3i %t %-25N %-25E | %C%> %Y", IP &QueryFormatDef, NULL,
     "printf-like format string for the query menu (address book)"
   },
+
+  { "sort_alias", DT_SYNONYM, IP "alias_sort", IP "2024-11-19" },
+
   { NULL },
   // clang-format on
 };

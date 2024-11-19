@@ -38,7 +38,7 @@
 /**
  * alias_config_observer - Notification that a Config Variable has changed - Implements ::observer_t - @ingroup observer_api
  *
- * The Address Book Window is affected by changes to `$sort_alias`.
+ * The Address Book Window is affected by changes to `$alias_sort`.
  */
 int alias_config_observer(struct NotifyCallback *nc)
 {
@@ -49,7 +49,7 @@ int alias_config_observer(struct NotifyCallback *nc)
 
   struct EventConfig *ev_c = nc->event_data;
 
-  if (!mutt_str_equal(ev_c->name, "sort_alias") && !mutt_str_equal(ev_c->name, "alias_format") &&
+  if (!mutt_str_equal(ev_c->name, "alias_sort") && !mutt_str_equal(ev_c->name, "alias_format") &&
       !mutt_str_equal(ev_c->name, "query_format"))
   {
     return 0;

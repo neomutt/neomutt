@@ -237,7 +237,7 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
   if (!ava || ARRAY_EMPTY(ava))
     return;
 
-  short c_sort_alias = cs_subset_sort(sub, "sort_alias");
+  short c_sort_alias = cs_subset_sort(sub, "alias_sort");
   if (c_sort_alias == ALIAS_SORT_ALIAS)
   {
     struct AliasView *av = ARRAY_GET(ava, 0);
