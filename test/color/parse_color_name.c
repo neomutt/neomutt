@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 enum CommandResult parse_color_name(const char *s, struct ColorElement *elem,
                                     struct Buffer *err);
@@ -44,11 +45,11 @@ void test_parse_color_name(void)
   for (int i = 0; tests[i]; i++)
   {
     rc = parse_color_name(tests[i], &elem, err);
-    TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
   }
 
   rc = parse_color_name("junk", &elem, err);
-  TEST_CHECK(rc == MUTT_CMD_WARNING);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
 
   buf_pool_release(&err);
 }

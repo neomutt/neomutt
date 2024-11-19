@@ -70,7 +70,7 @@ void test_buf_concat_path(void)
         }
         else
         {
-          if (!TEST_CHECK(strlen(buf_string(buf)) == 0))
+          if (!TEST_CHECK_NUM_EQ(strlen(buf_string(buf)), 0))
           {
             TEST_MSG("len = %ld", strlen(buf_string(buf)));
           }

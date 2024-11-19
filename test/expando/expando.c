@@ -132,13 +132,13 @@ void test_expando_expando(void)
       struct Buffer *buf = buf_pool_get();
 
       rc = expando_render(NULL, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
-      TEST_CHECK(rc == 0);
+      TEST_CHECK_NUM_EQ(rc, 0);
 
       rc = expando_render(exp, NULL, NULL, MUTT_FORMAT_NO_FLAGS, 80, buf);
-      TEST_CHECK(rc == 0);
+      TEST_CHECK_NUM_EQ(rc, 0);
 
       rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 5);
+      TEST_CHECK_NUM_EQ(rc, 5);
 
       buf_pool_release(&buf);
       buf_pool_release(&err);
@@ -159,7 +159,7 @@ void test_expando_expando(void)
       struct Buffer *buf = buf_pool_get();
 
       rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 30);
+      TEST_CHECK_NUM_EQ(rc, 30);
       TEST_CHECK_STR_EQ(buf_string(buf), "             bbb              ");
 
       buf_pool_release(&buf);
@@ -181,7 +181,7 @@ void test_expando_expando(void)
       struct Buffer *buf = buf_pool_get();
 
       rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 30);
+      TEST_CHECK_NUM_EQ(rc, 30);
       TEST_CHECK_STR_EQ(buf_string(buf), "             BBB              ");
 
       buf_pool_release(&buf);
@@ -203,7 +203,7 @@ void test_expando_expando(void)
       struct Buffer *buf = buf_pool_get();
 
       rc = expando_render(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-      TEST_CHECK(rc == 10);
+      TEST_CHECK_NUM_EQ(rc, 10);
       TEST_CHECK_STR_EQ(buf_string(buf), "       BBB");
 
       buf_pool_release(&buf);

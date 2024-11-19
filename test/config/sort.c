@@ -102,17 +102,9 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Apple = %d", VarApple);
   TEST_MSG("Banana = %d", VarBanana);
 
-  if (!TEST_CHECK(VarApple == EMAIL_SORT_DATE))
-  {
-    TEST_MSG("Expected: %d", EMAIL_SORT_DATE);
-    TEST_MSG("Actual  : %d", VarApple);
-  }
+  TEST_CHECK_NUM_EQ(VarApple, EMAIL_SORT_DATE);
 
-  if (!TEST_CHECK(VarBanana == EMAIL_SORT_SIZE))
-  {
-    TEST_MSG("Expected: %d", EMAIL_SORT_SIZE);
-    TEST_MSG("Actual  : %d", VarBanana);
-  }
+  TEST_CHECK_NUM_EQ(VarBanana, EMAIL_SORT_SIZE);
 
   cs_str_string_set(cs, "Apple", "threads", err);
   cs_str_string_set(cs, "Banana", "score", err);
@@ -126,7 +118,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Apple", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -143,7 +135,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Banana", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -160,7 +152,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_set(cs, "Cherry", "size", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -168,7 +160,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Cherry", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -198,7 +190,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     {
       buf_reset(err);
       rc = cs_str_string_set(cs, name_list[i], map[j].name, err);
-      if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+      if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
       {
         TEST_MSG("%s", buf_string(err));
         return false;
@@ -247,7 +239,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   const char *name = "Damson";
   buf_reset(err);
   int rc = cs_str_string_set(cs, name, "last-date-sent", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -262,7 +254,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "reverse-score", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -277,7 +269,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Tangerine";
   rc = cs_str_string_set(cs, name, "date", err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   rc = cs_str_string_set(cs, name, "size", err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
@@ -295,7 +287,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_SUBJECT, NULL);
   buf_reset(err);
   int rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -306,7 +298,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_THREADS, NULL);
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -339,7 +331,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_DATE | SORT_REVERSE | SORT_LAST, NULL);
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -366,7 +358,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     {
       buf_reset(err);
       rc = cs_str_native_set(cs, name_list[i], map[j].value, err);
-      if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+      if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
       {
         TEST_MSG("%s", buf_string(err));
         return false;
@@ -393,7 +385,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, -1, NULL);
   buf_reset(err);
   rc = cs_str_native_set(cs, name, value, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -430,7 +422,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   name = "Damson";
   buf_reset(err);
   rc = cs_str_native_set(cs, name, (EMAIL_SORT_DATE | SORT_LAST), err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -445,7 +437,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_native_set(cs, name, (EMAIL_SORT_SCORE | SORT_REVERSE), err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -460,7 +452,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Tangerine";
   rc = cs_str_native_set(cs, name, EMAIL_SORT_DATE, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   rc = cs_str_native_set(cs, name, EMAIL_SORT_SIZE, err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
@@ -478,7 +470,7 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_THREADS, NULL);
   buf_reset(err);
   intptr_t value = cs_str_native_get(cs, name, err);
-  if (!TEST_CHECK(value == EMAIL_SORT_THREADS))
+  if (!TEST_CHECK_NUM_EQ(value, EMAIL_SORT_THREADS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -499,7 +491,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   buf_reset(err);
 
   int rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -515,7 +507,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Reset: %s = %d", name, VarMango);
 
   rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -528,7 +520,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Initial: %s = %d", name, VarNectarine);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "size", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   VarNectarine = cs_subset_sort(sub, "Nectarine");
   TEST_MSG("Set: %s = %d", name, VarNectarine);
@@ -546,7 +538,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarNectarine = cs_subset_sort(sub, "Nectarine");
-  if (!TEST_CHECK(VarNectarine == EMAIL_SORT_SIZE))
+  if (!TEST_CHECK_NUM_EQ(VarNectarine, EMAIL_SORT_SIZE))
   {
     TEST_MSG("Value of %s changed", name);
     return false;
@@ -556,11 +548,11 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Tangerine";
   rc = cs_str_reset(cs, name, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   StartupComplete = false;
   rc = cs_str_native_set(cs, name, EMAIL_SORT_SIZE, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
   StartupComplete = true;
 
   rc = cs_str_reset(cs, name, err);
@@ -579,7 +571,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_SUBJECT, NULL);
   buf_reset(err);
   int rc = cs_str_string_set(cs, name, "threads", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -594,7 +586,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_SUBJECT, NULL);
   buf_reset(err);
   rc = cs_str_native_set(cs, name, EMAIL_SORT_THREADS, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -610,7 +602,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_SUBJECT, NULL);
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "threads", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -625,7 +617,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, EMAIL_SORT_SUBJECT, NULL);
   buf_reset(err);
   rc = cs_str_native_set(cs, name, EMAIL_SORT_THREADS, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -706,7 +698,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   cs_str_native_set(cs, parent, EMAIL_SORT_SUBJECT, NULL);
   buf_reset(err);
   int rc = cs_str_string_set(cs, parent, "threads", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -716,7 +708,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set child
   buf_reset(err);
   rc = cs_str_string_set(cs, child, "score", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -726,7 +718,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset child
   buf_reset(err);
   rc = cs_str_reset(cs, child, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -736,7 +728,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset parent
   buf_reset(err);
   rc = cs_str_reset(cs, parent, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;

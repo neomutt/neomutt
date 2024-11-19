@@ -27,6 +27,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "test_common.h"
 
 struct Buffer;
 
@@ -39,5 +40,5 @@ void test_parse_set(void)
 {
   TEST_CASE("parse_set");
   enum CommandResult rc = parse_set(NULL, NULL, 0, NULL);
-  TEST_CHECK(rc == MUTT_CMD_ERROR);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 }

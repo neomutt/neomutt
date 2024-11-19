@@ -28,6 +28,7 @@
 #include "mutt/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 struct ExpandoNode *node_conddate_new(int count, char period, int did, int uid);
 
@@ -115,7 +116,7 @@ void test_expando_node_condbool(void)
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
     rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
-    TEST_CHECK(rc == 1);
+    TEST_CHECK_NUM_EQ(rc, 1);
     node_free(&node);
 
     str = "%<b?x&y>";
@@ -125,7 +126,7 @@ void test_expando_node_condbool(void)
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
     rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     node_free(&node);
 
     str = "%<c?x&y>";
@@ -135,7 +136,7 @@ void test_expando_node_condbool(void)
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
     rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
-    TEST_CHECK(rc == 1);
+    TEST_CHECK_NUM_EQ(rc, 1);
     node_free(&node);
 
     str = "%<d?x&y>";
@@ -145,7 +146,7 @@ void test_expando_node_condbool(void)
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
     rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     node_free(&node);
 
     str = "%<e?x&y>";
@@ -155,7 +156,7 @@ void test_expando_node_condbool(void)
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
     rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     node_free(&node);
 
     buf_pool_release(&buf);

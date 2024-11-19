@@ -24,12 +24,13 @@
 #include "config.h"
 #include "acutest.h"
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_mb_wcwidth(void)
 {
   // int mutt_mb_wcwidth(wchar_t wc);
 
   {
-    TEST_CHECK(mutt_mb_wcwidth('A') == 1);
+    TEST_CHECK_NUM_EQ(mutt_mb_wcwidth('A'), 1);
   }
 }

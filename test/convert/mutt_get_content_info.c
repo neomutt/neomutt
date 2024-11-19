@@ -72,17 +72,17 @@ void test_mutt_get_content_info(void)
   struct Content *content = mutt_get_content_info(buf_string(fname), body, sub);
   TEST_CHECK(content != NULL);
 
-  TEST_CHECK(content->hibin == 0);
+  TEST_CHECK_NUM_EQ(content->hibin, 0);
   TEST_MSG("Check failed: %d == 0", content->hibin);
-  TEST_CHECK(content->lobin == 0);
+  TEST_CHECK_NUM_EQ(content->lobin, 0);
   TEST_MSG("Check failed: %d == 0", content->lobin);
-  TEST_CHECK(content->nulbin == 0);
+  TEST_CHECK_NUM_EQ(content->nulbin, 0);
   TEST_MSG("Check failed: %d == 0", content->nulbin);
-  TEST_CHECK(content->crlf == 1);
+  TEST_CHECK_NUM_EQ(content->crlf, 1);
   TEST_MSG("Check failed: %d == 1", content->crlf);
-  TEST_CHECK(content->ascii == 11);
+  TEST_CHECK_NUM_EQ(content->ascii, 11);
   TEST_MSG("Check failed: %d == 11", content->ascii);
-  TEST_CHECK(content->linemax == 7);
+  TEST_CHECK_NUM_EQ(content->linemax, 7);
   TEST_MSG("Check failed: %d == 7", content->linemax);
   TEST_CHECK(!content->space);
   TEST_MSG("Check failed: %d == 0", content->space);
@@ -92,7 +92,7 @@ void test_mutt_get_content_info(void)
   TEST_MSG("Check failed: %d == 0", content->from);
   TEST_CHECK(!content->dot);
   TEST_MSG("Check failed: %d == 0", content->dot);
-  TEST_CHECK(content->cr == 0);
+  TEST_CHECK_NUM_EQ(content->cr, 0);
   TEST_MSG("Check failed: %d == 0", content->cr);
 
   buf_pool_release(&fname);

@@ -28,6 +28,7 @@
 #include "mutt/lib.h"
 #include "expando/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 struct NodeCondDatePrivate *node_conddate_private_new(int count, char period);
 void node_conddate_private_free(void **ptr);
@@ -151,17 +152,13 @@ void test_expando_node_conddate(void)
       int test_date = now - ((test_dates[i].time * 9) / 10); // 10% newer
 
       int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 1);
-      TEST_MSG("Expected: %d", 1);
-      TEST_MSG("Actual:   %d", rc);
+      TEST_CHECK_NUM_EQ(rc, 1);
       TEST_CHECK(buf_is_empty(buf));
 
       test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
 
       rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 0);
-      TEST_MSG("Expected: %d", 0);
-      TEST_MSG("Actual:   %d", rc);
+      TEST_CHECK_NUM_EQ(rc, 0);
       TEST_CHECK(buf_is_empty(buf));
 
       node_free(&node);
@@ -204,9 +201,7 @@ void test_expando_node_conddate(void)
       int test_date = now - ((test_dates[i].time * 11) / 10); // 10% older
 
       int rc = node_conddate_render(node, TestRenderCallback, buf, 99, &test_date, MUTT_FORMAT_NO_FLAGS);
-      TEST_CHECK(rc == 0);
-      TEST_MSG("Expected: %d", 0);
-      TEST_MSG("Actual:   %d", rc);
+      TEST_CHECK_NUM_EQ(rc, 0);
       TEST_CHECK(buf_is_empty(buf));
 
       node_free(&node);

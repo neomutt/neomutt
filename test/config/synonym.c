@@ -64,7 +64,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   int rc = cs_str_string_set(cs, name, value, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -89,7 +89,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   int rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -110,7 +110,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   int rc = cs_str_native_set(cs, name, (intptr_t) value, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -134,7 +134,7 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   struct ConfigSet *cs = sub->cs;
 
   int rc = cs_str_string_set(cs, name, "tree", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
 
   buf_reset(err);
@@ -161,13 +161,13 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarIlama = cs_subset_string(sub, "Ilama");
   TEST_MSG("Initial: %s = '%s'", name, NONULL(VarIlama));
   int rc = cs_str_string_set(cs, name, "hello", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   TEST_MSG("Set: %s = '%s'", name, VarIlama);
 
   buf_reset(err);
   rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;

@@ -46,11 +46,7 @@ void test_mutt_str_copy(void)
 
   { /* empty */
     size_t len = mutt_str_copy(dst, src, sizeof(dst));
-    if (!TEST_CHECK(len == 0))
-    {
-      TEST_MSG("Expected: %zu", 0);
-      TEST_MSG("Actual  : %zu", len);
-    }
+    TEST_CHECK_NUM_EQ(len, 0);
   }
 
   { /* normal */

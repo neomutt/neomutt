@@ -39,7 +39,7 @@ void test_config_cache(void)
     const struct Slist *c_assumed_charset = cc_assumed_charset();
     TEST_CHECK(c_assumed_charset == NULL);
     int rc = cs_subset_str_string_set(sub, "assumed_charset", "us-ascii:utf-8", NULL);
-    TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+    TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
     config_cache_cleanup();
   }
 
@@ -47,7 +47,7 @@ void test_config_cache(void)
     const char *c_charset = cc_charset();
     TEST_CHECK(c_charset != NULL);
     int rc = cs_subset_str_string_set(sub, "charset", "us-ascii", NULL);
-    TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+    TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
     config_cache_cleanup();
   }
 
@@ -55,7 +55,7 @@ void test_config_cache(void)
     const char *c_maildir_field_delimiter = cc_maildir_field_delimiter();
     TEST_CHECK(c_maildir_field_delimiter != NULL);
     int rc = cs_subset_str_string_set(sub, "maildir_field_delimiter", ";", NULL);
-    TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+    TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
     config_cache_cleanup();
   }
 

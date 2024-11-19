@@ -54,7 +54,7 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
 
   const char *aval = "pie";
   int rc = cs_he_initial_set(cs, he_a, aval, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     TEST_MSG("Expected error: %s", buf_string(err));
 
   name = "Banana";
@@ -64,7 +64,7 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
 
   const char *bval = "split";
   rc = cs_he_initial_set(cs, he_b, bval, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
 
   name = "Cherry";
@@ -74,7 +74,7 @@ static bool test_set_initial(struct ConfigSubset *sub, struct Buffer *err)
 
   const char *cval = "blossom";
   rc = cs_str_initial_set(cs, name, cval, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
 
   const char *VarApple = cs_subset_string(sub, "Apple");

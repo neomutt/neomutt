@@ -25,12 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_mutt_check_encoding(void)
 {
   // int mutt_check_encoding(const char *c);
 
   {
-    TEST_CHECK(mutt_check_encoding(NULL) == 0);
+    TEST_CHECK_NUM_EQ(mutt_check_encoding(NULL), 0);
   }
 }

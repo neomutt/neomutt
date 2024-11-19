@@ -134,7 +134,7 @@ void test_expando_filter(void)
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
     rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-    TEST_CHECK(rc == 7);
+    TEST_CHECK_NUM_EQ(rc, 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");
     expando_free(&exp);
@@ -144,7 +144,7 @@ void test_expando_filter(void)
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
     rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
-    TEST_CHECK(rc == 7);
+    TEST_CHECK_NUM_EQ(rc, 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");
     expando_free(&exp);

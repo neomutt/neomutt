@@ -136,14 +136,14 @@ void test_expando_node_container(void)
     FREE(&cont->format);
     buf_reset(buf);
     rc = node_render(cont, TestRenderCallback, buf, 50, NULL, MUTT_FORMAT_NO_FLAGS);
-    TEST_CHECK(rc == 50);
+    TEST_CHECK_NUM_EQ(rc, 50);
     TEST_CHECK_STR_EQ(buf_string(buf), "ONEaaaONEbbbONEcccTWOaaaTWObbbTWOcccTHREEaaaTHREEb");
 
     fmt_str = "-15.20_x";
     cont->format = parse_format(fmt_str, &parsed_until, &err);
     buf_reset(buf);
     rc = node_render(cont, TestRenderCallback, buf, 20, NULL, MUTT_FORMAT_NO_FLAGS);
-    TEST_CHECK(rc == 20);
+    TEST_CHECK_NUM_EQ(rc, 20);
     TEST_CHECK_STR_EQ(buf_string(buf), "oneaaaonebbboneccctw");
 
     FREE(&cont->format);

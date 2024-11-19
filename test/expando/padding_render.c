@@ -76,8 +76,6 @@ void test_expando_padding_render(void)
     expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&err);
@@ -145,8 +143,6 @@ void test_expando_padding_render(void)
     struct Buffer *buf = buf_pool_get();
     expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&err);
@@ -182,8 +178,6 @@ void test_expando_padding_render(void)
     expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&err);
@@ -219,8 +213,6 @@ void test_expando_padding_render(void)
     expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 8, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&err);
@@ -256,8 +248,6 @@ void test_expando_padding_render(void)
     expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 13, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&err);
@@ -293,8 +283,6 @@ void test_expando_padding_render(void)
     expando_render(exp, render, &data, MUTT_FORMAT_NO_FLAGS, 5, buf);
 
     TEST_CHECK_STR_EQ(buf_string(buf), expected);
-    TEST_MSG("Expected: %s", expected);
-    TEST_MSG("Actual:   %s", buf_string(buf));
 
     expando_free(&exp);
     buf_pool_release(&err);

@@ -28,6 +28,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 enum CommandResult parse_color_colornnn(const char *s, struct ColorElement *elem,
                                         struct Buffer *err);
@@ -43,10 +44,10 @@ void test_parse_color_colornnn(void)
     struct Buffer *err = buf_pool_get();
 
     rc = parse_color_colornnn(NULL, &elem, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     rc = parse_color_colornnn(str, NULL, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     buf_pool_release(&err);
   }
@@ -63,11 +64,11 @@ void test_parse_color_colornnn(void)
       snprintf(str, sizeof(str), "color%d", i);
 
       rc = parse_color_colornnn(str, &elem, err);
-      TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
-      TEST_CHECK(elem.type == CT_PALETTE);
+      TEST_CHECK_NUM_EQ(elem.type, CT_PALETTE);
       TEST_CHECK(elem.color == i);
-      TEST_CHECK(elem.prefix == COLOR_PREFIX_NONE);
+      TEST_CHECK_NUM_EQ(elem.prefix, COLOR_PREFIX_NONE);
     }
 
     buf_pool_release(&err);
@@ -85,11 +86,11 @@ void test_parse_color_colornnn(void)
       snprintf(str, sizeof(str), "brightCOLOR%d", i);
 
       rc = parse_color_colornnn(str, &elem, err);
-      TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
-      TEST_CHECK(elem.type == CT_PALETTE);
+      TEST_CHECK_NUM_EQ(elem.type, CT_PALETTE);
       TEST_CHECK(elem.color == i);
-      TEST_CHECK(elem.prefix == COLOR_PREFIX_BRIGHT);
+      TEST_CHECK_NUM_EQ(elem.prefix, COLOR_PREFIX_BRIGHT);
     }
 
     buf_pool_release(&err);

@@ -47,7 +47,7 @@ void test_mutt_addrlist_write_list(void)
     mutt_addrlist_parse(&al, in);
     struct ListHead l = STAILQ_HEAD_INITIALIZER(l);
     const size_t written = mutt_addrlist_write_list(&al, &l);
-    TEST_CHECK(written == 5);
+    TEST_CHECK_NUM_EQ(written, 5);
 
     char out[1024] = { 0 };
     size_t off = 0;

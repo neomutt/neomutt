@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 void test_parse_color_pair(void)
 {
@@ -49,7 +50,7 @@ void test_parse_color_pair(void)
       buf_seek(s, 0);
 
       enum CommandResult rc = parse_color_pair(buf, s, ac, err);
-      TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
       TEST_MSG("%s\n", buf_string(err));
     }
   }

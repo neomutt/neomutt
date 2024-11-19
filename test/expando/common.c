@@ -26,11 +26,12 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "common.h"
+#include "test_common.h"
 
 void check_node_text(struct ExpandoNode *node, const char *text)
 {
   TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_TEXT);
+  TEST_CHECK_NUM_EQ(node->type, ENT_TEXT);
 
   TEST_CHECK(mutt_str_equal(node->text, text));
 }
@@ -39,7 +40,7 @@ void check_node_expando(struct ExpandoNode *node, const char *text,
                         const struct ExpandoFormat *fmt_expected)
 {
   TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_EXPANDO);
+  TEST_CHECK_NUM_EQ(node->type, ENT_EXPANDO);
   TEST_CHECK(node->ndata != NULL);
 
   if (text)
@@ -68,7 +69,7 @@ void check_node_expando(struct ExpandoNode *node, const char *text,
 void check_node_padding(struct ExpandoNode *node, const char *pad_char, enum ExpandoPadType pad_type)
 {
   TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_PADDING);
+  TEST_CHECK_NUM_EQ(node->type, ENT_PADDING);
 
   TEST_CHECK(mutt_str_equal(node->text, pad_char));
 
@@ -80,13 +81,13 @@ void check_node_padding(struct ExpandoNode *node, const char *pad_char, enum Exp
 void check_node_cond(struct ExpandoNode *node)
 {
   TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_CONDITION);
+  TEST_CHECK_NUM_EQ(node->type, ENT_CONDITION);
 }
 
 void check_node_condbool(struct ExpandoNode *node)
 {
   TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_CONDBOOL);
+  TEST_CHECK_NUM_EQ(node->type, ENT_CONDBOOL);
   TEST_CHECK(node->ndata != NULL);
 
   struct ExpandoFormat *fmt = node->format;
@@ -96,7 +97,7 @@ void check_node_condbool(struct ExpandoNode *node)
 void check_node_conddate(struct ExpandoNode *node, int count, char period)
 {
   TEST_CHECK(node != NULL);
-  TEST_CHECK(node->type == ENT_CONDDATE);
+  TEST_CHECK_NUM_EQ(node->type, ENT_CONDDATE);
 
   struct NodeCondDatePrivate *priv = node->ndata;
 

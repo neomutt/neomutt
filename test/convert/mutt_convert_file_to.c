@@ -48,22 +48,22 @@ void test_mutt_convert_file_to(void)
     struct Content info = initial_info;
 
     size_t rc = mutt_convert_file_to(fp, "us-ascii", tocodes, &tocode, &info);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     TEST_MSG("Check failed: %d == 0", rc);
 
-    TEST_CHECK(tocode == 0);
+    TEST_CHECK_NUM_EQ(tocode, 0);
     TEST_MSG("Check failed: %d == 0", tocode);
-    TEST_CHECK(info.hibin == 0);
+    TEST_CHECK_NUM_EQ(info.hibin, 0);
     TEST_MSG("Check failed: %d == 0", info.hibin);
-    TEST_CHECK(info.lobin == 0);
+    TEST_CHECK_NUM_EQ(info.lobin, 0);
     TEST_MSG("Check failed: %d == 0", info.lobin);
-    TEST_CHECK(info.nulbin == 0);
+    TEST_CHECK_NUM_EQ(info.nulbin, 0);
     TEST_MSG("Check failed: %d == 0", info.nulbin);
-    TEST_CHECK(info.crlf == 2);
+    TEST_CHECK_NUM_EQ(info.crlf, 2);
     TEST_MSG("Check failed: %d == 2", info.crlf);
-    TEST_CHECK(info.ascii == 25);
+    TEST_CHECK_NUM_EQ(info.ascii, 25);
     TEST_MSG("Check failed: %d == 25", info.ascii);
-    TEST_CHECK(info.linemax == 14);
+    TEST_CHECK_NUM_EQ(info.linemax, 14);
     TEST_MSG("Check failed: %d == 13", info.linemax);
     TEST_CHECK(info.space);
     TEST_MSG("Check failed: %d == 1", info.space);
@@ -73,7 +73,7 @@ void test_mutt_convert_file_to(void)
     TEST_MSG("Check failed: %d == 0", info.from);
     TEST_CHECK(!info.dot);
     TEST_MSG("Check failed: %d == 0", info.dot);
-    TEST_CHECK(info.cr == 1);
+    TEST_CHECK_NUM_EQ(info.cr, 1);
     TEST_MSG("Check failed: %d == 1", info.cr);
 
     slist_free(&tocodes);
@@ -125,10 +125,10 @@ void test_mutt_convert_file_to(void)
     struct Content info = initial_info;
 
     size_t rc = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     TEST_MSG("Check failed: %d == 0", rc);
 
-    TEST_CHECK(tocode == 0);
+    TEST_CHECK_NUM_EQ(tocode, 0);
     TEST_MSG("Check failed: %d == 0", tocode);
 
     slist_free(&tocodes);
@@ -148,24 +148,24 @@ void test_mutt_convert_file_to(void)
 
     size_t rc = mutt_convert_file_to(fp, "iso-8859-2", tocodes, &tocode, &info);
 
-    TEST_CHECK(tocode == 1);
+    TEST_CHECK_NUM_EQ(tocode, 1);
     TEST_MSG("Check failed: %d == 1", tocode);
 
     /* Special case for converting to UTF-8. */
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     TEST_MSG("Check failed: %d == 0", rc);
 
-    TEST_CHECK(info.hibin == 6);
+    TEST_CHECK_NUM_EQ(info.hibin, 6);
     TEST_MSG("Check failed: %d == 6", info.hibin);
-    TEST_CHECK(info.lobin == 1);
+    TEST_CHECK_NUM_EQ(info.lobin, 1);
     TEST_MSG("Check failed: %d == 1", info.lobin);
-    TEST_CHECK(info.nulbin == 1);
+    TEST_CHECK_NUM_EQ(info.nulbin, 1);
     TEST_MSG("Check failed: %d == 1", info.nulbin);
-    TEST_CHECK(info.crlf == 2);
+    TEST_CHECK_NUM_EQ(info.crlf, 2);
     TEST_MSG("Check failed: %d == 2", info.crlf);
-    TEST_CHECK(info.ascii == 12);
+    TEST_CHECK_NUM_EQ(info.ascii, 12);
     TEST_MSG("Check failed: %d == 12", info.ascii);
-    TEST_CHECK(info.linemax == 8);
+    TEST_CHECK_NUM_EQ(info.linemax, 8);
     TEST_MSG("Check failed: %d == 8", info.linemax);
     TEST_CHECK(!info.space);
     TEST_MSG("Check failed: %d == 0", info.space);
@@ -175,7 +175,7 @@ void test_mutt_convert_file_to(void)
     TEST_MSG("Check failed: %d == 0", info.from);
     TEST_CHECK(!info.dot);
     TEST_MSG("Check failed: %d == 0", info.dot);
-    TEST_CHECK(info.cr == 1);
+    TEST_CHECK_NUM_EQ(info.cr, 1);
     TEST_MSG("Check failed: %d == 1", info.cr);
 
     slist_free(&tocodes);

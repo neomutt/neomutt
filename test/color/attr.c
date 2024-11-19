@@ -244,7 +244,7 @@ void test_attr_colors(void)
   {
     cs_str_native_set(NeoMutt->sub->cs, "color_directcolor", false, NULL);
     color_t col = color_xterm256_to_24bit(123);
-    TEST_CHECK(col == 123);
+    TEST_CHECK_NUM_EQ(col, 123);
   }
 #endif
 

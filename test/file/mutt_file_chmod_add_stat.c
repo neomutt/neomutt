@@ -62,7 +62,7 @@ void test_mutt_file_chmod_add_stat(void)
     TEST_CHECK(chmod(buf_string(first), 0444) == 0);
     TEST_CHECK(stat(buf_string(first), &st) == 0);
     rc = mutt_file_chmod_add_stat(buf_string(first), 0222, &st);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     TEST_CHECK(stat(buf_string(first), &st) == 0);
     if (!TEST_CHECK((st.st_mode & 0777) == tests[i].retval))
     {
@@ -73,7 +73,7 @@ void test_mutt_file_chmod_add_stat(void)
     TEST_CHECK(chmod(buf_string(first), 0666) == 0);
     TEST_CHECK(stat(buf_string(first), &st) == 0);
     rc = mutt_file_chmod_add_stat(buf_string(first), 0222, &st);
-    TEST_CHECK(rc == 0);
+    TEST_CHECK_NUM_EQ(rc, 0);
     TEST_CHECK(stat(buf_string(first), &st) == 0);
     if (!TEST_CHECK((st.st_mode & 0777) == tests[i].retval))
     {

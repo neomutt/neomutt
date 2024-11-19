@@ -25,12 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_log_queue_save(void)
 {
   // int log_queue_save(FILE *fp);
 
   {
-    TEST_CHECK(log_queue_save(NULL) == 0);
+    TEST_CHECK_NUM_EQ(log_queue_save(NULL), 0);
   }
 }

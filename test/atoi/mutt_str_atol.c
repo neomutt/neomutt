@@ -123,7 +123,7 @@ void test_mutt_str_atol(void)
 
   // Degenerate tests
   TEST_CHECK(mutt_str_atol(NULL, &result) == NULL);
-  TEST_CHECK(result == 0);
+  TEST_CHECK_NUM_EQ(result, 0);
   TEST_CHECK(mutt_str_atol("42", NULL) != NULL);
 
   // Normal tests

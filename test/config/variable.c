@@ -52,7 +52,7 @@ void test_config_variable(void)
   struct Buffer *err = buf_pool_get();
   const char *name = "Apple";
   int result = cs_str_string_set(cs, name, "world", err);
-  if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     return;
@@ -60,7 +60,7 @@ void test_config_variable(void)
 
   buf_reset(err);
   result = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     return;
@@ -72,7 +72,7 @@ void test_config_variable(void)
 
   buf_reset(err);
   result = cs_he_string_get(cs, he, err);
-  if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     return;
@@ -80,7 +80,7 @@ void test_config_variable(void)
 
   buf_reset(err);
   result = cs_he_native_set(cs, he, IP "foo", err);
-  if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     return;
@@ -88,7 +88,7 @@ void test_config_variable(void)
 
   buf_reset(err);
   result = cs_str_native_set(cs, name, IP "bar", err);
-  if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     return;
@@ -108,14 +108,14 @@ void test_config_variable(void)
     return;
 
   result = cs_he_string_plus_equals(cs, he, "23", err);
-  if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     return;
   }
 
   result = cs_he_string_minus_equals(cs, he, "56", err);
-  if (!TEST_CHECK(CSR_RESULT(result) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     return;

@@ -45,7 +45,7 @@ void test_buf_concatn_path(void)
 
     size_t len = buf_concatn_path(buf, dir, 9, file, 4);
 
-    TEST_CHECK(len == 14);
+    TEST_CHECK_NUM_EQ(len, 14);
     TEST_CHECK_STR_EQ(buf_string(buf), result);
 
     buf_pool_release(&buf);

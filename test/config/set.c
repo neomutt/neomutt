@@ -412,7 +412,7 @@ void test_config_set(void)
 
   const char *name = "Unknown";
   int result = cs_str_string_set(cs, name, "hello", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -423,7 +423,7 @@ void test_config_set(void)
   }
 
   result = cs_str_string_plus_equals(cs, name, "42", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -434,7 +434,7 @@ void test_config_set(void)
   }
 
   result = cs_str_string_minus_equals(cs, name, "42", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -445,7 +445,7 @@ void test_config_set(void)
   }
 
   result = cs_str_string_get(cs, name, err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -456,7 +456,7 @@ void test_config_set(void)
   }
 
   result = cs_str_native_set(cs, name, IP "hello", err);
-  if (TEST_CHECK(CSR_RESULT(result) == CSR_ERR_UNKNOWN))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(result), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }
@@ -467,7 +467,7 @@ void test_config_set(void)
   }
 
   intptr_t native = cs_str_native_get(cs, name, err);
-  if (TEST_CHECK(native == INT_MIN))
+  if (TEST_CHECK_NUM_EQ(native, INT_MIN))
   {
     TEST_MSG("Expected error: Unknown var '%s'", name);
   }

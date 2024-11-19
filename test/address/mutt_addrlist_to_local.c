@@ -25,13 +25,14 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "address/lib.h"
+#include "test_common.h"
 
 void test_mutt_addrlist_to_local(void)
 {
   // int mutt_addrlist_to_local(struct AddressList *al);
 
   {
-    TEST_CHECK(mutt_addrlist_to_local(NULL) == 0);
+    TEST_CHECK_NUM_EQ(mutt_addrlist_to_local(NULL), 0);
   }
 
   {

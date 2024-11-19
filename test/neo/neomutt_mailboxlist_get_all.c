@@ -27,6 +27,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "test_common.h"
 
 void test_neomutt_mailboxlist_get_all(void)
 {
@@ -35,7 +36,7 @@ void test_neomutt_mailboxlist_get_all(void)
   {
     struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
     size_t count = neomutt_mailboxlist_get_all(&ml, NULL, MUTT_MAILDIR);
-    TEST_CHECK(count == 0);
+    TEST_CHECK_NUM_EQ(count, 0);
     TEST_CHECK(STAILQ_EMPTY(&ml) == true);
   }
 }

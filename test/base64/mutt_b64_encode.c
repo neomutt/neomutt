@@ -62,11 +62,7 @@ void test_mutt_b64_encode(void)
 
     /* Encoding a zero-length string should fail */
     enclen = mutt_b64_encode(in, 0, out1, 32);
-    if (!TEST_CHECK(enclen == 0))
-    {
-      TEST_MSG("Expected: %zu", 0);
-      TEST_MSG("Actual  : %zu", enclen);
-    }
+    TEST_CHECK_NUM_EQ(enclen, 0);
   }
 
   {

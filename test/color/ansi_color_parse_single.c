@@ -29,6 +29,7 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 void ansi_color_reset(struct AnsiColor *ansi);
 
@@ -50,16 +51,16 @@ void test_ansi_color_parse_single(void)
     int len;
 
     len = ansi_color_parse_single(NULL, &ansi, false);
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
 
     len = ansi_color_parse_single(str, NULL, false);
-    TEST_CHECK(len == 5);
+    TEST_CHECK_NUM_EQ(len, 5);
 
     len = ansi_color_parse_single("", &ansi, false);
-    TEST_CHECK(len == 0);
+    TEST_CHECK_NUM_EQ(len, 0);
 
     len = ansi_color_parse_single(str, &ansi, true);
-    TEST_CHECK(len == 5);
+    TEST_CHECK_NUM_EQ(len, 5);
 
     ansi_color_reset(NULL);
   }
@@ -143,8 +144,7 @@ void test_ansi_color_parse_single(void)
       len = ansi_color_parse_single(tests[i].name, &ansi, false);
       TEST_CHECK(len == tests[i].value);
       TEST_MSG("len: Expected %d, Got %d", tests[i].value, len);
-      TEST_CHECK(ansi.attrs == A_NORMAL);
-      TEST_MSG("attrs: Expected %d, Got %d", A_NORMAL, ansi.attrs);
+      TEST_CHECK_NUM_EQ(ansi.attrs, A_NORMAL);
     }
   }
 
@@ -161,8 +161,7 @@ void test_ansi_color_parse_single(void)
 
         struct AnsiColor ansi = { 0 };
         len = ansi_color_parse_single(str, &ansi, false);
-        TEST_CHECK(len == 5);
-        TEST_MSG("len: Expected 5, Got %d", len);
+        TEST_CHECK_NUM_EQ(len, 5);
       }
     }
   }
@@ -276,8 +275,7 @@ void test_ansi_color_parse_single(void)
 
       struct AnsiColor ansi = { 0 };
       len = ansi_color_parse_single(tests[i], &ansi, false);
-      TEST_CHECK(len == 0);
-      TEST_MSG("len: Expected 0, Got %d", len);
+      TEST_CHECK_NUM_EQ(len, 0);
     }
   }
 }

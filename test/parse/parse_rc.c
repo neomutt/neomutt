@@ -128,11 +128,11 @@ void test_parse_rc(void)
 
   TEST_CASE("parse_rc_line");
   rc = parse_rc_line(NULL, NULL);
-  TEST_CHECK(rc == MUTT_CMD_ERROR);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
   TEST_CASE("parse_rc_buffer");
   rc = parse_rc_buffer(NULL, NULL, NULL);
-  TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
   cs_str_initial_set(NeoMutt->sub->cs, "from", "rich@flatcap.org", NULL);

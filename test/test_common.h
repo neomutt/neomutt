@@ -51,6 +51,18 @@ static inline bool test_check_str_eq(const char *actual, const char *expected, c
   return rc;
 }
 
+static inline bool test_check_num_eq(long actual, long expected, const char *file, int lnum)
+{
+  const bool rc = (actual == expected);
+  if (!acutest_check_(rc, file, lnum, "test_check_num_eq"))
+  {
+    TEST_MSG("Expected : %ld", expected);
+    TEST_MSG("Actual   : %ld", actual);
+  }
+
+  return rc;
+}
+
 static inline FILE *test_make_file_with_contents(char *contents, size_t len)
 {
   FILE *fp = NULL;
@@ -71,6 +83,7 @@ int log_disp_null (time_t stamp, const char *file, int line, const char *functio
                    __attribute__((__format__(__printf__, 6, 7)));
 
 #define TEST_CHECK_STR_EQ(actual, expected) test_check_str_eq(actual, expected, __FILE__, __LINE__)
+#define TEST_CHECK_NUM_EQ(actual, expected) test_check_num_eq(actual, expected, __FILE__, __LINE__)
 
 #define LONG_IS_64 (LONG_MAX == 9223372036854775807)
 

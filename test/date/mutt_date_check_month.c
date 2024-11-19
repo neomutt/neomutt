@@ -26,17 +26,18 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_mutt_date_check_month(void)
 {
   // int mutt_date_check_month(const char *s);
 
-  TEST_CHECK(mutt_date_check_month(NULL) == -1);
-  TEST_CHECK(mutt_date_check_month("ja") == -1);
-  TEST_CHECK(mutt_date_check_month("Monday") == -1);
+  TEST_CHECK_NUM_EQ(mutt_date_check_month(NULL), -1);
+  TEST_CHECK_NUM_EQ(mutt_date_check_month("ja"), -1);
+  TEST_CHECK_NUM_EQ(mutt_date_check_month("Monday"), -1);
 
-  TEST_CHECK(mutt_date_check_month("jan") == -1);
-  TEST_CHECK(mutt_date_check_month("FEB") == -1);
-  TEST_CHECK(mutt_date_check_month("September") == 8);
-  TEST_CHECK(mutt_date_check_month("SepXXXX") == 8);
+  TEST_CHECK_NUM_EQ(mutt_date_check_month("jan"), -1);
+  TEST_CHECK_NUM_EQ(mutt_date_check_month("FEB"), -1);
+  TEST_CHECK_NUM_EQ(mutt_date_check_month("September"), 8);
+  TEST_CHECK_NUM_EQ(mutt_date_check_month("SepXXXX"), 8);
 }

@@ -37,21 +37,21 @@ void test_mutt_addrlist_parse2(void)
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse2(&alist, NULL);
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
     TEST_CHECK(TAILQ_EMPTY(&alist));
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse2(&alist, "");
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
     TEST_CHECK(TAILQ_EMPTY(&alist));
   }
 
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse2(&alist, "apple");
-    TEST_CHECK(parsed == 1);
+    TEST_CHECK_NUM_EQ(parsed, 1);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     TEST_CHECK_STR_EQ(buf_string(TAILQ_FIRST(&alist)->mailbox), "apple");
     mutt_addrlist_clear(&alist);
@@ -61,7 +61,7 @@ void test_mutt_addrlist_parse2(void)
     /* Not extremely nice, but this is the way it works... */
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse2(&alist, "test@example.com John Doe <john@doe.org>");
-    TEST_CHECK(parsed == 1);
+    TEST_CHECK_NUM_EQ(parsed, 1);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK_STR_EQ(buf_string(a->personal), "test@example.com John Doe");
@@ -72,7 +72,7 @@ void test_mutt_addrlist_parse2(void)
   {
     struct AddressList alist = TAILQ_HEAD_INITIALIZER(alist);
     int parsed = mutt_addrlist_parse2(&alist, "test@example.com john@doe.org foo@bar.baz");
-    TEST_CHECK(parsed == 3);
+    TEST_CHECK_NUM_EQ(parsed, 3);
     TEST_CHECK(!TAILQ_EMPTY(&alist));
     struct Address *a = TAILQ_FIRST(&alist);
     TEST_CHECK(a->personal == NULL);

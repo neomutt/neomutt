@@ -25,12 +25,13 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "email/lib.h"
+#include "test_common.h"
 
 void test_email_get_size(void)
 {
   // size_t email_get_size(const struct Email *e);
 
   {
-    TEST_CHECK(email_get_size(NULL) == 0);
+    TEST_CHECK_NUM_EQ(email_get_size(NULL), 0);
   }
 }

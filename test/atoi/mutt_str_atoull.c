@@ -27,6 +27,7 @@
 #include <limits.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct TestValue
 {
@@ -80,7 +81,7 @@ void test_mutt_str_atoull(void)
 
   // Degenerate tests
   TEST_CHECK(mutt_str_atoull(NULL, &result) == NULL);
-  TEST_CHECK(result == 0);
+  TEST_CHECK_NUM_EQ(result, 0);
   TEST_CHECK(mutt_str_atoull("42", NULL) != NULL);
 
   // Normal tests

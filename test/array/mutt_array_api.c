@@ -29,6 +29,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 struct Dummy
 {
@@ -124,8 +125,8 @@ void test_mutt_array_api(void)
   /* Initial state */
   {
     TEST_CHECK(ARRAY_EMPTY(&d));
-    TEST_CHECK(ARRAY_SIZE(&d) == 0);
-    TEST_CHECK(ARRAY_CAPACITY(&d) == 0);
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&d), 0);
+    TEST_CHECK_NUM_EQ(ARRAY_CAPACITY(&d), 0);
     TEST_CHECK(ARRAY_ELEM_SIZE(&d) == sizeof(struct Dummy));
   }
 
@@ -134,8 +135,8 @@ void test_mutt_array_api(void)
     struct DummyArray d2;
     ARRAY_INIT(&d2);
     TEST_CHECK(ARRAY_EMPTY(&d2));
-    TEST_CHECK(ARRAY_SIZE(&d2) == 0);
-    TEST_CHECK(ARRAY_CAPACITY(&d2) == 0);
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&d2), 0);
+    TEST_CHECK_NUM_EQ(ARRAY_CAPACITY(&d2), 0);
     TEST_CHECK(ARRAY_ELEM_SIZE(&d2) == sizeof(struct Dummy));
   }
 
@@ -143,12 +144,8 @@ void test_mutt_array_api(void)
   {
     ARRAY_RESERVE(&d, 12);
     TEST_CHECK(ARRAY_EMPTY(&d));
-    TEST_CHECK(ARRAY_SIZE(&d) == 0);
-    if (!TEST_CHECK(ARRAY_CAPACITY(&d) == nof_elem + ARRAY_HEADROOM))
-    {
-      TEST_MSG("Expected: %zu", nof_elem + ARRAY_HEADROOM);
-      TEST_MSG("Actual  : %zu", ARRAY_CAPACITY(&d));
-    }
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&d), 0);
+    TEST_CHECK_NUM_EQ(ARRAY_CAPACITY(&d), nof_elem + ARRAY_HEADROOM);
   }
 
   /* Set */
@@ -165,11 +162,7 @@ void test_mutt_array_api(void)
       TEST_MSG("Expected: not null");
       TEST_MSG("Actual  : null");
     }
-    if (!TEST_CHECK(fst->i == 0))
-    {
-      TEST_MSG("Expected: %zu", 0);
-      TEST_MSG("Actual  : %zu", fst->i);
-    }
+    TEST_CHECK_NUM_EQ(fst->i, 0);
 
     struct Dummy *lst = ARRAY_LAST(&d);
     if (!TEST_CHECK(lst != NULL))
@@ -366,16 +359,8 @@ void test_mutt_array_api(void)
   /* Free */
   {
     ARRAY_FREE(&d);
-    if (!TEST_CHECK(d.size == 0))
-    {
-      TEST_MSG("Expected: %zu", 0);
-      TEST_MSG("Actual  : %zu", d.size);
-    }
-    if (!TEST_CHECK(d.capacity == 0))
-    {
-      TEST_MSG("Expected: %zu", 0);
-      TEST_MSG("Actual  : %zu", d.capacity);
-    }
+    TEST_CHECK_NUM_EQ(d.size, 0);
+    TEST_CHECK_NUM_EQ(d.capacity, 0);
     if (!TEST_CHECK(d.entries == NULL))
     {
       TEST_MSG("Expected: %lp", NULL);
@@ -399,11 +384,7 @@ void test_mutt_array_api(void)
     {
       ARRAY_ADD(&head, i);
     }
-    if (!TEST_CHECK(ARRAY_SIZE(&head) == 10))
-    {
-      TEST_MSG("Expected: %zu", 10);
-      TEST_MSG("Actual  : %zu", ARRAY_SIZE(&head));
-    }
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 10);
     for (size_t i = 0; i < 10; i++)
     {
       if (!TEST_CHECK(*ARRAY_GET(&head, i) == i))
@@ -428,11 +409,7 @@ void test_mutt_array_api(void)
     size_t *elem = ARRAY_GET(&head, to_rem);
     ARRAY_REMOVE(&head, elem);
 
-    if (!TEST_CHECK(ARRAY_SIZE(&head) == 25))
-    {
-      TEST_MSG("Expected: %zu", 25);
-      TEST_MSG("Actual  : %zu", ARRAY_SIZE(&head));
-    }
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 25);
     for (size_t i = 0; i < 25; i++)
     {
       size_t res = i < to_rem ? i : i + 1;
@@ -458,11 +435,7 @@ void test_mutt_array_api(void)
     size_t *elem = ARRAY_GET(&head, to_rem);
     ARRAY_REMOVE(&head, elem);
 
-    if (!TEST_CHECK(ARRAY_SIZE(&head) == 25))
-    {
-      TEST_MSG("Expected: %zu", 25);
-      TEST_MSG("Actual  : %zu", ARRAY_SIZE(&head));
-    }
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 25);
     for (size_t i = 0; i < 25; i++)
     {
       size_t res = i < to_rem ? i : i + 1;
@@ -488,11 +461,7 @@ void test_mutt_array_api(void)
     size_t *elem = ARRAY_GET(&head, to_rem);
     ARRAY_REMOVE(&head, elem);
 
-    if (!TEST_CHECK(ARRAY_SIZE(&head) == 25))
-    {
-      TEST_MSG("Expected: %zu", 25);
-      TEST_MSG("Actual  : %zu", ARRAY_SIZE(&head));
-    }
+    TEST_CHECK_NUM_EQ(ARRAY_SIZE(&head), 25);
     for (size_t i = 0; i < 25; i++)
     {
       size_t res = i < to_rem ? i : i + 1;

@@ -27,6 +27,7 @@
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "color/lib.h"
+#include "test_common.h"
 
 enum CommandResult parse_color_namedcolor(const char *s, struct ColorElement *elem,
                                           struct Buffer *err);
@@ -48,10 +49,10 @@ void test_parse_color_namedcolor(void)
     struct Buffer *err = buf_pool_get();
 
     rc = parse_color_namedcolor(NULL, &elem, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     rc = parse_color_namedcolor(str, NULL, err);
-    TEST_CHECK(rc == MUTT_CMD_ERROR);
+    TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
     buf_pool_release(&err);
   }
@@ -81,18 +82,15 @@ void test_parse_color_namedcolor(void)
 
       TEST_CASE(tests[i].str);
       rc = parse_color_namedcolor(tests[i].str, &elem, err);
-      TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
       TEST_MSG("%s", buf_string(err));
-      TEST_MSG("rc: Expected %d, Got %d\n", MUTT_CMD_SUCCESS, rc);
 
       TEST_CHECK(elem.color == tests[i].cid);
       TEST_MSG("cid: Expected %d, Got %d\n", tests[i].cid, elem.color);
 
-      TEST_CHECK(elem.type == CT_SIMPLE);
-      TEST_MSG("type: Expected %d, Got %d\n", CT_SIMPLE, elem.type);
+      TEST_CHECK_NUM_EQ(elem.type, CT_SIMPLE);
 
-      TEST_CHECK(elem.prefix == COLOR_PREFIX_NONE);
-      TEST_MSG("prefix: Expected %d, Got %d\n", COLOR_PREFIX_NONE, elem.prefix);
+      TEST_CHECK_NUM_EQ(elem.prefix, COLOR_PREFIX_NONE);
     }
 
     buf_pool_release(&err);
@@ -122,18 +120,15 @@ void test_parse_color_namedcolor(void)
 
       TEST_CASE(tests[i].str);
       rc = parse_color_namedcolor(tests[i].str, &elem, err);
-      TEST_CHECK(rc == MUTT_CMD_SUCCESS);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
       TEST_MSG("%s", buf_string(err));
-      TEST_MSG("rc: Expected %d, Got %d\n", MUTT_CMD_SUCCESS, rc);
 
       TEST_CHECK(elem.color == tests[i].cid);
       TEST_MSG("cid: Expected %d, Got %d\n", tests[i].cid, elem.color);
 
-      TEST_CHECK(elem.type == CT_SIMPLE);
-      TEST_MSG("type: Expected %d, Got %d\n", CT_SIMPLE, elem.type);
+      TEST_CHECK_NUM_EQ(elem.type, CT_SIMPLE);
 
-      TEST_CHECK(elem.prefix == COLOR_PREFIX_LIGHT);
-      TEST_MSG("prefix: Expected %d, Got %d\n", COLOR_PREFIX_LIGHT, elem.prefix);
+      TEST_CHECK_NUM_EQ(elem.prefix, COLOR_PREFIX_LIGHT);
     }
 
     buf_pool_release(&err);
@@ -149,8 +144,7 @@ void test_parse_color_namedcolor(void)
     {
       TEST_CASE(tests[i]);
       rc = parse_color_namedcolor(tests[i], &elem, NULL);
-      TEST_CHECK(rc == MUTT_CMD_WARNING);
-      TEST_MSG("rc: Expected %d, Got %d\n", MUTT_CMD_WARNING, rc);
+      TEST_CHECK_NUM_EQ(rc, MUTT_CMD_WARNING);
     }
   }
 }

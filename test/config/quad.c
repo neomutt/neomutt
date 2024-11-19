@@ -68,17 +68,9 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Apple = %d", VarApple);
   TEST_MSG("Banana = %d", VarBanana);
 
-  if (!TEST_CHECK(VarApple == 0))
-  {
-    TEST_MSG("Expected: %d", 0);
-    TEST_MSG("Actual  : %d", VarApple);
-  }
+  TEST_CHECK_NUM_EQ(VarApple, 0);
 
-  if (!TEST_CHECK(VarBanana == 3))
-  {
-    TEST_MSG("Expected: %d", 3);
-    TEST_MSG("Actual  : %d", VarBanana);
-  }
+  TEST_CHECK_NUM_EQ(VarBanana, 3);
 
   cs_str_string_set(cs, "Apple", "ask-yes", err);
   cs_str_string_set(cs, "Banana", "ask-no", err);
@@ -89,7 +81,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Apple", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -125,7 +117,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_set(cs, "Cherry", "ask-yes", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -133,7 +125,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Cherry", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -172,7 +164,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("Setting %s to %s", name, valid[i]);
     buf_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("%s", buf_string(err));
       return false;
@@ -190,7 +182,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     {
       buf_reset(err);
       rc = cs_str_string_set(cs, name, valid[i], err);
-      if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+      if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
       {
         TEST_MSG("%s", buf_string(err));
         return false;
@@ -225,7 +217,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Papaya";
   rc = cs_str_string_set(cs, name, "ask-yes", err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   rc = cs_str_string_set(cs, name, "ask-no", err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
@@ -284,7 +276,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, MUTT_NO, NULL);
   buf_reset(err);
   int rc = cs_str_native_set(cs, name, value, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -337,7 +329,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Papaya";
   rc = cs_str_native_set(cs, name, MUTT_ASKYES, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   rc = cs_str_native_set(cs, name, MUTT_ASKNO, err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
@@ -379,7 +371,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   char VarHawthorn = cs_subset_quad(sub, "Hawthorn");
   TEST_MSG("%s = %d", name, VarHawthorn);
   int rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -402,7 +394,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Initial: %s = %d", name, VarIlama);
   dont_fail = true;
   rc = cs_str_string_set(cs, name, "ask-yes", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   VarIlama = cs_subset_quad(sub, "Ilama");
   TEST_MSG("Set: %s = %d", name, VarIlama);
@@ -420,7 +412,7 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   VarIlama = cs_subset_quad(sub, "Ilama");
-  if (!TEST_CHECK(VarIlama == MUTT_ASKYES))
+  if (!TEST_CHECK_NUM_EQ(VarIlama, MUTT_ASKYES))
   {
     TEST_MSG("Value of %s changed", name);
     return false;
@@ -430,11 +422,11 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Papaya";
   rc = cs_str_reset(cs, name, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
   StartupComplete = false;
   rc = cs_str_native_set(cs, name, MUTT_NO, err);
-  TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS);
+  TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
   StartupComplete = true;
 
   rc = cs_str_reset(cs, name, err);
@@ -453,7 +445,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, MUTT_NO, NULL);
   buf_reset(err);
   int rc = cs_str_string_set(cs, name, "yes", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -469,7 +461,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, MUTT_NO, NULL);
   buf_reset(err);
   rc = cs_str_native_set(cs, name, 1, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -486,7 +478,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, MUTT_NO, NULL);
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "yes", err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -502,7 +494,7 @@ static bool test_validator(struct ConfigSubset *sub, struct Buffer *err)
   cs_str_native_set(cs, name, MUTT_NO, NULL);
   buf_reset(err);
   rc = cs_str_native_set(cs, name, 1, err);
-  if (TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
   }
@@ -584,7 +576,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set parent
   buf_reset(err);
   int rc = cs_str_string_set(cs, parent, "yes", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -595,7 +587,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // set child
   buf_reset(err);
   rc = cs_str_string_set(cs, child, "no", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -610,7 +602,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset child
   buf_reset(err);
   rc = cs_str_reset(cs, child, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -621,7 +613,7 @@ static bool test_inherit(struct ConfigSet *cs, struct Buffer *err)
   // reset parent
   buf_reset(err);
   rc = cs_str_reset(cs, parent, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Error: %s", buf_string(err));
     goto ti_out;
@@ -662,14 +654,14 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     return false;
 
   rc = quad_he_toggle(NULL, he, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have");
     return false;
   }
 
   rc = quad_he_toggle(NeoMutt->sub, NULL, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_CODE))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_CODE))
   {
     TEST_MSG("Toggle succeeded when is shouldn't have");
     return false;
@@ -698,7 +690,7 @@ static bool test_toggle(struct ConfigSubset *sub, struct Buffer *err)
     }
 
     rc = quad_he_toggle(NeoMutt->sub, he, err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Toggle failed: %s", buf_string(err));
       return false;

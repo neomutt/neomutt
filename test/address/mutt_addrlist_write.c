@@ -48,7 +48,7 @@ void test_mutt_addrlist_write(void)
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     const char in[] = "test@example.com, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
     int parsed = mutt_addrlist_parse(&al, in);
-    TEST_CHECK(parsed == 3);
+    TEST_CHECK_NUM_EQ(parsed, 3);
 
     struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
@@ -61,7 +61,7 @@ void test_mutt_addrlist_write(void)
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     const char in[] = "some-group: first@example.com, second@example.com;, John Doe <john@doe.org>, \"Foo J. Bar\" <foo-j-bar@baz.com>";
     int parsed = mutt_addrlist_parse(&al, in);
-    TEST_CHECK(parsed == 4);
+    TEST_CHECK_NUM_EQ(parsed, 4);
     struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
     TEST_CHECK_STR_EQ(buf_string(buf), in);
@@ -73,7 +73,7 @@ void test_mutt_addrlist_write(void)
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     const char in[] = "undisclosaed-recipients:;";
     int parsed = mutt_addrlist_parse(&al, in);
-    TEST_CHECK(parsed == 0);
+    TEST_CHECK_NUM_EQ(parsed, 0);
     struct Buffer *buf = buf_pool_get();
     mutt_addrlist_write(&al, buf, false);
     // We always add a space after the colon. No big deal

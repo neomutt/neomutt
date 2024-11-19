@@ -35,7 +35,7 @@ void test_mutt_path_realpath(void)
   // size_t mutt_path_realpath(struct Buffer *path);
 
   {
-    TEST_CHECK(mutt_path_realpath(NULL) == 0);
+    TEST_CHECK_NUM_EQ(mutt_path_realpath(NULL), 0);
   }
 
   {
@@ -63,7 +63,7 @@ void test_mutt_path_realpath(void)
     buf_printf(path, "%s/file/missing_symlink", test_dir);
     snprintf(expected, sizeof(expected), "%s/file/missing_symlink", test_dir);
 
-    TEST_CHECK(mutt_path_realpath(path) == 0);
+    TEST_CHECK_NUM_EQ(mutt_path_realpath(path), 0);
     TEST_CHECK_STR_EQ(buf_string(path), expected);
     buf_pool_release(&path);
   }

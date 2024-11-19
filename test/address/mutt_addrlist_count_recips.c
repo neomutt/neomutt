@@ -26,24 +26,25 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "address/lib.h"
+#include "test_common.h"
 
 void test_mutt_addrlist_count_recips(void)
 {
   // int mutt_addrlist_count_recips(const struct AddressList *al);
 
   {
-    TEST_CHECK(mutt_addrlist_count_recips(NULL) == 0);
+    TEST_CHECK_NUM_EQ(mutt_addrlist_count_recips(NULL), 0);
   }
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
-    TEST_CHECK(mutt_addrlist_count_recips(&al) == 0);
+    TEST_CHECK_NUM_EQ(mutt_addrlist_count_recips(&al), 0);
   }
 
   {
     struct AddressList al = TAILQ_HEAD_INITIALIZER(al);
     mutt_addrlist_parse(&al, "test@example.com, john@doe.org");
-    TEST_CHECK(mutt_addrlist_count_recips(&al) == 2);
+    TEST_CHECK_NUM_EQ(mutt_addrlist_count_recips(&al), 2);
     mutt_addrlist_clear(&al);
   }
 
@@ -52,7 +53,7 @@ void test_mutt_addrlist_count_recips(void)
     mutt_addrlist_parse(&al, "test@example.com, john@doe.org");
     mutt_addrlist_append(&al, mutt_addr_new());
     mutt_addrlist_append(&al, mutt_addr_create(NULL, "foo@bar.baz"));
-    TEST_CHECK(mutt_addrlist_count_recips(&al) == 3);
+    TEST_CHECK_NUM_EQ(mutt_addrlist_count_recips(&al), 3);
     mutt_addrlist_clear(&al);
   }
 
@@ -63,7 +64,7 @@ void test_mutt_addrlist_count_recips(void)
     struct Address *a = mutt_addr_create(NULL, "foo@bar.baz");
     a->group = 1;
     mutt_addrlist_append(&al, a);
-    TEST_CHECK(mutt_addrlist_count_recips(&al) == 2);
+    TEST_CHECK_NUM_EQ(mutt_addrlist_count_recips(&al), 2);
     mutt_addrlist_clear(&al);
   }
 }

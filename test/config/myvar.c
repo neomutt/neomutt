@@ -110,7 +110,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Apple", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -127,7 +127,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Banana", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -144,7 +144,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_set(cs, "Cherry", "train", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -152,7 +152,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_set(cs, "Cherry", "plane", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -160,7 +160,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(value);
   rc = cs_str_initial_get(cs, "Cherry", value);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
     return false;
@@ -188,7 +188,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("%s", buf_string(err));
       return false;
@@ -213,7 +213,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
   name = "Fig";
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -225,7 +225,7 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     short_line();
     buf_reset(err);
     rc = cs_str_string_set(cs, name, valid[i], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("%s", buf_string(err));
       return false;
@@ -258,7 +258,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   int rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -269,7 +269,7 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   name = "Hawthorn";
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -279,12 +279,12 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
 
   name = "Ilama";
   rc = cs_str_string_set(cs, name, "ilama", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
 
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
@@ -309,7 +309,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   {
     buf_reset(err);
     rc = cs_str_native_set(cs, name, (intptr_t) valid[i], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("%s", buf_string(err));
       return false;
@@ -334,7 +334,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
   name = "Lemon";
   buf_reset(err);
   rc = cs_str_native_set(cs, name, (intptr_t) "", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -346,7 +346,7 @@ static bool test_native_set(struct ConfigSubset *sub, struct Buffer *err)
     short_line();
     buf_reset(err);
     rc = cs_str_native_set(cs, name, (intptr_t) valid[i], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("%s", buf_string(err));
       return false;
@@ -378,7 +378,7 @@ static bool test_native_get(struct ConfigSubset *sub, struct Buffer *err)
   const char *name = "Mango";
 
   int rc = cs_str_string_set(cs, name, "mango", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
 
   const char *VarMango = cs_subset_myvar(sub, "Mango");
@@ -421,21 +421,21 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
   {
     buf_reset(err);
     rc = cs_str_string_set(cs, name, PlusTests[i][0], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Set failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_plus_equals(cs, name, PlusTests[i][1], err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("PlusEquals failed: %s", buf_string(err));
       return false;
     }
 
     rc = cs_str_string_get(cs, name, err);
-    if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+    if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     {
       TEST_MSG("Get failed: %s", buf_string(err));
       return false;
@@ -443,8 +443,6 @@ static bool test_string_plus_equals(struct ConfigSubset *sub, struct Buffer *err
 
     if (!TEST_CHECK_STR_EQ(PlusTests[i][2], buf_string(err)))
     {
-      TEST_MSG("Expected: %s", PlusTests[i][2]);
-      TEST_MSG("Actual  : %s", buf_string(err));
       return false;
     }
   }
@@ -463,7 +461,7 @@ static bool test_non_existing(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_string_get(cs, "does_not_exist", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Get succeeded but should have failed: %s", buf_string(err));
     return false;
@@ -472,36 +470,34 @@ static bool test_non_existing(struct ConfigSubset *sub, struct Buffer *err)
   // Distinguish an empty string from an unset one
   buf_reset(err);
   rc = cs_str_string_set(cs, name, "", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Set failed: %s", buf_string(err));
     return false;
   }
   rc = cs_str_string_get(cs, name, err);
   buf_reset(err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   if (!TEST_CHECK_STR_EQ("", buf_string(err)))
   {
-    TEST_MSG("Expected: '%s'", "");
-    TEST_MSG("Actual  : '%s'", buf_string(err));
     return false;
   }
 
   // Delete should remove the variable
   buf_reset(err);
   rc = cs_str_delete(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Delete failed: %s", buf_string(err));
     return false;
   }
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_ERR_UNKNOWN))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_ERR_UNKNOWN))
   {
     TEST_MSG("Get succeeded but should have failed: %s", buf_string(err));
     return false;
@@ -522,13 +518,13 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarNectarine = cs_subset_myvar(sub, "Nectarine");
   TEST_MSG("Initial: %s = '%s'", name, VarNectarine);
   int rc = cs_str_string_set(cs, name, "hello", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   VarNectarine = cs_subset_myvar(sub, "Nectarine");
   TEST_MSG("Set: %s = '%s'", name, VarNectarine);
 
   rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;
@@ -536,14 +532,13 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
 
   buf_reset(err);
   rc = cs_str_string_get(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("Get failed: %s", buf_string(err));
     return false;
   }
   if (!TEST_CHECK_STR_EQ(buf_string(err), "nectarine"))
   {
-    TEST_MSG("Reset failed: expected = %s, got = %s", "nectarine", buf_string(err));
     return false;
   }
 
@@ -553,13 +548,13 @@ static bool test_reset(struct ConfigSubset *sub, struct Buffer *err)
   const char *VarOlive = cs_subset_myvar(sub, "Olive");
   TEST_MSG("Initial: %s = '%s'", name, VarOlive);
   rc = cs_str_string_set(cs, name, "hello", err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
     return false;
   VarOlive = cs_subset_myvar(sub, "Olive");
   TEST_MSG("Set: %s = '%s'", name, VarOlive);
 
   rc = cs_str_reset(cs, name, err);
-  if (!TEST_CHECK(CSR_RESULT(rc) == CSR_SUCCESS))
+  if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(err));
     return false;

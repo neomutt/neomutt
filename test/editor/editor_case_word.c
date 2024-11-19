@@ -47,12 +47,12 @@ void test_editor_case_word(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_bol(es);
     TEST_CHECK(editor_case_word(es, EC_CAPITALIZE) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 4);
 
     struct Buffer *buf = buf_pool_get();
     buf_mb_wcstombs(buf, es->wbuf, es->lastchar);
@@ -64,12 +64,12 @@ void test_editor_case_word(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "TEST string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_bol(es);
     TEST_CHECK(editor_case_word(es, EC_CAPITALIZE) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 4);
 
     struct Buffer *buf = buf_pool_get();
     buf_mb_wcstombs(buf, es->wbuf, es->lastchar);
@@ -81,12 +81,12 @@ void test_editor_case_word(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_bol(es);
     TEST_CHECK(editor_case_word(es, EC_UPCASE) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 4);
 
     struct Buffer *buf = buf_pool_get();
     buf_mb_wcstombs(buf, es->wbuf, es->lastchar);
@@ -98,13 +98,13 @@ void test_editor_case_word(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_buffer_set_cursor(es, 7);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 7);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 7);
     TEST_CHECK(editor_case_word(es, EC_UPCASE) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
 
     struct Buffer *buf = buf_pool_get();
     buf_mb_wcstombs(buf, es->wbuf, es->lastchar);
@@ -116,13 +116,13 @@ void test_editor_case_word(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test     string    ");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 19);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 19);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 19);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 19);
     editor_buffer_set_cursor(es, 6);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 6);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 6);
     TEST_CHECK(editor_case_word(es, EC_UPCASE) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 19);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 15);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 19);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 15);
 
     struct Buffer *buf = buf_pool_get();
     buf_mb_wcstombs(buf, es->wbuf, es->lastchar);
@@ -134,12 +134,12 @@ void test_editor_case_word(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_bol(es);
     TEST_CHECK(editor_case_word(es, EC_UPCASE) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 4);
 
     struct Buffer *buf = buf_pool_get();
     buf_mb_wcstombs(buf, es->wbuf, es->lastchar);
@@ -151,12 +151,12 @@ void test_editor_case_word(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "TEST STRING");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_bol(es);
     TEST_CHECK(editor_case_word(es, EC_DOWNCASE) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 4);
 
     struct Buffer *buf = buf_pool_get();
     buf_mb_wcstombs(buf, es->wbuf, es->lastchar);

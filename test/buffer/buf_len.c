@@ -26,18 +26,19 @@
 #include "acutest.h"
 #include <stddef.h>
 #include "mutt/lib.h"
+#include "test_common.h"
 
 void test_buf_len(void)
 {
   // size_t buf_len(const struct Buffer *buf);
 
   {
-    TEST_CHECK(buf_len(NULL) == 0);
+    TEST_CHECK_NUM_EQ(buf_len(NULL), 0);
   }
 
   {
     struct Buffer *buf = buf_pool_get();
-    TEST_CHECK(buf_len(buf) == 0);
+    TEST_CHECK_NUM_EQ(buf_len(buf), 0);
     buf_pool_release(&buf);
   }
 

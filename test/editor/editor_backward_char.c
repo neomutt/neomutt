@@ -27,6 +27,7 @@
 #include "core/lib.h"
 #include "editor/lib.h"
 #include "common.h" // IWYU pragma: keep
+#include "test_common.h"
 
 void test_editor_backward_char(void)
 {
@@ -45,10 +46,10 @@ void test_editor_backward_char(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_buffer_set_cursor(es, 0);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 0);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 0);
     TEST_CHECK(editor_backward_char(es) == FR_ERROR);
     enter_state_free(&es);
   }
@@ -56,23 +57,23 @@ void test_editor_backward_char(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "test string");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 11);
     editor_buffer_set_cursor(es, 3);
     TEST_CHECK(editor_backward_char(es) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 11);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 2);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 11);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 2);
     enter_state_free(&es);
   }
 
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "义勇军");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 3);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 3);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 3);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 3);
     TEST_CHECK(editor_backward_char(es) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 3);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 2);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 3);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 2);
     enter_state_free(&es);
   }
 
@@ -80,11 +81,11 @@ void test_editor_backward_char(void)
   {
     struct EnterState *es = enter_state_new();
     editor_buffer_set(es, "I ❤️");
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 4);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 4);
     TEST_CHECK(editor_backward_char(es) == FR_SUCCESS);
-    TEST_CHECK(editor_buffer_get_lastchar(es) == 4);
-    TEST_CHECK(editor_buffer_get_cursor(es) == 2);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_lastchar(es), 4);
+    TEST_CHECK_NUM_EQ(editor_buffer_get_cursor(es), 2);
     enter_state_free(&es);
   }
 #endif

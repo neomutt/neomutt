@@ -94,7 +94,7 @@ bool test_store_db(const struct StoreOps *store_ops, StoreHandle *store_handle)
   int rc;
 
   rc = store_ops->store(store_handle, key, klen, value, vlen);
-  if (!TEST_CHECK(rc == 0))
+  if (!TEST_CHECK_NUM_EQ(rc, 0))
     return false;
 
   void *data = NULL;
@@ -107,7 +107,7 @@ bool test_store_db(const struct StoreOps *store_ops, StoreHandle *store_handle)
   TEST_CHECK_(1, "store_ops->free(store_handle, &data)");
 
   rc = store_ops->delete_record(store_handle, key, klen);
-  if (!TEST_CHECK(rc == 0))
+  if (!TEST_CHECK_NUM_EQ(rc, 0))
     return false;
 
   return true;
