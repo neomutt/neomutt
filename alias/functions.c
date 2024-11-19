@@ -394,11 +394,11 @@ static int op_sort(struct AliasMenuData *mdata, int op)
 
   switch (mw_multi_choice(reverse ?
                               /* L10N: The highlighted letters must match the "Sort" options */
-                              _("Rev-Sort (a)lias, a(d)dress or (u)nsorted?") :
+                              _("Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?") :
                               /* L10N: The highlighted letters must match the "Rev-Sort" options */
-                              _("Sort (a)lias, a(d)dress or (u)nsorted?"),
+                              _("Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"),
                           /* L10N: These must match the highlighted letters from "Sort" and "Rev-Sort" */
-                          _("adu")))
+                          _("aneu")))
   {
     case -1: /* abort */
       resort = false;
@@ -408,11 +408,15 @@ static int op_sort(struct AliasMenuData *mdata, int op)
       sort = SORT_ALIAS;
       break;
 
-    case 2: /* a(d)dress */
-      sort = SORT_ADDRESS;
+    case 2: /* (n)ame */
+      sort = SORT_NAME;
       break;
 
-    case 3: /* (u)nsorted */
+    case 3: /* (e)mail */
+      sort = SORT_EMAIL;
+      break;
+
+    case 4: /* (u)nsorted */
       sort = SORT_ORDER;
       break;
   }

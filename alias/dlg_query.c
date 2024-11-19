@@ -95,8 +95,6 @@
 #include "gui.h"
 #include "mutt_logging.h"
 
-const struct ExpandoRenderData QueryRenderData[];
-
 /// Help Bar for the Address Query dialog
 static const struct Mapping QueryHelp[] = {
   // clang-format off
@@ -137,91 +135,6 @@ bool alias_to_addrlist(struct AddressList *al, struct Alias *alias)
   }
 
   return true;
-}
-
-/**
- * query_a - Query: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  struct Buffer *addrs = buf_pool_get();
-  mutt_addrlist_write(&alias->addr, addrs, true);
-
-  buf_printf(buf, "<%s>", buf_string(addrs));
-  buf_pool_release(&addrs);
-}
-
-/**
- * query_c_num - Query: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long query_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-
-  return av->num + 1;
-}
-
-/**
- * query_e - Query: Extra information - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_e(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  const char *s = alias->comment;
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_n - Query: Name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_n(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-  const struct Alias *alias = av->alias;
-
-  const char *s = alias->name;
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_t_num - Query: Tagged char - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long query_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AliasView *av = data;
-  return av->is_tagged;
-}
-
-/**
- * query_t - Query: Tagged char - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_t(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  // NOTE(g0mb4): use $flag_chars?
-  const char *s = av->is_tagged ? "*" : " ";
-  buf_strcpy(buf, s);
-}
-
-/**
- * query_Y - Query: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void query_Y(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
-             struct Buffer *buf)
-{
-  const struct AliasView *av = data;
-
-  alias_tags_to_buffer(&av->alias->tags, buf);
 }
 
 /**
@@ -298,6 +211,7 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
   if (verbose)
     mutt_message(_("Waiting for response..."));
 
+  struct Buffer *addr = buf_pool_get();
   /* The query protocol first reads one NL-terminated line. If an error
    * occurs, this is assumed to be an error message. Otherwise it's ignored. */
   msg = mutt_file_read_line(msg, &msglen, fp, NULL, MUTT_RL_NO_FLAGS);
@@ -313,8 +227,6 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
 
     struct Alias *alias = alias_new();
 
-    mutt_addrlist_parse(&alias->addr, tok);
-
     if (next_tok)
     {
       tok = next_tok;
@@ -322,12 +234,19 @@ int query_run(const char *s, bool verbose, struct AliasList *al, const struct Co
       if (next_tok)
         *next_tok++ = '\0';
 
-      alias->name = mutt_str_dup(tok);
+      buf_printf(addr, "%s <%s>", tok, buf);
+      mutt_addrlist_parse(&alias->addr, buf_string(addr));
+
       parse_alias_comments(alias, next_tok);
+    }
+    else
+    {
+      mutt_addrlist_parse(&alias->addr, buf); // Email address
     }
 
     TAILQ_INSERT_TAIL(al, alias, entries);
   }
+  buf_pool_release(&addr);
 
   FREE(&buf);
   mutt_file_fclose(&fp);
@@ -615,20 +534,3 @@ done:
   aliaslist_clear(&al);
   buf_pool_release(&buf);
 }
-
-/**
- * QueryRenderData - Callbacks for Query Expandos
- *
- * @sa QueryFormatDef, ExpandoDataAlias, ExpandoDataGlobal
- */
-const struct ExpandoRenderData QueryRenderData[] = {
-  // clang-format off
-  { ED_ALIAS,  ED_ALI_ADDRESS, query_a,     NULL },
-  { ED_ALIAS,  ED_ALI_NUMBER,  NULL,        query_c_num },
-  { ED_ALIAS,  ED_ALI_COMMENT, query_e,     NULL },
-  { ED_ALIAS,  ED_ALI_NAME,    query_n,     NULL },
-  { ED_ALIAS,  ED_ALI_TAGGED,  query_t,     query_t_num },
-  { ED_ALIAS,  ED_ALI_TAGS,    query_Y,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};

@@ -39,11 +39,11 @@
 #include "gui.h"
 
 /**
- * alias_sort_name - Compare two Aliases by their short names - Implements ::sort_t - @ingroup sort_api
+ * alias_sort_alias - Compare two Aliases by their short names - Implements ::sort_t - @ingroup sort_api
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_name(const void *a, const void *b, void *sdata)
+static int alias_sort_alias(const void *a, const void *b, void *sdata)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
@@ -60,11 +60,72 @@ static int alias_sort_name(const void *a, const void *b, void *sdata)
 }
 
 /**
- * alias_sort_address - Compare two Aliases by their Addresses - Implements ::sort_t - @ingroup sort_api
+ * alias_sort_email - Compare two Aliases by their Email Addresses - Implements ::sort_t - @ingroup sort_api
  *
  * @note Non-visible Aliases are sorted to the end
  */
-static int alias_sort_address(const void *a, const void *b, void *sdata)
+static int alias_sort_email(const void *a, const void *b, void *sdata)
+{
+  const struct AliasView *av_a = a;
+  const struct AliasView *av_b = b;
+  const bool sort_reverse = *(bool *) sdata;
+
+  const struct AddressList *al_a = &av_a->alias->addr;
+  const struct AddressList *al_b = &av_b->alias->addr;
+
+  if (av_a->is_visible != av_b->is_visible)
+    return av_a->is_visible ? -1 : 1;
+
+  if (!av_a->is_visible)
+    return 0;
+
+  int rc;
+  if (al_a == al_b)
+  {
+    rc = 0;
+  }
+  else if (!al_a)
+  {
+    rc = -1;
+  }
+  else if (!al_b)
+  {
+    rc = 1;
+  }
+  else
+  {
+    const struct Address *addr_a = TAILQ_FIRST(al_a);
+    const struct Address *addr_b = TAILQ_FIRST(al_b);
+    if (addr_a && addr_a->mailbox)
+    {
+      if (addr_b && addr_b->mailbox)
+        rc = buf_coll(addr_a->mailbox, addr_b->mailbox);
+      else
+        rc = 1;
+    }
+    else if (addr_b && addr_b->mailbox)
+    {
+      rc = -1;
+    }
+    else if (addr_a && addr_b)
+    {
+      rc = buf_coll(addr_a->personal, addr_b->personal);
+    }
+    else
+    {
+      rc = 0;
+    }
+  }
+
+  return sort_reverse ? -rc : rc;
+}
+
+/**
+ * alias_sort_name - Compare two Aliases by their Names - Implements ::sort_t - @ingroup sort_api
+ *
+ * @note Non-visible Aliases are sorted to the end
+ */
+static int alias_sort_name(const void *a, const void *b, void *sdata)
 {
   const struct AliasView *av_a = a;
   const struct AliasView *av_b = b;
@@ -150,13 +211,19 @@ static sort_t alias_get_sort_function(short sort)
   switch ((sort & SORT_MASK))
   {
     case SORT_ALIAS:
+      return alias_sort_alias;
+
+    case SORT_EMAIL:
+      return alias_sort_email;
+
+    case SORT_NAME:
       return alias_sort_name;
-    case SORT_ADDRESS:
-      return alias_sort_address;
+
     case SORT_ORDER:
       return alias_sort_unsort;
+
     default:
-      return alias_sort_name;
+      return alias_sort_alias;
   }
 }
 
@@ -170,7 +237,16 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
   if (!ava || ARRAY_EMPTY(ava))
     return;
 
-  const short c_sort_alias = cs_subset_sort(sub, "sort_alias");
+  short c_sort_alias = cs_subset_sort(sub, "sort_alias");
+  if (c_sort_alias == SORT_ALIAS)
+  {
+    struct AliasView *av = ARRAY_GET(ava, 0);
+    struct Alias *a = av->alias;
+
+    if (!a->name) // We've got a Query
+      c_sort_alias = SORT_ADDRESS;
+  }
+
   bool sort_reverse = (c_sort_alias & SORT_REVERSE);
   ARRAY_SORT(ava, alias_get_sort_function(c_sort_alias), &sort_reverse);
 

@@ -34,6 +34,7 @@
  * | alias/config.c      | @subpage alias_config      |
  * | alias/dlg_alias.c   | @subpage alias_dlg_alias   |
  * | alias/dlg_query.c   | @subpage alias_dlg_query   |
+ * | alias/expando.c     | @subpage alias_expando     |
  * | alias/functions.c   | @subpage alias_functions   |
  * | alias/gui.c         | @subpage alias_gui         |
  * | alias/reverse.c     | @subpage alias_reverse     |
@@ -46,6 +47,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
+#include "expando.h"
 
 struct Address;
 struct AddressList;

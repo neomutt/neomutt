@@ -841,7 +841,7 @@ cleanup:
 /**
  * get_micalg - Find the "micalg" parameter from the last GPGME operation
  * @param ctx       GPGME handle
- * @param use_smime If set, use SMIME instead of PGP
+ * @param use_smime If set, use SMIME instead of const PGP
  * @param buf       Buffer for the result
  * @param buflen    Length of buffer
  * @retval  0 Success

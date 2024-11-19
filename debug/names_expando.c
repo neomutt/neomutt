@@ -25,6 +25,7 @@
 #include "mutt/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "alias/expando.h"
 #include "alias/gui.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
