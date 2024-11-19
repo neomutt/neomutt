@@ -143,7 +143,11 @@ static int op_verify_key(struct PgpData *pd, int op)
   const int index = menu_get_index(pd->menu);
   struct PgpUid **pkey = ARRAY_GET(pd->key_table, index);
   if (!pkey)
+  {
+    mutt_file_fclose(&fp_tmp);
+    mutt_file_fclose(&fp_null);
     return FR_ERROR;
+  }
 
   char tmpbuf[256] = { 0 };
   snprintf(tmpbuf, sizeof(tmpbuf), "0x%s",

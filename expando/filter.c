@@ -88,11 +88,11 @@ bool check_for_pipe(struct ExpandoNode *root)
  */
 void filter_text(struct Buffer *buf)
 {
-  if (buf_is_empty(buf))
-    return;
-
   // Trim the | (pipe) character
   size_t len = buf_len(buf);
+  if (len == 0)
+    return;
+
   if (buf->data[len - 1] == '|')
     buf->data[len - 1] = '\0';
 

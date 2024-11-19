@@ -502,7 +502,8 @@ static bool is_autoview(struct Body *b)
     struct ListNode *np = NULL;
     STAILQ_FOREACH(np, &AutoViewList, entries)
     {
-      int i = mutt_str_len(np->data) - 1;
+      int i = mutt_str_len(np->data);
+      i--;
       if (((i > 0) && (np->data[i - 1] == '/') && (np->data[i] == '*') &&
            mutt_istrn_equal(type, np->data, i)) ||
           mutt_istr_equal(type, np->data))

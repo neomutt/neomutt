@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <wchar.h>
 #include "state.h"
+#include "charset.h"
 #include "date.h"
 #include "random.h"
 
@@ -126,13 +127,13 @@ void state_attach_puts(struct State *state, const char *t)
 static int state_putwc(struct State *state, wchar_t wc)
 {
   char mb[MB_LEN_MAX] = { 0 };
-  int rc;
 
-  rc = wcrtomb(mb, wc, NULL);
-  if (rc < 0)
-    return rc;
+  if (wcrtomb(mb, wc, NULL) == ICONV_ILLEGAL_SEQ)
+    return -1;
+
   if (fputs(mb, state->fp_out) == EOF)
     return -1;
+
   return 0;
 }
 

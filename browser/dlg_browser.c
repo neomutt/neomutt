@@ -1337,8 +1337,9 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
     }
     else
     {
-      int i;
-      for (i = buf_len(file) - 1; (i > 0) && ((buf_string(file))[i] != '/'); i--)
+      int i = buf_len(file);
+      i--;
+      for (; (i > 0) && ((buf_string(file))[i] != '/'); i--)
       {
         ; // do nothing
       }

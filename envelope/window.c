@@ -219,7 +219,7 @@ static int calc_address(struct AddressList *al, short cols, short *srows)
   struct ListHead slist = STAILQ_HEAD_INITIALIZER(slist);
   mutt_addrlist_write_list(al, &slist);
 
-  int rows = 1;
+  short rows = 1;
   int addr_len;
   int width_left = cols;
   struct ListNode *next = NULL;

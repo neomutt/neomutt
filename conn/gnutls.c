@@ -635,7 +635,7 @@ static int tls_check_certificate(struct Connection *conn)
     return 0;
 
   cert_list = gnutls_certificate_get_peers(session, &cert_list_size);
-  if (!cert_list)
+  if (!cert_list || (cert_list_size == 0))
   {
     mutt_error(_("Unable to get certificate from peer"));
     return 0;

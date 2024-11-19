@@ -96,7 +96,7 @@ struct MbTable *mbtable_parse(const char *s)
 
     slen -= k;
     t->chars[t->len++] = d;
-    while (k--)
+    while (k-- > 0)
       *d++ = *s++;
     *d++ = '\0';
   }

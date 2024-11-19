@@ -64,7 +64,6 @@ int node_container_render(const struct ExpandoNode *node,
   struct Buffer *tmp2 = buf_pool_get();
   if (fmt)
   {
-
     int max = max_cols;
     if (fmt->max_cols >= 0)
       max = MIN(max_cols, fmt->max_cols);
@@ -78,10 +77,8 @@ int node_container_render(const struct ExpandoNode *node,
   }
   else
   {
-
     total_cols = format_string(tmp2, 0, max_cols, JUSTIFY_LEFT, ' ',
                                buf_string(tmp), buf_len(tmp), true);
-
   }
   buf_addstr(buf, buf_string(tmp2));
   buf_pool_release(&tmp2);

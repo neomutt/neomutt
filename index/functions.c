@@ -2901,6 +2901,7 @@ static int op_main_entire_thread(struct IndexSharedData *shared,
     buf_addstr(buf, shared->email->env->message_id + msg_id_offset);
 
     size_t len = buf_len(buf);
+    ASSERT(len > 0);
     if (buf->data[len - 1] == '>')
       buf->data[len - 1] = '\0';
 

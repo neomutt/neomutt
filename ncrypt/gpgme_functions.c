@@ -174,7 +174,7 @@ static void print_dn_parts(FILE *fp, struct DnArray *dn)
 static const char *parse_dn_part(struct DnArray *array, const char *str)
 {
   const char *s = NULL, *s1 = NULL;
-  size_t n;
+  int n;
   char *p = NULL;
 
   /* parse attribute type */
@@ -203,7 +203,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
     n /= 2;
     p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
-    for (s1 = str; n; s1 += 2, n--)
+    for (s1 = str; n > 0; s1 += 2, n--)
       sscanf(s1, "%2hhx", (unsigned char *) p++);
     *p = '\0';
   }
@@ -246,7 +246,7 @@ static const char *parse_dn_part(struct DnArray *array, const char *str)
 
     p = MUTT_MEM_MALLOC(n + 1, char);
     array->value = (char *) p;
-    for (s = str; n; s++, n--)
+    for (s = str; n > 0; s++, n--)
     {
       if (*s == '\\')
       {
