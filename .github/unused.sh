@@ -9,6 +9,7 @@ IGNORELIST=(
     "mutt_socket_buffer_readln_d"
 
     # Used by tests
+    "mutt_mem_malloc"
     "mutt_str_upper"
     "name_expando_domain"
     "name_expando_node_type"
