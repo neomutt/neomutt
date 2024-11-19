@@ -1241,6 +1241,7 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     }
 
     window_redraw(NULL);
+    menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);
 
     /* give visual indication that the next command is a tag- command */
     if (priv->tag_prefix)
