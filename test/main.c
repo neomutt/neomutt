@@ -389,6 +389,7 @@ void test_fini(void);
                                                                                \
   /* gui */                                                                    \
   NEOMUTT_TEST_ITEM(test_window_reflow)                                        \
+  NEOMUTT_TEST_ITEM(test_window_swap)                                          \
   NEOMUTT_TEST_ITEM(test_window_visible)                                       \
                                                                                \
   /* hash */                                                                   \

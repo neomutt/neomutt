@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -277,5 +278,7 @@ void window_redraw(struct MuttWindow *win);
 void window_invalidate_all(void);
 const char *mutt_window_win_name(const struct MuttWindow *win);
 bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub);
+bool mutt_window_swap(struct MuttWindow *parent, struct MuttWindow *win1,
+                      struct MuttWindow *win2);
 
 #endif /* MUTT_GUI_MUTT_WINDOW_H */

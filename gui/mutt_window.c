@@ -4,6 +4,7 @@
  *
  * @authors
  * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Dennis Schön <mail@dennis-schoen.de>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -806,5 +807,56 @@ bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
 
   mutt_window_reflow(panel);
   window_invalidate_all();
+  return true;
+}
+
+/**
+ * mutt_window_swap - Swap the position of two windows
+ * @param parent Parent Window
+ * @param win1   Window
+ * @param win2   Window
+ * @retval true Windows were switched
+ */
+bool mutt_window_swap(struct MuttWindow *parent, struct MuttWindow *win1,
+                      struct MuttWindow *win2)
+{
+  if (!parent || !win1 || !win2)
+    return false;
+
+  // ensure both windows are children of the parent
+  if (win1->parent != parent || win2->parent != parent)
+    return false;
+
+  struct MuttWindow *win1_next = TAILQ_NEXT(win1, entries);
+  if (win1_next == win2)
+  {
+    // win1 is directly in front of win2, move it behind
+    TAILQ_REMOVE(&parent->children, win1, entries);
+    TAILQ_INSERT_AFTER(&parent->children, win2, win1, entries);
+    return true;
+  }
+
+  struct MuttWindow *win2_next = TAILQ_NEXT(win2, entries);
+  if (win2_next == win1)
+  {
+    // win2 is directly in front of win1, move it behind
+    TAILQ_REMOVE(&parent->children, win2, entries);
+    TAILQ_INSERT_AFTER(&parent->children, win1, win2, entries);
+    return true;
+  }
+
+  TAILQ_REMOVE(&parent->children, win1, entries);
+  TAILQ_REMOVE(&parent->children, win2, entries);
+
+  if (win1_next)
+    TAILQ_INSERT_BEFORE(win1_next, win2, entries);
+  else
+    TAILQ_INSERT_TAIL(&parent->children, win2, entries);
+
+  if (win2_next)
+    TAILQ_INSERT_BEFORE(win2_next, win1, entries);
+  else
+    TAILQ_INSERT_TAIL(&parent->children, win1, entries);
+
   return true;
 }
