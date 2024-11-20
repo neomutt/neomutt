@@ -497,11 +497,32 @@
 ** names in the browser mailbox list, using '~' and '='
 ** shortcuts.
 ** .pp
-** The default \fC"alpha"\fP setting of $$sort_browser uses
+** The default \fC"alpha"\fP setting of $$browser_sort uses
 ** locale-based sorting (using \fCstrcoll(3)\fP), which ignores some
 ** punctuation.  This can lead to some situations where the order
 ** doesn't make intuitive sense.  In those cases, it may be
 ** desirable to \fIunset\fP this variable.
+*/
+
+{ "browser_sort", DT_SORT, BROWSER_SORT_ALPHA },
+/*
+** .pp
+** Specifies how to sort entries in the file browser.  By default, the
+** entries are sorted alphabetically.  Valid values:
+** .il
+** .dd alpha (alphabetically by name)
+** .dd count (total message count)
+** .dd date
+** .dd desc (description)
+** .dd new (new message count)
+** .dd size
+** .dd unsorted
+** .ie
+** .pp
+** You may optionally use the "reverse-" prefix to specify reverse sorting
+** order (example: "\fCset browser_sort=reverse-date\fP").
+** .pp
+** The "unread" value is a synonym for "new".
 */
 
 { "browser_sort_dirs_first", DT_BOOL, false },
@@ -4980,27 +5001,6 @@
 ** .pp
 ** See the "Use Threads Feature" section for further explanation and
 ** examples, https://neomutt.org/feature/use-threads
-*/
-
-{ "sort_browser", DT_SORT, BROWSER_SORT_ALPHA },
-/*
-** .pp
-** Specifies how to sort entries in the file browser.  By default, the
-** entries are sorted alphabetically.  Valid values:
-** .il
-** .dd alpha (alphabetically by name)
-** .dd count (total message count)
-** .dd date
-** .dd desc (description)
-** .dd new (new message count)
-** .dd size
-** .dd unsorted
-** .ie
-** .pp
-** You may optionally use the "reverse-" prefix to specify reverse sorting
-** order (example: "\fCset sort_browser=reverse-date\fP").
-** .pp
-** The "unread" value is a synonym for "new".
 */
 
 { "sort_re", DT_BOOL, true },

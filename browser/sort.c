@@ -184,8 +184,8 @@ static int browser_sort_helper(const void *a, const void *b, void *sdata)
  */
 void browser_sort(struct BrowserState *state)
 {
-  const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-  switch (c_sort_browser & SORT_MASK)
+  const enum SortType c_browser_sort = cs_subset_sort(NeoMutt->sub, "browser_sort");
+  switch (c_browser_sort & SORT_MASK)
   {
     case BROWSER_SORT_SIZE:
     case BROWSER_SORT_DATE:
@@ -197,7 +197,7 @@ void browser_sort(struct BrowserState *state)
   }
 
   sort_t f = NULL;
-  switch (c_sort_browser & SORT_MASK)
+  switch (c_browser_sort & SORT_MASK)
   {
     case BROWSER_SORT_COUNT:
       f = browser_sort_count;
@@ -225,7 +225,7 @@ void browser_sort(struct BrowserState *state)
 
   struct CompareData cd = {
     .sort_fn = f,
-    .sort_reverse = c_sort_browser & SORT_REVERSE,
+    .sort_reverse = c_browser_sort & SORT_REVERSE,
     .sort_dirs_first = cs_subset_bool(NeoMutt->sub, "browser_sort_dirs_first"),
   };
 

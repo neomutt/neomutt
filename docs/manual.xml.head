@@ -17704,8 +17704,8 @@ set reply_with_xorig = "yes"
 
 <screen>
 <emphasis role="comment"># Fixed order</emphasis>
-set sort_browser="alpha"
-set sort_browser="unsorted"
+set browser_sort = "alpha"
+set browser_sort = "unsorted"
 </screen>
 
           <para>
@@ -17732,8 +17732,8 @@ set sort_browser="unsorted"
 
 <screen>
 <emphasis role="comment"># Variable order</emphasis>
-set sort_browser="reverse-count"
-set sort_browser="reverse-size"
+set browser_sort = "reverse-count"
+set browser_sort = "reverse-size"
 </screen>
 
           <para>
