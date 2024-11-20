@@ -3430,7 +3430,7 @@
 */
 #endif
 
-{ "pgp_sort_keys", DT_SORT, SORT_ADDRESS },
+{ "pgp_sort_keys", DT_SORT, KEY_SORT_ADDRESS },
 /*
 ** .pp
 ** Specifies how the entries in the pgp menu are sorted. The

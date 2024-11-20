@@ -39,11 +39,8 @@ enum SortType
   SORT_RECEIVED =  7, ///< Sort by when the message were delivered locally
   SORT_TO       =  8, ///< Sort by the email's To field
   SORT_SCORE    =  9, ///< Sort by the email's score
-  SORT_ADDRESS  = 10, ///< Sort by email address
-  SORT_KEYID    = 11, ///< Sort by the encryption key's ID
-  SORT_TRUST    = 12, ///< Sort by encryption key's trust level
-  SORT_SPAM     = 13, ///< Sort by the email's spam score
-  SORT_LABEL    = 14, ///< Sort by the emails label
+  SORT_SPAM     = 10, ///< Sort by the email's spam score
+  SORT_LABEL    = 11, ///< Sort by the emails label
 
   SORT_MAX,
 };

@@ -86,6 +86,7 @@
 #include "pgp_functions.h"
 #include "pgpkey.h"
 #include "pgplib.h"
+#include "sort.h"
 
 const struct ExpandoRenderData PgpEntryRenderData[];
 
@@ -647,16 +648,16 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
   short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
   switch (c_pgp_sort_keys & SORT_MASK)
   {
-    case SORT_ADDRESS:
+    case KEY_SORT_ADDRESS:
       fn = pgp_sort_address;
       break;
-    case SORT_DATE:
+    case KEY_SORT_DATE:
       fn = pgp_sort_date;
       break;
-    case SORT_KEYID:
+    case KEY_SORT_KEYID:
       fn = pgp_sort_keyid;
       break;
-    case SORT_TRUST:
+    case KEY_SORT_TRUST:
     default:
       fn = pgp_sort_trust;
       break;

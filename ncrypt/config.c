@@ -39,17 +39,18 @@
 #include "pgp.h"
 #include "pgplib.h"
 #include "smime.h"
+#include "sort.h"
 
 /**
- * SortKeyMethods - Sort methods for encryption keys
+ * KeySortMethods - Sort methods for encryption keys
  */
-static const struct Mapping SortKeyMethods[] = {
+static const struct Mapping KeySortMethods[] = {
   // clang-format off
-  { "address", SORT_ADDRESS },
-  { "date",    SORT_DATE },
-  { "keyid",   SORT_KEYID },
-  { "trust",   SORT_TRUST },
-  { NULL,      0 },
+  { "address", KEY_SORT_ADDRESS },
+  { "date",    KEY_SORT_DATE },
+  { "keyid",   KEY_SORT_KEYID },
+  { "trust",   KEY_SORT_TRUST },
+  { NULL, 0 },
   // clang-format on
 };
 
@@ -168,7 +169,7 @@ static struct ConfigDef NcryptVars[] = {
   { "pgp_sign_as", DT_STRING, 0, 0, NULL,
     "Use this alternative key for signing messages"
   },
-  { "pgp_sort_keys", DT_SORT|D_SORT_REVERSE, SORT_ADDRESS, IP SortKeyMethods, NULL,
+  { "pgp_sort_keys", DT_SORT|D_SORT_REVERSE, KEY_SORT_ADDRESS, IP KeySortMethods, NULL,
     "Sort order for PGP keys"
   },
   { "pgp_strict_enc", DT_BOOL, true, 0, NULL,

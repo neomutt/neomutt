@@ -88,6 +88,7 @@
 #include "gpgme_functions.h"
 #include "mutt_logging.h"
 #include "pgplib.h"
+#include "sort.h"
 
 const struct ExpandoRenderData PgpEntryGpgmeRenderData[];
 
@@ -645,16 +646,16 @@ struct CryptKeyInfo *dlg_gpgme(struct CryptKeyInfo *keys, struct Address *p,
   sort_t fn = NULL;
   switch (c_pgp_sort_keys & SORT_MASK)
   {
-    case SORT_ADDRESS:
+    case KEY_SORT_ADDRESS:
       fn = crypt_sort_address;
       break;
-    case SORT_DATE:
+    case KEY_SORT_DATE:
       fn = crypt_sort_date;
       break;
-    case SORT_KEYID:
+    case KEY_SORT_KEYID:
       fn = crypt_sort_keyid;
       break;
-    case SORT_TRUST:
+    case KEY_SORT_TRUST:
     default:
       fn = crypt_sort_trust;
       break;
