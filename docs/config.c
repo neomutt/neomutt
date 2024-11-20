@@ -4930,7 +4930,7 @@
 ** wait indefinitely.
 */
 
-{ "sort", DT_SORT, SORT_DATE },
+{ "sort", DT_SORT, EMAIL_SORT_DATE },
 /*
 ** .pp
 ** Specifies how to sort messages in the "index" menu.  Valid values
@@ -4939,6 +4939,7 @@
 ** .dd date
 ** .dd date-received
 ** .dd from
+** .dd label
 ** .dd score
 ** .dd size
 ** .dd spam
@@ -4978,7 +4979,7 @@
 ** examples, https://neomutt.org/feature/use-threads
 */
 
-{ "sort_aux", DT_SORT, SORT_DATE },
+{ "sort_aux", DT_SORT, EMAIL_SORT_DATE },
 /*
 ** .pp
 ** This provides a secondary sort for messages in the "index" menu, used

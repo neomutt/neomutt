@@ -902,8 +902,8 @@ static int op_attachment_attach_message(struct ComposeSharedData *shared, int op
   }
 
   /* `$sort`, `$sort_aux`, `$use_threads` could be changed in dlg_index() */
-  const enum SortType old_sort = cs_subset_sort(shared->sub, "sort");
-  const enum SortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
+  const enum EmailSortType old_sort = cs_subset_sort(shared->sub, "sort");
+  const enum EmailSortType old_sort_aux = cs_subset_sort(shared->sub, "sort_aux");
   const unsigned char old_use_threads = cs_subset_enum(shared->sub, "use_threads");
 
   mutt_message(_("Tag the messages you want to attach"));

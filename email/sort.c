@@ -277,37 +277,37 @@ static int email_sort_label(const struct Email *a, const struct Email *b, bool r
 
 /**
  * get_sort_func - Get the sort function for a given sort id
- * @param method Sort type, see #SortType
+ * @param method Sort type, see #EmailSortType
  * @param type   The Mailbox type
  * @retval ptr sort function - Implements ::sort_email_t
  */
-static sort_email_t get_sort_func(enum SortType method, enum MailboxType type)
+static sort_email_t get_sort_func(enum EmailSortType method, enum MailboxType type)
 {
   switch (method)
   {
-    case SORT_DATE:
+    case EMAIL_SORT_DATE:
       return email_sort_date;
-    case SORT_FROM:
+    case EMAIL_SORT_DATE_RECEIVED:
+      return email_sort_date_received;
+    case EMAIL_SORT_FROM:
       return email_sort_from;
-    case SORT_LABEL:
+    case EMAIL_SORT_LABEL:
       return email_sort_label;
-    case SORT_ORDER:
+    case EMAIL_SORT_SCORE:
+      return email_sort_score;
+    case EMAIL_SORT_SIZE:
+      return email_sort_size;
+    case EMAIL_SORT_SPAM:
+      return email_sort_spam;
+    case EMAIL_SORT_SUBJECT:
+      return email_sort_subject;
+    case EMAIL_SORT_TO:
+      return email_sort_to;
+    case EMAIL_SORT_UNSORTED:
       if (type == MUTT_NNTP)
         return nntp_sort_unsorted;
       else
         return email_sort_unsorted;
-    case SORT_RECEIVED:
-      return email_sort_date_received;
-    case SORT_SCORE:
-      return email_sort_score;
-    case SORT_SIZE:
-      return email_sort_size;
-    case SORT_SPAM:
-      return email_sort_spam;
-    case SORT_SUBJECT:
-      return email_sort_subject;
-    case SORT_TO:
-      return email_sort_to;
     default:
       mutt_error(_("Could not find sorting function [report this bug]"));
       return NULL;
@@ -321,7 +321,7 @@ static sort_email_t get_sort_func(enum SortType method, enum MailboxType type)
  * @param b        Second email
  * @param type     Mailbox type
  * @param sort     Primary sort to use (generally $sort)
- * @param sort_aux Secondary sort (generally $sort_aux or SORT_ORDER)
+ * @param sort_aux Secondary sort (generally $sort_aux or EMAIL_SORT_UNSORTED)
  * @retval <0 a precedes b
  * @retval  0 a and b are identical (should not happen in practice)
  * @retval >0 b precedes a
@@ -453,7 +453,7 @@ void mutt_sort_unsorted(struct Mailbox *m)
 
   struct EmailCompare cmp = { 0 };
   cmp.type = mx_type(m);
-  cmp.sort = SORT_ORDER;
+  cmp.sort = EMAIL_SORT_UNSORTED;
   mutt_qsort_r((void *) m->emails, m->msg_count, sizeof(struct Email *),
                email_sort_shim, &cmp);
 }

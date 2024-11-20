@@ -38,6 +38,7 @@
 #include <sys/types.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "status.h"
 #include "expando/lib.h"
@@ -60,10 +61,10 @@ const struct ExpandoRenderData StatusRenderData[];
  * get_sort_str - Get the sort method as a string
  * @param buf    Buffer for the sort string
  * @param buflen Length of the buffer
- * @param method Sort method, see #SortType
+ * @param method Sort method, see #EmailSortType
  * @retval ptr Buffer pointer
  */
-static char *get_sort_str(char *buf, size_t buflen, enum SortType method)
+static char *get_sort_str(char *buf, size_t buflen, enum EmailSortType method)
 {
   snprintf(buf, buflen, "%s%s%s", (method & SORT_REVERSE) ? "reverse-" : "",
            (method & SORT_LAST) ? "last-" : "",
@@ -326,7 +327,7 @@ void status_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 {
   char tmp[128] = { 0 };
 
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   const char *s = get_sort_str(tmp, sizeof(tmp), c_sort);
   buf_strcpy(buf, s);
 }
@@ -339,7 +340,7 @@ void status_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
 {
   char tmp[128] = { 0 };
 
-  const enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  const enum EmailSortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
   const char *s = get_sort_str(tmp, sizeof(tmp), c_sort_aux);
   buf_strcpy(buf, s);
 }

@@ -87,6 +87,7 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
@@ -1382,7 +1383,7 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
        * only to help readability of the code.  */
       bool browser_track = false;
 
-      const enum SortType c_browser_sort = cs_subset_sort(NeoMutt->sub, "browser_sort");
+      const enum EmailSortType c_browser_sort = cs_subset_sort(NeoMutt->sub, "browser_sort");
       switch (c_browser_sort & SORT_MASK)
       {
         case BROWSER_SORT_ALPHA:

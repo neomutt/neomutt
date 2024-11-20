@@ -704,7 +704,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
   const struct SbEntry *hil_entry = sbep ? *sbep : NULL;
 
   update_entries_visibility(wdata);
-  const short c_sidebar_sort = cs_subset_sort(NeoMutt->sub, "sidebar_sort");
+  const enum EmailSortType c_sidebar_sort = cs_subset_sort(NeoMutt->sub, "sidebar_sort");
   sb_sort_entries(wdata, c_sidebar_sort);
 
   if (opn_entry || hil_entry)

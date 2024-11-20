@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
 #include "test_common.h" // IWYU pragma: keep
@@ -41,13 +42,13 @@ extern struct EnumDef MboxTypeDef;
  */
 const struct Mapping SortMethods[] = {
   // clang-format off
-  { "date",    SORT_DATE },
-  { "from",    SORT_FROM },
-  { "label",   SORT_LABEL },
-  { "size",    SORT_SIZE },
-  { "spam",    SORT_SPAM },
-  { "subject", SORT_SUBJECT },
-  { "to",      SORT_TO },
+  { "date",    EMAIL_SORT_DATE },
+  { "from",    EMAIL_SORT_FROM },
+  { "label",   EMAIL_SORT_LABEL },
+  { "size",    EMAIL_SORT_SIZE },
+  { "spam",    EMAIL_SORT_SPAM },
+  { "subject", EMAIL_SORT_SUBJECT },
+  { "to",      EMAIL_SORT_TO },
   { NULL, 0 },
   // clang-format on
 };
@@ -63,7 +64,7 @@ static struct ConfigDef Vars[] = {
   { "signature",         DT_PATH|D_PATH_FILE,              IP "~/.signature",     0,               NULL, },
   { "print",             DT_QUAD,                          MUTT_ASKNO,            0,               NULL, },
   { "mask",              DT_REGEX|D_REGEX_NOSUB,           IP "!^\\.[^.]",        0,               NULL, },
-  { "sort",              DT_SORT|D_SORT_LAST,              SORT_DATE,             IP SortMethods,  NULL, },
+  { "sort",              DT_SORT|D_SORT_LAST,              EMAIL_SORT_DATE,             IP SortMethods,  NULL, },
   { "attribution_intro", DT_STRING,                        IP "On %d, %n wrote:", 0,               NULL, },
   { NULL },
   // clang-format on

@@ -25,14 +25,14 @@
 #ifndef MUTT_MUTT_THREAD_H
 #define MUTT_MUTT_THREAD_H
 
+#include "email/lib.h"
 #include <stdbool.h>
 #include <stdint.h>
 #include <sys/types.h>
-#include "config/lib.h"
 
 struct Buffer;
-struct Email;
-struct EmailArray;
+struct ConfigDef;
+struct ConfigSet;
 struct Mailbox;
 struct MailboxView;
 
@@ -44,8 +44,8 @@ struct ThreadsContext
   struct MailboxView *mailbox_view; ///< Current mailbox
   struct MuttThread  *tree;         ///< Top of thread tree
   struct HashTable   *hash;         ///< Hash Table: "message-id" -> MuttThread
-  enum SortType       c_sort;       ///< Last sort method
-  enum SortType       c_sort_aux;   ///< Last sort_aux method
+  enum EmailSortType       c_sort;       ///< Last sort method
+  enum EmailSortType       c_sort_aux;   ///< Last sort_aux method
 };
 
 /**

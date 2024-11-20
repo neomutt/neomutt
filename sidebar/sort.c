@@ -34,6 +34,7 @@
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "sort.h"
 
@@ -157,7 +158,7 @@ static int sb_sort_unsorted(const void *a, const void *b, void *sdata)
  *
  * Once sorted, the prev/next links will be reconstructed.
  */
-void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort)
+void sb_sort_entries(struct SidebarWindowData *wdata, enum EmailSortType sort)
 {
   sort_t fn = NULL;
 

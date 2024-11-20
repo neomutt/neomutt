@@ -31,6 +31,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "common.h" // IWYU pragma: keep
 #include "test_common.h"
@@ -48,19 +49,19 @@ static struct Mapping MboxTypeMap[] = {
  * Test Lookup table
  */
 const struct Mapping SortMangoMethods[] = {
-  { "date",          SORT_DATE },
-  { "date-sent",     SORT_DATE },
-  { "date-received", SORT_RECEIVED },
-  { "from",          SORT_FROM },
-  { "label",         SORT_LABEL },
-  { "unsorted",      SORT_ORDER },
-  { "mailbox-order", SORT_ORDER },
-  { "score",         SORT_SCORE },
-  { "size",          SORT_SIZE },
-  { "spam",          SORT_SPAM },
-  { "subject",       SORT_SUBJECT },
-  { "threads",       SORT_THREADS },
-  { "to",            SORT_TO },
+  { "date",          EMAIL_SORT_DATE },
+  { "date-sent",     EMAIL_SORT_DATE },
+  { "date-received", EMAIL_SORT_DATE_RECEIVED },
+  { "from",          EMAIL_SORT_FROM },
+  { "label",         EMAIL_SORT_LABEL },
+  { "unsorted",      EMAIL_SORT_UNSORTED },
+  { "mailbox-order", EMAIL_SORT_UNSORTED },
+  { "score",         EMAIL_SORT_SCORE },
+  { "size",          EMAIL_SORT_SIZE },
+  { "spam",          EMAIL_SORT_SPAM },
+  { "subject",       EMAIL_SORT_SUBJECT },
+  { "threads",       EMAIL_SORT_THREADS },
+  { "to",            EMAIL_SORT_TO },
   { NULL,            0 },
 };
 // clang-format on
@@ -85,7 +86,7 @@ static struct ConfigDef Vars[] = {
   { "Jackfruit",  DT_PATH|D_PATH_FILE,               IP "/etc/passwd",            0,                   NULL, },
   { "Kumquat",    DT_QUAD,                           0,                           0,                   NULL, },
   { "Lemon",      DT_REGEX,                          0,                           0,                   NULL, },
-  { "Mango",      DT_SORT,                           1,                           IP SortMangoMethods, NULL, },
+  { "Mango",      DT_SORT,                           EMAIL_SORT_DATE,             IP SortMangoMethods, NULL, },
   { "Nectarine",  DT_STRING|D_SENSITIVE,            IP "nectarine",               0,                   NULL, },
   { "Olive",      DT_STRING|D_INTERNAL_DEPRECATED,  IP "olive",                  0,                   NULL, },
   { NULL },

@@ -66,19 +66,20 @@ extern const struct ExpandoDefinition IndexFormatDef[];
  */
 static const struct Mapping SortAuxMethods[] = {
   // clang-format off
-  { "date",          SORT_DATE },
-  { "date-sent",     SORT_DATE },
-  { "threads",       SORT_DATE },
-  { "date-received", SORT_RECEIVED },
-  { "from",          SORT_FROM },
-  { "label",         SORT_LABEL },
-  { "unsorted",      SORT_ORDER },
-  { "mailbox-order", SORT_ORDER },
-  { "score",         SORT_SCORE },
-  { "size",          SORT_SIZE },
-  { "spam",          SORT_SPAM },
-  { "subject",       SORT_SUBJECT },
-  { "to",            SORT_TO },
+  { "date",          EMAIL_SORT_DATE },
+  { "date-received", EMAIL_SORT_DATE_RECEIVED },
+  { "from",          EMAIL_SORT_FROM },
+  { "label",         EMAIL_SORT_LABEL },
+  { "score",         EMAIL_SORT_SCORE },
+  { "size",          EMAIL_SORT_SIZE },
+  { "spam",          EMAIL_SORT_SPAM },
+  { "subject",       EMAIL_SORT_SUBJECT },
+  { "to",            EMAIL_SORT_TO },
+  { "unsorted",      EMAIL_SORT_UNSORTED },
+  // Compatibility
+  { "date-sent",     EMAIL_SORT_DATE },
+  { "mailbox-order", EMAIL_SORT_UNSORTED },
+  { "threads",       EMAIL_SORT_DATE },
   { NULL, 0 },
   // clang-format on
 };
@@ -88,19 +89,20 @@ static const struct Mapping SortAuxMethods[] = {
  */
 const struct Mapping SortMethods[] = {
   // clang-format off
-  { "date",          SORT_DATE },
-  { "date-sent",     SORT_DATE },
-  { "date-received", SORT_RECEIVED },
-  { "from",          SORT_FROM },
-  { "label",         SORT_LABEL },
-  { "unsorted",      SORT_ORDER },
-  { "mailbox-order", SORT_ORDER },
-  { "score",         SORT_SCORE },
-  { "size",          SORT_SIZE },
-  { "spam",          SORT_SPAM },
-  { "subject",       SORT_SUBJECT },
-  { "threads",       SORT_THREADS },
-  { "to",            SORT_TO },
+  { "date",          EMAIL_SORT_DATE },
+  { "date-received", EMAIL_SORT_DATE_RECEIVED },
+  { "from",          EMAIL_SORT_FROM },
+  { "label",         EMAIL_SORT_LABEL },
+  { "score",         EMAIL_SORT_SCORE },
+  { "size",          EMAIL_SORT_SIZE },
+  { "spam",          EMAIL_SORT_SPAM },
+  { "subject",       EMAIL_SORT_SUBJECT },
+  { "threads",       EMAIL_SORT_THREADS },
+  { "to",            EMAIL_SORT_TO },
+  { "unsorted",      EMAIL_SORT_UNSORTED },
+  // Compatibility
+  { "date-sent",     EMAIL_SORT_DATE },
+  { "mailbox-order", EMAIL_SORT_UNSORTED },
   { NULL, 0 },
   // clang-format on
 };
@@ -810,10 +812,10 @@ static struct ConfigDef MainVars[] = {
   { "sleep_time", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 1, 0, NULL,
     "Time to pause after certain info messages"
   },
-  { "sort", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, SORT_DATE, IP SortMethods, sort_validator,
+  { "sort", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, EMAIL_SORT_DATE, IP SortMethods, sort_validator,
     "Sort method for the index"
   },
-  { "sort_aux", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, SORT_DATE, IP SortAuxMethods, NULL,
+  { "sort_aux", DT_SORT|D_SORT_REVERSE|D_SORT_LAST, EMAIL_SORT_DATE, IP SortAuxMethods, NULL,
     "Secondary sort method for the index"
   },
   { "sort_re", DT_BOOL, true, 0, NULL,

@@ -25,26 +25,6 @@
 
 #define mutt_numeric_cmp(a,b) ((a) < (b) ? -1 : ((a) > (b) ? 1 : 0))
 
-/**
- * enum SortType - Methods for sorting
- */
-enum SortType
-{
-  SORT_DATE     =  1, ///< Sort by the date the email was sent
-  SORT_SIZE     =  2, ///< Sort by the size of the email
-  SORT_SUBJECT  =  3, ///< Sort by the email's subject
-  SORT_FROM     =  4, ///< Sort by the email's From field
-  SORT_ORDER    =  5, ///< Sort by the order the messages appear in the mailbox
-  SORT_THREADS  =  6, ///< Sort by email threads
-  SORT_RECEIVED =  7, ///< Sort by when the message were delivered locally
-  SORT_TO       =  8, ///< Sort by the email's To field
-  SORT_SCORE    =  9, ///< Sort by the email's score
-  SORT_SPAM     = 10, ///< Sort by the email's spam score
-  SORT_LABEL    = 11, ///< Sort by the emails label
-
-  SORT_MAX,
-};
-
 /* `$sort` and `$sort_aux` are shorts, and are a composite of a constant sort
  * operation number and a set of compounded bitflags.
  *

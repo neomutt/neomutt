@@ -233,8 +233,8 @@ struct Email *dlg_postponed(struct Mailbox *m)
   /* The postponed mailbox is setup to have sorting disabled, but the global
    * `$sort` variable may indicate something different.   Sorting has to be
    * disabled while the postpone menu is being displayed. */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  cs_subset_str_native_set(NeoMutt->sub, "sort", EMAIL_SORT_UNSORTED, NULL);
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);
   // ---------------------------------------------------------------------------

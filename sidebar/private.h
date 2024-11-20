@@ -27,6 +27,7 @@
 #include <stdint.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 
 struct IndexSharedData;
@@ -119,7 +120,7 @@ int sb_insertion_window_observer(struct NotifyCallback *nc);
 void sb_win_add_observers(struct MuttWindow *win);
 
 // sort.c
-void sb_sort_entries(struct SidebarWindowData *wdata, enum SortType sort);
+void sb_sort_entries(struct SidebarWindowData *wdata, enum EmailSortType sort);
 
 // wdata.c
 void                      sb_wdata_free(struct MuttWindow *win, void **ptr);

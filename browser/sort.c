@@ -33,6 +33,7 @@
 #include <sys/stat.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "sort.h"
 #include "lib.h"
@@ -184,7 +185,7 @@ static int browser_sort_helper(const void *a, const void *b, void *sdata)
  */
 void browser_sort(struct BrowserState *state)
 {
-  const enum SortType c_browser_sort = cs_subset_sort(NeoMutt->sub, "browser_sort");
+  const enum EmailSortType c_browser_sort = cs_subset_sort(NeoMutt->sub, "browser_sort");
   switch (c_browser_sort & SORT_MASK)
   {
     case BROWSER_SORT_SIZE:

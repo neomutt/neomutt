@@ -46,6 +46,24 @@ struct MailboxView;
  */
 typedef int (*sort_email_t)(const struct Email *a, const struct Email *b, bool reverse);
 
+/**
+ * enum EmailSortType - Methods for sorting Emails
+ */
+enum EmailSortType
+{
+  EMAIL_SORT_DATE,             ///< Sort by the date the email was sent
+  EMAIL_SORT_DATE_RECEIVED,    ///< Sort by when the message were delivered locally
+  EMAIL_SORT_FROM,             ///< Sort by the email's From field
+  EMAIL_SORT_LABEL,            ///< Sort by the emails label
+  EMAIL_SORT_SCORE,            ///< Sort by the email's score
+  EMAIL_SORT_SIZE,             ///< Sort by the size of the email
+  EMAIL_SORT_SPAM,             ///< Sort by the email's spam score
+  EMAIL_SORT_SUBJECT,          ///< Sort by the email's subject
+  EMAIL_SORT_THREADS,          ///< Sort by email threads
+  EMAIL_SORT_TO,               ///< Sort by the email's To field
+  EMAIL_SORT_UNSORTED,         ///< Sort by the order the messages appear in the mailbox
+};
+
 int mutt_compare_emails(const struct Email *a, const struct Email *b,
                         enum MailboxType type, short sort, short sort_aux);
 

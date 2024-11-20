@@ -475,7 +475,7 @@ void mutt_print_message(struct Mailbox *m, struct EmailArray *ea)
  */
 bool mutt_select_sort(bool reverse)
 {
-  enum SortType sort = SORT_DATE;
+  enum EmailSortType sort = EMAIL_SORT_DATE;
 
   switch (mw_multi_choice(reverse ?
                               /* L10N: The highlighted letters must match the "Sort" options */
@@ -489,56 +489,56 @@ bool mutt_select_sort(bool reverse)
       return false;
 
     case 1: /* (d)ate */
-      sort = SORT_DATE;
+      sort = EMAIL_SORT_DATE;
       break;
 
     case 2: /* (f)rm */
-      sort = SORT_FROM;
+      sort = EMAIL_SORT_FROM;
       break;
 
     case 3: /* (r)ecv */
-      sort = SORT_RECEIVED;
+      sort = EMAIL_SORT_DATE_RECEIVED;
       break;
 
     case 4: /* (s)ubj */
-      sort = SORT_SUBJECT;
+      sort = EMAIL_SORT_SUBJECT;
       break;
 
     case 5: /* t(o) */
-      sort = SORT_TO;
+      sort = EMAIL_SORT_TO;
       break;
 
     case 6: /* (t)hread */
-      sort = SORT_THREADS;
+      sort = EMAIL_SORT_THREADS;
       break;
 
     case 7: /* (u)nsort */
-      sort = SORT_ORDER;
+      sort = EMAIL_SORT_UNSORTED;
       break;
 
     case 8: /* si(z)e */
-      sort = SORT_SIZE;
+      sort = EMAIL_SORT_SIZE;
       break;
 
     case 9: /* s(c)ore */
-      sort = SORT_SCORE;
+      sort = EMAIL_SORT_SCORE;
       break;
 
     case 10: /* s(p)am */
-      sort = SORT_SPAM;
+      sort = EMAIL_SORT_SPAM;
       break;
 
     case 11: /* (l)abel */
-      sort = SORT_LABEL;
+      sort = EMAIL_SORT_LABEL;
       break;
   }
 
   const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   int rc = CSR_ERR_CODE;
-  if ((sort != SORT_THREADS) || (c_use_threads == UT_UNSET))
+  if ((sort != EMAIL_SORT_THREADS) || (c_use_threads == UT_UNSET))
   {
-    if ((sort != SORT_THREADS) && (c_sort & SORT_LAST))
+    if ((sort != EMAIL_SORT_THREADS) && (c_sort & SORT_LAST))
       sort |= SORT_LAST;
     if (reverse)
       sort |= SORT_REVERSE;
@@ -547,7 +547,7 @@ bool mutt_select_sort(bool reverse)
   }
   else
   {
-    ASSERT((c_sort & SORT_MASK) != SORT_THREADS); /* See index_config_observer() */
+    ASSERT((c_sort & SORT_MASK) != EMAIL_SORT_THREADS); /* See index_config_observer() */
     /* Preserve the value of $sort, and toggle whether we are threaded. */
     switch (c_use_threads)
     {
