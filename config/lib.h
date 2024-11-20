@@ -62,7 +62,7 @@
 #include "quad.h"
 #include "regex2.h"
 #include "set.h"
-#include "sort2.h"
+#include "sort.h"
 #include "subset.h"
 #include "types.h"
 // IWYU pragma: end_keep

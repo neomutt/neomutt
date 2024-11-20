@@ -36,8 +36,8 @@
 #include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "sort.h"
 #include "set.h"
-#include "sort2.h"
 #include "types.h"
 
 #define PREFIX_REVERSE "reverse-"

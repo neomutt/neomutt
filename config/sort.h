@@ -20,10 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_CONFIG_SORT2_H
-#define MUTT_CONFIG_SORT2_H
-
-#include "mutt/lib.h"
+#ifndef MUTT_CONFIG_SORT_H
+#define MUTT_CONFIG_SORT_H
 
 #define mutt_numeric_cmp(a,b) ((a) < (b) ? -1 : ((a) > (b) ? 1 : 0))
 
@@ -73,4 +71,4 @@ enum SortType
 #define SORT_REVERSE  (1 << 8)      ///< Reverse the order of the sort
 #define SORT_LAST     (1 << 9)      ///< Sort thread by last-X, e.g. received date
 
-#endif /* MUTT_CONFIG_SORT2_H */
+#endif /* MUTT_CONFIG_SORT_H */
