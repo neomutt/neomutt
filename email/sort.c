@@ -1,6 +1,6 @@
 /**
  * @file
- * Assorted sorting methods
+ * Email sorting methods
  *
  * @authors
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
@@ -25,9 +25,9 @@
  */
 
 /**
- * @page neo_sort Assorted sorting methods
+ * @page email_sort Email sorting methods
  *
- * Assorted sorting methods
+ * Email sorting methods
  */
 
 #include "config.h"
@@ -36,17 +36,22 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
-#include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
 #include "sort.h"
 #include "nntp/lib.h"
-#include "globals.h"
+#include "body.h"
+#include "email.h"
+#include "envelope.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mview.h"
 #include "mx.h"
 #include "score.h"
+
+extern bool OptNeedRescore;
+extern bool OptNeedResort;
+extern bool OptResortInit;
 
 /**
  * struct EmailCompare - Context for email_sort_shim()
@@ -70,7 +75,7 @@ static int email_sort_shim(const void *a, const void *b, void *sdata)
 }
 
 /**
- * email_sort_score - Compare two emails using their scores - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_score - Compare two emails using their scores - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_score(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -79,7 +84,7 @@ static int email_sort_score(const struct Email *a, const struct Email *b, bool r
 }
 
 /**
- * email_sort_size - Compare the size of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_size - Compare the size of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_size(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -88,7 +93,7 @@ static int email_sort_size(const struct Email *a, const struct Email *b, bool re
 }
 
 /**
- * email_sort_date - Compare the sent date of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_date - Compare the sent date of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_date(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -97,7 +102,7 @@ static int email_sort_date(const struct Email *a, const struct Email *b, bool re
 }
 
 /**
- * email_sort_subject - Compare the subject of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_subject - Compare the subject of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_subject(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -150,7 +155,7 @@ const char *mutt_get_name(const struct Address *a)
 }
 
 /**
- * email_sort_to - Compare the 'to' fields of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_to - Compare the 'to' fields of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_to(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -163,7 +168,7 @@ static int email_sort_to(const struct Email *a, const struct Email *b, bool reve
 }
 
 /**
- * email_sort_from - Compare the 'from' fields of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_from - Compare the 'from' fields of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_from(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -176,7 +181,7 @@ static int email_sort_from(const struct Email *a, const struct Email *b, bool re
 }
 
 /**
- * email_sort_date_received - Compare the date received of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_date_received - Compare the date received of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_date_received(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -185,7 +190,7 @@ static int email_sort_date_received(const struct Email *a, const struct Email *b
 }
 
 /**
- * email_sort_unsorted - Restore the 'unsorted' order of emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_unsorted - Restore the 'unsorted' order of emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -194,7 +199,7 @@ static int email_sort_unsorted(const struct Email *a, const struct Email *b, boo
 }
 
 /**
- * email_sort_spam - Compare the spam values of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_spam - Compare the spam values of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_spam(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -243,7 +248,7 @@ static int email_sort_spam(const struct Email *a, const struct Email *b, bool re
 }
 
 /**
- * email_sort_label - Compare the labels of two emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * email_sort_label - Compare the labels of two emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 static int email_sort_label(const struct Email *a, const struct Email *b, bool reverse)
 {
@@ -274,9 +279,9 @@ static int email_sort_label(const struct Email *a, const struct Email *b, bool r
  * get_sort_func - Get the sort function for a given sort id
  * @param method Sort type, see #SortType
  * @param type   The Mailbox type
- * @retval ptr sort function - Implements ::sort_mail_t
+ * @retval ptr sort function - Implements ::sort_email_t
  */
-static sort_mail_t get_sort_func(enum SortType method, enum MailboxType type)
+static sort_email_t get_sort_func(enum SortType method, enum MailboxType type)
 {
   switch (method)
   {
@@ -324,7 +329,7 @@ static sort_mail_t get_sort_func(enum SortType method, enum MailboxType type)
 int mutt_compare_emails(const struct Email *a, const struct Email *b,
                         enum MailboxType type, short sort, short sort_aux)
 {
-  sort_mail_t func = get_sort_func(sort & SORT_MASK, type);
+  sort_email_t func = get_sort_func(sort & SORT_MASK, type);
   int rc = func(a, b, (sort & SORT_REVERSE) != 0);
   if (rc == 0)
   {
@@ -438,10 +443,10 @@ void mutt_sort_headers(struct MailboxView *mv, bool init)
 }
 
 /**
- * mutt_sort_order - Sort emails by their disk order
+ * mutt_sort_unsorted - Sort emails by their disk order
  * @param m Mailbox
  */
-void mutt_sort_order(struct Mailbox *m)
+void mutt_sort_unsorted(struct Mailbox *m)
 {
   if (!m)
     return;

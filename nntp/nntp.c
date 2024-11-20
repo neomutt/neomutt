@@ -2351,7 +2351,7 @@ int nntp_check_children(struct Mailbox *m, const char *msgid)
 }
 
 /**
- * nntp_sort_unsorted - Restore the 'unsorted' order of emails - Implements ::sort_mail_t - @ingroup sort_mail_api
+ * nntp_sort_unsorted - Restore the 'unsorted' order of emails - Implements ::sort_email_t - @ingroup sort_email_api
  */
 int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse)
 {

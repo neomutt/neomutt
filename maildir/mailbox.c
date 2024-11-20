@@ -45,7 +45,6 @@
 #include "mdemail.h"
 #include "mx.h"
 #include "shared.h"
-#include "sort.h"
 #ifdef USE_INOTIFY
 #include "monitor.h"
 #endif

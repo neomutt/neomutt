@@ -60,7 +60,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
@@ -1085,7 +1084,7 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_sort != SORT_ORDER)
   {
-    mutt_sort_order(m);
+    mutt_sort_unsorted(m);
     need_sort = true;
   }
 

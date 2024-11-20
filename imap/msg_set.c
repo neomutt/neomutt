@@ -38,8 +38,8 @@
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
+#include "config/lib.h"
 #include "msg_set.h"
-#include "sort.h"
 
 /**
  * ImapMaxCmdlen - Maximum length of IMAP commands before they must be split

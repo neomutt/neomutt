@@ -49,7 +49,6 @@
 #include "hcache.h"
 #include "mx.h"
 #include "shared.h"
-#include "sort.h"
 
 struct HeaderCache;
 

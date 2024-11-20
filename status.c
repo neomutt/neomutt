@@ -45,6 +45,7 @@
 #include "menu/lib.h"
 #include "postpone/lib.h"
 #include "globals.h"
+#include "init.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"

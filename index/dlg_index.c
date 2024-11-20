@@ -90,7 +90,6 @@
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"
-#include "sort.h"
 #include "status.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

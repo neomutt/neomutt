@@ -34,7 +34,6 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "sort.h"
 
 /**
  * sb_sort_count - Compare two Sidebar entries by count - Implements ::sort_t - @ingroup sort_api

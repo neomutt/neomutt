@@ -25,7 +25,7 @@
 
 #include "mutt/lib.h"
 
-extern const struct Mapping SortMethods[];
+#define mutt_numeric_cmp(a,b) ((a) < (b) ? -1 : ((a) > (b) ? 1 : 0))
 
 /**
  * enum SortType - Methods for sorting

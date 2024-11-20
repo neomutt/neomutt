@@ -56,7 +56,6 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "sort.h"
 #include "subjectrx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

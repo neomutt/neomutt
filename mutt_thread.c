@@ -45,7 +45,6 @@
 #include "mview.h"
 #include "mx.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * UseThreadsMethods - Choices for '$use_threads' for the index

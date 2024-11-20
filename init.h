@@ -26,9 +26,11 @@
 #define MUTT_INIT_H
 
 #include <stdbool.h>
+#include "mutt/lib.h"
 
 struct ConfigSet;
-struct ListHead;
+
+extern const struct Mapping SortMethods[];
 
 void init_config         (struct ConfigSet *cs);
 int  mutt_init           (struct ConfigSet *cs, const char *dlevel, const char *dfile, bool skip_sys_rc, struct ListHead *commands);

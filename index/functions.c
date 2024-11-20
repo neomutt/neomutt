@@ -72,7 +72,6 @@
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"
-#include "sort.h"
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif

@@ -35,7 +35,6 @@
 #include "email/lib.h"
 #include "maillist.h"
 #include "muttlib.h"
-#include "sort.h"
 
 /**
  * mutt_is_mail_list - Is this the email address of a mailing list? - Implements ::addr_predicate_t - @ingroup addr_predicate_api

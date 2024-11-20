@@ -88,7 +88,6 @@
 #include "gpgme_functions.h"
 #include "mutt_logging.h"
 #include "pgplib.h"
-#include "sort.h"
 
 const struct ExpandoRenderData PgpEntryGpgmeRenderData[];
 

@@ -34,7 +34,6 @@
 #include "mutt/lib.h"
 #include "address/lib.h"
 #include "config/lib.h"
-#include "sort.h"
 #include "alias.h"
 #include "gui.h"
 

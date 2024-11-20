@@ -86,7 +86,6 @@
 #include "pgp_functions.h"
 #include "pgpkey.h"
 #include "pgplib.h"
-#include "sort.h"
 
 const struct ExpandoRenderData PgpEntryRenderData[];
 
