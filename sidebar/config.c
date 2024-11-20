@@ -35,22 +35,24 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "expando/lib.h"
+#include "sort.h"
 
 /**
- * SortSidebarMethods - Sort methods for the sidebar
+ * SidebarSortMethods - Sort methods for the sidebar
  */
-static const struct Mapping SortSidebarMethods[] = {
+static const struct Mapping SidebarSortMethods[] = {
   // clang-format off
-  { "path",          SORT_PATH },
-  { "alpha",         SORT_PATH },
-  { "name",          SORT_PATH },
-  { "count",         SORT_COUNT },
-  { "desc",          SORT_DESC },
-  { "flagged",       SORT_FLAGGED },
-  { "unsorted",      SORT_ORDER },
-  { "mailbox-order", SORT_ORDER },
-  { "unread",        SORT_UNREAD },
-  { "new",           SORT_UNREAD },
+  { "count",         SB_SORT_COUNT },
+  { "desc",          SB_SORT_DESC },
+  { "flagged",       SB_SORT_FLAGGED },
+  { "path",          SB_SORT_PATH },
+  { "unread",        SB_SORT_UNREAD },
+  { "unsorted",      SB_SORT_UNSORTED },
+  // Compatibility
+  { "alpha",         SB_SORT_PATH },
+  { "mailbox-order", SB_SORT_UNSORTED },
+  { "name",          SB_SORT_PATH },
+  { "new",           SB_SORT_UNREAD },
   { NULL, 0 },
   // clang-format on
 };
@@ -123,7 +125,7 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_short_path", DT_BOOL, false, 0, NULL,
     "(sidebar) Abbreviate the paths using the `$folder` variable"
   },
-  { "sidebar_sort_method", DT_SORT, SORT_ORDER, IP SortSidebarMethods, NULL,
+  { "sidebar_sort_method", DT_SORT, SB_SORT_UNSORTED, IP SidebarSortMethods, NULL,
     "(sidebar) Method to sort the sidebar"
   },
   { "sidebar_visible", DT_BOOL, false, 0, NULL,

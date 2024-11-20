@@ -46,10 +46,8 @@ enum SortType
   SORT_SPAM     = 13, ///< Sort by the email's spam score
   SORT_COUNT    = 14, ///< Sort by number of emails in a folder
   SORT_UNREAD   = 15, ///< Sort by the number of unread emails
-  SORT_FLAGGED  = 16, ///< Sort by the number of flagged emails
-  SORT_PATH     = 17, ///< Sort by the folder's path
-  SORT_LABEL    = 18, ///< Sort by the emails label
-  SORT_DESC     = 19, ///< Sort by the folder's description
+  SORT_LABEL    = 16, ///< Sort by the emails label
+  SORT_DESC     = 17, ///< Sort by the folder's description
 
   SORT_MAX,
 };

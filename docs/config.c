@@ -4437,15 +4437,16 @@
 ** $$sidebar_indent_string, $$sidebar_component_depth.
 */
 
-{ "sidebar_sort_method", DT_SORT, SORT_ORDER },
+{ "sidebar_sort_method", DT_SORT, SB_SORT_UNSORTED },
 /*
 ** .pp
 ** Specifies how to sort mailbox entries in the sidebar.  By default, the
 ** entries are \fBunsorted\fP.  Valid values:
 ** .il
-** .dd \fBpath\fP (alphabetically)
 ** .dd \fBcount\fP (all message count)
+** .dd \fBdesc\fP (mailbox description)
 ** .dd \fBflagged\fP (flagged message count)
+** .dd \fBpath\fP (alphabetically)
 ** .dd \fBunread\fP (unread message count)
 ** .dd \fBunsorted\fP
 ** .ie
