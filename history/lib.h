@@ -37,8 +37,7 @@
 #define MUTT_HISTORY_LIB_H
 
 #include <stdbool.h>
-#include <stdlib.h>
-#include "functions.h"
+#include "functions.h" // IWYU pragma: keep
 
 struct Buffer;
 struct HistoryArray;

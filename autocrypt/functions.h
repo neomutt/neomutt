@@ -23,8 +23,6 @@
 #ifndef MUTT_AUTOCRYPT_FUNCTIONS_H
 #define MUTT_AUTOCRYPT_FUNCTIONS_H
 
-#include <stdbool.h>
-
 struct AutocryptData;
 struct MuttWindow;
 

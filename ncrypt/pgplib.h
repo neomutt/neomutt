@@ -26,6 +26,7 @@
 
 #include <stdbool.h>
 #include <time.h>
+#include "mutt/lib.h"
 #include "lib.h"
 
 /**

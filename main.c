@@ -152,6 +152,7 @@
 #include "alias/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
+#include "mutt.h"
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "color/lib.h"

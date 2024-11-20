@@ -47,7 +47,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "core/lib.h"
-#include "expando.h"
+#include "expando.h" // IWYU pragma: keep
 
 struct Address;
 struct AddressList;

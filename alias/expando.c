@@ -26,7 +26,10 @@
  * Alias Expando definitions
  */
 
+#include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
+#include "address/lib.h"
 #include "expando.h"
 #include "lib.h"
 #include "expando/lib.h"

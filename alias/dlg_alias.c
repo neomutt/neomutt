@@ -90,6 +90,7 @@
 #include "pattern/lib.h"
 #include "send/lib.h"
 #include "alias.h"
+#include "expando.h"
 #include "functions.h"
 #include "gui.h"
 #include "mutt_logging.h"

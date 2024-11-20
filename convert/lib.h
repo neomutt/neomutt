@@ -35,7 +35,7 @@
 #ifndef MUTT_CONVERT_LIB_H
 #define MUTT_CONVERT_LIB_H
 
-#include <wchar.h>
+#include <stdio.h>
 
 struct Body;
 struct ConfigSubset;

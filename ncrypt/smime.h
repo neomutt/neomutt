@@ -35,7 +35,6 @@ struct Body;
 struct Email;
 struct Envelope;
 struct Message;
-struct State;
 
 /**
  * struct SmimeKey - An SIME key

@@ -24,7 +24,6 @@
 #define MUTT_NCRYPT_PGP_FUNCTIONS_H
 
 #include <stdbool.h>
-#include "pgplib.h"
 
 struct MuttWindow;
 

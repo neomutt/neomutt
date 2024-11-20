@@ -24,7 +24,6 @@
 #define MUTT_HISTORY_FUNCTIONS_H
 
 #include <stdbool.h>
-#include <stdio.h>
 #include "mutt/lib.h"
 
 struct MuttWindow;

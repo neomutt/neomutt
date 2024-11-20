@@ -97,6 +97,7 @@
 #include <sqlite3.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include "mutt/lib.h"
 
 struct Email;
 struct Envelope;

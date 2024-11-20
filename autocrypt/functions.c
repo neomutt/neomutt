@@ -30,6 +30,7 @@
 #ifdef _MAKEDOC
 #include "docs/makedoc_defs.h"
 #else
+#include <stdbool.h>
 #include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"

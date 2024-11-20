@@ -24,7 +24,6 @@
 #define MUTT_AUTOCRYPT_AUTOCRYPT_DATA_H
 
 #include <stdbool.h>
-#include "mutt/lib.h"
 #include "private.h"
 
 struct Menu;

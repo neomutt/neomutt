@@ -35,7 +35,6 @@ struct AutocryptAccountArray;
 struct AutocryptGossipHistory;
 struct AutocryptPeer;
 struct AutocryptPeerHistory;
-struct Buffer;
 struct Menu;
 
 extern sqlite3 *AutocryptDB;

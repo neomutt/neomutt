@@ -28,6 +28,8 @@
 
 #include "config.h"
 #include <stddef.h>
+#include "private.h"
+#include "mutt/lib.h"
 #include "address/lib.h"
 #include "autocrypt_data.h"
 

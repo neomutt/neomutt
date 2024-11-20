@@ -35,7 +35,6 @@
 #include "config/lib.h"
 #include "expando/lib.h"
 #include "expando.h"
-#include "gui.h"
 
 /**
  * SortAliasMethods - Sort methods for email aliases

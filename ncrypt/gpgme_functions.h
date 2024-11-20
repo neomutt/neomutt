@@ -24,7 +24,6 @@
 #define MUTT_NCRYPT_GPGME_FUNCTIONS_H
 
 #include <stdbool.h>
-#include "crypt_gpgme.h"
 
 struct CryptKeyInfo;
 struct MuttWindow;

@@ -24,7 +24,6 @@
 #define MUTT_NCRYPT_SMIME_FUNCTIONS_H
 
 #include <stdbool.h>
-#include "smime.h"
 
 struct MuttWindow;
 
