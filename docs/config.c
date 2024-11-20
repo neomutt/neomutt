@@ -3333,6 +3333,23 @@
 */
 #endif
 
+{ "pgp_key_sort", DT_SORT, KEY_SORT_ADDRESS },
+/*
+** .pp
+** Specifies how the entries in the pgp menu are sorted. The
+** following are legal values:
+** .dl
+** .dt address .dd sort alphabetically by user id
+** .dt keyid   .dd sort alphabetically by key id
+** .dt date    .dd sort by key creation date
+** .dt trust   .dd sort by the trust of the key
+** .de
+** .pp
+** If you prefer reverse order of the above values, prefix it with
+** "reverse-".
+** (PGP only)
+*/
+
 { "pgp_long_ids", DT_BOOL, true },
 /*
 ** .pp
@@ -3429,23 +3446,6 @@
 ** (PGP only)
 */
 #endif
-
-{ "pgp_sort_keys", DT_SORT, KEY_SORT_ADDRESS },
-/*
-** .pp
-** Specifies how the entries in the pgp menu are sorted. The
-** following are legal values:
-** .dl
-** .dt address .dd sort alphabetically by user id
-** .dt keyid   .dd sort alphabetically by key id
-** .dt date    .dd sort by key creation date
-** .dt trust   .dd sort by the trust of the key
-** .de
-** .pp
-** If you prefer reverse order of the above values, prefix it with
-** "reverse-".
-** (PGP only)
-*/
 
 { "pgp_strict_enc", DT_BOOL, true },
 /*

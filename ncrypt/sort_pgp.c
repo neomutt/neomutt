@@ -145,7 +145,7 @@ void pgp_sort_keys(struct PgpUidArray *pua)
     return;
 
   sort_t fn = NULL;
-  short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_key_sort");
   switch (c_pgp_sort_keys & SORT_MASK)
   {
     case KEY_SORT_ADDRESS:

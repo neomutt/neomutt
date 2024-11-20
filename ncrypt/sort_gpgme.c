@@ -174,7 +174,7 @@ done:
  */
 void gpgme_sort_keys(struct CryptKeyInfoArray *ckia)
 {
-  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
+  const short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_key_sort");
   sort_t fn = NULL;
   switch (c_pgp_sort_keys & SORT_MASK)
   {

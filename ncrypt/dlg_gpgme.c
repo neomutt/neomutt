@@ -436,7 +436,7 @@ static int gpgme_key_config_observer(struct NotifyCallback *nc)
   struct EventConfig *ev_c = nc->event_data;
 
   if (!mutt_str_equal(ev_c->name, "pgp_entry_format") &&
-      !mutt_str_equal(ev_c->name, "pgp_sort_keys"))
+      !mutt_str_equal(ev_c->name, "pgp_key_sort"))
   {
     return 0;
   }

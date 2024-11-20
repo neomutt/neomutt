@@ -169,7 +169,7 @@ static struct ConfigDef NcryptVars[] = {
   { "pgp_sign_as", DT_STRING, 0, 0, NULL,
     "Use this alternative key for signing messages"
   },
-  { "pgp_sort_keys", DT_SORT|D_SORT_REVERSE, KEY_SORT_ADDRESS, IP KeySortMethods, NULL,
+  { "pgp_key_sort", DT_SORT|D_SORT_REVERSE, KEY_SORT_ADDRESS, IP KeySortMethods, NULL,
     "Sort order for PGP keys"
   },
   { "pgp_strict_enc", DT_BOOL, true, 0, NULL,
@@ -204,6 +204,7 @@ static struct ConfigDef NcryptVars[] = {
   { "pgp_autoinline",         DT_SYNONYM, IP "pgp_auto_inline",    IP "2021-02-11" },
   { "pgp_create_traditional", DT_SYNONYM, IP "pgp_auto_inline",    IP "2004-04-12" },
   { "pgp_self_encrypt_as",    DT_SYNONYM, IP "pgp_default_key",    IP "2018-01-11" },
+  { "pgp_sort_keys",          DT_SYNONYM, IP "pgp_key_sort",       IP "2024-11-20" },
   { "pgp_verify_sig",         DT_SYNONYM, IP "crypt_verify_sig",   IP "2002-01-24" },
   { "smime_self_encrypt_as",  DT_SYNONYM, IP "smime_default_key",  IP "2018-01-11" },
 
