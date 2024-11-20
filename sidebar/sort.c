@@ -152,7 +152,7 @@ static int sb_sort_unsorted(const void *a, const void *b, void *sdata)
  * @param sort  Sort order, e.g. #SB_SORT_PATH
  *
  * Sort the `wdata->entries` array according to the current sort config option
- * `$sidebar_sort_method`. This calls qsort to do the work which calls our
+ * `$sidebar_sort`. This calls qsort to do the work which calls our
  * callback function "cb_qsort_sbe".
  *
  * Once sorted, the prev/next links will be reconstructed.

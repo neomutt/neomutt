@@ -125,7 +125,7 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_short_path", DT_BOOL, false, 0, NULL,
     "(sidebar) Abbreviate the paths using the `$folder` variable"
   },
-  { "sidebar_sort_method", DT_SORT, SB_SORT_UNSORTED, IP SidebarSortMethods, NULL,
+  { "sidebar_sort", DT_SORT, SB_SORT_UNSORTED, IP SidebarSortMethods, NULL,
     "(sidebar) Method to sort the sidebar"
   },
   { "sidebar_visible", DT_BOOL, false, 0, NULL,
@@ -134,6 +134,9 @@ static struct ConfigDef SidebarVars[] = {
   { "sidebar_width", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 30, 0, NULL,
     "(sidebar) Width of the sidebar"
   },
+
+  { "sidebar_sort_method", DT_SYNONYM, IP "sidebar_sort", IP "2024-11-20" },
+
   { NULL },
   // clang-format on
 };

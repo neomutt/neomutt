@@ -704,8 +704,8 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
   const struct SbEntry *hil_entry = sbep ? *sbep : NULL;
 
   update_entries_visibility(wdata);
-  const short c_sidebar_sort_method = cs_subset_sort(NeoMutt->sub, "sidebar_sort_method");
-  sb_sort_entries(wdata, c_sidebar_sort_method);
+  const short c_sidebar_sort = cs_subset_sort(NeoMutt->sub, "sidebar_sort");
+  sb_sort_entries(wdata, c_sidebar_sort);
 
   if (opn_entry || hil_entry)
   {
@@ -719,7 +719,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
   }
 
   if ((wdata->hil_index < 0) || (hil_entry && hil_entry->is_hidden) ||
-      (c_sidebar_sort_method != wdata->previous_sort))
+      (c_sidebar_sort != wdata->previous_sort))
   {
     if (wdata->opn_index >= 0)
     {
@@ -766,7 +766,7 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
   if (wdata->bot_index > (ARRAY_SIZE(&wdata->entries) - 1))
     wdata->bot_index = ARRAY_SIZE(&wdata->entries) - 1;
 
-  wdata->previous_sort = c_sidebar_sort_method;
+  wdata->previous_sort = c_sidebar_sort;
 
   return (wdata->hil_index >= 0);
 }

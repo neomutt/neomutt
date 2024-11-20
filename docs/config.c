@@ -4437,7 +4437,7 @@
 ** $$sidebar_indent_string, $$sidebar_component_depth.
 */
 
-{ "sidebar_sort_method", DT_SORT, SB_SORT_UNSORTED },
+{ "sidebar_sort", DT_SORT, SB_SORT_UNSORTED },
 /*
 ** .pp
 ** Specifies how to sort mailbox entries in the sidebar.  By default, the
@@ -4452,7 +4452,7 @@
 ** .ie
 ** .pp
 ** You may optionally use the "reverse-" prefix to specify reverse sorting
-** order (example: "\fCset sidebar_sort_method=reverse-path\fP").
+** order (example: "\fCset sidebar_sort=reverse-path\fP").
 ** .pp
 ** The \fBalpha\fP and \fBname\fP values are synonyms for \fBpath\fP. The
 ** \fBnew\fP value is a synonym for \fBunread\fP.

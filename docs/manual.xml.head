@@ -532,7 +532,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
           </itemizedlist>
           <itemizedlist>
             <title>
-              <link linkend="sidebar-sort">The order in which mailboxes are displayed</link>
+              <link linkend="sidebar-sorting">The order in which mailboxes are displayed</link>
             </title>
             <listitem>
               <para>
@@ -639,7 +639,7 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
             </listitem>
             <listitem>
               <para>
-                <link linkend="sidebar-sort">Sidebar sort methods</link>
+                <link linkend="sidebar-sorting">Sidebar sort methods</link>
               </para>
             </listitem>
           </itemizedlist>
@@ -17878,7 +17878,7 @@ set sort_browser="reverse-size"
                 <entry><literal>no</literal></entry>
               </row>
               <row>
-                <entry><literal>sidebar_sort_method</literal></entry>
+                <entry><literal>sidebar_sort</literal></entry>
                 <entry>enum</entry>
                 <entry><literal>unsorted</literal></entry>
               </row>
@@ -18088,7 +18088,7 @@ set sort_browser="reverse-size"
         </para>
       </sect2>
 
-      <sect2 id="sidebar-sort">
+      <sect2 id="sidebar-sorting">
         <title>Sort</title>
 
         <table id="table-sidebar-sort">
@@ -18197,7 +18197,7 @@ set sidebar_format = '%B%&lt;F? [%F]&gt;%* %&lt;N?%N/&gt;%S'
 <emphasis role="comment">#       unread   – number of unread messages</emphasis>
 <emphasis role="comment">#       path     – mailbox path</emphasis>
 <emphasis role="comment">#       unsorted – do not sort the mailboxes</emphasis>
-set sidebar_sort_method = 'unsorted'
+set sidebar_sort = 'unsorted'
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>
 <emphasis role="comment"># FUNCTIONS – shown with an example mapping</emphasis>
 <emphasis role="comment"># --------------------------------------------------------------------------</emphasis>

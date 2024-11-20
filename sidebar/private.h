@@ -95,7 +95,7 @@ struct SidebarWindowData
   int hil_index;             ///< Highlighted mailbox
   int bot_index;             ///< Last mailbox visible in sidebar
 
-  short previous_sort;       ///< Old `$sidebar_sort_method`
+  short previous_sort;       ///< Old `$sidebar_sort`
   enum DivType divider_type; ///< Type of divider to use, e.g. #SB_DIV_ASCII
   short divider_width;       ///< Width of the divider in screen columns
 };
