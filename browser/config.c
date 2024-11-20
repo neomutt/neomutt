@@ -35,20 +35,22 @@
 #include "config/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
+#include "sort.h"
 
 /**
- * SortBrowserMethods - Sort methods for the folder/dir browser
+ * BrowserSortMethods - Sort methods for the folder/dir browser
  */
-static const struct Mapping SortBrowserMethods[] = {
+static const struct Mapping BrowserSortMethods[] = {
   // clang-format off
-  { "alpha",    SORT_SUBJECT },
-  { "count",    SORT_COUNT },
-  { "date",     SORT_DATE },
-  { "desc",     SORT_DESC },
-  { "new",      SORT_UNREAD },
-  { "unread",   SORT_UNREAD },
-  { "size",     SORT_SIZE },
-  { "unsorted", SORT_ORDER },
+  { "alpha",    BROWSER_SORT_ALPHA },
+  { "count",    BROWSER_SORT_COUNT },
+  { "date",     BROWSER_SORT_DATE },
+  { "desc",     BROWSER_SORT_DESC },
+  { "size",     BROWSER_SORT_SIZE },
+  { "new",      BROWSER_SORT_NEW },
+  { "unsorted", BROWSER_SORT_UNSORTED },
+  // Compatibility
+  { "unread",   BROWSER_SORT_NEW },
   { NULL, 0 },
   // clang-format on
 };
@@ -153,7 +155,7 @@ static struct ConfigDef BrowserVars[] = {
   { "show_only_unread", DT_BOOL, false, 0, NULL,
     "(nntp) Only show subscribed newsgroups with unread articles"
   },
-  { "sort_browser", DT_SORT|D_SORT_REVERSE, SORT_ALPHA, IP SortBrowserMethods, NULL,
+  { "sort_browser", DT_SORT|D_SORT_REVERSE, BROWSER_SORT_ALPHA, IP BrowserSortMethods, NULL,
     "Sort method for the browser"
   },
   { "browser_sort_dirs_first", DT_BOOL, false, 0, NULL,

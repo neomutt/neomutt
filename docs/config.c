@@ -4982,14 +4982,14 @@
 ** examples, https://neomutt.org/feature/use-threads
 */
 
-{ "sort_browser", DT_SORT, SORT_ALPHA },
+{ "sort_browser", DT_SORT, BROWSER_SORT_ALPHA },
 /*
 ** .pp
 ** Specifies how to sort entries in the file browser.  By default, the
 ** entries are sorted alphabetically.  Valid values:
 ** .il
-** .dd alpha (alphabetically)
-** .dd count (all message count)
+** .dd alpha (alphabetically by name)
+** .dd count (total message count)
 ** .dd date
 ** .dd desc (description)
 ** .dd new (new message count)

@@ -105,6 +105,7 @@
 #include "nntp/adata.h"
 #include "nntp/mdata.h"
 #include "private_data.h"
+#include "sort.h"
 
 const struct ExpandoRenderData FolderRenderData[];
 const struct ExpandoRenderData GroupIndexRenderData[];
@@ -1384,9 +1385,9 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
       const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
       switch (c_sort_browser & SORT_MASK)
       {
-        case SORT_DESC:
-        case SORT_SUBJECT:
-        case SORT_ORDER:
+        case BROWSER_SORT_DESC:
+        case BROWSER_SORT_ALPHA:
+        case BROWSER_SORT_UNSORTED:
           browser_track = true;
           break;
       }

@@ -32,7 +32,6 @@ enum SortType
 {
   SORT_DATE     =  1, ///< Sort by the date the email was sent
   SORT_SIZE     =  2, ///< Sort by the size of the email
-  SORT_ALPHA    =  3, ///< Required by makedoc.c
   SORT_SUBJECT  =  3, ///< Sort by the email's subject
   SORT_FROM     =  4, ///< Sort by the email's From field
   SORT_ORDER    =  5, ///< Sort by the order the messages appear in the mailbox
@@ -44,10 +43,7 @@ enum SortType
   SORT_KEYID    = 11, ///< Sort by the encryption key's ID
   SORT_TRUST    = 12, ///< Sort by encryption key's trust level
   SORT_SPAM     = 13, ///< Sort by the email's spam score
-  SORT_COUNT    = 14, ///< Sort by number of emails in a folder
-  SORT_UNREAD   = 15, ///< Sort by the number of unread emails
-  SORT_LABEL    = 16, ///< Sort by the emails label
-  SORT_DESC     = 17, ///< Sort by the folder's description
+  SORT_LABEL    = 14, ///< Sort by the emails label
 
   SORT_MAX,
 };

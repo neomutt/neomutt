@@ -34,6 +34,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
+#include "sort.h"
 #include "lib.h"
 #include "globals.h"
 
@@ -64,11 +65,11 @@ static int browser_sort_subject(const void *a, const void *b, void *sdata)
 }
 
 /**
- * browser_sort_order - Compare two browser entries by their order - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_unsorted - Compare two browser entries by their order - Implements ::sort_t - @ingroup sort_api
  *
  * @note This only affects browsing mailboxes and is a no-op for folders.
  */
-static int browser_sort_order(const void *a, const void *b, void *sdata)
+static int browser_sort_unsorted(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -129,9 +130,9 @@ static int browser_sort_count(const void *a, const void *b, void *sdata)
 }
 
 /**
- * browser_sort_count_new - Compare two browser entries by their new count - Implements ::sort_t - @ingroup sort_api
+ * browser_sort_new - Compare two browser entries by their new count - Implements ::sort_t - @ingroup sort_api
  */
-static int browser_sort_count_new(const void *a, const void *b, void *sdata)
+static int browser_sort_new(const void *a, const void *b, void *sdata)
 {
   const struct FolderFile *pa = (const struct FolderFile *) a;
   const struct FolderFile *pb = (const struct FolderFile *) b;
@@ -186,8 +187,8 @@ void browser_sort(struct BrowserState *state)
   const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
   switch (c_sort_browser & SORT_MASK)
   {
-    case SORT_SIZE:
-    case SORT_DATE:
+    case BROWSER_SORT_SIZE:
+    case BROWSER_SORT_DATE:
       if (OptNews)
         return;
       FALLTHROUGH;
@@ -198,27 +199,27 @@ void browser_sort(struct BrowserState *state)
   sort_t f = NULL;
   switch (c_sort_browser & SORT_MASK)
   {
-    case SORT_COUNT:
+    case BROWSER_SORT_COUNT:
       f = browser_sort_count;
       break;
-    case SORT_DATE:
+    case BROWSER_SORT_DATE:
       f = browser_sort_date;
       break;
-    case SORT_DESC:
+    case BROWSER_SORT_DESC:
       f = browser_sort_desc;
       break;
-    case SORT_SIZE:
+    case BROWSER_SORT_SIZE:
       f = browser_sort_size;
       break;
-    case SORT_UNREAD:
-      f = browser_sort_count_new;
+    case BROWSER_SORT_NEW:
+      f = browser_sort_new;
       break;
-    case SORT_SUBJECT:
+    case BROWSER_SORT_ALPHA:
       f = browser_sort_subject;
       break;
+    case BROWSER_SORT_UNSORTED:
     default:
-    case SORT_ORDER:
-      f = browser_sort_order;
+      f = browser_sort_unsorted;
       break;
   }
 
