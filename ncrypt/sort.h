@@ -23,6 +23,9 @@
 #ifndef MUTT_NCRYPT_SORT_H
 #define MUTT_NCRYPT_SORT_H
 
+struct CryptKeyInfoArray;
+struct PgpUidArray;
+
 /**
  * enum KeySortType - Methods for sorting Crypto Keys
  */
@@ -33,5 +36,8 @@ enum KeySortType
   KEY_SORT_KEYID,      ///< Sort by key id
   KEY_SORT_TRUST,      ///< Sort by trust level
 };
+
+void gpgme_sort_keys(struct CryptKeyInfoArray *ckia);
+void pgp_sort_keys  (struct PgpUidArray *pua);
 
 #endif /* MUTT_NCRYPT_SORT_H */

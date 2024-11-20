@@ -105,102 +105,6 @@ static const struct Mapping PgpHelp[] = {
 static const char TrustFlags[] = "?- +";
 
 /**
- * pgp_sort_address - Compare two keys by their addresses - Implements ::sort_t - @ingroup sort_api
- */
-static int pgp_sort_address(const void *a, const void *b, void *sdata)
-{
-  struct PgpUid const *s = *(struct PgpUid const *const *) a;
-  struct PgpUid const *t = *(struct PgpUid const *const *) b;
-  const bool sort_reverse = *(bool *) sdata;
-
-  int rc = mutt_istr_cmp(s->addr, t->addr);
-  if (rc != 0)
-    goto done;
-
-  rc = mutt_istr_cmp(pgp_fpr_or_lkeyid(s->parent), pgp_fpr_or_lkeyid(t->parent));
-
-done:
-  return sort_reverse ? -rc : rc;
-}
-
-/**
- * pgp_sort_date - Compare two keys by their dates - Implements ::sort_t - @ingroup sort_api
- */
-static int pgp_sort_date(const void *a, const void *b, void *sdata)
-{
-  struct PgpUid const *s = *(struct PgpUid const *const *) a;
-  struct PgpUid const *t = *(struct PgpUid const *const *) b;
-  const bool sort_reverse = *(bool *) sdata;
-
-  int rc = mutt_numeric_cmp(s->parent->gen_time, t->parent->gen_time);
-  if (rc != 0)
-    goto done;
-
-  rc = mutt_istr_cmp(s->addr, t->addr);
-
-done:
-  return sort_reverse ? -rc : rc;
-}
-
-/**
- * pgp_sort_keyid - Compare two keys by their IDs - Implements ::sort_t - @ingroup sort_api
- */
-static int pgp_sort_keyid(const void *a, const void *b, void *sdata)
-{
-  struct PgpUid const *s = *(struct PgpUid const *const *) a;
-  struct PgpUid const *t = *(struct PgpUid const *const *) b;
-  const bool sort_reverse = *(bool *) sdata;
-
-  int rc = mutt_istr_cmp(pgp_fpr_or_lkeyid(s->parent), pgp_fpr_or_lkeyid(t->parent));
-  if (rc != 0)
-    goto done;
-
-  rc = mutt_istr_cmp(s->addr, t->addr);
-
-done:
-  return sort_reverse ? -rc : rc;
-}
-
-/**
- * pgp_sort_trust - Compare two keys by their trust levels - Implements ::sort_t - @ingroup sort_api
- */
-static int pgp_sort_trust(const void *a, const void *b, void *sdata)
-{
-  struct PgpUid const *s = *(struct PgpUid const *const *) a;
-  struct PgpUid const *t = *(struct PgpUid const *const *) b;
-  const bool sort_reverse = *(bool *) sdata;
-
-  int rc = mutt_numeric_cmp(s->parent->flags & KEYFLAG_RESTRICTIONS,
-                            t->parent->flags & KEYFLAG_RESTRICTIONS);
-  if (rc != 0)
-    goto done;
-
-  // Note: reversed
-  rc = mutt_numeric_cmp(t->trust, s->trust);
-  if (rc != 0)
-    goto done;
-
-  // Note: reversed
-  rc = mutt_numeric_cmp(t->parent->keylen, s->parent->keylen);
-  if (rc != 0)
-    goto done;
-
-  // Note: reversed
-  rc = mutt_numeric_cmp(t->parent->gen_time, s->parent->gen_time);
-  if (rc != 0)
-    goto done;
-
-  rc = mutt_istr_cmp(s->addr, t->addr);
-  if (rc != 0)
-    goto done;
-
-  rc = mutt_istr_cmp(pgp_fpr_or_lkeyid(s->parent), pgp_fpr_or_lkeyid(t->parent));
-
-done:
-  return sort_reverse ? -rc : rc;
-}
-
-/**
  * pgp_key_abilities - Turn PGP key abilities into a string
  * @param flags Flags, see #KeyFlags
  * @retval ptr Abilities string
@@ -644,30 +548,7 @@ struct PgpKeyInfo *dlg_pgp(struct PgpKeyInfo *keys, struct Address *p, const cha
     return NULL;
   }
 
-  sort_t fn = NULL;
-  short c_pgp_sort_keys = cs_subset_sort(NeoMutt->sub, "pgp_sort_keys");
-  switch (c_pgp_sort_keys & SORT_MASK)
-  {
-    case KEY_SORT_ADDRESS:
-      fn = pgp_sort_address;
-      break;
-    case KEY_SORT_DATE:
-      fn = pgp_sort_date;
-      break;
-    case KEY_SORT_KEYID:
-      fn = pgp_sort_keyid;
-      break;
-    case KEY_SORT_TRUST:
-    default:
-      fn = pgp_sort_trust;
-      break;
-  }
-
-  if (ARRAY_SIZE(&pua) > 1)
-  {
-    bool sort_reverse = c_pgp_sort_keys & SORT_REVERSE;
-    ARRAY_SORT(&pua, fn, &sort_reverse);
-  }
+  pgp_sort_keys(&pua);
 
   struct SimpleDialogWindows sdw = simple_dialog_new(MENU_PGP, WT_DLG_PGP, PgpHelp);
   menu = sdw.menu;
