@@ -1021,7 +1021,7 @@ msgstr "source : erreurs dans %s"
 #: commands.c:323
 #, c-format
 msgid "source: reading aborted due to too many errors in %s"
-msgstr "source : lecture interrompue car trop d'erreurs dans %s"
+msgstr "source : lecture interrompue car il y a trop d'erreurs dans %s"
 
 # TODO: need more context on what %d is here
 # , c-format
@@ -1062,20 +1062,20 @@ msgstr "Impossible d'utiliser un préfixe en appelant une variable"
 
 # , c-format
 #: commands.c:1032 commands.c:1040
-#, c-format
+#, fuzzy, c-format
 msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
 #: commands.c:1080 mutt_lua.c:502
-#, c-format
+#, fuzzy, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
 
 #: commands.c:1089
-#, fuzzy, c-format
+#, c-format
 msgid "source: file %s could not be sourced"
-msgstr "Les messages n'ont pas pu être imprimés"
+msgstr "source: impossible de charger le fichier %s"
 
 # , c-format
 #: commands.c:1259 imap/imap.c:1258
@@ -1205,7 +1205,7 @@ msgstr "Obj"
 
 #: compose/dlg_compose.c:101 compose/dlg_compose.c:115 compose/functions.c:733
 msgid "Attach file"
-msgstr "Attacher fichier"
+msgstr "Joindre fichier"
 
 #: compose/dlg_compose.c:102 compose/dlg_compose.c:116
 msgid "Descrip"
@@ -1298,10 +1298,9 @@ msgstr "Aucun message dans ce répertoire"
 msgid "Tag the messages you want to attach"
 msgstr "Marquez les messages que vous voulez attacher"
 
-# TODO: needs more context
 #: compose/functions.c:947
 msgid "Unable to attach"
-msgstr "Impossible d'attacher"
+msgstr "Impossible de joindre"
 
 #: compose/functions.c:1044
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
@@ -1466,9 +1465,8 @@ msgid "Message written"
 msgstr "Message écrit"
 
 #: compose/functions.c:2040
-#, fuzzy
 msgid "Save (postpone) draft message?"
-msgstr "Rappeler un message ajourné ?"
+msgstr "Voulez-vous enregistrer (ajourner) ce brouillon ?"
 
 # , c-format
 #: config/bool.c:76
@@ -1484,7 +1482,7 @@ msgstr "Valeur booléenne invalide : %ld"
 
 #: config/charset.c:55
 msgid "'charset' must contain exactly one character set name"
-msgstr "charset doit contenir exactement le nom d'un jeu de caractères"
+msgstr "'charset' doit contenir exactement le nom d'un jeu de caractères"
 
 # , c-format
 #: config/charset.c:71 config/charset.c:103 hcache/config.c:56
@@ -1510,13 +1508,14 @@ msgstr "Valeur invalide pour l'option %s : \"%s\""
 msgid "Invalid long: %s"
 msgstr "Type long invalide : %s"
 
+# TODO: Does actually mean that the value of the option cannot be negative?
 # , c-format
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
 #: config/number.c:93 config/number.c:155 config/number.c:209
 #: config/number.c:251
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be negative"
-msgstr "Fonction non autorisée en mode attach-message."
+msgstr "Option %s ne peut pas être négative"
 
 #: config/number.c:81 config/number.c:196 config/number.c:238
 #: expando/node_conddate.c:242 expando/node_expando.c:179
@@ -1973,23 +1972,20 @@ msgstr[1] "Les temps de calcul étaient erronés de %ld octets."
 msgid "No decryption engine available for message"
 msgstr "Pas de moteur de déchiffrement disponible pour le message"
 
-# TODO: « dossier » vs « répertoire »
 #: editmsg.c:77
 #, c-format
 msgid "could not create temporary folder: %s"
-msgstr "impossible de créer le dossier temporaire : %s"
+msgstr "impossible de créer le répertoire temporaire : %s"
 
-# TODO: « dossier » vs « répertoire »
 #: editmsg.c:97
-#, c-format
+#, fuzzy, c-format
 msgid "could not write temporary mail folder: %s"
-msgstr "impossible d'écrire dans le dossier temporaire : %s"
+msgstr "impossible d'écrire dans le répertoire temporaire : %s"
 
-# TODO: « dossier » vs « répertoire »
 #: editmsg.c:116
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "impossible de tronquer le dossier temporaire : %s"
+msgstr "impossible de tronquer le répertoire temporaire : %s"
 
 #: editmsg.c:162
 msgid "Message file is empty"
@@ -2381,13 +2377,11 @@ msgstr "darosintcpl"
 msgid "Shell command: "
 msgstr "Commande shell : "
 
-# TODO: find out where the %d things came from? Can I do this within github?
 # , c-format
 #. L10N: Progress meter message when copying tagged messages
 #: external.c:804
-#, fuzzy
 msgid "Copying tagged messages..."
-msgstr "Copie de %d messages dans %s..."
+msgstr "Copie des messages avec étiquettes..."
 
 #: external.c:808
 msgid "Copy tagged to mailbox"
@@ -3436,27 +3430,23 @@ msgstr "lister les boîtes aux lettres ayant de nouveaux messages"
 msgid "break the thread in two"
 msgstr "casser la discussion en deux"
 
-# TODO: « dossier » vs « répertoire »
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:511
 msgid "open a different folder"
-msgstr "ouvrir un dossier différent"
+msgstr "ouvrir un autre dossier"
 
-# TODO: « dossier » vs « répertoire »
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:514
 msgid "open a different folder in read only mode"
-msgstr "ouvrir un dossier différent en lecture seule"
+msgstr "ouvrir un autre répertoire en lecture seule"
 
-# TODO: « dossier » vs « répertoire »
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
 #: gui/opcodes.h:517
-#, fuzzy
 msgid "open a different newsgroup"
-msgstr "ouvrir un dossier différent"
+msgstr "ouvrir un autre répertoire"
 
 # TODO: « dossier » vs « répertoire »
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
@@ -3487,23 +3477,20 @@ msgstr "comprimer/décomprimer la discussion courante"
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
 #: gui/opcodes.h:532
-#, fuzzy
 msgid "delete non-hidden messages matching a pattern"
-msgstr "supprimer les messages correspondant à un motif"
+msgstr "supprimer des messages non caché correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
 #: gui/opcodes.h:535
-#, fuzzy
 msgid "retrieve mail from POP server"
-msgstr "récupérer le courrier depuis un serveur POP"
+msgstr "récupérer des messages depuis un serveur POP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
 #: gui/opcodes.h:538
-#, fuzzy
 msgid "force retrieval of mail from IMAP server"
-msgstr "forcer la récupération du courrier depuis un serveur IMAP"
+msgstr "forcer la récupération des messages depuis un serveur IMAP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
@@ -3533,9 +3520,8 @@ msgstr "modifier les étiquettes (notmuch/imap)"
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
 #: gui/opcodes.h:554
-#, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
-msgstr "modifier les étiquettes (notmuch/imap), puis cacher le message"
+msgstr "modifier les étiquettes (notmuch/imap), et puis cacher le message"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
@@ -4149,12 +4135,11 @@ msgstr "éditer la liste TO"
 msgid "edit the X-Comment-To field"
 msgstr "éditer le champ Reply-To"
 
-# TODO: « dossier » vs « répertoire »
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
 #: gui/opcodes.h:893
 msgid "open a different virtual folder"
-msgstr "ouvrir un dossier virtuel différent"
+msgstr "ouvrir un autre répertoire virtuel"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
@@ -4763,10 +4748,10 @@ msgstr "La connexion a échoué"
 msgid "%s is an invalid IMAP path"
 msgstr "%s n'est pas un chemin IMAP valide"
 
-# TODO: « dossier » vs « répertoire »
+# TODO: is « récuperation » really the best here?
 #: imap/browse.c:251
 msgid "Getting folder list..."
-msgstr "Récupération de la liste des dossiers..."
+msgstr "Récupération de la liste des répertoire..."
 
 # , c-format
 #. L10N: (%s) is the name / path of the folder we were trying to browse
@@ -4865,10 +4850,10 @@ msgstr "Désabonnement de %s..."
 
 # , c-format
 #: imap/imap.c:1415 imap/message.c:1803
-#, fuzzy, c-format
+#, c-format
 msgid "Copying %d message to %s..."
 msgid_plural "Copying %d messages to %s..."
-msgstr[0] "Copie de %d messages dans %s..."
+msgstr[0] "Copie de %d message dans %s..."
 msgstr[1] "Copie de %d messages dans %s..."
 
 # , c-format
@@ -4891,11 +4876,11 @@ msgstr[1] "Marquage de %d messages à supprimer..."
 
 # , c-format
 #: imap/imap.c:1563
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed message... [%d/%d]"
 msgid_plural "Saving changed messages... [%d/%d]"
-msgstr[0] "La sauvegarde a changé un message... [%d/%d]"
-msgstr[1] "La sauvegarde a changé des messages... [%d/%d]"
+msgstr[0] "Enregistrement du message changé... [%d/%d]"
+msgstr[1] "Enregistrement des messages changés... [%d/%d]"
 
 #: imap/imap.c:1606
 msgid "Error saving flags. Close anyway?"
@@ -4968,7 +4953,7 @@ msgstr "Récupération des en-têtes des messages..."
 
 #: imap/message.c:1572
 msgid "Uploading message..."
-msgstr "Chargement du message..."
+msgstr "Téléversement du message..."
 
 # , c-format
 #: imap/message.c:1739
@@ -5362,10 +5347,9 @@ msgstr "Ouvrir le newsgroup"
 msgid "Posting to this group not allowed, may be moderated. Continue?"
 msgstr "Poster à ce groupe n'est pas autorisé, modération possible. Continuer ?"
 
-# TODO: « dossier » vs « répertoire »
 #: index/functions.c:2892
 msgid "No virtual folder and no Message-Id, aborting"
-msgstr "Pas de dossier virtuel et pas de Message-Id, abandon"
+msgstr "Pas de répertoire virtuel et pas de Message-Id, abandon"
 
 #: index/functions.c:2920
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
@@ -5851,15 +5835,15 @@ msgstr "Impossible d'utiliser l'option -E avec stdin"
 
 # , c-format
 #: main.c:1172
-#, fuzzy, c-format
+#, c-format
 msgid "Can't parse message template: %s"
-msgstr "Impossible d'ouvrir le fichier : %s"
+msgstr "Impossible d'analyser le modèle : %s"
 
 # , c-format
 #: main.c:1238 mutt_header.c:349
 #, c-format
 msgid "%s: unable to attach file"
-msgstr "%s : impossible d'attacher le fichier"
+msgstr "%s : impossible de joindre le fichier"
 
 #: main.c:1328
 msgid "No mailbox with new mail"
@@ -6032,14 +6016,12 @@ msgstr ""
 #: mutt/random.c:87
 #, c-format
 msgid "open /dev/urandom: %s"
-msgstr "ouvrir /dev/urandom: %s"
+msgstr "ouverture de /dev/urandom: %s"
 
-# TODO: Clarify if this is "read" past tense or "read" verb
 #: mutt/random.c:94
 #, c-format
-#, fuzzy
 msgid "read /dev/urandom: %s"
-msgstr "read /dev/urandom: %s"
+msgstr "lecture de /dev/urandom: %s"
 
 #: mutt/regex.c:280
 #, c-format
@@ -6103,12 +6085,11 @@ msgstr "Valeur invalide pour l'option %s : \"%s\""
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Erreur : Impossible de charger l'interpréteur lua"
 
-# TODO: need more context, why does this english show "source" twice?
 # , c-format
 #: mutt_lua.c:517
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't source lua source: %s"
-msgstr "Impossible de charger : %s\n"
+msgstr "Impossible de charger le fichier source Lua : %s"
 
 # , c-format
 #: mutt_mailbox.c:255
@@ -6120,13 +6101,13 @@ msgstr "Nouveau(x) message(s) dans "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL n'est pas disponible, impossible de se connecter à %s"
 
-# TODO: will the 'last-' here be in english?
 #: mutt_thread.c:113
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
-msgstr ""
+msgstr "Impossible d'utiliser le préfixe 'last-' avec 'threads' pour %s"
 
 #: mutt_thread.c:1385
+#, fuzzy
 msgid "Parent message is not available"
 msgstr "Le message père n'est pas disponible"
 
