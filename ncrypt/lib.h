@@ -52,6 +52,8 @@
  * | ncrypt/pgppacket.c               | @subpage crypt_pgppacket             |
  * | ncrypt/smime.c                   | @subpage crypt_smime                 |
  * | ncrypt/smime_functions.c         | @subpage smime_functions             |
+ * | ncrypt/sort_gpgme.c              | @subpage crypt_sort_gpgme            |
+ * | ncrypt/sort_pgp.c                | @subpage crypt_sort_pgp              |
  */
 
 #ifndef MUTT_NCRYPT_LIB_H

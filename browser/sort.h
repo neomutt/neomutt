@@ -1,11 +1,9 @@
 /**
  * @file
- * Config/command parsing
+ * Browser sorting functions
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,19 +20,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_INIT_H
-#define MUTT_INIT_H
+#ifndef MUTT_BROWSER_SORT_H
+#define MUTT_BROWSER_SORT_H
 
-#include <stdbool.h>
-#include "mutt/lib.h"
+/**
+ * enum BrowserSortType - Methods for sorting the Browser
+ */
+enum BrowserSortType
+{
+  BROWSER_SORT_ALPHA,      ///< Sort alphabetically by name
+  BROWSER_SORT_COUNT,      ///< Sort by total message count
+  BROWSER_SORT_DATE,       ///< Sort by date
+  BROWSER_SORT_DESC,       ///< Sort by description
+  BROWSER_SORT_NEW,        ///< Sort by count of new messages
+  BROWSER_SORT_SIZE,       ///< Sort by size
+  BROWSER_SORT_UNSORTED,   ///< Sort into the raw order
+};
 
-struct ConfigSet;
-
-extern const struct Mapping SortMethods[];
-
-void init_config         (struct ConfigSet *cs);
-int  mutt_init           (struct ConfigSet *cs, const char *dlevel, const char *dfile, bool skip_sys_rc, struct ListHead *commands);
-void mutt_opts_cleanup   (void);
-int  mutt_query_variables(struct ListHead *queries, bool show_docs);
-
-#endif /* MUTT_INIT_H */
+#endif /* MUTT_BROWSER_SORT_H */

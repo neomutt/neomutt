@@ -50,6 +50,7 @@
 #include "alias.h"
 #include "functions.h"
 #include "gui.h"
+#include "sort.h"
 #endif
 
 // clang-format off
@@ -388,7 +389,7 @@ static int op_search(struct AliasMenuData *mdata, int op)
  */
 static int op_sort(struct AliasMenuData *mdata, int op)
 {
-  int sort = cs_subset_sort(mdata->sub, "sort_alias");
+  int sort = cs_subset_sort(mdata->sub, "alias_sort");
   bool resort = true;
   bool reverse = (op == OP_SORT_REVERSE);
 
@@ -405,19 +406,19 @@ static int op_sort(struct AliasMenuData *mdata, int op)
       break;
 
     case 1: /* (a)lias */
-      sort = SORT_ALIAS;
+      sort = ALIAS_SORT_ALIAS;
       break;
 
     case 2: /* (n)ame */
-      sort = SORT_NAME;
+      sort = ALIAS_SORT_NAME;
       break;
 
     case 3: /* (e)mail */
-      sort = SORT_EMAIL;
+      sort = ALIAS_SORT_EMAIL;
       break;
 
     case 4: /* (u)nsorted */
-      sort = SORT_ORDER;
+      sort = ALIAS_SORT_UNSORTED;
       break;
   }
 
@@ -426,7 +427,7 @@ static int op_sort(struct AliasMenuData *mdata, int op)
     sort |= reverse ? SORT_REVERSE : 0;
 
     // This will trigger a WA_RECALC
-    cs_subset_str_native_set(mdata->sub, "sort_alias", sort, NULL);
+    cs_subset_str_native_set(mdata->sub, "alias_sort", sort, NULL);
   }
 
   return FR_SUCCESS;

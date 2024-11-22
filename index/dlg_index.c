@@ -90,7 +90,6 @@
 #include "private_data.h"
 #include "protos.h"
 #include "shared_data.h"
-#include "sort.h"
 #include "status.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
@@ -337,8 +336,8 @@ int find_first_message(struct MailboxView *mv)
    * message is first.  Otherwise, the latest message is first if exactly
    * one of `$use_threads` and `$sort` are reverse.
    */
-  enum SortType c_sort = cs_subset_sort(m->sub, "sort");
-  if ((c_sort & SORT_MASK) == SORT_THREADS)
+  enum EmailSortType c_sort = cs_subset_sort(m->sub, "sort");
+  if ((c_sort & SORT_MASK) == EMAIL_SORT_THREADS)
     c_sort = cs_subset_sort(m->sub, "sort_aux");
   bool reverse = false;
   switch (mutt_thread_style())

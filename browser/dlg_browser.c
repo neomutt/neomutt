@@ -87,6 +87,7 @@
 #include <time.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "email/lib.h"
 #include "core/lib.h"
 #include "conn/lib.h"
 #include "gui/lib.h"
@@ -105,6 +106,7 @@
 #include "nntp/adata.h"
 #include "nntp/mdata.h"
 #include "private_data.h"
+#include "sort.h"
 
 const struct ExpandoRenderData FolderRenderData[];
 const struct ExpandoRenderData GroupIndexRenderData[];
@@ -1161,12 +1163,12 @@ static int browser_config_observer(struct NotifyCallback *nc)
     browser_highlight_default(state, menu);
   }
   else if (!mutt_str_equal(ev_c->name, "browser_abbreviate_mailboxes") &&
+           !mutt_str_equal(ev_c->name, "browser_sort") &&
            !mutt_str_equal(ev_c->name, "date_format") &&
            !mutt_str_equal(ev_c->name, "folder") &&
            !mutt_str_equal(ev_c->name, "folder_format") &&
            !mutt_str_equal(ev_c->name, "group_index_format") &&
-           !mutt_str_equal(ev_c->name, "mailbox_folder_format") &&
-           !mutt_str_equal(ev_c->name, "sort_browser"))
+           !mutt_str_equal(ev_c->name, "mailbox_folder_format"))
   {
     return 0;
   }
@@ -1381,12 +1383,12 @@ void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m,
        * only to help readability of the code.  */
       bool browser_track = false;
 
-      const enum SortType c_sort_browser = cs_subset_sort(NeoMutt->sub, "sort_browser");
-      switch (c_sort_browser & SORT_MASK)
+      const enum EmailSortType c_browser_sort = cs_subset_sort(NeoMutt->sub, "browser_sort");
+      switch (c_browser_sort & SORT_MASK)
       {
-        case SORT_DESC:
-        case SORT_SUBJECT:
-        case SORT_ORDER:
+        case BROWSER_SORT_ALPHA:
+        case BROWSER_SORT_DESC:
+        case BROWSER_SORT_UNSORTED:
           browser_track = true;
           break;
       }

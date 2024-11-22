@@ -96,7 +96,7 @@ void nntp_newsrc_close(struct NntpAccountData *adata);
 void nntp_mailbox(struct Mailbox *m, char *buf, size_t buflen);
 void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *acct);
 void nntp_clear_cache(struct NntpAccountData *adata);
-int nntp_compare_order(const struct Email *a, const struct Email *b, bool reverse);
+int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool reverse);
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 int nntp_complete(struct Buffer *buf);
 

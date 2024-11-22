@@ -90,7 +90,6 @@
 #include "sendlib.h"
 #include "sendmail.h"
 #include "smtp.h"
-#include "sort.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"
 #endif

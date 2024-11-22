@@ -60,6 +60,7 @@
 #include "nntp/adata.h"
 #include "nntp/mdata.h"
 #include "private_data.h"
+#include "sort.h"
 #endif
 
 static int op_subscribe_pattern(struct BrowserPrivateData *priv, int op);
@@ -883,31 +884,31 @@ static int op_sort(struct BrowserPrivateData *priv, int op)
       break;
 
     case 1: /* (d)ate */
-      sort = SORT_DATE;
+      sort = BROWSER_SORT_DATE;
       break;
 
     case 2: /* (a)lpha */
-      sort = SORT_SUBJECT;
+      sort = BROWSER_SORT_ALPHA;
       break;
 
     case 3: /* si(z)e */
-      sort = SORT_SIZE;
+      sort = BROWSER_SORT_SIZE;
       break;
 
     case 4: /* d(e)scription */
-      sort = SORT_DESC;
+      sort = BROWSER_SORT_DESC;
       break;
 
     case 5: /* (c)ount */
-      sort = SORT_COUNT;
+      sort = BROWSER_SORT_COUNT;
       break;
 
     case 6: /* ne(w) count */
-      sort = SORT_UNREAD;
+      sort = BROWSER_SORT_NEW;
       break;
 
     case 7: /* do(n)'t sort */
-      sort = SORT_ORDER;
+      sort = BROWSER_SORT_UNSORTED;
       break;
   }
 
@@ -915,7 +916,7 @@ static int op_sort(struct BrowserPrivateData *priv, int op)
     return FR_NO_ACTION;
 
   sort |= reverse ? SORT_REVERSE : 0;
-  cs_subset_str_native_set(NeoMutt->sub, "sort_browser", sort, NULL);
+  cs_subset_str_native_set(NeoMutt->sub, "browser_sort", sort, NULL);
   browser_sort(&priv->state);
   browser_highlight_default(&priv->state, priv->menu);
   menu_queue_redraw(priv->menu, MENU_REDRAW_FULL);

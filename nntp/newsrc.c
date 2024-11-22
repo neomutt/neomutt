@@ -310,10 +310,10 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   bool series;
   unsigned int entries;
 
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != EMAIL_SORT_UNSORTED)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+    cs_subset_str_native_set(NeoMutt->sub, "sort", EMAIL_SORT_UNSORTED, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
   }
 
@@ -378,7 +378,7 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
   }
   MUTT_MEM_REALLOC(&mdata->newsrc_ent, mdata->newsrc_len, struct NewsrcEntry);
 
-  if (c_sort != SORT_ORDER)
+  if (c_sort != EMAIL_SORT_UNSORTED)
   {
     cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);

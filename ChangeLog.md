@@ -861,7 +861,7 @@
   - 100% Czech
   - 70% Turkish
 * Docs
-  - Document that `$sort_alias` affects the query menu
+  - Document that `$alias_sort` affects the query menu
 * Build
   - improve ASAN flags
   - add SASL and S/MIME to `--everything`

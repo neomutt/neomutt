@@ -276,7 +276,7 @@ static void cmd_parse_expunge(struct ImapAccountData *adata, const char *s)
   if (e)
   {
     /* imap_expunge_mailbox() will rewrite e->index.
-     * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+     * It needs to resort using EMAIL_SORT_UNSORTED anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
     imap_edata_get(e)->msn = 0;
@@ -347,7 +347,7 @@ static void cmd_parse_vanished(struct ImapAccountData *adata, char *s)
     unsigned int exp_msn = imap_edata_get(e)->msn;
 
     /* imap_expunge_mailbox() will rewrite e->index.
-     * It needs to resort using SORT_ORDER anyway, so setting to INT_MAX
+     * It needs to resort using EMAIL_SORT_UNSORTED anyway, so setting to INT_MAX
      * makes the code simpler and possibly more efficient. */
     e->index = INT_MAX;
     imap_edata_get(e)->msn = 0;

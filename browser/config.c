@@ -35,20 +35,22 @@
 #include "config/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
+#include "sort.h"
 
 /**
- * SortBrowserMethods - Sort methods for the folder/dir browser
+ * BrowserSortMethods - Sort methods for the folder/dir browser
  */
-static const struct Mapping SortBrowserMethods[] = {
+static const struct Mapping BrowserSortMethods[] = {
   // clang-format off
-  { "alpha",    SORT_SUBJECT },
-  { "count",    SORT_COUNT },
-  { "date",     SORT_DATE },
-  { "desc",     SORT_DESC },
-  { "new",      SORT_UNREAD },
-  { "unread",   SORT_UNREAD },
-  { "size",     SORT_SIZE },
-  { "unsorted", SORT_ORDER },
+  { "alpha",    BROWSER_SORT_ALPHA },
+  { "count",    BROWSER_SORT_COUNT },
+  { "date",     BROWSER_SORT_DATE },
+  { "desc",     BROWSER_SORT_DESC },
+  { "size",     BROWSER_SORT_SIZE },
+  { "new",      BROWSER_SORT_NEW },
+  { "unsorted", BROWSER_SORT_UNSORTED },
+  // Compatibility
+  { "unread",   BROWSER_SORT_NEW },
   { NULL, 0 },
   // clang-format on
 };
@@ -138,6 +140,9 @@ static struct ConfigDef BrowserVars[] = {
   { "browser_abbreviate_mailboxes", DT_BOOL, true, 0, NULL,
     "Abbreviate mailboxes using '~' and '=' in the browser"
   },
+  { "browser_sort", DT_SORT|D_SORT_REVERSE, BROWSER_SORT_ALPHA, IP BrowserSortMethods, NULL,
+    "Sort method for the browser"
+  },
   { "folder_format", DT_EXPANDO|D_NOT_EMPTY, IP "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %i", IP &FolderFormatDef, NULL,
     "printf-like format string for the browser's display of folders"
   },
@@ -153,12 +158,12 @@ static struct ConfigDef BrowserVars[] = {
   { "show_only_unread", DT_BOOL, false, 0, NULL,
     "(nntp) Only show subscribed newsgroups with unread articles"
   },
-  { "sort_browser", DT_SORT|D_SORT_REVERSE, SORT_ALPHA, IP SortBrowserMethods, NULL,
-    "Sort method for the browser"
-  },
   { "browser_sort_dirs_first", DT_BOOL, false, 0, NULL,
     "Group directories before files in the browser"
   },
+
+  { "sort_browser", DT_SYNONYM, IP "browser_sort", IP "2024-11-20" },
+
   { NULL },
   // clang-format on
 };

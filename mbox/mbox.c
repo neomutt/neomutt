@@ -60,7 +60,6 @@
 #include "muttlib.h"
 #include "mx.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * struct MUpdate - Store of new offsets, used by mutt_sync_mailbox()
@@ -565,10 +564,10 @@ static int reopen_mailbox(struct Mailbox *m)
   m->verbose = false;
 
   /* our heuristics require the old mailbox to be unsorted */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != EMAIL_SORT_UNSORTED)
   {
-    cs_subset_str_native_set(NeoMutt->sub, "sort", SORT_ORDER, NULL);
+    cs_subset_str_native_set(NeoMutt->sub, "sort", EMAIL_SORT_UNSORTED, NULL);
     mailbox_changed(m, NT_MAILBOX_RESORT);
     cs_subset_str_native_set(NeoMutt->sub, "sort", c_sort, NULL);
   }
@@ -1082,10 +1081,10 @@ static enum MxStatus mbox_mbox_sync(struct Mailbox *m)
   enum MxStatus rc = MX_STATUS_ERROR;
 
   /* sort message by their position in the mailbox on disk */
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  if (c_sort != SORT_ORDER)
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  if (c_sort != EMAIL_SORT_UNSORTED)
   {
-    mutt_sort_order(m);
+    mutt_sort_unsorted(m);
     need_sort = true;
   }
 

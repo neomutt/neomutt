@@ -45,7 +45,6 @@
 #include "mview.h"
 #include "mx.h"
 #include "protos.h"
-#include "sort.h"
 
 /**
  * UseThreadsMethods - Choices for '$use_threads' for the index
@@ -82,10 +81,10 @@ const struct EnumDef UseThreadsTypeDef = {
 enum UseThreads mutt_thread_style(void)
 {
   const unsigned char c_use_threads = cs_subset_enum(NeoMutt->sub, "use_threads");
-  const enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
   if (c_use_threads > UT_FLAT)
     return c_use_threads;
-  if ((c_sort & SORT_MASK) != SORT_THREADS)
+  if ((c_sort & SORT_MASK) != EMAIL_SORT_THREADS)
     return UT_FLAT;
   if (c_sort & SORT_REVERSE)
     return UT_REVERSE;
@@ -108,7 +107,7 @@ const char *get_use_threads_str(enum UseThreads value)
 int sort_validator(const struct ConfigSet *cs, const struct ConfigDef *cdef,
                    intptr_t value, struct Buffer *err)
 {
-  if (((value & SORT_MASK) == SORT_THREADS) && (value & SORT_LAST))
+  if (((value & SORT_MASK) == EMAIL_SORT_THREADS) && (value & SORT_LAST))
   {
     buf_printf(err, _("Cannot use 'last-' prefix with 'threads' for %s"), cdef->name);
     return CSR_ERR_INVALID;
@@ -761,12 +760,12 @@ static int compare_threads(const void *a, const void *b, void *sdata)
   if (ta->parent)
   {
     return mutt_compare_emails(ta->sort_aux_key, tb->sort_aux_key, mtype,
-                               tctx->c_sort_aux, SORT_REVERSE | SORT_ORDER);
+                               tctx->c_sort_aux, SORT_REVERSE | EMAIL_SORT_UNSORTED);
   }
   else
   {
     return mutt_compare_emails(ta->sort_thread_key, tb->sort_thread_key, mtype,
-                               tctx->c_sort, SORT_REVERSE | SORT_ORDER);
+                               tctx->c_sort, SORT_REVERSE | EMAIL_SORT_UNSORTED);
   }
 }
 
@@ -792,9 +791,9 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
    * resorting, so we sort backwards and then put them back
    * in reverse order so they're forwards */
   const bool reverse = (mutt_thread_style() == UT_REVERSE);
-  enum SortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  enum SortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-  if ((c_sort & SORT_MASK) == SORT_THREADS)
+  enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  enum EmailSortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  if ((c_sort & SORT_MASK) == EMAIL_SORT_THREADS)
   {
     ASSERT(!(c_sort & SORT_REVERSE) != reverse);
     ASSERT(cs_subset_enum(NeoMutt->sub, "use_threads") == UT_UNSET);
@@ -906,7 +905,7 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
           {
             if (!thread->sort_aux_key ||
                 (mutt_compare_emails(thread->sort_aux_key, sort_aux_key, mtype,
-                                     c_sort_aux | SORT_REVERSE, SORT_ORDER) > 0))
+                                     c_sort_aux | SORT_REVERSE, EMAIL_SORT_UNSORTED) > 0))
             {
               thread->sort_aux_key = sort_aux_key;
             }
@@ -942,8 +941,8 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
               {
                 if (tmp->sort_thread_key == thread->sort_thread_key)
                   continue;
-                if ((mutt_compare_emails(thread->sort_thread_key, tmp->sort_thread_key,
-                                         mtype, c_sort | SORT_REVERSE, SORT_ORDER) > 0))
+                if ((mutt_compare_emails(thread->sort_thread_key, tmp->sort_thread_key, mtype,
+                                         c_sort | SORT_REVERSE, EMAIL_SORT_UNSORTED) > 0))
                 {
                   thread->sort_thread_key = tmp->sort_thread_key;
                 }

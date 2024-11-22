@@ -1,11 +1,9 @@
 /**
  * @file
- * Config/command parsing
+ * Sidebar sorting functions
  *
  * @authors
- * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -22,19 +20,21 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_INIT_H
-#define MUTT_INIT_H
+#ifndef MUTT_SIDEBAR_SORT_H
+#define MUTT_SIDEBAR_SORT_H
 
-#include <stdbool.h>
-#include "mutt/lib.h"
+/**
+ * enum SidebarSortType - Methods for sorting the Sidebar
+ */
+enum SidebarSortType
+{
+  SB_SORT_COUNT,       ///< Sort by total message count
+  SB_SORT_DESC,        ///< Sort by mailbox description
+  SB_SORT_FLAGGED,     ///< Sort by count of flagged messages
+  SB_SORT_PATH,        ///< Sort by mailbox path (alphabetically)
+  SB_SORT_UNREAD,      ///< Sort by count of unread messages
+  SB_SORT_UNSORTED,    ///< Sort into the order the mailboxes were configured
+};
 
-struct ConfigSet;
+#endif /* MUTT_SIDEBAR_SORT_H */
 
-extern const struct Mapping SortMethods[];
-
-void init_config         (struct ConfigSet *cs);
-int  mutt_init           (struct ConfigSet *cs, const char *dlevel, const char *dfile, bool skip_sys_rc, struct ListHead *commands);
-void mutt_opts_cleanup   (void);
-int  mutt_query_variables(struct ListHead *queries, bool show_docs);
-
-#endif /* MUTT_INIT_H */
