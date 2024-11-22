@@ -356,11 +356,10 @@ const char *name_expando_uid_mailbox(int uid)
 
 const char *name_expando_uid_menu(int uid)
 {
-  switch (uid)
-  {
-    DEBUG_NAME(ED_MEN_PERCENTAGE);
-    DEBUG_DEFAULT;
-  }
+  if (uid == ED_MEN_PERCENTAGE)
+    return "ED_MEN_PERCENTAGE";
+
+  return "UNKNOWN";
 }
 
 const char *name_expando_uid_nntp(int uid)
