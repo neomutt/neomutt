@@ -6079,7 +6079,7 @@ msgstr ""
 #: mutt_logging.c:275
 #, c-format
 msgid "Invalid value for option %s: %ld"
-msgstr "Valeur invalide pour l'option %s : \"%s\""
+msgstr "Valeur invalide pour l'option %s : \"%ld\""
 
 #: mutt_lua.c:447
 msgid "Error: Couldn't load the lua interpreter"
