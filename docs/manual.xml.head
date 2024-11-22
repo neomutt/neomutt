@@ -20580,9 +20580,9 @@ neomutt mailto:some@one.org?subject=test&amp;cc=other@one.org
             <command>
               <link linkend="lists">lists</link>
             </command>
-            <arg>
+            <arg choice="opt" rep="repeat">
               <option>-group</option>
-              <replaceable class="parameter">name</replaceable>
+              <replaceable>name</replaceable>
             </arg>
             <arg choice="plain">
               <replaceable class="parameter">regex</replaceable>
