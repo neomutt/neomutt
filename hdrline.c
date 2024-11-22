@@ -336,6 +336,10 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
                              enum IndexDateChoice which, MuttFormatFlags flags,
                              struct Buffer *buf, const char *format)
 {
+  char *fmt = mutt_str_dup(format);
+  if (!fmt)
+    return;
+
   struct tm tm = { 0 };
   switch (which)
   {
@@ -358,8 +362,6 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
       break;
     }
   }
-
-  char *fmt = mutt_str_dup(format);
 
   const bool use_c_locale = (*fmt == '!');
 
