@@ -1532,7 +1532,7 @@ msgstr "%s : option inconnue"
 #: config/set.c:261 config/set.c:849
 #, c-format
 msgid "Option %s has an invalid type %d"
-msgstr "Le type %d de l'option %s est invalide"
+msgstr "Le type %2$d de l'option %1$s est invalide"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:901 config/set.c:960
