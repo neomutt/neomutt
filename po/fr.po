@@ -238,11 +238,9 @@ msgstr "Limite : %s"
 msgid "attachments: no disposition"
 msgstr "attachments : pas de disposition"
 
-# TODO: need context here
 #: attach/attachments.c:493
-#, fuzzy
 msgid "Current attachments settings:"
-msgstr "Éditer la description de l'attachement:"
+msgstr "Les paramètres des pièces jointes :"
 
 # TODO: need context here
 #: attach/attachments.c:525
@@ -307,16 +305,12 @@ msgid "Deletion of attachments from encrypted messages is unsupported"
 msgstr "Impossible de supprimer des pièces jointes des messages chiffrés"
 
 #: attach/functions.c:295
-#, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature"
-msgstr "La suppression des pièces jointes de messages signés peut invalider la signature"
+msgstr "La suppression des pièces jointes d'un message signé peut invalider la signature"
 
-# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
-# « pas supporté ». Need to fix « multipartes » as well.
 #: attach/functions.c:311 attach/functions.c:335
-#, fuzzy
 msgid "Only deletion of multipart attachments is supported"
-msgstr "Seul la suppression des pièces jointes multipartes est supporté"
+msgstr "Seul la suppression des pièces jointes en plusieurs parties est possible"
 
 #: attach/functions.c:645 index/functions.c:2851
 msgid "Reply by mail as poster prefers?"
@@ -460,12 +454,9 @@ msgstr[1] "Imprimer les %d pièces jointes marquées ?"
 msgid "Print attachment?"
 msgstr "Imprimer la pièce jointe ?"
 
-# TODO: decide on « impossible » vs « n'est pas pris en charge » instead of 
-# « pas supporté »
 #: attach/recvattach.c:942
-#, fuzzy
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr "Les changements structurels sur des pièces jointes déchiffrés ne sont pas supportés"
+msgstr "Impossible de changer la structure des pièces jointes déchiffrées"
 
 #: attach/recvattach.c:1160
 msgid "Can't decrypt encrypted message"
@@ -1023,14 +1014,13 @@ msgstr "source : erreurs dans %s"
 msgid "source: reading aborted due to too many errors in %s"
 msgstr "source : lecture interrompue car il y a trop d'erreurs dans %s"
 
-# TODO: need more context on what %d is here
 # , c-format
 #: commands.c:332
-#, fuzzy, c-format
+#, c-format
 msgid "source: %d warning in %s"
 msgid_plural "source: %d warnings in %s"
-msgstr[0] "source : erreurs dans %s"
-msgstr[1] "source : erreurs dans %s"
+msgstr[0] "source : %d erreur dans %s"
+msgstr[1] "source : %d erreurs dans %s"
 
 #: commands.c:454
 #, c-format
@@ -1314,15 +1304,13 @@ msgstr "Codage invalide"
 msgid "Empty 'Content-Language'"
 msgstr "'Content-Language' vide"
 
-# TODO: get context
 #: compose/functions.c:1223
-#, fuzzy
 msgid "Can't filter multipart attachments"
-msgstr "Seul la suppression d'attachements multipart est supporté"
+msgstr "Impossible de traiter des pièces jointes en plusieurs parties"
 
 #: compose/functions.c:1258
 msgid "Can't get multipart attachments"
-msgstr "Impossible de recevoir les pièces jointes multipart"
+msgstr "Impossible de recevoir les pièces jointes en plusieurs parties"
 
 #: compose/functions.c:1280
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
@@ -1381,12 +1369,7 @@ msgstr "Impossible de créer le fichier %s"
 msgid "Error attaching file"
 msgstr "Erreur dans l'attachement du fichier"
 
-# TODO: multipart could be translated as a kind of adjective:
-#   en plusieurs parties
-#   à plusieurs parties
-# « multipartie » is a french word, but it's only used in political contexts
 #: compose/functions.c:1529
-#, fuzzy
 msgid "Can't print multipart attachments"
 msgstr "Les pièces jointes en plusieurs parties ne peuvent pas être imprimées"
 
@@ -1395,17 +1378,13 @@ msgid "Send attachment with name: "
 msgstr "Envoyer la pièce jointe avec le nom : "
 
 #: compose/functions.c:1580
-#, fuzzy
 msgid "Can't save multipart attachments"
-msgstr "Impossible de sauvegarder les pièces jointes en plusieurs parties"
+msgstr "Impossible de enregistrer les pièces jointes en plusieurs parties"
 
 #: compose/functions.c:1615
-#, fuzzy
 msgid "Recoding only affects text attachments"
 msgstr "Le recodage affecte uniquement les pièces jointes textuelles"
 
-# "current" in english usually translates much better to « actuel » in french.
-# there are contexts where « courant » works, but this is not one of them
 #: compose/functions.c:1620
 msgid "The current attachment won't be converted"
 msgstr "La pièce jointe actuelle ne sera pas convertie"
@@ -1415,9 +1394,8 @@ msgid "The current attachment will be converted"
 msgstr "La pièce jointe actuelle sera convertie"
 
 #: compose/functions.c:1651
-#, fuzzy
 msgid "Attachment is not 'multipart'"
-msgstr "La pièce jointe n'est pas au format 'multipart'"
+msgstr "La pièce jointe n'est pas en plusieurs parties (au format 'multipart')"
 
 #: compose/functions.c:1767 send/send.c:2739
 #, c-format
@@ -1425,14 +1403,12 @@ msgid "Bad IDN in '%s': '%s'"
 msgstr "Mauvais IDN dans « %s » : '%s'"
 
 #: compose/functions.c:1800
-#, fuzzy
 msgid "Can't edit multipart attachments"
-msgstr "Seul l'effacement des pièces jointes multipart est supporté"
+msgstr "Impossible de modifier les pièces jointes en plusieurs parties"
 
 #: compose/functions.c:1881
-#, fuzzy
 msgid "Can't rename multipart attachments"
-msgstr "Seul l'effacement des pièces jointes multipart est supporté"
+msgstr "Impossible de renommer les pièces jointes en plusieurs parties"
 
 #: compose/functions.c:1888
 msgid "Rename to: "
@@ -1508,8 +1484,6 @@ msgstr "Valeur invalide pour l'option %s : \"%s\""
 msgid "Invalid long: %s"
 msgstr "Type long invalide : %s"
 
-# TODO: Does actually mean that the value of the option cannot be negative?
-# , c-format
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
 #: config/number.c:93 config/number.c:155 config/number.c:209
 #: config/number.c:251
@@ -1551,14 +1525,14 @@ msgstr "Valeur invalide pour l'option %s : \"%s\""
 #: config/set.c:649 config/set.c:769 init.c:665 parse/set.c:120 parse/set.c:180
 #: parse/set.c:229 parse/set.c:263 parse/set.c:327 parse/set.c:368
 #: parse/set.c:435
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown option %s"
-msgstr "%s : variable inconnue"
+msgstr "%s : option inconnue"
 
 #: config/set.c:261 config/set.c:849
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s has an invalid type %d"
-msgstr "Le type %2$d de la variable '%1$s' est invalide"
+msgstr "Le type %d de l'option %s est invalide"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
 #: config/set.c:901 config/set.c:960
@@ -1978,7 +1952,7 @@ msgid "could not create temporary folder: %s"
 msgstr "impossible de créer le répertoire temporaire : %s"
 
 #: editmsg.c:97
-#, fuzzy, c-format
+#, c-format
 msgid "could not write temporary mail folder: %s"
 msgstr "impossible d'écrire dans le répertoire temporaire : %s"
 
@@ -1995,11 +1969,9 @@ msgstr "Le fichier contenant le message est vide"
 msgid "Message not modified"
 msgstr "Message non modifié"
 
-# TODO: Does this mean that the user or other agent tried to modify a message
-#       and something stopped them? That would change the translation...
 #: editmsg.c:176
 msgid "Message of read-only mailbox modified! Ignoring changes."
-msgstr ""
+msgstr "Message modifié dans une boîte aux lettres en lecture seul ! Les changements ne seront pas enregistrer."
 
 # , c-format
 #: editmsg.c:192
@@ -2016,7 +1988,7 @@ msgstr "Impossible d'ajouter au répertoire : %s"
 
 #: editor/window.c:52
 msgid "Complete"
-msgstr "Complèt"
+msgstr "Compléter"
 
 #: editor/window.c:53
 msgid "Hist Up"
@@ -2048,7 +2020,7 @@ msgstr "Supprimer le mot"
 
 #: email/parse.c:1593
 msgid "multipart message has no boundary parameter"
-msgstr "le message multipart n'a pas de paramètre boundary"
+msgstr "le message en plusieurs parties (au format 'multipart') n'a pas de paramètre boundary"
 
 #. L10N: The compose menu autocrypt prompt.
 #. (e)ncrypt enables encryption via autocrypt.
@@ -2392,39 +2364,32 @@ msgstr "Copier les messages étiquetés vers une boîte aux lettres"
 msgid "Copy to mailbox"
 msgstr "Copier vers une boîte aux lettres"
 
-# TODO: Consider « déchiffrer et copier » instead of the hyphen here and below
 #: external.c:811
-#, fuzzy
 msgid "Decrypt-copy tagged to mailbox"
-msgstr "Déchiffrer-copier les messages étiquetés vers une boîte aux lettres"
+msgstr "Déchiffrer et copier les messages étiquetés vers la boîte aux lettres"
 
 # , c-format
 #: external.c:812
-#, fuzzy
 msgid "Decrypt-copy to mailbox"
-msgstr "Déchiffrer-copier vers une boîte aux lettres"
+msgstr "Déchiffrer et copier vers la boîte aux lettres"
 
 #: external.c:815
-#, fuzzy
 msgid "Decode-copy tagged to mailbox"
-msgstr "Décoder-copier les messages marqués vers une boîte aux lettres"
+msgstr "Décoder et copier les messages marqués vers la boîte aux lettres"
 
 # , c-format
 #: external.c:816
-#, fuzzy
 msgid "Decode-copy to mailbox"
-msgstr "Décoder-copier vers une boîte aux lettres"
+msgstr "Décoder copier vers la boîte aux lettres"
 
-# « Enregistrer » is better here. « Sauvegarder » is really more like "backing
-# up" than "saving"
 #. L10N: Progress meter message when saving tagged messages
 #: external.c:823
 msgid "Saving tagged messages..."
-msgstr "Enregistrement des messages étiquettes en cours..."
+msgstr "Enregistrement des messages étiquetés en cours..."
 
 #: external.c:827
 msgid "Save tagged to mailbox"
-msgstr "Enregistrer les messages étiquettes vers une boîte aux lettres"
+msgstr "Enregistrer les messages étiquetés vers la boîte aux lettres"
 
 # , c-format
 #: external.c:827
@@ -2432,26 +2397,22 @@ msgid "Save to mailbox"
 msgstr "Enregistrer vers une boîte aux lettres"
 
 #: external.c:830
-#, fuzzy
 msgid "Decrypt-save tagged to mailbox"
-msgstr "Déchiffrer-enregistrer les messages marqués vers une boîte aux lettres"
+msgstr "Déchiffrer et enregistrer les messages étiquetés vers la boîte aux lettres"
 
 # , c-format
 #: external.c:831
-#, fuzzy
 msgid "Decrypt-save to mailbox"
-msgstr "Déchiffrer-enregistrer vers une boîte aux lettres"
+msgstr "Déchiffrer et enregistrer vers la boîte aux lettres"
 
 #: external.c:834
-#, fuzzy
 msgid "Decode-save tagged to mailbox"
-msgstr "Décoder-enregistrer les messages marqués vers une boîte aux lettres"
+msgstr "Décoder et enregistrer les messages étiquetés vers la boîte aux lettres"
 
 # , c-format
 #: external.c:835
-#, fuzzy
 msgid "Decode-save to mailbox"
-msgstr "Décoder-enregistrer vers une boîte aux lettres"
+msgstr "Décoder et enregistrer vers la boîte aux lettres"
 
 # , c-format
 #: external.c:878
@@ -2463,12 +2424,12 @@ msgstr "Copie vers %s..."
 #. L10N: Message when an index tagged save operation fails for some reason
 #: external.c:1031
 msgid "Error saving tagged messages"
-msgstr "Erreur en enregistrant les messages étiquetés"
+msgstr "Erreur durant l'enregistrement les messages étiquetés"
 
 #. L10N: Message when an index/pager save operation fails for some reason
 #: external.c:1036
 msgid "Error saving message"
-msgstr "Erreur en enregistrant le message"
+msgstr "Erreur durant l'enregistrement le message"
 
 #. L10N: Message when an index tagged copy operation fails for some reason
 #: external.c:1043
@@ -2583,15 +2544,14 @@ msgstr "supprimer l'entrée actuelle"
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_CONTENT_ID
 #. Compose Dialog: <op_attachment_edit_content_id>
 #: gui/opcodes.h:61
-#, fuzzy
 msgid "edit the 'Content-ID' of the attachment"
-msgstr "éditer le 'Content-Language' de la pièce jointe"
+msgstr "modifier le 'Content-ID' de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_DESCRIPTION
 #. Compose Dialog: <op_attachment_edit_description>
 #: gui/opcodes.h:64
 msgid "edit attachment description"
-msgstr "éditer la description de la pièce jointe"
+msgstr "modifier la description de la pièce jointe"
 
 # TODO: how to translate "transfer-encoding"
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_ENCODING
@@ -2599,19 +2559,19 @@ msgstr "éditer la description de la pièce jointe"
 #: gui/opcodes.h:67
 #, fuzzy
 msgid "edit attachment transfer-encoding"
-msgstr "éditer le transfer-encoding de la pièce jointe"
+msgstr "modifier le transfer-encoding de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_LANGUAGE
 #. Compose Dialog: <op_attachment_edit_language>
 #: gui/opcodes.h:70
 msgid "edit the 'Content-Language' of the attachment"
-msgstr "éditer le 'Content-Language' de la pièce jointe"
+msgstr "modifier le 'Content-Language' de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_MIME
 #. Compose Dialog: <op_attachment_edit_mime>
 #: gui/opcodes.h:73
 msgid "edit attachment using mailcap entry"
-msgstr "éditer la pièce jointe en utilisant l'entrée mailcap"
+msgstr "modifier la pièce jointe en utilisant l'entrée mailcap"
 
 #. L10N: Help screen description for OP_ATTACHMENT_EDIT_TYPE
 #. Attach Dialog: <op_attachment_edit_type>
@@ -2619,13 +2579,13 @@ msgstr "éditer la pièce jointe en utilisant l'entrée mailcap"
 #. Index: <op_attachment_edit_type>
 #: gui/opcodes.h:78
 msgid "edit attachment content type"
-msgstr "éditer le content-type de la pièce jointe"
+msgstr "modifier le type de contenu de la pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_FILTER
 #. Compose Dialog: <op_attachment_filter>
 #: gui/opcodes.h:81
 msgid "filter attachment through a shell command"
-msgstr "filtrer la pièce jointe au moyen d'une commande shell"
+msgstr "traiter la pièce jointe au moyen d'une commande shell"
 
 #. L10N: Help screen description for OP_ATTACHMENT_GET_ATTACHMENT
 #. Compose Dialog: <op_attachment_get_attachment>
@@ -2704,18 +2664,15 @@ msgstr "envoyer la pièce jointe avec un autre nom"
 msgid "save message/attachment to a mailbox/file"
 msgstr "enregistrer le message/la pièce jointe dans une boîte aux lettres ou un fichier"
 
-# TODO: Probably « basculer » would be better here
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_DISPOSITION
 #. Compose Dialog: <op_attachment_toggle_disposition>
 #: gui/opcodes.h:118
 msgid "toggle disposition between inline/attachment"
-msgstr "changer la disposition (en ligne/attachement)"
+msgstr "basculer la disposition (en ligne / en pièce jointe)"
 
-# TODO: not confident about « recodage » here...
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_RECODE
 #. Compose Dialog: <op_attachment_toggle_recode>
 #: gui/opcodes.h:121
-#, fuzzy
 msgid "toggle recoding of this attachment"
 msgstr "basculer le recodage de cette pièce jointe"
 
@@ -2723,7 +2680,7 @@ msgstr "basculer le recodage de cette pièce jointe"
 #. Compose Dialog: <op_attachment_toggle_unlink>
 #: gui/opcodes.h:124
 msgid "toggle whether to delete file after sending it"
-msgstr "basculer l'option de suppression de fichier après envoi"
+msgstr "basculer l'option de suppression de fichier après l'envoi"
 
 #. L10N: Help screen description for OP_ATTACHMENT_UNDELETE
 #. Attach Dialog: <op_attachment_undelete>
@@ -2733,13 +2690,13 @@ msgstr "basculer l'option de suppression de fichier après envoi"
 #. Index: <op_undelete>
 #: gui/opcodes.h:127 gui/opcodes.h:813
 msgid "undelete the current entry"
-msgstr "récupérer l'entrée actuelle"
+msgstr "récupérer l'entrée courante"
 
 #. L10N: Help screen description for OP_ATTACHMENT_UNGROUP
 #. Compose Dialog: <op_attachment_ungroup>
 #: gui/opcodes.h:130
 msgid "ungroup 'multipart' attachment"
-msgstr ""
+msgstr "retirer la pièce jointe 'multipart'"
 
 #. L10N: Help screen description for OP_ATTACHMENT_UPDATE_ENCODING
 #. Compose Dialog: <op_attachment_update_encoding>
@@ -2795,19 +2752,17 @@ msgstr "créer un nouveau compte autocrypt"
 msgid "delete the current account"
 msgstr "supprimer le compte actuel"
 
-# TODO: I think we prefer to use « basculer » in this context
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:164
-#, fuzzy
 msgid "toggle the current account active/inactive"
-msgstr "inverser l'état du compte actuel en actif/inactif"
+msgstr "basculer l'état du compte actuel en actif/inactif"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:167
 msgid "toggle the current account prefer-encrypt flag"
-msgstr "basculer le drapeau prefer-encrypt du compte courant"
+msgstr "basculer le drapeau 'prefer-encrypt' du compte courant"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
@@ -4086,29 +4041,31 @@ msgstr "éditer la liste CC"
 msgid "enter a file to save a copy of this message in"
 msgstr "entrer le nom d'un fichier dans lequel enregistrer une copie de ce message"
 
+# TODO: should the name of this field be translated?
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
 #: gui/opcodes.h:866
 msgid "edit the Followup-To field"
-msgstr "éditer le champ Followup-To"
+msgstr "modifier le champ Followup-To"
 
+# TODO: should the name of this field be translated?
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
 #: gui/opcodes.h:869
 msgid "edit the from field"
-msgstr "éditer le champ from"
+msgstr "modifier le champ from"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
 #: gui/opcodes.h:872
 msgid "edit the message with headers"
-msgstr "éditer le message avec ses en-têtes"
+msgstr "modifier le message avec ses en-têtes"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
 #: gui/opcodes.h:875
 msgid "edit the newsgroups list"
-msgstr "éditer la liste des groupes de discussion"
+msgstr "modifier la liste des groupes de discussion"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
@@ -4441,7 +4398,7 @@ msgstr ""
 
 #: handler.c:1115
 msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
-msgstr "[-- Erreur : Aucune partie du Multipart/Alternative n'a pu être affichée --]\n"
+msgstr "[-- Erreur : Aucune partie du 'Multipart/Alternative' n'a pu être affichée --]\n"
 
 # , c-format
 #. L10N: %s is the attachment description, filename or form_name.
@@ -4472,9 +4429,10 @@ msgstr "Impossible d'ouvrir le fichier temporaire"
 msgid "failed to re-open 'memory stream'"
 msgstr "échec de la réouverture de 'memory stream'"
 
+# TODO : look into this one, needs a rephrase for French
 #: handler.c:1715
 msgid "Error: multipart/signed has no protocol"
-msgstr "Erreur : multipart/signed n'a pas de protocole"
+msgstr "Erreur : 'multipart/signed' n'a pas de protocole"
 
 # , c-format
 #: handler.c:1785
@@ -4557,7 +4515,6 @@ msgstr "on a déjà répondu au message"
 msgid "message has been read"
 msgstr "le message a été lu"
 
-#TODO: nouveau ou neuf ?
 #: help.c:426
 msgid "message is new"
 msgstr "le message est nouveau"
@@ -4748,10 +4705,9 @@ msgstr "La connexion a échoué"
 msgid "%s is an invalid IMAP path"
 msgstr "%s n'est pas un chemin IMAP valide"
 
-# TODO: is « récuperation » really the best here?
 #: imap/browse.c:251
 msgid "Getting folder list..."
-msgstr "Récupération de la liste des répertoire..."
+msgstr "Récupération de la liste des répertoires..."
 
 # , c-format
 #. L10N: (%s) is the name / path of the folder we were trying to browse
@@ -6119,7 +6075,6 @@ msgstr "Le message racine n'est pas visible dans cette vue limitée"
 msgid "Parent message is not visible in this limited view"
 msgstr "Le message père n'est pas visible dans cette vue limitée"
 
-# TODO: « enregistrer dedans » is perhaps better...
 #. L10N: Means "The path you specified as the destination file is a directory."
 #. See the msgid "Save to file: " (alias.c, recvattach.c)
 #. These three letters correspond to the choices in the string.
@@ -6271,15 +6226,13 @@ msgstr "Impossible d'ouvrir le fichier : %s"
 msgid "Can't toggle write on a readonly mailbox"
 msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule"
 
-# TODO: « dossier » vs « répertoire »
 #: mx.c:1821
 msgid "Changes to folder will be written on folder exit"
-msgstr "Les modifications du dossier seront enregistrées à sa sortie"
+msgstr "Les modifications du répertoire seront écrites à la sortie du répertoire"
 
-# TODO: « dossier » vs « répertoire »
 #: mx.c:1826
 msgid "Changes to folder will not be written"
-msgstr "Les modifications du dossier ne seront pas enregistrées"
+msgstr "Les modifications du répertoire ne seront pas écrites"
 
 #: ncrypt/crypt.c:76
 #, c-format
@@ -6347,7 +6300,7 @@ msgid ""
 "[-- Error: Unknown multipart/signed protocol %s --]\n"
 "\n"
 msgstr ""
-"[-- Erreur : Protocole multipart/signed %s inconnu --]\n"
+"[-- Erreur : Protocole %s inconnue pour les messages signés ou en plusieurs parties --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1301
@@ -6355,7 +6308,7 @@ msgid ""
 "[-- Error: Missing or bad-format multipart/signed signature --]\n"
 "\n"
 msgstr ""
-"[-- Erreur : Signature multipart/signed manquante ou mauvais format  --]\n"
+"[-- Erreur : Signature manquante ou au mauvais format (message signé/en plusieurs parties) --]\n"
 "\n"
 
 #: ncrypt/crypt.c:1339
@@ -7430,11 +7383,9 @@ msgstr "Récupération de la liste des messages..."
 msgid "Checking for new messages..."
 msgstr "Recherche de nouveaux messages..."
 
-# TODO: « dossier » vs « répertoire »
 #: nntp/nntp.c:1828 nntp/nntp.c:1923
-#, fuzzy
 msgid "Could not switch to reader mode"
-msgstr "impossible d'écrire dans le dossier temporaire : %s"
+msgstr "Impossible de passer au mode lecture"
 
 # , c-format
 #: nntp/nntp.c:1841
@@ -8453,17 +8404,13 @@ msgstr "----- Début du message transféré de %f -----"
 msgid "----- End forwarded message -----"
 msgstr "----- Fin du message transféré -----"
 
-# TODO: Figure out why the english word "subject" is in parentheses here
 #: send/send.c:346
-#, fuzzy
 msgid "No subject, abort?"
-msgstr "Pas d'objet (Subject), abandonner?"
+msgstr "Pas d'objet, abandonner ?"
 
-# TODO: Figure out why the english word "subject" is in parentheses here
 #: send/send.c:348
-#, fuzzy
 msgid "No subject, aborting"
-msgstr "Pas d'objet (Subject), abandon"
+msgstr "Pas d'objet, abandon"
 
 #. L10N: This is the prompt for $forward_attachments.
 #. When inline forwarding ($mime_forward answered "no"), this prompts
