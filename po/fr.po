@@ -4495,7 +4495,7 @@ msgstr "ERREUR : veuillez signaler ce problème"
 
 #: help.c:417
 msgid "message is tagged"
-msgstr ""
+msgstr "message est étiqueté"
 
 # , c-format
 #: help.c:419
