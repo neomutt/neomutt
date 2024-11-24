@@ -2436,7 +2436,7 @@ static int nm_tags_commit(struct Mailbox *m, struct Email *e, const char *buf)
   update_tags(msg, buf);
   update_email_flags(m, e, buf);
   update_email_tags(e, msg);
-  mutt_set_header_color(m, e);
+  email_set_color(m, e);
 
   rc = 0;
   e->changed = true;

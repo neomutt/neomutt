@@ -938,7 +938,7 @@ const struct AttrColor *index_color(struct Menu *menu, int line)
   if (e->attr_color)
     return e->attr_color;
 
-  mutt_set_header_color(m, e);
+  email_set_color(m, e);
   return e->attr_color;
 }
 
@@ -1396,11 +1396,14 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
 }
 
 /**
- * mutt_set_header_color - Select a colour for a message
+ * email_set_color - Select an Index colour for an Email
  * @param m Mailbox
  * @param e Current Email
+ *
+ * Calculate the colour for an Email in the Index.
+ * Cache the colour in the Email.
  */
-void mutt_set_header_color(struct Mailbox *m, struct Email *e)
+void email_set_color(struct Mailbox *m, struct Email *e)
 {
   if (!e)
     return;

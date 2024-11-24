@@ -193,7 +193,7 @@ static const struct AttrColor *post_color(struct Menu *menu, int line)
   if (e->attr_color)
     return e->attr_color;
 
-  mutt_set_header_color(m, e);
+  email_set_color(m, e);
   return e->attr_color;
 }
 
