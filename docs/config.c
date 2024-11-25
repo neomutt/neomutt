@@ -3792,7 +3792,7 @@
 ** information.
 */
 
-{ "query_format", DT_STRING, "%3c %t %-25.25n %-25.25a | %e" },
+{ "query_format", DT_STRING, "%3i %t %-25N %-25E | %C%> %Y" },
 /*
 ** .pp
 ** This variable describes the format of the "query" menu. The
