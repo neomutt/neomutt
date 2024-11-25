@@ -66,12 +66,11 @@ default:	all
 NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
 		enriched.o external.o flags.o git_ver.o globals.o \
-		handler.o hdrline.o help.o hook.o init.o mailcap.o \
-		maillist.o main.o muttlib.o mutt_body.o \
-		mutt_config.o mutt_header.o mutt_logging.o mutt_mailbox.o \
-		mutt_signal.o mutt_socket.o mutt_thread.o mview.o mx.o \
-		recvcmd.o rfc3676.o score.o status.o subjectrx.o system.o \
-		version.o
+		handler.o help.o hook.o init.o mailcap.o maillist.o main.o \
+		muttlib.o mutt_body.o mutt_config.o mutt_header.o \
+		mutt_logging.o mutt_mailbox.o mutt_signal.o mutt_socket.o \
+		mutt_thread.o mview.o mx.o recvcmd.o rfc3676.o score.o \
+		status.o subjectrx.o system.o version.o
 
 @if USE_INOTIFY
 NEOMUTTOBJS+=	monitor.o
@@ -538,9 +537,9 @@ $(PWD)/imap:
 ###############################################################################
 # libindex
 LIBINDEX=	libindex.a
-LIBINDEXOBJS=	index/config.o index/dlg_index.o index/functions.o \
-		index/ibar.o index/index.o index/ipanel.o index/private_data.o \
-		index/shared_data.o
+LIBINDEXOBJS=	index/config.o index/dlg_index.o index/expando_index.o \
+		index/functions.o index/ibar.o index/index.o index/ipanel.o \
+		index/private_data.o index/shared_data.o
 CLEANFILES+=	$(LIBINDEX) $(LIBINDEXOBJS)
 ALLOBJS+=	$(LIBINDEXOBJS)
 

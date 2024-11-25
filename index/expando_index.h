@@ -22,8 +22,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_HDRLINE_H
-#define MUTT_HDRLINE_H
+#ifndef MUTT_INDEX_EXPANDO_INDEX_H
+#define MUTT_INDEX_EXPANDO_INDEX_H
 
 #include <stddef.h>
 #include "expando/lib.h"
@@ -80,4 +80,4 @@ int mutt_make_string(struct Buffer *buf, size_t max_cols, const struct Expando *
                      struct Mailbox *m, int inpgr, struct Email *e,
                      MuttFormatFlags flags, const char *progress);
 
-#endif /* MUTT_HDRLINE_H */
+#endif /* MUTT_INDEX_EXPANDO_INDEX_H */

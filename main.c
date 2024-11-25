@@ -78,7 +78,6 @@
  * | flags.c         | @subpage neo_flags         |
  * | globals.c       | @subpage neo_globals       |
  * | handler.c       | @subpage neo_handler       |
- * | hdrline.c       | @subpage neo_hdrline       |
  * | help.c          | @subpage neo_help          |
  * | hook.c          | @subpage neo_hook          |
  * | init.c          | @subpage neo_init          |

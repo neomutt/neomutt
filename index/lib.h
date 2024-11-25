@@ -45,9 +45,10 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
-#include "expando/lib.h" // IWYU pragma: keep
-#include "functions.h"   // IWYU pragma: keep
-#include "shared_data.h" // IWYU pragma: keep
+#include "expando/lib.h"   // IWYU pragma: keep
+#include "expando_index.h" // IWYU pragma: keep
+#include "functions.h"     // IWYU pragma: keep
+#include "shared_data.h"   // IWYU pragma: keep
 
 struct Email;
 struct MailboxView;

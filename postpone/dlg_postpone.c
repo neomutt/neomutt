@@ -80,7 +80,6 @@
 #include "menu/lib.h"
 #include "pattern/lib.h"
 #include "functions.h"
-#include "hdrline.h"
 #include "mutt_logging.h"
 #include "mview.h"
 

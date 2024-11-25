@@ -50,7 +50,6 @@
 #include "send/lib.h"
 #include "globals.h"
 #include "handler.h"
-#include "hdrline.h"
 #include "mx.h"
 #ifdef USE_NOTMUCH
 #include "notmuch/lib.h"

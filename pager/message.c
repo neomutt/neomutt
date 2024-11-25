@@ -49,7 +49,6 @@
 #include "question/lib.h"
 #include "copy.h"
 #include "globals.h"
-#include "hdrline.h"
 #include "hook.h"
 #include "mview.h"
 #include "mx.h"

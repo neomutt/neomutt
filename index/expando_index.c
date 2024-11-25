@@ -46,7 +46,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "alias/lib.h"
-#include "hdrline.h"
+#include "expando_index.h"
 #include "attach/lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"

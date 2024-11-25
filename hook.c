@@ -55,7 +55,6 @@
 #include "pattern/lib.h"
 #include "commands.h"
 #include "globals.h"
-#include "hdrline.h"
 #include "muttlib.h"
 #include "mx.h"
 
