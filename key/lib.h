@@ -27,11 +27,11 @@
  *
  * | File                | Description           |
  * | :------------------ | :-------------------- |
- * | key/dump.c:         | @subpage key_dump     |
- * | key/get.c:          | @subpage key_get      |
- * | key/init.c:         | @subpage key_init     |
- * | key/lib.c:          | @subpage key_lib      |
- * | key/parse.c:        | @subpage key_parse    |
+ * | key/dump.c          | @subpage key_dump     |
+ * | key/get.c           | @subpage key_get      |
+ * | key/init.c          | @subpage key_init     |
+ * | key/lib.c           | @subpage key_lib      |
+ * | key/parse.c         | @subpage key_parse    |
  */
 
 #ifndef MUTT_KEY_LIB_H

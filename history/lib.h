@@ -40,7 +40,6 @@
 #include "functions.h" // IWYU pragma: keep
 
 struct Buffer;
-struct HistoryArray;
 struct NotifyCallback;
 
 /**

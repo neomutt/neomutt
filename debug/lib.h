@@ -33,6 +33,7 @@
  * | debug/graphviz.c    | @subpage debug_graphviz    |
  * | debug/keymap.c      | @subpage debug_keymap      |
  * | debug/logging.c     | @subpage debug_logging     |
+ * | debug/names.c       | @subpage debug_names       |
  * | debug/notify.c      | @subpage debug_notify      |
  * | debug/pager.c       | @subpage debug_pager       |
  * | debug/window.c      | @subpage debug_window      |
