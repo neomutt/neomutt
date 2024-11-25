@@ -625,9 +625,6 @@ static struct ConfigDef MainVars[] = {
   { "mark_old", DT_BOOL, true, 0, NULL,
     "Mark new emails as old when leaving the mailbox"
   },
-  { "markers", DT_BOOL, true, 0, NULL,
-    "Display a '+' at the beginning of wrapped lines in the pager"
-  },
   { "mbox", DT_STRING|D_STRING_MAILBOX, IP "~/mbox", 0, NULL,
     "Folder that receives read emails (see Move)"
   },
