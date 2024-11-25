@@ -412,9 +412,6 @@ static struct ConfigDef MainVars[] = {
   { "auto_edit", DT_BOOL, false, 0, NULL,
     "Skip the initial compose menu and edit the email"
   },
-  { "auto_subscribe", DT_BOOL, false, 0, NULL,
-    "Automatically check if the user is subscribed to a mailing list"
-  },
   { "auto_tag", DT_BOOL, false, 0, NULL,
     "Automatically apply actions to all tagged messages"
   },
@@ -516,9 +513,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "header", DT_BOOL, false, 0, NULL,
     "Include the message headers in the reply email (Weed applies)"
-  },
-  { "hidden_tags", DT_SLIST|D_SLIST_SEP_COMMA, IP "unread,draft,flagged,passed,replied,attachment,signed,encrypted", 0, NULL,
-    "List of tags that shouldn't be displayed on screen (comma-separated)"
   },
   { "hide_limited", DT_BOOL, false, 0, NULL,
     "Don't indicate hidden messages, in the thread tree"
@@ -673,39 +667,11 @@ static struct ConfigDef MainVars[] = {
   { "reflow_wrap", DT_NUMBER, 78, 0, NULL,
     "Maximum paragraph width for reformatting 'format=flowed' text"
   },
-  // L10N: $reply_regex default format
-  //
-  // This is a regular expression that matches reply subject lines.
-  // By default, it only matches an initial "Re: ", which is the
-  // standardized Latin prefix.
-  //
-  // However, many locales have other prefixes that are commonly used
-  // too, such as Aw in Germany.  To add other prefixes, modify the first
-  // parenthesized expression, such as:
-  //    "^(re|aw)
-  // you can add multiple values, for example:
-  //    "^(re|aw|sv)
-  //
-  // Important:
-  // - Use all lower case letters.
-  // - Don't remove the 're' prefix from the list of choices.
-  // - Please test the value you use inside Mutt.  A mistake here will break
-  //   NeoMutt's threading behavior.  Note: the header cache can interfere with
-  //   testing, so be sure to test with $header_cache unset.
-  { "reply_regex", DT_REGEX|D_L10N_STRING, IP N_("^((re)(\\[[0-9]+\\])*:[ \t]*)*"), 0, NULL,
-    "Regex to match message reply subjects like 're: '"
-  },
   { "resolve", DT_BOOL, true, 0, NULL,
     "Move to the next email whenever a command modifies an email"
   },
   { "resume_edited_draft_files", DT_BOOL, true, 0, NULL,
     "Resume editing previously saved draft files"
-  },
-  { "reverse_alias", DT_BOOL, false, 0, NULL,
-    "Display the alias in the index, rather than the message's sender"
-  },
-  { "rfc2047_parameters", DT_BOOL, true, 0, NULL,
-    "Decode RFC2047-encoded MIME parameters"
   },
   { "save_address", DT_BOOL, false, 0, NULL,
     "Use sender's full address as a default save folder"
@@ -763,9 +729,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "sort_re", DT_BOOL, true, 0, NULL,
     "Whether $reply_regex must be matched when not $strict_threads"
-  },
-  { "spam_separator", DT_STRING, IP ",", 0, NULL,
-    "Separator for multiple spam headers"
   },
   { "spool_file", DT_STRING|D_STRING_MAILBOX, 0, 0, NULL,
     "Inbox"
@@ -853,7 +816,6 @@ static struct ConfigDef MainVars[] = {
   { "print_cmd",                 DT_SYNONYM, IP "print_command",              IP "2021-03-21" },
   { "quote_regexp",              DT_SYNONYM, IP "quote_regex",                IP "2021-03-21" },
   { "realname",                  DT_SYNONYM, IP "real_name",                  IP "2021-03-21" },
-  { "reply_regexp",              DT_SYNONYM, IP "reply_regex",                IP "2021-03-21" },
   { "spoolfile",                 DT_SYNONYM, IP "spool_file",                 IP "2021-03-21" },
   { "tmpdir",                    DT_SYNONYM, IP "tmp_dir",                    IP "2023-01-25" },
   { "xterm_icon",                DT_SYNONYM, IP "ts_icon_format",             IP "2021-03-21" },
@@ -938,6 +900,7 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, browser);
   CONFIG_INIT_VARS(cs, compose);
   CONFIG_INIT_VARS(cs, conn);
+  CONFIG_INIT_VARS(cs, email);
 #if defined(USE_HCACHE)
   CONFIG_INIT_VARS(cs, hcache);
 #endif
@@ -946,9 +909,9 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, imap);
   CONFIG_INIT_VARS(cs, index);
   CONFIG_INIT_VARS(cs, maildir);
-  CONFIG_INIT_VARS(cs, mh);
   CONFIG_INIT_VARS(cs, mbox);
   CONFIG_INIT_VARS(cs, menu);
+  CONFIG_INIT_VARS(cs, mh);
   CONFIG_INIT_VARS(cs, ncrypt);
   CONFIG_INIT_VARS(cs, nntp);
 #if defined(USE_NOTMUCH)
@@ -957,6 +920,7 @@ static void init_variables(struct ConfigSet *cs)
   CONFIG_INIT_VARS(cs, pager);
   CONFIG_INIT_VARS(cs, pattern);
   CONFIG_INIT_VARS(cs, pop);
+  CONFIG_INIT_VARS(cs, progress);
   CONFIG_INIT_VARS(cs, send);
   CONFIG_INIT_VARS(cs, sidebar);
 }
