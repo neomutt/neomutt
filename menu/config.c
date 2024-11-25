@@ -36,6 +36,12 @@
  */
 static struct ConfigDef MenuVars[] = {
   // clang-format off
+  { "arrow_cursor", DT_BOOL, false, 0, NULL,
+    "Use an arrow '->' instead of highlighting in the index"
+  },
+  { "arrow_string", DT_STRING|D_NOT_EMPTY, IP "->", 0, NULL,
+    "Use a custom string for arrow_cursor"
+  },
   { "menu_context", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
     "Number of lines of overlap when changing pages in the index"
   },

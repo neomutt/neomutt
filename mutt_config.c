@@ -430,12 +430,6 @@ static struct ConfigDef MainVars[] = {
   { "abort_key", DT_STRING|D_NOT_EMPTY|D_ON_STARTUP, IP "\007", 0, NULL,
     "String representation of key to abort prompts"
   },
-  { "arrow_cursor", DT_BOOL, false, 0, NULL,
-    "Use an arrow '->' instead of highlighting in the index"
-  },
-  { "arrow_string", DT_STRING|D_NOT_EMPTY, IP "->", 0, NULL,
-    "Use a custom string for arrow_cursor"
-  },
   { "ascii_chars", DT_BOOL, false, 0, NULL,
     "Use plain ASCII characters, when drawing email threads"
   },
