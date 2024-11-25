@@ -323,11 +323,15 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
   {
     case SENT_SENDER:
     {
+#ifdef HAVE_STRUCT_TM_TM_GMTOFF
       int offset = (e->zhours * 3600 + e->zminutes * 60) * (e->zoccident ? -1 : 1);
       const time_t now = e->date_sent + offset;
       tm = mutt_date_gmtime(now);
       tm.tm_gmtoff = offset;
       break;
+#else
+      FALLTHROUGH;
+#endif
     }
     case SENT_LOCAL:
     {

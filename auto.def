@@ -430,6 +430,10 @@ if {1} {
   cc-with {-includes sys/stat.h} {
     cc-check-members "struct stat.st_atim.tv_nsec"
   }
+
+  cc-with {-includes time.h} {
+    cc-check-members "struct tm.tm_gmtoff"
+  }
 }
 ###############################################################################
 

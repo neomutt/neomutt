@@ -2258,6 +2258,8 @@
 **                is a bang ("!"), the date is formatted ignoring any locale
 **                settings.  Note that the sender's time zone might only be
 **                available as a numerical offset, so "%Z" behaves like "%z".
+**                %{fmt} behaves like %[fmt] on systems where struct tm
+**                doesn't have a tm_gmtoff member.
 ** .dt %[fmt] .dd the date and time of the message is converted to the local
 **                time zone, and "fmt" is expanded by the library function
 **                \fCstrftime(3)\fP; if the first character inside the brackets
