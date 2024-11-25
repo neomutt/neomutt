@@ -778,7 +778,8 @@ $(PWD)/postpone:
 ###############################################################################
 # libprogress
 LIBPROGRESS=	libprogress.a
-LIBPROGRESSOBJS=progress/progress.o progress/wdata.o progress/window.o
+LIBPROGRESSOBJS=progress/config.o progress/progress.o progress/wdata.o \
+		progress/window.o
 CLEANFILES+=	$(LIBPROGRESS) $(LIBPROGRESSOBJS)
 ALLOBJS+=	$(LIBPROGRESSOBJS)
 

@@ -613,9 +613,6 @@ static struct ConfigDef MainVars[] = {
   { "narrow_tree", DT_BOOL, false, 0, NULL,
     "Draw a narrower thread tree in the index"
   },
-  { "net_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
-    "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
-  },
   { "new_mail_command", DT_EXPANDO|D_STRING_COMMAND, 0, IP StatusFormatDefNoPadding, NULL,
     "External command to run when new mail arrives"
   },
@@ -657,9 +654,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "quote_regex", DT_REGEX, IP "^([ \t]*[|>:}#])+", 0, NULL,
     "Regex to match quoted text in a reply"
-  },
-  { "read_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
-    "Update the progress bar after this many records read (0 to disable)"
   },
   { "read_only", DT_BOOL, false, 0, NULL,
     "Open folders in read-only mode"
@@ -794,9 +788,6 @@ static struct ConfigDef MainVars[] = {
   { "thread_received", DT_BOOL, false, 0, NULL,
     "Sort threaded messages by their received date"
   },
-  { "time_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 0, 0, NULL,
-    "Frequency of progress bar updates (milliseconds)"
-  },
   { "timeout", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 600, 0, NULL,
     "Time to wait for user input in menus"
   },
@@ -837,9 +828,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "wrap_search", DT_BOOL, true, 0, NULL,
     "Wrap around when the search hits the end"
-  },
-  { "write_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
-    "Update the progress bar after this many records written (0 to disable)"
   },
 
   { "cursor_overlay",            D_INTERNAL_DEPRECATED|DT_BOOL,   0, IP "2020-07-20" },
