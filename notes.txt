@@ -1,0 +1,30 @@
+$ gh pr list --search "merged:>2024-11-14"
+
+4437 show message preview in compose view                     ds/compose-message-preview         2024-11-12
+4441 mutt/memory.c: Add my_reallocarray()                     alejandro-colomar:alx/reallocarray 2024-11-14
+4442 remove unused fields from ComposeSharedData              ds/cleanup-compose-shared-data     2024-11-17
+4444 expando: fix overflow                                    devel/overflow                     2024-11-18
+4447 Disentagle `SORT_*`                                      devel/sort                         2024-11-20
+4448 Update mutt/queue.h                                      devel/update-queue                 2024-11-20
+4449 add mutt_window_swap()                                   devel/mutt_window_swap             2024-11-21
+4452 Smartos fixes                                            pekdon:smartos_fixes               2024-11-25
+4461 Spaces can be wide                                       devel/issue-4460                   2024-12-02
+4462 fix compose preview title                                ds/fix-preview-title               2024-12-02
+4464 Remove BOM from UTF-8 text                               devel/bom                          2024-12-03
+4465 only show text inline attachments in the compose preview ds/preview-only-inline             2024-12-03
+4467 fix: Bug with wrong fingerprints in certificate_file     frei-0xff:main                     2024-12-05
+4470 fix postponed sorting assertion failure                  flatcap/postpone                   2024-12-06
+
+----------------------------------------
+
+Translation:
+	sync to source
+	update "Project-Id-Version: neomutt-0000-00-00\n"
+
+Update:
+	.mailmap
+	AUTHORS.md
+	ChangeLog.md
+	README.md
+	auto.def
+
