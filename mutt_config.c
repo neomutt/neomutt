@@ -45,7 +45,6 @@
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
-#include "menu/lib.h"
 #include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
@@ -374,47 +373,6 @@ const struct ExpandoDefinition IndexFormatDef[] = {
 
 /// IndexFormatDefNoPadding - Index format definitions, without padding
 static const struct ExpandoDefinition *const IndexFormatDefNoPadding = &(IndexFormatDef[3]);
-
-/**
- * StatusFormatDef - Expando definitions
- *
- * Config:
- * - $new_mail_command
- * - $status_format
- * - $ts_icon_format
- * - $ts_status_format
- */
-static const struct ExpandoDefinition StatusFormatDef[] = {
-  // clang-format off
-  { "*", "padding-soft",     ED_GLOBAL, ED_GLO_PADDING_SOFT,     node_padding_parse },
-  { ">", "padding-hard",     ED_GLOBAL, ED_GLO_PADDING_HARD,     node_padding_parse },
-  { "|", "padding-eol",      ED_GLOBAL, ED_GLO_PADDING_EOL,      node_padding_parse },
-  { "b", "unread-mailboxes", ED_INDEX,  ED_IND_UNREAD_MAILBOXES, NULL },
-  { "d", "deleted-count",    ED_INDEX,  ED_IND_DELETED_COUNT,    NULL },
-  { "D", "description",      ED_INDEX,  ED_IND_DESCRIPTION,      NULL },
-  { "f", "mailbox-path",     ED_INDEX,  ED_IND_MAILBOX_PATH,     NULL },
-  { "F", "flagged-count",    ED_INDEX,  ED_IND_FLAGGED_COUNT,    NULL },
-  { "h", "hostname",         ED_GLOBAL, ED_GLO_HOSTNAME,         NULL },
-  { "l", "mailbox-size",     ED_INDEX,  ED_IND_MAILBOX_SIZE,     NULL },
-  { "L", "limit-size",       ED_INDEX,  ED_IND_LIMIT_SIZE,       NULL },
-  { "m", "message-count",    ED_INDEX,  ED_IND_MESSAGE_COUNT,    NULL },
-  { "M", "limit-count",      ED_INDEX,  ED_IND_LIMIT_COUNT,      NULL },
-  { "n", "new-count",        ED_INDEX,  ED_IND_NEW_COUNT,        NULL },
-  { "o", "old-count",        ED_INDEX,  ED_IND_OLD_COUNT,        NULL },
-  { "p", "postponed-count",  ED_INDEX,  ED_IND_POSTPONED_COUNT,  NULL },
-  { "P", "percentage",       ED_MENU,   ED_MEN_PERCENTAGE,       NULL },
-  { "r", "readonly",         ED_INDEX,  ED_IND_READONLY,         NULL },
-  { "R", "read-count",       ED_INDEX,  ED_IND_READ_COUNT,       NULL },
-  { "s", "sort",             ED_GLOBAL, ED_GLO_SORT,             NULL },
-  { "S", "sort-aux",         ED_GLOBAL, ED_GLO_SORT_AUX,         NULL },
-  { "t", "tagged-count",     ED_INDEX,  ED_IND_TAGGED_COUNT,     NULL },
-  { "T", "use-threads",      ED_GLOBAL, ED_GLO_USE_THREADS,      NULL },
-  { "u", "unread-count",     ED_INDEX,  ED_IND_UNREAD_COUNT,     NULL },
-  { "v", "version",          ED_GLOBAL, ED_GLO_VERSION,          NULL },
-  { "V", "limit-pattern",    ED_INDEX,  ED_IND_LIMIT_PATTERN,    NULL },
-  { NULL, NULL, 0, -1, NULL }
-  // clang-format on
-};
 
 /// StatusFormatDefNoPadding - Status format definitions, without padding
 const struct ExpandoDefinition *const StatusFormatDefNoPadding = &(StatusFormatDef[3]);
@@ -820,10 +778,6 @@ static struct ConfigDef MainVars[] = {
   },
   { "status_chars", DT_MBTABLE, IP "-*%A", 0, NULL,
     "Indicator characters for the status bar"
-  },
-  // L10N: $status_format default format
-  { "status_format", DT_EXPANDO|D_L10N_STRING, IP N_("-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"), IP &StatusFormatDef, NULL,
-    "printf-like format string for the index's status line"
   },
   { "status_on_top", DT_BOOL, false, 0, NULL,
     "Display the status bar at the top"
