@@ -680,7 +680,8 @@ $(PWD)/ncrypt:
 # libnntp
 LIBNNTP=	libnntp.a
 LIBNNTPOBJS=	nntp/adata.o nntp/complete.o nntp/config.o nntp/edata.o \
-		nntp/expando_browser.o nntp/mdata.o nntp/newsrc.o nntp/nntp.o
+		nntp/expando_browser.o nntp/expando_newsrc.o nntp/mdata.o \
+		nntp/newsrc.o nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 ALLOBJS+=	$(LIBNNTPOBJS)
 

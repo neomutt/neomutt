@@ -102,13 +102,4 @@ int nntp_sort_unsorted(const struct Email *a, const struct Email *b, bool revers
 enum MailboxType nntp_path_probe(const char *path, const struct stat *st);
 int nntp_complete(struct Buffer *buf);
 
-void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_P(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_s(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-void nntp_u(const struct ExpandoNode *node, void *data, MuttFormatFlags flags, struct Buffer *buf);
-
-long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags);
-
 #endif /* MUTT_NNTP_LIB_H */
