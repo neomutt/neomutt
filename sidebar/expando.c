@@ -55,10 +55,10 @@ static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
 }
 
 /**
- * sidebar_bang - Sidebar: Flagged flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * sidebar_flagged - Sidebar: Flagged flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void sidebar_bang(const struct ExpandoNode *node, void *data,
-                         MuttFormatFlags flags, struct Buffer *buf)
+static void sidebar_flagged(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -83,9 +83,9 @@ static void sidebar_bang(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * sidebar_a_num - Sidebar: Alert for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_notify_num - Sidebar: Alert for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_notify_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -95,10 +95,10 @@ static long sidebar_a_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_B - Sidebar: Name of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * sidebar_name - Sidebar: Name of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void sidebar_B(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static void sidebar_name(const struct ExpandoNode *node, void *data,
+                         MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -113,9 +113,10 @@ static void sidebar_B(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * sidebar_d_num - Sidebar: Number of deleted messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_deleted_count_num - Sidebar: Number of deleted messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_deleted_count_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -129,10 +130,10 @@ static long sidebar_d_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_D - Sidebar: Descriptive name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * sidebar_description - Sidebar: Descriptive name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void sidebar_D(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static void sidebar_description(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -155,9 +156,10 @@ static void sidebar_D(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * sidebar_F_num - Sidebar: Number of flagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_flagged_count_num - Sidebar: Number of flagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_F_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_flagged_count_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -167,9 +169,10 @@ static long sidebar_F_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_L_num - Sidebar: Number of limited messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_limited_count_num - Sidebar: Number of limited messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_limited_count_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -183,9 +186,9 @@ static long sidebar_L_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_n_num - Sidebar: New mail flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_new_mail_num - Sidebar: New mail flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_new_mail_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -195,10 +198,10 @@ static long sidebar_n_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_n - Sidebar: New mail flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * sidebar_new_mail - Sidebar: New mail flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void sidebar_n(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static void sidebar_new_mail(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -210,9 +213,10 @@ static void sidebar_n(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * sidebar_N_num - Sidebar: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_unread_count_num - Sidebar: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_N_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_unread_count_num(const struct ExpandoNode *node, void *data,
+                                     MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -222,9 +226,9 @@ static long sidebar_N_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_o_num - Sidebar: Number of old messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_old_count_num - Sidebar: Number of old messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_o_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_old_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -234,9 +238,9 @@ static long sidebar_o_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_p_num - Sidebar: Poll for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_poll_num - Sidebar: Poll for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_poll_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -246,9 +250,9 @@ static long sidebar_p_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_r_num - Sidebar: Number of read messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_read_count_num - Sidebar: Number of read messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_r_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_read_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -258,9 +262,10 @@ static long sidebar_r_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_S_num - Sidebar: number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_message_count_num - Sidebar: number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_S_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_message_count_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -270,9 +275,10 @@ static long sidebar_S_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_t_num - Sidebar: Number of tagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_tagged_count_num - Sidebar: Number of tagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_tagged_count_num(const struct ExpandoNode *node, void *data,
+                                     MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -286,9 +292,10 @@ static long sidebar_t_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * sidebar_Z_num - Sidebar: Number of new messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * sidebar_unseen_count_num - Sidebar: Number of new messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long sidebar_Z_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long sidebar_unseen_count_num(const struct ExpandoNode *node, void *data,
+                                     MuttFormatFlags flags)
 {
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
@@ -304,21 +311,21 @@ static long sidebar_Z_num(const struct ExpandoNode *node, void *data, MuttFormat
  */
 const struct ExpandoRenderData SidebarRenderData[] = {
   // clang-format off
-  { ED_SIDEBAR, ED_SID_FLAGGED,       sidebar_bang, NULL },
-  { ED_SIDEBAR, ED_SID_NOTIFY,        NULL,         sidebar_a_num },
-  { ED_SIDEBAR, ED_SID_NAME,          sidebar_B,    NULL },
-  { ED_SIDEBAR, ED_SID_DELETED_COUNT, NULL,         sidebar_d_num },
-  { ED_SIDEBAR, ED_SID_DESCRIPTION,   sidebar_D,    NULL },
-  { ED_SIDEBAR, ED_SID_FLAGGED_COUNT, NULL,         sidebar_F_num },
-  { ED_SIDEBAR, ED_SID_LIMITED_COUNT, NULL,         sidebar_L_num },
-  { ED_SIDEBAR, ED_SID_NEW_MAIL,      sidebar_n,    sidebar_n_num },
-  { ED_SIDEBAR, ED_SID_UNREAD_COUNT,  NULL,         sidebar_N_num },
-  { ED_SIDEBAR, ED_SID_OLD_COUNT,     NULL,         sidebar_o_num },
-  { ED_SIDEBAR, ED_SID_POLL,          NULL,         sidebar_p_num },
-  { ED_SIDEBAR, ED_SID_READ_COUNT,    NULL,         sidebar_r_num },
-  { ED_SIDEBAR, ED_SID_MESSAGE_COUNT, NULL,         sidebar_S_num },
-  { ED_SIDEBAR, ED_SID_TAGGED_COUNT,  NULL,         sidebar_t_num },
-  { ED_SIDEBAR, ED_SID_UNSEEN_COUNT,  NULL,         sidebar_Z_num },
+  { ED_SIDEBAR, ED_SID_DELETED_COUNT, NULL,                sidebar_deleted_count_num },
+  { ED_SIDEBAR, ED_SID_DESCRIPTION,   sidebar_description, NULL },
+  { ED_SIDEBAR, ED_SID_FLAGGED,       sidebar_flagged,     NULL },
+  { ED_SIDEBAR, ED_SID_FLAGGED_COUNT, NULL,                sidebar_flagged_count_num },
+  { ED_SIDEBAR, ED_SID_LIMITED_COUNT, NULL,                sidebar_limited_count_num },
+  { ED_SIDEBAR, ED_SID_MESSAGE_COUNT, NULL,                sidebar_message_count_num },
+  { ED_SIDEBAR, ED_SID_NAME,          sidebar_name,        NULL },
+  { ED_SIDEBAR, ED_SID_NEW_MAIL,      sidebar_new_mail,    sidebar_new_mail_num },
+  { ED_SIDEBAR, ED_SID_NOTIFY,        NULL,                sidebar_notify_num },
+  { ED_SIDEBAR, ED_SID_OLD_COUNT,     NULL,                sidebar_old_count_num },
+  { ED_SIDEBAR, ED_SID_POLL,          NULL,                sidebar_poll_num },
+  { ED_SIDEBAR, ED_SID_READ_COUNT,    NULL,                sidebar_read_count_num },
+  { ED_SIDEBAR, ED_SID_TAGGED_COUNT,  NULL,                sidebar_tagged_count_num },
+  { ED_SIDEBAR, ED_SID_UNREAD_COUNT,  NULL,                sidebar_unread_count_num },
+  { ED_SIDEBAR, ED_SID_UNSEEN_COUNT,  NULL,                sidebar_unseen_count_num },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
