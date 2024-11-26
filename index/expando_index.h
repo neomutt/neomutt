@@ -25,12 +25,9 @@
 #ifndef MUTT_INDEX_EXPANDO_INDEX_H
 #define MUTT_INDEX_EXPANDO_INDEX_H
 
-#include <stddef.h>
 #include "expando/lib.h"
 
-struct Buffer;
-struct Email;
-struct Mailbox;
+extern const struct ExpandoRenderData IndexRenderData[];
 
 /**
  * enum FlagChars - Index into the `$flag_chars` config variable
@@ -75,9 +72,5 @@ enum ToChars
   FLAG_CHAR_TO_SUBSCRIBED_LIST,   ///< Character denoting that the message is sent to a subscribed mailing list
   FLAG_CHAR_TO_REPLY_TO,          ///< Character denoting that the user is in the Reply-To list
 };
-
-int mutt_make_string(struct Buffer *buf, size_t max_cols, const struct Expando *exp,
-                     struct Mailbox *m, int inpgr, struct Email *e,
-                     MuttFormatFlags flags, const char *progress);
 
 #endif /* MUTT_INDEX_EXPANDO_INDEX_H */
