@@ -39,27 +39,14 @@
 #include "attach.h"
 #include "muttlib.h"
 
-static void attach_F(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf);
+static void body_file_disposition(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf);
 
 /**
- * attach_c - Attachment: Requires conversion flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * attach_charset - Attachment: Charset - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void attach_c(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AttachPtr *aptr = data;
-
-  // NOTE(g0mb4): use $to_chars?
-  const char *s = ((aptr->body->type != TYPE_TEXT) || aptr->body->noconv) ? "n" : "c";
-  buf_strcpy(buf, s);
-}
-
-/**
- * attach_C - Attachment: Charset - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_C(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void attach_charset(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
@@ -72,10 +59,103 @@ static void attach_C(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * attach_d - Attachment: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * attach_number_num - Attachment: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void attach_d(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static long attach_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+
+  return aptr->num + 1;
+}
+
+/**
+ * attach_tree - Attachment: Tree characters - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void attach_tree(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  node_expando_set_color(node, MT_COLOR_TREE);
+  node_expando_set_has_tree(node, true);
+  const char *s = aptr->tree;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * body_attach_count_num - Body: Number of MIME parts - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long body_attach_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  const struct Body *body = aptr->body;
+
+  return body->attach_count + body->attach_qualifies;
+}
+
+/**
+ * body_attach_qualifies - Body: Attachment counting - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void body_attach_qualifies(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = aptr->body->attach_qualifies ? "Q" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * body_attach_qualifies_num - Body: Attachment counting - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long body_attach_qualifies_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  return aptr->body->attach_qualifies;
+}
+
+/**
+ * body_charset_convert - Body: Requires conversion flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void body_charset_convert(const struct ExpandoNode *node, void *data,
+                                 MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = ((aptr->body->type != TYPE_TEXT) || aptr->body->noconv) ? "n" : "c";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * body_deleted - Body: Deleted - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void body_deleted(const struct ExpandoNode *node, void *data,
+                         MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  // NOTE(g0mb4): use $to_chars?
+  const char *s = aptr->body->deleted ? "D" : " ";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * body_deleted_num - Body: Deleted - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long body_deleted_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct AttachPtr *aptr = data;
+  return aptr->body->deleted;
+}
+
+/**
+ * body_description - Body: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void body_description(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
@@ -103,90 +183,14 @@ static void attach_d(const struct ExpandoNode *node, void *data,
     return;
   }
 
-  attach_F(node, data, flags, buf);
+  body_file_disposition(node, data, flags, buf);
 }
 
 /**
- * attach_D_num - Attachment: Deleted - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_disposition - Body: Disposition flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static long attach_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AttachPtr *aptr = data;
-  return aptr->body->deleted;
-}
-
-/**
- * attach_D - Attachment: Deleted - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_D(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AttachPtr *aptr = data;
-
-  // NOTE(g0mb4): use $to_chars?
-  const char *s = aptr->body->deleted ? "D" : " ";
-  buf_strcpy(buf, s);
-}
-
-/**
- * attach_e - Attachment: MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_e(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AttachPtr *aptr = data;
-
-  const char *s = ENCODING(aptr->body->encoding);
-  buf_strcpy(buf, s);
-}
-
-/**
- * attach_f - Attachment: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_f(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AttachPtr *aptr = data;
-
-  if (aptr->body->filename && (*aptr->body->filename == '/'))
-  {
-    struct Buffer *path = buf_pool_get();
-
-    buf_strcpy(path, aptr->body->filename);
-    buf_pretty_mailbox(path);
-    buf_copy(buf, path);
-    buf_pool_release(&path);
-  }
-  else
-  {
-    const char *s = aptr->body->filename;
-    buf_strcpy(buf, s);
-  }
-}
-
-/**
- * attach_F - Attachment: Filename in header - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_F(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AttachPtr *aptr = data;
-
-  if (aptr->body->d_filename)
-  {
-    const char *s = aptr->body->d_filename;
-    buf_strcpy(buf, s);
-    return;
-  }
-
-  attach_f(node, data, flags, buf);
-}
-
-/**
- * attach_I - Attachment: Disposition flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_I(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void body_disposition(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
@@ -208,79 +212,52 @@ static void attach_I(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * attach_m - Attachment: Major MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_file - Body: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void attach_m(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void body_file(const struct ExpandoNode *node, void *data,
+                      MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
-  const char *s = TYPE(aptr->body);
-  buf_strcpy(buf, s);
+  if (aptr->body->filename && (*aptr->body->filename == '/'))
+  {
+    struct Buffer *path = buf_pool_get();
+
+    buf_strcpy(path, aptr->body->filename);
+    buf_pretty_mailbox(path);
+    buf_copy(buf, path);
+    buf_pool_release(&path);
+  }
+  else
+  {
+    const char *s = aptr->body->filename;
+    buf_strcpy(buf, s);
+  }
 }
 
 /**
- * attach_M - Attachment: MIME subtype - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_file_disposition - Body: Filename in header - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void attach_M(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void body_file_disposition(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
-  const char *s = aptr->body->subtype;
-  buf_strcpy(buf, s);
+  if (aptr->body->d_filename)
+  {
+    const char *s = aptr->body->d_filename;
+    buf_strcpy(buf, s);
+    return;
+  }
+
+  body_file(node, data, flags, buf);
 }
 
 /**
- * attach_n_num - Attachment: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_file_size - Body: Size - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static long attach_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AttachPtr *aptr = data;
-
-  return aptr->num + 1;
-}
-
-/**
- * attach_Q_num - Attachment: Attachment counting - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long attach_Q_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AttachPtr *aptr = data;
-  return aptr->body->attach_qualifies;
-}
-
-/**
- * attach_Q - Attachment: Attachment counting - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_Q(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AttachPtr *aptr = data;
-
-  // NOTE(g0mb4): use $to_chars?
-  const char *s = aptr->body->attach_qualifies ? "Q" : " ";
-  buf_strcpy(buf, s);
-}
-
-/**
- * attach_s_num - Attachment: Size - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long attach_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AttachPtr *aptr = data;
-
-  if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
-    return mutt_file_get_size(aptr->body->filename);
-
-  return aptr->body->length;
-}
-
-/**
- * attach_s - Attachment: Size - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_s(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void body_file_size(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
@@ -301,19 +278,59 @@ static void attach_s(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * attach_t_num - Attachment: Is Tagged - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_file_size_num - Body: Size - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long attach_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long body_file_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AttachPtr *aptr = data;
-  return aptr->body->tagged;
+
+  if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
+    return mutt_file_get_size(aptr->body->filename);
+
+  return aptr->body->length;
 }
 
 /**
- * attach_t - Attachment: Is Tagged - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_mime_encoding - Body: MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void attach_t(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void body_mime_encoding(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  const char *s = ENCODING(aptr->body->encoding);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * body_mime_major - Body: Major MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void body_mime_major(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  const char *s = TYPE(aptr->body);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * body_mime_minor - Body: MIME subtype - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void body_mime_minor(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AttachPtr *aptr = data;
+
+  const char *s = aptr->body->subtype;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * body_tagged - Body: Is Tagged - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void body_tagged(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
@@ -323,33 +340,19 @@ static void attach_t(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * attach_T - Attachment: Tree characters - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_tagged_num - Body: Is Tagged - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void attach_T(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static long body_tagged_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AttachPtr *aptr = data;
-
-  node_expando_set_color(node, MT_COLOR_TREE);
-  node_expando_set_has_tree(node, true);
-  const char *s = aptr->tree;
-  buf_strcpy(buf, s);
+  return aptr->body->tagged;
 }
 
 /**
- * attach_u_num - Attachment: Unlink flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_unlink - Body: Unlink flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static long attach_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AttachPtr *aptr = data;
-  return aptr->body->unlink;
-}
-
-/**
- * attach_u - Attachment: Unlink flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void attach_u(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void body_unlink(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AttachPtr *aptr = data;
 
@@ -359,14 +362,12 @@ static void attach_u(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * attach_X_num - Attachment: Number of MIME parts - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_unlink_num - Body: Unlink flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long attach_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long body_unlink_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AttachPtr *aptr = data;
-  const struct Body *body = aptr->body;
-
-  return body->attach_count + body->attach_qualifies;
+  return aptr->body->unlink;
 }
 
 /**
@@ -376,23 +377,26 @@ static long attach_X_num(const struct ExpandoNode *node, void *data, MuttFormatF
  */
 const struct ExpandoRenderData AttachRenderData[] = {
   // clang-format off
-  { ED_ATTACH, ED_ATT_CHARSET,          attach_C,     NULL },
-  { ED_BODY,   ED_BOD_CHARSET_CONVERT,  attach_c,     NULL },
-  { ED_BODY,   ED_BOD_DELETED,          attach_D,     attach_D_num },
-  { ED_BODY,   ED_BOD_DESCRIPTION,      attach_d,     NULL },
-  { ED_BODY,   ED_BOD_MIME_ENCODING,    attach_e,     NULL },
-  { ED_BODY,   ED_BOD_FILE,             attach_f,     NULL },
-  { ED_BODY,   ED_BOD_FILE_DISPOSITION, attach_F,     NULL },
-  { ED_BODY,   ED_BOD_DISPOSITION,      attach_I,     NULL },
-  { ED_BODY,   ED_BOD_MIME_MAJOR,       attach_m,     NULL },
-  { ED_BODY,   ED_BOD_MIME_MINOR,       attach_M,     NULL },
-  { ED_ATTACH, ED_ATT_NUMBER,           NULL,         attach_n_num },
-  { ED_BODY,   ED_BOD_ATTACH_QUALIFIES, attach_Q,     attach_Q_num },
-  { ED_BODY,   ED_BOD_FILE_SIZE,        attach_s,     attach_s_num },
-  { ED_BODY,   ED_BOD_TAGGED,           attach_t,     attach_t_num },
-  { ED_ATTACH, ED_ATT_TREE,             attach_T,     NULL },
-  { ED_BODY,   ED_BOD_UNLINK,           attach_u,     attach_u_num },
-  { ED_BODY,   ED_BOD_ATTACH_COUNT,     NULL,         attach_X_num },
+
+  { ED_ATTACH, ED_ATT_CHARSET,          attach_charset,        NULL },
+  { ED_ATTACH, ED_ATT_NUMBER,           NULL,                  attach_number_num },
+  { ED_ATTACH, ED_ATT_TREE,             attach_tree,           NULL },
+
+  { ED_BODY,   ED_BOD_CHARSET_CONVERT,  body_charset_convert,  NULL },
+  { ED_BODY,   ED_BOD_DELETED,          body_deleted,          body_deleted_num },
+  { ED_BODY,   ED_BOD_DESCRIPTION,      body_description,      NULL },
+  { ED_BODY,   ED_BOD_MIME_ENCODING,    body_mime_encoding,    NULL },
+  { ED_BODY,   ED_BOD_FILE,             body_file,             NULL },
+  { ED_BODY,   ED_BOD_FILE_DISPOSITION, body_file_disposition, NULL },
+  { ED_BODY,   ED_BOD_DISPOSITION,      body_disposition,      NULL },
+  { ED_BODY,   ED_BOD_MIME_MAJOR,       body_mime_major,       NULL },
+  { ED_BODY,   ED_BOD_MIME_MINOR,       body_mime_minor,       NULL },
+  { ED_BODY,   ED_BOD_ATTACH_QUALIFIES, body_attach_qualifies, body_attach_qualifies_num },
+  { ED_BODY,   ED_BOD_FILE_SIZE,        body_file_size,        body_file_size_num },
+  { ED_BODY,   ED_BOD_TAGGED,           body_tagged,           body_tagged_num },
+  { ED_BODY,   ED_BOD_UNLINK,           body_unlink,           body_unlink_num },
+  { ED_BODY,   ED_BOD_ATTACH_COUNT,     NULL,                  body_attach_count_num },
+
   { -1, -1, NULL, NULL },
   // clang-format on
 };
