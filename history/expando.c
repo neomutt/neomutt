@@ -34,9 +34,9 @@
 #include "expando/lib.h"
 
 /**
- * history_C_num - History: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * history_number - History: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long history_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct HistoryEntry *entry = data;
 
@@ -44,10 +44,10 @@ static long history_C_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * history_s - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * history_match - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void history_s(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static void history_match(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HistoryEntry *entry = data;
 
@@ -62,8 +62,8 @@ static void history_s(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData HistoryRenderData[] = {
   // clang-format off
-  { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_C_num },
-  { ED_HISTORY, ED_HIS_MATCH,  history_s,     NULL },
+  { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_number },
+  { ED_HISTORY, ED_HIS_MATCH,  history_match, NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
