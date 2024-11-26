@@ -54,7 +54,6 @@
 #include "edata.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mx.h"
 
@@ -697,7 +696,7 @@ static void cmd_parse_lsub(struct ImapAccountData *adata, char *s)
   struct Buffer *err = buf_pool_get();
   struct Url url = { 0 };
 
-  mutt_account_tourl(&adata->conn->account, &url);
+  account_to_url(&adata->conn->account, &url);
   url.path = list.name;
 
   const char *const c_imap_user = cs_subset_string(NeoMutt->sub, "imap_user");

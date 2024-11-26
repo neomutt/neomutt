@@ -53,7 +53,6 @@
 #include "adata.h"
 #include "edata.h"
 #include "mdata.h"
-#include "mutt_account.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
 #include "muttlib.h"
@@ -529,7 +528,7 @@ static void cache_expand(char *dst, size_t dstlen, struct ConnAccount *cac, cons
 
   /* server subdirectory */
   struct Url url = { 0 };
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url.path = mutt_str_dup(src);
   url_tostring(&url, file, sizeof(file), U_PATH);
   FREE(&url.path);
@@ -559,7 +558,7 @@ void nntp_expand_path(char *buf, size_t buflen, struct ConnAccount *cac)
 {
   struct Url url = { 0 };
 
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url.path = mutt_str_dup(buf);
   url_tostring(&url, buf, buflen, U_NO_FLAGS);
   FREE(&url.path);
@@ -718,7 +717,7 @@ struct HeaderCache *nntp_hcache_open(struct NntpMboxData *mdata)
     return NULL;
   }
 
-  mutt_account_tourl(&mdata->adata->conn->account, &url);
+  account_to_url(&mdata->adata->conn->account, &url);
   url.path = mdata->group;
   url_tostring(&url, file, sizeof(file), U_PATH);
   const char *const c_news_cache_dir = cs_subset_path(NeoMutt->sub, "news_cache_dir");
@@ -922,7 +921,7 @@ void nntp_a(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   char tmp[128] = { 0 };
 
   struct Url url = { 0 };
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url_tostring(&url, tmp, sizeof(tmp), U_PATH);
   char *p = strchr(tmp, '/');
   if (p)
@@ -1002,7 +1001,7 @@ void nntp_S(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   char tmp[128] = { 0 };
 
   struct Url url = { 0 };
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url_tostring(&url, tmp, sizeof(tmp), U_PATH);
   char *p = strchr(tmp, ':');
   if (p)
@@ -1085,7 +1084,7 @@ struct NntpAccountData *nntp_select_server(struct Mailbox *m, const char *server
   struct Url *url = url_parse(file);
   if (!url || (url->path && *url->path) ||
       !((url->scheme == U_NNTP) || (url->scheme == U_NNTPS)) || !url->host ||
-      (mutt_account_fromurl(&cac, url) < 0))
+      (account_from_url(&cac, url) < 0))
   {
     url_free(&url);
     mutt_error(_("%s is an invalid news server specification"), server);

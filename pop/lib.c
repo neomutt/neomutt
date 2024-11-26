@@ -46,7 +46,6 @@
 #include "progress/lib.h"
 #include "adata.h"
 #include "edata.h"
-#include "mutt_account.h"
 #include "mutt_logging.h"
 
 struct Progress;
@@ -92,7 +91,7 @@ int pop_parse_path(const char *path, struct ConnAccount *cac)
   struct Url *url = url_parse(path);
 
   if (!url || ((url->scheme != U_POP) && (url->scheme != U_POPS)) ||
-      !url->host || (mutt_account_fromurl(cac, url) < 0))
+      !url->host || (account_from_url(cac, url) < 0))
   {
     url_free(&url);
     mutt_error(_("Invalid POP URL: %s"), path);

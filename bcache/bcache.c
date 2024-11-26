@@ -38,11 +38,9 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "conn/lib.h"
 #include "lib.h"
-#include "mutt_account.h"
 #include "muttlib.h"
-
-struct ConnAccount;
 
 /**
  * struct BodyCache - Local cache of email bodies
@@ -77,8 +75,8 @@ static int bcache_path(struct ConnAccount *account, const char *mailbox, struct 
   struct Buffer *host = buf_pool_get();
 
   /* make up a Url we can turn into a string */
-  mutt_account_tourl(account, &url);
-  /* mutt_account_tourl() just sets up some pointers;
+  account_to_url(account, &url);
+  /* account_to_url() just sets up some pointers;
    * if this ever changes, we have a memleak here */
   url.path = NULL;
   if (url_tostring(&url, host->data, host->dsize, U_PATH) < 0)

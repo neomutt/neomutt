@@ -57,7 +57,6 @@
 #include "globals.h"
 #include "mdata.h"
 #include "msn.h"
-#include "mutt_account.h"
 #ifdef USE_HCACHE
 #include "hcache/lib.h"
 #endif
@@ -324,7 +323,7 @@ void imap_hcache_open(struct ImapAccountData *adata, struct ImapMboxData *mdata,
     goto cleanup;
 
   struct Url url = { 0 };
-  mutt_account_tourl(&adata->conn->account, &url);
+  account_to_url(&adata->conn->account, &url);
   url.path = mbox->data;
   url_tobuffer(&url, cachepath, U_PATH);
 
@@ -516,7 +515,7 @@ int imap_parse_path(const char *path, struct ConnAccount *cac, char *mailbox, si
     return -1;
   }
 
-  if ((mutt_account_fromurl(cac, url) < 0) || (cac->host[0] == '\0'))
+  if ((account_from_url(cac, url) < 0) || (cac->host[0] == '\0'))
   {
     url_free(&url);
     return -1;
@@ -636,7 +635,7 @@ void imap_pretty_mailbox(char *path, size_t pathlen, const char *folder)
   }
 
 fallback:
-  mutt_account_tourl(&cac_target, &url);
+  account_to_url(&cac_target, &url);
   url.path = target_mailbox;
   url_tostring(&url, path, pathlen, U_NO_FLAGS);
 }
@@ -856,7 +855,7 @@ char *imap_next_word(char *s)
 void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *path)
 {
   struct Url url = { 0 };
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url.path = path;
   url_tostring(&url, buf, buflen, U_NO_FLAGS);
 }
@@ -870,7 +869,7 @@ void imap_qualify_path(char *buf, size_t buflen, struct ConnAccount *cac, char *
 void imap_buf_qualify_path(struct Buffer *buf, struct ConnAccount *cac, char *path)
 {
   struct Url url = { 0 };
-  mutt_account_tourl(cac, &url);
+  account_to_url(cac, &url);
   url.path = path;
   url_tobuffer(&url, buf, U_NO_FLAGS);
 }

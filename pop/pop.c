@@ -52,7 +52,6 @@
 #include "adata.h"
 #include "edata.h"
 #include "hook.h"
-#include "mutt_account.h"
 #include "mutt_header.h"
 #include "mutt_logging.h"
 #include "mutt_socket.h"
@@ -306,7 +305,7 @@ static struct HeaderCache *pop_hcache_open(struct PopAccountData *adata, const c
   struct Url url = { 0 };
   char p[1024] = { 0 };
 
-  mutt_account_tourl(&adata->conn->account, &url);
+  account_to_url(&adata->conn->account, &url);
   url.path = HC_FNAME;
   url_tostring(&url, p, sizeof(p), U_PATH);
   return hcache_open(c_header_cache, p, pop_hcache_namer, true);
@@ -753,7 +752,7 @@ static enum MxOpenReturns pop_mbox_open(struct Mailbox *m)
     return MX_OPEN_ERROR;
   }
 
-  mutt_account_tourl(&cac, &url);
+  account_to_url(&cac, &url);
   url.path = NULL;
   url_tostring(&url, buf, sizeof(buf), U_NO_FLAGS);
 

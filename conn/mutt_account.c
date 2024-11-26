@@ -22,7 +22,7 @@
  */
 
 /**
- * @page neo_mutt_account ConnAccount object used by POP and IMAP
+ * @page conn_mutt_account ConnAccount object used by POP and IMAP
  *
  * ConnAccount object used by POP and IMAP
  */
@@ -31,17 +31,17 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "email/lib.h"
-#include "conn/lib.h"
 #include "mutt_account.h"
+#include "connaccount.h"
 
 /**
- * mutt_account_fromurl - Fill ConnAccount with information from url
+ * account_from_url - Fill ConnAccount with information from url
  * @param cac ConnAccount to fill
  * @param url Url to parse
  * @retval  0 Success
  * @retval -1 Error
  */
-int mutt_account_fromurl(struct ConnAccount *cac, const struct Url *url)
+int account_from_url(struct ConnAccount *cac, const struct Url *url)
 {
   /* must be present */
   if (url->host)
@@ -69,7 +69,7 @@ int mutt_account_fromurl(struct ConnAccount *cac, const struct Url *url)
 }
 
 /**
- * mutt_account_tourl - Fill URL with info from account
+ * account_to_url - Fill URL with info from account
  * @param cac Source ConnAccount
  * @param url Url to fill
  *
@@ -77,7 +77,7 @@ int mutt_account_fromurl(struct ConnAccount *cac, const struct Url *url)
  * until you've finished with url (make a copy of cac if you need it for a
  * while).
  */
-void mutt_account_tourl(struct ConnAccount *cac, struct Url *url)
+void account_to_url(struct ConnAccount *cac, struct Url *url)
 {
   url->scheme = U_UNKNOWN;
   url->user = NULL;

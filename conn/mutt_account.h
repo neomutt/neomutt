@@ -21,10 +21,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* remote host account manipulation (POP/IMAP) */
-
-#ifndef MUTT_MUTT_ACCOUNT_H
-#define MUTT_MUTT_ACCOUNT_H
+#ifndef MUTT_CONN_MUTT_ACCOUNT_H
+#define MUTT_CONN_MUTT_ACCOUNT_H
 
 struct ConnAccount;
 struct Url;
@@ -42,7 +40,7 @@ enum AccountType
   MUTT_ACCT_TYPE_MAX
 };
 
-int   mutt_account_fromurl(struct ConnAccount *account, const struct Url *url);
-void  mutt_account_tourl  (struct ConnAccount *account, struct Url *url);
+int   account_from_url(struct ConnAccount *account, const struct Url *url);
+void  account_to_url  (struct ConnAccount *account, struct Url *url);
 
-#endif /* MUTT_MUTT_ACCOUNT_H */
+#endif /* MUTT_CONN_MUTT_ACCOUNT_H */

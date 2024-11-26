@@ -51,7 +51,6 @@
 #include "progress/lib.h"
 #include "question/lib.h"
 #include "globals.h"
-#include "mutt_account.h"
 #include "mutt_socket.h"
 #include "sendlib.h"
 #ifdef USE_SASL_GNU
@@ -369,7 +368,7 @@ static int smtp_fill_account(struct SmtpAccountData *adata, struct ConnAccount *
 
   struct Url *url = url_parse(c_smtp_url);
   if (!url || ((url->scheme != U_SMTP) && (url->scheme != U_SMTPS)) ||
-      !url->host || (mutt_account_fromurl(cac, url) < 0))
+      !url->host || (account_from_url(cac, url) < 0))
   {
     url_free(&url);
     mutt_error(_("Invalid SMTP URL: %s"), c_smtp_url);

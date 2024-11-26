@@ -67,7 +67,7 @@ NEOMUTT=	neomutt$(EXEEXT)
 NEOMUTTOBJS=	alternates.o commands.o conststrings.o copy.o editmsg.o \
 		enriched.o external.o flags.o git_ver.o globals.o \
 		handler.o hdrline.o help.o hook.o init.o mailcap.o \
-		maillist.o main.o muttlib.o mutt_account.o mutt_body.o \
+		maillist.o main.o muttlib.o mutt_body.o \
 		mutt_config.o mutt_header.o mutt_logging.o mutt_mailbox.o \
 		mutt_signal.o mutt_socket.o mutt_thread.o mview.o mx.o \
 		recvcmd.o rfc3676.o score.o status.o subjectrx.o system.o \
@@ -284,7 +284,8 @@ $(PWD)/config:
 # libconn
 LIBCONN=	libconn.a
 LIBCONNOBJS=	conn/accountcmd.o conn/config.o conn/connaccount.o \
-		conn/raw.o conn/sasl_plain.o conn/socket.o conn/tunnel.o
+		conn/mutt_account.o conn/raw.o conn/sasl_plain.o \
+		conn/socket.o conn/tunnel.o
 @if !DOMAIN
 LIBCONNOBJS+=	conn/getdomain.o
 @endif

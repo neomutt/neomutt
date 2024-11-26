@@ -402,7 +402,7 @@ static int complete_hosts(struct Buffer *buf)
     if (conn->account.type != MUTT_ACCT_TYPE_IMAP)
       continue;
 
-    mutt_account_tourl(&conn->account, &url);
+    account_to_url(&conn->account, &url);
     /* FIXME: how to handle multiple users on the same host? */
     url.user = NULL;
     url.path = NULL;

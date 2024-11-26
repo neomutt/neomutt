@@ -34,6 +34,7 @@
  * | conn/getdomain.c      | @subpage conn_getdomain       |
  * | conn/gnutls.c         | @subpage conn_gnutls          |
  * | conn/gsasl.c          | @subpage conn_gsasl           |
+ * | conn/mutt_account.c   | @subpage conn_mutt_account    |
  * | conn/openssl.c        | @subpage conn_openssl         |
  * | conn/raw.c            | @subpage conn_raw             |
  * | conn/sasl.c           | @subpage conn_sasl            |
@@ -50,6 +51,7 @@
 // IWYU pragma: begin_keep
 #include "connaccount.h"
 #include "connection.h"
+#include "mutt_account.h"
 #include "sasl_plain.h"
 #include "socket.h"
 #ifdef USE_SASL_GNU
