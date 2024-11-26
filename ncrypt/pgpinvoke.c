@@ -43,6 +43,7 @@
 #include "pgpinvoke.h"
 #include "lib.h"
 #include "expando/lib.h"
+#include "expando_command.h"
 #include "globals.h"
 #include "mutt_logging.h"
 #include "pgpkey.h"
@@ -50,68 +51,6 @@
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
 #include "pgp.h"
 #endif
-
-const struct ExpandoRenderData PgpCommandRenderData[];
-
-/**
- * pgp_command_a - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void pgp_command_a(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct PgpCommandContext *cctx = data;
-
-  const char *s = cctx->signas;
-  buf_strcpy(buf, s);
-}
-
-/**
- * pgp_command_f - PGP Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void pgp_command_f(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct PgpCommandContext *cctx = data;
-
-  const char *s = cctx->fname;
-  buf_strcpy(buf, s);
-}
-
-/**
- * pgp_command_p - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void pgp_command_p(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct PgpCommandContext *cctx = data;
-
-  const char *s = cctx->need_passphrase ? "PGPPASSFD=0" : "";
-  buf_strcpy(buf, s);
-}
-
-/**
- * pgp_command_r - PGP Command: key IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void pgp_command_r(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct PgpCommandContext *cctx = data;
-
-  const char *s = cctx->ids;
-  buf_strcpy(buf, s);
-}
-
-/**
- * pgp_command_s - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void pgp_command_s(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct PgpCommandContext *cctx = data;
-
-  const char *s = cctx->sig_fname;
-  buf_strcpy(buf, s);
-}
 
 /**
  * mutt_pgp_command - Prepare a PGP Command
@@ -174,12 +113,6 @@ static pid_t pgp_invoke(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_err,
   buf_pool_release(&cmd);
   return pid;
 }
-
-/*
- * The exported interface.
- *
- * This is historic and may be removed at some point.
- */
 
 /**
  * pgp_invoke_decode - Use PGP to decode a message
@@ -513,19 +446,3 @@ pid_t pgp_invoke_list_keys(FILE **fp_pgp_in, FILE **fp_pgp_out, FILE **fp_pgp_er
   buf_pool_release(&quoted);
   return rc;
 }
-
-/**
- * PgpCommandRenderData - Callbacks for PGP Command Expandos
- *
- * @sa PgpCommandFormatDef, ExpandoDataPgpCmd
- */
-const struct ExpandoRenderData PgpCommandRenderData[] = {
-  // clang-format off
-  { ED_PGP_CMD, ED_PGC_SIGN_AS,        pgp_command_a, NULL },
-  { ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   pgp_command_f, NULL },
-  { ED_PGP_CMD, ED_PGC_NEED_PASS,      pgp_command_p, NULL },
-  { ED_PGP_CMD, ED_PGC_KEY_IDS,        pgp_command_r, NULL },
-  { ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, pgp_command_s, NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};
