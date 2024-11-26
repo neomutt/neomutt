@@ -80,10 +80,9 @@
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "autocrypt_data.h"
+#include "expando.h"
 #include "functions.h"
 #include "mutt_logging.h"
-
-const struct ExpandoRenderData AutocryptRenderData[];
 
 /// Help Bar for the Autocrypt Account selection dialog
 static const struct Mapping AutocryptHelp[] = {
@@ -111,84 +110,6 @@ static const struct Mapping AutocryptHelp[] = {
   { NULL, 0 }
   // clang-format on
 };
-
-/**
- * autocrypt_a - Autocrypt: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_a(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  buf_copy(buf, entry->addr->mailbox);
-}
-
-/**
- * autocrypt_k - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_k(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  const char *s = entry->account->keyid;
-  buf_strcpy(buf, s);
-}
-
-/**
- * autocrypt_n_num - Autocrypt: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long autocrypt_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct AccountEntry *entry = data;
-
-  return entry->num;
-}
-
-/**
- * autocrypt_p - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_p(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  if (entry->account->prefer_encrypt)
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account has prefer-encrypt set */
-    buf_addstr(buf, _("prefer encrypt"));
-  }
-  else
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account has prefer-encrypt unset;
-           thus encryption will need to be manually enabled.  */
-    buf_addstr(buf, _("manual encrypt"));
-  }
-}
-
-/**
- * autocrypt_s - Autocrypt: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void autocrypt_s(const struct ExpandoNode *node, void *data,
-                 MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  if (entry->account->enabled)
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account is enabled/active */
-    buf_addstr(buf, _("active"));
-  }
-  else
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account is disabled/inactive */
-    buf_addstr(buf, _("inactive"));
-  }
-}
 
 /**
  * autocrypt_make_entry - Format an Autocrypt Account for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
@@ -378,19 +299,3 @@ void dlg_autocrypt(void)
   window_set_focus(old_focus);
   simple_dialog_free(&sdw.dlg);
 }
-
-/**
- * AutocryptRenderData - Callbacks for Autocrypt Expandos
- *
- * @sa AutocryptFormatDef, ExpandoDataAutocrypt, ExpandoDataGlobal
- */
-const struct ExpandoRenderData AutocryptRenderData[] = {
-  // clang-format off
-  { ED_AUTOCRYPT, ED_AUT_ADDRESS,        autocrypt_a,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_KEYID,          autocrypt_k,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_NUMBER,         NULL,            autocrypt_n_num },
-  { ED_AUTOCRYPT, ED_AUT_PREFER_ENCRYPT, autocrypt_p,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_ENABLED,        autocrypt_s,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};
