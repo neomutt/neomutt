@@ -45,7 +45,6 @@
 #include "ncrypt/smime.h"
 #include "pattern/private.h"
 #include "sidebar/private.h"
-#include "status.h"
 #ifdef CRYPT_BACKEND_GPGME
 #include "ncrypt/crypt_gpgme.h"
 #endif

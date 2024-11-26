@@ -100,7 +100,6 @@
  * | recvcmd.c       | @subpage neo_recvcmd       |
  * | rfc3676.c       | @subpage neo_rfc3676       |
  * | score.c         | @subpage neo_score         |
- * | status.c        | @subpage neo_status        |
  * | subjectrx.c     | @subpage neo_subjrx        |
  * | system.c        | @subpage neo_system        |
  * | timegm.c        | @subpage neo_timegm        |

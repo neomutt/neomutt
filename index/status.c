@@ -42,7 +42,6 @@
 #include "core/lib.h"
 #include "status.h"
 #include "expando/lib.h"
-#include "index/lib.h"
 #include "menu/lib.h"
 #include "postpone/lib.h"
 #include "globals.h"
@@ -51,6 +50,7 @@
 #include "mutt_thread.h"
 #include "muttlib.h"
 #include "mview.h"
+#include "shared_data.h"
 
 void status_f(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
               struct Buffer *buf);

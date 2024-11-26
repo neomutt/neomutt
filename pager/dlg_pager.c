@@ -62,7 +62,6 @@
 #include "mx.h"
 #include "private_data.h"
 #include "protos.h"
-#include "status.h"
 
 /// Braille display: row to leave the cursor
 int BrailleRow = -1;
