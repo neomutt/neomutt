@@ -38,10 +38,10 @@
 #include "smime.h"
 
 /**
- * smime_command_a - Smime Command: algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_algorithm - Smime Command: algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void smime_command_a(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
+static void smime_command_algorithm(const struct ExpandoNode *node, void *data,
+                                    MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SmimeCommandContext *cctx = data;
 
@@ -50,10 +50,10 @@ static void smime_command_a(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_c - Smime Command: certificate IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_certificate_ids - Smime Command: certificate IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void smime_command_c(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
+static void smime_command_certificate_ids(const struct ExpandoNode *node, void *data,
+                                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SmimeCommandContext *cctx = data;
 
@@ -62,10 +62,10 @@ static void smime_command_c(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_C - Smime Command: CA location - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_certificate_path - Smime Command: CA location - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void smime_command_C(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
+static void smime_command_certificate_path(const struct ExpandoNode *node, void *data,
+                                           MuttFormatFlags flags, struct Buffer *buf)
 {
   const char *const c_smime_ca_location = cs_subset_path(NeoMutt->sub, "smime_ca_location");
 
@@ -95,10 +95,10 @@ static void smime_command_C(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_d - Smime Command: Message digest algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_digest_algorithm - Smime Command: Message digest algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void smime_command_d(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
+static void smime_command_digest_algorithm(const struct ExpandoNode *node, void *data,
+                                           MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SmimeCommandContext *cctx = data;
 
@@ -107,22 +107,10 @@ static void smime_command_d(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_f - Smime Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_intermediate_ids - Smime Command: Intermediate certificates - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void smime_command_f(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct SmimeCommandContext *cctx = data;
-
-  const char *s = cctx->fname;
-  buf_strcpy(buf, s);
-}
-
-/**
- * smime_command_i - Smime Command: Intermediate certificates - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void smime_command_i(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
+static void smime_command_intermediate_ids(const struct ExpandoNode *node, void *data,
+                                           MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SmimeCommandContext *cctx = data;
 
@@ -131,10 +119,10 @@ static void smime_command_i(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_k - Smime Command: Key-pair - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_key - Smime Command: Key-pair - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void smime_command_k(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
+static void smime_command_key(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SmimeCommandContext *cctx = data;
 
@@ -143,10 +131,22 @@ static void smime_command_k(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_s - Smime Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_message_file - Smime Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void smime_command_s(const struct ExpandoNode *node, void *data,
-                            MuttFormatFlags flags, struct Buffer *buf)
+static void smime_command_message_file(const struct ExpandoNode *node, void *data,
+                                       MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct SmimeCommandContext *cctx = data;
+
+  const char *s = cctx->fname;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * smime_command_signature_file - Smime Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void smime_command_signature_file(const struct ExpandoNode *node, void *data,
+                                         MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct SmimeCommandContext *cctx = data;
 
@@ -161,14 +161,14 @@ static void smime_command_s(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData SmimeCommandRenderData[] = {
   // clang-format off
-  { ED_SMIME_CMD, ED_SMI_ALGORITHM,        smime_command_a, NULL },
-  { ED_SMIME_CMD, ED_SMI_CERTIFICATE_IDS,  smime_command_c, NULL },
-  { ED_SMIME_CMD, ED_SMI_CERTIFICATE_PATH, smime_command_C, NULL },
-  { ED_SMIME_CMD, ED_SMI_DIGEST_ALGORITHM, smime_command_d, NULL },
-  { ED_SMIME_CMD, ED_SMI_MESSAGE_FILE,     smime_command_f, NULL },
-  { ED_SMIME_CMD, ED_SMI_INTERMEDIATE_IDS, smime_command_i, NULL },
-  { ED_SMIME_CMD, ED_SMI_KEY,              smime_command_k, NULL },
-  { ED_SMIME_CMD, ED_SMI_SIGNATURE_FILE,   smime_command_s, NULL },
+  { ED_SMIME_CMD, ED_SMI_ALGORITHM,        smime_command_algorithm,        NULL },
+  { ED_SMIME_CMD, ED_SMI_CERTIFICATE_IDS,  smime_command_certificate_ids,  NULL },
+  { ED_SMIME_CMD, ED_SMI_CERTIFICATE_PATH, smime_command_certificate_path, NULL },
+  { ED_SMIME_CMD, ED_SMI_DIGEST_ALGORITHM, smime_command_digest_algorithm, NULL },
+  { ED_SMIME_CMD, ED_SMI_INTERMEDIATE_IDS, smime_command_intermediate_ids, NULL },
+  { ED_SMIME_CMD, ED_SMI_KEY,              smime_command_key,              NULL },
+  { ED_SMIME_CMD, ED_SMI_MESSAGE_FILE,     smime_command_message_file,     NULL },
+  { ED_SMIME_CMD, ED_SMI_SIGNATURE_FILE,   smime_command_signature_file,   NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
