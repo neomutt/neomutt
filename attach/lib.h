@@ -31,6 +31,7 @@
  * | attach/attachments.c  | @subpage attach_attachments  |
  * | attach/cid.c          | @subpage attach_cid          |
  * | attach/dlg_attach.c   | @subpage attach_dlg_attach   |
+ * | attach/expando.c      | @subpage attach_expando      |
  * | attach/functions.c    | @subpage attach_functions    |
  * | attach/lib.c          | @subpage attach_lib          |
  * | attach/mutt_attach.c  | @subpage attach_mutt_attach  |
