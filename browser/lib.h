@@ -30,6 +30,7 @@
  * | browser/complete.c     | @subpage browser_complete     |
  * | browser/config.c       | @subpage browser_config       |
  * | browser/dlg_browser.c  | @subpage browser_dlg_browser  |
+ * | browser/expando.c      | @subpage browser_expando      |
  * | browser/functions.c    | @subpage browser_functions    |
  * | browser/private_data.c | @subpage browser_private_data |
  * | browser/sort.c         | @subpage browser_sorting      |
