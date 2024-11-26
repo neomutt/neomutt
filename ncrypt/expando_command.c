@@ -34,22 +34,10 @@
 #include "pgp.h"
 
 /**
- * pgp_command_a - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_file_message - PGP Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void pgp_command_a(const struct ExpandoNode *node, void *data,
-                          MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct PgpCommandContext *cctx = data;
-
-  const char *s = cctx->signas;
-  buf_strcpy(buf, s);
-}
-
-/**
- * pgp_command_f - PGP Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void pgp_command_f(const struct ExpandoNode *node, void *data,
-                          MuttFormatFlags flags, struct Buffer *buf)
+static void pgp_command_file_message(const struct ExpandoNode *node, void *data,
+                                     MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct PgpCommandContext *cctx = data;
 
@@ -58,22 +46,22 @@ static void pgp_command_f(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_p - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_file_signature - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void pgp_command_p(const struct ExpandoNode *node, void *data,
-                          MuttFormatFlags flags, struct Buffer *buf)
+static void pgp_command_file_signature(const struct ExpandoNode *node, void *data,
+                                       MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct PgpCommandContext *cctx = data;
 
-  const char *s = cctx->need_passphrase ? "PGPPASSFD=0" : "";
+  const char *s = cctx->sig_fname;
   buf_strcpy(buf, s);
 }
 
 /**
- * pgp_command_r - PGP Command: key IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_key_ids - PGP Command: key IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void pgp_command_r(const struct ExpandoNode *node, void *data,
-                          MuttFormatFlags flags, struct Buffer *buf)
+static void pgp_command_key_ids(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct PgpCommandContext *cctx = data;
 
@@ -82,14 +70,26 @@ static void pgp_command_r(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_s - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_need_pass - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void pgp_command_s(const struct ExpandoNode *node, void *data,
-                          MuttFormatFlags flags, struct Buffer *buf)
+static void pgp_command_need_pass(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct PgpCommandContext *cctx = data;
 
-  const char *s = cctx->sig_fname;
+  const char *s = cctx->need_passphrase ? "PGPPASSFD=0" : "";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * pgp_command_sign_as - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void pgp_command_sign_as(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct PgpCommandContext *cctx = data;
+
+  const char *s = cctx->signas;
   buf_strcpy(buf, s);
 }
 
@@ -100,11 +100,11 @@ static void pgp_command_s(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData PgpCommandRenderData[] = {
   // clang-format off
-  { ED_PGP_CMD, ED_PGC_SIGN_AS,        pgp_command_a, NULL },
-  { ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   pgp_command_f, NULL },
-  { ED_PGP_CMD, ED_PGC_NEED_PASS,      pgp_command_p, NULL },
-  { ED_PGP_CMD, ED_PGC_KEY_IDS,        pgp_command_r, NULL },
-  { ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, pgp_command_s, NULL },
+  { ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   pgp_command_file_message,   NULL },
+  { ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, pgp_command_file_signature, NULL },
+  { ED_PGP_CMD, ED_PGC_KEY_IDS,        pgp_command_key_ids,        NULL },
+  { ED_PGP_CMD, ED_PGC_NEED_PASS,      pgp_command_need_pass,      NULL },
+  { ED_PGP_CMD, ED_PGC_SIGN_AS,        pgp_command_sign_as,        NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
