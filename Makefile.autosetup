@@ -215,7 +215,7 @@ $(PWD)/complete:
 ###############################################################################
 # libcompmbox
 LIBCOMPMBOX=	libcompmbox.a
-LIBCOMPMBOXOBJS=compmbox/compress.o
+LIBCOMPMBOXOBJS=compmbox/compress.o compmbox/expando.o
 CLEANFILES+=	$(LIBCOMPMBOX) $(LIBCOMPMBOXOBJS)
 ALLOBJS+=	$(LIBCOMPMBOXOBJS)
 
