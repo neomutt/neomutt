@@ -30,6 +30,7 @@
  * | index/config.c         | @subpage index_config         |
  * | index/dlg_index.c      | @subpage index_dlg_index      |
  * | index/expando_index.c  | @subpage index_expando_index  |
+ * | index/expando_status.c | @subpage index_expando_status |
  * | index/functions.c      | @subpage index_functions      |
  * | index/ibar.c           | @subpage index_ibar           |
  * | index/index.c          | @subpage index_index          |

@@ -541,8 +541,9 @@ $(PWD)/imap:
 # libindex
 LIBINDEX=	libindex.a
 LIBINDEXOBJS=	index/config.o index/dlg_index.o index/expando_index.o \
-		index/functions.o index/ibar.o index/index.o index/ipanel.o \
-		index/private_data.o index/shared_data.o index/status.o
+		index/expando_status.o index/functions.o index/ibar.o \
+		index/index.o index/ipanel.o index/private_data.o \
+		index/shared_data.o index/status.o
 CLEANFILES+=	$(LIBINDEX) $(LIBINDEXOBJS)
 ALLOBJS+=	$(LIBINDEXOBJS)
 

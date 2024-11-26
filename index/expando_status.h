@@ -20,14 +20,20 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_INDEX_STATUS_H
-#define MUTT_INDEX_STATUS_H
+#ifndef MUTT_INDEX_EXPANDO_STATUS_H
+#define MUTT_INDEX_EXPANDO_STATUS_H
 
-struct Buffer;
-struct Expando;
-struct IndexSharedData;
-struct Menu;
+#include "expando/lib.h"
 
-void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared, struct Menu *menu, int max_cols, const struct Expando *exp);
+/**
+ * struct MenuStatusLineData - Data for creating a Menu line
+ */
+struct MenuStatusLineData
+{
+  struct IndexSharedData *shared; ///< Data shared between Index, Pager and Sidebar
+  struct Menu *menu;              ///< Current Menu
+};
 
-#endif /* MUTT_INDEX_STATUS_H */
+extern const struct ExpandoRenderData StatusRenderData[];
+
+#endif /* MUTT_INDEX_EXPANDO_STATUS_H */
