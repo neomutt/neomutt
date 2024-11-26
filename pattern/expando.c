@@ -34,10 +34,10 @@
 #include "pattern_data.h"
 
 /**
- * pattern_d - Pattern: pattern description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pattern_description - Pattern: pattern description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void pattern_d(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static void pattern_description(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct PatternEntry *entry = data;
 
@@ -46,10 +46,10 @@ static void pattern_d(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pattern_e - Pattern: pattern expression - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pattern_expression - Pattern: pattern expression - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void pattern_e(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static void pattern_expression(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct PatternEntry *entry = data;
 
@@ -58,9 +58,9 @@ static void pattern_e(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pattern_n_num - Pattern: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * pattern_number_num - Pattern: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long pattern_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct PatternEntry *entry = data;
 
@@ -74,9 +74,9 @@ static long pattern_n_num(const struct ExpandoNode *node, void *data, MuttFormat
  */
 const struct ExpandoRenderData PatternRenderData[] = {
   // clang-format off
-  { ED_PATTERN, ED_PAT_DESCRIPTION, pattern_d, NULL },
-  { ED_PATTERN, ED_PAT_EXPRESSION,  pattern_e, NULL },
-  { ED_PATTERN, ED_PAT_NUMBER,      NULL,      pattern_n_num },
+  { ED_PATTERN, ED_PAT_DESCRIPTION, pattern_description, NULL },
+  { ED_PATTERN, ED_PAT_EXPRESSION,  pattern_expression,  NULL },
+  { ED_PATTERN, ED_PAT_NUMBER,      NULL,                pattern_number_num },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
