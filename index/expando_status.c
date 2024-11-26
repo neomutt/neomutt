@@ -52,8 +52,8 @@
 #include "mview.h"
 #include "shared_data.h"
 
-static void status_f(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf);
+static void index_mailbox_path(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf);
 
 /**
  * get_sort_str - Get the sort method as a string
@@ -71,43 +71,80 @@ static char *get_sort_str(char *buf, size_t buflen, enum EmailSortType method)
 }
 
 /**
- * status_r - Status: Modified/read-only flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_config_sort - Status: Sorting mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void status_r(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void global_config_sort(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct MbTable *c_status_chars = cs_subset_mbtable(NeoMutt->sub, "status_chars");
-  if (!c_status_chars || !c_status_chars->len)
-    return;
+  char tmp[128] = { 0 };
 
+  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
+  const char *s = get_sort_str(tmp, sizeof(tmp), c_sort);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * global_config_sort_aux - Status: Aux sorting method - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void global_config_sort_aux(const struct ExpandoNode *node, void *data,
+                                   MuttFormatFlags flags, struct Buffer *buf)
+{
+  char tmp[128] = { 0 };
+
+  const enum EmailSortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
+  const char *s = get_sort_str(tmp, sizeof(tmp), c_sort_aux);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * global_config_use_threads - Status: Current threading mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void global_config_use_threads(const struct ExpandoNode *node, void *data,
+                                      MuttFormatFlags flags, struct Buffer *buf)
+{
+  const enum UseThreads c_use_threads = mutt_thread_style();
+  const char *s = get_use_threads_str(c_use_threads);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * global_hostname - Status: Local hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void global_hostname(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const char *s = ShortHostname;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * global_version - Status: Version string - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void global_version(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, struct Buffer *buf)
+{
+  const char *s = mutt_make_version();
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_deleted_count_num - Status: Number of deleted messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_deleted_count_num(const struct ExpandoNode *node, void *data,
+                                    MuttFormatFlags flags)
+{
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
   const struct Mailbox *m = shared->mailbox;
 
-  size_t i = 0;
-
-  if (m)
-  {
-    i = shared->attach_msg ? 3 :
-                             ((m->readonly || m->dontwrite) ? 2 :
-                              (m->changed ||
-                               /* deleted doesn't necessarily mean changed in IMAP */
-                               (m->type != MUTT_IMAP && m->msg_deleted)) ?
-                                                              1 :
-                                                              0);
-  }
-
-  if (i >= c_status_chars->len)
-    buf_addstr(buf, c_status_chars->chars[0]);
-  else
-    buf_addstr(buf, c_status_chars->chars[i]);
+  return m ? m->msg_deleted : 0;
 }
 
 /**
- * status_D - Status: Description of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_description - Status: Description of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void status_D(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void index_description(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
@@ -121,14 +158,84 @@ static void status_D(const struct ExpandoNode *node, void *data,
     return;
   }
 
-  status_f(node, data, flags, buf);
+  index_mailbox_path(node, data, flags, buf);
 }
 
 /**
- * status_f - Status: pathname of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_flagged_count_num - Status: Number of flagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void status_f(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static long index_flagged_count_num(const struct ExpandoNode *node, void *data,
+                                    MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? m->msg_flagged : 0;
+}
+
+/**
+ * index_limit_count_num - Status: Number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_limit_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? m->vcount : 0;
+}
+
+/**
+ * index_limit_pattern - Status: Active limit pattern - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void index_limit_pattern(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct MailboxView *mailbox_view = shared->mailbox_view;
+
+  const char *s = mview_has_limit(mailbox_view) ? mailbox_view->pattern : "";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * index_limit_size - Status: Size of the messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void index_limit_size(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct MailboxView *mailbox_view = shared->mailbox_view;
+
+  char tmp[128] = { 0 };
+
+  const off_t num = mailbox_view ? mailbox_view->vsize : 0;
+  mutt_str_pretty_size(tmp, sizeof(tmp), num);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * index_limit_size_num - Status: Size of the messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_limit_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct MailboxView *mailbox_view = shared->mailbox_view;
+  if (!mailbox_view)
+    return 0;
+
+  return mailbox_view->vsize;
+}
+
+/**
+ * index_mailbox_path - Status: pathname of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void index_mailbox_path(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
@@ -159,132 +266,10 @@ static void status_f(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * status_M_num - Status: Number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_mailbox_size - Status: Size of the current mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static long status_M_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? m->vcount : 0;
-}
-
-/**
- * status_m_num - Status: Number of messages in the mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? m->msg_count : 0;
-}
-
-/**
- * status_n_num - Status: Number of new messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? m->msg_new : 0;
-}
-
-/**
- * status_o_num - Status: Number of old messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_o_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? (m->msg_unread - m->msg_new) : 0;
-}
-
-/**
- * status_d_num - Status: Number of deleted messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? m->msg_deleted : 0;
-}
-
-/**
- * status_F_num - Status: Number of flagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_F_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? m->msg_flagged : 0;
-}
-
-/**
- * status_t_num - Status: Number of tagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_t_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? m->msg_tagged : 0;
-}
-
-/**
- * status_p_num - Status: Number of postponed messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  struct Mailbox *m = shared->mailbox;
-
-  return mutt_num_postponed(m, false);
-}
-
-/**
- * status_b_num - Status: Number of mailboxes with new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_b_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  struct Mailbox *m = shared->mailbox;
-
-  return mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
-}
-
-/**
- * status_l_num - Status: Size of the current mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-  if (!m)
-    return 0;
-
-  return m->size;
-}
-
-/**
- * status_l - Status: Size of the current mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void status_l(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static void index_mailbox_size(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct IndexSharedData *shared = msld->shared;
@@ -298,63 +283,156 @@ static void status_l(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * status_T - Status: Current threading mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_mailbox_size_num - Status: Size of the current mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void status_T(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const enum UseThreads c_use_threads = mutt_thread_style();
-  const char *s = get_use_threads_str(c_use_threads);
-  buf_strcpy(buf, s);
-}
-
-/**
- * status_s - Status: Sorting mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void status_s(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  char tmp[128] = { 0 };
-
-  const enum EmailSortType c_sort = cs_subset_sort(NeoMutt->sub, "sort");
-  const char *s = get_sort_str(tmp, sizeof(tmp), c_sort);
-  buf_strcpy(buf, s);
-}
-
-/**
- * status_S - Status: Aux sorting method - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void status_S(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  char tmp[128] = { 0 };
-
-  const enum EmailSortType c_sort_aux = cs_subset_sort(NeoMutt->sub, "sort_aux");
-  const char *s = get_sort_str(tmp, sizeof(tmp), c_sort_aux);
-  buf_strcpy(buf, s);
-}
-
-/**
- * status_P_num - Status: Percentage through index - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long index_mailbox_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct MenuStatusLineData *msld = data;
-  const struct Menu *menu = msld->menu;
-  if (!menu)
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+  if (!m)
     return 0;
 
-  if (menu->top + menu->page_len >= menu->max)
-    return 100;
-
-  return (100 * (menu->top + menu->page_len)) / menu->max;
+  return m->size;
 }
 
 /**
- * status_P - Status: Percentage through index - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_message_count_num - Status: Number of messages in the mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void status_P(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
+static long index_message_count_num(const struct ExpandoNode *node, void *data,
+                                    MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? m->msg_count : 0;
+}
+
+/**
+ * index_new_count_num - Status: Number of new messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_new_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? m->msg_new : 0;
+}
+
+/**
+ * index_old_count_num - Status: Number of old messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_old_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? (m->msg_unread - m->msg_new) : 0;
+}
+
+/**
+ * index_postponed_count_num - Status: Number of postponed messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_postponed_count_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  struct Mailbox *m = shared->mailbox;
+
+  return mutt_num_postponed(m, false);
+}
+
+/**
+ * index_readonly - Status: Modified/read-only flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void index_readonly(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct MbTable *c_status_chars = cs_subset_mbtable(NeoMutt->sub, "status_chars");
+  if (!c_status_chars || !c_status_chars->len)
+    return;
+
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  size_t i = 0;
+
+  if (m)
+  {
+    i = shared->attach_msg ? 3 :
+                             ((m->readonly || m->dontwrite) ? 2 :
+                              (m->changed ||
+                               /* deleted doesn't necessarily mean changed in IMAP */
+                               (m->type != MUTT_IMAP && m->msg_deleted)) ?
+                                                              1 :
+                                                              0);
+  }
+
+  if (i >= c_status_chars->len)
+    buf_addstr(buf, c_status_chars->chars[0]);
+  else
+    buf_addstr(buf, c_status_chars->chars[i]);
+}
+
+/**
+ * index_read_count_num - Status: Number of read messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_read_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? (m->msg_count - m->msg_unread) : 0;
+}
+
+/**
+ * index_tagged_count_num - Status: Number of tagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_tagged_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? m->msg_tagged : 0;
+}
+
+/**
+ * index_unread_count_num - Status: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_unread_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  const struct Mailbox *m = shared->mailbox;
+
+  return m ? m->msg_unread : 0;
+}
+
+/**
+ * index_unread_mailboxes_num - Status: Number of mailboxes with new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long index_unread_mailboxes_num(const struct ExpandoNode *node,
+                                       void *data, MuttFormatFlags flags)
+{
+  const struct MenuStatusLineData *msld = data;
+  const struct IndexSharedData *shared = msld->shared;
+  struct Mailbox *m = shared->mailbox;
+
+  return mutt_mailbox_check(m, MUTT_MAILBOX_CHECK_NO_FLAGS);
+}
+
+/**
+ * menu_percentage - Status: Percentage through index - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void menu_percentage(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct MenuStatusLineData *msld = data;
   const struct Menu *menu = msld->menu;
@@ -386,92 +464,19 @@ static void status_P(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * status_h - Status: Local hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * menu_percentage_num - Status: Percentage through index - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void status_h(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const char *s = ShortHostname;
-  buf_strcpy(buf, s);
-}
-
-/**
- * status_L_num - Status: Size of the messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_L_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long menu_percentage_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct MailboxView *mailbox_view = shared->mailbox_view;
-  if (!mailbox_view)
+  const struct Menu *menu = msld->menu;
+  if (!menu)
     return 0;
 
-  return mailbox_view->vsize;
-}
+  if (menu->top + menu->page_len >= menu->max)
+    return 100;
 
-/**
- * status_L - Status: Size of the messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void status_L(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct MailboxView *mailbox_view = shared->mailbox_view;
-
-  char tmp[128] = { 0 };
-
-  const off_t num = mailbox_view ? mailbox_view->vsize : 0;
-  mutt_str_pretty_size(tmp, sizeof(tmp), num);
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * status_R_num - Status: Number of read messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_R_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? (m->msg_count - m->msg_unread) : 0;
-}
-
-/**
- * status_u_num - Status: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long status_u_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct Mailbox *m = shared->mailbox;
-
-  return m ? m->msg_unread : 0;
-}
-
-/**
- * status_v - Status: Version string - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void status_v(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const char *s = mutt_make_version();
-  buf_strcpy(buf, s);
-}
-
-/**
- * status_V - Status: Active limit pattern - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void status_V(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct MenuStatusLineData *msld = data;
-  const struct IndexSharedData *shared = msld->shared;
-  const struct MailboxView *mailbox_view = shared->mailbox_view;
-
-  const char *s = mview_has_limit(mailbox_view) ? mailbox_view->pattern : "";
-  buf_strcpy(buf, s);
+  return (100 * (menu->top + menu->page_len)) / menu->max;
 }
 
 /**
@@ -481,29 +486,29 @@ static void status_V(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData StatusRenderData[] = {
   // clang-format off
-  { ED_INDEX,  ED_IND_UNREAD_MAILBOXES,   NULL,     status_b_num },
-  { ED_INDEX,  ED_IND_DELETED_COUNT,      NULL,     status_d_num },
-  { ED_INDEX,  ED_IND_DESCRIPTION,        status_D, NULL },
-  { ED_INDEX,  ED_IND_FLAGGED_COUNT,      NULL,     status_F_num },
-  { ED_INDEX,  ED_IND_MAILBOX_PATH,       status_f, NULL },
-  { ED_GLOBAL, ED_GLO_HOSTNAME,           status_h, NULL },
-  { ED_INDEX,  ED_IND_LIMIT_SIZE,         status_L, status_L_num },
-  { ED_INDEX,  ED_IND_MAILBOX_SIZE,       status_l, status_l_num },
-  { ED_INDEX,  ED_IND_LIMIT_COUNT,        NULL,     status_M_num },
-  { ED_INDEX,  ED_IND_MESSAGE_COUNT,      NULL,     status_m_num },
-  { ED_INDEX,  ED_IND_NEW_COUNT,          NULL,     status_n_num },
-  { ED_INDEX,  ED_IND_OLD_COUNT,          NULL,     status_o_num },
-  { ED_MENU,   ED_MEN_PERCENTAGE,         status_P, status_P_num },
-  { ED_INDEX,  ED_IND_POSTPONED_COUNT,    NULL,     status_p_num },
-  { ED_INDEX,  ED_IND_READ_COUNT,         NULL,     status_R_num },
-  { ED_INDEX,  ED_IND_READONLY,           status_r, NULL },
-  { ED_GLOBAL, ED_GLO_CONFIG_SORT,        status_s, NULL },
-  { ED_GLOBAL, ED_GLO_CONFIG_SORT_AUX,    status_S, NULL },
-  { ED_INDEX,  ED_IND_TAGGED_COUNT,       NULL,     status_t_num },
-  { ED_GLOBAL, ED_GLO_CONFIG_USE_THREADS, status_T, NULL },
-  { ED_INDEX,  ED_IND_UNREAD_COUNT,       NULL,     status_u_num },
-  { ED_INDEX,  ED_IND_LIMIT_PATTERN,      status_V, NULL },
-  { ED_GLOBAL, ED_GLO_VERSION,            status_v, NULL },
+  { ED_GLOBAL, ED_GLO_CONFIG_SORT,        global_config_sort,        NULL },
+  { ED_GLOBAL, ED_GLO_CONFIG_SORT_AUX,    global_config_sort_aux,    NULL },
+  { ED_GLOBAL, ED_GLO_CONFIG_USE_THREADS, global_config_use_threads, NULL },
+  { ED_GLOBAL, ED_GLO_HOSTNAME,           global_hostname,           NULL },
+  { ED_GLOBAL, ED_GLO_VERSION,            global_version,            NULL },
+  { ED_INDEX,  ED_IND_DELETED_COUNT,      NULL,                      index_deleted_count_num },
+  { ED_INDEX,  ED_IND_DESCRIPTION,        index_description,         NULL },
+  { ED_INDEX,  ED_IND_FLAGGED_COUNT,      NULL,                      index_flagged_count_num },
+  { ED_INDEX,  ED_IND_LIMIT_COUNT,        NULL,                      index_limit_count_num },
+  { ED_INDEX,  ED_IND_LIMIT_PATTERN,      index_limit_pattern,       NULL },
+  { ED_INDEX,  ED_IND_LIMIT_SIZE,         index_limit_size,          index_limit_size_num },
+  { ED_INDEX,  ED_IND_MAILBOX_PATH,       index_mailbox_path,        NULL },
+  { ED_INDEX,  ED_IND_MAILBOX_SIZE,       index_mailbox_size,        index_mailbox_size_num },
+  { ED_INDEX,  ED_IND_MESSAGE_COUNT,      NULL,                      index_message_count_num },
+  { ED_INDEX,  ED_IND_NEW_COUNT,          NULL,                      index_new_count_num },
+  { ED_INDEX,  ED_IND_OLD_COUNT,          NULL,                      index_old_count_num },
+  { ED_INDEX,  ED_IND_POSTPONED_COUNT,    NULL,                      index_postponed_count_num },
+  { ED_INDEX,  ED_IND_READONLY,           index_readonly,            NULL },
+  { ED_INDEX,  ED_IND_READ_COUNT,         NULL,                      index_read_count_num },
+  { ED_INDEX,  ED_IND_TAGGED_COUNT,       NULL,                      index_tagged_count_num },
+  { ED_INDEX,  ED_IND_UNREAD_COUNT,       NULL,                      index_unread_count_num },
+  { ED_INDEX,  ED_IND_UNREAD_MAILBOXES,   NULL,                      index_unread_mailboxes_num },
+  { ED_MENU,   ED_MEN_PERCENTAGE,         menu_percentage,           menu_percentage_num },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
