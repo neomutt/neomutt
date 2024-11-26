@@ -33,6 +33,7 @@
  * | pattern/config.c       | @subpage pattern_config       |
  * | pattern/dlg_pattern.c  | @subpage pattern_dlg_pattern  |
  * | pattern/exec.c         | @subpage pattern_exec         |
+ * | pattern/expando.c      | @subpage pattern_expando      |
  * | pattern/flags.c        | @subpage pattern_flags        |
  * | pattern/functions.c    | @subpage pattern_functions    |
  * | pattern/message.c      | @subpage pattern_message      |
