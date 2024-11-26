@@ -29,6 +29,7 @@
  * | :-------------------- | :--------------------------- |
  * | history/config.c      | @subpage history_config      |
  * | history/dlg_history.c | @subpage history_dlg_history |
+ * | history/expando.c     | @subpage history_expando     |
  * | history/functions.c   | @subpage history_functions   |
  * | history/history.c     | @subpage history_history     |
  */

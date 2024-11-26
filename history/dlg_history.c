@@ -67,10 +67,9 @@
 #include "expando/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
+#include "expando.h"
 #include "functions.h"
 #include "mutt_logging.h"
-
-const struct ExpandoRenderData HistoryRenderData[];
 
 /// Help Bar for the History Selection dialog
 static const struct Mapping HistoryHelp[] = {
@@ -82,28 +81,6 @@ static const struct Mapping HistoryHelp[] = {
   { NULL, 0 },
   // clang-format on
 };
-
-/**
- * history_C_num - History: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-long history_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HistoryEntry *entry = data;
-
-  return entry->num + 1;
-}
-
-/**
- * history_s - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void history_s(const struct ExpandoNode *node, void *data,
-               MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HistoryEntry *entry = data;
-
-  const char *s = entry->history;
-  buf_strcpy(buf, s);
-}
 
 /**
  * history_make_entry - Format a History Item for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
@@ -186,16 +163,3 @@ void dlg_history(struct Buffer *buf, struct HistoryArray *matches)
   window_set_focus(old_focus);
   simple_dialog_free(&sdw.dlg);
 }
-
-/**
- * HistoryRenderData - Callbacks for History Expandos
- *
- * @sa HistoryFormatDef, ExpandoDataGlobal, ExpandoDataHistory
- */
-const struct ExpandoRenderData HistoryRenderData[] = {
-  // clang-format off
-  { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_C_num },
-  { ED_HISTORY, ED_HIS_MATCH,  history_s,     NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};
