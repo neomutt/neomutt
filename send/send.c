@@ -73,6 +73,7 @@
 #include "question/lib.h"
 #include "body.h"
 #include "copy.h"
+#include "expando.h"
 #include "globals.h"
 #include "handler.h"
 #include "header.h"
@@ -96,8 +97,6 @@
 #ifdef USE_AUTOCRYPT
 #include "autocrypt/lib.h"
 #endif
-
-const struct ExpandoRenderData GreetingRenderData[];
 
 /**
  * append_signature - Append a signature to an email
@@ -673,73 +672,6 @@ void mutt_make_attribution_intro(struct Email *e, FILE *fp_out, struct ConfigSub
 void mutt_make_attribution_trailer(struct Email *e, FILE *fp_out, struct ConfigSubset *sub)
 {
   format_attribution(cs_subset_expando(sub, "attribution_trailer"), e, fp_out, sub);
-}
-
-/**
- * greeting_n - Greeting: Real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void greeting_n(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Email *e = data;
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-
-  const char *s = mutt_get_name(to);
-  buf_strcpy(buf, s);
-}
-
-/**
- * greeting_u - Greeting: Login name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void greeting_u(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Email *e = data;
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  if (to)
-  {
-    mutt_str_copy(tmp, mutt_addr_for_display(to), sizeof(tmp));
-    if ((p = strpbrk(tmp, "%@")))
-    {
-      *p = '\0';
-    }
-  }
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * greeting_v - Greeting: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void greeting_v(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Email *e = data;
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
-
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  if (to)
-  {
-    const char *s = mutt_get_name(to);
-    mutt_str_copy(tmp, s, sizeof(tmp));
-  }
-  else if (cc)
-  {
-    const char *s = mutt_get_name(cc);
-    mutt_str_copy(tmp, s, sizeof(tmp));
-  }
-
-  if ((p = strpbrk(tmp, " %@")))
-    *p = '\0';
-
-  buf_strcpy(buf, tmp);
 }
 
 /**
@@ -3059,17 +2991,3 @@ bool mutt_send_list_unsubscribe(struct Mailbox *m, struct Email *e)
 
   return rc;
 }
-
-/**
- * GreetingRenderData - Callbacks for Greeting Expandos
- *
- * @sa GreetingFormatDef, ExpandoDataEnvelope
- */
-const struct ExpandoRenderData GreetingRenderData[] = {
-  // clang-format off
-  { ED_ENVELOPE, ED_ENV_REAL_NAME,  greeting_n, NULL },
-  { ED_ENVELOPE, ED_ENV_USER_NAME,  greeting_u, NULL },
-  { ED_ENVELOPE, ED_ENV_FIRST_NAME, greeting_v, NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};

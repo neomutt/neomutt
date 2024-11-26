@@ -809,8 +809,9 @@ $(PWD)/question:
 ###############################################################################
 # libsend
 LIBSEND=	libsend.a
-LIBSENDOBJS=	send/body.o send/config.o send/header.o send/multipart.o \
-		send/send.o send/sendlib.o send/sendmail.o send/smtp.o
+LIBSENDOBJS=	send/body.o send/config.o send/expando.o send/header.o \
+		send/multipart.o send/send.o send/sendlib.o send/sendmail.o \
+		send/smtp.o
 CLEANFILES+=	$(LIBSEND) $(LIBSENDOBJS)
 ALLOBJS+=	$(LIBSENDOBJS)
 
