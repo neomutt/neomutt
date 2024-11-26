@@ -40,6 +40,8 @@
  * | ncrypt/dlg_gpgme.c               | @subpage crypt_dlg_gpgme             |
  * | ncrypt/dlg_pgp.c                 | @subpage crypt_dlg_pgp               |
  * | ncrypt/dlg_smime.c               | @subpage crypt_dlg_smime             |
+ * | ncrypt/expando_gpgme.c           | @subpage ncrypt_expando_gpgme        |
+ * | ncrypt/expando_pgp.c             | @subpage ncrypt_expando_pgp          |
  * | ncrypt/functions.c               | @subpage crypt_functions             |
  * | ncrypt/gnupgparse.c              | @subpage crypt_gnupg                 |
  * | ncrypt/gpgme_functions.c         | @subpage crypt_gpgme_functions       |

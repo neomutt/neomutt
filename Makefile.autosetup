@@ -652,15 +652,16 @@ LIBNCRYPT=	libncrypt.a
 LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/crypt_mod.o \
 		ncrypt/cryptglue.o ncrypt/functions.o
 @if HAVE_PKG_GPGME
-LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o \
+LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o ncrypt/expando_gpgme.o \
 		ncrypt/gpgme_functions.o ncrypt/crypt_mod_pgp_gpgme.o \
 		ncrypt/crypt_mod_smime_gpgme.o ncrypt/sort_gpgme.o
 @endif
 @if HAVE_PGP
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlg_pgp.o \
-		ncrypt/gnupgparse.o ncrypt/pgp_functions.o ncrypt/pgp.o \
-		ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
-		ncrypt/pgpmicalg.o ncrypt/pgppacket.o ncrypt/sort_pgp.o
+		ncrypt/expando_pgp.o ncrypt/gnupgparse.o \
+		ncrypt/pgp_functions.o ncrypt/pgp.o ncrypt/pgpinvoke.o \
+		ncrypt/pgpkey.o ncrypt/pgplib.o ncrypt/pgpmicalg.o \
+		ncrypt/pgppacket.o ncrypt/sort_pgp.o
 @endif
 @if HAVE_SMIME
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/dlg_smime.o \
