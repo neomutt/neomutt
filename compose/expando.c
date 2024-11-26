@@ -51,9 +51,10 @@ static int num_attachments(const struct ComposeAttachData *adata)
 }
 
 /**
- * compose_a_num - Compose: Number of attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * compose_attach_count_num - Compose: Number of attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long compose_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long compose_attach_count_num(const struct ExpandoNode *node, void *data,
+                                     MuttFormatFlags flags)
 {
   const struct ComposeSharedData *shared = data;
 
@@ -61,29 +62,10 @@ static long compose_a_num(const struct ExpandoNode *node, void *data, MuttFormat
 }
 
 /**
- * compose_h - Compose: Hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * compose_attach_size - Compose: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void compose_h(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
-{
-  const char *s = ShortHostname;
-  buf_strcpy(buf, s);
-}
-
-/**
- * compose_l_num - Compose: Size in bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long compose_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct ComposeSharedData *shared = data;
-  return cum_attachs_size(shared->sub, shared->adata);
-}
-
-/**
- * compose_l - Compose: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void compose_l(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static void compose_attach_size(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct ComposeSharedData *shared = data;
 
@@ -94,10 +76,30 @@ static void compose_l(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * compose_v - Compose: Version - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * compose_attach_size_num - Compose: Size in bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void compose_v(const struct ExpandoNode *node, void *data,
-                      MuttFormatFlags flags, struct Buffer *buf)
+static long compose_attach_size_num(const struct ExpandoNode *node, void *data,
+                                    MuttFormatFlags flags)
+{
+  const struct ComposeSharedData *shared = data;
+  return cum_attachs_size(shared->sub, shared->adata);
+}
+
+/**
+ * global_hostname - Compose: Hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void global_hostname(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const char *s = ShortHostname;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * global_version - Compose: Version - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void global_version(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, struct Buffer *buf)
 {
   const char *s = mutt_make_version();
   buf_strcpy(buf, s);
@@ -110,10 +112,10 @@ static void compose_v(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData ComposeRenderData[] = {
   // clang-format off
-  { ED_COMPOSE, ED_COM_ATTACH_COUNT, NULL,      compose_a_num },
-  { ED_GLOBAL,  ED_GLO_HOSTNAME,     compose_h, NULL },
-  { ED_COMPOSE, ED_COM_ATTACH_SIZE,  compose_l, compose_l_num },
-  { ED_GLOBAL,  ED_GLO_VERSION,      compose_v, NULL },
+  { ED_COMPOSE, ED_COM_ATTACH_COUNT, NULL,                compose_attach_count_num },
+  { ED_COMPOSE, ED_COM_ATTACH_SIZE,  compose_attach_size, compose_attach_size_num },
+  { ED_GLOBAL,  ED_GLO_HOSTNAME,     global_hostname,     NULL },
+  { ED_GLOBAL,  ED_GLO_VERSION,      global_version,      NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
