@@ -1572,7 +1572,7 @@ const struct ExpandoRenderData FolderRenderData[] = {
   { ED_FOLDER, ED_FOL_FILE_SIZE,     folder_s,     folder_s_num },
   { ED_FOLDER, ED_FOL_TAGGED,        folder_t,     folder_t_num },
   { ED_FOLDER, ED_FOL_FILE_OWNER,    folder_u,     NULL },
-  { ED_FOLDER, ED_FOL_STRF,          folder_date,  folder_date_num },
+  { ED_FOLDER, ED_FOL_DATE_STRF,     folder_date,  folder_date_num },
   { ED_GLOBAL, ED_GLO_PADDING_SPACE, folder_space, NULL },
   { -1, -1, NULL, NULL },
   // clang-format on

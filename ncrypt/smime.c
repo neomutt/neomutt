@@ -2338,7 +2338,7 @@ const struct ExpandoRenderData SmimeCommandRenderData[] = {
   // clang-format off
   { ED_SMIME_CMD, ED_SMI_ALGORITHM,        smime_command_a, NULL },
   { ED_SMIME_CMD, ED_SMI_CERTIFICATE_IDS,  smime_command_c, NULL },
-  { ED_GLOBAL,    ED_GLO_CERTIFICATE_PATH, smime_command_C, NULL },
+  { ED_SMIME_CMD, ED_SMI_CERTIFICATE_PATH, smime_command_C, NULL },
   { ED_SMIME_CMD, ED_SMI_DIGEST_ALGORITHM, smime_command_d, NULL },
   { ED_SMIME_CMD, ED_SMI_MESSAGE_FILE,     smime_command_f, NULL },
   { ED_SMIME_CMD, ED_SMI_INTERMEDIATE_IDS, smime_command_i, NULL },

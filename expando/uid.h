@@ -31,15 +31,14 @@
  */
 enum ExpandoDataGlobal
 {
-  ED_GLO_CERTIFICATE_PATH = 1, ///< Path of Smime certificates
+  ED_GLO_CONFIG_SORT = 1,      ///< Value of $sort
+  ED_GLO_CONFIG_SORT_AUX,      ///< Value of $sort_aux
+  ED_GLO_CONFIG_USE_THREADS,   ///< Value of $use_threads
   ED_GLO_HOSTNAME,             ///< Local hostname
   ED_GLO_PADDING_EOL,          ///< Padding to end-of-line
   ED_GLO_PADDING_HARD,         ///< Hard Padding
   ED_GLO_PADDING_SOFT,         ///< Soft Padding
   ED_GLO_PADDING_SPACE,        ///< Space Padding
-  ED_GLO_SORT,                 ///< Value of $sort
-  ED_GLO_SORT_AUX,             ///< Value of $sort_aux
-  ED_GLO_USE_THREADS,          ///< Value of $use_threads
   ED_GLO_VERSION,              ///< NeoMutt version
 };
 

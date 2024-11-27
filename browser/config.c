@@ -103,7 +103,7 @@ static const struct ExpandoDefinition FolderFormatDef[] = {
   { "s", "file-size",     ED_FOLDER, ED_FOL_FILE_SIZE,     NULL },
   { "t", "tagged",        ED_FOLDER, ED_FOL_TAGGED,        NULL },
   { "u", "file-owner",    ED_FOLDER, ED_FOL_FILE_OWNER,    NULL },
-  { "[", NULL,            ED_FOLDER, ED_FOL_STRF,          parse_folder_date },
+  { "[", NULL,            ED_FOLDER, ED_FOL_DATE_STRF,     parse_folder_date },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };

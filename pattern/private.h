@@ -38,7 +38,7 @@ struct MailboxView;
 enum ExpandoDataPattern
 {
   ED_PAT_DESCRIPTION = 1,      ///< PatternEntry.desc
-  ED_PAT_EXPRESION,            ///< PatternEntry.expr
+  ED_PAT_EXPRESSION,           ///< PatternEntry.expr
   ED_PAT_NUMBER,               ///< PatternEntry.num
 };
 

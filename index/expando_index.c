@@ -1791,8 +1791,8 @@ const struct ExpandoRenderData IndexRenderData[] = {
   { ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        index_zc,              NULL },
   { ED_EMAIL,    ED_EMA_STATUS_FLAGS,        index_zs,              NULL },
   { ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       index_zt,              NULL },
-  { ED_EMAIL,    ED_EMA_STRF_LOCAL,          index_date_local,      index_date_local_num },
-  { ED_EMAIL,    ED_EMA_STRF,                index_date,            index_date_num },
+  { ED_EMAIL,    ED_EMA_DATE_STRF_LOCAL,     index_date_local,      index_date_local_num },
+  { ED_EMAIL,    ED_EMA_DATE_STRF,           index_date,            index_date_num },
   { -1, -1, NULL, NULL },
   // clang-format on
 };

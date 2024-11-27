@@ -115,6 +115,7 @@ enum ExpandoDataFolder
 {
   ED_FOL_DATE = 1,             ///< FolderFile.mtime
   ED_FOL_DATE_FORMAT,          ///< FolderFile.mtime
+  ED_FOL_DATE_STRF,            ///< FolderFile.mtime
   ED_FOL_DESCRIPTION,          ///< FolderFile.desc, FolderFile.name
   ED_FOL_FILENAME,             ///< FolderFile.name
   ED_FOL_FILE_GROUP,           ///< FolderFile.gid
@@ -131,7 +132,6 @@ enum ExpandoDataFolder
   ED_FOL_NOTIFY,               ///< FolderFile.notify_user
   ED_FOL_NUMBER,               ///< Folder.num
   ED_FOL_POLL,                 ///< FolderFile.poll_new_mail
-  ED_FOL_STRF,                 ///< FolderFile.mtime
   ED_FOL_TAGGED,               ///< FolderFile.tagged
   ED_FOL_UNREAD_COUNT,         ///< FolderFile.msg_unread
 };

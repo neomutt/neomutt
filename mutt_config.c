@@ -365,8 +365,8 @@ const struct ExpandoDefinition IndexFormatDef[] = {
   { "zc", "crypto-flags",        ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        NULL },
   { "zs", "status-flags",        ED_EMAIL,    ED_EMA_STATUS_FLAGS,        NULL },
   { "zt", "message-flags",       ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       NULL },
-  { "[",  NULL,                  ED_EMAIL,    ED_EMA_STRF_LOCAL,          parse_index_date_local },
-  { "{",  NULL,                  ED_EMAIL,    ED_EMA_STRF,                parse_index_date },
+  { "[",  NULL,                  ED_EMAIL,    ED_EMA_DATE_STRF_LOCAL,     parse_index_date_local },
+  { "{",  NULL,                  ED_EMAIL,    ED_EMA_DATE_STRF,           parse_index_date },
   { NULL, NULL, 0, -1, NULL }
   // clang-format on
 };

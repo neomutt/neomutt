@@ -74,6 +74,7 @@ enum ExpandoDataSmimeCmd
 {
   ED_SMI_ALGORITHM = 1,        ///< SmimeCommandContext.cryptalg
   ED_SMI_CERTIFICATE_IDS,      ///< SmimeCommandContext.certificates
+  ED_SMI_CERTIFICATE_PATH,     ///< Path of Smime certificates
   ED_SMI_DIGEST_ALGORITHM,     ///< SmimeCommandContext.digestalg
   ED_SMI_INTERMEDIATE_IDS,     ///< SmimeCommandContext.intermediates
   ED_SMI_KEY,                  ///< SmimeCommandContext.key

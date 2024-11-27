@@ -96,7 +96,7 @@ static const struct ExpandoDefinition PgpEntryFormatDef[] = {
   { "l", "key-length",        ED_PGP_KEY, ED_PGK_KEY_LENGTH,        NULL },
   { "L", "pkey-length",       ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL },
   { "n", "number",            ED_PGP,     ED_PGP_NUMBER,            NULL },
-  { "p", "protocol",          ED_PGP,     ED_PGK_PROTOCOL,          NULL },
+  { "p", "protocol",          ED_PGP_KEY, ED_PGK_PROTOCOL,          NULL },
   { "t", "trust",             ED_PGP,     ED_PGP_TRUST,             NULL },
   { "u", "user-id",           ED_PGP,     ED_PGP_USER_ID,           NULL },
   { "[", "date",              ED_PGP_KEY, ED_PGK_DATE,              parse_pgp_date },
@@ -283,7 +283,7 @@ static const struct ExpandoDefinition SmimeCommandFormatDef[] = {
   // clang-format off
   { "a", "algorithm",        ED_SMIME_CMD, ED_SMI_ALGORITHM,        NULL },
   { "c", "certificate-ids",  ED_SMIME_CMD, ED_SMI_CERTIFICATE_IDS,  NULL },
-  { "C", "certificate-path", ED_GLOBAL,    ED_GLO_CERTIFICATE_PATH, NULL },
+  { "C", "certificate-path", ED_SMIME_CMD, ED_SMI_CERTIFICATE_PATH, NULL },
   { "d", "digest-algorithm", ED_SMIME_CMD, ED_SMI_DIGEST_ALGORITHM, NULL },
   { "f", "message-file",     ED_SMIME_CMD, ED_SMI_MESSAGE_FILE,     NULL },
   { "i", "intermediate-ids", ED_SMIME_CMD, ED_SMI_INTERMEDIATE_IDS, NULL },

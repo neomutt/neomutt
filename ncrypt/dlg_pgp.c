@@ -630,7 +630,7 @@ const struct ExpandoRenderData PgpEntryRenderData[] = {
   { ED_PGP_KEY, ED_PGK_PKEY_FLAGS,        pgp_entry_pgp_F,     NULL },
   { ED_PGP_KEY, ED_PGK_PKEY_ID,           pgp_entry_pgp_K,     NULL },
   { ED_PGP_KEY, ED_PGK_PKEY_LENGTH,       NULL,                pgp_entry_pgp_L_num },
-  { ED_PGP,     ED_PGK_PROTOCOL,          pgp_entry_ignore,    NULL },
+  { ED_PGP_KEY, ED_PGK_PROTOCOL,          pgp_entry_ignore,    NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
