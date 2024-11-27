@@ -60,6 +60,7 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | progress/config.c   | @subpage progress_config   |
  * | progress/progress.c | @subpage progress_progress |
  * | progress/wdata.c    | @subpage progress_wdata    |
  * | progress/window.c   | @subpage progress_window   |

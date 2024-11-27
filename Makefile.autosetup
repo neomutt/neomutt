@@ -403,10 +403,10 @@ $(PWD)/editor:
 ###############################################################################
 # libemail
 LIBEMAIL=	libemail.a
-LIBEMAILOBJS=	email/body.o email/email.o email/envelope.o email/from.o \
-		email/globals.o email/mime.o email/parameter.o email/parse.o \
-		email/rfc2047.o email/rfc2231.o email/sort.o email/tags.o \
-		email/thread.o email/url.o
+LIBEMAILOBJS=	email/body.o email/config.o email/email.o email/envelope.o \
+		email/from.o email/globals.o email/mime.o email/parameter.o \
+		email/parse.o email/rfc2047.o email/rfc2231.o email/sort.o \
+		email/tags.o email/thread.o email/url.o
 CLEANFILES+=	$(LIBEMAIL) $(LIBEMAILOBJS)
 ALLOBJS+=	$(LIBEMAILOBJS)
 
@@ -778,7 +778,8 @@ $(PWD)/postpone:
 ###############################################################################
 # libprogress
 LIBPROGRESS=	libprogress.a
-LIBPROGRESSOBJS=progress/progress.o progress/wdata.o progress/window.o
+LIBPROGRESSOBJS=progress/config.o progress/progress.o progress/wdata.o \
+		progress/window.o
 CLEANFILES+=	$(LIBPROGRESS) $(LIBPROGRESSOBJS)
 ALLOBJS+=	$(LIBPROGRESSOBJS)
 

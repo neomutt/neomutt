@@ -45,6 +45,7 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
+#include "expando/lib.h" // IWYU pragma: keep
 #include "functions.h"   // IWYU pragma: keep
 #include "shared_data.h" // IWYU pragma: keep
 
@@ -73,6 +74,8 @@ typedef uint8_t CheckFlags;       ///< Flags, e.g. #CHECK_IN_MAILBOX
 #define CHECK_ATTACH     (1 << 4) ///< Is the user in message-attach mode?
 
 extern const struct Mapping IndexNewsHelp[];
+
+extern const struct ExpandoDefinition StatusFormatDef[];
 
 void                    change_folder_mailbox   (struct Menu *menu, struct Mailbox *m, int *oldcount, struct IndexSharedData *shared, bool read_only);
 struct Mailbox *        change_folder_notmuch   (struct Menu *menu, char *buf, int buflen, int *oldcount, struct IndexSharedData *shared, bool read_only);

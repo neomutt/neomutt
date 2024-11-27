@@ -28,6 +28,7 @@
  * | File                   | Description              |
  * | :--------------------- | :----------------------- |
  * | email/body.c           | @subpage email_body      |
+ * | email/config.c         | @subpage email_config    |
  * | email/email.c          | @subpage email_email     |
  * | email/envelope.c       | @subpage email_envelope  |
  * | email/from.c           | @subpage email_from      |

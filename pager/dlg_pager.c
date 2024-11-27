@@ -48,6 +48,7 @@
 #include "mutt.h"
 #include "lib.h"
 #include "color/lib.h"
+#include "expando/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
