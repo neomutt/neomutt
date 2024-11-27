@@ -221,7 +221,7 @@ struct EventHeader
 bool          email_cmp_strict(const struct Email *e1, const struct Email *e2);
 void          email_free      (struct Email **ptr);
 struct Email *email_new       (void);
-size_t        email_size      (const struct Email *e);
+size_t        email_get_size  (const struct Email *e);
 
 struct ListNode *header_add   (struct ListHead *hdrlist, const char *header);
 struct ListNode *header_find  (const struct ListHead *hdrlist, const char *header);

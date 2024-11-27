@@ -634,7 +634,7 @@ void index_cr(const struct ExpandoNode *node, void *data, MuttFormatFlags flags,
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
 
-  mutt_str_pretty_size(tmp, sizeof(tmp), email_size(e));
+  mutt_str_pretty_size(tmp, sizeof(tmp), email_get_size(e));
   buf_strcpy(buf, tmp);
 }
 

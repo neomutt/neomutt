@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for email_size()
+ * Test code for email_get_size()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -26,11 +26,11 @@
 #include <stddef.h>
 #include "email/lib.h"
 
-void test_email_size(void)
+void test_email_get_size(void)
 {
-  // size_t email_size(const struct Email *e);
+  // size_t email_get_size(const struct Email *e);
 
   {
-    TEST_CHECK(email_size(NULL) == 0);
+    TEST_CHECK(email_get_size(NULL) == 0);
   }
 }
