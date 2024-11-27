@@ -36,10 +36,10 @@
 #include "expando/lib.h"
 
 /**
- * autocrypt_a - Autocrypt: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * autocrypt_address - Autocrypt: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void autocrypt_a(const struct ExpandoNode *node, void *data,
-                        MuttFormatFlags flags, struct Buffer *buf)
+static void autocrypt_address(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AccountEntry *entry = data;
 
@@ -47,10 +47,32 @@ static void autocrypt_a(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_k - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * autocrypt_enabled - Autocrypt: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void autocrypt_k(const struct ExpandoNode *node, void *data,
-                        MuttFormatFlags flags, struct Buffer *buf)
+static void autocrypt_enabled(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct AccountEntry *entry = data;
+
+  if (entry->account->enabled)
+  {
+    /* L10N: Autocrypt Account menu.
+           flag that an account is enabled/active */
+    buf_addstr(buf, _("active"));
+  }
+  else
+  {
+    /* L10N: Autocrypt Account menu.
+           flag that an account is disabled/inactive */
+    buf_addstr(buf, _("inactive"));
+  }
+}
+
+/**
+ * autocrypt_keyid - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void autocrypt_keyid(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AccountEntry *entry = data;
 
@@ -59,9 +81,9 @@ static void autocrypt_k(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_n_num - Autocrypt: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * autocrypt_number_num - Autocrypt: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long autocrypt_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long autocrypt_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct AccountEntry *entry = data;
 
@@ -69,10 +91,10 @@ static long autocrypt_n_num(const struct ExpandoNode *node, void *data, MuttForm
 }
 
 /**
- * autocrypt_p - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * autocrypt_prefer_encrypt - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void autocrypt_p(const struct ExpandoNode *node, void *data,
-                        MuttFormatFlags flags, struct Buffer *buf)
+static void autocrypt_prefer_encrypt(const struct ExpandoNode *node, void *data,
+                                     MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct AccountEntry *entry = data;
 
@@ -92,39 +114,17 @@ static void autocrypt_p(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_s - Autocrypt: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void autocrypt_s(const struct ExpandoNode *node, void *data,
-                        MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct AccountEntry *entry = data;
-
-  if (entry->account->enabled)
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account is enabled/active */
-    buf_addstr(buf, _("active"));
-  }
-  else
-  {
-    /* L10N: Autocrypt Account menu.
-           flag that an account is disabled/inactive */
-    buf_addstr(buf, _("inactive"));
-  }
-}
-
-/**
  * AutocryptRenderData - Callbacks for Autocrypt Expandos
  *
  * @sa AutocryptFormatDef, ExpandoDataAutocrypt, ExpandoDataGlobal
  */
 const struct ExpandoRenderData AutocryptRenderData[] = {
   // clang-format off
-  { ED_AUTOCRYPT, ED_AUT_ADDRESS,        autocrypt_a,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_KEYID,          autocrypt_k,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_NUMBER,         NULL,            autocrypt_n_num },
-  { ED_AUTOCRYPT, ED_AUT_PREFER_ENCRYPT, autocrypt_p,     NULL },
-  { ED_AUTOCRYPT, ED_AUT_ENABLED,        autocrypt_s,     NULL },
+  { ED_AUTOCRYPT, ED_AUT_ADDRESS,        autocrypt_address,        NULL },
+  { ED_AUTOCRYPT, ED_AUT_ENABLED,        autocrypt_enabled,        NULL },
+  { ED_AUTOCRYPT, ED_AUT_KEYID,          autocrypt_keyid,          NULL },
+  { ED_AUTOCRYPT, ED_AUT_NUMBER,         NULL,                     autocrypt_number_num },
+  { ED_AUTOCRYPT, ED_AUT_PREFER_ENCRYPT, autocrypt_prefer_encrypt, NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };

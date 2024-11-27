@@ -36,10 +36,10 @@
 #include "expando/lib.h"
 
 /**
- * greeting_n - Greeting: Real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * greeting_real_name - Greeting: Real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void greeting_n(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, struct Buffer *buf)
+static void greeting_real_name(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Email *e = data;
   const struct Address *to = TAILQ_FIRST(&e->env->to);
@@ -49,10 +49,10 @@ static void greeting_n(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * greeting_u - Greeting: Login name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * greeting_login_name - Greeting: Login name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void greeting_u(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, struct Buffer *buf)
+static void greeting_login_name(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Email *e = data;
   const struct Address *to = TAILQ_FIRST(&e->env->to);
@@ -73,10 +73,10 @@ static void greeting_u(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * greeting_v - Greeting: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * greeting_first_name - Greeting: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void greeting_v(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, struct Buffer *buf)
+static void greeting_first_name(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Email *e = data;
   const struct Address *to = TAILQ_FIRST(&e->env->to);
@@ -109,9 +109,9 @@ static void greeting_v(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData GreetingRenderData[] = {
   // clang-format off
-  { ED_ENVELOPE, ED_ENV_REAL_NAME,  greeting_n, NULL },
-  { ED_ENVELOPE, ED_ENV_USER_NAME,  greeting_u, NULL },
-  { ED_ENVELOPE, ED_ENV_FIRST_NAME, greeting_v, NULL },
+  { ED_ENVELOPE, ED_ENV_REAL_NAME,  greeting_real_name,  NULL },
+  { ED_ENVELOPE, ED_ENV_USER_NAME,  greeting_login_name, NULL },
+  { ED_ENVELOPE, ED_ENV_FIRST_NAME, greeting_first_name, NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };

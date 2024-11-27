@@ -35,10 +35,10 @@
 #include "expando/lib.h"
 
 /**
- * compress_f - Compress: From filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * compress_from - Compress: From filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void compress_f(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, struct Buffer *buf)
+static void compress_from(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Mailbox *m = data;
 
@@ -49,10 +49,10 @@ static void compress_f(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * compress_t - Compress: To filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * compress_to - Compress: To filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void compress_t(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, struct Buffer *buf)
+static void compress_to(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Mailbox *m = data;
 
@@ -69,8 +69,8 @@ static void compress_t(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData CompressRenderData[] = {
   // clang-format off
-  { ED_COMPRESS, ED_CMP_FROM, compress_f, NULL },
-  { ED_COMPRESS, ED_CMP_TO,   compress_t, NULL },
+  { ED_COMPRESS, ED_CMP_FROM, compress_from, NULL },
+  { ED_COMPRESS, ED_CMP_TO,   compress_to,   NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };

@@ -39,10 +39,10 @@
 #include "adata.h"
 
 /**
- * nntp_a - Newsrc: Account url - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_account - Newsrc: Account url - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void nntp_a(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void nntp_account(const struct ExpandoNode *node, void *data,
+                         MuttFormatFlags flags, struct Buffer *buf)
 {
   struct NntpAccountData *adata = data;
   struct ConnAccount *cac = &adata->conn->account;
@@ -62,9 +62,9 @@ static void nntp_a(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_p_num - Newsrc: Port - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * nntp_port - Newsrc: Port - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long nntp_port(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
@@ -73,9 +73,9 @@ static long nntp_p_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 /**
- * nntp_P_num - Newsrc: Port if specified - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * nntp_port_if_num - Newsrc: Port if specified - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long nntp_port_if_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
@@ -87,10 +87,10 @@ static long nntp_P_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 }
 
 /**
- * nntp_P - Newsrc: Port if specified - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_port_if - Newsrc: Port if specified - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void nntp_P(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void nntp_port_if(const struct ExpandoNode *node, void *data,
+                         MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
@@ -102,10 +102,10 @@ static void nntp_P(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_s - Newsrc: News server name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_server - Newsrc: News server name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void nntp_s(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void nntp_server(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
@@ -119,10 +119,10 @@ static void nntp_s(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_S - Newsrc: Url schema - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_schema - Newsrc: Url schema - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void nntp_S(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void nntp_schema(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
 {
   struct NntpAccountData *adata = data;
   struct ConnAccount *cac = &adata->conn->account;
@@ -142,10 +142,10 @@ static void nntp_S(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_u - Newsrc: Username - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_username - Newsrc: Username - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void nntp_u(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void nntp_username(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct NntpAccountData *adata = data;
   const struct ConnAccount *cac = &adata->conn->account;
@@ -161,12 +161,12 @@ static void nntp_u(const struct ExpandoNode *node, void *data,
  */
 const struct ExpandoRenderData NntpRenderData[] = {
   // clang-format off
-  { ED_NNTP, ED_NTP_ACCOUNT,  nntp_a, NULL },
-  { ED_NNTP, ED_NTP_PORT,     NULL,   nntp_p_num },
-  { ED_NNTP, ED_NTP_PORT_IF,  nntp_P, nntp_P_num },
-  { ED_NNTP, ED_NTP_SCHEMA,   nntp_S, NULL },
-  { ED_NNTP, ED_NTP_SERVER,   nntp_s, NULL },
-  { ED_NNTP, ED_NTP_USERNAME, nntp_u, NULL },
+  { ED_NNTP, ED_NTP_ACCOUNT,  nntp_account,  NULL },
+  { ED_NNTP, ED_NTP_PORT,     NULL,          nntp_port },
+  { ED_NNTP, ED_NTP_PORT_IF,  nntp_port_if,  nntp_port_if_num },
+  { ED_NNTP, ED_NTP_SCHEMA,   nntp_schema,   NULL },
+  { ED_NNTP, ED_NTP_SERVER,   nntp_server,   NULL },
+  { ED_NNTP, ED_NTP_USERNAME, nntp_username, NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };

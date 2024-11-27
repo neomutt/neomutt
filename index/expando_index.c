@@ -62,6 +62,9 @@
 #include "notmuch/lib.h"
 #endif
 
+static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
+                                 MuttFormatFlags flags, struct Buffer *buf);
+
 /**
  * enum FieldType - Header types
  *
@@ -299,20 +302,6 @@ static bool thread_is_old(struct Email *e)
 }
 
 /**
- * index_date_recv_local_num - Index: Local received date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_date_recv_local_num(const struct ExpandoNode *node,
-                                      void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  return e->received;
-}
-
-/**
  * index_email_date - Index: Sent/Received Local/Sender date and time
  * @param node   ExpandoNode containing the callback
  * @param e      Email
@@ -381,1023 +370,9 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
 }
 
 /**
- * index_date_recv_local - Index: Received local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_attachment_count - Index: Number of MIME attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-static void index_date_recv_local(const struct ExpandoNode *node, void *data,
-                                  MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  index_email_date(node, e, RECV_LOCAL, flags, buf, node->text);
-}
-
-/**
- * index_date_local_num - Index: Local date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_date_local_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  return e->date_sent;
-}
-
-/**
- * index_date_local - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_date_local(const struct ExpandoNode *node, void *data,
-                             MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  index_email_date(node, e, SENT_LOCAL, flags, buf, node->text);
-}
-
-/**
- * index_date_num - Index: Sender's date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  return e->date_sent;
-}
-
-/**
- * index_date - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_date(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  index_email_date(node, e, SENT_SENDER, flags, buf, node->text);
-}
-
-/**
- * index_format_hook - Index: index-format-hook - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_format_hook(const struct ExpandoNode *node, void *data,
-                              MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  struct Mailbox *m = hfi->mailbox;
-
-  const struct Expando *exp = mutt_idxfmt_hook(node->text, m, e);
-  if (!exp)
-    return;
-
-  expando_filter(exp, IndexRenderData, data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
-}
-
-/**
- * index_a - Index: Author Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_a(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const struct Address *from = TAILQ_FIRST(&e->env->from);
-
-  const char *s = NULL;
-  if (from && from->mailbox)
-  {
-    s = mutt_addr_for_display(from);
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_A - Index: Reply-to address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_A(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const struct Address *reply_to = TAILQ_FIRST(&e->env->reply_to);
-
-  if (reply_to && reply_to->mailbox)
-  {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
-    const char *s = mutt_addr_for_display(reply_to);
-    buf_strcpy(buf, s);
-    return;
-  }
-
-  index_a(node, data, flags, buf);
-}
-
-/**
- * index_b - Index: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_b(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Mailbox *m = hfi->mailbox;
-  if (!m)
-  {
-    buf_addstr(buf, "(null)");
-    return;
-  }
-
-  char *p = NULL;
-
-#ifdef USE_NOTMUCH
-  struct Email *e = hfi->email;
-  if (m->type == MUTT_NOTMUCH)
-  {
-    p = nm_email_get_folder_rel_db(m, e);
-  }
-#endif
-  if (!p)
-  {
-    p = strrchr(mailbox_path(m), '/');
-    if (p)
-    {
-      p++;
-    }
-  }
-  buf_addstr(buf, p ? p : mailbox_path(m));
-}
-
-/**
- * index_B - Index: Email list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_B(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  char tmp[128] = { 0 };
-
-  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
-      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
-  {
-    buf_strcpy(buf, tmp);
-    return;
-  }
-
-  index_b(node, data, flags, buf);
-}
-
-/**
- * index_c_num - Index: Number of bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_c_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->body)
-    return 0;
-
-  return e->body->length;
-}
-
-/**
- * index_c - Index: Number of bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_c(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  char tmp[128] = { 0 };
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
-
-  mutt_str_pretty_size(tmp, sizeof(tmp), e->body->length);
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_cr - Index: Number of raw bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_cr(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  char tmp[128] = { 0 };
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
-
-  mutt_str_pretty_size(tmp, sizeof(tmp), email_get_size(e));
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_C_num - Index: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_NUMBER);
-
-  return e->msgno + 1;
-}
-
-/**
- * index_d_num - Index: Senders Date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_d_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  return e->date_sent;
-}
-
-/**
- * index_d - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_d(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
-  const char *cp = NONULL(c_date_format);
-
-  index_email_date(node, e, SENT_SENDER, flags, buf, cp);
-}
-
-/**
- * index_D - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_D(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
-  const char *cp = NONULL(c_date_format);
-
-  index_email_date(node, e, SENT_LOCAL, flags, buf, cp);
-}
-
-/**
- * index_D_num - Index: Local Date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_D_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  return e->date_sent;
-}
-
-/**
- * index_e_num - Index: Thread index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_e_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  struct Mailbox *m = hfi->mailbox;
-
-  return mutt_messages_in_thread(m, e, MIT_POSITION);
-}
-
-/**
- * index_E_num - Index: Number of messages thread - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_E_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  struct Mailbox *m = hfi->mailbox;
-
-  return mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES);
-}
-
-/**
- * index_f - Index: Sender - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_f(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  mutt_addrlist_write(&e->env->from, buf, true);
-}
-
-/**
- * index_F - Index: Author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_F(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  char tmp[128] = { 0 };
-
-  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_NO_FLAGS);
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_Fp - Index: Plain author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_Fp(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
-  struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  char tmp[128] = { 0 };
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
-
-  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_PLAIN);
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_g - Index: Message tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_g(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_TAGS);
-  driver_tags_get_transformed(&e->tags, buf);
-}
-
-/**
- * index_G - Index: Individual tag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_G(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  char *tag = mutt_hash_find(TagFormats, node->text);
-  if (!tag)
-    return;
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_TAG);
-  driver_tags_get_transformed_for(&e->tags, tag, buf);
-}
-
-/**
- * index_H - Index: Spam attributes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_H(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  buf_copy(buf, &e->env->spam);
-}
-
-/**
- * index_i - Index: Message-id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_i(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const char *s = e->env->message_id ? e->env->message_id : "<no.id>";
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_I - Index: Initials of author - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_I(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const struct Address *from = TAILQ_FIRST(&e->env->from);
-
-  char tmp[128] = { 0 };
-
-  if (mutt_mb_get_initials(mutt_get_name(from), tmp, sizeof(tmp)))
-  {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
-
-    buf_strcpy(buf, tmp);
-    return;
-  }
-
-  index_a(node, data, flags, buf);
-}
-
-/**
- * index_J - Index: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_J(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  bool have_tags = true;
-  struct Buffer *tags = buf_pool_get();
-  driver_tags_get_transformed(&e->tags, tags);
-  if (!buf_is_empty(tags))
-  {
-    if (flags & MUTT_FORMAT_TREE)
-    {
-      struct Buffer *parent_tags = buf_pool_get();
-      if (e->thread->prev && e->thread->prev->message)
-      {
-        driver_tags_get_transformed(&e->thread->prev->message->tags, parent_tags);
-      }
-      if (!parent_tags && e->thread->parent && e->thread->parent->message)
-      {
-        driver_tags_get_transformed(&e->thread->parent->message->tags, parent_tags);
-      }
-      if (parent_tags && buf_istr_equal(tags, parent_tags))
-        have_tags = false;
-      buf_pool_release(&parent_tags);
-    }
-  }
-  else
-  {
-    have_tags = false;
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_TAGS);
-
-  const char *s = have_tags ? buf_string(tags) : "";
-  buf_strcpy(buf, s);
-
-  buf_pool_release(&tags);
-}
-
-/**
- * index_K - Index: Mailing list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_K(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  char tmp[128] = { 0 };
-
-  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
-      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
-  {
-    buf_strcpy(buf, tmp);
-  }
-}
-
-/**
- * index_l_num - Index: Number of lines - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_l_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
-
-  return e->lines;
-}
-
-/**
- * index_L - Index: List address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_L(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  char tmp[128] = { 0 };
-
-  make_from(e->env, tmp, sizeof(tmp), true, flags);
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_m_num - Index: Total number of message - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_m_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Mailbox *m = hfi->mailbox;
-
-  if (m)
-    return m->msg_count;
-
-  return 0;
-}
-
-/**
- * index_M - Index: Number of hidden messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_M(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const bool threads = mutt_using_threads();
-  const bool is_index = (flags & MUTT_FORMAT_INDEX) != 0;
-
-  if (threads && is_index && e->collapsed && (e->num_hidden > 1))
-  {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
-    const int num = e->num_hidden;
-    buf_printf(buf, "%d", num);
-  }
-  else if (is_index && threads)
-  {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
-    const char *s = " ";
-    buf_strcpy(buf, s);
-  }
-}
-
-/**
- * index_M_num - Index: Number of hidden messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_M_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  const bool threads = mutt_using_threads();
-  const bool is_index = (flags & MUTT_FORMAT_INDEX) != 0;
-
-  if (threads && is_index && e->collapsed && (e->num_hidden > 1))
-  {
-    if (flags & MUTT_FORMAT_INDEX)
-      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
-    return e->num_hidden;
-  }
-
-  return 0;
-}
-
-/**
- * index_n - Index: Author's real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_n(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const struct Address *from = TAILQ_FIRST(&e->env->from);
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
-
-  const char *s = mutt_get_name(from);
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_N_num - Index: Message score - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_N_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return 0;
-
-  return e->score;
-}
-
-/**
- * index_O - Index: List Name or Save folder - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_O(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  make_from_addr(e->env, tmp, sizeof(tmp), true);
-  const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
-  if (!c_save_address && (p = strpbrk(tmp, "%@")))
-  {
-    *p = '\0';
-  }
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_P - Index: Progress indicator - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_P(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-
-  const char *s = hfi->pager_progress;
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_q - Index: Newsgroup name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_q(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const char *s = e->env->newsgroups;
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_r - Index: To recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_r(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  mutt_addrlist_write(&e->env->to, buf, true);
-}
-
-/**
- * index_R - Index: Cc recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_R(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  mutt_addrlist_write(&e->env->cc, buf, true);
-}
-
-/**
- * index_s - Index: Subject - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_s(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  if ((flags & MUTT_FORMAT_TREE) && !e->collapsed && !(flags & MUTT_FORMAT_FORCESUBJ))
-    return;
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
-
-  subjrx_apply_mods(e->env);
-
-  if (e->env->disp_subj)
-    buf_strcpy(buf, e->env->disp_subj);
-  else
-    buf_strcpy(buf, e->env->subject);
-}
-
-/**
- * index_S - Index: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_S(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
-  const int msg_in_pager = hfi->msg_in_pager;
-
-  const char *wch = NULL;
-  if (e->deleted)
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
-  else if (e->attach_del)
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
-  else if (e->tagged)
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
-  else if (e->flagged)
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_IMPORTANT);
-  else if (e->replied)
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_REPLIED);
-  else if (e->read && (msg_in_pager != e->msgno))
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_SEMPTY);
-  else if (e->old)
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD);
-  else
-    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW);
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
-
-  buf_strcpy(buf, wch);
-}
-
-/**
- * index_t - Index: To field - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_t(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
-
-  char tmp[128] = { 0 };
-
-  if (!check_for_mailing_list(&e->env->to, "To ", tmp, sizeof(tmp)) &&
-      !check_for_mailing_list(&e->env->cc, "Cc ", tmp, sizeof(tmp)))
-  {
-    if (to)
-      snprintf(tmp, sizeof(tmp), "To %s", mutt_get_name(to));
-    else if (cc)
-      snprintf(tmp, sizeof(tmp), "Cc %s", mutt_get_name(cc));
-    else
-    {
-      tmp[0] = '\0';
-    }
-  }
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_T - Index: $to_chars flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_T(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
-
-  int i;
-  const char *s = (c_to_chars && ((i = user_is_recipient(e))) < c_to_chars->len) ?
-                      c_to_chars->chars[i] :
-                      " ";
-
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_tree - Index: Thread tree - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_tree(const struct ExpandoNode *node, void *data,
-                       MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  if (!(flags & MUTT_FORMAT_TREE) || e->collapsed)
-    return;
-
-  node_expando_set_color(node, MT_COLOR_TREE);
-  node_expando_set_has_tree(node, true);
-  buf_strcpy(buf, e->tree);
-}
-
-/**
- * index_u - Index: User name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_u(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const struct Address *from = TAILQ_FIRST(&e->env->from);
-  if (!from || !from->mailbox)
-    return;
-
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  mutt_str_copy(tmp, mutt_addr_for_display(from), sizeof(tmp));
-  p = strpbrk(tmp, "%@");
-  if (p)
-  {
-    *p = '\0';
-  }
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_v - Index: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_v(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const struct Address *from = TAILQ_FIRST(&e->env->from);
-  const struct Address *to = TAILQ_FIRST(&e->env->to);
-  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
-
-  char tmp[128] = { 0 };
-  char *p = NULL;
-
-  if (mutt_addr_is_user(from))
-  {
-    if (to)
-    {
-      const char *s = mutt_get_name(to);
-      mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
-    }
-    else if (cc)
-    {
-      const char *s = mutt_get_name(cc);
-      mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
-    }
-  }
-  else
-  {
-    const char *s = mutt_get_name(from);
-    mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
-  }
-  p = strpbrk(tmp, " %@");
-  if (p)
-  {
-    *p = '\0';
-  }
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
- * index_W - Index: Organization - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_W(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const char *s = e->env->organization;
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_x - Index: X-Comment-To - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_x(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  const char *s = e->env->x_comment_to;
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_X_num - Index: Number of MIME attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
- */
-static long index_X_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long email_attachment_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -1416,207 +391,30 @@ static long index_X_num(const struct ExpandoNode *node, void *data, MuttFormatFl
 }
 
 /**
- * index_y - Index: X-Label - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_body_characters - Index: Number of raw bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void index_y(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
+static void email_body_characters(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_LABEL);
-
-  const char *s = e->env->x_label;
-  buf_strcpy(buf, s);
-}
-
-/**
- * index_Y - Index: X-Label (if different) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_Y(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
-  if (!e || !e->env)
-    return;
-
-  bool label = true;
-  if (e->env->x_label)
-  {
-    struct Email *e_tmp = NULL;
-    if (flags & MUTT_FORMAT_TREE && (e->thread->prev && e->thread->prev->message &&
-                                     e->thread->prev->message->env->x_label))
-    {
-      e_tmp = e->thread->prev->message;
-    }
-    else if (flags & MUTT_FORMAT_TREE && (e->thread->parent && e->thread->parent->message &&
-                                          e->thread->parent->message->env->x_label))
-    {
-      e_tmp = e->thread->parent->message;
-    }
-
-    if (e_tmp && mutt_istr_equal(e->env->x_label, e_tmp->env->x_label))
-    {
-      label = false;
-    }
-  }
-  else
-  {
-    label = false;
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_LABEL);
-
-  if (label)
-  {
-    const char *s = e->env->x_label;
-    buf_strcpy(buf, s);
-  }
-}
-
-/**
- * index_zc - Index: Message crypto flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_zc(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
+  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
   const struct Email *e = hfi->email;
   if (!e)
     return;
 
-  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
-
-  const char *ch = NULL;
-  if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
-  {
-    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN);
-  }
-  else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
-  {
-    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED);
-  }
-  else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
-  {
-    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED);
-  }
-  else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
-  {
-    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
-  }
-  else
-  {
-    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO);
-  }
+  char tmp[128] = { 0 };
 
   if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
-  buf_strcpy(buf, ch);
+    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
+
+  mutt_str_pretty_size(tmp, sizeof(tmp), email_get_size(e));
+  buf_strcpy(buf, tmp);
 }
 
 /**
- * index_zs - Index: Message status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_combined_flags - Index: Status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-static void index_zs(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const bool threads = mutt_using_threads();
-  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
-  const int msg_in_pager = hfi->msg_in_pager;
-
-  const char *ch = NULL;
-  if (e->deleted)
-  {
-    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
-  }
-  else if (e->attach_del)
-  {
-    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
-  }
-  else if (threads && thread_is_new(e))
-  {
-    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW_THREAD);
-  }
-  else if (threads && thread_is_old(e))
-  {
-    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD_THREAD);
-  }
-  else if (e->read && (msg_in_pager != e->msgno))
-  {
-    if (e->replied)
-    {
-      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_REPLIED);
-    }
-    else
-    {
-      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_ZEMPTY);
-    }
-  }
-  else
-  {
-    if (e->old)
-    {
-      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD);
-    }
-    else
-    {
-      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW);
-    }
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
-  buf_strcpy(buf, ch);
-}
-
-/**
- * index_zt - Index: Message tag flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_zt(const struct ExpandoNode *node, void *data,
-                     MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  if (!e)
-    return;
-
-  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
-  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
-
-  const char *ch = NULL;
-  if (e->tagged)
-  {
-    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
-  }
-  else if (e->flagged)
-  {
-    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_IMPORTANT);
-  }
-  else
-  {
-    ch = mbtable_get_nth_wchar(c_to_chars, user_is_recipient(e));
-  }
-
-  if (flags & MUTT_FORMAT_INDEX)
-    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
-  buf_strcpy(buf, ch);
-}
-
-/**
- * index_Z - Index: Status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-static void index_Z(const struct ExpandoNode *node, void *data,
-                    MuttFormatFlags flags, struct Buffer *buf)
+static void email_combined_flags(const struct ExpandoNode *node, void *data,
+                                 MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct HdrFormatInfo *hfi = data;
   struct Email *e = hfi->email;
@@ -1695,64 +493,1272 @@ static void index_Z(const struct ExpandoNode *node, void *data,
 }
 
 /**
+ * email_crypto_flags - Index: Message crypto flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_crypto_flags(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
+
+  const char *ch = NULL;
+  if ((WithCrypto != 0) && (e->security & SEC_GOODSIGN))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN);
+  }
+  else if ((WithCrypto != 0) && (e->security & SEC_ENCRYPT))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED);
+  }
+  else if ((WithCrypto != 0) && (e->security & SEC_SIGN))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED);
+  }
+  else if (((WithCrypto & APPLICATION_PGP) != 0) && ((e->security & PGP_KEY) == PGP_KEY))
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY);
+  }
+  else
+  {
+    ch = mbtable_get_nth_wchar(c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+  buf_strcpy(buf, ch);
+}
+
+/**
+ * email_date_format - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_date_format(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
+  const char *cp = NONULL(c_date_format);
+
+  index_email_date(node, e, SENT_SENDER, flags, buf, cp);
+}
+
+/**
+ * email_date_format_local - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_date_format_local(const struct ExpandoNode *node, void *data,
+                                    MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const char *c_date_format = cs_subset_string(NeoMutt->sub, "date_format");
+  const char *cp = NONULL(c_date_format);
+
+  index_email_date(node, e, SENT_LOCAL, flags, buf, cp);
+}
+
+/**
+ * email_date_format_local_num - Index: Local Date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_date_format_local_num(const struct ExpandoNode *node,
+                                        void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * email_date_format_num - Index: Senders Date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_date_format_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * email_date_strf - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_date_strf(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  index_email_date(node, e, SENT_SENDER, flags, buf, node->text);
+}
+
+/**
+ * email_date_strf_num - Index: Sender's date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_date_strf_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * email_date_strf_local - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_date_strf_local(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  index_email_date(node, e, SENT_LOCAL, flags, buf, node->text);
+}
+
+/**
+ * email_date_strf_local_num - Index: Local date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_date_strf_local_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->date_sent;
+}
+
+/**
+ * email_flag_chars - Index: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_flag_chars(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const int msg_in_pager = hfi->msg_in_pager;
+
+  const char *wch = NULL;
+  if (e->deleted)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
+  else if (e->attach_del)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
+  else if (e->tagged)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
+  else if (e->flagged)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_IMPORTANT);
+  else if (e->replied)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_REPLIED);
+  else if (e->read && (msg_in_pager != e->msgno))
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_SEMPTY);
+  else if (e->old)
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD);
+  else
+    wch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+
+  buf_strcpy(buf, wch);
+}
+
+/**
+ * email_from_list - Index: List address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_from_list(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  char tmp[128] = { 0 };
+
+  make_from(e->env, tmp, sizeof(tmp), true, flags);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * email_index_hook - Index: index-format-hook - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_index_hook(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  struct Mailbox *m = hfi->mailbox;
+
+  const struct Expando *exp = mutt_idxfmt_hook(node->text, m, e);
+  if (!exp)
+    return;
+
+  expando_filter(exp, IndexRenderData, data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+}
+
+/**
+ * email_lines - Index: Number of lines - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_lines(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
+
+  return e->lines;
+}
+
+/**
+ * email_list_or_save_folder - Index: List Name or Save folder - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_list_or_save_folder(const struct ExpandoNode *node, void *data,
+                                      MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  make_from_addr(e->env, tmp, sizeof(tmp), true);
+  const bool c_save_address = cs_subset_bool(NeoMutt->sub, "save_address");
+  if (!c_save_address && (p = strpbrk(tmp, "%@")))
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * email_message_flags - Index: Message tag flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_message_flags(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
+
+  const char *ch = NULL;
+  if (e->tagged)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_TAGGED);
+  }
+  else if (e->flagged)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_IMPORTANT);
+  }
+  else
+  {
+    ch = mbtable_get_nth_wchar(c_to_chars, user_is_recipient(e));
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+  buf_strcpy(buf, ch);
+}
+
+/**
+ * email_number - Index: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_NUMBER);
+
+  return e->msgno + 1;
+}
+
+/**
+ * email_score - Index: Message score - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_score(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->score;
+}
+
+/**
+ * email_size - Index: Number of bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_size(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
+
+  mutt_str_pretty_size(tmp, sizeof(tmp), e->body->length);
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * email_size_num - Index: Number of bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->body)
+    return 0;
+
+  return e->body->length;
+}
+
+/**
+ * email_status_flags - Index: Message status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_status_flags(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const bool threads = mutt_using_threads();
+  const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
+  const int msg_in_pager = hfi->msg_in_pager;
+
+  const char *ch = NULL;
+  if (e->deleted)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED);
+  }
+  else if (e->attach_del)
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_DELETED_ATTACH);
+  }
+  else if (threads && thread_is_new(e))
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW_THREAD);
+  }
+  else if (threads && thread_is_old(e))
+  {
+    ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD_THREAD);
+  }
+  else if (e->read && (msg_in_pager != e->msgno))
+  {
+    if (e->replied)
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_REPLIED);
+    }
+    else
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_ZEMPTY);
+    }
+  }
+  else
+  {
+    if (e->old)
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_OLD);
+    }
+    else
+    {
+      ch = mbtable_get_nth_wchar(c_flag_chars, FLAG_CHAR_NEW);
+    }
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_FLAGS);
+  buf_strcpy(buf, ch);
+}
+
+/**
+ * email_strf_recv_local - Index: Received local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_strf_recv_local(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  index_email_date(node, e, RECV_LOCAL, flags, buf, node->text);
+}
+
+/**
+ * email_strf_recv_local_num - Index: Local received date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_strf_recv_local_num(const struct ExpandoNode *node,
+                                      void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  return e->received;
+}
+
+/**
+ * email_tags - Index: Message tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_tags(const struct ExpandoNode *node, void *data,
+                       MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_TAGS);
+  driver_tags_get_transformed(&e->tags, buf);
+}
+
+/**
+ * email_tags_transformed - Index: Individual tag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_tags_transformed(const struct ExpandoNode *node, void *data,
+                                   MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  char *tag = mutt_hash_find(TagFormats, node->text);
+  if (!tag)
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_TAG);
+  driver_tags_get_transformed_for(&e->tags, tag, buf);
+}
+
+/**
+ * email_thread_count - Index: Number of messages thread - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_thread_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  struct Mailbox *m = hfi->mailbox;
+
+  return mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES);
+}
+
+/**
+ * email_thread_hidden_count - Index: Number of hidden messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_thread_hidden_count(const struct ExpandoNode *node, void *data,
+                                      MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const bool threads = mutt_using_threads();
+  const bool is_index = (flags & MUTT_FORMAT_INDEX) != 0;
+
+  if (threads && is_index && e->collapsed && (e->num_hidden > 1))
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    const int num = e->num_hidden;
+    buf_printf(buf, "%d", num);
+  }
+  else if (is_index && threads)
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    const char *s = " ";
+    buf_strcpy(buf, s);
+  }
+}
+
+/**
+ * email_thread_hidden_count_num - Index: Number of hidden messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_thread_hidden_count_num(const struct ExpandoNode *node,
+                                          void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e)
+    return 0;
+
+  const bool threads = mutt_using_threads();
+  const bool is_index = (flags & MUTT_FORMAT_INDEX) != 0;
+
+  if (threads && is_index && e->collapsed && (e->num_hidden > 1))
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_COLLAPSED);
+    return e->num_hidden;
+  }
+
+  return 0;
+}
+
+/**
+ * email_thread_number - Index: Thread index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long email_thread_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  struct Mailbox *m = hfi->mailbox;
+
+  return mutt_messages_in_thread(m, e, MIT_POSITION);
+}
+
+/**
+ * email_thread_tags - Index: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_thread_tags(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  bool have_tags = true;
+  struct Buffer *tags = buf_pool_get();
+  driver_tags_get_transformed(&e->tags, tags);
+  if (!buf_is_empty(tags))
+  {
+    if (flags & MUTT_FORMAT_TREE)
+    {
+      struct Buffer *parent_tags = buf_pool_get();
+      if (e->thread->prev && e->thread->prev->message)
+      {
+        driver_tags_get_transformed(&e->thread->prev->message->tags, parent_tags);
+      }
+      if (!parent_tags && e->thread->parent && e->thread->parent->message)
+      {
+        driver_tags_get_transformed(&e->thread->parent->message->tags, parent_tags);
+      }
+      if (parent_tags && buf_istr_equal(tags, parent_tags))
+        have_tags = false;
+      buf_pool_release(&parent_tags);
+    }
+  }
+  else
+  {
+    have_tags = false;
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_TAGS);
+
+  const char *s = have_tags ? buf_string(tags) : "";
+  buf_strcpy(buf, s);
+
+  buf_pool_release(&tags);
+}
+
+/**
+ * email_to_chars - Index: $to_chars flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void email_to_chars(const struct ExpandoNode *node, void *data,
+                           MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e)
+    return;
+
+  const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
+
+  int i;
+  const char *s = (c_to_chars && ((i = user_is_recipient(e))) < c_to_chars->len) ?
+                      c_to_chars->chars[i] :
+                      " ";
+
+  buf_strcpy(buf, s);
+}
+
+/**
+ * envelope_cc_all - Index: Cc recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_cc_all(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  mutt_addrlist_write(&e->env->cc, buf, true);
+}
+
+/**
+ * envelope_first_name - Index: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_first_name(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
+  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
+
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  if (mutt_addr_is_user(from))
+  {
+    if (to)
+    {
+      const char *s = mutt_get_name(to);
+      mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
+    }
+    else if (cc)
+    {
+      const char *s = mutt_get_name(cc);
+      mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
+    }
+  }
+  else
+  {
+    const char *s = mutt_get_name(from);
+    mutt_str_copy(tmp, NONULL(s), sizeof(tmp));
+  }
+  p = strpbrk(tmp, " %@");
+  if (p)
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * envelope_from - Index: Author Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_from(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+
+  const char *s = NULL;
+  if (from && from->mailbox)
+  {
+    s = mutt_addr_for_display(from);
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * envelope_from_full - Index: Sender - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_from_full(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  mutt_addrlist_write(&e->env->from, buf, true);
+}
+
+/**
+ * envelope_initials - Index: Initials of author - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_initials(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+
+  char tmp[128] = { 0 };
+
+  if (mutt_mb_get_initials(mutt_get_name(from), tmp, sizeof(tmp)))
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+    buf_strcpy(buf, tmp);
+    return;
+  }
+
+  envelope_from(node, data, flags, buf);
+}
+
+/**
+ * envelope_list_address - Index: Email list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_list_address(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
+      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
+  {
+    buf_strcpy(buf, tmp);
+    return;
+  }
+
+  mailbox_mailbox_name(node, data, flags, buf);
+}
+
+/**
+ * envelope_list_empty - Index: Mailing list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_list_empty(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (first_mailing_list(tmp, sizeof(tmp), &e->env->to) ||
+      first_mailing_list(tmp, sizeof(tmp), &e->env->cc))
+  {
+    buf_strcpy(buf, tmp);
+  }
+}
+
+/**
+ * envelope_message_id - Index: Message-id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_message_id(const struct ExpandoNode *node, void *data,
+                                MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->message_id ? e->env->message_id : "<no.id>";
+  buf_strcpy(buf, s);
+}
+
+/**
+ * envelope_name - Index: Author's real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_name(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+  const char *s = mutt_get_name(from);
+  buf_strcpy(buf, s);
+}
+
+/**
+ * envelope_newsgroup - Index: Newsgroup name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_newsgroup(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->newsgroups;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * envelope_organization - Index: Organization - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_organization(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->organization;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * envelope_reply_to - Index: Reply-to address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_reply_to(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *reply_to = TAILQ_FIRST(&e->env->reply_to);
+
+  if (reply_to && reply_to->mailbox)
+  {
+    if (flags & MUTT_FORMAT_INDEX)
+      node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+    const char *s = mutt_addr_for_display(reply_to);
+    buf_strcpy(buf, s);
+    return;
+  }
+
+  envelope_from(node, data, flags, buf);
+}
+
+/**
+ * envelope_sender - Index: Author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_sender(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_NO_FLAGS);
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * envelope_sender_plain - Index: Plain author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_sender_plain(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  char tmp[128] = { 0 };
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_AUTHOR);
+
+  make_from(e->env, tmp, sizeof(tmp), false, MUTT_FORMAT_PLAIN);
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * envelope_spam - Index: Spam attributes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_spam(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  buf_copy(buf, &e->env->spam);
+}
+
+/**
+ * envelope_subject - Index: Subject - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_subject(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  if ((flags & MUTT_FORMAT_TREE) && !e->collapsed && !(flags & MUTT_FORMAT_FORCESUBJ))
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_SUBJECT);
+
+  subjrx_apply_mods(e->env);
+
+  if (e->env->disp_subj)
+    buf_strcpy(buf, e->env->disp_subj);
+  else
+    buf_strcpy(buf, e->env->subject);
+}
+
+/**
+ * envelope_thread_tree - Index: Thread tree - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_thread_tree(const struct ExpandoNode *node, void *data,
+                                 MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  if (!(flags & MUTT_FORMAT_TREE) || e->collapsed)
+    return;
+
+  node_expando_set_color(node, MT_COLOR_TREE);
+  node_expando_set_has_tree(node, true);
+  buf_strcpy(buf, e->tree);
+}
+
+/**
+ * envelope_thread_x_label - Index: X-Label (if different) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_thread_x_label(const struct ExpandoNode *node, void *data,
+                                    MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  bool label = true;
+  if (e->env->x_label)
+  {
+    struct Email *e_tmp = NULL;
+    if (flags & MUTT_FORMAT_TREE && (e->thread->prev && e->thread->prev->message &&
+                                     e->thread->prev->message->env->x_label))
+    {
+      e_tmp = e->thread->prev->message;
+    }
+    else if (flags & MUTT_FORMAT_TREE && (e->thread->parent && e->thread->parent->message &&
+                                          e->thread->parent->message->env->x_label))
+    {
+      e_tmp = e->thread->parent->message;
+    }
+
+    if (e_tmp && mutt_istr_equal(e->env->x_label, e_tmp->env->x_label))
+    {
+      label = false;
+    }
+  }
+  else
+  {
+    label = false;
+  }
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_LABEL);
+
+  if (label)
+  {
+    const char *s = e->env->x_label;
+    buf_strcpy(buf, s);
+  }
+}
+
+/**
+ * envelope_to - Index: To field - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_to(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *to = TAILQ_FIRST(&e->env->to);
+  const struct Address *cc = TAILQ_FIRST(&e->env->cc);
+
+  char tmp[128] = { 0 };
+
+  if (!check_for_mailing_list(&e->env->to, "To ", tmp, sizeof(tmp)) &&
+      !check_for_mailing_list(&e->env->cc, "Cc ", tmp, sizeof(tmp)))
+  {
+    if (to)
+      snprintf(tmp, sizeof(tmp), "To %s", mutt_get_name(to));
+    else if (cc)
+      snprintf(tmp, sizeof(tmp), "Cc %s", mutt_get_name(cc));
+    else
+    {
+      tmp[0] = '\0';
+    }
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * envelope_to_all - Index: To recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_to_all(const struct ExpandoNode *node, void *data,
+                            MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  mutt_addrlist_write(&e->env->to, buf, true);
+}
+
+/**
+ * envelope_username - Index: User name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_username(const struct ExpandoNode *node, void *data,
+                              MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const struct Address *from = TAILQ_FIRST(&e->env->from);
+  if (!from || !from->mailbox)
+    return;
+
+  char tmp[128] = { 0 };
+  char *p = NULL;
+
+  mutt_str_copy(tmp, mutt_addr_for_display(from), sizeof(tmp));
+  p = strpbrk(tmp, "%@");
+  if (p)
+  {
+    *p = '\0';
+  }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * envelope_x_comment_to - Index: X-Comment-To - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_x_comment_to(const struct ExpandoNode *node, void *data,
+                                  MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  const char *s = e->env->x_comment_to;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * envelope_x_label - Index: X-Label - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void envelope_x_label(const struct ExpandoNode *node, void *data,
+                             MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Email *e = hfi->email;
+  if (!e || !e->env)
+    return;
+
+  if (flags & MUTT_FORMAT_INDEX)
+    node_expando_set_color(node, MT_COLOR_INDEX_LABEL);
+
+  const char *s = e->env->x_label;
+  buf_strcpy(buf, s);
+}
+
+/**
+ * mailbox_mailbox_name - Index: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
+                                 MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+  struct Mailbox *m = hfi->mailbox;
+  if (!m)
+  {
+    buf_addstr(buf, "(null)");
+    return;
+  }
+
+  char *p = NULL;
+
+#ifdef USE_NOTMUCH
+  struct Email *e = hfi->email;
+  if (m->type == MUTT_NOTMUCH)
+  {
+    p = nm_email_get_folder_rel_db(m, e);
+  }
+#endif
+  if (!p)
+  {
+    p = strrchr(mailbox_path(m), '/');
+    if (p)
+    {
+      p++;
+    }
+  }
+  buf_addstr(buf, p ? p : mailbox_path(m));
+}
+
+/**
+ * mailbox_message_count - Index: Total number of message - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ */
+static long mailbox_message_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+{
+  const struct HdrFormatInfo *hfi = data;
+  const struct Mailbox *m = hfi->mailbox;
+
+  if (m)
+    return m->msg_count;
+
+  return 0;
+}
+
+/**
+ * mailbox_percentage - Index: Progress indicator - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ */
+static void mailbox_percentage(const struct ExpandoNode *node, void *data,
+                               MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct HdrFormatInfo *hfi = data;
+
+  const char *s = hfi->pager_progress;
+  buf_strcpy(buf, s);
+}
+
+/**
  * IndexRenderData - Callbacks for Index Expandos
  *
  * @sa IndexFormatDef, ExpandoDataEmail, ExpandoDataEnvelope, ExpandoDataGlobal, ExpandoDataMailbox
  */
 const struct ExpandoRenderData IndexRenderData[] = {
   // clang-format off
-  { ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL,     index_date_recv_local, index_date_recv_local_num },
-  { ED_EMAIL,    ED_EMA_INDEX_HOOK,          index_format_hook,     NULL },
-  { ED_ENVELOPE, ED_ENV_FROM,                index_a,               NULL },
-  { ED_ENVELOPE, ED_ENV_REPLY_TO,            index_A,               NULL },
-  { ED_ENVELOPE, ED_ENV_LIST_ADDRESS,        index_B,               NULL },
-  { ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        index_b,               NULL },
-  { ED_EMAIL,    ED_EMA_NUMBER,              NULL,                  index_C_num },
-  { ED_EMAIL,    ED_EMA_SIZE,                index_c,               index_c_num },
-  { ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     index_cr,              NULL },
-  { ED_EMAIL,    ED_EMA_DATE_FORMAT,         index_d,               index_d_num },
-  { ED_EMAIL,    ED_EMA_DATE_FORMAT_LOCAL,   index_D,               index_D_num },
-  { ED_EMAIL,    ED_EMA_THREAD_COUNT,        NULL,                  index_E_num },
-  { ED_EMAIL,    ED_EMA_THREAD_NUMBER,       NULL,                  index_e_num },
-  { ED_ENVELOPE, ED_ENV_FROM_FULL,           index_f,               NULL },
-  { ED_ENVELOPE, ED_ENV_SENDER,              index_F,               NULL },
-  { ED_ENVELOPE, ED_ENV_SENDER_PLAIN,        index_Fp,              NULL },
-  { ED_EMAIL,    ED_EMA_TAGS,                index_g,               NULL },
-  { ED_EMAIL,    ED_EMA_TAGS_TRANSFORMED,    index_G,               NULL },
-  { ED_ENVELOPE, ED_ENV_SPAM,                index_H,               NULL },
-  { ED_ENVELOPE, ED_ENV_INITIALS,            index_I,               NULL },
-  { ED_ENVELOPE, ED_ENV_MESSAGE_ID,          index_i,               NULL },
-  { ED_EMAIL,    ED_EMA_THREAD_TAGS,         index_J,               NULL },
-  { ED_ENVELOPE, ED_ENV_LIST_EMPTY,          index_K,               NULL },
-  { ED_EMAIL,    ED_EMA_FROM_LIST,           index_L,               NULL },
-  { ED_EMAIL,    ED_EMA_LINES,               NULL,                  index_l_num },
-  { ED_MAILBOX,  ED_MBX_MESSAGE_COUNT,       NULL,                  index_m_num },
-  { ED_EMAIL,    ED_EMA_THREAD_HIDDEN_COUNT, index_M,               index_M_num },
-  { ED_ENVELOPE, ED_ENV_NAME,                index_n,               NULL },
-  { ED_EMAIL,    ED_EMA_SCORE,               NULL,                  index_N_num },
-  { ED_EMAIL,    ED_EMA_LIST_OR_SAVE_FOLDER, index_O,               NULL },
-  { ED_MAILBOX,  ED_MBX_PERCENTAGE,          index_P,               NULL },
-  { ED_ENVELOPE, ED_ENV_NEWSGROUP,           index_q,               NULL },
-  { ED_ENVELOPE, ED_ENV_CC_ALL,              index_R,               NULL },
-  { ED_ENVELOPE, ED_ENV_TO_ALL,              index_r,               NULL },
-  { ED_EMAIL,    ED_EMA_FLAG_CHARS,          index_S,               NULL },
-  { ED_ENVELOPE, ED_ENV_SUBJECT,             index_s,               NULL },
-  { ED_ENVELOPE, ED_ENV_TO,                  index_t,               NULL },
-  { ED_EMAIL,    ED_EMA_TO_CHARS,            index_T,               NULL },
-  { ED_ENVELOPE, ED_ENV_THREAD_TREE,         index_tree,            NULL },
-  { ED_ENVELOPE, ED_ENV_USERNAME,            index_u,               NULL },
-  { ED_ENVELOPE, ED_ENV_FIRST_NAME,          index_v,               NULL },
-  { ED_ENVELOPE, ED_ENV_ORGANIZATION,        index_W,               NULL },
-  { ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    NULL,                  index_X_num },
-  { ED_ENVELOPE, ED_ENV_X_COMMENT_TO,        index_x,               NULL },
-  { ED_ENVELOPE, ED_ENV_THREAD_X_LABEL,      index_Y,               NULL },
-  { ED_ENVELOPE, ED_ENV_X_LABEL,             index_y,               NULL },
-  { ED_EMAIL,    ED_EMA_COMBINED_FLAGS,      index_Z,               NULL },
-  { ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        index_zc,              NULL },
-  { ED_EMAIL,    ED_EMA_STATUS_FLAGS,        index_zs,              NULL },
-  { ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       index_zt,              NULL },
-  { ED_EMAIL,    ED_EMA_DATE_STRF_LOCAL,     index_date_local,      index_date_local_num },
-  { ED_EMAIL,    ED_EMA_DATE_STRF,           index_date,            index_date_num },
+  { ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    NULL,                      email_attachment_count },
+  { ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     email_body_characters,     NULL },
+  { ED_EMAIL,    ED_EMA_COMBINED_FLAGS,      email_combined_flags,      NULL },
+  { ED_EMAIL,    ED_EMA_CRYPTO_FLAGS,        email_crypto_flags,        NULL },
+  { ED_EMAIL,    ED_EMA_DATE_FORMAT,         email_date_format,         email_date_format_num },
+  { ED_EMAIL,    ED_EMA_DATE_FORMAT_LOCAL,   email_date_format_local,   email_date_format_local_num },
+  { ED_EMAIL,    ED_EMA_DATE_STRF,           email_date_strf,           email_date_strf_num },
+  { ED_EMAIL,    ED_EMA_DATE_STRF_LOCAL,     email_date_strf_local,     email_date_strf_local_num },
+  { ED_EMAIL,    ED_EMA_FLAG_CHARS,          email_flag_chars,          NULL },
+  { ED_EMAIL,    ED_EMA_FROM_LIST,           email_from_list,           NULL },
+  { ED_EMAIL,    ED_EMA_INDEX_HOOK,          email_index_hook,          NULL },
+  { ED_EMAIL,    ED_EMA_LINES,               NULL,                      email_lines },
+  { ED_EMAIL,    ED_EMA_LIST_OR_SAVE_FOLDER, email_list_or_save_folder, NULL },
+  { ED_EMAIL,    ED_EMA_MESSAGE_FLAGS,       email_message_flags,       NULL },
+  { ED_EMAIL,    ED_EMA_NUMBER,              NULL,                      email_number },
+  { ED_EMAIL,    ED_EMA_SCORE,               NULL,                      email_score },
+  { ED_EMAIL,    ED_EMA_SIZE,                email_size,                email_size_num },
+  { ED_EMAIL,    ED_EMA_STATUS_FLAGS,        email_status_flags,        NULL },
+  { ED_EMAIL,    ED_EMA_STRF_RECV_LOCAL,     email_strf_recv_local,     email_strf_recv_local_num },
+  { ED_EMAIL,    ED_EMA_TAGS,                email_tags,                NULL },
+  { ED_EMAIL,    ED_EMA_TAGS_TRANSFORMED,    email_tags_transformed,    NULL },
+  { ED_EMAIL,    ED_EMA_THREAD_COUNT,        NULL,                      email_thread_count },
+  { ED_EMAIL,    ED_EMA_THREAD_HIDDEN_COUNT, email_thread_hidden_count, email_thread_hidden_count_num },
+  { ED_EMAIL,    ED_EMA_THREAD_NUMBER,       NULL,                      email_thread_number },
+  { ED_EMAIL,    ED_EMA_THREAD_TAGS,         email_thread_tags,         NULL },
+  { ED_EMAIL,    ED_EMA_TO_CHARS,            email_to_chars,            NULL },
+  { ED_ENVELOPE, ED_ENV_CC_ALL,              envelope_cc_all,           NULL },
+  { ED_ENVELOPE, ED_ENV_FIRST_NAME,          envelope_first_name,       NULL },
+  { ED_ENVELOPE, ED_ENV_FROM,                envelope_from,             NULL },
+  { ED_ENVELOPE, ED_ENV_FROM_FULL,           envelope_from_full,        NULL },
+  { ED_ENVELOPE, ED_ENV_INITIALS,            envelope_initials,         NULL },
+  { ED_ENVELOPE, ED_ENV_LIST_ADDRESS,        envelope_list_address,     NULL },
+  { ED_ENVELOPE, ED_ENV_LIST_EMPTY,          envelope_list_empty,       NULL },
+  { ED_ENVELOPE, ED_ENV_MESSAGE_ID,          envelope_message_id,       NULL },
+  { ED_ENVELOPE, ED_ENV_NAME,                envelope_name,             NULL },
+  { ED_ENVELOPE, ED_ENV_NEWSGROUP,           envelope_newsgroup,        NULL },
+  { ED_ENVELOPE, ED_ENV_ORGANIZATION,        envelope_organization,     NULL },
+  { ED_ENVELOPE, ED_ENV_REPLY_TO,            envelope_reply_to,         NULL },
+  { ED_ENVELOPE, ED_ENV_SENDER,              envelope_sender,           NULL },
+  { ED_ENVELOPE, ED_ENV_SENDER_PLAIN,        envelope_sender_plain,     NULL },
+  { ED_ENVELOPE, ED_ENV_SPAM,                envelope_spam,             NULL },
+  { ED_ENVELOPE, ED_ENV_SUBJECT,             envelope_subject,          NULL },
+  { ED_ENVELOPE, ED_ENV_THREAD_TREE,         envelope_thread_tree,      NULL },
+  { ED_ENVELOPE, ED_ENV_THREAD_X_LABEL,      envelope_thread_x_label,   NULL },
+  { ED_ENVELOPE, ED_ENV_TO,                  envelope_to,               NULL },
+  { ED_ENVELOPE, ED_ENV_TO_ALL,              envelope_to_all,           NULL },
+  { ED_ENVELOPE, ED_ENV_USERNAME,            envelope_username,         NULL },
+  { ED_ENVELOPE, ED_ENV_X_COMMENT_TO,        envelope_x_comment_to,     NULL },
+  { ED_ENVELOPE, ED_ENV_X_LABEL,             envelope_x_label,          NULL },
+  { ED_MAILBOX,  ED_MBX_MAILBOX_NAME,        mailbox_mailbox_name,      NULL },
+  { ED_MAILBOX,  ED_MBX_MESSAGE_COUNT,       NULL,                      mailbox_message_count },
+  { ED_MAILBOX,  ED_MBX_PERCENTAGE,          mailbox_percentage,        NULL },
   { -1, -1, NULL, NULL },
   // clang-format on
 };
