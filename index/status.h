@@ -20,8 +20,8 @@
  * this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MUTT_STATUS_H
-#define MUTT_STATUS_H
+#ifndef MUTT_INDEX_STATUS_H
+#define MUTT_INDEX_STATUS_H
 
 struct Buffer;
 struct Expando;
@@ -30,4 +30,4 @@ struct Menu;
 
 void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared, struct Menu *menu, int max_cols, const struct Expando *exp);
 
-#endif /* MUTT_STATUS_H */
+#endif /* MUTT_INDEX_STATUS_H */

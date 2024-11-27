@@ -29,6 +29,7 @@
  * | File                | Description                |
  * | :------------------ | :------------------------- |
  * | compmbox/compress.c | @subpage compmbox_compress |
+ * | compmbox/expando.c  | @subpage compmbox_expando  |
  */
 
 #ifndef MUTT_COMPMBOX_LIB_H

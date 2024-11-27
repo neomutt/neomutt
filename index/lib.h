@@ -29,6 +29,8 @@
  * | :--------------------- | :---------------------------- |
  * | index/config.c         | @subpage index_config         |
  * | index/dlg_index.c      | @subpage index_dlg_index      |
+ * | index/expando_index.c  | @subpage index_expando_index  |
+ * | index/expando_status.c | @subpage index_expando_status |
  * | index/functions.c      | @subpage index_functions      |
  * | index/ibar.c           | @subpage index_ibar           |
  * | index/index.c          | @subpage index_index          |
@@ -101,5 +103,9 @@ void                    mutt_draw_statusline    (struct MuttWindow *win, int max
 void                    mutt_set_header_color   (struct Mailbox *m, struct Email *e);
 void                    resort_index            (struct MailboxView *mv, struct Menu *menu);
 void                    update_index            (struct Menu *menu, struct MailboxView *mv, enum MxStatus check, int oldcount, const struct IndexSharedData *shared);
+
+int mutt_make_string(struct Buffer *buf, size_t max_cols, const struct Expando *exp,
+                     struct Mailbox *m, int inpgr, struct Email *e,
+                     MuttFormatFlags flags, const char *progress);
 
 #endif /* MUTT_INDEX_LIB_H */

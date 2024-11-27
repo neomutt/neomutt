@@ -23,7 +23,7 @@
  */
 
 /**
- * @page nntp_browse Browse NNTP groups
+ * @page nntp_expando_browser Browse NNTP groups
  *
  * Browse NNTP groups
  */
@@ -34,7 +34,7 @@
 #include "mutt/lib.h"
 #include "config/lib.h"
 #include "core/lib.h"
-#include "lib.h"
+#include "expando_browser.h"
 #include "browser/lib.h"
 #include "expando/lib.h"
 #include "mdata.h"
@@ -42,7 +42,7 @@
 /**
  * group_index_a_num - NNTP: Alert for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct Folder *folder = data;
 
@@ -52,7 +52,7 @@ long group_index_a_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 /**
  * group_index_C_num - NNTP: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct Folder *folder = data;
 
@@ -62,8 +62,8 @@ long group_index_C_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 /**
  * group_index_d - NNTP: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-void group_index_d(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void group_index_d(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -88,8 +88,8 @@ void group_index_d(const struct ExpandoNode *node, void *data,
 /**
  * group_index_f - NNTP: Newsgroup name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-void group_index_f(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void group_index_f(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -100,8 +100,8 @@ void group_index_f(const struct ExpandoNode *node, void *data,
 /**
  * group_index_M - NNTP: Moderated flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-void group_index_M(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void group_index_M(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -122,7 +122,7 @@ void group_index_M(const struct ExpandoNode *node, void *data,
 /**
  * group_index_n_num - NNTP: Number of new articles - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct Folder *folder = data;
   const struct NntpMboxData *nd = folder->ff->nd;
@@ -141,8 +141,8 @@ long group_index_n_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 /**
  * group_index_N - NNTP: New flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
  */
-void group_index_N(const struct ExpandoNode *node, void *data,
-                   MuttFormatFlags flags, struct Buffer *buf)
+static void group_index_N(const struct ExpandoNode *node, void *data,
+                          MuttFormatFlags flags, struct Buffer *buf)
 {
   const struct Folder *folder = data;
 
@@ -163,7 +163,7 @@ void group_index_N(const struct ExpandoNode *node, void *data,
 /**
  * group_index_p_num - NNTP: Poll for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct Folder *folder = data;
 
@@ -173,9 +173,29 @@ long group_index_p_num(const struct ExpandoNode *node, void *data, MuttFormatFla
 /**
  * group_index_s_num - NNTP: Number of unread articles - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
  */
-long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
+static long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
   const struct Folder *folder = data;
 
   return folder->ff->nd->unread;
 }
+
+/**
+ * GroupIndexRenderData - Callbacks for Nntp Browser Expandos
+ *
+ * @sa GroupIndexFormatDef, ExpandoDataFolder
+ */
+const struct ExpandoRenderData GroupIndexRenderData[] = {
+  // clang-format off
+  { ED_FOLDER, ED_FOL_NOTIFY,       NULL,          group_index_a_num },
+  { ED_FOLDER, ED_FOL_NUMBER,       NULL,          group_index_C_num },
+  { ED_FOLDER, ED_FOL_DESCRIPTION,  group_index_d, NULL },
+  { ED_FOLDER, ED_FOL_NEWSGROUP,    group_index_f, NULL },
+  { ED_FOLDER, ED_FOL_FLAGS,        group_index_M, NULL },
+  { ED_FOLDER, ED_FOL_FLAGS2,       group_index_N, NULL },
+  { ED_FOLDER, ED_FOL_NEW_COUNT,    NULL,          group_index_n_num },
+  { ED_FOLDER, ED_FOL_POLL,         NULL,          group_index_p_num },
+  { ED_FOLDER, ED_FOL_UNREAD_COUNT, NULL,          group_index_s_num },
+  { -1, -1, NULL, NULL },
+  // clang-format on
+};

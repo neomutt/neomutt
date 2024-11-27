@@ -49,14 +49,13 @@
 #include "gui/lib.h"
 #include "lib.h"
 #include "expando/lib.h"
+#include "expando.h"
 #include "globals.h"
 #include "hook.h"
 #include "mx.h"
 #include "protos.h"
 
 struct Email;
-
-const struct ExpandoRenderData CompressRenderData[];
 
 /**
  * CompCommands - Compression Commands
@@ -279,34 +278,6 @@ static void compress_info_free(struct Mailbox *m)
   unlock_realpath(m);
 
   FREE(&m->compress_info);
-}
-
-/**
- * compress_f - Compress: From filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void compress_f(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Mailbox *m = data;
-
-  struct Buffer *quoted = buf_pool_get();
-  buf_quote_filename(quoted, m->realpath, false);
-  buf_copy(buf, quoted);
-  buf_pool_release(&quoted);
-}
-
-/**
- * compress_t - Compress: To filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
- */
-void compress_t(const struct ExpandoNode *node, void *data,
-                MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct Mailbox *m = data;
-
-  struct Buffer *quoted = buf_pool_get();
-  buf_quote_filename(quoted, mailbox_path(m), false);
-  buf_copy(buf, quoted);
-  buf_pool_release(&quoted);
 }
 
 /**
@@ -909,19 +880,6 @@ static int comp_path_canon(struct Buffer *path)
   mutt_path_canon(path, HomeDir, false);
   return 0;
 }
-
-/**
- * CompressRenderData - Callbacks for Compression Hook Expandos
- *
- * @sa CompressFormatDef, ExpandoDataCompress
- */
-const struct ExpandoRenderData CompressRenderData[] = {
-  // clang-format off
-  { ED_COMPRESS, ED_CMP_FROM, compress_f, NULL },
-  { ED_COMPRESS, ED_CMP_TO,   compress_t, NULL },
-  { -1, -1, NULL, NULL },
-  // clang-format on
-};
 
 /**
  * MxCompOps - Compressed Mailbox - Implements ::MxOps - @ingroup mx_api

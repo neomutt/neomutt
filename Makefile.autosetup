@@ -122,8 +122,9 @@ $(PWD)/alias:
 # libattach
 LIBATTACH=	libattach.a
 LIBATTACHOBJS=	attach/attach.o attach/attachments.o attach/cid.o \
-		attach/dlg_attach.o attach/functions.o attach/lib.o \
-		attach/mutt_attach.o attach/private_data.o attach/recvattach.o
+		attach/dlg_attach.o attach/expando.o attach/functions.o \
+		attach/lib.o attach/mutt_attach.o attach/private_data.o \
+		attach/recvattach.o
 CLEANFILES+=	$(LIBATTACH) $(LIBATTACHOBJS)
 ALLOBJS+=	$(LIBATTACHOBJS)
 
@@ -139,7 +140,8 @@ $(PWD)/attach:
 LIBAUTOCRYPT=	libautocrypt.a
 LIBAUTOCRYPTOBJS=autocrypt/autocrypt.o autocrypt/autocrypt_data.o \
 		 autocrypt/config.o autocrypt/db.o autocrypt/dlg_autocrypt.o \
-		 autocrypt/functions.o autocrypt/gpgme.o autocrypt/schema.o
+		 autocrypt/expando.o autocrypt/functions.o autocrypt/gpgme.o \
+		 autocrypt/schema.o
 CLEANFILES+=	$(LIBAUTOCRYPT) $(LIBAUTOCRYPTOBJS)
 ALLOBJS+=	$(LIBAUTOCRYPTOBJS)
 
@@ -167,7 +169,8 @@ $(PWD)/bcache:
 # libbrowser
 LIBBROWSER=	libbrowser.a
 LIBBROWSEROBJS=	browser/complete.o browser/config.o browser/dlg_browser.o \
-		browser/functions.o browser/private_data.o browser/sort.o
+		browser/expando.o browser/functions.o browser/private_data.o \
+		browser/sort.o
 CLEANFILES+=	$(LIBBROWSER) $(LIBBROWSEROBJS)
 ALLOBJS+=	$(LIBBROWSEROBJS)
 
@@ -212,7 +215,7 @@ $(PWD)/complete:
 ###############################################################################
 # libcompmbox
 LIBCOMPMBOX=	libcompmbox.a
-LIBCOMPMBOXOBJS=compmbox/compress.o
+LIBCOMPMBOXOBJS=compmbox/compress.o compmbox/expando.o
 CLEANFILES+=	$(LIBCOMPMBOX) $(LIBCOMPMBOXOBJS)
 ALLOBJS+=	$(LIBCOMPMBOXOBJS)
 
@@ -227,7 +230,7 @@ $(PWD)/compmbox:
 LIBCOMPOSE=	libcompose.a
 LIBCOMPOSEOBJS=	compose/attach.o compose/attach_data.o compose/cbar.o \
 		compose/cbar_data.o compose/config.o compose/dlg_compose.o \
-		compose/functions.o compose/shared_data.o
+		compose/expando.o compose/functions.o compose/shared_data.o
 
 CLEANFILES+=	$(LIBCOMPOSE) $(LIBCOMPOSEOBJS)
 ALLOBJS+=	$(LIBCOMPOSEOBJS)
@@ -495,8 +498,8 @@ $(PWD)/helpbar:
 ###############################################################################
 # libhistory
 LIBHISTORY=	libhistory.a
-LIBHISTORYOBJS=	history/config.o history/dlg_history.o history/functions.o \
-		history/history.o
+LIBHISTORYOBJS=	history/config.o history/dlg_history.o history/expando.o \
+		history/functions.o history/history.o
 CLEANFILES+=	$(LIBHISTORY) $(LIBHISTORYOBJS)
 ALLOBJS+=	$(LIBHISTORYOBJS)
 
@@ -538,8 +541,9 @@ $(PWD)/imap:
 # libindex
 LIBINDEX=	libindex.a
 LIBINDEXOBJS=	index/config.o index/dlg_index.o index/expando_index.o \
-		index/functions.o index/ibar.o index/index.o index/ipanel.o \
-		index/private_data.o index/shared_data.o index/status.o
+		index/expando_status.o index/functions.o index/ibar.o \
+		index/index.o index/ipanel.o index/private_data.o \
+		index/shared_data.o index/status.o
 CLEANFILES+=	$(LIBINDEX) $(LIBINDEXOBJS)
 ALLOBJS+=	$(LIBINDEXOBJS)
 
@@ -649,19 +653,20 @@ LIBNCRYPT=	libncrypt.a
 LIBNCRYPTOBJS=	ncrypt/config.o ncrypt/crypt.o ncrypt/crypt_mod.o \
 		ncrypt/cryptglue.o ncrypt/functions.o
 @if HAVE_PKG_GPGME
-LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o \
+LIBNCRYPTOBJS+=	ncrypt/crypt_gpgme.o ncrypt/dlg_gpgme.o ncrypt/expando_gpgme.o \
 		ncrypt/gpgme_functions.o ncrypt/crypt_mod_pgp_gpgme.o \
 		ncrypt/crypt_mod_smime_gpgme.o ncrypt/sort_gpgme.o
 @endif
 @if HAVE_PGP
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_pgp_classic.o ncrypt/dlg_pgp.o \
+		ncrypt/expando_command.o ncrypt/expando_pgp.o \
 		ncrypt/gnupgparse.o ncrypt/pgp_functions.o ncrypt/pgp.o \
 		ncrypt/pgpinvoke.o ncrypt/pgpkey.o ncrypt/pgplib.o \
 		ncrypt/pgpmicalg.o ncrypt/pgppacket.o ncrypt/sort_pgp.o
 @endif
 @if HAVE_SMIME
 LIBNCRYPTOBJS+=	ncrypt/crypt_mod_smime_classic.o ncrypt/dlg_smime.o \
-		ncrypt/smime_functions.o ncrypt/smime.o
+		ncrypt/expando_smime.o ncrypt/smime_functions.o ncrypt/smime.o
 @endif
 CLEANFILES+=	$(LIBNCRYPT) $(LIBNCRYPTOBJS)
 ALLOBJS+=	$(LIBNCRYPTOBJS)
@@ -675,8 +680,9 @@ $(PWD)/ncrypt:
 ###############################################################################
 # libnntp
 LIBNNTP=	libnntp.a
-LIBNNTPOBJS=	nntp/adata.o nntp/browse.o nntp/complete.o nntp/config.o \
-		nntp/edata.o nntp/mdata.o nntp/newsrc.o nntp/nntp.o
+LIBNNTPOBJS=	nntp/adata.o nntp/complete.o nntp/config.o nntp/edata.o \
+		nntp/expando_browser.o nntp/expando_newsrc.o nntp/mdata.o \
+		nntp/newsrc.o nntp/nntp.o
 CLEANFILES+=	$(LIBNNTP) $(LIBNNTPOBJS)
 ALLOBJS+=	$(LIBNNTPOBJS)
 
@@ -735,9 +741,9 @@ $(PWD)/parse:
 # libpattern
 LIBPATTERN=	libpattern.a
 LIBPATTERNOBJS=	pattern/compile.o pattern/complete.o pattern/config.o \
-		pattern/dlg_pattern.o pattern/exec.o pattern/flags.o \
-		pattern/functions.o pattern/message.o pattern/pattern.o \
-		pattern/pattern_data.o pattern/search_state.o
+		pattern/dlg_pattern.o pattern/exec.o pattern/expando.o \
+		pattern/flags.o pattern/functions.o pattern/message.o \
+		pattern/pattern.o pattern/pattern_data.o pattern/search_state.o
 CLEANFILES+=	$(LIBPATTERN) $(LIBPATTERNOBJS)
 ALLOBJS+=	$(LIBPATTERNOBJS)
 
@@ -804,8 +810,9 @@ $(PWD)/question:
 ###############################################################################
 # libsend
 LIBSEND=	libsend.a
-LIBSENDOBJS=	send/body.o send/config.o send/header.o send/multipart.o \
-		send/send.o send/sendlib.o send/sendmail.o send/smtp.o
+LIBSENDOBJS=	send/body.o send/config.o send/expando.o send/header.o \
+		send/multipart.o send/send.o send/sendlib.o send/sendmail.o \
+		send/smtp.o
 CLEANFILES+=	$(LIBSEND) $(LIBSENDOBJS)
 ALLOBJS+=	$(LIBSENDOBJS)
 
@@ -818,9 +825,9 @@ $(PWD)/send:
 ###############################################################################
 # libsidebar
 LIBSIDEBAR=	libsidebar.a
-LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/functions.o \
-		sidebar/observer.o sidebar/sidebar.o sidebar/sort.o \
-		sidebar/wdata.o sidebar/window.o
+LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/expando.o \
+		sidebar/functions.o sidebar/observer.o sidebar/sidebar.o \
+		sidebar/sort.o sidebar/wdata.o sidebar/window.o
 CLEANFILES+=	$(LIBSIDEBAR) $(LIBSIDEBAROBJS)
 ALLOBJS+=	$(LIBSIDEBAROBJS)
 

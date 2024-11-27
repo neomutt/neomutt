@@ -789,6 +789,35 @@ void change_folder_string(struct Menu *menu, struct Buffer *buf, int *oldcount,
 }
 
 /**
+ * mutt_make_string - Create formatted strings using mailbox expandos
+ * @param buf      Buffer for the result
+ * @param max_cols Number of screen columns (-1 means unlimited)
+ * @param exp      Expando containing expando tree
+ * @param m        Mailbox
+ * @param inpgr    Message shown in the pager
+ * @param e        Email
+ * @param flags    Flags, see #MuttFormatFlags
+ * @param progress Pager progress string
+ * @retval num Number of screen columns used
+ */
+int mutt_make_string(struct Buffer *buf, size_t max_cols,
+                     const struct Expando *exp, struct Mailbox *m, int inpgr,
+                     struct Email *e, MuttFormatFlags flags, const char *progress)
+{
+  if (!exp)
+    return 0;
+
+  struct HdrFormatInfo hfi = { 0 };
+
+  hfi.email = e;
+  hfi.mailbox = m;
+  hfi.msg_in_pager = inpgr;
+  hfi.pager_progress = progress;
+
+  return expando_filter(exp, IndexRenderData, &hfi, flags, max_cols, buf);
+}
+
+/**
  * index_make_entry - Format an Email for the Menu - Implements Menu::make_entry() - @ingroup menu_make_entry
  *
  * @sa $index_format

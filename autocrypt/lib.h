@@ -86,6 +86,7 @@
  * | autocrypt/config.c         | @subpage autocrypt_config         |
  * | autocrypt/db.c             | @subpage autocrypt_db             |
  * | autocrypt/dlg_autocrypt.c  | @subpage autocrypt_dlg_autocrypt  |
+ * | autocrypt/expando.c        | @subpage autocrypt_expando        |
  * | autocrypt/functions.c      | @subpage autocrypt_functions      |
  * | autocrypt/gpgme.c          | @subpage autocrypt_gpgme          |
  * | autocrypt/schema.c         | @subpage autocrypt_schema         |

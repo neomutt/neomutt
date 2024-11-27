@@ -57,8 +57,8 @@
 #include "mutt_mailbox.h"
 #include "muttlib.h"
 #include "mx.h"
-#include "nntp/adata.h"
-#include "nntp/mdata.h"
+#include "nntp/adata.h" // IWYU pragma: keep
+#include "nntp/mdata.h" // IWYU pragma: keep
 #include "private_data.h"
 #include "sort.h"
 #endif
