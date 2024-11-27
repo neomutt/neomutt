@@ -196,20 +196,18 @@ msgstr "Atžymėti adresus, tenkinančius: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Atvirkščiai rikiuoti pagal (a)liasą, a(d)resą ar neriki(u)ti?"
+msgstr "Atvirkščiai rikiuoti pagal (a)liasą, (v)ardą, a(d)resą ar neriki(u)ti?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Rikiuoti pagal (a)liasą, a(d)resą ar neriki(u)oti?"
+msgstr "Rikiuoti pagal (a)liasą, (v)ardą, a(d)resą ar neriki(u)oti?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "avdu"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
