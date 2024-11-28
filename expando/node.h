@@ -82,6 +82,7 @@ struct ExpandoNode
    *
    * render - Render an Expando
    * @param[in]  node     Node to render
+   * @param[in]  rdata    Array of ExpandoRenderData
    * @param[out] buf      Buffer in which to save string
    * @param[in]  max_cols Maximum number of screen columns to use
    * @param[in]  data     Private data

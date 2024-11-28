@@ -182,7 +182,7 @@ static long alias_view_tagged_num(const struct ExpandoNode *node, void *data, Mu
 /**
  * AliasRenderData - Callbacks for Alias Expandos
  *
- * @sa AliasFormatDef, ExpandoDataAlias, ExpandoDataGlobal
+ * @sa AliasFormatDef, ExpandoDataAlias
  */
 const struct ExpandoRenderData AliasRenderData[] = {
   // clang-format off
@@ -202,7 +202,7 @@ const struct ExpandoRenderData AliasRenderData[] = {
 /**
  * QueryRenderData - Callbacks for Query Expandos
  *
- * @sa QueryFormatDef, ExpandoDataAlias, ExpandoDataGlobal
+ * @sa QueryFormatDef, ExpandoDataAlias
  */
 const struct ExpandoRenderData QueryRenderData[] = {
   // clang-format off

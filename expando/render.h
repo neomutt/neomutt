@@ -46,8 +46,8 @@ typedef uint8_t MuttFormatFlags;         ///< Flags for expando_render(), e.g. #
  */
 struct ExpandoRenderData
 {
-  int did;                           ///< Domain ID
-  int uid;                           ///< Unique ID
+  int did;    ///< Domain ID, #ExpandoDomain
+  int uid;    ///< Unique ID, e.g. #ExpandoDataAlias
 
   /**
    * @defgroup expando_get_string_api Expando Get String API
