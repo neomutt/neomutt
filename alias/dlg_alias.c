@@ -257,14 +257,13 @@ static struct SimpleDialogWindows alias_dialog_new(struct AliasMenuData *mdata)
 
 /**
  * dlg_alias - Display a menu of Aliases - @ingroup gui_dlg
- * @param buf   Buffer for expanded aliases
  * @param mdata Menu data holding Aliases
  * @retval true Selection was made
  *
  * The Alias Dialog is an Address Book.
  * The user can select addresses to add to an Email.
  */
-static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
+static bool dlg_alias(struct AliasMenuData *mdata)
 {
   if (ARRAY_EMPTY(&mdata->ava))
   {
@@ -272,7 +271,6 @@ static bool dlg_alias(struct Buffer *buf, struct AliasMenuData *mdata)
     return false;
   }
 
-  mdata->query = buf;
   mdata->title = mutt_str_dup(_("Aliases"));
 
   struct SimpleDialogWindows sdw = alias_dialog_new(mdata);
@@ -416,7 +414,7 @@ int alias_complete(struct Buffer *buf, struct ConfigSubset *sub)
     mutt_pattern_alias_func(NULL, &mdata, PAA_VISIBLE, NULL);
   }
 
-  if (!dlg_alias(NULL, &mdata))
+  if (!dlg_alias(&mdata))
     goto done;
 
   buf_reset(buf);
@@ -472,7 +470,7 @@ void alias_dialog(struct Mailbox *m, struct ConfigSubset *sub)
     alias_array_alias_add(&mdata.ava, np);
   }
 
-  if (!dlg_alias(NULL, &mdata))
+  if (!dlg_alias(&mdata))
     goto done;
 
   // Prepare the "To:" field of a new email
