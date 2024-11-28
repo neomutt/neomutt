@@ -309,9 +309,16 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
   {
     struct Buffer *cmd = buf_pool_get();
 
+    struct ExpandoRenderData NntpRenderData[] = {
+      // clang-format off
+      { ED_NNTP, NntpRenderCallbacks, NULL, MUTT_FORMAT_NO_FLAGS },
+      { -1, NULL, NULL, 0 },
+      // clang-format on
+    };
+
     const struct Expando *c_inews_command = cs_subset_expando(sub, "inews_command");
-    expando_filter(c_inews_command, NntpRenderCallbacks, 0,
-                   MUTT_FORMAT_NO_FLAGS, cmd->dsize, NeoMutt->env, cmd);
+    expando_filter(c_inews_command, NntpRenderCallbacks, 0, MUTT_FORMAT_NO_FLAGS,
+                   cmd->dsize, NeoMutt->env, cmd);
     if (buf_is_empty(cmd))
     {
       i = nntp_post(m, msg);
