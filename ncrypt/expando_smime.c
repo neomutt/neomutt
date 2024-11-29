@@ -38,7 +38,7 @@
 #include "smime.h"
 
 /**
- * smime_command_algorithm - Smime Command: algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_algorithm - Smime Command: algorithm - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_algorithm(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags, struct Buffer *buf)
@@ -50,7 +50,7 @@ static void smime_command_algorithm(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_certificate_ids - Smime Command: certificate IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_certificate_ids - Smime Command: certificate IDs - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_certificate_ids(const struct ExpandoNode *node, void *data,
                                           MuttFormatFlags flags, struct Buffer *buf)
@@ -62,7 +62,7 @@ static void smime_command_certificate_ids(const struct ExpandoNode *node, void *
 }
 
 /**
- * smime_command_certificate_path - Smime Command: CA location - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_certificate_path - Smime Command: CA location - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_certificate_path(const struct ExpandoNode *node, void *data,
                                            MuttFormatFlags flags, struct Buffer *buf)
@@ -95,7 +95,7 @@ static void smime_command_certificate_path(const struct ExpandoNode *node, void 
 }
 
 /**
- * smime_command_digest_algorithm - Smime Command: Message digest algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_digest_algorithm - Smime Command: Message digest algorithm - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_digest_algorithm(const struct ExpandoNode *node, void *data,
                                            MuttFormatFlags flags, struct Buffer *buf)
@@ -107,7 +107,7 @@ static void smime_command_digest_algorithm(const struct ExpandoNode *node, void 
 }
 
 /**
- * smime_command_intermediate_ids - Smime Command: Intermediate certificates - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_intermediate_ids - Smime Command: Intermediate certificates - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_intermediate_ids(const struct ExpandoNode *node, void *data,
                                            MuttFormatFlags flags, struct Buffer *buf)
@@ -119,7 +119,7 @@ static void smime_command_intermediate_ids(const struct ExpandoNode *node, void 
 }
 
 /**
- * smime_command_key - Smime Command: Key-pair - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_key - Smime Command: Key-pair - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_key(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -131,7 +131,7 @@ static void smime_command_key(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * smime_command_message_file - Smime Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_message_file - Smime Command: Filename of message - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_message_file(const struct ExpandoNode *node, void *data,
                                        MuttFormatFlags flags, struct Buffer *buf)
@@ -143,7 +143,7 @@ static void smime_command_message_file(const struct ExpandoNode *node, void *dat
 }
 
 /**
- * smime_command_signature_file - Smime Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * smime_command_signature_file - Smime Command: Filename of signature - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void smime_command_signature_file(const struct ExpandoNode *node, void *data,
                                          MuttFormatFlags flags, struct Buffer *buf)

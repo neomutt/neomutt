@@ -43,7 +43,7 @@ static void body_file_disposition(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf);
 
 /**
- * attach_charset - Attachment: Charset - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * attach_charset - Attachment: Charset - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void attach_charset(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)
@@ -59,7 +59,7 @@ static void attach_charset(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * attach_number_num - Attachment: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * attach_number_num - Attachment: Index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long attach_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -69,7 +69,7 @@ static long attach_number_num(const struct ExpandoNode *node, void *data, MuttFo
 }
 
 /**
- * attach_tree - Attachment: Tree characters - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * attach_tree - Attachment: Tree characters - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void attach_tree(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
@@ -83,7 +83,7 @@ static void attach_tree(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_attach_count_num - Body: Number of MIME parts - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_attach_count_num - Body: Number of MIME parts - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long body_attach_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -94,7 +94,7 @@ static long body_attach_count_num(const struct ExpandoNode *node, void *data, Mu
 }
 
 /**
- * body_attach_qualifies - Body: Attachment counting - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_attach_qualifies - Body: Attachment counting - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_attach_qualifies(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -107,7 +107,7 @@ static void body_attach_qualifies(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_attach_qualifies_num - Body: Attachment counting - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_attach_qualifies_num - Body: Attachment counting - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long body_attach_qualifies_num(const struct ExpandoNode *node,
                                       void *data, MuttFormatFlags flags)
@@ -117,7 +117,7 @@ static long body_attach_qualifies_num(const struct ExpandoNode *node,
 }
 
 /**
- * body_charset_convert - Body: Requires conversion flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_charset_convert - Body: Requires conversion flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_charset_convert(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
@@ -130,7 +130,7 @@ static void body_charset_convert(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_deleted - Body: Deleted - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_deleted - Body: Deleted - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_deleted(const struct ExpandoNode *node, void *data,
                          MuttFormatFlags flags, struct Buffer *buf)
@@ -143,7 +143,7 @@ static void body_deleted(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_deleted_num - Body: Deleted - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_deleted_num - Body: Deleted - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long body_deleted_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -152,7 +152,7 @@ static long body_deleted_num(const struct ExpandoNode *node, void *data, MuttFor
 }
 
 /**
- * body_description - Body: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_description - Body: Description - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_description(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -187,7 +187,7 @@ static void body_description(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_disposition - Body: Disposition flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_disposition - Body: Disposition flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_disposition(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -212,7 +212,7 @@ static void body_disposition(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_file - Body: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_file - Body: Filename - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_file(const struct ExpandoNode *node, void *data,
                       MuttFormatFlags flags, struct Buffer *buf)
@@ -236,7 +236,7 @@ static void body_file(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_file_disposition - Body: Filename in header - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_file_disposition - Body: Filename in header - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_file_disposition(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -254,7 +254,7 @@ static void body_file_disposition(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_file_size - Body: Size - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_file_size - Body: Size - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_file_size(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)
@@ -278,7 +278,7 @@ static void body_file_size(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_file_size_num - Body: Size - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_file_size_num - Body: Size - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long body_file_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -291,7 +291,7 @@ static long body_file_size_num(const struct ExpandoNode *node, void *data, MuttF
 }
 
 /**
- * body_mime_encoding - Body: MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_mime_encoding - Body: MIME type - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_mime_encoding(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -303,7 +303,7 @@ static void body_mime_encoding(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_mime_major - Body: Major MIME type - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_mime_major - Body: Major MIME type - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_mime_major(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -315,7 +315,7 @@ static void body_mime_major(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_mime_minor - Body: MIME subtype - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_mime_minor - Body: MIME subtype - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_mime_minor(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -327,7 +327,7 @@ static void body_mime_minor(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_tagged - Body: Is Tagged - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_tagged - Body: Is Tagged - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_tagged(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
@@ -340,7 +340,7 @@ static void body_tagged(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_tagged_num - Body: Is Tagged - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_tagged_num - Body: Is Tagged - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long body_tagged_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -349,7 +349,7 @@ static long body_tagged_num(const struct ExpandoNode *node, void *data, MuttForm
 }
 
 /**
- * body_unlink - Body: Unlink flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * body_unlink - Body: Unlink flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void body_unlink(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
@@ -362,7 +362,7 @@ static void body_unlink(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * body_unlink_num - Body: Unlink flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * body_unlink_num - Body: Unlink flag - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long body_unlink_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {

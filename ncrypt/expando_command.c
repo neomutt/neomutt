@@ -34,7 +34,7 @@
 #include "pgp.h"
 
 /**
- * pgp_command_file_message - PGP Command: Filename of message - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_file_message - PGP Command: Filename of message - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void pgp_command_file_message(const struct ExpandoNode *node, void *data,
                                      MuttFormatFlags flags, struct Buffer *buf)
@@ -46,7 +46,7 @@ static void pgp_command_file_message(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_file_signature - PGP Command: Filename of signature - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_file_signature - PGP Command: Filename of signature - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void pgp_command_file_signature(const struct ExpandoNode *node, void *data,
                                        MuttFormatFlags flags, struct Buffer *buf)
@@ -58,7 +58,7 @@ static void pgp_command_file_signature(const struct ExpandoNode *node, void *dat
 }
 
 /**
- * pgp_command_key_ids - PGP Command: key IDs - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_key_ids - PGP Command: key IDs - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void pgp_command_key_ids(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -70,7 +70,7 @@ static void pgp_command_key_ids(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_need_pass - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_need_pass - PGP Command: PGPPASSFD=0 if passphrase is needed - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void pgp_command_need_pass(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -82,7 +82,7 @@ static void pgp_command_need_pass(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pgp_command_sign_as - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pgp_command_sign_as - PGP Command: $pgp_sign_as or $pgp_default_key - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void pgp_command_sign_as(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)

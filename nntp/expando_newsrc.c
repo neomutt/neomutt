@@ -39,7 +39,7 @@
 #include "adata.h"
 
 /**
- * nntp_account - Newsrc: Account url - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_account - Newsrc: Account url - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void nntp_account(const struct ExpandoNode *node, void *data,
                          MuttFormatFlags flags, struct Buffer *buf)
@@ -62,7 +62,7 @@ static void nntp_account(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_port - Newsrc: Port - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * nntp_port - Newsrc: Port - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long nntp_port(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -73,7 +73,7 @@ static long nntp_port(const struct ExpandoNode *node, void *data, MuttFormatFlag
 }
 
 /**
- * nntp_port_if_num - Newsrc: Port if specified - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * nntp_port_if_num - Newsrc: Port if specified - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long nntp_port_if_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -87,7 +87,7 @@ static long nntp_port_if_num(const struct ExpandoNode *node, void *data, MuttFor
 }
 
 /**
- * nntp_port_if - Newsrc: Port if specified - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_port_if - Newsrc: Port if specified - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void nntp_port_if(const struct ExpandoNode *node, void *data,
                          MuttFormatFlags flags, struct Buffer *buf)
@@ -102,7 +102,7 @@ static void nntp_port_if(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_server - Newsrc: News server name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_server - Newsrc: News server name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void nntp_server(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
@@ -119,7 +119,7 @@ static void nntp_server(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_schema - Newsrc: Url schema - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_schema - Newsrc: Url schema - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void nntp_schema(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
@@ -142,7 +142,7 @@ static void nntp_schema(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_username - Newsrc: Username - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * nntp_username - Newsrc: Username - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void nntp_username(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)

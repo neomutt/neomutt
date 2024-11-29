@@ -36,7 +36,7 @@
 #include "expando/lib.h"
 
 /**
- * autocrypt_address - Autocrypt: Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * autocrypt_address - Autocrypt: Address - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void autocrypt_address(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -47,7 +47,7 @@ static void autocrypt_address(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_enabled - Autocrypt: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * autocrypt_enabled - Autocrypt: Status flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void autocrypt_enabled(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -69,7 +69,7 @@ static void autocrypt_enabled(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_keyid - Autocrypt: GPG Key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * autocrypt_keyid - Autocrypt: GPG Key - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void autocrypt_keyid(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -81,7 +81,7 @@ static void autocrypt_keyid(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * autocrypt_number_num - Autocrypt: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * autocrypt_number_num - Autocrypt: Index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long autocrypt_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -91,7 +91,7 @@ static long autocrypt_number_num(const struct ExpandoNode *node, void *data, Mut
 }
 
 /**
- * autocrypt_prefer_encrypt - Autocrypt: Prefer-encrypt flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * autocrypt_prefer_encrypt - Autocrypt: Prefer-encrypt flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void autocrypt_prefer_encrypt(const struct ExpandoNode *node, void *data,
                                      MuttFormatFlags flags, struct Buffer *buf)

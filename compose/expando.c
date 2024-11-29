@@ -51,7 +51,7 @@ static int num_attachments(const struct ComposeAttachData *adata)
 }
 
 /**
- * compose_attach_count_num - Compose: Number of attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * compose_attach_count_num - Compose: Number of attachments - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long compose_attach_count_num(const struct ExpandoNode *node, void *data,
                                      MuttFormatFlags flags)
@@ -62,7 +62,7 @@ static long compose_attach_count_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * compose_attach_size - Compose: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * compose_attach_size - Compose: Size in bytes - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void compose_attach_size(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -76,7 +76,7 @@ static void compose_attach_size(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * compose_attach_size_num - Compose: Size in bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * compose_attach_size_num - Compose: Size in bytes - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long compose_attach_size_num(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags)
@@ -86,7 +86,7 @@ static long compose_attach_size_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * global_hostname - Compose: Hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_hostname - Compose: Hostname - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_hostname(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -96,7 +96,7 @@ static void global_hostname(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * global_version - Compose: Version - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_version - Compose: Version - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_version(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)

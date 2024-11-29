@@ -34,7 +34,7 @@
 #include "pattern_data.h"
 
 /**
- * pattern_description - Pattern: pattern description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pattern_description - Pattern: pattern description - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void pattern_description(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -46,7 +46,7 @@ static void pattern_description(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pattern_expression - Pattern: pattern expression - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * pattern_expression - Pattern: pattern expression - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void pattern_expression(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -58,7 +58,7 @@ static void pattern_expression(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * pattern_number_num - Pattern: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * pattern_number_num - Pattern: Index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long pattern_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {

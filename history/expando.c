@@ -34,7 +34,7 @@
 #include "expando/lib.h"
 
 /**
- * history_number - History: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * history_number - History: Index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long history_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -44,7 +44,7 @@ static long history_number(const struct ExpandoNode *node, void *data, MuttForma
 }
 
 /**
- * history_match - History: History match - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * history_match - History: History match - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void history_match(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)

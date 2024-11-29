@@ -42,7 +42,7 @@
 #include "muttlib.h"
 
 /**
- * folder_date - Browser: Last modified - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_date - Browser: Last modified - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_date(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
@@ -64,7 +64,7 @@ static void folder_date(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_date_num - Browser: Last modified - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_date_num - Browser: Last modified - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -76,7 +76,7 @@ static long folder_date_num(const struct ExpandoNode *node, void *data, MuttForm
 }
 
 /**
- * folder_date_format - Browser: Last modified ($date_format) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_date_format - Browser: Last modified ($date_format) - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_date_format(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -109,7 +109,7 @@ static void folder_date_format(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_date_format_num - Browser: Last modified ($date_format) - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_date_format_num - Browser: Last modified ($date_format) - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_date_format_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -121,7 +121,7 @@ static long folder_date_format_num(const struct ExpandoNode *node, void *data, M
 }
 
 /**
- * folder_date_strf - Browser: Last modified (strftime) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_date_strf - Browser: Last modified (strftime) - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_date_strf(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -155,7 +155,7 @@ static void folder_date_strf(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_date_strf_num - Browser: Last modified (strftime) - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_date_strf_num - Browser: Last modified (strftime) - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_date_strf_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -168,7 +168,7 @@ static long folder_date_strf_num(const struct ExpandoNode *node, void *data, Mut
 }
 
 /**
- * folder_description - Browser: Description - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_description - Browser: Description - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_description(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -192,7 +192,7 @@ static void folder_description(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_filename - Browser: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_filename - Browser: Filename - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_filename(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -212,7 +212,7 @@ static void folder_filename(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_file_group - Browser: Group name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_file_group - Browser: Group name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_file_group(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -233,7 +233,7 @@ static void folder_file_group(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_file_mode - Browser: File permissions - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_file_mode - Browser: File permissions - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_file_mode(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -268,7 +268,7 @@ static void folder_file_mode(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_file_owner - Browser: Owner name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_file_owner - Browser: Owner name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_file_owner(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -289,7 +289,7 @@ static void folder_file_owner(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_file_size - Browser: Size in bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_file_size - Browser: Size in bytes - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_file_size(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -303,7 +303,7 @@ static void folder_file_size(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_file_size_num - Browser: Size in bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_file_size_num - Browser: Size in bytes - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_file_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -312,7 +312,7 @@ static long folder_file_size_num(const struct ExpandoNode *node, void *data, Mut
 }
 
 /**
- * folder_hard_links - Browser: Hard links - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_hard_links - Browser: Hard links - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_hard_links(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -325,7 +325,7 @@ static void folder_hard_links(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_hard_links_num - Browser: Hard links - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_hard_links_num - Browser: Hard links - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_hard_links_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -338,7 +338,7 @@ static long folder_hard_links_num(const struct ExpandoNode *node, void *data, Mu
 }
 
 /**
- * folder_message_count - Browser: Number of messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_message_count - Browser: Number of messages - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_message_count(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
@@ -351,7 +351,7 @@ static void folder_message_count(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_message_count_num - Browser: Number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_message_count_num - Browser: Number of messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_message_count_num(const struct ExpandoNode *node, void *data,
                                      MuttFormatFlags flags)
@@ -365,7 +365,7 @@ static long folder_message_count_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_new_mail - Browser: New mail flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_new_mail - Browser: New mail flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_new_mail(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -378,7 +378,7 @@ static void folder_new_mail(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_new_mail_num - Browser: New mail flag - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_new_mail_num - Browser: New mail flag - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_new_mail_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -387,7 +387,7 @@ static long folder_new_mail_num(const struct ExpandoNode *node, void *data, Mutt
 }
 
 /**
- * folder_notify_num - Browser: Alert for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_notify_num - Browser: Alert for new mail - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_notify_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -397,7 +397,7 @@ static long folder_notify_num(const struct ExpandoNode *node, void *data, MuttFo
 }
 
 /**
- * folder_number_num - Browser: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_number_num - Browser: Index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -407,7 +407,7 @@ static long folder_number_num(const struct ExpandoNode *node, void *data, MuttFo
 }
 
 /**
- * folder_poll_num - Browser: Poll for new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_poll_num - Browser: Poll for new mail - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_poll_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -417,7 +417,7 @@ static long folder_poll_num(const struct ExpandoNode *node, void *data, MuttForm
 }
 
 /**
- * folder_tagged - Browser: Is Tagged - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_tagged - Browser: Is Tagged - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_tagged(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
@@ -430,7 +430,7 @@ static void folder_tagged(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_tagged_num - Browser: Is Tagged - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_tagged_num - Browser: Is Tagged - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_tagged_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -439,7 +439,7 @@ static long folder_tagged_num(const struct ExpandoNode *node, void *data, MuttFo
 }
 
 /**
- * folder_unread_count - Browser: Number of unread messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * folder_unread_count - Browser: Number of unread messages - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void folder_unread_count(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -452,7 +452,7 @@ static void folder_unread_count(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * folder_unread_count_num - Browser: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * folder_unread_count_num - Browser: Number of unread messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long folder_unread_count_num(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags)
@@ -466,7 +466,7 @@ static long folder_unread_count_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * global_padding_space - Fixed whitespace - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_padding_space - Fixed whitespace - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_padding_space(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)

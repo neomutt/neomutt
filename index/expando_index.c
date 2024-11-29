@@ -370,7 +370,7 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
 }
 
 /**
- * email_attachment_count - Index: Number of MIME attachments - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_attachment_count - Index: Number of MIME attachments - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_attachment_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -391,7 +391,7 @@ static long email_attachment_count(const struct ExpandoNode *node, void *data, M
 }
 
 /**
- * email_body_characters - Index: Number of raw bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_body_characters - Index: Number of raw bytes - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_body_characters(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -411,7 +411,7 @@ static void email_body_characters(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_combined_flags - Index: Status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_combined_flags - Index: Status flags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_combined_flags(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
@@ -493,7 +493,7 @@ static void email_combined_flags(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_crypto_flags - Index: Message crypto flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_crypto_flags - Index: Message crypto flags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_crypto_flags(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -533,7 +533,7 @@ static void email_crypto_flags(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_date_format - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_date_format - Index: Sent date and time - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_date_format(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -550,7 +550,7 @@ static void email_date_format(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_date_format_local - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_date_format_local - Index: Sent local date and time - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_date_format_local(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags, struct Buffer *buf)
@@ -567,7 +567,7 @@ static void email_date_format_local(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_date_format_local_num - Index: Local Date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_date_format_local_num - Index: Local Date and time - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_date_format_local_num(const struct ExpandoNode *node,
                                         void *data, MuttFormatFlags flags)
@@ -581,7 +581,7 @@ static long email_date_format_local_num(const struct ExpandoNode *node,
 }
 
 /**
- * email_date_format_num - Index: Senders Date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_date_format_num - Index: Senders Date and time - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_date_format_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -594,7 +594,7 @@ static long email_date_format_num(const struct ExpandoNode *node, void *data, Mu
 }
 
 /**
- * email_date_strf - Index: Sent date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_date_strf - Index: Sent date and time - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_date_strf(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -608,7 +608,7 @@ static void email_date_strf(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_date_strf_num - Index: Sender's date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_date_strf_num - Index: Sender's date and time - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_date_strf_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -621,7 +621,7 @@ static long email_date_strf_num(const struct ExpandoNode *node, void *data, Mutt
 }
 
 /**
- * email_date_strf_local - Index: Sent local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_date_strf_local - Index: Sent local date and time - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_date_strf_local(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -635,7 +635,7 @@ static void email_date_strf_local(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_date_strf_local_num - Index: Local date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_date_strf_local_num - Index: Local date and time - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_date_strf_local_num(const struct ExpandoNode *node,
                                       void *data, MuttFormatFlags flags)
@@ -649,7 +649,7 @@ static long email_date_strf_local_num(const struct ExpandoNode *node,
 }
 
 /**
- * email_flag_chars - Index: Status flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_flag_chars - Index: Status flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_flag_chars(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -687,7 +687,7 @@ static void email_flag_chars(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_from_list - Index: List address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_from_list - Index: List address - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_from_list(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -707,7 +707,7 @@ static void email_from_list(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_index_hook - Index: index-format-hook - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_index_hook - Index: index-format-hook - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_index_hook(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -727,7 +727,7 @@ static void email_index_hook(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_lines - Index: Number of lines - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_lines - Index: Number of lines - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_lines(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -743,7 +743,7 @@ static long email_lines(const struct ExpandoNode *node, void *data, MuttFormatFl
 }
 
 /**
- * email_list_or_save_folder - Index: List Name or Save folder - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_list_or_save_folder - Index: List Name or Save folder - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_list_or_save_folder(const struct ExpandoNode *node, void *data,
                                       MuttFormatFlags flags, struct Buffer *buf)
@@ -767,7 +767,7 @@ static void email_list_or_save_folder(const struct ExpandoNode *node, void *data
 }
 
 /**
- * email_message_flags - Index: Message tag flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_message_flags - Index: Message tag flags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_message_flags(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -800,7 +800,7 @@ static void email_message_flags(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_number - Index: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_number - Index: Index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -816,7 +816,7 @@ static long email_number(const struct ExpandoNode *node, void *data, MuttFormatF
 }
 
 /**
- * email_score - Index: Message score - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_score - Index: Message score - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_score(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -829,7 +829,7 @@ static long email_score(const struct ExpandoNode *node, void *data, MuttFormatFl
 }
 
 /**
- * email_size - Index: Number of bytes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_size - Index: Number of bytes - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_size(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, struct Buffer *buf)
@@ -849,7 +849,7 @@ static void email_size(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_size_num - Index: Number of bytes - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_size_num - Index: Number of bytes - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -862,7 +862,7 @@ static long email_size_num(const struct ExpandoNode *node, void *data, MuttForma
 }
 
 /**
- * email_status_flags - Index: Message status flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_status_flags - Index: Message status flags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_status_flags(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -922,7 +922,7 @@ static void email_status_flags(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_strf_recv_local - Index: Received local date and time - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_strf_recv_local - Index: Received local date and time - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_strf_recv_local(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -936,7 +936,7 @@ static void email_strf_recv_local(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_strf_recv_local_num - Index: Local received date and time - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_strf_recv_local_num - Index: Local received date and time - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_strf_recv_local_num(const struct ExpandoNode *node,
                                       void *data, MuttFormatFlags flags)
@@ -950,7 +950,7 @@ static long email_strf_recv_local_num(const struct ExpandoNode *node,
 }
 
 /**
- * email_tags - Index: Message tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_tags - Index: Message tags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_tags(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, struct Buffer *buf)
@@ -966,7 +966,7 @@ static void email_tags(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_tags_transformed - Index: Individual tag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_tags_transformed - Index: Individual tag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_tags_transformed(const struct ExpandoNode *node, void *data,
                                    MuttFormatFlags flags, struct Buffer *buf)
@@ -986,7 +986,7 @@ static void email_tags_transformed(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_thread_count - Index: Number of messages thread - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_thread_count - Index: Number of messages thread - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_thread_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -998,7 +998,7 @@ static long email_thread_count(const struct ExpandoNode *node, void *data, MuttF
 }
 
 /**
- * email_thread_hidden_count - Index: Number of hidden messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_thread_hidden_count - Index: Number of hidden messages - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_thread_hidden_count(const struct ExpandoNode *node, void *data,
                                       MuttFormatFlags flags, struct Buffer *buf)
@@ -1028,7 +1028,7 @@ static void email_thread_hidden_count(const struct ExpandoNode *node, void *data
 }
 
 /**
- * email_thread_hidden_count_num - Index: Number of hidden messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_thread_hidden_count_num - Index: Number of hidden messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_thread_hidden_count_num(const struct ExpandoNode *node,
                                           void *data, MuttFormatFlags flags)
@@ -1052,7 +1052,7 @@ static long email_thread_hidden_count_num(const struct ExpandoNode *node,
 }
 
 /**
- * email_thread_number - Index: Thread index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * email_thread_number - Index: Thread index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long email_thread_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -1064,7 +1064,7 @@ static long email_thread_number(const struct ExpandoNode *node, void *data, Mutt
 }
 
 /**
- * email_thread_tags - Index: Tags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_thread_tags - Index: Tags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_thread_tags(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -1110,7 +1110,7 @@ static void email_thread_tags(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * email_to_chars - Index: $to_chars flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * email_to_chars - Index: $to_chars flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void email_to_chars(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)
@@ -1131,7 +1131,7 @@ static void email_to_chars(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_cc_all - Index: Cc recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_cc_all - Index: Cc recipients - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_cc_all(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -1145,7 +1145,7 @@ static void envelope_cc_all(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_first_name - Index: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_first_name - Index: First name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_first_name(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -1190,7 +1190,7 @@ static void envelope_first_name(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_from - Index: Author Address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_from - Index: Author Address - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_from(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
@@ -1214,7 +1214,7 @@ static void envelope_from(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_from_full - Index: Sender - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_from_full - Index: Sender - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_from_full(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -1228,7 +1228,7 @@ static void envelope_from_full(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_initials - Index: Initials of author - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_initials - Index: Initials of author - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_initials(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -1255,7 +1255,7 @@ static void envelope_initials(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_list_address - Index: Email list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_list_address - Index: Email list - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_list_address(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -1278,7 +1278,7 @@ static void envelope_list_address(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_list_empty - Index: Mailing list - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_list_empty - Index: Mailing list - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_list_empty(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -1298,7 +1298,7 @@ static void envelope_list_empty(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_message_id - Index: Message-id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_message_id - Index: Message-id - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_message_id(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -1313,7 +1313,7 @@ static void envelope_message_id(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_name - Index: Author's real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_name - Index: Author's real name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_name(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
@@ -1333,7 +1333,7 @@ static void envelope_name(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_newsgroup - Index: Newsgroup name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_newsgroup - Index: Newsgroup name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_newsgroup(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -1348,7 +1348,7 @@ static void envelope_newsgroup(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_organization - Index: Organization - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_organization - Index: Organization - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_organization(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -1363,7 +1363,7 @@ static void envelope_organization(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_reply_to - Index: Reply-to address - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_reply_to - Index: Reply-to address - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_reply_to(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -1388,7 +1388,7 @@ static void envelope_reply_to(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_sender - Index: Author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_sender - Index: Author name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_sender(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -1409,7 +1409,7 @@ static void envelope_sender(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_sender_plain - Index: Plain author name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_sender_plain - Index: Plain author name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_sender_plain(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -1430,7 +1430,7 @@ static void envelope_sender_plain(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_spam - Index: Spam attributes - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_spam - Index: Spam attributes - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_spam(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
@@ -1444,7 +1444,7 @@ static void envelope_spam(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_subject - Index: Subject - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_subject - Index: Subject - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_subject(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -1469,7 +1469,7 @@ static void envelope_subject(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_thread_tree - Index: Thread tree - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_thread_tree - Index: Thread tree - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_thread_tree(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
@@ -1488,7 +1488,7 @@ static void envelope_thread_tree(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_thread_x_label - Index: X-Label (if different) - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_thread_x_label - Index: X-Label (if different) - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_thread_x_label(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags, struct Buffer *buf)
@@ -1534,7 +1534,7 @@ static void envelope_thread_x_label(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_to - Index: To field - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_to - Index: To field - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_to(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
@@ -1566,7 +1566,7 @@ static void envelope_to(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_to_all - Index: To recipients - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_to_all - Index: To recipients - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_to_all(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -1580,7 +1580,7 @@ static void envelope_to_all(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_username - Index: User name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_username - Index: User name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_username(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -1608,7 +1608,7 @@ static void envelope_username(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_x_comment_to - Index: X-Comment-To - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_x_comment_to - Index: X-Comment-To - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_x_comment_to(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -1623,7 +1623,7 @@ static void envelope_x_comment_to(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * envelope_x_label - Index: X-Label - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * envelope_x_label - Index: X-Label - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void envelope_x_label(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -1641,7 +1641,7 @@ static void envelope_x_label(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * mailbox_mailbox_name - Index: Filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * mailbox_mailbox_name - Index: Filename - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
@@ -1675,7 +1675,7 @@ static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * mailbox_message_count - Index: Total number of message - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * mailbox_message_count - Index: Total number of message - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long mailbox_message_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -1689,7 +1689,7 @@ static long mailbox_message_count(const struct ExpandoNode *node, void *data, Mu
 }
 
 /**
- * mailbox_percentage - Index: Progress indicator - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * mailbox_percentage - Index: Progress indicator - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void mailbox_percentage(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)

@@ -91,7 +91,7 @@ static char *crypt_flags(KeyFlags flags)
 }
 
 /**
- * gpgme_entry_number_num - GPGME: Index number - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * gpgme_entry_number_num - GPGME: Index number - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long gpgme_entry_number_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -100,7 +100,7 @@ static long gpgme_entry_number_num(const struct ExpandoNode *node, void *data, M
 }
 
 /**
- * gpgme_entry_trust - GPGME: Trust/validity - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_entry_trust - GPGME: Trust/validity - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_entry_trust(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -143,7 +143,7 @@ static void gpgme_entry_trust(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_entry_user_id - GPGME: User id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_entry_user_id - GPGME: User id - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_entry_user_id(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -156,7 +156,7 @@ static void gpgme_entry_user_id(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_key_algorithm - GPGME: Key Algorithm - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_key_algorithm - GPGME: Key Algorithm - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_key_algorithm(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -174,7 +174,7 @@ static void gpgme_key_algorithm(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_key_capabilities - GPGME: Key Capabilities - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_key_capabilities - GPGME: Key Capabilities - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_key_capabilities(const struct ExpandoNode *node, void *data,
                                    MuttFormatFlags flags, struct Buffer *buf)
@@ -187,7 +187,7 @@ static void gpgme_key_capabilities(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_key_date - GPGME: Date of the key - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_key_date - GPGME: Date of the key - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_key_date(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)
@@ -227,7 +227,7 @@ static void gpgme_key_date(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_key_date_num - GPGME: Date of the key - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * gpgme_key_date_num - GPGME: Date of the key - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long gpgme_key_date_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -237,7 +237,7 @@ static long gpgme_key_date_num(const struct ExpandoNode *node, void *data, MuttF
 }
 
 /**
- * gpgme_key_fingerprint - GPGME: Key fingerprint - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_key_fingerprint - GPGME: Key fingerprint - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_key_fingerprint(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
@@ -252,7 +252,7 @@ static void gpgme_key_fingerprint(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_key_flags - GPGME: Key Flags - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_key_flags - GPGME: Key Flags - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_key_flags(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -265,7 +265,7 @@ static void gpgme_key_flags(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_key_id - GPGME: Key id - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_key_id - GPGME: Key id - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_key_id(const struct ExpandoNode *node, void *data,
                          MuttFormatFlags flags, struct Buffer *buf)
@@ -280,7 +280,7 @@ static void gpgme_key_id(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * gpgme_key_length_num - GPGME: Key length - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * gpgme_key_length_num - GPGME: Key length - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long gpgme_key_length_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -291,7 +291,7 @@ static long gpgme_key_length_num(const struct ExpandoNode *node, void *data, Mut
 }
 
 /**
- * gpgme_key_protocol - GPGME: Protocol - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * gpgme_key_protocol - GPGME: Protocol - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void gpgme_key_protocol(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)

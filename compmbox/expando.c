@@ -35,7 +35,7 @@
 #include "expando/lib.h"
 
 /**
- * compress_from - Compress: From filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * compress_from - Compress: From filename - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void compress_from(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
@@ -49,7 +49,7 @@ static void compress_from(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * compress_to - Compress: To filename - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * compress_to - Compress: To filename - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void compress_to(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)

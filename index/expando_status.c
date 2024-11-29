@@ -71,7 +71,7 @@ static char *get_sort_str(char *buf, size_t buflen, enum EmailSortType method)
 }
 
 /**
- * global_config_sort - Status: Sorting mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_config_sort - Status: Sorting mode - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_config_sort(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -84,7 +84,7 @@ static void global_config_sort(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * global_config_sort_aux - Status: Aux sorting method - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_config_sort_aux - Status: Aux sorting method - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_config_sort_aux(const struct ExpandoNode *node, void *data,
                                    MuttFormatFlags flags, struct Buffer *buf)
@@ -97,7 +97,7 @@ static void global_config_sort_aux(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * global_config_use_threads - Status: Current threading mode - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_config_use_threads - Status: Current threading mode - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_config_use_threads(const struct ExpandoNode *node, void *data,
                                       MuttFormatFlags flags, struct Buffer *buf)
@@ -108,7 +108,7 @@ static void global_config_use_threads(const struct ExpandoNode *node, void *data
 }
 
 /**
- * global_hostname - Status: Local hostname - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_hostname - Status: Local hostname - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_hostname(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -118,7 +118,7 @@ static void global_hostname(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * global_version - Status: Version string - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * global_version - Status: Version string - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void global_version(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)
@@ -128,7 +128,7 @@ static void global_version(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_deleted_count_num - Status: Number of deleted messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_deleted_count_num - Status: Number of deleted messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_deleted_count_num(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags)
@@ -141,7 +141,7 @@ static long index_deleted_count_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_description - Status: Description of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_description - Status: Description of the mailbox - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void index_description(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
@@ -162,7 +162,7 @@ static void index_description(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_flagged_count_num - Status: Number of flagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_flagged_count_num - Status: Number of flagged messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_flagged_count_num(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags)
@@ -175,7 +175,7 @@ static long index_flagged_count_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_limit_count_num - Status: Number of messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_limit_count_num - Status: Number of messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_limit_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -187,7 +187,7 @@ static long index_limit_count_num(const struct ExpandoNode *node, void *data, Mu
 }
 
 /**
- * index_limit_pattern - Status: Active limit pattern - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_limit_pattern - Status: Active limit pattern - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void index_limit_pattern(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -201,7 +201,7 @@ static void index_limit_pattern(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_limit_size - Status: Size of the messages - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_limit_size - Status: Size of the messages - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void index_limit_size(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
@@ -218,7 +218,7 @@ static void index_limit_size(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_limit_size_num - Status: Size of the messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_limit_size_num - Status: Size of the messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_limit_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -232,7 +232,7 @@ static long index_limit_size_num(const struct ExpandoNode *node, void *data, Mut
 }
 
 /**
- * index_mailbox_path - Status: pathname of the mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_mailbox_path - Status: pathname of the mailbox - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void index_mailbox_path(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -266,7 +266,7 @@ static void index_mailbox_path(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_mailbox_size - Status: Size of the current mailbox - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_mailbox_size - Status: Size of the current mailbox - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void index_mailbox_size(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -283,7 +283,7 @@ static void index_mailbox_size(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_mailbox_size_num - Status: Size of the current mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_mailbox_size_num - Status: Size of the current mailbox - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_mailbox_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -297,7 +297,7 @@ static long index_mailbox_size_num(const struct ExpandoNode *node, void *data, M
 }
 
 /**
- * index_message_count_num - Status: Number of messages in the mailbox - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_message_count_num - Status: Number of messages in the mailbox - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_message_count_num(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags)
@@ -310,7 +310,7 @@ static long index_message_count_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_new_count_num - Status: Number of new messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_new_count_num - Status: Number of new messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_new_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -322,7 +322,7 @@ static long index_new_count_num(const struct ExpandoNode *node, void *data, Mutt
 }
 
 /**
- * index_old_count_num - Status: Number of old messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_old_count_num - Status: Number of old messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_old_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -334,7 +334,7 @@ static long index_old_count_num(const struct ExpandoNode *node, void *data, Mutt
 }
 
 /**
- * index_postponed_count_num - Status: Number of postponed messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_postponed_count_num - Status: Number of postponed messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_postponed_count_num(const struct ExpandoNode *node,
                                       void *data, MuttFormatFlags flags)
@@ -347,7 +347,7 @@ static long index_postponed_count_num(const struct ExpandoNode *node,
 }
 
 /**
- * index_readonly - Status: Modified/read-only flag - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * index_readonly - Status: Modified/read-only flag - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void index_readonly(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)
@@ -380,7 +380,7 @@ static void index_readonly(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * index_read_count_num - Status: Number of read messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_read_count_num - Status: Number of read messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_read_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -392,7 +392,7 @@ static long index_read_count_num(const struct ExpandoNode *node, void *data, Mut
 }
 
 /**
- * index_tagged_count_num - Status: Number of tagged messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_tagged_count_num - Status: Number of tagged messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_tagged_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -404,7 +404,7 @@ static long index_tagged_count_num(const struct ExpandoNode *node, void *data, M
 }
 
 /**
- * index_unread_count_num - Status: Number of unread messages - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_unread_count_num - Status: Number of unread messages - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_unread_count_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
@@ -416,7 +416,7 @@ static long index_unread_count_num(const struct ExpandoNode *node, void *data, M
 }
 
 /**
- * index_unread_mailboxes_num - Status: Number of mailboxes with new mail - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * index_unread_mailboxes_num - Status: Number of mailboxes with new mail - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long index_unread_mailboxes_num(const struct ExpandoNode *node,
                                        void *data, MuttFormatFlags flags)
@@ -429,7 +429,7 @@ static long index_unread_mailboxes_num(const struct ExpandoNode *node,
 }
 
 /**
- * menu_percentage - Status: Percentage through index - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * menu_percentage - Status: Percentage through index - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void menu_percentage(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
@@ -464,7 +464,7 @@ static void menu_percentage(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * menu_percentage_num - Status: Percentage through index - Implements ExpandoRenderData::get_number() - @ingroup expando_get_number_api
+ * menu_percentage_num - Status: Percentage through index - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long menu_percentage_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {

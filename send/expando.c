@@ -36,7 +36,7 @@
 #include "expando/lib.h"
 
 /**
- * greeting_real_name - Greeting: Real name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * greeting_real_name - Greeting: Real name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void greeting_real_name(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
@@ -49,7 +49,7 @@ static void greeting_real_name(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * greeting_login_name - Greeting: Login name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * greeting_login_name - Greeting: Login name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void greeting_login_name(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
@@ -73,7 +73,7 @@ static void greeting_login_name(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * greeting_first_name - Greeting: First name - Implements ExpandoRenderData::get_string() - @ingroup expando_get_string_api
+ * greeting_first_name - Greeting: First name - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void greeting_first_name(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
