@@ -41,7 +41,7 @@
  * node_container_render - Callback for a Container Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_container_render(const struct ExpandoNode *node,
-                          const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                          const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                           int max_cols, void *data, MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_CONTAINER);
@@ -58,7 +58,7 @@ int node_container_render(const struct ExpandoNode *node,
   {
     if (total_cols >= max_cols)
       break;
-    total_cols += node_render(*enp, rdata, tmp, max_cols - total_cols, data, flags);
+    total_cols += node_render(*enp, erc, tmp, max_cols - total_cols, data, flags);
   }
 
   struct Buffer *tmp2 = buf_pool_get();

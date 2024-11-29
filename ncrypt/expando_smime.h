@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData SmimeCommandRenderData[];
+extern const struct ExpandoRenderCallback SmimeCommandRenderCallbacks[];
 
 #endif /* MUTT_NCRYPT_EXPANDO_SMIME_H */

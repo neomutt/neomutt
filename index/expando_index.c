@@ -723,7 +723,7 @@ static void email_index_hook(const struct ExpandoNode *node, void *data,
   if (!exp)
     return;
 
-  expando_filter(exp, IndexRenderData, data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_filter(exp, IndexRenderCallbacks, data, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
 }
 
 /**
@@ -1701,11 +1701,11 @@ static void mailbox_percentage(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * IndexRenderData - Callbacks for Index Expandos
+ * IndexRenderCallbacks - Callbacks for Index Expandos
  *
  * @sa IndexFormatDef, ExpandoDataEmail, ExpandoDataEnvelope, ExpandoDataGlobal, ExpandoDataMailbox
  */
-const struct ExpandoRenderData IndexRenderData[] = {
+const struct ExpandoRenderCallback IndexRenderCallbacks[] = {
   // clang-format off
   { ED_EMAIL,    ED_EMA_ATTACHMENT_COUNT,    NULL,                      email_attachment_count },
   { ED_EMAIL,    ED_EMA_BODY_CHARACTERS,     email_body_characters,     NULL },

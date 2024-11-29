@@ -305,11 +305,11 @@ static long sidebar_unseen_count_num(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * SidebarRenderData - Callbacks for Sidebar Expandos
+ * SidebarRenderCallbacks - Callbacks for Sidebar Expandos
  *
  * @sa SidebarFormatDef, ExpandoDataSidebar
  */
-const struct ExpandoRenderData SidebarRenderData[] = {
+const struct ExpandoRenderCallback SidebarRenderCallbacks[] = {
   // clang-format off
   { ED_SIDEBAR, ED_SID_DELETED_COUNT, NULL,                sidebar_deleted_count_num },
   { ED_SIDEBAR, ED_SID_DESCRIPTION,   sidebar_description, NULL },

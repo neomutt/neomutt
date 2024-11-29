@@ -43,7 +43,7 @@ enum ExpandoDataAlias
   ED_ALI_TAGS,                 ///< Alias.tags
 };
 
-extern const struct ExpandoRenderData AliasRenderData[];
-extern const struct ExpandoRenderData QueryRenderData[];
+extern const struct ExpandoRenderCallback AliasRenderCallbacks[];
+extern const struct ExpandoRenderCallback QueryRenderCallbacks[];
 
 #endif /* MUTT_ALIAS_EXPANDO_H */

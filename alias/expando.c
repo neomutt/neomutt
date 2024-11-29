@@ -180,11 +180,11 @@ static long alias_view_tagged_num(const struct ExpandoNode *node, void *data, Mu
 }
 
 /**
- * AliasRenderData - Callbacks for Alias Expandos
+ * AliasRenderCallbacks - Callbacks for Alias Expandos
  *
  * @sa AliasFormatDef, ExpandoDataAlias
  */
-const struct ExpandoRenderData AliasRenderData[] = {
+const struct ExpandoRenderCallback AliasRenderCallbacks[] = {
   // clang-format off
   { ED_ALIAS, ED_ALI_ADDRESS, alias_address,     NULL },
   { ED_ALIAS, ED_ALI_ALIAS,   alias_alias,       NULL },
@@ -200,11 +200,11 @@ const struct ExpandoRenderData AliasRenderData[] = {
 };
 
 /**
- * QueryRenderData - Callbacks for Query Expandos
+ * QueryRenderCallbacks - Callbacks for Query Expandos
  *
  * @sa QueryFormatDef, ExpandoDataAlias
  */
-const struct ExpandoRenderData QueryRenderData[] = {
+const struct ExpandoRenderCallback QueryRenderCallbacks[] = {
   // clang-format off
   { ED_ALIAS, ED_ALI_ADDRESS, alias_address,     NULL },
   { ED_ALIAS, ED_ALI_COMMENT, alias_comment,     NULL },

@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData PgpEntryRenderData[];
+extern const struct ExpandoRenderCallback PgpEntryRenderCallbacks[];
 
 #endif /* MUTT_NCRYPT_EXPANDO_PGP_H */

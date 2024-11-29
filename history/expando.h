@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData HistoryRenderData[];
+extern const struct ExpandoRenderCallback HistoryRenderCallbacks[];
 
 #endif /* MUTT_HISTORY_EXPANDO_H */

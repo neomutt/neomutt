@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData CompressRenderData[];
+extern const struct ExpandoRenderCallback CompressRenderCallbacks[];
 
 #endif /* MUTT_COMPMBOX_EXPANDO_H */

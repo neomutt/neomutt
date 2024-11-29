@@ -27,7 +27,7 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData IndexRenderData[];
+extern const struct ExpandoRenderCallback IndexRenderCallbacks[];
 
 /**
  * enum FlagChars - Index into the `$flag_chars` config variable

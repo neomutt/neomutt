@@ -63,11 +63,11 @@ static void compress_to(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * CompressRenderData - Callbacks for Compression Hook Expandos
+ * CompressRenderCallbacks - Callbacks for Compression Hook Expandos
  *
  * @sa CompressFormatDef, ExpandoDataCompress
  */
-const struct ExpandoRenderData CompressRenderData[] = {
+const struct ExpandoRenderCallback CompressRenderCallbacks[] = {
   // clang-format off
   { ED_COMPRESS, ED_CMP_FROM, compress_from, NULL },
   { ED_COMPRESS, ED_CMP_TO,   compress_to,   NULL },

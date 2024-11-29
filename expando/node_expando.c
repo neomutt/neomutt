@@ -402,7 +402,7 @@ void add_color(struct Buffer *buf, enum ColorId cid)
  * node_expando_render - Render an Expando Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_expando_render(const struct ExpandoNode *node,
-                        const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                        const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                         int max_cols, void *data, MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_EXPANDO);
@@ -417,20 +417,20 @@ int node_expando_render(const struct ExpandoNode *node,
   // Numbers and strings get treated slightly differently. We prefer strings.
   // This allows dates to be stored as 1729850182, but displayed as "2024-10-25".
 
-  const struct ExpandoRenderData *rd_match = find_get_string(rdata, node->did, node->uid);
-  if (rd_match)
+  const struct ExpandoRenderCallback *erc_match = find_get_string(erc, node->did, node->uid);
+  if (erc_match)
   {
-    rd_match->get_string(node, data, flags, buf_expando);
+    erc_match->get_string(node, data, flags, buf_expando);
 
     if (fmt && fmt->lower)
       buf_lower_special(buf_expando);
   }
   else
   {
-    rd_match = find_get_number(rdata, node->did, node->uid);
-    ASSERT(rd_match && "Unknown UID");
+    erc_match = find_get_number(erc, node->did, node->uid);
+    ASSERT(erc_match && "Unknown UID");
 
-    const long num = rd_match->get_number(node, data, flags);
+    const long num = erc_match->get_number(node, data, flags);
 
     int precision = 1;
 

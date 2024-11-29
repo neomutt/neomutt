@@ -25,10 +25,10 @@
 #define MUTT_EXPANDO_HELPERS_H
 
 struct Buffer;
-struct ExpandoRenderData;
+struct ExpandoRenderCallback;
 
-const struct ExpandoRenderData *find_get_number(const struct ExpandoRenderData *rdata, int did, int uid);
-const struct ExpandoRenderData *find_get_string(const struct ExpandoRenderData *rdata, int did, int uid);
+const struct ExpandoRenderCallback *find_get_number(const struct ExpandoRenderCallback *erc, int did, int uid);
+const struct ExpandoRenderCallback *find_get_string(const struct ExpandoRenderCallback *erc, int did, int uid);
 
 void buf_lower_special(struct Buffer *buf);
 

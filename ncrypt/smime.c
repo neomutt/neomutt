@@ -195,7 +195,8 @@ bool smime_class_valid_passphrase(void)
 static void smime_command(struct Buffer *buf, struct SmimeCommandContext *cctx,
                           const struct Expando *exp)
 {
-  expando_render(exp, SmimeCommandRenderData, cctx, MUTT_FORMAT_NO_FLAGS, buf->dsize, buf);
+  expando_render(exp, SmimeCommandRenderCallbacks, cctx, MUTT_FORMAT_NO_FLAGS,
+                 buf->dsize, buf);
   mutt_debug(LL_DEBUG2, "%s\n", buf_string(buf));
 }
 

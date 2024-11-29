@@ -371,11 +371,11 @@ static long body_unlink_num(const struct ExpandoNode *node, void *data, MuttForm
 }
 
 /**
- * AttachRenderData - Callbacks for Attachment Expandos
+ * AttachRenderCallbacks - Callbacks for Attachment Expandos
  *
  * @sa AttachFormatDef, ExpandoDataAttach, ExpandoDataBody, ExpandoDataGlobal
  */
-const struct ExpandoRenderData AttachRenderData[] = {
+const struct ExpandoRenderCallback AttachRenderCallbacks[] = {
   // clang-format off
 
   { ED_ATTACH, ED_ATT_CHARSET,          attach_charset,        NULL },

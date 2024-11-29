@@ -87,7 +87,7 @@ void test_expando_node_condbool(void)
     // clang-format on
   };
 
-  static const struct ExpandoRenderData TestRenderData[] = {
+  static const struct ExpandoRenderCallback TestRenderCallback[] = {
     // clang-format off
     { 1, 2, test_y, test_y_num },
     { 1, 3, test_n, test_n_num },
@@ -98,7 +98,7 @@ void test_expando_node_condbool(void)
     // clang-format on
   };
 
-  // int node_condbool_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  // int node_condbool_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {
     struct Buffer *buf = buf_pool_get();
     struct ExpandoNode *node = NULL;
@@ -114,7 +114,7 @@ void test_expando_node_condbool(void)
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 1);
     node_free(&node);
 
@@ -124,7 +124,7 @@ void test_expando_node_condbool(void)
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 0);
     node_free(&node);
 
@@ -134,7 +134,7 @@ void test_expando_node_condbool(void)
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 1);
     node_free(&node);
 
@@ -144,7 +144,7 @@ void test_expando_node_condbool(void)
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 0);
     node_free(&node);
 
@@ -154,7 +154,7 @@ void test_expando_node_condbool(void)
     TEST_CHECK(node != NULL);
     node_cond = node_get_child(node, ENC_CONDITION);
     TEST_CHECK(node_cond != NULL);
-    rc = node_condbool_render(node_cond, TestRenderData, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_condbool_render(node_cond, TestRenderCallback, buf, 99, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 0);
     node_free(&node);
 

@@ -94,11 +94,11 @@ static void pgp_command_sign_as(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * PgpCommandRenderData - Callbacks for PGP Command Expandos
+ * PgpCommandRenderCallbacks - Callbacks for PGP Command Expandos
  *
  * @sa PgpCommandFormatDef, ExpandoDataPgpCmd
  */
-const struct ExpandoRenderData PgpCommandRenderData[] = {
+const struct ExpandoRenderCallback PgpCommandRenderCallbacks[] = {
   // clang-format off
   { ED_PGP_CMD, ED_PGC_FILE_MESSAGE,   pgp_command_file_message,   NULL },
   { ED_PGP_CMD, ED_PGC_FILE_SIGNATURE, pgp_command_file_signature, NULL },

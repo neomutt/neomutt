@@ -106,11 +106,11 @@ static void global_version(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * ComposeRenderData - Callbacks for Compose Expandos
+ * ComposeRenderCallbacks - Callbacks for Compose Expandos
  *
  * @sa ComposeFormatDef, ExpandoDataCompose, ExpandoDataGlobal
  */
-const struct ExpandoRenderData ComposeRenderData[] = {
+const struct ExpandoRenderCallback ComposeRenderCallbacks[] = {
   // clang-format off
   { ED_COMPOSE, ED_COM_ATTACH_COUNT, NULL,                compose_attach_count_num },
   { ED_COMPOSE, ED_COM_ATTACH_SIZE,  compose_attach_size, compose_attach_size_num },

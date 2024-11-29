@@ -103,11 +103,11 @@ static void greeting_first_name(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * GreetingRenderData - Callbacks for Greeting Expandos
+ * GreetingRenderCallbacks - Callbacks for Greeting Expandos
  *
  * @sa GreetingFormatDef, ExpandoDataEnvelope
  */
-const struct ExpandoRenderData GreetingRenderData[] = {
+const struct ExpandoRenderCallback GreetingRenderCallbacks[] = {
   // clang-format off
   { ED_ENVELOPE, ED_ENV_REAL_NAME,  greeting_real_name,  NULL },
   { ED_ENVELOPE, ED_ENV_USER_NAME,  greeting_login_name, NULL },

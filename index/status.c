@@ -52,5 +52,5 @@ void menu_status_line(struct Buffer *buf, struct IndexSharedData *shared,
 {
   struct MenuStatusLineData data = { shared, menu };
 
-  expando_filter(exp, StatusRenderData, &data, MUTT_FORMAT_NO_FLAGS, max_cols, buf);
+  expando_filter(exp, StatusRenderCallbacks, &data, MUTT_FORMAT_NO_FLAGS, max_cols, buf);
 }

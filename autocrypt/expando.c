@@ -114,11 +114,11 @@ static void autocrypt_prefer_encrypt(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * AutocryptRenderData - Callbacks for Autocrypt Expandos
+ * AutocryptRenderCallbacks - Callbacks for Autocrypt Expandos
  *
  * @sa AutocryptFormatDef, ExpandoDataAutocrypt, ExpandoDataGlobal
  */
-const struct ExpandoRenderData AutocryptRenderData[] = {
+const struct ExpandoRenderCallback AutocryptRenderCallbacks[] = {
   // clang-format off
   { ED_AUTOCRYPT, ED_AUT_ADDRESS,        autocrypt_address,        NULL },
   { ED_AUTOCRYPT, ED_AUT_ENABLED,        autocrypt_enabled,        NULL },

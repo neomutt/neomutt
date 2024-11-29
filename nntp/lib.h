@@ -56,7 +56,7 @@ struct stat;
 
 extern struct NntpAccountData *CurrentNewsSrv; ///< Current NNTP news server
 extern const struct MxOps MxNntpOps;
-extern const struct ExpandoRenderData NntpRenderData[];
+extern const struct ExpandoRenderCallback NntpRenderCallbacks[];
 
 /* article number type and format */
 #define anum_t long

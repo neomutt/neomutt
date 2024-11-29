@@ -25,7 +25,7 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData SidebarRenderData[];
+extern const struct ExpandoRenderCallback SidebarRenderCallbacks[];
 
 /**
  * struct SidebarData - Data passed to sidebar_format_str()

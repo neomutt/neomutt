@@ -72,7 +72,7 @@ typedef long (*get_number_t)(const struct ExpandoNode *node, void *data, MuttFor
  * Define callback functions to get data to be formatted.
  * Each function is associated with a Domain+UID pair.
  */
-struct ExpandoRenderData
+struct ExpandoRenderCallback
 {
   int did;                  ///< Domain ID, #ExpandoDomain
   int uid;                  ///< Unique ID, e.g. #ExpandoDataAlias
@@ -81,8 +81,7 @@ struct ExpandoRenderData
   get_number_t get_number;  // Callback function to get a number
 };
 
-int node_render(const struct ExpandoNode *node,
-                     const struct ExpandoRenderData *rdata, struct Buffer *buf,
-                     int max_cols, void *data, MuttFormatFlags flags);
+int node_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *erc,
+                struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
 
 #endif /* MUTT_EXPANDO_RENDER_H */

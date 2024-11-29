@@ -181,11 +181,11 @@ static long group_index_s_num(const struct ExpandoNode *node, void *data, MuttFo
 }
 
 /**
- * GroupIndexRenderData - Callbacks for Nntp Browser Expandos
+ * GroupIndexRenderCallbacks - Callbacks for Nntp Browser Expandos
  *
  * @sa GroupIndexFormatDef, ExpandoDataFolder
  */
-const struct ExpandoRenderData GroupIndexRenderData[] = {
+const struct ExpandoRenderCallback GroupIndexRenderCallbacks[] = {
   // clang-format off
   { ED_FOLDER, ED_FOL_NOTIFY,       NULL,          group_index_a_num },
   { ED_FOLDER, ED_FOL_NUMBER,       NULL,          group_index_C_num },

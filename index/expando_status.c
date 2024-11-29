@@ -480,11 +480,11 @@ static long menu_percentage_num(const struct ExpandoNode *node, void *data, Mutt
 }
 
 /**
- * StatusRenderData - Callbacks for Status Expandos
+ * StatusRenderCallbacks - Callbacks for Status Expandos
  *
  * @sa StatusFormatDef, ExpandoDataGlobal, ExpandoDataIndex, ExpandoDataMenu
  */
-const struct ExpandoRenderData StatusRenderData[] = {
+const struct ExpandoRenderCallback StatusRenderCallbacks[] = {
   // clang-format off
   { ED_GLOBAL, ED_GLO_CONFIG_SORT,        global_config_sort,        NULL },
   { ED_GLOBAL, ED_GLO_CONFIG_SORT_AUX,    global_config_sort_aux,    NULL },

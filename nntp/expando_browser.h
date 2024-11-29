@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData GroupIndexRenderData[];
+extern const struct ExpandoRenderCallback GroupIndexRenderCallbacks[];
 
 #endif /* MUTT_NNTP_EXPANDO_BROWSER_H */

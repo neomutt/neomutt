@@ -128,14 +128,14 @@ void filter_text(struct Buffer *buf)
 /**
  * expando_filter - Render an Expando and run the result through a filter
  * @param[in]  exp      Expando containing the expando tree
- * @param[in]  rdata    Expando render data
+ * @param[in]  erc      Expando Render Callback functions
  * @param[in]  data     Callback data
  * @param[in]  flags    Callback flags
  * @param[in]  max_cols Number of screen columns (-1 means unlimited)
  * @param[out] buf      Buffer in which to save string
  * @retval obj Number of bytes written to buf and screen columns used
  */
-int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rdata,
+int expando_filter(const struct Expando *exp, const struct ExpandoRenderCallback *erc,
                    void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf)
 {
   if (!exp || !exp->node)
@@ -148,7 +148,7 @@ int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rd
   if (is_pipe)
     max_cols = -1;
 
-  int rc = expando_render(exp, rdata, data, flags, max_cols, buf);
+  int rc = expando_render(exp, erc, data, flags, max_cols, buf);
 
   if (!is_pipe)
     return rc;

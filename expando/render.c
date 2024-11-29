@@ -24,7 +24,7 @@
 /**
  * @page expando_render Render Expandos using Data
  *
- * The caller uses ExpandoRenderData to define a set of callback functions.
+ * The caller uses ExpandoRenderCallback to define a set of callback functions.
  * The formatter uses these functions to get data, then format it.
  */
 
@@ -35,18 +35,18 @@
 /**
  * node_render - Render a tree of ExpandoNodes into a string
  * @param node     Root of tree
- * @param rdata    Expando Render data
+ * @param erc      Expando Render Callback functions
  * @param buf      Buffer for the result
  * @param max_cols Maximum number of screen columns to use
  * @param data     Private data
  * @param flags    Flags to control behaviour
  * @retval num Number of screen columns used
  */
-int node_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata,
+int node_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *erc,
                 struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags)
 {
   if (!node || !node->render)
     return 0;
 
-  return node->render(node, rdata, buf, max_cols, data, flags);
+  return node->render(node, erc, buf, max_cols, data, flags);
 }

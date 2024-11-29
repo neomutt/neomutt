@@ -56,11 +56,11 @@ static void history_match(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * HistoryRenderData - Callbacks for History Expandos
+ * HistoryRenderCallbacks - Callbacks for History Expandos
  *
  * @sa HistoryFormatDef, ExpandoDataGlobal, ExpandoDataHistory
  */
-const struct ExpandoRenderData HistoryRenderData[] = {
+const struct ExpandoRenderCallback HistoryRenderCallbacks[] = {
   // clang-format off
   { ED_HISTORY, ED_HIS_NUMBER, NULL,          history_number },
   { ED_HISTORY, ED_HIS_MATCH,  history_match, NULL },

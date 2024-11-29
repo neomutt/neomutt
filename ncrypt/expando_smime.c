@@ -155,11 +155,11 @@ static void smime_command_signature_file(const struct ExpandoNode *node, void *d
 }
 
 /**
- * SmimeCommandRenderData - Callbacks for Smime Command Expandos
+ * SmimeCommandRenderCallbacks - Callbacks for Smime Command Expandos
  *
  * @sa SmimeCommandFormatDef, ExpandoDataGlobal, ExpandoDataSmimeCmd
  */
-const struct ExpandoRenderData SmimeCommandRenderData[] = {
+const struct ExpandoRenderCallback SmimeCommandRenderCallbacks[] = {
   // clang-format off
   { ED_SMIME_CMD, ED_SMI_ALGORITHM,        smime_command_algorithm,        NULL },
   { ED_SMIME_CMD, ED_SMI_CERTIFICATE_IDS,  smime_command_certificate_ids,  NULL },

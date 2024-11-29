@@ -65,7 +65,7 @@ void test_expando_padding_render(void)
     check_node_text(left, "text1");
     check_node_text(right, "text2");
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { -1, -1, NULL },
     };
 
@@ -100,7 +100,7 @@ void test_expando_padding_render(void)
     check_node_text(left, "text1");
     check_node_text(right, "text2");
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { -1, -1, NULL },
     };
 
@@ -135,7 +135,7 @@ void test_expando_padding_render(void)
     check_node_text(left, "text1");
     check_node_text(right, "text2");
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { -1, -1, NULL },
     };
 
@@ -171,7 +171,7 @@ void test_expando_padding_render(void)
     check_node_text(left, "text1");
     check_node_text(right, "text2");
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { -1, -1, NULL },
     };
 
@@ -208,7 +208,7 @@ void test_expando_padding_render(void)
     check_node_text(left, "text1");
     check_node_text(right, "text2");
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { -1, -1, NULL },
     };
 
@@ -245,7 +245,7 @@ void test_expando_padding_render(void)
     check_node_text(left, "text1");
     check_node_text(right, "text2");
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { -1, -1, NULL },
     };
 
@@ -282,7 +282,7 @@ void test_expando_padding_render(void)
     check_node_text(left, "text1");
     check_node_text(right, "text2");
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { -1, -1, NULL },
     };
 

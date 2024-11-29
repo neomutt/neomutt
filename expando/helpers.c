@@ -37,22 +37,22 @@
 
 /**
  * find_get_number - Find a get_number() callback function
- * @param rdata Render data to search
+ * @param erc   Render callbacks to search
  * @param did   Domain ID to match
  * @param uid   Unique ID to match
  * @retval ptr Matching Render data
  */
-const struct ExpandoRenderData *find_get_number(const struct ExpandoRenderData *rdata,
-                                                int did, int uid)
+const struct ExpandoRenderCallback *find_get_number(const struct ExpandoRenderCallback *erc,
+                                                    int did, int uid)
 {
-  if (!rdata)
+  if (!erc)
     return NULL;
 
-  for (; rdata->did != -1; rdata++)
+  for (; erc->did != -1; erc++)
   {
-    if ((rdata->did == did) && (rdata->uid == uid) && rdata->get_number)
+    if ((erc->did == did) && (erc->uid == uid) && erc->get_number)
     {
-      return rdata;
+      return erc;
     }
   }
 
@@ -61,22 +61,22 @@ const struct ExpandoRenderData *find_get_number(const struct ExpandoRenderData *
 
 /**
  * find_get_string - Find a get_string() callback function
- * @param rdata Render data to search
+ * @param erc   Render callbacks to search
  * @param did   Domain ID to match
  * @param uid   Unique ID to match
  * @retval ptr Matching Render data
  */
-const struct ExpandoRenderData *find_get_string(const struct ExpandoRenderData *rdata,
-                                                int did, int uid)
+const struct ExpandoRenderCallback *find_get_string(const struct ExpandoRenderCallback *erc,
+                                                    int did, int uid)
 {
-  if (!rdata)
+  if (!erc)
     return NULL;
 
-  for (; rdata->did != -1; rdata++)
+  for (; erc->did != -1; erc++)
   {
-    if ((rdata->did == did) && (rdata->uid == uid) && rdata->get_string)
+    if ((erc->did == did) && (erc->uid == uid) && erc->get_string)
     {
-      return rdata;
+      return erc;
     }
   }
 

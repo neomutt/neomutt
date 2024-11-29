@@ -814,7 +814,7 @@ int mutt_make_string(struct Buffer *buf, size_t max_cols,
   hfi.msg_in_pager = inpgr;
   hfi.pager_progress = progress;
 
-  return expando_filter(exp, IndexRenderData, &hfi, flags, max_cols, buf);
+  return expando_filter(exp, IndexRenderCallbacks, &hfi, flags, max_cols, buf);
 }
 
 /**

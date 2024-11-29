@@ -690,7 +690,7 @@ static void mutt_make_greeting(struct Email *e, FILE *fp_out, struct ConfigSubse
 
   struct Buffer *buf = buf_pool_get();
 
-  expando_filter(c_greeting, GreetingRenderData, e, TOKEN_NO_FLAGS, buf->dsize, buf);
+  expando_filter(c_greeting, GreetingRenderCallbacks, e, TOKEN_NO_FLAGS, buf->dsize, buf);
 
   fputs(buf_string(buf), fp_out);
   fputc('\n', fp_out);

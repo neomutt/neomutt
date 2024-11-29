@@ -73,7 +73,7 @@ void test_expando_date_render(void)
 
     const char *expected = "2016-03-07 date";
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_date },
       { -1, -1, NULL },
     };
@@ -112,7 +112,7 @@ void test_expando_date_render(void)
 
     const char *expected = "2016-03-07  ";
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_date },
       { -1, -1, NULL },
     };

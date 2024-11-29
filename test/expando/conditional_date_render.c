@@ -76,7 +76,7 @@ void test_expando_conditional_date_render(void)
   check_node_text(node_true, "a");
   check_node_text(node_false, "banana");
 
-  const struct ExpandoRenderData render[] = {
+  const struct ExpandoRenderCallback render[] = {
     { 1, 2, cond_date, cond_date_num },
     { -1, -1, NULL },
   };

@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData AutocryptRenderData[];
+extern const struct ExpandoRenderCallback AutocryptRenderCallbacks[];
 
 #endif /* MUTT_AUTOCRYPT_EXPANDO_H */

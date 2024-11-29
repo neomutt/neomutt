@@ -93,7 +93,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(exp->node, 1), " - ");
     check_node_expando(node_get_child(exp->node, 2), NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },
@@ -157,7 +157,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(left, 1), " ");
     check_node_expando(right, NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },
@@ -239,7 +239,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(left, 1), " ");
     check_node_expando(right, NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },
@@ -306,7 +306,7 @@ void test_expando_colors_render(void)
     check_node_text(node_get_child(left, 1), " ");
     check_node_expando(right, NULL, NULL);
 
-    const struct ExpandoRenderData render[] = {
+    const struct ExpandoRenderCallback render[] = {
       { 1, 0, simple_s },
       { 1, 1, simple_C },
       { -1, -1, NULL },

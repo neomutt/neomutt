@@ -304,11 +304,11 @@ static void gpgme_key_protocol(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * PgpEntryGpgmeRenderData - Callbacks for GPGME Key Expandos
+ * PgpEntryGpgmeRenderCallbacks - Callbacks for GPGME Key Expandos
  *
  * @sa PgpEntryFormatDef, ExpandoDataGlobal, ExpandoDataPgpKeyGpgme
  */
-const struct ExpandoRenderData PgpEntryGpgmeRenderData[] = {
+const struct ExpandoRenderCallback PgpEntryGpgmeRenderCallbacks[] = {
   // clang-format off
   { ED_PGP,     ED_PGP_NUMBER,            NULL,                   gpgme_entry_number_num },
   { ED_PGP,     ED_PGP_TRUST,             gpgme_entry_trust,      NULL },

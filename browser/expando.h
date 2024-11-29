@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData FolderRenderData[];
+extern const struct ExpandoRenderCallback FolderRenderCallbacks[];
 
 #endif /* MUTT_BROWSER_EXPANDO_H */

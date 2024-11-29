@@ -68,11 +68,11 @@ static long pattern_number_num(const struct ExpandoNode *node, void *data, MuttF
 }
 
 /**
- * PatternRenderData - Callbacks for Pattern Expandos
+ * PatternRenderCallbacks - Callbacks for Pattern Expandos
  *
  * @sa PatternFormatDef, ExpandoDataGlobal, ExpandoDataPattern
  */
-const struct ExpandoRenderData PatternRenderData[] = {
+const struct ExpandoRenderCallback PatternRenderCallbacks[] = {
   // clang-format off
   { ED_PATTERN, ED_PAT_DESCRIPTION, pattern_description, NULL },
   { ED_PATTERN, ED_PAT_EXPRESSION,  pattern_expression,  NULL },

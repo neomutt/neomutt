@@ -155,11 +155,11 @@ static void nntp_username(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * NntpRenderData - Callbacks for Newsrc Expandos
+ * NntpRenderCallbacks - Callbacks for Newsrc Expandos
  *
  * @sa NntpFormatDef, ExpandoDataNntp
  */
-const struct ExpandoRenderData NntpRenderData[] = {
+const struct ExpandoRenderCallback NntpRenderCallbacks[] = {
   // clang-format off
   { ED_NNTP, ED_NTP_ACCOUNT,  nntp_account,  NULL },
   { ED_NNTP, ED_NTP_PORT,     NULL,          nntp_port },

@@ -107,7 +107,7 @@ void test_expando_filter(void)
     buf_pool_release(&buf);
   }
 
-  // int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rdata, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
+  // int expando_filter(const struct Expando *exp, const struct ExpandoRenderCallback *rdata, void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
   {
     const struct ExpandoDefinition TestFormatDef[] = {
       // clang-format off
@@ -116,7 +116,7 @@ void test_expando_filter(void)
       // clang-format on
     };
 
-    const struct ExpandoRenderData TestRenderData[] = {
+    const struct ExpandoRenderCallback TestRenderCallback[] = {
       // clang-format off
       { ED_ENVELOPE, ED_ENV_FROM, test_a, NULL },
       { -1, -1, NULL, NULL },
@@ -133,7 +133,7 @@ void test_expando_filter(void)
     const char *str = ">%a<";
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
-    rc = expando_filter(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
     TEST_CHECK(rc == 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");
@@ -143,7 +143,7 @@ void test_expando_filter(void)
     buf_reset(buf);
     exp = expando_parse(str, TestFormatDef, err);
     TEST_CHECK(exp != NULL);
-    rc = expando_filter(exp, TestRenderData, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
+    rc = expando_filter(exp, TestRenderCallback, NULL, MUTT_FORMAT_NO_FLAGS, -1, buf);
     TEST_CHECK(rc == 7);
     TEST_MSG("rc = %d", rc);
     TEST_CHECK_STR_EQ(buf_string(buf), ">apple<");

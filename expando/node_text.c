@@ -40,7 +40,7 @@
  * node_text_render - Render a Text Node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 static int node_text_render(const struct ExpandoNode *node,
-                            const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                            const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                             int max_cols, void *data, MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_TEXT);

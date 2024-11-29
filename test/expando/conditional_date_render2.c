@@ -77,7 +77,7 @@ void test_expando_conditional_date_render2(void)
   check_node_expando(node_true, "%d-%m-%Y", NULL);
   check_node_expando(node_false, "%Y-%m-%d", NULL);
 
-  const struct ExpandoRenderData render[] = {
+  const struct ExpandoRenderCallback render[] = {
     { 1, 2, cond_date, cond_date_num },
     { -1, -1, NULL },
   };

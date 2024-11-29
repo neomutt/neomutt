@@ -129,7 +129,7 @@ static int alias_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
   }
 
   const struct Expando *c_alias_format = cs_subset_expando(mdata->sub, "alias_format");
-  return expando_filter(c_alias_format, AliasRenderData, av,
+  return expando_filter(c_alias_format, AliasRenderCallbacks, av,
                         MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
 }
 

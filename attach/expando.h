@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData AttachRenderData[];
+extern const struct ExpandoRenderCallback AttachRenderCallbacks[];
 
 #endif /* MUTT_ATTACH_EXPANDO_H */

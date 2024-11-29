@@ -39,23 +39,23 @@
  * node_condbool_render - Callback for every bool node - Implements ExpandoNode::render() - @ingroup expando_render
  */
 int node_condbool_render(const struct ExpandoNode *node,
-                         const struct ExpandoRenderData *rdata, struct Buffer *buf,
+                         const struct ExpandoRenderCallback *erc, struct Buffer *buf,
                          int max_cols, void *data, MuttFormatFlags flags)
 {
   ASSERT(node->type == ENT_CONDBOOL);
 
-  const struct ExpandoRenderData *rd_match = find_get_number(rdata, node->did, node->uid);
-  if (rd_match)
+  const struct ExpandoRenderCallback *erc_match = find_get_number(erc, node->did, node->uid);
+  if (erc_match)
   {
-    const long num = rd_match->get_number(node, data, flags);
+    const long num = erc_match->get_number(node, data, flags);
     return (num != 0); // bool-ify
   }
 
-  rd_match = find_get_string(rdata, node->did, node->uid);
-  if (rd_match)
+  erc_match = find_get_string(erc, node->did, node->uid);
+  if (erc_match)
   {
     struct Buffer *buf_str = buf_pool_get();
-    rd_match->get_string(node, data, flags, buf_str);
+    erc_match->get_string(node, data, flags, buf_str);
     const size_t len = buf_len(buf_str);
     buf_pool_release(&buf_str);
 

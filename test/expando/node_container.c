@@ -78,7 +78,7 @@ struct ExpandoNode *make_children(char ch)
 
 void test_expando_node_container(void)
 {
-  const struct ExpandoRenderData TestRenderData[] = {
+  const struct ExpandoRenderCallback TestRenderCallback[] = {
     // clang-format off
     { 10, 1, test_one, NULL },
     { 10, 2, test_one, NULL },
@@ -100,7 +100,7 @@ void test_expando_node_container(void)
     node_free(&node);
   }
 
-  // int node_container_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+  // int node_container_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *rdata, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
   {
     static const struct Mapping tests[] = {
       // clang-format off
@@ -128,21 +128,21 @@ void test_expando_node_container(void)
     {
       TEST_CASE_("%d", tests[i].value);
       buf_reset(buf);
-      rc = node_render(cont, TestRenderData, buf, tests[i].value, NULL, MUTT_FORMAT_NO_FLAGS);
+      rc = node_render(cont, TestRenderCallback, buf, tests[i].value, NULL, MUTT_FORMAT_NO_FLAGS);
       TEST_CHECK(rc == strlen(tests[i].name));
       TEST_CHECK_STR_EQ(buf_string(buf), tests[i].name);
     }
 
     FREE(&cont->format);
     buf_reset(buf);
-    rc = node_render(cont, TestRenderData, buf, 50, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_render(cont, TestRenderCallback, buf, 50, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 50);
     TEST_CHECK_STR_EQ(buf_string(buf), "ONEaaaONEbbbONEcccTWOaaaTWObbbTWOcccTHREEaaaTHREEb");
 
     fmt_str = "-15.20_x";
     cont->format = parse_format(fmt_str, &parsed_until, &err);
     buf_reset(buf);
-    rc = node_render(cont, TestRenderData, buf, 20, NULL, MUTT_FORMAT_NO_FLAGS);
+    rc = node_render(cont, TestRenderCallback, buf, 20, NULL, MUTT_FORMAT_NO_FLAGS);
     TEST_CHECK(rc == 20);
     TEST_CHECK_STR_EQ(buf_string(buf), "oneaaaonebbboneccctw");
 

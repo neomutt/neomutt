@@ -25,6 +25,6 @@
 
 #include "expando/lib.h"
 
-extern const struct ExpandoRenderData NntpRenderData[];
+extern const struct ExpandoRenderCallback NntpRenderCallbacks[];
 
 #endif /* MUTT_NNTP_EXPANDO_NEWSRC_H */

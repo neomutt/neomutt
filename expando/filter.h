@@ -28,7 +28,7 @@
 struct Buffer;
 struct Expando;
 
-int expando_filter(const struct Expando *exp, const struct ExpandoRenderData *rdata,
+int expando_filter(const struct Expando *exp, const struct ExpandoRenderCallback *erc,
                    void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf);
 
 #endif /* MUTT_EXPANDO_FILTER_H */
