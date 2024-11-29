@@ -317,8 +317,7 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
     };
 
     const struct Expando *c_inews_command = cs_subset_expando(sub, "inews_command");
-    expando_filter(c_inews_command, NntpRenderCallbacks, 0, MUTT_FORMAT_NO_FLAGS,
-                   cmd->dsize, NeoMutt->env, cmd);
+    expando_filter(c_inews_command, NntpRenderData, cmd->dsize, NeoMutt->env, cmd);
     if (buf_is_empty(cmd))
     {
       i = nntp_post(m, msg);

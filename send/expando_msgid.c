@@ -264,8 +264,14 @@ char *msgid_generate(void)
 
   struct Buffer *buf = buf_pool_get();
 
-  expando_filter(c_message_id_format, MsgIdRenderCallbacks, &mid,
-                 MUTT_FORMAT_NO_FLAGS, buf->dsize, NeoMutt->env, buf);
+  struct ExpandoRenderData MsgIdRenderData[] = {
+    // clang-format off
+    { ED_ALIAS, MsgIdRenderCallbacks, &mid, MUTT_FORMAT_NO_FLAGS },
+    { -1, NULL, NULL, 0 },
+    // clang-format on
+  };
+
+  expando_filter(c_message_id_format, MsgIdRenderData, buf->dsize, NeoMutt->env, buf);
   if (buf_is_empty(buf))
   {
     buf_pool_release(&buf);

@@ -26,12 +26,12 @@
 
 #include <stdbool.h>
 #include "definition.h"
-#include "render.h"
 
 struct Buffer;
 struct ExpandoFormat;
 struct ExpandoNode;
 struct ExpandoParseError;
+struct ExpandoRenderData;
 
 /**
  * struct NodeExpandoPrivate - Private data for an Expando - @extends ExpandoNode
@@ -52,7 +52,7 @@ struct ExpandoNode *parse_long_name(const char *str, const struct ExpandoDefinit
 struct ExpandoNode *parse_short_name(const char *str, const struct ExpandoDefinition *defs, ExpandoParserFlags flags, struct ExpandoFormat *fmt, const char **parsed_until, struct ExpandoParseError *err);
 struct ExpandoNode *node_expando_parse(const char *str, const struct ExpandoDefinition *defs, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
 struct ExpandoNode *node_expando_parse_name(const char *str, const struct ExpandoDefinition *defs, ExpandoParserFlags flags, const char **parsed_until, struct ExpandoParseError *err);
-int node_expando_render(const struct ExpandoNode *node, const struct ExpandoRenderCallback *erc, struct Buffer *buf, int max_cols, void *data, MuttFormatFlags flags);
+int node_expando_render(const struct ExpandoNode *node, const struct ExpandoRenderData *rdata, int max_cols, struct Buffer *buf);
 
 struct ExpandoNode *node_expando_parse_enclosure(const char *str, int did, int uid, char terminator, struct ExpandoFormat *fmt, const char **parsed_until, struct ExpandoParseError *err);
 
