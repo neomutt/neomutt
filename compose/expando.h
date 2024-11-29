@@ -25,6 +25,7 @@
 
 #include "expando/lib.h" // IWYU pragma: keep
 
-extern const struct ExpandoRenderCallback ComposeRenderCallbacks[]; // IWYU pragma: keep
+extern const struct ExpandoRenderCallback ComposeRenderCallbacks1[]; // IWYU pragma: keep
+extern const struct ExpandoRenderCallback ComposeRenderCallbacks2[]; // IWYU pragma: keep
 
 #endif /* MUTT_COMPOSE_EXPANDO_H */
