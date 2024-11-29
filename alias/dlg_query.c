@@ -164,8 +164,7 @@ static int query_make_entry(struct Menu *menu, int line, int max_cols, struct Bu
   };
 
   const struct Expando *c_query_format = cs_subset_expando(mdata->sub, "query_format");
-  return expando_filter(c_query_format, QueryRenderCallbacks, av,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, NeoMutt->env, buf);
+  return expando_filter(c_query_format, AliasRenderData, max_cols, NeoMutt->env, buf);
 }
 
 /**
