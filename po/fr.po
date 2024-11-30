@@ -1465,15 +1465,15 @@ msgid "Invalid value for option %s: %s"
 msgstr "Valeur invalide pour l'option %s : %s"
 
 #: config/enum.c:58
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %s"
-msgstr "Erreur : score : nombre invalide"
+msgstr "Valeur d'énumération invalide : %s"
 
 # , c-format
 #: config/enum.c:135
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid enum value: %ld"
-msgstr "Valeur invalide pour l'option %s : \"%s\""
+msgstr "Valeur d'énumération invalide : %ld"
 
 # , c-format
 #: config/long.c:57 config/long.c:159 config/long.c:198
@@ -1513,9 +1513,9 @@ msgstr "Date relative invalide : %s"
 
 # , c-format
 #: config/quad.c:139
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid quad value: %ld"
-msgstr "Valeur invalide pour l'option %s : \"%s\""
+msgstr "Valeur 'quad' invalide : %ld"
 
 # , c-format
 #: config/set.c:109 config/set.c:446 config/set.c:512 config/set.c:573
@@ -1545,9 +1545,9 @@ msgstr "Date relative invalide : %s"
 
 # , c-format
 #: config/sort.c:165
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid sort type: %ld"
-msgstr "Date relative invalide : %s"
+msgstr "Type de tri non valide : %ld"
 
 #: conn/accountcmd.c:81
 #, c-format
@@ -4261,15 +4261,15 @@ msgstr "opération nulle"
 
 # , c-format
 #: handler.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Type : %s/%s, Codage : %s, Taille : %s --]\n"
+msgstr "[-- Type : %s/%s%s%s, Codage : %s, Taille : %s --]\n"
 
 # , c-format
 #: handler.c:107
-#, fuzzy, c-format
+#, c-format
 msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
-msgstr "[-- Type : %s/%s, Codage : %s, Taille : %s --]\n"
+msgstr "[-- Type alternatif: #%d : %s/%s%s%s, Codage : %s, Taille : %s --]\n"
 
 # , c-format
 #: handler.c:564
