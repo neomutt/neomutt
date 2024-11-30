@@ -39,26 +39,18 @@
 #include "shared_data.h"
 
 /**
- * num_attachments - Count the number of attachments
- * @param adata Attachment data
- * @retval num Number of attachments
- */
-static int num_attachments(const struct ComposeAttachData *adata)
-{
-  if (!adata || !adata->menu)
-    return 0;
-  return adata->menu->max;
-}
-
-/**
  * compose_attach_count_num - Compose: Number of attachments - Implements ::get_number_t - @ingroup expando_get_number_api
  */
 static long compose_attach_count_num(const struct ExpandoNode *node, void *data,
                                      MuttFormatFlags flags)
 {
   const struct ComposeSharedData *shared = data;
+  struct ComposeAttachData *adata = shared->adata;
 
-  return num_attachments(shared->adata);
+  if (!adata || !adata->menu)
+    return 0;
+
+  return adata->menu->max;
 }
 
 /**
