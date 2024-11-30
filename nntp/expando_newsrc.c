@@ -102,23 +102,6 @@ static void nntp_port_if(const struct ExpandoNode *node, void *data,
 }
 
 /**
- * nntp_server - Newsrc: News server name - Implements ::get_string_t - @ingroup expando_get_string_api
- */
-static void nntp_server(const struct ExpandoNode *node, void *data,
-                        MuttFormatFlags flags, struct Buffer *buf)
-{
-  const struct NntpAccountData *adata = data;
-  const struct ConnAccount *cac = &adata->conn->account;
-
-  char tmp[128] = { 0 };
-
-  mutt_str_copy(tmp, cac->host, sizeof(tmp));
-  mutt_str_lower(tmp);
-
-  buf_strcpy(buf, tmp);
-}
-
-/**
  * nntp_schema - Newsrc: Url schema - Implements ::get_string_t - @ingroup expando_get_string_api
  */
 static void nntp_schema(const struct ExpandoNode *node, void *data,
@@ -137,6 +120,23 @@ static void nntp_schema(const struct ExpandoNode *node, void *data,
   {
     *p = '\0';
   }
+
+  buf_strcpy(buf, tmp);
+}
+
+/**
+ * nntp_server - Newsrc: News server name - Implements ::get_string_t - @ingroup expando_get_string_api
+ */
+static void nntp_server(const struct ExpandoNode *node, void *data,
+                        MuttFormatFlags flags, struct Buffer *buf)
+{
+  const struct NntpAccountData *adata = data;
+  const struct ConnAccount *cac = &adata->conn->account;
+
+  char tmp[128] = { 0 };
+
+  mutt_str_copy(tmp, cac->host, sizeof(tmp));
+  mutt_str_lower(tmp);
 
   buf_strcpy(buf, tmp);
 }
