@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-11-22 18:22+0000\n"
-"PO-Revision-Date: 2024-11-17 16:36+0100\n"
+"PO-Revision-Date: 2024-11-30 19:33+0100\n"
 "Last-Translator: Страхиња Радић <sr@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -195,20 +195,18 @@ msgstr "Одозначи адресе које задовољавају: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Обр-Сорт алијас (a), адреса (d) или несортирано (n)?"
+msgstr "Обр-Сорт алијас (a), име (i), адреса (d) или несортирано (n)?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Сорт алијас (a), адреса (d) или несортирано (n)?"
+msgstr "Сорт алијас (a), име (i), адреса (d) или несортирано (n)?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "aidn"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
