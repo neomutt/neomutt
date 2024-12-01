@@ -4558,51 +4558,51 @@ msgstr "le fil a au moins un message"
 #: help.c:432
 #, c-format
 msgid "message has been read (%S expando)"
-msgstr ""
+msgstr "message a été lu (%S expando)"
 
 #: help.c:434
 msgid "message has been read (%Z expando)"
-msgstr ""
+msgstr "message a été lu (%Z expando)"
 
 #: help.c:438
 msgid "message signed with a verified key"
-msgstr ""
+msgstr "message signé avec une clé vérifiée"
 
 #: help.c:440
 msgid "message is PGP-encrypted"
-msgstr ""
+msgstr "message est chiffré avec PGP"
 
 #: help.c:442
 msgid "message is signed"
-msgstr ""
+msgstr "message est signé"
 
 #: help.c:444
 msgid "message contains a PGP key"
-msgstr ""
+msgstr "message contient une clé PGP"
 
 #: help.c:446
 msgid "message has no cryptography information"
-msgstr ""
+msgstr "message contient aucun information cryptographique"
 
 #: help.c:450
 msgid "message is not To: you"
-msgstr ""
+msgstr "message n'est pas À : vous"
 
 #: help.c:452
 msgid "message is To: you and only you"
-msgstr ""
+msgstr "message est À : vous et uniquement vous"
 
 #: help.c:453
 msgid "message is To: you"
-msgstr ""
+msgstr "message est À : vous"
 
 #: help.c:454
 msgid "message is Cc: to you"
-msgstr ""
+msgstr "message est CC : vous"
 
 #: help.c:456
 msgid "message is From: you"
-msgstr ""
+msgstr "message est De : vous"
 
 #: help.c:458
 msgid "message is sent to a subscribed mailing list"
@@ -4970,7 +4970,7 @@ msgstr "Continuer ?"
 #. L10N: $status_format default format
 #: index/config.c:94
 msgid "-%r-NeoMutt: %D [Msgs:%<M?%M/>%m%<n? New:%n>%<o? Old:%o>%<d? Del:%d>%<F? Flag:%F>%<t? Tag:%t>%<p? Post:%p>%<b? Inc:%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
-msgstr ""
+msgstr "-%r-NeoMutt : %D [Msgs:%<M?%M/>%m%<n? Nouveau(x) :%n>%<o? Vieux :%o>%<d? Supprimé(s) :%d>%<F? Marqué(s) :%F>%<t? Étiquetté(s) :%t>%<p? Ajourné(s) :%p>%<b? Boîtes :%b>%<l? %l>]---(%<T?%T/>%s/%S)-%>-(%P)---"
 
 #: index/dlg_index.c:104 index/dlg_index.c:119
 msgid "Quit"
@@ -5366,7 +5366,7 @@ msgstr "Pas de répertoire virtuel et pas de Message-Id, abandon"
 
 #: index/functions.c:2917
 msgid "failed to find message in notmuch database. try running 'notmuch new'."
-msgstr ""
+msgstr "Message non trouvé dans la base de données notmuch. Veuillez exécuter 'notmuch new'"
 
 #: index/functions.c:2929
 msgid "Failed to read thread, aborting"
@@ -5460,12 +5460,12 @@ msgstr "Touche d'annulation non définie, réglée par défaut sur Ctrl-G"
 #: key/init.c:250
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
-msgstr ""
+msgstr "La séquence de touches d'abandon spécifiée (%s) sera tronquée à la première touche"
 
 #: key/parse.c:101
 #, c-format
 msgid "Binding '%s' will alias '%s'  Before, try: 'bind %s %s noop'"
-msgstr ""
+msgstr "L'affectation de '%s' écrasera l'affectation existante '%s' Avant, veuillez essayer : 'bind %s %s noop'"
 
 #: key/parse.c:264
 #, c-format
@@ -5523,12 +5523,12 @@ msgstr "entrée mailcap pour le type %s non trouvée"
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:53
 msgid "maildir_field_delimiter must be exactly one character long"
-msgstr ""
+msgstr "maildir_field_delimiter doit être uniquement un caractère simple"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
 #: maildir/config.c:60
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
-msgstr ""
+msgstr "maildir_field_delimiter ne peut pas être alphanumérique ou '-.\\/'"
 
 # , c-format
 #: maildir/mailbox.c:492 mh/mh.c:676
@@ -6038,7 +6038,7 @@ msgstr "Erreur de connexion au serveur : %s"
 #: mutt/random.c:62
 #, c-format
 msgid "mutt_randbuf buflen=%zu"
-msgstr ""
+msgstr "mutt_randbuf buflen=%zu"
 
 #: mutt/random.c:87
 #, c-format
@@ -6059,6 +6059,7 @@ msgstr "Mauvaise expression rationnelle : %s"
 msgid "Not enough subexpressions for template"
 msgstr "Pas assez de sous-expressions pour la chaîne de format"
 
+# TODO: Should 'index-hook' not be translated?
 #: mutt_config.c:232
 #, c-format
 msgid "index-hook cannot be used as a condition"
@@ -6067,12 +6068,12 @@ msgstr ""
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:770
 msgid "M%<n?AIL&ail>"
-msgstr ""
+msgstr "M%<n?AIL&ail>"
 
 #. L10N: $ts_status_format default format
 #: mutt_config.c:774
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
-msgstr ""
+msgstr "NeoMutt avec %<m?%m messages&pas de message>%<n? [%n NOUVEAU(X)]>"
 
 # , c-format
 #: mutt_logging.c:275
