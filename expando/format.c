@@ -143,6 +143,10 @@ int format_string(struct Buffer *buf, int min_cols, int max_cols, enum FormatJus
     {
       w = 1; /* hack */
     }
+    else if (iswspace(wc))
+    {
+      w = MAX(1, wcwidth(wc));
+    }
     else
     {
 #ifdef HAVE_ISWBLANK
