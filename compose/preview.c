@@ -172,7 +172,7 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
       percent = 100.0 / i * (wdata->scroll_offset + row);
 
     // TODO: having the percentage right-aligned would be nice
-    snprintf(title, sizeof(title), _("--Preview (%.0f%%)"), percent);
+    snprintf(title, sizeof(title), _("-- Preview (%.0f%%)"), percent);
     sbar_set_title(wdata->bar, title);
 
     if (i > (wdata->scroll_offset + row))
