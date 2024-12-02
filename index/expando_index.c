@@ -378,12 +378,12 @@ static void index_email_date(const struct ExpandoNode *node, const struct Email 
  */
 static long email_attachment_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return 0;
 
-  struct Mailbox *m = hfi->mailbox;
+  struct Mailbox *m = efi->mailbox;
 
   struct Message *msg = mx_msg_open(m, e);
   if (!msg)
@@ -400,8 +400,8 @@ static long email_attachment_count(const struct ExpandoNode *node, void *data, M
 static void email_body_characters(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = (const struct EmailFormatInfo *) data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -420,12 +420,12 @@ static void email_body_characters(const struct ExpandoNode *node, void *data,
 static void email_combined_flags(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
-  const int msg_in_pager = hfi->msg_in_pager;
+  const int msg_in_pager = efi->msg_in_pager;
 
   const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
   const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
@@ -502,8 +502,8 @@ static void email_combined_flags(const struct ExpandoNode *node, void *data,
 static void email_crypto_flags(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -542,8 +542,8 @@ static void email_crypto_flags(const struct ExpandoNode *node, void *data,
 static void email_date_format(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -559,8 +559,8 @@ static void email_date_format(const struct ExpandoNode *node, void *data,
 static void email_date_format_local(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -576,8 +576,8 @@ static void email_date_format_local(const struct ExpandoNode *node, void *data,
 static long email_date_format_local_num(const struct ExpandoNode *node,
                                         void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -589,8 +589,8 @@ static long email_date_format_local_num(const struct ExpandoNode *node,
  */
 static long email_date_format_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -603,8 +603,8 @@ static long email_date_format_num(const struct ExpandoNode *node, void *data, Mu
 static void email_date_strf(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -616,8 +616,8 @@ static void email_date_strf(const struct ExpandoNode *node, void *data,
  */
 static long email_date_strf_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -630,8 +630,8 @@ static long email_date_strf_num(const struct ExpandoNode *node, void *data, Mutt
 static void email_date_strf_local(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -644,8 +644,8 @@ static void email_date_strf_local(const struct ExpandoNode *node, void *data,
 static long email_date_strf_local_num(const struct ExpandoNode *node,
                                       void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -658,13 +658,13 @@ static long email_date_strf_local_num(const struct ExpandoNode *node,
 static void email_flag_chars(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
   const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
-  const int msg_in_pager = hfi->msg_in_pager;
+  const int msg_in_pager = efi->msg_in_pager;
 
   const char *wch = NULL;
   if (e->deleted)
@@ -696,8 +696,8 @@ static void email_flag_chars(const struct ExpandoNode *node, void *data,
 static void email_from_list(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -716,12 +716,12 @@ static void email_from_list(const struct ExpandoNode *node, void *data,
 static void email_index_hook(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
-  struct Mailbox *m = hfi->mailbox;
+  struct Mailbox *m = efi->mailbox;
 
   const struct Expando *exp = mutt_idxfmt_hook(node->text, m, e);
   if (!exp)
@@ -735,8 +735,8 @@ static void email_index_hook(const struct ExpandoNode *node, void *data,
  */
 static long email_lines(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -752,8 +752,8 @@ static long email_lines(const struct ExpandoNode *node, void *data, MuttFormatFl
 static void email_list_or_save_folder(const struct ExpandoNode *node, void *data,
                                       MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -776,8 +776,8 @@ static void email_list_or_save_folder(const struct ExpandoNode *node, void *data
 static void email_message_flags(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -808,8 +808,8 @@ static void email_message_flags(const struct ExpandoNode *node, void *data,
  */
 static long email_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -824,8 +824,8 @@ static long email_number(const struct ExpandoNode *node, void *data, MuttFormatF
  */
 static long email_score(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -838,8 +838,8 @@ static long email_score(const struct ExpandoNode *node, void *data, MuttFormatFl
 static void email_size(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -857,8 +857,8 @@ static void email_size(const struct ExpandoNode *node, void *data,
  */
 static long email_size_num(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->body)
     return 0;
 
@@ -871,14 +871,14 @@ static long email_size_num(const struct ExpandoNode *node, void *data, MuttForma
 static void email_status_flags(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
   const bool threads = mutt_using_threads();
   const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
-  const int msg_in_pager = hfi->msg_in_pager;
+  const int msg_in_pager = efi->msg_in_pager;
 
   const char *ch = NULL;
   if (e->deleted)
@@ -931,8 +931,8 @@ static void email_status_flags(const struct ExpandoNode *node, void *data,
 static void email_strf_recv_local(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -945,8 +945,8 @@ static void email_strf_recv_local(const struct ExpandoNode *node, void *data,
 static long email_strf_recv_local_num(const struct ExpandoNode *node,
                                       void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -959,8 +959,8 @@ static long email_strf_recv_local_num(const struct ExpandoNode *node,
 static void email_tags(const struct ExpandoNode *node, void *data,
                        MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -975,8 +975,8 @@ static void email_tags(const struct ExpandoNode *node, void *data,
 static void email_tags_transformed(const struct ExpandoNode *node, void *data,
                                    MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -994,9 +994,9 @@ static void email_tags_transformed(const struct ExpandoNode *node, void *data,
  */
 static long email_thread_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  struct Mailbox *m = hfi->mailbox;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
+  struct Mailbox *m = efi->mailbox;
 
   return mutt_messages_in_thread(m, e, MIT_NUM_MESSAGES);
 }
@@ -1007,8 +1007,8 @@ static long email_thread_count(const struct ExpandoNode *node, void *data, MuttF
 static void email_thread_hidden_count(const struct ExpandoNode *node, void *data,
                                       MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -1037,8 +1037,8 @@ static void email_thread_hidden_count(const struct ExpandoNode *node, void *data
 static long email_thread_hidden_count_num(const struct ExpandoNode *node,
                                           void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e)
     return 0;
 
@@ -1060,9 +1060,9 @@ static long email_thread_hidden_count_num(const struct ExpandoNode *node,
  */
 static long email_thread_number(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
-  struct Mailbox *m = hfi->mailbox;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
+  struct Mailbox *m = efi->mailbox;
 
   return mutt_messages_in_thread(m, e, MIT_POSITION);
 }
@@ -1073,8 +1073,8 @@ static long email_thread_number(const struct ExpandoNode *node, void *data, Mutt
 static void email_thread_tags(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -1119,8 +1119,8 @@ static void email_thread_tags(const struct ExpandoNode *node, void *data,
 static void email_to_chars(const struct ExpandoNode *node, void *data,
                            MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e)
     return;
 
@@ -1140,8 +1140,8 @@ static void email_to_chars(const struct ExpandoNode *node, void *data,
 static void envelope_cc_all(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1154,8 +1154,8 @@ static void envelope_cc_all(const struct ExpandoNode *node, void *data,
 static void envelope_first_name(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1199,8 +1199,8 @@ static void envelope_first_name(const struct ExpandoNode *node, void *data,
 static void envelope_from(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1223,8 +1223,8 @@ static void envelope_from(const struct ExpandoNode *node, void *data,
 static void envelope_from_full(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1237,8 +1237,8 @@ static void envelope_from_full(const struct ExpandoNode *node, void *data,
 static void envelope_initials(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1264,8 +1264,8 @@ static void envelope_initials(const struct ExpandoNode *node, void *data,
 static void envelope_list_address(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1287,8 +1287,8 @@ static void envelope_list_address(const struct ExpandoNode *node, void *data,
 static void envelope_list_empty(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1307,8 +1307,8 @@ static void envelope_list_empty(const struct ExpandoNode *node, void *data,
 static void envelope_message_id(const struct ExpandoNode *node, void *data,
                                 MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1322,8 +1322,8 @@ static void envelope_message_id(const struct ExpandoNode *node, void *data,
 static void envelope_name(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1342,8 +1342,8 @@ static void envelope_name(const struct ExpandoNode *node, void *data,
 static void envelope_newsgroup(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1357,8 +1357,8 @@ static void envelope_newsgroup(const struct ExpandoNode *node, void *data,
 static void envelope_organization(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1372,8 +1372,8 @@ static void envelope_organization(const struct ExpandoNode *node, void *data,
 static void envelope_reply_to(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1397,8 +1397,8 @@ static void envelope_reply_to(const struct ExpandoNode *node, void *data,
 static void envelope_sender(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1418,8 +1418,8 @@ static void envelope_sender(const struct ExpandoNode *node, void *data,
 static void envelope_sender_plain(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = (const struct HdrFormatInfo *) data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = (const struct EmailFormatInfo *) data;
+  struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1439,8 +1439,8 @@ static void envelope_sender_plain(const struct ExpandoNode *node, void *data,
 static void envelope_spam(const struct ExpandoNode *node, void *data,
                           MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1453,8 +1453,8 @@ static void envelope_spam(const struct ExpandoNode *node, void *data,
 static void envelope_subject(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1478,8 +1478,8 @@ static void envelope_subject(const struct ExpandoNode *node, void *data,
 static void envelope_thread_tree(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1497,8 +1497,8 @@ static void envelope_thread_tree(const struct ExpandoNode *node, void *data,
 static void envelope_thread_x_label(const struct ExpandoNode *node, void *data,
                                     MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1543,8 +1543,8 @@ static void envelope_thread_x_label(const struct ExpandoNode *node, void *data,
 static void envelope_to(const struct ExpandoNode *node, void *data,
                         MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1575,8 +1575,8 @@ static void envelope_to(const struct ExpandoNode *node, void *data,
 static void envelope_to_all(const struct ExpandoNode *node, void *data,
                             MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1589,8 +1589,8 @@ static void envelope_to_all(const struct ExpandoNode *node, void *data,
 static void envelope_username(const struct ExpandoNode *node, void *data,
                               MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1617,8 +1617,8 @@ static void envelope_username(const struct ExpandoNode *node, void *data,
 static void envelope_x_comment_to(const struct ExpandoNode *node, void *data,
                                   MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1632,8 +1632,8 @@ static void envelope_x_comment_to(const struct ExpandoNode *node, void *data,
 static void envelope_x_label(const struct ExpandoNode *node, void *data,
                              MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Email *e = hfi->email;
+  const struct EmailFormatInfo *efi = data;
+  const struct Email *e = efi->email;
   if (!e || !e->env)
     return;
 
@@ -1650,8 +1650,8 @@ static void envelope_x_label(const struct ExpandoNode *node, void *data,
 static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
                                  MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
-  struct Mailbox *m = hfi->mailbox;
+  const struct EmailFormatInfo *efi = data;
+  struct Mailbox *m = efi->mailbox;
   if (!m)
   {
     buf_addstr(buf, "(null)");
@@ -1661,7 +1661,7 @@ static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
   char *p = NULL;
 
 #ifdef USE_NOTMUCH
-  struct Email *e = hfi->email;
+  struct Email *e = efi->email;
   if (m->type == MUTT_NOTMUCH)
   {
     p = nm_email_get_folder_rel_db(m, e);
@@ -1683,8 +1683,8 @@ static void mailbox_mailbox_name(const struct ExpandoNode *node, void *data,
  */
 static long mailbox_message_count(const struct ExpandoNode *node, void *data, MuttFormatFlags flags)
 {
-  const struct HdrFormatInfo *hfi = data;
-  const struct Mailbox *m = hfi->mailbox;
+  const struct EmailFormatInfo *efi = data;
+  const struct Mailbox *m = efi->mailbox;
 
   if (m)
     return m->msg_count;
@@ -1698,9 +1698,9 @@ static long mailbox_message_count(const struct ExpandoNode *node, void *data, Mu
 static void mailbox_percentage(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf)
 {
-  const struct HdrFormatInfo *hfi = data;
+  const struct EmailFormatInfo *efi = data;
 
-  const char *s = hfi->pager_progress;
+  const char *s = efi->pager_progress;
   buf_strcpy(buf, s);
 }
 

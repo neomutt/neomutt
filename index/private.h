@@ -31,9 +31,9 @@ struct IndexSharedData;
 struct ConfigSubset;
 
 /**
- * struct HdrFormatInfo - Data passed to index_format_str()
+ * struct EmailFormatInfo - Data passed to index_format_str()
  */
-struct HdrFormatInfo
+struct EmailFormatInfo
 {
   struct Mailbox *mailbox;    ///< Current Mailbox
   int msg_in_pager;           ///< Index of Email displayed in the Pager

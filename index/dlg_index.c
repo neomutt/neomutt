@@ -807,14 +807,14 @@ int mutt_make_string(struct Buffer *buf, size_t max_cols,
   if (!exp)
     return 0;
 
-  struct HdrFormatInfo hfi = { 0 };
+  struct EmailFormatInfo efi = { 0 };
 
-  hfi.email = e;
-  hfi.mailbox = m;
-  hfi.msg_in_pager = inpgr;
-  hfi.pager_progress = progress;
+  efi.email = e;
+  efi.mailbox = m;
+  efi.msg_in_pager = inpgr;
+  efi.pager_progress = progress;
 
-  return expando_filter(exp, IndexRenderCallbacks, &hfi, flags, max_cols, buf);
+  return expando_filter(exp, IndexRenderCallbacks, &efi, flags, max_cols, buf);
 }
 
 /**
