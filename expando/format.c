@@ -145,7 +145,7 @@ int format_string(struct Buffer *buf, int min_cols, int max_cols, enum FormatJus
     }
     else if (iswspace(wc))
     {
-      w = 1;
+      w = MAX(1, wcwidth(wc));
     }
     else
     {
