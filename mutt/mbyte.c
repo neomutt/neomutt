@@ -441,6 +441,10 @@ int mutt_mb_filter_unprintable(char **s)
       memset(&mbstate1, 0, sizeof(mbstate1));
       wc = ReplacementChar;
     }
+    if (CharsetIsUtf8 && IsBOM(wc))
+    {
+      continue;
+    }
     if (!IsWPrint(wc))
       wc = '?';
     else if (CharsetIsUtf8 && mutt_mb_is_display_corrupting_utf8(wc))
