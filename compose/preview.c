@@ -132,14 +132,22 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
 {
   struct Email *e = wdata->email;
 
+  mutt_window_clear(win);
+
+  if ((e->body->disposition != DISP_INLINE) || (e->body->type != TYPE_TEXT))
+  {
+    mutt_error(_("Only inline attachments with content-type text/* can be previewed"));
+    // The preview status bar might still be showing the percentage. Reset it.
+    sbar_set_title(wdata->bar, _("-- Preview"));
+    return;
+  }
+
   FILE *fp = mutt_file_fopen(e->body->filename, "r");
   if (!fp)
   {
     mutt_perror("%s", e->body->filename);
     return;
   }
-
-  mutt_window_clear(win);
 
   wdata->more_content = false;
 

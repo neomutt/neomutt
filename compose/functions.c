@@ -1395,6 +1395,7 @@ static int op_attachment_move_down(struct ComposeSharedData *shared, int op)
   compose_attach_swap(shared->email, shared->adata->actx, index, nextidx);
   mutt_update_tree(shared->adata->actx);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   menu_set_index(shared->adata->menu, finalidx);
   return FR_SUCCESS;
 }
@@ -1429,6 +1430,7 @@ static int op_attachment_move_up(struct ComposeSharedData *shared, int op)
   compose_attach_swap(shared->email, actx, previdx, index);
   mutt_update_tree(actx);
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_INDEX);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   menu_set_index(shared->adata->menu, previdx);
   return FR_SUCCESS;
 }
@@ -1602,6 +1604,7 @@ static int op_attachment_toggle_disposition(struct ComposeSharedData *shared, in
                                    DISP_ATTACH :
                                    DISP_INLINE;
   menu_queue_redraw(shared->adata->menu, MENU_REDRAW_CURRENT);
+  notify_send(shared->email->notify, NT_EMAIL, NT_EMAIL_CHANGE_ATTACH, NULL);
   return FR_SUCCESS;
 }
 
