@@ -30,15 +30,11 @@
 #include <stdbool.h>
 
 /**
- * enum ColorId - List of all colored objects
- *
- * This enumeration starts at 50 to avoid any of the values being 37 (ASCII %).
- * Inserting colour codes into expando strings, when one of the colour codes
- * was '%', was causing formatting problems.
+ * enum ColorId - List of all coloured objects
  */
 enum ColorId
 {
-  MT_COLOR_NONE = 50,
+  MT_COLOR_NONE,                     ///< No colour
   MT_COLOR_ATTACHMENT,               ///< MIME attachments text (entire line)
   MT_COLOR_ATTACH_HEADERS,           ///< MIME attachment test (takes a pattern)
   MT_COLOR_BODY,                     ///< Pager: highlight body of message (takes a pattern)
