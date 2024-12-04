@@ -40,6 +40,7 @@ extern bool OptLocales;
 #define IsPrint(ch) (isprint((unsigned char) (ch)) || (OptLocales ? 0 : ((unsigned char) (ch) >= 0xa0)))
 #define IsWPrint(wc) (iswprint(wc) || (OptLocales ? 0 : (wc >= 0xa0)))
 #endif
+#define IsBOM(wc) (wc == L'\xfeff')
 
 int    mutt_mb_charlen(const char *s, int *width);
 int    mutt_mb_filter_unprintable(char **s);
