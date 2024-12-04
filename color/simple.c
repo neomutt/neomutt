@@ -112,16 +112,6 @@ bool simple_color_is_set(enum ColorId cid)
 }
 
 /**
- * simple_color_is_header - Colour is for an Email header
- * @param cid Colour Id, e.g. #MT_COLOR_HEADER
- * @retval true Colour is for an Email header
- */
-bool simple_color_is_header(enum ColorId cid)
-{
-  return (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_HDRDEFAULT);
-}
-
-/**
  * simple_color_set - Set the colour of a simple object
  * @param cid    Colour Id, e.g. #MT_COLOR_SEARCH
  * @param ac_val Colour value to use

@@ -835,7 +835,7 @@ static int op_pager_skip_headers(struct IndexSharedData *shared,
                                    MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP), &priv->quote_list,
                                    &priv->q_level, &priv->force_redraw, &priv->search_re,
                                    priv->pview->win_pager, &priv->ansi_list)))) &&
-         simple_color_is_header(priv->lines[new_topline].cid))
+         color_is_header(priv->lines[new_topline].cid))
   {
     new_topline++;
   }
@@ -871,7 +871,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
   int num_quoted = 0;
 
   /* In a header? Skip all the email headers, and done */
-  if (simple_color_is_header(priv->lines[new_topline].cid))
+  if (color_is_header(priv->lines[new_topline].cid))
   {
     while (((new_topline < priv->lines_used) ||
             (0 == (rc = display_line(priv->fp, &priv->bytes_read, &priv->lines,
@@ -879,7 +879,7 @@ static int op_pager_skip_quoted(struct IndexSharedData *shared,
                                      MUTT_TYPES | (pview->flags & MUTT_PAGER_NOWRAP), &priv->quote_list,
                                      &priv->q_level, &priv->force_redraw, &priv->search_re,
                                      priv->pview->win_pager, &priv->ansi_list)))) &&
-           simple_color_is_header(priv->lines[new_topline].cid))
+           color_is_header(priv->lines[new_topline].cid))
     {
       new_topline++;
     }

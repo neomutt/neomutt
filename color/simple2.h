@@ -28,10 +28,7 @@
 #include "attr.h"
 #include "color.h"
 
-extern struct AttrColor SimpleColors[];
-
 struct AttrColor *simple_color_get      (enum ColorId cid);
-bool              simple_color_is_header(enum ColorId cid);
 bool              simple_color_is_set   (enum ColorId cid);
 void              simple_color_reset    (enum ColorId cid);
 struct AttrColor *simple_color_set      (enum ColorId cid, struct AttrColor *ac_val);
