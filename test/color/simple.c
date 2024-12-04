@@ -61,9 +61,6 @@ void test_simple_colors(void)
   ac = simple_color_get(MT_COLOR_MAX + 10);
   TEST_CHECK(ac == NULL);
 
-  TEST_CHECK(simple_color_is_header(MT_COLOR_HEADER));
-  TEST_CHECK(!simple_color_is_header(MT_COLOR_QUOTED));
-
   ac = simple_color_set(MT_COLOR_MAX + 10, NULL);
   TEST_CHECK(ac == NULL);
 

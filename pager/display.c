@@ -480,6 +480,16 @@ static void match_body_patterns(char *pat, struct Line *lines, int line_num)
 }
 
 /**
+ * color_is_header - Colour is for an Email header
+ * @param cid Colour Id, e.g. #MT_COLOR_HEADER
+ * @retval true Colour is for an Email header
+ */
+bool color_is_header(enum ColorId cid)
+{
+  return (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_HDRDEFAULT);
+}
+
+/**
  * resolve_types - Determine the style for a line of text
  * @param[in]  win          Window
  * @param[in]  buf          Formatted text
@@ -502,7 +512,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
-  if ((line_num == 0) || simple_color_is_header(lines[line_num - 1].cid) ||
+  if ((line_num == 0) || color_is_header(lines[line_num - 1].cid) ||
       (check_protected_header_marker(raw) == 0))
   {
     if (buf[0] == '\n') /* end of header */
@@ -1253,8 +1263,8 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   const bool c_smart_wrap = cs_subset_bool(NeoMutt->sub, "smart_wrap");
   if (c_smart_wrap)
   {
-    if ((cnt < b_read) && (ch != -1) &&
-        !simple_color_is_header(cur_line->cid) && !isspace(buf[cnt]))
+    if ((cnt < b_read) && (ch != -1) && !color_is_header(cur_line->cid) &&
+        !isspace(buf[cnt]))
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */
