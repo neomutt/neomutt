@@ -209,6 +209,13 @@ static int sb_color_observer(struct NotifyCallback *nc)
 
   enum ColorId cid = ev_c->cid;
 
+  if (cid == MT_COLOR_MAX) // Sent on `uncolor *`
+  {
+    // Set a default style
+    struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);
+    ac->attrs = A_UNDERLINE;
+  }
+
   switch (cid)
   {
     case MT_COLOR_INDICATOR:

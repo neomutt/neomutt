@@ -50,12 +50,13 @@ void colors_cleanup(void)
 {
   color_debug(LL_DEBUG5, "clean up\n");
   mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
-  struct EventColor ev_c = { MT_COLOR_MAX, NULL };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 
   simple_colors_cleanup();
   quoted_colors_cleanup();
   regex_colors_cleanup();
+
+  struct EventColor ev_c = { MT_COLOR_MAX, NULL };
+  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
 }
 
 /**

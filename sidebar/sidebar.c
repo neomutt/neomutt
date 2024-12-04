@@ -202,6 +202,10 @@ void sb_init(void)
 {
   commands_register(SbCommands, mutt_array_size(SbCommands));
 
+  // Set a default style
+  struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);
+  ac->attrs = A_UNDERLINE;
+
   // Listen for dialog creation events
   notify_observer_add(AllDialogsWindow->notify, NT_WINDOW,
                       sb_insertion_window_observer, NULL);
