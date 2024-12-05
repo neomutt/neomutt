@@ -38,10 +38,10 @@ extern struct AttrColor QuotedColors[];
 
 #define COLOR_QUOTED(cid) ((cid) == MT_COLOR_QUOTED)
 
-#define COLOR_QUOTED(cid) ((cid) == MT_COLOR_QUOTED)
+void quoted_colors_init   (void);
+void quoted_colors_reset  (void);
+void quoted_colors_cleanup(void);
 
-void               quoted_colors_init(void);
-void               quoted_colors_cleanup(void);
 struct AttrColor * quoted_colors_get(int q);
 int                quoted_colors_num_used(void);
 

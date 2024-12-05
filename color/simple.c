@@ -65,16 +65,24 @@ void simple_colors_init(void)
 }
 
 /**
- * simple_colors_cleanup - Reset the simple colour definitions
+ * simple_colors_reset - Reset the simple colour definitions
  */
-void simple_colors_cleanup(void)
+void simple_colors_reset(void)
 {
-  color_debug(LL_DEBUG5, "clean up defs\n");
+  color_debug(LL_DEBUG5, "reset defs\n");
   for (size_t i = 0; i < MT_COLOR_MAX; i++)
   {
     attr_color_clear(&SimpleColors[i]);
   }
   simple_colors_init();
+}
+
+/**
+ * simple_colors_cleanup - Cleanup the simple colour definitions
+ */
+void simple_colors_cleanup(void)
+{
+  simple_colors_reset();
 }
 
 /**

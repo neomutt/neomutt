@@ -369,7 +369,7 @@ static int start_curses(void)
     return 1;
   }
 
-  mutt_colors_init();
+  colors_init();
   keypad(stdscr, true);
   cbreak();
   noecho();

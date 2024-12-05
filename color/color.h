@@ -95,10 +95,10 @@ extern const struct Mapping ComposeColorFields[];
 
 #define COLOR_DEFAULT -1
 
-void mutt_colors_init(void);
-void mutt_colors_cleanup(void);
-bool mutt_color_has_pattern(enum ColorId cid);
-
+void colors_init   (void);
+void colors_reset  (void);
 void colors_cleanup(void);
+
+bool mutt_color_has_pattern(enum ColorId cid);
 
 #endif /* MUTT_COLOR_COLOR_H */

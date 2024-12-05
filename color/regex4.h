@@ -46,13 +46,15 @@ struct RegexColor
 };
 STAILQ_HEAD(RegexColorList, RegexColor);
 
+void regex_colors_init   (void);
+void regex_colors_reset  (void);
+void regex_colors_cleanup(void);
+
 void                   regex_color_clear(struct RegexColor *rcol);
 void                   regex_color_free(struct RegexColorList *list, struct RegexColor **ptr);
 struct RegexColor *    regex_color_new (void);
 
-void                   regex_colors_cleanup(void);
 struct RegexColorList *regex_colors_get_list(enum ColorId cid);
-void                   regex_colors_init(void);
 
 void                   regex_color_list_clear(struct RegexColorList *rcl);
 

@@ -86,11 +86,11 @@ void regex_colors_init(void)
 }
 
 /**
- * regex_colors_cleanup - Clear the Regex colours
+ * regex_colors_reset - Reset the Regex colours
  */
-void regex_colors_cleanup(void)
+void regex_colors_reset(void)
 {
-  color_debug(LL_DEBUG5, "clean up regex\n");
+  color_debug(LL_DEBUG5, "reset regex\n");
   regex_color_list_clear(&AttachList);
   regex_color_list_clear(&BodyList);
   regex_color_list_clear(&HeaderList);
@@ -106,6 +106,14 @@ void regex_colors_cleanup(void)
   regex_color_list_clear(&IndexSubjectList);
   regex_color_list_clear(&IndexTagList);
   regex_color_list_clear(&StatusList);
+}
+
+/**
+ * regex_colors_cleanup - Cleanup the Regex colours
+ */
+void regex_colors_cleanup(void)
+{
+  regex_colors_reset();
 }
 
 /**
