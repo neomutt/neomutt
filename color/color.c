@@ -58,6 +58,7 @@ void colors_init(struct ColorModuleData *mod_data)
   quoted_colors_init();
   regex_colors_init(mod_data);
   simple_colors_init(mod_data->simple_colors);
+  user_colors_init();
 
   start_color();
   use_default_colors();
@@ -87,9 +88,11 @@ void colors_reset(struct ColorModuleData *mod_data)
  */
 void colors_cleanup(struct ColorModuleData *mod_data)
 {
-  simple_colors_cleanup(mod_data->simple_colors);
   quoted_colors_cleanup(&mod_data->num_quoted_colors);
   regex_colors_cleanup(mod_data);
+  simple_colors_cleanup(mod_data->simple_colors);
+  user_colors_cleanup();
+
   merged_colors_cleanup(&mod_data->merged_colors);
   color_notify_cleanup(&mod_data->colors_notify);
 }
