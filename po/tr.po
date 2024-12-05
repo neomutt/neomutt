@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-12-05 12:44+0000\n"
-"PO-Revision-Date: 2024-11-08 16:00+0300\n"
+"PO-Revision-Date: 2024-12-05 22:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -197,20 +197,18 @@ msgstr "Eşleşen iletilerdeki etiketi kaldır: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Ters-sıra: (a)rma, a(d)res veya (s)ırasız?"
+msgstr "Ters-sıra: (a)rma, a(d), (e)-posta veya (s)ırasız?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Sırala: (a)rma, a(d)res veya (s)ırasız?"
+msgstr "Sırala: (a)rma, a(d), (e)-posta veya (s)ırasız?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "ades"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
@@ -1149,7 +1147,7 @@ msgstr "-- Ekler"
 
 #: compose/dlg_compose.c:337 compose/preview.c:141
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Önizleme"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1378,17 +1376,16 @@ msgstr "Taslak kaydedilsin (ertelensin) mi?"
 
 #: compose/preview.c:139
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Yalnızca text/* content-type olan satır içi ekler önizlenebilir"
 
 #: compose/preview.c:165
-#, fuzzy
 msgid "Failed to move cursor!"
-msgstr "Gönderici doğrulanamadı"
+msgstr "İmleç hareket ettirilemedi!"
 
 #: compose/preview.c:183
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Önizleme (%%%.0f)"
 
 #: config/bool.c:76
 #, c-format
@@ -2658,16 +2655,14 @@ msgstr "eki metin olarak göster"
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "iletinin başına geç"
+msgstr "iletinin sonraki sayfasını göster"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "bir önceki yeni veya okunmamış iletiye geç"
+msgstr "iletinin önceki sayfasını göster"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
