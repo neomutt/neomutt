@@ -58,30 +58,24 @@ void quoted_colors_init(void)
 }
 
 /**
- * find_highest_used - Find the highest-numbered quotedN in use
- * @retval num Highest number
+ * quoted_colors_reset - Reset the quoted-email colours
  */
-static int find_highest_used(void)
+void quoted_colors_reset(void)
 {
-  for (int i = COLOR_QUOTES_MAX - 1; i >= 0; i--)
-  {
-    if (attr_color_is_set(&QuotedColors[i]))
-      return i + 1;
-  }
-  return 0;
-}
-
-/**
- * quoted_colors_cleanup - Reset the quoted-email colours
- */
-void quoted_colors_cleanup(void)
-{
-  color_debug(LL_DEBUG5, "QuotedColors: clean up\n");
+  color_debug(LL_DEBUG5, "QuotedColors: reset\n");
   for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
   {
     attr_color_clear(&QuotedColors[i]);
   }
   NumQuotedColors = 0;
+}
+
+/**
+ * quoted_colors_cleanup - Cleanup the quoted-email colours
+ */
+void quoted_colors_cleanup(void)
+{
+  quoted_colors_reset();
 }
 
 /**
@@ -103,6 +97,20 @@ struct AttrColor *quoted_colors_get(int q)
 int quoted_colors_num_used(void)
 {
   return NumQuotedColors;
+}
+
+/**
+ * find_highest_used - Find the highest-numbered quotedN in use
+ * @retval num Highest number
+ */
+static int find_highest_used(void)
+{
+  for (int i = COLOR_QUOTES_MAX - 1; i >= 0; i--)
+  {
+    if (attr_color_is_set(&QuotedColors[i]))
+      return i + 1;
+  }
+  return 0;
 }
 
 /**
