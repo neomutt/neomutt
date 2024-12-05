@@ -578,7 +578,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
     {
       if (certerr & CERTERR_HOSTNAME) // Save hostname if necessary
       {
-        buf_strcpy(fpbuf, "");
+        buf_reset(fpbuf);
         tls_fingerprint(GNUTLS_DIG_MD5, fpbuf, certdata);
         fprintf(fp, "#H %s %s\n", hostname, buf_string(fpbuf));
         saved = true;
