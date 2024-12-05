@@ -35,7 +35,6 @@ struct Buffer;
 #define COLOR_QUOTES_MAX 10
 
 extern struct AttrColor QuotedColors[];
-extern int NumQuotedColors;
 
 #define COLOR_QUOTED(cid) ((cid) == MT_COLOR_QUOTED)
 
