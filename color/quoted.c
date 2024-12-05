@@ -40,21 +40,43 @@
 #include "notify2.h"
 #include "simple2.h"
 
-struct AttrColor QuotedColors[COLOR_QUOTES_MAX]; ///< Array of colours for quoted email text
 static int NumQuotedColors = 0; ///< Number of colours for quoted email text
+
+/**
+ * quoted_color_observer - Notification that a Color has changed - Implements ::observer_t - @ingroup observer_api
+ */
+static int quoted_color_observer(struct NotifyCallback *nc)
+{
+  if (nc->event_type != NT_COLOR)
+    return 0;
+  if (!nc->event_data)
+    return -1;
+
+  struct EventColor *ev_c = nc->event_data;
+  enum ColorId cid = ev_c->cid;
+
+  if (!COLOR_QUOTED(cid))
+    return 0;
+
+  // Find the highest-numbered quotedN in use
+  for (int i = MT_COLOR_QUOTED9; i >= MT_COLOR_QUOTED0; i--)
+  {
+    if (simple_color_is_set(i))
+    {
+      NumQuotedColors = i + 1;
+      break;
+    }
+  }
+
+  return 0;
+}
 
 /**
  * quoted_colors_init - Initialise the Quoted colours
  */
 void quoted_colors_init(void)
 {
-  for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
-  {
-    struct AttrColor *ac = &QuotedColors[i];
-    ac->fg.color = COLOR_DEFAULT;
-    ac->bg.color = COLOR_DEFAULT;
-  }
-  NumQuotedColors = 0;
+  mutt_color_observer_add(quoted_color_observer, NULL);
 }
 
 /**
@@ -62,11 +84,6 @@ void quoted_colors_init(void)
  */
 void quoted_colors_reset(void)
 {
-  color_debug(LL_DEBUG5, "QuotedColors: reset\n");
-  for (size_t i = 0; i < COLOR_QUOTES_MAX; i++)
-  {
-    attr_color_clear(&QuotedColors[i]);
-  }
   NumQuotedColors = 0;
 }
 
@@ -75,19 +92,24 @@ void quoted_colors_reset(void)
  */
 void quoted_colors_cleanup(void)
 {
+  mutt_color_observer_remove(quoted_color_observer, NULL);
   quoted_colors_reset();
 }
 
 /**
  * quoted_colors_get - Return the color of a quote, cycling through the used quotes
  * @param q Quote level
- * @retval enum #ColorId, e.g. #MT_COLOR_QUOTED
+ * @retval enum #ColorId, e.g. #MT_COLOR_QUOTED3
  */
 struct AttrColor *quoted_colors_get(int q)
 {
   if (NumQuotedColors == 0)
     return NULL;
-  return &QuotedColors[q % NumQuotedColors];
+
+  // If we have too few colours, cycle around
+  q %= NumQuotedColors;
+
+  return simple_color_get(MT_COLOR_QUOTED0 + q);
 }
 
 /**
@@ -97,102 +119,4 @@ struct AttrColor *quoted_colors_get(int q)
 int quoted_colors_num_used(void)
 {
   return NumQuotedColors;
-}
-
-/**
- * find_highest_used - Find the highest-numbered quotedN in use
- * @retval num Highest number
- */
-static int find_highest_used(void)
-{
-  for (int i = COLOR_QUOTES_MAX - 1; i >= 0; i--)
-  {
-    if (attr_color_is_set(&QuotedColors[i]))
-      return i + 1;
-  }
-  return 0;
-}
-
-/**
- * quoted_colors_parse_color - Parse the 'color quoted' command
- * @param cid     Colour Id, should be #MT_COLOR_QUOTED
- * @param ac_val  Colour value to use
- * @param q_level Quoting depth level
- * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
- * @param err     Buffer for error messages
- * @retval true Colour was parsed
- */
-bool quoted_colors_parse_color(enum ColorId cid, struct AttrColor *ac_val,
-                               int q_level, int *rc, struct Buffer *err)
-{
-  if (!COLOR_QUOTED(cid))
-    return false;
-
-  color_debug(LL_DEBUG5, "quoted %d\n", q_level);
-  if (q_level >= COLOR_QUOTES_MAX)
-  {
-    buf_printf(err, _("Maximum quoting level is %d"), COLOR_QUOTES_MAX - 1);
-    return false;
-  }
-
-  if (q_level >= NumQuotedColors)
-    NumQuotedColors = q_level + 1;
-
-  struct AttrColor *ac = &QuotedColors[q_level];
-
-  attr_color_overwrite(ac, ac_val);
-
-  struct CursesColor *cc = ac->curses_color;
-  if (!cc)
-    NumQuotedColors = find_highest_used();
-
-  struct Buffer *buf = buf_pool_get();
-  get_colorid_name(cid, buf);
-  color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
-  buf_pool_release(&buf);
-
-  if (q_level == 0)
-  {
-    // Copy the colour into the SimpleColors
-    struct AttrColor *ac_quoted = simple_color_get(MT_COLOR_QUOTED);
-    curses_color_free(&ac_quoted->curses_color);
-    *ac_quoted = *ac;
-    ac_quoted->ref_count = 1;
-    if (ac_quoted->curses_color)
-    {
-      ac_quoted->curses_color->ref_count++;
-      curses_color_dump(cc, "curses rc++");
-    }
-  }
-
-  struct EventColor ev_c = { cid, ac };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_SET, &ev_c);
-
-  curses_colors_dump(buf);
-
-  *rc = MUTT_CMD_SUCCESS;
-  return true;
-}
-
-/**
- * quoted_colors_parse_uncolor - Parse the 'uncolor quoted' command
- * @param cid     Colour Id, should be #MT_COLOR_QUOTED
- * @param q_level Quoting depth level
- * @param err     Buffer for error messages
- * @retval enum CommandResult, e.g. #MUTT_CMD_SUCCESS
- */
-enum CommandResult quoted_colors_parse_uncolor(enum ColorId cid, int q_level,
-                                               struct Buffer *err)
-{
-  color_debug(LL_DEBUG5, "unquoted %d\n", q_level);
-
-  struct AttrColor *ac = &QuotedColors[q_level];
-  attr_color_clear(ac);
-
-  NumQuotedColors = find_highest_used();
-
-  struct EventColor ev_c = { cid, ac };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
-
-  return MUTT_CMD_SUCCESS;
 }
