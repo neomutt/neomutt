@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-01 01:29+0000\n"
+"POT-Creation-Date: 2024-12-05 12:44+0000\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -137,8 +137,8 @@ msgstr "Επιλέξτε"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:109 attach/dlg_attach.c:98
 #: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:130 compose/dlg_compose.c:103
-#: compose/dlg_compose.c:117 conn/dlg_verifycert.c:69 editor/window.c:51
+#: browser/dlg_browser.c:130 compose/dlg_compose.c:105
+#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:69 editor/window.c:51
 #: history/dlg_history.c:80 index/dlg_index.c:111 index/dlg_index.c:126
 #: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:77 pager/dlg_pager.c:102 pager/dlg_pager.c:117
@@ -311,7 +311,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
 #: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:317
-#: compose/functions.c:1846 gui/curs_lib.c:124 index/dlg_index.c:1215
+#: compose/functions.c:1853 gui/curs_lib.c:124 index/dlg_index.c:1215
 #: index/dlg_index.c:1260 pager/dlg_pager.c:455 pager/do_pager.c:166
 #: pager/message.c:329 send/sendlib.c:581
 #, c-format
@@ -1116,50 +1116,54 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:70
+#: compose/config.c:71
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr ""
 
-#: compose/dlg_compose.c:93 compose/dlg_compose.c:111
+#: compose/dlg_compose.c:95 compose/dlg_compose.c:113
 msgid "Send"
 msgstr "Αποστολή"
 
-#: compose/dlg_compose.c:94 compose/dlg_compose.c:112
+#: compose/dlg_compose.c:96 compose/dlg_compose.c:114
 msgid "Abort"
 msgstr "Ακύρωση"
 
 #. L10N: compose menu help line entry
-#: compose/dlg_compose.c:96
+#: compose/dlg_compose.c:98
 msgid "To"
 msgstr "Σε"
 
 #. L10N: compose menu help line entry
-#: compose/dlg_compose.c:98
+#: compose/dlg_compose.c:100
 msgid "CC"
 msgstr "Κοινοποίηση σε"
 
 #. L10N: compose menu help line entry
-#: compose/dlg_compose.c:100 compose/dlg_compose.c:114
+#: compose/dlg_compose.c:102 compose/dlg_compose.c:116
 msgid "Subj"
 msgstr "Θέμα"
 
-#: compose/dlg_compose.c:101 compose/dlg_compose.c:115 compose/functions.c:733
+#: compose/dlg_compose.c:103 compose/dlg_compose.c:117 compose/functions.c:737
 msgid "Attach file"
 msgstr "Σύναψη αρχείου"
 
-#: compose/dlg_compose.c:102 compose/dlg_compose.c:116
+#: compose/dlg_compose.c:104 compose/dlg_compose.c:118
 msgid "Descrip"
 msgstr "Περιγραφή"
 
-#: compose/dlg_compose.c:113
+#: compose/dlg_compose.c:115
 msgid "Newsgroups"
 msgstr "Ομάδες νέων"
 
-#: compose/dlg_compose.c:272
+#: compose/dlg_compose.c:335
 msgid "-- Attachments"
 msgstr "-- Συνημμένα"
 
-#: compose/functions.c:220
+#: compose/dlg_compose.c:337 compose/preview.c:141
+msgid "-- Preview"
+msgstr ""
+
+#: compose/functions.c:224
 msgid "There are no attachments"
 msgstr "Δεν υπάρχουν συνημμένα"
 
@@ -1167,7 +1171,7 @@ msgstr "Δεν υπάρχουν συνημμένα"
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose/functions.c:289
+#: compose/functions.c:293
 #, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "Το συνημμένο #%d δεν υπάρχει πια: %s"
@@ -1176,12 +1180,12 @@ msgstr "Το συνημμένο #%d δεν υπάρχει πια: %s"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose/functions.c:306
+#: compose/functions.c:310
 #, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "Το συνημμένο #%d έχει τροποποιηθεί. Ανανέωση κωδικοποίησης για %s;"
 
-#: compose/functions.c:346
+#: compose/functions.c:350
 msgid "You may not delete the only attachment"
 msgstr "Δεν μπορείτε να διαγράψετε το μοναδικό συνημμένο"
 
@@ -1189,211 +1193,225 @@ msgstr "Δεν μπορείτε να διαγράψετε το μοναδικό 
 #. the compose menu.  This entry is most likely the message they just
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
-#: compose/functions.c:356
+#: compose/functions.c:360
 #, fuzzy
 msgid "Really delete the main message?"
 msgstr "Διαγραφή του γραμματοκιβωτίου \"%s\";"
 
-#: compose/functions.c:373 compose/functions.c:565
+#: compose/functions.c:377 compose/functions.c:569
 #, fuzzy
 msgid "Can't leave group with only one attachment"
 msgstr "Δεν μπορείτε να διαγράψετε το μοναδικό συνημμένο"
 
-#: compose/functions.c:533 compose/functions.c:547
+#: compose/functions.c:537 compose/functions.c:551
 msgid "Attachments to be grouped must have the same parent"
 msgstr ""
 
-#: compose/functions.c:754
+#: compose/functions.c:758
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Σύναψη επιλεγμένου αρχείου..."
 msgstr[1] "Σύναψη επιλεγμένων αρχείων..."
 
-#: compose/functions.c:774
+#: compose/functions.c:778
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Αδυναμία σύναψης του %s"
 
-#: compose/functions.c:826
+#: compose/functions.c:830
 msgid "Open mailbox to attach message from"
 msgstr "Άνοιγμα γραμματοκιβωτίου για σύναψη μηνύματος από"
 
-#: compose/functions.c:836
+#: compose/functions.c:840
 msgid "Open newsgroup to attach message from"
 msgstr "Άνοιγμα ομάδας νέων για σύναψη μηνύματος από"
 
-#: compose/functions.c:889 main.c:1420
+#: compose/functions.c:893 main.c:1420
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Αδυναμία ανοίγματος του γραμματοκιβωτίου %s"
 
-#: compose/functions.c:900
+#: compose/functions.c:904
 msgid "No messages in that folder"
 msgstr "Δεν υπάρχουν μηνύματα σε αυτό το φάκελο"
 
-#: compose/functions.c:909
+#: compose/functions.c:913
 msgid "Tag the messages you want to attach"
 msgstr "Σημειώστε τα μηνύματα που θέλετε να συνάψετε"
 
-#: compose/functions.c:947
+#: compose/functions.c:951
 msgid "Unable to attach"
 msgstr "Αδυναμία συνάψης"
 
-#: compose/functions.c:1044
+#: compose/functions.c:1048
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
 msgstr ""
 
-#: compose/functions.c:1123
+#: compose/functions.c:1127
 msgid "Invalid encoding"
 msgstr "Μη έγκυρη κωδικοποίηση"
 
-#: compose/functions.c:1160
+#: compose/functions.c:1164
 msgid "Empty 'Content-Language'"
 msgstr "Άδειο 'Content-Language'"
 
-#: compose/functions.c:1223
+#: compose/functions.c:1227
 #, fuzzy
 msgid "Can't filter multipart attachments"
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται"
 
-#: compose/functions.c:1258
+#: compose/functions.c:1262
 #, fuzzy
 msgid "Can't get multipart attachments"
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται"
 
-#: compose/functions.c:1280
+#: compose/functions.c:1284
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Η ομαδοποίηση των 'alternatives' χρειάζεται τουλάχιστον 2 σημειωμένα μηνύματα"
 
-#: compose/functions.c:1294
+#: compose/functions.c:1298
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Η ομαδοποίηση των 'multilingual' χρειάζεται τουλάχιστον 2 σημειωμένα μηνύματα"
 
-#: compose/functions.c:1306
+#: compose/functions.c:1310
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Δεν έχουνε όλα τα μέρη σετ 'Content-Language', συνέχεια;"
 
-#: compose/functions.c:1309
+#: compose/functions.c:1313
 msgid "Not sending this message"
 msgstr "Δεν γίνεται αποστολή αυτού του μηνύματος"
 
-#: compose/functions.c:1324
+#: compose/functions.c:1328
 #, fuzzy
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr "Η ομαδοποίηση των 'alternatives' χρειάζεται τουλάχιστον 2 σημειωμένα μηνύματα"
 
-#: compose/functions.c:1357 compose/functions.c:1376
+#: compose/functions.c:1361 compose/functions.c:1380
 msgid "Attachment is already at bottom"
 msgstr "Το συνημμένο είναι τελευταίο"
 
-#: compose/functions.c:1363 compose/functions.c:1416
+#: compose/functions.c:1367 compose/functions.c:1421
 msgid "Attachment can't be moved out of group"
 msgstr ""
 
-#: compose/functions.c:1411
+#: compose/functions.c:1416
 msgid "Attachment is already at top"
 msgstr "Το συνημμένο είναι ήδη πρώτο"
 
-#: compose/functions.c:1443
+#: compose/functions.c:1449
 msgid "New file: "
 msgstr "Νέο αρχείο: "
 
-#: compose/functions.c:1463
+#: compose/functions.c:1469
 msgid "Content-Type is of the form base/sub"
 msgstr "Το Content-Type είναι της μορφής base/sub"
 
-#: compose/functions.c:1470
+#: compose/functions.c:1476
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Άγνωστο Content-Type %s"
 
-#: compose/functions.c:1479
+#: compose/functions.c:1485
 #, c-format
 msgid "Can't create file %s"
 msgstr "Αδυναμία δημιουργίας αρχείου %s"
 
-#: compose/functions.c:1487
+#: compose/functions.c:1493
 #, fuzzy
 msgid "Error attaching file"
 msgstr "Αποτυχία κατά την δημιουργία συννημένου"
 
-#: compose/functions.c:1529
+#: compose/functions.c:1535
 #, fuzzy
 msgid "Can't print multipart attachments"
 msgstr "Εκτύπωση σημειωμένου/ων προσάρτησης/σεων;"
 
-#: compose/functions.c:1555
+#: compose/functions.c:1561
 msgid "Send attachment with name: "
 msgstr "Αποστολή συνημμένου με όνομα: "
 
-#: compose/functions.c:1580
+#: compose/functions.c:1586
 #, fuzzy
 msgid "Can't save multipart attachments"
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται"
 
-#: compose/functions.c:1615
+#: compose/functions.c:1622
 msgid "Recoding only affects text attachments"
 msgstr "Η επανακωδικοποίηση επηρεάζει μόνο τα συνημμένα κειμένου"
 
-#: compose/functions.c:1620
+#: compose/functions.c:1627
 msgid "The current attachment won't be converted"
 msgstr "Η τρέχουσα σύναψη δεν θα μετατραπεί"
 
-#: compose/functions.c:1622
+#: compose/functions.c:1629
 msgid "The current attachment will be converted"
 msgstr "Η τρέχουσα σύναψη θα μετατραπεί"
 
-#: compose/functions.c:1651
+#: compose/functions.c:1658
 #, fuzzy
 msgid "Attachment is not 'multipart'"
 msgstr "Το συνημμένο είναι ήδη πρώτο"
 
-#: compose/functions.c:1767 send/send.c:2673
+#: compose/functions.c:1774 send/send.c:2673
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN στο '%s': '%s'"
 
-#: compose/functions.c:1800
+#: compose/functions.c:1807
 #, fuzzy
 msgid "Can't edit multipart attachments"
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται"
 
-#: compose/functions.c:1881
+#: compose/functions.c:1888
 #, fuzzy
 msgid "Can't rename multipart attachments"
 msgstr "Μόνο η διαγραφή πολυμερών προσαρτήσεων υποστηρίζεται"
 
-#: compose/functions.c:1888
+#: compose/functions.c:1895
 msgid "Rename to: "
 msgstr "Μετονομασία σε: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1896 convert/content_info.c:208 editmsg.c:104
+#: compose/functions.c:1903 convert/content_info.c:208 editmsg.c:104
 #: editmsg.c:137 editmsg.c:156
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Αδυναμία λήψης της κατάστασης του %s: %s"
 
-#: compose/functions.c:1934
+#: compose/functions.c:1941
 msgid "Save a copy of this message?"
 msgstr "Αποθήκευση αντιγράφου του μηνύματος;"
 
-#: compose/functions.c:1960
+#: compose/functions.c:1967
 msgid "Write message to mailbox"
 msgstr "Εγγραφή του μηνύματος στο γραμματοκιβώτιο"
 
-#: compose/functions.c:1964
+#: compose/functions.c:1971
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Εγγραφή μηνύματος στο %s ..."
 
-#: compose/functions.c:1972
+#: compose/functions.c:1979
 msgid "Message written"
 msgstr "Το μήνυμα γράφτηκε"
 
-#: compose/functions.c:2040
+#: compose/functions.c:2047
 msgid "Save (postpone) draft message?"
 msgstr "Αποθήκευση (αναβολλή) πρόχειρου μηνύματος;"
+
+#: compose/preview.c:139
+msgid "Only inline attachments with content-type text/* can be previewed"
+msgstr ""
+
+#: compose/preview.c:165
+#, fuzzy
+msgid "Failed to move cursor!"
+msgstr "Αποτυχία κατά το άνοιγμα αρχείου για την ανάλυση των επικεφαλίδων."
+
+#: compose/preview.c:183
+#, c-format
+msgid "-- Preview (%.0f%%)"
+msgstr ""
 
 #: config/bool.c:76
 #, c-format
@@ -1592,7 +1610,7 @@ msgstr "Δεν έχει εφαρμοστεί μετακίνηση για του�
 msgid "Search is not implemented for this menu"
 msgstr "Δεν έχει εφαρμοστεί αναζήτηση για αυτό το μενού"
 
-#: conn/gnutls.c:146 conn/gnutls.c:640
+#: conn/gnutls.c:146 conn/gnutls.c:641
 msgid "Unable to get certificate from peer"
 msgstr "Αδυναμία στη λήψη πιστοποιητικού από το ταίρι"
 
@@ -1678,35 +1696,35 @@ msgstr "Προειδοποίηση: Το πιστοποιητικό του δι�
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Έλεγχος πιστοποιητικού SSL (πιστοποιητικό %zu απο %zu στην αλυσίδα)"
 
-#: conn/gnutls.c:600 conn/openssl.c:971
+#: conn/gnutls.c:601 conn/openssl.c:971
 msgid "Certificate saved"
 msgstr "Το πιστοποιητικό αποθηκεύτηκε"
 
-#: conn/gnutls.c:602 conn/openssl.c:973
+#: conn/gnutls.c:603 conn/openssl.c:973
 msgid "Warning: Couldn't save certificate"
 msgstr "Προειδοποίηση: Αδυναμία αποθήκευσης πιστοποιητικού"
 
-#: conn/gnutls.c:799 conn/gnutls.c:845
+#: conn/gnutls.c:800 conn/gnutls.c:846
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Όλα τα διαθέσιμα προτόκολλα για TLS/SSL σύνδεση απενεργοποιήθηκαν"
 
-#: conn/gnutls.c:852
+#: conn/gnutls.c:853
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr ""
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:922 conn/openssl.c:1156
+#: conn/gnutls.c:923 conn/openssl.c:1156
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Προειδοποίηση: αδυναμία ορισμού TLS SNI ονόματος host"
 
-#: conn/gnutls.c:968
+#: conn/gnutls.c:969
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL σύνδεση χρησιμοποιώντας %s (%s/%s/%s)"
 
-#: conn/gnutls.c:1050 conn/gnutls.c:1079
+#: conn/gnutls.c:1051 conn/gnutls.c:1080
 msgid "Error: no TLS socket open"
 msgstr "Σφάλμα: δεν υπάρχει ανοιχτό SSL socket"
 
@@ -2480,7 +2498,7 @@ msgstr "Αλλαγή της εμφάνισης των επιμέρους τμη�
 #. Alias Dialog: <op_delete>
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
-#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:274
+#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:280
 msgid "delete the current entry"
 msgstr "διαγραφή της τρέχουσας καταχώρησης"
 
@@ -2580,7 +2598,7 @@ msgstr "σύνθεση νέας προσάρτησης χρησιμοποιών�
 #. Compose Dialog: <op_attachment_filter>
 #. Attach Dialog: <op_attachment_pipe>
 #. Index: <op_pipe>
-#: gui/opcodes.h:104 gui/opcodes.h:664
+#: gui/opcodes.h:104 gui/opcodes.h:670
 msgid "pipe message/attachment to a shell command"
 msgstr "διοχέτευση του μηνύματος/προσάρτησης σε μια εντολή φλοιού"
 
@@ -2589,7 +2607,7 @@ msgstr "διοχέτευση του μηνύματος/προσάρτησης σ
 #. Compose Dialog: <op_attachment_print>
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
-#: gui/opcodes.h:108 gui/opcodes.h:682
+#: gui/opcodes.h:108 gui/opcodes.h:688
 msgid "print the current entry"
 msgstr "εκτύπωση της τρέχουσας καταχώρησης"
 
@@ -2606,7 +2624,7 @@ msgstr "επεξεργασία της κωδικοποίησης-μεταφορ�
 #. L10N: Help screen description for OP_SAVE
 #. Index: <op_save>
 #. Pager: <op_save>
-#: gui/opcodes.h:115 gui/opcodes.h:727
+#: gui/opcodes.h:115 gui/opcodes.h:733
 #, fuzzy
 msgid "save message/attachment to a mailbox/file"
 msgstr "αποθήκευση μηνύματος/προσάρτησης σε ένα αρχείο"
@@ -2635,7 +2653,7 @@ msgstr "επιλογή της διαγραφής του αρχείου μετά 
 #. Alias Dialog: <op_delete>
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
-#: gui/opcodes.h:127 gui/opcodes.h:813
+#: gui/opcodes.h:127 gui/opcodes.h:819
 msgid "undelete the current entry"
 msgstr "αποκατάσταση της τρέχουσας καταχώρησης"
 
@@ -2680,260 +2698,274 @@ msgstr "αναγκάζει την εμφάνιση της προσάρτησης
 msgid "view attachment as text"
 msgstr "παρουσίαση της προσάρτησης ως κείμενο"
 
+#. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
+#. Compose Dialog: <op_preview_page_down>
+#: gui/opcodes.h:152
+#, fuzzy
+msgid "show the next page of the message"
+msgstr "μετάβαση στην αρχή του μηνύματος"
+
+#. L10N: Help screen description for OP_PREVIEW_PAGE_UP
+#. Compose Dialog: <op_preview_page_up>
+#: gui/opcodes.h:155
+#, fuzzy
+msgid "show the previous page of the message"
+msgstr "μετάβαση στο προηγούμενο νέο ή μη αναγνωσμένο μήνυμα"
+
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
-#: gui/opcodes.h:155
+#: gui/opcodes.h:161
 msgid "manage autocrypt accounts"
 msgstr ""
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
-#: gui/opcodes.h:158
+#: gui/opcodes.h:164
 msgid "create a new autocrypt account"
 msgstr ""
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
-#: gui/opcodes.h:161
+#: gui/opcodes.h:167
 #, fuzzy
 msgid "delete the current account"
 msgstr "διαγραφή της τρέχουσας καταχώρησης"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
-#: gui/opcodes.h:164
+#: gui/opcodes.h:170
 msgid "toggle the current account active/inactive"
 msgstr ""
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
-#: gui/opcodes.h:167
+#: gui/opcodes.h:173
 msgid "toggle the current account prefer-encrypt flag"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
-#: gui/opcodes.h:170
+#: gui/opcodes.h:176
 msgid "show autocrypt compose menu options"
 msgstr ""
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
-#: gui/opcodes.h:178
+#: gui/opcodes.h:184
 #, fuzzy
 msgid "open the aliases dialog"
 msgstr "Είστε στο τελευταίο μήνυμα"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:181
+#: gui/opcodes.h:187
 msgid "move to the bottom of the page"
 msgstr "μετακίνηση στη βάση της σελίδας"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
-#: gui/opcodes.h:185
+#: gui/opcodes.h:191
 msgid "remail a message to another user"
 msgstr "Αποστολή ξανά ενός μηνύματος σε ένα άλλο χρήστη"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:188
+#: gui/opcodes.h:194
 msgid "swap the current folder position with $folder if it exists"
 msgstr ""
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
-#: gui/opcodes.h:191
+#: gui/opcodes.h:197
 msgid "select a new file in this directory"
 msgstr "επιλέξτε ένα νέο αρχείο σε αυτό τον κατάλογο"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:194
+#: gui/opcodes.h:200
 #, fuzzy
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "εγγραφή στο τρέχον γραμματοκιβώτιο (IMAP μόνο)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
-#: gui/opcodes.h:197
+#: gui/opcodes.h:203
 msgid "display the currently selected file's name"
 msgstr "απεικόνιση του ονόματος του τρέχοντος επιλεγμένου αρχείου"
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
-#: gui/opcodes.h:200
+#: gui/opcodes.h:206
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "αλλαγή όψης όλα/εγγεγραμμένα γραμματοκιβώτια  (IMAP μόνο)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:203
+#: gui/opcodes.h:209
 #, fuzzy
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "διαγραφή από το τρέχον γραμματοκιβώτιο (IMAP μόνο)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
-#: gui/opcodes.h:206
+#: gui/opcodes.h:212
 msgid "view file"
 msgstr "ανάγνωση το αρχείο"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
-#: gui/opcodes.h:210
+#: gui/opcodes.h:216
 msgid "mark all articles in newsgroup as read"
 msgstr ""
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:213
+#: gui/opcodes.h:219
 msgid "change directories"
 msgstr "αλλαγή καταλόγων"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:216
+#: gui/opcodes.h:222
 msgid "check mailboxes for new mail"
 msgstr "εξέταση γραμμα/τίων για νέα αλληλογραφία"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
-#: gui/opcodes.h:219
+#: gui/opcodes.h:225
 #, fuzzy
 msgid "calculate message statistics for all mailboxes"
 msgstr "αποθήκευση μηνύματος/προσάρτησης σε ένα αρχείο"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
-#: gui/opcodes.h:222
+#: gui/opcodes.h:228
 msgid "edit the file to be attached"
 msgstr "επεξεργασία του φακέλου που θα προσαρτηθεί"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
-#: gui/opcodes.h:225
+#: gui/opcodes.h:231
 msgid "edit the message"
 msgstr "επεξεργασία του μηνύματος"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
-#: gui/opcodes.h:228
+#: gui/opcodes.h:234
 msgid "run ispell on the message"
 msgstr "έλεγχος του μηνύματος με το  ispell"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
-#: gui/opcodes.h:231
+#: gui/opcodes.h:237
 msgid "save this message to send later"
 msgstr "αποθήκευση αυτού του μηνύματος για μετέπειτα αποστολή"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
-#: gui/opcodes.h:234
+#: gui/opcodes.h:240
 msgid "rename/move an attached file"
 msgstr "μετονομασία/μετακίνηση ενός αρχείου προσάρτησης"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
-#: gui/opcodes.h:237
+#: gui/opcodes.h:243
 msgid "send the message"
 msgstr "αποστολή του μηνύματος"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
-#: gui/opcodes.h:241
+#: gui/opcodes.h:247
 #, fuzzy
 msgid "compose new message to the current message sender"
 msgstr "σύνθεση ενός νέου μηνύματος"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
-#: gui/opcodes.h:244
+#: gui/opcodes.h:250
 msgid "write the message to a folder"
 msgstr "εγγραφή του μηνύματος σε ένα φάκελο"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
-#: gui/opcodes.h:247
+#: gui/opcodes.h:253
 msgid "copy a message to a file/mailbox"
 msgstr "αντιγραφή ενός μηνύματος σε ένα αρχείο/γραμμα/τιο"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
-#: gui/opcodes.h:251
+#: gui/opcodes.h:257
 msgid "create an alias from a message sender"
 msgstr "δημιουργία ενός ψευδωνύμου από ένα αποστολέα μηνύματος"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
-#: gui/opcodes.h:254
+#: gui/opcodes.h:260
 msgid "create a new mailbox (IMAP only)"
 msgstr "δημιουργία ενός νέου γραμματοκιβωτίου (IMAP μόνο)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
-#: gui/opcodes.h:257
+#: gui/opcodes.h:263
 msgid "move entry to bottom of screen"
 msgstr "μετακίνηση της καταχώρησης στην βάση της οθόνης"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:260
+#: gui/opcodes.h:266
 msgid "move entry to middle of screen"
 msgstr "μετακίνηση της καταχώρησης στην μέση της οθόνης"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
-#: gui/opcodes.h:263
+#: gui/opcodes.h:269
 msgid "move entry to top of screen"
 msgstr "μετακίνηση της καταχώρησης στην κορυφή της οθόνης"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:266
+#: gui/opcodes.h:272
 msgid "make decoded (text/plain) copy"
 msgstr "δημιουργία αποκωδικοποιημένου (text/plain) αντιγράφου"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:269
+#: gui/opcodes.h:275
 msgid "make decoded copy (text/plain) and delete"
 msgstr "δημιουργία αποκωδικοποιημένου (text/plain) αντιγράφου και διαγραφή"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
-#: gui/opcodes.h:277
+#: gui/opcodes.h:283
 msgid "delete the current mailbox (IMAP only)"
 msgstr "εγγραφή στο τρέχον γραμματοκιβώτιο (IMAP μόνο)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:280
+#: gui/opcodes.h:286
 msgid "delete all messages in subthread"
 msgstr "διαγραφή όλων των μηνυμάτων στη δευτερεύουσα συζήτηση"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:283
+#: gui/opcodes.h:289
 msgid "delete all messages in thread"
 msgstr "διαγραφή όλων των μηνυμάτων στη συζήτηση"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
-#: gui/opcodes.h:286
+#: gui/opcodes.h:292
 #, fuzzy
 msgid "descend into a directory"
 msgstr "Το %s δεν είναι κατάλογος"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
-#: gui/opcodes.h:289
+#: gui/opcodes.h:295
 msgid "display full address of sender"
 msgstr "απεικόνιση της πλήρης διεύθυνσης του αποστολέα"
 
@@ -2941,195 +2973,195 @@ msgstr "απεικόνιση της πλήρης διεύθυνσης του α�
 #. Attach Dialog: <op_attachment_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
-#: gui/opcodes.h:294
+#: gui/opcodes.h:300
 msgid "display message and toggle header weeding"
 msgstr "απεικόνιση του μηνύματος και επιλογή καθαρισμού επικεφαλίδας"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
-#: gui/opcodes.h:297
+#: gui/opcodes.h:303
 msgid "display a message"
 msgstr "απεικόνιση του μηνύματος"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
-#: gui/opcodes.h:300
+#: gui/opcodes.h:306
 msgid "delete the char in front of the cursor"
 msgstr "διαγραφή του χαρακτήρα μπροστά από τον κέρσορα"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
-#: gui/opcodes.h:303
+#: gui/opcodes.h:309
 msgid "move the cursor one character to the left"
 msgstr "μετακίνηση του δρομέα ένα χαρακτήρα προς τα αριστερά"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
-#: gui/opcodes.h:306
+#: gui/opcodes.h:312
 msgid "move the cursor to the beginning of the word"
 msgstr "μετακίνηση του δρομέα στην αρχή της λέξης"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
-#: gui/opcodes.h:309
+#: gui/opcodes.h:315
 msgid "jump to the beginning of the line"
 msgstr "μετάβαση στην αρχή της γραμμής"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:312
+#: gui/opcodes.h:318
 msgid "capitalize the word"
 msgstr "μετατροπή λέξης σε κεφαλαία"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:315
+#: gui/opcodes.h:321
 msgid "complete filename or alias"
 msgstr "ολόκληρο όνομα αρχείου ή ψευδώνυμο"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:318
+#: gui/opcodes.h:324
 msgid "complete address with query"
 msgstr "ολόκληρη διεύθυνση με ερώτηση"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
-#: gui/opcodes.h:321
+#: gui/opcodes.h:327
 msgid "delete the char under the cursor"
 msgstr "διαγραφή του χαρακτήρα κάτω από το δρομέα"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:324
+#: gui/opcodes.h:330
 msgid "convert the word to lower case"
 msgstr "μετατροπή λέξης σε πεζά"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
-#: gui/opcodes.h:327
+#: gui/opcodes.h:333
 msgid "jump to the end of the line"
 msgstr "μετακίνηση στο τέλος της γραμμής"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
-#: gui/opcodes.h:330
+#: gui/opcodes.h:336
 msgid "move the cursor one character to the right"
 msgstr "μετακίνηση του δρομέα ένα χαρακτήρα προς τα δεξιά"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
-#: gui/opcodes.h:333
+#: gui/opcodes.h:339
 msgid "move the cursor to the end of the word"
 msgstr "μετακίνηση του δρομέα στο τέλος της λέξης"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
-#: gui/opcodes.h:336
+#: gui/opcodes.h:342
 msgid "scroll down through the history list"
 msgstr "μετακίνηση προς κάτω στην λίστα ιστορίας"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
-#: gui/opcodes.h:339
+#: gui/opcodes.h:345
 #, fuzzy
 msgid "search through the history list"
 msgstr "μετακίνηση προς πάνω στην λίστα ιστορίας"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
-#: gui/opcodes.h:342
+#: gui/opcodes.h:348
 msgid "scroll up through the history list"
 msgstr "μετακίνηση προς πάνω στην λίστα ιστορίας"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
-#: gui/opcodes.h:345
+#: gui/opcodes.h:351
 msgid "delete chars from cursor to end of line"
 msgstr "διαγραφή των χαρακτήρων από τον κέρσορα ως το τέλος της γραμμής"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
-#: gui/opcodes.h:348
+#: gui/opcodes.h:354
 msgid "delete chars from the cursor to the end of the word"
 msgstr "διαγραφή των χαρακτήρων από τον κέρσορα ως το τέλος της λέξης"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
-#: gui/opcodes.h:351
+#: gui/opcodes.h:357
 #, fuzzy
 msgid "delete chars from cursor to beginning the line"
 msgstr "διαγραφή των χαρακτήρων από τον κέρσορα ως το τέλος της γραμμής"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
-#: gui/opcodes.h:354
+#: gui/opcodes.h:360
 msgid "delete all chars on the line"
 msgstr "διαγραφή όλων των χαρακτήρων στη γραμμή"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
-#: gui/opcodes.h:357
+#: gui/opcodes.h:363
 msgid "delete the word in front of the cursor"
 msgstr "διαγραφή της λέξης μπροστά από στον κέρσορα"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:360
+#: gui/opcodes.h:366
 msgid "cycle among incoming mailboxes"
 msgstr "μετακίνηση μεταξύ των γραμματοκιβωτίων"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
-#: gui/opcodes.h:363
+#: gui/opcodes.h:369
 msgid "quote the next typed key"
 msgstr "παράθεση του επόμενου πλήκτρου"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
-#: gui/opcodes.h:366
+#: gui/opcodes.h:372
 msgid "transpose character under cursor with previous"
 msgstr "μετατόπιση του χαρακτήρα κάτω από τον δρομέα με τον προηγούμενο"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:369
+#: gui/opcodes.h:375
 msgid "convert the word to upper case"
 msgstr "μετατροπή λέξης σε κεφαλαία"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
-#: gui/opcodes.h:372
+#: gui/opcodes.h:378
 msgid "add, change, or delete a message's label"
 msgstr ""
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:375
+#: gui/opcodes.h:381
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr ""
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:378
+#: gui/opcodes.h:384
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr ""
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
-#: gui/opcodes.h:381
+#: gui/opcodes.h:387
 msgid "end of conditional execution (noop)"
 msgstr "τέλος εκτέλεσης υπό συνθήκη (noop)"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
-#: gui/opcodes.h:384
+#: gui/opcodes.h:390
 msgid "enter a neomuttrc command"
 msgstr "καταχώρηση μιας εντολής neomuttrc"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
-#: gui/opcodes.h:387
+#: gui/opcodes.h:393
 msgid "enter a file mask"
 msgstr "καταχώρηση μιας μάσκας αρχείων"
 
@@ -3145,26 +3177,26 @@ msgstr "καταχώρηση μιας μάσκας αρχείων"
 #. PGP Key Selection Dialog: <op_exit>
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
-#: gui/opcodes.h:400
+#: gui/opcodes.h:406
 msgid "exit this menu"
 msgstr "έξοδος από αυτό το μενού"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:403
+#: gui/opcodes.h:409
 msgid "move to the first entry"
 msgstr "μετακίνηση στην πρώτη καταχώρηση"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
-#: gui/opcodes.h:406
+#: gui/opcodes.h:412
 msgid "toggle a message's 'important' flag"
 msgstr "αλλαγή της σημαίας 'σημαντικό' του μηνύματος"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
-#: gui/opcodes.h:410
+#: gui/opcodes.h:416
 #, fuzzy
 msgid "followup to newsgroup"
 msgstr "Συνέχεια στο %s%s;"
@@ -3172,14 +3204,14 @@ msgstr "Συνέχεια στο %s%s;"
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
-#: gui/opcodes.h:414
+#: gui/opcodes.h:420
 msgid "forward a message with comments"
 msgstr "προώθηση ενός μηνύματος με σχόλια"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
-#: gui/opcodes.h:418
+#: gui/opcodes.h:424
 msgid "forward to newsgroup"
 msgstr ""
 
@@ -3192,34 +3224,34 @@ msgstr ""
 #. PGP Key Selection Dialog: <op_generic_select_entry>
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
-#: gui/opcodes.h:428
+#: gui/opcodes.h:434
 msgid "select the current entry"
 msgstr "επιλογή της τρέχουσας καταχώρησης"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
-#: gui/opcodes.h:431
+#: gui/opcodes.h:437
 #, fuzzy
 msgid "get all children of the current message"
 msgstr "Είστε στο πρώτο μήνυμα."
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
-#: gui/opcodes.h:434
+#: gui/opcodes.h:440
 #, fuzzy
 msgid "get message with Message-Id"
 msgstr "επεξεργασία του μηνύματος με επικεφαλίδες"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
-#: gui/opcodes.h:437
+#: gui/opcodes.h:443
 #, fuzzy
 msgid "get parent of the current message"
 msgstr "Είστε στο πρώτο μήνυμα."
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:440
+#: gui/opcodes.h:446
 #, fuzzy
 msgid "go to parent directory"
 msgstr "Το %s δεν είναι κατάλογος."
@@ -3227,7 +3259,7 @@ msgstr "Το %s δεν είναι κατάλογος."
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:444
+#: gui/opcodes.h:450
 #, fuzzy
 msgid "reply to all recipients preserving To/Cc"
 msgstr "απάντηση σε όλους τους παραλήπτες"
@@ -3235,21 +3267,21 @@ msgstr "απάντηση σε όλους τους παραλήπτες"
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:448
+#: gui/opcodes.h:454
 msgid "reply to all recipients"
 msgstr "απάντηση σε όλους τους παραλήπτες"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
-#: gui/opcodes.h:452
+#: gui/opcodes.h:458
 msgid "scroll down 1/2 page"
 msgstr "μετακίνηση 1/2 σελίδας προς τα κάτω"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
-#: gui/opcodes.h:456
+#: gui/opcodes.h:462
 msgid "scroll up 1/2 page"
 msgstr "μετακίνηση 1/2 σελίδας προς τα πάνω"
 
@@ -3257,28 +3289,28 @@ msgstr "μετακίνηση 1/2 σελίδας προς τα πάνω"
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
-#: gui/opcodes.h:461
+#: gui/opcodes.h:467
 msgid "this screen"
 msgstr "αυτή η οθόνη"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
 #. Menu: <op_jump>
-#: gui/opcodes.h:465 gui/opcodes.h:466 gui/opcodes.h:467 gui/opcodes.h:468
-#: gui/opcodes.h:469 gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472
-#: gui/opcodes.h:473 gui/opcodes.h:474
+#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
+#: gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477 gui/opcodes.h:478
+#: gui/opcodes.h:479 gui/opcodes.h:480
 msgid "jump to an index number"
 msgstr "μετάβαση σε έναν αριθμό δείκτη "
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:477
+#: gui/opcodes.h:483
 msgid "move to the last entry"
 msgstr "μετακίνηση στην τελευταία καταχώρηση"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
-#: gui/opcodes.h:480
+#: gui/opcodes.h:486
 #, fuzzy
 msgid "limit view to current thread"
 msgstr "σημείωση της τρέχουσας συζήτησης"
@@ -3286,14 +3318,14 @@ msgstr "σημείωση της τρέχουσας συζήτησης"
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:484
+#: gui/opcodes.h:490
 msgid "reply to specified mailing list"
 msgstr "απάντηση στην καθορισμένη λίστα αλληλογραφίας"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
-#: gui/opcodes.h:488
+#: gui/opcodes.h:494
 #, fuzzy
 msgid "subscribe to a mailing list"
 msgstr "απάντηση στην καθορισμένη λίστα αλληλογραφίας"
@@ -3301,355 +3333,355 @@ msgstr "απάντηση στην καθορισμένη λίστα αλληλο
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
-#: gui/opcodes.h:492
+#: gui/opcodes.h:498
 #, fuzzy
 msgid "unsubscribe from a mailing list"
 msgstr "Απεγγραφή από %s"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
-#: gui/opcodes.h:495
+#: gui/opcodes.h:501
 msgid "load list of all newsgroups from NNTP server"
 msgstr ""
 
 #. L10N: Help screen description for OP_MACRO
-#: gui/opcodes.h:497
+#: gui/opcodes.h:503
 msgid "execute a macro"
 msgstr "εκτέλεση μιας μακροεντολής"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
-#: gui/opcodes.h:501
+#: gui/opcodes.h:507
 msgid "compose a new mail message"
 msgstr "σύνθεση ενός νέου μηνύματος"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
-#: gui/opcodes.h:505
+#: gui/opcodes.h:511
 msgid "list mailboxes with new mail"
 msgstr "απεικόνιση γραμματοκιβωτίων με νέα αλληλογραφία"
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
-#: gui/opcodes.h:508
+#: gui/opcodes.h:514
 msgid "break the thread in two"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:511
+#: gui/opcodes.h:517
 msgid "open a different folder"
 msgstr "άνοιγμα ενός διαφορετικού φακέλου"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:514
+#: gui/opcodes.h:520
 msgid "open a different folder in read only mode"
 msgstr "άνοιγμα ενός διαφορετικού φακέλου σε κατάσταση μόνο-ανάγνωσης"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:517
+#: gui/opcodes.h:523
 #, fuzzy
 msgid "open a different newsgroup"
 msgstr "άνοιγμα ενός διαφορετικού φακέλου"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:520
+#: gui/opcodes.h:526
 #, fuzzy
 msgid "open a different newsgroup in read only mode"
 msgstr "άνοιγμα ενός διαφορετικού φακέλου σε κατάσταση μόνο-ανάγνωσης"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:523
+#: gui/opcodes.h:529
 msgid "clear a status flag from a message"
 msgstr "καθαρισμός της σημαίας κατάστασης από το μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
-#: gui/opcodes.h:526
+#: gui/opcodes.h:532
 msgid "collapse/uncollapse all threads"
 msgstr "μάζεμα/άπλωμα όλων των συζητήσεων"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
-#: gui/opcodes.h:529
+#: gui/opcodes.h:535
 msgid "collapse/uncollapse current thread"
 msgstr "μάζεμα/άπλωμα της τρέχουσας συζήτησης"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
-#: gui/opcodes.h:532
+#: gui/opcodes.h:538
 #, fuzzy
 msgid "delete non-hidden messages matching a pattern"
 msgstr "διαγραφή των μηνυμάτων που ταιριάζουν σε ένα μοντέλο/μορφή"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
-#: gui/opcodes.h:535
+#: gui/opcodes.h:541
 msgid "retrieve mail from POP server"
 msgstr "παραλαβή αλληλογραφίας από το εξυπηρετητή POP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
-#: gui/opcodes.h:538
+#: gui/opcodes.h:544
 msgid "force retrieval of mail from IMAP server"
 msgstr "εξαναγκασμένη παραλαβή αλληλογραφίας από το εξυπηρετητή IMAP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
-#: gui/opcodes.h:541
+#: gui/opcodes.h:547
 msgid "logout from all IMAP servers"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
-#: gui/opcodes.h:545
+#: gui/opcodes.h:551
 msgid "show only messages matching a pattern"
 msgstr "εμφάνιση μόνο των μηνυμάτων που ταιριάζουν σε ένα μοντέλο/μορφή"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
-#: gui/opcodes.h:548
+#: gui/opcodes.h:554
 #, fuzzy
 msgid "link tagged message to the current one"
 msgstr "Διαβίβαση σημειωμένων μηνυμάτων στον: "
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:551
+#: gui/opcodes.h:557
 msgid "modify (notmuch/imap) tags"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:554
+#: gui/opcodes.h:560
 #, fuzzy
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "Είστε στο πρώτο μήνυμα."
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:557
+#: gui/opcodes.h:563
 msgid "jump to the next new message"
 msgstr "μετάβαση στο επόμενο νέο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:560
+#: gui/opcodes.h:566
 msgid "jump to the next new or unread message"
 msgstr "μετάβαση στο επόμενο νέο ή μη αναγνωσμένο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:563
+#: gui/opcodes.h:569
 msgid "jump to the next subthread"
 msgstr "μετάβαση στο επόμενο θέμα της δευτερεύουσας συζήτησης"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:566
+#: gui/opcodes.h:572
 msgid "jump to the next thread"
 msgstr "μετάβαση στην επόμενη συζήτηση"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
-#: gui/opcodes.h:569
+#: gui/opcodes.h:575
 msgid "move to the next undeleted message"
 msgstr "μετακίνηση στο επόμενο αποκαταστημένο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:572
+#: gui/opcodes.h:578
 msgid "jump to the next unread message"
 msgstr "μετάβαση στο επόμενο μη αναγνωσμένο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
-#: gui/opcodes.h:575
+#: gui/opcodes.h:581
 #, fuzzy
 msgid "open next mailbox with new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:578
+#: gui/opcodes.h:584
 msgid "jump to parent message in thread"
 msgstr "μετάβαση στο τρέχον μήνυμα της συζήτησης"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:581
+#: gui/opcodes.h:587
 msgid "jump to the previous new message"
 msgstr "μετάβαση στο προηγούμενο νέο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:584
+#: gui/opcodes.h:590
 msgid "jump to the previous new or unread message"
 msgstr "μετάβαση στο προηγούμενο νέο ή μη αναγνωσμένο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:587
+#: gui/opcodes.h:593
 msgid "jump to previous subthread"
 msgstr "μετάβαση στην προηγούμενη δευτερεύουσα συζήτηση"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:590
+#: gui/opcodes.h:596
 msgid "jump to previous thread"
 msgstr "μετάβαση στην προηγούμενη συζήτηση"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
-#: gui/opcodes.h:593
+#: gui/opcodes.h:599
 msgid "move to the previous undeleted message"
 msgstr "μετακίνηση στο προηγούμενο αποκαταστημένο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:596
+#: gui/opcodes.h:602
 msgid "jump to the previous unread message"
 msgstr "μετάβαση στο προηγούμενο μη αναγνωσμένο μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
-#: gui/opcodes.h:599
+#: gui/opcodes.h:605
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:602
+#: gui/opcodes.h:608
 msgid "mark the current subthread as read"
 msgstr "σημείωση της τρέχουσας υποσυζήτησης ως αναγνωσμένη"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:605
+#: gui/opcodes.h:611
 msgid "mark the current thread as read"
 msgstr "σημείωση της τρέχουσας συζήτησης ως αναγνωσμένη"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:608
+#: gui/opcodes.h:614
 #, fuzzy
 msgid "jump to root message in thread"
 msgstr "μετάβαση στο τρέχον μήνυμα της συζήτησης"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:611
+#: gui/opcodes.h:617
 msgid "set a status flag on a message"
 msgstr "ορισμός της σημαίας κατάστασης σε ένα μήνυμα"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
-#: gui/opcodes.h:614
+#: gui/opcodes.h:620
 msgid "show currently active limit pattern"
 msgstr "εμφάνιση της ενεργής μορφής των ορίων"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
-#: gui/opcodes.h:617
+#: gui/opcodes.h:623
 msgid "save changes to mailbox"
 msgstr "αποθήκευση των αλλαγών στο γραμματοκιβώτιο"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
-#: gui/opcodes.h:620
+#: gui/opcodes.h:626
 #, fuzzy
 msgid "tag non-hidden messages matching a pattern"
 msgstr "σημείωση των μηνυμάτων που ταιριάζουν με μια μορφή/μοντέλο"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
-#: gui/opcodes.h:623
+#: gui/opcodes.h:629
 #, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "αποκατάσταση (undelete) των μηνυμάτων που ταιριάζουν με μία μορφή/μοντέλο"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
-#: gui/opcodes.h:626
+#: gui/opcodes.h:632
 #, fuzzy
 msgid "untag non-hidden messages matching a pattern"
 msgstr "αφαίρεση της σημείωσης από τα μηνύματα που ταιριάζουν με μία μορφή/μοντέλο"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
-#: gui/opcodes.h:629
+#: gui/opcodes.h:635
 #, fuzzy
 msgid "create a hotkey macro for the current message"
 msgstr "Είστε στο πρώτο μήνυμα."
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:632
+#: gui/opcodes.h:638
 msgid "move to the middle of the page"
 msgstr "μετακίνηση στο μέσο της σελίδας"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
-#: gui/opcodes.h:636
+#: gui/opcodes.h:642
 msgid "move to the next entry"
 msgstr "μετακίνηση στην επόμενη καταχώρηση"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
-#: gui/opcodes.h:640
+#: gui/opcodes.h:646
 msgid "scroll down one line"
 msgstr "μετακίνηση μια γραμμή προς τα κάτω"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
-#: gui/opcodes.h:644
+#: gui/opcodes.h:650
 msgid "move to the next page"
 msgstr "μετακίνηση στην επόμενη σελίδα"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
-#: gui/opcodes.h:647
+#: gui/opcodes.h:653
 msgid "jump to the bottom of the message"
 msgstr "μετάβαση στη βάση του μηνύματος"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
-#: gui/opcodes.h:650
+#: gui/opcodes.h:656
 msgid "toggle display of quoted text"
 msgstr "επιλογή της εμφάνισης του quoted κειμένου"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
-#: gui/opcodes.h:653
+#: gui/opcodes.h:659
 #, fuzzy
 msgid "jump to first line after headers"
 msgstr "μετάβαση στην επόμενη συζήτηση"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
-#: gui/opcodes.h:656
+#: gui/opcodes.h:662
 msgid "skip beyond quoted text"
 msgstr "προσπέραση πέρα από το quoted κείμενο"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
-#: gui/opcodes.h:659
+#: gui/opcodes.h:665
 msgid "jump to the top of the message"
 msgstr "μετάβαση στην αρχή του μηνύματος"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
-#: gui/opcodes.h:667
+#: gui/opcodes.h:673
 #, fuzzy
 msgid "post message to newsgroup"
 msgstr "Διαβίβαση μηνύματος στον %s"
@@ -3657,46 +3689,46 @@ msgstr "Διαβίβαση μηνύματος στον %s"
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
-#: gui/opcodes.h:671
+#: gui/opcodes.h:677
 msgid "move to the previous entry"
 msgstr "μετακίνηση στην προηγούμενη καταχώρηση"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
-#: gui/opcodes.h:675
+#: gui/opcodes.h:681
 msgid "scroll up one line"
 msgstr "μετακίνηση μια γραμμή προς τα πάνω"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
-#: gui/opcodes.h:679
+#: gui/opcodes.h:685
 msgid "move to the previous page"
 msgstr "μετακίνηση στην προηγούμενη σελίδα"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
-#: gui/opcodes.h:685
+#: gui/opcodes.h:691
 msgid "delete the current entry, bypassing the trash folder"
 msgstr ""
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:688
+#: gui/opcodes.h:694
 msgid "delete the current thread, bypassing the trash folder"
 msgstr ""
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
-#: gui/opcodes.h:692
+#: gui/opcodes.h:698
 msgid "query external program for addresses"
 msgstr "ερώτηση ενός εξωτερικού προγράμματος για διευθύνσεις"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
-#: gui/opcodes.h:695
+#: gui/opcodes.h:701
 msgid "append new query results to current results"
 msgstr "πρόσθεση των νέων αποτελεσμάτων της ερώτησης στα τρέχοντα"
 
@@ -3704,19 +3736,19 @@ msgstr "πρόσθεση των νέων αποτελεσμάτων της ερ�
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
-#: gui/opcodes.h:700
+#: gui/opcodes.h:706
 msgid "save changes to mailbox and quit"
 msgstr "αποθήκευση των αλλαγών στο γραμματοκιβώτιο και εγκατάλειψη"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
-#: gui/opcodes.h:703
+#: gui/opcodes.h:709
 msgid "recall a postponed message"
 msgstr "επανάκληση ενός αναβληθέντος μηνύματος"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
-#: gui/opcodes.h:706
+#: gui/opcodes.h:712
 #, fuzzy
 msgid "reconstruct thread containing current message"
 msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μηνύματα."
@@ -3724,18 +3756,18 @@ msgstr "Η συζήτηση περιέχει μη αναγνωσμένα μην�
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
-#: gui/opcodes.h:710
+#: gui/opcodes.h:716
 msgid "clear and redraw the screen"
 msgstr "καθαρισμός και ανανέωση της οθόνης"
 
 #. L10N: Help screen description for OP_REFORMAT_WINCH
-#: gui/opcodes.h:712
+#: gui/opcodes.h:718
 msgid "{internal}"
 msgstr "{εσωτερικό}"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
-#: gui/opcodes.h:715
+#: gui/opcodes.h:721
 #, fuzzy
 msgid "rename the current mailbox (IMAP only)"
 msgstr "εγγραφή στο τρέχον γραμματοκιβώτιο (IMAP μόνο)"
@@ -3743,14 +3775,14 @@ msgstr "εγγραφή στο τρέχον γραμματοκιβώτιο (IMAP 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
-#: gui/opcodes.h:719
+#: gui/opcodes.h:725
 msgid "reply to a message"
 msgstr "απάντηση σε ένα μήνυμα"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
-#: gui/opcodes.h:723
+#: gui/opcodes.h:729
 msgid "use the current message as a template for a new one"
 msgstr "χρησιμοποίηση του τρέχοντος μηνύματος ως σχεδίου για ένα νέο"
 
@@ -3760,7 +3792,7 @@ msgstr "χρησιμοποίηση του τρέχοντος μηνύματος 
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:734
+#: gui/opcodes.h:740
 msgid "search for a regular expression"
 msgstr "αναζήτηση μιας κανονικής έκφρασης"
 
@@ -3770,7 +3802,7 @@ msgstr "αναζήτηση μιας κανονικής έκφρασης"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:741
+#: gui/opcodes.h:747
 msgid "search for next match"
 msgstr "αναζήτηση για επόμενο ταίριασμα"
 
@@ -3780,7 +3812,7 @@ msgstr "αναζήτηση για επόμενο ταίριασμα"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:748
+#: gui/opcodes.h:754
 msgid "search for next match in opposite direction"
 msgstr "αναζήτηση του επόμενου ταιριάσματος προς την αντίθετη κατεύθυνση"
 
@@ -3790,25 +3822,25 @@ msgstr "αναζήτηση του επόμενου ταιριάσματος πρ
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:755
+#: gui/opcodes.h:761
 msgid "search backwards for a regular expression"
 msgstr "αναζήτηση μιας κανονικής έκφρασης προς τα πίσω"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
-#: gui/opcodes.h:758
+#: gui/opcodes.h:764
 msgid "toggle search pattern coloring"
 msgstr "επιλογή του χρωματισμού των αποτελεσμάτων αναζήτησης"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
-#: gui/opcodes.h:761
+#: gui/opcodes.h:767
 msgid "invoke a command in a subshell"
 msgstr "κλήση μιας εντολής σε ένα δευτερεύων φλοιό"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
-#: gui/opcodes.h:764
+#: gui/opcodes.h:770
 #, fuzzy
 msgid "show log (and debug) messages"
 msgstr "ταξινόμηση των μηνυμάτων"
@@ -3817,7 +3849,7 @@ msgstr "ταξινόμηση των μηνυμάτων"
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:769
+#: gui/opcodes.h:775
 msgid "sort messages"
 msgstr "ταξινόμηση των μηνυμάτων"
 
@@ -3825,143 +3857,143 @@ msgstr "ταξινόμηση των μηνυμάτων"
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:774
+#: gui/opcodes.h:780
 msgid "sort messages in reverse order"
 msgstr "ταξινόμηση των μηνυμάτων σε ανάστροφη σειρά"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:777
+#: gui/opcodes.h:783
 #, fuzzy
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "αφαίρεση της σημείωσης από τα μηνύματα που ταιριάζουν με μία μορφή/μοντέλο"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
-#: gui/opcodes.h:780
+#: gui/opcodes.h:786
 msgid "tag the current entry"
 msgstr "σημείωση της τρέχουσας καταχώρησης"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
-#: gui/opcodes.h:782
+#: gui/opcodes.h:788
 msgid "apply next function to tagged messages"
 msgstr "εφαρμογή της επόμενης λειτουργίας στα σημειωμένα μηνύματα"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
-#: gui/opcodes.h:784
+#: gui/opcodes.h:790
 msgid "apply next function ONLY to tagged messages"
 msgstr "εφαρμογή της επόμενης λειτουργίας ΜΟΝΟ στα σημειωμένα μηνύματα"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:787
+#: gui/opcodes.h:793
 msgid "tag the current subthread"
 msgstr "σημείωση της τρέχουσας δευτερεύουσας συζήτησης"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:790
+#: gui/opcodes.h:796
 msgid "tag the current thread"
 msgstr "σημείωση της τρέχουσας συζήτησης"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:793
+#: gui/opcodes.h:799
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "επιλογή για περιήγηση στα γραμματοκιβώτια ή σε όλα τα αρχεία"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
-#: gui/opcodes.h:796
+#: gui/opcodes.h:802
 msgid "toggle a message's 'new' flag"
 msgstr "επιλογή της 'νέας' σημαίας μηνύματος"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
-#: gui/opcodes.h:799
+#: gui/opcodes.h:805
 #, fuzzy
 msgid "toggle view of read messages"
 msgstr "μετάβαση στο προηγούμενο νέο ή μη αναγνωσμένο μήνυμα"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
-#: gui/opcodes.h:802
+#: gui/opcodes.h:808
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "επιλογή εάν το γραμματοκιβώτιο θα ξαναγραφεί"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:805
+#: gui/opcodes.h:811
 msgid "move to the top of the page"
 msgstr "μετακίνηση στην αρχή της σελίδας"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
-#: gui/opcodes.h:808
+#: gui/opcodes.h:814
 msgid "mark all articles in newsgroup as unread"
 msgstr ""
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:816
+#: gui/opcodes.h:822
 msgid "undelete all messages in subthread"
 msgstr "αποκατάσταση όλων των μηνυμάτων στη δευτερεύουσα συζήτηση"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:819
+#: gui/opcodes.h:825
 msgid "undelete all messages in thread"
 msgstr "αποκατάσταση όλων των μηνυμάτων στη συζήτηση"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:822
+#: gui/opcodes.h:828
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "αφαίρεση της σημείωσης από τα μηνύματα που ταιριάζουν με μία μορφή/μοντέλο"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
-#: gui/opcodes.h:825
+#: gui/opcodes.h:831
 msgid "show the NeoMutt version number and date"
 msgstr "εμφάνιση του αριθμού έκδοσης του NeoMutt και την ημερομηνία"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
-#: gui/opcodes.h:829
+#: gui/opcodes.h:835
 msgid "show MIME attachments"
 msgstr "εμφάνιση των προσαρτήσεων MIME"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:832
+#: gui/opcodes.h:838
 #, fuzzy
 msgid "show the raw message"
 msgstr "επεξεργασία του <<ωμού>> μηνύματος"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
-#: gui/opcodes.h:835
+#: gui/opcodes.h:841
 msgid "display the keycode for a key press"
 msgstr "εμφάνιση κωδικού πληκτρολογίου για πατηθέν πλήκτρο"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:840
+#: gui/opcodes.h:846
 msgid "make decrypted copy"
 msgstr "δημιουργία αποκρυπτογραφημένου αντιγράφου"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:843
+#: gui/opcodes.h:849
 msgid "make decrypted copy and delete"
 msgstr "δημιουργία αποκρυπτογραφημένου αντιγράφου και διαγραφή"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
-#: gui/opcodes.h:847
+#: gui/opcodes.h:853
 msgid "extract supported public keys"
 msgstr "εξαγωγή των δημόσιων κλειδιών που υποστηρίζονται"
 
@@ -3969,245 +4001,245 @@ msgstr "εξαγωγή των δημόσιων κλειδιών που υποσ�
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
-#: gui/opcodes.h:852
+#: gui/opcodes.h:858
 #, fuzzy
 msgid "wipe passphrases from memory"
 msgstr "εξαφάνιση της φράσης(-εων) κλειδί από τη μνήμη"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
-#: gui/opcodes.h:857
+#: gui/opcodes.h:863
 msgid "edit the BCC list"
 msgstr "επεξεργασία της λίστας BCC"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
-#: gui/opcodes.h:860
+#: gui/opcodes.h:866
 msgid "edit the CC list"
 msgstr "επεξεργασία της λίστας CC"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
-#: gui/opcodes.h:863
+#: gui/opcodes.h:869
 msgid "enter a file to save a copy of this message in"
 msgstr "ορισμός αρχείου για αποθήκευση αντιγράφου αυτού του μηνύματος "
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
-#: gui/opcodes.h:866
+#: gui/opcodes.h:872
 #, fuzzy
 msgid "edit the Followup-To field"
 msgstr "επεξεργασία του πεδίου Reply-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
-#: gui/opcodes.h:869
+#: gui/opcodes.h:875
 msgid "edit the from field"
 msgstr "επεξεργασία του πεδίου from"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
-#: gui/opcodes.h:872
+#: gui/opcodes.h:878
 msgid "edit the message with headers"
 msgstr "επεξεργασία του μηνύματος με επικεφαλίδες"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
-#: gui/opcodes.h:875
+#: gui/opcodes.h:881
 #, fuzzy
 msgid "edit the newsgroups list"
 msgstr "επεξεργασία της λίστας CC"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
-#: gui/opcodes.h:878
+#: gui/opcodes.h:884
 msgid "edit the Reply-To field"
 msgstr "επεξεργασία του πεδίου Reply-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
-#: gui/opcodes.h:881
+#: gui/opcodes.h:887
 msgid "edit the subject of this message"
 msgstr "επεξεργασία του θέματος αυτού του μηνύματος"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
-#: gui/opcodes.h:884
+#: gui/opcodes.h:890
 msgid "edit the TO list"
 msgstr "επεξεργασία της λίστας TO"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
-#: gui/opcodes.h:887
+#: gui/opcodes.h:893
 #, fuzzy
 msgid "edit the X-Comment-To field"
 msgstr "επεξεργασία του πεδίου Reply-To"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:893
+#: gui/opcodes.h:899
 #, fuzzy
 msgid "open a different virtual folder"
 msgstr "άνοιγμα ενός διαφορετικού φακέλου"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
-#: gui/opcodes.h:896
+#: gui/opcodes.h:902
 msgid "read entire thread of the current message"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:899
+#: gui/opcodes.h:905
 msgid "generate virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:902
+#: gui/opcodes.h:908
 msgid "generate a read-only virtual folder from query"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:905
+#: gui/opcodes.h:911
 msgid "shifts virtual folder time window backwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:908
+#: gui/opcodes.h:914
 msgid "shifts virtual folder time window forwards"
 msgstr ""
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:911
+#: gui/opcodes.h:917
 msgid "resets virtual folder time window to the present"
 msgstr ""
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
 #. Compose Dialog: <op_attachment_attach_key>
-#: gui/opcodes.h:919
+#: gui/opcodes.h:925
 msgid "attach a PGP public key"
 msgstr "προσάρτηση του δημόσιου κλειδιού PGP"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
-#: gui/opcodes.h:923
+#: gui/opcodes.h:929
 #, fuzzy
 msgid "check for classic PGP"
 msgstr "έλεγχος για το κλασσικό pgp"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
-#: gui/opcodes.h:926
+#: gui/opcodes.h:932
 msgid "show PGP options"
 msgstr "εμφάνιση των επιλογών PGP"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
-#: gui/opcodes.h:929
+#: gui/opcodes.h:935
 msgid "mail a PGP public key"
 msgstr "ταχυδρόμηση δημόσιου κλειδιού PGP"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
-#: gui/opcodes.h:933
+#: gui/opcodes.h:939
 msgid "verify a PGP public key"
 msgstr "επιβεβαίωση ενός δημόσιου κλειδιού PGP"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
-#: gui/opcodes.h:937
+#: gui/opcodes.h:943
 msgid "view the key's user id"
 msgstr "εμφάνιση του ιδιοκτήτη του κλειδιού"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
-#: gui/opcodes.h:942
+#: gui/opcodes.h:948
 #, fuzzy
 msgid "move the highlight to the first mailbox"
 msgstr "μετακίνηση στην προηγούμενη σελίδα"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
-#: gui/opcodes.h:945
+#: gui/opcodes.h:951
 #, fuzzy
 msgid "move the highlight to the last mailbox"
 msgstr "μετακίνηση στην προηγούμενη σελίδα"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
-#: gui/opcodes.h:948
+#: gui/opcodes.h:954
 msgid "move the highlight to next mailbox"
 msgstr ""
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
-#: gui/opcodes.h:951
+#: gui/opcodes.h:957
 #, fuzzy
 msgid "move the highlight to next mailbox with new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
-#: gui/opcodes.h:954
+#: gui/opcodes.h:960
 #, fuzzy
 msgid "open highlighted mailbox"
 msgstr "Επαναπρόσβαση στο γραμματοκιβώτιο..."
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
-#: gui/opcodes.h:957
+#: gui/opcodes.h:963
 #, fuzzy
 msgid "scroll the sidebar down 1 page"
 msgstr "μετακίνηση 1/2 σελίδας προς τα κάτω"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
-#: gui/opcodes.h:960
+#: gui/opcodes.h:966
 #, fuzzy
 msgid "scroll the sidebar up 1 page"
 msgstr "μετακίνηση 1/2 σελίδας προς τα πάνω"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
-#: gui/opcodes.h:963
+#: gui/opcodes.h:969
 #, fuzzy
 msgid "move the highlight to previous mailbox"
 msgstr "μετακίνηση στην προηγούμενη σελίδα"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
-#: gui/opcodes.h:966
+#: gui/opcodes.h:972
 #, fuzzy
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
-#: gui/opcodes.h:969
+#: gui/opcodes.h:975
 #, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "επιλογή για περιήγηση στα γραμματοκιβώτια ή σε όλα τα αρχεία"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
-#: gui/opcodes.h:972
+#: gui/opcodes.h:978
 msgid "make the sidebar (in)visible"
 msgstr ""
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
-#: gui/opcodes.h:977
+#: gui/opcodes.h:983
 msgid "show S/MIME options"
 msgstr "εμφάνιση των επιλογών S/MIME"
 
-#: gui/opcodes.h:980
+#: gui/opcodes.h:986
 msgid "null operation"
 msgstr "κενή λειτουργία"
 
