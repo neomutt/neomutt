@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-01 01:29+0000\n"
+"POT-Creation-Date: 2024-12-05 12:44+0000\n"
 "PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
@@ -134,8 +134,8 @@ msgstr "Вибір"
 
 #: alias/dlg_alias.c:107 alias/dlg_query.c:109 attach/dlg_attach.c:98
 #: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:116
-#: browser/dlg_browser.c:130 compose/dlg_compose.c:103
-#: compose/dlg_compose.c:117 conn/dlg_verifycert.c:69 editor/window.c:51
+#: browser/dlg_browser.c:130 compose/dlg_compose.c:105
+#: compose/dlg_compose.c:119 conn/dlg_verifycert.c:69 editor/window.c:51
 #: history/dlg_history.c:80 index/dlg_index.c:111 index/dlg_index.c:126
 #: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:76
 #: pager/dlg_pager.c:77 pager/dlg_pager.c:102 pager/dlg_pager.c:117
@@ -302,7 +302,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Написання запису mailcap вимагає %%s"
 
 #: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:317
-#: compose/functions.c:1846 gui/curs_lib.c:124 index/dlg_index.c:1215
+#: compose/functions.c:1853 gui/curs_lib.c:124 index/dlg_index.c:1215
 #: index/dlg_index.c:1260 pager/dlg_pager.c:455 pager/do_pager.c:166
 #: pager/message.c:329 send/sendlib.c:581
 #, c-format
@@ -1110,50 +1110,54 @@ msgid "Error. Preserving temporary file: %s"
 msgstr "Помилка. Зберігання тимчасового файлу: %s"
 
 #. L10N: $compose_format default format
-#: compose/config.c:70
+#: compose/config.c:71
 msgid "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"
 msgstr ""
 
-#: compose/dlg_compose.c:93 compose/dlg_compose.c:111
+#: compose/dlg_compose.c:95 compose/dlg_compose.c:113
 msgid "Send"
 msgstr "Надіслати"
 
-#: compose/dlg_compose.c:94 compose/dlg_compose.c:112
+#: compose/dlg_compose.c:96 compose/dlg_compose.c:114
 msgid "Abort"
 msgstr "Скасувати"
 
 #. L10N: compose menu help line entry
-#: compose/dlg_compose.c:96
+#: compose/dlg_compose.c:98
 msgid "To"
 msgstr "Кому"
 
 #. L10N: compose menu help line entry
-#: compose/dlg_compose.c:98
+#: compose/dlg_compose.c:100
 msgid "CC"
 msgstr "CC"
 
 #. L10N: compose menu help line entry
-#: compose/dlg_compose.c:100 compose/dlg_compose.c:114
+#: compose/dlg_compose.c:102 compose/dlg_compose.c:116
 msgid "Subj"
 msgstr "Тема"
 
-#: compose/dlg_compose.c:101 compose/dlg_compose.c:115 compose/functions.c:733
+#: compose/dlg_compose.c:103 compose/dlg_compose.c:117 compose/functions.c:737
 msgid "Attach file"
 msgstr "Прикріпити файл"
 
-#: compose/dlg_compose.c:102 compose/dlg_compose.c:116
+#: compose/dlg_compose.c:104 compose/dlg_compose.c:118
 msgid "Descrip"
 msgstr "Опис"
 
-#: compose/dlg_compose.c:113
+#: compose/dlg_compose.c:115
 msgid "Newsgroups"
 msgstr "Групи новин"
 
-#: compose/dlg_compose.c:272
+#: compose/dlg_compose.c:335
 msgid "-- Attachments"
 msgstr "-- Прикріплення"
 
-#: compose/functions.c:220
+#: compose/dlg_compose.c:337 compose/preview.c:141
+msgid "-- Preview"
+msgstr ""
+
+#: compose/functions.c:224
 msgid "There are no attachments"
 msgstr "Прикріплень немає"
 
@@ -1161,7 +1165,7 @@ msgstr "Прикріплень немає"
 #. doesn't stat.  %d is the attachment number and %s is the attachment
 #. filename.  The filename is located last to avoid a long path hiding
 #. the error message.
-#: compose/functions.c:289
+#: compose/functions.c:293
 #, c-format
 msgid "Attachment #%d no longer exists: %s"
 msgstr "Прикріплення #%d вже не існує: %s"
@@ -1170,12 +1174,12 @@ msgstr "Прикріплення #%d вже не існує: %s"
 #. is modified behind the scenes.  %d is the attachment number and %s is
 #. the attachment filename.  The filename is located last to avoid a long
 #. path hiding the prompt question.
-#: compose/functions.c:306
+#: compose/functions.c:310
 #, c-format
 msgid "Attachment #%d modified. Update encoding for %s?"
 msgstr "Прикріплення #%d змінено. Оновити кодування для %s?"
 
-#: compose/functions.c:346
+#: compose/functions.c:350
 msgid "You may not delete the only attachment"
 msgstr "Це єдина частина листа, її неможливо видалити"
 
@@ -1183,203 +1187,217 @@ msgstr "Це єдина частина листа, її неможливо ви�
 #. the compose menu.  This entry is most likely the message they just
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
-#: compose/functions.c:356
+#: compose/functions.c:360
 #, fuzzy
 msgid "Really delete the main message?"
 msgstr "Справді видалити скриньку \"%s\"?"
 
-#: compose/functions.c:373 compose/functions.c:565
+#: compose/functions.c:377 compose/functions.c:569
 msgid "Can't leave group with only one attachment"
 msgstr "Не можливо покинути групу лише з одним прикріпленням"
 
-#: compose/functions.c:533 compose/functions.c:547
+#: compose/functions.c:537 compose/functions.c:551
 msgid "Attachments to be grouped must have the same parent"
 msgstr "Прикріплення для групування повинні мати одного батька"
 
-#: compose/functions.c:754
+#: compose/functions.c:758
 msgid "Attaching selected file..."
 msgid_plural "Attaching selected files..."
 msgstr[0] "Прикріплення вибраного файлу..."
 msgstr[1] "Прикріплення вибраних файлів..."
 msgstr[2] "Прикріплення вибраних файлів..."
 
-#: compose/functions.c:774
+#: compose/functions.c:778
 #, c-format
 msgid "Unable to attach %s"
 msgstr "Не можливо прикріпити %s"
 
-#: compose/functions.c:826
+#: compose/functions.c:830
 msgid "Open mailbox to attach message from"
 msgstr "Відкрити скриньку для прикріплення листа звідти"
 
-#: compose/functions.c:836
+#: compose/functions.c:840
 msgid "Open newsgroup to attach message from"
 msgstr "Відкрити групу новин для прикріплення листа звідти"
 
-#: compose/functions.c:889 main.c:1420
+#: compose/functions.c:893 main.c:1420
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Неможливо відкрити скриньку %s"
 
-#: compose/functions.c:900
+#: compose/functions.c:904
 msgid "No messages in that folder"
 msgstr "У цій теці нема листів"
 
-#: compose/functions.c:909
+#: compose/functions.c:913
 msgid "Tag the messages you want to attach"
 msgstr "Позначте листи, які бажаєте прикріпити"
 
-#: compose/functions.c:947
+#: compose/functions.c:951
 msgid "Unable to attach"
 msgstr "Не можливо прикріпити"
 
-#: compose/functions.c:1044
+#: compose/functions.c:1048
 msgid "Content-ID can only contain the characters: -.0-9@A-Z_a-z"
 msgstr "Content-ID може містити лише знаки: -.0-9@A-Z_a-z"
 
-#: compose/functions.c:1123
+#: compose/functions.c:1127
 msgid "Invalid encoding"
 msgstr "Неправильне кодування"
 
-#: compose/functions.c:1160
+#: compose/functions.c:1164
 msgid "Empty 'Content-Language'"
 msgstr "Порожнє 'Content-Language'"
 
-#: compose/functions.c:1223
+#: compose/functions.c:1227
 msgid "Can't filter multipart attachments"
 msgstr "Не можливо фільтрувати багаточастинні прикріплення"
 
-#: compose/functions.c:1258
+#: compose/functions.c:1262
 msgid "Can't get multipart attachments"
 msgstr "Не можливо отримати багаточастинні прикріплення"
 
-#: compose/functions.c:1280
+#: compose/functions.c:1284
 msgid "Grouping 'alternatives' requires at least 2 tagged messages"
 msgstr "Групування 'альтернатив' вимагає щонайменше 2 позначених листа"
 
-#: compose/functions.c:1294
+#: compose/functions.c:1298
 msgid "Grouping 'multilingual' requires at least 2 tagged messages"
 msgstr "Групування 'multilingual' вимагає щонайменше 2 позначених листи"
 
-#: compose/functions.c:1306
+#: compose/functions.c:1310
 msgid "Not all parts have 'Content-Language' set, continue?"
 msgstr "Не всі частини мають набір 'Content-Language', продовжити?"
 
-#: compose/functions.c:1309
+#: compose/functions.c:1313
 msgid "Not sending this message"
 msgstr "Цей лист не надсилається"
 
-#: compose/functions.c:1324
+#: compose/functions.c:1328
 msgid "Grouping 'related' requires at least 2 tagged messages"
 msgstr "Групування 'related' вимагає щонайменше 2 позначених листи"
 
-#: compose/functions.c:1357 compose/functions.c:1376
+#: compose/functions.c:1361 compose/functions.c:1380
 msgid "Attachment is already at bottom"
 msgstr "Прикріплення вже внизу"
 
-#: compose/functions.c:1363 compose/functions.c:1416
+#: compose/functions.c:1367 compose/functions.c:1421
 msgid "Attachment can't be moved out of group"
 msgstr "Прикріплення не можна перемістити за межі групи"
 
-#: compose/functions.c:1411
+#: compose/functions.c:1416
 msgid "Attachment is already at top"
 msgstr "Прикріплення вже вгорі"
 
-#: compose/functions.c:1443
+#: compose/functions.c:1449
 msgid "New file: "
 msgstr "Новий файл: "
 
-#: compose/functions.c:1463
+#: compose/functions.c:1469
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type повинно мати форму тип/підтип"
 
-#: compose/functions.c:1470
+#: compose/functions.c:1476
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Невідомий Content-Type %s"
 
-#: compose/functions.c:1479
+#: compose/functions.c:1485
 #, c-format
 msgid "Can't create file %s"
 msgstr "Не можливо створити файл %s"
 
-#: compose/functions.c:1487
+#: compose/functions.c:1493
 #, fuzzy
 msgid "Error attaching file"
 msgstr "Ми маємо тут невдале прикріплення"
 
-#: compose/functions.c:1529
+#: compose/functions.c:1535
 msgid "Can't print multipart attachments"
 msgstr "Не можливо надрукувати багаточастинні прикріплення"
 
-#: compose/functions.c:1555
+#: compose/functions.c:1561
 msgid "Send attachment with name: "
 msgstr "Надіслати прикріплення з назвою: "
 
-#: compose/functions.c:1580
+#: compose/functions.c:1586
 msgid "Can't save multipart attachments"
 msgstr "Не можливо зберегти багаточастинні прикріплення"
 
-#: compose/functions.c:1615
+#: compose/functions.c:1622
 msgid "Recoding only affects text attachments"
 msgstr "Перекодування діє лише на текстові прикріплення"
 
-#: compose/functions.c:1620
+#: compose/functions.c:1627
 msgid "The current attachment won't be converted"
 msgstr "Поточне прикріплення не буде перетворено"
 
-#: compose/functions.c:1622
+#: compose/functions.c:1629
 msgid "The current attachment will be converted"
 msgstr "Поточне перетворення не буде перетворено"
 
-#: compose/functions.c:1651
+#: compose/functions.c:1658
 msgid "Attachment is not 'multipart'"
 msgstr "Прикріплення не є 'багаточастинним'"
 
-#: compose/functions.c:1767 send/send.c:2673
+#: compose/functions.c:1774 send/send.c:2673
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Погані IDN в '%s': '%s'"
 
-#: compose/functions.c:1800
+#: compose/functions.c:1807
 msgid "Can't edit multipart attachments"
 msgstr "Не можливо змінити багаточастинні прикріплення"
 
-#: compose/functions.c:1881
+#: compose/functions.c:1888
 msgid "Can't rename multipart attachments"
 msgstr "Не можливо перейменувати багаточастинні прикріплення"
 
-#: compose/functions.c:1888
+#: compose/functions.c:1895
 msgid "Rename to: "
 msgstr "Перейменувати на: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1896 convert/content_info.c:208 editmsg.c:104
+#: compose/functions.c:1903 convert/content_info.c:208 editmsg.c:104
 #: editmsg.c:137 editmsg.c:156
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Неможливо отримати дані %s: %s"
 
-#: compose/functions.c:1934
+#: compose/functions.c:1941
 msgid "Save a copy of this message?"
 msgstr "Зберегти копію цього листа?"
 
-#: compose/functions.c:1960
+#: compose/functions.c:1967
 msgid "Write message to mailbox"
 msgstr "Записати лист до скриньки"
 
-#: compose/functions.c:1964
+#: compose/functions.c:1971
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Запис листа до %s..."
 
-#: compose/functions.c:1972
+#: compose/functions.c:1979
 msgid "Message written"
 msgstr "Лист записано"
 
-#: compose/functions.c:2040
+#: compose/functions.c:2047
 msgid "Save (postpone) draft message?"
 msgstr "Зберегти (відкласти) чернетку?"
+
+#: compose/preview.c:139
+msgid "Only inline attachments with content-type text/* can be previewed"
+msgstr ""
+
+#: compose/preview.c:165
+#, fuzzy
+msgid "Failed to move cursor!"
+msgstr "Не вдалося перевірити відправника"
+
+#: compose/preview.c:183
+#, c-format
+msgid "-- Preview (%.0f%%)"
+msgstr ""
 
 #: config/bool.c:76
 #, c-format
@@ -1577,7 +1595,7 @@ msgstr "Перехід у цьому діалозі не підримуєтьс�
 msgid "Search is not implemented for this menu"
 msgstr "Пошук у цьому меню не підтримується"
 
-#: conn/gnutls.c:146 conn/gnutls.c:640
+#: conn/gnutls.c:146 conn/gnutls.c:641
 msgid "Unable to get certificate from peer"
 msgstr "Неможливо отримати сертифікат"
 
@@ -1663,35 +1681,35 @@ msgstr "Увага: Сертифікат сервера підписано не�
 msgid "SSL Certificate check (certificate %zu of %zu in chain)"
 msgstr "Перевірка сертифіката SSL (сертифікат %zu з %zu в ланцюжку)"
 
-#: conn/gnutls.c:600 conn/openssl.c:971
+#: conn/gnutls.c:601 conn/openssl.c:971
 msgid "Certificate saved"
 msgstr "Сертифікат збережено"
 
-#: conn/gnutls.c:602 conn/openssl.c:973
+#: conn/gnutls.c:603 conn/openssl.c:973
 msgid "Warning: Couldn't save certificate"
 msgstr "Увага: не можливо зберегти сертифікат"
 
-#: conn/gnutls.c:799 conn/gnutls.c:845
+#: conn/gnutls.c:800 conn/gnutls.c:846
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Усі доступні протоколи для TLS/SSL заборонені"
 
-#: conn/gnutls.c:852
+#: conn/gnutls.c:853
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
 msgstr "Явний вибір набора шифрів через $ssl_ciphers не підтримується"
 
 #. L10N: This is a warning when trying to set the host name for
 #. TLS Server Name Indication (SNI).  This allows the server to present
 #. the correct certificate if it supports multiple hosts.
-#: conn/gnutls.c:922 conn/openssl.c:1156
+#: conn/gnutls.c:923 conn/openssl.c:1156
 msgid "Warning: unable to set TLS SNI host name"
 msgstr "Увага: не можливо вказати назву хоста TLS SNI"
 
-#: conn/gnutls.c:968
+#: conn/gnutls.c:969
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "З’єднання SSL/TLS з використанням %s (%s/%s/%s)"
 
-#: conn/gnutls.c:1050 conn/gnutls.c:1079
+#: conn/gnutls.c:1051 conn/gnutls.c:1080
 msgid "Error: no TLS socket open"
 msgstr "Помилка: не відкрито жодного сокета TLS"
 
@@ -2463,7 +2481,7 @@ msgstr "перемкнути відображення підчастин"
 #. Alias Dialog: <op_delete>
 #. Index: <op_delete>
 #. Postponed Dialog: <op_delete>
-#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:274
+#: gui/opcodes.h:55 gui/opcodes.h:58 gui/opcodes.h:280
 msgid "delete the current entry"
 msgstr "видалити поточну запис"
 
@@ -2558,7 +2576,7 @@ msgstr "створити нове прикріплення, використов
 #. Compose Dialog: <op_attachment_filter>
 #. Attach Dialog: <op_attachment_pipe>
 #. Index: <op_pipe>
-#: gui/opcodes.h:104 gui/opcodes.h:664
+#: gui/opcodes.h:104 gui/opcodes.h:670
 msgid "pipe message/attachment to a shell command"
 msgstr "передати лист/прикріплення команді оболонки"
 
@@ -2567,7 +2585,7 @@ msgstr "передати лист/прикріплення команді обо
 #. Compose Dialog: <op_attachment_print>
 #. L10N: Help screen description for OP_PRINT
 #. Index: <op_print>
-#: gui/opcodes.h:108 gui/opcodes.h:682
+#: gui/opcodes.h:108 gui/opcodes.h:688
 msgid "print the current entry"
 msgstr "друкувати поточну позицію"
 
@@ -2583,7 +2601,7 @@ msgstr "надіслати прикріплення з іншою назвою"
 #. L10N: Help screen description for OP_SAVE
 #. Index: <op_save>
 #. Pager: <op_save>
-#: gui/opcodes.h:115 gui/opcodes.h:727
+#: gui/opcodes.h:115 gui/opcodes.h:733
 msgid "save message/attachment to a mailbox/file"
 msgstr "зберегти лист/прикріплення у файл/скриньку"
 
@@ -2611,7 +2629,7 @@ msgstr "вибрати, чи треба видаляти файл після в�
 #. Alias Dialog: <op_delete>
 #. Postponed Dialog: <op_delete>
 #. Index: <op_undelete>
-#: gui/opcodes.h:127 gui/opcodes.h:813
+#: gui/opcodes.h:127 gui/opcodes.h:819
 msgid "undelete the current entry"
 msgstr "відновити поточну позицію"
 
@@ -2655,253 +2673,267 @@ msgstr "переглянути прикріплення у pager за допом
 msgid "view attachment as text"
 msgstr "переглянути прикріплення як текст"
 
+#. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
+#. Compose Dialog: <op_preview_page_down>
+#: gui/opcodes.h:152
+#, fuzzy
+msgid "show the next page of the message"
+msgstr "перейти на початок листа"
+
+#. L10N: Help screen description for OP_PREVIEW_PAGE_UP
+#. Compose Dialog: <op_preview_page_up>
+#: gui/opcodes.h:155
+#, fuzzy
+msgid "show the previous page of the message"
+msgstr "перейти до попереднього нового чи нечитаного листа"
+
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
-#: gui/opcodes.h:155
+#: gui/opcodes.h:161
 msgid "manage autocrypt accounts"
 msgstr "керувати обліковими записами autocrypt"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_CREATE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_create_acct>
-#: gui/opcodes.h:158
+#: gui/opcodes.h:164
 msgid "create a new autocrypt account"
 msgstr "створити обліковий запис autocrypt"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_DELETE_ACCT
 #. Autocrypt Dialog: <op_autocrypt_delete_acct>
-#: gui/opcodes.h:161
+#: gui/opcodes.h:167
 msgid "delete the current account"
 msgstr "видалити поточний обліковий запис autocrypt"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_ACTIVE
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
-#: gui/opcodes.h:164
+#: gui/opcodes.h:170
 msgid "toggle the current account active/inactive"
 msgstr "зробити поточний обліковий запис активним/неактивним"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
-#: gui/opcodes.h:167
+#: gui/opcodes.h:173
 msgid "toggle the current account prefer-encrypt flag"
 msgstr "увімкнути/вимкнути перевагу шифрування"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
-#: gui/opcodes.h:170
+#: gui/opcodes.h:176
 msgid "show autocrypt compose menu options"
 msgstr "показати параметри меню autocrypt"
 
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
-#: gui/opcodes.h:178
+#: gui/opcodes.h:184
 msgid "open the aliases dialog"
 msgstr "відкриває віконце псевдонімів"
 
 #. L10N: Help screen description for OP_BOTTOM_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:181
+#: gui/opcodes.h:187
 msgid "move to the bottom of the page"
 msgstr "перейти до кінця сторінки"
 
 #. L10N: Help screen description for OP_BOUNCE_MESSAGE
 #. Attach Dialog: <op_bounce_message>
 #. Index: <op_bounce_message>
-#: gui/opcodes.h:185
+#: gui/opcodes.h:191
 msgid "remail a message to another user"
 msgstr "надіслати копію листа іншому адресату"
 
 #. L10N: Help screen description for OP_BROWSER_GOTO_FOLDER
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:188
+#: gui/opcodes.h:194
 msgid "swap the current folder position with $folder if it exists"
 msgstr "поміняти місце поточної теки на $folder, якщо вона існує"
 
 #. L10N: Help screen description for OP_BROWSER_NEW_FILE
 #. Browser: <op_browser_new_file>
-#: gui/opcodes.h:191
+#: gui/opcodes.h:197
 msgid "select a new file in this directory"
 msgstr "вибрати новий файл в цьому каталозі"
 
 #. L10N: Help screen description for OP_BROWSER_SUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:194
+#: gui/opcodes.h:200
 msgid "subscribe to current mbox (IMAP/NNTP only)"
 msgstr "підписатися на поточну скриньку (лише IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_TELL
 #. Browser: <op_browser_tell>
-#: gui/opcodes.h:197
+#: gui/opcodes.h:203
 msgid "display the currently selected file's name"
 msgstr "відображати поточну вибрану назву файлу"
 
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
-#: gui/opcodes.h:200
+#: gui/opcodes.h:206
 msgid "toggle view all/subscribed mailboxes (IMAP only)"
 msgstr "вибрати: перелік всіх/підписаних (лише IMAP)"
 
 #. L10N: Help screen description for OP_BROWSER_UNSUBSCRIBE
 #. Browser: <op_browser_subscribe>
-#: gui/opcodes.h:203
+#: gui/opcodes.h:209
 msgid "unsubscribe from current mbox (IMAP/NNTP only)"
 msgstr "відписатися від поточної скриньки (лише IMAP/NNTP)"
 
 #. L10N: Help screen description for OP_BROWSER_VIEW_FILE
 #. Browser: <op_browser_view_file>
-#: gui/opcodes.h:206
+#: gui/opcodes.h:212
 msgid "view file"
 msgstr "переглянути файл"
 
 #. L10N: Help screen description for OP_CATCHUP
 #. Browser: <op_catchup>
 #. Index: <op_catchup>
-#: gui/opcodes.h:210
+#: gui/opcodes.h:216
 msgid "mark all articles in newsgroup as read"
 msgstr "позначити всі статті в групі новин прочитаними"
 
 #. L10N: Help screen description for OP_CHANGE_DIRECTORY
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:213
+#: gui/opcodes.h:219
 msgid "change directories"
 msgstr "змінювати каталоги"
 
 #. L10N: Help screen description for OP_CHECK_NEW
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:216
+#: gui/opcodes.h:222
 msgid "check mailboxes for new mail"
 msgstr "перевірити наявність нової пошти у скриньках"
 
 #. L10N: Help screen description for OP_CHECK_STATS
 #. Global: <op_check_stats>
-#: gui/opcodes.h:219
+#: gui/opcodes.h:225
 msgid "calculate message statistics for all mailboxes"
 msgstr "обчислити статистику повідомлень для всіх скриньок"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_FILE
 #. Compose Dialog: <op_compose_edit_file>
-#: gui/opcodes.h:222
+#: gui/opcodes.h:228
 msgid "edit the file to be attached"
 msgstr "змінити файл, що прикріпляється"
 
 #. L10N: Help screen description for OP_COMPOSE_EDIT_MESSAGE
 #. Compose Dialog: <op_compose_edit_message>
-#: gui/opcodes.h:225
+#: gui/opcodes.h:231
 msgid "edit the message"
 msgstr "змінити лист"
 
 #. L10N: Help screen description for OP_COMPOSE_ISPELL
 #. Compose Dialog: <op_compose_ispell>
-#: gui/opcodes.h:228
+#: gui/opcodes.h:234
 msgid "run ispell on the message"
 msgstr "перевірити граматику у листі (ispell)"
 
 #. L10N: Help screen description for OP_COMPOSE_POSTPONE_MESSAGE
 #. Compose Dialog: <op_compose_postpone_message>
-#: gui/opcodes.h:231
+#: gui/opcodes.h:237
 msgid "save this message to send later"
 msgstr "зберегти цей лист, аби відіслати пізніше"
 
 #. L10N: Help screen description for OP_COMPOSE_RENAME_FILE
 #. Compose Dialog: <op_compose_rename_file>
-#: gui/opcodes.h:234
+#: gui/opcodes.h:240
 msgid "rename/move an attached file"
 msgstr "перейменувати приєднаний файл"
 
 #. L10N: Help screen description for OP_COMPOSE_SEND_MESSAGE
 #. Compose Dialog: <op_compose_send_message>
-#: gui/opcodes.h:237
+#: gui/opcodes.h:243
 msgid "send the message"
 msgstr "надіслати лист"
 
 #. L10N: Help screen description for OP_COMPOSE_TO_SENDER
 #. Attach Dialog: <op_compose_to_sender>
 #. Index: <op_compose_to_sender>
-#: gui/opcodes.h:241
+#: gui/opcodes.h:247
 msgid "compose new message to the current message sender"
 msgstr "написати нового листа відправнику поточного листа"
 
 #. L10N: Help screen description for OP_COMPOSE_WRITE_MESSAGE
 #. Compose Dialog: <op_compose_write_message>
-#: gui/opcodes.h:244
+#: gui/opcodes.h:250
 msgid "write the message to a folder"
 msgstr "додати лист до скриньки"
 
 #. L10N: Help screen description for OP_COPY_MESSAGE
 #. Index: <op_save>
-#: gui/opcodes.h:247
+#: gui/opcodes.h:253
 msgid "copy a message to a file/mailbox"
 msgstr "копіювати лист у файл/скриньку"
 
 #. L10N: Help screen description for OP_CREATE_ALIAS
 #. Alias Dialog: <op_create_alias>
 #. Index: <op_create_alias>
-#: gui/opcodes.h:251
+#: gui/opcodes.h:257
 msgid "create an alias from a message sender"
 msgstr "створити псевдонім на відправника листа"
 
 #. L10N: Help screen description for OP_CREATE_MAILBOX
 #. Browser: <op_create_mailbox>
-#: gui/opcodes.h:254
+#: gui/opcodes.h:260
 msgid "create a new mailbox (IMAP only)"
 msgstr "створити нову скриньку (лише IMAP)"
 
 #. L10N: Help screen description for OP_CURRENT_BOTTOM
 #. Menu: <menu_movement>
-#: gui/opcodes.h:257
+#: gui/opcodes.h:263
 msgid "move entry to bottom of screen"
 msgstr "пересунути позицію донизу екрану"
 
 #. L10N: Help screen description for OP_CURRENT_MIDDLE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:260
+#: gui/opcodes.h:266
 msgid "move entry to middle of screen"
 msgstr "пересунути позицію досередини екрану"
 
 #. L10N: Help screen description for OP_CURRENT_TOP
 #. Menu: <menu_movement>
-#: gui/opcodes.h:263
+#: gui/opcodes.h:269
 msgid "move entry to top of screen"
 msgstr "пересунути позицію догори екрану"
 
 #. L10N: Help screen description for OP_DECODE_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:266
+#: gui/opcodes.h:272
 msgid "make decoded (text/plain) copy"
 msgstr "зробити декодовану (простий текст) копію"
 
 #. L10N: Help screen description for OP_DECODE_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:269
+#: gui/opcodes.h:275
 msgid "make decoded copy (text/plain) and delete"
 msgstr "зробити декодовану копію (текст) і видалити"
 
 #. L10N: Help screen description for OP_DELETE_MAILBOX
 #. Browser: <op_delete_mailbox>
-#: gui/opcodes.h:277
+#: gui/opcodes.h:283
 msgid "delete the current mailbox (IMAP only)"
 msgstr "видалити поточну скриньку (лише IMAP)"
 
 #. L10N: Help screen description for OP_DELETE_SUBTHREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:280
+#: gui/opcodes.h:286
 msgid "delete all messages in subthread"
 msgstr "видалити всі листи підгілки"
 
 #. L10N: Help screen description for OP_DELETE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:283
+#: gui/opcodes.h:289
 msgid "delete all messages in thread"
 msgstr "видалити всі листи гілки"
 
 #. L10N: Help screen description for OP_DESCEND_DIRECTORY
 #. Browser: <op_generic_select_entry>
-#: gui/opcodes.h:286
+#: gui/opcodes.h:292
 msgid "descend into a directory"
 msgstr "увійти в каталог"
 
 #. L10N: Help screen description for OP_DISPLAY_ADDRESS
 #. Index: <op_display_address>
-#: gui/opcodes.h:289
+#: gui/opcodes.h:295
 msgid "display full address of sender"
 msgstr "показати повну адресу відправника"
 
@@ -2909,193 +2941,193 @@ msgstr "показати повну адресу відправника"
 #. Attach Dialog: <op_attachment_view>
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
-#: gui/opcodes.h:294
+#: gui/opcodes.h:300
 msgid "display message and toggle header weeding"
 msgstr "показати лист і вимкн./увімкн. стискання заголовків"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
-#: gui/opcodes.h:297
+#: gui/opcodes.h:303
 msgid "display a message"
 msgstr "показати лист"
 
 #. L10N: Help screen description for OP_EDITOR_BACKSPACE
 #. Text Entry: <op_editor_backspace>
-#: gui/opcodes.h:300
+#: gui/opcodes.h:306
 msgid "delete the char in front of the cursor"
 msgstr "видалити символ перед курсором"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_CHAR
 #. Text Entry: <op_editor_backward_char>
-#: gui/opcodes.h:303
+#: gui/opcodes.h:309
 msgid "move the cursor one character to the left"
 msgstr "пересунути курсор на один символ вліво"
 
 #. L10N: Help screen description for OP_EDITOR_BACKWARD_WORD
 #. Text Entry: <op_editor_backward_word>
-#: gui/opcodes.h:306
+#: gui/opcodes.h:312
 msgid "move the cursor to the beginning of the word"
 msgstr "перемістити курсор на початок слова"
 
 #. L10N: Help screen description for OP_EDITOR_BOL
 #. Text Entry: <op_editor_bol>
-#: gui/opcodes.h:309
+#: gui/opcodes.h:315
 msgid "jump to the beginning of the line"
 msgstr "перейти на початок рядка"
 
 #. L10N: Help screen description for OP_EDITOR_CAPITALIZE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:312
+#: gui/opcodes.h:318
 msgid "capitalize the word"
 msgstr "написати слово з великої літери"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:315
+#: gui/opcodes.h:321
 msgid "complete filename or alias"
 msgstr "завершити назву файлу або псевдонім"
 
 #. L10N: Help screen description for OP_EDITOR_COMPLETE_QUERY
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:318
+#: gui/opcodes.h:324
 msgid "complete address with query"
 msgstr "доповнювати адресу за запитом"
 
 #. L10N: Help screen description for OP_EDITOR_DELETE_CHAR
 #. Text Entry: <op_editor_delete_char>
-#: gui/opcodes.h:321
+#: gui/opcodes.h:327
 msgid "delete the char under the cursor"
 msgstr "видалити символ на місці курсору"
 
 #. L10N: Help screen description for OP_EDITOR_DOWNCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:324
+#: gui/opcodes.h:330
 msgid "convert the word to lower case"
 msgstr "перетворити літери слова на маленькі"
 
 #. L10N: Help screen description for OP_EDITOR_EOL
 #. Text Entry: <op_editor_eol>
-#: gui/opcodes.h:327
+#: gui/opcodes.h:333
 msgid "jump to the end of the line"
 msgstr "перейти в кінець рядка"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_CHAR
 #. Text Entry: <op_editor_forward_char>
-#: gui/opcodes.h:330
+#: gui/opcodes.h:336
 msgid "move the cursor one character to the right"
 msgstr "пересунути курсор на один символ вправо"
 
 #. L10N: Help screen description for OP_EDITOR_FORWARD_WORD
 #. Text Entry: <op_editor_forward_word>
-#: gui/opcodes.h:333
+#: gui/opcodes.h:339
 msgid "move the cursor to the end of the word"
 msgstr "пересунути курсор до кінця слова"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_DOWN
 #. Text Entry: <op_editor_history_down>
-#: gui/opcodes.h:336
+#: gui/opcodes.h:342
 msgid "scroll down through the history list"
 msgstr "прокрутити вниз список історії"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_SEARCH
 #. Text Entry: <op_editor_history_search>
-#: gui/opcodes.h:339
+#: gui/opcodes.h:345
 msgid "search through the history list"
 msgstr "шукати в списку історії"
 
 #. L10N: Help screen description for OP_EDITOR_HISTORY_UP
 #. Text Entry: <op_editor_history_up>
-#: gui/opcodes.h:342
+#: gui/opcodes.h:348
 msgid "scroll up through the history list"
 msgstr "прокрутити список історії вверх"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOL
 #. Text Entry: <op_editor_kill_eol>
-#: gui/opcodes.h:345
+#: gui/opcodes.h:351
 msgid "delete chars from cursor to end of line"
 msgstr "видалити знаки від курсора до кінця рядка"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_EOW
 #. Text Entry: <op_editor_kill_eow>
-#: gui/opcodes.h:348
+#: gui/opcodes.h:354
 msgid "delete chars from the cursor to the end of the word"
 msgstr "видалити знаки від курсора до кінця слова"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_LINE
 #. Text Entry: <op_editor_kill_line>
-#: gui/opcodes.h:351
+#: gui/opcodes.h:357
 msgid "delete chars from cursor to beginning the line"
 msgstr "видалити знаки від курсора до початку рядка"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WHOLE_LINE
 #. Text Entry: <op_editor_kill_whole_line>
-#: gui/opcodes.h:354
+#: gui/opcodes.h:360
 msgid "delete all chars on the line"
 msgstr "видалити всі знаки в рядку"
 
 #. L10N: Help screen description for OP_EDITOR_KILL_WORD
 #. Text Entry: <op_editor_kill_word>
-#: gui/opcodes.h:357
+#: gui/opcodes.h:363
 msgid "delete the word in front of the cursor"
 msgstr "видалити слово перед курсором"
 
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
-#: gui/opcodes.h:360
+#: gui/opcodes.h:366
 msgid "cycle among incoming mailboxes"
 msgstr "перейти по вхідних скриньках"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
-#: gui/opcodes.h:363
+#: gui/opcodes.h:369
 msgid "quote the next typed key"
 msgstr "сприйняти наступний символ, як є"
 
 #. L10N: Help screen description for OP_EDITOR_TRANSPOSE_CHARS
 #. Text Entry: <op_editor_transpose_chars>
-#: gui/opcodes.h:366
+#: gui/opcodes.h:372
 msgid "transpose character under cursor with previous"
 msgstr "пересунути поточний символ до попереднього"
 
 #. L10N: Help screen description for OP_EDITOR_UPCASE_WORD
 #. Text Entry: <op_editor_capitalize_word>
-#: gui/opcodes.h:369
+#: gui/opcodes.h:375
 msgid "convert the word to upper case"
 msgstr "перетворити літери слова на великі"
 
 #. L10N: Help screen description for OP_EDIT_LABEL
 #. Index: <op_edit_label>
-#: gui/opcodes.h:372
+#: gui/opcodes.h:378
 msgid "add, change, or delete a message's label"
 msgstr "додати, змінити або видалити помітку листа"
 
 #. L10N: Help screen description for OP_EDIT_OR_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:375
+#: gui/opcodes.h:381
 msgid "edit the raw message if the mailbox is not read-only, otherwise view it"
 msgstr "змінити текст листа, якщо скринька не лише для читання, в іншому випадку переглянути його"
 
 #. L10N: Help screen description for OP_EDIT_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:378
+#: gui/opcodes.h:384
 msgid "edit the raw message (edit and edit-raw-message are synonyms)"
 msgstr "змінити текст листа (edit та edit-raw-message є синонімами)"
 
 #. L10N: Help screen description for OP_END_COND
 #. Index: <op_end_cond>
-#: gui/opcodes.h:381
+#: gui/opcodes.h:387
 msgid "end of conditional execution (noop)"
 msgstr "кінець умовного виразу"
 
 #. L10N: Help screen description for OP_ENTER_COMMAND
 #. Global: <op_enter_command>
-#: gui/opcodes.h:384
+#: gui/opcodes.h:390
 msgid "enter a neomuttrc command"
 msgstr "ввести команду neomuttrc"
 
 #. L10N: Help screen description for OP_ENTER_MASK
 #. Browser: <op_enter_mask>
-#: gui/opcodes.h:387
+#: gui/opcodes.h:393
 msgid "enter a file mask"
 msgstr "ввести маску файлів"
 
@@ -3111,40 +3143,40 @@ msgstr "ввести маску файлів"
 #. PGP Key Selection Dialog: <op_exit>
 #. Postponed Dialog: <op_exit>
 #. Smime Key Selection Dialog: <op_exit>
-#: gui/opcodes.h:400
+#: gui/opcodes.h:406
 msgid "exit this menu"
 msgstr "вийти з цього меню"
 
 #. L10N: Help screen description for OP_FIRST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:403
+#: gui/opcodes.h:409
 msgid "move to the first entry"
 msgstr "перейти до першої позиції"
 
 #. L10N: Help screen description for OP_FLAG_MESSAGE
 #. Index: <op_flag_message>
-#: gui/opcodes.h:406
+#: gui/opcodes.h:412
 msgid "toggle a message's 'important' flag"
 msgstr "змінити прапорець листа 'важливий'"
 
 #. L10N: Help screen description for OP_FOLLOWUP
 #. Attach Dialog: <op_followup>
 #. Index: <op_post>
-#: gui/opcodes.h:410
+#: gui/opcodes.h:416
 msgid "followup to newsgroup"
 msgstr "переслати до групи новин"
 
 #. L10N: Help screen description for OP_FORWARD_MESSAGE
 #. Attach Dialog: <op_forward_message>
 #. Index: <op_forward_message>
-#: gui/opcodes.h:414
+#: gui/opcodes.h:420
 msgid "forward a message with comments"
 msgstr "переслати лист із коментарем"
 
 #. L10N: Help screen description for OP_FORWARD_TO_GROUP
 #. Attach Dialog: <op_forward_to_group>
 #. Index: <op_post>
-#: gui/opcodes.h:418
+#: gui/opcodes.h:424
 msgid "forward to newsgroup"
 msgstr "переслати до групи новин"
 
@@ -3157,59 +3189,59 @@ msgstr "переслати до групи новин"
 #. PGP Key Selection Dialog: <op_generic_select_entry>
 #. Postponed Dialog: <op_generic_select_entry>
 #. Smime Key Selection Dialog: <op_generic_select_entry>
-#: gui/opcodes.h:428
+#: gui/opcodes.h:434
 msgid "select the current entry"
 msgstr "вибрати поточну позицію"
 
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
-#: gui/opcodes.h:431
+#: gui/opcodes.h:437
 msgid "get all children of the current message"
 msgstr "отримати всіх дітей поточного листа"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
-#: gui/opcodes.h:434
+#: gui/opcodes.h:440
 msgid "get message with Message-Id"
 msgstr "отримати листа з Message-Id"
 
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
-#: gui/opcodes.h:437
+#: gui/opcodes.h:443
 msgid "get parent of the current message"
 msgstr "отримати батька поточного листа"
 
 #. L10N: Help screen description for OP_GOTO_PARENT
 #. Browser: <op_change_directory>
-#: gui/opcodes.h:440
+#: gui/opcodes.h:446
 msgid "go to parent directory"
 msgstr "перейти до батьківського каталогу"
 
 #. L10N: Help screen description for OP_GROUP_CHAT_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:444
+#: gui/opcodes.h:450
 msgid "reply to all recipients preserving To/Cc"
 msgstr "відповісти всім адресатам зі збереженням To/Cc"
 
 #. L10N: Help screen description for OP_GROUP_REPLY
 #. Index: <op_group_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:448
+#: gui/opcodes.h:454
 msgid "reply to all recipients"
 msgstr "відповісти всім адресатам"
 
 #. L10N: Help screen description for OP_HALF_DOWN
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_down>
-#: gui/opcodes.h:452
+#: gui/opcodes.h:458
 msgid "scroll down 1/2 page"
 msgstr "прогорнути на півсторінки вниз"
 
 #. L10N: Help screen description for OP_HALF_UP
 #. Menu: <menu_movement>
 #. Pager: <op_pager_half_up>
-#: gui/opcodes.h:456
+#: gui/opcodes.h:462
 msgid "scroll up 1/2 page"
 msgstr "прогорнути на півсторінки вверх"
 
@@ -3217,434 +3249,434 @@ msgstr "прогорнути на півсторінки вверх"
 #. Text Entry: <op_help>
 #. Menu: <op_help>
 #. Pager: <op_help>
-#: gui/opcodes.h:461
+#: gui/opcodes.h:467
 msgid "this screen"
 msgstr "цей екран"
 
 #. L10N: Help screen description for OP_JUMP
 #. Index: <op_jump>
 #. Menu: <op_jump>
-#: gui/opcodes.h:465 gui/opcodes.h:466 gui/opcodes.h:467 gui/opcodes.h:468
-#: gui/opcodes.h:469 gui/opcodes.h:470 gui/opcodes.h:471 gui/opcodes.h:472
-#: gui/opcodes.h:473 gui/opcodes.h:474
+#: gui/opcodes.h:471 gui/opcodes.h:472 gui/opcodes.h:473 gui/opcodes.h:474
+#: gui/opcodes.h:475 gui/opcodes.h:476 gui/opcodes.h:477 gui/opcodes.h:478
+#: gui/opcodes.h:479 gui/opcodes.h:480
 msgid "jump to an index number"
 msgstr "перейти до позиції під номером"
 
 #. L10N: Help screen description for OP_LAST_ENTRY
 #. Menu: <menu_movement>
-#: gui/opcodes.h:477
+#: gui/opcodes.h:483
 msgid "move to the last entry"
 msgstr "перейти до останньої позиції"
 
 #. L10N: Help screen description for OP_LIMIT_CURRENT_THREAD
 #. Index: <op_main_limit>
-#: gui/opcodes.h:480
+#: gui/opcodes.h:486
 msgid "limit view to current thread"
 msgstr "обмежити перегляд для поточної гілки"
 
 #. L10N: Help screen description for OP_LIST_REPLY
 #. Index: <op_list_reply>
 #. Attach Dialog: <op_reply>
-#: gui/opcodes.h:484
+#: gui/opcodes.h:490
 msgid "reply to specified mailing list"
 msgstr "відповісти до вказаної поштової розсилки"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
-#: gui/opcodes.h:488
+#: gui/opcodes.h:494
 msgid "subscribe to a mailing list"
 msgstr "підписатися на поштову розсилку"
 
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
 #. Attach Dialog: <op_list_unsubscribe>
 #. Index: <op_list_unsubscribe>
-#: gui/opcodes.h:492
+#: gui/opcodes.h:498
 msgid "unsubscribe from a mailing list"
 msgstr "відписатися від поштової розсилки"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
-#: gui/opcodes.h:495
+#: gui/opcodes.h:501
 msgid "load list of all newsgroups from NNTP server"
 msgstr "завантажити список усіх груп новин зі сервера NNTP"
 
 #. L10N: Help screen description for OP_MACRO
-#: gui/opcodes.h:497
+#: gui/opcodes.h:503
 msgid "execute a macro"
 msgstr "виконати макрос"
 
 #. L10N: Help screen description for OP_MAIL
 #. Alias Dialog: <op_generic_select_entry>
 #. Index: <op_mail>
-#: gui/opcodes.h:501
+#: gui/opcodes.h:507
 msgid "compose a new mail message"
 msgstr "написати нового листа"
 
 #. L10N: Help screen description for OP_MAILBOX_LIST
 #. Browser: <op_mailbox_list>
 #. Index: <op_mailbox_list>
-#: gui/opcodes.h:505
+#: gui/opcodes.h:511
 msgid "list mailboxes with new mail"
 msgstr "перелік скриньок із новою поштою."
 
 #. L10N: Help screen description for OP_MAIN_BREAK_THREAD
 #. Index: <op_main_break_thread>
-#: gui/opcodes.h:508
+#: gui/opcodes.h:514
 msgid "break the thread in two"
 msgstr "розбити гілку на дві"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:511
+#: gui/opcodes.h:517
 msgid "open a different folder"
 msgstr "відкрити іншу теку"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_FOLDER_READONLY
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:514
+#: gui/opcodes.h:520
 msgid "open a different folder in read only mode"
 msgstr "відкрити іншу скриньку тільки для читання"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:517
+#: gui/opcodes.h:523
 msgid "open a different newsgroup"
 msgstr "відкрити іншу групу новин"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_GROUP_READONLY
 #. Index: <op_main_change_group>
-#: gui/opcodes.h:520
+#: gui/opcodes.h:526
 msgid "open a different newsgroup in read only mode"
 msgstr "відкрити іншу групу новин у режимі лише для читання"
 
 #. L10N: Help screen description for OP_MAIN_CLEAR_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:523
+#: gui/opcodes.h:529
 msgid "clear a status flag from a message"
 msgstr "прибрати прапорець стану для листа"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
-#: gui/opcodes.h:526
+#: gui/opcodes.h:532
 msgid "collapse/uncollapse all threads"
 msgstr "згорнути/розгорнути всі гілки"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_THREAD
 #. Index: <op_main_collapse_thread>
-#: gui/opcodes.h:529
+#: gui/opcodes.h:535
 msgid "collapse/uncollapse current thread"
 msgstr "згорнути/розгорнути поточну гілку"
 
 #. L10N: Help screen description for OP_MAIN_DELETE_PATTERN
 #. Index: <op_main_delete_pattern>
-#: gui/opcodes.h:532
+#: gui/opcodes.h:538
 #, fuzzy
 msgid "delete non-hidden messages matching a pattern"
 msgstr "видалити листи, що відповідають шаблону"
 
 #. L10N: Help screen description for OP_MAIN_FETCH_MAIL
 #. Index: <op_main_fetch_mail>
-#: gui/opcodes.h:535
+#: gui/opcodes.h:541
 msgid "retrieve mail from POP server"
 msgstr "отримати пошту з сервера POP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_FETCH
 #. Index: <op_main_imap_fetch>
-#: gui/opcodes.h:538
+#: gui/opcodes.h:544
 msgid "force retrieval of mail from IMAP server"
 msgstr "примусово отримати пошту з сервера IMAP"
 
 #. L10N: Help screen description for OP_MAIN_IMAP_LOGOUT_ALL
 #. Index: <op_main_imap_logout_all>
-#: gui/opcodes.h:541
+#: gui/opcodes.h:547
 msgid "logout from all IMAP servers"
 msgstr "вийти з усіх IMAP-серверів"
 
 #. L10N: Help screen description for OP_MAIN_LIMIT
 #. Alias Dialog: <op_main_limit>
 #. Index: <op_main_limit>
-#: gui/opcodes.h:545
+#: gui/opcodes.h:551
 msgid "show only messages matching a pattern"
 msgstr "показати лише листи, що відповідають виразу"
 
 #. L10N: Help screen description for OP_MAIN_LINK_THREADS
 #. Index: <op_main_link_threads>
-#: gui/opcodes.h:548
+#: gui/opcodes.h:554
 msgid "link tagged message to the current one"
 msgstr "об’єднати виділені листи з поточним"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:551
+#: gui/opcodes.h:557
 msgid "modify (notmuch/imap) tags"
 msgstr "змінити позначки (notmuch/imap)"
 
 #. L10N: Help screen description for OP_MAIN_MODIFY_TAGS_THEN_HIDE
 #. Index: <op_main_modify_tags>
-#: gui/opcodes.h:554
+#: gui/opcodes.h:560
 msgid "modify (notmuch/imap) tags and then hide message"
 msgstr "змінити позначки (notmuch/imap) і потім сховати листа"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:557
+#: gui/opcodes.h:563
 msgid "jump to the next new message"
 msgstr "перейти до наступного нового листа"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:560
+#: gui/opcodes.h:566
 msgid "jump to the next new or unread message"
 msgstr "перейти до наступного нового чи нечитаного листа"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:563
+#: gui/opcodes.h:569
 msgid "jump to the next subthread"
 msgstr "перейти до наступної підгілки"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:566
+#: gui/opcodes.h:572
 msgid "jump to the next thread"
 msgstr "перейти до наступної гілки"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNDELETED
 #. Index: <op_main_next_undeleted>
-#: gui/opcodes.h:569
+#: gui/opcodes.h:575
 msgid "move to the next undeleted message"
 msgstr "перейти до наступного невидаленого листа"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:572
+#: gui/opcodes.h:578
 msgid "jump to the next unread message"
 msgstr "перейти до наступного нечитаного листа"
 
 #. L10N: Help screen description for OP_MAIN_NEXT_UNREAD_MAILBOX
 #. Index: <op_main_next_unread_mailbox>
-#: gui/opcodes.h:575
+#: gui/opcodes.h:581
 msgid "open next mailbox with new mail"
 msgstr "відкрити нову скриньку з непрочитаною поштою"
 
 #. L10N: Help screen description for OP_MAIN_PARENT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:578
+#: gui/opcodes.h:584
 msgid "jump to parent message in thread"
 msgstr "перейти до батьківського листа в гілці"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:581
+#: gui/opcodes.h:587
 msgid "jump to the previous new message"
 msgstr "перейти до попереднього нового листа"
 
 #. L10N: Help screen description for OP_MAIN_PREV_NEW_THEN_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:584
+#: gui/opcodes.h:590
 msgid "jump to the previous new or unread message"
 msgstr "перейти до попереднього нового чи нечитаного листа"
 
 #. L10N: Help screen description for OP_MAIN_PREV_SUBTHREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:587
+#: gui/opcodes.h:593
 msgid "jump to previous subthread"
 msgstr "перейти до попередньої підгілки"
 
 #. L10N: Help screen description for OP_MAIN_PREV_THREAD
 #. Index: <op_main_next_thread>
-#: gui/opcodes.h:590
+#: gui/opcodes.h:596
 msgid "jump to previous thread"
 msgstr "перейти до попередньої гілки"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNDELETED
 #. Index: <op_main_prev_undeleted>
-#: gui/opcodes.h:593
+#: gui/opcodes.h:599
 msgid "move to the previous undeleted message"
 msgstr "перейти до попереднього невидаленого листа"
 
 #. L10N: Help screen description for OP_MAIN_PREV_UNREAD
 #. Index: <op_main_next_new>
-#: gui/opcodes.h:596
+#: gui/opcodes.h:602
 msgid "jump to the previous unread message"
 msgstr "перейти до попереднього нечитаного листа"
 
 #. L10N: Help screen description for OP_MAIN_QUASI_DELETE
 #. Index: <op_main_quasi_delete>
-#: gui/opcodes.h:599
+#: gui/opcodes.h:605
 msgid "delete from NeoMutt, don't touch on disk"
 msgstr "видалити з NeoMutt, не чіпати на диску"
 
 #. L10N: Help screen description for OP_MAIN_READ_SUBTHREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:602
+#: gui/opcodes.h:608
 msgid "mark the current subthread as read"
 msgstr "позначити поточну гілку як прочитану"
 
 #. L10N: Help screen description for OP_MAIN_READ_THREAD
 #. Index: <op_main_read_thread>
-#: gui/opcodes.h:605
+#: gui/opcodes.h:611
 msgid "mark the current thread as read"
 msgstr "позначити поточну гілку як прочитану"
 
 #. L10N: Help screen description for OP_MAIN_ROOT_MESSAGE
 #. Index: <op_main_root_message>
-#: gui/opcodes.h:608
+#: gui/opcodes.h:614
 msgid "jump to root message in thread"
 msgstr "перейти до кореневого листа в гілці"
 
 #. L10N: Help screen description for OP_MAIN_SET_FLAG
 #. Index: <op_main_set_flag>
-#: gui/opcodes.h:611
+#: gui/opcodes.h:617
 msgid "set a status flag on a message"
 msgstr "встановити прапорець стану листа"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
-#: gui/opcodes.h:614
+#: gui/opcodes.h:620
 msgid "show currently active limit pattern"
 msgstr "показати поточний вираз обмеження"
 
 #. L10N: Help screen description for OP_MAIN_SYNC_FOLDER
 #. Index: <op_main_sync_folder>
-#: gui/opcodes.h:617
+#: gui/opcodes.h:623
 msgid "save changes to mailbox"
 msgstr "зберегти зміни до скриньки"
 
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
-#: gui/opcodes.h:620
+#: gui/opcodes.h:626
 #, fuzzy
 msgid "tag non-hidden messages matching a pattern"
 msgstr "виділити листи, що відповідають виразу"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
-#: gui/opcodes.h:623
+#: gui/opcodes.h:629
 #, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
 msgstr "відновити листи, що відповідають виразу"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
-#: gui/opcodes.h:626
+#: gui/opcodes.h:632
 #, fuzzy
 msgid "untag non-hidden messages matching a pattern"
 msgstr "зняти виділення з листів, що відповідають виразу"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
-#: gui/opcodes.h:629
+#: gui/opcodes.h:635
 msgid "create a hotkey macro for the current message"
 msgstr "створити макрос для поточного листа"
 
 #. L10N: Help screen description for OP_MIDDLE_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:632
+#: gui/opcodes.h:638
 msgid "move to the middle of the page"
 msgstr "перейти до середини сторінки"
 
 #. L10N: Help screen description for OP_NEXT_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_next_entry>
-#: gui/opcodes.h:636
+#: gui/opcodes.h:642
 msgid "move to the next entry"
 msgstr "перейти до наступної позиції"
 
 #. L10N: Help screen description for OP_NEXT_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_line>
-#: gui/opcodes.h:640
+#: gui/opcodes.h:646
 msgid "scroll down one line"
 msgstr "прокрутити на рядок вниз"
 
 #. L10N: Help screen description for OP_NEXT_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_next_page>
-#: gui/opcodes.h:644
+#: gui/opcodes.h:650
 msgid "move to the next page"
 msgstr "перейти до наступної сторінки"
 
 #. L10N: Help screen description for OP_PAGER_BOTTOM
 #. Pager: <op_pager_bottom>
-#: gui/opcodes.h:647
+#: gui/opcodes.h:653
 msgid "jump to the bottom of the message"
 msgstr "перейти до кінця листа"
 
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
-#: gui/opcodes.h:650
+#: gui/opcodes.h:656
 msgid "toggle display of quoted text"
 msgstr "вимк./увімкн. відображення цитованого тексту"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
-#: gui/opcodes.h:653
+#: gui/opcodes.h:659
 msgid "jump to first line after headers"
 msgstr "перейти до першого рядка після заголовків"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_QUOTED
 #. Pager: <op_pager_skip_quoted>
-#: gui/opcodes.h:656
+#: gui/opcodes.h:662
 msgid "skip beyond quoted text"
 msgstr "пропустити цитований текст цілком"
 
 #. L10N: Help screen description for OP_PAGER_TOP
 #. Pager: <op_pager_top>
-#: gui/opcodes.h:659
+#: gui/opcodes.h:665
 msgid "jump to the top of the message"
 msgstr "перейти на початок листа"
 
 #. L10N: Help screen description for OP_POST
 #. Index: <op_post>
-#: gui/opcodes.h:667
+#: gui/opcodes.h:673
 msgid "post message to newsgroup"
 msgstr "опублікувати листа до групи новин"
 
 #. L10N: Help screen description for OP_PREV_ENTRY
 #. Menu: <menu_movement>
 #. Index: <op_prev_entry>
-#: gui/opcodes.h:671
+#: gui/opcodes.h:677
 msgid "move to the previous entry"
 msgstr "перейти до попередньої позицїї"
 
 #. L10N: Help screen description for OP_PREV_LINE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_line>
-#: gui/opcodes.h:675
+#: gui/opcodes.h:681
 msgid "scroll up one line"
 msgstr "прокрутити на рядок уверх"
 
 #. L10N: Help screen description for OP_PREV_PAGE
 #. Menu: <menu_movement>
 #. Pager: <op_pager_prev_page>
-#: gui/opcodes.h:679
+#: gui/opcodes.h:685
 msgid "move to the previous page"
 msgstr "перейти на попередню сторінку"
 
 #. L10N: Help screen description for OP_PURGE_MESSAGE
 #. Index: <op_delete>
-#: gui/opcodes.h:685
+#: gui/opcodes.h:691
 msgid "delete the current entry, bypassing the trash folder"
 msgstr "видалити поточний запис в обхід теки смітника"
 
 #. L10N: Help screen description for OP_PURGE_THREAD
 #. Index: <op_delete_thread>
-#: gui/opcodes.h:688
+#: gui/opcodes.h:694
 msgid "delete the current thread, bypassing the trash folder"
 msgstr "видалити поточну гілку в обхід теки смітника"
 
 #. L10N: Help screen description for OP_QUERY
 #. Alias Dialog: <op_query>
 #. Index: <op_query>
-#: gui/opcodes.h:692
+#: gui/opcodes.h:698
 msgid "query external program for addresses"
 msgstr "запит адрес у зовнішньої програми"
 
 #. L10N: Help screen description for OP_QUERY_APPEND
 #. Alias Dialog: <op_query>
-#: gui/opcodes.h:695
+#: gui/opcodes.h:701
 msgid "append new query results to current results"
 msgstr "додати результати нового запиту до поточних"
 
@@ -3652,51 +3684,51 @@ msgstr "додати результати нового запиту до пот�
 #. History Dialog: <op_quit>
 #. Index: <op_quit>
 #. Pattern Dialog: <op_quit>
-#: gui/opcodes.h:700
+#: gui/opcodes.h:706
 msgid "save changes to mailbox and quit"
 msgstr "зберегти зміни до скриньки і вийти"
 
 #. L10N: Help screen description for OP_RECALL_MESSAGE
 #. Index: <op_recall_message>
-#: gui/opcodes.h:703
+#: gui/opcodes.h:709
 msgid "recall a postponed message"
 msgstr "викликати залишений лист"
 
 #. L10N: Help screen description for OP_RECONSTRUCT_THREAD
 #. Index: <op_get_children>
-#: gui/opcodes.h:706
+#: gui/opcodes.h:712
 msgid "reconstruct thread containing current message"
 msgstr "перебудувати гілку з поточним листом"
 
 #. L10N: Help screen description for OP_REDRAW
 #. Text Entry: <op_redraw>
 #. Global: <op_redraw>
-#: gui/opcodes.h:710
+#: gui/opcodes.h:716
 msgid "clear and redraw the screen"
 msgstr "очистити та перемалювати екран"
 
 #. L10N: Help screen description for OP_REFORMAT_WINCH
-#: gui/opcodes.h:712
+#: gui/opcodes.h:718
 msgid "{internal}"
 msgstr "{внутрішня}"
 
 #. L10N: Help screen description for OP_RENAME_MAILBOX
 #. Browser: <op_rename_mailbox>
-#: gui/opcodes.h:715
+#: gui/opcodes.h:721
 msgid "rename the current mailbox (IMAP only)"
 msgstr "перейменувати поточну скриньку (лише IMAP)"
 
 #. L10N: Help screen description for OP_REPLY
 #. Attach Dialog: <op_reply>
 #. Index: <op_reply>
-#: gui/opcodes.h:719
+#: gui/opcodes.h:725
 msgid "reply to a message"
 msgstr "відповісти на лист"
 
 #. L10N: Help screen description for OP_RESEND
 #. Attach Dialog: <op_resend>
 #. Index: <op_resend>
-#: gui/opcodes.h:723
+#: gui/opcodes.h:729
 msgid "use the current message as a template for a new one"
 msgstr "взяти цей лист у якості шаблону для нового"
 
@@ -3706,7 +3738,7 @@ msgstr "взяти цей лист у якості шаблону для нов�
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:734
+#: gui/opcodes.h:740
 msgid "search for a regular expression"
 msgstr "пошук регулярного виразу"
 
@@ -3716,7 +3748,7 @@ msgstr "пошук регулярного виразу"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:741
+#: gui/opcodes.h:747
 msgid "search for next match"
 msgstr "пошук наступної відповідності"
 
@@ -3726,7 +3758,7 @@ msgstr "пошук наступної відповідності"
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:748
+#: gui/opcodes.h:754
 msgid "search for next match in opposite direction"
 msgstr "пошук наступного у зворотньому напрямку"
 
@@ -3736,25 +3768,25 @@ msgstr "пошук наступного у зворотньому напрямк
 #. Alias Dialog: <op_search>
 #. Index: <op_search>
 #. Postponed Dialog: <op_search>
-#: gui/opcodes.h:755
+#: gui/opcodes.h:761
 msgid "search backwards for a regular expression"
 msgstr "пошук виразу в напрямку назад"
 
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
-#: gui/opcodes.h:758
+#: gui/opcodes.h:764
 msgid "toggle search pattern coloring"
 msgstr "вимк./увімкнути виділення виразу пошуку"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
-#: gui/opcodes.h:761
+#: gui/opcodes.h:767
 msgid "invoke a command in a subshell"
 msgstr "викликати команду оболонки"
 
 #. L10N: Help screen description for OP_SHOW_LOG_MESSAGES
 #. Global: <op_show_log_messages>
-#: gui/opcodes.h:764
+#: gui/opcodes.h:770
 msgid "show log (and debug) messages"
 msgstr "показати повідомлення журналу (і зневадження)"
 
@@ -3762,7 +3794,7 @@ msgstr "показати повідомлення журналу (і знева�
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:769
+#: gui/opcodes.h:775
 msgid "sort messages"
 msgstr "сортувати листи"
 
@@ -3770,139 +3802,139 @@ msgstr "сортувати листи"
 #. Alias Dialog: <op_sort>
 #. Browser: <op_sort>
 #. Index: <op_sort>
-#: gui/opcodes.h:774
+#: gui/opcodes.h:780
 msgid "sort messages in reverse order"
 msgstr "сортувати листи у зворотньому порядку"
 
 #. L10N: Help screen description for OP_SUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:777
+#: gui/opcodes.h:783
 msgid "subscribe to newsgroups matching a pattern"
 msgstr "підписатися на групи новин, що відповідають шаблону"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
-#: gui/opcodes.h:780
+#: gui/opcodes.h:786
 msgid "tag the current entry"
 msgstr "виділити поточну позицію"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
-#: gui/opcodes.h:782
+#: gui/opcodes.h:788
 msgid "apply next function to tagged messages"
 msgstr "використати наступну функцію до виділеного"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
-#: gui/opcodes.h:784
+#: gui/opcodes.h:790
 msgid "apply next function ONLY to tagged messages"
 msgstr "застосувати наступну функцію лише для позначених листів"
 
 #. L10N: Help screen description for OP_TAG_SUBTHREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:787
+#: gui/opcodes.h:793
 msgid "tag the current subthread"
 msgstr "виділити поточну підгілку"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
-#: gui/opcodes.h:790
+#: gui/opcodes.h:796
 msgid "tag the current thread"
 msgstr "виділити поточну гілку"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
-#: gui/opcodes.h:793
+#: gui/opcodes.h:799
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "вибір між переглядом скриньок або всіх файлів"
 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
-#: gui/opcodes.h:796
+#: gui/opcodes.h:802
 msgid "toggle a message's 'new' flag"
 msgstr "змінити прапорець листа 'новий'"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
-#: gui/opcodes.h:799
+#: gui/opcodes.h:805
 msgid "toggle view of read messages"
 msgstr "перемкнути вигляд прочитаних листів"
 
 #. L10N: Help screen description for OP_TOGGLE_WRITE
 #. Index: <op_toggle_write>
-#: gui/opcodes.h:802
+#: gui/opcodes.h:808
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "вимкнути/увімкнути перезаписування скриньки"
 
 #. L10N: Help screen description for OP_TOP_PAGE
 #. Menu: <menu_movement>
-#: gui/opcodes.h:805
+#: gui/opcodes.h:811
 msgid "move to the top of the page"
 msgstr "перейти до початку сторінки"
 
 #. L10N: Help screen description for OP_UNCATCHUP
 #. Browser: <op_catchup>
-#: gui/opcodes.h:808
+#: gui/opcodes.h:814
 msgid "mark all articles in newsgroup as unread"
 msgstr "позначити всі статті в групі новин непрочитаними"
 
 #. L10N: Help screen description for OP_UNDELETE_SUBTHREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:816
+#: gui/opcodes.h:822
 msgid "undelete all messages in subthread"
 msgstr "відновити всі листи підгілки"
 
 #. L10N: Help screen description for OP_UNDELETE_THREAD
 #. Index: <op_undelete_thread>
-#: gui/opcodes.h:819
+#: gui/opcodes.h:825
 msgid "undelete all messages in thread"
 msgstr "відновити всі листи гілки"
 
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
-#: gui/opcodes.h:822
+#: gui/opcodes.h:828
 msgid "unsubscribe from newsgroups matching a pattern"
 msgstr "відписатися від групи новин, що відповідають шаблону"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
-#: gui/opcodes.h:825
+#: gui/opcodes.h:831
 msgid "show the NeoMutt version number and date"
 msgstr "показати версію і дату NeoMutt"
 
 #. L10N: Help screen description for OP_VIEW_ATTACHMENTS
 #. Index: <op_view_attachments>
 #. Pager: <op_view_attachments>
-#: gui/opcodes.h:829
+#: gui/opcodes.h:835
 msgid "show MIME attachments"
 msgstr "показати прикріплення MIME"
 
 #. L10N: Help screen description for OP_VIEW_RAW_MESSAGE
 #. Index: <op_edit_raw_message>
-#: gui/opcodes.h:832
+#: gui/opcodes.h:838
 msgid "show the raw message"
 msgstr "показати текст листа"
 
 #. L10N: Help screen description for OP_WHAT_KEY
 #. Global: <op_what_key>
-#: gui/opcodes.h:835
+#: gui/opcodes.h:841
 msgid "display the keycode for a key press"
 msgstr "показати код натиснутої клавіші"
 
 #. L10N: Help screen description for OP_DECRYPT_COPY
 #. Index: <op_save>
-#: gui/opcodes.h:840
+#: gui/opcodes.h:846
 msgid "make decrypted copy"
 msgstr "зробити розшифровану копію"
 
 #. L10N: Help screen description for OP_DECRYPT_SAVE
 #. Index: <op_save>
-#: gui/opcodes.h:843
+#: gui/opcodes.h:849
 msgid "make decrypted copy and delete"
 msgstr "зробити розшифровану копію і видалити"
 
 #. L10N: Help screen description for OP_EXTRACT_KEYS
 #. Attach Dialog: <op_extract_keys>
 #. Index: <op_extract_keys>
-#: gui/opcodes.h:847
+#: gui/opcodes.h:853
 msgid "extract supported public keys"
 msgstr "розпакувати підтримувані відкриті ключі"
 
@@ -3910,230 +3942,230 @@ msgstr "розпакувати підтримувані відкриті клю�
 #. Attach Dialog: <op_forget_passphrase>
 #. Compose Dialog: <op_forget_passphrase>
 #. Index: <op_forget_passphrase>
-#: gui/opcodes.h:852
+#: gui/opcodes.h:858
 msgid "wipe passphrases from memory"
 msgstr "очистити паролі з памʼяті"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_BCC
 #. Envelope Window: <op_envelope_edit_bcc>
-#: gui/opcodes.h:857
+#: gui/opcodes.h:863
 msgid "edit the BCC list"
 msgstr "змінити список BСС"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_CC
 #. Envelope Window: <op_envelope_edit_cc>
-#: gui/opcodes.h:860
+#: gui/opcodes.h:866
 msgid "edit the CC list"
 msgstr "змінити список CC"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FCC
 #. Envelope Window: <op_envelope_edit_fcc>
-#: gui/opcodes.h:863
+#: gui/opcodes.h:869
 msgid "enter a file to save a copy of this message in"
 msgstr "увести назву файлу для збереження копії цього листа"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FOLLOWUP_TO
 #. Envelope Window: <op_envelope_edit_followup_to>
-#: gui/opcodes.h:866
+#: gui/opcodes.h:872
 msgid "edit the Followup-To field"
 msgstr "змінити поле Followup-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_FROM
 #. Envelope Window: <op_envelope_edit_from>
-#: gui/opcodes.h:869
+#: gui/opcodes.h:875
 msgid "edit the from field"
 msgstr "змінити поле From"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_HEADERS
 #. Compose Dialog: <op_envelope_edit_headers>
-#: gui/opcodes.h:872
+#: gui/opcodes.h:878
 msgid "edit the message with headers"
 msgstr "редагувати лист з заголовками"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_NEWSGROUPS
 #. Envelope Window: <op_envelope_edit_newsgroups>
-#: gui/opcodes.h:875
+#: gui/opcodes.h:881
 msgid "edit the newsgroups list"
 msgstr "змінити список групи новин"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_REPLY_TO
 #. Envelope Window: <op_envelope_edit_reply_to>
-#: gui/opcodes.h:878
+#: gui/opcodes.h:884
 msgid "edit the Reply-To field"
 msgstr "змінити поле Reply-To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_SUBJECT
 #. Envelope Window: <op_envelope_edit_subject>
-#: gui/opcodes.h:881
+#: gui/opcodes.h:887
 msgid "edit the subject of this message"
 msgstr "редагувати тему цього листа"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_TO
 #. Envelope Window: <op_envelope_edit_to>
-#: gui/opcodes.h:884
+#: gui/opcodes.h:890
 msgid "edit the TO list"
 msgstr "змінити перелік To"
 
 #. L10N: Help screen description for OP_ENVELOPE_EDIT_X_COMMENT_TO
 #. Envelope Window: <op_envelope_edit_x_comment_to>
-#: gui/opcodes.h:887
+#: gui/opcodes.h:893
 msgid "edit the X-Comment-To field"
 msgstr "змінити поле X-Comment-To"
 
 #. L10N: Help screen description for OP_MAIN_CHANGE_VFOLDER
 #. Index: <op_main_change_folder>
-#: gui/opcodes.h:893
+#: gui/opcodes.h:899
 msgid "open a different virtual folder"
 msgstr "відкрити іншу віртуальну теку"
 
 #. L10N: Help screen description for OP_MAIN_ENTIRE_THREAD
 #. Index: <op_main_entire_thread>
-#: gui/opcodes.h:896
+#: gui/opcodes.h:902
 msgid "read entire thread of the current message"
 msgstr "читати всю гілку поточного листа"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:899
+#: gui/opcodes.h:905
 msgid "generate virtual folder from query"
 msgstr "створити віртуальну теку із запиту"
 
 #. L10N: Help screen description for OP_MAIN_VFOLDER_FROM_QUERY_READONLY
 #. Index: <op_main_vfolder_from_query>
-#: gui/opcodes.h:902
+#: gui/opcodes.h:908
 msgid "generate a read-only virtual folder from query"
 msgstr "створити віртуальну теку лише для читання із запиту"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_BACKWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:905
+#: gui/opcodes.h:911
 msgid "shifts virtual folder time window backwards"
 msgstr "зсуває вікно віртуальної теки назад"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_FORWARD
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:908
+#: gui/opcodes.h:914
 msgid "shifts virtual folder time window forwards"
 msgstr "зсуває вікно віртуальної теки вперед"
 
 #. L10N: Help screen description for OP_MAIN_WINDOWED_VFOLDER_RESET
 #. Index: <op_main_windowed_vfolder>
-#: gui/opcodes.h:911
+#: gui/opcodes.h:917
 msgid "resets virtual folder time window to the present"
 msgstr "скидає вікно віртуальної теки до теперішнього"
 
 #. L10N: Help screen description for OP_ATTACHMENT_ATTACH_KEY
 #. Compose Dialog: <op_attachment_attach_key>
-#: gui/opcodes.h:919
+#: gui/opcodes.h:925
 msgid "attach a PGP public key"
 msgstr "приєднати відкритий ключ PGP"
 
 #. L10N: Help screen description for OP_CHECK_TRADITIONAL
 #. Attach Dialog: <op_check_traditional>
 #. Index: <op_check_traditional>
-#: gui/opcodes.h:923
+#: gui/opcodes.h:929
 msgid "check for classic PGP"
 msgstr "перевірити на класичний PGP"
 
 #. L10N: Help screen description for OP_COMPOSE_PGP_MENU
 #. Envelope Window: <op_compose_pgp_menu>
-#: gui/opcodes.h:926
+#: gui/opcodes.h:932
 msgid "show PGP options"
 msgstr "показати параметри PGP"
 
 #. L10N: Help screen description for OP_MAIL_KEY
 #. Index: <op_mail_key>
-#: gui/opcodes.h:929
+#: gui/opcodes.h:935
 msgid "mail a PGP public key"
 msgstr "відіслати відкритий ключ PGP"
 
 #. L10N: Help screen description for OP_VERIFY_KEY
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
-#: gui/opcodes.h:933
+#: gui/opcodes.h:939
 msgid "verify a PGP public key"
 msgstr "перевірити відкритий ключ PGP"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
 #. PGP Key Selection Dialog: <op_view_id>
-#: gui/opcodes.h:937
+#: gui/opcodes.h:943
 msgid "view the key's user id"
 msgstr "побачити ідентіфікатор користувача ключа"
 
 #. L10N: Help screen description for OP_SIDEBAR_FIRST
 #. Sidebar: <op_sidebar_first>
-#: gui/opcodes.h:942
+#: gui/opcodes.h:948
 msgid "move the highlight to the first mailbox"
 msgstr "перемістити маркер до першої скриньки"
 
 #. L10N: Help screen description for OP_SIDEBAR_LAST
 #. Sidebar: <op_sidebar_last>
-#: gui/opcodes.h:945
+#: gui/opcodes.h:951
 msgid "move the highlight to the last mailbox"
 msgstr "перемістити маркер до останньої скриньки"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT
 #. Sidebar: <op_sidebar_next>
-#: gui/opcodes.h:948
+#: gui/opcodes.h:954
 msgid "move the highlight to next mailbox"
 msgstr "перемістити маркер до наступної скриньки"
 
 #. L10N: Help screen description for OP_SIDEBAR_NEXT_NEW
 #. Sidebar: <op_sidebar_next_new>
-#: gui/opcodes.h:951
+#: gui/opcodes.h:957
 msgid "move the highlight to next mailbox with new mail"
 msgstr "перемістити маркер до наступної скриньки з новою поштою"
 
 #. L10N: Help screen description for OP_SIDEBAR_OPEN
 #. Sidebar: <op_sidebar_open>
-#: gui/opcodes.h:954
+#: gui/opcodes.h:960
 msgid "open highlighted mailbox"
 msgstr "відкрити обрану скриньку"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_DOWN
 #. Sidebar: <op_sidebar_page_down>
-#: gui/opcodes.h:957
+#: gui/opcodes.h:963
 msgid "scroll the sidebar down 1 page"
 msgstr "прокрутити бокову панель вниз на 1 сторінку"
 
 #. L10N: Help screen description for OP_SIDEBAR_PAGE_UP
 #. Sidebar: <op_sidebar_page_up>
-#: gui/opcodes.h:960
+#: gui/opcodes.h:966
 msgid "scroll the sidebar up 1 page"
 msgstr "прокрутиит бокову панель уверх на 1 сторінку"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV
 #. Sidebar: <op_sidebar_prev>
-#: gui/opcodes.h:963
+#: gui/opcodes.h:969
 msgid "move the highlight to previous mailbox"
 msgstr "перемістити маркер до попередньої скриньки"
 
 #. L10N: Help screen description for OP_SIDEBAR_PREV_NEW
 #. Sidebar: <op_sidebar_prev_new>
-#: gui/opcodes.h:966
+#: gui/opcodes.h:972
 msgid "move the highlight to previous mailbox with new mail"
 msgstr "перемістити маркер до попередньої скриньки з новою поштою"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
-#: gui/opcodes.h:969
+#: gui/opcodes.h:975
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "перемкнути між скриньками і віртуальними скриньками"
 
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VISIBLE
 #. Sidebar: <op_sidebar_toggle_visible>
-#: gui/opcodes.h:972
+#: gui/opcodes.h:978
 msgid "make the sidebar (in)visible"
 msgstr "зробити бокову панель (не)видимою"
 
 #. L10N: Help screen description for OP_COMPOSE_SMIME_MENU
 #. Envelope Window: <op_compose_smime_menu>
-#: gui/opcodes.h:977
+#: gui/opcodes.h:983
 msgid "show S/MIME options"
 msgstr "показати параметри S/MIME"
 
-#: gui/opcodes.h:980
+#: gui/opcodes.h:986
 msgid "null operation"
 msgstr "порожня операція"
 
