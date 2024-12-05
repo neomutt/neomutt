@@ -56,7 +56,16 @@ enum ColorId
   MT_COLOR_OPTIONS,                  ///< Options in prompt
   MT_COLOR_PROGRESS,                 ///< Progress bar
   MT_COLOR_PROMPT,                   ///< Question/user input
-  MT_COLOR_QUOTED,                   ///< Pager: quoted text
+  MT_COLOR_QUOTED0,                  ///< Pager: quoted text, level 0
+  MT_COLOR_QUOTED1,                  ///< Pager: quoted text, level 1
+  MT_COLOR_QUOTED2,                  ///< Pager: quoted text, level 2
+  MT_COLOR_QUOTED3,                  ///< Pager: quoted text, level 3
+  MT_COLOR_QUOTED4,                  ///< Pager: quoted text, level 4
+  MT_COLOR_QUOTED5,                  ///< Pager: quoted text, level 5
+  MT_COLOR_QUOTED6,                  ///< Pager: quoted text, level 6
+  MT_COLOR_QUOTED7,                  ///< Pager: quoted text, level 7
+  MT_COLOR_QUOTED8,                  ///< Pager: quoted text, level 8
+  MT_COLOR_QUOTED9,                  ///< Pager: quoted text, level 9
   MT_COLOR_SEARCH,                   ///< Pager: search matches
   MT_COLOR_SIDEBAR_BACKGROUND,       ///< Background colour for the Sidebar
   MT_COLOR_SIDEBAR_DIVIDER,          ///< Line dividing sidebar from the index/pager

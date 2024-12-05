@@ -224,20 +224,16 @@ const char *color_log_name(char *buf, int buflen, struct ColorElement *elem)
  */
 void quoted_colors_dump(struct Buffer *buf)
 {
-  int num = quoted_colors_num_used();
-  if (num == 0)
-    return;
-
   struct Buffer *swatch = buf_pool_get();
   char color_fg[64] = { 0 };
   char color_bg[64] = { 0 };
 
   buf_addstr(buf, _("# Quoted Colors\n"));
-  for (int i = 0; i < num; i++)
+  for (int i = 0; i < 10; i++)
   {
-    struct AttrColor *ac = quoted_colors_get(i);
-    if (!ac)
-      continue; // LCOV_EXCL_LINE
+    struct AttrColor *ac = simple_color_get(MT_COLOR_QUOTED0 + i);
+    if (!attr_color_is_set(ac))
+      continue;
 
     color_log_color_attrs(ac, swatch);
     buf_add_printf(buf, "color quoted%d %-20s %-16s %-16s # %s\n", i,

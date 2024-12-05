@@ -46,7 +46,6 @@
 #include "globals.h"
 #include "notify2.h"
 #include "parse_color.h"
-#include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
 
@@ -81,7 +80,16 @@ const struct Mapping ColorFields[] = {
   { "options",           MT_COLOR_OPTIONS },
   { "progress",          MT_COLOR_PROGRESS },
   { "prompt",            MT_COLOR_PROMPT },
-  { "quoted",            MT_COLOR_QUOTED },
+  { "quoted0",           MT_COLOR_QUOTED0 },
+  { "quoted1",           MT_COLOR_QUOTED1 },
+  { "quoted2",           MT_COLOR_QUOTED2 },
+  { "quoted3",           MT_COLOR_QUOTED3 },
+  { "quoted4",           MT_COLOR_QUOTED4 },
+  { "quoted5",           MT_COLOR_QUOTED5 },
+  { "quoted6",           MT_COLOR_QUOTED6 },
+  { "quoted7",           MT_COLOR_QUOTED7 },
+  { "quoted8",           MT_COLOR_QUOTED8 },
+  { "quoted9",           MT_COLOR_QUOTED9 },
   { "search",            MT_COLOR_SEARCH },
   { "sidebar_background", MT_COLOR_SIDEBAR_BACKGROUND },
   { "sidebar_divider",   MT_COLOR_SIDEBAR_DIVIDER },
@@ -101,6 +109,7 @@ const struct Mapping ColorFields[] = {
   { "underline",         MT_COLOR_UNDERLINE },
   { "warning",           MT_COLOR_WARNING },
   // Deprecated
+  { "quoted",            MT_COLOR_QUOTED0 },
   { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE },
   { NULL, 0 },
   // clang-format on
@@ -151,33 +160,15 @@ void get_colorid_name(unsigned int cid, struct Buffer *buf)
  * @param[in]  buf   Temporary Buffer space
  * @param[in]  s     Buffer containing string to be parsed
  * @param[out] cid   Object type, e.g. #MT_COLOR_TILDE
- * @param[out] ql    Quote level, if type #MT_COLOR_QUOTED
  * @param[out] err   Buffer for error messages
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
- * Identify a colour object, e.g. "quoted", "compose header"
+ * Identify a colour object, e.g. "message", "compose header"
  */
 static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
-                                       enum ColorId *cid, int *ql, struct Buffer *err)
+                                       enum ColorId *cid, struct Buffer *err)
 {
   int rc;
-
-  if (mutt_str_startswith(buf->data, "quoted") != 0)
-  {
-    int val = 0;
-    if (buf->data[6] != '\0')
-    {
-      if (!mutt_str_atoi_full(buf->data + 6, &val) || (val > COLOR_QUOTES_MAX))
-      {
-        buf_printf(err, _("%s: no such object"), buf->data);
-        return MUTT_CMD_WARNING;
-      }
-    }
-
-    *ql = val;
-    *cid = MT_COLOR_QUOTED;
-    return MUTT_CMD_SUCCESS;
-  }
 
   if (mutt_istr_equal(buf->data, "compose"))
   {
@@ -248,9 +239,8 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
 
   unsigned int cid = MT_COLOR_NONE;
-  int ql = 0;
   color_debug(LL_DEBUG5, "uncolor: %s\n", buf_string(buf));
-  enum CommandResult rc = parse_object(buf, s, &cid, &ql, err);
+  enum CommandResult rc = parse_object(buf, s, &cid, err);
   if (rc != MUTT_CMD_SUCCESS)
     return rc;
 
@@ -258,12 +248,6 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
   {
     buf_printf(err, _("%s: no such object"), buf->data);
     return MUTT_CMD_ERROR;
-  }
-
-  if (COLOR_QUOTED(cid))
-  {
-    color_debug(LL_DEBUG5, "quoted\n");
-    return quoted_colors_parse_uncolor(cid, ql, err);
   }
 
   if ((cid == MT_COLOR_STATUS) && !MoreArgs(s))
@@ -323,7 +307,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
                                       struct Buffer *err,
                                       parser_callback_t callback, bool color)
 {
-  int q_level = 0;
   unsigned int match = 0;
   enum ColorId cid = MT_COLOR_NONE;
   enum CommandResult rc = MUTT_CMD_ERROR;
@@ -348,7 +331,7 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   color_debug(LL_DEBUG5, "color: %s\n", buf_string(buf));
 
-  rc = parse_object(buf, s, &cid, &q_level, err);
+  rc = parse_object(buf, s, &cid, err);
   if (rc != MUTT_CMD_SUCCESS)
     goto done;
 
@@ -408,12 +391,6 @@ static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
   if (regex_colors_parse_color_list(cid, buf->data, ac, &rc, err))
   {
     color_debug(LL_DEBUG5, "regex_colors_parse_color_list done\n");
-    goto done;
-    // do nothing
-  }
-  else if (quoted_colors_parse_color(cid, ac, q_level, &rc, err))
-  {
-    color_debug(LL_DEBUG5, "quoted_colors_parse_color done\n");
     goto done;
     // do nothing
   }

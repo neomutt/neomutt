@@ -31,12 +31,7 @@
 
 struct Buffer;
 
-/// Ten colours, quoted0..quoted9 (quoted and quoted0 are equivalent)
-#define COLOR_QUOTES_MAX 10
-
-extern struct AttrColor QuotedColors[];
-
-#define COLOR_QUOTED(cid) ((cid) == MT_COLOR_QUOTED)
+#define COLOR_QUOTED(cid) (((cid) >= MT_COLOR_QUOTED0) && ((cid) <= MT_COLOR_QUOTED9))
 
 void quoted_colors_init   (void);
 void quoted_colors_reset  (void);
@@ -44,8 +39,5 @@ void quoted_colors_cleanup(void);
 
 struct AttrColor * quoted_colors_get(int q);
 int                quoted_colors_num_used(void);
-
-bool               quoted_colors_parse_color  (enum ColorId cid, struct AttrColor *ac_val, int q_level, int *rc, struct Buffer *err);
-enum CommandResult quoted_colors_parse_uncolor(enum ColorId cid, int q_level, struct Buffer *err);
 
 #endif /* MUTT_COLOR_QUOTED_H */

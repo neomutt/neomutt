@@ -91,9 +91,6 @@ void test_color_dump(void)
   simple_color_set(MT_COLOR_PROMPT, &ac);
 
   int rc = 0;
-  quoted_colors_parse_color(MT_COLOR_QUOTED, &ac, 0, &rc, NULL);
-  quoted_colors_parse_color(MT_COLOR_QUOTED, &ac, 2, &rc, NULL);
-
   regex_colors_parse_color_list(MT_COLOR_BODY, "apple", &ac, &rc, NULL);
   regex_colors_parse_color_list(MT_COLOR_BODY, "banana", &ac, &rc, NULL);
 
