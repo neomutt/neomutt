@@ -75,7 +75,7 @@ void mutt_colors_cleanup(void)
 void mutt_colors_init(void)
 {
   color_debug(LL_DEBUG5, "init\n");
-  color_notify_init();
+  color_notify_init(NeoMutt->notify);
 
   curses_colors_init();
   merged_colors_init();
@@ -86,8 +86,6 @@ void mutt_colors_init(void)
   start_color();
   use_default_colors();
   color_debug(LL_DEBUG5, "COLORS = %d, COLOR_PAIRS = %d\n", COLORS, COLOR_PAIRS);
-
-  notify_set_parent(ColorsNotify, NeoMutt->notify);
 }
 
 /**
