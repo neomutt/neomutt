@@ -41,7 +41,7 @@
 #include "simple2.h"
 
 struct AttrColor QuotedColors[COLOR_QUOTES_MAX]; ///< Array of colours for quoted email text
-int NumQuotedColors; ///< Number of colours for quoted email text
+static int NumQuotedColors = 0; ///< Number of colours for quoted email text
 
 /**
  * quoted_colors_init - Initialise the Quoted colours
