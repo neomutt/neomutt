@@ -172,7 +172,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     def_color = *simple_color_get(lines[m].cid);
   }
 
-  if ((flags & MUTT_SHOWCOLOR) && (lines[m].cid == MT_COLOR_QUOTED))
+  if ((flags & MUTT_SHOWCOLOR) && COLOR_QUOTED(lines[m].cid))
   {
     struct QuoteStyle *qc = lines[m].quote;
 
@@ -590,7 +590,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
 
     lines[line_num].cid = MT_COLOR_SIGNATURE;
     while ((i < lines_used) && (check_sig(buf, lines, i - 1) == 0) &&
-           ((lines[i].cid == MT_COLOR_NORMAL) || (lines[i].cid == MT_COLOR_QUOTED) ||
+           ((lines[i].cid == MT_COLOR_NORMAL) || COLOR_QUOTED(lines[i].cid) ||
             (lines[i].cid == MT_COLOR_HEADER)))
     {
       /* oops... */
@@ -622,7 +622,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   }
 
   /* body patterns */
-  if ((lines[line_num].cid == MT_COLOR_NORMAL) || (lines[line_num].cid == MT_COLOR_QUOTED) ||
+  if ((lines[line_num].cid == MT_COLOR_NORMAL) || COLOR_QUOTED(lines[line_num].cid) ||
       ((lines[line_num].cid == MT_COLOR_HDRDEFAULT) && c_header_color_partial))
   {
     match_body_patterns(buf, lines, line_num);
@@ -1158,7 +1158,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
 
     /* this also prevents searching through the hidden lines */
     const short c_toggle_quoted_show_levels = cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
-    if ((flags & MUTT_HIDE) && (cur_line->cid == MT_COLOR_QUOTED) &&
+    if ((flags & MUTT_HIDE) && COLOR_QUOTED(cur_line->cid) &&
         (!cur_line->quote || (cur_line->quote->quote_n >= c_toggle_quoted_show_levels)))
     {
       flags = 0; /* MUTT_NOSHOW */
@@ -1171,7 +1171,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
    * solution is hence to call regexec() again, just to find out the
    * length of the quote prefix.  */
   if ((flags & MUTT_SHOWCOLOR) && !cur_line->cont_line &&
-      (cur_line->cid == MT_COLOR_QUOTED) && !cur_line->quote)
+      COLOR_QUOTED(cur_line->cid) && !cur_line->quote)
   {
     if (fill_buffer(fp, bytes_read, cur_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
