@@ -1149,7 +1149,7 @@ msgstr "-- Priedai"
 
 #: compose/dlg_compose.c:337 compose/preview.c:141
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Peržiūra"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1379,17 +1379,16 @@ msgstr "Išsaugoti (atidėti) juodraštį?"
 
 #: compose/preview.c:139
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Tik inline text/* priedai gali būti rodomi"
 
 #: compose/preview.c:165
-#, fuzzy
 msgid "Failed to move cursor!"
-msgstr "Nepavyko patikrinti siuntėjo"
+msgstr "Nepavyko perkelti žymeklio!"
 
 #: compose/preview.c:183
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Peržiūra (%.0f%%)"
 
 #: config/bool.c:76
 #, c-format
@@ -2667,16 +2666,14 @@ msgstr "žiūrėti priedą kaip tekstą"
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "šokti į laiško viršų"
+msgstr "rodyti kitą laiško puslapį"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "šokti į praeitą naują ar neskaitytą laišką"
+msgstr "rodyti ankstesnį laiško puslapį"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
