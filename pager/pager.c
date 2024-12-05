@@ -252,7 +252,7 @@ static int pager_color_observer(struct NotifyCallback *nc)
     return 0;
 
   // MT_COLOR_MAX is sent on `uncolor *`
-  if ((ev_c->cid == MT_COLOR_QUOTED) || (ev_c->cid == MT_COLOR_MAX))
+  if (COLOR_QUOTED(ev_c->cid) || (ev_c->cid == MT_COLOR_MAX))
   {
     // rework quoted colours
     qstyle_recolor(priv->quote_list);

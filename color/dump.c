@@ -310,7 +310,7 @@ void simple_colors_dump(struct Buffer *buf)
   int count = 0;
   for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
   {
-    if ((cid == MT_COLOR_QUOTED) || (cid == MT_COLOR_STATUS))
+    if (COLOR_QUOTED(cid) || (cid == MT_COLOR_STATUS))
       continue;
 
     struct AttrColor *ac = simple_color_get(cid);
@@ -323,7 +323,7 @@ void simple_colors_dump(struct Buffer *buf)
     buf_addstr(buf, _("# Simple Colors\n"));
     for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
     {
-      if ((cid == MT_COLOR_QUOTED) || (cid == MT_COLOR_STATUS))
+      if (COLOR_QUOTED(cid) || (cid == MT_COLOR_STATUS))
         continue;
 
       struct AttrColor *ac = simple_color_get(cid);

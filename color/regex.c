@@ -309,7 +309,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
 
 /**
  * regex_colors_parse_color_list - Parse a Regex 'color' command
- * @param cid     Colour Id, should be #MT_COLOR_QUOTED
+ * @param cid     Colour Id, should be #MT_COLOR_STATUS
  * @param pat     Regex pattern
  * @param ac      Colour value to use
  * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
@@ -378,7 +378,7 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
 
 /**
  * regex_colors_parse_status_list - Parse a Regex 'color status' command
- * @param cid     Colour ID, should be #MT_COLOR_QUOTED
+ * @param cid     Colour ID, should be #MT_COLOR_STATUS
  * @param pat     Regex pattern
  * @param ac      Colour value to use
  * @param match   Use the nth regex submatch

@@ -259,7 +259,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  if (cid == MT_COLOR_QUOTED)
+  if (COLOR_QUOTED(cid))
   {
     color_debug(LL_DEBUG5, "quoted\n");
     return quoted_colors_parse_uncolor(cid, ql, err);

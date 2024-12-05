@@ -117,7 +117,7 @@ int quoted_colors_num_used(void)
 bool quoted_colors_parse_color(enum ColorId cid, struct AttrColor *ac_val,
                                int q_level, int *rc, struct Buffer *err)
 {
-  if (cid != MT_COLOR_QUOTED)
+  if (!COLOR_QUOTED(cid))
     return false;
 
   color_debug(LL_DEBUG5, "quoted %d\n", q_level);
