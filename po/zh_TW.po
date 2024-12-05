@@ -6,6 +6,7 @@
 # Cd Chen <cdchen@mail.cynix.com.tw>, 2001
 # Weichung Chau <weichung@mail.cynix.com.tw>, 2001
 # Anthony Wong <ypwong@debian.org>, 2001
+# Chao-Kuei Hung <ckhung@cyut.edu.tw>, 2024
 #
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2024-12-01 01:29+0000\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
-"Last-Translator: Anthony Wong <ypwong@debian.org>\n"
+"Last-Translator: Chao-Kuei Hung <ckhung@cyut.edu.tw>\n"
 "Language-Team: Chinese <zh@li.org>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +27,7 @@ msgstr ""
 #: expando/config_type.c:69 expando/config_type.c:169
 #, c-format
 msgid "Option %s may not be empty"
-msgstr ""
+msgstr "選項 %s 不可留空"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:396
@@ -35,7 +36,7 @@ msgstr "取別名為："
 
 #: alias/alias.c:405
 msgid "You already have an alias defined with that name"
-msgstr "您已經為這個名字定義了別名啦"
+msgstr "這個別名已經有定義了喔"
 
 #: alias/alias.c:411
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -56,13 +57,12 @@ msgid "Personal name: "
 msgstr "個人姓名："
 
 #: alias/alias.c:468
-#, fuzzy
 msgid "Comment: "
-msgstr "編輯 Reply-To 欄位"
+msgstr "註記"
 
 #: alias/alias.c:474
 msgid "Tags (comma-separated): "
-msgstr ""
+msgstr "標籤 (以半型逗點分隔)："
 
 #: alias/alias.c:503
 msgid "Accept?"
@@ -75,14 +75,12 @@ msgid "Save to file: "
 msgstr "存到檔案："
 
 #: alias/alias.c:544
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "讀取信件時發生錯誤"
+msgstr "讀取別名檔時發生錯誤"
 
 #: alias/alias.c:583
-#, fuzzy
 msgid "Trouble adding alias"
-msgstr "讀取信件時發生錯誤"
+msgstr "無法新增別名"
 
 #: alias/alias.c:585
 msgid "Alias added"
@@ -90,12 +88,11 @@ msgstr "別名已經增加"
 
 #: alias/commands.c:144
 msgid "alias: no address"
-msgstr "別名：沒有電子郵件位址"
+msgstr "別名：沒有電子郵件地址"
 
 #: alias/commands.c:164
-#, fuzzy, c-format
 msgid "Warning: Bad address '%s' in alias '%s'"
-msgstr "警告：別名「%2$s」當中的「%1$s」為無效的 IDN"
+msgstr "警告：別名「%2$s」當中的「%1$s」為無效的地址"
 
 #: alias/commands.c:173
 #, c-format
@@ -123,11 +120,11 @@ msgstr "反刪除"
 
 #: alias/dlg_alias.c:104 alias/dlg_query.c:106
 msgid "Sort"
-msgstr ""
+msgstr "排序"
 
 #: alias/dlg_alias.c:105 alias/dlg_query.c:107
 msgid "Rev-Sort"
-msgstr ""
+msgstr "反向排序"
 
 #: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:95
 #: ncrypt/dlg_pgp.c:94 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
@@ -186,40 +183,39 @@ msgid "Query: "
 msgstr "查詢："
 
 #: alias/functions.c:248
-#, fuzzy
 msgid "Limit to addresses matching: "
-msgstr "限制只符合這樣式的信件："
+msgstr "限定只符合這樣式的地址："
 
 #: alias/functions.c:267
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "標記信件的條件："
+msgstr "標記符合條件的地址："
 
 #: alias/functions.c:283
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "反標記信件的條件："
+msgstr "移除標記，凡是符合條件的地址："
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr ""
+msgstr "反向排序依據： (a) 別名 (n) 姓名 (e) email (u) 不排序？"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr ""
+msgstr "排序依據： (a) 別名 (n) 姓名 (e) email (u) 不排序？"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "aneu"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
 #, c-format
 msgid "Limit: %s"
 msgstr "限制: %s"
+
+# ckhung 241205
 
 #: attach/attachments.c:481
 #, fuzzy
