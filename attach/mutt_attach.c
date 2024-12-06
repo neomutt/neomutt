@@ -888,10 +888,11 @@ static FILE *save_attachment_open(const char *path, enum SaveAttach opt)
 {
   if (opt == MUTT_SAVE_APPEND)
     return mutt_file_fopen_masked(path, "a");
-  if (opt == MUTT_SAVE_OVERWRITE)
-    return mutt_file_fopen_masked(path, "w");
 
-  return mutt_file_fopen_masked(path, "w");
+  FILE *fp = mutt_file_fopen_masked(path, "w");
+  if (fp)
+    ftruncate(fileno(fp), 0);
+  return fp;
 }
 
 /**
