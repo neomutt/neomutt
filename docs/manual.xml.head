@@ -5195,9 +5195,6 @@ folder-hook work "set sort=threads"
       </para>
       <cmdsynopsis>
         <command>color</command>
-        <arg choice="opt">
-          <option>compose</option>
-        </arg>
         <arg choice="plain">
           <replaceable class="parameter">object</replaceable>
         </arg>
@@ -5266,9 +5263,6 @@ folder-hook work "set sort=threads"
           </group>
         </group>
         <command>uncolor</command>
-        <arg choice="opt">
-          <option>compose</option>
-        </arg>
         <arg choice="plain">
           <replaceable class="parameter">object</replaceable>
         </arg>
@@ -5662,12 +5656,6 @@ uncolor sidebar_divider
         <para>
           These are compose objects.
         </para>
-        <note>
-          <para>
-            The compose objects use a slightly different format of command.
-            They prefix the style with the word <literal>compose</literal>.
-          </para>
-        </note>
         <table id="color-simple-compose">
           <title>Simple Compose Colours</title>
           <tgroup cols="2">
@@ -5679,33 +5667,33 @@ uncolor sidebar_divider
             </thead>
             <tbody>
               <row>
-                <entry>header</entry>
+                <entry>compose_header</entry>
                 <entry>Header labels, e.g. From:</entry>
               </row>
               <row>
-                <entry>security_encrypt</entry>
+                <entry>compose_security_encrypt</entry>
                 <entry>Mail will be encrypted</entry>
               </row>
               <row>
-                <entry>security_sign</entry>
+                <entry>compose_security_sign</entry>
                 <entry>Mail will be signed</entry>
               </row>
               <row>
-                <entry>security_both</entry>
+                <entry>compose_security_both</entry>
                 <entry>Mail will be encrypted and signed</entry>
               </row>
               <row>
-                <entry>security_none</entry>
+                <entry>compose_security_none</entry>
                 <entry>Mail will not be encrypted or signed</entry>
               </row>
             </tbody>
           </tgroup>
         </table>
 <screen>
-color compose header bold white default
+color compose_header bold white default
 </screen>
 <screen>
-uncolor compose header
+uncolor compose_header
 </screen>
         <para>
           The quoted objects refer to quoted lines in an email reply.
@@ -6002,8 +5990,8 @@ uncolor status *
           </group>
         </cmdsynopsis>
         <para>
-          For <emphasis>object</emphasis>, <emphasis>composeobject</emphasis>, and
-          <emphasis>attribute</emphasis>, see the <command>color</command> command.
+          For <emphasis>object</emphasis> and <emphasis>attribute</emphasis>,
+          see the <command>color</command> command.
         </para>
       </sect2>
     </sect1>

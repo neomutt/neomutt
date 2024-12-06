@@ -38,7 +38,6 @@
 #include "mview.h"
 
 extern const struct Mapping ColorFields[];
-extern const struct Mapping ComposeColorFields[];
 
 static void notify_dump_account(struct NotifyCallback *nc)
 {
@@ -56,7 +55,6 @@ static void notify_dump_color(struct NotifyCallback *nc)
   struct EventColor *ev_c = nc->event_data;
 
   const char *color = NULL;
-  const char *scope = "";
 
   if (ev_c->cid == MT_COLOR_MAX)
     color = "ALL";
@@ -65,17 +63,10 @@ static void notify_dump_color(struct NotifyCallback *nc)
     color = mutt_map_get_name(ev_c->cid, ColorFields);
 
   if (!color)
-  {
-    color = mutt_map_get_name(ev_c->cid, ComposeColorFields);
-    scope = "compose ";
-  }
-
-  if (!color)
     color = "UNKNOWN";
 
-  mutt_debug(LL_DEBUG1, "    Color: %s %s%s (%d)\n",
-             (nc->event_subtype == NT_COLOR_SET) ? "set" : "reset", scope,
-             color, ev_c->cid);
+  mutt_debug(LL_DEBUG1, "    Color: %s %s (%d)\n",
+             (nc->event_subtype == NT_COLOR_SET) ? "set" : "reset", color, ev_c->cid);
 }
 
 static void notify_dump_command(struct NotifyCallback *nc)

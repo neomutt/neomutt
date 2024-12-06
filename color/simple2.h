@@ -28,6 +28,8 @@
 #include "attr.h"
 #include "color.h"
 
+#define COLOR_COMPOSE(cid) (((cid) >= MT_COLOR_COMPOSE_HEADER) && ((cid) <= MT_COLOR_COMPOSE_SECURITY_SIGN))
+
 void simple_colors_init   (void);
 void simple_colors_reset  (void);
 void simple_colors_cleanup(void);
