@@ -796,7 +796,6 @@ static void mutt_sort_subthreads(struct ThreadsContext *tctx, bool init)
   if ((c_sort & SORT_MASK) == EMAIL_SORT_THREADS)
   {
     ASSERT(!(c_sort & SORT_REVERSE) != reverse);
-    ASSERT(cs_subset_enum(NeoMutt->sub, "use_threads") == UT_UNSET);
     c_sort = c_sort_aux;
   }
   c_sort ^= SORT_REVERSE;
