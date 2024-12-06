@@ -129,7 +129,7 @@ static bool ssl_load_certificates(SSL_CTX *ctx)
   }
 
   const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
-  FILE *fp = mutt_file_fopen(c_certificate_file, "rt");
+  FILE *fp = mutt_file_fopen(c_certificate_file, "r");
   if (!fp)
     return 0;
 
@@ -672,7 +672,7 @@ static bool check_certificate_file(X509 *peercert)
   FILE *fp = NULL;
 
   const char *const c_certificate_file = cs_subset_path(NeoMutt->sub, "certificate_file");
-  fp = mutt_file_fopen(c_certificate_file, "rt");
+  fp = mutt_file_fopen(c_certificate_file, "r");
   if (!fp)
     return false;
 
