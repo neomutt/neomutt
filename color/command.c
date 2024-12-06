@@ -54,78 +54,69 @@
  */
 const struct Mapping ColorFields[] = {
   // clang-format off
-  { "attachment",        MT_COLOR_ATTACHMENT },
-  { "attach_headers",    MT_COLOR_ATTACH_HEADERS },
-  { "body",              MT_COLOR_BODY },
-  { "bold",              MT_COLOR_BOLD },
-  { "error",             MT_COLOR_ERROR },
-  { "hdrdefault",        MT_COLOR_HDRDEFAULT },
-  { "header",            MT_COLOR_HEADER },
-  { "index",             MT_COLOR_INDEX },
-  { "index_author",      MT_COLOR_INDEX_AUTHOR },
-  { "index_collapsed",   MT_COLOR_INDEX_COLLAPSED },
-  { "index_date",        MT_COLOR_INDEX_DATE },
-  { "index_flags",       MT_COLOR_INDEX_FLAGS },
-  { "index_label",       MT_COLOR_INDEX_LABEL },
-  { "index_number",      MT_COLOR_INDEX_NUMBER },
-  { "index_size",        MT_COLOR_INDEX_SIZE },
-  { "index_subject",     MT_COLOR_INDEX_SUBJECT },
-  { "index_tag",         MT_COLOR_INDEX_TAG },
-  { "index_tags",        MT_COLOR_INDEX_TAGS },
-  { "indicator",         MT_COLOR_INDICATOR },
-  { "italic",            MT_COLOR_ITALIC },
-  { "markers",           MT_COLOR_MARKERS },
-  { "message",           MT_COLOR_MESSAGE },
-  { "normal",            MT_COLOR_NORMAL },
-  { "options",           MT_COLOR_OPTIONS },
-  { "progress",          MT_COLOR_PROGRESS },
-  { "prompt",            MT_COLOR_PROMPT },
-  { "quoted0",           MT_COLOR_QUOTED0 },
-  { "quoted1",           MT_COLOR_QUOTED1 },
-  { "quoted2",           MT_COLOR_QUOTED2 },
-  { "quoted3",           MT_COLOR_QUOTED3 },
-  { "quoted4",           MT_COLOR_QUOTED4 },
-  { "quoted5",           MT_COLOR_QUOTED5 },
-  { "quoted6",           MT_COLOR_QUOTED6 },
-  { "quoted7",           MT_COLOR_QUOTED7 },
-  { "quoted8",           MT_COLOR_QUOTED8 },
-  { "quoted9",           MT_COLOR_QUOTED9 },
-  { "search",            MT_COLOR_SEARCH },
-  { "sidebar_background", MT_COLOR_SIDEBAR_BACKGROUND },
-  { "sidebar_divider",   MT_COLOR_SIDEBAR_DIVIDER },
-  { "sidebar_flagged",   MT_COLOR_SIDEBAR_FLAGGED },
-  { "sidebar_highlight", MT_COLOR_SIDEBAR_HIGHLIGHT },
-  { "sidebar_indicator", MT_COLOR_SIDEBAR_INDICATOR },
-  { "sidebar_new",       MT_COLOR_SIDEBAR_NEW },
-  { "sidebar_ordinary",  MT_COLOR_SIDEBAR_ORDINARY },
-  { "sidebar_spool_file", MT_COLOR_SIDEBAR_SPOOLFILE },
-  { "sidebar_unread",    MT_COLOR_SIDEBAR_UNREAD },
-  { "signature",         MT_COLOR_SIGNATURE },
-  { "status",            MT_COLOR_STATUS },
-  { "stripe_even",       MT_COLOR_STRIPE_EVEN},
-  { "stripe_odd",        MT_COLOR_STRIPE_ODD},
-  { "tilde",             MT_COLOR_TILDE },
-  { "tree",              MT_COLOR_TREE },
-  { "underline",         MT_COLOR_UNDERLINE },
-  { "warning",           MT_COLOR_WARNING },
+  { "attachment",                MT_COLOR_ATTACHMENT },
+  { "attach_headers",            MT_COLOR_ATTACH_HEADERS },
+  { "body",                      MT_COLOR_BODY },
+  { "bold",                      MT_COLOR_BOLD },
+  { "compose_header",            MT_COLOR_COMPOSE_HEADER },
+  { "compose_security_both",     MT_COLOR_COMPOSE_SECURITY_BOTH },
+  { "compose_security_encrypt",  MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
+  { "compose_security_none",     MT_COLOR_COMPOSE_SECURITY_NONE },
+  { "compose_security_sign",     MT_COLOR_COMPOSE_SECURITY_SIGN },
+  { "error",                     MT_COLOR_ERROR },
+  { "hdrdefault",                MT_COLOR_HDRDEFAULT },
+  { "header",                    MT_COLOR_HEADER },
+  { "index",                     MT_COLOR_INDEX },
+  { "index_author",              MT_COLOR_INDEX_AUTHOR },
+  { "index_collapsed",           MT_COLOR_INDEX_COLLAPSED },
+  { "index_date",                MT_COLOR_INDEX_DATE },
+  { "index_flags",               MT_COLOR_INDEX_FLAGS },
+  { "index_label",               MT_COLOR_INDEX_LABEL },
+  { "index_number",              MT_COLOR_INDEX_NUMBER },
+  { "index_size",                MT_COLOR_INDEX_SIZE },
+  { "index_subject",             MT_COLOR_INDEX_SUBJECT },
+  { "index_tag",                 MT_COLOR_INDEX_TAG },
+  { "index_tags",                MT_COLOR_INDEX_TAGS },
+  { "indicator",                 MT_COLOR_INDICATOR },
+  { "italic",                    MT_COLOR_ITALIC },
+  { "markers",                   MT_COLOR_MARKERS },
+  { "message",                   MT_COLOR_MESSAGE },
+  { "normal",                    MT_COLOR_NORMAL },
+  { "options",                   MT_COLOR_OPTIONS },
+  { "progress",                  MT_COLOR_PROGRESS },
+  { "prompt",                    MT_COLOR_PROMPT },
+  { "quoted0",                   MT_COLOR_QUOTED0 },
+  { "quoted1",                   MT_COLOR_QUOTED1 },
+  { "quoted2",                   MT_COLOR_QUOTED2 },
+  { "quoted3",                   MT_COLOR_QUOTED3 },
+  { "quoted4",                   MT_COLOR_QUOTED4 },
+  { "quoted5",                   MT_COLOR_QUOTED5 },
+  { "quoted6",                   MT_COLOR_QUOTED6 },
+  { "quoted7",                   MT_COLOR_QUOTED7 },
+  { "quoted8",                   MT_COLOR_QUOTED8 },
+  { "quoted9",                   MT_COLOR_QUOTED9 },
+  { "search",                    MT_COLOR_SEARCH },
+  { "sidebar_background",        MT_COLOR_SIDEBAR_BACKGROUND },
+  { "sidebar_divider",           MT_COLOR_SIDEBAR_DIVIDER },
+  { "sidebar_flagged",           MT_COLOR_SIDEBAR_FLAGGED },
+  { "sidebar_highlight",         MT_COLOR_SIDEBAR_HIGHLIGHT },
+  { "sidebar_indicator",         MT_COLOR_SIDEBAR_INDICATOR },
+  { "sidebar_new",               MT_COLOR_SIDEBAR_NEW },
+  { "sidebar_ordinary",          MT_COLOR_SIDEBAR_ORDINARY },
+  { "sidebar_spool_file",        MT_COLOR_SIDEBAR_SPOOLFILE },
+  { "sidebar_unread",            MT_COLOR_SIDEBAR_UNREAD },
+  { "signature",                 MT_COLOR_SIGNATURE },
+  { "status",                    MT_COLOR_STATUS },
+  { "stripe_even",               MT_COLOR_STRIPE_EVEN},
+  { "stripe_odd",                MT_COLOR_STRIPE_ODD},
+  { "tilde",                     MT_COLOR_TILDE },
+  { "tree",                      MT_COLOR_TREE },
+  { "underline",                 MT_COLOR_UNDERLINE },
+  { "warning",                   MT_COLOR_WARNING },
   // Deprecated
-  { "quoted",            MT_COLOR_QUOTED0 },
-  { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE },
+  { "quoted",                    MT_COLOR_QUOTED0 },
+  { "sidebar_spoolfile",         MT_COLOR_SIDEBAR_SPOOLFILE },
   { NULL, 0 },
-  // clang-format on
-};
-
-/**
- * ComposeColorFields - Mapping of compose colour names to their IDs
- */
-const struct Mapping ComposeColorFields[] = {
-  // clang-format off
-  { "header",            MT_COLOR_COMPOSE_HEADER },
-  { "security_encrypt",  MT_COLOR_COMPOSE_SECURITY_ENCRYPT },
-  { "security_sign",     MT_COLOR_COMPOSE_SECURITY_SIGN },
-  { "security_both",     MT_COLOR_COMPOSE_SECURITY_BOTH },
-  { "security_none",     MT_COLOR_COMPOSE_SECURITY_NONE },
-  { NULL, 0 }
   // clang-format on
 };
 
@@ -136,19 +127,7 @@ const struct Mapping ComposeColorFields[] = {
  */
 void get_colorid_name(unsigned int cid, struct Buffer *buf)
 {
-  const char *name = NULL;
-
-  if ((cid >= MT_COLOR_COMPOSE_HEADER) && (cid <= MT_COLOR_COMPOSE_SECURITY_SIGN))
-  {
-    name = mutt_map_get_name(cid, ComposeColorFields);
-    if (name)
-    {
-      buf_printf(buf, "compose %s", name);
-      return;
-    }
-  }
-
-  name = mutt_map_get_name(cid, ColorFields);
+  const char *name = mutt_map_get_name(cid, ColorFields);
   if (name)
     buf_addstr(buf, name);
   else
@@ -168,8 +147,6 @@ void get_colorid_name(unsigned int cid, struct Buffer *buf)
 static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
                                        enum ColorId *cid, struct Buffer *err)
 {
-  int rc;
-
   if (mutt_istr_equal(buf->data, "compose"))
   {
     if (!MoreArgs(s))
@@ -178,20 +155,14 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_WARNING;
     }
 
-    parse_extract_token(buf, s, TOKEN_NO_FLAGS);
-
-    rc = mutt_map_get_value(buf->data, ComposeColorFields);
-    if (rc == -1)
-    {
-      buf_printf(err, _("%s: no such object"), buf->data);
-      return MUTT_CMD_WARNING;
-    }
-
-    *cid = rc;
-    return MUTT_CMD_SUCCESS;
+    struct Buffer *tmp = buf_pool_get();
+    parse_extract_token(tmp, s, TOKEN_NO_FLAGS);
+    buf_fix_dptr(buf);
+    buf_add_printf(buf, "_%s", buf_string(tmp));
+    buf_pool_release(&tmp);
   }
 
-  rc = mutt_map_get_value(buf->data, ColorFields);
+  int rc = mutt_map_get_value(buf->data, ColorFields);
   if (rc == -1)
   {
     buf_printf(err, _("%s: no such object"), buf->data);

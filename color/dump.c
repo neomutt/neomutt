@@ -323,7 +323,7 @@ void simple_colors_dump(struct Buffer *buf)
     buf_addstr(buf, _("# Simple Colors\n"));
     for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
     {
-      if (COLOR_QUOTED(cid) || (cid == MT_COLOR_STATUS))
+      if (COLOR_QUOTED(cid) || COLOR_COMPOSE(cid) || (cid == MT_COLOR_STATUS))
         continue;
 
       struct AttrColor *ac = simple_color_get(cid);
@@ -345,11 +345,9 @@ void simple_colors_dump(struct Buffer *buf)
   }
 
   count = 0;
-  for (int i = 0; ComposeColorFields[i].name; i++)
+  for (int i = MT_COLOR_COMPOSE_HEADER; i <= MT_COLOR_COMPOSE_SECURITY_SIGN; i++)
   {
-    enum ColorId cid = ComposeColorFields[i].value;
-
-    struct AttrColor *ac = simple_color_get(cid);
+    struct AttrColor *ac = simple_color_get(i);
     if (attr_color_is_set(ac))
       count++;
   }
@@ -357,18 +355,20 @@ void simple_colors_dump(struct Buffer *buf)
   if (count > 0)
   {
     buf_addstr(buf, _("# Compose Colors\n"));
-    for (int i = 0; ComposeColorFields[i].name; i++)
+    for (int i = 0; ColorFields[i].name; i++)
     {
-      const char *name = ComposeColorFields[i].name;
-      enum ColorId cid = ComposeColorFields[i].value;
+      enum ColorId cid = ColorFields[i].value;
+
+      if (!COLOR_COMPOSE(cid))
+        continue;
 
       struct AttrColor *ac = simple_color_get(cid);
       if (!attr_color_is_set(ac))
         continue;
 
       color_log_color_attrs(ac, swatch);
-      buf_add_printf(buf, "color compose %-18s %-20s %-16s %-16s # %s\n", name,
-                     color_log_attrs_list(ac->attrs),
+      buf_add_printf(buf, "color %-24s %-20s %-16s %-16s # %s\n",
+                     ColorFields[i].name, color_log_attrs_list(ac->attrs),
                      color_log_name(color_fg, sizeof(color_fg), &ac->fg),
                      color_log_name(color_bg, sizeof(color_bg), &ac->bg),
                      buf_string(swatch));
