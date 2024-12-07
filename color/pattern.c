@@ -297,7 +297,7 @@ bool pattern_colors_parse_color_list(enum ColorId cid, const char *pat,
   bool rc = add_pattern(pcl, pat, ac, err);
 
   struct Buffer *buf = buf_pool_get();
-  get_colorid_name(cid, buf);
+  color_get_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf->data);
   buf_pool_release(&buf);
 

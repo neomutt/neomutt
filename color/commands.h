@@ -54,6 +54,7 @@ enum CommandResult parse_uncolor        (const struct Command *cmd, struct Buffe
 enum CommandResult parse_uncolor_command(const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 enum CommandResult parse_unmono         (const struct Command *cmd, struct Buffer *line, struct Buffer *err);
 
-void get_colorid_name(unsigned int color_id, struct Buffer *buf);
+int  color_get_cid (const char *name);
+void color_get_name(int cid, struct Buffer *buf);
 
 #endif /* MUTT_COLOR_COMMANDS_H */

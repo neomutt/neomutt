@@ -26,8 +26,10 @@
 #define MUTT_COLOR_COLOR_H
 
 #include "config.h"
-#include "mutt/lib.h" // IWYU pragma: keep
 #include <stdbool.h>
+#include <stdint.h>
+#include "mutt/lib.h" // IWYU pragma: keep
+#include "mutt/lib.h"
 
 /**
  * enum ColorId - List of all coloured objects
@@ -98,7 +100,33 @@ enum ColorId
   MT_COLOR_MAX,
 };
 
-extern const struct Mapping ColorFields[];
+/**
+ * enum ColorDefType - Type of Colour Definition
+ */
+enum ColorDefType
+{
+  CDT_SIMPLE = 1,                    ///< Simple Colour,    e.g. `color normal fg bg`
+  CDT_PATTERN,                       ///< Optional Pattern, e.g. `color index  fg bg [pattern]`
+  CDT_REGEX,                         ///< Optional Regex,   e.g. `color body   fg bg [regex]`
+};
+
+typedef uint8_t ColorDefFlags;       ///< Flags, e.g. #CDF_BACK_REF
+#define CDF_NO_FLAGS            0    ///< No flags are set
+#define CDF_BACK_REF      (1 << 0)   ///< Optional Back-Reference
+#define CDF_SYNONYM       (1 << 1)   ///< Alias for another colour
+
+/**
+ * struct ColorDefinition - Colour Definition
+ */
+struct ColorDefinition
+{
+  const char       *name;          ///< Colour name
+  int               cid;           ///< Colour ID
+  enum ColorDefType type;          ///< Colour type, e.g. #CDT_REGEX
+  ColorDefFlags     flags;         ///< Flags, e.g. CDF_BACK_REF
+};
+
+extern const struct ColorDefinition ColorDefs[];
 
 #define COLOR_DEFAULT -1
 

@@ -269,7 +269,7 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
   *rc = add_pattern(rcl, pat, ac, err, 0);
 
   struct Buffer *buf = buf_pool_get();
-  get_colorid_name(cid, buf);
+  color_get_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
@@ -299,7 +299,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
     return rc;
 
   struct Buffer *buf = buf_pool_get();
-  get_colorid_name(cid, buf);
+  color_get_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
