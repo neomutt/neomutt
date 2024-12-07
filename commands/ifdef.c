@@ -68,9 +68,15 @@ static bool is_function(const char *name)
  */
 static bool is_color_object(const char *name)
 {
-  int cid = mutt_map_get_value(name, ColorFields);
+  for (size_t i = 0; ColorDefs[i].name; i++)
+  {
+    if (mutt_istr_equal(ColorDefs[i].name, name))
+    {
+      return true;
+    }
+  }
 
-  return (cid > 0);
+  return false;
 }
 
 /**

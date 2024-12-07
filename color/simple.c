@@ -137,7 +137,7 @@ struct AttrColor *simple_color_set(enum ColorId cid, struct AttrColor *ac_val)
   attr_color_overwrite(ac, ac_val);
 
   struct Buffer *buf = buf_pool_get();
-  get_colorid_name(cid, buf);
+  color_get_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_SET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
@@ -159,7 +159,7 @@ void simple_color_reset(enum ColorId cid)
     return;
 
   struct Buffer *buf = buf_pool_get();
-  get_colorid_name(cid, buf);
+  color_get_name(cid, buf);
   color_debug(LL_DEBUG5, "NT_COLOR_RESET: %s\n", buf_string(buf));
   buf_pool_release(&buf);
 
