@@ -220,14 +220,13 @@ msgstr "Trier (ordre inverse) par (a)lias, a(d)resse ou ne (p)as trier ?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Trier par (a)lias, a(d)resse ou ne (p)as trier ?"
+msgstr "Trier par (a)lias, (n)om, a(d)resse ou ne (p)as trier ?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "andp"
 
 # , c-format
 #. L10N: ask for a limit to apply
@@ -939,21 +938,24 @@ msgstr "Trop de couleurs : %d / %d"
 
 #: color/dump.c:231
 msgid "# Quoted Colors\n"
-msgstr ""
+msgstr "# Couleurs de citation\n"
 
 #: color/dump.c:277
 #, c-format
 msgid "# Regex Color %s\n"
-msgstr ""
+msgstr "# Couleur des expressions rationnelles %s\n"
 
 #: color/dump.c:323
 msgid "# Simple Colors\n"
 msgstr "# Couleurs simples\n"
 
+# TODO: Are these the colors for the to / from / etc fields in the compose
+#       menu? Need clarification
 #: color/dump.c:359
 msgid "# Compose Colors\n"
 msgstr ""
 
+# TODO: Are these the colors of the status bar? Or some other status?
 #: color/dump.c:406
 msgid "# Status Colors\n"
 msgstr ""
@@ -1102,6 +1104,7 @@ msgstr "Désabonné de %s"
 msgid "Could not unsubscribe from %s"
 msgstr "Échec de désabonnement de %s"
 
+# TODO: What is expando?
 #: compmbox/compress.c:223
 #, c-format
 msgid "Expando parse error: %s"
@@ -1209,7 +1212,7 @@ msgstr "-- Pièces jointes"
 
 #: compose/dlg_compose.c:337 compose/preview.c:141
 msgid "-- Preview"
-msgstr ""
+msgstr "-- aperçu"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1447,17 +1450,16 @@ msgstr "Voulez-vous enregistrer (ajourner) ce brouillon ?"
 
 #: compose/preview.c:139
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Seules des pièces jointes intégrées de type 'text/*' peuvent être prévisualisées"
 
 #: compose/preview.c:165
-#, fuzzy
 msgid "Failed to move cursor!"
-msgstr "Impossible de vérifier l'expéditeur"
+msgstr "Échec de déplacement curseur !"
 
 #: compose/preview.c:183
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Aperçu (%.0f%%)"
 
 # , c-format
 #: config/bool.c:76
@@ -2062,7 +2064,7 @@ msgstr "le message en plusieurs parties (au format 'multipart') n'a pas de param
 
 #: email/sort.c:312
 msgid "Could not find sorting function [report this bug]"
-msgstr "Fonction de tri non trouvée  [signalez ce bug]"
+msgstr "Fonction de tri non trouvée [signalez ce bug]"
 
 #: email/sort.c:378
 msgid "Sorting mailbox..."
@@ -2178,6 +2180,7 @@ msgstr "Headers: "
 #. L10N: Autocrypt recommendation flag: off.
 #. This is displayed when Autocrypt is turned off.
 #: envelope/window.c:134 envelope/window.c:476
+#, fuzzy
 msgid "Off"
 msgstr "Off"
 
@@ -2266,15 +2269,15 @@ msgstr[1] "(+%d more)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
 #: expando/config_type.c:84 expando/config_type.c:253
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s: "
-msgstr "Options par défaut :"
+msgstr "Option %s :"
 
 #. L10N: The 'ymwdHM' should not be translated
 #: expando/node_conddate.c:256
 #, c-format
 msgid "Invalid time period: '%c', must be one of 'ymwdHM'"
-msgstr ""
+msgstr "Période de temps non valide : '%c', doit être un des 'ymwdHM'"
 
 #. L10N: Expando is missing a terminator character
 #. e.g. "%[..." is missing the final ']'
@@ -2301,14 +2304,14 @@ msgstr ""
 #: expando/node_padding.c:242
 #, c-format
 msgid "Padding cannot be formatted"
-msgstr ""
+msgstr "Impossible de mettre en forme le remplissage"
 
 #. L10N: Conditional Expandos can only depend on other Expandos
 #. e.g. "%<X?apple>" displays "apple" if "%X" is true.
 #: expando/node_padding.c:252
 #, c-format
 msgid "Padding cannot be used as a condition"
-msgstr ""
+msgstr "Impossible d'utiliser le remplissage comme condition"
 
 #: external.c:109 recvcmd.c:185 recvcmd.c:197
 msgid "Warning: message contains no From: header"
@@ -2520,12 +2523,12 @@ msgstr "L'affichage des discussions n'est pas activé"
 # , c-format
 #: flags.c:466
 msgid "Clear flag"
-msgstr "Effacer l'indicateur"
+msgstr "Supprimer le drapeau"
 
 # , c-format
 #: flags.c:466
 msgid "Set flag"
-msgstr "Positionner l'indicateur"
+msgstr "Marquer d'un drapeau"
 
 #: gui/curs_lib.c:140 index/functions.c:766
 msgid "Exit NeoMutt without saving?"
@@ -2748,7 +2751,7 @@ msgstr "retirer la pièce jointe 'multipart'"
 #. Compose Dialog: <op_attachment_update_encoding>
 #: gui/opcodes.h:133
 msgid "update an attachment's encoding info"
-msgstr "mettre à jour les informations de codage d'une pièce jointe"
+msgstr "mettre à jour l'information de codage d'une pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_VIEW
 #. Attach Dialog: <op_attachment_view>
@@ -3267,7 +3270,7 @@ msgstr "aller à la première entrée"
 #. Index: <op_flag_message>
 #: gui/opcodes.h:412
 msgid "toggle a message's 'important' flag"
-msgstr "modifier l'indicateur 'important' d'un message"
+msgstr "basculer le drapeau 'important' du message"
 
 # , c-format
 #. L10N: Help screen description for OP_FOLLOWUP
@@ -3475,7 +3478,7 @@ msgstr "ouvrir un dossier différent en lecture seule"
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:529
 msgid "clear a status flag from a message"
-msgstr "effacer un indicateur de statut d'un message"
+msgstr "effacer un drapeau de statut d'un message"
 
 #. L10N: Help screen description for OP_MAIN_COLLAPSE_ALL
 #. Index: <op_main_collapse_all>
@@ -3650,7 +3653,7 @@ msgstr "aller au message racine dans la discussion"
 #. Index: <op_main_set_flag>
 #: gui/opcodes.h:617
 msgid "set a status flag on a message"
-msgstr "mettre un indicateur d'état sur un message"
+msgstr "marquer un message d'un drapeau d'état"
 
 #. L10N: Help screen description for OP_MAIN_SHOW_LIMIT
 #. Index: <op_main_show_limit>
@@ -3977,9 +3980,8 @@ msgstr "basculer entre l'affichage des boîtes aux lettres ou celui de tous les 
 #. L10N: Help screen description for OP_TOGGLE_NEW
 #. Index: <op_toggle_new>
 #: gui/opcodes.h:802
-#, fuzzy
 msgid "toggle a message's 'new' flag"
-msgstr "inverser l'indicateur 'nouveau' d'un message"
+msgstr "basculer le drapeau 'nouveau' du message"
 
 #. L10N: Help screen description for OP_TOGGLE_READ
 #. Index: <op_main_limit>
@@ -4555,7 +4557,7 @@ msgstr "message est étiqueté"
 # , c-format
 #: help.c:419
 msgid "message is flagged"
-msgstr ""
+msgstr "message est marqué d'un drapeau"
 
 # , c-format
 #: help.c:420
@@ -4660,7 +4662,7 @@ msgstr "Fonctions non affectées :"
 #       this application of the english word "flag"
 #: help.c:512
 msgid "Message flags:"
-msgstr ""
+msgstr "Les drapeaux du message :"
 
 # , c-format
 #: help.c:518
@@ -4900,11 +4902,11 @@ msgstr[1] "Enregistrement des messages changés... [%d/%d]"
 
 #: imap/imap.c:1605
 msgid "Error saving flags. Close anyway?"
-msgstr "Erreur en sauvant les indicateurs. Fermer tout de même ?"
+msgstr "Échec d'enregistrement des drapeaux. Fermer tout de même ?"
 
 #: imap/imap.c:1613
 msgid "Error saving flags"
-msgstr "Erreur en sauvant les indicateurs"
+msgstr "Échec d'enregistrement des drapeaux"
 
 # TODO: Check if this is a good usage of « effacement »
 #: imap/imap.c:1640
@@ -4927,7 +4929,7 @@ msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 #: imap/imap.c:2201
 msgid "IMAP server doesn't support custom flags"
-msgstr "Le serveur IMAP ne supporte pas les drapeaux personalisés"
+msgstr "Le serveur IMAP ne prend pas en charge des drapeaux personalisés"
 
 # , c-format
 #: imap/imap.c:2245
@@ -4946,9 +4948,8 @@ msgstr "Évaluation du cache..."
 
 # , c-format
 #: imap/message.c:929
-#, fuzzy
 msgid "Fetching flag updates..."
-msgstr "Récupération des en-têtes des messages..."
+msgstr "Récupération des mises à jour des drapeaux..."
 
 #. L10N: After opening an IMAP mailbox using QRESYNC, Mutt performs a quick
 #. sanity check.  If that fails, Mutt reopens the mailbox using a normal
@@ -5044,7 +5045,7 @@ msgstr "%s n'est pas une boîte aux lettres"
 
 #: index/dlg_index.c:1195
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Boîte aux lettres modifiée extérieurement. Les indicateurs peuvent être faux."
+msgstr "Boîte aux lettres modifiée extérieurement. Les drapeaux peuvent être faux."
 
 #: index/dlg_index.c:1204 pager/dlg_pager.c:430
 msgid "New mail in this mailbox"
@@ -5128,7 +5129,7 @@ msgstr "Impossible d'éditer le message"
 #. L10N: CHECK_ACL
 #: index/functions.c:803
 msgid "Can't flag message"
-msgstr "Impossible de marquer le message"
+msgstr "Impossible de marquer le message d'un drapeau"
 
 #: index/functions.c:916
 msgid "Jump to message: "
@@ -6095,7 +6096,7 @@ msgstr "Pas assez de sous-expressions pour la chaîne de format"
 #: mutt_config.c:232
 #, c-format
 msgid "index-hook cannot be used as a condition"
-msgstr ""
+msgstr "impossible d'utiliser 'index-hook' comme condition"
 
 #. L10N: $ts_icon_format default format
 #: mutt_config.c:770
@@ -6436,6 +6437,7 @@ msgstr "erreur lors de l'allocation de l'objet : %s"
 msgid "error rewinding data object: %s"
 msgstr "erreur lors du retour au début de l'objet : %s"
 
+# TODO: Am I correct to assume that this should not be translated?
 #: ncrypt/crypt_gpgme.c:540
 msgid "[tempfile]"
 msgstr ""
@@ -6567,12 +6569,11 @@ msgstr "créée : "
 #: ncrypt/crypt_gpgme.c:1425
 #, c-format
 msgid "Recipient: %s key, ID %s\n"
-msgstr ""
+msgstr "Destinataire : %s clé, identifiant %s\n"
 
 #: ncrypt/crypt_gpgme.c:1438
-#, fuzzy
 msgid "[-- Begin encryption information --]\n"
-msgstr "[-- Début des informations sur la signature --]\n"
+msgstr "[-- Début d'information sur le chiffrement --]\n"
 
 #: ncrypt/crypt_gpgme.c:1443
 #, fuzzy
@@ -6580,7 +6581,7 @@ msgid ""
 "[-- End encryption information --]\n"
 "\n"
 msgstr ""
-"[-- Fin des informations sur la signature --]\n"
+"[-- Fin d'information sur le chiffrement --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:1517
@@ -6609,7 +6610,7 @@ msgstr "                    expire : "
 #: ncrypt/crypt_gpgme.c:1608 ncrypt/crypt_gpgme.c:1846
 #: ncrypt/crypt_gpgme.c:2660
 msgid "[-- Begin signature information --]\n"
-msgstr "[-- Début des informations sur la signature --]\n"
+msgstr "[-- Début d'information sur la signature --]\n"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:1619
@@ -6632,7 +6633,7 @@ msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
-"[-- Fin des informations sur la signature --]\n"
+"[-- Fin d'information sur la signature --]\n"
 "\n"
 
 #: ncrypt/crypt_gpgme.c:1820
@@ -7964,7 +7965,7 @@ msgstr "messages dont l'en-tête From correspond à EXPR"
 #. L10N: Pattern Completion Menu description for ~F
 #: pattern/flags.c:74
 msgid "flagged messages"
-msgstr "messages marqués comme importants"
+msgstr "messages marqués d'un drapeau"
 
 #. L10N: Pattern Completion Menu description for ~g
 #: pattern/flags.c:77
@@ -8085,7 +8086,7 @@ msgstr "messages dont l'en-tête To correspond à EXPR"
 #. L10N: Pattern Completion Menu description for ~T
 #: pattern/flags.c:146
 msgid "tagged messages"
-msgstr "messages marqués"
+msgstr "messages marqués d'un drapeau"
 
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:149
