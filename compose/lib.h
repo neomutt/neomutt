@@ -31,6 +31,7 @@
  * | compose/attach_data.c  | @subpage compose_attach_data   |
  * | compose/cbar.c         | @subpage compose_cbar          |
  * | compose/cbar_data.c    | @subpage compose_cbar_data     |
+ * | compose/color.c        | @subpage compose_color         |
  * | compose/config.c       | @subpage compose_config        |
  * | compose/dlg_compose.c  | @subpage compose_dlg_compose   |
  * | compose/expando.c      | @subpage compose_expando       |

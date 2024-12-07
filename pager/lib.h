@@ -28,6 +28,7 @@
  *
  * | File                 | Description                 |
  * | :------------------- | :-------------------------- |
+ * | pager/color.c        | @subpage pager_color        |
  * | pager/config.c       | @subpage pager_config       |
  * | pager/display.c      | @subpage pager_display      |
  * | pager/dlg_pager.c    | @subpage pager_dlg_pager    |

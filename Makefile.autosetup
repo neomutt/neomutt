@@ -187,7 +187,7 @@ $(PWD)/cli:
 # libcolor
 LIBCOLOR=	libcolor.a
 LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/commands.o \
-		color/config.o color/curses.o color/dump.o color/merged.o \
+		color/config.o color/curses.o color/domain.o color/dump.o color/merged.o \
 		color/module.o color/notify.o color/parse_ansi.o \
 		color/parse_color.o color/pattern.o color/qstyle.o color/quoted.o \
 		color/regex.o color/simple.o
@@ -249,7 +249,7 @@ $(PWD)/compmbox:
 # libcompose
 LIBCOMPOSE=	libcompose.a
 LIBCOMPOSEOBJS=	compose/attach.o compose/attach_data.o compose/cbar.o \
-		compose/cbar_data.o compose/config.o compose/dlg_compose.o \
+		compose/cbar_data.o compose/color.o compose/config.o compose/dlg_compose.o \
 		compose/expando.o compose/functions.o compose/module.o \
 		compose/preview.o compose/shared_data.o
 
@@ -599,7 +599,7 @@ $(PWD)/imap:
 ###############################################################################
 # libindex
 LIBINDEX=	libindex.a
-LIBINDEXOBJS=	index/commands.o index/config.o index/dlg_index.o \
+LIBINDEXOBJS=	index/color.o index/commands.o index/config.o index/dlg_index.o \
 		index/expando_index.o index/expando_status.o index/functions.o \
 		index/ibar.o index/index.o index/ipanel.o index/module.o \
 		index/private_data.o index/shared_data.o index/status.o \
@@ -812,7 +812,7 @@ $(PWD)/notmuch:
 ###############################################################################
 # libpager
 LIBPAGER=	libpager.a
-LIBPAGEROBJS=	pager/config.o pager/display.o pager/dlg_pager.o \
+LIBPAGEROBJS=	pager/color.o pager/config.o pager/display.o pager/dlg_pager.o \
 		pager/do_pager.o pager/functions.o pager/message.o pager/module.o \
 		pager/pager.o pager/pbar.o pager/ppanel.o pager/private_data.o
 CLEANFILES+=	$(LIBPAGER) $(LIBPAGEROBJS)
@@ -928,7 +928,7 @@ $(PWD)/send:
 ###############################################################################
 # libsidebar
 LIBSIDEBAR=	libsidebar.a
-LIBSIDEBAROBJS=	sidebar/commands.o sidebar/config.o sidebar/expando.o \
+LIBSIDEBAROBJS=	sidebar/commands.o sidebar/color.o sidebar/config.o sidebar/expando.o \
 		sidebar/functions_fuzzy.o sidebar/functions_sidebar.o \
 		sidebar/module.o sidebar/observer.o sidebar/sidebar.o \
 		sidebar/sort.o sidebar/wdata.o sidebar/window.o
@@ -996,9 +996,9 @@ MUTTLIBS+=	$(LIBCORE) $(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) \
 		$(LIBAUTOCRYPT) $(LIBPOP) $(LIBEDITOR) $(LIBCOMPLETE) \
 		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
-		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
+		$(LIBCONVERT) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
 		$(LIBNNTP) $(LIBPATTERN) $(LIBMENU) $(LIBCOLOR) \
-		$(LIBCOMMANDS) $(LIBHOOKS) $(LIBENVELOPE) $(LIBHELPBAR) \
+		$(LIBCOMMANDS) $(LIBHOOKS) $(LIBINDEX) $(LIBPAGER) $(LIBCOMPOSE) $(LIBENVELOPE) $(LIBHELPBAR) \
 		$(LIBMBOX) $(LIBMH) $(LIBNOTMUCH) $(LIBMAILDIR) $(LIBEDITOR) \
 		$(LIBCOMPLETE) $(LIBNNTP) $(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) \
 		$(LIBHCACHE) $(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) \
