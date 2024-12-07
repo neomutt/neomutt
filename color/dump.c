@@ -270,11 +270,10 @@ void regex_colors_dump(struct Buffer *buf)
     if (STAILQ_EMPTY(rcl))
       continue;
 
-    const char *name = mutt_map_get_name(cid, ColorFields);
-    if (!name)
-      continue; // LCOV_EXCL_LINE
+    struct Buffer *name = buf_pool_get();
+    color_get_name(cid, name);
 
-    buf_add_printf(buf, _("# Regex Color %s\n"), name);
+    buf_add_printf(buf, _("# Regex Color %s\n"), buf_string(name));
 
     struct RegexColor *rc = NULL;
     STAILQ_FOREACH(rc, rcl, entries)
@@ -284,13 +283,14 @@ void regex_colors_dump(struct Buffer *buf)
       buf_reset(pattern);
       pretty_var(rc->pattern, pattern);
       color_log_color_attrs(ac, swatch);
-      buf_add_printf(buf, "color %-16s %-20s %-16s %-16s %-30s # %s\n", name,
-                     color_log_attrs_list(ac->attrs),
+      buf_add_printf(buf, "color %-16s %-20s %-16s %-16s %-30s # %s\n",
+                     buf_string(name), color_log_attrs_list(ac->attrs),
                      color_log_name(color_fg, sizeof(color_fg), &ac->fg),
                      color_log_name(color_bg, sizeof(color_bg), &ac->bg),
                      buf_string(pattern), buf_string(swatch));
     }
     buf_addstr(buf, "\n");
+    buf_pool_release(&name);
   }
 
   buf_pool_release(&swatch);
@@ -320,6 +320,8 @@ void simple_colors_dump(struct Buffer *buf)
 
   if (count > 0)
   {
+    struct Buffer *name = buf_pool_get();
+
     buf_addstr(buf, _("# Simple Colors\n"));
     for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
     {
@@ -330,18 +332,18 @@ void simple_colors_dump(struct Buffer *buf)
       if (!attr_color_is_set(ac))
         continue;
 
-      const char *name = mutt_map_get_name(cid, ColorFields);
-      if (!name)
-        continue;
+      buf_reset(name);
+      color_get_name(cid, name);
 
       color_log_color_attrs(ac, swatch);
-      buf_add_printf(buf, "color %-18s %-20s %-16s %-16s # %s\n", name,
-                     color_log_attrs_list(ac->attrs),
+      buf_add_printf(buf, "color %-18s %-20s %-16s %-16s # %s\n",
+                     buf_string(name), color_log_attrs_list(ac->attrs),
                      color_log_name(color_fg, sizeof(color_fg), &ac->fg),
                      color_log_name(color_bg, sizeof(color_bg), &ac->bg),
                      buf_string(swatch));
     }
     buf_addstr(buf, "\n");
+    buf_pool_release(&name);
   }
 
   count = 0;
@@ -355,20 +357,18 @@ void simple_colors_dump(struct Buffer *buf)
   if (count > 0)
   {
     buf_addstr(buf, _("# Compose Colors\n"));
-    for (int i = 0; ColorFields[i].name; i++)
+    for (const struct ColorDefinition *def = ColorDefs; def->name; def++)
     {
-      enum ColorId cid = ColorFields[i].value;
-
-      if (!COLOR_COMPOSE(cid))
+      if (!COLOR_COMPOSE(def->cid))
         continue;
 
-      struct AttrColor *ac = simple_color_get(cid);
+      struct AttrColor *ac = simple_color_get(def->cid);
       if (!attr_color_is_set(ac))
         continue;
 
       color_log_color_attrs(ac, swatch);
-      buf_add_printf(buf, "color %-24s %-20s %-16s %-16s # %s\n",
-                     ColorFields[i].name, color_log_attrs_list(ac->attrs),
+      buf_add_printf(buf, "color %-24s %-20s %-16s %-16s # %s\n", def->name,
+                     color_log_attrs_list(ac->attrs),
                      color_log_name(color_fg, sizeof(color_fg), &ac->fg),
                      color_log_name(color_bg, sizeof(color_bg), &ac->bg),
                      buf_string(swatch));

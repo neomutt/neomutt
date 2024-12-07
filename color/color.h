@@ -27,6 +27,8 @@
 
 #include "mutt/lib.h" // IWYU pragma: keep
 #include <stdbool.h>
+#include "mutt/lib.h"
+#include "attr.h"
 
 /**
  * enum ColorId - List of all coloured objects
@@ -97,7 +99,24 @@ enum ColorId
   MT_COLOR_MAX,
 };
 
-extern const struct Mapping ColorFields[];
+typedef uint8_t ColorFlags;        ///< Flags, e.g. #CF_REGEX
+#define CRF_NONE                0  ///< No flags are set
+#define CRF_SIMPLE              0  ///< Simple Colour
+#define CRF_REGEX         (1 << 0) ///< Optional Regex
+#define CRF_BACK_REF      (1 << 1) ///< Optional Back-Reference
+#define CRF_SYNONYM       (1 << 2) ///< Synonym for another name
+
+/**
+ * struct ColorDefinition - Colour Definition
+ */
+struct ColorDefinition
+{
+  const char *name;          ///< Colour name
+  int         cid;           ///< Colour ID
+  ColorFlags  flags;         ///< Colour flags, e.g. #CF_REGEX
+};
+
+extern const struct ColorDefinition ColorDefs[];
 
 #define COLOR_DEFAULT -1
 
