@@ -37,12 +37,51 @@
 #include "color.h"
 #include "curses2.h"
 #include "debug.h"
+#include "domain.h"
 #include "merged.h"
 #include "notify2.h"
 #include "pattern.h"
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
+
+void compose_colors_init(void);
+void index_colors_init(void);
+void pager_colors_init(void);
+void sidebar_colors_init(void);
+
+/**
+ * CoreColorDefs - Mapping of colour names to their IDs
+ */
+static const struct ColorDefinition CoreColorDefs[] = {
+  // clang-format off
+  { "bold",        CD_COR_BOLD,        CDT_SIMPLE },
+  { "error",       CD_COR_ERROR,       CDT_SIMPLE },
+  { "indicator",   CD_COR_INDICATOR,   CDT_SIMPLE },
+  { "italic",      CD_COR_ITALIC,      CDT_SIMPLE },
+  { "message",     CD_COR_MESSAGE,     CDT_SIMPLE },
+  { "normal",      CD_COR_NORMAL,      CDT_SIMPLE },
+  { "options",     CD_COR_OPTIONS,     CDT_SIMPLE },
+  { "progress",    CD_COR_PROGRESS,    CDT_SIMPLE },
+  { "prompt",      CD_COR_PROMPT,      CDT_SIMPLE },
+  { "status",      CD_COR_STATUS,      CDT_REGEX, CDF_BACK_REF },
+  { "stripe_even", CD_COR_STRIPE_EVEN, CDT_SIMPLE },
+  { "stripe_odd",  CD_COR_STRIPE_ODD,  CDT_SIMPLE },
+  { "tree",        CD_COR_TREE,        CDT_SIMPLE },
+  { "underline",   CD_COR_UNDERLINE,   CDT_SIMPLE },
+  { "warning",     CD_COR_WARNING,     CDT_SIMPLE },
+  { NULL, 0 },
+  // clang-format on
+};
+
+/**
+ * core_colors_init - Initialise the Core Colours
+ */
+void core_colors_init(void)
+{
+  color_register_domain("core", CD_CORE);
+  color_register_colors(CD_CORE, CoreColorDefs);
+}
 
 /**
  * colors_init - Initialize colours
@@ -62,6 +101,12 @@ void colors_init(void)
   start_color();
   use_default_colors();
   color_debug(LL_DEBUG5, "COLORS = %d, COLOR_PAIRS = %d\n", COLORS, COLOR_PAIRS);
+
+  core_colors_init();
+  compose_colors_init();
+  index_colors_init();
+  pager_colors_init();
+  sidebar_colors_init();
 }
 
 /**

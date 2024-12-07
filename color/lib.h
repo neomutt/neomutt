@@ -33,6 +33,7 @@
  * | color/commands.c    | @subpage color_commands    |
  * | color/curses.c      | @subpage color_curses      |
  * | color/debug.c       | @subpage color_debug       |
+ * | color/domain.c      | @subpage color_domain      |
  * | color/dump.c        | @subpage color_dump        |
  * | color/merged.c      | @subpage color_merge       |
  * | color/notify.c      | @subpage color_notify      |
@@ -55,6 +56,7 @@
 #include "commands.h"
 #include "curses2.h"
 #include "debug.h"
+#include "domain.h"
 #include "dump.h"
 #include "merged.h"
 #include "notify2.h"

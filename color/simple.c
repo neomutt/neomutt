@@ -39,7 +39,7 @@
 #include "notify2.h"
 #include "simple2.h"
 
-struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
+static struct AttrColor SimpleColors[MT_COLOR_MAX]; ///< Array of Simple colours
 
 /**
  * simple_colors_init - Initialise the simple colour definitions

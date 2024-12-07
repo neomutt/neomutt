@@ -27,6 +27,7 @@
  *
  * | File                | Description                |
  * | :------------------ | :------------------------- |
+ * | sidebar/color.c     | @subpage sidebar_color     |
  * | sidebar/commands.c  | @subpage sidebar_commands  |
  * | sidebar/config.c    | @subpage sidebar_config    |
  * | sidebar/expando.c   | @subpage sidebar_expando   |

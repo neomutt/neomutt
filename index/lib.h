@@ -27,6 +27,7 @@
  *
  * | File                   | Description                   |
  * | :--------------------- | :---------------------------- |
+ * | index/color.c          | @subpage index_color          |
  * | index/config.c         | @subpage index_config         |
  * | index/dlg_index.c      | @subpage index_dlg_index      |
  * | index/expando_index.c  | @subpage index_expando_index  |
