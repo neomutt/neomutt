@@ -119,6 +119,7 @@ struct ColorDefinition
 };
 
 extern const struct ColorDefinition ColorDefs[];
+extern const struct ColorDefinition RegexColorDefs[];
 
 #define COLOR_DEFAULT -1
 

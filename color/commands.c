@@ -56,8 +56,6 @@
 const struct ColorDefinition ColorDefs[] = {
   // clang-format off
   { "attachment",               CD_PAGER,   MT_COLOR_ATTACHMENT,               CRF_SIMPLE },
-  { "attach_headers",           CD_PAGER,   MT_COLOR_ATTACH_HEADERS,           CRF_REGEX },
-  { "body",                     CD_PAGER,   MT_COLOR_BODY,                     CRF_REGEX },
   { "bold",                     CD_CORE,    MT_COLOR_BOLD,                     CRF_SIMPLE },
   { "compose_header",           CD_COMPOSE, MT_COLOR_COMPOSE_HEADER,           CRF_SIMPLE },
   { "compose_security_both",    CD_COMPOSE, MT_COLOR_COMPOSE_SECURITY_BOTH,    CRF_SIMPLE },
@@ -66,18 +64,6 @@ const struct ColorDefinition ColorDefs[] = {
   { "compose_security_sign",    CD_COMPOSE, MT_COLOR_COMPOSE_SECURITY_SIGN,    CRF_SIMPLE },
   { "error",                    CD_CORE,    MT_COLOR_ERROR,                    CRF_SIMPLE },
   { "hdrdefault",               CD_PAGER,   MT_COLOR_HDRDEFAULT,               CRF_SIMPLE },
-  { "header",                   CD_PAGER,   MT_COLOR_HEADER,                   CRF_REGEX },
-  { "index",                    CD_INDEX,   MT_COLOR_INDEX,                    CRF_REGEX },
-  { "index_author",             CD_INDEX,   MT_COLOR_INDEX_AUTHOR,             CRF_REGEX },
-  { "index_collapsed",          CD_INDEX,   MT_COLOR_INDEX_COLLAPSED,          CRF_REGEX },
-  { "index_date",               CD_INDEX,   MT_COLOR_INDEX_DATE,               CRF_REGEX },
-  { "index_flags",              CD_INDEX,   MT_COLOR_INDEX_FLAGS,              CRF_REGEX },
-  { "index_label",              CD_INDEX,   MT_COLOR_INDEX_LABEL,              CRF_REGEX },
-  { "index_number",             CD_INDEX,   MT_COLOR_INDEX_NUMBER,             CRF_REGEX },
-  { "index_size",               CD_INDEX,   MT_COLOR_INDEX_SIZE,               CRF_REGEX },
-  { "index_subject",            CD_INDEX,   MT_COLOR_INDEX_SUBJECT,            CRF_REGEX },
-  { "index_tag",                CD_INDEX,   MT_COLOR_INDEX_TAG,                CRF_REGEX },
-  { "index_tags",               CD_INDEX,   MT_COLOR_INDEX_TAGS,               CRF_REGEX },
   { "indicator",                CD_CORE,    MT_COLOR_INDICATOR,                CRF_SIMPLE },
   { "italic",                   CD_CORE,    MT_COLOR_ITALIC,                   CRF_SIMPLE },
   { "markers",                  CD_PAGER,   MT_COLOR_MARKERS,                  CRF_SIMPLE },
@@ -107,7 +93,6 @@ const struct ColorDefinition ColorDefs[] = {
   { "sidebar_spool_file",       CD_SIDEBAR, MT_COLOR_SIDEBAR_SPOOL_FILE,       CRF_SIMPLE },
   { "sidebar_unread",           CD_SIDEBAR, MT_COLOR_SIDEBAR_UNREAD,           CRF_SIMPLE },
   { "signature",                CD_PAGER,   MT_COLOR_SIGNATURE,                CRF_SIMPLE },
-  { "status",                   CD_CORE,    MT_COLOR_STATUS,                   CRF_REGEX | CRF_BACK_REF },
   { "stripe_even",              CD_CORE,    MT_COLOR_STRIPE_EVEN,              CRF_SIMPLE },
   { "stripe_odd",               CD_CORE,    MT_COLOR_STRIPE_ODD,               CRF_SIMPLE },
   { "tilde",                    CD_PAGER,   MT_COLOR_TILDE,                    CRF_SIMPLE },
@@ -118,6 +103,30 @@ const struct ColorDefinition ColorDefs[] = {
   // Deprecated
   { "quoted",                   CD_QUOTED,  MT_COLOR_QUOTED0,                  CRF_SYNONYM },
   { "sidebar_spoolfile",        CD_SIDEBAR, MT_COLOR_SIDEBAR_SPOOL_FILE,       CRF_SYNONYM },
+  { NULL, 0 },
+  // clang-format on
+};
+
+/**
+ * RegexColorDefs - Mapping of colour names to their IDs
+ */
+const struct ColorDefinition RegexColorDefs[] = {
+  // clang-format off
+  { "attach_headers",           CD_PAGER,   MT_COLOR_ATTACH_HEADERS,           CRF_REGEX },
+  { "body",                     CD_PAGER,   MT_COLOR_BODY,                     CRF_REGEX },
+  { "header",                   CD_PAGER,   MT_COLOR_HEADER,                   CRF_REGEX },
+  { "index",                    CD_INDEX,   MT_COLOR_INDEX,                    CRF_REGEX },
+  { "index_author",             CD_INDEX,   MT_COLOR_INDEX_AUTHOR,             CRF_REGEX },
+  { "index_collapsed",          CD_INDEX,   MT_COLOR_INDEX_COLLAPSED,          CRF_REGEX },
+  { "index_date",               CD_INDEX,   MT_COLOR_INDEX_DATE,               CRF_REGEX },
+  { "index_flags",              CD_INDEX,   MT_COLOR_INDEX_FLAGS,              CRF_REGEX },
+  { "index_label",              CD_INDEX,   MT_COLOR_INDEX_LABEL,              CRF_REGEX },
+  { "index_number",             CD_INDEX,   MT_COLOR_INDEX_NUMBER,             CRF_REGEX },
+  { "index_size",               CD_INDEX,   MT_COLOR_INDEX_SIZE,               CRF_REGEX },
+  { "index_subject",            CD_INDEX,   MT_COLOR_INDEX_SUBJECT,            CRF_REGEX },
+  { "index_tag",                CD_INDEX,   MT_COLOR_INDEX_TAG,                CRF_REGEX },
+  { "index_tags",               CD_INDEX,   MT_COLOR_INDEX_TAGS,               CRF_REGEX },
+  { "status",                   CD_CORE,    MT_COLOR_STATUS,                   CRF_REGEX | CRF_BACK_REF },
   { NULL, 0 },
   // clang-format on
 };

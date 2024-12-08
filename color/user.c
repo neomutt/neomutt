@@ -64,6 +64,18 @@ void user_colors_init(void)
 
     he = mutt_hash_int_insert(UserColorsId, def->cid, data);
     if (he)
+      he->type = 1;
+  }
+
+  for (const struct ColorDefinition *def = RegexColorDefs; def->name; def++)
+  {
+    void *data = (void *) def; // drop the 'const'
+
+    he = mutt_hash_insert(UserColorsName, def->name, data);
+    he->type = 2;
+
+    he = mutt_hash_int_insert(UserColorsId, def->cid, data);
+    if (he)
       he->type = 2;
   }
 }
