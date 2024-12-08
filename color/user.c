@@ -67,3 +67,39 @@ void user_colors_init(void)
       he->type = 2;
   }
 }
+
+/**
+ * color_get_name - Get the name from a Colour ID
+ * @param cid Colour, e.g. #MT_COLOR_HEADER
+ * @param buf Buffer for result
+ */
+void color_get_name(int cid, struct Buffer *buf)
+{
+  for (const struct ColorDefinition *def = ColorDefs; def->name; def++)
+  {
+    if (def->cid == cid)
+    {
+      buf_addstr(buf, def->name);
+      return;
+    }
+  }
+
+  buf_add_printf(buf, "UNKNOWN %d", cid);
+}
+
+/**
+ * color_get_cid - Get the Colour ID from a name
+ * @param name Colour name, e.g. "warning"
+ * @retval num Colour ID, e.g. #MT_COLOR_WARNING
+ * @retval  -1 Name not found
+ */
+int color_get_cid(const char *name)
+{
+  for (const struct ColorDefinition *def = ColorDefs; def->name; def++)
+  {
+    if (mutt_str_equal(def->name, name))
+      return def->cid;
+  }
+
+  return -1;
+}

@@ -44,6 +44,7 @@
 #include "module_data.h"
 #include "notify2.h"
 #include "regex4.h"
+#include "user.h"
 
 /**
  * regex_colors_init - Initialise the Regex colours

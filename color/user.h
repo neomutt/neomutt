@@ -26,4 +26,7 @@
 void user_colors_cleanup(void);
 void user_colors_init   (void);
 
+int  color_get_cid (const char *name);
+void color_get_name(int cid, struct Buffer *buf);
+
 #endif /* MUTT_COLOR_USER_H */
