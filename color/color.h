@@ -25,10 +25,11 @@
 #ifndef MUTT_COLOR_COLOR_H
 #define MUTT_COLOR_COLOR_H
 
-#include "mutt/lib.h" // IWYU pragma: keep
 #include <stdbool.h>
+#include "mutt/lib.h" // IWYU pragma: keep
 #include "mutt/lib.h"
 #include "attr.h"
+#include "domain.h"
 
 /**
  * enum ColorId - List of all coloured objects
@@ -111,9 +112,10 @@ typedef uint8_t ColorFlags;        ///< Flags, e.g. #CF_REGEX
  */
 struct ColorDefinition
 {
-  const char *name;          ///< Colour name
-  int         cid;           ///< Colour ID
-  ColorFlags  flags;         ///< Colour flags, e.g. #CF_REGEX
+  const char      *name;     ///< Colour name
+  enum ColorDomain domain;   ///< Colour Domain
+  int              cid;      ///< Colour ID
+  ColorFlags       flags;    ///< Colour flags, e.g. #CF_REGEX
 };
 
 extern const struct ColorDefinition ColorDefs[];
