@@ -230,7 +230,6 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * add_pattern - Associate a colour to a pattern
  * @param rcl       List of existing colours
  * @param s         String to match
- * @param sensitive true if the pattern case-sensitive
  * @param ac_val    Colour value to use
  * @param err       Buffer for error messages
  * @param is_index  true of this is for the index
@@ -241,18 +240,15 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * called from mutt_parse_color()
  */
 static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
-                                      bool sensitive, struct AttrColor *ac_val,
+                                      struct AttrColor *ac_val,
                                       struct Buffer *err, bool is_index, int match)
 {
   struct RegexColor *rcol = NULL;
 
   STAILQ_FOREACH(rcol, rcl, entries)
   {
-    if ((sensitive && mutt_str_equal(s, rcol->pattern)) ||
-        (!sensitive && mutt_istr_equal(s, rcol->pattern)))
-    {
+    if (mutt_str_equal(s, rcol->pattern))
       break;
-    }
   }
 
   if (rcol) // found a matching regex
@@ -281,11 +277,8 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
     }
     else
     {
-      uint16_t flags = 0;
-      if (sensitive)
-        flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
-      else
-        flags = REG_ICASE;
+      // Smart case matching
+      uint16_t flags = mutt_mb_is_lower(s) ? REG_ICASE : 0;
 
       const int r = REG_COMP(&rcol->regex, s, flags);
       if (r != 0)
@@ -337,18 +330,13 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
   if (!rcl)
     return false;
 
-  bool sensitive = false;
   bool is_index = false;
   switch (cid)
   {
     case MT_COLOR_ATTACH_HEADERS:
     case MT_COLOR_BODY:
-      sensitive = true;
-      is_index = false;
       break;
     case MT_COLOR_HEADER:
-      sensitive = false;
-      is_index = false;
       break;
     case MT_COLOR_INDEX:
     case MT_COLOR_INDEX_AUTHOR:
@@ -361,14 +349,13 @@ bool regex_colors_parse_color_list(enum ColorId cid, const char *pat,
     case MT_COLOR_INDEX_SUBJECT:
     case MT_COLOR_INDEX_TAG:
     case MT_COLOR_INDEX_TAGS:
-      sensitive = true;
       is_index = true;
       break;
     default:
       return false;
   }
 
-  *rc = add_pattern(rcl, pat, sensitive, ac, err, is_index, 0);
+  *rc = add_pattern(rcl, pat, ac, err, is_index, 0);
 
   struct Buffer *buf = buf_pool_get();
   get_colorid_name(cid, buf);
@@ -399,7 +386,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
   if (cid != MT_COLOR_STATUS)
     return MUTT_CMD_ERROR;
 
-  int rc = add_pattern(&StatusList, pat, true, ac, err, false, match);
+  int rc = add_pattern(&StatusList, pat, ac, err, false, match);
   if (rc != MUTT_CMD_SUCCESS)
     return rc;
 
