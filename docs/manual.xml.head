@@ -13573,7 +13573,7 @@ sendmailcmd = neomutt -C -H - &amp;&amp; true
           </listitem>
           <listitem>
             <para>
-              Text wrapping is not supported
+              Smart text wrapping is not supported
             </para>
           </listitem>
         </itemizedlist>

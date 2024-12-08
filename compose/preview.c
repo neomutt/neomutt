@@ -68,6 +68,9 @@
 #include "gui/lib.h"
 #include "color/lib.h"
 
+// Maxixum body size in bytes to show in preview.
+const long MAX_PREVIEW_BODY_SIZE = 1024 * 1024 * 5;
+
 /**
  * struct PreviewWindowData - Data to fill the Preview Window
  */
@@ -132,13 +135,21 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
 {
   struct Email *e = wdata->email;
 
+  // Reset preview window and status bar.
   mutt_window_clear(win);
+  sbar_set_title(wdata->bar, _("-- Preview"));
 
+  // Check for valid content type and disposition
   if ((e->body->disposition != DISP_INLINE) || (e->body->type != TYPE_TEXT))
   {
     mutt_error(_("Only inline attachments with content-type text/* can be previewed"));
-    // The preview status bar might still be showing the percentage. Reset it.
-    sbar_set_title(wdata->bar, _("-- Preview"));
+    return;
+  }
+
+  // Ensure file isn't to too large.
+  long file_size = mutt_file_get_size(e->body->filename);
+  if (file_size > MAX_PREVIEW_BODY_SIZE)
+  {
     return;
   }
 
@@ -151,39 +162,64 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
 
   wdata->more_content = false;
 
-  int i = 0;
-  int row = 0;
-  char *buf = NULL;
-  size_t buflen;
-  while ((buf = mutt_file_read_line(buf, &buflen, fp, NULL, MUTT_RL_NO_FLAGS)))
+  int content_lines = 0; // number of (wrapped) content lines
+  int row = 0;           // window row to print
+  char *line = NULL;
+  size_t line_len = 0;
+  while ((line = mutt_file_read_line(NULL, &line_len, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
-    if ((++i < wdata->scroll_offset) || (row >= win->state.rows))
-      continue;
+    size_t pos = 0;
+    bool text_left = true;
+    while (text_left)
+    {
+      /* Text wrapping loop
+       *
+       * Note: We need to do the text wrapping also for text outside the visible
+       *       area to ensure the scrolling works correctly.
+       */
 
-    int rc = mutt_window_move(win, 0, row);
-    if (rc == ERR)
-      mutt_warning(_("Failed to move cursor!"));
+      content_lines++;
 
-    mutt_paddstr(win, win->state.cols, buf);
+      // Check how much of the string fits into the window width.
+      size_t width = 0;
+      size_t bytes = mutt_wstr_trunc(&line[pos], line_len - pos, win->state.cols, &width);
 
-    row++;
+      // If it doesn't fill the full width we're done wrapping.
+      if ((win->state.cols - width) > 0)
+        text_left = false;
+
+      // Only move the cursor and print if this line is currently visible.
+      if ((content_lines >= wdata->scroll_offset) && (row < win->state.rows))
+      {
+        int rc = mutt_window_move(win, 0, row);
+        if (rc == ERR)
+          mutt_warning(_("Failed to move cursor!"));
+
+        mutt_paddstr(win, win->state.cols, &line[pos]);
+
+        row++;
+      }
+
+      // Advance position in string.
+      pos += bytes;
+    }
   }
 
   mutt_file_fclose(&fp);
 
   // Show the scroll percentage in the status bar
-  if (i > win->state.rows)
+  if ((content_lines != 0) && (content_lines > win->state.rows))
   {
     char title[256] = { 0 };
     double percent = 100.0;
-    if (wdata->scroll_offset + row < i)
-      percent = 100.0 / i * (wdata->scroll_offset + row);
+    if ((wdata->scroll_offset + row) < content_lines)
+      percent = 100.0 / content_lines * (wdata->scroll_offset + row);
 
     // TODO: having the percentage right-aligned would be nice
     snprintf(title, sizeof(title), _("-- Preview (%.0f%%)"), percent);
     sbar_set_title(wdata->bar, title);
 
-    if (i > (wdata->scroll_offset + row))
+    if (content_lines > (wdata->scroll_offset + row))
       wdata->more_content = true;
   }
 }
