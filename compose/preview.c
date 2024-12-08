@@ -150,6 +150,7 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
   long file_size = mutt_file_get_size(e->body->filename);
   if (file_size > MAX_PREVIEW_BODY_SIZE)
   {
+    mutt_error(_("Email too large to preview"));
     return;
   }
 
