@@ -75,16 +75,13 @@ void user_colors_init(void)
  */
 void color_get_name(int cid, struct Buffer *buf)
 {
-  for (const struct ColorDefinition *def = ColorDefs; def->name; def++)
-  {
-    if (def->cid == cid)
-    {
-      buf_addstr(buf, def->name);
-      return;
-    }
-  }
+  const struct ColorDefinition *def = NULL;
 
-  buf_add_printf(buf, "UNKNOWN %d", cid);
+  def = mutt_hash_int_find(UserColorsId, cid);
+  if (def)
+    buf_addstr(buf, def->name);
+  else
+    buf_add_printf(buf, "UNKNOWN %d", cid);
 }
 
 /**
@@ -95,11 +92,11 @@ void color_get_name(int cid, struct Buffer *buf)
  */
 int color_get_cid(const char *name)
 {
-  for (const struct ColorDefinition *def = ColorDefs; def->name; def++)
-  {
-    if (mutt_str_equal(def->name, name))
-      return def->cid;
-  }
+  const struct ColorDefinition *def = NULL;
+
+  def = mutt_hash_find(UserColorsName, name);
+  if (def)
+    return def->cid;
 
   return -1;
 }

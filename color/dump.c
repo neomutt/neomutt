@@ -356,24 +356,27 @@ void simple_colors_dump(struct Buffer *buf)
 
   if (count > 0)
   {
-    buf_addstr(buf, _("# Compose Colors\n"));
-    for (const struct ColorDefinition *def = ColorDefs; def->name; def++)
-    {
-      if (!COLOR_COMPOSE(def->cid))
-        continue;
+    struct Buffer *name = buf_pool_get();
 
-      struct AttrColor *ac = simple_color_get(def->cid);
+    buf_addstr(buf, _("# Compose Colors\n"));
+    for (enum ColorId cid = MT_COLOR_COMPOSE_HEADER; cid < MT_COLOR_COMPOSE_SECURITY_SIGN; cid++)
+    {
+      struct AttrColor *ac = simple_color_get(cid);
       if (!attr_color_is_set(ac))
         continue;
 
+      buf_reset(name);
+      color_get_name(cid, name);
+
       color_log_color_attrs(ac, swatch);
-      buf_add_printf(buf, "color %-24s %-20s %-16s %-16s # %s\n", def->name,
+      buf_add_printf(buf, "color %-24s %-20s %-16s %-16s # %s\n", buf_string(name),
                      color_log_attrs_list(ac->attrs),
                      color_log_name(color_fg, sizeof(color_fg), &ac->fg),
                      color_log_name(color_bg, sizeof(color_bg), &ac->bg),
                      buf_string(swatch));
     }
     buf_addstr(buf, "\n");
+    buf_pool_release(&name);
   }
 
   buf_pool_release(&swatch);
