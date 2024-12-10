@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
-"PO-Revision-Date: 2024-11-13 12:53+0100\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
+"PO-Revision-Date: 2024-12-05 19:29+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -201,20 +201,18 @@ msgstr "Entferne Markierung nach Muster: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Umgekehrt sortieren nach (a)lias, a(d)resse oder (u)nsortiert?"
+msgstr "Umgekehrt sortieren nach (a)lias, (n)ame, (e)mail oder (u)nsortiert?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Sortiere nach (a)lias, a(d)dresse oder (u)nsortiert?"
+msgstr "Sortiere nach (a)lias, (n)ame, (e)mail oder (u)nsortiert?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "aneu"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
@@ -346,8 +344,8 @@ msgstr "Keinen passenden Mailcap-Eintrag gefunden. Anzeige als Text."
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "Undefinierter MIME-Typ. Kann Anhang nicht anzeigen."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Kann Filter nicht erzeugen"
@@ -372,11 +370,11 @@ msgstr "---Anhang: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Anhang: %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Schreibfehler"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "Ich weiß nicht, wie man dies druckt"
 
@@ -1151,9 +1149,9 @@ msgstr "Newsgroups"
 msgid "-- Attachments"
 msgstr "-- Anhänge"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Vorschau"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1380,19 +1378,18 @@ msgstr "Nachricht geschrieben"
 msgid "Save (postpone) draft message?"
 msgstr "Nachricht als Entwurf speichern?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Nur inline Anhänge des content-type text/* können vorangezeigt werden"
 
-#: compose/preview.c:165
-#, fuzzy
+#: compose/preview.c:196
 msgid "Failed to move cursor!"
-msgstr "Prüfung des Absenders fehlgeschlagen"
+msgstr "Konnte Zeiger nicht weiterbewegen!"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Vorschau (%.0f%%)"
 
 #: config/bool.c:76
 #, c-format
@@ -2400,8 +2397,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Zeichensatz in %s abgeändert; konvertiert"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "Die Darstellung von Diskussionsfäden ist abgeschaltet"
 
@@ -2662,16 +2659,14 @@ msgstr "Zeige Anhang als Text an"
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "Springe zum Nachrichtenanfang"
+msgstr "zeige die nächste Seite der Nachricht"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "Springe zur vorigen neuen oder ungelesenen Nachricht"
+msgstr "zeige die vorherige Seite der Nachricht"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
@@ -5634,7 +5629,7 @@ msgstr "Parameter -E funktioniert nicht mit stdin"
 msgid "Can't parse message template: %s"
 msgstr "Kann Nachrichtenvorlage nicht verarbeiten: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: Kann Datei nicht anhängen"
@@ -5859,15 +5854,15 @@ msgstr "SSL ist nicht verfügbar, keine Verbindung zu %s"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Kann 'last-' Prefix nicht mit 'threads' für %s verwenden"
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Bezugsnachricht ist nicht verfügbar"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Root message is not visible in this limited view"
 msgstr "Oberste Bezugsnachricht ist in dieser begrenzten Ansicht nicht sichtbar"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Bezugsnachricht ist in dieser begrenzten Ansicht nicht sichtbar"
 

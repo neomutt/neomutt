@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
-"PO-Revision-Date: 2024-11-08 16:00+0300\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
+"PO-Revision-Date: 2024-12-05 22:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -197,20 +197,18 @@ msgstr "Eşleşen iletilerdeki etiketi kaldır: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Ters-sıra: (a)rma, a(d)res veya (s)ırasız?"
+msgstr "Ters-sıra: (a)rma, a(d), (e)-posta veya (s)ırasız?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Sırala: (a)rma, a(d)res veya (s)ırasız?"
+msgstr "Sırala: (a)rma, a(d), (e)-posta veya (s)ırasız?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "ades"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
@@ -342,8 +340,8 @@ msgstr "Uygun mailcap kaydı bulunamadı. Metin olarak görüntüleniyor."
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME tipi belirlenmemiş. Ek görüntülenemiyor."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Süzgeç oluşturulamıyor"
@@ -368,11 +366,11 @@ msgstr "---Ekler: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Ekler: %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Yazma hatası"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "Bunun nasıl yazdırılacağını bilmiyorum"
 
@@ -1147,9 +1145,9 @@ msgstr "Haber grupları"
 msgid "-- Attachments"
 msgstr "-- Ekler"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Önizleme"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1376,19 +1374,18 @@ msgstr "İleti yazıldı"
 msgid "Save (postpone) draft message?"
 msgstr "Taslak kaydedilsin (ertelensin) mi?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Yalnızca text/* content-type olan satır içi ekler önizlenebilir"
 
-#: compose/preview.c:165
-#, fuzzy
+#: compose/preview.c:196
 msgid "Failed to move cursor!"
-msgstr "Gönderici doğrulanamadı"
+msgstr "İmleç hareket ettirilemedi!"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Önizleme (%%%.0f)"
 
 #: config/bool.c:76
 #, c-format
@@ -2396,8 +2393,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Karakter kümesi %s olarak değiştirildi; dönüştürülüyor"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "İlmek kullanımı etkin değil"
 
@@ -2658,16 +2655,14 @@ msgstr "eki metin olarak göster"
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "iletinin başına geç"
+msgstr "iletinin sonraki sayfasını göster"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "bir önceki yeni veya okunmamış iletiye geç"
+msgstr "iletinin önceki sayfasını göster"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
@@ -5633,7 +5628,7 @@ msgstr "-E bayrağı stdin ile kullanılamaz"
 msgid "Can't parse message template: %s"
 msgstr "İleti şablonu ayrıştırılamıyor: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: Dosya eklenemiyor"
@@ -5858,15 +5853,15 @@ msgstr "SSL erişilemiyor, %s konumuna bağlanamıyor"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "%s için 'last-' öneki 'threads' ile kullanılamıyor"
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Ana ileti mevcut değil"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Root message is not visible in this limited view"
 msgstr "Kök ileti bu sınırlı görünümde görüntülenemez"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Ana ileti bu sınırlı görünümde görüntülenemez"
 

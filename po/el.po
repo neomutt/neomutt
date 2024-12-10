@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2021-05-09 00:47GMT+3\n"
 "Last-Translator: Christos Margiolis <christos@margiolis.net>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -353,8 +353,8 @@ msgstr "Δεν βρέθηκε όμοια καταχώρηση Mailcap. Απει�
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "Ο τύπος MIME δεν έχει οριστεί. Αδυναμία εμφάνισης προσαρτήσεως."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Αδυναμία δημιουργίας φίλτρου"
@@ -379,11 +379,11 @@ msgstr "-- Προσαρτήσεις"
 msgid "---Attachment: %s"
 msgstr "-- Προσαρτήσεις"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Σφάλμα εγγραφής"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "Δεν γνωρίζω πώς να το τυπώσω αυτό"
 
@@ -1159,7 +1159,7 @@ msgstr "Ομάδες νέων"
 msgid "-- Attachments"
 msgstr "-- Συνημμένα"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1399,16 +1399,16 @@ msgstr "Το μήνυμα γράφτηκε"
 msgid "Save (postpone) draft message?"
 msgstr "Αποθήκευση (αναβολλή) πρόχειρου μηνύματος;"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Αποτυχία κατά το άνοιγμα αρχείου για την ανάλυση των επικεφαλίδων."
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2427,8 +2427,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Το σετ χαρακτήρων άλλαξε σε %s - μετατροπή"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "Η χρήση νημάτων δεν έχει ενεργοποιηθεί"
 
@@ -5737,7 +5737,7 @@ msgstr ""
 msgid "Can't parse message template: %s"
 msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: αδυναμία στην προσάρτηση του αρχείου"
@@ -5965,16 +5965,16 @@ msgstr "Το SSL δεν είναι διαθέσιμο."
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Το τρέχον μήνυμα δεν είναι διαθέσιμο"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 #, fuzzy
 msgid "Root message is not visible in this limited view"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Το τρέχον μήνυμα δεν είναι ορατό σε αυτή τη περιορισμένη όψη"
 

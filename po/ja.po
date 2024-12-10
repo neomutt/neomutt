@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2018-05-31 13:50+0000\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: neomutt-j <neomutt-j-users@lists.osdn.me>\n"
@@ -345,8 +345,8 @@ msgstr "mailcap に一致エントリがない。テキストとして表示中�
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME 形式が定義されていない。添付ファイルを表示できない。"
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "フィルタを作成できない"
@@ -371,11 +371,11 @@ msgstr "---添付ファイル: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---添付ファイル: %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "書き込み失敗"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "どのように印刷するか不明"
 
@@ -1153,7 +1153,7 @@ msgstr "題名が指定されていない。"
 msgid "-- Attachments"
 msgstr "-- 添付ファイル"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1398,16 +1398,16 @@ msgstr "メッセージは書き込まれた。"
 msgid "Save (postpone) draft message?"
 msgstr "書きかけのメッセージを呼び出す?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "送信者の検証に失敗した"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2431,8 +2431,8 @@ msgid "Character set changed to %s; converting"
 msgstr "文字セットを %s に変更した; 変換あり。"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "スレッド表示が有効になっていない。"
 
@@ -5715,7 +5715,7 @@ msgstr "標準入力には -E フラグを使用できない"
 msgid "Can't parse message template: %s"
 msgstr "メッセージファイルをオープンできない: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: ファイルを添付できない"
@@ -5942,15 +5942,15 @@ msgstr "SSL が利用できない。"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "親メッセージが利用できない。"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Root message is not visible in this limited view"
 msgstr "ルートメッセージはこの制限された表示範囲では不可視。"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "親メッセージはこの制限された表示範囲では不可視。"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2002-12-09 17:19+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@muhv.pri.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -351,8 +351,8 @@ msgstr "Sobivat mailcap kirjet pole. Käsitlen tekstina."
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME tüüp ei ole defineeritud. Lisa ei saa vaadata."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Ei õnnestu luua filtrit"
@@ -377,11 +377,11 @@ msgstr "-- Lisad"
 msgid "---Attachment: %s"
 msgstr "-- Lisad"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Viga kirjutamisel"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "Ma ei tea, kuidas seda trükkida"
 
@@ -1173,7 +1173,7 @@ msgstr "Teema puudub."
 msgid "-- Attachments"
 msgstr "-- Lisad"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1419,16 +1419,16 @@ msgstr "Teade on kirjutatud"
 msgid "Save (postpone) draft message?"
 msgstr "Laen postitusootel teate?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Faili avamine päiste analüüsiks ebaõnnestus."
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2489,8 +2489,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Kooditabeliks on nüüd %s; teisendan"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "Teemad ei ole lubatud"
 
@@ -5820,7 +5820,7 @@ msgstr ""
 msgid "Can't parse message template: %s"
 msgstr "Teate faili ei saa avada: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: faili lisamine ebaõnnestus"
@@ -6046,16 +6046,16 @@ msgstr "SSL ei ole kasutatav."
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Vanem teade ei ole kättesaadav"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 #, fuzzy
 msgid "Root message is not visible in this limited view"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Vanem teade ei ole selles piiratud vaates nähtav"
 

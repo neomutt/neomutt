@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Chao-Kuei Hung <ckhung@cyut.edu.tw>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -216,30 +216,25 @@ msgstr "aneu"
 msgid "Limit: %s"
 msgstr "限制: %s"
 
-# ckhung 241205
 #: attach/attachments.c:481
-#, fuzzy
 msgid "attachments: no disposition"
-msgstr "編輯附件的說明"
+msgstr "附件： 沒有 disposition"
 
 #: attach/attachments.c:492
-#, fuzzy
 msgid "Current attachments settings:"
-msgstr "編輯附件的說明"
+msgstr "目前的附件設定："
 
 #: attach/attachments.c:524
-#, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "編輯附件的說明"
+msgstr "附件： 無效的 disposition"
 
 #: attach/attachments.c:544
-#, fuzzy
 msgid "unattachments: no disposition"
-msgstr "編輯附件的說明"
+msgstr "unattachments: 沒有 disposition"
 
 #: attach/attachments.c:584
 msgid "unattachments: invalid disposition"
-msgstr ""
+msgstr "unattachments: 無效的 disposition"
 
 #: attach/dlg_attach.c:95 index/dlg_index.c:107 index/dlg_index.c:122
 msgid "Save"
@@ -259,7 +254,7 @@ msgstr "附件"
 
 #: attach/functions.c:56 index/functions.c:3101
 msgid "Function not permitted in attach-message mode"
-msgstr "功能在 attach-message 模式下不被支援"
+msgstr "在 attach-message 模式下不可使用此功能"
 
 #: attach/functions.c:188 index/functions.c:3095 mx.c:929
 msgid "Mailbox is read-only"
@@ -274,19 +269,16 @@ msgid "Can't delete attachment from POP server"
 msgstr "無法從 POP 伺服器刪除附件"
 
 #: attach/functions.c:282
-#, fuzzy
 msgid "Can't delete attachment from news server"
-msgstr "無法從 POP 伺服器刪除附件"
+msgstr "無法從新聞伺服器刪除附件"
 
 #: attach/functions.c:288
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported"
-msgstr "未支援刪除 PGP 信件所附帶的附件"
+msgstr "加密信件的附件無法獨立刪除"
 
 #: attach/functions.c:293
-#, fuzzy
 msgid "Deletion of attachments from signed messages may invalidate the signature"
-msgstr "未支援刪除 PGP 信件所附帶的附件"
+msgstr "若從帶有簽章的郵件內刪除個別附件，簽章可能失效"
 
 #: attach/functions.c:309 attach/functions.c:333
 msgid "Only deletion of multipart attachments is supported"
@@ -294,11 +286,11 @@ msgstr "只支援刪除多重附件"
 
 #: attach/functions.c:643 index/functions.c:2847
 msgid "Reply by mail as poster prefers?"
-msgstr ""
+msgstr "按照寄件者的偏好設定回覆對象？"
 
 #: attach/mutt_attach.c:145 attach/mutt_attach.c:285
 msgid "Can't match 'nametemplate', continue?"
-msgstr "無法配合二個同樣名稱，繼續？"
+msgstr "比對 nametemplate 失敗，繼續？"
 
 #: attach/mutt_attach.c:157
 #, c-format
@@ -322,9 +314,8 @@ msgid "Failure to open file to strip headers"
 msgstr "開啟檔案時去除檔案標頭失敗"
 
 #: attach/mutt_attach.c:222
-#, fuzzy
 msgid "Failure to rename file"
-msgstr "開啟檔案來分析檔頭失敗"
+msgstr "更改檔名失敗"
 
 #: attach/mutt_attach.c:232
 #, c-format
@@ -343,14 +334,14 @@ msgstr "沒有 %s 的 mailcap 編輯登錄"
 
 #: attach/mutt_attach.c:463
 msgid "No matching mailcap entry found.  Viewing as text."
-msgstr "沒有發現配合 mailcap 的登錄。將以文字檔方式瀏覽"
+msgstr "沒有發現符合的 mailcap 登錄。將以文字檔方式瀏覽"
 
 #: attach/mutt_attach.c:478
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME 形式未被定義. 無法顯示附件內容"
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "無法建立過濾器"
@@ -358,28 +349,28 @@ msgstr "無法建立過濾器"
 #: attach/mutt_attach.c:583
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr ""
+msgstr "---命令: %-20.20s 描述: %s"
 
 #: attach/mutt_attach.c:588
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr ""
+msgstr "---命令: %-30.30s 附件: %s"
 
 #: attach/mutt_attach.c:672
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s: %s"
-msgstr "-- 附件"
+msgstr "-- 附件： %s: %s"
 
 #: attach/mutt_attach.c:674
 #, fuzzy, c-format
 msgid "---Attachment: %s"
-msgstr "-- 附件"
+msgstr "---附件： %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "寫入失敗"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "我不知道要如何列印它"
 
@@ -396,7 +387,7 @@ msgstr[0] "附件已被儲存。"
 #: attach/recvattach.c:558
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
-msgstr "警告! 您正在覆蓋 %s, 是否要繼續?"
+msgstr "警告! 您即將覆寫 %s, 是否要繼續?"
 
 #: attach/recvattach.c:575
 msgid "Attachment filtered"
@@ -408,8 +399,9 @@ msgstr "經過過濾："
 
 #: attach/recvattach.c:738
 msgid "Pipe to: "
-msgstr "導引至："
+msgstr "導引 (pipe) 給："
 
+# ckhung 241209
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
 #: attach/recvattach.c:796
@@ -1169,7 +1161,7 @@ msgstr "沒有指定標題"
 msgid "-- Attachments"
 msgstr "-- 附件"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1414,16 +1406,16 @@ msgstr "信件已寫入"
 msgid "Save (postpone) draft message?"
 msgstr "要叫出被延遲的信件?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "開啟檔案來分析檔頭失敗"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2467,8 +2459,8 @@ msgid "Character set changed to %s; converting"
 msgstr "字符集已換為 %s; 轉換中"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "序列功能尚未啟動"
 
@@ -5794,7 +5786,7 @@ msgstr ""
 msgid "Can't parse message template: %s"
 msgstr "無法開啟信件檔案：%s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：無法附帶檔案"
@@ -6021,16 +6013,16 @@ msgstr "沒有 SSL 功能"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "主信件不存在"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 #, fuzzy
 msgid "Root message is not visible in this limited view"
 msgstr "在限制閱覽模式下無法顯示主信件"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 #, fuzzy
 msgid "Parent message is not visible in this limited view"
 msgstr "在限制閱覽模式下無法顯示主信件"
