@@ -449,16 +449,16 @@ void status_colors_dump(struct Buffer *buf)
  */
 void color_dump(void)
 {
-  struct Buffer *tmp_file = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
 
-  buf_mktemp(tmp_file);
-  FILE *fp = mutt_file_fopen(buf_string(tmp_file), "w");
+  buf_mktemp(tempfile);
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!fp)
   {
     // LCOV_EXCL_START
     // L10N: '%s' is the file name of the temporary file
-    mutt_error(_("Could not create temporary file %s"), buf_string(tmp_file));
-    buf_pool_release(&tmp_file);
+    mutt_error(_("Could not create temporary file %s"), buf_string(tempfile));
+    buf_pool_release(&tempfile);
     return;
     // LCOV_EXCL_STOP
   }
@@ -484,12 +484,12 @@ void color_dump(void)
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
-  pdata.fname = buf_string(tmp_file);
+  pdata.fname = buf_string(tempfile);
 
   pview.banner = "color";
   pview.flags = MUTT_SHOWCOLOR;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
-  buf_pool_release(&tmp_file);
+  buf_pool_release(&tempfile);
 }
