@@ -109,7 +109,7 @@ static void cid_save_attachment(struct Body *b, struct CidMapList *cid_map_list)
   if (!id)
     return;
 
-  struct Buffer *tmpfile = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   struct Buffer *cid = buf_pool_get();
   bool has_tempfile = false;
   FILE *fp = NULL;
@@ -120,26 +120,26 @@ static void cid_save_attachment(struct Body *b, struct CidMapList *cid_map_list)
   if (b->aptr)
     fp = b->aptr->fp;
   mutt_file_sanitize_filename(fname, fp ? true : false);
-  mailcap_expand_filename("%s", fname, tmpfile);
+  mailcap_expand_filename("%s", fname, tempfile);
   FREE(&fname);
 
   /* save attachment */
-  if (mutt_save_attachment(fp, b, buf_string(tmpfile), 0, NULL) == -1)
+  if (mutt_save_attachment(fp, b, buf_string(tempfile), 0, NULL) == -1)
     goto bail;
   has_tempfile = true;
   mutt_debug(LL_DEBUG2, "attachment with \"Content-ID: %s\" saved to file \"%s\"\n",
-             id, buf_string(tmpfile));
+             id, buf_string(tempfile));
 
   /* add Content-ID to filename mapping to list */
   buf_printf(cid, "cid:%s", id);
-  struct CidMap *cid_map = cid_map_new(buf_string(cid), buf_string(tmpfile));
+  struct CidMap *cid_map = cid_map_new(buf_string(cid), buf_string(tempfile));
   STAILQ_INSERT_TAIL(cid_map_list, cid_map, entries);
 
 bail:
 
-  if ((fp && !buf_is_empty(tmpfile)) || has_tempfile)
-    mutt_add_temp_attachment(buf_string(tmpfile));
-  buf_pool_release(&tmpfile);
+  if ((fp && !buf_is_empty(tempfile)) || has_tempfile)
+    mutt_add_temp_attachment(buf_string(tempfile));
+  buf_pool_release(&tempfile);
   buf_pool_release(&cid);
 }
 
@@ -180,21 +180,21 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
   size_t blen = 0;
   struct CidMap *cid_map = NULL;
 
-  struct Buffer *tmpfile = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
   struct Buffer *tmpbuf = buf_pool_get();
 
   FILE *fp_in = mutt_file_fopen(buf_string(filename), "r");
   if (!fp_in)
     goto bail;
 
-  /* ensure tmpfile has the same file extension as filename otherwise an
+  /* ensure tempfile has the same file extension as filename otherwise an
    * HTML file may be opened as plain text by the viewer */
   const char *suffix = buf_rfind(filename, ".");
   if (suffix && *(suffix++))
-    buf_mktemp_pfx_sfx(tmpfile, "neomutt", suffix);
+    buf_mktemp_pfx_sfx(tempfile, "neomutt", suffix);
   else
-    buf_mktemp(tmpfile);
-  fp_out = mutt_file_fopen(buf_string(tmpfile), "w+");
+    buf_mktemp(tempfile);
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp_out)
     goto bail;
 
@@ -235,17 +235,17 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
     FREE(&searchbuf);
   }
 
-  mutt_file_set_mtime(buf_string(filename), buf_string(tmpfile));
+  mutt_file_set_mtime(buf_string(filename), buf_string(tempfile));
 
   /* add filename to TempAtachmentsList so it doesn't get left lying around */
   mutt_add_temp_attachment(buf_string(filename));
   /* update filename to point to new file */
-  buf_copy(filename, tmpfile);
+  buf_copy(filename, tempfile);
 
 bail:
   FREE(&buf);
   mutt_file_fclose(&fp_in);
   mutt_file_fclose(&fp_out);
-  buf_pool_release(&tmpfile);
+  buf_pool_release(&tempfile);
   buf_pool_release(&tmpbuf);
 }

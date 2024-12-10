@@ -393,44 +393,44 @@ void nntp_newsrc_gen_entries(struct Mailbox *m)
 static int update_file(char *filename, char *buf)
 {
   FILE *fp = NULL;
-  char tmpfile[PATH_MAX] = { 0 };
+  char tempfile[PATH_MAX] = { 0 };
   int rc = -1;
 
   while (true)
   {
-    snprintf(tmpfile, sizeof(tmpfile), "%s.tmp", filename);
-    fp = mutt_file_fopen(tmpfile, "w");
+    snprintf(tempfile, sizeof(tempfile), "%s.tmp", filename);
+    fp = mutt_file_fopen(tempfile, "w");
     if (!fp)
     {
-      mutt_perror("%s", tmpfile);
-      *tmpfile = '\0';
+      mutt_perror("%s", tempfile);
+      *tempfile = '\0';
       break;
     }
     if (fputs(buf, fp) == EOF)
     {
-      mutt_perror("%s", tmpfile);
+      mutt_perror("%s", tempfile);
       break;
     }
     if (mutt_file_fclose(&fp) == EOF)
     {
-      mutt_perror("%s", tmpfile);
+      mutt_perror("%s", tempfile);
       fp = NULL;
       break;
     }
     fp = NULL;
-    if (rename(tmpfile, filename) < 0)
+    if (rename(tempfile, filename) < 0)
     {
       mutt_perror("%s", filename);
       break;
     }
-    *tmpfile = '\0';
+    *tempfile = '\0';
     rc = 0;
     break;
   }
   mutt_file_fclose(&fp);
 
-  if (*tmpfile)
-    unlink(tmpfile);
+  if (*tempfile)
+    unlink(tempfile);
   return rc;
 }
 

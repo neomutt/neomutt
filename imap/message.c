@@ -2011,11 +2011,11 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
   msg->fp = msg_cache_put(m, e);
   if (!msg->fp)
   {
-    struct Buffer *path = buf_pool_get();
-    buf_mktemp(path);
-    msg->fp = mutt_file_fopen(buf_string(path), "w+");
-    unlink(buf_string(path));
-    buf_pool_release(&path);
+    struct Buffer *tempfile = buf_pool_get();
+    buf_mktemp(tempfile);
+    msg->fp = mutt_file_fopen(buf_string(tempfile), "w+");
+    unlink(buf_string(tempfile));
+    buf_pool_release(&tempfile);
 
     if (!msg->fp)
       return false;

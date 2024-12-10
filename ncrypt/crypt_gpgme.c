@@ -564,11 +564,11 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 {
   ssize_t nread = 0;
   char *rv = NULL;
-  struct Buffer *tempf = buf_pool_get();
+  struct Buffer *tempfile = buf_pool_get();
 
-  buf_mktemp(tempf);
+  buf_mktemp(tempfile);
 
-  FILE *fp = mutt_file_fopen(buf_string(tempf), "w+");
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+");
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));
@@ -586,9 +586,9 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
     {
       if (fwrite(buf, nread, 1, fp) != 1)
       {
-        mutt_perror("%s", buf_string(tempf));
+        mutt_perror("%s", buf_string(tempfile));
         mutt_file_fclose(&fp);
-        unlink(buf_string(tempf));
+        unlink(buf_string(tempfile));
         goto cleanup;
       }
     }
@@ -600,16 +600,16 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
   if (nread == -1)
   {
     mutt_error(_("error reading data object: %s"), gpgme_strerror(err));
-    unlink(buf_string(tempf));
+    unlink(buf_string(tempfile));
     mutt_file_fclose(&fp);
     goto cleanup;
   }
   if (fp_ret)
     *fp_ret = fp;
-  rv = buf_strdup(tempf);
+  rv = buf_strdup(tempfile);
 
 cleanup:
-  buf_pool_release(&tempf);
+  buf_pool_release(&tempfile);
   return rv;
 }
 

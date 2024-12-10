@@ -2165,21 +2165,21 @@ static bool imap_msg_open_new(struct Mailbox *m, struct Message *msg, const stru
 {
   bool success = false;
 
-  struct Buffer *tmp = buf_pool_get();
-  buf_mktemp(tmp);
+  struct Buffer *tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
 
-  msg->fp = mutt_file_fopen(buf_string(tmp), "w");
+  msg->fp = mutt_file_fopen(buf_string(tempfile), "w");
   if (!msg->fp)
   {
-    mutt_perror("%s", buf_string(tmp));
+    mutt_perror("%s", buf_string(tempfile));
     goto cleanup;
   }
 
-  msg->path = buf_strdup(tmp);
+  msg->path = buf_strdup(tempfile);
   success = true;
 
 cleanup:
-  buf_pool_release(&tmp);
+  buf_pool_release(&tempfile);
   return success;
 }
 
