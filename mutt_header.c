@@ -201,6 +201,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   {
     mutt_perror("%s", body);
     mutt_file_fclose(&fp_out);
+    mutt_file_unlink(buf_string(path));
     goto cleanup;
   }
 
@@ -240,14 +241,15 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
   if (!fp_in)
   {
     mutt_perror("%s", buf_string(path));
+    mutt_file_unlink(buf_string(path));
     goto cleanup;
   }
 
   fp_out = mutt_file_fopen(body, "w");
   if (!fp_out)
   {
-    /* intentionally leak a possible temporary file here */
     mutt_file_fclose(&fp_in);
+    mutt_file_unlink(buf_string(path));
     mutt_perror("%s", body);
     goto cleanup;
   }
