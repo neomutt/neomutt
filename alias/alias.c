@@ -529,10 +529,6 @@ retry_name:
   }
 
   /* terminate existing file with \n if necessary */
-  if (!mutt_file_seek(fp_alias, 0, SEEK_END))
-  {
-    goto done;
-  }
   if (ftell(fp_alias) > 0)
   {
     if (!mutt_file_seek(fp_alias, -1, SEEK_CUR))
