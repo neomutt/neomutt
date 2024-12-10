@@ -486,7 +486,7 @@ void mutt_help(enum MenuType menu)
 
   do
   {
-    fp = mutt_file_fopen(buf_string(tempfile), "w");
+    fp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
     if (!fp)
     {
       mutt_perror("%s", buf_string(tempfile));

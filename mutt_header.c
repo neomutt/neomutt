@@ -183,7 +183,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
 {
   struct Buffer *path = buf_pool_get();
   buf_mktemp(path);
-  FILE *fp_out = mutt_file_fopen(buf_string(path), "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(path), "w"); // gahr - ok
   if (!fp_out)
   {
     mutt_perror("%s", buf_string(path));
@@ -245,7 +245,7 @@ void mutt_edit_headers(const char *editor, const char *body, struct Email *e,
     goto cleanup;
   }
 
-  fp_out = mutt_file_fopen(body, "w");
+  fp_out = mutt_file_fopen(body, "w"); // gahr - ok
   if (!fp_out)
   {
     mutt_file_fclose(&fp_in);

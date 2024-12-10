@@ -541,7 +541,7 @@ int pgp_class_application_handler(struct Body *b, struct State *state)
 
       /* Copy PGP material to temporary file */
       buf_mktemp(tempfile);
-      fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+");
+      fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
       if (!fp_tmp)
       {
         mutt_perror("%s", buf_string(tempfile));
@@ -904,7 +904,7 @@ int pgp_class_verify_one(struct Body *b, struct State *state, const char *tempfi
 
   buf_printf(sigfile, "%s.asc", tempfile);
 
-  FILE *fp_sig = mutt_file_fopen(buf_string(sigfile), "w");
+  FILE *fp_sig = mutt_file_fopen(buf_string(sigfile), "w"); // gahr - ok
   if (!fp_sig)
   {
     mutt_perror("%s", buf_string(sigfile));
@@ -974,7 +974,7 @@ static void pgp_extract_keys_from_attachment(FILE *fp, struct Body *b)
   struct Buffer *tempfile = buf_pool_get();
 
   buf_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_perror("%s", buf_string(tempfile));
@@ -1044,7 +1044,7 @@ static struct Body *pgp_decrypt_part(struct Body *a, struct State *state,
   }
 
   buf_mktemp(tempfile);
-  fp_pgp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  fp_pgp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_pgp_tmp)
   {
     mutt_perror("%s", buf_string(tempfile));
@@ -1343,14 +1343,14 @@ struct Body *pgp_class_sign_message(struct Body *b, const struct AddressList *fr
   crypt_convert_to_7bit(b); /* Signed data _must_ be in 7-bit format. */
 
   buf_mktemp(sigfile);
-  FILE *fp_sig = mutt_file_fopen(buf_string(sigfile), "w");
+  FILE *fp_sig = mutt_file_fopen(buf_string(sigfile), "w"); // gahr - ok
   if (!fp_sig)
   {
     goto cleanup;
   }
 
   buf_mktemp(signedfile);
-  fp_signed = mutt_file_fopen(buf_string(signedfile), "w");
+  fp_signed = mutt_file_fopen(buf_string(signedfile), "w"); // gahr - ok
   if (!fp_signed)
   {
     mutt_perror("%s", buf_string(signedfile));
@@ -1597,7 +1597,7 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
   struct Buffer *pgpinfile = buf_pool_get();
 
   buf_mktemp(tempfile);
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp_out)
   {
     mutt_perror("%s", buf_string(tempfile));
@@ -1614,7 +1614,7 @@ struct Body *pgp_class_encrypt_message(struct Body *b, char *keylist, bool sign,
   }
 
   buf_mktemp(pgpinfile);
-  fp_tmp = mutt_file_fopen(buf_string(pgpinfile), "w");
+  fp_tmp = mutt_file_fopen(buf_string(pgpinfile), "w"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_perror("%s", buf_string(pgpinfile));
@@ -1744,7 +1744,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *b, SecurityFlags fla
   }
 
   buf_mktemp(pgpinfile);
-  FILE *fp_pgp_in = mutt_file_fopen(buf_string(pgpinfile), "w");
+  FILE *fp_pgp_in = mutt_file_fopen(buf_string(pgpinfile), "w"); // gahr - ok
   if (!fp_pgp_in)
   {
     mutt_perror("%s", buf_string(pgpinfile));
@@ -1789,7 +1789,7 @@ struct Body *pgp_class_traditional_encryptsign(struct Body *b, SecurityFlags fla
   mutt_file_fclose(&fp_pgp_in);
 
   buf_mktemp(pgpoutfile);
-  FILE *fp_pgp_out = mutt_file_fopen(buf_string(pgpoutfile), "w+");
+  FILE *fp_pgp_out = mutt_file_fopen(buf_string(pgpoutfile), "w+"); // gahr - ok
   FILE *fp_pgp_err = mutt_file_mkstemp();
   if (!fp_pgp_out || !fp_pgp_err)
   {

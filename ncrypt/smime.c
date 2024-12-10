@@ -823,7 +823,7 @@ static char *smime_extract_certificate(const char *infile)
   }
 
   buf_mktemp(pk7out);
-  fp_out = mutt_file_fopen(buf_string(pk7out), "w+");
+  fp_out = mutt_file_fopen(buf_string(pk7out), "w+"); // gahr - ok
   if (!fp_out)
   {
     mutt_perror("%s", buf_string(pk7out));
@@ -857,7 +857,7 @@ static char *smime_extract_certificate(const char *infile)
   mutt_file_fclose(&fp_out);
 
   buf_mktemp(certfile);
-  fp_cert = mutt_file_fopen(buf_string(certfile), "w+");
+  fp_cert = mutt_file_fopen(buf_string(certfile), "w+"); // gahr - ok
   if (!fp_cert)
   {
     mutt_perror("%s", buf_string(certfile));
@@ -934,7 +934,7 @@ static char *smime_extract_signer_certificate(const char *infile)
 
   certfile = buf_pool_get();
   buf_mktemp(certfile);
-  FILE *fp_out = mutt_file_fopen(buf_string(certfile), "w+");
+  FILE *fp_out = mutt_file_fopen(buf_string(certfile), "w+"); // gahr - ok
   if (!fp_out)
   {
     mutt_file_fclose(&fp_err);
@@ -1069,7 +1069,7 @@ int smime_class_verify_sender(struct Email *e, struct Message *msg)
 
   struct Buffer *tempfname = buf_pool_get();
   buf_mktemp(tempfname);
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfname), "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfname), "w"); // gahr - ok
   if (!fp_out)
   {
     mutt_perror("%s", buf_string(tempfname));
@@ -1203,7 +1203,7 @@ struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
   struct Buffer *smime_infile = buf_pool_get();
 
   buf_mktemp(tempfile);
-  fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp_out)
   {
     mutt_perror("%s", buf_string(tempfile));
@@ -1218,7 +1218,7 @@ struct Body *smime_class_build_smime_entity(struct Body *b, char *certlist)
   }
 
   buf_mktemp(smime_infile);
-  fp_tmp = mutt_file_fopen(buf_string(smime_infile), "w+");
+  fp_tmp = mutt_file_fopen(buf_string(smime_infile), "w+"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_perror("%s", buf_string(smime_infile));
@@ -1380,7 +1380,7 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   signedfile = buf_pool_get();
 
   buf_mktemp(filetosign);
-  fp_sign = mutt_file_fopen(buf_string(filetosign), "w+");
+  fp_sign = mutt_file_fopen(buf_string(filetosign), "w+"); // gahr - ok
   if (!fp_sign)
   {
     mutt_perror("%s", buf_string(filetosign));
@@ -1388,7 +1388,7 @@ struct Body *smime_class_sign_message(struct Body *b, const struct AddressList *
   }
 
   buf_mktemp(signedfile);
-  fp_smime_out = mutt_file_fopen(buf_string(signedfile), "w+");
+  fp_smime_out = mutt_file_fopen(buf_string(signedfile), "w+"); // gahr - ok
   if (!fp_smime_out)
   {
     mutt_perror("%s", buf_string(signedfile));
@@ -1578,7 +1578,7 @@ int smime_class_verify_one(struct Body *b, struct State *state, const char *temp
 
   /* decode to a tempfile, saving the original destination */
   fp = state->fp_out;
-  state->fp_out = mutt_file_fopen(buf_string(signedfile), "w");
+  state->fp_out = mutt_file_fopen(buf_string(signedfile), "w"); // gahr - ok
   if (!state->fp_out)
   {
     mutt_perror("%s", buf_string(signedfile));
@@ -1704,7 +1704,7 @@ static struct Body *smime_handle_entity(struct Body *b, struct State *state, FIL
   }
 
   buf_mktemp(tmpfname);
-  fp_tmp = mutt_file_fopen(buf_string(tmpfname), "w+");
+  fp_tmp = mutt_file_fopen(buf_string(tmpfname), "w+"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_perror("%s", buf_string(tmpfname));

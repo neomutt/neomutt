@@ -2689,7 +2689,7 @@ static bool nntp_msg_open(struct Mailbox *m, struct Message *msg, struct Email *
       acache->path = buf_strdup(tempfile);
       buf_pool_release(&tempfile);
       acache->index = e->index;
-      msg->fp = mutt_file_fopen(acache->path, "w+");
+      msg->fp = mutt_file_fopen(acache->path, "w+"); // gahr - ok
       if (!msg->fp)
       {
         mutt_perror("%s", acache->path);

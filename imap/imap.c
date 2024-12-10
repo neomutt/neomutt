@@ -2168,7 +2168,7 @@ static bool imap_msg_open_new(struct Mailbox *m, struct Message *msg, const stru
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
 
-  msg->fp = mutt_file_fopen(buf_string(tempfile), "w");
+  msg->fp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!msg->fp)
   {
     mutt_perror("%s", buf_string(tempfile));

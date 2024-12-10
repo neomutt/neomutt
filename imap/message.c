@@ -1148,7 +1148,7 @@ static int read_headers_fetch_new(struct Mailbox *m, unsigned int msn_begin,
    * as they come in. */
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  fp = mutt_file_fopen(buf_string(tempfile), "w+");
+  fp = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp)
   {
     mutt_error(_("Could not create temporary file %s"), buf_string(tempfile));
@@ -2013,7 +2013,7 @@ bool imap_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e)
   {
     struct Buffer *tempfile = buf_pool_get();
     buf_mktemp(tempfile);
-    msg->fp = mutt_file_fopen(buf_string(tempfile), "w+");
+    msg->fp = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
     unlink(buf_string(tempfile));
     buf_pool_release(&tempfile);
 

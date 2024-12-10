@@ -120,7 +120,7 @@ static int op_generic_select_entry(struct PgpData *pd, int op)
  */
 static int op_verify_key(struct PgpData *pd, int op)
 {
-  FILE *fp_null = mutt_file_fopen("/dev/null", "w");
+  FILE *fp_null = mutt_file_fopen("/dev/null", "w"); // gahr - ok
   if (!fp_null)
   {
     mutt_perror(_("Can't open /dev/null"));
@@ -129,7 +129,7 @@ static int op_verify_key(struct PgpData *pd, int op)
   struct Buffer *tempfile = NULL;
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_perror(_("Can't create temporary file"));

@@ -1430,7 +1430,7 @@ static int invoke_mta(struct Mailbox *m, struct Email *e, struct ConfigSubset *s
   /* Write out the message in MIME form. */
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_tmp)
     goto cleanup;
 
@@ -2175,7 +2175,7 @@ int mutt_send_message(SendFlags flags, struct Email *e_templ, const char *tempfi
       {
         struct Buffer *buf = buf_pool_get();
         buf_mktemp(buf);
-        fp_tmp = mutt_file_fopen(buf_string(buf), "w+");
+        fp_tmp = mutt_file_fopen(buf_string(buf), "w+"); // gahr - ok
         e_templ->body->filename = buf_strdup(buf);
         buf_pool_release(&buf);
       }
@@ -2916,7 +2916,7 @@ static bool send_simple_email(struct Mailbox *m, struct EmailArray *ea,
   buf_mktemp(tempfile);
   if (body)
   {
-    FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+");
+    FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
     if (!fp)
     {
       email_free(&e);

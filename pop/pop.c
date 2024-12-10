@@ -1031,7 +1031,7 @@ static bool pop_msg_open(struct Mailbox *m, struct Message *msg, struct Email *e
       /* no */
       bcache = false;
       buf_mktemp(path);
-      msg->fp = mutt_file_fopen(buf_string(path), "w+");
+      msg->fp = mutt_file_fopen(buf_string(path), "w+"); // gahr - ok
       if (!msg->fp)
       {
         mutt_perror("%s", buf_string(path));

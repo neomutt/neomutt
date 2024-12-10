@@ -423,7 +423,7 @@ static gpgme_data_t body_to_data_object(struct Body *b, bool convert)
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_perror("%s", buf_string(tempfile));
@@ -568,7 +568,7 @@ static char *data_object_to_tempfile(gpgme_data_t data, FILE **fp_ret)
 
   buf_mktemp(tempfile);
 
-  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+");
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp)
   {
     mutt_perror(_("Can't create temporary file"));

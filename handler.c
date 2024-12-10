@@ -565,7 +565,7 @@ static int autoview_handler(struct Body *b_email, struct State *state)
       mutt_message(_("Invoking autoview command: %s"), buf_string(cmd));
     }
 
-    fp_in = mutt_file_fopen(buf_string(tempfile), "w+");
+    fp_in = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
     if (!fp_in)
     {
       mutt_perror("fopen");
@@ -1372,7 +1372,7 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
 #else
       tempfile = buf_pool_get();
       buf_mktemp(tempfile);
-      state->fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+      state->fp_out = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
       if (!state->fp_out)
       {
         mutt_error(_("Unable to open temporary file"));

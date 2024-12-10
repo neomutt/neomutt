@@ -241,7 +241,6 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
     struct Buffer *tempfile = buf_pool_get();
     buf_mktemp(tempfile);
 
-    /* Pass MUTT_SAVE_NO_FLAGS to force mutt_file_fopen("w") */
     rc = mutt_save_attachment(fp, b, buf_string(tempfile), MUTT_SAVE_NO_FLAGS, e);
     if (rc != 0)
       goto cleanup;
@@ -612,7 +611,7 @@ static void pipe_attachment(FILE *fp, struct Body *b, struct State *state)
 
     if (is_flowed)
     {
-      fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "w");
+      fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "w"); // gahr - ok
       if (!fp_unstuff)
       {
         mutt_perror("mutt_file_fopen");

@@ -761,7 +761,7 @@ int crypt_write_signed(struct Body *b, struct State *state, const char *tempfile
   if (!WithCrypto)
     return -1;
 
-  FILE *fp = mutt_file_fopen(tempfile, "w");
+  FILE *fp = mutt_file_fopen(tempfile, "w"); // gahr - ok
   if (!fp)
   {
     mutt_perror("%s", tempfile);
@@ -862,7 +862,7 @@ void crypt_extract_keys_from_messages(struct Mailbox *m, struct EmailArray *ea)
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_out)
   {
     mutt_perror("%s", buf_string(tempfile));

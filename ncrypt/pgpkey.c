@@ -276,14 +276,14 @@ struct Body *pgp_class_make_key_attachment(void)
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_perror(_("Can't create temporary file"));
     goto cleanup;
   }
 
-  FILE *fp_null = mutt_file_fopen("/dev/null", "w");
+  FILE *fp_null = mutt_file_fopen("/dev/null", "w"); // gahr - ok
   if (!fp_null)
   {
     mutt_perror(_("Can't open /dev/null"));

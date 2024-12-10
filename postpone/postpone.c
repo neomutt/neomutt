@@ -407,7 +407,7 @@ static int create_tmp_files_for_attachments(FILE *fp_body, struct Buffer *file,
       }
 
       mutt_adv_mktemp(file);
-      state.fp_out = mutt_file_fopen(buf_string(file), "w");
+      state.fp_out = mutt_file_fopen(buf_string(file), "w"); // gahr - ok
       if (!state.fp_out)
         return -1;
 

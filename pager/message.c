@@ -215,7 +215,7 @@ static int email_to_file(struct Message *msg, struct Buffer *tempfile,
 
   FILE *fp_filter_out = NULL;
   buf_mktemp(tempfile);
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_out)
   {
     mutt_error(_("Could not create temporary file"));

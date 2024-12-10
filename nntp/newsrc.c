@@ -399,7 +399,7 @@ static int update_file(char *filename, char *buf)
   while (true)
   {
     snprintf(tempfile, sizeof(tempfile), "%s.tmp", filename);
-    fp = mutt_file_fopen(tempfile, "w");
+    fp = mutt_file_fopen(tempfile, "w"); // gahr - ok
     if (!fp)
     {
       mutt_perror("%s", tempfile);

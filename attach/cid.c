@@ -194,7 +194,7 @@ void cid_to_filename(struct Buffer *filename, const struct CidMapList *cid_map_l
     buf_mktemp_pfx_sfx(tempfile, "neomutt", suffix);
   else
     buf_mktemp(tempfile);
-  fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp_out)
     goto bail;
 

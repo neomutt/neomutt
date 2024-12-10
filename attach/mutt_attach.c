@@ -86,7 +86,7 @@ int mutt_get_tmp_attachment(struct Body *b)
 
   FILE *fp_in = NULL, *fp_out = NULL;
   if ((fp_in = mutt_file_fopen(b->filename, "r")) &&
-      (fp_out = mutt_file_fopen(buf_string(tempfile), "w")))
+      (fp_out = mutt_file_fopen(buf_string(tempfile), "w"))) // gahr - ok
   {
     mutt_file_copy_stream(fp_in, fp_out);
     mutt_str_replace(&b->filename, buf_string(tempfile));
@@ -206,7 +206,7 @@ int mutt_compose_attachment(struct Body *b)
             }
 
             buf_mktemp(tempfile);
-            FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+            FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
             if (!fp_tmp)
             {
               mutt_perror(_("Failure to open file to strip headers"));
@@ -627,7 +627,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
          * conversion since this will be displayed by the internal pager.  */
         struct State state = { 0 };
 
-        state.fp_out = mutt_file_fopen(buf_string(pagerfile), "w");
+        state.fp_out = mutt_file_fopen(buf_string(pagerfile), "w"); // gahr - ok
         if (!state.fp_out)
         {
           mutt_debug(LL_DEBUG1, "mutt_file_fopen(%s) errno=%d %s\n",
@@ -784,7 +784,7 @@ int mutt_pipe_attachment(FILE *fp, struct Body *b, const char *path, const char 
 
     if (is_flowed)
     {
-      fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "w");
+      fp_unstuff = mutt_file_fopen(buf_string(unstuff_tempfile), "w"); // gahr - ok
       if (!fp_unstuff)
       {
         mutt_perror("mutt_file_fopen");
@@ -888,11 +888,8 @@ static FILE *save_attachment_open(const char *path, enum SaveAttach opt)
 {
   if (opt == MUTT_SAVE_APPEND)
     return mutt_file_fopen_masked(path, "a");
-
-  FILE *fp = mutt_file_fopen_masked(path, "w");
-  if (fp)
-    ftruncate(fileno(fp), 0);
-  return fp;
+  else
+    return mutt_file_fopen_masked(path, "w"); // gahr - ok
 }
 
 /**
@@ -1052,10 +1049,8 @@ int mutt_decode_save_attachment(FILE *fp, struct Body *b, const char *path,
 
   if (opt == MUTT_SAVE_APPEND)
     state.fp_out = mutt_file_fopen_masked(path, "a");
-  else if (opt == MUTT_SAVE_OVERWRITE)
-    state.fp_out = mutt_file_fopen_masked(path, "w");
   else
-    state.fp_out = mutt_file_fopen_masked(path, "w");
+    state.fp_out = mutt_file_fopen_masked(path, "w"); // gahr - ok
 
   if (!state.fp_out)
   {

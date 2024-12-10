@@ -452,7 +452,7 @@ void color_dump(void)
   struct Buffer *tempfile = buf_pool_get();
 
   buf_mktemp(tempfile);
-  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp)
   {
     // LCOV_EXCL_START

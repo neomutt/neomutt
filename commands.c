@@ -876,7 +876,7 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
 
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file
@@ -935,7 +935,7 @@ static enum CommandResult parse_setenv(struct Buffer *buf, struct Buffer *s,
     struct Buffer *tempfile = buf_pool_get();
     buf_mktemp(tempfile);
 
-    FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+    FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
     if (!fp_out)
     {
       // L10N: '%s' is the file name of the temporary file
@@ -1621,7 +1621,7 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
 
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_out)
   {
     // L10N: '%s' is the file name of the temporary file

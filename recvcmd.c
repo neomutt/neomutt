@@ -507,7 +507,7 @@ static void attach_forward_bodies(FILE *fp, struct Email *e, struct AttachCtx *a
 
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_error(_("Can't open temporary file %s"), buf_string(tempfile));
@@ -698,7 +698,7 @@ static void attach_forward_msgs(FILE *fp, struct AttachCtx *actx, struct Body *b
     /* no MIME encapsulation */
 
     buf_mktemp(tempfile);
-    fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+    fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
     if (!fp_tmp)
     {
       mutt_error(_("Can't create %s"), buf_string(tempfile));
@@ -1009,7 +1009,7 @@ void mutt_attach_reply(FILE *fp, struct Mailbox *m, struct Email *e,
 
   tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (!fp_tmp)
   {
     mutt_error(_("Can't create %s"), buf_string(tempfile));

@@ -219,7 +219,7 @@ static void transform_to_7bit(struct Body *b, FILE *fp_in, struct ConfigSubset *
        * restrict the lifetime of the buffer tightly */
       buf = buf_pool_get();
       buf_mktemp(buf);
-      state.fp_out = mutt_file_fopen(buf_string(buf), "w");
+      state.fp_out = mutt_file_fopen(buf_string(buf), "w"); // gahr - ok
       if (!state.fp_out)
       {
         mutt_perror("fopen");
@@ -286,7 +286,7 @@ void mutt_message_to_7bit(struct Body *b, FILE *fp, struct ConfigSubset *sub)
 
   /* Avoid buffer pool due to recursion */
   buf_mktemp(tempfile);
-  fp_out = mutt_file_fopen(buf_string(tempfile), "w+");
+  fp_out = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp_out)
   {
     mutt_perror("fopen");
@@ -472,7 +472,7 @@ struct Body *mutt_make_message_attach(struct Mailbox *m, struct Email *e,
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  fp = mutt_file_fopen_masked(buf_string(tempfile), "w+");
+  fp = mutt_file_fopen_masked(buf_string(tempfile), "w+"); // gahr - ok
   if (!fp)
   {
     buf_pool_release(&tempfile);
@@ -853,7 +853,7 @@ static int bounce_message(FILE *fp, struct Mailbox *m, struct Email *e,
 
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
-  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w");
+  FILE *fp_tmp = mutt_file_fopen(buf_string(tempfile), "w"); // gahr - ok
   if (fp_tmp)
   {
     CopyHeaderFlags chflags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
@@ -1086,7 +1086,7 @@ int mutt_write_fcc(const char *path, struct Email *e, const char *msgid, bool po
   {
     tempfile = buf_pool_get();
     buf_mktemp(tempfile);
-    fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+");
+    fp_tmp = mutt_file_fopen(buf_string(tempfile), "w+"); // gahr - ok
     if (!fp_tmp)
     {
       mutt_perror("%s", buf_string(tempfile));
