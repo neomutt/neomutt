@@ -435,7 +435,7 @@ void sb_win_add_observers(struct MuttWindow *win)
   notify_observer_add(NeoMutt->notify, NT_ACCOUNT, sb_account_observer, win);
   notify_observer_add(NeoMutt->notify, NT_COMMAND, sb_command_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, sb_config_observer, win);
-  notify_observer_add(dlg->notify, NT_ALL, sb_index_observer, win);
+  notify_observer_add(dlg->notify, NT_INDEX, sb_index_observer, win);
   notify_observer_add(NeoMutt->notify, NT_MAILBOX, sb_mailbox_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, sb_window_observer, win);
 }
