@@ -93,67 +93,6 @@ static bool stat_equal(struct stat *st_old, struct stat *st_new)
 }
 
 /**
- * mkwrapdir - Create a temporary directory next to a file name
- * @param path    Existing filename
- * @param newfile New filename
- * @param newdir  New directory name
- * @retval  0 Success
- * @retval -1 Error
- */
-static int mkwrapdir(const char *path, struct Buffer *newfile, struct Buffer *newdir)
-{
-  const char *basename = NULL;
-  int rc = 0;
-
-  struct Buffer *parent = buf_pool_get();
-  buf_strcpy(parent, path);
-
-  char *p = strrchr(buf_string(parent), '/');
-  if (p)
-  {
-    *p = '\0';
-    basename = p + 1;
-  }
-  else
-  {
-    buf_strcpy(parent, ".");
-    basename = path;
-  }
-
-  buf_printf(newdir, "%s/%s", buf_string(parent), ".muttXXXXXX");
-  if (!mkdtemp(newdir->data))
-  {
-    mutt_debug(LL_DEBUG1, "mkdtemp() failed\n");
-    rc = -1;
-    goto cleanup;
-  }
-
-  buf_printf(newfile, "%s/%s", buf_string(newdir), NONULL(basename));
-
-cleanup:
-  buf_pool_release(&parent);
-  return rc;
-}
-
-/**
- * put_file_in_place - Move a file into place
- * @param path      Destination path
- * @param safe_file Current filename
- * @param safe_dir  Current directory name
- * @retval  0 Success
- * @retval -1 Error, see errno
- */
-static int put_file_in_place(const char *path, const char *safe_file, const char *safe_dir)
-{
-  int rc;
-
-  rc = mutt_file_safe_rename(safe_file, path);
-  unlink(safe_file);
-  rmdir(safe_dir);
-  return rc;
-}
-
-/**
  * mutt_file_fclose_full - Close a FILE handle (and NULL the pointer)
  * @param[out] fp    FILE handle to close
  * @param[in]  file  Source file
@@ -579,55 +518,17 @@ int mutt_file_open(const char *path, uint32_t flags, mode_t mode)
   if (!path)
     return -1;
 
-  int fd;
-  struct Buffer *safe_file = buf_pool_get();
-  struct Buffer *safe_dir = buf_pool_get();
-
-  if (flags & O_EXCL)
-  {
-    buf_alloc(safe_file, PATH_MAX);
-    buf_alloc(safe_dir, PATH_MAX);
-
-    if (mkwrapdir(path, safe_file, safe_dir) == -1)
-    {
-      fd = -1;
-      goto cleanup;
-    }
-
-    fd = open(buf_string(safe_file), flags, mode);
-    if (fd < 0)
-    {
-      rmdir(buf_string(safe_dir));
-      goto cleanup;
-    }
-
-    /* NFS and I believe cygwin do not handle movement of open files well */
-    close(fd);
-    if (put_file_in_place(path, buf_string(safe_file), buf_string(safe_dir)) == -1)
-    {
-      fd = -1;
-      goto cleanup;
-    }
-  }
-
-  fd = open(path, flags & ~O_EXCL, 0600);
+  int fd = open(path, flags & ~O_EXCL, 0600);
   if (fd < 0)
-    goto cleanup;
+    return -1;
 
   /* make sure the file is not symlink */
-  struct stat st_old = { 0 };
-  struct stat st_new = { 0 };
-  if (((lstat(path, &st_old) < 0) || (fstat(fd, &st_new) < 0)) ||
-      !stat_equal(&st_old, &st_new))
+  struct stat st = { 0 };
+  if ((lstat(path, &st) < 0) || S_ISLNK(st.st_mode))
   {
     close(fd);
-    fd = -1;
-    goto cleanup;
+    return -1;
   }
-
-cleanup:
-  buf_pool_release(&safe_file);
-  buf_pool_release(&safe_dir);
 
   return fd;
 }
@@ -652,16 +553,13 @@ DIR *mutt_file_opendir(const char *path, enum MuttOpenDirMode mode)
 /**
  * mutt_file_fopen_full - Call fopen() safely
  * @param path  Filename
- * @param mode  Mode e.g. "r" readonly; "w" read-write
+ * @param mode  Mode e.g. "r" readonly; "w" write-only; "a" append; "w+" read-write
  * @param perms Permissions of the file (Relevant only when writing or appending)
  * @param file  Source file
  * @param line  Source line number
  * @param func  Source function
  * @retval ptr  FILE handle
  * @retval NULL Error, see errno
- *
- * When opening files for writing, make sure the file doesn't already exist to
- * avoid race conditions.
  */
 FILE *mutt_file_fopen_full(const char *path, const char *mode, const mode_t perms,
                            const char *file, int line, const char *func)
@@ -669,27 +567,7 @@ FILE *mutt_file_fopen_full(const char *path, const char *mode, const mode_t perm
   if (!path || !mode)
     return NULL;
 
-  FILE *fp = NULL;
-  if (mode[0] == 'w')
-  {
-    uint32_t flags = O_CREAT | O_EXCL | O_NOFOLLOW;
-
-    if (mode[1] == '+')
-      flags |= O_RDWR;
-    else
-      flags |= O_WRONLY;
-
-    int fd = mutt_file_open(path, flags, perms);
-    if (fd >= 0)
-    {
-      fp = fdopen(fd, mode);
-    }
-  }
-  else
-  {
-    fp = fopen(path, mode);
-  }
-
+  FILE *fp = fopen(path, mode);
   if (fp)
   {
     MuttLogger(0, file, line, func, LL_DEBUG2, "File opened (fd=%d): %s\n",
@@ -1094,6 +972,22 @@ void mutt_file_touch_atime(int fd)
   struct timespec times[2] = { { 0, UTIME_NOW }, { 0, UTIME_OMIT } };
   futimens(fd, times);
 #endif
+}
+
+/**
+ * mutt_file_touch - Make sure a file exists
+ * @param path Filename
+ * @retval true if succeeded
+ */
+bool mutt_file_touch(const char *path)
+{
+  FILE *fp = mutt_file_fopen(path, "w");
+  if (!fp)
+  {
+    return false;
+  }
+  mutt_file_fclose(&fp);
+  return true;
 }
 
 /**

@@ -184,12 +184,7 @@ static int setup_paths(struct Mailbox *m)
   buf_copy(&m->pathbuf, buf);
   buf_pool_release(&buf);
 
-  FILE *fp = mutt_file_fopen(mailbox_path(m), "w");
-  if (!fp)
-    return -1;
-
-  mutt_file_fclose(&fp);
-  return 0;
+  return mutt_file_touch(mailbox_path(m)) ? 0 : -1;
 }
 
 /**

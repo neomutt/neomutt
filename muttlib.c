@@ -609,7 +609,6 @@ int mutt_check_overwrite(const char *attname, const char *path, struct Buffer *f
         *opt = MUTT_SAVE_APPEND;
         break;
       case 1: /* overwrite */
-        *opt = MUTT_SAVE_OVERWRITE;
         break;
     }
   }
