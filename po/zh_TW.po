@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Chao-Kuei Hung <ckhung@cyut.edu.tw>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -340,8 +340,8 @@ msgstr "沒有發現符合的 mailcap 登錄。將以文字檔方式瀏覽"
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME 形式未被定義. 無法顯示附件內容"
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "無法建立過濾器"
@@ -357,6 +357,7 @@ msgid "---Command: %-30.30s Attachment: %s"
 msgstr "---命令: %-30.30s 附件: %s"
 
 #: attach/mutt_attach.c:672
+#, c-format
 msgid "---Attachment: %s: %s"
 msgstr "-- 附件： %s: %s"
 
@@ -365,11 +366,11 @@ msgstr "-- 附件： %s: %s"
 msgid "---Attachment: %s"
 msgstr "---附件： %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "寫入失敗"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "我不知道要如何列印它"
 
@@ -378,8 +379,10 @@ msgid "Saving..."
 msgstr "儲存中…"
 
 #: attach/recvattach.c:358 attach/recvattach.c:533
+#, fuzzy, c-format
 msgid "Attachment saved"
-msgstr "附件已被儲存。"
+msgid_plural "%d attachments saved"
+msgstr[0] "附件已被儲存。"
 
 #: attach/recvattach.c:558
 #, c-format
@@ -399,7 +402,6 @@ msgid "Pipe to: "
 msgstr "導引 (pipe) 給："
 
 # ckhung 241209
-
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
 #: attach/recvattach.c:796
@@ -1159,7 +1161,7 @@ msgstr "沒有指定標題"
 msgid "-- Attachments"
 msgstr "-- 附件"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1404,16 +1406,16 @@ msgstr "信件已寫入"
 msgid "Save (postpone) draft message?"
 msgstr "要叫出被延遲的信件?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "開啟檔案來分析檔頭失敗"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2457,8 +2459,8 @@ msgid "Character set changed to %s; converting"
 msgstr "字符集已換為 %s; 轉換中"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "序列功能尚未啟動"
 
@@ -5784,7 +5786,7 @@ msgstr ""
 msgid "Can't parse message template: %s"
 msgstr "無法開啟信件檔案：%s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s：無法附帶檔案"
@@ -6011,16 +6013,16 @@ msgstr "沒有 SSL 功能"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr ""
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "主信件不存在"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 #, fuzzy
 msgid "Root message is not visible in this limited view"
 msgstr "在限制閱覽模式下無法顯示主信件"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 #, fuzzy
 msgid "Parent message is not visible in this limited view"
 msgstr "在限制閱覽模式下無法顯示主信件"

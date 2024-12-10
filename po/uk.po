@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2022-06-30 00:19+0300\n"
 "Last-Translator: Andrij Mizyk <andmizyk@gmail.com>\n"
 "Language-Team: Ukrainian\n"
@@ -344,8 +344,8 @@ msgstr "Не знайдено відомостей у mailcap. Показано 
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "Тип MIME не визначено. Не можливо переглянути прикріплення."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Не можливо створити фільтр"
@@ -370,11 +370,11 @@ msgstr "---Прикріплення: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Прикріплення: %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Збій запису"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "Я не знаю, як це надрукувати"
 
@@ -1153,7 +1153,7 @@ msgstr "Групи новин"
 msgid "-- Attachments"
 msgstr "-- Прикріплення"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1385,16 +1385,16 @@ msgstr "Лист записано"
 msgid "Save (postpone) draft message?"
 msgstr "Зберегти (відкласти) чернетку?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Не вдалося перевірити відправника"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2414,8 +2414,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Кодування змінено на %s; перетворюється"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "Формування гілок не дозволено"
 
@@ -5659,7 +5659,7 @@ msgstr "Неможливо використовувати -E з stdin"
 msgid "Can't parse message template: %s"
 msgstr "Не можливо розпізнати шаблон листа: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: не можливо прикріпити файл"
@@ -5884,15 +5884,15 @@ msgstr "SSL недоступний, не можливо підʼєднатися
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Не можливо використовувати префікс 'last-' із 'threads' для %s"
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Батьківський лист недоступний"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Root message is not visible in this limited view"
 msgstr "Кореневий лист не можна побачити при цьому обмеженні"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Батьківський лист не можна побачити при цьому обмеженні"
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2021-05-06 05:30+0100\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language-Team: Liberium <epost@anotheragency.no>\n"
@@ -342,8 +342,8 @@ msgstr "Fant ingen passende mailcap-oppføring. Viser som tekst."
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME-typen er ikke definert. Kan ikke vise vedlegg."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Kan ikke opprette filter"
@@ -368,11 +368,11 @@ msgstr "---Vedlegg: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Vedlegg: %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Skrivefeil"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "Jeg vet ikke hvordan man skriver ut dette"
 
@@ -1147,7 +1147,7 @@ msgstr "Nyhetsgrupper"
 msgid "-- Attachments"
 msgstr "-- Vedlegg"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1378,16 +1378,16 @@ msgstr "Melding skrevet"
 msgid "Save (postpone) draft message?"
 msgstr "Lagre (utsett) kladd?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Klarte ikke å bekrefte avsender"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2399,8 +2399,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Tegnsett endret til %s; konverterer"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "Tråding er ikke slått på"
 
@@ -5632,7 +5632,7 @@ msgstr "Kan ikke bruke flagget «-E» med standard inndata"
 msgid "Can't parse message template: %s"
 msgstr "Kan ikke tolke meldingsmal: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: kunne ikke legge ved fil"
@@ -5857,15 +5857,15 @@ msgstr "SSL er ikke tilgjengelig. Kan ikke koble til %s"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Kan ikke bruke «last-»-prefikset med «tråder» for %s"
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Ovennevnt melding er ikke tilgjengelig"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Root message is not visible in this limited view"
 msgstr "Rotmelding er ikke synlig i denne begrensede visningen"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Ovennevnt melding er ikke synlig i denne begrensede visningen"
 

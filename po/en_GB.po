@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2017-04-17 17:06+0100\n"
 "Last-Translator: Richard Russon <rich@flatcap.org>\n"
 "Language-Team: none\n"
@@ -337,8 +337,8 @@ msgstr "No matching mailcap entry found.  Viewing as text."
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME type not defined.  Can't view attachment."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Can't create filter"
@@ -363,11 +363,11 @@ msgstr "---Attachment: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Attachment: %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Write fault"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "I don't know how to print that"
 
@@ -1142,7 +1142,7 @@ msgstr "Newsgroups"
 msgid "-- Attachments"
 msgstr "-- Attachments"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr "-- Preview"
 
@@ -1371,15 +1371,15 @@ msgstr "Message written"
 msgid "Save (postpone) draft message?"
 msgstr "Save (postpone) draft message?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr "Only inline attachments with content-type text/* can be previewed"
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 msgid "Failed to move cursor!"
 msgstr "Failed to move cursor!"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr "-- Preview (%.0f%%)"
@@ -2390,8 +2390,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Character set changed to %s; converting"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "Threading is not enabled"
 
@@ -5618,7 +5618,7 @@ msgstr "Can't use -E flag with stdin"
 msgid "Can't parse message template: %s"
 msgstr "Can't parse message template: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: unable to attach file"
@@ -5843,15 +5843,15 @@ msgstr "SSL is unavailable, can't connect to %s"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Cannot use 'last-' prefix with 'threads' for %s"
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Parent message is not available"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Root message is not visible in this limited view"
 msgstr "Root message is not visible in this limited view"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Parent message is not visible in this limited view"
 

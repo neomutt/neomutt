@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-11-14\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-05 12:44+0000\n"
+"POT-Creation-Date: 2024-12-10 13:03+0000\n"
 "PO-Revision-Date: 2020-04-20 15:18+0100\n"
 "Last-Translator: Jakub Jindra <jakub.jindra@socialbakers.com>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -352,8 +352,8 @@ msgstr "Odpovídající položka v mailcapu nebyla nalezena. Zobrazuji jako text
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME typ není definován, nelze zobrazit přílohu."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1197
-#: attach/mutt_attach.c:1262 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
+#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:301
 msgid "Can't create filter"
 msgstr "Filtr nelze vytvořit"
@@ -378,11 +378,11 @@ msgstr "---Příloha: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Příloha: %s"
 
-#: attach/mutt_attach.c:1015 attach/mutt_attach.c:1023
+#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
 msgid "Write fault"
 msgstr "Chyba při zápisu"
 
-#: attach/mutt_attach.c:1286
+#: attach/mutt_attach.c:1287
 msgid "I don't know how to print that"
 msgstr "Nevím, jak mám toto vytisknout"
 
@@ -1162,7 +1162,7 @@ msgstr "Skupiny"
 msgid "-- Attachments"
 msgstr "-- Přílohy"
 
-#: compose/dlg_compose.c:337 compose/preview.c:141
+#: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
 msgstr ""
 
@@ -1392,16 +1392,16 @@ msgstr "Zpráva uložena"
 msgid "Save (postpone) draft message?"
 msgstr "Uložit zprávu do odložených?"
 
-#: compose/preview.c:139
+#: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:165
+#: compose/preview.c:196
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Odesílatele nelze ověřit"
 
-#: compose/preview.c:183
+#: compose/preview.c:219
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -2423,8 +2423,8 @@ msgid "Character set changed to %s; converting"
 msgstr "Znaková sada změněna na %s; převádím"
 
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1300
-#: mutt_thread.c:1366 mutt_thread.c:1452
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
+#: mutt_thread.c:1365 mutt_thread.c:1451
 msgid "Threading is not enabled"
 msgstr "Vlákna nejsou podporována"
 
@@ -5663,7 +5663,7 @@ msgstr "Přepínač -E nelze se standardním vstupem použít"
 msgid "Can't parse message template: %s"
 msgstr "Soubor se šablonou zprávy nelze rozebrat: %s"
 
-#: main.c:1235 mutt_header.c:349
+#: main.c:1235 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "soubor %s nelze připojit"
@@ -5888,15 +5888,15 @@ msgstr "SSL není dostupné, nelze se spojit s %s"
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Nelze použít 'last-' prefix s 'threads' pro %s"
 
-#: mutt_thread.c:1387
+#: mutt_thread.c:1386
 msgid "Parent message is not available"
 msgstr "Rodičovská zpráva není dostupná"
 
-#: mutt_thread.c:1393
+#: mutt_thread.c:1392
 msgid "Root message is not visible in this limited view"
 msgstr "Kořenová zpráva není v omezeném zobrazení viditelná"
 
-#: mutt_thread.c:1395
+#: mutt_thread.c:1394
 msgid "Parent message is not visible in this limited view"
 msgstr "Rodičovská zpráva není v omezeném zobrazení viditelná"
 
