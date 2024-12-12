@@ -38,6 +38,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "lib.h"
+#include "color/lib.h"
 #include "index/lib.h"
 
 struct ListHead SidebarPinned = STAILQ_HEAD_INITIALIZER(SidebarPinned); ///< List of mailboxes to always display in the sidebar
@@ -201,6 +202,10 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
 void sb_init(void)
 {
   commands_register(SbCommands, mutt_array_size(SbCommands));
+
+  // Set a default style
+  struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);
+  ac->attrs = A_UNDERLINE;
 
   // Listen for dialog creation events
   notify_observer_add(AllDialogsWindow->notify, NT_WINDOW,

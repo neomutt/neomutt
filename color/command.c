@@ -91,7 +91,6 @@ const struct Mapping ColorFields[] = {
   { "sidebar_new",       MT_COLOR_SIDEBAR_NEW },
   { "sidebar_ordinary",  MT_COLOR_SIDEBAR_ORDINARY },
   { "sidebar_spool_file", MT_COLOR_SIDEBAR_SPOOLFILE },
-  { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE }, // This will be deprecated
   { "sidebar_unread",    MT_COLOR_SIDEBAR_UNREAD },
   { "signature",         MT_COLOR_SIGNATURE },
   { "status",            MT_COLOR_STATUS },
@@ -101,6 +100,8 @@ const struct Mapping ColorFields[] = {
   { "tree",              MT_COLOR_TREE },
   { "underline",         MT_COLOR_UNDERLINE },
   { "warning",           MT_COLOR_WARNING },
+  // Deprecated
+  { "sidebar_spoolfile", MT_COLOR_SIDEBAR_SPOOLFILE },
   { NULL, 0 },
   // clang-format on
 };
@@ -242,7 +243,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   if (mutt_str_equal(buf->data, "*"))
   {
-    colors_cleanup();
+    colors_reset();
     return MUTT_CMD_SUCCESS;
   }
 
@@ -259,7 +260,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  if (cid == MT_COLOR_QUOTED)
+  if (COLOR_QUOTED(cid))
   {
     color_debug(LL_DEBUG5, "quoted\n");
     return quoted_colors_parse_uncolor(cid, ql, err);

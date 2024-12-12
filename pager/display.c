@@ -172,7 +172,7 @@ static void resolve_color(struct MuttWindow *win, struct Line *lines, int line_n
     def_color = *simple_color_get(lines[m].cid);
   }
 
-  if ((flags & MUTT_SHOWCOLOR) && (lines[m].cid == MT_COLOR_QUOTED))
+  if ((flags & MUTT_SHOWCOLOR) && COLOR_QUOTED(lines[m].cid))
   {
     struct QuoteStyle *qc = lines[m].quote;
 
@@ -480,6 +480,16 @@ static void match_body_patterns(char *pat, struct Line *lines, int line_num)
 }
 
 /**
+ * color_is_header - Colour is for an Email header
+ * @param cid Colour Id, e.g. #MT_COLOR_HEADER
+ * @retval true Colour is for an Email header
+ */
+bool color_is_header(enum ColorId cid)
+{
+  return (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_HDRDEFAULT);
+}
+
+/**
  * resolve_types - Determine the style for a line of text
  * @param[in]  win          Window
  * @param[in]  buf          Formatted text
@@ -502,7 +512,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   const bool c_header_color_partial = cs_subset_bool(NeoMutt->sub, "header_color_partial");
   int offset, i = 0;
 
-  if ((line_num == 0) || simple_color_is_header(lines[line_num - 1].cid) ||
+  if ((line_num == 0) || color_is_header(lines[line_num - 1].cid) ||
       (check_protected_header_marker(raw) == 0))
   {
     if (buf[0] == '\n') /* end of header */
@@ -580,7 +590,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
 
     lines[line_num].cid = MT_COLOR_SIGNATURE;
     while ((i < lines_used) && (check_sig(buf, lines, i - 1) == 0) &&
-           ((lines[i].cid == MT_COLOR_NORMAL) || (lines[i].cid == MT_COLOR_QUOTED) ||
+           ((lines[i].cid == MT_COLOR_NORMAL) || COLOR_QUOTED(lines[i].cid) ||
             (lines[i].cid == MT_COLOR_HEADER)))
     {
       /* oops... */
@@ -612,7 +622,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
   }
 
   /* body patterns */
-  if ((lines[line_num].cid == MT_COLOR_NORMAL) || (lines[line_num].cid == MT_COLOR_QUOTED) ||
+  if ((lines[line_num].cid == MT_COLOR_NORMAL) || COLOR_QUOTED(lines[line_num].cid) ||
       ((lines[line_num].cid == MT_COLOR_HDRDEFAULT) && c_header_color_partial))
   {
     match_body_patterns(buf, lines, line_num);
@@ -1148,7 +1158,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
 
     /* this also prevents searching through the hidden lines */
     const short c_toggle_quoted_show_levels = cs_subset_number(NeoMutt->sub, "toggle_quoted_show_levels");
-    if ((flags & MUTT_HIDE) && (cur_line->cid == MT_COLOR_QUOTED) &&
+    if ((flags & MUTT_HIDE) && COLOR_QUOTED(cur_line->cid) &&
         (!cur_line->quote || (cur_line->quote->quote_n >= c_toggle_quoted_show_levels)))
     {
       flags = 0; /* MUTT_NOSHOW */
@@ -1161,7 +1171,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
    * solution is hence to call regexec() again, just to find out the
    * length of the quote prefix.  */
   if ((flags & MUTT_SHOWCOLOR) && !cur_line->cont_line &&
-      (cur_line->cid == MT_COLOR_QUOTED) && !cur_line->quote)
+      COLOR_QUOTED(cur_line->cid) && !cur_line->quote)
   {
     if (fill_buffer(fp, bytes_read, cur_line->offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
@@ -1253,8 +1263,8 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
   const bool c_smart_wrap = cs_subset_bool(NeoMutt->sub, "smart_wrap");
   if (c_smart_wrap)
   {
-    if ((cnt < b_read) && (ch != -1) &&
-        !simple_color_is_header(cur_line->cid) && !isspace(buf[cnt]))
+    if ((cnt < b_read) && (ch != -1) && !color_is_header(cur_line->cid) &&
+        !isspace(buf[cnt]))
     {
       buf_ptr = buf + ch;
       /* skip trailing blanks */

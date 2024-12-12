@@ -44,37 +44,12 @@
 #include "simple2.h"
 
 /**
- * colors_cleanup - Reset all the simple, quoted and regex colours
+ * colors_init - Initialize colours
  */
-void colors_cleanup(void)
-{
-  color_debug(LL_DEBUG5, "clean up\n");
-  mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
-  struct EventColor ev_c = { MT_COLOR_MAX, NULL };
-  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
-
-  simple_colors_cleanup();
-  quoted_colors_cleanup();
-  regex_colors_cleanup();
-}
-
-/**
- * mutt_colors_cleanup - Cleanup all the colours
- */
-void mutt_colors_cleanup(void)
-{
-  colors_cleanup();
-  merged_colors_cleanup();
-  color_notify_cleanup();
-}
-
-/**
- * mutt_colors_init - Initialize colours
- */
-void mutt_colors_init(void)
+void colors_init(void)
 {
   color_debug(LL_DEBUG5, "init\n");
-  color_notify_init();
+  color_notify_init(NeoMutt->notify);
 
   curses_colors_init();
   merged_colors_init();
@@ -85,8 +60,34 @@ void mutt_colors_init(void)
   start_color();
   use_default_colors();
   color_debug(LL_DEBUG5, "COLORS = %d, COLOR_PAIRS = %d\n", COLORS, COLOR_PAIRS);
+}
 
-  notify_set_parent(ColorsNotify, NeoMutt->notify);
+/**
+ * colors_reset - Reset all the simple, quoted and regex colours
+ */
+void colors_reset(void)
+{
+  color_debug(LL_DEBUG5, "reset\n");
+  mutt_debug(LL_NOTIFY, "NT_COLOR_RESET: [ALL]\n");
+
+  simple_colors_reset();
+  quoted_colors_reset();
+  regex_colors_reset();
+
+  struct EventColor ev_c = { MT_COLOR_MAX, NULL };
+  notify_send(ColorsNotify, NT_COLOR, NT_COLOR_RESET, &ev_c);
+}
+
+/**
+ * colors_cleanup - Cleanup all the colours
+ */
+void colors_cleanup(void)
+{
+  simple_colors_cleanup();
+  quoted_colors_cleanup();
+  regex_colors_cleanup();
+  merged_colors_cleanup();
+  color_notify_cleanup();
 }
 
 /**

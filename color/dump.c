@@ -221,7 +221,8 @@ const char *color_log_name(char *buf, int buflen, struct ColorElement *elem)
  */
 void quoted_colors_dump(struct Buffer *buf)
 {
-  if (NumQuotedColors == 0)
+  int num = quoted_colors_num_used();
+  if (num == 0)
     return;
 
   struct Buffer *swatch = buf_pool_get();
@@ -229,7 +230,7 @@ void quoted_colors_dump(struct Buffer *buf)
   char color_bg[64] = { 0 };
 
   buf_addstr(buf, _("# Quoted Colors\n"));
-  for (int i = 0; i < NumQuotedColors; i++)
+  for (int i = 0; i < num; i++)
   {
     struct AttrColor *ac = quoted_colors_get(i);
     if (!ac)
@@ -310,7 +311,7 @@ void simple_colors_dump(struct Buffer *buf)
   int count = 0;
   for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
   {
-    if ((cid == MT_COLOR_QUOTED) || (cid == MT_COLOR_STATUS))
+    if (COLOR_QUOTED(cid) || (cid == MT_COLOR_STATUS))
       continue;
 
     struct AttrColor *ac = simple_color_get(cid);
@@ -323,7 +324,7 @@ void simple_colors_dump(struct Buffer *buf)
     buf_addstr(buf, _("# Simple Colors\n"));
     for (enum ColorId cid = MT_COLOR_NONE + 1; cid < MT_COLOR_MAX; cid++)
     {
-      if ((cid == MT_COLOR_QUOTED) || (cid == MT_COLOR_STATUS))
+      if (COLOR_QUOTED(cid) || (cid == MT_COLOR_STATUS))
         continue;
 
       struct AttrColor *ac = simple_color_get(cid);

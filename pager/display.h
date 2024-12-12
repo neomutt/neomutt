@@ -28,10 +28,9 @@
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "lib.h"
+#include "color/lib.h"
 
-struct AttrColorList;
 struct MuttWindow;
-struct QuoteStyle;
 
 /**
  * struct TextSyntax - Highlighting for a piece of text
@@ -50,7 +49,7 @@ ARRAY_HEAD(TextSyntaxArray, struct TextSyntax);
 struct Line
 {
   LOFF_T offset;             ///< Offset into Email file (PagerPrivateData->fp)
-  short cid;                 ///< Default line colour, e.g. #MT_COLOR_QUOTED
+  short cid;                 ///< Default line colour, e.g. #MT_COLOR_SIGNATURE
   bool cont_line   : 1;      ///< Continuation of a previous line (wrapped by NeoMutt)
   bool cont_header : 1;      ///< Continuation of a header line (wrapped by MTA)
 
@@ -67,5 +66,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
                  int line_num, int *lines_used, int *lines_max, PagerFlags flags,
                  struct QuoteStyle **quote_list, int *q_level, bool *force_redraw,
                  regex_t *search_re, struct MuttWindow *win_pager, struct AttrColorList *ansi_list);
+
+bool color_is_header(enum ColorId cid);
 
 #endif /* MUTT_PAGER_DISPLAY_H */

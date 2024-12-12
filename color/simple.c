@@ -59,23 +59,30 @@ void simple_colors_init(void)
   SimpleColors[MT_COLOR_ITALIC].attrs = A_ITALIC;
   SimpleColors[MT_COLOR_MARKERS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_SEARCH].attrs = A_REVERSE;
-  SimpleColors[MT_COLOR_SIDEBAR_HIGHLIGHT].attrs = A_UNDERLINE;
   SimpleColors[MT_COLOR_STATUS].attrs = A_REVERSE;
   SimpleColors[MT_COLOR_STRIPE_EVEN].attrs = A_BOLD;
   SimpleColors[MT_COLOR_UNDERLINE].attrs = A_UNDERLINE;
 }
 
 /**
- * simple_colors_cleanup - Reset the simple colour definitions
+ * simple_colors_reset - Reset the simple colour definitions
  */
-void simple_colors_cleanup(void)
+void simple_colors_reset(void)
 {
-  color_debug(LL_DEBUG5, "clean up defs\n");
+  color_debug(LL_DEBUG5, "reset defs\n");
   for (size_t i = 0; i < MT_COLOR_MAX; i++)
   {
     attr_color_clear(&SimpleColors[i]);
   }
   simple_colors_init();
+}
+
+/**
+ * simple_colors_cleanup - Cleanup the simple colour definitions
+ */
+void simple_colors_cleanup(void)
+{
+  simple_colors_reset();
 }
 
 /**
@@ -109,16 +116,6 @@ struct AttrColor *simple_color_get(enum ColorId cid)
 bool simple_color_is_set(enum ColorId cid)
 {
   return attr_color_is_set(simple_color_get(cid));
-}
-
-/**
- * simple_color_is_header - Colour is for an Email header
- * @param cid Colour Id, e.g. #MT_COLOR_HEADER
- * @retval true Colour is for an Email header
- */
-bool simple_color_is_header(enum ColorId cid)
-{
-  return (cid == MT_COLOR_HEADER) || (cid == MT_COLOR_HDRDEFAULT);
 }
 
 /**

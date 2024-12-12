@@ -41,7 +41,7 @@ int color_observer(struct NotifyCallback *nc)
 
 void test_color_notify(void)
 {
-  color_notify_init();
+  color_notify_init(NeoMutt->notify);
 
   mutt_color_observer_add(color_observer, NULL);
 
