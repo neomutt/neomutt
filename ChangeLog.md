@@ -1,3 +1,61 @@
+2024-12-12  Richard Russon  \<rich@flatcap.org\>
+* Features
+  - #4437 show message preview in compose view
+  - #4439 add trailing commas when editing addresses
+* Bug Fixes
+  - #4444 expando: fix overflow
+  - #4461 Spaces can be wide
+  - #4464 Remove BOM from UTF-8 text
+  - #4467 Bug with wrong fingerprints in certificate_file
+  - #4470 fix postponed sorting assertion failure
+  - #4472 fix: `save_attachment_open()` when overwriting
+  - #4473 add text-wrapping to compose message preview pager
+  - #4475 edit_headers: cleanup temporary file on error
+  - expando: fix crash on empty `%[]` date
+  - expando: fix container formatting
+  - browser: fix 'tag-' display
+  - query: fix memory leak
+  - fix more arrow_cursor + search
+* Changed Config
+  - Config Renames:
+    - `$pgp_sort_keys`       -> `$pgp_key_sort`
+    - `$sidebar_sort_method` -> `$sidebar_sort`
+    - `$sort_alias`          -> `$alias_sort`
+    - `$sort_browser`        -> `$browser_sort`
+  - Changed Defaults:
+    - `set alias_format = "%3i %f%t %-15a %-56A | %C%> %Y"`
+    - `set query_format = "%3i %t %-25N %-25E | %C%> %Y"`
+* Translations
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Turkish
+  - 89% French
+  - 39% Chinese (Traditional)
+* Coverity Defects
+  - Explicit null dereferenced
+  - Overflowed constant
+  - Overflowed return value
+  - Resource leak
+* Docs
+  - alias tags
+* Build
+  - #4452 only use `struct tm.tm_gmtoff` if available
+* Code
+  - #4294 refactor memory allocation
+  - #4442 remove unused fields from ComposeSharedData
+  - #4447 refactor 'sort' constants
+  - #4449 add `mutt_window_swap()`
+  - unify Menu data
+  - move config to libraries
+  - unify Alias/Query
+  - expando factor out callbacks
+  - refactor `simple_dialog_new()`
+  - test: add `TEST_CHECK_NUM_EQ()`
+  - fopen: tidy read-only
+* Upstream
+  - #4448 Update queue.h
+
 2024-11-14  Richard Russon  \<rich@flatcap.org\>
 * Security
   - Fixed: CVE-2024-49393

@@ -2,7 +2,7 @@
 
 [![Stars](https://img.shields.io/github/stars/neomutt/neomutt.svg?style=social&label=Stars)](https://github.com/neomutt/neomutt "Give us a Star")
 [![Twitter](https://img.shields.io/twitter/follow/NeoMutt_Org.svg?style=social&label=Follow)](https://twitter.com/NeoMutt_Org "Follow us on Twitter")
-[![Contributors](https://img.shields.io/badge/Contributors-284-orange.svg)](https://github.com/neomutt/neomutt/blob/main/AUTHORS.md "All of NeoMutt's Contributors")
+[![Contributors](https://img.shields.io/badge/Contributors-286-orange.svg)](https://github.com/neomutt/neomutt/blob/main/AUTHORS.md "All of NeoMutt's Contributors")
 [![Release](https://img.shields.io/github/release/neomutt/neomutt.svg)](https://github.com/neomutt/neomutt/releases/latest "Latest Release Notes")
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/neomutt/neomutt/blob/main/LICENSE.md "Copyright Statement")
 [![Code build](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml/badge.svg?branch=main&event=push)](https://github.com/neomutt/neomutt/actions/workflows/build-and-test.yml "Latest Automatic Code Build")
@@ -28,6 +28,7 @@ sorted through them, fixed them up and documented them.
 | Attach Headers Color     | Color attachment headers using regex, just like mail bodies
 | Command-line Crypto (-C) | Enable message security in modes that by default don't enable it
 | Compose to Sender        | Send new mail to the sender of the current mail
+| Compose Message Preview  | Show a preview of the message in the Compose Dialog
 | Compressed Folders       | Read from/write to compressed mailboxes
 | Conditional Dates        | Use rules to choose date format
 | Custom Mailbox Tags      | Implements Notmuch tags and Imap keywords
