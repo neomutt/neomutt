@@ -71,7 +71,7 @@ static struct ConfigDef ComposeVars[] = {
   { "compose_format", DT_EXPANDO|D_L10N_STRING, IP N_("-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-"), IP &ComposeFormatDef, NULL,
     "printf-like format string for the Compose panel's status bar"
   },
-  { "compose_show_preview", DT_BOOL, true, 0, NULL,
+  { "compose_show_preview", DT_BOOL, false, 0, NULL,
     "Display a preview of the message body in the Compose window"
   },
   { "compose_show_user_headers", DT_BOOL, true, 0, NULL,
