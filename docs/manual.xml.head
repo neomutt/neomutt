@@ -13474,7 +13474,7 @@ sendmailcmd = neomutt -C -H - &amp;&amp; true
 
       <sect2 id="compose-message-preview-support">
         <title>Support</title>
-        <para><emphasis role="bold">Since:</emphasis> NeoMutt 2024-11-25</para>
+        <para><emphasis role="bold">Since:</emphasis> NeoMutt 2024-12-12</para>
         <para><emphasis role="bold">Dependencies:</emphasis> None</para>
       </sect2>
 
