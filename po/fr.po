@@ -5676,7 +5676,7 @@ msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
 msgstr ""
-"   --            Cet argument force NeoMutt à arrêter d'analyser des options et\n"
+"   --           Cet argument force NeoMutt à arrêter d'analyser des options et\n"
 "                de traiter les arguments restants comme les adresses, même s'ils\n"
 "                commencent par un tiret"
 
@@ -5759,13 +5759,13 @@ msgstr "  -F <fichier>  Spécifier un fichier de configuration alternatif à lir
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr ""
 "  -f <boîte>    Spécifier une boîte à lettres (comme c'est défini dans la\n"
-"               commande « mailboxes ») à charger"
+"                commande « mailboxes ») à charger"
 
 #: main.c:325
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr ""
 "  -G            Démarrer NeoMutt avec une liste de groupes de discussion\n"
-"               abonnées"
+"                abonnées"
 
 #: main.c:326
 msgid "  -g <server>   Like -G, but start at specified news server"
@@ -5775,7 +5775,7 @@ msgstr "  -g <serveur>  Comme -G, mais commencer d'un serveur spécifié"
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr ""
 "  -H <fichier>  Spécifier un brouillon avec un en-tête et un corps pour la\n"
-"               composition des messages"
+"                composition des messages"
 
 #: main.c:328
 msgid "  -h            Print this help message and exit"
@@ -5789,7 +5789,7 @@ msgstr "  -i <fichier>  Spécifier un fichier à intégrer dans le corps du mess
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 "  -l <fichier>  Spécifier un fichier pour la sortie de débogage (valeur par\n"
-"               défaut \"~/.neomuttdebug0\")"
+"                défaut \"~/.neomuttdebug0\")"
 
 #: main.c:331
 msgid ""
