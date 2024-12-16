@@ -1402,7 +1402,7 @@ main
 
     struct Mailbox *m_cur = mailbox_find(buf_string(folder));
     // Take a copy of the name just in case the hook alters m_cur
-    const char *name = mutt_str_dup(m_cur ? m_cur->name : NULL);
+    const char *name = m_cur ? mutt_str_dup(m_cur->name) : NULL;
     mutt_folder_hook(buf_string(folder), name);
     FREE(&name);
     mutt_startup_shutdown_hook(MUTT_STARTUP_HOOK);
