@@ -49,7 +49,9 @@
  */
 static intptr_t native_get(void *var)
 {
-  return (*(intptr_t *) var & TOGGLE_BIT) ? 0 : *(short *) var;
+  // take care of endianess and always read intptr_t value
+  intptr_t v = *(intptr_t *) var;
+  return (v & TOGGLE_BIT) ? 0 : (short) v;
 }
 
 /**
@@ -57,8 +59,9 @@ static intptr_t native_get(void *var)
  */
 static void native_set(void *var, intptr_t val)
 {
-  *(intptr_t *) var = 0; // clear any pending toggle status
-  *(short *) var = val;
+  // cast to unsigned short to clear any pending toggle status bits
+  val = (unsigned short) val;
+  *(intptr_t *) var = val;
 }
 
 /**
