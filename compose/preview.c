@@ -167,7 +167,7 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
   int row = 0;           // window row to print
   char *line = NULL;
   size_t line_len = 0;
-  while ((line = mutt_file_read_line(NULL, &line_len, fp, NULL, MUTT_RL_NO_FLAGS)))
+  while ((line = mutt_file_read_line(line, &line_len, fp, NULL, MUTT_RL_NO_FLAGS)))
   {
     size_t pos = 0;
     bool text_left = true;
@@ -206,6 +206,7 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
     }
   }
 
+  FREE(&line);
   mutt_file_fclose(&fp);
 
   // Show the scroll percentage in the status bar
