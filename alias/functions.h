@@ -40,7 +40,7 @@ struct MuttWindow;
  * Prototype for a Alias Function
  *
  * @param wdata  Alias Window data
- * @param op     Operation to perform, e.g. OP_ALIAS_NEXT
+ * @param op     Operation to perform, e.g. OP_CREATE_ALIAS
  * @retval enum #FunctionRetval
  */
 typedef int (*alias_function_t)(struct AliasMenuData *wdata, int op);

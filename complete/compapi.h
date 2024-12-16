@@ -40,7 +40,7 @@ struct CompleteOps
    *
    * complete - Perform Auto-Completion
    * @param wdata  Enter Window data
-   * @param op     Operation to perform, e.g. OP_COMPLETE
+   * @param op     Operation to perform, e.g. OP_EDITOR_COMPLETE
    * @retval num #FunctionRetval, e.g. #FR_SUCCESS
    */
   enum FunctionRetval (*complete)(struct EnterWindowData *wdata, int op);

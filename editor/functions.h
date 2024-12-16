@@ -36,7 +36,7 @@ struct MuttWindow;
  * Prototype for a Enter Function
  *
  * @param wdata  Enter Window data
- * @param op     Operation to perform, e.g. OP_ENTER_NEXT
+ * @param op     Operation to perform, e.g. OP_EDITOR_BACKSPACE
  * @retval enum #FunctionRetval
  */
 typedef int (*enter_function_t)(struct EnterWindowData *wdata, int op);

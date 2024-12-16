@@ -27,8 +27,8 @@ sorted through them, fixed them up and documented them.
 | Account Command          | Populate account credentials via an external command
 | Attach Headers Color     | Color attachment headers using regex, just like mail bodies
 | Command-line Crypto (-C) | Enable message security in modes that by default don't enable it
-| Compose to Sender        | Send new mail to the sender of the current mail
 | Compose Message Preview  | Show a preview of the message in the Compose Dialog
+| Compose to Sender        | Send new mail to the sender of the current mail
 | Compressed Folders       | Read from/write to compressed mailboxes
 | Conditional Dates        | Use rules to choose date format
 | Custom Mailbox Tags      | Implements Notmuch tags and Imap keywords

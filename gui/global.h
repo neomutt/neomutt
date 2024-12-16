@@ -41,7 +41,7 @@ typedef int (*global_function_t)(int op);
  */
 struct GlobalFunction
 {
-  int op;                     ///< Op code, e.g. OP_GLOBAL_NEXT
+  int op;                     ///< Op code, e.g. OP_ENTER_COMMAND
   global_function_t function; ///< Function to call
 };
 
