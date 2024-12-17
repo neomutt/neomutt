@@ -124,6 +124,7 @@ static int lua_mutt_call(lua_State *l)
     buf_addstr(buf, lua_tostring(l, i));
     buf_addch(buf, ' ');
   }
+  buf_seek(buf, 0);
 
   if (cmd->parse(token, buf, cmd->data, err))
   {
