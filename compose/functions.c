@@ -1479,13 +1479,11 @@ static int op_attachment_new_mime(struct ComposeSharedData *shared, int op)
 
   ap = mutt_aptr_new();
   /* Touch the file */
-  FILE *fp = mutt_file_fopen(buf_string(fname), "w");
-  if (!fp)
+  if (!mutt_file_touch(buf_string(fname)))
   {
     mutt_error(_("Can't create file %s"), buf_string(fname));
     goto done;
   }
-  mutt_file_fclose(&fp);
 
   ap->body = mutt_make_file_attach(buf_string(fname), shared->sub);
   if (!ap->body)

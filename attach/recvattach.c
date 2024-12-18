@@ -241,7 +241,6 @@ static int save_attachment_flowed_helper(FILE *fp, struct Body *b, const char *p
     struct Buffer *tempfile = buf_pool_get();
     buf_mktemp(tempfile);
 
-    /* Pass MUTT_SAVE_NO_FLAGS to force mutt_file_fopen("w") */
     rc = mutt_save_attachment(fp, b, buf_string(tempfile), MUTT_SAVE_NO_FLAGS, e);
     if (rc != 0)
       goto cleanup;

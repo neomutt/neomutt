@@ -124,6 +124,7 @@ int         mutt_file_stat_compare(struct stat *st1, enum MuttStatType st1_type,
 int         mutt_file_stat_timespec_compare(struct stat *st, enum MuttStatType type, struct timespec *b);
 int         mutt_file_symlink(const char *oldpath, const char *newpath);
 int         mutt_file_timespec_compare(struct timespec *a, struct timespec *b);
+bool        mutt_file_touch(const char *path);
 void        mutt_file_touch_atime(int fd);
 void        mutt_file_unlink(const char *s);
 void        mutt_file_unlink_empty(const char *path);
