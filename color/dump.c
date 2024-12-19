@@ -41,6 +41,9 @@
 #include "quoted.h"
 #include "regex4.h"
 #include "simple2.h"
+#ifdef USE_DEBUG_COLOR
+#include "debug.h"
+#endif
 
 /**
  * color_log_color_attrs - Get a colourful string to represent a colour in the log
