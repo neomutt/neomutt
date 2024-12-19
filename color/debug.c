@@ -52,7 +52,6 @@ const char *color_log_color(color_t fg, color_t bg)
 {
   static char text[64];
   size_t pos = 0;
-  // snprintf(text, sizeof(text), "\033[38;5;%dm\033[48;5;%dmXXXXXX\033[0m", fg, bg);
 
   if (fg != -1)
   {

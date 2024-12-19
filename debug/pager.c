@@ -29,10 +29,37 @@
 #include "config.h"
 #include <stdio.h>
 #include "mutt/lib.h"
+#include "lib.h"
 #include "color/lib.h"
 #include "pager/lib.h"
 #include "pager/display.h"
 #include "pager/private_data.h"
+
+void dump_text_syntax_array(struct TextSyntaxArray *tsa)
+{
+  if (!tsa || ARRAY_EMPTY(tsa))
+    return;
+
+  mutt_debug(LL_DEBUG1, "\tsyntax: %ld\n", ARRAY_SIZE(tsa));
+
+  struct TextSyntax *ts = NULL;
+  ARRAY_FOREACH(ts, tsa)
+  {
+    int index = 0;
+    const char *swatch = "";
+
+    if (ts->attr_color)
+    {
+      struct CursesColor *cc = ts->attr_color->curses_color;
+      if (cc)
+      {
+        index = cc->index;
+        swatch = color_log_color(cc->fg, cc->bg);
+      }
+    }
+    mutt_debug(LL_DEBUG1, "\t\t(%d-%d) %d %s\n", ts->first, ts->last - 1, index, swatch);
+  }
+}
 
 void dump_text_syntax(struct TextSyntax *ts, int num)
 {
@@ -43,27 +70,27 @@ void dump_text_syntax(struct TextSyntax *ts, int num)
   {
     int index = -1;
     const char *swatch = "";
-    if (!ts[i].attr_color)
-      continue;
-    struct CursesColor *cc = ts[i].attr_color->curses_color;
-    if (cc)
+    if (ts[i].attr_color)
     {
-      index = cc->index;
-      swatch = color_log_color(cc->fg, cc->bg);
+      struct CursesColor *cc = ts[i].attr_color->curses_color;
+      if (cc)
+      {
+        index = cc->index;
+        swatch = color_log_color(cc->fg, cc->bg);
+      }
     }
-    mutt_debug(LL_DEBUG1, "\t\t%3d %4d %4d %s\n", index, ts[i].first, ts[i].last, swatch);
+    mutt_debug(LL_DEBUG1, "\t\t(%d-%d) %d %s\n", ts[i].first, ts[i].last - 1, index, swatch);
   }
 }
 
 void dump_line(int i, struct Line *line)
 {
-  mutt_debug(LL_DEBUG1, "Line: %d (offset: %ld)\n", i, line->offset);
-  // mutt_debug(LL_DEBUG1, "\toffset: %ld\n", line->offset);
+  struct Buffer *buf = buf_pool_get();
+
+  buf_add_printf(buf, "%d [+%ld]", i, line->offset);
+
   if ((line->cid > 0) && (line->cid != MT_COLOR_NORMAL))
   {
-    struct Buffer *buf = buf_pool_get();
-    get_colorid_name(line->cid, buf);
-
     const char *swatch = "";
     struct AttrColor *ac = simple_color_get(line->cid);
     if (ac && ac->curses_color)
@@ -72,30 +99,30 @@ void dump_line(int i, struct Line *line)
       swatch = color_log_color(cc->fg, cc->bg);
     }
 
-    mutt_debug(LL_DEBUG1, "\tcolor: %d %s (%s)\n", line->cid, swatch, buf_string(buf));
-    buf_pool_release(&buf);
+    buf_add_printf(buf, " %s (%d) %s", name_color_id(line->cid), line->cid, swatch);
   }
-  if (line->cont_line)
+  mutt_debug(LL_DEBUG1, "%s\n", buf_string(buf));
+
+  if (line->cont_line || line->cont_header)
   {
-    mutt_debug(LL_DEBUG1, "\tcont_line: %s\n",
-               line->cont_line ? "\033[1;32myes\033[0m" : "\033[31mno\033[0m");
-  }
-  if (line->cont_header)
-  {
-    mutt_debug(LL_DEBUG1, "\tcont_header: %s\n",
-               line->cont_header ? "\033[1;32myes\033[0m" : "\033[31mno\033[0m");
+    mutt_debug(LL_DEBUG1, "\tcont: %s%s\n", line->cont_line ? "\033[1;32mL\033[0m" : "-",
+               line->cont_header ? "\033[1;32mH\033[0m" : "-");
   }
 
   if (line->syntax_arr_size > 0)
   {
-    mutt_debug(LL_DEBUG1, "\tsyntax: %d\n", line->syntax_arr_size);
+    mutt_debug(LL_DEBUG1, "\tsyntax: %d %p\n", line->syntax_arr_size,
+               (void *) line->syntax);
     dump_text_syntax(line->syntax, line->syntax_arr_size);
   }
   if (line->search_arr_size > 0)
   {
-    mutt_debug(LL_DEBUG1, "\t\033[1;36msearch\033[0m: %d\n", line->search_arr_size);
+    mutt_debug(LL_DEBUG1, "\t\033[1;36msearch\033[0m: %d %p\n",
+               line->search_arr_size, (void *) line->search);
     dump_text_syntax(line->search, line->search_arr_size);
   }
+
+  buf_pool_release(&buf);
 }
 
 void dump_pager(struct PagerPrivateData *priv)
@@ -109,4 +136,6 @@ void dump_pager(struct PagerPrivateData *priv)
   {
     dump_line(i, &priv->lines[i]);
   }
+  mutt_debug(LL_DEBUG1, "%d-%d unused (%d)\n", priv->lines_used,
+             priv->lines_max - 1, priv->lines_max - priv->lines_used);
 }
