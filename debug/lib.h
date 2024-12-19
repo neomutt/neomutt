@@ -124,6 +124,7 @@ extern bool DebugLogTimestamp;
 extern int log_disp_debug           (time_t stamp, const char *file, int line, const char *function, enum LogLevel level, const char *format, ...);
 
 // Names
+const char *name_color_id           (int cid);
 const char *name_content_disposition(enum ContentDisposition disp);
 const char *name_content_encoding   (enum ContentEncoding enc);
 const char *name_content_type       (enum ContentType type);
