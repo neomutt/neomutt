@@ -362,7 +362,6 @@ msgid "---Attachment: %s: %s"
 msgstr "-- 附件： %s: %s"
 
 #: attach/mutt_attach.c:674
-#, fuzzy, c-format
 msgid "---Attachment: %s"
 msgstr "---附件： %s"
 
@@ -379,10 +378,9 @@ msgid "Saving..."
 msgstr "儲存中…"
 
 #: attach/recvattach.c:358 attach/recvattach.c:533
-#, fuzzy, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
-msgstr[0] "附件已被儲存。"
+msgstr[0] "%d 個附件已被儲存。"
 
 #: attach/recvattach.c:558
 #, c-format
@@ -401,19 +399,17 @@ msgstr "經過過濾："
 msgid "Pipe to: "
 msgstr "導引 (pipe) 給："
 
-# ckhung 241209
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
 #: attach/recvattach.c:796
-#, fuzzy, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "我不知道要怎麼列印 %s 附件"
 
 #: attach/recvattach.c:900
-#, fuzzy, c-format
+#, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
-msgstr[0] "是否要列印標記起來的附件?"
+msgstr[0] "是否要列印 %d 個標記起來的附件?"
 
 #: attach/recvattach.c:901
 #, c-format
@@ -422,12 +418,11 @@ msgstr "是否要列印附件?"
 
 #: attach/recvattach.c:942
 msgid "Structural changes to decrypted attachments are not supported"
-msgstr ""
+msgstr "無法更動加密附件的結構"
 
 #: attach/recvattach.c:1160
-#, fuzzy
 msgid "Can't decrypt encrypted message"
-msgstr "找不到已標記的訊息"
+msgstr "無法解密訊息"
 
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
@@ -450,28 +445,28 @@ msgstr "無法建立 %s: %s"
 #. with this message.
 #: autocrypt/autocrypt.c:156
 msgid "Create an initial autocrypt account?"
-msgstr ""
+msgstr "建立 autocrypt 帳號？"
 
 #. L10N: Autocrypt is asking for the email address to use for the
 #. autocrypt account.  This will generate a key and add a record
 #. to the database for use in autocrypt operations.
 #: autocrypt/autocrypt.c:180
 msgid "Autocrypt account address: "
-msgstr ""
+msgstr "autocrypt 的 email 地址"
 
 #. L10N: Autocrypt prompts for an account email address, and requires
 #. a single address.  This is shown if they entered something invalid,
 #. nothing, or more than one address for some reason.
 #: autocrypt/autocrypt.c:189
 msgid "Please enter a single email address"
-msgstr ""
+msgstr "請輸入 (單一的) email 地址"
 
 #. L10N: When creating an autocrypt account, this message will be displayed
 #. if there is already an account in the database with the email address
 #. they just entered.
 #: autocrypt/autocrypt.c:206
 msgid "That email address already has an autocrypt account"
-msgstr ""
+msgstr "那個地址已有一個 autocrypt 帳號"
 
 #. L10N: Autocrypt has a setting "prefer-encrypt".
 #. When the recommendation algorithm returns "available" and BOTH sender and
@@ -480,28 +475,26 @@ msgstr ""
 #. Otherwise the UI will show encryption is "available" but the user
 #. will be required to enable encryption manually.
 #: autocrypt/autocrypt.c:219
-#, fuzzy
 msgid "Prefer encryption?"
-msgstr "加密"
+msgstr "偏好加密？"
 
 #. L10N: Message displayed after an autocrypt account is successfully created.
 #: autocrypt/autocrypt.c:233
 msgid "Autocrypt account creation succeeded"
-msgstr ""
+msgstr "已成功建立 autocrypt 帳號"
 
 #. L10N: Error message displayed if creating an autocrypt account failed
 #. or was aborted by the user.
 #: autocrypt/autocrypt.c:239
 msgid "Autocrypt account creation aborted"
-msgstr ""
+msgstr "放棄建立 autocrypt 帳號"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the engine is not available.
 #: autocrypt/autocrypt.c:576 autocrypt/autocrypt.c:585
 #: autocrypt/autocrypt.c:592
-#, fuzzy
 msgid "Autocrypt is not available"
-msgstr "主信件不存在"
+msgstr "沒有 autocrypt 功能"
 
 #. L10N: Error displayed if the user tries to force sending an Autocrypt
 #. email when the account does not exist or is not enabled.
@@ -510,7 +503,7 @@ msgstr "主信件不存在"
 #: autocrypt/autocrypt.c:604
 #, c-format
 msgid "Autocrypt is not enabled for %s"
-msgstr ""
+msgstr "%s 這個帳號尚未啟用 autocrypt"
 
 #. L10N: s is an email address.  Autocrypt is scanning for the keyids
 #. to use to encrypt, but it can't find a valid keyid for this address.
@@ -518,7 +511,7 @@ msgstr ""
 #: autocrypt/autocrypt.c:629 autocrypt/autocrypt.c:660
 #, c-format
 msgid "No (valid) autocrypt key found for %s"
-msgstr ""
+msgstr "找不到 %s 這個帳號的有效 autocrypt 密鑰"
 
 #. L10N: The first time autocrypt is enabled, NeoMutt will ask to scan
 #. through one or more mailboxes for Autocrypt: headers.  Those headers are
@@ -526,13 +519,12 @@ msgstr ""
 #. If this is answered yes, they will be prompted for a mailbox.
 #: autocrypt/autocrypt.c:928
 msgid "Scan a mailbox for autocrypt headers?"
-msgstr ""
+msgstr "掃描信箱尋找 autocrypt 標頭？"
 
 #. L10N: The prompt for a mailbox to scan for Autocrypt: headers
 #: autocrypt/autocrypt.c:934
-#, fuzzy
 msgid "Scan mailbox"
-msgstr "沒有信箱。\n"
+msgstr "掃描信箱"
 
 #. L10N: This is the second prompt to see if the user would like
 #. to scan more than one mailbox for Autocrypt headers.
@@ -541,21 +533,19 @@ msgstr "沒有信箱。\n"
 #. and I don't want them to accidentally ctrl-g and abort it.
 #: autocrypt/autocrypt.c:955
 msgid "Scan another mailbox for autocrypt headers?"
-msgstr ""
+msgstr "掃描另一個信箱， 尋找 autocrypt 標頭？"
 
 #. L10N: autocrypt couldn't open the SQLite database.
 #. The %s is the full path of the database file.
 #: autocrypt/db.c:71 autocrypt/db.c:105
-#, fuzzy, c-format
 msgid "Unable to open autocrypt database %s"
-msgstr "無法鎖住信箱"
+msgstr "無法開啟 autocrypt 資料庫檔 %s"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
 #: autocrypt/dlg_autocrypt.c:93
-#, fuzzy
 msgid "Create"
-msgstr "建立 %s？"
+msgstr "建立"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
@@ -570,7 +560,7 @@ msgstr "刪除"
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
 #: autocrypt/dlg_autocrypt.c:102
 msgid "Tgl Active"
-msgstr ""
+msgstr "啟用停用"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -579,68 +569,64 @@ msgstr ""
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
 #: autocrypt/dlg_autocrypt.c:108
 msgid "Prf Encr"
-msgstr ""
+msgstr "偏好加密"
 
 #. L10N: Autocrypt Account Management Menu title
 #: autocrypt/dlg_autocrypt.c:264
 msgid "Autocrypt Accounts"
-msgstr ""
+msgstr "Autocrypt 帳號"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is enabled/active
 #: autocrypt/expando.c:61
 msgid "active"
-msgstr ""
+msgstr "啟用中"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account is disabled/inactive
 #: autocrypt/expando.c:67
 msgid "inactive"
-msgstr ""
+msgstr "停用中"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt set
 #: autocrypt/expando.c:105
 msgid "prefer encrypt"
-msgstr ""
+msgstr "偏好加密"
 
 #. L10N: Autocrypt Account menu.
 #. flag that an account has prefer-encrypt unset;
 #. thus encryption will need to be manually enabled.
 #: autocrypt/expando.c:112
 msgid "manual encrypt"
-msgstr ""
+msgstr "手動加密"
 
 #. L10N: This error message is displayed if a database update of an
 #. account record fails for some odd reason.
 #: autocrypt/functions.c:91 autocrypt/functions.c:105
-#, fuzzy
 msgid "Error updating account record"
-msgstr "無法掃描目錄"
+msgstr "無法更新目錄"
 
 #. L10N: Confirmation message when deleting an autocrypt account
 #: autocrypt/functions.c:138
-#, fuzzy, c-format
 msgid "Really delete account \"%s\"?"
-msgstr "真的要刪除 \"%s\" 郵箱？"
+msgstr "真的要刪除 \"%s\" 信箱？"
 
 #: autocrypt/gpgme.c:59 ncrypt/crypt_gpgme.c:375
-#, fuzzy, c-format
 msgid "error creating GPGME context: %s"
-msgstr "在樣式上有錯誤：%s"
+msgstr "建立 GPGME context 時發生錯誤：%s"
 
 #. L10N: Message displayed just before a GPG key is generated for a created
 #. autocrypt account.
 #: autocrypt/gpgme.c:178
 msgid "Generating autocrypt key..."
-msgstr ""
+msgstr "產生 autocrypt 金鑰..."
 
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #: autocrypt/gpgme.c:188 autocrypt/gpgme.c:207
-#, fuzzy, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "在樣式上有錯誤：%s"
+msgstr "建立 autocrypt 金鑰時發生錯誤：%s"
 
 #. L10N: After selecting a key for an autocrypt account,
 #. this is displayed if the key was revoked/expired/disabled/invalid
@@ -649,26 +635,26 @@ msgstr "在樣式上有錯誤：%s"
 #: autocrypt/gpgme.c:255
 #, c-format
 msgid "The key %s is not usable for autocrypt"
-msgstr ""
+msgstr "%s 這把金鑰不適用於 autocrypt"
 
 #. L10N: During autocrypt account creation, this prompt asks the
 #. user whether they want to create a new GPG key for the account,
 #. or select an existing account from the keyring.
 #: autocrypt/gpgme.c:287
 msgid "(c)reate new, or (s)elect existing GPG key?"
-msgstr ""
+msgstr "建立 (c) 新的 GPG 金鑰， 或選擇 (s) 一把現有的金鑰？"
 
 #. L10N: The letters corresponding to the
 #. "(c)reate new, or (s)elect existing GPG key?" prompt.
 #: autocrypt/gpgme.c:290
 msgid "cs"
-msgstr ""
+msgstr "cs"
 
 #. L10N: During autocrypt account creation, if selecting an existing key fails
 #. for some reason, we prompt to see if they want to create a key instead.
 #: autocrypt/gpgme.c:302
 msgid "Create a new GPG key for this account, instead?"
-msgstr ""
+msgstr "改成幫這個帳號建立一把新的 GPG 金鑰？"
 
 #. L10N: The autocrypt database keeps track of schema version numbers.
 #. This error occurs if the version number is too high.
@@ -676,8 +662,9 @@ msgstr ""
 #. database was upgraded by a future version.
 #: autocrypt/schema.c:126
 msgid "Autocrypt database version is too new"
-msgstr ""
+msgstr "Autocrypt 資料庫版本太新"
 
+# ckhung 241219
 #: bcache/bcache.c:70
 #, fuzzy, c-format
 msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
