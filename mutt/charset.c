@@ -613,7 +613,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
   }
 
   /* check if we have this pair cached already */
-  for (int i = 0; i < IconvCacheUsed; ++i)
+  for (int i = 0; i < IconvCacheUsed; i++)
   {
     if (strcmp(tocode1, IconvCache[i].tocode1) == 0 &&
         strcmp(fromcode1, IconvCache[i].fromcode1) == 0)
@@ -1174,7 +1174,7 @@ char *mutt_ch_choose(const char *fromcode, const struct Slist *charsets,
  */
 void mutt_ch_cache_cleanup(void)
 {
-  for (int i = 0; i < IconvCacheUsed; ++i)
+  for (int i = 0; i < IconvCacheUsed; i++)
   {
     FREE(&IconvCache[i].fromcode1);
     FREE(&IconvCache[i].tocode1);

@@ -266,7 +266,7 @@ size_t buf_insert(struct Buffer *buf, size_t offset, const char *s)
 
   if (offset > curlen)
   {
-    for (size_t i = curlen; i < offset; ++i)
+    for (size_t i = curlen; i < offset; i++)
     {
       buf_addch(buf, ' ');
     }
@@ -802,7 +802,7 @@ const char *buf_rfind(const struct Buffer *buf, const char *str)
   int len = strlen(str);
   const char *end = buf->data + buf->dsize - len;
 
-  for (const char *p = end; p >= buf->data; --p)
+  for (const char *p = end; p >= buf->data; p--)
   {
     for (size_t i = 0; i < len; i++)
     {
