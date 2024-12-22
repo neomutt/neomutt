@@ -622,7 +622,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
 
       /* make room for this one at the top */
       struct IconvCacheEntry top = IconvCache[i];
-      for (int j = i; j-- > 0;)
+      for (int j = i - 1; j >= 0; j--)
       {
         IconvCache[j + 1] = IconvCache[j];
       }
@@ -663,7 +663,7 @@ iconv_t mutt_ch_iconv_open(const char *tocode, const char *fromcode, uint8_t fla
   }
 
   /* make room for this one at the top */
-  for (int j = IconvCacheUsed; j-- > 0;)
+  for (int j = IconvCacheUsed - 1; j >= 0; j--)
   {
     IconvCache[j + 1] = IconvCache[j];
   }

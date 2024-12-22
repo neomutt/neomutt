@@ -647,7 +647,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
     len--;
   if ((len >= 2) && (s[len - 1] == ')'))
   {
-    for (int i = len - 1; i-- > 0;)
+    for (int i = len - 2; i >= 0; i--)
     {
       if (s[i] == '(')
       {

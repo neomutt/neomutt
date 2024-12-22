@@ -645,7 +645,7 @@ static bool check_certificate_cache(X509 *peercert)
     return false;
   }
 
-  for (int i = sk_X509_num(SslSessionCerts); i-- > 0;)
+  for (int i = sk_X509_num(SslSessionCerts) - 1; i >= 0; i--)
   {
     cert = sk_X509_value(SslSessionCerts, i);
     if (certificates_equal(cert, peercert, peermd, peermdlen))
