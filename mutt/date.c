@@ -677,7 +677,7 @@ static time_t mutt_date_parse_rfc5322_strict(const char *s, struct Tz *tz_out)
     }
     else
     {
-      for (int i = 0; i < len; ++i)
+      for (int i = 0; i < len; i++)
       {
         if (!isalpha(s[i]))
           return -1;

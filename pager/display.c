@@ -558,7 +558,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
             {
               /* adjust the previous continuation lines to reflect the color of this continuation line */
               int j;
-              for (j = line_num - 1; j >= 0 && lines[j].cont_header; --j)
+              for (j = line_num - 1; j >= 0 && lines[j].cont_header; j--)
               {
                 lines[j].cid = lines[line_num].cid;
                 lines[j].syntax[0].attr_color = lines[line_num].syntax[0].attr_color;

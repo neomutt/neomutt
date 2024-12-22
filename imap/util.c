@@ -687,7 +687,7 @@ char *imap_fix_path(const char *mailbox, char *path, size_t plen)
 
   if (mailbox)
   {
-    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
+    for (const char *c = mailbox; *c && space_left; c++, space_left--)
     {
       if (strchr(NONULL(c_imap_delim_chars), *c))
       {
@@ -717,7 +717,7 @@ char *imap_fix_path_with_delim(const char delim, const char *mailbox, char *path
 
   if (mailbox)
   {
-    for (const char *c = mailbox; *c && space_left; ++c, --space_left)
+    for (const char *c = mailbox; *c && space_left; c++, space_left--)
     {
       if (*c == delim || *c == '/')
       {
@@ -734,7 +734,7 @@ char *imap_fix_path_with_delim(const char delim, const char *mailbox, char *path
 
   if (out != path && *(out - 1) == delim)
   {
-    --out;
+    out--;
   }
   *out = '\0';
   return path;
