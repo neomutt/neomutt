@@ -880,6 +880,21 @@ $(PWD)/sidebar:
 	$(MKDIR_P) $(PWD)/sidebar
 
 ###############################################################################
+# libspager
+LIBSPAGER=	libspager.a
+LIBSPAGEROBJS=	spager/ddata.o spager/dlg_observer.o spager/dlg_spager.o \
+		spager/functions.o spager/search.o spager/spbar.o \
+		spager/wdata.o spager/win_observer.o spager/win_spager.o
+CLEANFILES+=	$(LIBSPAGER) $(LIBSPAGEROBJS)
+ALLOBJS+=	$(LIBSPAGEROBJS)
+
+$(LIBSPAGER): $(PWD)/spager $(LIBSPAGEROBJS)
+	$(AR) cr $@ $(LIBSPAGEROBJS)
+	$(RANLIB) $@
+$(PWD)/spager:
+	$(MKDIR_P) $(PWD)/spager
+
+###############################################################################
 # libstore
 @if HAVE_BDB
 LIBSTOREOBJS+=	store/bdb.o
@@ -942,7 +957,7 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) \
-		$($(LIBPFILE) LIBAUTOCRYPT) $(LIBPOP) $(LIBEDITOR) $(LIBCOMPLETE) \
+		$(LIBSPAGER) $(LIBPFILE) $(LIBAUTOCRYPT) $(LIBPOP) $(LIBEDITOR) $(LIBCOMPLETE) \
 		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
