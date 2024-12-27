@@ -1819,7 +1819,7 @@ msgstr "Le certificat du serveur a expiré"
 
 #: conn/openssl.c:582
 msgid "Failed to find enough entropy on your system"
-msgstr "Impossible de trouver assez d'entropie sur votre système"
+msgstr "Échec de trouver assez d'entropie sur votre système"
 
 #: conn/openssl.c:771
 msgid "can't get certificate subject"
@@ -1837,7 +1837,7 @@ msgstr "le propriétaire du certificat ne correspond pas au nom %s"
 #: conn/openssl.c:1076
 #, c-format
 msgid "Certificate host check failed: %s"
-msgstr "Échec de vérification de machine : %s"
+msgstr "Échec de la vérification du certificat du hôte : %s"
 
 #: conn/openssl.c:1172
 msgid "I/O error"
@@ -5035,7 +5035,7 @@ msgstr "%s : opération non permise par les ACL"
 
 #: index/dlg_index.c:737
 msgid "Failed to create query, aborting"
-msgstr "La création de la requête a échoué, la tâche va quitter"
+msgstr "Échec de la création de la requête, abandon"
 
 # , c-format
 #: index/dlg_index.c:782 muttlib.c:785 mx.c:205 mx.c:343
@@ -5883,7 +5883,7 @@ msgstr "Erreur : la valeur '%s' est invalide pour -d"
 
 #: main.c:1029
 msgid "Failed to parse mailto: link"
-msgstr "Le lien mailto: n'a pas pu être analysé"
+msgstr "Échec de l'analyse du lien malto"
 
 #: main.c:1044 main.c:1313 send/send.c:306 send/send.c:2662 send/send.c:2666
 msgid "No recipients specified"
@@ -5952,7 +5952,7 @@ msgstr "Écriture des changements..."
 #: mbox/mbox.c:1326
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
-msgstr "Erreur d'écriture ! Boîte aux lettres partielle enregistrée dans %s"
+msgstr "L'écriture a échoué ! Boîte aux lettres partielle enregistrée dans %s"
 
 #: mbox/mbox.c:1411
 msgid "Could not reopen mailbox"
@@ -6874,8 +6874,9 @@ msgstr "csedmr"
 
 #: ncrypt/crypt_gpgme.c:4124
 msgid "Failed to verify sender"
-msgstr "Impossible de vérifier l'expéditeur"
+msgstr "Échec de la vérification de l'expéditeur"
 
+# TODO: What, specifically, does "figure out" mean here?
 #: ncrypt/crypt_gpgme.c:4129
 msgid "Failed to figure out sender"
 msgstr "Impossible de trouver l'expéditeur"
@@ -7548,14 +7549,15 @@ msgid "unknown reason"
 msgstr "erreur inconnue"
 
 #: notmuch/mdata.c:83 notmuch/notmuch.c:1803
-#, fuzzy, c-format
+#, c-format
 msgid "failed to parse notmuch url: %s"
-msgstr "Impossible d'analyser le lien mailto:\n"
+msgstr "échec de l'analyse du lien mailto : %s"
 
+# TODO: can we call limiting in neomutt filtering?
 #: notmuch/notmuch.c:368
 #, fuzzy, c-format
 msgid "failed to parse notmuch limit: %s"
-msgstr "Impossible d'analyser le lien mailto:\n"
+msgstr "échec de l'analysee du filtre mailto : %s"
 
 #: notmuch/notmuch.c:690
 #, fuzzy
@@ -7570,7 +7572,7 @@ msgstr "Pas de nouveaux messages dans cette vue limitée"
 #: notmuch/notmuch.c:1818
 #, fuzzy, c-format
 msgid "failed to parse limit: %s"
-msgstr "Impossible d'analyser le lien mailto:\n"
+msgstr "échec de l'analyse le lien mailto:\n"
 
 #: notmuch/notmuch.c:2328
 #, c-format
@@ -7589,7 +7591,7 @@ msgstr "Impossible d'écrire dans un répertoire virtuel"
 #: notmuch/query.c:116
 #, c-format
 msgid "failed to parse notmuch query type: %s"
-msgstr "Échec pendant l'analyse de la requête notmuch de type : %s"
+msgstr "échec de l'analyse de la requête notmuch de type : %s"
 
 #: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
 #: pager/dlg_pager.c:111
