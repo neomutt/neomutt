@@ -757,7 +757,7 @@ msgstr "%s n'est pas un répertoire"
 #: browser/dlg_browser.c:605
 #, c-format
 msgid "Subscribed newsgroups"
-msgstr "Abonné aux newsgroups"
+msgstr "Newsgroups auxquelles vous êtes abonnés"
 
 #: browser/dlg_browser.c:609
 #, c-format
@@ -1076,7 +1076,7 @@ msgstr "Abonné à %s"
 #: commands.c:1263
 #, c-format
 msgid "Could not subscribe to %s"
-msgstr "Échec d'abonnement à %s"
+msgstr "Échec de l'abonnement à %s"
 
 #: commands.c:1271 commands.c:1607
 msgid "No folder specified"
@@ -1102,7 +1102,7 @@ msgstr "Désabonné de %s"
 #: commands.c:1599
 #, c-format
 msgid "Could not unsubscribe from %s"
-msgstr "Échec de désabonnement de %s"
+msgstr "Échec du désabonnement de %s"
 
 # TODO: What is expando?
 #: compmbox/compress.c:223
@@ -3399,15 +3399,14 @@ msgstr "marquer la discussion courante"
 #. Attach Dialog: <op_reply>
 #: gui/opcodes.h:490
 msgid "reply to specified mailing list"
-msgstr "répondre à la liste spécifiée"
+msgstr "répondre à la liste de diffusion spécifiée"
 
 #. L10N: Help screen description for OP_LIST_SUBSCRIBE
 #. Attach Dialog: <op_list_subscribe>
 #. Index: <op_list_subscribe>
 #: gui/opcodes.h:494
-#, fuzzy
 msgid "subscribe to a mailing list"
-msgstr "répondre à la liste spécifiée"
+msgstr "s'abonner à la liste de diffusion spécifiée"
 
 # , c-format
 #. L10N: Help screen description for OP_LIST_UNSUBSCRIBE
@@ -3415,7 +3414,7 @@ msgstr "répondre à la liste spécifiée"
 #. Index: <op_list_unsubscribe>
 #: gui/opcodes.h:498
 msgid "unsubscribe from a mailing list"
-msgstr "se désabonner de %s"
+msgstr "se désabonner d'une liste de diffusion"
 
 #. L10N: Help screen description for OP_LOAD_ACTIVE
 #. Browser: <op_load_active>
@@ -4021,12 +4020,13 @@ msgstr "récupérer tous les messages de la sous-discussion"
 msgid "undelete all messages in thread"
 msgstr "récupérer tous les messages de la discussion"
 
+# TODO: Should "newsgroup" be translated?
 #. L10N: Help screen description for OP_UNSUBSCRIBE_PATTERN
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:828
 #, fuzzy
 msgid "unsubscribe from newsgroups matching a pattern"
-msgstr "démarquer les messages correspondant à un motif"
+msgstr "se désabonner des newgroups correspondant à un motif"
 
 #. L10N: Help screen description for OP_VERSION
 #. Global: <op_version>
@@ -4640,8 +4640,9 @@ msgstr "message est De : vous"
 
 #: help.c:458
 msgid "message is sent to a subscribed mailing list"
-msgstr ""
+msgstr "message envoyé à une liste de diffusion à laquelle vous êtes abonné.e"
 
+# TODO: should "Reply-To" be translated?
 #: help.c:460
 msgid "you are in the Reply-To: list"
 msgstr ""
@@ -8012,7 +8013,7 @@ msgstr "messages dont l'en-tête CCI correspond à EXPR"
 #. L10N: Pattern Completion Menu description for ~l
 #: pattern/flags.c:101
 msgid "messages addressed to known mailing lists"
-msgstr "messages adressés à des listes connues"
+msgstr "messages adressés à des listes de diffusion connues"
 
 #. L10N: Pattern Completion Menu description for ~L
 #: pattern/flags.c:104
@@ -8093,7 +8094,7 @@ msgstr "messages marqués d'un drapeau"
 #. L10N: Pattern Completion Menu description for ~u
 #: pattern/flags.c:149
 msgid "messages addressed to subscribed mailing lists"
-msgstr "messages adressés à des liste auxquelles vous êtes abonné"
+msgstr "messages adressés aux listes de diffusion auxquelles vous êtes abonné.e"
 
 #. L10N: Pattern Completion Menu description for ~U
 #: pattern/flags.c:152
