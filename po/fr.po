@@ -8739,7 +8739,6 @@ msgstr ""
 "du code, des corrections et des suggestions.\n"
 
 #: version.c:89
-#, fuzzy
 msgid ""
 "This program is free software; you can redistribute it and/or modify\n"
 "it under the terms of the GNU General Public License as published by\n"
@@ -8758,9 +8757,9 @@ msgstr ""
 "Ce programme est un logiciel libre ; vous pouvez le redistribuer et/ou\n"
 "le modifier sous les termes de la GNU General Public License telle que\n"
 "publiée par la Free Software Foundation ; que ce soit la version 2 de\n"
-"la licence, ou (selon votre choix) une version plus récente.\n"
+"la licence, ou encore (à votre choix) une version plus récente.\n"
 "\n"
-"Ce programme est distribué avec l'espoir qu'il soit utile,\n"
+"Ce programme est distribué dans l'espoir qu'il soit utile,\n"
 "mais SANS AUCUNE GARANTIE ; sans même la garantie implicite de\n"
 "QUALITÉ MARCHANDE ou d'ADÉQUATION À UN BESOIN PARTICULIER. Référez-vous\n"
 "à la GNU General Public License pour plus de détails.\n"
@@ -8782,7 +8781,6 @@ msgstr ""
 "ou envoyez un email à: <neomutt-devel@neomutt.org>\n"
 
 #: version.c:112
-#, fuzzy
 msgid ""
 "Copyright (C) 2015-2024 Richard Russon and friends\n"
 "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
@@ -8790,9 +8788,9 @@ msgid ""
 "under certain conditions; type 'neomutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 2015-2024 Richard Russon et autres.\n"
-"NeoMutt ne fournit ABSOLUMENT AUCUNE GARANTIE ; pour les détails tapez 'neomutt -vv'.\n"
+"NeoMutt ne fournit ABSOLUMENT AUCUNE GARANTIE ; pour les détails exécutez 'neomutt -vv'.\n"
 "NeoMutt est un logiciel libre, et vous êtes libre de le redistribuer\n"
-"sous certaines conditions ; tapez 'neomutt -vv' pour les détails.\n"
+"sous certaines conditions ; exécutez 'neomutt -vv' pour les détails.\n"
 
 #: version.c:482
 msgid "Compile options:"
