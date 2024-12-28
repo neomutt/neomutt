@@ -36,9 +36,9 @@ msgstr ""
 #: address/config_type.c:87 config/long.c:50 config/path.c:99 config/path.c:175
 #: config/sort.c:57 config/string.c:68 config/string.c:145
 #: expando/config_type.c:69 expando/config_type.c:169
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s may not be empty"
-msgstr "L'option %s ne peut pas être vide"
+msgstr "L'option %s doit être définie"
 
 #. L10N: prompt to add a new alias
 #: alias/alias.c:396
@@ -203,20 +203,17 @@ msgid "Limit to addresses matching: "
 msgstr "Limiter aux adresses courriels correspondant à : "
 
 #: alias/functions.c:267
-#, fuzzy
 msgid "Tag addresses matching: "
-msgstr "Marquer les messages correspondant à : "
+msgstr "Étiqueter les messages correspondant à : "
 
 #: alias/functions.c:283
-#, fuzzy
 msgid "Untag addresses matching: "
-msgstr "Démarquer les messages correspondant à : "
+msgstr "Enlever l'étiquette des messages correspondant à : "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Trier (ordre inverse) par (a)lias, a(d)resse ou ne (p)as trier ?"
+msgstr "Trier (en sens inverse) par (a)lias, (n)om, a(d)resse ou ne (p)as trier ?"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
@@ -263,7 +260,10 @@ msgstr "unattachments : disposition invalide"
 msgid "Save"
 msgstr "Enregistrer"
 
+# TODO: This should likely be "passer à une commande," but I need to look into 
+# the context
 #: attach/dlg_attach.c:96
+#, fuzzy
 msgid "Pipe"
 msgstr "Pipe"
 
@@ -418,9 +418,8 @@ msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ATTENTION ! Vous allez écraser %s, continuer?"
 
 #: attach/recvattach.c:575
-#, fuzzy
 msgid "Attachment filtered"
-msgstr "Attachement filtré"
+msgstr "Pièce jointe filtrée"
 
 #: attach/recvattach.c:738
 msgid "Filter through: "
@@ -597,7 +596,7 @@ msgstr "Retirer"
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
 #: autocrypt/dlg_autocrypt.c:102
 msgid "Tgl Active"
-msgstr "Tgl Actif"
+msgstr "Bsclr Actif"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. toggle "prefer-encrypt" on an account
@@ -2273,6 +2272,7 @@ msgstr[1] "(+%d more)"
 msgid "Option %s: "
 msgstr "Option %s :"
 
+# TODO: Find out why ymwdHM should not be translated
 #. L10N: The 'ymwdHM' should not be translated
 #: expando/node_conddate.c:256
 #, c-format
@@ -2544,9 +2544,9 @@ msgstr " ('?' pour voir la liste) : "
 
 # , c-format
 #: gui/curs_lib.c:506
-#, fuzzy, c-format
+#, c-format
 msgid "Enter keys (%s to abort): "
-msgstr "Entrez des touches (^G pour abandonner) : "
+msgstr "Taper des touches (%s pour abandonner) : "
 
 #: gui/curs_lib.c:555
 #, c-format
@@ -2574,9 +2574,8 @@ msgstr "joindre des fichiers de groupes de discussion à ce message"
 #. L10N: Help screen description for OP_ATTACHMENT_COLLAPSE
 #. Attach Dialog: <op_attachment_collapse>
 #: gui/opcodes.h:52
-#, fuzzy
 msgid "toggle display of subparts"
-msgstr "inverser l'affichage des sous-parties"
+msgstr "activer/désactiver l'affichage des sous-parties"
 
 #. L10N: Help screen description for OP_ATTACHMENT_DELETE
 #. Attach Dialog: <op_attachment_delete>
@@ -2723,7 +2722,7 @@ msgstr "basculer la disposition (en ligne / en pièce jointe)"
 #. Compose Dialog: <op_attachment_toggle_recode>
 #: gui/opcodes.h:121
 msgid "toggle recoding of this attachment"
-msgstr "basculer le recodage de cette pièce jointe"
+msgstr "activer/désactiver le recodage de cette pièce jointe"
 
 #. L10N: Help screen description for OP_ATTACHMENT_TOGGLE_UNLINK
 #. Compose Dialog: <op_attachment_toggle_unlink>
@@ -2779,23 +2778,20 @@ msgstr "forcer la visualisation d'une pièce jointe en utilisant le fichier mail
 #. Attach Dialog: <op_attachment_view_text>
 #. Compose Dialog: <op_display_headers>
 #: gui/opcodes.h:149
-#, fuzzy
 msgid "view attachment as text"
 msgstr "visualiser la pièce jointe en tant que texte"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "aller au début du message"
+msgstr "afficher la prochaine page du message"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "aller au message nouveau ou non lu précédent"
+msgstr "afficher la page précédente du message"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
@@ -2819,13 +2815,13 @@ msgstr "supprimer le compte actuel"
 #. Autocrypt Dialog: <op_autocrypt_toggle_active>
 #: gui/opcodes.h:170
 msgid "toggle the current account active/inactive"
-msgstr "basculer l'état du compte actuel en actif/inactif"
+msgstr "basculer l'état actif/infactif du compte actuel"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_TOGGLE_PREFER
 #. Autocrypt Dialog: <op_autocrypt_toggle_prefer>
 #: gui/opcodes.h:173
 msgid "toggle the current account prefer-encrypt flag"
-msgstr "basculer le drapeau 'prefer-encrypt' du compte courant"
+msgstr "basculer le drapeau 'prefer-encrypt' du compte actuel"
 
 #. L10N: Help screen description for OP_COMPOSE_AUTOCRYPT_MENU
 #. Envelope Window: <op_compose_autocrypt_menu>
@@ -2833,6 +2829,7 @@ msgstr "basculer le drapeau 'prefer-encrypt' du compte courant"
 msgid "show autocrypt compose menu options"
 msgstr "afficher les options du menu de composition d'autocrypt"
 
+# TODO: Does "dialog" here refer to a pop-up or a separate window?
 #. L10N: Help screen description for OP_ALIAS_DIALOG
 #. Index: <op_alias_dialog>
 #: gui/opcodes.h:184
@@ -2877,6 +2874,7 @@ msgstr "s'abonner à la boîte mail courante (IMAP/NNTP seulement)"
 msgid "display the currently selected file's name"
 msgstr "afficher le nom du fichier sélectionné actuellement"
 
+# TODO: Try to find a way to shorten this translation
 #. L10N: Help screen description for OP_BROWSER_TOGGLE_LSUB
 #. Browser: <op_browser_toggle_lsub>
 #: gui/opcodes.h:206
@@ -3053,9 +3051,8 @@ msgstr "afficher l'adresse complète de l'expéditeur"
 #. Compose Dialog: <op_display_headers>
 #. Index: <op_display_message>
 #: gui/opcodes.h:300
-#, fuzzy
 msgid "display message and toggle header weeding"
-msgstr "afficher le message et inverser la restriction des en-têtes"
+msgstr "afficher le message et activer/désactiver la restriction des en-têtes"
 
 #. L10N: Help screen description for OP_DISPLAY_MESSAGE
 #. Index: <op_display_message>
@@ -3193,6 +3190,7 @@ msgstr "parcourir les boîtes aux lettres recevant du courrier"
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
 #: gui/opcodes.h:369
+#, fuzzy
 msgid "quote the next typed key"
 msgstr "entrer le caractère correspondant à la prochaine touche"
 
@@ -3669,23 +3667,20 @@ msgstr "enregistrer les modifications de la boîte aux lettres"
 #. L10N: Help screen description for OP_MAIN_TAG_PATTERN
 #. Index: <op_main_tag_pattern>
 #: gui/opcodes.h:626
-#, fuzzy
 msgid "tag non-hidden messages matching a pattern"
-msgstr "marquer les messages correspondant à un motif"
+msgstr "étiqueter des messages non cachés correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_UNDELETE_PATTERN
 #. Index: <op_main_undelete_pattern>
 #: gui/opcodes.h:629
-#, fuzzy
 msgid "undelete non-hidden messages matching a pattern"
-msgstr "récupérer les messages correspondant à un motif"
+msgstr "récupérer des messages non cachés correspondant à un motif"
 
 #. L10N: Help screen description for OP_MAIN_UNTAG_PATTERN
 #. Index: <op_main_untag_pattern>
 #: gui/opcodes.h:632
-#, fuzzy
 msgid "untag non-hidden messages matching a pattern"
-msgstr "démarquer les messages correspondant à un motif"
+msgstr "enlever l'étiquette des messages non cachés correspondant à un motif"
 
 #. L10N: Help screen description for OP_MARK_MSG
 #. Index: <op_mark_msg>
@@ -3729,9 +3724,8 @@ msgstr "aller à la fin du message"
 #. L10N: Help screen description for OP_PAGER_HIDE_QUOTED
 #. Pager: <op_pager_hide_quoted>
 #: gui/opcodes.h:656
-#, fuzzy
 msgid "toggle display of quoted text"
-msgstr "inverser l'affichage du texte cité"
+msgstr "activer/désactiver l'affichage du texte cité"
 
 #. L10N: Help screen description for OP_PAGER_SKIP_HEADERS
 #. Pager: <op_pager_skip_headers>
@@ -3902,9 +3896,8 @@ msgstr "rechercher en arrière une expression rationnelle"
 #. L10N: Help screen description for OP_SEARCH_TOGGLE
 #. Pager: <op_search_toggle>
 #: gui/opcodes.h:764
-#, fuzzy
 msgid "toggle search pattern coloring"
-msgstr "inverser la coloration du motif de recherche"
+msgstr "activer/désactiver la coloration du motif de recherche"
 
 #. L10N: Help screen description for OP_SHELL_ESCAPE
 #. Global: <op_shell_escape>
@@ -3939,18 +3932,18 @@ msgstr "trier les messages dans l'ordre inverse"
 #. Browser: <op_subscribe_pattern>
 #: gui/opcodes.h:783
 msgid "subscribe to newsgroups matching a pattern"
-msgstr "s'abonner aux newsgroups correspondant à un filtre"
+msgstr "s'abonner aux newsgroups correspondant à un motif"
 
 #. L10N: Help screen description for OP_TAG
 #. Index: <op_tag>
 #: gui/opcodes.h:786
 msgid "tag the current entry"
-msgstr "marquer l'entrée courante"
+msgstr "marquer l'entrée actuelle"
 
 #. L10N: Help screen description for OP_TAG_PREFIX
 #: gui/opcodes.h:788
 msgid "apply next function to tagged messages"
-msgstr "appliquer la prochaine fonction aux messages marqués"
+msgstr "appliquer la prochaine fonction aux messages étiquettés"
 
 #. L10N: Help screen description for OP_TAG_PREFIX_COND
 #: gui/opcodes.h:790
@@ -3961,18 +3954,17 @@ msgstr "appliquer la prochaine fonction SEULEMENT aux messages marqués"
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:793
 msgid "tag the current subthread"
-msgstr "marquer la sous-discussion courante"
+msgstr "étiqueter la sous-discussion actuelle"
 
 #. L10N: Help screen description for OP_TAG_THREAD
 #. Index: <op_tag_thread>
 #: gui/opcodes.h:796
 msgid "tag the current thread"
-msgstr "marquer la discussion courante"
+msgstr "étiqueter la discussion actuelle"
 
 #. L10N: Help screen description for OP_TOGGLE_MAILBOXES
 #. Browser: <op_toggle_mailboxes>
 #: gui/opcodes.h:799
-#, fuzzy
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "basculer entre l'affichage des boîtes aux lettres ou celui de tous les fichiers"
 
@@ -4296,7 +4288,6 @@ msgstr "déplacer la marque vers la boîte aux lettres avec de nouveaux messages
 #. L10N: Help screen description for OP_SIDEBAR_TOGGLE_VIRTUAL
 #. Sidebar: <op_sidebar_toggle_virtual>
 #: gui/opcodes.h:975
-#, fuzzy
 msgid "toggle between mailboxes and virtual mailboxes"
 msgstr "basculer entre l'affichage des boîtes aux lettres et celui des boîtes aux lettres virtuelles"
 
@@ -5336,9 +5327,8 @@ msgstr "Quitter NeoMutt?"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:2365
-#, fuzzy
 msgid "Can't toggle new"
-msgstr "Impossible d'inverser l'indic. 'nouveau'"
+msgstr "Impossible de basculer le drapeau 'nouveau'"
 
 #. L10N: CHECK_ACL
 #: index/functions.c:2417
@@ -5448,9 +5438,9 @@ msgstr "impossible de déterminer nodename via uname()"
 
 #: init.c:637 parse/set.c:127 parse/set.c:187 parse/set.c:235 parse/set.c:269
 #: parse/set.c:333 parse/set.c:374 parse/set.c:441
-#, fuzzy, c-format
+#, c-format
 msgid "Option %s is deprecated"
-msgstr "La variable de configuration '%s' est invalide"
+msgstr "La variable de configuration %s n'est plus valide"
 
 # , c-format
 #. L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
@@ -6276,9 +6266,9 @@ msgstr "%d gardé(s), %d supprimé(s)"
 
 # , c-format
 #: mx.c:920
-#, fuzzy, c-format
+#, c-format
 msgid " Press '%s' to toggle write"
-msgstr " Appuyez sur '%s' pour inverser l'écriture autorisée"
+msgstr " Tapez '%s' pour basculer en écriture"
 
 #: mx.c:922
 msgid "Use 'toggle-write' to re-enable write"
@@ -6302,7 +6292,7 @@ msgstr "Impossible d'ouvrir le fichier : %s"
 
 #: mx.c:1814
 msgid "Can't toggle write on a readonly mailbox"
-msgstr "Impossible de rendre inscriptible une boîte aux lettres en lecture seule"
+msgstr "Impossible d'activer l'écriture sur une boîte aux lettres en lecture seule"
 
 #: mx.c:1821
 msgid "Changes to folder will be written on folder exit"
@@ -6315,7 +6305,7 @@ msgstr "Les modifications du répertoire ne seront pas écrites"
 #: ncrypt/crypt.c:76
 #, c-format
 msgid " (current time: %c)"
-msgstr " (heure courante : %c)"
+msgstr " (heure actuelle : %c)"
 
 #: ncrypt/crypt.c:83
 #, c-format
@@ -7884,7 +7874,7 @@ msgstr "Motifs"
 #: pattern/exec.c:95
 #, c-format
 msgid "Pattern operator '~%c' is disabled"
-msgstr ""
+msgstr "L'opérateur motif '~%c' n'est pas pris en charge"
 
 # , c-format
 #. L10N: An unknown pattern operator was somehow invoked.
