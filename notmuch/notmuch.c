@@ -559,6 +559,25 @@ static int update_message_path(struct Email *e, const char *path)
     edata->folder = mutt_strn_dup(path, p - path);
 
     mutt_debug(LL_DEBUG2, "nm: folder='%s', file='%s'\n", edata->folder, e->path);
+
+    // We _might_ be looking at a different file (with the same message-id)
+    // so reparse it from scratch.
+
+    // Preserve the message-id as it's used in the Email HashTable
+    mutt_debug(LL_DEBUG1, "nm: reparse the message\n");
+    char *message_id = e->env->message_id;
+    e->env->message_id = NULL;
+
+    mutt_body_free(&e->body);
+    mutt_env_free(&e->env);
+    maildir_parse_message(path, e->old, e);
+    ASSERT(e->body);
+    ASSERT(e->env);
+
+    FREE(&e->env->message_id);
+    e->env->message_id = message_id;
+    message_id = NULL;
+
     return 0;
   }
 
