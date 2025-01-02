@@ -268,13 +268,13 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 /**
  * mutt_window_get_coords - Get the cursor position in the Window
  * @param[in]  win Window
- * @param[out] col Column in Window
  * @param[out] row Row in Window
+ * @param[out] col Column in Window
  *
  * Assumes the current position is inside the window.  Otherwise it will
  * happily return negative or values outside the window boundaries
  */
-void mutt_window_get_coords(struct MuttWindow *win, int *col, int *row)
+void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
 {
   int x = 0;
   int y = 0;
