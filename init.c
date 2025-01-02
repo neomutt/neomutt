@@ -657,8 +657,13 @@ int mutt_query_variables(struct ListHead *queries, bool show_docs)
         buf_copy(value, tmp);
       }
 
-      dump_config_neo(NeoMutt->sub->cs, he, value, NULL,
-                      show_docs ? CS_DUMP_SHOW_DOCS : CS_DUMP_NO_FLAGS, stdout);
+      const bool tty = isatty(STDOUT_FILENO);
+
+      ConfigDumpFlags cdflags = tty ? CS_DUMP_LINK_DOCS : CS_DUMP_NO_FLAGS;
+      if (show_docs)
+        cdflags |= CS_DUMP_SHOW_DOCS;
+
+      dump_config_neo(NeoMutt->sub->cs, he, value, NULL, cdflags, stdout);
       continue;
     }
 

@@ -898,7 +898,9 @@ main
 
   if (dump_variables)
   {
-    ConfigDumpFlags cdflags = CS_DUMP_NO_FLAGS;
+    const bool tty = isatty(STDOUT_FILENO);
+
+    ConfigDumpFlags cdflags = tty ? CS_DUMP_LINK_DOCS : CS_DUMP_NO_FLAGS;
     if (hide_sensitive)
       cdflags |= CS_DUMP_HIDE_SENSITIVE;
     if (one_liner)
