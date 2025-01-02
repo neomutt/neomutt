@@ -300,30 +300,6 @@ int mutt_window_move(struct MuttWindow *win, int col, int row)
 }
 
 /**
- * mutt_window_mvprintw - Move the cursor and write a formatted string to a Window
- * @param win Window to write to
- * @param col Column to move to
- * @param row Row to move to
- * @param fmt printf format string
- * @param ... printf arguments
- * @retval num Success, characters written
- * @retval ERR Error, move failed
- */
-int mutt_window_mvprintw(struct MuttWindow *win, int col, int row, const char *fmt, ...)
-{
-  int rc = mutt_window_move(win, col, row);
-  if (rc == ERR)
-    return rc;
-
-  va_list ap;
-  va_start(ap, fmt);
-  rc = vw_printw(stdscr, fmt, ap);
-  va_end(ap);
-
-  return rc;
-}
-
-/**
  * mutt_window_reflow - Resize a Window and its children
  * @param win Window to resize
  */
