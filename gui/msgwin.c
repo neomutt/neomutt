@@ -271,7 +271,7 @@ static int msgwin_repaint(struct MuttWindow *win)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   mutt_window_clrtoeol(win);
 
-  mutt_window_get_coords(win, &wdata->col, &wdata->row);
+  mutt_window_get_coords(win, &wdata->row, &wdata->col);
 
   mutt_debug(LL_DEBUG5, "msgwin repaint done\n");
   return 0;

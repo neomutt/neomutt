@@ -244,7 +244,7 @@ struct EventWindow
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
 void               mutt_window_free               (struct MuttWindow **ptr);
-void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
+void               mutt_window_get_coords         (struct MuttWindow *win, int *row, int *col);
 struct MuttWindow *mutt_window_new                (enum WindowType type, enum MuttWindowOrientation orient, enum MuttWindowSize size, int cols, int rows);
 void               mutt_window_reflow             (struct MuttWindow *win);
 struct MuttWindow *mutt_window_remove_child       (struct MuttWindow *parent, struct MuttWindow *child);
