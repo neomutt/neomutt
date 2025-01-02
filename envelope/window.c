@@ -340,7 +340,8 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
 static void draw_floating(struct MuttWindow *win, int col, int row, const char *text)
 {
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(win, col, row, "%s", text);
+  mutt_window_move(win, col, row);
+  mutt_window_printf(win, "%s", text);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
 
@@ -353,7 +354,8 @@ static void draw_floating(struct MuttWindow *win, int col, int row, const char *
 static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 {
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_mvprintw(win, 0, row, "%*s", HeaderPadding[field], _(Prompts[field]));
+  mutt_window_move(win, 0, row);
+  mutt_window_printf(win, "%*s", HeaderPadding[field], _(Prompts[field]));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
 
