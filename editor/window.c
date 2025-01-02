@@ -196,7 +196,7 @@ static int enter_repaint(struct MuttWindow *win)
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 
   int prompt_length = 0;
-  mutt_window_get_coords(win, &prompt_length, NULL);
+  mutt_window_get_coords(win, NULL, &prompt_length);
 
   int width = win->state.cols - prompt_length - 1;
 
@@ -235,7 +235,7 @@ static int enter_repaint(struct MuttWindow *win)
                      0);
   }
 
-  mutt_window_get_coords(win, &wdata->col, &wdata->row);
+  mutt_window_get_coords(win, &wdata->row, &wdata->col);
   mutt_debug(LL_DEBUG5, "repaint done\n");
 
   return 0;

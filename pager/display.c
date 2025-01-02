@@ -518,7 +518,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
     if (buf[0] == '\n') /* end of header */
     {
       lines[line_num].cid = MT_COLOR_NORMAL;
-      mutt_window_get_coords(win, &BrailleCol, &BrailleRow);
+      mutt_window_get_coords(win, &BrailleRow, &BrailleCol);
     }
     else
     {
