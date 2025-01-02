@@ -300,20 +300,6 @@ int mutt_window_move(struct MuttWindow *win, int col, int row)
 }
 
 /**
- * mutt_window_mvaddstr - Move the cursor and write a fixed string to a Window
- * @param win Window to write to
- * @param col Column to move to
- * @param row Row to move to
- * @param str String to write
- * @retval OK  Success
- * @retval ERR Error
- */
-int mutt_window_mvaddstr(struct MuttWindow *win, int col, int row, const char *str)
-{
-  return mvaddstr(win->state.row_offset + row, win->state.col_offset + col, str);
-}
-
-/**
  * mutt_window_mvprintw - Move the cursor and write a formatted string to a Window
  * @param win Window to write to
  * @param col Column to move to

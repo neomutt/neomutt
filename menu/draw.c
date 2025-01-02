@@ -414,7 +414,8 @@ void menu_redraw_motion(struct Menu *menu)
 
     /* now draw it in the new location */
     mutt_curses_set_color(ac_ind);
-    mutt_window_mvaddstr(menu->win, 0, menu->current - menu->top, c_arrow_string);
+    mutt_window_move(menu->win, 0, menu->current - menu->top);
+    mutt_window_addstr(menu->win, c_arrow_string);
   }
   else
   {
