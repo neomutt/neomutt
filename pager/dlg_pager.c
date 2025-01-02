@@ -383,13 +383,13 @@ int dlg_pager(struct PagerView *pview)
     {
       if (BrailleRow != -1)
       {
-        mutt_window_move(priv->pview->win_pager, BrailleCol, BrailleRow + 1);
+        mutt_window_move(priv->pview->win_pager, BrailleRow + 1, BrailleCol);
         BrailleRow = -1;
       }
     }
     else
     {
-      mutt_window_move(priv->pview->win_pbar, priv->pview->win_pager->state.cols - 1, 0);
+      mutt_window_move(priv->pview->win_pbar, 0, priv->pview->win_pager->state.cols - 1);
     }
 
     // force redraw of the screen at every iteration of the event loop

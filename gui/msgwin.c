@@ -255,7 +255,7 @@ static int msgwin_repaint(struct MuttWindow *win)
   const char *str = buf_string(wdata->text);
   for (int i = 0; i < MSGWIN_MAX_ROWS; i++)
   {
-    mutt_window_move(win, 0, i);
+    mutt_window_move(win, i, 0);
     if (ARRAY_EMPTY(&wdata->rows[i]))
       break;
 
@@ -284,7 +284,7 @@ static bool msgwin_recursor(struct MuttWindow *win)
 {
   struct MsgWinWindowData *wdata = win->wdata;
 
-  mutt_window_move(win, wdata->col, wdata->row);
+  mutt_window_move(win, wdata->row, wdata->col);
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
 
   mutt_debug(LL_DEBUG5, "msgwin recursor done\n");

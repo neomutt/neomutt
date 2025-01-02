@@ -340,7 +340,7 @@ static int calc_envelope(struct MuttWindow *win, struct EnvelopeWindowData *wdat
 static void draw_floating(struct MuttWindow *win, int col, int row, const char *text)
 {
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_move(win, col, row);
+  mutt_window_move(win, row, col);
   mutt_window_printf(win, "%s", text);
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
@@ -354,7 +354,7 @@ static void draw_floating(struct MuttWindow *win, int col, int row, const char *
 static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 {
   mutt_curses_set_normal_backed_color_by_id(MT_COLOR_COMPOSE_HEADER);
-  mutt_window_move(win, 0, row);
+  mutt_window_move(win, row, 0);
   mutt_window_printf(win, "%*s", HeaderPadding[field], _(Prompts[field]));
   mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
 }
@@ -371,7 +371,7 @@ static void draw_header(struct MuttWindow *win, int row, enum HeaderField field)
 static void draw_header_content(struct MuttWindow *win, int row,
                                 enum HeaderField field, const char *content)
 {
-  mutt_window_move(win, HeaderPadding[field], row);
+  mutt_window_move(win, row, HeaderPadding[field]);
   mutt_paddstr(win, win->state.cols - HeaderPadding[field], content);
 }
 
@@ -578,7 +578,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
       row++;
       lines_used++;
       width_left = win->state.cols - MaxHeaderWidth;
-      mutt_window_move(win, MaxHeaderWidth, row);
+      mutt_window_move(win, row, MaxHeaderWidth);
       goto try_again;
     }
 
@@ -597,7 +597,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
   if (count > 0)
   {
-    mutt_window_move(win, win->state.cols - more_len, row);
+    mutt_window_move(win, row, win->state.cols - more_len);
     mutt_curses_set_normal_backed_color_by_id(MT_COLOR_BOLD);
     mutt_window_addstr(win, more);
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
@@ -610,7 +610,7 @@ static int draw_envelope_addr(int field, struct AddressList *al,
 
   for (int i = lines_used; i < max_lines; i++)
   {
-    mutt_window_move(win, 0, row + i);
+    mutt_window_move(win, row + i, 0);
     mutt_window_clrtoeol(win);
   }
 
