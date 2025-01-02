@@ -257,7 +257,7 @@ int  mutt_window_addstr   (struct MuttWindow *win, const char *str);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_clear    (struct MuttWindow *win);
 void mutt_window_clrtoeol (struct MuttWindow *win);
-int  mutt_window_move     (struct MuttWindow *win, int col, int row);
+int  mutt_window_move     (struct MuttWindow *win, int row, int col);
 int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...)
                             __attribute__((__format__(__printf__, 2, 3)));
 bool mutt_window_is_visible(struct MuttWindow *win);

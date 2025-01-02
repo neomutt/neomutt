@@ -108,15 +108,15 @@ static int menu_repaint(struct MuttWindow *win)
   {
     const char *const c_arrow_string = cs_subset_string(menu->sub, "arrow_string");
     const int arrow_width = mutt_strwidth(c_arrow_string);
-    mutt_window_move(menu->win, arrow_width, menu->current - menu->top);
+    mutt_window_move(menu->win, menu->current - menu->top, arrow_width);
   }
   else if (c_braille_friendly)
   {
-    mutt_window_move(menu->win, 0, menu->current - menu->top);
+    mutt_window_move(menu->win, menu->current - menu->top, 0);
   }
   else
   {
-    mutt_window_move(menu->win, menu->win->state.cols - 1, menu->current - menu->top);
+    mutt_window_move(menu->win, menu->current - menu->top, menu->win->state.cols - 1);
   }
 
   mutt_debug(LL_DEBUG5, "repaint done\n");
