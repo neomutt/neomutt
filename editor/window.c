@@ -218,7 +218,7 @@ static int enter_repaint(struct MuttWindow *win)
           wdata->state->wbuf, wdata->state->lastchar,
           mutt_mb_wcswidth(wdata->state->wbuf, wdata->state->curpos) - (width / 2));
     }
-    mutt_window_move(win, prompt_length, 0);
+    mutt_window_move(win, 0, prompt_length);
     int w = 0;
     for (size_t i = wdata->state->begin; i < wdata->state->lastchar; i++)
     {
@@ -228,11 +228,10 @@ static int enter_repaint(struct MuttWindow *win)
       my_addwch(win, wdata->state->wbuf[i]);
     }
     mutt_window_clrtoeol(win);
-    mutt_window_move(win,
+    mutt_window_move(win, 0,
                      prompt_length +
                          mutt_mb_wcswidth(wdata->state->wbuf + wdata->state->begin,
-                                          wdata->state->curpos - wdata->state->begin),
-                     0);
+                                          wdata->state->curpos - wdata->state->begin));
   }
 
   mutt_window_get_coords(win, &wdata->row, &wdata->col);
@@ -247,7 +246,7 @@ static int enter_repaint(struct MuttWindow *win)
 static bool enter_recursor(struct MuttWindow *win)
 {
   struct EnterWindowData *wdata = win->wdata;
-  mutt_window_move(win, wdata->col, wdata->row);
+  mutt_window_move(win, wdata->row, wdata->col);
   mutt_curses_set_cursor(MUTT_CURSOR_VISIBLE);
   return true;
 }

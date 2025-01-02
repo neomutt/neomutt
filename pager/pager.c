@@ -213,7 +213,7 @@ static int pager_repaint(struct MuttWindow *win)
           priv->win_height++;
         }
         priv->cur_line++;
-        mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
+        mutt_window_move(priv->pview->win_pager, priv->win_height, 0);
       }
     } while (priv->force_redraw);
 
@@ -225,7 +225,7 @@ static int pager_repaint(struct MuttWindow *win)
       if (c_tilde)
         mutt_window_addch(priv->pview->win_pager, '~');
       priv->win_height++;
-      mutt_window_move(priv->pview->win_pager, 0, priv->win_height);
+      mutt_window_move(priv->pview->win_pager, priv->win_height, 0);
     }
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
   }

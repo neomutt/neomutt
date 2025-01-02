@@ -1283,16 +1283,16 @@ struct Mailbox *dlg_index(struct MuttWindow *dlg, struct Mailbox *m_init)
     {
       const char *const c_arrow_string = cs_subset_string(shared->sub, "arrow_string");
       const int arrow_width = mutt_strwidth(c_arrow_string);
-      mutt_window_move(priv->menu->win, arrow_width, index - priv->menu->top);
+      mutt_window_move(priv->menu->win, index - priv->menu->top, arrow_width);
     }
     else if (c_braille_friendly)
     {
-      mutt_window_move(priv->menu->win, 0, index - priv->menu->top);
+      mutt_window_move(priv->menu->win, index - priv->menu->top, 0);
     }
     else
     {
-      mutt_window_move(priv->menu->win, priv->menu->win->state.cols - 1,
-                       index - priv->menu->top);
+      mutt_window_move(priv->menu->win, index - priv->menu->top,
+                       priv->menu->win->state.cols - 1);
     }
     mutt_refresh();
 

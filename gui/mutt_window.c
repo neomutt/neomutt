@@ -231,7 +231,7 @@ void mutt_window_free(struct MuttWindow **ptr)
  */
 void mutt_window_clearline(struct MuttWindow *win, int row)
 {
-  mutt_window_move(win, 0, row);
+  mutt_window_move(win, row, 0);
   mutt_window_clrtoeol(win);
 }
 
@@ -289,12 +289,12 @@ void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
 /**
  * mutt_window_move - Move the cursor in a Window
  * @param win Window
- * @param col Column to move to
  * @param row Row to move to
+ * @param col Column to move to
  * @retval OK  Success
  * @retval ERR Error
  */
-int mutt_window_move(struct MuttWindow *win, int col, int row)
+int mutt_window_move(struct MuttWindow *win, int row, int col)
 {
   return move(win->state.row_offset + row, win->state.col_offset + col);
 }
