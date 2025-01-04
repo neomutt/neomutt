@@ -648,8 +648,7 @@ static int op_pager_search(struct IndexSharedData *shared,
     int line_num = 0;
     while (display_line(priv->fp, &priv->bytes_read, &priv->lines, line_num,
                         &priv->lines_used, &priv->lines_max,
-                        MUTT_SEARCH | (pview->flags & MUTT_PAGER_NSKIP) |
-                            (pview->flags & MUTT_PAGER_NOWRAP) | priv->has_types,
+                        MUTT_SEARCH | (pview->flags & MUTT_PAGER_NOWRAP) | priv->has_types,
                         &priv->quote_list, &priv->q_level, &priv->force_redraw,
                         &priv->search_re, priv->pview->win_pager, &priv->ansi_list) == 0)
     {

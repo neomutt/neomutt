@@ -467,24 +467,10 @@ int dlg_pager(struct PagerView *pview)
       msgwin_clear_text(NULL);
 
       pager_queue_redraw(priv, PAGER_REDRAW_FLOW);
-      if (pview->flags & MUTT_PAGER_RETWINCH)
-      {
-        /* Store current position. */
-        priv->win_height = -1;
-        for (size_t i = 0; i <= priv->top_line; i++)
-          if (!priv->lines[i].cont_line)
-            priv->win_height++;
 
-        op = OP_ABORT;
-        priv->rc = OP_REFORMAT_WINCH;
-        break;
-      }
-      else
-      {
-        /* note: mutt_resize_screen() -> mutt_window_reflow() sets
-         * PAGER_REDRAW_PAGER and PAGER_REDRAW_FLOW */
-        op = OP_NULL;
-      }
+      /* note: mutt_resize_screen() -> mutt_window_reflow() sets
+       * PAGER_REDRAW_PAGER and PAGER_REDRAW_FLOW */
+      op = OP_NULL;
       continue;
     }
 

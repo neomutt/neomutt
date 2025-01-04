@@ -484,44 +484,42 @@ void mutt_help(enum MenuType menu)
   struct PagerView pview = { &pdata };
 
   pview.mode = PAGER_MODE_HELP;
-  pview.flags = MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP |
-                MUTT_PAGER_NOWRAP | MUTT_PAGER_STRIPES;
+  pview.flags = MUTT_PAGER_MARKER | MUTT_PAGER_NOWRAP | MUTT_PAGER_STRIPES;
 
-  do
+  fp = mutt_file_fopen(buf_string(tempfile), "w");
+  if (!fp)
   {
-    fp = mutt_file_fopen(buf_string(tempfile), "w");
-    if (!fp)
-    {
-      mutt_perror("%s", buf_string(tempfile));
-      goto cleanup;
-    }
+    mutt_perror("%s", buf_string(tempfile));
+    goto cleanup;
+  }
 
-    const int wraplen = AllDialogsWindow->state.cols;
-    dump_menu(fp, menu, wraplen);
-    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
-    {
-      fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
-      dump_menu(fp, MENU_GENERIC, wraplen);
-    }
+  const int wraplen = AllDialogsWindow->state.cols;
+  dump_menu(fp, menu, wraplen);
+  if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
+  {
+    fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
+    dump_menu(fp, MENU_GENERIC, wraplen);
+  }
 
-    fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
-    if (funcs)
-      dump_unbound(fp, funcs, &Keymaps[menu], NULL, wraplen);
-    if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
-      dump_unbound(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], wraplen);
+  fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
+  if (funcs)
+    dump_unbound(fp, funcs, &Keymaps[menu], NULL, wraplen);
+  if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
+    dump_unbound(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], wraplen);
 
-    if (menu == MENU_INDEX)
-    {
-      fprintf(fp, "\n%s\n\n", _("Message flags:"));
-      dump_message_flags(fp, wraplen);
-    }
+  if (menu == MENU_INDEX)
+  {
+    fprintf(fp, "\n%s\n\n", _("Message flags:"));
+    dump_message_flags(fp, wraplen);
+  }
 
-    mutt_file_fclose(&fp);
+  mutt_file_fclose(&fp);
 
-    snprintf(banner, sizeof(banner), _("Help for %s"), desc);
-    pdata.fname = buf_string(tempfile);
-    pview.banner = banner;
-  } while (mutt_do_pager(&pview, NULL) == OP_REFORMAT_WINCH);
+  snprintf(banner, sizeof(banner), _("Help for %s"), desc);
+  pdata.fname = buf_string(tempfile);
+  pview.banner = banner;
+
+  mutt_do_pager(&pview, NULL);
 
 cleanup:
   buf_pool_release(&tempfile);
