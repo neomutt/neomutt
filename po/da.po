@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-12-12\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-10 13:03+0000\n"
+"POT-Creation-Date: 2025-01-04 09:58+0000\n"
 "PO-Revision-Date: 2019-05-10 21:15+0200\n"
 "Last-Translator: Morten Bo Johansen <mbj@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -68,22 +68,22 @@ msgstr ""
 msgid "Accept?"
 msgstr "O.k.?"
 
-#: alias/alias.c:518 attach/recvattach.c:306 attach/recvattach.c:329
-#: attach/recvattach.c:347 attach/recvattach.c:364 attach/recvattach.c:491
-#: pager/functions.c:1018
+#: alias/alias.c:518 attach/recvattach.c:305 attach/recvattach.c:328
+#: attach/recvattach.c:346 attach/recvattach.c:363 attach/recvattach.c:490
+#: pager/functions.c:1019
 msgid "Save to file: "
 msgstr "Gem i fil: "
 
-#: alias/alias.c:544
+#: alias/alias.c:540
 msgid "Error reading alias file"
 msgstr "Fejl ved læsning af alias-fil"
 
-#: alias/alias.c:583
+#: alias/alias.c:579
 #, fuzzy
 msgid "Trouble adding alias"
 msgstr "Fejl ved læsning af alias-fil"
 
-#: alias/alias.c:585
+#: alias/alias.c:581
 msgid "Alias added"
 msgstr "Adresse tilføjet"
 
@@ -304,8 +304,8 @@ msgstr "Kan ikke matche navneskabelon, fortsæt?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Brug af \"compose\" i mailcap-fil kræver %%s"
 
-#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:317
-#: compose/functions.c:1853 gui/curs_lib.c:124 index/dlg_index.c:1215
+#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:312
+#: compose/functions.c:1851 gui/curs_lib.c:124 index/dlg_index.c:1215
 #: index/dlg_index.c:1260 pager/dlg_pager.c:455 pager/do_pager.c:166
 #: pager/message.c:329 send/sendlib.c:581
 #, c-format
@@ -347,9 +347,9 @@ msgstr "Ingen passende mailcap-regler fundet. Viser som tekst."
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME-typen er ikke defineret. Kan ikke vise bilag."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
-#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
-#: ncrypt/pgpkey.c:301
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1193
+#: attach/mutt_attach.c:1258 handler.c:595 ncrypt/pgp_functions.c:160
+#: ncrypt/pgpkey.c:300
 msgid "Can't create filter"
 msgstr "Kan ikke oprette filter"
 
@@ -373,66 +373,66 @@ msgstr "---Bilag: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Bilag: %s"
 
-#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
+#: attach/mutt_attach.c:1013 attach/mutt_attach.c:1021
 msgid "Write fault"
 msgstr "Skrivefejl"
 
-#: attach/mutt_attach.c:1287
+#: attach/mutt_attach.c:1282
 msgid "I don't know how to print that"
 msgstr "Jeg ved ikke hvordan man udskriver dette"
 
-#: attach/recvattach.c:352
+#: attach/recvattach.c:351
 msgid "Saving..."
 msgstr "Gemmer ..."
 
-#: attach/recvattach.c:358 attach/recvattach.c:533
+#: attach/recvattach.c:357 attach/recvattach.c:532
 #, fuzzy, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
 msgstr[0] "Bilag gemt"
 msgstr[1] "Bilag gemt"
 
-#: attach/recvattach.c:558
+#: attach/recvattach.c:557
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ADVARSEL! Fil %s findes, overskriv?"
 
-#: attach/recvattach.c:575
+#: attach/recvattach.c:574
 msgid "Attachment filtered"
 msgstr "Brevdel filtreret"
 
-#: attach/recvattach.c:738
+#: attach/recvattach.c:737
 msgid "Filter through: "
 msgstr "Filtrér gennem: "
 
-#: attach/recvattach.c:738
+#: attach/recvattach.c:737
 msgid "Pipe to: "
 msgstr "Overfør til kommando (pipe): "
 
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-#: attach/recvattach.c:796
+#: attach/recvattach.c:795
 #, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Jeg ved ikke hvordan man udskriver %s-brevdele"
 
-#: attach/recvattach.c:900
+#: attach/recvattach.c:899
 #, fuzzy, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "Udskriv udvalgte brevdel(e)?"
 msgstr[1] "Udskriv udvalgte brevdel(e)?"
 
-#: attach/recvattach.c:901
+#: attach/recvattach.c:900
 #, c-format
 msgid "Print attachment?"
 msgstr "Udskriv brevdel?"
 
-#: attach/recvattach.c:942
+#: attach/recvattach.c:941
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Strukturelle ændringer i dekrypterede bilag understøttes ikke"
 
-#: attach/recvattach.c:1160
+#: attach/recvattach.c:1159
 msgid "Can't decrypt encrypted message"
 msgstr "Kan ikke dekryptere krypteret brev"
 
@@ -855,13 +855,13 @@ msgstr "Abonnerer på %s"
 msgid "Unsubscribe pattern: "
 msgstr "Afmeldt fra %s"
 
-#: color/command.c:171 color/command.c:194 color/command.c:205
-#: color/command.c:258
+#: color/command.c:172 color/command.c:195 color/command.c:206
+#: color/command.c:259
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: ukendt objekt"
 
-#: color/command.c:185 color/command.c:340 color/parse_color.c:288
+#: color/command.c:186 color/command.c:341 color/parse_color.c:288
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:367
 #: commands.c:389 commands.c:530 commands.c:546 commands.c:763 commands.c:795
 #: commands.c:811 commands.c:931 commands.c:1056 commands.c:1109
@@ -872,30 +872,30 @@ msgstr "%s: ukendt objekt"
 msgid "%s: too few arguments"
 msgstr "%s: for få parametre"
 
-#: color/command.c:365
+#: color/command.c:366
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr ""
 
-#: color/command.c:372
+#: color/command.c:373
 #, fuzzy, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "standard-farver er ikke understøttet"
 
-#: color/command.c:379 color/parse_color.c:188 color/parse_color.c:227
+#: color/command.c:380 color/parse_color.c:188 color/parse_color.c:227
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: farve er ikke understøttet af terminal"
 
-#: color/command.c:402 color/command.c:444 commands.c:413 commands.c:1118
+#: color/command.c:403 color/command.c:445 commands.c:413 commands.c:1118
 #: commands.c:1249 commands.c:1585 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
-#: mutt_lua.c:507 score.c:108
+#: mutt_lua.c:508 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: for mange parametre"
 
-#: color/command.c:434
+#: color/command.c:435
 #, fuzzy, c-format
 msgid "%s: invalid number: %s"
 msgstr "Fejl: score: ugyldigt tal"
@@ -905,29 +905,29 @@ msgstr "Fejl: score: ugyldigt tal"
 msgid "Too many colors: %d / %d"
 msgstr ""
 
-#: color/dump.c:231
+#: color/dump.c:232
 msgid "# Quoted Colors\n"
 msgstr ""
 
-#: color/dump.c:277
+#: color/dump.c:278
 #, c-format
 msgid "# Regex Color %s\n"
 msgstr ""
 
-#: color/dump.c:323
+#: color/dump.c:324
 msgid "# Simple Colors\n"
 msgstr ""
 
-#: color/dump.c:359
+#: color/dump.c:360
 msgid "# Compose Colors\n"
 msgstr ""
 
-#: color/dump.c:406
+#: color/dump.c:407
 msgid "# Status Colors\n"
 msgstr ""
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:883 commands.c:942 commands.c:1628
+#: color/dump.c:461 commands.c:883 commands.c:942 commands.c:1628
 #: imap/message.c:1154 key/dump.c:231
 #, c-format
 msgid "Could not create temporary file %s"
@@ -943,7 +943,7 @@ msgstr "%s: ukendt farve"
 msgid "%s: no such attribute"
 msgstr "%s: ukendt attribut"
 
-#: color/quoted.c:126
+#: color/quoted.c:134
 #, c-format
 msgid "Maximum quoting level is %d"
 msgstr ""
@@ -1016,7 +1016,7 @@ msgstr ""
 msgid "%s is unset"
 msgstr "%s er ikke sat"
 
-#: commands.c:1080 mutt_lua.c:502
+#: commands.c:1080 mutt_lua.c:503
 #, c-format
 msgid "source: error at %s"
 msgstr "source: Fejl ved %s"
@@ -1061,59 +1061,59 @@ msgstr "Afmeldt fra %s"
 msgid "Could not unsubscribe from %s"
 msgstr "Afmeldt fra %s"
 
-#: compmbox/compress.c:223
+#: compmbox/compress.c:218
 #, c-format
 msgid "Expando parse error: %s"
 msgstr ""
 
-#: compmbox/compress.c:352 compmbox/compress.c:485
+#: compmbox/compress.c:347 compmbox/compress.c:480
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Kan ikke tilføje uden en \"append-hook\" eller \"close-hook\" : %s"
 
-#: compmbox/compress.c:434 compmbox/compress.c:497 compmbox/compress.c:572
-#: compmbox/compress.c:610 mbox/mbox.c:1106
+#: compmbox/compress.c:429 compmbox/compress.c:492 compmbox/compress.c:567
+#: compmbox/compress.c:605 mbox/mbox.c:1106
 msgid "Unable to lock mailbox"
 msgstr "Kan ikke låse brevbakke"
 
-#: compmbox/compress.c:438 compmbox/compress.c:504 compmbox/compress.c:576
+#: compmbox/compress.c:433 compmbox/compress.c:499 compmbox/compress.c:571
 #, c-format
 msgid "Decompressing %s"
 msgstr "Dekomprimerer %s"
 
-#: compmbox/compress.c:446
+#: compmbox/compress.c:441
 msgid "Can't identify the contents of the compressed file"
 msgstr "Kan ikke bestemme indholdet i den komprimerede fil"
 
-#: compmbox/compress.c:453 compmbox/compress.c:526
+#: compmbox/compress.c:448 compmbox/compress.c:521
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Kan ikke finde operationer for brevbakke af typen %d"
 
-#: compmbox/compress.c:506
+#: compmbox/compress.c:501
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Komprimeringskommando fejlede: %s"
 
-#: compmbox/compress.c:519
+#: compmbox/compress.c:514
 msgid "Unsupported mailbox type for appending"
 msgstr "Typen på brevbakken understøttes ikke ved tilføjelse"
 
-#: compmbox/compress.c:600
+#: compmbox/compress.c:595
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Kan ikke synkronisere en komprimeret fil uden en \"close-hook\""
 
-#: compmbox/compress.c:622 compmbox/compress.c:673
+#: compmbox/compress.c:617 compmbox/compress.c:668
 #, c-format
 msgid "Compressing %s"
 msgstr "Komprimerer %s"
 
-#: compmbox/compress.c:668
+#: compmbox/compress.c:663
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Komprimeret-tilføjelse til %s ..."
 
-#: compmbox/compress.c:679 editmsg.c:266
+#: compmbox/compress.c:674 editmsg.c:266
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Fejl. Bevarer midlertidig fil: %s"
@@ -1232,7 +1232,7 @@ msgstr "Åbn brevbakken med brevet som skal vedlægges"
 msgid "Open newsgroup to attach message from"
 msgstr "Åbn brevbakken med brevet som skal vedlægges"
 
-#: compose/functions.c:893 main.c:1420
+#: compose/functions.c:893 main.c:1424
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Kan ikke åbne brevbakke %s"
@@ -1319,91 +1319,91 @@ msgstr "\"Content-Type\" er på formen grundtype/undertype"
 msgid "Unknown Content-Type %s"
 msgstr "Ukendt \"Content-Type\" %s"
 
-#: compose/functions.c:1485
+#: compose/functions.c:1484
 #, c-format
 msgid "Can't create file %s"
 msgstr "Kan ikke oprette filen %s"
 
-#: compose/functions.c:1493
+#: compose/functions.c:1491
 #, fuzzy
 msgid "Error attaching file"
 msgstr "Det er ikke muligt at lave et bilag"
 
-#: compose/functions.c:1535
+#: compose/functions.c:1533
 #, fuzzy
 msgid "Can't print multipart attachments"
 msgstr "Udskriv udvalgte brevdel(e)?"
 
-#: compose/functions.c:1561
+#: compose/functions.c:1559
 msgid "Send attachment with name: "
 msgstr "Send bilag med navn: "
 
-#: compose/functions.c:1586
+#: compose/functions.c:1584
 #, fuzzy
 msgid "Can't save multipart attachments"
 msgstr "Sletning af brevdele fra udelte breve er ikke understøttet"
 
-#: compose/functions.c:1622
+#: compose/functions.c:1620
 msgid "Recoding only affects text attachments"
 msgstr "Omkodning berører kun tekstdele"
 
-#: compose/functions.c:1627
+#: compose/functions.c:1625
 msgid "The current attachment won't be converted"
 msgstr "Den aktuelle del vil ikke blive konverteret"
 
-#: compose/functions.c:1629
+#: compose/functions.c:1627
 msgid "The current attachment will be converted"
 msgstr "Den aktuelle del vil blive konverteret"
 
-#: compose/functions.c:1658
+#: compose/functions.c:1656
 #, fuzzy
 msgid "Attachment is not 'multipart'"
 msgstr "Bilag gemt"
 
-#: compose/functions.c:1774 send/send.c:2673
+#: compose/functions.c:1772 send/send.c:2673
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Forkert IDN i '%s': '%s'"
 
-#: compose/functions.c:1807
+#: compose/functions.c:1805
 #, fuzzy
 msgid "Can't edit multipart attachments"
 msgstr "Sletning af brevdele fra udelte breve er ikke understøttet"
 
-#: compose/functions.c:1888
+#: compose/functions.c:1886
 #, fuzzy
 msgid "Can't rename multipart attachments"
 msgstr "Sletning af brevdele fra udelte breve er ikke understøttet"
 
-#: compose/functions.c:1895
+#: compose/functions.c:1893
 msgid "Rename to: "
 msgstr "Omdøb til: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1903 convert/content_info.c:208 editmsg.c:104
+#: compose/functions.c:1901 convert/content_info.c:208 editmsg.c:104
 #: editmsg.c:137 editmsg.c:156
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Kan ikke finde filen %s: %s"
 
-#: compose/functions.c:1941
+#: compose/functions.c:1939
 msgid "Save a copy of this message?"
 msgstr "Gem en kopi af dette brev?"
 
-#: compose/functions.c:1967
+#: compose/functions.c:1965
 msgid "Write message to mailbox"
 msgstr "Skriv brevet til brevbakke"
 
-#: compose/functions.c:1971
+#: compose/functions.c:1969
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Skriver brevet til %s ..."
 
-#: compose/functions.c:1979
+#: compose/functions.c:1977
 msgid "Message written"
 msgstr "Brevet skrevet"
 
-#: compose/functions.c:2047
+#: compose/functions.c:2045
 #, fuzzy
 msgid "Save (postpone) draft message?"
 msgstr "Genindlæs tilbageholdt brev?"
@@ -1412,12 +1412,16 @@ msgstr "Genindlæs tilbageholdt brev?"
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:196
+#: compose/preview.c:153
+msgid "Email too large to preview"
+msgstr ""
+
+#: compose/preview.c:197
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Kunne ikke verificere afsender"
 
-#: compose/preview.c:219
+#: compose/preview.c:221
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -1458,25 +1462,25 @@ msgid "Invalid long: %s"
 msgstr "Ugyldig måned: %s"
 
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
-#: config/number.c:93 config/number.c:155 config/number.c:209
-#: config/number.c:251
+#: config/number.c:96 config/number.c:158 config/number.c:212
+#: config/number.c:254
 #, fuzzy, c-format
 msgid "Option %s may not be negative"
 msgstr "Funktionen er ikke tilladt ved vedlægning af bilag."
 
-#: config/number.c:81 config/number.c:196 config/number.c:238
+#: config/number.c:84 config/number.c:199 config/number.c:241
 #: expando/node_conddate.c:242 expando/node_expando.c:179
 #: expando/node_expando.c:202
 #, fuzzy, c-format
 msgid "Invalid number: %s"
 msgstr "Fejl: score: ugyldigt tal"
 
-#: config/number.c:87 config/number.c:203 config/number.c:245
+#: config/number.c:90 config/number.c:206 config/number.c:248
 #, c-format
 msgid "Number is too big: %s"
 msgstr ""
 
-#: config/number.c:149
+#: config/number.c:152
 #, fuzzy, c-format
 msgid "Invalid number: %ld"
 msgstr "Fejl: score: ugyldigt tal"
@@ -4599,7 +4603,7 @@ msgstr "Hjælp for %s"
 msgid "History '%s'"
 msgstr "Forespørgsel: '%s'"
 
-#: history/history.c:235 history/history.c:625
+#: history/history.c:235 history/history.c:623
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: Fejlformateret historikfil"
@@ -4612,7 +4616,7 @@ msgstr "%s:%d: Fejlformateret historikfil"
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:590 ncrypt/pgp.c:597
 #: ncrypt/pgp.c:925 ncrypt/pgp.c:1042 ncrypt/pgp.c:1199 ncrypt/pgp.c:1223
 #: ncrypt/pgp.c:1256 ncrypt/pgp.c:1610 ncrypt/pgp_functions.c:135
-#: ncrypt/pgpkey.c:283 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
+#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
 #: ncrypt/smime.c:722 ncrypt/smime.c:821 ncrypt/smime.c:931 ncrypt/smime.c:998
 #: ncrypt/smime.c:1005 ncrypt/smime.c:1216 ncrypt/smime.c:1616
 #: ncrypt/smime.c:1695 ncrypt/smime.c:1702 ncrypt/smime.c:1809
@@ -4795,7 +4799,7 @@ msgid_plural "Copying %d messages to %s..."
 msgstr[0] "Kopierer %d breve til %s ..."
 msgstr[1] "Kopierer %d breve til %s ..."
 
-#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1821 muttlib.c:801
+#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Opret %s?"
@@ -4951,7 +4955,7 @@ msgstr "%s: Operationen er ikke tilladt af ACL"
 msgid "Failed to create query, aborting"
 msgstr ""
 
-#: index/dlg_index.c:782 muttlib.c:785 mx.c:205 mx.c:343
+#: index/dlg_index.c:782 muttlib.c:784 mx.c:205 mx.c:343
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s er ingen brevbakke"
@@ -4968,15 +4972,15 @@ msgstr "Nye breve i denne brevbakke"
 msgid "Mailbox was externally modified"
 msgstr "Brevbakke ændret udefra"
 
-#: index/dlg_index.c:1336 index/functions.c:3075 pattern/message.c:288
+#: index/dlg_index.c:1335 index/functions.c:3075 pattern/message.c:288
 msgid "No mailbox is open"
 msgstr "Ingen brevbakke er åben"
 
-#: index/dlg_index.c:1344
+#: index/dlg_index.c:1343
 msgid "No tagged messages"
 msgstr "Ingen breve er udvalgt"
 
-#: index/dlg_index.c:1349 index/functions.c:919
+#: index/dlg_index.c:1348 index/functions.c:919
 msgid "Nothing to do"
 msgstr "Intet at gøre"
 
@@ -5155,7 +5159,7 @@ msgstr "Ingen ulæste breve"
 msgid "Search wrapped to top"
 msgstr "Søgning fortsat fra top"
 
-#: index/functions.c:1570 pager/functions.c:796 pattern/pattern.c:570
+#: index/functions.c:1570 pager/functions.c:797 pattern/pattern.c:570
 #: pattern/pattern.c:726
 msgid "Search wrapped to bottom"
 msgstr "Søgning fortsat fra bund"
@@ -5758,11 +5762,11 @@ msgstr "%s: kunne ikke vedlægge fil"
 msgid "No mailbox with new mail"
 msgstr "Ingen brevbakke med nye breve"
 
-#: main.c:1344
+#: main.c:1345
 msgid "No incoming mailboxes defined"
 msgstr "Ingen indbakker er defineret"
 
-#: main.c:1397
+#: main.c:1398
 msgid "Mailbox is empty"
 msgstr "Brevbakken er tom"
 
@@ -5819,7 +5823,7 @@ msgid "Search for: "
 msgstr "Søg efter: "
 
 #: menu/functions.c:127 pager/functions.c:695 pager/functions.c:762
-#: pager/functions.c:792 pattern/pattern.c:621 pattern/pattern.c:774
+#: pager/functions.c:793 pattern/pattern.c:621 pattern/pattern.c:774
 msgid "Not found"
 msgstr "Ikke fundet"
 
@@ -5865,25 +5869,25 @@ msgstr "Der er ingen udvalgte listninger"
 msgid "Out of memory"
 msgstr ""
 
-#: mutt/file.c:787
+#: mutt/file.c:665
 #, fuzzy, c-format
 msgid "Failed to seek file: %s"
 msgstr "Omdøbning af fil slog fejl"
 
-#: mutt/file.c:1231
+#: mutt/file.c:1125
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "Udløbstid overskredet under forsøg på at bruge fcntl-lås"
 
-#: mutt/file.c:1237
+#: mutt/file.c:1131
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Venter på fcntl-lås ... %d"
 
-#: mutt/file.c:1297
+#: mutt/file.c:1191
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "Timeout overskredet ved forsøg på brug af flock-lås"
 
-#: mutt/file.c:1304
+#: mutt/file.c:1198
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Venter på flock-lås ... %d"
@@ -5952,11 +5956,11 @@ msgstr ""
 msgid "Invalid value for option %s: %ld"
 msgstr "Ugyldig værdi for tilvalget %s: \"%s\""
 
-#: mutt_lua.c:447
+#: mutt_lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
 msgstr ""
 
-#: mutt_lua.c:517
+#: mutt_lua.c:518
 #, fuzzy, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Kunne ikke låse %s.\n"
@@ -6017,16 +6021,16 @@ msgstr "Filen eksisterer , (o)verskriv, (t)ilføj, (a)nnulér?"
 msgid "oac"
 msgstr "ota"
 
-#: muttlib.c:754
+#: muttlib.c:753
 msgid "Can't save message to POP mailbox"
 msgstr "Kan ikke gemme brev i POP-brevbakke"
 
-#: muttlib.c:764
+#: muttlib.c:763
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Føj breve til %s?"
 
-#: muttlib.c:777
+#: muttlib.c:776
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "Kunne ikke efterlade breve på server"
@@ -6170,7 +6174,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Brev ikke sendt: integreret PGP kan ikke bruges sammen med format=flowed"
 
 #: ncrypt/crypt.c:208 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
-#: ncrypt/pgpkey.c:296
+#: ncrypt/pgpkey.c:295
 msgid "Invoking PGP..."
 msgstr "Starter PGP ..."
 
@@ -6561,8 +6565,8 @@ msgstr "gpgme_op_keylist_start fejlede: %s"
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next fejlede: %s"
 
-#: ncrypt/crypt_gpgme.c:3271 ncrypt/crypt_gpgme.c:3391 ncrypt/pgpkey.c:399
-#: ncrypt/pgpkey.c:531
+#: ncrypt/crypt_gpgme.c:3271 ncrypt/crypt_gpgme.c:3391 ncrypt/pgpkey.c:398
+#: ncrypt/pgpkey.c:530
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Leder efter nøgler, der matcher \"%s\"..."
@@ -6589,7 +6593,7 @@ msgstr "Anfør nøgle-id for %s: "
 msgid "No secret keys found"
 msgstr "Ingen hemmelige nøgler fundet"
 
-#: ncrypt/crypt_gpgme.c:3776 ncrypt/pgpkey.c:269
+#: ncrypt/crypt_gpgme.c:3776 ncrypt/pgpkey.c:268
 msgid "Please enter the key ID: "
 msgstr "Anfør venligst nøgle-id: "
 
@@ -7081,7 +7085,7 @@ msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge eller r(y)d?"
 msgid "esabc"
 msgstr "kusby"
 
-#: ncrypt/pgp_functions.c:126 ncrypt/pgpkey.c:290
+#: ncrypt/pgp_functions.c:126 ncrypt/pgpkey.c:289
 msgid "Can't open /dev/null"
 msgstr "Kan ikke åbne /dev/null"
 
@@ -7089,12 +7093,12 @@ msgstr "Kan ikke åbne /dev/null"
 msgid "Fetching PGP key..."
 msgstr "Henter PGP-nøgle ..."
 
-#: ncrypt/pgpkey.c:319
+#: ncrypt/pgpkey.c:318
 #, c-format
 msgid "PGP Key %s"
 msgstr "PGP-nøgle %s"
 
-#: ncrypt/pgpkey.c:601
+#: ncrypt/pgpkey.c:600
 #, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Denne nøgle kan ikke bruges: udløbet/sat ud af kraft/tilbagekaldt"
@@ -7414,7 +7418,7 @@ msgid "Bottom of message is shown"
 msgstr "Bunden af brevet vises"
 
 #: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:965
+#: pager/functions.c:966
 msgid "Top of message is shown"
 msgstr "Toppen af brevet vises"
 
@@ -7422,23 +7426,23 @@ msgstr "Toppen af brevet vises"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:849
+#: pager/functions.c:850
 msgid "No text past headers"
 msgstr ""
 
-#: pager/functions.c:908 pager/functions.c:948
+#: pager/functions.c:909 pager/functions.c:949
 msgid "No more unquoted text after quoted text"
 msgstr "Ikke mere uciteret tekst efter citeret tekst"
 
-#: pager/functions.c:930
+#: pager/functions.c:931
 msgid "No more quoted text"
 msgstr "Ikke mere citeret tekst"
 
-#: pager/functions.c:989
+#: pager/functions.c:990
 msgid "Help is currently being shown"
 msgstr "Hjælpeskærm vises nu"
 
-#: pager/functions.c:1045
+#: pager/functions.c:1046
 #, c-format
 msgid "Saved to: %s"
 msgstr ""

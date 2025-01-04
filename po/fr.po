@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-12-12\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-10 13:03+0000\n"
+"POT-Creation-Date: 2025-01-04 09:58+0000\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Ryan d'Huart <homoelectromagneticus@protonmail.com>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -83,21 +83,21 @@ msgstr "Étiquettes (séparée par des virgules) : "
 msgid "Accept?"
 msgstr "Accepter ?"
 
-#: alias/alias.c:518 attach/recvattach.c:306 attach/recvattach.c:329
-#: attach/recvattach.c:347 attach/recvattach.c:364 attach/recvattach.c:491
-#: pager/functions.c:1018
+#: alias/alias.c:518 attach/recvattach.c:305 attach/recvattach.c:328
+#: attach/recvattach.c:346 attach/recvattach.c:363 attach/recvattach.c:490
+#: pager/functions.c:1019
 msgid "Save to file: "
 msgstr "Enregistrer dans le fichier : "
 
-#: alias/alias.c:544
+#: alias/alias.c:540
 msgid "Error reading alias file"
 msgstr "Erreur en lisant le fichier d'alias"
 
-#: alias/alias.c:583
+#: alias/alias.c:579
 msgid "Trouble adding alias"
 msgstr "Erreur en ajoutant le fichier d'alias"
 
-#: alias/alias.c:585
+#: alias/alias.c:581
 msgid "Alias added"
 msgstr "Alias ajouté"
 
@@ -321,8 +321,8 @@ msgstr "Ne correspond pas au 'nametemplate', continuer?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
-#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:317
-#: compose/functions.c:1853 gui/curs_lib.c:124 index/dlg_index.c:1215
+#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:312
+#: compose/functions.c:1851 gui/curs_lib.c:124 index/dlg_index.c:1215
 #: index/dlg_index.c:1260 pager/dlg_pager.c:455 pager/do_pager.c:166
 #: pager/message.c:329 send/sendlib.c:581
 #, c-format
@@ -366,9 +366,9 @@ msgstr "Pas d'entrée mailcap correspondante. Visualisation en texte."
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "Type MIME non défini. Impossible de afficher la pièce jointe."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
-#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
-#: ncrypt/pgpkey.c:301
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1193
+#: attach/mutt_attach.c:1258 handler.c:595 ncrypt/pgp_functions.c:160
+#: ncrypt/pgpkey.c:300
 msgid "Can't create filter"
 msgstr "Impossible de créer le filtre"
 
@@ -392,19 +392,19 @@ msgstr "---Pièce jointe : %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Pièce jointe : %s"
 
-#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
+#: attach/mutt_attach.c:1013 attach/mutt_attach.c:1021
 msgid "Write fault"
 msgstr "Erreur d'écriture"
 
-#: attach/mutt_attach.c:1287
+#: attach/mutt_attach.c:1282
 msgid "I don't know how to print that"
 msgstr "Je ne sais pas comment imprimer ceci"
 
-#: attach/recvattach.c:352
+#: attach/recvattach.c:351
 msgid "Saving..."
 msgstr "Sauvetage en cours..."
 
-#: attach/recvattach.c:358 attach/recvattach.c:533
+#: attach/recvattach.c:357 attach/recvattach.c:532
 #, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
@@ -412,48 +412,48 @@ msgstr[0] "Pièce jointe sauvée"
 msgstr[1] "%d pièces jointes sauvées"
 
 # , c-format
-#: attach/recvattach.c:558
+#: attach/recvattach.c:557
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "ATTENTION ! Vous allez écraser %s, continuer?"
 
-#: attach/recvattach.c:575
+#: attach/recvattach.c:574
 msgid "Attachment filtered"
 msgstr "Pièce jointe filtrée"
 
-#: attach/recvattach.c:738
+#: attach/recvattach.c:737
 msgid "Filter through: "
 msgstr "Filtrer avec : "
 
-#: attach/recvattach.c:738
+#: attach/recvattach.c:737
 msgid "Pipe to: "
 msgstr "Passer à la commande : "
 
 # , c-format
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-#: attach/recvattach.c:796
+#: attach/recvattach.c:795
 #, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Je ne sais pas comment imprimer une pièce jointe de format %s"
 
-#: attach/recvattach.c:900
+#: attach/recvattach.c:899
 #, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
 msgstr[0] "Imprimer la pièce jointe marquée ?"
 msgstr[1] "Imprimer les %d pièces jointes marquées ?"
 
-#: attach/recvattach.c:901
+#: attach/recvattach.c:900
 #, c-format
 msgid "Print attachment?"
 msgstr "Imprimer la pièce jointe ?"
 
-#: attach/recvattach.c:942
+#: attach/recvattach.c:941
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Impossible de changer la structure des pièces jointes déchiffrées"
 
-#: attach/recvattach.c:1160
+#: attach/recvattach.c:1159
 msgid "Can't decrypt encrypted message"
 msgstr "Impossible de déchiffrer le message chiffré"
 
@@ -883,14 +883,14 @@ msgid "Unsubscribe pattern: "
 msgstr "Filtre de désabonnement : "
 
 # , c-format
-#: color/command.c:171 color/command.c:194 color/command.c:205
-#: color/command.c:258
+#: color/command.c:172 color/command.c:195 color/command.c:206
+#: color/command.c:259
 #, c-format
 msgid "%s: no such object"
 msgstr "%s : cet objet n'existe pas"
 
 # , c-format
-#: color/command.c:185 color/command.c:340 color/parse_color.c:288
+#: color/command.c:186 color/command.c:341 color/parse_color.c:288
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:367
 #: commands.c:389 commands.c:530 commands.c:546 commands.c:763 commands.c:795
 #: commands.c:811 commands.c:931 commands.c:1056 commands.c:1109
@@ -901,31 +901,31 @@ msgstr "%s : cet objet n'existe pas"
 msgid "%s: too few arguments"
 msgstr "%s : pas assez d'arguments"
 
-#: color/command.c:365
+#: color/command.c:366
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr "La capacité d'afficher les vraies couleurs n'est pas compilée dans : %s"
 
-#: color/command.c:372
+#: color/command.c:373
 #, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "La capacité d'afficher les vraies couleurs est désactivé : %s"
 
 # , c-format
-#: color/command.c:379 color/parse_color.c:188 color/parse_color.c:227
+#: color/command.c:380 color/parse_color.c:188 color/parse_color.c:227
 #, fuzzy, c-format
 msgid "%s: color not supported by term"
 msgstr "%s : couleur non disponible sur ce terminal"
 
-#: color/command.c:402 color/command.c:444 commands.c:413 commands.c:1118
+#: color/command.c:403 color/command.c:445 commands.c:413 commands.c:1118
 #: commands.c:1249 commands.c:1585 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
-#: mutt_lua.c:507 score.c:108
+#: mutt_lua.c:508 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: trop d'arguments"
 
-#: color/command.c:434
+#: color/command.c:435
 #, c-format
 msgid "%s: invalid number: %s"
 msgstr "Erreur %s : nombre %s : invalide"
@@ -935,32 +935,32 @@ msgstr "Erreur %s : nombre %s : invalide"
 msgid "Too many colors: %d / %d"
 msgstr "Trop de couleurs : %d / %d"
 
-#: color/dump.c:231
+#: color/dump.c:232
 msgid "# Quoted Colors\n"
 msgstr "# Couleurs de citation\n"
 
-#: color/dump.c:277
+#: color/dump.c:278
 #, c-format
 msgid "# Regex Color %s\n"
 msgstr "# Couleur des expressions rationnelles %s\n"
 
-#: color/dump.c:323
+#: color/dump.c:324
 msgid "# Simple Colors\n"
 msgstr "# Couleurs simples\n"
 
 # TODO: Are these the colors for the to / from / etc fields in the compose
 #       menu? Need clarification
-#: color/dump.c:359
+#: color/dump.c:360
 msgid "# Compose Colors\n"
 msgstr ""
 
 # TODO: Are these the colors of the status bar? Or some other status?
-#: color/dump.c:406
+#: color/dump.c:407
 msgid "# Status Colors\n"
 msgstr ""
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:883 commands.c:942 commands.c:1628
+#: color/dump.c:461 commands.c:883 commands.c:942 commands.c:1628
 #: imap/message.c:1154 key/dump.c:231
 #, c-format
 msgid "Could not create temporary file %s"
@@ -978,7 +978,7 @@ msgstr "%s : cette couleur n'existe pas"
 msgid "%s: no such attribute"
 msgstr "%s : cet attribut n'existe pas"
 
-#: color/quoted.c:126
+#: color/quoted.c:134
 #, c-format
 msgid "Maximum quoting level is %d"
 msgstr "Le niveau maximum de citation est %d"
@@ -1055,7 +1055,7 @@ msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
-#: commands.c:1080 mutt_lua.c:502
+#: commands.c:1080 mutt_lua.c:503
 #, fuzzy, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
@@ -1104,61 +1104,61 @@ msgid "Could not unsubscribe from %s"
 msgstr "Échec du désabonnement de %s"
 
 # TODO: What is expando?
-#: compmbox/compress.c:223
+#: compmbox/compress.c:218
 #, c-format
 msgid "Expando parse error: %s"
 msgstr ""
 
-#: compmbox/compress.c:352 compmbox/compress.c:485
+#: compmbox/compress.c:347 compmbox/compress.c:480
 #, fuzzy, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Impossible d'ajouter sans append-hook ou close-hook : %s"
 
-#: compmbox/compress.c:434 compmbox/compress.c:497 compmbox/compress.c:572
-#: compmbox/compress.c:610 mbox/mbox.c:1106
+#: compmbox/compress.c:429 compmbox/compress.c:492 compmbox/compress.c:567
+#: compmbox/compress.c:605 mbox/mbox.c:1106
 msgid "Unable to lock mailbox"
 msgstr "Impossible de verrouiller la boîte mail"
 
-#: compmbox/compress.c:438 compmbox/compress.c:504 compmbox/compress.c:576
+#: compmbox/compress.c:433 compmbox/compress.c:499 compmbox/compress.c:571
 #, c-format
 msgid "Decompressing %s"
 msgstr "Décompression de %s"
 
-#: compmbox/compress.c:446
+#: compmbox/compress.c:441
 msgid "Can't identify the contents of the compressed file"
 msgstr "Impossible d'identifier le contenu du fichier compressé"
 
-#: compmbox/compress.c:453 compmbox/compress.c:526
+#: compmbox/compress.c:448 compmbox/compress.c:521
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Impossible de trouver les opérations pour la boîte aux lettres de type %d"
 
-#: compmbox/compress.c:506
+#: compmbox/compress.c:501
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "La commande de compression a échoué : %s"
 
-#: compmbox/compress.c:519
+#: compmbox/compress.c:514
 msgid "Unsupported mailbox type for appending"
 msgstr "Type de boîte aux lettres non supporté pour l'ajout"
 
-#: compmbox/compress.c:600
+#: compmbox/compress.c:595
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Impossible de synchroniser un fichier compressé sans close-hook"
 
 # , c-format
-#: compmbox/compress.c:622 compmbox/compress.c:673
+#: compmbox/compress.c:617 compmbox/compress.c:668
 #, c-format
 msgid "Compressing %s"
 msgstr "Compression de %s"
 
 # , c-format
-#: compmbox/compress.c:668
+#: compmbox/compress.c:663
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Ajout avec compression à %s..."
 
-#: compmbox/compress.c:679 editmsg.c:266
+#: compmbox/compress.c:674 editmsg.c:266
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Erreur. Préservation du fichier temporaire : %s"
@@ -1278,7 +1278,7 @@ msgstr "Ouvrir une boîte aux lettres d'où joindre un message"
 msgid "Open newsgroup to attach message from"
 msgstr "Ouvrir une boîte mail d'où attacher un message"
 
-#: compose/functions.c:893 main.c:1420
+#: compose/functions.c:893 main.c:1424
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Impossible d'ouvrir la boîte aux lettres %s"
@@ -1363,87 +1363,87 @@ msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s inconnu"
 
 # , c-format
-#: compose/functions.c:1485
+#: compose/functions.c:1484
 #, c-format
 msgid "Can't create file %s"
 msgstr "Impossible de créer le fichier %s"
 
-#: compose/functions.c:1493
+#: compose/functions.c:1491
 msgid "Error attaching file"
 msgstr "Erreur dans l'attachement du fichier"
 
-#: compose/functions.c:1535
+#: compose/functions.c:1533
 msgid "Can't print multipart attachments"
 msgstr "Les pièces jointes en plusieurs parties ne peuvent pas être imprimées"
 
-#: compose/functions.c:1561
+#: compose/functions.c:1559
 msgid "Send attachment with name: "
 msgstr "Envoyer la pièce jointe avec le nom : "
 
-#: compose/functions.c:1586
+#: compose/functions.c:1584
 msgid "Can't save multipart attachments"
 msgstr "Impossible de enregistrer les pièces jointes en plusieurs parties"
 
-#: compose/functions.c:1622
+#: compose/functions.c:1620
 msgid "Recoding only affects text attachments"
 msgstr "Le recodage affecte uniquement les pièces jointes textuelles"
 
-#: compose/functions.c:1627
+#: compose/functions.c:1625
 msgid "The current attachment won't be converted"
 msgstr "La pièce jointe actuelle ne sera pas convertie"
 
-#: compose/functions.c:1629
+#: compose/functions.c:1627
 msgid "The current attachment will be converted"
 msgstr "La pièce jointe actuelle sera convertie"
 
-#: compose/functions.c:1658
+#: compose/functions.c:1656
 msgid "Attachment is not 'multipart'"
 msgstr "La pièce jointe n'est pas en plusieurs parties (au format 'multipart')"
 
-#: compose/functions.c:1774 send/send.c:2673
+#: compose/functions.c:1772 send/send.c:2673
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Mauvais IDN dans « %s » : '%s'"
 
-#: compose/functions.c:1807
+#: compose/functions.c:1805
 msgid "Can't edit multipart attachments"
 msgstr "Impossible de modifier les pièces jointes en plusieurs parties"
 
-#: compose/functions.c:1888
+#: compose/functions.c:1886
 msgid "Can't rename multipart attachments"
 msgstr "Impossible de renommer les pièces jointes en plusieurs parties"
 
-#: compose/functions.c:1895
+#: compose/functions.c:1893
 msgid "Rename to: "
 msgstr "Renommer en : "
 
 # , c-format
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1903 convert/content_info.c:208 editmsg.c:104
+#: compose/functions.c:1901 convert/content_info.c:208 editmsg.c:104
 #: editmsg.c:137 editmsg.c:156
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Impossible d'obtenir le statut de %s : %s"
 
-#: compose/functions.c:1941
+#: compose/functions.c:1939
 msgid "Save a copy of this message?"
 msgstr "Enregistrer une copie de ce message ?"
 
-#: compose/functions.c:1967
+#: compose/functions.c:1965
 msgid "Write message to mailbox"
 msgstr "Écrire le message dans la boîte aux lettres"
 
 # , c-format
-#: compose/functions.c:1971
+#: compose/functions.c:1969
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Écriture du message dans %s ..."
 
-#: compose/functions.c:1979
+#: compose/functions.c:1977
 msgid "Message written"
 msgstr "Message écrit"
 
-#: compose/functions.c:2047
+#: compose/functions.c:2045
 msgid "Save (postpone) draft message?"
 msgstr "Voulez-vous enregistrer (ajourner) ce brouillon ?"
 
@@ -1451,11 +1451,15 @@ msgstr "Voulez-vous enregistrer (ajourner) ce brouillon ?"
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr "Seules des pièces jointes intégrées de type 'text/*' peuvent être prévisualisées"
 
-#: compose/preview.c:196
+#: compose/preview.c:153
+msgid "Email too large to preview"
+msgstr ""
+
+#: compose/preview.c:197
 msgid "Failed to move cursor!"
 msgstr "Échec de déplacement curseur !"
 
-#: compose/preview.c:219
+#: compose/preview.c:221
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr "-- Aperçu (%.0f%%)"
@@ -1501,25 +1505,25 @@ msgid "Invalid long: %s"
 msgstr "Type long invalide : %s"
 
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
-#: config/number.c:93 config/number.c:155 config/number.c:209
-#: config/number.c:251
+#: config/number.c:96 config/number.c:158 config/number.c:212
+#: config/number.c:254
 #, c-format
 msgid "Option %s may not be negative"
 msgstr "Option %s ne peut pas être négative"
 
-#: config/number.c:81 config/number.c:196 config/number.c:238
+#: config/number.c:84 config/number.c:199 config/number.c:241
 #: expando/node_conddate.c:242 expando/node_expando.c:179
 #: expando/node_expando.c:202
 #, c-format
 msgid "Invalid number: %s"
 msgstr "Nombre invalide : %s"
 
-#: config/number.c:87 config/number.c:203 config/number.c:245
+#: config/number.c:90 config/number.c:206 config/number.c:248
 #, c-format
 msgid "Number is too big: %s"
 msgstr "Nombre trop grand : %s"
 
-#: config/number.c:149
+#: config/number.c:152
 #, c-format
 msgid "Invalid number: %ld"
 msgstr "Nombre invalide : %ld"
@@ -4667,7 +4671,7 @@ msgstr "Aide pour %s"
 msgid "History '%s'"
 msgstr "Historique '%s'"
 
-#: history/history.c:235 history/history.c:625
+#: history/history.c:235 history/history.c:623
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: Mauvais format de fichier d'historique"
@@ -4680,7 +4684,7 @@ msgstr "%s:%d: Mauvais format de fichier d'historique"
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:590 ncrypt/pgp.c:597
 #: ncrypt/pgp.c:925 ncrypt/pgp.c:1042 ncrypt/pgp.c:1199 ncrypt/pgp.c:1223
 #: ncrypt/pgp.c:1256 ncrypt/pgp.c:1610 ncrypt/pgp_functions.c:135
-#: ncrypt/pgpkey.c:283 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
+#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
 #: ncrypt/smime.c:722 ncrypt/smime.c:821 ncrypt/smime.c:931 ncrypt/smime.c:998
 #: ncrypt/smime.c:1005 ncrypt/smime.c:1216 ncrypt/smime.c:1616
 #: ncrypt/smime.c:1695 ncrypt/smime.c:1702 ncrypt/smime.c:1809
@@ -4867,7 +4871,7 @@ msgstr[0] "Copie de %d message dans %s..."
 msgstr[1] "Copie de %d messages dans %s..."
 
 # , c-format
-#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1821 muttlib.c:801
+#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s?"
@@ -5030,7 +5034,7 @@ msgid "Failed to create query, aborting"
 msgstr "Échec de la création de la requête, abandon"
 
 # , c-format
-#: index/dlg_index.c:782 muttlib.c:785 mx.c:205 mx.c:343
+#: index/dlg_index.c:782 muttlib.c:784 mx.c:205 mx.c:343
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s n'est pas une boîte aux lettres"
@@ -5047,16 +5051,16 @@ msgstr "Nouveau(x) message(s) dans cette boîte aux lettres"
 msgid "Mailbox was externally modified"
 msgstr "La boîte aux lettres a été modifiée extérieurement"
 
-#: index/dlg_index.c:1336 index/functions.c:3075 pattern/message.c:288
+#: index/dlg_index.c:1335 index/functions.c:3075 pattern/message.c:288
 msgid "No mailbox is open"
 msgstr "Aucune boîte aux lettres n'est ouverte"
 
-#: index/dlg_index.c:1344
+#: index/dlg_index.c:1343
 msgid "No tagged messages"
 msgstr "Pas de messages marqués"
 
 # , c-format
-#: index/dlg_index.c:1349 index/functions.c:919
+#: index/dlg_index.c:1348 index/functions.c:919
 msgid "Nothing to do"
 msgstr "Rien à faire"
 
@@ -5232,7 +5236,7 @@ msgstr "Pas de messages non lus"
 msgid "Search wrapped to top"
 msgstr "La recherche est repartie du début"
 
-#: index/functions.c:1570 pager/functions.c:796 pattern/pattern.c:570
+#: index/functions.c:1570 pager/functions.c:797 pattern/pattern.c:570
 #: pattern/pattern.c:726
 msgid "Search wrapped to bottom"
 msgstr "La recherche est repartie de la fin"
@@ -5900,12 +5904,12 @@ msgstr "%s : impossible de joindre le fichier"
 msgid "No mailbox with new mail"
 msgstr "Pas de boîte aux lettres avec des nouveaux messages"
 
-#: main.c:1344
+#: main.c:1345
 #, fuzzy
 msgid "No incoming mailboxes defined"
 msgstr "Pas de boîtes aux lettres recevant du courrier définies"
 
-#: main.c:1397
+#: main.c:1398
 msgid "Mailbox is empty"
 msgstr "La boîte aux lettres est vide"
 
@@ -5964,7 +5968,7 @@ msgid "Search for: "
 msgstr "Rechercher : "
 
 #: menu/functions.c:127 pager/functions.c:695 pager/functions.c:762
-#: pager/functions.c:792 pattern/pattern.c:621 pattern/pattern.c:774
+#: pager/functions.c:793 pattern/pattern.c:621 pattern/pattern.c:774
 msgid "Not found"
 msgstr "Non trouvé"
 
@@ -6010,27 +6014,27 @@ msgstr "Pas d'entrées marquées"
 msgid "Out of memory"
 msgstr "Mémoire épuisée"
 
-#: mutt/file.c:787
+#: mutt/file.c:665
 #, fuzzy, c-format
 msgid "Failed to seek file: %s"
 msgstr "Échec de renommage du fichier"
 
-#: mutt/file.c:1231
+#: mutt/file.c:1125
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "Délai dépassé lors de la tentative de verrouillage fcntl"
 
 # , c-format
-#: mutt/file.c:1237
+#: mutt/file.c:1131
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Attente du verrouillage fcntl... %d"
 
-#: mutt/file.c:1297
+#: mutt/file.c:1191
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "Délai dépassé lors de la tentative de verrouillage flock"
 
 # , c-format
-#: mutt/file.c:1304
+#: mutt/file.c:1198
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Attente de la tentative de flock... %d"
@@ -6105,12 +6109,12 @@ msgstr "NeoMutt avec %<m?%m messages&pas de message>%<n? [%n NOUVEAU(X)]>"
 msgid "Invalid value for option %s: %ld"
 msgstr "Valeur invalide pour l'option %s : \"%ld\""
 
-#: mutt_lua.c:447
+#: mutt_lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Erreur : Impossible de charger l'interpréteur lua"
 
 # , c-format
-#: mutt_lua.c:517
+#: mutt_lua.c:518
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Impossible de charger le fichier source Lua : %s"
@@ -6173,17 +6177,17 @@ msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler ?"
 msgid "oac"
 msgstr "eca"
 
-#: muttlib.c:754
+#: muttlib.c:753
 msgid "Can't save message to POP mailbox"
 msgstr "Impossible de enregistrer le message dans la boîte aux lettres POP"
 
 # , c-format
-#: muttlib.c:764
+#: muttlib.c:763
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Ajouter les messages à %s ?"
 
-#: muttlib.c:777
+#: muttlib.c:776
 #, fuzzy
 msgid "Can't save message to news server"
 msgstr "Impossible de laisser les messages sur le serveur"
@@ -6338,7 +6342,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Message non envoyé : PGP en ligne est impossible avec format=flowed"
 
 #: ncrypt/crypt.c:208 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
-#: ncrypt/pgpkey.c:296
+#: ncrypt/pgpkey.c:295
 msgid "Invoking PGP..."
 msgstr "Appel de PGP..."
 
@@ -6747,8 +6751,8 @@ msgstr "gpgme_op_keylist_start a échoué : %s"
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next a échoué : %s"
 
-#: ncrypt/crypt_gpgme.c:3271 ncrypt/crypt_gpgme.c:3391 ncrypt/pgpkey.c:399
-#: ncrypt/pgpkey.c:531
+#: ncrypt/crypt_gpgme.c:3271 ncrypt/crypt_gpgme.c:3391 ncrypt/pgpkey.c:398
+#: ncrypt/pgpkey.c:530
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Recherche des clés correspondant à \"%s\"..."
@@ -6777,7 +6781,7 @@ msgstr "Entrez keyID pour %s : "
 msgid "No secret keys found"
 msgstr "Pas de clé secrète trouvée"
 
-#: ncrypt/crypt_gpgme.c:3776 ncrypt/pgpkey.c:269
+#: ncrypt/crypt_gpgme.c:3776 ncrypt/pgpkey.c:268
 msgid "Please enter the key ID: "
 msgstr "Veuillez entrer l'ID de la clé : "
 
@@ -7274,7 +7278,7 @@ msgstr "(C)hiffrer pgp, (S)igner, (E)n tant que, les (D)eux, ou (R)ien ?"
 msgid "esabc"
 msgstr "csedr"
 
-#: ncrypt/pgp_functions.c:126 ncrypt/pgpkey.c:290
+#: ncrypt/pgp_functions.c:126 ncrypt/pgpkey.c:289
 msgid "Can't open /dev/null"
 msgstr "Impossible d'ouvrir /dev/null"
 
@@ -7283,12 +7287,12 @@ msgid "Fetching PGP key..."
 msgstr "Récupération de la clé PGP..."
 
 # , c-format
-#: ncrypt/pgpkey.c:319
+#: ncrypt/pgpkey.c:318
 #, c-format
 msgid "PGP Key %s"
 msgstr "Clé PGP %s"
 
-#: ncrypt/pgpkey.c:601
+#: ncrypt/pgpkey.c:600
 #, fuzzy
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Cette clé ne peut pas être utilisée : expirée/désactivée/révoquée"
@@ -7612,7 +7616,7 @@ msgid "Bottom of message is shown"
 msgstr "La fin du message est affichée"
 
 #: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:965
+#: pager/functions.c:966
 msgid "Top of message is shown"
 msgstr "Le début du message est affiché"
 
@@ -7620,24 +7624,24 @@ msgstr "Le début du message est affiché"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:849
+#: pager/functions.c:850
 msgid "No text past headers"
 msgstr "Pas de texte après les en-têtes"
 
-#: pager/functions.c:908 pager/functions.c:948
+#: pager/functions.c:909 pager/functions.c:949
 msgid "No more unquoted text after quoted text"
 msgstr "Il n'y a plus de texte non cité après le texte cité"
 
-#: pager/functions.c:930
+#: pager/functions.c:931
 msgid "No more quoted text"
 msgstr "Il n'y a plus de texte cité"
 
-#: pager/functions.c:989
+#: pager/functions.c:990
 msgid "Help is currently being shown"
 msgstr "L'aide est actuellement affichée"
 
 # TODO: find out what is being saved? gender agreement may need to change
-#: pager/functions.c:1045
+#: pager/functions.c:1046
 #, c-format
 msgid "Saved to: %s"
 msgstr "Enregistré sous : %s"
