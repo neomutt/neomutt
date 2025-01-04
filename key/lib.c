@@ -30,7 +30,6 @@
 #include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -402,18 +401,17 @@ void generic_tokenize_push_string(char *s)
 
 /**
  * km_keyname - Get the human name for a key
- * @param c Key code
- * @retval ptr Name of the key
- *
- * @note This returns a pointer to a static buffer.
+ * @param[in]  c   Key code
+ * @param[out] buf Buffer for the result
  */
-const char *km_keyname(int c)
+void km_keyname(int c, struct Buffer *buf)
 {
-  static char buf[35];
-
-  const char *p = mutt_map_get_name(c, KeyNames);
-  if (p)
-    return p;
+  const char *name = mutt_map_get_name(c, KeyNames);
+  if (name)
+  {
+    buf_addstr(buf, name);
+    return;
+  }
 
   if ((c < 256) && (c > -128) && iscntrl((unsigned char) c))
   {
@@ -422,28 +420,26 @@ const char *km_keyname(int c)
 
     if (c < 128)
     {
-      buf[0] = '^';
-      buf[1] = (c + '@') & 0x7f;
-      buf[2] = '\0';
+      buf_addch(buf, '^');
+      buf_addch(buf, (c + '@') & 0x7f);
     }
     else
     {
-      snprintf(buf, sizeof(buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
+      buf_add_printf(buf, "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
     }
   }
   else if ((c >= KEY_F0) && (c < KEY_F(256))) /* this maximum is just a guess */
   {
-    snprintf(buf, sizeof(buf), "<F%d>", c - KEY_F0);
+    buf_add_printf(buf, "<F%d>", c - KEY_F0);
   }
   else if ((c < 256) && (c >= -128) && IsPrint(c))
   {
-    snprintf(buf, sizeof(buf), "%c", (unsigned char) c);
+    buf_add_printf(buf, "%c", (unsigned char) c);
   }
   else
   {
-    snprintf(buf, sizeof(buf), "<%ho>", (unsigned short) c);
+    buf_add_printf(buf, "<%ho>", (unsigned short) c);
   }
-  return buf;
 }
 
 /**
@@ -459,7 +455,7 @@ bool km_expand_key(struct Keymap *map, struct Buffer *buf)
 
   for (int i = 0; i < map->len; i++)
   {
-    buf_addstr(buf, km_keyname(map->keys[i]));
+    km_keyname(map->keys[i], buf);
   }
 
   return true;
@@ -474,7 +470,7 @@ void km_expand_key_string(char *str, struct Buffer *buf)
 {
   for (; *str; str++)
   {
-    buf_addstr(buf, km_keyname(*str));
+    km_keyname(*str, buf);
   }
 }
 
