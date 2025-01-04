@@ -157,7 +157,7 @@ void                     km_expand_key_string       (char *str, struct Buffer *b
 struct Keymap *          km_find_func               (enum MenuType menu, int func);
 const struct MenuFuncOp *km_get_table               (enum MenuType mtype);
 void                     km_init                    (void);
-const char *             km_keyname                 (int c);
+void                     km_keyname                 (int c, struct Buffer *buf);
 void                     init_extended_keys         (void);
 int                      main_config_observer       (struct NotifyCallback *nc);
 void                     mutt_flush_macro_to_endcond(void);
