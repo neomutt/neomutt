@@ -1793,22 +1793,21 @@ int mutt_body_handler(struct Body *b, struct State *state)
     }
     else
     {
-      char keystroke[128] = { 0 };
-      if (km_expand_key(keystroke, sizeof(keystroke),
-                        km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS)))
+      struct Buffer *keystroke = buf_pool_get();
+      if (km_expand_key(km_find_func(MENU_PAGER, OP_VIEW_ATTACHMENTS), keystroke))
       {
         if (c_honor_disposition && (b->disposition == DISP_ATTACH))
         {
           /* L10N: %s expands to a keystroke/key binding, e.g. 'v'.  */
           buf_printf(msg, _("[-- This is an attachment (use '%s' to view this part) --]\n"),
-                     keystroke);
+                     buf_string(keystroke));
         }
         else
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain".
              The last %s expands to a keystroke/key binding, e.g. 'v'. */
           buf_printf(msg, _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n"),
-                     TYPE(b), b->subtype, keystroke);
+                     TYPE(b), b->subtype, buf_string(keystroke));
         }
       }
       else
@@ -1824,6 +1823,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
                      TYPE(b), b->subtype);
         }
       }
+      buf_pool_release(&keystroke);
     }
     state_mark_attach(state);
     state_printf(state, "%s", buf_string(msg));
