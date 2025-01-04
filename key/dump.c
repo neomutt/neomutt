@@ -145,7 +145,8 @@ static bool dump_macro(struct Buffer *buf, enum MenuType menu, const char *name)
     }
     else
     {
-      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, buf_string(key_binding), buf_string(tmp));
+      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, buf_string(key_binding),
+                     buf_string(tmp));
     }
 
     buf_pool_release(&tmp);
