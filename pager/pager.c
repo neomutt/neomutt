@@ -140,32 +140,30 @@ static int pager_repaint(struct MuttWindow *win)
   const bool repopulate = (priv->cur_line > priv->lines_used);
   if ((priv->redraw & PAGER_REDRAW_FLOW) || repopulate)
   {
-    if (!(priv->pview->flags & MUTT_PAGER_RETWINCH))
+    priv->win_height = -1;
+    for (int i = 0; i <= priv->top_line; i++)
+      if (!priv->lines[i].cont_line)
+        priv->win_height++;
+    for (int i = 0; i < priv->lines_max; i++)
     {
-      priv->win_height = -1;
-      for (int i = 0; i <= priv->top_line; i++)
-        if (!priv->lines[i].cont_line)
-          priv->win_height++;
-      for (int i = 0; i < priv->lines_max; i++)
-      {
-        priv->lines[i].offset = 0;
-        priv->lines[i].cid = -1;
-        priv->lines[i].cont_line = false;
-        priv->lines[i].syntax_arr_size = 0;
-        priv->lines[i].search_arr_size = -1;
-        priv->lines[i].quote = NULL;
+      priv->lines[i].offset = 0;
+      priv->lines[i].cid = -1;
+      priv->lines[i].cont_line = false;
+      priv->lines[i].syntax_arr_size = 0;
+      priv->lines[i].search_arr_size = -1;
+      priv->lines[i].quote = NULL;
 
-        MUTT_MEM_REALLOC(&(priv->lines[i].syntax), 1, struct TextSyntax);
-        if (priv->search_compiled && priv->lines[i].search)
-          FREE(&(priv->lines[i].search));
-      }
-
-      if (!repopulate)
-      {
-        priv->lines_used = 0;
-        priv->top_line = 0;
-      }
+      MUTT_MEM_REALLOC(&(priv->lines[i].syntax), 1, struct TextSyntax);
+      if (priv->search_compiled && priv->lines[i].search)
+        FREE(&(priv->lines[i].search));
     }
+
+    if (!repopulate)
+    {
+      priv->lines_used = 0;
+      priv->top_line = 0;
+    }
+
     int i = -1;
     int j = -1;
     const PagerFlags flags = priv->has_types | priv->search_flag |
@@ -294,30 +292,6 @@ static int pager_config_observer(struct NotifyCallback *nc)
 }
 
 /**
- * pager_global_observer - Notification that a Global Event occurred - Implements ::observer_t - @ingroup observer_api
- */
-static int pager_global_observer(struct NotifyCallback *nc)
-{
-  if (nc->event_type != NT_GLOBAL)
-    return 0;
-  if (!nc->global_data)
-    return -1;
-  if (nc->event_subtype != NT_GLOBAL_COMMAND)
-    return 0;
-
-  struct MuttWindow *win_pager = nc->global_data;
-
-  struct PagerPrivateData *priv = win_pager->wdata;
-  const struct PagerView *pview = priv ? priv->pview : NULL;
-  if (priv && pview && (priv->redraw & PAGER_REDRAW_FLOW) && (pview->flags & MUTT_PAGER_RETWINCH))
-  {
-    priv->rc = OP_REFORMAT_WINCH;
-  }
-
-  return 0;
-}
-
-/**
  * pager_index_observer - Notification that the Index has changed - Implements ::observer_t - @ingroup observer_api
  */
 static int pager_index_observer(struct NotifyCallback *nc)
@@ -399,7 +373,6 @@ static int pager_window_observer(struct NotifyCallback *nc)
 
   mutt_color_observer_remove(pager_color_observer, win_pager);
   notify_observer_remove(NeoMutt->sub->notify, pager_config_observer, win_pager);
-  notify_observer_remove(NeoMutt->notify, pager_global_observer, win_pager);
   notify_observer_remove(shared->notify, pager_index_observer, win_pager);
   notify_observer_remove(shared->notify, pager_pager_observer, win_pager);
   notify_observer_remove(win_pager->notify, pager_window_observer, win_pager);
@@ -427,7 +400,6 @@ struct MuttWindow *pager_window_new(struct IndexSharedData *shared,
 
   mutt_color_observer_add(pager_color_observer, win);
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, pager_config_observer, win);
-  notify_observer_add(NeoMutt->notify, NT_GLOBAL, pager_global_observer, win);
   notify_observer_add(shared->notify, NT_ALL, pager_index_observer, win);
   notify_observer_add(shared->notify, NT_PAGER, pager_pager_observer, win);
   notify_observer_add(win->notify, NT_WINDOW, pager_window_observer, win);
