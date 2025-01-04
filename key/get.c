@@ -296,15 +296,17 @@ void km_error_key(enum MenuType mtype)
   struct Keymap *key = km_find_func(mtype, OP_HELP);
   if (!key && (mtype != MENU_EDITOR) && (mtype != MENU_PAGER))
     key = km_find_func(MENU_GENERIC, OP_HELP);
+
   if (!key)
   {
     mutt_error(_("Key is not bound"));
     return;
   }
 
-  char buf[128] = { 0 };
-  km_expand_key(buf, sizeof(buf), key);
-  mutt_error(_("Key is not bound.  Press '%s' for help."), buf);
+  struct Buffer *buf = buf_pool_get();
+  km_expand_key(key, buf);
+  mutt_error(_("Key is not bound.  Press '%s' for help."), buf_string(buf));
+  buf_pool_release(&buf);
 }
 
 /**

@@ -91,17 +91,22 @@
  */
 static bool make_help(char *buf, size_t buflen, const char *txt, enum MenuType menu, int op)
 {
-  char tmp[128] = { 0 };
+  struct Buffer *tmp = buf_pool_get();
+  bool rc = false;
 
-  if (km_expand_key(tmp, sizeof(tmp), km_find_func(menu, op)) ||
-      km_expand_key(tmp, sizeof(tmp), km_find_func(MENU_GENERIC, op)))
+  if (km_expand_key(km_find_func(menu, op), tmp) ||
+      km_expand_key(km_find_func(MENU_GENERIC, op), tmp))
   {
-    snprintf(buf, buflen, "%s:%s", tmp, txt);
-    return true;
+    snprintf(buf, buflen, "%s:%s", buf_string(tmp), txt);
+    rc = true;
+  }
+  else
+  {
+    buf[0] = '\0';
   }
 
-  buf[0] = '\0';
-  return false;
+  buf_pool_release(&tmp);
+  return rc;
 }
 
 /**

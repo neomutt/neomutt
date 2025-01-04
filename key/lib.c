@@ -448,32 +448,21 @@ const char *km_keyname(int c)
 
 /**
  * km_expand_key - Get the key string bound to a Keymap
- * @param s   Buffer for the key string
- * @param len Length of buffer
- * @param map Keybinding map
- * @retval 1 Success
- * @retval 0 Error
+ * @param[in]  map Keybinding map
+ * @param[out] buf Buffer for the result
+ * @retval true Success
  */
-int km_expand_key(char *s, size_t len, struct Keymap *map)
+bool km_expand_key(struct Keymap *map, struct Buffer *buf)
 {
-  if (!map)
-    return 0;
+  if (!map || !buf)
+    return false;
 
-  int p = 0;
-
-  while (true)
+  for (int i = 0; i < map->len; i++)
   {
-    mutt_str_copy(s, km_keyname(map->keys[p]), len);
-    const size_t l = mutt_str_len(s);
-    len -= l;
-
-    if ((++p >= map->len) || !len)
-      return 1;
-
-    s += l;
+    buf_addstr(buf, km_keyname(map->keys[i]));
   }
 
-  /* not reached */
+  return true;
 }
 
 /**
