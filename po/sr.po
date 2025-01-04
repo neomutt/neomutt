@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-12-12\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-01-04 09:58+0000\n"
-"PO-Revision-Date: 2024-11-30 19:33+0100\n"
+"PO-Revision-Date: 2025-01-04 12:26+0100\n"
 "Last-Translator: Страхиња Радић <sr@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
 "Language: sr\n"
@@ -1148,7 +1148,7 @@ msgstr "-- Прилози"
 
 #: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Преглед"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1378,21 +1378,20 @@ msgstr "Чување (одлагање) нацрта?"
 
 #: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Могу се прегледати само убачени прилози са content-type text/*"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "Порука је превелика за приказ"
 
 #: compose/preview.c:197
-#, fuzzy
 msgid "Failed to move cursor!"
-msgstr "Неуспешно верификовање пошиљаоца"
+msgstr "Неуспешно померање курсора!"
 
 #: compose/preview.c:221
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Преглед (%.0f%%)"
 
 #: config/bool.c:76
 #, c-format
@@ -2670,16 +2669,14 @@ msgstr "преглед прилога као текст"
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "скок на врх поруке"
+msgstr "приказ следеће странице поруке"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "скок на претходну нову или непрочитану поруку"
+msgstr "приказ претходне странице поруке"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
