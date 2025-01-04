@@ -502,15 +502,19 @@ void mw_what_key(void)
   if (!win)
     return;
 
-  char prompt[256] = { 0 };
-  snprintf(prompt, sizeof(prompt), _("Enter keys (%s to abort): "), km_keyname(AbortKey));
-  msgwin_set_text(win, prompt, MT_COLOR_PROMPT);
+  struct Buffer *key = buf_pool_get();
+  struct Buffer *prompt = buf_pool_get();
+  struct Buffer *text = buf_pool_get();
+
+  km_keyname(AbortKey, key);
+
+  buf_printf(prompt, _("Enter keys (%s to abort): "), buf_string(key));
+  msgwin_set_text(win, buf_string(prompt), MT_COLOR_PROMPT);
 
   msgcont_push_window(win);
   struct MuttWindow *old_focus = window_set_focus(win);
   window_redraw(win);
 
-  char keys[256] = { 0 };
   const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
   const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
 
@@ -552,14 +556,22 @@ void mw_what_key(void)
     }
 
     msgwin_clear_text(win);
-    snprintf(keys, sizeof(keys), _("Char = %s, Octal = %o, Decimal = %d\n"),
-             km_keyname(ch), ch, ch);
-    msgwin_add_text(win, keys, ac_normal);
-    msgwin_add_text(win, prompt, ac_prompt);
+
+    buf_reset(key);
+    km_keyname(ch, key);
+
+    buf_printf(text, _("Char = %s, Octal = %o, Decimal = %d\n"), buf_string(key), ch, ch);
+
+    msgwin_add_text(win, buf_string(text), ac_normal);
+    msgwin_add_text(win, buf_string(prompt), ac_prompt);
     msgwin_add_text(win, NULL, NULL);
     window_redraw(NULL);
   }
   // ---------------------------------------------------------------------------
+
+  buf_pool_release(&key);
+  buf_pool_release(&prompt);
+  buf_pool_release(&text);
 
   win = msgcont_pop_window();
   window_set_focus(old_focus);
