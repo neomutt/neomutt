@@ -397,25 +397,28 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
   }
   else if (mutt_istr_equal("noop", buf->data))
   {
+    struct Buffer *keystr = buf_pool_get();
     for (int i = 0; i < num_menus; i++)
     {
       km_bindkey(key, mtypes[i], OP_NULL); /* the 'unbind' command */
       funcs = km_get_table(mtypes[i]);
       if (funcs)
       {
-        char keystr[32] = { 0 };
-        km_expand_key_string(key, keystr, sizeof(keystr));
+        buf_reset(keystr);
+        km_expand_key_string(key, keystr);
         const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
-        mutt_debug(LL_NOTIFY, "NT_BINDING_DELETE: %s %s\n", mname, keystr);
+        mutt_debug(LL_NOTIFY, "NT_BINDING_DELETE: %s %s\n", mname, buf_string(keystr));
 
         int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
         struct EventBinding ev_b = { mtypes[i], key, op };
         notify_send(NeoMutt->notify, NT_BINDING, NT_BINDING_DELETE, &ev_b);
       }
     }
+    buf_pool_release(&keystr);
   }
   else
   {
+    struct Buffer *keystr = buf_pool_get();
     for (int i = 0; i < num_menus; i++)
     {
       /* The pager and editor menus don't use the generic map,
@@ -425,10 +428,10 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         rc = try_bind(key, mtypes[i], buf->data, OpGeneric, err);
         if (rc == MUTT_CMD_SUCCESS)
         {
-          char keystr[32] = { 0 };
-          km_expand_key_string(key, keystr, sizeof(keystr));
+          buf_reset(keystr);
+          km_expand_key_string(key, keystr);
           const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
-          mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, keystr);
+          mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, buf_string(keystr));
 
           int op = get_op(OpGeneric, buf->data, mutt_str_len(buf->data));
           struct EventBinding ev_b = { mtypes[i], key, op };
@@ -447,10 +450,10 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         rc = try_bind(key, mtypes[i], buf->data, funcs, err);
         if (rc == MUTT_CMD_SUCCESS)
         {
-          char keystr[32] = { 0 };
-          km_expand_key_string(key, keystr, sizeof(keystr));
+          buf_reset(keystr);
+          km_expand_key_string(key, keystr);
           const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
-          mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, keystr);
+          mutt_debug(LL_NOTIFY, "NT_BINDING_NEW: %s %s\n", mname, buf_string(keystr));
 
           int op = get_op(funcs, buf->data, mutt_str_len(buf->data));
           struct EventBinding ev_b = { mtypes[i], key, op };
@@ -459,6 +462,7 @@ enum CommandResult mutt_parse_bind(struct Buffer *buf, struct Buffer *s,
         }
       }
     }
+    buf_pool_release(&keystr);
   }
   FREE(&key);
   return rc;
@@ -541,10 +545,11 @@ enum CommandResult mutt_parse_unbind(struct Buffer *buf, struct Buffer *s,
     }
     else
     {
-      char keystr[32] = { 0 };
-      km_expand_key_string(key, keystr, sizeof(keystr));
+      struct Buffer *keystr = buf_pool_get();
+      km_expand_key_string(key, keystr);
       const char *mname = mutt_map_get_name(i, MenuNames);
-      mutt_debug(LL_NOTIFY, "NT_MACRO_DELETE: %s %s\n", mname, keystr);
+      mutt_debug(LL_NOTIFY, "NT_MACRO_DELETE: %s %s\n", mname, buf_string(keystr));
+      buf_pool_release(&keystr);
 
       km_bindkey(key, i, OP_NULL);
       struct EventBinding ev_b = { i, key, OP_NULL };
@@ -602,42 +607,46 @@ enum CommandResult mutt_parse_macro(struct Buffer *buf, struct Buffer *s,
       }
       else
       {
+        struct Buffer *keystr = buf_pool_get();
         for (int i = 0; i < num_menus; i++)
         {
           rc = km_bind(key, mtypes[i], OP_MACRO, seq, buf->data);
           if (rc == MUTT_CMD_SUCCESS)
           {
-            char keystr[32] = { 0 };
-            km_expand_key_string(key, keystr, sizeof(keystr));
+            buf_reset(keystr);
+            km_expand_key_string(key, keystr);
             const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
-            mutt_debug(LL_NOTIFY, "NT_MACRO_NEW: %s %s\n", mname, keystr);
+            mutt_debug(LL_NOTIFY, "NT_MACRO_NEW: %s %s\n", mname, buf_string(keystr));
 
             struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
             notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_ADD, &ev_b);
             continue;
           }
         }
+        buf_pool_release(&keystr);
       }
 
       FREE(&seq);
     }
     else
     {
+      struct Buffer *keystr = buf_pool_get();
       for (int i = 0; i < num_menus; i++)
       {
         rc = km_bind(key, mtypes[i], OP_MACRO, buf->data, NULL);
         if (rc == MUTT_CMD_SUCCESS)
         {
-          char keystr[32] = { 0 };
-          km_expand_key_string(key, keystr, sizeof(keystr));
+          buf_reset(keystr);
+          km_expand_key_string(key, keystr);
           const char *mname = mutt_map_get_name(mtypes[i], MenuNames);
-          mutt_debug(LL_NOTIFY, "NT_MACRO_NEW: %s %s\n", mname, keystr);
+          mutt_debug(LL_NOTIFY, "NT_MACRO_NEW: %s %s\n", mname, buf_string(keystr));
 
           struct EventBinding ev_b = { mtypes[i], key, OP_MACRO };
           notify_send(NeoMutt->notify, NT_BINDING, NT_MACRO_ADD, &ev_b);
           continue;
         }
       }
+      buf_pool_release(&keystr);
     }
   }
   FREE(&key);
