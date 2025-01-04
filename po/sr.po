@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-12-12\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2024-12-10 13:03+0000\n"
+"POT-Creation-Date: 2025-01-04 09:58+0000\n"
 "PO-Revision-Date: 2024-11-30 19:33+0100\n"
 "Last-Translator: Страхиња Радић <sr@strahinja.org>\n"
 "Language-Team: Serbian <sr@li.org>\n"
@@ -66,21 +66,21 @@ msgstr "Ознаке (раздвојене запетама):"
 msgid "Accept?"
 msgstr "Прихватити?"
 
-#: alias/alias.c:518 attach/recvattach.c:306 attach/recvattach.c:329
-#: attach/recvattach.c:347 attach/recvattach.c:364 attach/recvattach.c:491
-#: pager/functions.c:1018
+#: alias/alias.c:518 attach/recvattach.c:305 attach/recvattach.c:328
+#: attach/recvattach.c:346 attach/recvattach.c:363 attach/recvattach.c:490
+#: pager/functions.c:1019
 msgid "Save to file: "
 msgstr "Чување у датотеку: "
 
-#: alias/alias.c:544
+#: alias/alias.c:540
 msgid "Error reading alias file"
 msgstr "Грешка при читању датотеке алијаса"
 
-#: alias/alias.c:583
+#: alias/alias.c:579
 msgid "Trouble adding alias"
 msgstr "Проблем приликом додавања алијаса"
 
-#: alias/alias.c:585
+#: alias/alias.c:581
 msgid "Alias added"
 msgstr "Алијас додат"
 
@@ -295,8 +295,8 @@ msgstr "„nametemplate“ није задовољен, наставити?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Compose ставка mailcap-а захтева %%s"
 
-#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:317
-#: compose/functions.c:1853 gui/curs_lib.c:124 index/dlg_index.c:1215
+#: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:312
+#: compose/functions.c:1851 gui/curs_lib.c:124 index/dlg_index.c:1215
 #: index/dlg_index.c:1260 pager/dlg_pager.c:455 pager/do_pager.c:166
 #: pager/message.c:329 send/sendlib.c:581
 #, c-format
@@ -338,9 +338,9 @@ msgstr "Нема одговарајуће mailcap ставке.  Преглед�
 msgid "MIME type not defined.  Can't view attachment."
 msgstr "MIME врста није дефинисана.  Не може се прегледати прилог."
 
-#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1198
-#: attach/mutt_attach.c:1263 handler.c:595 ncrypt/pgp_functions.c:160
-#: ncrypt/pgpkey.c:301
+#: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1193
+#: attach/mutt_attach.c:1258 handler.c:595 ncrypt/pgp_functions.c:160
+#: ncrypt/pgpkey.c:300
 msgid "Can't create filter"
 msgstr "Не може се креирати филтер"
 
@@ -364,19 +364,19 @@ msgstr "---Прилог: %s: %s"
 msgid "---Attachment: %s"
 msgstr "---Прилог: %s"
 
-#: attach/mutt_attach.c:1016 attach/mutt_attach.c:1024
+#: attach/mutt_attach.c:1013 attach/mutt_attach.c:1021
 msgid "Write fault"
 msgstr "Грешка приликом уписивања"
 
-#: attach/mutt_attach.c:1287
+#: attach/mutt_attach.c:1282
 msgid "I don't know how to print that"
 msgstr "Не знам како да то одштампам"
 
-#: attach/recvattach.c:352
+#: attach/recvattach.c:351
 msgid "Saving..."
 msgstr "Чување..."
 
-#: attach/recvattach.c:358 attach/recvattach.c:533
+#: attach/recvattach.c:357 attach/recvattach.c:532
 #, c-format
 msgid "Attachment saved"
 msgid_plural "%d attachments saved"
@@ -384,31 +384,31 @@ msgstr[0] "%d прилог је сачуван"
 msgstr[1] "%d прилога су сачувана"
 msgstr[2] "%d прилога је сачувано"
 
-#: attach/recvattach.c:558
+#: attach/recvattach.c:557
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "УПОЗОРЕЊЕ!  Преписаћете %s, наставити?"
 
-#: attach/recvattach.c:575
+#: attach/recvattach.c:574
 msgid "Attachment filtered"
 msgstr "Прилог је филтриран"
 
-#: attach/recvattach.c:738
+#: attach/recvattach.c:737
 msgid "Filter through: "
 msgstr "Филтрирај кроз: "
 
-#: attach/recvattach.c:738
+#: attach/recvattach.c:737
 msgid "Pipe to: "
 msgstr "Проследи: "
 
 #. L10N: s gets replaced by a MIME type, e.g. "text/plain" or
 #. application/octet-stream.
-#: attach/recvattach.c:796
+#: attach/recvattach.c:795
 #, c-format
 msgid "I don't know how to print %s attachments"
 msgstr "Не знам како да одштампам прилоге %s"
 
-#: attach/recvattach.c:900
+#: attach/recvattach.c:899
 #, c-format
 msgid "Print tagged attachment?"
 msgid_plural "Print %d tagged attachments?"
@@ -416,16 +416,16 @@ msgstr[0] "Одштампати %d означен прилог?"
 msgstr[1] "Одштампати %d означена прилога?"
 msgstr[2] "Одштампати %d означених прилога?"
 
-#: attach/recvattach.c:901
+#: attach/recvattach.c:900
 #, c-format
 msgid "Print attachment?"
 msgstr "Одштампати прилог?"
 
-#: attach/recvattach.c:942
+#: attach/recvattach.c:941
 msgid "Structural changes to decrypted attachments are not supported"
 msgstr "Структурне измене дешифрованих прилога нису подржане"
 
-#: attach/recvattach.c:1160
+#: attach/recvattach.c:1159
 msgid "Can't decrypt encrypted message"
 msgstr "Шифрована порука се не може дешифровати"
 
@@ -839,13 +839,13 @@ msgstr "Шаблон претплате: "
 msgid "Unsubscribe pattern: "
 msgstr "Шаблон отпретплате: "
 
-#: color/command.c:171 color/command.c:194 color/command.c:205
-#: color/command.c:258
+#: color/command.c:172 color/command.c:195 color/command.c:206
+#: color/command.c:259
 #, c-format
 msgid "%s: no such object"
 msgstr "%s: нема таквог објекта"
 
-#: color/command.c:185 color/command.c:340 color/parse_color.c:288
+#: color/command.c:186 color/command.c:341 color/parse_color.c:288
 #: color/parse_color.c:313 color/parse_color.c:333 commands.c:367
 #: commands.c:389 commands.c:530 commands.c:546 commands.c:763 commands.c:795
 #: commands.c:811 commands.c:931 commands.c:1056 commands.c:1109
@@ -856,30 +856,30 @@ msgstr "%s: нема таквог објекта"
 msgid "%s: too few arguments"
 msgstr "%s: премало аргумената"
 
-#: color/command.c:365
+#: color/command.c:366
 #, c-format
 msgid "Direct colors support not compiled in: %s"
 msgstr "Подршка за директне боје није укомпајлирана: %s"
 
-#: color/command.c:372
+#: color/command.c:373
 #, c-format
 msgid "Direct colors support disabled: %s"
 msgstr "Подршка за директне боје је деактивирана: %s"
 
-#: color/command.c:379 color/parse_color.c:188 color/parse_color.c:227
+#: color/command.c:380 color/parse_color.c:188 color/parse_color.c:227
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s: терминал не подржава ову боју"
 
-#: color/command.c:402 color/command.c:444 commands.c:413 commands.c:1118
+#: color/command.c:403 color/command.c:445 commands.c:413 commands.c:1118
 #: commands.c:1249 commands.c:1585 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:350 key/parse.c:390 key/parse.c:504 key/parse.c:596
-#: mutt_lua.c:507 score.c:108
+#: mutt_lua.c:508 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: превише аргумената"
 
-#: color/command.c:434
+#: color/command.c:435
 #, c-format
 msgid "%s: invalid number: %s"
 msgstr "%s: неисправан број: %s"
@@ -889,29 +889,29 @@ msgstr "%s: неисправан број: %s"
 msgid "Too many colors: %d / %d"
 msgstr "Превише боја: %d / %d"
 
-#: color/dump.c:231
+#: color/dump.c:232
 msgid "# Quoted Colors\n"
 msgstr "# Боје цитата\n"
 
-#: color/dump.c:277
+#: color/dump.c:278
 #, c-format
 msgid "# Regex Color %s\n"
 msgstr "# Боје regex-а %s\n"
 
-#: color/dump.c:323
+#: color/dump.c:324
 msgid "# Simple Colors\n"
 msgstr "# Једноставне боје\n"
 
-#: color/dump.c:359
+#: color/dump.c:360
 msgid "# Compose Colors\n"
 msgstr "# Боје писања\n"
 
-#: color/dump.c:406
+#: color/dump.c:407
 msgid "# Status Colors\n"
 msgstr "# Боје статуса\n"
 
 #. L10N: '%s' is the file name of the temporary file
-#: color/dump.c:460 commands.c:883 commands.c:942 commands.c:1628
+#: color/dump.c:461 commands.c:883 commands.c:942 commands.c:1628
 #: imap/message.c:1154 key/dump.c:231
 #, c-format
 msgid "Could not create temporary file %s"
@@ -927,7 +927,7 @@ msgstr "%s: нема такве боје"
 msgid "%s: no such attribute"
 msgstr "%s: нема таквог атрибута"
 
-#: color/quoted.c:126
+#: color/quoted.c:134
 #, c-format
 msgid "Maximum quoting level is %d"
 msgstr "Максимални ниво цитирања је %d"
@@ -1001,7 +1001,7 @@ msgstr "Не може се користити префикс када се ис�
 msgid "%s is unset"
 msgstr "%s није постављено"
 
-#: commands.c:1080 mutt_lua.c:502
+#: commands.c:1080 mutt_lua.c:503
 #, c-format
 msgid "source: error at %s"
 msgstr "source: грешка на %s"
@@ -1045,59 +1045,59 @@ msgstr "Отпретплаћен са %s"
 msgid "Could not unsubscribe from %s"
 msgstr "Неуспешна отпретплата са %s"
 
-#: compmbox/compress.c:223
+#: compmbox/compress.c:218
 #, c-format
 msgid "Expando parse error: %s"
 msgstr "Грешка приликом рашчлањивања експандоа: %s"
 
-#: compmbox/compress.c:352 compmbox/compress.c:485
+#: compmbox/compress.c:347 compmbox/compress.c:480
 #, c-format
 msgid "Can't append without an append-hook or close-hook : %s"
 msgstr "Не може се дописати на крај без append-hook или close-hook: %s"
 
-#: compmbox/compress.c:434 compmbox/compress.c:497 compmbox/compress.c:572
-#: compmbox/compress.c:610 mbox/mbox.c:1106
+#: compmbox/compress.c:429 compmbox/compress.c:492 compmbox/compress.c:567
+#: compmbox/compress.c:605 mbox/mbox.c:1106
 msgid "Unable to lock mailbox"
 msgstr "Не може се закључати сандуче"
 
-#: compmbox/compress.c:438 compmbox/compress.c:504 compmbox/compress.c:576
+#: compmbox/compress.c:433 compmbox/compress.c:499 compmbox/compress.c:571
 #, c-format
 msgid "Decompressing %s"
 msgstr "Декомпресија %s"
 
-#: compmbox/compress.c:446
+#: compmbox/compress.c:441
 msgid "Can't identify the contents of the compressed file"
 msgstr "Не може се идентификовати садржај компресоване датотеке"
 
-#: compmbox/compress.c:453 compmbox/compress.c:526
+#: compmbox/compress.c:448 compmbox/compress.c:521
 #, c-format
 msgid "Can't find mailbox ops for mailbox type %d"
 msgstr "Не могу се наћи операције сандучета за тип %d"
 
-#: compmbox/compress.c:506
+#: compmbox/compress.c:501
 #, c-format
 msgid "Compress command failed: %s"
 msgstr "Неуспешна наредба компресије: %s"
 
-#: compmbox/compress.c:519
+#: compmbox/compress.c:514
 msgid "Unsupported mailbox type for appending"
 msgstr "Неподржана врста сандучета за дописивање на крај"
 
-#: compmbox/compress.c:600
+#: compmbox/compress.c:595
 msgid "Can't sync a compressed file without a close-hook"
 msgstr "Не може се синхронизовати компресована датотека без close-hook"
 
-#: compmbox/compress.c:622 compmbox/compress.c:673
+#: compmbox/compress.c:617 compmbox/compress.c:668
 #, c-format
 msgid "Compressing %s"
 msgstr "Компресија %s"
 
-#: compmbox/compress.c:668
+#: compmbox/compress.c:663
 #, c-format
 msgid "Compressed-appending to %s..."
 msgstr "Компресовано—дописивање на крај %s..."
 
-#: compmbox/compress.c:679 editmsg.c:266
+#: compmbox/compress.c:674 editmsg.c:266
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Грешка. Сачувана привремена датотека: %s"
@@ -1212,7 +1212,7 @@ msgstr "Отвори сандуче из ког ће се додати пору�
 msgid "Open newsgroup to attach message from"
 msgstr "Отвори њузгрупу из које ће се додати порука"
 
-#: compose/functions.c:893 main.c:1420
+#: compose/functions.c:893 main.c:1424
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Не може се отворити сандуче %s"
@@ -1294,85 +1294,85 @@ msgstr "Content-Type је облика основни/подтип"
 msgid "Unknown Content-Type %s"
 msgstr "Непознат Content-Type %s"
 
-#: compose/functions.c:1485
+#: compose/functions.c:1484
 #, c-format
 msgid "Can't create file %s"
 msgstr "Не може се креирати датотека %s"
 
-#: compose/functions.c:1493
+#: compose/functions.c:1491
 msgid "Error attaching file"
 msgstr "Грешка при додавању датотеке"
 
-#: compose/functions.c:1535
+#: compose/functions.c:1533
 msgid "Can't print multipart attachments"
 msgstr "Не могу се одштампати multipart прилози"
 
-#: compose/functions.c:1561
+#: compose/functions.c:1559
 msgid "Send attachment with name: "
 msgstr "Послати прилог са називом: "
 
-#: compose/functions.c:1586
+#: compose/functions.c:1584
 msgid "Can't save multipart attachments"
 msgstr "Не могу се сачувати multipart прилози"
 
-#: compose/functions.c:1622
+#: compose/functions.c:1620
 msgid "Recoding only affects text attachments"
 msgstr "Рекодирање утиче само на текстуалне прилоге"
 
-#: compose/functions.c:1627
+#: compose/functions.c:1625
 msgid "The current attachment won't be converted"
 msgstr "Текући прилог неће бити конвертован"
 
-#: compose/functions.c:1629
+#: compose/functions.c:1627
 msgid "The current attachment will be converted"
 msgstr "Текући прилог ће бити конвертован"
 
-#: compose/functions.c:1658
+#: compose/functions.c:1656
 msgid "Attachment is not 'multipart'"
 msgstr "Прилог није „multipart“"
 
-#: compose/functions.c:1774 send/send.c:2673
+#: compose/functions.c:1772 send/send.c:2673
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Лош IDN у „%s“: „%s“"
 
-#: compose/functions.c:1807
+#: compose/functions.c:1805
 msgid "Can't edit multipart attachments"
 msgstr "Не могу се уређивати multipart прилози"
 
-#: compose/functions.c:1888
+#: compose/functions.c:1886
 msgid "Can't rename multipart attachments"
 msgstr "Не могу се преименовати multipart прилози"
 
-#: compose/functions.c:1895
+#: compose/functions.c:1893
 msgid "Rename to: "
 msgstr "Преименовати у: "
 
 #. L10N: "stat" is a system call. Do "man 2 stat" for more information.
-#: compose/functions.c:1903 convert/content_info.c:208 editmsg.c:104
+#: compose/functions.c:1901 convert/content_info.c:208 editmsg.c:104
 #: editmsg.c:137 editmsg.c:156
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Не може се stat-овати %s: %s"
 
-#: compose/functions.c:1941
+#: compose/functions.c:1939
 msgid "Save a copy of this message?"
 msgstr "Сачувати копију ове поруке?"
 
-#: compose/functions.c:1967
+#: compose/functions.c:1965
 msgid "Write message to mailbox"
 msgstr "Упиши поруку у сандуче"
 
-#: compose/functions.c:1971
+#: compose/functions.c:1969
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Уписивање поруке у %s ..."
 
-#: compose/functions.c:1979
+#: compose/functions.c:1977
 msgid "Message written"
 msgstr "Порука уписана"
 
-#: compose/functions.c:2047
+#: compose/functions.c:2045
 msgid "Save (postpone) draft message?"
 msgstr "Чување (одлагање) нацрта?"
 
@@ -1380,12 +1380,16 @@ msgstr "Чување (одлагање) нацрта?"
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr ""
 
-#: compose/preview.c:196
+#: compose/preview.c:153
+msgid "Email too large to preview"
+msgstr ""
+
+#: compose/preview.c:197
 #, fuzzy
 msgid "Failed to move cursor!"
 msgstr "Неуспешно верификовање пошиљаоца"
 
-#: compose/preview.c:219
+#: compose/preview.c:221
 #, c-format
 msgid "-- Preview (%.0f%%)"
 msgstr ""
@@ -1426,25 +1430,25 @@ msgid "Invalid long: %s"
 msgstr "Неисправан long: %s"
 
 #: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
-#: config/number.c:93 config/number.c:155 config/number.c:209
-#: config/number.c:251
+#: config/number.c:96 config/number.c:158 config/number.c:212
+#: config/number.c:254
 #, c-format
 msgid "Option %s may not be negative"
 msgstr "Опција %s не може бити негативна"
 
-#: config/number.c:81 config/number.c:196 config/number.c:238
+#: config/number.c:84 config/number.c:199 config/number.c:241
 #: expando/node_conddate.c:242 expando/node_expando.c:179
 #: expando/node_expando.c:202
 #, c-format
 msgid "Invalid number: %s"
 msgstr "Неисправан број: %s"
 
-#: config/number.c:87 config/number.c:203 config/number.c:245
+#: config/number.c:90 config/number.c:206 config/number.c:248
 #, c-format
 msgid "Number is too big: %s"
 msgstr "Број је превелик: %s"
 
-#: config/number.c:149
+#: config/number.c:152
 #, c-format
 msgid "Invalid number: %ld"
 msgstr "Неисправан број: %ld"
@@ -4494,7 +4498,7 @@ msgstr "Помоћ у вези са %s"
 msgid "History '%s'"
 msgstr "Историја „%s“"
 
-#: history/history.c:235 history/history.c:625
+#: history/history.c:235 history/history.c:623
 #, c-format
 msgid "%s:%d: Bad history file format"
 msgstr "%s:%d: Лош формат датотеке историје"
@@ -4507,7 +4511,7 @@ msgstr "%s:%d: Лош формат датотеке историје"
 #: ncrypt/gpgme_functions.c:645 ncrypt/pgp.c:590 ncrypt/pgp.c:597
 #: ncrypt/pgp.c:925 ncrypt/pgp.c:1042 ncrypt/pgp.c:1199 ncrypt/pgp.c:1223
 #: ncrypt/pgp.c:1256 ncrypt/pgp.c:1610 ncrypt/pgp_functions.c:135
-#: ncrypt/pgpkey.c:283 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
+#: ncrypt/pgpkey.c:282 ncrypt/pgpmicalg.c:192 ncrypt/smime.c:714
 #: ncrypt/smime.c:722 ncrypt/smime.c:821 ncrypt/smime.c:931 ncrypt/smime.c:998
 #: ncrypt/smime.c:1005 ncrypt/smime.c:1216 ncrypt/smime.c:1616
 #: ncrypt/smime.c:1695 ncrypt/smime.c:1702 ncrypt/smime.c:1809
@@ -4688,7 +4692,7 @@ msgstr[0] "Копирање %d поруке у %s..."
 msgstr[1] "Копирање %d поруке у %s..."
 msgstr[2] "Копирање %d порука у %s..."
 
-#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1821 muttlib.c:801
+#: imap/imap.c:1432 imap/imap.c:2090 imap/message.c:1821 muttlib.c:800
 #, c-format
 msgid "Create %s?"
 msgstr "Креирати %s?"
@@ -4840,7 +4844,7 @@ msgstr "%s: Операција није дозвољена ACL-ом"
 msgid "Failed to create query, aborting"
 msgstr "Неуспешно креирање упита, прекида се"
 
-#: index/dlg_index.c:782 muttlib.c:785 mx.c:205 mx.c:343
+#: index/dlg_index.c:782 muttlib.c:784 mx.c:205 mx.c:343
 #, c-format
 msgid "%s is not a mailbox"
 msgstr "%s није сандуче"
@@ -4857,15 +4861,15 @@ msgstr "Нови мејлови у овом сандучету"
 msgid "Mailbox was externally modified"
 msgstr "Сандуче је измењено споља"
 
-#: index/dlg_index.c:1336 index/functions.c:3075 pattern/message.c:288
+#: index/dlg_index.c:1335 index/functions.c:3075 pattern/message.c:288
 msgid "No mailbox is open"
 msgstr "Ниједно сандуче није отворено"
 
-#: index/dlg_index.c:1344
+#: index/dlg_index.c:1343
 msgid "No tagged messages"
 msgstr "Нема означених порука"
 
-#: index/dlg_index.c:1349 index/functions.c:919
+#: index/dlg_index.c:1348 index/functions.c:919
 msgid "Nothing to do"
 msgstr "Нема се шта радити"
 
@@ -5040,7 +5044,7 @@ msgstr "Нема непрочитаних порука"
 msgid "Search wrapped to top"
 msgstr "Претрага се вратила на почетак"
 
-#: index/functions.c:1570 pager/functions.c:796 pattern/pattern.c:570
+#: index/functions.c:1570 pager/functions.c:797 pattern/pattern.c:570
 #: pattern/pattern.c:726
 msgid "Search wrapped to bottom"
 msgstr "Претрага се вратила на дно"
@@ -5659,11 +5663,11 @@ msgstr "%s: не може се додати датотека"
 msgid "No mailbox with new mail"
 msgstr "Ниједно сандуче нема нову пошту"
 
-#: main.c:1344
+#: main.c:1345
 msgid "No incoming mailboxes defined"
 msgstr "Ниједно долазеће сандуче није дефинисано"
 
-#: main.c:1397
+#: main.c:1398
 msgid "Mailbox is empty"
 msgstr "Сандуче је празно"
 
@@ -5720,7 +5724,7 @@ msgid "Search for: "
 msgstr "Тражи: "
 
 #: menu/functions.c:127 pager/functions.c:695 pager/functions.c:762
-#: pager/functions.c:792 pattern/pattern.c:621 pattern/pattern.c:774
+#: pager/functions.c:793 pattern/pattern.c:621 pattern/pattern.c:774
 msgid "Not found"
 msgstr "Није пронађено"
 
@@ -5766,25 +5770,25 @@ msgstr "Нема означених ставки"
 msgid "Out of memory"
 msgstr "Недовољно меморије"
 
-#: mutt/file.c:787
+#: mutt/file.c:665
 #, c-format
 msgid "Failed to seek file: %s"
 msgstr "Неуспешно премотавање датотеке: %s"
 
-#: mutt/file.c:1231
+#: mutt/file.c:1125
 msgid "Timeout exceeded while attempting fcntl lock"
 msgstr "Тајмаут приликом покушаја закључавања fcntl-ом"
 
-#: mutt/file.c:1237
+#: mutt/file.c:1131
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Чекање на закључавање fcntl-ом... %d"
 
-#: mutt/file.c:1297
+#: mutt/file.c:1191
 msgid "Timeout exceeded while attempting flock lock"
 msgstr "Тајмаут приликом покушаја закључавања flock-ом је истекао"
 
-#: mutt/file.c:1304
+#: mutt/file.c:1198
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Чекање на покушај flock-а... %d"
@@ -5852,11 +5856,11 @@ msgstr "NeoMutt %<m?са порука: %m&без порука>%<n? [%n НОВИ�
 msgid "Invalid value for option %s: %ld"
 msgstr "Неисправна вредност за опцију %s: %ld"
 
-#: mutt_lua.c:447
+#: mutt_lua.c:448
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Грешка: Не може се учитати lua интерпретер"
 
-#: mutt_lua.c:517
+#: mutt_lua.c:518
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Не може се учитати lua изворни код: %s"
@@ -5917,16 +5921,16 @@ msgstr "Датотека постоји, преписати (p), дописат�
 msgid "oac"
 msgstr "pdo"
 
-#: muttlib.c:754
+#: muttlib.c:753
 msgid "Can't save message to POP mailbox"
 msgstr "Порука се не може сачувати у POP сандуче"
 
-#: muttlib.c:764
+#: muttlib.c:763
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Дописати поруке у %s?"
 
-#: muttlib.c:777
+#: muttlib.c:776
 msgid "Can't save message to news server"
 msgstr "Порука се не може сачувати на њуз серверу"
 
@@ -6070,7 +6074,7 @@ msgid "Mail not sent: inline PGP can't be used with format=flowed"
 msgstr "Порука није послата: убачени PGP се не може користити са format=flowed"
 
 #: ncrypt/crypt.c:208 ncrypt/cryptglue.c:159 ncrypt/pgp_functions.c:141
-#: ncrypt/pgpkey.c:296
+#: ncrypt/pgpkey.c:295
 msgid "Invoking PGP..."
 msgstr "Покрећем PGP..."
 
@@ -6469,8 +6473,8 @@ msgstr "gpgme_op_keylist_start је неуспешно: %s"
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next је неуспешно: %s"
 
-#: ncrypt/crypt_gpgme.c:3271 ncrypt/crypt_gpgme.c:3391 ncrypt/pgpkey.c:399
-#: ncrypt/pgpkey.c:531
+#: ncrypt/crypt_gpgme.c:3271 ncrypt/crypt_gpgme.c:3391 ncrypt/pgpkey.c:398
+#: ncrypt/pgpkey.c:530
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Траже се кључеви који одговарају „%s“..."
@@ -6497,7 +6501,7 @@ msgstr "Унесите ИБкључа за %s: "
 msgid "No secret keys found"
 msgstr "Није пронађен ниједан тајни кључ"
 
-#: ncrypt/crypt_gpgme.c:3776 ncrypt/pgpkey.c:269
+#: ncrypt/crypt_gpgme.c:3776 ncrypt/pgpkey.c:268
 msgid "Please enter the key ID: "
 msgstr "Унесите ИБ кључа: "
 
@@ -6977,7 +6981,7 @@ msgstr "PGP шифруј (s), потпиши (p), потпиши као (k), о�
 msgid "esabc"
 msgstr "spkbo"
 
-#: ncrypt/pgp_functions.c:126 ncrypt/pgpkey.c:290
+#: ncrypt/pgp_functions.c:126 ncrypt/pgpkey.c:289
 msgid "Can't open /dev/null"
 msgstr "Не може се отворити /dev/null"
 
@@ -6985,12 +6989,12 @@ msgstr "Не може се отворити /dev/null"
 msgid "Fetching PGP key..."
 msgstr "Добављам PGP кључ..."
 
-#: ncrypt/pgpkey.c:319
+#: ncrypt/pgpkey.c:318
 #, c-format
 msgid "PGP Key %s"
 msgstr "PGP кључ %s"
 
-#: ncrypt/pgpkey.c:601
+#: ncrypt/pgpkey.c:600
 msgid "A key can't be used: expired/disabled/revoked"
 msgstr "Овај кључ се не може користити: он је истекао/онемогућен/повучен"
 
@@ -7295,7 +7299,7 @@ msgid "Bottom of message is shown"
 msgstr "Приказан је крај поруке"
 
 #: pager/functions.c:454 pager/functions.c:546 pager/functions.c:559
-#: pager/functions.c:965
+#: pager/functions.c:966
 msgid "Top of message is shown"
 msgstr "Приказан је почетак поруке"
 
@@ -7303,23 +7307,23 @@ msgstr "Приказан је почетак поруке"
 #. there is no text past the headers.
 #. (I don't think this is actually possible in Mutt's code, but
 #. display some kind of message in case it somehow occurs.)
-#: pager/functions.c:849
+#: pager/functions.c:850
 msgid "No text past headers"
 msgstr "Нема текста после заглавља"
 
-#: pager/functions.c:908 pager/functions.c:948
+#: pager/functions.c:909 pager/functions.c:949
 msgid "No more unquoted text after quoted text"
 msgstr "Нема више нецитираног текста после цитираног"
 
-#: pager/functions.c:930
+#: pager/functions.c:931
 msgid "No more quoted text"
 msgstr "Нема више цитираног текста"
 
-#: pager/functions.c:989
+#: pager/functions.c:990
 msgid "Help is currently being shown"
 msgstr "Помоћ је приказана"
 
-#: pager/functions.c:1045
+#: pager/functions.c:1046
 #, c-format
 msgid "Saved to: %s"
 msgstr "Сачувано у: %s"
