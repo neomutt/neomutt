@@ -153,7 +153,7 @@ int                      km_dokey                   (enum MenuType menu, GetChFl
 struct KeyEvent          km_dokey_event             (enum MenuType menu, GetChFlags flags);
 void                     km_error_key               (enum MenuType menu);
 bool                     km_expand_key              (struct Keymap *map, struct Buffer *buf);
-int                      km_expand_key_string       (char *str, char *buf, size_t buflen);
+void                     km_expand_key_string       (char *str, struct Buffer *buf);
 struct Keymap *          km_find_func               (enum MenuType menu, int func);
 const struct MenuFuncOp *km_get_table               (enum MenuType mtype);
 void                     km_init                    (void);

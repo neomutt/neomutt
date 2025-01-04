@@ -467,26 +467,15 @@ bool km_expand_key(struct Keymap *map, struct Buffer *buf)
 
 /**
  * km_expand_key_string - Get a human-readable key string
- * @param str    Raw key string
- * @param buf    Buffer for the key string
- * @param buflen Length of buffer
- * @retval num Length of string
+ * @param[in]  str Raw key string
+ * @param[out] buf Buffer for the key string
  */
-int km_expand_key_string(char *str, char *buf, size_t buflen)
+void km_expand_key_string(char *str, struct Buffer *buf)
 {
-  size_t len = 0;
   for (; *str; str++)
   {
-    const char *key = km_keyname(*str);
-    size_t keylen = mutt_str_len(key);
-
-    mutt_str_copy(buf, key, buflen);
-    buf += keylen;
-    buflen -= keylen;
-    len += keylen;
+    buf_addstr(buf, km_keyname(*str));
   }
-
-  return len;
 }
 
 /**
