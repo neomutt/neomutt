@@ -66,8 +66,6 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stddef.h>
-#include <stdio.h>
 #include "private.h"
 #include "mutt/lib.h"
 #include "config/lib.h"
@@ -80,62 +78,42 @@
 
 /**
  * make_help - Create one entry for the Help Bar
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
- * @param txt    Text part, e.g. "delete"
- * @param menu   Current Menu, e.g. #MENU_PAGER
- * @param op     Operation, e.g. OP_DELETE
- * @retval true The keybinding exists
+ * @param[in]  menu Current Menu, e.g. #MENU_PAGER
+ * @param[in]  op   Operation, e.g. OP_DELETE
+ * @param[in]  txt  Text part, e.g. "delete"
+ * @param[out] buf  Buffer for the result
+ * @retval true Keybinding exists
  *
  * This will return something like: "d:delete"
  */
-static bool make_help(char *buf, size_t buflen, const char *txt, enum MenuType menu, int op)
+static bool make_help(enum MenuType menu, int op, const char *txt, struct Buffer *buf)
 {
-  struct Buffer *tmp = buf_pool_get();
-  bool rc = false;
-
-  if (km_expand_key(km_find_func(menu, op), tmp) ||
-      km_expand_key(km_find_func(MENU_GENERIC, op), tmp))
+  if (km_expand_key(km_find_func(menu, op), buf) ||
+      km_expand_key(km_find_func(MENU_GENERIC, op), buf))
   {
-    snprintf(buf, buflen, "%s:%s", buf_string(tmp), txt);
-    rc = true;
-  }
-  else
-  {
-    buf[0] = '\0';
+    buf_addch(buf, ':');
+    buf_addstr(buf, txt);
+    return true;
   }
 
-  buf_pool_release(&tmp);
-  return rc;
+  return false;
 }
 
 /**
  * compile_help - Create the text for the help menu
- * @param buf    Buffer for the result
- * @param buflen Length of buffer
- * @param menu   Current Menu, e.g. #MENU_PAGER
- * @param items  Map of functions to display in the Help Bar
- * @retval ptr Buffer containing result
+ * @param[in]  menu   Current Menu, e.g. #MENU_PAGER
+ * @param[in]  items  Map of functions to display in the Help Bar
+ * @param[out] buf    Buffer for the result
  */
-static char *compile_help(char *buf, size_t buflen, enum MenuType menu,
-                          const struct Mapping *items)
+static void compile_help(enum MenuType menu, const struct Mapping *items, struct Buffer *buf)
 {
-  char *pbuf = buf;
-
-  for (int i = 0; items[i].name && (buflen > 2); i++)
+  for (int i = 0; items[i].name; i++)
   {
-    if (!make_help(pbuf, buflen, _(items[i].name), menu, items[i].value))
+    if (!make_help(menu, items[i].value, _(items[i].name), buf))
       continue;
 
-    const size_t len = mutt_str_len(pbuf);
-    pbuf += len;
-    buflen -= len;
-
-    *pbuf++ = ' ';
-    *pbuf++ = ' ';
-    buflen -= 2;
+    buf_addstr(buf, "  ");
   }
-  return buf;
 }
 
 /**
@@ -163,12 +141,13 @@ static int helpbar_recalc(struct MuttWindow *win)
   if (!win_focus)
     return 0;
 
-  char helpstr[1024] = { 0 };
-  compile_help(helpstr, sizeof(helpstr), win_focus->help_menu, win_focus->help_data);
+  struct Buffer *helpstr = buf_pool_get();
+  compile_help(win_focus->help_menu, win_focus->help_data, helpstr);
 
   wdata->help_menu = win_focus->help_menu;
   wdata->help_data = win_focus->help_data;
-  wdata->help_str = mutt_str_dup(helpstr);
+  wdata->help_str = buf_strdup(helpstr);
+  buf_pool_release(&helpstr);
 
   win->actions |= WA_REPAINT;
   mutt_debug(LL_DEBUG5, "recalc done, request WA_REPAINT\n");
