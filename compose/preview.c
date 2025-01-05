@@ -192,7 +192,7 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
       // Only move the cursor and print if this line is currently visible.
       if ((content_lines >= wdata->scroll_offset) && (row < win->state.rows))
       {
-        int rc = mutt_window_move(win, 0, row);
+        int rc = mutt_window_move(win, row, 0);
         if (rc == ERR)
           mutt_warning(_("Failed to move cursor!"));
 

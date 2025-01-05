@@ -646,7 +646,7 @@ static int draw_divider(struct SidebarWindowData *wdata, struct MuttWindow *win,
 
   for (int i = 0; i < num_rows; i++)
   {
-    mutt_window_move(win, col, i);
+    mutt_window_move(win, i, col);
 
     if (wdata->divider_type == SB_DIV_USER)
       mutt_window_addstr(win, NONULL(c_sidebar_divider_char));
@@ -681,7 +681,7 @@ static void fill_empty_space(struct MuttWindow *win, int first_row,
     div_width = 0;
   for (int r = 0; r < num_rows; r++)
   {
-    mutt_window_move(win, div_width, first_row + r);
+    mutt_window_move(win, first_row + r, div_width);
     mutt_curses_set_color_by_id(MT_COLOR_SIDEBAR_BACKGROUND);
 
     for (int i = 0; i < num_cols; i++)
@@ -717,7 +717,7 @@ int sb_repaint(struct MuttWindow *win)
         continue;
 
       struct SbEntry *entry = (*sbep);
-      mutt_window_move(win, col, row);
+      mutt_window_move(win, row, col);
       mutt_curses_set_color(entry->color);
       mutt_window_printf(win, "%s", entry->display);
       mutt_refresh();

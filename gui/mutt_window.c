@@ -231,7 +231,7 @@ void mutt_window_free(struct MuttWindow **ptr)
  */
 void mutt_window_clearline(struct MuttWindow *win, int row)
 {
-  mutt_window_move(win, 0, row);
+  mutt_window_move(win, row, 0);
   mutt_window_clrtoeol(win);
 }
 
@@ -268,13 +268,13 @@ void mutt_window_clrtoeol(struct MuttWindow *win)
 /**
  * mutt_window_get_coords - Get the cursor position in the Window
  * @param[in]  win Window
- * @param[out] col Column in Window
  * @param[out] row Row in Window
+ * @param[out] col Column in Window
  *
  * Assumes the current position is inside the window.  Otherwise it will
  * happily return negative or values outside the window boundaries
  */
-void mutt_window_get_coords(struct MuttWindow *win, int *col, int *row)
+void mutt_window_get_coords(struct MuttWindow *win, int *row, int *col)
 {
   int x = 0;
   int y = 0;
@@ -289,52 +289,14 @@ void mutt_window_get_coords(struct MuttWindow *win, int *col, int *row)
 /**
  * mutt_window_move - Move the cursor in a Window
  * @param win Window
- * @param col Column to move to
  * @param row Row to move to
+ * @param col Column to move to
  * @retval OK  Success
  * @retval ERR Error
  */
-int mutt_window_move(struct MuttWindow *win, int col, int row)
+int mutt_window_move(struct MuttWindow *win, int row, int col)
 {
   return move(win->state.row_offset + row, win->state.col_offset + col);
-}
-
-/**
- * mutt_window_mvaddstr - Move the cursor and write a fixed string to a Window
- * @param win Window to write to
- * @param col Column to move to
- * @param row Row to move to
- * @param str String to write
- * @retval OK  Success
- * @retval ERR Error
- */
-int mutt_window_mvaddstr(struct MuttWindow *win, int col, int row, const char *str)
-{
-  return mvaddstr(win->state.row_offset + row, win->state.col_offset + col, str);
-}
-
-/**
- * mutt_window_mvprintw - Move the cursor and write a formatted string to a Window
- * @param win Window to write to
- * @param col Column to move to
- * @param row Row to move to
- * @param fmt printf format string
- * @param ... printf arguments
- * @retval num Success, characters written
- * @retval ERR Error, move failed
- */
-int mutt_window_mvprintw(struct MuttWindow *win, int col, int row, const char *fmt, ...)
-{
-  int rc = mutt_window_move(win, col, row);
-  if (rc == ERR)
-    return rc;
-
-  va_list ap;
-  va_start(ap, fmt);
-  rc = vw_printw(stdscr, fmt, ap);
-  va_end(ap);
-
-  return rc;
 }
 
 /**
