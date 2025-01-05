@@ -53,18 +53,20 @@ static bool dump_bind(struct Buffer *buf, enum MenuType menu, const char *name)
   bool empty = true;
   struct Keymap *map = NULL;
 
+  struct Buffer *key_binding = buf_pool_get();
+
   STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
     if (map->op == OP_MACRO)
       continue;
 
-    char key_binding[128] = { 0 };
     const char *fn_name = NULL;
 
-    km_expand_key(key_binding, sizeof(key_binding), map);
+    buf_reset(key_binding);
+    km_expand_key(map, key_binding);
     if (map->op == OP_NULL)
     {
-      buf_add_printf(buf, "bind %s %s noop\n", name, key_binding);
+      buf_add_printf(buf, "bind %s %s noop\n", name, buf_string(key_binding));
       continue;
     }
 
@@ -86,10 +88,11 @@ static bool dump_bind(struct Buffer *buf, enum MenuType menu, const char *name)
       fn_name = mutt_get_func(funcs, map->op);
     }
 
-    buf_add_printf(buf, "bind %s %s %s\n", name, key_binding, fn_name);
+    buf_add_printf(buf, "bind %s %s %s\n", name, buf_string(key_binding), fn_name);
     empty = false;
   }
 
+  buf_pool_release(&key_binding);
   return empty;
 }
 
@@ -122,31 +125,35 @@ static bool dump_macro(struct Buffer *buf, enum MenuType menu, const char *name)
   bool empty = true;
   struct Keymap *map = NULL;
 
+  struct Buffer *key_binding = buf_pool_get();
+
   STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
     if (map->op != OP_MACRO)
       continue;
 
-    char key_binding[128] = { 0 };
-    km_expand_key(key_binding, sizeof(key_binding), map);
+    buf_reset(key_binding);
+    km_expand_key(map, key_binding);
 
     struct Buffer *tmp = buf_pool_get();
     escape_string(tmp, map->macro);
 
     if (map->desc)
     {
-      buf_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", name, key_binding,
-                     tmp->data, map->desc);
+      buf_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", name,
+                     buf_string(key_binding), buf_string(tmp), map->desc);
     }
     else
     {
-      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, key_binding, tmp->data);
+      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, buf_string(key_binding),
+                     buf_string(tmp));
     }
 
     buf_pool_release(&tmp);
     empty = false;
   }
 
+  buf_pool_release(&key_binding);
   return empty;
 }
 
