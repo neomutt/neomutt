@@ -53,7 +53,6 @@
  */
 struct HelpLine
 {
-  bool is_macro;      ///< This is a macro
   const char *first;  ///< First  column
   const char *second; ///< Second column
   const char *third;  ///< Third  column
@@ -100,24 +99,21 @@ static int help_sort_alpha(const void *a, const void *b, void *sdata)
 }
 
 /**
- * print_macro - Print a macro string to a file
- * @param[in]  fp       File to write to
- * @param[in]  maxwidth Maximum width in screen columns
- * @param[out] macro    Macro string
- * @retval num Number of screen columns used
+ * escape_macro - Escape any special characters in a macro
+ * @param[in]  macro Macro string
+ * @param[out] buf   Buffer for the result
  *
- * The `macro` pointer is move past the string we've printed
+ * Replace characters, such as `<Enter>` with the literal "\n"
  */
-static int print_macro(FILE *fp, int maxwidth, const char **macro)
+static void escape_macro(const char *macro, struct Buffer *buf)
 {
-  int n = maxwidth;
   wchar_t wc = 0;
   size_t k;
-  size_t len = mutt_str_len(*macro);
+  size_t len = mutt_str_len(macro);
   mbstate_t mbstate1 = { 0 };
   mbstate_t mbstate2 = { 0 };
 
-  for (; len && (k = mbrtowc(&wc, *macro, len, &mbstate1)); *macro += k, len -= k)
+  for (; (len > 0) && (k = mbrtowc(&wc, macro, MB_LEN_MAX, &mbstate1)); macro += k, len -= k)
   {
     if ((k == ICONV_ILLEGAL_SEQ) || (k == ICONV_BUF_TOO_SMALL))
     {
@@ -126,59 +122,47 @@ static int print_macro(FILE *fp, int maxwidth, const char **macro)
       k = (k == ICONV_ILLEGAL_SEQ) ? 1 : len;
       wc = ReplacementChar;
     }
-    /* glibc-2.1.3's wcwidth() returns 1 for unprintable chars! */
+
     const int w = wcwidth(wc);
     if (IsWPrint(wc) && (w >= 0))
     {
-      if (w > n)
-        break;
-      n -= w;
+      char tmp[MB_LEN_MAX * 2] = { 0 };
+      if (wcrtomb(tmp, wc, &mbstate2) != ICONV_ILLEGAL_SEQ)
       {
-        char buf[MB_LEN_MAX * 2];
-        size_t n1, n2;
-        if (((n1 = wcrtomb(buf, wc, &mbstate2)) != ICONV_ILLEGAL_SEQ) &&
-            ((n2 = wcrtomb(buf + n1, 0, &mbstate2)) != ICONV_ILLEGAL_SEQ))
-        {
-          fputs(buf, fp);
-        }
+        buf_addstr(buf, tmp);
       }
     }
     else if ((wc < 0x20) || (wc == 0x7f))
     {
-      if (n < 2)
-        break;
-      n -= 2;
       if (wc == '\033') // Escape
-        fprintf(fp, "\\e");
+        buf_addstr(buf, "\\e");
       else if (wc == '\n')
-        fprintf(fp, "\\n");
+        buf_addstr(buf, "\\n");
       else if (wc == '\r')
-        fprintf(fp, "\\r");
+        buf_addstr(buf, "\\r");
       else if (wc == '\t')
-        fprintf(fp, "\\t");
+        buf_addstr(buf, "\\t");
       else
-        fprintf(fp, "^%c", (char) ((wc + '@') & 0x7f));
+        buf_add_printf(buf, "^%c", (char) ((wc + '@') & 0x7f));
     }
     else
     {
-      if (n < 1)
-        break;
-      n -= 1;
-      fprintf(fp, "?");
+      buf_addch(buf, '?');
     }
   }
-  return maxwidth - n;
 }
 
 /**
  * dump_menu - Write all the key bindings to a HelpLine Array
- * @param menu Menu type
- * @param hla  HelpLine Array
+ * @param menu      Menu type
+ * @param hla_menu  HelpLine Array of key bindings
+ * @param hla_macro HelpLine Array of macros
  *
  * For bind:  { key-string, function-name, description }
  * For macro: { key-string, macro-text,    optional-description }
  */
-static void dump_menu(enum MenuType menu, struct HelpLineArray *hla)
+static void dump_menu(enum MenuType menu, struct HelpLineArray *hla_menu,
+                      struct HelpLineArray *hla_macro)
 {
   struct Keymap *map = NULL;
   struct Buffer *buf = buf_pool_get();
@@ -197,9 +181,9 @@ static void dump_menu(enum MenuType menu, struct HelpLineArray *hla)
 
     if (map->op == OP_MACRO)
     {
-      hl.is_macro = true;
       hl.second = map->macro;
       hl.third = map->desc;
+      ARRAY_ADD(hla_macro, hl);
     }
     else
     {
@@ -207,9 +191,8 @@ static void dump_menu(enum MenuType menu, struct HelpLineArray *hla)
       ASSERT(funcs);
       hl.second = funcs->name;
       hl.third = _(opcodes_get_description(funcs->op));
+      ARRAY_ADD(hla_menu, hl);
     }
-
-    ARRAY_ADD(hla, hl);
   }
 
   buf_pool_release(&buf);
@@ -226,33 +209,34 @@ static void dump_menu(enum MenuType menu, struct HelpLineArray *hla)
  */
 static void dump_bound(enum MenuType menu, FILE *fp)
 {
-  struct HelpLineArray hla_menu = ARRAY_HEAD_INITIALIZER;
   struct HelpLineArray hla_gen = ARRAY_HEAD_INITIALIZER;
+  struct HelpLineArray hla_macro = ARRAY_HEAD_INITIALIZER;
+  struct HelpLineArray hla_menu = ARRAY_HEAD_INITIALIZER;
 
-  dump_menu(menu, &hla_menu);
+  dump_menu(menu, &hla_menu, &hla_macro);
   if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
   {
-    dump_menu(MENU_GENERIC, &hla_gen);
+    dump_menu(MENU_GENERIC, &hla_gen, &hla_macro);
   }
 
-  const char *const c_pager = pager_get_pager(NeoMutt->sub);
   struct HelpLine *hl = NULL;
   int w1 = 0;
   int w2 = 0;
   ARRAY_FOREACH(hl, &hla_menu)
   {
     w1 = MAX(w1, mutt_str_len(hl->first));
-
-    if (!hl->is_macro)
-      w2 = MAX(w2, mutt_str_len(hl->second));
+    w2 = MAX(w2, mutt_str_len(hl->second));
   }
 
   ARRAY_FOREACH(hl, &hla_gen)
   {
     w1 = MAX(w1, mutt_str_len(hl->first));
+    w2 = MAX(w2, mutt_str_len(hl->second));
+  }
 
-    if (!hl->is_macro)
-      w2 = MAX(w2, mutt_str_len(hl->second));
+  ARRAY_FOREACH(hl, &hla_macro)
+  {
+    w1 = MAX(w1, mutt_str_len(hl->first));
   }
 
   const char *desc = mutt_map_get_name(menu, MenuNames);
@@ -262,22 +246,7 @@ static void dump_bound(enum MenuType menu, FILE *fp)
   ARRAY_FOREACH(hl, &hla_menu)
   {
     fprintf(fp, "%*s  ", -w1, hl->first);
-
-    if (hl->is_macro)
-    {
-      if (!c_pager)
-        fputs("_\010", fp); // Ctrl-H (backspace)
-      fputs("M ", fp);
-
-      print_macro(fp, 999, &hl->second);
-      fputs("\n", fp);
-      if (hl->third)
-        fprintf(fp, "%*s    %s\n", -w1, "", hl->third);
-    }
-    else
-    {
-      fprintf(fp, "  %*s  %s\n", -w2, hl->second, hl->third);
-    }
+    fprintf(fp, "%*s  %s\n", -w2, hl->second, hl->third);
   }
 
   fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
@@ -285,26 +254,27 @@ static void dump_bound(enum MenuType menu, FILE *fp)
   ARRAY_FOREACH(hl, &hla_gen)
   {
     fprintf(fp, "%*s  ", -w1, hl->first);
-
-    if (hl->is_macro)
-    {
-      if (!c_pager)
-        fputs("_\010", fp); // Ctrl-H (backspace)
-      fputs("M ", fp);
-
-      print_macro(fp, 999, &hl->second);
-      fputs("\n", fp);
-      if (hl->third)
-        fprintf(fp, "%*s    %s\n", -w1, "", hl->third);
-    }
-    else
-    {
-      fprintf(fp, "  %*s  %s\n", -w2, hl->second, hl->third);
-    }
+    fprintf(fp, "%*s  %s\n", -w2, hl->second, hl->third);
   }
 
-  ARRAY_FREE(&hla_menu);
+  fprintf(fp, "\n%s\n\n", _("macros:"));
+  struct Buffer *macro = buf_pool_get();
+  ARRAY_FOREACH(hl, &hla_macro)
+  {
+    fprintf(fp, "%*s  ", -w1, hl->first);
+
+    buf_reset(macro);
+    escape_macro(hl->second, macro);
+    fprintf(fp, "%s\n", buf_string(macro));
+
+    if (hl->third)
+      fprintf(fp, "%*s  %s\n\n", -w1, "", hl->third);
+  }
+  buf_pool_release(&macro);
+
   ARRAY_FREE(&hla_gen);
+  ARRAY_FREE(&hla_macro);
+  ARRAY_FREE(&hla_menu);
 }
 
 /**
