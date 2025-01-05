@@ -57,7 +57,7 @@
  */
 static const struct MenuFuncOp *help_lookup_function(int op, enum MenuType menu)
 {
-  if (menu != MENU_PAGER && (menu != MENU_GENERIC))
+  if ((menu != MENU_PAGER) && (menu != MENU_GENERIC))
   {
     /* first look in the generic map for the function */
     for (int i = 0; OpGeneric[i].name; i++)
@@ -216,7 +216,6 @@ static int pad(FILE *fp, int col, int i)
  * @param t1      Text part 1
  * @param t2      Text part 2
  * @param t3      Text part 3
- * @param wraplen Width to wrap to
  *
  * Assemble the three columns of text.
  *
@@ -225,28 +224,17 @@ static int pad(FILE *fp, int col, int i)
  * *  0 : Non-macro
  * * -1 : Macro with no description
  */
-static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
-                        const char *t3, int wraplen)
+static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2, const char *t3)
 {
   int col;
   int col_b;
+  int wraplen = 120;
 
   fputs(t1, fp);
 
-  /* don't try to press string into one line with less than 40 characters. */
-  bool split = (wraplen < 40);
-  if (split)
-  {
-    col = 0;
-    col_b = 1024;
-    fputc('\n', fp);
-  }
-  else
-  {
-    const int col_a = (wraplen > 83) ? (wraplen - 32) >> 2 : 12;
-    col_b = (wraplen > 49) ? (wraplen - 10) >> 1 : 19;
-    col = pad(fp, mutt_strwidth(t1), col_a);
-  }
+  const int col_a = (wraplen - 32) >> 2;
+  col_b = (wraplen - 10) >> 1;
+  col = pad(fp, mutt_strwidth(t1), col_a);
 
   const char *const c_pager = pager_get_pager(NeoMutt->sub);
   if (ismacro > 0)
@@ -256,55 +244,41 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
     fputs("M ", fp);
     col += 2;
 
-    if (!split)
-    {
-      col += print_macro(fp, col_b - col - 4, &t2);
-      if (mutt_strwidth(t2) > col_b - col)
-        t2 = "...";
-    }
+    col += print_macro(fp, col_b - col - 4, &t2);
+    if (mutt_strwidth(t2) > col_b - col)
+      t2 = "...";
   }
 
   col += print_macro(fp, col_b - col - 1, &t2);
-  if (split)
-    fputc('\n', fp);
-  else
-    col = pad(fp, col, col_b);
+  col = pad(fp, col, col_b);
 
-  if (split)
+  while (*t3)
   {
-    print_macro(fp, 1024, &t3);
-    fputc('\n', fp);
-  }
-  else
-  {
-    while (*t3)
+    int n = wraplen - col;
+
+    if (ismacro >= 0)
     {
-      int n = wraplen - col;
+      SKIPWS(t3);
+      n = get_wrapped_width(t3, n);
+    }
 
-      if (ismacro >= 0)
+    n = print_macro(fp, n, &t3);
+
+    if (*t3)
+    {
+      if (c_pager)
       {
-        SKIPWS(t3);
-        n = get_wrapped_width(t3, n);
+        fputc('\n', fp);
+        n = 0;
       }
-
-      n = print_macro(fp, n, &t3);
-
-      if (*t3)
+      else
       {
-        if (c_pager)
-        {
-          fputc('\n', fp);
-          n = 0;
-        }
-        else
-        {
-          n += col - wraplen;
-          const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
-          if (c_markers)
-            n++;
-        }
-        col = pad(fp, n, col_b);
+        n += col - wraplen;
+        const bool c_markers = cs_subset_bool(NeoMutt->sub, "markers");
+        if (c_markers)
+          n++;
       }
+      col = pad(fp, n, col_b);
     }
   }
 
@@ -313,11 +287,10 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 
 /**
  * dump_menu - Write all the key bindings to a file
- * @param fp      File to write to
- * @param menu    Current Menu, e.g. #MENU_PAGER
- * @param wraplen Width to wrap to
+ * @param menu Menu type
+ * @param fp   File to write to
  */
-static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
+static void dump_menu(enum MenuType menu, FILE *fp)
 {
   struct Keymap *map = NULL;
   struct Buffer *buf = buf_pool_get();
@@ -332,22 +305,40 @@ static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
       if (map->op == OP_MACRO)
       {
         if (map->desc)
-          format_line(fp, 1, buf_string(buf), map->macro, map->desc, wraplen);
+          format_line(fp, 1, buf_string(buf), map->macro, map->desc);
         else
-          format_line(fp, -1, buf_string(buf), "macro", map->macro, wraplen);
+          format_line(fp, -1, buf_string(buf), map->macro, "");
       }
       else
       {
         const struct MenuFuncOp *funcs = help_lookup_function(map->op, menu);
-        format_line(fp, 0, buf_string(buf), funcs ? funcs->name : "UNKNOWN",
-                    funcs ? _(opcodes_get_description(funcs->op)) :
-                            _("ERROR: please report this bug"),
-                    wraplen);
+        ASSERT(funcs);
+        format_line(fp, 0, buf_string(buf), funcs->name,
+                    _(opcodes_get_description(funcs->op)));
       }
     }
   }
 
   buf_pool_release(&buf);
+}
+
+/**
+ * dump_bound - Dump the bound keys to a file
+ * @param menu Menu type
+ * @param fp   File to write to
+ *
+ * Collect all the function bindings and write them to a file.
+ *
+ * The output will be in three columns: binding, function, description.
+ */
+static void dump_bound(enum MenuType menu, FILE *fp)
+{
+  dump_menu(menu, fp);
+  if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
+  {
+    fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
+    dump_menu(MENU_GENERIC, fp);
+  }
 }
 
 /**
@@ -368,32 +359,48 @@ static bool is_bound(struct KeymapList *km_list, int op)
 }
 
 /**
- * dump_unbound - Write out all the operations with no key bindings
+ * dump_unbound_menu - Write out all the operations with no key bindings
  * @param fp      File to write to
  * @param funcs   All the bindings for the current menu
  * @param km_list First key map to consider
  * @param aux     Second key map to consider
- * @param wraplen Width to wrap to
  */
-static void dump_unbound(FILE *fp, const struct MenuFuncOp *funcs,
-                         struct KeymapList *km_list, struct KeymapList *aux, int wraplen)
+static void dump_unbound_menu(FILE *fp, const struct MenuFuncOp *funcs,
+                              struct KeymapList *km_list, struct KeymapList *aux)
 {
   for (int i = 0; funcs[i].name; i++)
   {
     if (!is_bound(km_list, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
-      format_line(fp, 0, funcs[i].name, "", _(opcodes_get_description(funcs[i].op)), wraplen);
+      format_line(fp, 0, funcs[i].name, "", _(opcodes_get_description(funcs[i].op)));
   }
+}
+
+/**
+ * dump_unbound - Dump the unbound keys to a file
+ * @param menu Menu type
+ * @param fp   File to write to
+ *
+ * The output will be in two columns: { function-name, description }
+ */
+static void dump_unbound(enum MenuType menu, FILE *fp)
+{
+  fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
+
+  const struct MenuFuncOp *funcs = km_get_table(menu);
+  if (funcs)
+    dump_unbound_menu(fp, funcs, &Keymaps[menu], NULL);
+  if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
+    dump_unbound_menu(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu]);
 }
 
 /**
  * show_flag_if_present - Write out a message flag if exists
  * @param fp              File to write to
- * @param wraplen         Width to wrap to
  * @param table           Table containing the flag characters
  * @param index           Index of flag character int the table
  * @param description     Description of flag
  */
-static void show_flag_if_present(FILE *fp, int wraplen, const struct MbTable *table,
+static void show_flag_if_present(FILE *fp, const struct MbTable *table,
                                  int index, char *description)
 {
   const char *flag = mbtable_get_nth_wchar(table, index);
@@ -402,64 +409,68 @@ static void show_flag_if_present(FILE *fp, int wraplen, const struct MbTable *ta
     return;
   }
 
-  format_line(fp, 0, flag, "", description, wraplen);
+  format_line(fp, 0, flag, "", description);
 }
 
 /**
  * dump_message_flags - Write out all the message flags
- * @param fp            File to write to
- * @param wraplen       Width to wrap to
+ * @param menu Menu type
+ * @param fp   File to write to
+ *
+ * Display a quick reminder of all the flags in the config options:
+ * - $crypt_chars
+ * - $flag_chars
+ * - $to_chars
  */
-static void dump_message_flags(FILE *fp, int wraplen)
+static void dump_message_flags(enum MenuType menu, FILE *fp)
 {
+  if (menu != MENU_INDEX)
+    return;
+
+  fprintf(fp, "\n%s\n\n", _("Message flags:"));
+
   const struct MbTable *c_flag_chars = cs_subset_mbtable(NeoMutt->sub, "flag_chars");
   const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
   const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
 
-  format_line(fp, 0, "$flag_chars:", "", "", wraplen);
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_TAGGED, _("message is tagged"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_IMPORTANT,
-                       _("message is flagged"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_DELETED, _("message is deleted"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_DELETED_ATTACH,
-                       _("attachment is deleted"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_REPLIED,
-                       _("message has been replied to"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_OLD, _("message has been read"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_NEW, _("message is new"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_OLD_THREAD,
-                       _("thread has been read"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_NEW_THREAD,
+  format_line(fp, 0, "$flag_chars:", "", "");
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_TAGGED, _("message is tagged"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_IMPORTANT, _("message is flagged"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_DELETED, _("message is deleted"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_DELETED_ATTACH, _("attachment is deleted"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_REPLIED, _("message has been replied to"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_OLD, _("message has been read"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_NEW, _("message is new"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_OLD_THREAD, _("thread has been read"));
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_NEW_THREAD,
                        _("thread has at least one new message"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_SEMPTY,
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_SEMPTY,
                        _("message has been read (%S expando)"));
-  show_flag_if_present(fp, wraplen, c_flag_chars, FLAG_CHAR_ZEMPTY,
+  show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_ZEMPTY,
                        _("message has been read (%Z expando)"));
 
-  format_line(fp, 0, "\n$crypt_chars:", "", "", wraplen);
-  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN,
+  format_line(fp, 0, "\n$crypt_chars:", "", "");
+  show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN,
                        _("message signed with a verified key"));
-  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED,
+  show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED,
                        _("message is PGP-encrypted"));
-  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED,
-                       _("message is signed"));
-  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY,
+  show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_SIGNED, _("message is signed"));
+  show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_CONTAINS_KEY,
                        _("message contains a PGP key"));
-  show_flag_if_present(fp, wraplen, c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO,
+  show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO,
                        _("message has no cryptography information"));
 
-  format_line(fp, 0, "\n$to_chars:", "", "", wraplen);
-  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_NOT_IN_THE_LIST,
+  format_line(fp, 0, "\n$to_chars:", "", "");
+  show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_NOT_IN_THE_LIST,
                        _("message is not To: you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_UNIQUE,
+  show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_UNIQUE,
                        _("message is To: you and only you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_TO, _("message is To: you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_CC, _("message is Cc: to you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_ORIGINATOR,
-                       _("message is From: you"));
-  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_SUBSCRIBED_LIST,
+  show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_TO, _("message is To: you"));
+  show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_CC, _("message is Cc: to you"));
+  show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_ORIGINATOR, _("message is From: you"));
+  show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_SUBSCRIBED_LIST,
                        _("message is sent to a subscribed mailing list"));
-  show_flag_if_present(fp, wraplen, c_to_chars, FLAG_CHAR_TO_REPLY_TO,
+  show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_REPLY_TO,
                        _("you are in the Reply-To: list"));
 }
 
@@ -475,11 +486,6 @@ void mutt_help(enum MenuType menu)
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
 
-  const struct MenuFuncOp *funcs = km_get_table(menu);
-  const char *desc = mutt_map_get_name(menu, MenuNames);
-  if (!desc)
-    desc = _("<UNKNOWN>");
-
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
@@ -493,27 +499,15 @@ void mutt_help(enum MenuType menu)
     goto cleanup;
   }
 
-  const int wraplen = AllDialogsWindow->state.cols;
-  dump_menu(fp, menu, wraplen);
-  if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
-  {
-    fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
-    dump_menu(fp, MENU_GENERIC, wraplen);
-  }
-
-  fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
-  if (funcs)
-    dump_unbound(fp, funcs, &Keymaps[menu], NULL, wraplen);
-  if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
-    dump_unbound(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], wraplen);
-
-  if (menu == MENU_INDEX)
-  {
-    fprintf(fp, "\n%s\n\n", _("Message flags:"));
-    dump_message_flags(fp, wraplen);
-  }
+  dump_bound(menu, fp);
+  dump_unbound(menu, fp);
+  dump_message_flags(menu, fp);
 
   mutt_file_fclose(&fp);
+
+  const char *desc = mutt_map_get_name(menu, MenuNames);
+  if (!desc)
+    desc = _("<UNKNOWN>");
 
   snprintf(banner, sizeof(banner), _("Help for %s"), desc);
   pdata.fname = buf_string(tempfile);
