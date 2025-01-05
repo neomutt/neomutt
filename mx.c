@@ -914,14 +914,18 @@ enum MxStatus mx_mbox_sync(struct Mailbox *m)
 
   if (m->dontwrite)
   {
-    char buf[512] = { 0 };
-    char tmp[768] = { 0 };
-    if (km_expand_key(buf, sizeof(buf), km_find_func(MENU_INDEX, OP_TOGGLE_WRITE)))
-      snprintf(tmp, sizeof(tmp), _(" Press '%s' to toggle write"), buf);
-    else
-      mutt_str_copy(tmp, _("Use 'toggle-write' to re-enable write"), sizeof(tmp));
+    struct Buffer *buf = buf_pool_get();
+    struct Buffer *tmp = buf_pool_get();
 
-    mutt_error(_("Mailbox is marked unwritable. %s"), tmp);
+    if (km_expand_key(km_find_func(MENU_INDEX, OP_TOGGLE_WRITE), buf))
+      buf_printf(tmp, _(" Press '%s' to toggle write"), buf_string(buf));
+    else
+      buf_addstr(tmp, _("Use 'toggle-write' to re-enable write"));
+
+    mutt_error(_("Mailbox is marked unwritable. %s"), buf_string(tmp));
+
+    buf_pool_release(&buf);
+    buf_pool_release(&tmp);
     return MX_STATUS_ERROR;
   }
   else if (m->readonly)

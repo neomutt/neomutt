@@ -38,6 +38,7 @@
 #define MUTT_KEY_LIB_H
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -151,12 +152,12 @@ enum CommandResult       km_bind                    (char *s, enum MenuType menu
 int                      km_dokey                   (enum MenuType menu, GetChFlags flags);
 struct KeyEvent          km_dokey_event             (enum MenuType menu, GetChFlags flags);
 void                     km_error_key               (enum MenuType menu);
-int                      km_expand_key              (char *s, size_t len, struct Keymap *map);
-int                      km_expand_key_string       (char *str, char *buf, size_t buflen);
+bool                     km_expand_key              (struct Keymap *map, struct Buffer *buf);
+void                     km_expand_key_string       (char *str, struct Buffer *buf);
 struct Keymap *          km_find_func               (enum MenuType menu, int func);
 const struct MenuFuncOp *km_get_table               (enum MenuType mtype);
 void                     km_init                    (void);
-const char *             km_keyname                 (int c);
+void                     km_keyname                 (int c, struct Buffer *buf);
 void                     init_extended_keys         (void);
 int                      main_config_observer       (struct NotifyCallback *nc);
 void                     mutt_flush_macro_to_endcond(void);
