@@ -395,21 +395,20 @@ static void dump_unbound(enum MenuType menu, FILE *fp)
 
 /**
  * show_flag_if_present - Write out a message flag if exists
- * @param fp              File to write to
- * @param table           Table containing the flag characters
- * @param index           Index of flag character int the table
- * @param description     Description of flag
+ * @param fp    File to write to
+ * @param table Table containing the flag characters
+ * @param index Index of flag character int the table
+ * @param desc  Description of flag
  */
-static void show_flag_if_present(FILE *fp, const struct MbTable *table,
-                                 int index, char *description)
+static void show_flag_if_present(FILE *fp, const struct MbTable *table, int index, char *desc)
 {
   const char *flag = mbtable_get_nth_wchar(table, index);
   if ((strlen(flag) < 1) || (*flag == ' '))
-  {
     return;
-  }
 
-  format_line(fp, 0, flag, "", description);
+  int cols = mutt_strwidth(flag);
+
+  fprintf(fp, "    %s%*s  %s\n", flag, 4 - cols, "", desc);
 }
 
 /**
@@ -433,7 +432,7 @@ static void dump_message_flags(enum MenuType menu, FILE *fp)
   const struct MbTable *c_crypt_chars = cs_subset_mbtable(NeoMutt->sub, "crypt_chars");
   const struct MbTable *c_to_chars = cs_subset_mbtable(NeoMutt->sub, "to_chars");
 
-  format_line(fp, 0, "$flag_chars:", "", "");
+  fputs("$flag_chars:\n", fp);
   show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_TAGGED, _("message is tagged"));
   show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_IMPORTANT, _("message is flagged"));
   show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_DELETED, _("message is deleted"));
@@ -449,7 +448,7 @@ static void dump_message_flags(enum MenuType menu, FILE *fp)
   show_flag_if_present(fp, c_flag_chars, FLAG_CHAR_ZEMPTY,
                        _("message has been read (%Z expando)"));
 
-  format_line(fp, 0, "\n$crypt_chars:", "", "");
+  fputs("\n$crypt_chars:\n", fp);
   show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_GOOD_SIGN,
                        _("message signed with a verified key"));
   show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_ENCRYPTED,
@@ -460,7 +459,7 @@ static void dump_message_flags(enum MenuType menu, FILE *fp)
   show_flag_if_present(fp, c_crypt_chars, FLAG_CHAR_CRYPT_NO_CRYPTO,
                        _("message has no cryptography information"));
 
-  format_line(fp, 0, "\n$to_chars:", "", "");
+  fputs("\n$to_chars:\n", fp);
   show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_NOT_IN_THE_LIST,
                        _("message is not To: you"));
   show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_UNIQUE,
@@ -472,6 +471,7 @@ static void dump_message_flags(enum MenuType menu, FILE *fp)
                        _("message is sent to a subscribed mailing list"));
   show_flag_if_present(fp, c_to_chars, FLAG_CHAR_TO_REPLY_TO,
                        _("you are in the Reply-To: list"));
+  fputs("\n", fp);
 }
 
 /**
@@ -506,9 +506,6 @@ void mutt_help(enum MenuType menu)
   mutt_file_fclose(&fp);
 
   const char *desc = mutt_map_get_name(menu, MenuNames);
-  if (!desc)
-    desc = _("<UNKNOWN>");
-
   snprintf(banner, sizeof(banner), _("Help for %s"), desc);
   pdata.fname = buf_string(tempfile);
   pview.banner = banner;
