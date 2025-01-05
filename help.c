@@ -309,37 +309,45 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2, c
 }
 
 /**
- * dump_menu - Write all the key bindings to a file
+ * dump_menu - Write all the key bindings to a HelpLine Array
  * @param menu Menu type
- * @param fp   File to write to
+ * @param hla  HelpLine Array
+ *
+ * For bind:  { key-string, function-name, description }
+ * For macro: { key-string, macro-text,    optional-description }
  */
-static void dump_menu(enum MenuType menu, FILE *fp)
+static void dump_menu(enum MenuType menu, struct HelpLineArray *hla)
 {
   struct Keymap *map = NULL;
   struct Buffer *buf = buf_pool_get();
 
   STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
-    if (map->op != OP_NULL)
-    {
-      buf_reset(buf);
-      km_expand_key(map, buf);
+    if (map->op == OP_NULL)
+      continue;
 
-      if (map->op == OP_MACRO)
-      {
-        if (map->desc)
-          format_line(fp, 1, buf_string(buf), map->macro, map->desc);
-        else
-          format_line(fp, -1, buf_string(buf), map->macro, "");
-      }
-      else
-      {
-        const struct MenuFuncOp *funcs = help_lookup_function(map->op, menu);
-        ASSERT(funcs);
-        format_line(fp, 0, buf_string(buf), funcs->name,
-                    _(opcodes_get_description(funcs->op)));
-      }
+    buf_reset(buf);
+    km_expand_key(map, buf);
+
+    struct HelpLine hl = { 0 };
+
+    hl.first = buf_strdup(buf);
+
+    if (map->op == OP_MACRO)
+    {
+      hl.is_macro = true;
+      hl.second = map->macro;
+      hl.third = map->desc;
     }
+    else
+    {
+      const struct MenuFuncOp *funcs = help_lookup_function(map->op, menu);
+      ASSERT(funcs);
+      hl.second = funcs->name;
+      hl.third = _(opcodes_get_description(funcs->op));
+    }
+
+    ARRAY_ADD(hla, hl);
   }
 
   buf_pool_release(&buf);
@@ -356,12 +364,85 @@ static void dump_menu(enum MenuType menu, FILE *fp)
  */
 static void dump_bound(enum MenuType menu, FILE *fp)
 {
-  dump_menu(menu, fp);
+  struct HelpLineArray hla_menu = ARRAY_HEAD_INITIALIZER;
+  struct HelpLineArray hla_gen = ARRAY_HEAD_INITIALIZER;
+
+  dump_menu(menu, &hla_menu);
   if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
   {
-    fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
-    dump_menu(MENU_GENERIC, fp);
+    dump_menu(MENU_GENERIC, &hla_gen);
   }
+
+  const char *const c_pager = pager_get_pager(NeoMutt->sub);
+  struct HelpLine *hl = NULL;
+  int w1 = 0;
+  int w2 = 0;
+  ARRAY_FOREACH(hl, &hla_menu)
+  {
+    w1 = MAX(w1, mutt_str_len(hl->first));
+
+    if (!hl->is_macro)
+      w2 = MAX(w2, mutt_str_len(hl->second));
+  }
+
+  ARRAY_FOREACH(hl, &hla_gen)
+  {
+    w1 = MAX(w1, mutt_str_len(hl->first));
+
+    if (!hl->is_macro)
+      w2 = MAX(w2, mutt_str_len(hl->second));
+  }
+
+  const char *desc = mutt_map_get_name(menu, MenuNames);
+  fprintf(fp, _("%s bindings:"), desc);
+  fputs("\n\n", fp);
+
+  ARRAY_FOREACH(hl, &hla_menu)
+  {
+    fprintf(fp, "%*s  ", -w1, hl->first);
+
+    if (hl->is_macro)
+    {
+      if (!c_pager)
+        fputs("_\010", fp); // Ctrl-H (backspace)
+      fputs("M ", fp);
+
+      print_macro(fp, 999, &hl->second);
+      fputs("\n", fp);
+      if (hl->third)
+        fprintf(fp, "%*s    %s\n", -w1, "", hl->third);
+    }
+    else
+    {
+      fprintf(fp, "  %*s  %s\n", -w2, hl->second, hl->third);
+    }
+  }
+
+  fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
+
+  ARRAY_FOREACH(hl, &hla_gen)
+  {
+    fprintf(fp, "%*s  ", -w1, hl->first);
+
+    if (hl->is_macro)
+    {
+      if (!c_pager)
+        fputs("_\010", fp); // Ctrl-H (backspace)
+      fputs("M ", fp);
+
+      print_macro(fp, 999, &hl->second);
+      fputs("\n", fp);
+      if (hl->third)
+        fprintf(fp, "%*s    %s\n", -w1, "", hl->third);
+    }
+    else
+    {
+      fprintf(fp, "  %*s  %s\n", -w2, hl->second, hl->third);
+    }
+  }
+
+  ARRAY_FREE(&hla_menu);
+  ARRAY_FREE(&hla_gen);
 }
 
 /**
@@ -454,7 +535,7 @@ static void show_flag_if_present(FILE *fp, const struct MbTable *table, int inde
   if ((strlen(flag) < 1) || (*flag == ' '))
     return;
 
-  int cols = mutt_strwidth(flag);
+  const int cols = mutt_strwidth(flag);
 
   fprintf(fp, "    %s%*s  %s\n", flag, 4 - cols, "", desc);
 }
