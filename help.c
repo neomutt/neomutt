@@ -49,6 +49,18 @@
 #include "protos.h"
 
 /**
+ * struct HelpLine - One line of Help text
+ */
+struct HelpLine
+{
+  bool is_macro;      ///< This is a macro
+  const char *first;  ///< First  column
+  const char *second; ///< Second column
+  const char *third;  ///< Third  column
+};
+ARRAY_HEAD(HelpLineArray, struct HelpLine);
+
+/**
  * help_lookup_function - Find a keybinding for an operation
  * @param op   Operation, e.g. OP_DELETE
  * @param menu Current Menu, e.g. #MENU_PAGER
@@ -74,6 +86,17 @@ static const struct MenuFuncOp *help_lookup_function(int op, enum MenuType menu)
   }
 
   return NULL;
+}
+
+/**
+ * help_sort_alpha - Compare two Help Lines by their first entry - Implements ::sort_t - @ingroup sort_api
+ */
+static int help_sort_alpha(const void *a, const void *b, void *sdata)
+{
+  const struct HelpLine *x = (const struct HelpLine *) a;
+  const struct HelpLine *y = (const struct HelpLine *) b;
+
+  return mutt_str_cmp(x->first, y->first);
 }
 
 /**
@@ -359,19 +382,26 @@ static bool is_bound(struct KeymapList *km_list, int op)
 }
 
 /**
- * dump_unbound_menu - Write out all the operations with no key bindings
- * @param fp      File to write to
- * @param funcs   All the bindings for the current menu
- * @param km_list First key map to consider
- * @param aux     Second key map to consider
+ * dump_unbound_menu - Write the operations with no key bindings to a HelpLine Array
+ * @param[in]  funcs   All the bindings for the current menu
+ * @param[in]  km_list First key map to consider
+ * @param[in]  aux     Second key map to consider
+ * @param[out] hla     HelpLine Array
+ *
+ * The output will be in two columns: { function-name, description }
  */
-static void dump_unbound_menu(FILE *fp, const struct MenuFuncOp *funcs,
-                              struct KeymapList *km_list, struct KeymapList *aux)
+static void dump_unbound_menu(const struct MenuFuncOp *funcs, struct KeymapList *km_list,
+                              struct KeymapList *aux, struct HelpLineArray *hla)
 {
   for (int i = 0; funcs[i].name; i++)
   {
     if (!is_bound(km_list, funcs[i].op) && (!aux || !is_bound(aux, funcs[i].op)))
-      format_line(fp, 0, funcs[i].name, "", _(opcodes_get_description(funcs[i].op)));
+    {
+      struct HelpLine hl = { 0 };
+      hl.first = funcs[i].name;
+      hl.second = _(opcodes_get_description(funcs[i].op));
+      ARRAY_ADD(hla, hl);
+    }
   }
 }
 
@@ -386,11 +416,29 @@ static void dump_unbound(enum MenuType menu, FILE *fp)
 {
   fprintf(fp, "\n%s\n\n", _("Unbound functions:"));
 
+  struct HelpLineArray hla = ARRAY_HEAD_INITIALIZER;
+
   const struct MenuFuncOp *funcs = km_get_table(menu);
   if (funcs)
-    dump_unbound_menu(fp, funcs, &Keymaps[menu], NULL);
+    dump_unbound_menu(funcs, &Keymaps[menu], NULL, &hla);
+
   if ((menu != MENU_EDITOR) && (menu != MENU_PAGER) && (menu != MENU_GENERIC))
-    dump_unbound_menu(fp, OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu]);
+    dump_unbound_menu(OpGeneric, &Keymaps[MENU_GENERIC], &Keymaps[menu], &hla);
+
+  struct HelpLine *hl = NULL;
+  int w1 = 0;
+  ARRAY_FOREACH(hl, &hla)
+  {
+    w1 = MAX(w1, mutt_str_len(hl->first));
+  }
+
+  ARRAY_SORT(&hla, help_sort_alpha, NULL);
+  ARRAY_FOREACH(hl, &hla)
+  {
+    fprintf(fp, "%*s  %s\n", -w1, hl->first, hl->second);
+  }
+
+  ARRAY_FREE(&hla);
 }
 
 /**
