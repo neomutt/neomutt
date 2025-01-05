@@ -320,31 +320,34 @@ static void format_line(FILE *fp, int ismacro, const char *t1, const char *t2,
 static void dump_menu(FILE *fp, enum MenuType menu, int wraplen)
 {
   struct Keymap *map = NULL;
-  char buf[128] = { 0 };
+  struct Buffer *buf = buf_pool_get();
 
   STAILQ_FOREACH(map, &Keymaps[menu], entries)
   {
     if (map->op != OP_NULL)
     {
-      km_expand_key(buf, sizeof(buf), map);
+      buf_reset(buf);
+      km_expand_key(map, buf);
 
       if (map->op == OP_MACRO)
       {
         if (map->desc)
-          format_line(fp, 1, buf, map->macro, map->desc, wraplen);
+          format_line(fp, 1, buf_string(buf), map->macro, map->desc, wraplen);
         else
-          format_line(fp, -1, buf, "macro", map->macro, wraplen);
+          format_line(fp, -1, buf_string(buf), "macro", map->macro, wraplen);
       }
       else
       {
         const struct MenuFuncOp *funcs = help_lookup_function(map->op, menu);
-        format_line(fp, 0, buf, funcs ? funcs->name : "UNKNOWN",
+        format_line(fp, 0, buf_string(buf), funcs ? funcs->name : "UNKNOWN",
                     funcs ? _(opcodes_get_description(funcs->op)) :
                             _("ERROR: please report this bug"),
                     wraplen);
       }
     }
   }
+
+  buf_pool_release(&buf);
 }
 
 /**

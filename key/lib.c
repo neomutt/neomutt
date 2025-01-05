@@ -30,7 +30,6 @@
 #include <ctype.h>
 #include <limits.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -402,18 +401,17 @@ void generic_tokenize_push_string(char *s)
 
 /**
  * km_keyname - Get the human name for a key
- * @param c Key code
- * @retval ptr Name of the key
- *
- * @note This returns a pointer to a static buffer.
+ * @param[in]  c   Key code
+ * @param[out] buf Buffer for the result
  */
-const char *km_keyname(int c)
+void km_keyname(int c, struct Buffer *buf)
 {
-  static char buf[35];
-
-  const char *p = mutt_map_get_name(c, KeyNames);
-  if (p)
-    return p;
+  const char *name = mutt_map_get_name(c, KeyNames);
+  if (name)
+  {
+    buf_addstr(buf, name);
+    return;
+  }
 
   if ((c < 256) && (c > -128) && iscntrl((unsigned char) c))
   {
@@ -422,82 +420,58 @@ const char *km_keyname(int c)
 
     if (c < 128)
     {
-      buf[0] = '^';
-      buf[1] = (c + '@') & 0x7f;
-      buf[2] = '\0';
+      buf_addch(buf, '^');
+      buf_addch(buf, (c + '@') & 0x7f);
     }
     else
     {
-      snprintf(buf, sizeof(buf), "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
+      buf_add_printf(buf, "\\%d%d%d", c >> 6, (c >> 3) & 7, c & 7);
     }
   }
   else if ((c >= KEY_F0) && (c < KEY_F(256))) /* this maximum is just a guess */
   {
-    snprintf(buf, sizeof(buf), "<F%d>", c - KEY_F0);
+    buf_add_printf(buf, "<F%d>", c - KEY_F0);
   }
   else if ((c < 256) && (c >= -128) && IsPrint(c))
   {
-    snprintf(buf, sizeof(buf), "%c", (unsigned char) c);
+    buf_add_printf(buf, "%c", (unsigned char) c);
   }
   else
   {
-    snprintf(buf, sizeof(buf), "<%ho>", (unsigned short) c);
+    buf_add_printf(buf, "<%ho>", (unsigned short) c);
   }
-  return buf;
 }
 
 /**
  * km_expand_key - Get the key string bound to a Keymap
- * @param s   Buffer for the key string
- * @param len Length of buffer
- * @param map Keybinding map
- * @retval 1 Success
- * @retval 0 Error
+ * @param[in]  map Keybinding map
+ * @param[out] buf Buffer for the result
+ * @retval true Success
  */
-int km_expand_key(char *s, size_t len, struct Keymap *map)
+bool km_expand_key(struct Keymap *map, struct Buffer *buf)
 {
-  if (!map)
-    return 0;
+  if (!map || !buf)
+    return false;
 
-  int p = 0;
-
-  while (true)
+  for (int i = 0; i < map->len; i++)
   {
-    mutt_str_copy(s, km_keyname(map->keys[p]), len);
-    const size_t l = mutt_str_len(s);
-    len -= l;
-
-    if ((++p >= map->len) || !len)
-      return 1;
-
-    s += l;
+    km_keyname(map->keys[i], buf);
   }
 
-  /* not reached */
+  return true;
 }
 
 /**
  * km_expand_key_string - Get a human-readable key string
- * @param str    Raw key string
- * @param buf    Buffer for the key string
- * @param buflen Length of buffer
- * @retval num Length of string
+ * @param[in]  str Raw key string
+ * @param[out] buf Buffer for the key string
  */
-int km_expand_key_string(char *str, char *buf, size_t buflen)
+void km_expand_key_string(char *str, struct Buffer *buf)
 {
-  size_t len = 0;
   for (; *str; str++)
   {
-    const char *key = km_keyname(*str);
-    size_t keylen = mutt_str_len(key);
-
-    mutt_str_copy(buf, key, buflen);
-    buf += keylen;
-    buflen -= keylen;
-    len += keylen;
+    km_keyname(*str, buf);
   }
-
-  return len;
 }
 
 /**
