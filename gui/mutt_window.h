@@ -244,7 +244,7 @@ struct EventWindow
 // Functions that deal with the Window
 void               mutt_window_add_child          (struct MuttWindow *parent, struct MuttWindow *child);
 void               mutt_window_free               (struct MuttWindow **ptr);
-void               mutt_window_get_coords         (struct MuttWindow *win, int *col, int *row);
+void               mutt_window_get_coords         (struct MuttWindow *win, int *row, int *col);
 struct MuttWindow *mutt_window_new                (enum WindowType type, enum MuttWindowOrientation orient, enum MuttWindowSize size, int cols, int rows);
 void               mutt_window_reflow             (struct MuttWindow *win);
 struct MuttWindow *mutt_window_remove_child       (struct MuttWindow *parent, struct MuttWindow *child);
@@ -257,10 +257,7 @@ int  mutt_window_addstr   (struct MuttWindow *win, const char *str);
 void mutt_window_clearline(struct MuttWindow *win, int row);
 void mutt_window_clear    (struct MuttWindow *win);
 void mutt_window_clrtoeol (struct MuttWindow *win);
-int  mutt_window_move     (struct MuttWindow *win, int col, int row);
-int  mutt_window_mvaddstr (struct MuttWindow *win, int col, int row, const char *str);
-int  mutt_window_mvprintw (struct MuttWindow *win, int col, int row, const char *fmt, ...)
-                            __attribute__((__format__(__printf__, 4, 5)));
+int  mutt_window_move     (struct MuttWindow *win, int row, int col);
 int  mutt_window_printf   (struct MuttWindow *win, const char *format, ...)
                             __attribute__((__format__(__printf__, 2, 3)));
 bool mutt_window_is_visible(struct MuttWindow *win);
