@@ -16,7 +16,7 @@ msgstr ""
 "Project-Id-Version: neomutt-2024-12-12\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-01-04 09:58+0000\n"
-"PO-Revision-Date: 2024-12-05 19:29+0100\n"
+"PO-Revision-Date: 2025-01-06 18:45+0100\n"
 "Last-Translator: kbcb <gerritche@gmail.com>\n"
 "Language-Team: none\n"
 "Language: de\n"
@@ -1384,7 +1384,7 @@ msgstr "Nur inline Anhänge des content-type text/* können vorangezeigt werden"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "E-Mail zu groß für Vorschau"
 
 #: compose/preview.c:197
 msgid "Failed to move cursor!"
