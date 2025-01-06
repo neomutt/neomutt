@@ -1383,7 +1383,7 @@ msgstr "Tik inline text/* priedai gali būti rodomi"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "Laiškas per didelis peržiūrai"
 
 #: compose/preview.c:197
 msgid "Failed to move cursor!"
