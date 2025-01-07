@@ -265,10 +265,17 @@ static void dump_bound(enum MenuType menu, FILE *fp)
 
     buf_reset(macro);
     escape_macro(hl->second, macro);
-    fprintf(fp, "%s\n", buf_string(macro));
 
-    if (hl->third)
-      fprintf(fp, "%*s  %s\n\n", -w1, "", hl->third);
+    if (hl->third) // there's a description
+    {
+      // Two lines, description then macro
+      fprintf(fp, "%s\n", hl->third);
+      fprintf(fp, "%s\n\n", buf_string(macro));
+    }
+    else
+    {
+      fprintf(fp, "%s\n", buf_string(macro));
+    }
   }
   buf_pool_release(&macro);
 
