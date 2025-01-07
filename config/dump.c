@@ -139,7 +139,35 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
   if (show_name && show_value)
     fprintf(fp, "set ");
   if (show_name)
-    fprintf(fp, "%s", name);
+  {
+    if (flags & CS_DUMP_LINK_DOCS)
+    {
+      // Used to generate unique ids for the urls
+      static int seq_num = 1;
+
+      if (DTYPE(he->type) == DT_MYVAR)
+      {
+        static const char *url = "https://neomutt.org/guide/configuration#set-myvar";
+        fprintf(fp, "\033]8;id=%d;%s\a%s\033]8;;\a", seq_num++, url, name);
+      }
+      else
+      {
+        char *fragment = mutt_str_dup(name);
+        for (char *underscore = fragment; (underscore = strchr(underscore, '_')); underscore++)
+        {
+          *underscore = '-';
+        }
+
+        static const char *url = "https://neomutt.org/guide/reference";
+        fprintf(fp, "\033]8;id=%d;%s#%s\a%s\033]8;;\a", seq_num++, url, fragment, name);
+        FREE(&fragment);
+      }
+    }
+    else
+    {
+      fprintf(fp, "%s", name);
+    }
+  }
   if (show_name && show_value)
     fprintf(fp, " = ");
   if (show_value)
@@ -218,8 +246,10 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value->data[0] == '/'))
           mutt_pretty_mailbox(value->data, value->dsize);
 
+        // These values of these config options don't need quoting / escaping
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
-            (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
+            (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
+            !(flags & CS_DUMP_NO_ESCAPING))
         {
           buf_reset(tmp);
           pretty_var(value->data, tmp);
