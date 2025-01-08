@@ -207,20 +207,18 @@ msgstr "Odznačit adresy shodující se s: "
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: alias/functions.c:398
-#, fuzzy
 msgid "Rev-Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Obrácené řazení přezdívk(a), a(d)resa, (n)eřadit"
+msgstr "Obrácené řazení přezdívk(a), (j)méno, a(d)resa, (n)eřadit"
 
 #. L10N: The highlighted letters must match the "Rev-Sort" options
 #: alias/functions.c:400
-#, fuzzy
 msgid "Sort (a)lias, (n)ame, (e)mail or (u)nsorted?"
-msgstr "Řazení přezdívk(a), a(d)resa, (n)eřadit"
+msgstr "Řazení přezdívk(a), (j)méno, a(d)resa, (n)eřadit"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Rev-Sort"
 #: alias/functions.c:402
 msgid "aneu"
-msgstr ""
+msgstr "ajdn"
 
 #. L10N: ask for a limit to apply
 #: alias/gui.c:84 index/functions.c:1831
@@ -1164,7 +1162,7 @@ msgstr "-- Přílohy"
 
 #: compose/dlg_compose.c:337 compose/preview.c:140
 msgid "-- Preview"
-msgstr ""
+msgstr "-- Náhled"
 
 #: compose/functions.c:224
 msgid "There are no attachments"
@@ -1394,21 +1392,20 @@ msgstr "Uložit zprávu do odložených?"
 
 #: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
-msgstr ""
+msgstr "Pouze vložené přílohy typu text/* mohou být zobrazeny v náhledu"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "Email je příliš velký pro náhled"
 
 #: compose/preview.c:197
-#, fuzzy
 msgid "Failed to move cursor!"
-msgstr "Odesílatele nelze ověřit"
+msgstr "Selhal pohyb kurzoru!"
 
 #: compose/preview.c:221
 #, c-format
 msgid "-- Preview (%.0f%%)"
-msgstr ""
+msgstr "-- Náhled (%.0f%%)"
 
 #: config/bool.c:76
 #, c-format
@@ -2689,16 +2686,14 @@ msgstr "zobrazit přílohu jako text"
 #. L10N: Help screen description for OP_PREVIEW_PAGE_DOWN
 #. Compose Dialog: <op_preview_page_down>
 #: gui/opcodes.h:152
-#, fuzzy
 msgid "show the next page of the message"
-msgstr "přeskočit na začátek zprávy"
+msgstr "zobrazit další stránku zprávy"
 
 #. L10N: Help screen description for OP_PREVIEW_PAGE_UP
 #. Compose Dialog: <op_preview_page_up>
 #: gui/opcodes.h:155
-#, fuzzy
 msgid "show the previous page of the message"
-msgstr "přeskočit na předchozí novou nebo nepřečtenou zprávu"
+msgstr "zobrazit předchozí stránku zprávy"
 
 #. L10N: Help screen description for OP_AUTOCRYPT_ACCT_MENU
 #. Index: <op_autocrypt_acct_menu>
