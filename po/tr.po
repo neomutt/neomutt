@@ -6,14 +6,14 @@
 # Fatih Demir <kabalak@gtranslator.org>, 2001
 # Recai Oktaş <roktas@debian.org>, 2006
 # Perry Thompson <contact@ryper.org>, 2018
-# Emir SARI <emir_sari@icloud.com>, 2020-2024
+# Emir SARI <emir_sari@icloud.com>, 2020-2025
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2024-12-12\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
 "POT-Creation-Date: 2025-01-04 09:58+0000\n"
-"PO-Revision-Date: 2024-12-05 22:00+0300\n"
+"PO-Revision-Date: 2025-12-08 20:00+0300\n"
 "Last-Translator: Emir SARI <emir_sari@icloud.com>\n"
 "Language-Team: https://github.com/neomutt/neomutt\n"
 "Language: tr\n"
@@ -1380,7 +1380,7 @@ msgstr "Yalnızca text/* content-type olan satır içi ekler önizlenebilir"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "E-posta önizlemek için pek büyük"
 
 #: compose/preview.c:197
 msgid "Failed to move cursor!"
