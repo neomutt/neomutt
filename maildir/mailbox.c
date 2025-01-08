@@ -87,6 +87,11 @@ void maildir_parse_flags(struct Email *e, const char *path)
   e->replied = false;
 
   struct MaildirEmailData *edata = maildir_edata_get(e);
+  if (!edata)
+  {
+    e->edata = maildir_edata_new();
+    edata = e->edata;
+  }
 
   const char c_maildir_field_delimiter = *cc_maildir_field_delimiter();
   char *p = strrchr(path, c_maildir_field_delimiter);
