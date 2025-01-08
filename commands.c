@@ -120,6 +120,19 @@ static bool is_function(const char *name)
 }
 
 /**
+ * is_color_object - Is the argument a neomutt colour?
+ * @param name  Colour name to be searched for
+ * @retval true  Function found
+ * @retval false Function not found
+ */
+static bool is_color_object(const char *name)
+{
+  int cid = mutt_map_get_value(name, ColorFields);
+
+  return (cid > 0);
+}
+
+/**
  * parse_grouplist - Parse a group context
  * @param gl   GroupList to add to
  * @param buf  Temporary Buffer space
@@ -536,6 +549,7 @@ static enum CommandResult parse_ifdef(struct Buffer *buf, struct Buffer *s,
              || feature_enabled(buf->data)             // a compiled-in feature?
              || is_function(buf->data)                 // a function?
              || command_get(buf->data)                 // a command?
+             || is_color_object(buf->data)             // a color?
 #ifdef USE_HCACHE
              || store_is_valid_backend(buf->data) // a store? (database)
 #endif
