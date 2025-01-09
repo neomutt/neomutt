@@ -1,3 +1,29 @@
+2025-01-09  Richard Russon  \<rich@flatcap.org\>
+* Bug Fixes
+  - #4477 fix crash in folder-hook
+  - #4480 fix memory leak in compose message preview (fixes #4478)
+  - #4483 query: fix comma-separated names
+  - #4485 lua: fix `lua_mutt_call()`
+  - #4490 notmuch: refresh the Email if the filename changes
+  - fix: no new mail message
+  - fix display of certificate fingerprints
+  - fix prompt colour
+* Translations
+  - 100% Czech
+  - 100% German
+  - 100% Lithuanian
+  - 100% Serbian
+  - 100% Slovakian
+  - 100% Turkish
+  - 91% French
+  - 41% Chinese (Traditional)
+* Build
+  - #4479 Fix DT_NUMBER entries on 32-bit endian platforms
+* Code
+  - #4481 Simplify `mutt_file_fopen()`
+  - colour refactoring
+  - standardise variable names for temporary files
+
 2024-12-12  Richard Russon  \<rich@flatcap.org\>
 * Features
   - #4437 show message preview in compose view

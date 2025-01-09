@@ -69,12 +69,12 @@ extern unsigned char configure_options[];
 
 /// CLI Version: Authors' copyrights
 static const char *Copyright =
-    "Copyright (C) 2015-2024 Richard Russon <rich@flatcap.org>\n"
-    "Copyright (C) 2016-2023 Pietro Cerutti <gahr@gahr.ch>\n"
+    "Copyright (C) 2015-2025 Richard Russon <rich@flatcap.org>\n"
+    "Copyright (C) 2016-2025 Pietro Cerutti <gahr@gahr.ch>\n"
     "Copyright (C) 2017-2019 Mehdi Abaakouk <sileht@sileht.net>\n"
     "Copyright (C) 2018-2020 Federico Kircheis <federico.kircheis@gmail.com>\n"
     "Copyright (C) 2017-2022 Austin Ray <austin@austinray.io>\n"
-    "Copyright (C) 2023-2024 Dennis Schön <mail@dennis-schoen.de>\n"
+    "Copyright (C) 2023-2025 Dennis Schön <mail@dennis-schoen.de>\n"
     "Copyright (C) 2016-2017 Damien Riegel <damien.riegel@gmail.com>\n"
     "Copyright (C) 2023      Rayford Shireman\n"
     "Copyright (C) 2021-2023 David Purton <dcpurton@marshwiggle.net>\n"
@@ -109,7 +109,7 @@ static const char *ReachingUs = N_("To learn more about NeoMutt, visit: https://
 // clang-format off
 /// CLI Version: Warranty notice
 static const char *Notice =
-    N_("Copyright (C) 2015-2024 Richard Russon and friends\n"
+    N_("Copyright (C) 2015-2025 Richard Russon and friends\n"
        "NeoMutt comes with ABSOLUTELY NO WARRANTY; for details type 'neomutt -vv'.\n"
        "NeoMutt is free software, and you are welcome to redistribute it\n"
        "under certain conditions; type 'neomutt -vv' for details.\n");
