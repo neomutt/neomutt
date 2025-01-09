@@ -245,7 +245,8 @@ int mw_enter_fname(const char *prompt, struct Buffer *fname, bool mailbox,
 
   struct Buffer *text = buf_pool_get();
   const struct AttrColor *ac_normal = simple_color_get(MT_COLOR_NORMAL);
-  const struct AttrColor *ac_prompt = simple_color_get(MT_COLOR_PROMPT);
+  const struct AttrColor *ac_prompt = merged_color_overlay(ac_normal,
+                                                           simple_color_get(MT_COLOR_PROMPT));
 
   msgwin_add_text(win, prompt, ac_prompt);
   msgwin_add_text(win, _(" ('?' for list): "), ac_prompt);
