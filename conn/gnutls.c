@@ -527,6 +527,7 @@ static int tls_check_one_certificate(const gnutls_datum_t *certdata,
   mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf_string(fpbuf));
   ARRAY_ADD(&carr, line);
 
+  buf_reset(fpbuf);
   tls_fingerprint(GNUTLS_DIG_SHA256, fpbuf, certdata);
   fpbuf->data[39] = '\0'; // Divide into two lines of output
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf_string(fpbuf));

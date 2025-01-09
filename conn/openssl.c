@@ -916,6 +916,8 @@ static bool interactive_check_cert(X509 *cert, int idx, size_t len, SSL *ssl, bo
   x509_fingerprint(buf, cert, EVP_sha1);
   mutt_str_asprintf(&line, _("SHA1 Fingerprint: %s"), buf_string(buf));
   ARRAY_ADD(&carr, line);
+
+  buf_reset(buf);
   x509_fingerprint(buf, cert, EVP_sha256);
   buf->data[39] = '\0'; /* Divide into two lines of output */
   mutt_str_asprintf(&line, "%s%s", _("SHA256 Fingerprint: "), buf_string(buf));
