@@ -257,8 +257,8 @@ configuration file.
 \fBcolor\fP { header | body } [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIregex\fP
 \fBcolor\fP status \fIforeground\fP \fIbackground\fP [\fIregex\fP [ \fInum\fP ]]
 \fBcolor\fP index-object [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP \fIpattern\fP
-\fBcolor\fP compose \fIcomposeobject\fP \fIforeground\fP \fIbackground\fP
-\fBcolor\fP compose \fIcomposeobject\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
+\fBcolor\fP \fIcompose-object\fP \fIforeground\fP \fIbackground\fP
+\fBcolor\fP \fIcompose-object\fP [ \fIattribute\fP ... ] \fIforeground\fP \fIbackground\fP
 \fBuncolor\fP { index-object | header | body } { \fB*\fP | \fIpattern\fP ... }
 .fi
 .IP
@@ -323,9 +323,9 @@ The \fBstatus\fP object optionally takes an regex and a match number.  If the
 regex is given, only the matching parts are colored.  If additionally the match
 number is given, only that sub-match of the regex is colored.
 .IP
-Valid composeobjects include
-.BR header ", " security_encrypt ", " security_sign ", "
-.BR security_both ", " security_none .
+Valid compose-objects include
+.BR compose_header ", " compose_security_encrypt ", " compose_security_sign ", "
+.BR compose_security_both ", " compose_security_none .
 .IP
 Valid colors include:
 .BR default ", "

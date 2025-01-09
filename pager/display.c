@@ -614,7 +614,7 @@ static void resolve_types(struct MuttWindow *win, char *buf, char *raw,
                                               pmatch[0].rm_eo - pmatch[0].rm_so,
                                               force_redraw, q_level);
     }
-    lines[line_num].cid = MT_COLOR_QUOTED;
+    lines[line_num].cid = MT_COLOR_QUOTED0;
   }
   else
   {
