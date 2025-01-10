@@ -15142,7 +15142,7 @@ set header_cache_compress_method = ""
           Tino Reichardt
         </para>
       </sect2>
-  </sect1>
+    </sect1>
 
     <sect1 id="ifdef">
       <title>Ifdef Feature</title>
@@ -15206,6 +15206,12 @@ finish                                    <emphasis role="comment"># Finish read
                 <literal>index-format-hook</literal>,
                 <literal>tag-transforms</literal></entry>
                 <entry>Command</entry>
+              </row>
+              <row>
+                <entry>
+                <literal>indicator</literal>,
+                <literal>sidebar_new</literal></entry>
+                <entry>Colour</entry>
               </row>
               <row>
                 <entry>
