@@ -181,6 +181,8 @@ static void draw_preview(struct MuttWindow *win, struct PreviewWindowData *wdata
 
       content_lines++;
 
+      line = mutt_str_expand_tabs(line, &line_len, 8);
+
       // Check how much of the string fits into the window width.
       size_t width = 0;
       size_t bytes = mutt_wstr_trunc(&line[pos], line_len - pos, win->state.cols, &width);

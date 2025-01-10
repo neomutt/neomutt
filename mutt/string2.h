@@ -70,6 +70,7 @@ char *      mutt_str_skip_email_wsp(const char *s);
 char *      mutt_str_skip_whitespace(const char *p);
 const char *mutt_str_sysexit(int e);
 char *      mutt_str_upper(char *str);
+char *      mutt_str_expand_tabs(char *str, size_t *len, int tabwidth);
 
 /* case-sensitive flavours */
 int         mutt_str_cmp(const char *a, const char *b);
