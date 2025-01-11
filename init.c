@@ -400,12 +400,24 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
   }
 
   /* "$mailcap_path" precedence: config file, environment, code */
+  struct Buffer *mc = buf_pool_get();
+  struct Slist *sl_mc = NULL;
   const char *env_mc = mutt_str_getenv("MAILCAPS");
   if (env_mc)
   {
-    cs_str_initial_set(cs, "mailcap_path", env_mc, NULL);
-    cs_str_reset(cs, "mailcap_path", NULL);
+    sl_mc = slist_parse(env_mc, D_SLIST_SEP_COLON);
   }
+  else
+  {
+    cs_str_initial_get(cs, "mailcap_path", mc);
+    sl_mc = slist_parse(buf_string(mc), D_SLIST_SEP_COLON);
+    buf_reset(mc);
+  }
+  slist_to_buffer(sl_mc, mc);
+  cs_str_initial_set(cs, "mailcap_path", buf_string(mc), NULL);
+  cs_str_reset(cs, "mailcap_path", NULL);
+  slist_free(&sl_mc);
+  buf_pool_release(&mc);
 
   /* "$tmp_dir" precedence: config file, environment, code */
   const char *env_tmp = mutt_str_getenv("TMPDIR");
@@ -502,9 +514,14 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
     }
   }
 
-  if (!STAILQ_EMPTY(&Muttrc))
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &Muttrc, entries)
   {
-    cs_str_string_set(cs, "alias_file", STAILQ_FIRST(&Muttrc)->data, NULL);
+    if (np->data && !mutt_str_equal(np->data, "/dev/null"))
+    {
+      cs_str_string_set(cs, "alias_file", np->data, NULL);
+      break;
+    }
   }
 
   /* Process the global rc file if it exists and the user hasn't explicitly
@@ -542,7 +559,6 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
   }
 
   /* Read the user's initialization file.  */
-  struct ListNode *np = NULL;
   STAILQ_FOREACH(np, &Muttrc, entries)
   {
     if (np->data)
