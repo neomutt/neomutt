@@ -266,8 +266,16 @@ struct HashElem *cs_register_variable(const struct ConfigSet *cs,
   if (!he)
     return NULL; /* LCOV_EXCL_LINE */
 
+  // Temporarily disable the validator
+  // (trust that the hard-coded initial values are sane)
+  int (*validator)(const struct ConfigSet *cs, const struct ConfigDef *cdef,
+                   intptr_t value, struct Buffer *err) = cdef->validator;
+  cdef->validator = NULL;
+
   if (cst->reset)
     cst->reset(cs, &cdef->var, cdef, err);
+
+  cdef->validator = validator;
 
   return he;
 }
