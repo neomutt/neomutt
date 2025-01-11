@@ -1316,7 +1316,7 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
     if (flags & MUTT_PAGER_STRIPES)
     {
       const enum ColorId cid = ((line_num % 2) == 0) ? MT_COLOR_STRIPE_ODD : MT_COLOR_STRIPE_EVEN;
-      mutt_curses_set_color_by_id(cid);
+      mutt_curses_set_normal_backed_color_by_id(cid);
     }
     else
     {
