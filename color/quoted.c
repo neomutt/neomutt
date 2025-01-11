@@ -27,16 +27,10 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "mutt/lib.h"
-#include "core/lib.h"
 #include "quoted.h"
-#include "attr.h"
 #include "color.h"
-#include "command2.h"
-#include "curses2.h"
-#include "debug.h"
 #include "notify2.h"
 #include "simple2.h"
 

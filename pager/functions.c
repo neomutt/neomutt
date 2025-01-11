@@ -979,7 +979,7 @@ static int op_exit(struct IndexSharedData *shared, struct PagerPrivateData *priv
 }
 
 /**
- * op_help - This screen - Implements ::pager_function_t - @ingroup pager_function_api
+ * op_help - Help screen - Implements ::pager_function_t - @ingroup pager_function_api
  */
 static int op_help(struct IndexSharedData *shared, struct PagerPrivateData *priv, int op)
 {

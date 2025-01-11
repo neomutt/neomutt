@@ -481,7 +481,7 @@ static void match_body_patterns(char *pat, struct Line *lines, int line_num)
 
 /**
  * color_is_header - Colour is for an Email header
- * @param cid Colour Id, e.g. #MT_COLOR_HEADER
+ * @param cid Colour ID, e.g. #MT_COLOR_HEADER
  * @retval true Colour is for an Email header
  */
 bool color_is_header(enum ColorId cid)

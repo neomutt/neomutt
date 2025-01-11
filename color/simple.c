@@ -87,7 +87,7 @@ void simple_colors_cleanup(void)
 
 /**
  * simple_color_get - Get the colour of an object by its ID
- * @param cid Colour Id, e.g. #MT_COLOR_SEARCH
+ * @param cid Colour ID, e.g. #MT_COLOR_SEARCH
  * @retval ptr AttrColor of the object
  *
  * @note Do not free the returned object
@@ -110,7 +110,7 @@ struct AttrColor *simple_color_get(enum ColorId cid)
 
 /**
  * simple_color_is_set - Is the object coloured?
- * @param cid Colour Id, e.g. #MT_COLOR_SEARCH
+ * @param cid Colour ID, e.g. #MT_COLOR_SEARCH
  * @retval true Yes, a 'color' command has been used on this object
  */
 bool simple_color_is_set(enum ColorId cid)
@@ -120,7 +120,7 @@ bool simple_color_is_set(enum ColorId cid)
 
 /**
  * simple_color_set - Set the colour of a simple object
- * @param cid    Colour Id, e.g. #MT_COLOR_SEARCH
+ * @param cid    Colour ID, e.g. #MT_COLOR_SEARCH
  * @param ac_val Colour value to use
  * @retval ptr Colour
  */
@@ -145,7 +145,7 @@ struct AttrColor *simple_color_set(enum ColorId cid, struct AttrColor *ac_val)
 
 /**
  * simple_color_reset - Clear the colour of a simple object
- * @param cid Colour Id, e.g. #MT_COLOR_SEARCH
+ * @param cid Colour ID, e.g. #MT_COLOR_SEARCH
  */
 void simple_color_reset(enum ColorId cid)
 {

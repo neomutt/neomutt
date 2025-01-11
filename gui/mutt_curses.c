@@ -54,8 +54,8 @@ void mutt_curses_set_color(const struct AttrColor *ac)
 }
 
 /**
- * mutt_curses_set_normal_backed_color_by_id - Set the colour and attributes by the colour id
- * @param cid Colour Id, e.g. #MT_COLOR_WARNING
+ * mutt_curses_set_normal_backed_color_by_id - Set the colour and attributes by the Colour ID
+ * @param cid Colour ID, e.g. #MT_COLOR_WARNING
  * @retval ptr Colour set
  *
  * @note Colour will be merged over #MT_COLOR_NORMAL
@@ -72,8 +72,8 @@ const struct AttrColor *mutt_curses_set_normal_backed_color_by_id(enum ColorId c
 }
 
 /**
- * mutt_curses_set_color_by_id - Set the colour and attributes by the colour id
- * @param cid Colour Id, e.g. #MT_COLOR_TREE
+ * mutt_curses_set_color_by_id - Set the colour and attributes by the Colour ID
+ * @param cid Colour ID, e.g. #MT_COLOR_TREE
  * @retval ptr Colour set
  */
 const struct AttrColor *mutt_curses_set_color_by_id(enum ColorId cid)

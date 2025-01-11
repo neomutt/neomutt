@@ -23,13 +23,7 @@
 #ifndef MUTT_COLOR_QUOTED_H
 #define MUTT_COLOR_QUOTED_H
 
-#include "config.h"
-#include <stdbool.h>
-#include "core/lib.h"
-#include "attr.h"
 #include "color.h"
-
-struct Buffer;
 
 #define COLOR_QUOTED(cid) (((cid) >= MT_COLOR_QUOTED0) && ((cid) <= MT_COLOR_QUOTED9))
 

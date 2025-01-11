@@ -183,8 +183,8 @@ void regex_color_list_clear(struct RegexColorList *rcl)
 }
 
 /**
- * regex_colors_get_list - Return the RegexColorList for a colour id
- * @param cid Colour Id, e.g. #MT_COLOR_BODY
+ * regex_colors_get_list - Return the RegexColorList for a Colour ID
+ * @param cid Colour ID, e.g. #MT_COLOR_BODY
  * @retval ptr RegexColorList
  */
 struct RegexColorList *regex_colors_get_list(enum ColorId cid)
@@ -310,7 +310,7 @@ static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
 
 /**
  * regex_colors_parse_color_list - Parse a Regex 'color' command
- * @param cid     Colour Id, should be #MT_COLOR_STATUS
+ * @param cid     Colour ID, should be #MT_COLOR_STATUS
  * @param pat     Regex pattern
  * @param ac      Colour value to use
  * @param rc      Return code, e.g. #MUTT_CMD_SUCCESS
@@ -403,7 +403,7 @@ int regex_colors_parse_status_list(enum ColorId cid, const char *pat,
 
 /**
  * regex_colors_parse_uncolor - Parse a Regex 'uncolor' command
- * @param cid     Colour Id, e.g. #MT_COLOR_STATUS
+ * @param cid     Colour ID, e.g. #MT_COLOR_STATUS
  * @param pat     Pattern to remove (NULL to remove all)
  * @param uncolor true if 'uncolor', false if 'unmono'
  * @retval true If colours were unset

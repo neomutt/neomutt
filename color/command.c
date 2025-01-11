@@ -121,7 +121,7 @@ const struct Mapping ColorFields[] = {
 };
 
 /**
- * get_colorid_name - Get the name of a color id
+ * get_colorid_name - Get the name of a Colour ID
  * @param cid Colour, e.g. #MT_COLOR_HEADER
  * @param buf Buffer for result
  */
