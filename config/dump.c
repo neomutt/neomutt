@@ -247,7 +247,7 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
         if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value->data[0] == '/'))
           mutt_pretty_mailbox(value->data, value->dsize);
 
-        // These values of these config options don't need quoting / escaping
+        // Quote/escape the values of config options NOT of these types
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
             (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
             !(flags & CS_DUMP_NO_ESCAPING))
@@ -268,11 +268,13 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
           break;          /* LCOV_EXCL_LINE */
         }
 
-        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && !(he->type & D_STRING_MAILBOX))
+        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (initial->data[0] == '/'))
           mutt_pretty_mailbox(initial->data, initial->dsize);
 
+        // Quote/escape the values of config options NOT of these types
         if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
-            (type != DT_QUAD) && !(flags & CS_DUMP_NO_ESCAPING))
+            (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
+            !(flags & CS_DUMP_NO_ESCAPING))
         {
           buf_reset(tmp);
           pretty_var(initial->data, tmp);
