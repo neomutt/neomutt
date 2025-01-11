@@ -433,6 +433,19 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
   mutt_ch_set_charset(charset);
   FREE(&charset);
 
+  char name[256] = { 0 };
+  const char *c_real_name = cs_subset_string(NeoMutt->sub, "real_name");
+  if (!c_real_name)
+  {
+    struct passwd *pw = getpwuid(getuid());
+    if (pw)
+    {
+      c_real_name = mutt_gecos_name(name, sizeof(name), pw);
+    }
+  }
+  cs_str_initial_set(cs, "real_name", c_real_name, NULL);
+  cs_str_reset(cs, "real_name", NULL);
+
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
@@ -547,19 +560,6 @@ int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
 
   if (!get_hostname(cs))
     goto done;
-
-  char name[256] = { 0 };
-  const char *c_real_name = cs_subset_string(NeoMutt->sub, "real_name");
-  if (!c_real_name)
-  {
-    struct passwd *pw = getpwuid(getuid());
-    if (pw)
-    {
-      c_real_name = mutt_gecos_name(name, sizeof(name), pw);
-    }
-  }
-  cs_str_initial_set(cs, "real_name", c_real_name, NULL);
-  cs_str_reset(cs, "real_name", NULL);
 
   /* The command line overrides the config */
   if (dlevel)
