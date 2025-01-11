@@ -279,6 +279,21 @@ static void dump_bound(enum MenuType menu, FILE *fp)
   }
   buf_pool_release(&macro);
 
+  ARRAY_FOREACH(hl, &hla_gen)
+  {
+    FREE(&hl->first);
+  }
+
+  ARRAY_FOREACH(hl, &hla_menu)
+  {
+    FREE(&hl->first);
+  }
+
+  ARRAY_FOREACH(hl, &hla_macro)
+  {
+    FREE(&hl->first);
+  }
+
   ARRAY_FREE(&hla_gen);
   ARRAY_FREE(&hla_macro);
   ARRAY_FREE(&hla_menu);
