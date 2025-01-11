@@ -249,35 +249,40 @@ static void dump_bound(enum MenuType menu, FILE *fp)
     fprintf(fp, "%*s  %s\n", -w2, hl->second, hl->third);
   }
 
-  fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
-
-  ARRAY_FOREACH(hl, &hla_gen)
+  if (!ARRAY_EMPTY(&hla_gen))
   {
-    fprintf(fp, "%*s  ", -w1, hl->first);
-    fprintf(fp, "%*s  %s\n", -w2, hl->second, hl->third);
-  }
-
-  fprintf(fp, "\n%s\n\n", _("macros:"));
-  struct Buffer *macro = buf_pool_get();
-  ARRAY_FOREACH(hl, &hla_macro)
-  {
-    fprintf(fp, "%*s  ", -w1, hl->first);
-
-    buf_reset(macro);
-    escape_macro(hl->second, macro);
-
-    if (hl->third) // there's a description
+    fprintf(fp, "\n%s\n\n", _("Generic bindings:"));
+    ARRAY_FOREACH(hl, &hla_gen)
     {
-      // Two lines, description then macro
-      fprintf(fp, "%s\n", hl->third);
-      fprintf(fp, "%s\n\n", buf_string(macro));
-    }
-    else
-    {
-      fprintf(fp, "%s\n", buf_string(macro));
+      fprintf(fp, "%*s  ", -w1, hl->first);
+      fprintf(fp, "%*s  %s\n", -w2, hl->second, hl->third);
     }
   }
-  buf_pool_release(&macro);
+
+  if (!ARRAY_EMPTY(&hla_macro))
+  {
+    fprintf(fp, "\n%s\n\n", _("macros:"));
+    struct Buffer *macro = buf_pool_get();
+    ARRAY_FOREACH(hl, &hla_macro)
+    {
+      fprintf(fp, "%*s  ", -w1, hl->first);
+
+      buf_reset(macro);
+      escape_macro(hl->second, macro);
+
+      if (hl->third) // there's a description
+      {
+        // Two lines, description then macro
+        fprintf(fp, "%s\n", hl->third);
+        fprintf(fp, "%s\n\n", buf_string(macro));
+      }
+      else
+      {
+        fprintf(fp, "%s\n", buf_string(macro));
+      }
+    }
+    buf_pool_release(&macro);
+  }
 
   ARRAY_FOREACH(hl, &hla_gen)
   {
