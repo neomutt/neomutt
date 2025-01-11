@@ -1089,7 +1089,7 @@ static enum CommandResult parse_source(struct Buffer *buf, struct Buffer *s,
 
   do
   {
-    if (parse_extract_token(buf, s, TOKEN_NO_FLAGS) != 0)
+    if (parse_extract_token(buf, s, TOKEN_BACKTICK_VARS) != 0)
     {
       buf_printf(err, _("source: error at %s"), s->dptr);
       buf_pool_release(&path);
