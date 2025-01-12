@@ -2035,6 +2035,7 @@ int smime_gpgme_decrypt_mime(FILE *fp_in, FILE **fp_out, struct Body *b, struct 
   if (!*fp_out)
   {
     mutt_perror(_("Can't create temporary file"));
+    mutt_file_fclose(&fp_tmp);
     return -1;
   }
 

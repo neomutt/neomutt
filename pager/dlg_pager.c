@@ -470,7 +470,6 @@ int dlg_pager(struct PagerView *pview)
 
       /* note: mutt_resize_screen() -> mutt_window_reflow() sets
        * PAGER_REDRAW_PAGER and PAGER_REDRAW_FLOW */
-      op = OP_NULL;
       continue;
     }
 
@@ -506,10 +505,7 @@ int dlg_pager(struct PagerView *pview)
     mutt_debug(LL_DEBUG1, "Got op %s (%d)\n", opcodes_get_name(op), op);
 
     if (op < OP_NULL)
-    {
-      op = OP_NULL;
       continue;
-    }
 
     if (op == OP_NULL)
     {

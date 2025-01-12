@@ -122,8 +122,9 @@ static int tunnel_socket_open(struct Connection *conn)
   if ((close(pin[1]) < 0) || (close(pout[0]) < 0))
     mutt_perror("close");
 
-  fcntl(pin[0], F_SETFD, FD_CLOEXEC);
-  fcntl(pout[1], F_SETFD, FD_CLOEXEC);
+  // These are unlikely to fail
+  (void) fcntl(pin[0], F_SETFD, FD_CLOEXEC);
+  (void) fcntl(pout[1], F_SETFD, FD_CLOEXEC);
 
   tunnel->fd_read = pin[0];
   tunnel->fd_write = pout[1];

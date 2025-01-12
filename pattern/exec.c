@@ -177,6 +177,7 @@ static bool msg_search(struct Pattern *pat, struct Email *e, struct Message *msg
 #ifdef USE_FMEMOPEN
         FREE(&temp);
 #endif
+        mutt_file_fclose(&state.fp_out);
         return false;
       }
       mutt_body_handler(e->body, &state);

@@ -1190,6 +1190,7 @@ int mutt_smtp_send(const struct AddressList *from, const struct AddressList *to,
 
   mutt_socket_close(adata.conn);
   FREE(&adata.conn);
+  FREE(&adata.auth_mechs);
 
   if (rc == SMTP_ERR_READ)
     mutt_error(_("SMTP session failed: read error"));
