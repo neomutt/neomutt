@@ -282,3 +282,33 @@ set imap_oauth_refresh_command="/path/to/script/mutt_oauth2.py ${imap_user}.toke
 set smtp_authenticators=${imap_authenticators}
 set smtp_oauth_refresh_command=${imap_oauth_refresh_command}
 ```
+
+## Using the script for scripting
+
+Most clients such as neomutt, msmtp, mbsync know how to use an OAUTH access
+token. For those which do not, or for scripting with openssl etc, the script can
+output a complete base64 encoded SASL string (with `--format sasl`) instead of
+the plain access token:
+
+```sh
+  --format {token,sasl,msasl}
+                        output format: token - plain access token (default);
+                        sasl - base64 encoded SASL token string for the
+                        specified protocol [--protocol] and user [--email];
+                        msasl - like sasl, preceeded with the SASL method
+```
+
+With `--format msasl`, the string is prefixed with the method (XOAUTH2 or
+OAUTHBEARER) so that it can be used as is with `. AUTHENTICATE` in a direct
+connection. Note that the string depends on the user and (for OAUTHBEARER) on
+the port. They default to the user as registered resp. imap (993) but can be
+specified explicitly:
+
+```sh
+  --protocol {imap,pop,smtp}
+                        protocol used for SASL output (default: imap)
+  --email EMAIL         Your email address.
+```
+
+In particular, you would specify another user with `--email` if you want to
+access that user's shared mailbox with your credentials as registered.
