@@ -1447,13 +1447,14 @@ msgstr "Message écrit"
 msgid "Save (postpone) draft message?"
 msgstr "Voulez-vous enregistrer (ajourner) ce brouillon ?"
 
+# TODO: Consider using « aperçu »
 #: compose/preview.c:145
 msgid "Only inline attachments with content-type text/* can be previewed"
 msgstr "Seules des pièces jointes intégrées de type 'text/*' peuvent être prévisualisées"
 
 #: compose/preview.c:153
 msgid "Email too large to preview"
-msgstr ""
+msgstr "Message trop volumineux pour en afficher l'aperçu"
 
 #: compose/preview.c:197
 msgid "Failed to move cursor!"
@@ -7518,7 +7519,7 @@ msgstr "Newsgroup %s a été supprimé du serveur"
 #: notmuch/config.c:65
 #, c-format
 msgid "nm_default_url must be: notmuch://<absolute path> . Current: %s"
-msgstr ""
+msgstr "nm_default_url doit correspond à : notmuch://<chemin absolu> . Actuellement : %s"
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
@@ -8153,6 +8154,7 @@ msgstr "messages non référencés"
 msgid "broken threads"
 msgstr "Pas d'autres discussions"
 
+# TODO: Should "STRING" be translated here?
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:188
 msgid "IMAP custom server-side search for STRING"
