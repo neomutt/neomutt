@@ -319,7 +319,6 @@ struct MuttWindow *progress_window_new(size_t size, size_t size_inc,
                                            MUTT_WIN_SIZE_UNLIMITED, 1);
   win->recalc = progress_window_recalc;
   win->repaint = progress_window_repaint;
-  win->actions |= WA_RECALC;
 
   struct ProgressWindowData *wdata = progress_wdata_new();
   wdata->win = win;

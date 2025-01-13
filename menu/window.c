@@ -149,7 +149,6 @@ struct MuttWindow *menu_window_new(enum MenuType type, struct ConfigSubset *sub)
   win->repaint = menu_repaint;
   win->wdata = menu;
   win->wdata_free = menu_wdata_free;
-  win->actions |= WA_RECALC;
 
   return win;
 }

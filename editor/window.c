@@ -297,7 +297,6 @@ int mw_get_field(const char *prompt, struct Buffer *buf, CompletionFlags complet
 
   win->wdata = &wdata;
   win->wdata_free = NULL; // No need, we hold the data
-  win->actions |= WA_RECALC;
   win->recalc = enter_recalc;
   win->repaint = enter_repaint;
   win->recursor = enter_recursor;

@@ -192,6 +192,9 @@ struct MuttWindow *mutt_window_new(enum WindowType type, enum MuttWindowOrientat
   win->state.visible = true;
   win->notify = notify_new();
   TAILQ_INIT(&win->children);
+
+  win->actions |= WA_RECALC | WA_REPAINT;
+
   return win;
 }
 
