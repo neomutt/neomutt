@@ -115,11 +115,16 @@ static void curses_segv_handler(int sig)
   dump_graphviz("segfault", NULL);
 #endif
 
+  // Chain the old SEGV handler, it could have been set by ASAN
+  if (OldSegvHandler)
+    OldSegvHandler(sig);
+
   struct sigaction act = { 0 };
   sigemptyset(&act.sa_mask);
   act.sa_flags = 0;
   act.sa_handler = SIG_DFL;
   sigaction(sig, &act, NULL);
+
   // Re-raise the signal to give outside handlers a chance to deal with it
   raise(sig);
 }
