@@ -912,7 +912,7 @@ int mutt_save_message(struct Mailbox *m, struct EmailArray *ea,
   mutt_file_resolve_symlink(buf);
   m_save = mx_path_resolve(buf_string(buf));
   bool old_append = m_save->append;
-  OpenMailboxFlags mbox_flags = MUTT_NEWFOLDER;
+  OpenMailboxFlags mbox_flags = MUTT_APPEND;
   /* Display a tagged message progress counter, rather than (for
    * IMAP) a per-message progress counter */
   if (msg_count > 1)

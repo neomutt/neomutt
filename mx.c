@@ -196,7 +196,7 @@ static bool mx_open_mailbox_append(struct Mailbox *m, OpenMailboxFlags flags)
 
     if (m->type == MUTT_UNKNOWN)
     {
-      if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
+      if (flags & MUTT_APPEND)
       {
         m->type = MUTT_MAILBOX_ERROR;
       }
@@ -290,7 +290,7 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   if (!m)
     return false;
 
-  if ((m->type == MUTT_UNKNOWN) && (flags & (MUTT_NEWFOLDER | MUTT_APPEND)))
+  if ((m->type == MUTT_UNKNOWN) && (flags & MUTT_APPEND))
   {
     m->type = cs_subset_enum(NeoMutt->sub, "mbox_type");
     m->mx_ops = mx_get_ops(m->type);
@@ -309,7 +309,7 @@ bool mx_mbox_open(struct Mailbox *m, OpenMailboxFlags flags)
   m->readonly = (flags & MUTT_READONLY);
   m->peekonly = (flags & MUTT_PEEK);
 
-  if (flags & (MUTT_APPEND | MUTT_NEWFOLDER))
+  if (flags & MUTT_APPEND)
   {
     if (!mx_open_mailbox_append(m, flags))
     {
