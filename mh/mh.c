@@ -824,7 +824,7 @@ static enum MxOpenReturns mh_mbox_open(struct Mailbox *m)
  */
 static bool mh_mbox_open_append(struct Mailbox *m, OpenMailboxFlags flags)
 {
-  if (!(flags & (MUTT_APPENDNEW | MUTT_NEWFOLDER)))
+  if (!(flags & MUTT_APPENDNEW))
     return true;
 
   if (mutt_file_mkdir(mailbox_path(m), S_IRWXU))

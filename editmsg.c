@@ -72,7 +72,7 @@ static int ev_message(enum EvMessage action, struct Mailbox *m, struct Email *e)
   cs_subset_str_native_set(NeoMutt->sub, "mbox_type", MUTT_MBOX, NULL);
 
   struct Mailbox *m_fname = mx_path_resolve(buf_string(fname));
-  if (!mx_mbox_open(m_fname, MUTT_NEWFOLDER))
+  if (!mx_mbox_open(m_fname, MUTT_APPEND))
   {
     mutt_error(_("could not create temporary folder: %s"), strerror(errno));
     buf_pool_release(&fname);

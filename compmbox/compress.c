@@ -462,8 +462,6 @@ cmo_fail:
 /**
  * comp_mbox_open_append - Open a Mailbox for appending - Implements MxOps::mbox_open_append() - @ingroup mx_mbox_open_append
  *
- * flags may also contain #MUTT_NEWFOLDER
- *
  * To append to a compressed mailbox we need an append-hook (or both open- and
  * close-hooks).
  */
