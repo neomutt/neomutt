@@ -1,4 +1,4 @@
-2025-01-09  Richard Russon  \<rich@flatcap.org\>
+2025-01-13  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
   - #4477 fix crash in folder-hook
   - #4480 fix memory leak in compose message preview (fixes #4478)
@@ -23,6 +23,9 @@
   - #4481 Simplify `mutt_file_fopen()`
   - colour refactoring
   - standardise variable names for temporary files
+
+2025-01-09  Richard Russon  \<rich@flatcap.org\>
+* BROKEN - Please use 2025-01-13 instead
 
 2024-12-12  Richard Russon  \<rich@flatcap.org\>
 * Features
