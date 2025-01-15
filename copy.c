@@ -425,6 +425,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
                      CopyHeaderFlags chflags, const char *prefix, int wraplen)
 {
   char *temp_hdr = NULL;
+  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
 
   if (e->env)
   {
@@ -451,7 +452,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     fputc('\n', fp_out);
   }
 
-  if ((chflags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&e->env->in_reply_to))
+  if ((chflags & CH_UPDATE_IRT) && !STAILQ_EMPTY(&e->env->in_reply_to) &&
+      !(c_weed && mutt_matches_ignore("In-Reply-To")))
   {
     fputs("In-Reply-To:", fp_out);
     struct ListNode *np = NULL;
@@ -463,7 +465,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     fputc('\n', fp_out);
   }
 
-  if ((chflags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&e->env->references))
+  if ((chflags & CH_UPDATE_REFS) && !STAILQ_EMPTY(&e->env->references) &&
+      !(c_weed && mutt_matches_ignore("References")))
   {
     fputs("References:", fp_out);
     mutt_write_references(&e->env->references, fp_out, 0);
@@ -472,7 +475,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
 
   if ((chflags & CH_UPDATE) && ((chflags & CH_NOSTATUS) == 0))
   {
-    if (e->old || e->read)
+    if ((e->old || e->read) && !(c_weed && mutt_matches_ignore("Status")))
     {
       fputs("Status: ", fp_out);
       if (e->read)
@@ -482,7 +485,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       fputc('\n', fp_out);
     }
 
-    if (e->flagged || e->replied)
+    if ((e->flagged || e->replied) && !(c_weed && mutt_matches_ignore("X-Status")))
     {
       fputs("X-Status: ", fp_out);
       if (e->replied)
@@ -493,20 +496,20 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
     }
   }
 
-  if (chflags & CH_UPDATE_LEN && ((chflags & CH_NOLEN) == 0))
+  if (chflags & CH_UPDATE_LEN && ((chflags & CH_NOLEN) == 0) &&
+      !(c_weed && mutt_matches_ignore("Content-Length")))
   {
     fprintf(fp_out, "Content-Length: " OFF_T_FMT "\n", e->body->length);
     if ((e->lines != 0) || (e->body->length == 0))
       fprintf(fp_out, "Lines: %d\n", e->lines);
   }
 
-  const bool c_weed = cs_subset_bool(NeoMutt->sub, "weed");
 #ifdef USE_NOTMUCH
   if (chflags & CH_VIRTUAL)
   {
     /* Add some fake headers based on notmuch data */
     char *folder = nm_email_get_folder(e);
-    if (folder && !(c_weed && mutt_matches_ignore("folder")))
+    if (folder && !(c_weed && mutt_matches_ignore("Folder")))
     {
       char buf[1024] = { 0 };
       mutt_str_copy(buf, folder, sizeof(buf));
@@ -521,7 +524,7 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
 
   struct Buffer *tags = buf_pool_get();
   driver_tags_get(&e->tags, tags);
-  if (!buf_is_empty(tags) && !(c_weed && mutt_matches_ignore("tags")))
+  if (!buf_is_empty(tags) && !(c_weed && mutt_matches_ignore("Tags")))
   {
     fputs("Tags: ", fp_out);
     fputs(buf_string(tags), fp_out);
@@ -531,7 +534,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
 
   const struct Slist *const c_send_charset = cs_subset_slist(NeoMutt->sub, "send_charset");
   const short c_wrap = cs_subset_number(NeoMutt->sub, "wrap");
-  if ((chflags & CH_UPDATE_LABEL) && e->env->x_label)
+  if ((chflags & CH_UPDATE_LABEL) && e->env->x_label &&
+      !(c_weed && mutt_matches_ignore("X-Label")))
   {
     temp_hdr = e->env->x_label;
     /* env->x_label isn't currently stored with direct references elsewhere.
@@ -551,7 +555,8 @@ int mutt_copy_header(FILE *fp_in, struct Email *e, FILE *fp_out,
       FREE(&temp_hdr);
   }
 
-  if ((chflags & CH_UPDATE_SUBJECT) && e->env->subject)
+  if ((chflags & CH_UPDATE_SUBJECT) && e->env->subject &&
+      !(c_weed && mutt_matches_ignore("Subject")))
   {
     temp_hdr = e->env->subject;
     /* env->subject is directly referenced in Mailbox->subj_hash, so we
