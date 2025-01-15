@@ -135,21 +135,21 @@ void sb_remove_mailbox(struct SidebarWindowData *wdata, const struct Mailbox *m)
     ARRAY_REMOVE(&wdata->entries, sbep);
     FREE(&sbe_remove);
 
-    if (wdata->opn_index == ARRAY_FOREACH_IDX)
+    if (wdata->opn_index == ARRAY_FOREACH_IDX_sbep)
     {
       // Open item was deleted
       wdata->opn_index = -1;
     }
-    else if ((wdata->opn_index > 0) && (wdata->opn_index > ARRAY_FOREACH_IDX))
+    else if ((wdata->opn_index > 0) && (wdata->opn_index > ARRAY_FOREACH_IDX_sbep))
     {
       // Open item is still visible, so adjust the index
       wdata->opn_index--;
     }
 
-    if (wdata->hil_index == ARRAY_FOREACH_IDX)
+    if (wdata->hil_index == ARRAY_FOREACH_IDX_sbep)
     {
       // If possible, keep the highlight where it is
-      struct SbEntry **sbep_cur = ARRAY_GET(&wdata->entries, ARRAY_FOREACH_IDX);
+      struct SbEntry **sbep_cur = ARRAY_GET(&wdata->entries, ARRAY_FOREACH_IDX_sbep);
       if (!sbep_cur)
       {
         // The last entry was deleted, so backtrack
@@ -162,7 +162,7 @@ void sb_remove_mailbox(struct SidebarWindowData *wdata, const struct Mailbox *m)
           wdata->hil_index = -1;
       }
     }
-    else if ((wdata->hil_index > 0) && (wdata->hil_index > ARRAY_FOREACH_IDX))
+    else if ((wdata->hil_index > 0) && (wdata->hil_index > ARRAY_FOREACH_IDX_sbep))
     {
       // Highlighted item is still visible, so adjust the index
       wdata->hil_index--;
@@ -187,8 +187,8 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
     {
       if (mutt_str_equal((*sbep)->mailbox->realpath, m->realpath))
       {
-        wdata->opn_index = ARRAY_FOREACH_IDX;
-        wdata->hil_index = ARRAY_FOREACH_IDX;
+        wdata->opn_index = ARRAY_FOREACH_IDX_sbep;
+        wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
         break;
       }
     }

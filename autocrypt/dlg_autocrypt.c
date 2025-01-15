@@ -161,7 +161,7 @@ bool populate_menu(struct Menu *menu)
   {
     struct AccountEntry *entry = MUTT_MEM_CALLOC(1, struct AccountEntry);
 
-    entry->num = ARRAY_FOREACH_IDX + 1;
+    entry->num = ARRAY_FOREACH_IDX_pac + 1;
     /* note: we are transferring the account pointer to the entries
      * array, and freeing the accounts array below.  the account
      * will be freed in autocrypt_menu_free().  */

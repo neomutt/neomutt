@@ -232,7 +232,7 @@ static int op_generic_select_entry(struct AliasMenuData *mdata, int op)
     const int idx = menu_get_index(menu);
     ARRAY_FOREACH(avp, &mdata->ava)
     {
-      avp->is_tagged = (ARRAY_FOREACH_IDX == idx);
+      avp->is_tagged = (ARRAY_FOREACH_IDX_avp == idx);
     }
   }
 

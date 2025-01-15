@@ -668,7 +668,7 @@ void init_menu(struct BrowserState *state, struct Menu *menu, struct Mailbox *m,
     {
       if (mutt_str_equal(ff->name, target_dir))
       {
-        menu_set_index(menu, ARRAY_FOREACH_IDX);
+        menu_set_index(menu, ARRAY_FOREACH_IDX_ff);
         matched = true;
         break;
       }

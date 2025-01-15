@@ -310,18 +310,18 @@ void node_padding_repad(struct ExpandoNode **ptr)
     struct ExpandoNode *node_left = node_container_new();
     struct ExpandoNode *node_right = node_container_new();
 
-    if (ARRAY_FOREACH_IDX > 0)
+    if (ARRAY_FOREACH_IDX_np > 0)
     {
-      for (int i = 0; i < ARRAY_FOREACH_IDX; i++)
+      for (int i = 0; i < ARRAY_FOREACH_IDX_np; i++)
       {
         node_add_child(node_left, node_get_child(parent, i));
       }
     }
 
     size_t count = ARRAY_SIZE(&parent->children);
-    if ((ARRAY_FOREACH_IDX + 1) < count)
+    if ((ARRAY_FOREACH_IDX_np + 1) < count)
     {
-      for (int i = ARRAY_FOREACH_IDX + 1; i < count; i++)
+      for (int i = ARRAY_FOREACH_IDX_np + 1; i < count; i++)
       {
         node_add_child(node_right, node_get_child(parent, i));
       }

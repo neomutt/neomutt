@@ -253,6 +253,6 @@ void alias_array_sort(struct AliasViewArray *ava, const struct ConfigSubset *sub
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, ava)
   {
-    avp->num = ARRAY_FOREACH_IDX;
+    avp->num = ARRAY_FOREACH_IDX_avp;
   }
 }

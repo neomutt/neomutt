@@ -353,7 +353,7 @@ static bool dlg_query(struct Buffer *buf, struct AliasMenuData *mdata)
   struct AliasView *avp = NULL;
   ARRAY_FOREACH(avp, &mdata->ava)
   {
-    avp->num = ARRAY_FOREACH_IDX;
+    avp->num = ARRAY_FOREACH_IDX_avp;
   }
 
   struct MuttWindow *old_focus = window_set_focus(menu->win);

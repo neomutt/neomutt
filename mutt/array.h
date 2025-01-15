@@ -210,7 +210,7 @@
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  */
 #define ARRAY_FOREACH(elem, head)                                              \
-  ARRAY_FOREACH_FROM_TO((elem), (head), 0, (head)->size)
+  ARRAY_FOREACH_FROM_TO(elem, (head), 0, (head)->size)
 
 /**
  * ARRAY_FOREACH_FROM - Iterate from an index to the end
@@ -221,7 +221,7 @@
  * @note The from index must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_FROM(elem, head, from)                                   \
-  ARRAY_FOREACH_FROM_TO((elem), (head), (from), (head)->size)
+  ARRAY_FOREACH_FROM_TO(elem, (head), (from), (head)->size)
 
 /**
  * ARRAY_FOREACH_TO - Iterate from the beginning to an index
@@ -232,7 +232,7 @@
  * @note The to index must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_TO(elem, head, to)                                       \
-  ARRAY_FOREACH_FROM_TO((elem), (head), 0, (to))
+  ARRAY_FOREACH_FROM_TO(elem, (head), 0, (to))
 
 /**
  * ARRAY_FOREACH_FROM_TO - Iterate between two indexes
@@ -245,10 +245,10 @@
  *       the from index must not be bigger than to index.
  */
 #define ARRAY_FOREACH_FROM_TO(elem, head, from, to)                            \
-  for (size_t ARRAY_FOREACH_IDX = (from);                                      \
-       (ARRAY_FOREACH_IDX < (to)) &&                                           \
-       ((elem) = ARRAY_GET((head), ARRAY_FOREACH_IDX));                        \
-       ARRAY_FOREACH_IDX++)
+  for (size_t ARRAY_FOREACH_IDX_##elem = (from);                               \
+       (ARRAY_FOREACH_IDX_##elem < (to)) &&                                    \
+       (elem = ARRAY_GET((head), ARRAY_FOREACH_IDX_##elem));                   \
+       ARRAY_FOREACH_IDX_##elem++)
 
 /**
  * ARRAY_IDX - Return the index of an element of the array

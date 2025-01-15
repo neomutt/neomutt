@@ -365,7 +365,7 @@ static void update_entries_visibility(struct SidebarWindowData *wdata)
   struct SbEntry **sbep = NULL;
   ARRAY_FOREACH(sbep, &wdata->entries)
   {
-    int i = ARRAY_FOREACH_IDX;
+    int i = ARRAY_FOREACH_IDX_sbep;
     sbe = *sbep;
 
     sbe->is_hidden = false;
@@ -441,9 +441,9 @@ static bool prepare_sidebar(struct SidebarWindowData *wdata, int page_size)
     ARRAY_FOREACH(sbep, &wdata->entries)
     {
       if ((opn_entry == *sbep) && (*sbep)->mailbox->visible)
-        wdata->opn_index = ARRAY_FOREACH_IDX;
+        wdata->opn_index = ARRAY_FOREACH_IDX_sbep;
       if ((hil_entry == *sbep) && (*sbep)->mailbox->visible)
-        wdata->hil_index = ARRAY_FOREACH_IDX;
+        wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
     }
   }
 
@@ -551,7 +551,7 @@ int sb_recalc(struct MuttWindow *win)
     struct SbEntry *entry = (*sbep);
     struct Mailbox *m = entry->mailbox;
 
-    const int entryidx = ARRAY_FOREACH_IDX;
+    const int entryidx = ARRAY_FOREACH_IDX_sbep;
     entry->color = calc_color(m, (entryidx == wdata->opn_index),
                               (entryidx == wdata->hil_index));
 
