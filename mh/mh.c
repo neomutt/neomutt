@@ -564,7 +564,7 @@ static void mh_delayed_parsing(struct Mailbox *m, struct MhEmailArray *mha,
     if (!md || !md->email || md->header_parsed)
       continue;
 
-    progress_update(progress, ARRAY_FOREACH_IDX, -1);
+    progress_update(progress, ARRAY_FOREACH_IDX_mdp, -1);
 
 #ifdef USE_HCACHE
     const char *key = md->email->path;

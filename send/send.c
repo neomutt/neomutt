@@ -1176,7 +1176,7 @@ static int generate_body(FILE *fp_tmp, struct Email *e, SendFlags flags,
           mutt_error(_("Could not include all requested messages"));
           return -1;
         }
-        if (ARRAY_FOREACH_IDX < count)
+        if (ARRAY_FOREACH_IDX_ep < count)
         {
           fputc('\n', fp_tmp);
         }

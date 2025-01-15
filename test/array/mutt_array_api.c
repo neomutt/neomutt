@@ -346,7 +346,7 @@ void test_mutt_array_api(void)
     struct Dummy *elem = NULL;
     ARRAY_FOREACH_FROM(elem, &d, 1)
     {
-      int prev = ARRAY_GET(&d, ARRAY_FOREACH_IDX - 1)->i;
+      int prev = ARRAY_GET(&d, ARRAY_FOREACH_IDX_elem - 1)->i;
       int curr = elem->i;
       if (!TEST_CHECK(curr < prev))
       {

@@ -51,7 +51,7 @@ bool sb_next(struct SidebarWindowData *wdata)
   {
     if (!(*sbep)->is_hidden)
     {
-      wdata->hil_index = ARRAY_FOREACH_IDX;
+      wdata->hil_index = ARRAY_FOREACH_IDX_sbep;
       return true;
     }
   }
