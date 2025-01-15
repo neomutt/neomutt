@@ -226,7 +226,9 @@ bool test_get_elem_list(void)
   // struct HashElem **get_elem_list(struct ConfigSet *cs);
 
   {
-    if (!TEST_CHECK(get_elem_list(NULL) == NULL))
+    struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
+    hea = get_elem_list(NULL);
+    if (!TEST_CHECK(ARRAY_EMPTY(&hea)))
       return false;
   }
 
@@ -235,14 +237,15 @@ bool test_get_elem_list(void)
     if (!cs)
       return false;
 
-    struct HashElem **list = NULL;
-    if (!TEST_CHECK((list = get_elem_list(cs)) != NULL))
+    struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
+    hea = get_elem_list(cs);
+    if (!TEST_CHECK(!ARRAY_EMPTY(&hea)))
     {
       cs_free(&cs);
       return false;
     }
 
-    FREE(&list);
+    ARRAY_FREE(&hea);
     cs_free(&cs);
   }
 

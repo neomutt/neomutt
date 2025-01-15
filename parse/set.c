@@ -305,19 +305,18 @@ enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
   // Handle special "reset all" syntax
   if (mutt_str_equal(name->data, "all"))
   {
-    struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
-    if (!he_list)
-      return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
-
-    for (size_t i = 0; he_list[i]; i++)
+    struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs);
+    struct HashElem **hep = NULL;
+    ARRAY_FOREACH(hep, &hea)
     {
-      if (DTYPE(he_list[i]->type) == DT_MYVAR)
-        cs_subset_he_delete(NeoMutt->sub, he_list[i], err);
+      struct HashElem *he = *hep;
+      if (DTYPE(he->type) == DT_MYVAR)
+        cs_subset_he_delete(NeoMutt->sub, he, err);
       else
-        cs_subset_he_reset(NeoMutt->sub, he_list[i], NULL);
+        cs_subset_he_reset(NeoMutt->sub, he, NULL);
     }
 
-    FREE(&he_list);
+    ARRAY_FREE(&hea);
     return MUTT_CMD_SUCCESS;
   }
 

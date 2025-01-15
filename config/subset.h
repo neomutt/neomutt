@@ -24,10 +24,9 @@
 #define MUTT_CONFIG_SUBSET_H
 
 #include <stdint.h>
+#include "mutt/lib.h" // IWYU pragma: keep
 
-struct Buffer;
 struct ConfigSet;
-struct HashElem;
 struct Notify;
 
 /**
@@ -94,7 +93,7 @@ int      cs_subset_str_native_set         (const struct ConfigSubset *sub, const
 int      cs_subset_str_string_get         (const struct ConfigSubset *sub, const char *name,                       struct Buffer *result);
 int      cs_subset_str_string_set         (const struct ConfigSubset *sub, const char *name,    const char *value, struct Buffer *err);
 
-int               elem_list_sort(const void *a, const void *b, void *sdata);
-struct HashElem **get_elem_list(struct ConfigSet *cs);
+int                  elem_list_sort(const void *a, const void *b, void *sdata);
+struct HashElemArray get_elem_list(struct ConfigSet *cs);
 
 #endif /* MUTT_CONFIG_SUBSET_H */

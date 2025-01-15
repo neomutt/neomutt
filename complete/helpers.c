@@ -189,11 +189,11 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
       memset(cd->match_list, 0, cd->match_list_len);
       memset(cd->completed, 0, sizeof(cd->completed));
 
-      struct HashElem *he = NULL;
-      struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
-      for (size_t i = 0; he_list[i]; i++)
+      struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs);
+      struct HashElem **hep = NULL;
+      ARRAY_FOREACH(hep, &hea)
       {
-        he = he_list[i];
+        struct HashElem *he = *hep;
         const int type = DTYPE(he->type);
 
         if ((type == DT_SYNONYM) || (type & D_INTERNAL_DEPRECATED))
@@ -201,7 +201,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
 
         candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
       }
-      FREE(&he_list);
+      ARRAY_FREE(&hea);
 
       matches_ensure_morespace(cd, cd->num_matched);
       cd->match_list[cd->num_matched++] = cd->user_typed;
