@@ -134,7 +134,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/utsname.h>
@@ -895,20 +894,6 @@ static void localise_config(struct ConfigSet *cs)
   buf_pool_release(&value);
 }
 #endif
-
-/**
- * mutt_exit - Leave NeoMutt NOW
- * @param code Value to return to the calling environment
- */
-void mutt_exit(int code)
-{
-  mutt_endwin();
-#ifdef USE_DEBUG_BACKTRACE
-  if (code != 0)
-    show_backtrace();
-#endif
-  exit(code);
-}
 
 /**
  * usage - Display NeoMutt command line

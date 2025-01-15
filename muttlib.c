@@ -1092,3 +1092,17 @@ void remove_from_stailq(struct ListHead *head, const char *str)
     }
   }
 }
+
+/**
+ * mutt_exit - Leave NeoMutt NOW
+ * @param code Value to return to the calling environment
+ */
+void mutt_exit(int code)
+{
+  mutt_endwin();
+#ifdef USE_DEBUG_BACKTRACE
+  if (code != 0)
+    show_backtrace();
+#endif
+  exit(code);
+}
