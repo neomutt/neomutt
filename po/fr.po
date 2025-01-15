@@ -5,7 +5,7 @@
 #
 # Marc Baudoin <babafou@babafou.eu.org>, 1998-2019
 # Vincent Lefevre <vincent@vinc17.net>, 1998-2023
-# Ryan d'Huart <homoelectromagneticus@protonmail.com>, 2024
+# Ryan d'Huart <homoelectromagneticus@protonmail.com>, 2024-2025
 #
 # Traductions possibles de "timestamp":
 # _ horodatage
@@ -653,7 +653,7 @@ msgstr "Voulez-vous vraiment supprimer le compte \"%s\" ?"
 #: autocrypt/gpgme.c:59 ncrypt/crypt_gpgme.c:375
 #, c-format
 msgid "error creating GPGME context: %s"
-msgstr "erreur lors de la création du contexte GPGME : %s"
+msgstr "erreur durant la création du contexte GPGME : %s"
 
 #. L10N: Message displayed just before a GPG key is generated for a created
 #. autocrypt account.
@@ -664,9 +664,9 @@ msgstr "Génération de la clé autocrypt..."
 #. L10N: GPGME was unable to generate a key for some reason.
 #. %s is the error message returned by GPGME.
 #: autocrypt/gpgme.c:188 autocrypt/gpgme.c:207
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating autocrypt key: %s"
-msgstr "Erreur à l'export de la clé : %s"
+msgstr "Erreur durant la création de la clé autocrypt : %s"
 
 #. L10N: After selecting a key for an autocrypt account,
 #. this is displayed if the key was revoked/expired/disabled/invalid
@@ -706,15 +706,15 @@ msgstr "La version de la base de donnée Autocrypt est trop récente"
 
 # , c-format
 #: bcache/bcache.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Cache disabled, $message_cache_dir isn't a directory: %s"
-msgstr "%s n'est pas un répertoire"
+msgstr "Le cache n'est pas actif, $message_cache_dir n'est pas un répertoire : %s"
 
 # , c-format
 #: bcache/bcache.c:225
-#, fuzzy, c-format
+#, c-format
 msgid "Message cache isn't a directory: %s"
-msgstr "%s n'est pas un répertoire"
+msgstr "Le cache des messages n'est pas un répertoire : %s"
 
 #: browser/dlg_browser.c:113
 msgid "Chdir"
@@ -913,9 +913,9 @@ msgstr "La capacité d'afficher les vraies couleurs est désactivé : %s"
 
 # , c-format
 #: color/command.c:380 color/parse_color.c:188 color/parse_color.c:227
-#, fuzzy, c-format
+#, c-format
 msgid "%s: color not supported by term"
-msgstr "%s : couleur non disponible sur ce terminal"
+msgstr "%s : cette couleur n'est pas prise en charge sur ce terminal"
 
 #: color/command.c:403 color/command.c:445 commands.c:413 commands.c:1118
 #: commands.c:1249 commands.c:1585 hook.c:145 hook.c:225 hook.c:488
@@ -928,7 +928,7 @@ msgstr "%s: trop d'arguments"
 #: color/command.c:435
 #, c-format
 msgid "%s: invalid number: %s"
-msgstr "Erreur %s : nombre %s : invalide"
+msgstr "%s : nombre invalide : %s"
 
 #: color/curses.c:98
 #, c-format
@@ -948,16 +948,13 @@ msgstr "# Couleur des expressions rationnelles %s\n"
 msgid "# Simple Colors\n"
 msgstr "# Couleurs simples\n"
 
-# TODO: Are these the colors for the to / from / etc fields in the compose
-#       menu? Need clarification
 #: color/dump.c:360
 msgid "# Compose Colors\n"
-msgstr ""
+msgstr "# Couleurs utilisées dans le menu « compose »\n"
 
-# TODO: Are these the colors of the status bar? Or some other status?
 #: color/dump.c:407
 msgid "# Status Colors\n"
-msgstr ""
+msgstr "# Coulours de la barre d'état\n"
 
 #. L10N: '%s' is the file name of the temporary file
 #: color/dump.c:461 commands.c:883 commands.c:942 commands.c:1628
@@ -1107,7 +1104,7 @@ msgstr "Échec du désabonnement de %s"
 #: compmbox/compress.c:218
 #, c-format
 msgid "Expando parse error: %s"
-msgstr ""
+msgstr "Erreur de traitement de l'expando '%s'"
 
 #: compmbox/compress.c:347 compmbox/compress.c:480
 #, fuzzy, c-format
@@ -2289,7 +2286,7 @@ msgstr "Période de temps non valide : '%c', doit être un des 'ymwdHM'"
 #: expando/node_condition.c:188 expando/node_condition.c:232
 #, c-format
 msgid "Conditional expando is missing '%c'"
-msgstr ""
+msgstr "L'expando conditionnel '%c' est manquant"
 
 # , c-format
 #. L10N: e.g. "Unknown expando: %Q"
@@ -2303,7 +2300,7 @@ msgstr "%s : variable inconnue"
 #: expando/node_expando.c:366
 #, c-format
 msgid "Expando is missing terminator: '%c'"
-msgstr ""
+msgstr "L'expando lui manque son terminateur '%c'"
 
 #. L10N: Padding expandos, %* %> %|, don't use formatting, e.g. %-30x
 #: expando/node_padding.c:242
@@ -4638,10 +4635,9 @@ msgstr "message est De : vous"
 msgid "message is sent to a subscribed mailing list"
 msgstr "message envoyé à une liste de diffusion à laquelle vous êtes abonné.e"
 
-# TODO: should "Reply-To" be translated?
 #: help.c:460
 msgid "you are in the Reply-To: list"
-msgstr ""
+msgstr "vous êtes sur la liste 'Reply-To'"
 
 #: help.c:478
 msgid "<UNKNOWN>"
@@ -5423,7 +5419,7 @@ msgstr "Pas de messages visibles"
 
 #: index/index.c:100
 msgid "Changing threaded display should prefer $use_threads over $sort"
-msgstr ""
+msgstr "Un changement de l'affichage des fils devrait préférer $use_threads plutôt que $sort"
 
 # , c-format
 #: init.c:87
@@ -6433,10 +6429,9 @@ msgstr "erreur lors de l'allocation de l'objet : %s"
 msgid "error rewinding data object: %s"
 msgstr "erreur lors du retour au début de l'objet : %s"
 
-# TODO: Am I correct to assume that this should not be translated?
 #: ncrypt/crypt_gpgme.c:540
 msgid "[tempfile]"
-msgstr ""
+msgstr "[fichier temporaire]"
 
 # , c-format
 #: ncrypt/crypt_gpgme.c:546 ncrypt/crypt_gpgme.c:602
@@ -8154,11 +8149,10 @@ msgstr "messages non référencés"
 msgid "broken threads"
 msgstr "Pas d'autres discussions"
 
-# TODO: Should "STRING" be translated here?
 #. L10N: Pattern Completion Menu description for =/
 #: pattern/flags.c:188
 msgid "IMAP custom server-side search for STRING"
-msgstr ""
+msgstr "Rechercher du STRING sur le serveur IMAP"
 
 #: pattern/message.c:105 pattern/message.c:254
 msgid "No current message"
