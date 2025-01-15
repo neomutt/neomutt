@@ -6,7 +6,7 @@
  * Copyright (C) 1996-2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2017-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
@@ -80,7 +80,6 @@
  * | handler.c       | @subpage neo_handler       |
  * | help.c          | @subpage neo_help          |
  * | hook.c          | @subpage neo_hook          |
- * | init.c          | @subpage neo_init          |
  * | mailcap.c       | @subpage neo_mailcap       |
  * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
@@ -138,6 +137,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/utsname.h>
 #include <time.h>
 #include <unistd.h>
 #include "mutt/lib.h"
@@ -152,6 +152,7 @@
 #include "attach/lib.h"
 #include "browser/lib.h"
 #include "color/lib.h"
+#include "compmbox/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "index/lib.h"
@@ -159,15 +160,18 @@
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
+#include "notmuch/lib.h"
+#include "parse/lib.h"
 #include "pop/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
+#include "sidebar/lib.h"
 #include "alternates.h"
+#include "commands.h"
 #include "external.h"
 #include "globals.h"
 #include "hook.h"
-#include "init.h"
 #include "mutt_logging.h"
 #include "mutt_mailbox.h"
 #include "muttlib.h"
@@ -185,6 +189,12 @@
 #if defined(USE_DEBUG_NOTIFY) || defined(USE_DEBUG_BACKTRACE)
 #include "debug/lib.h"
 #endif
+#ifndef DOMAIN
+#include "conn/lib.h"
+#endif
+#ifdef USE_LUA
+#include "mutt_lua.h"
+#endif
 
 bool StartupComplete = false; ///< When the config has been read
 
@@ -198,6 +208,633 @@ typedef uint8_t CliFlags;         ///< Flags for command line options, e.g. #MUT
 #define MUTT_CLI_SELECT  (1 << 4) ///< -y Start with a list of all mailboxes
 #define MUTT_CLI_NEWS    (1 << 5) ///< -g/-G Start with a list of all newsgroups
 // clang-format on
+
+/**
+ * execute_commands - Execute a set of NeoMutt commands
+ * @param p List of command strings
+ * @retval  0 Success, all the commands succeeded
+ * @retval -1 Error
+ */
+static int execute_commands(struct ListHead *p)
+{
+  int rc = 0;
+  struct Buffer *err = buf_pool_get();
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, p, entries)
+  {
+    enum CommandResult rc2 = parse_rc_line(np->data, err);
+    if (rc2 == MUTT_CMD_ERROR)
+      mutt_error(_("Error in command line: %s"), buf_string(err));
+    else if (rc2 == MUTT_CMD_WARNING)
+      mutt_warning(_("Warning in command line: %s"), buf_string(err));
+
+    if ((rc2 == MUTT_CMD_ERROR) || (rc2 == MUTT_CMD_WARNING))
+    {
+      buf_pool_release(&err);
+      return -1;
+    }
+  }
+  buf_pool_release(&err);
+
+  return rc;
+}
+
+/**
+ * find_cfg - Find a config file
+ * @param home         User's home directory
+ * @param xdg_cfg_home XDG home directory
+ * @retval ptr  Success, first matching directory
+ * @retval NULL Error, no matching directories
+ */
+static char *find_cfg(const char *home, const char *xdg_cfg_home)
+{
+  const char *names[] = {
+    "neomuttrc",
+    "muttrc",
+    NULL,
+  };
+
+  const char *locations[][2] = {
+    { xdg_cfg_home, "neomutt/" },
+    { xdg_cfg_home, "mutt/" },
+    { home, ".neomutt/" },
+    { home, ".mutt/" },
+    { home, "." },
+    { NULL, NULL },
+  };
+
+  for (int i = 0; locations[i][0] || locations[i][1]; i++)
+  {
+    if (!locations[i][0])
+      continue;
+
+    for (int j = 0; names[j]; j++)
+    {
+      char buf[256] = { 0 };
+
+      snprintf(buf, sizeof(buf), "%s/%s%s", locations[i][0], locations[i][1], names[j]);
+      if (access(buf, F_OK) == 0)
+        return mutt_str_dup(buf);
+    }
+  }
+
+  return NULL;
+}
+
+#ifndef DOMAIN
+/**
+ * getmailname - Try to retrieve the FQDN from mailname files
+ * @retval ptr Heap allocated string with the FQDN
+ * @retval NULL No valid mailname file could be read
+ */
+static char *getmailname(void)
+{
+  char *mailname = NULL;
+  static const char *mn_files[] = { "/etc/mailname", "/etc/mail/mailname" };
+
+  for (size_t i = 0; i < mutt_array_size(mn_files); i++)
+  {
+    FILE *fp = mutt_file_fopen(mn_files[i], "r");
+    if (!fp)
+      continue;
+
+    size_t len = 0;
+    mailname = mutt_file_read_line(NULL, &len, fp, NULL, MUTT_RL_NO_FLAGS);
+    mutt_file_fclose(&fp);
+    if (mailname && *mailname)
+      break;
+
+    FREE(&mailname);
+  }
+
+  return mailname;
+}
+#endif
+
+/**
+ * get_hostname - Find the Fully-Qualified Domain Name
+ * @param cs Config Set
+ * @retval true  Success
+ * @retval false Error, failed to find any name
+ *
+ * Use several methods to try to find the Fully-Qualified domain name of this host.
+ * If the user has already configured a hostname, this function will use it.
+ */
+static bool get_hostname(struct ConfigSet *cs)
+{
+  const char *short_host = NULL;
+  struct utsname utsname = { 0 };
+
+  const char *const c_hostname = cs_subset_string(NeoMutt->sub, "hostname");
+  if (c_hostname)
+  {
+    short_host = c_hostname;
+  }
+  else
+  {
+    /* The call to uname() shouldn't fail, but if it does, the system is horribly
+     * broken, and the system's networking configuration is in an unreliable
+     * state.  We should bail.  */
+    if ((uname(&utsname)) == -1)
+    {
+      mutt_perror(_("unable to determine nodename via uname()"));
+      return false; // TEST09: can't test
+    }
+
+    short_host = utsname.nodename;
+  }
+
+  /* some systems report the FQDN instead of just the hostname */
+  char *dot = strchr(short_host, '.');
+  if (dot)
+    ShortHostname = mutt_strn_dup(short_host, dot - short_host);
+  else
+    ShortHostname = mutt_str_dup(short_host);
+
+  // All the code paths from here alloc memory for the fqdn
+  char *fqdn = mutt_str_dup(c_hostname);
+  if (!fqdn)
+  {
+    mutt_debug(LL_DEBUG1, "Setting $hostname\n");
+    /* now get FQDN.  Use configured domain first, DNS next, then uname */
+#ifdef DOMAIN
+    /* we have a compile-time domain name, use that for `$hostname` */
+    mutt_str_asprintf(&fqdn, "%s.%s", NONULL(ShortHostname), DOMAIN);
+#else
+    fqdn = getmailname();
+    if (!fqdn)
+    {
+      struct Buffer *domain = buf_pool_get();
+      if (getdnsdomainname(domain) == 0)
+      {
+        mutt_str_asprintf(&fqdn, "%s.%s", NONULL(ShortHostname), buf_string(domain));
+      }
+      else
+      {
+        /* DNS failed, use the nodename.  Whether or not the nodename had a '.'
+         * in it, we can use the nodename as the FQDN.  On hosts where DNS is
+         * not being used, e.g. small network that relies on hosts files, a
+         * short host name is all that is required for SMTP to work correctly.
+         * It could be wrong, but we've done the best we can, at this point the
+         * onus is on the user to provide the correct hostname if the nodename
+         * won't work in their network.  */
+        fqdn = mutt_str_dup(utsname.nodename);
+      }
+      buf_pool_release(&domain);
+      mutt_debug(LL_DEBUG1, "Hostname: %s\n", NONULL(fqdn));
+    }
+#endif
+  }
+
+  if (fqdn)
+  {
+    cs_str_initial_set(cs, "hostname", fqdn, NULL);
+    cs_str_reset(cs, "hostname", NULL);
+    FREE(&fqdn);
+  }
+
+  return true;
+}
+
+/**
+ * mutt_opts_cleanup - Clean up before quitting
+ */
+static void mutt_opts_cleanup(void)
+{
+  source_stack_cleanup();
+
+  alias_cleanup();
+  sb_cleanup();
+
+  mutt_regexlist_free(&MailLists);
+  mutt_regexlist_free(&NoSpamList);
+  mutt_regexlist_free(&SubscribedLists);
+  mutt_regexlist_free(&UnMailLists);
+  mutt_regexlist_free(&UnSubscribedLists);
+
+  mutt_grouplist_cleanup();
+  driver_tags_cleanup();
+
+  /* Lists of strings */
+  mutt_list_free(&AlternativeOrderList);
+  mutt_list_free(&AutoViewList);
+  mutt_list_free(&HeaderOrderList);
+  mutt_list_free(&Ignore);
+  mutt_list_free(&MailToAllow);
+  mutt_list_free(&MimeLookupList);
+  mutt_list_free(&Muttrc);
+  mutt_list_free(&UnIgnore);
+  mutt_list_free(&UserHeader);
+
+  colors_cleanup();
+
+  FREE(&CurrentFolder);
+  FREE(&HomeDir);
+  FREE(&LastFolder);
+  FREE(&ShortHostname);
+  FREE(&Username);
+
+  mutt_replacelist_free(&SpamList);
+
+  mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
+
+  mutt_hist_cleanup();
+  mutt_keys_cleanup();
+
+  mutt_regexlist_free(&NoSpamList);
+  commands_cleanup();
+}
+
+/**
+ * mutt_init - Initialise NeoMutt
+ * @param cs          Config Set
+ * @param dlevel      Command line debug level
+ * @param dfile       Command line debug file
+ * @param skip_sys_rc If true, don't read the system config file
+ * @param commands    List of config commands to execute
+ * @retval 0 Success
+ * @retval 1 Error
+ */
+static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile,
+                     bool skip_sys_rc, struct ListHead *commands)
+{
+  bool need_pause = false;
+  int rc = 1;
+  struct Buffer *err = buf_pool_get();
+  struct Buffer *buf = buf_pool_get();
+
+  mutt_grouplist_init();
+  alias_init();
+  commands_init();
+  hooks_init();
+  mutt_comp_init();
+  imap_init();
+#ifdef USE_LUA
+  mutt_lua_init();
+#endif
+  driver_tags_init();
+
+  menu_init();
+  sb_init();
+#ifdef USE_NOTMUCH
+  nm_init();
+#endif
+
+#ifdef NEOMUTT_DIRECT_COLORS
+  /* Test if we run in a terminal which supports direct colours.
+   *
+   * The user/terminal can indicate their capability independent of the
+   * terminfo file by setting the COLORTERM environment variable to "truecolor"
+   * or "24bit" (case sensitive).
+   *
+   * Note: This is to test is less about whether the terminal understands
+   * direct color commands but more about whether ncurses believes it can send
+   * them to the terminal, e.g. ncurses ignores COLORTERM.
+   */
+  if (COLORS == 16777216) // 2^24
+  {
+    /* Ncurses believes the Terminal supports it check the environment variable
+     * to respect the user's choice */
+    const char *env_colorterm = mutt_str_getenv("COLORTERM");
+    if (env_colorterm && (mutt_str_equal(env_colorterm, "truecolor") ||
+                          mutt_str_equal(env_colorterm, "24bit")))
+    {
+      cs_str_initial_set(cs, "color_directcolor", "yes", NULL);
+      cs_str_reset(cs, "color_directcolor", NULL);
+    }
+  }
+#endif
+
+  /* "$spool_file" precedence: config file, environment */
+  const char *p = mutt_str_getenv("MAIL");
+  if (!p)
+    p = mutt_str_getenv("MAILDIR");
+  if (!p)
+  {
+#ifdef HOMESPOOL
+    buf_concat_path(buf, NONULL(HomeDir), MAILPATH);
+#else
+    buf_concat_path(buf, MAILPATH, NONULL(Username));
+#endif
+    p = buf_string(buf);
+  }
+  cs_str_initial_set(cs, "spool_file", p, NULL);
+  cs_str_reset(cs, "spool_file", NULL);
+
+  p = mutt_str_getenv("REPLYTO");
+  if (p)
+  {
+    struct Buffer *token = buf_pool_get();
+
+    buf_printf(buf, "Reply-To: %s", p);
+    buf_seek(buf, 0);
+    parse_my_hdr(token, buf, 0, err); /* adds to UserHeader */
+    buf_pool_release(&token);
+  }
+
+  p = mutt_str_getenv("EMAIL");
+  if (p)
+  {
+    cs_str_initial_set(cs, "from", p, NULL);
+    cs_str_reset(cs, "from", NULL);
+  }
+
+  /* "$mailcap_path" precedence: config file, environment, code */
+  struct Buffer *mc = buf_pool_get();
+  struct Slist *sl_mc = NULL;
+  const char *env_mc = mutt_str_getenv("MAILCAPS");
+  if (env_mc)
+  {
+    sl_mc = slist_parse(env_mc, D_SLIST_SEP_COLON);
+  }
+  else
+  {
+    cs_str_initial_get(cs, "mailcap_path", mc);
+    sl_mc = slist_parse(buf_string(mc), D_SLIST_SEP_COLON);
+    buf_reset(mc);
+  }
+  slist_to_buffer(sl_mc, mc);
+  cs_str_initial_set(cs, "mailcap_path", buf_string(mc), NULL);
+  cs_str_reset(cs, "mailcap_path", NULL);
+  slist_free(&sl_mc);
+  buf_pool_release(&mc);
+
+  /* "$tmp_dir" precedence: config file, environment, code */
+  const char *env_tmp = mutt_str_getenv("TMPDIR");
+  if (env_tmp)
+  {
+    cs_str_initial_set(cs, "tmp_dir", env_tmp, NULL);
+    cs_str_reset(cs, "tmp_dir", NULL);
+  }
+
+  /* "$visual", "$editor" precedence: config file, environment, code */
+  const char *env_ed = mutt_str_getenv("VISUAL");
+  if (!env_ed)
+    env_ed = mutt_str_getenv("EDITOR");
+  if (!env_ed)
+    env_ed = "vi";
+  cs_str_initial_set(cs, "editor", env_ed, NULL);
+
+  const char *const c_editor = cs_subset_string(NeoMutt->sub, "editor");
+  if (!c_editor)
+    cs_str_reset(cs, "editor", NULL);
+
+  const char *charset = mutt_ch_get_langinfo_charset();
+  cs_str_initial_set(cs, "charset", charset, NULL);
+  cs_str_reset(cs, "charset", NULL);
+  mutt_ch_set_charset(charset);
+  FREE(&charset);
+
+  char name[256] = { 0 };
+  const char *c_real_name = cs_subset_string(NeoMutt->sub, "real_name");
+  if (!c_real_name)
+  {
+    struct passwd *pw = getpwuid(getuid());
+    if (pw)
+    {
+      c_real_name = mutt_gecos_name(name, sizeof(name), pw);
+    }
+  }
+  cs_str_initial_set(cs, "real_name", c_real_name, NULL);
+  cs_str_reset(cs, "real_name", NULL);
+
+#ifdef HAVE_GETSID
+  /* Unset suspend by default if we're the session leader */
+  if (getsid(0) == getpid())
+  {
+    cs_str_initial_set(cs, "suspend", "no", NULL);
+    cs_str_reset(cs, "suspend", NULL);
+  }
+#endif
+
+  /* RFC2368, "4. Unsafe headers"
+   * The creator of a mailto URL can't expect the resolver of a URL to
+   * understand more than the "subject" and "body" headers. Clients that
+   * resolve mailto URLs into mail messages should be able to correctly
+   * create RFC822-compliant mail messages using the "subject" and "body"
+   * headers.  */
+  add_to_stailq(&MailToAllow, "body");
+  add_to_stailq(&MailToAllow, "subject");
+  /* Cc, In-Reply-To, and References help with not breaking threading on
+   * mailing lists, see https://github.com/neomutt/neomutt/issues/115 */
+  add_to_stailq(&MailToAllow, "cc");
+  add_to_stailq(&MailToAllow, "in-reply-to");
+  add_to_stailq(&MailToAllow, "references");
+
+  if (STAILQ_EMPTY(&Muttrc))
+  {
+    const char *xdg_cfg_home = mutt_str_getenv("XDG_CONFIG_HOME");
+
+    if (!xdg_cfg_home && HomeDir)
+    {
+      buf_printf(buf, "%s/.config", HomeDir);
+      xdg_cfg_home = buf_string(buf);
+    }
+
+    char *config = find_cfg(HomeDir, xdg_cfg_home);
+    if (config)
+    {
+      mutt_list_insert_tail(&Muttrc, config);
+    }
+  }
+  else
+  {
+    struct ListNode *np = NULL;
+    STAILQ_FOREACH(np, &Muttrc, entries)
+    {
+      buf_strcpy(buf, np->data);
+      FREE(&np->data);
+      buf_expand_path(buf);
+      np->data = buf_strdup(buf);
+      if (access(np->data, F_OK))
+      {
+        mutt_perror("%s", np->data);
+        goto done; // TEST10: neomutt -F missing
+      }
+    }
+  }
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, &Muttrc, entries)
+  {
+    if (np->data && !mutt_str_equal(np->data, "/dev/null"))
+    {
+      cs_str_string_set(cs, "alias_file", np->data, NULL);
+      break;
+    }
+  }
+
+  /* Process the global rc file if it exists and the user hasn't explicitly
+   * requested not to via "-n".  */
+  if (!skip_sys_rc)
+  {
+    do
+    {
+      if (mutt_set_xdg_path(XDG_CONFIG_DIRS, buf))
+        break;
+
+      buf_printf(buf, "%s/neomuttrc", SYSCONFDIR);
+      if (access(buf_string(buf), F_OK) == 0)
+        break;
+
+      buf_printf(buf, "%s/Muttrc", SYSCONFDIR);
+      if (access(buf_string(buf), F_OK) == 0)
+        break;
+
+      buf_printf(buf, "%s/neomuttrc", PKGDATADIR);
+      if (access(buf_string(buf), F_OK) == 0)
+        break;
+
+      buf_printf(buf, "%s/Muttrc", PKGDATADIR);
+    } while (false);
+
+    if (access(buf_string(buf), F_OK) == 0)
+    {
+      if (source_rc(buf_string(buf), err) != 0)
+      {
+        mutt_error("%s", buf_string(err));
+        need_pause = true; // TEST11: neomutt (error in /etc/neomuttrc)
+      }
+    }
+  }
+
+  /* Read the user's initialization file.  */
+  STAILQ_FOREACH(np, &Muttrc, entries)
+  {
+    if (np->data)
+    {
+      if (source_rc(np->data, err) != 0)
+      {
+        mutt_error("%s", buf_string(err));
+        need_pause = true; // TEST12: neomutt (error in ~/.neomuttrc)
+      }
+    }
+  }
+
+  if (execute_commands(commands) != 0)
+    need_pause = true; // TEST13: neomutt -e broken
+
+  if (!get_hostname(cs))
+    goto done;
+
+  /* The command line overrides the config */
+  if (dlevel)
+    cs_str_reset(cs, "debug_level", NULL);
+  if (dfile)
+    cs_str_reset(cs, "debug_file", NULL);
+
+  if (mutt_log_start() < 0)
+  {
+    mutt_perror("log file");
+    goto done;
+  }
+
+  if (need_pause && !OptNoCurses)
+  {
+    log_queue_flush(log_disp_terminal);
+    if (mutt_any_key_to_continue(NULL) == 'q')
+      goto done; // TEST14: neomutt -e broken (press 'q')
+  }
+
+  const char *const c_tmp_dir = cs_subset_path(NeoMutt->sub, "tmp_dir");
+  if (mutt_file_mkdir(c_tmp_dir, S_IRWXU) < 0)
+  {
+    mutt_error(_("Can't create %s: %s"), c_tmp_dir, strerror(errno));
+    goto done;
+  }
+
+  mutt_hist_init();
+  mutt_hist_read_file();
+
+#ifdef USE_NOTMUCH
+  const bool c_virtual_spool_file = cs_subset_bool(NeoMutt->sub, "virtual_spool_file");
+  if (c_virtual_spool_file)
+  {
+    /* Find the first virtual folder and open it */
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_NOTMUCH);
+    struct MailboxNode *mp = STAILQ_FIRST(&ml);
+    if (mp)
+      cs_str_string_set(cs, "spool_file", mailbox_path(mp->mailbox), NULL);
+    neomutt_mailboxlist_clear(&ml);
+  }
+#endif
+  rc = 0;
+
+done:
+  buf_pool_release(&err);
+  buf_pool_release(&buf);
+  return rc;
+}
+
+/**
+ * mutt_query_variables - Implement the -Q command line flag
+ * @param queries   List of query strings
+ * @param show_docs If true, show one-liner docs for the config item
+ * @retval 0 Success, all queries exist
+ * @retval 1 Error
+ */
+static int mutt_query_variables(struct ListHead *queries, bool show_docs)
+{
+  struct Buffer *value = buf_pool_get();
+  struct Buffer *tmp = buf_pool_get();
+  int rc = 0;
+
+  struct ListNode *np = NULL;
+  STAILQ_FOREACH(np, queries, entries)
+  {
+    buf_reset(value);
+
+    struct HashElem *he = cs_subset_lookup(NeoMutt->sub, np->data);
+    if (he)
+    {
+      if (he->type & D_INTERNAL_DEPRECATED)
+      {
+        mutt_warning(_("Option %s is deprecated"), np->data);
+        rc = 1;
+        continue;
+      }
+
+      int rv = cs_subset_he_string_get(NeoMutt->sub, he, value);
+      if (CSR_RESULT(rv) != CSR_SUCCESS)
+      {
+        rc = 1;
+        continue;
+      }
+
+      int type = DTYPE(he->type);
+      if (type == DT_PATH)
+        mutt_pretty_mailbox(value->data, value->dsize);
+
+      if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
+      {
+        buf_reset(tmp);
+        pretty_var(buf_string(value), tmp);
+        buf_copy(value, tmp);
+      }
+
+      const bool tty = isatty(STDOUT_FILENO);
+
+      ConfigDumpFlags cdflags = CS_DUMP_NO_FLAGS;
+      if (tty)
+        cdflags |= CS_DUMP_LINK_DOCS;
+      if (show_docs)
+        cdflags |= CS_DUMP_SHOW_DOCS;
+
+      dump_config_neo(NeoMutt->sub->cs, he, value, NULL, cdflags, stdout);
+      continue;
+    }
+
+    mutt_warning(_("Unknown option %s"), np->data);
+    rc = 1;
+  }
+
+  buf_pool_release(&value);
+  buf_pool_release(&tmp);
+
+  return rc; // TEST16: neomutt -Q charset
+}
 
 /**
  * reset_tilde - Temporary measure
@@ -505,7 +1142,7 @@ static void log_gui(void)
 /**
  * main_timeout_observer - Notification that a timeout has occurred - Implements ::observer_t - @ingroup observer_api
  */
-int main_timeout_observer(struct NotifyCallback *nc)
+static int main_timeout_observer(struct NotifyCallback *nc)
 {
   static time_t last_run = 0;
 

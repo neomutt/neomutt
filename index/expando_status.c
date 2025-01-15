@@ -45,7 +45,6 @@
 #include "menu/lib.h"
 #include "postpone/lib.h"
 #include "globals.h"
-#include "init.h"
 #include "mutt_mailbox.h"
 #include "mutt_thread.h"
 #include "muttlib.h"
@@ -54,6 +53,8 @@
 
 static void index_mailbox_path(const struct ExpandoNode *node, void *data,
                                MuttFormatFlags flags, struct Buffer *buf);
+
+extern const struct Mapping SortMethods[];
 
 /**
  * get_sort_str - Get the sort method as a string

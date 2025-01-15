@@ -45,7 +45,6 @@
 #include "attach/lib.h"
 #include "expando/lib.h"
 #include "index/lib.h"
-#include "init.h"
 #include "mutt_logging.h"
 #include "mutt_thread.h"
 #include "mx.h"
