@@ -30,6 +30,7 @@
 struct Buffer;
 struct ConfigSet;
 struct HashElem;
+struct HashElemArray;
 
 typedef uint16_t ConfigDumpFlags;          ///< Flags for dump_config(), e.g. #CS_DUMP_ONLY_CHANGED
 #define CS_DUMP_NO_FLAGS               0   ///< No flags are set
@@ -46,7 +47,7 @@ typedef uint16_t ConfigDumpFlags;          ///< Flags for dump_config(), e.g. #C
 #define CS_DUMP_LINK_DOCS       (1 << 10)  ///< Link to the online docs
 
 void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, ConfigDumpFlags flags, FILE *fp);
-bool              dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp);
+bool              dump_config(struct ConfigSet *cs, struct HashElemArray *hea, ConfigDumpFlags flags, FILE *fp);
 size_t            escape_string(struct Buffer *buf, const char *src);
 size_t            pretty_var(const char *str, struct Buffer *buf);
 

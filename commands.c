@@ -899,7 +899,10 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
     return MUTT_CMD_ERROR;
   }
 
-  dump_config(NeoMutt->sub->cs, flags, fp_out);
+  struct ConfigSet *cs = NeoMutt->sub->cs;
+  struct HashElemArray hea = get_elem_list(cs);
+  dump_config(cs, &hea, flags, fp_out);
+  ARRAY_FREE(&hea);
 
   mutt_file_fclose(&fp_out);
 

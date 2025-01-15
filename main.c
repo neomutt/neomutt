@@ -717,69 +717,35 @@ done:
 }
 
 /**
- * mutt_query_variables - Implement the -Q command line flag
- * @param queries   List of query strings
- * @param show_docs If true, show one-liner docs for the config item
+ * get_elem_queries - Lookup the HashElems for a set of queries
+ * @param[in]  queries List of query strings
+ * @param[out] hea     Array for Config HashElems
  * @retval 0 Success, all queries exist
  * @retval 1 Error
  */
-static int mutt_query_variables(struct ListHead *queries, bool show_docs)
+static int get_elem_queries(struct ListHead *queries, struct HashElemArray *hea)
 {
-  struct Buffer *value = buf_pool_get();
-  struct Buffer *tmp = buf_pool_get();
   int rc = 0;
-
   struct ListNode *np = NULL;
   STAILQ_FOREACH(np, queries, entries)
   {
-    buf_reset(value);
-
     struct HashElem *he = cs_subset_lookup(NeoMutt->sub, np->data);
-    if (he)
+    if (!he)
     {
-      if (he->type & D_INTERNAL_DEPRECATED)
-      {
-        mutt_warning(_("Option %s is deprecated"), np->data);
-        rc = 1;
-        continue;
-      }
-
-      int rv = cs_subset_he_string_get(NeoMutt->sub, he, value);
-      if (CSR_RESULT(rv) != CSR_SUCCESS)
-      {
-        rc = 1;
-        continue;
-      }
-
-      int type = DTYPE(he->type);
-      if (type == DT_PATH)
-        mutt_pretty_mailbox(value->data, value->dsize);
-
-      if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) && (type != DT_QUAD))
-      {
-        buf_reset(tmp);
-        pretty_var(buf_string(value), tmp);
-        buf_copy(value, tmp);
-      }
-
-      const bool tty = isatty(STDOUT_FILENO);
-
-      ConfigDumpFlags cdflags = CS_DUMP_NO_FLAGS;
-      if (tty)
-        cdflags |= CS_DUMP_LINK_DOCS;
-      if (show_docs)
-        cdflags |= CS_DUMP_SHOW_DOCS;
-
-      dump_config_neo(NeoMutt->sub->cs, he, value, NULL, cdflags, stdout);
+      mutt_warning(_("Unknown option %s"), np->data);
+      rc = 1;
       continue;
     }
 
-    mutt_warning(_("Unknown option %s"), np->data);
-    rc = 1;
-  }
+    if (he->type & D_INTERNAL_DEPRECATED)
+    {
+      mutt_warning(_("Option %s is deprecated"), np->data);
+      rc = 1;
+      continue;
+    }
 
-  buf_pool_release(&value);
-  buf_pool_release(&tmp);
+    ARRAY_ADD(hea, he);
+  }
 
   return rc; // TEST16: neomutt -Q charset
 }
@@ -1445,13 +1411,7 @@ main
   if (new_type && !config_set_initial(cs, "mbox_type", new_type))
     goto main_curses;
 
-  if (!STAILQ_EMPTY(&queries))
-  {
-    rc = mutt_query_variables(&queries, one_liner);
-    goto main_curses;
-  }
-
-  if (dump_variables)
+  if (dump_variables || !STAILQ_EMPTY(&queries))
   {
     const bool tty = isatty(STDOUT_FILENO);
 
@@ -1462,8 +1422,21 @@ main
       cdflags |= CS_DUMP_HIDE_SENSITIVE;
     if (one_liner)
       cdflags |= CS_DUMP_SHOW_DOCS;
-    dump_config(cs, cdflags, stdout);
-    goto main_ok; // TEST18: neomutt -D
+
+    struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
+    if (dump_variables)
+    {
+      hea = get_elem_list(cs);
+      rc = 0;
+    }
+    else
+    {
+      rc = get_elem_queries(&queries, &hea);
+    }
+
+    dump_config(cs, &hea, cdflags, stdout);
+    ARRAY_FREE(&hea);
+    goto main_curses;
   }
 
   if (!STAILQ_EMPTY(&alias_queries))

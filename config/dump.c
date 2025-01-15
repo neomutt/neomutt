@@ -35,7 +35,6 @@
 #include "mutt/lib.h"
 #include "dump.h"
 #include "set.h"
-#include "subset.h"
 #include "types.h"
 
 void mutt_pretty_mailbox(char *buf, size_t buflen);
@@ -190,12 +189,14 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
 /**
  * dump_config - Write all the config to a file
  * @param cs    ConfigSet to dump
+ * @param hea   Array of Config HashElem to dump
  * @param flags Flags, see #ConfigDumpFlags
  * @param fp    File to write config to
  */
-bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
+bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
+                 ConfigDumpFlags flags, FILE *fp)
 {
-  if (!cs)
+  if (!cs || !hea || !fp)
     return false;
 
   bool result = true;
@@ -204,9 +205,8 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
   struct Buffer *initial = buf_pool_get();
   struct Buffer *tmp = buf_pool_get();
 
-  struct HashElemArray hea = get_elem_list(cs);
   struct HashElem **hep = NULL;
-  ARRAY_FOREACH(hep, &hea)
+  ARRAY_FOREACH(hep, hea)
   {
     struct HashElem *he = *hep;
     buf_reset(value);
@@ -282,7 +282,6 @@ bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp)
     dump_config_neo(cs, he, value, initial, flags, fp);
   }
 
-  ARRAY_FREE(&hea);
   buf_pool_release(&value);
   buf_pool_release(&initial);
   buf_pool_release(&tmp);

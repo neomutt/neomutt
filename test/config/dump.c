@@ -311,7 +311,7 @@ bool test_dump_config_neo(void)
 
 bool test_dump_config(void)
 {
-  // bool dump_config(struct ConfigSet *cs, ConfigDumpFlags flags, FILE *fp);
+  // bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea, ConfigDumpFlags flags, FILE *fp);
 
   {
     struct ConfigSet *cs = create_sample_data();
@@ -322,21 +322,24 @@ bool test_dump_config(void)
     if (!fp)
       return false;
 
+    struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
+
     // Degenerate tests
 
-    TEST_CHECK(!dump_config(NULL, CS_DUMP_NO_FLAGS, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_NO_FLAGS, NULL));
+    TEST_CHECK(!dump_config(NULL, &hea, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(!dump_config(cs, NULL, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(!dump_config(cs, &hea, CS_DUMP_NO_FLAGS, NULL));
 
     // Normal tests
 
-    TEST_CHECK(dump_config(cs, CS_DUMP_NO_FLAGS, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_SHOW_DOCS, fp));
-    TEST_CHECK(dump_config(cs, CS_DUMP_SHOW_DISABLED, fp));
+    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
+    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
+    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_SHOW_DOCS, fp));
+    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_SHOW_DISABLED, fp));
 
     struct ConfigSet *cs_bad = cs_new(30);
-    TEST_CHECK(dump_config(cs_bad, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(dump_config(cs_bad, &hea, CS_DUMP_NO_FLAGS, fp));
 
     fclose(fp);
     cs_free(&cs_bad);
