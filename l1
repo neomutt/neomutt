@@ -1,0 +1,47 @@
+gh pr list --search "merged:>2025-01-13"
+
+up to e474b0b94 merge: update translations
+
+73a0a275a trivial fixes
+427d0d5a9 fix mutt_debug()s missing newlines
+e0413d023 add enum StatusChars for $status_chars
+b9a11e87c factor out log_queue_save()
+484d4e74f key: tidy deps
+5de5efb6e refactor key binding dump functions
+c57d4e831 use STD*_FILENO
+2553d6f8b fuzz: tweak makefile to tidy main()
+e5366c98a tidy code
+b1c82c438 Use FreeBSD 14.2 in Cirrus CI (#4573)
+646a6e2ff Fix NULL pointer dereference when calling imap_logout_all()
+bcd3c8b03 improve localise_config()
+66455121b fix array leak in the verify certificate dialog
+
+* 488052057 commands: simplify commands_register()
+* 9f99c4566 commands: use const pointers
+* c657daf48 commands: move to NeoMutt
+merge: refactor NeoMutt commands
+
+66214f885 neomutt: home_dir, username, env
+ace867087 main: drop -B (batch mode) option
+f2b6539a3 fix crash in op_show_log_messages()
+
+* 6b3331a80 libcli - parse the command line
+* 28e1722d4 test: libcli - test the command line
+* 699657c61 main: refactor command line parsing
+merge: create libcli
+
+* 1c4e104ac cli: add help sections
+* 1dad991a1 cli: reorganise the 'neomutt -h' info
+* a763b0d35 build: update actions for new cli
+merge: reorg 'neomutt -h`
+
+fdbe8baad iwyu: fix headers of test code
+7b7c50919 coverity: fix defects
+  
+* 18f077724 version: factor out use_ansi
+* f0e4c92b9 move make_version()
+* 808489d81 refactor store_backend_list()
+* 5141ccca9 refactor compress_list()
+* 069a74be6 factor out version_get()
+merge: refactor version code
+
