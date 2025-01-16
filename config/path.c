@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2020-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2020-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
@@ -215,6 +215,20 @@ static intptr_t path_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * path_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool path_has_been_set(const struct ConfigSet *cs, void *var,
+                              const struct ConfigDef *cdef)
+{
+  const char *initial = path_tidy((const char *) cdef->initial, cdef->type & D_PATH_DIR);
+  const char *value = *(const char **) var;
+
+  bool rc = !mutt_str_equal(initial, value);
+  FREE(&initial);
+  return rc;
+}
+
+/**
  * path_reset - Reset a Path to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int path_reset(const struct ConfigSet *cs, void *var,
@@ -270,6 +284,7 @@ const struct ConfigSetType CstPath = {
   path_native_get,
   NULL, // string_plus_equals
   NULL, // string_minus_equals
+  path_has_been_set,
   path_reset,
   path_destroy,
 };

@@ -3,7 +3,7 @@
  * Type representing a user-defined variable "my_var"
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Rayford Shireman
  *
  * @copyright
@@ -213,6 +213,7 @@ const struct ConfigSetType CstMyVar = {
   myvar_native_get,
   myvar_string_plus_equals,
   NULL, // string_minus_equals
+  NULL, // has_been_set
   myvar_reset,
   myvar_destroy,
 };

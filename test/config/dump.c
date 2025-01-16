@@ -3,7 +3,7 @@
  * Test code for the Config Dump functions
  *
  * @authors
- * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
@@ -239,6 +239,27 @@ bool test_get_elem_list(void)
     struct ConfigSet *cs = create_sample_data();
     if (!cs)
       return false;
+
+    struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
+    hea = get_elem_list(cs);
+    if (!TEST_CHECK(!ARRAY_EMPTY(&hea)))
+    {
+      cs_free(&cs);
+      return false;
+    }
+
+    ARRAY_FREE(&hea);
+    cs_free(&cs);
+  }
+
+  {
+    struct ConfigSet *cs = create_sample_data();
+    if (!cs)
+      return false;
+
+    const char *name = "Apple";
+    int rc = cs_str_string_set(cs, name, "yes", NULL);
+    TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
     struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
     hea = get_elem_list(cs);

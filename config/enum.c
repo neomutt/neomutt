@@ -3,7 +3,7 @@
  * Type representing an enumeration
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -31,6 +31,8 @@
  */
 
 #include "config.h"
+#include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -157,6 +159,15 @@ static intptr_t enum_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * enum_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool enum_has_been_set(const struct ConfigSet *cs, void *var,
+                              const struct ConfigDef *cdef)
+{
+  return (cdef->initial != (*(unsigned char *) var));
+}
+
+/**
  * enum_reset - Reset an Enumeration to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int enum_reset(const struct ConfigSet *cs, void *var,
@@ -192,6 +203,7 @@ const struct ConfigSetType CstEnum = {
   enum_native_get,
   NULL, // string_plus_equals
   NULL, // string_minus_equals
+  enum_has_been_set,
   enum_reset,
   NULL, // destroy
 };

@@ -3,7 +3,7 @@
  * Type representing a string
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
@@ -35,6 +35,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -226,6 +227,18 @@ static int string_string_plus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * string_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool string_has_been_set(const struct ConfigSet *cs, void *var,
+                                const struct ConfigDef *cdef)
+{
+  const char *initial = (const char *) cdef->initial;
+  const char *value = *(const char **) var;
+
+  return !mutt_str_equal(initial, value);
+}
+
+/**
  * string_reset - Reset a String to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int string_reset(const struct ConfigSet *cs, void *var,
@@ -281,6 +294,7 @@ const struct ConfigSetType CstString = {
   string_native_get,
   string_string_plus_equals,
   NULL, // string_minus_equals
+  string_has_been_set,
   string_reset,
   string_destroy,
 };

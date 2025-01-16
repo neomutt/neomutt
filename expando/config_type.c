@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2023-2024 Tóth János <gomba007@gmail.com>
- * Copyright (C) 2023-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -35,6 +35,7 @@
 
 #include "config.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -276,6 +277,20 @@ static int expando_string_plus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * expando_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool expando_has_been_set(const struct ConfigSet *cs, void *var,
+                                 const struct ConfigDef *cdef)
+{
+  const char *initial = (const char *) cdef->initial;
+
+  struct Expando *exp = *(struct Expando **) var;
+  const char *exp_str = exp ? exp->string : NULL;
+
+  return !mutt_str_equal(initial, exp_str);
+}
+
+/**
  * expando_reset - Reset an Expando to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int expando_reset(const struct ConfigSet *cs, void *var,
@@ -337,6 +352,7 @@ const struct ConfigSetType CstExpando = {
   expando_native_get,
   expando_string_plus_equals,
   NULL, // string_minus_equals
+  expando_has_been_set,
   expando_reset,
   expando_destroy,
 };

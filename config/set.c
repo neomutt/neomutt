@@ -3,7 +3,7 @@
  * A collection of config items
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Rayford Shireman
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
@@ -456,6 +456,50 @@ int cs_str_reset(const struct ConfigSet *cs, const char *name, struct Buffer *er
   }
 
   return cs_he_reset(cs, he, err);
+}
+
+/**
+ * cs_he_has_been_set - Is the config value different to its initial value?
+ * @param cs   Config items
+ * @param he   HashElem representing config item
+ * @retval true  Config has been set
+ * @retval false Config has not been set
+ */
+bool cs_he_has_been_set(const struct ConfigSet *cs, struct HashElem *he)
+{
+  if (!cs || !he)
+    return false;
+
+  const struct ConfigSetType *cst = cs_get_type_def(cs, he->type);
+  if (!cst)
+    return false; // LCOV_EXCL_LINE
+
+  if (!cst->has_been_set) // Probably a my_var
+    return true;
+
+  struct ConfigDef *cdef = he->data;
+  void *var = &cdef->var;
+
+  return cst->has_been_set(cs, var, cdef);
+}
+
+/**
+ * cs_str_has_been_set - Is the config value different to its initial value?
+ * @param cs   Config items
+ * @param name Name of config item
+ * @retval true  Config has been set
+ * @retval false Config has not been set
+ */
+bool cs_str_has_been_set(const struct ConfigSet *cs, const char *name)
+{
+  if (!cs || !name)
+    return false;
+
+  struct HashElem *he = cs_get_elem(cs, name);
+  if (!he)
+    return false;
+
+  return cs_he_has_been_set(cs, he);
 }
 
 /**

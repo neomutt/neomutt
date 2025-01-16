@@ -3,7 +3,7 @@
  * Test code for the Long object
  *
  * @authors
- * Copyright (C) 2018-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
@@ -214,6 +214,9 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
     TEST_MSG("This test should have failed");
     return false;
   }
+
+  name = "Damson";
+  TEST_CHECK(cs_str_has_been_set(cs, name));
 
   name = "Papaya";
   rc = cs_str_string_set(cs, name, "1", err);

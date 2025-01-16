@@ -3,7 +3,7 @@
  * Type representing a number
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2021 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
@@ -35,6 +35,7 @@
 
 #include "config.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -271,6 +272,15 @@ static int number_string_minus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * number_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool number_has_been_set(const struct ConfigSet *cs, void *var,
+                                const struct ConfigDef *cdef)
+{
+  return (cdef->initial != native_get(var));
+}
+
+/**
  * number_reset - Reset a Number to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int number_reset(const struct ConfigSet *cs, void *var,
@@ -330,6 +340,7 @@ const struct ConfigSetType CstNumber = {
   number_native_get,
   number_string_plus_equals,
   number_string_minus_equals,
+  number_has_been_set,
   number_reset,
   NULL, // destroy
 };

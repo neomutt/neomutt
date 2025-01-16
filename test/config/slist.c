@@ -3,7 +3,7 @@
  * Test code for the Slist object
  *
  * @authors
- * Copyright (C) 2019-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2022 Michal Siedlaczek <michal@siedlaczek.me>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
@@ -462,6 +462,9 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   rc = cs_str_string_set(cs, name, "banana", err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  name = "Damson";
+  TEST_CHECK(cs_str_has_been_set(cs, name));
 
   return true;
 }
