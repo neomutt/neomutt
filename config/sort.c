@@ -3,7 +3,7 @@
  * Type representing a sort option
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2018 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  *
@@ -33,6 +33,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
 #include "mutt/lib.h"
@@ -194,6 +195,15 @@ static intptr_t sort_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * sort_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool sort_has_been_set(const struct ConfigSet *cs, void *var,
+                              const struct ConfigDef *cdef)
+{
+  return (cdef->initial != (*(short *) var));
+}
+
+/**
  * sort_reset - Reset a Sort to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int sort_reset(const struct ConfigSet *cs, void *var,
@@ -229,6 +239,7 @@ const struct ConfigSetType CstSort = {
   sort_native_get,
   NULL, // string_plus_equals
   NULL, // string_minus_equals
+  sort_has_been_set,
   sort_reset,
   NULL, // destroy
 };

@@ -3,7 +3,7 @@
  * Type representing a regular expression
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
@@ -281,6 +281,20 @@ static intptr_t regex_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * regex_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool regex_has_been_set(const struct ConfigSet *cs, void *var,
+                               const struct ConfigDef *cdef)
+{
+  const char *initial = (const char *) cdef->initial;
+
+  struct Regex *currx = *(struct Regex **) var;
+  const char *curval = currx ? currx->pattern : NULL;
+
+  return !mutt_str_equal(initial, curval);
+}
+
+/**
  * regex_reset - Reset a Regex to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int regex_reset(const struct ConfigSet *cs, void *var,
@@ -341,6 +355,7 @@ const struct ConfigSetType CstRegex = {
   regex_native_get,
   NULL, // string_plus_equals
   NULL, // string_minus_equals
+  regex_has_been_set,
   regex_reset,
   regex_destroy,
 };

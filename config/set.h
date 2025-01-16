@@ -3,7 +3,7 @@
  * A collection of config items
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -208,6 +208,23 @@ struct ConfigSetType
   int (*string_minus_equals)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef, const char *value, struct Buffer *err);
 
   /**
+   * @defgroup cfg_type_has_been_set has_been_set()
+   * @ingroup cfg_type_api
+   *
+   * has_been_set - Is the config value different to its initial value?
+   * @param cs   Config items
+   * @param var  Variable to check
+   * @param cdef Variable definition
+   * @retval true  Value differs from its initial value
+   * @retval false Value is the same as its initial value
+   *
+   * @pre cs   is not NULL
+   * @pre var  is not NULL
+   * @pre cdef is not NULL
+   */
+  bool (*has_been_set)(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef);
+
+  /**
    * @defgroup cfg_type_reset reset()
    * @ingroup cfg_type_api
    *
@@ -268,6 +285,7 @@ struct HashElem *cs_create_variable   (const struct ConfigSet *cs, struct Config
 struct HashElem *cs_inherit_variable  (const struct ConfigSet *cs, struct HashElem *he_parent, const char *name);
 void             cs_uninherit_variable(const struct ConfigSet *cs, const char *name);
 
+bool     cs_he_has_been_set        (const struct ConfigSet *cs, struct HashElem *he);
 int      cs_he_initial_get         (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *result);
 int      cs_he_initial_set         (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 intptr_t cs_he_native_get          (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
@@ -279,6 +297,7 @@ int      cs_he_string_plus_equals  (const struct ConfigSet *cs, struct HashElem 
 int      cs_he_string_set          (const struct ConfigSet *cs, struct HashElem *he, const char *value, struct Buffer *err);
 int      cs_he_delete              (const struct ConfigSet *cs, struct HashElem *he,                    struct Buffer *err);
 
+bool     cs_str_has_been_set       (const struct ConfigSet *cs, const char *name);
 int      cs_str_initial_get        (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
 int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_native_set         (const struct ConfigSet *cs, const char *name,    intptr_t value,    struct Buffer *err);

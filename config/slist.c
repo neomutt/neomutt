@@ -3,7 +3,7 @@
  * Type representing a list of strings
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  *
  * @copyright
@@ -34,6 +34,8 @@
  */
 
 #include "config.h"
+#include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -274,6 +276,23 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * slist_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool slist_has_been_set(const struct ConfigSet *cs, void *var,
+                               const struct ConfigDef *cdef)
+{
+  struct Slist *list = NULL;
+  const char *initial = (const char *) cdef->initial;
+
+  if (initial)
+    list = slist_parse(initial, cdef->type);
+
+  bool rc = !slist_equal(list, *(struct Slist **) var);
+  slist_free(&list);
+  return rc;
+}
+
+/**
  * slist_reset - Reset a Slist to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int slist_reset(const struct ConfigSet *cs, void *var,
@@ -331,6 +350,7 @@ const struct ConfigSetType CstSlist = {
   slist_native_get,
   slist_string_plus_equals,
   slist_string_minus_equals,
+  slist_has_been_set,
   slist_reset,
   slist_destroy,
 };

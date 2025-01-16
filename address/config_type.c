@@ -3,7 +3,7 @@
  * Config type representing an email address
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2019-2023 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
@@ -213,6 +213,24 @@ static intptr_t address_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * address_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool address_has_been_set(const struct ConfigSet *cs, void *var,
+                                 const struct ConfigDef *cdef)
+{
+  struct Buffer *value = buf_pool_get();
+  struct Address *a = *(struct Address **) var;
+  if (a)
+    mutt_addr_write(value, a, false);
+
+  const char *initial = (const char *) cdef->initial;
+
+  bool rc = !mutt_str_equal(initial, buf_string(value));
+  buf_pool_release(&value);
+  return rc;
+}
+
+/**
  * address_reset - Reset an Address to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int address_reset(const struct ConfigSet *cs, void *var,
@@ -258,6 +276,7 @@ const struct ConfigSetType CstAddress = {
   address_native_get,
   NULL, // string_plus_equals
   NULL, // string_minus_equals
+  address_has_been_set,
   address_reset,
   address_destroy,
 };

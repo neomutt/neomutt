@@ -3,7 +3,7 @@
  * Test code for the Expando object
  *
  * @authors
- * Copyright (C) 2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2024-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -273,6 +273,9 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   rc = cs_str_string_set(cs, name, "apple", err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  name = "Damson";
+  TEST_CHECK(!cs_str_has_been_set(cs, name));
 
   log_line(__func__);
   return true;

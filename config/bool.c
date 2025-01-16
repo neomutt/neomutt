@@ -3,7 +3,7 @@
  * Type representing a boolean
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -163,6 +163,15 @@ static intptr_t bool_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * bool_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool bool_has_been_set(const struct ConfigSet *cs, void *var,
+                              const struct ConfigDef *cdef)
+{
+  return (cdef->initial != (*(bool *) var));
+}
+
+/**
  * bool_reset - Reset a Bool to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int bool_reset(const struct ConfigSet *cs, void *var,
@@ -240,6 +249,7 @@ const struct ConfigSetType CstBool = {
   bool_native_get,
   NULL, // string_plus_equals
   NULL, // string_minus_equals
+  bool_has_been_set,
   bool_reset,
   NULL, // destroy
 };

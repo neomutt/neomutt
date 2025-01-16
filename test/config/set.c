@@ -3,7 +3,7 @@
  * Test code for the ConfigSet object
  *
  * @authors
- * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Jakub Jindra <jakub.jindra@socialbakers.com>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
@@ -78,6 +78,12 @@ int dummy_minus_equals(const struct ConfigSet *cs, void *var, const struct Confi
   return CSR_ERR_CODE;
 }
 
+static bool dummy_has_been_set(const struct ConfigSet *cs, void *var,
+                               const struct ConfigDef *cdef)
+{
+  return false;
+}
+
 static int dummy_reset(const struct ConfigSet *cs, void *var,
                        const struct ConfigDef *cdef, struct Buffer *err)
 {
@@ -143,6 +149,16 @@ bool degenerate_tests(struct ConfigSet *cs)
   if (!TEST_CHECK(cs_str_reset(NULL, "apple", NULL) != CSR_SUCCESS))
     return false;
   if (!TEST_CHECK(cs_str_reset(cs, NULL, NULL) != CSR_SUCCESS))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(NULL, he)))
+    return false;
+  if (!TEST_CHECK(!cs_he_has_been_set(cs, NULL)))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(NULL, "apple")))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(cs, NULL)))
+    return false;
+  if (!TEST_CHECK(!cs_str_has_been_set(cs, "apple")))
     return false;
   if (!TEST_CHECK(cs_he_initial_set(NULL, he, "42", NULL) != CSR_SUCCESS))
     return false;
@@ -377,6 +393,7 @@ void test_config_set(void)
     dummy_native_get,
     dummy_plus_equals,
     dummy_minus_equals,
+    dummy_has_been_set,
     dummy_reset,
     dummy_destroy,
   };

@@ -3,7 +3,7 @@
  * Type representing a quad-option
  *
  * @authors
- * Copyright (C) 2017-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2017-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  *
  * @copyright
@@ -37,6 +37,7 @@
 
 #include "config.h"
 #include <limits.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -168,6 +169,15 @@ static intptr_t quad_native_get(const struct ConfigSet *cs, void *var,
 }
 
 /**
+ * quad_has_been_set - Is the config value different to its initial value? - Implements ConfigSetType::has_been_set() - @ingroup cfg_type_has_been_set
+ */
+static bool quad_has_been_set(const struct ConfigSet *cs, void *var,
+                              const struct ConfigDef *cdef)
+{
+  return (cdef->initial != (*(char *) var));
+}
+
+/**
  * quad_reset - Reset a Quad-option to its initial value - Implements ConfigSetType::reset() - @ingroup cfg_type_reset
  */
 static int quad_reset(const struct ConfigSet *cs, void *var,
@@ -248,6 +258,7 @@ const struct ConfigSetType CstQuad = {
   quad_native_get,
   NULL, // string_plus_equals
   NULL, // string_minus_equals
+  quad_has_been_set,
   quad_reset,
   NULL, // destroy
 };

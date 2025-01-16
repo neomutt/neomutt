@@ -3,7 +3,7 @@
  * Test code for the Enum object
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
  * @copyright
@@ -252,6 +252,9 @@ static bool test_string_set(struct ConfigSubset *sub, struct Buffer *err)
 
   rc = cs_str_string_set(cs, name, "Badger", err);
   TEST_CHECK(CSR_RESULT(rc) != CSR_SUCCESS);
+
+  name = "Damson";
+  TEST_CHECK(cs_str_has_been_set(cs, name));
 
   log_line(__func__);
   return true;
