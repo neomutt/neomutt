@@ -52,6 +52,6 @@ int parse_grouplist(struct GroupList *gl, struct Buffer *buf, struct Buffer *s, 
 void source_stack_cleanup(void);
 int source_rc(const char *rcfile_path, struct Buffer *err);
 
-enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err);
+enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err);
 
 #endif /* MUTT_COMMANDS_H */

@@ -230,7 +230,7 @@ bool test_get_elem_list(void)
 
   {
     struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
-    hea = get_elem_list(NULL);
+    hea = get_elem_list(NULL, GEL_ALL_CONFIG);
     if (!TEST_CHECK(ARRAY_EMPTY(&hea)))
       return false;
   }
@@ -241,7 +241,7 @@ bool test_get_elem_list(void)
       return false;
 
     struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
-    hea = get_elem_list(cs);
+    hea = get_elem_list(cs, GEL_ALL_CONFIG);
     if (!TEST_CHECK(!ARRAY_EMPTY(&hea)))
     {
       cs_free(&cs);
@@ -262,7 +262,7 @@ bool test_get_elem_list(void)
     TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS);
 
     struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
-    hea = get_elem_list(cs);
+    hea = get_elem_list(cs, GEL_CHANGED_CONFIG);
     if (!TEST_CHECK(!ARRAY_EMPTY(&hea)))
     {
       cs_free(&cs);
@@ -349,7 +349,7 @@ bool test_dump_config(void)
     if (!fp)
       return false;
 
-    struct HashElemArray hea = get_elem_list(cs);
+    struct HashElemArray hea = get_elem_list(cs, GEL_ALL_CONFIG);
 
     // Degenerate tests
 

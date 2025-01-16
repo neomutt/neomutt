@@ -3,7 +3,7 @@
  * Subset of config items
  *
  * @authors
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Pietro Cerutti <gahr@gahr.ch>
  * Copyright (C) 2023 Rayford Shireman
  *
@@ -73,10 +73,11 @@ int elem_list_sort(const void *a, const void *b, void *sdata)
 
 /**
  * get_elem_list - Create a sorted list of all config items
- * @param cs ConfigSet to read
+ * @param cs    ConfigSet to read
+ * @param flags Flags, e.g. #GEL_ALL_CONFIG
  * @retval ptr Array of HashElem
  */
-struct HashElemArray get_elem_list(struct ConfigSet *cs)
+struct HashElemArray get_elem_list(struct ConfigSet *cs, enum GetElemListFlags flags)
 {
   struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
 
@@ -87,6 +88,9 @@ struct HashElemArray get_elem_list(struct ConfigSet *cs)
   struct HashElem *he = NULL;
   while ((he = mutt_hash_walk(cs->hash, &walk)))
   {
+    if ((flags == GEL_CHANGED_CONFIG) && !cs_he_has_been_set(cs, he))
+      continue;
+
     ARRAY_ADD(&hea, he);
   }
 
@@ -119,7 +123,7 @@ void cs_subset_free(struct ConfigSubset **ptr)
 
     // We don't know if any config items have been set,
     // so search for anything with a matching scope.
-    struct HashElemArray hea = get_elem_list(sub->cs);
+    struct HashElemArray hea = get_elem_list(sub->cs, GEL_ALL_CONFIG);
     struct HashElem **hep = NULL;
     ARRAY_FOREACH(hep, &hea)
     {
