@@ -305,7 +305,7 @@ enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
   // Handle special "reset all" syntax
   if (mutt_str_equal(name->data, "all"))
   {
-    struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs);
+    struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
     struct HashElem **hep = NULL;
     ARRAY_FOREACH(hep, &hea)
     {
@@ -415,7 +415,7 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
   if (buf_is_empty(name))
   {
     if (StartupComplete)
-      return set_dump(CS_DUMP_ONLY_CHANGED, err);
+      return set_dump(GEL_CHANGED_CONFIG, err);
     else
       return MUTT_CMD_SUCCESS;
   }
@@ -423,7 +423,7 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
   if (mutt_str_equal(name->data, "all"))
   {
     if (StartupComplete)
-      return set_dump(CS_DUMP_NO_FLAGS, err);
+      return set_dump(GEL_ALL_CONFIG, err);
     else
       return MUTT_CMD_SUCCESS;
   }

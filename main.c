@@ -1407,7 +1407,7 @@ main
     struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
     if (dump_variables)
     {
-      hea = get_elem_list(cs);
+      hea = get_elem_list(cs, GEL_ALL_CONFIG);
       rc = 0;
     }
     else

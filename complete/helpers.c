@@ -3,7 +3,7 @@
  * Auto-completion helpers
  *
  * @authors
- * Copyright (C) 2022-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2022-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Anna Figueiredo Gomes <navi@vlhl.dev>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  *
@@ -189,7 +189,7 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
       memset(cd->match_list, 0, cd->match_list_len);
       memset(cd->completed, 0, sizeof(cd->completed));
 
-      struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs);
+      struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
       struct HashElem **hep = NULL;
       ARRAY_FOREACH(hep, &hea)
       {

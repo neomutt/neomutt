@@ -3,7 +3,7 @@
  * Create a GraphViz dot file from the NeoMutt objects
  *
  * @authors
- * Copyright (C) 2018-2024 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2018-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -371,7 +371,7 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
     char scope[256];
     snprintf(scope, sizeof(scope), "%s:", sub->name);
 
-    struct HashElemArray hea = get_elem_list(sub->cs);
+    struct HashElemArray hea = get_elem_list(sub->cs, GEL_ALL_CONFIG);
     struct HashElem **hep = NULL;
     ARRAY_FOREACH(hep, &hea)
     {
@@ -401,7 +401,7 @@ void dot_config(FILE *fp, const char *name, int type, struct ConfigSubset *sub,
   }
   else
   {
-    struct HashElemArray hea = get_elem_list(sub->cs);
+    struct HashElemArray hea = get_elem_list(sub->cs, GEL_ALL_CONFIG);
     dot_type_number(fp, "count", ARRAY_SIZE(&hea));
     ARRAY_FREE(&hea);
   }

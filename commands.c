@@ -5,7 +5,7 @@
  * @authors
  * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * Copyright (C) 2019-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2019-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2020 Aditya De Saha <adityadesaha@gmail.com>
  * Copyright (C) 2020 Matthew Hughes <matthewhughes934@gmail.com>
  * Copyright (C) 2020 R Primus <rprimus@gmail.com>
@@ -878,14 +878,14 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
 
 /**
  * set_dump - Dump list of config variables into a file/pager
- * @param flags what configs to dump: see #ConfigDumpFlags
- * @param err buffer for error message
+ * @param flags Which config to dump, e.g. #GEL_CHANGED_CONFIG
+ * @param err   Buffer for error message
  * @return num See #CommandResult
  *
  * FIXME: Move me into parse/set.c.  Note: this function currently depends on
  * pager, which is the reason it is not included in the parse library.
  */
-enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
+enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
 {
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
@@ -900,8 +900,8 @@ enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
   }
 
   struct ConfigSet *cs = NeoMutt->sub->cs;
-  struct HashElemArray hea = get_elem_list(cs);
-  dump_config(cs, &hea, flags, fp_out);
+  struct HashElemArray hea = get_elem_list(cs, flags);
+  dump_config(cs, &hea, CS_DUMP_NO_FLAGS, fp_out);
   ARRAY_FREE(&hea);
 
   mutt_file_fclose(&fp_out);
