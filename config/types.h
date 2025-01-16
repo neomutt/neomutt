@@ -32,7 +32,6 @@ enum ConfigType
   DT_BOOL,        ///< boolean option
   DT_ENUM,        ///< an enumeration
   DT_EXPANDO,     ///< an expando
-  DT_HCACHE,      ///< header cache backend
   DT_LONG,        ///< a number (long)
   DT_MBTABLE,     ///< multibyte char table
   DT_MYVAR,       ///< a user-defined variable (my_foo)

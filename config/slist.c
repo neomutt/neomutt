@@ -34,7 +34,6 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -46,9 +45,6 @@
  */
 static void slist_destroy(const struct ConfigSet *cs, void *var, const struct ConfigDef *cdef)
 {
-  if (!cs || !var || !cdef)
-    return; /* LCOV_EXCL_LINE */
-
   struct Slist **l = (struct Slist **) var;
   if (!*l)
     return;
@@ -125,9 +121,6 @@ static int slist_string_set(const struct ConfigSet *cs, void *var, struct Config
 static int slist_string_get(const struct ConfigSet *cs, void *var,
                             const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if (var)
   {
     struct Slist *list = *(struct Slist **) var;
@@ -154,9 +147,6 @@ static int slist_string_get(const struct ConfigSet *cs, void *var,
 static int slist_native_set(const struct ConfigSet *cs, void *var,
                             const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc;
 
   if (slist_equal((struct Slist *) value, *(struct Slist **) var))
@@ -191,9 +181,6 @@ static int slist_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t slist_native_get(const struct ConfigSet *cs, void *var,
                                  const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   struct Slist *list = *(struct Slist **) var;
 
   return (intptr_t) list;
@@ -206,9 +193,6 @@ static int slist_string_plus_equals(const struct ConfigSet *cs, void *var,
                                     const struct ConfigDef *cdef,
                                     const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc = CSR_SUCCESS;
 
   /* Store empty strings as NULL */
@@ -254,9 +238,6 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
                                      const struct ConfigDef *cdef,
                                      const char *value, struct Buffer *err)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   int rc = CSR_SUCCESS;
 
   /* Store empty strings as NULL */
@@ -298,9 +279,6 @@ static int slist_string_minus_equals(const struct ConfigSet *cs, void *var,
 static int slist_reset(const struct ConfigSet *cs, void *var,
                        const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   struct Slist *list = NULL;
   const char *initial = (const char *) cdef->initial;
 

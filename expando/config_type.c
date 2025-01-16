@@ -210,9 +210,6 @@ static int expando_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t expando_native_get(const struct ConfigSet *cs, void *var,
                                    const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   struct Expando *exp = *(struct Expando **) var;
 
   return (intptr_t) exp;
@@ -284,9 +281,6 @@ static int expando_string_plus_equals(const struct ConfigSet *cs, void *var,
 static int expando_reset(const struct ConfigSet *cs, void *var,
                          const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   struct Expando *exp = NULL;
   const char *initial = (const char *) cdef->initial;
 

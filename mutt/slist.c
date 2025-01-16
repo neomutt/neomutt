@@ -62,6 +62,8 @@ struct Slist *slist_new(uint32_t flags)
  * @param list List to modify
  * @param str  String to add
  * @retval ptr Modified list
+ *
+ * @note String will be copied
  */
 struct Slist *slist_add_string(struct Slist *list, const char *str)
 {

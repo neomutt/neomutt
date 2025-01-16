@@ -31,7 +31,6 @@
  */
 
 #include "config.h"
-#include <limits.h>
 #include <stddef.h>
 #include <stdint.h>
 #include "mutt/lib.h"
@@ -91,9 +90,6 @@ static int enum_string_set(const struct ConfigSet *cs, void *var, struct ConfigD
 static int enum_string_get(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, struct Buffer *result)
 {
-  if (!cs || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   unsigned int value;
 
   if (var)
@@ -122,9 +118,6 @@ static int enum_string_get(const struct ConfigSet *cs, void *var,
 static int enum_native_set(const struct ConfigSet *cs, void *var,
                            const struct ConfigDef *cdef, intptr_t value, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   struct EnumDef *ed = (struct EnumDef *) cdef->data;
   if (!ed || !ed->lookup)
     return CSR_ERR_CODE;
@@ -160,9 +153,6 @@ static int enum_native_set(const struct ConfigSet *cs, void *var,
 static intptr_t enum_native_get(const struct ConfigSet *cs, void *var,
                                 const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return INT_MIN; /* LCOV_EXCL_LINE */
-
   return *(unsigned char *) var;
 }
 
@@ -172,9 +162,6 @@ static intptr_t enum_native_get(const struct ConfigSet *cs, void *var,
 static int enum_reset(const struct ConfigSet *cs, void *var,
                       const struct ConfigDef *cdef, struct Buffer *err)
 {
-  if (!cs || !var || !cdef)
-    return CSR_ERR_CODE; /* LCOV_EXCL_LINE */
-
   if (cdef->initial == (*(unsigned char *) var))
     return CSR_SUCCESS | CSR_SUC_NO_CHANGE;
 
