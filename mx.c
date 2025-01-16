@@ -81,9 +81,9 @@
 static const struct Mapping MboxTypeMap[] = {
   // clang-format off
   { "mbox",    MUTT_MBOX,    },
-  { "MMDF",    MUTT_MMDF,    },
-  { "MH",      MUTT_MH,      },
-  { "Maildir", MUTT_MAILDIR, },
+  { "mmdf",    MUTT_MMDF,    },
+  { "mh",      MUTT_MH,      },
+  { "maildir", MUTT_MAILDIR, },
   { NULL, 0, },
   // clang-format on
 };
