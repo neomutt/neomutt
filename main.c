@@ -397,55 +397,6 @@ static bool get_hostname(struct ConfigSet *cs)
 }
 
 /**
- * mutt_opts_cleanup - Clean up before quitting
- */
-static void mutt_opts_cleanup(void)
-{
-  source_stack_cleanup();
-
-  alias_cleanup();
-  sb_cleanup();
-
-  mutt_regexlist_free(&MailLists);
-  mutt_regexlist_free(&NoSpamList);
-  mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnMailLists);
-  mutt_regexlist_free(&UnSubscribedLists);
-
-  mutt_grouplist_cleanup();
-  driver_tags_cleanup();
-
-  /* Lists of strings */
-  mutt_list_free(&AlternativeOrderList);
-  mutt_list_free(&AutoViewList);
-  mutt_list_free(&HeaderOrderList);
-  mutt_list_free(&Ignore);
-  mutt_list_free(&MailToAllow);
-  mutt_list_free(&MimeLookupList);
-  mutt_list_free(&Muttrc);
-  mutt_list_free(&UnIgnore);
-  mutt_list_free(&UserHeader);
-
-  colors_cleanup();
-
-  FREE(&CurrentFolder);
-  FREE(&HomeDir);
-  FREE(&LastFolder);
-  FREE(&ShortHostname);
-  FREE(&Username);
-
-  mutt_replacelist_free(&SpamList);
-
-  mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
-
-  mutt_hist_cleanup();
-  mutt_keys_cleanup();
-
-  mutt_regexlist_free(&NoSpamList);
-  commands_cleanup();
-}
-
-/**
  * mutt_init - Initialise NeoMutt
  * @param cs          Config Set
  * @param dlevel      Command line debug level
@@ -2110,7 +2061,50 @@ main_exit:
   menu_cleanup();
   crypt_cleanup();
   mutt_ch_cache_cleanup();
-  mutt_opts_cleanup();
+
+  source_stack_cleanup();
+
+  alias_cleanup();
+  sb_cleanup();
+
+  mutt_regexlist_free(&MailLists);
+  mutt_regexlist_free(&NoSpamList);
+  mutt_regexlist_free(&SubscribedLists);
+  mutt_regexlist_free(&UnMailLists);
+  mutt_regexlist_free(&UnSubscribedLists);
+
+  mutt_grouplist_cleanup();
+  driver_tags_cleanup();
+
+  /* Lists of strings */
+  mutt_list_free(&AlternativeOrderList);
+  mutt_list_free(&AutoViewList);
+  mutt_list_free(&HeaderOrderList);
+  mutt_list_free(&Ignore);
+  mutt_list_free(&MailToAllow);
+  mutt_list_free(&MimeLookupList);
+  mutt_list_free(&Muttrc);
+  mutt_list_free(&UnIgnore);
+  mutt_list_free(&UserHeader);
+
+  colors_cleanup();
+
+  FREE(&CurrentFolder);
+  FREE(&HomeDir);
+  FREE(&LastFolder);
+  FREE(&ShortHostname);
+  FREE(&Username);
+
+  mutt_replacelist_free(&SpamList);
+
+  mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
+
+  mutt_hist_cleanup();
+  mutt_keys_cleanup();
+
+  mutt_regexlist_free(&NoSpamList);
+  commands_cleanup();
+
   subjrx_cleanup();
   attach_cleanup();
   alternates_cleanup();
