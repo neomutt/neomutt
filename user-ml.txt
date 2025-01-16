@@ -1,0 +1,89 @@
+Subject: NeoMutt 2025-04-04
+
+## Notes
+
+This is (mostly) a Bug-Fix Release.
+
+Most of other changes are improving the startup/help, e.g.
+
+- `neomutt -h       # Clearer help`
+- `neomutt -h send  # Specific help with examples`
+- `neomutt -DD      # Dump different (changed) config`
+
+## Sponsors
+
+- Jakub Jindra (@jindraj)
+- Scott Kostyshak (@scottkosty)
+- Igor Serebryany (@igor47)
+- Mark Korondi (@kmARC)
+- Mateus Etto (@Yutsuten)
+- Bastian Bittorf (@bittorf)
+- Nicolas Évrard (@nicoe)
+- Farzad Sadeghi (@terminaldweller)
+- Robert Ricci (@ricci)
+- Blunix GmbH - https://www.blunix.com/
+  Linux support company from Berlin, Germany
+
+- Robert Labudda
+- Patrick Koetter (@patrickbenkoetter@troet.cafe)
+- Reiko Kaps
+- Morgan Kelly
+- Izaac Mammadov (@IzaacMammadov)
+- Anon (BitCoin)
+
+Become a sponsor of NeoMutt - https://neomutt.org/sponsor
+
+## Thanks
+
+Many thanks to our *new contributors*:
+
+- @wbob
+- @Leif-W
+- Michael J Gruber (@mjg)
+
+and our *regular contributors*:
+
+- Chao-Kuei Hung (@ckhung)
+- Pietro Cerutti (@gahr)
+- Rayford Shireman (@rayfordshire)
+- Gerrit Rüsing (@kbcb)
+- Ian Zimmerman (@nobrowser)
+- Ryan d'Huart (@homoelectromagneticus)
+- Dennis Schön (@roccoblues)
+- Emir Sari (@bitigchi)
+- Mateus Etto (@yutsuten)
+- Marius Gedminas (@mgedmin)
+
+## Features
+
+- #4493 config: don't quote enums
+- #4493 link config dump to docs
+- #4494 refactor the Help Page for clarity
+- #4554 CLI: `neomutt -DD` -- Dump Different
+- #4593 browser: tag select rather than descend
+
+## Bug Fixes
+
+- #3469 source: fix variable interpretation
+- #4370 `mutt_oauth2`: refactor `sasl_string` computation
+- #4536 expand tabs to spaces in compose preview
+- #4537 fix dumping of initial values
+- #4538 move `real_name` init
+- #4542 Remove `MUTT_NEWFOLDER`, fix appending to mbox
+- #4546 Respect Ignore when modifying an email's headers
+- #4549 fix refresh on toggle `hide_thread_subject`
+- #4550 buffer: fix seek
+- #4551 add comma to single `<complete-query>` match
+- #4595 notmuch: check for parse failure
+- #4596 query: allow `<>`s around email addresses
+- pager: fix normal/stripe colour
+- fix colour leaks in pager
+- fix array leak in the verify certificate dialog
+
+## Translations
+
+- 100% German
+- 100% Turkish
+- 96% Lithuanian
+- 86% French
+- 49% Chinese (Traditional)
