@@ -33,7 +33,8 @@ struct Buffer;
 
 enum CommandResult set_dump(ConfigDumpFlags flags, struct Buffer *err)
 {
-  return MUTT_CMD_ERROR;
+  buf_strcpy(err, "config");
+  return MUTT_CMD_SUCCESS;
 }
 
 void test_parse_set(void)

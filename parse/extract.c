@@ -299,7 +299,7 @@ int parse_extract_token(struct Buffer *dest, struct Buffer *tok, TokenFlags flag
       buf_addch(dest, ch);
     }
   }
-  buf_addch(dest, 0); /* terminate the string */
+
   SKIPWS(tok->dptr);
   return 0;
 }

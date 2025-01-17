@@ -3,7 +3,7 @@
  * Parse the 'set' command
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 Rayford Shireman
  *
@@ -56,7 +56,7 @@
  * @note The type must be the full HashElem.type, not the sanitized DTYPE(HashElem.type)
  * @note The value is expanded in-place
  */
-static void command_set_expand_value(uint32_t type, struct Buffer *value)
+void command_set_expand_value(int type, struct Buffer *value)
 {
   ASSERT(value);
   if (DTYPE(type) == DT_PATH)
@@ -97,8 +97,8 @@ static void command_set_expand_value(uint32_t type, struct Buffer *value)
  *
  * This implements "set foo = bar" command where "bar" is present.
  */
-static enum CommandResult command_set_set(struct Buffer *name,
-                                          struct Buffer *value, struct Buffer *err)
+enum CommandResult command_set_set(struct Buffer *name, struct Buffer *value,
+                                   struct Buffer *err)
 {
   ASSERT(name);
   ASSERT(value);
@@ -113,7 +113,7 @@ static enum CommandResult command_set_set(struct Buffer *name,
       my_cdef.type = DT_MYVAR;
       he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, err);
       if (!he)
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
     }
     else
     {
@@ -140,7 +140,7 @@ static enum CommandResult command_set_set(struct Buffer *name,
     rc = cs_subset_he_string_set(NeoMutt->sub, he, value->data, err);
   }
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
 
   return MUTT_CMD_SUCCESS;
 }
@@ -157,8 +157,8 @@ static enum CommandResult command_set_set(struct Buffer *name,
  *
  * This implements "set foo += bar" command where "bar" is present.
  */
-static enum CommandResult command_set_increment(struct Buffer *name,
-                                                struct Buffer *value, struct Buffer *err)
+enum CommandResult command_set_increment(struct Buffer *name,
+                                         struct Buffer *value, struct Buffer *err)
 {
   ASSERT(name);
   ASSERT(value);
@@ -173,7 +173,7 @@ static enum CommandResult command_set_increment(struct Buffer *name,
       my_cdef.type = DT_MYVAR;
       he = cs_create_variable(NeoMutt->sub->cs, &my_cdef, err);
       if (!he)
-        return MUTT_CMD_ERROR;
+        return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
     }
     else
     {
@@ -218,8 +218,8 @@ static enum CommandResult command_set_increment(struct Buffer *name,
  *
  * This implements "set foo -= bar" command where "bar" is present.
  */
-static enum CommandResult command_set_decrement(struct Buffer *name,
-                                                struct Buffer *value, struct Buffer *err)
+enum CommandResult command_set_decrement(struct Buffer *name,
+                                         struct Buffer *value, struct Buffer *err)
 {
   ASSERT(name);
   ASSERT(value);
@@ -254,7 +254,7 @@ static enum CommandResult command_set_decrement(struct Buffer *name,
  *
  * This implements "unset foo"
  */
-static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
@@ -284,7 +284,7 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
     rc = cs_subset_he_string_set(NeoMutt->sub, he, NULL, err);
   }
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
 
   return MUTT_CMD_SUCCESS;
 }
@@ -299,7 +299,7 @@ static enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *
  *
  * This implements "reset foo" (foo being any config variable) and "reset all".
  */
-static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   // Handle special "reset all" syntax
@@ -307,7 +307,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
   {
     struct HashElem **he_list = get_elem_list(NeoMutt->sub->cs);
     if (!he_list)
-      return MUTT_CMD_ERROR;
+      return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
 
     for (size_t i = 0; he_list[i]; i++)
     {
@@ -344,7 +344,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
     rc = cs_subset_he_reset(NeoMutt->sub, he, err);
   }
   if (CSR_RESULT(rc) != CSR_SUCCESS)
-    return MUTT_CMD_ERROR;
+    return MUTT_CMD_ERROR; // LCOV_EXCL_LINE
 
   return MUTT_CMD_SUCCESS;
 }
@@ -359,7 +359,7 @@ static enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *
  *
  * This implements "toggle foo".
  */
-static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   struct HashElem *he = cs_subset_lookup(NeoMutt->sub, name->data);
@@ -405,7 +405,7 @@ static enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer 
  *
  * This implements "set foo?".  The buffer err will contain something like "set foo = bar".
  */
-static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
+enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
 {
   ASSERT(name);
   // In the interactive case (outside of the initial parsing of neomuttrc) we
@@ -448,10 +448,12 @@ static enum CommandResult command_set_query(struct Buffer *name, struct Buffer *
   int rc = cs_subset_he_string_get(NeoMutt->sub, he, value);
   if (CSR_RESULT(rc) != CSR_SUCCESS)
   {
+    // LCOV_EXCL_START
     buf_reset(err);
     buf_addstr(err, value->data);
     buf_pool_release(&value);
     return MUTT_CMD_ERROR;
+    // LCOV_EXCL_STOP
   }
   if (DTYPE(he->type) == DT_PATH)
     mutt_pretty_mailbox(value->data, value->dsize);

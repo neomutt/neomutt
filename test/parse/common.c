@@ -38,5 +38,5 @@ struct Command mutt_commands[] = {
 
 void buf_expand_path(struct Buffer *buf)
 {
-  buf_insert(buf, 0, "expanded");
+  buf_insert(buf, 0, "expanded/");
 }

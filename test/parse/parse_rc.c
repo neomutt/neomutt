@@ -3,7 +3,7 @@
  * Test code for parsing config files
  *
  * @authors
- * Copyright (C) 2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2023-2025 Richard Russon <rich@flatcap.org>
  * Copyright (C) 2023 Dennis Schön <mail@dennis-schoen.de>
  * Copyright (C) 2023 наб <nabijaczleweli@nabijaczleweli.xyz>
  *
@@ -32,6 +32,7 @@
 #include "email/lib.h"
 #include "core/lib.h"
 #include "parse/lib.h"
+#include "common.h"
 #include "test_common.h" // IWYU pragma: keep
 
 extern const struct Mapping MboxTypeMap[];
@@ -126,10 +127,26 @@ void test_parse_rc(void)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
 
+  commands_register(mutt_commands, 4);
+
+  // enum CommandResult parse_rc_line(const char *line, struct Buffer *err);
   TEST_CASE("parse_rc_line");
   rc = parse_rc_line(NULL, NULL);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
 
+  TEST_CASE("parse_rc_line");
+  rc = parse_rc_line("; set", NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  TEST_CASE("parse_rc_line");
+  rc = parse_rc_line("# set", NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
+
+  TEST_CASE("parse_rc_line");
+  rc = parse_rc_line("unknown", NULL);
+  TEST_CHECK_NUM_EQ(rc, MUTT_CMD_ERROR);
+
+  // enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token, struct Buffer *err);
   TEST_CASE("parse_rc_buffer");
   rc = parse_rc_buffer(NULL, NULL, NULL);
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
@@ -138,4 +155,6 @@ void test_parse_rc(void)
   cs_str_initial_set(NeoMutt->sub->cs, "from", "rich@flatcap.org", NULL);
   cs_str_reset(NeoMutt->sub->cs, "from", NULL);
   test_parse_set();
+
+  commands_cleanup();
 }
