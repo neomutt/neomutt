@@ -264,6 +264,21 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_email_new)                                            \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_free)                               \
   NEOMUTT_TEST_ITEM(test_mutt_autocrypthdr_new)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_auto_subscribe)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_check_encoding)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_check_mime_type)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_extract_message_id)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_is_message_type)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_matches_ignore)                                  \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_content_type)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_mailto)                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_multipart)                                 \
+  NEOMUTT_TEST_ITEM(test_mutt_parse_part)                                      \
+  NEOMUTT_TEST_ITEM(test_mutt_read_mime_header)                                \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_line)                               \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_message)                            \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_header)                              \
+  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_line)                                \
                                                                                \
   /* envelope */                                                               \
   NEOMUTT_TEST_ITEM(test_mutt_env_cmp_strict)                                  \
@@ -531,21 +546,6 @@ void test_fini(void);
                                                                                \
   /* parse */                                                                  \
   NEOMUTT_TEST_ITEM(test_command_set)                                          \
-  NEOMUTT_TEST_ITEM(test_mutt_auto_subscribe)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_check_encoding)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_check_mime_type)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_extract_message_id)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_is_message_type)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_matches_ignore)                                  \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_content_type)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_mailto)                                    \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_multipart)                                 \
-  NEOMUTT_TEST_ITEM(test_mutt_parse_part)                                      \
-  NEOMUTT_TEST_ITEM(test_mutt_read_mime_header)                                \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_line)                               \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_parse_message)                            \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_header)                              \
-  NEOMUTT_TEST_ITEM(test_mutt_rfc822_read_line)                                \
   NEOMUTT_TEST_ITEM(test_parse_extract_token)                                  \
   NEOMUTT_TEST_ITEM(test_parse_rc)                                             \
   NEOMUTT_TEST_ITEM(test_parse_set)                                            \

@@ -40,15 +40,3 @@ void buf_expand_path(struct Buffer *buf)
 {
   buf_insert(buf, 0, "expanded");
 }
-
-void myvar_append(const char *var, const char *val)
-{
-}
-
-void myvar_del(const char *var)
-{
-}
-
-void myvar_set(const char *var, const char *val)
-{
-}

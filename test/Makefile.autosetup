@@ -228,7 +228,22 @@ EMAIL_OBJS	= test/email/common.o \
 		  test/email/email_header_update.o \
 		  test/email/email_new.o \
 		  test/email/mutt_autocrypthdr_free.o \
-		  test/email/mutt_autocrypthdr_new.o
+		  test/email/mutt_autocrypthdr_new.o \
+		  test/email/mutt_auto_subscribe.o \
+		  test/email/mutt_check_encoding.o \
+		  test/email/mutt_check_mime_type.o \
+		  test/email/mutt_extract_message_id.o \
+		  test/email/mutt_is_message_type.o \
+		  test/email/mutt_matches_ignore.o \
+		  test/email/mutt_parse_content_type.o \
+		  test/email/mutt_parse_mailto.o \
+		  test/email/mutt_parse_multipart.o \
+		  test/email/mutt_parse_part.o \
+		  test/email/mutt_read_mime_header.o \
+		  test/email/mutt_rfc822_parse_line.o \
+		  test/email/mutt_rfc822_parse_message.o \
+		  test/email/mutt_rfc822_read_header.o \
+		  test/email/mutt_rfc822_read_line.o
 
 ENVELOPE_OBJS	= test/envelope/mutt_env_cmp_strict.o \
 		  test/envelope/mutt_env_free.o \
@@ -483,21 +498,6 @@ PARAMETER_OBJS	= test/parameter/mutt_param_cmp_strict.o \
 		  test/parameter/mutt_param_set.o
 
 PARSE_OBJS	= test/parse/common.o \
-		  test/parse/mutt_auto_subscribe.o \
-		  test/parse/mutt_check_encoding.o \
-		  test/parse/mutt_check_mime_type.o \
-		  test/parse/mutt_extract_message_id.o \
-		  test/parse/mutt_is_message_type.o \
-		  test/parse/mutt_matches_ignore.o \
-		  test/parse/mutt_parse_content_type.o \
-		  test/parse/mutt_parse_mailto.o \
-		  test/parse/mutt_parse_multipart.o \
-		  test/parse/mutt_parse_part.o \
-		  test/parse/mutt_read_mime_header.o \
-		  test/parse/mutt_rfc822_parse_line.o \
-		  test/parse/mutt_rfc822_parse_message.o \
-		  test/parse/mutt_rfc822_read_header.o \
-		  test/parse/mutt_rfc822_read_line.o \
 		  test/parse/parse_extract_token.o \
 		  test/parse/parse_rc.o \
 		  test/parse/parse_rc_line.o \
