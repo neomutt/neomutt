@@ -362,7 +362,8 @@ GROUP_OBJS	= test/group/mutt_group_match.o \
 		  test/group/mutt_grouplist_remove_regex.o \
 		  test/group/mutt_pattern_group.o
 
-GUI_OBJS	= test/gui/reflow.o \
+GUI_OBJS	= test/gui/mutt_str_expand_tabs.o \
+		  test/gui/reflow.o \
 		  test/gui/swap.o \
 		  test/gui/visible.o
 
@@ -622,7 +623,6 @@ STRING_OBJS	= test/string/mutt_istrn_cmp.o \
 		  test/string/mutt_str_copy.o \
 		  test/string/mutt_str_dup.o \
 		  test/string/mutt_str_equal.o \
-		  test/string/mutt_str_expand_tabs.o \
 		  test/string/mutt_str_find_word.o \
 		  test/string/mutt_str_getenv.o \
 		  test/string/mutt_str_hyphenate.o \

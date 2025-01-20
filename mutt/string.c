@@ -39,7 +39,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
-#include "gui/lib.h"
 #include "exit.h"
 #include "logging2.h"
 #include "memory.h"
@@ -922,50 +921,4 @@ int mutt_str_inbox_cmp(const char *a, const char *b)
 
 #undef CMP_INBOX
 #undef IS_INBOX
-}
-
-/**
- * mutt_str_expand_tabs - Convert tabs to spaces in a string
- * @param str       Input string
- * @param len       Length of the string
- * @param tabwidth  The number of spaces per indentation-level
- *
- * Replace tab characters (`\t`) with spaces in the string. The string will be
- * resized to fit the expanded version if necessary.
- */
-char *mutt_str_expand_tabs(char *str, size_t *len, int tabwidth)
-{
-  if (!str || !len || (tabwidth < 1))
-    return NULL;
-
-  // calculate how much space we need
-  size_t required_len = 0;
-  for (int i = 0; (i < *len) && (str[i] != '\0'); i++)
-  {
-    if (str[i] == '\t')
-      required_len += tabwidth; // cheat, just assume full tab width
-    else
-      required_len++;
-  }
-
-  // resize the string if there isn't enough space
-  while (required_len > *len)
-  {
-    *len += 256;
-    MUTT_MEM_REALLOC(&str, *len, char);
-  }
-
-  // expand tabs
-  for (int i = 0; i < *len; i++)
-  {
-    if (str[i] == '\t')
-    {
-      int num_cells = mutt_strnwidth(str, i);
-      int indent = abs((num_cells % tabwidth) - tabwidth);
-      memmove(str + i + indent, str + i + 1, *len - (i + indent) - indent);
-      memset(str + i, ' ', indent);
-    }
-  }
-
-  return str;
 }

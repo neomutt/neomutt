@@ -403,6 +403,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_pattern_group)                                   \
                                                                                \
   /* gui */                                                                    \
+  NEOMUTT_TEST_ITEM(test_mutt_str_expand_tabs)                                 \
   NEOMUTT_TEST_ITEM(test_window_reflow)                                        \
   NEOMUTT_TEST_ITEM(test_window_swap)                                          \
   NEOMUTT_TEST_ITEM(test_window_visible)                                       \
@@ -649,7 +650,6 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_mutt_str_copy)                                        \
   NEOMUTT_TEST_ITEM(test_mutt_str_dup)                                         \
   NEOMUTT_TEST_ITEM(test_mutt_str_equal)                                       \
-  NEOMUTT_TEST_ITEM(test_mutt_str_expand_tabs)                                 \
   NEOMUTT_TEST_ITEM(test_mutt_str_find_word)                                   \
   NEOMUTT_TEST_ITEM(test_mutt_str_getenv)                                      \
   NEOMUTT_TEST_ITEM(test_mutt_str_hyphenate)                                   \

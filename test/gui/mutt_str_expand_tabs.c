@@ -26,6 +26,7 @@
 #include "acutest.h"
 #include <string.h>
 #include "mutt/lib.h"
+#include "gui/lib.h"
 #include "test_common.h"
 
 struct TestCase
