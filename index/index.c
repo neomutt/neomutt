@@ -415,6 +415,12 @@ static int index_config_observer(struct NotifyCallback *nc)
     config_use_threads(ev_c->sub);
     mutt_debug(LL_DEBUG5, "config done\n");
   }
+  else if (mutt_str_equal(ev_c->name, "hide_thread_subject"))
+  {
+    struct MuttWindow *dlg = dialog_find(win);
+    struct IndexSharedData *shared = dlg->wdata;
+    mutt_sort_headers(shared->mailbox_view, false);
+  }
 
   menu_queue_redraw(win->wdata, MENU_REDRAW_INDEX);
   return 0;
