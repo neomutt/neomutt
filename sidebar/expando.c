@@ -38,20 +38,16 @@
 
 /**
  * add_indent - Generate the needed indentation
- * @param buf    Output buffer
- * @param buflen Size of output buffer
- * @param sbe    Sidebar entry
- * @retval num Bytes written
+ * @param[out] buf   Output buffer
+ * @param[in]  depth Depth of indent
  */
-static size_t add_indent(char *buf, size_t buflen, const struct SbEntry *sbe)
+static void add_indent(struct Buffer *buf, int depth)
 {
-  size_t res = 0;
   const char *const c_sidebar_indent_string = cs_subset_string(NeoMutt->sub, "sidebar_indent_string");
-  for (int i = 0; i < sbe->depth; i++)
+  for (int i = 0; i < depth; i++)
   {
-    res += mutt_str_copy(buf + res, c_sidebar_indent_string, buflen - res);
+    buf_addstr(buf, c_sidebar_indent_string);
   }
-  return res;
 }
 
 /**
@@ -80,21 +76,12 @@ static void sidebar_description(const struct ExpandoNode *node, void *data,
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
 
-  char tmp[256] = { 0 };
-
-  const size_t ilen = sizeof(tmp);
-  const size_t off = add_indent(tmp, ilen, sbe);
+  add_indent(buf, sbe->depth);
 
   if (sbe->mailbox->name)
-  {
-    snprintf(tmp + off, ilen - off, "%s", sbe->mailbox->name);
-  }
+    buf_addstr(buf, sbe->mailbox->name);
   else
-  {
-    snprintf(tmp + off, ilen - off, "%s", sbe->box);
-  }
-
-  buf_strcpy(buf, tmp);
+    buf_addstr(buf, sbe->box);
 }
 
 /**
@@ -177,13 +164,8 @@ static void sidebar_name(const struct ExpandoNode *node, void *data,
   const struct SidebarData *sdata = data;
   const struct SbEntry *sbe = sdata->entry;
 
-  char tmp[256] = { 0 };
-
-  const size_t ilen = sizeof(tmp);
-  const size_t off = add_indent(tmp, ilen, sbe);
-  snprintf(tmp + off, ilen - off, "%s", sbe->box);
-
-  buf_strcpy(buf, tmp);
+  add_indent(buf, sbe->depth);
+  buf_addstr(buf, sbe->box);
 }
 
 /**
