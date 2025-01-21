@@ -413,23 +413,6 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
   struct Buffer *err = buf_pool_get();
   struct Buffer *buf = buf_pool_get();
 
-  mutt_grouplist_init();
-  alias_init();
-  commands_init();
-  hooks_init();
-  mutt_comp_init();
-  imap_init();
-#ifdef USE_LUA
-  mutt_lua_init();
-#endif
-  driver_tags_init();
-
-  menu_init();
-  sb_init();
-#ifdef USE_NOTMUCH
-  nm_init();
-#endif
-
 #ifdef NEOMUTT_DIRECT_COLORS
   /* Test if we run in a terminal which supports direct colours.
    *
@@ -675,22 +658,6 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
     goto done;
   }
 
-  mutt_hist_init();
-  mutt_hist_read_file();
-
-#ifdef USE_NOTMUCH
-  const bool c_virtual_spool_file = cs_subset_bool(NeoMutt->sub, "virtual_spool_file");
-  if (c_virtual_spool_file)
-  {
-    /* Find the first virtual folder and open it */
-    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
-    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_NOTMUCH);
-    struct MailboxNode *mp = STAILQ_FIRST(&ml);
-    if (mp)
-      cs_str_string_set(cs, "spool_file", mailbox_path(mp->mailbox), NULL);
-    neomutt_mailboxlist_clear(&ml);
-  }
-#endif
   rc = 0;
 
 done:
@@ -1362,10 +1329,44 @@ main
     log_gui();
   }
 
+  mutt_grouplist_init();
+  alias_init();
+  commands_init();
+  hooks_init();
+  mutt_comp_init();
+  imap_init();
+#ifdef USE_LUA
+  mutt_lua_init();
+#endif
+  driver_tags_init();
+
+  menu_init();
+  sb_init();
+#ifdef USE_NOTMUCH
+  nm_init();
+#endif
+
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, dlevel, dfile, flags & MUTT_CLI_NOSYSRC, &commands);
   if (rc2 != 0)
     goto main_curses;
+
+  mutt_hist_init();
+  mutt_hist_read_file();
+
+#ifdef USE_NOTMUCH
+  const bool c_virtual_spool_file = cs_subset_bool(NeoMutt->sub, "virtual_spool_file");
+  if (c_virtual_spool_file)
+  {
+    /* Find the first virtual folder and open it */
+    struct MailboxList ml = STAILQ_HEAD_INITIALIZER(ml);
+    neomutt_mailboxlist_get_all(&ml, NeoMutt, MUTT_NOTMUCH);
+    struct MailboxNode *mp = STAILQ_FIRST(&ml);
+    if (mp)
+      cs_str_string_set(cs, "spool_file", mailbox_path(mp->mailbox), NULL);
+    neomutt_mailboxlist_clear(&ml);
+  }
+#endif
 
   mutt_init_abort_key();
 
