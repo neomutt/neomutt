@@ -312,23 +312,6 @@ static char *getmailname(void)
 #endif
 
 /**
- * config_set_initial - Set the initial value of a Config Option
- */
-static bool config_set_initial(struct ConfigSet *cs, const char *name, const char *value)
-{
-  struct Buffer *err = buf_pool_get();
-
-  int rc = cs_str_initial_set(cs, name, value, err);
-  if (!buf_is_empty(err))
-    mutt_error("%s", buf_string(err));
-
-  buf_pool_release(&err);
-  cs_str_reset(cs, name, NULL);
-
-  return (CSR_RESULT(rc) == CSR_SUCCESS);
-}
-
-/**
  * get_hostname - Find the Fully-Qualified Domain Name
  * @param cs Config Set
  * @retval true  Success
@@ -405,7 +388,7 @@ static bool get_hostname(struct ConfigSet *cs)
 
   if (fqdn)
   {
-    config_set_initial(cs, "hostname", fqdn);
+    config_str_set_initial(cs, "hostname", fqdn);
     FREE(&fqdn);
   }
 
@@ -466,7 +449,7 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
     if (env_colorterm && (mutt_str_equal(env_colorterm, "truecolor") ||
                           mutt_str_equal(env_colorterm, "24bit")))
     {
-      config_set_initial(cs, "color_directcolor", "yes");
+      config_str_set_initial(cs, "color_directcolor", "yes");
     }
   }
 #endif
@@ -484,7 +467,7 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
 #endif
     p = buf_string(buf);
   }
-  config_set_initial(cs, "spool_file", p);
+  config_str_set_initial(cs, "spool_file", p);
 
   p = mutt_str_getenv("REPLYTO");
   if (p)
@@ -499,7 +482,7 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
 
   p = mutt_str_getenv("EMAIL");
   if (p)
-    config_set_initial(cs, "from", p);
+    config_str_set_initial(cs, "from", p);
 
   /* "$mailcap_path" precedence: config file, environment, code */
   struct Buffer *mc = buf_pool_get();
@@ -516,14 +499,14 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
     buf_reset(mc);
   }
   slist_to_buffer(sl_mc, mc);
-  config_set_initial(cs, "mailcap_path", buf_string(mc));
+  config_str_set_initial(cs, "mailcap_path", buf_string(mc));
   slist_free(&sl_mc);
   buf_pool_release(&mc);
 
   /* "$tmp_dir" precedence: config file, environment, code */
   const char *env_tmp = mutt_str_getenv("TMPDIR");
   if (env_tmp)
-    config_set_initial(cs, "tmp_dir", env_tmp);
+    config_str_set_initial(cs, "tmp_dir", env_tmp);
 
   /* "$visual", "$editor" precedence: config file, environment, code */
   const char *env_ed = mutt_str_getenv("VISUAL");
@@ -531,10 +514,10 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
     env_ed = mutt_str_getenv("EDITOR");
   if (!env_ed)
     env_ed = "vi";
-  config_set_initial(cs, "editor", env_ed);
+  config_str_set_initial(cs, "editor", env_ed);
 
   const char *charset = mutt_ch_get_langinfo_charset();
-  config_set_initial(cs, "charset", charset);
+  config_str_set_initial(cs, "charset", charset);
   mutt_ch_set_charset(charset);
   FREE(&charset);
 
@@ -548,12 +531,12 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
       c_real_name = mutt_gecos_name(name, sizeof(name), pw);
     }
   }
-  config_set_initial(cs, "real_name", c_real_name);
+  config_str_set_initial(cs, "real_name", c_real_name);
 
 #ifdef HAVE_GETSID
   /* Unset suspend by default if we're the session leader */
   if (getsid(0) == getpid())
-    config_set_initial(cs, "suspend", "no");
+    config_str_set_initial(cs, "suspend", "no");
 #endif
 
   /* RFC2368, "4. Unsafe headers"
@@ -767,8 +750,7 @@ static void reset_tilde(struct ConfigSet *cs)
     buf_reset(value);
     cs_he_initial_get(cs, he, value);
     buf_expand_path_regex(value, false);
-    cs_he_initial_set(cs, he, value->data, NULL);
-    cs_he_reset(cs, he, NULL);
+    config_he_set_initial(cs, he, value->data);
   }
   buf_pool_release(&value);
 }
@@ -802,9 +784,7 @@ static void localise_config(struct ConfigSet *cs)
 
     // Lookup the translation
     const char *l10n = gettext(buf_string(value));
-
-    cs_he_initial_set(cs, he, l10n, NULL);
-    cs_he_reset(cs, he, NULL);
+    config_he_set_initial(cs, he, l10n);
   }
   buf_pool_release(&value);
 }
@@ -981,7 +961,7 @@ static bool get_user_info(struct ConfigSet *cs)
   }
 
   if (shell)
-    config_set_initial(cs, "shell", shell);
+    config_str_set_initial(cs, "shell", shell);
 
   return true;
 }
@@ -1307,7 +1287,7 @@ main
 #endif
 
   if (dfile)
-    config_set_initial(cs, "debug_file", dfile);
+    config_str_set_initial(cs, "debug_file", dfile);
 
   if (dlevel)
   {
@@ -1318,7 +1298,7 @@ main
       goto main_exit; // TEST07: neomutt -d xyz
     }
 
-    config_set_initial(cs, "debug_level", dlevel);
+    config_str_set_initial(cs, "debug_level", dlevel);
   }
 
   mutt_log_prep();
@@ -1403,12 +1383,12 @@ main
   }
 
   if (cli_nntp)
-    config_set_initial(cs, "news_server", cli_nntp);
+    config_str_set_initial(cs, "news_server", cli_nntp);
 
   /* Initialize crypto backends.  */
   crypt_init();
 
-  if (new_type && !config_set_initial(cs, "mbox_type", new_type))
+  if (new_type && !config_str_set_initial(cs, "mbox_type", new_type))
     goto main_curses;
 
   if (dump_variables || !STAILQ_EMPTY(&queries))
