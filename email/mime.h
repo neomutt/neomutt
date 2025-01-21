@@ -86,7 +86,7 @@ extern const char MimeSpecials[];
      (strcasecmp((body)->subtype, "news") == 0) ||                             \
      (strcasecmp((body)->subtype, "global") == 0))))
 
-#define TYPE(body)                                                             \
+#define BODY_TYPE(body)                                                        \
   ((body->type == TYPE_OTHER) && body->xtype ? body->xtype : BodyTypes[(body->type)])
 
 #define ENCODING(x) BodyEncodings[(x)]

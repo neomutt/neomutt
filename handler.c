@@ -99,14 +99,15 @@ static void print_part_line(struct State *state, struct Body *b_email, int n)
   if (n == 0)
   {
     state_printf(state, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
-                 TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
+                 BODY_TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
                  charset ? charset : "", ENCODING(b_email->encoding), buf_string(length));
   }
   else
   {
     state_printf(state, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
-                 n, TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
-                 charset ? charset : "", ENCODING(b_email->encoding), buf_string(length));
+                 n, BODY_TYPE(b_email), b_email->subtype,
+                 charset ? "; charset=" : "", charset ? charset : "",
+                 ENCODING(b_email->encoding), buf_string(length));
   }
   buf_pool_release(&length);
 }
@@ -488,7 +489,7 @@ static bool is_autoview(struct Body *b)
   char type[256] = { 0 };
   bool is_av = false;
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
 
   const bool c_implicit_auto_view = cs_subset_bool(NeoMutt->sub, "implicit_auto_view");
   if (c_implicit_auto_view)
@@ -544,7 +545,7 @@ static int autoview_handler(struct Body *b_email, struct State *state)
   pid_t pid;
   int rc = 0;
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b_email), b_email->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b_email), b_email->subtype);
   mailcap_lookup(b_email, type, sizeof(type), entry, MUTT_MC_AUTOVIEW);
 
   fname = mutt_str_dup(b_email->filename);
@@ -873,8 +874,8 @@ static int external_body_handler(struct Body *b_email, struct State *state)
         }
       }
 
-      buf_printf(banner, fmt, TYPE(b_email->parts), b_email->parts->subtype,
-                 buf_string(pretty_size), expiration);
+      buf_printf(banner, fmt, BODY_TYPE(b_email->parts),
+                 b_email->parts->subtype, buf_string(pretty_size), expiration);
       state_attach_puts(state, buf_string(banner));
       if (b_email->parts->filename)
       {
@@ -899,7 +900,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
          each line should start with "[-- " and end with " --]".
          The "%s/%s" is a MIME type, e.g. "text/plain". */
       buf_printf(banner, _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has expired --]\n"),
-                 TYPE(b_email->parts), b_email->parts->subtype);
+                 BODY_TYPE(b_email->parts), b_email->parts->subtype);
       state_attach_puts(state, buf_string(banner));
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
@@ -920,7 +921,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
          access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
          "LOCAL-FILE", "MAIL-SERVER". */
       buf_printf(banner, _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
-                 TYPE(b_email->parts), b_email->parts->subtype, access_type);
+                 BODY_TYPE(b_email->parts), b_email->parts->subtype, access_type);
       state_attach_puts(state, buf_string(banner));
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
@@ -990,7 +991,7 @@ static int alternative_handler(struct Body *b_email, struct State *state)
       b = b_email;
     while (b)
     {
-      const char *bt = TYPE(b);
+      const char *bt = BODY_TYPE(b);
       if (mutt_istrn_equal(bt, np->data, btlen) && (bt[btlen] == 0))
       {
         /* the basetype matches */
@@ -1294,7 +1295,7 @@ static int multipart_handler(struct Body *b_email, struct State *state)
     {
       mutt_error(_("One or more parts of this message could not be displayed"));
       mutt_debug(LL_DEBUG1, "Failed on attachment #%d, type %s/%s\n", count,
-                 TYPE(p), NONULL(p->subtype));
+                 BODY_TYPE(p), NONULL(p->subtype));
     }
 
     if ((state->flags & STATE_REPLYING) && c_include_only_first && (state->flags & STATE_FIRSTDONE))
@@ -1444,8 +1445,8 @@ static int run_decode_and_handler(struct Body *b, struct State *state,
     rc = handler(b, state);
     if (rc != 0)
     {
-      mutt_debug(LL_DEBUG1, "Failed on attachment of type %s/%s\n", TYPE(b),
-                 NONULL(b->subtype));
+      mutt_debug(LL_DEBUG1, "Failed on attachment of type %s/%s\n",
+                 BODY_TYPE(b), NONULL(b->subtype));
     }
 
     if (decode)
@@ -1788,7 +1789,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
       else
       {
         /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
-        buf_printf(msg, _("[-- %s/%s is unsupported --]\n"), TYPE(b), b->subtype);
+        buf_printf(msg, _("[-- %s/%s is unsupported --]\n"), BODY_TYPE(b), b->subtype);
       }
     }
     else
@@ -1807,7 +1808,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
           /* L10N: %s/%s is a MIME type, e.g. "text/plain".
              The last %s expands to a keystroke/key binding, e.g. 'v'. */
           buf_printf(msg, _("[-- %s/%s is unsupported (use '%s' to view this part) --]\n"),
-                     TYPE(b), b->subtype, buf_string(keystroke));
+                     BODY_TYPE(b), b->subtype, buf_string(keystroke));
         }
       }
       else
@@ -1820,7 +1821,7 @@ int mutt_body_handler(struct Body *b, struct State *state)
         {
           /* L10N: %s/%s is a MIME type, e.g. "text/plain". */
           buf_printf(msg, _("[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"),
-                     TYPE(b), b->subtype);
+                     BODY_TYPE(b), b->subtype);
         }
       }
       buf_pool_release(&keystroke);
@@ -1835,7 +1836,7 @@ cleanup:
   state->flags = oflags | (state->flags & STATE_FIRSTDONE);
   if (rc != 0)
   {
-    mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s\n", TYPE(b),
+    mutt_debug(LL_DEBUG1, "Bailing on attachment of type %s/%s\n", BODY_TYPE(b),
                NONULL(b->subtype));
   }
 

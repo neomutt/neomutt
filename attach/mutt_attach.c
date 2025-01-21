@@ -78,7 +78,7 @@ int mutt_get_tmp_attachment(struct Body *b)
 
   struct Buffer *tempfile = buf_pool_get();
   struct MailcapEntry *entry = mailcap_entry_new();
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
   mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_NO_FLAGS);
   mailcap_expand_filename(entry->nametemplate, b->filename, tempfile);
 
@@ -127,7 +127,7 @@ int mutt_compose_attachment(struct Body *b)
   struct Buffer *newfile = buf_pool_get();
   struct Buffer *tempfile = buf_pool_get();
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
   if (mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_COMPOSE))
   {
     if (entry->composecommand || entry->composetypecommand)
@@ -271,7 +271,7 @@ bool mutt_edit_attachment(struct Body *b)
   struct Buffer *cmd = buf_pool_get();
   struct Buffer *newfile = buf_pool_get();
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
   if (mailcap_lookup(b, type, sizeof(type), entry, MUTT_MC_EDIT))
   {
     if (entry->editcommand)
@@ -444,7 +444,7 @@ int mutt_view_attachment(FILE *fp, struct Body *b, enum ViewAttachMode mode,
   use_mailcap = ((mode == MUTT_VA_MAILCAP) ||
                  ((mode == MUTT_VA_REGULAR) && mutt_needs_mailcap(b)) ||
                  (mode == MUTT_VA_PAGER));
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
 
   char columns[16] = { 0 };
   snprintf(columns, sizeof(columns), "%d", win->state.cols);
@@ -1145,7 +1145,7 @@ int mutt_print_attachment(FILE *fp, struct Body *b)
 
   int rc = 0;
 
-  snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+  snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
 
   if (mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
   {

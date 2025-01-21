@@ -780,7 +780,7 @@ static bool can_print(struct AttachCtx *actx, struct Body *b, bool tag)
   {
     if (tag)
       b = actx->idx[i]->body;
-    snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+    snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
     if (!tag || b->tagged)
     {
       if (!mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
@@ -829,7 +829,7 @@ static void print_attachment_list(struct AttachCtx *actx, FILE *fp, bool tag,
     }
     if (!tag || b->tagged)
     {
-      snprintf(type, sizeof(type), "%s/%s", TYPE(b), b->subtype);
+      snprintf(type, sizeof(type), "%s/%s", BODY_TYPE(b), b->subtype);
       if (!c_attach_split && !mailcap_lookup(b, type, sizeof(type), NULL, MUTT_MC_PRINT))
       {
         if (mutt_istr_equal("text/plain", b->subtype) ||

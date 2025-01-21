@@ -1337,7 +1337,7 @@ int mutt_signed_handler(struct Body *b_email, struct State *state)
           }
 
           state_printf(state, _("[-- Warning: We can't verify %s/%s signatures --]\n\n"),
-                       TYPE(signatures[i]), signatures[i]->subtype);
+                       BODY_TYPE(signatures[i]), signatures[i]->subtype);
         }
       }
 

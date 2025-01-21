@@ -307,7 +307,7 @@ static void body_mime_major(const struct ExpandoNode *node, void *data,
 {
   const struct AttachPtr *aptr = data;
 
-  const char *s = TYPE(aptr->body);
+  const char *s = BODY_TYPE(aptr->body);
   buf_strcpy(buf, s);
 }
 

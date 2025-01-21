@@ -762,7 +762,7 @@ int mutt_write_mime_header(struct Body *b, FILE *fp, struct ConfigSubset *sub)
   int tmplen;
   char buf[256] = { 0 };
 
-  fprintf(fp, "Content-Type: %s/%s", TYPE(b), b->subtype);
+  fprintf(fp, "Content-Type: %s/%s", BODY_TYPE(b), b->subtype);
 
   if (!TAILQ_EMPTY(&b->parameter))
   {

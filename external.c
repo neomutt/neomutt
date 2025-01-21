@@ -1082,7 +1082,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
   char *cp = mutt_param_get(&b->parameter, "charset");
   buf_strcpy(charset, cp);
 
-  buf_printf(buf, "%s/%s", TYPE(b), b->subtype);
+  buf_printf(buf, "%s/%s", BODY_TYPE(b), b->subtype);
   buf_copy(obuf, buf);
   if (!TAILQ_EMPTY(&b->parameter))
   {
@@ -1106,7 +1106,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
   mutt_parse_content_type(buf_string(buf), b);
 
-  buf_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
+  buf_printf(tmp, "%s/%s", BODY_TYPE(b), NONULL(b->subtype));
   type_changed = !mutt_istr_equal(buf_string(tmp), buf_string(obuf));
   charset_changed = !mutt_istr_equal(buf_string(charset),
                                      mutt_param_get(&b->parameter, "charset"));
@@ -1124,7 +1124,7 @@ bool mutt_edit_content_type(struct Email *e, struct Body *b, FILE *fp)
 
   /* inform the user */
 
-  buf_printf(tmp, "%s/%s", TYPE(b), NONULL(b->subtype));
+  buf_printf(tmp, "%s/%s", BODY_TYPE(b), NONULL(b->subtype));
   if (type_changed)
     mutt_message(_("Content-Type changed to %s"), buf_string(tmp));
   if ((b->type == TYPE_TEXT) && charset_changed)
