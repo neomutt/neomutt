@@ -92,22 +92,23 @@ typedef int (*handler_t)(struct Body *b_email, struct State *state);
  */
 static void print_part_line(struct State *state, struct Body *b_email, int n)
 {
-  char length[5] = { 0 };
-  mutt_str_pretty_size(length, sizeof(length), b_email->length);
+  struct Buffer *length = buf_pool_get();
+  mutt_str_pretty_size(length, b_email->length);
   state_mark_attach(state);
   char *charset = mutt_param_get(&b_email->parameter, "charset");
   if (n == 0)
   {
     state_printf(state, _("[-- Type: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
-                 charset ? charset : "", ENCODING(b_email->encoding), length);
+                 charset ? charset : "", ENCODING(b_email->encoding), buf_string(length));
   }
   else
   {
     state_printf(state, _("[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"),
                  n, TYPE(b_email), b_email->subtype, charset ? "; charset=" : "",
-                 charset ? charset : "", ENCODING(b_email->encoding), length);
+                 charset ? charset : "", ENCODING(b_email->encoding), buf_string(length));
   }
+  buf_pool_release(&length);
 }
 
 /**
@@ -769,9 +770,6 @@ static int message_handler(struct Body *b_email, struct State *state)
  */
 static int external_body_handler(struct Body *b_email, struct State *state)
 {
-  const char *str = NULL;
-  char strbuf[1024] = { 0 };
-
   const char *access_type = mutt_param_get(&b_email->parameter, "access-type");
   if (!access_type)
   {
@@ -787,6 +785,9 @@ static int external_body_handler(struct Body *b_email, struct State *state)
     }
   }
 
+  const char *fmt = NULL;
+  struct Buffer *banner = buf_pool_get();
+
   const char *expiration = mutt_param_get(&b_email->parameter, "expiration");
   time_t expire;
   if (expiration)
@@ -799,15 +800,15 @@ static int external_body_handler(struct Body *b_email, struct State *state)
   {
     if (state->flags & (STATE_DISPLAY | STATE_PRINTING))
     {
-      char pretty_size[10] = { 0 };
+      struct Buffer *pretty_size = buf_pool_get();
       char *length = mutt_param_get(&b_email->parameter, "length");
       if (length)
       {
-        long size = strtol(length, NULL, 10);
-        mutt_str_pretty_size(pretty_size, sizeof(pretty_size), size);
+        const long size = strtol(length, NULL, 10);
+        mutt_str_pretty_size(pretty_size, size);
         if (expire != -1)
         {
-          str = ngettext(
+          fmt = ngettext(
               /* L10N: If the translation of this string is a multi line string, then
                  each line should start with "[-- " and end with " --]".
                  The first "%s/%s" is a MIME type, e.g. "text/plain". The last %s
@@ -831,7 +832,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
         }
         else
         {
-          str = ngettext(
+          fmt = ngettext(
               /* L10N: If the translation of this string is a multi line string, then
                  each line should start with "[-- " and end with " --]".
                  The first "%s/%s" is a MIME type, e.g. "text/plain".
@@ -852,7 +853,6 @@ static int external_body_handler(struct Body *b_email, struct State *state)
       }
       else
       {
-        pretty_size[0] = '\0';
         if (expire != -1)
         {
           /* L10N: If the translation of this string is a multi line string, then
@@ -862,20 +862,20 @@ static int external_body_handler(struct Body *b_email, struct State *state)
 
              Caution: Argument three %3$ is also defined but should not be used
              in this translation!  */
-          str = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s --]\n");
+          fmt = _("[-- This %s/%s attachment has been deleted --]\n[-- on %4$s --]\n");
         }
         else
         {
           /* L10N: If the translation of this string is a multi line string, then
              each line should start with "[-- " and end with " --]".
              The first "%s/%s" is a MIME type, e.g. "text/plain". */
-          str = _("[-- This %s/%s attachment has been deleted --]\n");
+          fmt = _("[-- This %s/%s attachment has been deleted --]\n");
         }
       }
 
-      snprintf(strbuf, sizeof(strbuf), str, TYPE(b_email->parts),
-               b_email->parts->subtype, pretty_size, expiration);
-      state_attach_puts(state, strbuf);
+      buf_printf(banner, fmt, TYPE(b_email->parts), b_email->parts->subtype,
+                 buf_string(pretty_size), expiration);
+      state_attach_puts(state, buf_string(banner));
       if (b_email->parts->filename)
       {
         state_mark_attach(state);
@@ -888,6 +888,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
 
       mutt_copy_hdr(state->fp_in, state->fp_out, ftello(state->fp_in),
                     b_email->parts->offset, chflags, NULL, 0);
+      buf_pool_release(&pretty_size);
     }
   }
   else if (expiration && (expire < mutt_date_now()))
@@ -897,10 +898,9 @@ static int external_body_handler(struct Body *b_email, struct State *state)
       /* L10N: If the translation of this string is a multi line string, then
          each line should start with "[-- " and end with " --]".
          The "%s/%s" is a MIME type, e.g. "text/plain". */
-      snprintf(strbuf, sizeof(strbuf),
-               _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has expired --]\n"),
-               TYPE(b_email->parts), b_email->parts->subtype);
-      state_attach_puts(state, strbuf);
+      buf_printf(banner, _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has expired --]\n"),
+                 TYPE(b_email->parts), b_email->parts->subtype);
+      state_attach_puts(state, buf_string(banner));
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
       if (c_weed)
@@ -919,10 +919,9 @@ static int external_body_handler(struct Body *b_email, struct State *state)
          The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
          access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
          "LOCAL-FILE", "MAIL-SERVER". */
-      snprintf(strbuf, sizeof(strbuf),
-               _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
-               TYPE(b_email->parts), b_email->parts->subtype, access_type);
-      state_attach_puts(state, strbuf);
+      buf_printf(banner, _("[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"),
+                 TYPE(b_email->parts), b_email->parts->subtype, access_type);
+      state_attach_puts(state, buf_string(banner));
 
       CopyHeaderFlags chflags = CH_DECODE | CH_DISPLAY;
       if (c_weed)
@@ -932,6 +931,7 @@ static int external_body_handler(struct Body *b_email, struct State *state)
                     b_email->parts->offset, chflags, NULL, 0);
     }
   }
+  buf_pool_release(&banner);
 
   return 0;
 }

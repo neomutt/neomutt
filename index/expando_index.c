@@ -405,13 +405,10 @@ static void email_body_characters(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  char tmp[128] = { 0 };
-
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
 
-  mutt_str_pretty_size(tmp, sizeof(tmp), email_get_size(e));
-  buf_strcpy(buf, tmp);
+  mutt_str_pretty_size(buf, email_get_size(e));
 }
 
 /**
@@ -843,13 +840,10 @@ static void email_size(const struct ExpandoNode *node, void *data,
   if (!e)
     return;
 
-  char tmp[128] = { 0 };
-
   if (flags & MUTT_FORMAT_INDEX)
     node_expando_set_color(node, MT_COLOR_INDEX_SIZE);
 
-  mutt_str_pretty_size(tmp, sizeof(tmp), e->body->length);
-  buf_strcpy(buf, tmp);
+  mutt_str_pretty_size(buf, e->body->length);
 }
 
 /**

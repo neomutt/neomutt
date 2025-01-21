@@ -261,8 +261,6 @@ static void body_file_size(const struct ExpandoNode *node, void *data,
 {
   const struct AttachPtr *aptr = data;
 
-  char tmp[128] = { 0 };
-
   size_t l = 0;
   if (aptr->body->filename && (flags & MUTT_FORMAT_STAT_FILE))
   {
@@ -273,8 +271,7 @@ static void body_file_size(const struct ExpandoNode *node, void *data,
     l = aptr->body->length;
   }
 
-  mutt_str_pretty_size(tmp, sizeof(tmp), l);
-  buf_strcpy(buf, tmp);
+  mutt_str_pretty_size(buf, l);
 }
 
 /**

@@ -61,10 +61,7 @@ static void compose_attach_size(const struct ExpandoNode *node, void *data,
 {
   const struct ComposeSharedData *shared = data;
 
-  char tmp[128] = { 0 };
-
-  mutt_str_pretty_size(tmp, sizeof(tmp), cum_attachs_size(shared->sub, shared->adata));
-  buf_strcpy(buf, tmp);
+  mutt_str_pretty_size(buf, cum_attachs_size(shared->sub, shared->adata));
 }
 
 /**

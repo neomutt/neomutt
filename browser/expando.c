@@ -296,10 +296,7 @@ static void folder_file_size(const struct ExpandoNode *node, void *data,
 {
   const struct Folder *folder = data;
 
-  char tmp[128] = { 0 };
-
-  mutt_str_pretty_size(tmp, sizeof(tmp), folder->ff->size);
-  buf_strcpy(buf, tmp);
+  mutt_str_pretty_size(buf, folder->ff->size);
 }
 
 /**
