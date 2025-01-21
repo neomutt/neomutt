@@ -70,7 +70,7 @@ const char *cs_subset_myvar(const struct ConfigSubset *sub, const char *name)
 
   struct HashElem *he = cs_subset_lookup(sub, name);
   ASSERT(he);
-  ASSERT(DTYPE(he->type) == DT_MYVAR);
+  ASSERT(CONFIG_TYPE(he->type) == DT_MYVAR);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   ASSERT(value != INT_MIN);

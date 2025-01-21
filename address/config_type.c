@@ -278,7 +278,7 @@ const struct Address *cs_subset_address(const struct ConfigSubset *sub, const ch
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_ADDRESS);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_ADDRESS);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);

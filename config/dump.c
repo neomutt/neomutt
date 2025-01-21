@@ -145,7 +145,7 @@ void dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *v
       // Used to generate unique ids for the urls
       static int seq_num = 1;
 
-      if (DTYPE(he->type) == DT_MYVAR)
+      if (CONFIG_TYPE(he->type) == DT_MYVAR)
       {
         static const char *url = "https://neomutt.org/guide/configuration#set-myvar";
         fprintf(fp, "\033]8;id=%d;%s\a%s\033]8;;\a", seq_num++, url, name);
@@ -211,7 +211,7 @@ bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
     struct HashElem *he = *hep;
     buf_reset(value);
     buf_reset(initial);
-    const int type = DTYPE(he->type);
+    const int type = CONFIG_TYPE(he->type);
 
     if ((type == DT_SYNONYM) && !(flags & CS_DUMP_SHOW_SYNONYMS))
       continue;

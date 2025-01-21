@@ -357,7 +357,7 @@ enum QuadOption query_yesorno_help(const char *prompt, enum QuadOption def,
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_BOOL);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_BOOL);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   ASSERT(value != INT_MIN);
@@ -380,7 +380,7 @@ enum QuadOption query_quadoption(const char *prompt, struct ConfigSubset *sub, c
 {
   struct HashElem *he = cs_subset_create_inheritance(sub, name);
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_QUAD);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_QUAD);
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
   ASSERT(value != INT_MIN);

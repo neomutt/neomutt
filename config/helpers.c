@@ -53,7 +53,7 @@ bool cs_subset_bool(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_BOOL);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_BOOL);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -77,7 +77,7 @@ unsigned char cs_subset_enum(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_ENUM);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_ENUM);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -101,7 +101,7 @@ long cs_subset_long(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_LONG);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_LONG);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -125,7 +125,7 @@ struct MbTable *cs_subset_mbtable(const struct ConfigSubset *sub, const char *na
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_MBTABLE);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_MBTABLE);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -149,7 +149,7 @@ short cs_subset_number(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_NUMBER);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_NUMBER);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -174,7 +174,7 @@ const char *cs_subset_path(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_PATH);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_PATH);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -198,7 +198,7 @@ enum QuadOption cs_subset_quad(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_QUAD);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_QUAD);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -223,7 +223,7 @@ const struct Regex *cs_subset_regex(const struct ConfigSubset *sub, const char *
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_REGEX);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_REGEX);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -248,7 +248,7 @@ const struct Slist *cs_subset_slist(const struct ConfigSubset *sub, const char *
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_SLIST);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_SLIST);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -272,7 +272,7 @@ short cs_subset_sort(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_SORT);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_SORT);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);
@@ -297,7 +297,7 @@ const char *cs_subset_string(const struct ConfigSubset *sub, const char *name)
 
 #ifndef NDEBUG
   struct HashElem *he_base = cs_get_base(he);
-  ASSERT(DTYPE(he_base->type) == DT_STRING);
+  ASSERT(CONFIG_TYPE(he_base->type) == DT_STRING);
 #endif
 
   intptr_t value = cs_subset_he_native_get(sub, he, NULL);

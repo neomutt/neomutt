@@ -181,7 +181,7 @@ struct HashElem *cs_get_elem(const struct ConfigSet *cs, const char *name)
   if (!he)
     return NULL;
 
-  if (DTYPE(he->type) != DT_SYNONYM)
+  if (CONFIG_TYPE(he->type) != DT_SYNONYM)
     return he;
 
   const struct ConfigDef *cdef = he->data;
@@ -200,7 +200,7 @@ const struct ConfigSetType *cs_get_type_def(const struct ConfigSet *cs, unsigned
   if (!cs)
     return NULL;
 
-  type = DTYPE(type);
+  type = CONFIG_TYPE(type);
   if (type >= mutt_array_size(cs->types))
     return NULL; // LCOV_EXCL_LINE
 
@@ -252,7 +252,7 @@ struct HashElem *cs_register_variable(const struct ConfigSet *cs,
   if (!cs || !cdef)
     return NULL; /* LCOV_EXCL_LINE */
 
-  if (DTYPE(cdef->type) == DT_SYNONYM)
+  if (CONFIG_TYPE(cdef->type) == DT_SYNONYM)
     return create_synonym(cs, cdef, err);
 
   const struct ConfigSetType *cst = cs_get_type_def(cs, cdef->type);
@@ -359,7 +359,7 @@ struct HashElem *cs_inherit_variable(const struct ConfigSet *cs,
     return NULL;
 
   /* MyVars cannot be inherited, as they might get deleted */
-  if (DTYPE(he_parent->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he_parent->type) == DT_MYVAR)
     return NULL;
 
   struct Inheritance *i = MUTT_MEM_CALLOC(1, struct Inheritance);
@@ -403,7 +403,7 @@ int cs_he_reset(const struct ConfigSet *cs, struct HashElem *he, struct Buffer *
 
   /* An inherited var that's already pointing to its parent.
    * Return 'success', but don't send a notification. */
-  if ((he->type & D_INTERNAL_INHERITED) && (DTYPE(he->type) == 0))
+  if ((he->type & D_INTERNAL_INHERITED) && (CONFIG_TYPE(he->type) == 0))
     return CSR_SUCCESS;
 
   int rc = CSR_SUCCESS;
@@ -682,7 +682,7 @@ int cs_he_string_get(const struct ConfigSet *cs, struct HashElem *he, struct Buf
     struct Inheritance *i = he->data;
 
     // inherited, value not set
-    if (DTYPE(he->type) == 0)
+    if (CONFIG_TYPE(he->type) == 0)
       return cs_he_string_get(cs, i->parent, result);
 
     // inherited, value set
@@ -832,7 +832,7 @@ intptr_t cs_he_native_get(const struct ConfigSet *cs, struct HashElem *he, struc
     struct Inheritance *i = he->data;
 
     // inherited, value not set
-    if (DTYPE(he->type) == 0)
+    if (CONFIG_TYPE(he->type) == 0)
       return cs_he_native_get(cs, i->parent, err);
 
     // inherited, value set

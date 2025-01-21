@@ -199,7 +199,7 @@ int bool_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffer 
     return CSR_ERR_CODE;
 
   struct HashElem *he_base = cs_get_base(he);
-  if (DTYPE(he_base->type) != DT_BOOL)
+  if (CONFIG_TYPE(he_base->type) != DT_BOOL)
     return CSR_ERR_CODE;
 
   intptr_t value = cs_he_native_get(sub->cs, he, err);

@@ -181,7 +181,7 @@ static int lua_mutt_set(lua_State *l)
 
   int rc = 0;
 
-  switch (DTYPE(cdef->type))
+  switch (CONFIG_TYPE(cdef->type))
   {
     case DT_ADDRESS:
     case DT_ENUM:
@@ -197,7 +197,7 @@ static int lua_mutt_set(lua_State *l)
       size_t val_size = lua_rawlen(l, -1);
       struct Buffer *value_buf = buf_pool_get();
       buf_strcpy_n(value_buf, value, val_size);
-      if (DTYPE(he->type) == DT_PATH)
+      if (CONFIG_TYPE(he->type) == DT_PATH)
         buf_expand_path(value_buf);
 
       int rv = cs_subset_he_string_set(NeoMutt->sub, he, buf_string(value_buf), err);
@@ -224,7 +224,8 @@ static int lua_mutt_set(lua_State *l)
       break;
     }
     default:
-      luaL_error(l, "Unsupported NeoMutt parameter type %d for %s", DTYPE(cdef->type), param);
+      luaL_error(l, "Unsupported NeoMutt parameter type %d for %s",
+                 CONFIG_TYPE(cdef->type), param);
       rc = -1;
       break;
   }
@@ -254,7 +255,7 @@ static int lua_mutt_get(lua_State *l)
 
   struct ConfigDef *cdef = he->data;
 
-  switch (DTYPE(cdef->type))
+  switch (CONFIG_TYPE(cdef->type))
   {
     case DT_ADDRESS:
     case DT_ENUM:

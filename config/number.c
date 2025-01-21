@@ -307,7 +307,7 @@ int number_he_toggle(struct ConfigSubset *sub, struct HashElem *he, struct Buffe
     return CSR_ERR_CODE;
 
   struct HashElem *he_base = cs_get_base(he);
-  if (DTYPE(he_base->type) != DT_NUMBER)
+  if (CONFIG_TYPE(he_base->type) != DT_NUMBER)
     return CSR_ERR_CODE;
 
   struct ConfigDef *cdef = he_base->data;

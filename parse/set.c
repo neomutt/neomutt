@@ -53,13 +53,13 @@
  *
  * The type influences which expansions are done.
  *
- * @note The type must be the full HashElem.type, not the sanitized DTYPE(HashElem.type)
+ * @note The type must be the full HashElem.type, not the sanitized CONFIG_TYPE(HashElem.type)
  * @note The value is expanded in-place
  */
 void command_set_expand_value(int type, struct Buffer *value)
 {
   ASSERT(value);
-  if (DTYPE(type) == DT_PATH)
+  if (CONFIG_TYPE(type) == DT_PATH)
   {
     if (type & (D_PATH_DIR | D_PATH_FILE))
       buf_expand_path(value);
@@ -129,7 +129,7 @@ enum CommandResult command_set_set(struct Buffer *name, struct Buffer *value,
   }
   int rc = CSR_ERR_CODE;
 
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     // my variables do not expand their value
     rc = cs_subset_he_string_set(NeoMutt->sub, he, value->data, err);
@@ -190,7 +190,7 @@ enum CommandResult command_set_increment(struct Buffer *name,
 
   int rc = CSR_ERR_CODE;
 
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     // my variables do not expand their value
     rc = cs_subset_he_string_plus_equals(NeoMutt->sub, he, value->data, err);
@@ -271,11 +271,11 @@ enum CommandResult command_set_unset(struct Buffer *name, struct Buffer *err)
   }
 
   int rc = CSR_ERR_CODE;
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     rc = cs_subset_he_delete(NeoMutt->sub, he, err);
   }
-  else if ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD))
+  else if ((CONFIG_TYPE(he->type) == DT_BOOL) || (CONFIG_TYPE(he->type) == DT_QUAD))
   {
     rc = cs_subset_he_native_set(NeoMutt->sub, he, false, err);
   }
@@ -310,7 +310,7 @@ enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
     ARRAY_FOREACH(hep, &hea)
     {
       struct HashElem *he = *hep;
-      if (DTYPE(he->type) == DT_MYVAR)
+      if (CONFIG_TYPE(he->type) == DT_MYVAR)
         cs_subset_he_delete(NeoMutt->sub, he, err);
       else
         cs_subset_he_reset(NeoMutt->sub, he, NULL);
@@ -334,7 +334,7 @@ enum CommandResult command_set_reset(struct Buffer *name, struct Buffer *err)
   }
 
   int rc = CSR_ERR_CODE;
-  if (DTYPE(he->type) == DT_MYVAR)
+  if (CONFIG_TYPE(he->type) == DT_MYVAR)
   {
     rc = cs_subset_he_delete(NeoMutt->sub, he, err);
   }
@@ -374,15 +374,15 @@ enum CommandResult command_set_toggle(struct Buffer *name, struct Buffer *err)
     return MUTT_CMD_SUCCESS;
   }
 
-  if (DTYPE(he->type) == DT_BOOL)
+  if (CONFIG_TYPE(he->type) == DT_BOOL)
   {
     bool_he_toggle(NeoMutt->sub, he, err);
   }
-  else if (DTYPE(he->type) == DT_QUAD)
+  else if (CONFIG_TYPE(he->type) == DT_QUAD)
   {
     quad_he_toggle(NeoMutt->sub, he, err);
   }
-  else if (DTYPE(he->type) == DT_NUMBER)
+  else if (CONFIG_TYPE(he->type) == DT_NUMBER)
   {
     number_he_toggle(NeoMutt->sub, he, err);
   }
@@ -454,7 +454,7 @@ enum CommandResult command_set_query(struct Buffer *name, struct Buffer *err)
     return MUTT_CMD_ERROR;
     // LCOV_EXCL_STOP
   }
-  if (DTYPE(he->type) == DT_PATH)
+  if (CONFIG_TYPE(he->type) == DT_PATH)
     mutt_pretty_mailbox(value->data, value->dsize);
   pretty_var(value->data, err);
   buf_pool_release(&value);
@@ -533,8 +533,9 @@ enum CommandResult parse_set(struct Buffer *buf, struct Buffer *s,
     {
       // Use the correct name if a synonym is used
       buf_strcpy(buf, he->key.strkey);
-      bool_or_quad = ((DTYPE(he->type) == DT_BOOL) || (DTYPE(he->type) == DT_QUAD));
-      invertible = (bool_or_quad || (DTYPE(he->type) == DT_NUMBER));
+      bool_or_quad = ((CONFIG_TYPE(he->type) == DT_BOOL) ||
+                      (CONFIG_TYPE(he->type) == DT_QUAD));
+      invertible = (bool_or_quad || (CONFIG_TYPE(he->type) == DT_NUMBER));
     }
 
     if (*s->dptr == '?')
