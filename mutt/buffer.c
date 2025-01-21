@@ -90,7 +90,7 @@ void buf_reset(struct Buffer *buf)
  * @retval 0   Error
  *
  * Dynamically grow a Buffer to accommodate s, in increments of 128 bytes.
- * Always one byte bigger than necessary for the null terminator, and the
+ * Always one byte bigger than necessary for the NUL-terminator, and the
  * buffer is always NUL-terminated
  */
 size_t buf_addstr_n(struct Buffer *buf, const char *s, size_t len)

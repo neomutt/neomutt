@@ -84,7 +84,7 @@ enum ImapExecResult
   IMAP_EXEC_FATAL,       ///< Imap connection failure
 };
 
-/* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
+/* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (NUL-terminated) */
 #define IMAP_DATELEN 27
 
 /**

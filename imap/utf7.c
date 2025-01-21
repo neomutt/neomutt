@@ -100,7 +100,7 @@ static const char B64Chars[64] = {
  * 5.1.3), so we reject any non-canonical form, such as &ACY- (instead of &-)
  * or &AMA-&AMA- (instead of &AMAAwA-).
  *
- * @note The result is null-terminated.
+ * @note The result is NUL-terminated.
  * @note The caller must free() the returned data.
  */
 static char *utf7_to_utf8(const char *u7, size_t u7len, char **u8, size_t *u8len)
@@ -246,7 +246,7 @@ bail:
  *
  * Unicode characters above U+FFFF converted to a UTF-16 surrogate pair.
  *
- * @note The result is null-terminated.
+ * @note The result is NUL-terminated.
  * @note The caller must free() the returned data.
  */
 static char *utf8_to_utf7(const char *u8, size_t u8len, char **u7, size_t *u7len)

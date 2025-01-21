@@ -359,7 +359,7 @@ static void finalize_chunk(struct Buffer *res, struct Buffer *buf, char *charset
  * @param enc Encoding type
  * @retval ptr Decoded string
  *
- * @note The input string must be null-terminated; the len parameter is
+ * @note The input string must be NUL-terminated; the len parameter is
  *       an optimization. The caller must free the returned string.
  */
 static char *decode_word(const char *s, size_t len, enum ContentEncoding enc)

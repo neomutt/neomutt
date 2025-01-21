@@ -72,7 +72,7 @@ const int Index64[128] = {
 };
 
 /**
- * mutt_b64_encode - Convert raw bytes to null-terminated base64 string
+ * mutt_b64_encode - Convert raw bytes to NUL-terminated base64 string
  * @param in     Input buffer for the raw bytes
  * @param inlen  Length of the input buffer
  * @param out    Output buffer for the base64 encoded string
@@ -80,7 +80,7 @@ const int Index64[128] = {
  * @retval num Length of the string written to the output buffer
  *
  * This function performs base64 encoding. The resulting string is guaranteed
- * to be null-terminated. The number of characters up to the terminating
+ * to be NUL-terminated. The number of characters up to the terminating
  * NUL-byte is returned (equivalent to calling strlen() on the output buffer
  * after this function returns).
  */
@@ -121,15 +121,15 @@ size_t mutt_b64_encode(const char *in, size_t inlen, char *out, size_t outlen)
 }
 
 /**
- * mutt_b64_decode - Convert null-terminated base64 string to raw bytes
- * @param in   Input  buffer for the null-terminated base64-encoded string
+ * mutt_b64_decode - Convert NUL-terminated base64 string to raw bytes
+ * @param in   Input  buffer for the NUL-terminated base64-encoded string
  * @param out  Output buffer for the raw bytes
  * @param olen Length of the output buffer
  * @retval num Success, bytes written
  * @retval -1  Error
  *
  * This function performs base64 decoding. The resulting buffer is NOT
- * null-terminated. If the input buffer contains invalid base64 characters,
+ * NUL-terminated. If the input buffer contains invalid base64 characters,
  * this function returns -1.
  */
 int mutt_b64_decode(const char *in, char *out, size_t olen)
@@ -189,7 +189,7 @@ int mutt_b64_decode(const char *in, char *out, size_t olen)
 }
 
 /**
- * mutt_b64_buffer_encode - Convert raw bytes to null-terminated base64 string
+ * mutt_b64_buffer_encode - Convert raw bytes to NUL-terminated base64 string
  * @param buf    Buffer for the result
  * @param in     Input buffer for the raw bytes
  * @param len    Length of the input buffer
@@ -207,9 +207,9 @@ size_t mutt_b64_buffer_encode(struct Buffer *buf, const char *in, size_t len)
 }
 
 /**
- * mutt_b64_buffer_decode - Convert null-terminated base64 string to raw bytes
+ * mutt_b64_buffer_decode - Convert NUL-terminated base64 string to raw bytes
  * @param buf  Buffer for the result
- * @param in   Input  buffer for the null-terminated base64-encoded string
+ * @param in   Input  buffer for the NUL-terminated base64-encoded string
  * @retval num Success, bytes written
  * @retval -1  Error
  */

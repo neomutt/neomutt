@@ -235,7 +235,7 @@ struct ExpandoNode *node_conddate_parse(const char *str, int did, int uid,
     unsigned short number = 0;
     const char *end_ptr = mutt_str_atous(str, &number);
 
-    // NOTE(g0mb4): str is NOT null-terminated
+    // NOTE(g0mb4): str is NOT NUL-terminated
     if (!end_ptr || (number == USHRT_MAX))
     {
       err->position = str;

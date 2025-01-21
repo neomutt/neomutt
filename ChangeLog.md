@@ -1606,7 +1606,7 @@
   - pager specific "show incoming mailboxes list" macro
   - Improve gss debug printing of status_string
   - Remove trailing null count from gss_buffer_desc.length field
-  - Add a comment in auth_gss about RFCs and null-termination
+  - Add a comment in auth_gss about RFCs and NUL-termination
   - Change prompt string for `$crypt_verify_sig`
 
 2018-03-23  Richard Russon  \<rich@flatcap.org\>
@@ -2633,7 +2633,7 @@
   - More openssl1.1 fixes: remove uses of `X509->name` in debugging. (closes #3870)
   - Don't close stderr when opening a tunnel. (closes #3726)
   - Minor resource and error logic cleanup in tunnel_socket_open()
-  - Make sure that the output of X509_NAME_oneline is null-terminated
+  - Make sure that the output of X509_NAME_oneline is NUL-terminated
 
 2016-11-04  Richard Russon  \<rich@flatcap.org\>
 * Bug Fixes
