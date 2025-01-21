@@ -427,6 +427,7 @@ int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
       mutt_addrlist_write(&addr, buf, false);
       mutt_addrlist_clear(&addr);
       mutt_clear_error();
+      buf_addstr(buf, ", ");
     }
     goto done;
   }
