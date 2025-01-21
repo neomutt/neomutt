@@ -621,13 +621,11 @@ size_t buf_copy(struct Buffer *dst, const struct Buffer *src)
  */
 void buf_seek(struct Buffer *buf, size_t offset)
 {
-  if (!buf)
+  if (!buf || !buf->data)
     return;
 
-  if ((offset < buf_len(buf)))
-  {
-    buf->dptr = buf->data ? buf->data + offset : NULL;
-  }
+  if (offset < buf->dsize)
+    buf->dptr = buf->data + offset;
 }
 
 /**
