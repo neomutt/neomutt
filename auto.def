@@ -47,7 +47,6 @@ set valid_options {
   ssl=0                     => "Enable TLS support using OpenSSL"
   with-ssl:path             => "Location of OpenSSL"
   gnutls=0                  => "Enable TLS support using GnuTLS"
-  with-gnutls:path          => "Location of GnuTLS"
   # GPGME
   gpgme=0                   => "Enable GPGME support"
   # GSS (IMAP auth)
@@ -55,14 +54,12 @@ set valid_options {
   with-gss:path             => "Location of GSSAPI library"
   # SASL (IMAP and POP auth)
   gsasl=0                   => "Use the GNU SASL network security library"
-  with-gsasl:path           => "Location of the GNU SASL network security library"
   sasl=0                    => "Use the SASL network security library"
   with-sasl:path            => "Location of the SASL network security library"
   # AutoCrypt
   autocrypt=0               => "Enable AutoCrypt support (requires GPGME and SQLite)"
 # Lua
   lua=0                     => "Enable Lua scripting support"
-  with-lua:path             => "Location of Lua"
 # Notmuch
   notmuch=0                 => "Enable Notmuch support"
   with-notmuch:path         => "Location of Notmuch"
@@ -71,10 +68,8 @@ set valid_options {
   with-nls:path             => "Location of libintl"
 # IDN
   idn2=1                    => "Disable GNU libidn2 for internationalized domain names"
-  with-idn2:path            => "Location of GNU libidn2"
 # PCRE2
   pcre2=0                   => "Enable PCRE2 regular expressions"
-  with-pcre2:path           => "Location of PCRE2"
 # Header cache
   bdb=0                     => "Use BerkeleyDB for the header cache"
   with-bdb:path             => "Location of BerkeleyDB"
@@ -82,15 +77,12 @@ set valid_options {
   gdbm=0                    => "Use GNU dbm for the header cache"
   with-gdbm:path            => "Location of GNU dbm"
   kyotocabinet=0            => "Use KyotoCabinet for the header cache"
-  with-kyotocabinet:path    => "Location of KyotoCabinet"
   lmdb=0                    => "Use LMDB for the header cache"
   with-lmdb:path            => "Location of LMDB"
   qdbm=0                    => "Use QDBM for the header cache"
-  with-qdbm:path            => "Location of QDBM"
   rocksdb=0                 => "Use RocksDB for the header cache"
   with-rocksdb:path         => "Location of RocksDB"
   tdb=0                     => "Use TDB for the header cache"
-  with-tdb:path             => "Location of TDB"
   tokyocabinet=0            => "Use TokyoCabinet for the header cache"
   with-tokyocabinet:path    => "Location of TokyoCabinet"
 # sqlite
@@ -132,17 +124,25 @@ set valid_options {
 
 set deprecated_options  {
   idn:
-  with-idn:=
-  pkgconf:=
-  testing:=
-  with-slang:
-  with-ui:=
-  with-gpgme:
-  with-lz4:
-  with-zstd:
   include-path-in-cflags:=
   mixmaster:=
-  with-mixmaster:=
+  pkgconf:=
+  testing:=
+  with-gnutls:
+  with-gpgme:
+  with-gsasl:
+  with-idn:=
+  with-idn2:
+  with-kyotocabinet:
+  with-lua:
+  with-lz4:
+  with-mixmaster:
+  with-pcre2:
+  with-qdbm:
+  with-slang:
+  with-tdb:
+  with-ui:
+  with-zstd:
 }
 
 foreach dep $deprecated_options {
