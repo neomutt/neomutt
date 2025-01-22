@@ -746,7 +746,7 @@ void window_invalidate_all(void)
  *
  * @note The children are expected to have types: #WT_MENU, #WT_STATUS_BAR
  */
-bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub)
+bool window_status_on_top(struct MuttWindow *panel, const struct ConfigSubset *sub)
 {
   const bool c_status_on_top = cs_subset_bool(sub, "status_on_top");
 

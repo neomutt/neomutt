@@ -29,8 +29,6 @@
 #include "mutt/lib.h"
 #include "types.h"
 
-struct ConfigSet;
-
 /* Config Set Results */
 #define CSR_SUCCESS       0 ///< Action completed successfully
 #define CSR_ERR_CODE      1 ///< Problem with the code

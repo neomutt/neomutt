@@ -46,6 +46,7 @@
 #include "core/lib.h"
 #include "gui/lib.h"
 #include "mutt.h"
+#include "debug/lib.h"
 #include "lib.h"
 #include "color/lib.h"
 #include "expando/lib.h"

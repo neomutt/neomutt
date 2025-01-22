@@ -210,10 +210,4 @@ struct Line;
 void dump_text_syntax(struct TextSyntax *ts, int num);
 void dump_line(int i, struct Line *line);
 
-#ifdef USE_DEBUG_COLOR
-void dump_pager(struct PagerPrivateData *priv);
-#else
-static inline void dump_pager(struct PagerPrivateData *priv) {}
-#endif
-
 #endif /* MUTT_PAGER_LIB_H */

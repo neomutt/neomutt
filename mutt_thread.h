@@ -32,7 +32,6 @@
 
 struct Buffer;
 struct ConfigDef;
-struct ConfigSet;
 struct Mailbox;
 struct MailboxView;
 

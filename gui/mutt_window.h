@@ -274,7 +274,7 @@ bool               window_is_focused (const struct MuttWindow *win);
 void window_redraw(struct MuttWindow *win);
 void window_invalidate_all(void);
 const char *mutt_window_win_name(const struct MuttWindow *win);
-bool window_status_on_top(struct MuttWindow *panel, struct ConfigSubset *sub);
+bool window_status_on_top(struct MuttWindow *panel, const struct ConfigSubset *sub);
 bool mutt_window_swap(struct MuttWindow *parent, struct MuttWindow *win1, struct MuttWindow *win2);
 
 #endif /* MUTT_GUI_MUTT_WINDOW_H */

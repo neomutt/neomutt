@@ -254,7 +254,7 @@ void test_mutt_array_api(void)
 
   /* Iteration */
   {
-    struct Dummy *elem;
+    struct Dummy *elem = NULL;
     size_t i = 0;
     ARRAY_FOREACH(elem, &d)
     {
@@ -274,7 +274,7 @@ void test_mutt_array_api(void)
 
   /* Partial iteration - from */
   {
-    struct Dummy *elem;
+    struct Dummy *elem = NULL;
     size_t from = 4;
     ARRAY_FOREACH_FROM(elem, &d, from)
     {
@@ -289,7 +289,7 @@ void test_mutt_array_api(void)
 
   /* Partial iteration - to */
   {
-    struct Dummy *elem;
+    struct Dummy *elem = NULL;
     size_t i = 0;
     size_t to = 10;
     ARRAY_FOREACH_TO(elem, &d, to)
@@ -310,7 +310,7 @@ void test_mutt_array_api(void)
 
   /* Partial iteration - from+to */
   {
-    struct Dummy *elem;
+    struct Dummy *elem = NULL;
     size_t from = 4;
     size_t to = 10;
     ARRAY_FOREACH_FROM_TO(elem, &d, from, to)
@@ -370,7 +370,7 @@ void test_mutt_array_api(void)
 
   /* Iteration over an empty array */
   {
-    struct Dummy *elem;
+    struct Dummy *elem = NULL;
     ARRAY_FOREACH(elem, &d)
     {
       TEST_CHECK(false);

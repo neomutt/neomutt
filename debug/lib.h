@@ -142,7 +142,11 @@ const char *name_window_type        (const struct MuttWindow *win);
 int debug_all_observer(struct NotifyCallback *nc);
 
 // Pager
+#ifdef USE_DEBUG_COLOR
 void dump_pager(struct PagerPrivateData *priv);
+#else
+static inline void dump_pager(struct PagerPrivateData *priv) {}
+#endif
 
 // Window
 void debug_win_dump(void);

@@ -27,7 +27,6 @@
 
 struct Buffer;
 struct ConfigDef;
-struct ConfigSet;
 
 int charset_slist_validator(const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
 int charset_validator      (const struct ConfigDef *cdef, intptr_t value, struct Buffer *err);
