@@ -318,7 +318,7 @@ bool config_he_set_initial(struct ConfigSet *cs, struct HashElem *he, const char
 
   int rc = cs_he_initial_set(cs, he, value, err);
   if (!buf_is_empty(err))
-    mutt_error("%s", buf_string(err));
+    mutt_error("%s", buf_string(err)); // LCOV_EXCL_LINE
 
   buf_pool_release(&err);
   cs_he_reset(cs, he, NULL);

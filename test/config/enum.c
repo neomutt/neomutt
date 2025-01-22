@@ -83,6 +83,7 @@ static struct ConfigDef Vars[] = {
   { "Nectarine",  DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, validator_fail,    },
   { "Olive",      DT_ENUM, ANIMAL_ANTELOPE, IP &AnimalDef, NULL,              }, /* test_inherit */
   { "Papaya",     DT_ENUM | D_ON_STARTUP, ANIMAL_ANTELOPE, IP &AnimalDef, NULL, }, /* startup */
+  { "Quince",     DT_ENUM, 99,              IP &AnimalDef, NULL,              }, /* invalid */
   { NULL },
 };
 // clang-format on
@@ -283,6 +284,9 @@ static bool test_string_get(struct ConfigSubset *sub, struct Buffer *err)
   }
   VarFig = cs_subset_enum(sub, "Fig");
   TEST_MSG("%s = %d, %s", name, VarFig, buf_string(err));
+
+  unsigned char VarQuince = cs_subset_enum(sub, "Quince");
+  TEST_MSG("%s = %d, %s", name, VarQuince, buf_string(err));
 
   log_line(__func__);
   return true;

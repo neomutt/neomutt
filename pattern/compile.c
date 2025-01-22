@@ -780,7 +780,8 @@ void mutt_pattern_free(struct PatternList **pat)
   if (!pat || !*pat)
     return;
 
-  struct Pattern *np = SLIST_FIRST(*pat), *next = NULL;
+  struct Pattern *np = SLIST_FIRST(*pat);
+  struct Pattern *next = NULL;
 
   while (np)
   {

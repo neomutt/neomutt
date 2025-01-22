@@ -40,6 +40,7 @@ extern const struct ConfigSetType CstBool;
 extern const struct ConfigSetType CstEnum;
 extern const struct ConfigSetType CstLong;
 extern const struct ConfigSetType CstMbtable;
+extern const struct ConfigSetType CstMyVar;
 extern const struct ConfigSetType CstNumber;
 extern const struct ConfigSetType CstPath;
 extern const struct ConfigSetType CstQuad;

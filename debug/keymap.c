@@ -122,21 +122,25 @@ void log_menu(enum MenuType menu, struct KeymapList *kml)
     return;
   }
 
+  struct Buffer *binding = buf_pool_get();
+  struct Buffer *esc_key = buf_pool_get();
+
   STAILQ_FOREACH(map, kml, entries)
   {
-    char key_binding[128] = { 0 };
-    km_expand_key(key_binding, sizeof(key_binding), map);
+    buf_reset(binding);
+    km_expand_key(map, binding);
 
-    struct Buffer *esc_key = buf_pool_get();
-    escape_string(esc_key, key_binding);
+    buf_reset(esc_key);
+    escape_string(esc_key, buf_string(binding));
 
     if (map->op == OP_MACRO)
       log_macro(buf_string(esc_key), map);
     else
       log_bind(menu, buf_string(esc_key), map);
-
-    buf_pool_release(&esc_key);
   }
+
+  buf_pool_release(&binding);
+  buf_pool_release(&esc_key);
 }
 
 /**

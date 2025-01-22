@@ -94,6 +94,8 @@ void test_config_helpers(void)
 {
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
 
+  MuttLogger = log_disp_null;
+
   struct ConfigSubset *sub = NeoMutt->sub;
 
   TEST_CHECK(cs_subset_bool(sub, "Apple") == false);
@@ -107,4 +109,15 @@ void test_config_helpers(void)
   TEST_CHECK(cs_subset_slist(sub, "Olive") != NULL);
   TEST_CHECK(cs_subset_sort(sub, "Mango") == EMAIL_SORT_DATE);
   TEST_CHECK_STR_EQ(cs_subset_string(sub, "Nectarine"), "nectarine");
+
+  const char *name = "Apple";
+  struct ConfigSet *cs = sub->cs;
+  struct HashElem *he = cs_get_elem(cs, name);
+
+  TEST_CHECK(!config_he_set_initial(NULL, NULL, "yes"));
+  TEST_CHECK(config_he_set_initial(cs, he, "yes"));
+
+  TEST_CHECK(!config_str_set_initial(NULL, NULL, "no"));
+  TEST_CHECK(!config_str_set_initial(cs, "Unknown", "no"));
+  TEST_CHECK(config_str_set_initial(cs, "Apple", "no"));
 }

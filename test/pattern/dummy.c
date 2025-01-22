@@ -175,6 +175,7 @@ void mutt_parse_mime_message(struct Mailbox *m, struct Email *e, FILE *msg)
 
 int mutt_str_pretty_size(struct Buffer *buf, size_t num)
 {
+  return 0;
 }
 
 void mutt_set_flag(struct Mailbox *m, struct Email *e, int flag, bool bf, bool upd_mbox)

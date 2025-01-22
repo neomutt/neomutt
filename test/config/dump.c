@@ -87,8 +87,10 @@ static struct ConfigDef Vars[] = {
   { "Kumquat",    DT_QUAD,                           0,                           0,                   NULL, },
   { "Lemon",      DT_REGEX,                          0,                           0,                   NULL, },
   { "Mango",      DT_SORT,                           EMAIL_SORT_DATE,             IP SortMangoMethods, NULL, },
-  { "Nectarine",  DT_STRING|D_SENSITIVE,            IP "nectarine",               0,                   NULL, },
-  { "Olive",      DT_STRING|D_INTERNAL_DEPRECATED,  IP "olive",                  0,                   NULL, },
+  { "Nectarine",  DT_STRING|D_SENSITIVE,             IP "nectarine",              0,                   NULL, },
+  { "Olive",      DT_STRING|D_INTERNAL_DEPRECATED,   IP "olive",                  0,                   NULL, },
+  { "Pap_aya",    DT_STRING,                         IP "papaya",                 0,                   NULL, },
+  { "Quince",     DT_MYVAR,                          IP "my_value",               0,                   NULL, },
   { NULL },
 };
 // clang-format on
@@ -207,10 +209,11 @@ struct ConfigSet *create_sample_data(void)
   cs_register_type(cs, &CstEnum);
   cs_register_type(cs, &CstLong);
   cs_register_type(cs, &CstMbtable);
+  cs_register_type(cs, &CstMyVar);
   cs_register_type(cs, &CstNumber);
   cs_register_type(cs, &CstPath);
-  cs_register_type(cs, &CstQuad);
   cs_register_type(cs, &CstPath);
+  cs_register_type(cs, &CstQuad);
   cs_register_type(cs, &CstRegex);
   cs_register_type(cs, &CstSort);
   cs_register_type(cs, &CstString);
@@ -296,6 +299,9 @@ bool test_dump_config_neo(void)
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_SHOW_DEFAULTS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_SHOW_DEFAULTS, fp)");
 
+    dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_SHOW_DOCS | CS_DUMP_LINK_DOCS, fp);
+    TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_SHOW_DEFAULTS, fp)");
+
     he = mutt_hash_find_elem(cs->hash, "Damson");
     dump_config_neo(cs, he, buf_val, buf_init, CS_DUMP_NO_FLAGS, fp);
     TEST_CHECK_(1, "dump_config_neo(cs, he, &buf_val, &buf_init, CS_DUMP_NO_FLAGS, fp)");
@@ -322,7 +328,7 @@ bool test_dump_config(void)
     if (!fp)
       return false;
 
-    struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
+    struct HashElemArray hea = get_elem_list(cs);
 
     // Degenerate tests
 
@@ -335,12 +341,13 @@ bool test_dump_config(void)
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_NO_FLAGS, fp));
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_ONLY_CHANGED | CS_DUMP_HIDE_SENSITIVE, fp));
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_HIDE_VALUE | CS_DUMP_SHOW_DEFAULTS, fp));
-    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_SHOW_DOCS, fp));
+    TEST_CHECK(dump_config(cs, &hea, CS_DUMP_SHOW_DOCS | CS_DUMP_LINK_DOCS, fp));
     TEST_CHECK(dump_config(cs, &hea, CS_DUMP_SHOW_DISABLED, fp));
 
     struct ConfigSet *cs_bad = cs_new(30);
-    TEST_CHECK(dump_config(cs_bad, &hea, CS_DUMP_NO_FLAGS, fp));
+    TEST_CHECK(!dump_config(cs_bad, &hea, CS_DUMP_NO_FLAGS, fp));
 
+    ARRAY_FREE(&hea);
     fclose(fp);
     cs_free(&cs_bad);
     cs_free(&cs);
