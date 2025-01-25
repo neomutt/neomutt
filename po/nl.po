@@ -4175,8 +4175,9 @@ msgstr "mail een PGP publieke sleutel"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-msgid "verify a PGP public key"
-msgstr "controleer een PGP publieke sleutel"
+#, fuzzy
+msgid "verify a public key"
+msgstr "controleer een publieke sleutel"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>

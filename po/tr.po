@@ -4049,8 +4049,9 @@ msgstr "bir PGP genel anahtarı gönder"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-msgid "verify a PGP public key"
-msgstr "bir PGP genel anahtarı doğrula"
+#, fuzzy
+msgid "verify a public key"
+msgstr "bir genel anahtarı doğrula"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>

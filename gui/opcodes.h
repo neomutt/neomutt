@@ -934,7 +934,7 @@ const char *opcodes_get_name       (int op);
   /* L10N: Help screen description for OP_VERIFY_KEY */ \
   /*       GPGME Key Selection Dialog: <op_verify_key> */ \
   /*       PGP Key Selection Dialog: <op_verify_key> */ \
-  _fmt(OP_VERIFY_KEY,                         N_("verify a PGP public key")) \
+  _fmt(OP_VERIFY_KEY,                         N_("verify a public key")) \
   /* L10N: Help screen description for OP_VIEW_ID */ \
   /*       GPGME Key Selection Dialog: <op_view_id> */ \
   /*       PGP Key Selection Dialog: <op_view_id> */ \
