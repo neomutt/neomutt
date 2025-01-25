@@ -4060,8 +4060,9 @@ msgstr "siųsti PGP viešą raktą"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-msgid "verify a PGP public key"
-msgstr "patikrinti PGP viešą raktą"
+#, fuzzy
+msgid "verify a public key"
+msgstr "patikrinti viešą raktą"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>

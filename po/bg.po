@@ -4204,8 +4204,9 @@ msgstr "изпраща PGP публичен ключ"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-msgid "verify a PGP public key"
-msgstr "потвърждава PGP публичен ключ"
+#, fuzzy
+msgid "verify a public key"
+msgstr "потвърждава публичен ключ"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>

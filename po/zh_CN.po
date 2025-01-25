@@ -4059,8 +4059,9 @@ msgstr "邮寄 PGP 公钥"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-msgid "verify a PGP public key"
-msgstr "验证 PGP 公钥"
+#, fuzzy
+msgid "verify a public key"
+msgstr "验证 公钥"
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>

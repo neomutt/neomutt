@@ -4212,8 +4212,9 @@ msgstr "envoyer une clé publique PGP"
 #. GPGME Key Selection Dialog: <op_verify_key>
 #. PGP Key Selection Dialog: <op_verify_key>
 #: gui/opcodes.h:937
-msgid "verify a PGP public key"
-msgstr "vérifier une clé publique PGP"
+#, fuzzy
+msgid "verify a public key"
+msgstr "vérifier une clé publique "
 
 #. L10N: Help screen description for OP_VIEW_ID
 #. GPGME Key Selection Dialog: <op_view_id>
