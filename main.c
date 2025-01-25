@@ -1054,7 +1054,8 @@ main
   int version = 0;
   int i;
   bool explicit_folder = false;
-  int dump_variables = 0;
+  bool dump_variables = false;
+  bool dump_changed = false;
   bool one_liner = false;
   bool hide_sensitive = false;
   bool batch_mode = false;
@@ -1125,7 +1126,10 @@ main
           mutt_list_insert_tail(&cc_list, mutt_str_dup(optarg));
           break;
         case 'D':
-          dump_variables++;
+          if (dump_variables)
+            dump_changed = true;
+          else
+            dump_variables = true;
           break;
         case 'd':
           dlevel = optarg;
@@ -1297,7 +1301,7 @@ main
 
   /* Check for a batch send. */
   if (!isatty(0) || !STAILQ_EMPTY(&queries) || !STAILQ_EMPTY(&alias_queries) ||
-      (dump_variables > 0) || batch_mode)
+      dump_variables || batch_mode)
   {
     OptNoCurses = true;
     sendflags |= SEND_BATCH;
@@ -1393,7 +1397,7 @@ main
   if (new_type && !config_str_set_initial(cs, "mbox_type", new_type))
     goto main_curses;
 
-  if ((dump_variables > 0) || !STAILQ_EMPTY(&queries))
+  if (dump_variables || !STAILQ_EMPTY(&queries))
   {
     const bool tty = isatty(STDOUT_FILENO);
 
@@ -1406,9 +1410,9 @@ main
       cdflags |= CS_DUMP_SHOW_DOCS;
 
     struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
-    if (dump_variables > 0)
+    if (dump_variables)
     {
-      enum GetElemListFlags gel_flags = (dump_variables > 1) ? GEL_CHANGED_CONFIG : GEL_ALL_CONFIG;
+      enum GetElemListFlags gel_flags = dump_changed ? GEL_CHANGED_CONFIG : GEL_ALL_CONFIG;
       hea = get_elem_list(cs, gel_flags);
       rc = 0;
     }
