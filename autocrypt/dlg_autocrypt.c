@@ -82,6 +82,7 @@
 #include "autocrypt_data.h"
 #include "expando.h"
 #include "functions.h"
+#include "globals.h"
 #include "mutt_logging.h"
 
 /// Help Bar for the Autocrypt Account selection dialog
@@ -133,7 +134,7 @@ static int autocrypt_make_entry(struct Menu *menu, int line, int max_cols, struc
 
   const struct Expando *c_autocrypt_acct_format = cs_subset_expando(NeoMutt->sub, "autocrypt_acct_format");
   return expando_filter(c_autocrypt_acct_format, AutocryptRenderCallbacks,
-                        *pentry, MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+                        *pentry, MUTT_FORMAT_ARROWCURSOR, max_cols, EnvList, buf);
 }
 
 /**

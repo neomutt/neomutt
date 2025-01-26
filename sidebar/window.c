@@ -80,6 +80,7 @@
 #include "expando/lib.h"
 #include "index/lib.h"
 #include "expando.h"
+#include "globals.h"
 
 /**
  * imap_is_prefix - Check if folder matches the beginning of mbox
@@ -320,7 +321,7 @@ static void make_sidebar_entry(char *buf, size_t buflen, int width,
   struct Buffer *tmp = buf_pool_get();
   const struct Expando *c_sidebar_format = cs_subset_expando(NeoMutt->sub, "sidebar_format");
   expando_filter(c_sidebar_format, SidebarRenderCallbacks, &sdata,
-                 MUTT_FORMAT_NO_FLAGS, width, tmp);
+                 MUTT_FORMAT_NO_FLAGS, width, EnvList, tmp);
   mutt_str_copy(buf, buf_string(tmp), buflen);
   buf_pool_release(&tmp);
 

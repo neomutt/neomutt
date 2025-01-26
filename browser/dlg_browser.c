@@ -532,20 +532,20 @@ static int folder_make_entry(struct Menu *menu, int line, int max_cols, struct B
   if (OptNews)
   {
     const struct Expando *c_group_index_format = cs_subset_expando(NeoMutt->sub, "group_index_format");
-    return expando_filter(c_group_index_format, GroupIndexRenderCallbacks,
-                          &folder, MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+    return expando_filter(c_group_index_format, GroupIndexRenderCallbacks, &folder,
+                          MUTT_FORMAT_ARROWCURSOR, max_cols, EnvList, buf);
   }
 
   if (bstate->is_mailbox_list)
   {
     const struct Expando *c_mailbox_folder_format = cs_subset_expando(NeoMutt->sub, "mailbox_folder_format");
-    return expando_filter(c_mailbox_folder_format, FolderRenderCallbacks,
-                          &folder, MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+    return expando_filter(c_mailbox_folder_format, FolderRenderCallbacks, &folder,
+                          MUTT_FORMAT_ARROWCURSOR, max_cols, EnvList, buf);
   }
 
   const struct Expando *c_folder_format = cs_subset_expando(NeoMutt->sub, "folder_format");
   return expando_filter(c_folder_format, FolderRenderCallbacks, &folder,
-                        MUTT_FORMAT_ARROWCURSOR, max_cols, buf);
+                        MUTT_FORMAT_ARROWCURSOR, max_cols, EnvList, buf);
 }
 
 /**
