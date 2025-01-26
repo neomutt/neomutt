@@ -86,7 +86,7 @@ bool check_for_pipe(struct ExpandoNode *root)
  * The text is passed unchanged to the shell.
  * The first line of any output (minus the newline) is stored back in buf.
  */
-void filter_text(struct Buffer *buf)
+void filter_text(struct Buffer *buf, char **env_list)
 {
   // Trim the | (pipe) character
   size_t len = buf_len(buf);
@@ -98,7 +98,7 @@ void filter_text(struct Buffer *buf)
 
   mutt_debug(LL_DEBUG3, "execute: %s\n", buf_string(buf));
   FILE *fp_filter = NULL;
-  pid_t pid = filter_create(buf_string(buf), NULL, &fp_filter, NULL, EnvList);
+  pid_t pid = filter_create(buf_string(buf), NULL, &fp_filter, NULL, env_list);
   if (pid < 0)
     return; // LCOV_EXCL_LINE
 
@@ -132,11 +132,13 @@ void filter_text(struct Buffer *buf)
  * @param[in]  data     Callback data
  * @param[in]  flags    Callback flags
  * @param[in]  max_cols Number of screen columns (-1 means unlimited)
+ * @param[in]  env_list Environment to pass to filter
  * @param[out] buf      Buffer in which to save string
  * @retval obj Number of bytes written to buf and screen columns used
  */
 int expando_filter(const struct Expando *exp, const struct ExpandoRenderCallback *erc,
-                   void *data, MuttFormatFlags flags, int max_cols, struct Buffer *buf)
+                   void *data, MuttFormatFlags flags, int max_cols,
+                   char **env_list, struct Buffer *buf)
 {
   if (!exp || !exp->node)
     return 0;
@@ -153,7 +155,7 @@ int expando_filter(const struct Expando *exp, const struct ExpandoRenderCallback
   if (!is_pipe)
     return rc;
 
-  filter_text(buf);
+  filter_text(buf, env_list);
 
   // Strictly truncate to size
   size_t width = 0;

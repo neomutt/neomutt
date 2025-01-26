@@ -71,6 +71,7 @@
 #include "index/lib.h"
 #include "cbar_data.h"
 #include "expando.h"
+#include "globals.h"
 #include "shared_data.h"
 
 /**
@@ -85,7 +86,7 @@ static int cbar_recalc(struct MuttWindow *win)
 
   const struct Expando *c_compose_format = cs_subset_expando(shared->sub, "compose_format");
   expando_filter(c_compose_format, ComposeRenderCallbacks, shared,
-                 MUTT_FORMAT_NO_FLAGS, win->state.cols, buf);
+                 MUTT_FORMAT_NO_FLAGS, win->state.cols, EnvList, buf);
 
   struct ComposeBarData *cbar_data = win->wdata;
   if (!mutt_str_equal(buf_string(buf), cbar_data->compose_format))
