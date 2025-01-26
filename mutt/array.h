@@ -208,6 +208,8 @@
  * ARRAY_FOREACH - Iterate over all elements of the array
  * @param elem Variable to be used as pointer to the element at each iteration
  * @param head Pointer to a struct defined using ARRAY_HEAD()
+ * 
+ * @note Range: 0 .. (ARRAY_SIZE(head)-1)
  */
 #define ARRAY_FOREACH(elem, head)                                              \
   ARRAY_FOREACH_FROM_TO(elem, (head), 0, (head)->size)
@@ -218,7 +220,8 @@
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @param from Starting index (inclusive)
  *
- * @note The from index must be between 0 and ARRAY_SIZE(head)
+ * @note Range: from .. (ARRAY_SIZE(head)-1)
+ * @note 'from' must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_FROM(elem, head, from)                                   \
   ARRAY_FOREACH_FROM_TO(elem, (head), (from), (head)->size)
@@ -229,7 +232,8 @@
  * @param head Pointer to a struct defined using ARRAY_HEAD()
  * @param to   Terminating index (exclusive)
  *
- * @note The to index must be between 0 and ARRAY_SIZE(head)
+ * @note Range: 0 .. (to-1)
+ * @note 'to' must be between 0 and ARRAY_SIZE(head)
  */
 #define ARRAY_FOREACH_TO(elem, head, to)                                       \
   ARRAY_FOREACH_FROM_TO(elem, (head), 0, (to))
@@ -241,8 +245,9 @@
  * @param from Starting index (inclusive)
  * @param to   Terminating index (exclusive)
  *
- * @note The from and to indexes must be between 0 and ARRAY_SIZE(head);
- *       the from index must not be bigger than to index.
+ * @note Range: from .. (to-1)
+ * @note 'from' and 'to' must be between 0 and ARRAY_SIZE(head).
+ * @note 'from' must not be bigger than 'to'.
  */
 #define ARRAY_FOREACH_FROM_TO(elem, head, from, to)                            \
   for (size_t ARRAY_FOREACH_IDX_##elem = (from);                               \
