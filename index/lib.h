@@ -47,11 +47,12 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "core/lib.h"
-#include "expando/lib.h"   // IWYU pragma: keep
-#include "expando_index.h" // IWYU pragma: keep
-#include "functions.h"     // IWYU pragma: keep
-#include "shared_data.h"   // IWYU pragma: keep
-#include "status.h"        // IWYU pragma: keep
+#include "expando/lib.h"    // IWYU pragma: keep
+#include "expando_index.h"  // IWYU pragma: keep
+#include "expando_status.h" // IWYU pragma: keep
+#include "functions.h"      // IWYU pragma: keep
+#include "shared_data.h"    // IWYU pragma: keep
+#include "status.h"         // IWYU pragma: keep
 
 struct Buffer;
 struct Email;
