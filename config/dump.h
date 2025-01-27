@@ -31,6 +31,7 @@ struct Buffer;
 struct ConfigSet;
 struct HashElem;
 struct HashElemArray;
+struct PagedFile;
 
 typedef uint16_t ConfigDumpFlags;          ///< Flags for dump_config(), e.g. #CS_DUMP_ONLY_CHANGED
 #define CS_DUMP_NO_FLAGS               0   ///< No flags are set
@@ -45,10 +46,14 @@ typedef uint16_t ConfigDumpFlags;          ///< Flags for dump_config(), e.g. #C
 #define CS_DUMP_SHOW_DEPRECATED (1 <<  8)  ///< Show config items that aren't used any more
 #define CS_DUMP_SHOW_DOCS       (1 <<  9)  ///< Show one-liner documentation for the config item
 #define CS_DUMP_LINK_DOCS       (1 << 10)  ///< Link to the online docs
+#define CS_DUMP_ANSI_COLOUR     (1 << 11)  ///< Output ANSI colours
+#define CS_DUMP_ALIGN_TEXT      (1 << 12)  ///< Align the '=' signs
 
 void              dump_config_neo(struct ConfigSet *cs, struct HashElem *he, struct Buffer *value, struct Buffer *initial, ConfigDumpFlags flags, FILE *fp);
 bool              dump_config(struct ConfigSet *cs, struct HashElemArray *hea, ConfigDumpFlags flags, FILE *fp);
 size_t            escape_string(struct Buffer *buf, const char *src);
 size_t            pretty_var(const char *str, struct Buffer *buf);
+
+void dump_config2(struct ConfigSet *cs, struct HashElemArray *hea, ConfigDumpFlags flags, struct PagedFile *pf);
 
 #endif /* MUTT_CONFIG_DUMP_H */
