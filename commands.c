@@ -58,6 +58,8 @@
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
+#include "pfile/lib.h"
+#include "spager/lib.h"
 #include "store/lib.h"
 #include "alternates.h"
 #include "globals.h"
@@ -70,6 +72,9 @@
 #endif
 #ifdef ENABLE_NLS
 #include <libintl.h>
+#endif
+#ifdef USE_DEBUG_SPAGER
+#include "debug/lib.h"
 #endif
 
 /// LIFO designed to contain the list of config files that have been sourced and
@@ -887,36 +892,35 @@ enum CommandResult parse_my_hdr(struct Buffer *buf, struct Buffer *s,
  */
 enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
 {
-  struct Buffer *tempfile = buf_pool_get();
-  buf_mktemp(tempfile);
+  struct PagedFile *pf = paged_file_new(NULL);
 
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
-  if (!fp_out)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
-    buf_pool_release(&tempfile);
-    return MUTT_CMD_ERROR;
-  }
+  struct Buffer *value = buf_pool_get();
+  struct Buffer *tmp = buf_pool_get();
 
-  struct ConfigSet *cs = NeoMutt->sub->cs;
-  struct HashElemArray hea = get_elem_list(cs, flags);
-  dump_config(cs, &hea, CS_DUMP_NO_FLAGS, fp_out);
+  struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, flags);
+
+  dump_config2(NeoMutt->sub->cs, &hea, CS_DUMP_ALIGN_TEXT | CS_DUMP_HIDE_SENSITIVE, pf);
   ARRAY_FREE(&hea);
 
-  mutt_file_fclose(&fp_out);
+  // Apply striping
+  struct PagedRow *pr = NULL;
+  ARRAY_FOREACH(pr, &pf->rows)
+  {
+    if ((ARRAY_FOREACH_IDX_pr % 2) == 0)
+      pr->cid = MT_COLOR_STRIPE_ODD;
+    else
+      pr->cid = MT_COLOR_STRIPE_EVEN;
+  }
 
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
+#ifdef USE_DEBUG_SPAGER
+  dump_spager(pf);
+#endif
+  const char *banner = (flags == GEL_ALL_CONFIG) ? "set all" : "set";
+  dlg_spager(pf, banner, NeoMutt->sub);
 
-  pdata.fname = buf_string(tempfile);
-
-  pview.banner = "set";
-  pview.flags = MUTT_PAGER_NO_FLAGS;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
-  buf_pool_release(&tempfile);
+  buf_pool_release(&value);
+  buf_pool_release(&tmp);
+  paged_file_free(&pf);
 
   return MUTT_CMD_SUCCESS;
 }
