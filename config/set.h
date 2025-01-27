@@ -278,7 +278,6 @@ int      cs_he_delete              (const struct ConfigSet *cs, struct HashElem 
 
 bool     cs_str_has_been_set       (const struct ConfigSet *cs, const char *name);
 int      cs_str_initial_get        (const struct ConfigSet *cs, const char *name,                       struct Buffer *result);
-int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);
 int      cs_str_native_set         (const struct ConfigSet *cs, const char *name,    intptr_t value,    struct Buffer *err);
 int      cs_str_reset              (const struct ConfigSet *cs, const char *name,                       struct Buffer *err);
 int      cs_str_string_set         (const struct ConfigSet *cs, const char *name,    const char *value, struct Buffer *err);

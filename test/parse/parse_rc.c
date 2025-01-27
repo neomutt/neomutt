@@ -152,7 +152,8 @@ void test_parse_rc(void)
   TEST_CHECK_NUM_EQ(rc, MUTT_CMD_SUCCESS);
 
   TEST_CHECK(cs_register_variables(NeoMutt->sub->cs, Vars));
-  cs_str_initial_set(NeoMutt->sub->cs, "from", "rich@flatcap.org", NULL);
+  struct HashElem *he = cs_get_elem(NeoMutt->sub->cs, "from");
+  cs_he_initial_set(NeoMutt->sub->cs, he, "rich@flatcap.org", NULL);
   cs_str_reset(NeoMutt->sub->cs, "from", NULL);
   test_parse_set();
 

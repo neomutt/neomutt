@@ -150,8 +150,9 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   TEST_MSG("Banana = '%s'", VarBanana);
   TEST_MSG("Banana's initial value is '%s'", buf_string(value));
 
+  struct HashElem *he = cs_get_elem(cs, "Cherry");
   buf_reset(value);
-  rc = cs_str_initial_set(cs, "Cherry", "train", value);
+  rc = cs_he_initial_set(cs, he, "train", value);
   if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));
@@ -159,7 +160,7 @@ static bool test_initial_values(struct ConfigSubset *sub, struct Buffer *err)
   }
 
   buf_reset(value);
-  rc = cs_str_initial_set(cs, "Cherry", "plane", value);
+  rc = cs_he_initial_set(cs, he, "plane", value);
   if (!TEST_CHECK_NUM_EQ(CSR_RESULT(rc), CSR_SUCCESS))
   {
     TEST_MSG("%s", buf_string(value));

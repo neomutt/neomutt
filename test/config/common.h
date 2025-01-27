@@ -60,6 +60,7 @@ void set_list(const struct ConfigSet *cs);
 void cs_dump_set(const struct ConfigSet *cs);
 
 int      cs_str_delete             (const struct ConfigSet *cs, const char *name, struct Buffer *err);
+int      cs_str_initial_set        (const struct ConfigSet *cs, const char *name, const char *value, struct Buffer *err);
 intptr_t cs_str_native_get         (const struct ConfigSet *cs, const char *name, struct Buffer *err);
 int      cs_str_string_get         (const struct ConfigSet *cs, const char *name, struct Buffer *result);
 int      cs_str_string_minus_equals(const struct ConfigSet *cs, const char *name, const char *value, struct Buffer *err);

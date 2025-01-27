@@ -545,30 +545,6 @@ int cs_he_initial_set(const struct ConfigSet *cs, struct HashElem *he,
 }
 
 /**
- * cs_str_initial_set - Set the initial value of a config item
- * @param cs    Config items
- * @param name  Name of config item
- * @param value Value to set
- * @param err   Buffer for error messages
- * @retval num Result, e.g. #CSR_SUCCESS
- */
-int cs_str_initial_set(const struct ConfigSet *cs, const char *name,
-                       const char *value, struct Buffer *err)
-{
-  if (!cs || !name)
-    return CSR_ERR_CODE;
-
-  struct HashElem *he = cs_get_elem(cs, name);
-  if (!he)
-  {
-    buf_printf(err, _("Unknown option %s"), name);
-    return CSR_ERR_UNKNOWN;
-  }
-
-  return cs_he_initial_set(cs, he, value, err);
-}
-
-/**
  * cs_he_initial_get - Get the initial, or parent, value of a config item
  * @param cs     Config items
  * @param he     HashElem representing config item
