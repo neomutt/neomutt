@@ -33,8 +33,12 @@
 #include <stdio.h>
 #include <string.h>
 #include "mutt/lib.h"
+#include "core/lib.h"
 #include "dump.h"
+#include "color/lib.h"
+#include "pfile/lib.h"
 #include "set.h"
+#include "subset.h"
 #include "types.h"
 
 void mutt_pretty_mailbox(char *buf, size_t buflen);
@@ -278,4 +282,234 @@ bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
   buf_pool_release(&tmp);
 
   return result;
+}
+
+/**
+ * dump_config2 - XXX
+ * bool ansi colour
+ * bool url
+ * bool docs
+ * bool format
+ */
+void dump_config2(struct ConfigSet *cs, struct HashElemArray *hea,
+                  ConfigDumpFlags flags, struct PagedFile *pf)
+{
+  if (!cs || !hea || !pf)
+    return;
+
+  struct Buffer *tmp = buf_pool_get();
+  struct Buffer *value = buf_pool_get();
+  struct Buffer *swatch = buf_pool_get();
+
+  // measure the width of the config names
+  int width = 0;
+  struct HashElem **hep = NULL;
+  ARRAY_FOREACH(hep, hea)
+  {
+    const struct ConfigDef *cdef = (*hep)->data;
+    width = MAX(width, mutt_str_len(cdef->name));
+  }
+
+  const bool align_text = (flags & CS_DUMP_ALIGN_TEXT);
+  const bool ansi_color = (flags & CS_DUMP_ANSI_COLOUR);
+  const bool link_docs = (flags & CS_DUMP_LINK_DOCS);
+  const bool show_docs = (flags & CS_DUMP_SHOW_DOCS);
+
+  int len;
+  struct AttrColor *ac = NULL;
+  struct PagedRow *pr = NULL;
+  ARRAY_FOREACH(hep, hea)
+  {
+    const struct ConfigDef *cdef = (*hep)->data;
+
+    if (show_docs)
+    {
+      pr = paged_file_new_row(pf);
+
+      if (ansi_color)
+      {
+        ac = simple_color_get(MT_COLOR_COMMENT);
+        color_log_color_attrs(ac, swatch);
+        if (!buf_is_empty(swatch))
+          fputs(buf_string(swatch), pf->fp);
+      }
+
+      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, "# ");
+      paged_row_add_colored_text(pr, MT_COLOR_COMMENT, cdef->docs);
+      paged_row_add_newline(pr);
+
+      if (ansi_color)
+      {
+        if (!buf_is_empty(swatch))
+          fputs("\033[0m", pf->fp);
+      }
+    }
+
+    pr = paged_file_new_row(pf);
+
+    // set config =
+    if (ansi_color)
+    {
+      ac = simple_color_get(MT_COLOR_FUNCTION);
+      color_log_color_attrs(ac, swatch);
+      if (!buf_is_empty(swatch))
+        fputs(buf_string(swatch), pf->fp);
+    }
+
+    paged_row_add_colored_text(pr, MT_COLOR_FUNCTION, "set");
+
+    if (ansi_color)
+    {
+      if (!buf_is_empty(swatch))
+        fputs("\033[0m", pf->fp);
+    }
+
+    paged_row_add_text(pr, " ");
+
+    if (ansi_color)
+    {
+      ac = simple_color_get(MT_COLOR_IDENTIFIER);
+      color_log_color_attrs(ac, swatch);
+      if (!buf_is_empty(swatch))
+        fputs(buf_string(swatch), pf->fp);
+    }
+
+    if (link_docs)
+    {
+      // Used to generate unique ids for the urls
+      static int seq_num = 1;
+
+      if (CONFIG_TYPE((*hep)->type) == DT_MYVAR)
+      {
+        static const char *url = "https://neomutt.org/guide/configuration#set-myvar";
+        fprintf(pf->fp, "\033]8;id=%d;%s\a", seq_num++, url);
+        len = paged_row_add_colored_text(pr, MT_COLOR_IDENTIFIER, cdef->name);
+        fputs("\033]8;;\a", pf->fp);
+      }
+      else
+      {
+        char *fragment = mutt_str_dup(cdef->name);
+        for (char *underscore = fragment; (underscore = strchr(underscore, '_')); underscore++)
+        {
+          *underscore = '-';
+        }
+
+        static const char *url = "https://neomutt.org/guide/reference";
+        fprintf(pf->fp, "\033]8;id=%d;%s#%s\a", seq_num++, url, fragment);
+        len = paged_row_add_colored_text(pr, MT_COLOR_IDENTIFIER, cdef->name);
+        fputs("\033]8;;\a", pf->fp);
+
+        FREE(&fragment);
+      }
+    }
+    else
+    {
+      len = paged_row_add_colored_text(pr, MT_COLOR_IDENTIFIER, cdef->name);
+    }
+
+    if (ansi_color)
+    {
+      if (!buf_is_empty(swatch))
+        fputs("\033[0m", pf->fp);
+    }
+
+    if (align_text)
+    {
+      buf_printf(tmp, "%*s", width - len + 1, "");
+      paged_row_add_text(pr, buf_string(tmp));
+    }
+    else
+    {
+      paged_row_add_text(pr, " ");
+    }
+
+    if (ansi_color)
+    {
+      ac = simple_color_get(MT_COLOR_OPERATOR);
+      color_log_color_attrs(ac, swatch);
+      if (!buf_is_empty(swatch))
+        fputs(buf_string(swatch), pf->fp);
+    }
+
+    paged_row_add_colored_text(pr, MT_COLOR_OPERATOR, "=");
+    paged_row_add_text(pr, " ");
+
+    if (ansi_color)
+    {
+      if (!buf_is_empty(swatch))
+        fputs("\033[0m", pf->fp);
+    }
+
+    buf_reset(value);
+    cs_subset_he_string_get(NeoMutt->sub, *hep, value);
+
+    int type = CONFIG_TYPE((*hep)->type);
+    if ((type == DT_STRING) && (cdef->type & D_SENSITIVE) &&
+        (flags & CS_DUMP_HIDE_SENSITIVE) && !buf_is_empty(value))
+    {
+      buf_strcpy(value, "***");
+      type = DT_ENUM;
+    }
+
+    int cid;
+    if ((type == DT_BOOL) || (type == DT_ENUM) || (type == DT_QUAD) || (type == DT_SORT))
+      cid = MT_COLOR_ENUM;
+    else if ((type == DT_LONG) || (type == DT_NUMBER))
+      cid = MT_COLOR_NUMBER;
+    else
+      cid = MT_COLOR_STRING;
+
+    if (((type == DT_PATH) || IS_MAILBOX((*hep)->type)) && (value->data[0] == '/'))
+      mutt_pretty_mailbox(value->data, value->dsize);
+
+    // Quote/escape the values of config options NOT of these types
+    if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
+        (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT))
+    {
+      buf_reset(tmp);
+      pretty_var(value->data, tmp);
+      buf_strcpy(value, tmp->data);
+    }
+
+    if (ansi_color)
+    {
+      ac = simple_color_get(cid);
+      color_log_color_attrs(ac, swatch);
+      if (!buf_is_empty(swatch))
+        fputs(buf_string(swatch), pf->fp);
+    }
+
+    paged_row_add_colored_text(pr, cid, buf_string(value));
+
+    if (ansi_color)
+    {
+      if (!buf_is_empty(swatch))
+        fputs("\033[0m", pf->fp);
+    }
+
+    paged_row_add_newline(pr);
+
+    if (show_docs)
+    {
+      pr = paged_file_new_row(pf);
+      paged_row_add_newline(pr);
+    }
+  }
+
+  // :set [hea,flags,pf]; gen_pf(); spager(pf)
+  // main [hea,flags,pf]; gen_pf(); done
+
+  // flags: ansi, url, format
+
+  // gen_pf()
+  //      ∀ hea collect [name,value,docs]; measure (if format)
+  //      ∀ hea write to pf
+  //              mt_color always
+  //              ansi/url/format flag
+
+  // ansi => mt_color -> ansi conversion
+
+  buf_pool_release(&tmp);
+  buf_pool_release(&value);
+  buf_pool_release(&swatch);
 }
