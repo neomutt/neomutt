@@ -237,7 +237,7 @@ struct RegexColorList *regex_colors_get_list(enum ColorId cid)
  * @retval #CommandResult Result e.g. #MUTT_CMD_SUCCESS
  *
  * is_index used to store compiled pattern only for 'index' color object when
- * called from mutt_parse_color()
+ * called from parse_color()
  */
 static enum CommandResult add_pattern(struct RegexColorList *rcl, const char *s,
                                       struct AttrColor *ac_val,

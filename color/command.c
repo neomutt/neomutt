@@ -178,7 +178,7 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_uncolor - Parse an 'uncolor' command
+ * parse_uncolor_command - Parse an 'uncolor' command
  * @param buf     Temporary Buffer space
  * @param s       Buffer containing string to be parsed
  * @param err     Buffer for error messages
@@ -189,8 +189,8 @@ static enum CommandResult parse_object(struct Buffer *buf, struct Buffer *s,
  * * uncolor index pattern [pattern...]
  * * unmono  index pattern [pattern...]
  */
-static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
-                                        struct Buffer *err, bool uncolor)
+static enum CommandResult parse_uncolor_command(struct Buffer *buf, struct Buffer *s,
+                                                struct Buffer *err, bool uncolor)
 {
   if (OptNoCurses) // No GUI, so quietly discard the command
   {
@@ -262,7 +262,7 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 }
 
 /**
- * parse_color - Parse a 'color' command
+ * parse_color_command - Parse a 'color' command
  * @param buf      Temporary Buffer space
  * @param s        Buffer containing string to be parsed
  * @param err      Buffer for error messages
@@ -274,9 +274,9 @@ static enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
  * * color OBJECT [ ATTRS ] FG BG [ REGEX ]
  * * mono  OBJECT   ATTRS         [ REGEX ]
  */
-static enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
-                                      struct Buffer *err,
-                                      parser_callback_t callback, bool color)
+static enum CommandResult parse_color_command(struct Buffer *buf,
+                                              struct Buffer *s, struct Buffer *err,
+                                              parser_callback_t callback, bool color)
 {
   unsigned int match = 0;
   enum ColorId cid = MT_COLOR_NONE;
@@ -421,10 +421,10 @@ done:
 }
 
 /**
- * mutt_parse_uncolor - Parse the 'uncolor' command - Implements Command::parse() - @ingroup command_parse
+ * parse_uncolor - Parse the 'uncolor' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
-                                      intptr_t data, struct Buffer *err)
+enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
+                                 intptr_t data, struct Buffer *err)
 {
   if (OptNoCurses) // No GUI, so quietly discard the command
   {
@@ -436,26 +436,26 @@ enum CommandResult mutt_parse_uncolor(struct Buffer *buf, struct Buffer *s,
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
-  enum CommandResult rc = parse_uncolor(buf, s, err, true);
+  enum CommandResult rc = parse_uncolor_command(buf, s, err, true);
   curses_colors_dump(buf);
   return rc;
 }
 
 /**
- * mutt_parse_unmono - Parse the 'unmono' command - Implements Command::parse() - @ingroup command_parse
+ * parse_unmono - Parse the 'unmono' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_unmono(struct Buffer *buf, struct Buffer *s,
-                                     intptr_t data, struct Buffer *err)
+enum CommandResult parse_unmono(struct Buffer *buf, struct Buffer *s,
+                                intptr_t data, struct Buffer *err)
 {
   *s->dptr = '\0'; /* fake that we're done parsing */
   return MUTT_CMD_SUCCESS;
 }
 
 /**
- * mutt_parse_color - Parse the 'color' command - Implements Command::parse() - @ingroup command_parse
+ * parse_color - Parse the 'color' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
-                                    intptr_t data, struct Buffer *err)
+enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
+                               intptr_t data, struct Buffer *err)
 {
   // No GUI, or no colours, so quietly discard the command
   if (OptNoCurses || (COLORS == 0))
@@ -468,16 +468,16 @@ enum CommandResult mutt_parse_color(struct Buffer *buf, struct Buffer *s,
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
-  enum CommandResult rc = parse_color(buf, s, err, parse_color_pair, true);
+  enum CommandResult rc = parse_color_command(buf, s, err, parse_color_pair, true);
   curses_colors_dump(buf);
   return rc;
 }
 
 /**
- * mutt_parse_mono - Parse the 'mono' command - Implements Command::parse() - @ingroup command_parse
+ * parse_mono - Parse the 'mono' command - Implements Command::parse() - @ingroup command_parse
  */
-enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
-                                   intptr_t data, struct Buffer *err)
+enum CommandResult parse_mono(struct Buffer *buf, struct Buffer *s,
+                              intptr_t data, struct Buffer *err)
 {
   // No GUI, or colours available, so quietly discard the command
   if (OptNoCurses || (COLORS != 0))
@@ -490,7 +490,7 @@ enum CommandResult mutt_parse_mono(struct Buffer *buf, struct Buffer *s,
   }
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
-  enum CommandResult rc = parse_color(buf, s, err, parse_attr_spec, false);
+  enum CommandResult rc = parse_color_command(buf, s, err, parse_attr_spec, false);
   curses_colors_dump(buf);
   return rc;
 }
