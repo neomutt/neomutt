@@ -30,12 +30,13 @@
 
 #include "config.h"
 #include <stdbool.h>
-#include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
 #include "global.h"
+#include "color/lib.h"
 #include "index/lib.h"
-#include "pager/lib.h"
+#include "pfile/lib.h"
+#include "spager/lib.h"
 #include "curs_lib.h"
 #include "external.h"
 #include "mutt_curses.h"
@@ -98,41 +99,40 @@ static int op_shell_escape(struct MuttWindow *win, int op)
  */
 static int op_show_log_messages(struct MuttWindow *win, int op)
 {
-  struct Buffer *tempfile = buf_pool_get();
-  buf_mktemp(tempfile);
+  struct PagedFile *pf = paged_file_new(NULL);
+  struct Buffer *buf = buf_pool_get();
 
-  FILE *fp = mutt_file_fopen(buf_string(tempfile), "a+");
-  if (!fp)
-  {
-    mutt_perror("fopen");
-    buf_pool_release(&tempfile);
-    return FR_ERROR;
-  }
-
-  char buf[32] = { 0 };
   struct LogLine *ll = NULL;
   const struct LogLineList lll = log_queue_get();
   STAILQ_FOREACH(ll, &lll, entries)
   {
-    mutt_date_localtime_format(buf, sizeof(buf), "%H:%M:%S", ll->time);
-    fprintf(fp, "[%s]<%c> %s", buf, LogLevelAbbr[ll->level + 3], ll->message);
+    struct PagedRow *pr = paged_file_new_row(pf);
+
+    if (ll->level <= LL_ERROR)
+      pr->cid = MT_COLOR_ERROR;
+    else if (ll->level == LL_WARNING)
+      pr->cid = MT_COLOR_WARNING;
+    else if (ll->level == LL_MESSAGE)
+      pr->cid = MT_COLOR_MESSAGE;
+    else
+      pr->cid = MT_COLOR_DEBUG;
+
+    mutt_date_localtime_format(buf->data, buf->dsize, "[%H:%M:%S]", ll->time);
+    paged_row_add_text(pr, buf_string(buf));
+
+    buf_printf(buf, "<%c> %s", LogLevelAbbr[ll->level + 3], ll->message);
+    paged_row_add_text(pr, buf_string(buf));
+
     if (ll->level <= LL_MESSAGE)
-      fputs("\n", fp);
+      paged_row_add_newline(pr);
   }
 
-  mutt_file_fclose(&fp);
+  //QWQ pview.flags = MUTT_PAGER_BOTTOM;
 
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
+  dlg_spager(pf, "messages", NeoMutt->sub);
 
-  pdata.fname = buf_string(tempfile);
-
-  pview.banner = "messages";
-  pview.flags = MUTT_PAGER_LOGS | MUTT_PAGER_BOTTOM;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
-  buf_pool_release(&tempfile);
+  buf_pool_release(&buf);
+  paged_file_free(&pf);
 
   return FR_SUCCESS;
 }
