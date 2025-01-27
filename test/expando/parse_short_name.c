@@ -62,13 +62,9 @@ void test_expando_parse_short_name(void)
 
   static const struct TestShortName tests[] = {
     // clang-format off
-    { "a",   0,                  ED_EMAIL, ED_EMA_STRF_RECV_LOCAL },
-    { "b",   0,                  ED_EMAIL, ED_EMA_INDEX_HOOK      },
-    { "bb",  0,                  ED_EMAIL, ED_EMA_INDEX_HOOK      },
-    { "c",   EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF_LOCAL },
-    { "cc",  EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF_LOCAL },
-    { "dd",  EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF       },
-    { "dde", EP_NO_CUSTOM_PARSE, ED_EMAIL, ED_EMA_DATE_STRF       },
+    { "a",   0, ED_EMAIL, ED_EMA_STRF_RECV_LOCAL },
+    { "b",   0, ED_EMAIL, ED_EMA_INDEX_HOOK      },
+    { "bb",  0, ED_EMAIL, ED_EMA_INDEX_HOOK      },
     { NULL, 0, 0, 0 },
     // clang-format on
   };

@@ -37,6 +37,7 @@
 #include "node_container.h"
 #include "parse.h"
 #include "render.h"
+#include "uid.h"
 
 /**
  * node_padding_private_new - Create new Padding private data
@@ -254,23 +255,26 @@ struct ExpandoNode *node_padding_parse(const char *str, struct ExpandoFormat *fm
   }
 
   enum ExpandoPadType pt = 0;
-  if (*str == '|')
+  switch (uid)
   {
-    pt = EPT_FILL_EOL;
+    case ED_GLO_PADDING_EOL:
+      pt = EPT_FILL_EOL;
+      break;
+
+    case ED_GLO_PADDING_HARD:
+      pt = EPT_HARD_FILL;
+      break;
+
+    case ED_GLO_PADDING_SOFT:
+      pt = EPT_SOFT_FILL;
+      break;
+
+    default:
+      return NULL;
   }
-  else if (*str == '>')
-  {
-    pt = EPT_HARD_FILL;
-  }
-  else if (*str == '*')
-  {
-    pt = EPT_SOFT_FILL;
-  }
-  else
-  {
-    return NULL;
-  }
-  str++;
+
+  // Skip over the name
+  str = *parsed_until + 1;
 
   size_t consumed = mutt_mb_charlen(str, NULL);
   if (consumed == 0)
@@ -280,6 +284,7 @@ struct ExpandoNode *node_padding_parse(const char *str, struct ExpandoFormat *fm
   }
 
   *parsed_until = str + consumed;
+
   return node_padding_new(pt, str, str + consumed);
 }
 

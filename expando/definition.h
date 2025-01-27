@@ -33,7 +33,6 @@ struct ExpandoParseError;
 typedef uint8_t ExpandoParserFlags;       ///< Flags for expando_parse(), e.g. #EP_CONDITIONAL
 #define EP_NO_FLAGS                 0     ///< No flags are set
 #define EP_CONDITIONAL        (1 << 0)    ///< Expando is being used as a condition
-#define EP_NO_CUSTOM_PARSE    (1 << 1)    ///< Don't use the custom parser
 
 /**
  * struct ExpandoDefinition - Definition of a format string
