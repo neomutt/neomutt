@@ -161,7 +161,7 @@ struct Keymap *alloc_keys(size_t len, keycode_t *keys)
  *
  * Given "<f8>", it will return 8.
  */
-static int parse_fkey(char *s)
+int parse_fkey(char *s)
 {
   char *t = NULL;
   int n = 0;
@@ -325,77 +325,6 @@ const char *mutt_get_func(const struct MenuFuncOp *funcs, int op)
   }
 
   return NULL;
-}
-
-/**
- * generic_tokenize_push_string - Parse and queue a 'push' command
- * @param s String to push into the key queue
- *
- * Parses s for `<function>` syntax and adds the whole sequence the macro buffer.
- */
-void generic_tokenize_push_string(char *s)
-{
-  char *pp = NULL;
-  char *p = s + mutt_str_len(s) - 1;
-  size_t l;
-  int i, op = OP_NULL;
-
-  while (p >= s)
-  {
-    /* if we see something like "<PageUp>", look to see if it is a real
-     * function name and return the corresponding value */
-    if (*p == '>')
-    {
-      for (pp = p - 1; pp >= s && *pp != '<'; pp--)
-        ; // do nothing
-
-      if (pp >= s)
-      {
-        i = parse_fkey(pp);
-        if (i > 0)
-        {
-          mutt_push_macro_event(KEY_F(i), 0);
-          p = pp - 1;
-          continue;
-        }
-
-        l = p - pp + 1;
-        for (i = 0; KeyNames[i].name; i++)
-        {
-          if (mutt_istrn_equal(pp, KeyNames[i].name, l))
-            break;
-        }
-        if (KeyNames[i].name)
-        {
-          /* found a match */
-          mutt_push_macro_event(KeyNames[i].value, 0);
-          p = pp - 1;
-          continue;
-        }
-
-        /* See if it is a valid command
-         * skip the '<' and the '>' when comparing */
-        for (enum MenuType j = 0; MenuNames[j].name; j++)
-        {
-          const struct MenuFuncOp *funcs = km_get_table(MenuNames[j].value);
-          if (funcs)
-          {
-            op = get_op(funcs, pp + 1, l - 2);
-            if (op != OP_NULL)
-              break;
-          }
-        }
-
-        if (op != OP_NULL)
-        {
-          mutt_push_macro_event(0, op);
-          p = pp - 1;
-          continue;
-        }
-      }
-    }
-    mutt_push_macro_event((unsigned char) *p--, 0); /* independent 8 bits chars */
-  }
 }
 
 /**
