@@ -72,7 +72,6 @@ struct Keymap
   keycode_t *keys;              ///< key sequence
   STAILQ_ENTRY(Keymap) entries; ///< Linked list
 };
-
 STAILQ_HEAD(KeymapList, Keymap);
 
 /**
@@ -83,8 +82,19 @@ struct KeyEvent
   int ch; ///< Raw key pressed
   int op; ///< Function opcode, e.g. OP_HELP
 };
-
 ARRAY_HEAD(KeyEventArray, struct KeyEvent);
+
+/**
+ * struct BindingInfo - Info about one keybinding
+ *
+ * - `bind`:  [key, function,   description]
+ * - `macro`: [key, macro-text, description]
+ */
+struct BindingInfo
+{
+  const char *a[3]; ///< Array of info
+};
+ARRAY_HEAD(BindingInfoArray, struct BindingInfo);
 
 extern struct KeyEventArray MacroEvents;
 
@@ -180,5 +190,10 @@ const char *       mutt_get_func               (const struct MenuFuncOp *binding
 void               mutt_keymap_free            (struct Keymap **ptr);
 int                parse_fkey                  (char *s);
 size_t             parsekeys                   (const char *str, keycode_t *d, size_t max);
+
+int  measure_column(struct BindingInfoArray *bia, int col);
+void gather_menu(enum MenuType menu, struct BindingInfoArray *bia_bind, struct BindingInfoArray *bia_macro);
+int  gather_unbound(const struct MenuFuncOp *funcs, const struct KeymapList *km_menu, const struct KeymapList *km_aux, struct BindingInfoArray *bia_unbound);
+int binding_sort(const void *a, const void *b, void *sdata);
 
 #endif /* MUTT_KEY_LIB_H */

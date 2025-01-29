@@ -32,144 +32,142 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "mutt/lib.h"
-#include "config/lib.h"
 #include "core/lib.h"
-#include "gui/lib.h"
 #include "key/lib.h"
 #include "menu/lib.h"
 #include "pager/lib.h"
 #include "parse/lib.h"
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#endif
 
 /**
- * dump_bind - Dumps all the binds maps of a menu into a buffer
- * @param buf  Output buffer
- * @param menu Menu to dump
- * @param name Menu name
- * @retval true  Menu is empty
- * @retval false Menu is not empty
+ * print_bind - Display the bindings for one menu
+ * @param menu Menu type
+ * @param fp   File to write to
+ * @retval num Number of bindings
  */
-static bool dump_bind(struct Buffer *buf, enum MenuType menu, const char *name)
+static int print_bind(enum MenuType menu, FILE *fp)
 {
-  bool empty = true;
-  struct Keymap *map = NULL;
+  struct BindingInfoArray bia_bind = ARRAY_HEAD_INITIALIZER;
 
-  struct Buffer *key_binding = buf_pool_get();
+  gather_menu(menu, &bia_bind, NULL);
+  if (ARRAY_EMPTY(&bia_bind))
+    return 0;
 
-  STAILQ_FOREACH(map, &Keymaps[menu], entries)
+  ARRAY_SORT(&bia_bind, binding_sort, NULL);
+  const int wb0 = measure_column(&bia_bind, 0);
+  const int wb1 = measure_column(&bia_bind, 1);
+
+  const char *menu_name = mutt_map_get_name(menu, MenuNames);
+
+  struct BindingInfo *bi = NULL;
+  ARRAY_FOREACH(bi, &bia_bind)
   {
-    if (map->op == OP_MACRO)
-      continue;
-
-    const char *fn_name = NULL;
-
-    buf_reset(key_binding);
-    km_expand_key(map, key_binding);
-    if (map->op == OP_NULL)
-    {
-      buf_add_printf(buf, "bind %s %s noop\n", name, buf_string(key_binding));
-      continue;
-    }
-
-    /* The pager and editor menus don't use the generic map,
-     * however for other menus try generic first. */
-    if ((menu != MENU_PAGER) && (menu != MENU_EDITOR) && (menu != MENU_GENERIC))
-    {
-      fn_name = mutt_get_func(OpGeneric, map->op);
-    }
-
-    /* if it's one of the menus above or generic doesn't find
-     * the function, try with its own menu. */
-    if (!fn_name)
-    {
-      const struct MenuFuncOp *funcs = km_get_table(menu);
-      if (!funcs)
-        continue;
-
-      fn_name = mutt_get_func(funcs, map->op);
-    }
-
-    buf_add_printf(buf, "bind %s %s %s\n", name, buf_string(key_binding), fn_name);
-    empty = false;
+    //XXX use description?
+    fprintf(fp, "bind %s %*s  %*s  # %s\n", menu_name, -wb0, bi->a[0], -wb1,
+            bi->a[1], bi->a[2]);
   }
 
-  buf_pool_release(&key_binding);
-  return empty;
+  const int count = ARRAY_SIZE(&bia_bind);
+  ARRAY_FOREACH(bi, &bia_bind)
+  {
+    // we only need to free the keybinding
+    FREE(&bi->a[0]);
+  }
+
+  return count;
 }
 
 /**
- * dump_all_binds - Dumps all the binds inside every menu
- * @param buf  Output buffer
+ * colon_bind - Dump the key bindings
+ * @param menu Menu type
+ * @param fp   File to write to
  */
-static void dump_all_binds(struct Buffer *buf)
+static void colon_bind(enum MenuType menu, FILE *fp)
 {
-  for (enum MenuType i = 1; i < MENU_MAX; i++)
+  if (menu == MENU_MAX)
   {
-    const bool empty = dump_bind(buf, i, mutt_map_get_name(i, MenuNames));
+    for (enum MenuType i = 1; i < MENU_MAX; i++)
+    {
+      print_bind(i, fp);
 
-    /* Add a new line for readability between menus. */
-    if (!empty && (i < (MENU_MAX - 1)))
-      buf_addch(buf, '\n');
+      //XXX need to elide last blank line
+      fprintf(fp, "\n");
+    }
+  }
+  else
+  {
+    print_bind(menu, fp);
   }
 }
 
 /**
- * dump_macro - Dumps all the macros maps of a menu into a buffer
- * @param buf  Output buffer
- * @param menu Menu to dump
- * @param name Menu name
- * @retval true  Menu is empty
- * @retval false Menu is not empty
+ * print_macro - Display the macros for one menu
+ * @param menu Menu type
+ * @param fp   File to write to
+ * @retval num Number of macros
  */
-static bool dump_macro(struct Buffer *buf, enum MenuType menu, const char *name)
+static int print_macro(enum MenuType menu, FILE *fp)
 {
-  bool empty = true;
-  struct Keymap *map = NULL;
+  struct BindingInfoArray bia_macro = ARRAY_HEAD_INITIALIZER;
 
-  struct Buffer *key_binding = buf_pool_get();
+  gather_menu(menu, NULL, &bia_macro);
+  if (ARRAY_EMPTY(&bia_macro))
+    return 0;
 
-  STAILQ_FOREACH(map, &Keymaps[menu], entries)
+  ARRAY_SORT(&bia_macro, binding_sort, NULL);
+  const int wm0 = measure_column(&bia_macro, 0);
+
+  const char *menu_name = mutt_map_get_name(menu, MenuNames);
+
+  struct BindingInfo *bi = NULL;
+  ARRAY_FOREACH(bi, &bia_macro)
   {
-    if (map->op != OP_MACRO)
-      continue;
-
-    buf_reset(key_binding);
-    km_expand_key(map, key_binding);
-
-    struct Buffer *tmp = buf_pool_get();
-    escape_string(tmp, map->macro);
-
-    if (map->desc)
+    if (bi->a[2]) // description
     {
-      buf_add_printf(buf, "macro %s %s \"%s\" \"%s\"\n", name,
-                     buf_string(key_binding), buf_string(tmp), map->desc);
+      fprintf(fp, "macro %s %*s  \"%s\"  \"%s\"\n", menu_name, -wm0, bi->a[0],
+              bi->a[1], bi->a[2]);
     }
     else
     {
-      buf_add_printf(buf, "macro %s %s \"%s\"\n", name, buf_string(key_binding),
-                     buf_string(tmp));
+      fprintf(fp, "macro %s %*s  \"%s\"\n", menu_name, -wm0, bi->a[0], bi->a[1]);
     }
-
-    buf_pool_release(&tmp);
-    empty = false;
   }
 
-  buf_pool_release(&key_binding);
-  return empty;
+  const int count = ARRAY_SIZE(&bia_macro);
+  ARRAY_FOREACH(bi, &bia_macro)
+  {
+    // free the keybinding and the macro text
+    FREE(&bi->a[0]);
+    FREE(&bi->a[1]);
+  }
+
+  ARRAY_FREE(&bia_macro);
+  return count;
 }
 
 /**
- * dump_all_macros - Dumps all the macros inside every menu
- * @param buf  Output buffer
+ * colon_macro - Dump the macros
+ * @param menu Menu type
+ * @param fp   File to write to
  */
-static void dump_all_macros(struct Buffer *buf)
+static void colon_macro(enum MenuType menu, FILE *fp)
 {
-  for (enum MenuType i = 1; i < MENU_MAX; i++)
+  if (menu == MENU_MAX)
   {
-    const bool empty = dump_macro(buf, i, mutt_map_get_name(i, MenuNames));
-
-    /* Add a new line for legibility between menus. */
-    if (!empty && (i < (MENU_MAX - 1)))
-      buf_addch(buf, '\n');
+    for (enum MenuType i = 1; i < MENU_MAX; i++)
+    {
+      if (print_macro(i, fp) > 0)
+      {
+        //XXX need to elide last blank line
+        fprintf(fp, "\n");
+      }
+    }
+  }
+  else
+  {
+    print_macro(menu, fp);
   }
 }
 
@@ -179,8 +177,11 @@ static void dump_all_macros(struct Buffer *buf)
 enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
                                    intptr_t data, struct Buffer *err)
 {
-  FILE *fp_out = NULL;
-  bool dump_all = false, bind = (data == 0);
+  FILE *fp = NULL;
+  struct Buffer *tempfile = NULL;
+  bool dump_all = false;
+  bool bind = (data == 0);
+  int rc = MUTT_CMD_ERROR;
 
   if (!MoreArgs(s))
     dump_all = true;
@@ -191,71 +192,67 @@ enum CommandResult dump_bind_macro(struct Buffer *buf, struct Buffer *s,
   {
     /* More arguments potentially means the user is using the
      * ::command_t :bind command thus we delegate the task. */
-    return MUTT_CMD_ERROR;
+    goto done;
   }
 
-  struct Buffer *filebuf = buf_pool_get();
+  tempfile = buf_pool_get();
+  buf_mktemp(tempfile);
+  fp = mutt_file_fopen(buf_string(tempfile), "w");
+  if (!fp)
+  {
+    // L10N: '%s' is the file name of the temporary file
+    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
+    goto done;
+  }
+
   if (dump_all || mutt_istr_equal(buf_string(buf), "all"))
   {
     if (bind)
-      dump_all_binds(filebuf);
+      colon_bind(MENU_MAX, fp);
     else
-      dump_all_macros(filebuf);
+      colon_macro(MENU_MAX, fp);
   }
   else
   {
-    const int menu_index = mutt_map_get_value(buf_string(buf), MenuNames);
-    if (menu_index == -1)
+    const int menu = mutt_map_get_value(buf_string(buf), MenuNames);
+    if (menu == -1)
     {
       // L10N: '%s' is the (misspelled) name of the menu, e.g. 'index' or 'pager'
       buf_printf(err, _("%s: no such menu"), buf_string(buf));
-      buf_pool_release(&filebuf);
-      return MUTT_CMD_ERROR;
+      goto done;
     }
 
     if (bind)
-      dump_bind(filebuf, menu_index, buf_string(buf));
+      colon_bind(menu, fp);
     else
-      dump_macro(filebuf, menu_index, buf_string(buf));
+      colon_macro(menu, fp);
   }
 
-  if (buf_is_empty(filebuf))
+  if (ftello(fp) == 0)
   {
     // L10N: '%s' is the name of the menu, e.g. 'index' or 'pager',
     //       it might also be 'all' when all menus are affected.
     buf_printf(err, bind ? _("%s: no binds for this menu") : _("%s: no macros for this menu"),
                dump_all ? "all" : buf_string(buf));
-    buf_pool_release(&filebuf);
-    return MUTT_CMD_ERROR;
+    goto done;
   }
-
-  struct Buffer *tempfile = buf_pool_get();
-  buf_mktemp(tempfile);
-  fp_out = mutt_file_fopen(buf_string(tempfile), "w");
-  if (!fp_out)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
-    buf_pool_release(&filebuf);
-    buf_pool_release(&tempfile);
-    return MUTT_CMD_ERROR;
-  }
-  fputs(buf_string(filebuf), fp_out);
-
-  mutt_file_fclose(&fp_out);
-  buf_pool_release(&filebuf);
+  mutt_file_fclose(&fp);
 
   struct PagerData pdata = { 0 };
   struct PagerView pview = { &pdata };
 
   pdata.fname = buf_string(tempfile);
 
-  pview.banner = (bind) ? "bind" : "macro";
+  pview.banner = bind ? "bind" : "macro";
   pview.flags = MUTT_PAGER_NO_FLAGS;
   pview.mode = PAGER_MODE_OTHER;
 
   mutt_do_pager(&pview, NULL);
+  rc = MUTT_CMD_SUCCESS;
+
+done:
+  mutt_file_fclose(&fp);
   buf_pool_release(&tempfile);
 
-  return MUTT_CMD_SUCCESS;
+  return rc;
 }

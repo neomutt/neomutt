@@ -58,6 +58,7 @@
  * OpDialog - Functions for Simple Dialogs
  */
 const struct MenuFuncOp OpDialog[] = {
+  { "quit",                          OP_QUIT },
   { "exit",                          OP_EXIT },
   { NULL, 0 },
 };
