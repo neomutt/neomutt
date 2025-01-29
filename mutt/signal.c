@@ -81,7 +81,11 @@ static void exit_print_uint(unsigned int n)
     exit_print_uint(n / 10);
 
   digit = '0' + (n % 10);
-  (void) write(STDOUT_FILENO, &digit, 1);
+
+  if (write(STDOUT_FILENO, &digit, 1) == -1)
+  {
+    // do nothing
+  }
 }
 
 /**
@@ -92,7 +96,11 @@ static void exit_print_int(int n)
 {
   if (n < 0)
   {
-    (void) write(STDOUT_FILENO, "-", 1);
+    if (write(STDOUT_FILENO, "-", 1) == -1)
+    {
+      // do nothing
+    }
+
     n = -n;
   }
   exit_print_uint(n);
@@ -107,7 +115,10 @@ static void exit_print_string(const char *str)
   if (!str)
     return;
 
-  (void) write(STDOUT_FILENO, str, strlen(str));
+  if (write(STDOUT_FILENO, str, strlen(str)) == -1)
+  {
+    // do nothing
+  }
 }
 
 /**
