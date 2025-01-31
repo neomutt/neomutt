@@ -1359,6 +1359,12 @@ int display_line(FILE *fp, LOFF_T *bytes_read, struct Line **lines,
       const struct AttrColor *ac_eol = merged_color_overlay(ac_normal, stripe_color);
       mutt_curses_set_color(ac_eol);
     }
+    else
+    {
+      // Colours may be disabled, but we may still need to end the "search" colour
+      if (!(flags & MUTT_SHOWCOLOR))
+        mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
+    }
     mutt_window_clrtoeol(win_pager);
   }
 
