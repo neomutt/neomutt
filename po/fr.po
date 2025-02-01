@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: neomutt-2025-01-09\n"
 "Report-Msgid-Bugs-To: neomutt-devel@neomutt.org\n"
-"POT-Creation-Date: 2025-01-20 14:41+0000\n"
+"POT-Creation-Date: 2025-02-01 02:20+0000\n"
 "PO-Revision-Date: 2023-05-08 12:38+0000\n"
 "Last-Translator: Ryan d'Huart <homoelectromagneticus@protonmail.com>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -33,9 +33,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 2.4.2\n"
 
-#: address/config_type.c:87 config/long.c:50 config/path.c:99 config/path.c:175
-#: config/sort.c:57 config/string.c:68 config/string.c:145
-#: expando/config_type.c:69 expando/config_type.c:169
+#: address/config_type.c:87 config/long.c:51 config/path.c:99 config/path.c:174
+#: config/sort.c:58 config/string.c:69 config/string.c:144
+#: expando/config_type.c:70 expando/config_type.c:168
 #, c-format
 msgid "Option %s may not be empty"
 msgstr "L'option %s doit être définie"
@@ -115,54 +115,54 @@ msgstr "Attention : mauvaise adresse '%s' dans l'alias '%s'"
 msgid "Warning: Bad IDN '%s' in alias '%s'"
 msgstr "Attention : mauvais IDN '%s' dans l'alias '%s'"
 
-#: alias/dlg_alias.c:101 alias/dlg_query.c:102 attach/dlg_attach.c:94
-#: autocrypt/dlg_autocrypt.c:90 browser/dlg_browser.c:112
-#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:68 history/dlg_history.c:77
-#: ncrypt/dlg_gpgme.c:94 ncrypt/dlg_pgp.c:93 ncrypt/dlg_smime.c:74
-#: pager/dlg_pager.c:74 pager/dlg_pager.c:85 pager/dlg_pager.c:95
-#: pager/dlg_pager.c:110 pattern/dlg_pattern.c:90 postpone/dlg_postpone.c:89
+#: alias/dlg_alias.c:102 alias/dlg_query.c:102 attach/dlg_attach.c:95
+#: autocrypt/dlg_autocrypt.c:91 browser/dlg_browser.c:112
+#: browser/dlg_browser.c:124 conn/dlg_verifycert.c:68 history/dlg_history.c:78
+#: ncrypt/dlg_gpgme.c:95 ncrypt/dlg_pgp.c:94 ncrypt/dlg_smime.c:74
+#: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
+#: pager/dlg_pager.c:111 pattern/dlg_pattern.c:91 postpone/dlg_postpone.c:89
 msgid "Exit"
 msgstr "Quitter"
 
-#: alias/dlg_alias.c:102 index/dlg_index.c:105 index/dlg_index.c:120
-#: pager/dlg_pager.c:99 pager/dlg_pager.c:115 postpone/dlg_postpone.c:90
+#: alias/dlg_alias.c:103 index/dlg_index.c:105 index/dlg_index.c:120
+#: pager/dlg_pager.c:100 pager/dlg_pager.c:116 postpone/dlg_postpone.c:90
 msgid "Del"
 msgstr "Supprimer"
 
-#: alias/dlg_alias.c:103 index/dlg_index.c:106 index/dlg_index.c:121
+#: alias/dlg_alias.c:104 index/dlg_index.c:106 index/dlg_index.c:121
 #: postpone/dlg_postpone.c:91
 msgid "Undel"
 msgstr "Récup"
 
-#: alias/dlg_alias.c:104 alias/dlg_query.c:106
+#: alias/dlg_alias.c:105 alias/dlg_query.c:106
 msgid "Sort"
 msgstr "Trier"
 
-#: alias/dlg_alias.c:105 alias/dlg_query.c:107
+#: alias/dlg_alias.c:106 alias/dlg_query.c:107
 msgid "Rev-Sort"
 msgstr "Trier (ordre inverse)"
 
-#: alias/dlg_alias.c:106 history/dlg_history.c:78 ncrypt/dlg_gpgme.c:95
-#: ncrypt/dlg_pgp.c:94 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:91
+#: alias/dlg_alias.c:107 history/dlg_history.c:79 ncrypt/dlg_gpgme.c:96
+#: ncrypt/dlg_pgp.c:95 ncrypt/dlg_smime.c:75 pattern/dlg_pattern.c:92
 msgid "Select"
 msgstr "Sélectionner"
 
-#: alias/dlg_alias.c:107 alias/dlg_query.c:109 attach/dlg_attach.c:98
-#: autocrypt/dlg_autocrypt.c:109 browser/dlg_browser.c:116
+#: alias/dlg_alias.c:108 alias/dlg_query.c:109 attach/dlg_attach.c:99
+#: autocrypt/dlg_autocrypt.c:110 browser/dlg_browser.c:116
 #: browser/dlg_browser.c:130 compose/dlg_compose.c:105
 #: compose/dlg_compose.c:119 conn/dlg_verifycert.c:69 editor/window.c:51
-#: history/dlg_history.c:80 index/dlg_index.c:111 index/dlg_index.c:126
-#: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96 ncrypt/dlg_smime.c:76
-#: pager/dlg_pager.c:77 pager/dlg_pager.c:102 pager/dlg_pager.c:117
-#: pattern/dlg_pattern.c:92 postpone/dlg_postpone.c:92
+#: history/dlg_history.c:81 index/dlg_index.c:111 index/dlg_index.c:126
+#: ncrypt/dlg_gpgme.c:98 ncrypt/dlg_pgp.c:97 ncrypt/dlg_smime.c:76
+#: pager/dlg_pager.c:78 pager/dlg_pager.c:103 pager/dlg_pager.c:118
+#: pattern/dlg_pattern.c:93 postpone/dlg_postpone.c:92
 msgid "Help"
 msgstr "Aide"
 
-#: alias/dlg_alias.c:270
+#: alias/dlg_alias.c:271
 msgid "You have no aliases"
 msgstr "Vous n'avez pas défini d'alias"
 
-#: alias/dlg_alias.c:274
+#: alias/dlg_alias.c:275
 msgid "Aliases"
 msgstr "Alias"
 
@@ -178,7 +178,7 @@ msgstr "Nouvelle requête"
 msgid "Make Alias"
 msgstr "Créer un alias"
 
-#: alias/dlg_query.c:108 history/dlg_history.c:79
+#: alias/dlg_query.c:108 history/dlg_history.c:80
 msgid "Search"
 msgstr "Rechercher"
 
@@ -190,11 +190,11 @@ msgstr "Attente de la réponse..."
 msgid "Query"
 msgstr "Requête"
 
-#: alias/dlg_query.c:409 alias/dlg_query.c:481
+#: alias/dlg_query.c:409 alias/dlg_query.c:482
 msgid "Query command not defined"
 msgstr "Commande de requête non définie"
 
-#: alias/dlg_query.c:491 alias/functions.c:303 alias/functions.c:321
+#: alias/dlg_query.c:492 alias/functions.c:303 alias/functions.c:321
 msgid "Query: "
 msgstr "Requête : "
 
@@ -256,22 +256,22 @@ msgstr "unattachments : pas de disposition"
 msgid "unattachments: invalid disposition"
 msgstr "unattachments : disposition invalide"
 
-#: attach/dlg_attach.c:95 index/dlg_index.c:107 index/dlg_index.c:122
+#: attach/dlg_attach.c:96 index/dlg_index.c:107 index/dlg_index.c:122
 msgid "Save"
 msgstr "Enregistrer"
 
 # TODO: This should likely be "passer à une commande," but I need to look into 
 # the context
-#: attach/dlg_attach.c:96
+#: attach/dlg_attach.c:97
 #, fuzzy
 msgid "Pipe"
 msgstr "Pipe"
 
-#: attach/dlg_attach.c:97
+#: attach/dlg_attach.c:98
 msgid "Print"
 msgstr "Imprimer"
 
-#: attach/dlg_attach.c:244
+#: attach/dlg_attach.c:245
 msgid "Attachments"
 msgstr "Pièces jointes"
 
@@ -323,7 +323,7 @@ msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
 #: attach/mutt_attach.c:166 attach/mutt_attach.c:305 compmbox/compress.c:312
 #: compose/functions.c:1851 gui/curs_lib.c:125 index/dlg_index.c:1215
-#: index/dlg_index.c:1260 pager/dlg_pager.c:455 pager/do_pager.c:166
+#: index/dlg_index.c:1260 pager/dlg_pager.c:456 pager/do_pager.c:166
 #: pager/message.c:329 send/sendlib.c:581
 #, c-format
 msgid "Error running \"%s\""
@@ -367,7 +367,7 @@ msgid "MIME type not defined.  Can't view attachment."
 msgstr "Type MIME non défini. Impossible de afficher la pièce jointe."
 
 #: attach/mutt_attach.c:575 attach/mutt_attach.c:773 attach/mutt_attach.c:1193
-#: attach/mutt_attach.c:1258 handler.c:595 ncrypt/pgp_functions.c:160
+#: attach/mutt_attach.c:1258 handler.c:597 ncrypt/pgp_functions.c:160
 #: ncrypt/pgpkey.c:300
 msgid "Can't create filter"
 msgstr "Impossible de créer le filtre"
@@ -460,7 +460,7 @@ msgstr "Impossible de déchiffrer le message chiffré"
 #. L10N: s is a directory.  NeoMutt is looking for a directory it needs
 #. for some reason (e.g. autocrypt, header cache, bcache), but it
 #. doesn't exist.  The prompt is asking whether to create the directory
-#: autocrypt/autocrypt.c:77 main.c:1504
+#: autocrypt/autocrypt.c:77 main.c:1491
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer?"
@@ -468,8 +468,8 @@ msgstr "%s n'existe pas. Le créer?"
 # , c-format
 #. L10N: mkdir() on the directory %s failed.  The second %s is the
 #. error message returned by libc
-#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:691
-#: main.c:1508 nntp/newsrc.c:1020
+#: autocrypt/autocrypt.c:84 bcache/bcache.c:233 hcache/hcache.c:329 main.c:657
+#: main.c:1495 nntp/newsrc.c:1021
 #, c-format
 msgid "Can't create %s: %s"
 msgstr "Impossible de créer %s : %s"
@@ -579,13 +579,13 @@ msgstr "Impossible d'ouvrir la base de données autocrypt %s"
 # , c-format
 #. L10N: Autocrypt Account Menu Help line:
 #. create new account
-#: autocrypt/dlg_autocrypt.c:93
+#: autocrypt/dlg_autocrypt.c:94
 msgid "Create"
 msgstr "Créer"
 
 #. L10N: Autocrypt Account Menu Help line:
 #. delete account
-#: autocrypt/dlg_autocrypt.c:96
+#: autocrypt/dlg_autocrypt.c:97
 msgid "Delete"
 msgstr "Retirer"
 
@@ -594,7 +594,7 @@ msgstr "Retirer"
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:102
+#: autocrypt/dlg_autocrypt.c:103
 msgid "Tgl Active"
 msgstr "Bsclr Actif"
 
@@ -603,12 +603,12 @@ msgstr "Bsclr Actif"
 #. The words here are abbreviated to keep the help line compact.
 #. It currently has the content:
 #. q:Exit  c:Create  D:Delete  a:Tgl Active  p:Prf Encr  ?:Help
-#: autocrypt/dlg_autocrypt.c:108
+#: autocrypt/dlg_autocrypt.c:109
 msgid "Prf Encr"
 msgstr "Chffr Fav"
 
 #. L10N: Autocrypt Account Management Menu title
-#: autocrypt/dlg_autocrypt.c:264
+#: autocrypt/dlg_autocrypt.c:265
 msgid "Autocrypt Accounts"
 msgstr "Comptes Autocrypt"
 
@@ -919,7 +919,7 @@ msgstr "%s : cette couleur n'est pas prise en charge sur ce terminal"
 #: color/command.c:357 color/command.c:393 commands.c:426 commands.c:1135
 #: commands.c:1266 commands.c:1602 hook.c:145 hook.c:225 hook.c:488
 #: key/parse.c:355 key/parse.c:395 key/parse.c:513 key/parse.c:606
-#: mutt_lua.c:508 score.c:108
+#: mutt_lua.c:509 score.c:108
 #, c-format
 msgid "%s: too many arguments"
 msgstr "%s: trop d'arguments"
@@ -1030,12 +1030,12 @@ msgstr "Erreur : %s"
 msgid "invalid header field"
 msgstr "en-tête invalide"
 
-#: commands.c:997 commands.c:1011 parse/set.c:550
+#: commands.c:997 commands.c:1011 parse/set.c:551
 #, fuzzy, c-format
 msgid "Can't query option with the '%s' command"
 msgstr "Impossible d'appeler une variable avec la commande '%s'"
 
-#: commands.c:1017 parse/set.c:544
+#: commands.c:1017 parse/set.c:545
 msgid "Can't use a prefix when querying a variable"
 msgstr "Impossible d'utiliser un préfixe en appelant une variable"
 
@@ -1046,7 +1046,7 @@ msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
-#: commands.c:1097 mutt_lua.c:503
+#: commands.c:1097 mutt_lua.c:504
 #, fuzzy, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
@@ -1269,7 +1269,7 @@ msgstr "Ouvrir une boîte aux lettres d'où joindre un message"
 msgid "Open newsgroup to attach message from"
 msgstr "Ouvrir une boîte mail d'où attacher un message"
 
-#: compose/functions.c:893 main.c:1956
+#: compose/functions.c:893 main.c:1943
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Impossible d'ouvrir la boîte aux lettres %s"
@@ -1391,7 +1391,7 @@ msgstr "La pièce jointe actuelle sera convertie"
 msgid "Attachment is not 'multipart'"
 msgstr "La pièce jointe n'est pas en plusieurs parties (au format 'multipart')"
 
-#: compose/functions.c:1772 send/send.c:2673
+#: compose/functions.c:1772 send/send.c:2674
 #, c-format
 msgid "Bad IDN in '%s': '%s'"
 msgstr "Mauvais IDN dans « %s » : '%s'"
@@ -1463,23 +1463,23 @@ msgid "Invalid boolean value: %s"
 msgstr "Valeur booléenne invalide : %s"
 
 # , c-format
-#: config/bool.c:134
+#: config/bool.c:133
 #, c-format
 msgid "Invalid boolean value: %ld"
 msgstr "Valeur booléenne invalide : %ld"
 
-#: config/charset.c:55
+#: config/charset.c:54
 msgid "'charset' must contain exactly one character set name"
 msgstr "'charset' doit contenir exactement le nom d'un jeu de caractères"
 
 # , c-format
-#: config/charset.c:71 config/charset.c:103 hcache/config.c:56
-#: hcache/config.c:80 hcache/config.c:105 mutt_config.c:122
+#: config/charset.c:70 config/charset.c:101 hcache/config.c:55
+#: hcache/config.c:78 hcache/config.c:103 mutt_config.c:121
 #, fuzzy, c-format
 msgid "Invalid value for option %s: %s"
 msgstr "Valeur invalide pour l'option %s : %s"
 
-#: config/enum.c:57
+#: config/enum.c:58
 #, c-format
 msgid "Invalid enum value: %s"
 msgstr "Valeur d'énumération invalide : %s"
@@ -1491,37 +1491,46 @@ msgid "Invalid enum value: %ld"
 msgstr "Valeur d'énumération invalide : %ld"
 
 # , c-format
-#: config/long.c:57 config/long.c:159 config/long.c:198
+#: config/helpers.c:340 config/set.c:109 config/set.c:454 config/set.c:601
+#: config/set.c:677 config/set.c:797 main.c:685 parse/set.c:120 parse/set.c:180
+#: parse/set.c:229 parse/set.c:263 parse/set.c:326 parse/set.c:367
+#: parse/set.c:434
+#, c-format
+msgid "Unknown option %s"
+msgstr "%s : option inconnue"
+
+# , c-format
+#: config/long.c:58 config/long.c:157 config/long.c:195
 #, c-format
 msgid "Invalid long: %s"
 msgstr "Type long invalide : %s"
 
-#: config/long.c:63 config/long.c:118 config/long.c:166 config/long.c:205
-#: config/number.c:96 config/number.c:158 config/number.c:212
-#: config/number.c:254
+#: config/long.c:64 config/long.c:118 config/long.c:164 config/long.c:202
+#: config/number.c:97 config/number.c:157 config/number.c:209
+#: config/number.c:250
 #, c-format
 msgid "Option %s may not be negative"
 msgstr "Option %s ne peut pas être négative"
 
-#: config/number.c:84 config/number.c:199 config/number.c:241
+#: config/number.c:85 config/number.c:196 config/number.c:237
 #: expando/node_conddate.c:242 expando/node_expando.c:179
 #: expando/node_expando.c:202
 #, c-format
 msgid "Invalid number: %s"
 msgstr "Nombre invalide : %s"
 
-#: config/number.c:90 config/number.c:206 config/number.c:248
+#: config/number.c:91 config/number.c:203 config/number.c:244
 #, c-format
 msgid "Number is too big: %s"
 msgstr "Nombre trop grand : %s"
 
-#: config/number.c:152
+#: config/number.c:151
 #, c-format
 msgid "Invalid number: %ld"
 msgstr "Nombre invalide : %ld"
 
 # , c-format
-#: config/quad.c:78
+#: config/quad.c:79
 #, fuzzy, c-format
 msgid "Invalid quad value: %s"
 msgstr "Date relative invalide : %s"
@@ -1532,28 +1541,19 @@ msgstr "Date relative invalide : %s"
 msgid "Invalid quad value: %ld"
 msgstr "Valeur 'quad' invalide : %ld"
 
-# , c-format
-#: config/set.c:109 config/set.c:454 config/set.c:520 config/set.c:581
-#: config/set.c:657 config/set.c:777 main.c:735 parse/set.c:120 parse/set.c:180
-#: parse/set.c:229 parse/set.c:263 parse/set.c:326 parse/set.c:367
-#: parse/set.c:434
-#, c-format
-msgid "Unknown option %s"
-msgstr "%s : option inconnue"
-
-#: config/set.c:261 config/set.c:857
+#: config/set.c:261 config/set.c:877
 #, c-format
 msgid "Option %s has an invalid type %d"
 msgstr "Le type %2$d de l'option %1$s est invalide"
 
 #. L10N: e.g. Type 'boolean' doesn't support operation '+='
-#: config/set.c:909 config/set.c:968
+#: config/set.c:929 config/set.c:988
 #, c-format
 msgid "Type '%s' doesn't support operation '%s'"
 msgstr "Le type '%s' ne supporte pas l'opération '%s'"
 
 # , c-format
-#: config/sort.c:87
+#: config/sort.c:88
 #, fuzzy, c-format
 msgid "Invalid sort name: %s"
 msgstr "Date relative invalide : %s"
@@ -2263,7 +2263,7 @@ msgstr[0] "(+%d plus)"
 msgstr[1] "(+%d more)"
 
 #. L10N: e.g. "Option index_format:" plus an error message
-#: expando/config_type.c:84 expando/config_type.c:250
+#: expando/config_type.c:85 expando/config_type.c:247
 #, c-format
 msgid "Option %s: "
 msgstr "Option %s :"
@@ -2510,8 +2510,8 @@ msgstr "Jeu de caractères changé à %s ; conversion"
 # TODO: Typically a thread is translated as « un fil », but may « disscussion »
 #       is better here? Need to look into this.
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
-#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1299
-#: mutt_thread.c:1365 mutt_thread.c:1451
+#: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1298
+#: mutt_thread.c:1364 mutt_thread.c:1450
 #, fuzzy
 msgid "Threading is not enabled"
 msgstr "L'affichage des discussions n'est pas activé"
@@ -4312,30 +4312,30 @@ msgid "[-- Alternative Type #%d: %s/%s%s%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Type alternatif: #%d : %s/%s%s%s, Codage : %s, Taille : %s --]\n"
 
 # , c-format
-#: handler.c:564
+#: handler.c:566
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Visualisation automatique en utilisant %s --]\n"
 
 # , c-format
-#: handler.c:565
+#: handler.c:567
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Invocation de la commande de visualisation automatique : %s"
 
 # , c-format
-#: handler.c:599
+#: handler.c:601
 #, c-format
 msgid "[-- Can't run %s --]\n"
 msgstr "[-- Impossible d'exécuter %s --]\n"
 
 # , c-format
-#: handler.c:625 handler.c:646
+#: handler.c:627 handler.c:648
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Visualisation automatique stderr de %s --]\n"
 
-#: handler.c:781
+#: handler.c:780
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr "[-- Erreur : message/external-body n'a pas de paramètre access-type --]\n"
 
@@ -4355,7 +4355,7 @@ msgstr "[-- Erreur : message/external-body n'a pas de paramètre access-type --]
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in muttlib.c
-#: handler.c:826
+#: handler.c:828
 #, fuzzy, c-format
 msgid ""
 "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
@@ -4385,7 +4385,7 @@ msgstr[1] ""
 #. passing the precise size in bytes. If you are interested the
 #. function responsible for the prettification is
 #. mutt_str_pretty_size() in muttlib.c
-#: handler.c:849
+#: handler.c:851
 #, fuzzy, c-format
 msgid "[-- This %s/%s attachment (size %s byte) has been deleted --]\n"
 msgid_plural "[-- This %s/%s attachment (size %s bytes) has been deleted --]\n"
@@ -4400,7 +4400,7 @@ msgstr[1] "[-- Cette pièce jointe %s/%s (taille %s octets) a été supprimée -
 #.
 #. Caution: Argument three %3$ is also defined but should not be used
 #. in this translation!
-#: handler.c:865
+#: handler.c:866
 msgid ""
 "[-- This %s/%s attachment has been deleted --]\n"
 "[-- on %4$s --]\n"
@@ -4412,18 +4412,21 @@ msgstr ""
 #. L10N: If the translation of this string is a multi line string, then
 #. each line should start with "[-- " and end with " --]".
 #. The first "%s/%s" is a MIME type, e.g. "text/plain".
-#: handler.c:872
+#: handler.c:873
 #, c-format
 msgid "[-- This %s/%s attachment has been deleted --]\n"
 msgstr "[-- Cette pièce jointe %s/%s a été supprimée --]\n"
 
 # , c-format
-#: handler.c:882
+#: handler.c:883
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nom : %s --]\n"
 
-#: handler.c:901
+#. L10N: If the translation of this string is a multi line string, then
+#. each line should start with "[-- " and end with " --]".
+#. The "%s/%s" is a MIME type, e.g. "text/plain".
+#: handler.c:902
 #, c-format
 msgid ""
 "[-- This %s/%s attachment is not included, --]\n"
@@ -4432,6 +4435,11 @@ msgstr ""
 "[-- Cette pièce jointe %s/%s n'est pas incluse, --]\n"
 "[-- et la source externe indiquée a expiré. --]\n"
 
+#. L10N: If the translation of this string is a multi line string, then
+#. each line should start with "[-- " and end with " --]".
+#. The "%s/%s" is a MIME type, e.g. "text/plain".  The %s after
+#. access-type is an access-type as defined by the MIME RFCs, e.g. "FTP",
+#. "LOCAL-FILE", "MAIL-SERVER".
 #: handler.c:923
 #, c-format
 msgid ""
@@ -4441,59 +4449,59 @@ msgstr ""
 "[-- Cette pièce jointe %s/%s n'est pas incluse, --]\n"
 "[-- et l'access-type %s indiqué n'est pas supporté --]\n"
 
-#: handler.c:1116
+#: handler.c:1117
 msgid "[-- Error: Could not display any parts of Multipart/Alternative --]\n"
 msgstr "[-- Erreur : Aucune partie du 'Multipart/Alternative' n'a pu être affichée --]\n"
 
 # , c-format
 #. L10N: %s is the attachment description, filename or form_name.
-#: handler.c:1270
+#: handler.c:1271
 #, c-format
 msgid "[-- Attachment #%d: %s --]\n"
 msgstr "[-- Pièce jointe #%d: %s --]\n"
 
 # , c-format
-#: handler.c:1277
+#: handler.c:1278
 #, c-format
 msgid "[-- Attachment #%d --]\n"
 msgstr "[-- Pièce jointe #%d --]\n"
 
-#: handler.c:1295
+#: handler.c:1296
 msgid "One or more parts of this message could not be displayed"
 msgstr "Une ou plusieurs parties de ce message n'ont pas pu être affichées"
 
-#: handler.c:1368
+#: handler.c:1369
 msgid "Unable to open 'memory stream'"
 msgstr "Impossible d'ouvrir 'memory stream'"
 
-#: handler.c:1378
+#: handler.c:1379
 msgid "Unable to open temporary file"
 msgstr "Impossible d'ouvrir le fichier temporaire"
 
-#: handler.c:1425
+#: handler.c:1426
 msgid "failed to re-open 'memory stream'"
 msgstr "échec de la réouverture de 'memory stream'"
 
 # TODO : look into this one, needs a rephrase for French
-#: handler.c:1716
+#: handler.c:1717
 msgid "Error: multipart/signed has no protocol"
 msgstr "Erreur : 'multipart/signed' n'a pas de protocole"
 
 # , c-format
-#: handler.c:1786
+#: handler.c:1787
 msgid "[-- This is an attachment --]\n"
 msgstr "[-- Ceci est une pièce jointe --]\n"
 
 # , c-format
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1791
+#: handler.c:1792
 #, c-format
 msgid "[-- %s/%s is unsupported --]\n"
 msgstr "[-- %s/%s n'est pas supporté --]\n"
 
 # , c-format
 #. L10N: %s expands to a keystroke/key binding, e.g. 'v'.
-#: handler.c:1802
+#: handler.c:1803
 #, c-format
 msgid "[-- This is an attachment (use '%s' to view this part) --]\n"
 msgstr "[-- Ceci est une pièce jointe (utilisez '%s' pour voir cette partie) --]\n"
@@ -4501,22 +4509,22 @@ msgstr "[-- Ceci est une pièce jointe (utilisez '%s' pour voir cette partie) --
 # , c-format
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
 #. The last %s expands to a keystroke/key binding, e.g. 'v'.
-#: handler.c:1809
+#: handler.c:1810
 #, c-format
 msgid "[-- %s/%s is unsupported (use '%s' to view this part) --]\n"
 msgstr "[-- %s/%s n'est pas disponible (utilisez '%s' pour voir cette partie) --]\n"
 
-#: handler.c:1817
+#: handler.c:1818
 msgid "[-- This is an attachment (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- Ceci est une pièce jointe (la fonction 'view-attachments' doit être affectée à une touche ) --]\n"
 
 #. L10N: %s/%s is a MIME type, e.g. "text/plain".
-#: handler.c:1822
+#: handler.c:1823
 #, c-format
 msgid "[-- %s/%s is unsupported (need 'view-attachments' bound to key) --]\n"
 msgstr "[-- %s/%s n'est pas disponible (la fonction 'view-attachments' doit être affectée à une touche ) --]\n"
 
-#: hcache/config.c:97
+#: hcache/config.c:95
 #, fuzzy, c-format
 msgid "Set option %s before setting %s"
 msgstr "Déterminer l'option %s avant le paramètre %s"
@@ -4524,7 +4532,7 @@ msgstr "Déterminer l'option %s avant le paramètre %s"
 #. L10N: This applies to the "$header_cache_compress_level" config variable.
 #. It shows the minimum and maximum values, e.g. 'between 1 and 22'
 #. L10N: This applies to the "$wrap_headers" config variable.
-#: hcache/config.c:114 send/config.c:68
+#: hcache/config.c:112 send/config.c:68
 #, fuzzy, c-format
 msgid "Option %s must be between %d and %d inclusive"
 msgstr "L'option %s doit se situer entre les valeurs de  %d à %d (inclus)"
@@ -4654,7 +4662,7 @@ msgstr "vous êtes sur la liste 'Reply-To'"
 msgid "Help for %s"
 msgstr "Aide pour %s"
 
-#: history/dlg_history.c:127
+#: history/dlg_history.c:128
 #, c-format
 msgid "History '%s'"
 msgstr "Historique '%s'"
@@ -4807,7 +4815,7 @@ msgstr "La commande IMAP a échoué : %s"
 msgid "Connection to %s timed out"
 msgstr "Connexion à %s interrompue"
 
-#: imap/config.c:61 pop/config.c:61 send/config.c:92
+#: imap/config.c:60 pop/config.c:60 send/config.c:91
 #, fuzzy, c-format
 msgid "Option %s: %s is not a valid authenticator"
 msgstr "L'option %s: %s n'est pas un moyen accepté d'authentification"
@@ -4993,7 +5001,7 @@ msgstr "-%r-NeoMutt : %D [Msgs:%<M?%M/>%m%<n? Nouveau(x) :%n>%<o? Vieux :%o>%<d?
 msgid "Quit"
 msgstr "Quitter"
 
-#: index/dlg_index.c:109 pager/dlg_pager.c:100
+#: index/dlg_index.c:109 pager/dlg_pager.c:101
 msgid "Reply"
 msgstr "Répondre"
 
@@ -5001,12 +5009,12 @@ msgstr "Répondre"
 msgid "Group"
 msgstr "Groupe"
 
-#: index/dlg_index.c:123 pager/dlg_pager.c:113
+#: index/dlg_index.c:123 pager/dlg_pager.c:114
 msgid "Post"
 msgstr "Poster"
 
 # , c-format
-#: index/dlg_index.c:124 pager/dlg_pager.c:114
+#: index/dlg_index.c:124 pager/dlg_pager.c:115
 #, fuzzy
 msgid "Followup"
 msgstr "Suivi de la discussion à %s%s ?"
@@ -5031,7 +5039,7 @@ msgstr "%s n'est pas une boîte aux lettres"
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Boîte aux lettres modifiée extérieurement. Les drapeaux peuvent être faux."
 
-#: index/dlg_index.c:1204 pager/dlg_pager.c:430
+#: index/dlg_index.c:1204 pager/dlg_pager.c:431
 msgid "New mail in this mailbox"
 msgstr "Nouveau(x) message(s) dans cette boîte aux lettres"
 
@@ -5052,26 +5060,26 @@ msgstr "Pas de messages marqués"
 msgid "Nothing to do"
 msgstr "Rien à faire"
 
-#: index/expando_status.c:263
+#: index/expando_status.c:260
 msgid "(no mailbox)"
 msgstr "(pas de boîte aux lettres)"
 
 #. L10N: Status bar message: the end of the list emails is visible in the index
 #. L10N: Status bar message: the end of the email is visible in the pager
-#: index/expando_status.c:450 pager/pbar.c:122
+#: index/expando_status.c:444 pager/pbar.c:122
 msgid "end"
 msgstr "fin"
 
 #. L10N: Status bar message: all the emails are visible in the index
 #. L10N: Status bar message: the entire email is visible in the pager
-#: index/expando_status.c:452 pager/message.c:61 pager/pbar.c:120
+#: index/expando_status.c:446 pager/message.c:61 pager/pbar.c:120
 msgid "all"
 msgstr "tout"
 
 #. L10N: Status bar, percentage of way through index.
 #. `%d` is the number, `%%` is the percent symbol.
 #. They may be reordered, or space inserted, if you wish.
-#: index/expando_status.c:460
+#: index/expando_status.c:454
 #, c-format
 msgid "%d%%"
 msgstr "%d %%"
@@ -5447,11 +5455,11 @@ msgstr "Cette touche n'est pas affectée. Tapez '%s' pour avoir l'aide."
 msgid "Macro loop detected"
 msgstr "Boucle de macro détectée"
 
-#: key/init.c:244
+#: key/init.c:236
 msgid "Abort key is not set, defaulting to Ctrl-G"
 msgstr "Touche d'annulation non définie, réglée par défaut sur Ctrl-G"
 
-#: key/init.c:250
+#: key/init.c:242
 #, c-format
 msgid "Specified abort key sequence (%s) will be truncated to first key"
 msgstr "La séquence de touches d'abandon spécifiée (%s) sera tronquée à la première touche"
@@ -5515,12 +5523,12 @@ msgid "mailcap entry for type %s not found"
 msgstr "entrée mailcap pour le type %s non trouvée"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
-#: maildir/config.c:53
+#: maildir/config.c:52
 msgid "maildir_field_delimiter must be exactly one character long"
 msgstr "maildir_field_delimiter doit être uniquement un caractère simple"
 
 #. L10N: maildir_field_delimiter is a config variable and shouldn't be translated
-#: maildir/config.c:60
+#: maildir/config.c:59
 msgid "maildir_field_delimiter cannot be alphanumeric or '-.\\/'"
 msgstr "maildir_field_delimiter ne peut pas être alphanumérique ou '-.\\/'"
 
@@ -5565,22 +5573,22 @@ msgstr "Erreur dans la ligne de commande : %s"
 msgid "Warning in command line: %s"
 msgstr "Erreur dans la ligne de commande : %s"
 
-#: main.c:357
+#: main.c:340
 msgid "unable to determine nodename via uname()"
 msgstr "impossible de déterminer nodename via uname()"
 
-#: main.c:742 parse/set.c:127 parse/set.c:187 parse/set.c:235 parse/set.c:269
+#: main.c:692 parse/set.c:127 parse/set.c:187 parse/set.c:235 parse/set.c:269
 #: parse/set.c:332 parse/set.c:373 parse/set.c:440
 #, c-format
 msgid "Option %s is deprecated"
 msgstr "La variable de configuration %s n'est plus valide"
 
 #. L10N: Try to limit to 80 columns
-#: main.c:823
+#: main.c:770
 msgid "usage:"
 msgstr "utilisation :"
 
-#: main.c:824
+#: main.c:771
 #, fuzzy
 msgid ""
 "  neomutt [-CEn] [-e <command>] [-F <config>] [-H <draft>] [-i <include>]\n"
@@ -5591,7 +5599,7 @@ msgstr ""
 "          [-b <address>] [-c <address>] [-s <subject>] [-a <file> [...] --]\n"
 "          <address> [...]"
 
-#: main.c:827
+#: main.c:774
 #, fuzzy
 msgid ""
 "  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
@@ -5600,61 +5608,61 @@ msgstr ""
 "  neomutt [-Cn] [-e <command>] [-F <config>] [-b <address>] [-c <address>]\n"
 "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"
 
-#: main.c:829
+#: main.c:776
 msgid "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 msgstr "  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"
 
-#: main.c:830
+#: main.c:777
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"
 
-#: main.c:831
+#: main.c:778
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -B"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -B"
 
-#: main.c:832
-msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
-msgstr "  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"
+#: main.c:779
+msgid "  neomutt [-n] [-e <command>] [-F <config>] -D [-D] [-O] [-S]"
+msgstr "  neomutt [-n] [-e <command>] [-F <config>] -D [-D] [-O] [-S]"
 
-#: main.c:833
+#: main.c:780
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"
 
-#: main.c:834
+#: main.c:781
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -G"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -G"
 
-#: main.c:835
+#: main.c:782
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -g <server>"
 
-#: main.c:836
+#: main.c:783
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -p"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -p"
 
-#: main.c:837
+#: main.c:784
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Q <variable> [-O]"
 
-#: main.c:838
+#: main.c:785
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -Z"
 
-#: main.c:839
+#: main.c:786
 msgid "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 msgstr "  neomutt [-n] [-e <command>] [-F <config>] -z [-f <mailbox>]"
 
-#: main.c:840
+#: main.c:787
 msgid "  neomutt -v[v]\n"
 msgstr "  neomutt -v[v]\n"
 
 #. L10N: Try to limit to 80 columns.  If more space is needed add an indented line
-#: main.c:843
+#: main.c:790
 #, fuzzy
 msgid "options:"
 msgstr "Options par défaut :"
 
-#: main.c:844
+#: main.c:791
 msgid ""
 "  --            Special argument forces NeoMutt to stop option parsing and treat\n"
 "                remaining arguments as addresses even if they start with a dash"
@@ -5663,13 +5671,13 @@ msgstr ""
 "                de traiter les arguments restants comme les adresses, même s'ils\n"
 "                commencent par un tiret"
 
-#: main.c:846
+#: main.c:793
 msgid "  -A <alias>    Print an expanded version of the given alias to stdout and exit"
 msgstr ""
 "  -A <alias>    Afficher une version élargie de l'alias donné sur stdout et\n"
 "                quitter"
 
-#: main.c:847
+#: main.c:794
 msgid ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
@@ -5678,42 +5686,47 @@ msgstr ""
 "                dernière option). Ajoutez l'adresses ou les adresses après\n"
 "                l'argument « -- »"
 
-#: main.c:849
+#: main.c:796
 msgid "  -B            Run in batch mode (do not start the ncurses UI)"
 msgstr ""
 "  -B            Partir en mode traitement par lots (ne pas démarrer\n"
 "                l'interface utilisateur ncurses)"
 
-#: main.c:850
+#: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adress>   Indiquer un destinataire en copie conforme invisible (CCI)"
 
-#: main.c:851
+#: main.c:798
 msgid "  -c <address>  Specify a carbon copy (Cc) recipient"
 msgstr "  -c <adress>   Choisir un destinataire en copie conforme (CC)"
 
-#: main.c:852
+#: main.c:799
 #, fuzzy
 msgid "  -C            Enable Command-line Crypto (signing/encryption)"
 msgstr ""
 "  -C            Activer le mode « Command-line crypto » (signature\n"
 "                numérique / chiffrement)"
 
-#: main.c:853
+#: main.c:800
 msgid "  -D            Dump all config variables as 'name=value' pairs to stdout"
 msgstr ""
 "  -D            Afficher toutes les variables de configuration sous la forme\n"
 "                « nom=valeur » sur stdout"
 
-#: main.c:854
+#: main.c:801
+#, fuzzy
+msgid "  -D -D         (or -DD) Like -D, but only show changed config"
+msgstr "  -D -D         Comme -D, mais afficher la documentation d'une seule ligne"
+
+#: main.c:802
 msgid "  -D -O         Like -D, but show one-liner documentation"
 msgstr "  -D -D         Comme -D, mais afficher la documentation d'une seule ligne"
 
-#: main.c:855
+#: main.c:803
 msgid "  -D -S         Like -D, but hide the value of sensitive variables"
 msgstr "  -D -S         Comme -D, mais cacher la valeurs des variables sensibles"
 
-#: main.c:856
+#: main.c:804
 msgid ""
 "  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
 "                The level can range from 1-5 and affects verbosity"
@@ -5721,60 +5734,60 @@ msgstr ""
 "  -d <niveau>   Journaliser sur un fichier (fichier par default : \"~/.neomuttdebug0\")\n"
 "                Le niveau de journalisation (entre 1 et 5) affecte la verbosité"
 
-#: main.c:858
+#: main.c:806
 msgid "  -E            Edit draft (-H) or include (-i) file during message composition"
 msgstr ""
 "  -E            Éditer un message ajourné (-H) ou inclure (-i) un fichier\n"
 "                durant la composition du message"
 
-#: main.c:859
+#: main.c:807
 msgid "  -e <command>  Specify a command to be run after reading the config files"
 msgstr ""
 "  -e <commande> Spécifier une commande à exécuter après la lecture des fichiers\n"
 "                de configuration"
 
-#: main.c:860
+#: main.c:808
 msgid "  -F <config>   Specify an alternative initialization file to read"
 msgstr "  -F <fichier>  Spécifier un fichier de configuration alternatif à lire"
 
 # TODO: should the command name "mailboxes" be translated?
-#: main.c:861
+#: main.c:809
 msgid "  -f <mailbox>  Specify a mailbox (as defined with 'mailboxes' command) to load"
 msgstr ""
 "  -f <boîte>    Spécifier une boîte à lettres (comme c'est défini dans la\n"
 "                commande « mailboxes ») à charger"
 
-#: main.c:862
+#: main.c:810
 msgid "  -G            Start NeoMutt with a listing of subscribed newsgroups"
 msgstr ""
 "  -G            Démarrer NeoMutt avec une liste de groupes de discussion\n"
 "                abonnées"
 
-#: main.c:863
+#: main.c:811
 msgid "  -g <server>   Like -G, but start at specified news server"
 msgstr "  -g <serveur>  Comme -G, mais commencer d'un serveur spécifié"
 
-#: main.c:864
+#: main.c:812
 msgid "  -H <draft>    Specify a draft file with header and body for message composing"
 msgstr ""
 "  -H <fichier>  Spécifier un brouillon avec un en-tête et un corps pour la\n"
 "                composition des messages"
 
-#: main.c:865
+#: main.c:813
 msgid "  -h            Print this help message and exit"
 msgstr "  -h            Afficher ce message et quitter"
 
-#: main.c:866
+#: main.c:814
 msgid "  -i <include>  Specify an include file to be embedded in the body of a message"
 msgstr "  -i <fichier>  Spécifier un fichier à intégrer dans le corps du message"
 
-#: main.c:867
+#: main.c:815
 msgid "  -l <file>     Specify a file for debugging output (default \"~/.neomuttdebug0\")"
 msgstr ""
 "  -l <fichier>  Spécifier un fichier pour la sortie de débogage (valeur par\n"
 "                défaut \"~/.neomuttdebug0\")"
 
-#: main.c:868
+#: main.c:816
 msgid ""
 "  -m <type>     Specify a default mailbox format type for newly created folders\n"
 "                The type is either MH, MMDF, Maildir or mbox (case-insensitive)"
@@ -5783,15 +5796,15 @@ msgstr ""
 "                répertoires nouvellement créés. Le format doit être un des suivants :\n"
 "                MH, MMDF, Mailir, ou mbox (non sensible à la casse)"
 
-#: main.c:870
+#: main.c:818
 msgid "  -n            Do not read the system-wide configuration file"
 msgstr "  -n            Ne pas lire le fichier de configuration du système"
 
-#: main.c:871
+#: main.c:819
 msgid "  -p            Resume a prior postponed message, if any"
 msgstr "  -p            Retourner à un message ajourné, s'il en existe"
 
-#: main.c:872
+#: main.c:820
 msgid ""
 "  -Q <variable> Query a configuration variable and print its value to stdout\n"
 "                (after the config has been read and any commands executed)\n"
@@ -5801,35 +5814,35 @@ msgstr ""
 "                stdout (après la configuration a été lue et ses commandes exécutées)\n"
 "                Ajoutez -O pour la documentation d'une seule ligne"
 
-#: main.c:875
+#: main.c:823
 msgid "  -R            Open mailbox in read-only mode"
 msgstr "  -R            Ouvrir la boîte aux lettres en lecture seule"
 
-#: main.c:876
+#: main.c:824
 msgid "  -s <subject>  Specify a subject (must be enclosed in quotes if it has spaces)"
 msgstr ""
 "  -s <objet>    Créer l'objet du message (doit être entre guillemets s'il\n"
 "                comporte des espaces)"
 
-#: main.c:877
+#: main.c:825
 msgid "  -v            Print the NeoMutt version and compile-time definitions and exit"
 msgstr ""
 "  -v            Afficher la version de NeoMutt version, définit son temps de\n"
 "                compilation et quitter"
 
-#: main.c:878
+#: main.c:826
 msgid "  -vv           Print the NeoMutt license and copyright information and exit"
 msgstr ""
 "  -vv           Afficher la licence NeoMutt, les informations relatives à la\n"
 "                propriété intellectuelle et quitter"
 
-#: main.c:879
+#: main.c:827
 msgid "  -y            Start NeoMutt with a listing of all defined mailboxes"
 msgstr ""
 "  -y            Démarrer NeoMutt avec une liste de toutes les boîtes aux\n"
 "                lettres définies"
 
-#: main.c:880
+#: main.c:828
 msgid ""
 "  -Z            Open the first mailbox with new message or exit immediately with\n"
 "                exit code 1 if none is found in all defined mailboxes"
@@ -5838,7 +5851,7 @@ msgstr ""
 "                quitter immédiatement avec un code de sortie de 1 s'il n'y en a\n"
 "                pas un trouvé dans toutes les boîtes aux lettres définies"
 
-#: main.c:882
+#: main.c:830
 msgid ""
 "  -z            Open the first or specified (-f) mailbox if it holds any message\n"
 "                or exit immediately with exit code 1 otherwise"
@@ -5847,57 +5860,57 @@ msgstr ""
 "                spécifiée (avec -f) si elle contient un message. Quitter immédiatement\n"
 "                avec un code de sortie de 1 sinon"
 
-#: main.c:905
+#: main.c:853
 msgid "Error initializing terminal"
 msgstr "Erreur d'initialisation du terminal"
 
-#: main.c:973
+#: main.c:921
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
-#: main.c:979
+#: main.c:927
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: main.c:1317
+#: main.c:1269
 #, c-format
 msgid "Error: value '%s' is invalid for -d"
 msgstr "Erreur : la valeur '%s' est invalide pour -d"
 
-#: main.c:1561
+#: main.c:1548
 msgid "Failed to parse mailto: link"
 msgstr "Échec de l'analyse du lien malto"
 
-#: main.c:1576 main.c:1845 send/send.c:306 send/send.c:2662 send/send.c:2666
+#: main.c:1563 main.c:1832 send/send.c:306 send/send.c:2663 send/send.c:2667
 msgid "No recipients specified"
 msgstr "Pas de destinataire spécifié"
 
-#: main.c:1611
+#: main.c:1598
 msgid "Can't use -E flag with stdin"
 msgstr "Impossible d'utiliser l'option -E avec stdin"
 
 # , c-format
-#: main.c:1701
+#: main.c:1688
 #, c-format
 msgid "Can't parse message template: %s"
 msgstr "Impossible d'analyser le modèle : %s"
 
 # , c-format
-#: main.c:1767 mutt_header.c:351
+#: main.c:1754 mutt_header.c:351
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s : impossible de joindre le fichier"
 
-#: main.c:1857
+#: main.c:1844
 msgid "No mailbox with new mail"
 msgstr "Pas de boîte aux lettres avec des nouveaux messages"
 
-#: main.c:1877
+#: main.c:1864
 #, fuzzy
 msgid "No incoming mailboxes defined"
 msgstr "Pas de boîtes aux lettres recevant du courrier définies"
 
-#: main.c:1930
+#: main.c:1917
 msgid "Mailbox is empty"
 msgstr "La boîte aux lettres est vide"
 
@@ -6076,33 +6089,33 @@ msgid "Not enough subexpressions for template"
 msgstr "Pas assez de sous-expressions pour la chaîne de format"
 
 # TODO: Should 'index-hook' not be translated?
-#: mutt_config.c:231
+#: mutt_config.c:230
 #, c-format
 msgid "index-hook cannot be used as a condition"
 msgstr "impossible d'utiliser 'index-hook' comme condition"
 
 #. L10N: $ts_icon_format default format
-#: mutt_config.c:769
+#: mutt_config.c:768
 msgid "M%<n?AIL&ail>"
 msgstr "M%<n?AIL&ail>"
 
 #. L10N: $ts_status_format default format
-#: mutt_config.c:773
+#: mutt_config.c:772
 msgid "NeoMutt with %<m?%m messages&no messages>%<n? [%n NEW]>"
 msgstr "NeoMutt avec %<m?%m messages&pas de message>%<n? [%n NOUVEAU(X)]>"
 
 # , c-format
-#: mutt_logging.c:275
+#: mutt_logging.c:274
 #, c-format
 msgid "Invalid value for option %s: %ld"
 msgstr "Valeur invalide pour l'option %s : \"%ld\""
 
-#: mutt_lua.c:448
+#: mutt_lua.c:449
 msgid "Error: Couldn't load the lua interpreter"
 msgstr "Erreur : Impossible de charger l'interpréteur lua"
 
 # , c-format
-#: mutt_lua.c:518
+#: mutt_lua.c:519
 #, c-format
 msgid "Couldn't source lua source: %s"
 msgstr "Impossible de charger le fichier source Lua : %s"
@@ -6117,21 +6130,21 @@ msgstr "Nouveau(x) message(s) dans "
 msgid "SSL is unavailable, can't connect to %s"
 msgstr "SSL n'est pas disponible, impossible de se connecter à %s"
 
-#: mutt_thread.c:112
+#: mutt_thread.c:111
 #, c-format
 msgid "Cannot use 'last-' prefix with 'threads' for %s"
 msgstr "Impossible d'utiliser le préfixe 'last-' avec 'threads' pour %s"
 
-#: mutt_thread.c:1386
+#: mutt_thread.c:1385
 #, fuzzy
 msgid "Parent message is not available"
 msgstr "Le message père n'est pas disponible"
 
-#: mutt_thread.c:1392
+#: mutt_thread.c:1391
 msgid "Root message is not visible in this limited view"
 msgstr "Le message racine n'est pas visible dans cette vue limitée"
 
-#: mutt_thread.c:1394
+#: mutt_thread.c:1393
 msgid "Parent message is not visible in this limited view"
 msgstr "Le message père n'est pas visible dans cette vue limitée"
 
@@ -6338,7 +6351,7 @@ msgstr "Appel de PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Le message ne peut pas être envoyé en ligne. Utiliser PGP/MIME?"
 
-#: ncrypt/crypt.c:221 send/send.c:2641
+#: ncrypt/crypt.c:221 send/send.c:2642
 msgid "Mail not sent"
 msgstr "Message non envoyé"
 
@@ -6867,54 +6880,54 @@ msgstr "Impossible de trouver l'expéditeur"
 msgid "Invoking S/MIME..."
 msgstr "Appel de S/MIME..."
 
-#: ncrypt/dlg_gpgme.c:96 ncrypt/dlg_pgp.c:95
+#: ncrypt/dlg_gpgme.c:97 ncrypt/dlg_pgp.c:96
 msgid "Check key"
 msgstr "Vérifier clé"
 
-#: ncrypt/dlg_gpgme.c:215
+#: ncrypt/dlg_gpgme.c:216
 msgid "All matching keys are marked expired/revoked"
 msgstr "Toutes les clés correspondantes sont marquées expirées/révoquées"
 
-#: ncrypt/dlg_gpgme.c:244
+#: ncrypt/dlg_gpgme.c:245
 msgid "PGP and S/MIME keys matching"
 msgstr "Les clés PGP et S/MIME correspondent"
 
-#: ncrypt/dlg_gpgme.c:246
+#: ncrypt/dlg_gpgme.c:247
 msgid "PGP keys matching"
 msgstr "Les clés PGP correspondent"
 
-#: ncrypt/dlg_gpgme.c:248
+#: ncrypt/dlg_gpgme.c:249
 msgid "S/MIME keys matching"
 msgstr "Les clés S/MIME correspondent"
 
-#: ncrypt/dlg_gpgme.c:250
+#: ncrypt/dlg_gpgme.c:251
 msgid "keys matching"
 msgstr "clés correspondant à"
 
 #. L10N: 1$s is one of the previous four entries.
 #. %2$s is an address.
 #. e.g. "S/MIME keys matching <john.doe@example.com>"
-#: ncrypt/dlg_gpgme.c:258
+#: ncrypt/dlg_gpgme.c:259
 #, c-format
 msgid "%s <%s>"
 msgstr "%s <%s>"
 
 #. L10N: e.g. 'S/MIME keys matching "John Doe".'
-#: ncrypt/dlg_gpgme.c:263
+#: ncrypt/dlg_gpgme.c:264
 #, c-format
 msgid "%s \"%s\""
 msgstr "%s \"%s\""
 
-#: ncrypt/dlg_pgp.c:222
+#: ncrypt/dlg_pgp.c:223
 msgid "All matching keys are expired, revoked, or disabled"
 msgstr "Toutes les clés correspondantes sont expirées, révoquées, ou désactivées"
 
-#: ncrypt/dlg_pgp.c:242
+#: ncrypt/dlg_pgp.c:243
 #, c-format
 msgid "PGP keys matching <%s>"
 msgstr "Clés PGP correspondant à <%s>"
 
-#: ncrypt/dlg_pgp.c:244
+#: ncrypt/dlg_pgp.c:245
 #, c-format
 msgid "PGP keys matching \"%s\""
 msgstr "Clés PGP correspondant à \"%s\""
@@ -7402,15 +7415,15 @@ msgstr "(1) AES128, (2) AES192, (3) AES256?"
 msgid "ID is not trusted. Do you really want to use the key?"
 msgstr "L'ID n'est pas de confiance. Voulez-vous vraiment utiliser la clé?"
 
-#: nntp/newsrc.c:632
+#: nntp/newsrc.c:633
 msgid "Loading list of groups from cache..."
 msgstr "Chargement de la liste des groupes depuis le cache..."
 
-#: nntp/newsrc.c:955
+#: nntp/newsrc.c:956
 msgid "No news server defined"
 msgstr "Aucun serveur de news défini"
 
-#: nntp/newsrc.c:973
+#: nntp/newsrc.c:974
 #, fuzzy, c-format
 msgid "%s is an invalid news server specification"
 msgstr "%s est un chemin POP invalide"
@@ -7509,7 +7522,7 @@ msgstr "nm_default_url doit correspond à : notmuch://<chemin absolu> . Actuelle
 
 #. L10N: The values 'hour', 'day', 'week', 'month', 'year' are literal.
 #. They should not be translated.
-#: notmuch/config.c:95 notmuch/notmuch.c:321
+#: notmuch/config.c:94 notmuch/notmuch.c:321
 msgid "Invalid nm_query_window_timebase value (valid values are: hour, day, week, month, year)"
 msgstr "Valeur de nm_query_window_timebase non valide (les bonnes valeurs sont : hour, day, week, month, year)"
 
@@ -7575,21 +7588,21 @@ msgstr "Impossible d'écrire dans un répertoire virtuel"
 msgid "failed to parse notmuch query type: %s"
 msgstr "échec de l'analyse de la requête notmuch de type : %s"
 
-#: pager/dlg_pager.c:75 pager/dlg_pager.c:86 pager/dlg_pager.c:96
-#: pager/dlg_pager.c:111
+#: pager/dlg_pager.c:76 pager/dlg_pager.c:87 pager/dlg_pager.c:97
+#: pager/dlg_pager.c:112
 msgid "PrevPg"
 msgstr "PgPréc"
 
-#: pager/dlg_pager.c:76 pager/dlg_pager.c:87 pager/dlg_pager.c:97
-#: pager/dlg_pager.c:112
+#: pager/dlg_pager.c:77 pager/dlg_pager.c:88 pager/dlg_pager.c:98
+#: pager/dlg_pager.c:113
 msgid "NextPg"
 msgstr "PgSuiv"
 
-#: pager/dlg_pager.c:98
+#: pager/dlg_pager.c:99
 msgid "View Attachm."
 msgstr "Voir pièce j."
 
-#: pager/dlg_pager.c:101 pager/dlg_pager.c:116
+#: pager/dlg_pager.c:102 pager/dlg_pager.c:117
 msgid "Next"
 msgstr "Suivant"
 
@@ -7698,29 +7711,29 @@ msgstr "La commande '%s' ne peut être utlisée qu'avec des variables booléenne
 msgid "Can't use 'inv', 'no', '&' or '?' with the '%s' command"
 msgstr "Impossible d'utiliser 'inv', 'no', '&' ou '?' dans la commande '%s'"
 
-#: parse/set.c:561
+#: parse/set.c:562
 msgid "Can't use prefix when incrementing or decrementing a variable"
 msgstr "Impossible d'utiliser un préfixe en incrémentant ou décrémentant une variable"
 
-#: parse/set.c:567 parse/set.c:597
+#: parse/set.c:568 parse/set.c:598
 #, fuzzy, c-format
 msgid "Can't set option with the '%s' command"
 msgstr "Impossible de définir une variable avec la commande '%s'"
 
-#: parse/set.c:583
+#: parse/set.c:584
 msgid "'+' and '-' must be followed by '='"
 msgstr "'+' et '-' doit être suivis par '='"
 
-#: parse/set.c:591
+#: parse/set.c:592
 msgid "Can't use prefix when setting a variable"
 msgstr "Impossible d'utiliser un préfixe en définissant une variable"
 
-#: parse/set.c:609
+#: parse/set.c:610
 #, fuzzy
 msgid "Prefixes 'no' and 'inv' may only be used with bool/quad/number variables"
 msgstr "Les préfixes 'no' et 'inv' ne peuvent être utilisés qu'avec des variables booléennes/quadratiques"
 
-#: parse/set.c:613
+#: parse/set.c:614
 #, fuzzy, c-format
 msgid "Command '%s' can only be used with bool/quad/number variables"
 msgstr "La commande '%s' ne peut être utlisée qu'avec des variables booléennes/quadratiques"
@@ -7763,47 +7776,47 @@ msgstr "Mois invalide : %s"
 msgid "Invalid relative date: %s"
 msgstr "Date relative invalide : %s"
 
-#: pattern/compile.c:925 pattern/compile.c:1139
+#: pattern/compile.c:926 pattern/compile.c:1140
 msgid "empty pattern"
 msgstr "motif vide"
 
 # , c-format
-#: pattern/compile.c:955 pattern/compile.c:1130
+#: pattern/compile.c:956 pattern/compile.c:1131
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "erreur dans le motif à : %s"
 
-#: pattern/compile.c:982
+#: pattern/compile.c:983
 #, c-format
 msgid "missing pattern: %s"
 msgstr "motif manquant : %s"
 
 # , c-format
-#: pattern/compile.c:1000 pattern/compile.c:1100
+#: pattern/compile.c:1001 pattern/compile.c:1101
 #, c-format
 msgid "mismatched parentheses: %s"
 msgstr "parenthésage incorrect : %s"
 
 # , c-format
-#: pattern/compile.c:1034
+#: pattern/compile.c:1035
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c : modificateur de motif invalide"
 
 # , c-format
-#: pattern/compile.c:1039
+#: pattern/compile.c:1040
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c : non supporté dans ce mode"
 
-#: pattern/compile.c:1062
+#: pattern/compile.c:1063
 msgid "missing parameter"
 msgstr "paramètre manquant"
 
 #. L10N:
 #. Pattern Completion Menu argument type: a regular expression
 #.
-#: pattern/dlg_pattern.c:150
+#: pattern/dlg_pattern.c:151
 msgid "EXPR"
 msgstr "EXPR"
 
@@ -7811,7 +7824,7 @@ msgstr "EXPR"
 #. Pattern Completion Menu argument type: a numeric range.
 #. Used by ~m, ~n, ~X, ~z.
 #.
-#: pattern/dlg_pattern.c:158
+#: pattern/dlg_pattern.c:159
 msgid "RANGE"
 msgstr "MIN-MAX"
 
@@ -7819,7 +7832,7 @@ msgstr "MIN-MAX"
 #. Pattern Completion Menu argument type: a date range
 #. Used by ~d, ~r.
 #.
-#: pattern/dlg_pattern.c:165
+#: pattern/dlg_pattern.c:166
 msgid "DATERANGE"
 msgstr "MIN-MAX"
 
@@ -7827,7 +7840,7 @@ msgstr "MIN-MAX"
 #. Pattern Completion Menu argument type: a query
 #. Used by ~I.
 #.
-#: pattern/dlg_pattern.c:172
+#: pattern/dlg_pattern.c:173
 msgid "QUERY"
 msgstr "REQUÊTE"
 
@@ -7835,27 +7848,27 @@ msgstr "REQUÊTE"
 #. Pattern Completion Menu argument type: a nested pattern.
 #. Used by ~(), ~<(), ~>().
 #.
-#: pattern/dlg_pattern.c:191
+#: pattern/dlg_pattern.c:192
 msgid "PATTERN"
 msgstr "MOTIF"
 
 #. L10N: Pattern Completion Menu description for ~()
-#: pattern/dlg_pattern.c:198
+#: pattern/dlg_pattern.c:199
 msgid "messages in threads containing messages matching PATTERN"
 msgstr "messages dans discussions avec messages correspondant à MOTIF"
 
 #. L10N: Pattern Completion Menu description for ~<()
-#: pattern/dlg_pattern.c:206
+#: pattern/dlg_pattern.c:207
 msgid "messages whose immediate parent matches PATTERN"
 msgstr "messages dont le parent immédiat correspond à MOTIF"
 
 #. L10N: Pattern Completion Menu description for ~>()
-#: pattern/dlg_pattern.c:214
+#: pattern/dlg_pattern.c:215
 msgid "messages having an immediate child matching PATTERN"
 msgstr "messages ayant un fils immédiat correspondant à MOTIF"
 
 #. L10N: Pattern completion menu title
-#: pattern/dlg_pattern.c:299
+#: pattern/dlg_pattern.c:300
 msgid "Patterns"
 msgstr "Motifs"
 
@@ -8319,7 +8332,7 @@ msgstr "Pas de message ajourné"
 #. L10N: Progress bar: `%s` loading text, `%s` pretty size (e.g. 4.6K),
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:177
+#: progress/window.c:182
 #, c-format
 msgid "%s %s (%d%%)"
 msgstr "%s %s (%d%%)"
@@ -8327,19 +8340,19 @@ msgstr "%s %s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu` position,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:185
+#: progress/window.c:190
 #, c-format
 msgid "%s %zu (%d%%)"
 msgstr "%s %zu (%d%%)"
 
 #. L10N: Progress bar: `%s` loading text, `%s` position/size
-#: progress/window.c:194
+#: progress/window.c:199
 #, c-format
 msgid "%s %s"
 msgstr "%s %s"
 
 #. L10N: Progress bar: `%s` loading text, `%zu` position
-#: progress/window.c:199
+#: progress/window.c:204
 #, c-format
 msgid "%s %zu"
 msgstr "%s %zu"
@@ -8347,7 +8360,7 @@ msgstr "%s %zu"
 #. L10N: Progress bar: `%s` loading text, `%s/%s` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:210
+#: progress/window.c:215
 #, c-format
 msgid "%s %s/%s (%d%%)"
 msgstr "%s %s/%s (%d%%)"
@@ -8355,7 +8368,7 @@ msgstr "%s %s/%s (%d%%)"
 #. L10N: Progress bar: `%s` loading text, `%zu/%zu` position/size,
 #. `%d` is the number, `%%` is the percent symbol.
 #. `%d` and `%%` may be reordered, or space inserted, if you wish.
-#: progress/window.c:218
+#: progress/window.c:223
 #, c-format
 msgid "%s %zu/%zu (%d%%)"
 msgstr "%s %zu/%zu (%d%%)"
@@ -8406,7 +8419,7 @@ msgstr "Impossible de créer %s"
 msgid "Can't find any tagged messages"
 msgstr "Aucun message marqué n'a pu être trouvé"
 
-#: recvcmd.c:886 send/send.c:1121
+#: recvcmd.c:886 send/send.c:1122
 msgid "No mailing lists found"
 msgstr "Pas de liste de diffusion trouvée"
 
@@ -8435,25 +8448,25 @@ msgid "%s no longer exists"
 msgstr "%s n'existe plus"
 
 #. L10N: This applies to the "$sendmail" and "$inews" config variables.
-#: send/config.c:115
+#: send/config.c:114
 #, fuzzy, c-format
 msgid "Option %s must not contain shell metacharacters: %c"
 msgstr "L'option %s ne doit pas contenir les métacaractères sheel : %c"
 
 #. L10N: $attribution_intro default format
-#: send/config.c:170
+#: send/config.c:169
 #, c-format
 msgid "On %d, %n wrote:"
 msgstr "Le %d, %n a écrit :"
 
 #. L10N: $forward_attribution_intro default format
-#: send/config.c:237
+#: send/config.c:236
 #, c-format
 msgid "----- Forwarded message from %f -----"
 msgstr "----- Début du message transféré de %f -----"
 
 #. L10N: $forward_attribution_trailer default format
-#: send/config.c:241
+#: send/config.c:240
 msgid "----- End forwarded message -----"
 msgstr "----- Fin du message transféré -----"
 
@@ -8478,40 +8491,40 @@ msgstr "Faire suivre les pièces jointes ?"
 # , c-format
 #. L10N: Asks whether the user respects the reply-to header.
 #. If she says no, neomutt will reply to the from header's address instead.
-#: send/send.c:832
+#: send/send.c:833
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Répondre à %s%s?"
 
 # , c-format
-#: send/send.c:879
+#: send/send.c:880
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Suivi de la discussion à %s%s?"
 
-#: send/send.c:1163
+#: send/send.c:1164
 msgid "Include message in reply?"
 msgstr "Inclure le message dans la réponse?"
 
-#: send/send.c:1169
+#: send/send.c:1170
 msgid "Including quoted message..."
 msgstr "Inclusion du message cité..."
 
-#: send/send.c:1176
+#: send/send.c:1177
 msgid "Could not include all requested messages"
 msgstr "Tous les messages demandés n'ont pas pu être inclus"
 
-#: send/send.c:1188
+#: send/send.c:1189
 #, fuzzy
 msgid "Forward as attachment?"
 msgstr "Faire suivre sous forme de pièce jointe ?"
 
-#: send/send.c:1193
+#: send/send.c:1194
 msgid "Preparing forwarded message..."
 msgstr "Préparation du message à faire suivre..."
 
 # , c-format
-#: send/send.c:1681
+#: send/send.c:1682
 msgid "Warning: Fcc to an IMAP mailbox is not supported in batch mode"
 msgstr "Attention : Fcc vers une boîte mail IMAP n'est pas supporté en mode batch"
 
@@ -8520,12 +8533,12 @@ msgstr "Attention : Fcc vers une boîte mail IMAP n'est pas supporté en mode b
 #. sending the mail too.
 #. %s is the full mailbox URL, including imap(s)://
 #.
-#: send/send.c:1687
+#: send/send.c:1688
 #, c-format
 msgid "Skipping Fcc to %s"
 msgstr "Omission du Fcc dans %s"
 
-#: send/send.c:1727 send/send.c:1739 send/send.c:1765
+#: send/send.c:1728 send/send.c:1740 send/send.c:1766
 msgid "Save attachments in Fcc?"
 msgstr "Enregistrer les pièces jointes dans Fcc?"
 
@@ -8533,119 +8546,119 @@ msgstr "Enregistrer les pièces jointes dans Fcc?"
 #. (r)etry tries the same mailbox again.
 #. alternate (m)ailbox prompts for a different mailbox to try.
 #. (s)kip aborts saving.
-#: send/send.c:1787
+#: send/send.c:1788
 msgid "Fcc failed. (r)etry, alternate (m)ailbox, or (s)kip?"
 msgstr "Fcc a échoué. (r)éessayer, autre (b)oîte aux lettres, ou (s)auter ?"
 
 #. L10N: These correspond to the "Fcc failed" multi-choice prompt
 #. (r)etry, alternate (m)ailbox, or (s)kip.
 #. Any similarity to famous leaders of the FSF is coincidental.
-#: send/send.c:1791
+#: send/send.c:1792
 msgid "rms"
 msgstr "rbs"
 
 #. L10N: This is the prompt to enter an "alternate (m)ailbox" when the
 #. initial Fcc fails.
-#: send/send.c:1797
+#: send/send.c:1798
 msgid "Fcc mailbox"
 msgstr "Boîte aux lettres Fcc"
 
-#: send/send.c:1866
+#: send/send.c:1867
 msgid "Can't postpone.  $postponed is unset"
 msgstr "Impossible d'ajourner. $postponed est non renseigné"
 
-#: send/send.c:1903 send/send.c:1920
+#: send/send.c:1904 send/send.c:1921
 msgid "Error encrypting message. Check your crypt settings."
 msgstr "Erreur de chiffrement du message. Vérifiez vos paramètres de chiffrement."
 
-#: send/send.c:2014
+#: send/send.c:2015
 #, fuzzy
 msgid "Message contains text matching \"$abort_noattach_regex\". Not sending."
 msgstr "L'attachement qui correspond à \"$abort_noattach_regex est manquant dans le message"
 
-#: send/send.c:2018
+#: send/send.c:2019
 msgid "No attachments, cancel sending?"
 msgstr "Pas de pièce jointe, abandonner l'envoi ?"
 
-#: send/send.c:2069
+#: send/send.c:2070
 msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné?"
 
-#: send/send.c:2325
+#: send/send.c:2326
 msgid "Error sending message"
 msgstr "Erreur en envoyant le message"
 
-#: send/send.c:2414
+#: send/send.c:2415
 msgid "Edit forwarded message?"
 msgstr "Éditer le message à faire suivre?"
 
-#: send/send.c:2455
+#: send/send.c:2456
 msgid "Abort unmodified message?"
 msgstr "Message non modifié. Abandonner?"
 
-#: send/send.c:2457
+#: send/send.c:2458
 msgid "Aborted unmodified message"
 msgstr "Message non modifié. Abandon"
 
-#: send/send.c:2599
+#: send/send.c:2600
 msgid "No crypto backend configured.  Disabling message security setting."
 msgstr "Pas de backend crypto configuré. Désactivation de la sécurité du message."
 
-#: send/send.c:2639
+#: send/send.c:2640
 msgid "Article not posted"
 msgstr "Article non envoyé"
 
-#: send/send.c:2648
+#: send/send.c:2649
 msgid "Message postponed"
 msgstr "Message ajourné"
 
-#: send/send.c:2683
+#: send/send.c:2684
 msgid "No subject, abort sending?"
 msgstr "Pas d'objet (Subject), abandonner l'envoi?"
 
-#: send/send.c:2687 send/send.c:2693
+#: send/send.c:2688 send/send.c:2694
 msgid "No subject specified"
 msgstr "Pas d'objet (Subject) spécifié"
 
-#: send/send.c:2699
+#: send/send.c:2700
 msgid "No newsgroup specified"
 msgstr "Pas de newsgroup spécifié"
 
-#: send/send.c:2744
+#: send/send.c:2745
 msgid "Missing encryption key; mail not sent"
 msgstr "Clé de chiffrement non trouvée ; message non envoyé"
 
-#: send/send.c:2768 send/smtp.c:262
+#: send/send.c:2769 send/smtp.c:262
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
-#: send/send.c:2814
+#: send/send.c:2815
 msgid "Could not send the message"
 msgstr "Impossible d'envoyer le message"
 
-#: send/send.c:2824
+#: send/send.c:2825
 msgid "Sending in background"
 msgstr "Envoi en tâche de fond"
 
-#: send/send.c:2825
+#: send/send.c:2826
 msgid "Article posted"
 msgstr "Article posté"
 
-#: send/send.c:2826
+#: send/send.c:2827
 msgid "Mail sent"
 msgstr "Message envoyé"
 
-#: send/send.c:2907
+#: send/send.c:2908
 msgid "No recipient specified"
 msgstr "Pas de destinataire spécifié"
 
-#: send/send.c:2954
+#: send/send.c:2955
 #, fuzzy
 msgid "No List-Subscribe header found"
 msgstr "clé secrète « %s » non trouvée : %s"
 
 # , c-format
-#: send/send.c:2983
+#: send/send.c:2984
 #, fuzzy
 msgid "No List-Unsubscribe header found"
 msgstr "Filtre de désabonnement : "
@@ -8665,18 +8678,18 @@ msgstr "Impossible d'ouvrir %s"
 msgid "Bad IDN %s while preparing resent-from"
 msgstr "Mauvais IDN %s lors de la préparation du resent-from"
 
-#: send/sendmail.c:335
+#: send/sendmail.c:336
 #, fuzzy
 msgid "$sendmail must be set in order to send mail"
 msgstr "$sendmail doit avoir une valeur pour pouvoir envoyer du courrier"
 
 # , c-format
-#: send/sendmail.c:440
+#: send/sendmail.c:441
 #, c-format
 msgid "Error sending message, child exited %d (%s)"
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)"
 
-#: send/sendmail.c:452
+#: send/sendmail.c:453
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
@@ -8783,4 +8796,3 @@ msgstr "Options de compilation :"
 #: version.c:487
 msgid "Devel options:"
 msgstr "Options de développement :"
-
