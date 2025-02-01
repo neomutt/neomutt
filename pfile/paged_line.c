@@ -80,7 +80,7 @@ int paged_line_add_newline(struct PagedLine *pl)
  */
 int paged_line_add_raw_text(struct PagedLine *pl, const char *text)
 {
-  if (!pl || !pl->paged_file || !text)
+  if (!pl || !pl->paged_file || !text || (text[0] == '\0'))
     return 0;
 
   fputs(text, pl->paged_file->fp);

@@ -36,7 +36,9 @@
 #include "config/lib.h"
 #include "gui/lib.h"
 #include "version.h"
+#include "color/lib.h"
 #include "compress/lib.h"
+#include "pfile/lib.h"
 #include "store/lib.h"
 #include "globals.h"
 #ifdef HAVE_LIBIDN
@@ -58,9 +60,6 @@
 #define PCRE2_CODE_UNIT_WIDTH 8
 #include <pcre2.h>
 #endif
-
-/// CLI: Width to wrap version info
-static const int SCREEN_WIDTH = 80;
 
 extern unsigned char cc_cflags[];
 extern unsigned char configure_options[];
@@ -529,8 +528,10 @@ void version_free(struct NeoMuttVersion **ptr)
 /**
  * print_compile_options - Print a list of enabled/disabled features
  * @param co       Array of compile options
- * @param fp       file to write to
+ * @param width    Width to wrap to (0 for no wrapping)
  * @param use_ansi Use ANSI colour escape sequences
+ * @param pf       PagedFile to write to
+ * @param acl      Storage for temporary AttrColors
  *
  * Two lists are generated and passed to this function:
  * - List of features, e.g. +notmuch
@@ -539,65 +540,146 @@ void version_free(struct NeoMuttVersion **ptr)
  * The output is of the form: "+enabled_feature -disabled_feature" and is
  * wrapped to SCREEN_WIDTH characters.
  */
-static void print_compile_options(const struct CompileOption *co, FILE *fp, bool use_ansi)
+static void print_compile_options(const struct CompileOption *co, int width,
+                                  bool use_ansi, struct PagedFile *pf, struct AttrColorList *acl)
 {
-  if (!co || !fp)
+  if (!co || !pf)
     return;
 
+  struct AttrColor *ac_cyan = NULL;
+  struct AttrColor *ac_green = NULL;
+  struct AttrColor *ac_red = NULL;
+  struct AttrColor *ac = NULL;
+
+  if (acl)
+  {
+    struct CursesColor *cc = curses_color_new(6, COLOR_DEFAULT);
+    ac_cyan = attr_color_new();
+    ac_cyan->fg.type = CT_SIMPLE;
+    ac_cyan->fg.color = cc->fg;
+    ac_cyan->bg.type = CT_SIMPLE;
+    ac_cyan->bg.color = cc->bg;
+    ac_cyan->curses_color = cc;
+    ac_cyan->attrs = A_BOLD;
+    TAILQ_INSERT_TAIL(acl, ac_cyan, entries);
+
+    cc = curses_color_new(1, COLOR_DEFAULT);
+    ac_red = attr_color_new();
+    ac_red->fg.type = CT_SIMPLE;
+    ac_red->fg.color = cc->fg;
+    ac_red->bg.type = CT_SIMPLE;
+    ac_red->bg.color = cc->bg;
+    ac_red->curses_color = cc;
+    ac_red->attrs = A_BOLD;
+    TAILQ_INSERT_TAIL(acl, ac_red, entries);
+
+    cc = curses_color_new(2, COLOR_DEFAULT);
+    ac_green = attr_color_new();
+    ac_green->fg.type = CT_SIMPLE;
+    ac_green->fg.color = cc->fg;
+    ac_green->bg.type = CT_SIMPLE;
+    ac_green->bg.color = cc->bg;
+    ac_green->curses_color = cc;
+    ac_green->attrs = A_BOLD;
+    TAILQ_INSERT_TAIL(acl, ac_green, entries);
+  }
+
+  const char *col_cyan = "";
+  const char *col_green = "";
+  const char *col_red = "";
+  const char *col_end = "";
+
+  if (use_ansi)
+  {
+    col_cyan = "\033[1;36m";  // Escape, cyan
+    col_red = "\033[1;31m";   // Escape, red
+    col_green = "\033[1;32m"; // Escape, green
+    col_end = "\033[0m";      // Escape, end
+  }
+
   size_t used = 2;
-  fprintf(fp, "  ");
+  struct Buffer *buf = buf_pool_get();
+  struct PagedLine *pl = NULL;
+
+  pl = paged_file_new_line(pf);
+  if (width > 0)
+    paged_line_add_text(pl, "  ");
+
+  const char *col = NULL;
+  const char *prefix = "";
+
   for (int i = 0; co[i].name; i++)
   {
     const size_t len = strlen(co[i].name) + 2; /* +/- and a space */
-    if ((used + len) > SCREEN_WIDTH)
+
+    if ((width > 0) && ((used + len) > width))
     {
+      paged_line_add_text(pl, buf_string(buf));
+      paged_line_add_text(pl, "\n");
+      buf_reset(buf);
+
       used = 2;
-      fprintf(fp, "\n  ");
+      pl = paged_file_new_line(pf);
+      paged_line_add_text(pl, "  ");
     }
     used += len;
-    const char *fmt = "?%s ";
+
     switch (co[i].enabled)
     {
       case 0: // Disabled
-        if (use_ansi)
-          fmt = "\033[1;31m-%s\033[0m "; // Escape, red
-        else
-          fmt = "-%s ";
+      {
+        col = col_red;
+        prefix = "-";
+        ac = ac_red;
         break;
+      }
       case 1: // Enabled
-        if (use_ansi)
-          fmt = "\033[1;32m+%s\033[0m "; // Escape, green
-        else
-          fmt = "+%s ";
+      {
+        col = col_green;
+        prefix = "-";
+        ac = ac_green;
         break;
+      }
       case 2: // Devel only
-        if (use_ansi)
-          fmt = "\033[1;36m%s\033[0m "; // Escape, cyan
-        else
-          fmt = "%s ";
+      {
+        col = col_cyan;
+        prefix = "";
+        ac = ac_cyan;
         break;
+      }
     }
-    fprintf(fp, fmt, co[i].name);
+
+    paged_line_add_raw_text(pl, col);
+    paged_line_add_ac_text(pl, ac, prefix);
+    paged_line_add_ac_text(pl, ac, co[i].name);
+    paged_line_add_raw_text(pl, col_end);
+    paged_line_add_text(pl, " ");
   }
-  fprintf(fp, "\n");
+  paged_line_add_text(pl, buf_string(buf));
+  paged_line_add_text(pl, "\n");
+
+  buf_pool_release(&buf);
 }
 
 /**
  * print_version - Print system and compile info to a file
- * @param fp       File to print to
+ * @param pf       PagedFile to write to
+ * @param width    Width to wrap at (0 for no wrapping)
  * @param use_ansi Use ANSI colour escape sequences
+ * @param acl      Storage for temporary AttrColors
  * @retval true Text displayed
  *
  * Print information about the current system NeoMutt is running on.
  * Also print a list of all the compile-time information.
  */
-bool print_version(FILE *fp, bool use_ansi)
+bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrColorList *acl)
 {
-  if (!fp)
+  if (!pf)
     return false;
 
   struct KeyValue *kv = NULL;
   struct ListNode *np = NULL;
+  struct PagedLine *pl = NULL;
   struct NeoMuttVersion *ver = version_get();
 
   const char *col_cyan = "";
@@ -611,85 +693,161 @@ bool print_version(FILE *fp, bool use_ansi)
     col_end = "\033[0m";     // Escape, end
   }
 
-  fprintf(fp, "%s%s%s\n", col_cyan, ver->version, col_end);
-  fprintf(fp, "%s\n", _(Notice));
+  struct AttrColor *ac_cyan = NULL;
+  if (acl)
+  {
+    struct CursesColor *cc = curses_color_new(6, COLOR_DEFAULT);
+    ac_cyan = attr_color_new();
+    ac_cyan->fg.type = CT_SIMPLE;
+    ac_cyan->fg.color = cc->fg;
+    ac_cyan->bg.type = CT_SIMPLE;
+    ac_cyan->bg.color = cc->bg;
+    ac_cyan->curses_color = cc;
+    ac_cyan->attrs = A_BOLD;
+    TAILQ_INSERT_TAIL(acl, ac_cyan, entries);
+  }
+
+  pl = paged_file_new_line(pf);
+
+  paged_line_add_raw_text(pl, col_cyan);
+  paged_line_add_ac_text(pl, ac_cyan, ver->version);
+  paged_line_add_raw_text(pl, col_end);
+  paged_line_add_newline(pl);
+
+  paged_line_add_multiline(pf, _(Notice));
+
+  pl = paged_file_new_line(pf);
+  paged_line_add_text(pl, "\n");
 
   ARRAY_FOREACH(kv, &ver->system)
   {
-    fprintf(fp, "%s%s:%s %s\n", col_bold, kv->key, col_end, kv->value);
+    pl = paged_file_new_line(pf);
+    paged_line_add_raw_text(pl, col_bold);
+    paged_line_add_colored_text(pl, MT_COLOR_BOLD, kv->key);
+    paged_line_add_raw_text(pl, col_end);
+    paged_line_add_text(pl, ": ");
+    paged_line_add_text(pl, kv->value);
+    paged_line_add_newline(pl);
   }
 
   if (ver->storage)
   {
-    fprintf(fp, "%sstorage:%s ", col_bold, col_end);
+    pl = paged_file_new_line(pf);
+    paged_line_add_raw_text(pl, col_bold);
+    paged_line_add_colored_text(pl, MT_COLOR_BOLD, "Storage");
+    paged_line_add_raw_text(pl, col_end);
+    paged_line_add_text(pl, ": ");
+
     STAILQ_FOREACH(np, &ver->storage->head, entries)
     {
-      fputs(np->data, fp);
+      paged_line_add_text(pl, np->data);
       if (STAILQ_NEXT(np, entries))
-        fputs(", ", fp);
+        paged_line_add_text(pl, ", ");
     }
-    fputs("\n", fp);
+    paged_line_add_text(pl, "\n");
   }
 
   if (ver->compression)
   {
-    fprintf(fp, "%scompression:%s ", col_bold, col_end);
+    pl = paged_file_new_line(pf);
+    paged_line_add_raw_text(pl, col_bold);
+    paged_line_add_colored_text(pl, MT_COLOR_BOLD, "Compression");
+    paged_line_add_raw_text(pl, col_end);
+    paged_line_add_text(pl, ": ");
     STAILQ_FOREACH(np, &ver->compression->head, entries)
     {
-      fputs(np->data, fp);
+      paged_line_add_text(pl, np->data);
       if (STAILQ_NEXT(np, entries))
-        fputs(", ", fp);
+        paged_line_add_text(pl, ", ");
     }
-    fputs("\n", fp);
+    paged_line_add_text(pl, "\n");
   }
-  fputs("\n", fp);
 
-  fprintf(fp, "%sConfigure options:%s ", col_bold, col_end);
+  pl = paged_file_new_line(pf);
+  paged_line_add_text(pl, "\n");
+
+  pl = paged_file_new_line(pf);
+  paged_line_add_raw_text(pl, col_bold);
+  paged_line_add_colored_text(pl, MT_COLOR_BOLD, "Configure options");
+  paged_line_add_raw_text(pl, col_end);
+  paged_line_add_text(pl, ": ");
   if (ver->configure)
   {
     STAILQ_FOREACH(np, &ver->configure->head, entries)
     {
       if (!np || !np->data)
         continue;
-      fputs(np->data, fp);
+      paged_line_add_text(pl, np->data);
       if (STAILQ_NEXT(np, entries))
-        fputs(" ", fp);
+        paged_line_add_text(pl, " ");
     }
+    paged_line_add_text(pl, "\n");
   }
-  fputs("\n\n", fp);
+
+  pl = paged_file_new_line(pf);
+  paged_line_add_text(pl, "\n");
 
   if (ver->compilation)
   {
-    fprintf(fp, "%sCompilation CFLAGS:%s ", col_bold, col_end);
+    pl = paged_file_new_line(pf);
+    paged_line_add_raw_text(pl, col_bold);
+    paged_line_add_colored_text(pl, MT_COLOR_BOLD, "Compilation CFLAGS");
+    paged_line_add_raw_text(pl, col_end);
+    paged_line_add_text(pl, ": ");
     STAILQ_FOREACH(np, &ver->compilation->head, entries)
     {
       if (!np || !np->data)
         continue;
-      fputs(np->data, fp);
+      paged_line_add_text(pl, np->data);
       if (STAILQ_NEXT(np, entries))
-        fputs(" ", fp);
+        paged_line_add_text(pl, " ");
     }
-    fputs("\n\n", fp);
+    paged_line_add_text(pl, "\n");
   }
 
-  fprintf(fp, "%s%s%s\n", col_bold, _("Compile options:"), col_end);
-  print_compile_options(ver->feature, fp, use_ansi);
-  fputs("\n", fp);
+  pl = paged_file_new_line(pf);
+  paged_line_add_text(pl, "\n");
+
+  pl = paged_file_new_line(pf);
+  paged_line_add_raw_text(pl, col_bold);
+  paged_line_add_colored_text(pl, MT_COLOR_BOLD, _("Compile options"));
+  paged_line_add_raw_text(pl, col_end);
+  paged_line_add_text(pl, ":\n");
+
+  print_compile_options(ver->feature, width, use_ansi, pf, acl);
+
+  pl = paged_file_new_line(pf);
+  paged_line_add_text(pl, "\n");
 
   if (ver->devel)
   {
-    fprintf(fp, "%s%s%s\n", col_bold, _("Devel options:"), col_end);
-    print_compile_options(ver->devel, fp, use_ansi);
-    fputs("\n", fp);
+    pl = paged_file_new_line(pf);
+    paged_line_add_raw_text(pl, col_bold);
+    paged_line_add_colored_text(pl, MT_COLOR_BOLD, _("Devel options"));
+    paged_line_add_raw_text(pl, col_end);
+    paged_line_add_text(pl, ":\n");
+
+    print_compile_options(ver->devel, width, use_ansi, pf, acl);
+
+    pl = paged_file_new_line(pf);
+    paged_line_add_text(pl, "\n");
   }
 
   ARRAY_FOREACH(kv, &ver->paths)
   {
-    fprintf(fp, "%s%s%s=\"%s\"\n", col_bold, kv->key, col_end, kv->value);
+    pl = paged_file_new_line(pf);
+    paged_line_add_raw_text(pl, col_bold);
+    paged_line_add_colored_text(pl, MT_COLOR_BOLD, kv->key);
+    paged_line_add_raw_text(pl, col_end);
+    paged_line_add_text(pl, "=\"");
+    paged_line_add_text(pl, kv->value);
+    paged_line_add_text(pl, "\"\n");
   }
-  fputs("\n", fp);
 
-  fputs(_(ReachingUs), fp);
+  pl = paged_file_new_line(pf);
+  paged_line_add_text(pl, "\n");
+
+  paged_line_add_multiline(pf, _(ReachingUs));
 
   version_free(&ver);
   return true;
@@ -697,21 +855,31 @@ bool print_version(FILE *fp, bool use_ansi)
 
 /**
  * print_copyright - Print copyright message
+ * @param use_ansi Use ANSI colour escape sequences
  * @retval true Text displayed
  *
  * Print the authors' copyright messages, the GPL license and some contact
  * information for the NeoMutt project.
  */
-bool print_copyright(void)
+bool print_copyright(bool use_ansi)
 {
-  puts(mutt_make_version());
+
+  if (use_ansi)
+    fputs("\033[1;36m", stdout); // Escape, cyan
+
+  fputs(mutt_make_version(), stdout);
+
+  if (use_ansi)
+    fputs("\033[0m", stdout);     // Escape, end
+
+  puts("");
+
   puts(Copyright);
   puts(_(Thanks));
   puts(_(License));
   puts(_(ReachingUs));
 
-  fflush(stdout);
-  return !ferror(stdout);
+  return true;
 }
 
 /**
