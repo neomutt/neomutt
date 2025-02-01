@@ -776,7 +776,7 @@ static bool usage(void)
   puts(_("  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -B"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -D [-S] [-O]"));
+  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -D [-D] [-O] [-S]"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -G"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -g <server>"));
@@ -798,6 +798,7 @@ static bool usage(void)
   puts(_("  -c <address>  Specify a carbon copy (Cc) recipient"));
   puts(_("  -C            Enable Command-line Crypto (signing/encryption)"));
   puts(_("  -D            Dump all config variables as 'name=value' pairs to stdout"));
+  puts(_("  -D -D         (or -DD) Like -D, but only show changed config"));
   puts(_("  -D -O         Like -D, but show one-liner documentation"));
   puts(_("  -D -S         Like -D, but hide the value of sensitive variables"));
   puts(_("  -d <level>    Log debugging output to a file (default is \"~/.neomuttdebug0\")\n"
@@ -1054,6 +1055,7 @@ main
   int i;
   bool explicit_folder = false;
   bool dump_variables = false;
+  bool dump_changed = false;
   bool one_liner = false;
   bool hide_sensitive = false;
   bool batch_mode = false;
@@ -1124,7 +1126,10 @@ main
           mutt_list_insert_tail(&cc_list, mutt_str_dup(optarg));
           break;
         case 'D':
-          dump_variables = true;
+          if (dump_variables)
+            dump_changed = true;
+          else
+            dump_variables = true;
           break;
         case 'd':
           dlevel = optarg;
@@ -1407,7 +1412,8 @@ main
     struct HashElemArray hea = ARRAY_HEAD_INITIALIZER;
     if (dump_variables)
     {
-      hea = get_elem_list(cs, GEL_ALL_CONFIG);
+      enum GetElemListFlags gel_flags = dump_changed ? GEL_CHANGED_CONFIG : GEL_ALL_CONFIG;
+      hea = get_elem_list(cs, gel_flags);
       rc = 0;
     }
     else
