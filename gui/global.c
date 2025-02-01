@@ -99,6 +99,10 @@ static int op_shell_escape(int op)
  */
 static int op_show_log_messages(int op)
 {
+  const struct LogLineList lll = log_queue_get();
+  if (STAILQ_EMPTY(&lll))
+    return FR_NO_ACTION;
+
   struct Buffer *tempfile = buf_pool_get();
   buf_mktemp(tempfile);
 
@@ -110,7 +114,16 @@ static int op_show_log_messages(int op)
     return FR_ERROR;
   }
 
-  log_queue_save(fp);
+  char buf[32] = { 0 };
+  struct LogLine *ll = NULL;
+  STAILQ_FOREACH(ll, &lll, entries)
+  {
+    mutt_date_localtime_format(buf, sizeof(buf), "%H:%M:%S", ll->time);
+    fprintf(fp, "[%s]<%c> %s", buf, LogLevelAbbr[ll->level + 3], ll->message);
+    if (ll->level <= LL_MESSAGE)
+      fputs("\n", fp);
+  }
+
   mutt_file_fclose(&fp);
 
   struct PagerData pdata = { 0 };

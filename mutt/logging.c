@@ -43,7 +43,7 @@
 #include "queue.h"
 #include "string2.h"
 
-const char *LevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
+const char *LogLevelAbbr = "PEWM12345N"; ///< Abbreviations of logging level names
 
 /**
  * MuttLogger - The log dispatcher - @ingroup logging_api
@@ -255,7 +255,8 @@ int log_disp_file(time_t stamp, const char *file, int line, const char *function
   if (!function)
     function = "UNKNOWN";
 
-  rc += fprintf(LogFileFP, "[%s]<%c> %s() ", timestamp(stamp), LevelAbbr[level + 3], function);
+  rc += fprintf(LogFileFP, "[%s]<%c> %s() ", timestamp(stamp),
+                LogLevelAbbr[level + 3], function);
 
   va_list ap;
   va_start(ap, format);
@@ -355,33 +356,12 @@ void log_queue_flush(log_dispatcher_t disp)
 }
 
 /**
- * log_queue_save - Save the contents of the queue to a temporary file
- * @param fp Open file handle
- * @retval num Lines written to the file
- *
- * The queue is written to a temporary file.  The format is:
- * * `[HH:MM:SS]<LEVEL> FORMATTED-MESSAGE`
- *
- * @note The caller should delete the file
+ * log_queue_get - Get the Log Queue
+ * @retval obj Log Queue
  */
-int log_queue_save(FILE *fp)
+const struct LogLineList log_queue_get(void)
 {
-  if (!fp)
-    return 0;
-
-  char buf[32] = { 0 };
-  int count = 0;
-  struct LogLine *ll = NULL;
-  STAILQ_FOREACH(ll, &LogQueue, entries)
-  {
-    mutt_date_localtime_format(buf, sizeof(buf), "%H:%M:%S", ll->time);
-    fprintf(fp, "[%s]<%c> %s", buf, LevelAbbr[ll->level + 3], ll->message);
-    if (ll->level <= LL_MESSAGE)
-      fputs("\n", fp);
-    count++;
-  }
-
-  return count;
+  return LogQueue;
 }
 
 /**

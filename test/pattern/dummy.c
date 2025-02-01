@@ -302,11 +302,6 @@ void mutt_select_file(char *file, size_t filelen, SelectFileFlags flags,
 {
 }
 
-const char *opcodes_get_name(int op)
-{
-  return NULL;
-}
-
 int query_complete(struct Buffer *buf, struct ConfigSubset *sub)
 {
   return 0;

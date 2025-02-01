@@ -1,6 +1,6 @@
 /**
  * @file
- * Test code for log_queue_save()
+ * Test code for log_queue_get()
  *
  * @authors
  * Copyright (C) 2019 Richard Russon <rich@flatcap.org>
@@ -27,11 +27,11 @@
 #include "mutt/lib.h"
 #include "test_common.h"
 
-void test_log_queue_save(void)
+void test_log_queue_get(void)
 {
-  // int log_queue_save(FILE *fp);
+  // const struct LogLineList log_queue_get(void);
 
-  {
-    TEST_CHECK_NUM_EQ(log_queue_save(NULL), 0);
-  }
+  const struct LogLineList lll = log_queue_get();
+
+  TEST_CHECK(STAILQ_EMPTY(&lll));
 }

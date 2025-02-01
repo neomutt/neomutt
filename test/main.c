@@ -472,7 +472,7 @@ void test_fini(void);
   NEOMUTT_TEST_ITEM(test_log_queue_add)                                        \
   NEOMUTT_TEST_ITEM(test_log_queue_empty)                                      \
   NEOMUTT_TEST_ITEM(test_log_queue_flush)                                      \
-  NEOMUTT_TEST_ITEM(test_log_queue_save)                                       \
+  NEOMUTT_TEST_ITEM(test_log_queue_get)                                        \
   NEOMUTT_TEST_ITEM(test_log_queue_set_max_size)                               \
                                                                                \
   /* mailbox */                                                                \

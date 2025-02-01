@@ -426,7 +426,7 @@ LOGGING_OBJS	= test/logging/log_disp_file.o \
 		  test/logging/log_queue_add.o \
 		  test/logging/log_queue_empty.o \
 		  test/logging/log_queue_flush.o \
-		  test/logging/log_queue_save.o \
+		  test/logging/log_queue_get.o \
 		  test/logging/log_queue_set_max_size.o
 
 MAILBOX_OBJS	= test/mailbox/mailbox_changed.o \
