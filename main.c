@@ -938,11 +938,13 @@ static bool show_help(struct CliHelp *help)
   }
   else if (help->license)
   {
-    print_copyright();
+    print_copyright(tty);
   }
   else
   {
-    print_version(stdout, tty);
+    struct PagedFile *pf = paged_file_new(stdout);
+    print_version(pf, 80, tty, NULL);
+    paged_file_free(&pf);
   }
 
   return false; // Stop

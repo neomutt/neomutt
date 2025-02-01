@@ -1638,32 +1638,12 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
   if (!StartupComplete)
     return MUTT_CMD_SUCCESS;
 
-  struct Buffer *tempfile = buf_pool_get();
-  buf_mktemp(tempfile);
-
-  FILE *fp_out = mutt_file_fopen(buf_string(tempfile), "w");
-  if (!fp_out)
-  {
-    // L10N: '%s' is the file name of the temporary file
-    buf_printf(err, _("Could not create temporary file %s"), buf_string(tempfile));
-    buf_pool_release(&tempfile);
-    return MUTT_CMD_ERROR;
-  }
-
-  print_version(fp_out, false);
-  mutt_file_fclose(&fp_out);
-
-  struct PagerData pdata = { 0 };
-  struct PagerView pview = { &pdata };
-
-  pdata.fname = buf_string(tempfile);
-
-  pview.banner = "version";
-  pview.flags = MUTT_PAGER_NO_FLAGS;
-  pview.mode = PAGER_MODE_OTHER;
-
-  mutt_do_pager(&pview, NULL);
-  buf_pool_release(&tempfile);
+  struct AttrColorList acl = TAILQ_HEAD_INITIALIZER(acl);
+  struct PagedFile *pf = paged_file_new(NULL);
+  print_version(pf, 0, false, &acl);
+  dlg_spager(pf, "version", NeoMutt->sub);
+  paged_file_free(&pf);
+  attr_color_list_clear(&acl);
 
   return MUTT_CMD_SUCCESS;
 }
