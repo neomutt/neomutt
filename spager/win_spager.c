@@ -93,20 +93,22 @@ static int win_spager_recalc(struct MuttWindow *win)
   {
     struct PagedRow *pr = ARRAY_GET(&pf->rows, i);
 
-    if ((pr->cid > MT_COLOR_NONE) && !pr->ac_row)
+    // if ((pr->cid > MT_COLOR_NONE) && !pr->ac_row)
+    if (pr->cid > MT_COLOR_NONE)
       pr->ac_row = simple_color_get(pr->cid);
 
-    if (!pr->ac_merged)
-      pr->ac_merged = merged_color_overlay(pf->ac_file, pr->ac_row);
+    // if (!pr->ac_merged)
+    pr->ac_merged = merged_color_overlay(pf->ac_file, pr->ac_row);
 
     struct PagedTextMarkup *ptm = NULL;
     ARRAY_FOREACH(ptm, &pr->text)
     {
-      if ((ptm->cid > MT_COLOR_NONE) && !ptm->ac_text)
+      // if ((ptm->cid > MT_COLOR_NONE) && !ptm->ac_text)
+      if (ptm->cid > MT_COLOR_NONE)
         ptm->ac_text = simple_color_get(ptm->cid);
 
-      if (!ptm->ac_merged)
-        ptm->ac_merged = merged_color_overlay(pr->ac_merged, ptm->ac_text);
+      // if (!ptm->ac_merged)
+      ptm->ac_merged = merged_color_overlay(pr->ac_merged, ptm->ac_text);
     }
 
     ARRAY_FOREACH(ptm, &pr->search)
@@ -156,7 +158,9 @@ static void display_row2(struct MuttWindow *win, int row, const char *text,
     mutt_window_move(win, row, 0);
     mutt_curses_set_color_by_id(MT_COLOR_MARKERS);
     mutt_window_addch(win, '+');
+#ifdef USE_DEBUG_WINDOW
     mutt_refresh();
+#endif
   }
 
   while (text && (pos < text_end))

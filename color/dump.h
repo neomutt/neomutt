@@ -23,15 +23,37 @@
 #ifndef MUTT_COLOR_DUMP_H
 #define MUTT_COLOR_DUMP_H
 
-struct AttrColor;
-struct Buffer;
-struct ColorElement;
+#include <stdbool.h>
+#include "mutt/lib.h"
 
-void color_dump(void);
+struct AttrColor;
+struct AttrColorList;
+struct ColorElement;
+struct PagedFile;
+
+/**
+ * struct ColorTable - Table of Colours
+ */
+struct ColorTable
+{
+  struct AttrColor *attr_color; ///< Colour
+  const char *name;             ///< Colour name
+  struct Slist *attrs;          ///< Attributes
+  const char *fg;               ///< Foreground
+  const char *bg;               ///< Background
+  const char *pattern;          ///< Pattern
+  int match;                    ///< Pattern match number
+};
+ARRAY_HEAD(ColorTableArray, struct ColorTable);
+
+void color_dump(struct PagedFile *pf, struct AttrColorList *acl, bool all);
 
 const char *color_log_attrs_list (int attrs);
 void        color_log_color_attrs(struct AttrColor *ac, struct Buffer *swatch);
+struct Slist *color_log_attrs_list2(int attrs);
 const char *color_log_name       (char *buf, int buflen, struct ColorElement *elem);
+int measure_attrs(const struct Slist *sl);
+const char *color_log_name2(struct ColorElement *elem);
 
 #endif /* MUTT_COLOR_DUMP_H */
 

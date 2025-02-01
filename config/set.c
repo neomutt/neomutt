@@ -332,7 +332,7 @@ struct HashElem *cs_create_variable(const struct ConfigSet *cs,
   cdef_copy->initial = cdef->initial;
   cdef_copy->data = cdef->data;
   cdef_copy->validator = cdef->validator;
-  cdef_copy->docs = mutt_str_dup(cdef->name);
+  cdef_copy->docs = mutt_str_dup("User-defined variable");
   cdef_copy->var = cdef->var;
 
   struct HashElem *he = cs_register_variable(cs, cdef_copy, err);

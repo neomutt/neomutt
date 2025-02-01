@@ -149,6 +149,7 @@
 #include "nntp/lib.h"
 #include "notmuch/lib.h"
 #include "parse/lib.h"
+#include "pfile/lib.h"
 #include "pop/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
@@ -1022,7 +1023,7 @@ static bool dump_info(struct CliInfo *ci, struct ConfigSet *cs)
 
     ConfigDumpFlags cdflags = CS_DUMP_NO_FLAGS;
     if (tty)
-      cdflags |= CS_DUMP_LINK_DOCS;
+      cdflags |= CS_DUMP_ANSI_COLOUR | CS_DUMP_LINK_DOCS;
     if (ci->hide_sensitive)
       cdflags |= CS_DUMP_HIDE_SENSITIVE;
     if (ci->show_help)
@@ -1039,7 +1040,9 @@ static bool dump_info(struct CliInfo *ci, struct ConfigSet *cs)
       get_elem_queries(&ci->queries, &hea);
     }
 
-    dump_config(cs, &hea, cdflags, stdout);
+    struct PagedFile *pf = paged_file_new(stdout);
+    dump_config2(cs, &hea, cdflags, pf);
+    paged_file_free(&pf);
     ARRAY_FREE(&hea);
   }
   else if (!ARRAY_EMPTY(&ci->alias_queries))
