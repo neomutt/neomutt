@@ -38,6 +38,8 @@
 #include "gui/lib.h"
 #include "mutt.h"
 #include "parse/lib.h"
+#include "pfile/lib.h"
+#include "spager/lib.h"
 #include "attr.h"
 #include "color.h"
 #include "command2.h"
@@ -300,7 +302,12 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
   {
     if (StartupComplete)
     {
-      color_dump();
+      struct AttrColorList acl = TAILQ_HEAD_INITIALIZER(acl);
+      struct PagedFile *pf = paged_file_new(NULL);
+      color_dump(pf, &acl, false);
+      dlg_spager(pf, "color", NeoMutt->sub);
+      paged_file_free(&pf);
+      attr_color_list_clear(&acl);
       rc = MUTT_CMD_SUCCESS;
     }
     else
@@ -314,6 +321,21 @@ static enum CommandResult parse_color_command(struct Buffer *buf,
 
   parse_extract_token(buf, s, TOKEN_NO_FLAGS);
   color_debug(LL_DEBUG5, "color: %s\n", buf_string(buf));
+
+  // Handle special "color all" syntax
+  if (mutt_str_equal(buf_string(buf), "all"))
+  {
+    if (StartupComplete)
+    {
+      struct AttrColorList acl = TAILQ_HEAD_INITIALIZER(acl);
+      struct PagedFile *pf = paged_file_new(NULL);
+      color_dump(pf, &acl, true);
+      dlg_spager(pf, "color", NeoMutt->sub);
+      paged_file_free(&pf);
+      attr_color_list_clear(&acl);
+    }
+    return MUTT_CMD_SUCCESS;
+  }
 
   rc = parse_object(buf, s, &cid, err);
   if (rc != MUTT_CMD_SUCCESS)
@@ -450,7 +472,6 @@ enum CommandResult parse_uncolor(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_uncolor_command(buf, s, err, true);
-  curses_colors_dump(buf);
   return rc;
 }
 
@@ -482,7 +503,6 @@ enum CommandResult parse_color(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_color_command(buf, s, err, parse_color_pair, true);
-  curses_colors_dump(buf);
   return rc;
 }
 
@@ -504,6 +524,5 @@ enum CommandResult parse_mono(struct Buffer *buf, struct Buffer *s,
 
   color_debug(LL_DEBUG5, "parse: %s\n", buf_string(buf));
   enum CommandResult rc = parse_color_command(buf, s, err, parse_attr_spec, false);
-  curses_colors_dump(buf);
   return rc;
 }
