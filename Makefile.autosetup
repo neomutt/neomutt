@@ -783,6 +783,19 @@ $(PWD)/pattern:
 	$(MKDIR_P) $(PWD)/pattern
 
 ###############################################################################
+# libpfile
+LIBPFILE=	libpfile.a
+LIBPFILEOBJS=	pfile/paged_file.o pfile/paged_row.o pfile/paged_text.o
+CLEANFILES+=	$(LIBPFILE) $(LIBPFILEOBJS)
+ALLOBJS+=	$(LIBPFILEOBJS)
+
+$(LIBPFILE): $(PWD)/pfile $(LIBPFILEOBJS)
+	$(AR) cr $@ $(LIBPFILEOBJS)
+	$(RANLIB) $@
+$(PWD)/pfile:
+	$(MKDIR_P) $(PWD)/pfile
+
+###############################################################################
 # libpop
 LIBPOP=		libpop.a
 LIBPOPOBJS=	pop/adata.o pop/auth.o pop/config.o pop/edata.o pop/lib.o \
@@ -929,7 +942,7 @@ $(ALLOBJS):
 # The order of these libraries depends on their dependencies.
 # The libraries with the most dependencies will come first.
 MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBLUA) \
-		$(LIBAUTOCRYPT) $(LIBPOP) $(LIBEDITOR) $(LIBCOMPLETE) \
+		$($(LIBPFILE) LIBAUTOCRYPT) $(LIBPOP) $(LIBEDITOR) $(LIBCOMPLETE) \
 		$(LIBBROWSER) $(LIBCOMPMBOX) $(LIBSTORE) $(LIBPROGRESS) \
 		$(LIBQUESTION) $(LIBPOSTPONE) $(LIBALIAS) $(LIBSEND) \
 		$(LIBCONVERT) $(LIBCOMPOSE) $(LIBATTACH) $(LIBKEY) $(LIBGUI) \
