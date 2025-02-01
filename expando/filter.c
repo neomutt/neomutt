@@ -36,7 +36,6 @@
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "expando.h"
-#include "globals.h"
 #include "node.h"
 #include "render.h"
 
@@ -81,7 +80,8 @@ bool check_for_pipe(struct ExpandoNode *root)
 
 /**
  * filter_text - Filter the text through an external command
- * @param[in,out] buf Text
+ * @param[in,out] buf      Text
+ * @param[in]     env_list Environment
  *
  * The text is passed unchanged to the shell.
  * The first line of any output (minus the newline) is stored back in buf.
