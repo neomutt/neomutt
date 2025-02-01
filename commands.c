@@ -898,10 +898,6 @@ enum CommandResult set_dump(enum GetElemListFlags flags, struct Buffer *err)
   struct Buffer *tmp = buf_pool_get();
 
   struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, flags);
-  struct HashElem **hep = NULL;
-  struct HashElem *he = NULL;
-  const struct ConfigDef *cdef = NULL;
-  int type;
 
   dump_config2(NeoMutt->sub->cs, &hea, CS_DUMP_ALIGN_TEXT | CS_DUMP_HIDE_SENSITIVE, pf);
   ARRAY_FREE(&hea);

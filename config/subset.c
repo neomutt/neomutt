@@ -42,6 +42,7 @@
 #include "mutt/lib.h"
 #include "subset.h"
 #include "set.h"
+#include "types.h"
 
 struct Notify;
 
@@ -76,6 +77,8 @@ int elem_list_sort(const void *a, const void *b, void *sdata)
  * @param cs    ConfigSet to read
  * @param flags Flags, e.g. #GEL_ALL_CONFIG
  * @retval ptr Array of HashElem
+ * 
+ * @note Synonyms and deprecated config will be ignored
  */
 struct HashElemArray get_elem_list(struct ConfigSet *cs, enum GetElemListFlags flags)
 {
@@ -88,6 +91,9 @@ struct HashElemArray get_elem_list(struct ConfigSet *cs, enum GetElemListFlags f
   struct HashElem *he = NULL;
   while ((he = mutt_hash_walk(cs->hash, &walk)))
   {
+    if ((CONFIG_TYPE(he->type) == DT_SYNONYM) || (he->type & D_INTERNAL_DEPRECATED))
+      continue;
+
     if ((flags == GEL_CHANGED_CONFIG) && !cs_he_has_been_set(cs, he))
       continue;
 

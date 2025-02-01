@@ -52,7 +52,7 @@ static int win_spager_color_observer(struct NotifyCallback *nc)
   // We _could_ recursively check the PagedFile to see if the colour is used,
   // but for now, just force a recalc.
   struct MuttWindow *win = nc->global_data;
-  win->actions |= WA_REPAINT;
+  win->actions |= WA_RECALC;
   mutt_debug(LL_DEBUG5, "color done, request WA_REPAINT, spager_REDRAW_FULL\n");
 
   return 0;

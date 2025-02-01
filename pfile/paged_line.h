@@ -29,6 +29,7 @@
 #include "paged_text.h"
 
 struct AttrColor;
+struct PagedFile;
 
 /**
  * typedef LineWrapFlags - Flags controlling the wrapping of text
