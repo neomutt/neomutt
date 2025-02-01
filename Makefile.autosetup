@@ -1039,6 +1039,7 @@ coverage: all test
 	  --directory notmuch \
 	  --directory parse \
 	  --directory pattern \
+	  --directory pfile \
 	  --directory store \
 	  --directory test/eqi \
 	  --exclude '*/atoi.h'
