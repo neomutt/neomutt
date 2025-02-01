@@ -24,8 +24,10 @@
 #define MUTT_VERSION_H
 
 #include <stdbool.h>
-#include <stdio.h>
 #include "mutt/lib.h"
+
+struct AttrColorList;
+struct PagedFile;
 
 /**
  * struct KeyValue - Key/Value pairs
@@ -71,8 +73,8 @@ struct NeoMuttVersion *version_get (void);
 void                   version_free(struct NeoMuttVersion **ptr);
 
 const char *mutt_make_version(void);
-bool print_version(FILE *fp, bool use_ansi);
-bool print_copyright(void);
+bool print_version(struct PagedFile *pf, int width, bool use_ansi, struct AttrColorList *acl);
+bool print_copyright(bool use_ansi);
 bool feature_enabled(const char *name);
 
 #endif /* MUTT_VERSION_H */
