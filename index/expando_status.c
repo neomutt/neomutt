@@ -355,21 +355,22 @@ static void index_readonly(const struct ExpandoNode *node, void *data,
   const struct IndexSharedData *shared = msld->shared;
   const struct Mailbox *m = shared->mailbox;
 
-  size_t i = 0;
+  int i = STATUS_CHAR_UNCHANGED;
 
   if (m)
   {
-    i = shared->attach_msg ? 3 :
-                             ((m->readonly || m->dontwrite) ? 2 :
-                              (m->changed ||
-                               /* deleted doesn't necessarily mean changed in IMAP */
-                               (m->type != MUTT_IMAP && m->msg_deleted)) ?
-                                                              1 :
-                                                              0);
+    if (shared->attach_msg)
+      i = STATUS_CHAR_ATTACH;
+    else if (m->readonly || m->dontwrite)
+      i = STATUS_CHAR_READ_ONLY;
+    else if (m->changed || ((m->type != MUTT_IMAP) && m->msg_deleted)) /* deleted doesn't necessarily mean changed in IMAP */
+      i = STATUS_CHAR_NEED_RESYNC;
+    else
+      i = STATUS_CHAR_UNCHANGED;
   }
 
   if (i >= c_status_chars->len)
-    buf_addstr(buf, c_status_chars->chars[0]);
+    buf_addstr(buf, c_status_chars->chars[STATUS_CHAR_UNCHANGED]);
   else
     buf_addstr(buf, c_status_chars->chars[i]);
 }
