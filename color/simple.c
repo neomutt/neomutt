@@ -96,12 +96,12 @@ struct AttrColor *simple_color_get(enum ColorId cid)
 {
   if (cid >= MT_COLOR_MAX)
   {
-    mutt_debug(LL_DEBUG1, "color overflow %d/%d", cid, MT_COLOR_MAX);
+    mutt_debug(LL_DEBUG1, "color overflow %d/%d\n", cid, MT_COLOR_MAX);
     return NULL;
   }
   if (cid <= MT_COLOR_NONE)
   {
-    mutt_debug(LL_DEBUG1, "color underflow %d/%d", cid, MT_COLOR_NONE);
+    mutt_debug(LL_DEBUG1, "color underflow %d/%d\n", cid, MT_COLOR_NONE);
     return NULL;
   }
 

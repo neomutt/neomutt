@@ -327,7 +327,7 @@ int mutt_copy_hdr(FILE *fp_in, FILE *fp_out, LOFF_T off_start, LOFF_T off_end,
               match = x;
               match_len = hdr_order_len;
             }
-            mutt_debug(LL_DEBUG2, "Reorder: %s matches %s", np->data, buf);
+            mutt_debug(LL_DEBUG2, "Reorder: %s matches %s\n", np->data, buf);
           }
           x++;
         }

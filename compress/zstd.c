@@ -98,7 +98,7 @@ static ComprHandle *compr_zstd_open(short level)
 
   if ((level < MIN_COMP_LEVEL) || (level > MAX_COMP_LEVEL))
   {
-    mutt_debug(LL_DEBUG1, "The compression level for %s should be between %d and %d",
+    mutt_debug(LL_DEBUG1, "The compression level for %s should be between %d and %d\n",
                compr_zstd_ops.name, MIN_COMP_LEVEL, MAX_COMP_LEVEL);
     level = MIN_COMP_LEVEL;
   }

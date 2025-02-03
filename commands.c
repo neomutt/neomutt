@@ -1281,7 +1281,7 @@ enum CommandResult parse_subscribe_to(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
 
-    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    mutt_debug(LL_DEBUG1, "Corrupted buffer\n");
     return MUTT_CMD_ERROR;
   }
 
@@ -1617,7 +1617,7 @@ enum CommandResult parse_unsubscribe_from(struct Buffer *buf, struct Buffer *s,
       return MUTT_CMD_ERROR;
     }
 
-    mutt_debug(LL_DEBUG1, "Corrupted buffer");
+    mutt_debug(LL_DEBUG1, "Corrupted buffer\n");
     return MUTT_CMD_ERROR;
   }
 

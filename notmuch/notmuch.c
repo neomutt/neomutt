@@ -1930,7 +1930,7 @@ int nm_record_message(struct Mailbox *m, char *path, struct Email *e)
   //    It saves NeoMutt from allocating/deallocating repeatedly.
   if (!mdata)
   {
-    mutt_debug(LL_DEBUG1, "nm: non-nm mailbox. trying the default nm mailbox.");
+    mutt_debug(LL_DEBUG1, "nm: non-nm mailbox. trying the default nm mailbox.\n");
     m = get_default_mailbox();
     mdata = nm_mdata_get(m);
   }
