@@ -26,7 +26,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-bool print_version(FILE *fp);
+bool print_version(FILE *fp, bool use_ansi);
 bool print_copyright(void);
 bool feature_enabled(const char *name);
 

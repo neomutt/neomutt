@@ -1647,7 +1647,7 @@ static enum CommandResult parse_version(struct Buffer *buf, struct Buffer *s,
     return MUTT_CMD_ERROR;
   }
 
-  print_version(fp_out);
+  print_version(fp_out, false);
   mutt_file_fclose(&fp_out);
 
   struct PagerData pdata = { 0 };

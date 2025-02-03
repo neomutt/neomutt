@@ -4,7 +4,7 @@
  *
  * @authors
  * Copyright (C) 2016-2020 Pietro Cerutti <gahr@gahr.ch>
- * Copyright (C) 2016-2023 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016-2025 Richard Russon <rich@flatcap.org>
  *
  * @copyright
  * This program is free software: you can redistribute it and/or modify it under
@@ -32,7 +32,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/utsname.h>
-#include <unistd.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
 #include "version.h"
@@ -300,25 +299,23 @@ static const struct CompileOptions DebugOpts[] = {
 
 /**
  * print_compile_options - Print a list of enabled/disabled features
- * @param co Array of compile options
- * @param fp file to write to
+ * @param co       Array of compile options
+ * @param fp       file to write to
+ * @param use_ansi Use ANSI colour escape sequences
  *
  * Two lists are generated and passed to this function:
- *
- * One list which just uses the configure state of each feature.
- * One list which just uses feature which are set to on directly in NeoMutt.
+ * - List of features, e.g. +notmuch
+ * - List of devel features, e.g. window
  *
  * The output is of the form: "+enabled_feature -disabled_feature" and is
  * wrapped to SCREEN_WIDTH characters.
  */
-static void print_compile_options(const struct CompileOptions *co, FILE *fp)
+static void print_compile_options(const struct CompileOptions *co, FILE *fp, bool use_ansi)
 {
   if (!co || !fp)
     return;
 
   size_t used = 2;
-  bool tty = isatty(fileno(fp));
-
   fprintf(fp, "  ");
   for (int i = 0; co[i].name; i++)
   {
@@ -333,19 +330,19 @@ static void print_compile_options(const struct CompileOptions *co, FILE *fp)
     switch (co[i].enabled)
     {
       case 0: // Disabled
-        if (tty)
+        if (use_ansi)
           fmt = "\033[1;31m-%s\033[0m "; // Escape, red
         else
           fmt = "-%s ";
         break;
       case 1: // Enabled
-        if (tty)
+        if (use_ansi)
           fmt = "\033[1;32m+%s\033[0m "; // Escape, green
         else
           fmt = "+%s ";
         break;
       case 2: // Devel only
-        if (tty)
+        if (use_ansi)
           fmt = "\033[1;36m%s\033[0m "; // Escape, cyan
         else
           fmt = "%s ";
@@ -379,25 +376,25 @@ static char *rstrip_in_place(char *s)
 
 /**
  * print_version - Print system and compile info to a file
- * @param fp File to print to
+ * @param fp       File to print to
+ * @param use_ansi Use ANSI colour escape sequences
  * @retval true Text displayed
  *
  * Print information about the current system NeoMutt is running on.
  * Also print a list of all the compile-time information.
  */
-bool print_version(FILE *fp)
+bool print_version(FILE *fp, bool use_ansi)
 {
   if (!fp)
     return false;
 
   struct utsname uts = { 0 };
-  bool tty = isatty(fileno(fp));
 
   const char *col_cyan = "";
   const char *col_bold = "";
   const char *col_end = "";
 
-  if (tty)
+  if (use_ansi)
   {
     col_cyan = "\033[1;36m"; // Escape, cyan
     col_bold = "\033[1m";    // Escape, bold
@@ -480,12 +477,12 @@ bool print_version(FILE *fp)
   fprintf(fp, "\n%sCompilation CFLAGS:%s %s\n", col_bold, col_end, (char *) cc_cflags);
 
   fprintf(fp, "\n%s%s%s\n", col_bold, _("Compile options:"), col_end);
-  print_compile_options(CompOpts, fp);
+  print_compile_options(CompOpts, fp, use_ansi);
 
   if (DebugOpts[0].name)
   {
     fprintf(fp, "\n%s%s%s\n", col_bold, _("Devel options:"), col_end);
-    print_compile_options(DebugOpts, fp);
+    print_compile_options(DebugOpts, fp, use_ansi);
   }
 
   fprintf(fp, "\n");

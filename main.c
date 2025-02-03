@@ -953,7 +953,7 @@ static bool show_help(struct CliHelp *help)
   }
   else
   {
-    print_version(stdout);
+    print_version(stdout, isatty(STDOUT_FILENO));
   }
 
   return false; // Stop
