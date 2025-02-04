@@ -115,18 +115,22 @@
 ** Specifies the format of the data displayed for the "$alias" menu.  The
 ** following \fCprintf(3)\fP-style sequences are available:
 ** .dl
-** .dt %a  .dd Alias name
-** .dt %A  .dd Full Address (Name and Email)
-** .dt %C  .dd Comment
-** .dt %E  .dd Email Address
-** .dt %f  .dd Flags - currently, a "d" for an alias marked for deletion
-** .dt %i  .dd Index number
-** .dt %N  .dd Real name
-** .dt %t  .dd Alias is tagged (selected)
-** .dt %Y  .dd User-defined tags (labels)
-** .dt %>X .dd right justify the rest of the string and pad with character "X"
-** .dt %|X .dd pad to the end of the line with character "X"
-** .dt %*X .dd soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
+** .dt \fC%A\fP    .dd \fC%{address}\fP      .dd Full Address (Name and Email)
+** .dt \fC%a\fP    .dd \fC%{alias}\fP        .dd Alias name
+** .dt \fC%C\fP    .dd \fC%{comment}\fP      .dd Comment
+** .dt \fC%E\fP    .dd \fC%{email}\fP        .dd Email Address
+** .dt \fC%f\fP    .dd \fC%{flags}\fP        .dd Flags - currently, a \fCd\fP for an alias marked for deletion
+** .dt \fC%i\fP    .dd \fC%{number}\fP       .dd Index number
+** .dt \fC%N\fP    .dd \fC%{name}\fP         .dd Real name
+** .dt \fC%t\fP    .dd \fC%{tagged}\fP       .dd Alias is tagged (selected)
+** .dt \fC%Y\fP    .dd \fC%{tags}\fP         .dd User-defined tags (labels)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fC%c\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%C\fP instead
+** .dt \fC%n\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%i\fP instead
+** .dt \fC%r\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%A\fP instead
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -281,27 +285,28 @@
 ** This variable describes the format of the "attachment" menu.  The
 ** following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
-** .dt %C  .dd Charset
-** .dt %c  .dd Requires charset conversion ("n" or "c")
-** .dt %D  .dd Deleted flag
-** .dt %d  .dd Description (if none, falls back to %F)
-** .dt %e  .dd MIME content-transfer-encoding
-** .dt %f  .dd Filename
-** .dt %F  .dd Filename in content-disposition header (if none, falls back to %f)
-** .dt %I  .dd Disposition ("I" for inline, "A" for attachment)
-** .dt %m  .dd Major MIME type
-** .dt %M  .dd MIME subtype
-** .dt %n  .dd Attachment number
-** .dt %Q  .dd "Q", if MIME part qualifies for attachment counting
-** .dt %s  .dd Size (see $formatstrings-size)
-** .dt %T  .dd Graphic tree characters
-** .dt %t  .dd Tagged flag
-** .dt %u  .dd Unlink (=to delete) flag
-** .dt %X  .dd Number of qualifying MIME parts in this part and its children
-**             (please see the "$attachments" section for possible speed effects)
-** .dt %>X .dd Right justify the rest of the string and pad with character "X"
-** .dt %|X .dd Pad to the end of the line with character "X"
-** .dt %*X .dd Soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP           .dd \fBDescription\fP
+** .dt \fC%C\fP    .dd \fC%{charset}\fP          .dd Charset
+** .dt \fC%c\fP    .dd \fC%{charset-convert}\fP  .dd Requires charset conversion (\fCn\fP or \fCc\fP)
+** .dt \fC%D\fP    .dd \fC%{deleted}\fP          .dd Deleted flag
+** .dt \fC%d\fP    .dd \fC%{description}\fP      .dd Description (if none, falls back to \fC%F\fP)
+** .dt \fC%e\fP    .dd \fC%{mime-encoding}\fP    .dd MIME content-transfer-encoding
+** .dt \fC%F\fP    .dd \fC%{file-disposition}\fP .dd Filename in content-disposition header (if none, falls back to \fC%f\fP)
+** .dt \fC%f\fP    .dd \fC%{file}\fP             .dd Filename
+** .dt \fC%I\fP    .dd \fC%{disposition}\fP      .dd Disposition (\fCI\fP for inline, \fCA\fP for attachment)
+** .dt \fC%M\fP    .dd \fC%{mime-minor}\fP       .dd MIME subtype
+** .dt \fC%m\fP    .dd \fC%{mime-major}\fP       .dd Major MIME type
+** .dt \fC%n\fP    .dd \fC%{number}\fP           .dd Attachment number
+** .dt \fC%Q\fP    .dd \fC%{attach-qualifies}\fP .dd \fCQ\fP, if MIME part qualifies for attachment counting
+** .dt \fC%s\fP    .dd \fC%{file-size}\fP        .dd Size (see $formatstrings-size)
+** .dt \fC%T\fP    .dd \fC%{tree}\fP             .dd Graphic tree characters
+** .dt \fC%t\fP    .dd \fC%{tagged}\fP           .dd Tagged flag
+** .dt \fC%u\fP    .dd \fC%{unlink}\fP           .dd Unlink (=to delete) flag
+** .dt \fC%X\fP    .dd \fC%{attach-count}\fP     .dd Number of qualifying MIME parts in this part and its children
+**                                                   (see the $$attachments section for possible speed effects)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP     .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP     .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP      .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -427,14 +432,15 @@
 ** This variable describes the format of the "autocrypt account" menu.
 ** The following \fCprintf(3)\fP-style sequences are understood
 ** .dl
-** .dt %a  .dd email address
-** .dt %k  .dd gpg keyid
-** .dt %n  .dd current entry number
-** .dt %p  .dd prefer-encrypt flag
-** .dt %s  .dd status flag (active/inactive)
-** .dt %>X .dd right justify the rest of the string and pad with character "X"
-** .dt %|X .dd pad to the end of the line with character "X"
-** .dt %*X .dd soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{address}\fP        .dd Email address
+** .dt \fC%k\fP    .dd \fC%{keyid}\fP          .dd GPG keyid
+** .dt \fC%n\fP    .dd \fC%{number}\fP         .dd Current entry number
+** .dt \fC%p\fP    .dd \fC%{prefer-encrypt}\fP .dd Prefer-encrypt flag
+** .dt \fC%s\fP    .dd \fC%{enabled}\fP        .dd Status flag (active/inactive)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP   .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP   .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP    .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** (Autocrypt only)
@@ -687,13 +693,14 @@
 ** menu.  This string is similar to $$status_format, but has its own
 ** set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt %a  .dd Total number of attachments
-** .dt %h  .dd Local hostname
-** .dt %l  .dd Approximate size (in bytes) of the current message (see $formatstrings-size)
-** .dt %v  .dd NeoMutt version string
-** .dt %>X .dd right justify the rest of the string and pad with character "X"
-** .dt %|X .dd pad to the end of the line with character "X"
-** .dt %*X .dd soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{attach-count}\fP .dd Total number of attachments
+** .dt \fC%h\fP    .dd \fC%{hostname}\fP     .dd Local hostname
+** .dt \fC%l\fP    .dd \fC%{attach-size}\fP  .dd Approximate size (in bytes) of the current message (see $formatstrings-size)
+** .dt \fC%v\fP    .dd \fC%{version}\fP      .dd NeoMutt version string
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** See the text describing the $$status_format option for more
@@ -1439,29 +1446,29 @@
 ** personal taste.  This string is similar to $$index_format, but has
 ** its own set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt %a  .dd   .dd Alert: 1 if user is notified of new mail
-** .dt %C  .dd   .dd Current file number
-** .dt %d  .dd   .dd Date/time folder was last modified
-** .dt %D  .dd   .dd Date/time folder was last modified using $$date_format.
-**                   It is encouraged to use "%[fmt]" instead, where "fmt" is
-**                   the value of $$date_format.
-** .dt %f  .dd   .dd Filename ("/" is appended to directory names,
-**                   "@" to symbolic links and "*" to executable files)
-** .dt %F  .dd   .dd File permissions
-** .dt %g  .dd   .dd Group name (or numeric gid, if missing)
-** .dt %i  .dd   .dd Description of the folder
-** .dt %l  .dd   .dd Number of hard links
-** .dt %m  .dd * .dd Number of messages in the mailbox
-** .dt %n  .dd * .dd Number of unread messages in the mailbox
-** .dt %N  .dd   .dd "N" if mailbox has new mail, " " (space) otherwise
-** .dt %p  .dd   .dd Poll: 1 if Mailbox is checked for new mail
-** .dt %s  .dd   .dd Size in bytes (see $formatstrings-size)
-** .dt %t  .dd   .dd "*" if the file is tagged, blank otherwise
-** .dt %u  .dd   .dd Owner name (or numeric uid, if missing)
-** .dt %[fmt] .dd   .dd Date/time folder was last modified using an \fCstrftime(3)\fP expression
-** .dt %>X .dd   .dd Right justify the rest of the string and pad with character "X"
-** .dt %|X .dd   .dd Pad to the end of the line with character "X"
-** .dt %*X .dd   .dd Soft-fill with character "X" as pad
+** .dt \fBShort\fP  .dd \fBLong Name\fP        .dd \fBDescription\fP
+** .dt \fC%a\fP     .dd \fC%{notify}\fP        .dd Alert: 1 if user is notified of new mail
+** .dt \fC%C\fP     .dd \fC%{number}\fP        .dd Current file number
+** .dt \fC%D\fP     .dd \fC%{date}\fP          .dd Date/time folder was last modified using $$date_format.
+**                                                 It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
+** .dt \fC%d\fP     .dd \fC%{date-format}\fP   .dd Date/time folder was last modified
+** .dt \fC%F\fP     .dd \fC%{file-mode}\fP     .dd File permissions
+** .dt \fC%f\fP     .dd \fC%{filename}\fP      .dd Filename (\fC/\fP is appended to directory names,
+**                                                 \fC@\fP to symbolic links and \fC*\fP to executable files)
+** .dt \fC%g\fP     .dd \fC%{file-group}\fP    .dd Group name (or numeric gid, if missing)
+** .dt \fC%i\fP     .dd \fC%{description}\fP   .dd Description of the folder
+** .dt \fC%l\fP     .dd \fC%{hard-links}\fP    .dd Number of hard links
+** .dt \fC%m\fP     .dd \fC%{message-count}\fP .dd Number of messages in the mailbox
+** .dt \fC%N\fP     .dd \fC%{new-mail}\fP      .dd \fCN\fP if mailbox has new mail, \fC \fP (space) otherwise
+** .dt \fC%n\fP     .dd \fC%{unread-count}\fP  .dd Number of unread messages in the mailbox
+** .dt \fC%p\fP     .dd \fC%{poll}\fP          .dd Poll: 1 if Mailbox is checked for new mail
+** .dt \fC%s\fP     .dd \fC%{file-size}\fP     .dd Size in bytes (see $formatstrings-size)
+** .dt \fC%t\fP     .dd \fC%{tagged}\fP        .dd \fC*\fP if the file is tagged, blank otherwise
+** .dt \fC%u\fP     .dd \fC%{file-owner}\fP    .dd Owner name (or numeric uid, if missing)
+** .dt \fC%[fmt]\fP .dd                        .dd Date/time folder was last modified using an \fCstrftime(3)\fP expression
+** .dt \fC%*X\fP    .dd \fC%{padding-soft}\fP  .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP    .dd \fC%{padding-hard}\fP  .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP    .dd \fC%{padding-eol}\fP   .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -1654,9 +1661,10 @@
 ** The following sequences are defined in NeoMutt:
 ** .pp
 ** .dl
-** .dt %n .dd Recipient's real name
-** .dt %u .dd User (login) name of recipient
-** .dt %v .dd First name of recipient
+** .dt \fBShort\fP .dd \fBLong Name\fP     .dd \fBDescription\fP
+** .dt \fC%n\fP    .dd \fC%{real-name}\fP  .dd Recipient's real name
+** .dt \fC%u\fP    .dd \fC%{user-name}\fP  .dd User (login) name of recipient
+** .dt \fC%v\fP    .dd \fC%{first-name}\fP .dd First name of recipient
 ** .de
 */
 
@@ -1667,18 +1675,19 @@
 ** your personal taste.  This string is similar to "$index_format", but
 ** has its own set of printf()-like sequences:
 ** .dl
-** .dt %a  .dd Alert: 1 if user is notified of new mail
-** .dt %C  .dd Current newsgroup number
-** .dt %d  .dd Description of newsgroup (becomes from server)
-** .dt %f  .dd Newsgroup name
-** .dt %M  .dd - if newsgroup not allowed for direct post (moderated for example)
-** .dt %N  .dd N if newsgroup is new, u if unsubscribed, blank otherwise
-** .dt %n  .dd Number of new articles in newsgroup
-** .dt %p  .dd Poll: 1 if Mailbox is checked for new mail
-** .dt %s  .dd Number of unread articles in newsgroup
-** .dt %>X .dd Right justify the rest of the string and pad with character "X"
-** .dt %|X .dd Pad to the end of the line with character "X"
-** .dt %*X .dd Soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{notify}\fP       .dd Alert: 1 if user is notified of new mail
+** .dt \fC%C\fP    .dd \fC%{number}\fP       .dd Current newsgroup number
+** .dt \fC%d\fP    .dd \fC%{description}\fP  .dd Description of newsgroup (becomes from server)
+** .dt \fC%f\fP    .dd \fC%{newsgroup}\fP    .dd Newsgroup name
+** .dt \fC%M\fP    .dd \fC%{flags}\fP        .dd \fC-\fP if newsgroup not allowed for direct post (moderated for example)
+** .dt \fC%N\fP    .dd \fC%{flags2}\fP       .dd \fCN\fP if newsgroup is new, \fCu\fP if unsubscribed, \fC \fP (space) otherwise
+** .dt \fC%n\fP    .dd \fC%{new-count}\fP    .dd Number of new articles in newsgroup
+** .dt \fC%p\fP    .dd \fC%{poll}\fP         .dd Poll: 1 if Mailbox is checked for new mail
+** .dt \fC%s\fP    .dd \fC%{unread-count}\fP .dd Number of unread articles in newsgroup
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 */
 
@@ -1849,11 +1858,12 @@
 ** This string is similar to $$index_format, but has its own
 ** set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt %C  .dd Line number
-** .dt %s  .dd History match
-** .dt %>X .dd right justify the rest of the string and pad with character "X"
-** .dt %|X .dd pad to the end of the line with character "X"
-** .dt %*X .dd soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
+** .dt \fC%C\fP    .dd \fC%{number}\fP       .dd Line number
+** .dt \fC%s\fP    .dd \fC%{match}\fP        .dd History match
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 */
 
@@ -2228,88 +2238,77 @@
 ** For an explanation of the %<...> construct, see the $status_format description.
 ** The following sequences are defined in NeoMutt:
 ** .dl
-** .dt %a .dd Address of the author
-** .dt %A .dd Reply-to address (if present; otherwise: address of author)
-** .dt %b .dd Filename of the original message folder (think mailbox)
-** .dt %B .dd Same as %K
-** .dt %c .dd Number of characters (bytes) in the body of the message (see $formatstrings-size)
-** .dt %C .dd Current message number
-** .dt %cr .dd Number of characters (bytes) in the raw message, including the header (see $formatstrings-size)
-** .dt %d .dd Date and time of message using $date_format and sender's timezone
-**            It is encouraged to use "%{fmt}" instead, where "fmt" is the value of $$date_format.
-** .dt %D .dd Date and time of message using $date_format and local timezone
-**            It is encouraged to use "%[fmt]" instead, where "fmt" is the value of $$date_format.
-** .dt %e .dd Current message number in thread
-** .dt %E .dd Number of messages in current thread
-** .dt %f .dd Sender (address + real name), either From: or Return-Path:
-** .dt %F .dd Author name, or recipient name if the message is from you
-** .dt %Fp .dd Like %F, but plain. No contextual formatting is applied to recipient name
-** .dt %g .dd Message tags (e.g. notmuch tags/imap flags)
-** .dt %Gx .dd Individual message tag (e.g. notmuch tags/imap flags)
-** .dt %H .dd Spam attribute(s) of this message
-** .dt %i .dd Message-id of the current message
-** .dt %I .dd Initials of author
-** .dt %J .dd Message tags (if present, tree unfolded, and != parent's tags)
-** .dt %K .dd The list to which the letter was sent (if any; otherwise: empty)
-** .dt %l .dd number of lines in the unprocessed message (may not work with
-**            maildir, mh, and IMAP folders)
-** .dt %L .dd If an address in the "To:" or "Cc:" header field matches an address
-**            Defined by the user's "$subscribe" command, this displays
-**            "To <list-name>", otherwise the same as %F
-** .dt %m .dd Total number of message in the mailbox
-** .dt %M .dd Number of hidden messages if the thread is collapsed
-** .dt %n .dd Author's real name (or address if missing)
-** .dt %N .dd Message score
-** .dt %O .dd Original save folder where NeoMutt would formerly have
-**            Stashed the message: list name or recipient name
-**            If not sent to a list
-** .dt %P .dd Progress indicator for the built-in pager (how much of the file has been displayed)
-** .dt %q .dd Newsgroup name (if compiled with NNTP support)
-** .dt %r .dd Comma separated list of "To:" recipients
-** .dt %R .dd Comma separated list of "Cc:" recipients
-** .dt %s .dd Subject of the message
-** .dt %S .dd Single character status of the message ("N"/"O"/"D"/"d"/"!"/"r"/"\(as")
-** .dt %t .dd "To:" field (recipients)
-** .dt %T .dd The appropriate character from the $$to_chars string
-** .dt %u .dd User (login) name of the author
-** .dt %v .dd First name of the author, or the recipient if the message is from you
-** .dt %W .dd Name of organization of author ("Organization:" field)
-** .dt %x .dd "X-Comment-To:" field (if present and compiled with NNTP support)
-** .dt %X .dd Number of MIME attachments
-**            (please see the "$attachments" section for possible speed effects)
-** .dt %y .dd "X-Label:" field, if present
-** .dt %Y .dd "X-Label:" field, if present, and \fI(1)\fP not at part of a thread tree,
-**            \fI(2)\fP at the top of a thread, or \fI(3)\fP "X-Label:" is different from
-**            Preceding message's "X-Label:"
-** .dt %Z .dd A three character set of message status flags.
-**            The first character is new/read/replied flags ("n"/"o"/"r"/"O"/"N").
-**            The second is deleted or encryption flags ("D"/"d"/"S"/"P"/"s"/"K").
-**            The third is either tagged/flagged ("\(as"/"!"), or one of the characters
-**            Listed in $$to_chars.
-** .dt %zc .dd Message crypto flags
-** .dt %zs .dd Message status flags
-** .dt %zt .dd Message tag flags
-** .dt %@name@ .dd insert and evaluate format-string from the matching
-**                 "$index-format-hook" command
-** .dt %{fmt} .dd the date and time of the message is converted to sender's
-**                time zone, and "fmt" is expanded by the library function
-**                \fCstrftime(3)\fP; if the first character inside the braces
-**                is a bang ("!"), the date is formatted ignoring any locale
-**                settings.  Note that the sender's time zone might only be
-**                available as a numerical offset, so "%Z" behaves like "%z".
-**                %{fmt} behaves like %[fmt] on systems where struct tm
-**                doesn't have a tm_gmtoff member.
-** .dt %[fmt] .dd the date and time of the message is converted to the local
-**                time zone, and "fmt" is expanded by the library function
-**                \fCstrftime(3)\fP; if the first character inside the brackets
-**                is a bang ("!"), the date is formatted ignoring any locale settings.
-** .dt %(fmt) .dd the local date and time when the message was received, and
-**                "fmt" is expanded by the library function \fCstrftime(3)\fP;
-**                if the first character inside the parentheses is a bang ("!"),
-**                the date is formatted ignoring any locale settings.
-** .dt %>X    .dd right justify the rest of the string and pad with character "X"
-** .dt %|X    .dd pad to the end of the line with character "X"
-** .dt %*X    .dd soft-fill with character "X" as pad
+** .dt \fBShort\fP   .dd \fBLong Name\fP              .dd \fBDescription\fP
+** .dt \fC%A\fP      .dd \fC%{reply-to}\fP            .dd Reply-to address (if present; otherwise: address of author)
+** .dt \fC%a\fP      .dd \fC%{from}\fP                .dd Address of the author
+** .dt \fC%B\fP      .dd \fC%{list-address}\fP        .dd List to which the email was sent (if any; otherwise: Mailbox name)
+** .dt \fC%b\fP      .dd \fC%{mailbox-name}\fP        .dd Filename of the original message folder (think mailbox)
+** .dt \fC%C\fP      .dd \fC%{number}\fP              .dd Current message number
+** .dt \fC%c\fP      .dd \fC%{body-characters}\fP     .dd Number of characters (bytes) in the body of the message (see $formatstrings-size)
+** .dt \fC%cr\fP     .dd \fC%{size}\fP                .dd Number of characters (bytes) in the raw message, including the header (see $formatstrings-size)
+** .dt \fC%D\fP      .dd \fC%{date-format-local}\fP   .dd Date and time of message using $$date_format and local timezone.
+**                                                        It is recommended to use \fC%[fmt]\fP instead, where \fCfmt\fP is the value of $$date_format.
+** .dt \fC%d\fP      .dd \fC%{date-format}\fP         .dd Date and time of message using $$date_format and sender's timezone.
+**                                                        It is recommended to use \fC%{fmt}\fP instead, where \fCfmt\fP is the value of $$date_format.
+** .dt \fC%E\fP      .dd \fC%{thread-count}\fP        .dd Number of messages in current thread
+** .dt \fC%e\fP      .dd \fC%{thread-number}\fP       .dd Current message number in thread
+** .dt \fC%F\fP      .dd \fC%{sender}\fP              .dd Author name, or recipient name if the message is from you
+** .dt \fC%Fp\fP     .dd \fC%{sender-plain}\fP        .dd Like \fC%F\fP, but plain. No contextual formatting is applied to recipient name
+** .dt \fC%f\fP      .dd \fC%{from-full}\fP           .dd Sender (address + real name), either From: or Return-Path:
+** .dt \fC%Gx\fP     .dd \fC%{tags-transformed}\fP    .dd Individual message tag (e.g. Notmuch tags/imap flags)
+** .dt \fC%g\fP      .dd \fC%{tags}\fP                .dd Message tags (e.g. Notmuch tags/imap flags)
+** .dt \fC%H\fP      .dd \fC%{spam}\fP                .dd Spam attribute(s) of this message
+** .dt \fC%I\fP      .dd \fC%{initials}\fP            .dd Initials of author
+** .dt \fC%i\fP      .dd \fC%{message-id}\fP          .dd Message-id of the current message
+** .dt \fC%J\fP      .dd \fC%{thread-tags}\fP         .dd Message tags (if present, tree unfolded, and != parent's tags)
+** .dt \fC%K\fP      .dd \fC%{list-empty}\fP          .dd List to which the email was sent (if any; otherwise: empty)
+** .dt \fC%L\fP      .dd \fC%{from-list}\fP           .dd If an address in the \fCTo:\fP or \fCCc:\fP header field matches an address
+**                                                        defined by the user's $$subscribe command, this displays.
+** .dt \fC%l\fP      .dd \fC%{lines}\fP               .dd Number of lines in the unprocessed message (may not work with maildir, mh, and IMAP folders)
+** .dt \fC%M\fP      .dd \fC%{thread-hidden-count}\fP .dd Number of hidden messages if the thread is collapsed
+** .dt \fC%m\fP      .dd \fC%{message-count}\fP       .dd Total number of message in the mailbox
+** .dt \fC%N\fP      .dd \fC%{score}\fP               .dd Message score
+** .dt \fC%n\fP      .dd \fC%{name}\fP                .dd Author's real name (or address if missing)
+** .dt \fC%O\fP      .dd \fC%{save-folder}\fP         .dd Original save folder where NeoMutt would formerly have Stashed the message:
+**                                                        list name or recipient name if not sent to a list
+** .dt \fC%P\fP      .dd \fC%{percentage}\fP          .dd Progress indicator for the built-in pager (how much of the file has been displayed)
+** .dt \fC%q\fP      .dd \fC%{newsgroup}\fP           .dd Newsgroup name (if compiled with NNTP support)
+** .dt \fC%R\fP      .dd \fC%{cc-all}\fP              .dd Comma separated list of \fCCc:\fP recipients
+** .dt \fC%r\fP      .dd \fC%{to-all}\fP              .dd Comma separated list of \fCTo:\fP recipients
+** .dt \fC%S\fP      .dd \fC%{flag-chars}\fP          .dd Single character status of the message (\fCN\fP/\fCO\fP/\fCD\fP/\fCd\fP/\fC!\fP/\fCr\fP/\fC*\fP)
+** .dt \fC%s\fP      .dd \fC%{subject}\fP             .dd Subject of the message
+** .dt \fC%T\fP      .dd \fC%{to-chars}\fP            .dd Appropriate character from the $$to_chars string
+** .dt \fC%t\fP      .dd \fC%{to}\fP                  .dd \fC%{To:}\fP field (recipients)
+** .dt \fC%u\fP      .dd \fC%{username}\fP            .dd User (login) name of the author
+** .dt \fC%v\fP      .dd \fC%{first-name}\fP          .dd First name of the author, or the recipient if the message is from you
+** .dt \fC%W\fP      .dd \fC%{organization}\fP        .dd Name of organization of author (\fCOrganization:\fP field)
+** .dt \fC%X\fP      .dd \fC%{attachment-count}\fP    .dd Number of MIME attachments (see the $$attachments section for possible speed effects)
+** .dt \fC%x\fP      .dd \fC%{x-comment-to}\fP        .dd \fC%{X-Comment-To:}\fP field (if present)
+** .dt \fC%Y\fP      .dd \fC%{thread-x-label}\fP      .dd \fC%{X-Label:}\fP field, if present, and
+**                                                        1. not at part of a thread tree
+**                                                        2. at the top of a thread, or
+**                                                        3. \fCX-Label:\fP is different from Preceding message's \fCX-Label:\fP
+** .dt \fC%y\fP      .dd \fC%{x-label}\fP             .dd \fC%{X-Label:}\fP field, if present
+** .dt \fC%Z\fP      .dd \fC%{combined-flags}\fP      .dd A three character set of message status flags.
+**                                                        The first character is new/read/replied flags (\fCn\fP/\fCo\fP/\fCr\fP/\fCO\fP/\fCN\fP).
+**                                                        The second is deleted or encryption flags (\fCD\fP/\fCd\fP/\fCS\fP/\fCP\fP/\fCs\fP/\fCK\fP).
+**                                                        The third is either tagged/flagged (\fC*\fP/\fC!\fP), or one of the characters.
+**                                                        Listed in $$to_chars.
+** .dt \fC%zc\fP     .dd \fC%{crypto-flags}\fP        .dd Message crypto flags
+** .dt \fC%zs\fP     .dd \fC%{status-flags}\fP        .dd Message status flags
+** .dt \fC%zt\fP     .dd \fC%{message-flags}\fP       .dd Message tag flags
+** .dt \fC%@name@\fP .dd                              .dd Insert and evaluate format-string from the matching \fC$index-format-hook\fP command
+** .dt \fC%{fmt}\fP  .dd                              .dd Date and time of the message is converted to sender's time zone, and \fCfmt\fP is expanded by the library function \fCstrftime(3)\fP;
+**                                                        if the first character inside the braces is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
+**                                                        Note that the sender's time zone might only be available as a numerical offset, so \fC%Z\fP behaves like \fC%z\fP.
+**                                                        \fC%{fmt}\fP behaves like \fC%[fmt]\fP on systems where \fCstruct tm\fP doesn't have a \fCtm_gmtoff\fP member.
+** .dt \fC%[fmt]\fP  .dd                              .dd Date and time of the message is converted to the local time zone, and \fCfmt\fP is expanded by the library function \fCstrftime(3)\fP;
+**                                                        if the first character inside the brackets is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
+** .dt \fC%(fmt)\fP  .dd                              .dd Local date and time when the message was received, and \fCfmt\fP is expanded by the library function \fCstrftime(3)\fP;
+**                                                        if the first character inside the parentheses is a bang (\fC!\fP), the date is formatted ignoring any locale settings.
+** .dt \fC%*X\fP     .dd \fC%{padding-soft}\fP        .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP     .dd \fC%{padding-hard}\fP        .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP     .dd \fC%{padding-eol}\fP         .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** Date format expressions can be constructed based on relative dates. Using
@@ -2633,18 +2632,19 @@
 ** .pp
 ** The following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
-** .dt %c .dd Step counter looping from ``A'' to ``Z''
-** .dt %d .dd Current day of the month (GMT)
-** .dt %f .dd $$hostname
-** .dt %H .dd Current hour using a 24-hour clock (GMT)
-** .dt %m .dd Current month number (GMT)
-** .dt %M .dd Current minute of the hour (GMT)
-** .dt %p .dd Pid of the running mutt process
-** .dt %r .dd 3 bytes of pseudo-random data encoded in Base64Url
-** .dt %S .dd Current second of the minute (GMT)
-** .dt %x .dd 1 byte of pseudo-random data hex encoded (example: '1b')
-** .dt %Y .dd Current year using 4 digits (GMT)
-** .dt %z .dd 4 byte timestamp + 8 bytes of pseudo-random data encoded in Base64Url
+** .dt \fBShort\fP .dd \fBLong Name\fP    .dd \fBDescription\fP
+** .dt %c          .dd \fC%{counter}\fP   .dd Step counter looping from \fCA\fP to \fCZ\fP
+** .dt %d          .dd \fC%{day}\fP       .dd Current day of the month (GMT)
+** .dt %f          .dd \fC%{hostname}\fP  .dd $$hostname
+** .dt %H          .dd \fC%{hour}\fP      .dd Current hour using a 24-hour clock (GMT)
+** .dt %m          .dd \fC%{minute}\fP    .dd Current month number (GMT)
+** .dt %M          .dd \fC%{month}\fP     .dd Current minute of the hour (GMT)
+** .dt %p          .dd \fC%{pid}\fP       .dd Pid of the running mutt process
+** .dt %r          .dd \fC%{random_3}\fP  .dd 3 bytes of pseudo-random data encoded in Base64
+** .dt %S          .dd \fC%{second}\fP    .dd Current second of the minute (GMT)
+** .dt %x          .dd \fC%{random_1}\fP  .dd 1 byte of pseudo-random data hex encoded (example: \fC1b\fP)
+** .dt %Y          .dd \fC%{year}\fP      .dd Current year using 4 digits (GMT)
+** .dt %z          .dd \fC%{random_12}\fP .dd 4 byte timestamp + 8 bytes of pseudo-random data encoded in Base64
 ** .de
 ** .pp
 ** See also: Base64Url: https://datatracker.ietf.org/doc/html/rfc4648#section-5
@@ -2818,13 +2818,13 @@
 ** indexes of read articles.  The following printf-style sequence
 ** is understood:
 ** .dl
-** .dt \fBExpando\fP .dd \fBDescription\fP .dd \fBExample\fP
-** .dt %a .dd Account url       .dd \fCnews:news.gmane.org\fP
-** .dt %p .dd Port              .dd \fC119\fP
-** .dt %P .dd Port if specified .dd \fC10119\fP
-** .dt %s .dd News server name  .dd \fCnews.gmane.org\fP
-** .dt %S .dd Url schema        .dd \fCnews\fP
-** .dt %u .dd Username          .dd \fCusername\fP
+** .dt \fBShort\fP .dd \fBLong Name\fP   .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{account}\fP  .dd Account url
+** .dt \fC%P\fP    .dd \fC%{port-if}\fP  .dd Port if specified
+** .dt \fC%p\fP    .dd \fC%{port}\fP     .dd Port
+** .dt \fC%S\fP    .dd \fC%{schema}\fP   .dd Url schema
+** .dt \fC%s\fP    .dd \fC%{server}\fP   .dd News server name
+** .dt \fC%u\fP    .dd \fC%{username}\fP .dd Username
 ** .de
 */
 
@@ -3114,12 +3114,13 @@
 ** This variable describes the format of the "pattern completion" menu. The
 ** following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
-** .dt %d  .dd pattern description
-** .dt %e  .dd pattern expression
-** .dt %n  .dd index number
-** .dt %>X .dd right justify the rest of the string and pad with character "X"
-** .dt %|X .dd pad to the end of the line with character "X"
-** .dt %*X .dd soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
+** .dt \fC%d\fP    .dd \fC%{description}\fP  .dd Pattern description
+** .dt \fC%e\fP    .dd \fC%{expression}\fP   .dd Pattern expression
+** .dt \fC%n\fP    .dd \fC%{number}\fP       .dd Index number
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 */
@@ -3203,14 +3204,14 @@
 ** .pp
 ** The PGP command formats have their own set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt %a .dd The value of $$pgp_sign_as if set, otherwise the value
-**            of $$pgp_default_key.
-** .dt %f .dd Expands to the name of a file containing a message.
-** .dt %p .dd Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
-**            string otherwise. Note: This may be used with a %<...> construct.
-** .dt %r .dd One or more key IDs (or fingerprints if available).
-** .dt %s .dd Expands to the name of a file containing the signature part
-**            of a \fCmultipart/signed\fP attachment when verifying it.
+** .dt \fBShort\fP .dd \fBLong Name\fP         .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{sign-as}\fP        .dd Value of $$pgp_sign_as if set, otherwise the value of $$pgp_default_key
+** .dt \fC%f\fP    .dd \fC%{file-message}\fP   .dd Expands to the name of a file containing a message
+** .dt \fC%p\fP    .dd \fC%{need-pass}\fP      .dd Expands to \fCPGPPASSFD=0\fP when a pass phrase is needed, to an empty string otherwise.
+**                                                 Note: This may be used with a \fC%<...>\fP construct.
+** .dt \fC%r\fP    .dd \fC%{key-ids}\fP        .dd One or more key IDs (or fingerprints if available)
+** .dt \fC%s\fP    .dd \fC%{file-signature}\fP .dd Expands to the name of a file containing the signature part
+**                                                 of a \fCmultipart/signed\fP attachment when verifying it
 ** .de
 ** .pp
 ** (PGP only)
@@ -3294,20 +3295,27 @@
 ** to S/MIME key selection menu also. This string is similar to $$index_format,
 ** but has its own set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt %a     .dd Algorithm
-** .dt %c     .dd Capabilities
-** .dt %f     .dd Flags
-** .dt %i     .dd Key fingerprint (or long key id if non-existent)
-** .dt %k     .dd Key id
-** .dt %l     .dd Key length
-** .dt %n     .dd Number
-** .dt %p     .dd Protocol
-** .dt %t     .dd Trust/validity of the key-uid association
-** .dt %u     .dd User id
-** .dt %[<s>] .dd Date of the key where <s> is an \fCstrftime(3)\fP expression
-** .dt %>X    .dd Right justify the rest of the string and pad with character "X"
-** .dt %|X    .dd Pad to the end of the line with character "X"
-** .dt %*X    .dd Soft-fill with character "X" as pad
+** .dt \fBShort\fP    .dd \fBLong Name\fP            .dd \fBDescription\fP
+** .dt \fC%a\fP       .dd \fC%{key-algorithm}\fP     .dd Algorithm
+** .dt \fC%c\fP       .dd \fC%{key-capabilities}\fP  .dd Capabilities
+** .dt \fC%f\fP       .dd \fC%{key-flags}\fP         .dd Flags
+** .dt \fC%i\fP       .dd \fC%{key-fingerprint}\fP   .dd Key fingerprint (or long key id if non-existent)
+** .dt \fC%k\fP       .dd \fC%{key-id}\fP            .dd Key id
+** .dt \fC%l\fP       .dd \fC%{key-length}\fP        .dd Key length
+** .dt \fC%n\fP       .dd \fC%{number}\fP            .dd Number
+** .dt \fC%p\fP       .dd \fC%{protocol}\fP          .dd Protocol
+** .dt \fC%t\fP       .dd \fC%{trust}\fP             .dd Trust/validity of the key-uid association
+** .dt \fC%u\fP       .dd \fC%{user-id}\fP           .dd User id
+** .dt \fC%A\fP       .dd \fC%{pkey-algorithm}\fP    .dd Primary Key Algorithm
+** .dt \fC%C\fP       .dd \fC%{pkey-capabilities}\fP .dd Primary Key Capabilities
+** .dt \fC%F\fP       .dd \fC%{pkey-flags}\fP        .dd Primary Key Flags
+** .dt \fC%I\fP       .dd \fC%{pkey-fingerprint}\fP  .dd Primary Key fingerprint (or long key id if non-existent)
+** .dt \fC%K\fP       .dd \fC%{pkey-id}\fP           .dd Primary Key id
+** .dt \fC%L\fP       .dd \fC%{pkey-length}\fP       .dd Primary Key length
+** .dt \fC%[<s>]\fP   .dd \fC%{date}\fP              .dd Date of the key where \fC<s>\fP is an \fCstrftime(3)\fP expression
+** .dt \fC%*X\fP      .dd \fC%{padding-soft}\fP      .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP      .dd \fC%{padding-hard}\fP      .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP      .dd \fC%{padding-eol}\fP       .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** See the section "Sending Cryptographically Signed/Encrypted Messages" of the
@@ -3865,16 +3873,21 @@
 ** This variable describes the format of the "query" menu. The
 ** following \fCprintf(3)\fP-style sequences are understood:
 ** .dl
-** .dt %A  .dd Full Address (Name and Email)
-** .dt %C  .dd Comment
-** .dt %E  .dd Email Address
-** .dt %i  .dd Index number
-** .dt %N  .dd Real name
-** .dt %t  .dd Alias is tagged (selected)
-** .dt %Y  .dd User-defined tags (labels)
-** .dt %>X .dd Right justify the rest of the string and pad with "X"
-** .dt %|X .dd Pad to the end of the line with "X"
-** .dt %*X .dd Soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP       .dd \fBDescription\fP
+** .dt \fC%A\fP    .dd \fC%{address}\fP      .dd Full Address (Name and Email)
+** .dt \fC%C\fP    .dd \fC%{comment}\fP      .dd Comment
+** .dt \fC%E\fP    .dd \fC%{email}\fP        .dd Email Address
+** .dt \fC%i\fP    .dd \fC%{number}\fP       .dd Index number
+** .dt \fC%N\fP    .dd \fC%{name}\fP         .dd Real name
+** .dt \fC%t\fP    .dd \fC%{tagged}\fP       .dd Alias is tagged (selected)
+** .dt \fC%Y\fP    .dd \fC%{tags}\fP         .dd User-defined tags (labels)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP  .dd Pad to the end of the line with character \fCX\fP
+** .dt \fC%a\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%E\fP instead
+** .dt \fC%c\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%i\fP instead
+** .dt \fC%e\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%C\fP instead
+** .dt \fC%n\fP    .dd                       .dd \fBDeprecated:\fP Use \fC%N\fP instead
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
@@ -4434,32 +4447,30 @@
 ** similar to $$index_format, but has its own set of \fCprintf(3)\fP-like
 ** sequences:
 ** .dl
-** .dt %a .dd     .dd Alert: 1 if user is notified of new mail
-** .dt %B .dd     .dd Name of the mailbox
-** .dt %d .dd * @ .dd Number of deleted messages in the mailbox
-** .dt %D .dd     .dd Descriptive name of the mailbox
-** .dt %F .dd *   .dd Number of flagged messages in the mailbox
-** .dt %L .dd * @ .dd Number of messages after limiting
-** .dt %n .dd     .dd "N" if mailbox has new mail, " " (space) otherwise
-** .dt %N .dd *   .dd Number of unread messages in the mailbox (seen or unseen)
-** .dt %o .dd *   .dd Number of old messages in the mailbox (unread, seen)
-** .dt %p .dd     .dd Poll: 1 if Mailbox is checked for new mail
-** .dt %r .dd *   .dd Number of read messages in the mailbox (read, seen)
-** .dt %S .dd *   .dd Size of mailbox (total number of messages)
-** .dt %t .dd * @ .dd Number of tagged messages in the mailbox
-** .dt %Z .dd *   .dd Number of new messages in the mailbox (unread, unseen)
-** .dt %! .dd     .dd "!" : one flagged message;
-**                    "!!" : two flagged messages;
-**                    "n!" : n flagged messages (for n > 2).
-**                    Otherwise prints nothing.
-** .dt %>X .dd .dd Right justify the rest of the string and pad with "X"
-** .dt %|X .dd .dd Pad to the end of the line with "X"
-** .dt %*X .dd .dd Soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP        .dd \fBCur\fP .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{notify}\fP        .dd           .dd Alert: 1 if user is notified of new mail
+** .dt \fC%B\fP    .dd \fC%{name}\fP          .dd           .dd Name of the mailbox
+** .dt \fC%D\fP    .dd \fC%{description}\fP   .dd           .dd Descriptive name of the mailbox
+** .dt \fC%d\fP    .dd \fC%{deleted-count}\fP .dd Cur       .dd Number of deleted messages in the mailbox
+** .dt \fC%F\fP    .dd \fC%{flagged-count}\fP .dd           .dd Number of flagged messages in the mailbox
+** .dt \fC%L\fP    .dd \fC%{limited-count}\fP .dd Cur       .dd Number of messages after limiting
+** .dt \fC%N\fP    .dd \fC%{new-mail}\fP      .dd           .dd Number of unread messages in the mailbox (seen or unseen)
+** .dt \fC%n\fP    .dd \fC%{unread-count}\fP  .dd           .dd \fCN\fP if mailbox has new mail, \fC \fP (space) otherwise
+** .dt \fC%o\fP    .dd \fC%{old-count}\fP     .dd           .dd Number of old messages in the mailbox (unread, seen)
+** .dt \fC%p\fP    .dd \fC%{poll}\fP          .dd           .dd Poll: 1 if Mailbox is checked for new mail
+** .dt \fC%r\fP    .dd \fC%{read-count}\fP    .dd           .dd Number of read messages in the mailbox (read, seen)
+** .dt \fC%S\fP    .dd \fC%{message-count}\fP .dd           .dd Size of mailbox (total number of messages)
+** .dt \fC%t\fP    .dd \fC%{tagged-count}\fP  .dd Cur       .dd Number of tagged messages in the mailbox
+** .dt \fC%Z\fP    .dd \fC%{unseen-count}\fP  .dd           .dd Number of new messages in the mailbox (unread, unseen)
+** .dt \fC%!\fP    .dd \fC%{flagged}\fP       .dd           .dd \fC!\fP : one flagged message
+**                                                              \fC!!\fP : two flagged messages
+**                                                              \fC%{n!}\fP : n flagged messages (for n > 2)
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP  .dd           .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP  .dd           .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP   .dd           .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
-** * = Can be optionally printed if nonzero
-** .pp
-** @ = Only applicable to the current folder
+** \fBCur\fP = Only applicable to the current folder
 ** .pp
 ** In order to use %S, %N, %F, and %!, $$mail_check_stats must
 ** be \fIset\fP.  When thus set, a suggested value for this option is
@@ -4707,17 +4718,17 @@
 ** The OpenSSL command formats have their own set of \fCprintf(3)\fP-like sequences
 ** similar to PGP's:
 ** .dl
-** .dt %a .dd The algorithm used for encryption.
-** .dt %c .dd One or more certificate IDs.
-** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
-**            points to a directory or file, this expands to
-**            "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location".
-** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.
-** .dt %f .dd Expands to the name of a file containing a message.
-** .dt %i .dd Intermediate certificates
-** .dt %k .dd The key-pair specified with $$smime_default_key
-** .dt %s .dd Expands to the name of a file containing the signature part
-**            of a \fCmultipart/signed\fP attachment when verifying it.
+** .dt \fBShort\fP .dd \fBLong Name\fP           .dd \fBDescription\fP
+** .dt \fC%a\fP    .dd \fC%{algorithm}\fP        .dd Algorithm used for encryption
+** .dt \fC%C\fP    .dd \fC%{certificate-path}\fP .dd CA location:  Depending on whether $$smime_ca_location points to a directory or file,
+**                                                   this expands to "-CApath $$smime_ca_location" or "-CAfile $$smime_ca_location"
+** .dt \fC%c\fP    .dd \fC%{certificate-ids}\fP  .dd One or more certificate IDs
+** .dt \fC%d\fP    .dd \fC%{digest-algorithm}\fP .dd Message digest algorithm specified with $$smime_sign_digest_alg
+** .dt \fC%f\fP    .dd \fC%{message-file}\fP     .dd Expands to the name of a file containing a message
+** .dt \fC%i\fP    .dd \fC%{intermediate-ids}\fP .dd Intermediate certificates
+** .dt \fC%k\fP    .dd \fC%{key}\fP              .dd Key-pair specified with $$smime_default_key
+** .dt \fC%s\fP    .dd \fC%{signature-file}\fP   .dd Expands to the name of a file containing the signature part
+**                                                   of a \fCmultipart/signed\fP attachment when verifying it
 ** .de
 ** .pp
 ** For examples on how to configure these formats, see the \fCsmime.rc\fP in
@@ -5266,34 +5277,33 @@
 ** menu.  This string is similar to $$index_format, but has its own
 ** set of \fCprintf(3)\fP-like sequences:
 ** .dl
-** .dt %b  .dd * .dd Number of mailboxes with new mail
-** .dt %d  .dd * .dd Number of deleted messages
-** .dt %D  .dd   .dd Description of the mailbox
-** .dt %f  .dd   .dd The full pathname of the current mailbox
-** .dt %F  .dd * .dd Number of flagged messages
-** .dt %h  .dd   .dd Local hostname
-** .dt %l  .dd * .dd Size (in bytes) of the current mailbox (see $formatstrings-size)
-** .dt %L  .dd * .dd Size (in bytes) of the messages shown
-**                   (i.e., which match the current limit) (see $formatstrings-size)
-** .dt %m  .dd * .dd The number of messages in the mailbox
-** .dt %M  .dd * .dd The number of messages shown (i.e., which match the current limit)
-** .dt %n  .dd * .dd Number of new messages in the mailbox (unread, unseen)
-** .dt %o  .dd * .dd Number of old messages in the mailbox (unread, seen)
-** .dt %p  .dd * .dd Number of postponed messages
-** .dt %P  .dd   .dd Percentage of the way through the index
-** .dt %r  .dd   .dd Modified/read-only/won't-write/attach-message indicator,
-**                   According to $$status_chars
-** .dt %R  .dd * .dd Number of read messages in the mailbox (read, seen)
-** .dt %s  .dd   .dd Current sorting mode ($$sort)
-** .dt %S  .dd   .dd Current aux sorting method ($$sort_aux)
-** .dt %t  .dd * .dd Number of tagged messages in the mailbox
-** .dt %T  .dd * .dd Current threading mode ($$use_threads)
-** .dt %u  .dd * .dd Number of unread messages in the mailbox (seen or unseen)
-** .dt %v  .dd   .dd NeoMutt version string
-** .dt %V  .dd * .dd Currently active limit pattern, if any
-** .dt %>X .dd   .dd Right justify the rest of the string and pad with "X"
-** .dt %|X .dd   .dd Pad to the end of the line with "X"
-** .dt %*X .dd   .dd Soft-fill with character "X" as pad
+** .dt \fBShort\fP .dd \fBLong Name\fP           .dd \fBDescription\fP
+** .dt \fC%b\fP    .dd \fC%{unread-mailboxes}\fP .dd Number of mailboxes with new mail
+** .dt \fC%D\fP    .dd \fC%{description}\fP      .dd Description of the mailbox
+** .dt \fC%d\fP    .dd \fC%{deleted-count}\fP    .dd Number of deleted messages
+** .dt \fC%f\fP    .dd \fC%{flagged-count}\fP    .dd Full pathname of the current mailbox
+** .dt \fC%F\fP    .dd \fC%{mailbox-path}\fP     .dd Number of flagged messages
+** .dt \fC%h\fP    .dd \fC%{hostname}\fP         .dd Local hostname
+** .dt \fC%l\fP    .dd \fC%{limit-size}\fP       .dd Size (in bytes) of the current mailbox (see $formatstrings-size)
+** .dt \fC%L\fP    .dd \fC%{mailbox-size}\fP     .dd Size (in bytes) of the messages shown (i.e., which match the current limit) (see $formatstrings-size)
+** .dt \fC%m\fP    .dd \fC%{limit-count}\fP      .dd Number of messages in the mailbox
+** .dt \fC%M\fP    .dd \fC%{message-count}\fP    .dd Number of messages shown (i.e., which match the current limit)
+** .dt \fC%n\fP    .dd \fC%{new-count}\fP        .dd Number of new messages in the mailbox (unread, unseen)
+** .dt \fC%o\fP    .dd \fC%{old-count}\fP        .dd Number of old messages in the mailbox (unread, seen)
+** .dt \fC%P\fP    .dd \fC%{percentage}\fP       .dd Percentage of the way through the index
+** .dt \fC%p\fP    .dd \fC%{postponed-count}\fP  .dd Number of postponed messages
+** .dt \fC%r\fP    .dd \fC%{read-count}\fP       .dd Modified/read-only/won't-write/attach-message indicator, According to $$status_chars
+** .dt \fC%R\fP    .dd \fC%{readonly}\fP         .dd Number of read messages in the mailbox (read, seen)
+** .dt \fC%S\fP    .dd \fC%{sort-aux}\fP         .dd Current aux sorting method ($$sort_aux)
+** .dt \fC%s\fP    .dd \fC%{sort}\fP             .dd Current sorting mode ($$sort)
+** .dt \fC%T\fP    .dd \fC%{use-threads}\fP      .dd Current threading mode ($$use_threads)
+** .dt \fC%t\fP    .dd \fC%{tagged-count}\fP     .dd Number of tagged messages in the mailbox
+** .dt \fC%u\fP    .dd \fC%{unread-count}\fP     .dd Number of unread messages in the mailbox (seen or unseen)
+** .dt \fC%v\fP    .dd \fC%{limit-pattern}\fP    .dd NeoMutt version string
+** .dt \fC%V\fP    .dd \fC%{version}\fP          .dd Currently active limit pattern, if any
+** .dt \fC%*X\fP   .dd \fC%{padding-soft}\fP     .dd Soft-fill with character \fCX\fP as pad
+** .dt \fC%>X\fP   .dd \fC%{padding-hard}\fP     .dd Right justify the rest of the string and pad with character \fCX\fP
+** .dt \fC%|X\fP   .dd \fC%{padding-eol}\fP      .dd Pad to the end of the line with character \fCX\fP
 ** .de
 ** .pp
 ** For an explanation of "soft-fill", see the $$index_format documentation.
