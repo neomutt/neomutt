@@ -525,21 +525,24 @@ int imap_delete_mailbox(struct Mailbox *m, char *path)
  */
 static void imap_logout(struct ImapAccountData *adata)
 {
-  /* we set status here to let imap_handle_untagged know we _expect_ to
-   * receive a bye response (so it doesn't freak out and close the conn) */
-  if (adata->state == IMAP_DISCONNECTED)
+  if (adata->status != IMAP_FATAL)
   {
-    return;
-  }
+    /* we set status here to let imap_handle_untagged know we _expect_ to
+     * receive a bye response (so it doesn't freak out and close the conn) */
+    if (adata->state == IMAP_DISCONNECTED)
+    {
+      return;
+    }
 
-  adata->status = IMAP_BYE;
-  imap_cmd_start(adata, "LOGOUT");
-  const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
-  if ((c_imap_poll_timeout <= 0) ||
-      (mutt_socket_poll(adata->conn, c_imap_poll_timeout) != 0))
-  {
-    while (imap_cmd_step(adata) == IMAP_RES_CONTINUE)
-      ; // do nothing
+    adata->status = IMAP_BYE;
+    imap_cmd_start(adata, "LOGOUT");
+    const short c_imap_poll_timeout = cs_subset_number(NeoMutt->sub, "imap_poll_timeout");
+    if ((c_imap_poll_timeout <= 0) ||
+        (mutt_socket_poll(adata->conn, c_imap_poll_timeout) != 0))
+    {
+      while (imap_cmd_step(adata) == IMAP_RES_CONTINUE)
+        ; // do nothing
+    }
   }
   mutt_socket_close(adata->conn);
   adata->state = IMAP_DISCONNECTED;
