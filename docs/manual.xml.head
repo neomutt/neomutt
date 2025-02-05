@@ -19787,12 +19787,6 @@ neomutt -a image.jpg *.png -- address1 address2
               </entry>
             </row>
             <row>
-              <entry>-B</entry>
-              <entry>
-                Run in batch mode (do not start the ncurses UI)
-              </entry>
-            </row>
-            <row>
               <entry>-b <literal>address</literal></entry>
               <entry>
                 Specify a blind carbon copy (Bcc) recipient

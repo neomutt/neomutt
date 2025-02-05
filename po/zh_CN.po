@@ -5456,10 +5456,6 @@ msgstr ""
 "  -a <文件>     给信件添加一个或多个附件（必须是最后一个参数）\n"
 "                在 '--' 参数后添加地址"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            以批处理模式运行（不启动 ncurses 用户界面）"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <地址>     指定一个密送(BCC)收件人"

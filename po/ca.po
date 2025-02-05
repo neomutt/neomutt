@@ -5724,10 +5724,6 @@ msgid ""
 "                Add any addresses after the '--' argument"
 msgstr ""
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr ""
