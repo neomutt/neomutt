@@ -5484,10 +5484,6 @@ msgstr ""
 "\n"
 "                opcją). Dołącz adresy po argumencie '--'"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Wykonaj w trybie wsadowym (nie uruchamiaj UI)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  Wyszczególnij odbiorcę blind carbon copy (Bcc)"

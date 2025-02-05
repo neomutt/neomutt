@@ -5448,10 +5448,6 @@ msgstr ""
 "  -a <file>     Attach one or more files to a message (must be the last option)\n"
 "                Add any addresses after the '--' argument"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Run in batch mode (do not start the ncurses UI)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  Specify a blind carbon copy (Bcc) recipient"

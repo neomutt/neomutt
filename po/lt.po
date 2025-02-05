@@ -5471,10 +5471,6 @@ msgstr ""
 "  -a <priedas>  Prikabinti vieną ar daugiau bylų prie laiško (turi būti\n"
 "                paskutinis parametras).  Gavėjus nurodykite po '--'"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Veikti automatiniame režime (be ncurses sąsajos)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresas>  Nurodyti slaptos kopijos (Bcc) gavėją"

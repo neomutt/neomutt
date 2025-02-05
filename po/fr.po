@@ -5686,12 +5686,6 @@ msgstr ""
 "                dernière option). Ajoutez l'adresses ou les adresses après\n"
 "                l'argument « -- »"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr ""
-"  -B            Partir en mode traitement par lots (ne pas démarrer\n"
-"                l'interface utilisateur ncurses)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adress>   Indiquer un destinataire en copie conforme invisible (CCI)"

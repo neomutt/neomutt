@@ -5475,10 +5475,6 @@ msgstr ""
 "  -a <súbor>    Pripojí k správe súbor(y), musí to byť posledný prepínač\n"
 "                Další adresy lze přidat až za přepínač „--“"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Dávkový režim (nespustí sa užívateľské rozhranie)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresa>   Určuje adresu pre utajenú kópiu (Bcc)"

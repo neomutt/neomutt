@@ -5489,10 +5489,6 @@ msgstr ""
 "  -a <файл>     Прикріпити один або більше файлів до листа (має бути останнім\n"
 "                параметром). Додати будь-яку адресу після арґумента '--'"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Запустити в пакетному режимі (без запуску КІ ncurses)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <адреса>  Визначає отримувача прихованої перебивної копії (Bcc)"

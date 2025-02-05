@@ -5502,10 +5502,6 @@ msgstr ""
 "  -a <file>     Liitä yksi tai useampia tiedostoja (pitää olla viimeinen valitsin)\n"
 "                osoitteita voi lisätä merkinnän -- jälkeen"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Eräajotila (ei käynnistä ncurses-käyttöliittymää)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  Lisää piilokopion (Bcc) osoite"

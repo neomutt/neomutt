@@ -5464,10 +5464,6 @@ msgstr ""
 "  -a <arquivo> [...] --   anexa arquivo à mensagem (deve ser o último argumento)\n"
 "                Adicione endereços após a opção '--'"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Executa no modo 'batch' (não inicia interface ncurses)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <endereço> Especifica endereço destinatário em cópia oculta (BCC)"

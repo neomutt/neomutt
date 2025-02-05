@@ -770,7 +770,6 @@ static bool usage(void)
          "          [-s <subject>] [-a <file> [...] --] <address> [...] < message"));
   puts(_("  neomutt [-nRy] [-e <command>] [-F <config>] [-f <mailbox>] [-m <type>]"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -A <alias>"));
-  puts(_("  neomutt [-n] [-e <command>] [-F <config>] -B"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -D [-D] [-O] [-S]"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -d <level> -l <file>"));
   puts(_("  neomutt [-n] [-e <command>] [-F <config>] -G"));
@@ -788,7 +787,6 @@ static bool usage(void)
   puts(_("  -A <alias>    Print an expanded version of the given alias to stdout and exit"));
   puts(_("  -a <file>     Attach one or more files to a message (must be the last option)\n"
          "                Add any addresses after the '--' argument"));
-  puts(_("  -B            Run in batch mode (do not start the ncurses UI)"));
   puts(_("  -b <address>  Specify a blind carbon copy (Bcc) recipient"));
   puts(_("  -c <address>  Specify a carbon copy (Cc) recipient"));
   puts(_("  -C            Enable Command-line Crypto (signing/encryption)"));
@@ -1047,7 +1045,6 @@ int main(int argc, char *argv[], char *envp[])
   bool dump_changed = false;
   bool one_liner = false;
   bool hide_sensitive = false;
-  bool batch_mode = false;
   bool edit_infile = false;
   int double_dash = argc, nargc = 1;
   int rc = 1;
@@ -1102,7 +1099,7 @@ int main(int argc, char *argv[], char *envp[])
         argv[nargc++] = argv[optind];
     }
 
-    i = getopt(argc, argv, "+A:a:Bb:F:f:Cc:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvyzZ");
+    i = getopt(argc, argv, "+A:a:b:F:f:Cc:Dd:l:Ee:g:GH:i:hm:nOpQ:RSs:TvyzZ");
     if (i != EOF)
     {
       switch (i)
@@ -1112,9 +1109,6 @@ int main(int argc, char *argv[], char *envp[])
           break;
         case 'a':
           mutt_list_insert_tail(&attach, mutt_str_dup(optarg));
-          break;
-        case 'B':
-          batch_mode = true;
           break;
         case 'b':
           mutt_list_insert_tail(&bcc_list, mutt_str_dup(optarg));
@@ -1291,7 +1285,7 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Check for a batch send. */
   if (!isatty(STDIN_FILENO) || !STAILQ_EMPTY(&queries) ||
-      !STAILQ_EMPTY(&alias_queries) || dump_variables || batch_mode)
+      !STAILQ_EMPTY(&alias_queries) || dump_variables)
   {
     OptNoCurses = true;
     sendflags |= SEND_BATCH;
@@ -1488,10 +1482,6 @@ int main(int argc, char *argv[], char *envp[])
     buf_pool_release(&fpath);
   }
 
-  if (batch_mode)
-  {
-    goto main_ok; // TEST22: neomutt -B
-  }
   StartupComplete = true;
 
   notify_observer_add(NeoMutt->sub->notify, NT_CONFIG, main_hist_observer, NULL);

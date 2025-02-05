@@ -5456,10 +5456,6 @@ msgstr ""
 "  -a <file>     Hänge eine/mehrere Dateien der Nachricht an (Option muss zuletzt\n"
 "                notiert und mittels '--' von Empfängeradressen separiert werden)"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Benutze den Batch-Modus (startet ohne ncurses Oberfläche)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <address>  Verwende Adresse für unsichtbare Kopie (Bcc:) an Empfänger"

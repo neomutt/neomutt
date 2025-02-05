@@ -5462,10 +5462,6 @@ msgstr ""
 "  -a <file>     Legg til én eller flere filer i en melding (må være siste valg)\n"
 "                Legg til adresser etter '--' -argumentet"
 
-#: main.c:796
-msgid "  -B            Run in batch mode (do not start the ncurses UI)"
-msgstr "  -B            Kjør i knippe-modus (ikke start ncurses-grensesnittet)"
-
 #: main.c:797
 msgid "  -b <address>  Specify a blind carbon copy (Bcc) recipient"
 msgstr "  -b <adresse>  Angi en blindkopi (Bcc)-mottager"
