@@ -7,8 +7,11 @@
 #include "config/lib.h"
 #include "email/lib.h"
 #include "core/lib.h"
+#include "mutt.h"
 #include "globals.h"
 #include "protos.h"
+
+bool StartupComplete = true;
 
 /**
  * log_disp_null - Discard log lines - Implements ::log_dispatcher_t - @ingroup logging_api
