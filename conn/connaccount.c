@@ -64,11 +64,11 @@ int mutt_account_getuser(struct ConnAccount *cac)
   else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NO_FLAGS)
   {
     /* The external command might interact with the screen */
-    if (!OptNoCurses)
+    if (OptGui)
       mutt_need_hard_redraw();
     return 0;
   }
-  else if (OptNoCurses)
+  else if (!OptGui)
   {
     return -1;
   }
@@ -143,11 +143,11 @@ int mutt_account_getpass(struct ConnAccount *cac)
   else if (mutt_account_call_external_cmd(cac) != MUTT_ACCT_NO_FLAGS)
   {
     /* The external command might interact with the screen */
-    if (!OptNoCurses)
+    if (OptGui)
       mutt_need_hard_redraw();
     return 0;
   }
-  else if (OptNoCurses)
+  else if (!OptGui)
   {
     return -1;
   }
@@ -227,7 +227,7 @@ char *mutt_account_getoauthbearer(struct ConnAccount *cac, bool xoauth2)
   filter_wait(pid);
 
   /* The refresh cmd in some cases will invoke gpg to decrypt a token */
-  if (!OptNoCurses)
+  if (OptGui)
     mutt_need_hard_redraw();
 
   if (!token || (*token == '\0'))
