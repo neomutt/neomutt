@@ -714,7 +714,7 @@ int mutt_sasl_interact(sasl_interact_t *interaction)
     snprintf(prompt, sizeof(prompt), "%s: ", interaction->prompt);
     buf_reset(resp);
 
-    if (OptNoCurses ||
+    if (!OptGui ||
         (mw_get_field(prompt, resp, MUTT_COMP_NO_FLAGS, HC_OTHER, NULL, NULL) != 0))
     {
       rc = SASL_FAIL;

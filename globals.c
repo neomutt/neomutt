@@ -57,13 +57,13 @@ bool OptAutocryptGpgme;     ///< (pseudo) use Autocrypt context inside ncrypt/cr
 #endif
 bool OptDontHandlePgpKeys;  ///< (pseudo) used to extract PGP keys
 bool OptForceRefresh;       ///< (pseudo) refresh even during macros
+bool OptGui;                ///< (pseudo) when the gui (and curses) are started
 bool OptKeepQuiet;          ///< (pseudo) shut up the message and refresh functions while we are executing an external program
 bool OptMsgErr;             ///< (pseudo) used by mutt_error/mutt_message
 bool OptNeedRescore;        ///< (pseudo) set when the 'score' command is used
 bool OptNeedResort;         ///< (pseudo) used to force a re-sort
 bool OptNews;               ///< (pseudo) used to change reader mode
 bool OptNewsSend;           ///< (pseudo) used to change behavior when posting
-bool OptNoCurses;           ///< (pseudo) when sending in batch mode
 bool OptPgpCheckTrust;      ///< (pseudo) used by dlg_pgp()
 bool OptResortInit;         ///< (pseudo) used to force the next resort to be from scratch
 bool OptSortSubthreads;     ///< (pseudo) used when $sort_aux changes

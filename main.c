@@ -644,7 +644,7 @@ static int mutt_init(struct ConfigSet *cs, const char *dlevel, const char *dfile
     goto done;
   }
 
-  if (need_pause && !OptNoCurses)
+  if (need_pause && OptGui)
   {
     log_queue_flush(log_disp_terminal);
     if (mutt_any_key_to_continue(NULL) == 'q')
@@ -1064,6 +1064,7 @@ int main(int argc, char *argv[], char *envp[])
   }
 
   init_locale();
+  OptGui = true;
 
   cs = cs_new(500);
   if (!cs)
@@ -1194,7 +1195,7 @@ int main(int argc, char *argv[], char *envp[])
           flags |= MUTT_CLI_IGNORE;
           break;
         default:
-          OptNoCurses = true;
+          OptGui = false;
           if (usage())
             goto main_ok; // TEST03: neomutt -9
           else
@@ -1217,7 +1218,7 @@ int main(int argc, char *argv[], char *envp[])
       done = print_version(stdout);
     else
       done = print_copyright();
-    OptNoCurses = true;
+    OptGui = false;
     if (done)
       goto main_ok; // TEST04: neomutt -v
     else
@@ -1287,19 +1288,19 @@ int main(int argc, char *argv[], char *envp[])
   if (!isatty(STDIN_FILENO) || !STAILQ_EMPTY(&queries) ||
       !STAILQ_EMPTY(&alias_queries) || dump_variables)
   {
-    OptNoCurses = true;
+    OptGui = false;
     sendflags |= SEND_BATCH;
     MuttLogger = log_disp_terminal;
     log_queue_flush(log_disp_terminal);
   }
 
   /* Check to make sure stdout is available in curses mode. */
-  if (!OptNoCurses && !isatty(STDOUT_FILENO))
+  if (OptGui && !isatty(STDOUT_FILENO))
     goto main_curses;
 
   /* This must come before mutt_init() because curses needs to be started
    * before calling the init_pair() function to set the color scheme.  */
-  if (!OptNoCurses)
+  if (OptGui)
   {
     int crc = start_curses();
     if (crc != 0)
@@ -1310,7 +1311,7 @@ int main(int argc, char *argv[], char *envp[])
    * paths that end up referencing them. */
   rootwin_new();
 
-  if (!OptNoCurses)
+  if (OptGui)
   {
     /* check whether terminal status is supported (must follow curses init) */
     TsSupported = mutt_ts_capability();
@@ -1438,7 +1439,7 @@ int main(int argc, char *argv[], char *envp[])
     goto main_curses; // TEST20: neomutt -A alias
   }
 
-  if (!OptNoCurses)
+  if (OptGui)
   {
     mutt_curses_set_color_by_id(MT_COLOR_NORMAL);
     clear();
@@ -1457,7 +1458,7 @@ int main(int argc, char *argv[], char *envp[])
 
   /* Create the `$folder` directory if it doesn't exist. */
   const char *const c_folder = cs_subset_string(NeoMutt->sub, "folder");
-  if (!OptNoCurses && c_folder)
+  if (OptGui && c_folder)
   {
     struct stat st = { 0 };
     struct Buffer *fpath = buf_pool_get();
@@ -1491,7 +1492,7 @@ int main(int argc, char *argv[], char *envp[])
 
   if (sendflags & SEND_POSTPONED)
   {
-    if (!OptNoCurses)
+    if (OptGui)
       mutt_flushinp();
     if (mutt_send_message(SEND_POSTPONED, NULL, NULL, NULL, NULL, NeoMutt->sub) == 0)
       rc = 0;
@@ -1511,7 +1512,7 @@ int main(int argc, char *argv[], char *envp[])
     const char *bodyfile = NULL;
     int rv = 0;
 
-    if (!OptNoCurses)
+    if (OptGui)
       mutt_flushinp();
 
     if (!e)

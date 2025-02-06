@@ -533,7 +533,7 @@ static int smtp_auth_gsasl(struct SmtpAccountData *adata, const char *mechlist)
     return SMTP_AUTH_UNAVAIL;
   }
 
-  if (!OptNoCurses)
+  if (OptGui)
     mutt_message(_("Authenticating (%s)..."), chosen_mech);
 
   input_buf = buf_pool_get();
@@ -650,7 +650,7 @@ static int smtp_auth_sasl(struct SmtpAccountData *adata, const char *mechlist)
     return SMTP_AUTH_UNAVAIL;
   }
 
-  if (!OptNoCurses)
+  if (OptGui)
   {
     // L10N: (%s) is the method name, e.g. Anonymous, CRAM-MD5, GSSAPI, SASL
     mutt_message(_("Authenticating (%s)..."), mech);

@@ -151,7 +151,7 @@ void mutt_query_exit(void)
  */
 void mutt_endwin(void)
 {
-  if (OptNoCurses)
+  if (!OptGui)
     return;
 
   int e = errno;
