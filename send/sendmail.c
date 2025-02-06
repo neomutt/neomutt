@@ -422,13 +422,13 @@ int mutt_invoke_sendmail(struct Mailbox *m, struct AddressList *from,
   ARRAY_ADD(&args, NULL);
 
   const short c_sendmail_wait = cs_subset_number(sub, "sendmail_wait");
-  i = send_msg(path, &args, msg, OptNoCurses ? NULL : &childout, c_sendmail_wait);
+  i = send_msg(path, &args, msg, OptGui ? &childout : NULL, c_sendmail_wait);
 
   /* Some user's $sendmail command uses gpg for password decryption,
    * and is set up to prompt using ncurses pinentry.  If we
    * mutt_endwin() it leaves other users staring at a blank screen.
    * So instead, just force a hard redraw on the next refresh. */
-  if (!OptNoCurses)
+  if (OptGui)
   {
     mutt_need_hard_redraw();
   }
