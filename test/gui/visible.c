@@ -27,6 +27,7 @@
 #include <stddef.h>
 #include "mutt/lib.h"
 #include "gui/lib.h"
+#include "globals.h"
 
 enum TestEvent
 {
@@ -119,6 +120,8 @@ void test_window_visible(void)
     { true,  true,  TE_NONE,    true,  true,  TE_NONE    },
     // clang-format on
   };
+
+  OptGui = true;
 
   struct MuttWindow *parent = mutt_window_new(WT_ROOT, MUTT_WIN_ORIENT_VERTICAL,
                                               MUTT_WIN_SIZE_FIXED, 80, 24);

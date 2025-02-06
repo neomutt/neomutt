@@ -78,7 +78,7 @@ void mutt_clear_error(void)
     error_pause();
 
   ErrorBufMessage = false;
-  if (!OptNoCurses)
+  if (OptGui)
     msgwin_clear_text(NULL);
 }
 

@@ -181,7 +181,7 @@ int raw_socket_open(struct Connection *conn)
   host_idna = conn->account.host;
 #endif
 
-  if (!OptNoCurses)
+  if (OptGui)
     mutt_message(_("Looking up %s..."), conn->account.host);
 
   rc = getaddrinfo(host_idna, port, &hints, &res);
@@ -196,7 +196,7 @@ int raw_socket_open(struct Connection *conn)
     return -1;
   }
 
-  if (!OptNoCurses)
+  if (OptGui)
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
@@ -238,7 +238,7 @@ int raw_socket_open(struct Connection *conn)
   host_idna = conn->account.host;
 #endif
 
-  if (!OptNoCurses)
+  if (OptGui)
     mutt_message(_("Looking up %s..."), conn->account.host);
 
   he = gethostbyname(host_idna);
@@ -254,7 +254,7 @@ int raw_socket_open(struct Connection *conn)
     return -1;
   }
 
-  if (!OptNoCurses)
+  if (OptGui)
     mutt_message(_("Connecting to %s..."), conn->account.host);
 
   rc = -1;
