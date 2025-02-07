@@ -35,7 +35,7 @@
 #include "config/lib.h"
 #include "core/lib.h"
 #include "gui/lib.h"
-#include "key/lib.h"
+#include "lib.h"
 #include "menu/lib.h"
 
 extern const struct MenuOpSeq AliasDefaultBindings[];

@@ -30,8 +30,8 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdlib.h>
-#include "mutt/lib.h" // IWYU pragma: keep
 #include "qsort_r.h"
+#include "lib.h" // IWYU pragma: keep
 
 #if !defined(HAVE_QSORT_S) && !defined(HAVE_QSORT_R)
 /// Original comparator in fallback implementation

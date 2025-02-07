@@ -85,7 +85,7 @@ const struct ExpandoDefinition CompressFormatDef[] = {
 };
 
 /**
- * mutt_comp_init - Setup feature commands
+ * mutt_comp_init - Setup Compressed Mailbox commands
  */
 void mutt_comp_init(void)
 {

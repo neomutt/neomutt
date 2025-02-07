@@ -27,11 +27,7 @@
 
 struct ConfigSet;
 
-bool config_init_history(struct ConfigSet *cs);
-
 void test_mutt_hist_cleanup(void)
 {
   // void mutt_hist_cleanup(void);
-
-  // config_init_history(NeoMutt->sub->cs);
 }

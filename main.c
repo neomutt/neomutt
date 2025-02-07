@@ -1710,13 +1710,17 @@ int main(int argc, char *argv[], char *envp[])
         mutt_env_free(&opts_env);
         email_free(&e_tmp);
       }
-      /* Editing the include_file: pass it directly in.
-       * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
       else if (edit_infile)
+      {
+        /* Editing the include_file: pass it directly in.
+         * Note that SEND_NO_FREE_HEADER is set above so it isn't unlinked.  */
         bodyfile = buf_string(expanded_infile);
-      // For bodytext and unedited include_file: use the tempfile.
+      }
       else
+      {
+        // For bodytext and unedited include_file: use the tempfile.
         bodyfile = buf_string(tempfile);
+      }
 
       mutt_file_fclose(&fp_in);
     }
