@@ -27,8 +27,20 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef PopVars[];
+
+/**
+ * pop_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool pop_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, PopVars);
+}
 
 /**
  * ModulePop - Module for the Pop library
@@ -37,7 +49,7 @@ const struct Module ModulePop = {
   "pop",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  pop_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

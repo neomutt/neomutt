@@ -29,6 +29,23 @@
 #include "config.h"
 #include <stddef.h>
 #include "core/lib.h"
+#include "color.h"
+
+/**
+ * color_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool color_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
+ * color_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+static void color_gui_cleanup(struct NeoMutt *n)
+{
+  colors_cleanup();
+}
 
 /**
  * ModuleColor - Module for the Color library
@@ -39,8 +56,7 @@ const struct Module ModuleColor = {
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
-  NULL, // gui_init
-  NULL, // gui_cleanup
+  color_gui_init, color_gui_cleanup,
   NULL, // cleanup
   NULL, // mod_data
 };

@@ -27,8 +27,36 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef NotmuchVars[];
+
+extern const struct Command NmCommands[];
+
+/**
+ * notmuch_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool notmuch_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = false;
+
+#if defined(USE_NOTMUCH)
+  rc |= cs_register_variables(cs, NotmuchVars);
+#endif
+
+  return rc;
+}
+
+/**
+ * notmuch_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool notmuch_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, NmCommands);
+}
 
 /**
  * ModuleNotmuch - Module for the Notmuch library
@@ -37,8 +65,8 @@ const struct Module ModuleNotmuch = {
   "notmuch",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
-  NULL, // commands_register
+  notmuch_config_define_variables,
+  notmuch_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup
