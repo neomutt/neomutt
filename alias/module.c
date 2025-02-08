@@ -27,20 +27,58 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
+#include "alias.h"
+#include "reverse.h"
+
+extern struct ConfigDef AliasVars[];
+
+/**
+ * alias_init - Initialise a Module - Implements Module::init()
+ */
+static bool alias_init(struct NeoMutt *n)
+{
+  alias_reverse_init();
+  return true;
+}
+
+/**
+ * alias_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool alias_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, AliasVars);
+}
+
+/**
+ * alias_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static void alias_cleanup(struct NeoMutt *n)
+{
+  struct Alias *np = NULL;
+  TAILQ_FOREACH(np, &Aliases, entries)
+  {
+    alias_reverse_delete(np);
+  }
+  aliaslist_clear(&Aliases);
+  alias_reverse_shutdown();
+}
 
 /**
  * ModuleAlias - Module for the Alias library
  */
 const struct Module ModuleAlias = {
   "alias",
-  NULL, // init
+  alias_init,
   NULL, // config_define_types
-  NULL, // config_define_variables
+  alias_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  alias_cleanup,
   NULL, // mod_data
 };

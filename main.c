@@ -139,23 +139,19 @@
 #include "browser/lib.h"
 #include "cli/lib.h"
 #include "color/lib.h"
-#include "compmbox/lib.h"
 #include "history/lib.h"
 #include "imap/lib.h"
 #include "index/lib.h"
 #include "key/lib.h"
-#include "lua/lib.h"
 #include "menu/lib.h"
 #include "ncrypt/lib.h"
 #include "nntp/lib.h"
-#include "notmuch/lib.h"
 #include "parse/lib.h"
 #include "pop/lib.h"
 #include "postpone/lib.h"
 #include "question/lib.h"
 #include "send/lib.h"
 #include "sidebar/lib.h"
-#include "alternates.h"
 #include "commands.h"
 #include "external.h"
 #include "globals.h"
@@ -166,7 +162,6 @@
 #include "mx.h"
 #include "nntp/adata.h" // IWYU pragma: keep
 #include "protos.h"
-#include "subjectrx.h"
 #include "version.h"
 #ifdef ENABLE_NLS
 #include <libintl.h>
@@ -1113,6 +1108,8 @@ int main(int argc, char *argv[], char *envp[])
   struct ConfigSet *cs = NULL;
   struct CommandLine *cli = command_line_new();
 
+  // -------------------------------------------------------------------------------
+
   NeoMutt = neomutt_new();
   if (!neomutt_init(NeoMutt, Modules))
     goto main_curses;
@@ -1148,18 +1145,10 @@ int main(int argc, char *argv[], char *envp[])
   mutt_str_replace(&NeoMutt->username, mutt_str_getenv("USER"));
   mutt_str_replace(&NeoMutt->home_dir, mutt_str_getenv("HOME"));
 
-  init_config(cs);
-
   cli_parse(argc, argv, cli);
 
   if (!show_help(&cli->help))
     goto main_ok;
-
-  // Change the current umask, and save the original one
-  NeoMutt->user_default_umask = umask(077);
-  subjrx_init();
-  attach_init();
-  alternates_init();
 
 #ifdef USE_DEBUG_NOTIFY
   notify_observer_add(NeoMutt->notify, NT_ALL, debug_all_observer, NULL);
@@ -1179,8 +1168,6 @@ int main(int argc, char *argv[], char *envp[])
   mutt_log_prep();
   MuttLogger = log_disp_queue;
   log_translation();
-  mutt_debug(LL_DEBUG1, "user's umask %03o\n", NeoMutt->user_default_umask);
-  mutt_debug(LL_DEBUG3, "umask set to 077\n");
 
   /* Check for a batch send. */
   if (!isatty(STDIN_FILENO) || !ARRAY_EMPTY(&cli->info.queries) ||
@@ -1217,21 +1204,8 @@ int main(int argc, char *argv[], char *envp[])
     log_gui();
   }
 
-  mutt_grouplist_init();
-  alias_init();
-  commands_init();
-  hooks_init();
-  mutt_comp_init();
-  imap_init();
-  lua_init();
-  driver_tags_init();
-  km_init();
-
   menu_init();
   sb_init();
-#ifdef USE_NOTMUCH
-  nm_init();
-#endif
 
   /* set defaults and read init files */
   int rc2 = mutt_init(cs, &cli->shared.log_level, &cli->shared.log_file,
@@ -1798,6 +1772,8 @@ int main(int argc, char *argv[], char *envp[])
     // TEST44: neomutt (change mailbox)
   }
 
+  // -------------------------------------------------------------------------------
+
 main_ok:
   rc = 0;
 main_curses:
@@ -1816,68 +1792,12 @@ main_exit:
   MuttLogger = log_disp_queue;
   buf_pool_release(&expanded_infile);
   buf_pool_release(&tempfile);
-  crypto_module_cleanup();
-  rootwin_cleanup();
-  buf_pool_cleanup();
-  if (NeoMutt)
-    envlist_free(&NeoMutt->env);
-  mutt_browser_cleanup();
-  external_cleanup();
-  menu_cleanup();
-  crypt_cleanup();
-  mutt_ch_cache_cleanup();
-  command_line_free(&cli);
 
-  source_stack_cleanup();
-
-  alias_cleanup();
-  sb_cleanup();
-
-  mutt_regexlist_free(&MailLists);
-  mutt_regexlist_free(&NoSpamList);
-  mutt_regexlist_free(&SubscribedLists);
-  mutt_regexlist_free(&UnMailLists);
-  mutt_regexlist_free(&UnSubscribedLists);
-
-  mutt_grouplist_cleanup();
-  driver_tags_cleanup();
-
-  /* Lists of strings */
-  mutt_list_free(&AlternativeOrderList);
-  mutt_list_free(&AutoViewList);
-  mutt_list_free(&HeaderOrderList);
-  mutt_list_free(&Ignore);
-  mutt_list_free(&MailToAllow);
-  mutt_list_free(&MimeLookupList);
-  mutt_list_free(&UnIgnore);
-  mutt_list_free(&UserHeader);
-
-  colors_cleanup();
-
-  FREE(&CurrentFolder);
-  FREE(&LastFolder);
-  FREE(&ShortHostname);
-
-  mutt_replacelist_free(&SpamList);
-
-  mutt_delete_hooks(MUTT_HOOK_NO_FLAGS);
-
-  mutt_hist_cleanup();
-  mutt_keys_cleanup();
-
-  mutt_regexlist_free(&NoSpamList);
-  if (NeoMutt)
-    commands_clear(&NeoMutt->commands);
-
-  lua_cleanup();
-  subjrx_cleanup();
-  attach_cleanup();
-  alternates_cleanup();
-  mutt_keys_cleanup();
-  mutt_prex_cleanup();
-  config_cache_cleanup();
+  neomutt_gui_cleanup(NeoMutt);
+  neomutt_cleanup(NeoMutt);
   neomutt_free(&NeoMutt);
-  cs_free(&cs);
+
+  buf_pool_cleanup();
   log_queue_flush(log_disp_terminal);
   mutt_log_stop();
   return rc;

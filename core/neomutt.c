@@ -58,6 +58,16 @@ static bool init_locale(struct NeoMutt *n)
   textdomain(PACKAGE);
 #endif
 
+  n->time_c_locale = duplocale(LC_GLOBAL_LOCALE);
+  if (n->time_c_locale)
+    n->time_c_locale = newlocale(LC_TIME_MASK, "C", n->time_c_locale);
+
+  if (!n->time_c_locale)
+  {
+    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
+    return false;                      // LCOV_EXCL_LINE
+  }
+
   return true;
 }
 
@@ -188,16 +198,6 @@ struct NeoMutt *neomutt_new(void)
 {
   struct NeoMutt *n = MUTT_MEM_CALLOC(1, struct NeoMutt);
 
-  n->time_c_locale = duplocale(LC_GLOBAL_LOCALE);
-  if (n->time_c_locale)
-    n->time_c_locale = newlocale(LC_TIME_MASK, "C", n->time_c_locale);
-
-  if (!n->time_c_locale)
-  {
-    mutt_error("%s", strerror(errno)); // LCOV_EXCL_LINE
-    mutt_exit(1);                      // LCOV_EXCL_LINE
-  }
-
   return n;
 }
 
@@ -290,14 +290,21 @@ void neomutt_free(struct NeoMutt **ptr)
   struct NeoMutt *n = *ptr;
 
   neomutt_accounts_free(n);
+
   if (n->sub)
+  {
     cs_free(&n->sub->cs);
-  cs_subset_free(&n->sub);
+    cs_subset_free(&n->sub);
+  }
+
   notify_free(&n->notify_resize);
   notify_free(&n->notify_timeout);
   notify_free(&n->notify);
+
   if (n->time_c_locale)
     freelocale(n->time_c_locale);
+
+  ARRAY_FREE(&n->commands);
 
   FREE(&n->home_dir);
   FREE(&n->username);

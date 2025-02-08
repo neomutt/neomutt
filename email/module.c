@@ -27,20 +27,66 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "mutt/lib.h"
+#include "config/lib.h"
 #include "core/lib.h"
+#include "globals.h"
+#include "tags.h"
+
+extern struct ConfigDef EmailVars[];
+
+/**
+ * email_init - Initialise a Module - Implements Module::init()
+ */
+static bool email_init(struct NeoMutt *n)
+{
+  driver_tags_init();
+  return true;
+}
+
+/**
+ * email_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool email_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, EmailVars);
+}
+
+/**
+ * email_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static void email_cleanup(struct NeoMutt *n)
+{
+  driver_tags_cleanup();
+
+  mutt_regexlist_free(&MailLists);
+  mutt_regexlist_free(&NoSpamList);
+  mutt_regexlist_free(&SubscribedLists);
+  mutt_regexlist_free(&UnMailLists);
+  mutt_regexlist_free(&UnSubscribedLists);
+
+  mutt_list_free(&Ignore);
+  mutt_list_free(&MailToAllow);
+  mutt_list_free(&UnIgnore);
+
+  mutt_replacelist_free(&SpamList);
+
+  mutt_regexlist_free(&NoSpamList);
+}
 
 /**
  * ModuleEmail - Module for the Email library
  */
 const struct Module ModuleEmail = {
   "email",
-  NULL, // init
+  email_init,
   NULL, // config_define_types
-  NULL, // config_define_variables
+  email_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  email_cleanup,
   NULL, // mod_data
 };

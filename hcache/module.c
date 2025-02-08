@@ -27,8 +27,41 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef HcacheVars[];
+extern struct ConfigDef HcacheVarsComp[];
+extern struct ConfigDef HcacheVarsComp2[];
+extern struct ConfigDef HcacheVarsPage[];
+
+/**
+ * hcache_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool hcache_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = true;
+
+#if defined(USE_HCACHE)
+  rc &= cs_register_variables(cs, HcacheVars);
+#endif
+
+#if defined(USE_HCACHE_COMPRESSION)
+  rc &= cs_register_variables(cs, HcacheVarsComp);
+#endif
+
+#if defined(HAVE_QDBM) && defined(HAVE_TC) && defined(HAVE_KC)
+  rc &= cs_register_variables(cs, HcacheVarsComp2);
+#endif
+
+#if defined(HAVE_GDBM) && defined(HAVE_BDB)
+  rc &= cs_register_variables(cs, HcacheVarsPage);
+#endif
+
+  return rc;
+}
 
 /**
  * ModuleHcache - Module for the Hcache library
@@ -37,7 +70,7 @@ const struct Module ModuleHcache = {
   "hcache",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  hcache_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

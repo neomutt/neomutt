@@ -64,7 +64,7 @@ static int maildir_field_delimiter_validator(const struct ConfigDef *cdef,
 /**
  * MaildirVars - Config definitions for the Maildir library
  */
-static struct ConfigDef MaildirVars[] = {
+struct ConfigDef MaildirVars[] = {
   // clang-format off
   { "check_new", DT_BOOL, true, 0, NULL,
     "(maildir,mh) Check for new mail while the mailbox is open"
@@ -86,7 +86,7 @@ static struct ConfigDef MaildirVars[] = {
 /**
  * MaildirVarsHcache - Config definitions for the Maildir header cache
  */
-static struct ConfigDef MaildirVarsHcache[] = {
+struct ConfigDef MaildirVarsHcache[] = {
   // clang-format off
   { "maildir_header_cache_verify", DT_BOOL, true, 0, NULL,
     "Check for maildir changes when opening mailbox"
@@ -95,17 +95,3 @@ static struct ConfigDef MaildirVarsHcache[] = {
   // clang-format on
 };
 #endif
-
-/**
- * config_init_maildir - Register maildir config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_maildir(struct ConfigSet *cs)
-{
-  bool rc = cs_register_variables(cs, MaildirVars);
-
-#if defined(USE_HCACHE)
-  rc |= cs_register_variables(cs, MaildirVarsHcache);
-#endif
-
-  return rc;
-}

@@ -151,7 +151,6 @@ struct BrowserState
 
 void dlg_browser(struct Buffer *file, SelectFileFlags flags, struct Mailbox *m, char ***files, int *numfiles);
 void mutt_browser_select_dir(const char *f);
-void mutt_browser_cleanup(void);
 
 void browser_sort(struct BrowserState *state);
 void browser_add_folder(const struct Menu *menu, struct BrowserState *state, const char *name, const char *desc, const struct stat *st, struct Mailbox *m, void *data);

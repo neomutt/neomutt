@@ -27,8 +27,47 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+#include "lib.h"
+
+extern struct ConfigDef SidebarVars[];
+
+extern const struct Command SbCommands[];
+
+/**
+ * sidebar_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool sidebar_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, SidebarVars);
+}
+
+/**
+ * sidebar_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool sidebar_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, SbCommands);
+}
+
+/**
+ * sidebar_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool sidebar_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
+ * sidebar_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+static void sidebar_gui_cleanup(struct NeoMutt *n)
+{
+  sb_cleanup();
+}
 
 /**
  * ModuleSidebar - Module for the Sidebar library
@@ -37,10 +76,10 @@ const struct Module ModuleSidebar = {
   "sidebar",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
-  NULL, // commands_register
-  NULL, // gui_init
-  NULL, // gui_cleanup
+  sidebar_config_define_variables,
+  sidebar_commands_register,
+  sidebar_gui_init,
+  sidebar_gui_cleanup,
   NULL, // cleanup
   NULL, // mod_data
 };

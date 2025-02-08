@@ -30,13 +30,13 @@
 #include "history/lib.h"
 #include "test_common.h" // IWYU pragma: keep
 
-bool config_init_history(struct ConfigSet *cs);
+extern struct ConfigDef HistoryVars[];
 
 void test_mutt_hist_add(void)
 {
   // void mutt_hist_add(enum HistoryClass hclass, const char *str, bool save);
 
-  config_init_history(NeoMutt->sub->cs);
+  cs_register_variables(NeoMutt->sub->cs, HistoryVars);
 
   {
     mutt_hist_add(0, NULL, false);

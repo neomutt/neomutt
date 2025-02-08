@@ -27,8 +27,30 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+#include "lib.h"
+
+extern struct ConfigDef BrowserVars[];
+
+/**
+ * browser_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool browser_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_variables(cs, BrowserVars);
+}
+
+/**
+ * browser_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static void browser_cleanup(struct NeoMutt *n)
+{
+  buf_dealloc(&LastDir);
+  buf_dealloc(&LastDirBackup);
+}
 
 /**
  * ModuleBrowser - Module for the Browser library
@@ -37,10 +59,10 @@ const struct Module ModuleBrowser = {
   "browser",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  browser_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  browser_cleanup,
   NULL, // mod_data
 };

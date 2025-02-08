@@ -38,12 +38,10 @@
 
 #ifdef USE_LUA
 
-void lua_init   (void);
 void lua_cleanup(void);
 
 #else
 
-static inline void lua_init   (void) {}
 static inline void lua_cleanup(void) {}
 
 #endif

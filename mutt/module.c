@@ -31,6 +31,15 @@
 #include "core/lib.h"
 
 /**
+ * mutt_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static void mutt_cleanup(struct NeoMutt *n)
+{
+  mutt_ch_cache_cleanup();
+  mutt_prex_cleanup();
+}
+
+/**
  * ModuleMutt - Module for the Mutt library
  */
 const struct Module ModuleMutt = {
@@ -41,6 +50,6 @@ const struct Module ModuleMutt = {
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  mutt_cleanup,
   NULL, // mod_data
 };

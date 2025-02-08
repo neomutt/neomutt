@@ -90,7 +90,7 @@ struct stat;
 /**
  * NmCommands - Notmuch Commands
  */
-static const struct Command NmCommands[] = {
+const struct Command NmCommands[] = {
   // clang-format off
   { "unvirtual-mailboxes", parse_unmailboxes, 0 },
   { "virtual-mailboxes",   parse_mailboxes,   MUTT_NAMED },
@@ -102,14 +102,6 @@ static const struct Command NmCommands[] = {
 const char NmUrlProtocol[] = "notmuch://";
 /// Length of #NmUrlProtocol string
 const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
-
-/**
- * nm_init - Setup feature commands
- */
-void nm_init(void)
-{
-  commands_register(&NeoMutt->commands, NmCommands);
-}
 
 /**
  * nm_hcache_open - Open a header cache

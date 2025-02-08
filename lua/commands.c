@@ -114,21 +114,13 @@ static enum CommandResult parse_lua_source(struct Buffer *buf, struct Buffer *s,
 /**
  * LuaCommands - List of NeoMutt commands to register
  */
-static const struct Command LuaCommands[] = {
+const struct Command LuaCommands[] = {
   // clang-format off
   { "lua",        parse_lua,        0 },
   { "lua-source", parse_lua_source, 0 },
   { NULL, NULL, 0 },
   // clang-format on
 };
-
-/**
- * lua_init - Setup feature commands
- */
-void lua_init(void)
-{
-  commands_register(&NeoMutt->commands, LuaCommands);
-}
 
 /**
  * lua_cleanup - Clean up Lua

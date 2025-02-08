@@ -27,8 +27,46 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "core/lib.h"
+#include "set.h"
+
+extern const struct ConfigSetType CstBool;
+extern const struct ConfigSetType CstEnum;
+extern const struct ConfigSetType CstLong;
+extern const struct ConfigSetType CstMbtable;
+extern const struct ConfigSetType CstMyVar;
+extern const struct ConfigSetType CstNumber;
+extern const struct ConfigSetType CstPath;
+extern const struct ConfigSetType CstQuad;
+extern const struct ConfigSetType CstRegex;
+extern const struct ConfigSetType CstSlist;
+extern const struct ConfigSetType CstSort;
+extern const struct ConfigSetType CstString;
+
+/**
+ * config_config_define_types - Set up Config Types - Implements Module::config_define_types()
+ */
+static bool config_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = true;
+
+  rc &= cs_register_type(cs, &CstBool);
+  rc &= cs_register_type(cs, &CstEnum);
+  rc &= cs_register_type(cs, &CstLong);
+  rc &= cs_register_type(cs, &CstMbtable);
+  rc &= cs_register_type(cs, &CstMyVar);
+  rc &= cs_register_type(cs, &CstNumber);
+  rc &= cs_register_type(cs, &CstPath);
+  rc &= cs_register_type(cs, &CstQuad);
+  rc &= cs_register_type(cs, &CstRegex);
+  rc &= cs_register_type(cs, &CstSlist);
+  rc &= cs_register_type(cs, &CstSort);
+  rc &= cs_register_type(cs, &CstString);
+
+  return rc;
+}
 
 /**
  * ModuleConfig - Module for the Config library
@@ -36,7 +74,7 @@
 const struct Module ModuleConfig = {
   "config",
   NULL, // init
-  NULL, // config_define_types
+  config_config_define_types,
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
