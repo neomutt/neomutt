@@ -27,20 +27,50 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+#include "group.h"
+
+extern const struct ConfigSetType CstAddress;
+
+/**
+ * address_init - Initialise a Module - Implements Module::init()
+ */
+static bool address_init(struct NeoMutt *n)
+{
+  mutt_grouplist_init();
+  return true;
+}
+
+/**
+ * address_config_define_types - Set up Config Types - Implements Module::config_define_types()
+ */
+static bool address_config_define_types(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  return cs_register_type(cs, &CstAddress);
+}
+
+/**
+ * address_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static void address_cleanup(struct NeoMutt *n)
+{
+  mutt_grouplist_cleanup();
+}
 
 /**
  * ModuleAddress - Module for the Address library
  */
 const struct Module ModuleAddress = {
   "address",
-  NULL, // init
-  NULL, // config_define_types
+  address_init,
+  address_config_define_types,
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  address_cleanup,
   NULL, // mod_data
 };

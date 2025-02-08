@@ -27,14 +27,13 @@
  */
 
 #include "config.h"
-#include <stdbool.h>
 #include <stddef.h>
 #include "config/lib.h"
 
 /**
  * ProgressVars - Config definitions for the Progress Bar
  */
-static struct ConfigDef ProgressVars[] = {
+struct ConfigDef ProgressVars[] = {
   // clang-format off
   { "net_inc", DT_NUMBER|D_INTEGER_NOT_NEGATIVE, 10, 0, NULL,
     "(socket) Update the progress bar after this many KB sent/received (0 to disable)"
@@ -51,11 +50,3 @@ static struct ConfigDef ProgressVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_progress - Register progress config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_progress(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, ProgressVars);
-}
