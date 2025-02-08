@@ -1676,7 +1676,7 @@ void source_stack_cleanup(void)
 /**
  * MuttCommands - General NeoMutt Commands
  */
-static const struct Command MuttCommands[] = {
+const struct Command MuttCommands[] = {
   // clang-format off
   { "alias",               parse_alias,            0 },
   { "alternates",          parse_alternates,       0 },
@@ -1741,11 +1741,3 @@ static const struct Command MuttCommands[] = {
   { NULL, NULL, 0 },
   // clang-format on
 };
-
-/**
- * commands_init - Initialize commands array and register default commands
- */
-bool commands_init(void)
-{
-  return commands_register(&NeoMutt->commands, MuttCommands);
-}

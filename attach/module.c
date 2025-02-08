@@ -27,19 +27,38 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "core/lib.h"
+#include "attachments.h"
+
+/**
+ * attach_init - Initialise a Module - Implements Module::init()
+ */
+static bool attach_init(struct NeoMutt *n)
+{
+  attachlist_init();
+  return true;
+}
+
+/**
+ * attach_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static void attach_cleanup(struct NeoMutt *n)
+{
+  attachlist_cleanup();
+}
 
 /**
  * ModuleAttach - Module for the Attach library
  */
 const struct Module ModuleAttach = {
-  NULL, // init
+  "attach",       attach_init,
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  attach_cleanup,
   NULL, // mod_data
 };

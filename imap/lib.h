@@ -72,7 +72,6 @@ struct PatternList;
 struct stat;
 
 /* imap.c */
-void imap_init(void);
 int imap_access(const char *path);
 enum MxStatus imap_check_mailbox(struct Mailbox *m, bool force);
 int imap_delete_mailbox(struct Mailbox *m, char *path);
