@@ -27,8 +27,19 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "core/lib.h"
+
+extern const struct Command CompCommands[];
+
+/**
+ * compmbox_commands_register - Register NeoMutt Commands - Implements Module::commands_register()
+ */
+static bool compmbox_commands_register(struct NeoMutt *n, struct CommandArray *ca)
+{
+  return commands_register(ca, CompCommands);
+}
 
 /**
  * ModuleCompmbox - Module for the Compmbox library
@@ -38,7 +49,7 @@ const struct Module ModuleCompmbox = {
   NULL, // init
   NULL, // config_define_types
   NULL, // config_define_variables
-  NULL, // commands_register
+  compmbox_commands_register,
   NULL, // gui_init
   NULL, // gui_cleanup
   NULL, // cleanup

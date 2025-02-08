@@ -133,7 +133,7 @@ static const struct ExpandoDefinition GreetingFormatDef[] = {
 /**
  * SendVars - Config definitions for the send library
  */
-static struct ConfigDef SendVars[] = {
+struct ConfigDef SendVars[] = {
   // clang-format off
   { "abort_noattach", DT_QUAD, MUTT_NO, 0, NULL,
     "Abort sending the email if attachments are missing"
@@ -391,8 +391,8 @@ static struct ConfigDef SendVars[] = {
   { "pgp_replyinline",          DT_SYNONYM, IP "pgp_reply_inline",           IP "2021-03-21" },
   { "pgp_replysign",            DT_SYNONYM, IP "crypt_reply_sign",           IP "2021-03-21" },
   { "pgp_replysignencrypted",   DT_SYNONYM, IP "crypt_reply_sign_encrypted", IP "2021-03-21" },
-  { "post_indent_str",          DT_SYNONYM, IP "post_indent_string",         IP "2021-03-21" },
   { "post_indent_string",       DT_SYNONYM, IP "attribution_trailer",        IP "2023-02-20" },
+  { "post_indent_str",          DT_SYNONYM, IP "post_indent_string",         IP "2021-03-21" },
   { "reverse_realname",         DT_SYNONYM, IP "reverse_real_name",          IP "2021-03-21" },
   { "use_8bitmime",             DT_SYNONYM, IP "use_8bit_mime",              IP "2021-03-21" },
 
@@ -400,11 +400,3 @@ static struct ConfigDef SendVars[] = {
   { NULL },
   // clang-format on
 };
-
-/**
- * config_init_send - Register send config variables - Implements ::module_init_config_t - @ingroup cfg_module_api
- */
-bool config_init_send(struct ConfigSet *cs)
-{
-  return cs_register_variables(cs, SendVars);
-}
