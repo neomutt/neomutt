@@ -27,8 +27,27 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stddef.h>
+#include "config/lib.h"
 #include "core/lib.h"
+
+extern struct ConfigDef MaildirVars[];
+extern struct ConfigDef MaildirVarsHcache[];
+
+/**
+ * maildir_config_define_variables - Define the Config Variables - Implements Module::config_define_variables()
+ */
+static bool maildir_config_define_variables(struct NeoMutt *n, struct ConfigSet *cs)
+{
+  bool rc = cs_register_variables(cs, MaildirVars);
+
+#if defined(USE_HCACHE)
+  rc |= cs_register_variables(cs, MaildirVarsHcache);
+#endif
+
+  return rc;
+}
 
 /**
  * ModuleMaildir - Module for the Maildir library
@@ -37,7 +56,7 @@ const struct Module ModuleMaildir = {
   "maildir",
   NULL, // init
   NULL, // config_define_types
-  NULL, // config_define_variables
+  maildir_config_define_variables,
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup

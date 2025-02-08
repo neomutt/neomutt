@@ -28,7 +28,16 @@
 
 #include "config.h"
 #include <stddef.h>
+#include "config_cache.h"
 #include "neomutt.h"
+
+/**
+ * core_cleanup - Clean up a Module - Implements Module::cleanup()
+ */
+static void core_cleanup(struct NeoMutt *n)
+{
+  config_cache_cleanup();
+}
 
 /**
  * ModuleCore - Module for the Core library
@@ -41,6 +50,6 @@ const struct Module ModuleCore = {
   NULL, // commands_register
   NULL, // gui_init
   NULL, // gui_cleanup
-  NULL, // cleanup
+  core_cleanup,
   NULL, // mod_data
 };

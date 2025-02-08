@@ -29,6 +29,23 @@
 #include "config.h"
 #include <stddef.h>
 #include "core/lib.h"
+#include "rootwin.h"
+
+/**
+ * gui_gui_init - Initialise the GUI - Implements Module::gui_init()
+ */
+static bool gui_gui_init(struct NeoMutt *n)
+{
+  return true;
+}
+
+/**
+ * gui_gui_cleanup - Clean up the GUI - Implements Module::gui_cleanup()
+ */
+static void gui_gui_cleanup(struct NeoMutt *n)
+{
+  rootwin_cleanup();
+}
 
 /**
  * ModuleGui - Module for the Gui library
@@ -39,8 +56,7 @@ const struct Module ModuleGui = {
   NULL, // config_define_types
   NULL, // config_define_variables
   NULL, // commands_register
-  NULL, // gui_init
-  NULL, // gui_cleanup
+  gui_gui_init, gui_gui_cleanup,
   NULL, // cleanup
   NULL, // mod_data
 };
