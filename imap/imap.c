@@ -95,7 +95,7 @@ static const struct Command ImapCommands[] = {
  */
 void imap_init(void)
 {
-  commands_register(ImapCommands);
+  commands_register(&NeoMutt->commands, ImapCommands);
 }
 
 /**

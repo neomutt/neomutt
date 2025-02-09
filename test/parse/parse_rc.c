@@ -127,7 +127,7 @@ void test_parse_rc(void)
 {
   enum CommandResult rc = MUTT_CMD_ERROR;
 
-  commands_register(mutt_commands);
+  commands_register(&NeoMutt->commands, mutt_commands);
 
   // enum CommandResult parse_rc_line(const char *line, struct Buffer *err);
   TEST_CASE("parse_rc_line");
@@ -157,5 +157,5 @@ void test_parse_rc(void)
   cs_str_reset(NeoMutt->sub->cs, "from", NULL);
   test_parse_set();
 
-  commands_cleanup();
+  commands_clear(&NeoMutt->commands);
 }

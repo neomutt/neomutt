@@ -562,12 +562,14 @@ out:
 static HookFlags mutt_get_hook_type(const char *name)
 {
   const struct Command **cp = NULL;
-  for (size_t i = 0, size = commands_array(&cp); i < size; i++)
+  ARRAY_FOREACH(cp, &NeoMutt->commands)
   {
-    if (((cp[i]->parse == mutt_parse_hook) || (cp[i]->parse == mutt_parse_idxfmt_hook)) &&
-        mutt_istr_equal(cp[i]->name, name))
+    const struct Command *cmd = *cp;
+
+    if (((cmd->parse == mutt_parse_hook) || (cmd->parse == mutt_parse_idxfmt_hook)) &&
+        mutt_istr_equal(cmd->name, name))
     {
-      return cp[i]->data;
+      return cmd->data;
     }
   }
   return MUTT_HOOK_NO_FLAGS;
@@ -1050,5 +1052,5 @@ static const struct Command HookCommands[] = {
  */
 void hooks_init(void)
 {
-  commands_register(HookCommands);
+  commands_register(&NeoMutt->commands, HookCommands);
 }

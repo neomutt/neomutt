@@ -24,7 +24,7 @@
 #define MUTT_CORE_COMMAND_H
 
 #include "config.h"
-#include <stddef.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include "mutt/lib.h"
 
@@ -67,11 +67,9 @@ struct Command
 };
 ARRAY_HEAD(CommandArray, const struct Command *);
 
-const struct Command *command_get (const char *name);
-
-size_t          commands_array    (const struct Command ***first);
-void            commands_cleanup  (void);
-void            commands_init     (void);
-void            commands_register (const struct Command *cmds);
+const struct Command *commands_get     (struct CommandArray *ca, const char *name);
+void                  commands_clear   (struct CommandArray *ca);
+bool                  commands_init    (void);
+bool                  commands_register(struct CommandArray *ca, const struct Command *cmds);
 
 #endif /* MUTT_CORE_COMMAND_H */

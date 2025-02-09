@@ -203,7 +203,7 @@ void sb_set_current_mailbox(struct SidebarWindowData *wdata, struct Mailbox *m)
  */
 void sb_init(void)
 {
-  commands_register(SbCommands);
+  commands_register(&NeoMutt->commands, SbCommands);
 
   // Set a default style
   struct AttrColor *ac = simple_color_get(MT_COLOR_SIDEBAR_HIGHLIGHT);

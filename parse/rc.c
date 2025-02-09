@@ -27,6 +27,7 @@
  */
 
 #include "config.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include "mutt/lib.h"
 #include "core/lib.h"
@@ -68,29 +69,33 @@ enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
     }
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
+    bool match = false;
     const struct Command **cp = NULL;
-    size_t size = commands_array(&cp);
-    size_t i;
-    for (i = 0; i < size; i++)
+    ARRAY_FOREACH(cp, &NeoMutt->commands)
     {
-      if (mutt_str_equal(token->data, cp[i]->name))
+      const struct Command *cmd = *cp;
+
+      if (mutt_str_equal(token->data, cmd->name))
       {
-        mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cp[i]->name);
-        rc = cp[i]->parse(token, line, cp[i]->data, err);
+        mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd->name);
+        rc = cmd->parse(token, line, cmd->data, err);
         if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
           goto finish; /* Propagate return code */
 
-        notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) cp[i]);
+        notify_send(NeoMutt->notify, NT_COMMAND, 0, (void *) cmd);
+        match = true;
         break; /* Continue with next command */
       }
     }
-    if (i == size)
+
+    if (!match)
     {
       buf_printf(err, _("%s: unknown command"), buf_string(token));
       rc = MUTT_CMD_ERROR;
       break; /* Ignore the rest of the line */
     }
   }
+
 finish:
   return rc;
 }

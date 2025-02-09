@@ -108,7 +108,7 @@ const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
  */
 void nm_init(void)
 {
-  commands_register(NmCommands);
+  commands_register(&NeoMutt->commands, NmCommands);
 }
 
 /**

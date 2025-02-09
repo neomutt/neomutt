@@ -132,8 +132,13 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
       memset(cd->completed, 0, sizeof(cd->completed));
 
       const struct Command **cp = NULL;
-      for (size_t num = 0, size = commands_array(&cp); num < size; num++)
-        candidate(cd, cd->user_typed, cp[num]->name, cd->completed, sizeof(cd->completed));
+      ARRAY_FOREACH(cp, &NeoMutt->commands)
+      {
+        const struct Command *cmd = *cp;
+
+        candidate(cd, cd->user_typed, cmd->name, cd->completed, sizeof(cd->completed));
+      }
+
       matches_ensure_morespace(cd, cd->num_matched);
       cd->match_list[cd->num_matched++] = cd->user_typed;
 

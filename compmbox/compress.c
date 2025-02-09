@@ -90,7 +90,7 @@ const struct ExpandoDefinition CompressFormatDef[] = {
  */
 void mutt_comp_init(void)
 {
-  commands_register(CompCommands);
+  commands_register(&NeoMutt->commands, CompCommands);
 }
 
 /**

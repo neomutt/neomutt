@@ -113,7 +113,7 @@ static int lua_mutt_call(lua_State *l)
     return -1;
   }
 
-  cmd = command_get(lua_tostring(l, 1));
+  cmd = commands_get(&NeoMutt->commands, lua_tostring(l, 1));
   if (!cmd)
   {
     luaL_error(l, "Error command %s not found.", lua_tostring(l, 1));
@@ -424,9 +424,11 @@ static void luaopen_mutt(lua_State *l)
   (void) luaL_dostring(l, "mutt.command = {}");
 
   const struct Command **cp = NULL;
-  for (size_t i = 0, size = commands_array(&cp); i < size; i++)
+  ARRAY_FOREACH(cp, &NeoMutt->commands)
   {
-    lua_expose_command(l, cp[i]);
+    const struct Command *cmd = *cp;
+
+    lua_expose_command(l, cmd);
   }
 }
 
@@ -465,7 +467,7 @@ static bool lua_init(lua_State **l)
  */
 void mutt_lua_init(void)
 {
-  commands_register(LuaCommands);
+  commands_register(&NeoMutt->commands, LuaCommands);
 }
 
 /**

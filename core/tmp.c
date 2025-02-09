@@ -36,6 +36,7 @@
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "config/lib.h"
+#include "tmp.h"
 #include "globals.h"
 #include "neomutt.h"
 

@@ -27,11 +27,9 @@
  */
 
 #include "config.h"
+#include <stddef.h>
 #include "mutt/lib.h"
 #include "command.h"
-
-/// All the registered commands, e.g. alias, sidebar_pin
-static struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
 
 /**
  * commands_sort - Compare two commands by name - Implements ::sort_t - @ingroup sort_api
@@ -46,47 +44,45 @@ static int commands_sort(const void *a, const void *b, void *sdata)
 
 /**
  * commands_register - Add commands to Commands array
- * @param cmds Array of Commands
+ * @param ca   Command Array
+ * @param cmds New Commands to add
+ * @retval true Success
  */
-void commands_register(const struct Command *cmds)
+bool commands_register(struct CommandArray *ca, const struct Command *cmds)
 {
+  if (!ca || !cmds)
+    return false;
+
   for (int i = 0; cmds[i].name; i++)
   {
-    ARRAY_ADD(&Commands, &cmds[i]);
+    ARRAY_ADD(ca, &cmds[i]);
   }
-  ARRAY_SORT(&Commands, commands_sort, NULL);
+  ARRAY_SORT(ca, commands_sort, NULL);
+
+  return true;
 }
 
 /**
- * commands_cleanup - Free Commands array
+ * commands_clear - Clear an Array of Commands
+ *
+ * @note The Array itself is not freed
  */
-void commands_cleanup(void)
+void commands_clear(struct CommandArray *ca)
 {
-  ARRAY_FREE(&Commands);
+  ARRAY_FREE(ca);
 }
 
 /**
- * commands_array - Get Commands array
- * @param first Set to first element of Commands array
- * @retval num Size of Commands array
- */
-size_t commands_array(const struct Command ***first)
-{
-  *first = ARRAY_FIRST(&Commands);
-
-  return ARRAY_SIZE(&Commands);
-}
-
-/**
- * command_get - Get a Command by its name
- * @param name Command string to lookup
+ * commands_get - Get a Command by its name
+ * @param ca   Command Array
+ * @param name Command name to lookup
  * @retval ptr  Success, Command
  * @retval NULL Error, no such command
  */
-const struct Command *command_get(const char *name)
+const struct Command *commands_get(struct CommandArray *ca, const char *name)
 {
   const struct Command **cp = NULL;
-  ARRAY_FOREACH(cp, &Commands)
+  ARRAY_FOREACH(cp, ca)
   {
     const struct Command *cmd = *cp;
 

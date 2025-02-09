@@ -2038,7 +2038,8 @@ main_exit:
   mutt_keys_cleanup();
 
   mutt_regexlist_free(&NoSpamList);
-  commands_cleanup();
+  if (NeoMutt)
+    commands_clear(&NeoMutt->commands);
 
   subjrx_cleanup();
   attach_cleanup();

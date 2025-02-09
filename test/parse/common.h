@@ -29,6 +29,4 @@
 
 extern struct Command mutt_commands[];
 
-size_t commands_array(const struct Command ***first);
-
 #endif /* TEST_PARSE_COMMON_H */
