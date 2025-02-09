@@ -183,6 +183,19 @@ $(PWD)/browser:
 	$(MKDIR_P) $(PWD)/browser
 
 ###############################################################################
+# libcli
+LIBCLI=		libcli.a
+LIBCLIOBJS=	cli/objects.o cli/parse.o
+CLEANFILES+=	$(LIBCLI) $(LIBCLIOBJS)
+ALLOBJS+=	$(LIBCLIOBJS)
+
+$(LIBCLI): $(PWD)/cli $(LIBCLIOBJS)
+	$(AR) cr $@ $(LIBCLIOBJS)
+	$(RANLIB) $@
+$(PWD)/cli:
+	$(MKDIR_P) $(PWD)/cli
+
+###############################################################################
 # libcolor
 LIBCOLOR=	libcolor.a
 LIBCOLOROBJS=	color/ansi.o color/attr.o color/color.o color/command.o \
@@ -911,7 +924,7 @@ MUTTLIBS+=	$(LIBINDEX) $(LIBPAGER) $(LIBINDEX) $(LIBPAGER) $(LIBAUTOCRYPT) $(LIB
 		$(LIBNCRYPT) $(LIBIMAP) $(LIBCONN) $(LIBHCACHE) \
 		$(LIBCOMPRESS) $(LIBSIDEBAR) $(LIBBCACHE) $(LIBHISTORY) \
 		$(LIBCORE) $(LIBPARSE) $(LIBEXPANDO) $(LIBCONFIG) $(LIBEMAIL) $(LIBADDRESS) \
-		$(LIBDEBUG) $(LIBMUTT)
+		$(LIBDEBUG) $(LIBCLI) $(LIBMUTT)
 
 # neomutt
 $(NEOMUTT): $(GENERATED) $(NEOMUTTOBJS) $(MUTTLIBS)
@@ -987,6 +1000,7 @@ coverage: all test
 	$(RM) mutt/exit.gc??
 	lcov --test-name "test" --output-file coverage.info --capture \
 	  --directory address \
+	  --directory cli \
 	  --directory color \
 	  --directory compress \
 	  --directory config \
