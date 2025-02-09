@@ -423,10 +423,10 @@ static void luaopen_mutt(lua_State *l)
   luaL_requiref(l, "mutt", luaopen_mutt_decl, 1);
   (void) luaL_dostring(l, "mutt.command = {}");
 
-  struct Command *c = NULL;
-  for (size_t i = 0, size = commands_array(&c); i < size; i++)
+  const struct Command **cp = NULL;
+  for (size_t i = 0, size = commands_array(&cp); i < size; i++)
   {
-    lua_expose_command(l, &c[i]);
+    lua_expose_command(l, cp[i]);
   }
 }
 

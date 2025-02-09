@@ -68,19 +68,19 @@ enum CommandResult parse_rc_buffer(struct Buffer *line, struct Buffer *token,
     }
     parse_extract_token(token, line, TOKEN_NO_FLAGS);
 
-    struct Command *cmd = NULL;
-    size_t size = commands_array(&cmd);
+    const struct Command **cp = NULL;
+    size_t size = commands_array(&cp);
     size_t i;
     for (i = 0; i < size; i++)
     {
-      if (mutt_str_equal(token->data, cmd[i].name))
+      if (mutt_str_equal(token->data, cp[i]->name))
       {
-        mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cmd[i].name);
-        rc = cmd[i].parse(token, line, cmd[i].data, err);
+        mutt_debug(LL_DEBUG1, "NT_COMMAND: %s\n", cp[i]->name);
+        rc = cp[i]->parse(token, line, cp[i]->data, err);
         if ((rc == MUTT_CMD_WARNING) || (rc == MUTT_CMD_ERROR) || (rc == MUTT_CMD_FINISH))
           goto finish; /* Propagate return code */
 
-        notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) cmd);
+        notify_send(NeoMutt->notify, NT_COMMAND, i, (void *) cp[i]);
         break; /* Continue with next command */
       }
     }

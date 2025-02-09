@@ -26,8 +26,7 @@
 #include "config.h"
 #include <stddef.h>
 #include <stdint.h>
-
-struct Buffer;
+#include "mutt/lib.h"
 
 /**
  * enum CommandResult - Error codes for command_t parse functions
@@ -66,10 +65,11 @@ struct Command
 
   intptr_t data; ///< Data or flags to pass to the command
 };
+ARRAY_HEAD(CommandArray, const struct Command *);
 
-struct Command *command_get       (const char *s);
+const struct Command *command_get (const char *name);
 
-size_t          commands_array    (struct Command **first);
+size_t          commands_array    (const struct Command ***first);
 void            commands_cleanup  (void);
 void            commands_init     (void);
 void            commands_register (const struct Command *cmds);

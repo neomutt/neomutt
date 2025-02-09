@@ -561,13 +561,13 @@ out:
  */
 static HookFlags mutt_get_hook_type(const char *name)
 {
-  struct Command *c = NULL;
-  for (size_t i = 0, size = commands_array(&c); i < size; i++)
+  const struct Command **cp = NULL;
+  for (size_t i = 0, size = commands_array(&cp); i < size; i++)
   {
-    if (((c[i].parse == mutt_parse_hook) || (c[i].parse == mutt_parse_idxfmt_hook)) &&
-        mutt_istr_equal(c[i].name, name))
+    if (((cp[i]->parse == mutt_parse_hook) || (cp[i]->parse == mutt_parse_idxfmt_hook)) &&
+        mutt_istr_equal(cp[i]->name, name))
     {
-      return c[i].data;
+      return cp[i]->data;
     }
   }
   return MUTT_HOOK_NO_FLAGS;

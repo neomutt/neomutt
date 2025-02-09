@@ -1583,9 +1583,10 @@ void test_command_set(void)
   commands_register(mutt_commands);
   MuttLogger = log_disp_null;
 
-  struct Command *cmd = NULL;
-  size_t num = commands_array(&cmd);
+  const struct Command **cp = NULL;
+  size_t num = commands_array(&cp);
 
+  const struct Command *cmd = *cp;
   TEST_CHECK(cmd != NULL);
   TEST_CHECK_NUM_EQ(num, 4);
 

@@ -30,7 +30,6 @@
 #include "mutt/lib.h"
 #include "command.h"
 
-ARRAY_HEAD(CommandArray, struct Command);
 /// All the registered commands, e.g. alias, sidebar_pin
 static struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
 
@@ -39,10 +38,10 @@ static struct CommandArray Commands = ARRAY_HEAD_INITIALIZER;
  */
 static int commands_sort(const void *a, const void *b, void *sdata)
 {
-  struct Command x = *(const struct Command *) a;
-  struct Command y = *(const struct Command *) b;
+  const struct Command *x = *(const struct Command **) a;
+  const struct Command *y = *(const struct Command **) b;
 
-  return mutt_str_cmp(x.name, y.name);
+  return mutt_str_cmp(x->name, y->name);
 }
 
 /**
@@ -53,7 +52,7 @@ void commands_register(const struct Command *cmds)
 {
   for (int i = 0; cmds[i].name; i++)
   {
-    ARRAY_ADD(&Commands, cmds[i]);
+    ARRAY_ADD(&Commands, &cmds[i]);
   }
   ARRAY_SORT(&Commands, commands_sort, NULL);
 }
@@ -71,24 +70,27 @@ void commands_cleanup(void)
  * @param first Set to first element of Commands array
  * @retval num Size of Commands array
  */
-size_t commands_array(struct Command **first)
+size_t commands_array(const struct Command ***first)
 {
   *first = ARRAY_FIRST(&Commands);
+
   return ARRAY_SIZE(&Commands);
 }
 
 /**
  * command_get - Get a Command by its name
- * @param s Command string to lookup
+ * @param name Command string to lookup
  * @retval ptr  Success, Command
  * @retval NULL Error, no such command
  */
-struct Command *command_get(const char *s)
+const struct Command *command_get(const char *name)
 {
-  struct Command *cmd = NULL;
-  ARRAY_FOREACH(cmd, &Commands)
+  const struct Command **cp = NULL;
+  ARRAY_FOREACH(cp, &Commands)
   {
-    if (mutt_str_equal(s, cmd->name))
+    const struct Command *cmd = *cp;
+
+    if (mutt_str_equal(name, cmd->name))
       return cmd;
   }
   return NULL;
