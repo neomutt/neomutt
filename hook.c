@@ -1041,6 +1041,7 @@ static const struct Command HookCommands[] = {
   { "startup-hook",      mutt_parse_hook,               MUTT_STARTUP_HOOK | MUTT_GLOBAL_HOOK },
   { "timeout-hook",      mutt_parse_hook,               MUTT_TIMEOUT_HOOK | MUTT_GLOBAL_HOOK },
   { "unhook",            mutt_parse_unhook,             0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -1049,5 +1050,5 @@ static const struct Command HookCommands[] = {
  */
 void hooks_init(void)
 {
-  commands_register(HookCommands, mutt_array_size(HookCommands));
+  commands_register(HookCommands);
 }

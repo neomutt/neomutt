@@ -62,6 +62,7 @@ static const struct Command LuaCommands[] = {
   // clang-format off
   { "lua",        mutt_lua_parse,       0 },
   { "lua-source", mutt_lua_source_file, 0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -464,7 +465,7 @@ static bool lua_init(lua_State **l)
  */
 void mutt_lua_init(void)
 {
-  commands_register(LuaCommands, mutt_array_size(LuaCommands));
+  commands_register(LuaCommands);
 }
 
 /**

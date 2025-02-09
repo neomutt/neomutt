@@ -1580,7 +1580,7 @@ void test_command_set(void)
     return;
   }
 
-  commands_register(mutt_commands, 4);
+  commands_register(mutt_commands);
   MuttLogger = log_disp_null;
 
   struct Command *cmd = NULL;

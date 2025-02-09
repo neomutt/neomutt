@@ -1738,6 +1738,7 @@ static const struct Command MuttCommands[] = {
   { "unsubjectrx",         parse_unsubjectrx_list, 0 },
   { "unsubscribe",         parse_unsubscribe,      0 },
   { "version",             parse_version,          0 },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -1746,5 +1747,5 @@ static const struct Command MuttCommands[] = {
  */
 void commands_init(void)
 {
-  commands_register(MuttCommands, mutt_array_size(MuttCommands));
+  commands_register(MuttCommands);
 }

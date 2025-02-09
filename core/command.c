@@ -47,12 +47,11 @@ static int commands_sort(const void *a, const void *b, void *sdata)
 
 /**
  * commands_register - Add commands to Commands array
- * @param cmds     Array of Commands
- * @param num_cmds Number of Commands in the Array
+ * @param cmds Array of Commands
  */
-void commands_register(const struct Command *cmds, const size_t num_cmds)
+void commands_register(const struct Command *cmds)
 {
-  for (int i = 0; i < num_cmds; i++)
+  for (int i = 0; cmds[i].name; i++)
   {
     ARRAY_ADD(&Commands, cmds[i]);
   }

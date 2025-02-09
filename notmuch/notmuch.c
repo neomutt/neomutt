@@ -94,6 +94,7 @@ static const struct Command NmCommands[] = {
   // clang-format off
   { "unvirtual-mailboxes", parse_unmailboxes, 0 },
   { "virtual-mailboxes",   parse_mailboxes,   MUTT_NAMED },
+  { NULL, NULL, 0 },
   // clang-format on
 };
 
@@ -107,7 +108,7 @@ const int NmUrlProtocolLen = sizeof(NmUrlProtocol) - 1;
  */
 void nm_init(void)
 {
-  commands_register(NmCommands, mutt_array_size(NmCommands));
+  commands_register(NmCommands);
 }
 
 /**
