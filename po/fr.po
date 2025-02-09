@@ -855,15 +855,13 @@ msgstr "Le renommage n'est possible que pour les boîtes aux lettres IMAP"
 
 #. L10N: The highlighted letters must match the "Sort" options
 #: browser/functions.c:876
-#, fuzzy
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Trier inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ?"
+msgstr "Trier inverse par (d)ate, (a)lphabétique, (t)aille, des(c)ription, (n)ombre, nombre nou(v)eau, ou ne (p)as trier ?"
 
 #. L10N: The highlighted letters must match the "Reverse Sort" options
 #: browser/functions.c:878
-#, fuzzy
 msgid "Sort by (d)ate, (a)lpha, si(z)e, d(e)scription, (c)ount, ne(w) count, or do(n)'t sort?"
-msgstr "Trier par (d)ate, (a)lphabétique, (t)aille, des(c)ription, (n)ombre, nou(v)eau nombre, ou ne (p)as trier ?"
+msgstr "Trier par (d)ate, (a)lphabétique, (t)aille, des(c)ription, (n)ombre, nombre nou(v)eau, ou ne (p)as trier ?"
 
 #. L10N: These must match the highlighted letters from "Sort" and "Reverse Sort"
 #: browser/functions.c:880
@@ -1041,9 +1039,9 @@ msgstr "Impossible d'utiliser un préfixe en appelant une variable"
 
 # , c-format
 #: commands.c:1049 commands.c:1057
-#, fuzzy, c-format
+#, c-format
 msgid "%s is unset"
-msgstr "%s n'est pas positionné"
+msgstr "%s n'est pas mise"
 
 # , c-format
 #: commands.c:1097 mutt_lua.c:504
@@ -1237,9 +1235,8 @@ msgstr "Vous ne pouvez pas supprimer la seule pièce jointe"
 #. typed.  Hitting yes will remove the entry and unlink the file, so
 #. it's worth confirming they really meant to do it.
 #: compose/functions.c:360
-#, fuzzy
 msgid "Really delete the main message?"
-msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
+msgstr "Voulez-vous vraiment supprimer le message principal ?"
 
 #: compose/functions.c:377 compose/functions.c:569
 msgid "Can't leave group with only one attachment"
@@ -1596,9 +1593,8 @@ msgstr "Mot de passe pour %s@%s : "
 #. $*_oauth_refresh_command defined. So the message does not mean "None of
 #. your $*_oauth_refresh_command's are defined."
 #: conn/connaccount.c:211
-#, fuzzy
 msgid "No OAUTH refresh command defined"
-msgstr "Commande de rafraîchissement 'OATH' non définie"
+msgstr "La commande de rafraîchissement 'OATH' n'est pas définie"
 
 #: conn/connaccount.c:219
 msgid "Unable to run refresh command"
@@ -2507,8 +2503,8 @@ msgstr "Jeu de caractères changé à %s ; pas de conversion"
 msgid "Character set changed to %s; converting"
 msgstr "Jeu de caractères changé à %s ; conversion"
 
-# TODO: Typically a thread is translated as « un fil », but may « disscussion »
-#       is better here? Need to look into this.
+# TODO: Typically a thread is translated as « un fil », but maybe
+# 	    « disscussion » is better here? Need to look into this.
 #: flags.c:393 index/functions.c:1044 index/functions.c:1147
 #: index/functions.c:1163 index/functions.c:1302 mutt_thread.c:1298
 #: mutt_thread.c:1364 mutt_thread.c:1450
@@ -3179,9 +3175,8 @@ msgstr "supprimer le mot devant le curseur"
 #. L10N: Help screen description for OP_EDITOR_MAILBOX_CYCLE
 #. Text Entry: <op_editor_complete>
 #: gui/opcodes.h:366
-#, fuzzy
 msgid "cycle among incoming mailboxes"
-msgstr "parcourir les boîtes aux lettres recevant du courrier"
+msgstr "faire défiler les boîtes aux lettres"
 
 #. L10N: Help screen description for OP_EDITOR_QUOTE_CHAR
 #. Text Entry: <op_editor_quote_char>
@@ -3305,9 +3300,8 @@ msgstr "sélectionner l'entrée courante"
 #. L10N: Help screen description for OP_GET_CHILDREN
 #. Index: <op_get_children>
 #: gui/opcodes.h:437
-#, fuzzy
 msgid "get all children of the current message"
-msgstr "créer une macro hotkey (marque-page) pour le message courant"
+msgstr "afficher le(s) message(s) enfant(s) du message courant"
 
 #. L10N: Help screen description for OP_GET_MESSAGE
 #. Index: <op_get_message>
@@ -3319,9 +3313,8 @@ msgstr "éditer le message avec ses en-têtes"
 #. L10N: Help screen description for OP_GET_PARENT
 #. Index: <op_get_message>
 #: gui/opcodes.h:443
-#, fuzzy
 msgid "get parent of the current message"
-msgstr "créer une macro hotkey (marque-page) pour le message courant"
+msgstr "afficher le message parent du message courant"
 
 # , c-format
 #. L10N: Help screen description for OP_GOTO_PARENT
