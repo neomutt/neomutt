@@ -118,6 +118,8 @@ CHARSET_OBJS	= test/charset/mutt_ch_canonical_charset.o \
 		  test/charset/mutt_ch_lookup_remove.o \
 		  test/charset/mutt_ch_set_charset.o
 
+CLI_OBJS	= test/cli/cli_parse.o
+
 COLOR_OBJS	= test/color/ansi.o \
 		  test/color/ansi_color_parse_single.o \
 		  test/color/attr.o \
@@ -666,16 +668,17 @@ URL_OBJS	= test/url/url_check_scheme.o \
 BUILD_DIRS	= $(PWD)/test/account $(PWD)/test/address $(PWD)/test/array \
 		  $(PWD)/test/atoi $(PWD)/test/attach $(PWD)/test/base64 \
 		  $(PWD)/test/body $(PWD)/test/buffer $(PWD)/test/charset \
-		  $(PWD)/test/color $(PWD)/test/compress $(PWD)/test/config \
-		  $(PWD)/test/convert $(PWD)/test/core $(PWD)/test/date \
-		  $(PWD)/test/editor $(PWD)/test/email $(PWD)/test/envelope \
-		  $(PWD)/test/envlist $(PWD)/test/eqi $(PWD)/test/expando $(PWD)/test/file \
-		  $(PWD)/test/filter $(PWD)/test/from $(PWD)/test/group \
-		  $(PWD)/test/gui $(PWD)/test/hash $(PWD)/test/history \
-		  $(PWD)/test/idna $(PWD)/test/imap $(PWD)/test/list \
-		  $(PWD)/test/logging $(PWD)/test/mailbox $(PWD)/test/mapping \
-		  $(PWD)/test/mbyte $(PWD)/test/md5 $(PWD)/test/memory \
-		  $(PWD)/test/neo $(PWD)/test/notify $(PWD)/test/notmuch \
+		  $(PWD)/test/cli $(PWD)/test/color $(PWD)/test/compress \
+		  $(PWD)/test/config $(PWD)/test/convert $(PWD)/test/core \
+		  $(PWD)/test/date $(PWD)/test/editor $(PWD)/test/email \
+		  $(PWD)/test/envelope $(PWD)/test/envlist $(PWD)/test/eqi \
+		  $(PWD)/test/expando $(PWD)/test/file $(PWD)/test/filter \
+		  $(PWD)/test/from $(PWD)/test/group $(PWD)/test/gui \
+		  $(PWD)/test/hash $(PWD)/test/history $(PWD)/test/idna \
+		  $(PWD)/test/imap $(PWD)/test/list $(PWD)/test/logging \
+		  $(PWD)/test/mailbox $(PWD)/test/mapping $(PWD)/test/mbyte \
+		  $(PWD)/test/md5 $(PWD)/test/memory $(PWD)/test/neo \
+		  $(PWD)/test/notify $(PWD)/test/notmuch \
 		  $(PWD)/test/parameter $(PWD)/test/parse $(PWD)/test/path \
 		  $(PWD)/test/pattern $(PWD)/test/pool $(PWD)/test/prex \
 		  $(PWD)/test/random $(PWD)/test/regex $(PWD)/test/rfc2047 \
@@ -693,6 +696,7 @@ TEST_OBJS	= test/common.o test/main.o \
 		  $(BODY_OBJS) \
 		  $(BUFFER_OBJS) \
 		  $(CHARSET_OBJS) \
+		  $(CLI_OBJS) \
 		  $(COLOR_OBJS) \
 		  $(COMPRESS_OBJS) \
 		  $(CONFIG_OBJS) \
