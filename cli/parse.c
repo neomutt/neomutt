@@ -28,6 +28,7 @@
 
 #include "config.h"
 #include <stdbool.h>
+#include <sys/param.h> // IWYU pragma: keep
 #include <unistd.h>
 #include "mutt/lib.h"
 #include "objects.h"
@@ -84,6 +85,13 @@ bool cli_parse(int argc, char **argv, struct CommandLine *cli)
   bool rc = true;
 
   opterr = 0; // We'll handle the errors
+// Always initialise getopt() or the tests will fail
+#if defined(BSD) || defined(__APPLE__)
+  optreset = 1;
+  optind = 1;
+#else
+  optind = 0;
+#endif
 
   while (rc && (argc > 1) && (optind < argc))
   {
