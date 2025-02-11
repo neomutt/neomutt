@@ -30,6 +30,7 @@
  * | :------------------------ | :------------------------------ |
  * | convert/content_info.c    | @subpage convert_content_info   |
  * | convert/convert.c         | @subpage convert_convert        |
+ * | convert/module.c          | @subpage convert_module         |
  */
 
 #ifndef MUTT_CONVERT_LIB_H
