@@ -37,6 +37,7 @@
  * | pattern/flags.c        | @subpage pattern_flags        |
  * | pattern/functions.c    | @subpage pattern_functions    |
  * | pattern/message.c      | @subpage pattern_message      |
+ * | pattern/module.c       | @subpage pattern_module       |
  * | pattern/pattern.c      | @subpage pattern_pattern      |
  * | pattern/pattern_data.c | @subpage pattern_pattern_data |
  * | pattern/search_state.c | @subpage pattern_search_state |

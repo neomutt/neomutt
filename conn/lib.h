@@ -34,6 +34,7 @@
  * | conn/getdomain.c      | @subpage conn_getdomain       |
  * | conn/gnutls.c         | @subpage conn_gnutls          |
  * | conn/gsasl.c          | @subpage conn_gsasl           |
+ * | conn/module.c         | @subpage conn_module          |
  * | conn/mutt_account.c   | @subpage conn_mutt_account    |
  * | conn/openssl.c        | @subpage conn_openssl         |
  * | conn/raw.c            | @subpage conn_raw             |

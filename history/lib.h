@@ -32,6 +32,7 @@
  * | history/expando.c     | @subpage history_expando     |
  * | history/functions.c   | @subpage history_functions   |
  * | history/history.c     | @subpage history_history     |
+ * | history/module.c      | @subpage history_module      |
  */
 
 #ifndef MUTT_HISTORY_LIB_H
