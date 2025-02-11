@@ -28,8 +28,12 @@ task:
         - (cd ${NEOMUTT_TEST_DIR} && ./setup.sh)
       configure_script: ./configure --autocrypt --disable-doc --disable-idn --idn2 --notmuch --testing
       build_script: make
-      version_script: ./neomutt -v
-      test_script: make test
+      version_script:
+        - ./neomutt -v
+        - ./neomutt -h all
+      test_script:
+        - make test/neomutt-test
+        - make test
 
     - name: FreeBSD / OpenSSL
       install_script:
@@ -37,7 +41,9 @@ task:
         - ${PKG_INSTALL} ${PKG_COMMON} openssl
       configure_script: ./configure ${CONFIGURE_COMMON} --ssl
       build_script: make
-      version_script: ./neomutt -v
+      version_script:
+        - ./neomutt -v
+        - ./neomutt -h all
 
     - name: FreeBSD / LibreSSL
       install_script:
@@ -45,7 +51,9 @@ task:
         - ${PKG_INSTALL} ${PKG_COMMON} libressl
       configure_script: ./configure ${CONFIGURE_COMMON} --ssl
       build_script: make
-      version_script: ./neomutt -v
+      version_script:
+        - ./neomutt -v
+        - ./neomutt -h all
 
     - name: FreeBSD / GnuTLS
       install_script:
@@ -53,4 +61,6 @@ task:
         - ${PKG_INSTALL} ${PKG_COMMON} gnutls
       configure_script: ./configure ${CONFIGURE_COMMON} --gnutls
       build_script: make
-      version_script: ./neomutt -v
+      version_script:
+        - ./neomutt -v
+        - ./neomutt -h all

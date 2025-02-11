@@ -82,6 +82,7 @@ jobs:
     - name: Neomutt Version
       run: |
         test -f neomutt && ./neomutt -v || :
+        test -f neomutt && ./neomutt -h all || :
 
     - name: Build Tests
       run: |
