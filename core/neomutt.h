@@ -126,6 +126,7 @@ struct Module
  */
 struct NeoMutt
 {
+  const struct Module **modules; ///< Library modules
   struct Notify *notify;         ///< Notifications handler
   struct Notify *notify_resize;  ///< Window resize notifications handler
   struct Notify *notify_timeout; ///< Timeout notifications handler
@@ -158,7 +159,13 @@ bool            neomutt_account_add   (struct NeoMutt *n, struct Account *a);
 void            neomutt_account_remove(struct NeoMutt *n, struct Account *a);
 void            neomutt_accounts_free (struct NeoMutt *n);
 void            neomutt_free          (struct NeoMutt **ptr);
-struct NeoMutt *neomutt_new           (struct ConfigSet *cs);
+struct NeoMutt *neomutt_new           (void);
+
+bool neomutt_init   (struct NeoMutt *n, const struct Module **modules);
+void neomutt_cleanup(struct NeoMutt *n);
+
+bool neomutt_gui_init   (struct NeoMutt *n);
+void neomutt_gui_cleanup(struct NeoMutt *n);
 
 struct MailboxArray neomutt_mailboxes_get(struct NeoMutt *n, enum MailboxType type);
 

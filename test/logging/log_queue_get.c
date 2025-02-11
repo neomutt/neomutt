@@ -31,5 +31,5 @@ void test_log_queue_get(void)
 
   const struct LogLineList lll = log_queue_get();
 
-  TEST_CHECK(STAILQ_EMPTY(&lll));
+  TEST_CHECK(!STAILQ_EMPTY(&lll));
 }
