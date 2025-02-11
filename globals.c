@@ -45,7 +45,6 @@ struct ListHead AlternativeOrderList = STAILQ_HEAD_INITIALIZER(AlternativeOrderL
 struct ListHead AutoViewList         = STAILQ_HEAD_INITIALIZER(AutoViewList);         ///< List of mime types to auto view
 struct ListHead HeaderOrderList      = STAILQ_HEAD_INITIALIZER(HeaderOrderList);      ///< List of header fields in the order they should be displayed
 struct ListHead MimeLookupList       = STAILQ_HEAD_INITIALIZER(MimeLookupList);       ///< List of mime types that that shouldn't use the mailcap entry
-struct ListHead Muttrc               = STAILQ_HEAD_INITIALIZER(Muttrc);               ///< List of config files to read
 struct ListHead TempAttachmentsList  = STAILQ_HEAD_INITIALIZER(TempAttachmentsList);  ///< List of temporary files for displaying attachments
 struct ListHead UserHeader           = STAILQ_HEAD_INITIALIZER(UserHeader);           ///< List of custom headers to add to outgoing emails
 // clang-format on
