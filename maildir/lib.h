@@ -36,6 +36,7 @@
  * | maildir/mdata.c    | @subpage maildir_mdata    |
  * | maildir/mdemail.c  | @subpage maildir_mdemail  |
  * | maildir/message.c  | @subpage maildir_message  |
+ * | maildir/module.c   | @subpage maildir_module   |
  * | maildir/path.c     | @subpage maildir_path     |
  * | maildir/shared.c   | @subpage maildir_shared   |
  */

@@ -31,6 +31,7 @@
  * | gui/dialog.c        | @subpage gui_dialog        |
  * | gui/functions.c     | @subpage gui_functions     |
  * | gui/global.c        | @subpage gui_global        |
+ * | gui/module.c        | @subpage gui_module        |
  * | gui/msgcont.c       | @subpage gui_msgcont       |
  * | gui/msgwin.c        | @subpage gui_msgwin        |
  * | gui/msgwin_wdata.c  | @subpage gui_msgwin_wdata  |

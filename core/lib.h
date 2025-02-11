@@ -33,6 +33,7 @@
  * | core/dispatcher.c   | @subpage core_dispatcher   |
  * | core/mailbox.c      | @subpage core_mailbox      |
  * | core/message.c      | @subpage core_message      |
+ * | core/module.c       | @subpage core_module       |
  * | core/neomutt.c      | @subpage core_neomutt      |
  * | core/tmp.c          | @subpage core_tmp          |
  */

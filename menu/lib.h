@@ -31,6 +31,7 @@
  * | menu/draw.c      | @subpage menu_draw      |
  * | menu/functions.c | @subpage menu_functions |
  * | menu/menu.c      | @subpage menu_menu      |
+ * | menu/module.c    | @subpage menu_module    |
  * | menu/move.c      | @subpage menu_move      |
  * | menu/observer.c  | @subpage menu_observer  |
  * | menu/tagging.c   | @subpage menu_tagging   |

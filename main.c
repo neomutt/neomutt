@@ -67,6 +67,7 @@
  * | mailcap.c       | @subpage neo_mailcap       |
  * | maillist.c      | @subpage neo_maillist      |
  * | main.c          | @subpage neo_main          |
+ * | module.c        | @subpage main_module       |
  * | monitor.c       | @subpage neo_monitor       |
  * | muttlib.c       | @subpage neo_muttlib       |
  * | mutt_body.c     | @subpage neo_mutt_body     |
@@ -176,7 +177,6 @@
 #ifndef DOMAIN
 #include "conn/lib.h"
 #endif
-#include "debug/lib.h"
 
 bool StartupComplete = false; ///< When the config has been read
 
