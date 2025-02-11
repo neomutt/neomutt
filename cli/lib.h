@@ -32,8 +32,8 @@
 #ifndef MUTT_CLI_LIB_H
 #define MUTT_CLI_LIB_H
 
-// IWYU pragma: begin_keep
 #include <stdbool.h>
+// IWYU pragma: begin_keep
 #include "objects.h"
 // IWYU pragma: end_keep
 
