@@ -31,6 +31,7 @@
  * | complete/complete.c    | @subpage complete_complete   |
  * | complete/data.c        | @subpage complete_data       |
  * | complete/helpers.c     | @subpage complete_helpers    |
+ * | complete/module.c      | @subpage complete_module     |
  */
 
 #ifndef MUTT_COMPLETE_LIB_H

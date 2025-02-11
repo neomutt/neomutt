@@ -32,6 +32,7 @@
  * | send/expando_greeting.c | @subpage send_expando_greeting |
  * | send/expando_msgid.c    | @subpage send_expando_msgid    |
  * | send/header.c           | @subpage send_header           |
+ * | send/module.c           | @subpage send_module           |
  * | send/multipart.c        | @subpage send_multipart        |
  * | send/send.c             | @subpage send_send             |
  * | send/sendlib.c          | @subpage send_sendlib          |

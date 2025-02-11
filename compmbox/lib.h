@@ -30,6 +30,7 @@
  * | :------------------ | :------------------------- |
  * | compmbox/compress.c | @subpage compmbox_compress |
  * | compmbox/expando.c  | @subpage compmbox_expando  |
+ * | compmbox/module.c   | @subpage compmbox_module   |
  */
 
 #ifndef MUTT_COMPMBOX_LIB_H

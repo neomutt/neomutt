@@ -33,6 +33,7 @@
  * | expando/filter.c                  | @subpage expando_filter         |
  * | expando/format.c                  | @subpage expando_format         |
  * | expando/helpers.c                 | @subpage expando_helpers        |
+ * | expando/module.c                  | @subpage expando_module         |
  * | expando/node.c                    | @subpage expando_node           |
  * | expando/node_condbool.c           | @subpage expando_node_condbool  |
  * | expando/node_conddate.c           | @subpage expando_node_conddate  |

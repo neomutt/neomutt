@@ -37,6 +37,7 @@
  * | alias/expando.c     | @subpage alias_expando     |
  * | alias/functions.c   | @subpage alias_functions   |
  * | alias/gui.c         | @subpage alias_gui         |
+ * | alias/module.c      | @subpage alias_module      |
  * | alias/reverse.c     | @subpage alias_reverse     |
  * | alias/sort.c        | @subpage alias_sort        |
  */
