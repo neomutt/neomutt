@@ -161,6 +161,8 @@ void cert_array_clear(struct CertArray *carr)
   {
     FREE(line);
   }
+
+  ARRAY_FREE(carr);
 }
 
 /**
