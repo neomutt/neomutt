@@ -729,23 +729,16 @@ static void reset_tilde(struct ConfigSet *cs)
  */
 static void localise_config(struct ConfigSet *cs)
 {
-  static const char *names[] = {
-    "attribution_intro",
-    "compose_format",
-    "forward_attribution_intro",
-    "forward_attribution_trailer",
-    "reply_regex",
-    "status_format",
-    "ts_icon_format",
-    "ts_status_format",
-  };
-
   struct Buffer *value = buf_pool_get();
-  for (size_t i = 0; i < mutt_array_size(names); i++)
+  struct HashElemArray hea = get_elem_list(NeoMutt->sub->cs, GEL_ALL_CONFIG);
+  struct HashElem **hep = NULL;
+
+  ARRAY_FOREACH(hep, &hea)
   {
-    struct HashElem *he = cs_get_elem(cs, names[i]);
-    if (!he)
+    struct HashElem *he = *hep;
+    if (!(he->type & D_L10N_STRING))
       continue;
+
     buf_reset(value);
     cs_he_initial_get(cs, he, value);
 
@@ -753,6 +746,8 @@ static void localise_config(struct ConfigSet *cs)
     const char *l10n = gettext(buf_string(value));
     config_he_set_initial(cs, he, l10n);
   }
+
+  ARRAY_FREE(&hea);
   buf_pool_release(&value);
 }
 #endif
