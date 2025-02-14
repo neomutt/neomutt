@@ -197,13 +197,8 @@ int mutt_command_complete(struct CompletionData *cd, struct Buffer *buf, int pos
       struct HashElem **hep = NULL;
       ARRAY_FOREACH(hep, &hea)
       {
-        struct HashElem *he = *hep;
-        const int type = CONFIG_TYPE(he->type);
-
-        if ((type == DT_SYNONYM) || (type & D_INTERNAL_DEPRECATED))
-          continue;
-
-        candidate(cd, cd->user_typed, he->key.strkey, cd->completed, sizeof(cd->completed));
+        candidate(cd, cd->user_typed, (*hep)->key.strkey, cd->completed,
+                  sizeof(cd->completed));
       }
       ARRAY_FREE(&hea);
 

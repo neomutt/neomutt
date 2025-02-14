@@ -213,69 +213,60 @@ bool dump_config(struct ConfigSet *cs, struct HashElemArray *hea,
     buf_reset(initial);
     const int type = CONFIG_TYPE(he->type);
 
-    if ((type == DT_SYNONYM) && !(flags & CS_DUMP_SHOW_SYNONYMS))
-      continue;
-
-    if ((he->type & D_INTERNAL_DEPRECATED) && !(flags & CS_DUMP_SHOW_DEPRECATED))
-      continue;
-
-    if (type != DT_SYNONYM)
+    /* If necessary, get the current value */
+    if ((flags & CS_DUMP_ONLY_CHANGED) || !(flags & CS_DUMP_HIDE_VALUE) ||
+        (flags & CS_DUMP_SHOW_DEFAULTS))
     {
-      /* If necessary, get the current value */
-      if ((flags & CS_DUMP_ONLY_CHANGED) || !(flags & CS_DUMP_HIDE_VALUE) ||
-          (flags & CS_DUMP_SHOW_DEFAULTS))
+      int rc = cs_he_string_get(cs, he, value);
+      if (CSR_RESULT(rc) != CSR_SUCCESS)
       {
-        int rc = cs_he_string_get(cs, he, value);
-        if (CSR_RESULT(rc) != CSR_SUCCESS)
-        {
-          result = false; /* LCOV_EXCL_LINE */
-          break;          /* LCOV_EXCL_LINE */
-        }
-
-        const struct ConfigDef *cdef = he->data;
-        if ((type == DT_STRING) && (cdef->type & D_SENSITIVE) &&
-            (flags & CS_DUMP_HIDE_SENSITIVE) && !buf_is_empty(value))
-        {
-          buf_reset(value);
-          buf_addstr(value, "***");
-        }
-
-        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value->data[0] == '/'))
-          mutt_pretty_mailbox(value->data, value->dsize);
-
-        // Quote/escape the values of config options NOT of these types
-        if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
-            (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
-            !(flags & CS_DUMP_NO_ESCAPING))
-        {
-          buf_reset(tmp);
-          pretty_var(value->data, tmp);
-          buf_strcpy(value, tmp->data);
-        }
+        result = false; /* LCOV_EXCL_LINE */
+        break;          /* LCOV_EXCL_LINE */
       }
 
-      /* If necessary, get the default value */
-      if (flags & (CS_DUMP_ONLY_CHANGED | CS_DUMP_SHOW_DEFAULTS))
+      const struct ConfigDef *cdef = he->data;
+      if ((type == DT_STRING) && (cdef->type & D_SENSITIVE) &&
+          (flags & CS_DUMP_HIDE_SENSITIVE) && !buf_is_empty(value))
       {
-        int rc = cs_he_initial_get(cs, he, initial);
-        if (CSR_RESULT(rc) != CSR_SUCCESS)
-        {
-          result = false; /* LCOV_EXCL_LINE */
-          break;          /* LCOV_EXCL_LINE */
-        }
+        buf_reset(value);
+        buf_addstr(value, "***");
+      }
 
-        if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (initial->data[0] == '/'))
-          mutt_pretty_mailbox(initial->data, initial->dsize);
+      if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (value->data[0] == '/'))
+        mutt_pretty_mailbox(value->data, value->dsize);
 
-        // Quote/escape the values of config options NOT of these types
-        if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
-            (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
-            !(flags & CS_DUMP_NO_ESCAPING))
-        {
-          buf_reset(tmp);
-          pretty_var(initial->data, tmp);
-          buf_strcpy(initial, tmp->data);
-        }
+      // Quote/escape the values of config options NOT of these types
+      if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
+          (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
+          !(flags & CS_DUMP_NO_ESCAPING))
+      {
+        buf_reset(tmp);
+        pretty_var(value->data, tmp);
+        buf_strcpy(value, tmp->data);
+      }
+    }
+
+    /* If necessary, get the default value */
+    if (flags & (CS_DUMP_ONLY_CHANGED | CS_DUMP_SHOW_DEFAULTS))
+    {
+      int rc = cs_he_initial_get(cs, he, initial);
+      if (CSR_RESULT(rc) != CSR_SUCCESS)
+      {
+        result = false; /* LCOV_EXCL_LINE */
+        break;          /* LCOV_EXCL_LINE */
+      }
+
+      if (((type == DT_PATH) || IS_MAILBOX(he->type)) && (initial->data[0] == '/'))
+        mutt_pretty_mailbox(initial->data, initial->dsize);
+
+      // Quote/escape the values of config options NOT of these types
+      if ((type != DT_BOOL) && (type != DT_NUMBER) && (type != DT_LONG) &&
+          (type != DT_QUAD) && (type != DT_ENUM) && (type != DT_SORT) &&
+          !(flags & CS_DUMP_NO_ESCAPING))
+      {
+        buf_reset(tmp);
+        pretty_var(initial->data, tmp);
+        buf_strcpy(initial, tmp->data);
       }
     }
 
